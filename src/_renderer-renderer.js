@@ -1,17 +1,13 @@
 import {
-  createElement,
   attachError,
   sanitizeLanguage,
-  sanitizeCodeContent
+  sanitizeCodeContent,
+  getBlockLines,
 } from "./_renderer-utils.js";
-import hljs from "./_renderer-highlight.min.js";
-import {registerTerraform} from "./_renderer-hljs-terraform.js";
-
-registerTerraform(hljs);
 
 export class Renderer {
   centerThreshold = 50;
-  blockToken = '"""';
+  blockToken = ":::";
   sectionSplitter = "\n\n";
 
   constructor({version, features, card, content }) {
@@ -23,16 +19,148 @@ export class Renderer {
 
   /**
    * @dev
+   * #1 Currently this only parses single line headers, it should be possible
+   * to parse multiline headers using ";" as the line separator.
+   * #2 means that the line is a comment.
+   * #3 This is intentionally untrimmed.
+   */
+  _parseTableContent(content) {
+    const multilineParser = (line) => line
+      .split(":")[1]
+      .split(";")
+      .map((l) => l.split(",").map((v) => v.trim()));
+
+    const singleLineParser = (line) => line
+      .split(",")
+      .map((v) => v.trim());
+    
+    const tagWrapper = (values, tags) => {
+      const merged = [];
+      for (let ri = 0; ri < values.length; ri++) {
+        const row = [];
+        for (let ci = 0; ci < values[0].length; ci++) {
+          row.push({
+            tag: tags[ri][ci],
+            content: values[ri][ci]
+          })        
+        }
+        merged.push(row);      
+      }
+      return merged;
+    }
+
+    const checkInconsistentColumnLength = (partName, part) => {
+      if (part.some((row) => row.length !== part[0].length)) {
+        throw new Error(`Inconsistent sized columns in ${partName}`);
+      }
+    }
+
+    const tagExpander = (values, tags, defaultTag) => {
+      if (values.length !== tags.length && tags.length > 1) {
+        throw new Error(`Tag row length in consistent`, values, tags);
+      }
+      
+      if (tags.length > 0 && values[0].length !== tags[0].length && tags[0].length !== 1) {
+        throw new Error(`Tag column length in consistent`, values[0], tags[0]);
+      }
+
+      if (tags.length === 0) {
+        return values.map((r) => r.map((_) => defaultTag));
+      }
+
+      if (tags.length === 1) {
+        if (tags[0].length === 1) {
+          return Array(values.length).fill(Array(values[0].length).fill(tags[0][0]));
+        } else {
+          return Array(values.length).fill(tags[0]);
+        }
+      }
+    }
+
+    const parts = {
+      head: {
+        defaultTag: "th",
+        tags: [],
+        values: [],
+      },
+      body: {
+        defaultTag: "td",
+        tags: [],
+        values: [],
+      }, 
+      foot: {
+        defaultTag: "th",
+        tags: [],
+        values: [],
+      },
+    }
+
+    for (const line of getBlockLines(content)) {
+      const trimmed = line.trim();
+      if (trimmed === "") {
+        continue;
+      }
+      if (trimmed.startsWith("#")) { // #2
+        continue;
+      }
+
+      if (trimmed.startsWith("BODY_TAGS:")) {
+        parts.body.tags = multilineParser(line);
+      } else if (trimmed.startsWith("HEAD_TAGS:")) {
+        parts.head.tags = multilineParser(line);
+      } else if (trimmed.startsWith("FOOT_TAGS:")) {
+        parts.foot.tags = multilineParser(line);
+        //#1
+      } else if (trimmed.startsWith("HEADS:")) {
+        parts.head.values = multilineParser(line);
+      } else if (trimmed.startsWith("FOOTS:")) {
+        parts.foot.values = multilineParser(line);
+      } else {
+        parts.body.values.push(singleLineParser(line)); // #3
+      }
+    }
+    
+    Object.entries(parts).forEach(([name, {values, tags}]) => {
+      checkInconsistentColumnLength(`${name}.values`, values);
+      checkInconsistentColumnLength(`${name}.tags`, tags);
+    });
+    
+    const parsedTable = Object
+      .entries(parts)
+      .reduce((acc, [name, { tags, values, defaultTag }]) => {
+        if (!values.length) {
+          acc[name] = [];
+          return acc;
+        }
+        const expandedTags = tagExpander(values, tags, defaultTag);
+        acc[name] = tagWrapper(values, expandedTags);
+        return acc;
+      }, {});
+
+    return parsedTable;
+  }
+
+  _parseUl(content) {
+    return content.split("\n").map((value) => ({
+      tag: "li",
+      value,
+    }))
+  }
+
+  /**
+   * @dev
    * #1 1 for start, 1 for end, 1 for single line of code, if it's more than 3,
    * then it means it's multiline.
-   * 
    * #2 Multiline <code> blocks aren't legible, so the code doesn't allow their
    * use.
    */
-  _parseSections(pre) {
-    const raw = pre.split(this.sectionSplitter);
+  _parseGroups(field)
+  {
+    const raw = this.content[field].split(this.sectionSplitter);
     const groups = [];
-    raw.forEach((group) => { 
+    
+    raw.forEach((group) =>
+    {
       const blockStart = group.startsWith(this.blockToken);
       const blockEnd = group.endsWith(this.blockToken);
       const notBlock = !blockStart && !blockEnd;
@@ -50,7 +178,7 @@ export class Renderer {
             type: "text",
             content,
             complete: true,
-          })
+          });
         }
         return;
       }
@@ -66,7 +194,7 @@ export class Renderer {
           type: "block",
           content: content,
           complete: blockEnd
-        })
+        });
       }
 
       if (!blockStart && blockEnd) {
@@ -75,7 +203,14 @@ export class Renderer {
       }
     });
 
-    const blocks = groups.map(({type, content, complete}) => { 
+    return {
+      field,
+      list: groups
+    };
+  }
+
+  _parseBlocks(groups) {
+    const blocks = groups.list.map(({type, content, complete}) => { 
       if (type === "text") {
         if (content.length < this.centerThreshold) {
           return {
@@ -97,10 +232,8 @@ export class Renderer {
       }
       
       const blockLines = content.split("\n");
-      const firstLine = blockLines[0].split(",").map((i) => i.trim());
+      const [flavor, flavorType] = blockLines[0].split(",").map((i) => i.trim());
       const isMultiline = blockLines.length > 3; // #1
-      const flavor = firstLine.length > 1 ? firstLine[0] : undefined;
-      const flavorType = firstLine.length > 1 ? firstLine[1] : undefined;
       
       // #2
       if (isMultiline && flavor === "code") {
@@ -115,7 +248,7 @@ export class Renderer {
             type,
             flavor,
             language: sanitizeLanguage(flavorType),
-            content
+            content: sanitizeCodeContent(content),
           }
 
         case "ts":
@@ -128,7 +261,21 @@ export class Renderer {
             type,
             flavor,
             language: sanitizeLanguage(flavorType),
-            content
+            content: sanitizeCodeContent(content),
+          }
+        
+        case "table":
+          return {
+            type,
+            flavor,
+            content: this._parseTableContent(content),
+          }
+        
+        case "ul": 
+          return {
+            type, 
+            flavor: "ul",
+            content: this._parseUl(content)
           }
 
         default:
@@ -137,124 +284,19 @@ export class Renderer {
             flavor: "pre",
             content,
           }
-          // attachError(`Unrecognized block flavor: ${blockFlavor}`);
       }
-      
     });
 
-    return blocks;
-  }
+    return {
+      field: groups.field,
+      list: blocks
+    };
+  } 
 
-  _renderSection({type, flavor, content, language}) {
-    switch (flavor) {
-      case "paragraph":
-        return createElement("p", { format: "html", content })
-
-      case "centered":
-        return createElement("div", { format: "html", content });
-
-      case "code":
-        return createElement("code", {
-          format: "text",
-          content: sanitizeCodeContent(content)
-        });
-
-      case "pre.code":
-        const pre = createElement("pre");
-        // const raw = content.split("\n");
-        // const codeContent = raw
-        //   .slice(1, -1)
-        //   .join("\n")
-        //   .trim()
-        //   .replace("&lt;", "<")
-        //   .replace("&gt;", ">");
-        const langLabelElem = createElement("span", {
-          format: "text",
-          content: language,
-          className: "language-label",
-        });
-        pre.appendChild(langLabelElem);
-        const highlighted = hljs.highlight(
-          sanitizeCodeContent(content),
-          // codeContent,
-          { language }
-        ).value;
-        const code = createElement("code", {
-          format: "html",
-          content: highlighted
-        });
-        pre.appendChild(code);
-        return pre;
-      
-      case "pre":
-        return createElement("pre", { format: "html", content })
-
-      case "table":
-        const table = createElement("table");
-        const tbody = createElement("tbody");
-        table.appendChild(tbody);
-        const tr = createElement("tr");
-        tbody.appendChild(tr);
-        const td1 = createElement("td", { format: "text", content: "cat" });
-        const td2 = createElement("td", { format: "text", content: "dog" });
-        tr.appendChild(td1);
-        tr.appendChild(td2);
-        return table;
-      
-      case "dl":
-        return;
-      
-      case "ul":
-        return;
-      
-      case "ol":
-        return;
-      
-      default:
-        attachError(`Unknown section type ${type}`);
-    }
-  }
-
-  _pres() {
-    const sections = {}
-    for (const [key, content] of Object.entries(this.content)) {
-      sections[key] = this._parseSections(content);
-    }
-
-    const renders = {};
-    for (const [key, section] of Object.entries(sections)) {
-      const container = createElement("div");
-      for (const line of section) {
-        container.appendChild(this._renderSection(line));
-      }
-      renders[key] = container;
-    }
-
-    return renders;
-  }
-
-  render(side)
-  {
-    const renders = this._pres(this.content);
-
-    switch (side) {
-      case "front":
-        const front = document.createElement("div");
-        front.appendChild(renders["Question-Start-Pre"]);
-        front.appendChild(renders["Front-Prompt-Pre"]);
-        front.appendChild(renders["Question-End-Pre"]);
-        return front;
-
-      case "back":
-        const back = document.createElement("div");
-        back.appendChild(renders["Answer-Start-Pre"]);
-        back.appendChild(renders["Back-Prompt-Pre"]);
-        back.appendChild(renders["Answer-End-Pre"]);
-        return back;
-
-      default:
-        attachError(`Error: Unknown side: ${side}`);
-        return null;
-    }
+  parse(fields) {
+    return fields.map((field) => { 
+      const groups = this._parseGroups(field);
+      return this._parseBlocks(groups);
+    });
   }
 }

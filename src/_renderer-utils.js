@@ -110,13 +110,16 @@ export function sanitizeLanguage(name)
   }
 }
 
-export function sanitizeCodeContent(content)
-{
-  const lines = content.split("\n");
-  return lines
-    .slice(1, -1)
-    .join("\n")
-    .trim()
+export function sanitizeCodeContent(content) {
+  return stripBlockBoundaries(content)
     .replace("&lt;", "<")
     .replace("&gt;", ">");
+}
+
+export function getBlockLines(content) {
+  return content.split("\n").slice(1, -1)
+} 
+
+export function stripBlockBoundaries(content) {
+  return getBlockLines(content).join("\n") .trim();
 }

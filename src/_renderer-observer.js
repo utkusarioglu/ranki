@@ -1,4 +1,5 @@
 import {  attachError } from "./_renderer-utils.js";
+import { Dom } from "./_renderer-dom.js";
 
 export class Observer {
   renderedIndicatorClass = "rendered";
@@ -23,13 +24,16 @@ export class Observer {
       const back = matches[1];
       
       if (!front) {
-        attachError("front doesn't exist");
+        attachError("Front doesn't exist");
         return 
       }
 
       if (!front.className.includes(this.renderedIndicatorClass)) {
         front.classList.add(this.renderedIndicatorClass);
-        front.appendChild(this.renderer.render("front"));
+        const dom = new Dom(front);
+        const fields = dom.getFields(this.anki.card, "front");
+        const parsed = this.renderer.parse(fields);
+        dom.render(parsed);
       }
 
       if (!back) {
@@ -38,7 +42,10 @@ export class Observer {
 
       if (!back.className.includes(this.renderedIndicatorClass)) {
         back.classList.add(this.renderedIndicatorClass);
-        back.appendChild(this.renderer.render("back"));
+        const dom = new Dom(back);
+        const fields = dom.getFields(this.anki.card, "back");
+        const parsed = this.renderer.parse(fields);
+        dom.render(parsed);
       }
     });
 

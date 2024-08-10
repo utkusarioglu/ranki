@@ -142,7 +142,12 @@ hr {
 table {
   display: block;
   position: relative;
-  margin: 0 calc(var(--length-content-inline-inset-rem) * -1);
+  /* 
+    This is disabled because it's ruining alignment, but i'm sure it was put
+    here for a purpose.
+   
+  */
+  /* margin: 0 calc(var(--length-content-inline-inset-rem) * -1); */
   max-width: 100vw !important;
   width: max-content !important;
   translate: -50%;
@@ -405,6 +410,7 @@ div.code-container:has(.code-language:not(:empty))>code {
 
 .hud .hud-item-deck-glue {
   color: var(--color-border-hex);
+  padding-inline: 0.2rem;
 }
 
 iframe {
