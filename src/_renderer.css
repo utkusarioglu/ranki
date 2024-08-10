@@ -1,0 +1,417 @@
+/* @import url("https://unpkg.com/@highlightjs/cdn-assets@11.10.0/styles/base16/framer.min.css"); */
+@import url("./_renderer-highlight.min.css");
+
+:root {
+  --color-heading-hex: #CCC;
+  --color-text-hex: #FFF;
+  --color-block-code-hex: #0F6;
+  --color-inline-code-hex: #fdba74;
+  --color-code-bg-hex: #151515;
+  --color-code-bg2-hex: #101010;
+  --color-link-hex: #09E;
+  --color-border-hex: #555;
+  --color-deck-hex: #444;
+  --color-close-hex: #299;
+
+  --length-content-inline-inset-rem: 1rem;
+  --length-pre-code-block-padding-rem: 1rem;
+  --length-pre-code-hljs-down-nudge: 0.2rem;
+  --length-chip-padding-inline-rem: 0.3rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+body>*:not(#qa, #_mark, #_flag),
+.card {
+  padding: 0 !important;
+  overflow-x: hidden;
+  margin-inline: 0 !important;
+}
+
+html,
+body,
+body>*:not(#qa, #_mark, #_flag),
+.card,
+#qa {
+  /* padding-inline: 0 !important; */
+  width: 100vw;
+}
+
+
+/*
+  This stops unstyled card content being flashed,
+  has an equivalent opacity: 1 in the card styling section.
+*/
+body {
+  opacity: initial !important;
+}
+
+/* 
+  Reserves some space for the deck name on top,
+  otherwise the question and deck name superimpose on ankidroid
+  see `.deck` as well.
+*/
+#qa {
+  padding-block: 2rem;
+  padding-inline: var(--length-content-inline-inset-rem);
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.card {
+  font-family: arial;
+  font-size: 16px;
+  text-align: center;
+  color: var(--color-text-hex) !important;
+  text-align: center;
+  padding-block: 1rem;
+}
+
+section {
+  margin-block: 1rem;
+}
+
+section:first-of-type {
+  margin-top: 0;
+}
+
+h4,
+h5,
+h6 {
+  font-size: 1.1rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h1 {
+  font-size: 1.6rem;
+}
+
+a {
+  color: var(--color-link-hex);
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-link-hex);
+}
+
+:is(h1, h2, h3, h4, h5, h6),
+:is(h1, h2, h3, h4, h5, h6)>a {
+  color: var(--color-heading-hex);
+}
+
+p {
+  line-height: 1.3rem;
+  /* margin-inline: calc(var(--length-content-inline-inset-rem) * -1); */
+  text-align: left;
+}
+
+/*
+I couldn't get this to work
+p:is(:not(> code))::first-letter {
+text-transform: uppercase;
+}
+*/
+
+ul {
+  padding-inline-start: 1.2rem;
+}
+
+li {
+  margin-block-end: 0.4rem;
+}
+
+li::marker {
+  color: var(--color-heading-hex);
+}
+
+hr {
+  border: var(--color-border-hex) solid 2px;
+  margin-inline: var(--length-content-inline-inset-rem);
+  margin-block: 2rem;
+  border-radius: 2px;
+}
+
+table {
+  display: block;
+  position: relative;
+  margin: 0 calc(var(--length-content-inline-inset-rem) * -1);
+  max-width: 100vw !important;
+  width: max-content !important;
+  translate: -50%;
+  left: 50%;
+
+  text-align: left;
+  background-color: var(--color-code-bg-hex);
+  overflow-x: scroll;
+  white-space: nowrap;
+  border-collapse: collapse;
+}
+
+thead {
+  color: var(--color-heading-hex);
+}
+
+thead th {
+  padding-block: 1rem;
+}
+
+/*
+  I'm not sure if the following two need to be separate
+*/
+td:has(+ td) {
+  padding-inline-end: 1rem;
+}
+
+table td:last-of-type {
+  padding-inline-end: var(--length-content-inline-inset-rem);
+}
+
+tr> :is(td, th):first-of-type {
+  padding-inline-start: var(--length-content-inline-inset-rem);
+}
+
+tr>td {
+  padding-block: 0.4rem;
+}
+
+tbody>tr:nth-of-type(2n + 1) {
+  background-color: var(--color-code-bg2-hex);
+}
+
+dl {
+  text-align: left;
+  /* 
+    This is disabled because card content now has a padding and it's likely
+    that this value isn't needed anymore.
+  */
+  /* margin-inline: 1rem; */
+}
+
+dt {
+  font-weight: 700;
+  color: var(--color-heading-hex);
+}
+
+dd {
+  margin-bottom: 1rem;
+}
+
+/*
+  pre > default pre:not(:has(.text) :has(code)) {}
+  pre that contains text (can contain code): block pre:has(.text)>code {}
+  pre that contains hljs code: pre:not(:has(.text)) > code {}
+*/
+/* pre { */
+pre:not(.text) {
+  padding-block: var(--length-pre-code-block-padding-rem);
+  margin-inline: calc(var(--length-content-inline-inset-rem) * -1);
+  background-color: var(--color-code-bg-hex);
+  color: var(--color-block-code-hex);
+  overflow-x: scroll;
+  position: relative;
+  line-height: 1.2rem;
+  font-size: smaller;
+}
+
+pre.text {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  /* Allow wrapping */
+  white-space: pre-wrap;
+  /* Handle long words */
+  overflow-wrap: break-word;
+}
+
+pre::-webkit-scrollbar {
+  display: none;
+}
+
+pre:not(.text):not(:has(code)) {
+  padding-inline: var(--length-pre-code-block-padding-rem);
+}
+
+pre:not(.text)>code {
+  padding: 0 var(--length-content-inline-inset-rem) !important;
+  /* padding: 0 !important; */
+  display: block;
+  width: max-content;
+  background-color: transparent;
+}
+
+pre:not(.text)>code.hljs {
+  background-color: transparent !important;
+}
+
+pre.text>code {
+  /*
+  This undoes hljs's block setting.
+  */
+  display: inline !important;
+}
+
+pre:not(.text):has(code.hljs) {
+  --base: var(--length-pre-code-block-padding-rem);
+  --nudge: var(--length-pre-code-hljs-down-nudge);
+
+  padding-block-start: calc(var(--base) + var(--nudge));
+  padding-block-end: calc(var(--base) - var(--nudge));
+}
+
+code:empty,
+pre:has(code:empty) {
+  display: none;
+}
+
+.language-label {
+  --padding-inset-rem: 0.5rem;
+  --border-radius-rem: 0.4rem;
+
+  position: absolute;
+  top: -0.2rem;
+  left: calc(var(--length-content-inline-inset-rem) - var(--padding-inset-rem));
+  color: var(--color-heading-hex);
+  font-size: 0.6rem;
+  background-color: black;
+  border-end-end-radius: var(--border-radius-rem);
+  border-end-start-radius: var(--border-radius-rem);
+  padding-inline: var(--padding-inset-rem);
+}
+
+pre:has(.text)>code,
+code {
+  --inline-padding: var(--length-chip-padding-inline-rem);
+
+  position: relative;
+  background-color: var(--color-code-bg2-hex);
+  padding: 0.05rem 0.3rem;
+  border-radius: 0.3rem;
+  color: var(--color-inline-code-hex);
+  font-size: smaller;
+}
+
+/*
+  This div only exists as a language hack. it powers the following two 
+  divs to be hidden conditionally.
+*/
+div.code-container>.code-language {
+  display: none;
+}
+
+/*
+  Disables code block if the code doesn't have a language specified
+*/
+div.code-container:has(.code-language:empty)>pre {
+  display: none;
+}
+
+/*
+  Disables code inline if the code block has a language specified
+*/
+div.code-container:has(.code-language:not(:empty))>code {
+  display: none;
+}
+
+.cloze {
+  font-weight: 700;
+  color: var(--color-close-hex);
+}
+
+/*
+  Deck name has to be inserted with the .deck class
+  see `#qa` as well.
+*/
+/** Remove .deck once the transition is complete */
+.deck,
+.info-bar {
+  position: absolute;
+  top: 0;
+  text-align: center;
+  left: var(--length-content-inline-inset-rem);
+  right: var(--length-content-inline-inset-rem);
+
+  font-size: 0.8rem;
+  color: var(--color-deck-hex);
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.info-bar>.info-bar-right>*,
+.info-bar>.info-bar-left>* {
+  display: block;
+}
+
+.info-bar>.info-bar-right {
+  text-align: right;
+}
+
+.info-bar>.info-bar-left {
+  text-align: left;
+}
+
+.hud {
+  position: absolute;
+  top: 0.2rem;
+  left: 0;
+  right: 0;
+  /*
+    This was set for all elements that relate to body and card but hud needs to
+    be an exception
+  */
+  overflow-x: scroll !important;
+  scrollbar-width: none;
+}
+
+.hud::-webkit-scrollbar {
+  display: none;
+}
+
+.hud .hud-scroll-container {
+  --inset: var(--length-content-inline-inset-rem);
+  --chip-padding: var(--length-chip-padding-inline-rem);
+
+  display: flex;
+
+  padding-inline: calc(var(--inset) - var(--chip-padding));
+  padding-block: 0.1rem;
+  width: max-content;
+  margin-inline: auto;
+}
+
+.hud .hud-item {
+  --inline-padding: var(--length-chip-padding-inline-rem);
+
+  padding: 0.3rem var(--inline-padding);
+  background-color: var(--color-code-bg-hex);
+  color: var(--color-heading-hex);
+  margin-inline-end: 0.3rem;
+  border-radius: 0.3rem;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.hud .hud-item:last-of-type {
+  margin-inline-end: 0;
+}
+
+.hud .hud-item-deck-glue {
+  color: var(--color-border-hex);
+}
+
+iframe {
+  /* margin-inline: calc(var(--length-content-inline-inset-rem) * -1); */
+  width: 100%;
+  border: none;
+  height: 100svh;
+  margin: 0 !important;
+}
