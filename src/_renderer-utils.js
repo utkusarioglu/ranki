@@ -111,7 +111,12 @@ export function sanitizeLanguage(name)
 }
 
 export function sanitizeCodeContent(content) {
-  return stripBlockBoundaries(content)
+  return stripHtmlEncoding(stripBlockBoundaries(content));
+}
+
+export function stripHtmlEncoding(content) {
+  console.log("content", content);
+  return content
     .replace("&lt;", "<")
     .replace("&gt;", ">");
 }

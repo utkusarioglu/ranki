@@ -1,10 +1,12 @@
-import { createElement, attachError, } from "./_renderer-utils.js";
+import { createElement, attachError, stripHtmlEncoding } from "./_renderer-utils.js";
 import hljs from "./_renderer-highlight.min.js";
 import {registerTerraform} from "./_renderer-hljs-terraform.js";
 
 registerTerraform(hljs);
 
 export class Dom {
+  childToken = "/";
+
   constructor(parent) {
     this.parent = parent;
   }
@@ -30,8 +32,8 @@ export class Dom {
     }
   }
 
-  _multiWrap(tags, {format, content}) {
-    const list = tags.split(".").map((v) => v.trim());
+  _multiWrap(tags, {format, content} = {}) {
+    const list = tags.split(this.childToken).map((v) => v.trim());
     const root = createElement(list[0]);
     const rest = list.slice(1);
 
@@ -45,10 +47,12 @@ export class Dom {
     if (content) {
       switch (format) {
         case "html":
-          leaf.innerHTML = content;
+          leaf.innerHTML = stripHtmlEncoding(content);
+          break;
         
         case "text":
           leaf.innerText = content;
+          break;
       }
     }
 
@@ -104,7 +108,7 @@ export class Dom {
         part.appendChild(tr);
         
         for (const {tag, content} of row) {
-          const { root } = this._multiWrap(tag, { format: "text", content });
+          const { root } = this._multiWrap(tag, { format: "html", content });
           tr.appendChild(root);
         }
       }
@@ -124,6 +128,40 @@ export class Dom {
     return table;
   }
 
+  _list(tag, content) {
+    const list = createElement(tag);
+    for (const {tag, value} of content) {
+      const { root, leaf } = this._multiWrap(tag);
+      for (const v of value) {
+        const p = createElement("p", { format: "html", content: v });
+        leaf.appendChild(p);
+      }
+      list.appendChild(root);
+    }
+    return list;
+  }
+
+  _dl(content) {
+    const dl = createElement("dl");
+    for (const { dts, dd } of content) {
+      for (const dt of dts) {
+        dl.appendChild(createElement("dt", {
+          format: "html",
+          content: dt
+        }));
+      }
+      const div = createElement("div");
+      dl.appendChild(div);
+      for (const line of dd) {
+        div.appendChild(createElement("p", {
+          format: "html",
+          content: line
+        }));
+      }
+    }
+    return dl
+  }
+
   _renderBlock({type, flavor, content, language}) {
     switch (flavor) {
       case "paragraph":
@@ -135,7 +173,7 @@ export class Dom {
       case "code":
         return this._code(content)
 
-      case "pre.code":
+      case "pre > code":
         return this._preCode(content, language);
       
       case "pre":
@@ -143,15 +181,13 @@ export class Dom {
 
       case "table":
         return this._table(content);
+
+      case "ol":
+      case "ul":
+        return this._list(flavor, content);
       
       case "dl":
-        return;
-      
-      case "ul":
-        return;
-      
-      case "ol":
-        return;
+        return this._dl(content);
       
       default:
         attachError(`Unknown section type ${type}`);

@@ -9,12 +9,22 @@ export class Renderer {
   centerThreshold = 50;
   blockToken = ":::";
   sectionSplitter = "\n\n";
+  childToken = "/";
+  assignmentToken = ":";
+  newLineToken = ";";
+  paramToken = ",";
+  commentToken = "#";
+  listStartToken = "-";
 
   constructor({version, features, card, content }) {
     this.version = version;
     this.features = features;
     this.card = card;
     this.content = content;
+  }
+
+  _assign(name) {
+    return `${name}${this.assignmentToken}`;
   }
 
   /**
@@ -24,14 +34,14 @@ export class Renderer {
    * #2 means that the line is a comment.
    * #3 This is intentionally untrimmed.
    */
-  _parseTableContent(content) {
+  _parseTable(content) {
     const multilineParser = (line) => line
-      .split(":")[1]
-      .split(";")
-      .map((l) => l.split(",").map((v) => v.trim()));
+      .split(this.assignmentToken)[1]
+      .split(this.newLineToken)
+      .map((l) => l.split(this.paramToken).map((v) => v.trim()));
 
     const singleLineParser = (line) => line
-      .split(",")
+      .split(this.paramToken)
       .map((v) => v.trim());
     
     const tagWrapper = (values, tags) => {
@@ -100,20 +110,20 @@ export class Renderer {
       if (trimmed === "") {
         continue;
       }
-      if (trimmed.startsWith("#")) { // #2
+      if (trimmed.startsWith(this.commentToken)) { // #2
         continue;
       }
 
-      if (trimmed.startsWith("BODY_TAGS:")) {
+      if (trimmed.startsWith(this._assign("BODY_TAGS"))) {
         parts.body.tags = multilineParser(line);
-      } else if (trimmed.startsWith("HEAD_TAGS:")) {
+      } else if (trimmed.startsWith(this._assign("HEAD_TAGS"))) {
         parts.head.tags = multilineParser(line);
-      } else if (trimmed.startsWith("FOOT_TAGS:")) {
+      } else if (trimmed.startsWith(this._assign("FOOT_TAGS"))) {
         parts.foot.tags = multilineParser(line);
         //#1
-      } else if (trimmed.startsWith("HEADS:")) {
+      } else if (trimmed.startsWith(this._assign("HEADS"))) {
         parts.head.values = multilineParser(line);
-      } else if (trimmed.startsWith("FOOTS:")) {
+      } else if (trimmed.startsWith(this._assign("FOOTS"))) {
         parts.foot.values = multilineParser(line);
       } else {
         parts.body.values.push(singleLineParser(line)); // #3
@@ -140,11 +150,62 @@ export class Renderer {
     return parsedTable;
   }
 
-  _parseUl(content) {
-    return content.split("\n").map((value) => ({
-      tag: "li",
-      value,
-    }))
+  _parseList(content)
+  {
+    let tag = "li";
+    const items = [];
+    for (const line of getBlockLines(content)) {
+      const trimmed = line.trim();
+      if (trimmed === "") {
+        continue;
+      }
+      if (trimmed.startsWith(this.commentToken)) { // #2
+        continue;
+      }
+
+      if (trimmed.startsWith(this._assign("LI_TAGS"))) {
+        tag = trimmed.split(this.assignmentToken)[1].trim();
+      } else if (trimmed.startsWith(this.listStartToken)) {
+        items.push({
+          value: [trimmed.slice(1).trim()]
+        });
+      } else if(items.length){
+        items[items.length - 1].value.push(trimmed);
+      }
+    }
+
+    return items.map(({ value }) => ({ tag, value }));
+  }
+
+  _parseDl(content) {
+    const items = []
+    for (const line of getBlockLines(content)) {
+      const trimmed = line.trim();
+      if (trimmed === "") {
+        continue;
+      }
+      if (trimmed.startsWith(this.commentToken)) { // #2
+        continue;
+      }
+
+      if (trimmed.includes(this.assignmentToken)) {
+        const dts = trimmed
+          .split(this.assignmentToken)[0]
+          .split(this.paramToken)
+          .map((v) => v.trim());
+
+        console.log(dts);
+        
+        items.push({
+          dts,
+          dd: [],
+        });
+      } else {
+        items[items.length - 1].dd.push(trimmed)
+      }
+    }
+
+    return items;
   }
 
   /**
@@ -232,8 +293,11 @@ export class Renderer {
       }
       
       const blockLines = content.split("\n");
-      const [flavor, flavorType] = blockLines[0].split(",").map((i) => i.trim());
+      let [flavor, flavorType] = blockLines[0].split(this.newLineToken).map((i) => i.trim());
       const isMultiline = blockLines.length > 3; // #1
+      flavor = flavor
+        .split(this.childToken)
+        .map((v) => v.trim()).join(" > ");
       
       // #2
       if (isMultiline && flavor === "code") {
@@ -251,12 +315,7 @@ export class Renderer {
             content: sanitizeCodeContent(content),
           }
 
-        case "ts":
-        case "js":
-        case "python":
-        case "hcl":
-
-        case "pre.code":
+        case "pre > code":
           return {
             type,
             flavor,
@@ -268,14 +327,22 @@ export class Renderer {
           return {
             type,
             flavor,
-            content: this._parseTableContent(content),
+            content: this._parseTable(content),
           }
         
-        case "ul": 
+        case "ol":
+        case "ul":
           return {
-            type, 
-            flavor: "ul",
-            content: this._parseUl(content)
+            type,
+            flavor,
+            content: this._parseList(content),
+          }
+        
+        case "dl":
+          return {
+            type,
+            flavor,
+            content: this._parseDl(content),
           }
 
         default:
@@ -294,7 +361,7 @@ export class Renderer {
   } 
 
   parse(fields) {
-    return fields.map((field) => { 
+    return fields.map((field) => {
       const groups = this._parseGroups(field);
       return this._parseBlocks(groups);
     });
