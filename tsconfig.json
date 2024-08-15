@@ -4,7 +4,8 @@
     "module": "NodeNext",
     "target": "ESNext",
     "strict": true,
+    "typeRoots": ["./src/types/window.d.mts"],
     "allowJs": true
   },
-  "include": ["./src/_ranki.js"]
+  "include": ["src/_ranki.ts"]
 }

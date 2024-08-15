@@ -1,5 +1,36 @@
 import hljs from "./_ranki_hljs.js";
 import { registerTerraform } from "./_ranki_hljs_terraform.js";
+import type {
+  RankiCard,
+  RankiTokens,
+  WindowRankiConfig,
+} from "./types/ranki.mjs";
+import type {
+  CreateElementChainOptions,
+  CreateElementChainReturn,
+  CreateElementOptions,
+} from "./types/dom.mjs";
+import {
+  ContentCommon,
+  HeadingContent,
+  ParagraphContent,
+  ParserField,
+  ParserKind,
+  ParserKindFrame,
+  ParserKindFrameCode,
+  ParserKindFrameDl,
+  ParserKindFrameList,
+  ParserKindFrameListContent,
+  ParserKindFramePreCode,
+  ParserKindFrameTable,
+  ParserKindHeading,
+  ParserKindParagraph,
+  ParserKindText,
+  ParserPart,
+  ParserPartFlavorFrame,
+  ParserPartFlavorPlain,
+  Tags,
+} from "./types/parser.mjs";
 
 registerTerraform(hljs);
 
@@ -16,25 +47,33 @@ const CLASSES = {
   preCodeLanguageLabel: "ranki-pre-code-language-label",
 };
 
+export class Dom {
+  private parent: Element;
+  private tokens: RankiTokens;
+  private card: RankiCard;
 
-export class Dom
-{
-  constructor(parent, { tokens, card })
-  {
+  constructor(parent: Element, { tokens, card }: WindowRankiConfig) {
     this.parent = parent;
     this.tokens = tokens;
     this.card = card;
   }
 
-  _decodeHtmlEntities(str)
-  {
+  _decodeHtmlEntities(str: string): string {
     const parser = new DOMParser();
-    const doc = parser.parseFromString(str, 'text/html');
-    return doc.documentElement.textContent;
+    const doc = parser.parseFromString(str, "text/html");
+    return doc.documentElement.textContent!;
   }
 
-  _createElement(tag, { format, content, className, style, children } = {})
-  {
+  _createElement(
+    tag: string,
+    {
+      format,
+      content,
+      className,
+      style,
+      children,
+    }: Partial<CreateElementOptions> = {},
+  ): HTMLElement {
     const elem = document.createElement(tag);
 
     if (content) {
@@ -57,6 +96,7 @@ export class Dom
     }
 
     if (style) {
+      // @ts-ignore
       elem.style = style;
     }
 
@@ -69,8 +109,10 @@ export class Dom
     return elem;
   }
 
-  _createElementChain(tags, { leaf } = {})
-  {
+  _createElementChain(
+    tags: Tags,
+    { leaf }: Partial<CreateElementChainOptions> = {},
+  ): CreateElementChainReturn {
     const root = this._createElement(tags[0]);
     const rest = tags.slice(1);
 
@@ -96,14 +138,13 @@ export class Dom
 
     return {
       root,
-      leaf: leafElem
+      leaf: leafElem,
     };
   }
 
-  renderError(message, stack)
-  {
+  renderError(message: string, stack: string): void {
     const errorContainer = this._createElement("div", {
-      className: "ranki ranki-global-error"
+      className: "ranki ranki-global-error",
     });
     this.parent.appendChild(errorContainer);
 
@@ -118,13 +159,12 @@ export class Dom
     const stackElem = this._createElement("pre", {
       className: "ranki ranki-global-error error-trace",
       format: "text",
-      content: stack
+      content: stack,
     });
     errorContainer.appendChild(stackElem);
   }
 
-  _hudTags(tags, classes)
-  {
+  _hudTags(tags: string, classes: typeof CLASSES): HTMLElement {
     const tagElems = [];
     for (const tag of tags.split(this.tokens.tagSeparator)) {
       if (!tag.length) {
@@ -140,18 +180,16 @@ export class Dom
 
     return this._createElement("span", {
       className: classes.hudTagContainer,
-      children: tagElems
+      children: tagElems,
     });
   }
 
-  _hudDeck(deck, classes)
-  {
+  _hudDeck(deck: string, classes: typeof CLASSES): HTMLElement {
     const deckElem = this._createElement("span", {
       className: classes.hudChip,
     });
     const deckSteps = deck.split(this.tokens.deckSeparator);
-    deckSteps.forEach((step, i, all) =>
-    {
+    deckSteps.forEach((step, i, all) => {
       const stepSpan = this._createElement("span", {
         format: "text",
         content: step,
@@ -171,8 +209,7 @@ export class Dom
     return deckElem;
   }
 
-  _hudCard(card, classes)
-  {
+  _hudCard(card: string, classes: typeof CLASSES): HTMLElement {
     return this._createElement("span", {
       format: "text",
       content: card,
@@ -180,8 +217,7 @@ export class Dom
     });
   }
 
-  _hudType(type, classes)
-  {
+  _hudType(type: string, classes: typeof CLASSES): HTMLElement {
     return this._createElement("span", {
       format: "text",
       content: type,
@@ -189,8 +225,7 @@ export class Dom
     });
   }
 
-  renderHud()
-  {
+  renderHud(): void {
     const existingInfoBar = this.parent.querySelector(`.${CLASSES.hud}`);
     if (existingInfoBar) {
       // console.log("info bar already attached");
@@ -206,39 +241,29 @@ export class Dom
 
     const hudScrollContainer = this._createElement("div", {
       className: CLASSES.hudScrollContainer,
-      children: [
-        deckElem,
-        typeElem,
-        cardElem,
-        tagsElem,
-      ]
+      children: [deckElem, typeElem, cardElem, tagsElem],
     });
 
     const hudElem = this._createElement("div", {
       className: CLASSES.hud,
-      children: [
-        hudScrollContainer,
-      ]
+      children: [hudScrollContainer],
     });
 
     this.parent.appendChild(hudElem);
   }
 
-  hasRendered()
-  {
+  hasRendered(): boolean {
     return this.parent.className.includes(CLASSES.renderedIndicator);
   }
 
-  _renderPartSpan(part)
-  {
+  _renderPartSpan(part: ParserPartFlavorPlain): HTMLElement {
     return this._createElement("span", {
       format: "html",
-      content: part.content
+      content: part.content,
     });
   }
 
-  _renderPartFrame(part)
-  {
+  _renderPartFrame(part: ParserPartFlavorFrame): HTMLElement {
     let content = part.content.lines.join("\n");
 
     switch (part.content.tags.join(" ")) {
@@ -248,21 +273,17 @@ export class Dom
         break;
     }
 
-    const { root } = this._createElementChain(
-      part.content.tags,
-      {
-        leaf: {
-          format: "html",
-          content,
-        }
-      }
-    );
+    const { root } = this._createElementChain(part.content.tags, {
+      leaf: {
+        format: "html",
+        content,
+      },
+    });
 
     return root;
   }
 
-  _renderPart(part)
-  {
+  _renderPart(part: ParserPart): HTMLElement {
     switch (part.flavor) {
       case "plain":
         return this._renderPartSpan(part);
@@ -271,29 +292,36 @@ export class Dom
         return this._renderPartFrame(part);
 
       default:
+        // @ts-ignore
         throw new Error(`Unrecognized part flavor: ${part.flavor}`);
     }
   }
 
-  _renderContent(content, tagCallback)
-  {
+  /**
+   * @dev
+   * #1 This is poorly typed. If the content has a single part, it is going to
+   * be a string.
+   */
+  _renderTextContent(
+    content: (HeadingContent | ParagraphContent)[],
+    tagCallback: (item: any) => string,
+  ): HTMLElement[] {
     const children = [];
     for (const item of content) {
       const hasMultipleParts = item.parts.length > 1;
 
-      const container = this._createElement(
-        tagCallback(item),
-        {
-          format: "html",
-          className: [
-            item.params.isCentered
-              ? "ranki-center-aligned"
-              : "ranki-left-aligned",
-          ].join(" "),
-          content: hasMultipleParts
-            ? undefined
-            : item.parts[0].content,
-        });
+      const container = this._createElement(tagCallback(item), {
+        format: "html",
+        className: [
+          item.params.isCentered
+            ? "ranki-center-aligned"
+            : "ranki-left-aligned",
+        ].join(" "),
+
+        content: hasMultipleParts
+          ? undefined
+          : (item.parts[0].content as string), // #1
+      });
 
       const parts = [];
       if (hasMultipleParts) {
@@ -301,8 +329,7 @@ export class Dom
           parts.push(this._renderPart(part));
         }
       }
-      parts.forEach((part) =>
-      {
+      parts.forEach((part) => {
         container.appendChild(part);
       });
 
@@ -312,10 +339,9 @@ export class Dom
     return children;
   }
 
-  _renderHgroup(group)
-  {
+  _renderHgroup(group: ParserKindHeading): HTMLElement {
     const hgroup = this._createElement("hgroup");
-    const children = this._renderContent(
+    const children = this._renderTextContent(
       group.content,
       (item) => `h${item.params.level}`,
     );
@@ -327,10 +353,9 @@ export class Dom
     return hgroup;
   }
 
-  _renderParagraph(group)
-  {
+  _renderParagraph(group: ParserKindParagraph): HTMLElement {
     const p = this._createElement("p");
-    const children = this._renderContent(group.content, () => "div");
+    const children = this._renderTextContent(group.content, () => "div");
 
     for (const child of children) {
       p.appendChild(child);
@@ -339,8 +364,7 @@ export class Dom
     return p;
   }
 
-  _renderCode(group)
-  {
+  _renderCode(group: ParserKindFrameCode): HTMLElement {
     const language = group.params[0];
 
     const content = language
@@ -355,8 +379,7 @@ export class Dom
     return code;
   }
 
-  _renderPreCode(group)
-  {
+  _renderPreCode(group: ParserKindFramePreCode): HTMLElement {
     const language = group.params[0];
     const joined = group.content.join("\n");
     const content = language
@@ -367,7 +390,7 @@ export class Dom
       leaf: {
         format: "html",
         content,
-      }
+      },
     });
 
     const langLabelElem = this._createElement("span", {
@@ -380,8 +403,7 @@ export class Dom
     return root;
   }
 
-  _renderTextKind(group)
-  {
+  _renderTextKind(group: ParserKindText): HTMLElement {
     switch (group.kind) {
       case "heading":
         return this._renderHgroup(group);
@@ -390,38 +412,55 @@ export class Dom
         return this._renderParagraph(group);
 
       default:
-        throw new Error([
-          "Unrecognized text group kind:",
-          JSON.stringify(group, null, 2)
-        ].join("\n"));
+        throw new Error(
+          [
+            "Unrecognized text group kind:",
+            JSON.stringify(group, null, 2),
+          ].join("\n"),
+        );
     }
   }
 
-  _renderUl(group, wrapperTag)
-  {
-    // console.log(group);
-    const container = this._createElement(wrapperTag);
-    const children = this._renderContent(group.content, () => "li");
+  _renderUl(group: ParserKindFrameList, wrapperTag: string): HTMLElement {
+    // const children = this._renderTextContent(group.content, () => "li");
 
-    for (const child of children) {
-      container.appendChild(child);
-    }
+    // for (const child of children) {
+    //   container.appendChild(child);
+    // }
+    // const container = this._createElement(wrapperTag);
+
+    const children = group.content.map(({ tag, lines }) => {
+      const { root, leaf } = this._createElementChain(tag);
+
+      lines.forEach((line) => {
+        const p = this._createElement("p", {
+          children: line.parts.map((part) => this._renderPart(part)),
+        });
+        leaf.appendChild(p);
+      });
+
+      return root;
+    });
+
+    const container = this._createElement(wrapperTag, {
+      children,
+    });
 
     return container;
   }
 
-  _renderDl(group)
-  {
+  _renderDl(group: ParserKindFrameDl): HTMLElement {
+    const container = this._createElement("dl");
 
+    return container;
   }
 
-  _renderTable(group)
-  {
-
+  _renderTable(group: ParserKindFrameTable): HTMLElement {
+    const container = this._createElement("table");
+    return container;
   }
 
-  _renderFrameKind(group)
-  {
+  _renderFrameKind(group: ParserKindFrame): HTMLElement {
     switch (group.kind) {
       case "code":
         return this._renderCode(group);
@@ -431,7 +470,7 @@ export class Dom
 
       case "ol":
       case "ul":
-        return this._renderUl(group);
+        return this._renderUl(group, group.kind);
 
       case "dl":
         return this._renderDl(group);
@@ -440,15 +479,16 @@ export class Dom
         return this._renderTable(group);
 
       default:
-        throw new Error([
-          "Unrecognized frame group kind:",
-          JSON.stringify(group, null, 2)
-        ].join("\n"));
+        throw new Error(
+          [
+            "Unrecognized frame group kind:",
+            JSON.stringify(group, null, 2),
+          ].join("\n"),
+        );
     }
   }
 
-  _renderGroup(group)
-  {
+  _renderGroup(group: ParserKind): HTMLElement {
     switch (group.type) {
       case "text":
         return this._renderTextKind(group);
@@ -457,23 +497,22 @@ export class Dom
         return this._renderFrameKind(group);
 
       default:
-        throw new Error([
-          "Unrecognized group type:",
-          JSON.stringify(group, null, 2)
-        ].join("\n"));
+        throw new Error(
+          ["Unrecognized group type:", JSON.stringify(group, null, 2)].join(
+            "\n",
+          ),
+        );
     }
   }
 
-  renderFace(sections)
-  {
+  renderFace(sections: ParserField[]): void {
     const renders = [];
     for (const section of sections) {
       const container = this._createElement("section", {
         className: section.field,
       });
 
-      section.list.forEach((group) =>
-      {
+      section.list.forEach((group) => {
         const g = this._renderGroup(group);
         if (g) {
           container.appendChild(g);

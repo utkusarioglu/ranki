@@ -1,5 +1,5 @@
-import { Parser } from "../src/_ranki_parser.js";
-import { rankiDefaults } from "../src/_ranki_config.js";
+import { Parser } from "../build/_ranki_parser.js";
+import { rankiDefaults } from "../build/_ranki_config.js";
 import { readFileSync } from "node:fs";
 
 const fieldContent = readFileSync("/workdir/tests/field.txt", { encoding: "utf-8" }, (err, data) =>
