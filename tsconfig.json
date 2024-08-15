@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "outDir": "build",
+    "module": "NodeNext",
+    "target": "ESNext",
+    "strict": true,
+    "allowJs": true
+  },
+  "include": ["./src/_ranki.js"]
+}

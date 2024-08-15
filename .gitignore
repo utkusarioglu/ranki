@@ -1,2 +1,4 @@
 .ignore
 .old
+build
+.env

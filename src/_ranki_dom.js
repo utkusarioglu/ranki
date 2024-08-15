@@ -193,7 +193,7 @@ export class Dom
   {
     const existingInfoBar = this.parent.querySelector(`.${CLASSES.hud}`);
     if (existingInfoBar) {
-      console.log("info bar already attached");
+      // console.log("info bar already attached");
       return;
     }
 
@@ -399,7 +399,7 @@ export class Dom
 
   _renderUl(group, wrapperTag)
   {
-    console.log(group);
+    // console.log(group);
     const container = this._createElement(wrapperTag);
     const children = this._renderContent(group.content, () => "li");
 

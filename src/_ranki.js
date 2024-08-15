@@ -3,6 +3,8 @@ import { Observer } from "./_ranki_observer.js";
 import { Parser } from "./_ranki_parser.js";
 import { rankiDefaults } from "./_ranki_config.js";
 
+console.log("hello");
+
 function globalErrorHandler(e)
 {
   e.preventDefault();
