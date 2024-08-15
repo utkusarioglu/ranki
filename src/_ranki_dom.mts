@@ -11,7 +11,6 @@ import type {
   CreateElementOptions,
 } from "./types/dom.mjs";
 import {
-  ContentCommon,
   HeadingContent,
   ParagraphContent,
   ParserField,
@@ -20,7 +19,6 @@ import {
   ParserKindFrameCode,
   ParserKindFrameDl,
   ParserKindFrameList,
-  ParserKindFrameListContent,
   ParserKindFramePreCode,
   ParserKindFrameTable,
   ParserKindHeading,
@@ -29,6 +27,7 @@ import {
   ParserPart,
   ParserPartFlavorFrame,
   ParserPartFlavorPlain,
+  TableHeaderOrData,
   Tags,
 } from "./types/parser.mjs";
 
@@ -134,6 +133,12 @@ export class Dom {
           leafElem.innerText = leaf.content;
           break;
       }
+    }
+
+    if (leaf && leaf.children) {
+      leaf.children.forEach((child) => {
+        leafElem.appendChild(child);
+      });
     }
 
     return {
@@ -269,7 +274,9 @@ export class Dom {
     switch (part.content.tags.join(" ")) {
       case "code":
         const language = part.content.params[0];
-        content = hljs.highlight(content, { language }).value;
+        if (language) {
+          content = hljs.highlight(content, { language }).value;
+        }
         break;
     }
 
@@ -450,14 +457,75 @@ export class Dom {
   }
 
   _renderDl(group: ParserKindFrameDl): HTMLElement {
-    const container = this._createElement("dl");
+    const container = this._createElement("dl", {
+      children: group.content.map(({ title, lines }) => {
+        const div = this._createElement("div");
+        title.forEach((t) => {
+          const { root, leaf } = this._createElementChain(t.tags);
+          t.parts
+            .map((part) => this._renderPart(part))
+            .forEach((part) => leaf.appendChild(part));
+          div.appendChild(root);
+          return root;
+        });
+
+        lines.forEach((line) => {
+          const p = this._createElement("p", {
+            children: line.parts.map((part) => this._renderPart(part)),
+          });
+          div.appendChild(p);
+        });
+
+        return div;
+      }),
+    });
 
     return container;
   }
 
-  _renderTable(group: ParserKindFrameTable): HTMLElement {
-    const container = this._createElement("table");
-    return container;
+  _renderTable({
+    content: { body, head, foot },
+  }: ParserKindFrameTable): HTMLElement {
+    if (!body.length) {
+      throw new Error("The table body is empty");
+    }
+
+    const table = this._createElement("table");
+
+    const createTablePart = (
+      wrapperTag: string,
+      rows: TableHeaderOrData[][],
+    ): HTMLElement => {
+      return this._createElement(wrapperTag, {
+        children: rows.map((row) => {
+          const tr = this._createElement("tr", {
+            children: row.map((col) => {
+              const { root } = this._createElementChain(col.tag, {
+                leaf: {
+                  children: col.parts.map((part) => this._renderPart(part)),
+                },
+              });
+
+              return root;
+            }),
+          });
+
+          return tr;
+        }),
+      });
+    };
+
+    if (head.length) {
+      table.appendChild(createTablePart("thead", head));
+    }
+
+    table.appendChild(createTablePart("tbody", body));
+
+    if (foot.length) {
+      table.appendChild(createTablePart("tfoot", foot));
+    }
+
+    return table;
   }
 
   _renderFrameKind(group: ParserKindFrame): HTMLElement {

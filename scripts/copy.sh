@@ -2,8 +2,9 @@ source "${0%/*}/../.env"
 
 function copy {
   list="$(echo $(find ./build -maxdepth 1 -not -type d))"
-  # cp $list "${ANKI_MEDIA_PATH}/"
+  echo $list
   cp $list "/target/"
+  cp public/* /target/
 }
 
 function main {

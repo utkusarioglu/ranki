@@ -200,9 +200,9 @@ export class Parser {
   _parseField(fieldName: FieldName): ParserGroup[] {
     // @ts-ignore: #1
     const fieldContent: string = this.ranki.content[fieldName];
-    if (!fieldContent) {
-      throw new Error("No Field content");
-    }
+    // if (!fieldContent) {
+    //   throw new Error("No Field content");
+    // }
 
     const lines = fieldContent.split("\n");
     let stack: Stack = [];

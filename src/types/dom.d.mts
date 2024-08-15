@@ -3,11 +3,11 @@ export type CreateElementOptions = {
   content: string;
   className: string;
   style: string;
-  children: Node[];
+  children: HTMLElement[];
 };
 
 export type CreateElementChainOptions = {
-  leaf: Pick<CreateElementOptions, "format" | "content">;
+  leaf: Partial<Pick<CreateElementOptions, "format" | "content" | "children">>;
 };
 
 export type CreateElementChainReturn = {
