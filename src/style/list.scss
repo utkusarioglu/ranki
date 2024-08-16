@@ -1,0 +1,16 @@
+ul {
+  padding-inline-start: 1.2rem;
+}
+
+li {
+  margin-block-end: 0.4rem;
+}
+
+li::marker {
+  color: var(--color-heading-hex);
+}
+
+li p {
+  margin-block-start: 0;
+  margin-block-end: var(--length-list-item-margin-block-rem);
+}

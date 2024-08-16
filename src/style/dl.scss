@@ -1,5 +1,5 @@
 dd {
-  margin-inline-start: 1.2rem;
+  margin-inline-start: 0;
 }
 
 dl dt {
@@ -7,11 +7,32 @@ dl dt {
 }
 
 dl dd p {
-  // padding-inline-start: 1.2rem;
   text-align: left;
+  margin-block: var(--length-list-item-margin-block-rem);
+}
+
+dl dd p:last-child {
+  margin-bottom: 0;
 }
 
 dl dt {
   font-weight: 700;
   color: var(--color-heading-hex);
+}
+
+dl > div:nth-of-type(2n) {
+  background-color: var(--color-code-bg-hex);
+}
+
+dl > div:nth-of-type(2n + 1) {
+  background-color: var(--color-code-bg2-hex);
+}
+
+dl > div {
+  padding-block: var(--length-section-block-margin-rem);
+  padding-inline: var(--length-content-inline-inset-rem);
+}
+
+dl {
+  margin-inline: calc(var(--length-content-inline-inset-rem) * -1);
 }
