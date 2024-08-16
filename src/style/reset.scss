@@ -32,9 +32,12 @@ a {
 }
 
 p {
-  line-height: 1.3rem;
-  /* margin-inline: calc(var(--length-content-inline-inset-rem) * -1); */
-  text-align: left;
+  &,
+  & > div {
+    line-height: 1.3rem;
+    /* margin-inline: calc(var(--length-content-inline-inset-rem) * -1); */
+    text-align: left;
+  }
 }
 
 /*

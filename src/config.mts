@@ -1,4 +1,4 @@
-import { type WindowRankiConfig } from "./types/ranki.mjs"
+import { type WindowRankiConfig } from "./types/ranki.mjs";
 
 export const rankiDefaults: Partial<WindowRankiConfig> = {
   tokens: {
@@ -30,4 +30,4 @@ export const rankiDefaults: Partial<WindowRankiConfig> = {
     dlDtTags: "DT_TAGS",
     dlDdTags: "DD_TAGS",
   },
-}
+};

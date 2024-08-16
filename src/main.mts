@@ -5,9 +5,9 @@ import {
   type RankiRequiredProps,
   type WindowRankiConfig,
 } from "./types/ranki.mjs";
-import { Observer } from "./_ranki_observer.mjs";
-import { Parser } from "./_ranki_parser.mjs";
-import { rankiDefaults } from "./_ranki_config.mjs";
+import { Observer } from "./observer.mjs";
+import { Parser } from "./parser.mjs";
+import { rankiDefaults } from "./config.mjs";
 
 declare var window: CustomWindow;
 

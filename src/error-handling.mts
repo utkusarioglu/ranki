@@ -1,4 +1,4 @@
-import { Dom } from "./_ranki_dom.mjs";
+import { Dom } from "./dom.mjs";
 import { type CustomWindow } from "./types/window.mjs";
 
 declare var window: CustomWindow;

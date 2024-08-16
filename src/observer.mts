@@ -1,8 +1,18 @@
-import { Dom } from "./_ranki_dom.mjs";
-import { Collection } from "./_ranki_collection.mjs";
-import { type Parser } from "./_ranki_parser.mjs";
+import { Dom } from "./dom.mjs";
+import { Collection } from "./collection.mjs";
+import { type Parser } from "./parser.mjs";
 import { type CardFaces, type WindowRankiConfig } from "./types/ranki.mjs";
 
+/**
+ * Anki behaves differently on different platforms. In some, it rerenders the
+ * entire page when the answer is displayed and in some it appends the back card
+ * elements into the document.
+ *
+ * This Observer ensures that the front and back fields are only attached when
+ * they need to be attached.
+ *
+ * *Which means, this class is what decides when renders happen.*
+ */
 export class Observer {
   private faceSelector: string;
   private parser: Parser;
