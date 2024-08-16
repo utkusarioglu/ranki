@@ -1,0 +1,50 @@
+code:empty,
+pre:has(code:empty) {
+  display: none;
+}
+
+pre > code,
+code {
+  --inline-padding: var(--length-chip-padding-inline-rem);
+
+  position: relative;
+  background-color: var(--color-code-bg2-hex);
+  padding: 0.05rem 0.3rem;
+  border-radius: 0.3rem;
+  color: var(--color-inline-code-hex);
+  font-size: smaller;
+}
+
+pre {
+  padding-block: var(--length-pre-code-block-padding-rem);
+  margin-inline: calc(var(--length-content-inline-inset-rem) * -1);
+  background-color: var(--color-code-bg-hex);
+  color: var(--color-block-code-hex);
+  overflow-x: scroll;
+  position: relative;
+  line-height: 1.2rem;
+  font-size: smaller;
+}
+
+.ranki-pre-code-language-label {
+  --padding-inset-rem: 0.5rem;
+  --border-radius-rem: 0.4rem;
+
+  position: absolute;
+  top: -0.2rem;
+  left: calc(var(--length-content-inline-inset-rem) - var(--padding-inset-rem));
+  color: var(--color-heading-hex);
+  font-size: 0.6rem;
+  background-color: black;
+  border-end-end-radius: var(--border-radius-rem);
+  border-end-start-radius: var(--border-radius-rem);
+  padding-inline: var(--padding-inset-rem);
+}
+
+pre > code {
+  padding: 0 var(--length-content-inline-inset-rem) !important;
+  /* padding: 0 !important; */
+  display: block;
+  width: max-content;
+  background-color: transparent;
+}

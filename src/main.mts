@@ -1,24 +1,15 @@
-import "./style/style.scss";
+import "./style/main.scss";
+import "./error-handling.mjs";
 import { type CustomWindow } from "./types/window.mjs";
 import {
   type RankiRequiredProps,
   type WindowRankiConfig,
 } from "./types/ranki.mjs";
-import { Dom } from "./_ranki_dom.mjs";
 import { Observer } from "./_ranki_observer.mjs";
 import { Parser } from "./_ranki_parser.mjs";
 import { rankiDefaults } from "./_ranki_config.mjs";
 
 declare var window: CustomWindow;
-
-function globalErrorHandler(e: ErrorEvent) {
-  e.preventDefault();
-  const dom = new Dom(document.body, window.ranki);
-  dom.renderError(e.error.message, e.error.stack);
-  console.error(e);
-}
-
-window.addEventListener("error", globalErrorHandler);
 
 window.ranki = {
   ...rankiDefaults,

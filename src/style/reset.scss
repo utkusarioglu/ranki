@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+}
+
+h4,
+h5,
+h6 {
+  font-size: 1.1rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h1 {
+  font-size: 1.6rem;
+}
+
+a {
+  color: var(--color-link-hex);
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-link-hex);
+}
+
+:is(h1, h2, h3, h4, h5, h6),
+:is(h1, h2, h3, h4, h5, h6) > a {
+  color: var(--color-heading-hex);
+}
+
+p {
+  line-height: 1.3rem;
+  /* margin-inline: calc(var(--length-content-inline-inset-rem) * -1); */
+  text-align: left;
+}
+
+/*
+I couldn't get this to work
+p:is(:not(> code))::first-letter {
+text-transform: uppercase;
+}
+*/
+
+ul {
+  padding-inline-start: 1.2rem;
+}
+
+li {
+  margin-block-end: 0.4rem;
+}
+
+li::marker {
+  color: var(--color-heading-hex);
+}
+
+hr {
+  border: var(--color-border-hex) solid 2px;
+  margin-inline: var(--length-content-inline-inset-rem);
+  margin-block: 2rem;
+  border-radius: 2px;
+}
+
+iframe {
+  /* margin-inline: calc(var(--length-content-inline-inset-rem) * -1); */
+  width: 100%;
+  border: none;
+  height: 100svh;
+  margin: 0 !important;
+}

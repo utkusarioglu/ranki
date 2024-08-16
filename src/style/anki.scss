@@ -1,0 +1,43 @@
+html,
+body,
+body > *:not(#qa, #_mark, #_flag),
+.card {
+  padding: 0 !important;
+  overflow-x: hidden;
+  margin-inline: 0 !important;
+}
+
+html,
+body,
+body > *:not(#qa, #_mark, #_flag),
+.card,
+#qa {
+  /* padding-inline: 0 !important; */
+  width: 100vw;
+}
+
+/* 
+  Reserves some space for the deck name on top,
+  otherwise the question and deck name superimpose on ankidroid
+  see `.deck` as well.
+*/
+#qa {
+  padding-block: 2rem;
+  padding-inline: var(--length-content-inline-inset-rem);
+  max-width: 640px;
+  margin-inline: auto;
+}
+
+.card {
+  font-family: arial;
+  font-size: 16px;
+  text-align: center;
+  color: var(--color-text-hex) !important;
+  text-align: center;
+  padding-block: 1rem;
+}
+
+.cloze {
+  font-weight: 700;
+  color: var(--color-close-hex);
+}

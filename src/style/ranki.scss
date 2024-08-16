@@ -1,0 +1,20 @@
+.ranki-global-error {
+  & {
+    padding: var(--length-content-inline-inset-rem);
+  }
+
+  & > pre {
+    background-color: var(--color-error-bg-hex);
+    color: var(--color-text-hex);
+    margin-block: var(--length-section-block-margin-rem);
+    margin-inline: 0;
+  }
+}
+
+.ranki-left-aligned {
+  text-align: left;
+}
+
+.ranki-center-aligned {
+  text-align: center;
+}

@@ -44,6 +44,10 @@ const CLASSES = {
 
   renderedIndicator: "ranki-rendered",
   preCodeLanguageLabel: "ranki-pre-code-language-label",
+
+  errorContainer: "ranki-global-error",
+  errorMessage: "ranki-global-error error-message",
+  errorStack: "ranki-global-error error-trace",
 };
 
 export class Dom {
@@ -147,22 +151,31 @@ export class Dom {
     };
   }
 
+  /**
+   * @dev
+   * #1 This is for deduping, anki includes script tags and other things twice
+   * in some platforms.
+   */
   renderError(message: string, stack: string): void {
+    // #1
+    if (this._hasErrorRendered()) {
+      return;
+    }
+
     const errorContainer = this._createElement("div", {
-      className: "ranki ranki-global-error",
+      className: CLASSES.errorContainer,
     });
     this.parent.appendChild(errorContainer);
 
     const messageElem = this._createElement("pre", {
-      className: "ranki ranki-global-error error-message",
+      className: CLASSES.errorMessage,
       format: "text",
-      style: "text-align: center;",
       content: message,
     });
     errorContainer.appendChild(messageElem);
 
     const stackElem = this._createElement("pre", {
-      className: "ranki ranki-global-error error-trace",
+      className: CLASSES.errorStack,
       format: "text",
       content: stack,
     });
@@ -257,8 +270,12 @@ export class Dom {
     this.parent.appendChild(hudElem);
   }
 
-  hasRendered(): boolean {
+  hasFaceRendered(): boolean {
     return this.parent.className.includes(CLASSES.renderedIndicator);
+  }
+
+  _hasErrorRendered(): boolean {
+    return document.body.querySelector(`.${CLASSES.errorContainer}`) !== null;
   }
 
   _renderPartSpan(part: ParserPartFlavorPlain): HTMLElement {
