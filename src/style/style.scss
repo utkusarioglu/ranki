@@ -1,4 +1,4 @@
-@import url("./_ranki_hljs_framer.css");
+@import url("./hljs-framer.scss");
 
 :root {
   --color-heading-hex: #CCC;
@@ -205,4 +205,9 @@ pre>code {
   display: block;
   width: max-content;
   background-color: transparent;
+}
+
+
+p {
+  text-align: left;
 }

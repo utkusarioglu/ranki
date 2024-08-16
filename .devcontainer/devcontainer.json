@@ -1,0 +1,21 @@
+{
+  "name": "ranki.utkusarioglu.com",
+  "workspaceFolder": "/workdir",
+  "dockerComposeFile": [
+    "../.docker/docker-compose.yml"
+  ],
+  "service": "dev",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "workbench.colorCustomizations": {
+          "activityBar.background": "#550033",
+          "activityBar.foreground": "#FFFFFF"
+        }
+      },
+      "extensions": [
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}

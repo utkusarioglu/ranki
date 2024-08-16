@@ -1,0 +1,11 @@
+services:
+  dev:
+    image: utkusarioglu/node-devcontainer:20-slim.0.7
+    volumes:
+      - type: bind
+        source: ..
+        target: /workdir
+      - type: bind
+        source: /mnt/c/Users/utkus/AppData/Roaming/Anki2/User 1/collection.media
+        target: /target
+    command: sh -c 'while sleep 1000; do :; done'

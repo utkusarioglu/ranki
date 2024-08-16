@@ -1,11 +1,17 @@
 {
   "compilerOptions": {
     "outDir": "build",
-    "module": "NodeNext",
+    "rootDir": "src",
+    "module": "ESNext",
     "target": "ESNext",
     "strict": true,
     "allowJs": true,
-    "removeComments": true
+    "removeComments": true,
+    "isolatedModules": true,
+    "moduleResolution": "Bundler",
+    "useDefineForClassFields": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   },
-  "include": ["src/_ranki.ts"]
+  "include": ["src/main.mts"]
 }
