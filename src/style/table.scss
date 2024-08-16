@@ -19,17 +19,20 @@ table {
   border-collapse: collapse;
 }
 
-thead {
+thead,
+tfoot {
   color: var(--color-heading-hex);
 }
 
-thead th {
+thead th,
+tfoot th {
   padding-block: 1rem;
 }
 
 /*
   I'm not sure if the following two need to be separate
 */
+th:has(+ th),
 td:has(+ td) {
   padding-inline-end: 1rem;
 }

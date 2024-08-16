@@ -1,4 +1,17 @@
-dl dt,
-dl p {
+dd {
+  margin-inline-start: 1.2rem;
+}
+
+dl dt {
   text-align: left;
+}
+
+dl dd p {
+  // padding-inline-start: 1.2rem;
+  text-align: left;
+}
+
+dl dt {
+  font-weight: 700;
+  color: var(--color-heading-hex);
 }

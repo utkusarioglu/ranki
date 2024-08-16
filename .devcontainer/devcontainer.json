@@ -1,9 +1,7 @@
 {
   "name": "ranki.utkusarioglu.com",
   "workspaceFolder": "/workdir",
-  "dockerComposeFile": [
-    "../.docker/docker-compose.yml"
-  ],
+  "dockerComposeFile": ["../.docker/docker-compose.yml"],
   "service": "dev",
   "customizations": {
     "vscode": {
@@ -13,9 +11,7 @@
           "activityBar.foreground": "#FFFFFF"
         }
       },
-      "extensions": [
-        "esbenp.prettier-vscode"
-      ]
+      "extensions": ["esbenp.prettier-vscode", "ms-azuretools.vscode-docker"]
     }
   }
 }

@@ -1,5 +1,6 @@
-import hljs from "./_ranki_hljs.js";
-import { registerTerraform } from "./_ranki_hljs_terraform.js";
+// @ts-expect-error: For some reason ts doesn't see the types for hljs
+import hljs from "highlight.js";
+import { registerTerraform } from "./hljs/terraform.js";
 import type {
   RankiCard,
   RankiTokens,
@@ -332,8 +333,6 @@ export class Dom {
   ): HTMLElement[] {
     const children = [];
     for (const item of content) {
-      const hasMultipleParts = item.parts.length > 1;
-
       const container = this._createElement(tagCallback(item), {
         format: "html",
         className: [
@@ -341,17 +340,11 @@ export class Dom {
             ? "ranki-center-aligned"
             : "ranki-left-aligned",
         ].join(" "),
-
-        content: hasMultipleParts
-          ? undefined
-          : (item.parts[0].content as string), // #1
       });
 
       const parts = [];
-      if (hasMultipleParts) {
-        for (const part of item.parts) {
-          parts.push(this._renderPart(part));
-        }
+      for (const part of item.parts) {
+        parts.push(this._renderPart(part));
       }
       parts.forEach((part) => {
         container.appendChild(part);
@@ -446,13 +439,6 @@ export class Dom {
   }
 
   _renderUl(group: ParserKindFrameList, wrapperTag: string): HTMLElement {
-    // const children = this._renderTextContent(group.content, () => "li");
-
-    // for (const child of children) {
-    //   container.appendChild(child);
-    // }
-    // const container = this._createElement(wrapperTag);
-
     const children = group.content.map(({ tag, lines }) => {
       const { root, leaf } = this._createElementChain(tag);
 
@@ -486,13 +472,14 @@ export class Dom {
           return root;
         });
 
-        lines.forEach((line) => {
-          const p = this._createElement("p", {
-            children: line.parts.map((part) => this._renderPart(part)),
-          });
-          div.appendChild(p);
+        const dd = this._createElement("dd", {
+          children: lines.map((line) => {
+            return this._createElement("p", {
+              children: line.parts.map((part) => this._renderPart(part)),
+            });
+          }),
         });
-
+        div.appendChild(dd);
         return div;
       }),
     });

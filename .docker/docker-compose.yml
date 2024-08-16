@@ -1,3 +1,7 @@
+# @dev
+# #1 Anki media path.
+# Vite will copy the bundle files to this path after every build.
+# This works during watch as well.
 services:
   dev:
     image: utkusarioglu/node-devcontainer:20-slim.0.7
@@ -5,6 +9,7 @@ services:
       - type: bind
         source: ..
         target: /workdir
+        # #1
       - type: bind
         source: /mnt/c/Users/utkus/AppData/Roaming/Anki2/User 1/collection.media
         target: /target
