@@ -1,3 +1,5 @@
+import type { FieldList } from "./collection.d.mts";
+
 export type Tags = string[];
 
 export type Params = string[];
@@ -181,7 +183,7 @@ export type ParserGroup =
   | ParserGroupFrame;
 
 export interface ParserField {
-  field: string;
+  field: FieldList;
   list: ParserKind[];
 }
 

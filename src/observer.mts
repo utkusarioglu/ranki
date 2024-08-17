@@ -40,6 +40,7 @@ export class Observer {
     const dom = new Dom(faceElem, this.ranki);
     if (!dom.hasFaceRendered()) {
       const fields = Collection.getFields(faceName, this.ranki);
+      console.log(fields);
       const parsed = this.parser.parseFields(fields);
       dom.renderFace(parsed);
     }

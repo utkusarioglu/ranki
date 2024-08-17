@@ -1,4 +1,4 @@
-import type { CollectionRenderFields } from "./types/collection.mjs";
+import type { CollectionRenderFields, FieldList } from "./types/collection.mjs";
 import type { WindowRankiConfig } from "./types/ranki.mjs";
 import type {
   ParserPartWoContent,
@@ -28,7 +28,6 @@ import type {
   ListItemsComplete,
   TableHeaderOrData,
 } from "./types/parser.mjs";
-import type { FieldName } from "./types/ranki-content.mjs";
 
 /**
  * @dev
@@ -197,7 +196,8 @@ export class Parser {
    * #1 Type `FieldName` needs to be reevaluated once more card types are
    * introduced.
    */
-  _parseField(fieldName: FieldName): ParserGroup[] {
+  _parseField(field: FieldList): ParserGroup[] {
+    const fieldName = field.name;
     // @ts-ignore: #1
     const fieldContent: string = this.ranki.content[fieldName];
     // if (!fieldContent) {
@@ -827,10 +827,10 @@ export class Parser {
   }
 
   parseFields(fields: CollectionRenderFields): ParserField[] {
-    return fields.map((fieldName) => {
-      const groups = this._parseField(fieldName);
+    return fields.map((field) => {
+      const groups = this._parseField(field);
       return {
-        field: fieldName,
+        field: field,
         list: this._parseGroups(groups),
       };
     });

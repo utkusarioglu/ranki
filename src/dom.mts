@@ -581,7 +581,7 @@ export class Dom {
     const renders = [];
     for (const section of sections) {
       const container = this._createElement("section", {
-        className: section.field,
+        className: section.field.name,
       });
 
       section.list.forEach((group) => {
