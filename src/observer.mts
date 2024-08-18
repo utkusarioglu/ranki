@@ -1,7 +1,8 @@
-import { Dom } from "./dom.mts";
+import { Dom } from "./dom/dom.mts";
 import { Collection } from "./collection.mts";
 import { type Parser } from "./parser/parser.mts";
-import type { CardFaces, WindowRankiConfig } from "./types/ranki.d.mts";
+import type { CardFaces } from "./types/ranki.d.mts";
+import type { WindowRankiConfig } from "./config/config.d.mts";
 
 /**
  * Anki behaves differently on different platforms. In some, it rerenders the

@@ -4,15 +4,36 @@ pre:has(code:empty) {
 }
 
 pre > code,
-code {
+div.ranki-code-frame > code {
   --inline-padding: var(--length-chip-padding-inline-rem);
 
   position: relative;
   background-color: var(--color-code-bg2-hex);
   padding: 0.05rem 0.3rem;
-  border-radius: 0.3rem;
+  border-radius: var(--length-code-border-radius-rem);
   color: var(--color-inline-code-hex);
   font-size: smaller;
+}
+
+code.ranki-code-inline {
+  color: var(--color-inline-code-hex);
+  font-size: smaller;
+  position: relative;
+
+  &::before {
+    --block: -0.08rem;
+    --inline: -0.4rem;
+
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: var(--inline);
+    right: var(--inline);
+    top: var(--block);
+    bottom: var(--block);
+    border-radius: var(--length-code-border-radius-rem);
+    background-color: var(--color-code-bg2-hex);
+  }
 }
 
 pre {
@@ -26,6 +47,10 @@ pre {
   font-size: smaller;
 }
 
+pre::-webkit-scrollbar {
+  display: none;
+}
+
 pre > code {
   padding: 0 var(--length-content-inline-inset-rem) !important;
   /* padding: 0 !important; */
@@ -34,7 +59,7 @@ pre > code {
   background-color: transparent;
 }
 
-pre:has(code) {
+pre.ranki-code-language-available {
   --base: var(--length-pre-code-block-padding-rem);
   --nudge: var(--length-pre-code-hljs-down-nudge);
 
@@ -55,4 +80,21 @@ pre:has(code) {
   border-end-end-radius: var(--border-radius-rem);
   border-end-start-radius: var(--border-radius-rem);
   padding-inline: var(--padding-inset-rem);
+}
+
+pre.ranki-code-language-alias-unregistered::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: calc(var(--length-content-inline-inset-rem) / 3);
+  background-color: var(--color-error-bg-hex);
+}
+
+div.ranki-code-frame {
+  margin-bottom: var(--length-content-inline-inset-rem);
+  & > code {
+    padding: 0.3rem 0.8rem;
+  }
 }

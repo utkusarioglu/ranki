@@ -7,7 +7,10 @@ export type CreateElementOptions = {
 };
 
 export type CreateElementChainOptions = {
-  leaf: Partial<Pick<CreateElementOptions, "format" | "content" | "children">>;
+  leaf: Partial<
+    Pick<CreateElementOptions, "format" | "content" | "children" | "className">
+  >;
+  root: Partial<Pick<CreateElementOptions, "className">>;
 };
 
 export type CreateElementChainReturn = {

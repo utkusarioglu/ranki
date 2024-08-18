@@ -2,7 +2,7 @@ import type {
   CollectionRenderFields,
   FieldList,
 } from "../types/collection.mjs";
-import type { WindowRankiConfig } from "../types/ranki.mjs";
+import type { WindowRankiConfig } from "../config/config.d.mts";
 import type {
   ParserPartWoContent,
   ParserField,
@@ -665,6 +665,15 @@ export class Parser {
         // prev.lines.push({
         //   raw: trimmed,
         // });
+      } else if (trimmed.startsWith(`${tokens.listItemSeparator} `)) {
+        itemsRaw.push({
+          isComplete: false,
+          lines: [
+            {
+              raw: trimmed.slice(tokens.listItemSeparator.length + 1).trim(),
+            },
+          ],
+        });
       } else if (!itemsRaw.length) {
         itemsRaw.push({
           isComplete: false,

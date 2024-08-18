@@ -1,4 +1,4 @@
-import { Dom } from "./dom.mts";
+import { Dom } from "./dom/dom.mts";
 import type { CustomWindow } from "./types/window.d.mts";
 
 declare var window: CustomWindow;

@@ -1,4 +1,4 @@
-import type { RankiDefaults } from "./types/ranki.d.mts";
+import type { RankiDefaults } from "./config.d.mjs";
 
 export const rankiDefaults: RankiDefaults = {
   features: {},
@@ -26,10 +26,29 @@ export const rankiDefaults: RankiDefaults = {
     tableBodyTags: "BODY_TAGS",
 
     listTags: "LI_TAGS",
-    // listItem: "- ",
     listItemSeparator: "-",
 
     dlDtTags: "DT_TAGS",
     dlDdTags: "DD_TAGS",
+  },
+  aliases: {
+    code: {
+      javascript: {
+        list: ["js", "cjs", "mjs", "javascript"],
+        displayName: "JavaScript",
+      },
+      typescript: {
+        list: ["ts", "mts", "typescript"],
+        displayName: "TypeScript",
+      },
+      pwsh: {
+        list: ["powershell", "pwsh"],
+        displayName: "PowerShell",
+      },
+      hcl: {
+        list: ["hcl", "tf", "terraform"],
+        displayName: "Hcl",
+      },
+    },
   },
 };

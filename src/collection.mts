@@ -1,4 +1,5 @@
-import type { WindowRankiConfig, CardFaces } from "./types/ranki.d.mts";
+import type { CardFaces } from "./types/ranki.d.mts";
+import type { WindowRankiConfig } from "./config/config.d.mts";
 import type { CollectionRenderFields } from "./types/collection.d.mts";
 
 const common = {

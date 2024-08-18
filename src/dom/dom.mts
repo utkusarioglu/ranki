@@ -1,16 +1,17 @@
 // @ts-expect-error: For some reason ts doesn't see the types for hljs
 import hljs from "highlight.js";
-import { registerTerraform } from "./hljs/terraform.js";
+import { registerTerraform } from "../hljs/terraform.js";
+import { ContentControl } from "../content-control/content-control.mts";
 import type {
   RankiCard,
   RankiTokens,
   WindowRankiConfig,
-} from "./types/ranki.mjs";
+} from "../config/config.d.mjs";
 import type {
   CreateElementChainOptions,
   CreateElementChainReturn,
   CreateElementOptions,
-} from "./types/dom.mjs";
+} from "./dom.d.mjs";
 import type {
   HeadingContent,
   ParagraphContent,
@@ -30,7 +31,7 @@ import type {
   ParserPartFlavorPlain,
   TableHeaderOrData,
   Tags,
-} from "./types/parser.d.mts";
+} from "../types/parser.mjs";
 
 registerTerraform(hljs);
 
@@ -49,23 +50,73 @@ const CLASSES = {
   errorContainer: "ranki-global-error",
   errorMessage: "ranki-global-error error-message",
   errorStack: "ranki-global-error error-trace",
+
+  codeLanguageAbsent: "ranki-code-language-absent",
+  codeLanguageAvailable: "ranki-code-language-available",
+  codeLanguageAliasRegistered: "ranki-code-language-alias-registered",
+  codeLanguageAliasUnregistered: "ranki-code-language-alias-unregistered",
+  codeFrame: "ranki-code-frame",
+  codeInline: "ranki-code-inline",
 };
 
 export class Dom {
   private parent: Element;
   private tokens: RankiTokens;
   private card: RankiCard;
+  private content: ContentControl;
 
-  constructor(parent: Element, { tokens, card }: WindowRankiConfig) {
+  constructor(parent: Element, { tokens, card, aliases }: WindowRankiConfig) {
     this.parent = parent;
     this.tokens = tokens;
     this.card = card;
+    this.content = new ContentControl(aliases);
   }
 
-  _decodeHtmlEntities(str: string): string {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(str, "text/html");
-    return doc.documentElement.textContent!;
+  // _decodeHtmlEntities(str: string): string {
+  //   const parser = new DOMParser();
+  //   const doc = parser.parseFromString(str, "text/html");
+  //   return doc.documentElement.textContent!;
+  // }
+
+  _assignElementContent(
+    elem: HTMLElement | undefined,
+    content: string | undefined,
+    format: string = "text",
+  ) {
+    if (elem && content) {
+      switch (format) {
+        case "html":
+          elem.innerHTML = content;
+          break;
+
+        case "text":
+          elem.innerText = content;
+          break;
+
+        default:
+          elem.innerHTML = content;
+      }
+    }
+  }
+
+  _appendElementChildren(
+    elem: HTMLElement | undefined,
+    children: HTMLElement[] = [],
+  ) {
+    if (elem && children.length) {
+      for (const child of children) {
+        elem.appendChild(child);
+      }
+    }
+  }
+
+  _assignElemClassName(
+    elem: HTMLElement | undefined,
+    className: string | undefined,
+  ) {
+    if (elem && className) {
+      elem.className = className;
+    }
   }
 
   _createElement(
@@ -80,34 +131,13 @@ export class Dom {
   ): HTMLElement {
     const elem = document.createElement(tag);
 
-    if (content) {
-      switch (format) {
-        case "html":
-          elem.innerHTML = content;
-          break;
-
-        case "text":
-          elem.innerText = content;
-          break;
-
-        default:
-          elem.innerHTML = content;
-      }
-    }
-
-    if (className) {
-      elem.className = className;
-    }
+    this._assignElementContent(elem, content, format);
+    this._assignElemClassName(elem, className);
+    this._appendElementChildren(elem, children);
 
     if (style) {
       // @ts-ignore
       elem.style = style;
-    }
-
-    if (children) {
-      for (const child of children) {
-        elem.appendChild(child);
-      }
     }
 
     return elem;
@@ -115,39 +145,25 @@ export class Dom {
 
   _createElementChain(
     tags: Tags,
-    { leaf }: Partial<CreateElementChainOptions> = {},
+    { leaf, root }: Partial<CreateElementChainOptions> = {},
   ): CreateElementChainReturn {
-    const root = this._createElement(tags[0]);
+    const rootElem = this._createElement(tags[0]);
     const rest = tags.slice(1);
 
-    let leafElem = root;
+    let leafElem = rootElem;
     for (const e of rest) {
       const child = this._createElement(e);
       leafElem.appendChild(child);
       leafElem = child;
     }
 
-    if (leaf && leaf.content && leaf.format) {
-      switch (leaf.format) {
-        case "html":
-          // leafElem.innerHTML = this._decodeHtmlEntities(leaf.content);
-          leafElem.innerHTML = leaf.content;
-          break;
-
-        case "text":
-          leafElem.innerText = leaf.content;
-          break;
-      }
-    }
-
-    if (leaf && leaf.children) {
-      leaf.children.forEach((child) => {
-        leafElem.appendChild(child);
-      });
-    }
+    this._assignElementContent(leafElem, leaf?.content, leaf?.format);
+    this._appendElementChildren(leafElem, leaf?.children);
+    this._assignElemClassName(leafElem, leaf?.className);
+    this._assignElemClassName(rootElem, root?.className);
 
     return {
-      root,
+      root: rootElem,
       leaf: leafElem,
     };
   }
@@ -286,22 +302,64 @@ export class Dom {
     });
   }
 
-  _renderPartFrame(part: ParserPartFlavorFrame): HTMLElement {
-    let content = part.content.lines.join("\n");
+  _renderHljs(content: string, languageAlias: string) {
+    if (!languageAlias) {
+      return {
+        html: content,
+        highlighted: false,
+        displayName: "",
+        className: CLASSES.codeLanguageAbsent,
+      };
+    }
 
-    switch (part.content.tags.join(" ")) {
+    const { displayName, hljsName, found } =
+      this.content.codeAlias(languageAlias);
+    // const language = content.params[0];
+    // if (language) {
+    const html = hljs.highlight(content, { language: hljsName }).value;
+    const className = [
+      CLASSES.codeLanguageAvailable,
+      found
+        ? "ranki-code-language-alias-registered"
+        : "ranki-code-language-alias-unregistered",
+    ].join(" ");
+
+    return {
+      html,
+      displayName,
+      highlighted: false,
+      className,
+    };
+    // className = "ranki-inline-frame-code";
+    // }
+  }
+
+  _renderPartFrame(part: ParserPartFlavorFrame): HTMLElement {
+    const tagsJoined = part.content.tags.join(" ");
+    let content = part.content.lines.join("\n");
+    let className = "";
+
+    switch (tagsJoined) {
       case "code":
-        const language = part.content.params[0];
-        if (language) {
-          content = hljs.highlight(content, { language }).value;
-        }
+        const languageAlias = part.content.params[0];
+        // if (languageAlias) {
+        //   content = hljs.highlight(content, { language: languageAlias }).value;
+        //   className = "ranki-inline-frame-code";
+        // }
+        const renderedCode = this._renderHljs(content, languageAlias);
+        content = renderedCode.html;
+        className = [CLASSES.codeInline, renderedCode.className].join(" ");
         break;
+
+      default:
+        throw new Error(`Unrecognized inline frame tag: ${tagsJoined}`);
     }
 
     const { root } = this._createElementChain(part.content.tags, {
       leaf: {
         format: "html",
         content,
+        className,
       },
     });
 
@@ -382,40 +440,57 @@ export class Dom {
   }
 
   _renderCode(group: ParserKindFrameCode): HTMLElement {
-    const language = group.params[0];
+    const languageAlias = group.params[0];
 
-    const content = language
-      ? hljs.highlight(group.content[0], { language }).value
-      : group.content[0];
+    // const content = languageAlias
+    //   ? hljs.highlight(group.content[0], { language: languageAlias }).value
+    //   : group.content[0];
+    const renderedCode = this._renderHljs(group.content[0], languageAlias);
 
-    const code = this._createElement("code", {
-      format: "html",
-      content,
+    // const code = this._createElement("code", {
+    //   format: "html",
+    //   content: renderedCode.html,
+    //   className: renderedCode.className,
+    // });
+    const { root } = this._createElementChain(["div", "code"], {
+      leaf: {
+        format: "html",
+        content: renderedCode.html,
+        className: renderedCode.className,
+      },
+      root: {
+        className: CLASSES.codeFrame,
+      },
     });
 
-    return code;
+    // return code;
+    return root;
   }
 
   _renderPreCode(group: ParserKindFramePreCode): HTMLElement {
-    const language = group.params[0];
+    const languageAlias = group.params[0];
     const joined = group.content.join("\n");
-    const content = language
-      ? hljs.highlight(joined, { language }).value
-      : joined;
+    const renderedCode = this._renderHljs(joined, languageAlias);
 
     const { root } = this._createElementChain(group.tags, {
       leaf: {
         format: "html",
-        content,
+        content: renderedCode.html,
+        className: renderedCode.className,
+      },
+      root: {
+        className: renderedCode.className,
       },
     });
 
-    const langLabelElem = this._createElement("span", {
-      format: "text",
-      content: language,
-      className: CLASSES.preCodeLanguageLabel,
-    });
-    root.appendChild(langLabelElem);
+    if (languageAlias) {
+      const langLabelElem = this._createElement("span", {
+        format: "text",
+        content: renderedCode.displayName,
+        className: CLASSES.preCodeLanguageLabel,
+      });
+      root.appendChild(langLabelElem);
+    }
 
     return root;
   }

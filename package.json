@@ -5,7 +5,8 @@
   "scripts": {
     "build": "yarn vite build",
     "watch": "yarn vite build --watch",
-    "test": "jest"
+    "test": "jest",
+    "clean-target": "scripts/clean-target.sh"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
