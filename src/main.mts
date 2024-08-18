@@ -1,13 +1,13 @@
 import "./style/main.scss";
-import "./error-handling.mjs";
-import { type CustomWindow } from "./types/window.mjs";
-import {
-  type RankiRequiredProps,
-  type WindowRankiConfig,
-} from "./types/ranki.mjs";
-import { Observer } from "./observer.mjs";
-import { Parser } from "./parser.mjs";
-import { rankiDefaults } from "./config.mjs";
+import "./error-handling.mts";
+import type { CustomWindow } from "./types/window.d.mts";
+import type {
+  RankiRequiredProps,
+  WindowRankiConfig,
+} from "./types/ranki.d.mts";
+import { Observer } from "./observer.mts";
+import { Parser } from "./parser/parser.mts";
+import { rankiDefaults } from "./config.mts";
 
 declare var window: CustomWindow;
 

@@ -1,6 +1,7 @@
-import { type WindowRankiConfig } from "./types/ranki.mjs";
+import type { RankiDefaults } from "./types/ranki.d.mts";
 
-export const rankiDefaults: Partial<WindowRankiConfig> = {
+export const rankiDefaults: RankiDefaults = {
+  features: {},
   tokens: {
     frame: ":::",
 
@@ -25,7 +26,8 @@ export const rankiDefaults: Partial<WindowRankiConfig> = {
     tableBodyTags: "BODY_TAGS",
 
     listTags: "LI_TAGS",
-    listItem: "- ",
+    // listItem: "- ",
+    listItemSeparator: "-",
 
     dlDtTags: "DT_TAGS",
     dlDdTags: "DD_TAGS",

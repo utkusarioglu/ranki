@@ -11,7 +11,7 @@ import type {
   CreateElementChainReturn,
   CreateElementOptions,
 } from "./types/dom.mjs";
-import {
+import type {
   HeadingContent,
   ParagraphContent,
   ParserField,
@@ -30,7 +30,7 @@ import {
   ParserPartFlavorPlain,
   TableHeaderOrData,
   Tags,
-} from "./types/parser.mjs";
+} from "./types/parser.d.mts";
 
 registerTerraform(hljs);
 

@@ -1,5 +1,5 @@
-import { type WindowRankiConfig } from "./ranki.d.mjs"
+import type { WindowRankiConfig } from "./ranki.d.mts";
 
 interface CustomWindow extends Window {
-  ranki: WindowRankiConfig
+  ranki: WindowRankiConfig;
 }

@@ -1,5 +1,5 @@
-import { Dom } from "./dom.mjs";
-import { type CustomWindow } from "./types/window.mjs";
+import { Dom } from "./dom.mts";
+import type { CustomWindow } from "./types/window.d.mts";
 
 declare var window: CustomWindow;
 

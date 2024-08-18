@@ -1,5 +1,8 @@
-import type { CollectionRenderFields, FieldList } from "./types/collection.mjs";
-import type { WindowRankiConfig } from "./types/ranki.mjs";
+import type {
+  CollectionRenderFields,
+  FieldList,
+} from "../types/collection.mjs";
+import type { WindowRankiConfig } from "../types/ranki.mjs";
 import type {
   ParserPartWoContent,
   ParserField,
@@ -27,7 +30,7 @@ import type {
   ListItemsRaw,
   ListItemsComplete,
   TableHeaderOrData,
-} from "./types/parser.mjs";
+} from "../types/parser.mjs";
 
 /**
  * @dev
@@ -77,7 +80,7 @@ export class Parser {
           new RegExp([tokens.frame, "(.*?)", tokens.frame].join(""), "g"),
         ); // #1
     const frameEnd = trimmed === tokens.frame;
-    const listItem = trimmed.startsWith(tokens.listItem);
+    const listSeparated = trimmed === tokens.listItemSeparator;
 
     if (isComment) {
       // #3
@@ -156,13 +159,13 @@ export class Parser {
       stack.pop();
       // @ts-ignore: trivial state
       prev.isComplete = true;
-    } else if (listItem) {
+    } else if (listSeparated) {
       if (isStackEmpty) {
-        throw new Error("List item received while not in frame");
+        throw new Error("List separator received while not in frame");
       }
       if (!hasPrev) {
         throw new Error(
-          "List item defined while there is no section to put it in.",
+          "List separator given while a list isn't being being populated.",
         );
       }
 
@@ -341,7 +344,10 @@ export class Parser {
     const tokens = this.ranki.tokens;
     const trimmed = raw.trim();
     const matches = ` ${trimmed} `.match(
-      new RegExp([" ", tokens.frame, "(.*?)", tokens.frame, " "].join(""), "g"),
+      new RegExp(
+        [" ", tokens.frame, "(.*?)", tokens.frame, "[\\s?!\\.]"].join(""),
+        "g",
+      ),
     );
 
     if (!matches) {
@@ -649,16 +655,37 @@ export class Parser {
           .trim()
           .split(tokens.parameter)
           .map((v) => v.trim());
-      } else if (trimmed.startsWith(tokens.listItem)) {
+      } else if (trimmed === tokens.listItemSeparator) {
+        const prev = itemsRaw.at(-1);
+        if (!prev) {
+          continue;
+        }
+
+        prev.isComplete = true;
+        // prev.lines.push({
+        //   raw: trimmed,
+        // });
+      } else if (!itemsRaw.length) {
         itemsRaw.push({
+          isComplete: false,
           lines: [
             {
-              raw: trimmed.slice(tokens.listItem.length).trim(),
+              raw: trimmed,
             },
           ],
         });
-      } else if (itemsRaw.length) {
-        itemsRaw[itemsRaw.length - 1].lines.push({
+      } else if (itemsRaw.length && itemsRaw.at(-1)?.isComplete === true) {
+        itemsRaw.push({
+          isComplete: false,
+          lines: [
+            {
+              raw: trimmed,
+            },
+          ],
+        });
+      } else {
+        const prev = itemsRaw.at(-1);
+        prev?.lines.push({
           raw: trimmed,
         });
       }

@@ -11,7 +11,9 @@
     "moduleResolution": "Bundler",
     "useDefineForClassFields": true,
     "allowImportingTsExtensions": true,
-    "noEmit": true
+    "noEmit": true,
+    "esModuleInterop": true,
+    "verbatimModuleSyntax": true
   },
   "include": ["src/main.mts"]
 }

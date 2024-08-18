@@ -1,3 +1,7 @@
+type WithIsComplete = {
+  isComplete: boolean;
+};
+
 import type { FieldList } from "./collection.d.mts";
 
 export type Tags = string[];
@@ -21,14 +25,15 @@ export interface ParserPartFlavorFrameWoContent {
   part: string;
 }
 
-export interface ParserPartFlavorFrame extends ParserPartFlavorFrameWoContent {
-  content: {
-    tags: string[];
-    params: string[];
-    isComplete: boolean;
-    lines: string[];
+export type ParserPartFlavorFrame = ParserPartFlavorFrameWoContent &
+  WithIsComplete & {
+    content: {
+      tags: string[];
+      params: string[];
+      // isComplete: boolean;
+      lines: string[];
+    };
   };
-}
 
 export type ParserPart = ParserPartFlavorPlain | ParserPartFlavorFrame;
 export type ParserPartWoContent =
@@ -107,13 +112,13 @@ export interface ParserKindFrameList extends ParserGroupFrameCommon {
   content: ParserKindFrameListContent[];
 }
 
-export interface ParserGroupFrameCommon {
+export type ParserGroupFrameCommon = WithIsComplete & {
   type: "frame";
   tags: Tags;
   params: Params;
-  isComplete: boolean;
+  // isComplete: boolean;
   lines: string[];
-}
+};
 
 // export interface DlItemTitle {
 //   raw: string;
@@ -158,12 +163,13 @@ interface ParserGroupText extends ParserGroupCommon {
   type: "text";
 }
 
-interface ParserGroupFrame extends ParserGroupCommon {
-  type: "frame";
-  tags: Tags;
-  params: Params;
-  isComplete: boolean;
-}
+type ParserGroupFrame = ParserGroupCommon &
+  WithIsComplete & {
+    type: "frame";
+    tags: Tags;
+    params: Params;
+    // isComplete: boolean;
+  };
 
 export type ParserKindText = ParserKindParagraph | ParserKindHeading;
 
@@ -246,10 +252,10 @@ export interface DlItemWithTags {
   lines: ContentCommonWithTags[];
 }
 
-export interface ListItemsRaw {
+export type ListItemsRaw = WithIsComplete & {
   lines: ContentCommonWoParts[];
-}
+};
 
-export interface ListItemsComplete {
+export type ListItemsComplete = WithIsComplete & {
   lines: ContentCommon[];
-}
+};

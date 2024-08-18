@@ -26,6 +26,22 @@ pre {
   font-size: smaller;
 }
 
+pre > code {
+  padding: 0 var(--length-content-inline-inset-rem) !important;
+  /* padding: 0 !important; */
+  display: block;
+  width: max-content;
+  background-color: transparent;
+}
+
+pre:has(code) {
+  --base: var(--length-pre-code-block-padding-rem);
+  --nudge: var(--length-pre-code-hljs-down-nudge);
+
+  padding-block-start: calc(var(--base) + var(--nudge));
+  padding-block-end: calc(var(--base) - var(--nudge));
+}
+
 .ranki-pre-code-language-label {
   --padding-inset-rem: 0.5rem;
   --border-radius-rem: 0.4rem;
@@ -39,12 +55,4 @@ pre {
   border-end-end-radius: var(--border-radius-rem);
   border-end-start-radius: var(--border-radius-rem);
   padding-inline: var(--padding-inset-rem);
-}
-
-pre > code {
-  padding: 0 var(--length-content-inline-inset-rem) !important;
-  /* padding: 0 !important; */
-  display: block;
-  width: max-content;
-  background-color: transparent;
 }
