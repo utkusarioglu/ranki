@@ -1,6 +1,10 @@
 // @ts-expect-error: For some reason ts doesn't see the types for hljs
 import hljs from "highlight.js";
-import { registerTerraform } from "../hljs/terraform.js";
+import { hljsDefineTerraform } from "../hljs/terraform.js";
+import { hljsDefineSolidity } from "../hljs/solidity/solidity.js";
+import { hljsDefineYul } from "../hljs/solidity/yul.js";
+import { hljsDefineSuperCollider } from "../hljs/supercollider.js";
+
 import { ContentControl } from "../content-control/content-control.mts";
 import type {
   RankiCard,
@@ -33,7 +37,10 @@ import type {
   Tags,
 } from "../types/parser.mjs";
 
-registerTerraform(hljs);
+hljs.registerLanguage("terraform", hljsDefineTerraform);
+hljs.registerLanguage("solidity", hljsDefineSolidity);
+hljs.registerLanguage("yul", hljsDefineYul);
+hljs.registerLanguage("supercollider", hljsDefineSuperCollider);
 
 const CLASSES = {
   hud: "ranki-hud",
@@ -71,12 +78,6 @@ export class Dom {
     this.card = card;
     this.content = new ContentControl(aliases);
   }
-
-  // _decodeHtmlEntities(str: string): string {
-  //   const parser = new DOMParser();
-  //   const doc = parser.parseFromString(str, "text/html");
-  //   return doc.documentElement.textContent!;
-  // }
 
   _assignElementContent(
     elem: HTMLElement | undefined,

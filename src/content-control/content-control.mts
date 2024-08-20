@@ -23,10 +23,11 @@ export class ContentControl {
     Object.entries(aliases.code).forEach(
       ([hljsName, { list, displayName }]) => {
         list.forEach((alias) => {
-          if (assignments.has(alias)) {
-            throw new Error(`Code alias ${alias} assigned twice`);
+          const lowercase = alias.toLowerCase();
+          if (assignments.has(lowercase)) {
+            throw new Error(`Code alias ${lowercase} assigned twice`);
           }
-          assignments.set(alias, {
+          assignments.set(lowercase, {
             hljsName,
             displayName,
           });
@@ -37,7 +38,8 @@ export class ContentControl {
   }
 
   codeAlias(alias: string): CodeAliasReturn {
-    const assigned = this.assignments.get(alias);
+    const lowercase = alias.toLowerCase();
+    const assigned = this.assignments.get(lowercase);
     if (assigned) {
       return {
         ...assigned,
@@ -46,9 +48,8 @@ export class ContentControl {
     }
 
     return {
-      hljsName: alias.toLowerCase(),
-      displayName:
-        alias.slice(0, 1).toUpperCase() + alias.slice(1).toLowerCase(),
+      hljsName: lowercase,
+      displayName: lowercase.slice(0, 1).toUpperCase() + alias.slice(1),
       found: false,
     };
   }
