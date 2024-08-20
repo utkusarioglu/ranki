@@ -2,7 +2,7 @@ import { Dom } from "./dom/dom.mts";
 import { Collection } from "./collection.mts";
 import { type Parser } from "./parser/parser.mts";
 import type { CardFaces } from "./types/ranki.d.mts";
-import type { WindowRankiConfig } from "./config/config.d.mts";
+import type { WindowRankiConfig } from "./config/config.d.mjs";
 
 /**
  * Anki behaves differently on different platforms. In some, it rerenders the
@@ -41,7 +41,6 @@ export class Observer {
     const dom = new Dom(faceElem, this.ranki);
     if (!dom.hasFaceRendered()) {
       const fields = Collection.getFields(faceName, this.ranki);
-      console.log(fields);
       const parsed = this.parser.parseFields(fields);
       dom.renderFace(parsed);
     }

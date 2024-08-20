@@ -1,5 +1,5 @@
 import type { CardFaces } from "./types/ranki.d.mts";
-import type { WindowRankiConfig } from "./config/config.d.mts";
+import type { WindowRankiConfig } from "./config/config.d.mjs";
 import type { CollectionRenderFields } from "./types/collection.d.mts";
 
 const common = {
@@ -32,9 +32,9 @@ const assignments = {
   "+Render-FB-BF": {
     "Front > Back": {
       front: [
-        common.questionStartPre,
+        // common.questionStartPre,
         common.frontPromptPre,
-        common.questionEndPre,
+        // common.questionEndPre,
       ],
       back: [
         //
@@ -51,9 +51,9 @@ const assignments = {
       ],
       back: [
         //
-        common.answerStartPre,
+        // common.answerStartPre,
         common.frontPromptPre,
-        common.answerEndPre,
+        // common.answerEndPre,
       ],
     },
   },
@@ -88,7 +88,6 @@ export class Collection {
       throw new Error(`Unrecognized card face: ${cardFace}`);
     }
 
-    console.log(type, card, cardFace);
     return face;
   }
 }

@@ -264,7 +264,6 @@ export class Dom {
   renderHud(): void {
     const existingInfoBar = this.parent.querySelector(`.${CLASSES.hud}`);
     if (existingInfoBar) {
-      // console.log("info bar already attached");
       return;
     }
 

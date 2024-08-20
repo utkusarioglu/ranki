@@ -41,3 +41,15 @@ body > *:not(#qa, #_mark, #_flag),
   font-weight: 700;
   color: var(--color-close-hex);
 }
+
+/**
+ * @dev
+ * #1 For some reason hex numbers get altered, I think anki does this for
+ * screen readability reasons. Regardless, we are going with color name because
+ * of this.
+ */
+.win body.night_mode {
+  // #1
+  // background-color: var(--color-windows-dark-mode-body-background-hex);
+  background-color: black;
+}

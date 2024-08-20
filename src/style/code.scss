@@ -11,14 +11,15 @@ div.ranki-code-frame > code {
   background-color: var(--color-code-bg2-hex);
   padding: 0.05rem 0.3rem;
   border-radius: var(--length-code-border-radius-rem);
-  color: var(--color-inline-code-hex);
+  // color: var(--color-inline-code-hex);
   font-size: smaller;
 }
 
-code.ranki-code-inline {
+p code {
   color: var(--color-inline-code-hex);
   font-size: smaller;
   position: relative;
+  vertical-align: 0.3px; // MAGIC NUMBER
 
   &::before {
     --block: -0.08rem;
@@ -40,11 +41,14 @@ pre {
   padding-block: var(--length-pre-code-block-padding-rem);
   margin-inline: calc(var(--length-content-inline-inset-rem) * -1);
   background-color: var(--color-code-bg-hex);
-  color: var(--color-block-code-hex);
   overflow-x: scroll;
   position: relative;
   line-height: 1.2rem;
   font-size: smaller;
+}
+
+pre:not(:has(code)) {
+  color: var(--color-block-code-hex);
 }
 
 pre::-webkit-scrollbar {
