@@ -2,6 +2,7 @@ import type { RankiContent } from "../types/ranki-content.d.mts";
 
 export interface RankiTokens {
   frame: string;
+  inlineFrameAllowedEndCharacters: string[];
   child: string;
   terminator: string;
   parameter: string;

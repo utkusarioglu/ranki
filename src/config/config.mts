@@ -4,6 +4,7 @@ export const rankiDefaults: RankiDefaults = {
   features: {},
   tokens: {
     frame: ":::",
+    inlineFrameAllowedEndCharacters: ["\\s", "?", "!", ":", "\\."],
 
     child: " ",
     terminator: ";",

@@ -15,6 +15,10 @@ div.ranki-code-frame > code {
   font-size: smaller;
 }
 
+code.ranki-code-language-absent {
+  color: var(--color-inline-code-hex);
+}
+
 p code {
   color: var(--color-inline-code-hex);
   font-size: smaller;

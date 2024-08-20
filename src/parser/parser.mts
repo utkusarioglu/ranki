@@ -2,7 +2,7 @@ import type {
   CollectionRenderFields,
   FieldList,
 } from "../types/collection.mjs";
-import type { WindowRankiConfig } from "../config/config.d.mts";
+import type { WindowRankiConfig } from "../config/config.d.mjs";
 import type {
   ParserPartWoContent,
   ParserField,
@@ -345,7 +345,13 @@ export class Parser {
     const trimmed = raw.trim();
     const matches = ` ${trimmed} `.match(
       new RegExp(
-        [" ", tokens.frame, "(.*?)", tokens.frame, "[\\s?!\\.]"].join(""),
+        [
+          " ",
+          tokens.frame,
+          "(.*?)",
+          tokens.frame,
+          `[${tokens.inlineFrameAllowedEndCharacters.join("")}]`,
+        ].join(""),
         "g",
       ),
     );
