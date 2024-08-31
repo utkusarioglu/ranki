@@ -195,6 +195,21 @@ export class Parser {
   }
 
   /**
+   * Replaces phrases defined in `config.replacements` with the given
+   * replacement strings.
+   *
+   * This was designed for replacing html encoding such as `&lt;` with `<` but
+   * was expanded in purpose for any string sequence that may need to be
+   * replaced
+   */
+  _replaceStrings(line: string): string {
+    for (const [find, replace] of this.ranki.replacements) {
+      line = line.replaceAll(find, replace);
+    }
+    return line;
+  }
+
+  /**
    * @dev
    * #1 Type `FieldName` needs to be reevaluated once more card types are
    * introduced.
@@ -203,9 +218,6 @@ export class Parser {
     const fieldName = field.name;
     // @ts-ignore: #1
     const fieldContent: string = this.ranki.content[fieldName];
-    // if (!fieldContent) {
-    //   throw new Error("No Field content");
-    // }
 
     const lines = fieldContent.split("\n");
     let stack: Stack = [];
@@ -227,7 +239,8 @@ export class Parser {
 
     for (const line of lines) {
       try {
-        ({ stack, groups } = this._parseFieldLine({ stack, groups }, line));
+        const replaced = this._replaceStrings(line);
+        ({ stack, groups } = this._parseFieldLine({ stack, groups }, replaced));
       } catch (e) {
         throw customError(e as Error, line);
       }

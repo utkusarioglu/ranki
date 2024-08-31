@@ -2,19 +2,19 @@
   "compilerOptions": {
     "outDir": "build",
     "rootDir": "src",
-    "module": "ESNext",
+    "module": "NodeNext",
     "target": "ESNext",
     "strict": true,
     "allowJs": true,
     "removeComments": true,
     "isolatedModules": true,
-    "moduleResolution": "Bundler",
     "useDefineForClassFields": true,
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "esModuleInterop": true,
     "verbatimModuleSyntax": true,
-    "exactOptionalPropertyTypes": true
+    "exactOptionalPropertyTypes": true,
+    "noEmitOnError": true
   },
   "include": ["src/main.mts"]
 }

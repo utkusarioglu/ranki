@@ -3,6 +3,7 @@ import type { RankiDefaults } from "./config.d.mjs";
 export const rankiDefaults: RankiDefaults = {
   features: {},
   tokens: {
+    ignoreField: "RANKI_IGNORE",
     frame: ":::",
     inlineFrameAllowedEndCharacters: ["\\s", "?", "!", ":", "\\."],
 
@@ -33,11 +34,16 @@ export const rankiDefaults: RankiDefaults = {
     dlDdTags: "DD_TAGS",
   },
 
+  replacements: [
+    ["&lt;", "<"],
+    ["&gt;", ">"],
+  ],
+
   aliases: {
     code: {
       autohotkey: {
         list: ["autohotkey", "ahk"],
-        displayName: "AuthoHotkey",
+        displayName: "AutoHotkey",
       },
       awk: {
         list: ["awk", "mawk", "nawk", "gawk"],

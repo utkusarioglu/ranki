@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { Parser } from "./parser.mts";
-import { rankiDefaults } from "../config.mts";
-import type { WindowRankiConfig } from "../types/ranki.d.mts";
+import { rankiDefaults } from "../config/config.mts";
+import type { WindowRankiConfig } from "../config/config.d.mjs";
 
 const ul = readFileSync("./assets/test/ul.txt", { encoding: "utf-8" });
 
@@ -125,7 +125,7 @@ describe("paragraph", () => {
   });
 });
 
-describe.only("Frame without ending", () => {
+describe("Frame without ending", () => {
   it("code", () => {
     const parser = new Parser({
       ...rankiConfig,
@@ -154,5 +154,25 @@ describe.only("Frame without ending", () => {
 
     expect(parsed[0].list[0].kind).toBe("pre code");
     expect(parsed[0].list[0].isComplete).toBe(false);
+  });
+
+  describe.only("Ignored frame", () => {
+    it("RANKI_IGNORE 1", () => {
+      const content = ["% RANKI_IGNORE", "the rest", "another rest"].join("\n");
+      const parser = new Parser({
+        ...rankiConfig,
+        content: {
+          // @ts-ignore
+          F: content,
+        },
+      });
+      const parsed = parser.parseFields([{ name: "F" }]);
+      console.log(content);
+      console.log(JSON.stringify(parsed, null, 2));
+      expect(parsed.length).toBe(1);
+      expect(parsed[0].type).toBe("ignore");
+      expect(parsed[0].kind).toBe("ignore");
+      expect(parsed[0].list).toBe(content);
+    });
   });
 });

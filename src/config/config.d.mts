@@ -18,10 +18,10 @@ export interface RankiTokens {
   tableFootTags: string;
   tableBodyTags: string;
   listTags: string;
-  // listItem: string;
   listItemSeparator: string;
   dlDtTags: string;
   dlDdTags: string;
+  ignoreField: string;
 }
 
 export interface RankiFeatures {}
@@ -44,16 +44,19 @@ export interface RankiAliases {
   code: Record<string, RankiCodeAlias>;
 }
 
+type Replacement = [string, string];
+
 export interface WindowRankiConfig {
   version: "v1";
   tokens: RankiTokens;
   aliases: RankiAliases;
   features: RankiFeatures;
+  replacements: Replacement[];
   card: RankiCard;
   content: RankiContent;
 }
 
 export type RankiDefaults = Pick<
   WindowRankiConfig,
-  "features" | "tokens" | "aliases"
+  "features" | "tokens" | "aliases" | "replacements"
 >;

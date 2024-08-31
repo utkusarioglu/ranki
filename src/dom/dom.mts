@@ -441,17 +441,8 @@ export class Dom {
 
   _renderCode(group: ParserKindFrameCode): HTMLElement {
     const languageAlias = group.params[0];
-
-    // const content = languageAlias
-    //   ? hljs.highlight(group.content[0], { language: languageAlias }).value
-    //   : group.content[0];
     const renderedCode = this._renderHljs(group.content[0], languageAlias);
 
-    // const code = this._createElement("code", {
-    //   format: "html",
-    //   content: renderedCode.html,
-    //   className: renderedCode.className,
-    // });
     const { root } = this._createElementChain(["div", "code"], {
       leaf: {
         format: "html",
