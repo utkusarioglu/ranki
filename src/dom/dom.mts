@@ -40,7 +40,7 @@ import type {
 hljs.registerLanguage("terraform", hljsDefineTerraform);
 hljs.registerLanguage("solidity", hljsDefineSolidity);
 hljs.registerLanguage("yul", hljsDefineYul);
-hljs.registerLanguage("supercollider", hljsDefineSuperCollider);
+// hljs.registerLanguage("supercollider", hljsDefineSuperCollider);
 
 const CLASSES = {
   hud: "ranki-hud",
@@ -600,6 +600,12 @@ export class Dom {
 
   _renderFrameKind(group: ParserKindFrame): HTMLElement {
     switch (group.kind) {
+      case "ignore":
+        return this._createElement("div", {
+          format: "html",
+          content: group.content,
+        });
+
       case "code":
         return this._renderCode(group);
 

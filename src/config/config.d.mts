@@ -21,7 +21,6 @@ export interface RankiTokens {
   listItemSeparator: string;
   dlDtTags: string;
   dlDdTags: string;
-  ignoreField: string;
 }
 
 export interface RankiFeatures {}

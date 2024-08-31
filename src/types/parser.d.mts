@@ -141,6 +141,11 @@ export interface ParserKindFrameCode extends ParserGroupFrameCommon {
   content: string[];
 }
 
+export interface ParserKindFrameIgnore extends ParserGroupFrameCommon {
+  kind: "ignore";
+  content: string;
+}
+
 export interface ParserKindFramePreCode extends ParserGroupFrameCommon {
   kind: "pre code";
   content: string[];
@@ -179,7 +184,8 @@ export type ParserKindFrame =
   | ParserKindFramePre
   | ParserKindFrameTable
   | ParserKindFrameList
-  | ParserKindFrameDl;
+  | ParserKindFrameDl
+  | ParserKindFrameIgnore;
 
 export type ParserKind = ParserKindText | ParserKindFrame;
 

@@ -3,7 +3,6 @@ import type { RankiDefaults } from "./config.d.mjs";
 export const rankiDefaults: RankiDefaults = {
   features: {},
   tokens: {
-    ignoreField: "RANKI_IGNORE",
     frame: ":::",
     inlineFrameAllowedEndCharacters: ["\\s", "?", "!", ":", "\\."],
 

@@ -239,8 +239,7 @@ export class Parser {
 
     for (const line of lines) {
       try {
-        const replaced = this._replaceStrings(line);
-        ({ stack, groups } = this._parseFieldLine({ stack, groups }, replaced));
+        ({ stack, groups } = this._parseFieldLine({ stack, groups }, line));
       } catch (e) {
         throw customError(e as Error, line);
       }
@@ -596,7 +595,7 @@ export class Parser {
       },
     };
 
-    for (const line of group.lines) {
+    for (const line of group.lines.map((l) => this._replaceStrings(l))) {
       const trimmed = line.trim();
       const isEmpty = trimmed === "";
       const isComment = trimmed.startsWith(tokens.comment);
@@ -660,7 +659,7 @@ export class Parser {
     let tag: Tags = ["li"];
 
     const itemsRaw: ListItemsRaw[] = [];
-    for (const line of group.lines) {
+    for (const line of group.lines.map((l) => this._replaceStrings(l))) {
       const trimmed = line.trim();
       const isEmpty = trimmed === "";
       const isComment = trimmed.startsWith(tokens.comment);
@@ -742,7 +741,7 @@ export class Parser {
       dd: ["dd"],
     };
 
-    for (const line of group.lines) {
+    for (const line of group.lines.map((l) => this._replaceStrings(l))) {
       const trimmed = line.trim();
       const isEmpty = trimmed === "";
       const isComment = trimmed.startsWith(tokens.comment);
@@ -804,27 +803,44 @@ export class Parser {
 
     return itemsWithTags;
   }
+  _parseCodeKinds(group: ParserGroupFrame) {
+    return group.lines.map((line) => this._replaceStrings(line));
+  }
 
+  /**
+   * @dev
+   * #1 This case falls through. this is intentional, pre code, pre and code
+   * share the same logic
+   */
   _parseFrameGroup(group: ParserGroupFrame): ParserKindFrame {
     const kind = group.tags.join(" ");
     switch (kind) {
+      case "ignore":
+        return {
+          ...group,
+          kind,
+          content: group.lines.join("\n"),
+        };
+
+      // #1
       case "code":
         if (group.lines.length > 1) {
           throw new Error("Code frames cannot have more than 1 line");
         }
-
-        return {
-          ...group,
-          kind,
-          content: group.lines,
-        };
+      // return {
+      //   ...group,
+      //   kind,
+      //   // content: group.lines,
+      //   content: this._parseCodeKinds(group),
+      // };
 
       case "pre":
       case "pre code":
         return {
           ...group,
           kind,
-          content: group.lines,
+          // content: group.lines,
+          content: this._parseCodeKinds(group),
         };
 
       case "ul":

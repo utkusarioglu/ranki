@@ -156,23 +156,23 @@ describe("Frame without ending", () => {
     expect(parsed[0].list[0].isComplete).toBe(false);
   });
 
-  describe.only("Ignored frame", () => {
+  describe("Ignored frame", () => {
     it("RANKI_IGNORE 1", () => {
-      const content = ["% RANKI_IGNORE", "the rest", "another rest"].join("\n");
+      const content = ["the rest", "another rest"];
       const parser = new Parser({
         ...rankiConfig,
         content: {
           // @ts-ignore
-          F: content,
+          F: [":::ignore", ...content].join("\n"),
         },
       });
       const parsed = parser.parseFields([{ name: "F" }]);
       console.log(content);
       console.log(JSON.stringify(parsed, null, 2));
       expect(parsed.length).toBe(1);
-      expect(parsed[0].type).toBe("ignore");
-      expect(parsed[0].kind).toBe("ignore");
-      expect(parsed[0].list).toBe(content);
+      expect(parsed[0].list[0].type).toBe("frame");
+      expect(parsed[0].list[0].kind).toBe("ignore");
+      expect(parsed[0].list[0].content).toBe(content.join("\n"));
     });
   });
 });
