@@ -50,6 +50,11 @@ p {
   }
 }
 
+em,
+strong {
+  color: var(--color-text-strong-hex);
+}
+
 hr {
   border: var(--color-border-hex) solid 2px;
   margin-inline: var(--length-content-inline-inset-rem);
@@ -71,4 +76,10 @@ section {
 
 section:first-of-type {
   margin-top: 0;
+}
+
+kbd {
+  @extend %inline-card;
+
+  color: var(--color-inline-kbd-hex);
 }

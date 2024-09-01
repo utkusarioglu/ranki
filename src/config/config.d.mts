@@ -1,6 +1,7 @@
 import type { RankiContent } from "../types/ranki-content.d.mts";
 
 export interface RankiTokens {
+  cardTypesPrefix: string;
   frame: string;
   inlineFrameAllowedEndCharacters: string[];
   child: string;

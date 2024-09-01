@@ -19,26 +19,13 @@ code.ranki-code-language-absent {
   color: var(--color-inline-code-hex);
 }
 
+// #1 This `:::code..` block color will have its color overridden. This color
+// is the definite color for `<code>` elements.
 p code {
+  @extend %inline-card;
+
+  // #1
   color: var(--color-inline-code-hex);
-  font-size: smaller;
-  position: relative;
-  vertical-align: 0.3px; // MAGIC NUMBER
-
-  &::before {
-    --block: -0.08rem;
-    --inline: -0.4rem;
-
-    content: "";
-    position: absolute;
-    z-index: -1;
-    left: var(--inline);
-    right: var(--inline);
-    top: var(--block);
-    bottom: var(--block);
-    border-radius: var(--length-code-border-radius-rem);
-    background-color: var(--color-code-bg2-hex);
-  }
 }
 
 pre {

@@ -262,6 +262,7 @@ export class Dom {
   }
 
   renderHud(): void {
+    const tokens = this.tokens;
     const existingInfoBar = this.parent.querySelector(`.${CLASSES.hud}`);
     if (existingInfoBar) {
       return;
@@ -271,7 +272,10 @@ export class Dom {
 
     const deckElem = this._hudDeck(deck, CLASSES);
     const cardElem = this._hudCard(card, CLASSES);
-    const typeElem = this._hudType(type, CLASSES);
+    const typeElem = this._hudType(
+      type.replace(tokens.cardTypesPrefix, ""),
+      CLASSES,
+    );
     const tagsElem = this._hudTags(tags, CLASSES);
 
     const hudScrollContainer = this._createElement("div", {
@@ -650,6 +654,7 @@ export class Dom {
   }
 
   renderFace(sections: ParserField[]): void {
+    console.log({ sections });
     const renders = [];
     for (const section of sections) {
       const container = this._createElement("section", {

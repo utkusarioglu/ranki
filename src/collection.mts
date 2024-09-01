@@ -26,10 +26,22 @@ const common = {
   answerEndPre: {
     name: "Answer-End-Pre",
   },
+
+  summaryPromptPre: {
+    name: "Summary-Prompt-Pre",
+  },
+
+  clozeText: {
+    name: "Text",
+  },
+
+  clozeBackExtra: {
+    name: "BackExtra",
+  },
 };
 
 const assignments = {
-  "+Render-FB-BF": {
+  "FB-BF": {
     "Front > Back": {
       front: [
         // common.questionStartPre,
@@ -57,10 +69,29 @@ const assignments = {
       ],
     },
   },
-  "+Render-FB": {
+
+  FB: {
     "Front > Back": {
       front: [common.frontPromptPre],
       back: [common.backPromptPre],
+    },
+  },
+
+  "FB-SB": {
+    "Front > Back": {
+      front: [common.frontPromptPre],
+      back: [common.backPromptPre],
+    },
+    "Summary > Back": {
+      front: [common.summaryPromptPre],
+      back: [common.backPromptPre],
+    },
+  },
+
+  C: {
+    Cloze: {
+      front: [common.clozeText],
+      back: [common.clozeBackExtra],
     },
   },
 };
@@ -73,7 +104,7 @@ export class Collection {
     const { type, card } = ranki.card;
 
     // @ts-expect-error
-    const aType = assignments[type];
+    const aType = assignments[type.replace(ranki.tokens.cardTypesPrefix, "")];
     if (!aType) {
       throw new Error(`Unrecognized anki type: ${type}`);
     }

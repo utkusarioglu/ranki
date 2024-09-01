@@ -3,6 +3,7 @@ import type { RankiDefaults } from "./config.d.mjs";
 export const rankiDefaults: RankiDefaults = {
   features: {},
   tokens: {
+    cardTypesPrefix: "+Ranki-",
     frame: ":::",
     inlineFrameAllowedEndCharacters: ["\\s", "?", "!", ":", "\\."],
 
