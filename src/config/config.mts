@@ -5,7 +5,7 @@ export const rankiDefaults: RankiDefaults = {
   tokens: {
     cardTypesPrefix: "+Ranki-",
     frame: ":::",
-    inlineFrameAllowedEndCharacters: ["\\s", "?", "!", ":", "\\."],
+    inlineFrameAllowedEndCharacters: ["\\s", "?", "!", ":", "\\.", ","],
 
     child: " ",
     terminator: ";",
