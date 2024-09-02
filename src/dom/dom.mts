@@ -41,7 +41,7 @@ import type {
 hljs.registerLanguage("terraform", hljsDefineTerraform);
 hljs.registerLanguage("solidity", hljsDefineSolidity);
 hljs.registerLanguage("yul", hljsDefineYul);
-// hljs.registerLanguage("supercollider", hljsDefineSuperCollider);
+hljs.registerLanguage("supercollider", hljsDefineSuperCollider);
 
 const CLASSES = {
   hud: "ranki-hud",
@@ -703,7 +703,6 @@ export class Dom {
   }
 
   renderFace(sections: ParserField[]): void {
-    console.log({ sections });
     const renders = [];
     for (const section of sections) {
       const container = this._createElement("section", {

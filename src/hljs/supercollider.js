@@ -56,7 +56,7 @@ export function hljsDefineSuperCollider(hljs)
   var SYMBOL_SELECTOR_RE = "[A-Za-z_]\\w*\\:";
 
   var BLOCK_COMMENT = hljs.C_BLOCK_COMMENT_MODE;
-  BLOCK_COMMENT.contains.push("self"); // block comments in SC are nested
+  // BLOCK_COMMENT.contains.push("self"); // block comments in SC are nested
 
   return {
     aliases: ["supercollider", "sc"],
