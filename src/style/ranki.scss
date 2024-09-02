@@ -18,3 +18,67 @@
 .ranki-center-aligned {
   text-align: center;
 }
+
+.ranki-fenced-frame-tag {
+  display: inline-block;
+  color: var(--color-heading-hex);
+  font-size: 0.6rem;
+  background-color: black;
+  border-end-end-radius: var(--border-radius-rem);
+  border-end-start-radius: var(--border-radius-rem);
+  padding-inline: var(--padding-inset-rem);
+  margin-right: var(--padding-inset-rem);
+
+  &::last-of-type {
+    margin-right: 0;
+  }
+}
+
+.ranki-fenced-frame-tag-container {
+  --padding-inset-rem: 0.5rem;
+  --border-radius-rem: 0.4rem;
+
+  position: absolute;
+  top: -0.2rem;
+  left: calc(var(--length-content-inline-inset-rem) - var(--padding-inset-rem));
+}
+
+.ranki-fenced-frame {
+  padding-block: var(--length-pre-code-block-padding-rem);
+  margin-inline: calc(var(--length-content-inline-inset-rem) * -1);
+  background-color: var(--color-code-bg-hex);
+  overflow-x: scroll;
+  position: relative;
+  line-height: 1.2rem;
+  font-size: smaller;
+
+  & > :not(.ranki-fenced-frame-tag-container) {
+    padding: 0 var(--length-content-inline-inset-rem) !important;
+    /* padding: 0 !important; */
+    display: block;
+    width: max-content;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &.ranki-fenced-frame-has-tags {
+    --base: var(--length-pre-code-block-padding-rem);
+    --nudge: var(--length-pre-code-hljs-down-nudge);
+
+    padding-block-start: calc(var(--base) + var(--nudge));
+    padding-block-end: calc(var(--base) - var(--nudge));
+  }
+
+  .ranki-code-language-alias-unregistered {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: calc(var(--length-content-inline-inset-rem) / 3);
+    background-color: var(--color-error-bg-hex);
+  }
+}

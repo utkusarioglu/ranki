@@ -7,6 +7,7 @@
   --color-code-bg-hex: #151515;
   --color-code-bg2-hex: #101010;
   --color-link-hex: #09e;
+  --color-mnemonic-bg-hex: #043652;
   --color-inline-kbd-hex: #083;
   --color-border-hex: #555;
   --color-deck-hex: #444;
@@ -15,7 +16,7 @@
 
   --length-content-inline-inset-rem: 1rem;
   --length-pre-code-block-padding-rem: 1rem;
-  --length-pre-code-hljs-down-nudge: 0.2rem;
+  --length-pre-code-hljs-down-nudge: 0.25rem;
   --length-chip-padding-inline-rem: 0.3rem;
   --length-section-block-margin-rem: 1rem;
   --length-list-item-margin-block-rem: 0.5rem;
@@ -31,12 +32,12 @@
 
   font-size: smaller;
   position: relative;
-  vertical-align: 0.3px; // MAGIC NUMBER
+  vertical-align: 0.4px; // MAGIC NUMBER
 
   border-radius: var(--length-code-border-radius-rem);
-  background-color: var(--color-code-bg2-hex);
+  background-color: var(--color-code-bg-hex);
   padding: var(--block) var(--inline);
-  margin-inline: calc(var(--inline) / -1.5);
+  margin-inline: calc(var(--inline) / -2);
   z-index: -1; // #1
 
   &:first-child {

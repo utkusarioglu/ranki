@@ -803,8 +803,29 @@ export class Parser {
 
     return itemsWithTags;
   }
-  _parseCodeKinds(group: ParserGroupFrame) {
+
+  _replaceStringsOnly(group: ParserGroupFrame) {
     return group.lines.map((line) => this._replaceStrings(line));
+  }
+
+  /**
+   * @dev
+   * #1 This algo doesn't group `<strong>` items, it just pops them side by
+   * side. If this function becomes more consequential, then this algorithm can
+   * be switched with one that checks if the previous char is also strong.
+   */
+  _parseMnemonicGroup(group: ParserGroupFrame) {
+    const line = this._replaceStrings(group.lines.join(" - "));
+    let parsed = "";
+    for (const char of line) {
+      const charCode = char.charCodeAt(0);
+      if (charCode > 64 && charCode < 91) {
+        parsed += `<strong>${char}</strong>`; // #1
+      } else {
+        parsed += char;
+      }
+    }
+    return [parsed];
   }
 
   /**
@@ -813,6 +834,12 @@ export class Parser {
    * share the same logic
    */
   _parseFrameGroup(group: ParserGroupFrame): ParserKindFrame {
+    const singleLineOnly = (group: ParserGroupFrame, kind: string) => {
+      if (group.lines.length > 1) {
+        throw new Error(`${kind} frames cannot have more than 1 line`);
+      }
+    };
+
     const kind = group.tags.join(" ");
     switch (kind) {
       case "ignore":
@@ -824,23 +851,14 @@ export class Parser {
 
       // #1
       case "code":
-        if (group.lines.length > 1) {
-          throw new Error("Code frames cannot have more than 1 line");
-        }
-      // return {
-      //   ...group,
-      //   kind,
-      //   // content: group.lines,
-      //   content: this._parseCodeKinds(group),
-      // };
+        singleLineOnly(group, kind);
 
       case "pre":
       case "pre code":
         return {
           ...group,
           kind,
-          // content: group.lines,
-          content: this._parseCodeKinds(group),
+          content: this._replaceStringsOnly(group),
         };
 
       case "ul":
@@ -864,6 +882,18 @@ export class Parser {
           kind,
           content: this._parseTableFrameGroup(group),
         };
+
+      case "mnemonic":
+        singleLineOnly(group, kind);
+        return {
+          ...group,
+          kind,
+          content: this._parseMnemonicGroup(group),
+        };
+
+      case "output":
+      case "note":
+      case "path":
 
       default:
         throw new Error(`Unknown frame type: ${kind}`);

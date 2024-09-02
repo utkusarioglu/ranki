@@ -25,6 +25,7 @@ import type {
   ParserKindFrameCode,
   ParserKindFrameDl,
   ParserKindFrameList,
+  ParserKindFrameMnemonic,
   ParserKindFramePreCode,
   ParserKindFrameTable,
   ParserKindHeading,
@@ -52,18 +53,25 @@ const CLASSES = {
   hudTagContainer: "ranki ranki-hud-tag-container",
 
   renderedIndicator: "ranki-rendered",
-  preCodeLanguageLabel: "ranki-pre-code-language-label",
+
+  fencedFrame: "ranki-fenced-frame",
+  fencedFrameTagContainer: "ranki-fenced-frame-tag-container",
+  fencedFrameTag: "ranki-fenced-frame-tag",
+  fencedFrameHasTags: "ranki-fenced-frame-has-tags",
+  // fencedFrameTagContainer: "ranki-fenced-frame-tag-container",
 
   errorContainer: "ranki-global-error",
   errorMessage: "ranki-global-error error-message",
   errorStack: "ranki-global-error error-trace",
 
   codeLanguageAbsent: "ranki-code-language-absent",
-  codeLanguageAvailable: "ranki-code-language-available",
+  // fencedFrameHasTags: "ranki-code-language-available",
   codeLanguageAliasRegistered: "ranki-code-language-alias-registered",
   codeLanguageAliasUnregistered: "ranki-code-language-alias-unregistered",
+
   codeFrame: "ranki-code-frame",
   codeInline: "ranki-code-inline",
+  mnemonicFrame: "ranki-mnemonic-frame",
 };
 
 export class Dom {
@@ -322,7 +330,7 @@ export class Dom {
     // if (language) {
     const html = hljs.highlight(content, { language: hljsName }).value;
     const className = [
-      CLASSES.codeLanguageAvailable,
+      CLASSES.fencedFrameHasTags,
       found
         ? "ranki-code-language-alias-registered"
         : "ranki-code-language-alias-unregistered",
@@ -474,19 +482,57 @@ export class Dom {
         className: renderedCode.className,
       },
       root: {
-        className: renderedCode.className,
+        className: [CLASSES.fencedFrame, renderedCode.className].join(" "),
       },
     });
 
-    if (languageAlias) {
-      const langLabelElem = this._createElement("span", {
-        format: "text",
-        content: renderedCode.displayName,
-        className: CLASSES.preCodeLanguageLabel,
-      });
-      root.appendChild(langLabelElem);
+    if (group.params.length) {
+      root.appendChild(
+        this._renderFencedFrameTags([
+          renderedCode.displayName,
+          ...group.params.slice(1),
+        ]),
+      );
     }
 
+    return root;
+  }
+
+  _renderFencedFrameTags(tags: string[]) {
+    return this._createElement("div", {
+      className: CLASSES.fencedFrameTagContainer,
+      children: tags.map((tag) =>
+        this._createElement("span", {
+          format: "text",
+          content: tag,
+          className: CLASSES.fencedFrameTag,
+        }),
+      ),
+    });
+  }
+
+  _renderMnemonic(group: ParserKindFrameMnemonic): HTMLElement {
+    const MNEMONIC_DEVICE_STRING = "Mnemonic Device";
+
+    const { root } = this._createElementChain(["div", "span"], {
+      leaf: {
+        format: "html",
+        content: group.content[0],
+        // className: renderedCode.className,
+      },
+      root: {
+        className: [
+          CLASSES.fencedFrame,
+          CLASSES.fencedFrameHasTags,
+          CLASSES.mnemonicFrame,
+        ].join(" "),
+      },
+    });
+
+    root.appendChild(
+      this._renderFencedFrameTags([MNEMONIC_DEVICE_STRING, ...group.params]),
+    );
+    // return code;
     return root;
   }
 
@@ -625,6 +671,9 @@ export class Dom {
 
       case "table":
         return this._renderTable(group);
+
+      case "mnemonic":
+        return this._renderMnemonic(group);
 
       default:
         throw new Error(
