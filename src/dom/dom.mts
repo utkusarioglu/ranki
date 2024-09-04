@@ -4,6 +4,7 @@ import { hljsDefineTerraform } from "../hljs/terraform.js";
 import { hljsDefineSolidity } from "../hljs/solidity/solidity.js";
 import { hljsDefineYul } from "../hljs/solidity/yul.js";
 import { hljsDefineSuperCollider } from "../hljs/supercollider.js";
+import { getMathjaxSvg } from "./mathjax.mts";
 
 import { ContentControl } from "../content-control/content-control.mts";
 import type {
@@ -24,6 +25,7 @@ import type {
   ParserKindFrame,
   ParserKindFrameCode,
   ParserKindFrameDl,
+  ParserKindFrameLatex,
   ParserKindFrameList,
   ParserKindFrameMnemonic,
   ParserKindFramePreCode,
@@ -58,20 +60,20 @@ const CLASSES = {
   fencedFrameTagContainer: "ranki-fenced-frame-tag-container",
   fencedFrameTag: "ranki-fenced-frame-tag",
   fencedFrameHasTags: "ranki-fenced-frame-has-tags",
-  // fencedFrameTagContainer: "ranki-fenced-frame-tag-container",
 
   errorContainer: "ranki-global-error",
   errorMessage: "ranki-global-error error-message",
   errorStack: "ranki-global-error error-trace",
 
   codeLanguageAbsent: "ranki-code-language-absent",
-  // fencedFrameHasTags: "ranki-code-language-available",
   codeLanguageAliasRegistered: "ranki-code-language-alias-registered",
   codeLanguageAliasUnregistered: "ranki-code-language-alias-unregistered",
 
   codeFrame: "ranki-code-frame",
   codeInline: "ranki-code-inline",
   mnemonicFrame: "ranki-mnemonic-frame",
+  latexFrame: "ranki-latex-frame",
+  latexLineNumber: "ranki-latex-line-number",
 };
 
 export class Dom {
@@ -326,8 +328,6 @@ export class Dom {
 
     const { displayName, hljsName, found } =
       this.content.codeAlias(languageAlias);
-    // const language = content.params[0];
-    // if (language) {
     const html = hljs.highlight(content, { language: hljsName }).value;
     const className = [
       CLASSES.fencedFrameHasTags,
@@ -342,8 +342,6 @@ export class Dom {
       highlighted: false,
       className,
     };
-    // className = "ranki-inline-frame-code";
-    // }
   }
 
   _renderPartFrame(part: ParserPartFlavorFrame): HTMLElement {
@@ -354,13 +352,13 @@ export class Dom {
     switch (tagsJoined) {
       case "code":
         const languageAlias = part.content.params[0];
-        // if (languageAlias) {
-        //   content = hljs.highlight(content, { language: languageAlias }).value;
-        //   className = "ranki-inline-frame-code";
-        // }
         const renderedCode = this._renderHljs(content, languageAlias);
         content = renderedCode.html;
         className = [CLASSES.codeInline, renderedCode.className].join(" ");
+        break;
+
+      case "latex":
+        content = getMathjaxSvg(content, { scale: 0.8 });
         break;
 
       default:
@@ -532,7 +530,7 @@ export class Dom {
     root.appendChild(
       this._renderFencedFrameTags([MNEMONIC_DEVICE_STRING, ...group.params]),
     );
-    // return code;
+
     return root;
   }
 
@@ -648,6 +646,33 @@ export class Dom {
     return table;
   }
 
+  _renderLatex(group: ParserKindFrameLatex) {
+    const mathLines = group.content.map((line) => getMathjaxSvg(line));
+    const mathDivs = mathLines.map((content, i) => {
+      const lineNumber = this._createElement("span", {
+        format: "text",
+        content: "(" + (i + 1).toString() + ")",
+        className: CLASSES.latexLineNumber,
+      });
+
+      const mathLine = this._createElement("div", {
+        format: "html",
+        content,
+        style: "position: relative;",
+      });
+
+      mathLine.appendChild(lineNumber);
+      return mathLine;
+    });
+
+    const container = this._createElement("div", {
+      className: CLASSES.latexFrame,
+      format: "html",
+      children: mathDivs,
+    });
+    return container;
+  }
+
   _renderFrameKind(group: ParserKindFrame): HTMLElement {
     switch (group.kind) {
       case "ignore":
@@ -674,6 +699,9 @@ export class Dom {
 
       case "mnemonic":
         return this._renderMnemonic(group);
+
+      case "latex":
+        return this._renderLatex(group);
 
       default:
         throw new Error(

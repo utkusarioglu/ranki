@@ -32,6 +32,7 @@ const RAW_RUNTIME_STATE =
           ["highlight.js", "npm:11.10.0"],\
           ["jest", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:29.7.0"],\
           ["jest-config", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:29.7.0"],\
+          ["mathjax-full", "npm:3.2.2"],\
           ["sass", "npm:1.77.8"],\
           ["ts-jest", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:29.2.5"],\
           ["ts-jest-resolver", "npm:2.0.1"],\
@@ -2355,6 +2356,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["commander", [\
+      ["npm:9.2.0", {\
+        "packageLocation": "../home/node/.yarn/berry/cache/commander-npm-9.2.0-57c5b6c2ff-10c0.zip/node_modules/commander/",\
+        "packageDependencies": [\
+          ["commander", "npm:9.2.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["concat-map", [\
       ["npm:0.0.1", {\
         "packageLocation": "../home/node/.yarn/berry/cache/concat-map-npm-0.0.1-85a921b7ee-10c0.zip/node_modules/concat-map/",\
@@ -2617,6 +2627,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/node/.yarn/berry/cache/escape-string-regexp-npm-2.0.0-aef69d2a25-10c0.zip/node_modules/escape-string-regexp/",\
         "packageDependencies": [\
           ["escape-string-regexp", "npm:2.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["esm", [\
+      ["npm:3.2.25", {\
+        "packageLocation": "../home/node/.yarn/berry/cache/esm-npm-3.2.25-762b3ebd40-10c0.zip/node_modules/esm/",\
+        "packageDependencies": [\
+          ["esm", "npm:3.2.25"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -3943,11 +3962,33 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["mathjax-full", [\
+      ["npm:3.2.2", {\
+        "packageLocation": "../home/node/.yarn/berry/cache/mathjax-full-npm-3.2.2-211c89f732-10c0.zip/node_modules/mathjax-full/",\
+        "packageDependencies": [\
+          ["mathjax-full", "npm:3.2.2"],\
+          ["esm", "npm:3.2.25"],\
+          ["mhchemparser", "npm:4.2.1"],\
+          ["mj-context-menu", "npm:0.6.1"],\
+          ["speech-rule-engine", "npm:4.0.7"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["merge-stream", [\
       ["npm:2.0.0", {\
         "packageLocation": "../home/node/.yarn/berry/cache/merge-stream-npm-2.0.0-2ac83efea5-10c0.zip/node_modules/merge-stream/",\
         "packageDependencies": [\
           ["merge-stream", "npm:2.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["mhchemparser", [\
+      ["npm:4.2.1", {\
+        "packageLocation": "../home/node/.yarn/berry/cache/mhchemparser-npm-4.2.1-86768cf6a7-10c0.zip/node_modules/mhchemparser/",\
+        "packageDependencies": [\
+          ["mhchemparser", "npm:4.2.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -4082,6 +4123,15 @@ const RAW_RUNTIME_STATE =
           ["minizlib", "npm:2.1.2"],\
           ["minipass", "npm:3.3.6"],\
           ["yallist", "npm:4.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["mj-context-menu", [\
+      ["npm:0.6.1", {\
+        "packageLocation": "../home/node/.yarn/berry/cache/mj-context-menu-npm-0.6.1-fbd0b269a2-10c0.zip/node_modules/mj-context-menu/",\
+        "packageDependencies": [\
+          ["mj-context-menu", "npm:0.6.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -4548,6 +4598,7 @@ const RAW_RUNTIME_STATE =
           ["highlight.js", "npm:11.10.0"],\
           ["jest", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:29.7.0"],\
           ["jest-config", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:29.7.0"],\
+          ["mathjax-full", "npm:3.2.2"],\
           ["sass", "npm:1.77.8"],\
           ["ts-jest", "virtual:dc3fc578bfa5e06182a4d2be39ede0bc5b74940b1ffe0d70c26892ab140a4699787750fba175dc306292e80b4aa2c8c5f68c2a821e69b2c37e360c0dff36ff66#npm:29.2.5"],\
           ["ts-jest-resolver", "npm:2.0.1"],\
@@ -4704,6 +4755,18 @@ const RAW_RUNTIME_STATE =
           ["source-map-support", "npm:0.5.13"],\
           ["buffer-from", "npm:1.1.2"],\
           ["source-map", "npm:0.6.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["speech-rule-engine", [\
+      ["npm:4.0.7", {\
+        "packageLocation": "../home/node/.yarn/berry/cache/speech-rule-engine-npm-4.0.7-8ac5f89291-10c0.zip/node_modules/speech-rule-engine/",\
+        "packageDependencies": [\
+          ["speech-rule-engine", "npm:4.0.7"],\
+          ["commander", "npm:9.2.0"],\
+          ["wicked-good-xpath", "npm:1.3.0"],\
+          ["xmldom-sre", "npm:0.1.31"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -5149,6 +5212,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["wicked-good-xpath", [\
+      ["npm:1.3.0", {\
+        "packageLocation": "../home/node/.yarn/berry/cache/wicked-good-xpath-npm-1.3.0-754ac723af-10c0.zip/node_modules/wicked-good-xpath/",\
+        "packageDependencies": [\
+          ["wicked-good-xpath", "npm:1.3.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["wrap-ansi", [\
       ["npm:7.0.0", {\
         "packageLocation": "../home/node/.yarn/berry/cache/wrap-ansi-npm-7.0.0-ad6e1a0554-10c0.zip/node_modules/wrap-ansi/",\
@@ -5187,6 +5259,15 @@ const RAW_RUNTIME_STATE =
           ["write-file-atomic", "npm:4.0.2"],\
           ["imurmurhash", "npm:0.1.4"],\
           ["signal-exit", "npm:3.0.7"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["xmldom-sre", [\
+      ["npm:0.1.31", {\
+        "packageLocation": "../home/node/.yarn/berry/cache/xmldom-sre-npm-0.1.31-2caf569f49-10c0.zip/node_modules/xmldom-sre/",\
+        "packageDependencies": [\
+          ["xmldom-sre", "npm:0.1.31"]\
         ],\
         "linkType": "HARD"\
       }]\

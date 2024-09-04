@@ -141,6 +141,11 @@ export interface ParserKindFrameCode extends ParserGroupFrameCommon {
   content: string[];
 }
 
+export interface ParserKindFrameLatex extends ParserGroupFrameCommon {
+  kind: "latex";
+  content: string[];
+}
+
 export interface ParserKindFrameMnemonic extends ParserGroupFrameCommon {
   kind: "mnemonic";
   content: string[];
@@ -184,6 +189,7 @@ type ParserGroupFrame = ParserGroupCommon &
 export type ParserKindText = ParserKindParagraph | ParserKindHeading;
 
 export type ParserKindFrame =
+  | ParserKindFrameLatex
   | ParserKindFrameCode
   | ParserKindFrameMnemonic
   | ParserKindFramePreCode

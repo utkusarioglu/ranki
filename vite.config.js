@@ -22,7 +22,7 @@ export default defineConfig({
             copyFileSync(source, target);
             console.log(["Copied:", source, "to", target].join(" "));
           }
-        }, 1000);
+        }, 2000);
       }
     }
   ],
@@ -46,4 +46,7 @@ export default defineConfig({
       }
     }
   },
+  optimizeDeps: {
+    include: ['mathjax-full/js/mathjax.js', 'mathjax-full/js/input/tex.js', 'mathjax-full/js/output/svg.js']
+  }
 });

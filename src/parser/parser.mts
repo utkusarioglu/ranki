@@ -891,6 +891,13 @@ export class Parser {
           content: this._parseMnemonicGroup(group),
         };
 
+      case "latex":
+        return {
+          ...group,
+          kind,
+          content: this._replaceStringsOnly(group),
+        };
+
       case "output":
       case "note":
       case "path":

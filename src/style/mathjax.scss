@@ -1,0 +1,36 @@
+.ranki-latex-frame {
+  margin-bottom: 1.4rem;
+
+  svg {
+    scale: 0.95;
+  }
+
+  & > div {
+    margin-bottom: 0.8rem;
+  }
+
+  & > div > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+p latex > svg {
+  scale: 0.95;
+
+  :not(.mobile) & {
+    vertical-align: -0.3rem !important;
+  }
+
+  .mobile & {
+    vertical-align: -0.31rem !important;
+  }
+}
+
+.ranki-latex-line-number {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  translate: 0 -50%;
+  color: var(--color-text-dim-hex);
+  font-size: smaller;
+}
