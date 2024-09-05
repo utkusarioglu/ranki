@@ -11,4 +11,6 @@ export type Note = {
 export type DestinationNodes = {
   osc: OscillatorNode;
   gain: GainNode;
+  startTime: number;
+  duration: number;
 };

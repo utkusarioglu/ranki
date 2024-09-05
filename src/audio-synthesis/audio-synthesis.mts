@@ -13,11 +13,11 @@ export class AudioSynthesis {
     .fill(this.base)
     .map((f, i) => f * 2 ** (i / 12));
 
-  constructor(notes: Note[]) {
-    this.constructMulti(notes);
+  constructor(notes: Note[], duration: number) {
+    this.constructMulti(notes, duration);
   }
 
-  private constructMulti(notes: Note[]) {
+  private constructMulti(notes: Note[], duration: number) {
     if (!this.context) {
       this.context = new window.AudioContext();
     }
@@ -32,6 +32,7 @@ export class AudioSynthesis {
         note.waveform,
         this.equal[note.step],
         note.amplitude / amplitudeTotal,
+        duration,
       );
     });
   }
@@ -41,22 +42,42 @@ export class AudioSynthesis {
     waveform: Waveform,
     freq: number,
     amplitude: Amplitude,
+    duration: number,
   ) {
     console.log({ waveform, freq, amplitude });
     const osc = this.context.createOscillator();
     const gain = this.context.createGain();
     osc.type = waveform;
     osc.frequency.setValueAtTime(freq, this.context.currentTime);
-    gain.gain.setValueAtTime(amplitude, this.context.currentTime);
 
     osc.connect(gain);
     gain.connect(this.context.destination);
-    this.nodes.push({ osc, gain });
+
+    const attackTime = 0.02;
+    const decayTime = 0.1;
+    const sustainLevel = 0.7;
+    const startTime = this.context.currentTime + 0.1;
+
+    gain.gain.linearRampToValueAtTime(0, startTime);
+    gain.gain.linearRampToValueAtTime(amplitude, startTime + attackTime);
+    gain.gain.linearRampToValueAtTime(
+      sustainLevel * amplitude,
+      startTime + attackTime + decayTime,
+    );
+    gain.gain.linearRampToValueAtTime(0, startTime + duration);
+
+    this.nodes.push({
+      osc,
+      gain,
+      startTime,
+      duration,
+    });
   }
 
   play() {
-    console.log("playing...", this.equal);
-    this.nodes.forEach((osc) => osc.osc.start());
+    this.nodes.forEach((node) => {
+      node.osc.start(node.startTime);
+    });
   }
 
   stop() {

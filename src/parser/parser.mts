@@ -262,7 +262,7 @@ export class Parser {
 
     for (let li = 0; li < group.lines.length; li++) {
       // #2
-      const line = group.lines[li];
+      const line = this._replaceStrings(group.lines[li]);
       const trimmed = line.trim();
 
       const headingIndex = trimmed.indexOf(tokens.heading);

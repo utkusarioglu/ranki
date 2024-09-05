@@ -678,37 +678,50 @@ export class Dom {
   }
 
   _renderAudioSynthesis(group: ParserKindFrameAudioSynthesis) {
-    console.log(group);
     let as: AudioSynthesis | undefined;
     let stopButton: HTMLElement;
     let playButton: HTMLElement;
+    const duration = 2;
+    let timeoutTicket: number;
 
-    stopButton = this._createElement("button", {
-      format: "text",
-      content: "Stop",
-      className: CLASSES.buttonActive,
-    });
-    stopButton.addEventListener("click", () => {
+    const playAction = () => {
+      if (!as) {
+        // @ts-expect-error
+        as = new AudioSynthesis(group.content, 2);
+        playButton.classList.add(CLASSES.buttonActive);
+        stopButton.classList.remove(CLASSES.buttonActive);
+        as.play();
+      }
+
+      timeoutTicket = setTimeout(() => {
+        stopAction();
+      }, duration * 1000 + 100);
+    };
+
+    const stopAction = () => {
+      if (timeoutTicket) {
+        clearTimeout(timeoutTicket);
+      }
       if (as) {
         as.stop();
         as = undefined;
         stopButton.classList.add(CLASSES.buttonActive);
         playButton.classList.remove(CLASSES.buttonActive);
       }
+    };
+
+    stopButton = this._createElement("button", {
+      format: "text",
+      content: "Stop",
+      className: CLASSES.buttonActive,
     });
+    stopButton.addEventListener("click", () => stopAction());
 
     playButton = this._createElement("button", {
       format: "text",
       content: "Play",
     });
-    playButton.addEventListener("click", () => {
-      if (!as) {
-        as = new AudioSynthesis(group.content);
-        playButton.classList.add(CLASSES.buttonActive);
-        stopButton.classList.remove(CLASSES.buttonActive);
-        as.play();
-      }
-    });
+    playButton.addEventListener("click", () => playAction());
 
     const container = this._createElement("div", {
       children: [playButton, stopButton],
