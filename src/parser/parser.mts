@@ -828,6 +828,26 @@ export class Parser {
     return [parsed];
   }
 
+  _parseAsGroup(group: ParserGroupFrame) {
+    const tokens = this.ranki.tokens;
+    const defaults = this.ranki.audioSynthesis.defaults;
+    const parseNote = (line: string) => {
+      const params = line.split(tokens.parameter).map((param) => param.trim());
+      const step = parseInt(params[0]);
+      const amplitude =
+        params[1] !== undefined ? parseFloat(params[1]) : defaults.amplitude;
+      const waveform = params[2] || defaults.waveform;
+
+      return {
+        step,
+        waveform,
+        amplitude,
+      };
+    };
+
+    return group.lines.map((line) => parseNote(line));
+  }
+
   /**
    * @dev
    * #1 This case falls through. this is intentional, pre code, pre and code
@@ -847,6 +867,13 @@ export class Parser {
           ...group,
           kind,
           content: group.lines.join("\n"),
+        };
+
+      case "as":
+        return {
+          ...group,
+          kind,
+          content: this._parseAsGroup(group),
         };
 
       // #1

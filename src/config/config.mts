@@ -37,7 +37,16 @@ export const rankiDefaults: RankiDefaults = {
   replacements: [
     ["&lt;", "<"],
     ["&gt;", ">"],
+    ["<p>", ""],
+    ["</p>", ""],
   ],
+
+  audioSynthesis: {
+    defaults: {
+      waveform: "sine",
+      amplitude: 1,
+    },
+  },
 
   aliases: {
     code: {
@@ -116,7 +125,7 @@ export const rankiDefaults: RankiDefaults = {
         displayName: "HTML",
       },
       ini: {
-        list: ["ini", "toml"],
+        list: ["ini", "toml", "conf"],
         displayName: "INI",
       },
       json: {

@@ -1,0 +1,15 @@
+button {
+  background: red;
+}
+
+button:hover {
+  background: blue;
+}
+
+button.ranki-button-active {
+  background: pink;
+}
+
+button:hover.ranki-button-active {
+  background: green;
+}

@@ -16,5 +16,6 @@
     "exactOptionalPropertyTypes": true,
     "noEmitOnError": true
   },
-  "include": ["src/main.mts"]
+  "include": ["src/main.mts"],
+  "exclude": ["node_modules", "build", "dist", "lib"]
 }

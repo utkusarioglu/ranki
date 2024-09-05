@@ -1,5 +1,6 @@
 // @ts-expect-error: For some reason ts doesn't see the types for hljs
 import hljs from "highlight.js";
+import { AudioSynthesis } from "../audio-synthesis/audio-synthesis.mts";
 import { hljsDefineTerraform } from "../hljs/terraform.js";
 import { hljsDefineSolidity } from "../hljs/solidity/solidity.js";
 import { hljsDefineYul } from "../hljs/solidity/yul.js";
@@ -23,6 +24,7 @@ import type {
   ParserField,
   ParserKind,
   ParserKindFrame,
+  ParserKindFrameAudioSynthesis,
   ParserKindFrameCode,
   ParserKindFrameDl,
   ParserKindFrameLatex,
@@ -74,6 +76,8 @@ const CLASSES = {
   mnemonicFrame: "ranki-mnemonic-frame",
   latexFrame: "ranki-latex-frame",
   latexLineNumber: "ranki-latex-line-number",
+
+  buttonActive: "ranki-button-active",
 };
 
 export class Dom {
@@ -673,6 +677,46 @@ export class Dom {
     return container;
   }
 
+  _renderAudioSynthesis(group: ParserKindFrameAudioSynthesis) {
+    console.log(group);
+    let as: AudioSynthesis | undefined;
+    let stopButton: HTMLElement;
+    let playButton: HTMLElement;
+
+    stopButton = this._createElement("button", {
+      format: "text",
+      content: "Stop",
+      className: CLASSES.buttonActive,
+    });
+    stopButton.addEventListener("click", () => {
+      if (as) {
+        as.stop();
+        as = undefined;
+        stopButton.classList.add(CLASSES.buttonActive);
+        playButton.classList.remove(CLASSES.buttonActive);
+      }
+    });
+
+    playButton = this._createElement("button", {
+      format: "text",
+      content: "Play",
+    });
+    playButton.addEventListener("click", () => {
+      if (!as) {
+        as = new AudioSynthesis(group.content);
+        playButton.classList.add(CLASSES.buttonActive);
+        stopButton.classList.remove(CLASSES.buttonActive);
+        as.play();
+      }
+    });
+
+    const container = this._createElement("div", {
+      children: [playButton, stopButton],
+    });
+
+    return container;
+  }
+
   _renderFrameKind(group: ParserKindFrame): HTMLElement {
     switch (group.kind) {
       case "ignore":
@@ -680,6 +724,9 @@ export class Dom {
           format: "html",
           content: group.content,
         });
+
+      case "as":
+        return this._renderAudioSynthesis(group);
 
       case "code":
         return this._renderCode(group);

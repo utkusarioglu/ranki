@@ -1,4 +1,8 @@
 import type { RankiContent } from "../types/ranki-content.d.mts";
+import type {
+  Waveform,
+  Amplitude,
+} from "../audio-synthesis/audio-synthesis.types.mts";
 
 export interface RankiTokens {
   cardTypesPrefix: string;
@@ -46,6 +50,13 @@ export interface RankiAliases {
 
 type Replacement = [string, string];
 
+export interface AudioSynthesis {
+  defaults: {
+    waveform: Waveform;
+    amplitude: Amplitude;
+  };
+}
+
 export interface WindowRankiConfig {
   version: "v1";
   tokens: RankiTokens;
@@ -54,9 +65,10 @@ export interface WindowRankiConfig {
   replacements: Replacement[];
   card: RankiCard;
   content: RankiContent;
+  audioSynthesis: AudioSynthesis;
 }
 
 export type RankiDefaults = Pick<
   WindowRankiConfig,
-  "features" | "tokens" | "aliases" | "replacements"
+  "features" | "tokens" | "aliases" | "replacements" | "audioSynthesis"
 >;

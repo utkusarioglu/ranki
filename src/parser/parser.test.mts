@@ -167,12 +167,31 @@ describe("Frame without ending", () => {
         },
       });
       const parsed = parser.parseFields([{ name: "F" }]);
-      console.log(content);
-      console.log(JSON.stringify(parsed, null, 2));
+
       expect(parsed.length).toBe(1);
       expect(parsed[0].list[0].type).toBe("frame");
       expect(parsed[0].list[0].kind).toBe("ignore");
       expect(parsed[0].list[0].content).toBe(content.join("\n"));
     });
+  });
+});
+
+describe.only("as", () => {
+  it("happy", () => {
+    const content = ["something"];
+    const frame = [":::as", ...content, ":::"].join("\n");
+    const parser = new Parser({
+      ...rankiConfig,
+      content: {
+        // @ts-ignore
+        F: frame,
+      },
+    });
+    const parsed = parser.parseFields([{ name: "F" }]);
+    console.log(content);
+    expect(parsed.length).toBe(1);
+    expect(parsed[0].list[0].type).toBe("frame");
+    expect(parsed[0].list[0].kind).toBe("as");
+    // expect(parsed[0].list[0].content).toBe(content.join("\n"));
   });
 });
