@@ -30,7 +30,7 @@ import type {
   ListItemsRaw,
   ListItemsComplete,
   TableHeaderOrData,
-} from "../types/parser.mjs";
+} from "./parser.types.mts";
 
 /**
  * @dev
@@ -214,7 +214,7 @@ export class Parser {
    * #1 Type `FieldName` needs to be reevaluated once more card types are
    * introduced.
    */
-  _parseField(field: FieldList): ParserGroup[] {
+  _parseFieldAsGroup(field: FieldList): ParserGroup[] {
     const fieldName = field.name;
     // @ts-ignore: #1
     const fieldContent: string = this.ranki.content[fieldName];
@@ -907,7 +907,7 @@ export class Parser {
     }
   }
 
-  _parseGroups(groups: ParserGroup[]): ParserKind[] {
+  _parseGroupsAsKinds(groups: ParserGroup[]): ParserKind[] {
     const ast: ParserKind[] = [];
     for (let gi = 0; gi < groups.length; gi++) {
       const group = groups[gi];
@@ -936,10 +936,10 @@ export class Parser {
 
   parseFields(fields: CollectionRenderFields): ParserField[] {
     return fields.map((field) => {
-      const groups = this._parseField(field);
+      const groups = this._parseFieldAsGroup(field);
       return {
         field: field,
-        list: this._parseGroups(groups),
+        list: this._parseGroupsAsKinds(groups),
       };
     });
   }

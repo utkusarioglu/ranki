@@ -14,8 +14,7 @@
     "esModuleInterop": true,
     "verbatimModuleSyntax": true,
     "exactOptionalPropertyTypes": true,
-    "noEmitOnError": true,
-    "types": ["jest", "node", "mathjax"]
+    "noEmitOnError": true
   },
   "include": ["src/main.mts"]
 }

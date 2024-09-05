@@ -2,7 +2,7 @@ type WithIsComplete = {
   isComplete: boolean;
 };
 
-import type { FieldList } from "./collection.d.mts";
+import type { FieldList } from "../types/collection.d.mts";
 
 export type Tags = string[];
 
@@ -178,7 +178,7 @@ interface ParserGroupText extends ParserGroupCommon {
   type: "text";
 }
 
-type ParserGroupFrame = ParserGroupCommon &
+export type ParserGroupFrame = ParserGroupCommon &
   WithIsComplete & {
     type: "frame";
     tags: Tags;

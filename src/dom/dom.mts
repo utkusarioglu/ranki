@@ -38,7 +38,7 @@ import type {
   ParserPartFlavorPlain,
   TableHeaderOrData,
   Tags,
-} from "../types/parser.mjs";
+} from "../parser/parser.types.mts";
 
 hljs.registerLanguage("terraform", hljsDefineTerraform);
 hljs.registerLanguage("solidity", hljsDefineSolidity);
