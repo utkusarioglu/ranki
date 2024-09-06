@@ -142,7 +142,7 @@ export interface ParserKindFrameCode extends ParserGroupFrameCommon {
 }
 
 export interface ParserKindFrameAudioSynthesis extends ParserGroupFrameCommon {
-  kind: "as";
+  kind: "synth";
   content: string[];
 }
 

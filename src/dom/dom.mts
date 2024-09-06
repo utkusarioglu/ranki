@@ -78,6 +78,9 @@ const CLASSES = {
   latexLineNumber: "ranki-latex-line-number",
 
   buttonActive: "ranki-button-active",
+  synthPlayer: "ranki-synth-player",
+  synthStopButton: "ranki-synth-stop-button",
+  synthPlayButton: "ranki-synth-play-button",
 
   pathInline: "ranki-path-inline",
 
@@ -712,7 +715,7 @@ export class Dom {
 
       timeoutTicket = setTimeout(() => {
         stopAction();
-      }, duration * 1000 + 100);
+      }, duration * 1000);
     };
 
     const stopAction = () => {
@@ -728,21 +731,33 @@ export class Dom {
     };
 
     stopButton = this._createElement("button", {
-      format: "text",
-      content: "Stop",
-      className: CLASSES.buttonActive,
+      className: CLASSES.synthStopButton,
+      children: [
+        this._createElement("span", {
+          format: "text",
+          content: "■",
+        }),
+      ],
     });
     stopButton.addEventListener("click", () => stopAction());
 
     playButton = this._createElement("button", {
-      format: "text",
-      content: "Play",
+      className: CLASSES.synthPlayButton,
+      children: [
+        this._createElement("span", {
+          format: "text",
+          content: "▶",
+        }),
+      ],
     });
     playButton.addEventListener("click", () => playAction());
 
     const container = this._createElement("div", {
       children: [playButton, stopButton],
+      className: CLASSES.synthPlayer,
     });
+
+    playAction();
 
     return container;
   }
@@ -755,7 +770,7 @@ export class Dom {
           content: group.content,
         });
 
-      case "as":
+      case "synth":
         return this._renderAudioSynthesis(group);
 
       case "code":

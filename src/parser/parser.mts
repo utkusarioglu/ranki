@@ -828,7 +828,7 @@ export class Parser {
     return [parsed];
   }
 
-  _parseAsGroup(group: ParserGroupFrame) {
+  _parseAudioSynthesisGroup(group: ParserGroupFrame) {
     const tokens = this.ranki.tokens;
     const defaults = this.ranki.audioSynthesis.defaults;
     const parseNote = (line: string) => {
@@ -836,16 +836,42 @@ export class Parser {
       const step = parseInt(params[0]);
       const amplitude =
         params[1] !== undefined ? parseFloat(params[1]) : defaults.amplitude;
-      const waveform = params[2] || defaults.waveform;
+      const duration = parseFloat(params[2]) || defaults.duration;
+      const waveform = params[3] || defaults.waveform;
 
       return {
         step,
         waveform,
         amplitude,
+        duration,
       };
     };
 
-    return group.lines.map((line) => parseNote(line));
+    const parseLine = (line: string) => {
+      const trimmed = line.trim();
+      if (!trimmed.length) {
+        return null;
+      }
+
+      const split = trimmed.split(tokens.assignment);
+      if (split.length < 2) {
+        throw new Error(`Unparsable content: ${trimmed}`);
+      }
+
+      const timestamp = split[0];
+      const notesStr = split[1].split(tokens.terminator);
+      const notes = notesStr.map(parseNote);
+
+      return {
+        notes,
+        timestamp,
+      };
+    };
+
+    return group.lines.filter((v) => v !== null).map(parseLine);
+    // return group.lines
+    //   .map((line) => line.split(";").map((inner) => parseNote(inner)))
+    //   .flat();
   }
 
   /**
@@ -869,11 +895,11 @@ export class Parser {
           content: group.lines.join("\n"),
         };
 
-      case "as":
+      case "synth":
         return {
           ...group,
           kind,
-          content: this._parseAsGroup(group),
+          content: this._parseAudioSynthesisGroup(group),
         };
 
       // #1

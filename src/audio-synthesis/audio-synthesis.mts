@@ -13,8 +13,10 @@ export class AudioSynthesis {
     .fill(this.base)
     .map((f, i) => f * 2 ** (i / 12));
 
-  constructor(notes: Note[], duration: number) {
-    this.constructMulti(notes, duration);
+  constructor(notes: Note[][], duration: number) {
+    console.log(notes);
+    // @ts-expect-error
+    this.constructMulti(notes[0].notes, duration);
   }
 
   private constructMulti(notes: Note[], duration: number) {
@@ -44,7 +46,6 @@ export class AudioSynthesis {
     amplitude: Amplitude,
     duration: number,
   ) {
-    console.log({ waveform, freq, amplitude });
     const osc = this.context.createOscillator();
     const gain = this.context.createGain();
     osc.type = waveform;
@@ -81,18 +82,31 @@ export class AudioSynthesis {
   }
 
   stop() {
-    this.nodes.forEach((node) => {
-      node.osc.stop();
-      node.osc.disconnect(node.gain);
-      node.gain.disconnect(this.context.destination);
-      // @ts-expect-error
-      delete node.gain;
-      // @ts-expect-error
-      delete node.osc;
-    });
+    const fadeOut = 400;
+    const context = this.context;
 
-    this.context
-      .close()
+    Promise.all(
+      this.nodes.map(
+        (node) =>
+          new Promise<void>((resolve) => {
+            node.gain.gain.linearRampToValueAtTime(
+              0,
+              context.currentTime + fadeOut / 1000,
+            );
+            setTimeout(() => {
+              node.osc.stop();
+              node.osc.disconnect(node.gain);
+              node.gain.disconnect(context.destination);
+              // @ts-expect-error
+              delete node.gain;
+              // @ts-expect-error
+              delete node.osc;
+              resolve();
+            }, fadeOut);
+          }),
+      ),
+    )
+      .then(() => this.context.close())
       .then(() => console.log("closed"))
       .catch(() => console.log("fail during close"));
   }

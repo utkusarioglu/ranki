@@ -1,11 +1,10 @@
+import { getRanki } from "./config/config.mts";
 import { Dom } from "./dom/dom.mts";
-import type { CustomWindow } from "./types/window.d.mts";
-
-declare var window: CustomWindow;
 
 function globalErrorHandler(e: ErrorEvent) {
   e.preventDefault();
-  const dom = new Dom(document.body, window.ranki);
+  const ranki = getRanki();
+  const dom = new Dom(document.body, ranki);
   dom.renderError(e.error.message, e.error.stack);
   console.error(e);
 }

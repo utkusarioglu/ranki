@@ -49,6 +49,7 @@ const rankiDefaults: RankiDefaults = {
     defaults: {
       waveform: "sine",
       amplitude: 1,
+      duration: 1,
     },
   },
 
@@ -206,8 +207,8 @@ const rankiDefaults: RankiDefaults = {
 };
 
 export function getRanki(): WindowRankiConfig {
-  return {
+  return Object.freeze({
     ...rankiDefaults,
     ...window.ranki,
-  };
+  });
 }

@@ -54,6 +54,7 @@ export interface AudioSynthesis {
   defaults: {
     waveform: Waveform;
     amplitude: Amplitude;
+    duration: number;
   };
 }
 
