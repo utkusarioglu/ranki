@@ -78,6 +78,10 @@ const CLASSES = {
   latexLineNumber: "ranki-latex-line-number",
 
   buttonActive: "ranki-button-active",
+
+  pathInline: "ranki-path-inline",
+
+  urlInline: "ranki-url-inline",
 };
 
 export class Dom {
@@ -352,6 +356,7 @@ export class Dom {
     const tagsJoined = part.content.tags.join(" ");
     let content = part.content.lines.join("\n");
     let className = "";
+    let tags: string[];
 
     switch (tagsJoined) {
       case "code":
@@ -359,17 +364,29 @@ export class Dom {
         const renderedCode = this._renderHljs(content, languageAlias);
         content = renderedCode.html;
         className = [CLASSES.codeInline, renderedCode.className].join(" ");
+        tags = ["code"];
         break;
 
       case "latex":
         content = getMathjaxSvg(content, { scale: 0.8 });
+        tags = ["span"];
+        break;
+
+      case "path":
+        className = CLASSES.pathInline;
+        tags = ["code"];
+        break;
+
+      case "url":
+        className = CLASSES.urlInline;
+        tags = ["code"];
         break;
 
       default:
         throw new Error(`Unrecognized inline frame tag: ${tagsJoined}`);
     }
 
-    const { root } = this._createElementChain(part.content.tags, {
+    const { root } = this._createElementChain(tags, {
       leaf: {
         format: "html",
         content,

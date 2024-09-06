@@ -14,17 +14,17 @@
   }
 }
 
-p latex > svg {
-  scale: 0.95;
+// p latex > svg {
+//   scale: 0.95;
 
-  :not(.mobile) & {
-    vertical-align: -0.3rem !important;
-  }
+//   :not(.mobile) & {
+//     vertical-align: -0.3rem !important;
+//   }
 
-  .mobile & {
-    vertical-align: -0.31rem !important;
-  }
-}
+//   .mobile & {
+//     vertical-align: -0.31rem !important;
+//   }
+// }
 
 .ranki-latex-line-number {
   position: absolute;

@@ -37,6 +37,7 @@ export const rankiDefaults: RankiDefaults = {
   replacements: [
     ["&lt;", "<"],
     ["&gt;", ">"],
+    ["&amp;", "&"],
     ["<p>", ""],
     ["</p>", ""],
   ],

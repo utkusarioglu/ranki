@@ -93,3 +93,11 @@ div.ranki-code-frame {
     padding: 0.3rem 0.8rem;
   }
 }
+
+code.ranki-path-inline {
+  color: var(--color-inline-path-hex);
+}
+
+code.ranki-url-inline {
+  color: var(--color-inline-url-hex);
+}
