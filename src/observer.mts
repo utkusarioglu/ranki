@@ -1,8 +1,9 @@
 import { Dom } from "./dom/dom.mts";
 import { Collection } from "./collection.mts";
-import { type Parser } from "./parser/parser.mts";
+import { Parser } from "./parser/parser.mts";
 import type { CardFaces } from "./types/ranki.d.mts";
 import type { WindowRankiConfig } from "./config/config.d.mjs";
+import { getRanki } from "./config/config.mts";
 
 /**
  * Anki behaves differently on different platforms. In some, it rerenders the
@@ -16,38 +17,41 @@ import type { WindowRankiConfig } from "./config/config.d.mjs";
  */
 export class Observer {
   private faceSelector: string;
-  private parser: Parser;
-  private ranki: WindowRankiConfig;
+  // private parser: Parser;
+  // private ranki: WindowRankiConfig;
 
-  constructor(faceSelector: string, parser: Parser, ranki: WindowRankiConfig) {
+  constructor(faceSelector: string) {
     if (!faceSelector) {
       throw new Error("Observer requires face selector");
     }
 
-    if (!parser) {
-      throw new Error("Observer requires `parser`");
-    }
+    // if (!parser) {
+    //   throw new Error("Observer requires `parser`");
+    // }
 
-    if (!ranki) {
-      throw new Error("Observer requires `ranki`");
-    }
+    // if (!ranki) {
+    //   throw new Error("Observer requires `ranki`");
+    // }
 
     this.faceSelector = faceSelector;
-    this.parser = parser;
-    this.ranki = ranki;
+    // this.parser = parser;
+    // this.ranki = ranki;
   }
 
   _checkAndProcessFace(faceName: CardFaces, faceElem: Element) {
-    const dom = new Dom(faceElem, this.ranki);
+    const ranki = getRanki();
+    const dom = new Dom(faceElem, ranki);
     if (!dom.hasFaceRendered()) {
-      const fields = Collection.getFields(faceName, this.ranki);
-      const parsed = this.parser.parseFields(fields);
+      const parser = new Parser(ranki);
+      const fields = Collection.getFields(faceName, ranki);
+      const parsed = parser.parseFields(fields);
       dom.renderFace(parsed);
     }
   }
 
   _processHud() {
-    const dom = new Dom(document.body, this.ranki);
+    const ranki = getRanki();
+    const dom = new Dom(document.body, ranki);
     dom.renderHud();
   }
 

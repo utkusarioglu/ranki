@@ -1,24 +1,12 @@
 import "./style/main.scss";
 import "./error-handling.mts";
-import type { CustomWindow } from "./types/window.d.mts";
+import { getRanki } from "./config/config.mts";
 import type { RankiRequiredProps } from "./types/ranki.d.mts";
-import type { WindowRankiConfig } from "./config/config.d.mjs";
 import { Observer } from "./observer.mts";
 import { Parser } from "./parser/parser.mts";
-import { rankiDefaults } from "./config/config.mts";
 
-declare var window: CustomWindow;
-
-window.ranki = {
-  ...rankiDefaults,
-  ...window.ranki,
-};
-
-function checkParams(ranki: WindowRankiConfig) {
-  if (!ranki) {
-    throw new Error("`window.ranki` is not defined");
-  }
-
+function checkParams() {
+  const ranki = getRanki();
   const REQUIRED_RANKI_PROPS: RankiRequiredProps[] = [
     "version",
     "features",
@@ -35,11 +23,11 @@ function checkParams(ranki: WindowRankiConfig) {
   }
 }
 
-function main(ranki: WindowRankiConfig) {
-  checkParams(ranki);
+function main() {
+  checkParams();
 
-  const parser = new Parser(ranki);
-  new Observer("div.ranki-root", parser, ranki).observe();
+  // const parser = new Parser(ranki);
+  new Observer("div.ranki-root").observe();
 }
 
-main(window.ranki);
+main();

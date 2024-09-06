@@ -1,6 +1,9 @@
-import type { RankiDefaults } from "./config.d.mjs";
+import type { RankiDefaults, WindowRankiConfig } from "./config.d.mjs";
+import type { CustomWindow } from "../types/window.d.mts";
 
-export const rankiDefaults: RankiDefaults = {
+declare var window: CustomWindow;
+
+const rankiDefaults: RankiDefaults = {
   features: {},
   tokens: {
     cardTypesPrefix: "+Ranki-",
@@ -201,3 +204,10 @@ export const rankiDefaults: RankiDefaults = {
     },
   },
 };
+
+export function getRanki(): WindowRankiConfig {
+  return {
+    ...rankiDefaults,
+    ...window.ranki,
+  };
+}
