@@ -3,6 +3,6 @@
  */
 export type CollectionRenderFields = FieldList[];
 
-interface FieldList {
+export interface FieldList {
   name: string;
 }

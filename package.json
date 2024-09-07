@@ -9,6 +9,7 @@
     "clean-target": "scripts/clean-target.sh"
   },
   "devDependencies": {
+    "@chevrotain/regexp-to-ast": "^11.0.3",
     "@types/jest": "^29.5.12",
     "@types/node": "^22.5.1",
     "jest": "^29.7.0",
@@ -17,10 +18,13 @@
     "ts-jest": "^29.2.4",
     "ts-jest-resolver": "^2.0.1",
     "typescript": "^5.5.4",
-    "vite": "^5.4.1"
+    "vite": "^5.4.1",
+    "vscode-jsonrpc": "^8.2.1",
+    "vscode-languageserver-types": "^3.17.5"
   },
   "dependencies": {
     "highlight.js": "^11.10.0",
-    "mathjax-full": "^3.2.2"
+    "mathjax-full": "^3.2.2",
+    "mermaid": "^11.1.1"
   }
 }

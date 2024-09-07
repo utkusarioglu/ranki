@@ -141,6 +141,11 @@ export interface ParserKindFrameCode extends ParserGroupFrameCommon {
   content: string[];
 }
 
+export interface ParserKindFrameMermaid extends ParserGroupFrameCommon {
+  kind: "mermaid";
+  content: string[];
+}
+
 export interface ParserKindFrameAudioSynthesis extends ParserGroupFrameCommon {
   kind: "synth";
   content: string[];
@@ -196,6 +201,7 @@ export type ParserKindText = ParserKindParagraph | ParserKindHeading;
 export type ParserKindFrame =
   | ParserKindFrameLatex
   | ParserKindFrameCode
+  | ParserKindFrameMermaid
   | ParserKindFrameMnemonic
   | ParserKindFramePreCode
   | ParserKindFramePre

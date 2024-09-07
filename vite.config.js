@@ -17,12 +17,16 @@ export default defineConfig({
         {
           const files = readdirSync(outDir, { withFileTypes: true });
           for (const file of files) {
+            if (!file.name.startsWith("_ranki")) {
+              console.error("Non ranki files have been created:", file.name);
+              return;
+            }
             const source = join(outDir, file.name);
             const target = join(targetDir, file.name);
             copyFileSync(source, target);
             console.log(["Copied:", source, "to", target].join(" "));
           }
-        }, 2000);
+        }, 5000);
       }
     }
   ],
@@ -35,7 +39,7 @@ export default defineConfig({
       },
       output: {
         entryFileNames: '_ranki.js',  // The name of your output bundle
-        format: 'es',                 // Use 'es' for modern output, or 'iife' for self-contained
+        format: "iife",                 // Use 'es' for modern output, or 'iife' for self-contained
         assetFileNames: (assetInfo) =>
         {
           if (assetInfo.name.endsWith("css")) {

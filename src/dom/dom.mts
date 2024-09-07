@@ -1,5 +1,7 @@
 // @ts-expect-error: For some reason ts doesn't see the types for hljs
 import hljs from "highlight.js";
+// @ts-expect-error: For some reason ts doesn't see the types for hljs
+import mermaid from "mermaid";
 import { AudioSynthesis } from "../audio-synthesis/audio-synthesis.mts";
 import { hljsDefineTerraform } from "../hljs/terraform.js";
 import { hljsDefineSolidity } from "../hljs/solidity/solidity.js";
@@ -29,6 +31,7 @@ import type {
   ParserKindFrameDl,
   ParserKindFrameLatex,
   ParserKindFrameList,
+  ParserKindFrameMermaid,
   ParserKindFrameMnemonic,
   ParserKindFramePreCode,
   ParserKindFrameTable,
@@ -762,38 +765,63 @@ export class Dom {
     return container;
   }
 
-  _renderFrameKind(group: ParserKindFrame): HTMLElement {
+  async _renderMermaid(group: ParserKindFrameMermaid): Promise<HTMLElement> {
+    // console.log(group);
+    // const content = `
+    //   graph TD;
+    //     A-->B;
+    //     A-->C;
+    //     B-->D;
+    //     C-->D;
+    // `;
+    const content = group.content.join("\n");
+    mermaid.initialize({ startOnLoad: false });
+    const { svg } = await mermaid.render("generatedGraph", content);
+    const container = this._createElement("div", {
+      format: "html",
+      content: svg,
+    });
+    return container;
+  }
+
+  _renderFrameKind(group: ParserKindFrame): Promise<HTMLElement> {
+    // return this._renderMermaid();
     switch (group.kind) {
       case "ignore":
-        return this._createElement("div", {
-          format: "html",
-          content: group.content,
-        });
+        return Promise.resolve(
+          this._createElement("div", {
+            format: "html",
+            content: group.content,
+          }),
+        );
+
+      case "mermaid":
+        return this._renderMermaid(group);
 
       case "synth":
-        return this._renderAudioSynthesis(group);
+        return Promise.resolve(this._renderAudioSynthesis(group));
 
       case "code":
-        return this._renderCode(group);
+        return Promise.resolve(this._renderCode(group));
 
       case "pre code":
-        return this._renderPreCode(group);
+        return Promise.resolve(this._renderPreCode(group));
 
       case "ol":
       case "ul":
-        return this._renderUl(group, group.kind);
+        return Promise.resolve(this._renderUl(group, group.kind));
 
       case "dl":
-        return this._renderDl(group);
+        return Promise.resolve(this._renderDl(group));
 
       case "table":
-        return this._renderTable(group);
+        return Promise.resolve(this._renderTable(group));
 
       case "mnemonic":
-        return this._renderMnemonic(group);
+        return Promise.resolve(this._renderMnemonic(group));
 
       case "latex":
-        return this._renderLatex(group);
+        return Promise.resolve(this._renderLatex(group));
 
       default:
         throw new Error(
@@ -805,10 +833,10 @@ export class Dom {
     }
   }
 
-  _renderGroup(group: ParserKind): HTMLElement {
+  _renderGroup(group: ParserKind): Promise<HTMLElement> {
     switch (group.type) {
       case "text":
-        return this._renderTextKind(group);
+        return Promise.resolve(this._renderTextKind(group));
 
       case "frame":
         return this._renderFrameKind(group);
@@ -829,8 +857,8 @@ export class Dom {
         className: section.field.name,
       });
 
-      section.list.forEach((group) => {
-        const g = this._renderGroup(group);
+      section.list.forEach(async (group) => {
+        const g = await this._renderGroup(group);
         if (g) {
           container.appendChild(g);
         }

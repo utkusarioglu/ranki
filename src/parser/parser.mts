@@ -892,10 +892,11 @@ export class Parser {
     };
 
     return group.lines.filter((v) => v !== null).map(parseLine);
-    // return group.lines
-    //   .map((line) => line.split(";").map((inner) => parseNote(inner)))
-    //   .flat();
   }
+
+  // _parseMermaidFrameGroup(group: ParserGroupFrame) {
+  //   return group.lines;
+  // }
 
   /**
    * @dev
@@ -923,6 +924,14 @@ export class Parser {
           ...group,
           kind,
           content: this._parseAudioSynthesisGroup(group),
+        };
+
+      case "mermaid":
+        return {
+          ...group,
+          kind,
+          // content: this._parseMermaidFrameGroup(group),
+          content: this._replaceStringsOnly(group),
         };
 
       // #1
