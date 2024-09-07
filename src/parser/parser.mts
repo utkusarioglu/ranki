@@ -654,13 +654,25 @@ export class Parser {
     return parsedTable;
   }
 
+  /**
+   * @dev
+   * #1 If the list only has one `li` element, the algo will go back to parse
+   * each line as a separate list item. This is done with the assumption that
+   * lists will have multiple items. Switching to line-by-line parse helps with
+   * having to include a `- ` list item token for every item in the list. If
+   * this assumption doesn't hold, this feature SHOULD be revisited.
+   */
   _parseListFrameGroup(group: ParserGroup): ParserKindFrameListContent[] {
     const tokens = this.ranki.tokens;
     let tag: Tags = ["li"];
 
     const itemsRaw: ListItemsRaw[] = [];
-    for (const line of group.lines.map((l) => this._replaceStrings(l))) {
-      const trimmed = line.trim();
+    const replaced = group.lines
+      .map((l) => this._replaceStrings(l))
+      .map((line) => ({ line, trimmed: line.trim() }));
+
+    for (const { line, trimmed } of replaced) {
+      // const trimmed = line.trim();
       const isEmpty = trimmed === "";
       const isComment = trimmed.startsWith(tokens.comment);
 
@@ -714,6 +726,17 @@ export class Parser {
         const prev = itemsRaw.at(-1);
         prev?.lines.push({
           raw: trimmed,
+        });
+      }
+    }
+
+    // #1
+    if (itemsRaw.length == 1) {
+      const first = itemsRaw.pop();
+      for (const line of first!.lines) {
+        itemsRaw.push({
+          isComplete: true,
+          lines: [line],
         });
       }
     }
