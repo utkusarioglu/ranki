@@ -12,12 +12,12 @@ import type {
   RankiCard,
   RankiTokens,
   WindowRankiConfig,
-} from "../config/config.d.mjs";
+} from "../config/config.types.mts";
 import type {
   CreateElementChainOptions,
   CreateElementChainReturn,
   CreateElementOptions,
-} from "./dom.d.mjs";
+} from "./dom.types.mts";
 import type {
   HeadingContent,
   ParagraphContent,

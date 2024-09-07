@@ -1,4 +1,4 @@
-import type { RankiAliases } from "../config/config.d.mjs";
+import type { RankiAliases } from "../config/config.types.mts";
 
 interface ContentControlCodeAssignment {
   hljsName: string;

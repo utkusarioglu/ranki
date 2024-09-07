@@ -1,8 +1,8 @@
 import { Dom } from "./dom/dom.mts";
 import { Collection } from "./collection.mts";
 import { Parser } from "./parser/parser.mts";
-import type { CardFaces } from "./types/ranki.d.mts";
-import type { WindowRankiConfig } from "./config/config.d.mjs";
+import type { CardFaces } from "./types/ranki.types.mts";
+import type { WindowRankiConfig } from "./config/config.types.mts";
 import { getRanki } from "./config/config.mts";
 
 /**

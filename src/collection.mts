@@ -1,6 +1,5 @@
-import type { CardFaces } from "./types/ranki.d.mts";
-import type { WindowRankiConfig } from "./config/config.d.mjs";
-import type { CollectionRenderFields } from "./types/collection.d.mts";
+import type { WindowRankiConfig, CardFaces } from "./config/config.types.mts";
+import type { CollectionRenderFields } from "./types/collection.types.mts";
 
 const common = {
   questionStartPre: {

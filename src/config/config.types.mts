@@ -1,4 +1,4 @@
-import type { RankiContent } from "../types/ranki-content.d.mts";
+import type { RankiContent } from "../types/ranki-content.types.mts";
 import type {
   Waveform,
   Amplitude,

@@ -1,8 +1,8 @@
 import type {
   CollectionRenderFields,
   FieldList,
-} from "../types/collection.mjs";
-import type { WindowRankiConfig } from "../config/config.d.mjs";
+} from "../types/collection.types.mts";
+import type { WindowRankiConfig } from "../config/config.types.mts";
 import type {
   ParserPartWoContent,
   ParserField,

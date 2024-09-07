@@ -1,5 +1,11 @@
-import type { RankiDefaults, WindowRankiConfig } from "./config.d.mjs";
-import type { CustomWindow } from "../types/window.d.mts";
+import type { RankiDefaults, WindowRankiConfig } from "./config.types.mts";
+export interface CustomWindow extends Window {
+  ranki: WindowRankiConfig;
+}
+
+export type RankiRequiredProps = "version" | "features" | "card" | "content";
+
+export type CardFaces = "front" | "back";
 
 declare var window: CustomWindow;
 

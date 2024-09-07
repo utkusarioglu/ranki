@@ -2,7 +2,7 @@ type WithIsComplete = {
   isComplete: boolean;
 };
 
-import type { FieldList } from "../types/collection.d.mts";
+import type { FieldList } from "../types/collection.types.mts";
 
 export type Tags = string[];
 

@@ -1,9 +1,8 @@
 import "./style/main.scss";
 import "./error-handling.mts";
 import { getRanki } from "./config/config.mts";
-import type { RankiRequiredProps } from "./types/ranki.d.mts";
+import type { RankiRequiredProps } from "./config/config.types.mts";
 import { Observer } from "./observer.mts";
-import { Parser } from "./parser/parser.mts";
 
 function checkParams() {
   const ranki = getRanki();
@@ -26,7 +25,6 @@ function checkParams() {
 function main() {
   checkParams();
 
-  // const parser = new Parser(ranki);
   new Observer("div.ranki-root").observe();
 }
 
