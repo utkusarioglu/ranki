@@ -1,7 +1,5 @@
 // @ts-expect-error: For some reason ts doesn't see the types for hljs
 import hljs from "highlight.js";
-// @ts-expect-error: For some reason ts doesn't see the types for hljs
-import mermaid from "mermaid";
 import { AudioSynthesis } from "../audio-synthesis/audio-synthesis.mts";
 import { hljsDefineTerraform } from "../hljs/terraform.js";
 import { hljsDefineSolidity } from "../hljs/solidity/solidity.js";
@@ -11,6 +9,8 @@ import { getMathjaxSvg } from "./mathjax.mts";
 
 import { ContentControl } from "../content-control/content-control.mts";
 import type {
+  CardFaces,
+  MermaidConfig,
   RankiCard,
   RankiTokens,
   WindowRankiConfig,
@@ -88,6 +88,8 @@ const CLASSES = {
   pathInline: "ranki-path-inline",
 
   urlInline: "ranki-url-inline",
+
+  graphContainer: "ranki-graph-container",
 };
 
 export class Dom {
@@ -95,11 +97,16 @@ export class Dom {
   private tokens: RankiTokens;
   private card: RankiCard;
   private content: ContentControl;
+  private mermaid: MermaidConfig;
 
-  constructor(parent: Element, { tokens, card, aliases }: WindowRankiConfig) {
+  constructor(
+    parent: Element,
+    { tokens, card, aliases, mermaid }: WindowRankiConfig,
+  ) {
     this.parent = parent;
     this.tokens = tokens;
     this.card = card;
+    this.mermaid = mermaid;
     this.content = new ContentControl(aliases);
   }
 
@@ -673,7 +680,10 @@ export class Dom {
     return table;
   }
 
-  _renderLatex(group: ParserKindFrameLatex) {
+  async _renderLatex(group: ParserKindFrameLatex) {
+    const { getMathjaxSvg } = await import(
+      /* webpackChunkName: "_ranki_mathjax" */ "./mathjax.mts"
+    );
     const mathLines = group.content.map((line) => getMathjaxSvg(line));
     const mathDivs = mathLines.map((content, i) => {
       const lineNumber = this._createElement("span", {
@@ -765,27 +775,31 @@ export class Dom {
     return container;
   }
 
-  async _renderMermaid(group: ParserKindFrameMermaid): Promise<HTMLElement> {
-    // console.log(group);
-    // const content = `
-    //   graph TD;
-    //     A-->B;
-    //     A-->C;
-    //     B-->D;
-    //     C-->D;
-    // `;
+  async _renderMermaid(
+    faceName: CardFaces,
+    groupIndex: number,
+    group: ParserKindFrameMermaid,
+  ): Promise<HTMLElement> {
+    const { default: mermaid } = await import(
+      // @ts-expect-error
+      /* webpackChunkName: "_ranki_mermaid" */ "mermaid"
+    );
     const content = group.content.join("\n");
-    mermaid.initialize({ startOnLoad: false });
-    const { svg } = await mermaid.render("generatedGraph", content);
+    mermaid.initialize({ startOnLoad: false, ...this.mermaid });
+    const { svg } = await mermaid.render(`${faceName}-${groupIndex}`, content);
     const container = this._createElement("div", {
       format: "html",
       content: svg,
+      className: CLASSES.graphContainer,
     });
     return container;
   }
 
-  _renderFrameKind(group: ParserKindFrame): Promise<HTMLElement> {
-    // return this._renderMermaid();
+  _renderFrameKind(
+    faceName: CardFaces,
+    groupIndex: number,
+    group: ParserKindFrame,
+  ): Promise<HTMLElement> {
     switch (group.kind) {
       case "ignore":
         return Promise.resolve(
@@ -796,7 +810,7 @@ export class Dom {
         );
 
       case "mermaid":
-        return this._renderMermaid(group);
+        return this._renderMermaid(faceName, groupIndex, group);
 
       case "synth":
         return Promise.resolve(this._renderAudioSynthesis(group));
@@ -821,7 +835,7 @@ export class Dom {
         return Promise.resolve(this._renderMnemonic(group));
 
       case "latex":
-        return Promise.resolve(this._renderLatex(group));
+        return this._renderLatex(group);
 
       default:
         throw new Error(
@@ -833,13 +847,17 @@ export class Dom {
     }
   }
 
-  _renderGroup(group: ParserKind): Promise<HTMLElement> {
+  _renderGroup(
+    faceName: CardFaces,
+    groupIndex: number,
+    group: ParserKind,
+  ): Promise<HTMLElement> {
     switch (group.type) {
       case "text":
         return Promise.resolve(this._renderTextKind(group));
 
       case "frame":
-        return this._renderFrameKind(group);
+        return this._renderFrameKind(faceName, groupIndex, group);
 
       default:
         throw new Error(
@@ -850,15 +868,15 @@ export class Dom {
     }
   }
 
-  renderFace(sections: ParserField[]): void {
+  renderFace(faceName: CardFaces, sections: ParserField[]): void {
     const renders = [];
     for (const section of sections) {
       const container = this._createElement("section", {
         className: section.field.name,
       });
 
-      section.list.forEach(async (group) => {
-        const g = await this._renderGroup(group);
+      section.list.forEach(async (group, groupIndex) => {
+        const g = await this._renderGroup(faceName, groupIndex, group);
         if (g) {
           container.appendChild(g);
         }

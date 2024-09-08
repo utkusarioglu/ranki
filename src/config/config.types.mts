@@ -4,6 +4,10 @@ import type {
   Amplitude,
 } from "../audio-synthesis/audio-synthesis.types.mts";
 
+export type RankiRequiredProps = "version" | "features" | "card" | "content";
+
+export type CardFaces = "front" | "back";
+
 export interface RankiTokens {
   cardTypesPrefix: string;
   frame: string;
@@ -58,6 +62,11 @@ export interface AudioSynthesis {
   };
 }
 
+export interface MermaidConfig {
+  theme: string;
+  themeVariables: Record<string, any>;
+}
+
 export interface WindowRankiConfig {
   version: "v1";
   tokens: RankiTokens;
@@ -67,9 +76,15 @@ export interface WindowRankiConfig {
   card: RankiCard;
   content: RankiContent;
   audioSynthesis: AudioSynthesis;
+  mermaid: MermaidConfig;
 }
 
 export type RankiDefaults = Pick<
   WindowRankiConfig,
-  "features" | "tokens" | "aliases" | "replacements" | "audioSynthesis"
+  | "features"
+  | "tokens"
+  | "aliases"
+  | "replacements"
+  | "audioSynthesis"
+  | "mermaid"
 >;

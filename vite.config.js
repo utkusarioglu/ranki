@@ -26,7 +26,7 @@ export default defineConfig({
             copyFileSync(source, target);
             console.log(["Copied:", source, "to", target].join(" "));
           }
-        }, 5000);
+        }, 3000);
       }
     }
   ],
@@ -38,8 +38,18 @@ export default defineConfig({
         main: resolve(__dirname, 'src/main.mts'),  // Adjust the entry point as needed
       },
       output: {
+        inlineDynamicImports: false,
+        manualChunks: (id) =>
+        {
+          if (id.includes("mermaid") || id.includes("katex")) {
+            return "_ranki_mermaid";
+          } else if (id.includes("mathjax.mts")) {
+            return "_ranki_mathjax";
+          }
+        },
         entryFileNames: '_ranki.js',  // The name of your output bundle
-        format: "iife",                 // Use 'es' for modern output, or 'iife' for self-contained
+        chunkFileNames: "[name].js",
+        format: "es",                 // Use 'es' for modern output, or 'iife' for self-contained
         assetFileNames: (assetInfo) =>
         {
           if (assetInfo.name.endsWith("css")) {

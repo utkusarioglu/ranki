@@ -3,10 +3,6 @@ export interface CustomWindow extends Window {
   ranki: WindowRankiConfig;
 }
 
-export type RankiRequiredProps = "version" | "features" | "card" | "content";
-
-export type CardFaces = "front" | "back";
-
 declare var window: CustomWindow;
 
 const rankiDefaults: RankiDefaults = {
@@ -56,6 +52,20 @@ const rankiDefaults: RankiDefaults = {
       waveform: "sine",
       amplitude: 1,
       duration: 1,
+    },
+  },
+
+  mermaid: {
+    theme: "base",
+    themeVariables: {
+      // primaryColor: "#BB2528",
+      primaryColor: "#444",
+      // primaryTextColor: "#fff",
+      primaryTextColor: "#ddd",
+      primaryBorderColor: "#7C0000",
+      lineColor: "#F8B229",
+      secondaryColor: "#006100",
+      tertiaryColor: "#fff",
     },
   },
 

@@ -923,6 +923,7 @@ export class Parser {
         return {
           ...group,
           kind,
+          // @ts-expect-error
           content: this._parseAudioSynthesisGroup(group),
         };
 

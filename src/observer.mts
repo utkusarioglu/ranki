@@ -1,8 +1,7 @@
 import { Dom } from "./dom/dom.mts";
 import { Collection } from "./collection.mts";
 import { Parser } from "./parser/parser.mts";
-import type { CardFaces } from "./types/ranki.types.mts";
-import type { WindowRankiConfig } from "./config/config.types.mts";
+import type { CardFaces } from "./config/config.types.mts";
 import { getRanki } from "./config/config.mts";
 
 /**
@@ -17,25 +16,12 @@ import { getRanki } from "./config/config.mts";
  */
 export class Observer {
   private faceSelector: string;
-  // private parser: Parser;
-  // private ranki: WindowRankiConfig;
 
   constructor(faceSelector: string) {
     if (!faceSelector) {
       throw new Error("Observer requires face selector");
     }
-
-    // if (!parser) {
-    //   throw new Error("Observer requires `parser`");
-    // }
-
-    // if (!ranki) {
-    //   throw new Error("Observer requires `ranki`");
-    // }
-
     this.faceSelector = faceSelector;
-    // this.parser = parser;
-    // this.ranki = ranki;
   }
 
   _checkAndProcessFace(faceName: CardFaces, faceElem: Element) {
@@ -45,7 +31,7 @@ export class Observer {
       const parser = new Parser(ranki);
       const fields = Collection.getFields(faceName, ranki);
       const parsed = parser.parseFields(fields);
-      dom.renderFace(parsed);
+      dom.renderFace(faceName, parsed);
     }
   }
 
