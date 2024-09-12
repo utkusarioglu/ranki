@@ -12,6 +12,7 @@ import type {
   CardFaces,
   MermaidConfig,
   RankiCard,
+  RankiCode,
   RankiTokens,
   WindowRankiConfig,
 } from "../config/config.types.mts";
@@ -98,16 +99,18 @@ export class Dom {
   private card: RankiCard;
   private content: ContentControl;
   private mermaid: MermaidConfig;
+  private code: RankiCode;
 
   constructor(
     parent: Element,
-    { tokens, card, aliases, mermaid }: WindowRankiConfig,
+    { tokens, card, code, mermaid }: WindowRankiConfig,
   ) {
     this.parent = parent;
     this.tokens = tokens;
     this.card = card;
     this.mermaid = mermaid;
-    this.content = new ContentControl(aliases);
+    this.code = code;
+    this.content = new ContentControl(code);
   }
 
   _assignElementContent(
@@ -349,7 +352,9 @@ export class Dom {
 
     const { displayName, hljsName, found } =
       this.content.codeAlias(languageAlias);
-    const html = hljs.highlight(content, { language: hljsName }).value;
+    const html = hljs.highlight(content, {
+      language: hljsName,
+    }).value;
     const className = [
       CLASSES.fencedFrameHasTags,
       found
@@ -503,9 +508,18 @@ export class Dom {
   }
 
   _renderPreCode(group: ParserKindFramePreCode): HTMLElement {
+    const replaceAnkiClozeSpan = (joined: string) => {
+      return this.code.replacements.reduce((a2, r) => {
+        const match = [...a2.matchAll(r)];
+        return match.reduce((a1, c) => {
+          return a1.replace(c[0], c[1]);
+        }, joined);
+      }, joined);
+    };
     const languageAlias = group.params[0];
     const joined = group.content.join("\n");
-    const renderedCode = this._renderHljs(joined, languageAlias);
+    const replaced = replaceAnkiClozeSpan(joined);
+    const renderedCode = this._renderHljs(replaced, languageAlias);
 
     const { root } = this._createElementChain(group.tags, {
       leaf: {
@@ -544,7 +558,7 @@ export class Dom {
   }
 
   _renderMnemonic(group: ParserKindFrameMnemonic): HTMLElement {
-    const MNEMONIC_DEVICE_STRING = "Mnemonic Device";
+    const MNEMONIC_DEVICE_STRING = "Mnemonic";
 
     const { root } = this._createElementChain(["div", "span"], {
       leaf: {

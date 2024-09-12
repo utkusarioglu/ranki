@@ -5,6 +5,11 @@ export interface CustomWindow extends Window {
 
 declare var window: CustomWindow;
 
+/**
+ * @dev
+ * #1 For the removal of cloze span element that anki places. Hljs does not
+ * offer the option to ignore the element, so it needs to be removed.
+ */
 const rankiDefaults: RankiDefaults = {
   features: {},
   tokens: {
@@ -45,6 +50,10 @@ const rankiDefaults: RankiDefaults = {
     ["&amp;", "&"],
     ["<p>", ""],
     ["</p>", ""],
+    // #1
+    // [/<span[\w\s=-\d\."]*>/g, ""],
+    // // [/<span class="cloze".*?>/g, ""],
+    // ["</span>", ""],
   ],
 
   audioSynthesis: {
@@ -58,6 +67,7 @@ const rankiDefaults: RankiDefaults = {
   mermaid: {
     theme: "base",
     themeVariables: {
+      // fontSize: "8px",
       // primaryColor: "#BB2528",
       primaryColor: "#444",
       // primaryTextColor: "#fff",
@@ -69,8 +79,12 @@ const rankiDefaults: RankiDefaults = {
     },
   },
 
-  aliases: {
-    code: {
+  code: {
+    replacements: [
+      //#1
+      /<span\s+[^>]*class=["']cloze["'][^>]*>(.*?)<\/span>/g,
+    ],
+    aliases: {
       autohotkey: {
         list: ["autohotkey", "ahk"],
         displayName: "AutoHotkey",

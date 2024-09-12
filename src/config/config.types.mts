@@ -48,11 +48,12 @@ interface RankiCodeAlias {
   displayName: string;
 }
 
-export interface RankiAliases {
-  code: Record<string, RankiCodeAlias>;
+export interface RankiCode {
+  aliases: Record<string, RankiCodeAlias>;
+  replacements: RegExp[];
 }
 
-type Replacement = [string, string];
+type Replacement = [string | RegExp, string];
 
 export interface AudioSynthesis {
   defaults: {
@@ -70,7 +71,7 @@ export interface MermaidConfig {
 export interface WindowRankiConfig {
   version: "v1";
   tokens: RankiTokens;
-  aliases: RankiAliases;
+  code: RankiCode;
   features: RankiFeatures;
   replacements: Replacement[];
   card: RankiCard;
@@ -81,10 +82,5 @@ export interface WindowRankiConfig {
 
 export type RankiDefaults = Pick<
   WindowRankiConfig,
-  | "features"
-  | "tokens"
-  | "aliases"
-  | "replacements"
-  | "audioSynthesis"
-  | "mermaid"
+  "features" | "tokens" | "code" | "replacements" | "audioSynthesis" | "mermaid"
 >;

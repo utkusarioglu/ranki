@@ -1,4 +1,4 @@
-import type { RankiAliases } from "../config/config.types.mts";
+import type { RankiCode } from "../config/config.types.mts";
 
 interface ContentControlCodeAssignment {
   hljsName: string;
@@ -14,13 +14,13 @@ type AssignmentsMap = Map<string, ContentControlCodeAssignment>;
 export class ContentControl {
   private assignments: AssignmentsMap;
 
-  constructor(aliases: RankiAliases) {
+  constructor(aliases: RankiCode) {
     this.assignments = this._computeAssignments(aliases);
   }
 
-  private _computeAssignments(aliases: RankiAliases): AssignmentsMap {
+  private _computeAssignments(aliases: RankiCode): AssignmentsMap {
     const assignments = new Map();
-    Object.entries(aliases.code).forEach(
+    Object.entries(aliases.aliases).forEach(
       ([hljsName, { list, displayName }]) => {
         list.forEach((alias) => {
           const lowercase = alias.toLowerCase();
