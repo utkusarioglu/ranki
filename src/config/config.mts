@@ -81,12 +81,12 @@ const rankiDefaults: RankiDefaults = {
 
   flagAssignments: {
     flag1: "Faulty Information",
-    flag2: "Study Further",
-    flag3: "Needs Expansion",
+    flag2: "Out of Scope",
+    flag3: "Needs Elaboration",
     flag4: "Possibly Outdated",
-    flag5: "Ranki Issue",
-    flag6: "Out of Scope",
-    flag7: "Too Broad",
+    flag5: "Rendering Issue",
+    flag6: "Too Extensive",
+    flag7: "Poor Wording/Formatting",
   },
 
   code: {

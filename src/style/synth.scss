@@ -7,12 +7,12 @@
 
     & > .ranki-synth-stop-button {
       background: var(--color-synth-stop-button-active-hex);
-      color: var(--color-text-hex);
+      color: var(--color-heading-hex);
     }
   }
 
   button {
-    color: var(--color-heading-hex);
+    color: var(--color-heading2-hex);
     margin: 0;
     border-radius: 0;
     padding: 1em 2em;

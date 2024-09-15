@@ -295,8 +295,8 @@ export class Dom {
     }
 
     const style = [
-      "color: black;",
-      `background-color: var(--color-${flag});`,
+      `color: var(--color-${flag}-fg-hex);`,
+      `background-color: var(--color-${flag}-bg-hex);`,
     ].join(" ");
 
     return this._createElement("span", {
@@ -315,12 +315,23 @@ export class Dom {
     });
   }
 
+  /**
+   * @dev
+   * #1 Currently the hud is only rendered once per card view. This would be
+   * the wrong strategy if Anki shared changes in the states of flags or marks.
+   * But it appears that there are no callbacks or events that allows Ranki to
+   * access this information.
+   *
+   * If such an option emerges, this logic would have to be altered to allow
+   * rerender of the hud even if another hud is available on the screen.
+   */
   renderHud(): void {
     const tokens = this.tokens;
     const existingInfoBar = this.parent.querySelector(`.${CLASSES.hud}`);
-    // if (existingInfoBar) {
-    //   return;
-    // }
+    // #1
+    if (existingInfoBar) {
+      return;
+    }
 
     const { card, deck, type, tags, flag } = this.card;
 
@@ -342,11 +353,11 @@ export class Dom {
       children: [hudScrollContainer],
     });
 
-    if (existingInfoBar) {
-      console.log("removing");
-      this.parent.removeChild(existingInfoBar);
-    }
-    console.log(this.card);
+    // #1
+    // if (existingInfoBar) {
+    //   console.log("removing");
+    //   this.parent.removeChild(existingInfoBar);
+    // }
     this.parent.appendChild(hudElem);
   }
 

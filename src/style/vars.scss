@@ -1,5 +1,6 @@
 :root {
   --color-heading-hex: #bbb;
+  --color-heading2-hex: #999;
   --color-text-hex: #ddd;
   --color-text-dim-hex: #444;
   --color-text-strong-hex: #fff;
@@ -29,23 +30,28 @@
   --length-chip-padding-inline-rem: 0.3rem;
   --length-section-block-margin-rem: 1rem;
   --length-list-item-margin-block-rem: 0.5rem;
-
   --length-code-border-radius-rem: 0.3rem;
 
-  // --color-flag1: #f87171;
-  // --color-flag2: #fdba74;
-  // --color-flag3: #86efac;
-  // --color-flag4: #60a5fa;
-  // --color-flag5: #f0abfc;
-  // --color-flag6: #5eead4;
-  // --color-flag7: #c084fc;
-  --color-flag1: red;
-  --color-flag2: orange;
-  --color-flag3: green;
-  --color-flag4: blue;
-  --color-flag5: pink;
-  --color-flag6: turquoise;
-  --color-flag7: purple;
+  --color-flag1-bg-hex: #fe0000;
+  --color-flag1-fg-hex: #000;
+
+  --color-flag2-bg-hex: #bb7918;
+  --color-flag2-fg-hex: #000;
+
+  --color-flag3-bg-hex: #057a05;
+  --color-flag3-fg-hex: #fff;
+
+  --color-flag4-bg-hex: #1976d3;
+  --color-flag4-fg-hex: #fff;
+
+  --color-flag5-bg-hex: #ff82ee;
+  --color-flag5-fg-hex: #000;
+
+  --color-flag6-bg-hex: #00d1b4;
+  --color-flag6-fg-hex: #fff;
+
+  --color-flag7-bg-hex: #9149dd;
+  --color-flag7-fg-hex: #fff;
 }
 
 // #1: This is here so that the padding background color never obscures
