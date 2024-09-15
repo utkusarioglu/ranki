@@ -9,6 +9,12 @@
   */
   overflow-x: scroll !important;
   scrollbar-width: none;
+
+  .mobile & {
+    // position: fixed;
+    // z-index: 1000;
+    top: 0;
+  }
 }
 
 .ranki-hud::-webkit-scrollbar {

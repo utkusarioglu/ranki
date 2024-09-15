@@ -1,6 +1,18 @@
 .ranki-synth-player {
+  &.ranki-feature-active {
+    & > .ranki-synth-play-button {
+      background: var(--color-synth-play-button-active-hex);
+      color: var(--color-text-strong-hex);
+    }
+
+    & > .ranki-synth-stop-button {
+      background: var(--color-synth-stop-button-active-hex);
+      color: var(--color-text-hex);
+    }
+  }
+
   button {
-    background: var(--color-code-bg-hex);
+    color: var(--color-heading-hex);
     margin: 0;
     border-radius: 0;
     padding: 1em 2em;
@@ -25,10 +37,6 @@
     background: var(--color-deck-hex);
   }
 
-  // button.ranki-button-active {
-  //   background: pink;
-  // }
-
   button.ranki-synth-play-button {
     background: var(--color-synth-play-button-inactive-hex);
     padding-inline: 2.5rem;
@@ -36,16 +44,9 @@
     span {
       padding-left: 0.4rem;
     }
-
-    &.ranki-button-active {
-      background: var(--color-synth-play-button-active-hex);
-    }
   }
 
-  button.ranki-synth-stop-button.ranki-button-active {
-    background: var(--color-code-bg-hex);
+  button.ranki-synth-stop-button {
+    background: var(--color-synth-stop-button-inactive-hex);
   }
-  // button:hover.ranki-button-active {
-  //   background: purple;
-  // }
 }

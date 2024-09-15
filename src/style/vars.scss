@@ -6,6 +6,8 @@
   --color-block-code-hex: #0f6;
   --color-synth-play-button-active-hex: #090;
   --color-synth-play-button-inactive-hex: #050;
+  --color-synth-stop-button-active-hex: #333;
+  --color-synth-stop-button-inactive-hex: #222;
   --color-code-bg-hex: #151515;
   --color-code-bg2-hex: #101010;
   --color-link-hex: #09e;
@@ -29,6 +31,21 @@
   --length-list-item-margin-block-rem: 0.5rem;
 
   --length-code-border-radius-rem: 0.3rem;
+
+  // --color-flag1: #f87171;
+  // --color-flag2: #fdba74;
+  // --color-flag3: #86efac;
+  // --color-flag4: #60a5fa;
+  // --color-flag5: #f0abfc;
+  // --color-flag6: #5eead4;
+  // --color-flag7: #c084fc;
+  --color-flag1: red;
+  --color-flag2: orange;
+  --color-flag3: green;
+  --color-flag4: blue;
+  --color-flag5: pink;
+  --color-flag6: turquoise;
+  --color-flag7: purple;
 }
 
 // #1: This is here so that the padding background color never obscures

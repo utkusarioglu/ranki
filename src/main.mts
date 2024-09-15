@@ -4,6 +4,17 @@ import { getRanki } from "./config/config.mts";
 import type { RankiRequiredProps } from "./config/config.types.mts";
 import { Observer } from "./observer.mts";
 
+// function runEval() {
+//   console.log("eval");
+//   const feat = ranki.content["JsFeatures-Object"]
+//     .replace("&lt;", "<")
+//     .replace("&gt;", ">");
+//   console.log(feat);
+//   if (feat) {
+//     eval(feat);
+//   }
+// }
+
 function checkParams() {
   const ranki = getRanki();
   const REQUIRED_RANKI_PROPS: RankiRequiredProps[] = [

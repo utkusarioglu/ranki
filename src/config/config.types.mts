@@ -68,8 +68,11 @@ export interface MermaidConfig {
   themeVariables: Record<string, any>;
 }
 
+export type RankiFlagAssignments = Record<string, string>;
+
 export interface WindowRankiConfig {
   version: "v1";
+  flagAssignments: RankiFlagAssignments;
   tokens: RankiTokens;
   code: RankiCode;
   features: RankiFeatures;
@@ -82,5 +85,11 @@ export interface WindowRankiConfig {
 
 export type RankiDefaults = Pick<
   WindowRankiConfig,
-  "features" | "tokens" | "code" | "replacements" | "audioSynthesis" | "mermaid"
+  | "features"
+  | "tokens"
+  | "code"
+  | "replacements"
+  | "audioSynthesis"
+  | "mermaid"
+  | "flagAssignments"
 >;

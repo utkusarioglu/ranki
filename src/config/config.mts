@@ -79,10 +79,20 @@ const rankiDefaults: RankiDefaults = {
     },
   },
 
+  flagAssignments: {
+    flag1: "Faulty Information",
+    flag2: "Study Further",
+    flag3: "Needs Expansion",
+    flag4: "Possibly Outdated",
+    flag5: "Ranki Issue",
+    flag6: "Out of Scope",
+    flag7: "Too Broad",
+  },
+
   code: {
     replacements: [
       //#1
-      /<span\s+[^>]*class=["']cloze["'][^>]*>(.*?)<\/span>/g,
+      /<span\s+[^>]*class=["']cloze(?:-inactive)?["'][^>]*>(.*?)<\/span>/g,
     ],
     aliases: {
       autohotkey: {

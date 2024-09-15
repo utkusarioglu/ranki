@@ -81,7 +81,7 @@ const CLASSES = {
   latexFrame: "ranki-latex-frame",
   latexLineNumber: "ranki-latex-line-number",
 
-  buttonActive: "ranki-button-active",
+  featureActive: "ranki-feature-active",
   synthPlayer: "ranki-synth-player",
   synthStopButton: "ranki-synth-stop-button",
   synthPlayButton: "ranki-synth-play-button",
@@ -100,16 +100,18 @@ export class Dom {
   private content: ContentControl;
   private mermaid: MermaidConfig;
   private code: RankiCode;
+  private flagAssignments: WindowRankiConfig["flagAssignments"];
 
   constructor(
     parent: Element,
-    { tokens, card, code, mermaid }: WindowRankiConfig,
+    { tokens, card, code, mermaid, flagAssignments }: WindowRankiConfig,
   ) {
     this.parent = parent;
     this.tokens = tokens;
     this.card = card;
     this.mermaid = mermaid;
     this.code = code;
+    this.flagAssignments = flagAssignments;
     this.content = new ContentControl(code);
   }
 
@@ -234,7 +236,7 @@ export class Dom {
     errorContainer.appendChild(stackElem);
   }
 
-  _hudTags(tags: string, classes: typeof CLASSES): HTMLElement {
+  _hudTags(tags: string): HTMLElement {
     const tagElems = [];
     for (const tag of tags.split(this.tokens.tagSeparator)) {
       if (!tag.length) {
@@ -243,34 +245,34 @@ export class Dom {
       const tagsElem = this._createElement("span", {
         format: "text",
         content: tag,
-        className: [classes.hudChip, classes.hudTag].join(" "),
+        className: [CLASSES.hudChip, CLASSES.hudTag].join(" "),
       });
       tagElems.push(tagsElem);
     }
 
     return this._createElement("span", {
-      className: classes.hudTagContainer,
+      className: CLASSES.hudTagContainer,
       children: tagElems,
     });
   }
 
-  _hudDeck(deck: string, classes: typeof CLASSES): HTMLElement {
+  _hudDeck(deck: string): HTMLElement {
     const deckElem = this._createElement("span", {
-      className: classes.hudChip,
+      className: CLASSES.hudChip,
     });
     const deckSteps = deck.split(this.tokens.deckSeparator);
     deckSteps.forEach((step, i, all) => {
       const stepSpan = this._createElement("span", {
         format: "text",
         content: step,
-        className: classes.hudDeckStep,
+        className: CLASSES.hudDeckStep,
       });
       deckElem.appendChild(stepSpan);
       if (i < all.length - 1) {
         const stepGlue = this._createElement("span", {
           format: "text",
           content: this.tokens.deckSeparator,
-          className: classes.hudDeckStepSeparator,
+          className: CLASSES.hudDeckStepSeparator,
         });
         deckElem.appendChild(stepGlue);
       }
@@ -279,42 +281,60 @@ export class Dom {
     return deckElem;
   }
 
-  _hudCard(card: string, classes: typeof CLASSES): HTMLElement {
+  _hudCard(card: string): HTMLElement {
     return this._createElement("span", {
       format: "text",
       content: card,
-      className: classes.hudChip,
+      className: CLASSES.hudChip,
     });
   }
 
-  _hudType(type: string, classes: typeof CLASSES): HTMLElement {
+  _hudFlag(flag: string): HTMLElement | null {
+    if (!Object.keys(this.flagAssignments).includes(flag)) {
+      return null;
+    }
+
+    const style = [
+      "color: black;",
+      `background-color: var(--color-${flag});`,
+    ].join(" ");
+
+    return this._createElement("span", {
+      format: "text",
+      content: this.flagAssignments[flag],
+      className: CLASSES.hudChip,
+      style,
+    });
+  }
+
+  _hudType(type: string): HTMLElement {
     return this._createElement("span", {
       format: "text",
       content: type,
-      className: classes.hudChip,
+      className: CLASSES.hudChip,
     });
   }
 
   renderHud(): void {
     const tokens = this.tokens;
     const existingInfoBar = this.parent.querySelector(`.${CLASSES.hud}`);
-    if (existingInfoBar) {
-      return;
-    }
+    // if (existingInfoBar) {
+    //   return;
+    // }
 
-    const { card, deck, type, tags } = this.card;
+    const { card, deck, type, tags, flag } = this.card;
 
-    const deckElem = this._hudDeck(deck, CLASSES);
-    const cardElem = this._hudCard(card, CLASSES);
-    const typeElem = this._hudType(
-      type.replace(tokens.cardTypesPrefix, ""),
-      CLASSES,
-    );
-    const tagsElem = this._hudTags(tags, CLASSES);
+    const flagElem = this._hudFlag(flag);
+    const deckElem = this._hudDeck(deck);
+    const cardElem = this._hudCard(card);
+    const typeElem = this._hudType(type.replace(tokens.cardTypesPrefix, ""));
+    const tagsElem = this._hudTags(tags);
 
     const hudScrollContainer = this._createElement("div", {
       className: CLASSES.hudScrollContainer,
-      children: [deckElem, typeElem, cardElem, tagsElem],
+      children: [flagElem, deckElem, typeElem, cardElem, tagsElem].filter(
+        (v) => !!v,
+      ),
     });
 
     const hudElem = this._createElement("div", {
@@ -322,6 +342,11 @@ export class Dom {
       children: [hudScrollContainer],
     });
 
+    if (existingInfoBar) {
+      console.log("removing");
+      this.parent.removeChild(existingInfoBar);
+    }
+    console.log(this.card);
     this.parent.appendChild(hudElem);
   }
 
@@ -724,19 +749,25 @@ export class Dom {
     return container;
   }
 
-  _renderAudioSynthesis(group: ParserKindFrameAudioSynthesis) {
+  _renderSynth(group: ParserKindFrameAudioSynthesis) {
     let as: AudioSynthesis | undefined;
     let stopButton: HTMLElement;
     let playButton: HTMLElement;
     const duration = 2;
     let timeoutTicket: number;
 
+    const container = this._createElement("div", {
+      // children: [playButton, stopButton],
+      className: CLASSES.synthPlayer,
+    });
+
     const playAction = () => {
       if (!as) {
         // @ts-expect-error
         as = new AudioSynthesis(group.content, 2);
-        playButton.classList.add(CLASSES.buttonActive);
-        stopButton.classList.remove(CLASSES.buttonActive);
+        playButton.classList.add(CLASSES.featureActive);
+        container.classList.add(CLASSES.featureActive);
+        // stopButton.classList.remove(CLASSES.featureActive);
         as.play();
       }
 
@@ -752,8 +783,9 @@ export class Dom {
       if (as) {
         as.stop();
         as = undefined;
-        stopButton.classList.add(CLASSES.buttonActive);
-        playButton.classList.remove(CLASSES.buttonActive);
+        // stopButton.classList.add(CLASSES.featureActive);
+        playButton.classList.remove(CLASSES.featureActive);
+        container.classList.remove(CLASSES.featureActive);
       }
     };
 
@@ -779,10 +811,8 @@ export class Dom {
     });
     playButton.addEventListener("click", () => playAction());
 
-    const container = this._createElement("div", {
-      children: [playButton, stopButton],
-      className: CLASSES.synthPlayer,
-    });
+    container.appendChild(playButton);
+    container.appendChild(stopButton);
 
     playAction();
 
@@ -827,7 +857,7 @@ export class Dom {
         return this._renderMermaid(faceName, groupIndex, group);
 
       case "synth":
-        return Promise.resolve(this._renderAudioSynthesis(group));
+        return Promise.resolve(this._renderSynth(group));
 
       case "code":
         return Promise.resolve(this._renderCode(group));
