@@ -21,7 +21,9 @@
 
   --color-border-hex: #555;
   --color-deck-hex: #444;
-  --color-close-hex: #299;
+  --color-cloze-hex: #299;
+  --color-code-cloze-hex: #299;
+  // --color-code-cloze-hex: #f73;
   --color-error-bg-hex: #600;
 
   --length-content-inline-inset-rem: 1rem;
@@ -77,4 +79,13 @@
   &:last-child {
     margin-right: calc(var(--inline) * -1);
   }
+}
+
+/*
+`position` and `z-index` is set for code blocks to be able to use z-index.
+they need that to be able to paint a background color.
+*/
+%code-block-fix {
+  position: relative;
+  z-index: -1;
 }

@@ -15,12 +15,20 @@ div.ranki-code-frame > code {
   font-size: smaller;
 }
 
+.ranki-code-cloze {
+  @extend .cloze;
+  color: var(--color-code-cloze-hex);
+  text-decoration-color: var(--color-code-cloze-hex);
+}
+
 code.ranki-code-language-absent {
   color: var(--color-inline-code-hex);
 }
 
 // #1 This `:::code..` block color will have its color overridden. This color
 // is the definite color for `<code>` elements.
+span.cloze code,
+span.cloze-inactive code,
 p code {
   @extend %inline-card;
 

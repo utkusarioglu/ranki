@@ -4,6 +4,7 @@
 # This works during watch as well.
 services:
   dev:
+    container_name: ranki
     image: utkusarioglu/node-devcontainer:20-slim.0.7
     volumes:
       - type: bind

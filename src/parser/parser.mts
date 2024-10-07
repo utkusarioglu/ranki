@@ -415,7 +415,8 @@ export class Parser {
   _parseInlineFrame(frame: ParserPartFlavorFrame["part"]) {
     const tokens = this.ranki.tokens;
     const raw = frame.slice(tokens.frame.length, -tokens.frame.length);
-    const split = raw.split(tokens.terminator);
+    const replaced = this._replaceAnkiClozeSpan(raw);
+    const split = replaced.split(tokens.terminator);
 
     const getTags = (str: string) =>
       str
@@ -453,9 +454,20 @@ export class Parser {
             "type",
             "params (optional)",
             "content",
+            "RAW CONTENT RECEIVED:",
+            raw,
           ].join("\n"),
         );
     }
+  }
+
+  _replaceAnkiClozeSpan(joined: string) {
+    return this.ranki.code.replacements.reduce((a2, r) => {
+      const match = [...a2.matchAll(r)];
+      return match.reduce((a1, c) => {
+        return a1.replace(c[0], c[1]);
+      }, joined);
+    }, joined);
   }
 
   _getAssignmentString(str: string) {
@@ -902,6 +914,7 @@ export class Parser {
    * @dev
    * #1 This case falls through. this is intentional, pre code, pre and code
    * share the same logic
+   * #2 This joining and splitting is not necessary, this part needs a refactoring
    */
   _parseFrameGroup(group: ParserGroupFrame): ParserKindFrame {
     const singleLineOnly = (group: ParserGroupFrame, kind: string) => {
@@ -941,10 +954,13 @@ export class Parser {
 
       case "pre":
       case "pre code":
+        // #2
+        const replaced = this._replaceStringsOnly(group);
+        const cloze = this._replaceAnkiClozeSpan(replaced.join("\n"));
         return {
           ...group,
           kind,
-          content: this._replaceStringsOnly(group),
+          content: cloze.split("\n"),
         };
 
       case "ul":

@@ -74,6 +74,7 @@ const CLASSES = {
   codeLanguageAbsent: "ranki-code-language-absent",
   codeLanguageAliasRegistered: "ranki-code-language-alias-registered",
   codeLanguageAliasUnregistered: "ranki-code-language-alias-unregistered",
+  codeCloze: "ranki-code-cloze",
 
   codeFrame: "ranki-code-frame",
   codeInline: "ranki-code-inline",
@@ -416,7 +417,7 @@ export class Dom {
       case "code":
         const languageAlias = part.content.params[0];
         const renderedCode = this._renderHljs(content, languageAlias);
-        content = renderedCode.html;
+        content = this._replaceAnkiClozeStandIn(renderedCode.html);
         className = [CLASSES.codeInline, renderedCode.className].join(" ");
         tags = ["code"];
         break;
@@ -527,11 +528,13 @@ export class Dom {
   _renderCode(group: ParserKindFrameCode): HTMLElement {
     const languageAlias = group.params[0];
     const renderedCode = this._renderHljs(group.content[0], languageAlias);
+    const content = this._replaceAnkiClozeStandIn(renderedCode.html);
 
     const { root } = this._createElementChain(["div", "code"], {
       leaf: {
         format: "html",
-        content: renderedCode.html,
+        // content: renderedCode.html,
+        content,
         className: renderedCode.className,
       },
       root: {
@@ -543,24 +546,24 @@ export class Dom {
     return root;
   }
 
+  _replaceAnkiClozeStandIn(phrase: string) {
+    const content = phrase.replace(
+      "[...]",
+      `<span class="${CLASSES.codeCloze}">[...]</span>`,
+    );
+    return content;
+  }
+
   _renderPreCode(group: ParserKindFramePreCode): HTMLElement {
-    const replaceAnkiClozeSpan = (joined: string) => {
-      return this.code.replacements.reduce((a2, r) => {
-        const match = [...a2.matchAll(r)];
-        return match.reduce((a1, c) => {
-          return a1.replace(c[0], c[1]);
-        }, joined);
-      }, joined);
-    };
     const languageAlias = group.params[0];
-    const joined = group.content.join("\n");
-    const replaced = replaceAnkiClozeSpan(joined);
+    const replaced = group.content.join("\n");
     const renderedCode = this._renderHljs(replaced, languageAlias);
+    const content = this._replaceAnkiClozeStandIn(renderedCode.html);
 
     const { root } = this._createElementChain(group.tags, {
       leaf: {
         format: "html",
-        content: renderedCode.html,
+        content,
         className: renderedCode.className,
       },
       root: {

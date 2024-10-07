@@ -17,6 +17,10 @@ table {
   overflow-x: scroll;
   white-space: nowrap;
   border-collapse: collapse;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 thead,
@@ -39,6 +43,10 @@ td:has(+ td) {
 
 table td:last-of-type {
   padding-inline-end: var(--length-content-inline-inset-rem);
+}
+
+tr {
+  @extend %code-block-fix;
 }
 
 tr > :is(td, th):first-of-type {

@@ -29,6 +29,8 @@ dl > div:nth-of-type(2n + 1) {
 }
 
 dl > div {
+  @extend %code-block-fix;
+
   padding-block: var(--length-section-block-margin-rem);
   padding-inline: var(--length-content-inline-inset-rem);
 }

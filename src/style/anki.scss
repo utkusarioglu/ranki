@@ -40,8 +40,9 @@ body > *:not(#qa, #_mark, #_flag),
 .cloze {
   font-weight: initial;
   text-decoration: underline;
-  text-decoration-color: var(--color-close-hex);
-  color: var(--color-close-hex);
+  text-decoration-color: var(--color-cloze-hex);
+  text-decoration-thickness: 2px;
+  // color: var(--color-cloze-hex);
 }
 
 /**
