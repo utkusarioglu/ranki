@@ -206,6 +206,16 @@ export class Dom {
     };
   }
 
+  removeError() {
+    const errorContainer = this.parent.querySelector(
+      `.${CLASSES.errorContainer}`,
+    );
+    if (errorContainer) {
+      console.log("Remove error container");
+      this.parent.removeChild(errorContainer);
+    }
+  }
+
   /**
    * @dev
    * #1 This is for deduping, anki includes script tags and other things twice

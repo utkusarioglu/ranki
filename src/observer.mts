@@ -24,10 +24,17 @@ export class Observer {
     this.faceSelector = faceSelector;
   }
 
+  /**
+   * @dev
+   * #1 I think this shouldn't be here. A similar call is also made in
+   * `processHud`.
+   */
   _checkAndProcessFace(faceName: CardFaces, faceElem: Element) {
     const ranki = getRanki();
     const dom = new Dom(faceElem, ranki);
     if (!dom.hasFaceRendered()) {
+      // #1
+      dom.removeError();
       const parser = new Parser(ranki);
       const fields = Collection.getFields(faceName, ranki);
       const parsed = parser.parseFields(fields);
@@ -35,9 +42,15 @@ export class Observer {
     }
   }
 
+  /**
+   * @dev
+   * #1 I think this shouldn't be here. A similar call is also made in
+   * `_checkAndProcessFace`
+   */
   _processHud() {
     const ranki = getRanki();
     const dom = new Dom(document.body, ranki);
+    dom.removeError();
     dom.renderHud();
   }
 
