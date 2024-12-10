@@ -1,0 +1,17 @@
+/* 
+CSS that is useful for custom needs,
+
+such as a red box for html character entities
+*/
+
+.red-box {
+  box-sizing: border-box;
+  width: max-content;
+  min-width: 1rem;
+  height: max-content;
+  margin-inline: auto;
+  padding: 0.2rem;
+
+  border: 2px solid red;
+  // line-height: 0;
+}
