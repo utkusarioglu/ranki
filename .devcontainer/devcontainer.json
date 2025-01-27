@@ -4,6 +4,7 @@
   "dockerComposeFile": ["../.docker/docker-compose.yml"],
   "service": "dev",
   "postCreateCommand": "scripts/post-create-command.sh",
+  "shutdownAction": "stopCompose",
   "customizations": {
     "vscode": {
       "settings": {

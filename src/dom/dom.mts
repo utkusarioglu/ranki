@@ -30,6 +30,7 @@ import type {
   ParserKindFrameAudioSynthesis,
   ParserKindFrameCode,
   ParserKindFrameDl,
+  ParserKindFrameHtml,
   ParserKindFrameLatex,
   ParserKindFrameList,
   ParserKindFrameMermaid,
@@ -81,6 +82,8 @@ const CLASSES = {
   mnemonicFrame: "ranki-mnemonic-frame",
   latexFrame: "ranki-latex-frame",
   latexLineNumber: "ranki-latex-line-number",
+  htmlFrame: "ranki-html-frame",
+  htmlFrameContent: "ranki-html-frame-content",
 
   featureActive: "ranki-feature-active",
   synthPlayer: "ranki-synth-player",
@@ -863,6 +866,21 @@ export class Dom {
     return container;
   }
 
+  async _renderHtml(group: ParserKindFrameHtml) {
+    const content = this._createElement("pre", {
+      format: "html",
+      className: CLASSES.htmlFrameContent,
+      content: group.content.join(""),
+    });
+
+    const container = this._createElement("div", {
+      format: "html",
+      className: CLASSES.htmlFrame,
+      children: [content],
+    });
+    return Promise.resolve(container);
+  }
+
   _renderFrameKind(
     faceName: CardFaces,
     groupIndex: number,
@@ -904,6 +922,9 @@ export class Dom {
 
       case "latex":
         return this._renderLatex(group);
+
+      case "html":
+        return this._renderHtml(group);
 
       default:
         throw new Error(

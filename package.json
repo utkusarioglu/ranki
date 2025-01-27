@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@chevrotain/regexp-to-ast": "^11.0.3",
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.5.1",
     "jest": "^29.7.0",
     "jest-config": "^29.7.0",

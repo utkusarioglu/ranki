@@ -1,0 +1,10 @@
+.ranki-html-frame {
+  display: flex;
+  place-content: center;
+
+  &-content {
+    color: white;
+    font-family: initial;
+    margin: 0;
+  }
+}

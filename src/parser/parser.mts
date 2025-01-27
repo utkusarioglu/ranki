@@ -1001,6 +1001,14 @@ export class Parser {
           content: this._replaceStringsOnly(group),
         };
 
+      case "html":
+        return {
+          ...group,
+          kind,
+          // content: this._replaceStringsOnly(group),
+          content: group.lines,
+        };
+
       case "output":
       case "note":
       case "path":

@@ -5,7 +5,9 @@
 services:
   dev:
     container_name: ranki
-    image: utkusarioglu/node-devcontainer:20-slim.0.7
+    image: utkusarioglu/node-devcontainer:23-ubuntu-test-22
+    stdin_open: true
+    init: true
     volumes:
       - type: bind
         source: ..
@@ -14,4 +16,4 @@ services:
       - type: bind
         source: /mnt/c/Users/utkus/AppData/Roaming/Anki2/User 1/collection.media
         target: /target
-    command: sh -c 'while sleep 1000; do :; done'
+    # command: sh -c 'while sleep 1000; do :; done'

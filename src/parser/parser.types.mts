@@ -156,6 +156,11 @@ export interface ParserKindFrameLatex extends ParserGroupFrameCommon {
   content: string[];
 }
 
+export interface ParserKindFrameHtml extends ParserGroupFrameCommon {
+  kind: "html";
+  content: string[];
+}
+
 export interface ParserKindFrameMnemonic extends ParserGroupFrameCommon {
   kind: "mnemonic";
   content: string[];
@@ -200,6 +205,7 @@ export type ParserKindText = ParserKindParagraph | ParserKindHeading;
 
 export type ParserKindFrame =
   | ParserKindFrameLatex
+  | ParserKindFrameHtml
   | ParserKindFrameCode
   | ParserKindFrameMermaid
   | ParserKindFrameMnemonic
