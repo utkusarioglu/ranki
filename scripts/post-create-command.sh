@@ -21,4 +21,4 @@
 # done
 
 
-yarn
+yes | yarn

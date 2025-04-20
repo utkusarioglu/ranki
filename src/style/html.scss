@@ -6,5 +6,9 @@
     color: white;
     font-family: initial;
     margin: 0;
+
+    & > * {
+      all: initial;
+    }
   }
 }

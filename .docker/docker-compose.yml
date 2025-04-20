@@ -5,7 +5,8 @@
 services:
   dev:
     container_name: ranki
-    image: utkusarioglu/node-devcontainer:23-ubuntu-test-22
+    # image: utkusarioglu/node-devcontainer:23-ubuntu-test-24
+    image: utkusarioglu/react-native-android-devcontainer:35-23-ubuntu-test-24
     stdin_open: true
     init: true
     volumes:
