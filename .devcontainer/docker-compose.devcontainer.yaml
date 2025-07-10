@@ -1,0 +1,20 @@
+services:
+  dev:
+    volumes:
+      - type: volume
+        source: vscode-server-extensions
+        target: /home/dev/.vscode-server/extensions
+      - type: volume
+        source: vscode-server-insiders-extensions
+        target: /home/dev/.vscode-server-insiders/extensions
+      - type: volume
+        source: yarn
+        target: /home/dev/.yarn
+
+volumes:
+  vscode-server-extensions:
+    name: ranki-vscode-server-extensions
+  vscode-server-insiders-extensions:
+    name: ranki-vscode-server-insiders-extensions
+  yarn:
+    name: ranki-yarn

@@ -6,7 +6,8 @@ services:
   dev:
     container_name: ranki
     # image: utkusarioglu/node-devcontainer:23-ubuntu-test-24
-    image: utkusarioglu/react-native-android-devcontainer:35-23-ubuntu-test-24
+    # image: utkusarioglu/react-native-android-devcontainer:35-23-ubuntu-test-24
+    image: utkusarioglu/react-native-android-devcontainer:36-24-ubuntu-test-27
     stdin_open: true
     init: true
     volumes:
@@ -17,4 +18,3 @@ services:
       - type: bind
         source: /mnt/c/Users/utkus/AppData/Roaming/Anki2/User 1/collection.media
         target: /target
-    # command: sh -c 'while sleep 1000; do :; done'

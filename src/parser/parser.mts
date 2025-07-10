@@ -2,6 +2,7 @@ import type {
   CollectionRenderFields,
   FieldList,
 } from "../types/collection.types.mts";
+import yaml from "yaml";
 import type { WindowRankiConfig } from "../config/config.types.mts";
 import type {
   ParserPartWoContent,
@@ -30,6 +31,8 @@ import type {
   ListItemsRaw,
   ListItemsComplete,
   TableHeaderOrData,
+  ParserKindFrameImageContent,
+  ParserKindFrameLatex,
 } from "./parser.types.mts";
 
 /**
@@ -907,6 +910,43 @@ export class Parser {
     return group.lines.filter((v) => v !== null).map(parseLine);
   }
 
+  private _parseImage(group: ParserGroupFrame): ParserKindFrameImageContent {
+    const merged = group.lines.join("\n");
+    const parsed = yaml.parse(merged);
+    if (!Array.isArray(parsed)) {
+      throw new Error("Image frame is not a yaml array");
+    }
+    console.log(parsed);
+
+    return parsed;
+  }
+
+  private _parseLatex(
+    group: ParserGroupFrame,
+  ): ParserKindFrameLatex["content"] {
+    const replaced = this._replaceStringsOnly(group);
+    const groups: string[] = [];
+    let index = 0;
+    let emptyStart = -1;
+    for (const line of replaced) {
+      if (line.trim() === "") {
+        if (emptyStart === -1) {
+          emptyStart = index;
+          index++;
+        }
+      } else {
+        emptyStart = -1;
+        if (groups[index] === undefined) {
+          groups[index] = "";
+        }
+        groups[index] += line.trim();
+      }
+    }
+
+    console.log({ replaced, groups });
+    return groups;
+  }
+
   // _parseMermaidFrameGroup(group: ParserGroupFrame) {
   //   return group.lines;
   // }
@@ -939,6 +979,13 @@ export class Parser {
           kind,
           // @ts-expect-error
           content: this._parseAudioSynthesisGroup(group),
+        };
+
+      case "image":
+        return {
+          ...group,
+          kind,
+          content: this._parseImage(group),
         };
 
       case "mermaid":
@@ -998,7 +1045,7 @@ export class Parser {
         return {
           ...group,
           kind,
-          content: this._replaceStringsOnly(group),
+          content: this._parseLatex(group),
         };
 
       case "html":

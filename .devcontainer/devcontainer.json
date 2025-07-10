@@ -1,7 +1,10 @@
 {
   "name": "ranki.utkusarioglu.com",
   "workspaceFolder": "/workdir",
-  "dockerComposeFile": ["../.docker/docker-compose.yml"],
+  "dockerComposeFile": [
+    "./docker-compose.devcontainer.yaml",
+    "../.docker/docker-compose.yml"
+  ],
   "service": "dev",
   "postCreateCommand": "scripts/post-create-command.sh",
   "shutdownAction": "stopCompose",
@@ -13,7 +16,11 @@
           "activityBar.foreground": "#FFFFFF"
         }
       },
-      "extensions": ["esbenp.prettier-vscode", "ms-azuretools.vscode-docker"]
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker",
+        "arcanis.vscode-zipfs"
+      ]
     }
   }
 }

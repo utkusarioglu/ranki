@@ -31,6 +31,7 @@ import type {
   ParserKindFrameCode,
   ParserKindFrameDl,
   ParserKindFrameHtml,
+  ParserKindFrameImage,
   ParserKindFrameLatex,
   ParserKindFrameList,
   ParserKindFrameMermaid,
@@ -95,6 +96,11 @@ const CLASSES = {
   urlInline: "ranki-url-inline",
 
   graphContainer: "ranki-graph-container",
+
+  htmlImgFrame: "ranki-img-frame",
+  htmlImgFrameHud: "ranki-img-frame-hud",
+  htmlImgFrameScroller: "ranki-img-frame-scroller",
+  htmlImgFrameScrollContainer: "ranki-img-frame-scroll-container",
 };
 
 export class Dom {
@@ -881,6 +887,39 @@ export class Dom {
     return Promise.resolve(container);
   }
 
+  _renderImage(group: ParserKindFrameImage) {
+    const content = group.content.map(({ url }) => {
+      const img = document.createElement("img");
+      img.src = url;
+      return img;
+    });
+    const scroller = this._createElement("div", {
+      format: "html",
+      className: CLASSES.htmlImgFrameScroller,
+      children: content,
+    });
+    const scrollContainer = this._createElement("div", {
+      format: "html",
+      className: CLASSES.htmlImgFrameScrollContainer,
+
+      children: [scroller],
+    });
+    const frame = this._createElement("div", {
+      format: "html",
+      className: CLASSES.htmlImgFrame,
+      children: [scrollContainer],
+    });
+    if (group.content.length > 1) {
+      const hud = this._createElement("div", {
+        format: "text",
+        className: CLASSES.htmlImgFrameHud,
+        content: String(group.content.length),
+      });
+      frame.appendChild(hud);
+    }
+    return Promise.resolve(frame);
+  }
+
   _renderFrameKind(
     faceName: CardFaces,
     groupIndex: number,
@@ -916,6 +955,9 @@ export class Dom {
 
       case "table":
         return Promise.resolve(this._renderTable(group));
+
+      case "image":
+        return Promise.resolve(this._renderImage(group));
 
       case "mnemonic":
         return Promise.resolve(this._renderMnemonic(group));

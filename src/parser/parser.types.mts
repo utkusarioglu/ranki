@@ -151,6 +151,17 @@ export interface ParserKindFrameAudioSynthesis extends ParserGroupFrameCommon {
   content: string[];
 }
 
+export interface ParserKindFrameImage extends ParserGroupFrameCommon {
+  kind: "image";
+  content: ParserKindFrameImageContent;
+}
+
+interface ParserKindFrameImageContentItem {
+  url: string;
+}
+
+export type ParserKindFrameImageContent = ParserKindFrameImageContentItem[];
+
 export interface ParserKindFrameLatex extends ParserGroupFrameCommon {
   kind: "latex";
   content: string[];
@@ -215,6 +226,7 @@ export type ParserKindFrame =
   | ParserKindFrameList
   | ParserKindFrameDl
   | ParserKindFrameAudioSynthesis
+  | ParserKindFrameImage
   | ParserKindFrameIgnore;
 
 export type ParserKind = ParserKindText | ParserKindFrame;

@@ -1,0 +1,53 @@
+.ranki-img-frame {
+  /*
+    THESE SHOULDN'T BE NEEDED
+    Right now frames do not set their own paddings. they snuggle inside
+    the container. If they set their own paddings, some frames like this one
+    can avoid using negative margins
+  */
+  // margin-left: -1em; // MAGIC
+  // margin-right: -1em; // MAGIC
+
+  margin-left: calc(-1 * var(--length-content-inline-inset-rem));
+  margin-right: calc(-1 * var(--length-content-inline-inset-rem));
+
+  position: relative;
+
+  & .ranki-img-frame-hud {
+    position: absolute;
+    padding: 0.5em; // MAGIC
+    background-color: var(--color-code-bg-hex);
+    color: var(--color-heading-hex);
+    bottom: var(--length-content-inline-inset-rem);
+    right: var(--length-content-inline-inset-rem);
+
+    border: 0.2px solid var(--color-code-bg-hex);
+    border-radius: 0.3rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    aspect-ratio: 1;
+  }
+
+  & .ranki-img-frame-scroll-container {
+    scroll-snap-type: x mandatory;
+    // overflow-x: hidden;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar-track {
+      height: 2px;
+    }
+
+    & .ranki-img-frame-scroller {
+      display: flex;
+      flex-direction: row;
+      column-gap: var(--length-content-inline-inset-rem);
+      align-items: center;
+
+      & > img {
+        scroll-snap-align: start;
+        // scroll-snap-stop: always;
+        width: 100svw;
+      }
+    }
+  }
+}
