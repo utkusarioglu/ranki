@@ -19,7 +19,8 @@
       "extensions": [
         "esbenp.prettier-vscode",
         "ms-azuretools.vscode-docker",
-        "arcanis.vscode-zipfs"
+        "arcanis.vscode-zipfs",
+        "fantasy.vscode-ohm"
       ]
     }
   }

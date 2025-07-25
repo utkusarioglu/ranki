@@ -37,6 +37,9 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'src/main.mts'),  // Adjust the entry point as needed
       },
+      // external: [
+      //   "langium" // I have no idea why this causes issues
+      // ],
       output: {
         inlineDynamicImports: false,
         manualChunks: (id) =>
@@ -61,6 +64,11 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ['mathjax-full/js/mathjax.js', 'mathjax-full/js/input/tex.js', 'mathjax-full/js/output/svg.js']
+    include: [
+      // "langium",
+      "mathjax-full/js/mathjax.js",
+      "mathjax-full/js/input/tex.js",
+      "mathjax-full/js/output/svg.js",
+    ]
   }
 });

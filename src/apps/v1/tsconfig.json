@@ -3,6 +3,7 @@
     "outDir": "build",
     "rootDir": "src",
     "module": "NodeNext",
+    "moduleResolution": "nodenext",
     "target": "ESNext",
     "strict": true,
     "allowJs": true,
