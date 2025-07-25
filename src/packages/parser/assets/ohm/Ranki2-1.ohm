@@ -1,0 +1,26 @@
+Ranki {
+  Document = Element*
+
+  Element = Block | Text
+
+  Block = ":::" BlockHeader ";" ContentParams? ";" BlockContent ":::"  --withParams
+        | ":::" BlockHeader ";" BlockContent ":::"                     --noParams
+
+  BlockHeader = Word ("," BlockParam)*
+
+  BlockParam = Space? Word ("=" Element)?
+
+  ContentParams = (ContentParam ",")* ContentParam
+
+  ContentParam = Space? Word ("=" Element)?
+
+  BlockContent = (~":::" any)*
+
+  Word = letter+
+
+  Space = " "
+
+  Text = (~BlockStart any)+
+
+  BlockStart = ":::" Word ";"
+}

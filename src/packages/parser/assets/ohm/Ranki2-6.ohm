@@ -1,0 +1,47 @@
+Ranki  {
+  Document = Group*
+  Group = Directive | Element
+  Directive = directiveTag #nl+ Element* (directiveTag | end)
+  Element = Frame | Text
+  
+  Text = (~(directiveTag | frameTag) any)+
+  
+  Frame = inlineFrame | blockFrame
+  
+  inlineFrame = 
+    #inlineFrameStart #word #inlineFrameEnd --noParam
+    | #inlineFrameStart #contentParams #word #inlineFrameEnd --withParam
+    
+  inlineFrameStart = #frameTag sp* #frameHeader #sp* #semi #sp* 
+  inlineFrameEnd =  #sp* #frameTag
+  
+  contentParams =  #params #sp* #semi #sp*
+  
+  blockFrame = 
+    blockFrameStart #word blockFrameEnd --noParam
+    | blockFrameStart #contentParams #word blockFrameEnd --withParam
+    
+  blockFrameStart =  frameTag #frameHeader (#semi)? #sp* #nl+ #sp* 
+  blockFrameEnd = #sp* #nl+ (frameTag | end) 
+  frameHeader = #frameType #params
+  frameType = lower (lower | " ")*
+  frameContentParams = word
+  
+  params = param? (#sp* #com #sp* param)*
+  param = #assignment | #attribute
+  attribute = word
+  assignment = #word #sp* #as #sp* (word | inlineFrame)
+  
+  word = letter+
+  Word = letter+
+  
+  directiveTag = "%%%"
+  frameTag = ":::"
+  
+  semi = ";"
+  
+  sp =  " " | "\t"
+  nl = "\n" | "\r"
+  as = "="
+  com = ","
+}

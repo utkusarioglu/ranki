@@ -1,0 +1,38 @@
+Ranki  {
+  Document = Group*
+  Group = Macro | Element
+  
+  Macro = macro_tag Params Element* (macro_tag | end)
+  
+  Element = Block | Text
+  
+  Block = block_tag BlockHeader #sep Params #sep BlockContent (block_tag | end)  --withParams
+    | block_tag BlockHeader #sep BlockContent (block_tag | end) --noParams
+  BlockHeader = Word comma_sp Params --withParams
+    | Word --noParams 
+  BlockContent = (Block | Text)*
+  
+  Text = (~(block_tag | macro_tag) any)+
+  
+  Params = (Param #comma_sp)* Param
+  Param = word #eq_sp Element --assignment
+    | word --token
+  
+  macro_tag = "%%%"
+  block_tag = ":::"
+  
+  Word = letter+
+  word = letter+
+  sep = semi_sp -- semi
+      | newline_sp --nl
+      
+  semi_sp = spacing* ";" spacing*
+  newline_sp = spacing* (newline+ spacing*)+
+  comma_sp = spacing* comma spacing*
+  eq_sp = spacing* eq spacing*
+  
+  spacing = " " | "\t"
+  newline = "\n" | "\r\n"
+  eq = "="
+  comma = ","
+}
