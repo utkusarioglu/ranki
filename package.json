@@ -5,13 +5,15 @@
     "src/apps/*",
     "src/packages/*"
   ],
-  "packageManager": "yarn@4.0.0",
+  "packageManager": "yarn@4.9.2",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint"
   },
   "devDependencies": {
-    "turbo": "^2.5.5"
+    "tsx": "^4.20.3",
+    "turbo": "^2.5.5",
+    "typescript": "^5.8.3"
   }
 }
