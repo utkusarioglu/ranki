@@ -1,3 +1,81 @@
-- - fr!
-  - code
-  - sep
+type: document
+warnings: []
+children:
+  - type: section
+    children:
+      type: directive
+      configuration:
+        - keyword: DIRECTIVE_PREFIX_SEPARATOR_TYPE
+          values:
+            - sw
+        - keyword: DIRECTIVE_PARAMETER_SEPARATOR_TYPE
+          values:
+            - sep_multiline
+        - keyword: DIRECTIVE_CONTENT_SEPARATOR_TYPE
+          values:
+            - sw
+      parameters:
+        - keyword: sep
+          values:
+            - type: word
+              source: dfs
+        - keyword: for
+          values:
+            - type: word
+              source: cat
+      children:
+        type: document
+        warnings: []
+        children:
+          - type: section
+            children:
+              type: frame
+              configuration:
+                - keyword: FRAME_LEVEL
+                  values:
+                    - block
+                - keyword: FRAME_SPECS_TYPE
+                  values:
+                    - n
+                - keyword: FRAME_TAG_LIST
+                  values:
+                    - table
+                - keyword: FRAME_PREFIX_SEPARATOR_TYPE
+                  values:
+                    - sep_multiline
+              children:
+                type: document
+                warnings: []
+                children:
+                  - type: section
+                    children:
+                      type: frame
+                      configuration:
+                        - keyword: FRAME_LEVEL
+                          values:
+                            - block
+                        - keyword: FRAME_SPECS_TYPE
+                          values:
+                            - n
+                        - keyword: FRAME_TAG_LIST
+                          values:
+                            - code
+                        - keyword: FRAME_PREFIX_SEPARATOR_TYPE
+                          values:
+                            - sep_multiline
+                      children:
+                        type: document
+                        warnings: []
+                        children:
+                          - type: section
+                            children:
+                              type: paragraph
+                              children:
+                                - type: line
+                                  configuration:
+                                    - keyword: LINE_TYPE
+                                      values:
+                                        - p
+                                  children:
+                                    - type: word
+                                      source: asdfsa

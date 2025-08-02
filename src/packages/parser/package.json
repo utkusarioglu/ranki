@@ -1,11 +1,20 @@
 {
-  "name": "ranki-packages-parser",
+  "name": "@ranki/package-parser",
   "private": true,
-  "packageManager": "yarn@4.0.0",
+  "main": "lib/main.mjs",
+  "exports": {
+    ".": {
+      "default": "./lib/main.mjs",
+      "import": "./lib/main.mjs"
+    }
+  },
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "build": "tsc"
   },
   "dependencies": {
+    "@ranki/package-api": "workspace:^",
+    "@ranki/package-plugins": "workspace:^",
     "ohm-js": "^17.1.0"
   },
   "devDependencies": {

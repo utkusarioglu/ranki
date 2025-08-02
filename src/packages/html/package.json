@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "name": "@ranki/package-html",
+  "packageManager": "yarn@4.9.2",
+  "exports": {
+    ".": {
+      "default": "./lib/main.mjs",
+      "import": "./lib/main.mjs"
+    }
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}

@@ -1,0 +1,61 @@
+RankiBase {
+  dir = "%%%"
+  space := " " | "\t"
+  nl = "\n" | "\r"
+ 
+  snl = spaces nl
+  snl2 = snl snl
+  snl3 = snl snl snl
+  
+  c = ","
+  s = ";"
+  a = "="
+  
+  pause = "---"
+  frame = ":::"
+  quote 
+    = "\"" --double
+    | "'" --single
+    
+  negation = "!"
+  heading = "#"
+  
+  em = "/"
+  b = "*"
+  i = "_" 
+  
+  paramValueQuoted
+    = quote_double (~(quote_double) any)* quote_double --double
+    |  quote_single (~(quote_single) any)* quote_single --single
+    
+  paramValuePrimitive
+    = digit+ --number
+    | ("true" | "false") --boolean
+    | letter+ --word
+    
+  paramValueItem
+    = paramValueQuoted
+    | paramValuePrimitive
+
+  paramValue = nonemptyListOf<paramValueItem, spaces>
+  param
+    = paramKeyword spaces a spaces paramValue --assignment
+    | negation paramKeyword --negative
+    | paramKeyword --positive
+    
+    
+  paramSep
+    = spaces c spaces --inline
+    | spaces (c spaces)? nl spaces --multiline
+  paramKeyword = lower+
+  params = listOf<param, paramSep> paramSep?
+}
+
+RankiDirective <: RankiBase {
+  document = listOf<directive, snl3>
+  directive = dir snl? spaces params snl spaces directiveContainer snl? (dir | end)
+    
+  directiveContainer 
+    = document  
+    | (~dir any)*
+}

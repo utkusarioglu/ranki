@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "name": "@ranki/package-renderer",
+  "packageManager": "yarn@4.9.2",
+  "dependencies": {
+    "@ranki/package-api": "workspace:^"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}

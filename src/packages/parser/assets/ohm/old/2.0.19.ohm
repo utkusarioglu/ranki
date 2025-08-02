@@ -1,0 +1,98 @@
+Ranki {
+  document = both<sb<nl>*, documentContent>
+  documentContent = nonemptyListOf<section, nl+>
+  
+  space := " " | "\t"
+  nl = "\n" | "\r"
+  c = ","
+  s = ";"
+  a = "="
+  dir = "%%%"
+  fr = ":::"
+  qd = "\""
+  qs = "'"
+  neg = "!"
+  head = "#"
+  pause = "---"
+  
+  emphasis = "/"
+  bold = "*"
+  idiomatic = "_"
+  
+  char = ~"\"" ~"\n" any
+  
+  indentation = spaces
+  nl2 = nl spaces nl
+  both<wrapper, elem> = wrapper elem wrapper 
+  sb<elem> = both<spaces, elem>
+  sl<elem> = spaces elem
+  sep<char, ln>
+    = sb<char?> ln --multiline
+    | sb<char> --singleline
+
+  paramValueItem
+    = qd (~(qd) any)* qd --literalDoubleQuote
+    | qs (~(qs) any)* qs --literalSingleQuote
+    | frame_inline --frameInline
+    | frame_empty --frameEmpty
+    | digit+ --number
+    | ("true" | "false") --boolean
+    | letter+ --word
+
+  paramValue = nonemptyListOf<paramValueItem, spaces>
+  param
+    = paramKeyword both<spaces, a> paramValue --assignment
+    | neg paramKeyword --negative
+    | paramKeyword --positive
+  paramKeyword = lower+
+  params = listOf<param, sep<c, nl>> sep<c,nl>?
+  
+  section = directive | block
+  
+  directiveContent = document
+  directive = dir sb<nl?> params sep<s, nl> directiveContent sb<nl?> (dir | end)
+  
+  block = frame ~(spaces nonemptyListOf<lineWord, spaces>) | paragraph
+  
+  framePause 
+    = pause sb<nl?> documentContent sb<nl?> pause nl --block	
+    | pause spaces line spaces pause --inline
+     
+  frameTag = letter+
+  frameTagList = nonemptyListOf<frameTag, spaces>
+  frameInlineContent = listOf<line, framePause_inline>
+  frameBlockContent = listOf<document, framePause_block>
+  frameParams = params
+  frameAttributes = params
+  frameSpecs 
+    = fr sb<frameTagList> sep<c, nl> frameAttributes sep<s, nl> frameParams sep<s, nl> --ap
+    | fr sb<frameTagList> sep<c, nl> frameAttributes sep<s, nl> --a
+    | fr sb<frameTagList> sep<s, nl> frameParams sep<s, nl> --p
+    | fr sb<frameTagList> sep<s, nl> --n // I don't get this one
+    | fr sb<frameTagList> --e
+    
+  frame
+    = spaces frameSpecs frameBlockContent sl<nl?> (fr | end) --block
+    | spaces frameSpecs frameInlineContent sb<nl?> fr --inline
+    | spaces frameSpecs fr --empty
+ 
+  paragraph = nonemptyListOf<line, nl> nl?
+  line
+    = indentation head+ space+ line spaces --h
+    | indentation nonemptyListOf<lineContent, spaces> spaces --p
+  lineContent = frame_inline | frame_empty | lineWord
+  lineWord 
+    = both<emphasis, lineWordPrimitive> --emphasis
+    | both<bold, lineWordPrimitive> --bold
+    | both<idiomatic, lineWordPrimitive> --idiomatic
+    | lineWordPrimitive+
+
+  lineWordPrimitive
+    = lineCharUpper+ --upper
+    | digit+ --number
+    | lineChar+ --mixed
+
+  lineCharIllegal = fr | dir | space | nl | pause
+  lineChar = ~lineCharIllegal any
+  lineCharUpper  = ~lineCharIllegal upper
+}

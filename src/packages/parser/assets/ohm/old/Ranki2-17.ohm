@@ -1,6 +1,6 @@
-Ranki  {
+Ranki {
   document (Sections need to be separated by two new lines)
-    = sw<nl>* nonemptyListOf<section, nl2> sw<nl>*
+    = sw<nl>* nonemptyListOf<section, nl+> sw<nl>*
   
   space := " " | "\t"
   nl = "\n" | "\r"
@@ -12,8 +12,10 @@ Ranki  {
   qd = "\""
   qs = "'"
   neg = "!"
+  head = "#"
   char = ~"\"" ~"\n" any
   
+  indentation = spaces
   nl2 = nl spaces nl
   wr<wrapper, elem> = wrapper elem wrapper 
   sw<elem> = wr<spaces, elem>
@@ -26,7 +28,8 @@ Ranki  {
     | qs (~(qs) any)* qs --literalSingleQuote
     | frame_inline --frameInline
     | frame_empty --frameEmpty
-    | digit+ -- number
+    | digit+ --number
+    | ("true" | "false") --boolean
     | letter+ --word
 
   paramValue = nonemptyListOf<paramValueItem, spaces>
@@ -40,30 +43,34 @@ Ranki  {
   section = directive | block
   
   directiveContent = document
-  directive = dir sw<nl?> params sep<s, nl> directiveContent sw<nl?> dir
+  directive = dir sw<nl?> params sep<s, nl> directiveContent sw<nl?> (dir | end)
   
-  block = frame_block  | paragraph
+  block = frame ~(spaces nonemptyListOf<lineWord, spaces>) | paragraph
   
-  frameType = nonemptyListOf<letter+, space>
+  frameTag = letter+
+  frameTagList = nonemptyListOf<frameTag, spaces>
   frameInlineContent = line
   frameBlockContent = document
   frameParams = params
   frameAttributes = params
   frameSpecs 
-    = fr sw<frameType> sep<c, nl> frameAttributes sep<s, nl> frameParams sep<s, nl> --ap
-    | fr sw<frameType> sep<c, nl> frameAttributes sep<s, nl> --a
-    | fr sw<frameType> sep<s, nl> frameParams sep<s, nl> --p
-    | fr sw<frameType> sep<s, nl> --n
-    | fr wr<space?, frameType> --e
+    = fr sw<frameTagList> sep<c, nl> frameAttributes sep<s, nl> frameParams sep<s, nl> --ap
+    | fr sw<frameTagList> sep<c, nl> frameAttributes sep<s, nl> --a
+    | fr sw<frameTagList> sep<s, nl> frameParams sep<s, nl> --p
+    | fr sw<frameTagList> sep<s, nl> --n // I don't get this one
+    | fr sw<frameTagList> --e
     
   frame
     = frameSpecs frameInlineContent sw<nl?> fr --inline
-    | frameSpecs frameBlockContent sw<nl?> fr--block
+    | frameSpecs frameBlockContent sw<nl?> (fr | end) --block
     | frameSpecs fr --empty
  
   paragraph = nonemptyListOf<line, nl> nl?
-  line = nonemptyListOf<lineContent, spaces> spaces
+  line
+    = indentation head+ space+ line spaces --h
+    | indentation nonemptyListOf<lineContent, spaces> spaces --p
   lineContent = frame_inline | frame_empty | lineWord
   lineWord = lineChar+
+
   lineChar = ~(fr | dir | space | nl) any
 }

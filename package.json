@@ -1,9 +1,10 @@
 {
-  "name": "ranki",
+  "name": "@ranki/root",
   "private": true,
   "workspaces": [
     "src/apps/*",
-    "src/packages/*"
+    "src/packages/*",
+    "src/plugins/*"
   ],
   "packageManager": "yarn@4.9.2",
   "scripts": {

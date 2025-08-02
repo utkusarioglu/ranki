@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "name": "@ranki/package-api",
+  "packageManager": "yarn@4.9.2",
+  "types": "./lib/main.d.mts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "ohm-js": "^17.2.1",
+    "typescript": "^5.8.3"
+  },
+  "exports": {
+    ".": {
+      "default": "./lib/main.mjs",
+      "import": "./lib/main.mjs"
+    }
+  }
+}

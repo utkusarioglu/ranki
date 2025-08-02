@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "name": "@ranki/plugin-dom",
+  "packageManager": "yarn@4.9.2",
+  "types": "./lib/main.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ranki/package-html": "workspace:^"
+  },
+  "devDependencies": {
+    "@ranki/package-api": "workspace:^",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "exports": {
+    ".": {
+      "default": "./lib/main.mjs",
+      "import": "./lib/main.mjs"
+    }
+  }
+}

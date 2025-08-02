@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "packageManager": "yarn@4.9.2",
   "scripts": {
-    "build": "yarn vite build",
+    "build-v1": "yarn vite build",
     "dev": "yarn vite build --watch",
     "test": "jest",
     "clean-target": "scripts/clean-target.sh"

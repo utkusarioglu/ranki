@@ -10,6 +10,8 @@ services:
     image: utkusarioglu/react-native-android-devcontainer:36-24-ubuntu-test-27
     stdin_open: true
     init: true
+    ports:
+      - 5000:5000/tcp
     volumes:
       - type: bind
         source: ..

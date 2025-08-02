@@ -18,7 +18,12 @@ const cases = fs
     name,
     input: {
       path: inputPath,
-      content: fs.readFileSync(inputPath).toString(),
+      content: fs
+        .readFileSync(inputPath)
+        .toString()
+        .split("\n")
+        .slice(1, -2)
+        .join("\n"),
     },
     expected: {
       path: expectedPath,
@@ -28,6 +33,7 @@ const cases = fs
 
 cases.forEach(({ name, input, expected }) => {
   it(name, () => {
+    console.log(input.content);
     const response = main(input.content);
     expect(response).toEqual(expected.content);
   });
