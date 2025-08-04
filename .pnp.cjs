@@ -43,6 +43,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/packages/renderer"\
     },\
     {\
+      "name": "@ranki/package-transformer",\
+      "reference": "workspace:src/packages/transformer"\
+    },\
+    {\
       "name": "@ranki/package-validator",\
       "reference": "workspace:src/packages/validator"\
     },\
@@ -62,6 +66,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/package-parser", ["workspace:src/packages/parser"]],\
     ["@ranki/package-plugins", ["workspace:src/packages/plugins"]],\
     ["@ranki/package-renderer", ["workspace:src/packages/renderer"]],\
+    ["@ranki/package-transformer", ["workspace:src/packages/transformer"]],\
     ["@ranki/package-validator", ["workspace:src/packages/validator"]],\
     ["@ranki/plugin-dom", ["workspace:src/plugins/dom"]],\
     ["@ranki/root", ["workspace:."]]\
@@ -1949,6 +1954,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-parser", "workspace:src/packages/parser"],\
           ["@ranki/package-plugins", "workspace:src/packages/plugins"],\
           ["@ranki/package-renderer", "workspace:src/packages/renderer"],\
+          ["@ranki/package-transformer", "workspace:src/packages/transformer"],\
           ["@ranki/package-validator", "workspace:src/packages/validator"],\
           ["@ranki/plugin-dom", "workspace:src/plugins/dom"],\
           ["@types/node", "npm:24.1.0"],\
@@ -2012,6 +2018,17 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-api", "workspace:src/packages/api"],\
           ["@ranki/package-html", "workspace:src/packages/html"],\
           ["@ranki/package-renderer", "workspace:src/packages/renderer"],\
+          ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/package-transformer", [\
+      ["workspace:src/packages/transformer", {\
+        "packageLocation": "./src/packages/transformer/",\
+        "packageDependencies": [\
+          ["@ranki/package-api", "workspace:src/packages/api"],\
+          ["@ranki/package-transformer", "workspace:src/packages/transformer"],\
           ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\

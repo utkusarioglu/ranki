@@ -1,15 +1,22 @@
-import type { ApiStageValidated, ApiStageRendered } from "@ranki/package-api";
+import type { ApiStageTransformed, ApiStageRendered } from "@ranki/package-api";
 import { Html } from "@ranki/package-html";
 
 export function render(
-  validated: ApiStageValidated,
+  transformed: ApiStageTransformed,
 ): Promise<ApiStageRendered> {
   const html = new Html();
   return Promise.resolve({
+    ...transformed,
     stage: "rendered",
-    element: html.single("pre", {
-      format: "text",
-      content: JSON.stringify(validated.ast, null, 2),
-    }),
+    rendered: {
+      selector: "string",
+      component: "aaa",
+      element: html.chain(["div", "pre"], {
+        leaf: {
+          format: "text",
+          content: JSON.stringify(transformed.ast, null, 2),
+        },
+      }).root as HTMLDivElement,
+    },
   });
 }

@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "name": "@ranki/package-transformer",
+  "packageManager": "yarn@4.9.2",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "clean-all": "rm -rf .turbo lib *.tsbuildinfo"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@ranki/package-api": "workspace:^"
+  },
+  "exports": {
+    ".": {
+      "default": "./lib/main.mjs",
+      "import": "./lib/main.mjs",
+      "types": "./lib/main.d.mts"
+    }
+  }
+}

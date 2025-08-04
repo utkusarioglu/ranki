@@ -1,10 +1,12 @@
+export type { AstNode, AstNodeParameter } from "./ast-node.mjs";
+
 export type {
-  AstNode,
-  AstNodeParameter,
   ApiStageParsed,
   ApiStageRendered,
   ApiStageValidated,
-} from "./types.mjs";
+  ApiStageTransformed,
+} from "./stages.mjs";
+
 export type {
   Plugin,
   PluginComponentParser,
@@ -14,4 +16,3 @@ export type {
   PluginComponentStage,
   PluginComponentStages,
 } from "./plugin.mjs";
-// export { astNode } from "./helpers.mjs";

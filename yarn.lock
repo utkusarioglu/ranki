@@ -1288,6 +1288,7 @@ __metadata:
     "@ranki/package-parser": "workspace:^"
     "@ranki/package-plugins": "workspace:^"
     "@ranki/package-renderer": "workspace:^"
+    "@ranki/package-transformer": "workspace:^"
     "@ranki/package-validator": "workspace:^"
     "@ranki/plugin-dom": "workspace:^"
     "@types/node": "npm:^24.1.0"
@@ -1341,6 +1342,15 @@ __metadata:
   dependencies:
     "@ranki/package-api": "workspace:^"
     "@ranki/package-html": "workspace:^"
+    typescript: "npm:^5.9.2"
+  languageName: unknown
+  linkType: soft
+
+"@ranki/package-transformer@workspace:^, @ranki/package-transformer@workspace:src/packages/transformer":
+  version: 0.0.0-use.local
+  resolution: "@ranki/package-transformer@workspace:src/packages/transformer"
+  dependencies:
+    "@ranki/package-api": "workspace:^"
     typescript: "npm:^5.9.2"
   languageName: unknown
   linkType: soft

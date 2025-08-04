@@ -65,19 +65,3 @@ export interface AstNode {
   source?: AstPrimitive;
   ohm?: ohm.Node;
 }
-
-export interface ApiStageParsed {
-  stage: "parsed";
-  ast: AstNode;
-}
-
-export interface ApiStageValidated {
-  stage: "validated";
-  ast: AstNode;
-}
-
-export interface ApiStageRendered {
-  stage: "rendered";
-  // ast: AstNode;
-  element: HTMLElement;
-}

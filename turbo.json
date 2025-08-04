@@ -11,7 +11,8 @@
       "inputs": ["src/**", "test/**"]
     },
     "dev": {
-      "cache": false
+      "cache": false,
+      "persistent": true
     },
     "watch": {
       "cache": false

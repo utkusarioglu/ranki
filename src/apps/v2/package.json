@@ -19,6 +19,7 @@
     "@ranki/package-parser": "workspace:^",
     "@ranki/package-plugins": "workspace:^",
     "@ranki/package-renderer": "workspace:^",
+    "@ranki/package-transformer": "workspace:^",
     "@ranki/package-validator": "workspace:^",
     "@ranki/plugin-dom": "workspace:^",
     "yaml": "^2.8.0"

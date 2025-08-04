@@ -1,4 +1,4 @@
-import type { AstNode } from "../types/types.mjs";
+import type { AstNode } from "../types/ast-node.mjs";
 
 type AstNodeFuncRequired = "type";
 type AstNodeFuncParams = Pick<AstNode, AstNodeFuncRequired> &

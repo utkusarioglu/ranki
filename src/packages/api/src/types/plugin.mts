@@ -1,11 +1,12 @@
 import type * as ohm from "ohm-js";
-import type { AstNode } from "./types.mjs";
+import type { AstNode } from "./ast-node.mjs";
 
 interface RenderParams {}
 
 export type PluginComponentParser = (source: ohm.Node) => AstNode;
 export type PluginComponentValidator = (a: AstNode) => AstNode;
 export type PluginComponentRenderer = (params: RenderParams) => PluginRender;
+export type PluginComponentTransformer = (params: RenderParams) => PluginRender;
 export type FrameTagString = string;
 
 interface PluginRender {
@@ -19,6 +20,7 @@ interface PluginMetadata {
 export interface PluginComponentStages {
   parser: PluginComponentParser;
   validator: PluginComponentValidator;
+  transformer: PluginComponentTransformer;
   renderer: PluginComponentRenderer;
 }
 

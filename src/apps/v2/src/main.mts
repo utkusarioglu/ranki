@@ -4,9 +4,12 @@ import yaml from "yaml";
 import { parse } from "@ranki/package-parser";
 import { validate } from "@ranki/package-validator";
 import { render } from "@ranki/package-renderer";
+import { transform } from "@ranki/package-transformer";
 
 function populate() {
-  const raw = `
+  document.querySelector<HTMLScriptElement>(
+    "script.ranki-field.a",
+  )!.innerHTML = `
 %%%
 cat
 
@@ -19,9 +22,10 @@ dog
 sdf
 /rrrr/
 :::
-`;
-  document.querySelector<HTMLScriptElement>("script.ranki-field.a")!.innerHTML =
-    raw;
+  `;
+  document.querySelector<HTMLScriptElement>(
+    "script.ranki-field.b",
+  )!.innerHTML = `normal text`;
 }
 
 async function main() {
@@ -46,9 +50,10 @@ async function main() {
   for (const field of fields) {
     const parsed = await parse(field.innerText, plugins, config.tokens);
     const validated = await validate(parsed);
-    const rendered = await render(validated);
+    const transformed = await transform(validated);
+    const rendered = await render(transformed);
 
-    target.appendChild(rendered.element);
+    target.appendChild(rendered.rendered.element);
   }
 }
 
