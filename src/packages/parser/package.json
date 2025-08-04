@@ -1,16 +1,17 @@
 {
   "name": "@ranki/package-parser",
   "private": true,
-  "main": "lib/main.mjs",
   "exports": {
     ".": {
       "default": "./lib/main.mjs",
-      "import": "./lib/main.mjs"
+      "import": "./lib/main.mjs",
+      "types": "./lib/main.d.mts"
     }
   },
   "scripts": {
     "test": "vitest",
-    "build": "tsc"
+    "build": "tsc",
+    "watch": "tsc --watch"
   },
   "dependencies": {
     "@ranki/package-api": "workspace:^",
@@ -18,10 +19,7 @@
     "ohm-js": "^17.1.0"
   },
   "devDependencies": {
-    "@types/node": "^24.1.0",
-    "tsx": "^4.20.3",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.4",
-    "yaml": "^2.8.0"
+    "vitest": "^3.2.4"
   }
 }

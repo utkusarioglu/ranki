@@ -1,5 +1,4 @@
-import { Plugin, astNode } from "@ranki/package-api";
-import { Html } from "@ranki/package-html";
+import type { Plugin } from "@ranki/package-api";
 
 const plugin: Plugin = {
   metadata: {
@@ -7,28 +6,8 @@ const plugin: Plugin = {
   },
   components: [
     {
-      tags: ["a"],
-      parser: (n) =>
-        astNode({
-          type: "a",
-          children: [
-            astNode({
-              type: "code",
-              source: n.sourceString,
-            }),
-          ],
-        }),
-      validator: (v) => v,
-      renderer: (p) => {
-        const html = new Html();
-        const element = html.single("pre", {
-          format: "text",
-          content: JSON.stringify(p, null, 2),
-        });
-        return {
-          element,
-        };
-      },
+      tags: ["pre"],
+      stages: async () => (await import("./stages/debug/main.mjs")).default,
     },
   ],
 };

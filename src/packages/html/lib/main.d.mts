@@ -6,5 +6,5 @@ export declare class Html {
     _assignElemClassName(elem: HTMLElement | undefined, className: string | undefined): void;
     single(tag: string, { format, content, className, style, children, }?: Partial<CreateElementOptions>): HTMLElement;
     chain(tags: Tags, { leaf, root }?: Partial<CreateElementChainOptions>): CreateElementChainReturn;
-    toString(html: HTMLElement): string;
+    toString(elem: HTMLElement): string;
 }

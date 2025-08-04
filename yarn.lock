@@ -1256,6 +1256,47 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ranki/app-v1@workspace:src/apps/v1":
+  version: 0.0.0-use.local
+  resolution: "@ranki/app-v1@workspace:src/apps/v1"
+  dependencies:
+    "@types/jest": "npm:^30.0.0"
+    "@types/node": "npm:^24.0.13"
+    highlight.js: "npm:^11.11.1"
+    jest: "npm:^30.0.4"
+    jest-config: "npm:^30.0.4"
+    mathjax-full: "npm:^3.2.2"
+    mermaid: "npm:^11.8.1"
+    ohm-js: "npm:^17.1.0"
+    sass: "npm:^1.89.2"
+    ts-jest: "npm:^29.4.0"
+    ts-jest-resolver: "npm:^2.0.1"
+    tsx: "npm:^4.20.3"
+    typescript: "npm:^5.8.3"
+    vite: "npm:^7.0.4"
+    vscode-jsonrpc: "npm:^8.2.1"
+    vscode-languageserver-types: "npm:^3.17.5"
+    yaml: "npm:^2.8.0"
+  languageName: unknown
+  linkType: soft
+
+"@ranki/app-v2@workspace:src/apps/v2":
+  version: 0.0.0-use.local
+  resolution: "@ranki/app-v2@workspace:src/apps/v2"
+  dependencies:
+    "@ranki/package-api": "workspace:^"
+    "@ranki/package-parser": "workspace:^"
+    "@ranki/package-plugins": "workspace:^"
+    "@ranki/package-renderer": "workspace:^"
+    "@ranki/package-validator": "workspace:^"
+    "@ranki/plugin-dom": "workspace:^"
+    "@types/node": "npm:^24.1.0"
+    typescript: "npm:~5.8.3"
+    vite: "npm:^7.0.4"
+    yaml: "npm:^2.8.0"
+  languageName: unknown
+  linkType: soft
+
 "@ranki/package-api@workspace:^, @ranki/package-api@workspace:src/packages/api":
   version: 0.0.0-use.local
   resolution: "@ranki/package-api@workspace:src/packages/api"
@@ -1279,12 +1320,9 @@ __metadata:
   dependencies:
     "@ranki/package-api": "workspace:^"
     "@ranki/package-plugins": "workspace:^"
-    "@types/node": "npm:^24.1.0"
     ohm-js: "npm:^17.1.0"
-    tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
     vitest: "npm:^3.2.4"
-    yaml: "npm:^2.8.0"
   languageName: unknown
   linkType: soft
 
@@ -1293,14 +1331,23 @@ __metadata:
   resolution: "@ranki/package-plugins@workspace:src/packages/plugins"
   dependencies:
     "@ranki/package-api": "workspace:^"
-    "@ranki/plugin-dom": "workspace:^"
     typescript: "npm:^5.9.2"
   languageName: unknown
   linkType: soft
 
-"@ranki/package-renderer@workspace:src/packages/renderer":
+"@ranki/package-renderer@workspace:^, @ranki/package-renderer@workspace:src/packages/renderer":
   version: 0.0.0-use.local
   resolution: "@ranki/package-renderer@workspace:src/packages/renderer"
+  dependencies:
+    "@ranki/package-api": "workspace:^"
+    "@ranki/package-html": "workspace:^"
+    typescript: "npm:^5.9.2"
+  languageName: unknown
+  linkType: soft
+
+"@ranki/package-validator@workspace:^, @ranki/package-validator@workspace:src/packages/validator":
+  version: 0.0.0-use.local
+  resolution: "@ranki/package-validator@workspace:src/packages/validator"
   dependencies:
     "@ranki/package-api": "workspace:^"
     typescript: "npm:^5.9.2"
@@ -1315,6 +1362,7 @@ __metadata:
     "@ranki/package-html": "workspace:^"
     tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
+    yaml: "npm:^2.8.0"
   languageName: unknown
   linkType: soft
 
@@ -5314,30 +5362,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ranki-v1@workspace:src/apps/v1":
-  version: 0.0.0-use.local
-  resolution: "ranki-v1@workspace:src/apps/v1"
-  dependencies:
-    "@types/jest": "npm:^30.0.0"
-    "@types/node": "npm:^24.0.13"
-    highlight.js: "npm:^11.11.1"
-    jest: "npm:^30.0.4"
-    jest-config: "npm:^30.0.4"
-    mathjax-full: "npm:^3.2.2"
-    mermaid: "npm:^11.8.1"
-    ohm-js: "npm:^17.1.0"
-    sass: "npm:^1.89.2"
-    ts-jest: "npm:^29.4.0"
-    ts-jest-resolver: "npm:^2.0.1"
-    tsx: "npm:^4.20.3"
-    typescript: "npm:^5.8.3"
-    vite: "npm:^7.0.4"
-    vscode-jsonrpc: "npm:^8.2.1"
-    vscode-languageserver-types: "npm:^3.17.5"
-    yaml: "npm:^2.8.0"
-  languageName: unknown
-  linkType: soft
-
 "react-is@npm:^18.0.0, react-is@npm:^18.3.1":
   version: 18.3.1
   resolution: "react-is@npm:18.3.1"
@@ -6266,21 +6290,6 @@ __metadata:
   checksum: 10c0/34aa51b9874ae398c2b799c88a127701408cd581ee89ec3baa53509dd8728cbb25826f2a038f9465f8b7be446f0fbf11558862965b18d21c993684297628d4d3
   languageName: node
   linkType: hard
-
-"v2@workspace:src/apps/v2":
-  version: 0.0.0-use.local
-  resolution: "v2@workspace:src/apps/v2"
-  dependencies:
-    "@ranki/package-api": "workspace:^"
-    "@ranki/package-parser": "workspace:^"
-    "@ranki/package-plugins": "workspace:^"
-    "@types/node": "npm:^24.1.0"
-    tsx: "npm:^4.20.3"
-    typescript: "npm:~5.8.3"
-    vite: "npm:^7.0.4"
-    yaml: "npm:^2.8.0"
-  languageName: unknown
-  linkType: soft
 
 "v8-to-istanbul@npm:^9.0.1":
   version: 9.3.0

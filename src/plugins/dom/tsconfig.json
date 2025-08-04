@@ -7,5 +7,5 @@
     "target": "esnext",
     "composite": true
   },
-  "include": ["src/*"]
+  "include": ["src/*", "src/stages/debug/main.mts"]
 }

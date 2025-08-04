@@ -2,12 +2,13 @@
   "private": true,
   "name": "@ranki/plugin-dom",
   "packageManager": "yarn@4.9.2",
-  "types": "./lib/main.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "watch": "tsc --watch"
   },
   "dependencies": {
-    "@ranki/package-html": "workspace:^"
+    "@ranki/package-html": "workspace:^",
+    "yaml": "^2.8.0"
   },
   "devDependencies": {
     "@ranki/package-api": "workspace:^",
@@ -17,7 +18,8 @@
   "exports": {
     ".": {
       "default": "./lib/main.mjs",
-      "import": "./lib/main.mjs"
+      "import": "./lib/main.mjs",
+      "types": "./lin/main.d.mts"
     }
   }
 }

@@ -2,9 +2,9 @@
   "private": true,
   "name": "@ranki/package-api",
   "packageManager": "yarn@4.9.2",
-  "types": "./lib/main.d.mts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "watch": "tsc --watch"
   },
   "devDependencies": {
     "ohm-js": "^17.2.1",
@@ -12,8 +12,19 @@
   },
   "exports": {
     ".": {
-      "default": "./lib/main.mjs",
-      "import": "./lib/main.mjs"
+      "default": "./lib/types/main.mjs",
+      "import": "./lib/types/main.mjs",
+      "types": "./lib/types/main.d.mts"
+    },
+    "./helpers": {
+      "default": "./lib/helpers/main.mjs",
+      "import": "./lib/helpers/main.mjs",
+      "types": "./lib/helpers/main.d.mts"
+    },
+    "./constants": {
+      "default": "./lib/constants/main.mjs",
+      "import": "./lib/constants/main.mjs",
+      "types": "./lib/constants/main.d.mts"
     }
   }
 }

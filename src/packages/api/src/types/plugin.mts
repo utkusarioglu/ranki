@@ -16,11 +16,17 @@ interface PluginMetadata {
   name: string;
 }
 
-interface PluginComponent {
-  tags: FrameTagString[];
+export interface PluginComponentStages {
   parser: PluginComponentParser;
   validator: PluginComponentValidator;
   renderer: PluginComponentRenderer;
+}
+
+export type PluginComponentStage = keyof PluginComponentStages;
+
+interface PluginComponent {
+  tags: FrameTagString[];
+  stages: () => Promise<PluginComponentStages>;
 }
 
 export interface Plugin {

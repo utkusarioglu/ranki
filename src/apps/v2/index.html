@@ -5,27 +5,45 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + TS</title>
+    <style>
+      body {
+        background-color: #151515;
+        color: #ccc;
+      }
+      </style>
   </head>
   <body>
-    <div class="ranki-root"></div>
-    
-    <data class="front">{{Front}}</data>
-    <data class="back">{{Back}}</data>
-    
-    <style></style>
-    <script>
-      window.ranki = {
-        version: "v2",
-        metadata: {
-          deck: `{{Deck}}`,
-          subdeck: `{{Subdeck}}`,
-          tags: `{{Tags}}`,
-          type: `{{Type}}`,
-          flag: `{{CardFlag}}`,
-          card: `{{Card}}`,
-        }
-      }
+    <script id="ranki-config" type="text/yaml">
+      version: v2
+      metadata:
+        deck: "{{Deck}}"
+        subdeck: "{{Subdeck}}"
+        tags: "{{Tags}}"
+        type: "{{Type}}"
+        flag: "{{CardFlag}}"
+        card: "{{Card}}"
+      tokens:
+        negation: "!"
+        sep_parameter: ","
+        sep_argument: ";"
+        assignment: "="
+        quote_single: '"'
+        quote_double: "'"
+
+        directive: "%%%"
+
+        frame: ":::"
+        pause: "---"
+
+        h: "#"
+        em: "/"
+        b: "*"
+        i: "_"
     </script>
+    <script class="ranki-field a" type="text/ranki">{{A}}</script>
+
+    <div class="ranki-root"></div>
+    <style></style>
 
     <script type="module" src="/src/main.mts"></script>
   </body>

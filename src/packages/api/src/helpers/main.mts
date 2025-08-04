@@ -1,4 +1,4 @@
-import type { AstNode } from "./types.mjs";
+import type { AstNode } from "../types/types.mjs";
 
 type AstNodeFuncRequired = "type";
 type AstNodeFuncParams = Pick<AstNode, AstNodeFuncRequired> &
@@ -15,5 +15,6 @@ export function astNode(specs: AstNodeFuncParams): AstNode {
     ...(specs.parameters !== undefined && { parameters: specs.parameters }),
     ...(specs.children !== undefined && { children: specs.children }),
     ...(specs.source !== undefined && { source: specs.source }),
+    ...(specs.ohm !== undefined && { ohm: specs.ohm }),
   };
 }

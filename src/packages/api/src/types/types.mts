@@ -1,4 +1,5 @@
-import type { WARNINGS } from "./constants.mjs";
+import type * as ohm from "ohm-js";
+import type { WARNINGS } from "../constants/main.mjs";
 
 interface AstNodeConfiguration {
   keyword: string;
@@ -62,4 +63,21 @@ export interface AstNode {
   attributes?: AstNodeParameter[];
   children?: AstNode[];
   source?: AstPrimitive;
+  ohm?: ohm.Node;
+}
+
+export interface ApiStageParsed {
+  stage: "parsed";
+  ast: AstNode;
+}
+
+export interface ApiStageValidated {
+  stage: "validated";
+  ast: AstNode;
+}
+
+export interface ApiStageRendered {
+  stage: "rendered";
+  // ast: AstNode;
+  element: HTMLElement;
 }

@@ -1,7 +1,11 @@
 {
   "private": true,
-  "name": "@ranki/package-html",
+  "name": "@ranki/package-validator",
   "packageManager": "yarn@4.9.2",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
   "exports": {
     ".": {
       "default": "./lib/main.mjs",
@@ -9,9 +13,8 @@
       "types": "./lib/main.d.mts"
     }
   },
-  "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch"
+  "dependencies": {
+    "@ranki/package-api": "workspace:^"
   },
   "devDependencies": {
     "typescript": "^5.9.2"

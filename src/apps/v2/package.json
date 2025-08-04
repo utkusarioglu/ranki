@@ -1,17 +1,15 @@
 {
-  "name": "v2",
+  "name": "@ranki/app-v2",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "cli": "yarn tsx src/cli.mts",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
     "@types/node": "^24.1.0",
-    "tsx": "^4.20.3",
     "typescript": "~5.8.3",
     "vite": "^7.0.4"
   },
@@ -19,6 +17,9 @@
     "@ranki/package-api": "workspace:^",
     "@ranki/package-parser": "workspace:^",
     "@ranki/package-plugins": "workspace:^",
+    "@ranki/package-renderer": "workspace:^",
+    "@ranki/package-validator": "workspace:^",
+    "@ranki/plugin-dom": "workspace:^",
     "yaml": "^2.8.0"
   }
 }

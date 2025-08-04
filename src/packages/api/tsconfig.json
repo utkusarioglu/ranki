@@ -7,5 +7,5 @@
     "target": "esnext",
     "composite": true
   },
-  "include": ["src/*"]
+  "include": ["src/types/*", "src/helpers/*", "src/constants/*"]
 }

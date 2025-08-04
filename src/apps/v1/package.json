@@ -1,5 +1,5 @@
 {
-  "name": "ranki-v1",
+  "name": "@ranki/app-v1",
   "type": "module",
   "version": "0.0.0",
   "packageManager": "yarn@4.9.2",

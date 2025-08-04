@@ -4,16 +4,15 @@
   "name": "@ranki/package-plugins",
   "packageManager": "yarn@4.9.2",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "watch": "tsc --watch"
   },
   "exports": {
     ".": {
       "default": "./lib/main.mjs",
-      "import": "./lib/main.mjs"
+      "import": "./lib/main.mjs",
+      "types": "./lib/main.d.mts"
     }
-  },
-  "dependencies": {
-    "@ranki/plugin-dom": "workspace:^"
   },
   "devDependencies": {
     "@ranki/package-api": "workspace:^",

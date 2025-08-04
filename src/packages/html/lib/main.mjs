@@ -54,9 +54,9 @@ export class Html {
             leaf: leafElem,
         };
     }
-    toString(html) {
+    toString(elem) {
         const div = document.createElement("div");
-        div.appendChild(html);
+        div.appendChild(elem);
         return div.innerHTML;
     }
 }

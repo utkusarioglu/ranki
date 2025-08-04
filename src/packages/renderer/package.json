@@ -2,8 +2,20 @@
   "private": true,
   "name": "@ranki/package-renderer",
   "packageManager": "yarn@4.9.2",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "exports": {
+    ".": {
+      "default": "./lib/main.mjs",
+      "import": "./lib/main.mjs",
+      "types": "./lib/main.d.mts"
+    }
+  },
   "dependencies": {
-    "@ranki/package-api": "workspace:^"
+    "@ranki/package-api": "workspace:^",
+    "@ranki/package-html": "workspace:^"
   },
   "devDependencies": {
     "typescript": "^5.9.2"
