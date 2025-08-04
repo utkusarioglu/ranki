@@ -4,7 +4,8 @@
   "packageManager": "yarn@4.9.2",
   "scripts": {
     "build": "tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "clean-all": "rm -rf .turbo lib *.tsbuildinfo"
   },
   "dependencies": {
     "@ranki/package-html": "workspace:^",

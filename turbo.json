@@ -16,6 +16,9 @@
     "watch": {
       "cache": false
     },
+    "clean-all": {
+      "cache": false
+    },
     "lint": {}
   }
 }

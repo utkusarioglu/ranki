@@ -11,7 +11,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "clean-all": "rm -rf .turbo lib *.tsbuildinfo"
   },
   "devDependencies": {
     "typescript": "^5.9.2"

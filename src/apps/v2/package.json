@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean-all": "rm -rf .turbo dist node_modules *.tsconfigbuildinfo"
   },
   "devDependencies": {
     "@types/node": "^24.1.0",
