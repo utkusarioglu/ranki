@@ -48,7 +48,7 @@ export class Html {
     }
   }
 
-  single(
+  single<Root extends HTMLElement>(
     tag: string,
     {
       format,
@@ -69,13 +69,13 @@ export class Html {
       elem.style = style;
     }
 
-    return elem;
+    return elem as Root;
   }
 
-  chain(
+  chain<Root extends HTMLElement, Leaf extends HTMLElement>(
     tags: Tags,
     { leaf, root }: Partial<CreateElementChainOptions> = {},
-  ): CreateElementChainReturn {
+  ): CreateElementChainReturn<Root, Leaf> {
     const rootElem = this.single(tags[0]);
     const rest = tags.slice(1);
 
@@ -92,8 +92,8 @@ export class Html {
     this._assignElemClassName(rootElem, root?.className);
 
     return {
-      root: rootElem,
-      leaf: leafElem,
+      root: rootElem as unknown as Root,
+      leaf: leafElem as unknown as Leaf,
     };
   }
 

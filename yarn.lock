@@ -1343,6 +1343,7 @@ __metadata:
     "@ranki/package-api": "workspace:^"
     "@ranki/package-html": "workspace:^"
     typescript: "npm:^5.9.2"
+    yaml: "npm:^2.8.0"
   languageName: unknown
   linkType: soft
 

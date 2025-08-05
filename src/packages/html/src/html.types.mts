@@ -13,7 +13,10 @@ export type CreateElementChainOptions = {
   root: Partial<Pick<CreateElementOptions, "className">>;
 };
 
-export type CreateElementChainReturn = {
-  leaf: HTMLElement;
-  root: HTMLElement;
+export type CreateElementChainReturn<
+  Root extends HTMLElement,
+  Leaf extends HTMLElement,
+> = {
+  leaf: Leaf;
+  root: Root;
 };

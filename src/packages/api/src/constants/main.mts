@@ -94,3 +94,7 @@ export const WARNINGS = {
   emptySpaceBefore: "EMPTY_SPACE_BEFORE",
   emptySpaceAfter: "EMPTY_SPACE_AFTER",
 };
+
+export const ERRORS = {
+  allIsWrong: "ALL_IS_WRONG", // this is here to keep ts happy during designing
+};

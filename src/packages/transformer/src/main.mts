@@ -1,4 +1,23 @@
-import { ApiStageValidated, ApiStageTransformed } from "@ranki/package-api";
+import {
+  transformNodeLeaf,
+  transformNodeParent,
+} from "@ranki/package-api/helpers";
+import type {
+  ApiStageValidated,
+  ApiStageTransformed,
+  TransformNode,
+  ValidationNode,
+} from "@ranki/package-api";
+
+function recurse(root: ValidationNode): TransformNode {
+  switch (root.kind) {
+    case "leaf":
+      return transformNodeLeaf(root);
+    case "parent":
+      const children = root.children.map((c) => recurse(c));
+      return transformNodeParent(root, children);
+  }
+}
 
 export function transform(
   validated: ApiStageValidated,
@@ -6,11 +25,6 @@ export function transform(
   return Promise.resolve({
     ...validated,
     stage: "transformed",
-    transformed: {
-      tag: "tag",
-      classNames: "many",
-      styles: "many",
-      children: "many",
-    },
+    transformed: recurse(validated.validated),
   });
 }

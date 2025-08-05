@@ -2018,7 +2018,8 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-api", "workspace:src/packages/api"],\
           ["@ranki/package-html", "workspace:src/packages/html"],\
           ["@ranki/package-renderer", "workspace:src/packages/renderer"],\
-          ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
+          ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"],\
+          ["yaml", "npm:2.8.0"]\
         ],\
         "linkType": "SOFT"\
       }]\

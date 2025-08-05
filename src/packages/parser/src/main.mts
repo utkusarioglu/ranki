@@ -2,12 +2,18 @@ import * as ohm from "ohm-js";
 import type { Plugins } from "@ranki/package-plugins";
 import { CONFIGURATION_KEYS, NODE_TYPES } from "@ranki/package-api/constants";
 import type {
-  AstNode,
+  AstNodeLeaf,
+  AstNodeUnparsed,
   ApiStageParsed,
   AstNodeParameter,
+  AstNodeIndefinite,
+  AstNodeParentIndefinite,
+  AstNodeParentDefinite,
 } from "@ranki/package-api";
 import grammarStr from "../assets/ohm/2.0.22.ohm?raw";
 import { createActions } from "./actions.mjs";
+import { AstNodeDefinite } from "../../api/lib/types/ast.mjs";
+import { astNodeParentDefinite } from "@ranki/package-api/helpers";
 
 type TokenValue = string | number | boolean;
 type Tokens = Record<string, TokenValue>;
@@ -47,7 +53,10 @@ export function produceGrammar(tokens: Tokens) {
   return rankiGrammar;
 }
 
-const parseAstOhm = async (root: AstNode, plugins: Plugins) => {
+const parseAstOhm = async (
+  root: AstNodeIndefinite,
+  plugins: Plugins,
+): Promise<AstNodeIndefinite> => {
   const tagListConfig = root.configuration.filter(
     (c) => c.keyword === CONFIGURATION_KEYS.frame.tag.list,
   );
@@ -60,21 +69,59 @@ const parseAstOhm = async (root: AstNode, plugins: Plugins) => {
   return parsed;
 };
 
-async function parseAsync(root: AstNode, plugins: Plugins) {
-  if (root.ohm) {
-    root = await parseAstOhm(root, plugins);
-    root.ohm = null;
+async function parseAsync(
+  root: AstNodeIndefinite,
+  plugins: Plugins,
+): Promise<AstNodeDefinite> {
+  // if (root.kind === "unparsed") {
+  //   const parsed = await parseAstOhm(root, plugins);
+  // }
+
+  let parsed: AstNodeIndefinite;
+  if (root.kind === "unparsed") {
+    parsed = await parseAstOhm(root, plugins);
+    parsed.ohm = null;
+  } else {
+    parsed = root;
   }
-  if (root.children) {
-    if (!root.children.map) {
-      console.log(root.type, root.children);
-    }
-    const children = await Promise.all(
-      root.children.map(async (child) => await parseAsync(child, plugins)),
-    );
-    root.children = children;
+
+  switch (parsed.kind) {
+    case "leaf":
+      return parsed;
+    case "parent":
+      // TODO this should be gone eventually
+      if (!parsed.children.map) {
+        console.log(parsed.type, parsed.children);
+      }
+      const children = await Promise.all(
+        parsed.children.map(async (child) => await parseAsync(child, plugins)),
+      );
+      // parsed.children = children;
+      // const definite = parsed as AstNodeDefinite;
+      const definite = astNodeParentDefinite({
+        children: children,
+        type: parsed.type,
+        parameters: parsed.parameters,
+        attributes: parsed.attributes,
+        configuration: parsed.configuration,
+      });
+      return definite;
   }
-  return root;
+
+  // if (root.ohm) {
+  //   root = await parseAstOhm(root, plugins);
+  //   root.ohm = null;
+  // }
+  // if (parsed.children) {
+  //   if (!root.children.map) {
+  //     console.log(root.type, root.children);
+  //   }
+  //   const children = await Promise.all(
+  //     root.children.map(async (child) => await parseAsync(child, plugins)),
+  //   );
+  //   root.children = children;
+  // }
+  // return root;
 }
 
 export async function parse(
@@ -86,7 +133,7 @@ export async function parse(
   const result = rankiGrammar.match(raw, "document");
   const root = rankiGrammar
     .createSemantics()
-    .addOperation<AstNode>("eval(tokens)", createActions(plugins));
+    .addOperation<AstNodeIndefinite>("eval(tokens)", createActions(plugins));
   if (result.succeeded()) {
     const rootParsed = root(result).eval(defaultTokens);
     const framed = await parseAsync(rootParsed, plugins);

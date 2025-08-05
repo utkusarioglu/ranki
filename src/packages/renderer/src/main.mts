@@ -1,5 +1,6 @@
 import type { ApiStageTransformed, ApiStageRendered } from "@ranki/package-api";
 import { Html } from "@ranki/package-html";
+import yaml from "yaml";
 
 export function render(
   transformed: ApiStageTransformed,
@@ -13,8 +14,9 @@ export function render(
       component: "aaa",
       element: html.chain(["div", "pre"], {
         leaf: {
+          className: "some class name",
           format: "text",
-          content: JSON.stringify(transformed.ast, null, 2),
+          content: yaml.stringify(transformed),
         },
       }).root as HTMLDivElement,
     },

@@ -1,17 +1,25 @@
 import type * as ohm from "ohm-js";
-import type { AstNode } from "./ast-node.mjs";
+import type {
+  AstNodeDefinite,
+  AstNodeLeaf,
+  AstNodeParentDefinite,
+  AstNodeParentIndefinite,
+} from "./ast.mjs";
+import type { ValidationNode } from "./validation.mjs";
+import type { RenderNode } from "./render.mjs";
+import { TransformNode } from "./transform.mjs";
 
-interface RenderParams {}
+export type PluginComponentParser = (
+  source: ohm.Node,
+) => AstNodeParentIndefinite | AstNodeParentDefinite | AstNodeLeaf;
 
-export type PluginComponentParser = (source: ohm.Node) => AstNode;
-export type PluginComponentValidator = (a: AstNode) => AstNode;
-export type PluginComponentRenderer = (params: RenderParams) => PluginRender;
-export type PluginComponentTransformer = (params: RenderParams) => PluginRender;
+export type PluginComponentValidator = (a: AstNodeDefinite) => ValidationNode;
+
+export type PluginComponentRenderer = (params: TransformNode) => RenderNode;
+
+export type PluginComponentTransformer = (n: ValidationNode) => TransformNode;
+
 export type FrameTagString = string;
-
-interface PluginRender {
-  element: HTMLElement;
-}
 
 interface PluginMetadata {
   name: string;
@@ -32,8 +40,6 @@ interface PluginComponent {
 }
 
 export interface Plugin {
-  // parsers: Record<FrameTag, ParseHandler>;
-  // renderers: Record<FrameTag, RenderHandler>;
   metadata: PluginMetadata;
   components: PluginComponent[];
 }

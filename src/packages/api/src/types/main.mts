@@ -1,4 +1,24 @@
-export type { AstNode, AstNodeParameter } from "./ast-node.mjs";
+export type {
+  AstNodeParameter,
+  AstNodeLeaf,
+  AstNodeUnparsed,
+  AstNodeIndefinite,
+  AstNodeDefinite,
+  AstNodeParentDefinite,
+  AstNodeParentIndefinite,
+} from "./ast.mjs";
+
+export type {
+  ValidationNode,
+  ValidationNodeLeaf,
+  ValidationNodeParent,
+} from "./validation.mjs";
+
+export type {
+  TransformNode,
+  TransformNodeLeaf,
+  TransformNodeParent,
+} from "./transform.mjs";
 
 export type {
   ApiStageParsed,
