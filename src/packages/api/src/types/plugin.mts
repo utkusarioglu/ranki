@@ -4,18 +4,22 @@ import type {
   AstNodeLeaf,
   AstNodeParentDefinite,
   AstNodeParentIndefinite,
-} from "./ast.mjs";
-import type { ValidationNode } from "./validation.mjs";
-import type { RenderNode } from "./render.mjs";
-import { TransformNode } from "./transform.mjs";
+} from "./stages/ast.mjs";
+import type { ValidationNode } from "./stages/validation.mjs";
+import type { RenderNodeParent, RenderNodeLeaf } from "./stages/render.mjs";
+import { TransformNode } from "./stages/transform.mjs";
 
 export type PluginComponentParser = (
   source: ohm.Node,
 ) => AstNodeParentIndefinite | AstNodeParentDefinite | AstNodeLeaf;
 
-export type PluginComponentValidator = (a: AstNodeDefinite) => ValidationNode;
+export type PluginComponentValidator = (
+  a: AstNodeDefinite,
+) => Pick<ValidationNode, "errors" | "warnings">;
 
-export type PluginComponentRenderer = (params: TransformNode) => RenderNode;
+export type PluginComponentRenderer = (
+  params: TransformNode,
+) => RenderNodeParent | RenderNodeLeaf;
 
 export type PluginComponentTransformer = (n: ValidationNode) => TransformNode;
 

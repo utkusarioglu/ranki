@@ -1,9 +1,11 @@
-import type { WARNINGS, ERRORS } from "../constants/main.mjs";
+import type { WARNINGS, ERRORS } from "../../constants/main.mjs";
 import type {
   AstNodeConfiguration,
   AstNodeParameter,
+  AstNodeParentDefinite,
+  AstNodeParentIndefinite,
   AstNodePrimitive,
-} from "../types/ast.mjs";
+} from "./ast.mjs";
 
 type ValidationNodeWarning = (typeof WARNINGS)[keyof typeof WARNINGS];
 type ValidationNodeError = (typeof ERRORS)[keyof typeof ERRORS];
@@ -22,6 +24,7 @@ interface ValidationNodeCommon {
 
 export type ValidationNodeParent = ValidationNodeCommon & {
   kind: "parent";
+  completion: (AstNodeParentDefinite | AstNodeParentIndefinite)["completion"];
   children: ValidationNode[];
 };
 

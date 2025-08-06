@@ -8,12 +8,10 @@
     "clean-all": "rm -rf .turbo lib *.tsbuildinfo"
   },
   "dependencies": {
-    "@ranki/package-html": "workspace:^",
-    "yaml": "^2.8.0"
+    "@ranki/package-html": "workspace:^"
   },
   "devDependencies": {
     "@ranki/package-api": "workspace:^",
-    "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
   "exports": {

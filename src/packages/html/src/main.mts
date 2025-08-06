@@ -7,7 +7,7 @@ import type {
 export type Tags = string[];
 
 export class Html {
-  _assignElementContent(
+  private static _assignElementContent(
     elem: HTMLElement | undefined,
     content: string | undefined,
     format: string = "text",
@@ -28,7 +28,7 @@ export class Html {
     }
   }
 
-  _appendElementChildren(
+  private static _appendElementChildren(
     elem: HTMLElement | undefined,
     children: HTMLElement[] = [],
   ) {
@@ -39,7 +39,7 @@ export class Html {
     }
   }
 
-  _assignElemClassName(
+  private static _assignElemClassName(
     elem: HTMLElement | undefined,
     className: string | undefined,
   ) {
@@ -48,7 +48,7 @@ export class Html {
     }
   }
 
-  single<Root extends HTMLElement>(
+  static single<Root extends HTMLElement>(
     tag: string,
     {
       format,
@@ -60,9 +60,9 @@ export class Html {
   ): HTMLElement {
     const elem = document.createElement(tag);
 
-    this._assignElementContent(elem, content, format);
-    this._assignElemClassName(elem, className);
-    this._appendElementChildren(elem, children);
+    Html._assignElementContent(elem, content, format);
+    Html._assignElemClassName(elem, className);
+    Html._appendElementChildren(elem, children);
 
     if (style) {
       // @ts-ignore
@@ -72,24 +72,24 @@ export class Html {
     return elem as Root;
   }
 
-  chain<Root extends HTMLElement, Leaf extends HTMLElement>(
+  static chain<Root extends HTMLElement, Leaf extends HTMLElement>(
     tags: Tags,
     { leaf, root }: Partial<CreateElementChainOptions> = {},
   ): CreateElementChainReturn<Root, Leaf> {
-    const rootElem = this.single(tags[0]);
+    const rootElem = Html.single(tags[0]);
     const rest = tags.slice(1);
 
     let leafElem = rootElem;
     for (const e of rest) {
-      const child = this.single(e);
+      const child = Html.single(e);
       leafElem.appendChild(child);
       leafElem = child;
     }
 
-    this._assignElementContent(leafElem, leaf?.content, leaf?.format);
-    this._appendElementChildren(leafElem, leaf?.children);
-    this._assignElemClassName(leafElem, leaf?.className);
-    this._assignElemClassName(rootElem, root?.className);
+    Html._assignElementContent(leafElem, leaf?.content, leaf?.format);
+    Html._appendElementChildren(leafElem, leaf?.children);
+    Html._assignElemClassName(leafElem, leaf?.className);
+    Html._assignElemClassName(rootElem, root?.className);
 
     return {
       root: rootElem as unknown as Root,
@@ -97,7 +97,7 @@ export class Html {
     };
   }
 
-  toString(elem: HTMLElement) {
+  static toString(elem: HTMLElement) {
     const div = document.createElement("div");
     div.appendChild(elem);
     return div.innerHTML;

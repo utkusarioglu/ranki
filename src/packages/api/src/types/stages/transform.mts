@@ -1,6 +1,7 @@
 export type TransformNode = TransformNodeLeaf | TransformNodeParent;
 
 export interface TransformNodeLeaf {
+  kind: "leaf";
   tag: string;
   classNames: string;
   styles: string;
@@ -8,6 +9,7 @@ export interface TransformNodeLeaf {
 }
 
 export interface TransformNodeParent {
+  kind: "parent";
   tag: string;
   classNames: string;
   styles: string;

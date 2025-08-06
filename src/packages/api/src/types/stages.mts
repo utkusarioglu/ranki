@@ -1,7 +1,7 @@
-import type { AstNodeDefinite } from "./ast.mjs";
-import type { ValidationNode } from "./validation.mjs";
-import type { TransformNode } from "./transform.mjs";
-import type { RenderNode } from "./render.mjs";
+import type { AstNodeDefinite } from "./stages/ast.mjs";
+import type { ValidationNode } from "./stages/validation.mjs";
+import type { TransformNode } from "./stages/transform.mjs";
+import type { RenderNodeParent, RenderNodeLeaf } from "./stages/render.mjs";
 
 export interface ApiStageParsed {
   stage: "parsed";
@@ -20,5 +20,5 @@ export type ApiStageTransformed = Omit<ApiStageValidated, "stage"> & {
 
 export type ApiStageRendered = Omit<ApiStageTransformed, "stage"> & {
   stage: "rendered";
-  rendered: RenderNode;
+  rendered: RenderNodeParent | RenderNodeLeaf;
 };

@@ -3,6 +3,8 @@ import type {
   PluginComponentStages,
   ValidationNode,
   TransformNode,
+  RenderNodeLeaf,
+  RenderNodeParent,
 } from "@ranki/package-api";
 import {
   astNodeLeaf,
@@ -12,41 +14,67 @@ import {
   validationNodeParent,
 } from "@ranki/package-api/helpers";
 import { Html } from "@ranki/package-html";
-import yaml from "yaml";
 
-function validationRecurse(root: AstNodeDefinite) {
+function validator(root: AstNodeDefinite): ValidationNode {
+  const errorsAndWarnings: Pick<ValidationNode, "errors" | "warnings"> = {
+    errors: [`DOM DEBUG: ${root.type}`],
+    warnings: [`DOM DEBUG: ${root.type}`],
+  };
   switch (root.kind) {
     case "leaf":
-      return validationNodeLeaf(root, {});
+      return validationNodeLeaf(root, errorsAndWarnings);
     case "parent":
-      const children = root.children.map((n) => validationRecurse(n));
-      const { kind, type, completion, parameters, configuration, attributes } =
-        root;
-
-      return validationNodeParent(
-        {
-          kind,
-          type,
-          completion,
-          parameters,
-          configuration,
-          attributes,
-        },
-        {
-          children,
-        },
-      );
+      return validationNodeParent(root, errorsAndWarnings, []);
   }
 }
 
-function transformRecurse(root: ValidationNode): TransformNode {
+function transformer(root: ValidationNode): TransformNode {
   switch (root.kind) {
     case "leaf":
-      return transformNodeLeaf(root);
+      const transformed = transformNodeLeaf(root);
+      transformed.classNames += "CUSTOM VALUE";
+      return transformed;
     case "parent":
-      const children = root.children.map((c) => transformRecurse(c));
-      return transformNodeParent(root, children);
+      return transformNodeParent(root, []);
   }
+}
+
+function renderer(t: TransformNode): RenderNodeLeaf | RenderNodeParent {
+  switch (t.kind) {
+    case "leaf":
+      const leafElem = Html.single("pre", {
+        format: "text",
+        content: t.text,
+      });
+      return {
+        selector: "made-up-selector-01",
+        component: "made-up-component",
+        element: leafElem,
+      };
+    case "parent":
+      const parentElem = Html.single("pre", {
+        format: "html",
+        children: [],
+        // content: JSON.stringify(t),
+      });
+      return {
+        selector: "made-up-selector-01",
+        component: "made-up-component",
+        element: parentElem,
+        inserts: {
+          children: parentElem,
+        },
+      };
+  }
+  const element = Html.single("pre", {
+    format: "text",
+    content: JSON.stringify(t),
+  });
+  return {
+    selector: "made-up-selector-01",
+    component: "made-up-component",
+    element,
+  };
 }
 
 const plugin: PluginComponentStages = {
@@ -55,20 +83,9 @@ const plugin: PluginComponentStages = {
       type: "pre",
       source: n.sourceString,
     }),
-  validator: (v) => validationRecurse(v),
-  transformer: (v) => transformRecurse(v),
-  renderer: (p) => {
-    const html = new Html();
-    const element = html.single("pre", {
-      format: "text",
-      content: yaml.stringify(p),
-    });
-    return {
-      selector: "made-up-selector",
-      component: "made-up-component",
-      element,
-    };
-  },
+  validator,
+  transformer,
+  renderer,
 };
 
 export default plugin;

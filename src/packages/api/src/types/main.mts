@@ -6,19 +6,21 @@ export type {
   AstNodeDefinite,
   AstNodeParentDefinite,
   AstNodeParentIndefinite,
-} from "./ast.mjs";
+} from "./stages/ast.mjs";
 
 export type {
   ValidationNode,
   ValidationNodeLeaf,
   ValidationNodeParent,
-} from "./validation.mjs";
+} from "./stages/validation.mjs";
 
 export type {
   TransformNode,
   TransformNodeLeaf,
   TransformNodeParent,
-} from "./transform.mjs";
+} from "./stages/transform.mjs";
+
+export type { RenderNodeParent, RenderNodeLeaf } from "./stages/render.mjs";
 
 export type {
   ApiStageParsed,
@@ -35,4 +37,5 @@ export type {
   FrameTagString,
   PluginComponentStage,
   PluginComponentStages,
+  PluginComponentTransformer,
 } from "./plugin.mjs";

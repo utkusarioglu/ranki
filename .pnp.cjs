@@ -2017,6 +2017,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@ranki/package-api", "workspace:src/packages/api"],\
           ["@ranki/package-html", "workspace:src/packages/html"],\
+          ["@ranki/package-plugins", "workspace:src/packages/plugins"],\
           ["@ranki/package-renderer", "workspace:src/packages/renderer"],\
           ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"],\
           ["yaml", "npm:2.8.0"]\
@@ -2029,6 +2030,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./src/packages/transformer/",\
         "packageDependencies": [\
           ["@ranki/package-api", "workspace:src/packages/api"],\
+          ["@ranki/package-plugins", "workspace:src/packages/plugins"],\
           ["@ranki/package-transformer", "workspace:src/packages/transformer"],\
           ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
         ],\
@@ -2040,6 +2042,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./src/packages/validator/",\
         "packageDependencies": [\
           ["@ranki/package-api", "workspace:src/packages/api"],\
+          ["@ranki/package-plugins", "workspace:src/packages/plugins"],\
           ["@ranki/package-validator", "workspace:src/packages/validator"],\
           ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
         ],\
@@ -2053,9 +2056,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-api", "workspace:src/packages/api"],\
           ["@ranki/package-html", "workspace:src/packages/html"],\
           ["@ranki/plugin-dom", "workspace:src/plugins/dom"],\
-          ["tsx", "npm:4.20.3"],\
-          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
-          ["yaml", "npm:2.8.0"]\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
       }]\

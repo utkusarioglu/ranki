@@ -17,6 +17,8 @@ cat
 
 meow meow
 
+:::pre; asdfs :::
+
 :::pre
 dog
 sdf
@@ -49,9 +51,9 @@ async function main() {
   }
   for (const field of fields) {
     const parsed = await parse(field.innerText, plugins, config.tokens);
-    const validated = await validate(parsed);
-    const transformed = await transform(validated);
-    const rendered = await render(transformed);
+    const validated = await validate(parsed, plugins);
+    const transformed = await transform(validated, plugins);
+    const rendered = await render(transformed, plugins);
 
     target.appendChild(rendered.rendered.element);
   }

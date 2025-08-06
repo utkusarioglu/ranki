@@ -1342,6 +1342,7 @@ __metadata:
   dependencies:
     "@ranki/package-api": "workspace:^"
     "@ranki/package-html": "workspace:^"
+    "@ranki/package-plugins": "workspace:^"
     typescript: "npm:^5.9.2"
     yaml: "npm:^2.8.0"
   languageName: unknown
@@ -1352,6 +1353,7 @@ __metadata:
   resolution: "@ranki/package-transformer@workspace:src/packages/transformer"
   dependencies:
     "@ranki/package-api": "workspace:^"
+    "@ranki/package-plugins": "workspace:^"
     typescript: "npm:^5.9.2"
   languageName: unknown
   linkType: soft
@@ -1361,6 +1363,7 @@ __metadata:
   resolution: "@ranki/package-validator@workspace:src/packages/validator"
   dependencies:
     "@ranki/package-api": "workspace:^"
+    "@ranki/package-plugins": "workspace:^"
     typescript: "npm:^5.9.2"
   languageName: unknown
   linkType: soft
@@ -1371,9 +1374,7 @@ __metadata:
   dependencies:
     "@ranki/package-api": "workspace:^"
     "@ranki/package-html": "workspace:^"
-    tsx: "npm:^4.20.3"
     typescript: "npm:^5.8.3"
-    yaml: "npm:^2.8.0"
   languageName: unknown
   linkType: soft
 

@@ -21,5 +21,28 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../../packages/api"
+    },
+    {
+      "path": "../../packages/parser"
+    },
+    {
+      "path": "../../packages/plugins"
+    },
+    {
+      "path": "../../packages/renderer"
+    },
+    {
+      "path": "../../packages/transformer"
+    },
+    {
+      "path": "../../packages/validator"
+    },
+    {
+      "path": "../../plugins/dom"
+    }
+  ]
 }

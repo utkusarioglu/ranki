@@ -6,6 +6,7 @@ import {
   Plugin,
   PluginComponentStage,
   PluginComponentStages,
+  PluginComponentTransformer,
 } from "@ranki/package-api";
 
 export class Plugins {
@@ -65,5 +66,11 @@ export class Plugins {
       tag,
       "validator",
     ) as Promise<PluginComponentValidator>;
+  }
+  async getTransformer(tag: FrameTagString) {
+    return this.getPluginStage(
+      tag,
+      "transformer",
+    ) as Promise<PluginComponentTransformer>;
   }
 }

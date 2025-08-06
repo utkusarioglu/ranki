@@ -73,10 +73,6 @@ async function parseAsync(
   root: AstNodeIndefinite,
   plugins: Plugins,
 ): Promise<AstNodeDefinite> {
-  // if (root.kind === "unparsed") {
-  //   const parsed = await parseAstOhm(root, plugins);
-  // }
-
   let parsed: AstNodeIndefinite;
   if (root.kind === "unparsed") {
     parsed = await parseAstOhm(root, plugins);
@@ -96,8 +92,6 @@ async function parseAsync(
       const children = await Promise.all(
         parsed.children.map(async (child) => await parseAsync(child, plugins)),
       );
-      // parsed.children = children;
-      // const definite = parsed as AstNodeDefinite;
       const definite = astNodeParentDefinite({
         children: children,
         type: parsed.type,
@@ -107,21 +101,6 @@ async function parseAsync(
       });
       return definite;
   }
-
-  // if (root.ohm) {
-  //   root = await parseAstOhm(root, plugins);
-  //   root.ohm = null;
-  // }
-  // if (parsed.children) {
-  //   if (!root.children.map) {
-  //     console.log(root.type, root.children);
-  //   }
-  //   const children = await Promise.all(
-  //     root.children.map(async (child) => await parseAsync(child, plugins)),
-  //   );
-  //   root.children = children;
-  // }
-  // return root;
 }
 
 export async function parse(

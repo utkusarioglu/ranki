@@ -11,7 +11,8 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
-    "@ranki/package-api": "workspace:^"
+    "@ranki/package-api": "workspace:^",
+    "@ranki/package-plugins": "workspace:^"
   },
   "exports": {
     ".": {

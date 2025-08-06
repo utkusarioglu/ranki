@@ -7,5 +7,16 @@
     "target": "esnext",
     "composite": true
   },
-  "include": ["src/*"]
+  "include": ["src/*"],
+  "references": [
+    {
+      "path": "../api"
+    },
+    {
+      "path": "../html"
+    },
+    {
+      "path": "../plugins"
+    }
+  ]
 }
