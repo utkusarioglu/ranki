@@ -7,8 +7,8 @@ import type {
   PluginComponentRenderer,
   TransformNodeLeaf,
   TransformNodeParent,
+  RankiContext,
 } from "@ranki/package-api";
-import type { Plugins } from "@ranki/package-plugins";
 import { Html } from "@ranki/package-html";
 
 function rootRenderer(root: TransformNode): Promise<PluginComponentRenderer> {
@@ -44,7 +44,7 @@ function rootRenderer(root: TransformNode): Promise<PluginComponentRenderer> {
 
 async function getRenderer(
   root: TransformNode,
-  plugins: Plugins,
+  context: RankiContext,
 ): Promise<PluginComponentRenderer> {
   switch (root.tag) {
     case "document":
@@ -55,22 +55,22 @@ async function getRenderer(
     case "word":
       return rootRenderer(root);
     default:
-      return plugins.getRenderer(root.tag);
+      return context.plugins.getRenderer(root.tag);
   }
 }
 
 async function recursiveRenderer(
   root: TransformNode,
-  plugins: Plugins,
+  context: RankiContext,
 ): Promise<RenderNodeParent | RenderNodeLeaf> {
-  const renderer = await getRenderer(root, plugins);
+  const renderer = await getRenderer(root, context);
 
   switch (root.kind) {
     case "leaf":
       return renderer(root);
     case "parent":
       const children = await Promise.all(
-        root.children.map((c) => recursiveRenderer(c, plugins)),
+        root.children.map((c) => recursiveRenderer(c, context)),
       );
       const parent = renderer(root) as RenderNodeParent;
       children.forEach((child) => {
@@ -82,11 +82,11 @@ async function recursiveRenderer(
 
 export async function render(
   transformed: ApiStageTransformed,
-  plugins: Plugins,
+  context: RankiContext,
 ): Promise<ApiStageRendered> {
   return Promise.resolve({
     ...transformed,
     stage: "rendered",
-    rendered: await recursiveRenderer(transformed.transformed, plugins),
+    rendered: await recursiveRenderer(transformed.transformed, context),
   });
 }

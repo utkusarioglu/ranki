@@ -8,8 +8,8 @@ import type {
   TransformNode,
   ValidationNode,
   TransformNodeParent,
+  RankiContext,
 } from "@ranki/package-api";
-import type { Plugins } from "@ranki/package-plugins";
 import { PluginComponentTransformer } from "../../api/src/types/plugin.mjs";
 
 async function rootTransformer(root: ValidationNode) {
@@ -27,7 +27,7 @@ async function rootTransformer(root: ValidationNode) {
 
 function getTransformer(
   root: ValidationNode,
-  plugins: Plugins,
+  context: RankiContext,
 ): Promise<PluginComponentTransformer> {
   switch (root.type) {
     case "document":
@@ -39,21 +39,21 @@ function getTransformer(
       // @ts-expect-error this will fix itself soon
       return rootTransformer(root);
     default:
-      return plugins.getTransformer(root.type);
+      return context.plugins.getTransformer(root.type);
   }
 }
 
 async function recursiveTransformation(
   root: ValidationNode,
-  plugins: Plugins,
+  context: RankiContext,
 ): Promise<TransformNode> {
-  const transformer = await getTransformer(root, plugins);
+  const transformer = await getTransformer(root, context);
   switch (root.kind) {
     case "leaf":
       return transformer(root);
     case "parent":
       const children = await Promise.all(
-        root.children.map((c) => recursiveTransformation(c, plugins)),
+        root.children.map((c) => recursiveTransformation(c, context)),
       );
       const transformed = transformer(root) as TransformNodeParent;
       transformed.children = children;
@@ -63,11 +63,11 @@ async function recursiveTransformation(
 
 export async function transform(
   validated: ApiStageValidated,
-  plugins: Plugins,
+  context: RankiContext,
 ): Promise<ApiStageTransformed> {
   return Promise.resolve({
     ...validated,
     stage: "transformed",
-    transformed: await recursiveTransformation(validated.validated, plugins),
+    transformed: await recursiveTransformation(validated.validated, context),
   });
 }

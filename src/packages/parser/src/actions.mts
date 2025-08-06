@@ -1,16 +1,15 @@
-import type { AstNodeIndefinite } from "@ranki/package-api";
+import type { AstNodeIndefinite, RankiPlugins } from "@ranki/package-api";
 import {
   astNodeLeaf,
   astNodeParentIndefinite,
   astNodeUnparsed,
 } from "@ranki/package-api/helpers";
 import { NODE_TYPES, CONFIGURATION_KEYS } from "@ranki/package-api/constants";
-import type { Plugins } from "@ranki/package-plugins";
 import * as ohm from "ohm-js";
 import { directiveParamsToDict, produceGrammar } from "./main.mjs";
 
 export function createActions(
-  plugins: Plugins,
+  plugins: RankiPlugins,
 ): ohm.ActionDict<AstNodeIndefinite> {
   return {
     document(whitespace, list) {

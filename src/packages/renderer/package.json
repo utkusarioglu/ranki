@@ -17,7 +17,6 @@
   "dependencies": {
     "@ranki/package-api": "workspace:^",
     "@ranki/package-html": "workspace:^",
-    "@ranki/package-plugins": "workspace:^",
     "yaml": "^2.8.0"
   },
   "devDependencies": {

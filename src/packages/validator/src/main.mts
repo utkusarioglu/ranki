@@ -1,9 +1,9 @@
-import type { Plugins } from "@ranki/package-plugins";
 import type {
   ApiStageParsed,
   ApiStageValidated,
   AstNodeDefinite,
   PluginComponentValidator,
+  RankiContext,
   ValidationNode,
 } from "@ranki/package-api";
 import {
@@ -20,7 +20,7 @@ function rootValidator(root: AstNodeDefinite) {
 
 async function getValidator(
   root: AstNodeDefinite,
-  plugins: Plugins,
+  context: RankiContext,
 ): Promise<PluginComponentValidator> {
   switch (root.type) {
     case "document":
@@ -31,22 +31,22 @@ async function getValidator(
     case "word":
       return rootValidator(root);
     default:
-      return plugins.getValidator(root.type);
+      return context.plugins.getValidator(root.type);
   }
 }
 
 async function recursiveValidation(
   root: AstNodeDefinite,
-  plugins: Plugins,
+  context: RankiContext,
 ): Promise<ValidationNode> {
-  const validator = await getValidator(root, plugins);
+  const validator = await getValidator(root, context);
 
   switch (root.kind) {
     case "leaf":
       return validationNodeLeaf(root, validator(root));
     case "parent":
       const children = await Promise.all(
-        root.children.map(async (n) => recursiveValidation(n, plugins)),
+        root.children.map(async (n) => recursiveValidation(n, context)),
       );
 
       return validationNodeParent(root, validator(root), children);
@@ -55,11 +55,11 @@ async function recursiveValidation(
 
 export async function validate(
   parsed: ApiStageParsed,
-  plugins: Plugins,
+  context: RankiContext,
 ): Promise<ApiStageValidated> {
   return Promise.resolve({
     ...parsed,
     stage: "validated",
-    validated: await recursiveValidation(parsed.ast, plugins),
+    validated: await recursiveValidation(parsed.ast, context),
   });
 }

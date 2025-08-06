@@ -43,6 +43,9 @@
     },
     {
       "path": "../../plugins/dom"
+    },
+    {
+      "path": "../../plugins/root"
     }
   ]
 }

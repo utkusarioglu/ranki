@@ -7,9 +7,10 @@ import {
   PluginComponentStage,
   PluginComponentStages,
   PluginComponentTransformer,
+  RankiPlugins,
 } from "@ranki/package-api";
 
-export class Plugins {
+export class Plugins implements RankiPlugins {
   private stages: PluginComponentStages[] = [];
   private plugins: Plugin[] = [];
   private tags = new Map<FrameTagString, [number, number, number]>();

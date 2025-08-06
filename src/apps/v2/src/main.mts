@@ -1,10 +1,12 @@
 import { Plugins } from "@ranki/package-plugins";
 import pluginDom from "@ranki/plugin-dom";
+import pluginRoot from "@ranki/plugin-root";
 import yaml from "yaml";
 import { parse } from "@ranki/package-parser";
 import { validate } from "@ranki/package-validator";
 import { render } from "@ranki/package-renderer";
 import { transform } from "@ranki/package-transformer";
+import type { RankiContext } from "@ranki/package-api";
 
 function populate() {
   document.querySelector<HTMLScriptElement>(
@@ -43,17 +45,21 @@ async function main() {
   );
 
   const plugins = new Plugins();
-  plugins.register(pluginDom);
+  [pluginRoot, pluginDom].forEach((p) => plugins.register(p));
 
+  const context: RankiContext = {
+    plugins,
+    config,
+  };
   const target = document.querySelector(".ranki-root");
   if (!target) {
     throw new Error("cannot find root");
   }
   for (const field of fields) {
-    const parsed = await parse(field.innerText, plugins, config.tokens);
-    const validated = await validate(parsed, plugins);
-    const transformed = await transform(validated, plugins);
-    const rendered = await render(transformed, plugins);
+    const parsed = await parse(field.innerText, context);
+    const validated = await validate(parsed, context);
+    const transformed = await transform(validated, context);
+    const rendered = await render(transformed, context);
 
     target.appendChild(rendered.rendered.element);
   }

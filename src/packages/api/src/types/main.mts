@@ -39,3 +39,5 @@ export type {
   PluginComponentStages,
   PluginComponentTransformer,
 } from "./plugin.mjs";
+
+export type { RankiPlugins, RankiConfig, RankiContext } from "./context.mjs";

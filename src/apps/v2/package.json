@@ -22,6 +22,7 @@
     "@ranki/package-transformer": "workspace:^",
     "@ranki/package-validator": "workspace:^",
     "@ranki/plugin-dom": "workspace:^",
+    "@ranki/plugin-root": "workspace:^",
     "yaml": "^2.8.0"
   }
 }

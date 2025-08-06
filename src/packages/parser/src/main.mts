@@ -1,14 +1,11 @@
 import * as ohm from "ohm-js";
-import type { Plugins } from "@ranki/package-plugins";
 import { CONFIGURATION_KEYS, NODE_TYPES } from "@ranki/package-api/constants";
 import type {
-  AstNodeLeaf,
-  AstNodeUnparsed,
   ApiStageParsed,
   AstNodeParameter,
   AstNodeIndefinite,
-  AstNodeParentIndefinite,
-  AstNodeParentDefinite,
+  RankiContext,
+  RankiPlugins,
 } from "@ranki/package-api";
 import grammarStr from "../assets/ohm/2.0.22.ohm?raw";
 import { createActions } from "./actions.mjs";
@@ -55,7 +52,7 @@ export function produceGrammar(tokens: Tokens) {
 
 const parseAstOhm = async (
   root: AstNodeIndefinite,
-  plugins: Plugins,
+  plugins: RankiPlugins,
 ): Promise<AstNodeIndefinite> => {
   const tagListConfig = root.configuration.filter(
     (c) => c.keyword === CONFIGURATION_KEYS.frame.tag.list,
@@ -71,7 +68,7 @@ const parseAstOhm = async (
 
 async function parseAsync(
   root: AstNodeIndefinite,
-  plugins: Plugins,
+  plugins: RankiPlugins,
 ): Promise<AstNodeDefinite> {
   let parsed: AstNodeIndefinite;
   if (root.kind === "unparsed") {
@@ -105,17 +102,21 @@ async function parseAsync(
 
 export async function parse(
   raw: string,
-  plugins: Plugins,
-  defaultTokens: Tokens,
+  context: RankiContext,
+  // plugins: Plugins,
+  // defaultTokens: Tokens,
 ): Promise<ApiStageParsed> {
-  const rankiGrammar = produceGrammar(defaultTokens);
+  const rankiGrammar = produceGrammar(context.config.tokens);
   const result = rankiGrammar.match(raw, "document");
   const root = rankiGrammar
     .createSemantics()
-    .addOperation<AstNodeIndefinite>("eval(tokens)", createActions(plugins));
+    .addOperation<AstNodeIndefinite>(
+      "eval(tokens)",
+      createActions(context.plugins),
+    );
   if (result.succeeded()) {
-    const rootParsed = root(result).eval(defaultTokens);
-    const framed = await parseAsync(rootParsed, plugins);
+    const rootParsed = root(result).eval(context.config.tokens);
+    const framed = await parseAsync(rootParsed, context.plugins);
     return {
       stage: "parsed",
       ast: framed,

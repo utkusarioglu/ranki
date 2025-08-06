@@ -1291,6 +1291,7 @@ __metadata:
     "@ranki/package-transformer": "workspace:^"
     "@ranki/package-validator": "workspace:^"
     "@ranki/plugin-dom": "workspace:^"
+    "@ranki/plugin-root": "workspace:^"
     "@types/node": "npm:^24.1.0"
     typescript: "npm:~5.8.3"
     vite: "npm:^7.0.4"
@@ -1320,7 +1321,6 @@ __metadata:
   resolution: "@ranki/package-parser@workspace:src/packages/parser"
   dependencies:
     "@ranki/package-api": "workspace:^"
-    "@ranki/package-plugins": "workspace:^"
     ohm-js: "npm:^17.1.0"
     typescript: "npm:^5.8.3"
     vitest: "npm:^3.2.4"
@@ -1342,7 +1342,6 @@ __metadata:
   dependencies:
     "@ranki/package-api": "workspace:^"
     "@ranki/package-html": "workspace:^"
-    "@ranki/package-plugins": "workspace:^"
     typescript: "npm:^5.9.2"
     yaml: "npm:^2.8.0"
   languageName: unknown
@@ -1353,7 +1352,6 @@ __metadata:
   resolution: "@ranki/package-transformer@workspace:src/packages/transformer"
   dependencies:
     "@ranki/package-api": "workspace:^"
-    "@ranki/package-plugins": "workspace:^"
     typescript: "npm:^5.9.2"
   languageName: unknown
   linkType: soft
@@ -1363,7 +1361,6 @@ __metadata:
   resolution: "@ranki/package-validator@workspace:src/packages/validator"
   dependencies:
     "@ranki/package-api": "workspace:^"
-    "@ranki/package-plugins": "workspace:^"
     typescript: "npm:^5.9.2"
   languageName: unknown
   linkType: soft
@@ -1371,6 +1368,16 @@ __metadata:
 "@ranki/plugin-dom@workspace:^, @ranki/plugin-dom@workspace:src/plugins/dom":
   version: 0.0.0-use.local
   resolution: "@ranki/plugin-dom@workspace:src/plugins/dom"
+  dependencies:
+    "@ranki/package-api": "workspace:^"
+    "@ranki/package-html": "workspace:^"
+    typescript: "npm:^5.8.3"
+  languageName: unknown
+  linkType: soft
+
+"@ranki/plugin-root@workspace:^, @ranki/plugin-root@workspace:src/plugins/root":
+  version: 0.0.0-use.local
+  resolution: "@ranki/plugin-root@workspace:src/plugins/root"
   dependencies:
     "@ranki/package-api": "workspace:^"
     "@ranki/package-html": "workspace:^"

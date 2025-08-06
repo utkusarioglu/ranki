@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "@ranki/package-api": "workspace:^",
-    "@ranki/package-plugins": "workspace:^",
     "ohm-js": "^17.1.0"
   },
   "devDependencies": {
