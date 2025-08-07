@@ -1,4 +1,8 @@
-import type { AstNodeIndefinite, RankiPlugins } from "@ranki/package-api";
+import type {
+  AstNodeIndefinite,
+  // PluginComponentParser,
+  RankiContext,
+} from "@ranki/package-api";
 import {
   astNodeLeaf,
   astNodeParentIndefinite,
@@ -6,19 +10,64 @@ import {
 } from "@ranki/package-api/helpers";
 import { NODE_TYPES, CONFIGURATION_KEYS } from "@ranki/package-api/constants";
 import * as ohm from "ohm-js";
-import { directiveParamsToDict, produceGrammar } from "./main.mjs";
+// import { directiveParamsToDict, produceGrammar } from "./main.mjs";
 
 export function createActions(
-  plugins: RankiPlugins,
+  context: RankiContext,
+  // parsers: { document: PluginComponentParser },
 ): ohm.ActionDict<AstNodeIndefinite> {
   return {
     document(whitespace, list) {
-      const tokens = this.args.tokens;
-      return astNodeParentIndefinite({
-        type: NODE_TYPES.document,
-        children: list.eval(tokens).children,
-      });
+      return context.root.parsers.document.call(
+        this,
+        { whitespace, list },
+        context,
+      );
     },
+
+    dir(pre, sb1, params, sArg, dirContent, sb2, post) {
+      return context.root.parsers.directive.call(
+        this,
+        {
+          pre,
+          sb1,
+          params,
+          sArg,
+          dirContent,
+          sb2,
+          post,
+        },
+        context,
+      );
+    },
+
+    // dir(pre, sb1, params, sArg, dirContent, sb2, post) {
+    //   const tokens = this.args.tokens;
+    //   const paramsParsed = params
+    //     .eval(tokens)
+    //     .children.children.map((v) => v.parameters)
+    //     .reduce((a, c) => [...a, ...c], []);
+    //   const dirTokens = directiveParamsToDict(paramsParsed);
+    //   const newTokens = { ...tokens, ...dirTokens };
+    //   const localGrammar = produceGrammar(newTokens);
+    //   const localSemantics = localGrammar
+    //     .createSemantics()
+    //     .addOperation<AstNodeIndefinite>(
+    //       "eval(tokens)",
+    //       createActions(context),
+    //     );
+    //   const localMatch = localGrammar.match(
+    //     dirContent.sourceString,
+    //     "document",
+    //   );
+    //   const children = [localSemantics(localMatch).eval(newTokens)];
+    //   return astNodeParentIndefinite({
+    //     type: NODE_TYPES.directive,
+    //     children,
+    //     // source: "!coming!",
+    //   });
+    // },
+
     nonemptyListOf(item, sep, rest) {
       const tokens = this.args.tokens;
       return astNodeParentIndefinite({
@@ -30,33 +79,6 @@ export function createActions(
       return astNodeLeaf({
         type: "WRAP",
         source: elem.sourceString,
-      });
-    },
-    dir(pre, sb1, params, sArg, dirContent, sb2, post) {
-      const tokens = this.args.tokens;
-      const paramsParsed = params
-        .eval(tokens)
-        .children.children.map((v) => v.parameters)
-        .reduce((a, c) => [...a, ...c], []);
-      const dirTokens = directiveParamsToDict(paramsParsed);
-      const newTokens = { ...tokens, ...dirTokens };
-      const localGrammar = produceGrammar(newTokens);
-      const localSemantics = localGrammar
-        .createSemantics()
-        .addOperation<AstNodeIndefinite>(
-          "eval(tokens)",
-          createActions(plugins),
-        );
-      const localMatch = localGrammar.match(
-        dirContent.sourceString,
-        "document",
-      );
-      const children = [localSemantics(localMatch).eval(newTokens)];
-
-      return astNodeParentIndefinite({
-        type: NODE_TYPES.directive,
-        children,
-        // source: "!coming!",
       });
     },
     _iter(...children) {
@@ -161,7 +183,7 @@ export function createActions(
     line_heading(indentation, h, spaces1, line, spaces2) {
       const tokens = this.args.tokens;
       return astNodeParentIndefinite({
-        type: "HEADING",
+        type: NODE_TYPES.heading,
         children: line.eval(tokens).children,
       });
     },

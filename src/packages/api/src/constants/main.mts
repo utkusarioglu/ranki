@@ -78,6 +78,7 @@ export const NODE_TYPES = {
   frame: "frame",
   frameSpecs: "frame_specs",
   paragraph: "paragraph",
+  heading: "heading",
   line: "line",
   word: "word",
   number: "number",

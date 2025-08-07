@@ -7,10 +7,13 @@ import type {
 } from "./stages/ast.mjs";
 import type { ValidationNode } from "./stages/validation.mjs";
 import type { RenderNodeParent, RenderNodeLeaf } from "./stages/render.mjs";
-import { TransformNode } from "./stages/transform.mjs";
+import type { TransformNode } from "./stages/transform.mjs";
+import type { RankiContext } from "./context.mjs";
 
 export type PluginComponentParser = (
-  source: ohm.Node,
+  nodes: Record<string, ohm.Node>,
+  context: RankiContext,
+  // source: ohm.Node,
 ) => AstNodeParentIndefinite | AstNodeParentDefinite | AstNodeLeaf;
 
 export type PluginComponentValidator = (

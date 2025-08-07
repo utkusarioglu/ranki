@@ -40,4 +40,9 @@ export type {
   PluginComponentTransformer,
 } from "./plugin.mjs";
 
-export type { RankiPlugins, RankiConfig, RankiContext } from "./context.mjs";
+export type {
+  RankiPlugins,
+  RankiConfig,
+  RankiContext,
+  TokenValue,
+} from "./context.mjs";

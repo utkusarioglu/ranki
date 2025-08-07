@@ -2,7 +2,7 @@ import type {
   ApiStageParsed,
   ApiStageValidated,
   AstNodeDefinite,
-  PluginComponentValidator,
+  // PluginComponentValidator,
   RankiContext,
   ValidationNode,
 } from "@ranki/package-api";
@@ -11,35 +11,36 @@ import {
   validationNodeParent,
 } from "@ranki/package-api/helpers";
 
-function rootValidator(root: AstNodeDefinite) {
-  return () => ({
-    errors: [`ROOT: ${root.type}`],
-    warnings: [`ROOT: ${root.type}`],
-  });
-}
+// function rootValidator(root: AstNodeDefinite) {
+//   return () => ({
+//     errors: [`ROOT: ${root.type}`],
+//     warnings: [`ROOT: ${root.type}`],
+//   });
+// }
 
-async function getValidator(
-  root: AstNodeDefinite,
-  context: RankiContext,
-): Promise<PluginComponentValidator> {
-  switch (root.type) {
-    case "document":
-    case "directive":
-    case "paragraph":
-    case "HEADING":
-    case "line":
-    case "word":
-      return rootValidator(root);
-    default:
-      return context.plugins.getValidator(root.type);
-  }
-}
+// async function getValidator(
+//   root: AstNodeDefinite,
+//   context: RankiContext,
+// ): Promise<PluginComponentValidator> {
+//   switch (root.type) {
+//     case "document":
+//     case "directive":
+//     case "paragraph":
+//     case "HEADING":
+//     case "line":
+//     case "word":
+//       return rootValidator(root);
+//     default:
+//       return context.plugins.getValidator(root.type);
+//   }
+// }
 
 async function recursiveValidation(
   root: AstNodeDefinite,
   context: RankiContext,
 ): Promise<ValidationNode> {
-  const validator = await getValidator(root, context);
+  const validator = await context.plugins.getValidator(root.type);
+  // const validator = await getValidator(root, context);
 
   switch (root.kind) {
     case "leaf":

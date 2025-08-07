@@ -5,13 +5,9 @@ import type {
   TransformNode,
   RenderNodeLeaf,
   RenderNodeParent,
-  AstNodeIndefinite,
-  AstNodeParameter,
-  RankiConfig,
 } from "@ranki/package-api";
-import { NODE_TYPES } from "@ranki/package-api/constants";
 import {
-  astNodeParentIndefinite,
+  astNodeLeaf,
   transformNodeLeaf,
   transformNodeParent,
   validationNodeLeaf,
@@ -36,6 +32,7 @@ function transformer(root: ValidationNode): TransformNode {
   switch (root.kind) {
     case "leaf":
       const transformed = transformNodeLeaf(root);
+      // transformed.classNames += " ROOT DIRECTIVE";
       return transformed;
     case "parent":
       return transformNodeParent(root, []);
@@ -47,7 +44,6 @@ function renderer(t: TransformNode): RenderNodeLeaf | RenderNodeParent {
     case "leaf":
       const leafElem = Html.single(t.tag, {
         format: "text",
-        className: t.classNames,
         content: t.text,
       });
       return {
@@ -58,7 +54,6 @@ function renderer(t: TransformNode): RenderNodeLeaf | RenderNodeParent {
     case "parent":
       const parentElem = Html.single(t.tag, {
         format: "html",
-        className: t.classNames,
         children: [],
         // content: JSON.stringify(t),
       });
@@ -72,51 +67,13 @@ function renderer(t: TransformNode): RenderNodeLeaf | RenderNodeParent {
       };
   }
 }
-export function directiveParamsToDict(
-  params: AstNodeParameter[],
-): RankiConfig["tokens"] {
-  return params.reduce((a, { keyword, values }) => {
-    if (values.length !== 1) {
-      throw new Error(
-        `Directive params can only accept single values: ${JSON.stringify(
-          values,
-        )}`,
-      );
-    }
-    a[keyword] = values[0].value;
-    return a;
-  }, {} as RankiConfig["tokens"]);
-}
 
 const plugin: PluginComponentStages = {
-  parser: function (
-    { pre, sb1, params, sArg, dirContent, sb2, post },
-    context,
-  ) {
-    const tokens = this.args.tokens;
-    const paramsParsed = params
-      .eval(tokens)
-      .children.children.map((v) => v.parameters)
-      .reduce((a, c) => [...a, ...c], []);
-    const dirTokens = directiveParamsToDict(paramsParsed);
-    const newTokens = { ...tokens, ...dirTokens };
-    const localGrammar = context.language.produceGrammar(newTokens);
-    // @ts-expect-error
-    const localSemantics = localGrammar
-      .createSemantics()
-      .addOperation<AstNodeIndefinite>(
-        "eval(tokens)",
-        context.language.createActions(context),
-      );
-    const localMatch = localGrammar.match(dirContent.sourceString, "document");
-    const children = [localSemantics(localMatch).eval(newTokens)];
-
-    return astNodeParentIndefinite({
-      type: NODE_TYPES.directive,
-      children,
-      // source: "!coming!",
-    });
-  },
+  parser: (n) =>
+    astNodeLeaf({
+      type: "pre",
+      source: n.sourceString,
+    }),
   validator,
   transformer,
   renderer,

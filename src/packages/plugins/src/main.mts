@@ -17,12 +17,12 @@ export class Plugins implements RankiPlugins {
 
   register(plugin: Plugin) {
     const pluginIndex = this.plugins.push(plugin) - 1;
-    plugin.components.forEach((component) => {
-      component.tags.forEach((tag, componentIndex) => {
+    plugin.components.forEach((component, componentIndex) => {
+      component.tags.forEach((tag) => {
         if (this.tags.has(tag)) {
           throw new Error(`${tag} already registered`);
         }
-        this.tags.set(tag, [pluginIndex, componentIndex, -1]);
+        this.tags.set(tag, [pluginIndex, componentIndex, -Infinity]);
       });
     });
   }
@@ -40,7 +40,7 @@ export class Plugins implements RankiPlugins {
   ): Promise<PluginComponentStages[typeof stage]> {
     const [pluginIndex, componentIndex, stageIndex] =
       this.getPluginIndex(tagListString);
-    if (stageIndex !== -1) {
+    if (stageIndex !== -Infinity) {
       return this.stages[stageIndex][stage];
     }
     const stages = await this.plugins[pluginIndex].components[

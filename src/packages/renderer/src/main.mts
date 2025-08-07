@@ -11,59 +11,60 @@ import type {
 } from "@ranki/package-api";
 import { Html } from "@ranki/package-html";
 
-function rootRenderer(root: TransformNode): Promise<PluginComponentRenderer> {
-  switch (root.kind) {
-    case "leaf":
-      return Promise.resolve((t: TransformNodeLeaf) => ({
-        selector: `selector-${t.tag}`,
-        component: "aa",
-        element: Html.single(t.tag, {
-          format: "text",
-          content: t.text,
-          style: "paddingLeft: 1em",
-        }),
-      }));
-    case "parent":
-      return Promise.resolve((t: TransformNodeParent) => {
-        const element = Html.single(t.tag, {
-          format: "html",
-          style: "padding-left: 1em",
-          children: [],
-        });
-        return {
-          selector: `selector-${t.tag}`,
-          component: "aa",
-          element,
-          inserts: {
-            children: element,
-          },
-        };
-      });
-  }
-}
+// function rootRenderer(root: TransformNode): Promise<PluginComponentRenderer> {
+//   switch (root.kind) {
+//     case "leaf":
+//       return Promise.resolve((t: TransformNodeLeaf) => ({
+//         selector: `selector-${t.tag}`,
+//         component: "aa",
+//         element: Html.single(t.tag, {
+//           format: "text",
+//           content: t.text,
+//           style: "paddingLeft: 1em",
+//         }),
+//       }));
+//     case "parent":
+//       return Promise.resolve((t: TransformNodeParent) => {
+//         const element = Html.single(t.tag, {
+//           format: "html",
+//           style: "padding-left: 1em",
+//           children: [],
+//         });
+//         return {
+//           selector: `selector-${t.tag}`,
+//           component: "aa",
+//           element,
+//           inserts: {
+//             children: element,
+//           },
+//         };
+//       });
+//   }
+// }
 
-async function getRenderer(
-  root: TransformNode,
-  context: RankiContext,
-): Promise<PluginComponentRenderer> {
-  switch (root.tag) {
-    case "document":
-    case "directive":
-    case "paragraph":
-    case "HEADING":
-    case "line":
-    case "word":
-      return rootRenderer(root);
-    default:
-      return context.plugins.getRenderer(root.tag);
-  }
-}
+// async function getRenderer(
+//   root: TransformNode,
+//   context: RankiContext,
+// ): Promise<PluginComponentRenderer> {
+//   switch (root.tag) {
+//     case "document":
+//     case "directive":
+//     case "paragraph":
+//     case "HEADING":
+//     case "line":
+//     case "word":
+//       return rootRenderer(root);
+//     default:
+//       return context.plugins.getRenderer(root.tag);
+//   }
+// }
 
 async function recursiveRenderer(
   root: TransformNode,
   context: RankiContext,
 ): Promise<RenderNodeParent | RenderNodeLeaf> {
-  const renderer = await getRenderer(root, context);
+  // const renderer = await getRenderer(root, context);
+  const renderer = await context.plugins.getRenderer(root.tag);
 
   switch (root.kind) {
     case "leaf":

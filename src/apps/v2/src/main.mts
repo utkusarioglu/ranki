@@ -2,7 +2,7 @@ import { Plugins } from "@ranki/package-plugins";
 import pluginDom from "@ranki/plugin-dom";
 import pluginRoot from "@ranki/plugin-root";
 import yaml from "yaml";
-import { parse } from "@ranki/package-parser";
+import { parse, createActions, produceGrammar } from "@ranki/package-parser";
 import { validate } from "@ranki/package-validator";
 import { render } from "@ranki/package-renderer";
 import { transform } from "@ranki/package-transformer";
@@ -47,10 +47,25 @@ async function main() {
   const plugins = new Plugins();
   [pluginRoot, pluginDom].forEach((p) => plugins.register(p));
 
+  const documentParser = await plugins.getParser("document");
+  const directive = await plugins.getParser("directive");
+  const rootParsers = {
+    document: documentParser,
+    directive,
+  };
+
   const context: RankiContext = {
     plugins,
     config,
+    root: {
+      parsers: rootParsers,
+    },
+    language: {
+      createActions,
+      produceGrammar,
+    },
   };
+
   const target = document.querySelector(".ranki-root");
   if (!target) {
     throw new Error("cannot find root");

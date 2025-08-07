@@ -45,4 +45,16 @@ export interface RankiConfig {
 export interface RankiContext {
   plugins: RankiPlugins;
   config: RankiConfig;
+  root: {
+    parsers: {
+      document: PluginComponentParser;
+      directive: PluginComponentParser;
+    };
+  };
+  language: {
+    createActions: Function;
+    produceGrammar: Function;
+  };
 }
+
+export type TokenValue = string;

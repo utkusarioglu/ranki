@@ -7,5 +7,10 @@
     "target": "esnext",
     "composite": true
   },
-  "include": ["src/*", "src/stages/debug/main.mts"]
+  "include": ["src/*", "src/stages/debug/main.mts"],
+  "references": [
+    {
+      "path": "../../packages/api"
+    }
+  ]
 }

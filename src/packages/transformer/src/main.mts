@@ -1,7 +1,3 @@
-import {
-  transformNodeLeaf,
-  transformNodeParent,
-} from "@ranki/package-api/helpers";
 import type {
   ApiStageValidated,
   ApiStageTransformed,
@@ -10,44 +6,13 @@ import type {
   TransformNodeParent,
   RankiContext,
 } from "@ranki/package-api";
-import { PluginComponentTransformer } from "../../api/src/types/plugin.mjs";
-
-async function rootTransformer(root: ValidationNode) {
-  switch (root.kind) {
-    case "leaf":
-      return transformNodeLeaf;
-    case "parent":
-      return transformNodeParent;
-  }
-  // return () => ({
-  //   errors: [`ROOT: ${root.type}`],
-  //   warnings: [`ROOT: ${root.type}`],
-  // });
-}
-
-function getTransformer(
-  root: ValidationNode,
-  context: RankiContext,
-): Promise<PluginComponentTransformer> {
-  switch (root.type) {
-    case "document":
-    case "directive":
-    case "paragraph":
-    case "HEADING":
-    case "line":
-    case "word":
-      // @ts-expect-error this will fix itself soon
-      return rootTransformer(root);
-    default:
-      return context.plugins.getTransformer(root.type);
-  }
-}
+// import { NODE_TYPES } from "@ranki/package-api/constants";
 
 async function recursiveTransformation(
   root: ValidationNode,
   context: RankiContext,
 ): Promise<TransformNode> {
-  const transformer = await getTransformer(root, context);
+  const transformer = await context.plugins.getTransformer(root.type);
   switch (root.kind) {
     case "leaf":
       return transformer(root);
@@ -55,9 +20,20 @@ async function recursiveTransformation(
       const children = await Promise.all(
         root.children.map((c) => recursiveTransformation(c, context)),
       );
+
+      // const children = [];
+      // root.children.forEach(async (c) => {
+      //   const t = await recursiveTransformation(c, context);
+      //   t.forEach((i) => children.push(i));
+      // });
+
+      // if (root.type === NODE_TYPES.document) {
+      //   return children;
+      // } else {
       const transformed = transformer(root) as TransformNodeParent;
       transformed.children = children;
       return transformed;
+    // }
   }
 }
 
@@ -68,6 +44,9 @@ export async function transform(
   return Promise.resolve({
     ...validated,
     stage: "transformed",
+    // transformed: await Promise.all([
+    //   recursiveTransformation(validated.validated, context),
+    // ]),
     transformed: await recursiveTransformation(validated.validated, context),
   });
 }
