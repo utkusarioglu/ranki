@@ -2,6 +2,9 @@ import type { Plugin } from "@ranki/package-api";
 import { NODE_TYPES } from "@ranki/package-api/constants";
 import document from "./stages/document/main.mjs";
 import directive from "./stages/directive/main.mjs";
+import paragraph from "./stages/paragraph/main.mjs";
+import others from "./stages/others/main.mjs";
+import word from "./stages/word/main.mjs";
 
 const plugin: Plugin = {
   metadata: {
@@ -18,19 +21,19 @@ const plugin: Plugin = {
     },
     {
       tags: [NODE_TYPES.paragraph],
-      stages: async () => (await import("./stages/others/main.mjs")).default,
+      stages: () => Promise.resolve(paragraph),
     },
     {
       tags: [NODE_TYPES.heading],
-      stages: async () => (await import("./stages/others/main.mjs")).default,
+      stages: () => Promise.resolve(others),
     },
     {
       tags: [NODE_TYPES.line],
-      stages: async () => (await import("./stages/others/main.mjs")).default,
+      stages: () => Promise.resolve(others),
     },
     {
       tags: [NODE_TYPES.word],
-      stages: async () => (await import("./stages/others/main.mjs")).default,
+      stages: () => Promise.resolve(word),
     },
   ],
 };

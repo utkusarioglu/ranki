@@ -1,17 +1,19 @@
 export type TransformNode = TransformNodeLeaf | TransformNodeParent;
 
-export interface TransformNodeLeaf {
+export type TransformNodeLeaf = TransformNodeAdds & {
   kind: "leaf";
-  tag: string;
-  classNames: string;
-  styles: string;
+  type: string; // TODO
   text: string;
-}
+};
 
-export interface TransformNodeParent {
+export type TransformNodeParent = TransformNodeAdds & {
   kind: "parent";
+  type: string; // TODO
+  children: TransformNode[];
+};
+
+export interface TransformNodeAdds {
   tag: string;
   classNames: string;
   styles: string;
-  children: TransformNode[];
 }

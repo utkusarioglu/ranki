@@ -13,7 +13,6 @@ import type { RankiContext } from "./context.mjs";
 export type PluginComponentParser = (
   nodes: Record<string, ohm.Node>,
   context: RankiContext,
-  // source: ohm.Node,
 ) => AstNodeParentIndefinite | AstNodeParentDefinite | AstNodeLeaf;
 
 export type PluginComponentValidator = (

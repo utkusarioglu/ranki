@@ -6,34 +6,41 @@ import type {
   TransformNodeParent,
   RankiContext,
 } from "@ranki/package-api";
-// import { NODE_TYPES } from "@ranki/package-api/constants";
+import { NODE_TYPES } from "@ranki/package-api/constants";
 
 async function recursiveTransformation(
   root: ValidationNode,
   context: RankiContext,
-): Promise<TransformNode> {
+): Promise<TransformNode[]> {
   const transformer = await context.plugins.getTransformer(root.type);
   switch (root.kind) {
     case "leaf":
-      return transformer(root);
+      return [transformer(root)];
     case "parent":
-      const children = await Promise.all(
-        root.children.map((c) => recursiveTransformation(c, context)),
+      const flatten = (items) => {
+        return items.reduce((a, c) => {
+          if (Array.isArray(c)) {
+            return [...a, ...c];
+          } else return [...a, c];
+        }, [] as TransformNode[]);
+      };
+
+      const children = flatten(
+        await Promise.all(
+          root.children.map((c) => recursiveTransformation(c, context)),
+        ),
       );
 
-      // const children = [];
-      // root.children.forEach(async (c) => {
-      //   const t = await recursiveTransformation(c, context);
-      //   t.forEach((i) => children.push(i));
-      // });
-
-      // if (root.type === NODE_TYPES.document) {
-      //   return children;
-      // } else {
-      const transformed = transformer(root) as TransformNodeParent;
-      transformed.children = children;
-      return transformed;
-    // }
+      switch (root.type) {
+        case NODE_TYPES.document:
+        case NODE_TYPES.directive:
+        case NODE_TYPES.line:
+          return children;
+        default:
+          const transformed = transformer(root) as TransformNodeParent;
+          transformed.children = children;
+          return [transformed];
+      }
   }
 }
 

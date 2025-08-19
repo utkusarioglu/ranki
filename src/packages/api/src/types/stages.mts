@@ -15,10 +15,10 @@ export type ApiStageValidated = Omit<ApiStageParsed, "stage"> & {
 
 export type ApiStageTransformed = Omit<ApiStageValidated, "stage"> & {
   stage: "transformed";
-  transformed: TransformNode;
+  transformed: TransformNode[];
 };
 
 export type ApiStageRendered = Omit<ApiStageTransformed, "stage"> & {
   stage: "rendered";
-  rendered: RenderNodeParent | RenderNodeLeaf;
+  rendered: (RenderNodeParent | RenderNodeLeaf)[];
 };

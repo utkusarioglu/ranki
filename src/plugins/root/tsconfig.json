@@ -11,6 +11,8 @@
     "src/*",
     "src/stages/document/main.mts",
     "src/stages/directive/main.mts",
+    "src/stages/paragraph/main.mts",
+    "src/stages/word/main.mts",
     "src/stages/others/main.mts"
   ],
   "references": [

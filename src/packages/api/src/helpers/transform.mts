@@ -2,6 +2,7 @@ import type {
   TransformNodeLeaf,
   TransformNode,
   TransformNodeParent,
+  TransformNodeAdds,
 } from "../types/stages/transform.mjs";
 import {
   ValidationNodeLeaf,
@@ -10,25 +11,29 @@ import {
 
 export function transformNodeLeaf(
   validationNode: ValidationNodeLeaf,
+  adds: TransformNodeAdds,
 ): TransformNodeLeaf {
   return {
     kind: "leaf",
-    tag: validationNode.type,
+    type: validationNode.type,
     classNames: validationNode.kind,
     styles: "color: pink;",
     text: validationNode.source.toString(),
+    ...adds,
   };
 }
 
 export function transformNodeParent(
   validationNode: ValidationNodeParent,
+  adds: TransformNodeAdds,
   children: TransformNode[],
 ): TransformNodeParent {
   return {
     kind: "parent",
-    tag: validationNode.type,
+    type: validationNode.type,
     classNames: validationNode.kind,
     styles: "color: red;",
     children,
+    ...adds,
   };
 }

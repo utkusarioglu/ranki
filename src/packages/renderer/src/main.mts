@@ -81,6 +81,15 @@ async function recursiveRenderer(
   }
 }
 
+async function arrayRenderer(
+  root: TransformNode[],
+  context: RankiContext,
+): Promise<(RenderNodeParent | RenderNodeLeaf)[]> {
+  return Promise.all(
+    root.map(async (n) => await recursiveRenderer(n, context)),
+  );
+}
+
 export async function render(
   transformed: ApiStageTransformed,
   context: RankiContext,
@@ -88,6 +97,6 @@ export async function render(
   return Promise.resolve({
     ...transformed,
     stage: "rendered",
-    rendered: await recursiveRenderer(transformed.transformed, context),
+    rendered: await arrayRenderer(transformed.transformed, context),
   });
 }

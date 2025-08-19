@@ -18,6 +18,7 @@ export type {
   TransformNode,
   TransformNodeLeaf,
   TransformNodeParent,
+  TransformNodeAdds,
 } from "./stages/transform.mjs";
 
 export type { RenderNodeParent, RenderNodeLeaf } from "./stages/render.mjs";

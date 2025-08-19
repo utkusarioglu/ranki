@@ -6,9 +6,8 @@ import type {
   RenderNodeLeaf,
   RenderNodeParent,
 } from "@ranki/package-api";
-import { NODE_TYPES } from "@ranki/package-api/constants";
 import {
-  astNodeParentIndefinite,
+  astNodeLeaf,
   transformNodeLeaf,
   transformNodeParent,
   validationNodeLeaf,
@@ -18,8 +17,8 @@ import { Html } from "@ranki/package-html";
 
 function validator(root: AstNodeDefinite): ValidationNode {
   const errorsAndWarnings: Pick<ValidationNode, "errors" | "warnings"> = {
-    errors: [`ROOT DEBUG: ${root.type}`],
-    warnings: [`ROOT DEBUG: ${root.type}`],
+    errors: [`DOM DEBUG: ${root.type}`],
+    warnings: [`DOM DEBUG: ${root.type}`],
   };
   switch (root.kind) {
     case "leaf":
@@ -33,18 +32,19 @@ function transformer(root: ValidationNode): TransformNode {
   switch (root.kind) {
     case "leaf":
       const transformed = transformNodeLeaf(root, {
-        tag: "span",
+        tag: "pre",
+        classNames: "pre-leaf",
         styles: "",
-        classNames: "",
       });
+      transformed.classNames += "CUSTOM VALUE";
       return transformed;
     case "parent":
       return transformNodeParent(
         root,
         {
-          tag: "div",
+          tag: "pre",
+          classNames: "pre-parent",
           styles: "",
-          classNames: "",
         },
         [],
       );
@@ -54,9 +54,8 @@ function transformer(root: ValidationNode): TransformNode {
 function renderer(t: TransformNode): RenderNodeLeaf | RenderNodeParent {
   switch (t.kind) {
     case "leaf":
-      const leafElem = Html.single(t.tag, {
+      const leafElem = Html.single("pre", {
         format: "text",
-        className: t.classNames,
         content: t.text,
       });
       return {
@@ -65,9 +64,8 @@ function renderer(t: TransformNode): RenderNodeLeaf | RenderNodeParent {
         element: leafElem,
       };
     case "parent":
-      const parentElem = Html.single(t.tag, {
+      const parentElem = Html.single("pre", {
         format: "html",
-        className: t.classNames,
         children: [],
         // content: JSON.stringify(t),
       });
@@ -83,24 +81,12 @@ function renderer(t: TransformNode): RenderNodeLeaf | RenderNodeParent {
 }
 
 const plugin: PluginComponentStages = {
-  parser: function ({ whitespace, list }, context) {
-    const tokens = this.args.tokens;
-    return astNodeParentIndefinite({
-      type: NODE_TYPES.document,
-      attributes: [
-        {
-          keyword: "hello",
-          values: [
-            {
-              type: "number",
-              value: whitespace.sourceString.length,
-            },
-          ],
-        },
-      ],
-      children: list.eval(tokens).children,
-    });
-  },
+  parser: (n) =>
+    astNodeLeaf({
+      type: "pre",
+      // @ts-expect-error
+      source: n.sourceString,
+    }),
   validator,
   transformer,
   renderer,

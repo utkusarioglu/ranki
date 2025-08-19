@@ -6,9 +6,8 @@ import type {
   RenderNodeLeaf,
   RenderNodeParent,
 } from "@ranki/package-api";
-import { NODE_TYPES } from "@ranki/package-api/constants";
 import {
-  astNodeParentIndefinite,
+  astNodeLeaf,
   transformNodeLeaf,
   transformNodeParent,
   validationNodeLeaf,
@@ -18,8 +17,8 @@ import { Html } from "@ranki/package-html";
 
 function validator(root: AstNodeDefinite): ValidationNode {
   const errorsAndWarnings: Pick<ValidationNode, "errors" | "warnings"> = {
-    errors: [`ROOT DEBUG: ${root.type}`],
-    warnings: [`ROOT DEBUG: ${root.type}`],
+    errors: [`DOM DEBUG: ${root.type}`],
+    warnings: [`DOM DEBUG: ${root.type}`],
   };
   switch (root.kind) {
     case "leaf":
@@ -34,17 +33,18 @@ function transformer(root: ValidationNode): TransformNode {
     case "leaf":
       const transformed = transformNodeLeaf(root, {
         tag: "span",
+        classNames: "span-leaf",
         styles: "",
-        classNames: "",
       });
+      transformed.classNames += "CUSTOM VALUE";
       return transformed;
     case "parent":
       return transformNodeParent(
         root,
         {
-          tag: "div",
+          tag: "span",
+          classNames: "span-parent",
           styles: "",
-          classNames: "",
         },
         [],
       );
@@ -56,7 +56,6 @@ function renderer(t: TransformNode): RenderNodeLeaf | RenderNodeParent {
     case "leaf":
       const leafElem = Html.single(t.tag, {
         format: "text",
-        className: t.classNames,
         content: t.text,
       });
       return {
@@ -67,7 +66,6 @@ function renderer(t: TransformNode): RenderNodeLeaf | RenderNodeParent {
     case "parent":
       const parentElem = Html.single(t.tag, {
         format: "html",
-        className: t.classNames,
         children: [],
         // content: JSON.stringify(t),
       });
@@ -83,24 +81,12 @@ function renderer(t: TransformNode): RenderNodeLeaf | RenderNodeParent {
 }
 
 const plugin: PluginComponentStages = {
-  parser: function ({ whitespace, list }, context) {
-    const tokens = this.args.tokens;
-    return astNodeParentIndefinite({
-      type: NODE_TYPES.document,
-      attributes: [
-        {
-          keyword: "hello",
-          values: [
-            {
-              type: "number",
-              value: whitespace.sourceString.length,
-            },
-          ],
-        },
-      ],
-      children: list.eval(tokens).children,
-    });
-  },
+  parser: (n) =>
+    astNodeLeaf({
+      type: "pre",
+      // @ts-expect-error
+      source: n.sourceString,
+    }),
   validator,
   transformer,
   renderer,

@@ -31,19 +31,33 @@ function validator(root: AstNodeDefinite): ValidationNode {
 function transformer(root: ValidationNode): TransformNode {
   switch (root.kind) {
     case "leaf":
-      const transformed = transformNodeLeaf(root);
+      const transformed = transformNodeLeaf(root, {
+        tag: "p",
+        classNames: "pre-leaf",
+        styles: "",
+      });
       transformed.classNames += "CUSTOM VALUE";
       return transformed;
     case "parent":
-      return transformNodeParent(root, []);
+      return transformNodeParent(
+        root,
+        {
+          tag: "p",
+          classNames: "pre-parent",
+          styles: "",
+        },
+        [],
+      );
   }
 }
 
 function renderer(t: TransformNode): RenderNodeLeaf | RenderNodeParent {
   switch (t.kind) {
     case "leaf":
-      const leafElem = Html.single("pre", {
+      const leafElem = Html.single(t.tag, {
         format: "text",
+        className: t.classNames,
+        style: t.styles,
         content: t.text,
       });
       return {
@@ -52,8 +66,10 @@ function renderer(t: TransformNode): RenderNodeLeaf | RenderNodeParent {
         element: leafElem,
       };
     case "parent":
-      const parentElem = Html.single("pre", {
+      const parentElem = Html.single(t.tag, {
         format: "html",
+        className: t.classNames,
+        style: t.styles,
         children: [],
         // content: JSON.stringify(t),
       });
@@ -72,6 +88,7 @@ const plugin: PluginComponentStages = {
   parser: (n) =>
     astNodeLeaf({
       type: "pre",
+      // @ts-expect-error
       source: n.sourceString,
     }),
   validator,

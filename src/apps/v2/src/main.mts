@@ -75,8 +75,9 @@ async function main() {
     const validated = await validate(parsed, context);
     const transformed = await transform(validated, context);
     const rendered = await render(transformed, context);
-
-    target.appendChild(rendered.rendered.element);
+    rendered.rendered.forEach((r) => {
+      target.appendChild(r.element);
+    });
   }
 }
 
