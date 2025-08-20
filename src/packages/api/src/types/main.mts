@@ -31,14 +31,18 @@ export type {
 } from "./stages.mjs";
 
 export type {
+  PluginComponent,
+  PluginComponentStageName,
   Plugin,
   PluginComponentParser,
   PluginComponentRenderer,
   PluginComponentValidator,
-  FrameTagString,
-  PluginComponentStage,
-  PluginComponentStages,
+  ParseType,
+  ValidationType,
+  TransformType,
+  RenderType,
   PluginComponentTransformer,
+  PluginComponentStageSpec,
 } from "./plugin.mjs";
 
 export type {

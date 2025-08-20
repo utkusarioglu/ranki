@@ -64,7 +64,7 @@ export const CONFIGURATION_VALUES = {
   },
 };
 
-export const NODE_TYPES = {
+export const PARSE_TYPES = {
   frameTagList: "frame_tag_list",
   frameTag: "frame_tag",
   document: "document",

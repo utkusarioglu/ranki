@@ -7,12 +7,7 @@
     "target": "esnext",
     "composite": true
   },
-  "include": [
-    "src/*",
-    "src/stages/pre/main.mts",
-    "src/stages/p/main.mts",
-    "src/stages/span/main.mts"
-  ],
+  "include": ["src/**/*"],
   "references": [
     {
       "path": "../../packages/api"

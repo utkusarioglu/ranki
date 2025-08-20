@@ -6,7 +6,7 @@ import type {
   TransformNodeParent,
   RankiContext,
 } from "@ranki/package-api";
-import { NODE_TYPES } from "@ranki/package-api/constants";
+import { PARSE_TYPES } from "@ranki/package-api/constants";
 
 async function recursiveTransformation(
   root: ValidationNode,
@@ -32,9 +32,9 @@ async function recursiveTransformation(
       );
 
       switch (root.type) {
-        case NODE_TYPES.document:
-        case NODE_TYPES.directive:
-        case NODE_TYPES.line:
+        case PARSE_TYPES.document:
+        case PARSE_TYPES.directive:
+        case PARSE_TYPES.line:
           return children;
         default:
           const transformed = transformer(root) as TransformNodeParent;

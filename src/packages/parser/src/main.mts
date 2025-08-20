@@ -1,5 +1,5 @@
 import * as ohm from "ohm-js";
-import { CONFIGURATION_KEYS, NODE_TYPES } from "@ranki/package-api/constants";
+import { CONFIGURATION_KEYS } from "@ranki/package-api/constants";
 import type {
   AstNodeDefinite,
   ApiStageParsed,

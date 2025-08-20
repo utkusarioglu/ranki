@@ -1,5 +1,5 @@
 import type {
-  FrameTagString,
+  ParseType,
   Plugin,
   PluginComponentParser,
   PluginComponentRenderer,
@@ -9,10 +9,10 @@ import type {
 
 export interface RankiPlugins {
   register(plugin: Plugin): void;
-  getParser(tag: FrameTagString): Promise<PluginComponentParser>;
-  getRenderer(tag: FrameTagString): Promise<PluginComponentRenderer>;
-  getValidator(tag: FrameTagString): Promise<PluginComponentValidator>;
-  getTransformer(tag: FrameTagString): Promise<PluginComponentTransformer>;
+  getParser(tag: ParseType): Promise<PluginComponentParser>;
+  getRenderer(tag: ParseType): Promise<PluginComponentRenderer>;
+  getValidator(tag: ParseType): Promise<PluginComponentValidator>;
+  getTransformer(tag: ParseType): Promise<PluginComponentTransformer>;
 }
 
 export interface RankiConfig {

@@ -1,22 +1,18 @@
 import type { Plugin } from "@ranki/package-api";
+import { p } from "./components/p/main.mjs";
+import { span } from "./components/span/main.mjs";
+import { pre } from "./components/pre/main.mjs";
 
 const plugin: Plugin = {
   metadata: {
     name: "html dom elements",
   },
   components: [
-    {
-      tags: ["pre"],
-      stages: async () => (await import("./stages/pre/main.mjs")).default,
-    },
-    {
-      tags: ["p"],
-      stages: async () => (await import("./stages/p/main.mjs")).default,
-    },
-    {
-      tags: ["span"],
-      stages: async () => (await import("./stages/span/main.mjs")).default,
-    },
+    // TODO these are disabled because they clash with root
+    // TODO and the error messages aren't informative enough, fix that
+    // p,
+    // span,
+    pre,
   ],
 };
 

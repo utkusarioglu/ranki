@@ -8,7 +8,7 @@ import {
   astNodeParentIndefinite,
   astNodeUnparsed,
 } from "@ranki/package-api/helpers";
-import { NODE_TYPES, CONFIGURATION_KEYS } from "@ranki/package-api/constants";
+import { PARSE_TYPES, CONFIGURATION_KEYS } from "@ranki/package-api/constants";
 import * as ohm from "ohm-js";
 // import { directiveParamsToDict, produceGrammar } from "./main.mjs";
 
@@ -71,7 +71,7 @@ export function createActions(
     nonemptyListOf(item, sep, rest) {
       const tokens = this.args.tokens;
       return astNodeParentIndefinite({
-        type: NODE_TYPES.nonemptyList,
+        type: PARSE_TYPES.nonemptyList,
         children: [item.eval(tokens), ...rest.eval(tokens).children],
       });
     },
@@ -84,7 +84,7 @@ export function createActions(
     _iter(...children) {
       const tokens = this.args.tokens;
       return astNodeParentIndefinite({
-        type: NODE_TYPES.iter,
+        type: PARSE_TYPES.iter,
         children: children.map((v) => v.eval(tokens)),
       });
     },
@@ -97,7 +97,7 @@ export function createActions(
     },
     frTag(tag) {
       return astNodeLeaf({
-        type: NODE_TYPES.frameTag,
+        type: PARSE_TYPES.frameTag,
         source: tag.sourceString,
       });
     },
@@ -106,7 +106,7 @@ export function createActions(
       const tagList = slFrTagList.eval(tokens);
       const tagListValues = tagList.children.children.map((v) => v.source);
       return astNodeUnparsed({
-        type: NODE_TYPES.frame,
+        type: PARSE_TYPES.frame,
         configuration: [
           {
             keyword: CONFIGURATION_KEYS.frame.tag.list,
@@ -120,14 +120,14 @@ export function createActions(
     params(list, post) {
       const tokens = this.args.tokens;
       return astNodeParentIndefinite({
-        type: NODE_TYPES.parameters,
+        type: PARSE_TYPES.parameters,
         children: list.eval(tokens),
       });
     },
     param_assignment(paramKey, sbA, paramValue) {
       const tokens = this.args.tokens;
       return astNodeParentIndefinite({
-        type: NODE_TYPES.parameter,
+        type: PARSE_TYPES.parameter,
         parameters: [
           {
             keyword: paramKey.sourceString,
@@ -163,27 +163,27 @@ export function createActions(
     paragraph(list, post) {
       const tokens = this.args.tokens;
       return astNodeParentIndefinite({
-        type: NODE_TYPES.paragraph,
+        type: PARSE_TYPES.paragraph,
         children: list.eval(tokens).children,
       });
     },
     line_default(indentation, list, spaces) {
       const tokens = this.args.tokens;
       return astNodeParentIndefinite({
-        type: NODE_TYPES.line,
+        type: PARSE_TYPES.line,
         children: list.eval(tokens).children,
       });
     },
     lineWordPrimitive_mixed(word) {
       return astNodeLeaf({
-        type: NODE_TYPES.word,
+        type: PARSE_TYPES.word,
         source: word.sourceString,
       });
     },
     line_heading(indentation, h, spaces1, line, spaces2) {
       const tokens = this.args.tokens;
       return astNodeParentIndefinite({
-        type: NODE_TYPES.heading,
+        type: PARSE_TYPES.heading,
         children: line.eval(tokens).children,
       });
     },
