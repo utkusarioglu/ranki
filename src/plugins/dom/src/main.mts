@@ -1,11 +1,12 @@
 import type { Plugin } from "@ranki/package-api";
-import { p } from "./components/p/main.mjs";
-import { span } from "./components/span/main.mjs";
+// import { p } from "./components/p/main.mjs";
+// import { span } from "./components/span/main.mjs";
 import { pre } from "./components/pre/main.mjs";
 
 const plugin: Plugin = {
   metadata: {
     name: "html dom elements",
+    loadMethod: "lazy",
   },
   components: [
     // TODO these are disabled because they clash with root

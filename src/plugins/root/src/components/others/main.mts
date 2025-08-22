@@ -18,7 +18,7 @@ export const others: PluginComponent = {
     action: () => Promise.resolve(transformer),
   },
   renderer: {
-    types: ["line", "heading", "span", "p"],
+    types: ["line", "heading", "p"],
     action: () => Promise.resolve(renderer),
   },
 };

@@ -1,20 +1,15 @@
-import type {
-  AstNodeIndefinite,
-  // PluginComponentParser,
-  RankiContext,
-} from "@ranki/package-api";
+import type { AstNodeIndefinite, RankiContext } from "@ranki/package-api";
 import {
   astNodeLeaf,
   astNodeParentIndefinite,
   astNodeUnparsed,
+  zip,
 } from "@ranki/package-api/helpers";
 import { PARSE_TYPES, CONFIGURATION_KEYS } from "@ranki/package-api/constants";
 import * as ohm from "ohm-js";
-// import { directiveParamsToDict, produceGrammar } from "./main.mjs";
 
 export function createActions(
   context: RankiContext,
-  // parsers: { document: PluginComponentParser },
 ): ohm.ActionDict<AstNodeIndefinite> {
   return {
     document(whitespace, list) {
@@ -41,33 +36,38 @@ export function createActions(
       );
     },
 
-    // dir(pre, sb1, params, sArg, dirContent, sb2, post) {
-    //   const tokens = this.args.tokens;
-    //   const paramsParsed = params
-    //     .eval(tokens)
-    //     .children.children.map((v) => v.parameters)
-    //     .reduce((a, c) => [...a, ...c], []);
-    //   const dirTokens = directiveParamsToDict(paramsParsed);
-    //   const newTokens = { ...tokens, ...dirTokens };
-    //   const localGrammar = produceGrammar(newTokens);
-    //   const localSemantics = localGrammar
-    //     .createSemantics()
-    //     .addOperation<AstNodeIndefinite>(
-    //       "eval(tokens)",
-    //       createActions(context),
-    //     );
-    //   const localMatch = localGrammar.match(
-    //     dirContent.sourceString,
-    //     "document",
-    //   );
-    //   const children = [localSemantics(localMatch).eval(newTokens)];
-    //   return astNodeParentIndefinite({
-    //     type: NODE_TYPES.directive,
-    //     children,
-    //     // source: "!coming!",
-    //   });
-    // },
-
+    lineBreak(lb) {
+      return astNodeLeaf({
+        type: "lineBreak",
+        source: lb.sourceString,
+      });
+    },
+    spacePlus(spaces) {
+      return astNodeLeaf({
+        type: "spacePlus",
+        source: spaces.sourceString,
+      });
+    },
+    lineList(item, sep, rest) {
+      const tokens = this.args.tokens;
+      return astNodeParentIndefinite({
+        type: "lineList",
+        children: [
+          item.eval(tokens),
+          ...zip(sep.eval(tokens).children, rest.eval(tokens).children),
+        ],
+      });
+    },
+    lineContentList(item, sep, rest) {
+      const tokens = this.args.tokens;
+      return astNodeParentIndefinite({
+        type: PARSE_TYPES.nonemptyList,
+        children: [
+          item.eval(tokens),
+          ...zip(sep.eval(tokens).children, rest.eval(tokens).children),
+        ],
+      });
+    },
     nonemptyListOf(item, sep, rest) {
       const tokens = this.args.tokens;
       return astNodeParentIndefinite({

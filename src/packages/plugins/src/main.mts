@@ -13,94 +13,33 @@ import {
   RenderType,
 } from "@ranki/package-api";
 import { StageLibrary } from "./stage-library.mjs";
-
-// export class PluginsOld implements RankiPlugins {
-//   private stages: PluginComponentStageName[] = [];
-//   private plugins: Plugin[] = [];
-//   private tags = new Map<ParseType, [number, number, number]>();
-
-//   register(plugin: Plugin) {
-//     const pluginIndex = this.plugins.push(plugin) - 1;
-//     plugin.components.forEach((component, componentIndex) => {
-//       component.tags.forEach((tag) => {
-//         if (this.tags.has(tag)) {
-//           throw new Error(`${tag} already registered`);
-//         }
-//         this.tags.set(tag, [pluginIndex, componentIndex, -Infinity]);
-//       });
-//     });
-//   }
-
-//   private getPluginIndex(tagListString) {
-//     if (!this.tags.has(tagListString)) {
-//       throw new Error(`No plugin handles tag "${tagListString}"`);
-//     }
-//     return this.tags.get(tagListString);
-//   }
-
-//   private async getPluginStage(
-//     tagListString: ParseType,
-//     stage: PluginComponentStageName,
-//   ): Promise<PluginComponentStages[typeof stage]> {
-//     const [pluginIndex, componentIndex, stageIndex] =
-//       this.getPluginIndex(tagListString);
-//     if (stageIndex !== -Infinity) {
-//       return this.stages[stageIndex][stage];
-//     }
-//     const stages = await this.plugins[pluginIndex].components[
-//       componentIndex
-//     ].stages();
-//     const newStageIndex = this.stages.push(stages) - 1;
-//     this.tags.set(tagListString, [pluginIndex, componentIndex, newStageIndex]);
-//     return stages[stage];
-//   }
-
-//   async getParser(tag: ParseType) {
-//     return this.getPluginStage(tag, "parser") as Promise<PluginComponentParser>;
-//   }
-
-//   async getRenderer(tag: ParseType) {
-//     return this.getPluginStage(
-//       tag,
-//       "renderer",
-//     ) as Promise<PluginComponentRenderer>;
-//   }
-
-//   async getValidator(tag: ParseType) {
-//     return this.getPluginStage(
-//       tag,
-//       "validator",
-//     ) as Promise<PluginComponentValidator>;
-//   }
-//   async getTransformer(tag: ParseType) {
-//     return this.getPluginStage(
-//       tag,
-//       "transformer",
-//     ) as Promise<PluginComponentTransformer>;
-//   }
-// }
-
 export class Plugins implements RankiPlugins {
   private plugins: Plugin[] = [];
-  private parsers = new StageLibrary<ParseType, PluginComponentParser>();
+  private parsers = new StageLibrary<ParseType, PluginComponentParser>(
+    "parser",
+  );
   private validators = new StageLibrary<
     ValidationType,
     PluginComponentValidator
-  >();
+  >("validator");
   private transformers = new StageLibrary<
     TransformType,
     PluginComponentTransformer
-  >();
-  private renderers = new StageLibrary<RenderType, PluginComponentRenderer>();
+  >("transformer");
+  private renderers = new StageLibrary<RenderType, PluginComponentRenderer>(
+    "renderer",
+  );
 
+  // TODO this doesn't await plugin loads.
+  // you need many layers of promise.alls to have this thing load everything
   register(plugin: Plugin): void {
     this.plugins.push(plugin);
     plugin.components.forEach(
       ({ parser, validator, transformer, renderer }) => {
-        this.parsers.insertStage(parser);
-        this.validators.insertStage(validator);
-        this.transformers.insertStage(transformer);
-        this.renderers.insertStage(renderer);
+        this.parsers.insertStage(parser, plugin.metadata);
+        this.validators.insertStage(validator, plugin.metadata);
+        this.transformers.insertStage(transformer, plugin.metadata);
+        this.renderers.insertStage(renderer, plugin.metadata);
       },
     );
   }

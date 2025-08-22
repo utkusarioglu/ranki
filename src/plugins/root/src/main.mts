@@ -4,12 +4,14 @@ import { paragraph } from "./components/paragraph/main.mjs";
 import { others } from "./components/others/main.mjs";
 import { word } from "./components/word/main.mjs";
 import { document } from "./components/document/main.mjs";
+import { span } from "./components/span/main.mjs";
 
 const plugin: Plugin = {
   metadata: {
     name: "Ranki root elements",
+    loadMethod: "preload",
   },
-  components: [document, directive, paragraph, word, others],
+  components: [document, directive, paragraph, word, others, span],
 };
 
 export default plugin;

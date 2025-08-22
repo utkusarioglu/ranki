@@ -30,8 +30,11 @@ export type ValidationType = string;
 export type TransformType = string;
 export type RenderType = string;
 
+type LoadMethod = "lazy" | "preload";
+
 interface PluginMetadata {
   name: string;
+  loadMethod: LoadMethod;
 }
 
 // export interface PluginComponentStages {

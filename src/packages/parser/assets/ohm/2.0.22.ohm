@@ -6,6 +6,7 @@ RankiGrammar <: RankiConfig {
 
   // Separators
   indentation = spaces
+  spacePlus = space+
   whitespace = sb<nl>*
   sb<elem> = spaces elem spaces
   wrap<wrapper, elem> = wrapper (~wrapper elem)* wrapper
@@ -48,10 +49,15 @@ RankiGrammar <: RankiConfig {
   block = fr ~(spaces nonemptyListOf<lineWord, spaces>) | paragraph
 
   // Text
-  paragraph = nonemptyListOf<line, nl> nl?
+  lineBreak = nl
+  paragraph = lineList<line, lineBreak> nl?
+  lineList<elem, sep> 
+    = elem (sep elem)*
   line
-    = indentation h+ space+ line spaces --heading
-    | indentation nonemptyListOf<lineContent, spaces> spaces --default
+    = indentation h+ spacePlus line spaces --heading
+    | indentation lineContentList<lineContent, spacePlus> spaces --default
+  lineContentList<elem, sep> 
+    = elem (sep elem)*
   lineContent = fr | lineWord
   lineWord
     = wrap<em, lineWord> --emphasis

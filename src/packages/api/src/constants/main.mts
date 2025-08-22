@@ -65,6 +65,7 @@ export const CONFIGURATION_VALUES = {
 };
 
 export const PARSE_TYPES = {
+  spacePlus: "spacePlus",
   frameTagList: "frame_tag_list",
   frameTag: "frame_tag",
   document: "document",

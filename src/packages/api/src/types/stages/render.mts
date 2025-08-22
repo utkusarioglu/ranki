@@ -1,7 +1,7 @@
 export interface RenderNodeLeaf {
   selector: string;
   component: string;
-  element: HTMLElement;
+  element: HTMLElement | Text;
 }
 
 export interface RenderNodeParent {

@@ -7,30 +7,7 @@ import { validate } from "@ranki/package-validator";
 import { render } from "@ranki/package-renderer";
 import { transform } from "@ranki/package-transformer";
 import type { RankiContext } from "@ranki/package-api";
-
-function populate() {
-  document.querySelector<HTMLScriptElement>(
-    "script.ranki-field.a",
-  )!.innerHTML = `
-%%%
-cat
-
-# bunny _cat_
-
-meow meow
-
-:::pre; asdfs :::
-
-:::pre
-dog
-sdf
-/rrrr/
-:::
-  `;
-  document.querySelector<HTMLScriptElement>(
-    "script.ranki-field.b",
-  )!.innerHTML = `normal text`;
-}
+import { populate } from "./populate.mts";
 
 async function main() {
   const htmlConfig = document.querySelector(

@@ -3,7 +3,7 @@ import { astNodeLeaf } from "@ranki/package-api/helpers";
 
 export const parser: PluginComponentParser = (n) =>
   astNodeLeaf({
-    type: "pre",
+    type: "span",
     // @ts-expect-error
     source: n.sourceString,
   });
