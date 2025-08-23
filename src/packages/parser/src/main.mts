@@ -3,7 +3,6 @@ import { CONFIGURATION_KEYS } from "@ranki/package-api/constants";
 import type {
   AstNodeDefinite,
   ApiStageParsed,
-  // AstNodeParameter,
   AstNodeIndefinite,
   RankiContext,
   RankiConfig,
@@ -12,22 +11,6 @@ import grammarStr from "../assets/ohm/2.0.22.ohm?raw";
 import { createActions } from "./actions.mjs";
 import { astNodeParentDefinite } from "@ranki/package-api/helpers";
 export { createActions } from "./actions.mjs";
-
-// export function directiveParamsToDict(
-//   params: AstNodeParameter[],
-// ): RankiConfig["tokens"] {
-//   return params.reduce((a, { keyword, values }) => {
-//     if (values.length !== 1) {
-//       throw new Error(
-//         `Directive params can only accept single values: ${JSON.stringify(
-//           values,
-//         )}`,
-//       );
-//     }
-//     a[keyword] = values[0].value;
-//     return a;
-//   }, {} as RankiConfig["tokens"]);
-// }
 
 function stringifyConfig(tokens: RankiConfig["tokens"]) {
   const configStr = [

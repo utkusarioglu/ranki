@@ -8,10 +8,30 @@ import {
 import { PARSE_TYPES, CONFIGURATION_KEYS } from "@ranki/package-api/constants";
 import * as ohm from "ohm-js";
 
+const common: ohm.ActionDict<AstNodeIndefinite> = {
+  fr(indentation, pre, slFrTagList, frConfig, frContent, post) {
+    const tokens = this.args.tokens;
+    const tagList = slFrTagList.eval(tokens);
+    const tagListValues = tagList.children.children.map((v) => v.source);
+    return astNodeUnparsed({
+      type: PARSE_TYPES.frame,
+      configuration: [
+        {
+          keyword: CONFIGURATION_KEYS.frame.tag.list,
+          values: tagListValues,
+        },
+      ],
+      ohm: frContent,
+      // children: [parsed],
+    });
+  },
+};
+
 export function createActions(
   context: RankiContext,
 ): ohm.ActionDict<AstNodeIndefinite> {
   return {
+    ...common,
     document(whitespace, list) {
       return context.root.parsers.document.call(
         this,
@@ -42,9 +62,9 @@ export function createActions(
         source: lb.sourceString,
       });
     },
-    spacePlus(spaces) {
+    clearance(spaces) {
       return astNodeLeaf({
-        type: "spacePlus",
+        type: "clearance",
         source: spaces.sourceString,
       });
     },
@@ -99,22 +119,6 @@ export function createActions(
       return astNodeLeaf({
         type: PARSE_TYPES.frameTag,
         source: tag.sourceString,
-      });
-    },
-    fr(indentation, pre, slFrTagList, frConfig, frContent, post) {
-      const tokens = this.args.tokens;
-      const tagList = slFrTagList.eval(tokens);
-      const tagListValues = tagList.children.children.map((v) => v.source);
-      return astNodeUnparsed({
-        type: PARSE_TYPES.frame,
-        configuration: [
-          {
-            keyword: CONFIGURATION_KEYS.frame.tag.list,
-            values: tagListValues,
-          },
-        ],
-        ohm: frContent,
-        // children: [parsed],
       });
     },
     params(list, post) {

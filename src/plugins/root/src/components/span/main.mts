@@ -18,15 +18,15 @@ export const span: PluginComponent = {
     action: () => Promise.resolve(parser),
   },
   validator: {
-    types: ["span", "lineBreak", "spacePlus"],
+    types: ["span", "lineBreak", "clearance"],
     action: () => Promise.resolve(validator),
   },
   transformer: {
-    types: ["span", "lineBreak", "spacePlus"],
+    types: ["span", "lineBreak", "clearance"],
     action: () => Promise.resolve(transformer),
   },
   renderer: {
-    types: ["span", "spacePlus"],
+    types: ["span", "clearance"],
     action: () => Promise.resolve(renderer),
   },
 };
