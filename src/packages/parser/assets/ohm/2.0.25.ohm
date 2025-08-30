@@ -1,0 +1,190 @@
+RankiConfig {
+  negation = "!"
+  sep_parameter = ","
+  sep_argument = ";"
+  assignment = "="
+  quote_single = "\""
+  quote_double = "'"
+  directive = "%%%"
+  frame = ":::"
+  pause = "---"
+  h = "#"
+  em = "/"
+  b = "*"
+  i = "_"
+  space := " " | "\t"
+  nl = "\n" | "\r"
+
+  shorthand = "%:"
+}
+
+RankiRoot <: RankiConfig {
+  document = whitespace documentList whitespace
+  documentList = block? (blockSep block)*
+
+  pauseDocument = whitespace pauseList whitespace
+  pauseList = block? (pauseSep block)*
+  pauseSep = whitespace pause whitespace
+
+  block =  dirBlock | frBlock | p
+  blockSep = nl+
+  
+  // Param
+  param
+    = paramKey wi assignment wi paramValue --assignment
+    | negation paramKey --negative
+    | paramKey --positive
+  paramKey = letter (paramKeyLegal)*
+  paramKeyLegal = letter | "_" | "-"
+  paramValue = paramValueItem (spaces paramValueItem)*
+  paramValueItem
+    = quoted<quote_single>
+    | quoted<quote_double>
+    | frInline
+    | frBlock
+    | paramValueItemPrimitive
+
+  quoted<q> = q quotedContent<q>* q
+  quotedContent<q> 
+    = "\\" q --escaped
+    | ~q any --content
+  
+  paramValueItemPrimitive
+    = digit+ --number
+    | caseInsensitive<"true"> --true
+    | caseInsensitive<"false"> --false
+    | upper+ --uppercase
+    | lower+ --lowercase
+    | letter+ --mixed
+  
+  // Params
+  paramList = param (paramSep param)*
+  paramSep 
+    = wi sep_parameter? wi nl wi --multiline
+    | wi sep_parameter wi --inline
+  
+  // directive
+  dirBlock
+    = directive wi wm+ 
+        dirArgs 
+        argSep 
+        dirPayload 
+      (directive | end)
+  dirInline = directive wi dirArgs sep_argument dirPayload directive
+  dirArgs = paramList
+  dirPayload = document
+  
+  // Args
+  argSep 
+    = wi sep_argument? nl wi nl --multiline
+    | wi sep_argument wi --inline
+    
+  // unused rn
+  frInline
+    = frame wi 
+        frType wi 
+          sep_parameter wi 
+        frArgs wi 
+          sep_argument 
+        frParams wi
+          sep_argument
+        frPayload 
+       frame --ap
+    | frame wi 
+        frType wi 
+          sep_parameter wi 
+        frArgs wi 
+          sep_argument 
+        frParams wi
+          sep_argument
+        frPayload 
+       frame --p
+    | frame wi 
+        frType wi 
+          sep_parameter wi 
+        frArgs wi 
+          sep_argument 
+        frPayload 
+      frame --a
+    | frame wi 
+        frType wi 
+          sep_argument 
+        frPayload 
+      frame --n
+    | frame wi 
+        frType wi 
+      frame --e
+    
+  frBlock
+    = frame wi 
+        frType wi 
+          sep_parameter? wi 
+          nl wi
+        frArgs wi 
+          (sep_argument | nl) wi 
+          whitespace
+        frParams wi
+          (sep_argument | nl) wi
+          nl wi
+        frPayload 
+      (frame | end) --argsParams
+    | frame wi 
+        frType wi 
+          sep_parameter? wi 
+          nl wi
+        frParams wi
+          (sep_argument | nl) wi
+          nl wi
+        frPayload 
+      (frame | end) --params
+    | frame wi 
+        frType wi 
+          sep_argument wi 
+          nl wi
+        frArgs wi 
+          (sep_argument | nl) wi 
+          nl wi
+        frPayload 
+      (frame | end) --args
+    | frame wi 
+        frType wi 
+          sep_argument? wi 
+          nl wi
+        frPayload 
+      (frame | end) --none
+     
+  frType = letter (space | letter)*
+  frArgs = paramList
+  frParams = paramList
+  frPayload = pauseDocument
+
+  p = pLine (nl pLine)*
+  pLine = indentation pContent (clearance pContent)*
+  pContent 
+    = dirInline
+    | frInline
+    | pProse
+  pProse = pHeading? pDecoration (clearance pDecoration)*
+  pHeading = h+ clearance
+  pDecoration
+    = em pDecoration em --emphasis
+    | b pDecoration b --bold
+    | i pDecoration i --idiomatic
+    | pText --text
+  pText = pWord (clearance pWord)*
+  pWord = (~pIllegal pWordType)+
+  pWordType
+    = digit+ --number
+    | upper+ --uppercase
+    | lower+ --lowercase
+    | letter+ --mixed
+  pIllegal = frame | directive | pause | nl | space | em | b | i 
+  
+  indentation = spaces
+  wi (waste inline) 
+    = spaces
+  wm (waste multiline) 
+    = spaces nl
+  clearance = space+
+  whitespace = wm* wi
+}

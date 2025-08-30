@@ -8,6 +8,7 @@ import type {
   RankiConfig,
 } from "@ranki/package-api";
 import grammarStr from "../assets/ohm/2.0.22.ohm?raw";
+// import grammarStr from "../assets/ohm/2.0.24.ohm?raw";
 import { createActions } from "./actions.mjs";
 import { astNodeParentDefinite } from "@ranki/package-api/helpers";
 export { createActions } from "./actions.mjs";
@@ -19,6 +20,11 @@ function stringifyConfig(tokens: RankiConfig["tokens"]) {
       const value = typeof v === "string" ? v.replace('"', '\\"') : v;
       return `  ${k} = "${value}"`;
     }),
+    ...[
+      // always overridden
+      `  space := " " | "\\t"`,
+      `  nl = "\\n" | "\\r"`,
+    ],
     "}",
   ].join("\n");
   return configStr;

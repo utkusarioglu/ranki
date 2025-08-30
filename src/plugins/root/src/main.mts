@@ -9,7 +9,8 @@ import { span } from "./components/span/main.mjs";
 const plugin: Plugin = {
   metadata: {
     name: "Ranki root elements",
-    loadMethod: "preload",
+    // loadMethod: "preload",
+    preload: ["parser", "validator", "transformer", "renderer"],
   },
   components: [document, directive, paragraph, word, others, span],
 };

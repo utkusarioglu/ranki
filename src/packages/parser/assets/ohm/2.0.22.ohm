@@ -1,8 +1,8 @@
 RankiGrammar <: RankiConfig {
   document = whitespace nonemptyListOf<section, nl+>
 
-  space := " " | "\t"
-  nl = "\n" | "\r"
+  // space := " " | "\t"
+  // nl = "\n" | "\r"
 
   // Separators
   indentation = spaces

@@ -30,19 +30,10 @@ export type ValidationType = string;
 export type TransformType = string;
 export type RenderType = string;
 
-type LoadMethod = "lazy" | "preload";
-
 interface PluginMetadata {
   name: string;
-  loadMethod: LoadMethod;
+  preload: (keyof PluginComponent)[];
 }
-
-// export interface PluginComponentStages {
-//   parser: PluginComponentParser;
-//   validator: PluginComponentValidator;
-//   transformer: PluginComponentTransformer;
-//   renderer: PluginComponentRenderer;
-// }
 
 export type PluginComponentStageName = keyof PluginComponent;
 
@@ -51,45 +42,20 @@ export type PluginComponentStageSpec<TagType, ActionType> = {
   action: () => Promise<ActionType>;
 };
 
-// interface PluginComponent {
-//   tags: FrameTagString[];
-//   stages: () => Promise<PluginComponentStages>;
-// }
-
-// export interface PluginComponentParserSpec {
-//   parseTypes: ParseType[];
-//   action: () => Promise<PluginComponentParser>;
-// }
-
 export type PluginComponentParserSpec = PluginComponentStageSpec<
   ParseType,
   PluginComponentParser
 >;
-
-// export interface PluginComponentValidatorSpec {
-//   validationTypes: ValidationType[];
-//   action: () => Promise<PluginComponentValidator>;
-// }
 
 export type PluginComponentValidatorSpec = PluginComponentStageSpec<
   ValidationType,
   PluginComponentValidator
 >;
 
-// export interface PluginComponentTransformerSpec {
-//   transformTypes: TransformType[];
-//   action: () => Promise<PluginComponentTransformer>;
-// }
-
 export type PluginComponentTransformerSpec = PluginComponentStageSpec<
   TransformType,
   PluginComponentTransformer
 >;
-
-// export interface PluginComponentRendererSpec {
-//   renderTypes: RenderType[];
-//   action: () => Promise<PluginComponentRenderer>;
-// }
 
 export type PluginComponentRendererSpec = PluginComponentStageSpec<
   RenderType,
