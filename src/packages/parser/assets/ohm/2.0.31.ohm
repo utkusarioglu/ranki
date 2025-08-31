@@ -1,0 +1,342 @@
+RankiConfig {
+  negation = "!"
+  sep_left = ","
+  sep_right = ";"
+  assignment = "="
+  quote_single = "\""
+  quote_double = "'"
+
+  directive = "%%%"
+  frame = ":::"
+  pause = "-"
+
+  directive_short = "%"
+  frame_short = ":"
+
+  h = "#"
+  em = "+"
+  b = "*"
+  i = "/"
+  u = "_"
+  
+  space := " " | "\t"
+  nl = "\n" | "\r"
+}
+
+RankiRoot <: RankiConfig {
+  document = whitespace documentList whitespace
+  documentList = block? (blockSep block)*
+
+  pauseDocument = whitespace pauseList whitespace
+  pauseList = block? (pauseSep block)*
+  pauseSep = whitespace pause digit pause whitespace
+
+  block 
+    =  dirBlock wi ~pLine --dir
+    | frBlock wi ~pLine --fr
+    | p
+  blockSep = nl+
+  
+  // Param
+  param
+    = paramKey wi assignment wi paramValue --assignment
+    | negation paramKey --negative
+    | paramKey --positive
+  paramKey = letter (paramKeyLegal)*
+  paramKeyLegal = letter | "_" | "-"
+  paramValue = paramValueItem (spaces paramValueItem)*
+  paramValueItem
+    = quoted<quote_single>
+    | quoted<quote_double>
+    | frInline
+    | frBlock
+    | paramValueItemPrimitive
+
+  quoted<q> = q quotedContent<q>* q
+  quotedContent<q> 
+    = "\\" q --escaped
+    | ~q any --content
+  
+  paramValueItemPrimitive
+    = digit+ --number
+    | caseInsensitive<"true"> --true
+    | caseInsensitive<"false"> --false
+    | upper+ --uppercase
+    | lower+ --lowercase
+    | letter+ --mixed
+  
+  leftSepBlock 
+    =   wi 
+      sep_left? wi 
+        nl wi
+  leftSepInline 
+    =   wi 
+      sep_left wi
+  paramListInline = param (leftSepInline param)*
+  paramListBlock = param (leftSepBlock param)*
+  
+  // directive
+  dirBlock
+    = directive wi 
+          wm+ 
+        dirLeftBlock
+        rightSepBlock 
+        dirPayload 
+      (directive | end)
+  dirInline = directive wi dirLeftInline sep_right dirPayload directive
+  dirLeftBlock = paramListBlock
+  dirLeftInline = paramListInline
+  dirPayload = document
+  
+  // Args
+  rightSepBlock = wi sep_right? nl wi nl
+  rightSepInline = wi sep_right wi 
+    
+  frInline
+    = frStart wi
+          sep_left wi 
+        frLeftInline wi 
+          sep_right wi
+        frRightInline wi
+          sep_right wi
+        frInlinePayload 
+       frame --clsrsp
+    | frStart wi
+          sep_right wi
+        frRightInline wi
+          sep_right wi
+        frInlinePayload 
+       frame --srsp
+    | frStart wi
+          sep_right wi
+        frBlockPayload 
+      frame --sp
+    | frStart wi
+          sep_left wi 
+        frLeftInline wi 
+          sep_right
+        frInlinePayload 
+      frame --clsp
+    | frStart wi
+          sep_left wi 
+        frLeftInline wi 
+      frame --cl
+    | frStart wi
+      frame --e
+      
+  frStart = frame wi frType
+  frBlockEnd
+    = frame --explicit
+    | end -- implicit
+  frType = letter (space | letter)*
+  frLeftInline = paramListInline
+  frRightInline = paramListInline
+  frLeftBlock = paramListBlock
+  frRightBlock = paramListBlock
+  frBlockPayload = pauseDocument
+  frInlinePayload = pauseDocument
+
+  p = pLine (nl pLine)*
+  pLine = indentation pContent (clearance pContent)*
+  pContent 
+    = shortInline
+    | dirInline
+    | frInline
+    | pProse
+  pProse = pHeading? pDecoration (clearance pDecoration)*
+  pHeading = h+ clearance
+  pDecoration
+    = em pDecoration em --emphasis
+    | b pDecoration b --bold
+    | i pDecoration i --idiomatic
+    | u pDecoration u --underline
+    | pText --text
+  pText = pWord (clearance pWord)*
+  pWord
+    = (~pIllegal digit)+ &clearance --number
+    | (~pIllegal upper)+ &clearance --uppercase
+    | (~pIllegal lower)+ &clearance --lowercase
+    | (~pIllegal letter)+ &clearance --chars
+    | (~pIllegal any)+ --mixed
+  pIllegal = shortEnd | frame | directive | pause | nl | space | em | b | i | u 
+  
+  indentation = spaces
+  wi (waste inline) 
+    = spaces
+  wm (waste multiline) 
+    = spaces nl
+  clearance = space+
+  whitespace = wm* wi
+      
+  // FRAME BLOCK
+  frBlock
+    = frBlockLrpBV2 
+    | frBlockLrpIV2
+    | frBlockLpBV2
+    | frBlockLpIV2
+    | frBlockRpBV2
+    | frBlockRpIV1
+    | frBlockPV2
+    | frBlockPV1
+    
+ frBlockPV1 (Ranki V1 payload blocks)
+    = frStart wi
+          sep_right wi 
+          nl wi
+        frBlockPayload 
+      frBlockEnd --sP
+    | frStart wi
+          nl wi
+        frBlockPayload 
+      frBlockEnd --P
+      
+  frBlockPV2 (p family)
+    = frStart wi
+          sep_right wi 
+          sep_right wi
+          nl wi
+        frBlockPayload 
+      frBlockEnd --ssP
+
+  frBlockRpIV1 (Ranki V1 right inline blocks)
+    = frStart wi
+          sep_right wi 
+        frRightInline wi
+          sep_right wi
+          nl wi
+        frBlockPayload 
+      frBlockEnd --srsP
+    | frStart wi
+          sep_right wi 
+        frRightInline wi
+          nl wi
+        frBlockPayload 
+      frBlockEnd --srP
+
+  frBlockLrpIV2 (Ranki V2 lrp block)
+    = frStart wi
+           sep_left wi
+         frLeftInline wi
+           sep_right wi
+         frRightInline wi
+           sep_right wi
+           nl wi
+         frBlockPayload
+       frBlockEnd --clsrsP
+    |  frStart wi
+           sep_left wi
+         frLeftInline wi
+           sep_right wi
+         frRightInline wi
+           nl wi
+         frBlockPayload
+       frBlockEnd --clsrP
+       
+  frBlockLpIV2 (Ranki V2 lp block)
+    = frStart wi
+           sep_left wi
+         frLeftInline wi
+           sep_right wi
+           nl wi
+         frBlockPayload
+       frBlockEnd --clsP
+     | frStart wi
+           sep_left wi
+         frLeftInline wi
+           nl wi
+         frBlockPayload
+       frBlockEnd --clP
+         
+    frBlockLrpBV2 (Ranki V2 lrp Block family)
+      = frStart wi
+            sep_left wi
+          frLeftInline wi
+            sep_right wi
+            nl wi
+          frRightBlock wi
+            sep_right wi
+            nl wi
+          frBlockPayload 
+         frBlockEnd  --clsRsP
+       | frStart wi
+            sep_left wi
+          frLeftInline wi
+            sep_right wi
+            nl wi
+          frRightBlock wi
+            nl wi
+          frBlockPayload
+         frBlockEnd --clsRP
+       | frStart wi
+            sep_left wi
+            nl wi
+          frLeftBlock wi
+            sep_right wi
+            nl wi
+          frRightBlock wi
+            sep_right wi
+            nl wi
+          frBlockPayload
+        frBlockEnd --cLsRsP
+    | frStart wi
+          sep_left wi
+          nl wi
+        frLeftBlock wi
+          nl wi
+          nl wi
+        frRightBlock wi
+          nl wi
+          nl wi
+        frBlockPayload
+      frBlockEnd --cLRP
+         
+  frBlockRpBV2 (Ranki V2 block rp family)
+    = frStart wi
+          sep_right wi
+          nl wi
+        frRightBlock wi
+          sep_right wi
+          nl wi
+        frBlockPayload
+      frBlockEnd --sRsP
+    | frStart wi
+          sep_right wi
+          nl wi
+        frRightBlock wi
+          nl wi
+          nl wi
+        frBlockPayload
+      frBlockEnd --sRP
+      
+  frBlockLpBV2 (Ranki V2 Lp Block family)
+    = frStart wi
+          sep_left wi
+          nl wi
+        frLeftBlock wi
+          sep_right wi
+          nl wi
+        frBlockPayload
+      frBlockEnd --clsP
+    | frStart wi
+          sep_left wi
+          nl wi
+        frLeftBlock
+          nl wi
+          nl wi
+        frBlockPayload
+      frBlockEnd --cLP
+      
+  shortEnd = frame_short directive_short
+  shortInline 
+    = directive_short wi
+         dirLeftInline wi
+       frame_short wi
+         frType wi
+           sep_left wi
+         frLeftInline wi
+           sep_right wi
+         frRightInline wi
+           sep_right wi
+         frInlinePayload 
+       shortEnd
+}

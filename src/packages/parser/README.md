@@ -449,7 +449,7 @@ p
 :::
 ```
 
-##### `rP` Family
+##### `rp` Family
 
 ###### `srP` (right inline block)
 
@@ -469,9 +469,21 @@ p
 
 #### New inline versions in V2
 
+##### `p`family
+
+###### `ssP` (double redundant payload block)
+
+This one prevents payload lines from being interpreted as right params
+
+```ranki
+:::pr;;
+p
+:::
+```
+
 ##### `lrp` family
 
-###### `clsrs_p`
+###### `clsrsP`
 
 ```ranki
 :::fr, l; r;
@@ -479,7 +491,7 @@ p
 :::
 ```
 
-###### `clsr_p`
+###### `clsrP`
 
 ```ranki
 :::fr, l; r
@@ -489,7 +501,7 @@ p
 
 ##### `lp` family
 
-###### `cls_p`
+###### `clsP`
 
 ```ranki
 :::fr, l;
@@ -497,7 +509,7 @@ p
 :::
 ```
 
-###### `cl_p`
+###### `clP`
 
 ```ranki
 :::fr, l
@@ -509,7 +521,7 @@ p
 
 ##### `lrp` family
 
-###### `cls_rs_p` (left right tight half expansion)
+###### `clsRsP` (left right tight half expansion)
 
 ```ranki
 :::fr, l;
@@ -518,7 +530,7 @@ p
 :::
 ```
 
-###### `cls_r_p` (left right loose half expansion)
+###### `clsRP` (left right loose half expansion)
 
 ```ranki
 :::fr, l;
@@ -528,7 +540,7 @@ p
 :::
 ```
 
-###### `c_ls_rs_p` (tight full expansion)
+###### `cLsRsP` (tight full expansion)
 
 ```ranki
 :::fr,
@@ -538,7 +550,7 @@ p
 :::
 ```
 
-###### `c_l_r_p` (loose full expansion)
+###### `cLRP` (loose full expansion)
 
 ```ranki
 :::fr,
@@ -552,7 +564,7 @@ p
 
 ##### `rp` family
 
-###### `s_rs_p` (right tight expansion)
+###### `sRsP` (right tight expansion)
 
 ```ranki
 :::fr;
@@ -561,7 +573,7 @@ p
 :::
 ```
 
-###### `s_r_p` (right loose expansion)
+###### `sRP` (right loose expansion)
 
 ```ranki
 :::fr;
@@ -573,7 +585,7 @@ p
 
 ##### `lp` family
 
-###### `cls_p` (left tight expansion)
+###### `clsP` (left tight expansion)
 
 ```ranki
 :::fr,
@@ -582,7 +594,7 @@ p
 :::
 ```
 
-###### `c_l_p` (left loose expansion)
+###### `cLP` (left loose expansion)
 
 ```ranki
 :::fr,
