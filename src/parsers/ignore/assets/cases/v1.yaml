@@ -1,0 +1,30 @@
+name: v1
+skip: false
+only: true
+cases:
+  - description: basic
+    input: ":::var; hello :::"
+    tests:
+      contentTrimmed: "hello"
+      content: " hello "
+
+  # - description: misaligned directive
+  #   input: " % ignore\nhello igworld"
+  #   tests:
+  #     contentTrimmed: "hello igworld"
+  #     content: "hello igworld"
+
+  # - description: indented ignore
+  #   input: |
+  #     % ignore
+  #       hello igworld
+  #   tests:
+  #     contentTrimmed: "hello igworld"
+  #     content: "  hello igworld\n"
+
+
+  # - description: misaligned directive
+  #   input: " % ignore\nhello igworld"
+  #   tests:
+  #     contentTrimmed: "hello igworld"
+  #     content: "hello igworld"

@@ -1,0 +1,24 @@
+RankiBasic <: RankiIgnore {
+  document := 
+    | ... 
+    | whitespace documentList whitespace --blocks
+    
+  documentList = block? (blockSep block)*
+  blockSep = (nl wi)+
+  
+  block  = 
+    | p --p
+  
+  p = line (nl line)*
+  
+  line = indentation word (clearance word)* wi
+  
+  wordEnd =  clearance | nl | end
+  
+  word (Word, Number or punctuation combination) = 
+    | hWord<(~nl ~space any)+> --basic
+
+  hWord<t> = t &wordEnd
+  
+  hCheck<t> = &t t
+}

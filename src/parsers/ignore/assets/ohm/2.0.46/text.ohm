@@ -1,0 +1,76 @@
+RankiText <: RankiIgnore {
+  document := 
+    | ... 
+    | whitespace documentList whitespace --blocks
+    
+  documentList = block? (blockSep block)*
+  blockSep = (nl wi)+
+  block  = p --p
+
+  p = pLine (nl pLine)*
+  pLine = indentation pAlignment pHeading pContent (clearance pContent)* wi
+  pContent = pProse --prose
+
+  pProse = pDecoration (clearance pDecoration)*
+  
+  pHeading = 
+    | h+ clearance --heading
+    | &(~h) --text
+    
+  pAlignment =
+    | align align clearance --right
+    | align clearance --center
+    | &(~align) --left
+
+  pDecoration =
+    | em pDecoration em --emphasis
+    | b pDecoration b --bold
+    | i pDecoration i --idiomatic
+    | u pDecoration u --underline
+    | "(" pDecoration ")" --parens
+    | abbr pDecoration abbr --abbreviation
+    | pText --text
+    
+  pText = pWord (clearance pWord)*
+  pWordTerminator = clearance | nl | end | em | b | i | u | abbr
+  
+    // | (&pChar digit)+ &pWordTerminator --number
+  pWordNumber = 
+    | (&pChar complexInteger)+ &pWordTerminator --complexInteger
+    | (&pChar eNotation)+ &pWordTerminator --eNotation
+    | (&pChar decimal)+ &pWordTerminator --decimal
+    | (&pChar integer)+ &pWordTerminator --integer
+  
+  pWordText =
+    | (&pChar upper)+ &pWordTerminator --uppercase
+    | (&pChar lower)+ &pWordTerminator --lowercase
+    | (&pChar letter)+ &pWordTerminator --text
+    // | pChar+ &pWordTerminator --mixed
+
+    // | (&pChar eNotation)+ &pWordTerminator --eNotation
+    // | (&pChar decimal)+ &pWordTerminator --decimal
+    // | (&pChar integer)+ &pWordTerminator --integer
+    // | (&pChar upper)+ &pWordTerminator --uppercase
+    // | (&pChar lower)+ &pWordTerminator --lowercase
+    // | (&pChar letter)+ &pWordTerminator --text
+  pWord =
+    | pWordNumber
+    | pWordText
+    | pChar+ &pWordTerminator --mixed
+  
+  pChar =
+    | esc any --escaped 
+    | ~pIllegal any --legal
+    
+  pIllegal = nl | space | em | b | i | u 
+  
+  wi (waste inline) 
+    = spaces
+
+  whitespace = wm* wi
+  
+  integer = "-"? digit+
+  decimal = "-"? digit* "." digit+
+  eNotation = "-"? digit* ("." digit+)? "e" "-"? integer
+  complexInteger = integer wi ("+" | "-") wi digit+ "i"
+}

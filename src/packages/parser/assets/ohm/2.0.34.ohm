@@ -28,7 +28,7 @@ RankiRoot <: RankiConfig {
   documentList = block? (blockSep block)*
 
   pauseDocument = whitespace pauseList whitespace
-  pauseList = block? (pauseSep block)*
+  pauseList = documentList (pauseSep documentList)*
   pauseSep = whitespace pause digit pause whitespace
 
   block 
@@ -36,7 +36,7 @@ RankiRoot <: RankiConfig {
     | dirBlock wi ~pLine --dir
     | frBlock wi ~pLine --fr
     | p
-  blockSep = nl+
+  blockSep = (nl wi)+
   
   // Param
   param
@@ -93,39 +93,7 @@ RankiRoot <: RankiConfig {
   rightSepBlock = wi sepRight? nl wi nl
   rightSepInline = wi sepRight wi 
     
-  frInline= frStart wi frInlineConfig frame
-  frInlineConfig
-    = sepLeft wi 
-        frLeftInline wi 
-          sepRight wi
-        frRightInline wi
-          sepRight wi
-        frInlinePayload  --clsrsp
-    | sepRight wi
-        frRightInline wi
-          sepRight wi
-        frInlinePayload  --srsp
-    | sepRight wi
-        frBlockPayload  --sp
-    | sepLeft wi 
-        frLeftInline wi 
-          sepRight
-        frInlinePayload  --clsp
-    |   sepLeft wi 
-        frLeftInline wi  --cl
-    |   --e
-      
-  frStart = frame wi frType
-  frBlockEnd
-    = frame --explicit
-    | end --implicit
-  frType = letter (space | letter)*
-  frLeftInline = paramListInline
-  frRightInline = paramListInline
-  frLeftBlock = paramListBlock
-  frRightBlock = paramListBlock
-  frBlockPayload = pauseDocument
-  frInlinePayload = pauseDocument
+
 
   p = pLine (nl pLine)*
   pLine = indentation pContent (clearance pContent)*
@@ -159,7 +127,40 @@ RankiRoot <: RankiConfig {
     = spaces nl
   clearance = space+
   whitespace = wm* wi
+        frInline= frStart wi frInlineConfig frame
+  frInlineConfig
+    = sepLeft wi 
+        frLeftInline wi 
+          sepRight wi
+        frRightInline wi
+          sepRight wi
+        frInlinePayload  --clsrsp
+    | sepRight wi
+        frRightInline wi
+          sepRight wi
+        frInlinePayload  --srsp
+    | sepRight wi
+        frBlockPayload  --sp
+    | sepLeft wi 
+        frLeftInline wi 
+          sepRight
+        frInlinePayload  --clsp
+    |   sepLeft wi 
+        frLeftInline wi  --cl
+    |   --e
       
+  frStart = frame frType
+  frBlockEnd
+    = &(frame ~frType) frame --explicit
+    | end --implicit
+  frType = letter (space | letter)*
+  frLeftInline = paramListInline
+  frRightInline = paramListInline
+  frLeftBlock = paramListBlock
+  frRightBlock = paramListBlock
+  frBlockPayload = pauseDocument
+  frInlinePayload = pauseDocument
+  
   // FRAME BLOCK
   frBlock =  frStart wi frBlockConfig frBlockPayload frBlockEnd
   frBlockConfig
@@ -180,8 +181,7 @@ RankiRoot <: RankiConfig {
   frBlockPV2 (p family)
     =    sepRight wi 
           sepRight wi
-          nl wi
-        frBlockPayload  --ssP
+          nl wi  --ssP
 
   frBlockRpIV1 (Ranki V1 right inline blocks)
     =    sepRight wi 

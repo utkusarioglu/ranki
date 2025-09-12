@@ -1,0 +1,32 @@
+name: ignore
+skip: false
+only: false
+cases:
+  - description: happy
+    input: |-
+      % ignore
+      hello igworld
+    tests:
+      contentTrimmed: "hello igworld"
+      content: "hello igworld"
+
+  - description: misaligned directive
+    input: " % ignore\nhello igworld"
+    tests:
+      contentTrimmed: "hello igworld"
+      content: "hello igworld"
+
+  - description: indented ignore
+    input: |
+      % ignore
+        hello igworld
+    tests:
+      contentTrimmed: "hello igworld"
+      content: "  hello igworld\n"
+
+
+  - description: misaligned directive
+    input: " % ignore\nhello igworld"
+    tests:
+      contentTrimmed: "hello igworld"
+      content: "hello igworld"

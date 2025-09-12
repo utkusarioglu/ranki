@@ -1,0 +1,26 @@
+RankiConfig {
+  negation = "!"
+  sepLeft = ","
+  sepRight = ";"
+  assignment = "="
+  quoteSingle = "\""
+  quoteDouble = "'"
+
+  frameV1 = ":::"
+  
+  pause = ","
+  directive = "%"
+  frame = ":"
+
+  align = "$"
+  h = "#"
+  em = "+"
+  b = "*"
+  i = "/"
+  u = "_"
+  abbr = "@"
+  esc = "\\"
+  
+  space := " " | "\t"
+  nl = "\n" | "\r"
+}

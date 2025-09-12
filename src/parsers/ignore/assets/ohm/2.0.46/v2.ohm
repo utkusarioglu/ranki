@@ -1,0 +1,91 @@
+RankiV2 <: RankiText {
+  document := ...
+  pIllegal := frame | directive | pause |  ...
+  
+  block := 
+    | indentation v2 wi ~pLine --v2
+    | ...
+    
+  pContent := 
+    | v2 --v2
+    | ...
+  
+  pauseDocument = whitespace pauseList whitespace
+  pauseList = documentList (pausedDocument documentList)*
+  pauseStart = pause integer? pause
+  pausedDocument = whitespace pauseStart whitespace document whitespace pause pause whitespace
+
+  param =
+    | paramKey wi assignment wi paramValue --assignment
+    | negation paramKey --negative
+    | paramKey --positive
+    
+  paramKey = letter (paramKeyLegal)*
+  paramKeyLegal = letter | "_" | "-"
+  paramValue = paramValueItem (spaces paramValueItem)*
+  
+  paramValueItem = 
+    | quoted<quoteSingle>
+    | quoted<quoteDouble>
+    | v2
+    | paramValueItemPrimitive
+
+  quoted<q> = q quotedContent<q>* q
+  quotedContent<q> = 
+    | "\\" q --escaped
+    | ~q any --content
+  
+  paramValueItemPrimitive =
+    | eNotation --eNotation
+    | decimal --decimal
+    | integer -- integer
+    | caseInsensitive<"true"> --true
+    | caseInsensitive<"false"> --false
+    | upper+ --uppercase
+    | lower+ --lowercase
+    | letter+ --mixed
+    
+  sepLeftInline = wi sepLeft wi
+  sepLeftBlock = wi sepLeft? wi nl wi
+  sepRightBlock = wi sepRight? wi nl wi
+  v2paramListInline = param (sepLeftInline param)*
+  v2paramListBlock = param (sepLeftBlock param)*
+  sepRightInline = wi sepRight wi
+  
+  v2Type = letter (space | letter)*
+  
+  v2Payload = 
+    | wi nl pauseDocument --P
+    | pauseDocument --p
+    
+  v2End =
+    | frame integer? directive --explicit
+    | end --implicit
+
+  v2DirectiveConfig =
+    | wi nl wi v2paramListBlock whitespace --D  
+    | wi v2paramListInline wi --d
+
+  v2FrameConfigFp =
+    | wi 
+        v2Type wi 
+          sepLeft wi 
+          nl wi 
+        v2paramListBlock wi 
+          sepLeft?  --F
+    |   wi 
+      v2Type wi 
+        sepLeft wi 
+      v2paramListInline wi 
+        sepLeft?  --f
+
+  v2FrameConfigP = wi v2Type
+
+  v2FrameConfig =
+    | v2FrameConfigFp --fp
+    | v2FrameConfigP --p
+
+  v2 = 
+    | directive v2DirectiveConfig frame v2FrameConfig v2Payload v2End --dfp
+    | directive frame v2FrameConfig v2Payload v2End --fp
+}

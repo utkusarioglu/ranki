@@ -1,0 +1,48 @@
+RankiV1 <: RankiV2 {
+  document := ...
+  pContent := v1Inline | ...
+  block := 
+    | indentation v1Block wi ~pLine --v1
+    | ...
+  
+  v1ParamValue = (~(space | frameV1 | sepRight | nl) any)+
+  v1ParamListInline = v1ParamValue (sepLeftInline v1ParamValue)*
+
+  v1Inline = 
+    | frameV1 wi 
+        v2Type wi 
+          sepRight wi 
+        v1ParamListInline wi 
+          sepRight 
+        v1PayloadInline 
+      frameV1 --fp
+    | frameV1 wi 
+        v2Type wi 
+          sepRight 
+        v1PayloadInline 
+      frameV1 --p
+
+  v1PayloadInline = (~frameV1 any)*
+  
+  v1End = 
+    | frameV1 --explicit
+    | end --implicit
+
+  v1Block = 
+    | frameV1 wi 
+         v2Type wi
+         sepRight wi
+         v1ParamListInline wi
+         (sepRight wi)?
+         nl 
+         v1PayloadBlock
+       frameV1 --fp
+    | frameV1 wi 
+         v2Type wi
+         (sepRight wi)?
+         nl 
+         v1PayloadBlock
+       frameV1 --p
+
+  v1PayloadBlock = document
+}

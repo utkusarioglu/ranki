@@ -1,0 +1,129 @@
+
+RankiText <: RankiIgnore {
+  document := 
+    | ... 
+    | whitespace documentList whitespace --blocks
+
+  wi (waste inline) 
+    = spaces
+
+  whitespace = wm* wi
+    
+  documentList = block? (blockSep block)*
+  blockSep = (nl wi)+
+  block  = p --p
+  p = pLine (nl pLine)*
+  pLine = indentation pAlignment pHeading pContent (clearance pContent)* wi
+  
+  pHeading (Line heading level qualifier) = 
+    | h+ clearance --heading
+    | &(~h) --text
+    
+  pAlignment (Line alignment qualifier) =
+    | align+ clearance --aligned
+    | &(~align) --unaligned
+
+  pContent = pProse --prose
+
+  pProse = pDecoration (&clearance pDecoration)*
+  
+//  hDecoration<s, c, e> = &(s c e pWordTerminator) s c e
+  
+  pDecoration =
+    | em pDecoration em --emphasis
+    | b pDecoration b --bold
+    | i pDecoration i --idiomatic
+    | u pDecoration u --underline
+    | "(" pDecoration ")" --p1
+    | "[" pDecoration "]" --p2
+    | abbr pDecoration abbr --abbreviation
+    | pText --text
+    
+  pText = pWord (clearance pWord)*
+  pWordTerminator (Word terminator) = 
+    clearance | nl | end | em | b | i | u | abbr
+  
+  hWord<t> =   hChar<t>+ &pWordTerminator
+
+  pWordText (Word) =
+    | hWord<upper> --uppercase
+    | hWord<lower> --lowercase
+    | hWord<letter> --mixedCase
+    
+  pWordTokened (Word with tokens) =
+    | hTokened<digit> --digit
+    | hTokened<letter> --letter
+    | hTokened<alnum> --alnum
+
+  pWordNumber (number type )= 
+    | pWordNumberComplex --complex
+    | pWordNumberScalar --scalar
+
+ pWordNumberComplex (Complex Number) =
+    | complexENotation &pWordTerminator --complexEnotation
+    | complexDecimal &pWordTerminator --complexDecimal
+    | complexInteger &pWordTerminator --complexInteger
+
+ pWordNumberScalar (Scalar Number)= 
+    | eNotation &pWordTerminator --eNotation
+    | decimal &pWordTerminator --decimal
+    | integer &pWordTerminator --integer
+
+  pWord (Word, Number or punctuation combination) =
+    | pWordTokened --tokened
+    | pWordNumber --number
+    | pWordText --word
+    | (~pWordTerminator any)+ &pWordTerminator --lastLegal
+    | (~nl ~space any)+ &pWordTerminator --lastResort
+   
+ hTokened<t> = 
+   hChar<t>+ 
+   (
+     (esc? pDecorationToken &((pDecorationToken | t)*))+ 
+     hChar<t>+
+   )+
+   &pWordTerminator
+ 
+ hChar<t> (legal or escaped character) = 
+    | esc pIllegal --escaped 
+    | esc t --redundantEscape
+    | t --legal
+
+  hCheck<t> = &t t
+    
+  pIllegal (Word boundary or Word decoration token) = 
+    nl | space | pDecorationToken
+  pDecorationToken (Word decoration token) = 
+    em | b | i | u | abbr 
+
+  integer (Integer) = 
+    | "-"? digit+  --signed
+    | digit+ --unsigned
+    
+  decimal (Decimal number) = 
+    | "-"? digit* "." digit+ --signed
+    | digit* "." digit+ --unsigned
+    
+  eNotation (Base 10 scientific notation) = "-"? digit* ("." digit+)? "e" integer
+  
+  complexInteger (Complex integer) = hComplex<integer, integer_unsigned>
+  
+  complexDecimal (ComplexDecimal) = 
+    | hComplex<integer, decimal_unsigned> --id
+    | hComplex<decimal, decimal_unsigned> --dd
+    | hComplex<decimal, integer_unsigned> --di
+
+  complexENotation (Complex Scientific notation) =
+    | hComplex<eNotation, eNotation> --ee
+    | hComplex<decimal, eNotation> --de
+    | hComplex<eNotation, decimal> --ed
+    | hComplex<integer, eNotation> --ie
+    | hComplex<eNotation, integer> --ei
+  
+  hComplex<real, imaginary> = 
+   | real wi ("+" | "-") wi imaginary complexUnits --bi
+   | real wi ("+" | "-") wi complexUnits imaginary --ib
+
+  punctuation (Punctuation mark) = 
+    ~alnum ~space ~nl any
+}

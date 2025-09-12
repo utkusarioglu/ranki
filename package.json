@@ -4,7 +4,8 @@
   "workspaces": [
     "src/apps/*",
     "src/packages/*",
-    "src/plugins/*"
+    "src/plugins/*",
+    "src/parsers/*"
   ],
   "packageManager": "yarn@4.9.2",
   "scripts": {

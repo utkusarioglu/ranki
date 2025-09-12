@@ -1,0 +1,14 @@
+RankiIgnore <: RankiConfig {
+  document = indentation directive clearance "ignore" wm any* --ignore
+  
+  indentation = spaces
+  clearance = space+
+  
+  wm (waste multiline) 
+    = spaces nl
+    
+  wi (waste inline) 
+    = spaces
+    
+  whitespace = wm* wi
+}

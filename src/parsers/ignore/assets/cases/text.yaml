@@ -1,0 +1,36 @@
+name: text
+skip: false
+only: false
+cases:
+  - description: basic
+    input: hello WORLD
+    tests:
+      contentTrimmed: "hello"
+      content: "hello"
+
+  - description: complex int
+    input: 5 + 3i
+    tests:
+      contentTrimmed: "hello"
+      content: "hello"
+
+  # - description: misaligned directive
+  #   input: " % ignore\nhello igworld"
+  #   tests:
+  #     contentTrimmed: "hello igworld"
+  #     content: "hello igworld"
+
+  # - description: indented ignore
+  #   input: |
+  #     % ignore
+  #       hello igworld
+  #   tests:
+  #     contentTrimmed: "hello igworld"
+  #     content: "  hello igworld\n"
+
+
+  # - description: misaligned directive
+  #   input: " % ignore\nhello igworld"
+  #   tests:
+  #     contentTrimmed: "hello igworld"
+  #     content: "hello igworld"

@@ -1,0 +1,59 @@
+RankiV1 <: RankiBasic {
+	//document := ...
+ // pContent := v1Inline | ...
+  
+  word :=
+    | v1Inline
+    | ...
+  
+  block := 
+    | indentation v1Block  wi &(nl | end) --v1
+    | ...
+  
+  v1SepLeftInline = wi sepLeft wi
+  v1SepLeftBlock = wi sepLeft? wi nl wi
+  
+  v1ParamValue = (~(space | frameV1 | sepRight | nl) any)+
+  v1ParamListInline = v1ParamValue (v1SepLeftInline v1ParamValue)*
+  
+  v1Type = letter (space | letter)*
+  
+  v1Inline = 
+    | frameV1 wi 
+        v1Type wi 
+          sepRight wi 
+        v1ParamListInline wi 
+          sepRight 
+        v1PayloadInline 
+      frameV1 --fp
+    | frameV1 wi 
+        v1Type wi 
+          sepRight 
+        v1PayloadInline 
+      frameV1 --p
+
+  v1PayloadInline = (~(frameV1 | nl) any)*
+  
+  // not sure about this one
+  v1BlockEnd = 
+    | frameV1 ~(wi v1Type) --explicit
+    | end --implicit
+
+  v1Block = 
+    | frameV1 wi 
+         v1Type wi
+         sepRight wi
+         v1ParamListInline wi
+         (sepRight wi)?
+         nl 
+         v1PayloadBlock
+       v1BlockEnd --fp
+    | frameV1 wi 
+         v1Type wi
+         (sepRight wi)?
+         nl 
+         v1PayloadBlock
+       v1BlockEnd --p
+
+  v1PayloadBlock = (~v1BlockEnd_explicit any)+ --plain
+}

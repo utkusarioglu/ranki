@@ -1,0 +1,64 @@
+RankiRichText <: RankiBasic {
+  document := ...
+  
+  lineModifiers := alignment smalltext heading
+
+  smalltext =
+    | &(small+ ~clearance) --decoration
+    | small+ clearance --small
+    | ~small --normal
+
+  heading (Line heading level qualifier) = 
+    | &(h+ ~clearance) --decoration
+    | h+ clearance --heading
+    | ~h --normal
+    
+  alignment (Line alignment qualifier) =
+    | &(align+ ~clearance) --decoration
+    | ~align --unaligned
+    | align+ clearance --aligned
+
+  lexeme := 
+    | textual --textual
+    | ...
+
+  textual = decorated (clearance decorated)*
+
+  decorated := 
+    | word &wordEnd --bare
+    | hChar<inWordToken>* word hChar<inWordToken>* &wordEnd--decorated
+    | hChar<inWordToken>+ &wordEnd --token
+    | hChar<inWordToken>* hChar<~wordEnd ~inWordToken any>+ hChar<inWordToken>* &wordEnd--richAny
+    | ...
+
+  word :=
+    | text --chars
+    | hChar<digit>+ --digits
+    | hChar<punctuation>+ --punctuation
+    | hChar<(letter | digit | punctuation)>+ --mixed
+    | ...
+
+  text (Word) =
+    | hChar<upper> hChar<lower>+ --proper
+    | hChar<upper>+ --uppercase
+    | hChar<lower>+ --lowercase
+    | hChar<letter>+ --mixedcase
+
+  inWordToken = wordToken | sentence | lineToken | esc ~lineToken
+
+  punctuation (Punctuation mark) = 
+    ~(alnum | space | nl | digit | inWordToken) any
+
+  // they come at the start of lines to alter their behavior
+  lineToken := align | h | small
+  
+  // they come at the beginning or end of words to alter their behavior
+  wordToken := 
+    | em --emphasis
+    | b --bold
+    | i --idiomatic
+    | u --underlined
+    | abbr --abbreviation
+    | quotes
+    | brackets
+}

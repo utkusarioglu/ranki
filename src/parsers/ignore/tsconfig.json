@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "lib",
+    "rootDir": "src",
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
+    "target": "esnext",
+    "composite": true
+  },
+  "include": ["src/**/*"],
+  "references": [
+    {
+      "path": "../../packages/api"
+    }
+  ]
+}

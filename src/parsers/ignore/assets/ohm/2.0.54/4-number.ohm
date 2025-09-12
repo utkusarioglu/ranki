@@ -1,0 +1,32 @@
+RankiNumber <: RankiBasic {
+  document := ...
+
+  integer (Integer) = 
+    | "-"? digit+  --signed
+    | digit+ --unsigned
+    
+  decimal (Decimal number) = 
+    | "-"? digit* "." digit+ --signed
+    | digit* "." digit+ --unsigned
+    
+  eNotation (Base 10 scientific notation) = "-"? digit* ("." digit+)? "e" integer
+  
+  hComplex<real, imaginary> = 
+   | real clearance ("+" | "-") clearance imaginary complexUnits --bi
+   | real clearance ("+" | "-") clearance complexUnits imaginary --ib
+    
+ complex (Complex Number) = hComplex<scalar, scalar>
+
+ scalar (Scalar Number)= 
+    | eNotation --eNotation
+    | decimal --decimal
+    | integer --integer
+    
+  number (number type) = 
+    | complex --complex
+    | scalar --scalar
+    
+  word :=
+    | number
+    | ...
+}

@@ -1,0 +1,244 @@
+RankiConfig {
+  //v1
+  frameV1 = ":::"
+  
+  // v2
+  pause = ","
+  directive = "%"
+  frame = ":"
+  
+  // params
+  sepLeft = ","
+  sepRight = ";"
+  assignment = "="
+  negation = "!"
+
+  // line alteration tokens
+  align = "$"
+  h = "#"
+  small = "_"
+  
+  // text decoration tokens
+  em = "+"
+  b = "*"
+  i = "/"
+  u = "_"
+  abbr = "@"
+
+/*
+  quoteDouble = "\""
+  quoteSingle = "'"
+  
+  roundOpen = "("
+  roundClose = ")"
+  squareOpen = "["
+  squareClose = "]"
+  curlyOpen = "{"
+  curlyClose = "}"
+*/
+
+
+  // language tokens
+  esc = "\\"
+  sentence = "." | "!" | "?"
+  
+  // number tokens
+  complexUnits = "i" | "j" | "k"
+}
+
+/*
+( )	Parentheses or Round Brackets
+[ ]	Square Brackets or Box Brackets
+{ }	Braces or Curly Brackets
+< >	Angle Brackets or Chevrons
+*/
+
+RankiIgnore <: RankiConfig {
+  document = indentation directive clearance "ignore" wm any* --ignore
+  
+  indentation = spaces
+  clearance = space+
+  
+  wm (waste multiline) 
+    = spaces nl
+    
+  wi (waste inline) 
+    = spaces
+    
+  whitespace = wm* wi
+  
+  // unchangeable tokens
+  space := " " | "\t"
+  nl = "\n" | "\r"
+}
+
+RankiBasic <: RankiIgnore {
+  document := 
+    | ... 
+    | whitespace documentList whitespace --blocks
+    
+  documentList = block? (blockSep block)*
+  blockSep = (nl wi)+
+  
+  block  = 
+    | p --p
+  
+  p = line (nl line)*
+  
+  line = indentation plaintext wi
+  
+  plaintext = basicWord (clearance basicWord)*
+  
+  wordEnd =  clearance | nl | end
+  
+  basicWord (Word, Number or punctuation combination) = 
+    hWord<(~nl ~space any)+>
+
+  hWord<t> = t &wordEnd
+  
+  hCheck<t> = &t t
+  
+  quoteSingle =
+    | "'" --open
+    | "'" --close
+    
+  quoteDouble =
+    | "\"" --open
+    | "\"" --close
+
+  bracketRound = 
+    | "(" --open
+    | ")" --close
+  
+  bracketSquare =
+    | "[" --open
+    | "]" --close
+  
+  bracketCurly = 
+    | "{" --open
+    | "}" --close
+    
+  quotes = 
+    | quoteSingle --single
+    | quoteDouble --double
+    
+  brackets = 
+    | bracketRound --round
+    | bracketSquare --square
+    | bracketCurly --curly
+}
+
+RankiExtensible <:RankiBasic {
+  document := ...
+  
+  line := indentation lineModifiers lexemes wi
+  lineModifiers  = ""
+  lexemes = lexeme (clearance lexeme)*
+  
+  lexeme = decorated
+
+  decorated = 
+    | hChar<~nl ~space any>+ &wordEnd --any
+ 
+  word = ""
+
+  wordToken = ""
+  lineToken = ""
+
+  hChar<c> = 
+    | esc wordToken --escaped
+    | esc c --redundant
+    | c --regular
+}
+
+RankiRichText <: RankiExtensible {
+  document := ...
+  
+  lineModifiers := alignment heading
+
+  heading (Line heading level qualifier) = 
+    | small+ clearance --small
+    | h+ clearance --heading
+    | ~h --text
+    
+  alignment (Line alignment qualifier) =
+    | align+ clearance --aligned
+    | ~align --unaligned
+
+  lexeme := 
+    | textual --textual
+    | ...
+
+  textual = decorated (clearance decorated)*
+
+  decorated := 
+    | word &wordEnd --bare
+    | hChar<inWordToken>* word hChar<inWordToken>* &wordEnd--rich
+    | hChar<inWordToken>+ &wordEnd --token
+    | hChar<inWordToken>* hChar<~wordEnd ~inWordToken any>+ hChar<inWordToken>* &wordEnd--richAny
+    | ...
+
+  word :=
+    | text --chars
+    | hChar<digit>+ --digits
+    | hChar<punctuation>+ --punctuation
+    | hChar<(letter | digit | punctuation)>+ --mixed
+    | ...
+
+  text (Word) =
+    | hChar<upper> hChar<lower>+ --proper
+    | hChar<upper>+ --uppercase
+    | hChar<lower>+ --lowercase
+    | hChar<letter>+ --mixedcase
+
+  inWordToken = wordToken | sentence | lineToken | esc ~lineToken
+
+  punctuation (Punctuation mark) = 
+    ~alnum ~space ~nl ~digit ~inWordToken any
+
+  // they come at the start of lines to alter their behavior
+  lineToken := align | h | small
+  
+  // they come at the beginning or end of words to alter their behavior
+  wordToken := 
+    | em --emphasis
+    | b --bold
+    | i --idiomatic
+    | u --underlined
+    | abbr --abbreviation
+    | quotes
+    | brackets
+}
+
+RankiNumber <: RankiRichText {
+  document := ...
+
+  integer (Integer) = 
+    | "-"? digit+  --signed
+    | digit+ --unsigned
+    
+  decimal (Decimal number) = 
+    | "-"? digit* "." digit+ --signed
+    | digit* "." digit+ --unsigned
+    
+  eNotation (Base 10 scientific notation) = "-"? digit* ("." digit+)? "e" integer
+  
+  hComplex<real, imaginary> = 
+   | real clearance ("+" | "-") clearance imaginary complexUnits --bi
+   | real clearance ("+" | "-") clearance complexUnits imaginary --ib
+    
+ complex (Complex Number) = hComplex<scalar, scalar>
+
+ scalar (Scalar Number)= 
+    | eNotation --eNotation
+    | decimal --decimal
+    | integer --integer
+    
+  number (number type )= 
+    | complex --complex
+    | scalar --scalar
+    
+  word :=
+    | number
+    | ...
+}

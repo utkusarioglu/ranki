@@ -1,0 +1,155 @@
+RankiConfig {
+  negation = "!"
+  sepLeft = ","
+  sepRight = ";"
+  assignment = "="
+  quoteSingle = "\""
+  quoteDouble = "'"
+
+  frameV1 = ":::"
+  pause = "-"
+
+  directive = "%"
+  frame = ":"
+  multiline = "|"
+
+  align = "$"
+  h = "#"
+  em = "+"
+  b = "*"
+  i = "/"
+  u = "_"
+  abbr = "@"
+  esc = "\\"
+  
+  space := " " | "\t"
+  nl = "\n" | "\r"
+}
+
+RankiText <: RankiConfig {
+  document = whitespace documentList whitespace
+  documentList = block? (blockSep block)*
+  blockSep = (nl wi)+
+  block  = p
+
+  p = pLine (nl pLine)*
+  pLine = indentation pContent (clearance pContent)*
+  pContent = pProse
+
+  pProse = pAlignment pHeading pDecoration (clearance pDecoration)*
+  pHeading 
+    = h+ clearance --heading
+    | &(~h) --text
+  pAlignment 
+    = align align clearance --right
+    | align clearance --center
+    | &(~align) --left
+
+  pDecoration
+    = em pDecoration em --emphasis
+    | b pDecoration b --bold
+    | i pDecoration i --idiomatic
+    | u pDecoration u --underline
+    | abbr pDecoration abbr --abbreviation
+    | pText --text
+  pText = pWord (clearance pWord)*
+  pWordTerminator = clearance | nl | end | em | b | i | u | abbr
+  pWord
+    = (&pChar digit)+ &pWordTerminator --number
+    | (&pChar upper)+ &pWordTerminator --uppercase
+    | (&pChar lower)+ &pWordTerminator --lowercase
+    | (&pChar letter)+ &pWordTerminator --chars
+    | pChar+ &pWordTerminator --mixed
+  pChar 
+  	= esc any --escaped 
+    | ~pIllegal any --legal
+  pIllegal = nl | space | em | b | i | u 
+  
+  indentation = spaces
+  wi (waste inline) 
+    = spaces
+  wm (waste multiline) 
+    = spaces nl
+  clearance = space+
+  whitespace = wm* wi
+}
+
+RankiFrame <: RankiText {
+/*
+  pContent 
+    := shInline
+     | dirInline
+     | frInline
+     |pContent
+*/
+
+  
+  pIllegal := frame | directive | pause |  ...
+  
+
+/*
+  block 
+    := 
+    shBlock wi ~pLine --sh
+    | dirBlock wi ~pLine --dir
+    | frBlock wi ~pLine --fr
+    | block
+    */
+
+  document := ...
+  pContent := v2Inline | ...
+  
+  param
+    = paramKey wi assignment wi paramValue --assignment
+    | negation paramKey --negative
+    | paramKey --positive
+  paramKey = letter (paramKeyLegal)*
+  paramKeyLegal = letter | "_" | "-"
+  paramValue = paramValueItem (spaces paramValueItem)*
+  paramValueItem
+    = quoted<quoteSingle>
+    | quoted<quoteDouble>
+    | v2Inline
+  //  | v2Block
+    | paramValueItemPrimitive
+
+  quoted<q> = q quotedContent<q>* q
+  quotedContent<q> 
+    = "\\" q --escaped
+    | ~q any --content
+  
+  paramValueItemPrimitive
+    = digit+ --number
+    | caseInsensitive<"true"> --true
+    | caseInsensitive<"false"> --false
+    | upper+ --uppercase
+    | lower+ --lowercase
+    | letter+ --mixed
+  sepLeftInline 
+    =   wi 
+      sepLeft wi
+    sepLeftBlock 
+    =   wi 
+      sepLeft? wi 
+        nl wi
+  sepRightBlock = wi sepRight? wi nl wi
+  paramListInline = param (sepLeftInline param)*
+  paramListBlock = param (sepLeftBlock param)*
+  sepRightInline = wi sepRight wi
+  v2Type = letter (space | letter)*
+  v2PayloadInline = pauseDocument
+  v2DirectiveParams
+    = multiline wi nl wi paramListBlock whitespace --multiline  
+    | wi paramListInline wi --inline
+  v2FrameConfig 
+    = multiline wi v2Type wi sepLeft? wi nl wi paramListBlock wi sepLeft ?sepRightBlock --multiline
+    | wi v2Type wi sepLeft wi paramListInline wi sepRight --inline
+  v2Inline 
+    = directive v2DirectiveParams frame v2FrameConfig v2PayloadInline frame directive --dfp
+     | directive frame v2FrameConfig v2PayloadInline frame directive --fp
+     | directive frame wi v2Type wi sepRight v2PayloadInline frame directive --p
+    
+  pauseDocument = whitespace pauseList whitespace
+  pauseList = documentList (pauseSep documentList)*
+  pauseSep = whitespace pause digit pause whitespace
+}
