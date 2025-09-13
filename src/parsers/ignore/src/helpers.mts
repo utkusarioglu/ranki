@@ -28,6 +28,6 @@ export function getCaseFiles(casesPath: PathLike) {
 
 export function getConfig(languageVersion: string) {
   return fs
-    .readFileSync(path.join("assets", "ohm", languageVersion, "config.ohm"))
+    .readFileSync(path.join("assets", "ohm", languageVersion, "1-config.ohm"))
     .toString();
 }

@@ -1,0 +1,79 @@
+RankiBasic <: RankiIgnore {
+  document := 
+    | ... 
+    | whitespace blocks whitespace --blocks
+    
+  blocks = 
+    | block (blockSep block)* --populated
+    | "" --empty
+    
+  blockSep = (nl wi)+
+  
+  block  = 
+    | p --p
+  
+  p = line (nl line)*
+  
+  // line = indentation plaintext wi
+  line = indentation lineModifiers lexemes wi
+  lineModifiers  = ""
+    
+  lexemes = lexeme (clearance lexeme)*
+  
+  lexeme = decorated
+
+  decorated = 
+    | word &wordEnd --base
+    | hChar<~(nl | space) any>+ &wordEnd --fallback
+ 
+  // This shouldn't match anything unless the document is extended
+  word = 
+    | number --number
+    | hChar<~(nl | space | end) any>+ --base
+  
+  number (Number) = 
+    | digit+ --digits
+  
+  wordEnd =  clearance | nl | end
+
+  hWord<t> = t &wordEnd
+  
+  hCheck<t> = &t t
+  
+  quoteSingle =
+    | "'" --open
+    | "'" --close
+    
+  quoteDouble =
+    | "\"" --open
+    | "\"" --close
+
+  bracketRound = 
+    | "(" --open
+    | ")" --close
+  
+  bracketSquare =
+    | "[" --open
+    | "]" --close
+  
+  bracketCurly = 
+    | "{" --open
+    | "}" --close
+    
+  quotes = 
+    | quoteSingle --single
+    | quoteDouble --double
+    
+  brackets = 
+    | bracketRound --round
+    | bracketSquare --square
+    | bracketCurly --curly
+
+  wordToken = ""
+  lineToken = ""
+
+  hChar<c> = 
+    | esc wordToken --escaped
+    | esc c --redundant
+    | c --regular
+}

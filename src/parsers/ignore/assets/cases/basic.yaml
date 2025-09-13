@@ -1,15 +1,23 @@
-name: text
+name: basic
 skip: false
 only: false
 cases:
-  - description: basic
-    input: hello WORLD
+  - description: one word
+    input: hello
     tests:
       contentTrimmed: "hello"
       content: "hello"
 
   - description: complex int
     input: 5 + 3i
+    tests:
+      contentTrimmed: "hello"
+      content: "hello"
+
+  - description: complex int
+    input: |
+      prev
+      
     tests:
       contentTrimmed: "hello"
       content: "hello"

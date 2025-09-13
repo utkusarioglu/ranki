@@ -4,9 +4,10 @@ import yaml from "yaml";
 
 // const CASES = "./assets/cases";
 // const cases = fs.readdirSync(CASES);
-const configSrc = getConfig("2.0.46");
+const configSrc = getConfig("2.0.54");
 const caseFiles = getCaseFiles("./assets/cases");
 
-const result = parse(configSrc, caseFiles["text"].cases[1].input);
-
-console.log(yaml.stringify(JSON.parse(JSON.stringify(result))));
+caseFiles["rich-text"].cases.forEach((c) => {
+  const result = parse(configSrc, c.input);
+  console.log(yaml.stringify(JSON.parse(JSON.stringify(result))));
+});

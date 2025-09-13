@@ -1,4 +1,4 @@
-RankiFrameV2 <: RankiBasic {
+RankiFrameV2 <: RankiBase {
   block :=
     | indentation v2 wi &(nl | end) --v2 
     | ...
@@ -53,8 +53,6 @@ RankiFrameV2 <: RankiBasic {
     
   v2SepLeftInline = wi sepLeft wi
   v2SepLeftBlock = wi sepLeft? wi nl wi
-// THIS SHOULD BE USED..
-//  v2SepRightBlock = wi sepRight? wi nl wi
   v2paramListInline = param (v2SepLeftInline param)*
   v2paramListBlock = param (v2SepLeftBlock param)*
   

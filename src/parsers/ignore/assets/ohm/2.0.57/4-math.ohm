@@ -1,0 +1,27 @@
+RankiMath <: RankiRichNumber {
+  trigonometry = 
+    | "a"? "sin" "h"?
+    | "a"? "cos" "h"?
+    | "a"? "tan" "h"?
+    
+  functionName =
+    trigonometry
+    
+  symbolicMath =
+    | functionName space letter+ --trigonometry
+    
+  numericMath = 
+    | functionName space number --trigonometry
+  
+  math = 
+    | symbolicMath --symbolic
+    | numericMath --numeric
+    | commonEquations
+    
+  commonEquations =
+    | letter "x" digit space ("+" | "-") space letter "x" space ("+" | "-") space letter --quadratic
+
+  lexeme :=
+    | math
+    | ...
+}

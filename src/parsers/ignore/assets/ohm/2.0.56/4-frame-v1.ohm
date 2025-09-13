@@ -55,5 +55,6 @@ RankiFrameV1 <: RankiBasic {
          v1PayloadBlock
        v1BlockEnd --p
 
-  v1PayloadBlock = (~v1BlockEnd_explicit any)+ --plain
+  v1PayloadBlockPlain = (~v1Inline any)+
+  v1PayloadBlock = (v1Inline | v1PayloadBlockPlain )*
 }
