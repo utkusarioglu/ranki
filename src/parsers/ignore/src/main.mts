@@ -3,31 +3,26 @@ import * as ohm from "ohm-js";
 import * as path from "path";
 import { zip } from "@ranki/package-api/helpers";
 import type { ParseNode } from "./types.mjs";
-import { ignoreAction } from "./ignore.action.mjs";
-import { basicAction } from "./basic.action.mjs";
-import { richTextAction } from "./rich-text.action.mjs";
+import { baseAction } from "./actions/base.action.mjs";
 
-export const LANGUAGE = "./assets/ohm/2.0.54";
+export const LANGUAGE = "./assets/ohm/2.0.58";
 
-function level(filename: string, opts) {
+function getLevel(filename: string, opts) {
   const src = fs
     .readFileSync(path.join(LANGUAGE, `${filename}.ohm`))
     .toString();
   return ohm.grammar(src, opts);
 }
 
-export function parse(configSrc: string, raw: string) {
-  const RankiConfig = ohm.grammar(configSrc);
+export function parse(raw: string) {
+  const RankiConfig = getLevel("1-config", {});
+  const RankiBase = getLevel("2-base", { RankiConfig });
+  // const RankiRichText = getLevel("3-rich-text", {
+  //   RankiBase,
+  //   RankiConfig,
+  // });
 
-  const RankiIgnore = level("2-ignore", { RankiConfig });
-  const RankiBasic = level("3-basic", { RankiConfig, RankiIgnore });
-  const RankiRichText = level("4-rich-text", {
-    RankiConfig,
-    RankiIgnore,
-    RankiBasic,
-  });
-
-  const matcher = RankiRichText;
+  const matcher = RankiBase;
 
   const semantics = matcher
     .createSemantics()
@@ -90,9 +85,10 @@ export function parse(configSrc: string, raw: string) {
     // })
 
     .addOperation<ParseNode>("node", {
-      ...ignoreAction,
-      ...basicAction,
-      ...richTextAction,
+      ...baseAction
+      // ...ignoreAction,
+      // ...basicAction,
+      // ...richTextAction,
     });
   //   {
   //   /*
