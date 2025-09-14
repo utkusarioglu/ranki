@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version=2.0.58
+version=2.0.59
 
 base_relpath=assets/ohm
 
@@ -9,12 +9,13 @@ target_relpath="all.ohm"
 files=(
   1-config
   2-base
-  3-rich-text
-  3-rich-number
-  3-rich-structure
-  3-frame-v2
   3-frame-v1
+  3-params-v2
+  3-rich-number
+  3-rich-text
+  4-frame-v2
   4-math
+  4-rich-structure
 )
 
 

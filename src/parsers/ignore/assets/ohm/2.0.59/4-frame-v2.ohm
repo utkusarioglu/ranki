@@ -1,4 +1,4 @@
-RankiFrameV2 <: RankiBase {
+RankiFrameV2 <: RankiParamsV2 {
   block :=
     | indentation v2 wi &(nl | end) --v2 
     | ...
@@ -6,7 +6,11 @@ RankiFrameV2 <: RankiBase {
   word :=
     | v2
     | ...
-    
+
+  paramValueItem :=
+    | v2 --v2
+    | ...
+  
   pauseDocument = whitespace pauseList whitespace
   pauseList = v2PayloadSection (pausedContainer v2PayloadSection)*
 
@@ -22,39 +26,6 @@ RankiFrameV2 <: RankiBase {
   pauseEnd = pause pause
   pausedContainer = whitespace pauseStart whitespace pausedPayload whitespace pauseEnd whitespace
   pausedPayload = (~pauseEnd ~v2End any)+
-
-  param =
-    | paramKey wi assignment wi paramValue --assignment
-    | negation paramKey --negative
-    | paramKey --positive
-    
-  paramKey = letter (paramKeyLegal)*
-  paramKeyLegal = letter | "_" | "-"
-  paramValue = paramValueItem (spaces paramValueItem)*
-  
-  paramValueItem = 
-    | quoted<quoteSingle>
-    | quoted<quoteDouble>
-    | v2
-    | paramValueItemPrimitive
-
-  quoted<q> = q quotedContent<q>* q
-  quotedContent<q> = 
-    | "\\" q --escaped
-    | ~q any --content
-  
-  paramValueItemPrimitive =
-    | number --number
-    | caseInsensitive<"true"> --true
-    | caseInsensitive<"false"> --false
-    | upper+ --uppercase
-    | lower+ --lowercase
-    | letter+ --mixed
-    
-  v2SepLeftInline = wi sepLeft wi
-  v2SepLeftBlock = wi sepLeft? wi nl wi
-  v2paramListInline = param (v2SepLeftInline param)*
-  v2paramListBlock = param (v2SepLeftBlock param)*
   
   v2Type = letter (space | letter)*
   
@@ -69,21 +40,16 @@ RankiFrameV2 <: RankiBase {
 
   v2DirectiveConfig =
     | wi nl wi v2paramListBlock whitespace --D  
-    | wi v2paramListInline wi --d
-
+    | wi v2paramListInline wi --d  
+  
   v2FrameConfigFp =
     | wi 
         v2Type wi 
-          sepLeft wi 
-          nl wi 
-        v2paramListBlock wi 
-          sepLeft? wi
+          v2ParamListBlockContainer wi
           sepRight?  --F
     |   wi 
       v2Type wi 
-        sepLeft wi 
-      v2paramListInline wi 
-        sepLeft? wi 
+        v2ParamListInlineContainer wi 
         sepRight?  --f
 
   v2FrameConfigP = wi v2Type wi (sepRight | nl)

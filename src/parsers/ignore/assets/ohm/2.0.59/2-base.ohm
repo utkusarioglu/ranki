@@ -1,20 +1,19 @@
 RankiBase <: RankiConfig {
-  root := article
-
-  article =
+  root := 
     | indentation directive clearance "ignore" wm any* --ignore
-    | whitespace sections whitespace --defined
+    | whitespace structure whitespace --structure
+
+  structure = section --base
+    // | indentation directive clearance "ignore" wm any* --ignore
     
-  sections = section (sectionSep section)* 
-  sectionSep = nl wi nl wi (nl wi)+ --threeLines
+  // sections = section (sectionSep section)* 
+  // sectionSep = nl wi nl wi (nl wi)+ --threeLines
     
-  section = blocks
-    
-  blocks = 
-    | block (blockSep block)* --populated
+  section =  
+    | block (blockSep block)* --base
     | "" --empty
     
-  blockSep = nl wi nl wi
+  blockSep = nl wi (nl wi)+ --base
   
   block  = 
     | p --p

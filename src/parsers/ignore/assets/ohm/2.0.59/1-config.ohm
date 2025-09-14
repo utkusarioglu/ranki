@@ -31,7 +31,7 @@ RankiConfig {
   esc = "\\"
   sentence = "." | "!" | "?"
 
-  structure = "~"
+  divider = "~"
   
   // number tokens
   complexUnits = "i" | "j" | "k"
