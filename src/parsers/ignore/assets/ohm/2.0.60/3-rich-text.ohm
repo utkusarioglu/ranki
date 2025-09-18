@@ -38,10 +38,11 @@ RankiRichText <: RankiBase {
     | ...
 
   text (Text Word) =
+    | hChar<upper>+ hChar<lower>+ (hChar<upper>+ hChar<lower>*)+ --mixedcaseUl
     | hChar<upper> hChar<lower>+ --propercase
     | hChar<upper>+ --uppercase
+    | hChar<lower>+ (hChar<upper>+ hChar<lower>*)+ --mixedcaseLu
     | hChar<lower>+ --lowercase
-    | hChar<letter>+ --mixedcase
 
   inWordToken = wordToken | sentence | lineToken | esc ~lineToken
 
@@ -51,16 +52,13 @@ RankiRichText <: RankiBase {
   // they come at the start of lines to alter their behavior
   lineToken := align | h | small
   
-  decorations = 
+  // they come at the beginning or end of words to alter their behavior
+  wordToken := 
     | em --emphasis
     | b --bold
     | i --idiomatic
     | u --underlined
     | abbr --abbreviation
-  
-  // they come at the beginning or end of words to alter their behavior
-  wordToken := 
-    | decorations
     | quotes
     | brackets
 }

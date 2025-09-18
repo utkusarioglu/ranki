@@ -9,4 +9,4 @@ export { transformNodeLeaf, transformNodeParent } from "./transform.mjs";
 
 export { validationNodeLeaf, validationNodeParent } from "./validation.mjs";
 
-export { zip } from "./zip.mjs";
+export { zipNodes, joinNodes } from "./zip.mjs";

@@ -1,0 +1,57 @@
+% ignore
+hello
+---
+hello
+---
+hello world
+---
+
+hello
+  world    
+yes
+
+---
+12
+---
+aaa
+
+
+
+
+aaaaa
+
+---
+*yellow!
+
+---
+@*yellow!.
+
+---
+@*yellow!.**
+
+---
+@*Yellow!.*+*+
+---
+++Yellow!+
+---
+/Yellow!+/
+---
+$$ /Yellow!+/
+
+---
+$$    /Yellow!+/
+
+---
+$$  _   ###  /Yellow!+/
+---
+a-b
+---
+*a-b*
+---
+/*a-b*/
+===
+cat CAT CaT Cat cAT cAt ccAAt
+---
+
+This is /intended/ to be a normal paragraph that uses regular features of the *english* language. 
+__ It features some odd uses for decorations to exemplify features of the ranki parser!!!

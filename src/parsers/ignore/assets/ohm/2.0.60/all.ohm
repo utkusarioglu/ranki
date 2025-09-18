@@ -320,16 +320,13 @@ RankiRichText <: RankiBase {
   // they come at the start of lines to alter their behavior
   lineToken := align | h | small
   
-  decorations = 
+  // they come at the beginning or end of words to alter their behavior
+  wordToken := 
     | em --emphasis
     | b --bold
     | i --idiomatic
     | u --underlined
     | abbr --abbreviation
-  
-  // they come at the beginning or end of words to alter their behavior
-  wordToken := 
-    | decorations
     | quotes
     | brackets
 }

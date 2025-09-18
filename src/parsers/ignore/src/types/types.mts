@@ -1,16 +1,39 @@
+import type { NodeArgs } from "./node-arg.mjs";
+export type { NodeArgs } from "./node-arg.mjs";
+
+export interface ParseContext {
+  tokens: {
+    sentence: {
+      period: string;
+      question: string;
+      exclamation: string;
+    };
+    paramsV2: {
+      separator: {
+        left: string;
+        right: string;
+      };
+      key: {
+        negation: string;
+      };
+      operators: {
+        assign: string;
+        append: string;
+        remove: string;
+      };
+    };
+  };
+}
+
 interface ParseNodeCommon {
   type: string;
-  args: NodeArg[];
+  args: NodeArgs;
 }
 
 interface ParseNodeLeaf extends ParseNodeCommon {
   kind: "leaf";
+  print: boolean;
   source: NodeLeafSource;
-}
-
-interface NodeArg {
-  key: string;
-  value: string | number | boolean;
 }
 
 interface ParseNodeParent extends ParseNodeCommon {
@@ -22,7 +45,15 @@ interface ParseNodeParent extends ParseNodeCommon {
 export type ParseNode = ParseNodeLeaf | ParseNodeParent;
 
 interface NodeLeafSourceString {
-  type: "uppercase" | "lowercase" | "text" | "mixed";
+  type:
+    | "uppercase"
+    | "lowercase"
+    | "propercase"
+    | "mixedcase"
+    | "text"
+    | "mixed"
+    | "token"
+    | "punctuation";
   value: string;
 }
 
@@ -30,6 +61,12 @@ interface NodeLeafSourceString {
 //   type: "number";
 //   value: number;
 // }
+
+interface NodeLeafSourceNumber {
+  type: "number";
+  // sign: 1 | -1;
+  integer: number;
+}
 
 interface NodeLeafSourceInteger {
   type: "integer";
@@ -69,6 +106,7 @@ interface NodeLeafSourceComplexInteger {
 }
 
 type NodeLeafSource =
+  | NodeLeafSourceNumber
   | NodeLeafSourceComplexInteger
   | NodeLeafSourceString
   | NodeLeafSourceInteger
