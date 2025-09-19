@@ -70,3 +70,5 @@ yes
 
 ---
 /hello/ +*% !as:code, !cat ; world! :%*+
+---
+5.5

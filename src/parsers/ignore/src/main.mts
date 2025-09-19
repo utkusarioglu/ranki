@@ -20,6 +20,9 @@ function getLevel(specs: GrammarSpecs, filename: string): ParserPluginGrammar {
     .toString();
 
   const altered = raw.replace(/<:\s*(\w+)\s*\{/, (match, word) => {
+    if (specs.parentGrammar === "") {
+      throw new Error("GRAMMAR EXPECTS PARENT BUT NONE WAS GIVEN");
+    }
     return `<: ${specs.parentGrammar} {`; // replace `word` however you want
   });
 
@@ -115,6 +118,12 @@ const richTextParserPlugin: ParserPlugin = {
   parser: (specs) => getLevel(specs, "3-rich-text"),
 };
 
+const richNumberParserPlugin: ParserPlugin = {
+  name: "RankiRichNumber",
+  dependencies: ["RankiBase"],
+  parser: (specs) => getLevel(specs, "3-rich-number"),
+};
+
 function expandDependencies(plugins: ParserPlugin[]): void {
   const lookup = Object.fromEntries(plugins.map((p) => [p.name, p]));
 
@@ -206,6 +215,7 @@ const IMPORTED_PLUGINS = {
   paramsV2ParserPlugin,
   baseParserPlugin,
   configParserPlugin,
+  richNumberParserPlugin,
 };
 
 const STANDARD_PLUGIN_NAMES = ["RankiConfig", "RankiBase"];
@@ -214,12 +224,24 @@ export function parse(raw: string, requestedPluginNames: string[]) {
   const activePluginNames = [...STANDARD_PLUGIN_NAMES, ...requestedPluginNames];
   const { versionPath, semver } = getVersionData(OHM_PATH);
   const activePluginNamesSet = new Set(activePluginNames);
+
+  {
+    const importedPluginNameSet = new Set(
+      Object.values(IMPORTED_PLUGINS).map((v) => v.name),
+    );
+    for (const name of activePluginNames) {
+      if (!importedPluginNameSet.has(name)) {
+        throw new Error(`REQUESTED PLUGIN NOT IMPORTED: ${name}`);
+      }
+    }
+  }
+
   const activePluginsObj = Object.entries(IMPORTED_PLUGINS)
-    .filter(([k, v]) => activePluginNamesSet.has(v.name))
-    .reduce((a, [k, v]) => {
-      a[k] = v;
-      return a;
-    }, {} as typeof IMPORTED_PLUGINS);
+    .filter(([_, v]) => activePluginNamesSet.has(v.name))
+    .reduce(
+      (a, [k, v]) => ((a[k] = v), a),
+      {} as Partial<typeof IMPORTED_PLUGINS>,
+    );
 
   if (!Object.keys(activePluginsObj).length) {
     throw new Error("NO ENABLED PLUGINS");
@@ -228,25 +250,23 @@ export function parse(raw: string, requestedPluginNames: string[]) {
   const activePluginsArr = Object.values(activePluginsObj);
 
   expandDependencies(activePluginsArr);
-  const sorted = topologicalSort(activePluginsArr);
-  const pluginDependencies = activePluginsArr.reduce((a, v) => {
-    a[v.name] = v.dependencies;
-    return a;
-  }, {} as Record<string, string[]>);
+  const importChain = topologicalSort(activePluginsArr);
+  const dependencyGraph = activePluginsArr.reduce(
+    (a, v) => ((a[v.name] = v.dependencies), a),
+    {} as Record<string, string[]>,
+  );
 
   const matchers = {};
   let grammarParents = {};
-  for (let si = 0; si < sorted.length; si++) {
-    const name = sorted[si];
-    const plugin = Object.values(activePluginsObj).filter(
-      (p) => p.name === name,
-    )[0];
+  for (let si = 0; si < importChain.length; si++) {
+    const name = importChain[si];
+    const plugin = Object.values(activePluginsObj).find((p) => p.name === name);
     if (!plugin) {
       throw new Error(`CANNOT FIND PLUGIN ${name}`);
     }
     const matcher = plugin.parser({
       versionPath,
-      parentGrammar: si === 0 ? "" : sorted[si - 1],
+      parentGrammar: si === 0 ? "" : importChain[si - 1],
       dependencies: grammarParents,
     });
     matchers[name] = matcher;
@@ -256,7 +276,7 @@ export function parse(raw: string, requestedPluginNames: string[]) {
     };
   }
 
-  const last = sorted.at(-1);
+  const last = importChain.at(-1);
   const matcher = matchers[last].grammar;
 
   if (!matcher) {
@@ -306,8 +326,8 @@ export function parse(raw: string, requestedPluginNames: string[]) {
     },
     parser: {
       requested: requestedPluginNames,
-      sorted,
-      dependencies: pluginDependencies,
+      importChain,
+      dependencyGraph,
     },
     stages: {
       raw,

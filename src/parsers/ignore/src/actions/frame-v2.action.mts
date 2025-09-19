@@ -41,10 +41,7 @@ const node: ohm.ActionDict<ParseNode> = {
       type: this.ctorName,
       args: {
         "wi.1.length": wi1.sourceString.length,
-        // "whitespace.1.length": whitespace1.sourceString.length,
-        // "whitespace.2.length": whitespace2.sourceString.length,
       },
-      // !TODO I don't like that the node is being skipped
       children: [pauseDocument.node(this.args.context)],
     };
   },
@@ -53,15 +50,11 @@ const node: ohm.ActionDict<ParseNode> = {
     return {
       kind: "parent",
       type: this.ctorName,
-      args: {
-        // "wi.1.length": wi1.sourceString.length,
-        // "whitespace.1.length": whitespace1.sourceString.length,
-        // "whitespace.2.length": whitespace2.sourceString.length,
-      },
-      // !TODO I don't like that the node is being skipped
+      args: {},
       children: [pauseDocument.node(this.args.context)],
     };
   },
+
   pauseDocument(whitespace1, pauseList, whitespace2) {
     return {
       kind: "parent",
@@ -70,10 +63,10 @@ const node: ohm.ActionDict<ParseNode> = {
         "whitespace.1.length": whitespace1.sourceString.length,
         "whitespace.2.length": whitespace2.sourceString.length,
       },
-      // !TODO I don't like that the node is being skipped
       children: [pauseList.node(this.args.context)],
     };
   },
+
   pauseList(v2PayloadSection1, pausedContainer, v2PayloadSection2) {
     return {
       kind: "parent",
@@ -87,6 +80,7 @@ const node: ohm.ActionDict<ParseNode> = {
       ),
     };
   },
+
   v2PayloadSection(v2PayloadSectionItem1, whitespace, v2PayloadSectionItem2) {
     return {
       kind: "parent",
@@ -100,6 +94,7 @@ const node: ohm.ActionDict<ParseNode> = {
       ),
     };
   },
+
   v2PayloadPlain(plain) {
     return {
       kind: "leaf",
@@ -112,6 +107,8 @@ const node: ohm.ActionDict<ParseNode> = {
       },
     };
   },
+
+  // !TODO
   pausedContainer(
     whitespace1,
     pauseStart,
