@@ -64,3 +64,9 @@ world
 :%
 
 yes
+
+---
+/hello/ +*% !as:code; world! :%*+
+
+---
+/hello/ +*% !as:code, !cat ; world! :%*+

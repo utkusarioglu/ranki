@@ -305,6 +305,7 @@ export function parse(raw: string, requestedPluginNames: string[]) {
       context,
     },
     parser: {
+      requested: requestedPluginNames,
       sorted,
       dependencies: pluginDependencies,
     },

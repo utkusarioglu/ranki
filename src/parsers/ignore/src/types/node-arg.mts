@@ -125,34 +125,12 @@ export interface NodeArgHeading {
   "line.heading": NodeArgLineModifiersCommon;
 }
 
-// !FIX this entire structure is temporary
-export interface FrameV2Config {
-  "frame.v2": {
-    type: string;
-    variant: string; // this is like f fp
-    frameType: string; // like code in %:code; ...:%
-    args: NodeArgs &
-      // !FIX this entire structure is temporary
-      Partial<{
-        "separator.right.type": string;
-        "separator.left.type": string;
-        "frame.v2.config": NodeArgs;
-        "directive.v2": NodeArgs;
-      }>;
-    params: ParamsV2Spec;
-    // params: {
-    //   variant: "block" | "inline" | "none";
-    //   items: ParamV2[];
-    // };
-  };
-}
-
 export interface DirectiveV2Config {
   "directive.v2": {
     type: string;
     args: NodeArgs;
+    params: ParamsV2Spec;
   };
-  params: ParamsV2Spec;
 }
 
 export interface ParamsV2Spec {
@@ -163,4 +141,50 @@ export interface ParamsV2Spec {
 export interface ArgsAndParams {
   args: NodeArgs;
   params: ParamsV2Spec;
+}
+
+export type FrameV2Config =
+  | FrameV2ConfigFp_F
+  | FrameV2ConfigFp_f
+  | FrameV2ConfigP;
+
+export interface FrameV2ConfigFp_F {
+  "frame.v2": {
+    type: string;
+    variant: "fp_F"; // this is like f fp
+    frameType: string; // like code in %:code; ...:%
+    args: NodeArgs & {
+      "separator.right.type": string;
+      // !FIX this value is inside the config structure, which breaks symmetry
+      // "separator.left.type": string;
+      "frame.v2.config": NodeArgs;
+    };
+    params: ParamsV2Spec;
+  };
+}
+
+export interface FrameV2ConfigFp_f {
+  "frame.v2": {
+    type: string;
+    variant: "fp_f"; // this is like f fp
+    frameType: string; // like code in %:code; ...:%
+    args: NodeArgs & {
+      "separator.right.type": string;
+      // !FIX this value is inside the config structure, which breaks symmetry
+      // "separator.left.type": string;
+      "frame.v2.config": NodeArgs;
+    };
+    params: ParamsV2Spec;
+  };
+}
+
+export interface FrameV2ConfigP {
+  "frame.v2": {
+    type: string;
+    variant: "p"; // this is like f fp
+    frameType: string; // like code in %:code; ...:%
+    args: NodeArgs & {
+      "separator.right.type": string;
+    };
+  };
 }

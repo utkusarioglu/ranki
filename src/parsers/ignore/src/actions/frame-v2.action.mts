@@ -187,12 +187,9 @@ const v2FrameConfig: ohm.ActionDict<NodeArgs> = {
     return {
       "directive.v2": {
         type: this.ctorName,
-        // frameType: v2Type.sourceString,
-        // variant: "p",
         args: {
           "wi.1.length": wi1.sourceString.length,
           "wi.2.length": wi2.sourceString.length,
-          // "separator.right.type": sep.creatorName(this.args.context),
         },
         params: {
           variant: "block",
@@ -206,12 +203,9 @@ const v2FrameConfig: ohm.ActionDict<NodeArgs> = {
     return {
       "directive.v2": {
         type: this.ctorName,
-        // frameType: v2Type.sourceString,
-        // variant: "p",
         args: {
           "wi.1.length": wi1.sourceString.length,
           "wi.2.length": wi2.sourceString.length,
-          // "separator.right.type": sep.creatorName(this.args.context),
         },
         params: {
           variant: "inline",
@@ -231,10 +225,6 @@ const v2FrameConfig: ohm.ActionDict<NodeArgs> = {
           "wi.2.length": wi2.sourceString.length,
           "separator.right.type": sep.creatorName(this.args.context),
         },
-        params: {
-          variant: "none",
-          items: [],
-        },
       },
     };
   },
@@ -246,12 +236,14 @@ const v2FrameConfig: ohm.ActionDict<NodeArgs> = {
     wi3,
     sepRight,
   ) {
-    const config = v2ParamListBlockContainer.argsAndParams(this.args.context);
+    const config: ArgsAndParams = v2ParamListBlockContainer.argsAndParams(
+      this.args.context,
+    );
     return {
       "frame.v2": {
         type: this.ctorName,
         frameType: v2Type.sourceString,
-        variant: this.ctorName.split("_").at(-1),
+        variant: "fp_F",
         args: {
           "wi.1.length": wi1.sourceString.length,
           "wi.2.length": wi2.sourceString.length,
@@ -273,19 +265,23 @@ const v2FrameConfig: ohm.ActionDict<NodeArgs> = {
     wi3,
     sepRight,
   ) {
-    const config = v2ParamListInlineContainer.argsAndParams(this.args.context);
+    const config: ArgsAndParams = v2ParamListInlineContainer.argsAndParams(
+      this.args.context,
+    );
     return {
       "frame.v2": {
         type: this.ctorName,
         frameType: v2Type.sourceString,
-        variant: this.ctorName.split("_").at(-1),
+        variant: "fp_f",
         args: {
           "wi.1.length": wi1.sourceString.length,
           "wi.2.length": wi2.sourceString.length,
           "wi.3.length": wi3.sourceString.length,
-          // !FIX sepRight doesn't work
+
+          // !FIX this expects iter if `creatorName` is called
           // "separator.right.type": sepRight.creatorName(this.args.context),
           "separator.right.type": sepRight.sourceString,
+
           "frame.v2.config": config.args,
         },
         params: config.params,
