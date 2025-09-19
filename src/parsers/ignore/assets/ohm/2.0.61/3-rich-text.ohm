@@ -1,0 +1,64 @@
+RankiRichText <: RankiBase {
+  lineModifiers := alignment smalltext heading
+
+  smalltext =
+    | &(small+ ~clearance) --decoration
+    | small+ clearance --small
+    | ~small --normal
+
+  heading (Line heading level qualifier) = 
+    | &(h+ ~clearance) --decoration
+    | h+ clearance --heading
+    | ~h --normal
+    
+  alignment (Line alignment qualifier) =
+    | &(align+ ~clearance) --decoration
+    | ~align --unaligned
+    | align+ clearance --aligned
+
+  lexeme := 
+    | textual --textual
+    | ...
+
+  textual = decorated (clearance decorated)*
+
+  decorated := 
+//    | word &wordEnd --bare
+    | hChar<inWordToken>* word hChar<inWordToken>* &wordEnd --decorated
+    | hChar<inWordToken>+ &wordEnd --token
+    | hChar<inWordToken>* hChar<~wordEnd ~inWordToken any>+ hChar<inWordToken>* &wordEnd --richTextBase
+    | ...
+
+  word :=
+    | text --chars
+//    | hChar<digit>+ --digits
+    | hChar<punctuation>+ --punctuation
+    // | hChar<~wordEnd ~inWordToken any>+ --richTextBase
+//    | hChar<(letter | digit | punctuation)>+ --mixed
+    | ...
+
+  text (Text Word) =
+    | hChar<upper>+ hChar<lower>+ (hChar<upper>+ hChar<lower>*)+ --mixedcaseUl
+    | hChar<upper> hChar<lower>+ --propercase
+    | hChar<upper>+ --uppercase
+    | hChar<lower>+ (hChar<upper>+ hChar<lower>*)+ --mixedcaseLu
+    | hChar<lower>+ --lowercase
+
+  inWordToken = wordToken | sentence | lineToken | esc ~lineToken
+
+  punctuation (Punctuation mark) = 
+    ~(alnum | space | nl | digit | inWordToken) any
+
+  // they come at the start of lines to alter their behavior
+  lineToken := align | h | small
+  
+  // they come at the beginning or end of words to alter their behavior
+  wordToken := 
+    | em --emphasis
+    | b --bold
+    | i --idiomatic
+    | u --underlined
+    | abbr --abbreviation
+    | quotes
+    | brackets
+}

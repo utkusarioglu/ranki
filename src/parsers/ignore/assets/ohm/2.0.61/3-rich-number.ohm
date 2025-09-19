@@ -1,0 +1,59 @@
+RankiRichNumber <: RankiBase {
+  groupedDigits =  
+    | digit digit digit --three
+    | digit digit --two
+    | digit --one
+
+  integerCultural = 
+    | &(groupedDigits groupToken) groupedDigits (groupToken groupedDigits_three)* --western
+    | digit+ --basic
+
+  integer (Integer) = 
+    | negativeToken integerCultural --negative
+    | integerCultural --positive
+    
+  decimal (Decimal number) = 
+    | integer decimalToken integer_positive --full
+    | decimalToken integer_positive --point
+    
+  eNotation (Base 10 scientific notation) = scalar eToken integer
+    
+  complex (Complex Number) = 
+   | scalar clearance ("+" | "-") clearance scalar complexToken --si
+   | scalar clearance ("+" | "-") clearance complexToken scalar --is
+   | scalar clearance ("+" | "-") clearance complexToken --i
+
+  scalar (Scalar Number) =
+    | decimal
+    | integer
+
+  rational = number "/" number
+
+  infinity = 
+    | negativeToken infinityToken --negative
+    | "+" infinityToken --positive
+    | infinityToken --unsigned
+
+  hZeroType<symbol, range> = 
+    | negativeToken "0" symbol range (groupToken? range)* --negative
+    | "0" symbol range (groupToken? range)* --positive
+
+  octal = hZeroType<octalToken, ("0".."7")>
+  binary = hZeroType<binaryToken, ("0" | "1")>
+  hexadecimal = hZeroType<hexadecimalToken, ("0".."9" | "a".."f" | "A".."F")>
+
+  number := 
+    | hexadecimal
+    | binary
+    | octal
+    | infinity
+    | rational
+    | complex 
+    | eNotation 
+    | scalar 
+    | ...
+    
+  word :=
+    | number
+    | ...
+}

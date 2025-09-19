@@ -1,4 +1,3 @@
-// import { getConfig, getCaseFiles } from "./helpers.mjs";
 import yaml from "yaml";
 import * as fs from "node:fs";
 import { parse } from "./main.mjs";
@@ -27,7 +26,7 @@ function main(count: number) {
             "RankiParamsV2",
             "RankiFrameV2",
             "RankiRichText",
-            "RankiRichNumber",
+            // "RankiRichNumber",
           ]),
         );
       } catch (e) {
