@@ -7,7 +7,7 @@
     "src/plugins/*",
     "src/parsers/*"
   ],
-  "packageManager": "yarn@4.9.2",
+  "packageManager": "yarn@4.10.2",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",

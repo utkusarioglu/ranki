@@ -18,6 +18,13 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
 
     return joined;
   },
+  v2ParamListBlock(param1, sep, param2) {
+    // const p2 = param2.paramsV2(this.args.context);
+    const rest = param2.paramsV2(this.args.context);
+    const joined = [param1.paramV2(this.args.context), ...rest];
+
+    return joined;
+  },
 };
 
 const paramV2: ohm.ActionDict<ParamV2> = {
@@ -36,6 +43,32 @@ const paramV2: ohm.ActionDict<ParamV2> = {
       },
       operator: f[0] as ParamV2Operator,
       values: paramValues.paramV2Values(this.args.context),
+    };
+  },
+  param_positive(key) {
+    return {
+      key: key.sourceString,
+      args: {},
+      operator: "assign",
+      values: [
+        {
+          type: "boolean",
+          value: true,
+        },
+      ],
+    };
+  },
+  param_negative(negation, key) {
+    return {
+      key: key.sourceString,
+      args: {},
+      operator: "assign",
+      values: [
+        {
+          type: "boolean",
+          value: false,
+        },
+      ],
     };
   },
 };
@@ -68,7 +101,31 @@ const paramV2Value: ohm.ActionDict<ParamV2Value> = {
   paramValueItemPrimitive_true(val) {
     return {
       type: "boolean",
-      value: val.sourceString === "true",
+      value: true,
+    };
+  },
+  paramValueItemPrimitive_false(val) {
+    return {
+      type: "boolean",
+      value: false,
+    };
+  },
+  paramValueItemPrimitive_uppercase(val) {
+    return {
+      type: "uppercase",
+      value: val.sourceString,
+    };
+  },
+  paramValueItemPrimitive_mixed(val) {
+    return {
+      type: "mixed",
+      value: val.sourceString,
+    };
+  },
+  quoted(quote1, quotedContent, quote2) {
+    return {
+      type: "quoted",
+      value: quotedContent.sourceString,
     };
   },
 };

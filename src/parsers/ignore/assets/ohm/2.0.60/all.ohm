@@ -1,4 +1,4 @@
-// 2.0.59
+// 2.0.60
 RankiConfig {
   root = ""
 
@@ -13,7 +13,9 @@ RankiConfig {
   // params
   sepLeft = ","
   sepRight = ";"
-  assignment = "="
+  assign = "="
+  append = "+="
+  remove = "-=" 
   negation = "!"
 
   // line alteration tokens
@@ -195,26 +197,31 @@ RankiFrameV1 <: RankiBase {
 RankiParamsV2 <: RankiBase {
   v2ParamListBlockContainer = sepLeft wi 
           nl wi 
-        v2paramListBlock wi 
+        v2ParamListBlock wi 
           sepLeft?
   
   v2ParamListInlineContainer = sepLeft wi 
-      v2paramListInline wi 
+      v2ParamListInline wi 
         sepLeft?
         
   v2SepLeftInline = wi sepLeft wi
   v2SepLeftBlock = wi sepLeft? wi nl wi
-  v2paramListInline = param (v2SepLeftInline param)*
-  v2paramListBlock = param (v2SepLeftBlock param)*
+  v2ParamListInline = param (v2SepLeftInline param)*
+  v2ParamListBlock = param (v2SepLeftBlock param)*
+
+  operator =
+    | remove
+    | append
+    | assign
 
   param =
-    | paramKey wi assignment wi paramValue --assignment
+    | paramKey wi operator wi paramValues --operator
     | negation paramKey --negative
     | paramKey --positive
 
   paramKey = letter (paramKeyLegal)*
   paramKeyLegal = letter | "_" | "-"
-  paramValue = paramValueItem (spaces paramValueItem)*
+  paramValues = paramValueItem (clearance paramValueItem)*
 
   paramValueItem = 
     | quoted<quoteSingle>
@@ -223,7 +230,7 @@ RankiParamsV2 <: RankiBase {
     
   quoted<q> = q quotedContent<q>* q
   quotedContent<q> = 
-    | "\\" q --escaped
+    | esc q --escaped
     | ~q any --content
 
   paramValueItemPrimitive =
@@ -307,10 +314,11 @@ RankiRichText <: RankiBase {
     | ...
 
   text (Text Word) =
+    | hChar<upper>+ hChar<lower>+ (hChar<upper>+ hChar<lower>*)+ --mixedcaseUl
     | hChar<upper> hChar<lower>+ --propercase
     | hChar<upper>+ --uppercase
+    | hChar<lower>+ (hChar<upper>+ hChar<lower>*)+ --mixedcaseLu
     | hChar<lower>+ --lowercase
-    | hChar<letter>+ --mixedcase
 
   inWordToken = wordToken | sentence | lineToken | esc ~lineToken
 
@@ -352,28 +360,33 @@ RankiFrameV2 <: RankiParamsV2 {
   // I'm not sure if this is a good idea. it does isolate nested frame errors though
 //  v2Malformed = directive (~frame any)* frame (~(frame directive) any)+ frame ("-"? digit+)? directive
   
-  v2PayloadSection = 
-    | ((v2 | v2PayloadPlain) whitespace)* 
+  v2PayloadSectionItem = 
+    | v2 --v2
+    | v2PayloadPlain --plain
+  
+  v2PayloadSection = v2PayloadSectionItem (whitespace v2PayloadSectionItem)*
 
   pauseStart = pause digit* pause
   pauseEnd = pause pause
-  pausedContainer = whitespace pauseStart whitespace pausedPayload whitespace pauseEnd whitespace
+  pausedContainer = whitespace pauseStart pausedPayload pauseEnd whitespace
+
+  // !FIX this would break with nested pauses
   pausedPayload = (~pauseEnd ~v2End any)+
   
-  v2Type = letter (space | letter)*
+  v2Type = letter+ (clearance letter+)* 
   
   v2Payload = 
     | wi nl pauseDocument --P
     | pauseDocument --p
 
-   v2End =
+  v2End =
     | frame "-"? digit+ directive --exact
     | frame directive --explicit
     | end --implicit
 
   v2DirectiveConfig =
-    | wi nl wi v2paramListBlock whitespace --D  
-    | wi v2paramListInline wi --d  
+    | wi nl wi v2ParamListBlock whitespace --D  
+    | wi v2ParamListInline wi --d  
   
   v2FrameConfigFp =
     | wi 

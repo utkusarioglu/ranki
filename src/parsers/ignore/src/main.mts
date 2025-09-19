@@ -99,42 +99,75 @@ const baseParserPlugin: ParserPlugin = {
 
 const paramsV2ParserPlugin: ParserPlugin = {
   name: "RankiParamsV2",
-  dependencies: ["RankiBase", "RankiConfig"],
+  dependencies: ["RankiBase"],
   parser: (specs) => getLevel(specs, "3-params-v2"),
 };
 
 const frameV2ParserPlugin: ParserPlugin = {
   name: "RankiFrameV2",
-  dependencies: ["RankiParamsV2", "RankiBase", "RankiConfig"],
+  dependencies: ["RankiParamsV2"],
   parser: (specs) => getLevel(specs, "4-frame-v2"),
 };
 
 const richTextParserPlugin: ParserPlugin = {
   name: "RankiRichText",
-  dependencies: ["RankiBase", "RankiConfig"],
+  dependencies: ["RankiBase"],
   parser: (specs) => getLevel(specs, "3-rich-text"),
 };
 
+function expandDependencies(plugins: ParserPlugin[]): void {
+  const lookup = Object.fromEntries(plugins.map((p) => [p.name, p]));
+
+  const cache = new Map<string, Set<string>>();
+
+  function getAllDeps(name: string, visited = new Set<string>()): Set<string> {
+    if (cache.has(name)) return cache.get(name)!;
+    if (visited.has(name))
+      throw new Error(`CIRCULAR DEPENDENCY involving ${name}`);
+
+    visited.add(name);
+    const plugin = lookup[name];
+    const result = new Set<string>();
+
+    for (const dep of plugin.dependencies) {
+      if (!lookup[dep]) throw new Error(`DEPENDENCY ABSENT ${dep}`);
+      result.add(dep);
+      for (const transitive of getAllDeps(dep, visited)) {
+        result.add(transitive);
+      }
+    }
+
+    cache.set(name, result);
+    visited.delete(name);
+    return result;
+  }
+
+  // Mutate each plugin.dependencies to include transitive deps
+  plugins.forEach((p) => {
+    p.dependencies = Array.from(getAllDeps(p.name));
+  });
+}
+
 function topologicalSort(plugins: ParserPlugin[]): ParserPlugin["name"][] {
-  const sorted = [];
+  const sorted: string[] = [];
   const adjacencies = plugins.reduce((a, c) => {
-    a[c.name] = [];
+    a[c.name] = new Set();
     return a;
-  }, {});
+  }, {} as Record<string, Set<string>>);
 
   plugins.forEach((p) => {
     p.dependencies.forEach((d) => {
       if (!adjacencies.hasOwnProperty(d)) {
         throw new Error(`DEPENDENCY ABSENT ${d}`);
       }
-      adjacencies[d].push(p.name);
+      adjacencies[d].add(p.name);
     });
   });
 
   const counts = Object.keys(adjacencies).reduce((a, c) => {
     a[c] = 0;
     return a;
-  }, {});
+  }, {} as Record<string, number>);
 
   plugins
     .map((p) => p.name)
@@ -167,40 +200,45 @@ function topologicalSort(plugins: ParserPlugin[]): ParserPlugin["name"][] {
   return sorted;
 }
 
-export function parse(raw: string) {
-  const requestedPluginNames = [
-    "RankiConfig",
-    "RankiBase",
-    "RankiParamsV2",
-    "RankiFrameV2",
-  ];
+const IMPORTED_PLUGINS = {
+  richTextParserPlugin,
+  frameV2ParserPlugin,
+  paramsV2ParserPlugin,
+  baseParserPlugin,
+  configParserPlugin,
+};
+
+const STANDARD_PLUGIN_NAMES = ["RankiConfig", "RankiBase"];
+
+export function parse(raw: string, requestedPluginNames: string[]) {
+  const activePluginNames = [...STANDARD_PLUGIN_NAMES, ...requestedPluginNames];
   const { versionPath, semver } = getVersionData(OHM_PATH);
-  const plugins = {
-    richTextParserPlugin,
-    frameV2ParserPlugin,
-    paramsV2ParserPlugin,
-    baseParserPlugin,
-    configParserPlugin,
-  };
-  const requestedPluginNamesSet = new Set(requestedPluginNames);
-  const enabledPlugins = Object.entries(plugins)
-    .filter(([k, v]) => requestedPluginNamesSet.has(v.name))
+  const activePluginNamesSet = new Set(activePluginNames);
+  const activePluginsObj = Object.entries(IMPORTED_PLUGINS)
+    .filter(([k, v]) => activePluginNamesSet.has(v.name))
     .reduce((a, [k, v]) => {
       a[k] = v;
       return a;
-    }, {} as typeof plugins);
+    }, {} as typeof IMPORTED_PLUGINS);
 
-  if (!Object.keys(enabledPlugins).length) {
+  if (!Object.keys(activePluginsObj).length) {
     throw new Error("NO ENABLED PLUGINS");
   }
 
-  const sorted = topologicalSort(Object.values(enabledPlugins));
+  const activePluginsArr = Object.values(activePluginsObj);
+
+  expandDependencies(activePluginsArr);
+  const sorted = topologicalSort(activePluginsArr);
+  const pluginDependencies = activePluginsArr.reduce((a, v) => {
+    a[v.name] = v.dependencies;
+    return a;
+  }, {} as Record<string, string[]>);
 
   const matchers = {};
-  let dependencies = {};
+  let grammarParents = {};
   for (let si = 0; si < sorted.length; si++) {
     const name = sorted[si];
-    const plugin = Object.values(enabledPlugins).filter(
+    const plugin = Object.values(activePluginsObj).filter(
       (p) => p.name === name,
     )[0];
     if (!plugin) {
@@ -209,11 +247,11 @@ export function parse(raw: string) {
     const matcher = plugin.parser({
       versionPath,
       parentGrammar: si === 0 ? "" : sorted[si - 1],
-      dependencies,
+      dependencies: grammarParents,
     });
     matchers[name] = matcher;
-    dependencies = {
-      ...dependencies,
+    grammarParents = {
+      ...grammarParents,
       [name]: matcher.grammar,
     };
   }
@@ -227,7 +265,7 @@ export function parse(raw: string) {
 
   const { semantics, participants, methods } = compileOperations(
     matcher.createSemantics(),
-    requestedPluginNames,
+    activePluginNames,
     {
       RankiBase: baseActions,
       RankiRichText: richTextActions,
@@ -266,10 +304,13 @@ export function parse(raw: string) {
       version: semver,
       context,
     },
+    parser: {
+      sorted,
+      dependencies: pluginDependencies,
+    },
     stages: {
       raw,
-      parser: {
-        sorted,
+      parse: {
         participants,
         methods,
         root: semantics(matched).node(context),

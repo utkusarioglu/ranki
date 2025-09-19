@@ -1,1 +1,66 @@
-hello %: name , cat = dog bird, yes = 12, bird = true ; world :%
+%:code
+hello
+:%
+---
+%:code
+hello world!
+:%
+---
+%:code
+hello world!,, paused ,, hello 2!
+:%
+---
+%:code
+  this %:var; is :% war!
+:%
+---
+hello %:name; world :%
+---
+hello %: name  ; world :%
+---
+hello %: name , cat = dog ; world :%
+---
+hello %: name , cat = dog bird ; world :%
+---
+hello %: name , cat = dog bird, yes = 12 ; world :%
+---
+hello % one = two: name , cat = dog bird, yes = 12 ; world :% a
+---
+hello % one = 11: name , cat = dog bird, yes = 12 ; world :% earth
+---
+%:name, abc; world :%
+---
+%:name, abc, !cde; world :%
+---
+%:name, abc = "bb" ; world :%
+---
+%:name, abc = 'cc' ; world :%
+---
+%:name, abc = true ; world :%
+---
+%:name, abc = false ; world :%
+---
+%:name, abc = AAA ; world :%
+---
+%
+yes, 
+!no
+:name, 
+abc = AAA,
+meow
+
+world 
+,, 
+agree 
+,,
+adsf
+:%
+
+---
+hello
+
+%:name
+world 
+:%
+
+yes

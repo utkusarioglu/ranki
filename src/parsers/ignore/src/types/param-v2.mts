@@ -11,16 +11,22 @@ export type ParamV2Operator = "assign" | "append" | "remove";
 
 export type ParamV2Value =
   | ParamV2ValueNumber
-  | ParamV2ValueLowercase
-  | ParamV2ValueBoolean;
+  | ParamV2ValueString
+  | ParamV2ValueBoolean
+  | ParamV2ValueQuoted;
 
 interface ParamV2ValueNumber {
   type: "number";
   value: number;
 }
 
-interface ParamV2ValueLowercase {
-  type: "lowercase";
+interface ParamV2ValueString {
+  type: "lowercase" | "uppercase" | "mixed";
+  value: string;
+}
+
+interface ParamV2ValueQuoted {
+  type: "quoted";
   value: string;
 }
 

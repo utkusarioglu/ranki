@@ -8,7 +8,8 @@ export type NodeArgs = Partial<
     NodeArgWordEnd &
     NodeArgWordDecoration &
     NodeArgLineModifiers &
-    FrameV2Config
+    FrameV2Config &
+    DirectiveV2Config
 >;
 
 type NodeArgWordDecoration = NodeArgSentenceEnd &
@@ -136,10 +137,30 @@ export interface FrameV2Config {
         "separator.right.type": string;
         "separator.left.type": string;
         "frame.v2.config": NodeArgs;
+        "directive.v2": NodeArgs;
       }>;
-    params: {
-      variant: "block" | "inline" | "none";
-      items: ParamV2[];
-    };
+    params: ParamsV2Spec;
+    // params: {
+    //   variant: "block" | "inline" | "none";
+    //   items: ParamV2[];
+    // };
   };
+}
+
+export interface DirectiveV2Config {
+  "directive.v2": {
+    type: string;
+    args: NodeArgs;
+  };
+  params: ParamsV2Spec;
+}
+
+export interface ParamsV2Spec {
+  variant: "block" | "inline" | "none";
+  items: ParamV2[];
+}
+
+export interface ArgsAndParams {
+  args: NodeArgs;
+  params: ParamsV2Spec;
 }
