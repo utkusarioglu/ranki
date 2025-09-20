@@ -1,20 +1,28 @@
 RankiRichNumber <: RankiBase {
-  groupedDigits =  
+  groupedDigits3 =
     | digit digit digit --three
+    | groupedDigits2
+
+  groupedDigits2 =
     | digit digit --two
     | digit --one
 
-  integerCultural = 
-    | &(groupedDigits groupToken) groupedDigits (groupToken groupedDigits_three)* --western
+  numberSystemInternational = groupedDigits3 (groupToken groupedDigits3_three)+
+  numberSystemIndian = groupedDigits2 groupToken (groupedDigits2_two groupToken)+ groupedDigits3_three --lakhCrore
+
+  numberSystem = 
+    | numberSystemIndian --indian
+    | numberSystemInternational --international
     | digit+ --basic
 
   integer (Integer) = 
-    | negativeToken integerCultural --negative
-    | integerCultural --positive
+    | negativeToken numberSystem --negative
+    | positiveToken numberSystem --positive
+    | numberSystem --unsigned
     
   decimal (Decimal number) = 
-    | integer decimalToken integer_positive --full
-    | decimalToken integer_positive --point
+    | integer decimalToken integer_unsigned --full
+    | decimalToken integer_unsigned --point
     
   eNotation (Base 10 scientific notation) = scalar eToken integer
     
@@ -27,26 +35,36 @@ RankiRichNumber <: RankiBase {
     | decimal
     | integer
 
-  rational = number "/" number
+  rational = number rationalToken number
 
-  infinity = 
-    | negativeToken infinityToken --negative
-    | "+" infinityToken --positive
-    | infinityToken --unsigned
+  hConcept<token> =
+    | negativeToken token --negative
+    | positiveToken token --positive
+    | token --unsigned
+  
+  conceptual = 
+    | hConcept<infinityToken> --infinity
+    | hConcept<eToken> --e
+    | hConcept<piToken> --pi
 
+  hBasicGroup<range> = range (groupToken? range)*
+  hZeroTypePositive<symbol, range> =  "0" symbol hBasicGroup<range>
   hZeroType<symbol, range> = 
-    | negativeToken "0" symbol range (groupToken? range)* --negative
-    | "0" symbol range (groupToken? range)* --positive
+    | negativeToken hZeroTypePositive<symbol, range> --negative
+    | hZeroTypePositive<symbol, range> --positive
 
   octal = hZeroType<octalToken, ("0".."7")>
   binary = hZeroType<binaryToken, ("0" | "1")>
   hexadecimal = hZeroType<hexadecimalToken, ("0".."9" | "a".."f" | "A".."F")>
 
-  number := 
+  bases = 
     | hexadecimal
     | binary
     | octal
-    | infinity
+
+  number := 
+    | bases
+    | conceptual
     | rational
     | complex 
     | eNotation 

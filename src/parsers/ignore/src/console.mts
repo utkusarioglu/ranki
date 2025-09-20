@@ -23,10 +23,10 @@ function main(count: number) {
       try {
         parsed.push(
           parse(c, [
-            "RankiParamsV2",
-            "RankiFrameV2",
-            "RankiRichText",
-            // "RankiRichNumber",
+            // "RankiParamsV2",
+            // "RankiFrameV2",
+            // "RankiRichText",
+            "RankiRichNumber",
           ]),
         );
       } catch (e) {

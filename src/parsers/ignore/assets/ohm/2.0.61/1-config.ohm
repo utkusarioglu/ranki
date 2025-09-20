@@ -39,11 +39,14 @@ RankiConfig {
   // number tokens
   complexToken = "i" | "j" | "k"
   infinityToken = "inf"
+  piToken = "pi" | "PI"
   eToken = "e" | "E"
   hexadecimalToken = "x" | "X"
   octalToken = "o" | "O"
   binaryToken = "b" | "B"
   decimalToken = "."
   negativeToken = "-"
+  positiveToken = "+"
   groupToken = "_"
+  rationalToken = "/"
 }

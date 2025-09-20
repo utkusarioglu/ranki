@@ -1,4 +1,8 @@
 import type { NodeArgs } from "./node-arg.mjs";
+import {
+  NodeLeafSourceRichNumberV1,
+  NodeLeafSourceNumber,
+} from "./rich-number.types.mjs";
 export type { NodeArgs } from "./node-arg.mjs";
 
 export interface ParseContext {
@@ -21,6 +25,18 @@ export interface ParseContext {
         append: string;
         remove: string;
       };
+    };
+    richNumberV1: {
+      complexUnits: string[];
+      infinity: string[];
+      e: string[];
+      pi: string[];
+      hexadecimal: string[];
+      octal: string[];
+      binary: string[];
+      decimal: string;
+      negative: string;
+      group: string;
     };
   };
 }
@@ -57,58 +73,13 @@ interface NodeLeafSourceString {
   value: string;
 }
 
-// interface NodeLeafSourceNumber {
-//   type: "number";
-//   value: number;
-// }
-
-interface NodeLeafSourceNumber {
-  type: "number";
+export interface NodeLeafSourceDigits {
+  type: "digits";
   // sign: 1 | -1;
-  integer: number;
-}
-
-interface NodeLeafSourceInteger {
-  type: "integer";
-  sign: 1 | -1;
-  integer: number;
-}
-
-interface NodeLeafSourceDecimal {
-  type: "decimal";
-  sign: 1 | -1;
-  integer: number;
-  decimal: number;
-}
-
-interface NodeLeafSourceENotation {
-  type: "eNotation";
-  sign: 1 | -1;
-  integer: number;
-  decimal: number;
-  exponentSign: 1 | -1;
-  exponent: number;
-}
-
-interface NodeLeafSourceComplexInteger {
-  type: "complexInteger";
-  real: {
-    sign: 1 | -1;
-    integer: number;
-  };
-  complex: {
-    sign: 1 | -1;
-    integer: number;
-  };
-  // decimal: number;
-  // exponentSign: 1 | -1;
-  // exponent: number;
+  digits: number;
 }
 
 type NodeLeafSource =
+  | NodeLeafSourceRichNumberV1
   | NodeLeafSourceNumber
-  | NodeLeafSourceComplexInteger
-  | NodeLeafSourceString
-  | NodeLeafSourceInteger
-  | NodeLeafSourceDecimal
-  | NodeLeafSourceENotation;
+  | NodeLeafSourceString;

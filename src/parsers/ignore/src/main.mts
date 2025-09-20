@@ -6,6 +6,7 @@ import { baseActions } from "./actions/base.action.mjs";
 import { richTextActions } from "./actions/rich-text.action.mjs";
 import { paramsV2Actions } from "./actions/params-v2.action.mjs";
 import { frameV2Actions } from "./actions/frame-v2.action.mjs";
+import { richNumberActions } from "./actions/rich-number.mjs";
 import type {
   GrammarSpecs,
   ParserPlugin,
@@ -21,7 +22,7 @@ function getLevel(specs: GrammarSpecs, filename: string): ParserPluginGrammar {
 
   const altered = raw.replace(/<:\s*(\w+)\s*\{/, (match, word) => {
     if (specs.parentGrammar === "") {
-      throw new Error("GRAMMAR EXPECTS PARENT BUT NONE WAS GIVEN");
+      throw new Error("GRAMMAR EXPECTS A PARENT BUT NONE WAS GIVEN");
     }
     return `<: ${specs.parentGrammar} {`; // replace `word` however you want
   });
@@ -123,6 +124,12 @@ const richNumberParserPlugin: ParserPlugin = {
   dependencies: ["RankiBase"],
   parser: (specs) => getLevel(specs, "3-rich-number"),
 };
+
+// const richNumberParserPlugin: ParserPlugin = {
+//   name: "RankiRichNumber",
+//   dependencies: ["RankiBase"],
+//   parser: (specs) => getLevel(specs, "3-rich-number"),
+// };
 
 function expandDependencies(plugins: ParserPlugin[]): void {
   const lookup = Object.fromEntries(plugins.map((p) => [p.name, p]));
@@ -291,6 +298,7 @@ export function parse(raw: string, requestedPluginNames: string[]) {
       RankiRichText: richTextActions,
       RankiParamsV2: paramsV2Actions,
       RankiFrameV2: frameV2Actions,
+      RankiRichNumber: richNumberActions,
     },
   );
 
@@ -315,6 +323,18 @@ export function parse(raw: string, requestedPluginNames: string[]) {
           append: "+=",
           remove: "-=",
         },
+      },
+      richNumberV1: {
+        complexUnits: ["i", "j", "k"],
+        infinity: ["inf", "INF"],
+        pi: ["pi", "PI"],
+        e: ["e", "E"],
+        hexadecimal: ["h", "H"],
+        octal: ["o", "O"],
+        binary: ["b", "B"],
+        decimal: ".",
+        negative: "-",
+        group: "_",
       },
     },
   };
