@@ -7,6 +7,7 @@ import { richTextActions } from "./actions/rich-text.action.mjs";
 import { paramsV2Actions } from "./actions/params-v2.action.mjs";
 import { frameV2Actions } from "./actions/frame-v2.action.mjs";
 import { richNumberActions } from "./actions/rich-number.mjs";
+import { richStructureActions } from "./actions/rich-structure.action.mjs";
 import type {
   GrammarSpecs,
   ParserPlugin,
@@ -125,6 +126,11 @@ const richNumberParserPlugin: ParserPlugin = {
   parser: (specs) => getLevel(specs, "3-rich-number"),
 };
 
+const richStructureParserPlugin: ParserPlugin = {
+  name: "RankiRichStructure",
+  dependencies: ["RankiParamsV2"],
+  parser: (specs) => getLevel(specs, "4-rich-structure"),
+};
 // const richNumberParserPlugin: ParserPlugin = {
 //   name: "RankiRichNumber",
 //   dependencies: ["RankiBase"],
@@ -223,6 +229,7 @@ const IMPORTED_PLUGINS = {
   baseParserPlugin,
   configParserPlugin,
   richNumberParserPlugin,
+  richStructureParserPlugin,
 };
 
 const STANDARD_PLUGIN_NAMES = ["RankiConfig", "RankiBase"];
@@ -299,6 +306,7 @@ export function parse(raw: string, requestedPluginNames: string[]) {
       RankiParamsV2: paramsV2Actions,
       RankiFrameV2: frameV2Actions,
       RankiRichNumber: richNumberActions,
+      RankiRichStructure: richStructureActions,
     },
   );
 

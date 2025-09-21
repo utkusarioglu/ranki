@@ -1,5 +1,10 @@
 import type * as ohm from "ohm-js";
 import type { ParseContext, ParseNode } from "../types/types.mjs";
+import {
+  NodeLeafSourceComplex,
+  NodeLeafSourceInteger,
+  NodeLeafSourceScalar,
+} from "../types/rich-number.types.mjs";
 
 const CONCEPTUAL_NUMBERS = ["e", "infinity", "pi"];
 
@@ -16,7 +21,7 @@ function hConcept(token: ohm.Node): ParseNode {
   }
 
   return {
-    kind: "leaf",
+    kind: "leaf" as "leaf",
     type: this.ctorName,
     print: true,
     args: {},
@@ -25,6 +30,38 @@ function hConcept(token: ohm.Node): ParseNode {
       sign: -1,
       raw: this.sourceString,
       symbol: token.sourceString,
+    },
+  };
+}
+
+function hComplex(
+  real: NodeLeafSourceScalar,
+  clearance1: ohm.Node,
+  operator: ohm.Node,
+  clearance2: ohm.Node,
+  imaginary: NodeLeafSourceScalar,
+  // imaginaryPart: ohm.Node,
+  complexToken: ohm.Node,
+): ParseNode {
+  return {
+    kind: "leaf",
+    type: this.ctorName,
+    print: true,
+    args: {
+      "clearance.1.length": clearance1.sourceString.length,
+      "clearance.2.length": clearance2.sourceString.length,
+      "richNumber.v1": {
+        args: {
+          "token.complex": complexToken.sourceString,
+        },
+      },
+    },
+    source: {
+      type: "complex",
+      raw: this.sourceString,
+      operator: operator.sourceString as NodeLeafSourceComplex["operator"],
+      real,
+      imaginary,
     },
   };
 }
@@ -181,6 +218,7 @@ const node: ohm.ActionDict<ParseNode> = {
       },
     };
   },
+
   decimal_point(decimalToken, integer_positive) {
     return {
       kind: "leaf",
@@ -192,6 +230,105 @@ const node: ohm.ActionDict<ParseNode> = {
         sign: 1,
         integer: 0,
         decimal: +integer_positive.sourceString,
+      },
+    };
+  },
+
+  rational(nominator, rationalToken, denominator) {
+    return {
+      kind: "leaf",
+      type: this.ctorName,
+      print: true,
+      args: {
+        // !TODO
+      },
+      source: {
+        type: "rational",
+        nominator: nominator.node(this.args.context).source,
+        denominator: denominator.node(this.args.context).source,
+      },
+    };
+  },
+
+  complex_i(realPart, clearance1, operator, clearance2, complexToken) {
+    const imaginary: NodeLeafSourceInteger = {
+      type: "integer",
+      raw: complexToken.sourceString,
+      sign: 1,
+      system: "basic",
+      integer: 1,
+    };
+    const real: NodeLeafSourceScalar = realPart.node(this.args.context).source;
+    return hComplex.call(
+      this,
+      real,
+      clearance1,
+      operator,
+      clearance2,
+      imaginary,
+      complexToken,
+    );
+  },
+
+  complex_si(
+    realPart,
+    clearance1,
+    operator,
+    clearance2,
+    imaginaryPart,
+    complexToken,
+  ) {
+    const real: NodeLeafSourceScalar = realPart.node(this.args.context).source;
+    const imaginary: NodeLeafSourceScalar = imaginaryPart.node(
+      this.args.context,
+    ).source;
+    return hComplex.call(
+      this,
+      real,
+      clearance1,
+      operator,
+      clearance2,
+      imaginary,
+      complexToken,
+    );
+  },
+
+  complex_is(
+    realPart,
+    clearance1,
+    operator,
+    clearance2,
+    complexToken,
+    imaginaryPart,
+  ) {
+    const real: NodeLeafSourceScalar = realPart.node(this.args.context).source;
+    const imaginary: NodeLeafSourceScalar = imaginaryPart.node(
+      this.args.context,
+    ).source;
+    return hComplex.call(
+      this,
+      real,
+      clearance1,
+      operator,
+      clearance2,
+      imaginary,
+      complexToken,
+    );
+  },
+
+  eNotation(significand, eToken, exponent) {
+    return {
+      kind: "leaf",
+      type: this.ctorName,
+      print: true,
+      args: {
+        // !TODO
+      },
+      source: {
+        type: "eNotation",
+        raw: this.sourceString,
+        significand: significand.node(this.args.context).source,
+        exponent: exponent.node(this.args.context).source,
       },
     };
   },

@@ -9,7 +9,9 @@ export type NodeArgs = Partial<
     NodeArgWordDecoration &
     NodeArgLineModifiers &
     FrameV2Config &
-    DirectiveV2Config
+    DirectiveV2Config &
+    RichNumberV1 &
+    RichStructureV1
 >;
 
 type NodeArgWordDecoration = NodeArgSentenceEnd &
@@ -24,11 +26,10 @@ type NodeArgNumber = Record<
   | "whitespace.2.length"
   | "indentation.1.length"
   | "clearance.1.length"
+  | "clearance.2.length"
   | "wm.1.length"
   | "small.level"
   | "wi.1.length",
-  // | "heading.level"
-  // | "alignment.level"
   number
 >;
 
@@ -186,5 +187,26 @@ export interface FrameV2ConfigP {
     args: NodeArgs & {
       "separator.right.type": string;
     };
+  };
+}
+
+type RichNumberV1 = RichNumberV1Complex;
+
+export interface RichNumberV1Complex {
+  "richNumber.v1": {
+    args: {
+      "token.complex": string;
+    };
+  };
+}
+
+interface RichStructureV1 {
+  "richStructure.v1": {
+    // name: string;
+    // type: "implicit" | "explicit";
+    args: NodeArgs & {
+      "richStructure.v1.config": NodeArgs;
+    };
+    params: ParamsV2Spec;
   };
 }

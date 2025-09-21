@@ -1,8 +1,8 @@
 import type * as ohm from "ohm-js";
 import type { ParseNode } from "../types/types.mjs";
 import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
-import { NodeArgs } from "../types/types.mjs";
-import { ArgsAndParams } from "../types/node-arg.mjs";
+import type { NodeArgs } from "../types/types.mjs";
+import type { ArgsAndParams } from "../types/node-arg.mjs";
 
 const node: ohm.ActionDict<ParseNode> = {
   block_v2(indentation, v2, wi, ender) {
@@ -136,48 +136,6 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 };
 
-const argsAndParams: ohm.ActionDict<ArgsAndParams> = {
-  v2ParamListBlockContainer(
-    sepLeft1,
-    wi1,
-    nl,
-    wi2,
-    v2ParamListBlock,
-    wi3,
-    sepLeft2,
-  ) {
-    return {
-      args: {
-        "separator.left.1.type": sepLeft1.creatorName(this.args.context),
-        // !FIX needs to be parsed
-        // "separator.left.2.type": sepLeft2.creatorName(this.args.context),
-        "wi.1.length": wi1.sourceString.length,
-        "wi.2.length": wi2.sourceString.length,
-        "wi.3.length": wi3.sourceString.length,
-      },
-      params: {
-        variant: "block",
-        items: v2ParamListBlock.paramsV2(this.args.context),
-      },
-    };
-  },
-  v2ParamListInlineContainer(sepLeft1, wi1, v2ParamListInline, wi2, sepLeft2) {
-    return {
-      args: {
-        "separator.left.1.type": sepLeft1.creatorName(this.args.context),
-        // !FIX needs to be parsed
-        // "separator.left.2.type": sepLeft2.creatorName(this.args.context),
-        "wi.1.length": wi1.sourceString.length,
-        "wi.2.length": wi2.sourceString.length,
-      },
-      params: {
-        variant: "inline",
-        items: v2ParamListInline.paramsV2(this.args.context),
-      },
-    };
-  },
-};
-
 const v2FrameConfig: ohm.ActionDict<NodeArgs> = {
   v2DirectiveConfig_D(wi1, nl, wi2, v2ParamListBlock, whitespace) {
     const params = v2ParamListBlock.paramsV2(this.args.context);
@@ -290,5 +248,5 @@ const v2FrameConfig: ohm.ActionDict<NodeArgs> = {
 export const frameV2Actions = {
   node,
   v2FrameConfig,
-  argsAndParams,
+  // argsAndParams,
 };

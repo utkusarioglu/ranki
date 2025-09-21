@@ -1,5 +1,6 @@
 import type * as ohm from "ohm-js";
 import type { NodeArgs, ParseContext, ParseNode } from "../types/types.mjs";
+import type { ArgsAndParams } from "../types/node-arg.mjs";
 import type {
   ParamV2,
   ParamV2Operator,
@@ -130,9 +131,52 @@ const paramV2Value: ohm.ActionDict<ParamV2Value> = {
   },
 };
 
+const argsAndParams: ohm.ActionDict<ArgsAndParams> = {
+  v2ParamListBlockContainer(
+    sepLeft1,
+    wi1,
+    nl,
+    wi2,
+    v2ParamListBlock,
+    wi3,
+    sepLeft2,
+  ) {
+    return {
+      args: {
+        "separator.left.1.type": sepLeft1.creatorName(this.args.context),
+        // !FIX needs to be parsed
+        // "separator.left.2.type": sepLeft2.creatorName(this.args.context),
+        "wi.1.length": wi1.sourceString.length,
+        "wi.2.length": wi2.sourceString.length,
+        "wi.3.length": wi3.sourceString.length,
+      },
+      params: {
+        variant: "block",
+        items: v2ParamListBlock.paramsV2(this.args.context),
+      },
+    };
+  },
+  v2ParamListInlineContainer(sepLeft1, wi1, v2ParamListInline, wi2, sepLeft2) {
+    return {
+      args: {
+        "separator.left.1.type": sepLeft1.creatorName(this.args.context),
+        // !FIX needs to be parsed
+        // "separator.left.2.type": sepLeft2.creatorName(this.args.context),
+        "wi.1.length": wi1.sourceString.length,
+        "wi.2.length": wi2.sourceString.length,
+      },
+      params: {
+        variant: "inline",
+        items: v2ParamListInline.paramsV2(this.args.context),
+      },
+    };
+  },
+};
+
 export const paramsV2Actions = {
   paramsV2,
   paramV2,
   paramV2Values,
   paramV2Value,
+  argsAndParams,
 };

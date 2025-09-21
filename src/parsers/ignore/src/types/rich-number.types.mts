@@ -4,7 +4,11 @@ export interface NodeLeafSourceNumber {
   integer: number;
 }
 
-interface NodeLeafSourceInteger {
+export type NodeLeafSourceScalar =
+  | NodeLeafSourceInteger
+  | NodeLeafSourceDecimal;
+
+export interface NodeLeafSourceInteger {
   type: "integer";
   raw: string;
   system: string;
@@ -21,23 +25,14 @@ interface NodeLeafSourceDecimal {
 
 interface NodeLeafSourceENotation {
   type: "eNotation";
-  sign: 1 | -1;
-  integer: number;
-  decimal: number;
-  exponentSign: 1 | -1;
-  exponent: number;
-}
-
-interface NodeLeafSourceComplexInteger {
-  type: "complexInteger";
-  real: {
-    sign: 1 | -1;
-    integer: number;
-  };
-  complex: {
-    sign: 1 | -1;
-    integer: number;
-  };
+  raw: string;
+  significand: NodeLeafSourceScalar;
+  exponent: NodeLeafSourceInteger;
+  // sign: 1 | -1;
+  // integer: number;
+  // decimal: number;
+  // exponentSign: 1 | -1;
+  // exponent: number;
 }
 
 interface NodeLeafSourceBases {
@@ -55,10 +50,24 @@ interface NodeLeafSourceConceptual {
   symbol: string;
 }
 
+interface NodeLeafSourceRational {
+  type: "rational";
+  nominator: NodeLeafSourceRichNumberV1;
+  denominator: NodeLeafSourceRichNumberV1;
+}
+
+export interface NodeLeafSourceComplex {
+  type: "complex";
+  raw: string;
+  real: NodeLeafSourceScalar;
+  operator: "+" | "-";
+  imaginary: NodeLeafSourceScalar;
+}
+
 export type NodeLeafSourceRichNumberV1 =
+  | NodeLeafSourceRational
   | NodeLeafSourceConceptual
   | NodeLeafSourceBases
-  | NodeLeafSourceDecimal
+  | NodeLeafSourceScalar
   | NodeLeafSourceENotation
-  | NodeLeafSourceInteger
-  | NodeLeafSourceComplexInteger;
+  | NodeLeafSourceComplex;
