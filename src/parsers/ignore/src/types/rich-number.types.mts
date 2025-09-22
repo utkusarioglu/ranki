@@ -1,5 +1,6 @@
 export interface NodeLeafSourceNumber {
   type: "number";
+  raw: string;
   // sign: 1 | -1;
   integer: number;
 }
@@ -12,15 +13,15 @@ export interface NodeLeafSourceInteger {
   type: "integer";
   raw: string;
   system: string;
-  sign: 1 | -1;
+  sign: RankiRichNumberV2Sign;
   integer: number;
 }
 
 interface NodeLeafSourceDecimal {
   type: "decimal";
-  sign: 1 | -1;
-  integer: number;
-  decimal: number;
+  raw: string;
+  integer: NodeLeafSourceInteger;
+  decimal: NodeLeafSourceInteger;
 }
 
 interface NodeLeafSourceENotation {
@@ -28,16 +29,11 @@ interface NodeLeafSourceENotation {
   raw: string;
   significand: NodeLeafSourceScalar;
   exponent: NodeLeafSourceInteger;
-  // sign: 1 | -1;
-  // integer: number;
-  // decimal: number;
-  // exponentSign: 1 | -1;
-  // exponent: number;
 }
 
 interface NodeLeafSourceBases {
   type: "hexadecimal" | "octal" | "binary";
-  sign: 1 | -1;
+  sign: RankiRichNumberV2Sign;
   raw: string;
   symbol: string;
   digits: string;
@@ -53,6 +49,7 @@ interface NodeLeafSourceConceptual {
 
 interface NodeLeafSourceRational {
   type: "rational";
+  raw: string;
   nominator: NodeLeafSourceRichNumberV1;
   denominator: NodeLeafSourceRichNumberV1;
 }
@@ -61,9 +58,15 @@ export interface NodeLeafSourceComplex {
   type: "complex";
   raw: string;
   real: NodeLeafSourceScalar;
-  operator: "+" | "-";
+  operator: RankiRichNumberV2Sign; // this is not really a sign but it works for now
   imaginary: NodeLeafSourceScalar;
 }
+
+export type RankiRichNumberV2Sign =
+  | "plus"
+  | "minus"
+  | "plusMinus"
+  | "minusPlus";
 
 export type NodeLeafSourceRichNumberV1 =
   | NodeLeafSourceRational

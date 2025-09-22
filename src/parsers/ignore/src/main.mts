@@ -341,7 +341,7 @@ export function parse(raw: string, requestedPluginNames: string[]) {
         infinity: ["inf", "INF"],
         pi: ["pi", "PI"],
         e: ["e", "E"],
-        hexadecimal: ["h", "H"],
+        hexadecimal: ["x", "X"],
         octal: ["o", "O"],
         binary: ["b", "B"],
         decimal: ".",

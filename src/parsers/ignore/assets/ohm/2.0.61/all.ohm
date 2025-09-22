@@ -265,20 +265,25 @@ RankiRichNumber <: RankiBase {
 
   numberSystemInternational = groupedDigits3 (groupToken groupedDigits3_three)+
   numberSystemIndian = groupedDigits2 groupToken (groupedDigits2_two groupToken)+ groupedDigits3_three --lakhCrore
+  numberSystemUnstructured = hBasicGroup<digit>
 
   numberSystem = 
     | numberSystemIndian --indian
     | numberSystemInternational --international
+    | &(digit+ groupToken) numberSystemUnstructured --unstructured
     | digit+ --basic
 
   integer (Integer) = 
-    | negativeToken numberSystem --negative
-    | positiveToken numberSystem --positive
+    | sign numberSystem --signed
     | numberSystem --unsigned
     
+  // decimal (Decimal number) = 
+  //   | sign integer_unsigned decimalToken integer_unsigned --full
+  //   | sign decimalToken integer_unsigned --point
+
   decimal (Decimal number) = 
     | integer decimalToken integer_unsigned --full
-    | decimalToken integer_unsigned --point
+    | sign decimalToken integer_unsigned --point
     
   eNotation (Base 10 scientific notation) = scalar eToken integer
     
@@ -293,27 +298,37 @@ RankiRichNumber <: RankiBase {
 
   rational = number rationalToken number
 
-  hConcept<token> =
-    | negativeToken token --negative
-    | positiveToken token --positive
-    | token --unsigned
+  // hConcept<token> =
+  //   | negativeToken token --negative
+  //   | positiveToken token --positive
+  //   | token --unsigned
   
   conceptualSymbol = 
-    | hConcept<infinityToken> --infinity
-    | hConcept<eToken> --e
-    | hConcept<piToken> --pi
+    | infinityToken --infinity
+    | eToken --e
+    | piToken --pi
 
-  conceptual = digit+ conceptualSymbol
+  conceptualNumber = 
+    | digit+ conceptualSymbol --factored
+    | conceptualSymbol --bare
+
+  conceptual = 
+    | sign conceptualNumber --signed
+    | conceptualNumber --unsigned
+
+  sign = 
+    | ("+-" | "±") --plusMinus
+    | ("-+" | "∓") --minusPlus
+    | "+" --plus
+    | "-" --minus
+    | "" --none
 
   hBasicGroup<range> = range (groupToken? range)*
-  hZeroTypePositive<symbol, range> =  "0" symbol hBasicGroup<range>
-  hZeroType<symbol, range> = 
-    | negativeToken hZeroTypePositive<symbol, range> --negative
-    | hZeroTypePositive<symbol, range> --positive
+  hBases<symbol, range> = "0" symbol numberSystem_unstructured
 
-  octal = hZeroType<octalToken, ("0".."7")>
-  binary = hZeroType<binaryToken, ("0" | "1")>
-  hexadecimal = hZeroType<hexadecimalToken, ("0".."9" | "a".."f" | "A".."F")>
+  octal = sign hBases<octalToken, ("0".."7")>
+  binary = sign hBases<binaryToken, ("0" | "1")>
+  hexadecimal = sign hBases<hexadecimalToken, ("0".."9" | "a".."f" | "A".."F")>
 
   bases = 
     | hexadecimal
@@ -321,11 +336,11 @@ RankiRichNumber <: RankiBase {
     | octal
 
   number := 
+    | rational
+    | eNotation 
     | bases
     | conceptual
-    | rational
     | complex 
-    | eNotation 
     | scalar 
     | ...
     

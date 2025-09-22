@@ -4,36 +4,37 @@ import {
   NodeLeafSourceComplex,
   NodeLeafSourceInteger,
   NodeLeafSourceScalar,
+  RankiRichNumberV2Sign,
 } from "../types/rich-number.types.mjs";
 
 const CONCEPTUAL_NUMBERS = ["e", "infinity", "pi"];
 
-function hConcept(token: ohm.Node): ParseNode {
-  const context: ParseContext = this.args.context;
-  let type;
-  CONCEPTUAL_NUMBERS.forEach((t) => {
-    if (context.tokens.richNumberV1[t].includes(token.sourceString)) {
-      type = t;
-    }
-  });
-  if (!type) {
-    throw new Error(`UNRECOGNIZED CONCEPTUAL NUMBER ${token.sourceString}`);
-  }
+// function hConcept(token: ohm.Node): ParseNode {
+//   const context: ParseContext = this.args.context;
+//   let type;
+//   CONCEPTUAL_NUMBERS.forEach((t) => {
+//     if (context.tokens.richNumberV1[t].includes(token.sourceString)) {
+//       type = t;
+//     }
+//   });
+//   if (!type) {
+//     throw new Error(`UNRECOGNIZED CONCEPTUAL NUMBER ${token.sourceString}`);
+//   }
 
-  return {
-    kind: "leaf" as "leaf",
-    type: this.ctorName,
-    print: true,
-    args: {},
-    source: {
-      type,
-      sign: 1,
-      factor: 1,
-      raw: this.sourceString,
-      symbol: token.sourceString,
-    },
-  };
-}
+//   return {
+//     kind: "leaf" as "leaf",
+//     type: this.ctorName,
+//     print: true,
+//     args: {},
+//     source: {
+//       type,
+//       sign: 1,
+//       factor: 1,
+//       raw: this.sourceString,
+//       symbol: token.sourceString,
+//     },
+//   };
+// }
 
 function hComplex(
   real: NodeLeafSourceScalar,
@@ -60,7 +61,7 @@ function hComplex(
     source: {
       type: "complex",
       raw: this.sourceString,
-      operator: operator.sourceString as NodeLeafSourceComplex["operator"],
+      operator: operator.richNumberV2Sign(this.args.context),
       real,
       imaginary,
     },
@@ -68,6 +69,33 @@ function hComplex(
 }
 
 const node: ohm.ActionDict<ParseNode> = {
+  conceptualSymbol(token) {
+    const context: ParseContext = this.args.context;
+    let type;
+    CONCEPTUAL_NUMBERS.forEach((t) => {
+      if (context.tokens.richNumberV1[t].includes(token.sourceString)) {
+        type = t;
+      }
+    });
+    if (!type) {
+      throw new Error(`UNRECOGNIZED CONCEPTUAL NUMBER ${token.sourceString}`);
+    }
+
+    return {
+      kind: "leaf" as "leaf",
+      type: this.ctorName,
+      print: true,
+      args: {},
+      source: {
+        type,
+        sign: 1,
+        factor: 1,
+        raw: this.sourceString,
+        symbol: token.sourceString,
+      },
+    };
+  },
+
   numberSystem_indian(num) {
     const context: ParseContext = this.args.context;
     const integer = +num.sourceString
@@ -80,7 +108,7 @@ const node: ohm.ActionDict<ParseNode> = {
       args: {},
       source: {
         type: "integer",
-        sign: 1,
+        sign: "plus",
         system: "indian_lakhCrore",
         integer,
         raw: num.sourceString,
@@ -100,7 +128,7 @@ const node: ohm.ActionDict<ParseNode> = {
       args: {},
       source: {
         type: "integer",
-        sign: 1,
+        sign: "plus",
         system: "international",
         integer,
         raw: num.sourceString,
@@ -108,30 +136,73 @@ const node: ohm.ActionDict<ParseNode> = {
     };
   },
 
-  conceptual_factored(factor, conceptualSymbol) {
+  numberSystem_unstructured(digit, token, num) {
+    const context: ParseContext = this.args.context;
+    const integer = +num.sourceString
+      .split(context.tokens.richNumberV1.group)
+      .join("");
+    return {
+      kind: "leaf",
+      type: this.ctorName,
+      print: true,
+      args: {},
+      source: {
+        type: "integer",
+        sign: "plus",
+        system: "unstructured",
+        integer,
+        raw: num.sourceString,
+      },
+    };
+  },
+
+  numberSystem_basic(basic) {
+    return {
+      kind: "leaf",
+      type: this.ctorName,
+      print: true,
+      args: {},
+      source: {
+        type: "integer",
+        sign: "plus",
+        system: "basic",
+        raw: basic.sourceString,
+        integer: +basic.sourceString,
+      },
+    };
+  },
+
+  conceptualNumber_factored(factor, conceptualSymbol) {
     const c = conceptualSymbol.node(this.args.context);
     c["source"]["factor"] = +factor.sourceString;
     c["source"]["raw"] = this.sourceString;
     return c;
   },
 
-  hConcept_positive(positiveToken, token) {
-    const h = hConcept.call(this, token);
-    h["source"]["sign"] = 1;
-    return h;
-  },
-  hConcept_unsigned(token) {
-    const h = hConcept.call(this, token);
-    h["source"]["sign"] = 1;
-    return h;
-  },
-  hConcept_negative(negativeToken, token) {
-    const h = hConcept.call(this, token);
-    h["source"]["sign"] = -1;
-    return h;
+  conceptual_signed(sign, conceptualNumber) {
+    const c = conceptualNumber.node(this.args.context);
+    c["source"]["sign"] = sign.richNumberV2Sign(this.args.context);
+    c["source"]["raw"] = this.sourceString;
+    return c;
   },
 
-  hZeroTypePositive(zero, symbol, basicGroup) {
+  // hConcept_positive(positiveToken, token) {
+  //   const h = hConcept.call(this, token);
+  //   h["source"]["sign"] = 1;
+  //   return h;
+  // },
+  // hConcept_unsigned(token) {
+  //   const h = hConcept.call(this, token);
+  //   h["source"]["sign"] = 1;
+  //   return h;
+  // },
+  // hConcept_negative(negativeToken, token) {
+  //   const h = hConcept.call(this, token);
+  //   h["source"]["sign"] = -1;
+  //   return h;
+  // },
+
+  hBases(zero, symbol, numberSystem_unstructured) {
     const context: ParseContext = this.args.context;
     const richNumberV1 = context.tokens.richNumberV1;
     let type;
@@ -142,7 +213,10 @@ const node: ohm.ActionDict<ParseNode> = {
       }
     });
     if (!type) {
-      throw new Error(`UNRECOGNIZED BASE SYMBOL: ${symbol.sourceString}`);
+      console.log(richNumberV1);
+      throw new Error(
+        `UNRECOGNIZED BASE SYMBOL: ${symbol.sourceString} in ${this.sourceString}`,
+      );
     }
 
     return {
@@ -153,81 +227,57 @@ const node: ohm.ActionDict<ParseNode> = {
       source: {
         type,
         raw: this.sourceString,
-        sign: 1,
+        sign: "plus",
         symbol: symbol.sourceString,
-        digits: basicGroup.sourceString.split(richNumberV1.group).join(""),
+        digits: numberSystem_unstructured.sourceString
+          .split(richNumberV1.group)
+          .join(""),
       },
     };
   },
 
-  hZeroType_positive(pos) {
-    return pos.node(this.args.context);
+  hexadecimal(sign, basedNumber) {
+    const h = basedNumber.node(this.args.context);
+    h["type"] = this.ctorName;
+    h["source"]["sign"] = sign.sourceString;
+    return h;
   },
-  hZeroType_negative(negative, pos) {
-    const positive: ParseNode = pos.node(this.args.context);
-    positive["source"]["sign"] = -1;
-    positive["source"]["raw"] = this.sourceString;
-    return positive;
+  binary(sign, basedNumber) {
+    const h = basedNumber.node(this.args.context);
+    h["type"] = this.ctorName;
+    h["source"]["sign"] = sign.sourceString;
+    return h;
   },
-
-  integer_negative(negativeToken, integerPositive) {
-    const posInt = integerPositive.node(this.args.context).source;
-    return {
-      kind: "leaf",
-      type: this.ctorName,
-      print: true,
-      args: {},
-      source: {
-        ...posInt,
-        sign: -1,
-        raw: this.sourceString,
-      },
-    };
-  },
-  numberSystem_basic(basic) {
-    return {
-      kind: "leaf",
-      type: this.ctorName,
-      print: true,
-      args: {},
-      source: {
-        type: "integer",
-        sign: 1,
-        system: "basic",
-        raw: basic.sourceString,
-        integer: +basic.sourceString,
-      },
-    };
+  octal(sign, basedNumber) {
+    const h = basedNumber.node(this.args.context);
+    h["type"] = this.ctorName;
+    h["source"]["sign"] = sign.sourceString;
+    return h;
   },
 
-  integer_positive(positiveToken, numberSystem) {
+  integer_signed(sign, numberSystem) {
     const ns = numberSystem.node(this.args.context);
     return {
       kind: "leaf",
       type: this.ctorName,
       print: true,
       args: {},
-      source: { ...ns.source, raw: this.sourceString },
-    };
-  },
-
-  decimal_full(integer, decimalToken, integer_positive) {
-    const integerNode = integer.node(this.args.context);
-    return {
-      kind: "leaf",
-      type: this.ctorName,
-      print: true,
-      args: {},
       source: {
-        type: "decimal",
-        sign: integerNode.source.sign,
-        integer: integerNode.source.integer,
-        decimal: +integer_positive.sourceString,
+        ...ns.source,
+        sign: sign.richNumberV2Sign(this.args.context),
+        raw: this.sourceString,
       },
     };
   },
 
-  decimal_point(decimalToken, integer_positive) {
+  decimal_full(integer, decimalToken, decimalGroup) {
+    // const context: ParseContext = this.args.context;
+    // const integerNode = integer.node(this.args.context);
+    // const decimal = +decimalGroup.sourceString
+    //   .split(context.tokens.richNumberV1.group)
+    //   .join("");
+    // const decimal =
+    // integerNode["sign"] = sign.richNumberV2Sign(this.args.context);
     return {
       kind: "leaf",
       type: this.ctorName,
@@ -235,9 +285,49 @@ const node: ohm.ActionDict<ParseNode> = {
       args: {},
       source: {
         type: "decimal",
-        sign: 1,
-        integer: 0,
-        decimal: +integer_positive.sourceString,
+        raw: this.sourceString,
+        integer: integer.node(this.args.context).source,
+        decimal: decimalGroup.node(this.args.context).source,
+        // decimal: {
+        //   type: "integer",
+        //   raw: decimalGroup.sourceString,
+        //   system: "basic",
+        //   sign: "plus",
+        //   integer: decimal,
+        // },
+      },
+    };
+  },
+
+  // !fix return schema is wrong (I think)
+  decimal_point(sign, decimalToken, decimalGroup) {
+    const context: ParseContext = this.args.context;
+    const decimal = +decimalGroup.sourceString
+      .split(context.tokens.richNumberV1.group)
+      .join("");
+    return {
+      kind: "leaf",
+      type: this.ctorName,
+      print: true,
+      args: {},
+      source: {
+        type: "decimal",
+        raw: this.sourceString,
+        // sign: 1,
+        integer: {
+          type: "integer",
+          raw: sign.sourceString,
+          system: "basic",
+          sign: sign.richNumberV2Sign(this.args.context),
+          integer: 1,
+        },
+        decimal: {
+          type: "integer",
+          raw: decimalGroup.sourceString,
+          system: "basic",
+          sign: "plus",
+          integer: decimal,
+        },
       },
     };
   },
@@ -252,6 +342,7 @@ const node: ohm.ActionDict<ParseNode> = {
       },
       source: {
         type: "rational",
+        raw: this.sourceString,
         nominator: nominator.node(this.args.context).source,
         denominator: denominator.node(this.args.context).source,
       },
@@ -262,7 +353,7 @@ const node: ohm.ActionDict<ParseNode> = {
     const imaginary: NodeLeafSourceInteger = {
       type: "integer",
       raw: complexToken.sourceString,
-      sign: 1,
+      sign: "plus",
       system: "basic",
       integer: 1,
     };
@@ -342,6 +433,27 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 };
 
+const richNumberV2Sign: ohm.ActionDict<RankiRichNumberV2Sign> = {
+  sign(s) {
+    switch (s.sourceString) {
+      case "":
+      case "+":
+        return "plus";
+      case "+-":
+      case "±":
+        return "plusMinus";
+      case "-+":
+      case "∓":
+        return "minusPlus";
+      case "-":
+        return "minus";
+      default:
+        throw new Error(`UNRECOGNIZED SIGN ${s.sourceString}`);
+    }
+  },
+};
+
 export const richNumberActions = {
   node,
+  richNumberV2Sign,
 };
