@@ -1,6 +1,6 @@
 import type * as ohm from "ohm-js";
 import type { NodeArgs, ParseContext, ParseNode } from "../types/types.mjs";
-import type { ArgsAndParams } from "../types/node-arg.mjs";
+import type { ArgsAndParamsV2 } from "../types/node-arg.mjs";
 import type {
   ParamV2,
   ParamV2Operator,
@@ -131,7 +131,7 @@ const paramV2Value: ohm.ActionDict<ParamV2Value> = {
   },
 };
 
-const argsAndParams: ohm.ActionDict<ArgsAndParams> = {
+const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   v2ParamListBlockContainer(
     sepLeft1,
     wi1,
@@ -178,5 +178,5 @@ export const paramsV2Actions = {
   paramV2,
   paramV2Values,
   paramV2Value,
-  argsAndParams,
+  argsAndParamsV2,
 };

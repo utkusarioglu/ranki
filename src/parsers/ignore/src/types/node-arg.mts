@@ -11,7 +11,8 @@ export type NodeArgs = Partial<
     FrameV2Config &
     DirectiveV2Config &
     RichNumberV1 &
-    RichStructureV1
+    RichStructureV1 &
+    FrameV1Config
 >;
 
 type NodeArgWordDecoration = NodeArgSentenceEnd &
@@ -139,9 +140,14 @@ export interface ParamsV2Spec {
   items: ParamV2[];
 }
 
-export interface ArgsAndParams {
+export interface ArgsAndParamsV2 {
   args: NodeArgs;
   params: ParamsV2Spec;
+}
+
+export interface ArgsAndParamsV1 {
+  args: NodeArgs;
+  params: string[];
 }
 
 export type FrameV2Config =
@@ -187,6 +193,28 @@ export interface FrameV2ConfigP {
     args: NodeArgs & {
       "separator.right.type": string;
     };
+  };
+}
+
+type FrameV1Config = FrameV1ConfigP | FrameV1ConfigFp;
+
+export interface FrameV1ConfigP {
+  "frame.v1": {
+    // type: string;
+    variant: "p"; // this is like f fp
+    frameType: string; // like code in %:code; ...:%
+    // args: NodeArgs;
+  };
+}
+
+export interface FrameV1ConfigFp {
+  "frame.v1": {
+    // type: string;
+    variant: "fp"; // this is like f fp
+    frameType: string; // like code in %:code; ...:%
+    // args: NodeArgs;
+    params: string[];
+    // params: Pa
   };
 }
 

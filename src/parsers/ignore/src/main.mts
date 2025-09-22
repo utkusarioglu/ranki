@@ -8,6 +8,7 @@ import { paramsV2Actions } from "./actions/params-v2.action.mjs";
 import { frameV2Actions } from "./actions/frame-v2.action.mjs";
 import { richNumberActions } from "./actions/rich-number.mjs";
 import { richStructureActions } from "./actions/rich-structure.action.mjs";
+import { frameV1Actions } from "./actions/frame-v1.action.mjs";
 import type {
   GrammarSpecs,
   ParserPlugin,
@@ -131,11 +132,12 @@ const richStructureParserPlugin: ParserPlugin = {
   dependencies: ["RankiParamsV2"],
   parser: (specs) => getLevel(specs, "4-rich-structure"),
 };
-// const richNumberParserPlugin: ParserPlugin = {
-//   name: "RankiRichNumber",
-//   dependencies: ["RankiBase"],
-//   parser: (specs) => getLevel(specs, "3-rich-number"),
-// };
+
+const frameV1ParserPlugin: ParserPlugin = {
+  name: "RankiFrameV1",
+  dependencies: ["RankiBase"],
+  parser: (specs) => getLevel(specs, "3-frame-v1"),
+};
 
 function expandDependencies(plugins: ParserPlugin[]): void {
   const lookup = Object.fromEntries(plugins.map((p) => [p.name, p]));
@@ -230,6 +232,7 @@ const IMPORTED_PLUGINS = {
   configParserPlugin,
   richNumberParserPlugin,
   richStructureParserPlugin,
+  frameV1ParserPlugin,
 };
 
 const STANDARD_PLUGIN_NAMES = ["RankiConfig", "RankiBase"];
@@ -307,6 +310,7 @@ export function parse(raw: string, requestedPluginNames: string[]) {
       RankiFrameV2: frameV2Actions,
       RankiRichNumber: richNumberActions,
       RankiRichStructure: richStructureActions,
+      RankiFrameV1: frameV1Actions,
     },
   );
 

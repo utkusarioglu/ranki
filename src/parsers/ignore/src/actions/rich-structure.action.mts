@@ -1,7 +1,7 @@
 import type * as ohm from "ohm-js";
 import type { ParseNode } from "../types/types.mjs";
 import type { NodeArgs } from "../types/types.mjs";
-import type { ArgsAndParams } from "../types/node-arg.mjs";
+import type { ArgsAndParamsV2 } from "../types/node-arg.mjs";
 
 function hLevel(a: ohm.Node) {
   const l = a.node(this.args.context);
@@ -12,7 +12,7 @@ function hLevel(a: ohm.Node) {
 
 const node: ohm.ActionDict<ParseNode> = {
   hLevel_defined(structureType1, separator, structureType2) {
-    const sep = separator.argsAndParams(this.args.context);
+    const sep = separator.argsAndParamsV2(this.args.context);
     return {
       kind: "parent",
       type: this.ctorName,
@@ -48,9 +48,9 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 };
 
-const argsAndParams: ohm.ActionDict<ArgsAndParams> = {
+const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   _iter(...children) {
-    return children.map((c) => c.argsAndParams(this.args.context));
+    return children.map((c) => c.argsAndParamsV2(this.args.context));
   },
   hStructureSepInline_s(
     structureSepStart,
@@ -79,7 +79,7 @@ const argsAndParams: ohm.ActionDict<ArgsAndParams> = {
     wi3,
     structureSepEnd,
   ) {
-    const config: ArgsAndParams = v2ParamListInlineContainer.argsAndParams(
+    const config: ArgsAndParamsV2 = v2ParamListInlineContainer.argsAndParamsV2(
       this.args.context,
     );
     return {
@@ -99,7 +99,7 @@ const argsAndParams: ohm.ActionDict<ArgsAndParams> = {
 
 export const richStructureActions = {
   node,
-  argsAndParams,
+  argsAndParamsV2,
   // creatorName,
   // iterNode,
 };

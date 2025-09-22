@@ -27,7 +27,8 @@ function hConcept(token: ohm.Node): ParseNode {
     args: {},
     source: {
       type,
-      sign: -1,
+      sign: 1,
+      factor: 1,
       raw: this.sourceString,
       symbol: token.sourceString,
     },
@@ -105,6 +106,13 @@ const node: ohm.ActionDict<ParseNode> = {
         raw: num.sourceString,
       },
     };
+  },
+
+  conceptual_factored(factor, conceptualSymbol) {
+    const c = conceptualSymbol.node(this.args.context);
+    c["source"]["factor"] = +factor.sourceString;
+    c["source"]["raw"] = this.sourceString;
+    return c;
   },
 
   hConcept_positive(positiveToken, token) {

@@ -44,8 +44,9 @@ interface NodeLeafSourceBases {
 }
 
 interface NodeLeafSourceConceptual {
-  type: "infinity";
+  type: "infinity" | "pi" | "e";
   sign: 1 | -1;
+  factor: number;
   raw: string;
   symbol: string;
 }

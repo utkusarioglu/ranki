@@ -1,0 +1,19 @@
+:::code; yes :::
+---
+:::mode; cat; yes :::
+---
+:::mode; cat, dog; yes :::
+---
+:::code
+meow
+:::
+---
+:::code; cat, dog
+meow
+:::
+---
+:::code; cat, dog
+cat
+dog 
+bunny
+:::

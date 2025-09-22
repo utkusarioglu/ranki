@@ -42,13 +42,17 @@ RankiRichNumber <: RankiBase {
     | positiveToken token --positive
     | token --unsigned
   
-  conceptual = 
+  conceptualSymbol = 
     | hConcept<infinityToken> --infinity
     | hConcept<eToken> --e
     | hConcept<piToken> --pi
 
+  conceptual = 
+    | digit+ conceptualSymbol --factored
+    | conceptualSymbol --bare
+
   hBasicGroup<range> = range (groupToken? range)*
-  hZeroTypePositive<symbol, range> =  "0" symbol hBasicGroup<range>
+  hZeroTypePositive<symbol, range> = "0" symbol hBasicGroup<range>
   hZeroType<symbol, range> = 
     | negativeToken hZeroTypePositive<symbol, range> --negative
     | hZeroTypePositive<symbol, range> --positive

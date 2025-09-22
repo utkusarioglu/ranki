@@ -160,7 +160,7 @@ RankiFrameV1 <: RankiBase {
   v1SepLeftInline = wi sepLeft wi
   v1SepLeftBlock = wi sepLeft? wi nl wi
   
-  v1ParamValue = (~(space | frameV1 | sepRight | nl) any)+
+  v1ParamValue = (~(space | frameV1 | sepRight | sepLeft | nl) any)+
   v1ParamListInline = v1ParamValue (v1SepLeftInline v1ParamValue)*
   
   v1Type = letter (space | letter)*
@@ -202,7 +202,7 @@ RankiFrameV1 <: RankiBase {
          v1PayloadBlock
        v1BlockEnd --p
 
-  v1PayloadBlockPlain = (~v1Inline any)+
+  v1PayloadBlockPlain = (~(v1Inline | v1BlockEnd) any)+
   v1PayloadBlock = (v1Inline | v1PayloadBlockPlain )*
 }
 
@@ -298,10 +298,12 @@ RankiRichNumber <: RankiBase {
     | positiveToken token --positive
     | token --unsigned
   
-  conceptual = 
+  conceptualSymbol = 
     | hConcept<infinityToken> --infinity
     | hConcept<eToken> --e
     | hConcept<piToken> --pi
+
+  conceptual = digit+ conceptualSymbol
 
   hBasicGroup<range> = range (groupToken? range)*
   hZeroTypePositive<symbol, range> =  "0" symbol hBasicGroup<range>

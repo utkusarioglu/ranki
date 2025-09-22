@@ -42,21 +42,6 @@ hello % one = 11: name , cat = dog bird, yes = 12 ; world :% earth
 ---
 %:name, abc = AAA ; world :%
 ---
-%
-yes, 
-!no
-:name, 
-abc = AAA,
-meow
-
-world 
-,, 
-agree 
-,,
-adsf
-:%
-
----
 hello
 
 %:name
@@ -72,3 +57,17 @@ yes
 /hello/ +*% !as:code, !cat ; world! :%*+
 ---
 5.5
+---
+%
+yes, 
+!no
+:name, 
+abc = AAA,
+meow
+
+world 
+,, 
+agree 
+,,
+adsf
+:%
