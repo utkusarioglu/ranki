@@ -17,3 +17,9 @@ cat
 dog 
 bunny
 :::
+---
+:::code; cat, dog
+*cat*
+/dog/
+bunny!
+:::

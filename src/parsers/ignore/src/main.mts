@@ -21,14 +21,12 @@ function getLevel(specs: GrammarSpecs, filename: string): ParserPluginGrammar {
   const raw = fs
     .readFileSync(path.join(specs.versionPath, `${filename}.ohm`))
     .toString();
-
   const altered = raw.replace(/<:\s*(\w+)\s*\{/, (match, word) => {
     if (specs.parentGrammar === "") {
       throw new Error("GRAMMAR EXPECTS A PARENT BUT NONE WAS GIVEN");
     }
     return `<: ${specs.parentGrammar} {`; // replace `word` however you want
   });
-
   return {
     raw,
     altered,
@@ -91,6 +89,7 @@ function compileOperations(
     methods,
   };
 }
+
 const configParserPlugin: ParserPlugin = {
   name: "RankiConfig",
   dependencies: [],
@@ -237,7 +236,11 @@ const IMPORTED_PLUGINS = {
 
 const STANDARD_PLUGIN_NAMES = ["RankiConfig", "RankiBase"];
 
-export function parse(raw: string, requestedPluginNames: string[]) {
+function parse(
+  context: ParseContext,
+  requestedPluginNames: string[],
+  raw: string,
+) {
   const activePluginNames = [...STANDARD_PLUGIN_NAMES, ...requestedPluginNames];
   const { versionPath, semver } = getVersionData(OHM_PATH);
   const activePluginNamesSet = new Set(activePluginNames);
@@ -315,51 +318,18 @@ export function parse(raw: string, requestedPluginNames: string[]) {
   );
 
   const matched = matcher.match(raw, "root");
-  const context: ParseContext = {
-    tokens: {
-      sentence: {
-        period: ".",
-        question: "?",
-        exclamation: "!",
-      },
-      paramsV2: {
-        separator: {
-          left: ",",
-          right: ";",
-        },
-        key: {
-          negation: "!",
-        },
-        operators: {
-          assign: "=",
-          append: "+=",
-          remove: "-=",
-        },
-      },
-      richNumberV1: {
-        complexUnits: ["i", "j", "k"],
-        infinity: ["inf", "INF"],
-        pi: ["pi", "PI"],
-        e: ["e", "E"],
-        hexadecimal: ["x", "X"],
-        octal: ["o", "O"],
-        binary: ["b", "B"],
-        decimal: ".",
-        negative: "-",
-        group: "_",
-      },
-    },
-  };
 
   return {
-    language: {
-      version: semver,
-      context,
-    },
-    parser: {
-      requested: requestedPluginNames,
-      importChain,
-      dependencyGraph,
+    report: {
+      language: {
+        version: semver,
+        // context,
+      },
+      parser: {
+        requested: requestedPluginNames,
+        importChain,
+        dependencyGraph,
+      },
     },
     stages: {
       raw,
@@ -371,3 +341,42 @@ export function parse(raw: string, requestedPluginNames: string[]) {
     },
   };
 }
+
+export const context: ParseContext = {
+  tokens: {
+    sentence: {
+      period: ".",
+      question: "?",
+      exclamation: "!",
+    },
+    paramsV2: {
+      separator: {
+        left: ",",
+        right: ";",
+      },
+      key: {
+        negation: "!",
+      },
+      operators: {
+        assign: "=",
+        append: "+=",
+        remove: "-=",
+      },
+    },
+    richNumberV1: {
+      complexUnits: ["i", "j", "k"],
+      infinity: ["inf", "INF"],
+      pi: ["pi", "PI"],
+      e: ["e", "E"],
+      hexadecimal: ["x", "X"],
+      octal: ["o", "O"],
+      binary: ["b", "B"],
+      decimal: ".",
+      negative: "-",
+      group: "_",
+    },
+  },
+  methods: {
+    parser: (p) => parse,
+  },
+};

@@ -173,8 +173,15 @@ const node: ohm.ActionDict<ParseNode> = {
     v1PayloadBlock,
     v1BlockEnd,
   ) {
+    const context = this.args.context;
     const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(
       this.args.context,
+    );
+    const parser = context.methods.parser();
+    const child = parser(
+      this.args.context,
+      ["RankiBase", "RankiRichText"],
+      v1PayloadBlock.sourceString,
     );
     return {
       kind: "parent",
@@ -190,19 +197,21 @@ const node: ohm.ActionDict<ParseNode> = {
           variant: "fp",
           frameType: v1Type.sourceString,
           ...argsAndParamsV1,
+          report: child.report,
         },
       },
       children: [
-        {
-          kind: "leaf",
-          print: true,
-          type: "TEMP PAYLOAD V1 NODE",
-          args: {},
-          source: {
-            type: "mixed",
-            value: v1PayloadBlock.sourceString,
-          },
-        },
+        child.stages.parse.root,
+        // {
+        //   kind: "leaf",
+        //   print: true,
+        //   type: "TEMP PAYLOAD V1 NODE",
+        //   args: {},
+        //   source: {
+        //     type: "mixed",
+        //     value: v1PayloadBlock.sourceString,
+        //   },
+        // },
       ],
     };
   },

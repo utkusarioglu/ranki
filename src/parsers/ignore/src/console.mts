@@ -1,6 +1,6 @@
 import yaml from "yaml";
 import * as fs from "node:fs";
-import { parse } from "./main.mjs";
+import { context } from "./main.mjs";
 import path from "node:path";
 
 const THROW_TESTS = "./assets/throw";
@@ -16,26 +16,29 @@ function main(count: number) {
     return a;
   }, [] as string[]);
 
+  const startIndex = Number.isNaN(count) ? 0 : serialized.length - count;
   const parsed = [];
-  serialized
-    .slice(serialized.length - count, serialized.length)
-    .forEach((c) => {
-      try {
-        parsed.push(
-          parse(c, [
+  serialized.slice(startIndex, serialized.length).forEach((c) => {
+    try {
+      parsed.push(
+        context.methods.parser({ frameType: "null" })(
+          context,
+          [
             // "RankiParamsV2",
             // "RankiFrameV2",
-            // "RankiFrameV1",
+            "RankiFrameV1",
             // "RankiRichText",
-            "RankiRichNumber",
+            // "RankiRichNumber",
             // "RankiRichStructure",
-          ]),
-        );
-      } catch (e) {
-        console.error(e);
-        process.exit(1);
-      }
-    });
+          ],
+          c,
+        ),
+      );
+    } catch (e) {
+      console.error(e);
+      process.exit(1);
+    }
+  });
   console.log(yaml.stringify(parsed));
 }
 
