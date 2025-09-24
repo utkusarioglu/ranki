@@ -191,6 +191,7 @@ const node: ohm.ActionDict<ParseNode> = {
       args: {},
       source: {
         type: "number",
+        raw: number.sourceString,
         integer: +number.sourceString,
       },
     };

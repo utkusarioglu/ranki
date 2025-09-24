@@ -17,10 +17,10 @@ const grammar = fs
   )
   .toString();
 
-export const rankiFrameV1ParserPlugin: RankiPluginParser = {
+export const rankiConstantsV2ParserPlugin: RankiPluginParser = {
   type: "parser",
   version,
-  name: "RankiFrameV1",
-  dependencies: ["RankiBaseV2"],
+  name: "RankiConstantsV2",
+  dependencies: [],
   grammar: () => grammar,
 };

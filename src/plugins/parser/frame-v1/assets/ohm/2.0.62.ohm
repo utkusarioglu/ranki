@@ -1,4 +1,4 @@
-RankiFrameV1 <: RankiBase {
+RankiFrameV1 <: RankiBaseV2 {
   word :=
     | v1Inline
     | ...

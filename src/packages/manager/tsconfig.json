@@ -13,10 +13,10 @@
       "path": "../../packages/api"
     },
     {
-      "path": "../../plugins/parser/constants"
+      "path": "../../plugins/parser/constants-v2"
     },
     {
-      "path": "../../plugins/parser/base"
+      "path": "../../plugins/parser/base-v2"
     }
   ]
 }

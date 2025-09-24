@@ -4,41 +4,42 @@ import {
   NodeLeafSourceNumber,
 } from "./rich-number.types.mjs";
 export type { NodeArgs } from "./node-arg.mjs";
+import { RankiConfig } from "@ranki/package-api";
 
-export interface ParseContext {
-  tokens: {
-    sentence: {
-      period: string;
-      question: string;
-      exclamation: string;
-    };
-    paramsV2: {
-      separator: {
-        left: string;
-        right: string;
-      };
-      key: {
-        negation: string;
-      };
-      operators: {
-        assign: string;
-        append: string;
-        remove: string;
-      };
-    };
-    richNumberV1: {
-      complexUnits: string[];
-      infinity: string[];
-      e: string[];
-      pi: string[];
-      hexadecimal: string[];
-      octal: string[];
-      binary: string[];
-      decimal: string;
-      negative: string;
-      group: string;
-    };
-  };
+export interface ParseContext extends RankiConfig {
+  // tokens: {
+  //   sentence: {
+  //     period: string;
+  //     question: string;
+  //     exclamation: string;
+  //   };
+  //   paramsV2: {
+  //     separator: {
+  //       left: string;
+  //       right: string;
+  //     };
+  //     key: {
+  //       negation: string;
+  //     };
+  //     operators: {
+  //       assign: string;
+  //       append: string;
+  //       remove: string;
+  //     };
+  //   };
+  //   richNumberV1: {
+  //     complexUnits: string[];
+  //     infinity: string[];
+  //     e: string[];
+  //     pi: string[];
+  //     hexadecimal: string[];
+  //     octal: string[];
+  //     binary: string[];
+  //     decimal: string;
+  //     negative: string;
+  //     group: string;
+  //   };
+  // };
   methods: {
     parser: ParserGenerator;
   };

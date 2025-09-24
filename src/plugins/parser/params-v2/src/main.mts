@@ -5,15 +5,22 @@ import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
+const version = "2.0.62";
+
 const grammar = fs
   .readFileSync(
-    path.join(fileURLToPath(import.meta.url), "../..", "assets/ohm/2.0.62.ohm"),
+    path.join(
+      fileURLToPath(import.meta.url),
+      "../..",
+      `assets/ohm/${version}.ohm`,
+    ),
   )
   .toString();
 
 export const rankiParamsV2ParserPlugin: RankiPluginParser = {
   type: "parser",
   name: "RankiParamsV2",
-  dependencies: ["RankiConstants"],
-  grammar,
+  version,
+  dependencies: ["RankiConstantsV2"],
+  grammar: () => grammar,
 };

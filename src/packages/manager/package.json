@@ -23,14 +23,14 @@
     "yaml": "^2.8.1"
   },
   "dependencies": {
-    "@ranki/plugin-parser-base": "workspace:^",
-    "@ranki/plugin-parser-constants": "workspace:^",
+    "@ranki/plugin-parser-base-v2": "workspace:^",
+    "@ranki/plugin-parser-constants-v2": "workspace:^",
     "@ranki/plugin-parser-frame-v1": "workspace:^",
     "@ranki/plugin-parser-frame-v2": "workspace:^",
     "@ranki/plugin-parser-params-v2": "workspace:^",
-    "@ranki/plugin-parser-rich-number-v1": "workspace:^",
-    "@ranki/plugin-parser-rich-structure-v1": "workspace:^",
-    "@ranki/plugin-parser-rich-text-v1": "workspace:^",
+    "@ranki/plugin-parser-rich-number-v2": "workspace:^",
+    "@ranki/plugin-parser-rich-structure-v2": "workspace:^",
+    "@ranki/plugin-parser-rich-text-v2": "workspace:^",
     "ohm-js": "^17.2.1"
   }
 }

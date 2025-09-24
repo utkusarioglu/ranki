@@ -180,7 +180,7 @@ const node: ohm.ActionDict<ParseNode> = {
     const parser = context.methods.parser();
     const child = parser(
       this.args.context,
-      ["RankiBase", "RankiRichTextV1"],
+      ["RankiBaseV2", "RankiRichTextV2"],
       v1PayloadBlock.sourceString,
     );
     return {

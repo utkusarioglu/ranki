@@ -2,16 +2,17 @@ import * as fs from "node:fs";
 import * as ohm from "ohm-js";
 import * as path from "path";
 import type { NodeArgs, ParseContext, ParseNode } from "./types/types.mjs";
-import { rankiConstantsParserPlugin } from "@ranki/plugin-parser-constants";
-import { rankiBaseParserPlugin } from "@ranki/plugin-parser-base";
+
+import { rankiConstantsV2ParserPlugin } from "@ranki/plugin-parser-constants-v2";
+import { rankiBaseV2ParserPlugin } from "@ranki/plugin-parser-base-v2";
 import { rankiParamsV2ParserPlugin } from "@ranki/plugin-parser-params-v2";
 import { rankiFrameV2ParserPlugin } from "@ranki/plugin-parser-frame-v2";
-import { rankiRichTextV1ParserPlugin } from "@ranki/plugin-parser-rich-text-v1";
-import { rankiRichNumberV1ParserPlugin } from "@ranki/plugin-parser-rich-number-v1";
-import { rankiRichStructureV1ParserPlugin } from "@ranki/plugin-parser-rich-structure-v1";
+import { rankiRichTextV2ParserPlugin } from "@ranki/plugin-parser-rich-text-v2";
+import { rankiRichNumberV2ParserPlugin } from "@ranki/plugin-parser-rich-number-v2";
+import { rankiRichStructureV2ParserPlugin } from "@ranki/plugin-parser-rich-structure-v2";
 import { rankiFrameV1ParserPlugin } from "@ranki/plugin-parser-frame-v1";
 
-import type { RankiPluginParser } from "@ranki/package-api";
+import type { RankiConfig, RankiPluginParser } from "@ranki/package-api";
 import { baseActions } from "./actions/base.action.mjs";
 import { richTextActions } from "./actions/rich-text.action.mjs";
 import { paramsV2Actions } from "./actions/params-v2.action.mjs";
@@ -19,22 +20,47 @@ import { frameV2Actions } from "./actions/frame-v2.action.mjs";
 import { richNumberActions } from "./actions/rich-number.mjs";
 import { richStructureActions } from "./actions/rich-structure.action.mjs";
 import { frameV1Actions } from "./actions/frame-v1.action.mjs";
-import type {
-  GrammarSpecs,
-  ParserPlugin,
-  // ParserPluginGrammar,
-} from "./types/parser.mjs";
+import type { GrammarSpecs } from "./types/parser.mjs";
+
+const config: RankiConfig = {
+  tokens: {
+    sentence: {
+      period: ".",
+      question: "?",
+      exclamation: "!",
+    },
+    paramsV2: {
+      separator: {
+        left: ",",
+        right: ";",
+      },
+      key: {
+        negation: "!",
+      },
+      operators: {
+        assign: "=",
+        append: "+=",
+        remove: "-=",
+      },
+    },
+    richNumberV1: {
+      complexUnits: ["i", "j", "k"],
+      infinity: ["inf", "INF"],
+      pi: ["pi", "PI"],
+      e: ["e", "E"],
+      hexadecimal: ["x", "X"],
+      octal: ["o", "O"],
+      binary: ["b", "B"],
+      decimal: ".",
+      negative: "-",
+      group: "_",
+    },
+  },
+};
 
 const OHM_PATH = "./assets/ohm";
 
 const { versionPath, semver } = getVersionData(OHM_PATH);
-
-function getOhm(versionPath: string, filename: string): string {
-  const raw = fs
-    .readFileSync(path.join(versionPath, `${filename}.ohm`))
-    .toString();
-  return raw;
-}
 
 function adjustParent(specs: GrammarSpecs, raw: string) {
   const altered = raw.replace(/<:\s*(\w+)\s*\{/, (match, word) => {
@@ -194,26 +220,17 @@ function topologicalSort(
 }
 
 const IMPORTED_PLUGINS = {
-  rankiBaseParserPlugin,
-  rankiConstantsParserPlugin,
+  rankiBaseV2ParserPlugin,
+  rankiConstantsV2ParserPlugin,
   rankiParamsV2ParserPlugin,
   rankiFrameV2ParserPlugin,
-  rankiRichTextV1ParserPlugin,
-  rankiRichNumberV1ParserPlugin,
-  rankiRichStructureV1ParserPlugin,
+  rankiRichTextV2ParserPlugin,
+  rankiRichNumberV2ParserPlugin,
+  rankiRichStructureV2ParserPlugin,
   rankiFrameV1ParserPlugin,
-  // richTextParserPlugin,
-  // frameV2ParserPlugin,
-  // paramsV2ParserPlugin,
-  // baseParserPlugin,
-
-  //
-  // richNumberParserPlugin,
-  // richStructureParserPlugin,
-  // frameV1ParserPlugin,
 };
 
-const STANDARD_PLUGIN_NAMES = ["RankiConstants", "RankiBase"];
+const STANDARD_PLUGIN_NAMES = ["RankiConstantsV2", "RankiBaseV2"];
 
 function parse(
   context: ParseContext,
@@ -268,13 +285,8 @@ function parse(
         parentGrammar: si === 0 ? "" : importChain[si - 1],
         dependencies: grammarParents,
       },
-      plugin.grammar,
+      plugin.grammar(config),
     );
-    // const matcher = plugin.parser({
-    //   versionPath,
-    //   parentGrammar: si === 0 ? "" : importChain[si - 1],
-    //   dependencies: grammarParents,
-    // });
     matchers[name] = matcher;
     grammarParents = {
       ...grammarParents,
@@ -293,12 +305,12 @@ function parse(
     matcher.createSemantics(),
     activePluginNames,
     {
-      RankiBase: baseActions,
-      RankiRichText: richTextActions,
+      RankiBaseV2: baseActions,
+      RankiRichTextV2: richTextActions,
       RankiParamsV2: paramsV2Actions,
       RankiFrameV2: frameV2Actions,
-      RankiRichNumber: richNumberActions,
-      RankiRichStructure: richStructureActions,
+      RankiRichNumberV2: richNumberActions,
+      RankiRichStructureV2: richStructureActions,
       RankiFrameV1: frameV1Actions,
     },
   );
@@ -329,39 +341,7 @@ function parse(
 }
 
 export const context: ParseContext = {
-  tokens: {
-    sentence: {
-      period: ".",
-      question: "?",
-      exclamation: "!",
-    },
-    paramsV2: {
-      separator: {
-        left: ",",
-        right: ";",
-      },
-      key: {
-        negation: "!",
-      },
-      operators: {
-        assign: "=",
-        append: "+=",
-        remove: "-=",
-      },
-    },
-    richNumberV1: {
-      complexUnits: ["i", "j", "k"],
-      infinity: ["inf", "INF"],
-      pi: ["pi", "PI"],
-      e: ["e", "E"],
-      hexadecimal: ["x", "X"],
-      octal: ["o", "O"],
-      binary: ["b", "B"],
-      decimal: ".",
-      negative: "-",
-      group: "_",
-    },
-  },
+  ...config,
   methods: {
     parser: (p) => parse,
   },
