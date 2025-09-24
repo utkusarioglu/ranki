@@ -2,6 +2,16 @@ import * as fs from "node:fs";
 import * as ohm from "ohm-js";
 import * as path from "path";
 import type { NodeArgs, ParseContext, ParseNode } from "./types/types.mjs";
+import { rankiConstantsParserPlugin } from "@ranki/plugin-parser-constants";
+import { rankiBaseParserPlugin } from "@ranki/plugin-parser-base";
+import { rankiParamsV2ParserPlugin } from "@ranki/plugin-parser-params-v2";
+import { rankiFrameV2ParserPlugin } from "@ranki/plugin-parser-frame-v2";
+import { rankiRichTextV1ParserPlugin } from "@ranki/plugin-parser-rich-text-v1";
+import { rankiRichNumberV1ParserPlugin } from "@ranki/plugin-parser-rich-number-v1";
+import { rankiRichStructureV1ParserPlugin } from "@ranki/plugin-parser-rich-structure-v1";
+import { rankiFrameV1ParserPlugin } from "@ranki/plugin-parser-frame-v1";
+
+import type { RankiPluginParser } from "@ranki/package-api";
 import { baseActions } from "./actions/base.action.mjs";
 import { richTextActions } from "./actions/rich-text.action.mjs";
 import { paramsV2Actions } from "./actions/params-v2.action.mjs";
@@ -12,15 +22,21 @@ import { frameV1Actions } from "./actions/frame-v1.action.mjs";
 import type {
   GrammarSpecs,
   ParserPlugin,
-  ParserPluginGrammar,
+  // ParserPluginGrammar,
 } from "./types/parser.mjs";
 
 const OHM_PATH = "./assets/ohm";
 
-function getLevel(specs: GrammarSpecs, filename: string): ParserPluginGrammar {
+const { versionPath, semver } = getVersionData(OHM_PATH);
+
+function getOhm(versionPath: string, filename: string): string {
   const raw = fs
-    .readFileSync(path.join(specs.versionPath, `${filename}.ohm`))
+    .readFileSync(path.join(versionPath, `${filename}.ohm`))
     .toString();
+  return raw;
+}
+
+function adjustParent(specs: GrammarSpecs, raw: string) {
   const altered = raw.replace(/<:\s*(\w+)\s*\{/, (match, word) => {
     if (specs.parentGrammar === "") {
       throw new Error("GRAMMAR EXPECTS A PARENT BUT NONE WAS GIVEN");
@@ -28,7 +44,7 @@ function getLevel(specs: GrammarSpecs, filename: string): ParserPluginGrammar {
     return `<: ${specs.parentGrammar} {`; // replace `word` however you want
   });
   return {
-    raw,
+    // raw,
     altered,
     grammar: ohm.grammar(altered, specs.dependencies),
   };
@@ -90,55 +106,7 @@ function compileOperations(
   };
 }
 
-const configParserPlugin: ParserPlugin = {
-  name: "RankiConfig",
-  dependencies: [],
-  parser: (specs) => getLevel(specs, "1-config"),
-};
-
-const baseParserPlugin: ParserPlugin = {
-  name: "RankiBase",
-  dependencies: ["RankiConfig"],
-  parser: (specs) => getLevel(specs, "2-base"),
-};
-
-const paramsV2ParserPlugin: ParserPlugin = {
-  name: "RankiParamsV2",
-  dependencies: ["RankiBase"],
-  parser: (specs) => getLevel(specs, "3-params-v2"),
-};
-
-const frameV2ParserPlugin: ParserPlugin = {
-  name: "RankiFrameV2",
-  dependencies: ["RankiParamsV2"],
-  parser: (specs) => getLevel(specs, "4-frame-v2"),
-};
-
-const richTextParserPlugin: ParserPlugin = {
-  name: "RankiRichText",
-  dependencies: ["RankiBase"],
-  parser: (specs) => getLevel(specs, "3-rich-text"),
-};
-
-const richNumberParserPlugin: ParserPlugin = {
-  name: "RankiRichNumber",
-  dependencies: ["RankiBase"],
-  parser: (specs) => getLevel(specs, "3-rich-number"),
-};
-
-const richStructureParserPlugin: ParserPlugin = {
-  name: "RankiRichStructure",
-  dependencies: ["RankiParamsV2"],
-  parser: (specs) => getLevel(specs, "4-rich-structure"),
-};
-
-const frameV1ParserPlugin: ParserPlugin = {
-  name: "RankiFrameV1",
-  dependencies: ["RankiBase"],
-  parser: (specs) => getLevel(specs, "3-frame-v1"),
-};
-
-function expandDependencies(plugins: ParserPlugin[]): void {
+function expandDependencies(plugins: RankiPluginParser[]): void {
   const lookup = Object.fromEntries(plugins.map((p) => [p.name, p]));
 
   const cache = new Map<string, Set<string>>();
@@ -171,7 +139,9 @@ function expandDependencies(plugins: ParserPlugin[]): void {
   });
 }
 
-function topologicalSort(plugins: ParserPlugin[]): ParserPlugin["name"][] {
+function topologicalSort(
+  plugins: RankiPluginParser[],
+): RankiPluginParser["name"][] {
   const sorted: string[] = [];
   const adjacencies = plugins.reduce((a, c) => {
     a[c.name] = new Set();
@@ -224,17 +194,26 @@ function topologicalSort(plugins: ParserPlugin[]): ParserPlugin["name"][] {
 }
 
 const IMPORTED_PLUGINS = {
-  richTextParserPlugin,
-  frameV2ParserPlugin,
-  paramsV2ParserPlugin,
-  baseParserPlugin,
-  configParserPlugin,
-  richNumberParserPlugin,
-  richStructureParserPlugin,
-  frameV1ParserPlugin,
+  rankiBaseParserPlugin,
+  rankiConstantsParserPlugin,
+  rankiParamsV2ParserPlugin,
+  rankiFrameV2ParserPlugin,
+  rankiRichTextV1ParserPlugin,
+  rankiRichNumberV1ParserPlugin,
+  rankiRichStructureV1ParserPlugin,
+  rankiFrameV1ParserPlugin,
+  // richTextParserPlugin,
+  // frameV2ParserPlugin,
+  // paramsV2ParserPlugin,
+  // baseParserPlugin,
+
+  //
+  // richNumberParserPlugin,
+  // richStructureParserPlugin,
+  // frameV1ParserPlugin,
 };
 
-const STANDARD_PLUGIN_NAMES = ["RankiConfig", "RankiBase"];
+const STANDARD_PLUGIN_NAMES = ["RankiConstants", "RankiBase"];
 
 function parse(
   context: ParseContext,
@@ -242,7 +221,6 @@ function parse(
   raw: string,
 ) {
   const activePluginNames = [...STANDARD_PLUGIN_NAMES, ...requestedPluginNames];
-  const { versionPath, semver } = getVersionData(OHM_PATH);
   const activePluginNamesSet = new Set(activePluginNames);
 
   {
@@ -284,11 +262,19 @@ function parse(
     if (!plugin) {
       throw new Error(`CANNOT FIND PLUGIN ${name}`);
     }
-    const matcher = plugin.parser({
-      versionPath,
-      parentGrammar: si === 0 ? "" : importChain[si - 1],
-      dependencies: grammarParents,
-    });
+    const matcher = adjustParent(
+      {
+        versionPath,
+        parentGrammar: si === 0 ? "" : importChain[si - 1],
+        dependencies: grammarParents,
+      },
+      plugin.grammar,
+    );
+    // const matcher = plugin.parser({
+    //   versionPath,
+    //   parentGrammar: si === 0 ? "" : importChain[si - 1],
+    //   dependencies: grammarParents,
+    // });
     matchers[name] = matcher;
     grammarParents = {
       ...grammarParents,

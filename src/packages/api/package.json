@@ -9,12 +9,10 @@
   },
   "exports": {
     ".": {
-      "import": "./lib/main.mjs",
       "types": "./types/main.d.mts",
       "default": "./lib/main.mjs"
     },
     "./helpers": {
-      "import": "./lib/helpers/main.mjs",
       "types": "./types/helpers/main.d.mts",
       "default": "./lib/helpers/main.mjs"
     }

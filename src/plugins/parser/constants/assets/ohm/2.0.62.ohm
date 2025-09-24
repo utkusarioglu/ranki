@@ -1,0 +1,52 @@
+RankiConstants {
+  root = ""
+
+  //v1
+  frameV1 = ":::"
+  
+  // v2
+  pause = ","
+  directive = "%"
+  frame = ":"
+  
+  // params
+  sepLeft = ","
+  sepRight = ";"
+  assign = "="
+  append = "+="
+  remove = "-=" 
+  negation = "!"
+
+  // line alteration tokens
+  align = "$"
+  h = "#"
+  small = "_"
+  
+  // text decoration tokens
+  em = "+"
+  b = "*"
+  i = "/"
+  u = "_"
+  abbr = "@"
+
+  // language tokens
+  esc = "\\"
+  sentence = "." | "!" | "?"
+
+  // Rich structure tokens
+  divider = "~"
+  
+  // number tokens
+  complexToken = "i" | "j" | "k"
+  infinityToken = "inf"
+  piToken = "pi" | "PI"
+  eToken = "e" | "E"
+  hexadecimalToken = "x" | "X"
+  octalToken = "o" | "O"
+  binaryToken = "b" | "B"
+  decimalToken = "."
+  negativeToken = "-"
+  positiveToken = "+"
+  groupToken = "_"
+  rationalToken = "/"
+}
