@@ -7,3 +7,5 @@ build
 .turbo
 *.tsbuildinfo
 lib
+
+src/.defunct

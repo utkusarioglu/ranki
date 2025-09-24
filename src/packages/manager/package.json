@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "name": "@ranki/manager",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./lib/main.mjs",
+      "types": "./lib/main.d.ts",
+      "default": "./lib/main.mjs"
+    }
+  },
+  "scripts": {
+    "watch": "yarn tsc --watch",
+    "console": "yarn tsx src/console.mts",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@ranki/package-api": "workspace:^",
+    "@types/node": "^24.3.1",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4",
+    "yaml": "^2.8.1"
+  },
+  "dependencies": {
+    "ohm-js": "^17.2.1"
+  }
+}

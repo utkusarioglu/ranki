@@ -1284,14 +1284,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ranki/app-v2@workspace:src/apps/v2"
   dependencies:
-    "@ranki/package-api": "workspace:^"
-    "@ranki/package-parser": "workspace:^"
-    "@ranki/package-plugins": "workspace:^"
-    "@ranki/package-renderer": "workspace:^"
-    "@ranki/package-transformer": "workspace:^"
-    "@ranki/package-validator": "workspace:^"
-    "@ranki/plugin-dom": "workspace:^"
-    "@ranki/plugin-root": "workspace:^"
     "@types/node": "npm:^24.1.0"
     typescript: "npm:~5.8.3"
     vite: "npm:^7.0.4"
@@ -1299,75 +1291,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ranki/package-api@workspace:^, @ranki/package-api@workspace:src/packages/api":
+"@ranki/manager@workspace:src/packages/manager":
   version: 0.0.0-use.local
-  resolution: "@ranki/package-api@workspace:src/packages/api"
-  dependencies:
-    ohm-js: "npm:^17.2.1"
-    typescript: "npm:^5.8.3"
-  languageName: unknown
-  linkType: soft
-
-"@ranki/package-html@workspace:^, @ranki/package-html@workspace:src/packages/html":
-  version: 0.0.0-use.local
-  resolution: "@ranki/package-html@workspace:src/packages/html"
-  dependencies:
-    typescript: "npm:^5.9.2"
-  languageName: unknown
-  linkType: soft
-
-"@ranki/package-parser@workspace:^, @ranki/package-parser@workspace:src/packages/parser":
-  version: 0.0.0-use.local
-  resolution: "@ranki/package-parser@workspace:src/packages/parser"
-  dependencies:
-    "@ranki/package-api": "workspace:^"
-    ohm-js: "npm:^17.1.0"
-    typescript: "npm:^5.8.3"
-    vitest: "npm:^3.2.4"
-  languageName: unknown
-  linkType: soft
-
-"@ranki/package-plugins@workspace:^, @ranki/package-plugins@workspace:src/packages/plugins":
-  version: 0.0.0-use.local
-  resolution: "@ranki/package-plugins@workspace:src/packages/plugins"
-  dependencies:
-    "@ranki/package-api": "workspace:^"
-    typescript: "npm:^5.9.2"
-  languageName: unknown
-  linkType: soft
-
-"@ranki/package-renderer@workspace:^, @ranki/package-renderer@workspace:src/packages/renderer":
-  version: 0.0.0-use.local
-  resolution: "@ranki/package-renderer@workspace:src/packages/renderer"
-  dependencies:
-    "@ranki/package-api": "workspace:^"
-    "@ranki/package-html": "workspace:^"
-    typescript: "npm:^5.9.2"
-    yaml: "npm:^2.8.0"
-  languageName: unknown
-  linkType: soft
-
-"@ranki/package-transformer@workspace:^, @ranki/package-transformer@workspace:src/packages/transformer":
-  version: 0.0.0-use.local
-  resolution: "@ranki/package-transformer@workspace:src/packages/transformer"
-  dependencies:
-    "@ranki/package-api": "workspace:^"
-    typescript: "npm:^5.9.2"
-  languageName: unknown
-  linkType: soft
-
-"@ranki/package-validator@workspace:^, @ranki/package-validator@workspace:src/packages/validator":
-  version: 0.0.0-use.local
-  resolution: "@ranki/package-validator@workspace:src/packages/validator"
-  dependencies:
-    "@ranki/package-api": "workspace:^"
-    typescript: "npm:^5.9.2"
-  languageName: unknown
-  linkType: soft
-
-"@ranki/parser-ignore@workspace:src/parsers/ignore":
-  version: 0.0.0-use.local
-  resolution: "@ranki/parser-ignore@workspace:src/parsers/ignore"
+  resolution: "@ranki/manager@workspace:src/packages/manager"
   dependencies:
     "@ranki/package-api": "workspace:^"
     "@types/node": "npm:^24.3.1"
@@ -1379,23 +1305,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ranki/plugin-dom@workspace:^, @ranki/plugin-dom@workspace:src/plugins/dom":
+"@ranki/package-api@workspace:^, @ranki/package-api@workspace:src/packages/api":
   version: 0.0.0-use.local
-  resolution: "@ranki/plugin-dom@workspace:src/plugins/dom"
+  resolution: "@ranki/package-api@workspace:src/packages/api"
   dependencies:
-    "@ranki/package-api": "workspace:^"
-    "@ranki/package-html": "workspace:^"
-    typescript: "npm:^5.8.3"
+    ohm-js: "npm:^17.2.1"
+    typescript: "npm:^5.9.2"
   languageName: unknown
   linkType: soft
 
-"@ranki/plugin-root@workspace:^, @ranki/plugin-root@workspace:src/plugins/root":
+"@ranki/package-html@workspace:src/packages/html":
   version: 0.0.0-use.local
-  resolution: "@ranki/plugin-root@workspace:src/plugins/root"
+  resolution: "@ranki/package-html@workspace:src/packages/html"
   dependencies:
-    "@ranki/package-api": "workspace:^"
-    "@ranki/package-html": "workspace:^"
-    typescript: "npm:^5.8.3"
+    typescript: "npm:^5.9.2"
   languageName: unknown
   linkType: soft
 

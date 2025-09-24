@@ -15,14 +15,6 @@
     "vite": "^7.0.4"
   },
   "dependencies": {
-    "@ranki/package-api": "workspace:^",
-    "@ranki/package-parser": "workspace:^",
-    "@ranki/package-plugins": "workspace:^",
-    "@ranki/package-renderer": "workspace:^",
-    "@ranki/package-transformer": "workspace:^",
-    "@ranki/package-validator": "workspace:^",
-    "@ranki/plugin-dom": "workspace:^",
-    "@ranki/plugin-root": "workspace:^",
     "yaml": "^2.8.0"
   }
 }

@@ -1,19 +1,13 @@
 {
   "compilerOptions": {
-    "outDir": "lib",
-    "rootDir": "src",
+    "target": "esnext",
     "moduleResolution": "nodenext",
     "module": "nodenext",
-    "target": "esnext",
-    "composite": true
+    "strict": true,
+    "composite": true,
+    "declarationDir": "types",
+    "outDir": "lib",
+    "rootDir": "src"
   },
-  "include": [
-    "src/types/*",
-    "src/helpers/*",
-    "src/constants/*",
-    "src/types/stages/ast.mts",
-    "src/types/stages/render.mts",
-    "src/types/stages/transform.mts",
-    "src/types/stages/validation.mts"
-  ]
+  "include": ["src/**/*"]
 }
