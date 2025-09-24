@@ -1,8 +1,20 @@
-export interface NodeLeafSourceNumber {
-  type: "number";
-  raw: string;
-  // sign: 1 | -1;
-  integer: number;
+import type {
+  ParseNode as ParseNodeBaseV2,
+  NodeArgs as NodeArgsBaseV2,
+} from "@ranki/package-api";
+
+type RichNumberV1 = RichNumberV1Complex;
+
+export type ParseNodeRichNumberV2 = Omit<ParseNodeBaseV2, "args"> & {
+  args: Partial<NodeArgsBaseV2> & RichNumberV1Complex;
+};
+
+export interface RichNumberV1Complex {
+  "richNumber.v1": {
+    args: {
+      "token.complex": string;
+    };
+  };
 }
 
 export type NodeLeafSourceScalar =

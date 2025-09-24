@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import * as ohm from "ohm-js";
 import * as path from "path";
-import type { NodeArgs, ParseContext, ParseNode } from "./types/types.mjs";
+import type { ParseContext } from "@ranki/package-api";
 
 import { rankiConstantsV2ParserPlugin } from "@ranki/plugin-parser-constants-v2";
 import { rankiBaseV2ParserPlugin } from "@ranki/plugin-parser-base-v2";
@@ -13,13 +13,13 @@ import { rankiRichStructureV2ParserPlugin } from "@ranki/plugin-parser-rich-stru
 import { rankiFrameV1ParserPlugin } from "@ranki/plugin-parser-frame-v1";
 
 import type { RankiConfig, RankiPluginParser } from "@ranki/package-api";
-import { baseActions } from "./actions/base.action.mjs";
-import { richTextActions } from "./actions/rich-text.action.mjs";
-import { paramsV2Actions } from "./actions/params-v2.action.mjs";
-import { frameV2Actions } from "./actions/frame-v2.action.mjs";
-import { richNumberActions } from "./actions/rich-number.mjs";
-import { richStructureActions } from "./actions/rich-structure.action.mjs";
-import { frameV1Actions } from "./actions/frame-v1.action.mjs";
+// import { baseActions } from "../../../plugins/parser/base-v2/src/actions.mjs";
+// import { richTextActions } from "../../../plugins/parser/rich-text-v2/src/actions.mjs";
+// import { paramsV2Actions } from "./actions/params-v2.action.mjs";
+// import { frameV2Actions } from "./actions/frame-v2.action.mjs";
+// import { richNumberActions } from "./actions/rich-number.mjs";
+// import { richStructureActions } from "./actions/rich-structure.action.mjs";
+// import { frameV1Actions } from "../../../plugins/parser/frame-v1/src/actions.mjs";
 import type { GrammarSpecs } from "./types/parser.mjs";
 
 const config: RankiConfig = {
@@ -304,15 +304,19 @@ function parse(
   const { semantics, participants, methods } = compileOperations(
     matcher.createSemantics(),
     activePluginNames,
-    {
-      RankiBaseV2: baseActions,
-      RankiRichTextV2: richTextActions,
-      RankiParamsV2: paramsV2Actions,
-      RankiFrameV2: frameV2Actions,
-      RankiRichNumberV2: richNumberActions,
-      RankiRichStructureV2: richStructureActions,
-      RankiFrameV1: frameV1Actions,
-    },
+    Object.values(IMPORTED_PLUGINS).reduce(
+      (a, c) => ((a[c.name] = c.actions()), a),
+      {},
+    ),
+    // {
+    //   RankiBaseV2: baseActions,
+    //   RankiRichTextV2: richTextActions,
+    //   RankiParamsV2: paramsV2Actions,
+    //   RankiFrameV2: frameV2Actions,
+    //   RankiRichNumberV2: richNumberActions,
+    //   RankiRichStructureV2: richStructureActions,
+    //   RankiFrameV1: frameV1Actions,
+    // },
   );
 
   const matched = matcher.match(raw, "root");

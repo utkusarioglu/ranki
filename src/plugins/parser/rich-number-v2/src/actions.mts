@@ -1,11 +1,12 @@
 import type * as ohm from "ohm-js";
-import type { ParseContext, ParseNode } from "../types/types.mjs";
+import type { ParseContext } from "@ranki/package-api";
 import {
   NodeLeafSourceComplex,
   NodeLeafSourceInteger,
   NodeLeafSourceScalar,
   RankiRichNumberV2Sign,
-} from "../types/rich-number.types.mjs";
+  ParseNodeRichNumberV2,
+} from "./types.mjs";
 
 const CONCEPTUAL_NUMBERS = ["e", "infinity", "pi"];
 
@@ -44,7 +45,7 @@ function hComplex(
   imaginary: NodeLeafSourceScalar,
   // imaginaryPart: ohm.Node,
   complexToken: ohm.Node,
-): ParseNode {
+): ParseNodeRichNumberV2 {
   return {
     kind: "leaf",
     type: this.ctorName,
@@ -68,7 +69,7 @@ function hComplex(
   };
 }
 
-const node: ohm.ActionDict<ParseNode> = {
+const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   conceptualSymbol(token) {
     const context: ParseContext = this.args.context;
     let type;
@@ -453,7 +454,7 @@ const richNumberV2Sign: ohm.ActionDict<RankiRichNumberV2Sign> = {
   },
 };
 
-export const richNumberActions = {
+export const actions = {
   node,
   richNumberV2Sign,
 };

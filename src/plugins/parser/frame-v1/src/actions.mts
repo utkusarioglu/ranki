@@ -1,8 +1,6 @@
 import type * as ohm from "ohm-js";
-import type { ParseNode } from "../types/types.mjs";
-import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
-import type { NodeArgs } from "../types/types.mjs";
-import type { ArgsAndParamsV1 } from "../types/node-arg.mjs";
+import type { ParseNode } from "@ranki/package-api";
+import type { ArgsAndParamsV1 } from "./types.mjs";
 
 const node: ohm.ActionDict<ParseNode> = {
   v1Inline_p(
@@ -241,7 +239,7 @@ const argsAndParamsV1: ohm.ActionDict<ArgsAndParamsV1> = {
   },
 };
 
-export const frameV1Actions = {
+export const actions = {
   node,
   paramV1,
   paramsV1,

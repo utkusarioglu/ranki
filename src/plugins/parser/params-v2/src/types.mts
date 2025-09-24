@@ -1,8 +1,10 @@
-import type { NodeArgs } from "./node-arg.mjs";
+import type { NodeArgs as NodeArgsBaseV2 } from "@ranki/package-api";
+
+type NodeArgsParamsV2 = Partial<NodeArgsBaseV2>;
 
 export interface ParamV2 {
   key: string;
-  args: NodeArgs;
+  args: NodeArgsParamsV2;
   operator: ParamV2Operator;
   values: ParamV2Value[];
 }
@@ -33,4 +35,14 @@ interface ParamV2ValueQuoted {
 interface ParamV2ValueBoolean {
   type: "boolean";
   value: boolean;
+}
+
+export interface ParamsV2Spec {
+  variant: "block" | "inline" | "none";
+  items: ParamV2[];
+}
+
+export interface ArgsAndParamsV2 {
+  args: NodeArgsParamsV2;
+  params: ParamsV2Spec;
 }

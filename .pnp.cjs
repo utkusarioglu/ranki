@@ -2025,6 +2025,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-api", "workspace:src/packages/api"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
           ["@types/node", "npm:24.5.2"],\
+          ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
@@ -2049,6 +2050,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-api", "workspace:src/packages/api"],\
           ["@ranki/plugin-parser-frame-v1", "workspace:src/plugins/parser/frame-v1"],\
           ["@types/node", "npm:24.5.2"],\
+          ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
@@ -2060,7 +2062,9 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@ranki/package-api", "workspace:src/packages/api"],\
           ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
+          ["@ranki/plugin-parser-params-v2", "workspace:src/plugins/parser/params-v2"],\
           ["@types/node", "npm:24.5.2"],\
+          ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
@@ -2073,6 +2077,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-api", "workspace:src/packages/api"],\
           ["@ranki/plugin-parser-params-v2", "workspace:src/plugins/parser/params-v2"],\
           ["@types/node", "npm:24.5.2"],\
+          ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
@@ -2085,6 +2090,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-api", "workspace:src/packages/api"],\
           ["@ranki/plugin-parser-rich-number-v2", "workspace:src/plugins/parser/rich-number-v2"],\
           ["@types/node", "npm:24.5.2"],\
+          ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
@@ -2095,8 +2101,10 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./src/plugins/parser/rich-structure-v2/",\
         "packageDependencies": [\
           ["@ranki/package-api", "workspace:src/packages/api"],\
+          ["@ranki/plugin-parser-params-v2", "workspace:src/plugins/parser/params-v2"],\
           ["@ranki/plugin-parser-rich-structure-v2", "workspace:src/plugins/parser/rich-structure-v2"],\
           ["@types/node", "npm:24.5.2"],\
+          ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
@@ -2109,6 +2117,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-api", "workspace:src/packages/api"],\
           ["@ranki/plugin-parser-rich-text-v2", "workspace:src/plugins/parser/rich-text-v2"],\
           ["@types/node", "npm:24.5.2"],\
+          ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\

@@ -1,12 +1,12 @@
 import type * as ohm from "ohm-js";
-import type { NodeArgs, ParseContext, ParseNode } from "../types/types.mjs";
-import type { ArgsAndParamsV2 } from "../types/node-arg.mjs";
+import type { ParseContext } from "@ranki/package-api";
 import type {
+  ArgsAndParamsV2,
   ParamV2,
   ParamV2Operator,
   ParamV2Value,
-} from "../types/param-v2.mjs";
-import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
+} from "./types.mjs";
+// import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
 
 const paramsV2: ohm.ActionDict<ParamV2[]> = {
   _iter(...children) {
@@ -35,6 +35,10 @@ const paramV2: ohm.ActionDict<ParamV2> = {
     const f = Object.entries(operators).find(
       ([k, v]) => v === operatorToken.sourceString,
     );
+
+    if (!f) {
+      throw new Error(`UNRECOGNIZED OPERATOR ${f}`);
+    }
 
     return {
       key: paramKey.sourceString,
@@ -173,7 +177,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   },
 };
 
-export const paramsV2Actions = {
+export const actions = {
   paramsV2,
   paramV2,
   paramV2Values,

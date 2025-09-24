@@ -4,6 +4,7 @@ import { RankiPluginParser } from "@ranki/package-api";
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { actions } from "./actions.mjs";
 
 const version = "2.0.62";
 
@@ -23,4 +24,5 @@ export const rankiFrameV2ParserPlugin: RankiPluginParser = {
   version,
   dependencies: ["RankiParamsV2"],
   grammar: () => grammar,
+  actions: () => actions,
 };

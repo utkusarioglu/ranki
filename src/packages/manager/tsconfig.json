@@ -17,6 +17,24 @@
     },
     {
       "path": "../../plugins/parser/base-v2"
+    },
+    {
+      "path": "../../plugins/parser/frame-v1"
+    },
+    {
+      "path": "../../plugins/parser/frame-v2"
+    },
+    {
+      "path": "../../plugins/parser/params-v2"
+    },
+    {
+      "path": "../../plugins/parser/rich-number-v2"
+    },
+    {
+      "path": "../../plugins/parser/rich-structure-v2"
+    },
+    {
+      "path": "../../plugins/parser/rich-text-v2"
     }
   ]
 }

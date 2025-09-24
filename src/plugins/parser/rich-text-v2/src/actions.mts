@@ -1,9 +1,21 @@
 import type * as ohm from "ohm-js";
-import type { ParseNode, NodeArgs, ParseContext } from "../types/types.mjs";
+import type {
+  ParseNode as ParseNodeBaseV2,
+  NodeArgs as NodeArgsBaseV2,
+  ParseContext,
+  ParseNodeLeaf,
+} from "@ranki/package-api";
+import type { NodeArgSentenceEnd, NodeArgWordDecoration } from "./types.mjs";
+
+type NodeArgs = Partial<NodeArgsBaseV2> & Partial<NodeArgWordDecoration>;
+
+type ParseNode = Omit<ParseNodeBaseV2, "args"> & {
+  args: NodeArgs;
+};
 
 import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
 
-function wordEndArgs(context, wordEnd) {
+function wordEndArgs(context: ParseContext, wordEnd: ohm.Node) {
   return {
     "wordEnd.type": wordEnd.creatorName(context),
   };
@@ -21,7 +33,8 @@ function startToken(context: ParseContext, start: ohm.Node) {
 
     switch (n.type) {
       case "em":
-        if (!startArgs.hasOwnProperty("em.start")) {
+        // if (!startArgs.hasOwnProperty("em.start")) {
+        if (!startArgs["em.start"]) {
           startArgs["em.start"] = { indices: [], level: 0 };
         }
         startArgs["em.start"].level++;
@@ -29,7 +42,7 @@ function startToken(context: ParseContext, start: ohm.Node) {
         break;
 
       case "b":
-        if (!startArgs.hasOwnProperty("b.start")) {
+        if (!startArgs["b.start"]) {
           startArgs["b.start"] = { indices: [], level: 0 };
         }
         startArgs["b.start"].level++;
@@ -37,7 +50,7 @@ function startToken(context: ParseContext, start: ohm.Node) {
         break;
 
       case "i":
-        if (!startArgs.hasOwnProperty("i.start")) {
+        if (!startArgs["i.start"]) {
           startArgs["i.start"] = { indices: [], level: 0 };
         }
         startArgs["i.start"].level++;
@@ -45,7 +58,7 @@ function startToken(context: ParseContext, start: ohm.Node) {
         break;
 
       case "u":
-        if (!startArgs.hasOwnProperty("u.start")) {
+        if (!startArgs["u.start"]) {
           startArgs["u.start"] = { indices: [], level: 0 };
         }
         startArgs["u.start"].level++;
@@ -53,7 +66,7 @@ function startToken(context: ParseContext, start: ohm.Node) {
         break;
 
       case "abbr":
-        if (!startArgs.hasOwnProperty("abbreviation.start")) {
+        if (!startArgs["abbreviation.start"]) {
           startArgs["abbreviation.start"] = {
             indices: [],
             level: 0,
@@ -68,7 +81,7 @@ function startToken(context: ParseContext, start: ohm.Node) {
 }
 
 function endToken(context: ParseContext, end: ohm.Node) {
-  const endNodes: ParseNode[] = end.iterNode(context);
+  const endNodes: ParseNodeLeaf[] = end.iterNode(context);
 
   const endArgs: NodeArgs = {};
 
@@ -85,26 +98,32 @@ function endToken(context: ParseContext, end: ohm.Node) {
         }
         const value = n.source.value;
 
-        if (!endArgs.hasOwnProperty("sentence.end")) {
-          endArgs["sentence.end"] = {
-            indices: [],
-            level: 0,
-            types: Object.keys(context.tokens.sentence).reduce((a, c) => {
-              a[c] = false;
-              return a;
-            }, {} as (typeof endArgs)["sentence.end"]["types"]),
-          };
+        {
+          type T = keyof NodeArgSentenceEnd["sentence.end"]["types"];
+          if (!endArgs["sentence.end"]) {
+            endArgs["sentence.end"] = {
+              indices: [],
+              level: 0,
+              types: Object.keys(context.tokens.sentence).reduce((a, c) => {
+                a[c as T] = false;
+                return a;
+              }, {} as Record<T, boolean>),
+            };
+          }
         }
 
-        endArgs["sentence.end"].indices.push(ei);
-        endArgs["sentence.end"].level++;
-        Object.entries(context.tokens.sentence).forEach(([k, v]) => {
-          endArgs["sentence.end"].types[k] ||= value === v;
-        });
+        {
+          type T = keyof NodeArgSentenceEnd["sentence.end"]["types"];
+          endArgs["sentence.end"].indices.push(ei);
+          endArgs["sentence.end"].level++;
+          Object.entries(context.tokens.sentence).forEach(([k, v]) => {
+            endArgs["sentence.end"]!.types[k as T] ||= value === v;
+          });
+        }
         break;
 
       case "em":
-        if (!endArgs.hasOwnProperty("em.end")) {
+        if (!endArgs["em.end"]) {
           endArgs["em.end"] = { indices: [], level: 0 };
         }
         endArgs["em.end"].level++;
@@ -112,7 +131,7 @@ function endToken(context: ParseContext, end: ohm.Node) {
         break;
 
       case "b":
-        if (!endArgs.hasOwnProperty("b.end")) {
+        if (!endArgs["b.end"]) {
           endArgs["b.end"] = { indices: [], level: 0 };
         }
         endArgs["b.end"].level++;
@@ -120,7 +139,7 @@ function endToken(context: ParseContext, end: ohm.Node) {
         break;
 
       case "i":
-        if (!endArgs.hasOwnProperty("i.end")) {
+        if (!endArgs["i.end"]) {
           endArgs["i.end"] = { indices: [], level: 0 };
         }
         endArgs["i.end"].level++;
@@ -128,7 +147,7 @@ function endToken(context: ParseContext, end: ohm.Node) {
         break;
 
       case "u":
-        if (!endArgs.hasOwnProperty("u.end")) {
+        if (!endArgs["u.end"]) {
           endArgs["u.end"] = { indices: [], level: 0 };
         }
         endArgs["u.end"].level++;
@@ -136,7 +155,7 @@ function endToken(context: ParseContext, end: ohm.Node) {
         break;
 
       case "abbr":
-        if (!endArgs.hasOwnProperty("abbreviation.end")) {
+        if (!endArgs["abbreviation.end"]) {
           endArgs["abbreviation.end"] = { indices: [], level: 0 };
         }
         endArgs["abbreviation.end"].indices.push(ei);
@@ -444,7 +463,7 @@ const lineModifiers: ohm.ActionDict<NodeArgs> = {
   },
 };
 
-export const richTextActions = {
+export const actions = {
   node,
   lineModifiers,
 };

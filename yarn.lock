@@ -1336,6 +1336,7 @@ __metadata:
   dependencies:
     "@ranki/package-api": "workspace:^"
     "@types/node": "npm:^24.5.2"
+    ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1356,6 +1357,7 @@ __metadata:
   dependencies:
     "@ranki/package-api": "workspace:^"
     "@types/node": "npm:^24.5.2"
+    ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1365,7 +1367,9 @@ __metadata:
   resolution: "@ranki/plugin-parser-frame-v2@workspace:src/plugins/parser/frame-v2"
   dependencies:
     "@ranki/package-api": "workspace:^"
+    "@ranki/plugin-parser-params-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
+    ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1376,6 +1380,7 @@ __metadata:
   dependencies:
     "@ranki/package-api": "workspace:^"
     "@types/node": "npm:^24.5.2"
+    ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1386,6 +1391,7 @@ __metadata:
   dependencies:
     "@ranki/package-api": "workspace:^"
     "@types/node": "npm:^24.5.2"
+    ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1395,7 +1401,9 @@ __metadata:
   resolution: "@ranki/plugin-parser-rich-structure-v2@workspace:src/plugins/parser/rich-structure-v2"
   dependencies:
     "@ranki/package-api": "workspace:^"
+    "@ranki/plugin-parser-params-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
+    ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1406,6 +1414,7 @@ __metadata:
   dependencies:
     "@ranki/package-api": "workspace:^"
     "@types/node": "npm:^24.5.2"
+    ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft

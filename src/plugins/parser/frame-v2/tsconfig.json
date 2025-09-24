@@ -13,6 +13,9 @@
   "references": [
     {
       "path": "../../../packages/api"
+    },
+    {
+      "path": "../../parser/params-v2"
     }
   ]
 }

@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { ParseNode } from "../types/types.mjs";
+import type { ParseNode } from "@ranki/package-api";
 import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
 
 const node: ohm.ActionDict<ParseNode> = {
@@ -254,7 +254,7 @@ const iterNode: ohm.ActionDict<ParseNode[]> = {
   },
 };
 
-export const baseActions = {
+export const actions = {
   node,
   creatorName,
   iterNode,

@@ -23,4 +23,5 @@ export const rankiConstantsV2ParserPlugin: RankiPluginParser = {
   name: "RankiConstantsV2",
   dependencies: [],
   grammar: () => grammar,
+  actions: () => ({}),
 };

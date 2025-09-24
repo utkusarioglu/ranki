@@ -13,6 +13,7 @@ export interface RankiPluginParser extends RankiPluginCommon {
   // name: string;
   dependencies: string[];
   grammar: (c: RankiConfig) => string;
+  actions: () => Record<string, ohm.ActionDict<unknown>>;
   // parser: (specs) => getLevel(specs, "1-config"),
   // parser: (specs: PluginParserSpecs) => PluginParserGrammar;
 }

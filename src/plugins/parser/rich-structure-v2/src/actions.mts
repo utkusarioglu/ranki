@@ -1,7 +1,6 @@
 import type * as ohm from "ohm-js";
-import type { ParseNode } from "../types/types.mjs";
-import type { NodeArgs } from "../types/types.mjs";
-import type { ArgsAndParamsV2 } from "../types/node-arg.mjs";
+import type { ParseNode, NodeArgs } from "@ranki/package-api";
+import type { ArgsAndParamsV2 } from "@ranki/plugin-parser-params-v2";
 
 function hLevel(a: ohm.Node) {
   const l = a.node(this.args.context);
@@ -97,7 +96,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   },
 };
 
-export const richStructureActions = {
+export const actions = {
   node,
   argsAndParamsV2,
   // creatorName,

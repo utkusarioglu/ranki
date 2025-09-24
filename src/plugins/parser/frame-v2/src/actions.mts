@@ -1,8 +1,14 @@
 import type * as ohm from "ohm-js";
-import type { ParseNode } from "../types/types.mjs";
 import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
-import type { NodeArgs } from "../types/types.mjs";
-import type { ArgsAndParamsV2 } from "../types/node-arg.mjs";
+import type {
+  NodeArgs as NodeArgsBaseV2,
+  ParseNode as ParseNodeBaseV2,
+} from "@ranki/package-api";
+import type { ArgsAndParamsV2 } from "@ranki/plugin-parser-params-v2";
+
+type ParseNode = Omit<ParseNodeBaseV2, "args"> & {
+  args: NodeArgsBaseV2;
+};
 
 const node: ohm.ActionDict<ParseNode> = {
   block_v2(indentation, v2, wi, ender) {
@@ -136,7 +142,7 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 };
 
-const v2FrameConfig: ohm.ActionDict<NodeArgs> = {
+const v2FrameConfig: ohm.ActionDict<NodeArgsBaseV2> = {
   v2DirectiveConfig_D(wi1, nl, wi2, v2ParamListBlock, whitespace) {
     const params = v2ParamListBlock.paramsV2(this.args.context);
     return {
@@ -245,7 +251,7 @@ const v2FrameConfig: ohm.ActionDict<NodeArgs> = {
   },
 };
 
-export const frameV2Actions = {
+export const actions = {
   node,
   v2FrameConfig,
   // argsAndParams,
