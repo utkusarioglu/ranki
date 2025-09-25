@@ -8,7 +8,7 @@ export interface ArgsAndParamsV1 {
 
 // type FrameV1Config = FrameV1ConfigP | FrameV1ConfigFp;
 
-export interface FrameV1ConfigP {
+export interface NodeArgsFrameV1ConfigP {
   "frame.v1": {
     // type: string;
     variant: "p"; // this is like f fp
@@ -17,7 +17,7 @@ export interface FrameV1ConfigP {
   };
 }
 
-export interface FrameV1ConfigFp {
+export interface NodeArgsFrameV1ConfigFp {
   "frame.v1": {
     // type: string;
     variant: "fp"; // this is like f fp
@@ -33,9 +33,9 @@ export type ParseNodeFrameV1 =
   | ParseNodeFrameV1ConfigFp;
 
 export type ParseNodeFrameV1ConfigP = Omit<ParseNode, "args"> & {
-  args: Partial<NodeArgsBaseV2> & FrameV1ConfigP;
+  args: Partial<NodeArgsBaseV2> & NodeArgsFrameV1ConfigP;
 };
 
 export type ParseNodeFrameV1ConfigFp = Omit<ParseNode, "args"> & {
-  args: Partial<NodeArgsBaseV2> & FrameV1ConfigFp;
+  args: Partial<NodeArgsBaseV2> & NodeArgsFrameV1ConfigFp;
 };

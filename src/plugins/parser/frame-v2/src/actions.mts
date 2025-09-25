@@ -128,6 +128,7 @@ const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       children: [v2Payload.node(this.args.context)],
     };
   },
+
   v2_dfp(directive, directiveConfig, frame, v2FrameConfig, v2Payload, v2End) {
     return {
       kind: "parent",

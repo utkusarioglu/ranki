@@ -1,15 +1,15 @@
 import type { ParseNode as ParseNodeBaseV2 } from "@ranki/package-api";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
-export type NodeArgWordDecoration = NodeArgSentenceEnd &
-  NodeArgAbbreviation &
-  NodeArgB &
-  NodeArgEm &
-  NodeArgI &
-  NodeArgU &
-  NodeArgLineModifiers;
+export type NodeArgRichTextV2WordDecoration = NodeArgRichTextV2SentenceEnd &
+  NodeArgRichTextV2Abbreviation &
+  NodeArgRichTextV2B &
+  NodeArgRichTextV2Em &
+  NodeArgRichTextV2I &
+  NodeArgRichTextV2U &
+  NodeArgRichTextV2LineModifiers;
 
-export interface NodeArgSentenceEnd {
+export interface NodeArgRichTextV2SentenceEnd {
   "sentence.end": {
     indices: number[];
     level: number;
@@ -21,7 +21,7 @@ export interface NodeArgSentenceEnd {
   };
 }
 
-export interface NodeArgAbbreviation {
+export interface NodeArgRichTextV2Abbreviation {
   "abbreviation.start": {
     indices: number[];
     level: number;
@@ -32,7 +32,7 @@ export interface NodeArgAbbreviation {
   };
 }
 
-export interface NodeArgB {
+export interface NodeArgRichTextV2B {
   "b.start": {
     indices: number[];
     level: number;
@@ -43,7 +43,7 @@ export interface NodeArgB {
   };
 }
 
-export interface NodeArgEm {
+export interface NodeArgRichTextV2Em {
   "em.start": {
     indices: number[];
     level: number;
@@ -54,7 +54,7 @@ export interface NodeArgEm {
   };
 }
 
-export interface NodeArgI {
+export interface NodeArgRichTextV2I {
   "i.start": {
     indices: number[];
     level: number;
@@ -65,7 +65,7 @@ export interface NodeArgI {
   };
 }
 
-export interface NodeArgU {
+export interface NodeArgRichTextV2U {
   "u.start": {
     indices: number[];
     level: number;
@@ -76,30 +76,30 @@ export interface NodeArgU {
   };
 }
 
-type NodeArgLineModifiers = NodeArgAlignment &
-  NodeArgSmallText &
-  NodeArgHeading;
+type NodeArgRichTextV2LineModifiers = NodeArgRichTextV2Alignment &
+  NodeArgRichTextV2SmallText &
+  NodeArgRichTextV2Heading;
 
-interface NodeArgLineModifiersCommon {
+interface NodeArgRichTextV2LineModifiersCommon {
   level: number;
   clearance: number;
   type: string;
 }
 
-export interface NodeArgAlignment {
-  "line.alignment": NodeArgLineModifiersCommon;
+export interface NodeArgRichTextV2Alignment {
+  "line.alignment": NodeArgRichTextV2LineModifiersCommon;
 }
 
-export interface NodeArgSmallText {
-  "line.smalltext": NodeArgLineModifiersCommon;
+export interface NodeArgRichTextV2SmallText {
+  "line.smalltext": NodeArgRichTextV2LineModifiersCommon;
 }
 
-export interface NodeArgHeading {
-  "line.heading": NodeArgLineModifiersCommon;
+export interface NodeArgRichTextV2Heading {
+  "line.heading": NodeArgRichTextV2LineModifiersCommon;
 }
 
 export type NodeArgsRichTextV2 = Partial<NodeArgsBaseV2> &
-  Partial<NodeArgWordDecoration>;
+  Partial<NodeArgRichTextV2WordDecoration>;
 
 export type ParseNodeRichTextV2 = Omit<ParseNodeBaseV2, "args"> & {
   args: NodeArgsRichTextV2;

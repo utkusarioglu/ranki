@@ -1,7 +1,7 @@
 import type * as ohm from "ohm-js";
 import type { ParseContext, ParseNodeLeaf } from "@ranki/package-api";
 import type {
-  NodeArgSentenceEnd,
+  NodeArgRichTextV2SentenceEnd,
   NodeArgsRichTextV2,
   ParseNodeRichTextV2,
 } from "./types.mjs";
@@ -92,24 +92,27 @@ function endToken(context: ParseContext, end: ohm.Node) {
         const value = n.source.value;
 
         {
-          type T = keyof NodeArgSentenceEnd["sentence.end"]["types"];
+          type T = keyof NodeArgRichTextV2SentenceEnd["sentence.end"]["types"];
           if (!endArgs["sentence.end"]) {
             endArgs["sentence.end"] = {
               indices: [],
               level: 0,
-              types: Object.keys(context.tokens.sentence).reduce((a, c) => {
-                a[c as T] = false;
-                return a;
-              }, {} as Record<T, boolean>),
+              types: Object.keys(context.config.tokens.sentence).reduce(
+                (a, c) => {
+                  a[c as T] = false;
+                  return a;
+                },
+                {} as Record<T, boolean>,
+              ),
             };
           }
         }
 
         {
-          type T = keyof NodeArgSentenceEnd["sentence.end"]["types"];
+          type T = keyof NodeArgRichTextV2SentenceEnd["sentence.end"]["types"];
           endArgs["sentence.end"].indices.push(ei);
           endArgs["sentence.end"].level++;
-          Object.entries(context.tokens.sentence).forEach(([k, v]) => {
+          Object.entries(context.config.tokens.sentence).forEach(([k, v]) => {
             endArgs["sentence.end"]!.types[k as T] ||= value === v;
           });
         }

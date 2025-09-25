@@ -1,35 +1,44 @@
+type Alternates = Single[];
+type Single = string;
+
+type PluginName = string;
+
 export interface RankiConfig {
+  plugins: {
+    standards: PluginName[];
+    requested: PluginName[];
+  };
   tokens: {
     sentence: {
-      period: string;
-      question: string;
-      exclamation: string;
+      period: Single;
+      question: Single;
+      exclamation: Single;
     };
     paramsV2: {
       separator: {
-        left: string;
-        right: string;
+        left: Single;
+        right: Single;
       };
       key: {
-        negation: string;
+        negation: Single;
       };
       operators: {
-        assign: string;
-        append: string;
-        remove: string;
+        assign: Single;
+        append: Single;
+        remove: Single;
       };
     };
-    richNumberV1: {
-      complexUnits: string[];
-      infinity: string[];
-      e: string[];
-      pi: string[];
-      hexadecimal: string[];
-      octal: string[];
-      binary: string[];
-      decimal: string;
-      negative: string;
-      group: string;
+    richNumberV2: {
+      complexUnits: Alternates;
+      infinity: Alternates;
+      e: Alternates;
+      pi: Alternates;
+      hexadecimal: Alternates;
+      octal: Alternates;
+      binary: Alternates;
+      decimal: Single;
+      negative: Single;
+      group: Single;
     };
   };
 }

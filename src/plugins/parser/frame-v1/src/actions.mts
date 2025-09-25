@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { ParseNode } from "@ranki/package-api";
+import type { ParseContext, ParseNode } from "@ranki/package-api";
 import type { ParseNodeFrameV1 } from "./types.mjs";
 import type { ArgsAndParamsV1 } from "./types.mjs";
 
@@ -174,16 +174,10 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadBlock,
     v1BlockEnd,
   ) {
-    const context = this.args.context;
-    const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(
-      this.args.context,
-    );
-    const parser = context.methods.parser();
-    const child = parser(
-      this.args.context,
-      ["RankiBaseV2", "RankiRichTextV2"],
-      v1PayloadBlock.sourceString,
-    );
+    const context: ParseContext = this.args.context;
+    const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(context);
+    const parser = context.methods.parser(this.args.context);
+    const child = parser(context, v1PayloadBlock.sourceString);
     return {
       kind: "parent",
       type: this.ctorName,
@@ -201,19 +195,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           report: child.report,
         },
       },
-      children: [
-        child.stages.parse.root,
-        // {
-        //   kind: "leaf",
-        //   print: true,
-        //   type: "TEMP PAYLOAD V1 NODE",
-        //   args: {},
-        //   source: {
-        //     type: "mixed",
-        //     value: v1PayloadBlock.sourceString,
-        //   },
-        // },
-      ],
+      children: [child.stages.parse.root],
     };
   },
 };

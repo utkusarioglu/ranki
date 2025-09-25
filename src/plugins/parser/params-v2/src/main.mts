@@ -4,7 +4,7 @@ import { RankiPluginParser } from "@ranki/package-api";
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import { actions } from "./params-v2.action.mjs";
+import { actions } from "./actions.mjs";
 
 const version = "2.0.62";
 

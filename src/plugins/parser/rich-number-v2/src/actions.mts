@@ -1,14 +1,14 @@
 import type * as ohm from "ohm-js";
 import type { ParseContext } from "@ranki/package-api";
 import {
-  NodeLeafSourceComplex,
-  NodeLeafSourceInteger,
-  NodeLeafSourceScalar,
-  RankiRichNumberV2Sign,
+  NodeLeafRichNumberV2SourceComplex,
+  NodeLeafRichNumberV2SourceInteger,
+  NodeLeafRichNumberV2SourceScalar,
+  RichNumberV2Sign,
   ParseNodeRichNumberV2,
 } from "./types.mjs";
 
-type Keys = Partial<keyof ParseContext["tokens"]["richNumberV1"]>[];
+type Keys = Partial<keyof ParseContext["config"]["tokens"]["richNumberV2"]>[];
 
 const CONCEPTUAL_NUMBERS = ["e", "infinity", "pi"] as Keys;
 
@@ -42,11 +42,11 @@ const BASES = ["hexadecimal", "octal", "binary"] as Keys;
 
 function hComplex<T extends ohm.Node>(
   this: T,
-  real: NodeLeafSourceScalar,
+  real: NodeLeafRichNumberV2SourceScalar,
   clearance1: ohm.Node,
   operator: ohm.Node,
   clearance2: ohm.Node,
-  imaginary: NodeLeafSourceScalar,
+  imaginary: NodeLeafRichNumberV2SourceScalar,
   // imaginaryPart: ohm.Node,
   complexToken: ohm.Node,
 ): ParseNodeRichNumberV2 {
@@ -57,7 +57,7 @@ function hComplex<T extends ohm.Node>(
     args: {
       "clearance.1.length": clearance1.sourceString.length,
       "clearance.2.length": clearance2.sourceString.length,
-      "richNumber.v1": {
+      "richNumber.v2": {
         args: {
           "token.complex": complexToken.sourceString,
         },
@@ -78,7 +78,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const context: ParseContext = this.args.context;
     let type;
     CONCEPTUAL_NUMBERS.forEach((t) => {
-      if (context.tokens.richNumberV1[t].includes(token.sourceString)) {
+      if (context.config.tokens.richNumberV2[t].includes(token.sourceString)) {
         type = t;
       }
     });
@@ -104,7 +104,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   numberSystem_indian(num) {
     const context: ParseContext = this.args.context;
     const integer = +num.sourceString
-      .split(context.tokens.richNumberV1.group)
+      .split(context.config.tokens.richNumberV2.group)
       .join("");
     return {
       kind: "leaf",
@@ -124,7 +124,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   numberSystem_international(num) {
     const context: ParseContext = this.args.context;
     const integer = +num.sourceString
-      .split(context.tokens.richNumberV1.group)
+      .split(context.config.tokens.richNumberV2.group)
       .join("");
     return {
       kind: "leaf",
@@ -144,7 +144,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   numberSystem_unstructured(digit, token, num) {
     const context: ParseContext = this.args.context;
     const integer = +num.sourceString
-      .split(context.tokens.richNumberV1.group)
+      .split(context.config.tokens.richNumberV2.group)
       .join("");
     return {
       kind: "leaf",
@@ -209,16 +209,16 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
 
   hBases(zero, symbol, numberSystem_unstructured) {
     const context: ParseContext = this.args.context;
-    const richNumberV1 = context.tokens.richNumberV1;
+    const richNumberV2 = context.config.tokens.richNumberV2;
     let type;
 
     BASES.forEach((s) => {
-      if (richNumberV1[s].includes(symbol.sourceString)) {
+      if (richNumberV2[s].includes(symbol.sourceString)) {
         type = s;
       }
     });
     if (!type) {
-      console.log(richNumberV1);
+      console.log(richNumberV2);
       throw new Error(
         `UNRECOGNIZED BASE SYMBOL: ${symbol.sourceString} in ${this.sourceString}`,
       );
@@ -235,7 +235,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
         sign: "plus",
         symbol: symbol.sourceString,
         digits: numberSystem_unstructured.sourceString
-          .split(richNumberV1.group)
+          .split(richNumberV2.group)
           .join(""),
       },
     };
@@ -308,7 +308,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   decimal_point(sign, decimalToken, decimalGroup) {
     const context: ParseContext = this.args.context;
     const decimal = +decimalGroup.sourceString
-      .split(context.tokens.richNumberV1.group)
+      .split(context.config.tokens.richNumberV2.group)
       .join("");
     return {
       kind: "leaf",
@@ -355,14 +355,16 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   complex_i(realPart, clearance1, operator, clearance2, complexToken) {
-    const imaginary: NodeLeafSourceInteger = {
+    const imaginary: NodeLeafRichNumberV2SourceInteger = {
       type: "integer",
       raw: complexToken.sourceString,
       sign: "plus",
       system: "basic",
       integer: 1,
     };
-    const real: NodeLeafSourceScalar = realPart.node(this.args.context).source;
+    const real: NodeLeafRichNumberV2SourceScalar = realPart.node(
+      this.args.context,
+    ).source;
     return hComplex.call(
       this,
       real,
@@ -382,8 +384,10 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     imaginaryPart,
     complexToken,
   ) {
-    const real: NodeLeafSourceScalar = realPart.node(this.args.context).source;
-    const imaginary: NodeLeafSourceScalar = imaginaryPart.node(
+    const real: NodeLeafRichNumberV2SourceScalar = realPart.node(
+      this.args.context,
+    ).source;
+    const imaginary: NodeLeafRichNumberV2SourceScalar = imaginaryPart.node(
       this.args.context,
     ).source;
     return hComplex.call(
@@ -405,8 +409,10 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     complexToken,
     imaginaryPart,
   ) {
-    const real: NodeLeafSourceScalar = realPart.node(this.args.context).source;
-    const imaginary: NodeLeafSourceScalar = imaginaryPart.node(
+    const real: NodeLeafRichNumberV2SourceScalar = realPart.node(
+      this.args.context,
+    ).source;
+    const imaginary: NodeLeafRichNumberV2SourceScalar = imaginaryPart.node(
       this.args.context,
     ).source;
     return hComplex.call(
@@ -438,7 +444,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 };
 
-const richNumberV2Sign: ohm.ActionDict<RankiRichNumberV2Sign> = {
+const richNumberV2Sign: ohm.ActionDict<RichNumberV2Sign> = {
   sign(s) {
     switch (s.sourceString) {
       case "":

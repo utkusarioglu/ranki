@@ -1,6 +1,6 @@
-export type NodeArgsBaseV2 = NodeArgNumber & NodeArgWordEnd;
+export type NodeArgsBaseV2 = NodeArgBaseV2Number & NodeArgBaseV2WordEnd;
 
-type NodeArgNumber = Record<
+type NodeArgBaseV2Number = Record<
   | "whitespace.1.length"
   | "whitespace.2.length"
   | "indentation.1.length"
@@ -12,6 +12,6 @@ type NodeArgNumber = Record<
   number
 >;
 
-export type NodeArgWordEnd = {
+export type NodeArgBaseV2WordEnd = {
   "wordEnd.type": "clearance" | "nl" | "end";
 };

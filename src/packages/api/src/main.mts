@@ -15,4 +15,8 @@ export type {
   ParseNodeParent,
 } from "./parse.mjs";
 
-export type { ParseContext } from "./context.mjs";
+export type {
+  ParseContext,
+  VersionReport,
+  CreateContextFunction,
+} from "./context.mjs";

@@ -1,12 +1,6 @@
-import type {
-  ParseNodeLeaf,
-  // ParseNode as ParseNodeBaseV2,
-  // NodeArgs as NodeArgsBaseV2,
-} from "@ranki/package-api";
+import type { ParseNodeLeaf } from "@ranki/package-api";
 
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
-
-// type RichNumberV1 = RichNumberV1Complex;
 
 export type ParseNodeRichNumberV2 =
   | ParseNodeRichNumberV2General
@@ -14,56 +8,56 @@ export type ParseNodeRichNumberV2 =
 
 type ParseNodeRichNumberV2General = Omit<ParseNodeLeaf, "args" | "source"> & {
   args: Partial<NodeArgsBaseV2>;
-  source: NodeLeafSourceRichNumberV1General;
+  source: NodeLeafRichNumberV2SourceGeneral;
 };
 type ParseNodeRichNumberV2Complex = Omit<ParseNodeLeaf, "args" | "source"> & {
-  args: Partial<NodeArgsBaseV2> & NodeArgsRichNumberV1Complex;
-  source: NodeLeafSourceComplex;
+  args: Partial<NodeArgsBaseV2> & NodeArgsRichNumberV2Complex;
+  source: NodeLeafRichNumberV2SourceComplex;
 };
 
-export interface NodeArgsRichNumberV1Complex {
-  "richNumber.v1": {
+export interface NodeArgsRichNumberV2Complex {
+  "richNumber.v2": {
     args: {
       "token.complex": string;
     };
   };
 }
 
-export type NodeLeafSourceScalar =
-  | NodeLeafSourceInteger
-  | NodeLeafSourceDecimal;
+export type NodeLeafRichNumberV2SourceScalar =
+  | NodeLeafRichNumberV2SourceInteger
+  | NodeLeafRichNumberV2SourceDecimal;
 
-export interface NodeLeafSourceInteger {
+export interface NodeLeafRichNumberV2SourceInteger {
   type: "integer";
   raw: string;
   system: string;
-  sign: RankiRichNumberV2Sign;
+  sign: RichNumberV2Sign;
   integer: number;
 }
 
-interface NodeLeafSourceDecimal {
+interface NodeLeafRichNumberV2SourceDecimal {
   type: "decimal";
   raw: string;
-  integer: NodeLeafSourceInteger;
-  decimal: NodeLeafSourceInteger;
+  integer: NodeLeafRichNumberV2SourceInteger;
+  decimal: NodeLeafRichNumberV2SourceInteger;
 }
 
-interface NodeLeafSourceENotation {
+interface NodeLeafRichNumberV2SourceENotation {
   type: "eNotation";
   raw: string;
-  significand: NodeLeafSourceScalar;
-  exponent: NodeLeafSourceInteger;
+  significand: NodeLeafRichNumberV2SourceScalar;
+  exponent: NodeLeafRichNumberV2SourceInteger;
 }
 
-interface NodeLeafSourceBases {
+interface NodeLeafRichNumberV2SourceBases {
   type: "hexadecimal" | "octal" | "binary";
-  sign: RankiRichNumberV2Sign;
+  sign: RichNumberV2Sign;
   raw: string;
   symbol: string;
   digits: string;
 }
 
-interface NodeLeafSourceConceptual {
+interface NodeLeafRichNumberV2SourceConceptual {
   type: "infinity" | "pi" | "e";
   sign: 1 | -1;
   factor: number;
@@ -71,31 +65,27 @@ interface NodeLeafSourceConceptual {
   symbol: string;
 }
 
-interface NodeLeafSourceRational {
+interface NodeLeafRichNumberV2SourceRational {
   type: "rational";
   raw: string;
-  nominator: NodeLeafSourceRichNumberV1General;
-  denominator: NodeLeafSourceRichNumberV1General;
+  nominator: NodeLeafRichNumberV2SourceGeneral;
+  denominator: NodeLeafRichNumberV2SourceGeneral;
 }
 
-export interface NodeLeafSourceComplex {
+export interface NodeLeafRichNumberV2SourceComplex {
   type: "complex";
   raw: string;
-  real: NodeLeafSourceScalar;
-  operator: RankiRichNumberV2Sign; // this is not really a sign but it works for now
-  imaginary: NodeLeafSourceScalar;
+  real: NodeLeafRichNumberV2SourceScalar;
+  operator: RichNumberV2Sign; // this is not really a sign but it works for now
+  imaginary: NodeLeafRichNumberV2SourceScalar;
 }
 
-export type RankiRichNumberV2Sign =
-  | "plus"
-  | "minus"
-  | "plusMinus"
-  | "minusPlus";
+export type RichNumberV2Sign = "plus" | "minus" | "plusMinus" | "minusPlus";
 
-export type NodeLeafSourceRichNumberV1General =
-  | NodeLeafSourceRational
-  | NodeLeafSourceConceptual
-  | NodeLeafSourceBases
-  | NodeLeafSourceScalar
-  | NodeLeafSourceENotation;
+export type NodeLeafRichNumberV2SourceGeneral =
+  | NodeLeafRichNumberV2SourceRational
+  | NodeLeafRichNumberV2SourceConceptual
+  | NodeLeafRichNumberV2SourceBases
+  | NodeLeafRichNumberV2SourceScalar
+  | NodeLeafRichNumberV2SourceENotation;
 // | NodeLeafSourceComplex;

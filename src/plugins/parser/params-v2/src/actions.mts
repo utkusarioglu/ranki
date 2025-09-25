@@ -11,6 +11,7 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
   _iter(...children) {
     return children.map((c) => c.paramV2(this.args.context));
   },
+
   v2ParamListInline(param1, sep, param2) {
     // const p2 = param2.paramsV2(this.args.context);
     const rest = param2.paramsV2(this.args.context);
@@ -18,6 +19,7 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
 
     return joined;
   },
+
   v2ParamListBlock(param1, sep, param2) {
     // const p2 = param2.paramsV2(this.args.context);
     const rest = param2.paramsV2(this.args.context);
@@ -30,7 +32,7 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
 const paramV2: ohm.ActionDict<ParamV2> = {
   param_operator(paramKey, wi1, operatorToken, wi2, paramValues) {
     const context: ParseContext = this.args.context;
-    const operators = context.tokens.paramsV2.operators;
+    const operators = context.config.tokens.paramsV2.operators;
     const f = Object.entries(operators).find(
       ([k, v]) => v === operatorToken.sourceString,
     );
@@ -49,6 +51,7 @@ const paramV2: ohm.ActionDict<ParamV2> = {
       values: paramValues.paramV2Values(this.args.context),
     };
   },
+
   param_positive(key) {
     return {
       key: key.sourceString,
@@ -62,6 +65,7 @@ const paramV2: ohm.ActionDict<ParamV2> = {
       ],
     };
   },
+
   param_negative(negation, key) {
     return {
       key: key.sourceString,
@@ -81,6 +85,7 @@ const paramV2Values: ohm.ActionDict<ParamV2Value[]> = {
   _iter(...children) {
     return children.map((c) => c.paramV2Value(this.args.context));
   },
+
   paramValues(i1, clearance, i2) {
     return [
       i1.paramV2Value(this.args.context),
@@ -96,36 +101,42 @@ const paramV2Value: ohm.ActionDict<ParamV2Value> = {
       value: +num.sourceString,
     };
   },
+
   paramValueItemPrimitive_lowercase(lower) {
     return {
       type: "lowercase",
       value: lower.sourceString,
     };
   },
+
   paramValueItemPrimitive_true(val) {
     return {
       type: "boolean",
       value: true,
     };
   },
+
   paramValueItemPrimitive_false(val) {
     return {
       type: "boolean",
       value: false,
     };
   },
+
   paramValueItemPrimitive_uppercase(val) {
     return {
       type: "uppercase",
       value: val.sourceString,
     };
   },
+
   paramValueItemPrimitive_mixed(val) {
     return {
       type: "mixed",
       value: val.sourceString,
     };
   },
+
   quoted(quote1, quotedContent, quote2) {
     return {
       type: "quoted",
@@ -159,6 +170,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
       },
     };
   },
+
   v2ParamListInlineContainer(sepLeft1, wi1, v2ParamListInline, wi2, sepLeft2) {
     return {
       args: {

@@ -1,6 +1,9 @@
 import type * as ohm from "ohm-js";
 import type { ArgsAndParamsV2 } from "@ranki/plugin-parser-params-v2";
-import type { ParseNodeRichStructureV2 } from "./types.mjs";
+import type {
+  ParseNodeRichStructureV2,
+  ArgsAndParamsV2RichStructureV2,
+} from "./types.mjs";
 
 function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
   const l = a.node(this.args.context);
@@ -11,12 +14,13 @@ function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
 
 const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
   hLevel_defined(structureType1, separator, structureType2) {
-    const sep = separator.argsAndParamsV2(this.args.context);
+    const sep: ParseNodeRichStructureV2["args"]["richStructure.v2"] =
+      separator.argsAndParamsV2(this.args.context);
     return {
       kind: "parent",
       type: this.ctorName,
       args: {
-        "richStructure.v1": {
+        "richStructure.v2": {
           // name: "SHALL BE SET BY PARENT",
           // !FIX the separators are misplaced. the first separator args and params belong to the SECOND collection, section or whatever the level name is.
           ...sep,
@@ -81,9 +85,8 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi3,
     structureSepEnd,
   ) {
-    const config: ArgsAndParamsV2 = v2ParamListInlineContainer.argsAndParamsV2(
-      this.args.context,
-    );
+    const config: ArgsAndParamsV2RichStructureV2 =
+      v2ParamListInlineContainer.argsAndParamsV2(this.args.context);
     return {
       args: {
         // !TODO you need ctorName here
@@ -105,6 +108,4 @@ export const actions = {
     ...argsAndParamsV2,
     ...argsAndParamsV2List,
   },
-  // creatorName,
-  // iterNode,
 };
