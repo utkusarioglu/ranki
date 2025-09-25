@@ -1,8 +1,9 @@
+import type { RankiConfig } from "@ranki/package-api";
 import yaml from "yaml";
 import * as fs from "node:fs";
 import path from "node:path";
 import { parse } from "./parse.mjs";
-import { createContext, config } from "./context.mjs";
+import { createContext } from "./context.mjs";
 import { ParserPlugins } from "./plugins.mjs";
 
 import { rankiConstantsV2ParserPlugin } from "@ranki/plugin-parser-constants-v2";
@@ -26,6 +27,53 @@ const parserPlugins = new ParserPlugins();
   rankiFrameV1ParserPlugin,
 ].forEach((p) => parserPlugins.addPlugin(p));
 
+export const config: RankiConfig = {
+  plugins: {
+    standards: ["RankiConstantsV2", "RankiBaseV2"],
+    requested: [
+      "RankiParamsV2",
+      "RankiFrameV2",
+      "RankiFrameV1",
+      "RankiRichTextV2",
+      "RankiRichNumberV2",
+      "RankiRichStructureV2",
+    ],
+  },
+  tokens: {
+    sentence: {
+      period: ".",
+      question: "?",
+      exclamation: "!",
+    },
+    paramsV2: {
+      separator: {
+        left: ",",
+        right: ";",
+      },
+      key: {
+        negation: "!",
+      },
+      operators: {
+        assign: "=",
+        append: "+=",
+        remove: "-=",
+      },
+    },
+    richNumberV2: {
+      complexUnits: ["i", "j", "k"],
+      infinity: ["inf", "INF"],
+      pi: ["pi", "PI"],
+      e: ["e", "E"],
+      hexadecimal: ["x", "X"],
+      octal: ["o", "O"],
+      binary: ["b", "B"],
+      decimal: ".",
+      negative: "-",
+      group: "_",
+    },
+  },
+};
+
 const THROW_TESTS = "./assets/throw";
 const throwTests = fs.readdirSync(THROW_TESTS);
 
@@ -45,7 +93,7 @@ function produceTests(count: number) {
 
 function main(count: number) {
   const parsed = [];
-  const context = createContext(config, parse, parserPlugins);
+  const context = createContext(config, parserPlugins);
 
   produceTests(count).forEach((t) => {
     try {

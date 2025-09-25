@@ -19,7 +19,7 @@ type ParserFunction = (context: ParseContext, raw: string) => ParseResult;
 
 export type CreateContextFunction = (
   config: RankiConfig,
-  parser: ParserFunction,
+  // parser: ParserFunction,
   parserPlugins: any,
 ) => ParseContext;
 

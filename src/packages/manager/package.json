@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@ranki/manager",
+  "name": "@ranki/package-manager",
   "type": "module",
   "exports": {
     ".": {
@@ -10,6 +10,7 @@
     }
   },
   "scripts": {
+    "build": "yarn tsc",
     "watch": "yarn tsc --watch",
     "console": "yarn tsx src/console.mts",
     "test": "vitest"
