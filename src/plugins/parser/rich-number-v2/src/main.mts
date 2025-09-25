@@ -1,4 +1,5 @@
 import { RankiPluginParser } from "@ranki/package-api";
+import { actions } from "./actions.mjs";
 // import rankiConfig from "../assets/ohm/2.0.62.ohm?raw";
 // !TODO this needs to go
 import fs from "node:fs";
@@ -23,4 +24,5 @@ export const rankiRichNumberV2ParserPlugin: RankiPluginParser = {
   version,
   dependencies: ["RankiBaseV2"],
   grammar: () => grammar,
+  actions: () => actions,
 };

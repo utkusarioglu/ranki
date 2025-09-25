@@ -1,17 +1,10 @@
 import type * as ohm from "ohm-js";
+import type { ParseContext, ParseNodeLeaf } from "@ranki/package-api";
 import type {
-  ParseNode as ParseNodeBaseV2,
-  NodeArgs as NodeArgsBaseV2,
-  ParseContext,
-  ParseNodeLeaf,
-} from "@ranki/package-api";
-import type { NodeArgSentenceEnd, NodeArgWordDecoration } from "./types.mjs";
-
-type NodeArgs = Partial<NodeArgsBaseV2> & Partial<NodeArgWordDecoration>;
-
-type ParseNode = Omit<ParseNodeBaseV2, "args"> & {
-  args: NodeArgs;
-};
+  NodeArgSentenceEnd,
+  NodeArgsRichTextV2,
+  ParseNodeRichTextV2,
+} from "./types.mjs";
 
 import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
 
@@ -22,8 +15,8 @@ function wordEndArgs(context: ParseContext, wordEnd: ohm.Node) {
 }
 
 function startToken(context: ParseContext, start: ohm.Node) {
-  const startNodes: ParseNode[] = start.iterNode(context);
-  const startArgs: NodeArgs = {};
+  const startNodes: ParseNodeRichTextV2[] = start.iterNode(context);
+  const startArgs: NodeArgsRichTextV2 = {};
 
   for (let si = 0; si < startNodes.length; si++) {
     const n = startNodes[si];
@@ -83,7 +76,7 @@ function startToken(context: ParseContext, start: ohm.Node) {
 function endToken(context: ParseContext, end: ohm.Node) {
   const endNodes: ParseNodeLeaf[] = end.iterNode(context);
 
-  const endArgs: NodeArgs = {};
+  const endArgs: NodeArgsRichTextV2 = {};
 
   for (let ei = endNodes.length - 1; ei >= 0; ei--) {
     const n = endNodes[ei];
@@ -167,7 +160,7 @@ function endToken(context: ParseContext, end: ohm.Node) {
   return { endNodes, endArgs };
 }
 
-const node: ohm.ActionDict<ParseNode> = {
+const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   textual(decorated1, clearance, decorated2) {
     return {
       kind: "parent",
@@ -393,7 +386,7 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 };
 
-const lineModifiers: ohm.ActionDict<NodeArgs> = {
+const lineModifiers: ohm.ActionDict<NodeArgsRichTextV2> = {
   lineModifiers(alignment, smalltext, heading) {
     return {
       ...alignment.lineModifiers(this.args.context),

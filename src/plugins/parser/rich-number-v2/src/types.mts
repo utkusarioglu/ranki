@@ -1,15 +1,27 @@
 import type {
-  ParseNode as ParseNodeBaseV2,
-  NodeArgs as NodeArgsBaseV2,
+  ParseNodeLeaf,
+  // ParseNode as ParseNodeBaseV2,
+  // NodeArgs as NodeArgsBaseV2,
 } from "@ranki/package-api";
 
-type RichNumberV1 = RichNumberV1Complex;
+import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
-export type ParseNodeRichNumberV2 = Omit<ParseNodeBaseV2, "args"> & {
-  args: Partial<NodeArgsBaseV2> & RichNumberV1Complex;
+// type RichNumberV1 = RichNumberV1Complex;
+
+export type ParseNodeRichNumberV2 =
+  | ParseNodeRichNumberV2General
+  | ParseNodeRichNumberV2Complex;
+
+type ParseNodeRichNumberV2General = Omit<ParseNodeLeaf, "args" | "source"> & {
+  args: Partial<NodeArgsBaseV2>;
+  source: NodeLeafSourceRichNumberV1General;
+};
+type ParseNodeRichNumberV2Complex = Omit<ParseNodeLeaf, "args" | "source"> & {
+  args: Partial<NodeArgsBaseV2> & NodeArgsRichNumberV1Complex;
+  source: NodeLeafSourceComplex;
 };
 
-export interface RichNumberV1Complex {
+export interface NodeArgsRichNumberV1Complex {
   "richNumber.v1": {
     args: {
       "token.complex": string;
@@ -62,8 +74,8 @@ interface NodeLeafSourceConceptual {
 interface NodeLeafSourceRational {
   type: "rational";
   raw: string;
-  nominator: NodeLeafSourceRichNumberV1;
-  denominator: NodeLeafSourceRichNumberV1;
+  nominator: NodeLeafSourceRichNumberV1General;
+  denominator: NodeLeafSourceRichNumberV1General;
 }
 
 export interface NodeLeafSourceComplex {
@@ -80,10 +92,10 @@ export type RankiRichNumberV2Sign =
   | "plusMinus"
   | "minusPlus";
 
-export type NodeLeafSourceRichNumberV1 =
+export type NodeLeafSourceRichNumberV1General =
   | NodeLeafSourceRational
   | NodeLeafSourceConceptual
   | NodeLeafSourceBases
   | NodeLeafSourceScalar
-  | NodeLeafSourceENotation
-  | NodeLeafSourceComplex;
+  | NodeLeafSourceENotation;
+// | NodeLeafSourceComplex;

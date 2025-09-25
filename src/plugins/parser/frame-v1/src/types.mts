@@ -1,11 +1,12 @@
-import type { NodeArgs } from "@ranki/package-api";
+import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
+import type { ParseNode } from "@ranki/package-api";
 
 export interface ArgsAndParamsV1 {
-  args: NodeArgs;
+  args: Partial<NodeArgsBaseV2>;
   params: string[];
 }
 
-type FrameV1Config = FrameV1ConfigP | FrameV1ConfigFp;
+// type FrameV1Config = FrameV1ConfigP | FrameV1ConfigFp;
 
 export interface FrameV1ConfigP {
   "frame.v1": {
@@ -26,3 +27,15 @@ export interface FrameV1ConfigFp {
     // params: Pa
   };
 }
+
+export type ParseNodeFrameV1 =
+  | ParseNodeFrameV1ConfigP
+  | ParseNodeFrameV1ConfigFp;
+
+export type ParseNodeFrameV1ConfigP = Omit<ParseNode, "args"> & {
+  args: Partial<NodeArgsBaseV2> & FrameV1ConfigP;
+};
+
+export type ParseNodeFrameV1ConfigFp = Omit<ParseNode, "args"> & {
+  args: Partial<NodeArgsBaseV2> & FrameV1ConfigFp;
+};

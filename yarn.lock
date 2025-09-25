@@ -1356,6 +1356,7 @@ __metadata:
   resolution: "@ranki/plugin-parser-frame-v1@workspace:src/plugins/parser/frame-v1"
   dependencies:
     "@ranki/package-api": "workspace:^"
+    "@ranki/plugin-parser-base-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
     ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"
@@ -1367,6 +1368,7 @@ __metadata:
   resolution: "@ranki/plugin-parser-frame-v2@workspace:src/plugins/parser/frame-v2"
   dependencies:
     "@ranki/package-api": "workspace:^"
+    "@ranki/plugin-parser-base-v2": "workspace:^"
     "@ranki/plugin-parser-params-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
     ohm-js: "npm:^17.2.1"
@@ -1379,6 +1381,7 @@ __metadata:
   resolution: "@ranki/plugin-parser-params-v2@workspace:src/plugins/parser/params-v2"
   dependencies:
     "@ranki/package-api": "workspace:^"
+    "@ranki/plugin-parser-base-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
     ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"
@@ -1390,6 +1393,7 @@ __metadata:
   resolution: "@ranki/plugin-parser-rich-number-v2@workspace:src/plugins/parser/rich-number-v2"
   dependencies:
     "@ranki/package-api": "workspace:^"
+    "@ranki/plugin-parser-base-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
     ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"
@@ -1401,6 +1405,7 @@ __metadata:
   resolution: "@ranki/plugin-parser-rich-structure-v2@workspace:src/plugins/parser/rich-structure-v2"
   dependencies:
     "@ranki/package-api": "workspace:^"
+    "@ranki/plugin-parser-base-v2": "workspace:^"
     "@ranki/plugin-parser-params-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
     ohm-js: "npm:^17.2.1"
@@ -1413,6 +1418,7 @@ __metadata:
   resolution: "@ranki/plugin-parser-rich-text-v2@workspace:src/plugins/parser/rich-text-v2"
   dependencies:
     "@ranki/package-api": "workspace:^"
+    "@ranki/plugin-parser-base-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
     ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"

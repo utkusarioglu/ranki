@@ -10,7 +10,7 @@ export type { RankiConfig } from "./config.mjs";
 
 export type {
   ParseNode,
-  NodeArgs,
+  // NodeArgs,
   ParseNodeLeaf,
   ParseNodeParent,
 } from "./parse.mjs";

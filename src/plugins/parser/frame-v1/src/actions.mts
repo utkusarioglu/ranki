@@ -1,8 +1,24 @@
 import type * as ohm from "ohm-js";
 import type { ParseNode } from "@ranki/package-api";
+import type { ParseNodeFrameV1 } from "./types.mjs";
 import type { ArgsAndParamsV1 } from "./types.mjs";
 
-const node: ohm.ActionDict<ParseNode> = {
+const nodeBaseV2: ohm.ActionDict<ParseNode> = {
+  block_v1(indentation, v1Block, wi1, end) {
+    return {
+      kind: "parent",
+      type: this.ctorName,
+      args: {
+        "indentation.1.length": indentation.sourceString.length,
+        "wi.1.length": wi1.sourceString.length,
+        // !TODO end
+      },
+      children: [v1Block.node(this.args.context)],
+    };
+  },
+};
+
+const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
   v1Inline_p(
     frameV1_1,
     wi1,
@@ -93,19 +109,6 @@ const node: ohm.ActionDict<ParseNode> = {
           },
         },
       ],
-    };
-  },
-
-  block_v1(indentation, v1Block, wi1, end) {
-    return {
-      kind: "parent",
-      type: this.ctorName,
-      args: {
-        "indentation.1.length": indentation.sourceString.length,
-        "wi.1.length": wi1.sourceString.length,
-        // !TODO end
-      },
-      children: [v1Block.node(this.args.context)],
     };
   },
 
@@ -240,7 +243,10 @@ const argsAndParamsV1: ohm.ActionDict<ArgsAndParamsV1> = {
 };
 
 export const actions = {
-  node,
+  node: {
+    ...nodeFrameV1,
+    ...nodeBaseV2,
+  },
   paramV1,
   paramsV1,
   argsAndParamsV1,

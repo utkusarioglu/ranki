@@ -16,6 +16,9 @@
     },
     {
       "path": "../../parser/params-v2"
+    },
+    {
+      "path": "../base-v2"
     }
   ]
 }

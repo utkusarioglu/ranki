@@ -8,8 +8,11 @@ import {
   ParseNodeRichNumberV2,
 } from "./types.mjs";
 
-const CONCEPTUAL_NUMBERS = ["e", "infinity", "pi"];
+type Keys = Partial<keyof ParseContext["tokens"]["richNumberV1"]>[];
 
+const CONCEPTUAL_NUMBERS = ["e", "infinity", "pi"] as Keys;
+
+const BASES = ["hexadecimal", "octal", "binary"] as Keys;
 // function hConcept(token: ohm.Node): ParseNode {
 //   const context: ParseContext = this.args.context;
 //   let type;
@@ -37,7 +40,8 @@ const CONCEPTUAL_NUMBERS = ["e", "infinity", "pi"];
 //   };
 // }
 
-function hComplex(
+function hComplex<T extends ohm.Node>(
+  this: T,
   real: NodeLeafSourceScalar,
   clearance1: ohm.Node,
   operator: ohm.Node,
@@ -208,7 +212,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const richNumberV1 = context.tokens.richNumberV1;
     let type;
 
-    ["hexadecimal", "octal", "binary"].forEach((s) => {
+    BASES.forEach((s) => {
       if (richNumberV1[s].includes(symbol.sourceString)) {
         type = s;
       }

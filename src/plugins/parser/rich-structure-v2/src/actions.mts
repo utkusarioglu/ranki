@@ -1,15 +1,15 @@
 import type * as ohm from "ohm-js";
-import type { ParseNode, NodeArgs } from "@ranki/package-api";
 import type { ArgsAndParamsV2 } from "@ranki/plugin-parser-params-v2";
+import type { ParseNodeRichStructureV2 } from "./types.mjs";
 
-function hLevel(a: ohm.Node) {
+function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
   const l = a.node(this.args.context);
   l.type = this.ctorName;
   // l["args"]["richStructure.v1"]["name"] = this.ctorName;
   return l;
 }
 
-const node: ohm.ActionDict<ParseNode> = {
+const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
   hLevel_defined(structureType1, separator, structureType2) {
     const sep = separator.argsAndParamsV2(this.args.context);
     return {
@@ -47,10 +47,13 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 };
 
-const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
+const argsAndParamsV2List: ohm.ActionDict<ArgsAndParamsV2[]> = {
   _iter(...children) {
     return children.map((c) => c.argsAndParamsV2(this.args.context));
   },
+};
+
+const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   hStructureSepInline_s(
     structureSepStart,
     wi1,
@@ -98,7 +101,10 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
 
 export const actions = {
   node,
-  argsAndParamsV2,
+  argsAndParamsV2: {
+    ...argsAndParamsV2,
+    ...argsAndParamsV2List,
+  },
   // creatorName,
   // iterNode,
 };

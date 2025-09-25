@@ -1,4 +1,5 @@
-import type { NodeArgs as NodeArgsBaseV2 } from "@ranki/package-api";
+// import type { NodeArgs as NodeArgsBaseV2 } from "@ranki/package-api";
+import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
 type NodeArgsParamsV2 = Partial<NodeArgsBaseV2>;
 

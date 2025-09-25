@@ -26,3 +26,5 @@ export const rankiBaseV2ParserPlugin: RankiPluginParser = {
   grammar: () => grammar,
   actions: () => actions,
 };
+
+export type { NodeArgsBaseV2 } from "./type.mjs";

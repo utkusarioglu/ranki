@@ -1,16 +1,13 @@
 import type * as ohm from "ohm-js";
-import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
+import { zipNodes } from "@ranki/package-api/helpers";
+import type { ParseNode } from "@ranki/package-api";
 import type {
-  NodeArgs as NodeArgsBaseV2,
-  ParseNode as ParseNodeBaseV2,
-} from "@ranki/package-api";
-import type { ArgsAndParamsV2 } from "@ranki/plugin-parser-params-v2";
+  NodeArgsFrameV2,
+  ParseNodeFrameV2,
+  ArgsAndParamsV2FrameV2,
+} from "./types.mjs";
 
-type ParseNode = Omit<ParseNodeBaseV2, "args"> & {
-  args: NodeArgsBaseV2;
-};
-
-const node: ohm.ActionDict<ParseNode> = {
+const nodeBaseV2: ohm.ActionDict<ParseNode> = {
   block_v2(indentation, v2, wi, ender) {
     return {
       kind: "parent",
@@ -19,28 +16,6 @@ const node: ohm.ActionDict<ParseNode> = {
       children: [v2.node(this.args.context)],
     };
   },
-  v2_fp(directive, frame, v2FrameConfig, v2Payload, v2End) {
-    return {
-      kind: "parent",
-      type: this.ctorName,
-      args: {
-        ...v2FrameConfig.v2FrameConfig(this.args.context),
-      },
-      children: [v2Payload.node(this.args.context)],
-    };
-  },
-  v2_dfp(directive, directiveConfig, frame, v2FrameConfig, v2Payload, v2End) {
-    return {
-      kind: "parent",
-      type: this.ctorName,
-      args: {
-        ...directiveConfig.v2FrameConfig(this.args.context),
-        ...v2FrameConfig.v2FrameConfig(this.args.context),
-      },
-      children: [v2Payload.node(this.args.context)],
-    };
-  },
-
   v2Payload_P(wi1, nl, pauseDocument) {
     return {
       kind: "parent",
@@ -142,7 +117,31 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 };
 
-const v2FrameConfig: ohm.ActionDict<NodeArgsBaseV2> = {
+const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
+  v2_fp(directive, frame, v2FrameConfig, v2Payload, v2End) {
+    return {
+      kind: "parent",
+      type: this.ctorName,
+      args: {
+        ...v2FrameConfig.v2FrameConfig(this.args.context),
+      },
+      children: [v2Payload.node(this.args.context)],
+    };
+  },
+  v2_dfp(directive, directiveConfig, frame, v2FrameConfig, v2Payload, v2End) {
+    return {
+      kind: "parent",
+      type: this.ctorName,
+      args: {
+        ...directiveConfig.v2FrameConfig(this.args.context),
+        ...v2FrameConfig.v2FrameConfig(this.args.context),
+      },
+      children: [v2Payload.node(this.args.context)],
+    };
+  },
+};
+
+const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   v2DirectiveConfig_D(wi1, nl, wi2, v2ParamListBlock, whitespace) {
     const params = v2ParamListBlock.paramsV2(this.args.context);
     return {
@@ -159,6 +158,7 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsBaseV2> = {
       },
     };
   },
+
   v2DirectiveConfig_d(wi1, v2ParamListInline, wi2) {
     const params = v2ParamListInline.paramsV2(this.args.context);
     return {
@@ -175,6 +175,7 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsBaseV2> = {
       },
     };
   },
+
   v2FrameConfigP(wi1, v2Type, wi2, sep) {
     return {
       "frame.v2": {
@@ -189,35 +190,7 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsBaseV2> = {
       },
     };
   },
-  v2FrameConfigFp_F(
-    wi1,
-    v2Type,
-    wi2,
-    v2ParamListBlockContainer,
-    wi3,
-    sepRight,
-  ) {
-    const config: ArgsAndParamsV2 = v2ParamListBlockContainer.argsAndParamsV2(
-      this.args.context,
-    );
-    return {
-      "frame.v2": {
-        type: this.ctorName,
-        frameType: v2Type.sourceString,
-        variant: "fp_F",
-        args: {
-          "wi.1.length": wi1.sourceString.length,
-          "wi.2.length": wi2.sourceString.length,
-          "wi.3.length": wi3.sourceString.length,
-          // !FIX sepRight doesn't work
-          // "separator.right.type": sepRight.creatorName(this.args.context),
-          "separator.right.type": sepRight.sourceString,
-          "frame.v2.config": config.args,
-        },
-        params: config.params,
-      },
-    };
-  },
+
   v2FrameConfigFp_f(
     wi1,
     v2Type,
@@ -226,9 +199,8 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsBaseV2> = {
     wi3,
     sepRight,
   ) {
-    const config: ArgsAndParamsV2 = v2ParamListInlineContainer.argsAndParamsV2(
-      this.args.context,
-    );
+    const config: ArgsAndParamsV2FrameV2 =
+      v2ParamListInlineContainer.argsAndParamsV2(this.args.context);
     return {
       "frame.v2": {
         type: this.ctorName,
@@ -249,10 +221,41 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsBaseV2> = {
       },
     };
   },
+
+  v2FrameConfigFp_F(
+    wi1,
+    v2Type,
+    wi2,
+    v2ParamListBlockContainer,
+    wi3,
+    sepRight,
+  ) {
+    const config: ArgsAndParamsV2FrameV2 =
+      v2ParamListBlockContainer.argsAndParamsV2(this.args.context);
+    return {
+      "frame.v2": {
+        type: this.ctorName,
+        frameType: v2Type.sourceString,
+        variant: "fp_F",
+        args: {
+          "wi.1.length": wi1.sourceString.length,
+          "wi.2.length": wi2.sourceString.length,
+          "wi.3.length": wi3.sourceString.length,
+          // !FIX sepRight doesn't work
+          // "separator.right.type": sepRight.creatorName(this.args.context),
+          "separator.right.type": sepRight.sourceString,
+          "frame.v2.config": config.args,
+        },
+        params: config.params,
+      },
+    };
+  },
 };
 
 export const actions = {
-  node,
+  node: {
+    ...nodeFrameV2,
+    ...nodeBaseV2,
+  },
   v2FrameConfig,
-  // argsAndParams,
 };

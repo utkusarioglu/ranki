@@ -1,3 +1,6 @@
+import type { ParseNode as ParseNodeBaseV2 } from "@ranki/package-api";
+import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
+
 export type NodeArgWordDecoration = NodeArgSentenceEnd &
   NodeArgAbbreviation &
   NodeArgB &
@@ -94,3 +97,10 @@ export interface NodeArgSmallText {
 export interface NodeArgHeading {
   "line.heading": NodeArgLineModifiersCommon;
 }
+
+export type NodeArgsRichTextV2 = Partial<NodeArgsBaseV2> &
+  Partial<NodeArgWordDecoration>;
+
+export type ParseNodeRichTextV2 = Omit<ParseNodeBaseV2, "args"> & {
+  args: NodeArgsRichTextV2;
+};
