@@ -1,0 +1,42 @@
+{
+  "name": "demo-v2",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ranki/package-manager": "workspace:^",
+    "@ranki/plugin-parser-base-v2": "workspace:^",
+    "@ranki/plugin-parser-constants-v2": "workspace:^",
+    "@ranki/plugin-parser-frame-v1": "workspace:^",
+    "@ranki/plugin-parser-frame-v2": "workspace:^",
+    "@ranki/plugin-parser-params-v2": "workspace:^",
+    "@ranki/plugin-parser-rich-number-v2": "workspace:^",
+    "@ranki/plugin-parser-rich-structure-v2": "workspace:^",
+    "@ranki/plugin-parser-rich-text-v2": "workspace:^",
+    "prismjs": "^1.30.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
+    "@ranki/package-api": "workspace:^",
+    "@types/prismjs": "^1",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.3",
+    "eslint": "^9.36.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.4.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.44.0",
+    "vite": "^7.1.7"
+  }
+}

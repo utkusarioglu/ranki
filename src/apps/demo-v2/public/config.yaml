@@ -1,0 +1,56 @@
+version: v2
+metadata:
+  deck: "{{Deck}}"
+  subdeck: "{{Subdeck}}"
+  tags: "{{Tags}}"
+  type: "{{Type}}"
+  flag: "{{CardFlag}}"
+  card: "{{Card}}"
+plugins:
+  standards:
+    - RankiConstantsV2
+    - RankiBaseV2
+  requested: 
+    - RankiParamsV2
+    - RankiFrameV2
+tokens:
+  sentence:
+    period: .
+    question: "?"
+    exclamation: "!"
+  paramsV2:
+    separator:
+      left: ","
+      right: ;
+    key:
+      negation: "!"
+    operators:
+      assign: "="
+      append: +=
+      remove: "-="
+  richNumberV2:
+    complexUnits:
+      - i
+      - j
+      - k
+    infinity:
+      - inf
+      - INF
+    pi:
+      - pi
+      - PI
+    e:
+      - e
+      - E
+    hexadecimal:
+      - x
+      - X
+    octal:
+      - o
+      - O
+    binary:
+      - b
+      - B
+    decimal: .
+    negative: "-"
+    group: _

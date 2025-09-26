@@ -1,0 +1,30 @@
+:root {
+  --scrollbar-width: 2px;
+  --bg-1: #333;
+  --bg-2: #222;
+  --bg-3: #101010;
+  --fg-1: #eee;
+  --fg-2: #ccc;
+  --fg-3: #fff;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  background-color: #151515;
+  color: #ddd;
+}
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}

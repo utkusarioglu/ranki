@@ -22,7 +22,7 @@ export const rankiRichStructureV2ParserPlugin: RankiPluginParser = {
   type: "parser",
   name: "RankiRichStructureV2",
   version,
-  dependencies: ["RankiBaseV2"],
+  dependencies: ["RankiBaseV2", "RankiParamsV2"],
   grammar: () => grammar,
   actions: () => actions,
 };
