@@ -1,0 +1,35 @@
+--- Hello World
+Hello World!
+
+--- Multiline with varying indentation
+hello
+  world
+yes
+
+--- Ignored single word document
+% ignore
+hello
+
+--- Ignored single line document
+% ignore
+hello world!
+
+--- Ignored multiline document
+% ignore
+hello 
+world!
+
+--- Ignored multi paragraph document
+% ignore
+hello 
+world!
+
+hello 
+very
+world!
+
+--- Number
+12
+
+--- Punctuation
+!!! ### .. ,,

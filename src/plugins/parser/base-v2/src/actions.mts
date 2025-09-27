@@ -120,7 +120,7 @@ const node: ohm.ActionDict<ParseNode> = {
         "indentation.1.length": indentation1.sourceString.length,
         "wi.1.length": wi1.sourceString.length,
       },
-      children: lexemes.node(this.args.context),
+      children: [lexemes.node(this.args.context)],
     };
   },
 

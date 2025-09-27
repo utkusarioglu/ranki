@@ -6,32 +6,40 @@ import yaml from "yaml";
 import { ParserPlugins } from "@ranki/package-manager";
 import { pluginObjects } from "../../plugins.mjs";
 import type { RankiConfig } from "@ranki/package-api";
+import type { PresetGroup } from "../app/App";
 
 interface InputsProps {
   defaultConfigStr: string;
   setRankiParsed: (a: any) => void;
+  presetGroups: PresetGroup[];
 }
 const allPlugins = pluginObjects.map((p) => p.name);
 
-const presets = [
-  {
-    name: "Hello World!",
-    value: "Hello World!",
-  },
-  {
-    name: "Ignore",
-    value: `% ignore\ncatdog`,
-  },
-];
+// const presets = [
+//   {
+//     name: "Hello World!",
+//     value: "Hello World!",
+//   },
+//   {
+//     name: "Ignore",
+//     value: `% ignore\ncatdog`,
+//   },
+// ];
+
+const parentProps = ["kind", "type", "args"];
+
+const leafProps = ["kind", "type", "args", "children"];
 
 export const Inputs: FC<InputsProps> = ({
   defaultConfigStr,
   setRankiParsed,
+  presetGroups,
 }) => {
+  console.log(presetGroups);
   const [rankiConfigStr, setRankiConfigStr] = useState(defaultConfigStr);
   const [availablePlugins, setAvailablePlugins] = useState(allPlugins);
   const [selectedPlugins, setSelectedPlugins] = useState<string[]>([]);
-  const [rankiStr, setRankiStr] = useState(presets[0].value);
+  const [rankiStr, setRankiStr] = useState(presetGroups[0].presets[0].value);
 
   useEffect(() => {
     try {
@@ -47,7 +55,6 @@ export const Inputs: FC<InputsProps> = ({
         context,
         rankiStr,
       );
-      console.log("change");
       setRankiConfigStr(yaml.stringify(rankiConfig));
       setRankiParsed(parsed);
     } catch (e) {
@@ -59,6 +66,11 @@ export const Inputs: FC<InputsProps> = ({
 
   return (
     <div className={[style.inputs, style.roboto, style.scrollable].join(" ")}>
+      <div className={style.titleContainer}>
+        <h1>
+          Ranki <span className={style.titleDim}>v2</span>
+        </h1>
+      </div>
       <fieldset className={style.inputFieldSet}>
         <details open={true}>
           <summary className={style.summary}>
@@ -70,10 +82,14 @@ export const Inputs: FC<InputsProps> = ({
             className={style.selectPreset}
             onChange={(e) => setRankiStr(e.target.value)}
           >
-            {presets.map(({ name, value }) => (
-              <option key={name} value={value}>
-                {name}
-              </option>
+            {presetGroups.map(({ groupName, presets }) => (
+              <optgroup key={groupName} label={groupName}>
+                {presets.map(({ name, value }) => (
+                  <option key={name} value={value}>
+                    {name}
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
           <textarea

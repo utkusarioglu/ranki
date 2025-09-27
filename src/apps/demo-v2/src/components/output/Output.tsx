@@ -1,5 +1,6 @@
-import type { FC } from "react";
-import { useLayoutEffect, useRef, useState } from "react";
+import type { FC, CSSProperties } from "react";
+
+import { useState } from "react";
 import Prism from "prismjs";
 import style from "./output.module.css";
 import yaml from "yaml";
@@ -17,16 +18,19 @@ function crawl(c: any, path?: string) {
   }
   const splat = path.split(".");
   try {
-    const produced = splat.reduce((a, c) => ((a = a[c]), a), c);
-    if (produced === undefined) {
-      return c;
-    }
-    const prop = splat.at(-1);
-    if (!prop) {
-      return c;
+    let current = c;
+    while (splat.length) {
+      const u = splat.shift();
+      if (u && current[u] !== undefined) {
+        current = current[u];
+      } else {
+        return {
+          ...current,
+        };
+      }
     }
     return {
-      [path]: produced,
+      [path]: current,
     };
   } catch (e) {
     return c;
@@ -35,46 +39,65 @@ function crawl(c: any, path?: string) {
 
 type TabCrawler = (c: any, path?: string) => any;
 
-type TabDefinition = {
-  name: string;
-  cb: TabCrawler;
-};
+type TabDefinition =
+  | {
+      type: "exact";
+      name: string;
+      path: string;
+      // cb: TabCrawler;
+    }
+  | {
+      type: "custom";
+      name: string;
+      path: "";
+    };
 
 const tabs: TabDefinition[] = [
   {
+    type: "exact",
     name: "All",
-    cb: (c) => crawl(c, ""),
+    path: "",
+    // cb: (c) => crawl(c, ""),
   },
   {
+    type: "exact",
     name: "Report",
-    cb: (c) => crawl(c, "report"),
+    path: "report",
+    // cb: (c) => crawl(c, "report"),
   },
   {
-    name: "Stages.Raw",
-    cb: (c) => crawl(c, "stages.raw"),
+    type: "exact",
+    name: "Raw",
+    path: "stages.raw",
+    // cb: (c) => crawl(c, "stages.raw"),
   },
   {
-    name: "Stages.Parse.Root",
-    cb: (c) => crawl(c, "stages.parse.root"),
+    type: "exact",
+    name: "Root",
+    path: "stages.parse.root",
+    // cb: (c) => crawl(c, "stages.parse.root"),
   },
   {
+    type: "exact",
+    name: "Lexeme",
+    path: "stages.parse.root.children.children.0.children.0.children.0.children.",
+    // cb: (c) =>
+    //   crawl(
+    //     c,
+    //     "stages.parse.root.children.children.0.children.0.children.0.children.",
+    //   ),
+  },
+  {
+    type: "custom",
     name: "Custom",
-    cb: (c, path) => crawl(c, path),
+    path: "",
+    // cb: (c, path) => crawl(c, path),
   },
 ];
 
 export const Output: FC<OutputProps> = ({ parsed }) => {
-  const [marginTop, setMarginTop] = useState(0);
-  const ribbonRef = useRef<HTMLDivElement>(null);
   const [tabIndex, setTabIndex] = useState(0);
-  const [customPath, setCustomPath] = useState("");
-
-  useLayoutEffect(() => {
-    if (!ribbonRef.current) {
-      return;
-    }
-    setMarginTop(ribbonRef.current.clientHeight);
-  }, [tabIndex]);
+  const [customPath, setCustomPath] = useState(tabs[tabIndex].path);
 
   if (parsed === null) {
     return <p>Nothing yet</p>;
@@ -84,7 +107,7 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
     return <h1>{parsed.error}</h1>;
   }
 
-  const yamlStr = yaml.stringify(tabs[tabIndex].cb(parsed, customPath));
+  const yamlStr = yaml.stringify(crawl(parsed, customPath));
   const highlighted = Prism.highlight(
     yamlStr,
     Prism.languages.yaml,
@@ -92,8 +115,16 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
   );
 
   return (
-    <div className={[style.component].join(" ")}>
-      <div ref={ribbonRef} className={style.ribbon}>
+    <div
+      className={[style.component].join(" ")}
+      style={
+        {
+          "--tab-height": "3em",
+          "--input-height": tabs[tabIndex].type === "custom" ? "3.5em" : "0em",
+        } as CSSProperties
+      }
+    >
+      <div className={style.ribbon}>
         <div className={style.tabButtonContainer}>
           {tabs
             .map((t) => t.name)
@@ -106,18 +137,20 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
                 ]
                   .filter((v) => !!v)
                   .join(" ")}
-                onClick={() => setTabIndex(i)}
+                onClick={() => {
+                  setTabIndex(i);
+                  if (tabs[i].type !== "custom") {
+                    setCustomPath(tabs[i].path);
+                  }
+                }}
               >
                 {name}
               </button>
             ))}
         </div>
 
-        {tabs[tabIndex].name === "Custom" ? (
-          <div
-            style={{ display: tabIndex === tabs.length - 1 ? "block" : "none" }}
-            className={style.customInputContainer}
-          >
+        {tabs[tabIndex].type === "custom" ? (
+          <div className={style.customInputContainer}>
             <input
               className={style.customInput}
               value={customPath}
@@ -128,11 +161,13 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
         ) : null}
       </div>
 
+      {/* {ribbonRef.current?.clientHeight ? ( */}
       <div className={[style.output, style.scrollable].join(" ")}>
         <pre
-          style={{
-            marginTop,
-          }}
+          className={style.outputPre}
+          // style={{
+          //   marginTop: tabIndex === tabs.length - 1 ? 100 : "3.5em",
+          // }}
         >
           <code
             className="language-yaml"
@@ -140,6 +175,7 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
           />
         </pre>
       </div>
+      {/* ) : null} */}
     </div>
   );
 };

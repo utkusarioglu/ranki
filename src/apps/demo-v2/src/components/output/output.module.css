@@ -18,21 +18,33 @@
 }
 
 .output {
-  font-size: 0.8em;
+  --ribbon-height: calc(var(--tab-height) + var(--input-height));
+  padding-top: var(--ribbon-height);
+  /* height: calc(100svh - var(--ribbon-height)); */
 
   /* overflow-anchor: auto; */
   /* overflow-y: auto;
   overflow-x: hidden; */
-  padding: 1em;
+  /* margin-top: 1em; */
+  /* padding-top: calc(var(--tab-height) + var(--input-height) + "1em"); */
   /* height: auto; */
   /* height: 100svh; */
   /* padding: 1em; */
 }
 
-.tabButton {
+.outputPre {
+  font-size: 0.8em;
+  /* --padding-top: calc(var(--tab-height) + var(--input-height)); */
+
+  /* padding: calc(var(--padding-top) + 1em) 1em 1em 1em; */
   padding: 1em;
+}
+
+.tabButton {
+  padding-inline: 1em;
   background-color: var(--bg-2);
   border: 0px solid transparent;
+  height: 100%;
   color: #ddd;
   flex-grow: 1;
 }
@@ -44,6 +56,7 @@
 
 .tabButtonContainer {
   display: flex;
+  height: var(--tab-height);
 }
 
 .ribbon {
@@ -60,7 +73,10 @@
 .customInputContainer {
   /* width: 100%; */
   background-color: var(--bg-1);
-  padding: 1em 0.6em;
+  padding-inline: 1em;
+  height: var(--input-height);
+  display: flex;
+  align-items: center;
 }
 
 .customInput {

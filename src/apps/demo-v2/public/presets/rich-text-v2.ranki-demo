@@ -1,0 +1,44 @@
+--- Single word with bold start, Exclamation Finish
+*yellow!
+
+--- Single word sentence with @* start and !. finish
+@*yellow!.
+
+--- Single word sentence with @* start and !.** finish
+@*yellow!.**
+
+--- Single propercase word sentence with @* start and !.*+*+ finish
+@*Yellow!.*+*+
+
+--- Emphasized propercase word sentence with exclamation
+++Yellow!+
+
+--- Idiomatic propercase word sentence with exclamation
+/Yellow!+/
+
+--- Aligned propercase idiomatic exclamation sentence with with + end
+$$ /Yellow!+/
+
+--- Aligned loose propercase idiomatic exclamation sentence with + end
+$$    /Yellow!+/
+
+--- Aligned smalltext h3 idiomatic propercase single word sentence  with + end
+$$  _   ###  /Yellow!+/
+
+--- Dashed word
+a-b
+
+--- Bold dashed word
+*a-b*
+
+--- Idiomatic bold dashed word
+/*a-b*/
+
+--- Variety of casings for the word "Cat"
+cat CAT CaT Cat cAT cAt ccAAt
+
+--- A "normal" paragraph
+This is /intended/ to be a normal paragraph that uses regular features of the *english* language. 
+__ It features some odd uses for decorations to exemplify features of the ranki parser!!!
+
+This is a completely separate +emphasized paragraph+!?!

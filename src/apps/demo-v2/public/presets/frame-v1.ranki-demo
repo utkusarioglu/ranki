@@ -1,0 +1,32 @@
+--- Basic Inline frame
+:::code; yes :::
+
+--- Inline frame with a single param
+:::mode; cat; yes :::
+
+--- Inline frame with multiple params
+:::mode; cat, dog; yes :::
+
+--- Basic block frame 
+:::code
+meow
+:::
+
+--- Block frame with 2 params
+:::code; cat, dog
+meow
+:::
+
+--- Block frame with multiple params and multiline payload
+:::code; cat, dog
+cat
+dog 
+bunny
+:::
+
+--- Block frame with multiple params and decorated payload
+:::code; cat, dog
+*cat*
+/dog/
+bunny!
+:::

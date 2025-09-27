@@ -7,41 +7,108 @@ import { Output } from "../output/Output";
 
 interface RankiV2DemoProps {
   defaultConfigStr: string;
+  presets: PresetGroup[];
 }
 
-const RankiV2Demo: FC<RankiV2DemoProps> = ({ defaultConfigStr }) => {
-  // const [rankiConfigStr, setRankiConfigStr] = useState(defaultConfigStr);
-  // const [availablePlugins, setAvailablePlugins] = useState(allPlugins);
-  // const [selectedPlugins, setSelectedPlugins] = useState<string[]>([]);
-  // const [rankiStr, setRankiStr] = useState("");
+export interface PresetGroup {
+  groupName: string;
+  presets: Preset[];
+}
+
+interface Preset {
+  name: string;
+  value: string;
+}
+
+const RankiV2Demo: FC<RankiV2DemoProps> = ({ defaultConfigStr, presets }) => {
   const [parsed, setRankiParsed] = useState<object | null>(null);
-  // const [rankiRender, setRankiRender] = useState("");
 
   return (
     <div className={[appStyle.layout].join(" ")}>
       <Inputs
         setRankiParsed={setRankiParsed}
         defaultConfigStr={defaultConfigStr}
+        presetGroups={presets}
       />
       <Output parsed={parsed} />
     </div>
   );
 };
 
+const presetFiles = [
+  {
+    basename: "base-v2",
+    groupName: "Base v2",
+  },
+  {
+    basename: "rich-number-v2",
+    groupName: "Rich Number v2",
+  },
+  {
+    basename: "rich-structure-v2",
+    groupName: "Rich Structure v2",
+  },
+  {
+    basename: "rich-text-v2",
+    groupName: "Rich Text v2",
+  },
+  {
+    basename: "frame-v2",
+    groupName: "Frame v2",
+  },
+  {
+    basename: "frame-v1",
+    groupName: "Frame v1",
+  },
+];
+
 function App() {
   const [config, setConfig] = useState<string | null>(null);
+  const [presetGroups, setPresetGroups] = useState<PresetGroup[] | null>(null);
 
   useEffect(() => {
-    fetch("/config.yaml")
-      .then((r) => r.text())
-      .then((t) => setConfig(t));
+    Promise.all([
+      Promise.all(
+        presetFiles.map(({ basename, groupName }) =>
+          fetch(`/presets/${basename}.ranki-demo`)
+            .then((r) => r.text())
+            .then((t) => {
+              const presets = t
+                .split("---")
+                .slice(1)
+                .reduce((a, c) => {
+                  const lines = c.split("\n");
+                  const name = lines.shift()?.trim();
+                  if (name === undefined) {
+                    console.log(c);
+                    throw new Error("no title");
+                  }
+                  const value = lines.join("\n").trim();
+                  a.push({
+                    name,
+                    value,
+                  });
+                  return a;
+                }, [] as Preset[]);
+              return {
+                groupName,
+                presets,
+              };
+            }),
+        ),
+      ),
+      fetch("/config.yaml").then((r) => r.text()),
+    ]).then(([p, t]) => {
+      setPresetGroups(p);
+      setConfig(t);
+    });
   }, []);
 
-  if (config === null) {
+  if (config === null || presetGroups === null) {
     return <div>loading</div>;
   }
 
-  return <RankiV2Demo defaultConfigStr={config} />;
+  return <RankiV2Demo defaultConfigStr={config} presets={presetGroups} />;
 }
 
 export default App;

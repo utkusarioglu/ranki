@@ -1,0 +1,91 @@
+--- Basic single word block
+%:code
+hello
+:%
+
+--- Basic double word block
+%:code
+hello world!
+:%
+
+--- Basic paused block
+%:code
+hello world!,, paused ,, hello 2!
+:%
+
+--- Block containing text with inline frame
+%:code
+  this %:var; is :% war!
+:%
+
+--- Text and inline frame
+hello %:name; world :%
+
+--- Text and loose inline frame 
+hello %: name  ; world :%
+
+--- Text and inline frame with an assigned param with scalar value
+hello %: name , cat = dog ; world :%
+
+--- Text and inline frame with an assigned param with an array value
+hello %: name , cat = dog bird ; world :%
+
+--- Text and inline frame with an assigned param with array and number values
+hello %: name , cat = dog bird, yes = 12 ; world :%
+
+--- Text and inline frame with directive and assigned values
+hello % one = two: name , cat = dog bird, yes = 12 ; world :% a
+
+--- Text and loose inline frame with directive and assigned values
+hello % one = 11: name , cat = dog bird, yes = 12 ; world :% earth
+
+--- Lone inline frame with a boolean param
+%:name, abc; world :%
+
+--- Lone inline frame with a negated param
+%:name, abc, !cde; world :%
+
+--- Lone inline frame with double quoted param
+%:name, abc = "bb" ; world :%
+
+--- Lone inline frame with single quoted param
+%:name, abc = 'cc' ; world :%
+
+--- Lone inline frame with boolean true param
+%:name, abc = true ; world :%
+
+--- lone inline frame with boolean false param
+%:name, abc = false ; world :%
+
+--- lone inline frame with capital string param
+%:name, abc = AAA ; world :%
+
+--- Block frame among paragraphs
+hello
+
+%:name
+world 
+:%
+
+yes
+
+--- Inline directive frame among decorated text
+/hello/ +*% !as:code; world! :%*+
+
+--- Inline directive frame with params among decorated text
+/hello/ +*% !as:code, !cat ; world! :%*+
+
+--- Paused block frame with block directives and block params
+%
+yes, 
+!no
+:name, 
+abc = AAA,
+meow
+
+world 
+,, 
+agree 
+,,
+adsf
+:%

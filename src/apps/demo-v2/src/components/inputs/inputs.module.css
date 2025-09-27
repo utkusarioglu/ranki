@@ -84,3 +84,11 @@
   margin-bottom: 1em;
   margin-top: 1.5em;
 }
+
+.titleContainer {
+  margin-top: 0.5em;
+}
+
+.titleDim {
+  color: var(--fg-4);
+}
