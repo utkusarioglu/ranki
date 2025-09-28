@@ -6,14 +6,14 @@ export type {
   RankiPluginParserGrammar,
 } from "./plugin.mjs";
 
-export type { RankiConfig } from "./config.mjs";
-
 export type {
-  ParseNode,
-  // NodeArgs,
-  ParseNodeLeaf,
-  ParseNodeParent,
-} from "./parse.mjs";
+  RankiLanguageConfig,
+  RankiLanguageUserConfig,
+  RankiLanguageContextConfig,
+  RankiLanguageDefaultConfig,
+} from "./config.mjs";
+
+export type { ParseNode, ParseNodeLeaf, ParseNodeParent } from "./parse.mjs";
 
 export type {
   ParseContext,

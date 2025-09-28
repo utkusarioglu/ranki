@@ -1,4 +1,7 @@
-import type { RankiConfig } from "@ranki/package-api";
+import type {
+  RankiLanguageConfig,
+  RankiLanguageUserConfig,
+} from "@ranki/package-api";
 import yaml from "yaml";
 import * as fs from "node:fs";
 import path from "node:path";
@@ -27,9 +30,9 @@ const parserPlugins = new ParserPlugins();
   rankiFrameV1ParserPlugin,
 ].forEach((p) => parserPlugins.addPlugin(p));
 
-export const config: RankiConfig = {
+export const userConfig: RankiLanguageUserConfig = {
+  tags: [],
   plugins: {
-    standards: ["RankiConstantsV2", "RankiBaseV2"],
     requested: [
       "RankiParamsV2",
       "RankiFrameV2",
@@ -40,10 +43,12 @@ export const config: RankiConfig = {
     ],
   },
   tokens: {
-    sentence: {
-      period: ".",
-      question: "?",
-      exclamation: "!",
+    richTextV2: {
+      sentence: {
+        period: ".",
+        question: "?",
+        exclamation: "!",
+      },
     },
     paramsV2: {
       separator: {
@@ -74,6 +79,11 @@ export const config: RankiConfig = {
   },
 };
 
+const languageConfig: RankiLanguageConfig = JSON.parse(
+  JSON.stringify(userConfig),
+);
+languageConfig.merged.plugins.standards = ["RankiConstantsV2", "RankiBaseV2"];
+
 const THROW_TESTS = "./assets/throw";
 const throwTests = fs.readdirSync(THROW_TESTS);
 
@@ -93,7 +103,7 @@ function produceTests(count: number) {
 
 function main(count: number) {
   const parsed = [];
-  const context = createContext(config, parserPlugins);
+  const context = createContext(languageConfig, parserPlugins);
 
   produceTests(count).forEach((t) => {
     try {

@@ -97,13 +97,12 @@ function endToken(context: ParseContext, end: ohm.Node) {
             endArgs["sentence.end"] = {
               indices: [],
               level: 0,
-              types: Object.keys(context.config.tokens.sentence).reduce(
-                (a, c) => {
-                  a[c as T] = false;
-                  return a;
-                },
-                {} as Record<T, boolean>,
-              ),
+              types: Object.keys(
+                context.config.merged.tokens.richTextV2.sentence,
+              ).reduce((a, c) => {
+                a[c as T] = false;
+                return a;
+              }, {} as Record<T, boolean>),
             };
           }
         }
@@ -112,7 +111,9 @@ function endToken(context: ParseContext, end: ohm.Node) {
           type T = keyof NodeArgRichTextV2SentenceEnd["sentence.end"]["types"];
           endArgs["sentence.end"].indices.push(ei);
           endArgs["sentence.end"].level++;
-          Object.entries(context.config.tokens.sentence).forEach(([k, v]) => {
+          Object.entries(
+            context.config.merged.tokens.richTextV2.sentence,
+          ).forEach(([k, v]) => {
             endArgs["sentence.end"]!.types[k as T] ||= value === v;
           });
         }

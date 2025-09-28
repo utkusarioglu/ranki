@@ -1,8 +1,11 @@
-import type { RankiConfig } from "./config.mjs";
+import type {
+  RankiLanguageConfig,
+  RankiLanguageContextConfig,
+} from "./config.mjs";
 import type { ParseNode } from "./parse.mjs";
 
 export interface ParseContext {
-  config: RankiConfig;
+  config: RankiLanguageConfig;
   methods: {
     parser: ParserGenerator;
     parserPlugins: any;
@@ -18,9 +21,8 @@ type ParserGenerator = (p: ParserGeneratorParams) => ParserFunction;
 type ParserFunction = (context: ParseContext, raw: string) => ParseResult;
 
 export type CreateContextFunction = (
-  config: RankiConfig,
-  // parser: ParserFunction,
-  parserPlugins: any,
+  config: RankiLanguageContextConfig,
+  parserPlugins: any, // !FIX any,
 ) => ParseContext;
 
 export type VersionReport = Record<string, string>;

@@ -136,14 +136,18 @@ export class ParserPlugins {
     return activePluginsArr;
   }
 
-  checkPluginSet(set: Set<string>): boolean {
+  checkMissing(set: Set<string>): string[] {
     const importedPluginNameSet = this.namesSet();
+    const missing = [];
     for (const name of set) {
       if (!importedPluginNameSet.has(name)) {
-        throw new Error(`REQUESTED PLUGIN NOT IMPORTED: ${name}`);
+        missing.push(name);
+        // return false
+        // throw new Error(`REQUESTED PLUGIN NOT IMPORTED: ${name}`);
       }
     }
-    return true;
+    return missing;
+    // return true;
   }
 
   sortPlugins(activePluginsArr: RankiPluginParser[]) {

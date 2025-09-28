@@ -240,12 +240,12 @@ const creatorName: ohm.ActionDict<string> = {
   },
   sepRight(sep) {
     const context: ParseContext = this.args.context;
-    const separators = context.config.tokens.paramsV2.separator;
+    const separators = context.config.merged.tokens.paramsV2.separator;
     return sep.sourceString === separators.right ? this.ctorName : "none";
   },
   sepLeft(sep) {
     const context: ParseContext = this.args.context;
-    const separators = context.config.tokens.paramsV2.separator;
+    const separators = context.config.merged.tokens.paramsV2.separator;
     return sep.sourceString === separators.left ? this.ctorName : "none";
   },
 };

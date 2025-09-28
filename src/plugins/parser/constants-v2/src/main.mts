@@ -22,6 +22,19 @@ export const rankiConstantsV2ParserPlugin: RankiPluginParser = {
   version,
   name: "RankiConstantsV2",
   dependencies: [],
-  grammar: () => grammar,
+  grammar: (c) => {
+    console.log(c);
+    const ohm = {};
+
+    return grammar;
+  },
   actions: () => ({}),
 };
+
+// !TODO shall I use aliases such as `Alternates` and `Single` here?
+function alternates(items: string[]) {
+  if (!Array.isArray(items)) {
+    throw new Error(`This needs to be an array, ${items}`);
+  }
+  return items.join(" | ");
+}

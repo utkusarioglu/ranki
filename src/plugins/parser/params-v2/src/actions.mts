@@ -32,7 +32,7 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
 const paramV2: ohm.ActionDict<ParamV2> = {
   param_operator(paramKey, wi1, operatorToken, wi2, paramValues) {
     const context: ParseContext = this.args.context;
-    const operators = context.config.tokens.paramsV2.operators;
+    const operators = context.config.merged.tokens.paramsV2.operators;
     const f = Object.entries(operators).find(
       ([k, v]) => v === operatorToken.sourceString,
     );

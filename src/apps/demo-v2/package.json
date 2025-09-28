@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ranki/package-manager": "workspace:^",
+    "@ranki/package-language": "workspace:^",
     "@ranki/plugin-parser-base-v2": "workspace:^",
     "@ranki/plugin-parser-constants-v2": "workspace:^",
     "@ranki/plugin-parser-frame-v1": "workspace:^",

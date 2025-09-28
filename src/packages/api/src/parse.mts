@@ -30,11 +30,6 @@ interface NodeLeafSourceString {
   value: string;
 }
 
-// export interface NodeLeafSourceDigits {
-//   type: "digits";
-//   digits: number;
-// }
-
 type NodeLeafSource = NodeLeafSourceNumber | NodeLeafSourceString;
 
 export interface NodeLeafSourceNumber {

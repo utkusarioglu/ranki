@@ -1,23 +1,15 @@
-version: v2
-metadata:
-  deck: "{{Deck}}"
-  subdeck: "{{Subdeck}}"
-  tags: "{{Tags}}"
-  type: "{{Type}}"
-  flag: "{{CardFlag}}"
-  card: "{{Card}}"
+tags: []
 plugins:
   standards:
     - RankiConstantsV2
     - RankiBaseV2
-  requested: 
-    - RankiParamsV2
-    - RankiFrameV2
+  requested: []
 tokens:
-  sentence:
-    period: .
-    question: "?"
-    exclamation: "!"
+  richTextV2:
+    sentence:
+      period: .
+      question: "?"
+      exclamation: "!"
   paramsV2:
     separator:
       left: ","

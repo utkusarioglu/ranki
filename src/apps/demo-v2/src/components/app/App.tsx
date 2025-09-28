@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import appStyle from "./app.module.css";
 import { Inputs } from "../inputs/Inputs";
 
+import yaml from "yaml";
 import { Output } from "../output/Output";
+import type { RankiLanguageDefaultConfig } from "@ranki/package-api";
 
 interface RankiV2DemoProps {
-  defaultConfigStr: string;
-  presets: PresetGroup[];
+  languageDefaultConfig: RankiLanguageDefaultConfig;
+  initialLanguageUserConfigStr: string;
+  presetGroups: PresetGroup[];
 }
 
 export interface PresetGroup {
@@ -20,15 +23,20 @@ interface Preset {
   value: string;
 }
 
-const RankiV2Demo: FC<RankiV2DemoProps> = ({ defaultConfigStr, presets }) => {
+const RankiV2Demo: FC<RankiV2DemoProps> = ({
+  languageDefaultConfig,
+  presetGroups,
+  initialLanguageUserConfigStr,
+}) => {
   const [parsed, setRankiParsed] = useState<object | null>(null);
 
   return (
     <div className={[appStyle.layout].join(" ")}>
       <Inputs
         setRankiParsed={setRankiParsed}
-        defaultConfigStr={defaultConfigStr}
-        presetGroups={presets}
+        languageDefaultConfig={languageDefaultConfig}
+        presetGroups={presetGroups}
+        initialLanguageUserConfigStr={initialLanguageUserConfigStr}
       />
       <Output parsed={parsed} />
     </div>
@@ -63,7 +71,9 @@ const presetFiles = [
 ];
 
 function App() {
-  const [config, setConfig] = useState<string | null>(null);
+  const [languageDefaultConfigStr, setLanguageDefaultConfigStr] = useState<
+    string | null
+  >(null);
   const [presetGroups, setPresetGroups] = useState<PresetGroup[] | null>(null);
 
   useEffect(() => {
@@ -97,18 +107,25 @@ function App() {
             }),
         ),
       ),
-      fetch("/config.yaml").then((r) => r.text()),
+      fetch("/default-config.yaml").then((r) => r.text()),
+      // .then((t) => yaml.parse(t)),
     ]).then(([p, t]) => {
       setPresetGroups(p);
-      setConfig(t);
+      setLanguageDefaultConfigStr(t);
     });
   }, []);
 
-  if (config === null || presetGroups === null) {
+  if (languageDefaultConfigStr === null || presetGroups === null) {
     return <div>loading</div>;
   }
 
-  return <RankiV2Demo defaultConfigStr={config} presets={presetGroups} />;
+  return (
+    <RankiV2Demo
+      languageDefaultConfig={yaml.parse(languageDefaultConfigStr)}
+      initialLanguageUserConfigStr={languageDefaultConfigStr}
+      presetGroups={presetGroups}
+    />
+  );
 }
 
 export default App;

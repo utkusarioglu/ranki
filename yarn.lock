@@ -1557,7 +1557,7 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:^9.36.0"
     "@ranki/package-api": "workspace:^"
-    "@ranki/package-manager": "workspace:^"
+    "@ranki/package-language": "workspace:^"
     "@ranki/plugin-parser-base-v2": "workspace:^"
     "@ranki/plugin-parser-constants-v2": "workspace:^"
     "@ranki/plugin-parser-frame-v1": "workspace:^"
@@ -1588,7 +1588,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ranki/app-v2@workspace:src/apps/v2"
   dependencies:
-    "@ranki/package-manager": "workspace:^"
+    "@ranki/package-language": "workspace:^"
     "@ranki/plugin-parser-base-v2": "workspace:^"
     "@ranki/plugin-parser-constants-v2": "workspace:^"
     "@ranki/plugin-parser-frame-v1": "workspace:^"
@@ -1623,9 +1623,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ranki/package-manager@workspace:^, @ranki/package-manager@workspace:src/packages/manager":
+"@ranki/package-language@workspace:^, @ranki/package-language@workspace:src/packages/language":
   version: 0.0.0-use.local
-  resolution: "@ranki/package-manager@workspace:src/packages/manager"
+  resolution: "@ranki/package-language@workspace:src/packages/language"
   dependencies:
     "@ranki/package-api": "workspace:^"
     "@ranki/plugin-parser-base-v2": "workspace:^"

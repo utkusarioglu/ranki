@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { RankiConfig } from "./config.mjs";
+import type { RankiLanguageConfig } from "./config.mjs";
 
 export type RankiPlugin = RankiPluginParser | RankiPluginRenderer;
 
@@ -10,12 +10,9 @@ interface RankiPluginCommon {
 
 export interface RankiPluginParser extends RankiPluginCommon {
   type: "parser";
-  // name: string;
   dependencies: string[];
-  grammar: (c: RankiConfig) => string;
+  grammar: (c: RankiLanguageConfig) => string;
   actions: () => Record<string, ohm.ActionDict<unknown>>;
-  // parser: (specs) => getLevel(specs, "1-config"),
-  // parser: (specs: PluginParserSpecs) => PluginParserGrammar;
 }
 
 export interface RankiPluginRenderer extends RankiPluginCommon {

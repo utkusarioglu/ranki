@@ -1,74 +1,126 @@
 import type { FC } from "react";
 import { useEffect, useState } from "react";
 import style from "./inputs.module.css";
-import { createContext } from "@ranki/package-manager";
+import { createContext } from "@ranki/package-language";
 import yaml from "yaml";
-import { ParserPlugins } from "@ranki/package-manager";
+import { ParserPlugins } from "@ranki/package-language";
 import { pluginObjects } from "../../plugins.mjs";
-import type { RankiConfig } from "@ranki/package-api";
+import type {
+  // RankiLanguageContextConfig,
+  RankiLanguageDefaultConfig,
+  // RankiLanguageConfig,
+  RankiLanguageUserConfig,
+} from "@ranki/package-api";
 import type { PresetGroup } from "../app/App";
 
+// !FIX this needs to be in a separate package that deals with anki specific code
+interface RankiAppUserConfig extends RankiLanguageUserConfig {
+  version: "v2";
+  anki: {
+    deck: string;
+    subdeck: string;
+    tags: string;
+    type: string;
+    flag: string;
+    card: string;
+  };
+}
+
+// function createLanguageUserConfig(
+//   a: RankiAppUserConfig,
+// ): RankiLanguageUserConfig {
+//   const user: RankiLanguageUserConfig = JSON.parse(JSON.stringify(a));
+//   // @ts-expect-error
+//   delete user.anki;
+//   // @ts-expect-error
+//   delete user.version;
+
+//   user.tags = a.anki.tags.split(" ");
+
+//   return user;
+// }
+
+// function createLanguageContextConfig(
+//   d: RankiLanguageDefaultConfig,
+//   c: RankiLanguageUserConfig,
+// ): RankiLanguageContextConfig {
+//   return {
+//     default: d,
+//     user: {
+//       tags: c.anki.tags.split(" "),
+//       plugins: c.plugins,
+//       tokens: c.tokens,
+//     },
+//   };
+// }
+
 interface InputsProps {
-  defaultConfigStr: string;
+  // defaultContextConfigStr: string;
+  initialLanguageUserConfigStr: string;
+  languageDefaultConfig: RankiLanguageDefaultConfig;
   setRankiParsed: (a: any) => void;
   presetGroups: PresetGroup[];
 }
 const allPlugins = pluginObjects.map((p) => p.name);
-
-// const presets = [
-//   {
-//     name: "Hello World!",
-//     value: "Hello World!",
-//   },
-//   {
-//     name: "Ignore",
-//     value: `% ignore\ncatdog`,
-//   },
-// ];
 
 const parentProps = ["kind", "type", "args"];
 
 const leafProps = ["kind", "type", "args", "children"];
 
 export const Inputs: FC<InputsProps> = ({
-  defaultConfigStr,
+  languageDefaultConfig,
   setRankiParsed,
   presetGroups,
+  initialLanguageUserConfigStr,
 }) => {
-  console.log(presetGroups);
-  const [rankiConfigStr, setRankiConfigStr] = useState(defaultConfigStr);
-  const [availablePlugins, setAvailablePlugins] = useState(allPlugins);
-  const [selectedPlugins, setSelectedPlugins] = useState<string[]>([]);
+  const [languageUserConfigStr, setLanguageUserConfigStr] = useState<string>(
+    initialLanguageUserConfigStr,
+    // "{}",
+    // defaultContextConfigStr,
+  );
+  const [installedPlugins, setInstalledPlugins] = useState(allPlugins);
+  const [requestedPlugins, setRequestedPlugins] = useState<string[]>([]);
   const [rankiStr, setRankiStr] = useState(presetGroups[0].presets[0].value);
 
   useEffect(() => {
     try {
       const selectedPluginObjects = pluginObjects.filter((p) =>
-        availablePlugins.includes(p.name),
+        installedPlugins.includes(p.name),
       );
       const parserPlugins = new ParserPlugins();
       selectedPluginObjects.forEach((p) => parserPlugins.addPlugin(p));
-      const rankiConfig: RankiConfig = yaml.parse(rankiConfigStr);
-      rankiConfig.plugins.requested = selectedPlugins;
-      const context = createContext(rankiConfig, parserPlugins);
+      const languageUserConfig: RankiLanguageUserConfig = yaml.parse(
+        languageUserConfigStr,
+      );
+      languageUserConfig.plugins.requested = requestedPlugins;
+      // const languageDefaultConfig: RankiLanguageDefaultConfig = yaml.parse(
+      //   defaultContextConfigStr,
+      // );
+      const context = createContext(
+        {
+          default: languageDefaultConfig,
+          user: languageUserConfig,
+        },
+        parserPlugins,
+      );
       const parsed = context.methods.parser({ frameType: "null" })(
         context,
         rankiStr,
       );
-      setRankiConfigStr(yaml.stringify(rankiConfig));
+      setLanguageUserConfigStr(yaml.stringify(languageUserConfig));
       setRankiParsed(parsed);
     } catch (e) {
       setRankiParsed({
         error: (e as Error).toString(),
       });
     }
-  }, [rankiConfigStr, rankiStr, availablePlugins, selectedPlugins]);
+  }, [languageUserConfigStr, rankiStr, installedPlugins, requestedPlugins]);
 
   return (
     <div className={[style.inputs, style.roboto, style.scrollable].join(" ")}>
       <div className={style.titleContainer}>
         <h1>
-          Ranki <span className={style.titleDim}>v2</span>
+          RankiLang<span className={style.titleDim}>v2</span>
         </h1>
       </div>
       <fieldset className={style.inputFieldSet}>
@@ -105,14 +157,14 @@ export const Inputs: FC<InputsProps> = ({
         <details>
           <summary className={style.summary}>
             <label className={style.label} htmlFor="ranki">
-              Config
+              User Config
             </label>
           </summary>
           <textarea
             className={[style.inputField, style.scrollable].join(" ")}
             id="ranki"
-            onChange={(e) => setRankiConfigStr(e.target.value)}
-            value={rankiConfigStr}
+            onChange={(e) => setLanguageUserConfigStr(e.target.value)}
+            value={languageUserConfigStr}
           />
         </details>
       </fieldset>
@@ -121,7 +173,7 @@ export const Inputs: FC<InputsProps> = ({
         <details>
           <summary className={style.summary}>
             <label className={style.label} htmlFor="plugins">
-              Available Plugins
+              Installed Plugins
             </label>
           </summary>
           {allPlugins.map((pn) => (
@@ -129,15 +181,15 @@ export const Inputs: FC<InputsProps> = ({
               <input
                 id={["available", pn].join("-")}
                 type="checkbox"
-                checked={availablePlugins.includes(pn)}
+                checked={installedPlugins.includes(pn)}
                 onChange={(e) => {
                   if (e.target.checked) {
-                    setAvailablePlugins((l) => [
+                    setInstalledPlugins((l) => [
                       ...l.filter((n) => n !== pn),
                       pn,
                     ]);
                   } else {
-                    setAvailablePlugins((l) => l.filter((n) => n !== pn));
+                    setInstalledPlugins((l) => l.filter((n) => n !== pn));
                   }
                 }}
               />
@@ -156,23 +208,23 @@ export const Inputs: FC<InputsProps> = ({
         <details>
           <summary className={style.summary}>
             <label className={style.label} htmlFor="plugins">
-              Selected Plugins
+              Requested Plugins
             </label>
           </summary>
           {allPlugins.map((pn) => (
             <div key={pn}>
               <input
                 type="checkbox"
-                checked={selectedPlugins.includes(pn)}
+                checked={requestedPlugins.includes(pn)}
                 id={["selected", pn].join("-")}
                 onChange={(e) => {
                   if (e.target.checked) {
-                    setSelectedPlugins((l) => [
+                    setRequestedPlugins((l) => [
                       ...l.filter((n) => n !== pn),
                       pn,
                     ]);
                   } else {
-                    setSelectedPlugins((l) => l.filter((n) => n !== pn));
+                    setRequestedPlugins((l) => l.filter((n) => n !== pn));
                   }
                 }}
               />
