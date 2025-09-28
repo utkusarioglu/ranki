@@ -46,6 +46,8 @@ RankiRichTextV2 <: RankiBaseV2 {
 
   inWordToken = wordToken | sentence | lineToken | esc ~lineToken
 
+  sentence = period | exclamation | question
+
   punctuation (Punctuation mark) = 
     ~(alnum | space | nl | digit | inWordToken) any
 

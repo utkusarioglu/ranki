@@ -64,6 +64,7 @@ export function parse(context: ParseContext, raw: string) {
         importChain,
         dependencyGraph,
       },
+      config: context.config,
     },
     stages: {
       raw,

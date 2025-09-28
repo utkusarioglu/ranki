@@ -37,14 +37,11 @@ function crawl(c: any, path?: string) {
   }
 }
 
-type TabCrawler = (c: any, path?: string) => any;
-
 type TabDefinition =
   | {
       type: "exact";
       name: string;
       path: string;
-      // cb: TabCrawler;
     }
   | {
       type: "custom";
@@ -57,41 +54,31 @@ const tabs: TabDefinition[] = [
     type: "exact",
     name: "All",
     path: "",
-    // cb: (c) => crawl(c, ""),
   },
   {
     type: "exact",
     name: "Report",
     path: "report",
-    // cb: (c) => crawl(c, "report"),
   },
   {
     type: "exact",
     name: "Raw",
     path: "stages.raw",
-    // cb: (c) => crawl(c, "stages.raw"),
   },
   {
     type: "exact",
     name: "Root",
     path: "stages.parse.root",
-    // cb: (c) => crawl(c, "stages.parse.root"),
   },
   {
     type: "exact",
     name: "Lexeme",
     path: "stages.parse.root.children.children.0.children.0.children.0.children.",
-    // cb: (c) =>
-    //   crawl(
-    //     c,
-    //     "stages.parse.root.children.children.0.children.0.children.0.children.",
-    //   ),
   },
   {
     type: "custom",
     name: "Custom",
     path: "",
-    // cb: (c, path) => crawl(c, path),
   },
 ];
 
@@ -100,11 +87,16 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
   const [customPath, setCustomPath] = useState(tabs[tabIndex].path);
 
   if (parsed === null) {
-    return <p>Nothing yet</p>;
+    return <p>Nothing yet...</p>;
   }
 
   if (parsed.error) {
-    return <h1>{parsed.error}</h1>;
+    return (
+      <div className={style.errorContainer}>
+        <h3 className={style.errorHeading}>Error</h3>
+        <pre>{parsed.error}</pre>
+      </div>
+    );
   }
 
   const yamlStr = yaml.stringify(crawl(parsed, customPath));

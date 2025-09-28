@@ -4,12 +4,40 @@ type Single = string;
 type PluginName = string;
 
 interface TokensConfig {
+  baseV2: {
+    escape: Single;
+  };
+  frameV1: {
+    delimiter: Single;
+  };
+  frameV2: {
+    pause: Single;
+    directive: Single;
+    frame: Single;
+    // sepLeft: Single;
+    // sepRight: Single;
+  };
   richTextV2: {
     sentence: {
       period: Single;
       question: Single;
       exclamation: Single;
     };
+    line: {
+      align: Single;
+      heading: Single;
+      small: Single;
+    };
+    decoration: {
+      emphasis: Single;
+      bold: Single;
+      idiomatic: Single;
+      underline: Single;
+      abbreviation: Single;
+    };
+  };
+  richStructureV2: {
+    delimiter: Single;
   };
   paramsV2: {
     separator: {
@@ -35,7 +63,9 @@ interface TokensConfig {
     binary: Alternates;
     decimal: Single;
     negative: Single;
+    positive: Single;
     group: Single;
+    rational: Single;
   };
 }
 

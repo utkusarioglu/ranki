@@ -43,12 +43,38 @@ export const userConfig: RankiLanguageUserConfig = {
     ],
   },
   tokens: {
+    baseV2: {
+      escape: "\\",
+    },
+    frameV1: {
+      delimiter: ":::",
+    },
+    frameV2: {
+      pause: ",",
+      directive: "%",
+      frame: ":",
+    },
     richTextV2: {
       sentence: {
         period: ".",
         question: "?",
         exclamation: "!",
       },
+      line: {
+        align: "$",
+        heading: "#",
+        small: "_",
+      },
+      decoration: {
+        emphasis: "+",
+        bold: "*",
+        idiomatic: "/",
+        underline: "_",
+        abbreviation: "@",
+      },
+    },
+    richStructureV2: {
+      delimiter: "~",
     },
     paramsV2: {
       separator: {
@@ -75,6 +101,8 @@ export const userConfig: RankiLanguageUserConfig = {
       decimal: ".",
       negative: "-",
       group: "_",
+      positive: "+",
+      rational: "/",
     },
   },
 };

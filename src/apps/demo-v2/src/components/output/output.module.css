@@ -87,3 +87,11 @@
   color: var(--fg-2);
   border: 0px solid transparent;
 }
+
+.errorContainer {
+  padding: 1em;
+}
+
+.errorHeading {
+  padding-bottom: 0.5em;
+}

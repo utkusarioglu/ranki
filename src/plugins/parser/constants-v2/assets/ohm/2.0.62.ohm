@@ -31,7 +31,11 @@ RankiConstantsV2 {
 
   // language tokens
   esc = "\\"
-  sentence = "." | "!" | "?"
+
+  // rich text 
+  period = "."
+  exclamation  = "!"
+  question = "?"
 
   // Rich structure tokens
   divider = "~"

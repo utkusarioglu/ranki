@@ -35,7 +35,7 @@
   border: 0px solid transparent;
   color: var(--fg-2);
   width: 100%;
-  min-height: 100px;
+  min-height: 150px;
   padding: 1em;
   resize: vertical;
 }
