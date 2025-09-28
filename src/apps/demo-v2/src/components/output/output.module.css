@@ -40,25 +40,6 @@
   padding: 1em;
 }
 
-.tabButton {
-  padding-inline: 1em;
-  background-color: var(--bg-2);
-  border: 0px solid transparent;
-  height: 100%;
-  color: #ddd;
-  flex-grow: 1;
-}
-
-.tabButtonActive {
-  background-color: var(--bg-1);
-  color: var(--fg-3);
-}
-
-.tabButtonContainer {
-  display: flex;
-  height: var(--tab-height);
-}
-
 .ribbon {
   position: absolute;
   top: 0;
@@ -94,4 +75,5 @@
 
 .errorHeading {
   padding-bottom: 0.5em;
+  font-family: monospace;
 }

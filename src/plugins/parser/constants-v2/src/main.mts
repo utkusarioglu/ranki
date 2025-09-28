@@ -19,7 +19,7 @@ import grammar from "../assets/ohm/2.0.62.ohm?raw";
 
 export const rankiConstantsV2ParserPlugin: RankiPluginParser = {
   type: "parser",
-  version: "2.0.64",
+  version: "2.0.63",
   name: "RankiConstantsV2",
   dependencies: [],
   grammar: (c) => {
@@ -104,16 +104,19 @@ function stringifyConfig(config: RankiLanguageConfig["merged"]) {
 
   const stringifyValues = (values: string[] | string | number | boolean) => {
     if (Array.isArray(values)) {
-      return values.map((v) => stringifyValue(v)).join(" | ");
+      return values
+        .map((v) => stringifyValue(v))
+        .map((v) => `"${v}"`)
+        .join(" | ");
     }
-    return stringifyValue(values);
+    return `"${stringifyValue(values)}"`;
   };
 
   const configStr = [
     "RankiConfig {",
     ...Object.entries(tokens).map(([k, v]) => {
       const values = stringifyValues(v);
-      return `  ${k} = "${values}"`;
+      return `  ${k} = ${values}`;
     }),
     "}",
   ].join("\n");

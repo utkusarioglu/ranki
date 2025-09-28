@@ -27,12 +27,12 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/apps/v2"\
     },\
     {\
-      "name": "@ranki/package-api",\
-      "reference": "workspace:src/packages/api"\
+      "name": "@ranki/package-anki-config",\
+      "reference": "workspace:src/packages/anki-config"\
     },\
     {\
-      "name": "@ranki/package-html",\
-      "reference": "workspace:src/packages/html"\
+      "name": "@ranki/package-api",\
+      "reference": "workspace:src/packages/api"\
     },\
     {\
       "name": "@ranki/package-language",\
@@ -78,8 +78,8 @@ const RAW_RUNTIME_STATE =
     ["@ranki/app-v1", ["workspace:src/apps/v1"]],\
     ["@ranki/app-v2", ["workspace:src/apps/v2"]],\
     ["@ranki/app-v2-demo", ["workspace:src/apps/demo-v2"]],\
+    ["@ranki/package-anki-config", ["workspace:src/packages/anki-config"]],\
     ["@ranki/package-api", ["workspace:src/packages/api"]],\
-    ["@ranki/package-html", ["workspace:src/packages/html"]],\
     ["@ranki/package-language", ["workspace:src/packages/language"]],\
     ["@ranki/plugin-parser-base-v2", ["workspace:src/plugins/parser/base-v2"]],\
     ["@ranki/plugin-parser-constants-v2", ["workspace:src/plugins/parser/constants-v2"]],\
@@ -2357,10 +2357,11 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
-    ["@ranki/package-api", [\
-      ["workspace:src/packages/api", {\
-        "packageLocation": "./src/packages/api/",\
+    ["@ranki/package-anki-config", [\
+      ["workspace:src/packages/anki-config", {\
+        "packageLocation": "./src/packages/anki-config/",\
         "packageDependencies": [\
+          ["@ranki/package-anki-config", "workspace:src/packages/anki-config"],\
           ["@ranki/package-api", "workspace:src/packages/api"],\
           ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
@@ -2368,11 +2369,12 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
-    ["@ranki/package-html", [\
-      ["workspace:src/packages/html", {\
-        "packageLocation": "./src/packages/html/",\
+    ["@ranki/package-api", [\
+      ["workspace:src/packages/api", {\
+        "packageLocation": "./src/packages/api/",\
         "packageDependencies": [\
-          ["@ranki/package-html", "workspace:src/packages/html"],\
+          ["@ranki/package-api", "workspace:src/packages/api"],\
+          ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\

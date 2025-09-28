@@ -1,0 +1,21 @@
+{
+  "name": "@ranki/package-anki-config",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "clean-all": "rm -rf .turbo lib *.tsbuildinfo"
+  },
+  "exports": {
+    ".": {
+      "types": "./types/main.d.mts",
+      "default": "./lib/main.mjs"
+    }
+  },
+  "devDependencies": {
+    "@ranki/package-api": "workspace:^",
+    "ohm-js": "^17.2.1",
+    "typescript": "^5.9.2"
+  }
+}
