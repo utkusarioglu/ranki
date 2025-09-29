@@ -16,7 +16,10 @@ export type {
 export type { ParseNode, ParseNodeLeaf, ParseNodeParent } from "./parse.mjs";
 
 export type {
-  ParseContext,
+  RankiLangParseContext,
   VersionReport,
-  CreateContextFunction,
+  RankiLangInstance,
+  RankiLangParseResult,
+  RankiLangParseSpecs,
+  // CreateContextFunction,
 } from "./context.mjs";

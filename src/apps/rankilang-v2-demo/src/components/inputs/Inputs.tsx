@@ -74,7 +74,9 @@ export const Inputs: FC<InputsProps> = ({
 
   const tabPages = [
     () => (
-      <div className={style.tabPageContainer}>
+      <div
+        className={[style.tabPageContainer, style.tabBlockPadding].join(" ")}
+      >
         <select
           className={style.selectPreset}
           onChange={(e) => setRankiStr(e.target.value)}
@@ -99,7 +101,9 @@ export const Inputs: FC<InputsProps> = ({
       </div>
     ),
     () => (
-      <div className={style.tabPageContainer}>
+      <div
+        className={[style.tabPageContainer, style.tabBlockPadding].join(" ")}
+      >
         <textarea
           className={[style.inputField, style.scrollable].join(" ")}
           id="ranki"
@@ -140,7 +144,7 @@ export const Inputs: FC<InputsProps> = ({
         </fieldset>
 
         <fieldset className={style.inputFieldSet}>
-          <legend className={style.label}>Requested Plugins</legend>
+          <h4 className={style.label}>Requested Plugins</h4>
           {allPlugins.map((pn) => (
             <div key={pn}>
               <input
@@ -196,156 +200,6 @@ export const Inputs: FC<InputsProps> = ({
       </TabButtonContainer>
 
       {TabPage}
-    </div>
-  );
-};
-
-export const Inputs2: FC<InputsProps> = ({
-  languageDefaultConfig,
-  setRankiParsed,
-  presetGroups,
-  initialLanguageUserConfigStr,
-}) => {
-  const {
-    setRankiStr,
-    setInstalledPlugins,
-    setRequestedPlugins,
-    installedPlugins,
-    rankiStr,
-    languageUserConfigStr,
-    setLanguageUserConfigStr,
-    requestedPlugins,
-    allPlugins,
-  } = useUserInput(
-    pluginObjects,
-    setRankiParsed,
-    languageDefaultConfig,
-    initialLanguageUserConfigStr,
-    presetGroups,
-  );
-
-  return (
-    <div className={[style.inputs, style.roboto, style.scrollable].join(" ")}>
-      <div className={style.titleContainer}>
-        <h1>
-          RankiLang<span className={style.titleDim}>v2</span>
-        </h1>
-      </div>
-      {/* <fieldset className={style.inputFieldSet}>
-        <details open={true}>
-          <summary className={style.summary}>
-            <label className={style.label} htmlFor="ranki">
-              Document
-            </label>
-          </summary>
-          <select
-            className={style.selectPreset}
-            onChange={(e) => setRankiStr(e.target.value)}
-          >
-            {presetGroups.map(({ groupName, presets }) => (
-              <optgroup key={groupName} label={groupName}>
-                {presets.map(({ name, value }) => (
-                  <option key={name} value={value}>
-                    {name}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-          </select>
-          <textarea
-            className={[style.inputField, style.scrollable].join(" ")}
-            id="ranki"
-            onChange={(e) => setRankiStr(e.target.value)}
-            value={rankiStr}
-          />
-        </details>
-      </fieldset> */}
-
-      {/* <fieldset className={style.inputFieldSet}>
-        <details>
-          <summary className={style.summary}>
-            <label className={style.label} htmlFor="ranki">
-              User Config
-            </label>
-          </summary>
-          <textarea
-            className={[style.inputField, style.scrollable].join(" ")}
-            id="ranki"
-            onChange={(e) => setLanguageUserConfigStr(e.target.value)}
-            value={languageUserConfigStr}
-          />
-        </details>
-      </fieldset> */}
-
-      <fieldset className={style.inputFieldSet}>
-        <details>
-          <summary className={style.summary}>
-            <label className={style.label} htmlFor="plugins">
-              Installed Plugins
-            </label>
-          </summary>
-          {allPlugins.map((pn) => (
-            <div key={pn}>
-              <input
-                id={["available", pn].join("-")}
-                type="checkbox"
-                checked={installedPlugins.includes(pn)}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    setInstalledPlugins((l) => [
-                      ...l.filter((n) => n !== pn),
-                      pn,
-                    ]);
-                  } else {
-                    setInstalledPlugins((l) => l.filter((n) => n !== pn));
-                  }
-                }}
-              />
-              <label
-                className={style.inlineLabel}
-                htmlFor={["available", pn].join("-")}
-              >
-                {pn.replace("Ranki", "")}
-              </label>
-            </div>
-          ))}
-        </details>
-      </fieldset>
-
-      <fieldset className={style.inputFieldSet}>
-        <details>
-          <summary className={style.summary}>
-            <label className={style.label} htmlFor="plugins">
-              Requested Plugins
-            </label>
-          </summary>
-          {allPlugins.map((pn) => (
-            <div key={pn}>
-              <input
-                type="checkbox"
-                checked={requestedPlugins.includes(pn)}
-                id={["selected", pn].join("-")}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    setRequestedPlugins((l) => [
-                      ...l.filter((n) => n !== pn),
-                      pn,
-                    ]);
-                  } else {
-                    setRequestedPlugins((l) => l.filter((n) => n !== pn));
-                  }
-                }}
-              />
-              <label
-                className={style.inlineLabel}
-                htmlFor={["selected", pn].join("-")}
-              >
-                {pn.replace("Ranki", "")}
-              </label>
-            </div>
-          ))}
-        </details>
-      </fieldset>
     </div>
   );
 };

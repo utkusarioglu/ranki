@@ -13,7 +13,7 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
       kind: "parent",
       type: this.ctorName,
       args: {},
-      children: [v2.node(this.args.context)],
+      children: [v2.node(this.args.lang)],
     };
   },
   v2Payload_P(wi1, nl, pauseRoot) {
@@ -23,7 +23,7 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
       args: {
         "wi.1.length": wi1.sourceString.length,
       },
-      children: [pauseRoot.node(this.args.context)],
+      children: [pauseRoot.node(this.args.lang)],
     };
   },
 
@@ -32,7 +32,7 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
       kind: "parent",
       type: this.ctorName,
       args: {},
-      children: [pauseRoot.node(this.args.context)],
+      children: [pauseRoot.node(this.args.lang)],
     };
   },
 
@@ -44,7 +44,7 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
         "whitespace.1.length": whitespace1.sourceString.length,
         "whitespace.2.length": whitespace2.sourceString.length,
       },
-      children: [pauseList.node(this.args.context)],
+      children: [pauseList.node(this.args.lang)],
     };
   },
 
@@ -54,7 +54,7 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
       type: this.ctorName,
       args: {},
       children: zipNodes(
-        this.args.context,
+        this.args.lang,
         v2PayloadSection1,
         pausedContainer,
         v2PayloadSection2,
@@ -68,7 +68,7 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
       type: this.ctorName,
       args: {},
       children: zipNodes(
-        this.args.context,
+        this.args.lang,
         v2PayloadSectionItem1,
         whitespace,
         v2PayloadSectionItem2,
@@ -123,9 +123,9 @@ const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       kind: "parent",
       type: this.ctorName,
       args: {
-        ...v2FrameConfig.v2FrameConfig(this.args.context),
+        ...v2FrameConfig.v2FrameConfig(this.args.lang),
       },
-      children: [v2Payload.node(this.args.context)],
+      children: [v2Payload.node(this.args.lang)],
     };
   },
 
@@ -134,17 +134,17 @@ const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       kind: "parent",
       type: this.ctorName,
       args: {
-        ...directiveConfig.v2FrameConfig(this.args.context),
-        ...v2FrameConfig.v2FrameConfig(this.args.context),
+        ...directiveConfig.v2FrameConfig(this.args.lang),
+        ...v2FrameConfig.v2FrameConfig(this.args.lang),
       },
-      children: [v2Payload.node(this.args.context)],
+      children: [v2Payload.node(this.args.lang)],
     };
   },
 };
 
 const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   v2DirectiveConfig_D(wi1, nl, wi2, v2ParamListBlock, whitespace) {
-    const params = v2ParamListBlock.paramsV2(this.args.context);
+    const params = v2ParamListBlock.paramsV2(this.args.lang);
     return {
       "directive.v2": {
         type: this.ctorName,
@@ -161,7 +161,7 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   },
 
   v2DirectiveConfig_d(wi1, v2ParamListInline, wi2) {
-    const params = v2ParamListInline.paramsV2(this.args.context);
+    const params = v2ParamListInline.paramsV2(this.args.lang);
     return {
       "directive.v2": {
         type: this.ctorName,
@@ -186,7 +186,7 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
         args: {
           "wi.1.length": wi1.sourceString.length,
           "wi.2.length": wi2.sourceString.length,
-          "separator.right.type": sep.creatorName(this.args.context),
+          "separator.right.type": sep.creatorName(this.args.lang),
         },
       },
     };
@@ -201,7 +201,7 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     sepRight,
   ) {
     const config: ArgsAndParamsV2FrameV2 =
-      v2ParamListInlineContainer.argsAndParamsV2(this.args.context);
+      v2ParamListInlineContainer.argsAndParamsV2(this.args.lang);
     return {
       "frame.v2": {
         type: this.ctorName,
@@ -213,7 +213,7 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
           "wi.3.length": wi3.sourceString.length,
 
           // !FIX this expects iter if `creatorName` is called
-          // "separator.right.type": sepRight.creatorName(this.args.context),
+          // "separator.right.type": sepRight.creatorName(this.args.lang),
           "separator.right.type": sepRight.sourceString,
 
           "frame.v2.config": config.args,
@@ -232,7 +232,7 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     sepRight,
   ) {
     const config: ArgsAndParamsV2FrameV2 =
-      v2ParamListBlockContainer.argsAndParamsV2(this.args.context);
+      v2ParamListBlockContainer.argsAndParamsV2(this.args.lang);
     return {
       "frame.v2": {
         type: this.ctorName,
@@ -243,7 +243,7 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
           "wi.2.length": wi2.sourceString.length,
           "wi.3.length": wi3.sourceString.length,
           // !FIX sepRight doesn't work
-          // "separator.right.type": sepRight.creatorName(this.args.context),
+          // "separator.right.type": sepRight.creatorName(this.args.lang),
           "separator.right.type": sepRight.sourceString,
           "frame.v2.config": config.args,
         },

@@ -1,5 +1,8 @@
 import * as ohm from "ohm-js";
-import type { ParseContext, RankiPluginParser } from "@ranki/package-api";
+import type {
+  RankiLangParseContext,
+  RankiPluginParser,
+} from "@ranki/package-api";
 import type { GrammarSpecs } from "./types/parser.mjs";
 import type { ParserPluginGrammar } from "./types/parser.mjs";
 
@@ -17,7 +20,7 @@ function adjustParent(specs: GrammarSpecs, raw: string): ParserPluginGrammar {
 }
 
 export function buildGrammar(
-  context: ParseContext,
+  context: RankiLangParseContext,
   importChain: string[],
   finder: (s: string) => RankiPluginParser,
 ) {
@@ -31,7 +34,7 @@ export function buildGrammar(
         parentGrammar: si === 0 ? "" : importChain[si - 1],
         dependencies: grammarParents,
       },
-      parserPlugin.grammar(context.config),
+      parserPlugin.grammar(context.getConfig()),
     );
     matchers[name] = matcher;
     grammarParents = {
@@ -83,7 +86,7 @@ export function compileOhmActionDicts(
 
   Object.entries(operations).forEach(([operationName, actionDict]) => {
     semantics = semantics.addOperation(
-      `${operationName}(context)`,
+      `${operationName}(lang)`,
       actionDict as ohm.ActionDict<unknown>,
     );
   });

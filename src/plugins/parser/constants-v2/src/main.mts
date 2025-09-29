@@ -121,6 +121,5 @@ function stringifyConfig(config: RankiLanguageConfig["merged"]) {
     }),
     "}",
   ].join("\n");
-  console.log(configStr);
   return configStr;
 }

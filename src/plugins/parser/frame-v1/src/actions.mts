@@ -1,5 +1,9 @@
 import type * as ohm from "ohm-js";
-import type { ParseContext, ParseNode } from "@ranki/package-api";
+import type {
+  RankiLangParseContext,
+  ParseNode,
+  RankiLangInstance,
+} from "@ranki/package-api";
 import type { ParseNodeFrameV1 } from "./types.mjs";
 import type { ArgsAndParamsV1 } from "./types.mjs";
 
@@ -13,7 +17,7 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
         "wi.1.length": wi1.sourceString.length,
         // !TODO end
       },
-      children: [v1Block.node(this.args.context)],
+      children: [v1Block.node(this.args.lang)],
     };
   },
 };
@@ -32,6 +36,16 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadInline,
     frameV1_2,
   ) {
+    const lang: RankiLangInstance = this.args.lang;
+    const child = lang.create(null, null).parse(v1PayloadInline.sourceString, {
+      frame: {
+        version: "v1",
+        type: v1Type.sourceString,
+        // params: argsAndParamsV1["params"],
+        params: [],
+      },
+    });
+    console.log(child);
     return {
       kind: "parent",
       type: this.ctorName,
@@ -49,16 +63,17 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         },
       },
       children: [
-        {
-          kind: "leaf",
-          print: true,
-          type: "TEMP PAYLOAD V1 NODE",
-          args: {},
-          source: {
-            type: "mixed",
-            value: v1PayloadInline.sourceString,
-          },
-        },
+        child.stages.parse.root,
+        // {
+        //   kind: "leaf",
+        //   print: true,
+        //   type: "TEMP PAYLOAD V1 NODE",
+        //   args: {},
+        //   source: {
+        //     type: "mixed",
+        //     value: v1PayloadInline.sourceString,
+        //   },
+        // },
       ],
     };
   },
@@ -76,9 +91,16 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadInline,
     frameV1_2,
   ) {
-    const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(
-      this.args.context,
-    );
+    const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(this.args.lang);
+    const lang: RankiLangInstance = this.args.lang;
+    const child = lang.create(null, null).parse(v1PayloadInline.sourceString, {
+      frame: {
+        version: "v1",
+        type: v1Type.sourceString,
+        // params: argsAndParamsV1["params"],
+        params: argsAndParamsV1["params"],
+      },
+    });
     return {
       kind: "parent",
       type: this.ctorName,
@@ -98,16 +120,17 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         },
       },
       children: [
-        {
-          kind: "leaf",
-          print: true,
-          type: "TEMP PAYLOAD V1 NODE",
-          args: {},
-          source: {
-            type: "mixed",
-            value: v1PayloadInline.sourceString,
-          },
-        },
+        child.stages.parse.root,
+        // {
+        //   kind: "leaf",
+        //   print: true,
+        //   type: "TEMP PAYLOAD V1 NODE",
+        //   args: {},
+        //   source: {
+        //     type: "mixed",
+        //     value: v1PayloadInline.sourceString,
+        //   },
+        // },
       ],
     };
   },
@@ -124,8 +147,18 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1BlockEnd,
   ) {
     // const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(
-    //   this.args.context,
+    //   this.args.lang,
     // );
+
+    const lang: RankiLangInstance = this.args.lang;
+    const child = lang.create(null, null).parse(v1PayloadBlock.sourceString, {
+      frame: {
+        version: "v1",
+        type: v1Type.sourceString,
+        // params: argsAndParamsV1["params"],
+        params: [],
+      },
+    });
     return {
       kind: "parent",
       type: this.ctorName,
@@ -145,16 +178,17 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         },
       },
       children: [
-        {
-          kind: "leaf",
-          print: true,
-          type: "TEMP PAYLOAD V1 NODE",
-          args: {},
-          source: {
-            type: "mixed",
-            value: v1PayloadBlock.sourceString,
-          },
-        },
+        child.stages.parse.root,
+        // {
+        //   kind: "leaf",
+        //   print: true,
+        //   type: "TEMP PAYLOAD V1 NODE",
+        //   args: {},
+        //   source: {
+        //     type: "mixed",
+        //     value: v1PayloadBlock.sourceString,
+        //   },
+        // },
       ],
     };
   },
@@ -174,10 +208,18 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadBlock,
     v1BlockEnd,
   ) {
-    const context: ParseContext = this.args.context;
-    const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(context);
-    const parser = context.methods.parser(this.args.context);
-    const child = parser(context, v1PayloadBlock.sourceString);
+    const lang: RankiLangParseContext = this.args.lang;
+    const argsAndParamsV1: ArgsAndParamsV1 =
+      v1ParamListInline.argsAndParamsV1(lang);
+    const child = lang.create(null, null).parse(v1PayloadBlock.sourceString, {
+      frame: {
+        version: "v1",
+        type: v1Type.sourceString,
+        params: argsAndParamsV1["params"],
+      },
+    });
+    // const parser = lang.methods.parser(this.args.lang);
+    // const child = parser(lang, v1PayloadBlock.sourceString);
     return {
       kind: "parent",
       type: this.ctorName,
@@ -208,7 +250,7 @@ const paramV1: ohm.ActionDict<string> = {
 
 const paramsV1: ohm.ActionDict<string[]> = {
   _iter(...children) {
-    return children.map((v) => v.paramV1(this.args.context));
+    return children.map((v) => v.paramV1(this.args.lang));
   },
 };
 
@@ -217,8 +259,8 @@ const argsAndParamsV1: ohm.ActionDict<ArgsAndParamsV1> = {
     return {
       args: {},
       params: [
-        v1ParamValue1.paramV1(this.args.context),
-        ...v1ParamValue2.paramsV1(this.args.context),
+        v1ParamValue1.paramV1(this.args.lang),
+        ...v1ParamValue2.paramsV1(this.args.lang),
       ],
     };
   },

@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { ParseContext, ParseNodeLeaf } from "@ranki/package-api";
+import type { RankiLangParseContext, ParseNodeLeaf } from "@ranki/package-api";
 import type {
   NodeArgRichTextV2SentenceEnd,
   NodeArgsRichTextV2,
@@ -8,13 +8,13 @@ import type {
 
 import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
 
-function wordEndArgs(context: ParseContext, wordEnd: ohm.Node) {
+function wordEndArgs(context: RankiLangParseContext, wordEnd: ohm.Node) {
   return {
     "wordEnd.type": wordEnd.creatorName(context),
   };
 }
 
-function startToken(context: ParseContext, start: ohm.Node) {
+function startToken(context: RankiLangParseContext, start: ohm.Node) {
   const startNodes: ParseNodeRichTextV2[] = start.iterNode(context);
   const startArgs: NodeArgsRichTextV2 = {};
 
@@ -76,8 +76,8 @@ function startToken(context: ParseContext, start: ohm.Node) {
   return { startNodes, startArgs };
 }
 
-function endToken(context: ParseContext, end: ohm.Node) {
-  const endNodes: ParseNodeLeaf[] = end.iterNode(context);
+function endToken(lang: RankiLangParseContext, end: ohm.Node) {
+  const endNodes: ParseNodeLeaf[] = end.iterNode(lang);
 
   const endArgs: NodeArgsRichTextV2 = {};
 
@@ -101,7 +101,7 @@ function endToken(context: ParseContext, end: ohm.Node) {
               indices: [],
               level: 0,
               types: Object.keys(
-                context.config.merged.tokens.richTextV2.sentence,
+                lang.getConfig().merged.tokens.richTextV2.sentence,
               ).reduce((a, c) => {
                 a[c as T] = false;
                 return a;
@@ -115,7 +115,7 @@ function endToken(context: ParseContext, end: ohm.Node) {
           endArgs["sentence.end"].indices.push(ei);
           endArgs["sentence.end"].level++;
           Object.entries(
-            context.config.merged.tokens.richTextV2.sentence,
+            lang.getConfig().merged.tokens.richTextV2.sentence,
           ).forEach(([k, v]) => {
             endArgs["sentence.end"]!.types[k as T] ||= value === v;
           });
@@ -176,13 +176,13 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       kind: "parent",
       type: this.ctorName,
       args: {},
-      children: zipNodes(this.args.context, decorated1, clearance, decorated2),
+      children: zipNodes(this.args.lang, decorated1, clearance, decorated2),
     };
   },
 
   decorated_decorated(start, word, end, wordEnd) {
-    const { startNodes, startArgs } = startToken(this.args.context, start);
-    const { endNodes, endArgs } = endToken(this.args.context, end);
+    const { startNodes, startArgs } = startToken(this.args.lang, start);
+    const { endNodes, endArgs } = endToken(this.args.lang, end);
 
     return {
       kind: "parent",
@@ -190,9 +190,9 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       args: {
         ...startArgs,
         ...endArgs,
-        ...wordEndArgs(this.args.context, wordEnd),
+        ...wordEndArgs(this.args.lang, wordEnd),
       },
-      children: [...startNodes, word.node(this.args.context), ...endNodes],
+      children: [...startNodes, word.node(this.args.lang), ...endNodes],
     };
   },
 
@@ -347,9 +347,9 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       args: {
         "indentation.1.length": indentation1.sourceString.length,
         "wi.1.length": wi1.sourceString.length,
-        ...lineModifiers.lineModifiers(this.args.context),
+        ...lineModifiers.lineModifiers(this.args.lang),
       },
-      children: lexemes.node(this.args.context),
+      children: lexemes.node(this.args.lang),
     };
   },
 
@@ -367,8 +367,8 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   decorated_richTextBase(start, word, end, wordEnd) {
-    const { startNodes, startArgs } = startToken(this.args.context, start);
-    const { endNodes, endArgs } = endToken(this.args.context, end);
+    const { startNodes, startArgs } = startToken(this.args.lang, start);
+    const { endNodes, endArgs } = endToken(this.args.lang, end);
 
     return {
       kind: "parent",
@@ -376,7 +376,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       args: {
         ...startArgs,
         ...endArgs,
-        ...wordEndArgs(this.args.context, wordEnd),
+        ...wordEndArgs(this.args.lang, wordEnd),
       },
       children: [
         ...startNodes,
@@ -399,9 +399,9 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
 const lineModifiers: ohm.ActionDict<NodeArgsRichTextV2> = {
   lineModifiers(alignment, smalltext, heading) {
     return {
-      ...alignment.lineModifiers(this.args.context),
-      ...smalltext.lineModifiers(this.args.context),
-      ...heading.lineModifiers(this.args.context),
+      ...alignment.lineModifiers(this.args.lang),
+      ...smalltext.lineModifiers(this.args.lang),
+      ...heading.lineModifiers(this.args.lang),
     };
   },
 

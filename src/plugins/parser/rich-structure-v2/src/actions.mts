@@ -6,7 +6,7 @@ import type {
 } from "./types.mjs";
 
 function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
-  const l = a.node(this.args.context);
+  const l = a.node(this.args.lang);
   l.type = this.ctorName;
   // l["args"]["richStructure.v1"]["name"] = this.ctorName;
   return l;
@@ -15,7 +15,7 @@ function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
 const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
   hLevel_defined(structureType1, separator, structureType2) {
     const sep: ParseNodeRichStructureV2["args"]["richStructure.v2"] =
-      separator.argsAndParamsV2(this.args.context);
+      separator.argsAndParamsV2(this.args.lang);
     return {
       kind: "parent",
       type: this.ctorName,
@@ -29,8 +29,8 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
         },
       },
       children: [
-        structureType1.node(this.args.context),
-        ...structureType2.iterNode(this.args.context),
+        structureType1.node(this.args.lang),
+        ...structureType2.iterNode(this.args.lang),
       ],
     };
   },
@@ -53,7 +53,7 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
 
 const argsAndParamsV2List: ohm.ActionDict<ArgsAndParamsV2[]> = {
   _iter(...children) {
-    return children.map((c) => c.argsAndParamsV2(this.args.context));
+    return children.map((c) => c.argsAndParamsV2(this.args.lang));
   },
 };
 
@@ -86,7 +86,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     structureSepEnd,
   ) {
     const config: ArgsAndParamsV2RichStructureV2 =
-      v2ParamListInlineContainer.argsAndParamsV2(this.args.context);
+      v2ParamListInlineContainer.argsAndParamsV2(this.args.lang);
     return {
       args: {
         // !TODO you need ctorName here

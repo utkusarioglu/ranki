@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { createContext } from "@ranki/package-rankilang";
+// import { createContext } from "@ranki/package-rankilang";
 import yaml from "yaml";
-import { ParserPlugins } from "@ranki/package-rankilang";
+import { ParserPlugins, RankiLang } from "@ranki/package-rankilang";
 import type { PresetGroup } from "../services/preset/preset.types";
 import type {
   RankiLanguageDefaultConfig,
@@ -39,17 +39,14 @@ export function useUserInput(
         languageUserConfigStr,
       );
       languageUserConfig.plugins.requested = requestedPlugins;
-      const context = createContext(
+      const rankiLang = new RankiLang(
         {
           default: languageDefaultConfig,
           user: languageUserConfig,
         },
         parserPlugins,
       );
-      const parsed = context.methods.parser({ frameType: "null" })(
-        context,
-        rankiStr,
-      );
+      const parsed = rankiLang.parse(rankiStr);
       setRankiParsed(parsed);
     } catch (e) {
       setRankiParsed({

@@ -5,8 +5,8 @@ import type {
 import yaml from "yaml";
 import * as fs from "node:fs";
 import path from "node:path";
-import { parse } from "./parse.mjs";
-import { createContext } from "./context.mjs";
+// import { parse } from "./parse.mjs";
+// import { createContext } from "./context.mjs";
 import { ParserPlugins } from "./plugins.mjs";
 
 import { rankiConstantsV2ParserPlugin } from "@ranki/plugin-parser-constants-v2";
@@ -17,6 +17,7 @@ import { rankiRichTextV2ParserPlugin } from "@ranki/plugin-parser-rich-text-v2";
 import { rankiRichNumberV2ParserPlugin } from "@ranki/plugin-parser-rich-number-v2";
 import { rankiRichStructureV2ParserPlugin } from "@ranki/plugin-parser-rich-structure-v2";
 import { rankiFrameV1ParserPlugin } from "@ranki/plugin-parser-frame-v1";
+import { RankiLang } from "./context.mjs";
 
 const parserPlugins = new ParserPlugins();
 [
@@ -78,8 +79,8 @@ export const userConfig: RankiLanguageUserConfig = {
     },
     paramsV2: {
       separator: {
-        left: ",",
-        right: ";",
+        param: ",",
+        frame: ";",
       },
       key: {
         negation: "!",
@@ -91,18 +92,28 @@ export const userConfig: RankiLanguageUserConfig = {
       },
     },
     richNumberV2: {
-      complexUnits: ["i", "j", "k"],
-      infinity: ["inf", "INF"],
-      pi: ["pi", "PI"],
-      e: ["e", "E"],
-      hexadecimal: ["x", "X"],
-      octal: ["o", "O"],
-      binary: ["b", "B"],
-      decimal: ".",
-      negative: "-",
-      group: "_",
-      positive: "+",
-      rational: "/",
+      symbol: {
+        complex: ["i", "j", "k"],
+        infinity: ["inf", "INF"],
+        pi: ["pi", "PI"],
+        e: ["e", "E"],
+      },
+      base: {
+        hexadecimal: ["x", "X"],
+        octal: ["o", "O"],
+        binary: ["b", "B"],
+      },
+      operator: {
+        negative: "-",
+        positive: "+",
+        rational: "/",
+        plusMinus: ["+-"],
+        minusPlus: ["-+"],
+      },
+      number: {
+        group: "_",
+        decimal: ".",
+      },
     },
   },
 };
@@ -131,11 +142,13 @@ function produceTests(count: number) {
 
 function main(count: number) {
   const parsed = [];
-  const context = createContext(languageConfig, parserPlugins);
+  const lang = new RankiLang(languageConfig, parserPlugins);
+  // const context = createContext(languageConfig, parserPlugins);
 
   produceTests(count).forEach((t) => {
     try {
-      parsed.push(context.methods.parser({ frameType: "null" })(context, t));
+      parsed.push(lang.parse(t));
+      // parsed.push(context.methods.parser({ frameType: "null" })(context, t));
     } catch (e) {
       console.error(e);
       process.exit(1);

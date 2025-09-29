@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { ParseContext, ParseNode } from "@ranki/package-api";
+import type { RankiLangParseContext, ParseNode } from "@ranki/package-api";
 import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
 
 const node: ohm.ActionDict<ParseNode> = {
@@ -86,7 +86,7 @@ const node: ohm.ActionDict<ParseNode> = {
       //     value: whitespace2.sourceString.length,
       //   },
       // ],
-      children: structure.node(this.args.context),
+      children: structure.node(this.args.lang),
     };
   },
 
@@ -97,7 +97,7 @@ const node: ohm.ActionDict<ParseNode> = {
       args: {
         // block sep lengths
       },
-      children: joinNodes(this.args.context, block, block2),
+      children: joinNodes(this.args.lang, block, block2),
     };
   },
 
@@ -108,7 +108,7 @@ const node: ohm.ActionDict<ParseNode> = {
       args: {
         // nl length
       },
-      children: joinNodes(this.args.context, line1, line2),
+      children: joinNodes(this.args.lang, line1, line2),
     };
   },
 
@@ -120,7 +120,7 @@ const node: ohm.ActionDict<ParseNode> = {
         "indentation.1.length": indentation1.sourceString.length,
         "wi.1.length": wi1.sourceString.length,
       },
-      children: [lexemes.node(this.args.context)],
+      children: [lexemes.node(this.args.lang)],
     };
   },
 
@@ -129,8 +129,8 @@ const node: ohm.ActionDict<ParseNode> = {
       kind: "parent",
       type: this.ctorName,
       args: {},
-      children: zipNodes(this.args.context, lexeme1, clearance, lexeme2),
-      // children: zipNodes(this.args.context, lexeme1, clearance, lexeme2),
+      children: zipNodes(this.args.lang, lexeme1, clearance, lexeme2),
+      // children: zipNodes(this.args.lang, lexeme1, clearance, lexeme2),
     };
   },
 
@@ -139,10 +139,10 @@ const node: ohm.ActionDict<ParseNode> = {
       kind: "parent",
       type: this.ctorName,
       args: {
-        "wordEnd.type": wordEnd.creatorName(this.args.context),
+        "wordEnd.type": wordEnd.creatorName(this.args.lang),
       },
 
-      children: [word.node(this.args.context)],
+      children: [word.node(this.args.lang)],
     };
   },
 
@@ -152,7 +152,7 @@ const node: ohm.ActionDict<ParseNode> = {
       type: this.ctorName,
       // args: {},
       args: {
-        "wordEnd.type": wordEnd.creatorName(this.args.context),
+        "wordEnd.type": wordEnd.creatorName(this.args.lang),
       },
 
       children: [
@@ -239,20 +239,20 @@ const creatorName: ohm.ActionDict<string> = {
     return this.ctorName;
   },
   tParamsV2SeparatorFrame(sep) {
-    const context: ParseContext = this.args.context;
-    const separators = context.config.merged.tokens.paramsV2.separator;
+    const context: RankiLangParseContext = this.args.lang;
+    const separators = context.getConfig().merged.tokens.paramsV2.separator;
     return sep.sourceString === separators.frame ? this.ctorName : "none";
   },
   tParamsV2SeparatorParam(sep) {
-    const context: ParseContext = this.args.context;
-    const separators = context.config.merged.tokens.paramsV2.separator;
+    const lang: RankiLangParseContext = this.args.lang;
+    const separators = lang.getConfig().merged.tokens.paramsV2.separator;
     return sep.sourceString === separators.param ? this.ctorName : "none";
   },
 };
 
 const iterNode: ohm.ActionDict<ParseNode[]> = {
   _iter(...children) {
-    return children.map((c) => c.node(this.args.context));
+    return children.map((c) => c.node(this.args.lang));
   },
 };
 

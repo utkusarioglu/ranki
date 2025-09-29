@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { ParseContext } from "@ranki/package-api";
+import type { RankiLangParseContext } from "@ranki/package-api";
 import type {
   ArgsAndParamsV2,
   ParamV2,
@@ -9,21 +9,21 @@ import type {
 
 const paramsV2: ohm.ActionDict<ParamV2[]> = {
   _iter(...children) {
-    return children.map((c) => c.paramV2(this.args.context));
+    return children.map((c) => c.paramV2(this.args.lang));
   },
 
   v2ParamListInline(param1, sep, param2) {
-    // const p2 = param2.paramsV2(this.args.context);
-    const rest = param2.paramsV2(this.args.context);
-    const joined = [param1.paramV2(this.args.context), ...rest];
+    // const p2 = param2.paramsV2(this.args.lang);
+    const rest = param2.paramsV2(this.args.lang);
+    const joined = [param1.paramV2(this.args.lang), ...rest];
 
     return joined;
   },
 
   v2ParamListBlock(param1, sep, param2) {
-    // const p2 = param2.paramsV2(this.args.context);
-    const rest = param2.paramsV2(this.args.context);
-    const joined = [param1.paramV2(this.args.context), ...rest];
+    // const p2 = param2.paramsV2(this.args.lang);
+    const rest = param2.paramsV2(this.args.lang);
+    const joined = [param1.paramV2(this.args.lang), ...rest];
 
     return joined;
   },
@@ -31,8 +31,8 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
 
 const paramV2: ohm.ActionDict<ParamV2> = {
   param_operator(paramKey, wi1, operatorToken, wi2, paramValues) {
-    const context: ParseContext = this.args.context;
-    const operators = context.config.merged.tokens.paramsV2.operators;
+    const lang: RankiLangParseContext = this.args.lang;
+    const operators = lang.getConfig().merged.tokens.paramsV2.operators;
     const f = Object.entries(operators).find(
       ([k, v]) => v === operatorToken.sourceString,
     );
@@ -48,7 +48,7 @@ const paramV2: ohm.ActionDict<ParamV2> = {
         "wi.2.length": wi2.sourceString.length,
       },
       operator: f[0] as ParamV2Operator,
-      values: paramValues.paramV2Values(this.args.context),
+      values: paramValues.paramV2Values(this.args.lang),
     };
   },
 
@@ -83,13 +83,13 @@ const paramV2: ohm.ActionDict<ParamV2> = {
 
 const paramV2Values: ohm.ActionDict<ParamV2Value[]> = {
   _iter(...children) {
-    return children.map((c) => c.paramV2Value(this.args.context));
+    return children.map((c) => c.paramV2Value(this.args.lang));
   },
 
   paramValues(i1, clearance, i2) {
     return [
-      i1.paramV2Value(this.args.context),
-      ...i2.paramV2Values(this.args.context),
+      i1.paramV2Value(this.args.lang),
+      ...i2.paramV2Values(this.args.lang),
     ];
   },
 };
@@ -157,16 +157,16 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   ) {
     return {
       args: {
-        "separator.left.1.type": sepLeft1.creatorName(this.args.context),
+        "separator.left.1.type": sepLeft1.creatorName(this.args.lang),
         // !FIX needs to be parsed
-        // "separator.left.2.type": sepLeft2.creatorName(this.args.context),
+        // "separator.left.2.type": sepLeft2.creatorName(this.args.lang),
         "wi.1.length": wi1.sourceString.length,
         "wi.2.length": wi2.sourceString.length,
         "wi.3.length": wi3.sourceString.length,
       },
       params: {
         variant: "block",
-        items: v2ParamListBlock.paramsV2(this.args.context),
+        items: v2ParamListBlock.paramsV2(this.args.lang),
       },
     };
   },
@@ -174,15 +174,15 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   v2ParamListInlineContainer(sepLeft1, wi1, v2ParamListInline, wi2, sepLeft2) {
     return {
       args: {
-        "separator.left.1.type": sepLeft1.creatorName(this.args.context),
+        "separator.left.1.type": sepLeft1.creatorName(this.args.lang),
         // !FIX needs to be parsed
-        // "separator.left.2.type": sepLeft2.creatorName(this.args.context),
+        // "separator.left.2.type": sepLeft2.creatorName(this.args.lang),
         "wi.1.length": wi1.sourceString.length,
         "wi.2.length": wi2.sourceString.length,
       },
       params: {
         variant: "inline",
-        items: v2ParamListInline.paramsV2(this.args.context),
+        items: v2ParamListInline.paramsV2(this.args.lang),
       },
     };
   },

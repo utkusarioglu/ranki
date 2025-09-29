@@ -1,28 +1,25 @@
 import type { ParserPlugins } from "./plugins.mjs";
-import type { ParseContext } from "@ranki/package-api";
+import type {
+  RankiLangParseContext,
+  RankiLangParseResult,
+} from "@ranki/package-api";
 import { buildGrammar, compileOhmActionDicts } from "./grammar.mjs";
 
-// import { rankiConstantsV2ParserPlugin } from "@ranki/plugin-parser-constants-v2";
-// import { rankiBaseV2ParserPlugin } from "@ranki/plugin-parser-base-v2";
-// import { rankiParamsV2ParserPlugin } from "@ranki/plugin-parser-params-v2";
-// import { rankiFrameV2ParserPlugin } from "@ranki/plugin-parser-frame-v2";
-// import { rankiRichTextV2ParserPlugin } from "@ranki/plugin-parser-rich-text-v2";
-// import { rankiRichNumberV2ParserPlugin } from "@ranki/plugin-parser-rich-number-v2";
-// import { rankiRichStructureV2ParserPlugin } from "@ranki/plugin-parser-rich-structure-v2";
-// import { rankiFrameV1ParserPlugin } from "@ranki/plugin-parser-frame-v1";
-
-export function parse(context: ParseContext, raw: string) {
-  const parserPlugins: ParserPlugins = context.methods.parserPlugins;
+export function parse(
+  lang: RankiLangParseContext,
+  raw: string,
+): RankiLangParseResult {
+  const parserPlugins: ParserPlugins = lang.getPlugins();
 
   const missingStandard = parserPlugins.checkMissing(
-    new Set(context.config.merged.plugins.standards),
+    new Set(lang.getConfig().merged.plugins.standards),
   );
   if (missingStandard.length) {
     throw new Error(`MISSING STANDARD PLUGINS: ${missingStandard.join(", ")}`);
   }
 
   const missingRequested = parserPlugins.checkMissing(
-    new Set(context.config.merged.plugins.requested),
+    new Set(lang.getConfig().merged.plugins.requested),
   );
   if (missingRequested.length) {
     throw new Error(
@@ -31,15 +28,15 @@ export function parse(context: ParseContext, raw: string) {
   }
 
   const activePluginNames = new Set([
-    ...context.config.merged.plugins.standards,
-    ...context.config.merged.plugins.requested,
+    ...lang.getConfig().merged.plugins.standards,
+    ...lang.getConfig().merged.plugins.requested,
   ]);
 
   const activePluginsArr = parserPlugins.pickPlugins(activePluginNames);
   const importChain = parserPlugins.sortPlugins(activePluginsArr);
   const dependencyGraph = parserPlugins.dependencyGraph(activePluginsArr);
 
-  const { matcher } = buildGrammar(context, importChain, (n) =>
+  const { matcher } = buildGrammar(lang, importChain, (n) =>
     parserPlugins.find(n),
   );
 
@@ -60,18 +57,18 @@ export function parse(context: ParseContext, raw: string) {
         // context,
       },
       parser: {
-        requested: context.config.merged.plugins.requested,
+        requested: lang.getConfig().merged.plugins.requested,
         importChain,
         dependencyGraph,
       },
-      config: context.config,
+      config: lang.getConfig(),
     },
     stages: {
       raw,
       parse: {
         participants,
         methods,
-        root: semantics(matched).node(context),
+        root: semantics(matched).node(lang),
       },
     },
   };

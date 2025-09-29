@@ -1,5 +1,8 @@
 import type * as ohm from "ohm-js";
-import type { ParseContext } from "@ranki/package-api";
+import type {
+  RankiLangParseContext,
+  RankiLanguageConfig,
+} from "@ranki/package-api";
 import {
   NodeLeafRichNumberV2SourceComplex,
   NodeLeafRichNumberV2SourceInteger,
@@ -9,18 +12,18 @@ import {
 } from "./types.mjs";
 
 type SymbolKeys = Partial<
-  keyof ParseContext["config"]["merged"]["tokens"]["richNumberV2"]["symbol"]
+  keyof RankiLanguageConfig["merged"]["tokens"]["richNumberV2"]["symbol"]
 >[];
 
 type BaseKeys = Partial<
-  keyof ParseContext["config"]["merged"]["tokens"]["richNumberV2"]["base"]
+  keyof RankiLanguageConfig["merged"]["tokens"]["richNumberV2"]["base"]
 >[];
 
 const CONCEPTUAL_NUMBERS = ["e", "infinity", "pi"] as SymbolKeys;
 
 const BASES = ["hexadecimal", "octal", "binary"] as BaseKeys;
 // function hConcept(token: ohm.Node): ParseNode {
-//   const context: ParseContext = this.args.context;
+//   const context: ParseContext = this.args.lang;
 //   let type;
 //   CONCEPTUAL_NUMBERS.forEach((t) => {
 //     if (context.tokens.richNumberV1[t].includes(token.sourceString)) {
@@ -72,7 +75,7 @@ function hComplex<T extends ohm.Node>(
     source: {
       type: "complex",
       raw: this.sourceString,
-      operator: operator.richNumberV2Sign(this.args.context),
+      operator: operator.richNumberV2Sign(this.args.lang),
       real,
       imaginary,
     },
@@ -81,13 +84,13 @@ function hComplex<T extends ohm.Node>(
 
 const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   conceptualSymbol(token) {
-    const context: ParseContext = this.args.context;
+    const lang: RankiLangParseContext = this.args.lang;
     let type;
     CONCEPTUAL_NUMBERS.forEach((t) => {
       if (
-        context.config.merged.tokens.richNumberV2.symbol[t].includes(
-          token.sourceString,
-        )
+        lang
+          .getConfig()
+          .merged.tokens.richNumberV2.symbol[t].includes(token.sourceString)
       ) {
         type = t;
       }
@@ -112,9 +115,9 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_indian(num) {
-    const context: ParseContext = this.args.context;
+    const lang: RankiLangParseContext = this.args.lang;
     const integer = +num.sourceString
-      .split(context.config.merged.tokens.richNumberV2.number.group)
+      .split(lang.getConfig().merged.tokens.richNumberV2.number.group)
       .join("");
     return {
       kind: "leaf",
@@ -132,9 +135,9 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_international(num) {
-    const context: ParseContext = this.args.context;
+    const lang: RankiLangParseContext = this.args.lang;
     const integer = +num.sourceString
-      .split(context.config.merged.tokens.richNumberV2.number.group)
+      .split(lang.getConfig().merged.tokens.richNumberV2.number.group)
       .join("");
     return {
       kind: "leaf",
@@ -152,9 +155,9 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_unstructured(digit, token, num) {
-    const context: ParseContext = this.args.context;
+    const lang: RankiLangParseContext = this.args.lang;
     const integer = +num.sourceString
-      .split(context.config.merged.tokens.richNumberV2.number.group)
+      .split(lang.getConfig().merged.tokens.richNumberV2.number.group)
       .join("");
     return {
       kind: "leaf",
@@ -188,15 +191,15 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   conceptualNumber_factored(factor, conceptualSymbol) {
-    const c = conceptualSymbol.node(this.args.context);
+    const c = conceptualSymbol.node(this.args.lang);
     c["source"]["factor"] = +factor.sourceString;
     c["source"]["raw"] = this.sourceString;
     return c;
   },
 
   conceptual_signed(sign, conceptualNumber) {
-    const c = conceptualNumber.node(this.args.context);
-    c["source"]["sign"] = sign.richNumberV2Sign(this.args.context);
+    const c = conceptualNumber.node(this.args.lang);
+    c["source"]["sign"] = sign.richNumberV2Sign(this.args.lang);
     c["source"]["raw"] = this.sourceString;
     return c;
   },
@@ -218,8 +221,8 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   // },
 
   hBases(zero, symbol, numberSystem_unstructured) {
-    const context: ParseContext = this.args.context;
-    const richNumberV2 = context.config.merged.tokens.richNumberV2;
+    const lang: RankiLangParseContext = this.args.lang;
+    const richNumberV2 = lang.getConfig().merged.tokens.richNumberV2;
     let type;
 
     BASES.forEach((s) => {
@@ -252,26 +255,26 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   hexadecimal(sign, basedNumber) {
-    const h = basedNumber.node(this.args.context);
+    const h = basedNumber.node(this.args.lang);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
     return h;
   },
   binary(sign, basedNumber) {
-    const h = basedNumber.node(this.args.context);
+    const h = basedNumber.node(this.args.lang);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
     return h;
   },
   octal(sign, basedNumber) {
-    const h = basedNumber.node(this.args.context);
+    const h = basedNumber.node(this.args.lang);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
     return h;
   },
 
   integer_signed(sign, numberSystem) {
-    const ns = numberSystem.node(this.args.context);
+    const ns = numberSystem.node(this.args.lang);
     return {
       kind: "leaf",
       type: this.ctorName,
@@ -279,20 +282,20 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       args: {},
       source: {
         ...ns.source,
-        sign: sign.richNumberV2Sign(this.args.context),
+        sign: sign.richNumberV2Sign(this.args.lang),
         raw: this.sourceString,
       },
     };
   },
 
   decimal_full(integer, decimalToken, decimalGroup) {
-    // const context: ParseContext = this.args.context;
-    // const integerNode = integer.node(this.args.context);
+    // const context: ParseContext = this.args.lang;
+    // const integerNode = integer.node(this.args.lang);
     // const decimal = +decimalGroup.sourceString
     //   .split(context.tokens.richNumberV1.group)
     //   .join("");
     // const decimal =
-    // integerNode["sign"] = sign.richNumberV2Sign(this.args.context);
+    // integerNode["sign"] = sign.richNumberV2Sign(this.args.lang);
     return {
       kind: "leaf",
       type: this.ctorName,
@@ -301,8 +304,8 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       source: {
         type: "decimal",
         raw: this.sourceString,
-        integer: integer.node(this.args.context).source,
-        decimal: decimalGroup.node(this.args.context).source,
+        integer: integer.node(this.args.lang).source,
+        decimal: decimalGroup.node(this.args.lang).source,
         // decimal: {
         //   type: "integer",
         //   raw: decimalGroup.sourceString,
@@ -316,9 +319,9 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
 
   // !fix return schema is wrong (I think)
   decimal_point(sign, decimalToken, decimalGroup) {
-    const context: ParseContext = this.args.context;
+    const lang: RankiLangParseContext = this.args.lang;
     const decimal = +decimalGroup.sourceString
-      .split(context.config.merged.tokens.richNumberV2.number.group)
+      .split(lang.getConfig().merged.tokens.richNumberV2.number.group)
       .join("");
     return {
       kind: "leaf",
@@ -333,7 +336,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
           type: "integer",
           raw: sign.sourceString,
           system: "basic",
-          sign: sign.richNumberV2Sign(this.args.context),
+          sign: sign.richNumberV2Sign(this.args.lang),
           integer: 1,
         },
         decimal: {
@@ -358,8 +361,8 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       source: {
         type: "rational",
         raw: this.sourceString,
-        nominator: nominator.node(this.args.context).source,
-        denominator: denominator.node(this.args.context).source,
+        nominator: nominator.node(this.args.lang).source,
+        denominator: denominator.node(this.args.lang).source,
       },
     };
   },
@@ -373,7 +376,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       integer: 1,
     };
     const real: NodeLeafRichNumberV2SourceScalar = realPart.node(
-      this.args.context,
+      this.args.lang,
     ).source;
     return hComplex.call(
       this,
@@ -395,10 +398,10 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     complexToken,
   ) {
     const real: NodeLeafRichNumberV2SourceScalar = realPart.node(
-      this.args.context,
+      this.args.lang,
     ).source;
     const imaginary: NodeLeafRichNumberV2SourceScalar = imaginaryPart.node(
-      this.args.context,
+      this.args.lang,
     ).source;
     return hComplex.call(
       this,
@@ -420,10 +423,10 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     imaginaryPart,
   ) {
     const real: NodeLeafRichNumberV2SourceScalar = realPart.node(
-      this.args.context,
+      this.args.lang,
     ).source;
     const imaginary: NodeLeafRichNumberV2SourceScalar = imaginaryPart.node(
-      this.args.context,
+      this.args.lang,
     ).source;
     return hComplex.call(
       this,
@@ -447,8 +450,8 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       source: {
         type: "eNotation",
         raw: this.sourceString,
-        significand: significand.node(this.args.context).source,
-        exponent: exponent.node(this.args.context).source,
+        significand: significand.node(this.args.lang).source,
+        exponent: exponent.node(this.args.lang).source,
       },
     };
   },

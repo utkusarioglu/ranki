@@ -3,10 +3,14 @@
 }
 
 .tabPageContainer {
-  padding: 1em;
+  padding-inline: 1em;
   display: flex;
   flex-direction: column;
   height: calc(100% - var(--tab-height));
+}
+
+.tabBlockPadding {
+  padding-block: 1em;
 }
 
 .scrollableDark {
@@ -71,8 +75,8 @@
 
 .label {
   font-weight: 900;
-  /* margin-top: 1em; */
-  margin-bottom: 1em;
+  padding-top: 1em;
+  padding-bottom: 1em;
 }
 
 .inlineLabel {
