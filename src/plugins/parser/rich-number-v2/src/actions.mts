@@ -8,13 +8,17 @@ import {
   ParseNodeRichNumberV2,
 } from "./types.mjs";
 
-type Keys = Partial<
-  keyof ParseContext["config"]["merged"]["tokens"]["richNumberV2"]
+type SymbolKeys = Partial<
+  keyof ParseContext["config"]["merged"]["tokens"]["richNumberV2"]["symbol"]
 >[];
 
-const CONCEPTUAL_NUMBERS = ["e", "infinity", "pi"] as Keys;
+type BaseKeys = Partial<
+  keyof ParseContext["config"]["merged"]["tokens"]["richNumberV2"]["base"]
+>[];
 
-const BASES = ["hexadecimal", "octal", "binary"] as Keys;
+const CONCEPTUAL_NUMBERS = ["e", "infinity", "pi"] as SymbolKeys;
+
+const BASES = ["hexadecimal", "octal", "binary"] as BaseKeys;
 // function hConcept(token: ohm.Node): ParseNode {
 //   const context: ParseContext = this.args.context;
 //   let type;
@@ -81,7 +85,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     let type;
     CONCEPTUAL_NUMBERS.forEach((t) => {
       if (
-        context.config.merged.tokens.richNumberV2[t].includes(
+        context.config.merged.tokens.richNumberV2.symbol[t].includes(
           token.sourceString,
         )
       ) {
@@ -110,7 +114,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   numberSystem_indian(num) {
     const context: ParseContext = this.args.context;
     const integer = +num.sourceString
-      .split(context.config.merged.tokens.richNumberV2.group)
+      .split(context.config.merged.tokens.richNumberV2.number.group)
       .join("");
     return {
       kind: "leaf",
@@ -130,7 +134,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   numberSystem_international(num) {
     const context: ParseContext = this.args.context;
     const integer = +num.sourceString
-      .split(context.config.merged.tokens.richNumberV2.group)
+      .split(context.config.merged.tokens.richNumberV2.number.group)
       .join("");
     return {
       kind: "leaf",
@@ -150,7 +154,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   numberSystem_unstructured(digit, token, num) {
     const context: ParseContext = this.args.context;
     const integer = +num.sourceString
-      .split(context.config.merged.tokens.richNumberV2.group)
+      .split(context.config.merged.tokens.richNumberV2.number.group)
       .join("");
     return {
       kind: "leaf",
@@ -219,7 +223,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     let type;
 
     BASES.forEach((s) => {
-      if (richNumberV2[s].includes(symbol.sourceString)) {
+      if (richNumberV2.base[s].includes(symbol.sourceString)) {
         type = s;
       }
     });
@@ -241,7 +245,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
         sign: "plus",
         symbol: symbol.sourceString,
         digits: numberSystem_unstructured.sourceString
-          .split(richNumberV2.group)
+          .split(richNumberV2.number.group)
           .join(""),
       },
     };
@@ -314,7 +318,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   decimal_point(sign, decimalToken, decimalGroup) {
     const context: ParseContext = this.args.context;
     const decimal = +decimalGroup.sourceString
-      .split(context.config.merged.tokens.richNumberV2.group)
+      .split(context.config.merged.tokens.richNumberV2.number.group)
       .join("");
     return {
       kind: "leaf",

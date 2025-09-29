@@ -238,15 +238,15 @@ const creatorName: ohm.ActionDict<string> = {
   clearance(clearance1) {
     return this.ctorName;
   },
-  sepRight(sep) {
+  tParamsV2SeparatorFrame(sep) {
     const context: ParseContext = this.args.context;
     const separators = context.config.merged.tokens.paramsV2.separator;
-    return sep.sourceString === separators.right ? this.ctorName : "none";
+    return sep.sourceString === separators.frame ? this.ctorName : "none";
   },
-  sepLeft(sep) {
+  tParamsV2SeparatorParam(sep) {
     const context: ParseContext = this.args.context;
     const separators = context.config.merged.tokens.paramsV2.separator;
-    return sep.sourceString === separators.left ? this.ctorName : "none";
+    return sep.sourceString === separators.param ? this.ctorName : "none";
   },
 };
 

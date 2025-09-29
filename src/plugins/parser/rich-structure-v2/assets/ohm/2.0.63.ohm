@@ -1,0 +1,49 @@
+// collection, volume, chapter, article, section, block
+RankiRichStructureV2 <: RankiParamsV2 {
+  structure := richStructure
+
+  blockSep := nl wi nl wi --richStructure
+
+  richStructure = hLevel<caseInsensitive<"collection">, collection>
+
+  collection = hLevel<caseInsensitive<"volume">, volume>
+
+  volume = hLevel<caseInsensitive<"chapter">, chapter>
+
+  chapter = hLevel<caseInsensitive<"article">, article>
+
+  article = hLevel<caseInsensitive<"section">, section>
+
+  structureSepStart = blockSep (nl wi)+ tRichStructureV2Delimiter+ 
+  structureSepEnd = tRichStructureV2Delimiter+ nl (wi nl)* wi
+
+  hStructureSepInline<structureName> =
+    | structureSepStart wi 
+        structureName wi 
+      structureSepEnd --s
+    | structureSepStart wi 
+        structureName wi 
+        v2ParamListInlineContainer wi 
+      structureSepEnd --sp
+  
+  hStructureSepBlock<structureName> = 
+    | structureSepStart wi 
+          nl wi 
+        structureName wi 
+          nl wi 
+      structureSepEnd --S
+    | structureSepStart wi 
+          nl wi 
+        structureName wi 
+        v2ParamListBlockContainer wi 
+          nl wi
+      structureSepEnd --SP
+
+  hStructureSep<structureName> = 
+    | hStructureSepBlock<structureName> --block
+    | hStructureSepInline<structureName> --inline
+
+  hLevel<structureName, structureType> =
+    | structureType (hStructureSep<structureName> structureType)* --defined
+    | "" --empty
+}

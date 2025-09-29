@@ -1,0 +1,66 @@
+RankiRichTextV2 <: RankiBaseV2 {
+  lineModifiers := alignment smalltext heading
+
+  smalltext =
+    | &(tRichTextV2LineSmall+ ~clearance) --decoration
+    | tRichTextV2LineSmall+ clearance --small
+    | ~tRichTextV2LineSmall --normal
+
+  heading (Line heading level qualifier) = 
+    | &(tRichTextV2LineHeading+ ~clearance) --decoration
+    | tRichTextV2LineHeading+ clearance --heading
+    | ~tRichTextV2LineHeading --normal
+    
+  alignment (Line alignment qualifier) =
+    | &(tRichTextV2LineAlign+ ~clearance) --decoration
+    | ~tRichTextV2LineAlign --unaligned
+    | tRichTextV2LineAlign+ clearance --aligned
+
+  lexeme := 
+    | textual --textual
+    | ...
+
+  textual = decorated (clearance decorated)*
+
+  decorated := 
+//    | word &wordEnd --bare
+    | hChar<inWordToken>* word hChar<inWordToken>* &wordEnd --decorated
+    | hChar<inWordToken>+ &wordEnd --token
+    | hChar<inWordToken>* hChar<~wordEnd ~inWordToken any>+ hChar<inWordToken>* &wordEnd --richTextBase
+    | ...
+
+  word :=
+    | text --chars
+//    | hChar<digit>+ --digits
+    | hChar<punctuation>+ --punctuation
+    // | hChar<~wordEnd ~inWordToken any>+ --richTextBase
+//    | hChar<(letter | digit | punctuation)>+ --mixed
+    | ...
+
+  text (Text Word) =
+    | hChar<upper>+ hChar<lower>+ (hChar<upper>+ hChar<lower>*)+ --mixedcaseUl
+    | hChar<upper> hChar<lower>+ --propercase
+    | hChar<upper>+ --uppercase
+    | hChar<lower>+ (hChar<upper>+ hChar<lower>*)+ --mixedcaseLu
+    | hChar<lower>+ --lowercase
+
+  inWordToken = wordToken | sentence | lineToken | tBaseV2Escape ~lineToken
+
+  sentence = tRichTextV2SentencePeriod | tRichTextV2SentenceExclamation | tRichTextV2SentenceQuestion
+
+  punctuation (Punctuation mark) = 
+    ~(alnum | space | nl | digit | inWordToken) any
+
+  // they come at the start of lines to alter their behavior
+  lineToken := tRichTextV2LineAlign | tRichTextV2LineHeading | tRichTextV2LineSmall
+  
+  // they come at the beginning or end of words to alter their behavior
+  wordToken := 
+    | tRichTextV2DecorationEmphasis --emphasis
+    | tRichTextV2DecorationBold --bold
+    | tRichTextV2DecorationIdiomatic --idiomatic
+    | tRichTextV2DecorationUnderline --underlined
+    | tRichTextV2DecorationAbbreviation --abbreviation
+    | quotes
+    | brackets
+}

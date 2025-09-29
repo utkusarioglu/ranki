@@ -25,7 +25,7 @@ function startToken(context: ParseContext, start: ohm.Node) {
     }
 
     switch (n.type) {
-      case "em":
+      case "tRichTextV2DecorationEmphasis":
         // if (!startArgs.hasOwnProperty("em.start")) {
         if (!startArgs["em.start"]) {
           startArgs["em.start"] = { indices: [], level: 0 };
@@ -34,7 +34,7 @@ function startToken(context: ParseContext, start: ohm.Node) {
         startArgs["em.start"].indices.push(si);
         break;
 
-      case "b":
+      case "tRichTextV2DecorationBold":
         if (!startArgs["b.start"]) {
           startArgs["b.start"] = { indices: [], level: 0 };
         }
@@ -42,7 +42,7 @@ function startToken(context: ParseContext, start: ohm.Node) {
         startArgs["b.start"].indices.push(si);
         break;
 
-      case "i":
+      case "tRichTextV2DecorationIdiomatic":
         if (!startArgs["i.start"]) {
           startArgs["i.start"] = { indices: [], level: 0 };
         }
@@ -50,7 +50,7 @@ function startToken(context: ParseContext, start: ohm.Node) {
         startArgs["i.start"].indices.push(si);
         break;
 
-      case "u":
+      case "tRichTextV2DecorationUnderline":
         if (!startArgs["u.start"]) {
           startArgs["u.start"] = { indices: [], level: 0 };
         }
@@ -58,7 +58,7 @@ function startToken(context: ParseContext, start: ohm.Node) {
         startArgs["u.start"].indices.push(si);
         break;
 
-      case "abbr":
+      case "tRichTextV2DecorationAbbreviation":
         if (!startArgs["abbreviation.start"]) {
           startArgs["abbreviation.start"] = {
             indices: [],
@@ -68,6 +68,9 @@ function startToken(context: ParseContext, start: ohm.Node) {
         startArgs["abbreviation.start"].indices.push(si);
         startArgs["abbreviation.start"].level++;
         break;
+
+      default:
+        throw new Error(`UNRECOGNIZED START DECORATION ${n.type}`);
     }
   }
   return { startNodes, startArgs };
@@ -119,7 +122,7 @@ function endToken(context: ParseContext, end: ohm.Node) {
         }
         break;
 
-      case "em":
+      case "tRichTextV2DecorationEmphasis":
         if (!endArgs["em.end"]) {
           endArgs["em.end"] = { indices: [], level: 0 };
         }
@@ -127,7 +130,7 @@ function endToken(context: ParseContext, end: ohm.Node) {
         endArgs["em.end"].indices.push(ei);
         break;
 
-      case "b":
+      case "tRichTextV2DecorationBold":
         if (!endArgs["b.end"]) {
           endArgs["b.end"] = { indices: [], level: 0 };
         }
@@ -135,7 +138,7 @@ function endToken(context: ParseContext, end: ohm.Node) {
         endArgs["b.end"].indices.push(ei);
         break;
 
-      case "i":
+      case "tRichTextV2DecorationIdiomatic":
         if (!endArgs["i.end"]) {
           endArgs["i.end"] = { indices: [], level: 0 };
         }
@@ -143,7 +146,7 @@ function endToken(context: ParseContext, end: ohm.Node) {
         endArgs["i.end"].indices.push(ei);
         break;
 
-      case "u":
+      case "tRichTextV2DecorationUnderline":
         if (!endArgs["u.end"]) {
           endArgs["u.end"] = { indices: [], level: 0 };
         }
@@ -151,13 +154,16 @@ function endToken(context: ParseContext, end: ohm.Node) {
         endArgs["u.end"].indices.push(ei);
         break;
 
-      case "abbr":
+      case "tRichTextV2DecorationAbbreviation":
         if (!endArgs["abbreviation.end"]) {
           endArgs["abbreviation.end"] = { indices: [], level: 0 };
         }
         endArgs["abbreviation.end"].indices.push(ei);
         endArgs["abbreviation.end"].level++;
         break;
+
+      default:
+        throw new Error(`UNRECOGNIZED  END DECORATION ${n.type}`);
     }
   }
 
@@ -255,7 +261,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     };
   },
 
-  b(b) {
+  tRichTextV2DecorationBold(b) {
     return {
       kind: "leaf",
       print: false,
@@ -281,7 +287,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     };
   },
 
-  abbr(abbr) {
+  tRichTextV2DecorationAbbreviation(abbr) {
     return {
       kind: "leaf",
       print: false,
@@ -294,7 +300,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     };
   },
 
-  em(abbr) {
+  tRichTextV2DecorationEmphasis(abbr) {
     return {
       kind: "leaf",
       print: false,
@@ -307,7 +313,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     };
   },
 
-  i(abbr) {
+  tRichTextV2DecorationIdiomatic(abbr) {
     return {
       kind: "leaf",
       print: false,
@@ -320,7 +326,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     };
   },
 
-  u(abbr) {
+  tRichTextV2DecorationUnderline(abbr) {
     return {
       kind: "leaf",
       print: false,

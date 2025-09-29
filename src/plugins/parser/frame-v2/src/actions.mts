@@ -16,27 +16,27 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
       children: [v2.node(this.args.context)],
     };
   },
-  v2Payload_P(wi1, nl, pauseDocument) {
+  v2Payload_P(wi1, nl, pauseRoot) {
     return {
       kind: "parent",
       type: this.ctorName,
       args: {
         "wi.1.length": wi1.sourceString.length,
       },
-      children: [pauseDocument.node(this.args.context)],
+      children: [pauseRoot.node(this.args.context)],
     };
   },
 
-  v2Payload_p(pauseDocument) {
+  v2Payload_p(pauseRoot) {
     return {
       kind: "parent",
       type: this.ctorName,
       args: {},
-      children: [pauseDocument.node(this.args.context)],
+      children: [pauseRoot.node(this.args.context)],
     };
   },
 
-  pauseDocument(whitespace1, pauseList, whitespace2) {
+  pauseRoot(whitespace1, pauseList, whitespace2) {
     return {
       kind: "parent",
       type: this.ctorName,

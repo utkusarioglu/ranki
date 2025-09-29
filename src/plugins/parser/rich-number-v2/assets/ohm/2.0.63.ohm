@@ -1,0 +1,89 @@
+RankiRichNumberV2 <: RankiBaseV2 {
+  groupedDigits3 =
+    | digit digit digit --three
+    | groupedDigits2
+
+  groupedDigits2 =
+    | digit digit --two
+    | digit --one
+
+  numberSystemInternational = groupedDigits3 (tRichNumberV2NumberGroup groupedDigits3_three)+
+  numberSystemIndian = groupedDigits2 tRichNumberV2NumberGroup (groupedDigits2_two tRichNumberV2NumberGroup)+ groupedDigits3_three --lakhCrore
+  numberSystemUnstructured = hBasicGroup<digit>
+
+  numberSystem = 
+    | numberSystemIndian --indian
+    | numberSystemInternational --international
+    | &(digit+ tRichNumberV2NumberGroup) numberSystemUnstructured --unstructured
+    | digit+ --basic
+
+  integer (Integer) = 
+    | sign numberSystem --signed
+    | numberSystem --unsigned
+
+  decimal (Decimal number) = 
+    | integer tRichNumberV2NumberDecimal integer_unsigned --full
+    | sign tRichNumberV2NumberDecimal integer_unsigned --point
+    
+  eNotation (Base 10 scientific notation) = scalar tRichNumberV2SymbolE integer
+  
+  // !FIX doesn't understand a number like "4i"
+  complex (Complex Number) = 
+   | scalar clearance complexOperator clearance scalar tRichNumberV2SymbolComplex --si
+   | scalar clearance complexOperator clearance tRichNumberV2SymbolComplex scalar --is
+   | scalar clearance complexOperator clearance tRichNumberV2SymbolComplex --i
+
+  complexOperator = sign
+
+  scalar (Scalar Number) =
+    | decimal
+    | integer
+
+  rational = number tRichNumberV2OperatorRational number
+
+  conceptualSymbol = 
+    | tRichNumberV2SymbolInfinity --infinity
+    | tRichNumberV2SymbolE --e
+    | tRichNumberV2SymbolPi --pi
+
+  conceptualNumber = 
+    | digit+ conceptualSymbol --factored
+    | conceptualSymbol --bare
+
+  conceptual = 
+    | sign conceptualNumber --signed
+    | conceptualNumber --unsigned
+
+  sign = 
+    | tRichNumberV2OperatorPlusMinus --plusMinus
+    | tRichNumberV2OperatorMinusPlus --minusPlus
+    | tRichNumberV2OperatorPositive --plus
+    | tRichNumberV2OperatorNegative --minus
+    | "" --none
+
+  hBasicGroup<range> = range (tRichNumberV2NumberGroup? range)*
+  hBases<symbol, range> = "0" symbol numberSystem_unstructured
+
+  octal = sign hBases<tRichNumberV2BaseOctal, ("0".."7")>
+  binary = sign hBases<tRichNumberV2BaseBinary, ("0" | "1")>
+  hexadecimal = sign hBases<tRichNumberV2BaseHexadecimal, ("0".."9" | "a".."f" | "A".."F")>
+
+  bases = 
+    | hexadecimal
+    | binary
+    | octal
+
+  // !FIX doesn't deduce hex and other bases unless the number is grouped with _, like 0x5_5
+  number := 
+    | rational
+    | eNotation 
+    | bases
+    | conceptual
+    | complex 
+    | scalar 
+    | ...
+    
+  word :=
+    | number
+    | ...
+}

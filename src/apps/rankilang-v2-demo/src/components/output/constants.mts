@@ -28,6 +28,11 @@ export const tabs: TabDefinition[] = [
   },
   {
     type: "exact",
+    name: "Block",
+    path: "stages.parse.root.children.children.",
+  },
+  {
+    type: "exact",
     name: "Lexeme",
     path: "stages.parse.root.children.children.0.children.0.children.0.children.",
   },

@@ -41,8 +41,8 @@ interface TokensConfig {
   };
   paramsV2: {
     separator: {
-      left: Single;
-      right: Single;
+      param: Single;
+      frame: Single;
     };
     key: {
       negation: Single;
@@ -54,18 +54,28 @@ interface TokensConfig {
     };
   };
   richNumberV2: {
-    complexUnits: Alternates;
-    infinity: Alternates;
-    e: Alternates;
-    pi: Alternates;
-    hexadecimal: Alternates;
-    octal: Alternates;
-    binary: Alternates;
-    decimal: Single;
-    negative: Single;
-    positive: Single;
-    group: Single;
-    rational: Single;
+    symbol: {
+      complex: Alternates;
+      infinity: Alternates;
+      e: Alternates;
+      pi: Alternates;
+    };
+    base: {
+      hexadecimal: Alternates;
+      octal: Alternates;
+      binary: Alternates;
+    };
+    operator: {
+      negative: Single;
+      positive: Single;
+      minusPlus: Alternates;
+      plusMinus: Alternates;
+      rational: Single;
+    };
+    number: {
+      decimal: Single;
+      group: Single;
+    };
   };
 }
 

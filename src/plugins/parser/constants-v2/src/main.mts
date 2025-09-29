@@ -2,7 +2,7 @@ import { RankiPluginParser, RankiLanguageConfig } from "@ranki/package-api";
 
 export const rankiConstantsV2ParserPlugin: RankiPluginParser = {
   type: "parser",
-  version: "2.0.63",
+  version: "2.0.64",
   name: "RankiConstantsV2",
   dependencies: [],
   grammar: (c) => {
@@ -18,57 +18,79 @@ function tokenize(config: RankiLanguageConfig["merged"]): Tokens {
     root: "",
   };
   {
-    tokens["frameV1"] = config.tokens.frameV1.delimiter;
+    tokens["tFrameV1Delimiter"] = config.tokens.frameV1.delimiter;
   }
   {
-    tokens["pause"] = config.tokens.frameV2.pause;
-    tokens["directive"] = config.tokens.frameV2.directive;
-    tokens["frame"] = config.tokens.frameV2.frame;
+    tokens["tFrameV2Pause"] = config.tokens.frameV2.pause;
+    tokens["tFrameV2Directive"] = config.tokens.frameV2.directive;
+    tokens["tFrameV2Frame"] = config.tokens.frameV2.frame;
   }
   {
-    tokens["sepLeft"] = config.tokens.paramsV2.separator.left;
-    tokens["sepRight"] = config.tokens.paramsV2.separator.right;
-    tokens["negation"] = config.tokens.paramsV2.key.negation;
-    tokens["assign"] = config.tokens.paramsV2.operators.assign;
-    tokens["append"] = config.tokens.paramsV2.operators.append;
-    tokens["remove"] = config.tokens.paramsV2.operators.remove;
+    tokens["tParamsV2SeparatorParam"] = config.tokens.paramsV2.separator.param;
+    // TODO this doesn't appear in paramsV2. it does appear in Frame V2
+    tokens["tParamsV2SeparatorFrame"] = config.tokens.paramsV2.separator.frame;
+    tokens["tParamsV2Negation"] = config.tokens.paramsV2.key.negation;
+    tokens["tParamsV2OperatorAssign"] = config.tokens.paramsV2.operators.assign;
+    tokens["tParamsV2OperatorAppend"] = config.tokens.paramsV2.operators.append;
+    tokens["tParamsV2OperatorRemove"] = config.tokens.paramsV2.operators.remove;
   }
   {
-    tokens["align"] = config.tokens.richTextV2.line.align;
-    tokens["h"] = config.tokens.richTextV2.line.heading;
-    tokens["small"] = config.tokens.richTextV2.line.small;
+    tokens["tRichTextV2LineAlign"] = config.tokens.richTextV2.line.align;
+    tokens["tRichTextV2LineHeading"] = config.tokens.richTextV2.line.heading;
+    tokens["tRichTextV2LineSmall"] = config.tokens.richTextV2.line.small;
   }
   {
-    tokens["em"] = config.tokens.richTextV2.decoration.emphasis;
-    tokens["b"] = config.tokens.richTextV2.decoration.bold;
-    tokens["i"] = config.tokens.richTextV2.decoration.idiomatic;
-    tokens["u"] = config.tokens.richTextV2.decoration.underline;
-    tokens["abbr"] = config.tokens.richTextV2.decoration.abbreviation;
+    tokens["tRichTextV2DecorationEmphasis"] =
+      config.tokens.richTextV2.decoration.emphasis;
+    tokens["tRichTextV2DecorationBold"] =
+      config.tokens.richTextV2.decoration.bold;
+    tokens["tRichTextV2DecorationIdiomatic"] =
+      config.tokens.richTextV2.decoration.idiomatic;
+    tokens["tRichTextV2DecorationUnderline"] =
+      config.tokens.richTextV2.decoration.underline;
+    tokens["tRichTextV2DecorationAbbreviation"] =
+      config.tokens.richTextV2.decoration.abbreviation;
   }
   {
-    tokens["esc"] = config.tokens.baseV2.escape;
+    tokens["tBaseV2Escape"] = config.tokens.baseV2.escape;
   }
   {
-    tokens["period"] = config.tokens.richTextV2.sentence.period;
-    tokens["exclamation"] = config.tokens.richTextV2.sentence.exclamation;
-    tokens["question"] = config.tokens.richTextV2.sentence.question;
+    tokens["tRichTextV2SentencePeriod"] =
+      config.tokens.richTextV2.sentence.period;
+    tokens["tRichTextV2SentenceExclamation"] =
+      config.tokens.richTextV2.sentence.exclamation;
+    tokens["tRichTextV2SentenceQuestion"] =
+      config.tokens.richTextV2.sentence.question;
   }
   {
-    tokens["divider"] = config.tokens.richStructureV2.delimiter;
+    tokens["tRichStructureV2Delimiter"] =
+      config.tokens.richStructureV2.delimiter;
   }
   {
-    tokens["complexToken"] = config.tokens.richNumberV2.complexUnits;
-    tokens["infinityToken"] = config.tokens.richNumberV2.infinity;
-    tokens["eToken"] = config.tokens.richNumberV2.e;
-    tokens["piToken"] = config.tokens.richNumberV2.pi;
-    tokens["hexadecimalToken"] = config.tokens.richNumberV2.hexadecimal;
-    tokens["octalToken"] = config.tokens.richNumberV2.octal;
-    tokens["binaryToken"] = config.tokens.richNumberV2.binary;
-    tokens["decimalToken"] = config.tokens.richNumberV2.decimal;
-    tokens["negativeToken"] = config.tokens.richNumberV2.negative;
-    tokens["positive"] = config.tokens.richNumberV2.positive;
-    tokens["groupToken"] = config.tokens.richNumberV2.group;
-    tokens["rationalToken"] = config.tokens.richNumberV2.rational;
+    tokens["tRichNumberV2SymbolComplex"] =
+      config.tokens.richNumberV2.symbol.complex;
+    tokens["tRichNumberV2SymbolInfinity"] =
+      config.tokens.richNumberV2.symbol.infinity;
+    tokens["tRichNumberV2SymbolE"] = config.tokens.richNumberV2.symbol.e;
+    tokens["tRichNumberV2SymbolPi"] = config.tokens.richNumberV2.symbol.pi;
+    tokens["tRichNumberV2BaseHexadecimal"] =
+      config.tokens.richNumberV2.base.hexadecimal;
+    tokens["tRichNumberV2BaseOctal"] = config.tokens.richNumberV2.base.octal;
+    tokens["tRichNumberV2BaseBinary"] = config.tokens.richNumberV2.base.binary;
+    tokens["tRichNumberV2OperatorNegative"] =
+      config.tokens.richNumberV2.operator.negative;
+    tokens["tRichNumberV2OperatorPositive"] =
+      config.tokens.richNumberV2.operator.positive;
+    tokens["tRichNumberV2OperatorMinusPlus"] =
+      config.tokens.richNumberV2.operator.minusPlus;
+    tokens["tRichNumberV2OperatorPlusMinus"] =
+      config.tokens.richNumberV2.operator.plusMinus;
+    tokens["tRichNumberV2OperatorRational"] =
+      config.tokens.richNumberV2.operator.rational;
+    tokens["tRichNumberV2NumberDecimal"] =
+      config.tokens.richNumberV2.number.decimal;
+    tokens["tRichNumberV2NumberGroup"] =
+      config.tokens.richNumberV2.number.group;
   }
 
   return tokens;

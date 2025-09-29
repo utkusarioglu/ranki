@@ -1,13 +1,11 @@
 import { RankiPluginParser } from "@ranki/package-api";
-import grammar from "../assets/ohm/2.0.62.ohm?raw";
+import grammar from "../assets/ohm/2.0.63.ohm?raw";
 import { actions } from "./actions.mjs";
-
-const version = "2.0.62";
 
 export const rankiBaseV2ParserPlugin: RankiPluginParser = {
   type: "parser",
   name: "RankiBaseV2",
-  version,
+  version: "2.0.63",
   dependencies: ["RankiConstantsV2"],
   grammar: () => grammar,
   actions: () => actions,

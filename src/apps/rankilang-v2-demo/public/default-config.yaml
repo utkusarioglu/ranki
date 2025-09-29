@@ -32,8 +32,8 @@ tokens:
     delimiter: "~"
   paramsV2:
     separator:
-      left: ","
-      right: ;
+      param: ","
+      frame: ;
     key:
       negation: "!"
     operators:
@@ -41,30 +41,40 @@ tokens:
       append: +=
       remove: "-="
   richNumberV2:
-    complexUnits:
-      - i
-      - j
-      - k
-    infinity:
-      - inf
-      - INF
-    pi:
-      - pi
-      - PI
-    e:
-      - e
-      - E
-    hexadecimal:
-      - x
-      - X
-    octal:
-      - o
-      - O
-    binary:
-      - b
-      - B
-    decimal: .
-    negative: "-"
-    positive: "+"
-    group: _
-    rational: "/"
+    symbol:
+      complex:
+        - i
+        - j
+        - k
+      infinity:
+        - inf
+        - INF
+      pi:
+        - pi
+        - PI
+      e:
+        - e
+        - E
+    base: 
+      hexadecimal:
+        - x
+        - X
+      octal:
+        - o
+        - O
+      binary:
+        - b
+        - B
+    operator:
+      negative: "-"
+      positive: "+"
+      minusPlus: 
+        - "-+"
+        - "∓"
+      plusMinus:
+        - "+-" 
+        - "±"
+      rational: "/"
+    number:
+      decimal: .
+      group: _
