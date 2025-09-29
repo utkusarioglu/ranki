@@ -44,7 +44,7 @@ export function App() {
   const [parsed, setRankiParsed] = useState<object | null>(null);
 
   if (isLoading) {
-    return <div>Loading…</div>;
+    return <div className={style.loading}>Loading…</div>;
   }
 
   return (

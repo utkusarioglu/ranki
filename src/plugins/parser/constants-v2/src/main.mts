@@ -1,21 +1,4 @@
 import { RankiPluginParser, RankiLanguageConfig } from "@ranki/package-api";
-import grammar from "../assets/ohm/2.0.62.ohm?raw";
-// // !TODO this needs to go
-// import fs from "node:fs";
-// import { fileURLToPath } from "node:url";
-// import path from "node:path";
-
-// const version = "2.0.63";
-
-// const grammar = fs
-//   .readFileSync(
-//     path.join(
-//       fileURLToPath(import.meta.url),
-//       "../..",
-//       `assets/ohm/${version}.ohm`,
-//     ),
-//   )
-//   .toString();
 
 export const rankiConstantsV2ParserPlugin: RankiPluginParser = {
   type: "parser",
@@ -23,10 +6,6 @@ export const rankiConstantsV2ParserPlugin: RankiPluginParser = {
   name: "RankiConstantsV2",
   dependencies: [],
   grammar: (c) => {
-    // console.log(c);
-    // const ohm = {};
-
-    // return grammar;
     return stringifyConfig(c.merged);
   },
   actions: () => ({}),
@@ -113,7 +92,7 @@ function stringifyConfig(config: RankiLanguageConfig["merged"]) {
   };
 
   const configStr = [
-    "RankiConfig {",
+    "RankiConstantsV2 {",
     ...Object.entries(tokens).map(([k, v]) => {
       const values = stringifyValues(v);
       return `  ${k} = ${values}`;

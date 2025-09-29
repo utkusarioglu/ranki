@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@ranki/package-language",
+  "name": "@ranki/package-rankilang",
   "type": "module",
   "exports": {
     ".": {

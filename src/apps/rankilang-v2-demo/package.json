@@ -1,5 +1,5 @@
 {
-  "name": "@ranki/app-v2-demo",
+  "name": "@ranki/rankilang-v2-demo",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ranki/package-language": "workspace:^",
+    "@ranki/package-rankilang": "workspace:^",
     "@ranki/plugin-parser-base-v2": "workspace:^",
     "@ranki/plugin-parser-constants-v2": "workspace:^",
     "@ranki/plugin-parser-frame-v1": "workspace:^",
