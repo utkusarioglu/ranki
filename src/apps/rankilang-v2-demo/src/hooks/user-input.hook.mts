@@ -24,6 +24,7 @@ export function useUserInput(
   const [languageUserConfigStr, setLanguageUserConfigStr] = useState<string>(
     initialLanguageUserConfigStr,
   );
+  const [theater, setTheater] = useState<string>("Default");
   const [installedPlugins, setInstalledPlugins] = useState(allPlugins);
   const [requestedPlugins, setRequestedPlugins] = useState<string[]>([]);
   const [rankiStr, setRankiStr] = useState(presetGroups[0].presets[0].value);
@@ -53,9 +54,17 @@ export function useUserInput(
         error: (e as Error).toString(),
       });
     }
-  }, [languageUserConfigStr, rankiStr, installedPlugins, requestedPlugins]);
+  }, [
+    languageUserConfigStr,
+    rankiStr,
+    installedPlugins,
+    requestedPlugins,
+    theater,
+  ]);
 
   return {
+    theater,
+    setTheater,
     setRankiStr,
     setInstalledPlugins,
     setRequestedPlugins,

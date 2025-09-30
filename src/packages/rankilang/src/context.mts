@@ -61,6 +61,7 @@ export class RankiLang implements RankiLangInstance {
       case "test":
         return {
           stages: {
+            // @ts-expect-error
             parse: {
               root: {
                 kind: "leaf",

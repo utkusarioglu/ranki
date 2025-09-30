@@ -49,6 +49,8 @@ export const Inputs: FC<InputsProps> = ({
     setLanguageUserConfigStr,
     requestedPlugins,
     allPlugins,
+    theater,
+    setTheater,
   } = useUserInput(
     pluginObjects,
     setRankiParsed,
@@ -77,23 +79,41 @@ export const Inputs: FC<InputsProps> = ({
       <div
         className={[style.tabPageContainer, style.tabBlockPadding].join(" ")}
       >
-        <select
-          className={style.selectPreset}
-          onChange={(e) => setRankiStr(e.target.value)}
-          value={rankiStr}
-        >
-          {presetGroups.map(({ groupName, presets }) => (
-            <optgroup key={groupName} label={groupName}>
-              {presets.map(({ name, value }) => (
-                <option key={name} value={value}>
-                  {name}
-                </option>
-              ))}
-            </optgroup>
-          ))}
-        </select>
+        <div className={style.labelAndInput}>
+          <label htmlFor="preset">Preset</label>
+          <select
+            id="preset"
+            className={[
+              style.input,
+              style.inlineInput,
+              style.selectPreset,
+            ].join(" ")}
+            onChange={(e) => setRankiStr(e.target.value)}
+            value={rankiStr}
+          >
+            {presetGroups.map(({ groupName, presets }) => (
+              <optgroup key={groupName} label={groupName}>
+                {presets.map(({ name, value }) => (
+                  <option key={name} value={value}>
+                    {name}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </div>
+        <div className={style.labelAndInput}>
+          <label htmlFor="theater">Theater</label>
+          <input
+            id="theater"
+            className={[style.input, style.inlineInput].join(" ")}
+            type="text"
+            value={theater}
+            onChange={(e) => setTheater(e.target.value)}
+          />
+        </div>
         <textarea
-          className={[style.inputField, style.scrollable].join(" ")}
+          className={[style.input, style.textarea, style.scrollable].join(" ")}
           id="ranki"
           onChange={(e) => setRankiStr(e.target.value)}
           value={rankiStr}
@@ -105,7 +125,7 @@ export const Inputs: FC<InputsProps> = ({
         className={[style.tabPageContainer, style.tabBlockPadding].join(" ")}
       >
         <textarea
-          className={[style.inputField, style.scrollable].join(" ")}
+          className={[style.input, style.textarea, style.scrollable].join(" ")}
           id="ranki"
           onChange={(e) => setLanguageUserConfigStr(e.target.value)}
           value={languageUserConfigStr}

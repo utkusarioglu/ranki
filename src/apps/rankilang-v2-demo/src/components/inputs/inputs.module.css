@@ -4,6 +4,7 @@
 
 .tabPageContainer {
   padding-inline: 1em;
+  gap: 1em;
   display: flex;
   flex-direction: column;
   height: calc(100% - var(--tab-height));
@@ -49,22 +50,20 @@
   }
 }
 
-/* .output {
-  font-size: 0.8em;
-  overflow-anchor: auto;
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: 100svh;
-  padding: 1em;
-} */
-
-.inputField {
+.input {
   background-color: var(--bg-3);
   border: 0px solid transparent;
   color: var(--fg-2);
   width: 100%;
+}
+
+.inlineInput {
+  padding: 0.5em 1em;
+}
+
+.textarea {
   padding: 1em;
-  resize: vertical;
+  /* resize: vertical; */
   height: 100%;
 }
 
@@ -100,18 +99,24 @@
 }
 
 .selectPreset {
-  background-color: var(--bg-3);
-  color: var(--fg-2);
-  border: 0px solid transparent;
+  /* background-color: var(--bg-3);
+  color: var(--fg-2); */
+  /* border: 0px solid transparent; */
   width: 100%;
-  margin-bottom: 0.5em;
-  padding: 0.5em 1em;
+  /* margin-bottom: 0.5em; */
 }
 
-.summary {
+.labelAndInput {
+  display: flex;
+  gap: 1em;
+  /* margin-block: 1em; */
+  align-items: center;
+}
+
+/* .summary {
   margin-bottom: 1em;
   margin-top: 1.5em;
-}
+} */
 
 .titleContainer {
   margin-top: 0.5em;
