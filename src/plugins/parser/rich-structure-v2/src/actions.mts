@@ -1,4 +1,5 @@
 import type * as ohm from "ohm-js";
+import type { RankiLangParseContext } from "@ranki/package-api";
 import type { ArgsAndParamsV2 } from "@ranki/plugin-parser-params-v2";
 import type {
   ParseNodeRichStructureV2,
@@ -6,20 +7,27 @@ import type {
 } from "./types.mjs";
 
 function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
-  const l = a.node(this.args.lang);
+  const context: RankiLangParseContext = { ...this.args.context };
+  const l = a.node(context);
   l.type = this.ctorName;
-  // l["args"]["richStructure.v1"]["name"] = this.ctorName;
   return l;
 }
 
 const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
   hLevel_defined(structureType1, separator, structureType2) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.blockDepth++;
     const sep: ParseNodeRichStructureV2["args"]["richStructure.v2"] =
-      separator.argsAndParamsV2(this.args.lang);
+      separator.argsAndParamsV2(context);
     return {
       kind: "parent",
       type: this.ctorName,
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         "richStructure.v2": {
           // name: "SHALL BE SET BY PARENT",
           // !FIX the separators are misplaced. the first separator args and params belong to the SECOND collection, section or whatever the level name is.
@@ -29,8 +37,8 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
         },
       },
       children: [
-        structureType1.node(this.args.lang),
-        ...structureType2.iterNode(this.args.lang),
+        structureType1.node(context),
+        ...structureType2.iterNode(context),
       ],
     };
   },
@@ -43,9 +51,11 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
   volume(a) {
     return hLevel.call(this, a);
   },
+
   chapter(a) {
     return hLevel.call(this, a);
   },
+
   article(a) {
     return hLevel.call(this, a);
   },
@@ -53,7 +63,8 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
 
 const argsAndParamsV2List: ohm.ActionDict<ArgsAndParamsV2[]> = {
   _iter(...children) {
-    return children.map((c) => c.argsAndParamsV2(this.args.lang));
+    const context: RankiLangParseContext = { ...this.args.context };
+    return children.map((c) => c.argsAndParamsV2(context));
   },
 };
 
@@ -65,8 +76,15 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi2,
     structureSepEnd,
   ) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.inlineDepth++;
     return {
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         "wi.1.length": wi1.sourceString.length,
         "wi.2.length": wi2.sourceString.length,
       },
@@ -85,10 +103,17 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi3,
     structureSepEnd,
   ) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.inlineDepth++;
     const config: ArgsAndParamsV2RichStructureV2 =
-      v2ParamListInlineContainer.argsAndParamsV2(this.args.lang);
+      v2ParamListInlineContainer.argsAndParamsV2(context);
     return {
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         // !TODO you need ctorName here
         "wi.1.length": wi1.sourceString.length,
         "wi.2.length": wi2.sourceString.length,

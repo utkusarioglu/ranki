@@ -9,21 +9,24 @@ import type {
 
 const paramsV2: ohm.ActionDict<ParamV2[]> = {
   _iter(...children) {
-    return children.map((c) => c.paramV2(this.args.lang));
+    const context: RankiLangParseContext = { ...this.args.context };
+    return children.map((c) => c.paramV2(context));
   },
 
   v2ParamListInline(param1, sep, param2) {
-    // const p2 = param2.paramsV2(this.args.lang);
-    const rest = param2.paramsV2(this.args.lang);
-    const joined = [param1.paramV2(this.args.lang), ...rest];
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.inlineDepth++;
+    const rest = param2.paramsV2(context);
+    const joined = [param1.paramV2(context), ...rest];
 
     return joined;
   },
 
   v2ParamListBlock(param1, sep, param2) {
-    // const p2 = param2.paramsV2(this.args.lang);
-    const rest = param2.paramsV2(this.args.lang);
-    const joined = [param1.paramV2(this.args.lang), ...rest];
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.blockDepth++;
+    const rest = param2.paramsV2(context);
+    const joined = [param1.paramV2(context), ...rest];
 
     return joined;
   },
@@ -31,8 +34,9 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
 
 const paramV2: ohm.ActionDict<ParamV2> = {
   param_operator(paramKey, wi1, operatorToken, wi2, paramValues) {
-    const lang: RankiLangParseContext = this.args.lang;
-    const operators = lang.getConfig().merged.tokens.paramsV2.operators;
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.inlineDepth++;
+    const operators = context.lang.getConfig().merged.tokens.paramsV2.operators;
     const f = Object.entries(operators).find(
       ([k, v]) => v === operatorToken.sourceString,
     );
@@ -44,18 +48,31 @@ const paramV2: ohm.ActionDict<ParamV2> = {
     return {
       key: paramKey.sourceString,
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         "wi.1.length": wi1.sourceString.length,
         "wi.2.length": wi2.sourceString.length,
       },
       operator: f[0] as ParamV2Operator,
-      values: paramValues.paramV2Values(this.args.lang),
+      values: paramValues.paramV2Values(context),
     };
   },
 
   param_positive(key) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.inlineDepth++;
     return {
       key: key.sourceString,
-      args: {},
+      args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
+      },
       operator: "assign",
       values: [
         {
@@ -67,9 +84,17 @@ const paramV2: ohm.ActionDict<ParamV2> = {
   },
 
   param_negative(negation, key) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.inlineDepth++;
     return {
       key: key.sourceString,
-      args: {},
+      args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
+      },
       operator: "assign",
       values: [
         {
@@ -83,14 +108,13 @@ const paramV2: ohm.ActionDict<ParamV2> = {
 
 const paramV2Values: ohm.ActionDict<ParamV2Value[]> = {
   _iter(...children) {
-    return children.map((c) => c.paramV2Value(this.args.lang));
+    const context: RankiLangParseContext = { ...this.args.context };
+    return children.map((c) => c.paramV2Value(context));
   },
 
   paramValues(i1, clearance, i2) {
-    return [
-      i1.paramV2Value(this.args.lang),
-      ...i2.paramV2Values(this.args.lang),
-    ];
+    const context: RankiLangParseContext = { ...this.args.context };
+    return [i1.paramV2Value(context), ...i2.paramV2Values(context)];
   },
 };
 
@@ -155,34 +179,48 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi3,
     sepLeft2,
   ) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.blockDepth++;
     return {
       args: {
-        "separator.left.1.type": sepLeft1.creatorName(this.args.lang),
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
+        "separator.left.1.type": sepLeft1.creatorName(context),
         // !FIX needs to be parsed
-        // "separator.left.2.type": sepLeft2.creatorName(this.args.lang),
+        // "separator.left.2.type": sepLeft2.creatorName(context),
         "wi.1.length": wi1.sourceString.length,
         "wi.2.length": wi2.sourceString.length,
         "wi.3.length": wi3.sourceString.length,
       },
       params: {
         variant: "block",
-        items: v2ParamListBlock.paramsV2(this.args.lang),
+        items: v2ParamListBlock.paramsV2(context),
       },
     };
   },
 
   v2ParamListInlineContainer(sepLeft1, wi1, v2ParamListInline, wi2, sepLeft2) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.blockDepth++;
     return {
       args: {
-        "separator.left.1.type": sepLeft1.creatorName(this.args.lang),
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
+        "separator.left.1.type": sepLeft1.creatorName(context),
         // !FIX needs to be parsed
-        // "separator.left.2.type": sepLeft2.creatorName(this.args.lang),
+        // "separator.left.2.type": sepLeft2.creatorName(context),
         "wi.1.length": wi1.sourceString.length,
         "wi.2.length": wi2.sourceString.length,
       },
       params: {
         variant: "inline",
-        items: v2ParamListInline.paramsV2(this.args.lang),
+        items: v2ParamListInline.paramsV2(context),
       },
     };
   },

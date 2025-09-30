@@ -87,25 +87,11 @@ function topologicalSort(
 }
 
 export class ParserPlugins {
-  // private obj: Record<string, RankiPluginParser> = {
-  //   rankiBaseV2ParserPlugin,
-  //   rankiConstantsV2ParserPlugin,
-  //   rankiParamsV2ParserPlugin,
-  //   rankiFrameV2ParserPlugin,
-  //   rankiRichTextV2ParserPlugin,
-  //   rankiRichNumberV2ParserPlugin,
-  //   rankiRichStructureV2ParserPlugin,
-  //   rankiFrameV1ParserPlugin,
-  // };
   private list: RankiPluginParser[] = [];
 
   addPlugin(plugin: RankiPluginParser) {
     this.list.push(plugin);
   }
-
-  // getObj() {
-  //   return this.obj;
-  // }
 
   getList(): RankiPluginParser[] {
     return this.list;

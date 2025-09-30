@@ -21,5 +21,8 @@ export type {
   RankiLangInstance,
   RankiLangParseResult,
   RankiLangParseSpecs,
+  RankiLangParsedTheater,
+  RankiLangParseReport,
+  RankiLangParseFunctionReturn,
   // CreateContextFunction,
 } from "./context.mjs";

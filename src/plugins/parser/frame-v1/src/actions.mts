@@ -1,23 +1,26 @@
 import type * as ohm from "ohm-js";
-import type {
-  RankiLangParseContext,
-  ParseNode,
-  RankiLangInstance,
-} from "@ranki/package-api";
+import type { RankiLangParseContext, ParseNode } from "@ranki/package-api";
 import type { ParseNodeFrameV1 } from "./types.mjs";
 import type { ArgsAndParamsV1 } from "./types.mjs";
 
 const nodeBaseV2: ohm.ActionDict<ParseNode> = {
   block_v1(indentation, v1Block, wi1, end) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.blockDepth++;
     return {
       kind: "parent",
       type: this.ctorName,
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         "indentation.1.length": indentation.sourceString.length,
         "wi.1.length": wi1.sourceString.length,
         // !TODO end
       },
-      children: [v1Block.node(this.args.lang)],
+      children: [v1Block.node(context)],
     };
   },
 };
@@ -29,52 +32,39 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1Type,
     wi2,
     sepRight1,
-    // wi3,
-    // v1ParamListInline,
-    // wi4,
-    // sepRight2,
     v1PayloadInline,
     frameV1_2,
   ) {
-    const lang: RankiLangInstance = this.args.lang;
-    const child = lang.create(null, null).parse(v1PayloadInline.sourceString, {
-      frame: {
-        version: "v1",
-        type: v1Type.sourceString,
-        // params: argsAndParamsV1["params"],
-        params: [],
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.inlineDepth++;
+    const child = context.lang.clone(null, null).parse(
+      { [context.theater]: v1PayloadInline.sourceString },
+      {
+        ...context,
+        frame: {
+          version: "v1",
+          type: v1Type.sourceString,
+          params: [],
+        },
       },
-    });
-    console.log(child);
+    );
     return {
       kind: "parent",
       type: this.ctorName,
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         "wi.1.length": wi1.sourceString.length,
         "wi.2.length": wi2.sourceString.length,
-        // "wi.3.length": wi3.sourceString.length,
-        // "wi.4.length": wi4.sourceString.length,
         "frame.v1": {
           variant: "p",
           frameType: v1Type.sourceString,
-          // args: {
-          //   // v1ParamListInline
-          // },
         },
       },
-      children: [
-        child.stages.parse.root,
-        // {
-        //   kind: "leaf",
-        //   print: true,
-        //   type: "TEMP PAYLOAD V1 NODE",
-        //   args: {},
-        //   source: {
-        //     type: "mixed",
-        //     value: v1PayloadInline.sourceString,
-        //   },
-        // },
-      ],
+      children: [child.theaters[context.theater].stages.parse.root],
     };
   },
 
@@ -91,47 +81,38 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadInline,
     frameV1_2,
   ) {
-    const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(this.args.lang);
-    const lang: RankiLangInstance = this.args.lang;
-    const child = lang.create(null, null).parse(v1PayloadInline.sourceString, {
-      frame: {
-        version: "v1",
-        type: v1Type.sourceString,
-        // params: argsAndParamsV1["params"],
-        params: argsAndParamsV1["params"],
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.inlineDepth++;
+    const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(context);
+    const child = context.lang.clone(null, null).parse(
+      { [context.theater]: v1PayloadInline.sourceString },
+      {
+        ...context,
+        frame: {
+          version: "v1",
+          type: v1Type.sourceString,
+          params: argsAndParamsV1["params"],
+        },
       },
-    });
+    );
     return {
       kind: "parent",
       type: this.ctorName,
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         "wi.1.length": wi1.sourceString.length,
         "wi.2.length": wi2.sourceString.length,
-        // "wi.3.length": wi3.sourceString.length,
-        // "wi.4.length": wi4.sourceString.length,
         "frame.v1": {
           variant: "fp",
           frameType: v1Type.sourceString,
           ...argsAndParamsV1,
-          // params: ,
-          // args: {
-          //   ...c.args,
-          // },
         },
       },
-      children: [
-        child.stages.parse.root,
-        // {
-        //   kind: "leaf",
-        //   print: true,
-        //   type: "TEMP PAYLOAD V1 NODE",
-        //   args: {},
-        //   source: {
-        //     type: "mixed",
-        //     value: v1PayloadInline.sourceString,
-        //   },
-        // },
-      ],
+      children: [child.theaters[context.theater].stages.parse.root],
     };
   },
 
@@ -146,50 +127,36 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadBlock,
     v1BlockEnd,
   ) {
-    // const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(
-    //   this.args.lang,
-    // );
-
-    const lang: RankiLangInstance = this.args.lang;
-    const child = lang.create(null, null).parse(v1PayloadBlock.sourceString, {
-      frame: {
-        version: "v1",
-        type: v1Type.sourceString,
-        // params: argsAndParamsV1["params"],
-        params: [],
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.blockDepth++;
+    const child = context.lang.clone(null, null).parse(
+      { [context.theater]: v1PayloadBlock.sourceString },
+      {
+        ...context,
+        frame: {
+          version: "v1",
+          type: v1Type.sourceString,
+          params: [],
+        },
       },
-    });
+    );
     return {
       kind: "parent",
       type: this.ctorName,
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         "wi.1.length": wi1.sourceString.length,
         "wi.2.length": wi2.sourceString.length,
-        // "wi.3.length": wi3.sourceString.length,
-        // "wi.4.length": wi4.sourceString.length,
         "frame.v1": {
           variant: "p",
           frameType: v1Type.sourceString,
-          // ...argsAndParamsV1,
-          // params: ,
-          // args: {
-          //   ...c.args,
-          // },
         },
       },
-      children: [
-        child.stages.parse.root,
-        // {
-        //   kind: "leaf",
-        //   print: true,
-        //   type: "TEMP PAYLOAD V1 NODE",
-        //   args: {},
-        //   source: {
-        //     type: "mixed",
-        //     value: v1PayloadBlock.sourceString,
-        //   },
-        // },
-      ],
+      children: [child.theaters[context.theater].stages.parse.root],
     };
   },
 
@@ -208,22 +175,30 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadBlock,
     v1BlockEnd,
   ) {
-    const lang: RankiLangParseContext = this.args.lang;
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.blockDepth++;
     const argsAndParamsV1: ArgsAndParamsV1 =
-      v1ParamListInline.argsAndParamsV1(lang);
-    const child = lang.create(null, null).parse(v1PayloadBlock.sourceString, {
-      frame: {
-        version: "v1",
-        type: v1Type.sourceString,
-        params: argsAndParamsV1["params"],
+      v1ParamListInline.argsAndParamsV1(context);
+    const child = context.lang.clone(null, null).parse(
+      { [context.theater]: v1PayloadBlock.sourceString },
+      {
+        ...context,
+        frame: {
+          version: "v1",
+          type: v1Type.sourceString,
+          params: argsAndParamsV1["params"],
+        },
       },
-    });
-    // const parser = lang.methods.parser(this.args.lang);
-    // const child = parser(lang, v1PayloadBlock.sourceString);
+    );
     return {
       kind: "parent",
       type: this.ctorName,
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         // !TODO args
         "wi.1.length": wi1.sourceString.length,
         "wi.2.length": wi2.sourceString.length,
@@ -237,7 +212,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           report: child.report,
         },
       },
-      children: [child.stages.parse.root],
+      children: [child.theaters[context.theater].stages.parse.root],
     };
   },
 };
@@ -250,17 +225,21 @@ const paramV1: ohm.ActionDict<string> = {
 
 const paramsV1: ohm.ActionDict<string[]> = {
   _iter(...children) {
-    return children.map((v) => v.paramV1(this.args.lang));
+    const context: RankiLangParseContext = { ...this.args.context };
+    // context.depth++;
+    return children.map((v) => v.paramV1(context));
   },
 };
 
 const argsAndParamsV1: ohm.ActionDict<ArgsAndParamsV1> = {
   v1ParamListInline(v1ParamValue1, sep, v1ParamValue2) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    // context.depth++;
     return {
       args: {},
       params: [
-        v1ParamValue1.paramV1(this.args.lang),
-        ...v1ParamValue2.paramsV1(this.args.lang),
+        v1ParamValue1.paramV1(context),
+        ...v1ParamValue2.paramsV1(context),
       ],
     };
   },

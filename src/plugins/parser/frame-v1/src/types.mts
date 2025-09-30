@@ -33,9 +33,9 @@ export type ParseNodeFrameV1 =
   | ParseNodeFrameV1ConfigFp;
 
 export type ParseNodeFrameV1ConfigP = Omit<ParseNode, "args"> & {
-  args: Partial<NodeArgsBaseV2> & NodeArgsFrameV1ConfigP;
+  args: ParseNode["args"] & Partial<NodeArgsBaseV2> & NodeArgsFrameV1ConfigP;
 };
 
 export type ParseNodeFrameV1ConfigFp = Omit<ParseNode, "args"> & {
-  args: Partial<NodeArgsBaseV2> & NodeArgsFrameV1ConfigFp;
+  args: ParseNode["args"] & Partial<NodeArgsBaseV2> & NodeArgsFrameV1ConfigFp;
 };

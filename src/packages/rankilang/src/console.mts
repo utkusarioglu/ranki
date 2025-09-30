@@ -147,7 +147,7 @@ function main(count: number) {
 
   produceTests(count).forEach((t) => {
     try {
-      parsed.push(lang.parse(t));
+      parsed.push(lang.parse({ default: t }));
       // parsed.push(context.methods.parser({ frameType: "null" })(context, t));
     } catch (e) {
       console.error(e);

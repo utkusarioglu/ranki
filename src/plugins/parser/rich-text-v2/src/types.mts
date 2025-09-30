@@ -102,5 +102,5 @@ export type NodeArgsRichTextV2 = Partial<NodeArgsBaseV2> &
   Partial<NodeArgRichTextV2WordDecoration>;
 
 export type ParseNodeRichTextV2 = Omit<ParseNodeBaseV2, "args"> & {
-  args: NodeArgsRichTextV2;
+  args: ParseNodeBaseV2["args"] & NodeArgsRichTextV2;
 };

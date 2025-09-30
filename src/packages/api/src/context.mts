@@ -4,76 +4,54 @@ import type {
 } from "./config.mjs";
 import type { ParseNode } from "./parse.mjs";
 
-// export interface ParseContext {
-//   config: RankiLanguageConfig;
-//   methods: {
-//     parser: ParserGenerator;
-//     parserPlugins: any;
-//   };
-// }
-
-// interface ParserGeneratorParams {
-//   frameType: string;
-// }
-
-// type ParserGenerator = (p: ParserGeneratorParams) => ParserFunction;
-
-// type ParserFunction = (context: ParseContext, raw: string) => ParseResult;
-
-// export type CreateContextFunction = (
-//   config: RankiLanguageContextConfig,
-//   parserPlugins: any, // !FIX any,
-// ) => ParseContext;
-
-// export type VersionReport = Record<string, string>;
-
-// interface ParseResult {
-//   report: {
-//     language: {
-//       versions: VersionReport;
-//     };
-//   };
-//   stages: {
-//     raw: string;
-//     parse: {
-//       root: ParseNode;
-//     };
-//   };
-// }
-
 export interface RankiLangParseResult {
-  report: {
-    language: {
-      versions: VersionReport;
-    };
-    parser: {
-      requested: string[];
-      importChain: string[];
-      dependencyGraph: Record<string, string[]>;
-    };
-    config: RankiLanguageConfig;
+  report: RankiLangParseReport;
+  theaters: {
+    [key: string]: RankiLangParsedTheater;
   };
+}
+
+export interface RankiLangParseReport {
+  language: {
+    versions: VersionReport;
+  };
+  parser: {
+    requested: string[];
+    sorted: string[];
+    graph: Record<string, string[]>;
+    contributors: Record<string, string[]>;
+    methods: Record<string, string[]>;
+  };
+  config: RankiLanguageConfig;
+}
+
+export interface RankiLangParsedTheater {
   stages: {
     raw: string;
     parse: {
-      participants: Record<string, string[]>;
-      methods: Record<string, string[]>;
       root: ParseNode;
     };
   };
 }
 
+export interface RankiLangParseFunctionReturn {
+  report: RankiLangParseReport;
+  parsed: RankiLangParsedTheater["stages"]["parse"]["root"];
+}
+
 type ParserPlugins = any; // !TODO any
 
+type TheaterName = string & { type?: "TheaterName" };
+type RoleName = string & { type?: "RoleName" };
+
 export interface RankiLangInstance {
-  // new (
-  //   contextConfig: RankiLanguageContextConfig,
-  //   plugins: ParserPlugins,
-  // ): RankiLangInstance;
   getPlugins(): ParserPlugins;
   getConfig(): RankiLanguageConfig;
-  parse(raw: string, specs: RankiLangParseSpecs): RankiLangParseResult;
-  create(
+  parse(
+    raw: Record<TheaterName, string>,
+    specs: RankiLangParseSpecs,
+  ): RankiLangParseResult;
+  clone(
     contextConfig: RankiLanguageContextConfig | null,
     plugins: ParserPlugins | null,
   ): RankiLangInstance;
@@ -98,28 +76,22 @@ interface FrameV2 {
 
 export interface RankiLangParseSpecs {
   frame?: FrameNull | FrameV1 | FrameV2;
+  theater: TheaterName;
+  role: RoleName;
+  // totalDepth: number;
+  blockDepth: number;
+  inlineDepth: number;
   // frameType: string;
   // plugins: any; // !TODO any
 }
 
-export type RankiLangParseContext = RankiLangInstance;
-// export interface RankiLangParseContext {
-//   config: RankiLanguageConfig;
-//   lang: RankiLangInstance;
-// }
-
-// interface RankiLangParseResult {
-//   report: {
-//     language: {
-//       versions: VersionReport;
-//     };
-//   };
-//   stages: {
-//     raw: string;
-//     parse: {
-//       root: ParseNode;
-//     };
-//   };
-// }
+export type RankiLangParseContext = {
+  // totalDepth: number;
+  blockDepth: number;
+  inlineDepth: number;
+  theater: TheaterName;
+  role: RoleName;
+  lang: RankiLangInstance;
+};
 
 export type VersionReport = Record<string, string>;

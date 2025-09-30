@@ -24,7 +24,7 @@ export function useUserInput(
   const [languageUserConfigStr, setLanguageUserConfigStr] = useState<string>(
     initialLanguageUserConfigStr,
   );
-  const [theater, setTheater] = useState<string>("Default");
+  const [theater, setTheater] = useState<string>("default");
   const [installedPlugins, setInstalledPlugins] = useState(allPlugins);
   const [requestedPlugins, setRequestedPlugins] = useState<string[]>([]);
   const [rankiStr, setRankiStr] = useState(presetGroups[0].presets[0].value);
@@ -47,7 +47,7 @@ export function useUserInput(
         },
         parserPlugins,
       );
-      const parsed = rankiLang.parse(rankiStr);
+      const parsed = rankiLang.parse({ [theater]: rankiStr });
       setRankiParsed(parsed);
     } catch (e) {
       setRankiParsed({

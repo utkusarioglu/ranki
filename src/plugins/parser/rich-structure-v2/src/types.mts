@@ -7,15 +7,16 @@ export interface NodeArgsRichStructureV2 {
   "richStructure.v2": {
     // name: string;
     // type: "implicit" | "explicit";
-    args: Partial<NodeArgsBaseV2> & {
-      "richStructure.v2.config": Partial<NodeArgsBaseV2>;
-    };
+    args: ParseNode["args"] &
+      Partial<NodeArgsBaseV2> & {
+        "richStructure.v2.config": Partial<NodeArgsBaseV2>;
+      };
     params: ParamsV2Spec;
   };
 }
 
 export type ParseNodeRichStructureV2 = Omit<ParseNode, "args"> & {
-  args: Partial<NodeArgsBaseV2> & NodeArgsRichStructureV2;
+  args: ParseNode["args"] & Partial<NodeArgsBaseV2> & NodeArgsRichStructureV2;
 };
 
 export interface ArgsAndParamsV2RichStructureV2 {

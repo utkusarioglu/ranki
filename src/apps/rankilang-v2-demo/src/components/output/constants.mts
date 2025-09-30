@@ -18,23 +18,18 @@ export const tabs: TabDefinition[] = [
   },
   {
     type: "exact",
-    name: "Raw",
-    path: "stages.raw",
-  },
-  {
-    type: "exact",
-    name: "Root",
-    path: "stages.parse.root",
+    name: "Stages",
+    path: "theaters.default.stages",
   },
   {
     type: "exact",
     name: "Block",
-    path: "stages.parse.root.children.children.",
+    path: "theaters.default.stages.parse.root.children.children.",
   },
   {
     type: "exact",
     name: "Lexeme",
-    path: "stages.parse.root.children.children.0.children.0.children.0.children.",
+    path: "theaters.default.stages.parse.root.children.children.0.children.0.children.0.children.",
   },
   {
     type: "custom",

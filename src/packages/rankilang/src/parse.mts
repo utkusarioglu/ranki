@@ -1,25 +1,25 @@
 import type { ParserPlugins } from "./plugins.mjs";
 import type {
   RankiLangParseContext,
-  RankiLangParseResult,
+  RankiLangParseFunctionReturn,
 } from "@ranki/package-api";
 import { buildGrammar, compileOhmActionDicts } from "./grammar.mjs";
 
 export function parse(
-  lang: RankiLangParseContext,
+  context: RankiLangParseContext,
   raw: string,
-): RankiLangParseResult {
-  const parserPlugins: ParserPlugins = lang.getPlugins();
+): RankiLangParseFunctionReturn {
+  const parserPlugins: ParserPlugins = context.lang.getPlugins();
 
   const missingStandard = parserPlugins.checkMissing(
-    new Set(lang.getConfig().merged.plugins.standards),
+    new Set(context.lang.getConfig().merged.plugins.standards),
   );
   if (missingStandard.length) {
     throw new Error(`MISSING STANDARD PLUGINS: ${missingStandard.join(", ")}`);
   }
 
   const missingRequested = parserPlugins.checkMissing(
-    new Set(lang.getConfig().merged.plugins.requested),
+    new Set(context.lang.getConfig().merged.plugins.requested),
   );
   if (missingRequested.length) {
     throw new Error(
@@ -28,15 +28,15 @@ export function parse(
   }
 
   const activePluginNames = new Set([
-    ...lang.getConfig().merged.plugins.standards,
-    ...lang.getConfig().merged.plugins.requested,
+    ...context.lang.getConfig().merged.plugins.standards,
+    ...context.lang.getConfig().merged.plugins.requested,
   ]);
 
   const activePluginsArr = parserPlugins.pickPlugins(activePluginNames);
   const importChain = parserPlugins.sortPlugins(activePluginsArr);
   const dependencyGraph = parserPlugins.dependencyGraph(activePluginsArr);
 
-  const { matcher } = buildGrammar(lang, importChain, (n) =>
+  const { matcher } = buildGrammar(context, importChain, (n) =>
     parserPlugins.find(n),
   );
 
@@ -57,19 +57,14 @@ export function parse(
         // context,
       },
       parser: {
-        requested: lang.getConfig().merged.plugins.requested,
-        importChain,
-        dependencyGraph,
-      },
-      config: lang.getConfig(),
-    },
-    stages: {
-      raw,
-      parse: {
-        participants,
+        requested: context.lang.getConfig().merged.plugins.requested,
+        sorted: importChain,
+        graph: dependencyGraph,
+        contributors: participants,
         methods,
-        root: semantics(matched).node(lang),
       },
+      config: context.lang.getConfig(),
     },
+    parsed: semantics(matched).node(context),
   };
 }

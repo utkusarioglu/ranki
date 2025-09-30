@@ -34,7 +34,7 @@ export function buildGrammar(
         parentGrammar: si === 0 ? "" : importChain[si - 1],
         dependencies: grammarParents,
       },
-      parserPlugin.grammar(context.getConfig()),
+      parserPlugin.grammar(context.lang.getConfig()),
     );
     matchers[name] = matcher;
     grammarParents = {
@@ -86,7 +86,7 @@ export function compileOhmActionDicts(
 
   Object.entries(operations).forEach(([operationName, actionDict]) => {
     semantics = semantics.addOperation(
-      `${operationName}(lang)`,
+      `${operationName}(context)`,
       actionDict as ohm.ActionDict<unknown>,
     );
   });

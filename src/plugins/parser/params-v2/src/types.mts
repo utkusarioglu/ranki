@@ -1,7 +1,8 @@
 // import type { NodeArgs as NodeArgsBaseV2 } from "@ranki/package-api";
+import { ParseNode } from "@ranki/package-api";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
-type NodeArgsParamsV2 = Partial<NodeArgsBaseV2>;
+type NodeArgsParamsV2 = ParseNode["args"] & Partial<NodeArgsBaseV2>;
 
 export interface ParamV2 {
   key: string;

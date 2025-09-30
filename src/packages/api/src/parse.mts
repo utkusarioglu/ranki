@@ -14,7 +14,13 @@ export interface ParseNodeLeaf extends ParseNodeCommon {
 
 interface ParseNodeCommon {
   type: string;
-  args: {}; // this needs to be overwritten by the plugins
+  args: {
+    depth: {
+      block: number;
+      inline: number;
+      total: number;
+    };
+  }; // this needs to be extended by plugins
 }
 
 interface NodeLeafSourceString {

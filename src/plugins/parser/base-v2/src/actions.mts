@@ -4,30 +4,22 @@ import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
 
 const node: ohm.ActionDict<ParseNode> = {
   root_ignore(indentation, directive, clearance, ignore, wm, rest) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.blockDepth++;
     return {
       kind: "leaf",
       type: this.ctorName,
       print: true,
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         "indentation.1.length": indentation.sourceString.length,
         "clearance.1.length": clearance.sourceString.length,
         "wm.1.length": wm.sourceString.length,
       },
-      // args2: [
-      //   {
-      //     key: "indentation.1.length",
-      //     value: indentation.sourceString.length,
-      //   },
-      //   {
-      //     key: "clearance.1.length",
-      //     value: clearance.sourceString.length,
-      //   },
-      //   {
-      //     key: "wm.1.length",
-      //     value: wm.sourceString.length,
-      //   },
-      //   // more here
-      // ],
       source: {
         type: "mixed",
         value: rest.sourceString,
@@ -36,31 +28,19 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   section_empty(all) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.blockDepth++;
     return {
       kind: "leaf",
       type: this.ctorName,
       print: true,
-      args: {},
-      // args: {
-      //   "indentation.1.length": indentation.sourceString.length,
-      //   "clearance.1.length": clearance.sourceString.length,
-      //   "wm.1.length": wm.sourceString.length,
-      // },
-      // args2: [
-      //   {
-      //     key: "indentation.1.length",
-      //     value: indentation.sourceString.length,
-      //   },
-      //   {
-      //     key: "clearance.1.length",
-      //     value: clearance.sourceString.length,
-      //   },
-      //   {
-      //     key: "wm.1.length",
-      //     value: wm.sourceString.length,
-      //   },
-      //   // more here
-      // ],
+      args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
+      },
       source: {
         type: "mixed",
         value: all.sourceString,
@@ -69,90 +49,132 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   root_structure(whitespace1, structure, whitespace2) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.blockDepth++;
     return {
       kind: "parent",
       type: this.ctorName,
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         "whitespace.1.length": whitespace1.sourceString.length,
         "whitespace.2.length": whitespace2.sourceString.length,
       },
-      // args: [
-      //   {
-      //     key: "whitespace.1.length",
-      //     value: whitespace1.sourceString.length,
-      //   },
-      //   {
-      //     key: "whitespace.2.length",
-      //     value: whitespace2.sourceString.length,
-      //   },
-      // ],
-      children: structure.node(this.args.lang),
+      children: structure.node(context),
     };
   },
 
   section_base(block, blockSep, block2) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.blockDepth++;
+    console.log({ context });
     return {
       kind: "parent",
       type: this.ctorName,
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         // block sep lengths
       },
-      children: joinNodes(this.args.lang, block, block2),
+      children: joinNodes(context, block, block2),
     };
   },
 
   p(line1, nl, line2) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.blockDepth++;
     return {
       kind: "parent",
       type: this.ctorName,
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         // nl length
       },
-      children: joinNodes(this.args.lang, line1, line2),
+      children: joinNodes(context, line1, line2),
     };
   },
 
   line(indentation1, lineModifiers, lexemes, wi1) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.inlineDepth++;
     return {
       kind: "parent",
       type: this.ctorName,
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         "indentation.1.length": indentation1.sourceString.length,
         "wi.1.length": wi1.sourceString.length,
       },
-      children: [lexemes.node(this.args.lang)],
+      children: [lexemes.node(context)],
     };
   },
 
   lexemes(lexeme1, clearance, lexeme2) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.inlineDepth++;
     return {
       kind: "parent",
       type: this.ctorName,
-      args: {},
-      children: zipNodes(this.args.lang, lexeme1, clearance, lexeme2),
-      // children: zipNodes(this.args.lang, lexeme1, clearance, lexeme2),
+      args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
+      },
+      children: zipNodes(context, lexeme1, clearance, lexeme2),
+      // children: zipNodes(this.args.context, lexeme1, clearance, lexeme2),
     };
   },
 
   decorated_base(word, wordEnd) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.inlineDepth++;
     return {
       kind: "parent",
       type: this.ctorName,
       args: {
-        "wordEnd.type": wordEnd.creatorName(this.args.lang),
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
+        "wordEnd.type": wordEnd.creatorName(context),
       },
 
-      children: [word.node(this.args.lang)],
+      children: [word.node(context)],
     };
   },
 
   decorated_fallback(word, wordEnd) {
+    const parentContext: RankiLangParseContext = { ...this.args.context };
+    parentContext.inlineDepth++;
+    const leafContext: RankiLangParseContext = { ...parentContext };
+    leafContext.inlineDepth++;
     return {
       kind: "parent",
       type: this.ctorName,
-      // args: {},
       args: {
-        "wordEnd.type": wordEnd.creatorName(this.args.lang),
+        depth: {
+          block: parentContext.blockDepth,
+          inline: parentContext.inlineDepth,
+          total: parentContext.inlineDepth + parentContext.blockDepth,
+        },
+        "wordEnd.type": wordEnd.creatorName(this.args.context),
       },
 
       children: [
@@ -160,7 +182,13 @@ const node: ohm.ActionDict<ParseNode> = {
           kind: "leaf",
           type: this.ctorName,
           print: true,
-          args: {},
+          args: {
+            depth: {
+              block: leafContext.blockDepth,
+              inline: leafContext.inlineDepth,
+              total: leafContext.inlineDepth + leafContext.blockDepth,
+            },
+          },
           source: {
             type: "mixed",
             value: word.sourceString,
@@ -171,11 +199,19 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   word_base(base) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.inlineDepth++;
     return {
       kind: "leaf",
       type: this.ctorName,
       print: true,
-      args: {},
+      args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
+      },
       source: {
         type: "mixed",
         value: base.sourceString,
@@ -184,11 +220,19 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   word_number(number) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.inlineDepth++;
     return {
       kind: "leaf",
       type: this.ctorName,
       print: true,
-      args: {},
+      args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
+      },
       source: {
         type: "number",
         raw: number.sourceString,
@@ -198,11 +242,18 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   clearance(clearance1) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.inlineDepth++;
     return {
       kind: "leaf",
       print: true,
       type: this.ctorName,
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         "clearance.1.length": clearance1.sourceString.length,
       },
       source: {
@@ -213,12 +264,19 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   whitespace(wm, wi) {
+    const context: RankiLangParseContext = { ...this.args.context };
+    context.inlineDepth++;
     const sourceString = wm.sourceString + wi.sourceString;
     return {
       kind: "leaf",
       print: true,
       type: this.ctorName,
       args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
         "whitespace.1.length": sourceString.length,
       },
       source: {
@@ -239,20 +297,22 @@ const creatorName: ohm.ActionDict<string> = {
     return this.ctorName;
   },
   tParamsV2SeparatorFrame(sep) {
-    const context: RankiLangParseContext = this.args.lang;
-    const separators = context.getConfig().merged.tokens.paramsV2.separator;
+    const context: RankiLangParseContext = this.args.context;
+    const separators =
+      context.lang.getConfig().merged.tokens.paramsV2.separator;
     return sep.sourceString === separators.frame ? this.ctorName : "none";
   },
   tParamsV2SeparatorParam(sep) {
-    const lang: RankiLangParseContext = this.args.lang;
-    const separators = lang.getConfig().merged.tokens.paramsV2.separator;
+    const context: RankiLangParseContext = this.args.context;
+    const separators =
+      context.lang.getConfig().merged.tokens.paramsV2.separator;
     return sep.sourceString === separators.param ? this.ctorName : "none";
   },
 };
 
 const iterNode: ohm.ActionDict<ParseNode[]> = {
   _iter(...children) {
-    return children.map((c) => c.node(this.args.lang));
+    return children.map((c) => c.node(this.args.context));
   },
 };
 

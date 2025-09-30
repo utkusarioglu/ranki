@@ -4,10 +4,10 @@ import type {
   RankiLanguageContextConfig,
   RankiLangParseResult,
   RankiLangParseSpecs,
+  RankiLangParseContext,
 } from "@ranki/package-api";
 import { parse } from "./parse.mjs";
 import { ParserPlugins } from "./plugins.mjs";
-import { RankiLanguageMergedConfig } from "../../api/src/config.mjs";
 
 function createMergedConfig(
   contextConfig: RankiLanguageContextConfig,
@@ -51,26 +51,75 @@ export class RankiLang implements RankiLangInstance {
   }
 
   parse(
-    raw: string,
-    s: RankiLangParseSpecs = { frame: { type: "null" } },
+    raw: Record<string, string>,
+    spec: RankiLangParseSpecs = {
+      frame: { type: "null" },
+      theater: "default",
+      role: "default",
+      blockDepth: 0,
+      inlineDepth: 0,
+    },
   ): RankiLangParseResult {
-    switch (s.frame.type) {
+    const theaterRaw = raw[spec.theater];
+
+    if (theaterRaw === undefined) {
+      throw new Error(`THEATER UNDEFINED: ${spec.theater}`);
+    }
+
+    const context: RankiLangParseContext = {
+      lang: this,
+      // totalDepth: spec.totalDepth,
+      blockDepth: spec.blockDepth,
+      inlineDepth: spec.inlineDepth,
+      theater: spec.theater,
+      role: spec.role,
+    };
+
+    switch (spec.frame.type) {
       case "null":
-        return parse(this, raw);
+        const parsed = parse(context, theaterRaw);
+        return {
+          report: parsed.report,
+          theaters: {
+            [spec.theater]: {
+              stages: {
+                raw: theaterRaw,
+                parse: {
+                  root: parsed.parsed,
+                },
+              },
+            },
+          },
+        };
 
       case "test":
         return {
-          stages: {
-            // @ts-expect-error
-            parse: {
-              root: {
-                kind: "leaf",
-                type: s.frame.type,
-                print: true,
-                args: {},
-                source: {
-                  type: "mixed",
-                  value: raw.trim() + ": " + s.frame.params.join(" - "),
+          // @ts-expect-error
+          report: {},
+          theaters: {
+            [spec.theater]: {
+              stages: {
+                raw: theaterRaw,
+                parse: {
+                  root: {
+                    kind: "leaf",
+                    type: spec.frame.type,
+                    print: true,
+                    args: {
+                      depth: {
+                        inline: 1,
+                        block: 0,
+                        total: 1,
+                      },
+                    },
+                    source: {
+                      type: "mixed",
+                      value:
+                        theaterRaw.trim() +
+                        ": " +
+                        spec.frame.params.join(" - "),
+                    },
+                  },
                 },
               },
             },
@@ -78,11 +127,11 @@ export class RankiLang implements RankiLangInstance {
         };
 
       default:
-        return parse(this, raw);
+        throw new Error(`UNRECOGNIZED FRAME TYPE: ${spec.frame.type}`);
     }
   }
 
-  create(
+  clone(
     contextConfig: RankiLanguageContextConfig,
     plugins: ParserPlugins,
   ): RankiLangInstance {
