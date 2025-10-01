@@ -104,6 +104,29 @@ const paramV2: ohm.ActionDict<ParamV2> = {
       ],
     };
   },
+
+  quoted(q1, content, q2) {
+    const context: RankiLangAstContext = { ...this.args.context };
+    context.inlineDepth++;
+    return {
+      key: "quoted",
+      args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
+      },
+      operator: "assign",
+      values: [
+        {
+          type: "mixed",
+          value: content.sourceString,
+          // value: false,
+        },
+      ],
+    };
+  },
 };
 
 const paramV2Values: ohm.ActionDict<ParamV2Value[]> = {

@@ -13,6 +13,7 @@ import type {
   NodeArgsFrameV2Config,
   NodeArgsFrameV2Fp_F,
 } from "./types.mjs";
+import { applyV2Directives } from "@ranki/plugin-parser-params-v2";
 
 const nodeBaseV2: ohm.ActionDict<AstNode> = {
   block_v2(indentation, v2, wi, ender) {
@@ -240,9 +241,34 @@ const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         params: frameArgs["frame.v2"]["params"]["items"],
       },
     };
+    const newConfig = applyV2Directives(
+      context.lang.getConfig().merged,
+      directiveArgs["directive.v2"]["params"]["items"],
+      // !TODO this function needs to come from the plugin def for a frame's directive
+      (i, key, operator, values) => {
+        let path: string[];
+        switch (i) {
+          case 0:
+            path = ["content", "prefix"];
+            break;
+          default:
+            throw new Error(
+              `UNDEFINED POSITIONAL PARAM: ${values[0].value.toString()}`,
+            );
+        }
+
+        return {
+          path,
+          operator,
+          values,
+        };
+      },
+    );
+
+    console.log({ newConfig });
 
     const child = context.lang
-      .clone(null)
+      .clone(newConfig)
       .parse({ [context.theater]: v2Payload.sourceString }, parseSpecs);
 
     const theater = child.theaters[context.theater];

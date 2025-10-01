@@ -85,7 +85,15 @@ export interface RankiLanguageUserConfig {
     // standards: PluginName[];
     requested: PluginName[];
   };
+  content: RankiLanguageContentConfig;
   tokens: TokensConfig;
+}
+
+export interface RankiLanguageContentConfig {
+  prefix: string;
+  prefixLine: string;
+  suffix: string;
+  suffixLine: string;
 }
 
 export interface RankiLanguageMergedConfig {
@@ -94,6 +102,7 @@ export interface RankiLanguageMergedConfig {
     standards: PluginName[];
     requested: PluginName[];
   };
+  content: RankiLanguageContentConfig;
   tokens: TokensConfig;
 }
 

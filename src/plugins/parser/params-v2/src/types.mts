@@ -5,11 +5,13 @@ import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 type NodeArgsParamsV2 = AstNode["args"] & Partial<NodeArgsBaseV2>;
 
 export interface ParamV2 {
-  key: string;
+  key: ParamV2Key;
   args: NodeArgsParamsV2;
   operator: ParamV2Operator;
   values: ParamV2Value[];
 }
+
+export type ParamV2Key = string & { type?: "ParamV2Key" };
 
 export type ParamV2Operator = "assign" | "append" | "remove";
 

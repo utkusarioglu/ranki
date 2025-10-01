@@ -4,6 +4,11 @@ plugins:
     - RankiConstantsV2
     - RankiBaseV2
   requested: []
+content: 
+  prefix: ""
+  prefixLine: ""
+  suffix: ""
+  suffixLine: ""
 tokens:
   baseV2: 
     escape: "\\\\"

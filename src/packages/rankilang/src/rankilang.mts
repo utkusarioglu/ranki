@@ -91,6 +91,20 @@ export class RankiLang implements RankiLangInstance {
       role: spec.role,
     };
 
+    const contentConfig = this.config.merged.content;
+    const prefixLine =
+      contentConfig.prefixLine !== "" ? contentConfig.prefixLine + "\n" : "";
+    const suffixLine =
+      contentConfig.suffixLine !== "" ? "\n" + contentConfig.suffixLine : "";
+
+    const theaterWithContent = [
+      prefixLine,
+      contentConfig.prefix,
+      theaterRaw,
+      contentConfig.suffix,
+      suffixLine,
+    ].join("");
+
     switch (spec.frame.type) {
       case "null":
         return {
@@ -98,8 +112,8 @@ export class RankiLang implements RankiLangInstance {
           theaters: {
             [spec.theater]: {
               stages: {
-                raw: theaterRaw,
-                ast: ast(context, theaterRaw),
+                raw: theaterWithContent,
+                ast: ast(context, theaterWithContent),
               },
             },
           },
@@ -112,7 +126,7 @@ export class RankiLang implements RankiLangInstance {
           theaters: {
             [spec.theater]: {
               stages: {
-                raw: theaterRaw,
+                raw: theaterWithContent,
                 ast: {
                   report: {
                     parser: {
@@ -137,7 +151,9 @@ export class RankiLang implements RankiLangInstance {
                     source: {
                       type: "mixed",
                       value:
-                        theaterRaw.trim() + ": " + spec.frame.params.length,
+                        theaterWithContent.trim() +
+                        ": " +
+                        spec.frame.params.length,
                     },
                   },
                 },
