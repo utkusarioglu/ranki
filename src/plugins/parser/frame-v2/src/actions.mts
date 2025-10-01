@@ -1,10 +1,17 @@
 import type * as ohm from "ohm-js";
 import { zipNodes } from "@ranki/package-api/helpers";
-import type { AstNode, RankiLangAstContext } from "@ranki/package-api";
+import type {
+  AstNode,
+  RankiLangAstContext,
+  RankiLangParseSpecs,
+} from "@ranki/package-api";
 import type {
   NodeArgsFrameV2,
   ParseNodeFrameV2,
   ArgsAndParamsV2FrameV2,
+  NodeArgsDirectiveV2Config,
+  NodeArgsFrameV2Config,
+  NodeArgsFrameV2Fp_F,
 } from "./types.mjs";
 
 const nodeBaseV2: ohm.ActionDict<AstNode> = {
@@ -206,9 +213,46 @@ const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     };
   },
 
+  // // @ts-expect-error
+  // v2PayloadSectionItem_v2(v2) {
+  //   return {
+  //     message: "hi",
+  //   };
+  // },
+
   v2_dfp(directive, directiveConfig, frame, v2FrameConfig, v2Payload, v2End) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
+    const directiveArgs: NodeArgsDirectiveV2Config =
+      directiveConfig.v2FrameConfig(context);
+    const frameArgs: NodeArgsFrameV2Fp_F = v2FrameConfig.v2FrameConfig(context);
+
+    const parseSpecs: RankiLangParseSpecs = {
+      theater: context.theater,
+      role: context.role,
+      inlineDepth: context.inlineDepth,
+      blockDepth: context.blockDepth,
+      startRule: "v2Payload",
+      frame: {
+        version: "v2",
+        type: frameArgs["frame.v2"].frameType,
+        directives: directiveArgs["directive.v2"]["params"]["items"],
+        params: frameArgs["frame.v2"]["params"]["items"],
+      },
+    };
+
+    const child = context.lang
+      .clone(null)
+      .parse({ [context.theater]: v2Payload.sourceString }, parseSpecs);
+
+    const theater = child.theaters[context.theater];
+
+    // // @ts-expect-error
+    // frameArgs["frame.v2"]["report"] = theater.stages.ast.report;
+    // frameArgs["frame.v2"]["specs"] = {
+    //   directives:
+    // };
+
     return {
       kind: "parent",
       type: this.ctorName,
@@ -218,10 +262,12 @@ const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        ...directiveConfig.v2FrameConfig(context),
-        ...v2FrameConfig.v2FrameConfig(context),
+        ...directiveArgs,
+        ...frameArgs,
       },
-      children: [v2Payload.node(context)],
+      // children: [v2Payload.node(context)],
+      children: [theater.stages.ast.root],
+      // children: [theater.stages.ast],
     };
   },
 };

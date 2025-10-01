@@ -64,6 +64,7 @@ export class RankiLang implements RankiLangInstance {
       role: "default",
       blockDepth: 0,
       inlineDepth: 0,
+      startRule: "root",
     },
   ): RankiLangParseResult {
     const theaterRaw = raw[spec.theater];
@@ -78,6 +79,7 @@ export class RankiLang implements RankiLangInstance {
       inlineDepth: spec.inlineDepth,
       theater: spec.theater,
       role: spec.role,
+      startRule: "root",
     };
 
     const report: RankiLangParseReport = {
@@ -85,6 +87,8 @@ export class RankiLang implements RankiLangInstance {
         versions: this.plugins.getVersions(),
       },
       config: this.config,
+      theater: spec.theater,
+      role: spec.role,
     };
 
     switch (spec.frame.type) {
@@ -102,6 +106,7 @@ export class RankiLang implements RankiLangInstance {
         };
 
       case "test":
+        console.log(spec);
         return {
           report,
           theaters: {
@@ -132,9 +137,7 @@ export class RankiLang implements RankiLangInstance {
                     source: {
                       type: "mixed",
                       value:
-                        theaterRaw.trim() +
-                        ": " +
-                        spec.frame.params.join(" - "),
+                        theaterRaw.trim() + ": " + spec.frame.params.length,
                     },
                   },
                 },

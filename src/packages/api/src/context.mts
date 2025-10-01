@@ -14,6 +14,8 @@ export interface RankiLangParseReport {
     versions: VersionReport;
   };
   config: RankiLanguageConfig;
+  theater: TheaterName;
+  role: RoleName;
 }
 
 export interface RankiLangParsedTheater {
@@ -68,6 +70,7 @@ export interface RankiLangParseSpecs {
   role: RoleName;
   blockDepth: number;
   inlineDepth: number;
+  startRule: string;
 }
 
 export type RankiLangAstContext = {
@@ -76,6 +79,7 @@ export type RankiLangAstContext = {
   theater: TheaterName;
   role: RoleName;
   lang: RankiLangInstance;
+  startRule: string;
 };
 
 export type VersionReport = Record<string, string>;

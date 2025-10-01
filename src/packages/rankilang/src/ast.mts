@@ -56,7 +56,7 @@ export function ast(
     actions,
   );
 
-  const matched = matcher.match(raw, "root");
+  const matched = matcher.match(raw, context.startRule);
 
   return {
     report: {

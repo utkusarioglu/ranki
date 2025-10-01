@@ -52,7 +52,7 @@ RankiFrameV2 <: RankiParamsV2 {
     |   wi 
       v2Type wi 
         v2ParamListInlineContainer wi 
-        tParamsV2SeparatorFrame?  --f
+        tParamsV2SeparatorFrame? --f
 
   v2FrameConfigP = wi v2Type wi (tParamsV2SeparatorFrame | nl)
 
