@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangParseContext } from "@ranki/package-api";
+import type { RankiLangAstContext } from "@ranki/package-api";
 import type { ArgsAndParamsV2 } from "@ranki/plugin-parser-params-v2";
 import type {
   ParseNodeRichStructureV2,
@@ -7,7 +7,7 @@ import type {
 } from "./types.mjs";
 
 function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
-  const context: RankiLangParseContext = { ...this.args.context };
+  const context: RankiLangAstContext = { ...this.args.context };
   const l = a.node(context);
   l.type = this.ctorName;
   return l;
@@ -15,7 +15,7 @@ function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
 
 const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
   hLevel_defined(structureType1, separator, structureType2) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     const sep: ParseNodeRichStructureV2["args"]["richStructure.v2"] =
       separator.argsAndParamsV2(context);
@@ -63,7 +63,7 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
 
 const argsAndParamsV2List: ohm.ActionDict<ArgsAndParamsV2[]> = {
   _iter(...children) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     return children.map((c) => c.argsAndParamsV2(context));
   },
 };
@@ -76,7 +76,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi2,
     structureSepEnd,
   ) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
       args: {
@@ -103,7 +103,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi3,
     structureSepEnd,
   ) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const config: ArgsAndParamsV2RichStructureV2 =
       v2ParamListInlineContainer.argsAndParamsV2(context);

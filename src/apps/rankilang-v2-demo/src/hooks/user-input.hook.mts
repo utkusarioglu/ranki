@@ -41,11 +41,9 @@ export function useUserInput(
       );
       languageUserConfig.plugins.requested = requestedPlugins;
       const rankiLang = new RankiLang(
-        {
-          default: languageDefaultConfig,
-          user: languageUserConfig,
-        },
         parserPlugins,
+        languageDefaultConfig,
+        languageUserConfig,
       );
       const parsed = rankiLang.parse({ [theater]: rankiStr });
       setRankiParsed(parsed);

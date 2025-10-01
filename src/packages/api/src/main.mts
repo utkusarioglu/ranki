@@ -13,16 +13,16 @@ export type {
   RankiLanguageDefaultConfig,
 } from "./config.mjs";
 
-export type { ParseNode, ParseNodeLeaf, ParseNodeParent } from "./parse.mjs";
+export type { AstNode, AstNodeLeaf, AstNodeParent } from "./ast-node.mjs";
 
 export type {
-  RankiLangParseContext,
+  RankiLangAstContext,
   VersionReport,
-  RankiLangInstance,
   RankiLangParseResult,
   RankiLangParseSpecs,
   RankiLangParsedTheater,
   RankiLangParseReport,
   RankiLangParseFunctionReturn,
-  // CreateContextFunction,
 } from "./context.mjs";
+
+export type { RankiLangInstance } from "./rankilang.mjs";

@@ -1,4 +1,4 @@
-import type { ParseNode as ParseNodeBaseV2 } from "@ranki/package-api";
+import type { AstNode as ParseNodeBaseV2 } from "@ranki/package-api";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
 export type NodeArgRichTextV2WordDecoration = NodeArgRichTextV2SentenceEnd &

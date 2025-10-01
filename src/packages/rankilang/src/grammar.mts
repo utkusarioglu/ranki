@@ -1,6 +1,6 @@
 import * as ohm from "ohm-js";
 import type {
-  RankiLangParseContext,
+  RankiLangAstContext,
   RankiPluginParser,
 } from "@ranki/package-api";
 import type { GrammarSpecs } from "./types/parser.mjs";
@@ -20,7 +20,7 @@ function adjustParent(specs: GrammarSpecs, raw: string): ParserPluginGrammar {
 }
 
 export function buildGrammar(
-  context: RankiLangParseContext,
+  context: RankiLangAstContext,
   importChain: string[],
   finder: (s: string) => RankiPluginParser,
 ) {

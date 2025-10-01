@@ -1,10 +1,10 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangParseContext, ParseNode } from "@ranki/package-api";
+import type { RankiLangAstContext, AstNode } from "@ranki/package-api";
 import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
 
-const node: ohm.ActionDict<ParseNode> = {
+const node: ohm.ActionDict<AstNode> = {
   root_ignore(indentation, directive, clearance, ignore, wm, rest) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       kind: "leaf",
@@ -28,7 +28,7 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   section_empty(all) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       kind: "leaf",
@@ -49,7 +49,7 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   root_structure(whitespace1, structure, whitespace2) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       kind: "parent",
@@ -68,9 +68,8 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   section_base(block, blockSep, block2) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
-    console.log({ context });
     return {
       kind: "parent",
       type: this.ctorName,
@@ -87,7 +86,7 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   p(line1, nl, line2) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       kind: "parent",
@@ -105,7 +104,7 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   line(indentation1, lineModifiers, lexemes, wi1) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
       kind: "parent",
@@ -124,7 +123,7 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   lexemes(lexeme1, clearance, lexeme2) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
       kind: "parent",
@@ -142,7 +141,7 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   decorated_base(word, wordEnd) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
       kind: "parent",
@@ -161,9 +160,9 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   decorated_fallback(word, wordEnd) {
-    const parentContext: RankiLangParseContext = { ...this.args.context };
+    const parentContext: RankiLangAstContext = { ...this.args.context };
     parentContext.inlineDepth++;
-    const leafContext: RankiLangParseContext = { ...parentContext };
+    const leafContext: RankiLangAstContext = { ...parentContext };
     leafContext.inlineDepth++;
     return {
       kind: "parent",
@@ -199,7 +198,7 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   word_base(base) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
       kind: "leaf",
@@ -220,7 +219,7 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   word_number(number) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
       kind: "leaf",
@@ -242,7 +241,7 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   clearance(clearance1) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
       kind: "leaf",
@@ -264,7 +263,7 @@ const node: ohm.ActionDict<ParseNode> = {
   },
 
   whitespace(wm, wi) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const sourceString = wm.sourceString + wi.sourceString;
     return {
@@ -297,20 +296,20 @@ const creatorName: ohm.ActionDict<string> = {
     return this.ctorName;
   },
   tParamsV2SeparatorFrame(sep) {
-    const context: RankiLangParseContext = this.args.context;
+    const context: RankiLangAstContext = this.args.context;
     const separators =
       context.lang.getConfig().merged.tokens.paramsV2.separator;
     return sep.sourceString === separators.frame ? this.ctorName : "none";
   },
   tParamsV2SeparatorParam(sep) {
-    const context: RankiLangParseContext = this.args.context;
+    const context: RankiLangAstContext = this.args.context;
     const separators =
       context.lang.getConfig().merged.tokens.paramsV2.separator;
     return sep.sourceString === separators.param ? this.ctorName : "none";
   },
 };
 
-const iterNode: ohm.ActionDict<ParseNode[]> = {
+const iterNode: ohm.ActionDict<AstNode[]> = {
   _iter(...children) {
     return children.map((c) => c.node(this.args.context));
   },

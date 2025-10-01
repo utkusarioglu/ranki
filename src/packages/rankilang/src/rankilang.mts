@@ -1,45 +1,51 @@
 import type {
   RankiLanguageConfig,
   RankiLangInstance,
-  RankiLanguageContextConfig,
   RankiLangParseResult,
   RankiLangParseSpecs,
-  RankiLangParseContext,
+  RankiLangAstContext,
+  RankiLanguageDefaultConfig,
+  RankiLanguageUserConfig,
+  RankiLangParseReport,
 } from "@ranki/package-api";
-import { parse } from "./parse.mjs";
+import { ast } from "./ast.mjs";
 import { ParserPlugins } from "./plugins.mjs";
 
 function createMergedConfig(
-  contextConfig: RankiLanguageContextConfig,
+  defaultConfig: RankiLanguageDefaultConfig,
+  userConfig: RankiLanguageUserConfig,
 ): RankiLanguageConfig {
   const merged: RankiLanguageConfig["merged"] = {
-    ...contextConfig.default,
-    ...contextConfig.user,
+    ...defaultConfig,
+    ...userConfig,
     plugins: {
-      standards: contextConfig.default.plugins.standards,
-      requested: contextConfig.user.plugins.requested,
+      standards: defaultConfig.plugins.standards,
+      requested: userConfig.plugins.requested,
     },
   };
 
   return {
-    default: contextConfig.default,
-    user: contextConfig.user,
+    default: defaultConfig,
+    user: userConfig,
     merged,
   };
 }
 
 export class RankiLang implements RankiLangInstance {
-  private contextConfig: RankiLanguageContextConfig;
+  private defaultConfig: RankiLanguageDefaultConfig;
+  private userConfig: RankiLanguageUserConfig;
   private config: RankiLanguageConfig;
   private plugins: ParserPlugins;
 
   constructor(
-    contextConfig: RankiLanguageContextConfig,
     plugins: ParserPlugins,
+    defaultConfig: RankiLanguageDefaultConfig,
+    userConfig: RankiLanguageUserConfig,
   ) {
-    this.contextConfig = contextConfig;
+    this.defaultConfig = defaultConfig;
+    this.userConfig = userConfig;
     this.plugins = plugins;
-    this.config = createMergedConfig(this.contextConfig);
+    this.config = createMergedConfig(this.defaultConfig, this.userConfig);
   }
 
   getConfig() {
@@ -66,27 +72,30 @@ export class RankiLang implements RankiLangInstance {
       throw new Error(`THEATER UNDEFINED: ${spec.theater}`);
     }
 
-    const context: RankiLangParseContext = {
+    const context: RankiLangAstContext = {
       lang: this,
-      // totalDepth: spec.totalDepth,
       blockDepth: spec.blockDepth,
       inlineDepth: spec.inlineDepth,
       theater: spec.theater,
       role: spec.role,
     };
 
+    const report: RankiLangParseReport = {
+      language: {
+        versions: this.plugins.getVersions(),
+      },
+      config: this.config,
+    };
+
     switch (spec.frame.type) {
       case "null":
-        const parsed = parse(context, theaterRaw);
         return {
-          report: parsed.report,
+          report,
           theaters: {
             [spec.theater]: {
               stages: {
                 raw: theaterRaw,
-                parse: {
-                  root: parsed.parsed,
-                },
+                ast: ast(context, theaterRaw),
               },
             },
           },
@@ -94,13 +103,21 @@ export class RankiLang implements RankiLangInstance {
 
       case "test":
         return {
-          // @ts-expect-error
-          report: {},
+          report,
           theaters: {
             [spec.theater]: {
               stages: {
                 raw: theaterRaw,
-                parse: {
+                ast: {
+                  report: {
+                    parser: {
+                      requested: [],
+                      sorted: [],
+                      graph: {},
+                      contributors: {},
+                      methods: {},
+                    },
+                  },
                   root: {
                     kind: "leaf",
                     type: spec.frame.type,
@@ -131,15 +148,9 @@ export class RankiLang implements RankiLangInstance {
     }
   }
 
-  clone(
-    contextConfig: RankiLanguageContextConfig,
-    plugins: ParserPlugins,
-  ): RankiLangInstance {
-    const newContextConfig =
-      contextConfig === null ? this.contextConfig : contextConfig;
-    const newPlugins = plugins === null ? this.plugins : plugins;
-    const lang = new RankiLang(newContextConfig, newPlugins);
-    return lang;
+  clone(userConfig: RankiLanguageUserConfig | null): RankiLangInstance {
+    const newUserConfig = userConfig === null ? this.userConfig : userConfig;
+    return new RankiLang(this.plugins, this.defaultConfig, newUserConfig);
   }
 }
 

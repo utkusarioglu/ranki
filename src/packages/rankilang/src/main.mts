@@ -1,3 +1,3 @@
-export { parse } from "./parse.mjs";
+export { ast as parse } from "./ast.mjs";
 export { ParserPlugins } from "./plugins.mjs";
-export { RankiLang } from "./context.mjs";
+export { RankiLang } from "./rankilang.mjs";

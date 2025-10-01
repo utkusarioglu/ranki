@@ -1,8 +1,6 @@
-import type {
-  RankiLanguageConfig,
-  RankiLanguageContextConfig,
-} from "./config.mjs";
-import type { ParseNode } from "./parse.mjs";
+import type { RankiLanguageConfig } from "./config.mjs";
+import type { AstNode } from "./ast-node.mjs";
+import type { RankiLangInstance } from "./rankilang.mjs";
 
 export interface RankiLangParseResult {
   report: RankiLangParseReport;
@@ -15,6 +13,20 @@ export interface RankiLangParseReport {
   language: {
     versions: VersionReport;
   };
+  config: RankiLanguageConfig;
+}
+
+export interface RankiLangParsedTheater {
+  stages: {
+    raw: string;
+    ast: {
+      report: RankiLangAstReport;
+      root: AstNode;
+    };
+  };
+}
+
+export interface RankiLangAstReport {
   parser: {
     requested: string[];
     sorted: string[];
@@ -22,40 +34,16 @@ export interface RankiLangParseReport {
     contributors: Record<string, string[]>;
     methods: Record<string, string[]>;
   };
-  config: RankiLanguageConfig;
 }
-
-export interface RankiLangParsedTheater {
-  stages: {
-    raw: string;
-    parse: {
-      root: ParseNode;
-    };
-  };
-}
-
 export interface RankiLangParseFunctionReturn {
-  report: RankiLangParseReport;
-  parsed: RankiLangParsedTheater["stages"]["parse"]["root"];
+  report: RankiLangAstReport;
+  root: RankiLangParsedTheater["stages"]["ast"]["root"];
 }
 
-type ParserPlugins = any; // !TODO any
+export type ParserPlugins = any; // !TODO any
 
-type TheaterName = string & { type?: "TheaterName" };
+export type TheaterName = string & { type?: "TheaterName" };
 type RoleName = string & { type?: "RoleName" };
-
-export interface RankiLangInstance {
-  getPlugins(): ParserPlugins;
-  getConfig(): RankiLanguageConfig;
-  parse(
-    raw: Record<TheaterName, string>,
-    specs: RankiLangParseSpecs,
-  ): RankiLangParseResult;
-  clone(
-    contextConfig: RankiLanguageContextConfig | null,
-    plugins: ParserPlugins | null,
-  ): RankiLangInstance;
-}
 
 interface FrameNull {
   type: "null";
@@ -78,15 +66,11 @@ export interface RankiLangParseSpecs {
   frame?: FrameNull | FrameV1 | FrameV2;
   theater: TheaterName;
   role: RoleName;
-  // totalDepth: number;
   blockDepth: number;
   inlineDepth: number;
-  // frameType: string;
-  // plugins: any; // !TODO any
 }
 
-export type RankiLangParseContext = {
-  // totalDepth: number;
+export type RankiLangAstContext = {
   blockDepth: number;
   inlineDepth: number;
   theater: TheaterName;

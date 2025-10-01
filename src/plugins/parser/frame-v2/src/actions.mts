@@ -1,15 +1,15 @@
 import type * as ohm from "ohm-js";
 import { zipNodes } from "@ranki/package-api/helpers";
-import type { ParseNode, RankiLangParseContext } from "@ranki/package-api";
+import type { AstNode, RankiLangAstContext } from "@ranki/package-api";
 import type {
   NodeArgsFrameV2,
   ParseNodeFrameV2,
   ArgsAndParamsV2FrameV2,
 } from "./types.mjs";
 
-const nodeBaseV2: ohm.ActionDict<ParseNode> = {
+const nodeBaseV2: ohm.ActionDict<AstNode> = {
   block_v2(indentation, v2, wi, ender) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       kind: "parent",
@@ -25,7 +25,7 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
     };
   },
   v2Payload_P(wi1, nl, pauseRoot) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       kind: "parent",
@@ -43,7 +43,7 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
   },
 
   v2Payload_p(pauseRoot) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       kind: "parent",
@@ -60,7 +60,7 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
   },
 
   pauseRoot(whitespace1, pauseList, whitespace2) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       kind: "parent",
@@ -79,7 +79,7 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
   },
 
   pauseList(v2PayloadSection1, pausedContainer, v2PayloadSection2) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       kind: "parent",
@@ -101,7 +101,7 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
   },
 
   v2PayloadSection(v2PayloadSectionItem1, whitespace, v2PayloadSectionItem2) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       kind: "parent",
@@ -123,7 +123,7 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
   },
 
   v2PayloadPlain(plain) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       kind: "leaf",
@@ -151,9 +151,9 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
     pauseEnd,
     whitespace2,
   ) {
-    const parentContext: RankiLangParseContext = { ...this.args.context };
+    const parentContext: RankiLangAstContext = { ...this.args.context };
     parentContext.blockDepth++;
-    const leafContext: RankiLangParseContext = { ...parentContext };
+    const leafContext: RankiLangAstContext = { ...parentContext };
     leafContext.inlineDepth++;
     return {
       kind: "parent",
@@ -189,7 +189,7 @@ const nodeBaseV2: ohm.ActionDict<ParseNode> = {
 
 const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2_fp(directive, frame, v2FrameConfig, v2Payload, v2End) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       kind: "parent",
@@ -207,7 +207,7 @@ const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   v2_dfp(directive, directiveConfig, frame, v2FrameConfig, v2Payload, v2End) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       kind: "parent",
@@ -228,7 +228,7 @@ const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
 
 const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   v2DirectiveConfig_D(wi1, nl, wi2, v2ParamListBlock, whitespace) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     const params = v2ParamListBlock.paramsV2(context);
     return {
@@ -252,7 +252,7 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   },
 
   v2DirectiveConfig_d(wi1, v2ParamListInline, wi2) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     const params = v2ParamListInline.paramsV2(context);
     return {
@@ -276,7 +276,7 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   },
 
   v2FrameConfigP(wi1, v2Type, wi2, sep) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       "frame.v2": {
@@ -305,7 +305,7 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     wi3,
     sepRight,
   ) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     const config: ArgsAndParamsV2FrameV2 =
       v2ParamListInlineContainer.argsAndParamsV2(context);
@@ -343,7 +343,7 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     wi3,
     sepRight,
   ) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     const config: ArgsAndParamsV2FrameV2 =
       v2ParamListBlockContainer.argsAndParamsV2(context);

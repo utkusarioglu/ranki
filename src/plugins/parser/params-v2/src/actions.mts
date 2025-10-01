@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangParseContext } from "@ranki/package-api";
+import type { RankiLangAstContext } from "@ranki/package-api";
 import type {
   ArgsAndParamsV2,
   ParamV2,
@@ -9,12 +9,12 @@ import type {
 
 const paramsV2: ohm.ActionDict<ParamV2[]> = {
   _iter(...children) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     return children.map((c) => c.paramV2(context));
   },
 
   v2ParamListInline(param1, sep, param2) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const rest = param2.paramsV2(context);
     const joined = [param1.paramV2(context), ...rest];
@@ -23,7 +23,7 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
   },
 
   v2ParamListBlock(param1, sep, param2) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     const rest = param2.paramsV2(context);
     const joined = [param1.paramV2(context), ...rest];
@@ -34,7 +34,7 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
 
 const paramV2: ohm.ActionDict<ParamV2> = {
   param_operator(paramKey, wi1, operatorToken, wi2, paramValues) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const operators = context.lang.getConfig().merged.tokens.paramsV2.operators;
     const f = Object.entries(operators).find(
@@ -62,7 +62,7 @@ const paramV2: ohm.ActionDict<ParamV2> = {
   },
 
   param_positive(key) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
       key: key.sourceString,
@@ -84,7 +84,7 @@ const paramV2: ohm.ActionDict<ParamV2> = {
   },
 
   param_negative(negation, key) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
       key: key.sourceString,
@@ -108,12 +108,12 @@ const paramV2: ohm.ActionDict<ParamV2> = {
 
 const paramV2Values: ohm.ActionDict<ParamV2Value[]> = {
   _iter(...children) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     return children.map((c) => c.paramV2Value(context));
   },
 
   paramValues(i1, clearance, i2) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     return [i1.paramV2Value(context), ...i2.paramV2Values(context)];
   },
 };
@@ -179,7 +179,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi3,
     sepLeft2,
   ) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       args: {
@@ -203,7 +203,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   },
 
   v2ParamListInlineContainer(sepLeft1, wi1, v2ParamListInline, wi2, sepLeft2) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       args: {

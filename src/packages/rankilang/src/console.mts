@@ -1,6 +1,7 @@
 import type {
-  RankiLanguageConfig,
+  // RankiLanguageConfig,
   RankiLanguageUserConfig,
+  RankiLanguageDefaultConfig,
 } from "@ranki/package-api";
 import yaml from "yaml";
 import * as fs from "node:fs";
@@ -17,7 +18,7 @@ import { rankiRichTextV2ParserPlugin } from "@ranki/plugin-parser-rich-text-v2";
 import { rankiRichNumberV2ParserPlugin } from "@ranki/plugin-parser-rich-number-v2";
 import { rankiRichStructureV2ParserPlugin } from "@ranki/plugin-parser-rich-structure-v2";
 import { rankiFrameV1ParserPlugin } from "@ranki/plugin-parser-frame-v1";
-import { RankiLang } from "./context.mjs";
+import { RankiLang } from "./rankilang.mjs";
 
 const parserPlugins = new ParserPlugins();
 [
@@ -118,10 +119,10 @@ export const userConfig: RankiLanguageUserConfig = {
   },
 };
 
-const languageConfig: RankiLanguageConfig = JSON.parse(
+const defaultConfig: RankiLanguageDefaultConfig = JSON.parse(
   JSON.stringify(userConfig),
 );
-languageConfig.merged.plugins.standards = ["RankiConstantsV2", "RankiBaseV2"];
+defaultConfig.plugins.standards = ["RankiConstantsV2", "RankiBaseV2"];
 
 const THROW_TESTS = "./assets/throw";
 const throwTests = fs.readdirSync(THROW_TESTS);
@@ -142,13 +143,11 @@ function produceTests(count: number) {
 
 function main(count: number) {
   const parsed = [];
-  const lang = new RankiLang(languageConfig, parserPlugins);
-  // const context = createContext(languageConfig, parserPlugins);
+  const lang = new RankiLang(parserPlugins, defaultConfig, userConfig);
 
-  produceTests(count).forEach((t) => {
+  produceTests(count).forEach((test) => {
     try {
-      parsed.push(lang.parse({ default: t }));
-      // parsed.push(context.methods.parser({ frameType: "null" })(context, t));
+      parsed.push(lang.parse({ default: test }));
     } catch (e) {
       console.error(e);
       process.exit(1);

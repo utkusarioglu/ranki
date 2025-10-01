@@ -1,18 +1,18 @@
-export type ParseNode = ParseNodeLeaf | ParseNodeParent;
+export type AstNode = AstNodeLeaf | AstNodeParent;
 
-export interface ParseNodeParent extends ParseNodeCommon {
+export interface AstNodeParent extends AstNodeCommon {
   kind: "parent";
   type: string;
-  children: ParseNode[];
+  children: AstNode[];
 }
 
-export interface ParseNodeLeaf extends ParseNodeCommon {
+export interface AstNodeLeaf extends AstNodeCommon {
   kind: "leaf";
   print: boolean;
-  source: NodeLeafSource;
+  source: AstNodeLeafSource;
 }
 
-interface ParseNodeCommon {
+interface AstNodeCommon {
   type: string;
   args: {
     depth: {
@@ -23,7 +23,7 @@ interface ParseNodeCommon {
   }; // this needs to be extended by plugins
 }
 
-interface NodeLeafSourceString {
+interface AstNodeLeafSourceString {
   type:
     | "uppercase"
     | "lowercase"
@@ -36,9 +36,9 @@ interface NodeLeafSourceString {
   value: string;
 }
 
-type NodeLeafSource = NodeLeafSourceNumber | NodeLeafSourceString;
+type AstNodeLeafSource = AstNodeLeafSourceNumber | AstNodeLeafSourceString;
 
-export interface NodeLeafSourceNumber {
+export interface AstNodeLeafSourceNumber {
   type: "number";
   raw: string;
   number: number;

@@ -1,11 +1,11 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangParseContext, ParseNode } from "@ranki/package-api";
+import type { RankiLangAstContext, AstNode } from "@ranki/package-api";
 import type { ParseNodeFrameV1 } from "./types.mjs";
 import type { ArgsAndParamsV1 } from "./types.mjs";
 
-const nodeBaseV2: ohm.ActionDict<ParseNode> = {
+const nodeBaseV2: ohm.ActionDict<AstNode> = {
   block_v1(indentation, v1Block, wi1, end) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
       kind: "parent",
@@ -35,9 +35,9 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadInline,
     frameV1_2,
   ) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
-    const child = context.lang.clone(null, null).parse(
+    const child = context.lang.clone(null).parse(
       { [context.theater]: v1PayloadInline.sourceString },
       {
         ...context,
@@ -64,7 +64,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           frameType: v1Type.sourceString,
         },
       },
-      children: [child.theaters[context.theater].stages.parse.root],
+      children: [child.theaters[context.theater].stages.ast.root],
     };
   },
 
@@ -81,10 +81,10 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadInline,
     frameV1_2,
   ) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(context);
-    const child = context.lang.clone(null, null).parse(
+    const child = context.lang.clone(null).parse(
       { [context.theater]: v1PayloadInline.sourceString },
       {
         ...context,
@@ -112,7 +112,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           ...argsAndParamsV1,
         },
       },
-      children: [child.theaters[context.theater].stages.parse.root],
+      children: [child.theaters[context.theater].stages.ast.root],
     };
   },
 
@@ -127,9 +127,9 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadBlock,
     v1BlockEnd,
   ) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
-    const child = context.lang.clone(null, null).parse(
+    const child = context.lang.clone(null).parse(
       { [context.theater]: v1PayloadBlock.sourceString },
       {
         ...context,
@@ -156,7 +156,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           frameType: v1Type.sourceString,
         },
       },
-      children: [child.theaters[context.theater].stages.parse.root],
+      children: [child.theaters[context.theater].stages.ast.root],
     };
   },
 
@@ -175,11 +175,11 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadBlock,
     v1BlockEnd,
   ) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     const argsAndParamsV1: ArgsAndParamsV1 =
       v1ParamListInline.argsAndParamsV1(context);
-    const child = context.lang.clone(null, null).parse(
+    const child = context.lang.clone(null).parse(
       { [context.theater]: v1PayloadBlock.sourceString },
       {
         ...context,
@@ -212,7 +212,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           report: child.report,
         },
       },
-      children: [child.theaters[context.theater].stages.parse.root],
+      children: [child.theaters[context.theater].stages.ast.root],
     };
   },
 };
@@ -225,7 +225,7 @@ const paramV1: ohm.ActionDict<string> = {
 
 const paramsV1: ohm.ActionDict<string[]> = {
   _iter(...children) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     // context.depth++;
     return children.map((v) => v.paramV1(context));
   },
@@ -233,7 +233,7 @@ const paramsV1: ohm.ActionDict<string[]> = {
 
 const argsAndParamsV1: ohm.ActionDict<ArgsAndParamsV1> = {
   v1ParamListInline(v1ParamValue1, sep, v1ParamValue2) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     // context.depth++;
     return {
       args: {},

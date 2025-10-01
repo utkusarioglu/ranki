@@ -1,7 +1,7 @@
 // import type { NodeArgs as NodeArgsBaseV2 } from "@ranki/package-api";
 import type { ParamsV2Spec } from "@ranki/plugin-parser-params-v2";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
-import { ParseNode } from "@ranki/package-api";
+import { AstNode } from "@ranki/package-api";
 
 export type NodeArgsFrameV2Config =
   | NodeArgsFrameV2ConfigFp_F
@@ -13,13 +13,13 @@ export type ParseNodeFrameV2 =
   | ParseNodeFrameV2Fp_f
   | ParseNodeFrameV2P;
 
-export type ParseNodeFrameV2Fp_F = Omit<ParseNode, "args"> & {
+export type ParseNodeFrameV2Fp_F = Omit<AstNode, "args"> & {
   args: NodeArgsFrameV2ConfigFp_F;
 };
-export type ParseNodeFrameV2Fp_f = Omit<ParseNode, "args"> & {
+export type ParseNodeFrameV2Fp_f = Omit<AstNode, "args"> & {
   args: NodeArgsFrameV2ConfigFp_f;
 };
-export type ParseNodeFrameV2P = Omit<ParseNode, "args"> & {
+export type ParseNodeFrameV2P = Omit<AstNode, "args"> & {
   args: NodeArgsFrameV2ConfigP;
 };
 

@@ -1,4 +1,4 @@
-import type { ParseNode, ParseNodeLeaf } from "@ranki/package-api";
+import type { AstNode, AstNodeLeaf } from "@ranki/package-api";
 
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
@@ -6,14 +6,12 @@ export type ParseNodeRichNumberV2 =
   | ParseNodeRichNumberV2General
   | ParseNodeRichNumberV2Complex;
 
-type ParseNodeRichNumberV2General = Omit<ParseNodeLeaf, "args" | "source"> & {
-  args: ParseNode["args"] & Partial<NodeArgsBaseV2>;
+type ParseNodeRichNumberV2General = Omit<AstNodeLeaf, "args" | "source"> & {
+  args: AstNode["args"] & Partial<NodeArgsBaseV2>;
   source: NodeLeafRichNumberV2SourceGeneral;
 };
-type ParseNodeRichNumberV2Complex = Omit<ParseNodeLeaf, "args" | "source"> & {
-  args: ParseNode["args"] &
-    Partial<NodeArgsBaseV2> &
-    NodeArgsRichNumberV2Complex;
+type ParseNodeRichNumberV2Complex = Omit<AstNodeLeaf, "args" | "source"> & {
+  args: AstNode["args"] & Partial<NodeArgsBaseV2> & NodeArgsRichNumberV2Complex;
   source: NodeLeafRichNumberV2SourceComplex;
 };
 

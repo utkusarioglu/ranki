@@ -1,6 +1,6 @@
 import type * as ohm from "ohm-js";
 import type {
-  RankiLangParseContext,
+  RankiLangAstContext,
   RankiLanguageConfig,
 } from "@ranki/package-api";
 import {
@@ -33,7 +33,7 @@ function hComplex<T extends ohm.Node>(
   // imaginaryPart: ohm.Node,
   complexToken: ohm.Node,
 ): ParseNodeRichNumberV2 {
-  const context: RankiLangParseContext = { ...this.args.context };
+  const context: RankiLangAstContext = { ...this.args.context };
   context.inlineDepth++;
   return {
     kind: "leaf",
@@ -65,7 +65,7 @@ function hComplex<T extends ohm.Node>(
 
 const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   conceptualSymbol(token) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     let type;
     CONCEPTUAL_NUMBERS.forEach((t) => {
@@ -103,7 +103,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_indian(num) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const integer = +num.sourceString
       .split(context.lang.getConfig().merged.tokens.richNumberV2.number.group)
@@ -130,7 +130,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_international(num) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const integer = +num.sourceString
       .split(context.lang.getConfig().merged.tokens.richNumberV2.number.group)
@@ -157,7 +157,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_unstructured(digit, token, num) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const integer = +num.sourceString
       .split(context.lang.getConfig().merged.tokens.richNumberV2.number.group)
@@ -184,7 +184,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_basic(basic) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
       kind: "leaf",
@@ -208,7 +208,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   conceptualNumber_factored(factor, conceptualSymbol) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     const c = conceptualSymbol.node(context);
     c["source"]["factor"] = +factor.sourceString;
     c["source"]["raw"] = this.sourceString;
@@ -216,7 +216,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   conceptual_signed(sign, conceptualNumber) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     const c = conceptualNumber.node(context);
     c["source"]["sign"] = sign.richNumberV2Sign(context);
     c["source"]["raw"] = this.sourceString;
@@ -240,7 +240,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   // },
 
   hBases(zero, symbol, numberSystem_unstructured) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const richNumberV2 = context.lang.getConfig().merged.tokens.richNumberV2;
     let type;
@@ -281,21 +281,21 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   hexadecimal(sign, basedNumber) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     const h = basedNumber.node(context);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
     return h;
   },
   binary(sign, basedNumber) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     const h = basedNumber.node(context);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
     return h;
   },
   octal(sign, basedNumber) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     const h = basedNumber.node(context);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
@@ -303,7 +303,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   integer_signed(sign, numberSystem) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const ns = numberSystem.node(context);
     return {
@@ -326,7 +326,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   decimal_full(integer, decimalToken, decimalGroup) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
       kind: "leaf",
@@ -349,7 +349,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   decimal_point(sign, decimalToken, decimalGroup) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const decimal = +decimalGroup.sourceString
       .split(context.lang.getConfig().merged.tokens.richNumberV2.number.group)
@@ -388,7 +388,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   rational(nominator, rationalToken, denominator) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
       kind: "leaf",
@@ -412,7 +412,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   complex_i(realPart, clearance1, operator, clearance2, complexToken) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     const imaginary: NodeLeafRichNumberV2SourceInteger = {
       type: "integer",
       raw: complexToken.sourceString,
@@ -441,7 +441,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     imaginaryPart,
     complexToken,
   ) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     const real: NodeLeafRichNumberV2SourceScalar =
       realPart.node(context).source;
     const imaginary: NodeLeafRichNumberV2SourceScalar =
@@ -465,7 +465,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     complexToken,
     imaginaryPart,
   ) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     const real: NodeLeafRichNumberV2SourceScalar =
       realPart.node(context).source;
     const imaginary: NodeLeafRichNumberV2SourceScalar =
@@ -482,7 +482,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   eNotation(significand, eToken, exponent) {
-    const context: RankiLangParseContext = { ...this.args.context };
+    const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
       kind: "leaf",
