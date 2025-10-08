@@ -23,11 +23,14 @@ export type ParseNodeFrameV2P = Omit<AstNode, "args"> & {
   args: NodeArgsFrameV2ConfigP;
 };
 
+export type FrameSpec = string[];
+
+type FrameChain = { chain: FrameSpec[] };
+
 export interface NodeArgsFrameV2ConfigFp_F {
-  "frame.v2": {
-    type: string;
+  frame: FrameChain & {
+    version: "v2";
     variant: "fp_F"; // this is like f fp
-    frameType: string; // like code in %:code; ...:%
     args: Partial<NodeArgsBaseV2> & {
       "separator.right.type": string;
       // !FIX this value is inside the config structure, which breaks symmetry
@@ -39,10 +42,9 @@ export interface NodeArgsFrameV2ConfigFp_F {
 }
 
 export interface NodeArgsFrameV2ConfigFp_f {
-  "frame.v2": {
-    type: string;
+  frame: FrameChain & {
+    version: "v2";
     variant: "fp_f"; // this is like f fp
-    frameType: string; // like code in %:code; ...:%
     args: Partial<NodeArgsBaseV2> & {
       "separator.right.type": string;
       // !FIX this value is inside the config structure, which breaks symmetry
@@ -54,34 +56,33 @@ export interface NodeArgsFrameV2ConfigFp_f {
 }
 
 export interface NodeArgsFrameV2ConfigP {
-  "frame.v2": {
-    type: string;
+  frame: FrameChain & {
+    version: "v2";
     variant: "p"; // this is like f fp
-    frameType: string; // like code in %:code; ...:%
     args: Partial<NodeArgsBaseV2> & {
       "separator.right.type": string;
     };
   };
 }
 
-export interface NodeArgsDirectiveV2Config {
-  "directive.v2": {
+export interface NodeArgsFrameV2ConfigE {
+  frame: FrameChain & {
+    version: "v2";
     type: string;
-    args: Partial<NodeArgsBaseV2>;
-    params: ParamsV2Spec;
+    variant: "e"; // this is like f fp
+    args: [];
   };
 }
 
 export type NodeArgsFrameV2 =
-  | NodeArgsFrameV2D
   | NodeArgsFrameV2F
+  | NodeArgsFrameV2E
   | NodeArgsFrameV2Fp_F
   | NodeArgsFrameV2Fp_f;
 
-export type NodeArgsFrameV2D = Partial<NodeArgsBaseV2> &
-  NodeArgsDirectiveV2Config;
-
 export type NodeArgsFrameV2F = Partial<NodeArgsBaseV2> & NodeArgsFrameV2ConfigP;
+
+export type NodeArgsFrameV2E = Partial<NodeArgsBaseV2> & NodeArgsFrameV2ConfigE;
 
 export type NodeArgsFrameV2Fp_F = Partial<NodeArgsBaseV2> &
   NodeArgsFrameV2ConfigFp_F;

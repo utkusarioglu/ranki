@@ -1,0 +1,67 @@
+RankiParamsV2 <: RankiBase {
+  v2ParamListBlockContainer = tParamsV2SeparatorParam wi 
+          nl wi 
+        v2ParamListBlock wi 
+          tParamsV2SeparatorParam?
+  
+  v2ParamListInlineContainer = tParamsV2SeparatorParam wi 
+      v2ParamListInline wi 
+        tParamsV2SeparatorParam?
+        
+  v2SepLeftInline = wi tParamsV2SeparatorParam wi
+  v2SepLeftBlock = wi tParamsV2SeparatorParam? wi nl wi
+  v2ParamListInline = param (v2SepLeftInline param)*
+  v2ParamListBlock = param (v2SepLeftBlock param)*
+
+  operator =
+    | tParamsV2OperatorRemove
+    | tParamsV2OperatorAppend
+    | tParamsV2OperatorAssign
+
+  param =
+    | paramDirective
+    | paramSetting
+
+  paramFormatOperator = paramKey wi operator wi paramValues 
+  paramFormatNegative = tParamsV2Negation paramKey
+  paramFormatPositive = paramKey 
+  paramFormatPositional = paramValueItem
+
+  paramSettingNamespace = digit+ "."
+
+  paramSetting = 
+    | paramSettingNamespace? paramFormatOperator 
+    | paramSettingNamespace? paramFormatNegative
+    | paramSettingNamespace? paramFormatPositive
+    | paramSettingNamespace? paramFormatPositional
+
+  paramDirective = 
+    | tParamsV2DirectiveParam paramFormatOperator 
+    | tParamsV2DirectiveParam paramFormatNegative
+    | tParamsV2DirectiveParam paramFormatPositive
+    | tParamsV2DirectiveParam paramFormatPositional
+
+  paramKeyWordLegal = letter | "_" | "-"
+  paramKeyWord = letter (paramKeyWordLegal)*
+  paramKey = paramKeyWord ("." paramKeyWord)*
+
+  paramValues = paramValueItem (clearance paramValueItem)*
+
+  paramValueItem = 
+    | quoted<quoteSingle>
+    | quoted<quoteDouble>
+    | paramValueItemPrimitive
+    
+  quoted<q> = q quotedContent<q>* q
+  quotedContent<q> = 
+    | tBaseV2Escape q --escaped
+    | ~q any --content
+
+  paramValueItemPrimitive =
+    | number --number
+    | caseInsensitive<"true"> --true
+    | caseInsensitive<"false"> --false
+    | upper+ --uppercase
+    | lower+ --lowercase
+    | letter+ --mixed
+}

@@ -45,6 +45,7 @@ interface TokensConfig {
       frame: Single;
     };
     key: {
+      directive: Single;
       negation: Single;
     };
     operators: {

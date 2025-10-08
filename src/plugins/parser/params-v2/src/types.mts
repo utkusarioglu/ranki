@@ -1,17 +1,30 @@
-// import type { NodeArgs as NodeArgsBaseV2 } from "@ranki/package-api";
 import { AstNode } from "@ranki/package-api";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
 type NodeArgsParamsV2 = AstNode["args"] & Partial<NodeArgsBaseV2>;
 
-export interface ParamV2 {
-  key: ParamV2Key;
+export type ParamV2 = ParamV2Setting | ParamV2Directive;
+
+export interface ParamV2Common {
+  key: "positional" | ParamV2KeyWord[];
   args: NodeArgsParamsV2;
   operator: ParamV2Operator;
   values: ParamV2Value[];
 }
 
-export type ParamV2Key = string & { type?: "ParamV2Key" };
+export type ParamV2Setting = ParamV2Common & {
+  type: "setting";
+  namespace: number;
+};
+
+export type ParamV2Directive = ParamV2Common & {
+  type: "directive";
+  key: ParamV2KeyWord[]; // @overload
+};
+
+export type ParamV2SettingNamespace = number;
+
+export type ParamV2KeyWord = string & { type?: "ParamV2Key" };
 
 export type ParamV2Operator = "assign" | "append" | "remove";
 

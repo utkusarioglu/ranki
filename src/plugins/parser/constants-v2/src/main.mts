@@ -27,6 +27,7 @@ function tokenize(config: RankiLanguageConfig["merged"]): Tokens {
   }
   {
     tokens["tParamsV2SeparatorParam"] = config.tokens.paramsV2.separator.param;
+    tokens["tParamsV2DirectiveParam"] = config.tokens.paramsV2.key.directive;
     // TODO this doesn't appear in paramsV2. it does appear in Frame V2
     tokens["tParamsV2SeparatorFrame"] = config.tokens.paramsV2.separator.frame;
     tokens["tParamsV2Negation"] = config.tokens.paramsV2.key.negation;

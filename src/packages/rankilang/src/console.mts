@@ -44,6 +44,12 @@ export const userConfig: RankiLanguageUserConfig = {
       "RankiRichStructureV2",
     ],
   },
+  content: {
+    prefix: "",
+    prefixLine: "",
+    suffix: "",
+    suffixLine: "",
+  },
   tokens: {
     baseV2: {
       escape: "\\",
@@ -55,6 +61,7 @@ export const userConfig: RankiLanguageUserConfig = {
       pause: ",",
       directive: "%",
       frame: ":",
+      directiveParam: "$",
     },
     richTextV2: {
       sentence: {

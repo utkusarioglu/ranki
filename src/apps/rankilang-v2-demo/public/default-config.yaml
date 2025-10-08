@@ -41,6 +41,7 @@ tokens:
       frame: ;
     key:
       negation: "!"
+      directive: "$"
     operators:
       assign: "="
       append: +=

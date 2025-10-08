@@ -3,7 +3,10 @@ import type { RankiLangAstContext } from "@ranki/package-api";
 import type {
   ArgsAndParamsV2,
   ParamV2,
+  ParamV2Common,
+  ParamV2KeyWord,
   ParamV2Operator,
+  ParamV2SettingNamespace,
   ParamV2Value,
 } from "./types.mjs";
 
@@ -31,9 +34,27 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
     return joined;
   },
 };
+// const paramV2KeyWord: ohm.ActionDict<ParamV2KeyWord> = {
+//   paramKeyWord(a, b) {
+//     return this.sourceString;
+//   },
+// };
 
-const paramV2: ohm.ActionDict<ParamV2> = {
-  param_operator(paramKey, wi1, operatorToken, wi2, paramValues) {
+const paramV2Key: ohm.ActionDict<ParamV2KeyWord[]> = {
+  // @ts-expect-error
+  paramKeyWord(a, b) {
+    return this.sourceString;
+  },
+  _iter(...children) {
+    return [...children.map((v) => v.paramV2Key(this.args.context))];
+  },
+  paramKey(first, sep, rest) {
+    return [first.sourceString, ...rest.paramV2Key(this.args.context)];
+  },
+};
+
+const paramV2Common: ohm.ActionDict<ParamV2Common> = {
+  paramFormatOperator(paramKey, wi1, operatorToken, wi2, paramValues) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const operators = context.lang.getConfig().merged.tokens.paramsV2.operators;
@@ -45,8 +66,11 @@ const paramV2: ohm.ActionDict<ParamV2> = {
       throw new Error(`UNRECOGNIZED OPERATOR ${f}`);
     }
 
+    const key: ParamV2KeyWord[] = paramKey.paramV2Key(this.args.context);
+
     return {
-      key: paramKey.sourceString,
+      type: "setting",
+      key,
       args: {
         depth: {
           block: context.blockDepth,
@@ -61,11 +85,15 @@ const paramV2: ohm.ActionDict<ParamV2> = {
     };
   },
 
-  param_positive(key) {
+  paramFormatPositive(paramKey) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
+
+    const key: ParamV2KeyWord[] = paramKey.paramV2Key(this.args.context);
+
     return {
-      key: key.sourceString,
+      // type: "setting",
+      key,
       args: {
         depth: {
           block: context.blockDepth,
@@ -83,11 +111,12 @@ const paramV2: ohm.ActionDict<ParamV2> = {
     };
   },
 
-  param_negative(negation, key) {
+  paramFormatNegative(negation, paramKey) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
+    const key: ParamV2KeyWord[] = paramKey.paramV2Key(this.args.context);
     return {
-      key: key.sourceString,
+      key,
       args: {
         depth: {
           block: context.blockDepth,
@@ -105,11 +134,11 @@ const paramV2: ohm.ActionDict<ParamV2> = {
     };
   },
 
-  quoted(q1, content, q2) {
+  paramFormatPositional(quoted) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
-      key: "quoted",
+      key: "positional",
       args: {
         depth: {
           block: context.blockDepth,
@@ -121,11 +150,34 @@ const paramV2: ohm.ActionDict<ParamV2> = {
       values: [
         {
           type: "mixed",
-          value: content.sourceString,
-          // value: false,
+          value: quoted.sourceString,
         },
       ],
     };
+  },
+};
+
+const paramV2SettingNamespace: ohm.ActionDict<number> = {
+  _iter(...children) {
+    return +this.sourceString.slice(0, -1);
+  },
+};
+
+const paramV2: ohm.ActionDict<ParamV2> = {
+  paramSetting(namespace, param) {
+    const ns: ParamV2SettingNamespace = namespace.paramV2SettingNamespace(
+      this.args.context,
+    );
+    const p = param.paramV2Common(this.args.context);
+    p["type"] = "setting";
+    p["namespace"] = ns;
+    return p;
+  },
+
+  paramDirective(directive, param) {
+    const p = param.paramV2Common(this.args.context);
+    p["type"] = "directive";
+    return p;
   },
 };
 
@@ -252,7 +304,11 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
 export const actions = {
   paramsV2,
   paramV2,
+  paramV2Common,
   paramV2Values,
   paramV2Value,
   argsAndParamsV2,
+  paramV2Key,
+  paramV2SettingNamespace,
+  // paramV2KeyWord,
 };
