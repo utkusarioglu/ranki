@@ -27,7 +27,7 @@
       "path": "../../packages/api"
     },
     {
-      "path": "../../packages/manager"
+      "path": "../../packages/rankilang"
     },
     {
       "path": "../../plugins/parser/constants-v2"

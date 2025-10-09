@@ -1,0 +1,57 @@
+RankiFrameV1 <: RankiBaseV2 {
+  word :=
+    | v1Inline
+    | ...
+  
+  block := 
+    | indentation v1Block  wi &(nl | end) --v1
+    | ...
+  
+  v1SepLeftInline = wi tParamsV2SeparatorParam wi
+  v1SepLeftBlock = wi tParamsV2SeparatorParam? wi nl wi
+  
+  v1ParamValue = (~(space | tFrameV1Delimiter | tParamsV2SeparatorFrame | tParamsV2SeparatorParam | nl) any)+
+  v1ParamListInline = v1ParamValue (v1SepLeftInline v1ParamValue)*
+  
+  v1Type = letter (space | letter)*
+  
+  v1Inline = 
+    | tFrameV1Delimiter wi 
+        v1Type wi 
+          tParamsV2SeparatorFrame wi 
+        v1ParamListInline wi 
+          tParamsV2SeparatorFrame 
+        v1PayloadInline 
+      tFrameV1Delimiter --fp
+    | tFrameV1Delimiter wi 
+        v1Type wi 
+          tParamsV2SeparatorFrame 
+        v1PayloadInline 
+      tFrameV1Delimiter --p
+
+  v1PayloadInline = (~(tFrameV1Delimiter | nl) any)*
+  
+  // not sure about this one
+  v1BlockEnd = 
+    | tFrameV1Delimiter ~(wi v1Type) --explicit
+    | end --implicit
+
+  v1Block = 
+    | tFrameV1Delimiter wi 
+         v1Type wi
+         tParamsV2SeparatorFrame wi
+         v1ParamListInline wi
+         (tParamsV2SeparatorFrame wi)?
+         nl 
+         v1PayloadBlock
+       v1BlockEnd --fp
+    | tFrameV1Delimiter wi 
+         v1Type wi
+         (tParamsV2SeparatorFrame wi)?
+         nl 
+         v1PayloadBlock
+       v1BlockEnd --p
+
+  v1PayloadBlockPlain = (~(v1Inline | v1BlockEnd) any)+
+  v1PayloadBlock = (v1Inline | v1PayloadBlockPlain )*
+}

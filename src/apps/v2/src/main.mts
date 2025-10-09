@@ -1,7 +1,8 @@
 import yaml from "yaml";
 import { populate } from "./populate.mts";
 import { parserPlugins } from "./plugins.mts";
-import { createContext } from "@ranki/package-manager";
+// @ts-expect-error this doesn't exist anymore, so...
+import { createContext } from "@ranki/package-rankilang";
 import Prism from "prismjs";
 import "./global.css";
 import "./prism-atom-dark.css";
@@ -21,7 +22,6 @@ async function main() {
   const fields = document.querySelectorAll<HTMLDataElement>(
     'script[class^="ranki-field"]',
   );
-
   const context = createContext(config, parserPlugins);
 
   const target = document.querySelector(".ranki-root");

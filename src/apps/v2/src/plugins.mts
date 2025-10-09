@@ -6,7 +6,7 @@ import { rankiRichTextV2ParserPlugin } from "@ranki/plugin-parser-rich-text-v2";
 import { rankiRichNumberV2ParserPlugin } from "@ranki/plugin-parser-rich-number-v2";
 import { rankiRichStructureV2ParserPlugin } from "@ranki/plugin-parser-rich-structure-v2";
 import { rankiFrameV1ParserPlugin } from "@ranki/plugin-parser-frame-v1";
-import { ParserPlugins } from "@ranki/package-manager";
+import { ParserPlugins } from "@ranki/package-rankilang";
 
 export const parserPlugins = new ParserPlugins();
 [
