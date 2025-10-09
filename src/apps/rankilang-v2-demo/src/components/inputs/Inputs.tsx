@@ -20,9 +20,9 @@ interface InputsProps {
   presetGroups: PresetGroup[];
 }
 
-const parentProps = ["kind", "type", "args"];
+// const parentProps = ["kind", "type", "args"];
 
-const leafProps = ["kind", "type", "args", "children"];
+// const leafProps = ["kind", "type", "args", "children"];
 
 const AppTitle = () => (
   <div className={style.titleContainer}>
@@ -33,7 +33,7 @@ const AppTitle = () => (
 );
 
 export const Inputs: FC<InputsProps> = ({
-  languageDefaultConfig,
+  // languageDefaultConfig,
   setRankiParsed,
   presetGroups,
   initialLanguageUserConfigStr,
@@ -190,6 +190,20 @@ export const Inputs: FC<InputsProps> = ({
               </label>
             </div>
           ))}
+          <div className={style.requestedPluginsButtonContainer}>
+            <button
+              className={style.buttonPlugins}
+              onClick={() => setRequestedPlugins(allPlugins)}
+            >
+              All
+            </button>{" "}
+            <button
+              className={style.buttonPlugins}
+              onClick={() => setRequestedPlugins([])}
+            >
+              None
+            </button>
+          </div>
         </fieldset>
       </div>
     ),

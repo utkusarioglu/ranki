@@ -1,6 +1,6 @@
 import type {
   RankiLanguageConfig,
-  RankiLanguageUserConfig,
+  RankiLanguageProvidedConfig,
 } from "./config.mjs";
 import {
   ParserPlugins,
@@ -16,5 +16,5 @@ export interface RankiLangInstance {
     raw: Record<TheaterName, string>,
     specs: RankiLangParseSpecs,
   ): RankiLangParseResult;
-  clone(userConfig: RankiLanguageUserConfig | null): RankiLangInstance;
+  clone(userConfigs: RankiLanguageProvidedConfig[] | null): RankiLangInstance;
 }

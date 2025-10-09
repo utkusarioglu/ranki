@@ -17,7 +17,7 @@ interface PluginsConfig {
   // };
 }
 
-export interface RankiLanguageUserConfig {
+export interface RankiLanguageProvidedConfig {
   tags: string[]; // these may be anki args
   plugins: {
     // standards: PluginName[];
@@ -53,6 +53,6 @@ export type RankiLanguageContextConfig = Omit<RankiLanguageConfig, "merged">;
 
 export interface RankiLanguageConfig {
   default: RankiLanguageDefaultConfig;
-  user: RankiLanguageUserConfig;
+  provided: RankiLanguageProvidedConfig[];
   merged: RankiLanguageMergedConfig;
 }

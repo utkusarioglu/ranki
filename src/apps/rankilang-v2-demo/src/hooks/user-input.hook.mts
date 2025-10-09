@@ -3,8 +3,8 @@ import yaml from "yaml";
 import { ParserPlugins, RankiLang } from "@ranki/package-rankilang";
 import type { PresetGroup } from "../services/preset/preset.types";
 import type {
-  RankiLanguageDefaultConfig,
-  RankiLanguageUserConfig,
+  // RankiLanguageDefaultConfig,
+  RankiLanguageProvidedConfig,
   RankiPluginParser,
 } from "@ranki/package-api";
 
@@ -35,14 +35,21 @@ export function useUserInput(
       );
       const parserPlugins = new ParserPlugins();
       selectedPluginObjects.forEach((p) => parserPlugins.addPlugin(p));
-      const languageUserConfig: RankiLanguageUserConfig = yaml.parse(
+      const languageUserConfig: RankiLanguageProvidedConfig = yaml.parse(
         languageUserConfigStr,
       );
-      languageUserConfig.plugins.requested = requestedPlugins;
+      // languageUserConfig.plugins.requested = requestedPlugins;
       const rankiLang = new RankiLang(
         parserPlugins,
         // languageDefaultConfig,
-        languageUserConfig,
+        [
+          {
+            plugins: {
+              requested: requestedPlugins,
+            },
+          } as RankiLanguageProvidedConfig,
+          languageUserConfig,
+        ],
       );
       const parsed = rankiLang.parse({ [theater]: rankiStr });
       setRankiParsed(parsed);

@@ -125,3 +125,19 @@
 .titleDim {
   color: var(--fg-4);
 }
+
+.buttonPlugins {
+  padding: 0.5em 1em;
+  color: var(--fg-1);
+  background-color: var(--bg-1);
+  border: transparent 0px solid;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--bg-2);
+  }
+}
+
+.requestedPluginsButtonContainer {
+  margin-block: 1em;
+}

@@ -8,7 +8,7 @@ export type {
 
 export type {
   RankiLanguageConfig,
-  RankiLanguageUserConfig,
+  RankiLanguageProvidedConfig,
   RankiLanguageContextConfig,
   RankiLanguageDefaultConfig,
 } from "./config.mjs";

@@ -5,49 +5,80 @@ import type {
   RankiLangParseSpecs,
   RankiLangAstContext,
   RankiLanguageDefaultConfig,
-  RankiLanguageUserConfig,
+  RankiLanguageProvidedConfig,
   RankiLangParseReport,
 } from "@ranki/package-api";
 import { ast } from "./ast.mjs";
 import { ParserPlugins } from "./plugins.mjs";
+import { RankiLanguageMergedConfig } from "../../api/src/config.mjs";
 
-function createMergedConfig(
-  defaultConfig: RankiLanguageDefaultConfig,
-  userConfig: RankiLanguageUserConfig,
-): RankiLanguageConfig {
-  const merged: RankiLanguageConfig["merged"] = {
-    ...defaultConfig,
-    ...userConfig,
-    plugins: {
-      standards: defaultConfig.plugins.standards,
-      requested: userConfig.plugins.requested,
-      config: {
-        ...defaultConfig.plugins.config,
-        ...userConfig.plugins.config,
-      },
-    },
-  };
+// function createMergedConfig(
+//   defaultConfig: RankiLanguageDefaultConfig,
+//   userConfig: RankiLanguageUserConfig,
+// ): RankiLanguageConfig {
+//   const merged: RankiLanguageConfig["merged"] = {
+//     ...defaultConfig,
+//     ...userConfig,
+//     plugins: {
+//       standards: defaultConfig.plugins.standards,
+//       requested: userConfig.plugins.requested,
+//       config: {
+//         ...defaultConfig.plugins.config,
+//         ...userConfig.plugins.config,
+//       },
+//     },
+//   };
 
-  return {
-    default: defaultConfig,
-    user: userConfig,
-    merged,
-  };
+//   return {
+//     default: defaultConfig,
+//     user: userConfig,
+//     merged,
+//   };
+// }
+
+function mergeConfigs(configs: any[]): RankiLanguageMergedConfig {
+  if (configs.length < 1) {
+    throw new Error("NO CONFIG GIVEN");
+  }
+  if (configs.length === 1) {
+    return configs[0];
+  }
+  const rest = [...configs].filter((v) => !!v);
+  const base = configs.shift();
+  console.log("---", rest);
+
+  Object.entries(base).forEach(([k, _v]) => {
+    const restDefined = rest.map((v) => v[k]).filter((v) => !!v);
+
+    if (typeof base[k] === "object" && !Array.isArray(base[k])) {
+      mergeConfigs([base[k], ...restDefined]);
+    } else if (Array.isArray(base[k])) {
+      console.log("Arr");
+      const s = new Set(base[k]);
+      restDefined.forEach((a) => {
+        a.map((i) => s.add(i));
+      });
+      base[k] = Array.from(s);
+    } else if (restDefined.length) {
+      base[k] = restDefined[restDefined.length - 1];
+    }
+  });
+  return base;
 }
 
 export class RankiLang implements RankiLangInstance {
   private defaultConfig: RankiLanguageDefaultConfig;
-  private userConfig: RankiLanguageUserConfig;
+  private providedConfigs: RankiLanguageProvidedConfig[];
   private config: RankiLanguageConfig;
   private plugins: ParserPlugins;
 
   constructor(
     plugins: ParserPlugins,
     // defaultConfig: RankiLanguageDefaultConfig,
-    userConfig: RankiLanguageUserConfig,
+    userConfigs: RankiLanguageProvidedConfig[],
   ) {
     // this.defaultConfig = defaultConfig;
-    this.userConfig = userConfig;
+    this.providedConfigs = userConfigs;
     this.plugins = plugins;
     this.defaultConfig = {
       tags: [],
@@ -64,7 +95,12 @@ export class RankiLang implements RankiLangInstance {
       },
     };
 
-    this.config = createMergedConfig(this.defaultConfig, this.userConfig);
+    // this.config = createMergedConfig(this.defaultConfig, this.userConfig);
+    this.config = {
+      default: this.defaultConfig,
+      provided: this.providedConfigs,
+      merged: mergeConfigs([this.defaultConfig, ...this.providedConfigs]),
+    };
   }
 
   getConfig() {
@@ -186,9 +222,12 @@ export class RankiLang implements RankiLangInstance {
     }
   }
 
-  clone(userConfig: RankiLanguageUserConfig | null): RankiLangInstance {
-    const newUserConfig = userConfig === null ? this.userConfig : userConfig;
-    return new RankiLang(this.plugins, newUserConfig);
+  clone(
+    providedConfigs: RankiLanguageProvidedConfig[] | null,
+  ): RankiLangInstance {
+    const newProvidedConfigs =
+      providedConfigs === null ? this.providedConfigs : providedConfigs;
+    return new RankiLang(this.plugins, newProvidedConfigs);
   }
 }
 

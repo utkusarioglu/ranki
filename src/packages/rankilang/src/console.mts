@@ -1,13 +1,7 @@
-import type {
-  // RankiLanguageConfig,
-  RankiLanguageUserConfig,
-  RankiLanguageDefaultConfig,
-} from "@ranki/package-api";
+import type { RankiLanguageProvidedConfig } from "@ranki/package-api";
 import yaml from "yaml";
 import * as fs from "node:fs";
 import path from "node:path";
-// import { parse } from "./parse.mjs";
-// import { createContext } from "./context.mjs";
 import { ParserPlugins } from "./plugins.mjs";
 
 import { rankiConstantsV2ParserPlugin } from "@ranki/plugin-parser-constants-v2";
@@ -32,7 +26,7 @@ const parserPlugins = new ParserPlugins();
   rankiFrameV1ParserPlugin,
 ].forEach((p) => parserPlugins.addPlugin(p));
 
-export const userConfig: RankiLanguageUserConfig = {
+export const providedConfig = {
   tags: [],
   content: {
     prefix: "",
@@ -49,101 +43,8 @@ export const userConfig: RankiLanguageUserConfig = {
       "RankiRichNumberV2",
       "RankiRichStructureV2",
     ],
-    config: {
-      RankiBaseV2: {
-        tokens: {
-          escape: "\\",
-        },
-      },
-      RankiFrameV1: {
-        tokens: {
-          delimiter: ":::",
-        },
-      },
-      RankiFrameV2: {
-        tokens: {
-          pause: ",",
-          directive: "%",
-          frame: ":",
-        },
-      },
-      RankiRichTextV2: {
-        tokens: {
-          sentence: {
-            period: ".",
-            question: "?",
-            exclamation: "!",
-          },
-          line: {
-            align: "$",
-            heading: "#",
-            small: "_",
-          },
-          decoration: {
-            emphasis: "+",
-            bold: "*",
-            idiomatic: "/",
-            underline: "_",
-            abbreviation: "@",
-          },
-        },
-      },
-      RankiRichStructureV2: {
-        tokens: {
-          delimiter: "~",
-        },
-      },
-      RankiParamsV2: {
-        tokens: {
-          separator: {
-            param: ",",
-            frame: ";",
-          },
-          key: {
-            negation: "!",
-            directive: "$",
-          },
-          operators: {
-            assign: "=",
-            append: "+=",
-            remove: "-=",
-          },
-        },
-      },
-      RankiRichNumberV2: {
-        tokens: {
-          symbol: {
-            complex: ["i", "j", "k"],
-            infinity: ["inf", "INF"],
-            pi: ["pi", "PI"],
-            e: ["e", "E"],
-          },
-          base: {
-            hexadecimal: ["x", "X"],
-            octal: ["o", "O"],
-            binary: ["b", "B"],
-          },
-          operator: {
-            negative: "-",
-            positive: "+",
-            rational: "/",
-            plusMinus: ["+-"],
-            minusPlus: ["-+"],
-          },
-          number: {
-            group: "_",
-            decimal: ".",
-          },
-        },
-      },
-    },
   },
-};
-
-const defaultConfig: RankiLanguageDefaultConfig = JSON.parse(
-  JSON.stringify(userConfig),
-);
-defaultConfig.plugins.standards = ["RankiConstantsV2", "RankiBaseV2"];
+} as RankiLanguageProvidedConfig;
 
 const THROW_TESTS = "./assets/throw";
 const throwTests = fs.readdirSync(THROW_TESTS);
@@ -164,11 +65,7 @@ function produceTests(count: number) {
 
 function main(count: number) {
   const parsed = [];
-  const lang = new RankiLang(
-    parserPlugins,
-    // defaultConfig,
-    userConfig,
-  );
+  const lang = new RankiLang(parserPlugins, [providedConfig]);
 
   produceTests(count).forEach((test) => {
     try {
