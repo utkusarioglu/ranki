@@ -6,7 +6,7 @@ type NodeArgsParamsV2 = AstNode["args"] & Partial<NodeArgsBaseV2>;
 export type ParamV2 = ParamV2Setting | ParamV2Directive;
 
 export interface ParamV2Common {
-  key: "positional" | ParamV2KeyWord[];
+  key: "positional" | ParamV2Key;
   args: NodeArgsParamsV2;
   operator: ParamV2Operator;
   values: ParamV2Value[];
@@ -19,10 +19,12 @@ export type ParamV2Setting = ParamV2Common & {
 
 export type ParamV2Directive = ParamV2Common & {
   type: "directive";
-  key: ParamV2KeyWord[]; // @overload
+  key: ParamV2Key; // @overload
 };
 
 export type ParamV2SettingNamespace = number;
+
+export type ParamV2Key = ParamV2KeyWord[]; // @overload
 
 export type ParamV2KeyWord = string & { type?: "ParamV2Key" };
 

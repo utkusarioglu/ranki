@@ -1,6 +1,10 @@
 import type { RankiLangAstContext } from "@ranki/package-api";
 import type * as ohm from "ohm-js";
-import type { NodeArgsFrameV2, ArgsAndParamsV2FrameV2 } from "../types.mjs";
+import type {
+  NodeArgsFrameV2,
+  ArgsAndParamsV2FrameV2,
+  FrameSpec,
+} from "../types.mjs";
 
 const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   // v2DirectiveConfig_D(wi1, nl, wi2, v2ParamListBlock, whitespace) {
@@ -52,11 +56,12 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   v2FrameConfigP(wi1, v2Type, wi2, sep) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
+    const chain: FrameSpec[] = v2Type.frameSpecV2(context);
     return {
       frame: {
         version: "v2",
         type: this.ctorName,
-        frameType: v2Type.sourceString,
+        chain,
         variant: "p",
         args: {
           depth: {
@@ -84,11 +89,12 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     context.blockDepth++;
     const config: ArgsAndParamsV2FrameV2 =
       v2ParamListInlineContainer.argsAndParamsV2(context);
+    const chain: FrameSpec[] = v2Type.frameSpecV2(context);
     return {
       frame: {
         version: "v2",
         type: this.ctorName,
-        frameType: v2Type.sourceString,
+        chain,
         variant: "fp_f",
         args: {
           depth: {
@@ -123,11 +129,12 @@ const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     context.blockDepth++;
     const config: ArgsAndParamsV2FrameV2 =
       v2ParamListBlockContainer.argsAndParamsV2(context);
+    const chain: FrameSpec[] = v2Type.frameSpecV2(context);
     return {
       frame: {
         version: "v2",
         type: this.ctorName,
-        frameType: v2Type.sourceString,
+        chain,
         variant: "fp_F",
         args: {
           depth: {

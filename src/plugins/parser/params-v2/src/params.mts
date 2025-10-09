@@ -60,9 +60,12 @@ export function applyV2Directives(
   };
 
   directiveItems.forEach(({ key, operator, values }, index) => {
-    const path = key.split(".");
-    if (path.length > 1) {
-      assignDottedPath(merged, path, operator, values);
+    if (key === "positional") {
+      throw new Error("DIRECTIVES CANNOT BE POSITIONAL");
+    }
+    // const path = key.split(".");
+    if (key.length > 1) {
+      assignDottedPath(merged, key, operator, values);
     } else {
       const converted = customCb(index, key, operator, values);
       console.log(converted);

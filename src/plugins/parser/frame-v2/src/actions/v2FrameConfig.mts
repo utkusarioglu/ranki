@@ -57,13 +57,13 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
 
-    const frameChain: FrameSpec[] = v2Type.frameSpecV2(context);
+    const chain: FrameSpec[] = v2Type.frameSpecV2(context);
     return {
       frame: {
         version: "v2",
         // type: this.ctorName,
         // frameType: v2Type.sourceString,
-        chain: frameChain,
+        chain,
         variant: "p",
         args: {
           depth: {
@@ -92,13 +92,13 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     const config: ArgsAndParamsV2FrameV2 =
       v2ParamListInlineContainer.argsAndParamsV2(context);
 
-    const frameChain: FrameSpec[] = v2Type.frameSpecV2(context);
+    const chain: FrameSpec[] = v2Type.frameSpecV2(context);
     return {
       frame: {
         version: "v2",
         // type: this.ctorName,
         // frameType: v2Type.sourceString,
-        chain: frameChain,
+        chain,
         variant: "fp_f",
         args: {
           depth: {
@@ -133,13 +133,13 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     context.blockDepth++;
     const config: ArgsAndParamsV2FrameV2 =
       v2ParamListBlockContainer.argsAndParamsV2(context);
-    const frameChain: FrameSpec[] = v2Type.frameSpecV2(context);
+    const chain: FrameSpec[] = v2Type.frameSpecV2(context);
 
     return {
       frame: {
         version: "v2",
         variant: "fp_F",
-        chain: frameChain,
+        chain,
         args: {
           depth: {
             block: context.blockDepth,

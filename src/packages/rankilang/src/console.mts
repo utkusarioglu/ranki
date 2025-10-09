@@ -61,7 +61,6 @@ export const userConfig: RankiLanguageUserConfig = {
       pause: ",",
       directive: "%",
       frame: ":",
-      directiveParam: "$",
     },
     richTextV2: {
       sentence: {
@@ -92,6 +91,7 @@ export const userConfig: RankiLanguageUserConfig = {
       },
       key: {
         negation: "!",
+        directive: "$",
       },
       operators: {
         assign: "=",

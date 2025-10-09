@@ -3,7 +3,7 @@ type Single = string;
 
 type PluginName = string;
 
-interface TokensConfig {
+interface PluginsConfig {
   baseV2: {
     escape: Single;
   };
@@ -87,7 +87,7 @@ export interface RankiLanguageUserConfig {
     requested: PluginName[];
   };
   content: RankiLanguageContentConfig;
-  tokens: TokensConfig;
+  tokens: PluginsConfig;
 }
 
 export interface RankiLanguageContentConfig {
@@ -104,7 +104,7 @@ export interface RankiLanguageMergedConfig {
     requested: PluginName[];
   };
   content: RankiLanguageContentConfig;
-  tokens: TokensConfig;
+  tokens: PluginsConfig;
 }
 
 export type RankiLanguageDefaultConfig = RankiLanguageMergedConfig;
