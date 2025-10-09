@@ -99,7 +99,8 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
               indices: [],
               level: 0,
               types: Object.keys(
-                context.lang.getConfig().merged.tokens.richTextV2.sentence,
+                context.lang.getConfig().merged.plugins.config.RankiRichTextV2
+                  .tokens.sentence,
               ).reduce((a, c) => {
                 a[c as T] = false;
                 return a;
@@ -113,7 +114,8 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
           endArgs["sentence.end"].indices.push(ei);
           endArgs["sentence.end"].level++;
           Object.entries(
-            context.lang.getConfig().merged.tokens.richTextV2.sentence,
+            context.lang.getConfig().merged.plugins.config.RankiRichTextV2
+              .tokens.sentence,
           ).forEach(([k, v]) => {
             endArgs["sentence.end"]!.types[k as T] ||= value === v;
           });

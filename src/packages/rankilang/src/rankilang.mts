@@ -21,6 +21,10 @@ function createMergedConfig(
     plugins: {
       standards: defaultConfig.plugins.standards,
       requested: userConfig.plugins.requested,
+      config: {
+        ...defaultConfig.plugins.config,
+        ...userConfig.plugins.config,
+      },
     },
   };
 

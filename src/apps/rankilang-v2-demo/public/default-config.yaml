@@ -1,86 +1,95 @@
 tags: []
-plugins:
-  standards:
-    - RankiConstantsV2
-    - RankiBaseV2
-  requested: []
+
 content: 
   prefix: ""
   prefixLine: ""
   suffix: ""
   suffixLine: ""
-tokens:
-  baseV2: 
-    escape: "\\\\"
-  frameV1:
-    delimiter: ":::"
-  frameV2: 
-    pause: ","
-    directive: "%"
-    frame: ":"
-  richTextV2:
-    sentence:
-      period: .
-      question: "?"
-      exclamation: "!"
-    line:
-      align: "$"
-      heading: "#"
-      small: "_"
-    decoration:
-      emphasis: "+"
-      bold: "*"
-      idiomatic: "/"
-      underline: "_"
-      abbreviation: "@"
-  richStructureV2:
-    delimiter: "~"
-  paramsV2:
-    separator:
-      param: ","
-      frame: ;
-    key:
-      negation: "!"
-      directive: "$"
-    operators:
-      assign: "="
-      append: +=
-      remove: "-="
-  richNumberV2:
-    symbol:
-      complex:
-        - i
-        - j
-        - k
-      infinity:
-        - inf
-        - INF
-      pi:
-        - pi
-        - PI
-      e:
-        - e
-        - E
-    base: 
-      hexadecimal:
-        - x
-        - X
-      octal:
-        - o
-        - O
-      binary:
-        - b
-        - B
-    operator:
-      negative: "-"
-      positive: "+"
-      minusPlus: 
-        - "-+"
-        - "∓"
-      plusMinus:
-        - "+-" 
-        - "±"
-      rational: "/"
-    number:
-      decimal: .
-      group: _
+
+plugins:
+  standards:
+    - RankiConstantsV2
+    - RankiBaseV2
+  requested: []
+  config:
+    RankiBaseV2: 
+      tokens: 
+        escape: "\\\\"
+    RankiFrameV1:
+      tokens: 
+        delimiter: ":::"
+    RankiFrameV2: 
+      tokens:
+        pause: ","
+        directive: "%"
+        frame: ":"
+    RankiRichTextV2:
+      tokens: 
+        sentence:
+          period: .
+          question: "?"
+          exclamation: "!"
+        line:
+          align: "$"
+          heading: "#"
+          small: "_"
+        decoration:
+          emphasis: "+"
+          bold: "*"
+          idiomatic: "/"
+          underline: "_"
+          abbreviation: "@"
+    RankiRichStructureV2:
+      tokens: 
+        delimiter: "~"
+    RankiParamsV2:
+      tokens: 
+        separator:
+          param: ","
+          frame: ;
+        key:
+          negation: "!"
+          directive: "$"
+        operators:
+          assign: "="
+          append: +=
+          remove: "-="
+    RankiRichNumberV2:
+      tokens: 
+        symbol:
+          complex:
+            - i
+            - j
+            - k
+          infinity:
+            - inf
+            - INF
+          pi:
+            - pi
+            - PI
+          e:
+            - e
+            - E
+        base: 
+          hexadecimal:
+            - x
+            - X
+          octal:
+            - o
+            - O
+          binary:
+            - b
+            - B
+        operator:
+          negative: "-"
+          positive: "+"
+          minusPlus: 
+            - "-+"
+            - "∓"
+          plusMinus:
+            - "+-" 
+            - "±"
+          rational: "/"
+        number:
+          decimal: .
+          group: _

@@ -4,78 +4,92 @@ type Single = string;
 type PluginName = string;
 
 interface PluginsConfig {
-  baseV2: {
-    escape: Single;
+  RankiBaseV2: {
+    tokens: {
+      escape: Single;
+    };
   };
-  frameV1: {
-    delimiter: Single;
+  RankiFrameV1: {
+    tokens: {
+      delimiter: Single;
+    };
   };
-  frameV2: {
-    pause: Single;
-    directive: Single;
-    frame: Single;
+  RankiFrameV2: {
+    tokens: {
+      pause: Single;
+      directive: Single;
+      frame: Single;
+    };
     // sepLeft: Single;
     // sepRight: Single;
   };
-  richTextV2: {
-    sentence: {
-      period: Single;
-      question: Single;
-      exclamation: Single;
-    };
-    line: {
-      align: Single;
-      heading: Single;
-      small: Single;
-    };
-    decoration: {
-      emphasis: Single;
-      bold: Single;
-      idiomatic: Single;
-      underline: Single;
-      abbreviation: Single;
-    };
-  };
-  richStructureV2: {
-    delimiter: Single;
-  };
-  paramsV2: {
-    separator: {
-      param: Single;
-      frame: Single;
-    };
-    key: {
-      directive: Single;
-      negation: Single;
-    };
-    operators: {
-      assign: Single;
-      append: Single;
-      remove: Single;
+  RankiRichTextV2: {
+    tokens: {
+      sentence: {
+        period: Single;
+        question: Single;
+        exclamation: Single;
+      };
+      line: {
+        align: Single;
+        heading: Single;
+        small: Single;
+      };
+      decoration: {
+        emphasis: Single;
+        bold: Single;
+        idiomatic: Single;
+        underline: Single;
+        abbreviation: Single;
+      };
     };
   };
-  richNumberV2: {
-    symbol: {
-      complex: Alternates;
-      infinity: Alternates;
-      e: Alternates;
-      pi: Alternates;
+  RankiRichStructureV2: {
+    tokens: {
+      delimiter: Single;
     };
-    base: {
-      hexadecimal: Alternates;
-      octal: Alternates;
-      binary: Alternates;
+  };
+  RankiParamsV2: {
+    tokens: {
+      separator: {
+        param: Single;
+        frame: Single;
+      };
+      key: {
+        directive: Single;
+        negation: Single;
+      };
+      operators: {
+        assign: Single;
+        append: Single;
+        remove: Single;
+      };
     };
-    operator: {
-      negative: Single;
-      positive: Single;
-      minusPlus: Alternates;
-      plusMinus: Alternates;
-      rational: Single;
-    };
-    number: {
-      decimal: Single;
-      group: Single;
+  };
+  RankiRichNumberV2: {
+    tokens: {
+      symbol: {
+        complex: Alternates;
+        infinity: Alternates;
+        e: Alternates;
+        pi: Alternates;
+      };
+      base: {
+        hexadecimal: Alternates;
+        octal: Alternates;
+        binary: Alternates;
+      };
+      operator: {
+        negative: Single;
+        positive: Single;
+        minusPlus: Alternates;
+        plusMinus: Alternates;
+        rational: Single;
+      };
+      number: {
+        decimal: Single;
+        group: Single;
+      };
     };
   };
 }
@@ -85,9 +99,10 @@ export interface RankiLanguageUserConfig {
   plugins: {
     // standards: PluginName[];
     requested: PluginName[];
+    config: PluginsConfig;
   };
   content: RankiLanguageContentConfig;
-  tokens: PluginsConfig;
+  // tokens: PluginsConfig;
 }
 
 export interface RankiLanguageContentConfig {
@@ -102,9 +117,10 @@ export interface RankiLanguageMergedConfig {
   plugins: {
     standards: PluginName[];
     requested: PluginName[];
+    config: PluginsConfig;
   };
   content: RankiLanguageContentConfig;
-  tokens: PluginsConfig;
+  // tokens: PluginsConfig;
 }
 
 export type RankiLanguageDefaultConfig = RankiLanguageMergedConfig;

@@ -12,11 +12,11 @@ import {
 } from "./types.mjs";
 
 type SymbolKeys = Partial<
-  keyof RankiLanguageConfig["merged"]["tokens"]["richNumberV2"]["symbol"]
+  keyof RankiLanguageConfig["merged"]["plugins"]["config"]["RankiRichNumberV2"]["tokens"]["symbol"]
 >[];
 
 type BaseKeys = Partial<
-  keyof RankiLanguageConfig["merged"]["tokens"]["richNumberV2"]["base"]
+  keyof RankiLanguageConfig["merged"]["plugins"]["config"]["RankiRichNumberV2"]["tokens"]["base"]
 >[];
 
 const CONCEPTUAL_NUMBERS = ["e", "infinity", "pi"] as SymbolKeys;
@@ -72,7 +72,9 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       if (
         context.lang
           .getConfig()
-          .merged.tokens.richNumberV2.symbol[t].includes(token.sourceString)
+          .merged.plugins.config.RankiRichNumberV2.tokens.symbol[t].includes(
+            token.sourceString,
+          )
       ) {
         type = t;
       }
@@ -106,7 +108,10 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const integer = +num.sourceString
-      .split(context.lang.getConfig().merged.tokens.richNumberV2.number.group)
+      .split(
+        context.lang.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
+          .number.group,
+      )
       .join("");
     return {
       kind: "leaf",
@@ -133,7 +138,10 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const integer = +num.sourceString
-      .split(context.lang.getConfig().merged.tokens.richNumberV2.number.group)
+      .split(
+        context.lang.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
+          .number.group,
+      )
       .join("");
     return {
       kind: "leaf",
@@ -160,7 +168,10 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const integer = +num.sourceString
-      .split(context.lang.getConfig().merged.tokens.richNumberV2.number.group)
+      .split(
+        context.lang.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
+          .number.group,
+      )
       .join("");
     return {
       kind: "leaf",
@@ -242,7 +253,8 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   hBases(zero, symbol, numberSystem_unstructured) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
-    const richNumberV2 = context.lang.getConfig().merged.tokens.richNumberV2;
+    const richNumberV2 =
+      context.lang.getConfig().merged.plugins.config.RankiRichNumberV2.tokens;
     let type;
 
     BASES.forEach((s) => {
@@ -352,7 +364,10 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const decimal = +decimalGroup.sourceString
-      .split(context.lang.getConfig().merged.tokens.richNumberV2.number.group)
+      .split(
+        context.lang.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
+          .number.group,
+      )
       .join("");
     return {
       kind: "leaf",
