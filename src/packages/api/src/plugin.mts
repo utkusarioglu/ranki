@@ -3,19 +3,20 @@ import type { RankiLanguageConfig } from "./config.mjs";
 
 export type RankiPlugin = RankiPluginParser | RankiPluginRenderer;
 
-interface RankiPluginCommon {
+interface RankiPluginMeta {
   version: string; // semver
   name: string;
 }
 
-export interface RankiPluginParser extends RankiPluginCommon {
+export interface RankiPluginParser {
   type: "parser";
+  meta: RankiPluginMeta;
   dependencies: string[];
   grammar: (c: RankiLanguageConfig) => string;
   actions: () => Record<string, ohm.ActionDict<unknown>>;
 }
 
-export interface RankiPluginRenderer extends RankiPluginCommon {
+export interface RankiPluginRenderer extends RankiPluginMeta {
   type: "renderer";
   // name: string;
   // !TODO

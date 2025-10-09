@@ -20,7 +20,7 @@ export function useUserInput(
   initialLanguageUserConfigStr: string,
   presetGroups: PresetGroup[],
 ) {
-  const allPlugins = pluginObjects.map((p) => p.name);
+  const allPlugins = pluginObjects.map((p) => p.meta.name);
   const [languageUserConfigStr, setLanguageUserConfigStr] = useState<string>(
     initialLanguageUserConfigStr,
   );
@@ -32,7 +32,7 @@ export function useUserInput(
   useEffect(() => {
     try {
       const selectedPluginObjects = pluginObjects.filter((p) =>
-        installedPlugins.includes(p.name),
+        installedPlugins.includes(p.meta.name),
       );
       const parserPlugins = new ParserPlugins();
       selectedPluginObjects.forEach((p) => parserPlugins.addPlugin(p));

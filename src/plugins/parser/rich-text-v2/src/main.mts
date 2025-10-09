@@ -4,8 +4,10 @@ import { actions } from "./actions.mjs";
 
 export const rankiRichTextV2ParserPlugin: RankiPluginParser = {
   type: "parser",
-  name: "RankiRichTextV2",
-  version: "2.0.63",
+  meta: {
+    name: "RankiRichTextV2",
+    version: "2.0.63",
+  },
   dependencies: ["RankiBaseV2"],
   grammar: () => grammar,
   actions: () => actions,

@@ -1,7 +1,7 @@
 import type { RankiPluginParser, VersionReport } from "@ranki/package-api";
 
 function expandDependencies(plugins: RankiPluginParser[]): void {
-  const lookup = Object.fromEntries(plugins.map((p) => [p.name, p]));
+  const lookup = Object.fromEntries(plugins.map((p) => [p.meta.name, p]));
   const cache = new Map<string, Set<string>>();
 
   function getAllDeps(name: string, visited = new Set<string>()): Set<string> {
@@ -28,16 +28,16 @@ function expandDependencies(plugins: RankiPluginParser[]): void {
 
   // Mutate each plugin.dependencies to include transitive deps
   plugins.forEach((p) => {
-    p.dependencies = Array.from(getAllDeps(p.name));
+    p.dependencies = Array.from(getAllDeps(p.meta.name));
   });
 }
 
 function topologicalSort(
   plugins: RankiPluginParser[],
-): RankiPluginParser["name"][] {
+): RankiPluginParser["meta"]["name"][] {
   const sorted: string[] = [];
   const adjacencies = plugins.reduce((a, c) => {
-    a[c.name] = new Set();
+    a[c.meta.name] = new Set();
     return a;
   }, {} as Record<string, Set<string>>);
 
@@ -46,7 +46,7 @@ function topologicalSort(
       if (!adjacencies.hasOwnProperty(d)) {
         throw new Error(`DEPENDENCY ABSENT ${d}`);
       }
-      adjacencies[d].add(p.name);
+      adjacencies[d].add(p.meta.name);
     });
   });
 
@@ -56,7 +56,7 @@ function topologicalSort(
   }, {} as Record<string, number>);
 
   plugins
-    .map((p) => p.name)
+    .map((p) => p.meta.name)
     .forEach((n) => {
       for (let a of adjacencies[n]) {
         counts[a]++;
@@ -98,7 +98,7 @@ export class ParserPlugins {
   }
 
   find(name: string) {
-    const p = this.getList().find((p) => p.name === name);
+    const p = this.getList().find((p) => p.meta.name === name);
     if (!p) {
       throw new Error(`CANNOT FIND PLUGIN ${name}`);
     }
@@ -110,15 +110,18 @@ export class ParserPlugins {
   }
 
   namesSet(): Set<string> {
-    return new Set<string>(this.getList().map((v) => v.name));
+    return new Set<string>(this.getList().map((v) => v.meta.name));
   }
 
   getVersions(): VersionReport {
-    return this.list.reduce((a, p) => ((a[p.name] = p.version), a), {});
+    return this.list.reduce(
+      (a, p) => ((a[p.meta.name] = p.meta.version), a),
+      {},
+    );
   }
 
   pickPlugins(set: Set<string>): RankiPluginParser[] {
-    const activePluginsArr = this.getList().filter((v) => set.has(v.name));
+    const activePluginsArr = this.getList().filter((v) => set.has(v.meta.name));
     return activePluginsArr;
   }
 
@@ -144,15 +147,21 @@ export class ParserPlugins {
 
   dependencyGraph(
     activePluginsArr: RankiPluginParser[],
-  ): Record<RankiPluginParser["name"], RankiPluginParser["name"][]> {
+  ): Record<
+    RankiPluginParser["meta"]["name"],
+    RankiPluginParser["meta"]["name"][]
+  > {
     const dependencyGraph = activePluginsArr.reduce(
-      (a, v) => ((a[v.name] = v.dependencies), a),
+      (a, v) => ((a[v.meta.name] = v.dependencies), a),
       {} as Record<string, string[]>,
     );
     return dependencyGraph;
   }
 
   getActions() {
-    return this.getList().reduce((a, c) => ((a[c.name] = c.actions()), a), {});
+    return this.getList().reduce(
+      (a, c) => ((a[c.meta.name] = c.actions()), a),
+      {},
+    );
   }
 }

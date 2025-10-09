@@ -34,6 +34,12 @@ const parserPlugins = new ParserPlugins();
 
 export const userConfig: RankiLanguageUserConfig = {
   tags: [],
+  content: {
+    prefix: "",
+    prefixLine: "",
+    suffix: "",
+    suffixLine: "",
+  },
   plugins: {
     requested: [
       "RankiParamsV2",
@@ -43,84 +49,92 @@ export const userConfig: RankiLanguageUserConfig = {
       "RankiRichNumberV2",
       "RankiRichStructureV2",
     ],
-  },
-  content: {
-    prefix: "",
-    prefixLine: "",
-    suffix: "",
-    suffixLine: "",
-  },
-  tokens: {
-    baseV2: {
-      escape: "\\",
-    },
-    frameV1: {
-      delimiter: ":::",
-    },
-    frameV2: {
-      pause: ",",
-      directive: "%",
-      frame: ":",
-    },
-    richTextV2: {
-      sentence: {
-        period: ".",
-        question: "?",
-        exclamation: "!",
+    config: {
+      RankiBaseV2: {
+        tokens: {
+          escape: "\\",
+        },
       },
-      line: {
-        align: "$",
-        heading: "#",
-        small: "_",
+      RankiFrameV1: {
+        tokens: {
+          delimiter: ":::",
+        },
       },
-      decoration: {
-        emphasis: "+",
-        bold: "*",
-        idiomatic: "/",
-        underline: "_",
-        abbreviation: "@",
+      RankiFrameV2: {
+        tokens: {
+          pause: ",",
+          directive: "%",
+          frame: ":",
+        },
       },
-    },
-    richStructureV2: {
-      delimiter: "~",
-    },
-    paramsV2: {
-      separator: {
-        param: ",",
-        frame: ";",
+      RankiRichTextV2: {
+        tokens: {
+          sentence: {
+            period: ".",
+            question: "?",
+            exclamation: "!",
+          },
+          line: {
+            align: "$",
+            heading: "#",
+            small: "_",
+          },
+          decoration: {
+            emphasis: "+",
+            bold: "*",
+            idiomatic: "/",
+            underline: "_",
+            abbreviation: "@",
+          },
+        },
       },
-      key: {
-        negation: "!",
-        directive: "$",
+      RankiRichStructureV2: {
+        tokens: {
+          delimiter: "~",
+        },
       },
-      operators: {
-        assign: "=",
-        append: "+=",
-        remove: "-=",
+      RankiParamsV2: {
+        tokens: {
+          separator: {
+            param: ",",
+            frame: ";",
+          },
+          key: {
+            negation: "!",
+            directive: "$",
+          },
+          operators: {
+            assign: "=",
+            append: "+=",
+            remove: "-=",
+          },
+        },
       },
-    },
-    richNumberV2: {
-      symbol: {
-        complex: ["i", "j", "k"],
-        infinity: ["inf", "INF"],
-        pi: ["pi", "PI"],
-        e: ["e", "E"],
-      },
-      base: {
-        hexadecimal: ["x", "X"],
-        octal: ["o", "O"],
-        binary: ["b", "B"],
-      },
-      operator: {
-        negative: "-",
-        positive: "+",
-        rational: "/",
-        plusMinus: ["+-"],
-        minusPlus: ["-+"],
-      },
-      number: {
-        group: "_",
-        decimal: ".",
+      RankiRichNumberV2: {
+        tokens: {
+          symbol: {
+            complex: ["i", "j", "k"],
+            infinity: ["inf", "INF"],
+            pi: ["pi", "PI"],
+            e: ["e", "E"],
+          },
+          base: {
+            hexadecimal: ["x", "X"],
+            octal: ["o", "O"],
+            binary: ["b", "B"],
+          },
+          operator: {
+            negative: "-",
+            positive: "+",
+            rational: "/",
+            plusMinus: ["+-"],
+            minusPlus: ["-+"],
+          },
+          number: {
+            group: "_",
+            decimal: ".",
+          },
+        },
       },
     },
   },

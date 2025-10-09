@@ -2,8 +2,10 @@ import { RankiPluginParser, RankiLanguageConfig } from "@ranki/package-api";
 
 export const rankiConstantsV2ParserPlugin: RankiPluginParser = {
   type: "parser",
-  version: "2.0.64",
-  name: "RankiConstantsV2",
+  meta: {
+    version: "2.0.64",
+    name: "RankiConstantsV2",
+  },
   dependencies: [],
   grammar: (c) => {
     return stringifyConfig(c.merged);
