@@ -4,94 +4,17 @@ type Single = string;
 type PluginName = string;
 
 interface PluginsConfig {
-  RankiBaseV2: {
-    tokens: {
-      escape: Single;
-    };
-  };
-  RankiFrameV1: {
-    tokens: {
-      delimiter: Single;
-    };
-  };
-  RankiFrameV2: {
-    tokens: {
-      pause: Single;
-      directive: Single;
-      frame: Single;
-    };
-    // sepLeft: Single;
-    // sepRight: Single;
-  };
-  RankiRichTextV2: {
-    tokens: {
-      sentence: {
-        period: Single;
-        question: Single;
-        exclamation: Single;
-      };
-      line: {
-        align: Single;
-        heading: Single;
-        small: Single;
-      };
-      decoration: {
-        emphasis: Single;
-        bold: Single;
-        idiomatic: Single;
-        underline: Single;
-        abbreviation: Single;
-      };
-    };
-  };
-  RankiRichStructureV2: {
-    tokens: {
-      delimiter: Single;
-    };
-  };
-  RankiParamsV2: {
-    tokens: {
-      separator: {
-        param: Single;
-        frame: Single;
-      };
-      key: {
-        directive: Single;
-        negation: Single;
-      };
-      operators: {
-        assign: Single;
-        append: Single;
-        remove: Single;
-      };
-    };
-  };
-  RankiRichNumberV2: {
-    tokens: {
-      symbol: {
-        complex: Alternates;
-        infinity: Alternates;
-        e: Alternates;
-        pi: Alternates;
-      };
-      base: {
-        hexadecimal: Alternates;
-        octal: Alternates;
-        binary: Alternates;
-      };
-      operator: {
-        negative: Single;
-        positive: Single;
-        minusPlus: Alternates;
-        plusMinus: Alternates;
-        rational: Single;
-      };
-      number: {
-        decimal: Single;
-        group: Single;
-      };
-    };
-  };
+  // RankiBaseV2: {};
+  // RankiFrameV1: {};
+  // RankiFrameV2: {
+  // sepLeft: Single;
+  // sepRight: Single;
+  // };
+  // RankiRichTextV2: {};
+  // RankiRichStructureV2: {};
+  // RankiParamsV2: {};
+  // RankiRichNumberV2: {
+  // };
 }
 
 export interface RankiLanguageUserConfig {
@@ -112,6 +35,7 @@ export interface RankiLanguageContentConfig {
   suffixLine: string;
 }
 
+// TODO this will need to be a generic
 export interface RankiLanguageMergedConfig {
   tags: string[]; // these may be anki args
   plugins: {

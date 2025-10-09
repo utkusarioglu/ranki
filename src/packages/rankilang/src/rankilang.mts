@@ -43,12 +43,27 @@ export class RankiLang implements RankiLangInstance {
 
   constructor(
     plugins: ParserPlugins,
-    defaultConfig: RankiLanguageDefaultConfig,
+    // defaultConfig: RankiLanguageDefaultConfig,
     userConfig: RankiLanguageUserConfig,
   ) {
-    this.defaultConfig = defaultConfig;
+    // this.defaultConfig = defaultConfig;
     this.userConfig = userConfig;
     this.plugins = plugins;
+    this.defaultConfig = {
+      tags: [],
+      content: {
+        prefix: "",
+        prefixLine: "",
+        suffix: "",
+        suffixLine: "",
+      },
+      plugins: {
+        standards: ["RankiConstantsV2", "RankiBaseV2"],
+        requested: [],
+        config: plugins.produceConfig(),
+      },
+    };
+
     this.config = createMergedConfig(this.defaultConfig, this.userConfig);
   }
 
@@ -173,7 +188,7 @@ export class RankiLang implements RankiLangInstance {
 
   clone(userConfig: RankiLanguageUserConfig | null): RankiLangInstance {
     const newUserConfig = userConfig === null ? this.userConfig : userConfig;
-    return new RankiLang(this.plugins, this.defaultConfig, newUserConfig);
+    return new RankiLang(this.plugins, newUserConfig);
   }
 }
 

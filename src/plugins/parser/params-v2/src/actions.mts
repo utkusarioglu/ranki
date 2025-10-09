@@ -58,6 +58,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const operators =
+      // @ts-expect-error
       context.lang.getConfig().merged.plugins.config.RankiParamsV2.tokens
         .operators;
     const f = Object.entries(operators).find(

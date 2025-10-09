@@ -164,4 +164,11 @@ export class ParserPlugins {
       {},
     );
   }
+
+  produceConfig() {
+    return this.list.reduce(
+      (a, c) => ((a[c.meta.name] = c.config), a),
+      {} as any,
+    );
+  }
 }

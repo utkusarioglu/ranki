@@ -15,7 +15,7 @@ function usePublicData() {
   useEffect(() => {
     Promise.all([
       fetchPresets(),
-      fetch("/default-config.yaml").then((r) => r.text()),
+      fetch("/user-config.yaml").then((r) => r.text()),
     ]).then(([pg, dc]) => {
       setPresetGroups(pg);
       setLanguageDefaultConfigStr(dc);

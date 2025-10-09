@@ -298,6 +298,7 @@ const creatorName: ohm.ActionDict<string> = {
   tParamsV2SeparatorFrame(sep) {
     const context: RankiLangAstContext = this.args.context;
     const separators =
+      // @ts-expect-error
       context.lang.getConfig().merged.plugins.config.RankiParamsV2.tokens
         .separator;
     return sep.sourceString === separators.frame ? this.ctorName : "none";
@@ -305,6 +306,7 @@ const creatorName: ohm.ActionDict<string> = {
   tParamsV2SeparatorParam(sep) {
     const context: RankiLangAstContext = this.args.context;
     const separators =
+      // @ts-expect-error
       context.lang.getConfig().merged.plugins.config.RankiParamsV2.tokens
         .separator;
     return sep.sourceString === separators.param ? this.ctorName : "none";

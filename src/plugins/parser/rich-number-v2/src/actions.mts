@@ -12,10 +12,12 @@ import {
 } from "./types.mjs";
 
 type SymbolKeys = Partial<
+  // @ts-expect-error
   keyof RankiLanguageConfig["merged"]["plugins"]["config"]["RankiRichNumberV2"]["tokens"]["symbol"]
 >[];
 
 type BaseKeys = Partial<
+  // @ts-expect-error
   keyof RankiLanguageConfig["merged"]["plugins"]["config"]["RankiRichNumberV2"]["tokens"]["base"]
 >[];
 
@@ -72,6 +74,8 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       if (
         context.lang
           .getConfig()
+
+          // @ts-expect-error
           .merged.plugins.config.RankiRichNumberV2.tokens.symbol[t].includes(
             token.sourceString,
           )
@@ -109,6 +113,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     context.inlineDepth++;
     const integer = +num.sourceString
       .split(
+        // @ts-expect-error
         context.lang.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
           .number.group,
       )
@@ -139,6 +144,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     context.inlineDepth++;
     const integer = +num.sourceString
       .split(
+        // @ts-expect-error
         context.lang.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
           .number.group,
       )
@@ -169,6 +175,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     context.inlineDepth++;
     const integer = +num.sourceString
       .split(
+        // @ts-expect-error
         context.lang.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
           .number.group,
       )
@@ -254,6 +261,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const richNumberV2 =
+      // @ts-expect-error
       context.lang.getConfig().merged.plugins.config.RankiRichNumberV2.tokens;
     let type;
 
@@ -365,6 +373,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     context.inlineDepth++;
     const decimal = +decimalGroup.sourceString
       .split(
+        // @ts-expect-error
         context.lang.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
           .number.group,
       )

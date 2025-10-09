@@ -164,7 +164,11 @@ function produceTests(count: number) {
 
 function main(count: number) {
   const parsed = [];
-  const lang = new RankiLang(parserPlugins, defaultConfig, userConfig);
+  const lang = new RankiLang(
+    parserPlugins,
+    // defaultConfig,
+    userConfig,
+  );
 
   produceTests(count).forEach((test) => {
     try {

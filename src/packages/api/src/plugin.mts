@@ -8,13 +8,14 @@ interface RankiPluginMeta {
   name: string;
 }
 
-export interface RankiPluginParser {
+export type RankiPluginParser<ConfigShape = {}> = {
   type: "parser";
   meta: RankiPluginMeta;
   dependencies: string[];
+  config: ConfigShape;
   grammar: (c: RankiLanguageConfig) => string;
   actions: () => Record<string, ohm.ActionDict<unknown>>;
-}
+};
 
 export interface RankiPluginRenderer extends RankiPluginMeta {
   type: "renderer";

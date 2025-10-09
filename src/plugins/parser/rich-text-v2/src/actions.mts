@@ -99,6 +99,7 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
               indices: [],
               level: 0,
               types: Object.keys(
+                // @ts-expect-error
                 context.lang.getConfig().merged.plugins.config.RankiRichTextV2
                   .tokens.sentence,
               ).reduce((a, c) => {
@@ -114,6 +115,7 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
           endArgs["sentence.end"].indices.push(ei);
           endArgs["sentence.end"].level++;
           Object.entries(
+            // @ts-expect-error
             context.lang.getConfig().merged.plugins.config.RankiRichTextV2
               .tokens.sentence,
           ).forEach(([k, v]) => {

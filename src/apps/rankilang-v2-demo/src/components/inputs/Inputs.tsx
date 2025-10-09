@@ -54,7 +54,7 @@ export const Inputs: FC<InputsProps> = ({
   } = useUserInput(
     pluginObjects,
     setRankiParsed,
-    languageDefaultConfig,
+    // languageDefaultConfig,
     initialLanguageUserConfigStr,
     presetGroups,
   );

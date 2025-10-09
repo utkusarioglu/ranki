@@ -1,21 +1,26 @@
 import { RankiPluginParser, RankiLanguageConfig } from "@ranki/package-api";
 
-export const rankiConstantsV2ParserPlugin: RankiPluginParser = {
-  type: "parser",
-  meta: {
-    version: "2.0.64",
-    name: "RankiConstantsV2",
-  },
-  dependencies: [],
-  grammar: (c) => {
-    return stringifyConfig(c.merged);
-  },
-  actions: () => ({}),
-};
+export interface RankiConstantsV2ParserPluginConfig {}
+
+export const rankiConstantsV2ParserPlugin: RankiPluginParser<RankiConstantsV2ParserPluginConfig> =
+  {
+    type: "parser",
+    meta: {
+      version: "2.0.64",
+      name: "RankiConstantsV2",
+    },
+    dependencies: [],
+    config: {},
+    grammar: (c) => {
+      return stringifyConfig(c.merged);
+    },
+    actions: () => ({}),
+  };
 
 type Tokens = Record<string, boolean | number | string | string[]>;
 
-function tokenize(config: RankiLanguageConfig["merged"]): Tokens {
+// function tokenize(config: RankiLanguageConfig["merged"]): Tokens {
+function tokenize(config: any): Tokens {
   const tokens: Tokens = {
     root: "",
   };
