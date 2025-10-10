@@ -10,6 +10,25 @@ import type {
   ParamV2Value,
 } from "./types.mjs";
 
+const creatorName: ohm.ActionDict<string> = {
+  tParamsV2SeparatorFrame(sep) {
+    const context: RankiLangAstContext = this.args.context;
+    const separators =
+      // @ts-expect-error
+      context.lang.getConfig().merged.plugins.config.RankiParamsV2.tokens
+        .separator;
+    return sep.sourceString === separators.frame ? this.ctorName : "none";
+  },
+  tParamsV2SeparatorParam(sep) {
+    const context: RankiLangAstContext = this.args.context;
+    const separators =
+      // @ts-expect-error
+      context.lang.getConfig().merged.plugins.config.RankiParamsV2.tokens
+        .separator;
+    return sep.sourceString === separators.param ? this.ctorName : "none";
+  },
+};
+
 const paramsV2: ohm.ActionDict<ParamV2[]> = {
   _iter(...children) {
     const context: RankiLangAstContext = { ...this.args.context };
@@ -204,7 +223,7 @@ const paramV2Value: ohm.ActionDict<ParamV2Value> = {
     };
   },
 
-  paramValueItemPrimitive_lowercase(lower) {
+  paramValueItemPrimitive_lowercase(c1, c2, lower) {
     return {
       type: "lowercase",
       value: lower.sourceString,
@@ -225,9 +244,16 @@ const paramV2Value: ohm.ActionDict<ParamV2Value> = {
     };
   },
 
-  paramValueItemPrimitive_uppercase(val) {
+  paramValueItemPrimitive_uppercase(check1, check2, val) {
     return {
       type: "uppercase",
+      value: val.sourceString,
+    };
+  },
+
+  paramValueItemPrimitive_chars(c1, c2, val) {
+    return {
+      type: "mixed",
       value: val.sourceString,
     };
   },
@@ -313,5 +339,6 @@ export const actions = {
   argsAndParamsV2,
   paramV2Key,
   paramV2SettingNamespace,
+  creatorName,
   // paramV2KeyWord,
 };

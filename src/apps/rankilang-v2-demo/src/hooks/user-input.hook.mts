@@ -38,19 +38,14 @@ export function useUserInput(
       const languageUserConfig: RankiLanguageProvidedConfig = yaml.parse(
         languageUserConfigStr,
       );
-      // languageUserConfig.plugins.requested = requestedPlugins;
-      const rankiLang = new RankiLang(
-        parserPlugins,
-        // languageDefaultConfig,
-        [
-          {
-            plugins: {
-              requested: requestedPlugins,
-            },
-          } as RankiLanguageProvidedConfig,
-          languageUserConfig,
-        ],
-      );
+      const rankiLang = new RankiLang(parserPlugins, [
+        {
+          plugins: {
+            requested: requestedPlugins,
+          },
+        } as RankiLanguageProvidedConfig,
+        languageUserConfig,
+      ]);
       const parsed = rankiLang.parse({ [theater]: rankiStr });
       setRankiParsed(parsed);
     } catch (e) {

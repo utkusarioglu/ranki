@@ -54,26 +54,6 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     };
   },
 
-  // pauseRoot(whitespace1, pauseList, whitespace2) {
-  // pauseRoot(pauseList) {
-  //   const context: RankiLangAstContext = { ...this.args.context };
-  //   context.blockDepth++;
-  //   return {
-  //     kind: "parent",
-  //     type: this.ctorName,
-  //     args: {
-  //       depth: {
-  //         block: context.blockDepth,
-  //         inline: context.inlineDepth,
-  //         total: context.inlineDepth + context.blockDepth,
-  //       },
-  //       // "whitespace.1.length": whitespace1.sourceString.length,
-  //       // "whitespace.2.length": whitespace2.sourceString.length,
-  //     },
-  //     children: [pauseList.node(context)],
-  //   };
-  // },
-
   pauseList(v2PayloadSection1, pausedContainer, v2PayloadSection2) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;

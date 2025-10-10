@@ -19,7 +19,7 @@ export type ParamV2Setting = ParamV2Common & {
 
 export type ParamV2Directive = ParamV2Common & {
   type: "directive";
-  key: ParamV2Key; // @overload
+  // key: ParamV2Key; // @overload
 };
 
 export type ParamV2SettingNamespace = number;

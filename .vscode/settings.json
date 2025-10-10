@@ -5,7 +5,7 @@
   },
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.tsserver.log": "normal",
+  "typescript.tsserver.log": "off",
   "remote.autoForwardPorts": false,
   "files.exclude": {
     "**/.git": true,

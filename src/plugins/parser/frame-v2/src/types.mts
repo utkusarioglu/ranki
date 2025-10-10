@@ -16,19 +16,21 @@ export type ParseNodeFrameV2 =
 export type ParseNodeFrameV2Fp_F = Omit<AstNode, "args"> & {
   args: NodeArgsFrameV2ConfigFp_F;
 };
+
 export type ParseNodeFrameV2Fp_f = Omit<AstNode, "args"> & {
   args: NodeArgsFrameV2ConfigFp_f;
 };
+
 export type ParseNodeFrameV2P = Omit<AstNode, "args"> & {
   args: NodeArgsFrameV2ConfigP;
 };
 
 export type FrameSpec = string[];
 
-type FrameChain = { chain: FrameSpec[] };
+type WithFrameChain = { chain: FrameSpec[] };
 
 export interface NodeArgsFrameV2ConfigFp_F {
-  frame: FrameChain & {
+  frame: WithFrameChain & {
     version: "v2";
     variant: "fp_F"; // this is like f fp
     args: Partial<NodeArgsBaseV2> & {
@@ -42,7 +44,7 @@ export interface NodeArgsFrameV2ConfigFp_F {
 }
 
 export interface NodeArgsFrameV2ConfigFp_f {
-  frame: FrameChain & {
+  frame: WithFrameChain & {
     version: "v2";
     variant: "fp_f"; // this is like f fp
     args: Partial<NodeArgsBaseV2> & {
@@ -56,7 +58,7 @@ export interface NodeArgsFrameV2ConfigFp_f {
 }
 
 export interface NodeArgsFrameV2ConfigP {
-  frame: FrameChain & {
+  frame: WithFrameChain & {
     version: "v2";
     variant: "p"; // this is like f fp
     args: Partial<NodeArgsBaseV2> & {
@@ -66,17 +68,17 @@ export interface NodeArgsFrameV2ConfigP {
 }
 
 export interface NodeArgsFrameV2ConfigE {
-  frame: FrameChain & {
+  frame: WithFrameChain & {
     version: "v2";
-    type: string;
     variant: "e"; // this is like f fp
-    args: [];
+    // type: string;
+    args: Partial<NodeArgsBaseV2>;
   };
 }
 
 export type NodeArgsFrameV2 =
-  | NodeArgsFrameV2F
   | NodeArgsFrameV2E
+  | NodeArgsFrameV2F
   | NodeArgsFrameV2Fp_F
   | NodeArgsFrameV2Fp_f;
 

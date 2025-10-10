@@ -161,6 +161,20 @@ export const Inputs: FC<InputsProps> = ({
               </label>
             </div>
           ))}
+          <div className={style.requestedPluginsButtonContainer}>
+            <button
+              className={style.buttonPlugins}
+              onClick={() => setInstalledPlugins(allPlugins)}
+            >
+              All
+            </button>{" "}
+            <button
+              className={style.buttonPlugins}
+              onClick={() => setInstalledPlugins([])}
+            >
+              None
+            </button>
+          </div>
         </fieldset>
 
         <fieldset className={style.inputFieldSet}>

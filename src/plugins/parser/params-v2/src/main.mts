@@ -51,5 +51,5 @@ export const rankiParamsV2ParserPlugin: RankiPluginParser<RankiParamsV2ParserPlu
     actions: () => actions,
   };
 
-export type { ArgsAndParamsV2, ParamsV2Spec } from "./types.mjs";
+export type { ArgsAndParamsV2, ParamsV2Spec, ParamV2 } from "./types.mjs";
 export { applyV2Directives } from "./params.mjs";

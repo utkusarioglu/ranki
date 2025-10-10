@@ -3,7 +3,7 @@ import type { RankiLangAstContext, AstNode } from "@ranki/package-api";
 import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
 
 const node: ohm.ActionDict<AstNode> = {
-  root_ignore(indentation, directive, clearance, ignore, wm, rest) {
+  root_ignore(ignore, wm, rest) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
@@ -16,8 +16,8 @@ const node: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        "indentation.1.length": indentation.sourceString.length,
-        "clearance.1.length": clearance.sourceString.length,
+        // "indentation.1.length": indentation.sourceString.length,
+        // "clearance.1.length": clearance.sourceString.length,
         "wm.1.length": wm.sourceString.length,
       },
       source: {
@@ -295,22 +295,22 @@ const creatorName: ohm.ActionDict<string> = {
   clearance(clearance1) {
     return this.ctorName;
   },
-  tParamsV2SeparatorFrame(sep) {
-    const context: RankiLangAstContext = this.args.context;
-    const separators =
-      // @ts-expect-error
-      context.lang.getConfig().merged.plugins.config.RankiParamsV2.tokens
-        .separator;
-    return sep.sourceString === separators.frame ? this.ctorName : "none";
-  },
-  tParamsV2SeparatorParam(sep) {
-    const context: RankiLangAstContext = this.args.context;
-    const separators =
-      // @ts-expect-error
-      context.lang.getConfig().merged.plugins.config.RankiParamsV2.tokens
-        .separator;
-    return sep.sourceString === separators.param ? this.ctorName : "none";
-  },
+  // tParamsV2SeparatorFrame(sep) {
+  //   const context: RankiLangAstContext = this.args.context;
+  //   const separators =
+  //     // @ts-expect-error
+  //     context.lang.getConfig().merged.plugins.config.RankiParamsV2.tokens
+  //       .separator;
+  //   return sep.sourceString === separators.frame ? this.ctorName : "none";
+  // },
+  // tParamsV2SeparatorParam(sep) {
+  //   const context: RankiLangAstContext = this.args.context;
+  //   const separators =
+  //     // @ts-expect-error
+  //     context.lang.getConfig().merged.plugins.config.RankiParamsV2.tokens
+  //       .separator;
+  //   return sep.sourceString === separators.param ? this.ctorName : "none";
+  // },
 };
 
 const iterNode: ohm.ActionDict<AstNode[]> = {

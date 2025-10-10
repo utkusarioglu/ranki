@@ -165,7 +165,7 @@ export class ParserPlugins {
     );
   }
 
-  produceConfig() {
+  produceConfig(): Record<string, unknown> {
     return this.list.reduce(
       (a, c) => ((a[c.meta.name] = c.config), a),
       {} as any,

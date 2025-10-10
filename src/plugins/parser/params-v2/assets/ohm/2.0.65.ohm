@@ -61,7 +61,8 @@ RankiParamsV2 <: RankiBase {
     | number --number
     | caseInsensitive<"true"> --true
     | caseInsensitive<"false"> --false
-    | upper+ --uppercase
-    | lower+ --lowercase
-    | letter+ --mixed
+    | &(upper+ clearance) upper+ --uppercase
+    | &(lower+ clearance) lower+ --lowercase
+    | &(letter+ clearance) letter+ --chars
+    | (letter | digit)+ --mixed
 }

@@ -43,7 +43,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         ...context,
         frame: {
           version: "v1",
-          type: v1Type.sourceString,
+          chain: v1Type.sourceString,
           params: [],
         },
       },
@@ -90,7 +90,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         ...context,
         frame: {
           version: "v1",
-          type: v1Type.sourceString,
+          chain: v1Type.sourceString,
           params: argsAndParamsV1["params"],
         },
       },
@@ -135,7 +135,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         ...context,
         frame: {
           version: "v1",
-          type: v1Type.sourceString,
+          chain: v1Type.sourceString,
           params: [],
         },
       },
@@ -185,7 +185,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         ...context,
         frame: {
           version: "v1",
-          type: v1Type.sourceString,
+          chain: v1Type.sourceString,
           params: argsAndParamsV1["params"],
         },
       },

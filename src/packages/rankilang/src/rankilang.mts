@@ -4,121 +4,45 @@ import type {
   RankiLangParseResult,
   RankiLangParseSpecs,
   RankiLangAstContext,
-  RankiLanguageDefaultConfig,
   RankiLanguageProvidedConfig,
   RankiLangParseReport,
 } from "@ranki/package-api";
 import { ast } from "./ast.mjs";
 import { ParserPlugins } from "./plugins.mjs";
-import { RankiLanguageMergedConfig } from "../../api/src/config.mjs";
-
-// function createMergedConfig(
-//   defaultConfig: RankiLanguageDefaultConfig,
-//   userConfig: RankiLanguageUserConfig,
-// ): RankiLanguageConfig {
-//   const merged: RankiLanguageConfig["merged"] = {
-//     ...defaultConfig,
-//     ...userConfig,
-//     plugins: {
-//       standards: defaultConfig.plugins.standards,
-//       requested: userConfig.plugins.requested,
-//       config: {
-//         ...defaultConfig.plugins.config,
-//         ...userConfig.plugins.config,
-//       },
-//     },
-//   };
-
-//   return {
-//     default: defaultConfig,
-//     user: userConfig,
-//     merged,
-//   };
-// }
-
-function mergeConfigs(configs: any[]): RankiLanguageMergedConfig {
-  if (configs.length < 1) {
-    throw new Error("NO CONFIG GIVEN");
-  }
-  if (configs.length === 1) {
-    return configs[0];
-  }
-  const rest = [...configs].filter((v) => !!v);
-  const base = configs.shift();
-  console.log("---", rest);
-
-  Object.entries(base).forEach(([k, _v]) => {
-    const restDefined = rest.map((v) => v[k]).filter((v) => !!v);
-
-    if (typeof base[k] === "object" && !Array.isArray(base[k])) {
-      mergeConfigs([base[k], ...restDefined]);
-    } else if (Array.isArray(base[k])) {
-      console.log("Arr");
-      const s = new Set(base[k]);
-      restDefined.forEach((a) => {
-        a.map((i) => s.add(i));
-      });
-      base[k] = Array.from(s);
-    } else if (restDefined.length) {
-      base[k] = restDefined[restDefined.length - 1];
-    }
-  });
-  return base;
-}
+import { RankiLangConfig } from "./config.mjs";
 
 export class RankiLang implements RankiLangInstance {
-  private defaultConfig: RankiLanguageDefaultConfig;
-  private providedConfigs: RankiLanguageProvidedConfig[];
-  private config: RankiLanguageConfig;
+  private config: RankiLangConfig;
   private plugins: ParserPlugins;
 
-  constructor(
-    plugins: ParserPlugins,
-    // defaultConfig: RankiLanguageDefaultConfig,
-    userConfigs: RankiLanguageProvidedConfig[],
-  ) {
-    // this.defaultConfig = defaultConfig;
-    this.providedConfigs = userConfigs;
+  constructor(plugins: ParserPlugins, provided: RankiLanguageProvidedConfig[]) {
     this.plugins = plugins;
-    this.defaultConfig = {
-      tags: [],
-      content: {
-        prefix: "",
-        prefixLine: "",
-        suffix: "",
-        suffixLine: "",
-      },
-      plugins: {
-        standards: ["RankiConstantsV2", "RankiBaseV2"],
-        requested: [],
-        config: plugins.produceConfig(),
-      },
-    };
-
-    // this.config = createMergedConfig(this.defaultConfig, this.userConfig);
-    this.config = {
-      default: this.defaultConfig,
-      provided: this.providedConfigs,
-      merged: mergeConfigs([this.defaultConfig, ...this.providedConfigs]),
-    };
+    this.config = new RankiLangConfig(plugins.produceConfig(), provided);
   }
 
   getConfig() {
-    return this.config;
+    return this.config.getAll();
   }
 
   getPlugins() {
     return this.plugins;
   }
 
+  clone(
+    providedConfigs: RankiLanguageProvidedConfig[] | null,
+  ): RankiLangInstance {
+    return new RankiLang(this.plugins, this.config.clone(providedConfigs));
+  }
+
   parse(
     raw: Record<string, string>,
     spec: RankiLangParseSpecs = {
-      frame: { type: "null" },
       theater: "default",
       role: "default",
+      // TODO these values only relevant to frames, maybe they should be in the frame specification
       blockDepth: 0,
       inlineDepth: 0,
+      // TODO this one is root if we are at the root and is the frame's default, so maybe this doesn't need to be here
       startRule: "root",
     },
   ): RankiLangParseResult {
@@ -134,19 +58,19 @@ export class RankiLang implements RankiLangInstance {
       inlineDepth: spec.inlineDepth,
       theater: spec.theater,
       role: spec.role,
-      startRule: "root",
+      startRule: spec.startRule,
     };
 
     const report: RankiLangParseReport = {
       language: {
         versions: this.plugins.getVersions(),
       },
-      config: this.config,
+      config: this.config.getAll(),
       theater: spec.theater,
       role: spec.role,
     };
 
-    const contentConfig = this.config.merged.content;
+    const contentConfig = this.config.getAll().merged.content;
     const prefixLine =
       contentConfig.prefixLine !== "" ? contentConfig.prefixLine + "\n" : "";
     const suffixLine =
@@ -160,8 +84,23 @@ export class RankiLang implements RankiLangInstance {
       suffixLine,
     ].join("");
 
-    switch (spec.frame.type) {
-      case "null":
+    if (!spec.frame) {
+      return {
+        report,
+        theaters: {
+          [spec.theater]: {
+            stages: {
+              raw: theaterWithContent,
+              ast: ast(context, theaterWithContent),
+            },
+          },
+        },
+      };
+    }
+
+    switch (spec.frame.version) {
+      case "v1":
+        console.log("v1!");
         return {
           report,
           theaters: {
@@ -174,60 +113,20 @@ export class RankiLang implements RankiLangInstance {
           },
         };
 
-      case "test":
-        console.log(spec);
+      case "v2":
+        console.log("v2!");
         return {
           report,
           theaters: {
             [spec.theater]: {
               stages: {
                 raw: theaterWithContent,
-                ast: {
-                  report: {
-                    parser: {
-                      requested: [],
-                      sorted: [],
-                      graph: {},
-                      contributors: {},
-                      methods: {},
-                    },
-                  },
-                  root: {
-                    kind: "leaf",
-                    type: spec.frame.type,
-                    print: true,
-                    args: {
-                      depth: {
-                        inline: 1,
-                        block: 0,
-                        total: 1,
-                      },
-                    },
-                    source: {
-                      type: "mixed",
-                      value:
-                        theaterWithContent.trim() +
-                        ": " +
-                        spec.frame.params.length,
-                    },
-                  },
-                },
+                ast: ast(context, theaterWithContent),
               },
             },
           },
         };
-
-      default:
-        throw new Error(`UNRECOGNIZED FRAME TYPE: ${spec.frame.type}`);
     }
-  }
-
-  clone(
-    providedConfigs: RankiLanguageProvidedConfig[] | null,
-  ): RankiLangInstance {
-    const newProvidedConfigs =
-      providedConfigs === null ? this.providedConfigs : providedConfigs;
-    return new RankiLang(this.plugins, newProvidedConfigs);
   }
 }
 
