@@ -37,7 +37,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
   ) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
-    const child = context.lang.clone(null).parse(
+    const child = context.lang.parse(
       { [context.theater]: v1PayloadInline.sourceString },
       {
         ...context,
@@ -84,7 +84,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(context);
-    const child = context.lang.clone(null).parse(
+    const child = context.lang.parse(
       { [context.theater]: v1PayloadInline.sourceString },
       {
         ...context,
@@ -129,7 +129,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
   ) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
-    const child = context.lang.clone(null).parse(
+    const child = context.lang.parse(
       { [context.theater]: v1PayloadBlock.sourceString },
       {
         ...context,
@@ -179,7 +179,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     context.blockDepth++;
     const argsAndParamsV1: ArgsAndParamsV1 =
       v1ParamListInline.argsAndParamsV1(context);
-    const child = context.lang.clone(null).parse(
+    const child = context.lang.parse(
       { [context.theater]: v1PayloadBlock.sourceString },
       {
         ...context,

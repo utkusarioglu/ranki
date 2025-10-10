@@ -1,6 +1,6 @@
-import type { RankiLanguageUserConfig } from "@ranki/package-api";
+import type { RankiLanguageProvidedConfig } from "@ranki/package-api";
 
-export interface RankiAppUserConfig extends RankiLanguageUserConfig {
+export interface RankiAppUserConfig extends RankiLanguageProvidedConfig {
   version: "v2";
   anki: {
     deck: string;

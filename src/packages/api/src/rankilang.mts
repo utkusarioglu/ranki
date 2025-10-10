@@ -16,5 +16,5 @@ export interface RankiLangInstance {
     raw: Record<TheaterName, string>,
     specs: RankiLangParseSpecs,
   ): RankiLangParseResult;
-  clone(userConfigs: RankiLanguageProvidedConfig[] | null): RankiLangInstance;
+  // clone(userConfigs: RankiLanguageProvidedConfig[] | null): RankiLangInstance;
 }

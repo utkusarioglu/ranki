@@ -53,20 +53,46 @@ interface FrameV1 {
   params: string[];
 }
 
+// FIX This uses properties from the v2FrameConfig object.
+// this type should be coming from the framev2 plugin. `api` shouldn't care about these things
 interface FrameV2 {
   version: "v2";
-  chain: string[][];
-  directives: any; // !TODO any
-  settings: any; // !TODO any
+  // chain: string[][];
+  // directives: any; // !TODO any
+  // settings: any; // !TODO any
+
+  // version: "v2";
+  variant: "fp_F"; // this is like f fp
+  // args: Partial<NodeArgsBaseV2> & {
+  //   "separator.right.type": string;
+  //   // !FIX this value is inside the config structure, which breaks symmetry
+  //   // "separator.left.type": string;
+  //   "frame.v2.config": Partial<NodeArgsBaseV2>;
+  // };
+  params: any; // ParamsV2Spec;
 }
 
-export interface RankiLangParseSpecs {
-  frame?: FrameV1 | FrameV2;
+interface RankiLangParseSpecsCommon {
   theater: TheaterName;
   role: RoleName;
   blockDepth: number;
   inlineDepth: number;
   startRule: string;
+}
+
+export type RankiLangParseSpecs =
+  | RankiLangParseSpecsFrameNull
+  | RankiLangParseSpecsFrameV1
+  | RankiLangParseSpecsFrameV2;
+
+export interface RankiLangParseSpecsFrameNull
+  extends RankiLangParseSpecsCommon {}
+
+export interface RankiLangParseSpecsFrameV1 extends RankiLangParseSpecsCommon {
+  frame: FrameV1;
+}
+export interface RankiLangParseSpecsFrameV2 extends RankiLangParseSpecsCommon {
+  frame: FrameV2;
 }
 
 export type RankiLangAstContext = {
