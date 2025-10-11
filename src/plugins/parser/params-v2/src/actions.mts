@@ -172,7 +172,8 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
       values: [
         {
           type: "mixed",
-          value: quoted.sourceString,
+          // WARN this won't work if the quoted content has structure
+          value: quoted.sourceString.slice(1, -1),
         },
       ],
     };

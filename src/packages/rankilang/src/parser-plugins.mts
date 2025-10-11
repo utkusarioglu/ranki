@@ -1,4 +1,6 @@
 import type { RankiPluginParser, VersionReport } from "@ranki/package-api";
+import { parseV2 } from "./parseV2.mjs";
+import { parseV1 } from "./parseV1.mjs";
 
 function expandDependencies(plugins: RankiPluginParser[]): void {
   const lookup = Object.fromEntries(plugins.map((p) => [p.meta.name, p]));
@@ -86,8 +88,22 @@ function topologicalSort(
   return sorted;
 }
 
+type ParseHandler = (...rest: any[]) => any;
+
 export class ParserPlugins {
   private list: RankiPluginParser[] = [];
+  private handler: Record<string, ParseHandler> = {
+    RankiFrameV1: parseV1,
+    RankiFrameV2: parseV2,
+  };
+
+  getHandler(handlerName: string): ParseHandler {
+    const found = this.handler[handlerName];
+    if (!found) {
+      throw new Error(`CANNOT FIND PARSE CONTAINER: ${handlerName}`);
+    }
+    return found;
+  }
 
   addPlugin(plugin: RankiPluginParser) {
     this.list.push(plugin);
