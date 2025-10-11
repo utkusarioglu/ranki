@@ -27,7 +27,10 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       { [context.theater]: v2Payload.sourceString },
       {
         ...context,
-        frame: frameConfig["frame"],
+        plugin: {
+          ...frameConfig["frame"],
+          type: "RankiFrameV2",
+        },
       },
     );
 

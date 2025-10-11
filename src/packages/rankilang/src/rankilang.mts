@@ -10,7 +10,7 @@ import type {
   RankiLangParseSpecsFrameV1,
 } from "@ranki/package-api";
 import { ast } from "./ast.mjs";
-import { ParserPlugins } from "./plugins.mjs";
+import { ParserPlugins } from "./parser-plugins.mjs";
 import { RankiLangConfig } from "./config.mjs";
 import type { ParamV2 } from "@ranki/plugin-parser-params-v2";
 
@@ -100,10 +100,10 @@ function convertParams<T extends ParamV2>(
 }
 
 function parseSettings({ directive, setting }: any, frameConfig: any) {
-  if (!frameConfig.frame && !frameConfig.frame.params) {
+  if (!frameConfig.plugin && !frameConfig.plugin.params) {
     return { config: null };
   }
-  const items = frameConfig.frame.params.items;
+  const items = frameConfig.plugin.params.items;
   const directiveParams = items.filter((p) => p.type === "directive");
   const settingParams = items.filter((p) => p.type === "setting");
 
@@ -163,21 +163,38 @@ export class RankiLang implements RankiLangInstance {
       role: spec.role,
     };
 
-    const contentConfig = this.config.getAll().merged.content;
-    const prefixLine =
-      contentConfig.prefixLine !== "" ? contentConfig.prefixLine + "\n" : "";
-    const suffixLine =
-      contentConfig.suffixLine !== "" ? "\n" + contentConfig.suffixLine : "";
+    if (spec["plugin"]) {
+      switch (spec["plugin"].type) {
+        case "RankiFrameV1":
+          return this.parseV1(
+            theaterRaw,
+            report,
+            // TODO get rid of this type casting
+            spec as RankiLangParseSpecsFrameV1,
+          );
 
-    const theaterWithContent = [
-      prefixLine,
-      contentConfig.prefix,
-      theaterRaw,
-      contentConfig.suffix,
-      suffixLine,
-    ].join("");
+        case "RankiFrameV2":
+          return this.parseV2(
+            theaterRaw,
+            report,
+            // TODO get rid of this type casting
+            spec as RankiLangParseSpecsFrameV2,
+          );
+      }
+    } else {
+      const contentConfig = this.config.getAll().merged.content;
+      const prefixLine =
+        contentConfig.prefixLine !== "" ? contentConfig.prefixLine + "\n" : "";
+      const suffixLine =
+        contentConfig.suffixLine !== "" ? "\n" + contentConfig.suffixLine : "";
 
-    if (!spec["frame"]) {
+      const theaterWithContent = [
+        prefixLine,
+        contentConfig.prefix,
+        theaterRaw,
+        contentConfig.suffix,
+        suffixLine,
+      ].join("");
       const context: RankiLangAstContext = {
         lang: this,
         blockDepth: spec.blockDepth,
@@ -199,23 +216,9 @@ export class RankiLang implements RankiLangInstance {
       };
     }
 
-    switch (spec["frame"].version) {
-      case "v1":
-        return this.parseV1(
-          theaterRaw,
-          report,
-          // TODO get rid of this type casting
-          spec as RankiLangParseSpecsFrameV1,
-        );
-
-      case "v2":
-        return this.parseV2(
-          theaterRaw,
-          report,
-          // TODO get rid of this type casting
-          spec as RankiLangParseSpecsFrameV2,
-        );
-    }
+    throw new Error(
+      `FOUND NO VIABLE METHOD FOR PARSING CONTENT:\n${theaterRaw}`,
+    );
   }
 
   private parseV1(
@@ -292,7 +295,7 @@ export class RankiLang implements RankiLangInstance {
       contentConfig.suffix,
       suffixLine,
     ].join("");
-    console.log({ directives, settings, theaterWithContent });
+    console.log({ spec, directives, settings, theaterWithContent });
 
     return {
       report,

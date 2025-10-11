@@ -41,8 +41,8 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       { [context.theater]: v1PayloadInline.sourceString },
       {
         ...context,
-        frame: {
-          version: "v1",
+        plugin: {
+          type: "RankiFrameV1",
           chain: v1Type.sourceString,
           params: [],
         },
@@ -88,8 +88,8 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       { [context.theater]: v1PayloadInline.sourceString },
       {
         ...context,
-        frame: {
-          version: "v1",
+        plugin: {
+          type: "RankiFrameV1",
           chain: v1Type.sourceString,
           params: argsAndParamsV1["params"],
         },
@@ -133,8 +133,8 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       { [context.theater]: v1PayloadBlock.sourceString },
       {
         ...context,
-        frame: {
-          version: "v1",
+        plugin: {
+          type: "RankiFrameV1",
           chain: v1Type.sourceString,
           params: [],
         },
@@ -183,8 +183,8 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       { [context.theater]: v1PayloadBlock.sourceString },
       {
         ...context,
-        frame: {
-          version: "v1",
+        plugin: {
+          type: "RankiFrameV1",
           chain: v1Type.sourceString,
           params: argsAndParamsV1["params"],
         },

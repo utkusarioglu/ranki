@@ -48,7 +48,7 @@ export type TheaterName = string & { type?: "TheaterName" };
 type RoleName = string & { type?: "RoleName" };
 
 interface FrameV1 {
-  version: "v1";
+  type: "RankiFrameV1";
   chain: string;
   params: string[];
 }
@@ -56,7 +56,7 @@ interface FrameV1 {
 // FIX This uses properties from the v2FrameConfig object.
 // this type should be coming from the framev2 plugin. `api` shouldn't care about these things
 interface FrameV2 {
-  version: "v2";
+  type: "RankiFrameV2";
   // chain: string[][];
   // directives: any; // !TODO any
   // settings: any; // !TODO any
@@ -89,10 +89,10 @@ export interface RankiLangParseSpecsFrameNull
   extends RankiLangParseSpecsCommon {}
 
 export interface RankiLangParseSpecsFrameV1 extends RankiLangParseSpecsCommon {
-  frame: FrameV1;
+  plugin: FrameV1;
 }
 export interface RankiLangParseSpecsFrameV2 extends RankiLangParseSpecsCommon {
-  frame: FrameV2;
+  plugin: FrameV2;
 }
 
 export type RankiLangAstContext = {

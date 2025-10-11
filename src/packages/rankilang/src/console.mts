@@ -2,7 +2,7 @@ import type { RankiLanguageProvidedConfig } from "@ranki/package-api";
 import yaml from "yaml";
 import * as fs from "node:fs";
 import path from "node:path";
-import { ParserPlugins } from "./plugins.mjs";
+import { ParserPlugins } from "./parser-plugins.mjs";
 
 import { rankiConstantsV2ParserPlugin } from "@ranki/plugin-parser-constants-v2";
 import { rankiBaseV2ParserPlugin } from "@ranki/plugin-parser-base-v2";

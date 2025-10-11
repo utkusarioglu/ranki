@@ -1,4 +1,4 @@
-import type { ParserPlugins } from "./plugins.mjs";
+import type { ParserPlugins } from "./parser-plugins.mjs";
 import type {
   RankiLangAstContext,
   RankiLangParseFunctionReturn,
