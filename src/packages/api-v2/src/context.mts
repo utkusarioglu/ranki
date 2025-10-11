@@ -1,6 +1,11 @@
 import type { RankiLanguageConfig } from "./config.mjs";
 import type { AstNode } from "./ast-node.mjs";
-import type { RankiLangInstance } from "./rankilang.mjs";
+import type {
+  RankiLangInstance,
+  RankiLangParserPluginParseHandler,
+} from "./rankilang.mjs";
+import { RankiPluginParser } from "./plugin.mjs";
+import type * as ohm from "ohm-js";
 
 export interface RankiLangParseResult {
   report: RankiLangParseReport;
@@ -42,35 +47,35 @@ export interface RankiLangParseFunctionReturn {
   root: RankiLangParsedTheater["stages"]["ast"]["root"];
 }
 
-export type ParserPlugins = any; // !TODO any
+export type ProducedConfig = Record<string, unknown>;
+
+export type ActionsDictRecord = Record<
+  string,
+  Record<string, ohm.ActionDict<any>>
+>;
+
+export interface ParserPluginsInstance {
+  getVersions(): VersionReport;
+  produceConfig(): ProducedConfig;
+  getHandler(handlerName: string): RankiLangParserPluginParseHandler;
+  checkMissing(set: Set<string>): string[];
+  pickPlugins(set: Set<string>): RankiPluginParser[];
+  sortPlugins(activePluginsArr: RankiPluginParser[]): string[];
+  dependencyGraph(
+    activePluginsArr: RankiPluginParser[],
+  ): Record<
+    RankiPluginParser["meta"]["name"],
+    RankiPluginParser["meta"]["name"][]
+  >;
+  getActions(): ActionsDictRecord;
+  find(name: string): RankiPluginParser;
+}
 
 export type TheaterName = string & { type?: "TheaterName" };
 type RoleName = string & { type?: "RoleName" };
 
-interface FrameV1 {
-  type: "RankiFrameV1";
-  chain: string;
-  params: string[];
-}
-
 // FIX This uses properties from the v2FrameConfig object.
 // this type should be coming from the framev2 plugin. `api` shouldn't care about these things
-interface FrameV2 {
-  type: "RankiFrameV2";
-  // chain: string[][];
-  // directives: any; // !TODO any
-  // settings: any; // !TODO any
-
-  // version: "v2";
-  variant: "fp_F"; // this is like f fp
-  // args: Partial<NodeArgsBaseV2> & {
-  //   "separator.right.type": string;
-  //   // !FIX this value is inside the config structure, which breaks symmetry
-  //   // "separator.left.type": string;
-  //   "frame.v2.config": Partial<NodeArgsBaseV2>;
-  // };
-  params: any; // ParamsV2Spec;
-}
 
 interface RankiLangParseSpecsCommon {
   theater: TheaterName;
@@ -80,20 +85,31 @@ interface RankiLangParseSpecsCommon {
   startRule: string;
 }
 
-export type RankiLangParseSpecs =
-  | RankiLangParseSpecsFrameNull
-  | RankiLangParseSpecsFrameV1
-  | RankiLangParseSpecsFrameV2;
-
-export interface RankiLangParseSpecsFrameNull
-  extends RankiLangParseSpecsCommon {}
-
-export interface RankiLangParseSpecsFrameV1 extends RankiLangParseSpecsCommon {
-  plugin: FrameV1;
+export interface RankiLangParseHandlerCommon {
+  type: string;
 }
-export interface RankiLangParseSpecsFrameV2 extends RankiLangParseSpecsCommon {
-  plugin: FrameV2;
-}
+
+export type RankiLangParseSpecs<T extends RankiLangParseHandlerCommon> = {
+  // plugin?: FrameV1 | FrameV2;
+  plugin?: T;
+  theater: TheaterName;
+  role: RoleName;
+  blockDepth: number;
+  inlineDepth: number;
+  startRule: string;
+};
+// | RankiLangParseSpecsFrameNull
+// | RankiLangParseSpecsFrameV1
+// | RankiLangParseSpecsFrameV2;
+
+export type RankiLangParseSpecsFrameNull = RankiLangParseSpecsCommon;
+
+// export interface RankiLangParseSpecsFrameV1 extends RankiLangParseSpecsCommon {
+//   plugin: FrameV1;
+// }
+// export interface RankiLangParseSpecsFrameV2 extends RankiLangParseSpecsCommon {
+//   plugin: FrameV2;
+// }
 
 export type RankiLangAstContext = {
   blockDepth: number;

@@ -6,6 +6,8 @@ import type {
   RankiLangAstContext,
   RankiLanguageProvidedConfig,
   RankiLangParseReport,
+  RankiLangParseHandlerCommon,
+  ParserPluginsInstance,
 } from "@ranki/package-api-v2";
 import { ast } from "./ast/ast.mjs";
 import { ParserPlugins } from "./parser/parser-plugins.mjs";
@@ -14,10 +16,13 @@ import { ComponentPlugins } from "./component/component-plugins.mjs";
 
 export class RankiLang implements RankiLangInstance {
   private config: RankiLangConfig;
-  public parsers: ParserPlugins;
+  public parsers: ParserPluginsInstance;
   public components: ComponentPlugins;
 
-  constructor(plugins: ParserPlugins, provided: RankiLanguageProvidedConfig[]) {
+  constructor(
+    plugins: ParserPluginsInstance,
+    provided: RankiLanguageProvidedConfig[],
+  ) {
     this.parsers = plugins;
     this.config = new RankiLangConfig(plugins.produceConfig(), provided);
     this.components = new ComponentPlugins();
@@ -37,12 +42,12 @@ export class RankiLang implements RankiLangInstance {
     return new RankiLang(this.parsers, this.config.clone(providedConfigs));
   }
 
-  parse(
+  parse<T extends RankiLangParseHandlerCommon>(
     raw: Record<string, string>,
-    spec: RankiLangParseSpecs = {
+    spec: RankiLangParseSpecs<T> = {
       theater: "default",
       role: "default",
-      // TODO these values only relevant to frames, maybe they should be in the frame specification
+      // TODO these values are only relevant to frames, maybe they should be in the frame specification
       blockDepth: 0,
       inlineDepth: 0,
       // TODO this one is root if we are at the root and is the frame's default, so maybe this doesn't need to be here
@@ -85,6 +90,7 @@ export class RankiLang implements RankiLangInstance {
         contentConfig.suffix,
         suffixLine,
       ].join("");
+
       const context: RankiLangAstContext = {
         lang: this,
         blockDepth: spec.blockDepth,
@@ -93,6 +99,7 @@ export class RankiLang implements RankiLangInstance {
         role: spec.role,
         startRule: spec.startRule,
       };
+
       return {
         report,
         theaters: {

@@ -1,5 +1,14 @@
 import type * as ohm from "ohm-js";
-import type { RankiLanguageConfig } from "./config.mjs";
+import type {
+  RankiLanguageConfig,
+  RankiLanguageProvidedConfig,
+} from "./config.mjs";
+import {
+  RankiLangParseResult,
+  RankiLangParseSpecs,
+  RankiLangParseHandlerCommon,
+} from "./context.mjs";
+import { RankiLangParseHandlerHooks } from "./rankilang.mjs";
 
 export type RankiPlugin = RankiPluginParser | RankiPluginRenderer;
 
@@ -8,9 +17,28 @@ interface RankiPluginMeta {
   name: string;
 }
 
-export type RankiPluginParser<ConfigShape = {}> = {
+// export type RankiLangParseHandlerHooks = {
+//   lang: RankiLangInstance;
+//   clone: (
+//     providedConfigs: RankiLanguageProvidedConfig[] | null,
+//   ) => RankiLangInstance;
+// };
+
+export type RankiLangParseHandlerFunction<
+  HandlerShape extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
+> = (
+  raw: string,
+  spec: RankiLangParseSpecs<HandlerShape>,
+  hooks: RankiLangParseHandlerHooks,
+) => RankiLangParseResult;
+
+export type RankiPluginParser<
+  ConfigShape = {},
+  HandlerShape extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
+> = {
   type: "parser";
   meta: RankiPluginMeta;
+  handler?: RankiLangParseHandlerFunction<HandlerShape>;
   dependencies: string[];
   config: ConfigShape;
   grammar: (c: RankiLanguageConfig) => string;

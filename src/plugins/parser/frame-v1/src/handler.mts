@@ -1,13 +1,19 @@
 import type {
-  RankiLangParseSpecsFrameV1,
+  RankiLangParseSpecs,
   RankiLangAstContext,
   RankiLangParseReport,
 } from "@ranki/package-api-v2";
 
-export function parseV1(
+export interface FrameV1 {
+  type: "RankiFrameV1";
+  chain: string;
+  params: string[];
+}
+
+export function handler(
   theaterRaw: string,
   // report: RankiLangParseReport,
-  spec: RankiLangParseSpecsFrameV1,
+  spec: RankiLangParseSpecs<FrameV1>,
   {
     lang,
     clone,
@@ -15,7 +21,7 @@ export function parseV1(
     parseAst,
   }: any,
 ) {
-  console.log("v1!!!", spec);
+  console.log("v1!!! from handler", spec);
   const contextV1: RankiLangAstContext = {
     lang,
     blockDepth: spec.blockDepth,

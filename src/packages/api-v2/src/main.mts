@@ -24,9 +24,17 @@ export type {
   RankiLangParsedTheater,
   RankiLangParseReport,
   RankiLangParseFunctionReturn,
+  RankiLangParseHandlerCommon,
+  ParserPluginsInstance,
+  ProducedConfig,
+  ActionsDictRecord,
   // FIX I don't think this belongs here
-  RankiLangParseSpecsFrameV2,
-  RankiLangParseSpecsFrameV1,
+  // RankiLangParseSpecsFrameV2,
+  // RankiLangParseSpecsFrameV1,
 } from "./context.mjs";
 
-export type { RankiLangInstance } from "./rankilang.mjs";
+export type {
+  RankiLangInstance,
+  RankiLangParserPluginParseHandler,
+  RankiLangParseHandlerHooks,
+} from "./rankilang.mjs";

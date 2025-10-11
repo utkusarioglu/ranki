@@ -14,6 +14,7 @@ import type {
   // ArgsAndParamsV2FrameV2,
   FrameSpec,
 } from "../types.mjs";
+import type { FrameV2 } from "../handler.mjs";
 // !FIX should come from exports
 
 export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
@@ -23,7 +24,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const frameConfig: NodeArgsFrameV2ConfigFp_F =
       v2FrameConfig.v2FrameConfig(context);
 
-    const child = context.lang.parse(
+    const child = context.lang.parse<FrameV2>(
       { [context.theater]: v2Payload.sourceString },
       {
         ...context,

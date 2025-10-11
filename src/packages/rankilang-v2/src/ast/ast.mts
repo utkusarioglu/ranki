@@ -1,5 +1,6 @@
 import type { ParserPlugins } from "../parser/parser-plugins.mjs";
 import type {
+  ParserPluginsInstance,
   RankiLangAstContext,
   RankiLangParseFunctionReturn,
 } from "@ranki/package-api-v2";
@@ -9,7 +10,7 @@ export function ast(
   context: RankiLangAstContext,
   raw: string,
 ): RankiLangParseFunctionReturn {
-  const parserPlugins: ParserPlugins = context.lang.getPlugins();
+  const parserPlugins: ParserPluginsInstance = context.lang.getPlugins();
   const langConfig = context.lang.getConfig();
   const configPlugins = langConfig.merged.plugins;
 

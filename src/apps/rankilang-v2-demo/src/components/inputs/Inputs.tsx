@@ -52,6 +52,7 @@ export const Inputs: FC<InputsProps> = ({
     theater,
     setTheater,
   } = useUserInput(
+    // @ts-expect-error
     pluginObjects,
     setRankiParsed,
     // languageDefaultConfig,

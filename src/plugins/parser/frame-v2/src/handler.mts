@@ -1,26 +1,46 @@
 import type {
-  RankiLangParseSpecsFrameV2,
+  RankiLangParseSpecs,
   RankiLangParseResult,
   RankiLangParseReport,
   RankiLangAstContext,
+  RankiLangInstance,
+  RankiLangParserPluginParseHandler,
 } from "@ranki/package-api-v2";
-import type { ParamV2 } from "@ranki/plugin-parser-params-v2";
-import { RankiLang } from "../rankilang.mjs";
+import type { ParamsV2Spec, ParamV2 } from "@ranki/plugin-parser-params-v2";
+import type { ParseNodeFrameV2 } from "./types.mjs";
+// import type { RankiLang } from "../rankilang.mjs";
 
-export function parseV2(
+export interface FrameV2 {
+  type: "RankiFrameV2";
+  chain: string[][];
+  // directives: any; // !TODO any
+  // settings: any; // !TODO any
+
+  // version: "v2";
+  variant: "fp_F"; // this is like f fp
+  // args: Partial<NodeArgsBaseV2> & {
+  //   "separator.right.type": string;
+  //   // !FIX this value is inside the config structure, which breaks symmetry
+  //   // "separator.left.type": string;
+  //   "frame.v2.config": Partial<NodeArgsBaseV2>;
+  // };
+  params: ParamsV2Spec; // ParamsV2Spec;
+}
+
+export const handler: RankiLangParserPluginParseHandler<FrameV2> = (
   theaterRaw: string,
   // report: RankiLangParseReport,
-  spec: RankiLangParseSpecsFrameV2,
+  spec,
   // lang: RankiLang
   {
     lang,
     clone,
     // getComponents,
     parseAst,
-  }: any,
-): RankiLangParseResult {
-  // @ts-expect-error
-  const component = lang.components.get(spec.plugin.chain[0]);
+  },
+): RankiLangParseResult => {
+  console.log("v2!!! from handler", spec);
+  const component = lang.components.get(spec.plugin!.chain[0]);
 
   const { directives, settings } = parseSettings(component.ast.params, spec);
   const cloned = clone([component.ast.directives, directives]);
@@ -42,7 +62,8 @@ export function parseV2(
     startRule: spec.startRule,
   };
 
-  const contentConfig = (cloned as RankiLang).getConfig().merged.content;
+  const contentConfig = (cloned as RankiLangInstance).getConfig().merged
+    .content;
   const prefixLine =
     contentConfig.prefixLine !== "" ? contentConfig.prefixLine + "\n" : "";
   const suffixLine =
@@ -67,7 +88,7 @@ export function parseV2(
       },
     },
   };
-}
+};
 
 type ConvertParamsParams = {
   shorthands: Record<string, string[]>;
@@ -154,8 +175,14 @@ function convertParams<T extends ParamV2>(
   return config;
 }
 
-function parseSettings({ directive, setting }: any, frameConfig: any) {
-  if (!frameConfig.plugin && !frameConfig.plugin.params) {
+function parseSettings(
+  { directive, setting }: any,
+  frameConfig: RankiLangParseSpecs<FrameV2>,
+) {
+  if (!frameConfig.plugin) {
+    return { config: null };
+  }
+  if (!frameConfig.plugin.params) {
     return { config: null };
   }
   const items = frameConfig.plugin.params.items;
