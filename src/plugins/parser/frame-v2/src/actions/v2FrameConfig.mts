@@ -1,4 +1,4 @@
-import type { RankiLangAstContext } from "@ranki/package-api";
+import type { RankiLangAstContext } from "@ranki/package-api-v2";
 import type * as ohm from "ohm-js";
 import type {
   NodeArgsFrameV2,

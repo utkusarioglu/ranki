@@ -1,12 +1,12 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangAstContext, AstNodeLeaf } from "@ranki/package-api";
+import type { RankiLangAstContext, AstNodeLeaf } from "@ranki/package-api-v2";
 import type {
   NodeArgRichTextV2SentenceEnd,
   NodeArgsRichTextV2,
   ParseNodeRichTextV2,
 } from "./types.mjs";
 
-import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
+import { zipNodes, joinNodes } from "@ranki/package-api-v2/helpers";
 
 function wordEndArgs(context: RankiLangAstContext, wordEnd: ohm.Node) {
   return {

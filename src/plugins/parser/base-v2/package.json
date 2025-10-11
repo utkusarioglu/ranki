@@ -8,7 +8,7 @@
     "clean-all": "rm -rf .turbo lib *.tsbuildinfo"
   },
   "devDependencies": {
-    "@ranki/package-api": "workspace:^",
+    "@ranki/package-api-v2": "workspace:^",
     "@types/node": "^24.5.2",
     "ohm-js": "^17.2.1",
     "typescript": "^5.8.3"

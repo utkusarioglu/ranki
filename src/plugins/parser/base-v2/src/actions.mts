@@ -1,6 +1,6 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangAstContext, AstNode } from "@ranki/package-api";
-import { zipNodes, joinNodes } from "@ranki/package-api/helpers";
+import type { RankiLangAstContext, AstNode } from "@ranki/package-api-v2";
+import { zipNodes, joinNodes } from "@ranki/package-api-v2/helpers";
 
 const node: ohm.ActionDict<AstNode> = {
   root_ignore(ignore, wm, rest) {

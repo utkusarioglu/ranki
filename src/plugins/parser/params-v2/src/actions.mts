@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangAstContext } from "@ranki/package-api";
+import type { RankiLangAstContext } from "@ranki/package-api-v2";
 import type {
   ArgsAndParamsV2,
   ParamV2,

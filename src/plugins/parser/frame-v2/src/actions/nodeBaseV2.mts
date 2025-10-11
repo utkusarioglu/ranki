@@ -1,5 +1,5 @@
-import type { AstNode, RankiLangAstContext } from "@ranki/package-api";
-import { zipNodes } from "@ranki/package-api/helpers";
+import type { AstNode, RankiLangAstContext } from "@ranki/package-api-v2";
+import { zipNodes } from "@ranki/package-api-v2/helpers";
 import type * as ohm from "ohm-js";
 
 export const nodeBaseV2: ohm.ActionDict<AstNode> = {

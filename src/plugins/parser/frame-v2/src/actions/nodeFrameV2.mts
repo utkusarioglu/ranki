@@ -1,7 +1,7 @@
 import type {
   RankiLangAstContext,
   RankiLanguageProvidedConfig,
-} from "@ranki/package-api";
+} from "@ranki/package-api-v2";
 import type * as ohm from "ohm-js";
 import type {
   NodeArgsFrameV2Config,

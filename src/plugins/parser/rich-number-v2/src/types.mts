@@ -1,4 +1,4 @@
-import type { AstNode, AstNodeLeaf } from "@ranki/package-api";
+import type { AstNode, AstNodeLeaf } from "@ranki/package-api-v2";
 
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 

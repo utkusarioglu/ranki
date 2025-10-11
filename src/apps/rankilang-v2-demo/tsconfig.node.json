@@ -25,7 +25,7 @@
   "include": ["vite.config.ts"],
   "references": [
     {
-      "path": "../../packages/rankilang"
+      "path": "../../packages/rankilang-v2"
     }
   ]
 }

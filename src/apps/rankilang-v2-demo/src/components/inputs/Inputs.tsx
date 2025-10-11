@@ -1,7 +1,7 @@
 import { useState, type FC } from "react";
 import style from "./inputs.module.css";
 import { pluginObjects } from "../../plugins.mjs";
-import type { RankiLanguageDefaultConfig } from "@ranki/package-api";
+import type { RankiLanguageDefaultConfig } from "@ranki/package-api-v2";
 import type { PresetGroup } from "../../services/preset/preset.types";
 import { useUserInput } from "../../hooks/user-input.hook.mts";
 import { TabButton } from "../tab/TabButton";

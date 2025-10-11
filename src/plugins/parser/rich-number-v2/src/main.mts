@@ -1,4 +1,4 @@
-import { RankiPluginParser } from "@ranki/package-api";
+import { RankiPluginParser } from "@ranki/package-api-v2";
 import { actions } from "./actions.mjs";
 import grammar from "../assets/ohm/2.0.63.ohm?raw";
 

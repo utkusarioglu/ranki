@@ -1,5 +1,5 @@
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
-import type { AstNode } from "@ranki/package-api";
+import type { AstNode } from "@ranki/package-api-v2";
 
 export interface ArgsAndParamsV1 {
   args: Partial<NodeArgsBaseV2>;

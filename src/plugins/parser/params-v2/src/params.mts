@@ -2,7 +2,7 @@
 import type {
   RankiLangAstContext,
   RankiLanguageConfig,
-} from "@ranki/package-api";
+} from "@ranki/package-api-v2";
 import type {
   ParamsV2Spec,
   ParamV2Key,

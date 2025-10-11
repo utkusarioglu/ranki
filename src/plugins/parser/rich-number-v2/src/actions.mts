@@ -2,7 +2,7 @@ import type * as ohm from "ohm-js";
 import type {
   RankiLangAstContext,
   RankiLanguageConfig,
-} from "@ranki/package-api";
+} from "@ranki/package-api-v2";
 import {
   NodeLeafRichNumberV2SourceComplex,
   NodeLeafRichNumberV2SourceInteger,

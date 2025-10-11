@@ -27,7 +27,7 @@
   "include": ["src"],
   "references": [
     {
-      "path": "../../packages/rankilang"
+      "path": "../../packages/rankilang-v2"
     }
   ]
 }

@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangAstContext, AstNode } from "@ranki/package-api";
+import type { RankiLangAstContext, AstNode } from "@ranki/package-api-v2";
 import type { ParseNodeFrameV1 } from "./types.mjs";
 import type { ArgsAndParamsV1 } from "./types.mjs";
 

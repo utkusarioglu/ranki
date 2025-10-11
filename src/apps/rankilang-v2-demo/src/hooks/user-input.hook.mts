@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import yaml from "yaml";
-import { ParserPlugins, RankiLang } from "@ranki/package-rankilang";
+import { ParserPlugins, RankiLang } from "@ranki/package-rankilang-v2";
 import type { PresetGroup } from "../services/preset/preset.types";
 import type {
   // RankiLanguageDefaultConfig,
   RankiLanguageProvidedConfig,
   RankiPluginParser,
-} from "@ranki/package-api";
+} from "@ranki/package-api-v2";
 
 /**
  * This is a hideous thing and direly needs tidying up.

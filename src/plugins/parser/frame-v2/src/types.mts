@@ -1,7 +1,7 @@
-// import type { NodeArgs as NodeArgsBaseV2 } from "@ranki/package-api";
+// import type { NodeArgs as NodeArgsBaseV2 } from "@ranki/package-api-v2";
 import type { ParamsV2Spec } from "@ranki/plugin-parser-params-v2";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
-import { AstNode } from "@ranki/package-api";
+import { AstNode } from "@ranki/package-api-v2";
 
 export type NodeArgsFrameV2Config =
   | NodeArgsFrameV2ConfigFp_F

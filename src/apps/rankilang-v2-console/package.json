@@ -1,0 +1,36 @@
+{
+  "private": true,
+  "name": "@ranki/ap-rankilang-v2-console",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./lib/main.mjs",
+      "types": "./lib/main.d.ts",
+      "default": "./lib/main.mjs"
+    }
+  },
+  "scripts": {
+    "console-old": "yarn tsx src/console.mts",
+    "console": "yarn vite-node src/console.mts"
+  },
+  "devDependencies": {
+    "@ranki/package-api-v2": "workspace:^",
+    "@types/node": "^24.3.1",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "vite-node": "^3.2.4",
+    "yaml": "^2.8.1"
+  },
+  "dependencies": {
+    "@ranki/package-rankilang-v2": "workspace:^",
+    "@ranki/plugin-parser-base-v2": "workspace:^",
+    "@ranki/plugin-parser-constants-v2": "workspace:^",
+    "@ranki/plugin-parser-frame-v1": "workspace:^",
+    "@ranki/plugin-parser-frame-v2": "workspace:^",
+    "@ranki/plugin-parser-params-v2": "workspace:^",
+    "@ranki/plugin-parser-rich-number-v2": "workspace:^",
+    "@ranki/plugin-parser-rich-structure-v2": "workspace:^",
+    "@ranki/plugin-parser-rich-text-v2": "workspace:^",
+    "ohm-js": "^17.2.1"
+  }
+}

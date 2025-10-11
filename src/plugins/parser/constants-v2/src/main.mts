@@ -1,4 +1,4 @@
-import { RankiPluginParser, RankiLanguageConfig } from "@ranki/package-api";
+import { RankiPluginParser, RankiLanguageConfig } from "@ranki/package-api-v2";
 
 export interface RankiConstantsV2ParserPluginConfig {}
 
