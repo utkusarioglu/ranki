@@ -6,6 +6,7 @@ import { rankiRichTextV2ParserPlugin } from "@ranki/plugin-parser-rich-text-v2";
 import { rankiRichNumberV2ParserPlugin } from "@ranki/plugin-parser-rich-number-v2";
 import { rankiRichStructureV2ParserPlugin } from "@ranki/plugin-parser-rich-structure-v2";
 import { rankiFrameV1ParserPlugin } from "@ranki/plugin-parser-frame-v1";
+import { rankiFrameV2ComponentsPluginDom } from "@ranki/plugin-component-frame-v2-dom";
 // import { ParserPlugins } from "@ranki/package-manager";
 
 // export const parserPlugins = new ParserPlugins();
@@ -30,3 +31,5 @@ export const pluginObjects = [
   rankiRichStructureV2ParserPlugin,
   rankiFrameV1ParserPlugin,
 ];
+
+export const componentObjects = [rankiFrameV2ComponentsPluginDom];

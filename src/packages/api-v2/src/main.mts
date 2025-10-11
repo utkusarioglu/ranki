@@ -37,4 +37,8 @@ export type {
   RankiLangInstance,
   RankiLangParserPluginParseHandler,
   RankiLangParseHandlerHooks,
+  ComponentPluginsInstance,
+  RankiLangInstancePluginsRecord,
 } from "./rankilang.mjs";
+
+export type { RankiPluginComponent } from "./component.mjs";

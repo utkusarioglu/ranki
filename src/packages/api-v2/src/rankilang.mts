@@ -1,6 +1,9 @@
+import {
+  ComponentPluginComponent,
+  RankiPluginComponent,
+} from "./component.mjs";
 import type {
   RankiLanguageConfig,
-  RankiLanguageMergedConfig,
   RankiLanguageProvidedConfig,
 } from "./config.mjs";
 import {
@@ -12,27 +15,16 @@ import {
   RankiLangAstContext,
   RankiLangParseHandlerCommon,
 } from "./context.mjs";
+import { RankiPluginParser } from "./plugin.mjs";
 
-interface ComponentPluginShape {
-  // TODO
-  ast: {
-    preprocess: (raw: string) => string;
-    directives: Partial<RankiLanguageMergedConfig>;
-    params: {
-      setting: {
-        positional: string[][];
-        shorthands: Record<string, string[]>;
-      };
-      directive: {
-        positional: string[][];
-        shorthands: Record<string, string[]>;
-      };
-    };
-  };
+export interface ComponentPluginsInstance {
+  addPlugin(plugin: RankiPluginComponent): void;
+  getPlugin(handler: string, chain: string[]): ComponentPluginComponent;
 }
 
-interface ComponentPluginsInstance {
-  get(chain: string[]): ComponentPluginShape;
+export interface RankiLangInstancePluginsRecord {
+  parsers: RankiPluginParser[] | ParserPluginsInstance;
+  components: RankiPluginComponent[] | ComponentPluginsInstance;
 }
 
 export interface RankiLangInstance {

@@ -1,6 +1,6 @@
 import { useState, type FC } from "react";
 import style from "./inputs.module.css";
-import { pluginObjects } from "../../plugins.mjs";
+import { pluginObjects, componentObjects } from "../../plugins.mjs";
 import type { RankiLanguageDefaultConfig } from "@ranki/package-api-v2";
 import type { PresetGroup } from "../../services/preset/preset.types";
 import { useUserInput } from "../../hooks/user-input.hook.mts";
@@ -54,6 +54,7 @@ export const Inputs: FC<InputsProps> = ({
   } = useUserInput(
     // @ts-expect-error
     pluginObjects,
+    componentObjects,
     setRankiParsed,
     // languageDefaultConfig,
     initialLanguageUserConfigStr,
@@ -135,91 +136,183 @@ export const Inputs: FC<InputsProps> = ({
     ),
     () => (
       <div className={style.tabPageContainer}>
-        <fieldset className={style.inputFieldSet}>
-          <legend className={style.label}>Installed Plugins</legend>
-          {allPlugins.map((pn) => (
-            <div key={pn}>
-              <input
-                id={["available", pn].join("-")}
-                type="checkbox"
-                checked={installedPlugins.includes(pn)}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    setInstalledPlugins((l) => [
-                      ...l.filter((n) => n !== pn),
-                      pn,
-                    ]);
-                  } else {
-                    setInstalledPlugins((l) => l.filter((n) => n !== pn));
-                  }
-                }}
-              />
-              <label
-                className={style.inlineLabel}
-                htmlFor={["available", pn].join("-")}
+        <div>
+          <h2 className={style.h2}>Parser Plugins</h2>
+          <fieldset className={style.inputFieldSet}>
+            <legend className={style.label}>Installed</legend>
+            {allPlugins.map((pn) => (
+              <div key={pn}>
+                <input
+                  id={["available", pn].join("-")}
+                  type="checkbox"
+                  checked={installedPlugins.includes(pn)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setInstalledPlugins((l) => [
+                        ...l.filter((n) => n !== pn),
+                        pn,
+                      ]);
+                    } else {
+                      setInstalledPlugins((l) => l.filter((n) => n !== pn));
+                    }
+                  }}
+                />
+                <label
+                  className={style.inlineLabel}
+                  htmlFor={["available", pn].join("-")}
+                >
+                  {pn.replace("Ranki", "")}
+                </label>
+              </div>
+            ))}
+            <div className={style.requestedPluginsButtonContainer}>
+              <button
+                className={style.buttonPlugins}
+                onClick={() => setInstalledPlugins(allPlugins)}
               >
-                {pn.replace("Ranki", "")}
-              </label>
+                All
+              </button>{" "}
+              <button
+                className={style.buttonPlugins}
+                onClick={() => setInstalledPlugins([])}
+              >
+                None
+              </button>
             </div>
-          ))}
-          <div className={style.requestedPluginsButtonContainer}>
-            <button
-              className={style.buttonPlugins}
-              onClick={() => setInstalledPlugins(allPlugins)}
-            >
-              All
-            </button>{" "}
-            <button
-              className={style.buttonPlugins}
-              onClick={() => setInstalledPlugins([])}
-            >
-              None
-            </button>
-          </div>
-        </fieldset>
+          </fieldset>
 
-        <fieldset className={style.inputFieldSet}>
-          <h4 className={style.label}>Requested Plugins</h4>
-          {allPlugins.map((pn) => (
-            <div key={pn}>
-              <input
-                type="checkbox"
-                checked={requestedPlugins.includes(pn)}
-                id={["selected", pn].join("-")}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    setRequestedPlugins((l) => [
-                      ...l.filter((n) => n !== pn),
-                      pn,
-                    ]);
-                  } else {
-                    setRequestedPlugins((l) => l.filter((n) => n !== pn));
-                  }
-                }}
-              />
-              <label
-                className={style.inlineLabel}
-                htmlFor={["selected", pn].join("-")}
+          <fieldset className={style.inputFieldSet}>
+            <h4 className={style.label}>Requested</h4>
+            {allPlugins.map((pn) => (
+              <div key={pn}>
+                <input
+                  type="checkbox"
+                  checked={requestedPlugins.includes(pn)}
+                  id={["selected", pn].join("-")}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setRequestedPlugins((l) => [
+                        ...l.filter((n) => n !== pn),
+                        pn,
+                      ]);
+                    } else {
+                      setRequestedPlugins((l) => l.filter((n) => n !== pn));
+                    }
+                  }}
+                />
+                <label
+                  className={style.inlineLabel}
+                  htmlFor={["selected", pn].join("-")}
+                >
+                  {pn.replace("Ranki", "")}
+                </label>
+              </div>
+            ))}
+            <div className={style.requestedPluginsButtonContainer}>
+              <button
+                className={style.buttonPlugins}
+                onClick={() => setRequestedPlugins(allPlugins)}
               >
-                {pn.replace("Ranki", "")}
-              </label>
+                All
+              </button>{" "}
+              <button
+                className={style.buttonPlugins}
+                onClick={() => setRequestedPlugins([])}
+              >
+                None
+              </button>
             </div>
-          ))}
-          <div className={style.requestedPluginsButtonContainer}>
-            <button
-              className={style.buttonPlugins}
-              onClick={() => setRequestedPlugins(allPlugins)}
-            >
-              All
-            </button>{" "}
-            <button
-              className={style.buttonPlugins}
-              onClick={() => setRequestedPlugins([])}
-            >
-              None
-            </button>
-          </div>
-        </fieldset>
+          </fieldset>
+        </div>
+
+        <div>
+          <h2 className={style.h2}>Component Plugins</h2>
+          <fieldset className={style.inputFieldSet}>
+            <legend className={style.label}>Installed</legend>
+            {allPlugins.map((pn) => (
+              <div key={pn}>
+                <input
+                  id={["available", pn].join("-")}
+                  type="checkbox"
+                  checked={installedPlugins.includes(pn)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setInstalledPlugins((l) => [
+                        ...l.filter((n) => n !== pn),
+                        pn,
+                      ]);
+                    } else {
+                      setInstalledPlugins((l) => l.filter((n) => n !== pn));
+                    }
+                  }}
+                />
+                <label
+                  className={style.inlineLabel}
+                  htmlFor={["available", pn].join("-")}
+                >
+                  {pn.replace("Ranki", "")}
+                </label>
+              </div>
+            ))}
+            <div className={style.requestedPluginsButtonContainer}>
+              <button
+                className={style.buttonPlugins}
+                onClick={() => setInstalledPlugins(allPlugins)}
+              >
+                All
+              </button>{" "}
+              <button
+                className={style.buttonPlugins}
+                onClick={() => setInstalledPlugins([])}
+              >
+                None
+              </button>
+            </div>
+          </fieldset>
+
+          <fieldset className={style.inputFieldSet}>
+            <h4 className={style.label}>Requested</h4>
+            {allPlugins.map((pn) => (
+              <div key={pn}>
+                <input
+                  type="checkbox"
+                  checked={requestedPlugins.includes(pn)}
+                  id={["selected", pn].join("-")}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setRequestedPlugins((l) => [
+                        ...l.filter((n) => n !== pn),
+                        pn,
+                      ]);
+                    } else {
+                      setRequestedPlugins((l) => l.filter((n) => n !== pn));
+                    }
+                  }}
+                />
+                <label
+                  className={style.inlineLabel}
+                  htmlFor={["selected", pn].join("-")}
+                >
+                  {pn.replace("Ranki", "")}
+                </label>
+              </div>
+            ))}
+            <div className={style.requestedPluginsButtonContainer}>
+              <button
+                className={style.buttonPlugins}
+                onClick={() => setRequestedPlugins(allPlugins)}
+              >
+                All
+              </button>{" "}
+              <button
+                className={style.buttonPlugins}
+                onClick={() => setRequestedPlugins([])}
+              >
+                None
+              </button>
+            </div>
+          </fieldset>
+        </div>
       </div>
     ),
   ];

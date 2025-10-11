@@ -55,6 +55,7 @@ export type ActionsDictRecord = Record<
 >;
 
 export interface ParserPluginsInstance {
+  addPlugin(p: RankiPluginParser): void;
   getVersions(): VersionReport;
   produceConfig(): ProducedConfig;
   getHandler(handlerName: string): RankiLangParserPluginParseHandler;

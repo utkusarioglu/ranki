@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "esnext",
+    "outDir": "lib",
+    "rootDir": "src",
+    "declarationDir": "types",
+    "strict": true,
+    "composite": true
+  },
+  "include": ["src/**/*"],
+  "references": [
+    {
+      "path": "../../../packages/api-v2"
+    }
+  ]
+}

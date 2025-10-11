@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import yaml from "yaml";
-import { ParserPlugins, RankiLang } from "@ranki/package-rankilang-v2";
+import {
+  // ParserPlugins,
+  RankiLang,
+} from "@ranki/package-rankilang-v2";
 import type { PresetGroup } from "../services/preset/preset.types";
 import type {
   // RankiLanguageDefaultConfig,
   RankiLanguageProvidedConfig,
+  RankiPluginComponent,
   RankiPluginParser,
 } from "@ranki/package-api-v2";
 
@@ -14,6 +18,7 @@ import type {
  */
 export function useUserInput(
   pluginObjects: RankiPluginParser[],
+  componentObjects: RankiPluginComponent[],
   setRankiParsed: (a: any) => void,
   // languageDefaultConfig: RankiLanguageDefaultConfig,
   initialLanguageUserConfigStr: string,
@@ -33,19 +38,25 @@ export function useUserInput(
       const selectedPluginObjects = pluginObjects.filter((p) =>
         installedPlugins.includes(p.meta.name),
       );
-      const parserPlugins = new ParserPlugins();
-      selectedPluginObjects.forEach((p) => parserPlugins.addPlugin(p));
+      // const parserPlugins = new ParserPlugins();
+      // selectedPluginObjects.forEach((p) => parserPlugins.addPlugin(p));
       const languageUserConfig: RankiLanguageProvidedConfig = yaml.parse(
         languageUserConfigStr,
       );
-      const rankiLang = new RankiLang(parserPlugins, [
+      const rankiLang = new RankiLang(
         {
-          plugins: {
-            requested: requestedPlugins,
-          },
-        } as RankiLanguageProvidedConfig,
-        languageUserConfig,
-      ]);
+          parsers: selectedPluginObjects,
+          components: componentObjects,
+        },
+        [
+          {
+            plugins: {
+              requested: requestedPlugins,
+            },
+          } as RankiLanguageProvidedConfig,
+          languageUserConfig,
+        ],
+      );
       const parsed = rankiLang.parse({ [theater]: rankiStr });
       setRankiParsed(parsed);
     } catch (e) {

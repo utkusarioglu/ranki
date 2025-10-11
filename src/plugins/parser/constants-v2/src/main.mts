@@ -19,7 +19,7 @@ export const rankiConstantsV2ParserPlugin: RankiPluginParser<RankiConstantsV2Par
 
 type Tokens = Record<string, boolean | number | string | string[]>;
 
-// function tokenize(config: RankiLanguageConfig["merged"]): Tokens {
+// !TODO these need to go to their respective plugins
 function tokenize(config: any): Tokens {
   const tokens: Tokens = {
     root: "",

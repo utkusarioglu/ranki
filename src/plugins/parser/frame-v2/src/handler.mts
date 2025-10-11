@@ -40,10 +40,16 @@ export const handler: RankiLangParserPluginParseHandler<FrameV2> = (
   },
 ): RankiLangParseResult => {
   console.log("v2!!! from handler", spec);
-  const component = lang.components.get(spec.plugin!.chain[0]);
+  const component = lang.components.getPlugin(
+    "RankiFrameV2",
+    spec.plugin!.chain[0],
+  );
 
-  const { directives, settings } = parseSettings(component.ast.params, spec);
-  const cloned = clone([component.ast.directives, directives]);
+  const { directives, settings } = parseSettings(
+    component.stages.ast.params,
+    spec,
+  );
+  const cloned = clone([component.stages.ast.directives, directives]);
   const report: RankiLangParseReport = {
     language: {
       versions: cloned.parsers.getVersions(),
@@ -72,7 +78,7 @@ export const handler: RankiLangParserPluginParseHandler<FrameV2> = (
   const theaterWithContent = [
     prefixLine,
     contentConfig.prefix,
-    component.ast.preprocess(theaterRaw),
+    component.stages.ast.preprocess(theaterRaw),
     contentConfig.suffix,
     suffixLine,
   ].join("");

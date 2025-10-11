@@ -8,6 +8,8 @@ import type {
   RankiLangParseReport,
   RankiLangParseHandlerCommon,
   ParserPluginsInstance,
+  ComponentPluginsInstance,
+  RankiLangInstancePluginsRecord,
 } from "@ranki/package-api-v2";
 import { ast } from "./ast/ast.mjs";
 import { ParserPlugins } from "./parser/parser-plugins.mjs";
@@ -17,15 +19,29 @@ import { ComponentPlugins } from "./component/component-plugins.mjs";
 export class RankiLang implements RankiLangInstance {
   private config: RankiLangConfig;
   public parsers: ParserPluginsInstance;
-  public components: ComponentPlugins;
+  public components: ComponentPluginsInstance;
 
   constructor(
-    plugins: ParserPluginsInstance,
+    plugins: RankiLangInstancePluginsRecord,
+    // parsers: ParserPluginsInstance,
     provided: RankiLanguageProvidedConfig[],
   ) {
-    this.parsers = plugins;
-    this.config = new RankiLangConfig(plugins.produceConfig(), provided);
-    this.components = new ComponentPlugins();
+    console.log(plugins);
+    if (Array.isArray(plugins.parsers)) {
+      this.parsers = new ParserPlugins();
+      plugins.parsers.forEach((p) => this.parsers.addPlugin(p));
+    } else {
+      this.parsers = plugins.parsers;
+    }
+    if (Array.isArray(plugins.components)) {
+      this.components = new ComponentPlugins();
+      plugins.components.forEach((p) => this.components.addPlugin(p));
+    } else {
+      this.components = plugins.components;
+    }
+
+    this.config = new RankiLangConfig(this.parsers.produceConfig(), provided);
+    // this.components = new ComponentPlugins();
   }
 
   getConfig() {
@@ -39,7 +55,10 @@ export class RankiLang implements RankiLangInstance {
   private clone(
     providedConfigs: RankiLanguageProvidedConfig[] | null,
   ): RankiLangInstance {
-    return new RankiLang(this.parsers, this.config.clone(providedConfigs));
+    return new RankiLang(
+      { parsers: this.parsers, components: this.components },
+      this.config.clone(providedConfigs),
+    );
   }
 
   parse<T extends RankiLangParseHandlerCommon>(

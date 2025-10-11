@@ -43,6 +43,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/packages/rankilang-v2"\
     },\
     {\
+      "name": "@ranki/plugin-component-frame-v2-dom",\
+      "reference": "workspace:src/plugins/component/dom"\
+    },\
+    {\
       "name": "@ranki/plugin-parser-base-v2",\
       "reference": "workspace:src/plugins/parser/base-v2"\
     },\
@@ -86,6 +90,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/package-anki-config", ["workspace:src/packages/anki-config"]],\
     ["@ranki/package-api-v2", ["workspace:src/packages/api-v2"]],\
     ["@ranki/package-rankilang-v2", ["workspace:src/packages/rankilang-v2"]],\
+    ["@ranki/plugin-component-frame-v2-dom", ["workspace:src/plugins/component/dom"]],\
     ["@ranki/plugin-parser-base-v2", ["workspace:src/plugins/parser/base-v2"]],\
     ["@ranki/plugin-parser-constants-v2", ["workspace:src/plugins/parser/constants-v2"]],\
     ["@ranki/plugin-parser-frame-v1", ["workspace:src/plugins/parser/frame-v1"]],\
@@ -2360,6 +2365,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/app-rankilang-v2-demo", "workspace:src/apps/rankilang-v2-demo"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-rankilang-v2", "workspace:src/packages/rankilang-v2"],\
+          ["@ranki/plugin-component-frame-v2-dom", "workspace:src/plugins/component/dom"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
           ["@ranki/plugin-parser-constants-v2", "workspace:src/plugins/parser/constants-v2"],\
           ["@ranki/plugin-parser-frame-v1", "workspace:src/plugins/parser/frame-v1"],\
@@ -2423,6 +2429,17 @@ const RAW_RUNTIME_STATE =
           ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"],\
           ["vitest", "virtual:9813e6c63b79dbfe4193294abcaae256ba07ff0380cdf272d0e33000c7f71339d3323b7228b5f8b922df361b6603c7bbd0242f082708bdc11823155415c00666#npm:3.2.4"],\
           ["yaml", "npm:2.8.1"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/plugin-component-frame-v2-dom", [\
+      ["workspace:src/plugins/component/dom", {\
+        "packageLocation": "./src/plugins/component/dom/",\
+        "packageDependencies": [\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/plugin-component-frame-v2-dom", "workspace:src/plugins/component/dom"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
       }]\

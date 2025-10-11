@@ -1603,6 +1603,7 @@ __metadata:
     "@eslint/js": "npm:^9.36.0"
     "@ranki/package-api-v2": "workspace:^"
     "@ranki/package-rankilang-v2": "workspace:^"
+    "@ranki/plugin-component-frame-v2-dom": "workspace:^"
     "@ranki/plugin-parser-base-v2": "workspace:^"
     "@ranki/plugin-parser-constants-v2": "workspace:^"
     "@ranki/plugin-parser-frame-v1": "workspace:^"
@@ -1660,6 +1661,15 @@ __metadata:
     typescript: "npm:^5.9.2"
     vitest: "npm:^3.2.4"
     yaml: "npm:^2.8.1"
+  languageName: unknown
+  linkType: soft
+
+"@ranki/plugin-component-frame-v2-dom@workspace:^, @ranki/plugin-component-frame-v2-dom@workspace:src/plugins/component/dom":
+  version: 0.0.0-use.local
+  resolution: "@ranki/plugin-component-frame-v2-dom@workspace:src/plugins/component/dom"
+  dependencies:
+    "@ranki/package-api-v2": "workspace:^"
+    typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
 
