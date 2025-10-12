@@ -3,6 +3,7 @@ import type {
   RankiLanguageDefaultConfig,
   RankiLanguageProvidedConfig,
   RankiLanguageMergedConfig,
+  ProducedConfig,
 } from "@ranki/package-api-v2";
 
 export class RankiLangConfig {
@@ -11,10 +12,16 @@ export class RankiLangConfig {
   private config: RankiLanguageConfig;
 
   // TODO any
-  constructor(pluginConfig: any, userConfigs: RankiLanguageProvidedConfig[]) {
+  constructor(
+    pluginConfig: ProducedConfig,
+    userConfigs: RankiLanguageProvidedConfig[],
+  ) {
     this.providedConfigs = userConfigs;
     this.defaultConfig = {
       tags: [],
+      grammar: {
+        tokens: pluginConfig.tokens,
+      },
       content: {
         prefix: "",
         prefixLine: "",
@@ -24,7 +31,7 @@ export class RankiLangConfig {
       plugins: {
         standards: ["RankiConstantsV2", "RankiBaseV2"],
         requested: [],
-        config: pluginConfig,
+        config: pluginConfig.config,
       },
     };
 

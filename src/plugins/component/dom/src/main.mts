@@ -1,6 +1,10 @@
 import type { RankiPluginComponent } from "@ranki/package-api-v2";
 
 export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
+  meta: {
+    name: "RankiFrameV2Dom",
+    version: "0.0.0",
+  },
   handler: "RankiFrameV2",
   list: [
     {

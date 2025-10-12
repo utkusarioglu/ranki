@@ -4,7 +4,7 @@ import type {
   RankiLangInstance,
   RankiLangParserPluginParseHandler,
 } from "./rankilang.mjs";
-import { RankiPluginParser } from "../plugins/plugin.mjs";
+import { RankiGrammarTokens, RankiPluginParser } from "../plugins/parser.mjs";
 import type * as ohm from "ohm-js";
 
 export interface RankiLangParseResult {
@@ -47,7 +47,10 @@ export interface RankiLangParseFunctionReturn {
   root: RankiLangParsedTheater["stages"]["ast"]["root"];
 }
 
-export type ProducedConfig = Record<string, unknown>;
+export type ProducedConfig = {
+  config: Record<string, unknown>;
+  tokens: Record<string, RankiGrammarTokens>;
+};
 
 export type ActionsDictRecord = Record<
   string,

@@ -6,11 +6,12 @@ import {
   RankiLangParseHandlerCommon,
 } from "../lang/context.mjs";
 import { RankiLangParseHandlerHooks } from "../lang/rankilang.mjs";
+import type { RankiPluginCommon } from "./general.mjs";
 
-export interface RankiPluginMeta {
-  version: string; // semver
-  name: string;
-}
+export type RankiGrammarTokens = Record<
+  string,
+  boolean | number | string | string[]
+>;
 
 export type RankiLangParseHandlerFunction<
   HandlerShape extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
@@ -23,12 +24,12 @@ export type RankiLangParseHandlerFunction<
 export type RankiPluginParser<
   ConfigShape = {},
   HandlerShape extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
-> = {
+> = RankiPluginCommon & {
   type: "parser";
-  meta: RankiPluginMeta;
   handler?: RankiLangParseHandlerFunction<HandlerShape>;
   dependencies: string[];
   config: ConfigShape;
+  tokens: RankiGrammarTokens;
   grammar: (c: RankiLanguageConfig) => string;
   actions: () => Record<string, ohm.ActionDict<unknown>>;
 };

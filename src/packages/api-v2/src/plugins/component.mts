@@ -1,7 +1,8 @@
 import type { RankiLanguageMergedConfig } from "../lang/config.mjs";
-import { DeepPartial } from "../utils.mjs";
+import type { DeepPartial } from "../utils.mjs";
+import type { RankiPluginCommon } from "./general.mjs";
 
-export interface RankiPluginComponent {
+export interface RankiPluginComponent extends RankiPluginCommon {
   handler: string;
   list: ComponentPluginComponent[];
 }

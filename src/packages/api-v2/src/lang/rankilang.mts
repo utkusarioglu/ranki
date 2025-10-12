@@ -15,7 +15,7 @@ import {
   RankiLangAstContext,
   RankiLangParseHandlerCommon,
 } from "./context.mjs";
-import { RankiPluginParser } from "../plugins/plugin.mjs";
+import { RankiPluginParser } from "../plugins/parser.mjs";
 
 export interface ComponentPluginsInstance {
   addPlugin(plugin: RankiPluginComponent): void;

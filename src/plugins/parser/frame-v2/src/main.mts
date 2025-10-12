@@ -1,7 +1,11 @@
-import { RankiPluginParser } from "@ranki/package-api-v2";
+import type {
+  RankiPluginParser,
+  RankiGrammarTokens,
+} from "@ranki/package-api-v2";
 import { actions } from "./actions/actions.mjs";
 import grammar from "../assets/ohm/2.0.65.ohm?raw";
-import { FrameV2, handler } from "./handler.mjs";
+import { handler } from "./handler.mjs";
+import type { RankiLangParserPluginParseHandlerFrameV2 } from "./types.mjs";
 
 type Single = string;
 
@@ -13,9 +17,25 @@ export interface RankiFrameV2ParserPluginConfig {
   };
 }
 
+const config: RankiFrameV2ParserPluginConfig = {
+  tokens: {
+    pause: ",",
+    directive: "%",
+    frame: ":",
+  },
+};
+
+function tokenize(config: RankiFrameV2ParserPluginConfig): RankiGrammarTokens {
+  const tokens: RankiGrammarTokens = {};
+  tokens["tFrameV2Pause"] = config.tokens.pause;
+  tokens["tFrameV2Directive"] = config.tokens.directive;
+  tokens["tFrameV2Frame"] = config.tokens.frame;
+  return tokens;
+}
+
 export const rankiFrameV2ParserPlugin: RankiPluginParser<
   RankiFrameV2ParserPluginConfig,
-  FrameV2
+  RankiLangParserPluginParseHandlerFrameV2
 > = {
   type: "parser",
   meta: {
@@ -24,13 +44,8 @@ export const rankiFrameV2ParserPlugin: RankiPluginParser<
   },
   handler,
   dependencies: ["RankiParamsV2"],
-  config: {
-    tokens: {
-      pause: ",",
-      directive: "%",
-      frame: ":",
-    },
-  },
+  config,
+  tokens: tokenize(config),
   grammar: () => grammar,
   actions: () => actions,
 };

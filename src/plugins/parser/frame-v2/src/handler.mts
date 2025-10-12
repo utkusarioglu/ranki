@@ -6,40 +6,22 @@ import type {
   RankiLangInstance,
   RankiLangParserPluginParseHandler,
 } from "@ranki/package-api-v2";
-import type { ParamsV2Spec, ParamV2 } from "@ranki/plugin-parser-params-v2";
-import type { ParseNodeFrameV2 } from "./types.mjs";
-// import type { RankiLang } from "../rankilang.mjs";
+import type { ParamV2 } from "@ranki/plugin-parser-params-v2";
+import { RankiLangParserPluginParseHandlerFrameV2 } from "./types.mjs";
 
-export interface FrameV2 {
-  type: "RankiFrameV2";
-  chain: string[][];
-  // directives: any; // !TODO any
-  // settings: any; // !TODO any
-
-  // version: "v2";
-  variant: "fp_F"; // this is like f fp
-  // args: Partial<NodeArgsBaseV2> & {
-  //   "separator.right.type": string;
-  //   // !FIX this value is inside the config structure, which breaks symmetry
-  //   // "separator.left.type": string;
-  //   "frame.v2.config": Partial<NodeArgsBaseV2>;
-  // };
-  params: ParamsV2Spec; // ParamsV2Spec;
-}
-
-export const handler: RankiLangParserPluginParseHandler<FrameV2> = (
+export const handler: RankiLangParserPluginParseHandler<
+  RankiLangParserPluginParseHandlerFrameV2
+> = (
   theaterRaw: string,
-  // report: RankiLangParseReport,
   spec,
-  // lang: RankiLang
-  {
-    lang,
-    clone,
-    // getComponents,
-    parseAst,
-  },
+  { lang, clone, parseAst },
 ): RankiLangParseResult => {
-  console.log("v2!!! from handler", spec);
+  if (!spec.plugin || spec.plugin.type !== "RankiFrameV2") {
+    throw new Error(`FRAME V2 HANDLER GIVEN NON-FRAME V2 COMPONENT`);
+  }
+  if (spec.plugin?.chain.length > 1) {
+    throw new Error(`MULTI-LENGTH CHAINS NOT YET SUPPORTED`);
+  }
   const component = lang.components.getPlugin(
     "RankiFrameV2",
     spec.plugin!.chain[0],
@@ -83,13 +65,15 @@ export const handler: RankiLangParserPluginParseHandler<FrameV2> = (
     suffixLine,
   ].join("");
 
+  const ast = parseAst(contextV2, theaterWithContent);
+
   return {
     report,
     theaters: {
       [spec.theater]: {
         stages: {
           raw: theaterWithContent,
-          ast: parseAst(contextV2, theaterWithContent),
+          ast,
         },
       },
     },
@@ -183,7 +167,7 @@ function convertParams<T extends ParamV2>(
 
 function parseSettings(
   { directive, setting }: any,
-  frameConfig: RankiLangParseSpecs<FrameV2>,
+  frameConfig: RankiLangParseSpecs<RankiLangParserPluginParseHandlerFrameV2>,
 ) {
   if (!frameConfig.plugin) {
     return { config: null };

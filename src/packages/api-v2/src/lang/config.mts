@@ -1,3 +1,5 @@
+import { RankiGrammarTokens } from "../export.mjs";
+
 type Alternates = Single[];
 type Single = string;
 
@@ -30,6 +32,9 @@ export interface RankiLanguageMergedConfig {
     standards: PluginName[];
     requested: PluginName[];
     config: PluginsConfig;
+  };
+  grammar: {
+    tokens: Record<string, RankiGrammarTokens>;
   };
   content: RankiLanguageContentConfig;
 }

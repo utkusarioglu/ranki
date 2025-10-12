@@ -1,21 +1,8 @@
-import type {
-  RankiLangAstContext,
-  RankiLanguageProvidedConfig,
-} from "@ranki/package-api-v2";
 import type * as ohm from "ohm-js";
-import type {
-  NodeArgsFrameV2Config,
-  NodeArgsFrameV2ConfigFp_F,
-  NodeArgsFrameV2E,
-  ParseNodeFrameV2,
-} from "../types.mjs";
-import type {
-  // NodeArgsFrameV2,
-  // ArgsAndParamsV2FrameV2,
-  FrameSpec,
-} from "../types.mjs";
-import type { FrameV2 } from "../handler.mjs";
-// !FIX should come from exports
+import type { RankiLangAstContext } from "@ranki/package-api-v2";
+import type { NodeArgsFrameV2ConfigFp_F, ParseNodeFrameV2 } from "../types.mjs";
+import type { FrameSpec } from "../types.mjs";
+import type { RankiLangParserPluginParseHandlerFrameV2 } from "../types.mjs";
 
 export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2_fp(directive, frame, v2FrameConfig, v2Payload, v2End) {
@@ -24,7 +11,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const frameConfig: NodeArgsFrameV2ConfigFp_F =
       v2FrameConfig.v2FrameConfig(context);
 
-    const child = context.lang.parse<FrameV2>(
+    const child = context.lang.parse<RankiLangParserPluginParseHandlerFrameV2>(
       { [context.theater]: v2Payload.sourceString },
       {
         ...context,

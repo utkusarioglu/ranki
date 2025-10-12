@@ -1,5 +1,5 @@
-import { RankiPluginMeta } from "./plugin.mjs";
+import type { RankiPluginCommon } from "./general.mjs";
 
-export interface RankiPluginRenderer extends RankiPluginMeta {
+export interface RankiPluginRenderer extends RankiPluginCommon {
   type: "renderer";
 }

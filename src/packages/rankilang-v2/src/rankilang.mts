@@ -25,7 +25,6 @@ export class RankiLang implements RankiLangInstance {
     plugins: RankiLangInstancePluginsRecord,
     provided: RankiLanguageProvidedConfig[],
   ) {
-    console.log(plugins);
     if (Array.isArray(plugins.parsers)) {
       this.parsers = new ParserPlugins();
       plugins.parsers.forEach((p) => this.parsers.addPlugin(p));
@@ -40,7 +39,6 @@ export class RankiLang implements RankiLangInstance {
     }
 
     this.config = new RankiLangConfig(this.parsers.produceConfig(), provided);
-    // this.components = new ComponentPlugins();
   }
 
   getConfig() {

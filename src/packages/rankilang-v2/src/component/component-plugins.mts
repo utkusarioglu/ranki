@@ -1,40 +1,7 @@
 import type { RankiPluginComponent } from "@ranki/package-api-v2";
 
 export class ComponentPlugins {
-  private list = {
-    // code: {
-    //   ast: {
-    //     preprocess: (c: string) => c.trim(),
-    //     directives: {
-    //       plugins: {
-    //         requested: [
-    //           // "RankiParamsV2",
-    //           // "RankiRichStructureV2",
-    //           // "RankiRichNumberV2",
-    //         ],
-    //       },
-    //       content: {
-    //         prefix: "CODE_PREFIX",
-    //       },
-    //     },
-    //     params: {
-    //       setting: {
-    //         positional: [["pa"]],
-    //         shorthands: {
-    //           b: ["cat", "dog"],
-    //         },
-    //       },
-    //       directive: {
-    //         positional: [],
-    //         shorthands: {
-    //           p: ["content", "prefix"],
-    //           r: ["plugins", "requested"],
-    //         },
-    //       },
-    //     },
-    //   },
-    // },
-  };
+  private list = {};
 
   addPlugin(plugin: RankiPluginComponent) {
     if (!this.list[plugin.handler]) {
@@ -50,7 +17,6 @@ export class ComponentPlugins {
   }
 
   getPlugin(handlerName: string, chain: string[]) {
-    console.log("p", this.list);
     const pluginName = chain.join(".");
     const h = this.list[handlerName];
     if (!h) {

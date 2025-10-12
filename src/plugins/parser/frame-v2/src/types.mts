@@ -1,7 +1,6 @@
-// import type { NodeArgs as NodeArgsBaseV2 } from "@ranki/package-api-v2";
 import type { ParamsV2Spec } from "@ranki/plugin-parser-params-v2";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
-import { AstNode } from "@ranki/package-api-v2";
+import type { AstNode } from "@ranki/package-api-v2";
 
 export type NodeArgsFrameV2Config =
   | NodeArgsFrameV2ConfigFp_F
@@ -94,4 +93,10 @@ export type NodeArgsFrameV2Fp_f = Partial<NodeArgsBaseV2> &
 export interface ArgsAndParamsV2FrameV2 {
   args: NodeArgsFrameV2;
   params: ParamsV2Spec;
+}
+export interface RankiLangParserPluginParseHandlerFrameV2 {
+  type: "RankiFrameV2";
+  chain: string[][];
+  variant: "fp_F"; // this is like f fp
+  params: ParamsV2Spec; // ParamsV2Spec;
 }

@@ -97,9 +97,17 @@ export class ParserPlugins implements ParserPluginsInstance {
   }
 
   produceConfig(): ProducedConfig {
-    return this.list.reduce(
+    const config = this.list.reduce(
       (a, c) => ((a[c.meta.name] = c.config), a),
       {} as any,
     );
+    const tokens = this.list.reduce(
+      (a, c) => ((a[c.meta.name] = c.tokens), a),
+      {} as any,
+    );
+    return {
+      config,
+      tokens,
+    };
   }
 }

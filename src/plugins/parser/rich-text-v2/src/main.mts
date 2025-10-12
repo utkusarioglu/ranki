@@ -1,4 +1,4 @@
-import { RankiPluginParser } from "@ranki/package-api-v2";
+import { RankiGrammarTokens, RankiPluginParser } from "@ranki/package-api-v2";
 import grammar from "../assets/ohm/2.0.63.ohm?raw";
 import { actions } from "./actions.mjs";
 
@@ -26,6 +26,41 @@ export interface RankiRichTextV2ParserPluginConfig {
   };
 }
 
+const config: RankiRichTextV2ParserPluginConfig = {
+  tokens: {
+    sentence: {
+      period: ".",
+      question: "?",
+      exclamation: "!",
+    },
+    line: {
+      align: "$",
+      heading: "#",
+      small: "_",
+    },
+    decoration: {
+      emphasis: "+",
+      bold: "*",
+      idiomatic: "/",
+      underline: "_",
+      abbreviation: "@",
+    },
+  },
+};
+
+function tokenize(
+  config: RankiRichTextV2ParserPluginConfig,
+): RankiGrammarTokens {
+  const tokens: RankiGrammarTokens = {};
+  tokens["tRichTextV2DecorationEmphasis"] = config.tokens.decoration.emphasis;
+  tokens["tRichTextV2DecorationBold"] = config.tokens.decoration.bold;
+  tokens["tRichTextV2DecorationIdiomatic"] = config.tokens.decoration.idiomatic;
+  tokens["tRichTextV2DecorationUnderline"] = config.tokens.decoration.underline;
+  tokens["tRichTextV2DecorationAbbreviation"] =
+    config.tokens.decoration.abbreviation;
+  return tokens;
+}
+
 export const rankiRichTextV2ParserPlugin: RankiPluginParser<RankiRichTextV2ParserPluginConfig> =
   {
     type: "parser",
@@ -34,27 +69,8 @@ export const rankiRichTextV2ParserPlugin: RankiPluginParser<RankiRichTextV2Parse
       version: "2.0.63",
     },
     dependencies: ["RankiBaseV2"],
-    config: {
-      tokens: {
-        sentence: {
-          period: ".",
-          question: "?",
-          exclamation: "!",
-        },
-        line: {
-          align: "$",
-          heading: "#",
-          small: "_",
-        },
-        decoration: {
-          emphasis: "+",
-          bold: "*",
-          idiomatic: "/",
-          underline: "_",
-          abbreviation: "@",
-        },
-      },
-    },
+    config,
+    tokens: tokenize(config),
     grammar: () => grammar,
     actions: () => actions,
   };
