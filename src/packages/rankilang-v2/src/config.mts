@@ -24,9 +24,7 @@ export class RankiLangConfig {
       },
       content: {
         prefix: "",
-        prefixLine: "",
         suffix: "",
-        suffixLine: "",
       },
       plugins: {
         standards: ["RankiConstantsV2", "RankiBaseV2"],

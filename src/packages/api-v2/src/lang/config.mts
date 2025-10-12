@@ -20,9 +20,7 @@ export interface RankiLanguageProvidedConfig {
 
 export interface RankiLanguageContentConfig {
   prefix: string;
-  prefixLine: string;
   suffix: string;
-  suffixLine: string;
 }
 
 // TODO this will need to be a generic

@@ -44,7 +44,7 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
     },
 
     {
-      chain: "pre",
+      chain: "default",
       stages: {
         ast: {
           preprocess: (c: string) => c.trim(),
@@ -57,8 +57,8 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
               ],
             },
             content: {
-              prefix: "PREPRE-",
-              suffix: "-PREPRE",
+              prefix: "",
+              suffix: "",
             },
           },
           params: {
@@ -71,7 +71,7 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
             directive: {
               positional: [],
               shorthands: {
-                // p: ["content", "prefix"],
+                p: ["content", "prefix"],
                 r: ["plugins", "requested"],
               },
             },

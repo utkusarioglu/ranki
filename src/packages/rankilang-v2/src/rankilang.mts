@@ -76,6 +76,30 @@ export class RankiLang implements RankiLangInstance {
       throw new Error(`THEATER UNDEFINED: ${spec.theater}`);
     }
 
+    const ast = this.createAst(theaterRaw, spec);
+    return ast;
+  }
+
+  private createAst<T extends RankiLangParseHandlerCommon>(
+    theaterRaw: string,
+    spec: RankiLangParseSpecs<T>,
+  ): RankiLangParseResult {
+    if (spec["plugin"]) {
+      const parseAstHandler = this.parsers.getHandler(spec["plugin"].type);
+      return parseAstHandler(theaterRaw, spec, {
+        lang: this,
+        clone: this.clone.bind(this),
+        parseAst: ast,
+      });
+    } else {
+      return this.parseAstDefault(theaterRaw, spec);
+    }
+  }
+
+  private parseAstDefault<T extends RankiLangParseHandlerCommon>(
+    theaterRaw: string,
+    spec: RankiLangParseSpecs<T>,
+  ) {
     const report: RankiLangParseReport = {
       language: {
         versions: this.parsers.getVersions(),
@@ -84,50 +108,34 @@ export class RankiLang implements RankiLangInstance {
       theater: spec.theater,
       role: spec.role,
     };
+    const contentConfig = this.config.getAll().merged.content;
 
-    if (spec["plugin"]) {
-      const handler = this.parsers.getHandler(spec["plugin"].type);
-      return handler(theaterRaw, spec, {
-        lang: this,
-        clone: this.clone.bind(this),
-        parseAst: ast,
-      });
-    } else {
-      const contentConfig = this.config.getAll().merged.content;
-      const prefixLine =
-        contentConfig.prefixLine !== "" ? contentConfig.prefixLine + "\n" : "";
-      const suffixLine =
-        contentConfig.suffixLine !== "" ? "\n" + contentConfig.suffixLine : "";
+    const theaterWithContent = [
+      contentConfig.prefix,
+      theaterRaw,
+      contentConfig.suffix,
+    ].join("");
 
-      const theaterWithContent = [
-        prefixLine,
-        contentConfig.prefix,
-        theaterRaw,
-        contentConfig.suffix,
-        suffixLine,
-      ].join("");
+    const context: RankiLangAstContext = {
+      lang: this,
+      blockDepth: spec.blockDepth,
+      inlineDepth: spec.inlineDepth,
+      theater: spec.theater,
+      role: spec.role,
+      startRule: spec.startRule,
+    };
 
-      const context: RankiLangAstContext = {
-        lang: this,
-        blockDepth: spec.blockDepth,
-        inlineDepth: spec.inlineDepth,
-        theater: spec.theater,
-        role: spec.role,
-        startRule: spec.startRule,
-      };
-
-      return {
-        report,
-        theaters: {
-          [spec.theater]: {
-            stages: {
-              raw: theaterWithContent,
-              ast: ast(context, theaterWithContent),
-            },
+    return {
+      report,
+      theaters: {
+        [spec.theater]: {
+          stages: {
+            raw: theaterWithContent,
+            ast: ast(context, theaterWithContent),
           },
         },
-      };
-    }
+      },
+    };
   }
 }
 

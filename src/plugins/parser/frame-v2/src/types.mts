@@ -1,6 +1,7 @@
 import type { ParamsV2Spec } from "@ranki/plugin-parser-params-v2";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 import type { AstNode } from "@ranki/package-api-v2";
+import { Single } from "./main.mjs";
 
 export type NodeArgsFrameV2Config =
   | NodeArgsFrameV2ConfigFp_F
@@ -99,4 +100,20 @@ export interface RankiLangParserPluginParseHandlerFrameV2 {
   chain: string[][];
   variant: "fp_F"; // this is like f fp
   params: ParamsV2Spec; // ParamsV2Spec;
+}
+export interface RankiFrameV2ParserPluginConfig {
+  tokens: {
+    pause: Single;
+    left: {
+      outer: Single;
+      inner: Single;
+    };
+    right: {
+      outer: Single;
+      inner: Single;
+    };
+    separator: {
+      param: Single;
+    };
+  };
 }

@@ -58,6 +58,14 @@ function tokenize(
   tokens["tRichTextV2DecorationUnderline"] = config.tokens.decoration.underline;
   tokens["tRichTextV2DecorationAbbreviation"] =
     config.tokens.decoration.abbreviation;
+
+  tokens["tRichTextV2SentencePeriod"] = config.tokens.sentence.period;
+  tokens["tRichTextV2SentenceExclamation"] = config.tokens.sentence.exclamation;
+  tokens["tRichTextV2SentenceQuestion"] = config.tokens.sentence.question;
+
+  tokens["tRichTextV2LineAlign"] = config.tokens.line.align;
+  tokens["tRichTextV2LineHeading"] = config.tokens.line.heading;
+  tokens["tRichTextV2LineSmall"] = config.tokens.line.small;
   return tokens;
 }
 

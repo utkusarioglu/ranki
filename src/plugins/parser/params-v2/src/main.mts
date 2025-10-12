@@ -8,7 +8,6 @@ export interface RankiParamsV2ParserPluginConfig {
   tokens: {
     separator: {
       param: Single;
-      // frame: Single;
     };
     key: {
       directive: Single;
@@ -26,7 +25,6 @@ const config: RankiParamsV2ParserPluginConfig = {
   tokens: {
     separator: {
       param: ",",
-      // frame: ";",
     },
     key: {
       negation: "!",

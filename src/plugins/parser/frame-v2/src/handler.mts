@@ -52,17 +52,11 @@ export const handler: RankiLangParserPluginParseHandler<
 
   const contentConfig = (cloned as RankiLangInstance).getConfig().merged
     .content;
-  const prefixLine =
-    contentConfig.prefixLine !== "" ? contentConfig.prefixLine + "\n" : "";
-  const suffixLine =
-    contentConfig.suffixLine !== "" ? "\n" + contentConfig.suffixLine : "";
 
   const theaterWithContent = [
-    prefixLine,
     contentConfig.prefix,
     component.stages.ast.preprocess(theaterRaw),
     contentConfig.suffix,
-    suffixLine,
   ].join("");
 
   const ast = parseAst(contextV2, theaterWithContent);

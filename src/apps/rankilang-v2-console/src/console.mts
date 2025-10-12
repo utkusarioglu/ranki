@@ -29,9 +29,7 @@ export const providedConfig = {
   tags: [],
   content: {
     prefix: "",
-    prefixLine: "",
     suffix: "",
-    suffixLine: "",
   },
   plugins: {
     requested: [

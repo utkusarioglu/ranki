@@ -8,7 +8,7 @@ export class ComponentPlugins {
       this.list[plugin.handler] = {};
     }
     plugin.list.forEach((com) => {
-      if (this.list[plugin.handler][com.chain]) {
+      if (!!this.list[plugin.handler][com.chain]) {
         throw new Error(`COMPONENT PLUGIN ALREADY REGISTERED FOR ${com.chain}`);
       }
 
