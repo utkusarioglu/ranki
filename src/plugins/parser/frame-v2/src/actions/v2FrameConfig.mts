@@ -7,52 +7,6 @@ import type {
 } from "../types.mjs";
 
 export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
-  // v2DirectiveConfig_D(wi1, nl, wi2, v2ParamListBlock, whitespace) {
-  //   const context: RankiLangAstContext = { ...this.args.context };
-  //   context.blockDepth++;
-  //   const params = v2ParamListBlock.paramsV2(context);
-  //   return {
-  //     "directive.v2": {
-  //       type: this.ctorName,
-  //       args: {
-  //         depth: {
-  //           block: context.blockDepth,
-  //           inline: context.inlineDepth,
-  //           total: context.inlineDepth + context.blockDepth,
-  //         },
-  //         "wi.1.length": wi1.sourceString.length,
-  //         "wi.2.length": wi2.sourceString.length,
-  //       },
-  //       params: {
-  //         variant: "block",
-  //         items: params,
-  //       },
-  //     },
-  //   };
-  // },
-  // v2DirectiveConfig_d(wi1, v2ParamListInline, wi2) {
-  //   const context: RankiLangAstContext = { ...this.args.context };
-  //   context.blockDepth++;
-  //   const params = v2ParamListInline.paramsV2(context);
-  //   return {
-  //     "directive.v2": {
-  //       type: this.ctorName,
-  //       args: {
-  //         depth: {
-  //           block: context.blockDepth,
-  //           inline: context.inlineDepth,
-  //           total: context.inlineDepth + context.blockDepth,
-  //         },
-  //         "wi.1.length": wi1.sourceString.length,
-  //         "wi.2.length": wi2.sourceString.length,
-  //       },
-  //       params: {
-  //         variant: "inline",
-  //         items: params,
-  //       },
-  //     },
-  //   };
-  // },
   v2FrameConfigP(wi1, v2Type, wi2, sep) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;

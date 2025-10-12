@@ -2,25 +2,22 @@ import type * as ohm from "ohm-js";
 import type { RankiLangAstContext } from "@ranki/package-api-v2";
 import type { NodeArgsFrameV2ConfigFp_F, ParseNodeFrameV2 } from "../types.mjs";
 import type { FrameSpec } from "../types.mjs";
-import type { RankiLangParserPluginParseHandlerFrameV2 } from "../types.mjs";
 
 export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
-  v2_fp(directive, frame, v2FrameConfig, v2Payload, v2End) {
+  v2_fp(v2Start, v2FrameConfig, v2Payload, v2End) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
+    // !FIX i'm not sure if this specific of a type is a good idea here
     const frameConfig: NodeArgsFrameV2ConfigFp_F =
       v2FrameConfig.v2FrameConfig(context);
 
-    const child = context.lang.parse<RankiLangParserPluginParseHandlerFrameV2>(
-      { [context.theater]: v2Payload.sourceString },
-      {
-        ...context,
-        plugin: {
-          ...frameConfig["frame"],
-          type: "RankiFrameV2",
-        },
+    const child = v2Payload.node({
+      ...this.args.context,
+      plugin: {
+        ...frameConfig["frame"],
+        type: "RankiFrameV2",
       },
-    );
+    });
 
     return {
       kind: "parent",
@@ -32,17 +29,36 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         ...frameConfig,
-
-        report: child.report,
-        raw: child.theaters[context.theater].stages.raw,
       },
-      children: [child.theaters[context.theater].stages.ast.root],
+      children: [child],
+    };
+  },
+
+  v2_f(v2Start, v2FrameConfig, v2End) {
+    const context: RankiLangAstContext = { ...this.args.context };
+    context.blockDepth++;
+    // !FIX i'm not sure if this specific of a type is a good idea here
+    const frameConfig: NodeArgsFrameV2ConfigFp_F =
+      v2FrameConfig.v2FrameConfig(context);
+
+    return {
+      kind: "parent",
+      type: this.ctorName,
+      args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
+        ...frameConfig,
+      },
+      children: [],
     };
   },
 
   // @ts-expect-error FIX type in this doesn't seem to work
   // likely due to a design error
-  v2_e(directive, frame, wi1, v2Chain, wi2, v2End) {
+  v2_e(v2Start, wi1, v2Chain, wi2, v2End) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     const chain: FrameSpec[] = v2Chain.frameSpecV2(context);

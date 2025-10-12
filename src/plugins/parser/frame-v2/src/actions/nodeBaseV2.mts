@@ -1,6 +1,7 @@
 import type { AstNode, RankiLangAstContext } from "@ranki/package-api-v2";
 import { zipNodes } from "@ranki/package-api-v2/helpers";
 import type * as ohm from "ohm-js";
+import type { RankiLangParserPluginParseHandlerFrameV2 } from "../types.mjs";
 
 export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   block_v2(indentation, v2, wi, ender) {
@@ -101,8 +102,12 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   v2PayloadPlain(plain) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
+    const child = context.lang.parse<RankiLangParserPluginParseHandlerFrameV2>(
+      { [context.theater]: plain.sourceString },
+      this.args.context,
+    );
     return {
-      kind: "leaf",
+      kind: "parent",
       type: this.ctorName,
       print: true,
       args: {
@@ -112,10 +117,9 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
       },
-      source: {
-        type: "mixed",
-        value: plain.sourceString,
-      },
+      children: [child.theaters[context.theater].stages.ast.root],
+      // report: child.report,
+      // raw: child.theaters[context.theater].stages.raw,
     };
   },
 
