@@ -40,17 +40,21 @@ export const Inputs: FC<InputsProps> = ({
 }) => {
   const [tabIndex, setTabIndex] = useState(0);
   const {
-    setRankiStr,
-    setInstalledPlugins,
-    setRequestedPlugins,
-    installedPlugins,
     rankiStr,
-    languageUserConfigStr,
-    setLanguageUserConfigStr,
-    requestedPlugins,
-    allPlugins,
     theater,
-    setTheater,
+    languageUserConfigStr,
+    plugins,
+    // setRankiStr,
+    // setInstalledParserPlugins,
+    // setRequestedParserPlugins,
+    // installedParserPlugins,
+    // rankiStr,
+    // languageUserConfigStr,
+    // setLanguageUserConfigStr,
+    // requestedParserPlugins,
+    // allParserPlugins,
+    // theater,
+    // setTheater,
   } = useUserInput(
     // @ts-expect-error
     pluginObjects,
@@ -90,8 +94,8 @@ export const Inputs: FC<InputsProps> = ({
               style.inlineInput,
               style.selectPreset,
             ].join(" ")}
-            onChange={(e) => setRankiStr(e.target.value)}
-            value={rankiStr}
+            onChange={(e) => rankiStr.set(e.target.value)}
+            value={rankiStr.value}
           >
             {presetGroups.map(({ groupName, presets }) => (
               <optgroup key={groupName} label={groupName}>
@@ -110,15 +114,15 @@ export const Inputs: FC<InputsProps> = ({
             id="theater"
             className={[style.input, style.inlineInput].join(" ")}
             type="text"
-            value={theater}
-            onChange={(e) => setTheater(e.target.value)}
+            value={theater.value}
+            onChange={(e) => theater.set(e.target.value)}
           />
         </div>
         <textarea
           className={[style.input, style.textarea, style.scrollable].join(" ")}
           id="ranki"
-          onChange={(e) => setRankiStr(e.target.value)}
-          value={rankiStr}
+          onChange={(e) => rankiStr.set(e.target.value)}
+          value={rankiStr.value}
         />
       </div>
     ),
@@ -129,8 +133,8 @@ export const Inputs: FC<InputsProps> = ({
         <textarea
           className={[style.input, style.textarea, style.scrollable].join(" ")}
           id="ranki"
-          onChange={(e) => setLanguageUserConfigStr(e.target.value)}
-          value={languageUserConfigStr}
+          onChange={(e) => languageUserConfigStr.set(e.target.value)}
+          value={languageUserConfigStr.value}
         />
       </div>
     ),
@@ -140,20 +144,25 @@ export const Inputs: FC<InputsProps> = ({
           <h2 className={style.h2}>Parser Plugins</h2>
           <fieldset className={style.inputFieldSet}>
             <legend className={style.label}>Installed</legend>
-            {allPlugins.map((pn) => (
+            {plugins.parser.all.map((pn) => (
               <div key={pn}>
                 <input
                   id={["available", pn].join("-")}
                   type="checkbox"
-                  checked={installedPlugins.includes(pn)}
+                  // checked={installedParserPlugins.includes(pn)}
+                  checked={plugins.parser.installed.value.includes(pn)}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setInstalledPlugins((l) => [
+                      // setInstalledParserPlugins((l) => [
+                      plugins.parser.installed.set((l) => [
                         ...l.filter((n) => n !== pn),
                         pn,
                       ]);
                     } else {
-                      setInstalledPlugins((l) => l.filter((n) => n !== pn));
+                      // setInstalledParserPlugins((l) =>
+                      plugins.parser.installed.set((l) =>
+                        l.filter((n) => n !== pn),
+                      );
                     }
                   }}
                 />
@@ -168,13 +177,15 @@ export const Inputs: FC<InputsProps> = ({
             <div className={style.requestedPluginsButtonContainer}>
               <button
                 className={style.buttonPlugins}
-                onClick={() => setInstalledPlugins(allPlugins)}
+                // onClick={() => setInstalledParserPlugins(allParserPlugins)}
+                onClick={() => plugins.parser.installed.set(plugins.parser.all)}
               >
                 All
               </button>{" "}
               <button
                 className={style.buttonPlugins}
-                onClick={() => setInstalledPlugins([])}
+                // onClick={() => setInstalledParserPlugins([])}
+                onClick={() => plugins.parser.installed.set([])}
               >
                 None
               </button>
@@ -183,20 +194,26 @@ export const Inputs: FC<InputsProps> = ({
 
           <fieldset className={style.inputFieldSet}>
             <h4 className={style.label}>Requested</h4>
-            {allPlugins.map((pn) => (
+            {/* {allParserPlugins.map((pn) => ( */}
+            {plugins.parser.all.map((pn) => (
               <div key={pn}>
                 <input
                   type="checkbox"
-                  checked={requestedPlugins.includes(pn)}
+                  // checked={requestedParserPlugins.includes(pn)}
+                  checked={plugins.parser.requested.value.includes(pn)}
                   id={["selected", pn].join("-")}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setRequestedPlugins((l) => [
+                      // setRequestedParserPlugins((l) => [
+                      plugins.parser.requested.set((l) => [
                         ...l.filter((n) => n !== pn),
                         pn,
                       ]);
                     } else {
-                      setRequestedPlugins((l) => l.filter((n) => n !== pn));
+                      // setRequestedParserPlugins((l) =>
+                      plugins.parser.requested.set((l) =>
+                        l.filter((n) => n !== pn),
+                      );
                     }
                   }}
                 />
@@ -211,13 +228,15 @@ export const Inputs: FC<InputsProps> = ({
             <div className={style.requestedPluginsButtonContainer}>
               <button
                 className={style.buttonPlugins}
-                onClick={() => setRequestedPlugins(allPlugins)}
+                // onClick={() => setRequestedParserPlugins(allParserPlugins)}
+                onClick={() => plugins.parser.requested.set(plugins.parser.all)}
               >
                 All
               </button>{" "}
               <button
                 className={style.buttonPlugins}
-                onClick={() => setRequestedPlugins([])}
+                // onClick={() => setRequestedParserPlugins([])}
+                onClick={() => plugins.parser.requested.set([])}
               >
                 None
               </button>
@@ -229,20 +248,22 @@ export const Inputs: FC<InputsProps> = ({
           <h2 className={style.h2}>Component Plugins</h2>
           <fieldset className={style.inputFieldSet}>
             <legend className={style.label}>Installed</legend>
-            {allPlugins.map((pn) => (
+            {plugins.component.all.map((pn) => (
               <div key={pn}>
                 <input
                   id={["available", pn].join("-")}
                   type="checkbox"
-                  checked={installedPlugins.includes(pn)}
+                  checked={plugins.component.installed.value.includes(pn)}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setInstalledPlugins((l) => [
+                      plugins.component.installed.set((l) => [
                         ...l.filter((n) => n !== pn),
                         pn,
                       ]);
                     } else {
-                      setInstalledPlugins((l) => l.filter((n) => n !== pn));
+                      plugins.component.installed.set((l) =>
+                        l.filter((n) => n !== pn),
+                      );
                     }
                   }}
                 />
@@ -257,56 +278,15 @@ export const Inputs: FC<InputsProps> = ({
             <div className={style.requestedPluginsButtonContainer}>
               <button
                 className={style.buttonPlugins}
-                onClick={() => setInstalledPlugins(allPlugins)}
+                onClick={() =>
+                  plugins.component.installed.set(plugins.component.all)
+                }
               >
                 All
               </button>{" "}
               <button
                 className={style.buttonPlugins}
-                onClick={() => setInstalledPlugins([])}
-              >
-                None
-              </button>
-            </div>
-          </fieldset>
-
-          <fieldset className={style.inputFieldSet}>
-            <h4 className={style.label}>Requested</h4>
-            {allPlugins.map((pn) => (
-              <div key={pn}>
-                <input
-                  type="checkbox"
-                  checked={requestedPlugins.includes(pn)}
-                  id={["selected", pn].join("-")}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setRequestedPlugins((l) => [
-                        ...l.filter((n) => n !== pn),
-                        pn,
-                      ]);
-                    } else {
-                      setRequestedPlugins((l) => l.filter((n) => n !== pn));
-                    }
-                  }}
-                />
-                <label
-                  className={style.inlineLabel}
-                  htmlFor={["selected", pn].join("-")}
-                >
-                  {pn.replace("Ranki", "")}
-                </label>
-              </div>
-            ))}
-            <div className={style.requestedPluginsButtonContainer}>
-              <button
-                className={style.buttonPlugins}
-                onClick={() => setRequestedPlugins(allPlugins)}
-              >
-                All
-              </button>{" "}
-              <button
-                className={style.buttonPlugins}
-                onClick={() => setRequestedPlugins([])}
+                onClick={() => plugins.component.installed.set([])}
               >
                 None
               </button>

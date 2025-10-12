@@ -10,6 +10,7 @@ export type {
   ParserPluginsInstance,
   ProducedConfig,
   ActionsDictRecord,
+  RankiLangAstResult,
 } from "./context.mjs";
 
 export type {

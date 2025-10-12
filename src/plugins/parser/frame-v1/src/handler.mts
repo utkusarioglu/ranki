@@ -2,6 +2,7 @@ import type {
   RankiLangParseSpecs,
   RankiLangAstContext,
   RankiLangParseReport,
+  RankiLangParseResult,
 } from "@ranki/package-api-v2";
 
 export interface FrameV1 {
@@ -20,7 +21,7 @@ export function handler(
     // getComponents,
     parseAst,
   }: any,
-) {
+): RankiLangParseResult {
   console.log("v1!!! from handler", spec);
   const contextV1: RankiLangAstContext = {
     lang,
@@ -41,12 +42,13 @@ export function handler(
     role: spec.role,
   };
   return {
-    report,
+    // report,
     theaters: {
       [spec.theater]: {
         stages: {
           raw: theaterRaw,
           ast: parseAst(contextV1, theaterRaw),
+          validation: {},
         },
       },
     },

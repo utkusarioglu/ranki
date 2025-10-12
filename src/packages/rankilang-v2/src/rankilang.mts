@@ -10,8 +10,10 @@ import type {
   ParserPluginsInstance,
   ComponentPluginsInstance,
   RankiLangInstancePluginsRecord,
+  RankiLangAstResult,
 } from "@ranki/package-api-v2";
 import { ast } from "./ast/ast.mjs";
+import { validate } from "./validator/validator.mjs";
 import { ParserPlugins } from "./parser/parser-plugins.mjs";
 import { RankiLangConfig } from "./config.mjs";
 import { ComponentPlugins } from "./component/component-plugins.mjs";
@@ -77,13 +79,33 @@ export class RankiLang implements RankiLangInstance {
     }
 
     const ast = this.createAst(theaterRaw, spec);
-    return ast;
+    const validation = this.createValidation(ast, spec);
+    console.log(validation);
+    return {
+      theaters: {
+        [spec.theater]: {
+          stages: {
+            raw: theaterRaw,
+            ast: ast.theaters[spec.theater].stages.ast,
+            validation,
+          },
+        },
+      },
+    };
+  }
+
+  private createValidation<T extends RankiLangParseHandlerCommon>(
+    ast: RankiLangAstResult,
+    spec: RankiLangParseSpecs<T>,
+  ) {
+    const root = ast.theaters["default"]["stages"]["ast"]["root"];
+    return validate(root, spec);
   }
 
   private createAst<T extends RankiLangParseHandlerCommon>(
     theaterRaw: string,
     spec: RankiLangParseSpecs<T>,
-  ): RankiLangParseResult {
+  ): RankiLangAstResult {
     if (spec["plugin"]) {
       const parseAstHandler = this.parsers.getHandler(spec["plugin"].type);
       return parseAstHandler(theaterRaw, spec, {
@@ -99,7 +121,7 @@ export class RankiLang implements RankiLangInstance {
   private parseAstDefault<T extends RankiLangParseHandlerCommon>(
     theaterRaw: string,
     spec: RankiLangParseSpecs<T>,
-  ) {
+  ): RankiLangAstResult {
     const report: RankiLangParseReport = {
       language: {
         versions: this.parsers.getVersions(),
@@ -125,13 +147,16 @@ export class RankiLang implements RankiLangInstance {
       startRule: spec.startRule,
     };
 
+    const astStage = ast(context, theaterWithContent);
+    const validationStage = validate(astStage.root, spec);
     return {
-      report,
+      // report,
       theaters: {
         [spec.theater]: {
           stages: {
             raw: theaterWithContent,
-            ast: ast(context, theaterWithContent),
+            ast: astStage,
+            validation: validationStage,
           },
         },
       },

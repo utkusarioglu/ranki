@@ -209,7 +209,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           variant: "fp",
           frameType: v1Type.sourceString,
           ...argsAndParamsV1,
-          report: child.report,
+          // report: child.report,
         },
       },
       children: [child.theaters[context.theater].stages.ast.root],

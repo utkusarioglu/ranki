@@ -63,7 +63,7 @@ const node: ohm.ActionDict<AstNode> = {
         "whitespace.1.length": whitespace1.sourceString.length,
         "whitespace.2.length": whitespace2.sourceString.length,
       },
-      children: structure.node(context),
+      children: [structure.node(context)],
     };
   },
 

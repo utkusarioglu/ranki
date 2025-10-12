@@ -62,12 +62,13 @@ export const handler: RankiLangParserPluginParseHandler<
   const ast = parseAst(contextV2, theaterWithContent);
 
   return {
-    report,
+    // report,
     theaters: {
       [spec.theater]: {
         stages: {
           raw: theaterWithContent,
           ast,
+          validation: {},
         },
       },
     },
