@@ -1,10 +1,10 @@
 import type { RankiLanguageConfig } from "./config.mjs";
-import type { AstNode } from "./ast-node.mjs";
+import type { AstNode } from "../stages/ast.mjs";
 import type {
   RankiLangInstance,
   RankiLangParserPluginParseHandler,
 } from "./rankilang.mjs";
-import { RankiPluginParser } from "./plugin.mjs";
+import { RankiPluginParser } from "../plugins/plugin.mjs";
 import type * as ohm from "ohm-js";
 
 export interface RankiLangParseResult {
@@ -91,7 +91,6 @@ export interface RankiLangParseHandlerCommon {
 }
 
 export type RankiLangParseSpecs<T extends RankiLangParseHandlerCommon> = {
-  // plugin?: FrameV1 | FrameV2;
   plugin?: T;
   theater: TheaterName;
   role: RoleName;
@@ -99,18 +98,8 @@ export type RankiLangParseSpecs<T extends RankiLangParseHandlerCommon> = {
   inlineDepth: number;
   startRule: string;
 };
-// | RankiLangParseSpecsFrameNull
-// | RankiLangParseSpecsFrameV1
-// | RankiLangParseSpecsFrameV2;
 
 export type RankiLangParseSpecsFrameNull = RankiLangParseSpecsCommon;
-
-// export interface RankiLangParseSpecsFrameV1 extends RankiLangParseSpecsCommon {
-//   plugin: FrameV1;
-// }
-// export interface RankiLangParseSpecsFrameV2 extends RankiLangParseSpecsCommon {
-//   plugin: FrameV2;
-// }
 
 export type RankiLangAstContext = {
   blockDepth: number;

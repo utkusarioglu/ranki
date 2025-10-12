@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "clean-all": "rm -rf .turbo dist node_modules *.tsconfigbuildinfo"
+    "clean-all": "rm -rf .turbo lib dist types node_modules *.tsbuildinfo"
   },
   "devDependencies": {
     "@types/node": "^24.1.0",

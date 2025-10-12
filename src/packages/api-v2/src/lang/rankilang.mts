@@ -1,7 +1,7 @@
 import {
   ComponentPluginComponent,
   RankiPluginComponent,
-} from "./component.mjs";
+} from "../plugins/component.mjs";
 import type {
   RankiLanguageConfig,
   RankiLanguageProvidedConfig,
@@ -15,7 +15,7 @@ import {
   RankiLangAstContext,
   RankiLangParseHandlerCommon,
 } from "./context.mjs";
-import { RankiPluginParser } from "./plugin.mjs";
+import { RankiPluginParser } from "../plugins/plugin.mjs";
 
 export interface ComponentPluginsInstance {
   addPlugin(plugin: RankiPluginComponent): void;
@@ -37,7 +37,6 @@ export interface RankiLangInstance {
     raw: Record<TheaterName, string>,
     specs: RankiLangParseSpecs<T>,
   ): RankiLangParseResult;
-  // clone(userConfigs: RankiLanguageProvidedConfig[] | null): RankiLangInstance;
 }
 
 export interface RankiLangParseHandlerHooks {

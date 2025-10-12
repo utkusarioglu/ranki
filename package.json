@@ -10,7 +10,8 @@
   "packageManager": "yarn@4.10.2",
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "watch": "turbo run watch",
+    "dev-v2-demo": "turbo run dev --filter @ranki/app-rankilang-v2-demo",
     "lint": "turbo run lint"
   },
   "devDependencies": {

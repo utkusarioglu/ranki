@@ -1,5 +1,6 @@
 import type { RankiPluginParser } from "@ranki/package-api-v2";
 
+// ANKI
 export function expandDependencies(plugins: RankiPluginParser[]): void {
   const lookup = Object.fromEntries(plugins.map((p) => [p.meta.name, p]));
   const cache = new Map<string, Set<string>>();
@@ -32,6 +33,7 @@ export function expandDependencies(plugins: RankiPluginParser[]): void {
   });
 }
 
+// ANKI
 export function topologicalSort(
   plugins: RankiPluginParser[],
 ): RankiPluginParser["meta"]["name"][] {

@@ -23,7 +23,6 @@ export class RankiLang implements RankiLangInstance {
 
   constructor(
     plugins: RankiLangInstancePluginsRecord,
-    // parsers: ParserPluginsInstance,
     provided: RankiLanguageProvidedConfig[],
   ) {
     console.log(plugins);

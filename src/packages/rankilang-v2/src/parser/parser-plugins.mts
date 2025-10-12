@@ -65,12 +65,9 @@ export class ParserPlugins implements ParserPluginsInstance {
     for (const name of set) {
       if (!importedPluginNameSet.has(name)) {
         missing.push(name);
-        // return false
-        // throw new Error(`REQUESTED PLUGIN NOT IMPORTED: ${name}`);
       }
     }
     return missing;
-    // return true;
   }
 
   sortPlugins(activePluginsArr: RankiPluginParser[]) {

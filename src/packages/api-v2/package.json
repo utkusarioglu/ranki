@@ -5,12 +5,12 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "clean-all": "rm -rf .turbo lib *.tsbuildinfo"
+    "clean-all": "rm -rf .turbo lib dist types node_modules *.tsbuildinfo"
   },
   "exports": {
     ".": {
-      "types": "./types/main.d.mts",
-      "default": "./lib/main.mjs"
+      "types": "./types/export.d.mts",
+      "default": "./lib/export.mjs"
     },
     "./helpers": {
       "types": "./types/helpers/main.d.mts",

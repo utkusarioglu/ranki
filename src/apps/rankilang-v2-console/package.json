@@ -10,8 +10,8 @@
     }
   },
   "scripts": {
-    "console-old": "yarn tsx src/console.mts",
-    "console": "yarn vite-node src/console.mts"
+    "console": "yarn vite-node src/console.mts",
+    "clean-all": "rm -rf .turbo lib dist types node_modules *.tsbuildinfo"
   },
   "devDependencies": {
     "@ranki/package-api-v2": "workspace:^",

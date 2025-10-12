@@ -9,7 +9,6 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
         ast: {
           preprocess: (c: string) => c.trim(),
           directives: {
-            // @ts-expect-error
             plugins: {
               requested: [
                 // "RankiParamsV2",
@@ -17,7 +16,6 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
                 // "RankiRichNumberV2",
               ],
             },
-            // @ts-expect-error
             content: {
               prefix: "CODE_PREFIXA!",
             },
@@ -47,7 +45,6 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
         ast: {
           preprocess: (c: string) => c.trim(),
           directives: {
-            // @ts-expect-error
             plugins: {
               requested: [
                 // "RankiParamsV2",
@@ -55,7 +52,6 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
                 // "RankiRichNumberV2",
               ],
             },
-            // @ts-expect-error
             content: {
               prefix: "PREPRE-",
               suffix: "-PREPRE",

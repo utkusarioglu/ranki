@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean-all": "rm -rf .turbo lib dist types node_modules *.tsbuildinfo"
   },
   "dependencies": {
     "@ranki/package-rankilang-v2": "workspace:^",

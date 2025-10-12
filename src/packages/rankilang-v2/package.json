@@ -13,7 +13,8 @@
     "build": "yarn tsc",
     "watch": "yarn tsc --watch",
     "console": "yarn tsx src/console.mts",
-    "test": "vitest"
+    "test": "vitest",
+    "clean-all": "rm -rf .turbo lib dist types node_modules *.tsbuildinfo"
   },
   "devDependencies": {
     "@ranki/package-api-v2": "workspace:^",

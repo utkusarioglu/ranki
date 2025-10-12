@@ -1,4 +1,3 @@
-import type { ParserPlugins } from "../parser/parser-plugins.mjs";
 import type {
   ParserPluginsInstance,
   RankiLangAstContext,
@@ -61,10 +60,6 @@ export function ast(
 
   return {
     report: {
-      // language: {
-      //   versions: parserPlugins.getVersions(),
-      //   // context,
-      // },
       parser: {
         requested: configPlugins.requested,
         sorted: importChain,
@@ -72,7 +67,6 @@ export function ast(
         contributors: participants,
         methods,
       },
-      // config: langConfig,
     },
     root: semantics(matched).node(context),
   };
