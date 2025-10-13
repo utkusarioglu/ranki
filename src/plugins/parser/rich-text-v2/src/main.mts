@@ -1,6 +1,8 @@
 import { RankiGrammarTokens, RankiPluginParser } from "@ranki/package-api-v2";
 import grammar from "../assets/ohm/2.0.63.ohm?raw";
 import { actions } from "./actions.mjs";
+import { validators } from "./validators.mjs";
+import { transformers } from "./transformers.mjs";
 
 type Single = string;
 
@@ -80,6 +82,7 @@ export const rankiRichTextV2ParserPlugin: RankiPluginParser<RankiRichTextV2Parse
     config,
     tokens: tokenize(config),
     grammar: () => grammar,
-    validations: () => ({}),
+    validators,
+    transformers,
     actions: () => actions,
   };

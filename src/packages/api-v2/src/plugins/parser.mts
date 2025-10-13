@@ -8,6 +8,7 @@ import {
 import { RankiLangParseHandlerHooks } from "../lang/rankilang.mjs";
 import type { RankiPluginCommon } from "./general.mjs";
 import type { RankiPluginParserValidationCallback } from "../stages/validation.mjs";
+import type { RankiPluginParserTransformCallback } from "../stages/transform.mjs";
 
 export type RankiGrammarTokens = Record<
   string,
@@ -33,7 +34,8 @@ export type RankiPluginParser<
   tokens: RankiGrammarTokens;
   grammar: (c: RankiLanguageConfig) => string;
   actions: () => Record<string, ohm.ActionDict<unknown>>;
-  validations: RankiPluginParserValidationCallback;
+  validators: RankiPluginParserValidationCallback;
+  transformers: RankiPluginParserTransformCallback;
 };
 
 export interface RankiPluginParserSpecs {

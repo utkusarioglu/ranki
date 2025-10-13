@@ -7,7 +7,8 @@ import type {
   RankiLangParserPluginParseHandlerFrameV2,
 } from "./types.mjs";
 import { tokenize, config } from "./config.mjs";
-import { validations } from "./validation.mjs";
+import { validators } from "./validators.mjs";
+import { transformers } from "./transformers.mjs";
 
 export type Single = string;
 
@@ -25,6 +26,7 @@ export const rankiFrameV2ParserPlugin: RankiPluginParser<
   config,
   tokens: tokenize(config),
   grammar: () => grammar,
-  validations,
+  validators,
+  transformers,
   actions: () => actions,
 };

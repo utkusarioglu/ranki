@@ -9,18 +9,18 @@ import type {
 } from "@ranki/package-api-v2";
 
 export class ValidatorLibrary {
-  private validators: Record<string, ValidatorFunctionEntry> = {};
+  private list: Record<string, ValidatorFunctionEntry> = {};
 
   addPlugin(plugin: RankiPluginParser) {
-    console.log({ plugin });
-    Object.entries(plugin.validations()).forEach(([n, v]) => {
-      const current = this.validators[n];
+    console.log(plugin);
+    Object.entries(plugin.validators()).forEach(([n, v]) => {
+      const current = this.list[n];
       if (current) {
         throw new Error(
           `VALIDATOR ${n} ALREADY REGISTERED BY ${current.source}`,
         );
       }
-      this.validators[n] = {
+      this.list[n] = {
         source: n,
         callback: v,
       };
@@ -28,8 +28,7 @@ export class ValidatorLibrary {
   }
 
   getValidator(name: string): RankiPluginParserValidationFunc {
-    console.log(this.validators);
-    const found = this.validators[name];
+    const found = this.list[name];
     if (!found) {
       throw new Error(`VALIDATOR ${name} NOT FOUND`);
     }

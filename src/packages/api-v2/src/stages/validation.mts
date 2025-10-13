@@ -1,4 +1,4 @@
-import type { AstNode } from "./ast.mjs";
+import type { AstNode, AstNodeLeaf, AstNodeParent } from "./ast.mjs";
 // import type { RankiPluginParserValidationFunc } from "../export.mjs";
 
 export interface ValidatorFunctionEntry {
@@ -15,8 +15,15 @@ export interface ValidationNodeValidationEntry {
   errors: ValidationNodeErrorEntry[];
 }
 
-export type ValidationNode = AstNode & {
+export type ValidationNode = ValidationNodeParent | ValidationNodeLeaf;
+
+export type ValidationNodeLeaf = AstNodeLeaf & {
   validation: ValidationNodeValidationEntry;
+};
+
+export type ValidationNodeParent = Omit<AstNodeParent, "children"> & {
+  validation: ValidationNodeValidationEntry;
+  children: ValidationNode[];
 };
 
 export type RankiPluginParserValidationFunc = (

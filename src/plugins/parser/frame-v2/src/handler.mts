@@ -10,7 +10,11 @@ import { RankiLangParserPluginParseHandlerFrameV2 } from "./types.mjs";
 
 export const handler: RankiLangParserPluginParseHandler<
   RankiLangParserPluginParseHandlerFrameV2
-> = (theaterRaw, spec, { lang, clone, parseAst, parseValidation }) => {
+> = (
+  theaterRaw,
+  spec,
+  { lang, clone, parseAst, parseValidation, parseTransform },
+) => {
   if (!spec.plugin || spec.plugin.type !== "RankiFrameV2") {
     throw new Error(`FRAME V2 HANDLER GIVEN NON-FRAME V2 COMPONENT`);
   }
@@ -66,6 +70,8 @@ export const handler: RankiLangParserPluginParseHandler<
     validation: componentValidation,
   };
 
+  const transform = parseTransform(validation, spec);
+
   return {
     report,
     theaters: {
@@ -74,6 +80,7 @@ export const handler: RankiLangParserPluginParseHandler<
           raw: theaterWithContent,
           ast,
           validation,
+          transform,
         },
       },
     },

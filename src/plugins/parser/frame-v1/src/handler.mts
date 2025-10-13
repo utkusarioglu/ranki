@@ -14,7 +14,7 @@ export interface FrameV1 {
 export const handler: RankiLangParserPluginParseHandler<FrameV1> = (
   theaterRaw,
   spec,
-  { lang, parseAst, parseValidation },
+  { lang, parseAst, parseValidation, parseTransform },
 ) => {
   console.log("v1!!! from handler", spec);
   const contextV1: RankiLangAstContext = {
@@ -37,6 +37,7 @@ export const handler: RankiLangParserPluginParseHandler<FrameV1> = (
   };
   const ast = parseAst(theaterRaw, contextV1);
   const validation = parseValidation(ast.root, spec);
+  const transform = parseTransform(validation, spec);
   return {
     report,
     theaters: {
@@ -45,6 +46,7 @@ export const handler: RankiLangParserPluginParseHandler<FrameV1> = (
           raw: theaterRaw,
           ast,
           validation,
+          transform,
         },
       },
     },

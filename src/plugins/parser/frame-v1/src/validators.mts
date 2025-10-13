@@ -9,13 +9,4 @@ const placeholder: RankiPluginParserValidationFunc = (n) => ({
   errors: [],
 });
 
-export const validations: RankiPluginParserValidationCallback = () => ({
-  root_structure: placeholder,
-  section_base: placeholder,
-  p: placeholder,
-  line: placeholder,
-  lexemes: placeholder,
-  decorated_base: placeholder,
-  word_base: placeholder,
-  clearance: placeholder,
-});
+export const validators: RankiPluginParserValidationCallback = () => ({});

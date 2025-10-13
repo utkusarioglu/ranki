@@ -6,6 +6,8 @@ import type {
 } from "./rankilang.mjs";
 import { RankiGrammarTokens, RankiPluginParser } from "../plugins/parser.mjs";
 import type * as ohm from "ohm-js";
+import type { TransformNode } from "../stages/transform.mjs";
+import type { ValidationNode } from "../stages/validation.mjs";
 
 export interface RankiLangParseResult {
   report: RankiLangParseReport;
@@ -39,7 +41,8 @@ export interface RankiLangParsedTheater {
       report: RankiLangAstReport;
       root: AstNode;
     };
-    validation: any; // !TODO
+    validation: ValidationNode;
+    transform: TransformNode;
   };
 }
 

@@ -5,6 +5,8 @@ import type {
 import grammar from "../assets/ohm/2.0.64.ohm?raw";
 import { actions } from "./actions.mjs";
 import { FrameV1, handler } from "./handler.mjs";
+import { transformers } from "./transformers.mjs";
+import { validators } from "./validators.mjs";
 
 type Single = string;
 
@@ -47,6 +49,7 @@ export const rankiFrameV1ParserPlugin: RankiPluginParser<
   config,
   tokens: tokenize(config),
   grammar: () => grammar,
-  validations: () => ({}),
+  validators,
+  transformers,
   actions: () => actions,
 };

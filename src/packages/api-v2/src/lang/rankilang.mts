@@ -15,9 +15,10 @@ import {
   RankiLangAstContext,
   RankiLangParseHandlerCommon,
 } from "./context.mjs";
-import { RankiPluginParser } from "../plugins/parser.mjs";
-import { AstNode } from "../stages/ast.mjs";
-import { ValidationNode } from "../stages/validation.mjs";
+import type { RankiPluginParser } from "../plugins/parser.mjs";
+import type { AstNode } from "../stages/ast.mjs";
+import type { ValidationNode } from "../stages/validation.mjs";
+import type { TransformNode } from "../stages/transform.mjs";
 
 export interface ComponentPluginsInstance {
   addPlugin(plugin: RankiPluginComponent): void;
@@ -54,6 +55,10 @@ export interface RankiLangParseHandlerHooks<
     raw: string,
     context: RankiLangAstContext,
   ) => RankiLangParseFunctionReturn;
+  parseTransform: (
+    v: ValidationNode,
+    spec: RankiLangParseSpecs<T>,
+  ) => TransformNode;
 }
 
 export type RankiLangParserPluginParseHandler<
