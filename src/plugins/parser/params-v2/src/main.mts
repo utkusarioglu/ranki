@@ -62,6 +62,7 @@ export const rankiParamsV2ParserPlugin: RankiPluginParser<RankiParamsV2ParserPlu
     config,
     tokens: tokenize(config),
     grammar: () => grammar,
+    validations: () => ({}),
     actions: () => actions,
   };
 

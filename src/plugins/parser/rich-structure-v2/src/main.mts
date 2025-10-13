@@ -35,5 +35,6 @@ export const rankiRichStructureV2ParserPlugin: RankiPluginParser<RankiRichStruct
     config,
     tokens: tokenize(config),
     grammar: () => grammar,
+    validations: () => ({}),
     actions: () => actions,
   };

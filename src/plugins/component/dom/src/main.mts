@@ -1,4 +1,14 @@
-import type { RankiPluginComponent } from "@ranki/package-api-v2";
+import type {
+  RankiPluginComponent,
+  ComponentPluginValidationFunc,
+} from "@ranki/package-api-v2";
+
+const placeholder: ComponentPluginValidationFunc = ({ validation, spec }) => ({
+  warnings: [
+    ["COMPONENT VALIDATION", validation.kind, spec.blockDepth].join(" "),
+  ],
+  errors: [],
+});
 
 export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
   meta: {
@@ -26,7 +36,7 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
           },
           params: {
             setting: {
-              positional: [["pa"]],
+              positional: [["language"], ["path"]],
               shorthands: {
                 b: ["cat", "dog"],
               },
@@ -40,6 +50,7 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
             },
           },
         },
+        validation: placeholder,
       },
     },
 
@@ -63,7 +74,7 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
           },
           params: {
             setting: {
-              positional: [["pa"]],
+              positional: [["path"]],
               shorthands: {
                 b: ["cat", "dog"],
               },
@@ -77,6 +88,7 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
             },
           },
         },
+        validation: placeholder,
       },
     },
   ],

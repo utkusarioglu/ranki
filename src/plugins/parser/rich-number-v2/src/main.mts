@@ -89,5 +89,6 @@ export const rankiRichNumberV2ParserPlugin: RankiPluginParser<RankiRichNumberV2P
     config,
     tokens: tokenize(config),
     grammar: () => grammar,
+    validations: () => ({}),
     actions: () => actions,
   };

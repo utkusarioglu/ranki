@@ -1,6 +1,7 @@
 import { RankiPluginParser, RankiGrammarTokens } from "@ranki/package-api-v2";
 import grammar from "../assets/ohm/2.0.64.ohm?raw";
 import { actions } from "./actions.mjs";
+import { validations } from "./validation.mjs";
 
 type Single = string;
 
@@ -34,6 +35,7 @@ export const rankiBaseV2ParserPlugin: RankiPluginParser<RankiBaseV2ParserPluginC
     tokens: tokenize(config),
     grammar: () => grammar,
     actions: () => actions,
+    validations,
   };
 
 export type { NodeArgsBaseV2 } from "./type.mjs";

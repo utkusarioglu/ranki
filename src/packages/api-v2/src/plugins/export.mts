@@ -8,4 +8,7 @@ export type { RankiPlugin } from "./general.mjs";
 
 export type { RankiPluginRenderer } from "./render.mjs";
 
-export type { RankiPluginComponent } from "./component.mjs";
+export type {
+  RankiPluginComponent,
+  ComponentPluginValidationFunc,
+} from "./component.mjs";

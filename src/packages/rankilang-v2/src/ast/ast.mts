@@ -6,8 +6,8 @@ import type {
 import { buildGrammar, compileOhmActionDicts } from "./grammar.mjs";
 
 export function ast(
-  context: RankiLangAstContext,
   raw: string,
+  context: RankiLangAstContext,
 ): RankiLangParseFunctionReturn {
   const parserPlugins: ParserPluginsInstance = context.lang.getPlugins();
   const langConfig = context.lang.getConfig();

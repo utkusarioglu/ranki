@@ -1,6 +1,5 @@
 import type {
   RankiLangParseSpecs,
-  RankiLangParseResult,
   RankiLangParseReport,
   RankiLangAstContext,
   RankiLangInstance,
@@ -11,11 +10,7 @@ import { RankiLangParserPluginParseHandlerFrameV2 } from "./types.mjs";
 
 export const handler: RankiLangParserPluginParseHandler<
   RankiLangParserPluginParseHandlerFrameV2
-> = (
-  theaterRaw: string,
-  spec,
-  { lang, clone, parseAst },
-): RankiLangParseResult => {
+> = (theaterRaw, spec, { lang, clone, parseAst, parseValidation }) => {
   if (!spec.plugin || spec.plugin.type !== "RankiFrameV2") {
     throw new Error(`FRAME V2 HANDLER GIVEN NON-FRAME V2 COMPONENT`);
   }
@@ -59,16 +54,26 @@ export const handler: RankiLangParserPluginParseHandler<
     contentConfig.suffix,
   ].join("");
 
-  const ast = parseAst(contextV2, theaterWithContent);
+  const ast = parseAst(theaterWithContent, contextV2);
+  const validation = parseValidation(ast.root, spec);
+  const componentValidation = component.stages.validation({
+    validation,
+    spec,
+  });
+  // @ts-expect-error
+  validation.args["frame"] = {
+    version: "v2",
+    validation: componentValidation,
+  };
 
   return {
-    // report,
+    report,
     theaters: {
       [spec.theater]: {
         stages: {
           raw: theaterWithContent,
           ast,
-          validation: {},
+          validation,
         },
       },
     },

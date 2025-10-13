@@ -8,14 +8,16 @@ import { RankiGrammarTokens, RankiPluginParser } from "../plugins/parser.mjs";
 import type * as ohm from "ohm-js";
 
 export interface RankiLangParseResult {
-  // report: RankiLangParseReport;
+  report: RankiLangParseReport;
   theaters: {
     [key: string]: RankiLangParsedTheater;
   };
 }
 
+interface RankiLangLanguageReport {}
+
 export interface RankiLangAstResult {
-  // report: RankiLangParseReport;
+  // report: RankiLangLanguageReport;
   theaters: {
     [key: string]: RankiLangParsedTheater;
   };

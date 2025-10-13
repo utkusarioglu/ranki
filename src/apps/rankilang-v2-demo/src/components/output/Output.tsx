@@ -45,7 +45,9 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
     );
   }
 
-  const yamlStr = yaml.stringify(crawl(parsed, customPath));
+  const yamlStr = yaml.stringify(
+    JSON.parse(JSON.stringify(crawl(parsed, customPath))),
+  );
   const highlighted = Prism.highlight(
     yamlStr,
     Prism.languages.yaml,

@@ -80,5 +80,6 @@ export const rankiRichTextV2ParserPlugin: RankiPluginParser<RankiRichTextV2Parse
     config,
     tokens: tokenize(config),
     grammar: () => grammar,
+    validations: () => ({}),
     actions: () => actions,
   };

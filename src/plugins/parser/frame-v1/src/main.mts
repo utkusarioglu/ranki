@@ -47,5 +47,6 @@ export const rankiFrameV1ParserPlugin: RankiPluginParser<
   config,
   tokens: tokenize(config),
   grammar: () => grammar,
+  validations: () => ({}),
   actions: () => actions,
 };

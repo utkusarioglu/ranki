@@ -1,6 +1,14 @@
 import type { RankiLanguageMergedConfig } from "../lang/config.mjs";
 import type { DeepPartial } from "../utils.mjs";
 import type { RankiPluginCommon } from "./general.mjs";
+import type {
+  ValidationNode,
+  ValidationNodeValidationEntry,
+} from "../stages/validation.mjs";
+import {
+  RankiLangParseHandlerCommon,
+  RankiLangParseSpecs,
+} from "../lang/context.mjs";
 
 export interface RankiPluginComponent extends RankiPluginCommon {
   handler: string;
@@ -9,6 +17,17 @@ export interface RankiPluginComponent extends RankiPluginCommon {
 
 export type ComponentPluginComponentShorthand = Record<string, string[]>;
 export type ComponentPluginComponentPositional = string[][];
+
+export type ComponentPluginValidationFuncProps<
+  T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
+> = {
+  validation: ValidationNode;
+  spec: RankiLangParseSpecs<T>;
+};
+
+export type ComponentPluginValidationFunc = (
+  p: ComponentPluginValidationFuncProps,
+) => ValidationNodeValidationEntry;
 
 export interface ComponentPluginComponent {
   chain: string;
@@ -27,5 +46,6 @@ export interface ComponentPluginComponent {
         };
       };
     };
+    validation: ComponentPluginValidationFunc;
   };
 }
