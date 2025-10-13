@@ -13,8 +13,8 @@
       "default": "./lib/export.mjs"
     },
     "./helpers": {
-      "types": "./types/helpers/main.d.mts",
-      "default": "./lib/helpers/main.mjs"
+      "types": "./types/helpers/export.d.mts",
+      "default": "./lib/helpers/export.mjs"
     }
   },
   "devDependencies": {

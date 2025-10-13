@@ -32,3 +32,14 @@ body {
   margin: 0;
   box-sizing: border-box;
 }
+
+.monospace {
+  font-family: monospace;
+}
+
+.roboto {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  /* font-weight: 900; */
+  font-style: normal;
+}

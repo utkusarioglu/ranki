@@ -42,7 +42,7 @@ export const handler: RankiLangParserPluginParseHandler<
   };
   const contextV2: RankiLangAstContext = {
     lang: cloned,
-    blockDepth: spec.blockDepth,
+    blockDepth: spec.blockDepth + 1,
     inlineDepth: spec.inlineDepth,
     theater: spec.theater,
     role: spec.role,

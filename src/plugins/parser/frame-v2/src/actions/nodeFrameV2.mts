@@ -13,7 +13,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       v2FrameConfig.v2FrameConfig(context);
 
     const child = v2Payload.node({
-      ...this.args.context,
+      ...context,
       plugin: {
         ...frameConfig["frame"],
         type: "RankiFrameV2",

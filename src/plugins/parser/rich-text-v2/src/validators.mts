@@ -1,12 +1,14 @@
-import type {
-  RankiPluginParserValidationCallback,
-  RankiPluginParserValidationFunc,
-  // RankiPluginParserValidationDictionary
-} from "@ranki/package-api-v2";
+import type { RankiPluginParserValidationCallback } from "@ranki/package-api-v2";
+import { validationPlaceholder as placeholder } from "@ranki/package-api-v2/helpers";
 
-const placeholder: RankiPluginParserValidationFunc = (n) => ({
-  warnings: [["Placeholder:", n.kind, n.type].join(" ")],
-  errors: [],
+export const validators: RankiPluginParserValidationCallback = () => ({
+  textual: placeholder,
+  decorated_decorated: placeholder,
+  decorated_richTextBase: placeholder,
+  decorated_fallback: placeholder,
+  text_propercase: placeholder,
+  text_lowercase: placeholder,
+  text_uppercase: placeholder,
+  sentence: placeholder,
+  tRichTextV2DecorationBold: placeholder,
 });
-
-export const validators: RankiPluginParserValidationCallback = () => ({});

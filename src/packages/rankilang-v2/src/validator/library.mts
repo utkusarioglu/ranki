@@ -12,7 +12,6 @@ export class ValidatorLibrary {
   private list: Record<string, ValidatorFunctionEntry> = {};
 
   addPlugin(plugin: RankiPluginParser) {
-    console.log(plugin);
     Object.entries(plugin.validators()).forEach(([n, v]) => {
       const current = this.list[n];
       if (current) {
@@ -39,20 +38,25 @@ export class ValidatorLibrary {
     obj: AstNode,
     spec: RankiLangParseSpecs<T>,
   ): ValidationNode {
-    const validator = this.getValidator(obj.type);
-    if (obj.kind === "parent") {
-      const validation = validator(obj);
-      return {
-        validation,
-        ...obj,
-        children: obj.children.map((c) => this.validate(c, spec)),
-      };
-    } else {
-      const validation = validator(obj);
-      return {
-        validation,
-        ...obj,
-      };
+    try {
+      const validator = this.getValidator(obj.type);
+      if (obj.kind === "parent") {
+        const validation = validator(obj);
+        return {
+          validation,
+          ...obj,
+          children: obj.children.map((c) => this.validate(c, spec)),
+        };
+      } else {
+        const validation = validator(obj);
+        return {
+          validation,
+          ...obj,
+        };
+      }
+    } catch (e) {
+      console.error(obj, e);
+      throw new Error(e.message);
     }
   }
 }

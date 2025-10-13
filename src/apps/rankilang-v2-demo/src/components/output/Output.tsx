@@ -1,16 +1,17 @@
 import type { FC, CSSProperties } from "react";
 
 import { useState } from "react";
-import Prism from "prismjs";
+// import Prism from "prismjs";
 import style from "./output.module.css";
-import yaml from "yaml";
-import "./prism-atom-dark.css";
+// import yaml from "yaml";
+// import "./prism-atom-dark.css";
 
-import "prismjs/components/prism-yaml.js";
 import { tabs } from "./constants.mts";
-import { crawl } from "./custom-tab-utils.mts";
+// import { crawl } from "./custom-tab-utils.mts";
 import { TabButtonContainer } from "../tab/TabButtonContainer";
 import { TabButton } from "../tab/TabButton";
+import { YamlRenderer } from "../yaml-renderer/YamlRenderer";
+import { ComponentRenderer } from "../component-renderer/ComponentRenderer";
 
 interface OutputProps {
   parsed: any | null; // !FIX any
@@ -19,11 +20,13 @@ interface OutputProps {
 export type TabDefinition =
   | {
       type: "exact";
+      format: "yaml" | "render";
       name: string;
       path: string;
     }
   | {
       type: "custom";
+      format: "yaml" | "render";
       name: string;
       path: "";
     };
@@ -39,20 +42,20 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
   if (parsed.error) {
     return (
       <div className={style.errorContainer}>
-        <h3 className={style.errorHeading}>Error</h3>
+        <h3 className={[style.errorHeading, "monospace"].join(" ")}>Error</h3>
         <pre>{parsed.error}</pre>
       </div>
     );
   }
 
-  const yamlStr = yaml.stringify(
-    JSON.parse(JSON.stringify(crawl(parsed, customPath))),
-  );
-  const highlighted = Prism.highlight(
-    yamlStr,
-    Prism.languages.yaml,
-    "javascript",
-  );
+  // const yamlStr = yaml.stringify(
+  //   JSON.parse(JSON.stringify(crawl(parsed, customPath))),
+  // );
+  // const highlighted = Prism.highlight(
+  //   yamlStr,
+  //   Prism.languages.yaml,
+  //   "javascript",
+  // );
 
   // <button
   //   key={name}
@@ -98,7 +101,7 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
         {tabs[tabIndex].type === "custom" ? (
           <div className={style.customInputContainer}>
             <input
-              className={style.customInput}
+              className={[style.customInput, "monospace"].join(" ")}
               value={customPath}
               onChange={(e) => setCustomPath(e.target.value)}
               placeholder="stages.parse.root.children.0.args"
@@ -108,12 +111,11 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
       </div>
 
       <div className={[style.output, style.scrollable].join(" ")}>
-        <pre className={style.outputPre}>
-          <code
-            className="language-yaml"
-            dangerouslySetInnerHTML={{ __html: highlighted }}
-          />
-        </pre>
+        {tabs[tabIndex].format === "yaml" ? (
+          <YamlRenderer parsed={parsed} customPath={customPath} />
+        ) : (
+          <ComponentRenderer parsed={parsed} customPath={customPath} />
+        )}
       </div>
     </div>
   );

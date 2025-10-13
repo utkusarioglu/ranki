@@ -463,7 +463,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         "wi.1.length": wi1.sourceString.length,
         ...lineModifiers.lineModifiers(context),
       },
-      children: lexemes.node(context),
+      children: [lexemes.node(context)],
     };
   },
 

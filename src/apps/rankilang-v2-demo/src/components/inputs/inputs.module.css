@@ -86,22 +86,10 @@
 
 .inlineLabel {
   padding-left: 0.4em;
-  font-family: monospace;
-}
-
-.roboto {
-  font-family: "Roboto", sans-serif;
-  font-optical-sizing: auto;
-  /* font-weight: 900; */
-  font-style: normal;
 }
 
 .thickFont {
-  /* font-family: "Roboto", sans-serif;
-  font-optical-sizing: auto; */
   font-weight: 900;
-  /* font-style: normal; */
-  /* font-variation-settings: "wdth" 100; */
 }
 
 .selectPreset {

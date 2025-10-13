@@ -4,11 +4,15 @@ export type TransformNode = TransformNodeParent | TransformNodeLeaf;
 
 interface TransformNodeCommon {
   tag: string;
+  creator: string;
+  depth: number;
 }
 
 export type TransformNodeLeaf = TransformNodeCommon & {
   kind: "leaf";
+  dataType: string;
   value: string;
+  print: boolean;
 };
 
 export type TransformNodeParent = TransformNodeCommon & {

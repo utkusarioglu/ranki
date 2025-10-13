@@ -1,0 +1,77 @@
+.childLeaf {
+  padding-block-start: 0.1em;
+  margin-block: 0.2em;
+  padding-inline-start: 1em;
+}
+
+.childLeafPrint {
+  background-color: var(--bg-2);
+}
+
+.childLeafNoPrint {
+  background-color: var(--bg-3);
+}
+
+.childLeafValueUntrimmed {
+  /* border: 3px solid var(--bg-3); */
+  white-space: pre-wrap;
+}
+
+.childLeafValueSpace {
+  background-color: var(--bg-3);
+  width: 0.6em;
+  height: 1.1em;
+  vertical-align: bottom;
+  margin-right: 0.3em;
+  display: inline-block;
+
+  & > span {
+    font-size: 0.5em;
+  }
+}
+.childLeafValueNl {
+  background-color: var(--bg-1);
+  width: 0.6em;
+  height: 1.1em;
+  vertical-align: bottom;
+  display: inline-block;
+
+  & > span {
+    font-size: 0.5em;
+  }
+}
+
+.childLeafValueContainer {
+  padding-block-start: 0.2em;
+  padding-block-end: 0.6em;
+  font-size: 1.3em;
+  white-space: pre-wrap;
+}
+
+.childParentBg {
+  background-color: var(--bg-1);
+}
+
+.childParent {
+  padding-block-start: 0.3em;
+  /* margin-block: 0.2em; */
+  padding-inline-start: 1em;
+  border-width: 0px;
+  border-left-width: 1px;
+  border-style: solid;
+  border-color: var(--bg-1);
+  /* border-left-color: red; */
+  /* border-left: 1px solid var(--bg-2);
+  border-top: 1px solid var(--bg-2); */
+}
+
+.boundary {
+  --bg: var(--bg-2);
+  --style: dashed;
+  --padding: 0.5em;
+  --width: 5px;
+  border-left: var(--width) var(--style) var(--bg);
+  border-top: var(--width) var(--style) var(--bg);
+  padding-left: var(--padding);
+  padding-top: var(--padding);
+}

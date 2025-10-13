@@ -39,15 +39,20 @@ export class TransformerLibrary {
     obj: ValidationNode,
     spec: RankiLangParseSpecs<T>,
   ): TransformNode {
-    const transformer = this.getTransformer(obj.type);
-    if (obj.kind === "parent") {
-      const transformed = transformer(obj) as TransformNodeParent;
-      return {
-        ...transformed,
-        children: obj.children.map((c) => this.transform(c, spec)),
-      };
-    } else {
-      return transformer(obj);
+    try {
+      const transformer = this.getTransformer(obj.type);
+      if (obj.kind === "parent") {
+        const transformed = transformer(obj) as TransformNodeParent;
+        return {
+          ...transformed,
+          children: obj.children.map((c) => this.transform(c, spec)),
+        };
+      } else {
+        return transformer(obj);
+      }
+    } catch (e) {
+      console.error(obj, e);
+      throw new Error(e.message);
     }
   }
 }

@@ -167,7 +167,7 @@ export const Inputs: FC<InputsProps> = ({
                   }}
                 />
                 <label
-                  className={style.inlineLabel}
+                  className={[style.inlineLabel, "monospace"].join(" ")}
                   htmlFor={["available", pn].join("-")}
                 >
                   {pn.replace("Ranki", "")}
@@ -218,7 +218,7 @@ export const Inputs: FC<InputsProps> = ({
                   }}
                 />
                 <label
-                  className={style.inlineLabel}
+                  className={[style.inlineLabel, "monospace"].join(" ")}
                   htmlFor={["selected", pn].join("-")}
                 >
                   {pn.replace("Ranki", "")}
@@ -268,7 +268,7 @@ export const Inputs: FC<InputsProps> = ({
                   }}
                 />
                 <label
-                  className={style.inlineLabel}
+                  className={[style.inlineLabel, "monospace"].join(" ")}
                   htmlFor={["available", pn].join("-")}
                 >
                   {pn.replace("Ranki", "")}
@@ -304,9 +304,7 @@ export const Inputs: FC<InputsProps> = ({
   );
 
   return (
-    <div
-      className={[style.inputs, style.roboto, style.scrollableDark].join(" ")}
-    >
+    <div className={[style.inputs, "roboto", style.scrollableDark].join(" ")}>
       <TabButtonContainer>
         {tabButtons.map(({ name, children }, i) => (
           <TabButton

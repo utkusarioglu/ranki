@@ -32,14 +32,6 @@
   /* padding: 1em; */
 }
 
-.outputPre {
-  font-size: 0.8em;
-  /* --padding-top: calc(var(--tab-height) + var(--input-height)); */
-
-  /* padding: calc(var(--padding-top) + 1em) 1em 1em 1em; */
-  padding: 1em;
-}
-
 .ribbon {
   position: absolute;
   top: 0;
@@ -62,7 +54,6 @@
 
 .customInput {
   padding: 0.5em;
-  font-family: monospace;
   width: 100%;
   background-color: var(--bg-3);
   color: var(--fg-2);
@@ -75,5 +66,4 @@
 
 .errorHeading {
   padding-bottom: 0.5em;
-  font-family: monospace;
 }
