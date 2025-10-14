@@ -3,4 +3,5 @@ import { transformPlaceholder as placeholder } from "@ranki/package-api-v2/helpe
 
 export const transformers: RankiPluginParserTransformCallback = () => ({
   integer_signed: placeholder,
+  decimal_full: placeholder,
 });

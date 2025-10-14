@@ -33,7 +33,7 @@ interface AstNodeLeafSourceString {
     | "mixed"
     | "token"
     | "punctuation";
-  value: string;
+  raw: string;
 }
 
 type AstNodeLeafSource = AstNodeLeafSourceNumber | AstNodeLeafSourceString;

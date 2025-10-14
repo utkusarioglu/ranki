@@ -90,7 +90,7 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
         if (n.source.type !== "token") {
           throw new Error("VALUE MISMATCH: n.type ~ n.source.type");
         }
-        const value = n.source.value;
+        const value = n.source.raw;
 
         {
           type T = keyof NodeArgRichTextV2SentenceEnd["sentence.end"]["types"];

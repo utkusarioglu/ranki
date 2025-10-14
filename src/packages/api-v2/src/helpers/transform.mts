@@ -14,22 +14,13 @@ export const transformPlaceholder: RankiPluginParserTransformFunc = (
         children: [],
       };
     case "leaf":
-      let value;
-      switch (v.source.type) {
-        case "number":
-          value = v.source.number.toString();
-          break;
-        default:
-          value = v.source.value;
-      }
       return {
         kind: "leaf",
+        tag: "span",
         creator: v.type,
         depth: v.args.depth.total,
-        dataType: v.source.type,
         print: v.print,
-        tag: "span",
-        value,
+        source: v.source,
       };
   }
 };

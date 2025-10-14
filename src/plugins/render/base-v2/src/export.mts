@@ -16,7 +16,13 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
           throw new Error("span ELEMENT CANNOT BE A PARENT");
         }
         const element = document.createElement("span");
-        element.innerText = t.value;
+        switch (t.source.type) {
+          case "number":
+            element.innerText = t.source.number.toString();
+            break;
+          default:
+            element.innerText = t.source.raw;
+        }
         return {
           element,
           loadedCallback: () => {},

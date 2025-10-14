@@ -1,4 +1,4 @@
-import type { ValidationNode } from "./validation.mjs";
+import type { ValidationNode, ValidationNodeLeaf } from "./validation.mjs";
 
 export type TransformNode = TransformNodeParent | TransformNodeLeaf;
 
@@ -10,8 +10,9 @@ interface TransformNodeCommon {
 
 export type TransformNodeLeaf = TransformNodeCommon & {
   kind: "leaf";
-  dataType: string;
-  value: string;
+  // dataType: string;
+  // value: string;
+  source: ValidationNodeLeaf["source"];
   print: boolean;
 };
 

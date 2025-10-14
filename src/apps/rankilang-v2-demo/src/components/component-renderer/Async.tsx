@@ -1,5 +1,6 @@
 // import { Render } from "@ranki/package-render-v2";
 import { renderPluginBaseV2Render } from "@ranki/plugin-render-base-v2";
+import style from "./async.module.css";
 
 Render.addPlugin(renderPluginBaseV2Render);
 import { Render, type RenderFunctionReturn } from "@ranki/package-render-v2";
@@ -43,7 +44,7 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({ promise }) => {
     return () => f.element.remove();
   }, [f]);
 
-  return <div ref={ref} />;
+  return <div className={style.native} ref={ref} />;
 };
 
 interface AsyncRenderProps {
@@ -62,7 +63,13 @@ export const AsyncRender: FC<AsyncRenderProps> = ({ item }) => {
         console.log(details);
       }}
     >
-      <Suspense fallback={<div>Loading async element...</div>}>
+      <Suspense
+        fallback={
+          <div className={[style.native, style.loading, "monospace"].join(" ")}>
+            <pre>Loading…</pre>
+          </div>
+        }
+      >
         <AsyncHTMLElement promise={promise} />
       </Suspense>
     </ErrorBoundary>

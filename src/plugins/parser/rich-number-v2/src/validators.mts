@@ -3,4 +3,5 @@ import { validationPlaceholder as placeholder } from "@ranki/package-api-v2/help
 
 export const validators: RankiPluginParserValidationCallback = () => ({
   integer_signed: placeholder,
+  decimal_full: placeholder,
 });

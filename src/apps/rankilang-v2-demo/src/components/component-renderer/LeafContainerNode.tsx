@@ -18,35 +18,44 @@ export const LeafContainerNode: FC<LeafContainerNodeProps> = ({ item }) => {
         item.print ? style.childLeafPrint : style.childLeafNoPrint,
       ].join(" ")}
     >
-      <LeafInfo item={item} />
-      <div className={[style.childLeafValueContainer, "roboto"].join(" ")}>
-        {createElement(
-          item.tag,
-          {},
-          item.value.trim() !== item.value ? (
-            <div className={style.childLeafValueUntrimmed}>
-              {item.value.split("\n").map((l) => (
-                <div key={l}>
-                  {l.split(" ").map((i, index) =>
-                    i === "" ? (
-                      <div key={index} className={style.childLeafValueSpace}>
-                        <span>s</span>
+      <div className={style.childLeafRendersContainer}>
+        <div>
+          <LeafInfo item={item} />
+          <div className={[style.childLeafValueContainer, "roboto"].join(" ")}>
+            {createElement(
+              item.tag,
+              {},
+              item.source.raw.trim() !== item.source.raw ? (
+                <div className={style.childLeafValueUntrimmed}>
+                  {item.source.raw.split("\n").map((l) => (
+                    <div key={l}>
+                      {l.split(" ").map((i, index) =>
+                        i === "" ? (
+                          <div
+                            key={index}
+                            className={style.childLeafValueSpace}
+                          >
+                            <span>s</span>
+                          </div>
+                        ) : (
+                          i
+                        ),
+                      )}
+                      <div className={style.childLeafValueNl}>
+                        <span>n</span>
                       </div>
-                    ) : (
-                      i
-                    ),
-                  )}
-                  <div className={style.childLeafValueNl}>
-                    <span>n</span>
-                  </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div>{item.value}</div>
-          ),
-        )}
-        <AsyncRender item={item} />
+              ) : (
+                <div>{item.source.raw}</div>
+              ),
+            )}
+          </div>
+        </div>
+        <div className={style.nativeRenderContainer}>
+          <AsyncRender item={item} />
+        </div>
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ const node: ohm.ActionDict<AstNode> = {
       },
       source: {
         type: "mixed",
-        value: rest.sourceString,
+        raw: rest.sourceString,
       },
     };
   },
@@ -43,7 +43,7 @@ const node: ohm.ActionDict<AstNode> = {
       },
       source: {
         type: "mixed",
-        value: all.sourceString,
+        raw: all.sourceString,
       },
     };
   },
@@ -190,7 +190,7 @@ const node: ohm.ActionDict<AstNode> = {
           },
           source: {
             type: "mixed",
-            value: word.sourceString,
+            raw: word.sourceString,
           },
         },
       ],
@@ -213,7 +213,7 @@ const node: ohm.ActionDict<AstNode> = {
       },
       source: {
         type: "mixed",
-        value: base.sourceString,
+        raw: base.sourceString,
       },
     };
   },
@@ -257,7 +257,7 @@ const node: ohm.ActionDict<AstNode> = {
       },
       source: {
         type: "text",
-        value: clearance1.sourceString,
+        raw: clearance1.sourceString,
       },
     };
   },
@@ -280,7 +280,7 @@ const node: ohm.ActionDict<AstNode> = {
       },
       source: {
         type: "text",
-        value: sourceString,
+        raw: sourceString,
       },
     };
   },

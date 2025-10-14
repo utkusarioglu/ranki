@@ -12,9 +12,9 @@ export const LeafInfo: FC<LeafInfoProps> = ({ item }) => {
       {[
         item.creator,
         item.tag,
-        item.dataType,
         item.kind,
         item.print ? "Printed" : "Hidden",
+        item.source.type,
       ]
         .filter((v) => !!v)
         .join(" ")}

@@ -41,9 +41,12 @@
   }
 }
 
-.childLeafValueContainer {
+.childLeafRendersContainer {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr minmax(35vw, 1fr);
+}
+
+.childLeafValueContainer {
   padding-block-start: 0.2em;
   padding-block-end: 0.6em;
   padding-inline-end: 1em;
@@ -77,4 +80,9 @@
   border-top: var(--width) var(--style) var(--bg);
   padding-left: var(--padding);
   padding-top: var(--padding);
+}
+
+.nativeRenderContainer {
+  background-color: var(--bg-3);
+  padding: 1em;
 }

@@ -159,7 +159,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           },
           source: {
             type: "mixed",
-            value: pausedPayload.sourceString,
+            raw: pausedPayload.sourceString,
           },
         },
       ],
