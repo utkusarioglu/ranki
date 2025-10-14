@@ -12,7 +12,7 @@
   "scripts": {
     "build": "turbo run build",
     "watch": "turbo run watch",
-    "dev-v2-demo": "turbo run dev --filter @ranki/app-rankilang-v2-demo",
+    "dev--v2-demo": "turbo run dev --filter @ranki/app-rankilang-v2-demo",
     "lint": "turbo run lint"
   },
   "devDependencies": {

@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "yarn tsc",
-    "watch": "yarn tsc --watch",
+    "watch": "tsc --watch --preserveWatchOutput --preserveWatchOutput",
     "console": "yarn tsx src/console.mts",
     "test": "vitest",
     "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo"
