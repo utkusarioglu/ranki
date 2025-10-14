@@ -5,7 +5,8 @@
     "src/apps/*",
     "src/packages/*",
     "src/plugins/parser/*",
-    "src/plugins/component/*"
+    "src/plugins/component/*",
+    "src/plugins/render/*"
   ],
   "packageManager": "yarn@4.10.2",
   "scripts": {

@@ -26,6 +26,12 @@
   "references": [
     {
       "path": "../../packages/rankilang-v2"
+    },
+    {
+      "path": "../../packages/render-v2"
+    },
+    {
+      "path": "../../plugins/render/base-v2"
     }
   ]
 }

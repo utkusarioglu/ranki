@@ -42,8 +42,11 @@
 }
 
 .childLeafValueContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   padding-block-start: 0.2em;
   padding-block-end: 0.6em;
+  padding-inline-end: 1em;
   font-size: 1.3em;
   white-space: pre-wrap;
 }

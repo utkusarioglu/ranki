@@ -43,6 +43,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/packages/rankilang-v2"\
     },\
     {\
+      "name": "@ranki/package-render-v2",\
+      "reference": "workspace:src/packages/render-v2"\
+    },\
+    {\
       "name": "@ranki/plugin-component-frame-v2-dom",\
       "reference": "workspace:src/plugins/component/dom"\
     },\
@@ -77,6 +81,10 @@ const RAW_RUNTIME_STATE =
     {\
       "name": "@ranki/plugin-parser-rich-text-v2",\
       "reference": "workspace:src/plugins/parser/rich-text-v2"\
+    },\
+    {\
+      "name": "@ranki/plugin-render-base-v2",\
+      "reference": "workspace:src/plugins/render/base-v2"\
     }\
   ],\
   "enableTopLevelFallback": true,\
@@ -90,6 +98,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/package-anki-config", ["workspace:src/packages/anki-config"]],\
     ["@ranki/package-api-v2", ["workspace:src/packages/api-v2"]],\
     ["@ranki/package-rankilang-v2", ["workspace:src/packages/rankilang-v2"]],\
+    ["@ranki/package-render-v2", ["workspace:src/packages/render-v2"]],\
     ["@ranki/plugin-component-frame-v2-dom", ["workspace:src/plugins/component/dom"]],\
     ["@ranki/plugin-parser-base-v2", ["workspace:src/plugins/parser/base-v2"]],\
     ["@ranki/plugin-parser-constants-v2", ["workspace:src/plugins/parser/constants-v2"]],\
@@ -99,6 +108,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/plugin-parser-rich-number-v2", ["workspace:src/plugins/parser/rich-number-v2"]],\
     ["@ranki/plugin-parser-rich-structure-v2", ["workspace:src/plugins/parser/rich-structure-v2"]],\
     ["@ranki/plugin-parser-rich-text-v2", ["workspace:src/plugins/parser/rich-text-v2"]],\
+    ["@ranki/plugin-render-base-v2", ["workspace:src/plugins/render/base-v2"]],\
     ["@ranki/root", ["workspace:."]]\
   ],\
   "fallbackPool": [\
@@ -1039,6 +1049,15 @@ const RAW_RUNTIME_STATE =
         "packagePeers": [\
           "@babel/core",\
           "@types/babel__core"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@babel/runtime", [\
+      ["npm:7.28.4", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@babel-runtime-npm-7.28.4-31bc1b0001-10c0.zip/node_modules/@babel/runtime/",\
+        "packageDependencies": [\
+          ["@babel/runtime", "npm:7.28.4"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2365,6 +2384,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/app-rankilang-v2-demo", "workspace:src/apps/rankilang-v2-demo"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-rankilang-v2", "workspace:src/packages/rankilang-v2"],\
+          ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
           ["@ranki/plugin-component-frame-v2-dom", "workspace:src/plugins/component/dom"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
           ["@ranki/plugin-parser-constants-v2", "workspace:src/plugins/parser/constants-v2"],\
@@ -2374,6 +2394,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/plugin-parser-rich-number-v2", "workspace:src/plugins/parser/rich-number-v2"],\
           ["@ranki/plugin-parser-rich-structure-v2", "workspace:src/plugins/parser/rich-structure-v2"],\
           ["@ranki/plugin-parser-rich-text-v2", "workspace:src/plugins/parser/rich-text-v2"],\
+          ["@ranki/plugin-render-base-v2", "workspace:src/plugins/render/base-v2"],\
           ["@types/prismjs", "npm:1.26.5"],\
           ["@types/react", "npm:19.1.13"],\
           ["@types/react-dom", "virtual:56e235665721e97d09a872fed4e209638785440a96a0182c8b7851ddc5b5197c6079e0a6f7acdf0f15cfa65463f170f278a22d104f9a30aae09628eeff3200a9#npm:19.1.9"],\
@@ -2385,6 +2406,7 @@ const RAW_RUNTIME_STATE =
           ["prismjs", "npm:1.30.0"],\
           ["react", "npm:19.1.1"],\
           ["react-dom", "virtual:56e235665721e97d09a872fed4e209638785440a96a0182c8b7851ddc5b5197c6079e0a6f7acdf0f15cfa65463f170f278a22d104f9a30aae09628eeff3200a9#npm:19.1.1"],\
+          ["react-error-boundary", "virtual:56e235665721e97d09a872fed4e209638785440a96a0182c8b7851ddc5b5197c6079e0a6f7acdf0f15cfa65463f170f278a22d104f9a30aae09628eeff3200a9#npm:6.0.0"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
           ["typescript-eslint", "virtual:56e235665721e97d09a872fed4e209638785440a96a0182c8b7851ddc5b5197c6079e0a6f7acdf0f15cfa65463f170f278a22d104f9a30aae09628eeff3200a9#npm:8.44.1"],\
           ["vite", "virtual:56e235665721e97d09a872fed4e209638785440a96a0182c8b7851ddc5b5197c6079e0a6f7acdf0f15cfa65463f170f278a22d104f9a30aae09628eeff3200a9#npm:7.1.7"],\
@@ -2429,6 +2451,19 @@ const RAW_RUNTIME_STATE =
           ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"],\
           ["vitest", "virtual:9813e6c63b79dbfe4193294abcaae256ba07ff0380cdf272d0e33000c7f71339d3323b7228b5f8b922df361b6603c7bbd0242f082708bdc11823155415c00666#npm:3.2.4"],\
           ["yaml", "npm:2.8.1"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/package-render-v2", [\
+      ["workspace:src/packages/render-v2", {\
+        "packageLocation": "./src/packages/render-v2/",\
+        "packageDependencies": [\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
+          ["@types/node", "npm:24.5.2"],\
+          ["ohm-js", "npm:17.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -2548,6 +2583,20 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
           ["@ranki/plugin-parser-rich-text-v2", "workspace:src/plugins/parser/rich-text-v2"],\
+          ["@types/node", "npm:24.5.2"],\
+          ["ohm-js", "npm:17.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/plugin-render-base-v2", [\
+      ["workspace:src/plugins/render/base-v2", {\
+        "packageLocation": "./src/plugins/render/base-v2/",\
+        "packageDependencies": [\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
+          ["@ranki/plugin-render-base-v2", "workspace:src/plugins/render/base-v2"],\
           ["@types/node", "npm:24.5.2"],\
           ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
@@ -8332,6 +8381,29 @@ const RAW_RUNTIME_STATE =
           ["react", "npm:19.1.1"],\
           ["react-dom", "virtual:56e235665721e97d09a872fed4e209638785440a96a0182c8b7851ddc5b5197c6079e0a6f7acdf0f15cfa65463f170f278a22d104f9a30aae09628eeff3200a9#npm:19.1.1"],\
           ["scheduler", "npm:0.26.0"]\
+        ],\
+        "packagePeers": [\
+          "@types/react",\
+          "react"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["react-error-boundary", [\
+      ["npm:6.0.0", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/react-error-boundary-npm-6.0.0-66eefd4679-10c0.zip/node_modules/react-error-boundary/",\
+        "packageDependencies": [\
+          ["react-error-boundary", "npm:6.0.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:56e235665721e97d09a872fed4e209638785440a96a0182c8b7851ddc5b5197c6079e0a6f7acdf0f15cfa65463f170f278a22d104f9a30aae09628eeff3200a9#npm:6.0.0", {\
+        "packageLocation": "./.yarn/__virtual__/react-error-boundary-virtual-eb1dfc4211/2/home/dev/.yarn/berry/cache/react-error-boundary-npm-6.0.0-66eefd4679-10c0.zip/node_modules/react-error-boundary/",\
+        "packageDependencies": [\
+          ["@babel/runtime", "npm:7.28.4"],\
+          ["@types/react", "npm:19.1.13"],\
+          ["react", "npm:19.1.1"],\
+          ["react-error-boundary", "virtual:56e235665721e97d09a872fed4e209638785440a96a0182c8b7851ddc5b5197c6079e0a6f7acdf0f15cfa65463f170f278a22d104f9a30aae09628eeff3200a9#npm:6.0.0"]\
         ],\
         "packagePeers": [\
           "@types/react",\

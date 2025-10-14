@@ -1,7 +1,7 @@
 import type { RankiPluginParser } from "./parser.mjs";
-import type { RankiPluginRenderer } from "./render.mjs";
+// import type { RankiPluginRenderer } from "./render.mjs";
 
-export type RankiPlugin = RankiPluginParser | RankiPluginRenderer;
+export type RankiPlugin = RankiPluginParser;
 
 export type RankiPluginCommon = {
   meta: RankiPluginMeta;

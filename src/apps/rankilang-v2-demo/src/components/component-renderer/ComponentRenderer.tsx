@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { Child } from "./Child";
+import { ContainerNode } from "./ContainerNode";
 import style from "./component-renderer.module.css";
 
 interface ComponentRendererProps {
@@ -24,7 +24,7 @@ export const ComponentRenderer: FC<ComponentRendererProps> = ({
             </h1>
           </hgroup>
           {customPath !== "" ? <h2>{customPath}</h2> : null}
-          <Child
+          <ContainerNode
             // @ts-expect-error
             item={o.stages.transform}
           />

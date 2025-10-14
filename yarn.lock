@@ -457,6 +457,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.12.5":
+  version: 7.28.4
+  resolution: "@babel/runtime@npm:7.28.4"
+  checksum: 10c0/792ce7af9750fb9b93879cc9d1db175701c4689da890e6ced242ea0207c9da411ccf16dc04e689cc01158b28d7898c40d75598f4559109f761c12ce01e959bf7
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.27.2":
   version: 7.27.2
   resolution: "@babel/template@npm:7.27.2"
@@ -1603,6 +1610,7 @@ __metadata:
     "@eslint/js": "npm:^9.36.0"
     "@ranki/package-api-v2": "workspace:^"
     "@ranki/package-rankilang-v2": "workspace:^"
+    "@ranki/package-render-v2": "workspace:^"
     "@ranki/plugin-component-frame-v2-dom": "workspace:^"
     "@ranki/plugin-parser-base-v2": "workspace:^"
     "@ranki/plugin-parser-constants-v2": "workspace:^"
@@ -1612,6 +1620,7 @@ __metadata:
     "@ranki/plugin-parser-rich-number-v2": "workspace:^"
     "@ranki/plugin-parser-rich-structure-v2": "workspace:^"
     "@ranki/plugin-parser-rich-text-v2": "workspace:^"
+    "@ranki/plugin-render-base-v2": "workspace:^"
     "@types/prismjs": "npm:^1"
     "@types/react": "npm:^19.1.13"
     "@types/react-dom": "npm:^19.1.9"
@@ -1623,6 +1632,7 @@ __metadata:
     prismjs: "npm:^1.30.0"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
+    react-error-boundary: "npm:^6.0.0"
     typescript: "npm:~5.8.3"
     typescript-eslint: "npm:^8.44.0"
     vite: "npm:^7.1.7"
@@ -1661,6 +1671,17 @@ __metadata:
     typescript: "npm:^5.9.2"
     vitest: "npm:^3.2.4"
     yaml: "npm:^2.8.1"
+  languageName: unknown
+  linkType: soft
+
+"@ranki/package-render-v2@workspace:^, @ranki/package-render-v2@workspace:src/packages/render-v2":
+  version: 0.0.0-use.local
+  resolution: "@ranki/package-render-v2@workspace:src/packages/render-v2"
+  dependencies:
+    "@ranki/package-api-v2": "workspace:^"
+    "@types/node": "npm:^24.5.2"
+    ohm-js: "npm:^17.2.1"
+    typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -1762,6 +1783,18 @@ __metadata:
   dependencies:
     "@ranki/package-api-v2": "workspace:^"
     "@ranki/plugin-parser-base-v2": "workspace:^"
+    "@types/node": "npm:^24.5.2"
+    ohm-js: "npm:^17.2.1"
+    typescript: "npm:^5.8.3"
+  languageName: unknown
+  linkType: soft
+
+"@ranki/plugin-render-base-v2@workspace:^, @ranki/plugin-render-base-v2@workspace:src/plugins/render/base-v2":
+  version: 0.0.0-use.local
+  resolution: "@ranki/plugin-render-base-v2@workspace:src/plugins/render/base-v2"
+  dependencies:
+    "@ranki/package-api-v2": "workspace:^"
+    "@ranki/package-render-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
     ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"
@@ -6613,6 +6646,17 @@ __metadata:
   peerDependencies:
     react: ^19.1.1
   checksum: 10c0/8c91198510521299c56e4e8d5e3a4508b2734fb5e52f29eeac33811de64e76fe586ad32c32182e2e84e070d98df67125da346c3360013357228172dbcd20bcdd
+  languageName: node
+  linkType: hard
+
+"react-error-boundary@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "react-error-boundary@npm:6.0.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.12.5"
+  peerDependencies:
+    react: ">=16.13.1"
+  checksum: 10c0/1914d600dee95a14f14af4afe9867b0d35c26c4f7826d23208800ba2a99728659029aad60a6ef95e13430b4d79c2c4c9b3585f50bf508450478760d2e4e732d8
   languageName: node
   linkType: hard
 

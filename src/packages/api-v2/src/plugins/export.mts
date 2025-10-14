@@ -4,9 +4,7 @@ export type {
   RankiGrammarTokens,
 } from "./parser.mjs";
 
-export type { RankiPlugin } from "./general.mjs";
-
-export type { RankiPluginRenderer } from "./render.mjs";
+export type { RankiPlugin, RankiPluginCommon } from "./general.mjs";
 
 export type {
   RankiPluginComponent,
