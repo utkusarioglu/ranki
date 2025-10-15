@@ -85,6 +85,10 @@ const RAW_RUNTIME_STATE =
     {\
       "name": "@ranki/plugin-render-base-v2",\
       "reference": "workspace:src/plugins/render/base-v2"\
+    },\
+    {\
+      "name": "@ranki/plugin-render-latex",\
+      "reference": "workspace:src/plugins/render/latex"\
     }\
   ],\
   "enableTopLevelFallback": true,\
@@ -109,6 +113,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/plugin-parser-rich-structure-v2", ["workspace:src/plugins/parser/rich-structure-v2"]],\
     ["@ranki/plugin-parser-rich-text-v2", ["workspace:src/plugins/parser/rich-text-v2"]],\
     ["@ranki/plugin-render-base-v2", ["workspace:src/plugins/render/base-v2"]],\
+    ["@ranki/plugin-render-latex", ["workspace:src/plugins/render/latex"]],\
     ["@ranki/root", ["workspace:."]]\
   ],\
   "fallbackPool": [\
@@ -2597,6 +2602,20 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
           ["@ranki/plugin-render-base-v2", "workspace:src/plugins/render/base-v2"],\
+          ["@types/node", "npm:24.5.2"],\
+          ["ohm-js", "npm:17.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/plugin-render-latex", [\
+      ["workspace:src/plugins/render/latex", {\
+        "packageLocation": "./src/plugins/render/latex/",\
+        "packageDependencies": [\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
+          ["@ranki/plugin-render-latex", "workspace:src/plugins/render/latex"],\
           ["@types/node", "npm:24.5.2"],\
           ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\

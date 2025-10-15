@@ -5,9 +5,9 @@ content:
   suffix: ""
 
 plugins:
-  standards:
-    - RankiConstantsV2
-    - RankiBaseV2
+  # standards:
+  #   - RankiConstantsV2
+  #   - RankiBaseV2
   requested: []
   config:
     RankiBaseV2: 

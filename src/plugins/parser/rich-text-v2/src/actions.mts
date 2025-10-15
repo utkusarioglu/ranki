@@ -90,7 +90,7 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
         if (n.source.type !== "token") {
           throw new Error("VALUE MISMATCH: n.type ~ n.source.type");
         }
-        const value = n.source.raw;
+        const raw = n.source.raw;
 
         {
           type T = keyof NodeArgRichTextV2SentenceEnd["sentence.end"]["types"];
@@ -119,7 +119,7 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
             context.lang.getConfig().merged.plugins.config.RankiRichTextV2
               .tokens.sentence,
           ).forEach(([k, v]) => {
-            endArgs["sentence.end"]!.types[k as T] ||= value === v;
+            endArgs["sentence.end"]!.types[k as T] ||= raw === v;
           });
         }
         break;
@@ -229,7 +229,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       },
       source: {
         type: "lowercase",
-        value: text.sourceString,
+        raw: text.sourceString,
       },
     };
   },
@@ -250,7 +250,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       },
       source: {
         type: "propercase",
-        value: first.sourceString + rest.sourceString,
+        raw: first.sourceString + rest.sourceString,
       },
     };
   },
@@ -271,7 +271,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       },
       source: {
         type: "uppercase",
-        value: all.sourceString,
+        raw: all.sourceString,
       },
     };
   },
@@ -292,7 +292,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       },
       source: {
         type: "mixedcase",
-        value: [one, two, three, four].map((v) => v.sourceString).join(""),
+        raw: [one, two, three, four].map((v) => v.sourceString).join(""),
       },
     };
   },
@@ -313,7 +313,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       },
       source: {
         type: "mixedcase",
-        value: [one, two, three].map((v) => v.sourceString).join(""),
+        raw: [one, two, three].map((v) => v.sourceString).join(""),
       },
     };
   },
@@ -334,7 +334,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       },
       source: {
         type: "token",
-        value: b.sourceString,
+        raw: b.sourceString,
       },
     };
   },
@@ -355,7 +355,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       },
       source: {
         type: "token",
-        value: sentence.sourceString,
+        raw: sentence.sourceString,
       },
     };
   },
@@ -376,7 +376,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       },
       source: {
         type: "token",
-        value: abbr.sourceString,
+        raw: abbr.sourceString,
       },
     };
   },
@@ -397,7 +397,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       },
       source: {
         type: "token",
-        value: abbr.sourceString,
+        raw: abbr.sourceString,
       },
     };
   },
@@ -418,7 +418,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       },
       source: {
         type: "token",
-        value: abbr.sourceString,
+        raw: abbr.sourceString,
       },
     };
   },
@@ -439,7 +439,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       },
       source: {
         type: "token",
-        value: abbr.sourceString,
+        raw: abbr.sourceString,
       },
     };
   },
@@ -483,7 +483,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       },
       source: {
         type: "mixed",
-        value: chars.sourceString,
+        raw: chars.sourceString,
       },
     };
   },
@@ -524,7 +524,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           },
           source: {
             type: "mixed",
-            value: word.sourceString,
+            raw: word.sourceString,
           },
         },
         ...endNodes,

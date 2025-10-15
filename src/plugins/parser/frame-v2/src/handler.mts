@@ -31,6 +31,7 @@ export const handler: RankiLangParserPluginParseHandler<
     spec,
   );
   const cloned = clone([component.stages.ast.directives, directives]);
+  console.log(cloned.getConfig());
   const report: RankiLangParseReport = {
     language: {
       versions: cloned.parsers.getVersions(),

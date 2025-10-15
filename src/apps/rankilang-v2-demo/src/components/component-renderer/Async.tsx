@@ -36,15 +36,33 @@ interface AsyncHTMLElementProps {
 
 const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({ promise }) => {
   // const resource = useMemo(() => wrapPromise(promise), [promise]);
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLIFrameElement>(null);
   const f = promise.read(); // Suspends here if promise not ready
 
   useEffect(() => {
-    ref.current?.appendChild(f.element);
+    if (!ref.current) {
+      return;
+    }
+    if (!ref.current.contentDocument) {
+      return;
+    }
+    // ref.current?.appendChild(f.element);
+    f.element.classList.add(style.content);
+    ref.current.contentDocument.body.appendChild(f.element);
+    ref.current.contentDocument.body.style = Object.entries({
+      display: "grid",
+      "justify-content": "center",
+      "align-items": "center",
+      "font-family": "Arial, Helvetica, sans-serif",
+      color: "pink",
+    })
+      .map((p) => p.join(": "))
+      .join("; ");
+
     return () => f.element.remove();
   }, [f]);
 
-  return <div className={style.native} ref={ref} />;
+  return <iframe className={style.native} ref={ref} />;
 };
 
 interface AsyncRenderProps {

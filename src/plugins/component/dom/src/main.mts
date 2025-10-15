@@ -27,12 +27,13 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
               requested: [
                 // "RankiParamsV2",
                 // "RankiRichStructureV2",
-                "RankiRichNumberV2",
+                // "RankiRichNumberV2",
               ],
+              // standards: [],
             },
-            content: {
-              prefix: "",
-            },
+            // content: {
+            //   prefix: "% ignore \n",
+            // },
           },
           params: {
             setting: {
