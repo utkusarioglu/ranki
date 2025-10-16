@@ -2,7 +2,7 @@ import type { RankiLanguageProvidedConfig } from "@ranki/package-api-v2";
 import yaml from "yaml";
 import * as fs from "node:fs";
 import path from "node:path";
-import { ParserPlugins, RankiLang } from "@ranki/package-rankilang-v2";
+import { RankiLang } from "@ranki/package-rankilang-v2";
 
 import { rankiConstantsV2ParserPlugin } from "@ranki/plugin-parser-constants-v2";
 import { rankiBaseV2ParserPlugin } from "@ranki/plugin-parser-base-v2";
@@ -12,18 +12,7 @@ import { rankiRichTextV2ParserPlugin } from "@ranki/plugin-parser-rich-text-v2";
 import { rankiRichNumberV2ParserPlugin } from "@ranki/plugin-parser-rich-number-v2";
 import { rankiRichStructureV2ParserPlugin } from "@ranki/plugin-parser-rich-structure-v2";
 import { rankiFrameV1ParserPlugin } from "@ranki/plugin-parser-frame-v1";
-
-const parserPlugins = new ParserPlugins();
-[
-  rankiBaseV2ParserPlugin,
-  rankiConstantsV2ParserPlugin,
-  rankiParamsV2ParserPlugin,
-  rankiFrameV2ParserPlugin,
-  rankiRichTextV2ParserPlugin,
-  rankiRichNumberV2ParserPlugin,
-  rankiRichStructureV2ParserPlugin,
-  rankiFrameV1ParserPlugin,
-].forEach((p) => parserPlugins.addPlugin(p));
+import { rankiFrameV2ComponentsPluginDom } from "@ranki/plugin-component-frame-v2-dom";
 
 export const providedConfig = {
   tags: [],
@@ -35,10 +24,10 @@ export const providedConfig = {
     requested: [
       "RankiParamsV2",
       "RankiFrameV2",
-      "RankiFrameV1",
-      "RankiRichTextV2",
-      "RankiRichNumberV2",
-      "RankiRichStructureV2",
+      // "RankiFrameV1",
+      // "RankiRichTextV2",
+      // "RankiRichNumberV2",
+      // "RankiRichStructureV2",
     ],
   },
 } as RankiLanguageProvidedConfig;
@@ -62,7 +51,22 @@ function produceTests(count: number) {
 
 function main(count: number) {
   const parsed = [];
-  const lang = new RankiLang(parserPlugins, [providedConfig]);
+  const lang = new RankiLang(
+    {
+      parsers: [
+        rankiBaseV2ParserPlugin,
+        rankiConstantsV2ParserPlugin,
+        rankiParamsV2ParserPlugin,
+        rankiFrameV2ParserPlugin,
+        rankiRichTextV2ParserPlugin,
+        rankiRichNumberV2ParserPlugin,
+        rankiRichStructureV2ParserPlugin,
+        rankiFrameV1ParserPlugin,
+      ],
+      components: [rankiFrameV2ComponentsPluginDom],
+    },
+    [providedConfig],
+  );
 
   produceTests(count).forEach((test) => {
     try {
@@ -72,7 +76,7 @@ function main(count: number) {
       process.exit(1);
     }
   });
-  console.log(yaml.stringify(parsed));
+  console.log(yaml.stringify(JSON.parse(JSON.stringify(parsed))));
 }
 
 main(+process.argv.at(-1));

@@ -1,0 +1,23 @@
+{
+  "name": "@ranki/plugin-render-latex",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch --preserveWatchOutput",
+    "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo"
+  },
+  "devDependencies": {
+    "@ranki/package-api-v2": "workspace:^",
+    "@ranki/package-render-v2": "workspace:^",
+    "@types/node": "^24.5.2",
+    "ohm-js": "^17.2.1",
+    "typescript": "^5.8.3"
+  },
+  "exports": {
+    ".": {
+      "types": "./types/export.mjs",
+      "default": "./lib/export.mjs"
+    }
+  }
+}

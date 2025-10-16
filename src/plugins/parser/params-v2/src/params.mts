@@ -55,7 +55,7 @@ export function applyV2Directives(
           throw new Error(`UNKNOWN OPERATOR: ${operator}`);
       }
     } catch (e) {
-      console.log(e, path);
+      console.error(e, path);
     }
   };
 
@@ -68,7 +68,6 @@ export function applyV2Directives(
       assignDottedPath(merged, key, operator, values);
     } else {
       const converted = customCb(index, key, operator, values);
-      console.log(converted);
       assignDottedPath(
         merged,
         converted.path,

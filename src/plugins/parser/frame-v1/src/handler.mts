@@ -16,7 +16,6 @@ export const handler: RankiLangParserPluginParseHandler<FrameV1> = (
   spec,
   { lang, parseAst, parseValidation, parseTransform },
 ) => {
-  console.log("v1!!! from handler", spec);
   const contextV1: RankiLangAstContext = {
     lang,
     blockDepth: spec.blockDepth,

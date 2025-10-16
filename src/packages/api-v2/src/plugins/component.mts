@@ -9,6 +9,7 @@ import {
   RankiLangParseHandlerCommon,
   RankiLangParseSpecs,
 } from "../lang/context.mjs";
+import { TransformNode } from "../export.mjs";
 
 export interface RankiPluginComponent extends RankiPluginCommon {
   handler: string;
@@ -29,6 +30,17 @@ export type ComponentPluginValidationFunc = (
   p: ComponentPluginValidationFuncProps,
 ) => ValidationNodeValidationEntry;
 
+export type ComponentPluginTransformFuncProps<
+  T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
+> = {
+  validation: ValidationNode;
+  spec: RankiLangParseSpecs<T>;
+};
+
+export type ComponentPluginTransformFunc = (
+  t: ComponentPluginTransformFuncProps,
+) => TransformNode;
+
 export interface ComponentPluginComponent {
   chain: string;
   stages: {
@@ -47,5 +59,6 @@ export interface ComponentPluginComponent {
       };
     };
     validation: ComponentPluginValidationFunc;
+    transform: ComponentPluginTransformFunc;
   };
 }

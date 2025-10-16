@@ -70,19 +70,22 @@ export class RankiLangConfig {
     });
 
     Object.entries(base).forEach(([k, _v]) => {
-      const restDefined = rest.map((v) => v[k]).filter((v) => !!v);
+      const restDefined = rest.map((v) => v[k]).filter((v) => v !== undefined);
 
       if (typeof base[k] === "object" && !Array.isArray(base[k])) {
         RankiLangConfig.merge([base[k], ...restDefined]);
       } else if (Array.isArray(base[k])) {
         const s = new Set(base[k]);
         restDefined.forEach((a) => {
-          if (!Array.isArray(a)) {
+          if (!Array.isArray(a) && a !== null) {
             throw new Error(
               `THE FOLLOWING ASSIGNMENT WAS EXPECTED TO BE AN ARRAY: ${k}: ${a}`,
             );
+          } else if (a === null) {
+            s.clear();
+          } else {
+            a.map((i) => s.add(i));
           }
-          a.map((i) => s.add(i));
         });
         base[k] = Array.from(s);
       } else if (restDefined.length) {

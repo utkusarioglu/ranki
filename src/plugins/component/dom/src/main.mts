@@ -24,16 +24,17 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
           preprocess: (c: string) => c.trim(),
           directives: {
             plugins: {
-              requested: [
-                // "RankiParamsV2",
-                // "RankiRichStructureV2",
-                // "RankiRichNumberV2",
-              ],
-              // standards: [],
+              // requested: null,
+              // requested: [
+              // "RankiParamsV2",
+              // "RankiRichStructureV2",
+              // "RankiRichNumberV2",
+              // ],
+              // standards: null,
             },
-            // content: {
-            //   prefix: "% ignore \n",
-            // },
+            content: {
+              prefix: "% ignore \n",
+            },
           },
           params: {
             setting: {
@@ -52,45 +53,68 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
           },
         },
         validation: placeholder,
+        // @ts-expect-error
+        transform: ({ validation }) => {
+          console.log("c", JSON.stringify(validation, null, 2));
+          if (validation.kind === "parent") {
+            throw new Error(`CODE COMPONENT CANNOT BE A PARENT`);
+          }
+
+          const ob = Object.freeze({
+            tag: "FrameV2Code",
+            kind: validation.kind,
+            print: true,
+            creator: validation.type,
+            depth: 0,
+            // depth: validation.args.depth.total,
+            source: {
+              type: "lowercase",
+              raw: "soon",
+            },
+            // "children":
+          });
+          console.log(ob);
+          return ob;
+        },
       },
     },
 
-    {
-      chain: "default",
-      stages: {
-        ast: {
-          preprocess: (c: string) => c.trim(),
-          directives: {
-            plugins: {
-              requested: [
-                // "RankiParamsV2",
-                // "RankiRichStructureV2",
-                // "RankiRichNumberV2",
-              ],
-            },
-            content: {
-              prefix: "",
-              suffix: "",
-            },
-          },
-          params: {
-            setting: {
-              positional: [["path"]],
-              shorthands: {
-                b: ["cat", "dog"],
-              },
-            },
-            directive: {
-              positional: [],
-              shorthands: {
-                p: ["content", "prefix"],
-                r: ["plugins", "requested"],
-              },
-            },
-          },
-        },
-        validation: placeholder,
-      },
-    },
+    // {
+    //   chain: "default",
+    //   stages: {
+    //     ast: {
+    //       preprocess: (c: string) => c.trim(),
+    //       directives: {
+    //         plugins: {
+    //           requested: [
+    //             // "RankiParamsV2",
+    //             // "RankiRichStructureV2",
+    //             // "RankiRichNumberV2",
+    //           ],
+    //         },
+    //         content: {
+    //           prefix: "",
+    //           suffix: "",
+    //         },
+    //       },
+    //       params: {
+    //         setting: {
+    //           positional: [["path"]],
+    //           shorthands: {
+    //             b: ["cat", "dog"],
+    //           },
+    //         },
+    //         directive: {
+    //           positional: [],
+    //           shorthands: {
+    //             p: ["content", "prefix"],
+    //             r: ["plugins", "requested"],
+    //           },
+    //         },
+    //       },
+    //     },
+    //     validation: placeholder,
+    //   },
+    // },
   ],
 };

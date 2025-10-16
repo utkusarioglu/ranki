@@ -2313,6 +2313,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/ap-rankilang-v2-console", "workspace:src/apps/rankilang-v2-console"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-rankilang-v2", "workspace:src/packages/rankilang-v2"],\
+          ["@ranki/plugin-component-frame-v2-dom", "workspace:src/plugins/component/dom"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
           ["@ranki/plugin-parser-constants-v2", "workspace:src/plugins/parser/constants-v2"],\
           ["@ranki/plugin-parser-frame-v1", "workspace:src/plugins/parser/frame-v1"],\

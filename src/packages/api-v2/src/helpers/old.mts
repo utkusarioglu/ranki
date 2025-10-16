@@ -18,7 +18,7 @@ export function zipNodes<Context, ParseNode>(
   two: ohm.Node,
 ): Array<ParseNode> {
   if (one.length !== two.length) {
-    console.log(alone, one, two);
+    console.warn(alone, one, two);
     throw new Error("UNEQUAL LENGTHS");
   }
   const aloneNode = alone.node(context) as ParseNode;

@@ -81,7 +81,7 @@ export function topologicalSort(
   }
 
   if (sorted.length !== plugins.length) {
-    console.log(sorted, plugins);
+    console.warn(sorted, plugins);
     throw new Error("CIRCULAR PLUGIN DEPENDENCY");
   }
 

@@ -43,12 +43,6 @@ export class RenderLibrary {
     }
     const staticLoaded = this.static[tag];
     if (!staticLoaded) {
-      console.log({
-        tag,
-        loaded: this.loaded,
-        static: this.static,
-        plugins: this.plugins,
-      });
       throw new Error(`RENDERER ${tag} DOES NOT EXIST`);
     }
     if (staticLoaded.item.load === "static") {
