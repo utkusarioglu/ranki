@@ -11,11 +11,13 @@ export type {
   ProducedConfig,
   ActionsDictRecord,
   RankiLangAstResult,
+  RankiLangParsedAst,
+  RankiLangAstReport,
 } from "./context.mjs";
 
 export type {
   RankiLangInstance,
-  RankiLangParserPluginParseHandler,
+  // RankiLangParserPluginParseHandler,
   RankiLangParseHandlerHooks,
   ComponentPluginsInstance,
   RankiLangInstancePluginsRecord,

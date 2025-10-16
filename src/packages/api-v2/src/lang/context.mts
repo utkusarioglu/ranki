@@ -2,9 +2,13 @@ import type { RankiLanguageConfig } from "./config.mjs";
 import type { AstNode } from "../stages/ast.mjs";
 import type {
   RankiLangInstance,
-  RankiLangParserPluginParseHandler,
+  // RankiLangParserPluginParseHandler,
 } from "./rankilang.mjs";
-import { RankiGrammarTokens, RankiPluginParser } from "../plugins/parser.mjs";
+import {
+  RankiGrammarTokens,
+  RankiLangParseHandlerFunction,
+  RankiPluginParser,
+} from "../plugins/parser.mjs";
 import type * as ohm from "ohm-js";
 import type { TransformNode } from "../stages/transform.mjs";
 import type { ValidationNode } from "../stages/validation.mjs";
@@ -34,13 +38,15 @@ export interface RankiLangParseReport {
   role: RoleName;
 }
 
+export interface RankiLangParsedAst {
+  report: RankiLangAstReport;
+  root: AstNode;
+}
+
 export interface RankiLangParsedTheater {
   stages: {
     raw: string;
-    ast: {
-      report: RankiLangAstReport;
-      root: AstNode;
-    };
+    ast: RankiLangParsedAst;
     validation: ValidationNode;
     transform: TransformNode;
   };
@@ -74,7 +80,7 @@ export interface ParserPluginsInstance {
   addPlugin(p: RankiPluginParser): void;
   getVersions(): VersionReport;
   produceConfig(): ProducedConfig;
-  getHandler(handlerName: string): RankiLangParserPluginParseHandler;
+  getHandler(handlerName: string): RankiLangParseHandlerFunction;
   checkMissing(set: Set<string>): string[];
   pickPlugins(set: Set<string>): RankiPluginParser[];
   sortPlugins(activePluginsArr: RankiPluginParser[]): string[];

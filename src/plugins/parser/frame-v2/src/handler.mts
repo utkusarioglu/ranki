@@ -1,19 +1,27 @@
 import type {
   RankiLangParseSpecs,
-  RankiLangParseReport,
+  // RankiLangParseReport,
+  // RankiLangParseReport,
+  // RankiLangAstReport,
   RankiLangAstContext,
   RankiLangInstance,
-  RankiLangParserPluginParseHandler,
+  RankiLangParseHandlerFunction,
+  // RankiLangParserPluginParseHandler,
 } from "@ranki/package-api-v2";
 import type { ParamV2 } from "@ranki/plugin-parser-params-v2";
 import { RankiLangParserPluginParseHandlerFrameV2 } from "./types.mjs";
 
-export const handler: RankiLangParserPluginParseHandler<
+export const handler: RankiLangParseHandlerFunction<
   RankiLangParserPluginParseHandlerFrameV2
 > = (
   theaterRaw,
   spec,
-  { lang, clone, parseAst, parseValidation, parseTransform },
+  {
+    lang,
+    clone,
+    parseAst,
+    // parseValidation, parseTransform
+  },
 ) => {
   if (!spec.plugin || spec.plugin.type !== "RankiFrameV2") {
     throw new Error(`FRAME V2 HANDLER GIVEN NON-FRAME V2 COMPONENT`);
@@ -26,21 +34,26 @@ export const handler: RankiLangParserPluginParseHandler<
     spec.plugin!.chain[0],
   );
 
+  // TODO I think the settings are not communicated back to the ast
   const { directives, settings } = parseSettings(
     component.stages.ast.params,
     spec,
   );
   const cloned = clone([component.stages.ast.directives, directives]);
-  console.log(cloned.getConfig());
-  const report: RankiLangParseReport = {
-    language: {
-      versions: cloned.parsers.getVersions(),
-    },
-    // !FIX I don't like that I need to stringify the config for the yaml to appear as expected
-    config: JSON.parse(JSON.stringify(cloned.getConfig())),
-    theater: spec.theater,
-    role: spec.role,
-  };
+  // const merged = cloned.getConfig().merged
+  // const report: RankiLangAstReport = {
+  //   parser: {
+  //     requested: merged.plugins.requested,
+  //     sorted: merged.plugins.
+  //   },
+  //   // language: {
+  //   //   versions: cloned.parsers.getVersions(),
+  //   // },
+  //   // !FIX I don't like that I need to stringify the config for the yaml to appear as expected
+  //   // config: JSON.parse(JSON.stringify(cloned.getConfig())),
+  //   // theater: spec.theater,
+  //   // role: spec.role,
+  // };
   const contextV2: RankiLangAstContext = {
     lang: cloned,
     blockDepth: spec.blockDepth + 1,
@@ -60,32 +73,34 @@ export const handler: RankiLangParserPluginParseHandler<
   ].join("");
 
   const ast = parseAst(theaterWithContent, contextV2);
-  const validation = parseValidation(ast.root, spec);
-  const componentValidation = component.stages.validation({
-    validation,
-    spec,
-  });
-  // @ts-expect-error
-  validation.args["frame"] = {
-    version: "v2",
-    validation: componentValidation,
-  };
+  return ast;
+  // const validation = parseValidation(ast.root, spec);
+  // const componentValidation = component.stages.validation({
+  //   validation,
+  //   spec,
+  // });
+  // // @ts-expect-error
+  // validation.args["frame"] = {
+  //   version: "v2",
+  //   validation: componentValidation,
+  // };
 
-  const transform = parseTransform(validation, spec);
+  // const transform = parseTransform(validation, spec);
 
-  return {
-    report,
-    theaters: {
-      [spec.theater]: {
-        stages: {
-          raw: theaterWithContent,
-          ast,
-          validation,
-          transform,
-        },
-      },
-    },
-  };
+  // return {
+  //   report,
+  //   root,
+  //   // theaters: {
+  //   //   [spec.theater]: {
+  //   //     stages: {
+  //   //       raw: theaterWithContent,
+  //   //       ast,
+  //   //       validation,
+  //   //       transform,
+  //   //     },
+  //   //   },
+  //   // },
+  // };
 };
 
 type ConvertParamsParams = {

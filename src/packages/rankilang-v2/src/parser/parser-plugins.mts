@@ -1,19 +1,20 @@
 import type {
   RankiPluginParser,
   VersionReport,
-  RankiLangParserPluginParseHandler,
+  // RankiLangParserPluginParseHandler,
+  RankiLangParseHandlerFunction,
   ParserPluginsInstance,
   ProducedConfig,
   ActionsDictRecord,
-  RankiPluginParserValidationFunc,
+  // RankiPluginParserValidationFunc,
 } from "@ranki/package-api-v2";
 import { expandDependencies, topologicalSort } from "./utils.mjs";
 
 export class ParserPlugins implements ParserPluginsInstance {
   private list: RankiPluginParser[] = [];
-  private handler: Record<string, RankiLangParserPluginParseHandler> = {};
+  private handler: Record<string, RankiLangParseHandlerFunction> = {};
 
-  getHandler(handlerName: string): RankiLangParserPluginParseHandler {
+  getHandler(handlerName: string): RankiLangParseHandlerFunction {
     const found = this.handler[handlerName];
     if (!found) {
       throw new Error(`CANNOT FIND PARSE HANDLER: ${handlerName}`);

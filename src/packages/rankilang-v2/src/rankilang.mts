@@ -11,6 +11,7 @@ import type {
   ComponentPluginsInstance,
   RankiLangInstancePluginsRecord,
   RankiLangAstResult,
+  RankiLangParsedAst,
 } from "@ranki/package-api-v2";
 import { ast } from "./ast/ast.mjs";
 import { ParserPlugins } from "./parser/parser-plugins.mjs";
@@ -95,47 +96,40 @@ export class RankiLang implements RankiLangInstance {
       role: spec.role,
     };
 
-    const stages = this.parseStages(theaterRaw, spec);
+    const ast = this.parseAst(theaterRaw, spec);
     // const validation = this.createValidation(ast, spec);
+    // return stages
     return {
       report,
-      ...stages,
-      // theaters: {
-      //   [spec.theater]: {
-      //     stages: {
-      //       raw: theaterRaw,
-      //       ast: ast.theaters[spec.theater].stages.ast,
-      //       validation,
-      //     },
-      //   },
-      // },
+      // @ts-expect-error
+      theaters: {
+        [spec.theater]: {
+          stages: {
+            raw: theaterRaw,
+            ast,
+            // validation: {},
+            // transform: {},
+          },
+        },
+      },
     };
   }
 
-  // private createValidation<T extends RankiLangParseHandlerCommon>(
-  //   ast: RankiLangAstResult,
-  //   spec: RankiLangParseSpecs<T>,
-  // ) {
-  //   const root = ast.theaters["default"]["stages"]["ast"]["root"];
-  //   return this.validators.validate(root, spec);
-  // }
-
-  private parseStages<T extends RankiLangParseHandlerCommon>(
+  private parseAst<T extends RankiLangParseHandlerCommon>(
     theaterRaw: string,
     spec: RankiLangParseSpecs<T>,
-  ): RankiLangAstResult {
+  ): RankiLangParsedAst {
     if (!spec["plugin"]) {
       return this.parseAstDefault(theaterRaw, spec);
     }
 
-    // if (spec["plugin"]) {
     const handler = this.parsers.getHandler(spec["plugin"].type);
     const handled = handler(theaterRaw, spec, {
       lang: this,
       clone: this.clone.bind(this),
       parseAst: ast,
-      parseValidation: this.validators.validate.bind(this.validators),
-      parseTransform: this.transformers.transform.bind(this.transformers),
+      // parseValidation: this.validators.validate.bind(this.validators),
+      // parseTransform: this.transformers.transform.bind(this.transformers),
     });
     return handled;
   }
@@ -143,7 +137,7 @@ export class RankiLang implements RankiLangInstance {
   private parseAstDefault<T extends RankiLangParseHandlerCommon>(
     theaterRaw: string,
     spec: RankiLangParseSpecs<T>,
-  ): RankiLangAstResult {
+  ): RankiLangParsedAst {
     const contentConfig = this.config.getAll().merged.content;
 
     const theaterWithContent = [
@@ -162,22 +156,23 @@ export class RankiLang implements RankiLangInstance {
     };
 
     const astStage = ast(theaterWithContent, context);
-    const validationStage = this.validators.validate(astStage.root, spec);
-    const transformStage = this.transformers.transform(validationStage, spec);
+    // const validationStage = this.validators.validate(astStage.root, spec);
+    // const transformStage = this.transformers.transform(validationStage, spec);
 
-    return {
-      // report,
-      theaters: {
-        [spec.theater]: {
-          stages: {
-            raw: theaterWithContent,
-            ast: astStage,
-            validation: validationStage,
-            transform: transformStage,
-          },
-        },
-      },
-    };
+    return astStage;
+    // return {
+    //   // report,
+    //   theaters: {
+    //     [spec.theater]: {
+    //       stages: {
+    //         raw: theaterWithContent,
+    //         ast: astStage,
+    //         validation: validationStage,
+    //         transform: transformStage,
+    //       },
+    //     },
+    //   },
+    // };
   }
 }
 
