@@ -37,8 +37,9 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
   ) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
-    const child = context.lang.parse(
-      { [context.theater]: v1PayloadInline.sourceString },
+    const child = context.lang.parseAst(
+      // { [context.theater]: v1PayloadInline.sourceString },
+      v1PayloadInline.sourceString,
       {
         ...context,
         plugin: {
@@ -62,9 +63,11 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         "frame.v1": {
           variant: "p",
           frameType: v1Type.sourceString,
+          report: child.report,
         },
       },
-      children: [child.theaters[context.theater].stages.ast.root],
+      // children: [child.theaters[context.theater].stages.ast.root],
+      children: [child.root],
     };
   },
 
@@ -84,8 +87,9 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(context);
-    const child = context.lang.parse(
-      { [context.theater]: v1PayloadInline.sourceString },
+    const child = context.lang.parseAst(
+      // { [context.theater]: v1PayloadInline.sourceString },
+      v1PayloadInline.sourceString,
       {
         ...context,
         plugin: {
@@ -110,9 +114,11 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           variant: "fp",
           frameType: v1Type.sourceString,
           ...argsAndParamsV1,
+          report: child.report,
         },
       },
-      children: [child.theaters[context.theater].stages.ast.root],
+      // children: [child.theaters[context.theater].stages.ast.root],
+      children: [child.root],
     };
   },
 
@@ -129,8 +135,9 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
   ) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
-    const child = context.lang.parse(
-      { [context.theater]: v1PayloadBlock.sourceString },
+    const child = context.lang.parseAst(
+      // { [context.theater]: v1PayloadBlock.sourceString },
+      v1PayloadBlock.sourceString,
       {
         ...context,
         plugin: {
@@ -154,9 +161,11 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         "frame.v1": {
           variant: "p",
           frameType: v1Type.sourceString,
+          report: child.report,
         },
       },
-      children: [child.theaters[context.theater].stages.ast.root],
+      // children: [child.theaters[context.theater].stages.ast.root],
+      children: [child.root],
     };
   },
 
@@ -179,8 +188,9 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     context.blockDepth++;
     const argsAndParamsV1: ArgsAndParamsV1 =
       v1ParamListInline.argsAndParamsV1(context);
-    const child = context.lang.parse(
-      { [context.theater]: v1PayloadBlock.sourceString },
+    const child = context.lang.parseAst(
+      // { [context.theater]: v1PayloadBlock.sourceString },
+      v1PayloadBlock.sourceString,
       {
         ...context,
         plugin: {
@@ -209,10 +219,10 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           variant: "fp",
           frameType: v1Type.sourceString,
           ...argsAndParamsV1,
-          // report: child.report,
+          report: child.report,
         },
       },
-      children: [child.theaters[context.theater].stages.ast.root],
+      children: [child.root],
     };
   },
 };

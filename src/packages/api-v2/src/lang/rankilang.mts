@@ -41,6 +41,11 @@ export interface RankiLangInstance {
     raw: Record<TheaterName, string>,
     specs: RankiLangParseSpecs<T>,
   ): RankiLangParseResult;
+
+  parseAst<T extends RankiLangParseHandlerCommon>(
+    theaterRaw: string,
+    spec: RankiLangParseSpecs<T>,
+  ): RankiLangParsedAst;
 }
 
 export interface RankiLangParseHandlerHooks<

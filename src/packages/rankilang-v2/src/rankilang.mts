@@ -115,7 +115,7 @@ export class RankiLang implements RankiLangInstance {
     };
   }
 
-  private parseAst<T extends RankiLangParseHandlerCommon>(
+  parseAst<T extends RankiLangParseHandlerCommon>(
     theaterRaw: string,
     spec: RankiLangParseSpecs<T>,
   ): RankiLangParsedAst {

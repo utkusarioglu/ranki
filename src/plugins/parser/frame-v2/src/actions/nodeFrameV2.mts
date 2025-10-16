@@ -42,17 +42,24 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const frameConfig: NodeArgsFrameV2ConfigFp_F =
       v2FrameConfig.v2FrameConfig(context);
 
-    const child = context.lang.parse<RankiLangParserPluginParseHandlerFrameV2>(
-      { [context.theater]: "" },
-      {
+    // const child = context.lang.parse<RankiLangParserPluginParseHandlerFrameV2>(
+    //   { [context.theater]: "" },
+    //   {
+    //     ...this.args.context,
+    //     plugin: {
+    //       ...frameConfig["frame"],
+    //       type: "RankiFrameV2",
+    //     },
+    //   },
+    // );
+    const child =
+      context.lang.parseAst<RankiLangParserPluginParseHandlerFrameV2>("", {
         ...this.args.context,
         plugin: {
           ...frameConfig["frame"],
           type: "RankiFrameV2",
         },
-      },
-      // this.args.context,
-    );
+      });
 
     return {
       kind: "parent",
@@ -64,10 +71,12 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         ...frameConfig,
+        report: child.report,
       },
       // children: [],
 
-      children: [child.theaters[context.theater].stages.ast.root],
+      // children: [child.theaters[context.theater].stages.ast.root],
+      children: [child.root],
     };
   },
 
@@ -86,21 +95,39 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     // };
     // params: ParamsV2Spec;
 
-    const child = context.lang.parse<RankiLangParserPluginParseHandlerFrameV2>(
-      { [context.theater]: "" },
-      {
-        ...this.args.context,
-        plugin: {
-          // !FIX
-          chain,
-          version: "v2",
-          variant: "e", // this is like f fp
-          // ...frameConfig["frame"],
-          type: "RankiFrameV2",
+    // const child = context.lang.parse<RankiLangParserPluginParseHandlerFrameV2>(
+    //   { [context.theater]: "" },
+    //   {
+    //     ...this.args.context,
+    //     plugin: {
+    //       // !FIX
+    //       chain,
+    //       version: "v2",
+    //       variant: "e", // this is like f fp
+    //       // ...frameConfig["frame"],
+    //       type: "RankiFrameV2",
+    //     },
+    //   },
+    //   // this.args.context,
+    // );
+
+    const child =
+      context.lang.parseAst<RankiLangParserPluginParseHandlerFrameV2>(
+        "",
+        {
+          ...this.args.context,
+          plugin: {
+            // !FIX
+            chain,
+            version: "v2",
+            variant: "e", // this is like f fp
+            // ...frameConfig["frame"],
+            type: "RankiFrameV2",
+          },
         },
-      },
-      // this.args.context,
-    );
+        // this.args.context,
+      );
+
     return {
       kind: "parent",
       type: this.ctorName,
@@ -118,13 +145,15 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
             "wi.1.length": wi1.sourceString.length,
             "wi.2.length": wi2.sourceString.length,
           },
+          report: child.report,
           // params: [],
         },
         // ...v2FrameConfig.v2FrameConfig(context),
       },
       // children: [],
 
-      children: [child.theaters[context.theater].stages.ast.root],
+      // children: [child.theaters[context.theater].stages.ast.root],
+      children: [child.root],
     };
   },
 };

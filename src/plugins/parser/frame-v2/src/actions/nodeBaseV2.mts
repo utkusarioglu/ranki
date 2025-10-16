@@ -102,10 +102,15 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   v2PayloadPlain(plain) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
-    const child = context.lang.parse<RankiLangParserPluginParseHandlerFrameV2>(
-      { [context.theater]: plain.sourceString },
-      this.args.context,
-    );
+    // const child = context.lang.parse<RankiLangParserPluginParseHandlerFrameV2>(
+    //   { [context.theater]: plain.sourceString },
+    //   this.args.context,
+    // );
+    const child =
+      context.lang.parseAst<RankiLangParserPluginParseHandlerFrameV2>(
+        plain.sourceString,
+        this.args.context,
+      );
     return {
       kind: "parent",
       type: this.ctorName,
@@ -116,8 +121,10 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        report: child.report,
       },
-      children: [child.theaters[context.theater].stages.ast.root],
+      // children: [child.theaters[context.theater].stages.ast.root],
+      children: [child.root],
       // report: child.report,
       // raw: child.theaters[context.theater].stages.raw,
     };
