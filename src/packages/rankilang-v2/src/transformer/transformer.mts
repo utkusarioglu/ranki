@@ -44,13 +44,13 @@ export class TransformerLibrary {
     hooks: { getComponent: GetComponentHook },
   ): TransformNode {
     try {
-      // @ts-expect-error
+      // @ts-ignore
       if (validation.args.frame) {
         // !FIX this is supposed to come from the args
         const handlerName = "RankiFrameV2";
         const component = hooks.getComponent(
           handlerName,
-          // @ts-expect-error
+          // @ts-ignore
           validation.args.frame.chain,
         );
         const transformed = component.stages.transform({ validation, spec });

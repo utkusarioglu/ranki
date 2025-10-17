@@ -4,9 +4,9 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./lib/main.mjs",
-      "types": "./lib/main.d.ts",
-      "default": "./lib/main.mjs"
+      "import": "./lib/export.mjs",
+      "types": "./lib/export.d.ts",
+      "default": "./lib/export.mjs"
     }
   },
   "scripts": {

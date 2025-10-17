@@ -66,7 +66,7 @@ export function ast(
         graph: dependencyGraph,
         contributors: participants,
         methods,
-        // @ts-expect-error
+        // @ts-ignore
         source: sources.join("\n\n"),
       },
     },

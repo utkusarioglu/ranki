@@ -13,12 +13,12 @@ import type {
   RankiLangAstResult,
   RankiLangParsedAst,
 } from "@ranki/package-api-v2";
-import { ast } from "./ast/ast.mjs";
 import { ParserPlugins } from "./parser/parser-plugins.mjs";
 import { RankiLangConfig } from "./config.mjs";
 import { ComponentPlugins } from "./component/component-plugins.mjs";
 import { ValidatorLibrary } from "./validator/library.mjs";
 import { TransformerLibrary } from "./transformer/transformer.mjs";
+import { AstLibrary } from "./ast/library.mjs";
 
 export class RankiLang implements RankiLangInstance {
   private config: RankiLangConfig;
@@ -27,6 +27,7 @@ export class RankiLang implements RankiLangInstance {
 
   private validators = new ValidatorLibrary();
   private transformers = new TransformerLibrary();
+  private ast = new AstLibrary();
 
   constructor(
     plugins: RankiLangInstancePluginsRecord,
@@ -111,7 +112,7 @@ export class RankiLang implements RankiLangInstance {
             getComponent: this.components.getPlugin.bind(this.components),
           })
         : null;
-    // return stages
+
     return {
       report,
       theaters: {
@@ -139,9 +140,7 @@ export class RankiLang implements RankiLangInstance {
     const handled = handler(theaterRaw, spec, {
       lang: this,
       clone: this.clone.bind(this),
-      parseAst: ast,
-      // parseValidation: this.validators.validate.bind(this.validators),
-      // parseTransform: this.transformers.transform.bind(this.transformers),
+      parseAst: this.ast.parse.bind(this.ast),
     });
     return handled;
   }
@@ -167,24 +166,7 @@ export class RankiLang implements RankiLangInstance {
       startRule: spec.startRule,
     };
 
-    const astStage = ast(theaterWithContent, context);
-    // const validationStage = this.validators.validate(astStage.root, spec);
-    // const transformStage = this.transformers.transform(validationStage, spec);
-
-    return astStage;
-    // return {
-    //   // report,
-    //   theaters: {
-    //     [spec.theater]: {
-    //       stages: {
-    //         raw: theaterWithContent,
-    //         ast: astStage,
-    //         validation: validationStage,
-    //         transform: transformStage,
-    //       },
-    //     },
-    //   },
-    // };
+    return this.ast.parse(theaterWithContent, context);
   }
 }
 
