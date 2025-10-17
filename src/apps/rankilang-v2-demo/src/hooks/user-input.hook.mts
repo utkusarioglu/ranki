@@ -19,7 +19,7 @@ import type {
 export function useUserInput(
   parserPluginObjects: RankiPluginParser[],
   componentPluginObjects: RankiPluginComponent[],
-  setRankiParsed: (a: any) => void,
+  setSharedState: (a: any) => void,
   // languageDefaultConfig: RankiLanguageDefaultConfig,
   initialLanguageUserConfigStr: string,
   presetGroups: PresetGroup[],
@@ -70,9 +70,11 @@ export function useUserInput(
         ],
       );
       const parsed = rankiLang.parse({ [theater]: rankiStr });
-      setRankiParsed(parsed);
+      const config = rankiLang.getConfig().merged;
+      setSharedState({ type: "loaded", parsed, config });
     } catch (e) {
-      setRankiParsed({
+      setSharedState({
+        type: "error",
         error: (e as Error).toString(),
       });
     }

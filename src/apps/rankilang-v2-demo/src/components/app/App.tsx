@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import type { PresetGroup } from "../../services/preset/preset.types";
 import { fetchPresets } from "../../services/preset/preset.mjs";
 import yaml from "yaml";
+import type { SharedState } from "./shared-state.mts";
 
 function usePublicData() {
   const [languageDefaultConfigStr, setLanguageDefaultConfigStr] = useState<
@@ -41,7 +42,7 @@ function usePublicData() {
 
 export function App() {
   const { languageDefaultConfigStr, presetGroups, isLoading } = usePublicData();
-  const [parsed, setRankiParsed] = useState<object | null>(null);
+  const [sharedState, setSharedState] = useState<SharedState>(null);
 
   if (isLoading) {
     return (
@@ -52,12 +53,12 @@ export function App() {
   return (
     <div className={[style.layout].join(" ")}>
       <Inputs
-        setRankiParsed={setRankiParsed}
+        setSharedState={setSharedState}
         languageDefaultConfig={yaml.parse(languageDefaultConfigStr)}
         presetGroups={presetGroups}
         initialLanguageUserConfigStr={languageDefaultConfigStr}
       />
-      <Output parsed={parsed} />
+      <Output state={sharedState} />
     </div>
   );
 }

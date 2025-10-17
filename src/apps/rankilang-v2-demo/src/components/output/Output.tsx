@@ -11,10 +11,12 @@ import { tabs } from "./constants.mts";
 import { TabButtonContainer } from "../tab/TabButtonContainer";
 import { TabButton } from "../tab/TabButton";
 import { YamlRenderer } from "../yaml-renderer/YamlRenderer";
+import type { SharedState } from "../app/shared-state.mts";
 import { ComponentRenderer } from "../component-renderer/ComponentRenderer";
 
 interface OutputProps {
-  parsed: any | null; // !FIX any
+  state: SharedState;
+  // parsed: any | null; // !FIX any
 }
 
 export type TabDefinition =
@@ -31,19 +33,26 @@ export type TabDefinition =
       path: "";
     };
 
-export const Output: FC<OutputProps> = ({ parsed }) => {
+export const Output: FC<OutputProps> = ({ state }) => {
   const [tabIndex, setTabIndex] = useState(0);
-  const [customPath, setCustomPath] = useState(tabs[tabIndex].path);
+  const renderAvailable =
+    state?.type === "loaded" && state.config.stage === "transform";
 
-  if (parsed === null) {
+  const filteredTabs = renderAvailable
+    ? tabs
+    : tabs.filter(({ format }) => format !== "render");
+
+  const [customPath, setCustomPath] = useState(filteredTabs[tabIndex].path);
+
+  if (state === null) {
     return <p>Nothing yet...</p>;
   }
 
-  if (parsed.error) {
+  if (state.type === "error") {
     return (
       <div className={style.errorContainer}>
         <h3 className={[style.errorHeading, "monospace"].join(" ")}>Error</h3>
-        <pre>{parsed.error}</pre>
+        <pre>{state.error}</pre>
       </div>
     );
   }
@@ -53,13 +62,14 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
       className={[style.component].join(" ")}
       style={
         {
-          "--input-height": tabs[tabIndex].type === "custom" ? "3.5em" : "0em",
+          "--input-height":
+            filteredTabs[tabIndex].type === "custom" ? "3.5em" : "0em",
         } as CSSProperties
       }
     >
       <div className={style.ribbon}>
         <TabButtonContainer>
-          {tabs
+          {filteredTabs
             .map((t) => t.name)
             .map((name, i) => (
               <TabButton
@@ -67,8 +77,8 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
                 isActive={i === tabIndex}
                 onClick={() => {
                   setTabIndex(i);
-                  if (tabs[i].type !== "custom") {
-                    setCustomPath(tabs[i].path);
+                  if (filteredTabs[i].type !== "custom") {
+                    setCustomPath(filteredTabs[i].path);
                   }
                 }}
               >
@@ -77,7 +87,7 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
             ))}
         </TabButtonContainer>
 
-        {tabs[tabIndex].type === "custom" ? (
+        {filteredTabs[tabIndex].type === "custom" ? (
           <div className={style.customInputContainer}>
             <input
               className={[style.customInput, "monospace"].join(" ")}
@@ -90,11 +100,10 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
       </div>
 
       <div className={[style.output, style.scrollable].join(" ")}>
-        {tabs[tabIndex].format === "yaml" ? (
-          <YamlRenderer parsed={parsed} customPath={customPath} />
+        {renderAvailable && filteredTabs[tabIndex].format === "render" ? (
+          <ComponentRenderer parsed={state.parsed} customPath={customPath} />
         ) : (
-          <></>
-          // <ComponentRenderer parsed={parsed} customPath={customPath} />
+          <YamlRenderer parsed={state.parsed} customPath={customPath} />
         )}
       </div>
     </div>

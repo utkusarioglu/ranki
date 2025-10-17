@@ -6,7 +6,8 @@ import type { PresetGroup } from "../../services/preset/preset.types";
 import { useUserInput } from "../../hooks/user-input.hook.mts";
 import { TabButton } from "../tab/TabButton";
 import { TabButtonContainer } from "../tab/TabButtonContainer";
-import type { ReactNode } from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
+import type { SharedState } from "../app/shared-state.mts";
 
 interface Tab {
   name: string;
@@ -16,7 +17,8 @@ interface Tab {
 interface InputsProps {
   initialLanguageUserConfigStr: string;
   languageDefaultConfig: RankiLanguageDefaultConfig;
-  setRankiParsed: (a: any) => void;
+  // setSharedState: (a: SharedState) => void;
+  setSharedState: Dispatch<SetStateAction<SharedState>>;
   presetGroups: PresetGroup[];
 }
 
@@ -34,7 +36,7 @@ const AppTitle = () => (
 
 export const Inputs: FC<InputsProps> = ({
   // languageDefaultConfig,
-  setRankiParsed,
+  setSharedState,
   presetGroups,
   initialLanguageUserConfigStr,
 }) => {
@@ -59,7 +61,7 @@ export const Inputs: FC<InputsProps> = ({
     // @ts-expect-error
     pluginObjects,
     componentObjects,
-    setRankiParsed,
+    setSharedState,
     // languageDefaultConfig,
     initialLanguageUserConfigStr,
     presetGroups,

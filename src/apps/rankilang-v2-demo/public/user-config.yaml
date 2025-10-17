@@ -3,11 +3,10 @@ tags: []
 content: 
   prefix: ""
   suffix: ""
+    
+stage: "ast"
 
 plugins:
-  # standards:
-  #   - RankiConstantsV2
-  #   - RankiBaseV2
   requested: []
   config:
     RankiBaseV2: 
