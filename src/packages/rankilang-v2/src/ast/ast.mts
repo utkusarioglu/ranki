@@ -9,8 +9,8 @@ export function ast(
   raw: string,
   context: RankiLangAstContext,
 ): RankiLangParseFunctionReturn {
-  const parserPlugins: ParserPluginsInstance = context.lang.getPlugins();
-  const langConfig = context.lang.getConfig();
+  const parserPlugins: ParserPluginsInstance = context.hooks.getPlugins();
+  const langConfig = context.hooks.getConfig();
   const configPlugins = langConfig.merged.plugins;
 
   {

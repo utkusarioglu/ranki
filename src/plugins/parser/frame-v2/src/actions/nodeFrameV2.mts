@@ -2,7 +2,6 @@ import type * as ohm from "ohm-js";
 import type { RankiLangAstContext } from "@ranki/package-api-v2";
 import type { NodeArgsFrameV2ConfigFp_F, ParseNodeFrameV2 } from "../types.mjs";
 import type { FrameSpec } from "../types.mjs";
-import type { RankiLangParserPluginParseHandlerFrameV2 } from "../types.mjs";
 
 export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2_fp(v2Start, v2FrameConfig, v2Payload, v2End) {
@@ -52,14 +51,17 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     //     },
     //   },
     // );
-    const child =
-      context.lang.parseAst<RankiLangParserPluginParseHandlerFrameV2>("", {
-        ...this.args.context,
+    const child = context.hooks.parseAst(
+      "",
+      {
+        ...context,
         plugin: {
           ...frameConfig["frame"],
           type: "RankiFrameV2",
         },
-      });
+      },
+      context.hooks,
+    );
 
     return {
       kind: "parent",
@@ -111,22 +113,22 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     //   // this.args.context,
     // );
 
-    const child =
-      context.lang.parseAst<RankiLangParserPluginParseHandlerFrameV2>(
-        "",
-        {
-          ...this.args.context,
-          plugin: {
-            // !FIX
-            chain,
-            version: "v2",
-            variant: "e", // this is like f fp
-            // ...frameConfig["frame"],
-            type: "RankiFrameV2",
-          },
+    const child = context.hooks.parseAst(
+      "",
+      {
+        ...context,
+        plugin: {
+          // !FIX
+          // @ts-expect-error
+          chain,
+          version: "v2",
+          variant: "e", // this is like f fp
+          // ...frameConfig["frame"],
+          type: "RankiFrameV2",
         },
-        // this.args.context,
-      );
+      },
+      context.hooks,
+    );
 
     return {
       kind: "parent",

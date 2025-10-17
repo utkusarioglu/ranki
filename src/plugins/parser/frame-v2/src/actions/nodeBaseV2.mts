@@ -111,11 +111,12 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     //   { [context.theater]: plain.sourceString },
     //   this.args.context,
     // );
-    const child =
-      context.lang.parseAst<RankiLangParserPluginParseHandlerFrameV2>(
-        plain.sourceString,
-        this.args.context,
-      );
+    console.log({ context });
+    const child = context.hooks.parseAst(
+      plain.sourceString,
+      context,
+      context.hooks,
+    );
     return {
       kind: "parent",
       type: this.ctorName,

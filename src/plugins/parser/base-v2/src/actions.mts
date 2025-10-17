@@ -295,22 +295,6 @@ const creatorName: ohm.ActionDict<string> = {
   clearance(clearance1) {
     return this.ctorName;
   },
-  // tParamsV2SeparatorFrame(sep) {
-  //   const context: RankiLangAstContext = this.args.context;
-  //   const separators =
-  //     // @ts-expect-error
-  //     context.lang.getConfig().merged.plugins.config.RankiParamsV2.tokens
-  //       .separator;
-  //   return sep.sourceString === separators.frame ? this.ctorName : "none";
-  // },
-  // tParamsV2SeparatorParam(sep) {
-  //   const context: RankiLangAstContext = this.args.context;
-  //   const separators =
-  //     // @ts-expect-error
-  //     context.lang.getConfig().merged.plugins.config.RankiParamsV2.tokens
-  //       .separator;
-  //   return sep.sourceString === separators.param ? this.ctorName : "none";
-  // },
 };
 
 const iterNode: ohm.ActionDict<AstNode[]> = {

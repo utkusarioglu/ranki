@@ -21,6 +21,7 @@ export type {
   RankiLangParseHandlerHooks,
   ComponentPluginsInstance,
   RankiLangInstancePluginsRecord,
+  RankiLangCloneFunctionReturn,
 } from "./rankilang.mjs";
 
 export type {

@@ -42,29 +42,31 @@ export interface RankiLangInstance {
     specs: RankiLangParseSpecs<T>,
   ): RankiLangParseResult;
 
-  parseAst<T extends RankiLangParseHandlerCommon>(
-    theaterRaw: string,
-    spec: RankiLangParseSpecs<T>,
-  ): RankiLangParsedAst;
+  // parseAst<T extends RankiLangParseHandlerCommon>(
+  //   theaterRaw: string,
+  //   spec: RankiLangParseSpecs<T>,
+  // ): RankiLangParsedAst;
 }
 
-export interface RankiLangParseHandlerHooks<
-  // T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
-> {
-  lang: RankiLangInstance;
-  clone(userConfigs: RankiLanguageProvidedConfig[] | null): RankiLangInstance;
-  // parseValidation: (
-  //   ast: AstNode,
-  //   spec: RankiLangParseSpecs<T>,
-  // ) => ValidationNode;
+export interface RankiLangParseHandlerHooks<> {
+  getPlugins: RankiLangInstance["getPlugins"];
+  getHandler: ParserPluginsInstance["getHandler"];
+  getConfig: () => RankiLanguageConfig;
+  getComponent(handlerName: string, chain: string[]): ComponentPluginComponent;
+  clone(
+    userConfigs: RankiLanguageProvidedConfig[] | null,
+  ): RankiLangCloneFunctionReturn;
   parseAst: (
     raw: string,
     context: RankiLangAstContext,
+
+    hooks: RankiLangParseHandlerHooks,
   ) => RankiLangParseFunctionReturn;
-  // parseTransform: (
-  //   v: ValidationNode,
-  //   spec: RankiLangParseSpecs<T>,
-  // ) => TransformNode;
+}
+
+export interface RankiLangCloneFunctionReturn {
+  lang: RankiLangInstance;
+  hooks: RankiLangParseHandlerHooks;
 }
 
 // export type RankiLangParserPluginParseHandler<

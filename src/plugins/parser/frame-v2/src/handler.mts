@@ -13,35 +13,24 @@ import { RankiLangParserPluginParseHandlerFrameV2 } from "./types.mjs";
 
 export const handler: RankiLangParseHandlerFunction<
   RankiLangParserPluginParseHandlerFrameV2
-> = (
-  theaterRaw,
-  spec,
-  {
-    lang,
-    clone,
-    parseAst,
-    // parseValidation, parseTransform
-  },
-) => {
+> = (theaterRaw, spec, hooks) => {
+  console.log("handler", hooks);
   if (!spec.plugin || spec.plugin.type !== "RankiFrameV2") {
     throw new Error(`FRAME V2 HANDLER GIVEN NON-FRAME V2 COMPONENT`);
   }
   if (spec.plugin?.chain.length > 1) {
     throw new Error(`MULTI-LENGTH CHAINS NOT YET SUPPORTED`);
   }
-  const component = lang.components.getPlugin(
-    "RankiFrameV2",
-    spec.plugin!.chain[0],
-  );
+  const component = hooks.getComponent("RankiFrameV2", spec.plugin!.chain[0]);
 
   // TODO I think the settings are not communicated back to the ast
   const { directives, settings } = parseSettings(
     component.stages.ast.params,
     spec,
   );
-  const cloned = clone([component.stages.ast.directives, directives]);
+  const cloned = hooks.clone([component.stages.ast.directives, directives]);
   const contextV2: RankiLangAstContext = {
-    lang: cloned,
+    hooks: cloned.hooks,
     blockDepth: spec.blockDepth + 1,
     inlineDepth: spec.inlineDepth,
     theater: spec.theater,
@@ -49,8 +38,7 @@ export const handler: RankiLangParseHandlerFunction<
     startRule: spec.startRule,
   };
 
-  const contentConfig = (cloned as RankiLangInstance).getConfig().merged
-    .content;
+  const contentConfig = cloned.hooks.getConfig().merged.content;
 
   const theaterWithContent = [
     contentConfig.prefix,
@@ -58,8 +46,7 @@ export const handler: RankiLangParseHandlerFunction<
     contentConfig.suffix,
   ].join("");
 
-  const ast = parseAst(theaterWithContent, contextV2);
-  return ast;
+  return hooks.parseAst(theaterWithContent, contextV2, cloned.hooks);
 };
 
 type ConvertParamsParams = {

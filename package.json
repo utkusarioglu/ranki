@@ -15,7 +15,7 @@
     "dev--v2-demo": "turbo run dev --filter @ranki/app-rankilang-v2-demo",
     "console--v2": "cd src/apps/rankilang-v2-console && yarn console",
     "lint": "turbo run lint",
-    "clean-all": "yarn turbo run clean-all"
+    "clean-all": "rm -rf .turbo && yarn turbo run clean-all"
   },
   "devDependencies": {
     "tsx": "^4.20.3",

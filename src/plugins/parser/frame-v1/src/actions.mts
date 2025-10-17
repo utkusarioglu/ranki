@@ -37,17 +37,19 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
   ) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
-    const child = context.lang.parseAst(
+    const child = context.hooks.parseAst(
       // { [context.theater]: v1PayloadInline.sourceString },
       v1PayloadInline.sourceString,
       {
         ...context,
         plugin: {
           type: "RankiFrameV1",
+          // @ts-expect-error
           chain: v1Type.sourceString,
           params: [],
         },
       },
+      context.hooks,
     );
     return {
       kind: "parent",
@@ -87,17 +89,19 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(context);
-    const child = context.lang.parseAst(
+    const child = context.hooks.parseAst(
       // { [context.theater]: v1PayloadInline.sourceString },
       v1PayloadInline.sourceString,
       {
         ...context,
         plugin: {
           type: "RankiFrameV1",
+          // @ts-expect-error
           chain: v1Type.sourceString,
           params: argsAndParamsV1["params"],
         },
       },
+      context.hooks,
     );
     return {
       kind: "parent",
@@ -135,17 +139,19 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
   ) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
-    const child = context.lang.parseAst(
+    const child = context.hooks.parseAst(
       // { [context.theater]: v1PayloadBlock.sourceString },
       v1PayloadBlock.sourceString,
       {
         ...context,
         plugin: {
           type: "RankiFrameV1",
+          // @ts-expect-error
           chain: v1Type.sourceString,
           params: [],
         },
       },
+      context.hooks,
     );
     return {
       kind: "parent",
@@ -188,17 +194,19 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     context.blockDepth++;
     const argsAndParamsV1: ArgsAndParamsV1 =
       v1ParamListInline.argsAndParamsV1(context);
-    const child = context.lang.parseAst(
+    const child = context.hooks.parseAst(
       // { [context.theater]: v1PayloadBlock.sourceString },
       v1PayloadBlock.sourceString,
       {
         ...context,
         plugin: {
           type: "RankiFrameV1",
+          // @ts-expect-error
           chain: v1Type.sourceString,
           params: argsAndParamsV1["params"],
         },
       },
+      context.hooks,
     );
     return {
       kind: "parent",

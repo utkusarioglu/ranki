@@ -13,10 +13,10 @@ import type {
 const creatorName: ohm.ActionDict<string> = {
   tParamsV2SeparatorParam(sep) {
     const context: RankiLangAstContext = this.args.context;
+    const merged = context.hooks.getConfig().merged;
     const separators =
       // @ts-expect-error
-      context.lang.getConfig().merged.plugins.config.RankiParamsV2.tokens
-        .separator;
+      merged.plugins.config.RankiParamsV2.tokens.separator;
     return sep.sourceString === separators.param ? this.ctorName : "none";
   },
 };
@@ -70,7 +70,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
     context.inlineDepth++;
     const operators =
       // @ts-expect-error
-      context.lang.getConfig().merged.plugins.config.RankiParamsV2.tokens
+      context.hooks.getConfig().merged.plugins.config.RankiParamsV2.tokens
         .operators;
     const f = Object.entries(operators).find(
       ([k, v]) => v === operatorToken.sourceString,

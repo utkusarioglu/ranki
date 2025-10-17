@@ -72,7 +72,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     let type;
     CONCEPTUAL_NUMBERS.forEach((t) => {
       if (
-        context.lang
+        context.hooks
           .getConfig()
 
           // @ts-expect-error
@@ -114,7 +114,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const integer = +num.sourceString
       .split(
         // @ts-expect-error
-        context.lang.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
+        context.hooks.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
           .number.group,
       )
       .join("");
@@ -145,7 +145,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const integer = +num.sourceString
       .split(
         // @ts-expect-error
-        context.lang.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
+        context.hooks.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
           .number.group,
       )
       .join("");
@@ -176,7 +176,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const integer = +num.sourceString
       .split(
         // @ts-expect-error
-        context.lang.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
+        context.hooks.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
           .number.group,
       )
       .join("");
@@ -262,7 +262,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     context.inlineDepth++;
     const richNumberV2 =
       // @ts-expect-error
-      context.lang.getConfig().merged.plugins.config.RankiRichNumberV2.tokens;
+      context.hooks.getConfig().merged.plugins.config.RankiRichNumberV2.tokens;
     let type;
 
     BASES.forEach((s) => {
@@ -374,7 +374,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const decimal = +decimalGroup.sourceString
       .split(
         // @ts-expect-error
-        context.lang.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
+        context.hooks.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
           .number.group,
       )
       .join("");

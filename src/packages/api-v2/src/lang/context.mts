@@ -2,6 +2,7 @@ import type { RankiLanguageConfig } from "./config.mjs";
 import type { AstNode } from "../stages/ast.mjs";
 import type {
   RankiLangInstance,
+  RankiLangParseHandlerHooks,
   // RankiLangParserPluginParseHandler,
 } from "./rankilang.mjs";
 import {
@@ -123,13 +124,19 @@ export type RankiLangParseSpecs<T extends RankiLangParseHandlerCommon> = {
 
 export type RankiLangParseSpecsFrameNull = RankiLangParseSpecsCommon;
 
-export type RankiLangAstContext = {
-  blockDepth: number;
-  inlineDepth: number;
-  theater: TheaterName;
-  role: RoleName;
-  lang: RankiLangInstance;
-  startRule: string;
+export type RankiLangAstContext<
+  T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
+> = RankiLangParseSpecs<T> & {
+  hooks: RankiLangParseHandlerHooks;
 };
+// export type RankiLangAstContext = {
+//   hooks: RankiLangParseHandlerHooks;
+//   blockDepth: number;
+//   inlineDepth: number;
+//   theater: TheaterName;
+//   role: RoleName;
+//   // lang: RankiLangInstance;
+//   startRule: string;
+// };
 
 export type VersionReport = Record<string, string>;

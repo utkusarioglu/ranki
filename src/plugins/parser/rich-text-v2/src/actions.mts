@@ -100,7 +100,7 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
               level: 0,
               types: Object.keys(
                 // @ts-expect-error
-                context.lang.getConfig().merged.plugins.config.RankiRichTextV2
+                context.hooks.getConfig().merged.plugins.config.RankiRichTextV2
                   .tokens.sentence,
               ).reduce((a, c) => {
                 a[c as T] = false;
@@ -116,7 +116,7 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
           endArgs["sentence.end"].level++;
           Object.entries(
             // @ts-expect-error
-            context.lang.getConfig().merged.plugins.config.RankiRichTextV2
+            context.hooks.getConfig().merged.plugins.config.RankiRichTextV2
               .tokens.sentence,
           ).forEach(([k, v]) => {
             endArgs["sentence.end"]!.types[k as T] ||= raw === v;

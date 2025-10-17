@@ -12,6 +12,8 @@ import type {
   RankiLangInstancePluginsRecord,
   RankiLangAstResult,
   RankiLangParsedAst,
+  RankiLangParseHandlerHooks,
+  RankiLangCloneFunctionReturn,
 } from "@ranki/package-api-v2";
 import { ParserPlugins } from "./parser/parser-plugins.mjs";
 import { RankiLangConfig } from "./config.mjs";
@@ -64,11 +66,28 @@ export class RankiLang implements RankiLangInstance {
 
   private clone(
     providedConfigs: RankiLanguageProvidedConfig[] | null,
-  ): RankiLangInstance {
-    return new RankiLang(
+  ): RankiLangCloneFunctionReturn {
+    const lang = new RankiLang(
       { parsers: this.parsers, components: this.components },
       this.config.clone(providedConfigs),
     );
+    const hooks = lang.createParseHandlerHooks();
+    return {
+      lang,
+      hooks,
+    };
+  }
+
+  private createParseHandlerHooks() {
+    const parseHandlerHooks: RankiLangParseHandlerHooks = {
+      getPlugins: this.getPlugins.bind(this),
+      clone: this.clone.bind(this),
+      parseAst: this.ast.parse.bind(this.ast),
+      getComponent: this.components.getPlugin.bind(this.components),
+      getHandler: this.parsers.getHandler.bind(this.parsers),
+      getConfig: this.config.getAll.bind(this.config),
+    };
+    return parseHandlerHooks;
   }
 
   parse<T extends RankiLangParseHandlerCommon>(
@@ -100,7 +119,14 @@ export class RankiLang implements RankiLangInstance {
       role: spec.role,
     };
 
-    const ast = this.parseAst(theaterRaw, spec);
+    const ast = this.ast.parse(
+      theaterRaw,
+      // TODO this doesn't make sense. maybe the grammars should receive
+      // hooks as a separate object other than `context`
+      spec,
+      // { ...spec, hooks: parseHandlerHooks },
+      this.createParseHandlerHooks(),
+    );
 
     const validation = ["validate", "transform"].includes(config.merged.stage)
       ? this.validators.validate(ast.root, spec)
@@ -126,47 +152,6 @@ export class RankiLang implements RankiLangInstance {
         },
       },
     };
-  }
-
-  parseAst<T extends RankiLangParseHandlerCommon>(
-    theaterRaw: string,
-    spec: RankiLangParseSpecs<T>,
-  ): RankiLangParsedAst {
-    if (!spec["plugin"]) {
-      return this.parseAstDefault(theaterRaw, spec);
-    }
-
-    const handler = this.parsers.getHandler(spec["plugin"].type);
-    const handled = handler(theaterRaw, spec, {
-      lang: this,
-      clone: this.clone.bind(this),
-      parseAst: this.ast.parse.bind(this.ast),
-    });
-    return handled;
-  }
-
-  private parseAstDefault<T extends RankiLangParseHandlerCommon>(
-    theaterRaw: string,
-    spec: RankiLangParseSpecs<T>,
-  ): RankiLangParsedAst {
-    const contentConfig = this.config.getAll().merged.content;
-
-    const theaterWithContent = [
-      contentConfig.prefix,
-      theaterRaw,
-      contentConfig.suffix,
-    ].join("");
-
-    const context: RankiLangAstContext = {
-      lang: this,
-      blockDepth: spec.blockDepth,
-      inlineDepth: spec.inlineDepth,
-      theater: spec.theater,
-      role: spec.role,
-      startRule: spec.startRule,
-    };
-
-    return this.ast.parse(theaterWithContent, context);
   }
 }
 
