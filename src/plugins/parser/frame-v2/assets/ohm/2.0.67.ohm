@@ -16,13 +16,14 @@ RankiFrameV2 <: RankiParamsV2 {
   // pauseRoot = pauseList
   pauseList = v2PayloadSection (pausedContainer v2PayloadSection)*
 
-  v2PayloadPlain =  (~(pauseStart | v2Start | v2End_explicit | v2End_exact) any)+
+  v2PayloadPlainIllegal = pauseStart | v2Start | v2End_explicit | v2End_exact
+  v2PayloadPlain =  (~v2PayloadPlainIllegal any)+
   
   v2PayloadSectionItem = 
     | v2 --v2
     | v2PayloadPlain --plain
   
-  v2PayloadSection = v2PayloadSectionItem (whitespace v2PayloadSectionItem)*
+  v2PayloadSection = v2PayloadSectionItem (whitespace v2PayloadSectionItem)* whitespace
 
   pauseStart = tFrameV2Pause digit* tFrameV2Pause
   pauseEnd = tFrameV2Pause tFrameV2Pause

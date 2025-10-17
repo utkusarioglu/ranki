@@ -1,5 +1,10 @@
 --- Current
-=[code|aa]=
+=[code
+  a
+  =[code
+    b
+  ]=
+]=
 
 --- Hello World
 Hello World!

@@ -77,7 +77,12 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     };
   },
 
-  v2PayloadSection(v2PayloadSectionItem1, whitespace, v2PayloadSectionItem2) {
+  v2PayloadSection(
+    v2PayloadSectionItem1,
+    whitespace1,
+    v2PayloadSectionItem2,
+    whitespace2,
+  ) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     return {
@@ -93,7 +98,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
       children: zipNodes(
         context,
         v2PayloadSectionItem1,
-        whitespace,
+        whitespace1,
         v2PayloadSectionItem2,
       ),
     };
