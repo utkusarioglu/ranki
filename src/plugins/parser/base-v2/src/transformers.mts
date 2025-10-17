@@ -1,16 +1,17 @@
 import type { RankiPluginParserTransformCallback } from "@ranki/package-api-v2";
-import { transformPlaceholder } from "@ranki/package-api-v2/helpers";
+import { transformPlaceholder as placeholder } from "@ranki/package-api-v2/helpers";
 
 export const transformers: RankiPluginParserTransformCallback = () => ({
-  root_structure: transformPlaceholder,
-  section_base: transformPlaceholder,
-  section_empty: transformPlaceholder,
-  p: transformPlaceholder,
-  line: transformPlaceholder,
-  lexemes: transformPlaceholder,
-  decorated_base: transformPlaceholder,
-  word_base: transformPlaceholder,
-  clearance: transformPlaceholder,
-  root_ignore: transformPlaceholder,
-  word_number: transformPlaceholder,
+  root_structure: placeholder,
+  section_base: placeholder,
+  section_empty: placeholder,
+  p: placeholder,
+  line: placeholder,
+  lexemes: placeholder,
+  decorated_base: placeholder,
+  word_base: placeholder,
+  clearance: placeholder,
+  root_ignore: placeholder,
+  word_number: placeholder,
+  whitespace: placeholder,
 });

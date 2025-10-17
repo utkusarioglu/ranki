@@ -13,4 +13,5 @@ export const validators: RankiPluginParserValidationCallback = () => ({
   clearance: placeholder,
   root_ignore: placeholder,
   word_number: placeholder,
+  whitespace: placeholder,
 });
