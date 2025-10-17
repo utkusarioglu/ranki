@@ -8,6 +8,9 @@ import type {
   TransformNode,
   TransformNodeParent,
 } from "@ranki/package-api-v2";
+import { ComponentPlugins } from "../component/component-plugins.mjs";
+
+type GetComponentHook = ComponentPlugins["getPlugin"];
 
 export class TransformerLibrary {
   private list: Record<string, TransformerFunctionEntry> = {};
@@ -36,22 +39,43 @@ export class TransformerLibrary {
   }
 
   transform<T extends RankiLangParseHandlerCommon>(
-    obj: ValidationNode,
+    validation: ValidationNode,
     spec: RankiLangParseSpecs<T>,
+    hooks: { getComponent: GetComponentHook },
   ): TransformNode {
     try {
-      const transformer = this.getTransformer(obj.type);
-      if (obj.kind === "parent") {
-        const transformed = transformer(obj) as TransformNodeParent;
+      // @ts-expect-error
+      if (validation.args.frame) {
+        // !FIX this is supposed to come from the args
+        const handlerName = "RankiFrameV2";
+        const component = hooks.getComponent(
+          handlerName,
+          // @ts-expect-error
+          validation.args.frame.chain,
+        );
+        const transformed = component.stages.transform({ validation, spec });
+        return transformed;
+        // if (obj.args.frame.chain.join(".") === "code") {
+        //   return {
+        //     // @ts-expect-error
+        //     code: "code!",
+        //   };
+        // }
+      }
+      const transformer = this.getTransformer(validation.type);
+      if (validation.kind === "parent") {
+        const transformed = transformer(validation) as TransformNodeParent;
         return {
           ...transformed,
-          children: obj.children.map((c) => this.transform(c, spec)),
+          children: validation.children.map((c) =>
+            this.transform(c, spec, hooks),
+          ),
         };
       } else {
-        return transformer(obj);
+        return transformer(validation);
       }
     } catch (e) {
-      console.error(obj, e);
+      console.error(validation, e);
       throw new Error(e.message);
     }
   }

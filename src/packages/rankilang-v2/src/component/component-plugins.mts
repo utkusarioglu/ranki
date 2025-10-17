@@ -1,7 +1,10 @@
-import type { RankiPluginComponent } from "@ranki/package-api-v2";
+import type {
+  RankiPluginComponent,
+  ComponentPluginComponent,
+} from "@ranki/package-api-v2";
 
 export class ComponentPlugins {
-  private list = {};
+  private list: Record<string, Record<string, ComponentPluginComponent>> = {};
 
   addPlugin(plugin: RankiPluginComponent) {
     if (!this.list[plugin.handler]) {
@@ -16,7 +19,7 @@ export class ComponentPlugins {
     });
   }
 
-  getPlugin(handlerName: string, chain: string[]) {
+  getPlugin(handlerName: string, chain: string[]): ComponentPluginComponent {
     const pluginName = chain.join(".");
     const h = this.list[handlerName];
     if (!h) {

@@ -40,20 +40,6 @@ export const handler: RankiLangParseHandlerFunction<
     spec,
   );
   const cloned = clone([component.stages.ast.directives, directives]);
-  // const merged = cloned.getConfig().merged
-  // const report: RankiLangAstReport = {
-  //   parser: {
-  //     requested: merged.plugins.requested,
-  //     sorted: merged.plugins.
-  //   },
-  //   // language: {
-  //   //   versions: cloned.parsers.getVersions(),
-  //   // },
-  //   // !FIX I don't like that I need to stringify the config for the yaml to appear as expected
-  //   // config: JSON.parse(JSON.stringify(cloned.getConfig())),
-  //   // theater: spec.theater,
-  //   // role: spec.role,
-  // };
   const contextV2: RankiLangAstContext = {
     lang: cloned,
     blockDepth: spec.blockDepth + 1,
@@ -74,33 +60,6 @@ export const handler: RankiLangParseHandlerFunction<
 
   const ast = parseAst(theaterWithContent, contextV2);
   return ast;
-  // const validation = parseValidation(ast.root, spec);
-  // const componentValidation = component.stages.validation({
-  //   validation,
-  //   spec,
-  // });
-  // // @ts-expect-error
-  // validation.args["frame"] = {
-  //   version: "v2",
-  //   validation: componentValidation,
-  // };
-
-  // const transform = parseTransform(validation, spec);
-
-  // return {
-  //   report,
-  //   root,
-  //   // theaters: {
-  //   //   [spec.theater]: {
-  //   //     stages: {
-  //   //       raw: theaterWithContent,
-  //   //       ast,
-  //   //       validation,
-  //   //       transform,
-  //   //     },
-  //   //   },
-  //   // },
-  // };
 };
 
 type ConvertParamsParams = {

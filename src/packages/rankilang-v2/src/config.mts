@@ -19,6 +19,7 @@ export class RankiLangConfig {
     this.providedConfigs = userConfigs;
     this.defaultConfig = {
       tags: [],
+      stage: "transform",
       grammar: {
         tokens: pluginConfig.tokens,
       },

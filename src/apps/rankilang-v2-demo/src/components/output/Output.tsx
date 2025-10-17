@@ -48,27 +48,6 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
     );
   }
 
-  // const yamlStr = yaml.stringify(
-  //   JSON.parse(JSON.stringify(crawl(parsed, customPath))),
-  // );
-  // const highlighted = Prism.highlight(
-  //   yamlStr,
-  //   Prism.languages.yaml,
-  //   "javascript",
-  // );
-
-  // <button
-  //   key={name}
-  //   className={[
-  //     style.tabButton,
-  //     i === tabIndex && style.tabButtonActive,
-  //   ]
-  //     .filter((v) => !!v)
-  //     .join(" ")}
-  //   onClick={}
-  // >
-  //   {name}
-  // </button>
   return (
     <div
       className={[style.component].join(" ")}
@@ -114,7 +93,8 @@ export const Output: FC<OutputProps> = ({ parsed }) => {
         {tabs[tabIndex].format === "yaml" ? (
           <YamlRenderer parsed={parsed} customPath={customPath} />
         ) : (
-          <ComponentRenderer parsed={parsed} customPath={customPath} />
+          <></>
+          // <ComponentRenderer parsed={parsed} customPath={customPath} />
         )}
       </div>
     </div>

@@ -20,6 +20,7 @@ export const providedConfig = {
     prefix: "",
     suffix: "",
   },
+  stage: "ast",
   plugins: {
     requested: [
       "RankiParamsV2",

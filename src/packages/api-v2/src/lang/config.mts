@@ -11,6 +11,7 @@ interface PluginsConfig {
 
 export interface RankiLanguageProvidedConfig {
   tags: string[]; // these may be anki args
+  stage: Stages;
   plugins: {
     requested: PluginName[];
     config: PluginsConfig;
@@ -23,9 +24,12 @@ export interface RankiLanguageContentConfig {
   suffix: string;
 }
 
+type Stages = "ast" | "validate" | "transform";
+
 // TODO this will need to be a generic
 export interface RankiLanguageMergedConfig {
   tags: string[]; // these may be anki args
+  stage: Stages;
   plugins: {
     standards: PluginName[];
     requested: PluginName[];

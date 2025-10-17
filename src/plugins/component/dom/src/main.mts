@@ -1,6 +1,9 @@
 import type {
   RankiPluginComponent,
   ComponentPluginValidationFunc,
+  TransformNodeParent,
+  ValidationNodeParent,
+  ValidationNodeLeaf,
 } from "@ranki/package-api-v2";
 
 const placeholder: ComponentPluginValidationFunc = ({ validation, spec }) => ({
@@ -32,9 +35,9 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
               // ],
               // standards: null,
             },
-            content: {
-              prefix: "% ignore \n",
-            },
+            // content: {
+            //   prefix: "% ignore \n",
+            // },
           },
           params: {
             setting: {
@@ -53,27 +56,39 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
           },
         },
         validation: placeholder,
-        // @ts-expect-error
         transform: ({ validation }) => {
-          console.log("c", JSON.stringify(validation, null, 2));
-          if (validation.kind === "parent") {
+          if (validation.kind === "leaf") {
             throw new Error(`CODE COMPONENT CANNOT BE A PARENT`);
           }
 
-          const ob = Object.freeze({
-            tag: "FrameV2Code",
-            kind: validation.kind,
+          const payload = validation.children[0];
+          const pauseList = (payload as ValidationNodeParent).children[0];
+
+          const payloadSection = (pauseList as ValidationNodeParent)
+            .children[0];
+          const payloadPlain = (payloadSection as ValidationNodeParent)
+            .children[0];
+          const rootIgnore = (payloadPlain as ValidationNodeParent)
+            .children[0] as ValidationNodeLeaf;
+
+          // console.log("ignore", JSON.stringify(, null, 2));
+          const raw = rootIgnore.source.raw;
+          // const raw = payloadPlain.map((v) => (v as ValidationNodeLeaf).source);
+          // console.log(raw);
+
+          const ob = {
+            tag: "code",
+            kind: "leaf" as "leaf",
             print: true,
             creator: validation.type,
-            depth: 0,
-            // depth: validation.args.depth.total,
+            depth: validation.args.depth.total,
             source: {
-              type: "lowercase",
-              raw: "soon",
+              type: "mixed" as "mixed",
+              // raw: "soon",
+              raw,
             },
             // "children":
-          });
-          console.log(ob);
+          };
           return ob;
         },
       },

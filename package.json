@@ -13,6 +13,7 @@
     "build": "turbo run build",
     "watch": "turbo run watch",
     "dev--v2-demo": "turbo run dev --filter @ranki/app-rankilang-v2-demo",
+    "console--v2": "cd src/apps/rankilang-v2-console && yarn console",
     "lint": "turbo run lint"
   },
   "devDependencies": {

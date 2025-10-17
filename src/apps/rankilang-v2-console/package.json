@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@ranki/ap-rankilang-v2-console",
+  "name": "@ranki/app-rankilang-v2-console",
   "type": "module",
   "exports": {
     ".": {

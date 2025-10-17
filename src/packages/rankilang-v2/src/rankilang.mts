@@ -24,6 +24,7 @@ export class RankiLang implements RankiLangInstance {
   private config: RankiLangConfig;
   public parsers: ParserPluginsInstance;
   public components: ComponentPluginsInstance;
+
   private validators = new ValidatorLibrary();
   private transformers = new TransformerLibrary();
 
@@ -87,28 +88,39 @@ export class RankiLang implements RankiLangInstance {
       throw new Error(`THEATER UNDEFINED: ${spec.theater}`);
     }
 
+    const config = this.config.getAll();
+
     const report: RankiLangParseReport = {
       language: {
         versions: this.parsers.getVersions(),
       },
-      config: this.config.getAll(),
+      config,
       theater: spec.theater,
       role: spec.role,
     };
 
     const ast = this.parseAst(theaterRaw, spec);
-    // const validation = this.createValidation(ast, spec);
+
+    const validation = ["validate", "transform"].includes(config.merged.stage)
+      ? this.validators.validate(ast.root, spec)
+      : null;
+
+    const transform =
+      validation && config.merged.stage === "transform"
+        ? this.transformers.transform(validation, spec, {
+            getComponent: this.components.getPlugin.bind(this.components),
+          })
+        : null;
     // return stages
     return {
       report,
-      // @ts-expect-error
       theaters: {
         [spec.theater]: {
           stages: {
             raw: theaterRaw,
             ast,
-            // validation: {},
-            // transform: {},
+            validation,
+            transform,
           },
         },
       },

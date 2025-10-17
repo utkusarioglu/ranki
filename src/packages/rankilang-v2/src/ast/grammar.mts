@@ -26,6 +26,7 @@ export function buildGrammar(
 ) {
   const matchers: Record<string, ParserPluginGrammar> = {};
   let grammarParents = {};
+  let sources = [];
   for (let si = 0; si < importChain.length; si++) {
     const name = importChain[si];
     const parserPlugin = finder(name);
@@ -37,6 +38,7 @@ export function buildGrammar(
       parserPlugin.grammar(context.lang.getConfig()),
     );
     matchers[name] = matcher;
+    sources.push(matcher.altered);
     grammarParents = {
       ...grammarParents,
       [name]: matcher.grammar,
@@ -50,7 +52,7 @@ export function buildGrammar(
     throw new Error("CANNOT DEDUCE MATCHER");
   }
 
-  return { matcher };
+  return { matcher, sources };
 }
 
 export function compileOhmActionDicts(

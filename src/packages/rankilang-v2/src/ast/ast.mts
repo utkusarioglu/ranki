@@ -44,7 +44,7 @@ export function ast(
   const importChain = parserPlugins.sortPlugins(activePluginsArr);
   const dependencyGraph = parserPlugins.dependencyGraph(activePluginsArr);
 
-  const { matcher } = buildGrammar(context, importChain, (n) =>
+  const { matcher, sources } = buildGrammar(context, importChain, (n) =>
     parserPlugins.find(n),
   );
 
@@ -66,6 +66,8 @@ export function ast(
         graph: dependencyGraph,
         contributors: participants,
         methods,
+        // @ts-expect-error
+        source: sources.join("\n\n"),
       },
     },
     root: semantics(matched).node(context),
