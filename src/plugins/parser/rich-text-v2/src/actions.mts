@@ -8,12 +8,6 @@ import type {
 
 import { zipNodes, joinNodes } from "@ranki/package-api-v2/helpers";
 
-function wordEndArgs(context: RankiLangAstContext, wordEnd: ohm.Node) {
-  return {
-    "wordEnd.type": wordEnd.creatorName(context),
-  };
-}
-
 function startToken(context: RankiLangAstContext, start: ohm.Node) {
   const startNodes: ParseNodeRichTextV2[] = start.iterNode(context);
   const startArgs: NodeArgsRichTextV2 = {};
@@ -193,7 +187,8 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         raw: this.sourceString,
       },
       subtree: [],
-      children: zipNodes(context, decorated1, clearance, decorated2),
+      // children: zipNodes(context, decorated1, clearance, decorated2),
+      children: joinNodes(context, decorated1, decorated2),
     };
   },
 
@@ -212,11 +207,15 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        spaces: {},
+        spaces: {
+          suffix: {
+            type: wordEnd.creatorName(context),
+            raw: wordEnd.sourceString,
+          },
+        },
         separators: [],
         ...startArgs,
         ...endArgs,
-        ...wordEndArgs(context, wordEnd),
       },
       source: {
         type: "raw",
@@ -548,11 +547,15 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: parentContext.inlineDepth,
           total: parentContext.inlineDepth + parentContext.blockDepth,
         },
-        spaces: {},
+        spaces: {
+          suffix: {
+            type: wordEnd.creatorName(parentContext),
+            raw: wordEnd.sourceString,
+          },
+        },
         separators: [],
         ...startArgs,
         ...endArgs,
-        ...wordEndArgs(parentContext, wordEnd),
       },
       source: {
         type: "raw",

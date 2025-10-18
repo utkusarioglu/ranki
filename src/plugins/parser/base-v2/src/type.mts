@@ -1,17 +1,7 @@
-export type NodeArgsBaseV2 = NodeArgBaseV2Number & NodeArgBaseV2WordEnd;
-
-type NodeArgBaseV2Number = Record<
-  | "whitespace.1.length"
-  | "whitespace.2.length"
-  | "indentation.1.length"
-  | "clearance.1.length"
-  | "clearance.2.length"
-  | "wm.1.length"
-  | "small.level"
-  | "wi.1.length",
-  number
->;
-
-export type NodeArgBaseV2WordEnd = {
-  "wordEnd.type": "clearance" | "nl" | "end";
-};
+/**
+ * @dev
+ * This was emptied because the args it defined were no longer needed.
+ * But it's still kept for now as a handy insertion point for any plugin that
+ * inherits from BaseV2.
+ */
+export type NodeArgsBaseV2 = {};

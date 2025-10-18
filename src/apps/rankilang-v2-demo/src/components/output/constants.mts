@@ -35,13 +35,13 @@ export const tabs: TabDefinition[] = [
     type: "exact",
     format: "yaml",
     name: "Block",
-    path: "theaters.default.stages.ast.root.children.children.",
+    path: "theaters.default.stages.ast.root.children.0.children.",
   },
   {
     type: "exact",
     format: "yaml",
     name: "Lexeme",
-    path: "theaters.default.stages.ast.root.children.children.0.children.0.children.0.children.",
+    path: "theaters.default.stages.ast.root.children.0.children.0.children.0.children.0.children.",
   },
   {
     type: "custom",

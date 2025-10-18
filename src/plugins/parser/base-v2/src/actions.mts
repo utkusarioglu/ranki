@@ -163,7 +163,6 @@ const node: ohm.ActionDict<AstNode> = {
         },
         spaces: {},
         separators: nl.separator(context),
-        // nl length
       },
       source: {
         type: "raw",
@@ -229,11 +228,11 @@ const node: ohm.ActionDict<AstNode> = {
         raw: this.sourceString,
       },
       subtree: [],
-      children: zipNodes(context, lexeme1, clearance, lexeme2),
+      // children: zipNodes(context, lexeme1, clearance, lexeme2),
+      children: joinNodes(context, lexeme1, lexeme2),
     };
   },
 
-  // TODO wordEnd
   decorated_base(word, wordEnd) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
@@ -246,9 +245,14 @@ const node: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        spaces: {},
+        spaces: {
+          suffix: {
+            // !fix this would return an `any` type
+            type: wordEnd.creatorName(context),
+            raw: wordEnd.sourceString,
+          },
+        },
         separators: [],
-        "wordEnd.type": wordEnd.creatorName(context),
       },
       source: {
         type: "raw",
@@ -259,7 +263,6 @@ const node: ohm.ActionDict<AstNode> = {
     };
   },
 
-  // TODO wordEnd
   decorated_fallback(word, wordEnd) {
     const parentContext: RankiLangAstContext = { ...this.args.context };
     parentContext.inlineDepth++;
@@ -274,9 +277,13 @@ const node: ohm.ActionDict<AstNode> = {
           inline: parentContext.inlineDepth,
           total: parentContext.inlineDepth + parentContext.blockDepth,
         },
-        spaces: {},
+        spaces: {
+          suffix: {
+            type: wordEnd.creatorName(parentContext),
+            raw: wordEnd.sourceString,
+          },
+        },
         separators: [],
-        "wordEnd.type": wordEnd.creatorName(this.args.context),
       },
       source: {
         type: "raw",
@@ -369,7 +376,6 @@ const node: ohm.ActionDict<AstNode> = {
         },
         spaces: {},
         separators: [],
-        // "clearance.1.length": clearance1.sourceString.length,
       },
       source: {
         type: "text",
