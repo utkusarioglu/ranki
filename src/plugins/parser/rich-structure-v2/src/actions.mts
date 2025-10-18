@@ -40,6 +40,10 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
         structureType1.node(context),
         ...structureType2.iterNode(context),
       ],
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
     };
   },
   richStructure(a) {

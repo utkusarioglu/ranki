@@ -1,4 +1,4 @@
-import { AstNode } from "@ranki/package-api-v2";
+import { AstNode, AstNodeLeafSource } from "@ranki/package-api-v2";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
 type NodeArgsParamsV2 = AstNode["args"] & Partial<NodeArgsBaseV2>;
@@ -10,6 +10,7 @@ export interface ParamV2Common {
   args: NodeArgsParamsV2;
   operator: ParamV2Operator;
   values: ParamV2Value[];
+  source: AstNodeLeafSource;
 }
 
 export type ParamV2Setting = ParamV2Common & {
@@ -38,21 +39,24 @@ export type ParamV2Value =
 
 interface ParamV2ValueNumber {
   type: "number";
+  raw: string;
   value: number;
 }
 
 interface ParamV2ValueString {
-  type: "lowercase" | "uppercase" | "mixed";
-  value: string;
+  type: "lowercase" | "uppercase" | "mixedcase";
+  raw: string;
 }
 
 interface ParamV2ValueQuoted {
   type: "quoted";
+  raw: string;
   value: string;
 }
 
 interface ParamV2ValueBoolean {
   type: "boolean";
+  raw: string;
   value: boolean;
 }
 

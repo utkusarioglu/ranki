@@ -46,9 +46,11 @@ export function applyV2Directives(
       const last: string = path.at(-1);
       switch (operator) {
         case "assign":
-          const value = values.map((v) => v.value).join(" | ");
+          // !FIX this ignores the complex type options that come from
+          // `ParamV2Value` and has to be fixed
+          const value = values.map((v) => v.raw).join(" | ");
 
-          // @ts-expect-error
+          // @ts-expect-error too complex of a type to define
           c[last] = value;
           break;
         default:

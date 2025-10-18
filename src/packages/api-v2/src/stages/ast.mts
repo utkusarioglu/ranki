@@ -3,7 +3,9 @@ export type AstNode = AstNodeLeaf | AstNodeParent;
 export interface AstNodeParent extends AstNodeCommon {
   kind: "parent";
   type: string;
+  subtree: AstNode[];
   children: AstNode[];
+  source: AstNodeLeafSource;
 }
 
 export interface AstNodeLeaf extends AstNodeCommon {
@@ -30,13 +32,15 @@ interface AstNodeLeafSourceString {
     | "propercase"
     | "mixedcase"
     | "text"
-    | "mixed"
     | "token"
-    | "punctuation";
+    | "punctuation"
+    | "raw";
   raw: string;
 }
 
-type AstNodeLeafSource = AstNodeLeafSourceNumber | AstNodeLeafSourceString;
+export type AstNodeLeafSource =
+  | AstNodeLeafSourceNumber
+  | AstNodeLeafSourceString;
 
 export interface AstNodeLeafSourceNumber {
   type: "number";

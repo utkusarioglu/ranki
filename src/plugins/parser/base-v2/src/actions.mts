@@ -21,7 +21,7 @@ const node: ohm.ActionDict<AstNode> = {
         "wm.1.length": wm.sourceString.length,
       },
       source: {
-        type: "mixed",
+        type: "raw",
         raw: rest.sourceString,
       },
     };
@@ -42,7 +42,7 @@ const node: ohm.ActionDict<AstNode> = {
         },
       },
       source: {
-        type: "mixed",
+        type: "raw",
         raw: all.sourceString,
       },
     };
@@ -63,6 +63,11 @@ const node: ohm.ActionDict<AstNode> = {
         "whitespace.1.length": whitespace1.sourceString.length,
         "whitespace.2.length": whitespace2.sourceString.length,
       },
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [structure.node(context)],
     };
   },
@@ -81,6 +86,11 @@ const node: ohm.ActionDict<AstNode> = {
         },
         // block sep lengths
       },
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: joinNodes(context, block, block2),
     };
   },
@@ -99,6 +109,11 @@ const node: ohm.ActionDict<AstNode> = {
         },
         // nl length
       },
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: joinNodes(context, line1, line2),
     };
   },
@@ -118,6 +133,11 @@ const node: ohm.ActionDict<AstNode> = {
         "indentation.1.length": indentation1.sourceString.length,
         "wi.1.length": wi1.sourceString.length,
       },
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [lexemes.node(context)],
     };
   },
@@ -135,8 +155,12 @@ const node: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
       },
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: zipNodes(context, lexeme1, clearance, lexeme2),
-      // children: zipNodes(this.args.context, lexeme1, clearance, lexeme2),
     };
   },
 
@@ -154,7 +178,11 @@ const node: ohm.ActionDict<AstNode> = {
         },
         "wordEnd.type": wordEnd.creatorName(context),
       },
-
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [word.node(context)],
     };
   },
@@ -175,7 +203,11 @@ const node: ohm.ActionDict<AstNode> = {
         },
         "wordEnd.type": wordEnd.creatorName(this.args.context),
       },
-
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [
         {
           kind: "leaf",
@@ -189,7 +221,7 @@ const node: ohm.ActionDict<AstNode> = {
             },
           },
           source: {
-            type: "mixed",
+            type: "raw",
             raw: word.sourceString,
           },
         },
@@ -212,7 +244,7 @@ const node: ohm.ActionDict<AstNode> = {
         },
       },
       source: {
-        type: "mixed",
+        type: "raw",
         raw: base.sourceString,
       },
     };

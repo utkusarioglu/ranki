@@ -20,6 +20,11 @@ const nodeBaseV2: ohm.ActionDict<AstNode> = {
         "wi.1.length": wi1.sourceString.length,
         // !TODO end
       },
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [v1Block.node(context)],
     };
   },
@@ -68,7 +73,11 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           report: child.report,
         },
       },
-      // children: [child.theaters[context.theater].stages.ast.root],
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [child.root],
     };
   },
@@ -122,6 +131,11 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         },
       },
       // children: [child.theaters[context.theater].stages.ast.root],
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [child.root],
     };
   },
@@ -170,7 +184,11 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           report: child.report,
         },
       },
-      // children: [child.theaters[context.theater].stages.ast.root],
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [child.root],
     };
   },
@@ -230,6 +248,11 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           report: child.report,
         },
       },
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [child.root],
     };
   },

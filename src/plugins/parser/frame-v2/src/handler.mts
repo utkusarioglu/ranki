@@ -65,7 +65,7 @@ function convertParams<T extends ParamV2>(
       if (positional.length === 0) {
         throw new Error(
           `NO POSITIONAL PARAMS DEFINED FOR VALUE: "${p.values
-            .map((v) => v.value)
+            .map((v) => v.raw)
             .join(" ")}"`,
         );
       }
@@ -114,14 +114,14 @@ function convertParams<T extends ParamV2>(
     switch (p.operator) {
       case "assign":
         // FIX this discards values other than the first
-        step[last] = p.values[0].value;
+        step[last] = p.values[0].raw;
         break;
       case "append":
         if (step[last] === undefined) {
           step[last] = [];
         }
         p.values.forEach((v) => {
-          step[last].push(v.value);
+          step[last].push(v.raw);
         });
         break;
       default:

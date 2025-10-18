@@ -30,6 +30,11 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         },
         ...frameConfig,
       },
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [child],
     };
   },
@@ -78,6 +83,11 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       // children: [],
 
       // children: [child.theaters[context.theater].stages.ast.root],
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [child.root],
     };
   },

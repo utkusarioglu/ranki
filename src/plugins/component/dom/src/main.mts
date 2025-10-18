@@ -83,7 +83,7 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
             creator: validation.type,
             depth: validation.args.depth.total,
             source: {
-              type: "mixed" as "mixed",
+              type: "raw" as "raw",
               // raw: "soon",
               raw,
             },
@@ -93,43 +93,5 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
         },
       },
     },
-
-    // {
-    //   chain: "default",
-    //   stages: {
-    //     ast: {
-    //       preprocess: (c: string) => c.trim(),
-    //       directives: {
-    //         plugins: {
-    //           requested: [
-    //             // "RankiParamsV2",
-    //             // "RankiRichStructureV2",
-    //             // "RankiRichNumberV2",
-    //           ],
-    //         },
-    //         content: {
-    //           prefix: "",
-    //           suffix: "",
-    //         },
-    //       },
-    //       params: {
-    //         setting: {
-    //           positional: [["path"]],
-    //           shorthands: {
-    //             b: ["cat", "dog"],
-    //           },
-    //         },
-    //         directive: {
-    //           positional: [],
-    //           shorthands: {
-    //             p: ["content", "prefix"],
-    //             r: ["plugins", "requested"],
-    //           },
-    //         },
-    //       },
-    //     },
-    //     validation: placeholder,
-    //   },
-    // },
   ],
 };

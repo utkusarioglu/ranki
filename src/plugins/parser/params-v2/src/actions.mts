@@ -96,6 +96,10 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
       },
       operator: f[0] as ParamV2Operator,
       values: paramValues.paramV2Values(context),
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
     };
   },
 
@@ -116,9 +120,15 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
         },
       },
       operator: "assign",
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       values: [
         {
           type: "boolean",
+          raw: "",
           value: true,
         },
       ],
@@ -142,9 +152,14 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
       values: [
         {
           type: "boolean",
+          raw: "",
           value: false,
         },
       ],
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
     };
   },
 
@@ -163,11 +178,15 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
       operator: "assign",
       values: [
         {
-          type: "mixed",
+          type: "mixedcase",
           // WARN this won't work if the quoted content has structure
-          value: quoted.sourceString.slice(1, -1),
+          raw: quoted.sourceString.slice(1, -1),
         },
       ],
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
     };
   },
 };
@@ -212,6 +231,7 @@ const paramV2Value: ohm.ActionDict<ParamV2Value> = {
   paramValueItemPrimitive_number(num) {
     return {
       type: "number",
+      raw: num.sourceString,
       value: +num.sourceString,
     };
   },
@@ -219,13 +239,14 @@ const paramV2Value: ohm.ActionDict<ParamV2Value> = {
   paramValueItemPrimitive_lowercase(c1, c2, lower) {
     return {
       type: "lowercase",
-      value: lower.sourceString,
+      raw: lower.sourceString,
     };
   },
 
   paramValueItemPrimitive_true(val) {
     return {
       type: "boolean",
+      raw: this.sourceString,
       value: true,
     };
   },
@@ -233,6 +254,7 @@ const paramV2Value: ohm.ActionDict<ParamV2Value> = {
   paramValueItemPrimitive_false(val) {
     return {
       type: "boolean",
+      raw: this.sourceString,
       value: false,
     };
   },
@@ -240,27 +262,28 @@ const paramV2Value: ohm.ActionDict<ParamV2Value> = {
   paramValueItemPrimitive_uppercase(check1, check2, val) {
     return {
       type: "uppercase",
-      value: val.sourceString,
+      raw: val.sourceString,
     };
   },
 
   paramValueItemPrimitive_chars(c1, c2, val) {
     return {
-      type: "mixed",
-      value: val.sourceString,
+      type: "mixedcase",
+      raw: val.sourceString,
     };
   },
 
   paramValueItemPrimitive_mixed(val) {
     return {
-      type: "mixed",
-      value: val.sourceString,
+      type: "mixedcase",
+      raw: val.sourceString,
     };
   },
 
   quoted(quote1, quotedContent, quote2) {
     return {
       type: "quoted",
+      raw: quotedContent.sourceString,
       value: quotedContent.sourceString,
     };
   },

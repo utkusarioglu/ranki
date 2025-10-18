@@ -17,6 +17,11 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
       },
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [v2.node(context)],
     };
   },
@@ -34,6 +39,11 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         },
         "wi.1.length": wi1.sourceString.length,
       },
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [pauseRoot.node(context)],
     };
   },
@@ -51,6 +61,11 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
       },
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [pauseRoot.node(context)],
     };
   },
@@ -68,6 +83,11 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
       },
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: zipNodes(
         context,
         v2PayloadSection1,
@@ -95,6 +115,11 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
       },
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: zipNodes(
         context,
         v2PayloadSectionItem1,
@@ -107,11 +132,6 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   v2PayloadPlain(plain) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
-    // const child = context.lang.parse<RankiLangParserPluginParseHandlerFrameV2>(
-    //   { [context.theater]: plain.sourceString },
-    //   this.args.context,
-    // );
-    console.log({ context });
     const child = context.hooks.parseAst(
       plain.sourceString,
       context,
@@ -129,10 +149,12 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         },
         report: child.report,
       },
-      // children: [child.theaters[context.theater].stages.ast.root],
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [child.root],
-      // report: child.report,
-      // raw: child.theaters[context.theater].stages.raw,
     };
   },
 
@@ -158,6 +180,11 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           total: parentContext.inlineDepth + parentContext.blockDepth,
         },
       },
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: [],
       children: [
         {
           kind: "leaf",
@@ -171,7 +198,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
             },
           },
           source: {
-            type: "mixed",
+            type: "raw",
             raw: pausedPayload.sourceString,
           },
         },
