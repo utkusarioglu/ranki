@@ -185,6 +185,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "raw",
@@ -210,6 +211,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
         ...startArgs,
         ...endArgs,
         ...wordEndArgs(context, wordEnd),
@@ -236,6 +238,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "lowercase",
@@ -257,6 +260,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "propercase",
@@ -278,6 +282,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "uppercase",
@@ -299,6 +304,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "mixedcase",
@@ -320,6 +326,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "mixedcase",
@@ -341,6 +348,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "token",
@@ -362,6 +370,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "token",
@@ -370,7 +379,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     };
   },
 
-  tRichTextV2DecorationAbbreviation(abbr) {
+  tRichTextV2DecorationAbbreviation(token) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
@@ -383,15 +392,16 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "token",
-        raw: abbr.sourceString,
+        raw: token.sourceString,
       },
     };
   },
 
-  tRichTextV2DecorationEmphasis(abbr) {
+  tRichTextV2DecorationEmphasis(token) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
@@ -404,15 +414,16 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "token",
-        raw: abbr.sourceString,
+        raw: token.sourceString,
       },
     };
   },
 
-  tRichTextV2DecorationIdiomatic(abbr) {
+  tRichTextV2DecorationIdiomatic(token) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
@@ -425,15 +436,16 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "token",
-        raw: abbr.sourceString,
+        raw: token.sourceString,
       },
     };
   },
 
-  tRichTextV2DecorationUnderline(abbr) {
+  tRichTextV2DecorationUnderline(token) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
@@ -446,10 +458,11 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "token",
-        raw: abbr.sourceString,
+        raw: token.sourceString,
       },
     };
   },
@@ -495,6 +508,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "raw",
@@ -520,6 +534,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           inline: parentContext.inlineDepth,
           total: parentContext.inlineDepth + parentContext.blockDepth,
         },
+        spaces: {},
         ...startArgs,
         ...endArgs,
         ...wordEndArgs(parentContext, wordEnd),

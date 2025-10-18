@@ -4,6 +4,7 @@ import type { ParseNodeFrameV1 } from "./types.mjs";
 import type { ArgsAndParamsV1 } from "./types.mjs";
 
 const nodeBaseV2: ohm.ActionDict<AstNode> = {
+  // !TODO end
   block_v1(indentation, v1Block, wi1, end) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
@@ -16,9 +17,18 @@ const nodeBaseV2: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        "indentation.1.length": indentation.sourceString.length,
-        "wi.1.length": wi1.sourceString.length,
-        // !TODO end
+        spaces: {
+          indentation: {
+            type: "indentation",
+            raw: indentation.sourceString,
+          },
+          suffix: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+        },
+        // "indentation.1.length": indentation.sourceString.length,
+        // "wi.1.length": wi1.sourceString.length,
       },
       source: {
         type: "raw",
@@ -43,7 +53,6 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const child = context.hooks.parseAst(
-      // { [context.theater]: v1PayloadInline.sourceString },
       v1PayloadInline.sourceString,
       {
         ...context,
@@ -65,8 +74,16 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        "wi.1.length": wi1.sourceString.length,
-        "wi.2.length": wi2.sourceString.length,
+        spaces: {
+          frameAndType: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+          typeAndSep: {
+            type: "wi",
+            raw: wi2.sourceString,
+          },
+        },
         "frame.v1": {
           variant: "p",
           frameType: v1Type.sourceString,
@@ -99,7 +116,6 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     context.inlineDepth++;
     const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(context);
     const child = context.hooks.parseAst(
-      // { [context.theater]: v1PayloadInline.sourceString },
       v1PayloadInline.sourceString,
       {
         ...context,
@@ -121,8 +137,24 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        "wi.1.length": wi1.sourceString.length,
-        "wi.2.length": wi2.sourceString.length,
+        spaces: {
+          frameAndType: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+          typeAndSep: {
+            type: "wi",
+            raw: wi2.sourceString,
+          },
+          sepAndParam: {
+            type: "wi",
+            raw: wi3.sourceString,
+          },
+          paramAndSep: {
+            type: "wi",
+            raw: wi4.sourceString,
+          },
+        },
         "frame.v1": {
           variant: "fp",
           frameType: v1Type.sourceString,
@@ -130,7 +162,6 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           report: child.report,
         },
       },
-      // children: [child.theaters[context.theater].stages.ast.root],
       source: {
         type: "raw",
         raw: this.sourceString,
@@ -154,7 +185,6 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     const child = context.hooks.parseAst(
-      // { [context.theater]: v1PayloadBlock.sourceString },
       v1PayloadBlock.sourceString,
       {
         ...context,
@@ -176,8 +206,20 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        "wi.1.length": wi1.sourceString.length,
-        "wi.2.length": wi2.sourceString.length,
+        spaces: {
+          frameAndType: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+          typeAndSep: {
+            type: "wi",
+            raw: wi2.sourceString,
+          },
+          sepAndNl: {
+            type: "wi",
+            raw: wi3.sourceString,
+          },
+        },
         "frame.v1": {
           variant: "p",
           frameType: v1Type.sourceString,
@@ -213,7 +255,6 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     const argsAndParamsV1: ArgsAndParamsV1 =
       v1ParamListInline.argsAndParamsV1(context);
     const child = context.hooks.parseAst(
-      // { [context.theater]: v1PayloadBlock.sourceString },
       v1PayloadBlock.sourceString,
       {
         ...context,
@@ -235,12 +276,28 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        // !TODO args
-        "wi.1.length": wi1.sourceString.length,
-        "wi.2.length": wi2.sourceString.length,
-        "wi.3.length": wi3.sourceString.length,
-        "wi.4.length": wi4.sourceString.length,
-        "wi.5.length": wi5.sourceString.length,
+        spaces: {
+          frameAndType: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+          typeAndSep: {
+            type: "wi",
+            raw: wi2.sourceString,
+          },
+          sepAndParam: {
+            type: "wi",
+            raw: wi3.sourceString,
+          },
+          paramAndSep: {
+            type: "wi",
+            raw: wi4.sourceString,
+          },
+          sepAndNl: {
+            type: "wi",
+            raw: wi5.sourceString,
+          },
+        },
         "frame.v1": {
           variant: "fp",
           frameType: v1Type.sourceString,
@@ -267,7 +324,6 @@ const paramV1: ohm.ActionDict<string> = {
 const paramsV1: ohm.ActionDict<string[]> = {
   _iter(...children) {
     const context: RankiLangAstContext = { ...this.args.context };
-    // context.depth++;
     return children.map((v) => v.paramV1(context));
   },
 };
@@ -275,7 +331,6 @@ const paramsV1: ohm.ActionDict<string[]> = {
 const argsAndParamsV1: ohm.ActionDict<ArgsAndParamsV1> = {
   v1ParamListInline(v1ParamValue1, sep, v1ParamValue2) {
     const context: RankiLangAstContext = { ...this.args.context };
-    // context.depth++;
     return {
       args: {},
       params: [

@@ -46,16 +46,6 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const frameConfig: NodeArgsFrameV2ConfigFp_F =
       v2FrameConfig.v2FrameConfig(context);
 
-    // const child = context.lang.parse<RankiLangParserPluginParseHandlerFrameV2>(
-    //   { [context.theater]: "" },
-    //   {
-    //     ...this.args.context,
-    //     plugin: {
-    //       ...frameConfig["frame"],
-    //       type: "RankiFrameV2",
-    //     },
-    //   },
-    // );
     const child = context.hooks.parseAst(
       "",
       {
@@ -80,9 +70,6 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         ...frameConfig,
         report: child.report,
       },
-      // children: [],
-
-      // children: [child.theaters[context.theater].stages.ast.root],
       source: {
         type: "raw",
         raw: this.sourceString,
@@ -98,31 +85,6 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     const chain: FrameSpec[] = v2Chain.frameSpecV2(context);
-
-    // args: Partial<NodeArgsBaseV2> & {
-    //   "separator.right.type": string;
-    //   // !FIX this value is inside the config structure, which breaks symmetry
-    //   // "separator.left.type": string;
-    //   "frame.v2.config": Partial<NodeArgsBaseV2>;
-    // };
-    // params: ParamsV2Spec;
-
-    // const child = context.lang.parse<RankiLangParserPluginParseHandlerFrameV2>(
-    //   { [context.theater]: "" },
-    //   {
-    //     ...this.args.context,
-    //     plugin: {
-    //       // !FIX
-    //       chain,
-    //       version: "v2",
-    //       variant: "e", // this is like f fp
-    //       // ...frameConfig["frame"],
-    //       type: "RankiFrameV2",
-    //     },
-    //   },
-    //   // this.args.context,
-    // );
-
     const child = context.hooks.parseAst(
       "",
       {
@@ -133,7 +95,6 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
           chain,
           version: "v2",
           variant: "e", // this is like f fp
-          // ...frameConfig["frame"],
           type: "RankiFrameV2",
         },
       },
@@ -158,13 +119,8 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
             "wi.2.length": wi2.sourceString.length,
           },
           report: child.report,
-          // params: [],
         },
-        // ...v2FrameConfig.v2FrameConfig(context),
       },
-      // children: [],
-
-      // children: [child.theaters[context.theater].stages.ast.root],
       children: [child.root],
     };
   },

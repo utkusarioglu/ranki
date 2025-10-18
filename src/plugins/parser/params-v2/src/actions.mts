@@ -91,8 +91,16 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        "wi.1.length": wi1.sourceString.length,
-        "wi.2.length": wi2.sourceString.length,
+        spaces: {
+          keyAndOp: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+          opAndValues: {
+            type: "wi",
+            raw: wi2.sourceString,
+          },
+        },
       },
       operator: f[0] as ParamV2Operator,
       values: paramValues.paramV2Values(context),
@@ -118,6 +126,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       operator: "assign",
       source: {
@@ -147,6 +156,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       operator: "assign",
       values: [
@@ -174,6 +184,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       operator: "assign",
       values: [
@@ -308,12 +319,25 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {
+          sepAndNl: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+          nlAndParam: {
+            type: "wi",
+            raw: wi2.sourceString,
+          },
+          paramAndSep: {
+            type: "wi",
+            raw: wi3.sourceString,
+          },
+        },
         "separator.left.1.type": sepLeft1.creatorName(context),
         // !FIX needs to be parsed
         // "separator.left.2.type": sepLeft2.creatorName(context),
-        "wi.1.length": wi1.sourceString.length,
-        "wi.2.length": wi2.sourceString.length,
-        "wi.3.length": wi3.sourceString.length,
+        // "wi.2.length": wi2.sourceString.length,
+        // "wi.3.length": wi3.sourceString.length,
       },
       params: {
         variant: "block",
@@ -332,11 +356,19 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {
+          sepAndNl: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+          nlAndParam: {
+            type: "wi",
+            raw: wi2.sourceString,
+          },
+        },
         "separator.left.1.type": sepLeft1.creatorName(context),
         // !FIX needs to be parsed
         // "separator.left.2.type": sepLeft2.creatorName(context),
-        "wi.1.length": wi1.sourceString.length,
-        "wi.2.length": wi2.sourceString.length,
       },
       params: {
         variant: "inline",
@@ -356,5 +388,4 @@ export const actions = {
   paramV2Key,
   paramV2SettingNamespace,
   creatorName,
-  // paramV2KeyWord,
 };

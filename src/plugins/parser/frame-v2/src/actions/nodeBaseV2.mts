@@ -16,6 +16,16 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {
+          prefix: {
+            type: "indentation",
+            raw: indentation.sourceString,
+          },
+          v2AndEnder: {
+            type: "wi",
+            raw: wi.sourceString,
+          },
+        },
       },
       source: {
         type: "raw",
@@ -37,7 +47,12 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        "wi.1.length": wi1.sourceString.length,
+        spaces: {
+          prefix: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+        },
       },
       source: {
         type: "raw",
@@ -60,6 +75,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "raw",
@@ -82,6 +98,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "raw",
@@ -97,9 +114,11 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     };
   },
 
+  // !FIX separator between sections is very important and is not
+  // currently being parsed
   v2PayloadSection(
     v2PayloadSectionItem1,
-    whitespace1,
+    whitespaceSeparator,
     v2PayloadSectionItem2,
     whitespace2,
   ) {
@@ -114,6 +133,12 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {
+          suffix: {
+            type: "whitespace",
+            raw: whitespace2.sourceString,
+          },
+        },
       },
       source: {
         type: "raw",
@@ -123,7 +148,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
       children: zipNodes(
         context,
         v2PayloadSectionItem1,
-        whitespace1,
+        whitespaceSeparator,
         v2PayloadSectionItem2,
       ),
     };
@@ -147,6 +172,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
         report: child.report,
       },
       source: {
@@ -159,13 +185,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   },
 
   // !TODO
-  pausedContainer(
-    // whitespace1,
-    pauseStart,
-    pausedPayload,
-    pauseEnd,
-    // whitespace2,
-  ) {
+  pausedContainer(pauseStart, pausedPayload, pauseEnd) {
     const parentContext: RankiLangAstContext = { ...this.args.context };
     parentContext.blockDepth++;
     const leafContext: RankiLangAstContext = { ...parentContext };
@@ -179,6 +199,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           inline: parentContext.inlineDepth,
           total: parentContext.inlineDepth + parentContext.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "raw",
@@ -196,6 +217,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
               inline: leafContext.inlineDepth,
               total: leafContext.inlineDepth + leafContext.blockDepth,
             },
+            spaces: {},
           },
           source: {
             type: "raw",

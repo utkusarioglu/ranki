@@ -14,9 +14,15 @@ export interface AstNodeLeaf extends AstNodeCommon {
   source: AstNodeLeafSource;
 }
 
+export interface WhitespaceEntry {
+  raw: string;
+  type: "whitespace" | "wi" | "clearance" | "wm" | "indentation";
+}
+
 interface AstNodeCommon {
   type: string;
   args: {
+    spaces: Record<string, WhitespaceEntry>;
     depth: {
       block: number;
       inline: number;

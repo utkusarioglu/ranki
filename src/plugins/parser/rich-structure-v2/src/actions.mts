@@ -28,6 +28,7 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
         "richStructure.v2": {
           // name: "SHALL BE SET BY PARENT",
           // !FIX the separators are misplaced. the first separator args and params belong to the SECOND collection, section or whatever the level name is.
@@ -89,8 +90,16 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        "wi.1.length": wi1.sourceString.length,
-        "wi.2.length": wi2.sourceString.length,
+        spaces: {
+          startAndName: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+          nameAndEnd: {
+            type: "wi",
+            raw: wi2.sourceString,
+          },
+        },
       },
       params: {
         variant: "none",
@@ -118,10 +127,21 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {
+          startAndName: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+          nameAndParam: {
+            type: "wi",
+            raw: wi2.sourceString,
+          },
+          paramAndEnd: {
+            type: "wi",
+            raw: wi3.sourceString,
+          },
+        },
         // !TODO you need ctorName here
-        "wi.1.length": wi1.sourceString.length,
-        "wi.2.length": wi2.sourceString.length,
-        "wi.3.length": wi3.sourceString.length,
 
         // !TODO not sure if this is supposed to be placed here
         "richStructure.v1.config": config.args,

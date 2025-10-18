@@ -47,8 +47,18 @@ function hComplex<T extends ohm.Node>(
         inline: context.inlineDepth,
         total: context.inlineDepth + context.blockDepth,
       },
-      "clearance.1.length": clearance1.sourceString.length,
-      "clearance.2.length": clearance2.sourceString.length,
+      spaces: {
+        realAndOp: {
+          type: "clearance",
+          raw: clearance1.sourceString,
+        },
+        opAndIm: {
+          type: "clearance",
+          raw: clearance2.sourceString,
+        },
+      },
+      // "clearance.1.length": clearance1.sourceString.length,
+      // "clearance.2.length": clearance2.sourceString.length,
       "richNumber.v2": {
         args: {
           "token.complex": complexToken.sourceString,
@@ -69,16 +79,14 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   conceptualSymbol(token) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
+    const merged = context.hooks.getConfig().merged;
     let type;
     CONCEPTUAL_NUMBERS.forEach((t) => {
       if (
-        context.hooks
-          .getConfig()
-
-          // @ts-expect-error
-          .merged.plugins.config.RankiRichNumberV2.tokens.symbol[t].includes(
-            token.sourceString,
-          )
+        // @ts-expect-error
+        merged.plugins.config.RankiRichNumberV2.tokens.symbol[t].includes(
+          token.sourceString,
+        )
       ) {
         type = t;
       }
@@ -97,6 +105,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type,
@@ -128,6 +137,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "integer",
@@ -142,11 +152,11 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   numberSystem_international(num) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
+    const merged = context.hooks.getConfig().merged;
     const integer = +num.sourceString
       .split(
         // @ts-expect-error
-        context.hooks.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
-          .number.group,
+        merged.plugins.config.RankiRichNumberV2.tokens.number.group,
       )
       .join("");
     return {
@@ -159,6 +169,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "integer",
@@ -173,11 +184,11 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   numberSystem_unstructured(digit, token, num) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
+    const merged = context.hooks.getConfig().merged;
     const integer = +num.sourceString
       .split(
         // @ts-expect-error
-        context.hooks.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
-          .number.group,
+        merged.plugins.config.RankiRichNumberV2.tokens.number.group,
       )
       .join("");
     return {
@@ -190,6 +201,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "integer",
@@ -214,6 +226,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "integer",
@@ -241,28 +254,13 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     return c;
   },
 
-  // hConcept_positive(positiveToken, token) {
-  //   const h = hConcept.call(this, token);
-  //   h["source"]["sign"] = 1;
-  //   return h;
-  // },
-  // hConcept_unsigned(token) {
-  //   const h = hConcept.call(this, token);
-  //   h["source"]["sign"] = 1;
-  //   return h;
-  // },
-  // hConcept_negative(negativeToken, token) {
-  //   const h = hConcept.call(this, token);
-  //   h["source"]["sign"] = -1;
-  //   return h;
-  // },
-
   hBases(zero, symbol, numberSystem_unstructured) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
+    const merged = context.hooks.getConfig().merged;
     const richNumberV2 =
       // @ts-expect-error
-      context.hooks.getConfig().merged.plugins.config.RankiRichNumberV2.tokens;
+      merged.plugins.config.RankiRichNumberV2.tokens;
     let type;
 
     BASES.forEach((s) => {
@@ -287,6 +285,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type,
@@ -336,6 +335,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         ...ns.source,
@@ -358,6 +358,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "decimal",
@@ -371,11 +372,11 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   decimal_point(sign, decimalToken, decimalGroup) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
+    const merged = context.hooks.getConfig().merged;
     const decimal = +decimalGroup.sourceString
       .split(
         // @ts-expect-error
-        context.hooks.getConfig().merged.plugins.config.RankiRichNumberV2.tokens
-          .number.group,
+        merged.plugins.config.RankiRichNumberV2.tokens.number.group,
       )
       .join("");
     return {
@@ -388,11 +389,11 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "decimal",
         raw: this.sourceString,
-        // sign: 1,
         integer: {
           type: "integer",
           raw: sign.sourceString,
@@ -424,6 +425,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
         // !TODO
       },
       source: {
@@ -518,6 +520,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
         // !TODO
       },
       source: {

@@ -16,9 +16,12 @@ const node: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        // "indentation.1.length": indentation.sourceString.length,
-        // "clearance.1.length": clearance.sourceString.length,
-        "wm.1.length": wm.sourceString.length,
+        spaces: {
+          ignoreAndRest: {
+            type: "wm",
+            raw: wm.sourceString,
+          },
+        },
       },
       source: {
         type: "raw",
@@ -40,6 +43,7 @@ const node: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "raw",
@@ -60,8 +64,16 @@ const node: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        "whitespace.1.length": whitespace1.sourceString.length,
-        "whitespace.2.length": whitespace2.sourceString.length,
+        spaces: {
+          prefix: {
+            type: "whitespace",
+            raw: whitespace1.sourceString,
+          },
+          suffix: {
+            type: "whitespace",
+            raw: whitespace2.sourceString,
+          },
+        },
       },
       source: {
         type: "raw",
@@ -72,6 +84,7 @@ const node: ohm.ActionDict<AstNode> = {
     };
   },
 
+  // TODO blockSep
   section_base(block, blockSep, block2) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
@@ -84,7 +97,7 @@ const node: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        // block sep lengths
+        spaces: {},
       },
       source: {
         type: "raw",
@@ -95,6 +108,7 @@ const node: ohm.ActionDict<AstNode> = {
     };
   },
 
+  // TODO nl
   p(line1, nl, line2) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
@@ -107,6 +121,7 @@ const node: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
         // nl length
       },
       source: {
@@ -130,8 +145,16 @@ const node: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        "indentation.1.length": indentation1.sourceString.length,
-        "wi.1.length": wi1.sourceString.length,
+        spaces: {
+          prefix: {
+            type: "indentation",
+            raw: indentation1.sourceString,
+          },
+          suffix: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+        },
       },
       source: {
         type: "raw",
@@ -142,6 +165,7 @@ const node: ohm.ActionDict<AstNode> = {
     };
   },
 
+  // TODO clearance
   lexemes(lexeme1, clearance, lexeme2) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
@@ -154,6 +178,7 @@ const node: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "raw",
@@ -164,6 +189,7 @@ const node: ohm.ActionDict<AstNode> = {
     };
   },
 
+  // TODO wordEnd
   decorated_base(word, wordEnd) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
@@ -176,6 +202,7 @@ const node: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
         "wordEnd.type": wordEnd.creatorName(context),
       },
       source: {
@@ -187,6 +214,7 @@ const node: ohm.ActionDict<AstNode> = {
     };
   },
 
+  // TODO wordEnd
   decorated_fallback(word, wordEnd) {
     const parentContext: RankiLangAstContext = { ...this.args.context };
     parentContext.inlineDepth++;
@@ -201,6 +229,7 @@ const node: ohm.ActionDict<AstNode> = {
           inline: parentContext.inlineDepth,
           total: parentContext.inlineDepth + parentContext.blockDepth,
         },
+        spaces: {},
         "wordEnd.type": wordEnd.creatorName(this.args.context),
       },
       source: {
@@ -219,6 +248,7 @@ const node: ohm.ActionDict<AstNode> = {
               inline: leafContext.inlineDepth,
               total: leafContext.inlineDepth + leafContext.blockDepth,
             },
+            spaces: {},
           },
           source: {
             type: "raw",
@@ -242,6 +272,7 @@ const node: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "raw",
@@ -263,6 +294,7 @@ const node: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
+        spaces: {},
       },
       source: {
         type: "number",
@@ -272,6 +304,7 @@ const node: ohm.ActionDict<AstNode> = {
     };
   },
 
+  // TODO should this exist?
   clearance(clearance1) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
@@ -285,7 +318,8 @@ const node: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        "clearance.1.length": clearance1.sourceString.length,
+        spaces: {},
+        // "clearance.1.length": clearance1.sourceString.length,
       },
       source: {
         type: "text",
@@ -294,6 +328,7 @@ const node: ohm.ActionDict<AstNode> = {
     };
   },
 
+  // TODO should this exist?
   whitespace(wm, wi) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
@@ -308,7 +343,8 @@ const node: ohm.ActionDict<AstNode> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        "whitespace.1.length": sourceString.length,
+        spaces: {},
+        // "whitespace.1.length": sourceString.length,
       },
       source: {
         type: "text",
