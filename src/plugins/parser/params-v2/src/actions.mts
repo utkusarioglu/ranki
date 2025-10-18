@@ -101,6 +101,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
             raw: wi2.sourceString,
           },
         },
+        separators: [],
       },
       operator: f[0] as ParamV2Operator,
       values: paramValues.paramV2Values(context),
@@ -127,6 +128,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       operator: "assign",
       source: {
@@ -157,6 +159,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       operator: "assign",
       values: [
@@ -185,6 +188,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       operator: "assign",
       values: [
@@ -324,6 +328,10 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
             type: "wi",
             raw: wi1.sourceString,
           },
+          wi1AndWi2: {
+            type: "nl",
+            raw: nl.sourceString,
+          },
           nlAndParam: {
             type: "wi",
             raw: wi2.sourceString,
@@ -333,11 +341,18 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
             raw: wi3.sourceString,
           },
         },
-        "separator.left.1.type": sepLeft1.creatorName(context),
-        // !FIX needs to be parsed
-        // "separator.left.2.type": sepLeft2.creatorName(context),
-        // "wi.2.length": wi2.sourceString.length,
-        // "wi.3.length": wi3.sourceString.length,
+        separators: [
+          {
+            // !fix these break the types.
+            // The type doesn't understand `creatorName` return.
+            type: sepLeft1.creatorName(context),
+            raw: sepLeft1.sourceString,
+          },
+          {
+            type: sepLeft2.creatorName(context),
+            raw: sepLeft2.sourceString,
+          },
+        ],
       },
       params: {
         variant: "block",
@@ -366,9 +381,18 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
             raw: wi2.sourceString,
           },
         },
-        "separator.left.1.type": sepLeft1.creatorName(context),
-        // !FIX needs to be parsed
-        // "separator.left.2.type": sepLeft2.creatorName(context),
+        separators: [
+          {
+            // !fix these break the types.
+            // The type doesn't understand `creatorName` return.
+            type: sepLeft1.creatorName(context),
+            raw: sepLeft1.sourceString,
+          },
+          {
+            type: sepLeft2.creatorName(context),
+            raw: sepLeft2.sourceString,
+          },
+        ],
       },
       params: {
         variant: "inline",

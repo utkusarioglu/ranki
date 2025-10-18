@@ -26,6 +26,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
             raw: wi.sourceString,
           },
         },
+        separators: [],
       },
       source: {
         type: "raw",
@@ -52,7 +53,12 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
             type: "wi",
             raw: wi1.sourceString,
           },
+          wiAndPause: {
+            type: "nl",
+            raw: nl.sourceString,
+          },
         },
+        separators: [],
       },
       source: {
         type: "raw",
@@ -76,6 +82,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "raw",
@@ -99,6 +106,9 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        // TODO maybe `pausedContainer` should be a separator.
+        // after all, that's what it actually does
+        separators: [],
       },
       source: {
         type: "raw",
@@ -139,6 +149,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
             raw: whitespace2.sourceString,
           },
         },
+        separators: whitespaceSeparator.separator(context),
       },
       source: {
         type: "raw",
@@ -173,6 +184,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
         report: child.report,
       },
       source: {
@@ -184,7 +196,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     };
   },
 
-  // !TODO
+  // !TODO are pauseStart and pauseEnd separators or fillers?
   pausedContainer(pauseStart, pausedPayload, pauseEnd) {
     const parentContext: RankiLangAstContext = { ...this.args.context };
     parentContext.blockDepth++;
@@ -200,6 +212,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           total: parentContext.inlineDepth + parentContext.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "raw",
@@ -218,6 +231,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
               total: leafContext.inlineDepth + leafContext.blockDepth,
             },
             spaces: {},
+            separators: [],
           },
           source: {
             type: "raw",

@@ -27,6 +27,7 @@ const nodeBaseV2: ohm.ActionDict<AstNode> = {
             raw: wi1.sourceString,
           },
         },
+        separators: [],
         // "indentation.1.length": indentation.sourceString.length,
         // "wi.1.length": wi1.sourceString.length,
       },
@@ -84,6 +85,13 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
             raw: wi2.sourceString,
           },
         },
+        separators: [
+          {
+            // !fix this has any type
+            type: sepRight1.creatorName(context),
+            raw: sepRight1.sourceString,
+          },
+        ],
         "frame.v1": {
           variant: "p",
           frameType: v1Type.sourceString,
@@ -155,6 +163,17 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
             raw: wi4.sourceString,
           },
         },
+        separators: [
+          {
+            type: sepRight1.creatorName(context),
+            raw: sepRight1.sourceString,
+          },
+          {
+            type: sepRight2.creatorName(context),
+            raw: sepRight2.sourceString,
+          },
+        ],
+
         "frame.v1": {
           variant: "fp",
           frameType: v1Type.sourceString,
@@ -219,7 +238,17 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
             type: "wi",
             raw: wi3.sourceString,
           },
+          sepAndPayload: {
+            type: "nl",
+            raw: nl1.sourceString,
+          },
         },
+        separators: [
+          {
+            type: sep.creatorName(context),
+            raw: sep.sourceString,
+          },
+        ],
         "frame.v1": {
           variant: "p",
           frameType: v1Type.sourceString,
@@ -240,11 +269,11 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     wi1,
     v1Type,
     wi2,
-    sepRight1,
+    sep1,
     wi3,
     v1ParamListInline,
     wi4,
-    sep,
+    sep2,
     wi5,
     nl1,
     v1PayloadBlock,
@@ -297,7 +326,21 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
             type: "wi",
             raw: wi5.sourceString,
           },
+          sepAndPayload: {
+            type: "nl",
+            raw: nl1.sourceString,
+          },
         },
+        separators: [
+          {
+            type: sep1.creatorName(context),
+            raw: sep1.sourceString,
+          },
+          {
+            type: sep2.creatorName(context),
+            raw: sep2.sourceString,
+          },
+        ],
         "frame.v1": {
           variant: "fp",
           frameType: v1Type.sourceString,
@@ -341,11 +384,18 @@ const argsAndParamsV1: ohm.ActionDict<ArgsAndParamsV1> = {
   },
 };
 
+const creatorName: ohm.ActionDict<string> = {
+  tFrameV1SeparatorParam(one) {
+    return this.ctorName;
+  },
+};
+
 export const actions = {
   node: {
     ...nodeFrameV1,
     ...nodeBaseV2,
   },
+  creatorName,
   paramV1,
   paramsV1,
   argsAndParamsV1,

@@ -29,6 +29,8 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        // !fix I don't understand the separators thing here
+        separators: [],
         "richStructure.v2": {
           // name: "SHALL BE SET BY PARENT",
           // !FIX the separators are misplaced. the first separator args and params belong to the SECOND collection, section or whatever the level name is.
@@ -100,6 +102,16 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
             raw: wi2.sourceString,
           },
         },
+        separators: [
+          {
+            type: "structure",
+            raw: structureSepStart.sourceString,
+          },
+          {
+            type: "structure",
+            raw: structureSepEnd.sourceString,
+          },
+        ],
       },
       params: {
         variant: "none",
@@ -141,6 +153,16 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
             raw: wi3.sourceString,
           },
         },
+        separators: [
+          {
+            type: "structure",
+            raw: structureSepStart.sourceString,
+          },
+          {
+            type: "structure",
+            raw: structureSepEnd.sourceString,
+          },
+        ],
         // !TODO you need ctorName here
 
         // !TODO not sure if this is supposed to be placed here

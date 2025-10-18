@@ -1,6 +1,43 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangAstContext, AstNode } from "@ranki/package-api-v2";
+import type {
+  RankiLangAstContext,
+  AstNode,
+  SeparatorEntry,
+} from "@ranki/package-api-v2";
 import { zipNodes, joinNodes } from "@ranki/package-api-v2/helpers";
+
+const separatorList: ohm.ActionDict<SeparatorEntry[]> = {
+  _iter(...children) {
+    return children.map((c) => c.separator(this.args.context));
+  },
+};
+
+const separator: ohm.ActionDict<SeparatorEntry> = {
+  blockSep_base(n1, wi1, nl, wi) {
+    return {
+      type: "block",
+      raw: this.sourceString,
+    };
+  },
+  clearance(all) {
+    return {
+      type: "clearance",
+      raw: this.sourceString,
+    };
+  },
+  nl(all) {
+    return {
+      type: "nl",
+      raw: this.sourceString,
+    };
+  },
+  whitespace(one, two) {
+    return {
+      type: "whitespace",
+      raw: this.sourceString,
+    };
+  },
+};
 
 const node: ohm.ActionDict<AstNode> = {
   root_ignore(ignore, wm, rest) {
@@ -22,6 +59,7 @@ const node: ohm.ActionDict<AstNode> = {
             raw: wm.sourceString,
           },
         },
+        separators: [],
       },
       source: {
         type: "raw",
@@ -44,6 +82,7 @@ const node: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "raw",
@@ -74,6 +113,7 @@ const node: ohm.ActionDict<AstNode> = {
             raw: whitespace2.sourceString,
           },
         },
+        separators: [],
       },
       source: {
         type: "raw",
@@ -84,7 +124,6 @@ const node: ohm.ActionDict<AstNode> = {
     };
   },
 
-  // TODO blockSep
   section_base(block, blockSep, block2) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
@@ -98,6 +137,7 @@ const node: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: blockSep.separator(context),
       },
       source: {
         type: "raw",
@@ -122,6 +162,7 @@ const node: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: nl.separator(context),
         // nl length
       },
       source: {
@@ -133,6 +174,7 @@ const node: ohm.ActionDict<AstNode> = {
     };
   },
 
+  // TODO line modifiers
   line(indentation1, lineModifiers, lexemes, wi1) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
@@ -155,6 +197,7 @@ const node: ohm.ActionDict<AstNode> = {
             raw: wi1.sourceString,
           },
         },
+        separators: [],
       },
       source: {
         type: "raw",
@@ -179,6 +222,7 @@ const node: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: clearance.separator(context),
       },
       source: {
         type: "raw",
@@ -203,6 +247,7 @@ const node: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
         "wordEnd.type": wordEnd.creatorName(context),
       },
       source: {
@@ -230,6 +275,7 @@ const node: ohm.ActionDict<AstNode> = {
           total: parentContext.inlineDepth + parentContext.blockDepth,
         },
         spaces: {},
+        separators: [],
         "wordEnd.type": wordEnd.creatorName(this.args.context),
       },
       source: {
@@ -249,6 +295,7 @@ const node: ohm.ActionDict<AstNode> = {
               total: leafContext.inlineDepth + leafContext.blockDepth,
             },
             spaces: {},
+            separators: [],
           },
           source: {
             type: "raw",
@@ -273,6 +320,7 @@ const node: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "raw",
@@ -295,6 +343,7 @@ const node: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "number",
@@ -319,6 +368,7 @@ const node: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
         // "clearance.1.length": clearance1.sourceString.length,
       },
       source: {
@@ -344,6 +394,7 @@ const node: ohm.ActionDict<AstNode> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
         // "whitespace.1.length": sourceString.length,
       },
       source: {
@@ -375,4 +426,8 @@ export const actions = {
   node,
   creatorName,
   iterNode,
+  separator: {
+    ...separator,
+    ...separatorList,
+  },
 };

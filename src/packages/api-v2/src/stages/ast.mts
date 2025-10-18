@@ -16,13 +16,25 @@ export interface AstNodeLeaf extends AstNodeCommon {
 
 export interface WhitespaceEntry {
   raw: string;
-  type: "whitespace" | "wi" | "clearance" | "wm" | "indentation";
+  type: "whitespace" | "wi" | "clearance" | "wm" | "indentation" | "nl";
+}
+
+export interface SeparatorEntry {
+  type:
+    | "block"
+    | "clearance"
+    | "nl"
+    | "whitespace"
+    // ! fix this doesn't belong here. it belongs in richStructure
+    | "structure";
+  raw: string;
 }
 
 interface AstNodeCommon {
   type: string;
   args: {
     spaces: Record<string, WhitespaceEntry>;
+    separators: SeparatorEntry[];
     depth: {
       block: number;
       inline: number;

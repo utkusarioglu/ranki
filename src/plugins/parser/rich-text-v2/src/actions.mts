@@ -186,6 +186,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: clearance.separator(context),
       },
       source: {
         type: "raw",
@@ -212,6 +213,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
         ...startArgs,
         ...endArgs,
         ...wordEndArgs(context, wordEnd),
@@ -239,6 +241,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "lowercase",
@@ -261,6 +264,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "propercase",
@@ -283,6 +287,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "uppercase",
@@ -305,6 +310,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "mixedcase",
@@ -327,6 +333,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "mixedcase",
@@ -349,6 +356,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "token",
@@ -371,6 +379,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "token",
@@ -393,6 +402,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "token",
@@ -415,6 +425,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "token",
@@ -437,6 +448,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "token",
@@ -459,6 +471,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "token",
@@ -509,6 +522,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           total: context.inlineDepth + context.blockDepth,
         },
         spaces: {},
+        separators: [],
       },
       source: {
         type: "raw",
@@ -535,6 +549,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           total: parentContext.inlineDepth + parentContext.blockDepth,
         },
         spaces: {},
+        separators: [],
         ...startArgs,
         ...endArgs,
         ...wordEndArgs(parentContext, wordEnd),
