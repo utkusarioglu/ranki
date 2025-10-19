@@ -23,7 +23,9 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
     {
       chain: "code",
       stages: {
-        preprocess: (c: string) => c.trim(),
+        // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
+        // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
+        preprocess: (c) => c.replace("a", "'a'-is-replaced!!"),
         ast: {
           directives: {
             plugins: {

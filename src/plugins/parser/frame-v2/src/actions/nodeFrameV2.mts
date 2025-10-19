@@ -1,22 +1,24 @@
 import type * as ohm from "ohm-js";
 import type { RankiLangAstContext } from "@ranki/package-api-v2";
-import type { NodeArgsFrameV2ConfigFp_F, ParseNodeFrameV2 } from "../types.mjs";
-import type { FrameSpec } from "../types.mjs";
+import type { ParseNodeFrameV2, ParseNodeFrameV2Fp } from "../types/node.mjs";
+import type {
+  NodeArgsFrameV2ConfigE,
+  NodeArgsFrameV2Config,
+  NodeArgsFrameV2ConfigP,
+} from "../types/args.mjs";
+import type { FrameSpec } from "../types/args.mjs";
+import type { RankiLangParserPluginParseHandlerFrameV2 } from "../types/RankiLangParserPluginParseHandlerFrameV2.mjs";
 
 export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2_fp(v2Start, v2FrameConfig, v2Payload, v2End) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
-    // !FIX i'm not sure if this specific of a type is a good idea here
-    const frameConfig: NodeArgsFrameV2ConfigFp_F =
+    const frameConfig: NodeArgsFrameV2Config =
       v2FrameConfig.v2FrameConfig(context);
 
     const child = v2Payload.node({
       ...context,
-      plugin: {
-        ...frameConfig["frame"],
-        type: "RankiFrameV2",
-      },
+      plugin: frameConfig,
     });
 
     return {
@@ -28,31 +30,32 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        ...frameConfig,
+        separators: [],
+        spaces: {},
       },
       source: {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {
+        frameConfig,
+      },
       children: [child],
-    };
+    } as ParseNodeFrameV2Fp;
   },
 
   v2_f(v2Start, v2FrameConfig, v2End) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
-    // !FIX i'm not sure if this specific of a type is a good idea here
-    const frameConfig: NodeArgsFrameV2ConfigFp_F =
+    const frameConfig: NodeArgsFrameV2ConfigP =
       v2FrameConfig.v2FrameConfig(context);
 
-    const child = context.hooks.parseAst("", {
+    const newContext: RankiLangAstContext = {
       ...context,
-      plugin: {
-        ...frameConfig["frame"],
-        type: "RankiFrameV2",
-      },
-    });
+      plugin: frameConfig,
+    };
+
+    const child = context.hooks.parseAst("", newContext);
 
     return {
       kind: "parent",
@@ -63,35 +66,61 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        ...frameConfig,
-        report: child.report,
+        separators: [],
+        spaces: {},
+        // report: child.report,
       },
       source: {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {
+        frameConfig,
+      },
       children: [child.root],
     };
   },
 
-  // @ts-expect-error FIX type in this doesn't seem to work
-  // likely due to a design error
   v2_e(v2Start, wi1, v2Chain, wi2, v2End) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     const chain: FrameSpec[] = v2Chain.frameSpecV2(context);
-    const child = context.hooks.parseAst("", {
-      ...context,
-      plugin: {
-        // !FIX
-        // @ts-expect-error
-        chain,
-        version: "v2",
-        variant: "e", // this is like f fp
-        type: "RankiFrameV2",
+
+    const frameConfig: NodeArgsFrameV2ConfigE = {
+      type: "RankiFrameV2",
+      version: "v2",
+      variant: "e",
+      chain,
+      args: {
+        depth: {
+          block: context.blockDepth + 1,
+          inline: context.inlineDepth,
+          total: context.blockDepth + context.inlineDepth + 1,
+        },
+        spaces: {
+          startAndChain: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+          chainAndEnd: {
+            type: "wi",
+            raw: wi2.sourceString,
+          },
+        },
+        separators: [],
       },
-    });
+      params: {
+        variant: "none",
+        items: [],
+      },
+      subtree: {},
+    };
+
+    const child =
+      context.hooks.parseAst<RankiLangParserPluginParseHandlerFrameV2>("", {
+        ...context,
+        plugin: frameConfig,
+      });
 
     return {
       kind: "parent",
@@ -102,16 +131,15 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
           inline: context.inlineDepth,
           total: context.inlineDepth + context.blockDepth,
         },
-        frame: {
-          version: "v2",
-          variant: "e",
-          chain,
-          args: {
-            "wi.1.length": wi1.sourceString.length,
-            "wi.2.length": wi2.sourceString.length,
-          },
-          report: child.report,
-        },
+        separators: [],
+        spaces: {},
+      },
+      source: {
+        type: "raw",
+        raw: this.sourceString,
+      },
+      subtree: {
+        frameConfig,
       },
       children: [child.root],
     };

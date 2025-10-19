@@ -23,6 +23,10 @@ export interface RankiParamsV2ParserPluginConfig {
   };
 }
 
+export type WithRankiParamsV2ParserPluginConfig = {
+  RankiParamsV2: RankiParamsV2ParserPluginConfig;
+};
+
 const config: RankiParamsV2ParserPluginConfig = {
   tokens: {
     separator: {
@@ -69,5 +73,11 @@ export const rankiParamsV2ParserPlugin: RankiPluginParser<RankiParamsV2ParserPlu
     actions: () => actions,
   };
 
-export type { ArgsAndParamsV2, ParamsV2Spec, ParamV2 } from "./types.mjs";
+export type {
+  ArgsAndParamsV2,
+  ParamsV2Spec,
+  ParamsV2SpecNone,
+  ParamsV2SpecPopulated,
+  ParamV2,
+} from "./types.mjs";
 export { applyV2Directives } from "./params.mjs";

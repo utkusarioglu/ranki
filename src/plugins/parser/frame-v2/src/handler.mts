@@ -4,7 +4,7 @@ import type {
   RankiLangParseHandlerFunction,
 } from "@ranki/package-api-v2";
 import type { ParamV2 } from "@ranki/plugin-parser-params-v2";
-import type { RankiLangParserPluginParseHandlerFrameV2 } from "./types.mjs";
+import type { RankiLangParserPluginParseHandlerFrameV2 } from "./types/RankiLangParserPluginParseHandlerFrameV2.mjs";
 
 export const handler: RankiLangParseHandlerFunction<
   RankiLangParserPluginParseHandlerFrameV2

@@ -35,7 +35,7 @@ const nodeBaseV2: ohm.ActionDict<AstNode> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [v1Block.node(context)],
     };
   },
@@ -98,7 +98,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [child.root],
     };
   },
@@ -177,7 +177,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [child.root],
     };
   },
@@ -247,7 +247,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [child.root],
     };
   },
@@ -336,7 +336,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [child.root],
     };
   },

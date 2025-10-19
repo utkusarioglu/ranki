@@ -1,5 +1,5 @@
 import type { RankiGrammarTokens } from "@ranki/package-api-v2";
-import type { RankiFrameV2ParserPluginConfig } from "./types.mjs";
+import type { RankiFrameV2ParserPluginConfig } from "./types/config.mjs";
 
 export const config: RankiFrameV2ParserPluginConfig = {
   tokens: {

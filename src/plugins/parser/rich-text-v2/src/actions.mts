@@ -186,7 +186,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       // children: zipNodes(context, decorated1, clearance, decorated2),
       children: joinNodes(context, decorated1, decorated2),
     };
@@ -221,7 +221,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [...startNodes, word.node(context), ...endNodes],
     };
   },
@@ -502,7 +502,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [lexemes.node(context)],
     };
   },
@@ -561,7 +561,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [
         ...startNodes,
         {

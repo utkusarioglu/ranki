@@ -46,13 +46,13 @@ RankiFrameV2 <: RankiParamsV2 {
   v2Start = tFrameV2LeftOuter tFrameV2LeftInner
   
   v2FrameConfigFp =
-    | wi 
-        v2Chain wi 
-          v2ParamListBlockContainer wi
-          tFrameV2SeparatorParam?  --F
     |   wi 
       v2Chain wi 
-        v2ParamListInlineContainer wi 
+      v2ParamListBlockContainer wi
+        tFrameV2SeparatorParam?  --F
+    |   wi 
+      v2Chain wi 
+      v2ParamListInlineContainer wi 
         tFrameV2SeparatorParam? --f
 
   v2FrameConfigP = wi v2Chain wi (tFrameV2SeparatorParam | nl)

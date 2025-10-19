@@ -1,10 +1,7 @@
 import type { RankiLangAstContext } from "@ranki/package-api-v2";
 import type * as ohm from "ohm-js";
-import type {
-  NodeArgsFrameV2,
-  ArgsAndParamsV2FrameV2,
-  FrameSpec,
-} from "../types.mjs";
+import type { NodeArgsFrameV2, FrameSpec } from "../types/args.mjs";
+import { ArgsAndParamsV2 } from "@ranki/plugin-parser-params-v2";
 
 export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   v2FrameConfigP(wi1, v2Type, wi2, sep) {
@@ -13,23 +10,39 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
 
     const chain: FrameSpec[] = v2Type.frameSpecV2(context);
     return {
-      frame: {
-        version: "v2",
-        // type: this.ctorName,
-        // frameType: v2Type.sourceString,
-        chain,
-        variant: "p",
-        args: {
-          depth: {
-            block: context.blockDepth,
-            inline: context.inlineDepth,
-            total: context.inlineDepth + context.blockDepth,
+      type: "RankiFrameV2",
+      version: "v2",
+      variant: "p",
+      chain,
+      args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
+        },
+        separators: [
+          {
+            type: sep.creatorName(context),
+            raw: sep.sourceString,
           },
-          "wi.1.length": wi1.sourceString.length,
-          "wi.2.length": wi2.sourceString.length,
-          "separator.right.type": sep.creatorName(context),
+        ],
+        spaces: {
+          startAndType: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+          typeAndSep: {
+            type: "wi",
+
+            raw: wi2.sourceString,
+          },
         },
       },
+      params: {
+        variant: "none",
+        items: [],
+      },
+      subtree: {},
     };
   },
 
@@ -43,34 +56,47 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   ) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
-    const config: ArgsAndParamsV2FrameV2 =
+    const config: ArgsAndParamsV2 =
       v2ParamListInlineContainer.argsAndParamsV2(context);
 
     const chain: FrameSpec[] = v2Type.frameSpecV2(context);
     return {
-      frame: {
-        version: "v2",
-        // type: this.ctorName,
-        // frameType: v2Type.sourceString,
-        chain,
-        variant: "fp_f",
-        args: {
-          depth: {
-            block: context.blockDepth,
-            inline: context.inlineDepth,
-            total: context.inlineDepth + context.blockDepth,
-          },
-          "wi.1.length": wi1.sourceString.length,
-          "wi.2.length": wi2.sourceString.length,
-          "wi.3.length": wi3.sourceString.length,
-
-          // !FIX this expects iter if `creatorName` is called
-          // "separator.right.type": sepRight.creatorName(context),
-          "separator.right.type": sepRight.sourceString,
-
-          "frame.v2.config": config.args,
+      type: "RankiFrameV2",
+      version: "v2",
+      chain,
+      variant: "fp_f",
+      args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
         },
-        params: config.params,
+        spaces: {
+          start: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+          typeAndParams: {
+            type: "wi",
+            raw: wi2.sourceString,
+          },
+          paramsAndSep: {
+            type: "wi",
+            raw: wi3.sourceString,
+          },
+        },
+        separators: [
+          {
+            type: sepRight.creatorName(context),
+            raw: sepRight.sourceString,
+          },
+        ],
+      },
+      params: config.params,
+      subtree: {
+        paramsContainer: {
+          args: config.args,
+        },
       },
     };
   },
@@ -85,30 +111,47 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   ) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
-    const config: ArgsAndParamsV2FrameV2 =
+    const config: ArgsAndParamsV2 =
       v2ParamListBlockContainer.argsAndParamsV2(context);
     const chain: FrameSpec[] = v2Type.frameSpecV2(context);
 
     return {
-      frame: {
-        version: "v2",
-        variant: "fp_F",
-        chain,
-        args: {
-          depth: {
-            block: context.blockDepth,
-            inline: context.inlineDepth,
-            total: context.inlineDepth + context.blockDepth,
-          },
-          "wi.1.length": wi1.sourceString.length,
-          "wi.2.length": wi2.sourceString.length,
-          "wi.3.length": wi3.sourceString.length,
-          // !FIX sepRight doesn't work
-          // "separator.right.type": sepRight.creatorName(context),
-          "separator.right.type": sepRight.sourceString,
-          "frame.v2.config": config.args,
+      type: "RankiFrameV2",
+      version: "v2",
+      variant: "fp_F",
+      chain,
+      args: {
+        depth: {
+          block: context.blockDepth,
+          inline: context.inlineDepth,
+          total: context.inlineDepth + context.blockDepth,
         },
-        params: config.params,
+        spaces: {
+          start: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+          typeAndParams: {
+            type: "wi",
+            raw: wi2.sourceString,
+          },
+          paramsAndSep: {
+            type: "wi",
+            raw: wi3.sourceString,
+          },
+        },
+        separators: [
+          {
+            type: sepRight.creatorName(context),
+            raw: sepRight.sourceString,
+          },
+        ],
+      },
+      params: config.params,
+      subtree: {
+        paramsContainer: {
+          args: config.args,
+        },
       },
     };
   },

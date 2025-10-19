@@ -60,12 +60,33 @@ interface ParamV2ValueBoolean {
   value: boolean;
 }
 
-export interface ParamsV2Spec {
-  variant: "block" | "inline" | "none";
+export type ParamsV2Spec = ParamsV2SpecPopulated | ParamsV2SpecNone;
+// {
+//   variant: "block" | "inline" | "none";
+//   items: ParamV2[];
+// }
+
+export interface ParamsV2SpecPopulated {
+  variant: "block" | "inline";
   items: ParamV2[];
+}
+
+/**
+ * @dev
+ * this is never returned by ArgsAndParamsV2 but it's still a useful
+ * to have the type.
+ */
+export interface ParamsV2SpecNone {
+  variant: "none";
+  items: [];
 }
 
 export interface ArgsAndParamsV2 {
   args: NodeArgsParamsV2;
-  params: ParamsV2Spec;
+  params: ParamsV2SpecPopulated;
 }
+
+// export interface ArgsAndParamsV2WithNone {
+//   args: NodeArgsParamsV2;
+//   params: ParamsV2SpecNone;
+// }

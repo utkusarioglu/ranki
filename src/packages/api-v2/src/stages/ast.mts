@@ -3,7 +3,7 @@ export type AstNode = AstNodeLeaf | AstNodeParent;
 export interface AstNodeParent extends AstNodeCommon {
   kind: "parent";
   type: string;
-  subtree: AstNode[];
+  subtree: {}; // this is supposed to be overwritten by implementers which have subtrees
   children: AstNode[];
   source: AstNodeLeafSource;
 }

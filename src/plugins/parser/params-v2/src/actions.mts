@@ -10,6 +10,20 @@ import type {
   ParamV2Value,
 } from "./types.mjs";
 
+const creatorNameList: ohm.ActionDict<string[]> = {
+  _iter(...children) {
+    return children.map((c) => c.ctorName);
+  },
+  // tParamsV2SeparatorParam(sep) {
+  //   const context: RankiLangAstContext = this.args.context;
+  //   const merged = context.hooks.getConfig().merged;
+  //   const separators =
+  //     // @ts-expect-error
+  //     merged.plugins.config.RankiParamsV2.tokens.separator;
+  //   return sep.sourceString === separators.param ? this.ctorName : "none";
+  // },
+};
+
 const creatorName: ohm.ActionDict<string> = {
   tParamsV2SeparatorParam(sep) {
     const context: RankiLangAstContext = this.args.context;
@@ -135,7 +149,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       values: [
         {
           type: "boolean",
@@ -364,6 +378,14 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   v2ParamListInlineContainer(sepLeft1, wi1, v2ParamListInline, wi2, sepLeft2) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
+
+    const sepLastCtorName = sepLeft2.creatorName(context) as string[];
+
+    const sepLast = sepLastCtorName.map((type) => ({
+      type,
+      raw: sepLeft2.sourceString,
+    }));
+
     return {
       args: {
         depth: {
@@ -388,10 +410,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
             type: sepLeft1.creatorName(context),
             raw: sepLeft1.sourceString,
           },
-          {
-            type: sepLeft2.creatorName(context),
-            raw: sepLeft2.sourceString,
-          },
+          ...sepLast,
         ],
       },
       params: {
@@ -411,5 +430,8 @@ export const actions = {
   argsAndParamsV2,
   paramV2Key,
   paramV2SettingNamespace,
-  creatorName,
+  creatorName: {
+    ...creatorName,
+    ...creatorNameList,
+  },
 };

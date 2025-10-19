@@ -119,7 +119,7 @@ const node: ohm.ActionDict<AstNode> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [structure.node(context)],
     };
   },
@@ -143,7 +143,7 @@ const node: ohm.ActionDict<AstNode> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: joinNodes(context, block, block2),
     };
   },
@@ -168,7 +168,7 @@ const node: ohm.ActionDict<AstNode> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: joinNodes(context, line1, line2),
     };
   },
@@ -202,7 +202,7 @@ const node: ohm.ActionDict<AstNode> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [lexemes.node(context)],
     };
   },
@@ -227,7 +227,7 @@ const node: ohm.ActionDict<AstNode> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       // children: zipNodes(context, lexeme1, clearance, lexeme2),
       children: joinNodes(context, lexeme1, lexeme2),
     };
@@ -258,7 +258,7 @@ const node: ohm.ActionDict<AstNode> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [word.node(context)],
     };
   },
@@ -289,7 +289,7 @@ const node: ohm.ActionDict<AstNode> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [
         {
           kind: "leaf",

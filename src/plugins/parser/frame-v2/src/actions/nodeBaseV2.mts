@@ -1,7 +1,6 @@
 import type { AstNode, RankiLangAstContext } from "@ranki/package-api-v2";
-import { zipNodes } from "@ranki/package-api-v2/helpers";
+import { joinNodes, zipNodes } from "@ranki/package-api-v2/helpers";
 import type * as ohm from "ohm-js";
-import type { RankiLangParserPluginParseHandlerFrameV2 } from "../types.mjs";
 
 export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   block_v2(indentation, v2, wi, ender) {
@@ -32,10 +31,11 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [v2.node(context)],
     };
   },
+
   v2Payload_P(wi1, nl, pauseRoot) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
@@ -64,7 +64,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [pauseRoot.node(context)],
     };
   },
@@ -88,7 +88,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [pauseRoot.node(context)],
     };
   },
@@ -114,7 +114,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: zipNodes(
         context,
         v2PayloadSection1,
@@ -124,8 +124,6 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     };
   },
 
-  // !FIX separator between sections is very important and is not
-  // currently being parsed
   v2PayloadSection(
     v2PayloadSectionItem1,
     whitespaceSeparator,
@@ -155,11 +153,10 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
-      children: zipNodes(
+      subtree: {},
+      children: joinNodes(
         context,
         v2PayloadSectionItem1,
-        whitespaceSeparator,
         v2PayloadSectionItem2,
       ),
     };
@@ -172,7 +169,6 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       type: this.ctorName,
-      print: true,
       args: {
         depth: {
           block: context.blockDepth,
@@ -181,13 +177,13 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         },
         spaces: {},
         separators: [],
-        report: child.report,
+        // report: child.report,
       },
       source: {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [child.root],
     };
   },
@@ -214,7 +210,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: [],
+      subtree: {},
       children: [
         {
           kind: "leaf",

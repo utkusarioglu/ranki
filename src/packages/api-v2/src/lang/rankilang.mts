@@ -47,10 +47,11 @@ export interface RankiLangParseHandlerHooks {
   clone(
     userConfigs: RankiLanguageProvidedConfig[] | null,
   ): RankiLangCloneFunctionReturn;
-  parseAst: (
+  parseAst: <
+    T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
+  >(
     raw: string,
-    context: RankiLangAstContext,
-    // hooks: RankiLangParseHandlerHooks,
+    context: RankiLangAstContext<T>,
   ) => RankiLangParseFunctionReturn;
 }
 
