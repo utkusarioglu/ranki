@@ -1,8 +1,5 @@
 import type {
-  // RankiLangParseSpecs,
   RankiLangAstContext,
-  // RankiLangParseReport,
-  // RankiLangParserPluginParseHandler,
   RankiLangParseHandlerFunction,
 } from "@ranki/package-api-v2";
 
@@ -14,18 +11,17 @@ export interface FrameV1 {
 
 export const handler: RankiLangParseHandlerFunction<FrameV1> = (
   theaterRaw,
-  spec,
-  hooks,
+  context,
 ) => {
-  const cloned = hooks.clone([]);
+  const cloned = context.hooks.clone([]);
   const contextV1: RankiLangAstContext = {
     hooks: cloned.hooks,
-    blockDepth: spec.blockDepth,
-    inlineDepth: spec.inlineDepth,
-    theater: spec.theater,
-    role: spec.role,
-    startRule: spec.startRule,
+    blockDepth: context.blockDepth + 1,
+    inlineDepth: context.inlineDepth,
+    theater: context.theater,
+    role: context.role,
+    startRule: context.startRule,
   };
 
-  return hooks.parseAst(theaterRaw, contextV1, cloned.hooks);
+  return context.hooks.parseAst(theaterRaw, contextV1);
 };

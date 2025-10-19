@@ -1,10 +1,6 @@
 import type { RankiLanguageConfig } from "./config.mjs";
 import type { AstNode } from "../stages/ast.mjs";
-import type {
-  RankiLangInstance,
-  RankiLangParseHandlerHooks,
-  // RankiLangParserPluginParseHandler,
-} from "./rankilang.mjs";
+import type { RankiLangParseHandlerHooks } from "./rankilang.mjs";
 import {
   RankiGrammarTokens,
   RankiLangParseHandlerFunction,

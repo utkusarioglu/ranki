@@ -4,6 +4,7 @@ import type {
   RankiLangParseSpecs,
   RankiLangParseHandlerCommon,
   RankiLangParsedAst,
+  RankiLangAstContext,
 } from "../lang/context.mjs";
 import type { RankiLangParseHandlerHooks } from "../lang/rankilang.mjs";
 import type { RankiPluginCommon } from "./general.mjs";
@@ -19,8 +20,8 @@ export type RankiLangParseHandlerFunction<
   HandlerShape extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
 > = (
   raw: string,
-  spec: RankiLangParseSpecs<HandlerShape>,
-  hooks: RankiLangParseHandlerHooks,
+  spec: RankiLangAstContext<HandlerShape>,
+  // hooks: RankiLangParseHandlerHooks,
 ) => RankiLangParsedAst;
 
 export type RankiPluginParser<

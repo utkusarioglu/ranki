@@ -23,8 +23,8 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
     {
       chain: "code",
       stages: {
+        preprocess: (c: string) => c.trim(),
         ast: {
-          preprocess: (c: string) => c.trim(),
           directives: {
             plugins: {
               // requested: null,

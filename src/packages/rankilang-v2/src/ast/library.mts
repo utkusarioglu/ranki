@@ -3,30 +3,30 @@ import type {
   RankiLangParseHandlerHooks,
   RankiLangParseHandlerCommon,
   RankiLangParsedAst,
+  RankiLangAstContext,
 } from "@ranki/package-api-v2";
-import type { RankiLangAstContext } from "@ranki/package-api-v2";
 import { ast } from "./ast.mjs";
 
 export class AstLibrary {
   parse<T extends RankiLangParseHandlerCommon>(
     theaterRaw: string,
-    spec: RankiLangParseSpecs<T>,
-    hooks: RankiLangParseHandlerHooks,
+    context: RankiLangAstContext<T>,
+    // hooks: RankiLangParseHandlerHooks,
   ): RankiLangParsedAst {
-    if (!spec["plugin"]) {
-      return this.parseAstDefault(theaterRaw, spec, hooks);
+    if (!context["plugin"]) {
+      return this.parseAstDefault<T>(theaterRaw, context);
     }
 
-    const handler = hooks.getHandler(spec["plugin"].type);
-    return handler(theaterRaw, spec, hooks);
+    const handler = context.hooks.getHandler(context["plugin"].type);
+    return handler(theaterRaw, context);
   }
 
   private parseAstDefault<T extends RankiLangParseHandlerCommon>(
     theaterRaw: string,
-    spec: RankiLangParseSpecs<T>,
-    hooks: RankiLangParseHandlerHooks,
+    context: RankiLangAstContext<T>,
+    // hooks: RankiLangParseHandlerHooks,
   ): RankiLangParsedAst {
-    const contentConfig = hooks.getConfig().merged.content;
+    const contentConfig = context.hooks.getConfig().merged.content;
 
     const theaterWithContent = [
       contentConfig.prefix,
@@ -34,15 +34,16 @@ export class AstLibrary {
       contentConfig.suffix,
     ].join("");
 
-    const context: RankiLangAstContext = {
-      hooks,
-      blockDepth: spec.blockDepth,
-      inlineDepth: spec.inlineDepth,
-      theater: spec.theater,
-      role: spec.role,
-      startRule: spec.startRule,
+    // TODO this isn't needed. it doesn't change anything
+    const newContext: RankiLangAstContext = {
+      hooks: context.hooks,
+      blockDepth: context.blockDepth,
+      inlineDepth: context.inlineDepth,
+      theater: context.theater,
+      role: context.role,
+      startRule: context.startRule,
     };
 
-    return ast(theaterWithContent, context);
+    return ast(theaterWithContent, newContext);
   }
 }

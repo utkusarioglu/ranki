@@ -53,19 +53,15 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
   ) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
-    const child = context.hooks.parseAst(
-      v1PayloadInline.sourceString,
-      {
-        ...context,
-        plugin: {
-          type: "RankiFrameV1",
-          // @ts-expect-error
-          chain: v1Type.sourceString,
-          params: [],
-        },
+    const child = context.hooks.parseAst(v1PayloadInline.sourceString, {
+      ...context,
+      plugin: {
+        type: "RankiFrameV1",
+        // @ts-expect-error
+        chain: v1Type.sourceString,
+        params: [],
       },
-      context.hooks,
-    );
+    });
     return {
       kind: "parent",
       type: this.ctorName,
@@ -123,19 +119,15 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(context);
-    const child = context.hooks.parseAst(
-      v1PayloadInline.sourceString,
-      {
-        ...context,
-        plugin: {
-          type: "RankiFrameV1",
-          // @ts-expect-error
-          chain: v1Type.sourceString,
-          params: argsAndParamsV1["params"],
-        },
+    const child = context.hooks.parseAst(v1PayloadInline.sourceString, {
+      ...context,
+      plugin: {
+        type: "RankiFrameV1",
+        // @ts-expect-error
+        chain: v1Type.sourceString,
+        params: argsAndParamsV1["params"],
       },
-      context.hooks,
-    );
+    });
     return {
       kind: "parent",
       type: this.ctorName,
@@ -203,19 +195,15 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
   ) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
-    const child = context.hooks.parseAst(
-      v1PayloadBlock.sourceString,
-      {
-        ...context,
-        plugin: {
-          type: "RankiFrameV1",
-          // @ts-expect-error
-          chain: v1Type.sourceString,
-          params: [],
-        },
+    const child = context.hooks.parseAst(v1PayloadBlock.sourceString, {
+      ...context,
+      plugin: {
+        type: "RankiFrameV1",
+        // @ts-expect-error
+        chain: v1Type.sourceString,
+        params: [],
       },
-      context.hooks,
-    );
+    });
     return {
       kind: "parent",
       type: this.ctorName,
@@ -283,19 +271,15 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     context.blockDepth++;
     const argsAndParamsV1: ArgsAndParamsV1 =
       v1ParamListInline.argsAndParamsV1(context);
-    const child = context.hooks.parseAst(
-      v1PayloadBlock.sourceString,
-      {
-        ...context,
-        plugin: {
-          type: "RankiFrameV1",
-          // @ts-expect-error
-          chain: v1Type.sourceString,
-          params: argsAndParamsV1["params"],
-        },
+    const child = context.hooks.parseAst(v1PayloadBlock.sourceString, {
+      ...context,
+      plugin: {
+        type: "RankiFrameV1",
+        // @ts-expect-error
+        chain: v1Type.sourceString,
+        params: argsAndParamsV1["params"],
       },
-      context.hooks,
-    );
+    });
     return {
       kind: "parent",
       type: this.ctorName,

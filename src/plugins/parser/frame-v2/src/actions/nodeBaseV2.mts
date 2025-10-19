@@ -168,11 +168,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   v2PayloadPlain(plain) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
-    const child = context.hooks.parseAst(
-      plain.sourceString,
-      context,
-      context.hooks,
-    );
+    const child = context.hooks.parseAst(plain.sourceString, context);
     return {
       kind: "parent",
       type: this.ctorName,

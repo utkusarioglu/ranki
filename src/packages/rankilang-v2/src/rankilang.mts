@@ -119,14 +119,12 @@ export class RankiLang implements RankiLangInstance {
       role: spec.role,
     };
 
-    const ast = this.ast.parse(
-      theaterRaw,
-      // TODO this doesn't make sense. maybe the grammars should receive
-      // hooks as a separate object other than `context`
-      spec,
-      // { ...spec, hooks: parseHandlerHooks },
-      this.createParseHandlerHooks(),
-    );
+    const context: RankiLangAstContext = {
+      ...spec,
+      hooks: this.createParseHandlerHooks(),
+    };
+
+    const ast = this.ast.parse(theaterRaw, context);
 
     const validation = ["validate", "transform"].includes(config.merged.stage)
       ? this.validators.validate(ast.root, spec)

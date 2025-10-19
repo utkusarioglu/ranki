@@ -46,17 +46,13 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const frameConfig: NodeArgsFrameV2ConfigFp_F =
       v2FrameConfig.v2FrameConfig(context);
 
-    const child = context.hooks.parseAst(
-      "",
-      {
-        ...context,
-        plugin: {
-          ...frameConfig["frame"],
-          type: "RankiFrameV2",
-        },
+    const child = context.hooks.parseAst("", {
+      ...context,
+      plugin: {
+        ...frameConfig["frame"],
+        type: "RankiFrameV2",
       },
-      context.hooks,
-    );
+    });
 
     return {
       kind: "parent",
@@ -85,21 +81,17 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
     const chain: FrameSpec[] = v2Chain.frameSpecV2(context);
-    const child = context.hooks.parseAst(
-      "",
-      {
-        ...context,
-        plugin: {
-          // !FIX
-          // @ts-expect-error
-          chain,
-          version: "v2",
-          variant: "e", // this is like f fp
-          type: "RankiFrameV2",
-        },
+    const child = context.hooks.parseAst("", {
+      ...context,
+      plugin: {
+        // !FIX
+        // @ts-expect-error
+        chain,
+        version: "v2",
+        variant: "e", // this is like f fp
+        type: "RankiFrameV2",
       },
-      context.hooks,
-    );
+    });
 
     return {
       kind: "parent",

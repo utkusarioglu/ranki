@@ -14,12 +14,8 @@ import {
   RankiLangParseFunctionReturn,
   RankiLangAstContext,
   RankiLangParseHandlerCommon,
-  RankiLangParsedAst,
 } from "./context.mjs";
 import type { RankiPluginParser } from "../plugins/parser.mjs";
-import type { AstNode } from "../stages/ast.mjs";
-import type { ValidationNode } from "../stages/validation.mjs";
-import type { TransformNode } from "../stages/transform.mjs";
 
 export interface ComponentPluginsInstance {
   addPlugin(plugin: RankiPluginComponent): void;
@@ -41,14 +37,9 @@ export interface RankiLangInstance {
     raw: Record<TheaterName, string>,
     specs: RankiLangParseSpecs<T>,
   ): RankiLangParseResult;
-
-  // parseAst<T extends RankiLangParseHandlerCommon>(
-  //   theaterRaw: string,
-  //   spec: RankiLangParseSpecs<T>,
-  // ): RankiLangParsedAst;
 }
 
-export interface RankiLangParseHandlerHooks<> {
+export interface RankiLangParseHandlerHooks {
   getPlugins: RankiLangInstance["getPlugins"];
   getHandler: ParserPluginsInstance["getHandler"];
   getConfig: () => RankiLanguageConfig;
@@ -59,8 +50,7 @@ export interface RankiLangParseHandlerHooks<> {
   parseAst: (
     raw: string,
     context: RankiLangAstContext,
-
-    hooks: RankiLangParseHandlerHooks,
+    // hooks: RankiLangParseHandlerHooks,
   ) => RankiLangParseFunctionReturn;
 }
 
@@ -68,11 +58,3 @@ export interface RankiLangCloneFunctionReturn {
   lang: RankiLangInstance;
   hooks: RankiLangParseHandlerHooks;
 }
-
-// export type RankiLangParserPluginParseHandler<
-//   T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
-// > = (
-//   theaterRaw: string,
-//   spec: RankiLangParseSpecs<T>,
-//   hooks: RankiLangParseHandlerHooks,
-// ) => RankiLangParsedAst;

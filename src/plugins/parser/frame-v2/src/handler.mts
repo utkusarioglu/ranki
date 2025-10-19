@@ -8,40 +8,45 @@ import type { RankiLangParserPluginParseHandlerFrameV2 } from "./types.mjs";
 
 export const handler: RankiLangParseHandlerFunction<
   RankiLangParserPluginParseHandlerFrameV2
-> = (theaterRaw, spec, hooks) => {
-  console.log("handler", hooks);
-  if (!spec.plugin || spec.plugin.type !== "RankiFrameV2") {
+> = (theaterRaw, context) => {
+  if (!context.plugin || context.plugin.type !== "RankiFrameV2") {
     throw new Error(`FRAME V2 HANDLER GIVEN NON-FRAME V2 COMPONENT`);
   }
-  if (spec.plugin?.chain.length > 1) {
+  if (context.plugin?.chain.length > 1) {
     throw new Error(`MULTI-LENGTH CHAINS NOT YET SUPPORTED`);
   }
-  const component = hooks.getComponent("RankiFrameV2", spec.plugin.chain[0]);
+  const component = context.hooks.getComponent(
+    "RankiFrameV2",
+    context.plugin.chain[0],
+  );
 
   // TODO I think the settings are not communicated back to the ast
   const { directives, settings } = parseSettings(
     component.stages.ast.params,
-    spec,
+    context,
   );
-  const cloned = hooks.clone([component.stages.ast.directives, directives]);
+  const cloned = context.hooks.clone([
+    component.stages.ast.directives,
+    directives,
+  ]);
   const contextV2: RankiLangAstContext = {
     hooks: cloned.hooks,
-    blockDepth: spec.blockDepth + 1,
-    inlineDepth: spec.inlineDepth,
-    theater: spec.theater,
-    role: spec.role,
-    startRule: spec.startRule,
+    blockDepth: context.blockDepth + 1,
+    inlineDepth: context.inlineDepth,
+    theater: context.theater,
+    role: context.role,
+    startRule: context.startRule,
   };
 
   const contentConfig = cloned.hooks.getConfig().merged.content;
 
   const theaterWithContent = [
     contentConfig.prefix,
-    component.stages.ast.preprocess(theaterRaw),
+    component.stages.preprocess(theaterRaw),
     contentConfig.suffix,
   ].join("");
 
-  return hooks.parseAst(theaterWithContent, contextV2, cloned.hooks);
+  return context.hooks.parseAst(theaterWithContent, contextV2);
 };
 
 type ConvertParamsParams = {

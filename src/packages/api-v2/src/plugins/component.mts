@@ -44,8 +44,8 @@ export type ComponentPluginTransformFunc = (
 export interface ComponentPluginComponent {
   chain: string;
   stages: {
+    preprocess: (raw: string) => string;
     ast: {
-      preprocess: (raw: string) => string;
       directives: DeepPartial<RankiLanguageMergedConfig>;
       params: {
         setting: {
