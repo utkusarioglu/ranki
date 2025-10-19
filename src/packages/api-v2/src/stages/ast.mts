@@ -41,6 +41,17 @@ interface AstNodeCommon {
       total: number;
     };
   }; // this needs to be extended by plugins
+  // parser:
+  //   | "root"
+  //   | {
+  //       plugin: string;
+  //       chain: string[];
+  //       // parser: {}
+  //       // handler: string;
+  //       // component: string;
+  //       settings: {};
+  //       directives: {};
+  //     };
 }
 
 interface AstNodeLeafSourceString {

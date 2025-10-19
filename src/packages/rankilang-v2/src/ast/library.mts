@@ -1,30 +1,11 @@
 import type {
-  RankiLanguageConfig,
-  RankiLangInstance,
-  RankiLangParseResult,
   RankiLangParseSpecs,
   RankiLangParseHandlerHooks,
-  // RankiLangAstContext,
-  RankiLanguageProvidedConfig,
-  RankiLangParseReport,
   RankiLangParseHandlerCommon,
-  ParserPluginsInstance,
-  ComponentPluginsInstance,
-  RankiLangInstancePluginsRecord,
-  RankiLangAstResult,
   RankiLangParsedAst,
 } from "@ranki/package-api-v2";
-import type {
-  RankiLangAstContext,
-  RankiLangParseFunctionReturn,
-} from "@ranki/package-api-v2";
+import type { RankiLangAstContext } from "@ranki/package-api-v2";
 import { ast } from "./ast.mjs";
-import { RankiLang } from "../rankilang.mjs";
-
-// interface ParseHooks {
-//   getHandler: ParserPluginsInstance["getHandler"];
-//   clone: RankiLang["clone"];
-// }
 
 export class AstLibrary {
   parse<T extends RankiLangParseHandlerCommon>(
@@ -32,7 +13,6 @@ export class AstLibrary {
     spec: RankiLangParseSpecs<T>,
     hooks: RankiLangParseHandlerHooks,
   ): RankiLangParsedAst {
-    console.log("ast", { hooks });
     if (!spec["plugin"]) {
       return this.parseAstDefault(theaterRaw, spec, hooks);
     }
@@ -56,7 +36,6 @@ export class AstLibrary {
 
     const context: RankiLangAstContext = {
       hooks,
-      // lang: this,
       blockDepth: spec.blockDepth,
       inlineDepth: spec.inlineDepth,
       theater: spec.theater,

@@ -1,15 +1,10 @@
 import type {
   RankiLangParseSpecs,
-  // RankiLangParseReport,
-  // RankiLangParseReport,
-  // RankiLangAstReport,
   RankiLangAstContext,
-  RankiLangInstance,
   RankiLangParseHandlerFunction,
-  // RankiLangParserPluginParseHandler,
 } from "@ranki/package-api-v2";
 import type { ParamV2 } from "@ranki/plugin-parser-params-v2";
-import { RankiLangParserPluginParseHandlerFrameV2 } from "./types.mjs";
+import type { RankiLangParserPluginParseHandlerFrameV2 } from "./types.mjs";
 
 export const handler: RankiLangParseHandlerFunction<
   RankiLangParserPluginParseHandlerFrameV2
@@ -21,7 +16,7 @@ export const handler: RankiLangParseHandlerFunction<
   if (spec.plugin?.chain.length > 1) {
     throw new Error(`MULTI-LENGTH CHAINS NOT YET SUPPORTED`);
   }
-  const component = hooks.getComponent("RankiFrameV2", spec.plugin!.chain[0]);
+  const component = hooks.getComponent("RankiFrameV2", spec.plugin.chain[0]);
 
   // TODO I think the settings are not communicated back to the ast
   const { directives, settings } = parseSettings(
