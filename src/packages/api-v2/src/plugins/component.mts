@@ -6,6 +6,7 @@ import type {
   ValidationNodeValidationEntry,
 } from "../stages/validation.mjs";
 import {
+  RankiLangAstContext,
   RankiLangParseHandlerCommon,
   RankiLangParseSpecs,
 } from "../lang/context.mjs";
@@ -23,7 +24,7 @@ export type ComponentPluginValidationFuncProps<
   T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
 > = {
   validation: ValidationNode;
-  spec: RankiLangParseSpecs<T>;
+  spec: RankiLangAstContext<T>;
 };
 
 export type ComponentPluginValidationFunc = (
@@ -34,7 +35,7 @@ export type ComponentPluginTransformFuncProps<
   T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
 > = {
   validation: ValidationNode;
-  spec: RankiLangParseSpecs<T>;
+  spec: RankiLangAstContext<T>;
 };
 
 export type ComponentPluginTransformFunc = (

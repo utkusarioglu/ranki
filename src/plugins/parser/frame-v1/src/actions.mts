@@ -2,6 +2,8 @@ import type * as ohm from "ohm-js";
 import type { RankiLangAstContext, AstNode } from "@ranki/package-api-v2";
 import type { ParseNodeFrameV1 } from "./types.mjs";
 import type { ArgsAndParamsV1 } from "./types.mjs";
+import { RankiLangParseSpecsFrameNull } from "../../../../packages/api-v2/src/lang/context.mjs";
+import { FrameV1 } from "./handler.mjs";
 
 const nodeBaseV2: ohm.ActionDict<AstNode> = {
   // !TODO end
@@ -53,14 +55,19 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
   ) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
-    const child = context.hooks.parseAst(v1PayloadInline.sourceString, {
+
+    const newContext: RankiLangAstContext<FrameV1> = {
       ...context,
       plugin: {
         type: "RankiFrameV1",
         chain: v1Type.sourceString,
         params: [],
       },
-    });
+    };
+
+    const parseAst = context.hooks.createAstParser(newContext);
+    const child = parseAst(v1PayloadInline.sourceString);
+
     return {
       kind: "parent",
       type: this.ctorName,
@@ -90,7 +97,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         "frame.v1": {
           variant: "p",
           frameType: v1Type.sourceString,
-          report: child.report,
+          // report: child.report,
         },
       },
       source: {
@@ -118,14 +125,16 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(context);
-    const child = context.hooks.parseAst(v1PayloadInline.sourceString, {
+    const newContext: RankiLangAstContext<FrameV1> = {
       ...context,
       plugin: {
         type: "RankiFrameV1",
         chain: v1Type.sourceString,
         params: argsAndParamsV1["params"],
       },
-    });
+    };
+    const parseAst = context.hooks.createAstParser(newContext);
+    const child = parseAst(v1PayloadInline.sourceString);
     return {
       kind: "parent",
       type: this.ctorName,
@@ -168,7 +177,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           variant: "fp",
           frameType: v1Type.sourceString,
           ...argsAndParamsV1,
-          report: child.report,
+          // report: child.report,
         },
       },
       source: {
@@ -193,14 +202,16 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
   ) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.blockDepth++;
-    const child = context.hooks.parseAst(v1PayloadBlock.sourceString, {
+    const newContext: RankiLangAstContext<FrameV1> = {
       ...context,
       plugin: {
         type: "RankiFrameV1",
         chain: v1Type.sourceString,
         params: [],
       },
-    });
+    };
+    const parseAst = context.hooks.createAstParser(newContext);
+    const child = parseAst(v1PayloadBlock.sourceString);
     return {
       kind: "parent",
       type: this.ctorName,
@@ -237,7 +248,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         "frame.v1": {
           variant: "p",
           frameType: v1Type.sourceString,
-          report: child.report,
+          // report: child.report,
         },
       },
       source: {
@@ -268,14 +279,16 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     context.blockDepth++;
     const argsAndParamsV1: ArgsAndParamsV1 =
       v1ParamListInline.argsAndParamsV1(context);
-    const child = context.hooks.parseAst(v1PayloadBlock.sourceString, {
+    const newContext: RankiLangAstContext<FrameV1> = {
       ...context,
       plugin: {
         type: "RankiFrameV1",
         chain: v1Type.sourceString,
         params: argsAndParamsV1["params"],
       },
-    });
+    };
+    const parseAst = context.hooks.createAstParser(newContext);
+    const child = parseAst(v1PayloadBlock.sourceString);
     return {
       kind: "parent",
       type: this.ctorName,
@@ -325,7 +338,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           variant: "fp",
           frameType: v1Type.sourceString,
           ...argsAndParamsV1,
-          report: child.report,
+          // report: child.report,
         },
       },
       source: {

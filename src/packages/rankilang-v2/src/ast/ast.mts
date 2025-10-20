@@ -1,14 +1,14 @@
 import type {
   ParserPluginsInstance,
   RankiLangAstContext,
+  RankiLangAstReport,
   RankiLangParseFunctionReturn,
+  ParseAstFunction,
+  AstNode,
 } from "@ranki/package-api-v2";
 import { buildGrammar, compileOhmActionDicts } from "./grammar.mjs";
 
-export function ast(
-  raw: string,
-  context: RankiLangAstContext,
-): RankiLangParseFunctionReturn {
+export function createParser(context: RankiLangAstContext): ParseAstFunction {
   const parserPlugins: ParserPluginsInstance = context.hooks.getPlugins();
   const langConfig = context.hooks.getConfig();
   const configPlugins = langConfig.merged.plugins;
@@ -56,20 +56,35 @@ export function ast(
     actions,
   );
 
-  const matched = matcher.match(raw, context.startRule);
-
-  return {
-    report: {
-      parser: {
-        requested: configPlugins.requested,
-        sorted: importChain,
-        graph: dependencyGraph,
-        contributors: participants,
-        methods,
-        // @ts-ignore
-        source: sources.join("\n\n"),
-      },
+  const report: RankiLangAstReport = {
+    parser: {
+      requested: configPlugins.requested,
+      sorted: importChain,
+      graph: dependencyGraph,
+      contributors: participants,
+      methods,
+      // @ts-ignore
+      source: sources.join("\n\n"),
     },
-    root: semantics(matched).node(context),
   };
+
+  console.log({ report });
+
+  const parseAst: ParseAstFunction = (raw: string) => {
+    const matched = matcher.match(raw, context.startRule);
+    const root: AstNode = semantics(matched).node(context);
+    return { root };
+  };
+
+  return parseAst;
 }
+
+// export function ast(
+//   raw: string,
+//   context: RankiLangAstContext,
+// ): RankiLangParseFunctionReturn {
+//   const parseAst = createParser(context);
+//   return {
+//     root: parseAst(raw),
+//   };
+// }

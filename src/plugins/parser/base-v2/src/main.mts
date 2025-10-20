@@ -1,4 +1,9 @@
-import { RankiPluginParser, RankiGrammarTokens } from "@ranki/package-api-v2";
+import {
+  RankiPluginParser,
+  RankiGrammarTokens,
+  RankiLangAstContext,
+  RankiLangParsedAst,
+} from "@ranki/package-api-v2";
 import grammar from "../assets/ohm/2.0.65.ohm?raw";
 import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";
@@ -27,6 +32,33 @@ function tokenize(config: RankiBaseV2ParserPluginConfig) {
   return tokens;
 }
 
+function handler(
+  theaterRaw: string,
+  context: RankiLangAstContext<{ type: string }>,
+  // hooks: RankiLangParseHandlerHooks,
+): RankiLangParsedAst {
+  const contentConfig = context.hooks.getConfig().merged.content;
+
+  const theaterWithContent = [
+    contentConfig.prefix,
+    theaterRaw,
+    contentConfig.suffix,
+  ].join("");
+
+  // TODO this isn't needed. it doesn't change anything
+  // const newContext: RankiLangAstContext = {
+  //   hooks: context.hooks,
+  //   blockDepth: context.blockDepth,
+  //   inlineDepth: context.inlineDepth,
+  //   theater: context.theater,
+  //   role: context.role,
+  //   startRule: context.startRule,
+  // };
+  const parseAst = context.hooks.createAstParser(context);
+
+  return parseAst(theaterWithContent);
+}
+
 export const rankiBaseV2ParserPlugin: RankiPluginParser<RankiBaseV2ParserPluginConfig> =
   {
     type: "parser",
@@ -34,8 +66,7 @@ export const rankiBaseV2ParserPlugin: RankiPluginParser<RankiBaseV2ParserPluginC
       name: "RankiBaseV2",
       version: "2.0.65",
     },
-    // @ts-expect-error
-    handler: () => ({}),
+    handler: handler,
     dependencies: ["RankiConstantsV2"],
     config,
     tokens: tokenize(config),

@@ -4,7 +4,7 @@ import type {
   RankiLangParseHandlerFunction,
 } from "@ranki/package-api-v2";
 import type { ParamV2 } from "@ranki/plugin-grammar-params-v2";
-import type { RankiLangParserPluginParseHandlerFrameV2 } from "./types/RankiLangParserPluginParseHandlerFrameV2.mjs";
+import type { RankiLangParserPluginParseHandlerFrameV2 } from "./types/context.mjs";
 
 export const handler: RankiLangParseHandlerFunction<
   RankiLangParserPluginParseHandlerFrameV2
@@ -30,6 +30,7 @@ export const handler: RankiLangParseHandlerFunction<
     directives,
   ]);
   const contextV2: RankiLangAstContext = {
+    plugin: context.plugin,
     hooks: cloned.hooks,
     blockDepth: context.blockDepth + 1,
     inlineDepth: context.inlineDepth,
@@ -46,7 +47,9 @@ export const handler: RankiLangParseHandlerFunction<
     contentConfig.suffix,
   ].join("");
 
-  return context.hooks.parseAst(theaterWithContent, contextV2);
+  const parseAst = context.hooks.createAstParser(contextV2);
+
+  return parseAst(theaterWithContent);
 };
 
 type ConvertParamsParams = {
@@ -136,7 +139,7 @@ function convertParams<T extends ParamV2>(
 
 function parseSettings(
   { directive, setting }: any,
-  frameConfig: RankiLangParseSpecs<RankiLangParserPluginParseHandlerFrameV2>,
+  frameConfig: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2>,
 ) {
   if (!frameConfig.plugin) {
     return { config: null };

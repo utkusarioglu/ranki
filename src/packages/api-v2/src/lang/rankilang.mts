@@ -33,11 +33,20 @@ export interface RankiLangInstance {
 
   getPlugins(): ParserPluginsInstance;
   getConfig(): RankiLanguageConfig;
-  parse<T extends RankiLangParseHandlerCommon>(
+  parse(
     raw: Record<TheaterName, string>,
-    specs: RankiLangParseSpecs<T>,
+    specs: RankiLangParseSpecs,
   ): RankiLangParseResult;
 }
+
+export type ParseAstFunction =
+  // <
+  // T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
+  //   >
+  (
+    raw: string,
+    // context: RankiLangAstContext<T>,
+  ) => RankiLangParseFunctionReturn;
 
 export interface RankiLangParseHandlerHooks {
   getPlugins: RankiLangInstance["getPlugins"];
@@ -47,12 +56,15 @@ export interface RankiLangParseHandlerHooks {
   clone(
     userConfigs: RankiLanguageProvidedConfig[] | null,
   ): RankiLangCloneFunctionReturn;
-  parseAst: <
-    T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
-  >(
-    raw: string,
-    context: RankiLangAstContext<T>,
-  ) => RankiLangParseFunctionReturn;
+
+  createAstParser(context: RankiLangAstContext): ParseAstFunction;
+
+  // parseAst: <
+  //   T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
+  // >(
+  //   raw: string,
+  //   context: RankiLangAstContext<T>,
+  // ) => RankiLangParseFunctionReturn;
 }
 
 export interface RankiLangCloneFunctionReturn {

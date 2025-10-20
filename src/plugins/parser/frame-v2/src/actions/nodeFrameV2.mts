@@ -7,7 +7,7 @@ import type {
   NodeArgsFrameV2ConfigP,
 } from "../types/args.mjs";
 import type { FrameSpec } from "../types/args.mjs";
-import type { RankiLangParserPluginParseHandlerFrameV2 } from "../types/RankiLangParserPluginParseHandlerFrameV2.mjs";
+import type { RankiLangParserPluginParseHandlerFrameV2 } from "../types/context.mjs";
 
 export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2_fp(v2Start, v2FrameConfig, v2Payload, v2End) {
@@ -50,12 +50,14 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const frameConfig: NodeArgsFrameV2ConfigP =
       v2FrameConfig.v2FrameConfig(context);
 
-    const newContext: RankiLangAstContext = {
-      ...context,
-      plugin: frameConfig,
-    };
+    const newContext: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
+      {
+        ...context,
+        plugin: frameConfig,
+      };
+    const parseAst = context.hooks.createAstParser(newContext);
 
-    const child = context.hooks.parseAst("", newContext);
+    const child = parseAst("");
 
     return {
       kind: "parent",
@@ -116,11 +118,15 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       subtree: {},
     };
 
-    const child =
-      context.hooks.parseAst<RankiLangParserPluginParseHandlerFrameV2>("", {
+    const newContext: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
+      {
         ...context,
         plugin: frameConfig,
-      });
+      };
+
+    const parseAst = context.hooks.createAstParser(newContext);
+
+    const child = parseAst("");
 
     return {
       kind: "parent",

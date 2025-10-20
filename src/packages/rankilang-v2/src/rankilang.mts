@@ -79,10 +79,11 @@ export class RankiLang implements RankiLangInstance {
   }
 
   private createParseHandlerHooks() {
+    // @ts-expect-error
     const parseHandlerHooks: RankiLangParseHandlerHooks = {
       getPlugins: this.getPlugins.bind(this),
       clone: this.clone.bind(this),
-      parseAst: this.ast.parse.bind(this.ast),
+      // parseAst: this.ast.parse.bind(this.ast),
       getComponent: this.components.getPlugin.bind(this.components),
       getHandler: this.parsers.getHandler.bind(this.parsers),
       getConfig: this.config.getAll.bind(this.config),
@@ -90,16 +91,11 @@ export class RankiLang implements RankiLangInstance {
     return parseHandlerHooks;
   }
 
-  parse<T extends RankiLangParseHandlerCommon>(
+  parse(
     raw: Record<string, string>,
-    spec: RankiLangParseSpecs<T> = {
+    spec: RankiLangParseSpecs = {
       theater: "default",
       role: "default",
-      // TODO these values are only relevant to frames, maybe they should be in the frame specification
-      blockDepth: 0,
-      inlineDepth: 0,
-      // TODO this one is root if we are at the root and is the frame's default, so maybe this doesn't need to be here
-      startRule: "root",
     },
   ): RankiLangParseResult {
     const theaterRaw = raw[spec.theater];
@@ -120,21 +116,26 @@ export class RankiLang implements RankiLangInstance {
     };
 
     const context: RankiLangAstContext = {
-      ...spec,
+      theater: spec.theater,
+      role: spec.role,
+      plugin: {
+        type: "RankiBaseV2",
+      },
+      blockDepth: 0,
+      inlineDepth: 0,
+      startRule: "root",
       hooks: this.createParseHandlerHooks(),
     };
 
     const ast = this.ast.parse(theaterRaw, context);
 
     const validation = ["validate", "transform"].includes(config.merged.stage)
-      ? this.validators.validate(ast.root, spec)
+      ? this.validators.validate(ast.root, context)
       : null;
 
     const transform =
       validation && config.merged.stage === "transform"
-        ? this.transformers.transform(validation, spec, {
-            getComponent: this.components.getPlugin.bind(this.components),
-          })
+        ? this.transformers.transform(validation, context)
         : null;
 
     return {

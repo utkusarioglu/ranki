@@ -40,10 +40,12 @@ export interface RankiLangParseReport {
   role: RoleName;
 }
 
-export interface RankiLangParsedAst {
-  report: RankiLangAstReport;
-  root: AstNode;
-}
+export type RankiLangParsedAst = RankiLangParseFunctionReturn;
+
+//   {
+//   report: RankiLangAstReport;
+//   root: AstNode;
+// }
 
 export interface RankiLangParsedTheater {
   stages: {
@@ -64,8 +66,8 @@ export interface RankiLangAstReport {
   };
 }
 export interface RankiLangParseFunctionReturn {
-  report: RankiLangAstReport;
-  root: RankiLangParsedTheater["stages"]["ast"]["root"];
+  // report: RankiLangAstReport;
+  root: AstNode;
 }
 
 export type ProducedConfig = {
@@ -114,30 +116,24 @@ export interface RankiLangParseHandlerCommon {
   type: string;
 }
 
-export type RankiLangParseSpecs<T extends RankiLangParseHandlerCommon> = {
-  plugin?: T;
+export type RankiLangParseSpecs<
+  // TODO you may need to get rid of this
+  // T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
+> = {
   theater: TheaterName;
   role: RoleName;
-  blockDepth: number;
-  inlineDepth: number;
-  startRule: string;
 };
 
 export type RankiLangParseSpecsFrameNull = RankiLangParseSpecsCommon;
 
 export type RankiLangAstContext<
   T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
-> = RankiLangParseSpecs<T> & {
+> = RankiLangParseSpecs & {
+  plugin: T;
   hooks: RankiLangParseHandlerHooks;
+  blockDepth: number;
+  inlineDepth: number;
+  startRule: string;
 };
-// export type RankiLangAstContext = {
-//   hooks: RankiLangParseHandlerHooks;
-//   blockDepth: number;
-//   inlineDepth: number;
-//   theater: TheaterName;
-//   role: RoleName;
-//   // lang: RankiLangInstance;
-//   startRule: string;
-// };
 
 export type VersionReport = Record<string, string>;

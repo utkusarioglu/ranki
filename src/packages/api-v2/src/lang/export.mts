@@ -22,6 +22,7 @@ export type {
   ComponentPluginsInstance,
   RankiLangInstancePluginsRecord,
   RankiLangCloneFunctionReturn,
+  ParseAstFunction,
 } from "./rankilang.mjs";
 
 export type {

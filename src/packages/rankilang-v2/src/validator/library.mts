@@ -6,6 +6,7 @@ import type {
   RankiLangParseHandlerCommon,
   ValidatorFunctionEntry,
   ValidationNode,
+  RankiLangAstContext,
 } from "@ranki/package-api-v2";
 
 export class ValidatorLibrary {
@@ -36,7 +37,7 @@ export class ValidatorLibrary {
 
   validate<T extends RankiLangParseHandlerCommon>(
     obj: AstNode,
-    spec: RankiLangParseSpecs<T>,
+    spec: RankiLangAstContext<T>,
   ): ValidationNode {
     try {
       const validator = this.getValidator(obj.type);

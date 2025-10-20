@@ -1,6 +1,7 @@
 import type { AstNode, RankiLangAstContext } from "@ranki/package-api-v2";
 import { joinNodes, zipNodes } from "@ranki/package-api-v2/helpers";
 import type * as ohm from "ohm-js";
+import type { RankiLangParserPluginParseHandlerFrameV2 } from "../types/context.mjs";
 
 export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   block_v2(indentation, v2, wi, ender) {
@@ -163,9 +164,15 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   },
 
   v2PayloadPlain(plain) {
-    const context: RankiLangAstContext = { ...this.args.context };
+    // TODO i'm so not sure if this is what's supposed to happen here
+    // this uses a context that was created in a parent to produce a parser deeper in the chain
+    const context: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
+      { ...this.args.context };
     context.blockDepth++;
-    const child = context.hooks.parseAst(plain.sourceString, context);
+    console.log({ context });
+
+    const parseAst = context.hooks.createAstParser(context);
+    const child = parseAst(plain.sourceString);
     return {
       kind: "parent",
       type: this.ctorName,

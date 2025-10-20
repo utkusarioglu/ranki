@@ -7,6 +7,7 @@ import type {
   ValidationNode,
   TransformNode,
   TransformNodeParent,
+  RankiLangAstContext,
 } from "@ranki/package-api-v2";
 import { ComponentPlugins } from "../component/component-plugins.mjs";
 
@@ -40,20 +41,23 @@ export class TransformerLibrary {
 
   transform<T extends RankiLangParseHandlerCommon>(
     validation: ValidationNode,
-    spec: RankiLangParseSpecs<T>,
-    hooks: { getComponent: GetComponentHook },
+    context: RankiLangAstContext<T>,
+    // hooks: { getComponent: GetComponentHook },
   ): TransformNode {
     try {
       // @ts-ignore
       if (validation.args.frame) {
         // !FIX this is supposed to come from the args
         const handlerName = "RankiFrameV2";
-        const component = hooks.getComponent(
+        const component = context.hooks.getComponent(
           handlerName,
           // @ts-ignore
           validation.args.frame.chain,
         );
-        const transformed = component.stages.transform({ validation, spec });
+        const transformed = component.stages.transform({
+          validation,
+          spec: context,
+        });
         return transformed;
         // if (obj.args.frame.chain.join(".") === "code") {
         //   return {
@@ -67,9 +71,7 @@ export class TransformerLibrary {
         const transformed = transformer(validation) as TransformNodeParent;
         return {
           ...transformed,
-          children: validation.children.map((c) =>
-            this.transform(c, spec, hooks),
-          ),
+          children: validation.children.map((c) => this.transform(c, context)),
         };
       } else {
         return transformer(validation);
