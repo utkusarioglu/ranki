@@ -2,10 +2,15 @@ import type { RankiLanguageConfig } from "./config.mjs";
 import type { AstNode } from "../stages/ast.mjs";
 import type { RankiLangParseHandlerHooks } from "./rankilang.mjs";
 import {
-  RankiGrammarTokens,
+  // RankiGrammarTokens,
   RankiLangParseHandlerFunction,
   RankiPluginParser,
 } from "../plugins/parser.mjs";
+import {
+  RankiGrammarTokens,
+  // RankiLangParseHandlerFunction,
+  // RankiPluginParser,
+} from "../plugins/grammar.mjs";
 import type * as ohm from "ohm-js";
 import type { TransformNode } from "../stages/transform.mjs";
 import type { ValidationNode } from "../stages/validation.mjs";

@@ -25,7 +25,7 @@
     "yaml": "^2.8.1"
   },
   "dependencies": {
-    "@ranki/plugin-parser-params-v2": "workspace:^",
+    "@ranki/plugin-grammar-params-v2": "workspace:^",
     "ohm-js": "^17.2.1"
   }
 }

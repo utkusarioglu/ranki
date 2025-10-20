@@ -51,12 +51,28 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/plugins/component/dom"\
     },\
     {\
-      "name": "@ranki/plugin-parser-base-v2",\
-      "reference": "workspace:src/plugins/parser/base-v2"\
+      "name": "@ranki/plugin-grammar-constants-v2",\
+      "reference": "workspace:src/plugins/grammar/constants-v2"\
     },\
     {\
-      "name": "@ranki/plugin-parser-constants-v2",\
-      "reference": "workspace:src/plugins/parser/constants-v2"\
+      "name": "@ranki/plugin-grammar-params-v2",\
+      "reference": "workspace:src/plugins/grammar/params-v2"\
+    },\
+    {\
+      "name": "@ranki/plugin-grammar-rich-number-v2",\
+      "reference": "workspace:src/plugins/grammar/rich-number-v2"\
+    },\
+    {\
+      "name": "@ranki/plugin-grammar-rich-structure-v2",\
+      "reference": "workspace:src/plugins/grammar/rich-structure-v2"\
+    },\
+    {\
+      "name": "@ranki/plugin-grammar-rich-text-v2",\
+      "reference": "workspace:src/plugins/grammar/rich-text-v2"\
+    },\
+    {\
+      "name": "@ranki/plugin-parser-base-v2",\
+      "reference": "workspace:src/plugins/parser/base-v2"\
     },\
     {\
       "name": "@ranki/plugin-parser-frame-v1",\
@@ -65,22 +81,6 @@ const RAW_RUNTIME_STATE =
     {\
       "name": "@ranki/plugin-parser-frame-v2",\
       "reference": "workspace:src/plugins/parser/frame-v2"\
-    },\
-    {\
-      "name": "@ranki/plugin-parser-params-v2",\
-      "reference": "workspace:src/plugins/parser/params-v2"\
-    },\
-    {\
-      "name": "@ranki/plugin-parser-rich-number-v2",\
-      "reference": "workspace:src/plugins/parser/rich-number-v2"\
-    },\
-    {\
-      "name": "@ranki/plugin-parser-rich-structure-v2",\
-      "reference": "workspace:src/plugins/parser/rich-structure-v2"\
-    },\
-    {\
-      "name": "@ranki/plugin-parser-rich-text-v2",\
-      "reference": "workspace:src/plugins/parser/rich-text-v2"\
     },\
     {\
       "name": "@ranki/plugin-render-base-v2",\
@@ -104,14 +104,14 @@ const RAW_RUNTIME_STATE =
     ["@ranki/package-rankilang-v2", ["workspace:src/packages/rankilang-v2"]],\
     ["@ranki/package-render-v2", ["workspace:src/packages/render-v2"]],\
     ["@ranki/plugin-component-frame-v2-dom", ["workspace:src/plugins/component/dom"]],\
+    ["@ranki/plugin-grammar-constants-v2", ["workspace:src/plugins/grammar/constants-v2"]],\
+    ["@ranki/plugin-grammar-params-v2", ["workspace:src/plugins/grammar/params-v2"]],\
+    ["@ranki/plugin-grammar-rich-number-v2", ["workspace:src/plugins/grammar/rich-number-v2"]],\
+    ["@ranki/plugin-grammar-rich-structure-v2", ["workspace:src/plugins/grammar/rich-structure-v2"]],\
+    ["@ranki/plugin-grammar-rich-text-v2", ["workspace:src/plugins/grammar/rich-text-v2"]],\
     ["@ranki/plugin-parser-base-v2", ["workspace:src/plugins/parser/base-v2"]],\
-    ["@ranki/plugin-parser-constants-v2", ["workspace:src/plugins/parser/constants-v2"]],\
     ["@ranki/plugin-parser-frame-v1", ["workspace:src/plugins/parser/frame-v1"]],\
     ["@ranki/plugin-parser-frame-v2", ["workspace:src/plugins/parser/frame-v2"]],\
-    ["@ranki/plugin-parser-params-v2", ["workspace:src/plugins/parser/params-v2"]],\
-    ["@ranki/plugin-parser-rich-number-v2", ["workspace:src/plugins/parser/rich-number-v2"]],\
-    ["@ranki/plugin-parser-rich-structure-v2", ["workspace:src/plugins/parser/rich-structure-v2"]],\
-    ["@ranki/plugin-parser-rich-text-v2", ["workspace:src/plugins/parser/rich-text-v2"]],\
     ["@ranki/plugin-render-base-v2", ["workspace:src/plugins/render/base-v2"]],\
     ["@ranki/plugin-render-latex", ["workspace:src/plugins/render/latex"]],\
     ["@ranki/root", ["workspace:."]]\
@@ -2338,14 +2338,14 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@ranki/app-ranki-v2", "workspace:src/apps/ranki-v2"],\
           ["@ranki/package-rankilang-v2", "workspace:src/packages/rankilang-v2"],\
+          ["@ranki/plugin-grammar-constants-v2", "workspace:src/plugins/grammar/constants-v2"],\
+          ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
+          ["@ranki/plugin-grammar-rich-number-v2", "workspace:src/plugins/grammar/rich-number-v2"],\
+          ["@ranki/plugin-grammar-rich-structure-v2", "workspace:src/plugins/grammar/rich-structure-v2"],\
+          ["@ranki/plugin-grammar-rich-text-v2", "workspace:src/plugins/grammar/rich-text-v2"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
-          ["@ranki/plugin-parser-constants-v2", "workspace:src/plugins/parser/constants-v2"],\
           ["@ranki/plugin-parser-frame-v1", "workspace:src/plugins/parser/frame-v1"],\
           ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
-          ["@ranki/plugin-parser-params-v2", "workspace:src/plugins/parser/params-v2"],\
-          ["@ranki/plugin-parser-rich-number-v2", "workspace:src/plugins/parser/rich-number-v2"],\
-          ["@ranki/plugin-parser-rich-structure-v2", "workspace:src/plugins/parser/rich-structure-v2"],\
-          ["@ranki/plugin-parser-rich-text-v2", "workspace:src/plugins/parser/rich-text-v2"],\
           ["@types/node", "npm:24.1.0"],\
           ["@types/prismjs", "npm:1.26.5"],\
           ["prismjs", "npm:1.30.0"],\
@@ -2364,14 +2364,14 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-rankilang-v2", "workspace:src/packages/rankilang-v2"],\
           ["@ranki/plugin-component-frame-v2-dom", "workspace:src/plugins/component/dom"],\
+          ["@ranki/plugin-grammar-constants-v2", "workspace:src/plugins/grammar/constants-v2"],\
+          ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
+          ["@ranki/plugin-grammar-rich-number-v2", "workspace:src/plugins/grammar/rich-number-v2"],\
+          ["@ranki/plugin-grammar-rich-structure-v2", "workspace:src/plugins/grammar/rich-structure-v2"],\
+          ["@ranki/plugin-grammar-rich-text-v2", "workspace:src/plugins/grammar/rich-text-v2"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
-          ["@ranki/plugin-parser-constants-v2", "workspace:src/plugins/parser/constants-v2"],\
           ["@ranki/plugin-parser-frame-v1", "workspace:src/plugins/parser/frame-v1"],\
           ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
-          ["@ranki/plugin-parser-params-v2", "workspace:src/plugins/parser/params-v2"],\
-          ["@ranki/plugin-parser-rich-number-v2", "workspace:src/plugins/parser/rich-number-v2"],\
-          ["@ranki/plugin-parser-rich-structure-v2", "workspace:src/plugins/parser/rich-structure-v2"],\
-          ["@ranki/plugin-parser-rich-text-v2", "workspace:src/plugins/parser/rich-text-v2"],\
           ["@types/node", "npm:24.3.1"],\
           ["ohm-js", "npm:17.2.1"],\
           ["tsx", "npm:4.20.5"],\
@@ -2392,14 +2392,14 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-rankilang-v2", "workspace:src/packages/rankilang-v2"],\
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
           ["@ranki/plugin-component-frame-v2-dom", "workspace:src/plugins/component/dom"],\
+          ["@ranki/plugin-grammar-constants-v2", "workspace:src/plugins/grammar/constants-v2"],\
+          ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
+          ["@ranki/plugin-grammar-rich-number-v2", "workspace:src/plugins/grammar/rich-number-v2"],\
+          ["@ranki/plugin-grammar-rich-structure-v2", "workspace:src/plugins/grammar/rich-structure-v2"],\
+          ["@ranki/plugin-grammar-rich-text-v2", "workspace:src/plugins/grammar/rich-text-v2"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
-          ["@ranki/plugin-parser-constants-v2", "workspace:src/plugins/parser/constants-v2"],\
           ["@ranki/plugin-parser-frame-v1", "workspace:src/plugins/parser/frame-v1"],\
           ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
-          ["@ranki/plugin-parser-params-v2", "workspace:src/plugins/parser/params-v2"],\
-          ["@ranki/plugin-parser-rich-number-v2", "workspace:src/plugins/parser/rich-number-v2"],\
-          ["@ranki/plugin-parser-rich-structure-v2", "workspace:src/plugins/parser/rich-structure-v2"],\
-          ["@ranki/plugin-parser-rich-text-v2", "workspace:src/plugins/parser/rich-text-v2"],\
           ["@ranki/plugin-render-base-v2", "workspace:src/plugins/render/base-v2"],\
           ["@types/prismjs", "npm:1.26.5"],\
           ["@types/react", "npm:19.1.13"],\
@@ -2450,7 +2450,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-rankilang-v2", "workspace:src/packages/rankilang-v2"],\
-          ["@ranki/plugin-parser-params-v2", "workspace:src/plugins/parser/params-v2"],\
+          ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
           ["@types/node", "npm:24.3.1"],\
           ["ohm-js", "npm:17.2.1"],\
           ["tsx", "npm:4.20.5"],\
@@ -2485,11 +2485,24 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
-    ["@ranki/plugin-parser-base-v2", [\
-      ["workspace:src/plugins/parser/base-v2", {\
-        "packageLocation": "./src/plugins/parser/base-v2/",\
+    ["@ranki/plugin-grammar-constants-v2", [\
+      ["workspace:src/plugins/grammar/constants-v2", {\
+        "packageLocation": "./src/plugins/grammar/constants-v2/",\
         "packageDependencies": [\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/plugin-grammar-constants-v2", "workspace:src/plugins/grammar/constants-v2"],\
+          ["@types/node", "npm:24.5.2"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/plugin-grammar-params-v2", [\
+      ["workspace:src/plugins/grammar/params-v2", {\
+        "packageLocation": "./src/plugins/grammar/params-v2/",\
+        "packageDependencies": [\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
           ["@types/node", "npm:24.5.2"],\
           ["ohm-js", "npm:17.2.1"],\
@@ -2498,13 +2511,57 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
-    ["@ranki/plugin-parser-constants-v2", [\
-      ["workspace:src/plugins/parser/constants-v2", {\
-        "packageLocation": "./src/plugins/parser/constants-v2/",\
+    ["@ranki/plugin-grammar-rich-number-v2", [\
+      ["workspace:src/plugins/grammar/rich-number-v2", {\
+        "packageLocation": "./src/plugins/grammar/rich-number-v2/",\
         "packageDependencies": [\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
-          ["@ranki/plugin-parser-constants-v2", "workspace:src/plugins/parser/constants-v2"],\
+          ["@ranki/plugin-grammar-rich-number-v2", "workspace:src/plugins/grammar/rich-number-v2"],\
+          ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
           ["@types/node", "npm:24.5.2"],\
+          ["ohm-js", "npm:17.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/plugin-grammar-rich-structure-v2", [\
+      ["workspace:src/plugins/grammar/rich-structure-v2", {\
+        "packageLocation": "./src/plugins/grammar/rich-structure-v2/",\
+        "packageDependencies": [\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
+          ["@ranki/plugin-grammar-rich-structure-v2", "workspace:src/plugins/grammar/rich-structure-v2"],\
+          ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
+          ["@types/node", "npm:24.5.2"],\
+          ["ohm-js", "npm:17.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/plugin-grammar-rich-text-v2", [\
+      ["workspace:src/plugins/grammar/rich-text-v2", {\
+        "packageLocation": "./src/plugins/grammar/rich-text-v2/",\
+        "packageDependencies": [\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/plugin-grammar-rich-text-v2", "workspace:src/plugins/grammar/rich-text-v2"],\
+          ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
+          ["@types/node", "npm:24.5.2"],\
+          ["ohm-js", "npm:17.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/plugin-parser-base-v2", [\
+      ["workspace:src/plugins/parser/base-v2", {\
+        "packageLocation": "./src/plugins/parser/base-v2/",\
+        "packageDependencies": [\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
+          ["@types/node", "npm:24.5.2"],\
+          ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
@@ -2529,66 +2586,9 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./src/plugins/parser/frame-v2/",\
         "packageDependencies": [\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
           ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
-          ["@ranki/plugin-parser-params-v2", "workspace:src/plugins/parser/params-v2"],\
-          ["@types/node", "npm:24.5.2"],\
-          ["ohm-js", "npm:17.2.1"],\
-          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
-        ],\
-        "linkType": "SOFT"\
-      }]\
-    ]],\
-    ["@ranki/plugin-parser-params-v2", [\
-      ["workspace:src/plugins/parser/params-v2", {\
-        "packageLocation": "./src/plugins/parser/params-v2/",\
-        "packageDependencies": [\
-          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
-          ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
-          ["@ranki/plugin-parser-params-v2", "workspace:src/plugins/parser/params-v2"],\
-          ["@types/node", "npm:24.5.2"],\
-          ["ohm-js", "npm:17.2.1"],\
-          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
-        ],\
-        "linkType": "SOFT"\
-      }]\
-    ]],\
-    ["@ranki/plugin-parser-rich-number-v2", [\
-      ["workspace:src/plugins/parser/rich-number-v2", {\
-        "packageLocation": "./src/plugins/parser/rich-number-v2/",\
-        "packageDependencies": [\
-          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
-          ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
-          ["@ranki/plugin-parser-rich-number-v2", "workspace:src/plugins/parser/rich-number-v2"],\
-          ["@types/node", "npm:24.5.2"],\
-          ["ohm-js", "npm:17.2.1"],\
-          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
-        ],\
-        "linkType": "SOFT"\
-      }]\
-    ]],\
-    ["@ranki/plugin-parser-rich-structure-v2", [\
-      ["workspace:src/plugins/parser/rich-structure-v2", {\
-        "packageLocation": "./src/plugins/parser/rich-structure-v2/",\
-        "packageDependencies": [\
-          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
-          ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
-          ["@ranki/plugin-parser-params-v2", "workspace:src/plugins/parser/params-v2"],\
-          ["@ranki/plugin-parser-rich-structure-v2", "workspace:src/plugins/parser/rich-structure-v2"],\
-          ["@types/node", "npm:24.5.2"],\
-          ["ohm-js", "npm:17.2.1"],\
-          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
-        ],\
-        "linkType": "SOFT"\
-      }]\
-    ]],\
-    ["@ranki/plugin-parser-rich-text-v2", [\
-      ["workspace:src/plugins/parser/rich-text-v2", {\
-        "packageLocation": "./src/plugins/parser/rich-text-v2/",\
-        "packageDependencies": [\
-          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
-          ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
-          ["@ranki/plugin-parser-rich-text-v2", "workspace:src/plugins/parser/rich-text-v2"],\
           ["@types/node", "npm:24.5.2"],\
           ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\

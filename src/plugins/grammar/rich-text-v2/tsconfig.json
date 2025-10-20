@@ -15,10 +15,7 @@
       "path": "../../../packages/api-v2"
     },
     {
-      "path": "../../parser/params-v2"
-    },
-    {
-      "path": "../base-v2"
+      "path": "../../parser/base-v2"
     }
   ]
 }

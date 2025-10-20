@@ -34,6 +34,8 @@ export const rankiBaseV2ParserPlugin: RankiPluginParser<RankiBaseV2ParserPluginC
       name: "RankiBaseV2",
       version: "2.0.65",
     },
+    // @ts-expect-error
+    handler: () => ({}),
     dependencies: ["RankiConstantsV2"],
     config,
     tokens: tokenize(config),

@@ -18,7 +18,7 @@
       "path": "../../parser/base-v2"
     },
     {
-      "path": "../../parser/params-v2"
+      "path": "../../grammar/params-v2"
     }
   ]
 }

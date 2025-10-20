@@ -1,6 +1,6 @@
 import type * as ohm from "ohm-js";
 import type { RankiLangAstContext } from "@ranki/package-api-v2";
-import type { ArgsAndParamsV2 } from "@ranki/plugin-parser-params-v2";
+import type { ArgsAndParamsV2 } from "@ranki/plugin-grammar-params-v2";
 import type {
   ParseNodeRichStructureV2,
   ArgsAndParamsV2RichStructureV2,
@@ -76,6 +76,8 @@ const argsAndParamsV2List: ohm.ActionDict<ArgsAndParamsV2[]> = {
 };
 
 const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
+  // @ts-expect-error
+  // !FIX
   hStructureSepInline_s(
     structureSepStart,
     wi1,
@@ -119,6 +121,9 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
       },
     };
   },
+
+  // @ts-expect-error
+  // !FIX
   hStructureSepInline_sp(
     structureSepStart,
     wi1,

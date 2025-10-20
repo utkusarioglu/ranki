@@ -1,5 +1,5 @@
 {
-  "name": "@ranki/plugin-parser-params-v2",
+  "name": "@ranki/plugin-grammar-rich-number-v2",
   "private": true,
   "type": "module",
   "scripts": {

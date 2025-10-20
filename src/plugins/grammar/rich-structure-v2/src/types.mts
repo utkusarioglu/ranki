@@ -1,5 +1,5 @@
 // import type { NodeArgs as NodeArgsBaseV2 } from "@ranki/package-api-v2";
-import type { ParamsV2Spec } from "@ranki/plugin-parser-params-v2";
+import type { ParamsV2Spec } from "@ranki/plugin-grammar-params-v2";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 import type { AstNode } from "@ranki/package-api-v2";
 

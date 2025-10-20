@@ -1,4 +1,4 @@
-import { RankiGrammarTokens, RankiPluginParser } from "@ranki/package-api-v2";
+import { RankiGrammarTokens, RankiPluginGrammar } from "@ranki/package-api-v2";
 import grammar from "../assets/ohm/2.0.63.ohm?raw";
 import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";
@@ -71,9 +71,9 @@ function tokenize(
   return tokens;
 }
 
-export const rankiRichTextV2ParserPlugin: RankiPluginParser<RankiRichTextV2ParserPluginConfig> =
+export const rankiRichTextV2ParserPlugin: RankiPluginGrammar<RankiRichTextV2ParserPluginConfig> =
   {
-    type: "parser",
+    type: "grammar",
     meta: {
       name: "RankiRichTextV2",
       version: "2.0.63",

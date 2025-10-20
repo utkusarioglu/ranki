@@ -17,14 +17,14 @@
   },
   "dependencies": {
     "@ranki/package-rankilang-v2": "workspace:^",
+    "@ranki/plugin-grammar-constants-v2": "workspace:^",
+    "@ranki/plugin-grammar-params-v2": "workspace:^",
+    "@ranki/plugin-grammar-rich-number-v2": "workspace:^",
+    "@ranki/plugin-grammar-rich-structure-v2": "workspace:^",
+    "@ranki/plugin-grammar-rich-text-v2": "workspace:^",
     "@ranki/plugin-parser-base-v2": "workspace:^",
-    "@ranki/plugin-parser-constants-v2": "workspace:^",
     "@ranki/plugin-parser-frame-v1": "workspace:^",
     "@ranki/plugin-parser-frame-v2": "workspace:^",
-    "@ranki/plugin-parser-params-v2": "workspace:^",
-    "@ranki/plugin-parser-rich-number-v2": "workspace:^",
-    "@ranki/plugin-parser-rich-structure-v2": "workspace:^",
-    "@ranki/plugin-parser-rich-text-v2": "workspace:^",
     "prismjs": "^1.30.0",
     "yaml": "^2.8.0"
   }

@@ -1,11 +1,11 @@
-import type { RankiPluginParser } from "@ranki/package-api-v2";
+import type { RankiPluginGrammar } from "@ranki/package-api-v2";
 import { buildGrammar } from "./grammar.mjs";
 
 export interface RankiConstantsV2ParserPluginConfig {}
 
-export const rankiConstantsV2ParserPlugin: RankiPluginParser<RankiConstantsV2ParserPluginConfig> =
+export const rankiConstantsV2ParserPlugin: RankiPluginGrammar<RankiConstantsV2ParserPluginConfig> =
   {
-    type: "parser",
+    type: "grammar",
     meta: {
       version: "2.0.64",
       name: "RankiConstantsV2",

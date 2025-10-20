@@ -1,7 +1,7 @@
 import type { RankiLangAstContext } from "@ranki/package-api-v2";
 import type * as ohm from "ohm-js";
 import type { NodeArgsFrameV2, FrameSpec } from "../types/args.mjs";
-import { ArgsAndParamsV2 } from "@ranki/plugin-parser-params-v2";
+import { ArgsAndParamsV2 } from "@ranki/plugin-grammar-params-v2";
 
 export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   v2FrameConfigP(wi1, v2Type, wi2, sep) {

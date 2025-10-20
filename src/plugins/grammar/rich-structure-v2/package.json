@@ -1,5 +1,5 @@
 {
-  "name": "@ranki/plugin-parser-rich-text-v2",
+  "name": "@ranki/plugin-grammar-rich-structure-v2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@ranki/package-api-v2": "workspace:^",
+    "@ranki/plugin-grammar-params-v2": "workspace:^",
     "@ranki/plugin-parser-base-v2": "workspace:^",
     "@types/node": "^24.5.2",
     "ohm-js": "^17.2.1",

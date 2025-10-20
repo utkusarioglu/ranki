@@ -30,7 +30,10 @@
       "path": "../../packages/rankilang-v2"
     },
     {
-      "path": "../../plugins/parser/constants-v2"
+      "path": "../../plugins/grammar/constants-v2"
+    },
+    {
+      "path": "../../plugins/parser/frame-v1"
     },
     {
       "path": "../../plugins/parser/base-v2"
@@ -42,16 +45,13 @@
       "path": "../../plugins/parser/frame-v2"
     },
     {
-      "path": "../../plugins/parser/rich-text-v2"
+      "path": "../../plugins/grammar/rich-text-v2"
     },
     {
-      "path": "../../plugins/parser/rich-number-v2"
+      "path": "../../plugins/grammar/rich-number-v2"
     },
     {
-      "path": "../../plugins/parser/rich-structure-v2"
-    },
-    {
-      "path": "../../plugins/parser/frame-v1"
+      "path": "../../plugins/grammar/rich-structure-v2"
     }
   ]
 }

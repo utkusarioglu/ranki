@@ -24,8 +24,8 @@ import { AstLibrary } from "./ast/library.mjs";
 
 export class RankiLang implements RankiLangInstance {
   private config: RankiLangConfig;
-  public parsers: ParserPluginsInstance;
   public components: ComponentPluginsInstance;
+  public parsers: ParserPluginsInstance;
 
   private validators = new ValidatorLibrary();
   private transformers = new TransformerLibrary();

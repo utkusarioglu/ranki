@@ -57,7 +57,6 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       ...context,
       plugin: {
         type: "RankiFrameV1",
-        // @ts-expect-error
         chain: v1Type.sourceString,
         params: [],
       },
@@ -123,7 +122,6 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       ...context,
       plugin: {
         type: "RankiFrameV1",
-        // @ts-expect-error
         chain: v1Type.sourceString,
         params: argsAndParamsV1["params"],
       },
@@ -199,7 +197,6 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       ...context,
       plugin: {
         type: "RankiFrameV1",
-        // @ts-expect-error
         chain: v1Type.sourceString,
         params: [],
       },
@@ -275,7 +272,6 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       ...context,
       plugin: {
         type: "RankiFrameV1",
-        // @ts-expect-error
         chain: v1Type.sourceString,
         params: argsAndParamsV1["params"],
       },

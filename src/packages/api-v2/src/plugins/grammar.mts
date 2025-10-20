@@ -11,21 +11,25 @@ import type { RankiPluginCommon } from "./general.mjs";
 import type { RankiPluginParserValidationCallback } from "../stages/validation.mjs";
 import type { RankiPluginParserTransformCallback } from "../stages/transform.mjs";
 
-import type { RankiGrammarTokens } from "./grammar.mjs";
+export type RankiGrammarTokens = Record<
+  string,
+  boolean | number | string | string[]
+>;
 
 export type RankiLangParseHandlerFunction<
   HandlerShape extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
 > = (
   raw: string,
-  context: RankiLangAstContext<HandlerShape>,
+  spec: RankiLangAstContext<HandlerShape>,
+  // hooks: RankiLangParseHandlerHooks,
 ) => RankiLangParsedAst;
 
-export type RankiPluginParser<
+export type RankiPluginGrammar<
   ConfigShape = {},
-  HandlerShape extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
+  // HandlerShape extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
 > = RankiPluginCommon & {
-  type: "parser";
-  handler: RankiLangParseHandlerFunction<HandlerShape>;
+  type: "grammar";
+  // handler: RankiLangParseHandlerFunction<HandlerShape>;
   dependencies: string[];
   config: ConfigShape;
   tokens: RankiGrammarTokens;
@@ -35,8 +39,8 @@ export type RankiPluginParser<
   transformers: RankiPluginParserTransformCallback;
 };
 
-export interface RankiPluginParserSpecs {
-  versionPath: string;
-  parentGrammar: string;
-  dependencies: Record<string, ohm.Grammar>;
-}
+// export interface RankiPluginParserSpecs {
+//   versionPath: string;
+//   parentGrammar: string;
+//   dependencies: Record<string, ohm.Grammar>;
+// }

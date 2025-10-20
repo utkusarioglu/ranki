@@ -5,6 +5,7 @@
     "src/apps/*",
     "src/packages/*",
     "src/plugins/parser/*",
+    "src/plugins/grammar/*",
     "src/plugins/component/*",
     "src/plugins/render/*"
   ],
