@@ -3,30 +3,7 @@ import grammar from "../assets/ohm/2.0.63.ohm?raw";
 import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";
 import { transformers } from "./transformers.mjs";
-
-type Single = string;
-
-export interface RankiRichTextV2ParserPluginConfig {
-  tokens: {
-    sentence: {
-      period: Single;
-      question: Single;
-      exclamation: Single;
-    };
-    line: {
-      align: Single;
-      heading: Single;
-      small: Single;
-    };
-    decoration: {
-      emphasis: Single;
-      bold: Single;
-      idiomatic: Single;
-      underline: Single;
-      abbreviation: Single;
-    };
-  };
-}
+import { RankiRichTextV2ParserPluginConfig } from "./types.mjs";
 
 const config: RankiRichTextV2ParserPluginConfig = {
   tokens: {

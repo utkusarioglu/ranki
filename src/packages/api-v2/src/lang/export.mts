@@ -18,7 +18,6 @@ export type {
 
 export type {
   RankiLangInstance,
-  // RankiLangParserPluginParseHandler,
   RankiLangParseHandlerHooks,
   ComponentPluginsInstance,
   RankiLangInstancePluginsRecord,

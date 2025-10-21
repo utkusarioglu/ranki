@@ -104,3 +104,30 @@ export type NodeArgsRichTextV2 = Partial<NodeArgsBaseV2> &
 export type ParseNodeRichTextV2 = Omit<ParseNodeBaseV2, "args"> & {
   args: ParseNodeBaseV2["args"] & NodeArgsRichTextV2;
 };
+type Single = string;
+
+export interface RankiRichTextV2ParserPluginConfig {
+  tokens: {
+    sentence: {
+      period: Single;
+      question: Single;
+      exclamation: Single;
+    };
+    line: {
+      align: Single;
+      heading: Single;
+      small: Single;
+    };
+    decoration: {
+      emphasis: Single;
+      bold: Single;
+      idiomatic: Single;
+      underline: Single;
+      abbreviation: Single;
+    };
+  };
+}
+
+export interface WithRankiRichTextV2ParserPluginConfig {
+  RankiRichTextV2: RankiRichTextV2ParserPluginConfig;
+}

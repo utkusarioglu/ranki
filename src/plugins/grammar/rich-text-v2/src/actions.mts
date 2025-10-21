@@ -4,6 +4,7 @@ import type {
   NodeArgRichTextV2SentenceEnd,
   NodeArgsRichTextV2,
   ParseNodeRichTextV2,
+  WithRankiRichTextV2ParserPluginConfig,
 } from "./types.mjs";
 
 import { zipNodes, joinNodes } from "@ranki/package-api-v2/helpers";
@@ -72,6 +73,10 @@ function startToken(context: RankiLangAstContext, start: ohm.Node) {
 function endToken(context: RankiLangAstContext, end: ohm.Node) {
   const endNodes: AstNodeLeaf[] = end.iterNode(context);
   const endArgs: NodeArgsRichTextV2 = {};
+  const merged = context.hooks.getConfig().merged;
+  const config = (
+    merged.plugins.config as WithRankiRichTextV2ParserPluginConfig
+  ).RankiRichTextV2;
 
   for (let ei = endNodes.length - 1; ei >= 0; ei--) {
     const n = endNodes[ei];
@@ -92,11 +97,7 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
             endArgs["sentence.end"] = {
               indices: [],
               level: 0,
-              types: Object.keys(
-                // @ts-expect-error
-                context.hooks.getConfig().merged.plugins.config.RankiRichTextV2
-                  .tokens.sentence,
-              ).reduce((a, c) => {
+              types: Object.keys(config.tokens.sentence).reduce((a, c) => {
                 a[c as T] = false;
                 return a;
               }, {} as Record<T, boolean>),
@@ -108,11 +109,7 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
           type T = keyof NodeArgRichTextV2SentenceEnd["sentence.end"]["types"];
           endArgs["sentence.end"].indices.push(ei);
           endArgs["sentence.end"].level++;
-          Object.entries(
-            // @ts-expect-error
-            context.hooks.getConfig().merged.plugins.config.RankiRichTextV2
-              .tokens.sentence,
-          ).forEach(([k, v]) => {
+          Object.entries(config.tokens.sentence).forEach(([k, v]) => {
             endArgs["sentence.end"]!.types[k as T] ||= raw === v;
           });
         }

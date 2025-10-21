@@ -1,12 +1,10 @@
 import type * as ohm from "ohm-js";
 import type { RankiLanguageConfig } from "../lang/config.mjs";
 import type {
-  RankiLangParseSpecs,
   RankiLangParseHandlerCommon,
   RankiLangParsedAst,
   RankiLangAstContext,
 } from "../lang/context.mjs";
-import type { RankiLangParseHandlerHooks } from "../lang/rankilang.mjs";
 import type { RankiPluginCommon } from "./general.mjs";
 import type { RankiPluginParserValidationCallback } from "../stages/validation.mjs";
 import type { RankiPluginParserTransformCallback } from "../stages/transform.mjs";

@@ -8,6 +8,7 @@ import type {
   ParamV2Operator,
   ParamV2SettingNamespace,
   ParamV2Value,
+  WithRankiParamsV2ParserPluginConfig,
 } from "./types.mjs";
 
 const creatorNameList: ohm.ActionDict<string[]> = {
@@ -20,9 +21,10 @@ const creatorName: ohm.ActionDict<string> = {
   tParamsV2SeparatorParam(sep) {
     const context: RankiLangAstContext = this.args.context;
     const merged = context.hooks.getConfig().merged;
-    const separators =
-      // @ts-expect-error
-      merged.plugins.config.RankiParamsV2.tokens.separator;
+    const pluginsConfig = merged.plugins
+      .config as WithRankiParamsV2ParserPluginConfig;
+    const config = pluginsConfig.RankiParamsV2;
+    const separators = config.tokens.separator;
     return sep.sourceString === separators.param ? this.ctorName : "none";
   },
 };
@@ -51,17 +53,8 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
     return joined;
   },
 };
-// const paramV2KeyWord: ohm.ActionDict<ParamV2KeyWord> = {
-//   paramKeyWord(a, b) {
-//     return this.sourceString;
-//   },
-// };
 
-const paramV2Key: ohm.ActionDict<ParamV2KeyWord[]> = {
-  // @ts-expect-error
-  paramKeyWord(a, b) {
-    return this.sourceString;
-  },
+const paramV2KeyList: ohm.ActionDict<ParamV2KeyWord[]> = {
   _iter(...children) {
     return [...children.map((v) => v.paramV2Key(this.args.context))];
   },
@@ -70,14 +63,21 @@ const paramV2Key: ohm.ActionDict<ParamV2KeyWord[]> = {
   },
 };
 
+const paramV2Key: ohm.ActionDict<ParamV2KeyWord> = {
+  paramKeyWord(a, b) {
+    return this.sourceString;
+  },
+};
+
 const paramV2Common: ohm.ActionDict<ParamV2Common> = {
   paramFormatOperator(paramKey, wi1, operatorToken, wi2, paramValues) {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
-    const operators =
-      // @ts-expect-error
-      context.hooks.getConfig().merged.plugins.config.RankiParamsV2.tokens
-        .operators;
+    const config = (
+      context.hooks.getConfig().merged.plugins
+        .config as WithRankiParamsV2ParserPluginConfig
+    ).RankiParamsV2;
+    const operators = config.tokens.operators;
     const f = Object.entries(operators).find(
       ([k, v]) => v === operatorToken.sourceString,
     );
@@ -420,7 +420,10 @@ export const actions = {
   paramV2Values,
   paramV2Value,
   argsAndParamsV2,
-  paramV2Key,
+  paramV2Key: {
+    ...paramV2Key,
+    ...paramV2KeyList,
+  },
   paramV2SettingNamespace,
   creatorName: {
     ...creatorName,

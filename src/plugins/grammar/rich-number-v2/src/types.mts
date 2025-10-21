@@ -88,4 +88,38 @@ export type NodeLeafRichNumberV2SourceGeneral =
   | NodeLeafRichNumberV2SourceBases
   | NodeLeafRichNumberV2SourceScalar
   | NodeLeafRichNumberV2SourceENotation;
+
+type Alternates = Single[];
+type Single = string;
+
+export interface RankiRichNumberV2ParserPluginConfig {
+  tokens: {
+    symbol: {
+      complex: Alternates;
+      infinity: Alternates;
+      e: Alternates;
+      pi: Alternates;
+    };
+    base: {
+      hexadecimal: Alternates;
+      octal: Alternates;
+      binary: Alternates;
+    };
+    operator: {
+      negative: Single;
+      positive: Single;
+      minusPlus: Alternates;
+      plusMinus: Alternates;
+      rational: Single;
+    };
+    number: {
+      decimal: Single;
+      group: Single;
+    };
+  };
+}
+
+export interface WithRankiRichNumberV2ParserPluginConfig {
+  RankiRichNumberV2: RankiRichNumberV2ParserPluginConfig;
+}
 // | NodeLeafSourceComplex;

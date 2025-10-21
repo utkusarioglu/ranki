@@ -39,7 +39,7 @@
       "path": "../../plugins/parser/base-v2"
     },
     {
-      "path": "../../plugins/parser/params-v2"
+      "path": "../../plugins/grammar/params-v2"
     },
     {
       "path": "../../plugins/parser/frame-v2"

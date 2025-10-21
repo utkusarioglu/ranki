@@ -3,29 +3,7 @@ import grammar from "../assets/ohm/2.0.66.ohm?raw";
 import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";
 import { transformers } from "./transformers.mjs";
-
-type Single = string;
-
-export interface RankiParamsV2ParserPluginConfig {
-  tokens: {
-    separator: {
-      param: Single;
-    };
-    key: {
-      directive: Single;
-      negation: Single;
-    };
-    operators: {
-      assign: Single;
-      append: Single;
-      remove: Single;
-    };
-  };
-}
-
-export type WithRankiParamsV2ParserPluginConfig = {
-  RankiParamsV2: RankiParamsV2ParserPluginConfig;
-};
+import { RankiParamsV2ParserPluginConfig } from "./types.mjs";
 
 const config: RankiParamsV2ParserPluginConfig = {
   tokens: {

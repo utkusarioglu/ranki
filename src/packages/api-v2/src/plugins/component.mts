@@ -8,7 +8,6 @@ import type {
 import {
   RankiLangAstContext,
   RankiLangParseHandlerCommon,
-  RankiLangParseSpecs,
 } from "../lang/context.mjs";
 import { TransformNode } from "../export.mjs";
 

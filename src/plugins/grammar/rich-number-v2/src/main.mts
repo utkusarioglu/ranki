@@ -3,36 +3,7 @@ import { actions } from "./actions.mjs";
 import grammar from "../assets/ohm/2.0.63.ohm?raw";
 import { validators } from "./validators.mjs";
 import { transformers } from "./transformers.mjs";
-
-type Alternates = Single[];
-type Single = string;
-
-export interface RankiRichNumberV2ParserPluginConfig {
-  tokens: {
-    symbol: {
-      complex: Alternates;
-      infinity: Alternates;
-      e: Alternates;
-      pi: Alternates;
-    };
-    base: {
-      hexadecimal: Alternates;
-      octal: Alternates;
-      binary: Alternates;
-    };
-    operator: {
-      negative: Single;
-      positive: Single;
-      minusPlus: Alternates;
-      plusMinus: Alternates;
-      rational: Single;
-    };
-    number: {
-      decimal: Single;
-      group: Single;
-    };
-  };
-}
+import { RankiRichNumberV2ParserPluginConfig } from "./types.mjs";
 
 const config: RankiRichNumberV2ParserPluginConfig = {
   tokens: {

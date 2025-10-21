@@ -15,7 +15,7 @@ export const handler: RankiLangParseHandlerFunction<FrameV1> = (
 ) => {
   const cloned = context.hooks.clone([]);
   const contextV1: RankiLangAstContext = {
-    plugin: context.plugin,
+    parser: context.parser,
     astHash: "",
     hooks: cloned.hooks,
     blockDepth: context.blockDepth + 1,

@@ -2,7 +2,6 @@ import type {
   AstNode,
   RankiPluginParser,
   RankiPluginParserValidationFunc,
-  RankiLangParseSpecs,
   RankiLangParseHandlerCommon,
   ValidatorFunctionEntry,
   ValidationNode,

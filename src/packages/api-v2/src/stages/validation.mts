@@ -1,5 +1,4 @@
 import type { AstNode, AstNodeLeaf, AstNodeParent } from "./ast.mjs";
-// import type { RankiPluginParserValidationFunc } from "../export.mjs";
 
 export interface ValidatorFunctionEntry {
   source: string; // name of the plugin

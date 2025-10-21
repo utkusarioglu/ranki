@@ -1,5 +1,4 @@
 import type { RankiPluginParser } from "./parser.mjs";
-// import type { RankiPluginRenderer } from "./render.mjs";
 
 export type RankiPlugin = RankiPluginParser;
 

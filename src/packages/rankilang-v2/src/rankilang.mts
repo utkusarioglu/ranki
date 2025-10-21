@@ -105,7 +105,7 @@ export class RankiLang implements RankiLangInstance {
     const context: RankiLangAstContext = {
       theater: spec.theater,
       role: spec.role,
-      plugin: {
+      parser: {
         type: "RankiBaseV2",
       },
       astHash: "", // this needs to be overwritten when a parser is created

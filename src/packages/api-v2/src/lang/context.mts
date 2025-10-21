@@ -123,7 +123,7 @@ export type RankiLangParseSpecsFrameNull = RankiLangParseSpecsCommon;
 export type RankiLangAstContext<
   T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
 > = RankiLangParseSpecs & {
-  plugin: T;
+  parser: T;
   astHash: string;
   hooks: RankiLangParseHandlerHooks;
   blockDepth: number;

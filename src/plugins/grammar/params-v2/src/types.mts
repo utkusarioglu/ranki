@@ -85,6 +85,27 @@ export interface ArgsAndParamsV2 {
   args: NodeArgsParamsV2;
   params: ParamsV2SpecPopulated;
 }
+export interface RankiParamsV2ParserPluginConfig {
+  tokens: {
+    separator: {
+      param: Single;
+    };
+    key: {
+      directive: Single;
+      negation: Single;
+    };
+    operators: {
+      assign: Single;
+      append: Single;
+      remove: Single;
+    };
+  };
+}
+
+export type WithRankiParamsV2ParserPluginConfig = {
+  RankiParamsV2: RankiParamsV2ParserPluginConfig;
+};
+export type Single = string;
 
 // export interface ArgsAndParamsV2WithNone {
 //   args: NodeArgsParamsV2;

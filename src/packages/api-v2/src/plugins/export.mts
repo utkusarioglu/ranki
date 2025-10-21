@@ -1,13 +1,7 @@
-export type {
-  RankiPluginParser,
-  RankiPluginParserSpecs,
-  // RankiGrammarTokens,
-  // RankiLangParseHandlerFunction,
-} from "./parser.mjs";
+export type { RankiPluginParser, RankiPluginParserSpecs } from "./parser.mjs";
 
 export type {
   RankiPluginGrammar,
-  // RankiPluginParserSpecs,
   RankiGrammarTokens,
   RankiLangParseHandlerFunction,
 } from "./grammar.mjs";

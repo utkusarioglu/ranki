@@ -19,7 +19,7 @@ export class AstLibrary {
     theaterRaw: string,
     context: RankiLangAstContext<T>,
   ): RankiLangParsedAst {
-    const handler = context.hooks.getHandler(context["plugin"].type);
+    const handler = context.hooks.getHandler(context["parser"].type);
 
     context.hooks.parseAst = this.createParser(context);
     return handler(theaterRaw, context);
@@ -115,9 +115,9 @@ export class AstLibrary {
       const mergedContext: RankiLangAstContext = {
         ...context,
         astHash: hash,
-        plugin: {
-          ...providedContext.plugin,
-          type: context.plugin.type,
+        parser: {
+          ...providedContext.parser,
+          type: context.parser.type,
         },
         blockDepth: providedContext.blockDepth,
         inlineDepth: providedContext.inlineDepth,

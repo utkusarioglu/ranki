@@ -9,15 +9,15 @@ import type { RankiLangParserPluginParseHandlerFrameV2 } from "./types/context.m
 export const handler: RankiLangParseHandlerFunction<
   RankiLangParserPluginParseHandlerFrameV2
 > = (theaterRaw, context) => {
-  if (!context.plugin || context.plugin.type !== "RankiFrameV2") {
+  if (!context.parser || context.parser.type !== "RankiFrameV2") {
     throw new Error(`FRAME V2 HANDLER GIVEN NON-FRAME V2 COMPONENT`);
   }
-  if (context.plugin?.chain.length > 1) {
+  if (context.parser?.chain.length > 1) {
     throw new Error(`MULTI-LENGTH CHAINS NOT YET SUPPORTED`);
   }
   const component = context.hooks.getComponent(
     "RankiFrameV2",
-    context.plugin.chain[0],
+    context.parser.chain[0],
   );
 
   // TODO I think the settings are not communicated back to the ast
@@ -30,7 +30,7 @@ export const handler: RankiLangParseHandlerFunction<
     directives,
   ]);
   const contextV2: RankiLangAstContext = {
-    plugin: context.plugin,
+    parser: context.parser,
     astHash: "",
     hooks: cloned.hooks,
     blockDepth: context.blockDepth + 1,
@@ -140,13 +140,13 @@ function parseSettings(
   { directive, setting }: any,
   frameConfig: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2>,
 ) {
-  if (!frameConfig.plugin) {
+  if (!frameConfig.parser) {
     return { config: null };
   }
-  if (!frameConfig.plugin.params) {
+  if (!frameConfig.parser.params) {
     return { config: null };
   }
-  const items = frameConfig.plugin.params.items;
+  const items = frameConfig.parser.params.items;
   const directiveParams = items.filter((p) => p.type === "directive");
   const settingParams = items.filter((p) => p.type === "setting");
 

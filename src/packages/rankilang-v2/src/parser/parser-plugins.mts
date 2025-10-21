@@ -1,12 +1,10 @@
 import type {
   RankiPluginParser,
   VersionReport,
-  // RankiLangParserPluginParseHandler,
   RankiLangParseHandlerFunction,
   ParserPluginsInstance,
   ProducedConfig,
   ActionsDictRecord,
-  // RankiPluginParserValidationFunc,
 } from "@ranki/package-api-v2";
 import { expandDependencies, topologicalSort } from "./utils.mjs";
 

@@ -1,24 +1,20 @@
 import type * as ohm from "ohm-js";
-import type {
-  RankiLangAstContext,
-  RankiLanguageConfig,
-} from "@ranki/package-api-v2";
+import type { RankiLangAstContext } from "@ranki/package-api-v2";
 import {
-  NodeLeafRichNumberV2SourceComplex,
   NodeLeafRichNumberV2SourceInteger,
   NodeLeafRichNumberV2SourceScalar,
   RichNumberV2Sign,
   ParseNodeRichNumberV2,
+  RankiRichNumberV2ParserPluginConfig,
+  WithRankiRichNumberV2ParserPluginConfig,
 } from "./types.mjs";
 
 type SymbolKeys = Partial<
-  // @ts-expect-error
-  keyof RankiLanguageConfig["merged"]["plugins"]["config"]["RankiRichNumberV2"]["tokens"]["symbol"]
+  keyof RankiRichNumberV2ParserPluginConfig["tokens"]["symbol"]
 >[];
 
 type BaseKeys = Partial<
-  // @ts-expect-error
-  keyof RankiLanguageConfig["merged"]["plugins"]["config"]["RankiRichNumberV2"]["tokens"]["base"]
+  keyof RankiRichNumberV2ParserPluginConfig["tokens"]["base"]
 >[];
 
 const CONCEPTUAL_NUMBERS = ["e", "infinity", "pi"] as SymbolKeys;
@@ -82,14 +78,12 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const merged = context.hooks.getConfig().merged;
+    const config = (
+      merged.plugins.config as WithRankiRichNumberV2ParserPluginConfig
+    ).RankiRichNumberV2;
     let type;
     CONCEPTUAL_NUMBERS.forEach((t) => {
-      if (
-        // @ts-expect-error
-        merged.plugins.config.RankiRichNumberV2.tokens.symbol[t].includes(
-          token.sourceString,
-        )
-      ) {
+      if (config.tokens.symbol[t].includes(token.sourceString)) {
         type = t;
       }
     });
@@ -125,11 +119,11 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const merged = context.hooks.getConfig().merged;
+    const config = (
+      merged.plugins.config as WithRankiRichNumberV2ParserPluginConfig
+    ).RankiRichNumberV2;
     const integer = +num.sourceString
-      .split(
-        // @ts-expect-error
-        merged.plugins.config.RankiRichNumberV2.tokens.number.group,
-      )
+      .split(config.tokens.number.group)
       .join("");
     return {
       kind: "leaf",
@@ -159,11 +153,11 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const merged = context.hooks.getConfig().merged;
+    const config = (
+      merged.plugins.config as WithRankiRichNumberV2ParserPluginConfig
+    ).RankiRichNumberV2;
     const integer = +num.sourceString
-      .split(
-        // @ts-expect-error
-        merged.plugins.config.RankiRichNumberV2.tokens.number.group,
-      )
+      .split(config.tokens.number.group)
       .join("");
     return {
       kind: "leaf",
@@ -193,11 +187,11 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const merged = context.hooks.getConfig().merged;
+    const config = (
+      merged.plugins.config as WithRankiRichNumberV2ParserPluginConfig
+    ).RankiRichNumberV2;
     const integer = +num.sourceString
-      .split(
-        // @ts-expect-error
-        merged.plugins.config.RankiRichNumberV2.tokens.number.group,
-      )
+      .split(config.tokens.number.group)
       .join("");
     return {
       kind: "leaf",
@@ -270,9 +264,11 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const merged = context.hooks.getConfig().merged;
-    const richNumberV2 =
-      // @ts-expect-error
-      merged.plugins.config.RankiRichNumberV2.tokens;
+    const config = (
+      merged.plugins.config as WithRankiRichNumberV2ParserPluginConfig
+    ).RankiRichNumberV2;
+
+    const richNumberV2 = config.tokens;
     let type;
 
     BASES.forEach((s) => {
@@ -391,11 +387,11 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     const merged = context.hooks.getConfig().merged;
+    const config = (
+      merged.plugins.config as WithRankiRichNumberV2ParserPluginConfig
+    ).RankiRichNumberV2;
     const decimal = +decimalGroup.sourceString
-      .split(
-        // @ts-expect-error
-        merged.plugins.config.RankiRichNumberV2.tokens.number.group,
-      )
+      .split(config.tokens.number.group)
       .join("");
     return {
       kind: "leaf",

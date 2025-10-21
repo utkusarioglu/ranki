@@ -7,3 +7,11 @@ import { AstNode } from "@ranki/package-api-v2";
  * inherits from BaseV2.
  */
 export type NodeArgsBaseV2 = AstNode["args"];
+type Single = string;
+
+export interface RankiBaseV2ParserPluginConfig {
+  tokens: {
+    ignore: Single;
+    escape: Single;
+  };
+}

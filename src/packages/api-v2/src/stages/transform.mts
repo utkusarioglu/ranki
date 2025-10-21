@@ -10,8 +10,6 @@ interface TransformNodeCommon {
 
 export type TransformNodeLeaf = TransformNodeCommon & {
   kind: "leaf";
-  // dataType: string;
-  // value: string;
   source: ValidationNodeLeaf["source"];
   print: boolean;
 };

@@ -59,7 +59,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
 
     const newContext: RankiLangAstContext<FrameV1> = {
       ...context,
-      plugin: {
+      parser: {
         type: "RankiFrameV1",
         chain: v1Type.sourceString,
         params: [],
@@ -131,7 +131,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(context);
     const newContext: RankiLangAstContext<FrameV1> = {
       ...context,
-      plugin: {
+      parser: {
         type: "RankiFrameV1",
         chain: v1Type.sourceString,
         params: argsAndParamsV1["params"],
@@ -211,7 +211,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     context.blockDepth++;
     const newContext: RankiLangAstContext<FrameV1> = {
       ...context,
-      plugin: {
+      parser: {
         type: "RankiFrameV1",
         chain: v1Type.sourceString,
         params: [],
@@ -291,7 +291,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       v1ParamListInline.argsAndParamsV1(context);
     const newContext: RankiLangAstContext<FrameV1> = {
       ...context,
-      plugin: {
+      parser: {
         type: "RankiFrameV1",
         chain: v1Type.sourceString,
         params: argsAndParamsV1["params"],

@@ -16,10 +16,13 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const frameConfig: NodeArgsFrameV2Config =
       v2FrameConfig.v2FrameConfig(context);
 
-    const child = v2Payload.node({
-      ...context,
-      plugin: frameConfig,
-    });
+    const payloadContext: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
+      {
+        ...context,
+        parser: frameConfig,
+      };
+
+    const child = v2Payload.node(payloadContext);
 
     return {
       kind: "parent",
@@ -54,7 +57,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const newContext: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
       {
         ...context,
-        plugin: frameConfig,
+        parser: frameConfig,
       };
     const child = context.hooks.parseAst("", newContext);
 
@@ -120,7 +123,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const newContext: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
       {
         ...context,
-        plugin: frameConfig,
+        parser: frameConfig,
       };
 
     const child = context.hooks.parseAst("", newContext);
