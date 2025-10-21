@@ -12,7 +12,7 @@ const nodeBaseV2: ohm.ActionDict<AstNode> = {
     context.blockDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -72,7 +72,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
 
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -141,7 +141,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     );
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -220,7 +220,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     );
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -299,7 +299,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     );
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,

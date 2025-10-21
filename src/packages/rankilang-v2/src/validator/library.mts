@@ -40,7 +40,7 @@ export class ValidatorLibrary {
     spec: RankiLangAstContext<T>,
   ): ValidationNode {
     try {
-      const validator = this.getValidator(obj.type);
+      const validator = this.getValidator(obj.creator);
       if (obj.kind === "parent") {
         const validation = validator(obj);
         return {

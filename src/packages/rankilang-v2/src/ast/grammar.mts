@@ -26,7 +26,7 @@ export function buildGrammar(
 ) {
   const matchers: Record<string, ParserPluginGrammar> = {};
   let grammarParents = {};
-  let sources = [];
+  let sources: string[] = [];
   for (let si = 0; si < importChain.length; si++) {
     const name = importChain[si];
     const parserPlugin = finder(name);

@@ -10,14 +10,14 @@ export const transformPlaceholder: RankiPluginParserTransformFunc = (
         kind: "parent",
         tag: "div",
         depth: v.args.depth.total,
-        creator: v.type,
+        creator: v.creator,
         children: [],
       };
     case "leaf":
       return {
         kind: "leaf",
         tag: "span",
-        creator: v.type,
+        creator: v.creator,
         depth: v.args.depth.total,
         print: v.print,
         source: v.source,

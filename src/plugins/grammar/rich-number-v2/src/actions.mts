@@ -39,7 +39,7 @@ function hComplex<T extends ohm.Node>(
   context.inlineDepth++;
   return {
     kind: "leaf",
-    type: this.ctorName,
+    creator: this.ctorName,
     print: true,
     args: {
       depth: {
@@ -98,7 +98,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
 
     return {
       kind: "leaf" as "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {
@@ -131,7 +131,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       .join("");
     return {
       kind: "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {
@@ -164,7 +164,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       .join("");
     return {
       kind: "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {
@@ -197,7 +197,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       .join("");
     return {
       kind: "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {
@@ -223,7 +223,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     context.inlineDepth++;
     return {
       kind: "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {
@@ -283,7 +283,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
 
     return {
       kind: "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {
@@ -334,7 +334,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     const ns = numberSystem.node(context);
     return {
       kind: "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {
@@ -358,7 +358,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     context.inlineDepth++;
     return {
       kind: "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {
@@ -390,7 +390,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       .join("");
     return {
       kind: "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {
@@ -427,7 +427,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     context.inlineDepth++;
     return {
       kind: "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {
@@ -523,7 +523,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     context.inlineDepth++;
     return {
       kind: "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {

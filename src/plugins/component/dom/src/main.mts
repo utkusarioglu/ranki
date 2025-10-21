@@ -82,7 +82,7 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
             tag: "code",
             kind: "leaf" as "leaf",
             print: true,
-            creator: validation.type,
+            creator: validation.creator,
             depth: validation.args.depth.total,
             source: {
               type: "raw" as "raw",

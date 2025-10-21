@@ -45,7 +45,7 @@ const node: ohm.ActionDict<AstNode> = {
     context.blockDepth++;
     return {
       kind: "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {
@@ -73,7 +73,7 @@ const node: ohm.ActionDict<AstNode> = {
     context.blockDepth++;
     return {
       kind: "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {
@@ -96,7 +96,7 @@ const node: ohm.ActionDict<AstNode> = {
     context.blockDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -129,7 +129,7 @@ const node: ohm.ActionDict<AstNode> = {
     context.blockDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -154,7 +154,7 @@ const node: ohm.ActionDict<AstNode> = {
     context.blockDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -179,7 +179,7 @@ const node: ohm.ActionDict<AstNode> = {
     context.inlineDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -213,7 +213,7 @@ const node: ohm.ActionDict<AstNode> = {
     context.inlineDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -238,7 +238,7 @@ const node: ohm.ActionDict<AstNode> = {
     context.inlineDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -270,7 +270,7 @@ const node: ohm.ActionDict<AstNode> = {
     leafContext.inlineDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: parentContext.blockDepth,
@@ -293,7 +293,7 @@ const node: ohm.ActionDict<AstNode> = {
       children: [
         {
           kind: "leaf",
-          type: this.ctorName,
+          creator: this.ctorName,
           print: true,
           args: {
             depth: {
@@ -318,7 +318,7 @@ const node: ohm.ActionDict<AstNode> = {
     context.inlineDepth++;
     return {
       kind: "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {
@@ -341,7 +341,7 @@ const node: ohm.ActionDict<AstNode> = {
     context.inlineDepth++;
     return {
       kind: "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {
@@ -367,7 +367,7 @@ const node: ohm.ActionDict<AstNode> = {
     return {
       kind: "leaf",
       print: true,
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -392,7 +392,7 @@ const node: ohm.ActionDict<AstNode> = {
     return {
       kind: "leaf",
       print: true,
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,

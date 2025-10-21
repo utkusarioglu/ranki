@@ -18,7 +18,7 @@ function startToken(context: RankiLangAstContext, start: ohm.Node) {
       throw new Error("DECORATION START IS NOT LEAF");
     }
 
-    switch (n.type) {
+    switch (n.creator) {
       case "tRichTextV2DecorationEmphasis":
         if (!startArgs["em.start"]) {
           startArgs["em.start"] = { indices: [], level: 0 };
@@ -63,7 +63,7 @@ function startToken(context: RankiLangAstContext, start: ohm.Node) {
         break;
 
       default:
-        throw new Error(`UNRECOGNIZED START DECORATION ${n.type}`);
+        throw new Error(`UNRECOGNIZED START DECORATION ${n.creator}`);
     }
   }
   return { startNodes, startArgs };
@@ -79,7 +79,7 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
       throw new Error("DECORATION START IS NOT LEAF");
     }
 
-    switch (n.type) {
+    switch (n.creator) {
       case "sentence":
         if (n.source.type !== "token") {
           throw new Error("VALUE MISMATCH: n.type ~ n.source.type");
@@ -159,7 +159,7 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
         break;
 
       default:
-        throw new Error(`UNRECOGNIZED  END DECORATION ${n.type}`);
+        throw new Error(`UNRECOGNIZED  END DECORATION ${n.creator}`);
     }
   }
 
@@ -172,7 +172,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     context.inlineDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -200,7 +200,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
 
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -232,7 +232,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     return {
       kind: "leaf",
       print: true,
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -255,7 +255,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     return {
       kind: "leaf",
       print: true,
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -278,7 +278,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     return {
       kind: "leaf",
       print: true,
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -301,7 +301,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     return {
       kind: "leaf",
       print: true,
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -324,7 +324,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     return {
       kind: "leaf",
       print: true,
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -347,7 +347,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     return {
       kind: "leaf",
       print: false,
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -370,7 +370,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     return {
       kind: "leaf",
       print: true,
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -393,7 +393,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     return {
       kind: "leaf",
       print: false,
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -416,7 +416,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     return {
       kind: "leaf",
       print: false,
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -439,7 +439,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     return {
       kind: "leaf",
       print: false,
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -462,7 +462,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     return {
       kind: "leaf",
       print: false,
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -487,7 +487,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     context.inlineDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -512,7 +512,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     context.inlineDepth++;
     return {
       kind: "leaf",
-      type: this.ctorName,
+      creator: this.ctorName,
       print: true,
       args: {
         depth: {
@@ -540,7 +540,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
 
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: parentContext.blockDepth,

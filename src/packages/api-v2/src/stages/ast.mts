@@ -1,8 +1,10 @@
+import { RankiLangAstContext } from "../export.mjs";
+
 export type AstNode = AstNodeLeaf | AstNodeParent;
 
 export interface AstNodeParent extends AstNodeCommon {
   kind: "parent";
-  type: string;
+  creator: string;
   subtree: {}; // this is supposed to be overwritten by implementers which have subtrees
   children: AstNode[];
   source: AstNodeLeafSource;
@@ -31,7 +33,7 @@ export interface SeparatorEntry {
 }
 
 interface AstNodeCommon {
-  type: string;
+  creator: string;
   args: {
     spaces: Record<string, WhitespaceEntry>;
     separators: SeparatorEntry[];
@@ -40,18 +42,8 @@ interface AstNodeCommon {
       inline: number;
       total: number;
     };
-  }; // this needs to be extended by plugins
-  // parser:
-  //   | "root"
-  //   | {
-  //       plugin: string;
-  //       chain: string[];
-  //       // parser: {}
-  //       // handler: string;
-  //       // component: string;
-  //       settings: {};
-  //       directives: {};
-  //     };
+  };
+  parser: RankiLangAstContext["parser"];
 }
 
 interface AstNodeLeafSourceString {

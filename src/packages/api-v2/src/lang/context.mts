@@ -2,15 +2,10 @@ import type { RankiLanguageConfig } from "./config.mjs";
 import type { AstNode } from "../stages/ast.mjs";
 import type { RankiLangParseHandlerHooks } from "./rankilang.mjs";
 import {
-  // RankiGrammarTokens,
   RankiLangParseHandlerFunction,
   RankiPluginParser,
 } from "../plugins/parser.mjs";
-import {
-  RankiGrammarTokens,
-  // RankiLangParseHandlerFunction,
-  // RankiPluginParser,
-} from "../plugins/grammar.mjs";
+import { RankiGrammarTokens } from "../plugins/grammar.mjs";
 import type * as ohm from "ohm-js";
 import type { TransformNode } from "../stages/transform.mjs";
 import type { ValidationNode } from "../stages/validation.mjs";
@@ -22,10 +17,7 @@ export interface RankiLangParseResult {
   };
 }
 
-interface RankiLangLanguageReport {}
-
 export interface RankiLangAstResult {
-  // report: RankiLangLanguageReport;
   theaters: {
     [key: string]: RankiLangParsedTheater;
   };
@@ -36,7 +28,6 @@ export interface RankiLangParseReport {
     versions: VersionReport;
   };
   ast: RankiLangConsolidatedAstReport;
-  config: RankiLanguageConfig;
   theater: TheaterName;
   role: RoleName;
 }
@@ -48,11 +39,6 @@ export interface RankiLangConsolidatedAstReport {
 
 export type RankiLangParsedAst = RankiLangParseFunctionReturn;
 
-//   {
-//   report: RankiLangAstReport;
-//   root: AstNode;
-// }
-
 export interface RankiLangParsedTheater {
   stages: {
     raw: string;
@@ -63,17 +49,24 @@ export interface RankiLangParsedTheater {
 }
 
 export interface RankiLangAstReport {
-  hash: string;
-  usageCount: number;
-  requested: string[];
-  sorted: string[];
-  graph: Record<string, string[]>;
-  contributors: Record<string, string[]>;
-  methods: Record<string, string[]>;
-  source: string;
+  cache: {
+    hash: string;
+    usageCount: number;
+  };
+  graph: {
+    requested: string[];
+    sorted: string[];
+    dependencies: Record<string, string[]>;
+    contributors: Record<string, string[]>;
+    methods: Record<string, string[]>;
+  };
+  grammar: {
+    source: string;
+  };
+  config: RankiLanguageConfig;
 }
+
 export interface RankiLangParseFunctionReturn {
-  // report: RankiLangAstReport;
   root: AstNode;
 }
 
@@ -108,9 +101,6 @@ export interface ParserPluginsInstance {
 export type TheaterName = string & { type?: "TheaterName" };
 type RoleName = string & { type?: "RoleName" };
 
-// FIX This uses properties from the v2FrameConfig object.
-// this type should be coming from the framev2 plugin. `api` shouldn't care about these things
-
 interface RankiLangParseSpecsCommon {
   theater: TheaterName;
   role: RoleName;
@@ -123,10 +113,7 @@ export interface RankiLangParseHandlerCommon {
   type: string;
 }
 
-export type RankiLangParseSpecs<
-  // TODO you may need to get rid of this
-  // T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
-> = {
+export type RankiLangParseSpecs = {
   theater: TheaterName;
   role: RoleName;
 };
@@ -137,6 +124,7 @@ export type RankiLangAstContext<
   T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
 > = RankiLangParseSpecs & {
   plugin: T;
+  astHash: string;
   hooks: RankiLangParseHandlerHooks;
   blockDepth: number;
   inlineDepth: number;

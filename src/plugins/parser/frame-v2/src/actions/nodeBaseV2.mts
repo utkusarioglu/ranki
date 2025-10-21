@@ -9,7 +9,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     context.blockDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -42,7 +42,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     context.blockDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -75,7 +75,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     context.blockDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -99,7 +99,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     context.blockDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -135,7 +135,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     context.blockDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -174,7 +174,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     const child = context.hooks.parseAst(plain.sourceString, context);
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,
@@ -202,7 +202,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     leafContext.inlineDepth++;
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: parentContext.blockDepth,
@@ -220,7 +220,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
       children: [
         {
           kind: "leaf",
-          type: this.ctorName,
+          creator: this.ctorName,
           print: true,
           args: {
             depth: {

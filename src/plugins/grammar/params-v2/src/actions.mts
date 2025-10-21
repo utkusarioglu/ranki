@@ -14,14 +14,6 @@ const creatorNameList: ohm.ActionDict<string[]> = {
   _iter(...children) {
     return children.map((c) => c.ctorName);
   },
-  // tParamsV2SeparatorParam(sep) {
-  //   const context: RankiLangAstContext = this.args.context;
-  //   const merged = context.hooks.getConfig().merged;
-  //   const separators =
-  //     // @ts-expect-error
-  //     merged.plugins.config.RankiParamsV2.tokens.separator;
-  //   return sep.sourceString === separators.param ? this.ctorName : "none";
-  // },
 };
 
 const creatorName: ohm.ActionDict<string> = {

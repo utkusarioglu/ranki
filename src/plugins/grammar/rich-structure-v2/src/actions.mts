@@ -21,7 +21,7 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
       separator.argsAndParamsV2(context);
     return {
       kind: "parent",
-      type: this.ctorName,
+      creator: this.ctorName,
       args: {
         depth: {
           block: context.blockDepth,

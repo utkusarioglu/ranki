@@ -86,14 +86,21 @@ export class AstLibrary {
     );
 
     const report: RankiLangAstReport = {
-      hash,
-      usageCount: 0,
-      requested: configPlugins.requested,
-      sorted: importChain,
-      graph: dependencyGraph,
-      contributors: participants,
-      methods,
-      source: sources.join("\n\n"),
+      cache: {
+        hash,
+        usageCount: 0,
+      },
+      graph: {
+        requested: configPlugins.requested,
+        sorted: importChain,
+        dependencies: dependencyGraph,
+        contributors: participants,
+        methods,
+      },
+      grammar: {
+        source: sources.join("\n"),
+      },
+      config: langConfig,
     };
     if (AstLibrary.reports[hash]) {
       throw new Error(`HASH COLLISION FOR ${hash}`);
@@ -102,22 +109,22 @@ export class AstLibrary {
 
     const parseAst: ParseAstFunction = (
       raw: string,
-      newContext: RankiLangAstContext,
+      providedContext: RankiLangAstContext,
     ) => {
       const matched = matcher.match(raw, context.startRule);
-      const root: AstNode = semantics(matched).node({
+      const mergedContext: RankiLangAstContext = {
         ...context,
+        astHash: hash,
         plugin: {
-          ...newContext.plugin,
+          ...providedContext.plugin,
           type: context.plugin.type,
         },
-        blockDepth: newContext.blockDepth,
-        inlineDepth: newContext.inlineDepth,
-        startRule: newContext.startRule,
-      });
-      AstLibrary.reports[hash].usageCount++;
-      // @ts-expect-error
-      root.args.hash = hash;
+        blockDepth: providedContext.blockDepth,
+        inlineDepth: providedContext.inlineDepth,
+        startRule: providedContext.startRule,
+      };
+      const root: AstNode = semantics(matched).node(mergedContext);
+      AstLibrary.reports[hash].cache.usageCount++;
       return { root };
     };
 

@@ -2,16 +2,12 @@ import type {
   RankiPluginParser,
   RankiPluginParserTransformFunc,
   TransformerFunctionEntry,
-  RankiLangParseSpecs,
   RankiLangParseHandlerCommon,
   ValidationNode,
   TransformNode,
   TransformNodeParent,
   RankiLangAstContext,
 } from "@ranki/package-api-v2";
-import { ComponentPlugins } from "../component/component-plugins.mjs";
-
-type GetComponentHook = ComponentPlugins["getPlugin"];
 
 export class TransformerLibrary {
   private list: Record<string, TransformerFunctionEntry> = {};
@@ -42,7 +38,6 @@ export class TransformerLibrary {
   transform<T extends RankiLangParseHandlerCommon>(
     validation: ValidationNode,
     context: RankiLangAstContext<T>,
-    // hooks: { getComponent: GetComponentHook },
   ): TransformNode {
     try {
       // @ts-ignore
@@ -59,14 +54,9 @@ export class TransformerLibrary {
           spec: context,
         });
         return transformed;
-        // if (obj.args.frame.chain.join(".") === "code") {
-        //   return {
-        //     // @ts-expect-error
-        //     code: "code!",
-        //   };
-        // }
       }
-      const transformer = this.getTransformer(validation.type);
+
+      const transformer = this.getTransformer(validation.creator);
       if (validation.kind === "parent") {
         const transformed = transformer(validation) as TransformNodeParent;
         return {

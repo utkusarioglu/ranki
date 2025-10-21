@@ -108,6 +108,7 @@ export class RankiLang implements RankiLangInstance {
       plugin: {
         type: "RankiBaseV2",
       },
+      astHash: "", // this needs to be overwritten when a parser is created
       blockDepth: 0,
       inlineDepth: 0,
       startRule: "root",
@@ -130,7 +131,6 @@ export class RankiLang implements RankiLangInstance {
         versions: this.parsers.getVersions(),
       },
       ast: this.ast.getReports(),
-      config,
       theater: spec.theater,
       role: spec.role,
     };

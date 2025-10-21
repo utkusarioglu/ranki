@@ -11,7 +11,7 @@ export const transformers: RankiPluginParserTransformCallback = () => ({
     return {
       tag: "eNotation",
       kind: "leaf",
-      creator: t.type,
+      creator: t.creator,
       depth: t.args.depth.total,
       print: t.print,
       source: t.source,
