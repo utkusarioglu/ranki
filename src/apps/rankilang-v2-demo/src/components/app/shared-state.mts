@@ -1,10 +1,13 @@
-import type { RankiLanguageMergedConfig } from "@ranki/package-api-v2";
+import type {
+  RankiLangParseResult,
+  RankiLanguageMergedConfig,
+} from "@ranki/package-api-v2";
 
 export type SharedState =
   | null
   | {
       type: "loaded";
-      parsed: object;
+      parsed: RankiLangParseResult;
       config: RankiLanguageMergedConfig;
     }
   | {

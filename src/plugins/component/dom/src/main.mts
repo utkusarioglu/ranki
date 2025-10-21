@@ -35,7 +35,7 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
               // "RankiRichStructureV2",
               // "RankiRichNumberV2",
               // ],
-              // standards: null,
+              // standards: ["RankiBaseV2", "RankiConstantsV2"],
             },
             // content: {
             //   prefix: "% ignore \n",

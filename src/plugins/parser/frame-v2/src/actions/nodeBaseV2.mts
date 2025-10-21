@@ -169,10 +169,9 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     const context: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
       { ...this.args.context };
     context.blockDepth++;
-    console.log({ context });
+    console.log(context);
 
-    const parseAst = context.hooks.createAstParser(context);
-    const child = parseAst(plain.sourceString);
+    const child = context.hooks.parseAst(plain.sourceString, context);
     return {
       kind: "parent",
       type: this.ctorName,

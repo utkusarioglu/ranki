@@ -47,9 +47,7 @@ export const handler: RankiLangParseHandlerFunction<
     contentConfig.suffix,
   ].join("");
 
-  const parseAst = context.hooks.createAstParser(contextV2);
-
-  return parseAst(theaterWithContent);
+  return context.hooks.parseAst(theaterWithContent, contextV2);
 };
 
 type ConvertParamsParams = {

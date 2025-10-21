@@ -35,9 +35,15 @@ export interface RankiLangParseReport {
   language: {
     versions: VersionReport;
   };
+  ast: RankiLangConsolidatedAstReport;
   config: RankiLanguageConfig;
   theater: TheaterName;
   role: RoleName;
+}
+
+export interface RankiLangConsolidatedAstReport {
+  count: number;
+  list: RankiLangAstReport[];
 }
 
 export type RankiLangParsedAst = RankiLangParseFunctionReturn;
@@ -57,13 +63,14 @@ export interface RankiLangParsedTheater {
 }
 
 export interface RankiLangAstReport {
-  parser: {
-    requested: string[];
-    sorted: string[];
-    graph: Record<string, string[]>;
-    contributors: Record<string, string[]>;
-    methods: Record<string, string[]>;
-  };
+  hash: string;
+  usageCount: number;
+  requested: string[];
+  sorted: string[];
+  graph: Record<string, string[]>;
+  contributors: Record<string, string[]>;
+  methods: Record<string, string[]>;
+  source: string;
 }
 export interface RankiLangParseFunctionReturn {
   // report: RankiLangAstReport;

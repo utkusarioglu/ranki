@@ -54,9 +54,9 @@ function handler(
   //   role: context.role,
   //   startRule: context.startRule,
   // };
-  const parseAst = context.hooks.createAstParser(context);
+  // const parseAst = context.hooks.createAstParser(context);
 
-  return parseAst(theaterWithContent);
+  return context.hooks.parseAst(theaterWithContent, context);
 }
 
 export const rankiBaseV2ParserPlugin: RankiPluginParser<RankiBaseV2ParserPluginConfig> =

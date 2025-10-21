@@ -23,8 +23,8 @@ export const providedConfig = {
   stage: "ast",
   plugins: {
     requested: [
-      "RankiParamsV2",
-      "RankiFrameV2",
+      // "RankiParamsV2",
+      // "RankiFrameV2",
       // "RankiFrameV1",
       // "RankiRichTextV2",
       // "RankiRichNumberV2",
@@ -55,14 +55,19 @@ function main(count: number) {
   const lang = new RankiLang(
     {
       parsers: [
-        rankiBaseV2ParserPlugin,
+        // @ts-expect-error
         rankiConstantsV2ParserPlugin,
-        rankiParamsV2ParserPlugin,
-        rankiFrameV2ParserPlugin,
-        rankiRichTextV2ParserPlugin,
-        rankiRichNumberV2ParserPlugin,
-        rankiRichStructureV2ParserPlugin,
-        rankiFrameV1ParserPlugin,
+        rankiBaseV2ParserPlugin,
+        // rankiFrameV2ParserPlugin,
+        // rankiFrameV1ParserPlugin,
+        // // @ts-expect-error
+        // rankiParamsV2ParserPlugin,
+        // // @ts-expect-error
+        // rankiRichTextV2ParserPlugin,
+        // // @ts-expect-error
+        // rankiRichNumberV2ParserPlugin,
+        // // @ts-expect-error
+        // rankiRichStructureV2ParserPlugin,
       ],
       components: [rankiFrameV2ComponentsPluginDom],
     },

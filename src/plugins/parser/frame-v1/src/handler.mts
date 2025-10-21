@@ -24,7 +24,5 @@ export const handler: RankiLangParseHandlerFunction<FrameV1> = (
     startRule: context.startRule,
   };
 
-  const parseAst = context.hooks.createAstParser(contextV1);
-
-  return parseAst(theaterRaw);
+  return context.hooks.parseAst(theaterRaw, contextV1);
 };

@@ -1,9 +1,10 @@
 import type { FC } from "react";
 import { ContainerNode } from "./ContainerNode";
 import style from "./component-renderer.module.css";
+import type { RankiLangParseResult } from "@ranki/package-api-v2";
 
 interface ComponentRendererProps {
-  parsed: any | null; // !FIX any
+  parsed: RankiLangParseResult;
   customPath: string;
 }
 
@@ -24,10 +25,7 @@ export const ComponentRenderer: FC<ComponentRendererProps> = ({
             </h1>
           </hgroup>
           {customPath !== "" ? <h2>{customPath}</h2> : null}
-          <ContainerNode
-            // @ts-expect-error
-            item={o.stages.transform}
-          />
+          <ContainerNode item={o.stages.transform} />
         </div>
       ))}
     </div>

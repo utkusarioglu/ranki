@@ -16,7 +16,7 @@
       "path": "../../packages/api-v2"
     },
     {
-      "path": "../../plugins/parser/constants-v2"
+      "path": "../../plugins/grammar/constants-v2"
     },
     {
       "path": "../../plugins/parser/base-v2"

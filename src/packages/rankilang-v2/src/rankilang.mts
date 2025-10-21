@@ -6,12 +6,9 @@ import type {
   RankiLangAstContext,
   RankiLanguageProvidedConfig,
   RankiLangParseReport,
-  RankiLangParseHandlerCommon,
   ParserPluginsInstance,
   ComponentPluginsInstance,
   RankiLangInstancePluginsRecord,
-  RankiLangAstResult,
-  RankiLangParsedAst,
   RankiLangParseHandlerHooks,
   RankiLangCloneFunctionReturn,
 } from "@ranki/package-api-v2";
@@ -79,12 +76,11 @@ export class RankiLang implements RankiLangInstance {
   }
 
   private createParseHandlerHooks() {
-    // @ts-expect-error
     const parseHandlerHooks: RankiLangParseHandlerHooks = {
       getPlugins: this.getPlugins.bind(this),
       clone: this.clone.bind(this),
-      // parseAst: this.ast.parse.bind(this.ast),
       getComponent: this.components.getPlugin.bind(this.components),
+      parseAst: this.ast.parse.bind(this.ast),
       getHandler: this.parsers.getHandler.bind(this.parsers),
       getConfig: this.config.getAll.bind(this.config),
     };
@@ -105,15 +101,6 @@ export class RankiLang implements RankiLangInstance {
     }
 
     const config = this.config.getAll();
-
-    const report: RankiLangParseReport = {
-      language: {
-        versions: this.parsers.getVersions(),
-      },
-      config,
-      theater: spec.theater,
-      role: spec.role,
-    };
 
     const context: RankiLangAstContext = {
       theater: spec.theater,
@@ -137,6 +124,16 @@ export class RankiLang implements RankiLangInstance {
       validation && config.merged.stage === "transform"
         ? this.transformers.transform(validation, context)
         : null;
+
+    const report: RankiLangParseReport = {
+      language: {
+        versions: this.parsers.getVersions(),
+      },
+      ast: this.ast.getReports(),
+      config,
+      theater: spec.theater,
+      role: spec.role,
+    };
 
     return {
       report,

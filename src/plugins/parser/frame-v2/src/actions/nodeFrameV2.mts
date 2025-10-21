@@ -55,9 +55,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         ...context,
         plugin: frameConfig,
       };
-    const parseAst = context.hooks.createAstParser(newContext);
-
-    const child = parseAst("");
+    const child = context.hooks.parseAst("", newContext);
 
     return {
       kind: "parent",
@@ -70,7 +68,6 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         },
         separators: [],
         spaces: {},
-        // report: child.report,
       },
       source: {
         type: "raw",
@@ -124,9 +121,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         plugin: frameConfig,
       };
 
-    const parseAst = context.hooks.createAstParser(newContext);
-
-    const child = parseAst("");
+    const child = context.hooks.parseAst("", newContext);
 
     return {
       kind: "parent",

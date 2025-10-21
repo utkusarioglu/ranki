@@ -65,8 +65,10 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       },
     };
 
-    const parseAst = context.hooks.createAstParser(newContext);
-    const child = parseAst(v1PayloadInline.sourceString);
+    const child = context.hooks.parseAst(
+      v1PayloadInline.sourceString,
+      newContext,
+    );
 
     return {
       kind: "parent",
@@ -133,8 +135,10 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         params: argsAndParamsV1["params"],
       },
     };
-    const parseAst = context.hooks.createAstParser(newContext);
-    const child = parseAst(v1PayloadInline.sourceString);
+    const child = context.hooks.parseAst(
+      v1PayloadInline.sourceString,
+      newContext,
+    );
     return {
       kind: "parent",
       type: this.ctorName,
@@ -210,8 +214,10 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         params: [],
       },
     };
-    const parseAst = context.hooks.createAstParser(newContext);
-    const child = parseAst(v1PayloadBlock.sourceString);
+    const child = context.hooks.parseAst(
+      v1PayloadBlock.sourceString,
+      newContext,
+    );
     return {
       kind: "parent",
       type: this.ctorName,
@@ -287,8 +293,10 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
         params: argsAndParamsV1["params"],
       },
     };
-    const parseAst = context.hooks.createAstParser(newContext);
-    const child = parseAst(v1PayloadBlock.sourceString);
+    const child = context.hooks.parseAst(
+      v1PayloadBlock.sourceString,
+      newContext,
+    );
     return {
       kind: "parent",
       type: this.ctorName,
