@@ -22,6 +22,7 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -88,6 +89,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     const context: RankiLangAstContext = { ...this.args.context };
     context.inlineDepth++;
     return {
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -138,6 +140,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     const config: ArgsAndParamsV2RichStructureV2 =
       v2ParamListInlineContainer.argsAndParamsV2(context);
     return {
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,

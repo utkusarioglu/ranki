@@ -173,6 +173,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -201,6 +202,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -233,6 +235,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -256,6 +259,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -279,6 +283,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -302,6 +307,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -325,6 +331,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -348,6 +355,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       kind: "leaf",
       print: false,
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -371,6 +379,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -394,6 +403,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       kind: "leaf",
       print: false,
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -417,6 +427,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       kind: "leaf",
       print: false,
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -440,6 +451,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       kind: "leaf",
       print: false,
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -463,6 +475,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       kind: "leaf",
       print: false,
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -488,6 +501,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -514,6 +528,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -541,6 +556,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: parentContext.astHash },
       args: {
         depth: {
           block: parentContext.blockDepth,
@@ -568,6 +584,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           kind: "leaf",
           type: this.ctorName,
           print: true,
+          parser: { hash: leafContext.astHash },
           args: {
             depth: {
               block: leafContext.blockDepth,

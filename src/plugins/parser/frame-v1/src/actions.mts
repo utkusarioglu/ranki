@@ -13,6 +13,7 @@ const nodeBaseV2: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -73,6 +74,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -142,6 +144,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -221,6 +224,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -300,6 +304,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -376,6 +381,7 @@ const argsAndParamsV1: ohm.ActionDict<ArgsAndParamsV1> = {
   v1ParamListInline(v1ParamValue1, sep, v1ParamValue2) {
     const context: RankiLangAstContext = { ...this.args.context };
     return {
+      parser: { hash: context.astHash },
       args: {},
       params: [
         v1ParamValue1.paramV1(context),

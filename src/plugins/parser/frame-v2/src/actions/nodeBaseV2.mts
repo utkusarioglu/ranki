@@ -10,6 +10,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -43,6 +44,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -76,6 +78,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -100,6 +103,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -136,6 +140,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -175,6 +180,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -203,6 +209,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: parentContext.astHash },
       args: {
         depth: {
           block: parentContext.blockDepth,
@@ -222,6 +229,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           kind: "leaf",
           creator: this.ctorName,
           print: true,
+          parser: { hash: leafContext.astHash },
           args: {
             depth: {
               block: leafContext.blockDepth,

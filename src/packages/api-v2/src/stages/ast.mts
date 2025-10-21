@@ -43,7 +43,9 @@ interface AstNodeCommon {
       total: number;
     };
   };
-  parser: RankiLangAstContext["parser"];
+  parser: {
+    hash: RankiLangAstContext["astHash"];
+  };
 }
 
 interface AstNodeLeafSourceString {

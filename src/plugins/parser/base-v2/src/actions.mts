@@ -47,6 +47,7 @@ const node: ohm.ActionDict<AstNode> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -75,6 +76,7 @@ const node: ohm.ActionDict<AstNode> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -97,6 +99,7 @@ const node: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -130,6 +133,7 @@ const node: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -155,6 +159,7 @@ const node: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -180,6 +185,7 @@ const node: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -214,6 +220,7 @@ const node: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -239,6 +246,7 @@ const node: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -271,6 +279,7 @@ const node: ohm.ActionDict<AstNode> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: parentContext.astHash },
       args: {
         depth: {
           block: parentContext.blockDepth,
@@ -295,6 +304,7 @@ const node: ohm.ActionDict<AstNode> = {
           kind: "leaf",
           creator: this.ctorName,
           print: true,
+          parser: { hash: leafContext.astHash },
           args: {
             depth: {
               block: leafContext.blockDepth,
@@ -320,6 +330,7 @@ const node: ohm.ActionDict<AstNode> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -343,6 +354,7 @@ const node: ohm.ActionDict<AstNode> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -368,6 +380,7 @@ const node: ohm.ActionDict<AstNode> = {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -393,6 +406,7 @@ const node: ohm.ActionDict<AstNode> = {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,

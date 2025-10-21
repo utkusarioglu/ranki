@@ -41,6 +41,7 @@ function hComplex<T extends ohm.Node>(
     kind: "leaf",
     creator: this.ctorName,
     print: true,
+    parser: { hash: context.astHash },
     args: {
       depth: {
         block: context.blockDepth,
@@ -100,6 +101,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf" as "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -133,6 +135,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -166,6 +169,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -199,6 +203,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -225,6 +230,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -285,6 +291,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -336,6 +343,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -360,6 +368,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -392,6 +401,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -429,6 +439,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -525,6 +536,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,

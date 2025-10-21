@@ -31,6 +31,7 @@ export const handler: RankiLangParseHandlerFunction<
   ]);
   const contextV2: RankiLangAstContext = {
     plugin: context.plugin,
+    astHash: "",
     hooks: cloned.hooks,
     blockDepth: context.blockDepth + 1,
     inlineDepth: context.inlineDepth,

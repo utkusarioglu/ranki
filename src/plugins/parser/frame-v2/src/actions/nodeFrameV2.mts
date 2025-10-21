@@ -24,6 +24,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -60,6 +61,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
@@ -126,6 +128,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     return {
       kind: "parent",
       creator: this.ctorName,
+      parser: { hash: context.astHash },
       args: {
         depth: {
           block: context.blockDepth,
