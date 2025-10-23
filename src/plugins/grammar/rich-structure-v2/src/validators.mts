@@ -7,4 +7,5 @@ export const validators: RankiPluginParserValidationCallback = () => ({
   volume: placeholder,
   chapter: placeholder,
   article: placeholder,
+  hLevel_defined: placeholder,
 });

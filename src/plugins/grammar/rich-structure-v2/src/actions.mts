@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangAstContext } from "@ranki/package-api-v2";
+import type { RankiLangContextInstance as R } from "@ranki/package-api-v2";
 import type { ArgsAndParamsV2 } from "@ranki/plugin-grammar-params-v2";
 import type {
   ParseNodeRichStructureV2,
@@ -7,7 +7,7 @@ import type {
 } from "./types.mjs";
 
 function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
-  const context: RankiLangAstContext = { ...this.args.context };
+  const context = (this.args.context as R).cloneContext();
   const l = a.node(context);
   l.type = this.ctorName;
   return l;
@@ -15,20 +15,15 @@ function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
 
 const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
   hLevel_defined(structureType1, separator, structureType2) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R).cloneContext("block");
     const sep: ParseNodeRichStructureV2["args"]["richStructure.v2"] =
       separator.argsAndParamsV2(context);
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         // !fix I don't understand the separators thing here
         separators: [],
@@ -71,7 +66,7 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
 
 const argsAndParamsV2List: ohm.ActionDict<ArgsAndParamsV2[]> = {
   _iter(...children) {
-    const context: RankiLangAstContext = { ...this.args.context };
+    const context = (this.args.context as R).cloneContext("inline");
     return children.map((c) => c.argsAndParamsV2(context));
   },
 };
@@ -86,16 +81,11 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi2,
     structureSepEnd,
   ) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {
           startAndName: {
             type: "wi",
@@ -135,18 +125,13 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi3,
     structureSepEnd,
   ) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     const config: ArgsAndParamsV2RichStructureV2 =
       v2ParamListInlineContainer.argsAndParamsV2(context);
     return {
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {
           startAndName: {
             type: "wi",

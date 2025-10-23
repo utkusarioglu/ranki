@@ -1,5 +1,8 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangAstContext } from "@ranki/package-api-v2";
+import type {
+  RankiLangAstContext,
+  RankiLangContextInstance as R,
+} from "@ranki/package-api-v2";
 import type {
   ArgsAndParamsV2,
   ParamV2,
@@ -9,6 +12,7 @@ import type {
   ParamV2SettingNamespace,
   ParamV2Value,
   WithRankiParamsV2ParserPluginConfig,
+  RankiParamsV2ParserPluginConfig,
 } from "./types.mjs";
 
 const creatorNameList: ohm.ActionDict<string[]> = {
@@ -19,11 +23,9 @@ const creatorNameList: ohm.ActionDict<string[]> = {
 
 const creatorName: ohm.ActionDict<string> = {
   tParamsV2SeparatorParam(sep) {
-    const context: RankiLangAstContext = this.args.context;
-    const merged = context.hooks.getConfig().merged;
-    const pluginsConfig = merged.plugins
-      .config as WithRankiParamsV2ParserPluginConfig;
-    const config = pluginsConfig.RankiParamsV2;
+    const context = this.args.context as R;
+    const config =
+      context.getPluginConfig<RankiParamsV2ParserPluginConfig>("RankiParamsV2");
     const separators = config.tokens.separator;
     return sep.sourceString === separators.param ? this.ctorName : "none";
   },
@@ -31,13 +33,12 @@ const creatorName: ohm.ActionDict<string> = {
 
 const paramsV2: ohm.ActionDict<ParamV2[]> = {
   _iter(...children) {
-    const context: RankiLangAstContext = { ...this.args.context };
+    const context = (this.args.context as R).cloneContext();
     return children.map((c) => c.paramV2(context));
   },
 
   v2ParamListInline(param1, sep, param2) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     const rest = param2.paramsV2(context);
     const joined = [param1.paramV2(context), ...rest];
 
@@ -45,8 +46,7 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
   },
 
   v2ParamListBlock(param1, sep, param2) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R).cloneContext("block");
     const rest = param2.paramsV2(context);
     const joined = [param1.paramV2(context), ...rest];
 
@@ -71,12 +71,9 @@ const paramV2Key: ohm.ActionDict<ParamV2KeyWord> = {
 
 const paramV2Common: ohm.ActionDict<ParamV2Common> = {
   paramFormatOperator(paramKey, wi1, operatorToken, wi2, paramValues) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
-    const config = (
-      context.hooks.getConfig().merged.plugins
-        .config as WithRankiParamsV2ParserPluginConfig
-    ).RankiParamsV2;
+    const context = (this.args.context as R).cloneContext("block");
+    const config =
+      context.getPluginConfig<RankiParamsV2ParserPluginConfig>("RankiParamsV2");
     const operators = config.tokens.operators;
     const f = Object.entries(operators).find(
       ([k, v]) => v === operatorToken.sourceString,
@@ -92,11 +89,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
       type: "setting",
       key,
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {
           keyAndOp: {
             type: "wi",
@@ -119,20 +112,13 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
   },
 
   paramFormatPositive(paramKey) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
-
+    const context = (this.args.context as R).cloneContext("inline");
     const key: ParamV2KeyWord[] = paramKey.paramV2Key(this.args.context);
 
     return {
-      // type: "setting",
       key,
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -153,17 +139,12 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
   },
 
   paramFormatNegative(negation, paramKey) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     const key: ParamV2KeyWord[] = paramKey.paramV2Key(this.args.context);
     return {
       key,
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -183,16 +164,11 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
   },
 
   paramFormatPositional(quoted) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       key: "positional",
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -238,12 +214,12 @@ const paramV2: ohm.ActionDict<ParamV2> = {
 
 const paramV2Values: ohm.ActionDict<ParamV2Value[]> = {
   _iter(...children) {
-    const context: RankiLangAstContext = { ...this.args.context };
+    const context = (this.args.context as R).cloneContext();
     return children.map((c) => c.paramV2Value(context));
   },
 
   paramValues(i1, clearance, i2) {
-    const context: RankiLangAstContext = { ...this.args.context };
+    const context = (this.args.context as R).cloneContext();
     return [i1.paramV2Value(context), ...i2.paramV2Values(context)];
   },
 };
@@ -320,15 +296,10 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi3,
     sepLeft2,
   ) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R).cloneContext("block");
     return {
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {
           sepAndNl: {
             type: "wi",
@@ -368,11 +339,8 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   },
 
   v2ParamListInlineContainer(sepLeft1, wi1, v2ParamListInline, wi2, sepLeft2) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
-
+    const context = (this.args.context as R).cloneContext("block");
     const sepLastCtorName = sepLeft2.creatorName(context) as string[];
-
     const sepLast = sepLastCtorName.map((type) => ({
       type,
       raw: sepLeft2.sourceString,
@@ -380,11 +348,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
 
     return {
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {
           sepAndNl: {
             type: "wi",

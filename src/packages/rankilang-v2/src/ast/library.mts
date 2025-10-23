@@ -7,6 +7,7 @@ import type {
   ParserPluginsInstance,
   AstNode,
   RankiLangConsolidatedAstReport,
+  RankiLangContextInstance,
 } from "@ranki/package-api-v2";
 import { djb2Hash, stringifyContext } from "./utils.mjs";
 import { buildGrammar, compileOhmActionDicts } from "./grammar.mjs";
@@ -17,11 +18,12 @@ export class AstLibrary {
 
   parse<T extends RankiLangParseHandlerCommon>(
     theaterRaw: string,
-    context: RankiLangAstContext<T>,
+    context: RankiLangContextInstance<T>,
   ): RankiLangParsedAst {
-    const handler = context.hooks.getHandler(context["parser"].type);
+    // const handler = context.getHandler(context["parser"].type);
+    const handler = context.getHandler(context.getParser().type);
 
-    context.hooks.parseAst = this.createParser(context);
+    context.parseAst = this.createParser(context);
     return handler(theaterRaw, context);
   }
 
@@ -38,9 +40,12 @@ export class AstLibrary {
     context: RankiLangAstContext,
     hash: string,
   ): ParseAstFunction {
-    const parserPlugins: ParserPluginsInstance = context.hooks.getPlugins();
-    const langConfig = context.hooks.getConfig();
-    const configPlugins = langConfig.merged.plugins;
+    // const parserPlugins: ParserPluginsInstance = context.hooks.getPlugins();
+    // const langConfig = context.hooks.getConfig();
+    // const configPlugins = langConfig.merged.plugins;
+    const parserPlugins = context.getPlugins();
+    const langConfig = context.getAllConfig();
+    const configPlugins = context.getMergedConfig().plugins;
 
     {
       const missingStandard = parserPlugins.checkMissing(
@@ -111,18 +116,25 @@ export class AstLibrary {
       raw: string,
       providedContext: RankiLangAstContext,
     ) => {
-      const matched = matcher.match(raw, context.startRule);
-      const mergedContext: RankiLangAstContext = {
-        ...context,
-        astHash: hash,
-        parser: {
-          ...providedContext.parser,
-          type: context.parser.type,
-        },
-        blockDepth: providedContext.blockDepth,
-        inlineDepth: providedContext.inlineDepth,
-        startRule: providedContext.startRule,
-      };
+      const matched = matcher.match(raw, context.getStartRule());
+      const mergedContext = context.cloneContext();
+      mergedContext.setParser({
+        ...providedContext.getParser(),
+        type: mergedContext.getParser().type,
+      });
+
+      // const mergedContext_old: RankiLangAstContext = {
+      //   ...context,
+      //   astHash: hash,
+      //   // parser: {
+      //   //   ...providedContext.parser,
+      //   //   type: context.parser.type,
+      //   // },
+      //   blockDepth: providedContext.blockDepth,
+      //   inlineDepth: providedContext.inlineDepth,
+      //   startRule: providedContext.startRule,
+      // };
+
       const root: AstNode = semantics(matched).node(mergedContext);
       AstLibrary.reports[hash].cache.usageCount++;
       return { root };

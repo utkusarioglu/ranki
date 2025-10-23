@@ -1,21 +1,16 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangAstContext } from "@ranki/package-api-v2";
+import type { RankiLangContextInstance as R } from "@ranki/package-api-v2";
 import {
   NodeLeafRichNumberV2SourceInteger,
   NodeLeafRichNumberV2SourceScalar,
   RichNumberV2Sign,
   ParseNodeRichNumberV2,
-  RankiRichNumberV2ParserPluginConfig,
-  WithRankiRichNumberV2ParserPluginConfig,
+  RankiRichNumberV2ParserPluginConfig as RNV2,
 } from "./types.mjs";
 
-type SymbolKeys = Partial<
-  keyof RankiRichNumberV2ParserPluginConfig["tokens"]["symbol"]
->[];
+type SymbolKeys = Partial<keyof RNV2["tokens"]["symbol"]>[];
 
-type BaseKeys = Partial<
-  keyof RankiRichNumberV2ParserPluginConfig["tokens"]["base"]
->[];
+type BaseKeys = Partial<keyof RNV2["tokens"]["base"]>[];
 
 const CONCEPTUAL_NUMBERS = ["e", "infinity", "pi"] as SymbolKeys;
 
@@ -28,22 +23,16 @@ function hComplex<T extends ohm.Node>(
   operator: ohm.Node,
   clearance2: ohm.Node,
   imaginary: NodeLeafRichNumberV2SourceScalar,
-  // imaginaryPart: ohm.Node,
   complexToken: ohm.Node,
 ): ParseNodeRichNumberV2 {
-  const context: RankiLangAstContext = { ...this.args.context };
-  context.inlineDepth++;
+  const context = (this.args.context as R).cloneContext("inline");
   return {
     kind: "leaf",
     creator: this.ctorName,
     print: true,
-    parser: { hash: context.astHash },
+    parser: { hash: context.getHash("ast") },
     args: {
-      depth: {
-        block: context.blockDepth,
-        inline: context.inlineDepth,
-        total: context.inlineDepth + context.blockDepth,
-      },
+      ...context.getContextArgs(),
       spaces: {
         realAndOp: {
           type: "clearance",
@@ -55,8 +44,6 @@ function hComplex<T extends ohm.Node>(
         },
       },
       separators: [],
-      // "clearance.1.length": clearance1.sourceString.length,
-      // "clearance.2.length": clearance2.sourceString.length,
       "richNumber.v2": {
         args: {
           "token.complex": complexToken.sourceString,
@@ -75,12 +62,8 @@ function hComplex<T extends ohm.Node>(
 
 const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   conceptualSymbol(token) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
-    const merged = context.hooks.getConfig().merged;
-    const config = (
-      merged.plugins.config as WithRankiRichNumberV2ParserPluginConfig
-    ).RankiRichNumberV2;
+    const context = (this.args.context as R).cloneContext("inline");
+    const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     let type;
     CONCEPTUAL_NUMBERS.forEach((t) => {
       if (config.tokens.symbol[t].includes(token.sourceString)) {
@@ -95,13 +78,9 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf" as "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -116,12 +95,8 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_indian(num) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
-    const merged = context.hooks.getConfig().merged;
-    const config = (
-      merged.plugins.config as WithRankiRichNumberV2ParserPluginConfig
-    ).RankiRichNumberV2;
+    const context = (this.args.context as R).cloneContext("inline");
+    const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const integer = +num.sourceString
       .split(config.tokens.number.group)
       .join("");
@@ -129,13 +104,9 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -150,12 +121,8 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_international(num) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
-    const merged = context.hooks.getConfig().merged;
-    const config = (
-      merged.plugins.config as WithRankiRichNumberV2ParserPluginConfig
-    ).RankiRichNumberV2;
+    const context = (this.args.context as R).cloneContext("inline");
+    const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const integer = +num.sourceString
       .split(config.tokens.number.group)
       .join("");
@@ -163,13 +130,9 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -184,12 +147,8 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_unstructured(digit, token, num) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
-    const merged = context.hooks.getConfig().merged;
-    const config = (
-      merged.plugins.config as WithRankiRichNumberV2ParserPluginConfig
-    ).RankiRichNumberV2;
+    const context = (this.args.context as R).cloneContext("inline");
+    const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const integer = +num.sourceString
       .split(config.tokens.number.group)
       .join("");
@@ -197,13 +156,9 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -218,19 +173,14 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_basic(basic) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -245,7 +195,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   conceptualNumber_factored(factor, conceptualSymbol) {
-    const context: RankiLangAstContext = { ...this.args.context };
+    const context = (this.args.context as R).cloneContext("inline");
     const c = conceptualSymbol.node(context);
     c["source"]["factor"] = +factor.sourceString;
     c["source"]["raw"] = this.sourceString;
@@ -253,7 +203,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   conceptual_signed(sign, conceptualNumber) {
-    const context: RankiLangAstContext = { ...this.args.context };
+    const context = (this.args.context as R).cloneContext("inline");
     const c = conceptualNumber.node(context);
     c["source"]["sign"] = sign.richNumberV2Sign(context);
     c["source"]["raw"] = this.sourceString;
@@ -261,23 +211,18 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   hBases(zero, symbol, numberSystem_unstructured) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
-    const merged = context.hooks.getConfig().merged;
-    const config = (
-      merged.plugins.config as WithRankiRichNumberV2ParserPluginConfig
-    ).RankiRichNumberV2;
-
-    const richNumberV2 = config.tokens;
+    const context = (this.args.context as R).cloneContext("inline");
+    const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
+    const tokens = config.tokens;
     let type;
 
     BASES.forEach((s) => {
-      if (richNumberV2.base[s].includes(symbol.sourceString)) {
+      if (tokens.base[s].includes(symbol.sourceString)) {
         type = s;
       }
     });
     if (!type) {
-      console.log(richNumberV2);
+      console.log(tokens);
       throw new Error(
         `UNRECOGNIZED BASE SYMBOL: ${symbol.sourceString} in ${this.sourceString}`,
       );
@@ -287,13 +232,9 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -303,28 +244,28 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
         sign: "plus",
         symbol: symbol.sourceString,
         digits: numberSystem_unstructured.sourceString
-          .split(richNumberV2.number.group)
+          .split(tokens.number.group)
           .join(""),
       },
     };
   },
 
   hexadecimal(sign, basedNumber) {
-    const context: RankiLangAstContext = { ...this.args.context };
+    const context = (this.args.context as R).cloneContext("inline");
     const h = basedNumber.node(context);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
     return h;
   },
   binary(sign, basedNumber) {
-    const context: RankiLangAstContext = { ...this.args.context };
+    const context = (this.args.context as R).cloneContext("inline");
     const h = basedNumber.node(context);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
     return h;
   },
   octal(sign, basedNumber) {
-    const context: RankiLangAstContext = { ...this.args.context };
+    const context = (this.args.context as R).cloneContext("inline");
     const h = basedNumber.node(context);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
@@ -332,20 +273,15 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   integer_signed(sign, numberSystem) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     const ns = numberSystem.node(context);
     return {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -358,19 +294,14 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   decimal_full(integer, decimalToken, decimalGroup) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -384,12 +315,8 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   decimal_point(sign, decimalToken, decimalGroup) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
-    const merged = context.hooks.getConfig().merged;
-    const config = (
-      merged.plugins.config as WithRankiRichNumberV2ParserPluginConfig
-    ).RankiRichNumberV2;
+    const context = (this.args.context as R).cloneContext("inline");
+    const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const decimal = +decimalGroup.sourceString
       .split(config.tokens.number.group)
       .join("");
@@ -397,13 +324,9 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -429,19 +352,14 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   rational(nominator, rationalToken, denominator) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
         // !TODO
@@ -456,7 +374,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   complex_i(realPart, clearance1, operator, clearance2, complexToken) {
-    const context: RankiLangAstContext = { ...this.args.context };
+    const context = (this.args.context as R).cloneContext("inline");
     const imaginary: NodeLeafRichNumberV2SourceInteger = {
       type: "integer",
       raw: complexToken.sourceString,
@@ -485,7 +403,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     imaginaryPart,
     complexToken,
   ) {
-    const context: RankiLangAstContext = { ...this.args.context };
+    const context = (this.args.context as R).cloneContext("inline");
     const real: NodeLeafRichNumberV2SourceScalar =
       realPart.node(context).source;
     const imaginary: NodeLeafRichNumberV2SourceScalar =
@@ -509,7 +427,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     complexToken,
     imaginaryPart,
   ) {
-    const context: RankiLangAstContext = { ...this.args.context };
+    const context = (this.args.context as R).cloneContext("inline");
     const real: NodeLeafRichNumberV2SourceScalar =
       realPart.node(context).source;
     const imaginary: NodeLeafRichNumberV2SourceScalar =
@@ -526,19 +444,14 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   eNotation(significand, eToken, exponent) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
         // !TODO

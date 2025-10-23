@@ -8,7 +8,7 @@ import type {
 
 const placeholder: ComponentPluginValidationFunc = ({ validation, spec }) => ({
   warnings: [
-    ["COMPONENT VALIDATION", validation.kind, spec.blockDepth].join(" "),
+    ["COMPONENT VALIDATION", validation.kind, spec.getDepth("block")].join(" "),
   ],
   errors: [],
 });

@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangAstContext } from "@ranki/package-api-v2";
+import type { RankiLangContextInstance as R } from "@ranki/package-api-v2";
 import type { ParseNodeFrameV2, ParseNodeFrameV2Fp } from "../types/node.mjs";
 import type {
   NodeArgsFrameV2ConfigE,
@@ -7,33 +7,30 @@ import type {
   NodeArgsFrameV2ConfigP,
 } from "../types/args.mjs";
 import type { FrameSpec } from "../types/args.mjs";
-import type { RankiLangParserPluginParseHandlerFrameV2 } from "../types/context.mjs";
+import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/context.mjs";
 
 export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2_fp(v2Start, v2FrameConfig, v2Payload, v2End) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R<V2>).cloneContext("block");
     const frameConfig: NodeArgsFrameV2Config =
       v2FrameConfig.v2FrameConfig(context);
 
-    const payloadContext: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
-      {
-        ...context,
-        parser: frameConfig,
-      };
+    // const payloadContext: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
+    //   {
+    //     ...context,
+    //     parser: frameConfig,
+    //   };
+
+    const payloadContext = context.cloneContext().setParser(frameConfig);
 
     const child = v2Payload.node(payloadContext);
 
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         separators: [],
         spaces: {},
       },
@@ -49,28 +46,26 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   v2_f(v2Start, v2FrameConfig, v2End) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R<V2>).cloneContext("block");
     const frameConfig: NodeArgsFrameV2ConfigP =
       v2FrameConfig.v2FrameConfig(context);
 
-    const newContext: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
-      {
-        ...context,
-        parser: frameConfig,
-      };
-    const child = context.hooks.parseAst("", newContext);
+    // const newContext: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
+    //   {
+    //     ...context,
+    //     parser: frameConfig,
+    // };
+
+    const newContext = context.cloneContext().setParser(frameConfig);
+
+    const child = context.parseAst("", newContext);
 
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         separators: [],
         spaces: {},
       },
@@ -86,8 +81,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   v2_e(v2Start, wi1, v2Chain, wi2, v2End) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R<V2>).cloneContext("block");
     const chain: FrameSpec[] = v2Chain.frameSpecV2(context);
 
     const frameConfig: NodeArgsFrameV2ConfigE = {
@@ -96,11 +90,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       variant: "e",
       chain,
       args: {
-        depth: {
-          block: context.blockDepth + 1,
-          inline: context.inlineDepth,
-          total: context.blockDepth + context.inlineDepth + 1,
-        },
+        ...context.getContextArgs(),
         spaces: {
           startAndChain: {
             type: "wi",
@@ -120,24 +110,21 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       subtree: {},
     };
 
-    const newContext: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
-      {
-        ...context,
-        parser: frameConfig,
-      };
+    // const newContext: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
+    //   {
+    //     ...context,
+    //     parser: frameConfig,
+    // };
 
-    const child = context.hooks.parseAst("", newContext);
+    const newContext = context.cloneContext().setParser(frameConfig);
+    const child = context.parseAst("", newContext);
 
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         separators: [],
         spaces: {},
       },

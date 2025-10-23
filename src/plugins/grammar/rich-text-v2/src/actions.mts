@@ -1,10 +1,14 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangAstContext, AstNodeLeaf } from "@ranki/package-api-v2";
+import type {
+  RankiLangAstContext,
+  AstNodeLeaf,
+  RankiLangContextInstance as R,
+} from "@ranki/package-api-v2";
 import type {
   NodeArgRichTextV2SentenceEnd,
   NodeArgsRichTextV2,
   ParseNodeRichTextV2,
-  WithRankiRichTextV2ParserPluginConfig,
+  RankiRichTextV2ParserPluginConfig as RTV2,
 } from "./types.mjs";
 
 import { zipNodes, joinNodes } from "@ranki/package-api-v2/helpers";
@@ -73,10 +77,7 @@ function startToken(context: RankiLangAstContext, start: ohm.Node) {
 function endToken(context: RankiLangAstContext, end: ohm.Node) {
   const endNodes: AstNodeLeaf[] = end.iterNode(context);
   const endArgs: NodeArgsRichTextV2 = {};
-  const merged = context.hooks.getConfig().merged;
-  const config = (
-    merged.plugins.config as WithRankiRichTextV2ParserPluginConfig
-  ).RankiRichTextV2;
+  const config = context.getPluginConfig<RTV2>("RankiRichTextV2");
 
   for (let ei = endNodes.length - 1; ei >= 0; ei--) {
     const n = endNodes[ei];
@@ -165,18 +166,13 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
 
 const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   textual(decorated1, clearance, decorated2) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: clearance.separator(context),
       },
@@ -191,21 +187,16 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   decorated_decorated(start, word, end, wordEnd) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     const { startNodes, startArgs } = startToken(context, start);
     const { endNodes, endArgs } = endToken(context, end);
 
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {
           suffix: {
             type: wordEnd.creatorName(context),
@@ -226,19 +217,14 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   text_lowercase(text) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -250,19 +236,14 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   text_propercase(first, rest) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -274,19 +255,14 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   text_uppercase(all) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -298,19 +274,14 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   text_mixedcaseUl(one, two, three, four) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -322,19 +293,14 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   text_mixedcaseLu(one, two, three) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -346,19 +312,14 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   tRichTextV2DecorationBold(b) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       print: false,
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -370,19 +331,14 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   sentence(sentence) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -394,19 +350,14 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   tRichTextV2DecorationAbbreviation(token) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       print: false,
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -418,19 +369,14 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   tRichTextV2DecorationEmphasis(token) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       print: false,
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -442,19 +388,14 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   tRichTextV2DecorationIdiomatic(token) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       print: false,
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -466,19 +407,14 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   tRichTextV2DecorationUnderline(token) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       print: false,
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -493,18 +429,13 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
    * @overload
    */
   line(indentation1, lineModifiers, lexemes, wi1) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         "indentation.1.length": indentation1.sourceString.length,
         "wi.1.length": wi1.sourceString.length,
         ...lineModifiers.lineModifiers(context),
@@ -519,19 +450,14 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   word_punctuation(chars) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -543,23 +469,17 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   decorated_richTextBase(start, word, end, wordEnd) {
-    const parentContext: RankiLangAstContext = { ...this.args.context };
-    parentContext.inlineDepth++;
-    const leafContext: RankiLangAstContext = { ...parentContext };
-    leafContext.inlineDepth++;
+    const parentContext = (this.args.context as R).cloneContext("inline");
+    const leafContext = (parentContext as R).cloneContext("inline");
     const { startNodes, startArgs } = startToken(parentContext, start);
     const { endNodes, endArgs } = endToken(parentContext, end);
 
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: parentContext.astHash },
+      parser: { hash: parentContext.getHash("ast") },
       args: {
-        depth: {
-          block: parentContext.blockDepth,
-          inline: parentContext.inlineDepth,
-          total: parentContext.inlineDepth + parentContext.blockDepth,
-        },
+        ...parentContext.getContextArgs(),
         spaces: {
           suffix: {
             type: wordEnd.creatorName(parentContext),
@@ -581,13 +501,9 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           kind: "leaf",
           type: this.ctorName,
           print: true,
-          parser: { hash: leafContext.astHash },
+          parser: { hash: leafContext.getHash("ast") },
           args: {
-            depth: {
-              block: leafContext.blockDepth,
-              inline: leafContext.inlineDepth,
-              total: leafContext.inlineDepth + leafContext.blockDepth,
-            },
+            ...leafContext.getContextArgs(),
           },
           source: {
             type: "raw",

@@ -14,6 +14,8 @@ export type {
   RankiLangParsedAst,
   RankiLangAstReport,
   RankiLangConsolidatedAstReport,
+  RankiLangContextInstance,
+  RankiLangContextParams,
 } from "./context.mjs";
 
 export type {

@@ -1,8 +1,8 @@
 import type * as ohm from "ohm-js";
 import type {
-  RankiLangAstContext,
   AstNode,
   SeparatorEntry,
+  RankiLangContextInstance as R,
 } from "@ranki/package-api-v2";
 import { zipNodes, joinNodes } from "@ranki/package-api-v2/helpers";
 
@@ -41,19 +41,14 @@ const separator: ohm.ActionDict<SeparatorEntry> = {
 
 const node: ohm.ActionDict<AstNode> = {
   root_ignore(ignore, wm, rest) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R).cloneContext("block");
     return {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {
           ignoreAndRest: {
             type: "wm",
@@ -70,19 +65,14 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   section_empty(all) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R).cloneContext("block");
     return {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -94,18 +84,13 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   root_structure(whitespace1, structure, whitespace2) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R).cloneContext("block");
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {
           prefix: {
             type: "whitespace",
@@ -128,18 +113,13 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   section_base(block, blockSep, block2) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R).cloneContext("block");
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: blockSep.separator(context),
       },
@@ -154,18 +134,13 @@ const node: ohm.ActionDict<AstNode> = {
 
   // TODO nl
   p(line1, nl, line2) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R).cloneContext("block");
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: nl.separator(context),
       },
@@ -180,18 +155,13 @@ const node: ohm.ActionDict<AstNode> = {
 
   // TODO line modifiers
   line(indentation1, lineModifiers, lexemes, wi1) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {
           prefix: {
             type: "indentation",
@@ -215,18 +185,13 @@ const node: ohm.ActionDict<AstNode> = {
 
   // TODO clearance
   lexemes(lexeme1, clearance, lexeme2) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: clearance.separator(context),
       },
@@ -235,24 +200,18 @@ const node: ohm.ActionDict<AstNode> = {
         raw: this.sourceString,
       },
       subtree: {},
-      // children: zipNodes(context, lexeme1, clearance, lexeme2),
       children: joinNodes(context, lexeme1, lexeme2),
     };
   },
 
   decorated_base(word, wordEnd) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {
           suffix: {
             // !fix this would return an `any` type
@@ -272,20 +231,14 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   decorated_fallback(word, wordEnd) {
-    const parentContext: RankiLangAstContext = { ...this.args.context };
-    parentContext.inlineDepth++;
-    const leafContext: RankiLangAstContext = { ...parentContext };
-    leafContext.inlineDepth++;
+    const parentContext = (this.args.context as R).cloneContext("inline");
+    const leafContext = (parentContext as R).cloneContext("inline");
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: parentContext.astHash },
+      parser: { hash: parentContext.getHash("ast") },
       args: {
-        depth: {
-          block: parentContext.blockDepth,
-          inline: parentContext.inlineDepth,
-          total: parentContext.inlineDepth + parentContext.blockDepth,
-        },
+        ...parentContext.getContextArgs(),
         spaces: {
           suffix: {
             type: wordEnd.creatorName(parentContext),
@@ -304,13 +257,9 @@ const node: ohm.ActionDict<AstNode> = {
           kind: "leaf",
           creator: this.ctorName,
           print: true,
-          parser: { hash: leafContext.astHash },
+          parser: { hash: leafContext.getHash("ast") },
           args: {
-            depth: {
-              block: leafContext.blockDepth,
-              inline: leafContext.inlineDepth,
-              total: leafContext.inlineDepth + leafContext.blockDepth,
-            },
+            ...leafContext.getContextArgs(),
             spaces: {},
             separators: [],
           },
@@ -324,19 +273,14 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   word_base(base) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -348,19 +292,14 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   word_number(number) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -374,19 +313,14 @@ const node: ohm.ActionDict<AstNode> = {
 
   // TODO should this exist?
   clearance(clearance1) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     return {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -399,20 +333,15 @@ const node: ohm.ActionDict<AstNode> = {
 
   // TODO should this exist?
   whitespace(wm, wi) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.inlineDepth++;
+    const context = (this.args.context as R).cloneContext("inline");
     const sourceString = wm.sourceString + wi.sourceString;
     return {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
         // "whitespace.1.length": sourceString.length,

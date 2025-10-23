@@ -1,4 +1,4 @@
-import { RankiLangAstContext } from "../export.mjs";
+import { RankiLangAstContext, RankiLangContextInstance } from "../export.mjs";
 
 export type AstNode = AstNodeLeaf | AstNodeParent;
 
@@ -44,7 +44,7 @@ interface AstNodeCommon {
     };
   };
   parser: {
-    hash: RankiLangAstContext["astHash"];
+    hash: ReturnType<RankiLangContextInstance["getHash"]>;
   };
 }
 

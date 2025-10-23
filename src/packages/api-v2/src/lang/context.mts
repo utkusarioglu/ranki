@@ -1,6 +1,13 @@
-import type { RankiLanguageConfig } from "./config.mjs";
+import type {
+  RankiLanguageConfig,
+  RankiLanguageProvidedConfig,
+} from "./config.mjs";
 import type { AstNode } from "../stages/ast.mjs";
-import type { RankiLangParseHandlerHooks } from "./rankilang.mjs";
+import type {
+  RankiLangCloneFunctionReturn,
+  RankiLangInstance,
+  RankiLangParseHandlerHooks,
+} from "./rankilang.mjs";
 import {
   RankiLangParseHandlerFunction,
   RankiPluginParser,
@@ -9,6 +16,7 @@ import { RankiGrammarTokens } from "../plugins/grammar.mjs";
 import type * as ohm from "ohm-js";
 import type { TransformNode } from "../stages/transform.mjs";
 import type { ValidationNode } from "../stages/validation.mjs";
+import { ComponentPluginComponent } from "../export.mjs";
 
 export interface RankiLangParseResult {
   report: RankiLangParseReport;
@@ -120,15 +128,57 @@ export type RankiLangParseSpecs = {
 
 export type RankiLangParseSpecsFrameNull = RankiLangParseSpecsCommon;
 
-export type RankiLangAstContext<
+export type RankiLangContextParams<
   T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
 > = RankiLangParseSpecs & {
   parser: T;
   astHash: string;
+
   hooks: RankiLangParseHandlerHooks;
   blockDepth: number;
   inlineDepth: number;
   startRule: string;
 };
+
+export type RankiLangAstContext<
+  T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
+> = RankiLangContextInstance<T>;
+
+export interface RankiLangContextInstance<
+  T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
+> {
+  getPlugins: RankiLangInstance["getPlugins"];
+  getHandler: ParserPluginsInstance["getHandler"];
+  // getConfig: () => RankiLanguageConfig;
+  getAllConfig: () => RankiLanguageConfig;
+  getMergedConfig: () => RankiLanguageConfig["merged"];
+  getPluginConfig: <T>(pluginName: string) => T;
+
+  getComponent(handlerName: string, chain: string[]): ComponentPluginComponent;
+
+  cloneLang(
+    userConfigs: RankiLanguageProvidedConfig[] | null,
+  ): RankiLangCloneFunctionReturn;
+
+  parseAst: <
+    T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
+  >(
+    raw: string,
+    context: RankiLangAstContext<T>,
+  ) => RankiLangParseFunctionReturn;
+
+  incrementDepth(direction: "block" | "inline"): AstNode["args"]["depth"];
+  getDepth(direction: "block" | "inline" | "total"): number;
+  getContextArgs(): Pick<AstNode["args"], "depth">;
+
+  cloneContext(direction?: "block" | "inline"): RankiLangContextInstance<T>;
+
+  getHash(type: "ast" | "TODO"): string;
+
+  setParser(parser: T): RankiLangContextInstance<T>;
+  getParser(): T;
+
+  getStartRule(): string;
+}
 
 export type VersionReport = Record<string, string>;

@@ -11,6 +11,7 @@ import type {
   RankiLangInstancePluginsRecord,
   RankiLangParseHandlerHooks,
   RankiLangCloneFunctionReturn,
+  RankiLangContextInstance,
 } from "@ranki/package-api-v2";
 import { ParserPlugins } from "./parser/parser-plugins.mjs";
 import { RankiLangConfig } from "./config.mjs";
@@ -18,6 +19,7 @@ import { ComponentPlugins } from "./component/component-plugins.mjs";
 import { ValidatorLibrary } from "./validator/library.mjs";
 import { TransformerLibrary } from "./transformer/transformer.mjs";
 import { AstLibrary } from "./ast/library.mjs";
+import { RankiLangContext } from "./context.mjs";
 
 export class RankiLang implements RankiLangInstance {
   private config: RankiLangConfig;
@@ -102,7 +104,7 @@ export class RankiLang implements RankiLangInstance {
 
     const config = this.config.getAll();
 
-    const context: RankiLangAstContext = {
+    const context: RankiLangContextInstance = new RankiLangContext({
       theater: spec.theater,
       role: spec.role,
       parser: {
@@ -113,7 +115,20 @@ export class RankiLang implements RankiLangInstance {
       inlineDepth: 0,
       startRule: "root",
       hooks: this.createParseHandlerHooks(),
-    };
+    });
+
+    // const context: RankiLangAstContext = {
+    //   theater: spec.theater,
+    //   role: spec.role,
+    //   parser: {
+    //     type: "RankiBaseV2",
+    //   },
+    //   astHash: "", // this needs to be overwritten when a parser is created
+    //   blockDepth: 0,
+    //   inlineDepth: 0,
+    //   startRule: "root",
+    //   hooks: this.createParseHandlerHooks(),
+    // };
 
     const ast = this.ast.parse(theaterRaw, context);
 

@@ -4,42 +4,43 @@ import type {
   RankiLangParseHandlerFunction,
 } from "@ranki/package-api-v2";
 import type { ParamV2 } from "@ranki/plugin-grammar-params-v2";
-import type { RankiLangParserPluginParseHandlerFrameV2 } from "./types/context.mjs";
+import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "./types/context.mjs";
 
-export const handler: RankiLangParseHandlerFunction<
-  RankiLangParserPluginParseHandlerFrameV2
-> = (theaterRaw, context) => {
-  if (!context.parser || context.parser.type !== "RankiFrameV2") {
+export const handler: RankiLangParseHandlerFunction<V2> = (
+  theaterRaw,
+  context,
+) => {
+  const parser = context.getParser();
+  if (parser.type !== "RankiFrameV2") {
     throw new Error(`FRAME V2 HANDLER GIVEN NON-FRAME V2 COMPONENT`);
   }
-  if (context.parser?.chain.length > 1) {
+  if (parser.chain.length > 1) {
     throw new Error(`MULTI-LENGTH CHAINS NOT YET SUPPORTED`);
   }
-  const component = context.hooks.getComponent(
-    "RankiFrameV2",
-    context.parser.chain[0],
-  );
+  const component = context.getComponent("RankiFrameV2", parser.chain[0]);
 
   // TODO I think the settings are not communicated back to the ast
   const { directives, settings } = parseSettings(
     component.stages.ast.params,
     context,
   );
-  const cloned = context.hooks.clone([
+  const cloned = context.cloneLang([
     component.stages.ast.directives,
     directives,
   ]);
-  const contextV2: RankiLangAstContext = {
-    parser: context.parser,
-    astHash: "",
-    hooks: cloned.hooks,
-    blockDepth: context.blockDepth + 1,
-    inlineDepth: context.inlineDepth,
-    theater: context.theater,
-    role: context.role,
-    startRule: context.startRule,
-  };
+  const contextV2 = context.cloneContext("block");
+  // const contextV2Old: RankiLangAstContext = {
+  //   parser: context.parser,
+  //   astHash: "",
+  //   hooks: cloned.hooks,
+  //   blockDepth: context.blockDepth + 1,
+  //   inlineDepth: context.inlineDepth,
+  //   theater: context.theater,
+  //   role: context.role,
+  //   startRule: context.startRule,
+  // };
 
+  // TODO
   const contentConfig = cloned.hooks.getConfig().merged.content;
 
   const theaterWithContent = [
@@ -48,7 +49,7 @@ export const handler: RankiLangParseHandlerFunction<
     contentConfig.suffix,
   ].join("");
 
-  return context.hooks.parseAst(theaterWithContent, contextV2);
+  return context.parseAst(theaterWithContent, contextV2);
 };
 
 type ConvertParamsParams = {
@@ -138,15 +139,13 @@ function convertParams<T extends ParamV2>(
 
 function parseSettings(
   { directive, setting }: any,
-  frameConfig: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2>,
+  frameConfig: RankiLangAstContext<V2>,
 ) {
-  if (!frameConfig.parser) {
+  const parser = frameConfig.getParser();
+  if (!parser.params) {
     return { config: null };
   }
-  if (!frameConfig.parser.params) {
-    return { config: null };
-  }
-  const items = frameConfig.parser.params.items;
+  const items = parser.params.items;
   const directiveParams = items.filter((p) => p.type === "directive");
   const settingParams = items.filter((p) => p.type === "setting");
 

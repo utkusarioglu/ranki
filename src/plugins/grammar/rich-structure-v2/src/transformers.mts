@@ -7,4 +7,5 @@ export const transformers: RankiPluginParserTransformCallback = () => ({
   volume: placeholder,
   chapter: placeholder,
   article: placeholder,
+  hLevel_defined: placeholder,
 });

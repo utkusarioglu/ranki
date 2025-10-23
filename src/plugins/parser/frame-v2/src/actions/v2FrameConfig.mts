@@ -1,12 +1,12 @@
-import type { RankiLangAstContext } from "@ranki/package-api-v2";
+import type { RankiLangContextInstance as R } from "@ranki/package-api-v2";
 import type * as ohm from "ohm-js";
 import type { NodeArgsFrameV2, FrameSpec } from "../types/args.mjs";
 import { ArgsAndParamsV2 } from "@ranki/plugin-grammar-params-v2";
+import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/context.mjs";
 
 export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   v2FrameConfigP(wi1, v2Type, wi2, sep) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R<V2>).cloneContext("block");
 
     const chain: FrameSpec[] = v2Type.frameSpecV2(context);
     return {
@@ -15,11 +15,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
       variant: "p",
       chain,
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         separators: [
           {
             type: sep.creatorName(context),
@@ -54,8 +50,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     wi3,
     sepRight,
   ) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R<V2>).cloneContext("block");
     const config: ArgsAndParamsV2 =
       v2ParamListInlineContainer.argsAndParamsV2(context);
 
@@ -66,11 +61,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
       chain,
       variant: "fp_f",
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {
           start: {
             type: "wi",
@@ -109,8 +100,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     wi3,
     sepRight,
   ) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R<V2>).cloneContext("block");
     const config: ArgsAndParamsV2 =
       v2ParamListBlockContainer.argsAndParamsV2(context);
     const chain: FrameSpec[] = v2Type.frameSpecV2(context);
@@ -121,11 +111,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
       variant: "fp_F",
       chain,
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {
           start: {
             type: "wi",

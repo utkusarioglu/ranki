@@ -2,8 +2,8 @@ import type { RankiLangAstContext } from "@ranki/package-api-v2";
 
 export function stringifyContext(context: RankiLangAstContext): string {
   return [
-    context.parser.type,
-    JSON.stringify(context.hooks.getConfig().merged),
+    context.getParser().type,
+    JSON.stringify(context.getMergedConfig()),
   ].join("");
 }
 

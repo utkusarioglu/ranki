@@ -1,22 +1,20 @@
-import type { AstNode, RankiLangAstContext } from "@ranki/package-api-v2";
+import type {
+  AstNode,
+  RankiLangContextInstance as R,
+} from "@ranki/package-api-v2";
 import { joinNodes, zipNodes } from "@ranki/package-api-v2/helpers";
 import type * as ohm from "ohm-js";
-import type { RankiLangParserPluginParseHandlerFrameV2 } from "../types/context.mjs";
+import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/context.mjs";
 
 export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   block_v2(indentation, v2, wi, ender) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R<V2>).cloneContext("block");
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {
           prefix: {
             type: "indentation",
@@ -39,18 +37,13 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   },
 
   v2Payload_P(wi1, nl, pauseRoot) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R<V2>).cloneContext("block");
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {
           prefix: {
             type: "wi",
@@ -73,18 +66,13 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   },
 
   v2Payload_p(pauseRoot) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R<V2>).cloneContext("block");
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -98,18 +86,13 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   },
 
   pauseList(v2PayloadSection1, pausedContainer, v2PayloadSection2) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R<V2>).cloneContext("block");
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         // TODO maybe `pausedContainer` should be a separator.
         // after all, that's what it actually does
@@ -135,18 +118,13 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     v2PayloadSectionItem2,
     whitespace2,
   ) {
-    const context: RankiLangAstContext = { ...this.args.context };
-    context.blockDepth++;
+    const context = (this.args.context as R<V2>).cloneContext("block");
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {
           suffix: {
             type: "whitespace",
@@ -171,22 +149,15 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   v2PayloadPlain(plain) {
     // TODO i'm so not sure if this is what's supposed to happen here
     // this uses a context that was created in a parent to produce a parser deeper in the chain
-    const context: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
-      { ...this.args.context };
-    context.blockDepth++;
-    console.log(context);
+    const context = (this.args.context as R<V2>).cloneContext("block");
 
-    const child = context.hooks.parseAst(plain.sourceString, context);
+    const child = context.parseAst(plain.sourceString, context);
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: context.astHash },
+      parser: { hash: context.getHash("ast") },
       args: {
-        depth: {
-          block: context.blockDepth,
-          inline: context.inlineDepth,
-          total: context.inlineDepth + context.blockDepth,
-        },
+        ...context.getContextArgs(),
         spaces: {},
         separators: [],
         // report: child.report,
@@ -202,20 +173,14 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
 
   // !TODO are pauseStart and pauseEnd separators or fillers?
   pausedContainer(pauseStart, pausedPayload, pauseEnd) {
-    const parentContext: RankiLangAstContext = { ...this.args.context };
-    parentContext.blockDepth++;
-    const leafContext: RankiLangAstContext = { ...parentContext };
-    leafContext.inlineDepth++;
+    const parentContext = (this.args.context as R<V2>).cloneContext("block");
+    const leafContext = (parentContext as R<V2>).cloneContext("inline");
     return {
       kind: "parent",
       creator: this.ctorName,
-      parser: { hash: parentContext.astHash },
+      parser: { hash: parentContext.getHash("ast") },
       args: {
-        depth: {
-          block: parentContext.blockDepth,
-          inline: parentContext.inlineDepth,
-          total: parentContext.inlineDepth + parentContext.blockDepth,
-        },
+        ...parentContext.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -229,13 +194,9 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
           kind: "leaf",
           creator: this.ctorName,
           print: true,
-          parser: { hash: leafContext.astHash },
+          parser: { hash: leafContext.getHash("ast") },
           args: {
-            depth: {
-              block: leafContext.blockDepth,
-              inline: leafContext.inlineDepth,
-              total: leafContext.inlineDepth + leafContext.blockDepth,
-            },
+            ...leafContext.getContextArgs(),
             spaces: {},
             separators: [],
           },

@@ -28,15 +28,14 @@ function handler(
   theaterRaw: string,
   context: RankiLangAstContext<{ type: string }>,
 ): RankiLangParsedAst {
-  const contentConfig = context.hooks.getConfig().merged.content;
-
+  const config = context.getMergedConfig();
   const theaterWithContent = [
-    contentConfig.prefix,
+    config.content.prefix,
     theaterRaw,
-    contentConfig.suffix,
+    config.content.suffix,
   ].join("");
 
-  return context.hooks.parseAst(theaterWithContent, context);
+  return context.parseAst(theaterWithContent, context);
 }
 
 export const rankiBaseV2ParserPlugin: RankiPluginParser<RankiBaseV2ParserPluginConfig> =

@@ -35,7 +35,7 @@ export function buildGrammar(
         parentGrammar: si === 0 ? "" : importChain[si - 1],
         dependencies: grammarParents,
       },
-      parserPlugin.grammar(context.hooks.getConfig()),
+      parserPlugin.grammar(context.getAllConfig()),
     );
     matchers[name] = matcher;
     sources.push(matcher.altered);
