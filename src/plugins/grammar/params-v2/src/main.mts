@@ -1,9 +1,12 @@
-import { RankiGrammarTokens, RankiPluginGrammar } from "@ranki/package-api-v2";
+import type {
+  RankiGrammarTokens,
+  RankiPluginGrammar,
+} from "@ranki/package-api-v2";
 import grammar from "../assets/ohm/2.0.66.ohm?raw";
 import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";
 import { transformers } from "./transformers.mjs";
-import { RankiParamsV2ParserPluginConfig } from "./types.mjs";
+import type { RankiParamsV2ParserPluginConfig } from "./types.mjs";
 
 const config: RankiParamsV2ParserPluginConfig = {
   tokens: {
@@ -22,7 +25,9 @@ const config: RankiParamsV2ParserPluginConfig = {
   },
 };
 
-function tokenize(config: RankiParamsV2ParserPluginConfig): RankiGrammarTokens {
+function tokenizer(
+  config: RankiParamsV2ParserPluginConfig,
+): RankiGrammarTokens {
   const tokens: RankiGrammarTokens = {};
   tokens["tParamsV2SeparatorParam"] = config.tokens.separator.param;
   tokens["tParamsV2DirectiveParam"] = config.tokens.key.directive;
@@ -44,7 +49,7 @@ export const rankiParamsV2ParserPlugin: RankiPluginGrammar<RankiParamsV2ParserPl
     },
     dependencies: ["RankiConstantsV2"],
     config,
-    tokens: tokenize(config),
+    tokenizer: () => tokenizer(config),
     grammar: () => grammar,
     validators,
     transformers,

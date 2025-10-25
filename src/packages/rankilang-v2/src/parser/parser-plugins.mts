@@ -102,7 +102,7 @@ export class ParserPlugins implements ParserPluginsInstance {
       {} as any,
     );
     const tokens = this.list.reduce(
-      (a, c) => ((a[c.meta.name] = c.tokens), a),
+      (a, c) => ((a[c.meta.name] = c.tokenizer()), a),
       {} as any,
     );
     return {

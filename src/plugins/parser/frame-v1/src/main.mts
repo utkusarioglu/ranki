@@ -7,17 +7,9 @@ import { actions } from "./actions.mjs";
 import { FrameV1, handler } from "./handler.mjs";
 import { transformers } from "./transformers.mjs";
 import { validators } from "./validators.mjs";
+import type { RankiFrameV1ParserPluginConfig } from "./types.mjs";
 
-type Single = string;
-
-export interface RankiFrameV1ParserPluginConfig {
-  tokens: {
-    delimiter: Single;
-    separator: {
-      param: Single;
-    };
-  };
-}
+export type Single = string;
 
 const config: RankiFrameV1ParserPluginConfig = {
   tokens: {
@@ -28,7 +20,7 @@ const config: RankiFrameV1ParserPluginConfig = {
   },
 };
 
-function tokenize(config: RankiFrameV1ParserPluginConfig): RankiGrammarTokens {
+function tokenizer(config: RankiFrameV1ParserPluginConfig) {
   const tokens: RankiGrammarTokens = {};
   tokens["tFrameV1Delimiter"] = config.tokens.delimiter;
   tokens["tFrameV1SeparatorParam"] = config.tokens.separator.param;
@@ -47,7 +39,7 @@ export const rankiFrameV1ParserPlugin: RankiPluginParser<
   handler,
   dependencies: ["RankiBaseV2"],
   config,
-  tokens: tokenize(config),
+  tokenizer: () => tokenizer(config),
   grammar: () => grammar,
   validators,
   transformers,

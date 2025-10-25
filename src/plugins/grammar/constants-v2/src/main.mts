@@ -12,10 +12,10 @@ export const rankiConstantsV2ParserPlugin: RankiPluginGrammar<RankiConstantsV2Pa
     },
     dependencies: [],
     config: {},
-    tokens: {
+    tokenizer: () => ({
       root: "",
-    },
-    grammar: (c) => buildGrammar(c.merged),
+    }),
+    grammar: buildGrammar,
     validators: () => ({}),
     transformers: () => ({}),
     actions: () => ({}),

@@ -3,7 +3,6 @@ import type {
   RankiLangInstance,
   RankiLangParseResult,
   RankiLangParseSpecs,
-  RankiLangAstContext,
   RankiLanguageProvidedConfig,
   RankiLangParseReport,
   ParserPluginsInstance,

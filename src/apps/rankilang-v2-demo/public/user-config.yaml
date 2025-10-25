@@ -20,13 +20,9 @@ plugins:
     RankiFrameV2: 
       tokens:
         pause: ","
-        left: 
-          outer: "="
-          inner: "["
-        right:
-          outer: "="
-          inner: "]"
-        separator: 
+        opener: "["
+        closer: "]"
+        separator:
           param: "|"
     RankiRichTextV2:
       tokens: 

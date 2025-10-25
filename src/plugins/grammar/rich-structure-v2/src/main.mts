@@ -1,16 +1,14 @@
-import { RankiGrammarTokens, RankiPluginGrammar } from "@ranki/package-api-v2";
+import type {
+  RankiGrammarTokens,
+  RankiPluginGrammar,
+} from "@ranki/package-api-v2";
 import grammar from "../assets/ohm/2.0.63.ohm?raw";
 import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";
 import { transformers } from "./transformers.mjs";
+import type { RankiRichStructureV2ParserPluginConfig } from "./types.mjs";
 
-type Single = string;
-
-export interface RankiRichStructureV2ParserPluginConfig {
-  tokens: {
-    delimiter: Single;
-  };
-}
+export type Single = string;
 
 const config: RankiRichStructureV2ParserPluginConfig = {
   tokens: {
@@ -18,7 +16,7 @@ const config: RankiRichStructureV2ParserPluginConfig = {
   },
 };
 
-function tokenize(
+function tokenizer(
   config: RankiRichStructureV2ParserPluginConfig,
 ): RankiGrammarTokens {
   const tokens: RankiGrammarTokens = {};
@@ -35,7 +33,7 @@ export const rankiRichStructureV2ParserPlugin: RankiPluginGrammar<RankiRichStruc
     },
     dependencies: ["RankiBaseV2", "RankiParamsV2"],
     config,
-    tokens: tokenize(config),
+    tokenizer: () => tokenizer(config),
     grammar: () => grammar,
     validators,
     transformers,

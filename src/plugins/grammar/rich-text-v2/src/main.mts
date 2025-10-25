@@ -3,7 +3,7 @@ import grammar from "../assets/ohm/2.0.63.ohm?raw";
 import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";
 import { transformers } from "./transformers.mjs";
-import { RankiRichTextV2ParserPluginConfig } from "./types.mjs";
+import type { RankiRichTextV2ParserPluginConfig } from "./types.mjs";
 
 const config: RankiRichTextV2ParserPluginConfig = {
   tokens: {
@@ -27,7 +27,7 @@ const config: RankiRichTextV2ParserPluginConfig = {
   },
 };
 
-function tokenize(
+function tokenizer(
   config: RankiRichTextV2ParserPluginConfig,
 ): RankiGrammarTokens {
   const tokens: RankiGrammarTokens = {};
@@ -57,7 +57,7 @@ export const rankiRichTextV2ParserPlugin: RankiPluginGrammar<RankiRichTextV2Pars
     },
     dependencies: ["RankiBaseV2"],
     config,
-    tokens: tokenize(config),
+    tokenizer: () => tokenizer(config),
     grammar: () => grammar,
     validators,
     transformers,

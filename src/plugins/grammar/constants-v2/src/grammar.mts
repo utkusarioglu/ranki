@@ -3,10 +3,11 @@ import type {
   RankiGrammarTokens,
 } from "@ranki/package-api-v2";
 
-export function buildGrammar(config: RankiLanguageConfig["merged"]) {
+export function buildGrammar(allConfig: RankiLanguageConfig) {
+  const merged = allConfig.merged;
   const tokens: RankiGrammarTokens = {};
 
-  Object.entries(config.grammar.tokens).forEach(([src, list]) => {
+  Object.entries(merged.grammar.tokens).forEach(([src, list]) => {
     Object.entries(list).forEach(([n, v]) => {
       if (tokens.hasOwnProperty(n)) {
         throw new Error(

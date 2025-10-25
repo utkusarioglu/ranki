@@ -5,29 +5,32 @@ export const config: RankiFrameV2ParserPluginConfig = {
   tokens: {
     pause: ",",
 
-    left: {
-      outer: "=",
-      inner: "[",
-    },
-    right: {
-      outer: "=",
-      inner: "]",
-    },
+    opener: "[",
+    closer: "]",
     separator: {
       param: "|",
     },
   },
 };
 
-export function tokenize(
+export function tokenizer(
   config: RankiFrameV2ParserPluginConfig,
 ): RankiGrammarTokens {
   const tokens: RankiGrammarTokens = {};
   tokens["tFrameV2Pause"] = config.tokens.pause;
-  tokens["tFrameV2LeftOuter"] = config.tokens.left.outer;
-  tokens["tFrameV2LeftInner"] = config.tokens.left.inner;
-  tokens["tFrameV2RightOuter"] = config.tokens.right.outer;
-  tokens["tFrameV2RightInner"] = config.tokens.right.inner;
+
+  const openerLength = config.tokens.opener.length;
+  const closerLength = config.tokens.closer.length;
+  if (openerLength === 0) {
+    throw new Error(`FRAME V2 OPENER HAS TO HAVE AT LEAST ONE CHARACTER`);
+  }
+  if (closerLength === 0) {
+    throw new Error(`FRAME V2 CLOSER HAS TO HAVE AT LEAST ONE CHARACTER`);
+  }
+
+  tokens["tFrameV2LeftOuter"] = config.tokens.opener;
+  tokens["tFrameV2RightOuter"] = config.tokens.closer;
+
   tokens["tFrameV2SeparatorParam"] = config.tokens.separator.param;
   return tokens;
 }

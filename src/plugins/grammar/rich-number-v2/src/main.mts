@@ -1,9 +1,12 @@
-import { RankiGrammarTokens, RankiPluginGrammar } from "@ranki/package-api-v2";
+import type {
+  RankiGrammarTokens,
+  RankiPluginGrammar,
+} from "@ranki/package-api-v2";
 import { actions } from "./actions.mjs";
 import grammar from "../assets/ohm/2.0.63.ohm?raw";
 import { validators } from "./validators.mjs";
 import { transformers } from "./transformers.mjs";
-import { RankiRichNumberV2ParserPluginConfig } from "./types.mjs";
+import type { RankiRichNumberV2ParserPluginConfig } from "./types.mjs";
 
 const config: RankiRichNumberV2ParserPluginConfig = {
   tokens: {
@@ -32,7 +35,7 @@ const config: RankiRichNumberV2ParserPluginConfig = {
   },
 };
 
-function tokenize(config: RankiRichNumberV2ParserPluginConfig) {
+function tokenizer(config: RankiRichNumberV2ParserPluginConfig) {
   const tokens: RankiGrammarTokens = {};
   tokens["tRichNumberV2SymbolComplex"] = config.tokens.symbol.complex;
   tokens["tRichNumberV2SymbolInfinity"] = config.tokens.symbol.infinity;
@@ -60,7 +63,7 @@ export const rankiRichNumberV2ParserPlugin: RankiPluginGrammar<RankiRichNumberV2
     },
     dependencies: ["RankiBaseV2"],
     config,
-    tokens: tokenize(config),
+    tokenizer: () => tokenizer(config),
     grammar: () => grammar,
     validators,
     transformers,

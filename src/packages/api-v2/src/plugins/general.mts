@@ -1,4 +1,5 @@
 import type { RankiPluginParser } from "./parser.mjs";
+import type { RankiGrammarTokens } from "./grammar.mjs";
 
 export type RankiPlugin = RankiPluginParser;
 
@@ -10,3 +11,7 @@ export interface RankiPluginMeta {
   version: string; // semver
   name: string;
 }
+
+export type WithTokenizer = {
+  tokenizer: () => RankiGrammarTokens;
+};

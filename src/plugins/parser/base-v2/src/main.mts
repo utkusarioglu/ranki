@@ -3,12 +3,16 @@ import {
   RankiGrammarTokens,
   RankiLangAstContext,
   RankiLangParsedAst,
+  RankiLanguageConfig,
 } from "@ranki/package-api-v2";
 import grammar from "../assets/ohm/2.0.65.ohm?raw";
 import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";
 import { transformers } from "./transformers.mjs";
-import { RankiBaseV2ParserPluginConfig } from "./type.mjs";
+import {
+  RankiBaseV2ParserPluginConfig,
+  WithRankiBaseV2ParserPluginConfig,
+} from "./type.mjs";
 
 const config: RankiBaseV2ParserPluginConfig = {
   tokens: {
@@ -17,7 +21,11 @@ const config: RankiBaseV2ParserPluginConfig = {
   },
 };
 
-function tokenize(config: RankiBaseV2ParserPluginConfig) {
+function tokenizer(config: RankiBaseV2ParserPluginConfig) {
+  // const config = (
+  //   allConfig.merged.plugins.config as WithRankiBaseV2ParserPluginConfig
+  // )["RankiBaseV2"];
+
   const tokens: RankiGrammarTokens = {};
   tokens["tBaseV2Escape"] = config.tokens.escape;
   tokens["tBaseV2Ignore"] = config.tokens.ignore;
@@ -48,7 +56,7 @@ export const rankiBaseV2ParserPlugin: RankiPluginParser<RankiBaseV2ParserPluginC
     handler,
     dependencies: ["RankiConstantsV2"],
     config,
-    tokens: tokenize(config),
+    tokenizer: () => tokenizer(config),
     grammar: () => grammar,
     actions: () => actions,
     validators,

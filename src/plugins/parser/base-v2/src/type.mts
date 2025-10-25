@@ -15,3 +15,7 @@ export interface RankiBaseV2ParserPluginConfig {
     escape: Single;
   };
 }
+
+export type WithRankiBaseV2ParserPluginConfig = {
+  RankiBaseV2: RankiBaseV2ParserPluginConfig;
+};
