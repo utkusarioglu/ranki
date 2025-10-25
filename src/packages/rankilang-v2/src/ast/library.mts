@@ -117,7 +117,7 @@ export class AstLibrary {
       providedContext: RankiLangAstContext,
     ) => {
       const matched = matcher.match(raw, context.getStartRule());
-      const mergedContext = context.cloneContext();
+      const mergedContext = context.newNode();
       mergedContext.setParser({
         ...providedContext.getParser(),
         type: mergedContext.getParser().type,

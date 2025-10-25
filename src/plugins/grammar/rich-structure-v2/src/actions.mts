@@ -7,7 +7,7 @@ import type {
 } from "./types.mjs";
 
 function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
-  const context = (this.args.context as R).cloneContext();
+  const context = (this.args.context as R).newNode();
   const l = a.node(context);
   l.type = this.ctorName;
   return l;
@@ -15,7 +15,7 @@ function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
 
 const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
   hLevel_defined(structureType1, separator, structureType2) {
-    const context = (this.args.context as R).cloneContext("block");
+    const context = (this.args.context as R).newNode("block");
     const sep: ParseNodeRichStructureV2["args"]["richStructure.v2"] =
       separator.argsAndParamsV2(context);
     return {
@@ -66,7 +66,7 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
 
 const argsAndParamsV2List: ohm.ActionDict<ArgsAndParamsV2[]> = {
   _iter(...children) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     return children.map((c) => c.argsAndParamsV2(context));
   },
 };
@@ -81,7 +81,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi2,
     structureSepEnd,
   ) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     return {
       parser: { hash: context.getHash("ast") },
       args: {
@@ -125,7 +125,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi3,
     structureSepEnd,
   ) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const config: ArgsAndParamsV2RichStructureV2 =
       v2ParamListInlineContainer.argsAndParamsV2(context);
     return {

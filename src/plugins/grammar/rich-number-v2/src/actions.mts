@@ -25,7 +25,7 @@ function hComplex<T extends ohm.Node>(
   imaginary: NodeLeafRichNumberV2SourceScalar,
   complexToken: ohm.Node,
 ): ParseNodeRichNumberV2 {
-  const context = (this.args.context as R).cloneContext("inline");
+  const context = (this.args.context as R).newNode("inline");
   return {
     kind: "leaf",
     creator: this.ctorName,
@@ -62,7 +62,7 @@ function hComplex<T extends ohm.Node>(
 
 const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   conceptualSymbol(token) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     let type;
     CONCEPTUAL_NUMBERS.forEach((t) => {
@@ -95,7 +95,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_indian(num) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const integer = +num.sourceString
       .split(config.tokens.number.group)
@@ -121,7 +121,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_international(num) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const integer = +num.sourceString
       .split(config.tokens.number.group)
@@ -147,7 +147,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_unstructured(digit, token, num) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const integer = +num.sourceString
       .split(config.tokens.number.group)
@@ -173,7 +173,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_basic(basic) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     return {
       kind: "leaf",
       creator: this.ctorName,
@@ -195,7 +195,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   conceptualNumber_factored(factor, conceptualSymbol) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const c = conceptualSymbol.node(context);
     c["source"]["factor"] = +factor.sourceString;
     c["source"]["raw"] = this.sourceString;
@@ -203,7 +203,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   conceptual_signed(sign, conceptualNumber) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const c = conceptualNumber.node(context);
     c["source"]["sign"] = sign.richNumberV2Sign(context);
     c["source"]["raw"] = this.sourceString;
@@ -211,7 +211,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   hBases(zero, symbol, numberSystem_unstructured) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const tokens = config.tokens;
     let type;
@@ -251,21 +251,21 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   hexadecimal(sign, basedNumber) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const h = basedNumber.node(context);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
     return h;
   },
   binary(sign, basedNumber) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const h = basedNumber.node(context);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
     return h;
   },
   octal(sign, basedNumber) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const h = basedNumber.node(context);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
@@ -273,7 +273,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   integer_signed(sign, numberSystem) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const ns = numberSystem.node(context);
     return {
       kind: "leaf",
@@ -294,7 +294,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   decimal_full(integer, decimalToken, decimalGroup) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     return {
       kind: "leaf",
       creator: this.ctorName,
@@ -315,7 +315,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   decimal_point(sign, decimalToken, decimalGroup) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const decimal = +decimalGroup.sourceString
       .split(config.tokens.number.group)
@@ -352,7 +352,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   rational(nominator, rationalToken, denominator) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     return {
       kind: "leaf",
       creator: this.ctorName,
@@ -374,7 +374,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   complex_i(realPart, clearance1, operator, clearance2, complexToken) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const imaginary: NodeLeafRichNumberV2SourceInteger = {
       type: "integer",
       raw: complexToken.sourceString,
@@ -403,7 +403,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     imaginaryPart,
     complexToken,
   ) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const real: NodeLeafRichNumberV2SourceScalar =
       realPart.node(context).source;
     const imaginary: NodeLeafRichNumberV2SourceScalar =
@@ -427,7 +427,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     complexToken,
     imaginaryPart,
   ) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const real: NodeLeafRichNumberV2SourceScalar =
       realPart.node(context).source;
     const imaginary: NodeLeafRichNumberV2SourceScalar =
@@ -444,7 +444,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   eNotation(significand, eToken, exponent) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     return {
       kind: "leaf",
       creator: this.ctorName,

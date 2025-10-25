@@ -171,7 +171,7 @@ export interface RankiLangContextInstance<
   getDepth(direction: "block" | "inline" | "total"): number;
   getContextArgs(): Pick<AstNode["args"], "depth">;
 
-  cloneContext(direction?: "block" | "inline"): RankiLangContextInstance<T>;
+  newNode(direction?: "block" | "inline"): RankiLangContextInstance<T>;
 
   getHash(type: "ast" | "TODO"): string;
 

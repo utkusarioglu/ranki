@@ -8,7 +8,7 @@ import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/co
 
 export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   block_v2(indentation, v2, wi, ender) {
-    const context = (this.args.context as R<V2>).cloneContext("block");
+    const context = (this.args.context as R<V2>).newNode("block");
     return {
       kind: "parent",
       creator: this.ctorName,
@@ -37,7 +37,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   },
 
   v2Payload_P(wi1, nl, pauseRoot) {
-    const context = (this.args.context as R<V2>).cloneContext("block");
+    const context = (this.args.context as R<V2>).newNode("block");
     return {
       kind: "parent",
       creator: this.ctorName,
@@ -66,7 +66,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   },
 
   v2Payload_p(pauseRoot) {
-    const context = (this.args.context as R<V2>).cloneContext("block");
+    const context = (this.args.context as R<V2>).newNode("block");
     return {
       kind: "parent",
       creator: this.ctorName,
@@ -86,7 +86,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   },
 
   pauseList(v2PayloadSection1, pausedContainer, v2PayloadSection2) {
-    const context = (this.args.context as R<V2>).cloneContext("block");
+    const context = (this.args.context as R<V2>).newNode("block");
     return {
       kind: "parent",
       creator: this.ctorName,
@@ -118,7 +118,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     v2PayloadSectionItem2,
     whitespace2,
   ) {
-    const context = (this.args.context as R<V2>).cloneContext("block");
+    const context = (this.args.context as R<V2>).newNode("block");
     return {
       kind: "parent",
       creator: this.ctorName,
@@ -149,7 +149,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   v2PayloadPlain(plain) {
     // TODO i'm so not sure if this is what's supposed to happen here
     // this uses a context that was created in a parent to produce a parser deeper in the chain
-    const context = (this.args.context as R<V2>).cloneContext("block");
+    const context = (this.args.context as R<V2>).newNode("block");
 
     const child = context.parseAst(plain.sourceString, context);
     return {
@@ -173,8 +173,8 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
 
   // !TODO are pauseStart and pauseEnd separators or fillers?
   pausedContainer(pauseStart, pausedPayload, pauseEnd) {
-    const parentContext = (this.args.context as R<V2>).cloneContext("block");
-    const leafContext = (parentContext as R<V2>).cloneContext("inline");
+    const parentContext = (this.args.context as R<V2>).newNode("block");
+    const leafContext = (parentContext as R<V2>).newNode("inline");
     return {
       kind: "parent",
       creator: this.ctorName,

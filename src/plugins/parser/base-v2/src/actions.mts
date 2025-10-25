@@ -41,7 +41,7 @@ const separator: ohm.ActionDict<SeparatorEntry> = {
 
 const node: ohm.ActionDict<AstNode> = {
   root_ignore(ignore, wm, rest) {
-    const context = (this.args.context as R).cloneContext("block");
+    const context = (this.args.context as R).newNode("block");
     return {
       kind: "leaf",
       creator: this.ctorName,
@@ -65,7 +65,7 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   section_empty(all) {
-    const context = (this.args.context as R).cloneContext("block");
+    const context = (this.args.context as R).newNode("block");
     return {
       kind: "leaf",
       creator: this.ctorName,
@@ -84,7 +84,7 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   root_structure(whitespace1, structure, whitespace2) {
-    const context = (this.args.context as R).cloneContext("block");
+    const context = (this.args.context as R).newNode("block");
     return {
       kind: "parent",
       creator: this.ctorName,
@@ -113,7 +113,7 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   section_base(block, blockSep, block2) {
-    const context = (this.args.context as R).cloneContext("block");
+    const context = (this.args.context as R).newNode("block");
     return {
       kind: "parent",
       creator: this.ctorName,
@@ -134,7 +134,7 @@ const node: ohm.ActionDict<AstNode> = {
 
   // TODO nl
   p(line1, nl, line2) {
-    const context = (this.args.context as R).cloneContext("block");
+    const context = (this.args.context as R).newNode("block");
     return {
       kind: "parent",
       creator: this.ctorName,
@@ -155,7 +155,7 @@ const node: ohm.ActionDict<AstNode> = {
 
   // TODO line modifiers
   line(indentation1, lineModifiers, lexemes, wi1) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     return {
       kind: "parent",
       creator: this.ctorName,
@@ -185,7 +185,7 @@ const node: ohm.ActionDict<AstNode> = {
 
   // TODO clearance
   lexemes(lexeme1, clearance, lexeme2) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     return {
       kind: "parent",
       creator: this.ctorName,
@@ -205,7 +205,7 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   decorated_base(word, wordEnd) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     return {
       kind: "parent",
       creator: this.ctorName,
@@ -231,8 +231,8 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   decorated_fallback(word, wordEnd) {
-    const parentContext = (this.args.context as R).cloneContext("inline");
-    const leafContext = (parentContext as R).cloneContext("inline");
+    const parentContext = (this.args.context as R).newNode("inline");
+    const leafContext = (parentContext as R).newNode("inline");
     return {
       kind: "parent",
       creator: this.ctorName,
@@ -273,7 +273,7 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   word_base(base) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     return {
       kind: "leaf",
       creator: this.ctorName,
@@ -292,7 +292,7 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   word_number(number) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     return {
       kind: "leaf",
       creator: this.ctorName,
@@ -313,7 +313,7 @@ const node: ohm.ActionDict<AstNode> = {
 
   // TODO should this exist?
   clearance(clearance1) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     return {
       kind: "leaf",
       print: true,
@@ -333,7 +333,7 @@ const node: ohm.ActionDict<AstNode> = {
 
   // TODO should this exist?
   whitespace(wm, wi) {
-    const context = (this.args.context as R).cloneContext("inline");
+    const context = (this.args.context as R).newNode("inline");
     const sourceString = wm.sourceString + wi.sourceString;
     return {
       kind: "leaf",

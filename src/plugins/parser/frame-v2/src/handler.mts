@@ -28,7 +28,7 @@ export const handler: RankiLangParseHandlerFunction<V2> = (
     component.stages.ast.directives,
     directives,
   ]);
-  const contextV2 = context.cloneContext("block");
+  const contextV2 = context.newNode("block");
   // const contextV2Old: RankiLangAstContext = {
   //   parser: context.parser,
   //   astHash: "",

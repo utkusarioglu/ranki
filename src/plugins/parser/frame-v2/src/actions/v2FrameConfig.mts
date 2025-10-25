@@ -6,7 +6,7 @@ import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/co
 
 export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   v2FrameConfigP(wi1, v2Type, wi2, sep) {
-    const context = (this.args.context as R<V2>).cloneContext("block");
+    const context = (this.args.context as R<V2>).newNode("block");
 
     const chain: FrameSpec[] = v2Type.frameSpecV2(context);
     return {
@@ -50,7 +50,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     wi3,
     sepRight,
   ) {
-    const context = (this.args.context as R<V2>).cloneContext("block");
+    const context = (this.args.context as R<V2>).newNode("block");
     const config: ArgsAndParamsV2 =
       v2ParamListInlineContainer.argsAndParamsV2(context);
 
@@ -100,7 +100,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     wi3,
     sepRight,
   ) {
-    const context = (this.args.context as R<V2>).cloneContext("block");
+    const context = (this.args.context as R<V2>).newNode("block");
     const config: ArgsAndParamsV2 =
       v2ParamListBlockContainer.argsAndParamsV2(context);
     const chain: FrameSpec[] = v2Type.frameSpecV2(context);

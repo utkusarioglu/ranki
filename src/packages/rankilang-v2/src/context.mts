@@ -92,7 +92,7 @@ export class RankiLangContext<
     return this.context.startRule;
   }
 
-  cloneContext(direction?: "block" | "inline"): RankiLangContextInstance<T> {
+  newNode(direction?: "block" | "inline"): RankiLangContextInstance<T> {
     const newContext = { ...this.context };
     const inst = new RankiLangContext(newContext);
     if (direction) {

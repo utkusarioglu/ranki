@@ -11,7 +11,7 @@ import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/co
 
 export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2_fp(v2Start, v2FrameConfig, v2Payload, v2End) {
-    const context = (this.args.context as R<V2>).cloneContext("block");
+    const context = (this.args.context as R<V2>).newNode("block");
     const frameConfig: NodeArgsFrameV2Config =
       v2FrameConfig.v2FrameConfig(context);
 
@@ -21,7 +21,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     //     parser: frameConfig,
     //   };
 
-    const payloadContext = context.cloneContext().setParser(frameConfig);
+    const payloadContext = context.newNode().setParser(frameConfig);
 
     const child = v2Payload.node(payloadContext);
 
@@ -46,7 +46,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   v2_f(v2Start, v2FrameConfig, v2End) {
-    const context = (this.args.context as R<V2>).cloneContext("block");
+    const context = (this.args.context as R<V2>).newNode("block");
     const frameConfig: NodeArgsFrameV2ConfigP =
       v2FrameConfig.v2FrameConfig(context);
 
@@ -56,7 +56,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     //     parser: frameConfig,
     // };
 
-    const newContext = context.cloneContext().setParser(frameConfig);
+    const newContext = context.newNode().setParser(frameConfig);
 
     const child = context.parseAst("", newContext);
 
@@ -81,7 +81,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   v2_e(v2Start, wi1, v2Chain, wi2, v2End) {
-    const context = (this.args.context as R<V2>).cloneContext("block");
+    const context = (this.args.context as R<V2>).newNode("block");
     const chain: FrameSpec[] = v2Chain.frameSpecV2(context);
 
     const frameConfig: NodeArgsFrameV2ConfigE = {
@@ -116,7 +116,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     //     parser: frameConfig,
     // };
 
-    const newContext = context.cloneContext().setParser(frameConfig);
+    const newContext = context.newNode().setParser(frameConfig);
     const child = context.parseAst("", newContext);
 
     return {
