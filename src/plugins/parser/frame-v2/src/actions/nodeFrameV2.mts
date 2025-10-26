@@ -11,7 +11,7 @@ import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/co
 
 export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2_fp(v2Start, v2FrameConfig, v2Payload, v2End) {
-    const context = (this.args.context as R<V2>).newNode("block");
+    const context = (this.args.context as R<V2>).newChild("block");
     const frameConfig: NodeArgsFrameV2Config =
       v2FrameConfig.v2FrameConfig(context);
 
@@ -21,14 +21,15 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     //     parser: frameConfig,
     //   };
 
-    const payloadContext = context.newNode().setParser(frameConfig);
+    const payloadContext = context.newChild().setParser(frameConfig);
 
     const child = v2Payload.node(payloadContext);
 
-    return {
+    return context.registerAstNode<ParseNodeFrameV2>({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         separators: [],
@@ -42,11 +43,11 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         frameConfig,
       },
       children: [child],
-    } as ParseNodeFrameV2Fp;
+    } as ParseNodeFrameV2Fp);
   },
 
   v2_f(v2Start, v2FrameConfig, v2End) {
-    const context = (this.args.context as R<V2>).newNode("block");
+    const context = (this.args.context as R<V2>).newChild("block");
     const frameConfig: NodeArgsFrameV2ConfigP =
       v2FrameConfig.v2FrameConfig(context);
 
@@ -56,14 +57,15 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     //     parser: frameConfig,
     // };
 
-    const newContext = context.newNode().setParser(frameConfig);
+    const newContext = context.newChild().setParser(frameConfig);
 
     const child = context.parseAst("", newContext);
 
-    return {
+    return context.registerAstNode<ParseNodeFrameV2>({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         separators: [],
@@ -77,13 +79,14 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         frameConfig,
       },
       children: [child.root],
-    };
+    });
   },
 
   v2_e(v2Start, wi1, v2Chain, wi2, v2End) {
-    const context = (this.args.context as R<V2>).newNode("block");
+    const context = (this.args.context as R<V2>).newChild("block");
     const chain: FrameSpec[] = v2Chain.frameSpecV2(context);
 
+    // @ts-expect-error needs its parent
     const frameConfig: NodeArgsFrameV2ConfigE = {
       type: "RankiFrameV2",
       version: "v2",
@@ -116,13 +119,14 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     //     parser: frameConfig,
     // };
 
-    const newContext = context.newNode().setParser(frameConfig);
+    const newContext = context.newChild().setParser(frameConfig);
     const child = context.parseAst("", newContext);
 
-    return {
+    return context.registerAstNode<ParseNodeFrameV2>({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         separators: [],
@@ -136,6 +140,6 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         frameConfig,
       },
       children: [child.root],
-    };
+    });
   },
 };

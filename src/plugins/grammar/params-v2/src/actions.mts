@@ -29,12 +29,12 @@ const creatorName: ohm.ActionDict<string> = {
 
 const paramsV2: ohm.ActionDict<ParamV2[]> = {
   _iter(...children) {
-    const context = (this.args.context as R).newNode();
+    const context = (this.args.context as R).newChild();
     return children.map((c) => c.paramV2(context));
   },
 
   v2ParamListInline(param1, sep, param2) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const rest = param2.paramsV2(context);
     const joined = [param1.paramV2(context), ...rest];
 
@@ -42,7 +42,7 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
   },
 
   v2ParamListBlock(param1, sep, param2) {
-    const context = (this.args.context as R).newNode("block");
+    const context = (this.args.context as R).newChild("block");
     const rest = param2.paramsV2(context);
     const joined = [param1.paramV2(context), ...rest];
 
@@ -67,7 +67,7 @@ const paramV2Key: ohm.ActionDict<ParamV2KeyWord> = {
 
 const paramV2Common: ohm.ActionDict<ParamV2Common> = {
   paramFormatOperator(paramKey, wi1, operatorToken, wi2, paramValues) {
-    const context = (this.args.context as R).newNode("block");
+    const context = (this.args.context as R).newChild("block");
     const config =
       context.getPluginConfig<RankiParamsV2ParserPluginConfig>("RankiParamsV2");
     const operators = config.tokens.operators;
@@ -108,7 +108,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
   },
 
   paramFormatPositive(paramKey) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const key: ParamV2KeyWord[] = paramKey.paramV2Key(this.args.context);
 
     return {
@@ -135,7 +135,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
   },
 
   paramFormatNegative(negation, paramKey) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const key: ParamV2KeyWord[] = paramKey.paramV2Key(this.args.context);
     return {
       key,
@@ -160,7 +160,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
   },
 
   paramFormatPositional(quoted) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     return {
       key: "positional",
       args: {
@@ -210,12 +210,12 @@ const paramV2: ohm.ActionDict<ParamV2> = {
 
 const paramV2Values: ohm.ActionDict<ParamV2Value[]> = {
   _iter(...children) {
-    const context = (this.args.context as R).newNode();
+    const context = (this.args.context as R).newChild();
     return children.map((c) => c.paramV2Value(context));
   },
 
   paramValues(i1, clearance, i2) {
-    const context = (this.args.context as R).newNode();
+    const context = (this.args.context as R).newChild();
     return [i1.paramV2Value(context), ...i2.paramV2Values(context)];
   },
 };
@@ -292,8 +292,10 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi3,
     sepLeft2,
   ) {
-    const context = (this.args.context as R).newNode("block");
-    return {
+    const context = (this.args.context as R).newChild("block");
+    return context.registerAstNode({
+      parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {
@@ -331,18 +333,20 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
         variant: "block",
         items: v2ParamListBlock.paramsV2(context),
       },
-    };
+    });
   },
 
   v2ParamListInlineContainer(sepLeft1, wi1, v2ParamListInline, wi2, sepLeft2) {
-    const context = (this.args.context as R).newNode("block");
+    const context = (this.args.context as R).newChild("block");
     const sepLastCtorName = sepLeft2.creatorName(context) as string[];
     const sepLast = sepLastCtorName.map((type) => ({
       type,
       raw: sepLeft2.sourceString,
     }));
 
-    return {
+    return context.registerAstNode({
+      parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {
@@ -369,7 +373,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
         variant: "inline",
         items: v2ParamListInline.paramsV2(context),
       },
-    };
+    });
   },
 };
 

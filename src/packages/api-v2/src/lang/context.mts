@@ -171,7 +171,7 @@ export interface RankiLangContextInstance<
   getDepth(direction: "block" | "inline" | "total"): number;
   getContextArgs(): Pick<AstNode["args"], "depth">;
 
-  newNode(direction?: "block" | "inline"): RankiLangContextInstance<T>;
+  newChild(direction?: "block" | "inline"): RankiLangContextInstance<T>;
 
   getHash(type: "ast" | "TODO"): string;
 
@@ -179,6 +179,12 @@ export interface RankiLangContextInstance<
   getParser(): T;
 
   getStartRule(): string;
+
+  getParentAstNode<T = AstNode>(): T;
+  getParentAstNode<T>(): T;
+
+  registerAstNode<T = AstNode>(n: T): T;
+  registerAstNode<T>(n: T): T;
 }
 
 export type VersionReport = Record<string, string>;

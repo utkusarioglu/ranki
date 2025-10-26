@@ -34,6 +34,7 @@ export interface SeparatorEntry {
 
 interface AstNodeCommon {
   creator: string;
+  parent: AstNode;
   args: {
     spaces: Record<string, WhitespaceEntry>;
     separators: SeparatorEntry[];

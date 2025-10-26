@@ -10,11 +10,12 @@ import { FrameV1 as V1 } from "./handler.mjs";
 const nodeBaseV2: ohm.ActionDict<AstNode> = {
   // !TODO end
   block_v1(indentation, v1Block, wi1, end) {
-    const context = (this.args.context as R<V1>).newNode("block");
-    return {
+    const context = (this.args.context as R<V1>).newChild("block");
+    return context.registerAstNode({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {
@@ -35,7 +36,7 @@ const nodeBaseV2: ohm.ActionDict<AstNode> = {
       },
       subtree: {},
       children: [v1Block.node(context)],
-    };
+    });
   },
 };
 
@@ -49,9 +50,9 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadInline,
     frameV1_2,
   ) {
-    const context = (this.args.context as R<V1>).newNode("inline");
+    const context = (this.args.context as R<V1>).newChild("inline");
 
-    const childContext = context.newNode().setParser({
+    const childContext = context.newChild().setParser({
       type: "RankiFrameV1",
       chain: v1Type.sourceString,
       params: [],
@@ -67,10 +68,11 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
 
     const child = context.parseAst(v1PayloadInline.sourceString, childContext);
 
-    return {
+    return context.registerAstNode({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {
@@ -102,7 +104,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       },
       subtree: {},
       children: [child.root],
-    };
+    });
   },
 
   v1Inline_fp(
@@ -118,9 +120,9 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadInline,
     frameV1_2,
   ) {
-    const context = (this.args.context as R<V1>).newNode("inline");
+    const context = (this.args.context as R<V1>).newChild("inline");
     const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(context);
-    const newContext = context.newNode().setParser({
+    const newContext = context.newChild().setParser({
       type: "RankiFrameV1",
       chain: v1Type.sourceString,
       params: [],
@@ -134,10 +136,11 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     //   },
     // };
     const child = context.parseAst(v1PayloadInline.sourceString, newContext);
-    return {
+    return context.registerAstNode({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {
@@ -182,7 +185,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       },
       subtree: {},
       children: [child.root],
-    };
+    });
   },
 
   v1Block_p(
@@ -196,8 +199,8 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadBlock,
     v1BlockEnd,
   ) {
-    const context = (this.args.context as R<V1>).newNode("inline");
-    const childContext = context.newNode().setParser({
+    const context = (this.args.context as R<V1>).newChild("inline");
+    const childContext = context.newChild().setParser({
       type: "RankiFrameV1",
       chain: v1Type.sourceString,
       params: [],
@@ -211,10 +214,11 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     //   },
     // };
     const child = context.parseAst(v1PayloadBlock.sourceString, childContext);
-    return {
+    return context.registerAstNode({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {
@@ -252,7 +256,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       },
       subtree: {},
       children: [child.root],
-    };
+    });
   },
 
   v1Block_fp(
@@ -270,10 +274,10 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadBlock,
     v1BlockEnd,
   ) {
-    const context = (this.args.context as R<V1>).newNode("block");
+    const context = (this.args.context as R<V1>).newChild("block");
     const argsAndParamsV1: ArgsAndParamsV1 =
       v1ParamListInline.argsAndParamsV1(context);
-    const newContext = context.newNode().setParser({
+    const newContext = context.newChild().setParser({
       type: "RankiFrameV1",
       chain: v1Type.sourceString,
       params: [],
@@ -287,10 +291,11 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     //   },
     // };
     const child = context.parseAst(v1PayloadBlock.sourceString, newContext);
-    return {
+    return context.registerAstNode({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {
@@ -342,7 +347,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       },
       subtree: {},
       children: [child.root],
-    };
+    });
   },
 };
 
@@ -354,14 +359,14 @@ const paramV1: ohm.ActionDict<string> = {
 
 const paramsV1: ohm.ActionDict<string[]> = {
   _iter(...children) {
-    const context = (this.args.context as R<V1>).newNode("inline");
+    const context = (this.args.context as R<V1>).newChild("inline");
     return children.map((v) => v.paramV1(context));
   },
 };
 
 const argsAndParamsV1: ohm.ActionDict<ArgsAndParamsV1> = {
   v1ParamListInline(v1ParamValue1, sep, v1ParamValue2) {
-    const context = (this.args.context as R<V1>).newNode("inline");
+    const context = (this.args.context as R<V1>).newChild("inline");
     return {
       parser: { hash: context.getHash("ast") },
       args: {},

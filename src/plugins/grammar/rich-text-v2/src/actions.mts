@@ -166,11 +166,12 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
 
 const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   textual(decorated1, clearance, decorated2) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichTextV2>({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {},
@@ -183,18 +184,19 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       subtree: {},
       // children: zipNodes(context, decorated1, clearance, decorated2),
       children: joinNodes(context, decorated1, decorated2),
-    };
+    });
   },
 
   decorated_decorated(start, word, end, wordEnd) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const { startNodes, startArgs } = startToken(context, start);
     const { endNodes, endArgs } = endToken(context, end);
 
-    return {
+    return context.registerAstNode<ParseNodeRichTextV2>({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {
@@ -213,16 +215,17 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       },
       subtree: {},
       children: [...startNodes, word.node(context), ...endNodes],
-    };
+    });
   },
 
   text_lowercase(text) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichTextV2>({
       kind: "leaf",
       print: true,
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {},
@@ -232,16 +235,17 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "lowercase",
         raw: text.sourceString,
       },
-    };
+    });
   },
 
   text_propercase(first, rest) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichTextV2>({
       kind: "leaf",
       print: true,
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {},
@@ -251,16 +255,17 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "propercase",
         raw: first.sourceString + rest.sourceString,
       },
-    };
+    });
   },
 
   text_uppercase(all) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichTextV2>({
       kind: "leaf",
       print: true,
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {},
@@ -270,16 +275,17 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "uppercase",
         raw: all.sourceString,
       },
-    };
+    });
   },
 
   text_mixedcaseUl(one, two, three, four) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichTextV2>({
       kind: "leaf",
       print: true,
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {},
@@ -289,16 +295,17 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "mixedcase",
         raw: [one, two, three, four].map((v) => v.sourceString).join(""),
       },
-    };
+    });
   },
 
   text_mixedcaseLu(one, two, three) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichTextV2>({
       kind: "leaf",
       print: true,
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {},
@@ -308,16 +315,17 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "mixedcase",
         raw: [one, two, three].map((v) => v.sourceString).join(""),
       },
-    };
+    });
   },
 
   tRichTextV2DecorationBold(b) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichTextV2>({
       kind: "leaf",
       print: false,
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {},
@@ -327,15 +335,16 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "token",
         raw: b.sourceString,
       },
-    };
+    });
   },
 
   sentence(sentence) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichTextV2>({
       kind: "leaf",
       print: true,
       creator: this.ctorName,
+      parent: context.getParentAstNode(),
       parser: { hash: context.getHash("ast") },
       args: {
         ...context.getContextArgs(),
@@ -346,16 +355,17 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "token",
         raw: sentence.sourceString,
       },
-    };
+    });
   },
 
   tRichTextV2DecorationAbbreviation(token) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichTextV2>({
       kind: "leaf",
       print: false,
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {},
@@ -365,14 +375,15 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "token",
         raw: token.sourceString,
       },
-    };
+    });
   },
 
   tRichTextV2DecorationEmphasis(token) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichTextV2>({
       kind: "leaf",
       print: false,
+      parent: context.getParentAstNode(),
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
       args: {
@@ -384,16 +395,17 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "token",
         raw: token.sourceString,
       },
-    };
+    });
   },
 
   tRichTextV2DecorationIdiomatic(token) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichTextV2>({
       kind: "leaf",
       print: false,
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {},
@@ -403,16 +415,17 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "token",
         raw: token.sourceString,
       },
-    };
+    });
   },
 
   tRichTextV2DecorationUnderline(token) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichTextV2>({
       kind: "leaf",
       print: false,
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {},
@@ -422,18 +435,19 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "token",
         raw: token.sourceString,
       },
-    };
+    });
   },
 
   /**
    * @overload
    */
   line(indentation1, lineModifiers, lexemes, wi1) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichTextV2>({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         "indentation.1.length": indentation1.sourceString.length,
@@ -446,16 +460,17 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       },
       subtree: {},
       children: [lexemes.node(context)],
-    };
+    });
   },
 
   word_punctuation(chars) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichTextV2>({
       kind: "leaf",
       creator: this.ctorName,
       print: true,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {},
@@ -465,19 +480,19 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         type: "raw",
         raw: chars.sourceString,
       },
-    };
+    });
   },
 
   decorated_richTextBase(start, word, end, wordEnd) {
-    const parentContext = (this.args.context as R).newNode("inline");
-    const leafContext = (parentContext as R).newNode("inline");
+    const parentContext = (this.args.context as R).newChild("inline");
     const { startNodes, startArgs } = startToken(parentContext, start);
     const { endNodes, endArgs } = endToken(parentContext, end);
 
-    return {
+    return parentContext.registerAstNode<ParseNodeRichTextV2>({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: parentContext.getHash("ast") },
+      parent: parentContext.getParentAstNode(),
       args: {
         ...parentContext.getContextArgs(),
         spaces: {
@@ -497,22 +512,28 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       subtree: {},
       children: [
         ...startNodes,
-        {
-          kind: "leaf",
-          type: this.ctorName,
-          print: true,
-          parser: { hash: leafContext.getHash("ast") },
-          args: {
-            ...leafContext.getContextArgs(),
-          },
-          source: {
-            type: "raw",
-            raw: word.sourceString,
-          },
-        },
+        (() => {
+          const leafContext = (parentContext as R).newChild("inline");
+          return {
+            kind: "leaf",
+            creator: this.ctorName,
+            print: true,
+            parent: leafContext.getParentAstNode(),
+            parser: { hash: leafContext.getHash("ast") },
+            args: {
+              ...leafContext.getContextArgs(),
+              spaces: {},
+              separators: [],
+            },
+            source: {
+              type: "raw",
+              raw: word.sourceString,
+            },
+          };
+        })(),
         ...endNodes,
       ],
-    };
+    });
   },
 };
 

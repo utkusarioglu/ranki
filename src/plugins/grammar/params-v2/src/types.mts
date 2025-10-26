@@ -82,6 +82,8 @@ export interface ParamsV2SpecNone {
 }
 
 export interface ArgsAndParamsV2 {
+  parser: { hash: string };
+  parent: AstNode;
   args: NodeArgsParamsV2;
   params: ParamsV2SpecPopulated;
 }

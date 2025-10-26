@@ -1,7 +1,11 @@
 // import type { NodeArgs as NodeArgsBaseV2 } from "@ranki/package-api-v2";
 import type { ParamsV2Spec } from "@ranki/plugin-grammar-params-v2";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
-import type { AstNode } from "@ranki/package-api-v2";
+import type {
+  AstNode,
+  AstNodeLeaf,
+  AstNodeParent,
+} from "@ranki/package-api-v2";
 import { Single } from "./main.mjs";
 
 export interface NodeArgsRichStructureV2 {
@@ -16,7 +20,15 @@ export interface NodeArgsRichStructureV2 {
   };
 }
 
-export type ParseNodeRichStructureV2 = Omit<AstNode, "args"> & {
+export type ParseNodeRichStructureV2 =
+  | ParseNodeRichStructureV2Leaf
+  | ParseNodeRichStructureV2Parent;
+
+export type ParseNodeRichStructureV2Leaf = Omit<AstNodeLeaf, "args"> & {
+  args: AstNode["args"] & Partial<NodeArgsBaseV2> & NodeArgsRichStructureV2;
+};
+
+export type ParseNodeRichStructureV2Parent = Omit<AstNodeParent, "args"> & {
   args: AstNode["args"] & Partial<NodeArgsBaseV2> & NodeArgsRichStructureV2;
 };
 

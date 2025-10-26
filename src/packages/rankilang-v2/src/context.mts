@@ -19,25 +19,31 @@ export class RankiLangContext<
   T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
 > implements RankiLangContextInstance<T>
 {
-  // private hooks: RankiLangParseHandlerHooks;
-  // private depth: AstNode["args"]["depth"];
-  // private parser: T;
-  // private role: string = "default"
-  // private theater: string = "default"
-  // private parser
-
+  private parent: AstNode;
+  private node: AstNode = null;
   private context: RankiLangContextParams<T>;
 
   // private startRule: string;
 
-  constructor(oldContext: RankiLangContextParams<T>) {
+  constructor(oldContext: RankiLangContextParams<T>, parent: AstNode | null) {
     this.context = oldContext;
+    this.parent = parent;
+    console.log(this.parent);
     // this.startRule = startRule;
   }
 
   setParser(parser: T) {
     this.context.parser = parser;
     return this;
+  }
+
+  getParentAstNode(): AstNode {
+    return this.parent;
+  }
+
+  registerAstNode(n: AstNode): AstNode {
+    this.node = n;
+    return n;
   }
 
   getParser(): T {
@@ -92,9 +98,9 @@ export class RankiLangContext<
     return this.context.startRule;
   }
 
-  newNode(direction?: "block" | "inline"): RankiLangContextInstance<T> {
+  newChild(direction?: "block" | "inline"): RankiLangContextInstance<T> {
     const newContext = { ...this.context };
-    const inst = new RankiLangContext(newContext);
+    const inst = new RankiLangContext(newContext, this.node);
     if (direction) {
       inst.incrementDepth(direction);
     }

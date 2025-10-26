@@ -7,7 +7,7 @@ import type {
 } from "./types.mjs";
 
 function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
-  const context = (this.args.context as R).newNode();
+  const context = (this.args.context as R).newChild();
   const l = a.node(context);
   l.type = this.ctorName;
   return l;
@@ -15,12 +15,13 @@ function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
 
 const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
   hLevel_defined(structureType1, separator, structureType2) {
-    const context = (this.args.context as R).newNode("block");
+    const context = (this.args.context as R).newChild("block");
     const sep: ParseNodeRichStructureV2["args"]["richStructure.v2"] =
       separator.argsAndParamsV2(context);
-    return {
+    return context.registerAstNode<ParseNodeRichStructureV2>({
       kind: "parent",
       creator: this.ctorName,
+      parent: context.getParentAstNode(),
       parser: { hash: context.getHash("ast") },
       args: {
         ...context.getContextArgs(),
@@ -35,6 +36,7 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
           // params: sep.params,
         },
       },
+      subtree: {},
       children: [
         structureType1.node(context),
         ...structureType2.iterNode(context),
@@ -43,7 +45,7 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
         type: "raw",
         raw: this.sourceString,
       },
-    };
+    });
   },
   richStructure(a) {
     return hLevel.call(this, a);
@@ -66,13 +68,12 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
 
 const argsAndParamsV2List: ohm.ActionDict<ArgsAndParamsV2[]> = {
   _iter(...children) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     return children.map((c) => c.argsAndParamsV2(context));
   },
 };
 
 const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
-  // @ts-expect-error
   // !FIX
   hStructureSepInline_s(
     structureSepStart,
@@ -81,9 +82,10 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi2,
     structureSepEnd,
   ) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ArgsAndParamsV2>({
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {
@@ -108,10 +110,11 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
         ],
       },
       params: {
-        variant: "none",
+        // FIX this is icky
+        variant: "none" as "inline",
         items: [],
       },
-    };
+    });
   },
 
   // @ts-expect-error
@@ -125,7 +128,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi3,
     structureSepEnd,
   ) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const config: ArgsAndParamsV2RichStructureV2 =
       v2ParamListInlineContainer.argsAndParamsV2(context);
     return {

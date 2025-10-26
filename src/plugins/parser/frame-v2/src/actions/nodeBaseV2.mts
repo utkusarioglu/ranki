@@ -8,11 +8,12 @@ import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/co
 
 export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   block_v2(indentation, v2, wi, ender) {
-    const context = (this.args.context as R<V2>).newNode("block");
-    return {
+    const context = (this.args.context as R<V2>).newChild("block");
+    return context.registerAstNode({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {
@@ -33,15 +34,16 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
       },
       subtree: {},
       children: [v2.node(context)],
-    };
+    });
   },
 
   v2Payload_P(wi1, nl, pauseRoot) {
-    const context = (this.args.context as R<V2>).newNode("block");
-    return {
+    const context = (this.args.context as R<V2>).newChild("block");
+    return context.registerAstNode({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {
@@ -62,15 +64,16 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
       },
       subtree: {},
       children: [pauseRoot.node(context)],
-    };
+    });
   },
 
   v2Payload_p(pauseRoot) {
-    const context = (this.args.context as R<V2>).newNode("block");
-    return {
+    const context = (this.args.context as R<V2>).newChild("block");
+    return context.registerAstNode({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {},
@@ -82,15 +85,16 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
       },
       subtree: {},
       children: [pauseRoot.node(context)],
-    };
+    });
   },
 
   pauseList(v2PayloadSection1, pausedContainer, v2PayloadSection2) {
-    const context = (this.args.context as R<V2>).newNode("block");
-    return {
+    const context = (this.args.context as R<V2>).newChild("block");
+    return context.registerAstNode({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {},
@@ -109,7 +113,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         pausedContainer,
         v2PayloadSection2,
       ),
-    };
+    });
   },
 
   v2PayloadSection(
@@ -118,11 +122,12 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     v2PayloadSectionItem2,
     whitespace2,
   ) {
-    const context = (this.args.context as R<V2>).newNode("block");
-    return {
+    const context = (this.args.context as R<V2>).newChild("block");
+    return context.registerAstNode({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {
@@ -143,19 +148,20 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         v2PayloadSectionItem1,
         v2PayloadSectionItem2,
       ),
-    };
+    });
   },
 
   v2PayloadPlain(plain) {
     // TODO i'm so not sure if this is what's supposed to happen here
     // this uses a context that was created in a parent to produce a parser deeper in the chain
-    const context = (this.args.context as R<V2>).newNode("block");
+    const context = (this.args.context as R<V2>).newChild("block");
 
     const child = context.parseAst(plain.sourceString, context);
-    return {
+    return context.registerAstNode({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: context.getHash("ast") },
+      parent: context.getParentAstNode(),
       args: {
         ...context.getContextArgs(),
         spaces: {},
@@ -168,17 +174,17 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
       },
       subtree: {},
       children: [child.root],
-    };
+    });
   },
 
   // !TODO are pauseStart and pauseEnd separators or fillers?
   pausedContainer(pauseStart, pausedPayload, pauseEnd) {
-    const parentContext = (this.args.context as R<V2>).newNode("block");
-    const leafContext = (parentContext as R<V2>).newNode("inline");
-    return {
+    const parentContext = (this.args.context as R<V2>).newChild("block");
+    return parentContext.registerAstNode({
       kind: "parent",
       creator: this.ctorName,
       parser: { hash: parentContext.getHash("ast") },
+      parent: parentContext.getParentAstNode(),
       args: {
         ...parentContext.getContextArgs(),
         spaces: {},
@@ -190,22 +196,26 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
       },
       subtree: {},
       children: [
-        {
-          kind: "leaf",
-          creator: this.ctorName,
-          print: true,
-          parser: { hash: leafContext.getHash("ast") },
-          args: {
-            ...leafContext.getContextArgs(),
-            spaces: {},
-            separators: [],
-          },
-          source: {
-            type: "raw",
-            raw: pausedPayload.sourceString,
-          },
-        },
+        (() => {
+          const leafContext = (parentContext as R<V2>).newChild("inline");
+          return {
+            kind: "leaf",
+            creator: this.ctorName,
+            print: true,
+            parser: { hash: leafContext.getHash("ast") },
+            parent: leafContext.getParentAstNode(),
+            args: {
+              ...leafContext.getContextArgs(),
+              spaces: {},
+              separators: [],
+            },
+            source: {
+              type: "raw",
+              raw: pausedPayload.sourceString,
+            },
+          };
+        })(),
       ],
-    };
+    });
   },
 };

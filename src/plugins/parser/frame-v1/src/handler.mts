@@ -26,7 +26,7 @@ export const handler: RankiLangParseHandlerFunction<FrameV1> = (
   //   startRule: context.startRule,
   // };
 
-  const contextV1 = context.newNode("block");
+  const contextV1 = context.newChild("block");
 
   return context.parseAst(theaterRaw, contextV1);
 };

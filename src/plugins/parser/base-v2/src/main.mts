@@ -22,10 +22,6 @@ const config: RankiBaseV2ParserPluginConfig = {
 };
 
 function tokenizer(config: RankiBaseV2ParserPluginConfig) {
-  // const config = (
-  //   allConfig.merged.plugins.config as WithRankiBaseV2ParserPluginConfig
-  // )["RankiBaseV2"];
-
   const tokens: RankiGrammarTokens = {};
   tokens["tBaseV2Escape"] = config.tokens.escape;
   tokens["tBaseV2Ignore"] = config.tokens.ignore;

@@ -1,4 +1,8 @@
-import type { AstNode as ParseNodeBaseV2 } from "@ranki/package-api-v2";
+import type {
+  AstNode,
+  AstNodeLeaf,
+  AstNodeParent,
+} from "@ranki/package-api-v2";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
 export type NodeArgRichTextV2WordDecoration = NodeArgRichTextV2SentenceEnd &
@@ -101,9 +105,6 @@ export interface NodeArgRichTextV2Heading {
 export type NodeArgsRichTextV2 = Partial<NodeArgsBaseV2> &
   Partial<NodeArgRichTextV2WordDecoration>;
 
-export type ParseNodeRichTextV2 = Omit<ParseNodeBaseV2, "args"> & {
-  args: ParseNodeBaseV2["args"] & NodeArgsRichTextV2;
-};
 type Single = string;
 
 export interface RankiRichTextV2ParserPluginConfig {
@@ -131,3 +132,15 @@ export interface RankiRichTextV2ParserPluginConfig {
 export interface WithRankiRichTextV2ParserPluginConfig {
   RankiRichTextV2: RankiRichTextV2ParserPluginConfig;
 }
+
+export type ParseNodeRichTextV2 =
+  | ParseNodeRichTextV2Leaf
+  | ParseNodeRichTextV2Parent;
+
+export type ParseNodeRichTextV2Leaf = Omit<AstNodeLeaf, "args"> & {
+  args: AstNode["args"] & NodeArgsRichTextV2;
+};
+
+export type ParseNodeRichTextV2Parent = Omit<AstNodeParent, "args"> & {
+  args: AstNode["args"] & NodeArgsRichTextV2;
+};

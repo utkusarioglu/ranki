@@ -25,10 +25,11 @@ function hComplex<T extends ohm.Node>(
   imaginary: NodeLeafRichNumberV2SourceScalar,
   complexToken: ohm.Node,
 ): ParseNodeRichNumberV2 {
-  const context = (this.args.context as R).newNode("inline");
-  return {
+  const context = (this.args.context as R).newChild("inline");
+  return context.registerAstNode<ParseNodeRichNumberV2>({
     kind: "leaf",
     creator: this.ctorName,
+    parent: context.getParentAstNode(),
     print: true,
     parser: { hash: context.getHash("ast") },
     args: {
@@ -57,12 +58,12 @@ function hComplex<T extends ohm.Node>(
       real,
       imaginary,
     },
-  };
+  });
 }
 
 const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   conceptualSymbol(token) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     let type;
     CONCEPTUAL_NUMBERS.forEach((t) => {
@@ -74,10 +75,11 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       throw new Error(`UNRECOGNIZED CONCEPTUAL NUMBER ${token.sourceString}`);
     }
 
-    return {
+    return context.registerAstNode<ParseNodeRichNumberV2>({
       kind: "leaf" as "leaf",
       creator: this.ctorName,
       print: true,
+      parent: context.getParentAstNode(),
       parser: { hash: context.getHash("ast") },
       args: {
         ...context.getContextArgs(),
@@ -91,17 +93,18 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
         raw: this.sourceString,
         symbol: token.sourceString,
       },
-    };
+    });
   },
 
   numberSystem_indian(num) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const integer = +num.sourceString
       .split(config.tokens.number.group)
       .join("");
-    return {
+    return context.registerAstNode<ParseNodeRichNumberV2>({
       kind: "leaf",
+      parent: context.getParentAstNode(),
       creator: this.ctorName,
       print: true,
       parser: { hash: context.getHash("ast") },
@@ -117,18 +120,19 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
         integer,
         raw: num.sourceString,
       },
-    };
+    });
   },
 
   numberSystem_international(num) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const integer = +num.sourceString
       .split(config.tokens.number.group)
       .join("");
-    return {
+    return context.registerAstNode<ParseNodeRichNumberV2>({
       kind: "leaf",
       creator: this.ctorName,
+      parent: context.getParentAstNode(),
       print: true,
       parser: { hash: context.getHash("ast") },
       args: {
@@ -143,18 +147,19 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
         integer,
         raw: num.sourceString,
       },
-    };
+    });
   },
 
   numberSystem_unstructured(digit, token, num) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const integer = +num.sourceString
       .split(config.tokens.number.group)
       .join("");
-    return {
+    return context.registerAstNode<ParseNodeRichNumberV2>({
       kind: "leaf",
       creator: this.ctorName,
+      parent: context.getParentAstNode(),
       print: true,
       parser: { hash: context.getHash("ast") },
       args: {
@@ -169,15 +174,16 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
         integer,
         raw: num.sourceString,
       },
-    };
+    });
   },
 
   numberSystem_basic(basic) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichNumberV2>({
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parent: context.getParentAstNode(),
       parser: { hash: context.getHash("ast") },
       args: {
         ...context.getContextArgs(),
@@ -191,11 +197,11 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
         raw: basic.sourceString,
         integer: +basic.sourceString,
       },
-    };
+    });
   },
 
   conceptualNumber_factored(factor, conceptualSymbol) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const c = conceptualSymbol.node(context);
     c["source"]["factor"] = +factor.sourceString;
     c["source"]["raw"] = this.sourceString;
@@ -203,7 +209,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   conceptual_signed(sign, conceptualNumber) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const c = conceptualNumber.node(context);
     c["source"]["sign"] = sign.richNumberV2Sign(context);
     c["source"]["raw"] = this.sourceString;
@@ -211,7 +217,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   hBases(zero, symbol, numberSystem_unstructured) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const tokens = config.tokens;
     let type;
@@ -222,16 +228,16 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       }
     });
     if (!type) {
-      console.log(tokens);
       throw new Error(
         `UNRECOGNIZED BASE SYMBOL: ${symbol.sourceString} in ${this.sourceString}`,
       );
     }
 
-    return {
+    return context.registerAstNode<ParseNodeRichNumberV2>({
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parent: context.getParentAstNode(),
       parser: { hash: context.getHash("ast") },
       args: {
         ...context.getContextArgs(),
@@ -247,25 +253,25 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
           .split(tokens.number.group)
           .join(""),
       },
-    };
+    });
   },
 
   hexadecimal(sign, basedNumber) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const h = basedNumber.node(context);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
     return h;
   },
   binary(sign, basedNumber) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const h = basedNumber.node(context);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
     return h;
   },
   octal(sign, basedNumber) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const h = basedNumber.node(context);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
@@ -273,11 +279,12 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   integer_signed(sign, numberSystem) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const ns = numberSystem.node(context);
-    return {
+    return context.registerAstNode<ParseNodeRichNumberV2>({
       kind: "leaf",
       creator: this.ctorName,
+      parent: context.getParentAstNode(),
       print: true,
       parser: { hash: context.getHash("ast") },
       args: {
@@ -290,15 +297,16 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
         sign: sign.richNumberV2Sign(context),
         raw: this.sourceString,
       },
-    };
+    });
   },
 
   decimal_full(integer, decimalToken, decimalGroup) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichNumberV2>({
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parent: context.getParentAstNode(),
       parser: { hash: context.getHash("ast") },
       args: {
         ...context.getContextArgs(),
@@ -311,19 +319,20 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
         integer: integer.node(context).source,
         decimal: decimalGroup.node(context).source,
       },
-    };
+    });
   },
 
   decimal_point(sign, decimalToken, decimalGroup) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const decimal = +decimalGroup.sourceString
       .split(config.tokens.number.group)
       .join("");
-    return {
+    return context.registerAstNode<ParseNodeRichNumberV2>({
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parent: context.getParentAstNode(),
       parser: { hash: context.getHash("ast") },
       args: {
         ...context.getContextArgs(),
@@ -348,15 +357,16 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
           integer: decimal,
         },
       },
-    };
+    });
   },
 
   rational(nominator, rationalToken, denominator) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichNumberV2>({
       kind: "leaf",
       creator: this.ctorName,
       print: true,
+      parent: context.getParentAstNode(),
       parser: { hash: context.getHash("ast") },
       args: {
         ...context.getContextArgs(),
@@ -370,11 +380,11 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
         nominator: nominator.node(context).source,
         denominator: denominator.node(context).source,
       },
-    };
+    });
   },
 
   complex_i(realPart, clearance1, operator, clearance2, complexToken) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const imaginary: NodeLeafRichNumberV2SourceInteger = {
       type: "integer",
       raw: complexToken.sourceString,
@@ -403,7 +413,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     imaginaryPart,
     complexToken,
   ) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const real: NodeLeafRichNumberV2SourceScalar =
       realPart.node(context).source;
     const imaginary: NodeLeafRichNumberV2SourceScalar =
@@ -427,7 +437,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     complexToken,
     imaginaryPart,
   ) {
-    const context = (this.args.context as R).newNode("inline");
+    const context = (this.args.context as R).newChild("inline");
     const real: NodeLeafRichNumberV2SourceScalar =
       realPart.node(context).source;
     const imaginary: NodeLeafRichNumberV2SourceScalar =
@@ -444,10 +454,11 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   eNotation(significand, eToken, exponent) {
-    const context = (this.args.context as R).newNode("inline");
-    return {
+    const context = (this.args.context as R).newChild("inline");
+    return context.registerAstNode<ParseNodeRichNumberV2>({
       kind: "leaf",
       creator: this.ctorName,
+      parent: context.getParentAstNode(),
       print: true,
       parser: { hash: context.getHash("ast") },
       args: {
@@ -462,7 +473,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
         significand: significand.node(context).source,
         exponent: exponent.node(context).source,
       },
-    };
+    });
   },
 };
 
