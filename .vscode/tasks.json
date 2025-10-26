@@ -1,0 +1,43 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "command": "yarn",
+      "args": ["dev--v2-demo"],
+      "label": "Dev V2 Demo",
+      "detail": "Runs RankiLang V2 Demo app",
+      "icon": {
+        "color": "terminal.ansiGreen",
+        "id": "play"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "clear": true
+      }
+    },
+    {
+      "type": "shell",
+      "command": "yarn",
+      "args": ["turbo", "run", "watch"],
+      "label": "Watch",
+      "detail": "Watches any repo with the script `watch`",
+      "icon": {
+        "color": "terminal.ansiYellow",
+        "id": "debug-pause"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      }
+    }
+  ]
+}
