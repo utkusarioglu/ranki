@@ -3,6 +3,10 @@ import type {
   AstNode,
   SeparatorEntry,
   RankiLangContextInstance as R,
+  AstNodeParent,
+  AstNodeLeaf,
+  AstNodeLeafReduced,
+  AstNodeParentReduced,
 } from "@ranki/package-api-v2";
 import { zipNodes, joinNodes } from "@ranki/package-api-v2/helpers";
 
@@ -42,14 +46,11 @@ const separator: ohm.ActionDict<SeparatorEntry> = {
 const node: ohm.ActionDict<AstNode> = {
   root_ignore(ignore, wm, rest) {
     const context = (this.args.context as R).newChild("block");
-    return context.registerAstNode({
+    return context.enrich<AstNodeLeafReduced, AstNodeLeaf>({
       kind: "leaf",
       creator: this.ctorName,
-      parent: context.getParentAstNode(),
       print: true,
-      parser: { hash: context.getHash("ast") },
       args: {
-        ...context.getContextArgs(),
         spaces: {
           ignoreAndRest: {
             type: "wm",
@@ -67,14 +68,11 @@ const node: ohm.ActionDict<AstNode> = {
 
   section_empty(all) {
     const context = (this.args.context as R).newChild("block");
-    return context.registerAstNode({
+    return context.enrich<AstNodeLeafReduced, AstNodeLeaf>({
       kind: "leaf",
       creator: this.ctorName,
-      parent: context.getParentAstNode(),
       print: true,
-      parser: { hash: context.getHash("ast") },
       args: {
-        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -87,213 +85,214 @@ const node: ohm.ActionDict<AstNode> = {
 
   root_structure(whitespace1, structure, whitespace2) {
     const context = (this.args.context as R).newChild("block");
-    return context.registerAstNode({
-      kind: "parent",
-      creator: this.ctorName,
-      parent: context.getParentAstNode(),
-      parser: { hash: context.getHash("ast") },
-      args: {
-        ...context.getContextArgs(),
-        spaces: {
-          prefix: {
-            type: "whitespace",
-            raw: whitespace1.sourceString,
+    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+      {
+        kind: "parent",
+        creator: this.ctorName,
+        args: {
+          spaces: {
+            prefix: {
+              type: "whitespace",
+              raw: whitespace1.sourceString,
+            },
+            suffix: {
+              type: "whitespace",
+              raw: whitespace2.sourceString,
+            },
           },
-          suffix: {
-            type: "whitespace",
-            raw: whitespace2.sourceString,
-          },
+          separators: [],
         },
-        separators: [],
+        source: {
+          type: "raw",
+          raw: this.sourceString,
+        },
       },
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        children: [structure.node(context)],
+        subtree: {},
       },
-      subtree: {},
-      children: [structure.node(context)],
-    });
+    );
   },
 
   section_base(block, blockSep, block2) {
     const context = (this.args.context as R).newChild("block");
-    return context.registerAstNode({
-      kind: "parent",
-      creator: this.ctorName,
-      parent: context.getParentAstNode(),
-      parser: { hash: context.getHash("ast") },
-      args: {
-        ...context.getContextArgs(),
-        spaces: {},
-        separators: blockSep.separator(context),
+    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+      {
+        kind: "parent",
+        creator: this.ctorName,
+        args: {
+          ...context.getContextArgs(),
+          spaces: {},
+          separators: blockSep.separator(context),
+        },
+        source: {
+          type: "raw",
+          raw: this.sourceString,
+        },
       },
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        children: joinNodes(context, block, block2),
       },
-      subtree: {},
-      children: joinNodes(context, block, block2),
-    });
+    );
   },
 
   // TODO nl
   p(line1, nl, line2) {
     const context = (this.args.context as R).newChild("block");
-    return context.registerAstNode({
-      kind: "parent",
-      creator: this.ctorName,
-      parent: context.getParentAstNode(),
-      parser: { hash: context.getHash("ast") },
-      args: {
-        ...context.getContextArgs(),
-        spaces: {},
-        separators: nl.separator(context),
+    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+      {
+        kind: "parent",
+        creator: this.ctorName,
+        args: {
+          spaces: {},
+          separators: nl.separator(context),
+        },
+        source: {
+          type: "raw",
+          raw: this.sourceString,
+        },
       },
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        subtree: {},
+        children: joinNodes(context, line1, line2),
       },
-      subtree: {},
-      children: joinNodes(context, line1, line2),
-    });
+    );
   },
 
   // TODO line modifiers
   line(indentation1, lineModifiers, lexemes, wi1) {
     const context = (this.args.context as R).newChild("inline");
-    return context.registerAstNode({
-      kind: "parent",
-      creator: this.ctorName,
-      parent: context.getParentAstNode(),
-      parser: { hash: context.getHash("ast") },
-      args: {
-        ...context.getContextArgs(),
-        spaces: {
-          prefix: {
-            type: "indentation",
-            raw: indentation1.sourceString,
+    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+      {
+        kind: "parent",
+        creator: this.ctorName,
+        args: {
+          spaces: {
+            prefix: {
+              type: "indentation",
+              raw: indentation1.sourceString,
+            },
+            suffix: {
+              type: "wi",
+              raw: wi1.sourceString,
+            },
           },
-          suffix: {
-            type: "wi",
-            raw: wi1.sourceString,
-          },
+          separators: [],
         },
-        separators: [],
+        source: {
+          type: "raw",
+          raw: this.sourceString,
+        },
       },
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        subtree: {},
+        children: [lexemes.node(context)],
       },
-      subtree: {},
-      children: [lexemes.node(context)],
-    });
+    );
   },
 
   // TODO clearance
   lexemes(lexeme1, clearance, lexeme2) {
     const context = (this.args.context as R).newChild("inline");
-    return context.registerAstNode({
-      kind: "parent",
-      creator: this.ctorName,
-      parent: context.getParentAstNode(),
-      parser: { hash: context.getHash("ast") },
-      args: {
-        ...context.getContextArgs(),
-        spaces: {},
-        separators: clearance.separator(context),
+    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+      {
+        kind: "parent",
+        creator: this.ctorName,
+        args: {
+          spaces: {},
+          separators: clearance.separator(context),
+        },
+        source: {
+          type: "raw",
+          raw: this.sourceString,
+        },
       },
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        subtree: {},
+        children: joinNodes(context, lexeme1, lexeme2),
       },
-      subtree: {},
-      children: joinNodes(context, lexeme1, lexeme2),
-    });
+    );
   },
 
   decorated_base(word, wordEnd) {
     const context = (this.args.context as R).newChild("inline");
-    return context.registerAstNode({
-      kind: "parent",
-      creator: this.ctorName,
-      parent: context.getParentAstNode(),
-      parser: { hash: context.getHash("ast") },
-      args: {
-        ...context.getContextArgs(),
-        spaces: {
-          suffix: {
-            // !fix this would return an `any` type
-            type: wordEnd.creatorName(context),
-            raw: wordEnd.sourceString,
+    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+      {
+        kind: "parent",
+        creator: this.ctorName,
+        args: {
+          spaces: {
+            suffix: {
+              // !fix this would return an `any` type
+              type: wordEnd.creatorName(context),
+              raw: wordEnd.sourceString,
+            },
           },
+          separators: [],
         },
-        separators: [],
+        source: {
+          type: "raw",
+          raw: this.sourceString,
+        },
       },
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        subtree: {},
+        children: [word.node(context)],
       },
-      subtree: {},
-      children: [word.node(context)],
-    });
+    );
   },
 
   decorated_fallback(word, wordEnd) {
     const parentContext = (this.args.context as R).newChild("inline");
-    return parentContext.registerAstNode({
-      kind: "parent",
-      creator: this.ctorName,
-      parent: parentContext.getParentAstNode(),
-      parser: { hash: parentContext.getHash("ast") },
-      args: {
-        ...parentContext.getContextArgs(),
-        spaces: {
-          suffix: {
-            type: wordEnd.creatorName(parentContext),
-            raw: wordEnd.sourceString,
+    return parentContext.enrich<AstNodeParentReduced, AstNodeParent>(
+      {
+        kind: "parent",
+        creator: this.ctorName,
+        args: {
+          spaces: {
+            suffix: {
+              type: wordEnd.creatorName(parentContext),
+              raw: wordEnd.sourceString,
+            },
           },
+          separators: [],
         },
-        separators: [],
+        source: {
+          type: "raw",
+          raw: this.sourceString,
+        },
       },
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        subtree: {},
+        children: [
+          (() => {
+            const leafContext = (parentContext as R).newChild("inline");
+            return leafContext.enrich<AstNodeLeafReduced, AstNodeLeaf>({
+              kind: "leaf",
+              creator: this.ctorName,
+              print: true,
+              args: {
+                spaces: {},
+                separators: [],
+              },
+              source: {
+                type: "raw",
+                raw: word.sourceString,
+              },
+            });
+          })(),
+        ],
       },
-      subtree: {},
-      children: [
-        (() => {
-          const leafContext = (parentContext as R).newChild("inline");
-          return {
-            kind: "leaf",
-            creator: this.ctorName,
-            parent: leafContext.getParentAstNode(),
-            print: true,
-            parser: { hash: leafContext.getHash("ast") },
-            args: {
-              ...leafContext.getContextArgs(),
-              spaces: {},
-              separators: [],
-            },
-            source: {
-              type: "raw",
-              raw: word.sourceString,
-            },
-          };
-        })(),
-      ],
-    });
+    );
   },
 
   word_base(base) {
     const context = (this.args.context as R).newChild("inline");
-    return context.registerAstNode({
+    return context.enrich<AstNodeLeafReduced, AstNodeLeaf>({
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parent: context.getParentAstNode(),
-      parser: { hash: context.getHash("ast") },
       args: {
-        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -306,14 +305,11 @@ const node: ohm.ActionDict<AstNode> = {
 
   word_number(number) {
     const context = (this.args.context as R).newChild("inline");
-    return context.registerAstNode({
+    return context.enrich<AstNodeLeafReduced, AstNodeLeaf>({
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      parent: context.getParentAstNode(),
-      parser: { hash: context.getHash("ast") },
       args: {
-        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -328,14 +324,11 @@ const node: ohm.ActionDict<AstNode> = {
   // TODO should this exist?
   clearance(clearance1) {
     const context = (this.args.context as R).newChild("inline");
-    return context.registerAstNode({
+    return context.enrich<AstNodeLeafReduced, AstNodeLeaf>({
       kind: "leaf",
       print: true,
       creator: this.ctorName,
-      parent: context.getParentAstNode(),
-      parser: { hash: context.getHash("ast") },
       args: {
-        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -350,14 +343,11 @@ const node: ohm.ActionDict<AstNode> = {
   whitespace(wm, wi) {
     const context = (this.args.context as R).newChild("inline");
     const sourceString = wm.sourceString + wi.sourceString;
-    return context.registerAstNode({
+    return context.enrich<AstNodeLeafReduced, AstNodeLeaf>({
       kind: "leaf",
       print: true,
       creator: this.ctorName,
-      parent: context.getParentAstNode(),
-      parser: { hash: context.getHash("ast") },
       args: {
-        ...context.getContextArgs(),
         spaces: {},
         separators: [],
         // "whitespace.1.length": sourceString.length,

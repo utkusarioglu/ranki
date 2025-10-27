@@ -1,6 +1,11 @@
 import type * as ohm from "ohm-js";
 import type { RankiLangContextInstance as R } from "@ranki/package-api-v2";
-import type { ParseNodeFrameV2, ParseNodeFrameV2Fp } from "../types/node.mjs";
+import type {
+  ParseNodeFrameV2,
+  ParseNodeFrameV2EReduced,
+  ParseNodeFrameV2FpReduced,
+  ParseNodeFrameV2FReduced,
+} from "../types/node.mjs";
 import type {
   NodeArgsFrameV2ConfigE,
   NodeArgsFrameV2Config,
@@ -15,35 +20,30 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const frameConfig: NodeArgsFrameV2Config =
       v2FrameConfig.v2FrameConfig(context);
 
-    // const payloadContext: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
-    //   {
-    //     ...context,
-    //     parser: frameConfig,
-    //   };
-
     const payloadContext = context.newChild().setParser(frameConfig);
 
     const child = v2Payload.node(payloadContext);
 
-    return context.registerAstNode<ParseNodeFrameV2>({
-      kind: "parent",
-      creator: this.ctorName,
-      parser: { hash: context.getHash("ast") },
-      parent: context.getParentAstNode(),
-      args: {
-        ...context.getContextArgs(),
-        separators: [],
-        spaces: {},
+    return context.enrich<ParseNodeFrameV2FpReduced, ParseNodeFrameV2>(
+      {
+        kind: "parent",
+        creator: this.ctorName,
+        args: {
+          separators: [],
+          spaces: {},
+        },
+        source: {
+          type: "raw",
+          raw: this.sourceString,
+        },
       },
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        subtree: {
+          frameConfig,
+        },
+        children: [child],
       },
-      subtree: {
-        frameConfig,
-      },
-      children: [child],
-    } as ParseNodeFrameV2Fp);
+    );
   },
 
   v2_f(v2Start, v2FrameConfig, v2End) {
@@ -51,35 +51,30 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const frameConfig: NodeArgsFrameV2ConfigP =
       v2FrameConfig.v2FrameConfig(context);
 
-    // const newContext: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
-    //   {
-    //     ...context,
-    //     parser: frameConfig,
-    // };
-
     const newContext = context.newChild().setParser(frameConfig);
 
     const child = context.parseAst("", newContext);
 
-    return context.registerAstNode<ParseNodeFrameV2>({
-      kind: "parent",
-      creator: this.ctorName,
-      parser: { hash: context.getHash("ast") },
-      parent: context.getParentAstNode(),
-      args: {
-        ...context.getContextArgs(),
-        separators: [],
-        spaces: {},
+    return context.enrich<ParseNodeFrameV2FReduced, ParseNodeFrameV2>(
+      {
+        kind: "parent",
+        creator: this.ctorName,
+        args: {
+          separators: [],
+          spaces: {},
+        },
+        source: {
+          type: "raw",
+          raw: this.sourceString,
+        },
       },
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        subtree: {
+          frameConfig,
+        },
+        children: [child.root],
       },
-      subtree: {
-        frameConfig,
-      },
-      children: [child.root],
-    });
+    );
   },
 
   v2_e(v2Start, wi1, v2Chain, wi2, v2End) {
@@ -113,33 +108,28 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       subtree: {},
     };
 
-    // const newContext: RankiLangAstContext<RankiLangParserPluginParseHandlerFrameV2> =
-    //   {
-    //     ...context,
-    //     parser: frameConfig,
-    // };
-
     const newContext = context.newChild().setParser(frameConfig);
     const child = context.parseAst("", newContext);
 
-    return context.registerAstNode<ParseNodeFrameV2>({
-      kind: "parent",
-      creator: this.ctorName,
-      parser: { hash: context.getHash("ast") },
-      parent: context.getParentAstNode(),
-      args: {
-        ...context.getContextArgs(),
-        separators: [],
-        spaces: {},
+    return context.enrich<ParseNodeFrameV2EReduced, ParseNodeFrameV2>(
+      {
+        kind: "parent",
+        creator: this.ctorName,
+        args: {
+          separators: [],
+          spaces: {},
+        },
+        source: {
+          type: "raw",
+          raw: this.sourceString,
+        },
       },
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        subtree: {
+          frameConfig,
+        },
+        children: [child.root],
       },
-      subtree: {
-        frameConfig,
-      },
-      children: [child.root],
-    });
+    );
   },
 };

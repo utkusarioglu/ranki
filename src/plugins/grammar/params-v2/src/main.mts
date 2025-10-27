@@ -62,5 +62,6 @@ export type {
   ParamsV2SpecNone,
   ParamsV2SpecPopulated,
   ParamV2,
+  ArgsAndParamsV2Reduced,
 } from "./types.mjs";
 export { applyV2Directives } from "./params.mjs";

@@ -149,7 +149,6 @@ export interface RankiLangContextInstance<
 > {
   getPlugins: RankiLangInstance["getPlugins"];
   getHandler: ParserPluginsInstance["getHandler"];
-  // getConfig: () => RankiLanguageConfig;
   getAllConfig: () => RankiLanguageConfig;
   getMergedConfig: () => RankiLanguageConfig["merged"];
   getPluginConfig: <T>(pluginName: string) => T;
@@ -180,11 +179,28 @@ export interface RankiLangContextInstance<
 
   getStartRule(): string;
 
-  getParentAstNode<T = AstNode>(): T;
-  getParentAstNode<T>(): T;
+  // getParentAstNode<T = AstNode>(): T;
+  // getParentAstNode<T>(): T;
 
-  registerAstNode<T = AstNode>(n: T): T;
-  registerAstNode<T>(n: T): T;
+  // setParentAstNode(parent: any): void;
+
+  // bindChildren<T = AstNode>(n: T): T;
+  enrich<P extends BindingNode, Output extends BindingNode>(
+    p: P,
+    en?: Enrichments,
+  ): Output;
+}
+
+export interface Enrichments {
+  children?: BindingNode[];
+  subtree?: Record<string, BindingNode>;
+}
+
+export interface BindingNode {
+  args?: Record<string, any>;
+  parent?: BindingNode;
+  children?: BindingNode[];
+  subtree?: Record<string, BindingNode>;
 }
 
 export type VersionReport = Record<string, string>;

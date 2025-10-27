@@ -3,8 +3,6 @@ import {
   RankiLangContextInstance,
   RankiLangAstContext,
   RankiLangParseHandlerCommon,
-  RankiLangParseHandlerHooks,
-  RankiLangInstance,
   ComponentPluginComponent,
   RankiLanguageConfig,
   RankiLangCloneFunctionReturn,
@@ -12,39 +10,83 @@ import {
   RankiLangParseFunctionReturn,
   AstNode,
   RankiLangContextParams,
+  BindingNode,
 } from "@ranki/package-api-v2";
 import { RankiLangParseHandlerFunction } from "../../api-v2/src/plugins/parser.mjs";
+import { Enrichments } from "../../api-v2/src/lang/context.mjs";
 
 export class RankiLangContext<
   T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
 > implements RankiLangContextInstance<T>
 {
-  private parent: AstNode;
-  private node: AstNode = null;
+  // private parent: AstNode = null;
+  // private node: AstNode = null;
   private context: RankiLangContextParams<T>;
 
   // private startRule: string;
 
-  constructor(oldContext: RankiLangContextParams<T>, parent: AstNode | null) {
+  constructor(oldContext: RankiLangContextParams<T>) {
     this.context = oldContext;
-    this.parent = parent;
-    console.log(this.parent);
-    // this.startRule = startRule;
   }
+
+  // setParentAstNode(parent: any) {
+  //   // if (this.node.creator === "root_structure") {
+  //   // }
+  //   // if (!parent) {
+  //   //   throw new Error("PARENT IS NULL / UNDEFINED");
+  //   // }
+  //   this.parent = parent;
+  // }
 
   setParser(parser: T) {
     this.context.parser = parser;
     return this;
   }
 
-  getParentAstNode(): AstNode {
-    return this.parent;
-  }
+  // getParentAstNode(): AstNode {
+  //   return this.parent;
+  // }
 
-  registerAstNode(n: AstNode): AstNode {
-    this.node = n;
-    return n;
+  enrich<P extends BindingNode, Output extends BindingNode>(
+    p: P,
+    en?: Enrichments,
+  ): Output {
+    if (en && en.children) {
+      if (!p.children) {
+        p.children = [];
+      }
+      en.children.forEach((i) => (i.parent = p));
+      p.children.push(...en.children);
+    }
+
+    if (en && en.subtree) {
+      if (!p.subtree) {
+        p.subtree = {};
+      }
+      Object.entries(en.subtree).forEach(([k, v]) => {
+        v = { parent: p, ...v };
+        p.subtree[k] = v;
+      });
+    }
+
+    if (p.args) {
+      p.args = {
+        ...this.getContextArgs(),
+        ...p.args,
+      };
+    }
+
+    p = {
+      parser: { hash: this.getHash("ast") },
+      ...p,
+    };
+
+    return p as unknown as Output;
   }
+  // bindChildren(p, c): AstNode {
+  //   this.node = n;
+  //   return this.node;
+  // }
 
   getParser(): T {
     return this.context.parser;
@@ -100,7 +142,13 @@ export class RankiLangContext<
 
   newChild(direction?: "block" | "inline"): RankiLangContextInstance<T> {
     const newContext = { ...this.context };
-    const inst = new RankiLangContext(newContext, this.node);
+
+    // if (this.node === null) {
+    //   throw new Error("THIS NODE IS NOT REGISTERED");
+    // }
+
+    const inst = new RankiLangContext(newContext);
+    // inst.setParentAstNode(this.node);
     if (direction) {
       inst.incrementDepth(direction);
     }

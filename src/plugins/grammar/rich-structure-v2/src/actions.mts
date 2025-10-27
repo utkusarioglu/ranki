@@ -1,9 +1,13 @@
 import type * as ohm from "ohm-js";
 import type { RankiLangContextInstance as R } from "@ranki/package-api-v2";
-import type { ArgsAndParamsV2 } from "@ranki/plugin-grammar-params-v2";
+import type {
+  ArgsAndParamsV2,
+  ArgsAndParamsV2Reduced,
+} from "@ranki/plugin-grammar-params-v2";
 import type {
   ParseNodeRichStructureV2,
   ArgsAndParamsV2RichStructureV2,
+  ParseNodeRichStructureV2ParentReduced,
 } from "./types.mjs";
 
 function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
@@ -16,25 +20,28 @@ function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
 const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
   hLevel_defined(structureType1, separator, structureType2) {
     const context = (this.args.context as R).newChild("block");
-    const sep: ParseNodeRichStructureV2["args"]["richStructure.v2"] =
-      separator.argsAndParamsV2(context);
-    return context.registerAstNode<ParseNodeRichStructureV2>({
+    // ! needs a type
+    // its previous type was:
+    // ParseNodeRichStructureV2["args"]["richStructure.v2"] =
+    const sep = separator.argsAndParamsV2(context);
+    return context.enrich<
+      ParseNodeRichStructureV2ParentReduced,
+      ParseNodeRichStructureV2
+    >({
       kind: "parent",
       creator: this.ctorName,
-      parent: context.getParentAstNode(),
-      parser: { hash: context.getHash("ast") },
+
       args: {
-        ...context.getContextArgs(),
         spaces: {},
         // !fix I don't understand the separators thing here
         separators: [],
-        "richStructure.v2": {
-          // name: "SHALL BE SET BY PARENT",
-          // !FIX the separators are misplaced. the first separator args and params belong to the SECOND collection, section or whatever the level name is.
-          ...sep,
-          // args: sep.args,
-          // params: sep.params,
-        },
+        // "richStructure.v2": {
+        //   // name: "SHALL BE SET BY PARENT",
+        //   // !FIX the separators are misplaced. the first separator args and params belong to the SECOND collection, section or whatever the level name is.
+        //   ...sep,
+        //   // args: sep.args,
+        //   // params: sep.params,
+        // },
       },
       subtree: {},
       children: [
@@ -83,11 +90,8 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     structureSepEnd,
   ) {
     const context = (this.args.context as R).newChild("inline");
-    return context.registerAstNode<ArgsAndParamsV2>({
-      parser: { hash: context.getHash("ast") },
-      parent: context.getParentAstNode(),
+    return context.enrich<ArgsAndParamsV2Reduced, ArgsAndParamsV2>({
       args: {
-        ...context.getContextArgs(),
         spaces: {
           startAndName: {
             type: "wi",
@@ -132,9 +136,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     const config: ArgsAndParamsV2RichStructureV2 =
       v2ParamListInlineContainer.argsAndParamsV2(context);
     return {
-      parser: { hash: context.getHash("ast") },
       args: {
-        ...context.getContextArgs(),
         spaces: {
           startAndName: {
             type: "wi",

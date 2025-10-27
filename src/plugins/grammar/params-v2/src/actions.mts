@@ -2,10 +2,14 @@ import type * as ohm from "ohm-js";
 import type { RankiLangContextInstance as R } from "@ranki/package-api-v2";
 import type {
   ArgsAndParamsV2,
+  ArgsAndParamsV2Reduced,
   ParamV2,
   ParamV2Common,
   ParamV2KeyWord,
   ParamV2Operator,
+  ParamV2Reduced,
+  ParamV2ReducedPartial,
+  ParamV2Setting,
   ParamV2SettingNamespace,
   ParamV2Value,
   RankiParamsV2ParserPluginConfig,
@@ -81,11 +85,10 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
 
     const key: ParamV2KeyWord[] = paramKey.paramV2Key(this.args.context);
 
-    return {
+    return context.enrich<ParamV2Reduced, ParamV2Setting>({
       type: "setting",
       key,
       args: {
-        ...context.getContextArgs(),
         spaces: {
           keyAndOp: {
             type: "wi",
@@ -98,23 +101,24 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
         },
         separators: [],
       },
+      // TODO
+      namespace: 1,
       operator: f[0] as ParamV2Operator,
       values: paramValues.paramV2Values(context),
       source: {
         type: "raw",
         raw: this.sourceString,
       },
-    };
+    });
   },
 
   paramFormatPositive(paramKey) {
     const context = (this.args.context as R).newChild("inline");
     const key: ParamV2KeyWord[] = paramKey.paramV2Key(this.args.context);
 
-    return {
+    return context.enrich<ParamV2ReducedPartial, ParamV2Common>({
       key,
       args: {
-        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -123,7 +127,6 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
         type: "raw",
         raw: this.sourceString,
       },
-      subtree: {},
       values: [
         {
           type: "boolean",
@@ -131,16 +134,15 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
           value: true,
         },
       ],
-    };
+    });
   },
 
   paramFormatNegative(negation, paramKey) {
     const context = (this.args.context as R).newChild("inline");
     const key: ParamV2KeyWord[] = paramKey.paramV2Key(this.args.context);
-    return {
+    return context.enrich<ParamV2ReducedPartial, ParamV2Common>({
       key,
       args: {
-        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -156,15 +158,14 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
         type: "raw",
         raw: this.sourceString,
       },
-    };
+    });
   },
 
   paramFormatPositional(quoted) {
     const context = (this.args.context as R).newChild("inline");
-    return {
+    return context.enrich<ParamV2ReducedPartial, ParamV2Common>({
       key: "positional",
       args: {
-        ...context.getContextArgs(),
         spaces: {},
         separators: [],
       },
@@ -180,7 +181,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
         type: "raw",
         raw: this.sourceString,
       },
-    };
+    });
   },
 };
 
@@ -293,11 +294,8 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     sepLeft2,
   ) {
     const context = (this.args.context as R).newChild("block");
-    return context.registerAstNode({
-      parser: { hash: context.getHash("ast") },
-      parent: context.getParentAstNode(),
+    return context.enrich<ArgsAndParamsV2Reduced, ArgsAndParamsV2>({
       args: {
-        ...context.getContextArgs(),
         spaces: {
           sepAndNl: {
             type: "wi",
@@ -344,11 +342,8 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
       raw: sepLeft2.sourceString,
     }));
 
-    return context.registerAstNode({
-      parser: { hash: context.getHash("ast") },
-      parent: context.getParentAstNode(),
+    return context.enrich<ArgsAndParamsV2Reduced, ArgsAndParamsV2>({
       args: {
-        ...context.getContextArgs(),
         spaces: {
           sepAndNl: {
             type: "wi",

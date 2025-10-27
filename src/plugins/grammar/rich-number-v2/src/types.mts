@@ -122,3 +122,21 @@ export interface RankiRichNumberV2ParserPluginConfig {
 export interface WithRankiRichNumberV2ParserPluginConfig {
   RankiRichNumberV2: RankiRichNumberV2ParserPluginConfig;
 }
+
+export type ParseNodeRichNumberV2Reduced =
+  | ParseNodeRichNumberV2GeneralReduced
+  | ParseNodeRichNumberV2ComplexReduced;
+
+export type ParseNodeRichNumberV2GeneralReduced = Omit<
+  ParseNodeRichNumberV2General,
+  "parent" | "parser" | "args"
+> & {
+  args: Omit<ParseNodeRichNumberV2General["args"], "depth">;
+};
+
+export type ParseNodeRichNumberV2ComplexReduced = Omit<
+  ParseNodeRichNumberV2Complex,
+  "parent" | "parser" | "args"
+> & {
+  args: Omit<ParseNodeRichNumberV2Complex["args"], "depth">;
+};

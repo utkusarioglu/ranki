@@ -1,6 +1,10 @@
 import type * as ohm from "ohm-js";
 import type {
   AstNode,
+  AstNodeLeafReduced,
+  AstNodeParentReduced,
+  AstNodeLeaf,
+  AstNodeParent,
   RankiLangContextInstance as R,
 } from "@ranki/package-api-v2";
 import type { ParseNodeFrameV1 } from "./types.mjs";
@@ -11,32 +15,33 @@ const nodeBaseV2: ohm.ActionDict<AstNode> = {
   // !TODO end
   block_v1(indentation, v1Block, wi1, end) {
     const context = (this.args.context as R<V1>).newChild("block");
-    return context.registerAstNode({
-      kind: "parent",
-      creator: this.ctorName,
-      parser: { hash: context.getHash("ast") },
-      parent: context.getParentAstNode(),
-      args: {
-        ...context.getContextArgs(),
-        spaces: {
-          indentation: {
-            type: "indentation",
-            raw: indentation.sourceString,
+    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+      {
+        kind: "parent",
+        creator: this.ctorName,
+        args: {
+          spaces: {
+            indentation: {
+              type: "indentation",
+              raw: indentation.sourceString,
+            },
+            suffix: {
+              type: "wi",
+              raw: wi1.sourceString,
+            },
           },
-          suffix: {
-            type: "wi",
-            raw: wi1.sourceString,
-          },
+          separators: [],
         },
-        separators: [],
+        source: {
+          type: "raw",
+          raw: this.sourceString,
+        },
       },
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        subtree: {},
+        children: [v1Block.node(context)],
       },
-      subtree: {},
-      children: [v1Block.node(context)],
-    });
+    );
   },
 };
 
@@ -57,54 +62,47 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       chain: v1Type.sourceString,
       params: [],
     });
-    // const newContext: RankiLangAstContext<FrameV1> = {
-    //   ...context,
-    //   parser: {
-    //     type: "RankiFrameV1",
-    //     chain: v1Type.sourceString,
-    //     params: [],
-    //   },
-    // };
 
     const child = context.parseAst(v1PayloadInline.sourceString, childContext);
-
-    return context.registerAstNode({
-      kind: "parent",
-      creator: this.ctorName,
-      parser: { hash: context.getHash("ast") },
-      parent: context.getParentAstNode(),
-      args: {
-        ...context.getContextArgs(),
-        spaces: {
-          frameAndType: {
-            type: "wi",
-            raw: wi1.sourceString,
+    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+      {
+        kind: "parent",
+        creator: this.ctorName,
+        args: {
+          spaces: {
+            frameAndType: {
+              type: "wi",
+              raw: wi1.sourceString,
+            },
+            typeAndSep: {
+              type: "wi",
+              raw: wi2.sourceString,
+            },
           },
-          typeAndSep: {
-            type: "wi",
-            raw: wi2.sourceString,
+          separators: [
+            {
+              // !fix this has any type
+              type: sepRight1.creatorName(context),
+              raw: sepRight1.sourceString,
+            },
+          ],
+          // @ts-expect-error TODO
+          "frame.v1": {
+            variant: "p",
+            frameType: v1Type.sourceString,
+            // report: child.report,
           },
         },
-        separators: [
-          {
-            // !fix this has any type
-            type: sepRight1.creatorName(context),
-            raw: sepRight1.sourceString,
-          },
-        ],
-        "frame.v1": {
-          variant: "p",
-          frameType: v1Type.sourceString,
-          // report: child.report,
+        source: {
+          type: "raw",
+          raw: this.sourceString,
         },
       },
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        subtree: {},
+        children: [child.root],
       },
-      subtree: {},
-      children: [child.root],
-    });
+    );
   },
 
   v1Inline_fp(
@@ -127,65 +125,58 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       chain: v1Type.sourceString,
       params: [],
     });
-    // const newContext: RankiLangAstContext<FrameV1> = {
-    //   ...context,
-    //   parser: {
-    //     type: "RankiFrameV1",
-    //     chain: v1Type.sourceString,
-    //     params: argsAndParamsV1["params"],
-    //   },
-    // };
     const child = context.parseAst(v1PayloadInline.sourceString, newContext);
-    return context.registerAstNode({
-      kind: "parent",
-      creator: this.ctorName,
-      parser: { hash: context.getHash("ast") },
-      parent: context.getParentAstNode(),
-      args: {
-        ...context.getContextArgs(),
-        spaces: {
-          frameAndType: {
-            type: "wi",
-            raw: wi1.sourceString,
+    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+      {
+        kind: "parent",
+        creator: this.ctorName,
+        args: {
+          spaces: {
+            frameAndType: {
+              type: "wi",
+              raw: wi1.sourceString,
+            },
+            typeAndSep: {
+              type: "wi",
+              raw: wi2.sourceString,
+            },
+            sepAndParam: {
+              type: "wi",
+              raw: wi3.sourceString,
+            },
+            paramAndSep: {
+              type: "wi",
+              raw: wi4.sourceString,
+            },
           },
-          typeAndSep: {
-            type: "wi",
-            raw: wi2.sourceString,
-          },
-          sepAndParam: {
-            type: "wi",
-            raw: wi3.sourceString,
-          },
-          paramAndSep: {
-            type: "wi",
-            raw: wi4.sourceString,
+          separators: [
+            {
+              type: sepRight1.creatorName(context),
+              raw: sepRight1.sourceString,
+            },
+            {
+              type: sepRight2.creatorName(context),
+              raw: sepRight2.sourceString,
+            },
+          ],
+          // @ts-expect-error TODO
+          "frame.v1": {
+            variant: "fp",
+            frameType: v1Type.sourceString,
+            ...argsAndParamsV1,
+            // report: child.report,
           },
         },
-        separators: [
-          {
-            type: sepRight1.creatorName(context),
-            raw: sepRight1.sourceString,
-          },
-          {
-            type: sepRight2.creatorName(context),
-            raw: sepRight2.sourceString,
-          },
-        ],
-
-        "frame.v1": {
-          variant: "fp",
-          frameType: v1Type.sourceString,
-          ...argsAndParamsV1,
-          // report: child.report,
+        source: {
+          type: "raw",
+          raw: this.sourceString,
         },
       },
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        subtree: {},
+        children: [child.root],
       },
-      subtree: {},
-      children: [child.root],
-    });
+    );
   },
 
   v1Block_p(
@@ -205,58 +196,52 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       chain: v1Type.sourceString,
       params: [],
     });
-    // const newContext: RankiLangAstContext<FrameV1> = {
-    //   ...context,
-    //   parser: {
-    //     type: "RankiFrameV1",
-    //     chain: v1Type.sourceString,
-    //     params: [],
-    //   },
-    // };
     const child = context.parseAst(v1PayloadBlock.sourceString, childContext);
-    return context.registerAstNode({
-      kind: "parent",
-      creator: this.ctorName,
-      parser: { hash: context.getHash("ast") },
-      parent: context.getParentAstNode(),
-      args: {
-        ...context.getContextArgs(),
-        spaces: {
-          frameAndType: {
-            type: "wi",
-            raw: wi1.sourceString,
+    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+      {
+        kind: "parent",
+        creator: this.ctorName,
+        args: {
+          spaces: {
+            frameAndType: {
+              type: "wi",
+              raw: wi1.sourceString,
+            },
+            typeAndSep: {
+              type: "wi",
+              raw: wi2.sourceString,
+            },
+            sepAndNl: {
+              type: "wi",
+              raw: wi3.sourceString,
+            },
+            sepAndPayload: {
+              type: "nl",
+              raw: nl1.sourceString,
+            },
           },
-          typeAndSep: {
-            type: "wi",
-            raw: wi2.sourceString,
-          },
-          sepAndNl: {
-            type: "wi",
-            raw: wi3.sourceString,
-          },
-          sepAndPayload: {
-            type: "nl",
-            raw: nl1.sourceString,
+          separators: [
+            {
+              type: sep.creatorName(context),
+              raw: sep.sourceString,
+            },
+          ],
+          // @ts-expect-error TODO
+          "frame.v1": {
+            variant: "p",
+            frameType: v1Type.sourceString,
           },
         },
-        separators: [
-          {
-            type: sep.creatorName(context),
-            raw: sep.sourceString,
-          },
-        ],
-        "frame.v1": {
-          variant: "p",
-          frameType: v1Type.sourceString,
+        source: {
+          type: "raw",
+          raw: this.sourceString,
         },
       },
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        subtree: {},
+        children: [child.root],
       },
-      subtree: {},
-      children: [child.root],
-    });
+    );
   },
 
   v1Block_fp(
@@ -282,72 +267,66 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       chain: v1Type.sourceString,
       params: [],
     });
-    // const newContext: RankiLangAstContext<FrameV1> = {
-    //   ...context,
-    //   parser: {
-    //     type: "RankiFrameV1",
-    //     chain: v1Type.sourceString,
-    //     params: argsAndParamsV1["params"],
-    //   },
-    // };
     const child = context.parseAst(v1PayloadBlock.sourceString, newContext);
-    return context.registerAstNode({
-      kind: "parent",
-      creator: this.ctorName,
-      parser: { hash: context.getHash("ast") },
-      parent: context.getParentAstNode(),
-      args: {
-        ...context.getContextArgs(),
-        spaces: {
-          frameAndType: {
-            type: "wi",
-            raw: wi1.sourceString,
+    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+      {
+        kind: "parent",
+        creator: this.ctorName,
+        args: {
+          spaces: {
+            frameAndType: {
+              type: "wi",
+              raw: wi1.sourceString,
+            },
+            typeAndSep: {
+              type: "wi",
+              raw: wi2.sourceString,
+            },
+            sepAndParam: {
+              type: "wi",
+              raw: wi3.sourceString,
+            },
+            paramAndSep: {
+              type: "wi",
+              raw: wi4.sourceString,
+            },
+            sepAndNl: {
+              type: "wi",
+              raw: wi5.sourceString,
+            },
+            sepAndPayload: {
+              type: "nl",
+              raw: nl1.sourceString,
+            },
           },
-          typeAndSep: {
-            type: "wi",
-            raw: wi2.sourceString,
-          },
-          sepAndParam: {
-            type: "wi",
-            raw: wi3.sourceString,
-          },
-          paramAndSep: {
-            type: "wi",
-            raw: wi4.sourceString,
-          },
-          sepAndNl: {
-            type: "wi",
-            raw: wi5.sourceString,
-          },
-          sepAndPayload: {
-            type: "nl",
-            raw: nl1.sourceString,
+          separators: [
+            {
+              type: sep1.creatorName(context),
+              raw: sep1.sourceString,
+            },
+            {
+              type: sep2.creatorName(context),
+              raw: sep2.sourceString,
+            },
+          ],
+          // @ts-expect-error TODO
+          "frame.v1": {
+            variant: "fp",
+            frameType: v1Type.sourceString,
+            ...argsAndParamsV1,
+            // report: child.report,
           },
         },
-        separators: [
-          {
-            type: sep1.creatorName(context),
-            raw: sep1.sourceString,
-          },
-          {
-            type: sep2.creatorName(context),
-            raw: sep2.sourceString,
-          },
-        ],
-        "frame.v1": {
-          variant: "fp",
-          frameType: v1Type.sourceString,
-          ...argsAndParamsV1,
-          // report: child.report,
+        source: {
+          type: "raw",
+          raw: this.sourceString,
         },
       },
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        subtree: {},
+        children: [child.root],
       },
-      subtree: {},
-      children: [child.root],
-    });
+    );
   },
 };
 

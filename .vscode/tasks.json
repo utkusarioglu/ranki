@@ -38,6 +38,25 @@
         "showReuseMessage": true,
         "clear": false
       }
+    },
+    {
+      "type": "shell",
+      "command": "yarn turbo run build --filter @ranki/package* --filter @ranki/plugin*",
+      "label": "Build RankiLang V2 Support",
+      "detail": "Build packages and plugins that are imported by RankiLang V2",
+      "icon": {
+        "id": "play",
+        "color": "terminal.ansiYellow"
+      },
+      "presentation": {
+        "close": true,
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      }
     }
   ]
 }

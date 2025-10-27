@@ -5,6 +5,9 @@ export type {
   AstNodeLeafSource,
   WhitespaceEntry,
   SeparatorEntry,
+  AstNodeLeafReduced,
+  AstNodeParentReduced,
+  AstNodeReduced,
 } from "./ast.mjs";
 export * from "./validation.mjs";
 export * from "./transform.mjs";

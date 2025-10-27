@@ -23,6 +23,25 @@ export type ParamV2Directive = ParamV2Common & {
   // key: ParamV2Key; // @overload
 };
 
+export type ParamV2Reduced = ParamV2SettingReduced | ParamV2DirectiveReduced;
+export type ParamV2ReducedPartial =
+  | ParamV2SettingReducedPartial
+  | ParamV2DirectiveReducedPartial;
+
+export type ParamV2SettingReducedPartial = Omit<ParamV2SettingReduced, "type">;
+export type ParamV2DirectiveReducedPartial = Omit<
+  ParamV2DirectiveReduced,
+  "type"
+>;
+
+export type ParamV2SettingReduced = Omit<ParamV2Setting, "args"> & {
+  args: Omit<ParamV2Setting["args"], "depth">;
+};
+
+export type ParamV2DirectiveReduced = Omit<ParamV2Directive, "args"> & {
+  args: Omit<ParamV2Directive["args"], "depth">;
+};
+
 export type ParamV2SettingNamespace = number;
 
 export type ParamV2Key = ParamV2KeyWord[]; // @overload
@@ -87,6 +106,13 @@ export interface ArgsAndParamsV2 {
   args: NodeArgsParamsV2;
   params: ParamsV2SpecPopulated;
 }
+
+export type ArgsAndParamsV2Reduced = Omit<
+  ArgsAndParamsV2,
+  "parser" | "parent" | "args"
+> & {
+  args: Omit<ArgsAndParamsV2["args"], "depth">;
+};
 export interface RankiParamsV2ParserPluginConfig {
   tokens: {
     separator: {

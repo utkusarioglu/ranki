@@ -2,6 +2,8 @@ import { RankiLangAstContext, RankiLangContextInstance } from "../export.mjs";
 
 export type AstNode = AstNodeLeaf | AstNodeParent;
 
+export type AstNodeReduced = AstNodeLeafReduced | AstNodeParentReduced;
+
 export interface AstNodeParent extends AstNodeCommon {
   kind: "parent";
   creator: string;
@@ -9,6 +11,20 @@ export interface AstNodeParent extends AstNodeCommon {
   children: AstNode[];
   source: AstNodeLeafSource;
 }
+
+export type AstNodeLeafReduced = Omit<
+  AstNodeLeaf,
+  "args" | "parent" | "parser"
+> & {
+  args: Omit<AstNodeCommon["args"], "depth">;
+};
+
+export type AstNodeParentReduced = Omit<
+  AstNodeParent,
+  "args" | "parent" | "children" | "subtree" | "parser"
+> & {
+  args: Omit<AstNodeCommon["args"], "depth">;
+};
 
 export interface AstNodeLeaf extends AstNodeCommon {
   kind: "leaf";

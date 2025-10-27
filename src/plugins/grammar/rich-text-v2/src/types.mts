@@ -144,3 +144,17 @@ export type ParseNodeRichTextV2Leaf = Omit<AstNodeLeaf, "args"> & {
 export type ParseNodeRichTextV2Parent = Omit<AstNodeParent, "args"> & {
   args: AstNode["args"] & NodeArgsRichTextV2;
 };
+
+export type ParseNodeRichTextV2LeafReduced = Omit<
+  ParseNodeRichTextV2Leaf,
+  "args" | "parser" | "parent"
+> & {
+  args: Omit<ParseNodeRichTextV2Leaf["args"], "depth">;
+};
+
+export type ParseNodeRichTextV2ParentReduced = Omit<
+  ParseNodeRichTextV2Parent,
+  "args" | "parser" | "parent" | "subtree" | "children"
+> & {
+  args: Omit<ParseNodeRichTextV2Parent["args"], "depth">;
+};

@@ -10,23 +10,23 @@ export interface ArgsAndParamsV1 {
 // type FrameV1Config = FrameV1ConfigP | FrameV1ConfigFp;
 
 export interface NodeArgsFrameV1ConfigP {
-  "frame.v1": {
-    // type: string;
-    variant: "p"; // this is like f fp
-    frameType: string; // like code in %:code; ...:%
-    // args: NodeArgs;
-  };
+  // "frame.v1": {
+  //   // type: string;
+  //   variant: "p"; // this is like f fp
+  //   frameType: string; // like code in %:code; ...:%
+  //   // args: NodeArgs;
+  // };
 }
 
 export interface NodeArgsFrameV1ConfigFp {
-  "frame.v1": {
-    // type: string;
-    variant: "fp"; // this is like f fp
-    frameType: string; // like code in %:code; ...:%
-    // args: NodeArgs;
-    params: string[];
-    // params: Pa
-  };
+  // "frame.v1": {
+  //   // type: string;
+  //   variant: "fp"; // this is like f fp
+  //   frameType: string; // like code in %:code; ...:%
+  //   // args: NodeArgs;
+  //   params: string[];
+  //   // params: Pa
+  // };
 }
 
 export type ParseNodeFrameV1 =

@@ -12,9 +12,7 @@ interface YamlRendererProps {
 }
 
 export const YamlRenderer: FC<YamlRendererProps> = ({ parsed, customPath }) => {
-  const yamlStr = yaml.stringify(
-    JSON.parse(JSON.stringify(crawl(parsed, customPath))),
-  );
+  const yamlStr = yaml.stringify(crawl(parsed, customPath));
   const highlighted = Prism.highlight(
     yamlStr,
     Prism.languages.yaml,
