@@ -6,6 +6,5 @@ build
 .yarn
 .turbo
 *.tsbuildinfo
-lib
 
 src/.defunct
