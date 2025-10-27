@@ -66,9 +66,9 @@ export class TransformerLibrary {
       } else {
         return transformer(validation);
       }
-    } catch (e) {
+    } catch (e: unknown) {
       console.error(validation, e);
-      throw new Error(e.message);
+      throw new Error((e as Error).message);
     }
   }
 }

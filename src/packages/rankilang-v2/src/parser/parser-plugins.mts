@@ -49,6 +49,7 @@ export class ParserPlugins implements ParserPluginsInstance {
 
   getVersions(): VersionReport {
     return this.list.reduce(
+      // @ts-expect-error
       (a, p) => ((a[p.meta.name] = p.meta.version), a),
       {},
     );
@@ -91,6 +92,7 @@ export class ParserPlugins implements ParserPluginsInstance {
 
   getActions(): ActionsDictRecord {
     return this.getList().reduce(
+      // @ts-expect-error
       (a, c) => ((a[c.meta.name] = c.actions()), a),
       {},
     );

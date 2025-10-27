@@ -1,7 +1,6 @@
 import type {
   RankiPluginComponent,
   ComponentPluginValidationFunc,
-  TransformNodeParent,
   ValidationNodeParent,
   ValidationNodeLeaf,
 } from "@ranki/package-api-v2";

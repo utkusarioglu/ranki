@@ -18,7 +18,6 @@ export class RankiLangConfig {
   ) {
     this.providedConfigs = userConfigs;
     this.defaultConfig = {
-      tags: [],
       stage: "transform",
       grammar: {
         tokens: pluginConfig.tokens,
@@ -85,6 +84,7 @@ export class RankiLangConfig {
           } else if (a === null) {
             s.clear();
           } else {
+            // @ts-expect-error
             a.map((i) => s.add(i));
           }
         });

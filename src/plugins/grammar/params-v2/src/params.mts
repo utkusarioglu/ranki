@@ -1,8 +1,4 @@
-// import { RankiLanguageMergedConfig } from "../../../../packages/api/src/config.mjs";
-import type {
-  RankiLangAstContext,
-  RankiLanguageConfig,
-} from "@ranki/package-api-v2";
+import type { RankiLanguageConfig } from "@ranki/package-api-v2";
 import type {
   ParamsV2Spec,
   ParamV2Key,

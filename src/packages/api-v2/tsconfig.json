@@ -1,4 +1,5 @@
 {
+  "extends": "@ranki/config-typescript/tsconfig.package.json",
   "compilerOptions": {
     "target": "esnext",
     "moduleResolution": "nodenext",
@@ -7,7 +8,9 @@
     "composite": true,
     "declarationDir": "types",
     "outDir": "lib",
-    "rootDir": "src"
+    "rootDir": "src",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "include": ["src/**/*"]
 }

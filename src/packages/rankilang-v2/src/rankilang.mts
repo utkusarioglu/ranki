@@ -103,6 +103,7 @@ export class RankiLang implements RankiLangInstance {
 
     const config = this.config.getAll();
 
+    // @ts-expect-error it doesn't like the property of `getPluginConfig`
     const context: RankiLangContextInstance = new RankiLangContext({
       theater: spec.theater,
       role: spec.role,

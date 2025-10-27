@@ -9,7 +9,7 @@ import type {
   AstNodeParentReduced,
 } from "@ranki/package-api-v2";
 import { getContext as c } from "@ranki/package-api-v2/helpers";
-import { zipNodes, joinNodes } from "@ranki/package-api-v2/helpers";
+import { joinNodes } from "@ranki/package-api-v2/helpers";
 
 const separatorList: ohm.ActionDict<SeparatorEntry[]> = {
   _iter(...children) {
@@ -18,25 +18,25 @@ const separatorList: ohm.ActionDict<SeparatorEntry[]> = {
 };
 
 const separator: ohm.ActionDict<SeparatorEntry> = {
-  blockSep_base(n1, wi1, nl, wi) {
+  blockSep_base(_n1, _wi1, _nl, _wi) {
     return {
       type: "block",
       raw: this.sourceString,
     };
   },
-  clearance(all) {
+  clearance(_all) {
     return {
       type: "clearance",
       raw: this.sourceString,
     };
   },
-  nl(all) {
+  nl(_all) {
     return {
       type: "nl",
       raw: this.sourceString,
     };
   },
-  whitespace(one, two) {
+  whitespace(_one, _two) {
     return {
       type: "whitespace",
       raw: this.sourceString,
@@ -45,7 +45,7 @@ const separator: ohm.ActionDict<SeparatorEntry> = {
 };
 
 const node: ohm.ActionDict<AstNode> = {
-  root_ignore(ignore, wm, rest) {
+  root_ignore(_ignore, wm, rest) {
     const context = c(this).newChild("block");
     return context.enrich<AstNodeLeafReduced, AstNodeLeaf>({
       kind: "leaf",
@@ -160,7 +160,7 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   // TODO line modifiers
-  line(indentation1, lineModifiers, lexemes, wi1) {
+  line(indentation1, _lineModifiers, lexemes, wi1) {
     const context = c(this).newChild("inline");
     return context.enrich<AstNodeParentReduced, AstNodeParent>(
       {
@@ -361,13 +361,13 @@ const node: ohm.ActionDict<AstNode> = {
 };
 
 const creatorName: ohm.ActionDict<string> = {
-  nl(nl) {
+  nl(_nl) {
     return this.ctorName;
   },
-  end(end) {
+  end(_end) {
     return this.ctorName;
   },
-  clearance(clearance1) {
+  clearance(_clearance1) {
     return this.ctorName;
   },
 };

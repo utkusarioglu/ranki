@@ -14,7 +14,7 @@ import type {
   ParseNodeRichTextV2LeafReduced,
 } from "./types.mjs";
 
-import { zipNodes, joinNodes } from "@ranki/package-api-v2/helpers";
+import { joinNodes } from "@ranki/package-api-v2/helpers";
 
 function startToken(context: RankiLangAstContext, start: ohm.Node) {
   const startNodes: ParseNodeRichTextV2[] = start.node(context);

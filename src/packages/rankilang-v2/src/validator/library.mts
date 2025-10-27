@@ -54,9 +54,9 @@ export class ValidatorLibrary {
           ...obj,
         };
       }
-    } catch (e) {
+    } catch (e: unknown) {
       console.error(obj, e);
-      throw new Error(e.message);
+      throw new Error((e as Error).message);
     }
   }
 }

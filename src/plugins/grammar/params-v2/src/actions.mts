@@ -37,7 +37,7 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
     return children.map((c) => c.paramV2(context));
   },
 
-  v2ParamListInline(param1, sep, param2) {
+  v2ParamListInline(param1, _sep, param2) {
     const context = c(this).newChild("inline");
     const rest = param2.paramsV2(context);
     const joined = [param1.paramV2(context), ...rest];
@@ -45,7 +45,7 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
     return joined;
   },
 
-  v2ParamListBlock(param1, sep, param2) {
+  v2ParamListBlock(param1, _sep, param2) {
     const context = c(this).newChild("block");
     const rest = param2.paramsV2(context);
     const joined = [param1.paramV2(context), ...rest];
@@ -58,13 +58,13 @@ const paramV2KeyList: ohm.ActionDict<ParamV2KeyWord[]> = {
   _iter(...children) {
     return [...children.map((v) => v.paramV2Key(c(this)))];
   },
-  paramKey(first, sep, rest) {
+  paramKey(first, _sep, rest) {
     return [first.sourceString, ...rest.paramV2Key(c(this))];
   },
 };
 
 const paramV2Key: ohm.ActionDict<ParamV2KeyWord> = {
-  paramKeyWord(a, b) {
+  paramKeyWord(_a, _b) {
     return this.sourceString;
   },
 };
@@ -75,8 +75,8 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
     const config =
       context.getPluginConfig<RankiParamsV2ParserPluginConfig>("RankiParamsV2");
     const operators = config.tokens.operators;
-    const f = Object.entries(operators).find(
-      ([k, v]) => v === operatorToken.sourceString,
+    const f = Object.values(operators).find(
+      (v) => v === operatorToken.sourceString,
     );
 
     if (!f) {
@@ -137,7 +137,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
     });
   },
 
-  paramFormatNegative(negation, paramKey) {
+  paramFormatNegative(_negation, paramKey) {
     const context = c(this).newChild("inline");
     const key: ParamV2KeyWord[] = paramKey.paramV2Key(c(this));
     return context.enrich<ParamV2ReducedPartial, ParamV2Common>({
@@ -186,7 +186,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
 };
 
 const paramV2SettingNamespace: ohm.ActionDict<number> = {
-  _iter(...children) {
+  _iter(..._children) {
     return +this.sourceString.slice(0, -1);
   },
 };
@@ -202,7 +202,7 @@ const paramV2: ohm.ActionDict<ParamV2> = {
     return p;
   },
 
-  paramDirective(directive, param) {
+  paramDirective(_directive, param) {
     const p = param.paramV2Common(c(this));
     p["type"] = "directive";
     return p;
@@ -215,7 +215,7 @@ const paramV2Values: ohm.ActionDict<ParamV2Value[]> = {
     return children.map((c) => c.paramV2Value(context));
   },
 
-  paramValues(i1, clearance, i2) {
+  paramValues(i1, _clearance, i2) {
     const context = c(this).newChild();
     return [i1.paramV2Value(context), ...i2.paramV2Values(context)];
   },
@@ -230,14 +230,14 @@ const paramV2Value: ohm.ActionDict<ParamV2Value> = {
     };
   },
 
-  paramValueItemPrimitive_lowercase(c1, c2, lower) {
+  paramValueItemPrimitive_lowercase(_c1, _c2, lower) {
     return {
       type: "lowercase",
       raw: lower.sourceString,
     };
   },
 
-  paramValueItemPrimitive_true(val) {
+  paramValueItemPrimitive_true(_val) {
     return {
       type: "boolean",
       raw: this.sourceString,
@@ -245,7 +245,7 @@ const paramV2Value: ohm.ActionDict<ParamV2Value> = {
     };
   },
 
-  paramValueItemPrimitive_false(val) {
+  paramValueItemPrimitive_false(_val) {
     return {
       type: "boolean",
       raw: this.sourceString,
@@ -253,14 +253,14 @@ const paramV2Value: ohm.ActionDict<ParamV2Value> = {
     };
   },
 
-  paramValueItemPrimitive_uppercase(check1, check2, val) {
+  paramValueItemPrimitive_uppercase(_check1, _check2, val) {
     return {
       type: "uppercase",
       raw: val.sourceString,
     };
   },
 
-  paramValueItemPrimitive_chars(c1, c2, val) {
+  paramValueItemPrimitive_chars(_c1, _c2, val) {
     return {
       type: "mixedcase",
       raw: val.sourceString,
@@ -274,7 +274,7 @@ const paramV2Value: ohm.ActionDict<ParamV2Value> = {
     };
   },
 
-  quoted(quote1, quotedContent, quote2) {
+  quoted(_quote1, quotedContent, _quote2) {
     return {
       type: "quoted",
       raw: quotedContent.sourceString,

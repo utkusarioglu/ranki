@@ -38,6 +38,7 @@ export class RankiLangContext<
   //   this.parent = parent;
   // }
 
+  // @ts-expect-error
   setParser(parser: T) {
     this.context.parser = parser;
     return this;
@@ -65,6 +66,7 @@ export class RankiLangContext<
       }
       Object.entries(en.subtree).forEach(([k, v]) => {
         v = { parent: p, ...v };
+        // @ts-expect-error
         p.subtree[k] = v;
       });
     }
@@ -152,6 +154,7 @@ export class RankiLangContext<
     if (direction) {
       inst.incrementDepth(direction);
     }
+    // @ts-expect-error
     return inst;
   }
 
@@ -177,7 +180,12 @@ export class RankiLangContext<
   }
 
   getHash(type: "ast"): string {
-    return this.context.astHash;
+    switch (type) {
+      case "ast":
+        return this.context.astHash;
+      default:
+        throw new Error(`UNDEFINED HASH TYPE: ${type}`);
+    }
   }
 
   getMergedConfig: () => RankiLanguageConfig["merged"] = () =>
@@ -188,9 +196,11 @@ export class RankiLangContext<
     pluginName: string,
   ) => {
     const merged = this.getMergedConfig().plugins.config;
+    // @ts-expect-error
     if (!merged[pluginName]) {
       throw new Error(`NO SUCH PLUGIN: ${pluginName}`);
     }
+    // @ts-expect-error
     return merged[pluginName] as T;
   };
 }

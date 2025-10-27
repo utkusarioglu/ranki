@@ -3,16 +3,12 @@ import {
   RankiGrammarTokens,
   RankiLangAstContext,
   RankiLangParsedAst,
-  RankiLanguageConfig,
 } from "@ranki/package-api-v2";
 import grammar from "../assets/ohm/2.0.65.ohm?raw";
 import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";
 import { transformers } from "./transformers.mjs";
-import {
-  RankiBaseV2ParserPluginConfig,
-  WithRankiBaseV2ParserPluginConfig,
-} from "./type.mjs";
+import { RankiBaseV2ParserPluginConfig } from "./type.mjs";
 
 const config: RankiBaseV2ParserPluginConfig = {
   tokens: {

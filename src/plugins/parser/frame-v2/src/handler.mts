@@ -1,5 +1,4 @@
 import type {
-  RankiLangParseSpecs,
   RankiLangAstContext,
   RankiLangParseHandlerFunction,
 } from "@ranki/package-api-v2";
@@ -24,6 +23,8 @@ export const handler: RankiLangParseHandlerFunction<V2> = (
     component.stages.ast.params,
     context,
   );
+  // TODO this is to be removed
+  settings && true;
   const cloned = context.cloneLang([
     component.stages.ast.directives,
     directives,

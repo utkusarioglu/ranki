@@ -1641,10 +1641,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@ranki/config-typescript@workspace:^, @ranki/config-typescript@workspace:src/config/typescript":
+  version: 0.0.0-use.local
+  resolution: "@ranki/config-typescript@workspace:src/config/typescript"
+  languageName: unknown
+  linkType: soft
+
 "@ranki/package-anki-config@workspace:src/packages/anki-config":
   version: 0.0.0-use.local
   resolution: "@ranki/package-anki-config@workspace:src/packages/anki-config"
   dependencies:
+    "@ranki/config-typescript": "workspace:^"
     "@ranki/package-api-v2": "workspace:^"
     ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.9.2"
@@ -1655,6 +1662,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ranki/package-api-v2@workspace:src/packages/api-v2"
   dependencies:
+    "@ranki/config-typescript": "workspace:^"
     ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.9.2"
   languageName: unknown
@@ -1664,6 +1672,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ranki/package-rankilang-v2@workspace:src/packages/rankilang-v2"
   dependencies:
+    "@ranki/config-typescript": "workspace:^"
     "@ranki/package-api-v2": "workspace:^"
     "@ranki/plugin-grammar-params-v2": "workspace:^"
     "@types/node": "npm:^24.3.1"
@@ -1679,6 +1688,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ranki/package-render-v2@workspace:src/packages/render-v2"
   dependencies:
+    "@ranki/config-typescript": "workspace:^"
     "@ranki/package-api-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
     ohm-js: "npm:^17.2.1"

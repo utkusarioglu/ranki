@@ -51,8 +51,8 @@ export interface RankiLangParsedTheater {
   stages: {
     raw: string;
     ast: RankiLangParsedAst;
-    validation: ValidationNode;
-    transform: TransformNode;
+    validation: ValidationNode | null;
+    transform: TransformNode | null;
   };
 }
 

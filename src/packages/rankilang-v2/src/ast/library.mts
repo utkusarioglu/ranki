@@ -4,7 +4,6 @@ import type {
   RankiLangAstContext,
   ParseAstFunction,
   RankiLangAstReport,
-  ParserPluginsInstance,
   AstNode,
   RankiLangConsolidatedAstReport,
   RankiLangContextInstance,

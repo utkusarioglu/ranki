@@ -2,6 +2,7 @@
   "name": "@ranki/root",
   "private": true,
   "workspaces": [
+    "src/config/*",
     "src/apps/*",
     "src/packages/*",
     "src/plugins/parser/*",

@@ -71,6 +71,9 @@ export function topologicalSort(
 
   while (queue.length) {
     const curr = queue.shift();
+    if (!curr) {
+      throw new Error("curr NOT DEFINED");
+    }
     sorted.push(curr);
 
     for (let n of adjacencies[curr]) {

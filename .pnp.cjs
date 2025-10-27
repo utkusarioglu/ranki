@@ -31,6 +31,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/apps/rankilang-v2-demo"\
     },\
     {\
+      "name": "@ranki/config-typescript",\
+      "reference": "workspace:src/config/typescript"\
+    },\
+    {\
       "name": "@ranki/package-anki-config",\
       "reference": "workspace:src/packages/anki-config"\
     },\
@@ -99,6 +103,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/app-ranki-v2", ["workspace:src/apps/ranki-v2"]],\
     ["@ranki/app-rankilang-v2-console", ["workspace:src/apps/rankilang-v2-console"]],\
     ["@ranki/app-rankilang-v2-demo", ["workspace:src/apps/rankilang-v2-demo"]],\
+    ["@ranki/config-typescript", ["workspace:src/config/typescript"]],\
     ["@ranki/package-anki-config", ["workspace:src/packages/anki-config"]],\
     ["@ranki/package-api-v2", ["workspace:src/packages/api-v2"]],\
     ["@ranki/package-rankilang-v2", ["workspace:src/packages/rankilang-v2"]],\
@@ -2421,10 +2426,20 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
+    ["@ranki/config-typescript", [\
+      ["workspace:src/config/typescript", {\
+        "packageLocation": "./src/config/typescript/",\
+        "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
     ["@ranki/package-anki-config", [\
       ["workspace:src/packages/anki-config", {\
         "packageLocation": "./src/packages/anki-config/",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-anki-config", "workspace:src/packages/anki-config"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["ohm-js", "npm:17.2.1"],\
@@ -2437,6 +2452,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:src/packages/api-v2", {\
         "packageLocation": "./src/packages/api-v2/",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
@@ -2448,6 +2464,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:src/packages/rankilang-v2", {\
         "packageLocation": "./src/packages/rankilang-v2/",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-rankilang-v2", "workspace:src/packages/rankilang-v2"],\
           ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
@@ -2465,6 +2482,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:src/packages/render-v2", {\
         "packageLocation": "./src/packages/render-v2/",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
           ["@types/node", "npm:24.5.2"],\

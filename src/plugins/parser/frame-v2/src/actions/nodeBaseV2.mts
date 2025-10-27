@@ -12,7 +12,7 @@ import type * as ohm from "ohm-js";
 import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/context.mjs";
 
 export const nodeBaseV2: ohm.ActionDict<AstNode> = {
-  block_v2(indentation, v2, wi, ender) {
+  block_v2(indentation, v2, wi, _ender) {
     const context = c<V2>(this).newChild("block");
     return context.enrich<AstNodeParentReduced, AstNodeParent>(
       {
@@ -189,7 +189,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   },
 
   // !TODO are pauseStart and pauseEnd separators or fillers?
-  pausedContainer(pauseStart, pausedPayload, pauseEnd) {
+  pausedContainer(_pauseStart, pausedPayload, _pauseEnd) {
     const parentContext = c<V2>(this).newChild("block");
     return parentContext.enrich<AstNodeParentReduced, AstNodeParent>(
       {

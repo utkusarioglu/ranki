@@ -15,7 +15,7 @@ import type { FrameSpec } from "../types/args.mjs";
 import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/context.mjs";
 
 export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
-  v2_fp(v2Start, v2FrameConfig, v2Payload, v2End) {
+  v2_fp(_v2Start, v2FrameConfig, v2Payload, _v2End) {
     const context = c<V2>(this).newChild("block");
     const frameConfig: NodeArgsFrameV2Config =
       v2FrameConfig.v2FrameConfig(context);
@@ -46,7 +46,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     );
   },
 
-  v2_f(v2Start, v2FrameConfig, v2End) {
+  v2_f(_v2Start, v2FrameConfig, _v2End) {
     const context = c<V2>(this).newChild("block");
     const frameConfig: NodeArgsFrameV2ConfigP =
       v2FrameConfig.v2FrameConfig(context);
@@ -77,7 +77,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     );
   },
 
-  v2_e(v2Start, wi1, v2Chain, wi2, v2End) {
+  v2_e(_v2Start, wi1, v2Chain, wi2, _v2End) {
     const context = c<V2>(this).newChild("block");
     const chain: FrameSpec[] = v2Chain.frameSpecV2(context);
 

@@ -15,7 +15,6 @@ import { rankiFrameV1ParserPlugin } from "@ranki/plugin-parser-frame-v1";
 import { rankiFrameV2ComponentsPluginDom } from "@ranki/plugin-component-frame-v2-dom";
 
 export const providedConfig = {
-  tags: [],
   content: {
     prefix: "",
     suffix: "",
@@ -23,12 +22,12 @@ export const providedConfig = {
   stage: "ast",
   plugins: {
     requested: [
-      // "RankiParamsV2",
-      // "RankiFrameV2",
-      // "RankiFrameV1",
-      // "RankiRichTextV2",
-      // "RankiRichNumberV2",
-      // "RankiRichStructureV2",
+      "RankiParamsV2",
+      "RankiFrameV2",
+      "RankiFrameV1",
+      "RankiRichTextV2",
+      "RankiRichNumberV2",
+      "RankiRichStructureV2",
     ],
   },
 } as RankiLanguageProvidedConfig;
@@ -55,19 +54,20 @@ function main(count: number) {
   const lang = new RankiLang(
     {
       parsers: [
+        rankiBaseV2ParserPlugin,
+        rankiFrameV2ParserPlugin,
+        rankiFrameV1ParserPlugin,
+        // TODO don't touch these until the plugin api is stabilized
         // @ts-expect-error
         rankiConstantsV2ParserPlugin,
-        rankiBaseV2ParserPlugin,
-        // rankiFrameV2ParserPlugin,
-        // rankiFrameV1ParserPlugin,
-        // // @ts-expect-error
-        // rankiParamsV2ParserPlugin,
-        // // @ts-expect-error
-        // rankiRichTextV2ParserPlugin,
-        // // @ts-expect-error
-        // rankiRichNumberV2ParserPlugin,
-        // // @ts-expect-error
-        // rankiRichStructureV2ParserPlugin,
+        // @ts-expect-error
+        rankiParamsV2ParserPlugin,
+        // @ts-expect-error
+        rankiRichTextV2ParserPlugin,
+        // @ts-expect-error
+        rankiRichNumberV2ParserPlugin,
+        // @ts-expect-error
+        rankiRichStructureV2ParserPlugin,
       ],
       components: [rankiFrameV2ComponentsPluginDom],
     },

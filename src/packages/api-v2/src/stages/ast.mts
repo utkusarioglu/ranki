@@ -1,4 +1,4 @@
-import { RankiLangAstContext, RankiLangContextInstance } from "../export.mjs";
+import type { RankiLangContextInstance } from "../export.mjs";
 
 export type AstNode = AstNodeLeaf | AstNodeParent;
 

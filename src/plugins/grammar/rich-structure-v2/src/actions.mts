@@ -24,6 +24,8 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
     // its previous type was:
     // ParseNodeRichStructureV2["shape"]["richStructure.v2"] =
     const sep = separator.shapeAndParamsV2(context);
+    sep && true;
+
     return context.enrich<
       ParseNodeRichStructureV2ParentReduced,
       ParseNodeRichStructureV2
@@ -82,7 +84,7 @@ const shapeAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   hStructureSepInline_s(
     structureSepStart,
     wi1,
-    structureName,
+    _structureName,
     wi2,
     structureSepEnd,
   ) {
@@ -123,7 +125,7 @@ const shapeAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   hStructureSepInline_sp(
     structureSepStart,
     wi1,
-    structureName,
+    _structureName,
     wi2,
     v2ParamListInlineContainer,
     wi3,

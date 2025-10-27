@@ -7,7 +7,7 @@ import type { GrammarSpecs } from "../types/parser.mjs";
 import type { ParserPluginGrammar } from "../types/parser.mjs";
 
 function adjustParent(specs: GrammarSpecs, raw: string): ParserPluginGrammar {
-  const altered = raw.replace(/<:\s*(\w+)\s*\{/, (match, word) => {
+  const altered = raw.replace(/<:\s*(\w+)\s*\{/, (_match, _word) => {
     if (specs.parentGrammar === "") {
       throw new Error("GRAMMAR EXPECTS A PARENT BUT NONE WAS GIVEN");
     }
@@ -46,6 +46,7 @@ export function buildGrammar(
   }
 
   const last = importChain.at(-1);
+  // @ts-expect-error
   const matcher = matchers[last].grammar;
 
   if (!matcher) {
@@ -70,11 +71,16 @@ export function compileOhmActionDicts(
     }
     Object.entries(parser).forEach(([operationName, actionDict]) => {
       if (!operations.hasOwnProperty(operationName)) {
+        // @ts-expect-error
         operations[operationName] = {};
+        // @ts-expect-error
         participants[operationName] = [];
       }
+      // @ts-expect-error
       participants[operationName].push(parserName);
+      // @ts-expect-error
       operations[operationName] = {
+        // @ts-expect-error
         ...operations[operationName],
         ...actionDict,
       };
@@ -82,6 +88,7 @@ export function compileOhmActionDicts(
   });
 
   const methods = Object.entries(operations).reduce((a, [k, v]) => {
+    // @ts-expect-error
     a[k] = Object.keys(v);
     return a;
   }, {});
