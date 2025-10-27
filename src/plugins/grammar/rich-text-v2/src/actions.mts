@@ -17,7 +17,7 @@ import type {
 import { zipNodes, joinNodes } from "@ranki/package-api-v2/helpers";
 
 function startToken(context: RankiLangAstContext, start: ohm.Node) {
-  const startNodes: ParseNodeRichTextV2[] = start.iterNode(context);
+  const startNodes: ParseNodeRichTextV2[] = start.node(context);
   const startArgs: NodeArgsRichTextV2 = {};
 
   for (let si = 0; si < startNodes.length; si++) {
@@ -78,7 +78,7 @@ function startToken(context: RankiLangAstContext, start: ohm.Node) {
 }
 
 function endToken(context: RankiLangAstContext, end: ohm.Node) {
-  const endNodes: AstNodeLeaf[] = end.iterNode(context);
+  const endNodes: AstNodeLeaf[] = end.node(context);
   const endArgs: NodeArgsRichTextV2 = {};
   const config = context.getPluginConfig<RTV2>("RankiRichTextV2");
 

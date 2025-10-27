@@ -44,10 +44,7 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
         // },
       },
       subtree: {},
-      children: [
-        structureType1.node(context),
-        ...structureType2.iterNode(context),
-      ],
+      children: [structureType1.node(context), ...structureType2.node(context)],
       source: {
         type: "raw",
         raw: this.sourceString,

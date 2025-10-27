@@ -22,8 +22,8 @@ export function zipNodes<Context, ParseNode>(
     throw new Error("UNEQUAL LENGTHS");
   }
   const aloneNode = alone.node(context) as ParseNode;
-  const oneNode = one.iterNode(context) as ParseNode[];
-  const twoNode = two.iterNode(context) as ParseNode[];
+  const oneNode = one.node(context) as ParseNode[];
+  const twoNode = two.node(context) as ParseNode[];
   return oneNode.reduce(
     (a, c, i) => {
       a.push(c);
@@ -42,5 +42,5 @@ export function joinNodes<Context, ParseNode>(
   first: ohm.Node,
   rest: ohm.Node,
 ): Array<ParseNode> {
-  return [first.node(context), ...rest.iterNode(context)];
+  return [first.node(context), ...rest.node(context)];
 }

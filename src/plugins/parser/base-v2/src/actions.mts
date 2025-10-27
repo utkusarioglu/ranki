@@ -372,16 +372,18 @@ const creatorName: ohm.ActionDict<string> = {
   },
 };
 
-const iterNode: ohm.ActionDict<AstNode[]> = {
+const nodeList: ohm.ActionDict<AstNode[]> = {
   _iter(...children) {
     return children.map((ch) => ch.node(c(this)));
   },
 };
 
 export const actions = {
-  node,
+  node: {
+    ...node,
+    ...nodeList,
+  },
   creatorName,
-  iterNode,
   separator: {
     ...separator,
     ...separatorList,
