@@ -1709,6 +1709,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ranki/plugin-grammar-constants-v2@workspace:src/plugins/grammar/constants-v2"
   dependencies:
+    "@ranki/config-typescript": "workspace:^"
     "@ranki/package-api-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
     typescript: "npm:^5.8.3"
@@ -1719,6 +1720,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ranki/plugin-grammar-params-v2@workspace:src/plugins/grammar/params-v2"
   dependencies:
+    "@ranki/config-typescript": "workspace:^"
     "@ranki/package-api-v2": "workspace:^"
     "@ranki/plugin-parser-base-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
@@ -1731,6 +1733,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ranki/plugin-grammar-rich-number-v2@workspace:src/plugins/grammar/rich-number-v2"
   dependencies:
+    "@ranki/config-typescript": "workspace:^"
     "@ranki/package-api-v2": "workspace:^"
     "@ranki/plugin-parser-base-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
@@ -1743,6 +1746,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ranki/plugin-grammar-rich-structure-v2@workspace:src/plugins/grammar/rich-structure-v2"
   dependencies:
+    "@ranki/config-typescript": "workspace:^"
     "@ranki/package-api-v2": "workspace:^"
     "@ranki/plugin-grammar-params-v2": "workspace:^"
     "@ranki/plugin-parser-base-v2": "workspace:^"
@@ -1756,6 +1760,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ranki/plugin-grammar-rich-text-v2@workspace:src/plugins/grammar/rich-text-v2"
   dependencies:
+    "@ranki/config-typescript": "workspace:^"
     "@ranki/package-api-v2": "workspace:^"
     "@ranki/plugin-parser-base-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
@@ -1828,6 +1833,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ranki/root@workspace:."
   dependencies:
+    "@ranki/config-typescript": "workspace:^"
     tsx: "npm:^4.20.3"
     turbo: "npm:^2.5.5"
     typescript: "npm:^5.8.3"

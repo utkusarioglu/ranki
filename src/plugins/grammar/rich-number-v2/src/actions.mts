@@ -152,7 +152,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     });
   },
 
-  numberSystem_unstructured(digit, token, num) {
+  numberSystem_unstructured(_digit, _token, num) {
     const context = c(this).newChild("inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const integer = +num.sourceString
@@ -218,7 +218,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     return con;
   },
 
-  hBases(zero, symbol, numberSystem_unstructured) {
+  hBases(_zero, symbol, numberSystem_unstructured) {
     const context = c(this).newChild("inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const tokens = config.tokens;
@@ -302,7 +302,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     });
   },
 
-  decimal_full(integer, decimalToken, decimalGroup) {
+  decimal_full(integer, _decimalToken, decimalGroup) {
     const context = c(this).newChild("inline");
     return context.enrich<
       ParseNodeRichNumberV2GeneralReduced,
@@ -324,7 +324,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     });
   },
 
-  decimal_point(sign, decimalToken, decimalGroup) {
+  decimal_point(sign, _decimalToken, decimalGroup) {
     const context = c(this).newChild("inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const decimal = +decimalGroup.sourceString
@@ -362,7 +362,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     });
   },
 
-  rational(nominator, rationalToken, denominator) {
+  rational(nominator, _rationalToken, denominator) {
     const context = c(this).newChild("inline");
     return context.enrich<
       ParseNodeRichNumberV2GeneralReduced,
@@ -455,7 +455,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     );
   },
 
-  eNotation(significand, eToken, exponent) {
+  eNotation(significand, _eToken, exponent) {
     const context = c(this).newChild("inline");
     return context.enrich<
       ParseNodeRichNumberV2GeneralReduced,

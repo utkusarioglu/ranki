@@ -128,6 +128,7 @@ const RAW_RUNTIME_STATE =
       [null, {\
         "packageLocation": "./",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/root", "workspace:."],\
           ["tsx", "npm:4.20.3"],\
           ["turbo", "npm:2.5.5"],\
@@ -2507,6 +2508,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:src/plugins/grammar/constants-v2", {\
         "packageLocation": "./src/plugins/grammar/constants-v2/",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/plugin-grammar-constants-v2", "workspace:src/plugins/grammar/constants-v2"],\
           ["@types/node", "npm:24.5.2"],\
@@ -2519,6 +2521,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:src/plugins/grammar/params-v2", {\
         "packageLocation": "./src/plugins/grammar/params-v2/",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
@@ -2533,6 +2536,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:src/plugins/grammar/rich-number-v2", {\
         "packageLocation": "./src/plugins/grammar/rich-number-v2/",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/plugin-grammar-rich-number-v2", "workspace:src/plugins/grammar/rich-number-v2"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
@@ -2547,6 +2551,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:src/plugins/grammar/rich-structure-v2", {\
         "packageLocation": "./src/plugins/grammar/rich-structure-v2/",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
           ["@ranki/plugin-grammar-rich-structure-v2", "workspace:src/plugins/grammar/rich-structure-v2"],\
@@ -2562,6 +2567,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:src/plugins/grammar/rich-text-v2", {\
         "packageLocation": "./src/plugins/grammar/rich-text-v2/",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/plugin-grammar-rich-text-v2", "workspace:src/plugins/grammar/rich-text-v2"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
@@ -2646,6 +2652,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:.", {\
         "packageLocation": "./",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/root", "workspace:."],\
           ["tsx", "npm:4.20.3"],\
           ["turbo", "npm:2.5.5"],\

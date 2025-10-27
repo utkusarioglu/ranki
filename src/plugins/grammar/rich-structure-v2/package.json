@@ -8,6 +8,7 @@
     "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo"
   },
   "devDependencies": {
+    "@ranki/config-typescript": "workspace:^",
     "@ranki/package-api-v2": "workspace:^",
     "@ranki/plugin-grammar-params-v2": "workspace:^",
     "@ranki/plugin-parser-base-v2": "workspace:^",

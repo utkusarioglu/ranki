@@ -20,6 +20,7 @@
     "clean-all": "rm -rf .turbo && yarn turbo run clean-all"
   },
   "devDependencies": {
+    "@ranki/config-typescript": "workspace:^",
     "tsx": "^4.20.3",
     "turbo": "^2.5.5",
     "typescript": "^5.8.3"
