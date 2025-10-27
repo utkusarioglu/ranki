@@ -9,7 +9,7 @@ export const transformPlaceholder: RankiPluginParserTransformFunc = (
       return {
         kind: "parent",
         tag: "div",
-        depth: v.args.depth.total,
+        depth: v.shape.depth.total,
         creator: v.creator,
         children: [],
       };
@@ -18,7 +18,7 @@ export const transformPlaceholder: RankiPluginParserTransformFunc = (
         kind: "leaf",
         tag: "span",
         creator: v.creator,
-        depth: v.args.depth.total,
+        depth: v.shape.depth.total,
         print: v.print,
         source: v.source,
       };

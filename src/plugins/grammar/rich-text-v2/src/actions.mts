@@ -177,7 +177,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           spaces: {},
           separators: clearance.separator(context),
         },
@@ -203,7 +203,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         kind: "parent",
         creator: this.ctorName,
 
-        args: {
+        shape: {
           spaces: {
             suffix: {
               type: wordEnd.creatorName(context),
@@ -233,7 +233,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       print: true,
       creator: this.ctorName,
 
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -251,7 +251,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       print: true,
       creator: this.ctorName,
 
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -269,7 +269,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       print: true,
       creator: this.ctorName,
 
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -287,7 +287,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       print: true,
       creator: this.ctorName,
 
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -305,7 +305,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       print: true,
       creator: this.ctorName,
 
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -323,7 +323,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       print: false,
       creator: this.ctorName,
 
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -341,7 +341,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       print: true,
       creator: this.ctorName,
 
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -359,7 +359,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       print: false,
       creator: this.ctorName,
 
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -378,7 +378,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
 
       creator: this.ctorName,
 
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -396,7 +396,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       print: false,
       creator: this.ctorName,
 
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -414,7 +414,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       print: false,
       creator: this.ctorName,
 
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -438,7 +438,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
         kind: "parent",
         creator: this.ctorName,
 
-        args: {
+        shape: {
           "indentation.1.length": indentation1.sourceString.length,
           "wi.1.length": wi1.sourceString.length,
           ...lineModifiers.lineModifiers(context),
@@ -459,7 +459,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       creator: this.ctorName,
       print: true,
 
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -482,7 +482,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           spaces: {
             suffix: {
               type: wordEnd.creatorName(parentContext),
@@ -511,7 +511,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
               kind: "leaf",
               creator: this.ctorName,
               print: true,
-              args: {
+              shape: {
                 spaces: {},
                 separators: [],
               },
@@ -530,7 +530,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
 
 const lineModifiers: ohm.ActionDict<NodeArgsRichTextV2> = {
   lineModifiers(alignment, smalltext, heading) {
-    const context: RankiLangAstContext = { ...this.args.context };
+    const context: RankiLangAstContext = c(this).newChild();
     return {
       ...alignment.lineModifiers(context),
       ...smalltext.lineModifiers(context),

@@ -28,7 +28,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           separators: [],
           spaces: {},
         },
@@ -59,7 +59,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           separators: [],
           spaces: {},
         },
@@ -87,7 +87,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       version: "v2",
       variant: "e",
       chain,
-      args: {
+      shape: {
         ...context.getContextArgs(),
         spaces: {
           startAndChain: {
@@ -115,7 +115,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           separators: [],
           spaces: {},
         },

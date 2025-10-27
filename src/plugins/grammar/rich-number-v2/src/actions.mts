@@ -35,7 +35,7 @@ function hComplex<T extends ohm.Node>(
     kind: "leaf",
     creator: this.ctorName,
     print: true,
-    args: {
+    shape: {
       spaces: {
         realAndOp: {
           type: "clearance",
@@ -48,7 +48,7 @@ function hComplex<T extends ohm.Node>(
       },
       separators: [],
       "richNumber.v2": {
-        args: {
+        shape: {
           "token.complex": complexToken.sourceString,
         },
       },
@@ -84,7 +84,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -111,7 +111,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -138,7 +138,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -165,7 +165,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -188,7 +188,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -242,7 +242,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -290,7 +290,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -311,7 +311,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -337,7 +337,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -371,7 +371,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
         // !TODO
@@ -464,7 +464,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },

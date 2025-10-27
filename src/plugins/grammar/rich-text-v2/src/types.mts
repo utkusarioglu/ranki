@@ -137,24 +137,24 @@ export type ParseNodeRichTextV2 =
   | ParseNodeRichTextV2Leaf
   | ParseNodeRichTextV2Parent;
 
-export type ParseNodeRichTextV2Leaf = Omit<AstNodeLeaf, "args"> & {
-  args: AstNode["args"] & NodeArgsRichTextV2;
+export type ParseNodeRichTextV2Leaf = Omit<AstNodeLeaf, "shape"> & {
+  shape: AstNode["shape"] & NodeArgsRichTextV2;
 };
 
-export type ParseNodeRichTextV2Parent = Omit<AstNodeParent, "args"> & {
-  args: AstNode["args"] & NodeArgsRichTextV2;
+export type ParseNodeRichTextV2Parent = Omit<AstNodeParent, "shape"> & {
+  shape: AstNode["shape"] & NodeArgsRichTextV2;
 };
 
 export type ParseNodeRichTextV2LeafReduced = Omit<
   ParseNodeRichTextV2Leaf,
-  "args" | "parser" | "parent"
+  "shape" | "parser" | "parent"
 > & {
-  args: Omit<ParseNodeRichTextV2Leaf["args"], "depth">;
+  shape: Omit<ParseNodeRichTextV2Leaf["shape"], "depth">;
 };
 
 export type ParseNodeRichTextV2ParentReduced = Omit<
   ParseNodeRichTextV2Parent,
-  "args" | "parser" | "parent" | "subtree" | "children"
+  "shape" | "parser" | "parent" | "subtree" | "children"
 > & {
-  args: Omit<ParseNodeRichTextV2Parent["args"], "depth">;
+  shape: Omit<ParseNodeRichTextV2Parent["shape"], "depth">;
 };

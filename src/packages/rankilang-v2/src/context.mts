@@ -69,10 +69,10 @@ export class RankiLangContext<
       });
     }
 
-    if (p.args) {
-      p.args = {
+    if (p.shape) {
+      p.shape = {
         ...this.getContextArgs(),
-        ...p.args,
+        ...p.shape,
       };
     }
 
@@ -120,7 +120,7 @@ export class RankiLangContext<
   ) => RankiLangParseFunctionReturn = (...all) =>
     this.context.hooks.parseAst(...all);
 
-  incrementDepth(direction: "block" | "inline"): AstNode["args"]["depth"] {
+  incrementDepth(direction: "block" | "inline"): AstNode["shape"]["depth"] {
     switch (direction) {
       case "block":
         this.context.blockDepth++;
@@ -166,7 +166,7 @@ export class RankiLangContext<
     }
   }
 
-  getContextArgs(): Pick<AstNode["args"], "depth"> {
+  getContextArgs(): Pick<AstNode["shape"], "depth"> {
     return {
       depth: {
         block: this.context.blockDepth,

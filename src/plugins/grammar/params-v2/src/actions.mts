@@ -56,10 +56,10 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
 
 const paramV2KeyList: ohm.ActionDict<ParamV2KeyWord[]> = {
   _iter(...children) {
-    return [...children.map((v) => v.paramV2Key(this.args.context))];
+    return [...children.map((v) => v.paramV2Key(c(this)))];
   },
   paramKey(first, sep, rest) {
-    return [first.sourceString, ...rest.paramV2Key(this.args.context)];
+    return [first.sourceString, ...rest.paramV2Key(c(this))];
   },
 };
 
@@ -83,12 +83,12 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
       throw new Error(`UNRECOGNIZED OPERATOR ${f}`);
     }
 
-    const key: ParamV2KeyWord[] = paramKey.paramV2Key(this.args.context);
+    const key: ParamV2KeyWord[] = paramKey.paramV2Key(c(this));
 
     return context.enrich<ParamV2Reduced, ParamV2Setting>({
       type: "setting",
       key,
-      args: {
+      shape: {
         spaces: {
           keyAndOp: {
             type: "wi",
@@ -114,11 +114,11 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
 
   paramFormatPositive(paramKey) {
     const context = c(this).newChild("inline");
-    const key: ParamV2KeyWord[] = paramKey.paramV2Key(this.args.context);
+    const key: ParamV2KeyWord[] = paramKey.paramV2Key(c(this));
 
     return context.enrich<ParamV2ReducedPartial, ParamV2Common>({
       key,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -139,10 +139,10 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
 
   paramFormatNegative(negation, paramKey) {
     const context = c(this).newChild("inline");
-    const key: ParamV2KeyWord[] = paramKey.paramV2Key(this.args.context);
+    const key: ParamV2KeyWord[] = paramKey.paramV2Key(c(this));
     return context.enrich<ParamV2ReducedPartial, ParamV2Common>({
       key,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -165,7 +165,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
     const context = c(this).newChild("inline");
     return context.enrich<ParamV2ReducedPartial, ParamV2Common>({
       key: "positional",
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -194,16 +194,16 @@ const paramV2SettingNamespace: ohm.ActionDict<number> = {
 const paramV2: ohm.ActionDict<ParamV2> = {
   paramSetting(namespace, param) {
     const ns: ParamV2SettingNamespace = namespace.paramV2SettingNamespace(
-      this.args.context,
+      c(this),
     );
-    const p = param.paramV2Common(this.args.context);
+    const p = param.paramV2Common(c(this));
     p["type"] = "setting";
     p["namespace"] = ns;
     return p;
   },
 
   paramDirective(directive, param) {
-    const p = param.paramV2Common(this.args.context);
+    const p = param.paramV2Common(c(this));
     p["type"] = "directive";
     return p;
   },
@@ -283,7 +283,7 @@ const paramV2Value: ohm.ActionDict<ParamV2Value> = {
   },
 };
 
-const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
+const shapeAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   v2ParamListBlockContainer(
     sepLeft1,
     wi1,
@@ -295,7 +295,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   ) {
     const context = c(this).newChild("block");
     return context.enrich<ArgsAndParamsV2Reduced, ArgsAndParamsV2>({
-      args: {
+      shape: {
         spaces: {
           sepAndNl: {
             type: "wi",
@@ -343,7 +343,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     }));
 
     return context.enrich<ArgsAndParamsV2Reduced, ArgsAndParamsV2>({
-      args: {
+      shape: {
         spaces: {
           sepAndNl: {
             type: "wi",
@@ -378,7 +378,7 @@ export const actions = {
   paramV2Common,
   paramV2Values,
   paramV2Value,
-  argsAndParamsV2,
+  shapeAndParamsV2,
   paramV2Key: {
     ...paramV2Key,
     ...paramV2KeyList,

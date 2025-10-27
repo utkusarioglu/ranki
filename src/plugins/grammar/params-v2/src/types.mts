@@ -1,13 +1,13 @@
 import { AstNode, AstNodeLeafSource } from "@ranki/package-api-v2";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
-type NodeArgsParamsV2 = AstNode["args"] & Partial<NodeArgsBaseV2>;
+type NodeArgsParamsV2 = AstNode["shape"] & Partial<NodeArgsBaseV2>;
 
 export type ParamV2 = ParamV2Setting | ParamV2Directive;
 
 export interface ParamV2Common {
   key: "positional" | ParamV2Key;
-  args: NodeArgsParamsV2;
+  shape: NodeArgsParamsV2;
   operator: ParamV2Operator;
   values: ParamV2Value[];
   source: AstNodeLeafSource;
@@ -34,12 +34,12 @@ export type ParamV2DirectiveReducedPartial = Omit<
   "type"
 >;
 
-export type ParamV2SettingReduced = Omit<ParamV2Setting, "args"> & {
-  args: Omit<ParamV2Setting["args"], "depth">;
+export type ParamV2SettingReduced = Omit<ParamV2Setting, "shape"> & {
+  shape: Omit<ParamV2Setting["shape"], "depth">;
 };
 
-export type ParamV2DirectiveReduced = Omit<ParamV2Directive, "args"> & {
-  args: Omit<ParamV2Directive["args"], "depth">;
+export type ParamV2DirectiveReduced = Omit<ParamV2Directive, "shape"> & {
+  shape: Omit<ParamV2Directive["shape"], "depth">;
 };
 
 export type ParamV2SettingNamespace = number;
@@ -103,15 +103,15 @@ export interface ParamsV2SpecNone {
 export interface ArgsAndParamsV2 {
   parser: { hash: string };
   parent: AstNode;
-  args: NodeArgsParamsV2;
+  shape: NodeArgsParamsV2;
   params: ParamsV2SpecPopulated;
 }
 
 export type ArgsAndParamsV2Reduced = Omit<
   ArgsAndParamsV2,
-  "parser" | "parent" | "args"
+  "parser" | "parent" | "shape"
 > & {
-  args: Omit<ArgsAndParamsV2["args"], "depth">;
+  shape: Omit<ArgsAndParamsV2["shape"], "depth">;
 };
 export interface RankiParamsV2ParserPluginConfig {
   tokens: {
@@ -136,6 +136,6 @@ export type WithRankiParamsV2ParserPluginConfig = {
 export type Single = string;
 
 // export interface ArgsAndParamsV2WithNone {
-//   args: NodeArgsParamsV2;
+//   shape: NodeArgsParamsV2;
 //   params: ParamsV2SpecNone;
 // }

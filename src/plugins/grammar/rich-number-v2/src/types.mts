@@ -6,18 +6,20 @@ export type ParseNodeRichNumberV2 =
   | ParseNodeRichNumberV2General
   | ParseNodeRichNumberV2Complex;
 
-type ParseNodeRichNumberV2General = Omit<AstNodeLeaf, "args" | "source"> & {
-  args: AstNode["args"] & Partial<NodeArgsBaseV2>;
+type ParseNodeRichNumberV2General = Omit<AstNodeLeaf, "shape" | "source"> & {
+  shape: AstNode["shape"] & Partial<NodeArgsBaseV2>;
   source: NodeLeafRichNumberV2SourceGeneral;
 };
-type ParseNodeRichNumberV2Complex = Omit<AstNodeLeaf, "args" | "source"> & {
-  args: AstNode["args"] & Partial<NodeArgsBaseV2> & NodeArgsRichNumberV2Complex;
+type ParseNodeRichNumberV2Complex = Omit<AstNodeLeaf, "shape" | "source"> & {
+  shape: AstNode["shape"] &
+    Partial<NodeArgsBaseV2> &
+    NodeArgsRichNumberV2Complex;
   source: NodeLeafRichNumberV2SourceComplex;
 };
 
 export interface NodeArgsRichNumberV2Complex {
   "richNumber.v2": {
-    args: {
+    shape: {
       "token.complex": string;
     };
   };
@@ -129,14 +131,14 @@ export type ParseNodeRichNumberV2Reduced =
 
 export type ParseNodeRichNumberV2GeneralReduced = Omit<
   ParseNodeRichNumberV2General,
-  "parent" | "parser" | "args"
+  "parent" | "parser" | "shape"
 > & {
-  args: Omit<ParseNodeRichNumberV2General["args"], "depth">;
+  shape: Omit<ParseNodeRichNumberV2General["shape"], "depth">;
 };
 
 export type ParseNodeRichNumberV2ComplexReduced = Omit<
   ParseNodeRichNumberV2Complex,
-  "parent" | "parser" | "args"
+  "parent" | "parser" | "shape"
 > & {
-  args: Omit<ParseNodeRichNumberV2Complex["args"], "depth">;
+  shape: Omit<ParseNodeRichNumberV2Complex["shape"], "depth">;
 };

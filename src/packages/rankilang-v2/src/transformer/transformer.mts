@@ -41,13 +41,13 @@ export class TransformerLibrary {
   ): TransformNode {
     try {
       // @ts-ignore
-      if (validation.args.frame) {
+      if (validation.shape.frame) {
         // !FIX this is supposed to come from the args
         const handlerName = "RankiFrameV2";
         const component = context.getComponent(
           handlerName,
           // @ts-ignore
-          validation.args.frame.chain,
+          validation.shape.frame.chain,
         );
         const transformed = component.stages.transform({
           validation,

@@ -13,7 +13,7 @@ import { zipNodes, joinNodes } from "@ranki/package-api-v2/helpers";
 
 const separatorList: ohm.ActionDict<SeparatorEntry[]> = {
   _iter(...children) {
-    return children.map((c) => c.separator(this.args.context));
+    return children.map((ch) => ch.separator(c(this)));
   },
 };
 
@@ -51,7 +51,7 @@ const node: ohm.ActionDict<AstNode> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      args: {
+      shape: {
         spaces: {
           ignoreAndRest: {
             type: "wm",
@@ -73,7 +73,7 @@ const node: ohm.ActionDict<AstNode> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -90,7 +90,7 @@ const node: ohm.ActionDict<AstNode> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           spaces: {
             prefix: {
               type: "whitespace",
@@ -121,8 +121,7 @@ const node: ohm.ActionDict<AstNode> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
-          ...context.getContextArgs(),
+        shape: {
           spaces: {},
           separators: blockSep.separator(context),
         },
@@ -144,7 +143,7 @@ const node: ohm.ActionDict<AstNode> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           spaces: {},
           separators: nl.separator(context),
         },
@@ -167,7 +166,7 @@ const node: ohm.ActionDict<AstNode> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           spaces: {
             prefix: {
               type: "indentation",
@@ -199,7 +198,7 @@ const node: ohm.ActionDict<AstNode> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           spaces: {},
           separators: clearance.separator(context),
         },
@@ -221,7 +220,7 @@ const node: ohm.ActionDict<AstNode> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           spaces: {
             suffix: {
               // !fix this would return an `any` type
@@ -249,7 +248,7 @@ const node: ohm.ActionDict<AstNode> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           spaces: {
             suffix: {
               type: wordEnd.creatorName(parentContext),
@@ -272,7 +271,7 @@ const node: ohm.ActionDict<AstNode> = {
               kind: "leaf",
               creator: this.ctorName,
               print: true,
-              args: {
+              shape: {
                 spaces: {},
                 separators: [],
               },
@@ -293,7 +292,7 @@ const node: ohm.ActionDict<AstNode> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -310,7 +309,7 @@ const node: ohm.ActionDict<AstNode> = {
       kind: "leaf",
       creator: this.ctorName,
       print: true,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -329,7 +328,7 @@ const node: ohm.ActionDict<AstNode> = {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
       },
@@ -348,7 +347,7 @@ const node: ohm.ActionDict<AstNode> = {
       kind: "leaf",
       print: true,
       creator: this.ctorName,
-      args: {
+      shape: {
         spaces: {},
         separators: [],
         // "whitespace.1.length": sourceString.length,
@@ -360,6 +359,7 @@ const node: ohm.ActionDict<AstNode> = {
     });
   },
 };
+
 const creatorName: ohm.ActionDict<string> = {
   nl(nl) {
     return this.ctorName;
@@ -374,7 +374,7 @@ const creatorName: ohm.ActionDict<string> = {
 
 const iterNode: ohm.ActionDict<AstNode[]> = {
   _iter(...children) {
-    return children.map((c) => c.node(this.args.context));
+    return children.map((ch) => ch.node(c(this)));
   },
 };
 

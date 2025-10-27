@@ -3,7 +3,7 @@ import type { AstNode } from "@ranki/package-api-v2";
 import { Single } from "./main.mjs";
 
 export interface ArgsAndParamsV1 {
-  args: Partial<NodeArgsBaseV2>;
+  shape: Partial<NodeArgsBaseV2>;
   params: string[];
 }
 
@@ -14,7 +14,7 @@ export interface NodeArgsFrameV1ConfigP {
   //   // type: string;
   //   variant: "p"; // this is like f fp
   //   frameType: string; // like code in %:code; ...:%
-  //   // args: NodeArgs;
+  //   // shape: NodeArgs;
   // };
 }
 
@@ -23,7 +23,7 @@ export interface NodeArgsFrameV1ConfigFp {
   //   // type: string;
   //   variant: "fp"; // this is like f fp
   //   frameType: string; // like code in %:code; ...:%
-  //   // args: NodeArgs;
+  //   // shape: NodeArgs;
   //   params: string[];
   //   // params: Pa
   // };
@@ -33,12 +33,12 @@ export type ParseNodeFrameV1 =
   | ParseNodeFrameV1ConfigP
   | ParseNodeFrameV1ConfigFp;
 
-export type ParseNodeFrameV1ConfigP = Omit<AstNode, "args"> & {
-  args: AstNode["args"] & Partial<NodeArgsBaseV2> & NodeArgsFrameV1ConfigP;
+export type ParseNodeFrameV1ConfigP = Omit<AstNode, "shape"> & {
+  shape: AstNode["shape"] & Partial<NodeArgsBaseV2> & NodeArgsFrameV1ConfigP;
 };
 
-export type ParseNodeFrameV1ConfigFp = Omit<AstNode, "args"> & {
-  args: AstNode["args"] & Partial<NodeArgsBaseV2> & NodeArgsFrameV1ConfigFp;
+export type ParseNodeFrameV1ConfigFp = Omit<AstNode, "shape"> & {
+  shape: AstNode["shape"] & Partial<NodeArgsBaseV2> & NodeArgsFrameV1ConfigFp;
 };
 export interface RankiFrameV1ParserPluginConfig {
   tokens: {

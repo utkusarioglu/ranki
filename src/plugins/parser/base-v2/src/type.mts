@@ -6,7 +6,7 @@ import { AstNode } from "@ranki/package-api-v2";
  * But it's still kept for now as a handy insertion point for any plugin that
  * inherits from BaseV2.
  */
-export type NodeArgsBaseV2 = AstNode["args"];
+export type NodeArgsBaseV2 = AstNode["shape"];
 type Single = string;
 
 export interface RankiBaseV2ParserPluginConfig {

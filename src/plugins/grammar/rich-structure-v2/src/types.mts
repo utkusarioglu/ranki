@@ -6,7 +6,7 @@ export interface NodeArgsRichStructureV2 {
   // "richStructure.v2": {
   //   // name: string;
   //   // type: "implicit" | "explicit";
-  //   args: AstNode["args"] &
+  //   shape: AstNode["shape"] &
   //     Partial<NodeArgsBaseV2> & {
   //       "richStructure.v2.config": Partial<NodeArgsBaseV2>;
   //     };
@@ -18,16 +18,16 @@ export type ParseNodeRichStructureV2 =
   | ParseNodeRichStructureV2Leaf
   | ParseNodeRichStructureV2Parent;
 
-export type ParseNodeRichStructureV2Leaf = Omit<AstNodeLeaf, "args"> & {
-  args: AstNodeLeaf["args"];
+export type ParseNodeRichStructureV2Leaf = Omit<AstNodeLeaf, "shape"> & {
+  shape: AstNodeLeaf["shape"];
 };
 
-export type ParseNodeRichStructureV2Parent = Omit<AstNodeParent, "args"> & {
-  args: AstNodeParent["args"];
+export type ParseNodeRichStructureV2Parent = Omit<AstNodeParent, "shape"> & {
+  shape: AstNodeParent["shape"];
 };
 
 export interface ArgsAndParamsV2RichStructureV2 {
-  args: NodeArgsRichStructureV2;
+  shape: NodeArgsRichStructureV2;
   params: ParamsV2Spec;
 }
 export interface RankiRichStructureV2ParserPluginConfig {
@@ -46,14 +46,14 @@ export type ParseNodeRichStructureV2Reduced =
 
 export type ParseNodeRichStructureV2LeafReduced = Omit<
   ParseNodeRichStructureV2Leaf,
-  "args" | "parent" | "parser"
+  "shape" | "parent" | "parser"
 > & {
-  args: Omit<ParseNodeRichStructureV2Leaf["args"], "depth">;
+  shape: Omit<ParseNodeRichStructureV2Leaf["shape"], "depth">;
 };
 
 export type ParseNodeRichStructureV2ParentReduced = Omit<
   ParseNodeRichStructureV2Parent,
-  "args" | "parent" | "parser"
+  "shape" | "parent" | "parser"
 > & {
-  args: Omit<ParseNodeRichStructureV2Parent["args"], "depth">;
+  shape: Omit<ParseNodeRichStructureV2Parent["shape"], "depth">;
 };

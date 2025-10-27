@@ -14,16 +14,16 @@ export interface AstNodeParent extends AstNodeCommon {
 
 export type AstNodeLeafReduced = Omit<
   AstNodeLeaf,
-  "args" | "parent" | "parser"
+  "shape" | "parent" | "parser"
 > & {
-  args: Omit<AstNodeCommon["args"], "depth">;
+  shape: Omit<AstNodeCommon["shape"], "depth">;
 };
 
 export type AstNodeParentReduced = Omit<
   AstNodeParent,
-  "args" | "parent" | "children" | "subtree" | "parser"
+  "shape" | "parent" | "children" | "subtree" | "parser"
 > & {
-  args: Omit<AstNodeCommon["args"], "depth">;
+  shape: Omit<AstNodeCommon["shape"], "depth">;
 };
 
 export interface AstNodeLeaf extends AstNodeCommon {
@@ -51,7 +51,7 @@ export interface SeparatorEntry {
 interface AstNodeCommon {
   creator: string;
   parent: AstNode;
-  args: {
+  shape: {
     spaces: Record<string, WhitespaceEntry>;
     separators: SeparatorEntry[];
     depth: {

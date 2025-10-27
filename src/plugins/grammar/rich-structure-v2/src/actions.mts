@@ -22,8 +22,8 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
     const context = c(this).newChild("block");
     // ! needs a type
     // its previous type was:
-    // ParseNodeRichStructureV2["args"]["richStructure.v2"] =
-    const sep = separator.argsAndParamsV2(context);
+    // ParseNodeRichStructureV2["shape"]["richStructure.v2"] =
+    const sep = separator.shapeAndParamsV2(context);
     return context.enrich<
       ParseNodeRichStructureV2ParentReduced,
       ParseNodeRichStructureV2
@@ -31,7 +31,7 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
       kind: "parent",
       creator: this.ctorName,
 
-      args: {
+      shape: {
         spaces: {},
         // !fix I don't understand the separators thing here
         separators: [],
@@ -39,7 +39,7 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
         //   // name: "SHALL BE SET BY PARENT",
         //   // !FIX the separators are misplaced. the first separator args and params belong to the SECOND collection, section or whatever the level name is.
         //   ...sep,
-        //   // args: sep.args,
+        //   // shape: sep.args,
         //   // params: sep.params,
         // },
       },
@@ -73,14 +73,14 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
   },
 };
 
-const argsAndParamsV2List: ohm.ActionDict<ArgsAndParamsV2[]> = {
+const shapeAndParamsV2List: ohm.ActionDict<ArgsAndParamsV2[]> = {
   _iter(...children) {
     const context = c(this).newChild("inline");
-    return children.map((c) => c.argsAndParamsV2(context));
+    return children.map((ch) => ch.shapeAndParamsV2(context));
   },
 };
 
-const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
+const shapeAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   // !FIX
   hStructureSepInline_s(
     structureSepStart,
@@ -91,7 +91,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   ) {
     const context = c(this).newChild("inline");
     return context.enrich<ArgsAndParamsV2Reduced, ArgsAndParamsV2>({
-      args: {
+      shape: {
         spaces: {
           startAndName: {
             type: "wi",
@@ -134,9 +134,9 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   ) {
     const context = c(this).newChild("inline");
     const config: ArgsAndParamsV2RichStructureV2 =
-      v2ParamListInlineContainer.argsAndParamsV2(context);
+      v2ParamListInlineContainer.shapeAndParamsV2(context);
     return {
-      args: {
+      shape: {
         spaces: {
           startAndName: {
             type: "wi",
@@ -164,7 +164,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
         // !TODO you need ctorName here
 
         // !TODO not sure if this is supposed to be placed here
-        "richStructure.v1.config": config.args,
+        "richStructure.v1.config": config.shape,
       },
       params: config.params,
     };
@@ -173,8 +173,8 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
 
 export const actions = {
   node,
-  argsAndParamsV2: {
-    ...argsAndParamsV2,
-    ...argsAndParamsV2List,
+  shapeAndParamsV2: {
+    ...shapeAndParamsV2,
+    ...shapeAndParamsV2List,
   },
 };

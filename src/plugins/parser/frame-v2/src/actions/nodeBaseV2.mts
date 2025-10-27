@@ -19,7 +19,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         kind: "parent",
         creator: this.ctorName,
 
-        args: {
+        shape: {
           ...context.getContextArgs(),
           spaces: {
             prefix: {
@@ -49,7 +49,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         kind: "parent",
         creator: this.ctorName,
 
-        args: {
+        shape: {
           ...context.getContextArgs(),
           spaces: {
             prefix: {
@@ -79,7 +79,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         kind: "parent",
         creator: this.ctorName,
 
-        args: {
+        shape: {
           ...context.getContextArgs(),
           spaces: {},
           separators: [],
@@ -100,7 +100,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         kind: "parent",
         creator: this.ctorName,
 
-        args: {
+        shape: {
           ...context.getContextArgs(),
           spaces: {},
           // TODO maybe `pausedContainer` should be a separator.
@@ -136,7 +136,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         kind: "parent",
         creator: this.ctorName,
 
-        args: {
+        shape: {
           ...context.getContextArgs(),
           spaces: {
             suffix: {
@@ -173,7 +173,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         kind: "parent",
         creator: this.ctorName,
 
-        args: {
+        shape: {
           ...context.getContextArgs(),
           spaces: {},
           separators: [],
@@ -195,7 +195,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           ...parentContext.getContextArgs(),
           spaces: {},
           separators: [],
@@ -214,7 +214,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
               kind: "leaf",
               creator: this.ctorName,
               print: true,
-              args: {
+              shape: {
                 spaces: {},
                 separators: [],
               },

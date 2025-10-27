@@ -22,9 +22,9 @@ interface InputsProps {
   presetGroups: PresetGroup[];
 }
 
-// const parentProps = ["kind", "type", "args"];
+// const parentProps = ["kind", "type", "shape"];
 
-// const leafProps = ["kind", "type", "args", "children"];
+// const leafProps = ["kind", "type", "shape", "children"];
 
 const AppTitle = () => (
   <div className={style.titleContainer}>

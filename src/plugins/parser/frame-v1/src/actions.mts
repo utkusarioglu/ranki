@@ -18,7 +18,7 @@ const nodeBaseV2: ohm.ActionDict<AstNode> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           spaces: {
             indentation: {
               type: "indentation",
@@ -67,7 +67,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           spaces: {
             frameAndType: {
               type: "wi",
@@ -118,7 +118,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     frameV1_2,
   ) {
     const context = c<V1>(this).newChild("inline");
-    const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(context);
+    const shapeAndParamsV1 = v1ParamListInline.shapeAndParamsV1(context);
     const newContext = context.newChild().setParser({
       type: "RankiFrameV1",
       chain: v1Type.sourceString,
@@ -129,7 +129,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           spaces: {
             frameAndType: {
               type: "wi",
@@ -162,7 +162,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           "frame.v1": {
             variant: "fp",
             frameType: v1Type.sourceString,
-            ...argsAndParamsV1,
+            ...shapeAndParamsV1,
             // report: child.report,
           },
         },
@@ -200,7 +200,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           spaces: {
             frameAndType: {
               type: "wi",
@@ -259,8 +259,8 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1BlockEnd,
   ) {
     const context = c<V1>(this).newChild("block");
-    const argsAndParamsV1: ArgsAndParamsV1 =
-      v1ParamListInline.argsAndParamsV1(context);
+    const shapeAndParamsV1: ArgsAndParamsV1 =
+      v1ParamListInline.shapeAndParamsV1(context);
     const newContext = context.newChild().setParser({
       type: "RankiFrameV1",
       chain: v1Type.sourceString,
@@ -271,7 +271,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       {
         kind: "parent",
         creator: this.ctorName,
-        args: {
+        shape: {
           spaces: {
             frameAndType: {
               type: "wi",
@@ -312,7 +312,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           "frame.v1": {
             variant: "fp",
             frameType: v1Type.sourceString,
-            ...argsAndParamsV1,
+            ...shapeAndParamsV1,
             // report: child.report,
           },
         },
@@ -342,12 +342,12 @@ const paramsV1: ohm.ActionDict<string[]> = {
   },
 };
 
-const argsAndParamsV1: ohm.ActionDict<ArgsAndParamsV1> = {
+const shapeAndParamsV1: ohm.ActionDict<ArgsAndParamsV1> = {
   v1ParamListInline(v1ParamValue1, sep, v1ParamValue2) {
     const context = c<V1>(this).newChild("inline");
     return {
       parser: { hash: context.getHash("ast") },
-      args: {},
+      shape: {},
       params: [
         v1ParamValue1.paramV1(context),
         ...v1ParamValue2.paramsV1(context),
@@ -370,5 +370,5 @@ export const actions = {
   creatorName,
   paramV1,
   paramsV1,
-  argsAndParamsV1,
+  shapeAndParamsV1,
 };

@@ -83,7 +83,7 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
             kind: "leaf" as "leaf",
             print: true,
             creator: validation.creator,
-            depth: validation.args.depth.total,
+            depth: validation.shape.depth.total,
             source: {
               type: "raw" as "raw",
               // raw: "soon",

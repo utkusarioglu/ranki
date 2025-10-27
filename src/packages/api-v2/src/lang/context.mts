@@ -166,9 +166,9 @@ export interface RankiLangContextInstance<
     context: RankiLangAstContext<T>,
   ) => RankiLangParseFunctionReturn;
 
-  incrementDepth(direction: "block" | "inline"): AstNode["args"]["depth"];
+  incrementDepth(direction: "block" | "inline"): AstNode["shape"]["depth"];
   getDepth(direction: "block" | "inline" | "total"): number;
-  getContextArgs(): Pick<AstNode["args"], "depth">;
+  getContextArgs(): Pick<AstNode["shape"], "depth">;
 
   newChild(direction?: "block" | "inline"): RankiLangContextInstance<T>;
 
@@ -197,7 +197,7 @@ export interface Enrichments {
 }
 
 export interface BindingNode {
-  args?: Record<string, any>;
+  shape?: Record<string, any>;
   parent?: BindingNode;
   children?: BindingNode[];
   subtree?: Record<string, BindingNode>;

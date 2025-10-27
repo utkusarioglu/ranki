@@ -12,7 +12,7 @@ export const transformers: RankiPluginParserTransformCallback = () => ({
       tag: "eNotation",
       kind: "leaf",
       creator: t.creator,
-      depth: t.args.depth.total,
+      depth: t.shape.depth.total,
       print: t.print,
       source: t.source,
     };

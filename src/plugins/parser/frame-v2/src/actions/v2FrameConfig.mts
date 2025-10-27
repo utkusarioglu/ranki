@@ -21,7 +21,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
         version: "v2",
         variant: "p",
         chain,
-        args: {
+        shape: {
           separators: [
             {
               type: sep.creatorName(context),
@@ -61,7 +61,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   ) {
     const context = c<V2>(this).newChild("block");
     const config: ArgsAndParamsV2 =
-      v2ParamListInlineContainer.argsAndParamsV2(context);
+      v2ParamListInlineContainer.shapeAndParamsV2(context);
 
     const chain: FrameSpec[] = v2Type.frameSpecV2(context);
     return context.enrich<NodeArgsFrameV2ConfigFp_f_Reduced, NodeArgsFrameV2>(
@@ -70,7 +70,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
         version: "v2",
         chain,
         variant: "fp_f",
-        args: {
+        shape: {
           spaces: {
             start: {
               type: "wi",
@@ -97,7 +97,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
       {
         subtree: {
           paramsContainer: {
-            args: config.args,
+            shape: config.shape,
           },
         },
       },
@@ -114,7 +114,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   ) {
     const context = c<V2>(this).newChild("block");
     const config: ArgsAndParamsV2 =
-      v2ParamListBlockContainer.argsAndParamsV2(context);
+      v2ParamListBlockContainer.shapeAndParamsV2(context);
     const chain: FrameSpec[] = v2Type.frameSpecV2(context);
 
     return context.enrich<NodeArgsFrameV2ConfigFp_F_Reduced, NodeArgsFrameV2>(
@@ -123,7 +123,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
         version: "v2",
         variant: "fp_F",
         chain,
-        args: {
+        shape: {
           spaces: {
             start: {
               type: "wi",
@@ -150,7 +150,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
       {
         subtree: {
           paramsContainer: {
-            args: config.args,
+            shape: config.shape,
           },
         },
       },
