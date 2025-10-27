@@ -5,7 +5,7 @@
   "exports": {
     ".": {
       "import": "./lib/export.mjs",
-      "types": "./lib/export.d.ts",
+      "types": "./types/export.d.mjs",
       "default": "./lib/export.mjs"
     }
   },

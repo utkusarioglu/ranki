@@ -1,4 +1,5 @@
 {
+  "extends": "@ranki/config-typescript/tsconfig.plugin.render.json",
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": "src",

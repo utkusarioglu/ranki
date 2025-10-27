@@ -2631,6 +2631,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:src/plugins/render/base-v2", {\
         "packageLocation": "./src/plugins/render/base-v2/",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
           ["@ranki/plugin-render-base-v2", "workspace:src/plugins/render/base-v2"],\
@@ -2645,6 +2646,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:src/plugins/render/latex", {\
         "packageLocation": "./src/plugins/render/latex/",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
           ["@ranki/plugin-render-latex", "workspace:src/plugins/render/latex"],\
