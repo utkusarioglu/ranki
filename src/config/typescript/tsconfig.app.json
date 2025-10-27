@@ -1,14 +1,22 @@
 {
-  "extends": "@ranki/config-typescript/tsconfig.package.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "lib",
-    "rootDir": "src",
-    "declarationDir": "types"
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
+    "target": "esnext",
+    "composite": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
-  "include": ["src/**/*"],
   "references": [
     {
+      "path": "../../packages/rankilang-v2"
+    },
+    {
       "path": "../../packages/api-v2"
+    },
+    {
+      "path": "../../plugins/grammar/constants-v2"
     },
     {
       "path": "../../plugins/parser/base-v2"
@@ -30,9 +38,6 @@
     },
     {
       "path": "../../plugins/grammar/rich-text-v2"
-    },
-    {
-      "path": "../../plugins/grammar/constants-v2"
     }
   ]
 }

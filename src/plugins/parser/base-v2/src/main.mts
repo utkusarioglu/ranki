@@ -1,4 +1,4 @@
-import {
+import type {
   RankiPluginParser,
   RankiGrammarTokens,
   RankiLangAstContext,
@@ -8,7 +8,7 @@ import grammar from "../assets/ohm/2.0.65.ohm?raw";
 import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";
 import { transformers } from "./transformers.mjs";
-import { RankiBaseV2ParserPluginConfig } from "./type.mjs";
+import type { RankiBaseV2ParserPluginConfig } from "./type.mjs";
 
 const config: RankiBaseV2ParserPluginConfig = {
   tokens: {

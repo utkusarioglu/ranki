@@ -3,12 +3,15 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "target": "esnext",
-    "outDir": "lib",
-    "rootDir": "src",
-    "declarationDir": "types",
-    "strict": true,
     "composite": true,
+    "verbatimModuleSyntax": true,
+
+    /* Linting */
+    "strict": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
   }
 }

@@ -1,11 +1,12 @@
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 import type { AstNode } from "@ranki/package-api-v2";
-import { Single } from "./main.mjs";
 
 export interface ArgsAndParamsV1 {
   shape: Partial<NodeArgsBaseV2>;
   params: string[];
 }
+
+export type Single = string;
 
 // type FrameV1Config = FrameV1ConfigP | FrameV1ConfigFp;
 

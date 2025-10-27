@@ -1,4 +1,4 @@
-import { AstNode } from "@ranki/package-api-v2";
+import type { AstNode } from "@ranki/package-api-v2";
 
 /**
  * @dev

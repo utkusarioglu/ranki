@@ -1,6 +1,6 @@
 import type * as ohm from "ohm-js";
 import { getContext as c } from "@ranki/package-api-v2/helpers";
-import {
+import type {
   NodeLeafRichNumberV2SourceInteger,
   NodeLeafRichNumberV2SourceScalar,
   RichNumberV2Sign,

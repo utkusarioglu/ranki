@@ -8,8 +8,6 @@ import { tokenizer, config } from "./config.mjs";
 import { validators } from "./validators.mjs";
 import { transformers } from "./transformers.mjs";
 
-export type Single = string;
-
 export const rankiFrameV2ParserPlugin: RankiPluginParser<
   RankiFrameV2ParserPluginConfig,
   RankiLangParserPluginParseHandlerFrameV2

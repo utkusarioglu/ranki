@@ -10,6 +10,7 @@
     "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo"
   },
   "devDependencies": {
+    "@ranki/config-typescript": "workspace:^",
     "@types/node": "^24.1.0",
     "@types/prismjs": "^1",
     "typescript": "~5.8.3",

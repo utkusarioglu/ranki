@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import { FrameSpec } from "../types/args.mjs";
+import type { FrameSpec } from "../types/args.mjs";
 import { getContext as c } from "@ranki/package-api-v2/helpers";
 
 export const frameSpecV2: ohm.ActionDict<FrameSpec[]> = {

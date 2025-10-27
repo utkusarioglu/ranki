@@ -1,4 +1,4 @@
-import {
+import type {
   ParserPluginsInstance,
   RankiLangContextInstance,
   RankiLangAstContext,
@@ -11,9 +11,9 @@ import {
   AstNode,
   RankiLangContextParams,
   BindingNode,
+  RankiLangParseHandlerFunction,
+  Enrichments,
 } from "@ranki/package-api-v2";
-import { RankiLangParseHandlerFunction } from "../../api-v2/src/plugins/parser.mjs";
-import { Enrichments } from "../../api-v2/src/lang/context.mjs";
 
 export class RankiLangContext<
   T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,

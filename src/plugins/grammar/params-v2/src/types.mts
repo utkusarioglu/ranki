@@ -1,4 +1,4 @@
-import { AstNode, AstNodeLeafSource } from "@ranki/package-api-v2";
+import type { AstNode, AstNodeLeafSource } from "@ranki/package-api-v2";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
 type NodeArgsParamsV2 = AstNode["shape"] & Partial<NodeArgsBaseV2>;

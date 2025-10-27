@@ -17,6 +17,7 @@ export type {
   RankiLangContextInstance,
   RankiLangContextParams,
   BindingNode,
+  Enrichments,
 } from "./context.mjs";
 
 export type {

@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
 import yaml from "yaml";
-import {
-  // ParserPlugins,
-  RankiLang,
-} from "@ranki/package-rankilang-v2";
+import { RankiLang } from "@ranki/package-rankilang-v2";
 import type { PresetGroup } from "../services/preset/preset.types";
 import type {
-  // RankiLanguageDefaultConfig,
   RankiLanguageProvidedConfig,
   RankiPluginComponent,
   RankiPluginParser,

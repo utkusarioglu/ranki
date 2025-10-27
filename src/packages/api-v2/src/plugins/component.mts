@@ -5,11 +5,11 @@ import type {
   ValidationNode,
   ValidationNodeValidationEntry,
 } from "../stages/validation.mjs";
-import {
+import type {
   RankiLangAstContext,
   RankiLangParseHandlerCommon,
 } from "../lang/context.mjs";
-import { TransformNode } from "../export.mjs";
+import type { TransformNode } from "../export.mjs";
 
 export interface RankiPluginComponent extends RankiPluginCommon {
   handler: string;

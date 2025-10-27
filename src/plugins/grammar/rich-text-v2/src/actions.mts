@@ -13,7 +13,6 @@ import type {
   RankiRichTextV2ParserPluginConfig as RTV2,
   ParseNodeRichTextV2LeafReduced,
 } from "./types.mjs";
-
 import { joinNodes } from "@ranki/package-api-v2/helpers";
 
 function startToken(context: RankiLangAstContext, start: ohm.Node) {

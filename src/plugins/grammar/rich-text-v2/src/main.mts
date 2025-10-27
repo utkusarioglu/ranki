@@ -1,4 +1,7 @@
-import { RankiGrammarTokens, RankiPluginGrammar } from "@ranki/package-api-v2";
+import type {
+  RankiGrammarTokens,
+  RankiPluginGrammar,
+} from "@ranki/package-api-v2";
 import grammar from "../assets/ohm/2.0.63.ohm?raw";
 import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";

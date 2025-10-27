@@ -1,6 +1,7 @@
 import type { ParamsV2Spec } from "@ranki/plugin-grammar-params-v2";
 import type { AstNodeLeaf, AstNodeParent } from "@ranki/package-api-v2";
-import { Single } from "./main.mjs";
+
+export type Single = string;
 
 export interface NodeArgsRichStructureV2 {
   // "richStructure.v2": {

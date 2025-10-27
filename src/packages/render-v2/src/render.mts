@@ -1,7 +1,7 @@
-import { TransformNode } from "@ranki/package-api-v2";
-import { RankiPluginRenderer } from "./types/plugin.mjs";
+import type { TransformNode } from "@ranki/package-api-v2";
+import type { RankiPluginRenderer } from "./types/plugin.mjs";
 import { RenderLibrary } from "./library.mjs";
-import { RenderFunctionReturn } from "./types/render.mjs";
+import type { RenderFunctionReturn } from "./types/render.mjs";
 
 export class Render {
   static library = new RenderLibrary();

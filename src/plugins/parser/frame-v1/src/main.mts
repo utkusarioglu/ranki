@@ -4,12 +4,10 @@ import type {
 } from "@ranki/package-api-v2";
 import grammar from "../assets/ohm/2.0.64.ohm?raw";
 import { actions } from "./actions.mjs";
-import { FrameV1, handler } from "./handler.mjs";
+import { type FrameV1, handler } from "./handler.mjs";
 import { transformers } from "./transformers.mjs";
 import { validators } from "./validators.mjs";
 import type { RankiFrameV1ParserPluginConfig } from "./types.mjs";
-
-export type Single = string;
 
 const config: RankiFrameV1ParserPluginConfig = {
   tokens: {

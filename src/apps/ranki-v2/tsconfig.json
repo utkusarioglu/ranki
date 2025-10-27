@@ -1,4 +1,5 @@
 {
+  "extends": "@ranki/config-typescript/tsconfig.app.json",
   "compilerOptions": {
     "target": "ES2022",
     "useDefineForClassFields": true,
@@ -6,52 +7,15 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
 
+    "rootDir": "src",
+    "outDir": "dist",
+    "declarationDir": "types",
+
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
     "moduleDetection": "force",
-    "noEmit": true,
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noEmit": true
   },
-  "include": ["src"],
-  "references": [
-    {
-      "path": "../../packages/api-v2"
-    },
-    {
-      "path": "../../packages/rankilang-v2"
-    },
-    {
-      "path": "../../plugins/grammar/constants-v2"
-    },
-    {
-      "path": "../../plugins/parser/frame-v1"
-    },
-    {
-      "path": "../../plugins/parser/base-v2"
-    },
-    {
-      "path": "../../plugins/grammar/params-v2"
-    },
-    {
-      "path": "../../plugins/parser/frame-v2"
-    },
-    {
-      "path": "../../plugins/grammar/rich-text-v2"
-    },
-    {
-      "path": "../../plugins/grammar/rich-number-v2"
-    },
-    {
-      "path": "../../plugins/grammar/rich-structure-v2"
-    }
-  ]
+  "include": ["src"]
 }

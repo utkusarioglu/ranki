@@ -8,8 +8,6 @@ import { validators } from "./validators.mjs";
 import { transformers } from "./transformers.mjs";
 import type { RankiRichStructureV2ParserPluginConfig } from "./types.mjs";
 
-export type Single = string;
-
 const config: RankiRichStructureV2ParserPluginConfig = {
   tokens: {
     delimiter: "~",

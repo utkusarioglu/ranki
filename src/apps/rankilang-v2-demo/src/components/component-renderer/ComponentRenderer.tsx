@@ -14,20 +14,25 @@ export const ComponentRenderer: FC<ComponentRendererProps> = ({
 }) => {
   return (
     <div className={style.container}>
-      {Object.entries(parsed.theaters).map(([theater, o]) => (
-        <div key={theater}>
-          <hgroup className={style.hgroup}>
-            <h5 className={[style.hgroupTitle, "roboto"].join(" ")}>
-              Theater:
-            </h5>
-            <h1 className={[style.theater, "monospace"].join(" ")}>
-              {theater}
-            </h1>
-          </hgroup>
-          {customPath !== "" ? <h2>{customPath}</h2> : null}
-          <ContainerNode item={o.stages.transform} />
-        </div>
-      ))}
+      {Object.entries(parsed.theaters).map(([theater, o]) => {
+        if (!o.stages.transform) {
+          return null;
+        }
+        return (
+          <div key={theater}>
+            <hgroup className={style.hgroup}>
+              <h5 className={[style.hgroupTitle, "roboto"].join(" ")}>
+                Theater:
+              </h5>
+              <h1 className={[style.theater, "monospace"].join(" ")}>
+                {theater}
+              </h1>
+            </hgroup>
+            {customPath !== "" ? <h2>{customPath}</h2> : null}
+            <ContainerNode item={o.stages.transform} />
+          </div>
+        );
+      })}
     </div>
   );
 };

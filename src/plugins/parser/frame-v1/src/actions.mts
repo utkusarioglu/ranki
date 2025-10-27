@@ -7,7 +7,7 @@ import type {
 import { getContext as c } from "@ranki/package-api-v2/helpers";
 import type { ParseNodeFrameV1 } from "./types.mjs";
 import type { ArgsAndParamsV1 } from "./types.mjs";
-import { FrameV1 as V1 } from "./handler.mjs";
+import type { FrameV1 as V1 } from "./handler.mjs";
 
 const nodeBaseV2: ohm.ActionDict<AstNode> = {
   // !TODO end

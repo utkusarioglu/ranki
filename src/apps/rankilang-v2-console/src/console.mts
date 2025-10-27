@@ -82,7 +82,7 @@ function main(count: number) {
       process.exit(1);
     }
   });
-  console.log(yaml.stringify(JSON.parse(JSON.stringify(parsed))));
+  console.log(yaml.stringify(parsed));
 }
 
 main(+process.argv.at(-1));

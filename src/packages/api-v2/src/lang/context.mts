@@ -8,15 +8,15 @@ import type {
   RankiLangInstance,
   RankiLangParseHandlerHooks,
 } from "./rankilang.mjs";
-import {
+import type {
   RankiLangParseHandlerFunction,
   RankiPluginParser,
 } from "../plugins/parser.mjs";
-import { RankiGrammarTokens } from "../plugins/grammar.mjs";
+import type { RankiGrammarTokens } from "../plugins/grammar.mjs";
 import type * as ohm from "ohm-js";
 import type { TransformNode } from "../stages/transform.mjs";
 import type { ValidationNode } from "../stages/validation.mjs";
-import { ComponentPluginComponent } from "../export.mjs";
+import type { ComponentPluginComponent } from "../export.mjs";
 
 export interface RankiLangParseResult {
   report: RankiLangParseReport;

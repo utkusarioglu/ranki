@@ -7,7 +7,7 @@ import type {
   NodeArgsFrameV2ConfigP_Reduced,
   NodeArgsFrameV2ConfigFp_F_Reduced,
 } from "../types/args.mjs";
-import { ArgsAndParamsV2 } from "@ranki/plugin-grammar-params-v2";
+import type { ArgsAndParamsV2 } from "@ranki/plugin-grammar-params-v2";
 import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/context.mjs";
 
 export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {

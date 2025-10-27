@@ -2,12 +2,7 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "lib",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "target": "esnext",
-    "composite": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "declarationDir": "types"
   },
   "include": ["src/*"]
 }

@@ -1,20 +1,9 @@
 {
+  "extends": "@ranki/config-typescript/tsconfig.plugin.component.json",
   "compilerOptions": {
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "target": "esnext",
     "outDir": "lib",
     "rootDir": "src",
-    "declarationDir": "types",
-    "strict": true,
-    "composite": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "declarationDir": "types"
   },
-  "include": ["src/**/*"],
-  "references": [
-    {
-      "path": "../../../packages/api-v2"
-    }
-  ]
+  "include": ["src/**/*"]
 }

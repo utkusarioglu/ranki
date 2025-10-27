@@ -1,45 +1,9 @@
 {
+  "extends": "@ranki/config-typescript/tsconfig.app.json",
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": "src",
-    "moduleResolution": "nodenext",
-    "module": "nodenext",
-    "target": "esnext",
-    "composite": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "declarationDir": "types"
   },
-  "include": ["src/**/*"],
-  "references": [
-    {
-      "path": "../../packages/rankilang-v2"
-    },
-    {
-      "path": "../../packages/api-v2"
-    },
-    {
-      "path": "../../plugins/grammar/constants-v2"
-    },
-    {
-      "path": "../../plugins/parser/base-v2"
-    },
-    {
-      "path": "../../plugins/parser/frame-v1"
-    },
-    {
-      "path": "../../plugins/parser/frame-v2"
-    },
-    {
-      "path": "../../plugins/grammar/params-v2"
-    },
-    {
-      "path": "../../plugins/grammar/rich-number-v2"
-    },
-    {
-      "path": "../../plugins/grammar/rich-structure-v2"
-    },
-    {
-      "path": "../../plugins/grammar/rich-text-v2"
-    }
-  ]
+  "include": ["src/**/*"]
 }

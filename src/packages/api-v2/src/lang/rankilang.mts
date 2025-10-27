@@ -6,7 +6,7 @@ import type {
   RankiLanguageConfig,
   RankiLanguageProvidedConfig,
 } from "./config.mjs";
-import {
+import type {
   ParserPluginsInstance,
   TheaterName,
   RankiLangParseSpecs,

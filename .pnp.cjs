@@ -2343,6 +2343,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./src/apps/ranki-v2/",\
         "packageDependencies": [\
           ["@ranki/app-ranki-v2", "workspace:src/apps/ranki-v2"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-rankilang-v2", "workspace:src/packages/rankilang-v2"],\
           ["@ranki/plugin-grammar-constants-v2", "workspace:src/plugins/grammar/constants-v2"],\
           ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
@@ -2367,6 +2368,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./src/apps/rankilang-v2-console/",\
         "packageDependencies": [\
           ["@ranki/app-rankilang-v2-console", "workspace:src/apps/rankilang-v2-console"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-rankilang-v2", "workspace:src/packages/rankilang-v2"],\
           ["@ranki/plugin-component-frame-v2-dom", "workspace:src/plugins/component/dom"],\
@@ -2394,6 +2396,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@eslint/js", "npm:9.36.0"],\
           ["@ranki/app-rankilang-v2-demo", "workspace:src/apps/rankilang-v2-demo"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-rankilang-v2", "workspace:src/packages/rankilang-v2"],\
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
@@ -2497,6 +2500,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:src/plugins/component/dom", {\
         "packageLocation": "./src/plugins/component/dom/",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/plugin-component-frame-v2-dom", "workspace:src/plugins/component/dom"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
