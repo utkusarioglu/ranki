@@ -1,10 +1,10 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangContextInstance as R } from "@ranki/package-api-v2";
+import { getContext as c } from "@ranki/package-api-v2/helpers";
 import type { RankiFrameV2ParserPluginConfig } from "../types/config.mjs";
 
 export const creatorName: ohm.ActionDict<string> = {
   tFrameV2SeparatorParam(sep) {
-    const context = this.args.context as R;
+    const context = c(this);
     const config =
       context.getPluginConfig<RankiFrameV2ParserPluginConfig>("RankiFrameV2");
     const separator = config.tokens.separator;

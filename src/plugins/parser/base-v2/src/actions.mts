@@ -8,6 +8,7 @@ import type {
   AstNodeLeafReduced,
   AstNodeParentReduced,
 } from "@ranki/package-api-v2";
+import { getContext as c } from "@ranki/package-api-v2/helpers";
 import { zipNodes, joinNodes } from "@ranki/package-api-v2/helpers";
 
 const separatorList: ohm.ActionDict<SeparatorEntry[]> = {
@@ -45,7 +46,7 @@ const separator: ohm.ActionDict<SeparatorEntry> = {
 
 const node: ohm.ActionDict<AstNode> = {
   root_ignore(ignore, wm, rest) {
-    const context = (this.args.context as R).newChild("block");
+    const context = c(this).newChild("block");
     return context.enrich<AstNodeLeafReduced, AstNodeLeaf>({
       kind: "leaf",
       creator: this.ctorName,
@@ -67,7 +68,7 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   section_empty(all) {
-    const context = (this.args.context as R).newChild("block");
+    const context = c(this).newChild("block");
     return context.enrich<AstNodeLeafReduced, AstNodeLeaf>({
       kind: "leaf",
       creator: this.ctorName,
@@ -84,7 +85,7 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   root_structure(whitespace1, structure, whitespace2) {
-    const context = (this.args.context as R).newChild("block");
+    const context = c(this).newChild("block");
     return context.enrich<AstNodeParentReduced, AstNodeParent>(
       {
         kind: "parent",
@@ -115,7 +116,7 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   section_base(block, blockSep, block2) {
-    const context = (this.args.context as R).newChild("block");
+    const context = c(this).newChild("block");
     return context.enrich<AstNodeParentReduced, AstNodeParent>(
       {
         kind: "parent",
@@ -138,7 +139,7 @@ const node: ohm.ActionDict<AstNode> = {
 
   // TODO nl
   p(line1, nl, line2) {
-    const context = (this.args.context as R).newChild("block");
+    const context = c(this).newChild("block");
     return context.enrich<AstNodeParentReduced, AstNodeParent>(
       {
         kind: "parent",
@@ -161,7 +162,7 @@ const node: ohm.ActionDict<AstNode> = {
 
   // TODO line modifiers
   line(indentation1, lineModifiers, lexemes, wi1) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<AstNodeParentReduced, AstNodeParent>(
       {
         kind: "parent",
@@ -193,7 +194,7 @@ const node: ohm.ActionDict<AstNode> = {
 
   // TODO clearance
   lexemes(lexeme1, clearance, lexeme2) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<AstNodeParentReduced, AstNodeParent>(
       {
         kind: "parent",
@@ -215,7 +216,7 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   decorated_base(word, wordEnd) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<AstNodeParentReduced, AstNodeParent>(
       {
         kind: "parent",
@@ -243,7 +244,7 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   decorated_fallback(word, wordEnd) {
-    const parentContext = (this.args.context as R).newChild("inline");
+    const parentContext = c(this).newChild("inline");
     return parentContext.enrich<AstNodeParentReduced, AstNodeParent>(
       {
         kind: "parent",
@@ -287,7 +288,7 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   word_base(base) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<AstNodeLeafReduced, AstNodeLeaf>({
       kind: "leaf",
       creator: this.ctorName,
@@ -304,7 +305,7 @@ const node: ohm.ActionDict<AstNode> = {
   },
 
   word_number(number) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<AstNodeLeafReduced, AstNodeLeaf>({
       kind: "leaf",
       creator: this.ctorName,
@@ -323,7 +324,7 @@ const node: ohm.ActionDict<AstNode> = {
 
   // TODO should this exist?
   clearance(clearance1) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<AstNodeLeafReduced, AstNodeLeaf>({
       kind: "leaf",
       print: true,
@@ -341,7 +342,7 @@ const node: ohm.ActionDict<AstNode> = {
 
   // TODO should this exist?
   whitespace(wm, wi) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     const sourceString = wm.sourceString + wi.sourceString;
     return context.enrich<AstNodeLeafReduced, AstNodeLeaf>({
       kind: "leaf",

@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangContextInstance as R } from "@ranki/package-api-v2";
+import { getContext as c } from "@ranki/package-api-v2/helpers";
 import type {
   ParseNodeFrameV2,
   ParseNodeFrameV2EReduced,
@@ -16,7 +16,7 @@ import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/co
 
 export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2_fp(v2Start, v2FrameConfig, v2Payload, v2End) {
-    const context = (this.args.context as R<V2>).newChild("block");
+    const context = c<V2>(this).newChild("block");
     const frameConfig: NodeArgsFrameV2Config =
       v2FrameConfig.v2FrameConfig(context);
 
@@ -47,7 +47,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   v2_f(v2Start, v2FrameConfig, v2End) {
-    const context = (this.args.context as R<V2>).newChild("block");
+    const context = c<V2>(this).newChild("block");
     const frameConfig: NodeArgsFrameV2ConfigP =
       v2FrameConfig.v2FrameConfig(context);
 
@@ -78,7 +78,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   v2_e(v2Start, wi1, v2Chain, wi2, v2End) {
-    const context = (this.args.context as R<V2>).newChild("block");
+    const context = c<V2>(this).newChild("block");
     const chain: FrameSpec[] = v2Chain.frameSpecV2(context);
 
     // @ts-expect-error needs its parent

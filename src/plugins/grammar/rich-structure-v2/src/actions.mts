@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { RankiLangContextInstance as R } from "@ranki/package-api-v2";
+import { getContext as c } from "@ranki/package-api-v2/helpers";
 import type {
   ArgsAndParamsV2,
   ArgsAndParamsV2Reduced,
@@ -11,7 +11,7 @@ import type {
 } from "./types.mjs";
 
 function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
-  const context = (this.args.context as R).newChild();
+  const context = c(this).newChild();
   const l = a.node(context);
   l.type = this.ctorName;
   return l;
@@ -19,7 +19,7 @@ function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
 
 const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
   hLevel_defined(structureType1, separator, structureType2) {
-    const context = (this.args.context as R).newChild("block");
+    const context = c(this).newChild("block");
     // ! needs a type
     // its previous type was:
     // ParseNodeRichStructureV2["args"]["richStructure.v2"] =
@@ -75,7 +75,7 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
 
 const argsAndParamsV2List: ohm.ActionDict<ArgsAndParamsV2[]> = {
   _iter(...children) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return children.map((c) => c.argsAndParamsV2(context));
   },
 };
@@ -89,7 +89,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi2,
     structureSepEnd,
   ) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<ArgsAndParamsV2Reduced, ArgsAndParamsV2>({
       args: {
         spaces: {
@@ -132,7 +132,7 @@ const argsAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi3,
     structureSepEnd,
   ) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     const config: ArgsAndParamsV2RichStructureV2 =
       v2ParamListInlineContainer.argsAndParamsV2(context);
     return {

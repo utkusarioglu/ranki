@@ -4,6 +4,7 @@ import type {
   AstNodeLeaf,
   RankiLangContextInstance as R,
 } from "@ranki/package-api-v2";
+import { getContext as c } from "@ranki/package-api-v2/helpers";
 import type {
   ParseNodeRichTextV2ParentReduced,
   NodeArgRichTextV2SentenceEnd,
@@ -168,7 +169,7 @@ function endToken(context: RankiLangAstContext, end: ohm.Node) {
 
 const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   textual(decorated1, clearance, decorated2) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<
       ParseNodeRichTextV2ParentReduced,
       ParseNodeRichTextV2
@@ -190,7 +191,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   decorated_decorated(start, word, end, wordEnd) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     const { startNodes, startArgs } = startToken(context, start);
     const { endNodes, endArgs } = endToken(context, end);
 
@@ -226,7 +227,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   text_lowercase(text) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<ParseNodeRichTextV2LeafReduced, ParseNodeRichTextV2>({
       kind: "leaf",
       print: true,
@@ -244,7 +245,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   text_propercase(first, rest) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<ParseNodeRichTextV2LeafReduced, ParseNodeRichTextV2>({
       kind: "leaf",
       print: true,
@@ -262,7 +263,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   text_uppercase(all) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<ParseNodeRichTextV2LeafReduced, ParseNodeRichTextV2>({
       kind: "leaf",
       print: true,
@@ -280,7 +281,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   text_mixedcaseUl(one, two, three, four) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<ParseNodeRichTextV2LeafReduced, ParseNodeRichTextV2>({
       kind: "leaf",
       print: true,
@@ -298,7 +299,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   text_mixedcaseLu(one, two, three) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<ParseNodeRichTextV2LeafReduced, ParseNodeRichTextV2>({
       kind: "leaf",
       print: true,
@@ -316,7 +317,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   tRichTextV2DecorationBold(b) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<ParseNodeRichTextV2LeafReduced, ParseNodeRichTextV2>({
       kind: "leaf",
       print: false,
@@ -334,7 +335,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   sentence(sentence) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<ParseNodeRichTextV2LeafReduced, ParseNodeRichTextV2>({
       kind: "leaf",
       print: true,
@@ -352,7 +353,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   tRichTextV2DecorationAbbreviation(token) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<ParseNodeRichTextV2LeafReduced, ParseNodeRichTextV2>({
       kind: "leaf",
       print: false,
@@ -370,7 +371,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   tRichTextV2DecorationEmphasis(token) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<ParseNodeRichTextV2LeafReduced, ParseNodeRichTextV2>({
       kind: "leaf",
       print: false,
@@ -389,7 +390,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   tRichTextV2DecorationIdiomatic(token) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<ParseNodeRichTextV2LeafReduced, ParseNodeRichTextV2>({
       kind: "leaf",
       print: false,
@@ -407,7 +408,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   tRichTextV2DecorationUnderline(token) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<ParseNodeRichTextV2LeafReduced, ParseNodeRichTextV2>({
       kind: "leaf",
       print: false,
@@ -428,7 +429,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
    * @overload
    */
   line(indentation1, lineModifiers, lexemes, wi1) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<
       ParseNodeRichTextV2ParentReduced,
       ParseNodeRichTextV2
@@ -452,7 +453,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   word_punctuation(chars) {
-    const context = (this.args.context as R).newChild("inline");
+    const context = c(this).newChild("inline");
     return context.enrich<ParseNodeRichTextV2LeafReduced, ParseNodeRichTextV2>({
       kind: "leaf",
       creator: this.ctorName,
@@ -470,7 +471,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   },
 
   decorated_richTextBase(start, word, end, wordEnd) {
-    const parentContext = (this.args.context as R).newChild("inline");
+    const parentContext = c(this).newChild("inline");
     const { startNodes, startArgs } = startToken(parentContext, start);
     const { endNodes, endArgs } = endToken(parentContext, end);
 

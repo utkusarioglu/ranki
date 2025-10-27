@@ -1,12 +1,11 @@
 import type * as ohm from "ohm-js";
 import type {
   AstNode,
-  AstNodeLeafReduced,
   AstNodeParentReduced,
-  AstNodeLeaf,
   AstNodeParent,
   RankiLangContextInstance as R,
 } from "@ranki/package-api-v2";
+import { getContext as c } from "@ranki/package-api-v2/helpers";
 import type { ParseNodeFrameV1 } from "./types.mjs";
 import type { ArgsAndParamsV1 } from "./types.mjs";
 import { FrameV1 as V1 } from "./handler.mjs";
@@ -14,7 +13,7 @@ import { FrameV1 as V1 } from "./handler.mjs";
 const nodeBaseV2: ohm.ActionDict<AstNode> = {
   // !TODO end
   block_v1(indentation, v1Block, wi1, end) {
-    const context = (this.args.context as R<V1>).newChild("block");
+    const context = c<V1>(this).newChild("block");
     return context.enrich<AstNodeParentReduced, AstNodeParent>(
       {
         kind: "parent",
@@ -55,7 +54,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadInline,
     frameV1_2,
   ) {
-    const context = (this.args.context as R<V1>).newChild("inline");
+    const context = c<V1>(this).newChild("inline");
 
     const childContext = context.newChild().setParser({
       type: "RankiFrameV1",
@@ -118,7 +117,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadInline,
     frameV1_2,
   ) {
-    const context = (this.args.context as R<V1>).newChild("inline");
+    const context = c<V1>(this).newChild("inline");
     const argsAndParamsV1 = v1ParamListInline.argsAndParamsV1(context);
     const newContext = context.newChild().setParser({
       type: "RankiFrameV1",
@@ -190,7 +189,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadBlock,
     v1BlockEnd,
   ) {
-    const context = (this.args.context as R<V1>).newChild("inline");
+    const context = c<V1>(this).newChild("inline");
     const childContext = context.newChild().setParser({
       type: "RankiFrameV1",
       chain: v1Type.sourceString,
@@ -259,7 +258,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadBlock,
     v1BlockEnd,
   ) {
-    const context = (this.args.context as R<V1>).newChild("block");
+    const context = c<V1>(this).newChild("block");
     const argsAndParamsV1: ArgsAndParamsV1 =
       v1ParamListInline.argsAndParamsV1(context);
     const newContext = context.newChild().setParser({
@@ -338,14 +337,14 @@ const paramV1: ohm.ActionDict<string> = {
 
 const paramsV1: ohm.ActionDict<string[]> = {
   _iter(...children) {
-    const context = (this.args.context as R<V1>).newChild("inline");
+    const context = c<V1>(this).newChild("inline");
     return children.map((v) => v.paramV1(context));
   },
 };
 
 const argsAndParamsV1: ohm.ActionDict<ArgsAndParamsV1> = {
   v1ParamListInline(v1ParamValue1, sep, v1ParamValue2) {
-    const context = (this.args.context as R<V1>).newChild("inline");
+    const context = c<V1>(this).newChild("inline");
     return {
       parser: { hash: context.getHash("ast") },
       args: {},
