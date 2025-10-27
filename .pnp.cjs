@@ -2582,6 +2582,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:src/plugins/parser/base-v2", {\
         "packageLocation": "./src/plugins/parser/base-v2/",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
           ["@types/node", "npm:24.5.2"],\
@@ -2595,6 +2596,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:src/plugins/parser/frame-v1", {\
         "packageLocation": "./src/plugins/parser/frame-v1/",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
           ["@ranki/plugin-parser-frame-v1", "workspace:src/plugins/parser/frame-v1"],\
@@ -2609,6 +2611,7 @@ const RAW_RUNTIME_STATE =
       ["workspace:src/plugins/parser/frame-v2", {\
         "packageLocation": "./src/plugins/parser/frame-v2/",\
         "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
           ["@ranki/plugin-parser-base-v2", "workspace:src/plugins/parser/base-v2"],\
