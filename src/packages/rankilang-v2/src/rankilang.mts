@@ -18,7 +18,7 @@ import { ComponentPlugins } from "./component/component-plugins.mjs";
 import { ValidatorLibrary } from "./validator/library.mjs";
 import { TransformerLibrary } from "./transformer/transformer.mjs";
 import { AstLibrary } from "./ast/library.mjs";
-import { RankiLangContext } from "./context.mjs";
+import { RankiLangContext } from "./context/context.mjs";
 
 export class RankiLang implements RankiLangInstance {
   private config: RankiLangConfig;
@@ -84,6 +84,7 @@ export class RankiLang implements RankiLangInstance {
       parseAst: this.ast.parse.bind(this.ast),
       getHandler: this.parsers.getHandler.bind(this.parsers),
       getConfig: this.config.getAll.bind(this.config),
+      createParser: this.ast.createParser.bind(this.ast),
     };
     return parseHandlerHooks;
   }
@@ -103,18 +104,14 @@ export class RankiLang implements RankiLangInstance {
 
     const config = this.config.getAll();
 
-    // @ts-expect-error it doesn't like the property of `getPluginConfig`
     const context: RankiLangContextInstance = new RankiLangContext({
       theater: spec.theater,
       role: spec.role,
-      parser: {
-        type: "RankiBaseV2",
-      },
-      astHash: "", // this needs to be overwritten when a parser is created
-      blockDepth: 0,
-      inlineDepth: 0,
-      startRule: "root",
       hooks: this.createParseHandlerHooks(),
+    }).setParser({
+      type: "RankiBaseV2",
+      chain: [[]],
+      params: [],
     });
 
     const ast = this.ast.parse(theaterRaw, context);

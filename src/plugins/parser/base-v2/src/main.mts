@@ -26,7 +26,7 @@ function tokenizer(config: RankiBaseV2ParserPluginConfig) {
 
 function handler(
   theaterRaw: string,
-  context: RankiLangAstContext<{ type: string }>,
+  context: RankiLangAstContext,
 ): RankiLangParsedAst {
   const config = context.getMergedConfig();
   const theaterWithContent = [

@@ -6,10 +6,7 @@ export interface FrameV1 {
   params: string[];
 }
 
-export const handler: RankiLangParseHandlerFunction<FrameV1> = (
-  theaterRaw,
-  context,
-) => {
+export const handler: RankiLangParseHandlerFunction = (theaterRaw, context) => {
   // TODO THIS SHOULD BE USED. this handler needs to clone the language and use it
   // const cloned = context.cloneLang([]);
 

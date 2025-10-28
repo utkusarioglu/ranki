@@ -1,7 +1,7 @@
 import type * as ohm from "ohm-js";
 import type { RankiLanguageConfig } from "../lang/config.mjs";
 import type {
-  RankiLangParseHandlerCommon,
+  // RankiLangParseHandler,
   RankiLangParsedAst,
   RankiLangAstContext,
 } from "../lang/context.mjs";
@@ -15,11 +15,8 @@ export type RankiGrammarTokens = Record<
 >;
 
 export type RankiLangParseHandlerFunction<
-  HandlerShape extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
-> = (
-  raw: string,
-  spec: RankiLangAstContext<HandlerShape>,
-) => RankiLangParsedAst;
+  // HandlerShape extends RankiLangParseHandler = RankiLangParseHandler,
+> = (raw: string, spec: RankiLangAstContext) => RankiLangParsedAst;
 
 export type RankiPluginGrammar<ConfigShape = {}> = RankiPluginCommon &
   WithTokenizer & {

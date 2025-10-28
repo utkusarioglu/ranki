@@ -8,11 +8,10 @@ import type {
   NodeArgsFrameV2ConfigFp_F_Reduced,
 } from "../types/args.mjs";
 import type { ArgsAndParamsV2 } from "@ranki/plugin-grammar-params-v2";
-import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/context.mjs";
 
 export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   v2FrameConfigP(wi1, v2Type, wi2, sep) {
-    const context = c<V2>(this).newChild("block");
+    const context = c(this).newChild("block");
 
     const chain: FrameSpec[] = v2Type.frameSpecV2(context);
     return context.enrich<NodeArgsFrameV2ConfigP_Reduced, NodeArgsFrameV2>(
@@ -59,7 +58,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     wi3,
     sepRight,
   ) {
-    const context = c<V2>(this).newChild("block");
+    const context = c(this).newChild("block");
     const config: ArgsAndParamsV2 =
       v2ParamListInlineContainer.shapeAndParamsV2(context);
 
@@ -112,7 +111,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     wi3,
     sepRight,
   ) {
-    const context = c<V2>(this).newChild("block");
+    const context = c(this).newChild("block");
     const config: ArgsAndParamsV2 =
       v2ParamListBlockContainer.shapeAndParamsV2(context);
     const chain: FrameSpec[] = v2Type.frameSpecV2(context);

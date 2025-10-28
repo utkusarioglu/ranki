@@ -13,15 +13,19 @@ import type {
   NodeArgsFrameV2ConfigE_Reduced,
 } from "../types/args.mjs";
 import type { FrameSpec } from "../types/args.mjs";
-import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/context.mjs";
 
 export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2_fp(_v2Start, v2FrameConfig, v2Payload, _v2End) {
-    const context = c<V2>(this).newChild("block");
+    const context = c(this).newChild("block");
     const frameConfig: NodeArgsFrameV2Config =
       v2FrameConfig.v2FrameConfig(context);
 
-    const payloadContext = context.newChild().setParser(frameConfig);
+    const payloadContext = context.newChild().setParser({
+      type: frameConfig.type,
+      chain: frameConfig.chain,
+      // @ts-expect-error complains about "key" type
+      params: frameConfig.params.items,
+    });
 
     const child = v2Payload.node(payloadContext);
 
@@ -48,11 +52,15 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   v2_f(_v2Start, v2FrameConfig, _v2End) {
-    const context = c<V2>(this).newChild("block");
+    const context = c(this).newChild("block");
     const frameConfig: NodeArgsFrameV2ConfigP =
       v2FrameConfig.v2FrameConfig(context);
 
-    const newContext = context.newChild().setParser(frameConfig);
+    const newContext = context.newChild().setParser({
+      type: frameConfig.type,
+      chain: frameConfig.chain,
+      params: frameConfig.params.items,
+    });
 
     const child = context.parseAst("", newContext);
 
@@ -79,7 +87,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   v2_e(_v2Start, wi1, v2Chain, wi2, _v2End) {
-    const context = c<V2>(this).newChild("block");
+    const context = c(this).newChild("block");
     const chain: FrameSpec[] = v2Chain.frameSpecV2(context);
     const configContext = context.newChild();
 
@@ -115,7 +123,11 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       },
     );
 
-    const newContext = context.newChild().setParser(frameConfig);
+    const newContext = context.newChild().setParser({
+      type: frameConfig.type,
+      chain: frameConfig.chain,
+      params: frameConfig.params.items,
+    });
     const child = context.parseAst("", newContext);
 
     return context.enrich<ParseNodeFrameV2EReduced, ParseNodeFrameV2>(

@@ -164,7 +164,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
   paramFormatPositional(quoted) {
     const context = c(this).newChild("inline");
     return context.enrich<ParamV2ReducedPartial, ParamV2Common>({
-      key: "positional",
+      key: "positional" as "positional",
       shape: {
         spaces: {},
         separators: [],

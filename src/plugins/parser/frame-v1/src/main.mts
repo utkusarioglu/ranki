@@ -4,7 +4,7 @@ import type {
 } from "@ranki/package-api-v2";
 import grammar from "../assets/ohm/2.0.64.ohm?raw";
 import { actions } from "./actions.mjs";
-import { type FrameV1, handler } from "./handler.mjs";
+import { handler } from "./handler.mjs";
 import { transformers } from "./transformers.mjs";
 import { validators } from "./validators.mjs";
 import type { RankiFrameV1ParserPluginConfig } from "./types.mjs";
@@ -25,21 +25,19 @@ function tokenizer(config: RankiFrameV1ParserPluginConfig) {
   return tokens;
 }
 
-export const rankiFrameV1ParserPlugin: RankiPluginParser<
-  RankiFrameV1ParserPluginConfig,
-  FrameV1
-> = {
-  type: "parser",
-  meta: {
-    version: "2.0.64",
-    name: "RankiFrameV1",
-  },
-  handler,
-  dependencies: ["RankiBaseV2"],
-  config,
-  tokenizer: () => tokenizer(config),
-  grammar: () => grammar,
-  validators,
-  transformers,
-  actions: () => actions,
-};
+export const rankiFrameV1ParserPlugin: RankiPluginParser<RankiFrameV1ParserPluginConfig> =
+  {
+    type: "parser",
+    meta: {
+      version: "2.0.64",
+      name: "RankiFrameV1",
+    },
+    handler,
+    dependencies: ["RankiBaseV2"],
+    config,
+    tokenizer: () => tokenizer(config),
+    grammar: () => grammar,
+    validators,
+    transformers,
+    actions: () => actions,
+  };

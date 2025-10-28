@@ -3,13 +3,9 @@ import type {
   RankiLangParseHandlerFunction,
 } from "@ranki/package-api-v2";
 import type { ParamV2 } from "@ranki/plugin-grammar-params-v2";
-import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "./types/context.mjs";
 
-export const handler: RankiLangParseHandlerFunction<V2> = (
-  theaterRaw,
-  context,
-) => {
-  const parser = context.getParser();
+export const handler: RankiLangParseHandlerFunction = (theaterRaw, context) => {
+  const parser = context.getParserDefinition();
   if (parser.type !== "RankiFrameV2") {
     throw new Error(`FRAME V2 HANDLER GIVEN NON-FRAME V2 COMPONENT`);
   }
@@ -140,18 +136,26 @@ function convertParams<T extends ParamV2>(
 
 function parseSettings(
   { directive, setting }: any,
-  frameConfig: RankiLangAstContext<V2>,
+  frameConfig: RankiLangAstContext,
 ) {
-  const parser = frameConfig.getParser();
+  const parser = frameConfig.getParserDefinition();
   if (!parser.params) {
     return { config: null };
   }
-  const items = parser.params.items;
+  const items = parser.params;
   const directiveParams = items.filter((p) => p.type === "directive");
   const settingParams = items.filter((p) => p.type === "setting");
 
-  const directives = convertParams(directiveParams, directive);
-  const settings = convertParams(settingParams, setting);
+  const directives = convertParams(
+    // @ts-expect-error
+    directiveParams,
+    directive,
+  );
+  const settings = convertParams(
+    // @ts-expect-error
+    settingParams,
+    setting,
+  );
 
   return { directives, settings };
 }

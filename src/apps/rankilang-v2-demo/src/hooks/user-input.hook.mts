@@ -69,9 +69,10 @@ export function useUserInput(
       const config = rankiLang.getConfig().merged;
       setSharedState({ type: "loaded", parsed, config });
     } catch (e) {
+      const err = e as Error;
       setSharedState({
         type: "error",
-        error: (e as Error).toString(),
+        error: err.stack ? err.stack : err.message,
       });
     }
   }, [

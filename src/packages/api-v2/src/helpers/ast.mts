@@ -1,10 +1,5 @@
-import type {
-  RankiLangContextInstance,
-  RankiLangParseHandlerCommon,
-} from "../export.mjs";
+import type { RankiLangContextInstance } from "../export.mjs";
 
-export function getContext<
-  T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
->(self: any): RankiLangContextInstance<T> {
+export function getContext(self: any): RankiLangContextInstance {
   return self.args.context;
 }

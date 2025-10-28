@@ -7,7 +7,7 @@ import type {
 } from "../stages/validation.mjs";
 import type {
   RankiLangAstContext,
-  RankiLangParseHandlerCommon,
+  // RankiLangParseHandler,
 } from "../lang/context.mjs";
 import type { TransformNode } from "../export.mjs";
 
@@ -20,10 +20,10 @@ export type ComponentPluginComponentShorthand = Record<string, string[]>;
 export type ComponentPluginComponentPositional = string[][];
 
 export type ComponentPluginValidationFuncProps<
-  T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
+  // T extends RankiLangParseHandler = RankiLangParseHandler,
 > = {
   validation: ValidationNode;
-  spec: RankiLangAstContext<T>;
+  spec: RankiLangAstContext;
 };
 
 export type ComponentPluginValidationFunc = (
@@ -31,10 +31,10 @@ export type ComponentPluginValidationFunc = (
 ) => ValidationNodeValidationEntry;
 
 export type ComponentPluginTransformFuncProps<
-  T extends RankiLangParseHandlerCommon = RankiLangParseHandlerCommon,
+  // T extends RankiLangParseHandler = RankiLangParseHandler,
 > = {
   validation: ValidationNode;
-  spec: RankiLangAstContext<T>;
+  spec: RankiLangAstContext;
 };
 
 export type ComponentPluginTransformFunc = (

@@ -2,7 +2,6 @@ import type {
   AstNode,
   RankiPluginParser,
   RankiPluginParserValidationFunc,
-  RankiLangParseHandlerCommon,
   ValidatorFunctionEntry,
   ValidationNode,
   RankiLangAstContext,
@@ -34,10 +33,7 @@ export class ValidatorLibrary {
     return found.callback;
   }
 
-  validate<T extends RankiLangParseHandlerCommon>(
-    obj: AstNode,
-    spec: RankiLangAstContext<T>,
-  ): ValidationNode {
+  validate(obj: AstNode, spec: RankiLangAstContext): ValidationNode {
     try {
       const validator = this.getValidator(obj.creator);
       if (obj.kind === "parent") {

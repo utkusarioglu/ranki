@@ -1,17 +1,22 @@
-import type { AstNode, AstNodeLeafSource } from "@ranki/package-api-v2";
+import type {
+  AstNode,
+  AstNodeLeafSource,
+  GenericParam,
+  GenericParamOperators,
+} from "@ranki/package-api-v2";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
 type NodeArgsParamsV2 = AstNode["shape"] & Partial<NodeArgsBaseV2>;
 
 export type ParamV2 = ParamV2Setting | ParamV2Directive;
 
-export interface ParamV2Common {
+export type ParamV2Common = Omit<GenericParam, "key"> & {
   key: "positional" | ParamV2Key;
   shape: NodeArgsParamsV2;
   operator: ParamV2Operator;
   values: ParamV2Value[];
   source: AstNodeLeafSource;
-}
+};
 
 export type ParamV2Setting = ParamV2Common & {
   type: "setting";
@@ -48,7 +53,7 @@ export type ParamV2Key = ParamV2KeyWord[]; // @overload
 
 export type ParamV2KeyWord = string & { type?: "ParamV2Key" };
 
-export type ParamV2Operator = "assign" | "append" | "remove";
+export type ParamV2Operator = GenericParamOperators;
 
 export type ParamV2Value =
   | ParamV2ValueNumber

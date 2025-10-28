@@ -6,7 +6,7 @@ export type {
   RankiLangParsedTheater,
   RankiLangParseReport,
   RankiLangParseFunctionReturn,
-  RankiLangParseHandlerCommon,
+  RankiLangParseHandler,
   ParserPluginsInstance,
   ProducedConfig,
   ActionsDictRecord,
@@ -18,6 +18,8 @@ export type {
   RankiLangContextParams,
   BindingNode,
   Enrichments,
+  GenericParam,
+  GenericParamOperators,
 } from "./context.mjs";
 
 export type {

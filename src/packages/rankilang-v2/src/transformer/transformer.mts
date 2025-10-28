@@ -2,7 +2,6 @@ import type {
   RankiPluginParser,
   RankiPluginParserTransformFunc,
   TransformerFunctionEntry,
-  RankiLangParseHandlerCommon,
   ValidationNode,
   TransformNode,
   TransformNodeParent,
@@ -35,9 +34,9 @@ export class TransformerLibrary {
     return found.callback;
   }
 
-  transform<T extends RankiLangParseHandlerCommon>(
+  transform(
     validation: ValidationNode,
-    context: RankiLangAstContext<T>,
+    context: RankiLangAstContext,
   ): TransformNode {
     try {
       // @ts-ignore

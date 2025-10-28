@@ -6,12 +6,11 @@ import type {
 import { getContext as c } from "@ranki/package-api-v2/helpers";
 import { joinNodes, zipNodes } from "@ranki/package-api-v2/helpers";
 import type * as ohm from "ohm-js";
-import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/context.mjs";
 import type { ParseNodeFrameV2 } from "../types/node.mjs";
 
 export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
   block_v2(indentation, v2, wi, _ender) {
-    const context = c<V2>(this).newChild("block");
+    const context = c(this).newChild("block");
     return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
@@ -39,7 +38,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   v2Payload_P(wi1, nl, pauseRoot) {
-    const context = c<V2>(this).newChild("block");
+    const context = c(this).newChild("block");
     return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
@@ -67,7 +66,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   v2Payload_p(pauseRoot) {
-    const context = c<V2>(this).newChild("block");
+    const context = c(this).newChild("block");
     return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
@@ -86,7 +85,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   pauseList(v2PayloadSection1, pausedContainer, v2PayloadSection2) {
-    const context = c<V2>(this).newChild("block");
+    const context = c(this).newChild("block");
     return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
@@ -120,7 +119,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     v2PayloadSectionItem2,
     whitespace2,
   ) {
-    const context = c<V2>(this).newChild("block");
+    const context = c(this).newChild("block");
     return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
@@ -153,7 +152,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2PayloadPlain(plain) {
     // TODO i'm so not sure if this is what's supposed to happen here
     // this uses a context that was created in a parent to produce a parser deeper in the chain
-    const context = c<V2>(this).newChild("block");
+    const context = c(this).newChild("block");
 
     const child = context.parseAst(plain.sourceString, context);
     return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
@@ -175,7 +174,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
 
   // !TODO are pauseStart and pauseEnd separators or fillers?
   pausedContainer(_pauseStart, pausedPayload, _pauseEnd) {
-    const parentContext = c<V2>(this).newChild("block");
+    const parentContext = c(this).newChild("block");
     return parentContext.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
@@ -193,7 +192,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
         subtree: {},
         children: [
           (() => {
-            const leafContext = (parentContext as R<V2>).newChild("inline");
+            const leafContext = (parentContext as R).newChild("inline");
             return leafContext.enrich<AstNodeLeafReduced, ParseNodeFrameV2>({
               kind: "leaf",
               creator: this.ctorName,

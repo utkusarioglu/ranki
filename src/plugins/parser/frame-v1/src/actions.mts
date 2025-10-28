@@ -6,12 +6,11 @@ import type {
   ParseNodeFrameV1,
 } from "./types.mjs";
 import type { ArgsAndParamsV1, FrameV1NodeParent } from "./types.mjs";
-import type { FrameV1 as V1 } from "./handler.mjs";
 
 const nodeBaseV2: ohm.ActionDict<FrameV1Node> = {
   // !TODO end
   block_v1(indentation, v1Block, wi1, _end) {
-    const context = c<V1>(this).newChild("block");
+    const context = c(this).newChild("block");
     return context.enrich<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
@@ -52,11 +51,11 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadInline,
     _frameV1_2,
   ) {
-    const context = c<V1>(this).newChild("inline");
+    const context = c(this).newChild("inline");
 
     const childContext = context.newChild().setParser({
       type: "RankiFrameV1",
-      chain: v1Type.sourceString,
+      chain: [[v1Type.sourceString]],
       params: [],
     });
 
@@ -115,11 +114,11 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadInline,
     _frameV1_2,
   ) {
-    const context = c<V1>(this).newChild("inline");
+    const context = c(this).newChild("inline");
     const shapeAndParamsV1 = v1ParamListInline.shapeAndParamsV1(context);
     const newContext = context.newChild().setParser({
       type: "RankiFrameV1",
-      chain: v1Type.sourceString,
+      chain: [[v1Type.sourceString]],
       params: [],
     });
     const child = context.parseAst(v1PayloadInline.sourceString, newContext);
@@ -187,10 +186,10 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadBlock,
     _v1BlockEnd,
   ) {
-    const context = c<V1>(this).newChild("inline");
+    const context = c(this).newChild("inline");
     const childContext = context.newChild().setParser({
       type: "RankiFrameV1",
-      chain: v1Type.sourceString,
+      chain: [[v1Type.sourceString]],
       params: [],
     });
     const child = context.parseAst(v1PayloadBlock.sourceString, childContext);
@@ -256,13 +255,13 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadBlock,
     _v1BlockEnd,
   ) {
-    const context = c<V1>(this).newChild("block");
+    const context = c(this).newChild("block");
     const shapeAndParamsV1: ArgsAndParamsV1 =
       v1ParamListInline.shapeAndParamsV1(context);
     shapeAndParamsV1 && true;
     const newContext = context.newChild().setParser({
       type: "RankiFrameV1",
-      chain: v1Type.sourceString,
+      chain: [[v1Type.sourceString]],
       params: [],
     });
     const child = context.parseAst(v1PayloadBlock.sourceString, newContext);
@@ -335,14 +334,14 @@ const paramV1: ohm.ActionDict<string> = {
 
 const paramsV1: ohm.ActionDict<string[]> = {
   _iter(...children) {
-    const context = c<V1>(this).newChild("inline");
+    const context = c(this).newChild("inline");
     return children.map((v) => v.paramV1(context));
   },
 };
 
 const shapeAndParamsV1: ohm.ActionDict<ArgsAndParamsV1> = {
   v1ParamListInline(v1ParamValue1, _sep, v1ParamValue2) {
-    const context = c<V1>(this).newChild("inline");
+    const context = c(this).newChild("inline");
     return {
       parser: { hash: context.getHash("ast") },
       shape: {},
