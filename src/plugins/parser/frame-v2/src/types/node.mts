@@ -7,24 +7,31 @@ import type {
 } from "./args.mjs";
 import type { OmittedType } from "./common.mjs";
 
+type FrameV2Plugins = {
+  RankiFrameV2: {};
+};
+
 export type ParseNodeFrameV2 =
   | ParseNodeFrameV2Fp
   | ParseNodeFrameV2F
   | ParseNodeFrameV2E;
 
 export type ParseNodeFrameV2Fp = Omit<AstNodeParent, "subtree"> & {
+  plugins: FrameV2Plugins;
   subtree: {
     frameConfig: NodeArgsFrameV2ConfigFp_F | NodeArgsFrameV2ConfigFp_f;
   };
 };
 
 export type ParseNodeFrameV2F = Omit<AstNodeParent, "subtree"> & {
+  plugins: FrameV2Plugins;
   subtree: {
     frameConfig: NodeArgsFrameV2ConfigP;
   };
 };
 
 export type ParseNodeFrameV2E = Omit<AstNodeParent, "subtree"> & {
+  plugins: FrameV2Plugins;
   subtree: {
     frameConfig: NodeArgsFrameV2ConfigE;
   };

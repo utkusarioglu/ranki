@@ -179,12 +179,9 @@ export interface RankiLangContextInstance<
 
   getStartRule(): string;
 
-  // getParentAstNode<T = AstNode>(): T;
-  // getParentAstNode<T>(): T;
+  getAstNodePlugins(): Record<string, any>;
+  setAstNodePlugins(plugins: Record<string, any>): RankiLangContextInstance;
 
-  // setParentAstNode(parent: any): void;
-
-  // bindChildren<T = AstNode>(n: T): T;
   enrich<P extends BindingNode, Output extends BindingNode>(
     p: P,
     en?: Enrichments,
@@ -200,6 +197,7 @@ export interface BindingNode {
   shape?: Record<string, any>;
   parent?: BindingNode;
   children?: BindingNode[];
+  plugins?: Record<string, any>;
   subtree?: Record<string, BindingNode>;
 }
 

@@ -12,6 +12,9 @@
     },
     {
       "path": "../../parser/base-v2"
+    },
+    {
+      "path": "../../../packages/api-v2"
     }
   ]
 }

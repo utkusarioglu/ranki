@@ -9,6 +9,9 @@
   "references": [
     {
       "path": "../base-v2"
+    },
+    {
+      "path": "../../../packages/api-v2"
     }
   ]
 }

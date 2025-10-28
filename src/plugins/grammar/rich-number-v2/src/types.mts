@@ -131,14 +131,14 @@ export type ParseNodeRichNumberV2Reduced =
 
 export type ParseNodeRichNumberV2GeneralReduced = Omit<
   ParseNodeRichNumberV2General,
-  "parent" | "parser" | "shape"
+  "parent" | "parser" | "shape" | "plugins"
 > & {
   shape: Omit<ParseNodeRichNumberV2General["shape"], "depth">;
 };
 
 export type ParseNodeRichNumberV2ComplexReduced = Omit<
   ParseNodeRichNumberV2Complex,
-  "parent" | "parser" | "shape"
+  "parent" | "parser" | "shape" | "plugins"
 > & {
   shape: Omit<ParseNodeRichNumberV2Complex["shape"], "depth">;
 };

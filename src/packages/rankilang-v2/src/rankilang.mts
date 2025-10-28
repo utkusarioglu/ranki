@@ -117,19 +117,6 @@ export class RankiLang implements RankiLangInstance {
       hooks: this.createParseHandlerHooks(),
     });
 
-    // const context: RankiLangAstContext = {
-    //   theater: spec.theater,
-    //   role: spec.role,
-    //   parser: {
-    //     type: "RankiBaseV2",
-    //   },
-    //   astHash: "", // this needs to be overwritten when a parser is created
-    //   blockDepth: 0,
-    //   inlineDepth: 0,
-    //   startRule: "root",
-    //   hooks: this.createParseHandlerHooks(),
-    // };
-
     const ast = this.ast.parse(theaterRaw, context);
 
     const validation = ["validate", "transform"].includes(config.merged.stage)

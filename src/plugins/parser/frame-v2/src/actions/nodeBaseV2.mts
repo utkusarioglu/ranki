@@ -1,26 +1,22 @@
 import type {
-  AstNode,
   AstNodeParentReduced,
-  AstNodeParent,
   AstNodeLeafReduced,
-  AstNodeLeaf,
   RankiLangContextInstance as R,
 } from "@ranki/package-api-v2";
 import { getContext as c } from "@ranki/package-api-v2/helpers";
 import { joinNodes, zipNodes } from "@ranki/package-api-v2/helpers";
 import type * as ohm from "ohm-js";
 import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/context.mjs";
+import type { ParseNodeFrameV2 } from "../types/node.mjs";
 
-export const nodeBaseV2: ohm.ActionDict<AstNode> = {
+export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
   block_v2(indentation, v2, wi, _ender) {
     const context = c<V2>(this).newChild("block");
-    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+    return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
         creator: this.ctorName,
-
         shape: {
-          ...context.getContextArgs(),
           spaces: {
             prefix: {
               type: "indentation",
@@ -44,13 +40,11 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
 
   v2Payload_P(wi1, nl, pauseRoot) {
     const context = c<V2>(this).newChild("block");
-    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+    return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
         creator: this.ctorName,
-
         shape: {
-          ...context.getContextArgs(),
           spaces: {
             prefix: {
               type: "wi",
@@ -74,13 +68,11 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
 
   v2Payload_p(pauseRoot) {
     const context = c<V2>(this).newChild("block");
-    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+    return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
         creator: this.ctorName,
-
         shape: {
-          ...context.getContextArgs(),
           spaces: {},
           separators: [],
         },
@@ -95,13 +87,11 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
 
   pauseList(v2PayloadSection1, pausedContainer, v2PayloadSection2) {
     const context = c<V2>(this).newChild("block");
-    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+    return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
         creator: this.ctorName,
-
         shape: {
-          ...context.getContextArgs(),
           spaces: {},
           // TODO maybe `pausedContainer` should be a separator.
           // after all, that's what it actually does
@@ -131,13 +121,11 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     whitespace2,
   ) {
     const context = c<V2>(this).newChild("block");
-    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+    return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
         creator: this.ctorName,
-
         shape: {
-          ...context.getContextArgs(),
           spaces: {
             suffix: {
               type: "whitespace",
@@ -168,16 +156,13 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
     const context = c<V2>(this).newChild("block");
 
     const child = context.parseAst(plain.sourceString, context);
-    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+    return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
         creator: this.ctorName,
-
         shape: {
-          ...context.getContextArgs(),
           spaces: {},
           separators: [],
-          // report: child.report,
         },
         source: {
           type: "raw",
@@ -191,12 +176,11 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
   // !TODO are pauseStart and pauseEnd separators or fillers?
   pausedContainer(_pauseStart, pausedPayload, _pauseEnd) {
     const parentContext = c<V2>(this).newChild("block");
-    return parentContext.enrich<AstNodeParentReduced, AstNodeParent>(
+    return parentContext.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
         creator: this.ctorName,
         shape: {
-          ...parentContext.getContextArgs(),
           spaces: {},
           separators: [],
         },
@@ -210,7 +194,7 @@ export const nodeBaseV2: ohm.ActionDict<AstNode> = {
         children: [
           (() => {
             const leafContext = (parentContext as R<V2>).newChild("inline");
-            return leafContext.enrich<AstNodeLeafReduced, AstNodeLeaf>({
+            return leafContext.enrich<AstNodeLeafReduced, ParseNodeFrameV2>({
               kind: "leaf",
               creator: this.ctorName,
               print: true,

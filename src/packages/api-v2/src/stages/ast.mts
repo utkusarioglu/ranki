@@ -14,14 +14,14 @@ export interface AstNodeParent extends AstNodeCommon {
 
 export type AstNodeLeafReduced = Omit<
   AstNodeLeaf,
-  "shape" | "parent" | "parser"
+  "shape" | "parent" | "parser" | "plugins"
 > & {
   shape: Omit<AstNodeCommon["shape"], "depth">;
 };
 
 export type AstNodeParentReduced = Omit<
   AstNodeParent,
-  "shape" | "parent" | "children" | "subtree" | "parser"
+  "shape" | "parent" | "children" | "subtree" | "parser" | "plugins"
 > & {
   shape: Omit<AstNodeCommon["shape"], "depth">;
 };
@@ -51,6 +51,12 @@ export interface SeparatorEntry {
 interface AstNodeCommon {
   creator: string;
   parent: AstNode;
+  plugins: {
+    parser: {
+      hash: ReturnType<RankiLangContextInstance["getHash"]>;
+    };
+    grammars: {};
+  }; // this is supposed to be overwritten by implementers which have subtrees
   shape: {
     spaces: Record<string, WhitespaceEntry>;
     separators: SeparatorEntry[];
@@ -59,9 +65,6 @@ interface AstNodeCommon {
       inline: number;
       total: number;
     };
-  };
-  parser: {
-    hash: ReturnType<RankiLangContextInstance["getHash"]>;
   };
 }
 

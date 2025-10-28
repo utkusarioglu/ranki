@@ -1,5 +1,11 @@
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
-import type { AstNode } from "@ranki/package-api-v2";
+import type {
+  AstNode,
+  AstNodeParentReduced,
+  AstNodeParent,
+  AstNodeLeaf,
+  AstNodeLeafReduced,
+} from "@ranki/package-api-v2";
 
 export interface ArgsAndParamsV1 {
   shape: Partial<NodeArgsBaseV2>;
@@ -52,3 +58,13 @@ export interface RankiFrameV1ParserPluginConfig {
 export type WithRankiFrameV1ParserPluginConfig = {
   RankiFrameV1: RankiFrameV1ParserPluginConfig;
 };
+
+// type PluginDef<T> = Omit<T, "plugins">;
+
+export type FrameV1NodeParentReduced = AstNodeParentReduced;
+export type FrameV1NodeLeafReduced = AstNodeLeafReduced;
+
+export type FrameV1NodeParent = AstNodeParent;
+export type FrameV1NodeLeaf = AstNodeLeaf;
+
+export type FrameV1Node = FrameV1NodeParent | FrameV1NodeLeaf;

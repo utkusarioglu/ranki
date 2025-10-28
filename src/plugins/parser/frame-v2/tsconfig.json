@@ -12,6 +12,9 @@
     },
     {
       "path": "../../grammar/params-v2"
+    },
+    {
+      "path": "../../../packages/api-v2"
     }
   ]
 }

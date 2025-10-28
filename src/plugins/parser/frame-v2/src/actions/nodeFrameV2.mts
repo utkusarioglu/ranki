@@ -10,6 +10,7 @@ import type {
   NodeArgsFrameV2ConfigE,
   NodeArgsFrameV2Config,
   NodeArgsFrameV2ConfigP,
+  NodeArgsFrameV2ConfigE_Reduced,
 } from "../types/args.mjs";
 import type { FrameSpec } from "../types/args.mjs";
 import type { RankiLangParserPluginParseHandlerFrameV2 as V2 } from "../types/context.mjs";
@@ -80,33 +81,39 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2_e(_v2Start, wi1, v2Chain, wi2, _v2End) {
     const context = c<V2>(this).newChild("block");
     const chain: FrameSpec[] = v2Chain.frameSpecV2(context);
+    const configContext = context.newChild();
 
-    // @ts-expect-error needs its parent
-    const frameConfig: NodeArgsFrameV2ConfigE = {
-      type: "RankiFrameV2",
-      version: "v2",
-      variant: "e",
-      chain,
-      shape: {
-        ...context.getContextArgs(),
-        spaces: {
-          startAndChain: {
-            type: "wi",
-            raw: wi1.sourceString,
+    const frameConfig: NodeArgsFrameV2ConfigE = configContext.enrich<
+      NodeArgsFrameV2ConfigE_Reduced,
+      NodeArgsFrameV2ConfigE
+    >(
+      {
+        type: "RankiFrameV2",
+        version: "v2",
+        variant: "e",
+        chain,
+        shape: {
+          spaces: {
+            startAndChain: {
+              type: "wi",
+              raw: wi1.sourceString,
+            },
+            chainAndEnd: {
+              type: "wi",
+              raw: wi2.sourceString,
+            },
           },
-          chainAndEnd: {
-            type: "wi",
-            raw: wi2.sourceString,
-          },
+          separators: [],
         },
-        separators: [],
+        params: {
+          variant: "none",
+          items: [],
+        },
       },
-      params: {
-        variant: "none",
-        items: [],
+      {
+        subtree: {},
       },
-      subtree: {},
-    };
+    );
 
     const newContext = context.newChild().setParser(frameConfig);
     const child = context.parseAst("", newContext);

@@ -1,4 +1,10 @@
-import type { AstNode } from "@ranki/package-api-v2";
+import type {
+  AstNode,
+  AstNodeParent,
+  AstNodeLeaf,
+  AstNodeLeafReduced,
+  AstNodeParentReduced,
+} from "@ranki/package-api-v2";
 
 /**
  * @dev
@@ -19,3 +25,17 @@ export interface RankiBaseV2ParserPluginConfig {
 export type WithRankiBaseV2ParserPluginConfig = {
   RankiBaseV2: RankiBaseV2ParserPluginConfig;
 };
+
+type BaseV2PluginDef<T> = Omit<T, "plugins"> & {
+  plugins: {
+    RankiBaseV2: {};
+  };
+};
+
+export type BaseV2NodeLeafReduced = AstNodeLeafReduced;
+export type BaseV2NodeParentReduced = AstNodeParentReduced;
+
+export type BaseV2NodeLeaf = BaseV2PluginDef<AstNodeLeaf>;
+export type BaseV2NodeParent = BaseV2PluginDef<AstNodeParent>;
+
+export type BaseV2Node = BaseV2NodeLeaf | BaseV2NodeParent;

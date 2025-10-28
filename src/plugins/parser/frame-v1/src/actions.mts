@@ -1,19 +1,18 @@
 import type * as ohm from "ohm-js";
-import type {
-  AstNode,
-  AstNodeParentReduced,
-  AstNodeParent,
-} from "@ranki/package-api-v2";
 import { getContext as c } from "@ranki/package-api-v2/helpers";
-import type { ParseNodeFrameV1 } from "./types.mjs";
-import type { ArgsAndParamsV1 } from "./types.mjs";
+import type {
+  FrameV1Node,
+  FrameV1NodeParentReduced,
+  ParseNodeFrameV1,
+} from "./types.mjs";
+import type { ArgsAndParamsV1, FrameV1NodeParent } from "./types.mjs";
 import type { FrameV1 as V1 } from "./handler.mjs";
 
-const nodeBaseV2: ohm.ActionDict<AstNode> = {
+const nodeBaseV2: ohm.ActionDict<FrameV1Node> = {
   // !TODO end
   block_v1(indentation, v1Block, wi1, _end) {
     const context = c<V1>(this).newChild("block");
-    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+    return context.enrich<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
         creator: this.ctorName,
@@ -62,7 +61,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     });
 
     const child = context.parseAst(v1PayloadInline.sourceString, childContext);
-    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+    return context.enrich<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
         creator: this.ctorName,
@@ -124,7 +123,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       params: [],
     });
     const child = context.parseAst(v1PayloadInline.sourceString, newContext);
-    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+    return context.enrich<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
         creator: this.ctorName,
@@ -195,7 +194,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       params: [],
     });
     const child = context.parseAst(v1PayloadBlock.sourceString, childContext);
-    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+    return context.enrich<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
         creator: this.ctorName,
@@ -260,13 +259,14 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     const context = c<V1>(this).newChild("block");
     const shapeAndParamsV1: ArgsAndParamsV1 =
       v1ParamListInline.shapeAndParamsV1(context);
+    shapeAndParamsV1 && true;
     const newContext = context.newChild().setParser({
       type: "RankiFrameV1",
       chain: v1Type.sourceString,
       params: [],
     });
     const child = context.parseAst(v1PayloadBlock.sourceString, newContext);
-    return context.enrich<AstNodeParentReduced, AstNodeParent>(
+    return context.enrich<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
         creator: this.ctorName,
@@ -307,13 +307,12 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
               raw: sep2.sourceString,
             },
           ],
-          // @ts-expect-error TODO
-          "frame.v1": {
-            variant: "fp",
-            frameType: v1Type.sourceString,
-            ...shapeAndParamsV1,
-            // report: child.report,
-          },
+          // "frame.v1": {
+          //   variant: "fp",
+          //   frameType: v1Type.sourceString,
+          //   ...shapeAndParamsV1,
+          //   // report: child.report,
+          // },
         },
         source: {
           type: "raw",
