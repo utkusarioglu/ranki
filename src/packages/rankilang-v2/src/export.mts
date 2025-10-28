@@ -1,2 +1,2 @@
-export { ParserPlugins } from "./parser/parser-plugins.mjs";
+export { ParserPlugins } from "./stages/parser/parser-plugins.mjs";
 export { RankiLang } from "./rankilang.mjs";

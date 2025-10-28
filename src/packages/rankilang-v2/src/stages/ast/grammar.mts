@@ -3,8 +3,8 @@ import type {
   RankiLangAstContext,
   RankiPluginParser,
 } from "@ranki/package-api-v2";
-import type { GrammarSpecs } from "../types/parser.mjs";
-import type { ParserPluginGrammar } from "../types/parser.mjs";
+import type { GrammarSpecs } from "../../types/parser.mjs";
+import type { ParserPluginGrammar } from "../../types/parser.mjs";
 
 function adjustParent(specs: GrammarSpecs, raw: string): ParserPluginGrammar {
   const altered = raw.replace(/<:\s*(\w+)\s*\{/, (_match, _word) => {

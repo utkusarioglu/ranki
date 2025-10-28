@@ -12,12 +12,12 @@ import type {
   RankiLangCloneFunctionReturn,
   RankiLangContextInstance,
 } from "@ranki/package-api-v2";
-import { ParserPlugins } from "./parser/parser-plugins.mjs";
+import { ParserPlugins } from "./stages/parser/parser-plugins.mjs";
 import { RankiLangConfig } from "./config.mjs";
 import { ComponentPlugins } from "./component/component-plugins.mjs";
-import { ValidatorLibrary } from "./validator/library.mjs";
-import { TransformerLibrary } from "./transformer/transformer.mjs";
-import { AstLibrary } from "./ast/library.mjs";
+import { ValidatorLibrary } from "./stages/validator/library.mjs";
+import { TransformerLibrary } from "./stages/transformer/transformer.mjs";
+import { AstLibrary } from "./stages/ast/library.mjs";
 import { RankiLangContext } from "./context/context.mjs";
 
 export class RankiLang implements RankiLangInstance {
