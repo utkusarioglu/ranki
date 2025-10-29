@@ -1,9 +1,7 @@
 import type {
   RankiPluginParser,
   RankiGrammarTokens,
-  RankiLangAstContext,
-  RankiLangParsedAst,
-  CreateParserReturn,
+  RankiLangParseHandlerFunction,
 } from "@ranki/package-api-v2";
 import grammar from "../assets/ohm/2.0.65.ohm?raw";
 import { actions } from "./actions.mjs";
@@ -25,11 +23,11 @@ function tokenizer(config: RankiBaseV2ParserPluginConfig) {
   return tokens;
 }
 
-function handler(
-  theaterRaw: string,
-  context: RankiLangAstContext,
-  parser: CreateParserReturn,
-): RankiLangParsedAst {
+const handler: RankiLangParseHandlerFunction = (
+  theaterRaw,
+  context,
+  parser,
+) => {
   const config = context.getMergedConfig();
   const theaterWithContent = [
     config.content.prefix,
@@ -37,8 +35,13 @@ function handler(
     config.content.suffix,
   ].join("");
 
-  return parser.callback(theaterWithContent);
-}
+  return {
+    props: {
+      message: "STILL UNDER CONSTRUCTION",
+    },
+    ast: parser.callback(theaterWithContent),
+  };
+};
 
 export const rankiBaseV2ParserPlugin: RankiPluginParser<RankiBaseV2ParserPluginConfig> =
   {

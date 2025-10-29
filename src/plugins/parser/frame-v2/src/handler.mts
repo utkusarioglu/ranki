@@ -10,7 +10,6 @@ export const handler: RankiLangParseHandlerFunction = (
   parser,
 ) => {
   const parserDef = parser.expandedDefinition;
-  // const parser = context.getParserDefinition();
   if (parserDef.type !== "RankiFrameV2") {
     throw new Error(`FRAME V2 HANDLER GIVEN NON-FRAME V2 COMPONENT`);
   }
@@ -19,14 +18,18 @@ export const handler: RankiLangParseHandlerFunction = (
   }
   const component = context.getComponent("RankiFrameV2", parserDef.chain[0]);
 
-  // TODO I think the settings are not communicated back to the ast
   const { directives, settings } = parseSettings(
     component.stages.ast.params,
     context,
   );
-  // TODO this is to be removed
-  settings && true;
+
   const cloned = context.cloneLang([
+    {
+      plugins: {
+        standards: null,
+        requested: null,
+      },
+    },
     component.stages.ast.directives,
     directives,
   ]);
@@ -42,8 +45,9 @@ export const handler: RankiLangParseHandlerFunction = (
   //   startRule: context.startRule,
   // };
 
-  // TODO
-  const contentConfig = cloned.hooks.getConfig().merged.content;
+  const merged = cloned.hooks.getConfig().merged;
+  const contentConfig = merged.content;
+  console.log({ merged });
 
   const theaterWithContent = [
     contentConfig.prefix,
@@ -51,7 +55,13 @@ export const handler: RankiLangParseHandlerFunction = (
     contentConfig.suffix,
   ].join("");
 
-  return parser.callback(theaterWithContent);
+  return {
+    props: {
+      settings,
+      directives,
+    },
+    ast: parser.callback(theaterWithContent),
+  };
 };
 
 type ConvertParamsParams = {

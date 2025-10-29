@@ -1,7 +1,9 @@
 --- ast to hello changes ast
 2.1e4
 
-[code, asd
-  a b3
+[code, ast
+  &trade; b3
   2.1e4
+
+  [a, cat|fd]
 ]

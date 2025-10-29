@@ -1,15 +1,13 @@
 import type {
   RankiLangParseDefinition,
-  RankiLangParsedAst,
   RankiLangAstContext,
-  // ParseAstFunction,
   RankiLangAstReport,
   AstNode,
   RankiLangConsolidatedAstReport,
   RankiLangContextInstance,
-  // RankiLangParseHandlerFunction,
   CreateParserReturn,
   ParseAstFunction,
+  RankiLangParseHandlerFunctionReturn,
 } from "@ranki/package-api-v2";
 import { buildGrammar, compileOhmActionDicts } from "./grammar.mjs";
 import { ParserHash } from "./hash.mjs";
@@ -22,8 +20,7 @@ export class AstLibrary {
     theaterRaw: string,
     def: RankiLangParseDefinition,
     context: RankiLangContextInstance,
-  ): RankiLangParsedAst {
-    // const type = def.type;
+  ): RankiLangParseHandlerFunctionReturn {
     const handler = context.getHandler(def);
     const parser = this.createParser(def, context);
     return handler(theaterRaw, context, parser);
@@ -121,14 +118,9 @@ export class AstLibrary {
     }
     AstLibrary.reports[hash] = report;
 
-    const parseAst: ParseAstFunction = (
-      raw: string,
-      // providedContext: RankiLangAstContext,
-    ) => {
+    const parseAst: ParseAstFunction = (raw: string) => {
       const matched = matcher.match(raw, context.getStartRule());
       const mergedContext = context.newChild();
-      // const parserDef = providedContext.getParserDefinition();
-      // mergedContext.switchParser(parserDef);
 
       const root: AstNode = semantics(matched).node(mergedContext);
       AstLibrary.reports[hash].cache.usageCount++;

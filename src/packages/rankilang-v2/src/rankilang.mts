@@ -62,7 +62,7 @@ export class RankiLang implements RankiLangInstance {
     return this.parsers;
   }
 
-  private clone(
+  private cloneLang(
     providedConfigs: RankiLanguageProvidedConfig[] | null,
   ): RankiLangCloneFunctionReturn {
     const lang = new RankiLang(
@@ -79,7 +79,7 @@ export class RankiLang implements RankiLangInstance {
   private createParseHandlerHooks() {
     const parseHandlerHooks: RankiLangParseHandlerHooks = {
       getPlugins: this.getPlugins.bind(this),
-      clone: this.clone.bind(this),
+      cloneLang: this.cloneLang.bind(this),
       getComponent: this.components.getPlugin.bind(this.components),
       parseAst: this.ast.parse.bind(this.ast),
       getHandler: this.parsers.getHandler.bind(this.parsers),
@@ -126,7 +126,7 @@ export class RankiLang implements RankiLangInstance {
     const ast = context.parseAst(theaterRaw);
 
     const validation = ["validate", "transform"].includes(config.merged.stage)
-      ? this.validators.validate(ast.root, context)
+      ? this.validators.validate(ast.ast.root, context)
       : null;
 
     const transform =
@@ -149,7 +149,9 @@ export class RankiLang implements RankiLangInstance {
         [spec.theater]: {
           stages: {
             raw: theaterRaw,
-            ast,
+            ast: {
+              root: ast.ast.root,
+            },
             validation,
             transform,
           },

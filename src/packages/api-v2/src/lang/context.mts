@@ -15,6 +15,7 @@ import type {
 import type {
   RankiGrammarTokens,
   RankiLangParseHandlerFunction,
+  RankiLangParseHandlerFunctionReturn,
 } from "../plugins/grammar.mjs";
 import type * as ohm from "ohm-js";
 import type { TransformNode } from "../stages/transform.mjs";
@@ -171,10 +172,10 @@ export interface RankiLangContextInstance {
     userConfigs: RankiLanguageProvidedConfig[] | null,
   ): RankiLangCloneFunctionReturn;
 
-  parseAst: (raw: string) => RankiLangParseFunctionReturn;
+  parseAst: (raw: string) => RankiLangParseHandlerFunctionReturn;
 
   incrementDepth(direction: "block" | "inline"): AstNode["shape"]["depth"];
-  getDepth(direction: "block" | "inline" | "total"): number;
+  // getDepth(direction: "block" | "inline" | "total"): number;
   getContextArgs(): Pick<AstNode["shape"], "depth">;
 
   newChild(direction?: "block" | "inline"): RankiLangContextInstance;

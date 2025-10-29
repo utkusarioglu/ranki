@@ -19,7 +19,12 @@ export type RankiLangParseHandlerFunction = (
   raw: string,
   spec: RankiLangAstContext,
   parser: CreateParserReturn,
-) => RankiLangParsedAst;
+) => RankiLangParseHandlerFunctionReturn;
+
+export type RankiLangParseHandlerFunctionReturn = {
+  props: any;
+  ast: RankiLangParsedAst;
+};
 
 export type RankiPluginGrammar<ConfigShape = {}> = RankiPluginCommon &
   WithTokenizer & {

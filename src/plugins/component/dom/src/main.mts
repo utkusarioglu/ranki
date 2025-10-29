@@ -5,10 +5,8 @@ import type {
   ValidationNodeLeaf,
 } from "@ranki/package-api-v2";
 
-const placeholder: ComponentPluginValidationFunc = ({ validation, spec }) => ({
-  warnings: [
-    ["COMPONENT VALIDATION", validation.kind, spec.getDepth("block")].join(" "),
-  ],
+const placeholder: ComponentPluginValidationFunc = ({ validation }) => ({
+  warnings: [["COMPONENT VALIDATION", validation.kind].join(" ")],
   errors: [],
 });
 
@@ -24,7 +22,7 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
       stages: {
         // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
         // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
-        preprocess: (c) => c.replace("a", "'a'-is-replaced!!"),
+        preprocess: (c) => c.replace("&trade;", "™"),
         ast: {
           directives: {
             plugins: {
@@ -72,10 +70,7 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
           const rootIgnore = (payloadPlain as ValidationNodeParent)
             .children[0] as ValidationNodeLeaf;
 
-          // console.log("ignore", JSON.stringify(, null, 2));
           const raw = rootIgnore.source.raw;
-          // const raw = payloadPlain.map((v) => (v as ValidationNodeLeaf).source);
-          // console.log(raw);
 
           const ob = {
             tag: "code",
@@ -85,10 +80,8 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
             depth: validation.shape.depth.total,
             source: {
               type: "raw" as "raw",
-              // raw: "soon",
               raw,
             },
-            // "children":
           };
           return ob;
         },

@@ -82,12 +82,6 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
               raw: sepRight1.sourceString,
             },
           ],
-          // @ts-expect-error TODO
-          "frame.v1": {
-            variant: "p",
-            frameType: v1Type.sourceString,
-            // report: child.report,
-          },
         },
         source: {
           type: "raw",
@@ -96,7 +90,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       },
       {
         subtree: {},
-        children: [child.root],
+        children: [child.ast.root],
       },
     );
   },
@@ -170,7 +164,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       },
       {
         subtree: {},
-        children: [child.root],
+        children: [child.ast.root],
       },
     );
   },
@@ -235,7 +229,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       },
       {
         subtree: {},
-        children: [child.root],
+        children: [child.ast.root],
       },
     );
   },
@@ -320,7 +314,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       },
       {
         subtree: {},
-        children: [child.root],
+        children: [child.ast.root],
       },
     );
   },

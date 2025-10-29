@@ -6,19 +6,20 @@ import type {
   RankiLanguageConfig,
   RankiLangCloneFunctionReturn,
   RankiLanguageProvidedConfig,
-  RankiLangParseFunctionReturn,
   AstNode,
   RankiLangContextParams,
   BindingNode,
   RankiLangParseHandlerFunction,
   Enrichments,
   CreateParserReturn,
+  RankiLangParseHandlerFunctionReturn,
 } from "@ranki/package-api-v2";
 
 export class RankiLangContext implements RankiLangContextInstance {
   private parserDefinition!: RankiLangParseDefinition;
   private parserLineage: CreateParserReturn[] = [];
   private parserDefaultDef!: RankiLangParseDefinition;
+  private parserProps!: any;
 
   private theater: RankiLangContextParams["theater"];
   private role: RankiLangContextParams["role"];
@@ -92,6 +93,7 @@ export class RankiLangContext implements RankiLangContextInstance {
         parser: {
           lineage,
           current: currentParser,
+          props: this.parserProps,
         },
         grammars: {},
       },
@@ -100,15 +102,6 @@ export class RankiLangContext implements RankiLangContextInstance {
 
     return p as unknown as Output;
   }
-
-  // private getCurrentParser() {
-  //   if (!this.parserLineage.length) {
-  //     const defaultDef = this.parserDefaultDef;
-  //     const parser = this.hooks.createParser(defaultDef, this);
-  //     this.parserLineage.push(parser);
-  //   }
-  //   return this.parserLineage.at(-1);
-  // }
 
   switchParser(
     parserDefinition: RankiLangParseDefinition,
@@ -119,15 +112,6 @@ export class RankiLangContext implements RankiLangContextInstance {
 
     return this;
   }
-
-  // setDefaultParserDef(parserDef: RankiLangParseDefinition) {
-  //   if (this.parserDefaultDef) {
-  //     throw new Error("DEFAULT PARSER SET TWICE");
-  //   }
-  //   this.parserDefaultDef = parserDef;
-  //   console.log("set", this.parserDefaultDef);
-  //   return this;
-  // }
 
   getParserDefinition(): RankiLangParseDefinition {
     if (!this.parserDefinition) {
@@ -152,12 +136,14 @@ export class RankiLangContext implements RankiLangContextInstance {
   cloneLang(
     userConfigs: RankiLanguageProvidedConfig[] | null,
   ): RankiLangCloneFunctionReturn {
-    return this.hooks.clone(userConfigs);
+    return this.hooks.cloneLang(userConfigs);
   }
 
-  parseAst(raw: string): RankiLangParseFunctionReturn {
+  parseAst(raw: string): RankiLangParseHandlerFunctionReturn {
     const def = this.getParserDefinition();
-    return this.hooks.parseAst(raw, def, this);
+    const parsed = this.hooks.parseAst(raw, def, this);
+    this.parserProps = parsed.props;
+    return parsed;
   }
 
   incrementDepth(direction: "block" | "inline"): AstNode["shape"]["depth"] {
@@ -202,16 +188,16 @@ export class RankiLangContext implements RankiLangContextInstance {
     return inst;
   }
 
-  getDepth(direction: "block" | "inline" | "total"): number {
-    switch (direction) {
-      case "block":
-        return this.blockDepth;
-      case "inline":
-        return this.inlineDepth;
-      case "total":
-        return this.blockDepth + this.inlineDepth;
-    }
-  }
+  // getDepth(direction: "block" | "inline" | "total"): number {
+  //   switch (direction) {
+  //     case "block":
+  //       return this.blockDepth;
+  //     case "inline":
+  //       return this.inlineDepth;
+  //     case "total":
+  //       return this.blockDepth + this.inlineDepth;
+  //   }
+  // }
 
   getContextArgs(): Pick<AstNode["shape"], "depth"> {
     return {

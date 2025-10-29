@@ -17,5 +17,10 @@ export const handler: RankiLangParseHandlerFunction = (
   const contextV1 = context.newChild("block");
   contextV1 && true;
 
-  return parser.callback(theaterRaw);
+  return {
+    props: {
+      message: "STILL UNDER CONSTRUCTION",
+    },
+    ast: parser.callback(theaterRaw),
+  };
 };
