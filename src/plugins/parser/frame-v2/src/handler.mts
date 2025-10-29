@@ -4,15 +4,20 @@ import type {
 } from "@ranki/package-api-v2";
 import type { ParamV2 } from "@ranki/plugin-grammar-params-v2";
 
-export const handler: RankiLangParseHandlerFunction = (theaterRaw, context) => {
-  const parser = context.getParserDefinition();
-  if (parser.type !== "RankiFrameV2") {
+export const handler: RankiLangParseHandlerFunction = (
+  theaterRaw,
+  context,
+  parser,
+) => {
+  const parserDef = parser.expandedDefinition;
+  // const parser = context.getParserDefinition();
+  if (parserDef.type !== "RankiFrameV2") {
     throw new Error(`FRAME V2 HANDLER GIVEN NON-FRAME V2 COMPONENT`);
   }
-  if (parser.chain.length > 1) {
+  if (parserDef.chain.length > 1) {
     throw new Error(`MULTI-LENGTH CHAINS NOT YET SUPPORTED`);
   }
-  const component = context.getComponent("RankiFrameV2", parser.chain[0]);
+  const component = context.getComponent("RankiFrameV2", parserDef.chain[0]);
 
   // TODO I think the settings are not communicated back to the ast
   const { directives, settings } = parseSettings(
@@ -25,7 +30,7 @@ export const handler: RankiLangParseHandlerFunction = (theaterRaw, context) => {
     component.stages.ast.directives,
     directives,
   ]);
-  const contextV2 = context.newChild("block");
+  // const contextV2 = context.newChild("block");
   // const contextV2Old: RankiLangAstContext = {
   //   parser: context.parser,
   //   astHash: "",
@@ -46,7 +51,7 @@ export const handler: RankiLangParseHandlerFunction = (theaterRaw, context) => {
     contentConfig.suffix,
   ].join("");
 
-  return context.parseAst(theaterWithContent, contextV2);
+  return parser.callback(theaterWithContent);
 };
 
 type ConvertParamsParams = {

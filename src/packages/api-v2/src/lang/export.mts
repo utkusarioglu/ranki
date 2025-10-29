@@ -6,7 +6,7 @@ export type {
   RankiLangParsedTheater,
   RankiLangParseReport,
   RankiLangParseFunctionReturn,
-  RankiLangParseHandler,
+  RankiLangParseDefinition,
   ParserPluginsInstance,
   ProducedConfig,
   ActionsDictRecord,
@@ -29,6 +29,7 @@ export type {
   RankiLangInstancePluginsRecord,
   RankiLangCloneFunctionReturn,
   ParseAstFunction,
+  CreateParserReturn,
 } from "./rankilang.mjs";
 
 export type {

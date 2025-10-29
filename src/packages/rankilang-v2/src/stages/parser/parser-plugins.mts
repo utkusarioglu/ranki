@@ -5,6 +5,7 @@ import type {
   ParserPluginsInstance,
   ProducedConfig,
   ActionsDictRecord,
+  RankiLangParseDefinition,
 } from "@ranki/package-api-v2";
 import { expandDependencies, topologicalSort } from "./utils.mjs";
 
@@ -12,10 +13,10 @@ export class ParserPlugins implements ParserPluginsInstance {
   private list: RankiPluginParser[] = [];
   private handler: Record<string, RankiLangParseHandlerFunction> = {};
 
-  getHandler(handlerName: string): RankiLangParseHandlerFunction {
-    const found = this.handler[handlerName];
+  getHandler(def: RankiLangParseDefinition): RankiLangParseHandlerFunction {
+    const found = this.handler[def.type];
     if (!found) {
-      throw new Error(`CANNOT FIND PARSE HANDLER: ${handlerName}`);
+      throw new Error(`CANNOT FIND PARSE HANDLER: ${def.type}`);
     }
     return found;
   }

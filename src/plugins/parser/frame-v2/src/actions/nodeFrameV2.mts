@@ -20,7 +20,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const frameConfig: NodeArgsFrameV2Config =
       v2FrameConfig.v2FrameConfig(context);
 
-    const payloadContext = context.newChild().setParser({
+    const payloadContext = context.newChild().switchParser({
       type: frameConfig.type,
       chain: frameConfig.chain,
       // @ts-expect-error complains about "key" type
@@ -56,13 +56,13 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const frameConfig: NodeArgsFrameV2ConfigP =
       v2FrameConfig.v2FrameConfig(context);
 
-    const newContext = context.newChild().setParser({
+    const newContext = context.newChild().switchParser({
       type: frameConfig.type,
       chain: frameConfig.chain,
       params: frameConfig.params.items,
     });
 
-    const child = context.parseAst("", newContext);
+    const child = newContext.parseAst("");
 
     return context.enrich<ParseNodeFrameV2FReduced, ParseNodeFrameV2>(
       {
@@ -123,12 +123,12 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       },
     );
 
-    const newContext = context.newChild().setParser({
+    const newContext = context.newChild().switchParser({
       type: frameConfig.type,
       chain: frameConfig.chain,
       params: frameConfig.params.items,
     });
-    const child = context.parseAst("", newContext);
+    const child = newContext.parseAst("");
 
     return context.enrich<ParseNodeFrameV2EReduced, ParseNodeFrameV2>(
       {

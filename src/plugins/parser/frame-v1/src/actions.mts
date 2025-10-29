@@ -53,13 +53,13 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
   ) {
     const context = c(this).newChild("inline");
 
-    const childContext = context.newChild().setParser({
+    const childContext = context.newChild().switchParser({
       type: "RankiFrameV1",
       chain: [[v1Type.sourceString]],
       params: [],
     });
 
-    const child = context.parseAst(v1PayloadInline.sourceString, childContext);
+    const child = childContext.parseAst(v1PayloadInline.sourceString);
     return context.enrich<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
@@ -116,12 +116,12 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
   ) {
     const context = c(this).newChild("inline");
     const shapeAndParamsV1 = v1ParamListInline.shapeAndParamsV1(context);
-    const newContext = context.newChild().setParser({
+    const newContext = context.newChild().switchParser({
       type: "RankiFrameV1",
       chain: [[v1Type.sourceString]],
       params: [],
     });
-    const child = context.parseAst(v1PayloadInline.sourceString, newContext);
+    const child = newContext.parseAst(v1PayloadInline.sourceString);
     return context.enrich<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
@@ -187,12 +187,12 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     _v1BlockEnd,
   ) {
     const context = c(this).newChild("inline");
-    const childContext = context.newChild().setParser({
+    const childContext = context.newChild().switchParser({
       type: "RankiFrameV1",
       chain: [[v1Type.sourceString]],
       params: [],
     });
-    const child = context.parseAst(v1PayloadBlock.sourceString, childContext);
+    const child = childContext.parseAst(v1PayloadBlock.sourceString);
     return context.enrich<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
@@ -259,12 +259,12 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     const shapeAndParamsV1: ArgsAndParamsV1 =
       v1ParamListInline.shapeAndParamsV1(context);
     shapeAndParamsV1 && true;
-    const newContext = context.newChild().setParser({
+    const newContext = context.newChild().switchParser({
       type: "RankiFrameV1",
       chain: [[v1Type.sourceString]],
       params: [],
     });
-    const child = context.parseAst(v1PayloadBlock.sourceString, newContext);
+    const child = newContext.parseAst(v1PayloadBlock.sourceString);
     return context.enrich<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
@@ -343,7 +343,6 @@ const shapeAndParamsV1: ohm.ActionDict<ArgsAndParamsV1> = {
   v1ParamListInline(v1ParamValue1, _sep, v1ParamValue2) {
     const context = c(this).newChild("inline");
     return {
-      parser: { hash: context.getHash("ast") },
       shape: {},
       params: [
         v1ParamValue1.paramV1(context),

@@ -154,7 +154,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     // this uses a context that was created in a parent to produce a parser deeper in the chain
     const context = c(this).newChild("block");
 
-    const child = context.parseAst(plain.sourceString, context);
+    const child = context.parseAst(plain.sourceString);
     return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",

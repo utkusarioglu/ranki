@@ -8,6 +8,9 @@ import type {
   RankiPluginParser,
 } from "@ranki/package-api-v2";
 
+// const FRAME_V2 = ["RankiParamsV2", "RankiFrameV2"];
+const NONE: string[] = [];
+
 /**
  * This is a hideous thing and direly needs tidying up.
  * Though, it works just fine...
@@ -16,7 +19,6 @@ export function useUserInput(
   parserPluginObjects: RankiPluginParser[],
   componentPluginObjects: RankiPluginComponent[],
   setSharedState: (a: any) => void,
-  // languageDefaultConfig: RankiLanguageDefaultConfig,
   initialLanguageUserConfigStr: string,
   presetGroups: PresetGroup[],
 ) {
@@ -28,14 +30,10 @@ export function useUserInput(
   const [theater, setTheater] = useState<string>("default");
   const [installedParserPlugins, setInstalledParserPlugins] =
     useState(allParserPlugins);
-  const [requestedParserPlugins, setRequestedParserPlugins] = useState<
-    string[]
-  >([]);
+  const [requestedParserPlugins, setRequestedParserPlugins] =
+    useState<string[]>(NONE);
   const [installedComponentPlugins, setInstalledComponentPlugins] =
     useState(allComponentPlugins);
-  // const [requestedComponentPlugins, setRequestedComponentPlugins] = useState<
-  //   string[]
-  // >([]);
   const [rankiStr, setRankiStr] = useState(presetGroups[0].presets[0].value);
 
   useEffect(() => {
@@ -46,8 +44,6 @@ export function useUserInput(
       const selectedComponentPluginObjects = componentPluginObjects.filter(
         (p) => installedComponentPlugins.includes(p.meta.name),
       );
-      // const parserPlugins = new ParserPlugins();
-      // selectedPluginObjects.forEach((p) => parserPlugins.addPlugin(p));
       const languageUserConfig: RankiLanguageProvidedConfig = yaml.parse(
         languageUserConfigStr,
       );
@@ -66,6 +62,7 @@ export function useUserInput(
         ],
       );
       const parsed = rankiLang.parse({ [theater]: rankiStr });
+      console.log(parsed);
       const config = rankiLang.getConfig().merged;
       setSharedState({ type: "loaded", parsed, config });
     } catch (e) {

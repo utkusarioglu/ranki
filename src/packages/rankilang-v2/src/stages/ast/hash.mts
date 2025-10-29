@@ -1,12 +1,12 @@
 // import { djb2Hash, stringifyContext } from "./utils.mjs";
 import type {
   RankiLangAstContext,
-  RankiLangParseHandler,
+  RankiLangParseDefinition,
 } from "@ranki/package-api-v2";
 
 export class ParserHash {
   static compute(
-    def: RankiLangParseHandler,
+    def: RankiLangParseDefinition,
     context: RankiLangAstContext,
   ): string {
     const stringified = ParserHash.stringifyContext(def, context);
@@ -22,7 +22,7 @@ export class ParserHash {
   }
 
   private static stringifyContext(
-    def: RankiLangParseHandler,
+    def: RankiLangParseDefinition,
     context: RankiLangAstContext,
   ): string {
     return [def.type, JSON.stringify(context.getMergedConfig())].join("");

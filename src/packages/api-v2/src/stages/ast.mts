@@ -1,5 +1,3 @@
-import type { RankiLangContextInstance } from "../export.mjs";
-
 export type AstNode = AstNodeLeaf | AstNodeParent;
 
 export type AstNodeReduced = AstNodeLeafReduced | AstNodeParentReduced;
@@ -53,7 +51,8 @@ interface AstNodeCommon {
   parent: AstNode;
   plugins: {
     parser: {
-      hash: ReturnType<RankiLangContextInstance["getHash"]>;
+      // TODO
+      hash: string;
     };
     grammars: {};
   }; // this is supposed to be overwritten by implementers which have subtrees

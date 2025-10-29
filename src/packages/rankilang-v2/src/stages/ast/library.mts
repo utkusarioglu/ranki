@@ -1,41 +1,49 @@
 import type {
-  RankiLangParseHandler,
+  RankiLangParseDefinition,
   RankiLangParsedAst,
   RankiLangAstContext,
-  ParseAstFunction,
+  // ParseAstFunction,
   RankiLangAstReport,
   AstNode,
   RankiLangConsolidatedAstReport,
   RankiLangContextInstance,
+  // RankiLangParseHandlerFunction,
+  CreateParserReturn,
+  ParseAstFunction,
 } from "@ranki/package-api-v2";
 import { buildGrammar, compileOhmActionDicts } from "./grammar.mjs";
 import { ParserHash } from "./hash.mjs";
 
 export class AstLibrary {
-  private static parsers: Record<string, ParseAstFunction> = {};
+  private static parsers: Record<string, CreateParserReturn> = {};
   private static reports: Record<string, RankiLangAstReport> = {};
 
   parse(
     theaterRaw: string,
+    def: RankiLangParseDefinition,
     context: RankiLangContextInstance,
   ): RankiLangParsedAst {
-    // const handler = context.getHandler(context["parser"].type);
-    const type = context.getParserDefinition().type;
-    const handler = context.getHandler(type);
-
-    // context.parseAst = this.createParser(context);
-    return handler(theaterRaw, context);
+    // const type = def.type;
+    const handler = context.getHandler(def);
+    const parser = this.createParser(def, context);
+    return handler(theaterRaw, context, parser);
   }
 
   createParser(
-    parseHandlerDef: RankiLangParseHandler,
+    parseHandlerDef: RankiLangParseDefinition,
     context: RankiLangAstContext,
-  ) {
-    // const hash = djb2Hash(stringifyContext(context)).toString();
+  ): CreateParserReturn {
     const hash = ParserHash.compute(parseHandlerDef, context);
     if (!AstLibrary.parsers[hash]) {
       const parser = this.createNewParser(hash, context);
-      AstLibrary.parsers[hash] = parser;
+      const expandedDefinition = {
+        hash,
+        ...parseHandlerDef,
+      };
+      AstLibrary.parsers[hash] = {
+        expandedDefinition,
+        callback: parser,
+      };
     }
     return AstLibrary.parsers[hash];
   }
@@ -44,9 +52,6 @@ export class AstLibrary {
     hash: string,
     context: RankiLangAstContext,
   ): ParseAstFunction {
-    // const parserPlugins: ParserPluginsInstance = context.hooks.getPlugins();
-    // const langConfig = context.hooks.getConfig();
-    // const configPlugins = langConfig.merged.plugins;
     const parserPlugins = context.getPlugins();
     const langConfig = context.getAllConfig();
     const configPlugins = context.getMergedConfig().plugins;
@@ -118,12 +123,12 @@ export class AstLibrary {
 
     const parseAst: ParseAstFunction = (
       raw: string,
-      providedContext: RankiLangAstContext,
+      // providedContext: RankiLangAstContext,
     ) => {
       const matched = matcher.match(raw, context.getStartRule());
       const mergedContext = context.newChild();
-      const parserDef = providedContext.getParserDefinition();
-      mergedContext.setParser(parserDef);
+      // const parserDef = providedContext.getParserDefinition();
+      // mergedContext.switchParser(parserDef);
 
       const root: AstNode = semantics(matched).node(mergedContext);
       AstLibrary.reports[hash].cache.usageCount++;

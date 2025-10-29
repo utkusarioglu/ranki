@@ -9,10 +9,13 @@ import type {
   RankiLangParseHandlerHooks,
 } from "./rankilang.mjs";
 import type {
-  RankiLangParseHandlerFunction,
+  // RankiLangParseHandlerFunction,
   RankiPluginParser,
 } from "../plugins/parser.mjs";
-import type { RankiGrammarTokens } from "../plugins/grammar.mjs";
+import type {
+  RankiGrammarTokens,
+  RankiLangParseHandlerFunction,
+} from "../plugins/grammar.mjs";
 import type * as ohm from "ohm-js";
 import type { TransformNode } from "../stages/transform.mjs";
 import type { ValidationNode } from "../stages/validation.mjs";
@@ -92,7 +95,7 @@ export interface ParserPluginsInstance {
   addPlugin(p: RankiPluginParser): void;
   getVersions(): VersionReport;
   produceConfig(): ProducedConfig;
-  getHandler(handlerName: string): RankiLangParseHandlerFunction;
+  getHandler(def: RankiLangParseDefinition): RankiLangParseHandlerFunction;
   checkMissing(set: Set<string>): string[];
   pickPlugins(set: Set<string>): RankiPluginParser[];
   sortPlugins(activePluginsArr: RankiPluginParser[]): string[];
@@ -128,7 +131,7 @@ export interface GenericParam {
   source: AstNodeLeafSource;
 }
 
-export interface RankiLangParseHandler {
+export interface RankiLangParseDefinition {
   type: string;
   chain: string[][];
   params: GenericParam[];
@@ -168,10 +171,7 @@ export interface RankiLangContextInstance {
     userConfigs: RankiLanguageProvidedConfig[] | null,
   ): RankiLangCloneFunctionReturn;
 
-  parseAst: (
-    raw: string,
-    context: RankiLangAstContext,
-  ) => RankiLangParseFunctionReturn;
+  parseAst: (raw: string) => RankiLangParseFunctionReturn;
 
   incrementDepth(direction: "block" | "inline"): AstNode["shape"]["depth"];
   getDepth(direction: "block" | "inline" | "total"): number;
@@ -179,10 +179,8 @@ export interface RankiLangContextInstance {
 
   newChild(direction?: "block" | "inline"): RankiLangContextInstance;
 
-  getHash(type: "ast" | "TODO"): string;
-
-  setParser(parser: RankiLangParseHandler): RankiLangContextInstance;
-  getParserDefinition(): RankiLangParseHandler;
+  switchParser(parser: RankiLangParseDefinition): RankiLangContextInstance;
+  getParserDefinition(): RankiLangParseDefinition;
 
   getStartRule(): string;
 

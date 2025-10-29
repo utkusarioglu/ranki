@@ -1,8 +1,7 @@
 import type {
   ParserPluginsInstance,
   RankiLangContextInstance,
-  RankiLangAstContext,
-  RankiLangParseHandler,
+  RankiLangParseDefinition,
   ComponentPluginComponent,
   RankiLanguageConfig,
   RankiLangCloneFunctionReturn,
@@ -13,32 +12,42 @@ import type {
   BindingNode,
   RankiLangParseHandlerFunction,
   Enrichments,
+  CreateParserReturn,
 } from "@ranki/package-api-v2";
 
 export class RankiLangContext implements RankiLangContextInstance {
-  private parserDefinition!: RankiLangParseHandler;
-  private parser!: RankiLangParseHandlerFunction;
+  private parserDefinition!: RankiLangParseDefinition;
+  private parserLineage: CreateParserReturn[] = [];
+  private parserDefaultDef!: RankiLangParseDefinition;
+
   private theater: RankiLangContextParams["theater"];
   private role: RankiLangContextParams["role"];
   private blockDepth: NonNullable<RankiLangContextParams["blockDepth"]>;
   private inlineDepth: NonNullable<RankiLangContextParams["inlineDepth"]>;
   private startRule: NonNullable<RankiLangContextParams["startRule"]>;
   private hooks: RankiLangContextParams["hooks"];
-  // private context: RankiLangContextParams;
 
-  constructor(p: RankiLangContextParams) {
+  constructor(
+    p: RankiLangContextParams,
+    transfers?: {
+      parserLineage: CreateParserReturn[];
+      parserDefinition: RankiLangParseDefinition;
+      parserDefaultDef: RankiLangParseDefinition;
+    },
+  ) {
     this.theater = p.theater;
     this.role = p.role;
     this.blockDepth = p.blockDepth || 0;
     this.inlineDepth = p.inlineDepth || 0;
     this.startRule = p.startRule || "root";
     this.hooks = p.hooks;
-  }
 
-  // setParser(p: T): RankiLangContextInstance<T> {
-  //   this.parser = p;
-  //   return this;
-  // }
+    if (transfers) {
+      this.parserLineage = [...transfers.parserLineage];
+      this.parserDefinition = transfers.parserDefinition;
+      this.parserDefaultDef = transfers.parserDefaultDef;
+    }
+  }
 
   enrich<P extends BindingNode, Output extends BindingNode>(
     p: P,
@@ -70,11 +79,19 @@ export class RankiLangContext implements RankiLangContextInstance {
       };
     }
 
+    // const lastParser = this.parserLineage.at(-1);
+    const currentParser = this.getParserDefinition();
+    if (!currentParser) {
+      throw new Error("NO PARSER HAS BEEN SET");
+    }
+
+    const lineage = this.parserLineage.map((p) => p.expandedDefinition.hash);
+
     p = {
       plugins: {
         parser: {
-          hash: this.getHash("ast"),
-          ...this.getParserDefinition(),
+          lineage,
+          current: currentParser,
         },
         grammars: {},
       },
@@ -84,15 +101,37 @@ export class RankiLangContext implements RankiLangContextInstance {
     return p as unknown as Output;
   }
 
-  setParser(parseHandlerDef: RankiLangParseHandler): RankiLangContextInstance {
-    this.parserDefinition = parseHandlerDef;
-    this.parser = this.hooks.createParser(parseHandlerDef, this);
-    return this as RankiLangContextInstance;
+  // private getCurrentParser() {
+  //   if (!this.parserLineage.length) {
+  //     const defaultDef = this.parserDefaultDef;
+  //     const parser = this.hooks.createParser(defaultDef, this);
+  //     this.parserLineage.push(parser);
+  //   }
+  //   return this.parserLineage.at(-1);
+  // }
+
+  switchParser(
+    parserDefinition: RankiLangParseDefinition,
+  ): RankiLangContextInstance {
+    this.parserDefinition = parserDefinition;
+    const createdParser = this.hooks.createParser(parserDefinition, this);
+    this.parserLineage.push(createdParser);
+
+    return this;
   }
 
-  getParserDefinition(): RankiLangParseHandler {
+  // setDefaultParserDef(parserDef: RankiLangParseDefinition) {
+  //   if (this.parserDefaultDef) {
+  //     throw new Error("DEFAULT PARSER SET TWICE");
+  //   }
+  //   this.parserDefaultDef = parserDef;
+  //   console.log("set", this.parserDefaultDef);
+  //   return this;
+  // }
+
+  getParserDefinition(): RankiLangParseDefinition {
     if (!this.parserDefinition) {
-      throw new Error("PARSER DEFINITION HASN'T BEEN SET");
+      throw new Error("NO PARSER DEFINITION HAS BEEN SET");
     }
     return this.parserDefinition;
   }
@@ -100,9 +139,8 @@ export class RankiLangContext implements RankiLangContextInstance {
   getPlugins: () => ParserPluginsInstance = (...all) =>
     this.hooks.getPlugins(...all);
 
-  getHandler: (handlerName: string) => RankiLangParseHandlerFunction = (
-    ...all
-  ) => this.hooks.getHandler(...all);
+  getHandler: (def: RankiLangParseDefinition) => RankiLangParseHandlerFunction =
+    (...all) => this.hooks.getHandler(...all);
 
   getAllConfig: () => RankiLanguageConfig = (...all) =>
     this.hooks.getConfig(...all);
@@ -117,14 +155,9 @@ export class RankiLangContext implements RankiLangContextInstance {
     return this.hooks.clone(userConfigs);
   }
 
-  parseAst(
-    raw: string,
-    context: RankiLangAstContext,
-  ): RankiLangParseFunctionReturn {
-    if (!this.parser) {
-      throw new Error("PARSER HASN'T BEEN CREATED");
-    }
-    return this.parser(raw, context);
+  parseAst(raw: string): RankiLangParseFunctionReturn {
+    const def = this.getParserDefinition();
+    return this.hooks.parseAst(raw, def, this);
   }
 
   incrementDepth(direction: "block" | "inline"): AstNode["shape"]["depth"] {
@@ -148,14 +181,21 @@ export class RankiLangContext implements RankiLangContextInstance {
   }
 
   newChild(direction?: "block" | "inline"): RankiLangContextInstance {
-    const inst = new RankiLangContext({
-      theater: this.theater,
-      role: this.role,
-      blockDepth: this.blockDepth,
-      inlineDepth: this.inlineDepth,
-      startRule: this.startRule,
-      hooks: this.hooks,
-    }).setParser(this.getParserDefinition());
+    const inst = new RankiLangContext(
+      {
+        theater: this.theater,
+        role: this.role,
+        blockDepth: this.blockDepth,
+        inlineDepth: this.inlineDepth,
+        startRule: this.startRule,
+        hooks: this.hooks,
+      },
+      {
+        parserDefinition: this.parserDefinition,
+        parserLineage: this.parserLineage,
+        parserDefaultDef: this.parserDefaultDef,
+      },
+    );
     if (direction) {
       inst.incrementDepth(direction);
     }
@@ -181,16 +221,6 @@ export class RankiLangContext implements RankiLangContextInstance {
         total: this.blockDepth + this.inlineDepth,
       },
     };
-  }
-
-  getHash(type: "ast"): string {
-    switch (type) {
-      case "ast":
-        return "I'M CURRENTLY FIXING THIS";
-      // return this.context.astHash;
-      default:
-        throw new Error(`UNDEFINED HASH TYPE: ${type}`);
-    }
   }
 
   getMergedConfig: () => RankiLanguageConfig["merged"] = () =>
