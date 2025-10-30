@@ -146,7 +146,9 @@ export class RankiLangContext implements RankiLangContextInstance {
     return parsed;
   }
 
-  incrementDepth(direction: "block" | "inline"): AstNode["shape"]["depth"] {
+  private incrementDepth(
+    direction: "block" | "inline",
+  ): AstNode["shape"]["depth"] {
     switch (direction) {
       case "block":
         this.blockDepth++;
@@ -188,18 +190,7 @@ export class RankiLangContext implements RankiLangContextInstance {
     return inst;
   }
 
-  // getDepth(direction: "block" | "inline" | "total"): number {
-  //   switch (direction) {
-  //     case "block":
-  //       return this.blockDepth;
-  //     case "inline":
-  //       return this.inlineDepth;
-  //     case "total":
-  //       return this.blockDepth + this.inlineDepth;
-  //   }
-  // }
-
-  getContextArgs(): Pick<AstNode["shape"], "depth"> {
+  private getContextArgs(): Pick<AstNode["shape"], "depth"> {
     return {
       depth: {
         block: this.blockDepth,

@@ -174,9 +174,9 @@ export interface RankiLangContextInstance {
 
   parseAst: (raw: string) => RankiLangParseHandlerFunctionReturn;
 
-  incrementDepth(direction: "block" | "inline"): AstNode["shape"]["depth"];
+  // incrementDepth(direction: "block" | "inline"): AstNode["shape"]["depth"];
   // getDepth(direction: "block" | "inline" | "total"): number;
-  getContextArgs(): Pick<AstNode["shape"], "depth">;
+  // getContextArgs(): Pick<AstNode["shape"], "depth">;
 
   newChild(direction?: "block" | "inline"): RankiLangContextInstance;
 

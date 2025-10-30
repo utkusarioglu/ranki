@@ -1,7 +1,7 @@
 import type { RankiPluginParser } from "@ranki/package-api-v2";
 import { actions } from "./actions/actions.mjs";
 import grammar from "../assets/ohm/2.0.68.ohm?raw";
-import { handler } from "./handler.mjs";
+import { handler } from "./handler/handler.mjs";
 import type { RankiFrameV2ParserPluginConfig } from "./types/config.mjs";
 import { tokenizer, config } from "./config.mjs";
 import { validators } from "./validators.mjs";

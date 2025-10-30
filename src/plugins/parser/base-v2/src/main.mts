@@ -1,47 +1,12 @@
-import type {
-  RankiPluginParser,
-  RankiGrammarTokens,
-  RankiLangParseHandlerFunction,
-} from "@ranki/package-api-v2";
+import type { RankiPluginParser } from "@ranki/package-api-v2";
 import grammar from "../assets/ohm/2.0.65.ohm?raw";
 import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";
 import { transformers } from "./transformers.mjs";
 import type { RankiBaseV2ParserPluginConfig } from "./type.mjs";
-
-const config: RankiBaseV2ParserPluginConfig = {
-  tokens: {
-    ignore: "% ignore",
-    escape: "\\\\",
-  },
-};
-
-function tokenizer(config: RankiBaseV2ParserPluginConfig) {
-  const tokens: RankiGrammarTokens = {};
-  tokens["tBaseV2Escape"] = config.tokens.escape;
-  tokens["tBaseV2Ignore"] = config.tokens.ignore;
-  return tokens;
-}
-
-const handler: RankiLangParseHandlerFunction = (
-  theaterRaw,
-  context,
-  parser,
-) => {
-  const config = context.getMergedConfig();
-  const theaterWithContent = [
-    config.content.prefix,
-    theaterRaw,
-    config.content.suffix,
-  ].join("");
-
-  return {
-    props: {
-      message: "STILL UNDER CONSTRUCTION",
-    },
-    ast: parser.callback(theaterWithContent),
-  };
-};
+import { handler } from "./handler.mjs";
+import { tokenizer } from "./tokenizer.mjs";
+import { config } from "./config.mjs";
 
 export const rankiBaseV2ParserPlugin: RankiPluginParser<RankiBaseV2ParserPluginConfig> =
   {
