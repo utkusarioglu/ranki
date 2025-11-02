@@ -47,14 +47,23 @@ export type ParseNodeRichStructureV2Reduced =
 
 export type ParseNodeRichStructureV2LeafReduced = Omit<
   ParseNodeRichStructureV2Leaf,
-  "shape" | "parent" | "parser" | "plugins"
+  "shape" | "parent" | "parser" | "plugins" | "creator" | "source" | "subtree"
 > & {
   shape: Omit<ParseNodeRichStructureV2Leaf["shape"], "depth">;
+  source?: ParseNodeRichStructureV2Leaf["source"];
 };
 
 export type ParseNodeRichStructureV2ParentReduced = Omit<
   ParseNodeRichStructureV2Parent,
-  "shape" | "parent" | "parser" | "plugins"
+  | "shape"
+  | "parent"
+  | "parser"
+  | "plugins"
+  | "creator"
+  | "source"
+  | "subtree"
+  | "children"
 > & {
   shape: Omit<ParseNodeRichStructureV2Parent["shape"], "depth">;
+  source?: ParseNodeRichStructureV2Parent["source"];
 };

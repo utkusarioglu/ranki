@@ -1,10 +1,11 @@
 import * as ohm from "ohm-js";
 import type {
-  RankiLangAstContext,
+  // RankiLangAstContext,
   RankiPluginParser,
 } from "@ranki/package-api-v2";
 import type { GrammarSpecs } from "../../types/parser.mjs";
 import type { ParserPluginGrammar } from "../../types/parser.mjs";
+import type { RankiLangConfig } from "../../config.mjs";
 
 function adjustParent(specs: GrammarSpecs, raw: string): ParserPluginGrammar {
   const altered = raw.replace(/<:\s*(\w+)\s*\{/, (_match, _word) => {
@@ -20,7 +21,8 @@ function adjustParent(specs: GrammarSpecs, raw: string): ParserPluginGrammar {
 }
 
 export function buildGrammar(
-  context: RankiLangAstContext,
+  config: RankiLangConfig,
+  // context: RankiLangAstContext,
   importChain: string[],
   finder: (s: string) => RankiPluginParser,
 ) {
@@ -35,7 +37,7 @@ export function buildGrammar(
         parentGrammar: si === 0 ? "" : importChain[si - 1],
         dependencies: grammarParents,
       },
-      parserPlugin.grammar(context.getAllConfig()),
+      parserPlugin.grammar(config.getAll()),
     );
     matchers[name] = matcher;
     sources.push(matcher.altered);

@@ -25,15 +25,16 @@ function hComplex<T extends ohm.Node>(
   operator: ohm.Node,
   clearance2: ohm.Node,
   imaginary: NodeLeafRichNumberV2SourceScalar,
-  complexToken: ohm.Node,
+  // TODO
+  _complexToken: ohm.Node,
 ): ParseNodeRichNumberV2 {
-  const context = c(this).newChild("inline");
-  return context.enrich<
+  const context = c(this).newChild(this, "inline");
+  return context.newAstNode<
     ParseNodeRichNumberV2ComplexReduced,
     ParseNodeRichNumberV2
   >({
     kind: "leaf",
-    creator: this.ctorName,
+    // creator: this.ctorName,
     print: true,
     shape: {
       spaces: {
@@ -47,11 +48,11 @@ function hComplex<T extends ohm.Node>(
         },
       },
       separators: [],
-      "richNumber.v2": {
-        shape: {
-          "token.complex": complexToken.sourceString,
-        },
-      },
+      // "richNumber.v2": {
+      //   shape: {
+      //     "token.complex": complexToken.sourceString,
+      //   },
+      // },
     },
     source: {
       type: "complex",
@@ -65,7 +66,7 @@ function hComplex<T extends ohm.Node>(
 
 const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   conceptualSymbol(token) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     let type;
     CONCEPTUAL_NUMBERS.forEach((t) => {
@@ -77,12 +78,12 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       throw new Error(`UNRECOGNIZED CONCEPTUAL NUMBER ${token.sourceString}`);
     }
 
-    return context.enrich<
+    return context.newAstNode<
       ParseNodeRichNumberV2GeneralReduced,
       ParseNodeRichNumberV2
     >({
       kind: "leaf",
-      creator: this.ctorName,
+      // creator: this.ctorName,
       print: true,
       shape: {
         spaces: {},
@@ -99,17 +100,17 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_indian(num) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const integer = +num.sourceString
       .split(config.tokens.number.group)
       .join("");
-    return context.enrich<
+    return context.newAstNode<
       ParseNodeRichNumberV2GeneralReduced,
       ParseNodeRichNumberV2
     >({
       kind: "leaf",
-      creator: this.ctorName,
+      // creator: this.ctorName,
       print: true,
       shape: {
         spaces: {},
@@ -126,17 +127,17 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_international(num) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const integer = +num.sourceString
       .split(config.tokens.number.group)
       .join("");
-    return context.enrich<
+    return context.newAstNode<
       ParseNodeRichNumberV2GeneralReduced,
       ParseNodeRichNumberV2
     >({
       kind: "leaf",
-      creator: this.ctorName,
+      // creator: this.ctorName,
       print: true,
       shape: {
         spaces: {},
@@ -153,17 +154,17 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_unstructured(_digit, _token, num) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const integer = +num.sourceString
       .split(config.tokens.number.group)
       .join("");
-    return context.enrich<
+    return context.newAstNode<
       ParseNodeRichNumberV2GeneralReduced,
       ParseNodeRichNumberV2
     >({
       kind: "leaf",
-      creator: this.ctorName,
+      // creator: this.ctorName,
       print: true,
       shape: {
         spaces: {},
@@ -180,13 +181,13 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   numberSystem_basic(basic) {
-    const context = c(this).newChild("inline");
-    return context.enrich<
+    const context = c(this).newChild(this, "inline");
+    return context.newAstNode<
       ParseNodeRichNumberV2GeneralReduced,
       ParseNodeRichNumberV2
     >({
       kind: "leaf",
-      creator: this.ctorName,
+      // creator: this.ctorName,
       print: true,
       shape: {
         spaces: {},
@@ -203,7 +204,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   conceptualNumber_factored(factor, conceptualSymbol) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const con = conceptualSymbol.node(context);
     con["source"]["factor"] = +factor.sourceString;
     con["source"]["raw"] = this.sourceString;
@@ -211,7 +212,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   conceptual_signed(sign, conceptualNumber) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const con = conceptualNumber.node(context);
     con["source"]["sign"] = sign.richNumberV2Sign(context);
     con["source"]["raw"] = this.sourceString;
@@ -219,7 +220,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   hBases(_zero, symbol, numberSystem_unstructured) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const tokens = config.tokens;
     let type;
@@ -235,12 +236,12 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
       );
     }
 
-    return context.enrich<
+    return context.newAstNode<
       ParseNodeRichNumberV2GeneralReduced,
       ParseNodeRichNumberV2
     >({
       kind: "leaf",
-      creator: this.ctorName,
+      // creator: this.ctorName,
       print: true,
       shape: {
         spaces: {},
@@ -259,21 +260,21 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   hexadecimal(sign, basedNumber) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const h = basedNumber.node(context);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
     return h;
   },
   binary(sign, basedNumber) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const h = basedNumber.node(context);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
     return h;
   },
   octal(sign, basedNumber) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const h = basedNumber.node(context);
     h["type"] = this.ctorName;
     h["source"]["sign"] = sign.sourceString;
@@ -281,14 +282,14 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   integer_signed(sign, numberSystem) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const ns = numberSystem.node(context);
-    return context.enrich<
+    return context.newAstNode<
       ParseNodeRichNumberV2GeneralReduced,
       ParseNodeRichNumberV2
     >({
       kind: "leaf",
-      creator: this.ctorName,
+      // creator: this.ctorName,
       print: true,
       shape: {
         spaces: {},
@@ -303,13 +304,13 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   decimal_full(integer, _decimalToken, decimalGroup) {
-    const context = c(this).newChild("inline");
-    return context.enrich<
+    const context = c(this).newChild(this, "inline");
+    return context.newAstNode<
       ParseNodeRichNumberV2GeneralReduced,
       ParseNodeRichNumberV2
     >({
       kind: "leaf",
-      creator: this.ctorName,
+      // creator: this.ctorName,
       print: true,
       shape: {
         spaces: {},
@@ -325,17 +326,17 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   decimal_point(sign, _decimalToken, decimalGroup) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const config = context.getPluginConfig<RNV2>("RankiRichNumberV2");
     const decimal = +decimalGroup.sourceString
       .split(config.tokens.number.group)
       .join("");
-    return context.enrich<
+    return context.newAstNode<
       ParseNodeRichNumberV2GeneralReduced,
       ParseNodeRichNumberV2
     >({
       kind: "leaf",
-      creator: this.ctorName,
+      // creator: this.ctorName,
       print: true,
       shape: {
         spaces: {},
@@ -363,13 +364,13 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   rational(nominator, _rationalToken, denominator) {
-    const context = c(this).newChild("inline");
-    return context.enrich<
+    const context = c(this).newChild(this, "inline");
+    return context.newAstNode<
       ParseNodeRichNumberV2GeneralReduced,
       ParseNodeRichNumberV2
     >({
       kind: "leaf",
-      creator: this.ctorName,
+      // creator: this.ctorName,
       print: true,
       shape: {
         spaces: {},
@@ -386,7 +387,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   complex_i(realPart, clearance1, operator, clearance2, complexToken) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const imaginary: NodeLeafRichNumberV2SourceInteger = {
       type: "integer",
       raw: complexToken.sourceString,
@@ -415,7 +416,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     imaginaryPart,
     complexToken,
   ) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const real: NodeLeafRichNumberV2SourceScalar =
       realPart.node(context).source;
     const imaginary: NodeLeafRichNumberV2SourceScalar =
@@ -439,7 +440,7 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
     complexToken,
     imaginaryPart,
   ) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const real: NodeLeafRichNumberV2SourceScalar =
       realPart.node(context).source;
     const imaginary: NodeLeafRichNumberV2SourceScalar =
@@ -456,13 +457,13 @@ const node: ohm.ActionDict<ParseNodeRichNumberV2> = {
   },
 
   eNotation(significand, _eToken, exponent) {
-    const context = c(this).newChild("inline");
-    return context.enrich<
+    const context = c(this).newChild(this, "inline");
+    return context.newAstNode<
       ParseNodeRichNumberV2GeneralReduced,
       ParseNodeRichNumberV2
     >({
       kind: "leaf",
-      creator: this.ctorName,
+      // creator: this.ctorName,
       print: true,
       shape: {
         spaces: {},

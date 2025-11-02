@@ -4,7 +4,7 @@ import type {
 } from "@ranki/package-api-v2";
 import grammar from "../assets/ohm/2.0.64.ohm?raw";
 import { actions } from "./actions.mjs";
-import { handler } from "./handler.mjs";
+// import { handler } from "./handler.mjs";
 import { transformers } from "./transformers.mjs";
 import { validators } from "./validators.mjs";
 import type { RankiFrameV1ParserPluginConfig } from "./types.mjs";
@@ -32,9 +32,11 @@ export const rankiFrameV1ParserPlugin: RankiPluginParser<RankiFrameV1ParserPlugi
       version: "2.0.64",
       name: "RankiFrameV1",
     },
-    handler,
+    // handler,
     dependencies: ["RankiBaseV2"],
     config,
+    // !TODO
+    paramParser: () => ({ config: [], message: "TODO" }),
     tokenizer: () => tokenizer(config),
     grammar: () => grammar,
     validators,

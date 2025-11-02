@@ -94,5 +94,35 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
         };
       },
     },
+
+    {
+      tag: "anchor",
+      engine: "vanilla-js",
+      load: "static",
+      renderer: (t) => {
+        console.log("anchor renderer called");
+        if (t.kind === "parent") {
+          throw new Error("E_NOTATION CANNOT BE A PARENT");
+        }
+
+        const container = document.createElement("div");
+        const hud = document.createElement("div");
+        const langName = document.createElement("span");
+        langName.innerText = "hello language";
+        hud.appendChild(langName);
+        container.appendChild(hud);
+
+        const pre = document.createElement("pre");
+        container.appendChild(pre);
+        const code = document.createElement("code");
+        pre.appendChild(code);
+        code.innerText = t.source.raw;
+
+        return {
+          element: container,
+          loadedCallback: () => {},
+        };
+      },
+    },
   ],
 };

@@ -1,39 +1,51 @@
+import type * as ohm from "ohm-js";
 import type {
   ParserPluginsInstance,
   RankiLangContextInstance,
   RankiLangParseDefinition,
   ComponentPluginComponent,
   RankiLanguageConfig,
-  RankiLangCloneFunctionReturn,
-  RankiLanguageProvidedConfig,
   AstNode,
   RankiLangContextParams,
   BindingNode,
-  RankiLangParseHandlerFunction,
+  // RankiLangParseHandlerFunction,
   Enrichments,
-  CreateParserReturn,
+  ComponentPluginsInstance,
   RankiLangParseHandlerFunctionReturn,
+  RankiLanguageProvidedConfig,
 } from "@ranki/package-api-v2";
+import { RankiLangParserBoundary } from "./parser-boundary.mjs";
+import { AstLibrary } from "../stages/ast/library.mjs";
+import { RankiLangConfig } from "../config.mjs";
+
+interface RankiLangContextHooks {
+  ast: AstLibrary;
+  components: ComponentPluginsInstance;
+  parsers: ParserPluginsInstance;
+  config: RankiLangConfig;
+}
 
 export class RankiLangContext implements RankiLangContextInstance {
-  private parserDefinition!: RankiLangParseDefinition;
-  private parserLineage: CreateParserReturn[] = [];
-  private parserDefaultDef!: RankiLangParseDefinition;
-  private parserProps!: any;
+  private parserBoundary!: RankiLangParserBoundary;
+  private expandedParserDefinition!: RankiLangParseDefinition;
+  private provided: RankiLanguageProvidedConfig[] = [];
+  private hooks: RankiLangContextHooks;
 
   private theater: RankiLangContextParams["theater"];
   private role: RankiLangContextParams["role"];
+
   private blockDepth: NonNullable<RankiLangContextParams["blockDepth"]>;
   private inlineDepth: NonNullable<RankiLangContextParams["inlineDepth"]>;
   private startRule: NonNullable<RankiLangContextParams["startRule"]>;
-  private hooks: RankiLangContextParams["hooks"];
+  private ohmNode: ohm.Node | null = null;
 
   constructor(
     p: RankiLangContextParams,
+    hooks: RankiLangContextHooks,
     transfers?: {
-      parserLineage: CreateParserReturn[];
-      parserDefinition: RankiLangParseDefinition;
-      parserDefaultDef: RankiLangParseDefinition;
+      parserBoundary: RankiLangParserBoundary;
+      expandedDefinition: RankiLangParseDefinition;
+      provided: RankiLanguageProvidedConfig[];
     },
   ) {
     this.theater = p.theater;
@@ -41,25 +53,57 @@ export class RankiLangContext implements RankiLangContextInstance {
     this.blockDepth = p.blockDepth || 0;
     this.inlineDepth = p.inlineDepth || 0;
     this.startRule = p.startRule || "root";
-    this.hooks = p.hooks;
+    this.hooks = hooks;
 
     if (transfers) {
-      this.parserLineage = [...transfers.parserLineage];
-      this.parserDefinition = transfers.parserDefinition;
-      this.parserDefaultDef = transfers.parserDefaultDef;
+      this.parserBoundary = transfers.parserBoundary;
+      this.expandedParserDefinition = transfers.expandedDefinition;
     }
   }
 
-  enrich<P extends BindingNode, Output extends BindingNode>(
+  setOhmNode(ohmNode: ohm.Node) {
+    this.ohmNode = ohmNode;
+  }
+
+  newAstNode<P extends BindingNode, Output extends BindingNode>(
     p: P,
     en?: Enrichments,
   ): Output {
-    if (en && en.children) {
-      if (!p.children) {
-        p.children = [];
-      }
-      en.children.forEach((i) => (i.parent = p));
-      p.children.push(...en.children);
+    if (!this.ohmNode) {
+      throw new Error("AST NODE CREATION BEFORE OHM NODE REF ASSIGNMENT");
+    }
+
+    p.creator = this.ohmNode.ctorName;
+
+    // const currentParser = this.getParserDefinition();
+    // const lineage = this.parserBoundary.getLineageHash();
+    // const props = this.getParserDefinition();
+
+    p = {
+      plugins: {
+        parser: {
+          current: this.expandedParserDefinition,
+          // lineage,
+          // current: currentParser,
+          // props,
+        },
+        grammars: {},
+      },
+      ...p,
+    };
+
+    if (p.shape) {
+      p.shape = {
+        ...this.getContextArgs(),
+        ...p.shape,
+      };
+    }
+
+    if (!p.source) {
+      p.source = {
+        type: (en && en.sourceType) || "raw",
+        raw: this.ohmNode.sourceString,
+      };
     }
 
     if (en && en.subtree) {
@@ -73,122 +117,113 @@ export class RankiLangContext implements RankiLangContextInstance {
       });
     }
 
-    if (p.shape) {
-      p.shape = {
-        ...this.getContextArgs(),
-        ...p.shape,
-      };
+    if (en && en.children) {
+      if (!p.children) {
+        p.children = [];
+      }
+      en.children.forEach((i) => (i.parent = p));
+      p.children.push(...en.children);
     }
-
-    // const lastParser = this.parserLineage.at(-1);
-    const currentParser = this.getParserDefinition();
-    if (!currentParser) {
-      throw new Error("NO PARSER HAS BEEN SET");
-    }
-
-    const lineage = this.parserLineage.map((p) => p.expandedDefinition.hash);
-
-    p = {
-      plugins: {
-        parser: {
-          lineage,
-          current: currentParser,
-          props: this.parserProps,
-        },
-        grammars: {},
-      },
-      ...p,
-    };
 
     return p as unknown as Output;
   }
 
-  switchParser(
-    parserDefinition: RankiLangParseDefinition,
-  ): RankiLangContextInstance {
-    this.parserDefinition = parserDefinition;
-    const createdParser = this.hooks.createParser(parserDefinition, this);
-    this.parserLineage.push(createdParser);
+  newBoundary(def: RankiLangParseDefinition): RankiLangContextInstance {
+    this.expandedParserDefinition = def;
+    return this;
+  }
 
+  replaceProvidedConfig(
+    provided: RankiLanguageProvidedConfig[] | RankiLanguageProvidedConfig,
+  ): RankiLangContextInstance {
+    if (Array.isArray(provided)) {
+      this.provided = provided;
+    } else {
+      this.provided = [provided];
+    }
+    return this;
+  }
+
+  addProvidedConfig(
+    provided: RankiLanguageProvidedConfig[] | RankiLanguageProvidedConfig,
+  ): RankiLangContextInstance {
+    if (Array.isArray(provided)) {
+      this.provided.push(...provided);
+    } else {
+      this.provided.push(provided);
+    }
     return this;
   }
 
   getParserDefinition(): RankiLangParseDefinition {
-    if (!this.parserDefinition) {
-      throw new Error("NO PARSER DEFINITION HAS BEEN SET");
-    }
-    return this.parserDefinition;
+    return this.parserBoundary.getExpandedDefinition();
   }
 
-  getPlugins: () => ParserPluginsInstance = (...all) =>
-    this.hooks.getPlugins(...all);
-
-  getHandler: (def: RankiLangParseDefinition) => RankiLangParseHandlerFunction =
-    (...all) => this.hooks.getHandler(...all);
+  getPlugins: () => ParserPluginsInstance = () => this.hooks.parsers;
 
   getAllConfig: () => RankiLanguageConfig = (...all) =>
-    this.hooks.getConfig(...all);
+    this.parserBoundary.getConfig().getAll(...all);
 
   getComponent(handlerName: string, chain: string[]): ComponentPluginComponent {
-    return this.hooks.getComponent(handlerName, chain);
-  }
-
-  cloneLang(
-    userConfigs: RankiLanguageProvidedConfig[] | null,
-  ): RankiLangCloneFunctionReturn {
-    return this.hooks.cloneLang(userConfigs);
+    return this.hooks.components.getPlugin(handlerName, chain);
   }
 
   parseAst(raw: string): RankiLangParseHandlerFunctionReturn {
-    const def = this.getParserDefinition();
-    const parsed = this.hooks.parseAst(raw, def, this);
-    this.parserProps = parsed.props;
-    return parsed;
-  }
-
-  private incrementDepth(
-    direction: "block" | "inline",
-  ): AstNode["shape"]["depth"] {
-    switch (direction) {
-      case "block":
-        this.blockDepth++;
-        break;
-      case "inline":
-        this.inlineDepth++;
-        break;
+    const parentParser = this.parserBoundary;
+    if (this.expandedParserDefinition === null) {
+      throw new Error("METHOD CALLED BEFORE SETTING THE PARSER");
     }
-    return {
-      block: this.blockDepth,
-      inline: this.inlineDepth,
-      total: this.blockDepth + this.inlineDepth,
-    };
+    this.parserBoundary = new RankiLangParserBoundary(
+      this.expandedParserDefinition,
+      this.provided,
+      {
+        ast: this.hooks.ast,
+        components: this.hooks.components,
+        parsers: this.hooks.parsers,
+        config: this.hooks.config,
+        context: this,
+        parent: parentParser,
+      },
+    );
+    return this.parserBoundary.parse(raw, this);
   }
 
   getStartRule(): string {
     return this.startRule;
   }
 
-  newChild(direction?: "block" | "inline"): RankiLangContextInstance {
+  newChild(
+    ohmNode: ohm.Node,
+    direction?: "block" | "inline",
+  ): RankiLangContextInstance {
+    const blockDepth = this.blockDepth + (direction === "block" ? 1 : 0);
+    const inlineDepth = this.inlineDepth + (direction === "inline" ? 1 : 0);
+
     const inst = new RankiLangContext(
       {
         theater: this.theater,
         role: this.role,
-        blockDepth: this.blockDepth,
-        inlineDepth: this.inlineDepth,
+        blockDepth,
+        inlineDepth,
         startRule: this.startRule,
-        hooks: this.hooks,
       },
+      this.hooks,
       {
-        parserDefinition: this.parserDefinition,
-        parserLineage: this.parserLineage,
-        parserDefaultDef: this.parserDefaultDef,
+        expandedDefinition: this.expandedParserDefinition,
+        parserBoundary: this.parserBoundary,
+        provided: this.provided,
       },
     );
-    if (direction) {
-      inst.incrementDepth(direction);
-    }
+    inst.setOhmNode(ohmNode);
     return inst;
   }
+
+  getMergedConfig: () => RankiLanguageConfig["merged"] = () =>
+    this.parserBoundary.getConfig().getMerged();
+
+  getPluginConfig: (pluginName: string) => any = (pluginName: string) => {
+    return this.parserBoundary.getConfig().getPluginConfig(pluginName);
+  };
 
   private getContextArgs(): Pick<AstNode["shape"], "depth"> {
     return {
@@ -200,16 +235,21 @@ export class RankiLangContext implements RankiLangContextInstance {
     };
   }
 
-  getMergedConfig: () => RankiLanguageConfig["merged"] = () =>
-    this.hooks.getConfig()["merged"];
-
-  getPluginConfig: (pluginName: string) => any = (pluginName: string) => {
-    const merged = this.getMergedConfig().plugins.config;
-    // @ts-ignore
-    if (!merged[pluginName]) {
-      throw new Error(`NO SUCH PLUGIN: ${pluginName}`);
-    }
-    // @ts-expect-error
-    return merged[pluginName] as T;
-  };
+  // private incrementDepth(
+  //   direction: "block" | "inline",
+  // ): AstNode["shape"]["depth"] {
+  //   switch (direction) {
+  //     case "block":
+  //       this.blockDepth++;
+  //       break;
+  //     case "inline":
+  //       this.inlineDepth++;
+  //       break;
+  //   }
+  //   return {
+  //     block: this.blockDepth,
+  //     inline: this.inlineDepth,
+  //     total: this.blockDepth + this.inlineDepth,
+  //   };
+  // }
 }

@@ -14,7 +14,8 @@ import type {
   RankiLangParseFunctionReturn,
   RankiLangAstContext,
   RankiLangParseDefinition,
-} from "./context.mjs";
+  RankiLangContextInstance,
+} from "./context.type.mjs";
 import type { RankiPluginParser } from "../plugins/parser.mjs";
 import type { RankiLangParseHandlerFunctionReturn } from "../export.mjs";
 
@@ -42,7 +43,7 @@ export interface RankiLangInstance {
 
 export interface RankiLangParseHandlerHooks {
   getPlugins: RankiLangInstance["getPlugins"];
-  getHandler: ParserPluginsInstance["getHandler"];
+  // getHandler: ParserPluginsInstance["getHandler"];
   getConfig: () => RankiLanguageConfig;
   getComponent(handlerName: string, chain: string[]): ComponentPluginComponent;
   cloneLang(
@@ -68,7 +69,7 @@ export interface CreateParserReturn {
 
 export type ParseAstFunction = (
   raw: string,
-  // newContext: RankiLangAstContext,
+  context: RankiLangContextInstance,
 ) => RankiLangParseFunctionReturn;
 
 export interface RankiLangCloneFunctionReturn {

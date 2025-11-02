@@ -1,29 +1,30 @@
 import type { AstNode, AstNodeLeaf } from "@ranki/package-api-v2";
 
-import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
+// import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
 export type ParseNodeRichNumberV2 =
   | ParseNodeRichNumberV2General
   | ParseNodeRichNumberV2Complex;
 
 type ParseNodeRichNumberV2General = Omit<AstNodeLeaf, "shape" | "source"> & {
-  shape: AstNode["shape"] & Partial<NodeArgsBaseV2>;
+  shape: AstNode["shape"];
+  // & Partial<NodeArgsBaseV2>;
   source: NodeLeafRichNumberV2SourceGeneral;
 };
 type ParseNodeRichNumberV2Complex = Omit<AstNodeLeaf, "shape" | "source"> & {
-  shape: AstNode["shape"] &
-    Partial<NodeArgsBaseV2> &
-    NodeArgsRichNumberV2Complex;
+  shape: AstNode["shape"];
+  // Partial<NodeArgsBaseV2>
+  // NodeArgsRichNumberV2Complex;
   source: NodeLeafRichNumberV2SourceComplex;
 };
 
-export interface NodeArgsRichNumberV2Complex {
-  "richNumber.v2": {
-    shape: {
-      "token.complex": string;
-    };
-  };
-}
+// export interface NodeArgsRichNumberV2Complex {
+//   "richNumber.v2": {
+//     shape: {
+//       "token.complex": string;
+//     };
+//   };
+// }
 
 export type NodeLeafRichNumberV2SourceScalar =
   | NodeLeafRichNumberV2SourceInteger
@@ -129,16 +130,18 @@ export type ParseNodeRichNumberV2Reduced =
   | ParseNodeRichNumberV2GeneralReduced
   | ParseNodeRichNumberV2ComplexReduced;
 
+type OmittedKeys = "parent" | "parser" | "shape" | "plugins" | "creator";
+
 export type ParseNodeRichNumberV2GeneralReduced = Omit<
   ParseNodeRichNumberV2General,
-  "parent" | "parser" | "shape" | "plugins"
+  OmittedKeys
 > & {
   shape: Omit<ParseNodeRichNumberV2General["shape"], "depth">;
 };
 
 export type ParseNodeRichNumberV2ComplexReduced = Omit<
   ParseNodeRichNumberV2Complex,
-  "parent" | "parser" | "shape" | "plugins"
+  OmittedKeys
 > & {
   shape: Omit<ParseNodeRichNumberV2Complex["shape"], "depth">;
 };

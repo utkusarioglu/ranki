@@ -1,10 +1,12 @@
 export type NodeOmitted =
+  | "creator"
   | "shape"
   | "parser"
   | "subtree"
   | "children"
   | "parent"
-  | "plugins";
+  | "plugins"
+  | "source";
 
 export type ArgsOmitted = "depth";
 

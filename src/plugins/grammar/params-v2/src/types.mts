@@ -12,6 +12,7 @@ export type ParamV2 = ParamV2Setting | ParamV2Directive;
 
 export type ParamV2Common = Omit<GenericParam, "key"> & {
   key: "positional" | ParamV2Key;
+  creator: string;
   shape: NodeArgsParamsV2;
   operator: ParamV2Operator;
   values: ParamV2Value[];
@@ -39,11 +40,17 @@ export type ParamV2DirectiveReducedPartial = Omit<
   "type"
 >;
 
-export type ParamV2SettingReduced = Omit<ParamV2Setting, "shape"> & {
+export type ParamV2SettingReduced = Omit<
+  ParamV2Setting,
+  "shape" | "source" | "creator"
+> & {
   shape: Omit<ParamV2Setting["shape"], "depth">;
 };
 
-export type ParamV2DirectiveReduced = Omit<ParamV2Directive, "shape"> & {
+export type ParamV2DirectiveReduced = Omit<
+  ParamV2Directive,
+  "shape" | "source" | "creator"
+> & {
   shape: Omit<ParamV2Directive["shape"], "depth">;
 };
 

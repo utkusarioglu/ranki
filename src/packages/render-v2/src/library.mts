@@ -16,6 +16,11 @@ export class RenderLibrary {
     }
     this.plugins[plugin.meta.name] = plugin;
     this.addStatics(plugin);
+    console.log({
+      plugins: this.plugins,
+      static: this.static,
+      loaded: this.loaded,
+    });
   }
 
   private addStatics(plugin: RankiPluginRenderer) {
@@ -37,6 +42,7 @@ export class RenderLibrary {
   }
 
   async getRenderer(tag: string): Promise<LoadedRenderCallback> {
+    console.log("get renderer", tag);
     const lazyLoaded = this.loaded[tag];
     if (lazyLoaded) {
       return Promise.resolve(lazyLoaded);

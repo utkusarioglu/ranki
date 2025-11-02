@@ -1,15 +1,17 @@
 // import { djb2Hash, stringifyContext } from "./utils.mjs";
 import type {
-  RankiLangAstContext,
+  // RankiLangAstContext,
   RankiLangParseDefinition,
 } from "@ranki/package-api-v2";
+import type { RankiLangConfig } from "../../config.mjs";
 
 export class ParserHash {
   static compute(
     def: RankiLangParseDefinition,
-    context: RankiLangAstContext,
+    config: RankiLangConfig,
+    // context: RankiLangAstContext,
   ): string {
-    const stringified = ParserHash.stringifyContext(def, context);
+    const stringified = ParserHash.stringifyContext(def, config);
     return ParserHash.djb2Hash(stringified).toString();
   }
 
@@ -23,8 +25,9 @@ export class ParserHash {
 
   private static stringifyContext(
     def: RankiLangParseDefinition,
-    context: RankiLangAstContext,
+    config: RankiLangConfig,
+    // context: RankiLangAstContext,
   ): string {
-    return [def.type, JSON.stringify(context.getMergedConfig())].join("");
+    return [def.type, JSON.stringify(config.getMerged())].join("");
   }
 }

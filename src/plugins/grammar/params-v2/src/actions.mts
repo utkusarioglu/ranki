@@ -33,12 +33,12 @@ const creatorName: ohm.ActionDict<string> = {
 
 const paramsV2: ohm.ActionDict<ParamV2[]> = {
   _iter(...children) {
-    const context = c(this).newChild();
+    const context = c(this).newChild(this);
     return children.map((c) => c.paramV2(context));
   },
 
   v2ParamListInline(param1, _sep, param2) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const rest = param2.paramsV2(context);
     const joined = [param1.paramV2(context), ...rest];
 
@@ -46,7 +46,7 @@ const paramsV2: ohm.ActionDict<ParamV2[]> = {
   },
 
   v2ParamListBlock(param1, _sep, param2) {
-    const context = c(this).newChild("block");
+    const context = c(this).newChild(this, "block");
     const rest = param2.paramsV2(context);
     const joined = [param1.paramV2(context), ...rest];
 
@@ -71,7 +71,7 @@ const paramV2Key: ohm.ActionDict<ParamV2KeyWord> = {
 
 const paramV2Common: ohm.ActionDict<ParamV2Common> = {
   paramFormatOperator(paramKey, wi1, operatorToken, wi2, paramValues) {
-    const context = c(this).newChild("block");
+    const context = c(this).newChild(this, "block");
     const config =
       context.getPluginConfig<RankiParamsV2ParserPluginConfig>("RankiParamsV2");
     const operators = config.tokens.operators;
@@ -85,7 +85,7 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
 
     const key: ParamV2KeyWord[] = paramKey.paramV2Key(c(this));
 
-    return context.enrich<ParamV2Reduced, ParamV2Setting>({
+    return context.newAstNode<ParamV2Reduced, ParamV2Setting>({
       type: "setting",
       key,
       shape: {
@@ -105,28 +105,28 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
       namespace: 1,
       operator: f[0] as ParamV2Operator,
       values: paramValues.paramV2Values(context),
-      source: {
-        type: "raw",
-        raw: this.sourceString,
-      },
+      // source: {
+      //   type: "raw",
+      //   raw: this.sourceString,
+      // },
     });
   },
 
   paramFormatPositive(paramKey) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const key: ParamV2KeyWord[] = paramKey.paramV2Key(c(this));
 
-    return context.enrich<ParamV2ReducedPartial, ParamV2Common>({
+    return context.newAstNode<ParamV2ReducedPartial, ParamV2Common>({
       key,
       shape: {
         spaces: {},
         separators: [],
       },
       operator: "assign",
-      source: {
-        type: "raw",
-        raw: this.sourceString,
-      },
+      // source: {
+      //   type: "raw",
+      //   raw: this.sourceString,
+      // },
       values: [
         {
           type: "boolean",
@@ -138,9 +138,9 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
   },
 
   paramFormatNegative(_negation, paramKey) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const key: ParamV2KeyWord[] = paramKey.paramV2Key(c(this));
-    return context.enrich<ParamV2ReducedPartial, ParamV2Common>({
+    return context.newAstNode<ParamV2ReducedPartial, ParamV2Common>({
       key,
       shape: {
         spaces: {},
@@ -154,16 +154,16 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
           value: false,
         },
       ],
-      source: {
-        type: "raw",
-        raw: this.sourceString,
-      },
+      // source: {
+      //   type: "raw",
+      //   raw: this.sourceString,
+      // },
     });
   },
 
   paramFormatPositional(quoted) {
-    const context = c(this).newChild("inline");
-    return context.enrich<ParamV2ReducedPartial, ParamV2Common>({
+    const context = c(this).newChild(this, "inline");
+    return context.newAstNode<ParamV2ReducedPartial, ParamV2Common>({
       key: "positional" as "positional",
       shape: {
         spaces: {},
@@ -177,10 +177,10 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
           raw: quoted.sourceString.slice(1, -1),
         },
       ],
-      source: {
-        type: "raw",
-        raw: this.sourceString,
-      },
+      // source: {
+      //   type: "raw",
+      //   raw: this.sourceString,
+      // },
     });
   },
 };
@@ -211,12 +211,12 @@ const paramV2: ohm.ActionDict<ParamV2> = {
 
 const paramV2Values: ohm.ActionDict<ParamV2Value[]> = {
   _iter(...children) {
-    const context = c(this).newChild();
+    const context = c(this).newChild(this);
     return children.map((c) => c.paramV2Value(context));
   },
 
   paramValues(i1, _clearance, i2) {
-    const context = c(this).newChild();
+    const context = c(this).newChild(this);
     return [i1.paramV2Value(context), ...i2.paramV2Values(context)];
   },
 };
@@ -293,8 +293,8 @@ const shapeAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi3,
     sepLeft2,
   ) {
-    const context = c(this).newChild("block");
-    return context.enrich<ArgsAndParamsV2Reduced, ArgsAndParamsV2>({
+    const context = c(this).newChild(this, "block");
+    return context.newAstNode<ArgsAndParamsV2Reduced, ArgsAndParamsV2>({
       shape: {
         spaces: {
           sepAndNl: {
@@ -335,14 +335,14 @@ const shapeAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
   },
 
   v2ParamListInlineContainer(sepLeft1, wi1, v2ParamListInline, wi2, sepLeft2) {
-    const context = c(this).newChild("block");
+    const context = c(this).newChild(this, "block");
     const sepLastCtorName = sepLeft2.creatorName(context) as string[];
     const sepLast = sepLastCtorName.map((type) => ({
       type,
       raw: sepLeft2.sourceString,
     }));
 
-    return context.enrich<ArgsAndParamsV2Reduced, ArgsAndParamsV2>({
+    return context.newAstNode<ArgsAndParamsV2Reduced, ArgsAndParamsV2>({
       shape: {
         spaces: {
           sepAndNl: {

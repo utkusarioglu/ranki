@@ -1,7 +1,6 @@
 import type {
   AstNodeParentReduced,
   AstNodeLeafReduced,
-  RankiLangContextInstance as R,
 } from "@ranki/package-api-v2";
 import { getContext as c } from "@ranki/package-api-v2/helpers";
 import { joinNodes, zipNodes } from "@ranki/package-api-v2/helpers";
@@ -10,11 +9,11 @@ import type { ParseNodeFrameV2 } from "../types/node.mjs";
 
 export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
   block_v2(indentation, v2, wi, _ender) {
-    const context = c(this).newChild("block");
-    return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
+    const context = c(this).newChild(this, "block");
+    return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        creator: this.ctorName,
+        // creator: this.ctorName,
         shape: {
           spaces: {
             prefix: {
@@ -28,21 +27,21 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
           },
           separators: [],
         },
-        source: {
-          type: "raw",
-          raw: this.sourceString,
-        },
+        // source: {
+        //   type: "raw",
+        //   raw: this.sourceString,
+        // },
       },
       { subtree: {}, children: [v2.node(context)] },
     );
   },
 
   v2Payload_P(wi1, nl, pauseRoot) {
-    const context = c(this).newChild("block");
-    return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
+    const context = c(this).newChild(this, "block");
+    return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        creator: this.ctorName,
+        // creator: this.ctorName,
         shape: {
           spaces: {
             prefix: {
@@ -56,50 +55,52 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
           },
           separators: [],
         },
-        source: {
-          type: "raw",
-          raw: this.sourceString,
-        },
+        // source: {
+        //   type: "raw",
+        //   raw: this.sourceString,
+        // },
       },
-      { subtree: {}, children: [pauseRoot.node(context)] },
+      {
+        children: [pauseRoot.node(context)],
+      },
     );
   },
 
   v2Payload_p(pauseRoot) {
-    const context = c(this).newChild("block");
-    return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
+    const context = c(this).newChild(this, "block");
+    return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        creator: this.ctorName,
+        // creator: this.ctorName,
         shape: {
           spaces: {},
           separators: [],
         },
-        source: {
-          type: "raw",
-          raw: this.sourceString,
-        },
+        // source: {
+        //   type: "raw",
+        //   raw: this.sourceString,
+        // },
       },
       { subtree: {}, children: [pauseRoot.node(context)] },
     );
   },
 
   pauseList(v2PayloadSection1, pausedContainer, v2PayloadSection2) {
-    const context = c(this).newChild("block");
-    return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
+    const context = c(this).newChild(this, "block");
+    return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        creator: this.ctorName,
+        // creator: this.ctorName,
         shape: {
           spaces: {},
           // TODO maybe `pausedContainer` should be a separator.
           // after all, that's what it actually does
           separators: [],
         },
-        source: {
-          type: "raw",
-          raw: this.sourceString,
-        },
+        // source: {
+        //   type: "raw",
+        //   raw: this.sourceString,
+        // },
       },
       {
         subtree: {},
@@ -119,11 +120,11 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     v2PayloadSectionItem2,
     whitespace2,
   ) {
-    const context = c(this).newChild("block");
-    return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
+    const context = c(this).newChild(this, "block");
+    return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        creator: this.ctorName,
+        // creator: this.ctorName,
         shape: {
           spaces: {
             suffix: {
@@ -133,10 +134,10 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
           },
           separators: whitespaceSeparator.separator(context),
         },
-        source: {
-          type: "raw",
-          raw: this.sourceString,
-        },
+        // source: {
+        //   type: "raw",
+        //   raw: this.sourceString,
+        // },
       },
       {
         subtree: {},
@@ -152,21 +153,21 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2PayloadPlain(plain) {
     // TODO i'm so not sure if this is what's supposed to happen here
     // this uses a context that was created in a parent to produce a parser deeper in the chain
-    const context = c(this).newChild("block");
+    const context = c(this).newChild(this, "block");
 
     const child = context.parseAst(plain.sourceString);
-    return context.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
+    return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        creator: this.ctorName,
+        // creator: this.ctorName,
         shape: {
           spaces: {},
           separators: [],
         },
-        source: {
-          type: "raw",
-          raw: this.sourceString,
-        },
+        // source: {
+        //   type: "raw",
+        //   raw: this.sourceString,
+        // },
       },
       { subtree: {}, children: [child.ast.root] },
     );
@@ -174,38 +175,40 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
 
   // !TODO are pauseStart and pauseEnd separators or fillers?
   pausedContainer(_pauseStart, pausedPayload, _pauseEnd) {
-    const parentContext = c(this).newChild("block");
-    return parentContext.enrich<AstNodeParentReduced, ParseNodeFrameV2>(
+    const parentContext = c(this).newChild(this, "block");
+    return parentContext.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        creator: this.ctorName,
+        // creator: this.ctorName,
         shape: {
           spaces: {},
           separators: [],
         },
-        source: {
-          type: "raw",
-          raw: this.sourceString,
-        },
+        // source: {
+        //   type: "raw",
+        //   raw: this.sourceString,
+        // },
       },
       {
         subtree: {},
         children: [
           (() => {
-            const leafContext = (parentContext as R).newChild("inline");
-            return leafContext.enrich<AstNodeLeafReduced, ParseNodeFrameV2>({
-              kind: "leaf",
-              creator: this.ctorName,
-              print: true,
-              shape: {
-                spaces: {},
-                separators: [],
+            const leafContext = parentContext.newChild(this, "inline");
+            return leafContext.newAstNode<AstNodeLeafReduced, ParseNodeFrameV2>(
+              {
+                kind: "leaf",
+                // creator: this.ctorName,
+                print: true,
+                shape: {
+                  spaces: {},
+                  separators: [],
+                },
+                source: {
+                  type: "raw",
+                  raw: pausedPayload.sourceString,
+                },
               },
-              source: {
-                type: "raw",
-                raw: pausedPayload.sourceString,
-              },
-            });
+            );
           })(),
         ],
       },

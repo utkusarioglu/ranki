@@ -5,11 +5,12 @@ import type {
   AstNodeParent,
   AstNodeLeaf,
   AstNodeLeafReduced,
+  GenericParam,
 } from "@ranki/package-api-v2";
 
-export interface ArgsAndParamsV1 {
+export interface ShapeAndParamsV1 {
   shape: Partial<NodeArgsBaseV2>;
-  params: string[];
+  params: GenericParam[];
 }
 
 export type Single = string;

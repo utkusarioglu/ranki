@@ -4,7 +4,7 @@ import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";
 import { transformers } from "./transformers.mjs";
 import type { RankiBaseV2ParserPluginConfig } from "./type.mjs";
-import { handler } from "./handler.mjs";
+// import { handler } from "./handler.mjs";
 import { tokenizer } from "./tokenizer.mjs";
 import { config } from "./config.mjs";
 
@@ -15,9 +15,10 @@ export const rankiBaseV2ParserPlugin: RankiPluginParser<RankiBaseV2ParserPluginC
       name: "RankiBaseV2",
       version: "2.0.65",
     },
-    handler,
+    // handler,
     dependencies: ["RankiConstantsV2"],
     config,
+    paramParser: () => ({ config: [], message: ["TODO"] }),
     tokenizer: () => tokenizer(config),
     grammar: () => grammar,
     actions: () => actions,

@@ -7,6 +7,7 @@ import { rankiRichNumberV2ParserPlugin } from "@ranki/plugin-grammar-rich-number
 import { rankiRichStructureV2ParserPlugin } from "@ranki/plugin-grammar-rich-structure-v2";
 import { rankiFrameV1ParserPlugin } from "@ranki/plugin-parser-frame-v1";
 import { rankiFrameV2ComponentsPluginDom } from "@ranki/plugin-component-frame-v2-dom";
+import { rankiBaseV2ComponentsPluginDefault } from "@ranki/plugin-component-base-v2-default";
 
 export const pluginObjects = [
   rankiBaseV2ParserPlugin,
@@ -19,4 +20,7 @@ export const pluginObjects = [
   rankiFrameV1ParserPlugin,
 ];
 
-export const componentObjects = [rankiFrameV2ComponentsPluginDom];
+export const componentObjects = [
+  rankiFrameV2ComponentsPluginDom,
+  rankiBaseV2ComponentsPluginDefault,
+];

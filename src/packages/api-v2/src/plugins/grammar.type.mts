@@ -4,25 +4,40 @@ import type {
   // RankiLangParseDefinition,
   RankiLangParsedAst,
   RankiLangAstContext,
-} from "../lang/context.mjs";
+  RankiLangParseDefinition,
+  // RankiLangParseDefinition,
+} from "../lang/context.type.mjs";
 import type { RankiPluginCommon, WithTokenizer } from "./general.mjs";
 import type { RankiPluginParserValidationCallback } from "../stages/validation.mjs";
 import type { RankiPluginParserTransformCallback } from "../stages/transform.mjs";
-import type { CreateParserReturn } from "../export.mjs";
+import type {
+  ComponentPluginComponent,
+  CreateParserReturn,
+} from "../export.mjs";
 
 export type RankiGrammarTokens = Record<
   string,
   boolean | number | string | string[]
 >;
 
+export type RankiLangParseHandlerFunctionParams = {
+  raw: string;
+  context: RankiLangAstContext;
+  // parser: CreateParserReturn;
+  component: ComponentPluginComponent;
+  createParser: (
+    parseHandlerDef: RankiLangParseDefinition,
+    context: RankiLangAstContext,
+  ) => CreateParserReturn;
+  definition: RankiLangParseDefinition;
+};
+
 export type RankiLangParseHandlerFunction = (
-  raw: string,
-  spec: RankiLangAstContext,
-  parser: CreateParserReturn,
+  params: RankiLangParseHandlerFunctionParams,
 ) => RankiLangParseHandlerFunctionReturn;
 
 export type RankiLangParseHandlerFunctionReturn = {
-  props: any;
+  // props: any;
   ast: RankiLangParsedAst;
 };
 

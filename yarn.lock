@@ -1615,6 +1615,7 @@ __metadata:
     "@ranki/package-api-v2": "workspace:^"
     "@ranki/package-rankilang-v2": "workspace:^"
     "@ranki/package-render-v2": "workspace:^"
+    "@ranki/plugin-component-base-v2-default": "workspace:^"
     "@ranki/plugin-component-frame-v2-dom": "workspace:^"
     "@ranki/plugin-grammar-constants-v2": "workspace:^"
     "@ranki/plugin-grammar-params-v2": "workspace:^"
@@ -1695,6 +1696,16 @@ __metadata:
     "@ranki/package-api-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
     ohm-js: "npm:^17.2.1"
+    typescript: "npm:^5.8.3"
+  languageName: unknown
+  linkType: soft
+
+"@ranki/plugin-component-base-v2-default@workspace:^, @ranki/plugin-component-base-v2-default@workspace:src/plugins/component/base-v2":
+  version: 0.0.0-use.local
+  resolution: "@ranki/plugin-component-base-v2-default@workspace:src/plugins/component/base-v2"
+  dependencies:
+    "@ranki/config-typescript": "workspace:^"
+    "@ranki/package-api-v2": "workspace:^"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft

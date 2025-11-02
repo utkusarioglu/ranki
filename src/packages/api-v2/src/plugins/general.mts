@@ -1,5 +1,5 @@
 import type { RankiPluginParser } from "./parser.mjs";
-import type { RankiGrammarTokens } from "./grammar.mjs";
+import type { RankiGrammarTokens } from "./grammar.type.mjs";
 
 export type RankiPlugin = RankiPluginParser;
 

@@ -11,7 +11,7 @@ import type {
 } from "./types.mjs";
 
 function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
-  const context = c(this).newChild();
+  const context = c(this).newChild(this);
   const l = a.node(context);
   l.type = this.ctorName;
   return l;
@@ -19,39 +19,46 @@ function hLevel<T extends ohm.Node>(this: T, a: ohm.Node) {
 
 const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
   hLevel_defined(structureType1, separator, structureType2) {
-    const context = c(this).newChild("block");
+    const context = c(this).newChild(this, "block");
     // ! needs a type
     // its previous type was:
     // ParseNodeRichStructureV2["shape"]["richStructure.v2"] =
     const sep = separator.shapeAndParamsV2(context);
     sep && true;
 
-    return context.enrich<
+    return context.newAstNode<
       ParseNodeRichStructureV2ParentReduced,
       ParseNodeRichStructureV2
-    >({
-      kind: "parent",
-      creator: this.ctorName,
+    >(
+      {
+        kind: "parent",
+        // creator: this.ctorName,
 
-      shape: {
-        spaces: {},
-        // !fix I don't understand the separators thing here
-        separators: [],
-        // "richStructure.v2": {
-        //   // name: "SHALL BE SET BY PARENT",
-        //   // !FIX the separators are misplaced. the first separator args and params belong to the SECOND collection, section or whatever the level name is.
-        //   ...sep,
-        //   // shape: sep.args,
-        //   // params: sep.params,
+        shape: {
+          spaces: {},
+          // !fix I don't understand the separators thing here
+          separators: [],
+          // "richStructure.v2": {
+          //   // name: "SHALL BE SET BY PARENT",
+          //   // !FIX the separators are misplaced. the first separator args and params belong to the SECOND collection, section or whatever the level name is.
+          //   ...sep,
+          //   // shape: sep.args,
+          //   // params: sep.params,
+          // },
+        },
+        // subtree: {},
+        // source: {
+        //   type: "raw",
+        //   raw: this.sourceString,
         // },
       },
-      subtree: {},
-      children: [structureType1.node(context), ...structureType2.node(context)],
-      source: {
-        type: "raw",
-        raw: this.sourceString,
+      {
+        children: [
+          structureType1.node(context),
+          ...structureType2.node(context),
+        ],
       },
-    });
+    );
   },
   richStructure(a) {
     return hLevel.call(this, a);
@@ -74,7 +81,7 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
 
 const shapeAndParamsV2List: ohm.ActionDict<ArgsAndParamsV2[]> = {
   _iter(...children) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     return children.map((ch) => ch.shapeAndParamsV2(context));
   },
 };
@@ -88,8 +95,8 @@ const shapeAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi2,
     structureSepEnd,
   ) {
-    const context = c(this).newChild("inline");
-    return context.enrich<ArgsAndParamsV2Reduced, ArgsAndParamsV2>({
+    const context = c(this).newChild(this, "inline");
+    return context.newAstNode<ArgsAndParamsV2Reduced, ArgsAndParamsV2>({
       shape: {
         spaces: {
           startAndName: {
@@ -131,7 +138,7 @@ const shapeAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
     wi3,
     structureSepEnd,
   ) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     const config: ArgsAndParamsV2RichStructureV2 =
       v2ParamListInlineContainer.shapeAndParamsV2(context);
     return {
@@ -163,7 +170,7 @@ const shapeAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
         // !TODO you need ctorName here
 
         // !TODO not sure if this is supposed to be placed here
-        "richStructure.v1.config": config.shape,
+        // "richStructure.v1.config": config.shape,
       },
       params: config.params,
     };

@@ -8,8 +8,8 @@ import type {
   RankiPluginParser,
 } from "@ranki/package-api-v2";
 
-// const FRAME_V2 = ["RankiParamsV2", "RankiFrameV2"];
-const NONE: string[] = [];
+const REQUESTED = ["RankiParamsV2", "RankiFrameV2"];
+// const REQUESTED: string[] = [];
 
 /**
  * This is a hideous thing and direly needs tidying up.
@@ -31,7 +31,7 @@ export function useUserInput(
   const [installedParserPlugins, setInstalledParserPlugins] =
     useState(allParserPlugins);
   const [requestedParserPlugins, setRequestedParserPlugins] =
-    useState<string[]>(NONE);
+    useState<string[]>(REQUESTED);
   const [installedComponentPlugins, setInstalledComponentPlugins] =
     useState(allComponentPlugins);
   const [rankiStr, setRankiStr] = useState(presetGroups[0].presets[0].value);
@@ -62,7 +62,6 @@ export function useUserInput(
         ],
       );
       const parsed = rankiLang.parse({ [theater]: rankiStr });
-      console.log(parsed);
       const config = rankiLang.getConfig().merged;
       setSharedState({ type: "loaded", parsed, config });
     } catch (e) {

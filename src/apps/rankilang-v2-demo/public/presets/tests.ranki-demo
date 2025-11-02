@@ -5,5 +5,11 @@
   &trade; b3
   2.1e4
 
-  [a, cat|fd]
+  [a, "https://www.google.com"|google]
+]
+
+
+--- nested code
+[code
+  [a|fd]
 ]

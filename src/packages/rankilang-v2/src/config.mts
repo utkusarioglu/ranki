@@ -9,6 +9,7 @@ import type {
 export class RankiLangConfig {
   private defaultConfig: RankiLanguageDefaultConfig;
   private providedConfigs: RankiLanguageProvidedConfig[];
+  private pluginsConfig: ProducedConfig;
   private config: RankiLanguageConfig;
 
   // TODO any
@@ -16,11 +17,12 @@ export class RankiLangConfig {
     pluginConfig: ProducedConfig,
     userConfigs: RankiLanguageProvidedConfig[],
   ) {
+    this.pluginsConfig = pluginConfig;
     this.providedConfigs = userConfigs;
     this.defaultConfig = {
       stage: "transform",
       grammar: {
-        tokens: pluginConfig.tokens,
+        tokens: this.pluginsConfig.tokens,
       },
       content: {
         prefix: "",
@@ -47,10 +49,29 @@ export class RankiLangConfig {
     return this.config;
   }
 
+  getMerged() {
+    return this.config.merged;
+  }
+
+  // getPluginsConfig() {
+  //   return this.config.merged.plugins
+  // }
+
+  getPluginConfig<T>(pluginName: string): T {
+    const pluginsConfig = this.config.merged.plugins.config;
+
+    // @ts-ignore
+    if (!pluginsConfig[pluginName]) {
+      throw new Error(`NO SUCH PLUGIN: ${pluginName}`);
+    }
+    // @ts-expect-error
+    return pluginsConfig[pluginName] as T;
+  }
+
   clone(providedConfigs: RankiLanguageProvidedConfig[] | null) {
     const newProvidedConfigs =
       providedConfigs === null ? this.providedConfigs : providedConfigs;
-    return newProvidedConfigs;
+    return new RankiLangConfig(this.pluginsConfig, newProvidedConfigs);
   }
 
   private static merge(configs: any[]): RankiLanguageMergedConfig {

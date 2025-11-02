@@ -1,4 +1,9 @@
-import type { RankiLangAstContext } from "@ranki/package-api-v2";
+import type {
+  ComponentPluginComponentStageAst,
+  ParamParserReturn,
+  // RankiLangAstContext,
+  RankiLangParseDefinition,
+} from "@ranki/package-api-v2";
 import type { ParamV2 } from "@ranki/plugin-grammar-params-v2";
 import type { ConvertParamsParams } from "../types/handler.mjs";
 
@@ -9,40 +14,44 @@ function convertParams<T extends ParamV2>(
   const converted: ParamV2[] = [];
 
   params.forEach((p, i) => {
-    if (p.key === "positional") {
-      if (positional.length === 0) {
-        throw new Error(
-          `NO POSITIONAL PARAMS DEFINED FOR VALUE: "${p.values
-            .map((v) => v.raw)
-            .join(" ")}"`,
-        );
-      }
+    if (positional) {
+      if (p.key === "positional") {
+        if (positional.length === 0) {
+          throw new Error(
+            `NO POSITIONAL PARAMS DEFINED FOR VALUE: "${p.values
+              .map((v) => v.raw)
+              .join(" ")}"`,
+          );
+        }
 
-      if (positional.length <= i) {
-        throw new Error(
-          `MORE POSITIONAL PARAMS THAN DEFINED FOR FRAME: ${positional.join(
-            ", ",
-          )}`,
-        );
-      }
+        if (positional.length <= i) {
+          throw new Error(
+            `MORE POSITIONAL PARAMS THAN DEFINED FOR FRAME: ${positional.join(
+              ", ",
+            )}`,
+          );
+        }
 
-      converted.push({
-        ...p,
-        key: positional[i],
-      });
-      return;
+        converted.push({
+          ...p,
+          key: positional[i],
+        });
+        return;
+      }
     }
 
-    const isShorthand =
-      p.key.length === 1 && shorthands.hasOwnProperty(p.key[0]);
+    if (shorthands) {
+      const isShorthand =
+        p.key.length === 1 && shorthands.hasOwnProperty(p.key[0]);
 
-    if (isShorthand) {
-      converted.push({
-        ...p,
-        key: shorthands[p.key[0]],
-      });
-    } else {
-      converted.push(p);
+      if (isShorthand) {
+        converted.push({
+          ...p,
+          key: shorthands[p.key[0]],
+        });
+      } else {
+        converted.push(p);
+      }
     }
     return converted;
   });
@@ -83,27 +92,28 @@ function convertParams<T extends ParamV2>(
 }
 
 export function parseSettings(
-  { directive, setting }: any,
-  context: RankiLangAstContext,
-) {
-  const parser = context.getParserDefinition();
-  if (!parser.params) {
-    return { config: null };
+  def: RankiLangParseDefinition,
+  componentAst: ComponentPluginComponentStageAst,
+  // context: RankiLangAstContext,
+): ParamParserReturn {
+  // const def = context.getParserDefinition();
+  if (!def.params) {
+    return { config: [] };
   }
-  const items = parser.params;
+  const items = def.params;
   const directiveParams = items.filter((p) => p.type === "directive");
   const settingParams = items.filter((p) => p.type === "setting");
 
-  const directives = convertParams(
+  const config = convertParams(
     // @ts-expect-error
     directiveParams,
-    directive,
+    componentAst.directives,
   );
   const settings = convertParams(
     // @ts-expect-error
     settingParams,
-    setting,
+    componentAst.params,
   );
 
-  return { directives, settings };
+  return { config: [config], settings };
 }

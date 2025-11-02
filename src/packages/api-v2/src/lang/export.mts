@@ -20,7 +20,8 @@ export type {
   Enrichments,
   GenericParam,
   GenericParamOperators,
-} from "./context.mjs";
+  RankiLangAstResultTheaters,
+} from "./context.type.mjs";
 
 export type {
   RankiLangInstance,

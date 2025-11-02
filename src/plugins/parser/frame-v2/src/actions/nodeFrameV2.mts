@@ -16,66 +16,68 @@ import type { FrameSpec } from "../types/args.mjs";
 
 export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2_fp(_v2Start, v2FrameConfig, v2Payload, _v2End) {
-    const context = c(this).newChild("block");
+    const context = c(this).newChild(this, "block");
     const frameConfig: NodeArgsFrameV2Config =
       v2FrameConfig.v2FrameConfig(context);
 
-    const payloadContext = context.newChild().switchParser({
-      type: frameConfig.type,
-      chain: frameConfig.chain,
-      // @ts-expect-error complains about "key" type
-      params: frameConfig.params.items,
-    });
+    const child = context
+      .newChild(this, "block")
+      .newBoundary({
+        type: frameConfig.type,
+        chain: frameConfig.chain,
+        // @ts-expect-error complains about "key" type
+        params: frameConfig.params.items,
+      })
+      .parseAst(v2Payload.sourceString);
 
-    const child = v2Payload.node(payloadContext);
-
-    return context.enrich<ParseNodeFrameV2FpReduced, ParseNodeFrameV2>(
+    return context.newAstNode<ParseNodeFrameV2FpReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        creator: this.ctorName,
+        // creator: this.ctorName,
         shape: {
           separators: [],
           spaces: {},
         },
-        source: {
-          type: "raw",
-          raw: this.sourceString,
-        },
+        // source: {
+        //   type: "raw",
+        //   raw: this.sourceString,
+        // },
       },
       {
         subtree: {
           frameConfig,
         },
-        children: [child],
+        children: [child.ast.root],
       },
     );
   },
 
   v2_f(_v2Start, v2FrameConfig, _v2End) {
-    const context = c(this).newChild("block");
+    const context = c(this).newChild(this, "block");
     const frameConfig: NodeArgsFrameV2ConfigP =
       v2FrameConfig.v2FrameConfig(context);
 
-    const newContext = context.newChild().switchParser({
-      type: frameConfig.type,
-      chain: frameConfig.chain,
-      params: frameConfig.params.items,
-    });
+    const child = context
+      .newChild(this)
+      .newBoundary({
+        type: frameConfig.type,
+        chain: frameConfig.chain,
+        params: frameConfig.params.items,
+      })
+      .parseAst("");
 
-    const child = newContext.parseAst("");
-
-    return context.enrich<ParseNodeFrameV2FReduced, ParseNodeFrameV2>(
+    return context.newAstNode<ParseNodeFrameV2FReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        creator: this.ctorName,
+        // creator: this.ctorName,
         shape: {
           separators: [],
           spaces: {},
         },
-        source: {
-          type: "raw",
-          raw: this.sourceString,
-        },
+        // source: {
+        //   type: "raw",
+        //   raw: this.sourceString,
+        // },
       },
       {
         subtree: {
@@ -87,11 +89,12 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   v2_e(_v2Start, wi1, v2Chain, wi2, _v2End) {
-    const context = c(this).newChild("block");
+    const context = c(this).newChild(this, "block");
     const chain: FrameSpec[] = v2Chain.frameSpecV2(context);
-    const configContext = context.newChild();
+    const configContext = context.newChild(this);
 
-    const frameConfig: NodeArgsFrameV2ConfigE = configContext.enrich<
+    // TODO, this shouldn't be here. it needs to be in frameConfig in the ohm grammar itself
+    const frameConfig: NodeArgsFrameV2ConfigE = configContext.newAstNode<
       NodeArgsFrameV2ConfigE_Reduced,
       NodeArgsFrameV2ConfigE
     >(
@@ -123,25 +126,27 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       },
     );
 
-    const newContext = context.newChild().switchParser({
-      type: frameConfig.type,
-      chain: frameConfig.chain,
-      params: frameConfig.params.items,
-    });
-    const child = newContext.parseAst("");
+    const child = context
+      .newChild(this)
+      .newBoundary({
+        type: frameConfig.type,
+        chain: frameConfig.chain,
+        params: frameConfig.params.items,
+      })
+      .parseAst("");
 
-    return context.enrich<ParseNodeFrameV2EReduced, ParseNodeFrameV2>(
+    return context.newAstNode<ParseNodeFrameV2EReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        creator: this.ctorName,
+        // creator: this.ctorName,
         shape: {
           separators: [],
           spaces: {},
         },
-        source: {
-          type: "raw",
-          raw: this.sourceString,
-        },
+        // source: {
+        //   type: "raw",
+        //   raw: this.sourceString,
+        // },
       },
       {
         subtree: {

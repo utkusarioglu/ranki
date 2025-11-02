@@ -8,9 +8,9 @@ import type {
   ParserPluginsInstance,
   ComponentPluginsInstance,
   RankiLangInstancePluginsRecord,
-  RankiLangParseHandlerHooks,
-  RankiLangCloneFunctionReturn,
   RankiLangContextInstance,
+  RankiLangParsedTheater,
+  RankiLangAstResultTheaters,
 } from "@ranki/package-api-v2";
 import { ParserPlugins } from "./stages/parser/parser-plugins.mjs";
 import { RankiLangConfig } from "./config.mjs";
@@ -21,13 +21,19 @@ import { AstLibrary } from "./stages/ast/library.mjs";
 import { RankiLangContext } from "./context/context.mjs";
 
 export class RankiLang implements RankiLangInstance {
-  private config: RankiLangConfig;
+  // parse stage
+  // private astLibrary = new AstLibrary();
+  private astLibrary: AstLibrary;
   public components: ComponentPluginsInstance;
+  private config: RankiLangConfig;
   public parsers: ParserPluginsInstance;
 
+  // validation
   private validators = new ValidatorLibrary();
+  // transform
   private transformers = new TransformerLibrary();
-  private ast = new AstLibrary();
+
+  private provided: RankiLanguageProvidedConfig[];
 
   constructor(
     plugins: RankiLangInstancePluginsRecord,
@@ -51,7 +57,9 @@ export class RankiLang implements RankiLangInstance {
       this.components = plugins.components;
     }
 
-    this.config = new RankiLangConfig(this.parsers.produceConfig(), provided);
+    this.astLibrary = new AstLibrary(this.parsers);
+    this.config = new RankiLangConfig(this.parsers.produceConfig(), []);
+    this.provided = provided;
   }
 
   getConfig() {
@@ -62,33 +70,6 @@ export class RankiLang implements RankiLangInstance {
     return this.parsers;
   }
 
-  private cloneLang(
-    providedConfigs: RankiLanguageProvidedConfig[] | null,
-  ): RankiLangCloneFunctionReturn {
-    const lang = new RankiLang(
-      { parsers: this.parsers, components: this.components },
-      this.config.clone(providedConfigs),
-    );
-    const hooks = lang.createParseHandlerHooks();
-    return {
-      lang,
-      hooks,
-    };
-  }
-
-  private createParseHandlerHooks() {
-    const parseHandlerHooks: RankiLangParseHandlerHooks = {
-      getPlugins: this.getPlugins.bind(this),
-      cloneLang: this.cloneLang.bind(this),
-      getComponent: this.components.getPlugin.bind(this.components),
-      parseAst: this.ast.parse.bind(this.ast),
-      getHandler: this.parsers.getHandler.bind(this.parsers),
-      getConfig: this.config.getAll.bind(this.config),
-      createParser: this.ast.createParser.bind(this.ast),
-    };
-    return parseHandlerHooks;
-  }
-
   parse(
     raw: Record<string, string>,
     spec: RankiLangParseSpecs = {
@@ -96,33 +77,48 @@ export class RankiLang implements RankiLangInstance {
       role: "default",
     },
   ): RankiLangParseResult {
-    const theaterRaw = raw[spec.theater];
-
-    if (theaterRaw === undefined) {
-      throw new Error(`THEATER UNDEFINED: ${spec.theater}`);
-    }
-
-    const config = this.config.getAll();
-
-    const context: RankiLangContextInstance = new RankiLangContext({
+    const report: RankiLangParseReport = {
+      language: {
+        versions: this.parsers.getVersions(),
+      },
+      ast: this.astLibrary.getReports(),
       theater: spec.theater,
       role: spec.role,
-      hooks: this.createParseHandlerHooks(),
-    }).switchParser({
-      type: "RankiBaseV2",
-      chain: [[]],
-      params: [],
-    });
+    };
 
-    // const ast = this.ast.parse(
-    //   theaterRaw,
-    //   {
-    //     type: "RankiBaseV2",
-    //     chain: [[]],
-    //     params: [],
-    //   },
-    //   context,
-    // );
+    const theaters = Object.entries(raw).reduce(
+      (a, [theaterName, raw]) => (
+        (a[theaterName] = this.parseTheater(theaterName, raw, spec)), a
+      ),
+      {} as RankiLangAstResultTheaters,
+    );
+
+    return {
+      report,
+      theaters,
+    };
+  }
+
+  private parseTheater(
+    _theaterName: string,
+    theaterRaw: string,
+    spec: RankiLangParseSpecs,
+  ): RankiLangParsedTheater {
+    const config = this.config.getAll();
+
+    const context: RankiLangContextInstance = new RankiLangContext(spec, {
+      ast: this.astLibrary,
+      components: this.components,
+      parsers: this.parsers,
+      config: this.config,
+    })
+      .newBoundary({
+        type: "RankiBaseV2",
+        chain: [["default"]],
+        params: [],
+      })
+      .replaceProvidedConfig(this.provided);
+
     const ast = context.parseAst(theaterRaw);
 
     const validation = ["validate", "transform"].includes(config.merged.stage)
@@ -134,28 +130,14 @@ export class RankiLang implements RankiLangInstance {
         ? this.transformers.transform(validation, context)
         : null;
 
-    const report: RankiLangParseReport = {
-      language: {
-        versions: this.parsers.getVersions(),
-      },
-      ast: this.ast.getReports(),
-      theater: spec.theater,
-      role: spec.role,
-    };
-
     return {
-      report,
-      theaters: {
-        [spec.theater]: {
-          stages: {
-            raw: theaterRaw,
-            ast: {
-              root: ast.ast.root,
-            },
-            validation,
-            transform,
-          },
+      stages: {
+        raw: theaterRaw,
+        ast: {
+          root: ast.ast.root,
         },
+        validation,
+        transform,
       },
     };
   }

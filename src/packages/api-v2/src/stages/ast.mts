@@ -12,14 +12,22 @@ export interface AstNodeParent extends AstNodeCommon {
 
 export type AstNodeLeafReduced = Omit<
   AstNodeLeaf,
-  "shape" | "parent" | "parser" | "plugins"
+  "shape" | "parent" | "parser" | "plugins" | "source" | "creator"
 > & {
   shape: Omit<AstNodeCommon["shape"], "depth">;
+  source?: AstNodeLeaf["source"];
 };
 
 export type AstNodeParentReduced = Omit<
   AstNodeParent,
-  "shape" | "parent" | "children" | "subtree" | "parser" | "plugins"
+  | "shape"
+  | "parent"
+  | "children"
+  | "subtree"
+  | "parser"
+  | "plugins"
+  | "creator"
+  | "source"
 > & {
   shape: Omit<AstNodeCommon["shape"], "depth">;
 };

@@ -5,16 +5,19 @@ import type {
   FrameV1NodeParentReduced,
   ParseNodeFrameV1,
 } from "./types.mjs";
-import type { ArgsAndParamsV1, FrameV1NodeParent } from "./types.mjs";
+import type {
+  ShapeAndParamsV1 as ShapeAndParamsV1,
+  FrameV1NodeParent,
+} from "./types.mjs";
 
 const nodeBaseV2: ohm.ActionDict<FrameV1Node> = {
   // !TODO end
   block_v1(indentation, v1Block, wi1, _end) {
-    const context = c(this).newChild("block");
-    return context.enrich<FrameV1NodeParentReduced, FrameV1NodeParent>(
+    const context = c(this).newChild(this, "block");
+    return context.newAstNode<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
-        creator: this.ctorName,
+        // creator: this.ctorName,
         shape: {
           spaces: {
             indentation: {
@@ -28,10 +31,10 @@ const nodeBaseV2: ohm.ActionDict<FrameV1Node> = {
           },
           separators: [],
         },
-        source: {
-          type: "raw",
-          raw: this.sourceString,
-        },
+        // source: {
+        //   type: "raw",
+        //   raw: this.sourceString,
+        // },
       },
       {
         subtree: {},
@@ -51,19 +54,19 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadInline,
     _frameV1_2,
   ) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
 
-    const childContext = context.newChild().switchParser({
+    const childContext = context.newChild(this).newBoundary({
       type: "RankiFrameV1",
       chain: [[v1Type.sourceString]],
       params: [],
     });
 
     const child = childContext.parseAst(v1PayloadInline.sourceString);
-    return context.enrich<FrameV1NodeParentReduced, FrameV1NodeParent>(
+    return context.newAstNode<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
-        creator: this.ctorName,
+        // creator: this.ctorName,
         shape: {
           spaces: {
             frameAndType: {
@@ -83,10 +86,10 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
             },
           ],
         },
-        source: {
-          type: "raw",
-          raw: this.sourceString,
-        },
+        // source: {
+        //   type: "raw",
+        //   raw: this.sourceString,
+        // },
       },
       {
         subtree: {},
@@ -108,18 +111,20 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadInline,
     _frameV1_2,
   ) {
-    const context = c(this).newChild("inline");
-    const shapeAndParamsV1 = v1ParamListInline.shapeAndParamsV1(context);
-    const newContext = context.newChild().switchParser({
+    const context = c(this).newChild(this, "inline");
+    const shapeAndParamsV1 = v1ParamListInline.shapeAndParamsV1(
+      context,
+    ) as ShapeAndParamsV1;
+    const newContext = context.newChild(this).newBoundary({
       type: "RankiFrameV1",
       chain: [[v1Type.sourceString]],
-      params: [],
+      params: shapeAndParamsV1.params,
     });
     const child = newContext.parseAst(v1PayloadInline.sourceString);
-    return context.enrich<FrameV1NodeParentReduced, FrameV1NodeParent>(
+    return context.newAstNode<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
-        creator: this.ctorName,
+        // creator: this.ctorName,
         shape: {
           spaces: {
             frameAndType: {
@@ -149,18 +154,17 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
               raw: sepRight2.sourceString,
             },
           ],
-          // @ts-expect-error TODO
-          "frame.v1": {
-            variant: "fp",
-            frameType: v1Type.sourceString,
-            ...shapeAndParamsV1,
-            // report: child.report,
-          },
+          // "frame.v1": {
+          //   variant: "fp",
+          //   frameType: v1Type.sourceString,
+          //   ...shapeAndParamsV1,
+          //   // report: child.report,
+          // },
         },
-        source: {
-          type: "raw",
-          raw: this.sourceString,
-        },
+        // source: {
+        //   type: "raw",
+        //   raw: this.sourceString,
+        // },
       },
       {
         subtree: {},
@@ -180,14 +184,14 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadBlock,
     _v1BlockEnd,
   ) {
-    const context = c(this).newChild("inline");
-    const childContext = context.newChild().switchParser({
+    const context = c(this).newChild(this, "inline");
+    const childContext = context.newChild(this).newBoundary({
       type: "RankiFrameV1",
       chain: [[v1Type.sourceString]],
       params: [],
     });
     const child = childContext.parseAst(v1PayloadBlock.sourceString);
-    return context.enrich<FrameV1NodeParentReduced, FrameV1NodeParent>(
+    return context.newAstNode<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
         creator: this.ctorName,
@@ -249,20 +253,20 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     v1PayloadBlock,
     _v1BlockEnd,
   ) {
-    const context = c(this).newChild("block");
-    const shapeAndParamsV1: ArgsAndParamsV1 =
+    const context = c(this).newChild(this, "block");
+    const shapeAndParamsV1: ShapeAndParamsV1 =
       v1ParamListInline.shapeAndParamsV1(context);
     shapeAndParamsV1 && true;
-    const newContext = context.newChild().switchParser({
+    const newContext = context.newChild(this).newBoundary({
       type: "RankiFrameV1",
       chain: [[v1Type.sourceString]],
       params: [],
     });
     const child = newContext.parseAst(v1PayloadBlock.sourceString);
-    return context.enrich<FrameV1NodeParentReduced, FrameV1NodeParent>(
+    return context.newAstNode<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
-        creator: this.ctorName,
+        // creator: this.ctorName,
         shape: {
           spaces: {
             frameAndType: {
@@ -307,10 +311,10 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
           //   // report: child.report,
           // },
         },
-        source: {
-          type: "raw",
-          raw: this.sourceString,
-        },
+        // source: {
+        //   type: "raw",
+        //   raw: this.sourceString,
+        // },
       },
       {
         subtree: {},
@@ -328,14 +332,14 @@ const paramV1: ohm.ActionDict<string> = {
 
 const paramsV1: ohm.ActionDict<string[]> = {
   _iter(...children) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     return children.map((v) => v.paramV1(context));
   },
 };
 
-const shapeAndParamsV1: ohm.ActionDict<ArgsAndParamsV1> = {
+const shapeAndParamsV1: ohm.ActionDict<ShapeAndParamsV1> = {
   v1ParamListInline(v1ParamValue1, _sep, v1ParamValue2) {
-    const context = c(this).newChild("inline");
+    const context = c(this).newChild(this, "inline");
     return {
       shape: {},
       params: [
