@@ -39,7 +39,8 @@ export class ValidatorLibrary {
   }
 
   addComponent(component: RankiPluginComponent): void {
-    const source = component.meta.name;
+    // TODO I don't like the fact that `source` is handler here but it's `type` in the frameConfig object
+    const source = component.handler;
     component.list.forEach(({ chain, stages }) => {
       const code = [source, chain].join(CODE_SEPARATOR);
       const current = this.parsers[chain];

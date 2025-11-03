@@ -16,11 +16,6 @@ export class RenderLibrary {
     }
     this.plugins[plugin.meta.name] = plugin;
     this.addStatics(plugin);
-    console.log({
-      plugins: this.plugins,
-      static: this.static,
-      loaded: this.loaded,
-    });
   }
 
   private addStatics(plugin: RankiPluginRenderer) {

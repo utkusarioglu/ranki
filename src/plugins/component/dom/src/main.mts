@@ -6,7 +6,7 @@ import type {
 } from "@ranki/package-api-v2";
 
 const placeholder: ComponentPluginValidationFunc = (validation) => ({
-  warnings: [["COMPONENT VALIDATION", validation.kind].join(" ")],
+  warnings: [["CODE_COMPONENT VALIDATION", validation.kind].join(" ")],
   errors: [],
 });
 
@@ -32,8 +32,8 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
                   "RankiParamsV2",
                   "RankiFrameV2",
                   "RankiRichNumberV2",
-                  "RankiBaseV2",
-                  "RankiConstantsV2",
+                  // "RankiBaseV2",
+                  // "RankiConstantsV2",
                 ],
               },
             },
@@ -54,7 +54,7 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
             },
           },
         },
-        validation: placeholder,
+        validator: placeholder,
         transform: ({ validation }) => {
           if (validation.kind === "leaf") {
             throw new Error(`CODE COMPONENT CANNOT BE A PARENT`);
@@ -124,7 +124,7 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
             },
           },
         },
-        validation: placeholder,
+        validator: placeholder,
         transform: ({ validation }) => {
           if (validation.kind === "leaf") {
             throw new Error(`Anchor COMPONENT CANNOT BE A PARENT`);

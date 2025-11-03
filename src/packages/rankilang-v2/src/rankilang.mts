@@ -52,7 +52,10 @@ export class RankiLang implements RankiLangInstance {
 
     if (Array.isArray(plugins.components)) {
       this.components = new ComponentPlugins();
-      plugins.components.forEach((p) => this.components.addPlugin(p));
+      plugins.components.forEach((component) => {
+        this.components.addPlugin(component);
+        this.validators.addComponent(component);
+      });
     } else {
       this.components = plugins.components;
     }
@@ -93,7 +96,6 @@ export class RankiLang implements RankiLangInstance {
       {} as RankiLangAstResultTheaters,
     );
 
-    console.log("validation", this.validators.getLists());
     return {
       report,
       theaters,
