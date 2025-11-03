@@ -5,7 +5,7 @@ import type {
   ValidationNodeLeaf,
 } from "@ranki/package-api-v2";
 
-const placeholder: ComponentPluginValidationFunc = ({ validation }) => ({
+const placeholder: ComponentPluginValidationFunc = (validation) => ({
   warnings: [["COMPONENT VALIDATION", validation.kind].join(" ")],
   errors: [],
 });
@@ -51,7 +51,7 @@ export const rankiBaseV2ComponentsPluginDefault: RankiPluginComponent = {
             },
           },
         },
-        validation: placeholder,
+        validator: placeholder,
         transform: ({ validation }) => {
           if (validation.kind === "leaf") {
             throw new Error(`CODE COMPONENT CANNOT BE A PARENT`);

@@ -91,7 +91,7 @@ function convertParams<T extends ParamV2>(
   return config;
 }
 
-export function parseSettings(
+export function paramParser(
   def: RankiLangParseDefinition,
   componentAst: ComponentPluginComponentStageAst,
   // context: RankiLangAstContext,

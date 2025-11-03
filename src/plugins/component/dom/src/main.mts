@@ -5,7 +5,7 @@ import type {
   ValidationNodeLeaf,
 } from "@ranki/package-api-v2";
 
-const placeholder: ComponentPluginValidationFunc = ({ validation }) => ({
+const placeholder: ComponentPluginValidationFunc = (validation) => ({
   warnings: [["COMPONENT VALIDATION", validation.kind].join(" ")],
   errors: [],
 });

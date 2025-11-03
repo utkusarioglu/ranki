@@ -6,7 +6,7 @@ import type { RankiFrameV2ParserPluginConfig } from "./types/config.mjs";
 import { tokenizer, config } from "./config.mjs";
 import { validators } from "./validators.mjs";
 import { transformers } from "./transformers.mjs";
-import { parseSettings } from "./handler/params.mjs";
+import { paramParser } from "./handler/params.mjs";
 
 export const rankiFrameV2ParserPlugin: RankiPluginParser<RankiFrameV2ParserPluginConfig> =
   {
@@ -15,10 +15,9 @@ export const rankiFrameV2ParserPlugin: RankiPluginParser<RankiFrameV2ParserPlugi
       name: "RankiFrameV2",
       version: "2.0.68",
     },
-    // handler,
     dependencies: ["RankiParamsV2"],
     config,
-    paramParser: parseSettings,
+    paramParser,
     tokenizer: () => tokenizer(config),
     grammar: () => grammar,
     validators,

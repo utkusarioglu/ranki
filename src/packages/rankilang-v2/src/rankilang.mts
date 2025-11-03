@@ -43,7 +43,7 @@ export class RankiLang implements RankiLangInstance {
       this.parsers = new ParserPlugins();
       plugins.parsers.forEach((p) => {
         this.parsers.addPlugin(p);
-        this.validators.addPlugin(p);
+        this.validators.addParser(p);
         this.transformers.addPlugin(p);
       });
     } else {
@@ -58,7 +58,7 @@ export class RankiLang implements RankiLangInstance {
     }
 
     this.astLibrary = new AstLibrary(this.parsers);
-    this.config = new RankiLangConfig(this.parsers.produceConfig(), []);
+    this.config = new RankiLangConfig(this.parsers.produceConfig(), provided);
     this.provided = provided;
   }
 
@@ -93,6 +93,7 @@ export class RankiLang implements RankiLangInstance {
       {} as RankiLangAstResultTheaters,
     );
 
+    console.log("validation", this.validators.getLists());
     return {
       report,
       theaters,
@@ -121,7 +122,7 @@ export class RankiLang implements RankiLangInstance {
 
     const ast = context.parseAst(theaterRaw);
 
-    const validation = ["validate", "transform"].includes(config.merged.stage)
+    const validation = ["validation", "transform"].includes(config.merged.stage)
       ? this.validators.validate(ast.ast.root, context)
       : null;
 

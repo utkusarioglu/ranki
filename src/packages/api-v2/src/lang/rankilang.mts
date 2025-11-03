@@ -1,7 +1,7 @@
 import type {
   ComponentPluginComponent,
   RankiPluginComponent,
-} from "../plugins/component.mjs";
+} from "../plugins/component.type.mjs";
 import type {
   RankiLanguageConfig,
   RankiLanguageProvidedConfig,

@@ -5,8 +5,9 @@ import type {
 // import type { DeepPartial } from "../utils.mjs";
 import type { RankiPluginCommon } from "./general.mjs";
 import type {
+  PluginValidationFuncReturn,
   ValidationNode,
-  ValidationNodeValidationEntry,
+  // ValidationNodeValidationEntry,
 } from "../stages/validation.mjs";
 import type {
   RankiLangAstContext,
@@ -22,16 +23,27 @@ export interface RankiPluginComponent extends RankiPluginCommon {
 export type ComponentPluginComponentShorthand = Record<string, string[]>;
 export type ComponentPluginComponentPositional = string[][];
 
-export type ComponentPluginValidationFuncProps<
-  // T extends RankiLangParseDefinition = RankiLangParseDefinition,
-> = {
-  validation: ValidationNode;
-  spec: RankiLangAstContext;
+// export type ComponentPluginValidationFuncProps =
+//   // <
+//   // T extends RankiLangParseDefinition = RankiLangParseDefinition,
+//   // >
+//   {
+//     validation: ValidationNode;
+//     spec: RankiLangAstContext;
+//   };
+
+export type ComponentValidationFuncEntry = {
+  source: string;
+  code: string;
+  chain: ComponentPluginComponent["chain"];
+  validate: ComponentPluginValidationFunc;
 };
 
 export type ComponentPluginValidationFunc = (
-  p: ComponentPluginValidationFuncProps,
-) => ValidationNodeValidationEntry;
+  validation: ValidationNode,
+  // spec: RankiLangAstContext,
+  // p: ComponentPluginValidationFuncProps,
+) => PluginValidationFuncReturn;
 
 export type ComponentPluginTransformFuncProps<
   // T extends RankiLangParseDefinition = RankiLangParseDefinition,
@@ -63,7 +75,7 @@ export interface ComponentPluginComponent {
   stages: {
     preprocess: (raw: string) => string;
     ast: ComponentPluginComponentStageAst;
-    validation: ComponentPluginValidationFunc;
+    validator: ComponentPluginValidationFunc;
     transform: ComponentPluginTransformFunc;
   };
 }

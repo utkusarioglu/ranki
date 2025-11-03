@@ -4,7 +4,7 @@ content:
   prefix: ""
   suffix: ""
     
-stage: transform
+stage: validation
 
 plugins:
   requested: []

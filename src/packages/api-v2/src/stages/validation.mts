@@ -1,13 +1,18 @@
 import type { AstNode, AstNodeLeaf, AstNodeParent } from "./ast.mjs";
 
-export interface ValidatorFunctionEntry {
+export interface ParserValidatorFunctionEntry {
   source: string; // name of the plugin
-  callback: RankiPluginParserValidationFunc;
+  validate: RankiPluginParserValidationFunc;
 }
 
-export type ValidationNodeWarningEntry = string;
+type ValidationNodeEntryCommon = {
+  source: string;
+  entry: string;
+};
 
-export type ValidationNodeErrorEntry = string;
+export type ValidationNodeWarningEntry = ValidationNodeEntryCommon;
+
+export type ValidationNodeErrorEntry = ValidationNodeEntryCommon;
 
 export interface ValidationNodeValidationEntry {
   warnings: ValidationNodeWarningEntry[];
@@ -27,7 +32,12 @@ export type ValidationNodeParent = Omit<AstNodeParent, "children"> & {
 
 export type RankiPluginParserValidationFunc = (
   a: AstNode,
-) => ValidationNodeValidationEntry;
+) => PluginValidationFuncReturn;
+
+export type PluginValidationFuncReturn = {
+  warnings: string[];
+  errors: string[];
+};
 
 export type RankiPluginParserValidationDictionary = Record<
   string,
