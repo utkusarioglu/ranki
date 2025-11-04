@@ -37,7 +37,6 @@ export class RenderLibrary {
   }
 
   async getRenderer(tag: string): Promise<LoadedRenderCallback> {
-    console.log("get renderer", tag);
     const lazyLoaded = this.loaded[tag];
     if (lazyLoaded) {
       return Promise.resolve(lazyLoaded);

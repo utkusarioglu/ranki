@@ -56,7 +56,6 @@ export const rankiBaseV2ComponentsPluginDefault: RankiPluginComponent = {
           if (validation.kind === "leaf") {
             throw new Error(`CODE COMPONENT CANNOT BE A PARENT`);
           }
-          console.log("called?");
 
           const payload = validation.children[0];
           const pauseList = (payload as ValidationNodeParent).children[0];

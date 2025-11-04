@@ -10,8 +10,8 @@ export class Render {
     Render.library.addPlugin(plugin);
   }
 
-  static async render(n: TransformNode): Promise<RenderFunctionReturn> {
-    const renderer = await Render.library.getRenderer(n.tag);
-    return renderer(n);
+  static async render(tn: TransformNode): Promise<RenderFunctionReturn> {
+    const renderer = await Render.library.getRenderer(tn.tag);
+    return renderer(tn);
   }
 }

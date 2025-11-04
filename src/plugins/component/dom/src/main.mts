@@ -57,7 +57,8 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
         validator: placeholder,
         transform: ({ validation }) => {
           if (validation.kind === "leaf") {
-            throw new Error(`CODE COMPONENT CANNOT BE A PARENT`);
+            console.log("err:", validation);
+            throw new Error(`CODE COMPONENT CANNOT BE A LEAF`);
           }
 
           const payload = validation.children[0];
@@ -126,6 +127,7 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
         },
         validator: placeholder,
         transform: ({ validation }) => {
+          console.log("AAA");
           if (validation.kind === "leaf") {
             throw new Error(`Anchor COMPONENT CANNOT BE A PARENT`);
           }
