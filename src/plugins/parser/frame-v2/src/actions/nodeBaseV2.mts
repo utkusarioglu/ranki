@@ -169,7 +169,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
         //   raw: this.sourceString,
         // },
       },
-      { subtree: {}, children: [child.ast.root] },
+      { subtree: {}, children: [child.root] },
     );
   },
 

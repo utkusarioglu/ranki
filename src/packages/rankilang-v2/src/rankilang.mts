@@ -22,7 +22,6 @@ import { RankiLangContext } from "./context/context.mjs";
 
 export class RankiLang implements RankiLangInstance {
   // parse stage
-  // private astLibrary = new AstLibrary();
   private astLibrary: AstLibrary;
   public components: ComponentPluginsInstance;
   private config: RankiLangConfig;
@@ -107,13 +106,15 @@ export class RankiLang implements RankiLangInstance {
     theaterRaw: string,
     spec: RankiLangParseSpecs,
   ): RankiLangParsedTheater {
-    const config = this.config.getAll();
+    // const config = this.config.getAll();
 
     const context: RankiLangContextInstance = new RankiLangContext(spec, {
       ast: this.astLibrary,
       components: this.components,
       parsers: this.parsers,
       config: this.config,
+      validators: this.validators,
+      transformers: this.transformers,
     })
       .newBoundary({
         type: "RankiBaseV2",
@@ -123,22 +124,25 @@ export class RankiLang implements RankiLangInstance {
       .replaceProvidedConfig(this.provided);
 
     const ast = context.parseAst(theaterRaw);
+    const validation = context.parseValidation(ast);
+    const transform = context.parseTransform(validation);
 
-    const validation = ["validation", "transform"].includes(config.merged.stage)
-      ? this.validators.validate(ast.ast.root, context)
-      : null;
+    // const validation = ["validation", "transform"].includes(config.merged.stage)
+    //   ? this.validators.validate(ast.ast.root, context)
+    //   : null;
 
-    const transform =
-      validation && config.merged.stage === "transform"
-        ? this.transformers.transform(validation, context)
-        : null;
+    // const transform =
+    //   validation && config.merged.stage === "transform"
+    //     ? this.transformers.transform(validation, context)
+    //     : null;
 
     return {
       stages: {
         raw: theaterRaw,
-        ast: {
-          root: ast.ast.root,
-        },
+        // ast: {
+        //   root: ast.ast.root,
+        // },
+        ast: ast,
         validation,
         transform,
       },

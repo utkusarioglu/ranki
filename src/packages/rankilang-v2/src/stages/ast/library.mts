@@ -135,7 +135,7 @@ export class AstLibrary {
 
       const root: AstNode = semantics(matched).node(context);
       AstLibrary.reports[hash].cache.usageCount++;
-      return { root };
+      return { props: {}, root };
     };
 
     return parseAst;

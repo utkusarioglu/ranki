@@ -8,22 +8,15 @@ import type {
   AstNode,
   RankiLangContextParams,
   BindingNode,
-  // RankiLangParseHandlerFunction,
   Enrichments,
-  ComponentPluginsInstance,
-  RankiLangParseHandlerFunctionReturn,
+  RankiLangParseFunctionReturn,
+  // RankiLangParseHandlerFunctionReturn,
   RankiLanguageProvidedConfig,
+  ValidationNode,
+  TransformNode,
 } from "@ranki/package-api-v2";
 import { RankiLangParserBoundary } from "./parser-boundary.mjs";
-import { AstLibrary } from "../stages/ast/library.mjs";
-import { RankiLangConfig } from "../config.mjs";
-
-interface RankiLangContextHooks {
-  ast: AstLibrary;
-  components: ComponentPluginsInstance;
-  parsers: ParserPluginsInstance;
-  config: RankiLangConfig;
-}
+import type { RankiLangContextHooks } from "./context.type.mjs";
 
 export class RankiLangContext implements RankiLangContextInstance {
   private parserBoundary!: RankiLangParserBoundary;
@@ -168,7 +161,7 @@ export class RankiLangContext implements RankiLangContextInstance {
     return this.hooks.components.getPlugin(handlerName, chain);
   }
 
-  parseAst(raw: string): RankiLangParseHandlerFunctionReturn {
+  parseAst(raw: string): RankiLangParseFunctionReturn {
     const parentParser = this.parserBoundary;
     if (this.expandedParserDefinition === null) {
       throw new Error("METHOD CALLED BEFORE SETTING THE PARSER");
@@ -225,6 +218,27 @@ export class RankiLangContext implements RankiLangContextInstance {
     return this.parserBoundary.getConfig().getPluginConfig(pluginName);
   };
 
+  parseValidation(ast: RankiLangParseFunctionReturn): ValidationNode | null {
+    const merged = this.parserBoundary.getConfig().getMerged();
+    const validation = ["validation", "transform"].includes(merged.stage)
+      ? this.hooks.validators.validate(ast.root, this)
+      : null;
+    return validation;
+  }
+
+  parseTransform(validation: ValidationNode | null): TransformNode | null {
+    if (validation === null) {
+      return null;
+    }
+
+    const merged = this.parserBoundary.getConfig().getMerged();
+    const transform =
+      validation && merged.stage === "transform"
+        ? this.hooks.transformers.transform(validation, this)
+        : null;
+    return transform;
+  }
+
   private getContextArgs(): Pick<AstNode["shape"], "depth"> {
     return {
       depth: {
@@ -234,22 +248,4 @@ export class RankiLangContext implements RankiLangContextInstance {
       },
     };
   }
-
-  // private incrementDepth(
-  //   direction: "block" | "inline",
-  // ): AstNode["shape"]["depth"] {
-  //   switch (direction) {
-  //     case "block":
-  //       this.blockDepth++;
-  //       break;
-  //     case "inline":
-  //       this.inlineDepth++;
-  //       break;
-  //   }
-  //   return {
-  //     block: this.blockDepth,
-  //     inline: this.inlineDepth,
-  //     total: this.blockDepth + this.inlineDepth,
-  //   };
-  // }
 }

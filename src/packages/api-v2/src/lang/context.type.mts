@@ -12,7 +12,7 @@ import type { RankiPluginParser } from "../plugins/parser.mjs";
 import type {
   RankiGrammarTokens,
   // RankiLangParseHandlerFunction,
-  RankiLangParseHandlerFunctionReturn,
+  // RankiLangParseHandlerFunctionReturn,
 } from "../plugins/grammar.type.mjs";
 import type * as ohm from "ohm-js";
 import type { TransformNode } from "../stages/transform.mjs";
@@ -48,12 +48,12 @@ export interface RankiLangConsolidatedAstReport {
   list: RankiLangAstReport[];
 }
 
-export type RankiLangParsedAst = RankiLangParseFunctionReturn;
+// export type RankiLangParsedAst = RankiLangParseFunctionReturn;
 
 export interface RankiLangParsedTheater {
   stages: {
     raw: string;
-    ast: RankiLangParsedAst;
+    ast: RankiLangParseFunctionReturn;
     validation: ValidationNode | null;
     transform: TransformNode | null;
   };
@@ -78,6 +78,7 @@ export interface RankiLangAstReport {
 }
 
 export interface RankiLangParseFunctionReturn {
+  props: Record<string, any>;
   root: AstNode;
 }
 
@@ -150,10 +151,9 @@ export interface RankiLangContextInstance {
   getPluginConfig: <T>(pluginName: string) => T;
 
   getComponent(handlerName: string, chain: string[]): ComponentPluginComponent;
-  parseAst: (
-    raw: string,
-    // provided: RankiLanguageProvidedConfig[],
-  ) => RankiLangParseHandlerFunctionReturn;
+  parseAst: (raw: string) => RankiLangParseFunctionReturn;
+  parseValidation(ast: RankiLangParseFunctionReturn): ValidationNode | null;
+  parseTransform(validation: ValidationNode | null): TransformNode | null;
 
   newChild(
     self: ohm.Node,

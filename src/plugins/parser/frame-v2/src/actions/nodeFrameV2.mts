@@ -47,7 +47,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         subtree: {
           frameConfig,
         },
-        children: [child.ast.root],
+        children: [child.root],
       },
     );
   },
@@ -83,7 +83,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         subtree: {
           frameConfig,
         },
-        children: [child.ast.root],
+        children: [child.root],
       },
     );
   },
@@ -152,7 +152,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         subtree: {
           frameConfig,
         },
-        children: [child.ast.root],
+        children: [child.root],
       },
     );
   },

@@ -3,11 +3,12 @@ import type {
   RankiPluginParser,
   ParserValidatorFunctionEntry,
   ValidationNode,
-  RankiLangAstContext,
+  // RankiLangAstContext,
   ValidationNodeParent,
   ValidationNodeLeaf,
   RankiPluginComponent,
   ComponentValidationFuncEntry,
+  RankiLangContextInstance,
 } from "@ranki/package-api-v2";
 
 const CODE_SEPARATOR = ":";
@@ -102,7 +103,7 @@ export class ValidatorLibrary {
   }
 
   // TODO i'm not sure whether the `spec` is actually needed in this method
-  validate(obj: AstNode, spec: RankiLangAstContext): ValidationNode {
+  validate(obj: AstNode, context: RankiLangContextInstance): ValidationNode {
     try {
       const parserValidator = this.getParserValidator(obj);
       if (obj.kind === "parent") {
@@ -118,7 +119,7 @@ export class ValidatorLibrary {
           //   ),
           //   {} as Record<string, ValidationNode>,
           // ),
-          children: obj.children.map((c) => this.validate(c, spec)),
+          children: obj.children.map((c) => this.validate(c, context)),
         } as ValidationNodeParent;
 
         const parserValidatorResult = parserValidator.validate(obj);

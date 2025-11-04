@@ -93,7 +93,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       },
       {
         subtree: {},
-        children: [child.ast.root],
+        children: [child.root],
       },
     );
   },
@@ -168,7 +168,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       },
       {
         subtree: {},
-        children: [child.ast.root],
+        children: [child.root],
       },
     );
   },
@@ -233,7 +233,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       },
       {
         subtree: {},
-        children: [child.ast.root],
+        children: [child.root],
       },
     );
   },
@@ -318,7 +318,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
       },
       {
         subtree: {},
-        children: [child.ast.root],
+        children: [child.root],
       },
     );
   },

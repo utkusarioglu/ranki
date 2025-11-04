@@ -8,7 +8,7 @@ export type {
   RankiPluginGrammar,
   RankiGrammarTokens,
   RankiLangParseHandlerFunction,
-  RankiLangParseHandlerFunctionReturn,
+  // RankiLangParseHandlerFunctionReturn,
 } from "./grammar.type.mjs";
 
 export type { RankiPlugin, RankiPluginCommon } from "./general.mjs";

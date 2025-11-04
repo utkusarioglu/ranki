@@ -17,7 +17,7 @@ import type {
   RankiLangContextInstance,
 } from "./context.type.mjs";
 import type { RankiPluginParser } from "../plugins/parser.mjs";
-import type { RankiLangParseHandlerFunctionReturn } from "../export.mjs";
+// import type { RankiLangParseHandlerFunctionReturn } from "../export.mjs";
 
 export interface ComponentPluginsInstance {
   addPlugin(plugin: RankiPluginComponent): void;
@@ -54,7 +54,7 @@ export interface RankiLangParseHandlerHooks {
     raw: string,
     def: RankiLangParseDefinition,
     context: RankiLangAstContext,
-  ) => RankiLangParseHandlerFunctionReturn;
+  ) => RankiLangParseFunctionReturn;
 
   createParser(
     def: RankiLangParseDefinition,

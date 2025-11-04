@@ -11,7 +11,7 @@ export type {
   ProducedConfig,
   ActionsDictRecord,
   RankiLangAstResult,
-  RankiLangParsedAst,
+  // RankiLangParsedAst,
   RankiLangAstReport,
   RankiLangConsolidatedAstReport,
   RankiLangContextInstance,

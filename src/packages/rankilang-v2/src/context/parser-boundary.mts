@@ -5,6 +5,7 @@ import type {
   RankiLangParseDefinition,
   CreateParserReturn,
   RankiLangContextInstance,
+  RankiLangParseFunctionReturn,
 } from "@ranki/package-api-v2";
 import { AstLibrary } from "../stages/ast/library.mjs";
 import { RankiLangConfig } from "../config.mjs";
@@ -32,16 +33,15 @@ export class RankiLangParserBoundary {
     hooks: RankiLangParserBoundaryHooks,
   ) {
     this.def = def;
-    // this.config = hooks.config.clone(provided);
     this.hooks = hooks;
     this.provided = [...provided];
-    // this.config = this.hooks.config.clone(provided)
-    // this.parser = this.hooks.ast.createParser(this.def, this.hooks.context);
   }
 
   // FIX recursive call between context.parseAst, handler, and this.parse
-  parse(raw: string, context: RankiLangContextInstance) {
-    // const handler = this.hooks.parsers.getHandler(this.def);
+  parse(
+    raw: string,
+    context: RankiLangContextInstance,
+  ): RankiLangParseFunctionReturn {
     const paramParser = this.hooks.parsers.find(this.def.type).paramParser;
 
     if (this.def.chain.length > 1) {
@@ -58,8 +58,6 @@ export class RankiLangParserBoundary {
       ...component.stages.ast.directives,
       ...props.config,
     ]);
-    // this.config.addProvidedConfig();
-    // context.addProvidedConfig();
 
     const parser = this.hooks.ast.createParser(this.def, this.config);
     const merged = context.getMergedConfig();
@@ -71,23 +69,15 @@ export class RankiLangParserBoundary {
       merged.content.suffix,
     ].join("");
 
-    const ast = parser.callback(theaterWithContent, context);
+    const root = parser.callback(theaterWithContent, context);
 
     return {
-      props,
-      ast,
+      props: {
+        ...root.props,
+        ...props,
+      },
+      root: root.root,
     };
-    // return handler({
-    //   raw,
-    //   context: this.hooks.context,
-    //   createParser: (...a) => {
-    //     this.parser = parser;
-    //     return parser;
-    //   },
-    //   // parser: this.parser,
-    //   definition: this.def,
-    //   component,
-    // });
   }
 
   getExpandedDefinition(): CreateParserReturn["expandedDefinition"] {
