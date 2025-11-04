@@ -103,7 +103,13 @@ export const Output: FC<OutputProps> = ({ state }) => {
         {renderAvailable && filteredTabs[tabIndex].format === "render" ? (
           <ComponentRenderer parsed={state.parsed} customPath={customPath} />
         ) : (
-          <YamlRenderer parsed={state.parsed} customPath={customPath} />
+          <YamlRenderer
+            parsed={state.parsed}
+            customPath={customPath}
+            astNodeSelectedProps={state.astNodeSelectedProps}
+            validationNodeSelectedProps={state.validationNodeSelectedProps}
+            transformNodeSelectedProps={state.transformNodeSelectedProps}
+          />
         )}
       </div>
     </div>

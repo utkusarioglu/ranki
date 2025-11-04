@@ -53,10 +53,6 @@ export class RankiLangConfig {
     return this.config.merged;
   }
 
-  // getPluginsConfig() {
-  //   return this.config.merged.plugins
-  // }
-
   getPluginConfig<T>(pluginName: string): T {
     const pluginsConfig = this.config.merged.plugins.config;
 
@@ -68,12 +64,15 @@ export class RankiLangConfig {
     return pluginsConfig[pluginName] as T;
   }
 
-  clone(providedConfigs: RankiLanguageProvidedConfig[] | null) {
-    const newProvidedConfigs =
-      providedConfigs === null ? this.providedConfigs : providedConfigs;
-    return new RankiLangConfig(this.pluginsConfig, newProvidedConfigs);
+  clone(newProvidedConfigs: RankiLanguageProvidedConfig[]) {
+    // TODO can't decide whether provided configs should be merged with `this.providedConfigs`
+    const providedConfigs = !!newProvidedConfigs.length
+      ? newProvidedConfigs
+      : this.providedConfigs;
+    return new RankiLangConfig(this.pluginsConfig, providedConfigs);
   }
 
+  // TODO any
   private static merge(configs: any[]): RankiLanguageMergedConfig {
     if (configs.length < 1) {
       throw new Error("NO CONFIG GIVEN");

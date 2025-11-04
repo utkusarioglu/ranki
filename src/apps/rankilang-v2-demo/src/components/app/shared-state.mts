@@ -9,6 +9,9 @@ export type SharedState =
       type: "loaded";
       parsed: RankiLangParseResult;
       config: RankiLanguageMergedConfig;
+      astNodeSelectedProps: string[];
+      validationNodeSelectedProps: string[];
+      transformNodeSelectedProps: string[];
     }
   | {
       type: "error";

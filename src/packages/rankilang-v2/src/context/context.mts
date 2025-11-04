@@ -10,7 +10,6 @@ import type {
   BindingNode,
   Enrichments,
   RankiLangParseFunctionReturn,
-  // RankiLangParseHandlerFunctionReturn,
   RankiLanguageProvidedConfig,
   ValidationNode,
   TransformNode,
@@ -71,6 +70,8 @@ export class RankiLangContext implements RankiLangContextInstance {
     // const currentParser = this.getParserDefinition();
     // const lineage = this.parserBoundary.getLineageHash();
     // const props = this.getParserDefinition();
+
+    p.context = this;
 
     p = {
       plugins: {
@@ -231,10 +232,11 @@ export class RankiLangContext implements RankiLangContextInstance {
       return null;
     }
 
-    const merged = this.parserBoundary.getConfig().getMerged();
+    const merged = validation.context.getMergedConfig();
+    // const merged = this.parserBoundary.getConfig().getMerged();
     const transform =
       validation && merged.stage === "transform"
-        ? this.hooks.transformers.transform(validation, this)
+        ? this.hooks.transformers.transform(validation)
         : null;
     return transform;
   }

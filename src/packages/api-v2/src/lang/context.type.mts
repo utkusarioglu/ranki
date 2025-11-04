@@ -184,6 +184,7 @@ export interface Enrichments {
 }
 
 export interface BindingNode {
+  context?: RankiLangContextInstance;
   creator?: string;
   shape?: Record<string, any>;
   parent?: BindingNode;

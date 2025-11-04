@@ -9,11 +9,11 @@ import type {
   ValidationNode,
   // ValidationNodeValidationEntry,
 } from "../stages/validation.type.mjs";
-import type {
-  // RankiLangAstContext,
-  RankiLangContextInstance,
-  // RankiLangParseDefinition,
-} from "../lang/context.type.mjs";
+// import type {
+//   // RankiLangAstContext,
+//   RankiLangContextInstance,
+//   // RankiLangParseDefinition,
+// } from "../lang/context.type.mjs";
 import type { TransformNode } from "../export.type.mjs";
 
 export interface RankiPluginComponent extends RankiPluginCommon {
@@ -57,7 +57,7 @@ export type ComponentPluginValidationFunc = (
 
 export type ComponentPluginTransformFunc = (
   validation: ValidationNode,
-  context: RankiLangContextInstance,
+  // context: RankiLangContextInstance,
 ) => TransformNode;
 
 export type ComponentPluginComponentStageAst = {

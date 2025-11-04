@@ -63,6 +63,7 @@ export type ParseNodeRichStructureV2ParentReduced = Omit<
   | "source"
   | "subtree"
   | "children"
+  | "context"
 > & {
   shape: Omit<ParseNodeRichStructureV2Parent["shape"], "depth">;
   source?: ParseNodeRichStructureV2Parent["source"];

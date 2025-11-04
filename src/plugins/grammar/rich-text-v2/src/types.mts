@@ -147,7 +147,7 @@ export type ParseNodeRichTextV2Parent = Omit<AstNodeParent, "shape"> & {
 
 export type ParseNodeRichTextV2LeafReduced = Omit<
   ParseNodeRichTextV2Leaf,
-  "shape" | "parser" | "parent" | "plugins" | "creator" | "source"
+  "shape" | "parser" | "parent" | "plugins" | "creator" | "source" | "context"
 > & {
   shape: Omit<ParseNodeRichTextV2Leaf["shape"], "depth">;
   source?: ParseNodeRichTextV2Leaf["source"];
@@ -163,6 +163,7 @@ export type ParseNodeRichTextV2ParentReduced = Omit<
   | "plugins"
   | "creator"
   | "source"
+  | "context"
 > & {
   shape: Omit<ParseNodeRichTextV2Parent["shape"], "depth">;
   source?: ParseNodeRichTextV2Parent["source"];

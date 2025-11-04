@@ -1,3 +1,5 @@
+import type { RankiLangContextInstance } from "../export.type.mjs";
+
 export type AstNode = AstNodeLeaf | AstNodeParent;
 
 export type AstNodeReduced = AstNodeLeafReduced | AstNodeParentReduced;
@@ -12,7 +14,7 @@ export interface AstNodeParent extends AstNodeCommon {
 
 export type AstNodeLeafReduced = Omit<
   AstNodeLeaf,
-  "shape" | "parent" | "parser" | "plugins" | "source" | "creator"
+  "shape" | "parent" | "parser" | "plugins" | "source" | "creator" | "context"
 > & {
   shape: Omit<AstNodeCommon["shape"], "depth">;
   source?: AstNodeLeaf["source"];
@@ -28,6 +30,7 @@ export type AstNodeParentReduced = Omit<
   | "plugins"
   | "creator"
   | "source"
+  | "context"
 > & {
   shape: Omit<AstNodeCommon["shape"], "depth">;
 };
@@ -57,6 +60,7 @@ export interface SeparatorEntry {
 interface AstNodeCommon {
   creator: string;
   parent: AstNode;
+  context: RankiLangContextInstance;
   plugins: {
     parser: {
       // TODO

@@ -52,7 +52,7 @@ export const rankiBaseV2ComponentsPluginDefault: RankiPluginComponent = {
           },
         },
         validator: placeholder,
-        transform: (validation, _context) => {
+        transform: (validation) => {
           if (validation.kind === "leaf") {
             throw new Error(`CODE COMPONENT CANNOT BE A PARENT`);
           }

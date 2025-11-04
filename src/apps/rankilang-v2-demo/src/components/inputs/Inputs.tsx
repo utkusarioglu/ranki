@@ -41,31 +41,15 @@ export const Inputs: FC<InputsProps> = ({
   initialLanguageUserConfigStr,
 }) => {
   const [tabIndex, setTabIndex] = useState(0);
-  const {
-    rankiStr,
-    theater,
-    languageUserConfigStr,
-    plugins,
-    // setRankiStr,
-    // setInstalledParserPlugins,
-    // setRequestedParserPlugins,
-    // installedParserPlugins,
-    // rankiStr,
-    // languageUserConfigStr,
-    // setLanguageUserConfigStr,
-    // requestedParserPlugins,
-    // allParserPlugins,
-    // theater,
-    // setTheater,
-  } = useUserInput(
-    // @ts-expect-error
-    pluginObjects,
-    componentObjects,
-    setSharedState,
-    // languageDefaultConfig,
-    initialLanguageUserConfigStr,
-    presetGroups,
-  );
+  const { rankiStr, theater, languageUserConfigStr, plugins, view } =
+    useUserInput(
+      // @ts-expect-error
+      pluginObjects,
+      componentObjects,
+      setSharedState,
+      initialLanguageUserConfigStr,
+      presetGroups,
+    );
 
   const tabButtons: Tab[] = [
     {
@@ -79,6 +63,10 @@ export const Inputs: FC<InputsProps> = ({
     {
       name: "Plugins",
       children: "Plugins",
+    },
+    {
+      name: "View",
+      children: "View",
     },
   ];
 
@@ -295,6 +283,83 @@ export const Inputs: FC<InputsProps> = ({
             </div>
           </fieldset>
         </div>
+      </div>
+    ),
+
+    () => (
+      <div className={style.tabPageContainer}>
+        {[
+          {
+            title: "Ast Node",
+            propName: "ast",
+          },
+          {
+            title: "Validation Node",
+            propName: "validation",
+          },
+          {
+            title: "Transform Node",
+            propName: "transform",
+          },
+        ].map(({ title, propName }) => {
+          // @ts-expect-error
+          const val = view[propName];
+          return (
+            <div>
+              <h2 className={style.h2}>{title}</h2>
+              <fieldset className={style.inputFieldSet}>
+                {
+                  // @ts-expect-error
+                  val.all.map((pn) => (
+                    <div key={pn}>
+                      <input
+                        id={["available", pn].join("-")}
+                        type="checkbox"
+                        checked={
+                          // @ts-expect-error
+                          view[propName].value.includes(pn)
+                        }
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            // @ts-expect-error
+                            val.set((l) => [
+                              // @ts-expect-error
+                              ...l.filter((n) => n !== pn),
+                              pn,
+                            ]);
+                          } else {
+                            // @ts-expect-error
+                            val.set((l) => l.filter((n) => n !== pn));
+                          }
+                        }}
+                      />
+                      <label
+                        className={[style.inlineLabel, "monospace"].join(" ")}
+                        htmlFor={["available", pn].join("-")}
+                      >
+                        {pn}
+                      </label>
+                    </div>
+                  ))
+                }
+                <div className={style.requestedPluginsButtonContainer}>
+                  <button
+                    className={style.buttonPlugins}
+                    onClick={() => val.set(val.all)}
+                  >
+                    All
+                  </button>{" "}
+                  <button
+                    className={style.buttonPlugins}
+                    onClick={() => val.set([])}
+                  >
+                    None
+                  </button>
+                </div>
+              </fieldset>
+            </div>
+          );
+        })}
       </div>
     ),
   ];

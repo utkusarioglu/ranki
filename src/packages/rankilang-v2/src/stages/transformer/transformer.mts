@@ -4,7 +4,6 @@ import type {
   TransformerFunctionEntry,
   ValidationNode,
   TransformNode,
-  RankiLangAstContext,
 } from "@ranki/package-api-v2";
 
 export class TransformerLibrary {
@@ -35,7 +34,7 @@ export class TransformerLibrary {
 
   transform(
     validation: ValidationNode,
-    context: RankiLangAstContext,
+    // context: RankiLangAstContext,
   ): TransformNode {
     try {
       // if (validation.shape.frame) {
@@ -49,8 +48,11 @@ export class TransformerLibrary {
         throw new Error("NO CURRENT PARSER SET");
       }
       const handlerName = current.type;
-      const component = context.getComponent(handlerName, current.chain);
-      const transformed = component.stages.transform(validation, context);
+      const component = validation.context.getComponent(
+        handlerName,
+        current.chain,
+      );
+      const transformed = component.stages.transform(validation);
 
       // if (transformed.kind === "parent") {
       // }
@@ -63,7 +65,7 @@ export class TransformerLibrary {
         }
         transformed.children = transformed.children.map((c) =>
           // TODO
-          this.transform(c as unknown as ValidationNode, context),
+          this.transform(c as unknown as ValidationNode),
         );
         // transformed.children = children;
       }

@@ -8,6 +8,30 @@ import type {
   RankiPluginParser,
 } from "@ranki/package-api-v2";
 
+const AST_NODE_PROPS = [
+  "children",
+  "kind",
+  "creator",
+  "shape",
+  "subtree",
+  "plugins",
+  "source",
+  "params",
+];
+
+const VALIDATION_NODE_PROPS = [
+  "validation",
+  "children",
+  "kind",
+  "creator",
+  "shape",
+  "subtree",
+  // "plugins",
+  "source",
+];
+
+const TRANSFORM_NODE_PROPS = ["children", "tag"];
+
 const REQUESTED = ["RankiParamsV2", "RankiFrameV2"];
 // const REQUESTED: string[] = [];
 
@@ -35,6 +59,12 @@ export function useUserInput(
   const [installedComponentPlugins, setInstalledComponentPlugins] =
     useState(allComponentPlugins);
   const [rankiStr, setRankiStr] = useState(presetGroups[0].presets[0].value);
+  const [astNodeSelectedProps, setAstNodeSelectedProps] =
+    useState(AST_NODE_PROPS);
+  const [validationNodeSelectedProps, setValidationNodeSelectedProps] =
+    useState(VALIDATION_NODE_PROPS);
+  const [transformNodeSelectedProps, setTransformNodeSelectedProps] =
+    useState(TRANSFORM_NODE_PROPS);
 
   useEffect(() => {
     try {
@@ -63,7 +93,14 @@ export function useUserInput(
       );
       const parsed = rankiLang.parse({ [theater]: rankiStr });
       const config = rankiLang.getConfig().merged;
-      setSharedState({ type: "loaded", parsed, config });
+      setSharedState({
+        type: "loaded",
+        parsed,
+        config,
+        astNodeSelectedProps,
+        validationNodeSelectedProps,
+        transformNodeSelectedProps,
+      });
     } catch (e) {
       const err = e as Error;
       setSharedState({
@@ -78,6 +115,9 @@ export function useUserInput(
     requestedParserPlugins,
     theater,
     installedComponentPlugins,
+    astNodeSelectedProps,
+    validationNodeSelectedProps,
+    transformNodeSelectedProps,
   ]);
 
   return {
@@ -93,6 +133,24 @@ export function useUserInput(
     languageUserConfigStr: {
       value: languageUserConfigStr,
       set: setLanguageUserConfigStr,
+    },
+
+    view: {
+      ast: {
+        set: setAstNodeSelectedProps,
+        value: astNodeSelectedProps,
+        all: AST_NODE_PROPS,
+      },
+      validation: {
+        value: validationNodeSelectedProps,
+        set: setValidationNodeSelectedProps,
+        all: VALIDATION_NODE_PROPS,
+      },
+      transform: {
+        value: transformNodeSelectedProps,
+        set: setTransformNodeSelectedProps,
+        all: TRANSFORM_NODE_PROPS,
+      },
     },
 
     plugins: {
@@ -112,10 +170,6 @@ export function useUserInput(
           value: installedComponentPlugins,
           set: setInstalledComponentPlugins,
         },
-        // requested: {
-        //   value: requestedComponentPlugins,
-        //   set: setRequestedComponentPlugins,
-        // },
         all: allComponentPlugins,
       },
     },

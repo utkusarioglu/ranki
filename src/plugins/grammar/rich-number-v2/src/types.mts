@@ -130,7 +130,13 @@ export type ParseNodeRichNumberV2Reduced =
   | ParseNodeRichNumberV2GeneralReduced
   | ParseNodeRichNumberV2ComplexReduced;
 
-type OmittedKeys = "parent" | "parser" | "shape" | "plugins" | "creator";
+type OmittedKeys =
+  | "parent"
+  | "parser"
+  | "shape"
+  | "plugins"
+  | "creator"
+  | "context";
 
 export type ParseNodeRichNumberV2GeneralReduced = Omit<
   ParseNodeRichNumberV2General,

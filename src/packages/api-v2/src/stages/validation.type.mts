@@ -1,3 +1,4 @@
+// import type { RankiLangContextInstance } from "../export.type.mjs";
 import type { AstNode, AstNodeLeaf, AstNodeParent } from "./ast.type.mjs";
 
 export interface ParserValidatorFunctionEntry {
@@ -19,16 +20,19 @@ export interface ValidationNodeValidationEntry {
   errors: ValidationNodeErrorEntry[];
 }
 
+interface ValidationNodeCommon {
+  // context: RankiLangContextInstance;
+  validation: ValidationNodeValidationEntry;
+}
+
 export type ValidationNode = ValidationNodeParent | ValidationNodeLeaf;
 
-export type ValidationNodeLeaf = AstNodeLeaf & {
-  validation: ValidationNodeValidationEntry;
-};
+export type ValidationNodeLeaf = AstNodeLeaf & ValidationNodeCommon & {};
 
-export type ValidationNodeParent = Omit<AstNodeParent, "children"> & {
-  validation: ValidationNodeValidationEntry;
-  children: ValidationNode[];
-};
+export type ValidationNodeParent = Omit<AstNodeParent, "children"> &
+  ValidationNodeCommon & {
+    children: ValidationNode[];
+  };
 
 export type RankiPluginParserValidationFunc = (
   a: AstNode,

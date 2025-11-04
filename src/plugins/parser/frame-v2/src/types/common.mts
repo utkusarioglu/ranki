@@ -6,7 +6,8 @@ export type NodeOmitted =
   | "children"
   | "parent"
   | "plugins"
-  | "source";
+  | "source"
+  | "context";
 
 export type ArgsOmitted = "depth";
 
