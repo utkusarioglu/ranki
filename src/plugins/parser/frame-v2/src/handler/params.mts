@@ -1,7 +1,6 @@
 import type {
   ComponentPluginComponentStageAst,
   ParamParserReturn,
-  // RankiLangAstContext,
   RankiLangParseDefinition,
 } from "@ranki/package-api-v2";
 import type { ParamV2 } from "@ranki/plugin-grammar-params-v2";
@@ -94,9 +93,7 @@ function convertParams<T extends ParamV2>(
 export function paramParser(
   def: RankiLangParseDefinition,
   componentAst: ComponentPluginComponentStageAst,
-  // context: RankiLangAstContext,
 ): ParamParserReturn {
-  // const def = context.getParserDefinition();
   if (!def.params) {
     return { config: [] };
   }

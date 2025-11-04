@@ -105,10 +105,6 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
       namespace: 1,
       operator: f[0] as ParamV2Operator,
       values: paramValues.paramV2Values(context),
-      // source: {
-      //   type: "raw",
-      //   raw: this.sourceString,
-      // },
     });
   },
 
@@ -123,10 +119,6 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
         separators: [],
       },
       operator: "assign",
-      // source: {
-      //   type: "raw",
-      //   raw: this.sourceString,
-      // },
       values: [
         {
           type: "boolean",
@@ -154,10 +146,6 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
           value: false,
         },
       ],
-      // source: {
-      //   type: "raw",
-      //   raw: this.sourceString,
-      // },
     });
   },
 
@@ -177,10 +165,6 @@ const paramV2Common: ohm.ActionDict<ParamV2Common> = {
           raw: quoted.sourceString.slice(1, -1),
         },
       ],
-      // source: {
-      //   type: "raw",
-      //   raw: this.sourceString,
-      // },
     });
   },
 };

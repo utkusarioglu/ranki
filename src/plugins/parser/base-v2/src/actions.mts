@@ -1,9 +1,5 @@
 import type * as ohm from "ohm-js";
-import type {
-  AstNode,
-  SeparatorEntry,
-  // RankiLangContextInstance as R,
-} from "@ranki/package-api-v2";
+import type { AstNode, SeparatorEntry } from "@ranki/package-api-v2";
 import { getContext as c } from "@ranki/package-api-v2/helpers";
 import { joinNodes } from "@ranki/package-api-v2/helpers";
 import type {
@@ -51,7 +47,6 @@ const node: ohm.ActionDict<BaseV2Node> = {
     return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {
             ignoreAndRest: {
@@ -61,10 +56,6 @@ const node: ohm.ActionDict<BaseV2Node> = {
           },
           separators: [],
         },
-        // source: {
-        //   type: "raw",
-        //   raw: rest.sourceString,
-        // },
       },
       {
         children: [
@@ -93,16 +84,11 @@ const node: ohm.ActionDict<BaseV2Node> = {
 
     return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
       kind: "leaf",
-      // creator: this.ctorName,
       print: true,
       shape: {
         spaces: {},
         separators: [],
       },
-      // source: {
-      //   type: "raw",
-      //   raw: all.sourceString,
-      // },
     });
   },
 
@@ -111,7 +97,6 @@ const node: ohm.ActionDict<BaseV2Node> = {
     return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {
             prefix: {
@@ -125,14 +110,9 @@ const node: ohm.ActionDict<BaseV2Node> = {
           },
           separators: [],
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         children: [structure.node(context)],
-        // subtree: {},
       },
     );
   },
@@ -142,15 +122,10 @@ const node: ohm.ActionDict<BaseV2Node> = {
     return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {},
           separators: blockSep.separator(context),
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         children: joinNodes(context, block, block2),
@@ -164,18 +139,12 @@ const node: ohm.ActionDict<BaseV2Node> = {
     return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {},
           separators: nl.separator(context),
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
-        // subtree: {},
         children: joinNodes(context, line1, line2),
       },
     );
@@ -187,7 +156,6 @@ const node: ohm.ActionDict<BaseV2Node> = {
     return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {
             prefix: {
@@ -201,13 +169,8 @@ const node: ohm.ActionDict<BaseV2Node> = {
           },
           separators: [],
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
-        subtree: {},
         children: [lexemes.node(context)],
       },
     );
@@ -219,15 +182,10 @@ const node: ohm.ActionDict<BaseV2Node> = {
     return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {},
           separators: clearance.separator(context),
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         subtree: {},
@@ -241,7 +199,6 @@ const node: ohm.ActionDict<BaseV2Node> = {
     return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {
             suffix: {
@@ -252,10 +209,6 @@ const node: ohm.ActionDict<BaseV2Node> = {
           },
           separators: [],
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         subtree: {},
@@ -269,7 +222,6 @@ const node: ohm.ActionDict<BaseV2Node> = {
     return parentContext.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {
             suffix: {
@@ -279,10 +231,6 @@ const node: ohm.ActionDict<BaseV2Node> = {
           },
           separators: [],
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         subtree: {},
@@ -291,7 +239,6 @@ const node: ohm.ActionDict<BaseV2Node> = {
             const leafContext = parentContext.newChild(this, "inline");
             return leafContext.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
               kind: "leaf",
-              // creator: this.ctorName,
               print: true,
               shape: {
                 spaces: {},
@@ -312,16 +259,11 @@ const node: ohm.ActionDict<BaseV2Node> = {
     const context = c(this).newChild(this, "inline");
     return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
       kind: "leaf",
-      // creator: this.ctorName,
       print: true,
       shape: {
         spaces: {},
         separators: [],
       },
-      // source: {
-      //   type: "raw",
-      //   raw: base.sourceString,
-      // },
     });
   },
 
@@ -329,7 +271,6 @@ const node: ohm.ActionDict<BaseV2Node> = {
     const context = c(this).newChild(this, "inline");
     return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
       kind: "leaf",
-      // creator: this.ctorName,
       print: true,
       shape: {
         spaces: {},
@@ -350,15 +291,10 @@ const node: ohm.ActionDict<BaseV2Node> = {
       {
         kind: "leaf",
         print: true,
-        // creator: this.ctorName,
         shape: {
           spaces: {},
           separators: [],
         },
-        // source: {
-        //   type: "text",
-        //   raw: clearance1.sourceString,
-        // },
       },
       {
         sourceType: "text",
@@ -369,21 +305,14 @@ const node: ohm.ActionDict<BaseV2Node> = {
   // TODO should this exist?
   whitespace(_wm, _wi) {
     const context = c(this).newChild(this, "inline");
-    // const sourceString = wm.sourceString + wi.sourceString;
     return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>(
       {
         kind: "leaf",
         print: true,
-        // creator: this.ctorName,
         shape: {
           spaces: {},
           separators: [],
-          // "whitespace.1.length": sourceString.length,
         },
-        // source: {
-        //   type: "text",
-        //   raw: sourceString,
-        // },
       },
       {
         sourceType: "text",

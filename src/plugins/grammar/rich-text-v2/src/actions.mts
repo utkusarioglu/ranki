@@ -1,9 +1,5 @@
 import type * as ohm from "ohm-js";
-import type {
-  RankiLangAstContext,
-  AstNodeLeaf,
-  // RankiLangContextInstance as R,
-} from "@ranki/package-api-v2";
+import type { RankiLangAstContext, AstNodeLeaf } from "@ranki/package-api-v2";
 import { getContext as c } from "@ranki/package-api-v2/helpers";
 import type {
   ParseNodeRichTextV2ParentReduced,
@@ -175,18 +171,12 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     >(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {},
           separators: clearance.separator(context),
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
-        // subtree: {},
         children: joinNodes(context, decorated1, decorated2),
       },
     );
@@ -203,8 +193,6 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     >(
       {
         kind: "parent",
-        // creator: this.ctorName,
-
         shape: {
           spaces: {
             suffix: {
@@ -216,13 +204,8 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           ...startArgs,
           ...endArgs,
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
-        // subtree: {},
         children: [...startNodes, word.node(context), ...endNodes],
       },
     );
@@ -236,8 +219,6 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     >({
       kind: "leaf",
       print: true,
-      // creator: this.ctorName,
-
       shape: {
         spaces: {},
         separators: [],
@@ -257,8 +238,6 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     >({
       kind: "leaf",
       print: true,
-      // creator: this.ctorName,
-
       shape: {
         spaces: {},
         separators: [],
@@ -278,8 +257,6 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     >({
       kind: "leaf",
       print: true,
-      // creator: this.ctorName,
-
       shape: {
         spaces: {},
         separators: [],
@@ -299,15 +276,12 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     >({
       kind: "leaf",
       print: true,
-      // creator: this.ctorName,
-
       shape: {
         spaces: {},
         separators: [],
       },
       source: {
         type: "mixedcase",
-        // raw: [one, two, three, four].map((v) => v.sourceString).join(""),
         raw: this.sourceString,
       },
     });
@@ -321,15 +295,12 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     >({
       kind: "leaf",
       print: true,
-      // creator: this.ctorName,
-
       shape: {
         spaces: {},
         separators: [],
       },
       source: {
         type: "mixedcase",
-        // raw: [one, two, three].map((v) => v.sourceString).join(""),
         raw: this.sourceString,
       },
     });
@@ -343,8 +314,6 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     >({
       kind: "leaf",
       print: false,
-      // creator: this.ctorName,
-
       shape: {
         spaces: {},
         separators: [],
@@ -364,8 +333,6 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     >({
       kind: "leaf",
       print: true,
-      // creator: this.ctorName,
-
       shape: {
         spaces: {},
         separators: [],
@@ -385,8 +352,6 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     >({
       kind: "leaf",
       print: false,
-      // creator: this.ctorName,
-
       shape: {
         spaces: {},
         separators: [],
@@ -406,9 +371,6 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     >({
       kind: "leaf",
       print: false,
-
-      // creator: this.ctorName,
-
       shape: {
         spaces: {},
         separators: [],
@@ -428,8 +390,6 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     >({
       kind: "leaf",
       print: false,
-      // creator: this.ctorName,
-
       shape: {
         spaces: {},
         separators: [],
@@ -449,8 +409,6 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     >({
       kind: "leaf",
       print: false,
-      // creator: this.ctorName,
-
       shape: {
         spaces: {},
         separators: [],
@@ -465,7 +423,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
   /**
    * @overload
    */
-  line(indentation1, lineModifiers, lexemes, wi1) {
+  line(indentation, lineModifiers, lexemes, wi) {
     const context = c(this).newChild(this, "inline");
     return context.newAstNode<
       ParseNodeRichTextV2ParentReduced,
@@ -473,11 +431,18 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     >(
       {
         kind: "parent",
-        // creator: this.ctorName,
-
         shape: {
-          "indentation.1.length": indentation1.sourceString.length,
-          "wi.1.length": wi1.sourceString.length,
+          spaces: {
+            prefix: {
+              type: "indentation",
+              raw: indentation.sourceString,
+            },
+            suffix: {
+              type: "wi",
+              raw: wi.sourceString,
+            },
+          },
+          separators: [],
           ...lineModifiers.lineModifiers(context),
         },
         source: {
@@ -496,9 +461,7 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
       ParseNodeRichTextV2
     >({
       kind: "leaf",
-      // creator: this.ctorName,
       print: true,
-
       shape: {
         spaces: {},
         separators: [],
@@ -521,7 +484,6 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
     >(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {
             suffix: {
@@ -533,10 +495,6 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
           ...startArgs,
           ...endArgs,
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         subtree: {},
@@ -549,7 +507,6 @@ const node: ohm.ActionDict<ParseNodeRichTextV2> = {
               ParseNodeRichTextV2
             >({
               kind: "leaf",
-              // creator: this.ctorName,
               print: true,
               shape: {
                 spaces: {},

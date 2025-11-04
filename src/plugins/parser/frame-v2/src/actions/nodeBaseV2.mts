@@ -13,7 +13,6 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {
             prefix: {
@@ -27,10 +26,6 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
           },
           separators: [],
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       { subtree: {}, children: [v2.node(context)] },
     );
@@ -41,7 +36,6 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {
             prefix: {
@@ -55,10 +49,6 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
           },
           separators: [],
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         children: [pauseRoot.node(context)],
@@ -71,15 +61,10 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {},
           separators: [],
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       { subtree: {}, children: [pauseRoot.node(context)] },
     );
@@ -90,17 +75,12 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {},
           // TODO maybe `pausedContainer` should be a separator.
           // after all, that's what it actually does
           separators: [],
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         subtree: {},
@@ -124,7 +104,6 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {
             suffix: {
@@ -134,10 +113,6 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
           },
           separators: whitespaceSeparator.separator(context),
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         subtree: {},
@@ -159,15 +134,10 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {},
           separators: [],
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       { subtree: {}, children: [child.root] },
     );
@@ -179,15 +149,10 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     return parentContext.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {},
           separators: [],
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         subtree: {},
@@ -197,7 +162,6 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
             return leafContext.newAstNode<AstNodeLeafReduced, ParseNodeFrameV2>(
               {
                 kind: "leaf",
-                // creator: this.ctorName,
                 print: true,
                 shape: {
                   spaces: {},

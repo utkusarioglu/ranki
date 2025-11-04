@@ -33,15 +33,10 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     return context.newAstNode<ParseNodeFrameV2FpReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           separators: [],
           spaces: {},
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         subtree: {
@@ -69,15 +64,10 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     return context.newAstNode<ParseNodeFrameV2FReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           separators: [],
           spaces: {},
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         subtree: {
@@ -138,15 +128,10 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     return context.newAstNode<ParseNodeFrameV2EReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           separators: [],
           spaces: {},
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         subtree: {

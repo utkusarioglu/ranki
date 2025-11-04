@@ -32,25 +32,11 @@ const node: ohm.ActionDict<ParseNodeRichStructureV2> = {
     >(
       {
         kind: "parent",
-        // creator: this.ctorName,
-
         shape: {
           spaces: {},
           // !fix I don't understand the separators thing here
           separators: [],
-          // "richStructure.v2": {
-          //   // name: "SHALL BE SET BY PARENT",
-          //   // !FIX the separators are misplaced. the first separator args and params belong to the SECOND collection, section or whatever the level name is.
-          //   ...sep,
-          //   // shape: sep.args,
-          //   // params: sep.params,
-          // },
         },
-        // subtree: {},
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         children: [
@@ -167,10 +153,6 @@ const shapeAndParamsV2: ohm.ActionDict<ArgsAndParamsV2> = {
             raw: structureSepEnd.sourceString,
           },
         ],
-        // !TODO you need ctorName here
-
-        // !TODO not sure if this is supposed to be placed here
-        // "richStructure.v1.config": config.shape,
       },
       params: config.params,
     };

@@ -17,7 +17,6 @@ const nodeBaseV2: ohm.ActionDict<FrameV1Node> = {
     return context.newAstNode<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {
             indentation: {
@@ -31,10 +30,6 @@ const nodeBaseV2: ohm.ActionDict<FrameV1Node> = {
           },
           separators: [],
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         subtree: {},
@@ -66,7 +61,6 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     return context.newAstNode<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {
             frameAndType: {
@@ -86,10 +80,6 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
             },
           ],
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         subtree: {},
@@ -124,7 +114,6 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     return context.newAstNode<FrameV1NodeParentReduced, FrameV1NodeParent>(
       {
         kind: "parent",
-        // creator: this.ctorName,
         shape: {
           spaces: {
             frameAndType: {
@@ -154,17 +143,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
               raw: sepRight2.sourceString,
             },
           ],
-          // "frame.v1": {
-          //   variant: "fp",
-          //   frameType: v1Type.sourceString,
-          //   ...shapeAndParamsV1,
-          //   // report: child.report,
-          // },
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         subtree: {},
@@ -304,17 +283,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
               raw: sep2.sourceString,
             },
           ],
-          // "frame.v1": {
-          //   variant: "fp",
-          //   frameType: v1Type.sourceString,
-          //   ...shapeAndParamsV1,
-          //   // report: child.report,
-          // },
         },
-        // source: {
-        //   type: "raw",
-        //   raw: this.sourceString,
-        // },
       },
       {
         subtree: {},
