@@ -5,7 +5,7 @@ import type {
 import type {
   RankiLanguageConfig,
   RankiLanguageProvidedConfig,
-} from "./config.mjs";
+} from "./config.type.mjs";
 import type {
   ParserPluginsInstance,
   TheaterName,
@@ -16,7 +16,7 @@ import type {
   RankiLangParseDefinition,
   RankiLangContextInstance,
 } from "./context.type.mjs";
-import type { RankiPluginParser } from "../plugins/parser.mjs";
+import type { RankiPluginParser } from "../plugins/parser.type.mjs";
 // import type { RankiLangParseHandlerFunctionReturn } from "../export.mjs";
 
 export interface ComponentPluginsInstance {

@@ -2,7 +2,7 @@ export type {
   RankiPluginParser,
   RankiPluginParserSpecs,
   ParamParserReturn,
-} from "./parser.mjs";
+} from "./parser.type.mjs";
 
 export type {
   RankiPluginGrammar,
@@ -11,7 +11,7 @@ export type {
   // RankiLangParseHandlerFunctionReturn,
 } from "./grammar.type.mjs";
 
-export type { RankiPlugin, RankiPluginCommon } from "./general.mjs";
+export type { RankiPlugin, RankiPluginCommon } from "./general.type.mjs";
 
 export type {
   RankiPluginComponent,

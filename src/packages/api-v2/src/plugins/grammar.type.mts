@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { RankiLanguageConfig } from "../lang/config.mjs";
+import type { RankiLanguageConfig } from "../lang/config.type.mjs";
 import type {
   // RankiLangParseDefinition,
   // RankiLangParsedAst,
@@ -8,13 +8,13 @@ import type {
   RankiLangParseDefinition,
   // RankiLangParseDefinition,
 } from "../lang/context.type.mjs";
-import type { RankiPluginCommon, WithTokenizer } from "./general.mjs";
-import type { RankiPluginParserValidationCallback } from "../stages/validation.mjs";
-import type { RankiPluginParserTransformCallback } from "../stages/transform.mjs";
+import type { RankiPluginCommon, WithTokenizer } from "./general.type.mjs";
+import type { RankiPluginParserValidationCallback } from "../stages/validation.type.mjs";
+import type { RankiPluginParserTransformCallback } from "../stages/transform.type.mjs";
 import type {
   ComponentPluginComponent,
   CreateParserReturn,
-} from "../export.mjs";
+} from "../export.type.mjs";
 
 export type RankiGrammarTokens = Record<
   string,

@@ -8,6 +8,6 @@ export type {
   AstNodeLeafReduced,
   AstNodeParentReduced,
   AstNodeReduced,
-} from "./ast.mjs";
-export * from "./validation.mjs";
-export * from "./transform.mjs";
+} from "./ast.type.mjs";
+export * from "./validation.type.mjs";
+export * from "./transform.type.mjs";

@@ -50,10 +50,7 @@ export class TransformerLibrary {
       }
       const handlerName = current.type;
       const component = context.getComponent(handlerName, current.chain);
-      const transformed = component.stages.transform({
-        validation,
-        spec: context,
-      });
+      const transformed = component.stages.transform(validation, context);
 
       // if (transformed.kind === "parent") {
       // }

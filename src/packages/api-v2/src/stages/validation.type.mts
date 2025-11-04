@@ -1,4 +1,4 @@
-import type { AstNode, AstNodeLeaf, AstNodeParent } from "./ast.mjs";
+import type { AstNode, AstNodeLeaf, AstNodeParent } from "./ast.type.mjs";
 
 export interface ParserValidatorFunctionEntry {
   source: string; // name of the plugin

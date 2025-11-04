@@ -1,19 +1,20 @@
 import type {
   // RankiLanguageMergedConfig,
   RankiLanguageProvidedConfig,
-} from "../lang/config.mjs";
+} from "../lang/config.type.mjs";
 // import type { DeepPartial } from "../utils.mjs";
-import type { RankiPluginCommon } from "./general.mjs";
+import type { RankiPluginCommon } from "./general.type.mjs";
 import type {
   PluginValidationFuncReturn,
   ValidationNode,
   // ValidationNodeValidationEntry,
-} from "../stages/validation.mjs";
+} from "../stages/validation.type.mjs";
 import type {
-  RankiLangAstContext,
+  // RankiLangAstContext,
+  RankiLangContextInstance,
   // RankiLangParseDefinition,
 } from "../lang/context.type.mjs";
-import type { TransformNode } from "../export.mjs";
+import type { TransformNode } from "../export.type.mjs";
 
 export interface RankiPluginComponent extends RankiPluginCommon {
   handler: string;
@@ -45,15 +46,18 @@ export type ComponentPluginValidationFunc = (
   // p: ComponentPluginValidationFuncProps,
 ) => PluginValidationFuncReturn;
 
-export type ComponentPluginTransformFuncProps<
-  // T extends RankiLangParseDefinition = RankiLangParseDefinition,
-> = {
-  validation: ValidationNode;
-  spec: RankiLangAstContext;
-};
+// export type ComponentPluginTransformFuncProps =
+//   // <
+//   // T extends RankiLangParseDefinition = RankiLangParseDefinition,
+//   // >
+//   {
+//     validation: ValidationNode;
+//     context: RankiLangContextInstance;
+//   };
 
 export type ComponentPluginTransformFunc = (
-  t: ComponentPluginTransformFuncProps,
+  validation: ValidationNode,
+  context: RankiLangContextInstance,
 ) => TransformNode;
 
 export type ComponentPluginComponentStageAst = {

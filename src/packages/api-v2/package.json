@@ -9,7 +9,7 @@
   },
   "exports": {
     ".": {
-      "types": "./types/export.d.mts",
+      "types": "./types/export.type.d.mts",
       "default": "./lib/export.mjs"
     },
     "./helpers": {

@@ -31,7 +31,7 @@ export type {
   RankiLangCloneFunctionReturn,
   ParseAstFunction,
   CreateParserReturn,
-} from "./rankilang.mjs";
+} from "./rankilang.type.mjs";
 
 export type {
   RankiLanguageConfig,
@@ -39,4 +39,4 @@ export type {
   RankiLanguageContextConfig,
   RankiLanguageDefaultConfig,
   RankiLanguageMergedConfig,
-} from "./config.mjs";
+} from "./config.type.mjs";

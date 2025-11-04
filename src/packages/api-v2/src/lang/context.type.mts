@@ -1,23 +1,23 @@
 import type {
   RankiLanguageConfig,
   RankiLanguageProvidedConfig,
-} from "./config.mjs";
+} from "./config.type.mjs";
 import type {
   AstNode,
   AstNodeLeaf,
   AstNodeLeafSource,
-} from "../stages/ast.mjs";
-import type { RankiLangInstance } from "./rankilang.mjs";
-import type { RankiPluginParser } from "../plugins/parser.mjs";
+} from "../stages/ast.type.mjs";
+import type { RankiLangInstance } from "./rankilang.type.mjs";
+import type { RankiPluginParser } from "../plugins/parser.type.mjs";
 import type {
   RankiGrammarTokens,
   // RankiLangParseHandlerFunction,
   // RankiLangParseHandlerFunctionReturn,
 } from "../plugins/grammar.type.mjs";
 import type * as ohm from "ohm-js";
-import type { TransformNode } from "../stages/transform.mjs";
-import type { ValidationNode } from "../stages/validation.mjs";
-import type { ComponentPluginComponent } from "../export.mjs";
+import type { TransformNode } from "../stages/transform.type.mjs";
+import type { ValidationNode } from "../stages/validation.type.mjs";
+import type { ComponentPluginComponent } from "../export.type.mjs";
 
 export interface RankiLangParseResult {
   report: RankiLangParseReport;

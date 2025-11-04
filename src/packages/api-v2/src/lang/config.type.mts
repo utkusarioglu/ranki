@@ -1,4 +1,4 @@
-import type { RankiGrammarTokens } from "../export.mjs";
+import type { RankiGrammarTokens } from "../export.type.mjs";
 
 type PluginName = string;
 

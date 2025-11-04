@@ -1,4 +1,4 @@
-import type { ValidationNode, ValidationNodeLeaf } from "./validation.mjs";
+import type { ValidationNode, ValidationNodeLeaf } from "./validation.type.mjs";
 
 export type TransformNode = TransformNodeParent | TransformNodeLeaf;
 

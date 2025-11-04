@@ -3,7 +3,6 @@ import type {
   RankiPluginParser,
   ParserValidatorFunctionEntry,
   ValidationNode,
-  // RankiLangAstContext,
   ValidationNodeParent,
   ValidationNodeLeaf,
   RankiPluginComponent,
@@ -103,26 +102,33 @@ export class ValidatorLibrary {
   }
 
   // TODO i'm not sure whether the `spec` is actually needed in this method
-  validate(obj: AstNode, context: RankiLangContextInstance): ValidationNode {
+  validate(
+    astNode: AstNode,
+    context: RankiLangContextInstance,
+  ): ValidationNode {
     try {
-      const parserValidator = this.getParserValidator(obj);
-      if (obj.kind === "parent") {
+      const parserValidator = this.getParserValidator(astNode);
+      if (astNode.kind === "parent") {
+        const subtree = astNode.subtree
+          ? Object.entries(astNode.subtree).reduce(
+              (a, [name, c]) => (
+                (a[name] = this.validate(c as AstNode, context)), a
+              ),
+              {} as Record<string, ValidationNode>,
+            )
+          : {};
+
         const validated = {
           validation: {
             errors: [],
             warnings: [],
           },
-          ...obj,
-          // subtree: Object.entries(obj.subtree).reduce(
-          //   (a, [name, c]) => (
-          //     (a[name] = this.validate(c as AstNode, spec)), a
-          //   ),
-          //   {} as Record<string, ValidationNode>,
-          // ),
-          children: obj.children.map((c) => this.validate(c, context)),
+          ...astNode,
+          subtree,
+          children: astNode.children.map((c) => this.validate(c, context)),
         } as ValidationNodeParent;
 
-        const parserValidatorResult = parserValidator.validate(obj);
+        const parserValidatorResult = parserValidator.validate(astNode);
         validated.validation.errors.push(
           ...parserValidatorResult.errors.map((entry) => ({
             source: parserValidator.source,
@@ -159,10 +165,10 @@ export class ValidatorLibrary {
             errors: [],
             warnings: [],
           },
-          ...obj,
+          ...astNode,
         } as ValidationNodeLeaf;
 
-        const parserValidatorResult = parserValidator.validate(obj);
+        const parserValidatorResult = parserValidator.validate(astNode);
         validated.validation.errors.push(
           ...parserValidatorResult.errors.map((entry) => ({
             source: parserValidator.source,
@@ -195,7 +201,7 @@ export class ValidatorLibrary {
         return validated;
       }
     } catch (e: unknown) {
-      console.error(obj, e);
+      console.error(astNode, e);
       throw new Error((e as Error).message);
     }
   }

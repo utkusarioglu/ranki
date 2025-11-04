@@ -1,5 +1,5 @@
-import type { ValidationNode } from "../stages/validation.mjs";
-import type { RankiPluginParserTransformFunc } from "../stages/transform.mjs";
+import type { ValidationNode } from "../stages/validation.type.mjs";
+import type { RankiPluginParserTransformFunc } from "../stages/transform.type.mjs";
 
 export const transformPlaceholder: RankiPluginParserTransformFunc = (
   v: ValidationNode,
