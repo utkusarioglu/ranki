@@ -43,6 +43,10 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
           frameConfig,
         },
         children: [child.root],
+        transformer: {
+          handler: frameConfig.type,
+          chain: frameConfig.chain.join("."),
+        },
       },
     );
   },

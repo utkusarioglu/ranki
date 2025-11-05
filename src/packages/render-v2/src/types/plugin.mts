@@ -30,5 +30,9 @@ export type RankiRenderPluginItemRenderFunction = (
 
 export type RankiRenderPluginItemRenderFunctionReturn = {
   element: HTMLElement;
-  loadedCallback: () => void;
+  css?: string;
+  slots?: {
+    children: HTMLElement;
+  };
+  onLoad: () => void;
 };

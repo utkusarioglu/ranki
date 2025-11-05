@@ -32,60 +32,24 @@ export class TransformerLibrary {
     return found.callback;
   }
 
-  transform(
-    validation: ValidationNode,
-    // context: RankiLangAstContext,
-  ): TransformNode {
+  transform(validation: ValidationNode): TransformNode {
     try {
-      // if (validation.shape.frame) {
-      // !FIX this is supposed to come from the args
       // TODO
-
-      // @ts-expect-error
-      const current = validation.plugins.parser.current;
-      if (!current) {
+      const transformer = validation.plugins.transformer;
+      if (!transformer) {
+        throw new Error("NO TRANSFORMER ENTRY SET AT TRANSFORM BOUNDARY");
+      }
+      const chain = transformer.chain;
+      const handler = transformer.handler;
+      if (!chain) {
         console.log("ERROR VALIDATION NODE:", validation);
         throw new Error("NO CURRENT PARSER SET");
       }
-      const handlerName = current.type;
-      const component = validation.context.getComponent(
-        handlerName,
-        current.chain,
-      );
-      const transformed = component.stages.transform(validation);
-
-      // if (transformed.kind === "parent") {
-      // }
-      // const children: TransformNode[] = [];
-      if (transformed.kind === "parent") {
-        if (validation.kind === "leaf") {
-          throw new Error(
-            "KIND INCONSISTENCY BETWEEN TRANSFORM AND VALIDATION",
-          );
-        }
-        transformed.children = transformed.children.map((c) =>
-          // TODO
-          this.transform(c as unknown as ValidationNode),
-        );
-        // transformed.children = children;
-      }
-
-      return transformed;
-      // }
-
-      // const transformer = this.getTransformer(validation.creator);
-      // if (validation.kind === "parent") {
-      //   const transformed = transformer(validation) as TransformNodeParent;
-      //   return {
-      //     ...transformed,
-      //     children: validation.children.map((c) => this.transform(c, context)),
-      //   };
-      // } else {
-      //   return transformer(validation);
-      // }
+      const component = validation.context.getComponent(handler, [chain]);
+      return component.stages.transform(validation);
     } catch (e: unknown) {
       console.error(validation, e);
-      throw new Error((e as Error).message);
+      throw new Error((e as Error).stack);
     }
   }
 }

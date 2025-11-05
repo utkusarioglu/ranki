@@ -12,3 +12,9 @@
 .hgroupTitle {
   padding-bottom: 0.2em;
 }
+
+.nativePreviewContainer {
+  background-color: var(--bg-4);
+  padding: 1em;
+  margin-bottom: 1em;
+}

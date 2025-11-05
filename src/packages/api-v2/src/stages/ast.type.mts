@@ -1,4 +1,7 @@
-import type { RankiLangContextInstance } from "../export.type.mjs";
+import type {
+  RankiLangContextInstance,
+  RankiLangParseDefinition,
+} from "../export.type.mjs";
 
 export type AstNode = AstNodeLeaf | AstNodeParent;
 
@@ -65,6 +68,10 @@ interface AstNodeCommon {
     parser: {
       // TODO
       hash: string;
+    } & RankiLangParseDefinition;
+    transformer?: {
+      handler: string;
+      chain: string;
     };
     grammars: {};
   }; // this is supposed to be overwritten by implementers which have subtrees

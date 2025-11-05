@@ -12,6 +12,17 @@ export class Render {
 
   static async render(tn: TransformNode): Promise<RenderFunctionReturn> {
     const renderer = await Render.library.getRenderer(tn.tag);
-    return renderer(tn);
+    const rendered = renderer(tn);
+    if (rendered.slots) {
+      if (tn.kind === "parent") {
+        const children = await Promise.all(
+          tn.children.map((c) => this.render(c)),
+        );
+        children.forEach((c) =>
+          rendered.slots?.children.appendChild(c.element),
+        );
+      }
+    }
+    return rendered;
   }
 }

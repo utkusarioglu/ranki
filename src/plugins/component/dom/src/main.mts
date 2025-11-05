@@ -132,17 +132,17 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
             throw new Error(`Anchor COMPONENT CANNOT BE A PARENT`);
           }
 
-          // const payload = validation.children[0];
-          // const pauseList = (payload as ValidationNodeParent).children[0];
+          const payload = validation.children[0];
+          const pauseList = (payload as ValidationNodeParent).children[0];
 
-          // const payloadSection = (pauseList as ValidationNodeParent)
-          //   .children[0];
-          // const payloadPlain = (payloadSection as ValidationNodeParent)
-          //   .children[0];
-          // const rootIgnore = (payloadPlain as ValidationNodeParent)
-          //   .children[0] as ValidationNodeLeaf;
+          const payloadSection = (pauseList as ValidationNodeParent)
+            .children[0];
+          const payloadPlain = (payloadSection as ValidationNodeParent)
+            .children[0];
+          const rootIgnore = (payloadPlain as ValidationNodeParent)
+            .children[0] as ValidationNodeLeaf;
 
-          // const raw = rootIgnore.source.raw;
+          const raw = rootIgnore.source.raw;
 
           const ob = {
             tag: "anchor",
@@ -153,15 +153,14 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
             source: {
               type: "raw" as "raw",
               raw: [
-                "-",
-                validation.source.raw[0].toUpperCase(),
-                validation.source.raw.slice(1).toLocaleLowerCase(),
-                ,
-                "-",
+                raw[0].toUpperCase(),
+                raw.slice(1).toLocaleLowerCase(),
+
+                // validation.source.raw[0].toUpperCase(),
+                // validation.source.raw.slice(1).toLocaleLowerCase(),
               ].join(""),
             },
           };
-          console.log({ ob });
           return ob;
         },
       },

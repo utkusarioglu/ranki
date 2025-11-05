@@ -57,6 +57,7 @@ function trimPlugins(value: any, properties: string[]) {
         }),
       },
     },
+    transformer: value.transformer,
   };
 }
 

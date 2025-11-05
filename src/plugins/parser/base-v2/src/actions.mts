@@ -113,6 +113,12 @@ const node: ohm.ActionDict<BaseV2Node> = {
       },
       {
         children: [structure.node(context)],
+        // TODO
+        transformer: {
+          handler: "RankiBaseV2",
+          chain: "default",
+        },
+        // transformerChain: "default",
       },
     );
   },

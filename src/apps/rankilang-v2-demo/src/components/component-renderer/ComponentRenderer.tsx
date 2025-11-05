@@ -2,6 +2,7 @@ import type { FC } from "react";
 import { ContainerNode } from "./ContainerNode";
 import style from "./component-renderer.module.css";
 import type { RankiLangParseResult } from "@ranki/package-api-v2";
+import { AsyncRender } from "./Async";
 
 interface ComponentRendererProps {
   parsed: RankiLangParseResult;
@@ -29,6 +30,9 @@ export const ComponentRenderer: FC<ComponentRendererProps> = ({
               </h1>
             </hgroup>
             {customPath !== "" ? <h2>{customPath}</h2> : null}
+            <div className={style.nativePreviewContainer}>
+              <AsyncRender item={o.stages.transform} />
+            </div>
             <ContainerNode item={o.stages.transform} />
           </div>
         );

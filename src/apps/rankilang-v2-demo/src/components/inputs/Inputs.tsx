@@ -305,7 +305,7 @@ export const Inputs: FC<InputsProps> = ({
           // @ts-expect-error
           const val = view[propName];
           return (
-            <div>
+            <div key={propName}>
               <h2 className={style.h2}>{title}</h2>
               <fieldset className={style.inputFieldSet}>
                 {

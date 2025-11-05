@@ -27,7 +27,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
         }
         return {
           element,
-          loadedCallback: () => {},
+          onLoad: () => {},
         };
       },
     },

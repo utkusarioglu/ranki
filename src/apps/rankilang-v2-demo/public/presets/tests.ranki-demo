@@ -1,3 +1,14 @@
+--- Anchor, title and code
+[a, "https://www.google.com"|google]
+
+# *Goo* bunny
+
+
+[code
+def hello():
+  print("hellooo")
+] 
+
 --- Google link
 [a, "https://www.google.com"|google]
 

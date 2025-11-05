@@ -27,7 +27,14 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
           separators: [],
         },
       },
-      { subtree: {}, children: [v2.node(context)] },
+      {
+        subtree: {},
+        children: [v2.node(context)],
+        // transformer: {
+        //   handler: "RankiFrameV2",
+        //   chain: "block_v2",
+        // },
+      },
     );
   },
 

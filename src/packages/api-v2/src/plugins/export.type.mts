@@ -19,4 +19,5 @@ export type {
   ComponentPluginComponent,
   ComponentPluginComponentStageAst,
   ComponentValidationFuncEntry,
+  ComponentPluginTransformFunc,
 } from "./component.type.mjs";

@@ -27,7 +27,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
         }
         return {
           element,
-          loadedCallback: () => {},
+          onLoad: () => {},
         };
       },
     },
@@ -61,7 +61,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
 
         return {
           element: container,
-          loadedCallback: () => {},
+          onLoad: () => {},
         };
       },
     },
@@ -69,28 +69,81 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
     {
       tag: "code",
       engine: "vanilla-js",
+      load: "lazy",
+      renderer: () => import("./code/renderer.mjs").then((i) => i.codeRenderer),
+      // renderer: async () => (t) => {
+      //   if (t.kind === "parent") {
+      //     throw new Error("E_NOTATION CANNOT BE A PARENT");
+      //   }
+
+      //   const container = document.createElement("div");
+      //   container.style.border = "1px solid gray";
+      //   container.style.padding = "1em";
+
+      //   const hud = document.createElement("div");
+      //   const langName = document.createElement("span");
+      //   langName.innerText = "js";
+      //   hud.style.backgroundColor = "gray";
+      //   hud.style.paddingInline = "1em";
+      //   hud.style.paddingBlock = "0.5em";
+      //   hud.appendChild(langName);
+      //   container.appendChild(hud);
+
+      //   const pre = document.createElement("pre");
+      //   container.appendChild(pre);
+      //   const code = document.createElement("code");
+      //   pre.appendChild(code);
+      //   code.innerText = t.source.raw;
+
+      //   return {
+      //     element: container,
+      //     onLoad: () => {},
+      //   };
+      // },
+    },
+
+    {
+      tag: "div",
+      engine: "vanilla-js",
       load: "static",
       renderer: (t) => {
-        if (t.kind === "parent") {
-          throw new Error("E_NOTATION CANNOT BE A PARENT");
+        if (t.kind !== "parent") {
+          throw new Error("DIV KIND HAS TO BE A PARENT");
         }
-
         const container = document.createElement("div");
-        const hud = document.createElement("div");
-        const langName = document.createElement("span");
-        langName.innerText = "hello language";
-        hud.appendChild(langName);
-        container.appendChild(hud);
-
-        const pre = document.createElement("pre");
-        container.appendChild(pre);
-        const code = document.createElement("code");
-        pre.appendChild(code);
-        code.innerText = t.source.raw;
-
+        const children = document.createElement("div");
+        container.className = "div-container";
+        container.appendChild(children);
+        // container.style.border = "2px solid red";
+        // container.innerText = t.creator + "-";
         return {
           element: container,
-          loadedCallback: () => {},
+          slots: {
+            children,
+          },
+          onLoad: () => {},
+        };
+      },
+    },
+
+    {
+      tag: "paragraph",
+      engine: "vanilla-js",
+      load: "static",
+      renderer: (t) => {
+        if (t.kind !== "leaf") {
+          throw new Error("PARAGRAPH HAS TO BE A LEAF");
+        }
+        const element = document.createElement("p");
+        element.classList.add(t.creator);
+        element.innerText = t.source.raw;
+
+        return {
+          element,
+          slots: {
+            children: element,
+          },
+          onLoad: () => {},
         };
       },
     },
@@ -100,27 +153,18 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
       engine: "vanilla-js",
       load: "static",
       renderer: (t) => {
-        console.log("anchor renderer called");
         if (t.kind === "parent") {
-          throw new Error("E_NOTATION CANNOT BE A PARENT");
+          throw new Error("Anchor CANNOT BE A PARENT");
         }
 
-        const container = document.createElement("div");
-        const hud = document.createElement("div");
-        const langName = document.createElement("span");
-        langName.innerText = "hello language";
-        hud.appendChild(langName);
-        container.appendChild(hud);
-
-        const pre = document.createElement("pre");
-        container.appendChild(pre);
-        const code = document.createElement("code");
-        pre.appendChild(code);
-        code.innerText = t.source.raw;
+        const container = document.createElement("a");
+        container.target = "_blank";
+        container.href = "https://www.google.com";
+        container.innerText = t.source.raw;
 
         return {
           element: container,
-          loadedCallback: () => {},
+          onLoad: () => {},
         };
       },
     },

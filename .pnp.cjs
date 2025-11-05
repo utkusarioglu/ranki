@@ -2654,7 +2654,9 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
           ["@ranki/plugin-render-base-v2", "workspace:src/plugins/render/base-v2"],\
           ["@types/node", "npm:24.5.2"],\
+          ["@types/prismjs", "npm:1.26.5"],\
           ["ohm-js", "npm:17.2.1"],\
+          ["prismjs", "npm:1.30.0"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\

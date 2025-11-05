@@ -181,6 +181,7 @@ export interface Enrichments {
   children?: BindingNode[];
   subtree?: Record<string, BindingNode>;
   sourceType?: AstNodeLeaf["source"]["raw"];
+  transformer?: NonNullable<AstNode["plugins"]["transformer"]>;
 }
 
 export interface BindingNode {

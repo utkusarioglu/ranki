@@ -82,6 +82,7 @@ export class RankiLangContext implements RankiLangContextInstance {
           // props,
         },
         grammars: {},
+        ...(en?.transformer ? { transformer: en.transformer } : {}),
       },
       ...p,
     };
@@ -233,7 +234,6 @@ export class RankiLangContext implements RankiLangContextInstance {
     }
 
     const merged = validation.context.getMergedConfig();
-    // const merged = this.parserBoundary.getConfig().getMerged();
     const transform =
       validation && merged.stage === "transform"
         ? this.hooks.transformers.transform(validation)

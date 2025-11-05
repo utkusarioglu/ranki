@@ -5,7 +5,16 @@ import style from "./async.module.css";
 Render.addPlugin(renderPluginBaseV2Render);
 import { Render, type RenderFunctionReturn } from "@ranki/package-render-v2";
 import type { TransformNode } from "@ranki/package-api-v2";
-import { Suspense, useEffect, useMemo, useRef, type FC } from "react";
+import {
+  Suspense,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type Dispatch,
+  type FC,
+  type SetStateAction,
+} from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
 function wrapPromise(promise: Promise<RenderFunctionReturn>) {
@@ -32,9 +41,17 @@ function wrapPromise(promise: Promise<RenderFunctionReturn>) {
 
 interface AsyncHTMLElementProps {
   promise: ReturnType<typeof wrapPromise>;
+  height: number;
+  setHeight: Dispatch<SetStateAction<number>>;
+  name: string;
 }
 
-const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({ promise }) => {
+const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
+  promise,
+  height,
+  setHeight,
+  name,
+}) => {
   // const resource = useMemo(() => wrapPromise(promise), [promise]);
   const ref = useRef<HTMLIFrameElement>(null);
   const f = promise.read(); // Suspends here if promise not ready
@@ -46,11 +63,45 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({ promise }) => {
     if (!ref.current.contentDocument) {
       return;
     }
-    // ref.current?.appendChild(f.element);
+    if (!f.element) {
+      return;
+    }
+
+    const message = (e: MessageEvent<any>) => {
+      if (e.data.type === `resize-${name}`) {
+        setHeight(+e.data.height);
+      }
+    };
+
+    window.addEventListener("message", message);
+
+    if (!ref.current.contentDocument.querySelector(`style.${name}`)) {
+      const sc = ref.current.contentDocument.createElement("style");
+      sc.className = name;
+      sc.innerHTML = f.css || "";
+      ref.current.contentDocument.head.appendChild(sc);
+    }
+
+    if (!ref.current.contentDocument.querySelector(`script.${name}-observer`)) {
+      const sc = ref.current.contentDocument.createElement("script");
+      sc.className = name + "-observer";
+      sc.innerText = `
+      const observer = new ResizeObserver(() => {
+      window.parent.postMessage({
+        type: "resize-${name}",
+        height: document.body.scrollHeight
+        }, '*');
+      });
+      observer.observe(document.body);
+    `;
+      ref.current.contentDocument.head.appendChild(sc);
+    }
+    //
     f.element.classList.add(style.content);
     ref.current.contentDocument.body.appendChild(f.element);
     ref.current.contentDocument.body.style = Object.entries({
       display: "grid",
+      overflow: "hidden",
       "justify-content": "center",
       "align-items": "center",
       "font-family": "Arial, Helvetica, sans-serif",
@@ -59,10 +110,19 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({ promise }) => {
       .map((p) => p.join(": "))
       .join("; ");
 
-    return () => f.element.remove();
+    return () => {
+      window.removeEventListener("message", message);
+      f.element.remove();
+    };
   }, [f]);
 
-  return <iframe className={style.native} ref={ref} />;
+  return (
+    <iframe
+      style={{ height }}
+      className={[style.native, name].join(" ")}
+      ref={ref}
+    />
+  );
 };
 
 interface AsyncRenderProps {
@@ -71,6 +131,8 @@ interface AsyncRenderProps {
 
 export const AsyncRender: FC<AsyncRenderProps> = ({ item }) => {
   const promise = useMemo(() => wrapPromise(Render.render(item)), [item]);
+  const [height, setHeight] = useState<number>(60);
+  const [name] = useState("h" + Math.random().toString().slice(2));
 
   return (
     <ErrorBoundary
@@ -83,12 +145,20 @@ export const AsyncRender: FC<AsyncRenderProps> = ({ item }) => {
     >
       <Suspense
         fallback={
-          <div className={[style.native, style.loading, "monospace"].join(" ")}>
+          <div
+            style={{ height }}
+            className={[style.native, style.loading, "monospace"].join(" ")}
+          >
             <pre>Loading…</pre>
           </div>
         }
       >
-        <AsyncHTMLElement promise={promise} />
+        <AsyncHTMLElement
+          promise={promise}
+          height={height}
+          setHeight={setHeight}
+          name={name}
+        />
       </Suspense>
     </ErrorBoundary>
   );
