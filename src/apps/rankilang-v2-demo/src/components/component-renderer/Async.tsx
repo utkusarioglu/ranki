@@ -75,12 +75,17 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
 
     window.addEventListener("message", message);
 
-    if (!ref.current.contentDocument.querySelector(`style.${name}`)) {
-      const sc = ref.current.contentDocument.createElement("style");
-      sc.className = name;
-      sc.innerHTML = f.css || "";
-      ref.current.contentDocument.head.appendChild(sc);
-    }
+    // adds css from renders
+    f.css?.forEach(({ id, css }) => {
+      const contentDocument = ref.current!.contentDocument!;
+      const htmlId = name + "-" + id;
+      if (!contentDocument.querySelector(`style#${htmlId}`)) {
+        const sc = contentDocument.createElement("style");
+        sc.id = htmlId;
+        sc.innerHTML = css;
+        contentDocument.head.appendChild(sc);
+      }
+    });
 
     if (!ref.current.contentDocument.querySelector(`script.${name}-observer`)) {
       const sc = ref.current.contentDocument.createElement("script");

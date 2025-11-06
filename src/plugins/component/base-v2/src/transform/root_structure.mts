@@ -66,17 +66,6 @@ export const p: ComponentPluginTransformFunc = (n) => {
   if (n.kind !== "parent") {
     throw new Error("EXPECTED PARENT");
   }
-  // const children: TransformNode[] = [];
-
-  // n.children.forEach((c) => {
-  //   switch (c.creator) {
-  //     case "block_v2":
-  //       children.push(section_base(c));
-  //       break;
-  //     default:
-  //       throw new Error(`UNKNOWN CHILD: ${c.creator}`);
-  //   }
-  // });
 
   return {
     tag: "paragraph",

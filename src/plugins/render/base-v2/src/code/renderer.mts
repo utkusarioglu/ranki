@@ -36,6 +36,11 @@ export const codeRenderer: RankiRenderPluginItemRenderFunction = (t) => {
   return {
     element: container,
     onLoad: () => {},
-    css,
+    css: [
+      {
+        id: "prism-atom-dark",
+        css,
+      },
+    ],
   };
 };

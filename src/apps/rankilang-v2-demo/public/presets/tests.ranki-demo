@@ -1,3 +1,20 @@
+--- Anchor, title and multiline code
+[a, "https://www.google.com"|google]
+
+# *Goo* bunny
+
+
+[code
+def hello():
+  print("hellooo")
+,,
+also
+,,
+# Second part
+def bunny():
+  yield "yes"
+]
+
 --- Anchor, title and code
 [a, "https://www.google.com"|google]
 

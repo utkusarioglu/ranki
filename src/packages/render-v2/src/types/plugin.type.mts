@@ -28,9 +28,14 @@ export type RankiRenderPluginItemRenderFunction = (
   n: TransformNode,
 ) => RankiRenderPluginItemRenderFunctionReturn;
 
+export interface RankiRenderPluginItemRenderFunctionReturnCssSpec {
+  id: string;
+  css: string;
+}
+
 export type RankiRenderPluginItemRenderFunctionReturn = {
   element: HTMLElement;
-  css?: string;
+  css?: RankiRenderPluginItemRenderFunctionReturnCssSpec[];
   slots?: {
     children: HTMLElement;
   };

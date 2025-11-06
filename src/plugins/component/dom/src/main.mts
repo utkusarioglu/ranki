@@ -1,14 +1,10 @@
 import type {
   RankiPluginComponent,
-  ComponentPluginValidationFunc,
   ValidationNodeParent,
   ValidationNodeLeaf,
 } from "@ranki/package-api-v2";
-
-const placeholder: ComponentPluginValidationFunc = (validation) => ({
-  warnings: [["CODE_COMPONENT VALIDATION", validation.kind].join(" ")],
-  errors: [],
-});
+import { placeholder } from "./placeholder.mjs";
+import { codeComponent } from "./components/code/component.mjs";
 
 export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
   meta: {
@@ -17,77 +13,78 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
   },
   handler: "RankiFrameV2",
   list: [
-    {
-      chain: "code",
-      stages: {
-        // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
-        // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
-        preprocess: (c) => c.replace("&trade;", "™"),
-        ast: {
-          directives: [
-            {
-              // @ts-expect-error
-              plugins: {
-                requested: [
-                  "RankiParamsV2",
-                  "RankiFrameV2",
-                  "RankiRichNumberV2",
-                  // "RankiBaseV2",
-                  // "RankiConstantsV2",
-                ],
-              },
-            },
-          ],
-          params: {
-            setting: {
-              positional: [["language"], ["path"]],
-              shorthands: {
-                b: ["cat", "dog"],
-              },
-            },
-            directive: {
-              positional: [],
-              shorthands: {
-                p: ["content", "prefix"],
-                r: ["plugins", "requested"],
-              },
-            },
-          },
-        },
-        validator: placeholder,
-        transform: (validation) => {
-          if (validation.kind === "leaf") {
-            console.log("err:", validation);
-            throw new Error(`CODE COMPONENT CANNOT BE A LEAF`);
-          }
+    codeComponent,
+    // {
+    //   chain: "code",
+    //   stages: {
+    //     // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
+    //     // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
+    //     preprocess: (c) => c.replace("&trade;", "™"),
+    //     ast: {
+    //       directives: [
+    //         {
+    //           // @ts-expect-error
+    //           plugins: {
+    //             requested: [
+    //               "RankiParamsV2",
+    //               "RankiFrameV2",
+    //               "RankiRichNumberV2",
+    //               // "RankiBaseV2",
+    //               // "RankiConstantsV2",
+    //             ],
+    //           },
+    //         },
+    //       ],
+    //       params: {
+    //         setting: {
+    //           positional: [["language"], ["path"]],
+    //           shorthands: {
+    //             b: ["cat", "dog"],
+    //           },
+    //         },
+    //         directive: {
+    //           positional: [],
+    //           shorthands: {
+    //             p: ["content", "prefix"],
+    //             r: ["plugins", "requested"],
+    //           },
+    //         },
+    //       },
+    //     },
+    //     validator: placeholder,
+    //     transform: (validation) => {
+    //       if (validation.kind === "leaf") {
+    //         console.log("err:", validation);
+    //         throw new Error(`CODE COMPONENT CANNOT BE A LEAF`);
+    //       }
 
-          const payload = validation.children[0];
-          const pauseList = (payload as ValidationNodeParent).children[0];
+    //       const payload = validation.children[0];
+    //       const pauseList = (payload as ValidationNodeParent).children[0];
 
-          const payloadSection = (pauseList as ValidationNodeParent)
-            .children[0];
-          const payloadPlain = (payloadSection as ValidationNodeParent)
-            .children[0];
-          const rootIgnore = (payloadPlain as ValidationNodeParent)
-            .children[0] as ValidationNodeLeaf;
+    //       const payloadSection = (pauseList as ValidationNodeParent)
+    //         .children[0];
+    //       const payloadPlain = (payloadSection as ValidationNodeParent)
+    //         .children[0];
+    //       const rootIgnore = (payloadPlain as ValidationNodeParent)
+    //         .children[0] as ValidationNodeLeaf;
 
-          const raw = rootIgnore.source.raw;
+    //       const raw = rootIgnore.source.raw;
 
-          const ob = {
-            tag: "code",
-            kind: "leaf" as "leaf",
-            print: true,
-            creator: validation.creator,
-            depth: validation.shape.depth.total,
-            source: {
-              type: "raw" as "raw",
-              raw,
-            },
-          };
-          return ob;
-        },
-      },
-    },
+    //       const ob = {
+    //         tag: "code",
+    //         kind: "leaf" as "leaf",
+    //         print: true,
+    //         creator: validation.creator,
+    //         depth: validation.shape.depth.total,
+    //         source: {
+    //           type: "raw" as "raw",
+    //           raw,
+    //         },
+    //       };
+    //       return ob;
+    //     },
+    //   },
+    // },
     {
       chain: "a",
       stages: {
@@ -127,7 +124,6 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
         },
         validator: placeholder,
         transform: (validation) => {
-          console.log("AAA");
           if (validation.kind === "leaf") {
             throw new Error(`Anchor COMPONENT CANNOT BE A PARENT`);
           }

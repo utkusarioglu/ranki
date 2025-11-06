@@ -1,8 +1,8 @@
-import type { RankiPluginRenderer } from "./types/plugin.mjs";
+import type { RankiPluginRenderer } from "./types/plugin.type.mjs";
 import type {
   LoadedRenderCallback,
   RenderLibraryEntry,
-} from "./types/library.mjs";
+} from "./types/library.type.mjs";
 
 export class RenderLibrary {
   private plugins: Record<string, RankiPluginRenderer> = {};

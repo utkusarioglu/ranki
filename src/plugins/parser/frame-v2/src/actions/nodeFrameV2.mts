@@ -20,15 +20,14 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const frameConfig: NodeArgsFrameV2Config =
       v2FrameConfig.v2FrameConfig(context);
 
-    const child = context
-      .newChild(this, "block")
-      .newBoundary({
-        type: frameConfig.type,
-        chain: frameConfig.chain,
-        // @ts-expect-error complains about "key" type
-        params: frameConfig.params.items,
-      })
-      .parseAst(v2Payload.sourceString);
+    const childContext = context.newChild(this, "block").newBoundary({
+      type: frameConfig.type,
+      chain: frameConfig.chain,
+      // @ts-expect-error complains about "key" type
+      params: frameConfig.params.items,
+    });
+    const child = v2Payload.node(childContext);
+    // .parseAst(v2Payload.sourceString);
 
     return context.newAstNode<ParseNodeFrameV2FpReduced, ParseNodeFrameV2>(
       {
@@ -42,7 +41,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         subtree: {
           frameConfig,
         },
-        children: [child.root],
+        children: [child],
         transformer: {
           handler: frameConfig.type,
           chain: frameConfig.chain.join("."),

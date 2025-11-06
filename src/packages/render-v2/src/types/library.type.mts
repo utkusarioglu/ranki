@@ -1,7 +1,7 @@
 import type {
   RankiRenderPluginItem,
   RankiRenderPluginItemRenderFunction,
-} from "./plugin.mjs";
+} from "./plugin.type.mjs";
 
 export interface RenderLibraryEntry {
   item: RankiRenderPluginItem;
