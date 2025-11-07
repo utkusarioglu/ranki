@@ -1,4 +1,5 @@
 import type { RankiPluginRenderer } from "@ranki/package-render-v2";
+import { codeRenderer } from "./code/renderer.mjs";
 
 export const renderPluginBaseV2Render: RankiPluginRenderer = {
   type: "renderer",
@@ -11,7 +12,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
       tag: "span",
       engine: "vanilla-js",
       load: "static",
-      renderer: (t) => {
+      renderer: async (t) => {
         if (t.kind === "parent") {
           throw new Error("span ELEMENT CANNOT BE A PARENT");
         }
@@ -27,7 +28,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
         }
         return {
           element,
-          onLoad: () => {},
+          // onLoad: () => {},
         };
       },
     },
@@ -37,7 +38,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
       tag: "eNotation",
       engine: "vanilla-js",
       load: "static",
-      renderer: (t) => {
+      renderer: async (t) => {
         if (t.kind === "parent") {
           throw new Error("E_NOTATION CANNOT BE A PARENT");
         }
@@ -61,7 +62,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
 
         return {
           element: container,
-          onLoad: () => {},
+          // onLoad: () => {},
         };
       },
     },
@@ -69,44 +70,21 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
     {
       tag: "code",
       engine: "vanilla-js",
+      load: "static",
+      renderer: codeRenderer,
+    },
+    {
+      tag: "computer_science.code.block.section",
+      engine: "vanilla-js",
       load: "lazy",
-      renderer: () => import("./code/renderer.mjs").then((i) => i.codeRenderer),
-      // renderer: async () => (t) => {
-      //   if (t.kind === "parent") {
-      //     throw new Error("E_NOTATION CANNOT BE A PARENT");
-      //   }
-
-      //   const container = document.createElement("div");
-      //   container.style.border = "1px solid gray";
-      //   container.style.padding = "1em";
-
-      //   const hud = document.createElement("div");
-      //   const langName = document.createElement("span");
-      //   langName.innerText = "js";
-      //   hud.style.backgroundColor = "gray";
-      //   hud.style.paddingInline = "1em";
-      //   hud.style.paddingBlock = "0.5em";
-      //   hud.appendChild(langName);
-      //   container.appendChild(hud);
-
-      //   const pre = document.createElement("pre");
-      //   container.appendChild(pre);
-      //   const code = document.createElement("code");
-      //   pre.appendChild(code);
-      //   code.innerText = t.source.raw;
-
-      //   return {
-      //     element: container,
-      //     onLoad: () => {},
-      //   };
-      // },
+      renderer: () => import("./code/section.mjs").then((i) => i.codeSection),
     },
 
     {
       tag: "div",
       engine: "vanilla-js",
       load: "static",
-      renderer: (t) => {
+      renderer: async (t) => {
         if (t.kind !== "parent") {
           throw new Error("DIV KIND HAS TO BE A PARENT");
         }
@@ -121,7 +99,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
           slots: {
             children,
           },
-          onLoad: () => {},
+          // onLoad: () => {},
         };
       },
     },
@@ -130,7 +108,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
       tag: "paragraph",
       engine: "vanilla-js",
       load: "static",
-      renderer: (t) => {
+      renderer: async (t) => {
         if (t.kind !== "leaf") {
           throw new Error("PARAGRAPH HAS TO BE A LEAF");
         }
@@ -143,7 +121,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
           slots: {
             children: element,
           },
-          onLoad: () => {},
+          // onLoad: () => {},
         };
       },
     },
@@ -152,7 +130,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
       tag: "anchor",
       engine: "vanilla-js",
       load: "static",
-      renderer: (t) => {
+      renderer: async (t) => {
         if (t.kind === "parent") {
           throw new Error("Anchor CANNOT BE A PARENT");
         }
@@ -164,7 +142,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
 
         return {
           element: container,
-          onLoad: () => {},
+          // onLoad: () => {},
         };
       },
     },

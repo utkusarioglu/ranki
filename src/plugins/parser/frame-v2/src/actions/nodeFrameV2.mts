@@ -45,6 +45,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         transformer: {
           handler: frameConfig.type,
           chain: frameConfig.chain.join("."),
+          props: {},
         },
       },
     );

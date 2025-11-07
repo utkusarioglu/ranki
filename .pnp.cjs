@@ -55,8 +55,8 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/plugins/component/base-v2"\
     },\
     {\
-      "name": "@ranki/plugin-component-frame-v2-dom",\
-      "reference": "workspace:src/plugins/component/dom"\
+      "name": "@ranki/plugin-component-frame-v2-code",\
+      "reference": "workspace:src/plugins/component/frame-v2-code"\
     },\
     {\
       "name": "@ranki/plugin-grammar-constants-v2",\
@@ -113,7 +113,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/package-rankilang-v2", ["workspace:src/packages/rankilang-v2"]],\
     ["@ranki/package-render-v2", ["workspace:src/packages/render-v2"]],\
     ["@ranki/plugin-component-base-v2-default", ["workspace:src/plugins/component/base-v2"]],\
-    ["@ranki/plugin-component-frame-v2-dom", ["workspace:src/plugins/component/dom"]],\
+    ["@ranki/plugin-component-frame-v2-code", ["workspace:src/plugins/component/frame-v2-code"]],\
     ["@ranki/plugin-grammar-constants-v2", ["workspace:src/plugins/grammar/constants-v2"]],\
     ["@ranki/plugin-grammar-params-v2", ["workspace:src/plugins/grammar/params-v2"]],\
     ["@ranki/plugin-grammar-rich-number-v2", ["workspace:src/plugins/grammar/rich-number-v2"]],\
@@ -2376,7 +2376,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-rankilang-v2", "workspace:src/packages/rankilang-v2"],\
-          ["@ranki/plugin-component-frame-v2-dom", "workspace:src/plugins/component/dom"],\
+          ["@ranki/plugin-component-frame-v2-code", "workspace:src/plugins/component/frame-v2-code"],\
           ["@ranki/plugin-grammar-constants-v2", "workspace:src/plugins/grammar/constants-v2"],\
           ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
           ["@ranki/plugin-grammar-rich-number-v2", "workspace:src/plugins/grammar/rich-number-v2"],\
@@ -2406,7 +2406,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-rankilang-v2", "workspace:src/packages/rankilang-v2"],\
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
           ["@ranki/plugin-component-base-v2-default", "workspace:src/plugins/component/base-v2"],\
-          ["@ranki/plugin-component-frame-v2-dom", "workspace:src/plugins/component/dom"],\
+          ["@ranki/plugin-component-frame-v2-code", "workspace:src/plugins/component/frame-v2-code"],\
           ["@ranki/plugin-grammar-constants-v2", "workspace:src/plugins/grammar/constants-v2"],\
           ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
           ["@ranki/plugin-grammar-rich-number-v2", "workspace:src/plugins/grammar/rich-number-v2"],\
@@ -2514,13 +2514,13 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
-    ["@ranki/plugin-component-frame-v2-dom", [\
-      ["workspace:src/plugins/component/dom", {\
-        "packageLocation": "./src/plugins/component/dom/",\
+    ["@ranki/plugin-component-frame-v2-code", [\
+      ["workspace:src/plugins/component/frame-v2-code", {\
+        "packageLocation": "./src/plugins/component/frame-v2-code/",\
         "packageDependencies": [\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
-          ["@ranki/plugin-component-frame-v2-dom", "workspace:src/plugins/component/dom"],\
+          ["@ranki/plugin-component-frame-v2-code", "workspace:src/plugins/component/frame-v2-code"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\

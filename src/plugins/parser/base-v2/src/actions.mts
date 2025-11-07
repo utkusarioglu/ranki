@@ -117,6 +117,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
         transformer: {
           handler: "RankiBaseV2",
           chain: "default",
+          props: {},
         },
         // transformerChain: "default",
       },

@@ -199,46 +199,55 @@ export class RankiLangContext implements RankiLangContextInstance {
 
   newTransformNode(
     v: ValidationNode,
-    reducedTransformNodes: ReducedTransformNode[],
+    parents: ReducedTransformNode[],
   ): TransformNode[] {
     let all: TransformNode[] = [];
-    reducedTransformNodes.forEach((reducedTransformNode) => {
-      switch (reducedTransformNode.kind) {
+    parents.forEach((parent) => {
+      switch (parent.kind) {
         case "leaf":
           const leafTn = {
-            tag: reducedTransformNode.tag,
-            kind: reducedTransformNode.kind,
-            hoist: v.shape.hoist,
+            tag: parent.tag,
+            kind: parent.kind,
+            hoist: parent.hoist,
             print: (v as ValidationNodeLeaf).print || true,
             creator: v.creator,
             depth: v.shape.depth.total,
-            source: reducedTransformNode.source,
+            source: parent.source,
+            props: v.plugins.transformer?.props || {},
           };
           all.push(leafTn);
           break;
         case "parent":
           const l1 = {
-            tag: reducedTransformNode.tag,
-            kind: reducedTransformNode.kind,
-            hoist: v.shape.hoist,
+            tag: parent.tag,
+            kind: parent.kind,
+            hoist: parent.hoist,
             creator: v.creator,
             depth: v.shape.depth.total,
-            children: [] as TransformNode[],
+            props: v.plugins.transformer?.props || {},
           };
-          if (reducedTransformNode.children.filter((n) => n.hoist).length) {
-            reducedTransformNode.children.forEach((c) => {
-              if (c.hoist) {
-                // const l1Copy = { ...l1 };
-                c.hoist--;
-                // l1Copy.children = [c];
-                all.push(c);
+
+          const hasHoist = parent.children.filter(({ hoist }) => hoist).length;
+          if (hasHoist) {
+            let l1Copy = { ...l1, children: [] as TransformNode[] };
+            parent.children.forEach((child) => {
+              if (child.hoist) {
+                child.hoist--;
+                if (l1Copy.children.length) {
+                  all.push({
+                    ...l1Copy,
+                    children: [...l1Copy.children],
+                  });
+                }
+                l1Copy = { ...l1, children: [] as TransformNode[] };
+                all.push(child);
               } else {
-                l1.children.push(c);
+                l1Copy.children.push(child);
               }
             });
+            all.push(l1Copy);
           } else {
-            l1.children = reducedTransformNode.children;
-            all.push(l1);
+            all.push({ ...l1, children: parent.children });
           }
       }
     });
@@ -297,7 +306,8 @@ export class RankiLangContext implements RankiLangContextInstance {
 
     // const merged = validation.context.getMergedConfig();
     if (!validation.plugins.transformer) {
-      throw new Error("NO TRANSFORMER DEFINITION AT THE ROOF");
+      console.log("Error node:", validation);
+      throw new Error("NO TRANSFORMER DEFINITION AT THE ROOT");
     }
     const transformerDef = validation.plugins.transformer;
     const component = this.hooks.components.getPlugin(transformerDef.handler, [

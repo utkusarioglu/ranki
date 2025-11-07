@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@ranki/package-rankilang-v2": "workspace:^",
-    "@ranki/plugin-component-frame-v2-dom": "workspace:^",
+    "@ranki/plugin-component-frame-v2-code": "workspace:^",
     "@ranki/plugin-grammar-constants-v2": "workspace:^",
     "@ranki/plugin-grammar-params-v2": "workspace:^",
     "@ranki/plugin-grammar-rich-number-v2": "workspace:^",

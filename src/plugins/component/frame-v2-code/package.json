@@ -1,5 +1,5 @@
 {
-  "name": "@ranki/plugin-component-frame-v2-dom",
+  "name": "@ranki/plugin-component-frame-v2-code",
   "private": true,
   "type": "module",
   "scripts": {

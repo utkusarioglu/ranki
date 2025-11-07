@@ -127,21 +127,9 @@ export class RankiLang implements RankiLangInstance {
     const validation = context.parseValidation(ast);
     const transform = context.parseTransform(validation);
 
-    // const validation = ["validation", "transform"].includes(config.merged.stage)
-    //   ? this.validators.validate(ast.ast.root, context)
-    //   : null;
-
-    // const transform =
-    //   validation && config.merged.stage === "transform"
-    //     ? this.transformers.transform(validation, context)
-    //     : null;
-
     return {
       stages: {
         raw: theaterRaw,
-        // ast: {
-        //   root: ast.ast.root,
-        // },
         ast: ast,
         validation,
         transform,

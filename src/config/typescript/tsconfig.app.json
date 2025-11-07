@@ -38,6 +38,12 @@
     },
     {
       "path": "../../plugins/grammar/rich-text-v2"
+    },
+    {
+      "path": "../../plugins/render/base-v2"
+    },
+    {
+      "path": "../../plugins/render/latex"
     }
   ]
 }

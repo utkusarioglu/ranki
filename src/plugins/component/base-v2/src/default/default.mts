@@ -1,15 +1,15 @@
 import type {
-  RankiPluginComponent,
   ComponentPluginValidationFunc,
+  ComponentPluginComponent,
 } from "@ranki/package-api-v2";
-import { root_structure } from "../transform/root_structure.mjs";
+import { transform } from "../transform/all.mjs";
 
 const placeholder: ComponentPluginValidationFunc = (validation) => ({
   warnings: [["COMPONENT VALIDATION", validation.kind].join(" ")],
   errors: [],
 });
 
-export const rankiBaseDefault: RankiPluginComponent["list"][0] = {
+export const rankiBaseDefault: ComponentPluginComponent = {
   chain: "default",
   stages: {
     // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
@@ -44,34 +44,6 @@ export const rankiBaseDefault: RankiPluginComponent["list"][0] = {
       },
     },
     validator: placeholder,
-    transform: root_structure,
-    // transform: (root_structure) => {
-    //   console.log("hit", root_structure);
-    //   if (root_structure.kind === "leaf") {
-    //     throw new Error(`CODE COMPONENT CANNOT BE A LEAF`);
-    //   }
-    //   const payload = root_structure.children[0];
-    //   const pauseList = (payload as ValidationNodeParent).children[0];
-
-    //   const payloadSection = (pauseList as ValidationNodeParent).children[0];
-    //   const payloadPlain = (payloadSection as ValidationNodeParent).children[0];
-    //   const rootIgnore = (payloadPlain as ValidationNodeParent)
-    //     .children[0] as ValidationNodeLeaf;
-
-    //   const raw = rootIgnore.source.raw;
-
-    //   const ob = {
-    //     tag: "span",
-    //     kind: "leaf" as "leaf",
-    //     print: true,
-    //     creator: root_structure.creator,
-    //     depth: root_structure.shape.depth.total,
-    //     source: {
-    //       type: "raw" as "raw",
-    //       raw,
-    //     },
-    //   };
-    //   return ob;
-    // },
+    transform,
   },
 };

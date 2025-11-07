@@ -23,7 +23,7 @@ export const ParentContainerNode: FC<ParentContainerNodeProps> = ({ item }) => {
         }}
       >
         {createElement(
-          item.tag,
+          "div",
           {},
           item.children.map((c, i) => <ContainerNode key={i} items={[c]} />),
         )}

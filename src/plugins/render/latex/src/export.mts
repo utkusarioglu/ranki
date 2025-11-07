@@ -8,10 +8,10 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
   },
   items: [
     {
-      tag: "code",
+      tag: "latex",
       engine: "vanilla-js",
       load: "static",
-      renderer: (t) => {
+      renderer: async (t) => {
         if (t.kind === "parent") {
           throw new Error("span ELEMENT CANNOT BE A PARENT");
         }
@@ -27,7 +27,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
         }
         return {
           element,
-          onLoad: () => {},
+          // onLoad: () => {},
         };
       },
     },

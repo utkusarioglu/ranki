@@ -1,54 +1,69 @@
-import type { RankiRenderPluginItemRenderFunction } from "@ranki/package-render-v2";
-import Prism from "prismjs";
+import { type RankiRenderPluginItemRenderFunction } from "@ranki/package-render-v2";
 import "prismjs/components/prism-python.js";
 import { css } from "./prism-atom-dark.css.mjs";
+import { assertTransformParent } from "@ranki/package-api-v2/helpers";
 
-export const codeRenderer: RankiRenderPluginItemRenderFunction = (t) => {
-  if (t.kind === "parent") {
-    throw new Error("E_NOTATION CANNOT BE A PARENT");
-  }
+type TitledFrame2Return = {
+  element: HTMLDivElement;
+  slots: {
+    children: HTMLDivElement;
+  };
+};
 
+function titledFrame2(title: string): TitledFrame2Return {
   const container = document.createElement("div");
   container.style.backgroundColor = "#151515";
-  // container.style.border = "1px solid gray";
-  // container.style.padding = "1em";
-
-  // const style = document.createElement("style");
-  // style.innerHTML = css;
-  // document.head.appendChild(style);
 
   const hud = document.createElement("div");
   hud.style.fontSize = "0.8em";
   hud.style.borderBottomRightRadius = "1em";
 
   const langName = document.createElement("span");
-  langName.innerText = "js";
+  langName.innerText = title;
   hud.style.backgroundColor = "#202020";
   hud.style.paddingInline = "1em";
   hud.style.paddingBlock = "0.5em";
   hud.style.width = "max-content";
   hud.appendChild(langName);
   container.appendChild(hud);
-
-  const pre = document.createElement("pre");
-  pre.style.paddingInline = "1em";
-  pre.style.paddingBlock = "0em 1em";
-
-  container.appendChild(pre);
-  const code = document.createElement("code");
-  pre.appendChild(code);
-  const raw = t.source.raw;
-  const highlighted = Prism.highlight(raw, Prism.languages.python, "python");
-  code.innerHTML = highlighted;
+  const children = document.createElement("div");
+  container.appendChild(children);
 
   return {
     element: container,
-    onLoad: () => {},
+    slots: {
+      children,
+    },
+  };
+}
+
+export const codeRenderer: RankiRenderPluginItemRenderFunction = async (t) => {
+  assertTransformParent(t);
+
+  const { element, slots } = titledFrame2("js3!");
+
+  return {
+    element,
+    slots,
+    onLoad: [
+      async () => {
+        await new Promise((r) => setTimeout(r, 1e3));
+        let val = 0;
+        const grow = () => {
+          val += 0.01;
+          element.style.scale = (Math.sin(val) + 1).toString();
+          if (val < Math.PI) {
+            window.requestAnimationFrame(grow);
+          }
+        };
+        window.requestAnimationFrame(grow);
+      },
+    ],
     css: [
       {
         id: "prism-atom-dark",
         css,
       },
-    ],
+    ].filter((v) => v),
   };
 };

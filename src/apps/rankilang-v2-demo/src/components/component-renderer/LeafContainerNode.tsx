@@ -23,7 +23,7 @@ export const LeafContainerNode: FC<LeafContainerNodeProps> = ({ item }) => {
           <LeafInfo item={item} />
           <div className={[style.childLeafValueContainer, "roboto"].join(" ")}>
             {createElement(
-              item.tag,
+              "div",
               {},
               item.source.raw.trim() !== item.source.raw ? (
                 <div className={style.childLeafValueUntrimmed}>

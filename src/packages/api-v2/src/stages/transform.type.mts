@@ -1,3 +1,4 @@
+import type { AstNodeTransformerDefinition } from "./ast.type.mjs";
 import type { ValidationNode, ValidationNodeLeaf } from "./validation.type.mjs";
 
 export type TransformNode = TransformNodeParent | TransformNodeLeaf;
@@ -7,6 +8,7 @@ interface TransformNodeCommon {
   creator: string;
   depth: number;
   hoist: number;
+  props: AstNodeTransformerDefinition["props"];
 }
 
 export type TransformNodeLeaf = TransformNodeCommon & {

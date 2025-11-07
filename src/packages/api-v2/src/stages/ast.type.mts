@@ -62,6 +62,13 @@ export interface SeparatorEntry {
   raw: string;
 }
 
+export interface AstNodeTransformerDefinition {
+  handler: string;
+  chain: string;
+  // TODO
+  props: Record<string, any>;
+}
+
 interface AstNodeCommon {
   creator: string;
   parent: AstNode;
@@ -71,10 +78,7 @@ interface AstNodeCommon {
       // TODO
       hash: string;
     } & RankiLangParseDefinition;
-    transformer?: {
-      handler: string;
-      chain: string;
-    };
+    transformer?: AstNodeTransformerDefinition;
     grammars: {};
   }; // this is supposed to be overwritten by implementers which have subtrees
   shape: {

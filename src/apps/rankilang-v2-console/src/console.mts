@@ -12,7 +12,7 @@ import { rankiRichTextV2ParserPlugin } from "@ranki/plugin-grammar-rich-text-v2"
 import { rankiRichNumberV2ParserPlugin } from "@ranki/plugin-grammar-rich-number-v2";
 import { rankiRichStructureV2ParserPlugin } from "@ranki/plugin-grammar-rich-structure-v2";
 import { rankiFrameV1ParserPlugin } from "@ranki/plugin-parser-frame-v1";
-import { rankiFrameV2ComponentsPluginDom } from "@ranki/plugin-component-frame-v2-dom";
+import { rankiFrameV2ComponentsPluginDom } from "@ranki/plugin-component-frame-v2-code";
 
 export const providedConfig = {
   content: {

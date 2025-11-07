@@ -26,18 +26,20 @@ interface RankiRenderPluginItemStatic extends RankiRenderPluginItemCommon {
 
 export type RankiRenderPluginItemRenderFunction = (
   n: TransformNode,
-) => RankiRenderPluginItemRenderFunctionReturn;
+) => Promise<RankiRenderNode>;
 
-export interface RankiRenderPluginItemRenderFunctionReturnCssSpec {
+export interface RankiRenderNodeCssSpec {
   id: string;
   css: string;
 }
 
-export type RankiRenderPluginItemRenderFunctionReturn = {
+export type RankiRenderNodeOnLoadCallback = () => Promise<void>;
+
+export type RankiRenderNode = {
   element: HTMLElement;
-  css?: RankiRenderPluginItemRenderFunctionReturnCssSpec[];
+  css?: RankiRenderNodeCssSpec[];
   slots?: {
     children: HTMLElement;
   };
-  onLoad: () => void;
+  onLoad?: RankiRenderNodeOnLoadCallback[];
 };

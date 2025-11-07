@@ -1,5 +1,6 @@
 --- Multiline code with pause
 [code
+[anchor|hi]
 def hello():
   print("hellooo")
 ,,

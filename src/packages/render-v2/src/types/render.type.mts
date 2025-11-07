@@ -1,3 +1,3 @@
-import type { RankiRenderPluginItemRenderFunctionReturn } from "./plugin.type.mjs";
+import type { RankiRenderNode } from "./plugin.type.mjs";
 
-export type RenderFunctionReturn = RankiRenderPluginItemRenderFunctionReturn;
+export type RenderFunctionReturn = RankiRenderNode;

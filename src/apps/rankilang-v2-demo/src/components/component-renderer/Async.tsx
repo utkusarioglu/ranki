@@ -87,6 +87,10 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
       }
     });
 
+    f.onLoad?.forEach((f) => {
+      f();
+    });
+
     if (!ref.current.contentDocument.querySelector(`script.${name}-observer`)) {
       const sc = ref.current.contentDocument.createElement("script");
       sc.className = name + "-observer";
