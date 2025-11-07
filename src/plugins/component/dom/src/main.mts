@@ -123,12 +123,12 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
           },
         },
         validator: placeholder,
-        transform: (validation) => {
-          if (validation.kind === "leaf") {
+        transform: (v) => {
+          if (v.kind === "leaf") {
             throw new Error(`Anchor COMPONENT CANNOT BE A PARENT`);
           }
 
-          const payload = validation.children[0];
+          const payload = v.children[0];
           const pauseList = (payload as ValidationNodeParent).children[0];
 
           const payloadSection = (pauseList as ValidationNodeParent)
@@ -140,24 +140,27 @@ export const rankiFrameV2ComponentsPluginDom: RankiPluginComponent = {
 
           const raw = rootIgnore.source.raw;
 
-          const ob = {
-            tag: "anchor",
-            kind: "leaf" as "leaf",
-            print: true,
-            creator: validation.creator,
-            depth: validation.shape.depth.total,
-            source: {
-              type: "raw" as "raw",
-              raw: [
-                raw[0].toUpperCase(),
-                raw.slice(1).toLocaleLowerCase(),
+          const all = [
+            {
+              tag: "anchor",
+              kind: "leaf" as "leaf",
+              // print: true,
+              hoist: 0,
+              // creator: v.creator,
+              // depth: v.shape.depth.total,
+              source: {
+                type: "raw" as "raw",
+                raw: [
+                  raw[0].toUpperCase(),
+                  raw.slice(1).toLocaleLowerCase(),
 
-                // validation.source.raw[0].toUpperCase(),
-                // validation.source.raw.slice(1).toLocaleLowerCase(),
-              ].join(""),
+                  // validation.source.raw[0].toUpperCase(),
+                  // validation.source.raw.slice(1).toLocaleLowerCase(),
+                ].join(""),
+              },
             },
-          };
-          return ob;
+          ];
+          return v.context.newTransformNode(v, all);
         },
       },
     },

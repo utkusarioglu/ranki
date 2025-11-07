@@ -16,7 +16,7 @@ import { ParserPlugins } from "./stages/parser/parser-plugins.mjs";
 import { RankiLangConfig } from "./config.mjs";
 import { ComponentPlugins } from "./component/component-plugins.mjs";
 import { ValidatorLibrary } from "./stages/validator/library.mjs";
-import { TransformerLibrary } from "./stages/transformer/transformer.mjs";
+// import { TransformerLibrary } from "./stages/transformer/transformer.mjs";
 import { AstLibrary } from "./stages/ast/library.mjs";
 import { RankiLangContext } from "./context/context.mjs";
 
@@ -30,7 +30,7 @@ export class RankiLang implements RankiLangInstance {
   // validation
   private validators = new ValidatorLibrary();
   // transform
-  private transformers = new TransformerLibrary();
+  // private transformers = new TransformerLibrary();
 
   private provided: RankiLanguageProvidedConfig[];
 
@@ -43,7 +43,7 @@ export class RankiLang implements RankiLangInstance {
       plugins.parsers.forEach((p) => {
         this.parsers.addPlugin(p);
         this.validators.addParser(p);
-        this.transformers.addPlugin(p);
+        // this.transformers.addPlugin(p);
       });
     } else {
       this.parsers = plugins.parsers;
@@ -114,7 +114,7 @@ export class RankiLang implements RankiLangInstance {
       parsers: this.parsers,
       config: this.config,
       validators: this.validators,
-      transformers: this.transformers,
+      // transformers: this.transformers,
     })
       .newBoundary({
         type: "RankiBaseV2",

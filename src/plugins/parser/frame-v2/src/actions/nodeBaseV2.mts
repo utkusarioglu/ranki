@@ -1,7 +1,4 @@
-import type {
-  AstNodeParentReduced,
-  AstNodeLeafReduced,
-} from "@ranki/package-api-v2";
+import type { AstNodeParentReduced } from "@ranki/package-api-v2";
 import { getContext as c } from "@ranki/package-api-v2/helpers";
 import { joinNodes, zipNodes } from "@ranki/package-api-v2/helpers";
 import type * as ohm from "ohm-js";
@@ -150,9 +147,17 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     );
   },
 
-  // !TODO are pauseStart and pauseEnd separators or fillers?
-  pausedContainer(_pauseStart, pausedPayload, _pauseEnd) {
+  pausedContainer(pauseStart, pausedPayload, _pauseEnd) {
+    const DEFAULT_HOIST_LEVEL = 1;
+    const hoistStr = pauseStart.sourceString.slice(1, -1);
+    const hoist = hoistStr === "" ? DEFAULT_HOIST_LEVEL : +hoistStr;
     const parentContext = c(this).newChild(this, "block");
+
+    const leafContext = parentContext
+      .newChild(this, "block")
+      .useLineageBoundary(hoist);
+    const child = leafContext.parseAst(pausedPayload.sourceString);
+
     return parentContext.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
@@ -162,25 +167,27 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
         },
       },
       {
+        hoist,
         subtree: {},
         children: [
-          (() => {
-            const leafContext = parentContext.newChild(this, "inline");
-            return leafContext.newAstNode<AstNodeLeafReduced, ParseNodeFrameV2>(
-              {
-                kind: "leaf",
-                print: true,
-                shape: {
-                  spaces: {},
-                  separators: [],
-                },
-                source: {
-                  type: "raw",
-                  raw: pausedPayload.sourceString,
-                },
-              },
-            );
-          })(),
+          child.root,
+          // (() => {
+          //   const leafContext = parentContext.newChild(this, "inline");
+          //   return leafContext.newAstNode<AstNodeLeafReduced, ParseNodeFrameV2>(
+          //     {
+          //       kind: "leaf",
+          //       print: true,
+          //       shape: {
+          //         spaces: {},
+          //         separators: [],
+          //       },
+          //       source: {
+          //         type: "raw",
+          //         raw: pausedPayload.sourceString,
+          //       },
+          //     },
+          //   );
+          // })(),
         ],
       },
     );

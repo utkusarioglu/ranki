@@ -1,7 +1,7 @@
 import type {
   ValidationNodeParent,
-  // ValidationNodeLeaf,
   ComponentPluginComponent,
+  ReducedTransformNode,
 } from "@ranki/package-api-v2";
 import { placeholder } from "../../placeholder.mjs";
 
@@ -43,48 +43,69 @@ export const codeComponent: ComponentPluginComponent = {
       },
     },
     validator: placeholder,
-    transform: (validation) => {
-      if (validation.kind === "leaf") {
-        console.log("err:", validation);
+    transform: (v) => {
+      if (v.kind === "leaf") {
+        console.log("err:", v);
         throw new Error(`CODE COMPONENT CANNOT BE A LEAF`);
       }
-      if (validation.children.length > 1) {
+      if (v.children.length > 1) {
         throw new Error("SINGLE CHILD EXPECTED");
       }
-      const v2Payload = validation.children[0] as ValidationNodeParent;
+      const v2Payload = v.children[0] as ValidationNodeParent;
       if (v2Payload.children.length > 1) {
         throw new Error("SINGLE CHILD EXPECTED");
       }
-      console.log(v2Payload);
       const pauseList = v2Payload.children[0] as ValidationNodeParent;
       const v2PayloadSections = pauseList.children;
 
-      const content = v2PayloadSections
-        .map((c) => {
-          switch (c.creator) {
-            case "v2PayloadSection":
-              return c.source.raw;
-            case "pausedContainer":
-              console.log("paused", c);
-              break;
-            default:
-              throw new Error(`UNRECOGNIZED CREATOR: ${c.creator}`);
-          }
-        })
-        .join("");
+      const all: ReducedTransformNode[] = [];
+      v2PayloadSections.forEach((c) => {
+        switch (c.creator) {
+          case "v2PayloadSection":
+            // return {
+            //   hoist: c.shape.hoist,
+            //   // TODO using trim here is not right
+            //   content: c.source.raw.trim(),
+            // };
+            all.push({
+              tag: "code",
+              kind: "leaf" as "leaf",
+              print: true,
+              // creator: validation.creator,
+              // depth: validation.shape.depth.total,
+              hoist: c.shape.hoist,
+              // TODO using trim here is not right
+              source: {
+                type: "raw",
+                raw: c.source.raw.trim(),
+              },
+              // source: {
+              //   type: "raw" as "raw",
+              //   raw: content,
+              // },
+            });
+            break;
+          case "pausedContainer":
+            if (c.kind !== "parent") {
+              throw new Error("PAUSED CONTAINER IS EXPECTED TO BE A PARENT");
+            }
+            const transformed = c.context.parseTransform(c.children[0]);
+            if (transformed === null) {
+              throw new Error("NULL TRANSFORM NODE NOT EXPECTED");
+            }
+            transformed.forEach((t) => {
+              t.hoist = c.shape.hoist;
+            });
+            all.push(...transformed);
+            break;
 
-      const ob = {
-        tag: "code",
-        kind: "leaf" as "leaf",
-        print: true,
-        creator: validation.creator,
-        depth: validation.shape.depth.total,
-        source: {
-          type: "raw" as "raw",
-          raw: content,
-        },
-      };
-      return ob;
+          default:
+            throw new Error(`UNRECOGNIZED CREATOR: ${c.creator}`);
+        }
+      });
+
+      console.log(all);
+      return v.context.newTransformNode(v, all);
     },
   },
 };

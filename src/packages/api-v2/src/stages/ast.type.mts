@@ -19,9 +19,11 @@ export type AstNodeLeafReduced = Omit<
   AstNodeLeaf,
   "shape" | "parent" | "parser" | "plugins" | "source" | "creator" | "context"
 > & {
-  shape: Omit<AstNodeCommon["shape"], "depth">;
+  shape: ShapeReduced;
   source?: AstNodeLeaf["source"];
 };
+
+export type ShapeReduced = Omit<AstNodeCommon["shape"], "depth" | "hoist">;
 
 export type AstNodeParentReduced = Omit<
   AstNodeParent,
@@ -35,7 +37,7 @@ export type AstNodeParentReduced = Omit<
   | "source"
   | "context"
 > & {
-  shape: Omit<AstNodeCommon["shape"], "depth">;
+  shape: ShapeReduced;
 };
 
 export interface AstNodeLeaf extends AstNodeCommon {
@@ -76,6 +78,7 @@ interface AstNodeCommon {
     grammars: {};
   }; // this is supposed to be overwritten by implementers which have subtrees
   shape: {
+    hoist: number;
     spaces: Record<string, WhitespaceEntry>;
     separators: SeparatorEntry[];
     depth: {

@@ -130,11 +130,11 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
   );
 };
 
-interface AsyncRenderProps {
+interface AsyncRenderItemProps {
   item: TransformNode;
 }
 
-export const AsyncRender: FC<AsyncRenderProps> = ({ item }) => {
+const AsyncRenderItem: FC<AsyncRenderItemProps> = ({ item }) => {
   const promise = useMemo(() => wrapPromise(Render.render(item)), [item]);
   const [height, setHeight] = useState<number>(60);
   const [name] = useState("h" + Math.random().toString().slice(2));
@@ -168,6 +168,18 @@ export const AsyncRender: FC<AsyncRenderProps> = ({ item }) => {
     </ErrorBoundary>
   );
 };
+
+interface AsyncRenderProps {
+  items: TransformNode[];
+}
+
+export const AsyncRender: FC<AsyncRenderProps> = ({ items }) => (
+  <>
+    {items.map((item, i) => (
+      <AsyncRenderItem key={i} item={item} />
+    ))}
+  </>
+);
 
 interface FallbackRenderProps {
   error: Error;

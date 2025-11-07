@@ -17,6 +17,6 @@ export const rankiConstantsV2ParserPlugin: RankiPluginGrammar<RankiConstantsV2Pa
     }),
     grammar: buildGrammar,
     validators: () => ({}),
-    transformers: () => ({}),
+    // transformers: () => ({}),
     actions: () => ({}),
   };

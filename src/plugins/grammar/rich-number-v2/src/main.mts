@@ -5,7 +5,7 @@ import type {
 import { actions } from "./actions.mjs";
 import grammar from "../assets/ohm/2.0.63.ohm?raw";
 import { validators } from "./validators.mjs";
-import { transformers } from "./transformers.mjs";
+// import { transformers } from "./transformers.mjs";
 import type { RankiRichNumberV2ParserPluginConfig } from "./types.mjs";
 
 const config: RankiRichNumberV2ParserPluginConfig = {
@@ -66,6 +66,6 @@ export const rankiRichNumberV2ParserPlugin: RankiPluginGrammar<RankiRichNumberV2
     tokenizer: () => tokenizer(config),
     grammar: () => grammar,
     validators,
-    transformers,
+    // transformers,
     actions: () => actions,
   };

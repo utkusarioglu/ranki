@@ -5,7 +5,7 @@ import type {
 import grammar from "../assets/ohm/2.0.63.ohm?raw";
 import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";
-import { transformers } from "./transformers.mjs";
+// import { transformers } from "./transformers.mjs";
 import type { RankiRichStructureV2ParserPluginConfig } from "./types.mjs";
 
 const config: RankiRichStructureV2ParserPluginConfig = {
@@ -34,6 +34,6 @@ export const rankiRichStructureV2ParserPlugin: RankiPluginGrammar<RankiRichStruc
     tokenizer: () => tokenizer(config),
     grammar: () => grammar,
     validators,
-    transformers,
+    // transformers,
     actions: () => actions,
   };

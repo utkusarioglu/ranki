@@ -21,6 +21,7 @@ export type {
   GenericParam,
   GenericParamOperators,
   RankiLangAstResultTheaters,
+  ReducedTransformNode,
 } from "./context.type.mjs";
 
 export type {

@@ -31,9 +31,9 @@ export const ComponentRenderer: FC<ComponentRendererProps> = ({
             </hgroup>
             {customPath !== "" ? <h2>{customPath}</h2> : null}
             <div className={style.nativePreviewContainer}>
-              <AsyncRender item={o.stages.transform} />
+              <AsyncRender items={o.stages.transform} />
             </div>
-            <ContainerNode item={o.stages.transform} />
+            <ContainerNode items={o.stages.transform} />
           </div>
         );
       })}

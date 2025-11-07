@@ -111,11 +111,11 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
           throw new Error("DIV KIND HAS TO BE A PARENT");
         }
         const container = document.createElement("div");
+        container.style.paddingLeft = "0.5em";
+        container.style.borderLeft = "1px solid gray";
         const children = document.createElement("div");
         container.className = "div-container";
         container.appendChild(children);
-        // container.style.border = "2px solid red";
-        // container.innerText = t.creator + "-";
         return {
           element: container,
           slots: {

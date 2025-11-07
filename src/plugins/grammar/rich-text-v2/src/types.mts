@@ -2,6 +2,7 @@ import type {
   AstNode,
   AstNodeLeaf,
   AstNodeParent,
+  ShapeReduced,
 } from "@ranki/package-api-v2";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
@@ -148,9 +149,13 @@ export type ParseNodeRichTextV2Parent = Omit<AstNodeParent, "shape"> & {
 export type ParseNodeRichTextV2LeafReduced = Omit<
   ParseNodeRichTextV2Leaf,
   "shape" | "parser" | "parent" | "plugins" | "creator" | "source" | "context"
-> & {
-  shape: Omit<ParseNodeRichTextV2Leaf["shape"], "depth">;
-  source?: ParseNodeRichTextV2Leaf["source"];
+> &
+  ReducedCommon & {
+    source?: ParseNodeRichTextV2Leaf["source"];
+  };
+
+type ReducedCommon = {
+  shape: ShapeReduced;
 };
 
 export type ParseNodeRichTextV2ParentReduced = Omit<
@@ -164,7 +169,8 @@ export type ParseNodeRichTextV2ParentReduced = Omit<
   | "creator"
   | "source"
   | "context"
-> & {
-  shape: Omit<ParseNodeRichTextV2Parent["shape"], "depth">;
-  source?: ParseNodeRichTextV2Parent["source"];
-};
+> &
+  ReducedCommon & {
+    shape: ShapeReduced;
+    source?: ParseNodeRichTextV2Parent["source"];
+  };

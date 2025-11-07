@@ -37,7 +37,6 @@ export class RankiLangParserBoundary {
     this.provided = [...provided];
   }
 
-  // FIX recursive call between context.parseAst, handler, and this.parse
   parse(
     raw: string,
     context: RankiLangContextInstance,
@@ -59,7 +58,7 @@ export class RankiLangParserBoundary {
       ...props.config,
     ]);
 
-    const parser = this.hooks.ast.createParser(this.def, this.config);
+    this.parser = this.hooks.ast.createParser(this.def, this.config);
     const merged = context.getMergedConfig();
     const preprocessed = component.stages.preprocess(raw);
 
@@ -69,7 +68,7 @@ export class RankiLangParserBoundary {
       merged.content.suffix,
     ].join("");
 
-    const root = parser.callback(theaterWithContent, context);
+    const root = this.parser.callback(theaterWithContent, context);
 
     return {
       props: {
@@ -78,6 +77,10 @@ export class RankiLangParserBoundary {
       },
       root: root.root,
     };
+  }
+
+  private getParent(): RankiLangParserBoundary | null {
+    return this.hooks.parent;
   }
 
   getExpandedDefinition(): CreateParserReturn["expandedDefinition"] {
@@ -90,9 +93,9 @@ export class RankiLangParserBoundary {
   getLineage(): RankiLangParserBoundary[] {
     const lineage: RankiLangParserBoundary[] = [];
     let curr: RankiLangParserBoundary | null = this;
-    while (curr !== null) {
+    while (curr) {
       lineage.push(curr);
-      curr = curr.hooks.parent;
+      curr = curr.getParent();
     }
     return lineage;
   }

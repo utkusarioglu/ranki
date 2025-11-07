@@ -1,4 +1,4 @@
-import type { AstNode, AstNodeLeaf } from "@ranki/package-api-v2";
+import type { AstNode, AstNodeLeaf, ShapeReduced } from "@ranki/package-api-v2";
 
 // import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
@@ -141,13 +141,15 @@ type OmittedKeys =
 export type ParseNodeRichNumberV2GeneralReduced = Omit<
   ParseNodeRichNumberV2General,
   OmittedKeys
-> & {
-  shape: Omit<ParseNodeRichNumberV2General["shape"], "depth">;
-};
+> &
+  ReducedCommon;
 
 export type ParseNodeRichNumberV2ComplexReduced = Omit<
   ParseNodeRichNumberV2Complex,
   OmittedKeys
-> & {
-  shape: Omit<ParseNodeRichNumberV2Complex["shape"], "depth">;
+> &
+  ReducedCommon;
+
+type ReducedCommon = {
+  shape: ShapeReduced;
 };

@@ -10,7 +10,7 @@ import type {
 // } from "../lang/context.mjs";
 import type { RankiPluginCommon, WithTokenizer } from "./general.type.mjs";
 import type { RankiPluginParserValidationCallback } from "../stages/validation.type.mjs";
-import type { RankiPluginParserTransformCallback } from "../stages/transform.type.mjs";
+// import type { RankiPluginParserTransformCallback } from "../stages/transform.type.mjs";
 // import type { RankiLangParseHandlerFunction } from "./grammar.type.mjs";
 import type {
   ComponentPluginComponentStageAst,
@@ -44,7 +44,7 @@ export type RankiPluginParser<
     grammar: (c: RankiLanguageConfig) => string;
     actions: () => Record<string, ohm.ActionDict<unknown>>;
     validators: RankiPluginParserValidationCallback;
-    transformers: RankiPluginParserTransformCallback;
+    // transformers: RankiPluginParserTransformCallback;
   };
 
 export interface RankiPluginParserSpecs {

@@ -5,7 +5,7 @@ import type {
 import grammar from "../assets/ohm/2.0.66.ohm?raw";
 import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";
-import { transformers } from "./transformers.mjs";
+// import { transformers } from "./transformers.mjs";
 import type { RankiParamsV2ParserPluginConfig } from "./types.mjs";
 
 const config: RankiParamsV2ParserPluginConfig = {
@@ -52,7 +52,7 @@ export const rankiParamsV2ParserPlugin: RankiPluginGrammar<RankiParamsV2ParserPl
     tokenizer: () => tokenizer(config),
     grammar: () => grammar,
     validators,
-    transformers,
+    // transformers,
     actions: () => actions,
   };
 
@@ -64,4 +64,5 @@ export type {
   ParamV2,
   ArgsAndParamsV2Reduced,
 } from "./types.mjs";
+
 export { applyV2Directives } from "./params.mjs";

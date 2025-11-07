@@ -9,7 +9,7 @@ export type NodeOmitted =
   | "source"
   | "context";
 
-export type ArgsOmitted = "depth";
+export type ArgsOmitted = "depth" | "hoist";
 
 export type OmittedType<T extends { shape: any }> = Omit<T, NodeOmitted> & {
   shape: Omit<T["shape"], ArgsOmitted>;

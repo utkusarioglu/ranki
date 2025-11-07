@@ -5,7 +5,7 @@ import type {
 import grammar from "../assets/ohm/2.0.64.ohm?raw";
 import { actions } from "./actions.mjs";
 // import { handler } from "./handler.mjs";
-import { transformers } from "./transformers.mjs";
+// import { transformers } from "./transformers.mjs";
 import { validators } from "./validators.mjs";
 import type { RankiFrameV1ParserPluginConfig } from "./types.mjs";
 
@@ -40,6 +40,6 @@ export const rankiFrameV1ParserPlugin: RankiPluginParser<RankiFrameV1ParserPlugi
     tokenizer: () => tokenizer(config),
     grammar: () => grammar,
     validators,
-    transformers,
+    // transformers,
     actions: () => actions,
   };

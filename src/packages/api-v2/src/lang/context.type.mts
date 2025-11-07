@@ -15,7 +15,11 @@ import type {
   // RankiLangParseHandlerFunctionReturn,
 } from "../plugins/grammar.type.mjs";
 import type * as ohm from "ohm-js";
-import type { TransformNode } from "../stages/transform.type.mjs";
+import type {
+  TransformNode,
+  TransformNodeLeaf,
+  TransformNodeParent,
+} from "../stages/transform.type.mjs";
 import type { ValidationNode } from "../stages/validation.type.mjs";
 import type { ComponentPluginComponent } from "../export.type.mjs";
 
@@ -55,7 +59,7 @@ export interface RankiLangParsedTheater {
     raw: string;
     ast: RankiLangParseFunctionReturn;
     validation: ValidationNode | null;
-    transform: TransformNode | null;
+    transform: TransformNode[] | null;
   };
 }
 
@@ -143,6 +147,33 @@ export type RankiLangContextParams = RankiLangParseSpecs & {
 
 export type RankiLangAstContext = RankiLangContextInstance;
 
+type TransformNodeParentRequired = "kind" | "tag" | "children";
+type TransformNodeLeafRequired = "kind" | "tag" | "source";
+
+export type ReducedTransformNode =
+  | ReducedTransformNodeParent
+  | ReducedTransformNodeLeaf;
+// Pick<TransformNode, TransformNodeRequired> &
+// Partial<Omit<TransformNode, TransformNodeRequired>>;
+
+type ReducedTransformNodeHoist = {
+  hoist: number;
+};
+
+export type ReducedTransformNodeParent = Pick<
+  TransformNodeParent,
+  TransformNodeParentRequired
+> &
+  Partial<Omit<TransformNodeParent, TransformNodeParentRequired>> &
+  ReducedTransformNodeHoist;
+
+export type ReducedTransformNodeLeaf = Pick<
+  TransformNodeLeaf,
+  TransformNodeLeafRequired
+> &
+  Partial<Omit<TransformNodeLeaf, TransformNodeLeafRequired>> &
+  ReducedTransformNodeHoist;
+
 export interface RankiLangContextInstance {
   getPlugins: RankiLangInstance["getPlugins"];
   // getHandler: ParserPluginsInstance["getHandler"];
@@ -153,14 +184,20 @@ export interface RankiLangContextInstance {
   getComponent(handlerName: string, chain: string[]): ComponentPluginComponent;
   parseAst: (raw: string) => RankiLangParseFunctionReturn;
   parseValidation(ast: RankiLangParseFunctionReturn): ValidationNode | null;
-  parseTransform(validation: ValidationNode | null): TransformNode | null;
+  parseTransform(validation: ValidationNode | null): TransformNode[] | null;
 
+  newTransformNode(
+    v: ValidationNode,
+    reducedTransformNode: ReducedTransformNode[],
+  ): TransformNode[];
   newChild(
     self: ohm.Node,
     direction?: "block" | "inline",
   ): RankiLangContextInstance;
 
   newBoundary(definition: RankiLangParseDefinition): RankiLangContextInstance;
+  useLineageBoundary(hoist: number): RankiLangContextInstance;
+
   replaceProvidedConfig(
     provided: RankiLanguageProvidedConfig[],
   ): RankiLangContextInstance;
@@ -182,6 +219,7 @@ export interface Enrichments {
   subtree?: Record<string, BindingNode>;
   sourceType?: AstNodeLeaf["source"]["raw"];
   transformer?: NonNullable<AstNode["plugins"]["transformer"]>;
+  hoist?: number;
 }
 
 export interface BindingNode {

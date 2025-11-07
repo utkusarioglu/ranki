@@ -6,6 +6,7 @@ interface TransformNodeCommon {
   tag: string;
   creator: string;
   depth: number;
+  hoist: number;
 }
 
 export type TransformNodeLeaf = TransformNodeCommon & {

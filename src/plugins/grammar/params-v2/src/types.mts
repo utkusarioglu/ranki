@@ -3,6 +3,7 @@ import type {
   AstNodeLeafSource,
   GenericParam,
   GenericParamOperators,
+  ShapeReduced,
 } from "@ranki/package-api-v2";
 import type { NodeArgsBaseV2 } from "@ranki/plugin-parser-base-v2";
 
@@ -44,14 +45,14 @@ export type ParamV2SettingReduced = Omit<
   ParamV2Setting,
   "shape" | "source" | "creator"
 > & {
-  shape: Omit<ParamV2Setting["shape"], "depth">;
+  shape: ShapeReduced;
 };
 
 export type ParamV2DirectiveReduced = Omit<
   ParamV2Directive,
   "shape" | "source" | "creator"
 > & {
-  shape: Omit<ParamV2Directive["shape"], "depth">;
+  shape: ShapeReduced;
 };
 
 export type ParamV2SettingNamespace = number;
@@ -123,8 +124,9 @@ export type ArgsAndParamsV2Reduced = Omit<
   ArgsAndParamsV2,
   "parser" | "parent" | "shape"
 > & {
-  shape: Omit<ArgsAndParamsV2["shape"], "depth">;
+  shape: ShapeReduced;
 };
+
 export interface RankiParamsV2ParserPluginConfig {
   tokens: {
     separator: {

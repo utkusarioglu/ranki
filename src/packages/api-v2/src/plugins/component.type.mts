@@ -58,7 +58,7 @@ export type ComponentPluginValidationFunc = (
 export type ComponentPluginTransformFunc = (
   validation: ValidationNode,
   // context: RankiLangContextInstance,
-) => TransformNode;
+) => TransformNode[];
 
 export type ComponentPluginComponentStageAst = {
   directives: RankiLanguageProvidedConfig[];

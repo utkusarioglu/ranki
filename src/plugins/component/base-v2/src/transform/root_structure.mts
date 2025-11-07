@@ -3,102 +3,108 @@ import type {
   TransformNode,
 } from "@ranki/package-api-v2";
 
-export const root_structure: ComponentPluginTransformFunc = (n) => {
-  if (n.kind !== "parent") {
+export const root_structure: ComponentPluginTransformFunc = (v) => {
+  if (v.kind !== "parent") {
     throw new Error("EXPECTED PARENT");
   }
   const children: TransformNode[] = [];
 
-  n.children.forEach((c) => {
+  v.children.forEach((c) => {
     switch (c.creator) {
       case "section_base":
-        children.push(section_base(c));
+        children.push(...section_base(c));
         break;
       default:
         throw new Error(`UNKNOWN CHILD: ${c.creator}`);
     }
   });
 
-  return {
-    tag: "div",
-    kind: "parent" as "parent",
-    creator: n.creator,
-    depth: n.shape.depth.total,
-    children,
-  };
+  return v.context.newTransformNode(v, [
+    {
+      tag: "div",
+      kind: "parent" as "parent",
+      hoist: 0,
+      // creator: v.creator,
+      // depth: v.shape.depth.total,
+      children,
+    },
+  ]);
 };
 
-export const section_base: ComponentPluginTransformFunc = (n) => {
-  if (n.kind !== "parent") {
+export const section_base: ComponentPluginTransformFunc = (v) => {
+  if (v.kind !== "parent") {
     throw new Error("EXPECTED PARENT");
   }
   const children: TransformNode[] = [];
 
-  n.children.forEach((c) => {
+  v.children.forEach((c) => {
     switch (c.creator) {
+      // !FIX BaseV2 does not need to know about block_v2. this needs to be moved to FrameV2
       case "block_v2":
-        children.push(block_v2(c));
+        children.push(...block_v2(c));
         break;
       case "p":
-        children.push(p(c));
+        children.push(...p(c));
         break;
       default:
-        // console.log("before", c);
-        // const external = c.context.parseTransform(c);
-        // if (external) {
-        //   children.push(external);
-        // }
-
         throw new Error(`UNKNOWN CHILD: ${c.creator}`);
     }
   });
 
-  return {
-    tag: "div",
-    kind: "parent" as "parent",
-    creator: n.creator,
-    depth: n.shape.depth.total,
-    children,
-  };
+  return v.context.newTransformNode(v, [
+    {
+      tag: "div",
+      kind: "parent" as "parent",
+      hoist: 0,
+      // creator: v.creator,
+      // depth: v.shape.depth.total,
+      children,
+    },
+  ]);
 };
 
-export const p: ComponentPluginTransformFunc = (n) => {
-  if (n.kind !== "parent") {
+export const p: ComponentPluginTransformFunc = (v) => {
+  if (v.kind !== "parent") {
     throw new Error("EXPECTED PARENT");
   }
 
-  return {
-    tag: "paragraph",
-    kind: "leaf" as "leaf",
-    print: true,
-    creator: n.creator,
-    depth: n.shape.depth.total,
-    source: n.source,
-  };
+  return v.context.newTransformNode(v, [
+    {
+      tag: "paragraph",
+      kind: "leaf" as "leaf",
+      hoist: 0,
+      print: true,
+      // creator: v.creator,
+      // depth: v.shape.depth.total,
+      source: v.source,
+    },
+  ]);
 };
 
-export const block_v2: ComponentPluginTransformFunc = (n) => {
-  if (n.kind !== "parent") {
+export const block_v2: ComponentPluginTransformFunc = (v) => {
+  if (v.kind !== "parent") {
     throw new Error("EXPECTED PARENT");
   }
   const children: TransformNode[] = [];
 
-  n.children.forEach((c) => {
+  v.children.forEach((c) => {
     switch (c.creator) {
       case "v2_fp":
-        children.push(c.context.parseTransform(c) as TransformNode);
+        children.push(...(c.context.parseTransform(c) as TransformNode[]));
         break;
       default:
         throw new Error(`UNKNOWN CHILD: ${c.creator}`);
     }
   });
 
-  return {
-    tag: "div",
-    kind: "parent" as "parent",
-    print: true,
-    creator: n.creator,
-    depth: n.shape.depth.total,
-    children,
-  };
+  return v.context.newTransformNode(v, [
+    {
+      tag: "div",
+      kind: "parent" as "parent",
+      hoist: 0,
+      // creator: v.creator,
+      // depth: v.shape.depth.total,
+      children,
+    },
+  ]);
 };

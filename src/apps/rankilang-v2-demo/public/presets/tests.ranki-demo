@@ -1,3 +1,15 @@
+--- Multiline code with pause
+[code
+def hello():
+  print("hellooo")
+,,
+also
+,,
+# Second part
+def bunny():
+  yield "yes"
+]
+
 --- Anchor, title and multiline code
 [a, "https://www.google.com"|google]
 

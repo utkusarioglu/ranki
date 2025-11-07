@@ -13,6 +13,8 @@ import type {
   RankiLanguageProvidedConfig,
   ValidationNode,
   TransformNode,
+  ReducedTransformNode,
+  ValidationNodeLeaf,
 } from "@ranki/package-api-v2";
 import { RankiLangParserBoundary } from "./parser-boundary.mjs";
 import type { RankiLangContextHooks } from "./context.type.mjs";
@@ -91,6 +93,7 @@ export class RankiLangContext implements RankiLangContextInstance {
       p.shape = {
         ...this.getContextArgs(),
         ...p.shape,
+        hoist: en?.hoist || 0,
       };
     }
 
@@ -125,6 +128,17 @@ export class RankiLangContext implements RankiLangContextInstance {
 
   newBoundary(def: RankiLangParseDefinition): RankiLangContextInstance {
     this.expandedParserDefinition = def;
+    return this;
+  }
+
+  useLineageBoundary(hoist: number): RankiLangContextInstance {
+    const lineage = this.parserBoundary.getLineage();
+    const boundary = lineage[lineage.length - hoist];
+    if (hoist > lineage.length) {
+      throw new Error(`HOIST NUMBER HIGHER THAN NESTED PARSERS`);
+    }
+    this.parserBoundary = boundary;
+    this.expandedParserDefinition = boundary.getExpandedDefinition();
     return this;
   }
 
@@ -183,6 +197,54 @@ export class RankiLangContext implements RankiLangContextInstance {
     return this.parserBoundary.parse(raw, this);
   }
 
+  newTransformNode(
+    v: ValidationNode,
+    reducedTransformNodes: ReducedTransformNode[],
+  ): TransformNode[] {
+    let all: TransformNode[] = [];
+    reducedTransformNodes.forEach((reducedTransformNode) => {
+      switch (reducedTransformNode.kind) {
+        case "leaf":
+          const leafTn = {
+            tag: reducedTransformNode.tag,
+            kind: reducedTransformNode.kind,
+            hoist: v.shape.hoist,
+            print: (v as ValidationNodeLeaf).print || true,
+            creator: v.creator,
+            depth: v.shape.depth.total,
+            source: reducedTransformNode.source,
+          };
+          all.push(leafTn);
+          break;
+        case "parent":
+          const l1 = {
+            tag: reducedTransformNode.tag,
+            kind: reducedTransformNode.kind,
+            hoist: v.shape.hoist,
+            creator: v.creator,
+            depth: v.shape.depth.total,
+            children: [] as TransformNode[],
+          };
+          if (reducedTransformNode.children.filter((n) => n.hoist).length) {
+            reducedTransformNode.children.forEach((c) => {
+              if (c.hoist) {
+                // const l1Copy = { ...l1 };
+                c.hoist--;
+                // l1Copy.children = [c];
+                all.push(c);
+              } else {
+                l1.children.push(c);
+              }
+            });
+          } else {
+            l1.children = reducedTransformNode.children;
+            all.push(l1);
+          }
+      }
+    });
+    return all;
+  }
+
   getStartRule(): string {
     return this.startRule;
   }
@@ -228,17 +290,25 @@ export class RankiLangContext implements RankiLangContextInstance {
     return validation;
   }
 
-  parseTransform(validation: ValidationNode | null): TransformNode | null {
+  parseTransform(validation: ValidationNode | null): TransformNode[] | null {
     if (validation === null) {
       return null;
     }
 
-    const merged = validation.context.getMergedConfig();
-    const transform =
-      validation && merged.stage === "transform"
-        ? this.hooks.transformers.transform(validation)
-        : null;
-    return transform;
+    // const merged = validation.context.getMergedConfig();
+    if (!validation.plugins.transformer) {
+      throw new Error("NO TRANSFORMER DEFINITION AT THE ROOF");
+    }
+    const transformerDef = validation.plugins.transformer;
+    const component = this.hooks.components.getPlugin(transformerDef.handler, [
+      transformerDef.chain,
+    ]);
+    return component.stages.transform(validation);
+    // const transform =
+    //   validation && merged.stage === "transform"
+    //     ? this.hooks.transformers.transform(validation)
+    //     : null;
+    // return transform;
   }
 
   private getContextArgs(): Pick<AstNode["shape"], "depth"> {

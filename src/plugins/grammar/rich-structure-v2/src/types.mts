@@ -49,7 +49,7 @@ export type ParseNodeRichStructureV2LeafReduced = Omit<
   ParseNodeRichStructureV2Leaf,
   "shape" | "parent" | "parser" | "plugins" | "creator" | "source" | "subtree"
 > & {
-  shape: Omit<ParseNodeRichStructureV2Leaf["shape"], "depth">;
+  shape: Omit<ParseNodeRichStructureV2Leaf["shape"], "depth" | "hoist">;
   source?: ParseNodeRichStructureV2Leaf["source"];
 };
 
@@ -65,6 +65,6 @@ export type ParseNodeRichStructureV2ParentReduced = Omit<
   | "children"
   | "context"
 > & {
-  shape: Omit<ParseNodeRichStructureV2Parent["shape"], "depth">;
+  shape: Omit<ParseNodeRichStructureV2Parent["shape"], "depth" | "hoist">;
   source?: ParseNodeRichStructureV2Parent["source"];
 };

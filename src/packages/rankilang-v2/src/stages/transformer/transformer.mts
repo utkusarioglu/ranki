@@ -1,5 +1,5 @@
 import type {
-  RankiPluginParser,
+  // RankiPluginParser,
   RankiPluginParserTransformFunc,
   TransformerFunctionEntry,
   ValidationNode,
@@ -9,20 +9,20 @@ import type {
 export class TransformerLibrary {
   private list: Record<string, TransformerFunctionEntry> = {};
 
-  addPlugin(p: RankiPluginParser) {
-    Object.entries(p.transformers()).forEach(([n, v]) => {
-      const current = this.list[n];
-      if (current) {
-        throw new Error(
-          `TRANSFORMER ${n} ALREADY REGISTERED BY ${current.source}`,
-        );
-      }
-      this.list[n] = {
-        source: n,
-        callback: v,
-      };
-    });
-  }
+  // addPlugin(p: RankiPluginParser) {
+  //   Object.entries(p.transformers()).forEach(([n, v]) => {
+  //     const current = this.list[n];
+  //     if (current) {
+  //       throw new Error(
+  //         `TRANSFORMER ${n} ALREADY REGISTERED BY ${current.source}`,
+  //       );
+  //     }
+  //     this.list[n] = {
+  //       source: n,
+  //       callback: v,
+  //     };
+  //   });
+  // }
 
   getTransformer(name: string): RankiPluginParserTransformFunc {
     const found = this.list[name];
@@ -32,7 +32,7 @@ export class TransformerLibrary {
     return found.callback;
   }
 
-  transform(validation: ValidationNode): TransformNode {
+  transform(validation: ValidationNode): TransformNode[] {
     try {
       // TODO
       const transformer = validation.plugins.transformer;
