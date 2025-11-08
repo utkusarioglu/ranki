@@ -6,6 +6,7 @@ import type {
   AstNode,
   AstNodeLeaf,
   AstNodeLeafSource,
+  AstNodeTransformerDefinition,
 } from "../stages/ast.type.mjs";
 import type { RankiLangInstance } from "./rankilang.type.mjs";
 import type { RankiPluginParser } from "../plugins/parser.type.mjs";
@@ -119,9 +120,12 @@ type RoleName = string & { type?: "RoleName" };
 
 export type GenericParamOperators = "assign" | "append" | "remove";
 
+// !fix export from args and params is renderer irrelevant because
+// `GenericParam` now also supports "positional"
+// remove those types
 export interface GenericParam {
   type: string;
-  key: string[]; // I hate this
+  key: string[] | "positional";
   shape: AstNode["shape"];
   operator: GenericParamOperators;
   values: { type: string; raw: string }[];
@@ -129,6 +133,7 @@ export interface GenericParam {
 }
 
 export interface RankiLangParseDefinition {
+  isBoundary: boolean;
   type: string;
   chain: string[][];
   params: GenericParam[];
@@ -195,8 +200,14 @@ export interface RankiLangContextInstance {
     direction?: "block" | "inline",
   ): RankiLangContextInstance;
 
-  newBoundary(definition: RankiLangParseDefinition): RankiLangContextInstance;
+  newParserBoundary(
+    def: Omit<RankiLangParseDefinition, "isBoundary">,
+  ): RankiLangContextInstance;
   useLineageBoundary(hoist: number): RankiLangContextInstance;
+
+  newTransformerBoundary(
+    def: Omit<AstNodeTransformerDefinition, "isBoundary">,
+  ): RankiLangContextInstance;
 
   replaceProvidedConfig(
     provided: RankiLanguageProvidedConfig[],

@@ -9,6 +9,7 @@ export type {
   AstNodeParentReduced,
   AstNodeReduced,
   ShapeReduced,
+  AstNodeTransformerDefinition,
 } from "./ast.type.mjs";
 export * from "./validation.type.mjs";
 export * from "./transform.type.mjs";

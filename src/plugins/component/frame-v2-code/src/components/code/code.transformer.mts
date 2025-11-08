@@ -16,13 +16,12 @@ export const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
   // v.children.forEach((n) => all.push(...transform(n)));
   // //  transform(v.children);
   // return v.context.newTransformNode(v, all);
-  console.log(v);
   return v.context.newTransformNode(v, [
     {
       kind: "leaf",
       tag: "computer_science.code.block.section",
       hoist: 0,
-      props: v.plugins.transformer!.props,
+      params: v.plugins.transformer.params,
       source: {
         type: "raw",
         raw: v.source.raw,
@@ -32,6 +31,7 @@ export const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
 };
 
 function fallThrough(v: ValidationNode): never {
+  console.log("ERROR NODE:\n", v);
   throw new Error(`UNRECOGNIZED NODE: ${v.creator}`);
 }
 
@@ -96,6 +96,20 @@ export const v2_fp: ComponentPluginTransformFunc = (v) => {
       case "v2PayloadSection":
         all.push(...v2PayloadSection(c));
         break;
+      // !FIX this doesn't belong here
+      case "line":
+        all.push({
+          kind: "leaf",
+          tag: "span",
+          creator: c.creator,
+          depth: c.shape.depth.total,
+          hoist: 1,
+          source: {
+            type: "raw",
+            raw: c.source.raw,
+          },
+        });
+        break;
       default:
         fallThrough(c);
     }
@@ -109,6 +123,8 @@ export const v2_fp: ComponentPluginTransformFunc = (v) => {
       tag: "code",
       kind: "parent",
       hoist: 0,
+      // // @ts-expect-error
+      // params: ["hia"],
       children,
     },
   ]);

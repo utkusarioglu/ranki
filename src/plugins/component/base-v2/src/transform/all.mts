@@ -51,14 +51,14 @@ const section_base: ComponentPluginTransformFunc = (v) => {
   // });
 
   return v.context.newTransformNode(v, children);
-  return v.context.newTransformNode(v, [
-    {
-      tag: "div",
-      kind: "parent" as "parent",
-      hoist: 0,
-      children,
-    },
-  ]);
+  // return v.context.newTransformNode(v, [
+  //   {
+  //     tag: "div",
+  //     kind: "parent" as "parent",
+  //     hoist: 0,
+  //     children,
+  //   },
+  // ]);
 };
 
 const p: ComponentPluginTransformFunc = (v) => {
@@ -98,14 +98,14 @@ const block_v2: ComponentPluginTransformFunc = (v) => {
   });
 
   return v.context.newTransformNode(v, children);
-  return v.context.newTransformNode(v, [
-    {
-      tag: "div",
-      kind: "parent" as "parent",
-      hoist: 0,
-      children,
-    },
-  ]);
+  // return v.context.newTransformNode(v, [
+  //   {
+  //     tag: "div",
+  //     kind: "parent" as "parent",
+  //     hoist: 0,
+  //     children,
+  //   },
+  // ]);
 };
 
 const NODES: Record<string, ComponentPluginTransformFunc> = {

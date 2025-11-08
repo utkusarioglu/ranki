@@ -40,7 +40,14 @@ function titledFrame2(title: string): TitledFrame2Return {
 export const codeRenderer: RankiRenderPluginItemRenderFunction = async (t) => {
   assertTransformParent(t);
 
-  const { element, slots } = titledFrame2("js3!");
+  const values = t.params
+    .filter(({ key }) => key === "positional")
+    .filter(({ type }) => type === "setting")[0].values;
+  if (values.length > 1) {
+    throw new Error("Single value expected");
+  }
+  const langName = values[0].raw;
+  const { element, slots } = titledFrame2(langName);
 
   return {
     element,

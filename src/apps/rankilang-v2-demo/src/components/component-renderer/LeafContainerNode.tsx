@@ -27,8 +27,8 @@ export const LeafContainerNode: FC<LeafContainerNodeProps> = ({ item }) => {
               {},
               item.source.raw.trim() !== item.source.raw ? (
                 <div className={style.childLeafValueUntrimmed}>
-                  {item.source.raw.split("\n").map((l) => (
-                    <div key={l}>
+                  {item.source.raw.split("\n").map((l, i) => (
+                    <div key={l + i}>
                       {l.split(" ").map((i, index) =>
                         i === "" ? (
                           <div

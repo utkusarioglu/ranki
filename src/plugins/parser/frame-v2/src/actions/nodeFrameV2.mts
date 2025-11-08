@@ -16,20 +16,33 @@ import type { FrameSpec } from "../types/args.mjs";
 
 export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2_fp(_v2Start, v2FrameConfig, v2Payload, _v2End) {
-    const context = c(this).newChild(this, "block");
-    const frameConfig: NodeArgsFrameV2Config =
-      v2FrameConfig.v2FrameConfig(context);
+    const frameConfigContext = c(this);
 
-    const childContext = context.newChild(this, "block").newBoundary({
-      type: frameConfig.type,
-      chain: frameConfig.chain,
-      // @ts-expect-error complains about "key" type
-      params: frameConfig.params.items,
-    });
+    const frameConfig: NodeArgsFrameV2Config =
+      v2FrameConfig.v2FrameConfig(frameConfigContext);
+
+    const parentContext = frameConfigContext
+      .newChild(this, "block")
+      .newTransformerBoundary({
+        handler: frameConfig.type,
+        chain: frameConfig.chain.join("."),
+        params: frameConfig.params.items,
+      });
+
+    const childContext = parentContext
+      .newChild(this, "block")
+      .newParserBoundary({
+        type: frameConfig.type,
+        chain: frameConfig.chain,
+        params: frameConfig.params.items,
+      });
     const child = v2Payload.node(childContext);
     // .parseAst(v2Payload.sourceString);
 
-    return context.newAstNode<ParseNodeFrameV2FpReduced, ParseNodeFrameV2>(
+    return parentContext.newAstNode<
+      ParseNodeFrameV2FpReduced,
+      ParseNodeFrameV2
+    >(
       {
         kind: "parent",
         shape: {
@@ -42,11 +55,6 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
           frameConfig,
         },
         children: [child],
-        transformer: {
-          handler: frameConfig.type,
-          chain: frameConfig.chain.join("."),
-          props: {},
-        },
       },
     );
   },
@@ -55,10 +63,15 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const context = c(this).newChild(this, "block");
     const frameConfig: NodeArgsFrameV2ConfigP =
       v2FrameConfig.v2FrameConfig(context);
+    context.newTransformerBoundary({
+      handler: frameConfig.type,
+      chain: frameConfig.chain.join("."),
+      params: frameConfig.params.items,
+    });
 
     const child = context
       .newChild(this)
-      .newBoundary({
+      .newParserBoundary({
         type: frameConfig.type,
         chain: frameConfig.chain,
         params: frameConfig.params.items,
@@ -122,7 +135,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
 
     const child = context
       .newChild(this)
-      .newBoundary({
+      .newParserBoundary({
         type: frameConfig.type,
         chain: frameConfig.chain,
         params: frameConfig.params.items,

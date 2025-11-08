@@ -26,11 +26,11 @@ const VALIDATION_NODE_PROPS = [
   "creator",
   "shape",
   "subtree",
-  // "plugins",
+  "plugins",
   "source",
 ];
 
-const TRANSFORM_NODE_PROPS = ["children", "tag"];
+const TRANSFORM_NODE_PROPS = ["children", "tag", "children", "params"];
 
 const REQUESTED = ["RankiParamsV2", "RankiFrameV2"];
 // const REQUESTED: string[] = [];

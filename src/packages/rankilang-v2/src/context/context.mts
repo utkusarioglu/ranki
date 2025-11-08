@@ -15,15 +15,17 @@ import type {
   TransformNode,
   ReducedTransformNode,
   ValidationNodeLeaf,
+  AstNodeTransformerDefinition,
 } from "@ranki/package-api-v2";
 import { RankiLangParserBoundary } from "./parser-boundary.mjs";
 import type { RankiLangContextHooks } from "./context.type.mjs";
 
 export class RankiLangContext implements RankiLangContextInstance {
   private parserBoundary!: RankiLangParserBoundary;
-  private expandedParserDefinition!: RankiLangParseDefinition;
+  private parserExpandedDefinition!: RankiLangParseDefinition;
   private provided: RankiLanguageProvidedConfig[] = [];
   private hooks: RankiLangContextHooks;
+  private transformerDefinition!: AstNodeTransformerDefinition;
 
   private theater: RankiLangContextParams["theater"];
   private role: RankiLangContextParams["role"];
@@ -38,8 +40,9 @@ export class RankiLangContext implements RankiLangContextInstance {
     hooks: RankiLangContextHooks,
     transfers?: {
       parserBoundary: RankiLangParserBoundary;
-      expandedDefinition: RankiLangParseDefinition;
+      parserExpandedDefinition: RankiLangParseDefinition;
       provided: RankiLanguageProvidedConfig[];
+      transformerDefinition: AstNodeTransformerDefinition;
     },
   ) {
     this.theater = p.theater;
@@ -51,7 +54,14 @@ export class RankiLangContext implements RankiLangContextInstance {
 
     if (transfers) {
       this.parserBoundary = transfers.parserBoundary;
-      this.expandedParserDefinition = transfers.expandedDefinition;
+      this.parserExpandedDefinition = {
+        ...transfers.parserExpandedDefinition,
+        isBoundary: false,
+      };
+      this.transformerDefinition = {
+        ...transfers.transformerDefinition,
+        isBoundary: false,
+      };
     }
   }
 
@@ -78,13 +88,13 @@ export class RankiLangContext implements RankiLangContextInstance {
     p = {
       plugins: {
         parser: {
-          current: this.expandedParserDefinition,
+          current: this.parserExpandedDefinition,
           // lineage,
           // current: currentParser,
           // props,
         },
         grammars: {},
-        ...(en?.transformer ? { transformer: en.transformer } : {}),
+        transformer: this.transformerDefinition,
       },
       ...p,
     };
@@ -126,8 +136,23 @@ export class RankiLangContext implements RankiLangContextInstance {
     return p as unknown as Output;
   }
 
-  newBoundary(def: RankiLangParseDefinition): RankiLangContextInstance {
-    this.expandedParserDefinition = def;
+  newParserBoundary(
+    def: Omit<RankiLangParseDefinition, "isBoundary">,
+  ): RankiLangContextInstance {
+    this.parserExpandedDefinition = {
+      isBoundary: true,
+      ...def,
+    };
+    return this;
+  }
+
+  newTransformerBoundary(
+    def: Omit<AstNodeTransformerDefinition, "isBoundary">,
+  ): RankiLangContextInstance {
+    this.transformerDefinition = {
+      isBoundary: true,
+      ...def,
+    };
     return this;
   }
 
@@ -138,7 +163,7 @@ export class RankiLangContext implements RankiLangContextInstance {
       throw new Error(`HOIST NUMBER HIGHER THAN NESTED PARSERS`);
     }
     this.parserBoundary = boundary;
-    this.expandedParserDefinition = boundary.getExpandedDefinition();
+    this.parserExpandedDefinition = boundary.getExpandedDefinition();
     return this;
   }
 
@@ -179,11 +204,11 @@ export class RankiLangContext implements RankiLangContextInstance {
 
   parseAst(raw: string): RankiLangParseFunctionReturn {
     const parentParser = this.parserBoundary;
-    if (this.expandedParserDefinition === null) {
+    if (this.parserExpandedDefinition === null) {
       throw new Error("METHOD CALLED BEFORE SETTING THE PARSER");
     }
     this.parserBoundary = new RankiLangParserBoundary(
-      this.expandedParserDefinition,
+      this.parserExpandedDefinition,
       this.provided,
       {
         ast: this.hooks.ast,
@@ -199,38 +224,46 @@ export class RankiLangContext implements RankiLangContextInstance {
 
   newTransformNode(
     v: ValidationNode,
-    parents: ReducedTransformNode[],
+    mamas: ReducedTransformNode[],
   ): TransformNode[] {
     let all: TransformNode[] = [];
-    parents.forEach((parent) => {
-      switch (parent.kind) {
+    mamas.forEach((mama) => {
+      switch (mama.kind) {
         case "leaf":
           const leafTn = {
-            tag: parent.tag,
-            kind: parent.kind,
-            hoist: parent.hoist,
+            tag: mama.tag,
+            kind: mama.kind,
+            hoist: mama.hoist,
             print: (v as ValidationNodeLeaf).print || true,
             creator: v.creator,
             depth: v.shape.depth.total,
-            source: parent.source,
-            props: v.plugins.transformer?.props || {},
+            source: mama.source,
+            params: v.plugins.transformer.params,
           };
           all.push(leafTn);
           break;
         case "parent":
+          // all.push({
+          //   ...mama,
+          //   creator: v.creator,
+          //   depth: v.shape.depth.total,
+          //   params: mama.params || v.plugins.transformer.params,
+          // });
+
           const l1 = {
-            tag: parent.tag,
-            kind: parent.kind,
-            hoist: parent.hoist,
+            tag: mama.tag,
+            kind: mama.kind,
+            hoist: mama.hoist,
             creator: v.creator,
             depth: v.shape.depth.total,
-            props: v.plugins.transformer?.props || {},
+            // !FIX I'm pretty sure this is conceptually faulty
+            params: mama.params || v.plugins.transformer.params,
           };
 
-          const hasHoist = parent.children.filter(({ hoist }) => hoist).length;
+          const hasHoist = mama.children.filter(({ hoist }) => hoist).length;
+          let l1Copy = { ...l1, children: [] as TransformNode[] };
           if (hasHoist) {
-            let l1Copy = { ...l1, children: [] as TransformNode[] };
-            parent.children.forEach((child) => {
+            mama.children.forEach((child) => {
               if (child.hoist) {
                 child.hoist--;
                 if (l1Copy.children.length) {
@@ -245,9 +278,11 @@ export class RankiLangContext implements RankiLangContextInstance {
                 l1Copy.children.push(child);
               }
             });
-            all.push(l1Copy);
+            if (l1Copy.children.length) {
+              all.push(l1Copy);
+            }
           } else {
-            all.push({ ...l1, children: parent.children });
+            all.push({ ...l1, children: mama.children });
           }
       }
     });
@@ -275,8 +310,9 @@ export class RankiLangContext implements RankiLangContextInstance {
       },
       this.hooks,
       {
-        expandedDefinition: this.expandedParserDefinition,
+        parserExpandedDefinition: this.parserExpandedDefinition,
         parserBoundary: this.parserBoundary,
+        transformerDefinition: this.transformerDefinition,
         provided: this.provided,
       },
     );

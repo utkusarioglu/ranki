@@ -1,4 +1,5 @@
 import type {
+  GenericParam,
   RankiLangContextInstance,
   RankiLangParseDefinition,
 } from "../export.type.mjs";
@@ -63,10 +64,10 @@ export interface SeparatorEntry {
 }
 
 export interface AstNodeTransformerDefinition {
+  isBoundary: boolean;
   handler: string;
   chain: string;
-  // TODO
-  props: Record<string, any>;
+  params: GenericParam[];
 }
 
 interface AstNodeCommon {
@@ -78,7 +79,7 @@ interface AstNodeCommon {
       // TODO
       hash: string;
     } & RankiLangParseDefinition;
-    transformer?: AstNodeTransformerDefinition;
+    transformer: AstNodeTransformerDefinition;
     grammars: {};
   }; // this is supposed to be overwritten by implementers which have subtrees
   shape: {

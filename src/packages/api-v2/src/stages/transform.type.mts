@@ -8,7 +8,7 @@ interface TransformNodeCommon {
   creator: string;
   depth: number;
   hoist: number;
-  props: AstNodeTransformerDefinition["props"];
+  params: AstNodeTransformerDefinition["params"];
 }
 
 export type TransformNodeLeaf = TransformNodeCommon & {

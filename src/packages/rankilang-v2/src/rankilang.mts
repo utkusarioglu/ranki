@@ -116,9 +116,14 @@ export class RankiLang implements RankiLangInstance {
       validators: this.validators,
       // transformers: this.transformers,
     })
-      .newBoundary({
+      .newParserBoundary({
         type: "RankiBaseV2",
         chain: [["default"]],
+        params: [],
+      })
+      .newTransformerBoundary({
+        handler: "RankiBaseV2",
+        chain: "default",
         params: [],
       })
       .replaceProvidedConfig(this.provided);

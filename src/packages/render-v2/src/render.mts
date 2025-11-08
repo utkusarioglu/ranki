@@ -24,11 +24,16 @@ export class Render {
         const children = await Promise.all(
           tn.children.map((c) => this.render(c)),
         );
+        if (children && !rendered.slots.children) {
+          throw new Error(
+            "TRANSFORM NODE HAS CHILDREN BUT RENDER NODE OFFERS NO SLOT",
+          );
+        }
+        rendered.slots.children.replaceWith(
+          ...children.map(({ element }) => element),
+        );
         children.forEach((c) => {
-          rendered.slots?.children.appendChild(c.element);
-          if (c.onLoad) {
-            onLoad.push(...c.onLoad);
-          }
+          c.onLoad && onLoad.push(...c.onLoad);
           c.css?.forEach((s) => cssMap.set(s.id, s));
         });
       }

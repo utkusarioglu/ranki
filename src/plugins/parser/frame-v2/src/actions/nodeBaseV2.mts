@@ -146,11 +146,11 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
       {
         subtree: {},
         children: [child.root],
-        transformer: {
-          handler: "RankiFrameV2",
-          chain: "v2PayloadPlain",
-          props: child.props,
-        },
+        // transformer: {
+        //   handler: "RankiFrameV2",
+        //   chain: "v2PayloadPlain",
+        //   props: child.props,
+        // },
       },
     );
   },
