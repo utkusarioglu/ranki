@@ -41,11 +41,11 @@ export class TransformerLibrary {
       }
       const chain = transformer.chain;
       const handler = transformer.handler;
-      if (!chain) {
-        console.log("ERROR VALIDATION NODE:", validation);
-        throw new Error("NO CURRENT PARSER SET");
-      }
-      const component = validation.context.getComponent(handler, [chain]);
+      // if (!chain) {
+      //   console.log("ERROR VALIDATION NODE:", validation);
+      //   throw new Error("NO CURRENT PARSER SET");
+      // }
+      const component = validation.context.getComponent(handler, chain);
       return component.stages.transform(validation);
     } catch (e: unknown) {
       console.error(validation, e);

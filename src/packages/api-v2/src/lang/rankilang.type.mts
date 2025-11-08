@@ -1,4 +1,6 @@
 import type {
+  ComponentChain,
+  ComponentHandler,
   ComponentPluginComponent,
   RankiPluginComponent,
 } from "../plugins/component.type.mjs";
@@ -17,11 +19,13 @@ import type {
   RankiLangContextInstance,
 } from "./context.type.mjs";
 import type { RankiPluginParser } from "../plugins/parser.type.mjs";
-// import type { RankiLangParseHandlerFunctionReturn } from "../export.mjs";
 
 export interface ComponentPluginsInstance {
   addPlugin(plugin: RankiPluginComponent): void;
-  getPlugin(handler: string, chain: string[]): ComponentPluginComponent;
+  getPlugin(
+    handler: ComponentHandler,
+    chain: ComponentChain,
+  ): ComponentPluginComponent;
 }
 
 export interface RankiLangInstancePluginsRecord {

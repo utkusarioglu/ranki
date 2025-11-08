@@ -135,9 +135,17 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
           throw new Error("Anchor CANNOT BE A PARENT");
         }
 
+        const values = t.params
+          .filter(({ key }) => key === "positional")
+          .filter(({ type }) => type === "setting")[0].values;
+        if (values.length > 1) {
+          throw new Error("Single value expected");
+        }
+        const href = values[0].raw;
+
         const container = document.createElement("a");
         container.target = "_blank";
-        container.href = "https://www.google.com";
+        container.href = href;
         container.innerText = t.source.raw;
 
         return {

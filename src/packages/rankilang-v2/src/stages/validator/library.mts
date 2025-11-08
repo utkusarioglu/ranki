@@ -8,6 +8,7 @@ import type {
   RankiPluginComponent,
   ComponentValidationFuncEntry,
   RankiLangContextInstance,
+  ComponentChainString,
 } from "@ranki/package-api-v2";
 
 const CODE_SEPARATOR = ":";
@@ -42,8 +43,9 @@ export class ValidatorLibrary {
     // TODO I don't like the fact that `source` is handler here but it's `type` in the frameConfig object
     const source = component.handler;
     component.list.forEach(({ chain, stages }) => {
-      const code = [source, chain].join(CODE_SEPARATOR);
-      const current = this.parsers[chain];
+      const chainStr: ComponentChainString = chain.join(".");
+      const code = [source, chainStr].join(CODE_SEPARATOR);
+      const current = this.parsers[chainStr];
       if (current) {
         throw new Error(
           `COMPONENT VALIDATOR ${chain} ALREADY REGISTERED BY ${current.source}`,

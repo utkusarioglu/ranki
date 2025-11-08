@@ -1,4 +1,6 @@
 import type {
+  ComponentChain,
+  ComponentHandler,
   GenericParam,
   RankiLangContextInstance,
   RankiLangParseDefinition,
@@ -65,8 +67,8 @@ export interface SeparatorEntry {
 
 export interface AstNodeTransformerDefinition {
   isBoundary: boolean;
-  handler: string;
-  chain: string;
+  handler: ComponentHandler;
+  chain: ComponentChain;
   params: GenericParam[];
 }
 

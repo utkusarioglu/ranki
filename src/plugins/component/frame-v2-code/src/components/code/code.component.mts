@@ -3,7 +3,8 @@ import { placeholder } from "../../placeholder.mjs";
 import { v2_fp } from "./code.transformer.mjs";
 
 export const codeComponent: ComponentPluginComponent = {
-  chain: "code",
+  chain: ["frame", "v2", "computer_science", "code", "block"],
+  aliases: ["code"],
   stages: {
     // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
     // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL

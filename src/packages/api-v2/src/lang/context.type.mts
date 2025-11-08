@@ -22,7 +22,10 @@ import type {
   TransformNodeParent,
 } from "../stages/transform.type.mjs";
 import type { ValidationNode } from "../stages/validation.type.mjs";
-import type { ComponentPluginComponent } from "../export.type.mjs";
+import type {
+  ComponentChain,
+  ComponentPluginComponent,
+} from "../export.type.mjs";
 
 export interface RankiLangParseResult {
   report: RankiLangParseReport;
@@ -135,7 +138,7 @@ export interface GenericParam {
 export interface RankiLangParseDefinition {
   isBoundary: boolean;
   type: string;
-  chain: string[][];
+  chainList: ComponentChain[];
   params: GenericParam[];
 }
 
@@ -186,7 +189,10 @@ export interface RankiLangContextInstance {
   getMergedConfig: () => RankiLanguageConfig["merged"];
   getPluginConfig: <T>(pluginName: string) => T;
 
-  getComponent(handlerName: string, chain: string[]): ComponentPluginComponent;
+  getComponent(
+    handlerName: string,
+    chain: ComponentChain,
+  ): ComponentPluginComponent;
   parseAst: (raw: string) => RankiLangParseFunctionReturn;
   parseValidation(ast: RankiLangParseFunctionReturn): ValidationNode | null;
   parseTransform(validation: ValidationNode | null): TransformNode[] | null;

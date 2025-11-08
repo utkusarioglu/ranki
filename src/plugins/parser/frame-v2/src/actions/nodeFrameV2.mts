@@ -12,7 +12,7 @@ import type {
   NodeArgsFrameV2ConfigP,
   NodeArgsFrameV2ConfigE_Reduced,
 } from "../types/args.mjs";
-import type { FrameSpec } from "../types/args.mjs";
+import type { ComponentChain } from "@ranki/package-api-v2";
 
 export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2_fp(_v2Start, v2FrameConfig, v2Payload, _v2End) {
@@ -25,7 +25,8 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       .newChild(this, "block")
       .newTransformerBoundary({
         handler: frameConfig.type,
-        chain: frameConfig.chain.join("."),
+        // !fix I don't like this
+        chain: frameConfig.chainList[0],
         params: frameConfig.params.items,
       });
 
@@ -33,7 +34,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       .newChild(this, "block")
       .newParserBoundary({
         type: frameConfig.type,
-        chain: frameConfig.chain,
+        chainList: frameConfig.chainList,
         params: frameConfig.params.items,
       });
     const child = v2Payload.node(childContext);
@@ -65,7 +66,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       v2FrameConfig.v2FrameConfig(context);
     context.newTransformerBoundary({
       handler: frameConfig.type,
-      chain: frameConfig.chain.join("."),
+      chain: frameConfig.chainList[0],
       params: frameConfig.params.items,
     });
 
@@ -73,7 +74,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       .newChild(this)
       .newParserBoundary({
         type: frameConfig.type,
-        chain: frameConfig.chain,
+        chainList: frameConfig.chainList,
         params: frameConfig.params.items,
       })
       .parseAst("");
@@ -95,9 +96,9 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     );
   },
 
-  v2_e(_v2Start, wi1, v2Chain, wi2, _v2End) {
+  v2_e(_v2Start, wi1, v2ChainList, wi2, _v2End) {
     const context = c(this).newChild(this, "block");
-    const chain: FrameSpec[] = v2Chain.frameSpecV2(context);
+    const chainList: ComponentChain[] = v2ChainList.frameSpecV2(context);
     const configContext = context.newChild(this);
 
     // TODO, this shouldn't be here. it needs to be in frameConfig in the ohm grammar itself
@@ -109,7 +110,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         type: "RankiFrameV2",
         version: "v2",
         variant: "e",
-        chain,
+        chainList,
         shape: {
           spaces: {
             startAndChain: {
@@ -137,7 +138,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       .newChild(this)
       .newParserBoundary({
         type: frameConfig.type,
-        chain: frameConfig.chain,
+        chainList: frameConfig.chainList,
         params: frameConfig.params.items,
       })
       .parseAst("");

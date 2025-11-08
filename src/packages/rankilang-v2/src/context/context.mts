@@ -16,6 +16,7 @@ import type {
   ReducedTransformNode,
   ValidationNodeLeaf,
   AstNodeTransformerDefinition,
+  ComponentChain,
 } from "@ranki/package-api-v2";
 import { RankiLangParserBoundary } from "./parser-boundary.mjs";
 import type { RankiLangContextHooks } from "./context.type.mjs";
@@ -198,7 +199,10 @@ export class RankiLangContext implements RankiLangContextInstance {
   getAllConfig: () => RankiLanguageConfig = (...all) =>
     this.parserBoundary.getConfig().getAll(...all);
 
-  getComponent(handlerName: string, chain: string[]): ComponentPluginComponent {
+  getComponent(
+    handlerName: string,
+    chain: ComponentChain,
+  ): ComponentPluginComponent {
     return this.hooks.components.getPlugin(handlerName, chain);
   }
 
@@ -339,22 +343,12 @@ export class RankiLangContext implements RankiLangContextInstance {
     if (validation === null) {
       return null;
     }
-
-    // const merged = validation.context.getMergedConfig();
-    if (!validation.plugins.transformer) {
-      console.log("Error node:", validation);
-      throw new Error("NO TRANSFORMER DEFINITION AT THE ROOT");
-    }
     const transformerDef = validation.plugins.transformer;
-    const component = this.hooks.components.getPlugin(transformerDef.handler, [
+    const component = this.hooks.components.getPlugin(
+      transformerDef.handler,
       transformerDef.chain,
-    ]);
+    );
     return component.stages.transform(validation);
-    // const transform =
-    //   validation && merged.stage === "transform"
-    //     ? this.hooks.transformers.transform(validation)
-    //     : null;
-    // return transform;
   }
 
   private getContextArgs(): Pick<AstNode["shape"], "depth"> {

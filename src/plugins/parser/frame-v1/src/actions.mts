@@ -53,7 +53,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
 
     const childContext = context.newChild(this).newParserBoundary({
       type: "RankiFrameV1",
-      chain: [[v1Type.sourceString]],
+      chainList: [[v1Type.sourceString]],
       params: [],
     });
 
@@ -107,7 +107,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     ) as ShapeAndParamsV1;
     const newContext = context.newChild(this).newParserBoundary({
       type: "RankiFrameV1",
-      chain: [[v1Type.sourceString]],
+      chainList: [[v1Type.sourceString]],
       params: shapeAndParamsV1.params,
     });
     const child = newContext.parseAst(v1PayloadInline.sourceString);
@@ -166,7 +166,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     const context = c(this).newChild(this, "inline");
     const childContext = context.newChild(this).newParserBoundary({
       type: "RankiFrameV1",
-      chain: [[v1Type.sourceString]],
+      chainList: [[v1Type.sourceString]],
       params: [],
     });
     const child = childContext.parseAst(v1PayloadBlock.sourceString);
@@ -238,7 +238,7 @@ const nodeFrameV1: ohm.ActionDict<ParseNodeFrameV1> = {
     shapeAndParamsV1 && true;
     const newContext = context.newChild(this).newParserBoundary({
       type: "RankiFrameV1",
-      chain: [[v1Type.sourceString]],
+      chainList: [[v1Type.sourceString]],
       params: [],
     });
     const child = newContext.parseAst(v1PayloadBlock.sourceString);

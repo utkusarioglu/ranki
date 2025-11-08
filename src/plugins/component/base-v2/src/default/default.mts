@@ -10,7 +10,8 @@ const placeholder: ComponentPluginValidationFunc = (validation) => ({
 });
 
 export const rankiBaseDefault: ComponentPluginComponent = {
-  chain: "default",
+  chain: ["base", "v2", "default"],
+  aliases: [],
   stages: {
     // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
     // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL

@@ -1,6 +1,19 @@
---- Multiline code with pause
+--- Multiline code with pause with aliases
 [code, "python", cat=dog, $hi
-[anchor, "https://hello.com"|hi]
+[a, "https://hello.com"|hi]
+def hello():
+  print("hellooo")
+,,
+also
+,,
+# Second part
+def bunny():
+  yield "yes"
+]
+
+--- frame v2 with no alias
+[frame.v2.computer_science.code.block, "python", cat=dog, $hi
+[frame.v2.navigation.anchor, "https://hello.com"|hi]
 def hello():
   print("hellooo")
 ,,

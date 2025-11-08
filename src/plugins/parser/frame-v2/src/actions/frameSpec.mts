@@ -1,10 +1,11 @@
 import type * as ohm from "ohm-js";
-import type { FrameSpec } from "../types/args.mjs";
 import { getContext as c } from "@ranki/package-api-v2/helpers";
+import type { ComponentChainString } from "@ranki/package-api-v2";
 
-export const frameSpecV2: ohm.ActionDict<FrameSpec[]> = {
-  v2Chain(first, _sep, rest) {
+export const frameSpecV2: ohm.ActionDict<ComponentChainString[]> = {
+  v2ChainList(first, _sep, rest) {
     const context = c(this);
-    return [first.paramV2Key(context), ...rest.paramV2Key(context)];
+    const what = [first.paramV2Key(context), ...rest.paramV2Key(context)];
+    return what;
   },
 };

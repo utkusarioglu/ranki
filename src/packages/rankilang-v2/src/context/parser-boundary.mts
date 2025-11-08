@@ -43,12 +43,12 @@ export class RankiLangParserBoundary {
   ): RankiLangParseFunctionReturn {
     const paramParser = this.hooks.parsers.find(this.def.type).paramParser;
 
-    if (this.def.chain.length > 1) {
+    if (this.def.chainList.length > 1) {
       throw new Error("MULTI LENGTH CHAINS NOT YET IMPLEMENTED");
     }
     const component = this.hooks.components.getPlugin(
       this.def.type,
-      this.def.chain[0],
+      this.def.chainList[0],
     );
     const props = paramParser(this.def, component.stages.ast);
 

@@ -2,10 +2,9 @@ import type {
   RankiGrammarTokens,
   RankiPluginGrammar,
 } from "@ranki/package-api-v2";
-import grammar from "../assets/ohm/2.0.66.ohm?raw";
+import grammar from "../assets/ohm/2.0.67.ohm?raw";
 import { actions } from "./actions.mjs";
 import { validators } from "./validators.mjs";
-// import { transformers } from "./transformers.mjs";
 import type { RankiParamsV2ParserPluginConfig } from "./types.mjs";
 
 const config: RankiParamsV2ParserPluginConfig = {
@@ -45,14 +44,13 @@ export const rankiParamsV2ParserPlugin: RankiPluginGrammar<RankiParamsV2ParserPl
     type: "grammar",
     meta: {
       name: "RankiParamsV2",
-      version: "2.0.66",
+      version: "2.0.67",
     },
     dependencies: ["RankiConstantsV2"],
     config,
     tokenizer: () => tokenizer(config),
     grammar: () => grammar,
     validators,
-    // transformers,
     actions: () => actions,
   };
 

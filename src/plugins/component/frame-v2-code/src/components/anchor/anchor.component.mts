@@ -1,10 +1,10 @@
 import type { ComponentPluginComponent } from "@ranki/package-api-v2";
 import { placeholder } from "../../placeholder.mjs";
-// import { transform } from "../../transform.mjs";
 import { anchor } from "./anchor.transform.mjs";
 
 export const anchorComponent: ComponentPluginComponent = {
-  chain: "anchor",
+  chain: ["frame", "v2", "navigation", "anchor"],
+  aliases: ["a"],
   stages: {
     // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
     // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL

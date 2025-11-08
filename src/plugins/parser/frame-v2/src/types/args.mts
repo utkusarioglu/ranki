@@ -4,20 +4,19 @@ import type {
   ParamsV2SpecPopulated,
   ArgsAndParamsV2,
 } from "@ranki/plugin-grammar-params-v2";
-import type { AstNode } from "@ranki/package-api-v2";
+import type { AstNode, ComponentChain } from "@ranki/package-api-v2";
 import type { OmittedType } from "./common.mjs";
-
-export type FrameSpec = string[];
 
 interface Common {
   parent: AstNode;
+  chainList: ComponentChain[];
 }
 
 export interface NodeArgsFrameV2ConfigFp_F extends Common {
   type: "RankiFrameV2";
   version: "v2";
   variant: "fp_F"; // this is like f fp
-  chain: FrameSpec[];
+  // chain: ComponentChain;
   shape: NodeArgsBaseV2;
   params: ParamsV2SpecPopulated;
   subtree: {
@@ -31,7 +30,7 @@ export interface NodeArgsFrameV2ConfigFp_f extends Common {
   type: "RankiFrameV2";
   version: "v2";
   variant: "fp_f"; // this is like f fp
-  chain: FrameSpec[];
+  // chain: ComponentChain;
   shape: NodeArgsBaseV2;
   params: ParamsV2SpecPopulated;
   subtree: {
@@ -45,7 +44,6 @@ export interface NodeArgsFrameV2ConfigP extends Common {
   type: "RankiFrameV2";
   version: "v2";
   variant: "p"; // this is like f fp
-  chain: FrameSpec[];
   shape: NodeArgsBaseV2;
   params: ParamsV2SpecNone;
   subtree: {};
@@ -55,7 +53,7 @@ export interface NodeArgsFrameV2ConfigE extends Common {
   type: "RankiFrameV2";
   version: "v2";
   variant: "e"; // this is like f fp
-  chain: FrameSpec[];
+  // chainList: ComponentChain[];
   shape: NodeArgsBaseV2;
   params: ParamsV2SpecNone;
   subtree: {};
