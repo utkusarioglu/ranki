@@ -57,15 +57,10 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
   const f = promise.read(); // Suspends here if promise not ready
 
   useEffect(() => {
-    if (!ref.current) {
+    if (!(ref.current && ref.current.contentDocument && f.element)) {
       return;
     }
-    if (!ref.current.contentDocument) {
-      return;
-    }
-    if (!f.element) {
-      return;
-    }
+    const contentDocument = ref.current.contentDocument;
 
     const message = (e: MessageEvent<any>) => {
       if (e.data.type === `resize-${name}`) {
@@ -75,24 +70,8 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
 
     window.addEventListener("message", message);
 
-    // adds css from renders
-    f.css?.forEach(({ id, css }) => {
-      const contentDocument = ref.current!.contentDocument!;
-      const htmlId = name + "-" + id;
-      if (!contentDocument.querySelector(`style#${htmlId}`)) {
-        const sc = contentDocument.createElement("style");
-        sc.id = htmlId;
-        sc.innerHTML = css;
-        contentDocument.head.appendChild(sc);
-      }
-    });
-
-    f.onLoad?.forEach((f) => {
-      f();
-    });
-
-    if (!ref.current.contentDocument.querySelector(`script.${name}-observer`)) {
-      const sc = ref.current.contentDocument.createElement("script");
+    if (!contentDocument.querySelector(`script.${name}-observer`)) {
+      const sc = contentDocument.createElement("script");
       sc.className = name + "-observer";
       sc.innerText = `
       const observer = new ResizeObserver(() => {
@@ -103,12 +82,10 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
       });
       observer.observe(document.body);
     `;
-      ref.current.contentDocument.head.appendChild(sc);
+      contentDocument.head.appendChild(sc);
     }
-    //
-    f.element.classList.add(style.content);
-    ref.current.contentDocument.body.appendChild(f.element);
-    ref.current.contentDocument.body.style = Object.entries({
+
+    contentDocument.body.style = Object.entries({
       display: "grid",
       overflow: "hidden",
       "justify-content": "center",
@@ -118,6 +95,22 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
     })
       .map((p) => p.join(": "))
       .join("; ");
+
+    // adds css from renders
+    f.css?.forEach(({ id, css }) => {
+      // const contentDocument = ref.current!.contentDocument!;
+      const htmlId = name + "-" + id;
+      if (!contentDocument.querySelector(`style#${htmlId}`)) {
+        const sc = contentDocument.createElement("style");
+        sc.id = htmlId;
+        sc.innerHTML = css;
+        contentDocument.head.appendChild(sc);
+      }
+    });
+
+    f.onLoad?.forEach((f) => f());
+
+    contentDocument.body.appendChild(f.element);
 
     return () => {
       window.removeEventListener("message", message);

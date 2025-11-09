@@ -41,7 +41,9 @@ export class Render {
     rendered.onLoad?.forEach((f) => onLoad.push(f));
     rendered.css?.forEach((s) => cssMap.set(s.id, s));
     return {
-      ...rendered,
+      element: rendered.element,
+      slots: rendered.slots,
+      // ...rendered,
       css: Array.from(cssMap.values()),
       onLoad,
     };
