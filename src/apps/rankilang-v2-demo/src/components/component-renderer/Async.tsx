@@ -134,10 +134,10 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
 
 interface AsyncRenderItem {
   items: TransformNode[];
+  options: RenderClientOptions;
 }
 
-export const AsyncRender: FC<AsyncRenderItem> = ({ items }) => {
-  const options: RenderClientOptions = { scheme: "dark" };
+export const AsyncRender: FC<AsyncRenderItem> = ({ items, options }) => {
   const promise = useMemo(
     () => wrapPromise(Render.render(items, options)),
     [items],

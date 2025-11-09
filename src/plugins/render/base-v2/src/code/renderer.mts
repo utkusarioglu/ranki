@@ -1,6 +1,8 @@
-import { type RankiRenderPluginItemRenderFunction } from "@ranki/package-render-v2";
+import {
+  type RankiRenderPluginItemRenderFunction,
+  type RenderClientOptions,
+} from "@ranki/package-render-v2";
 import "prismjs/components/prism-python.js";
-import { css } from "./prism-atom-dark.css.mjs";
 import { assertTransformParent } from "@ranki/package-api-v2/helpers";
 
 type TitledFrame2Return = {
@@ -10,9 +12,13 @@ type TitledFrame2Return = {
   };
 };
 
-function titledFrame2(title: string): TitledFrame2Return {
+function titledFrame2(
+  title: string,
+  options: RenderClientOptions,
+): TitledFrame2Return {
+  const darkMode = options.scheme === "dark";
   const container = document.createElement("div");
-  container.style.backgroundColor = "#151515";
+  container.style.backgroundColor = darkMode ? "#151515" : "#CCC";
 
   const hud = document.createElement("div");
   hud.style.fontSize = "0.8em";
@@ -37,7 +43,10 @@ function titledFrame2(title: string): TitledFrame2Return {
   };
 }
 
-export const codeRenderer: RankiRenderPluginItemRenderFunction = async (t) => {
+export const codeRenderer: RankiRenderPluginItemRenderFunction = async (
+  t,
+  options,
+) => {
   assertTransformParent(t);
 
   const values = t.params
@@ -47,7 +56,7 @@ export const codeRenderer: RankiRenderPluginItemRenderFunction = async (t) => {
     throw new Error("Single value expected");
   }
   const langName = values[0].raw;
-  const { element, slots } = titledFrame2(langName);
+  const { element, slots } = titledFrame2(langName, options);
 
   return {
     element,
@@ -57,20 +66,14 @@ export const codeRenderer: RankiRenderPluginItemRenderFunction = async (t) => {
         await new Promise((r) => setTimeout(r, 1e3));
         let val = 0;
         const grow = () => {
-          val += 0.01;
-          element.style.scale = (Math.sin(val) + 1).toString();
-          if (val < Math.PI) {
+          val += 0.2;
+          element.style.translate = (Math.sin(val) * 20).toString() + "px";
+          if (val < Math.PI * 3) {
             window.requestAnimationFrame(grow);
           }
         };
         window.requestAnimationFrame(grow);
       },
     ],
-    css: [
-      {
-        id: "prism-atom-dark",
-        css,
-      },
-    ].filter((v) => v),
   };
 };

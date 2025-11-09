@@ -2,6 +2,7 @@ import { assertTransformLeaf } from "@ranki/package-api-v2/helpers";
 import type { RankiRenderPluginItemRenderFunction } from "@ranki/package-render-v2";
 import Prism from "prismjs";
 import "prismjs/components/prism-python.js";
+import { css } from "./prism-atom-dark.css.mjs";
 
 export const codeSection: RankiRenderPluginItemRenderFunction = async (t) => {
   assertTransformLeaf(t);
@@ -21,5 +22,11 @@ export const codeSection: RankiRenderPluginItemRenderFunction = async (t) => {
 
   return {
     element,
+    css: [
+      {
+        id: "prism-atom-dark",
+        css,
+      },
+    ].filter((v) => v),
   };
 };
