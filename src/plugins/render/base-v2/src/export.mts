@@ -119,6 +119,19 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
     },
 
     // {
+    //   tag: ["frame", "v2", "math", "latex", "block", "container"].join("."),
+    //   engine: "vanilla-js",
+    //   load: "static",
+    //   renderer: latexRenderer,
+    // },
+    // {
+    //   tag: ["frame", "v2", "math", "latex", "block", "section"].join("."),
+    //   engine: "vanilla-js",
+    //   load: "lazy",
+    //   renderer: () => import("./latex/section.mjs").then((i) => i.latexSection),
+    // },
+
+    // {
     //   tag: "div",
     //   engine: "vanilla-js",
     //   load: "static",

@@ -1,3 +1,29 @@
+--- Math and code
+# f sad 1 fsd 123
+
+[latex
+\dfrac{1}{x + 3}
+,,
+cad
+,,
+\begin{bmatrix}
+1 & 2 & 3 \\
+0 & 4 & 5 \\
+0 & 0 & 6
+\end{bmatrix}
+,, 
+also this one
+,,
+\rho \left( \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla)\mathbf{u} \right)
+= -\nabla p + \mu \nabla^2 \mathbf{u} + \mathbf{f}
+]
+
+[code, "python"
+import cat
+
+cat.print("hello")
+]
+
 --- Multiline code with pause with aliases
 [code, "python", cat=dog, $hi
 [a, "https://hello.com"|hi]

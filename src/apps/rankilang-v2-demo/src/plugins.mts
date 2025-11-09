@@ -8,6 +8,7 @@ import { rankiRichStructureV2ParserPlugin } from "@ranki/plugin-grammar-rich-str
 import { rankiFrameV1ParserPlugin } from "@ranki/plugin-parser-frame-v1";
 import { rankiFrameV2ComponentsPluginCode } from "@ranki/plugin-component-frame-v2-code";
 import { rankiBaseV2ComponentsPluginDefault } from "@ranki/plugin-component-base-v2-default";
+import { rankiFrameV2ComponentsPluginLatex } from "@ranki/plugin-component-frame-v2-latex";
 
 export const pluginObjects = [
   rankiBaseV2ParserPlugin,
@@ -23,4 +24,5 @@ export const pluginObjects = [
 export const componentObjects = [
   rankiFrameV2ComponentsPluginCode,
   rankiBaseV2ComponentsPluginDefault,
+  rankiFrameV2ComponentsPluginLatex,
 ];

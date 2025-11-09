@@ -1,5 +1,5 @@
 {
-  "name": "@ranki/plugin-render-latex",
+  "name": "@ranki/plugin-render-frame-v2-latex",
   "private": true,
   "type": "module",
   "scripts": {
@@ -20,5 +20,8 @@
       "types": "./types/export.mjs",
       "default": "./lib/export.mjs"
     }
+  },
+  "dependencies": {
+    "mathjax-full": "^3.2.2"
   }
 }

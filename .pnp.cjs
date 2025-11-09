@@ -59,6 +59,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/plugins/component/frame-v2-code"\
     },\
     {\
+      "name": "@ranki/plugin-component-frame-v2-latex",\
+      "reference": "workspace:src/plugins/component/frame-v2-latex"\
+    },\
+    {\
       "name": "@ranki/plugin-grammar-constants-v2",\
       "reference": "workspace:src/plugins/grammar/constants-v2"\
     },\
@@ -95,8 +99,8 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/plugins/render/base-v2"\
     },\
     {\
-      "name": "@ranki/plugin-render-latex",\
-      "reference": "workspace:src/plugins/render/latex"\
+      "name": "@ranki/plugin-render-frame-v2-latex",\
+      "reference": "workspace:src/plugins/render/frame-v2-latex"\
     }\
   ],\
   "enableTopLevelFallback": true,\
@@ -114,6 +118,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/package-render-v2", ["workspace:src/packages/render-v2"]],\
     ["@ranki/plugin-component-base-v2-default", ["workspace:src/plugins/component/base-v2"]],\
     ["@ranki/plugin-component-frame-v2-code", ["workspace:src/plugins/component/frame-v2-code"]],\
+    ["@ranki/plugin-component-frame-v2-latex", ["workspace:src/plugins/component/frame-v2-latex"]],\
     ["@ranki/plugin-grammar-constants-v2", ["workspace:src/plugins/grammar/constants-v2"]],\
     ["@ranki/plugin-grammar-params-v2", ["workspace:src/plugins/grammar/params-v2"]],\
     ["@ranki/plugin-grammar-rich-number-v2", ["workspace:src/plugins/grammar/rich-number-v2"]],\
@@ -123,7 +128,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/plugin-parser-frame-v1", ["workspace:src/plugins/parser/frame-v1"]],\
     ["@ranki/plugin-parser-frame-v2", ["workspace:src/plugins/parser/frame-v2"]],\
     ["@ranki/plugin-render-base-v2", ["workspace:src/plugins/render/base-v2"]],\
-    ["@ranki/plugin-render-latex", ["workspace:src/plugins/render/latex"]],\
+    ["@ranki/plugin-render-frame-v2-latex", ["workspace:src/plugins/render/frame-v2-latex"]],\
     ["@ranki/root", ["workspace:."]]\
   ],\
   "fallbackPool": [\
@@ -2407,6 +2412,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
           ["@ranki/plugin-component-base-v2-default", "workspace:src/plugins/component/base-v2"],\
           ["@ranki/plugin-component-frame-v2-code", "workspace:src/plugins/component/frame-v2-code"],\
+          ["@ranki/plugin-component-frame-v2-latex", "workspace:src/plugins/component/frame-v2-latex"],\
           ["@ranki/plugin-grammar-constants-v2", "workspace:src/plugins/grammar/constants-v2"],\
           ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
           ["@ranki/plugin-grammar-rich-number-v2", "workspace:src/plugins/grammar/rich-number-v2"],\
@@ -2416,6 +2422,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/plugin-parser-frame-v1", "workspace:src/plugins/parser/frame-v1"],\
           ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
           ["@ranki/plugin-render-base-v2", "workspace:src/plugins/render/base-v2"],\
+          ["@ranki/plugin-render-frame-v2-latex", "workspace:src/plugins/render/frame-v2-latex"],\
           ["@types/prismjs", "npm:1.26.5"],\
           ["@types/react", "npm:19.1.13"],\
           ["@types/react-dom", "virtual:56e235665721e97d09a872fed4e209638785440a96a0182c8b7851ddc5b5197c6079e0a6f7acdf0f15cfa65463f170f278a22d104f9a30aae09628eeff3200a9#npm:19.1.9"],\
@@ -2521,6 +2528,18 @@ const RAW_RUNTIME_STATE =
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/plugin-component-frame-v2-code", "workspace:src/plugins/component/frame-v2-code"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/plugin-component-frame-v2-latex", [\
+      ["workspace:src/plugins/component/frame-v2-latex", {\
+        "packageLocation": "./src/plugins/component/frame-v2-latex/",\
+        "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/plugin-component-frame-v2-latex", "workspace:src/plugins/component/frame-v2-latex"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
@@ -2662,15 +2681,16 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
-    ["@ranki/plugin-render-latex", [\
-      ["workspace:src/plugins/render/latex", {\
-        "packageLocation": "./src/plugins/render/latex/",\
+    ["@ranki/plugin-render-frame-v2-latex", [\
+      ["workspace:src/plugins/render/frame-v2-latex", {\
+        "packageLocation": "./src/plugins/render/frame-v2-latex/",\
         "packageDependencies": [\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
-          ["@ranki/plugin-render-latex", "workspace:src/plugins/render/latex"],\
+          ["@ranki/plugin-render-frame-v2-latex", "workspace:src/plugins/render/frame-v2-latex"],\
           ["@types/node", "npm:24.5.2"],\
+          ["mathjax-full", "npm:3.2.2"],\
           ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\

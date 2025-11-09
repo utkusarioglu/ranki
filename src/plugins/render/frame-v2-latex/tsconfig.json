@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": "src",
-    "declarationDir": "types"
+    "declarationDir": "types",
+    "skipLibCheck": true
   },
   "include": ["src/**/*"],
   "references": [

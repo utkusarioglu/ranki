@@ -1,7 +1,9 @@
 import { renderPluginBaseV2Render } from "@ranki/plugin-render-base-v2";
+import { renderPluginFrameV2Latex } from "@ranki/plugin-render-frame-v2-latex";
 import style from "./async.module.css";
 
 Render.addPlugin(renderPluginBaseV2Render);
+Render.addPlugin(renderPluginFrameV2Latex);
 
 import {
   Render,
@@ -115,9 +117,9 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
         }
       });
 
-      f.onLoad?.forEach((f) => f());
-
       contentDocument.body.appendChild(f.element);
+
+      f.onLoad?.forEach((f) => f());
 
       // return () => {
       //   window.removeEventListener("message", message);
