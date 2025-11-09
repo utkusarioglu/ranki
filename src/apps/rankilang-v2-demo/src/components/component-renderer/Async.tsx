@@ -1,9 +1,13 @@
-// import { Render } from "@ranki/package-render-v2";
 import { renderPluginBaseV2Render } from "@ranki/plugin-render-base-v2";
 import style from "./async.module.css";
 
 Render.addPlugin(renderPluginBaseV2Render);
-import { Render, type RenderFunctionReturn } from "@ranki/package-render-v2";
+
+import {
+  Render,
+  type RenderClientOptions,
+  type RenderFunctionReturn,
+} from "@ranki/package-render-v2";
 import type { TransformNode } from "@ranki/package-api-v2";
 import {
   Suspense,
@@ -16,10 +20,11 @@ import {
   type SetStateAction,
 } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import type { SyncFC } from "../../react.type.mts";
 
-function wrapPromise(promise: Promise<RenderFunctionReturn>) {
+function wrapPromise(promise: Promise<RenderFunctionReturn[]>) {
   let status = "pending";
-  let result: RenderFunctionReturn;
+  let result: Awaited<Parameters<typeof wrapPromise>[0]>;
   const suspender = promise
     .then((r) => {
       status = "success";
@@ -46,18 +51,18 @@ interface AsyncHTMLElementProps {
   name: string;
 }
 
+// ANKI
 const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
   promise,
   height,
   setHeight,
   name,
 }) => {
-  // const resource = useMemo(() => wrapPromise(promise), [promise]);
   const ref = useRef<HTMLIFrameElement>(null);
-  const f = promise.read(); // Suspends here if promise not ready
+  const p = promise.read();
 
   useEffect(() => {
-    if (!(ref.current && ref.current.contentDocument && f.element)) {
+    if (!(ref.current && ref.current.contentDocument)) {
       return;
     }
     const contentDocument = ref.current.contentDocument;
@@ -96,27 +101,27 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
       .map((p) => p.join(": "))
       .join("; ");
 
-    // adds css from renders
-    f.css?.forEach(({ id, css }) => {
-      // const contentDocument = ref.current!.contentDocument!;
-      const htmlId = name + "-" + id;
-      if (!contentDocument.querySelector(`style#${htmlId}`)) {
-        const sc = contentDocument.createElement("style");
-        sc.id = htmlId;
-        sc.innerHTML = css;
-        contentDocument.head.appendChild(sc);
-      }
+    p.map((f) => {
+      f.css?.forEach(({ id, css }) => {
+        const htmlId = name + "-" + id;
+        if (!contentDocument.querySelector(`style#${htmlId}`)) {
+          const sc = contentDocument.createElement("style");
+          sc.id = htmlId;
+          sc.innerHTML = css;
+          contentDocument.head.appendChild(sc);
+        }
+      });
+
+      f.onLoad?.forEach((f) => f());
+
+      contentDocument.body.appendChild(f.element);
+
+      // return () => {
+      //   window.removeEventListener("message", message);
+      //   f.element.remove();
+      // };
     });
-
-    f.onLoad?.forEach((f) => f());
-
-    contentDocument.body.appendChild(f.element);
-
-    return () => {
-      window.removeEventListener("message", message);
-      f.element.remove();
-    };
-  }, [f]);
+  }, [p]);
 
   return (
     <iframe
@@ -127,18 +132,21 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
   );
 };
 
-interface AsyncRenderItemProps {
-  item: TransformNode;
+interface AsyncRenderItem {
+  items: TransformNode[];
 }
 
-const AsyncRenderItem: FC<AsyncRenderItemProps> = ({ item }) => {
-  const promise = useMemo(() => wrapPromise(Render.render(item)), [item]);
+export const AsyncRender: FC<AsyncRenderItem> = ({ items }) => {
+  const options: RenderClientOptions = { scheme: "dark" };
+  const promise = useMemo(
+    () => wrapPromise(Render.render(items, options)),
+    [items],
+  );
   const [height, setHeight] = useState<number>(60);
   const [name] = useState("h" + Math.random().toString().slice(2));
 
   return (
     <ErrorBoundary
-      // @ts-expect-error
       fallbackRender={FallbackRender}
       onReset={(details) => {
         // Reset the state of your app so the error doesn't happen again
@@ -166,32 +174,18 @@ const AsyncRenderItem: FC<AsyncRenderItemProps> = ({ item }) => {
   );
 };
 
-interface AsyncRenderProps {
-  items: TransformNode[];
-}
-
-export const AsyncRender: FC<AsyncRenderProps> = ({ items }) => (
-  <>
-    {items.map((item, i) => (
-      <AsyncRenderItem key={i} item={item} />
-    ))}
-  </>
-);
-
 interface FallbackRenderProps {
   error: Error;
   resetErrorBoundary: Function;
 }
 
-const FallbackRender: FC<FallbackRenderProps> = ({
+const FallbackRender: SyncFC<FallbackRenderProps> = ({
   error,
-  // resetErrorBoundary,
+  resetErrorBoundary,
 }) => {
-  // Call resetErrorBoundary() to reset the error boundary and retry the render.
-
   return (
     <div role="alert">
-      {/* <pre style={{ color: "red" }}>{error.message}</pre> */}
+      <button onClick={() => resetErrorBoundary()}>Reset</button>
       <pre style={{ color: "red" }}>{error.stack}</pre>
     </div>
   );

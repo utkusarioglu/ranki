@@ -1,4 +1,5 @@
 import type { RankiPluginCommon, TransformNode } from "@ranki/package-api-v2";
+import type { RenderClientOptions } from "./render.type.mjs";
 
 export interface RankiPluginRenderer extends RankiPluginCommon {
   type: "renderer";
@@ -26,6 +27,7 @@ interface RankiRenderPluginItemStatic extends RankiRenderPluginItemCommon {
 
 export type RankiRenderPluginItemRenderFunction = (
   n: TransformNode,
+  options: RenderClientOptions,
 ) => Promise<RankiRenderNode>;
 
 export interface RankiRenderNodeCssSpec {

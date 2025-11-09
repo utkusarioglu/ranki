@@ -5,7 +5,10 @@ import type {
   RankiRenderNodeOnLoadCallback,
 } from "./types/plugin.type.mjs";
 import { RenderLibrary } from "./library.mjs";
-import type { RenderFunctionReturn } from "./types/render.type.mjs";
+import type {
+  RenderClientOptions,
+  RenderFunctionReturn,
+} from "./types/render.type.mjs";
 
 export class Render {
   static library = new RenderLibrary();
@@ -14,15 +17,25 @@ export class Render {
     Render.library.addPlugin(plugin);
   }
 
-  static async render(tn: TransformNode): Promise<RenderFunctionReturn> {
+  static async render(
+    tns: TransformNode[],
+    options: RenderClientOptions,
+  ): Promise<RenderFunctionReturn[]> {
+    return Promise.all(tns.map((tn) => Render.renderNode(tn, options)));
+  }
+
+  private static async renderNode(
+    tn: TransformNode,
+    options: RenderClientOptions,
+  ): Promise<RenderFunctionReturn> {
     const renderer = await Render.library.getRenderer(tn.tag);
-    const rendered = await renderer(tn);
+    const rendered = await renderer(tn, options);
     const onLoad: RankiRenderNodeOnLoadCallback[] = [];
     const cssMap = new Map<string, RankiRenderNodeCssSpec>();
     if (rendered.slots) {
       if (tn.kind === "parent") {
         const children = await Promise.all(
-          tn.children.map((c) => this.render(c)),
+          tn.children.map((c) => this.renderNode(c, options)),
         );
         if (children && !rendered.slots.children) {
           throw new Error(
