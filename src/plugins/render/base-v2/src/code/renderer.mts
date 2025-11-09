@@ -49,9 +49,14 @@ export const codeRenderer: RankiRenderPluginItemRenderFunction = async (
 ) => {
   assertTransformParent(t);
 
-  const values = t.params
+  const positionalSettings = t.params
     .filter(({ key }) => key === "positional")
-    .filter(({ type }) => type === "setting")[0].values;
+    .filter(({ type }) => type === "setting");
+  if (!positionalSettings.length) {
+    console.log(t);
+    throw new Error("NO POSITIONAL SETTINGS");
+  }
+  const values = positionalSettings[0].values;
   if (values.length > 1) {
     throw new Error("Single value expected");
   }

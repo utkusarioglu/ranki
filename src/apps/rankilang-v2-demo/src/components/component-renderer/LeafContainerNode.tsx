@@ -3,14 +3,18 @@ import { createElement } from "react";
 import style from "./child.module.css";
 import type { TransformNodeLeaf } from "@ranki/package-api-v2";
 import { LeafInfo } from "./LeafInfo";
-// import { Render } from "@ranki/package-render-v2";
 import { AsyncRender } from "./Async";
+import type { RenderClientOptions } from "@ranki/package-render-v2";
 
 interface LeafContainerNodeProps {
   item: TransformNodeLeaf;
+  options: RenderClientOptions;
 }
 
-export const LeafContainerNode: FC<LeafContainerNodeProps> = ({ item }) => {
+export const LeafContainerNode: FC<LeafContainerNodeProps> = ({
+  item,
+  options,
+}) => {
   return (
     <div
       className={[
@@ -54,7 +58,7 @@ export const LeafContainerNode: FC<LeafContainerNodeProps> = ({ item }) => {
           </div>
         </div>
         <div className={style.nativeRenderContainer}>
-          <AsyncRender items={[item]} />
+          <AsyncRender items={[item]} options={options} />
         </div>
       </div>
     </div>

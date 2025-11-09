@@ -13,6 +13,7 @@ import { TabButton } from "../tab/TabButton";
 import { YamlRenderer } from "../yaml-renderer/YamlRenderer";
 import type { SharedState } from "../app/shared-state.mts";
 import { ComponentRenderer } from "../component-renderer/ComponentRenderer";
+import type { RenderClientOptions } from "@ranki/package-render-v2";
 
 interface OutputProps {
   state: SharedState;
@@ -34,6 +35,7 @@ export type TabDefinition =
     };
 
 export const Output: FC<OutputProps> = ({ state }) => {
+  const options: RenderClientOptions = { scheme: "dark" };
   const [tabIndex, setTabIndex] = useState(0);
   const renderAvailable =
     state?.type === "loaded" && state.config.stage === "transform";
@@ -101,7 +103,11 @@ export const Output: FC<OutputProps> = ({ state }) => {
 
       <div className={[style.output, style.scrollable].join(" ")}>
         {renderAvailable && filteredTabs[tabIndex].format === "render" ? (
-          <ComponentRenderer parsed={state.parsed} customPath={customPath} />
+          <ComponentRenderer
+            parsed={state.parsed}
+            customPath={customPath}
+            options={options}
+          />
         ) : (
           <YamlRenderer
             parsed={state.parsed}

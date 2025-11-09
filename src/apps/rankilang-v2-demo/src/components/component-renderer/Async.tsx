@@ -49,6 +49,7 @@ interface AsyncHTMLElementProps {
   height: number;
   setHeight: Dispatch<SetStateAction<number>>;
   name: string;
+  colorScheme: string;
 }
 
 // ANKI
@@ -57,6 +58,7 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
   height,
   setHeight,
   name,
+  colorScheme,
 }) => {
   const ref = useRef<HTMLIFrameElement>(null);
   const p = promise.read();
@@ -96,11 +98,12 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
       "justify-content": "center",
       "align-items": "center",
       "font-family": "Arial, Helvetica, sans-serif",
-      color: "pink",
+      color: colorScheme === "dark" ? "white" : "black",
     })
       .map((p) => p.join(": "))
       .join("; ");
 
+    contentDocument.body.innerText = "";
     p.map((f) => {
       f.css?.forEach(({ id, css }) => {
         const htmlId = name + "-" + id;
@@ -121,7 +124,7 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
       //   f.element.remove();
       // };
     });
-  }, [p]);
+  }, [p, colorScheme]);
 
   return (
     <iframe
@@ -132,15 +135,15 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
   );
 };
 
-interface AsyncRenderItem {
+interface AsyncRenderProps {
   items: TransformNode[];
   options: RenderClientOptions;
 }
 
-export const AsyncRender: FC<AsyncRenderItem> = ({ items, options }) => {
+export const AsyncRender: FC<AsyncRenderProps> = ({ items, options }) => {
   const promise = useMemo(
     () => wrapPromise(Render.render(items, options)),
-    [items],
+    [items, options],
   );
   const [height, setHeight] = useState<number>(60);
   const [name] = useState("h" + Math.random().toString().slice(2));
@@ -168,6 +171,7 @@ export const AsyncRender: FC<AsyncRenderItem> = ({ items, options }) => {
           height={height}
           setHeight={setHeight}
           name={name}
+          colorScheme={options.scheme}
         />
       </Suspense>
     </ErrorBoundary>

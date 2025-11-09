@@ -242,7 +242,7 @@ export class RankiLangContext implements RankiLangContextInstance {
             creator: v.creator,
             depth: v.shape.depth.total,
             source: mama.source,
-            params: v.plugins.transformer.params,
+            params: mama.params || v.plugins.transformer.params,
           };
           all.push(leafTn);
           break;
@@ -254,6 +254,8 @@ export class RankiLangContext implements RankiLangContextInstance {
           //   params: mama.params || v.plugins.transformer.params,
           // });
 
+          // break;
+
           const l1 = {
             tag: mama.tag,
             kind: mama.kind,
@@ -262,6 +264,7 @@ export class RankiLangContext implements RankiLangContextInstance {
             depth: v.shape.depth.total,
             // !FIX I'm pretty sure this is conceptually faulty
             params: mama.params || v.plugins.transformer.params,
+            // params: mama.params || [],
           };
 
           const hasHoist = mama.children.filter(({ hoist }) => hoist).length;

@@ -120,7 +120,7 @@ export const v2_fp: ComponentPluginTransformFunc = (v) => {
 
   const code = v.context.newTransformNode(v, [
     {
-      tag: "code",
+      tag: "computer_science.code.block.container",
       kind: "parent",
       hoist: 0,
       // // @ts-expect-error

@@ -1,17 +1,27 @@
 import type {
+  ComponentHandler,
   ComponentPluginTransformFunc,
   TransformNodeLeaf,
 } from "../export.type.mjs";
 import type { TransformNode, TransformNodeParent } from "../export.type.mjs";
 
-export const createTransformer: (
+// TODO create a separate type for this;
+type TransformHandler = ComponentHandler;
+
+type CreateTransformerFunc = (
+  handler: TransformHandler,
   nodes: Record<string, ComponentPluginTransformFunc>,
-) => ComponentPluginTransformFunc = (nodes) => {
-  const transform: ComponentPluginTransformFunc = (v) => {
+) => ComponentPluginTransformFunc;
+
+export const createTransformer: CreateTransformerFunc = (handler, nodes) => {
+  const transformSingle: ComponentPluginTransformFunc = (v) => {
     const local = nodes[v.creator] as ComponentPluginTransformFunc | undefined;
     if (local) {
       return local(v);
     } else {
+      if (v.plugins.transformer.handler === handler) {
+        throw new Error(`CANNOT FIND LOCAL TRANSFORMER FOR: ${v.creator}`);
+      }
       const transformed = v.context.parseTransform(v);
       if (transformed === null) {
         throw new Error("EXPECTED TRANSFORM NODE ARRAY");
@@ -19,7 +29,7 @@ export const createTransformer: (
       return transformed;
     }
   };
-  return transform;
+  return transformSingle;
 };
 
 export function assertTransformParent(

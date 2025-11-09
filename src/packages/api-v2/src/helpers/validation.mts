@@ -23,3 +23,10 @@ export function assertValidationLeaf(
   if (t.kind !== "leaf")
     throw new Error(`EXPECTED VALIDATION NODE ${t.creator} TO BE A LEAF`);
 }
+
+export function flattenValidationChildren(v: ValidationNodeParent) {
+  return v.children.reduce(
+    (a, c) => [...a, ...(c as ValidationNodeParent).children],
+    [] as ValidationNode[],
+  );
+}

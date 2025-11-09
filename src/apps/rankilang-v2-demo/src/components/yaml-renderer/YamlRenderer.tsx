@@ -152,10 +152,10 @@ export const YamlChild: FC<{ rawNode: Record<string, any>[] }> = ({
 }) => {
   if (Array.isArray(rawNode)) {
     return rawNode.map((n, i) => (
-      <>
+      <div key={i}>
         <span className={["monospace", style.leftPadded].join(" ")}>{i}:</span>
         <YamlChildObject rawNode={n} key={i} />
-      </>
+      </div>
     ));
   } else {
     return <YamlChildObject rawNode={rawNode} />;

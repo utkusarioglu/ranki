@@ -3,11 +3,10 @@ import type {
   ComponentPluginTransformFunc,
   ValidationNodeLeaf,
 } from "@ranki/package-api-v2";
+import { assertValidationParent } from "@ranki/package-api-v2/helpers";
 
 export const anchor: ComponentPluginTransformFunc = (v) => {
-  if (v.kind === "leaf") {
-    throw new Error(`Anchor COMPONENT CANNOT BE A PARENT`);
-  }
+  assertValidationParent(v);
 
   const payload = v.children[0];
   const pauseList = (payload as ValidationNodeParent).children[0];
@@ -22,12 +21,13 @@ export const anchor: ComponentPluginTransformFunc = (v) => {
 
   const all = [
     {
-      tag: "anchor",
+      tag: "html.primitive.anchor.basic",
       kind: "leaf" as "leaf",
       // print: true,
       hoist: 0,
       // creator: v.creator,
       // depth: v.shape.depth.total,
+      // params: "hi",
       source: {
         type: "raw" as "raw",
         raw: [
