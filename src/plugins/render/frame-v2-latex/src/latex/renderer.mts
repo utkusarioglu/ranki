@@ -2,7 +2,6 @@ import {
   type RankiRenderPluginItemRenderFunction,
   type RenderClientOptions,
 } from "@ranki/package-render-v2";
-import "prismjs/components/prism-python.js";
 import { assertTransformParent } from "@ranki/package-api-v2/helpers";
 
 type TitledFrame2Return = {
@@ -19,6 +18,7 @@ function titledFrame2(
   const darkMode = options.scheme === "dark";
   const container = document.createElement("div");
   container.style.backgroundColor = darkMode ? "#151515" : "#CCC";
+  container.style.marginBottom = "1em";
 
   const hud = document.createElement("div");
   hud.style.fontSize = "0.8em";

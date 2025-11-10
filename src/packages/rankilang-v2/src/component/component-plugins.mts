@@ -5,6 +5,8 @@ import type {
   ComponentAlias,
   ComponentHandler,
   ComponentChain,
+  ComponentPluginTransformFunc,
+  ValidationNode,
 } from "@ranki/package-api-v2";
 
 interface ShorthandConflict {
@@ -13,28 +15,48 @@ interface ShorthandConflict {
 }
 
 export class ComponentPlugins {
-  private list: Record<
+  private components: Record<
     ComponentHandler,
     Record<ComponentChainString, ComponentPluginComponent>
   > = {};
-  private aliases: Map<ComponentAlias, ComponentChain> = new Map();
   private shorthandConflicts: ShorthandConflict[] = [];
+  private aliases = new Map<ComponentAlias, ComponentChain>();
+  private transformers = new Map<string, ComponentPluginTransformFunc>();
+  private rootTransformerKeys = new Map<string, string>();
 
   addPlugin(plugin: RankiPluginComponent) {
-    if (!this.list[plugin.handler]) {
-      this.list[plugin.handler] = {};
+    if (!this.components[plugin.handler]) {
+      this.components[plugin.handler] = {};
     }
     plugin.list.forEach((component) => {
       const chainStr: ComponentChainString = component.chain.join(".");
       if (component.chain.length < 3) {
-        console.log("l", component.chain, component.chain.length);
         throw new Error(`COMPONENT CHAINS NEED TO BE NAMESPACED: ${chainStr}`);
       }
-      if (!!this.list[plugin.handler][chainStr]) {
+      if (!!this.components[plugin.handler][chainStr]) {
         throw new Error(`COMPONENT PLUGIN ALREADY REGISTERED FOR ${chainStr}`);
       }
 
-      this.list[plugin.handler][chainStr] = component;
+      this.components[plugin.handler][chainStr] = component;
+
+      Object.entries(component.stages.transformers.list).forEach(
+        ([creator, transformer]) => {
+          const transformerKey = this.createTransformerKey(
+            // plugin.handler,
+            component.chain.join("."),
+            creator,
+          );
+          if (this.transformers.has(transformerKey)) {
+            throw new Error(`TRANSFORMER ${transformerKey} ALREADY REGISTERED`);
+          }
+          this.transformers.set(transformerKey, transformer);
+        },
+      );
+
+      this.rootTransformerKeys.set(
+        chainStr,
+        component.stages.transformers.root,
+      );
 
       component.aliases.forEach((alias) => {
         if (alias.includes(".")) {
@@ -55,6 +77,13 @@ export class ComponentPlugins {
     });
   }
 
+  private createTransformerKey(
+    chainString: ComponentChainString,
+    creator: string,
+  ) {
+    return [chainString, creator].join(":");
+  }
+
   private retrieveChainStr(
     requestName: ComponentChain | ComponentAlias[],
   ): ComponentChainString {
@@ -68,13 +97,17 @@ export class ComponentPlugins {
       }
       return chain.join(".");
     }
+  }
 
-    // let chain: ComponentChain | undefined;
-    // if (!requestName.includes(".")) {
-    // } else {
-    //   chain = requestName as ComponentChain;
-    // }
-    // return chain.join(".");
+  getTransformer(v: ValidationNode): ComponentPluginTransformFunc {
+    const chain = this.retrieveChainStr(v.plugins.transformer.chain);
+    const creator = v.creator;
+    const key = this.createTransformerKey(chain, creator);
+    const transform = this.transformers.get(key);
+    if (!transform) {
+      throw new Error(`REQUESTED UNREGISTERED TRANSFORM: ${key}`);
+    }
+    return transform;
   }
 
   getPlugin(
@@ -82,7 +115,7 @@ export class ComponentPlugins {
     requestName: ComponentChain | ComponentAlias[],
   ): ComponentPluginComponent {
     let chainStr = this.retrieveChainStr(requestName);
-    const h = this.list[handlerName];
+    const h = this.components[handlerName];
     if (!h) {
       throw new Error(`NO COMPONENT PLUGIN REGISTERED FOR ${handlerName}`);
     }

@@ -1,35 +1,72 @@
 import type {
-  ComponentHandler,
+  ComponentChain,
+  // ComponentHandler,
   ComponentPluginTransformFunc,
+  ComponentPluginTransformFuncMulti,
   TransformNodeLeaf,
+  ValidationNode,
 } from "../export.type.mjs";
 import type { TransformNode, TransformNodeParent } from "../export.type.mjs";
 
 // TODO create a separate type for this;
-type TransformHandler = ComponentHandler;
+// type TransformHandler = ComponentHandler;
 
 type CreateTransformerFunc = (
-  handler: TransformHandler,
+  chain: ComponentChain,
   nodes: Record<string, ComponentPluginTransformFunc>,
-) => ComponentPluginTransformFunc;
+) => {
+  single: ComponentPluginTransformFunc;
+  list: ComponentPluginTransformFuncMulti;
+};
 
-export const createTransformer: CreateTransformerFunc = (handler, nodes) => {
+export const createTransformer: CreateTransformerFunc = (
+  localChain,
+  localNodes,
+) => {
+  const nodeRecord: Record<string, ComponentPluginTransformFunc> = {};
+  const localChainStr = localChain.join(".");
+
+  const getKey = (creator: string) => {
+    return [localChainStr, creator].join(":");
+  };
+
+  Object.entries(localNodes).forEach(([creator, callback]) => {
+    nodeRecord[getKey(creator)] = callback;
+  });
+
   const transformSingle: ComponentPluginTransformFunc = (v) => {
-    const local = nodes[v.creator] as ComponentPluginTransformFunc | undefined;
+    const transformChain = v.plugins.transformer.chain;
+    const transformChainStr = transformChain.join(".");
+    const transformKey = [transformChainStr, v.creator].join(":");
+    const local = nodeRecord[transformKey] as
+      | ComponentPluginTransformFunc
+      | undefined;
     if (local) {
       return local(v);
     } else {
-      if (v.plugins.transformer.handler === handler) {
-        throw new Error(`CANNOT FIND LOCAL TRANSFORMER FOR: ${v.creator}`);
+      console.log(transformChainStr === localChainStr);
+      if (transformChainStr === localChainStr) {
+        console.log("ERROR:", { v, nodes: localNodes, nodeRecord });
+        throw new Error(
+          `CANNOT FIND LOCAL TRANSFORMER FOR: ${v.creator} IN ${localChainStr} CHAIN`,
+        );
       }
       const transformed = v.context.parseTransform(v);
-      if (transformed === null) {
-        throw new Error("EXPECTED TRANSFORM NODE ARRAY");
-      }
+      assertTransformExists(transformed);
       return transformed;
     }
   };
-  return transformSingle;
+
+  const transformList = (v2PayloadSections: ValidationNode[]) =>
+    v2PayloadSections.reduce(
+      (a, c) => [...a, ...transformSingle(c)],
+      [] as TransformNode[],
+    );
+
+  return {
+    single: transformSingle,
+    list: transformList,
+  };
 };
 
 export function assertTransformParent(

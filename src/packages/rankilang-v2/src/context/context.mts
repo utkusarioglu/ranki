@@ -17,9 +17,11 @@ import type {
   ValidationNodeLeaf,
   AstNodeTransformerDefinition,
   ComponentChain,
+  ComponentPluginTransformFunc,
 } from "@ranki/package-api-v2";
 import { RankiLangParserBoundary } from "./parser-boundary.mjs";
 import type { RankiLangContextHooks } from "./context.type.mjs";
+import { assertTransformExists } from "@ranki/package-api-v2/helpers";
 
 export class RankiLangContext implements RankiLangContextInstance {
   private parserBoundary!: RankiLangParserBoundary;
@@ -147,7 +149,7 @@ export class RankiLangContext implements RankiLangContextInstance {
     return this;
   }
 
-  newTransformerBoundary(
+  newComponentBoundary(
     def: Omit<AstNodeTransformerDefinition, "isBoundary">,
   ): RankiLangContextInstance {
     this.transformerDefinition = {
@@ -342,16 +344,36 @@ export class RankiLangContext implements RankiLangContextInstance {
     return validation;
   }
 
-  parseTransform(validation: ValidationNode | null): TransformNode[] | null {
+  parseTransform(
+    validation: ValidationNode[] | ValidationNode | null,
+  ): TransformNode[] | null {
     if (validation === null) {
       return null;
     }
-    const transformerDef = validation.plugins.transformer;
-    const component = this.hooks.components.getPlugin(
-      transformerDef.handler,
-      transformerDef.chain,
-    );
-    return component.stages.transform(validation);
+    const singleTransform = (validation: ValidationNode): TransformNode[] => {
+      const transformer = this.hooks.components.getTransformer(validation);
+      return transformer(validation);
+    };
+
+    if (Array.isArray(validation)) {
+      const children: TransformNode[] = [];
+      validation.forEach((c) => {
+        const transformed = singleTransform(c);
+        assertTransformExists(transformed);
+        children.push(...transformed);
+      });
+      return children;
+    } else {
+      return singleTransform(validation);
+    }
+  }
+
+  getTransformer(
+    v: ValidationNode,
+    // chain: ComponentChain,
+    // creator: string,
+  ): ComponentPluginTransformFunc {
+    return this.hooks.components.getTransformer(v);
   }
 
   private getContextArgs(): Pick<AstNode["shape"], "depth"> {

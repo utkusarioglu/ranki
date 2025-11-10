@@ -2,6 +2,7 @@ import type {
   ComponentChain,
   ComponentHandler,
   ComponentPluginComponent,
+  ComponentPluginTransformFunc,
   RankiPluginComponent,
 } from "../plugins/component.type.mjs";
 import type {
@@ -19,6 +20,7 @@ import type {
   RankiLangContextInstance,
 } from "./context.type.mjs";
 import type { RankiPluginParser } from "../plugins/parser.type.mjs";
+import type { ValidationNode } from "../export.type.mjs";
 
 export interface ComponentPluginsInstance {
   addPlugin(plugin: RankiPluginComponent): void;
@@ -26,6 +28,13 @@ export interface ComponentPluginsInstance {
     handler: ComponentHandler,
     chain: ComponentChain,
   ): ComponentPluginComponent;
+  // getRootTransformer(chain: ComponentChain): ComponentPluginTransformFunc;
+
+  getTransformer(
+    v: ValidationNode,
+    // chain: ComponentChain,
+    // creator: string,
+  ): ComponentPluginTransformFunc;
 }
 
 export interface RankiLangInstancePluginsRecord {

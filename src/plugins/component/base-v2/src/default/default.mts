@@ -2,7 +2,7 @@ import type {
   ComponentPluginValidationFunc,
   ComponentPluginComponent,
 } from "@ranki/package-api-v2";
-import { transform } from "../transform/all.mjs";
+import { transformList } from "../transform/all.mjs";
 
 const placeholder: ComponentPluginValidationFunc = (validation) => ({
   warnings: [["COMPONENT VALIDATION", validation.kind].join(" ")],
@@ -45,6 +45,9 @@ export const rankiBaseDefault: ComponentPluginComponent = {
       },
     },
     validator: placeholder,
-    transform,
+    transformers: {
+      root: "a",
+      list: transformList,
+    },
   },
 };

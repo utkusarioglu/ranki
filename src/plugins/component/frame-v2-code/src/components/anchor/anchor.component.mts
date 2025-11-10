@@ -1,6 +1,6 @@
 import type { ComponentPluginComponent } from "@ranki/package-api-v2";
 import { placeholder } from "../../placeholder.mjs";
-import { anchor } from "./anchor.transform.mjs";
+import { transformList } from "./anchor.transform.mjs";
 
 export const anchorComponent: ComponentPluginComponent = {
   chain: ["frame", "v2", "navigation", "anchor"],
@@ -41,6 +41,9 @@ export const anchorComponent: ComponentPluginComponent = {
       },
     },
     validator: placeholder,
-    transform: anchor,
+    transformers: {
+      root: "v2_fp",
+      list: transformList,
+    },
   },
 };

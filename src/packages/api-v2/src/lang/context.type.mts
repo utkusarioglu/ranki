@@ -10,11 +10,7 @@ import type {
 } from "../stages/ast.type.mjs";
 import type { RankiLangInstance } from "./rankilang.type.mjs";
 import type { RankiPluginParser } from "../plugins/parser.type.mjs";
-import type {
-  RankiGrammarTokens,
-  // RankiLangParseHandlerFunction,
-  // RankiLangParseHandlerFunctionReturn,
-} from "../plugins/grammar.type.mjs";
+import type { RankiGrammarTokens } from "../plugins/grammar.type.mjs";
 import type * as ohm from "ohm-js";
 import type {
   TransformNode,
@@ -195,7 +191,9 @@ export interface RankiLangContextInstance {
   ): ComponentPluginComponent;
   parseAst: (raw: string) => RankiLangParseFunctionReturn;
   parseValidation(ast: RankiLangParseFunctionReturn): ValidationNode | null;
-  parseTransform(validation: ValidationNode | null): TransformNode[] | null;
+  parseTransform(
+    validation: ValidationNode[] | ValidationNode | null,
+  ): TransformNode[] | null;
 
   newTransformNode(
     v: ValidationNode,
@@ -211,7 +209,7 @@ export interface RankiLangContextInstance {
   ): RankiLangContextInstance;
   useLineageBoundary(hoist: number): RankiLangContextInstance;
 
-  newTransformerBoundary(
+  newComponentBoundary(
     def: Omit<AstNodeTransformerDefinition, "isBoundary">,
   ): RankiLangContextInstance;
 
@@ -229,6 +227,12 @@ export interface RankiLangContextInstance {
     p: P,
     en?: Enrichments,
   ): Output;
+
+  // getTransformer(
+  //   v: ValidationNode,
+  //   // chain: ComponentChain,
+  //   // creator: string,
+  // ): ComponentPluginTransformFunc;
 }
 
 export interface Enrichments {

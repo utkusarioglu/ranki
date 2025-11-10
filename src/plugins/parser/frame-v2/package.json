@@ -20,6 +20,10 @@
     ".": {
       "types": "./types/main.mjs",
       "default": "./lib/main.mjs"
+    },
+    "./transformers": {
+      "types": "./types/transformers.mjs",
+      "default": "./lib/transformers.mjs"
     }
   }
 }

@@ -93,7 +93,13 @@ const node: ohm.ActionDict<BaseV2Node> = {
   },
 
   root_structure(whitespace1, structure, whitespace2) {
-    const context = c(this).newChild(this, "block");
+    const context = c(this)
+      .newComponentBoundary({
+        handler: "RankiBaseV2",
+        chain: ["base", "v2", "default"],
+        params: [],
+      })
+      .newChild(this, "block");
     return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",

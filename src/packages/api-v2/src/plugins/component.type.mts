@@ -30,6 +30,10 @@ export type ComponentPluginTransformFunc = (
   validation: ValidationNode,
 ) => TransformNode[];
 
+export type ComponentPluginTransformFuncMulti = (
+  validation: ValidationNode[],
+) => TransformNode[];
+
 export type ComponentPluginComponentStageAst = {
   directives: RankiLanguageProvidedConfig[];
   params: {
@@ -51,7 +55,10 @@ export interface ComponentPluginComponent {
     preprocess: (raw: string) => string;
     ast: ComponentPluginComponentStageAst;
     validator: ComponentPluginValidationFunc;
-    transform: ComponentPluginTransformFunc;
+    transformers: {
+      root: string;
+      list: Record<string, ComponentPluginTransformFunc>;
+    };
   };
 }
 

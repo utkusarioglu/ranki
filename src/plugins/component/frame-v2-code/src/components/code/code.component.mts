@@ -1,6 +1,8 @@
 import type { ComponentPluginComponent } from "@ranki/package-api-v2";
 import { placeholder } from "../../placeholder.mjs";
-import { v2_fp } from "./code.transformer.mjs";
+import { transformList } from "./code.transformer.mjs";
+// import { v2_fp } from "../../transfor/code.transformer.mjs";
+// import { transform } from "../../transformers/main.mjs";
 
 export const codeComponent: ComponentPluginComponent = {
   chain: ["frame", "v2", "computer_science", "code", "block"],
@@ -41,6 +43,9 @@ export const codeComponent: ComponentPluginComponent = {
       },
     },
     validator: placeholder,
-    transform: v2_fp,
+    transformers: {
+      root: "",
+      list: transformList,
+    },
   },
 };

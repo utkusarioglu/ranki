@@ -118,43 +118,6 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
       renderer: () => import("./code/section.mjs").then((i) => i.codeSection),
     },
 
-    // {
-    //   tag: ["frame", "v2", "math", "latex", "block", "container"].join("."),
-    //   engine: "vanilla-js",
-    //   load: "static",
-    //   renderer: latexRenderer,
-    // },
-    // {
-    //   tag: ["frame", "v2", "math", "latex", "block", "section"].join("."),
-    //   engine: "vanilla-js",
-    //   load: "lazy",
-    //   renderer: () => import("./latex/section.mjs").then((i) => i.latexSection),
-    // },
-
-    // {
-    //   tag: "div",
-    //   engine: "vanilla-js",
-    //   load: "static",
-    //   renderer: async (t) => {
-    //     if (t.kind !== "parent") {
-    //       throw new Error("DIV KIND HAS TO BE A PARENT");
-    //     }
-    //     const container = document.createElement("div");
-    //     container.style.paddingLeft = "0.5em";
-    //     container.style.borderLeft = "1px solid gray";
-    //     const children = document.createElement("div");
-    //     container.className = "div-container";
-    //     container.appendChild(children);
-    //     return {
-    //       element: container,
-    //       slots: {
-    //         children,
-    //       },
-    //       // onLoad: () => {},
-    //     };
-    //   },
-    // },
-
     {
       tag: "paragraph",
       engine: "vanilla-js",
@@ -162,6 +125,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
       renderer: async (t) => {
         assertTransformParent(t);
         const element = document.createElement("p");
+        element.style.marginBlock = "1em";
         element.classList.add(t.creator);
         element.classList.add("base-v2");
 
@@ -207,7 +171,6 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
       tag: "base.v2.decorated_base",
       engine: "vanilla-js",
       load: "static",
-      // @ts-expect-error
       renderer: async (t) => {
         assertTransformParent(t);
         const element = document.createDocumentFragment();
@@ -286,13 +249,11 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
     },
 
     {
-      tag: "html.primitive.anchor.basic",
+      tag: "html.primitive.anchor.basic.container",
       engine: "vanilla-js",
       load: "static",
       renderer: async (t) => {
-        if (t.kind === "parent") {
-          throw new Error("Anchor CANNOT BE A PARENT");
-        }
+        assertTransformParent(t);
 
         const values = t.params
           .filter(({ key }) => key === "positional")
@@ -303,12 +264,15 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
         const href = values[0].raw;
 
         const container = document.createElement("a");
-        container.target = "_blank";
         container.href = href;
-        container.innerText = t.source.raw;
+        const children = document.createElement("span");
+        container.appendChild(children);
 
         return {
           element: container,
+          slots: {
+            children,
+          },
           // onLoad: () => {},
         };
       },

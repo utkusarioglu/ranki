@@ -23,7 +23,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
 
     const parentContext = frameConfigContext
       .newChild(this, "block")
-      .newTransformerBoundary({
+      .newComponentBoundary({
         handler: frameConfig.type,
         // !fix I don't like this
         chain: frameConfig.chainList[0],
@@ -64,7 +64,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const context = c(this).newChild(this, "block");
     const frameConfig: NodeArgsFrameV2ConfigP =
       v2FrameConfig.v2FrameConfig(context);
-    context.newTransformerBoundary({
+    context.newComponentBoundary({
       handler: frameConfig.type,
       chain: frameConfig.chainList[0],
       params: frameConfig.params.items,

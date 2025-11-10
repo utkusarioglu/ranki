@@ -2528,6 +2528,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/plugin-component-frame-v2-code", "workspace:src/plugins/component/frame-v2-code"],\
+          ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\

@@ -8,41 +8,24 @@ import {
   assertValidationSingleChild,
 } from "@ranki/package-api-v2/helpers";
 
-const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
-  assertValidationParent(v);
-  return v.context.newTransformNode(v, [
-    {
-      kind: "leaf",
-      tag: ["frame", "v2", "math", "latex", "block", "section"].join("."),
-      hoist: 0,
-      params: v.plugins.transformer.params,
-      source: {
-        type: "raw",
-        raw: v.source.raw,
-      },
-    },
-  ]);
-};
-
-const v2PayloadSection: ComponentPluginTransformFunc = (v) => {
+export const v2PayloadSection: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
   const all = v.context.parseTransform(v.children);
   assertTransformExists(all);
   return v.context.newTransformNode(v, all);
 };
 
-const pausedContainer: ComponentPluginTransformFunc = (v) => {
+export const pausedContainer: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
   const children = v.context.parseTransform(v.children);
   assertTransformExists(children);
   children.forEach((t) => {
     t.hoist = v.shape.hoist;
   });
-  const end = v.context.newTransformNode(v, children);
-  return end;
+  return v.context.newTransformNode(v, children);
 };
 
-const v2_fp: ComponentPluginTransformFunc = (v) => {
+export const v2_fpCommon: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
   assertValidationSingleChild(v);
   const v2Payload = v.children[0] as ValidationNodeParent;
@@ -53,21 +36,5 @@ const v2_fp: ComponentPluginTransformFunc = (v) => {
   const all = v.context.parseTransform(v2PayloadSections);
   assertTransformExists(all);
   const children = v.context.newTransformNode(v, all);
-
-  const code = v.context.newTransformNode(v, [
-    {
-      tag: ["frame", "v2", "math", "latex", "block", "container"].join("."),
-      kind: "parent",
-      hoist: 0,
-      children,
-    },
-  ]);
-  return code;
-};
-
-export const transformList = {
-  v2_fp,
-  pausedContainer,
-  v2PayloadPlain,
-  v2PayloadSection,
+  return children;
 };

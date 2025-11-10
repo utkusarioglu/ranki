@@ -1,8 +1,10 @@
 {
+  "extends": "@ranki/config-typescript/tsconfig.utils.json",
   "compilerOptions": {
-    "rootDir": "src",
     "outDir": "lib",
-    "declarationDir": "types"
+    "rootDir": "src",
+    "declarationDir": "types",
+    "skipLibCheck": true
   },
-  "include": ["src/*"]
+  "include": ["src/**/*"]
 }

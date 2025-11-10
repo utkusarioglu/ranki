@@ -1,3 +1,10 @@
+--- py and a
+[code, "python"
+[a, "https://hello.com"|hi]
+def hello():
+  print("hellooo")
+
+
 --- Math and code
 # f sad 1 fsd 123
 

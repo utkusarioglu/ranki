@@ -6,7 +6,13 @@ import type { ParseNodeFrameV2 } from "../types/node.mjs";
 
 export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
   block_v2(indentation, v2, wi, _ender) {
-    const context = c(this).newChild(this, "block");
+    const context = c(this)
+      .newChild(this, "block")
+      .newComponentBoundary({
+        handler: "RankiFrameV2",
+        chain: ["frame", "v2", "block"],
+        params: [],
+      });
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
@@ -177,26 +183,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
       {
         hoist,
         subtree: {},
-        children: [
-          child.root,
-          // (() => {
-          //   const leafContext = parentContext.newChild(this, "inline");
-          //   return leafContext.newAstNode<AstNodeLeafReduced, ParseNodeFrameV2>(
-          //     {
-          //       kind: "leaf",
-          //       print: true,
-          //       shape: {
-          //         spaces: {},
-          //         separators: [],
-          //       },
-          //       source: {
-          //         type: "raw",
-          //         raw: pausedPayload.sourceString,
-          //       },
-          //     },
-          //   );
-          // })(),
-        ],
+        children: [child.root],
       },
     );
   },

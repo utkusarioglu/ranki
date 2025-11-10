@@ -38,7 +38,7 @@ export interface RankiRenderNodeCssSpec {
 export type RankiRenderNodeOnLoadCallback = () => Promise<void>;
 
 export type RankiRenderNode = {
-  element: HTMLElement;
+  element: HTMLElement | DocumentFragment | Text;
   css?: RankiRenderNodeCssSpec[];
   slots?: {
     children: HTMLElement;
