@@ -49,6 +49,7 @@ function wrapPromise(promise: Promise<RenderFunctionReturn[]>) {
 interface AsyncHTMLElementProps {
   promise: ReturnType<typeof wrapPromise>;
   height: number;
+  width: number;
   setHeight: Dispatch<SetStateAction<number>>;
   name: string;
   colorScheme: string;
@@ -58,6 +59,7 @@ interface AsyncHTMLElementProps {
 const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
   promise,
   height,
+  width,
   setHeight,
   name,
   colorScheme,
@@ -73,7 +75,7 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
 
     const message = (e: MessageEvent<any>) => {
       if (e.data.type === `resize-${name}`) {
-        setHeight(+e.data.height);
+        setHeight(e.data.height);
       }
     };
 
@@ -84,9 +86,10 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
       sc.className = name + "-observer";
       sc.innerText = `
       const observer = new ResizeObserver(() => {
-      window.parent.postMessage({
-        type: "resize-${name}",
-        height: document.body.scrollHeight
+        const rect = document.body.getBoundingClientRect();
+        window.parent.postMessage({
+          type: "resize-${name}",
+          height: rect.height + rect.y,
         }, '*');
       });
       observer.observe(document.body);
@@ -95,12 +98,17 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
     }
 
     contentDocument.body.style = Object.entries({
-      display: "grid",
+      // display: "grid",
+      margin: 0,
+      padding: 0,
+      // height: "max-content",
+      // width: "max-content",
       overflow: "hidden",
       "justify-content": "center",
       "align-items": "center",
       "font-family": "Arial, Helvetica, sans-serif",
       color: colorScheme === "dark" ? "white" : "black",
+      // border: "2px solid red",
     })
       .map((p) => p.join(": "))
       .join("; ");
@@ -130,7 +138,7 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
 
   return (
     <iframe
-      style={{ height }}
+      style={{ height, width }}
       className={[style.native, name].join(" ")}
       ref={ref}
     />
@@ -140,9 +148,14 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
 interface AsyncRenderProps {
   items: TransformNode[];
   options: RenderClientOptions;
+  width: number;
 }
 
-export const AsyncRender: FC<AsyncRenderProps> = ({ items, options }) => {
+export const AsyncRender: FC<AsyncRenderProps> = ({
+  items,
+  options,
+  width,
+}) => {
   const promise = useMemo(
     () => wrapPromise(Render.render(items, options)),
     [items, options],
@@ -171,6 +184,7 @@ export const AsyncRender: FC<AsyncRenderProps> = ({ items, options }) => {
         <AsyncHTMLElement
           promise={promise}
           height={height}
+          width={width}
           setHeight={setHeight}
           name={name}
           colorScheme={options.scheme}

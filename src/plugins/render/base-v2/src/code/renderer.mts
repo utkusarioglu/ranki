@@ -72,9 +72,9 @@ export const codeRenderer: RankiRenderPluginItemRenderFunction = async (
         await new Promise((r) => setTimeout(r, 1e3));
         let val = 0;
         const grow = () => {
-          val += 0.2;
-          element.style.translate = (Math.sin(val) * 20).toString() + "px";
-          if (val < Math.PI * 3) {
+          val += 0.03;
+          element.style.opacity = val.toString();
+          if (val < 1) {
             window.requestAnimationFrame(grow);
           }
         };

@@ -17,6 +17,7 @@ export const ComponentRenderer: FC<ComponentRendererProps> = ({
   options,
 }) => {
   const [showParts, setShowParts] = useState(false);
+  const [width, setWidth] = useState(200);
   return (
     <div className={style.container}>
       {Object.entries(parsed.theaters).map(([theater, o]) => {
@@ -35,8 +36,27 @@ export const ComponentRenderer: FC<ComponentRendererProps> = ({
             </hgroup>
             {customPath !== "" ? <h2>{customPath}</h2> : null}
 
-            <div className={style.nativePreviewContainer}>
-              <AsyncRender items={o.stages.transform} options={options} />
+            <div
+              className={style.nativePreviewContainer}
+              // style={{ width: width + "px" }}
+            >
+              <div className={style.nativePreviewContainerInner}>
+                <AsyncRender
+                  items={o.stages.transform}
+                  options={options}
+                  width={width}
+                />
+              </div>
+            </div>
+
+            <div>
+              <input
+                type="range"
+                min={100}
+                defaultValue={width}
+                max={1000}
+                onChange={(e) => setWidth(+e.target.value)}
+              />
             </div>
 
             {showParts ? (

@@ -2,9 +2,6 @@
   padding: 1em;
 }
 
-.theater {
-}
-
 .hgroup {
   padding-bottom: 1em;
 }
@@ -15,6 +12,17 @@
 
 .nativePreviewContainer {
   background-color: var(--bg-4);
-  padding: 1em;
+  box-sizing: content-box;
+  /* padding: 1em; */
   margin-bottom: 1em;
+  /* width: max-content; */
+  height: max-content;
+  display: grid;
+  justify-content: center;
+  /* padding-inline: 1em; */
+}
+
+.nativePreviewContainerInner {
+  border-inline: 2px dashed var(--bg-1);
+  padding: 1em;
 }
