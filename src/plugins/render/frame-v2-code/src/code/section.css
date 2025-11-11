@@ -1,0 +1,39 @@
+.code-block {
+  &.section {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+
+    &::-webkit-scrollbar {
+      appearance: none;
+    }
+    &::-webkit-scrollbar-track {
+      width: 1px;
+    }
+  }
+
+  & .horizontal-scroller {
+    display: flex;
+  }
+
+  & .line-numbers {
+    font-family: monospace;
+    font-size: 13px;
+    color: gray;
+    white-space: pre;
+  }
+
+  & pre,
+  & code {
+    margin: 0;
+    padding: 0;
+  }
+
+  & pre {
+    padding-inline: 1em;
+    scroll-snap-stop: always;
+    scroll-snap-align: start end;
+    min-width: 100vw;
+    margin-inline-start: 0.2em;
+  }
+}

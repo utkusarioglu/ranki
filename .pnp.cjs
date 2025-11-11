@@ -55,6 +55,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/plugins/component/base-v2"\
     },\
     {\
+      "name": "@ranki/plugin-component-frame-v2",\
+      "reference": "workspace:src/plugins/component/frame-v2"\
+    },\
+    {\
       "name": "@ranki/plugin-component-frame-v2-code",\
       "reference": "workspace:src/plugins/component/frame-v2-code"\
     },\
@@ -99,6 +103,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/plugins/render/base-v2"\
     },\
     {\
+      "name": "@ranki/plugin-render-frame-v2-code",\
+      "reference": "workspace:src/plugins/render/frame-v2-code"\
+    },\
+    {\
       "name": "@ranki/plugin-render-frame-v2-latex",\
       "reference": "workspace:src/plugins/render/frame-v2-latex"\
     }\
@@ -117,6 +125,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/package-rankilang-v2", ["workspace:src/packages/rankilang-v2"]],\
     ["@ranki/package-render-v2", ["workspace:src/packages/render-v2"]],\
     ["@ranki/plugin-component-base-v2-default", ["workspace:src/plugins/component/base-v2"]],\
+    ["@ranki/plugin-component-frame-v2", ["workspace:src/plugins/component/frame-v2"]],\
     ["@ranki/plugin-component-frame-v2-code", ["workspace:src/plugins/component/frame-v2-code"]],\
     ["@ranki/plugin-component-frame-v2-latex", ["workspace:src/plugins/component/frame-v2-latex"]],\
     ["@ranki/plugin-grammar-constants-v2", ["workspace:src/plugins/grammar/constants-v2"]],\
@@ -128,6 +137,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/plugin-parser-frame-v1", ["workspace:src/plugins/parser/frame-v1"]],\
     ["@ranki/plugin-parser-frame-v2", ["workspace:src/plugins/parser/frame-v2"]],\
     ["@ranki/plugin-render-base-v2", ["workspace:src/plugins/render/base-v2"]],\
+    ["@ranki/plugin-render-frame-v2-code", ["workspace:src/plugins/render/frame-v2-code"]],\
     ["@ranki/plugin-render-frame-v2-latex", ["workspace:src/plugins/render/frame-v2-latex"]],\
     ["@ranki/root", ["workspace:."]]\
   ],\
@@ -2411,6 +2421,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-rankilang-v2", "workspace:src/packages/rankilang-v2"],\
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
           ["@ranki/plugin-component-base-v2-default", "workspace:src/plugins/component/base-v2"],\
+          ["@ranki/plugin-component-frame-v2", "workspace:src/plugins/component/frame-v2"],\
           ["@ranki/plugin-component-frame-v2-code", "workspace:src/plugins/component/frame-v2-code"],\
           ["@ranki/plugin-component-frame-v2-latex", "workspace:src/plugins/component/frame-v2-latex"],\
           ["@ranki/plugin-grammar-constants-v2", "workspace:src/plugins/grammar/constants-v2"],\
@@ -2422,6 +2433,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/plugin-parser-frame-v1", "workspace:src/plugins/parser/frame-v1"],\
           ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
           ["@ranki/plugin-render-base-v2", "workspace:src/plugins/render/base-v2"],\
+          ["@ranki/plugin-render-frame-v2-code", "workspace:src/plugins/render/frame-v2-code"],\
           ["@ranki/plugin-render-frame-v2-latex", "workspace:src/plugins/render/frame-v2-latex"],\
           ["@types/prismjs", "npm:1.26.5"],\
           ["@types/react", "npm:19.1.13"],\
@@ -2521,6 +2533,19 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
+    ["@ranki/plugin-component-frame-v2", [\
+      ["workspace:src/plugins/component/frame-v2", {\
+        "packageLocation": "./src/plugins/component/frame-v2/",\
+        "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/plugin-component-frame-v2", "workspace:src/plugins/component/frame-v2"],\
+          ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
     ["@ranki/plugin-component-frame-v2-code", [\
       ["workspace:src/plugins/component/frame-v2-code", {\
         "packageLocation": "./src/plugins/component/frame-v2-code/",\
@@ -2541,6 +2566,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/plugin-component-frame-v2-latex", "workspace:src/plugins/component/frame-v2-latex"],\
+          ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
@@ -2674,10 +2700,27 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
           ["@ranki/plugin-render-base-v2", "workspace:src/plugins/render/base-v2"],\
           ["@types/node", "npm:24.5.2"],\
+          ["ohm-js", "npm:17.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/plugin-render-frame-v2-code", [\
+      ["workspace:src/plugins/render/frame-v2-code", {\
+        "packageLocation": "./src/plugins/render/frame-v2-code/",\
+        "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
+          ["@ranki/plugin-render-frame-v2-code", "workspace:src/plugins/render/frame-v2-code"],\
+          ["@types/node", "npm:24.5.2"],\
           ["@types/prismjs", "npm:1.26.5"],\
+          ["concurrently", "npm:9.2.1"],\
           ["ohm-js", "npm:17.2.1"],\
           ["prismjs", "npm:1.30.0"],\
-          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vite", "virtual:2df575e1538e88a6a59db4ac4a439d2de68f6e3f154aed257c6e9865f65c89bc4a789646fbcb72a57c0e787b28c0b5fea2bdd8d202805df94f97b99eeba25e64#npm:7.2.2"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -2691,9 +2734,11 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
           ["@ranki/plugin-render-frame-v2-latex", "workspace:src/plugins/render/frame-v2-latex"],\
           ["@types/node", "npm:24.5.2"],\
+          ["concurrently", "npm:9.2.1"],\
           ["mathjax-full", "npm:3.2.2"],\
           ["ohm-js", "npm:17.2.1"],\
-          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vite", "virtual:2df575e1538e88a6a59db4ac4a439d2de68f6e3f154aed257c6e9865f65c89bc4a789646fbcb72a57c0e787b28c0b5fea2bdd8d202805df94f97b99eeba25e64#npm:7.2.2"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -4877,6 +4922,21 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/dev/.yarn/berry/cache/concat-map-npm-0.0.1-85a921b7ee-10c0.zip/node_modules/concat-map/",\
         "packageDependencies": [\
           ["concat-map", "npm:0.0.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["concurrently", [\
+      ["npm:9.2.1", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/concurrently-npm-9.2.1-695cfd169a-10c0.zip/node_modules/concurrently/",\
+        "packageDependencies": [\
+          ["chalk", "npm:4.1.2"],\
+          ["concurrently", "npm:9.2.1"],\
+          ["rxjs", "npm:7.8.2"],\
+          ["shell-quote", "npm:1.8.3"],\
+          ["supports-color", "npm:8.1.1"],\
+          ["tree-kill", "npm:1.2.2"],\
+          ["yargs", "npm:17.7.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -8720,6 +8780,16 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["rxjs", [\
+      ["npm:7.8.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/rxjs-npm-7.8.2-80ecda9013-10c0.zip/node_modules/rxjs/",\
+        "packageDependencies": [\
+          ["rxjs", "npm:7.8.2"],\
+          ["tslib", "npm:2.8.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["safer-buffer", [\
       ["npm:2.1.2", {\
         "packageLocation": "../home/dev/.yarn/berry/cache/safer-buffer-npm-2.1.2-8d5c0b705e-10c0.zip/node_modules/safer-buffer/",\
@@ -8782,6 +8852,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/dev/.yarn/berry/cache/shebang-regex-npm-3.0.0-899a0cd65e-10c0.zip/node_modules/shebang-regex/",\
         "packageDependencies": [\
           ["shebang-regex", "npm:3.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["shell-quote", [\
+      ["npm:1.8.3", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/shell-quote-npm-1.8.3-b29f851134-10c0.zip/node_modules/shell-quote/",\
+        "packageDependencies": [\
+          ["shell-quote", "npm:1.8.3"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9195,6 +9274,15 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["is-number", "npm:7.0.0"],\
           ["to-regex-range", "npm:5.0.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["tree-kill", [\
+      ["npm:1.2.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/tree-kill-npm-1.2.2-3da0e5a759-10c0.zip/node_modules/tree-kill/",\
+        "packageDependencies": [\
+          ["tree-kill", "npm:1.2.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9630,6 +9718,71 @@ const RAW_RUNTIME_STATE =
           ["vite", "npm:7.1.7"]\
         ],\
         "linkType": "SOFT"\
+      }],\
+      ["npm:7.2.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/vite-npm-7.2.2-7a1f855c04-10c0.zip/node_modules/vite/",\
+        "packageDependencies": [\
+          ["vite", "npm:7.2.2"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:2df575e1538e88a6a59db4ac4a439d2de68f6e3f154aed257c6e9865f65c89bc4a789646fbcb72a57c0e787b28c0b5fea2bdd8d202805df94f97b99eeba25e64#npm:7.2.2", {\
+        "packageLocation": "./.yarn/__virtual__/vite-virtual-548d467a1c/2/home/dev/.yarn/berry/cache/vite-npm-7.2.2-7a1f855c04-10c0.zip/node_modules/vite/",\
+        "packageDependencies": [\
+          ["@types/jiti", null],\
+          ["@types/less", null],\
+          ["@types/lightningcss", null],\
+          ["@types/node", "npm:24.5.2"],\
+          ["@types/sass", null],\
+          ["@types/sass-embedded", null],\
+          ["@types/stylus", null],\
+          ["@types/sugarss", null],\
+          ["@types/terser", null],\
+          ["@types/tsx", null],\
+          ["@types/yaml", null],\
+          ["esbuild", "npm:0.25.8"],\
+          ["fdir", "virtual:0e783aadbd2b4b8e6f6056033c0b290501892d23bc7c5dad5477e00e48ad8bd3e4434c3962a52dd75a58e06dbb7218094a494bac954ef2f7f6fdb65d9717e5f4#npm:6.5.0"],\
+          ["fsevents", "patch:fsevents@npm%3A2.3.3#optional!builtin<compat/fsevents>::version=2.3.3&hash=df0bf1"],\
+          ["jiti", null],\
+          ["less", null],\
+          ["lightningcss", null],\
+          ["picomatch", "npm:4.0.3"],\
+          ["postcss", "npm:8.5.6"],\
+          ["rollup", "npm:4.52.2"],\
+          ["sass", null],\
+          ["sass-embedded", null],\
+          ["stylus", null],\
+          ["sugarss", null],\
+          ["terser", null],\
+          ["tinyglobby", "npm:0.2.15"],\
+          ["tsx", null],\
+          ["vite", "virtual:2df575e1538e88a6a59db4ac4a439d2de68f6e3f154aed257c6e9865f65c89bc4a789646fbcb72a57c0e787b28c0b5fea2bdd8d202805df94f97b99eeba25e64#npm:7.2.2"],\
+          ["yaml", null]\
+        ],\
+        "packagePeers": [\
+          "@types/jiti",\
+          "@types/less",\
+          "@types/lightningcss",\
+          "@types/node",\
+          "@types/sass-embedded",\
+          "@types/sass",\
+          "@types/stylus",\
+          "@types/sugarss",\
+          "@types/terser",\
+          "@types/tsx",\
+          "@types/yaml",\
+          "jiti",\
+          "less",\
+          "lightningcss",\
+          "sass-embedded",\
+          "sass",\
+          "stylus",\
+          "sugarss",\
+          "terser",\
+          "tsx",\
+          "yaml"\
+        ],\
+        "linkType": "HARD"\
       }],\
       ["virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:7.0.6", {\
         "packageLocation": "./.yarn/__virtual__/vite-virtual-7e6a9f1503/2/home/dev/.yarn/berry/cache/vite-npm-7.0.6-be57657245-10c0.zip/node_modules/vite/",\

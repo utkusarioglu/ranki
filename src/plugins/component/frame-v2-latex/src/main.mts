@@ -3,7 +3,7 @@ import { latexComponent } from "./components/latex/latex.component.mjs";
 
 export const rankiFrameV2ComponentsPluginLatex: RankiPluginComponent = {
   meta: {
-    name: "RankiFrameV2Latex",
+    name: "RankiFrameV2:Latex",
     version: "0.0.0",
   },
   handler: "RankiFrameV2",

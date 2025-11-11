@@ -19,7 +19,7 @@ const defaultOptions = {
   display: true,
   em: 16,
   ex: 8,
-  containerWidth: 80 * 16,
+  // containerWidth: 80 * 16,
 };
 
 // Render LaTeX → SVG string

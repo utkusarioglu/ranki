@@ -1,6 +1,13 @@
 .layout {
   display: grid;
-  grid-template-columns: clamp(200px, 30vw, 400px) 1fr;
+  grid-template-columns: 0 1fr;
+}
+
+@media (min-width: 800px) {
+  .layout {
+    display: grid;
+    grid-template-columns: clamp(200px, 30vw, 400px) 1fr;
+  }
 }
 
 .loading {

@@ -1,3 +1,40 @@
+--- Math and code and inline
+# f sad 1 fsd 123 [latex|\textstyle \dfrac{1}{2}]
+
+[latex
+\dfrac{1}{x + 3}
+,,
+cad
+,,
+\begin{bmatrix}
+1 & 2 & 3 \\
+0 & 4 & 5 \\
+0 & 0 & 6
+\end{bmatrix}
+,, 
+also this one
+,,
+\rho \left( \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla)\mathbf{u} \right)
+= -\nabla p + \mu \nabla^2 \mathbf{u} + \mathbf{f}
+]
+
+[code, "python"
+import cat
+
+cat.print("hello")
+]
+
+[code, "javascript"
+class Cat {
+  private meow() {
+    return "stoopid human";
+  }
+}
+]
+
+extra text!
+
+
 --- py and a
 [code, "python"
 [a, "https://hello.com"|hi]

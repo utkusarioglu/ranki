@@ -1,5 +1,5 @@
 {
-  "name": "@ranki/plugin-component-frame-v2-latex",
+  "name": "@ranki/plugin-component-frame-v2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,13 +12,13 @@
     "@ranki/package-api-v2": "workspace:^",
     "typescript": "^5.8.3"
   },
-  "dependencies": {
-    "@ranki/plugin-parser-frame-v2": "workspace:^"
-  },
   "exports": {
     ".": {
       "types": "./types/main.mjs",
       "default": "./lib/main.mjs"
     }
+  },
+  "dependencies": {
+    "@ranki/plugin-parser-frame-v2": "workspace:^"
   }
 }

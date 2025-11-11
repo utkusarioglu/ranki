@@ -1,5 +1,5 @@
 import type { RankiPluginRenderer } from "@ranki/package-render-v2";
-import { codeRenderer } from "./code/renderer.mjs";
+// import { codeRenderer } from "./code/renderer.mjs";
 import {
   assertTransformLeaf,
   assertTransformParent,
@@ -12,40 +12,6 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
     version: "0.0.0",
   },
   items: [
-    // {
-    //   tag: "anki.titled-frame",
-    //   engine: "vanilla-js",
-    //   load: "static",
-    //   renderer: async (t, options) => {
-    //     const darkMode = options.scheme === "dark";
-    //     const container = document.createElement("div");
-    //     container.style.backgroundColor = darkMode ? "#151515" : "#CCC";
-
-    //     const hud = document.createElement("div");
-    //     hud.style.fontSize = "0.8em";
-    //     hud.style.borderBottomRightRadius = "1em";
-
-    //     const langName = document.createElement("span");
-    //     // @ts-expect-error
-    //     langName.innerText = t.params.title || "!!!NO TITLE!!!";
-    //     hud.style.backgroundColor = "#202020";
-    //     hud.style.paddingInline = "1em";
-    //     hud.style.paddingBlock = "0.5em";
-    //     hud.style.width = "max-content";
-    //     hud.appendChild(langName);
-    //     container.appendChild(hud);
-    //     const children = document.createElement("div");
-    //     container.appendChild(children);
-
-    //     return {
-    //       element: container,
-    //       slots: {
-    //         children,
-    //       },
-    //     };
-    //   },
-    // },
-
     {
       tag: "span",
       engine: "vanilla-js",
@@ -103,19 +69,6 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
           // onLoad: () => {},
         };
       },
-    },
-
-    {
-      tag: "computer_science.code.block.container",
-      engine: "vanilla-js",
-      load: "static",
-      renderer: codeRenderer,
-    },
-    {
-      tag: "computer_science.code.block.section",
-      engine: "vanilla-js",
-      load: "lazy",
-      renderer: () => import("./code/section.mjs").then((i) => i.codeSection),
     },
 
     {

@@ -1,0 +1,62 @@
+@media (pointer: coarse) {
+  .latex-block {
+    &.line-container {
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+
+      &::-webkit-scrollbar {
+        appearance: none;
+      }
+      &::-webkit-scrollbar-track {
+        width: none;
+      }
+    }
+
+    /* &.line-number {
+      padding-inline-start: 1em;
+    } */
+
+    & .equation-container {
+      scroll-snap-align: start end;
+      scroll-snap-stop: always;
+      /* min-width: auto; */
+    }
+
+    & .equation::after {
+      content: "";
+      display: inline-block;
+      height: 1px;
+    }
+
+    & .equation {
+      padding-inline: 1em;
+      min-width: 100vw;
+      box-sizing: border-box;
+    }
+  }
+}
+
+.latex-block {
+  & .horizontal-scroll {
+    display: flex;
+    align-items: center;
+  }
+
+  & .equation-container {
+    flex-grow: 1;
+    /* min-width: 100vw; */
+  }
+
+  & .line-number {
+    color: gray;
+    margin-inline-end: 0.2em;
+    padding-inline-start: 1em;
+    /* padding-inline-end: 1em; */
+    flex-grow: 0;
+    font-size: 0.8em;
+  }
+
+  & .equation {
+    text-align: center;
+  }
+}

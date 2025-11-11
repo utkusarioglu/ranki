@@ -1,10 +1,10 @@
 import type { RankiPluginRenderer } from "@ranki/package-render-v2";
-import { latexRenderer } from "./latex/renderer.mjs";
+import { latexContainer } from "./latex/container.mjs";
 
 export const renderPluginFrameV2Latex: RankiPluginRenderer = {
   type: "renderer",
   meta: {
-    name: "FrameV2Latex",
+    name: "FrameV2:Latex",
     version: "0.0.0",
   },
   items: [
@@ -12,7 +12,7 @@ export const renderPluginFrameV2Latex: RankiPluginRenderer = {
       tag: ["frame", "v2", "math", "latex", "block", "container"].join("."),
       engine: "vanilla-js",
       load: "static",
-      renderer: latexRenderer,
+      renderer: latexContainer,
     },
     {
       tag: ["frame", "v2", "math", "latex", "block", "section"].join("."),
