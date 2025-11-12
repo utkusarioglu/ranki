@@ -18,6 +18,12 @@ class Cat {
 }
 ]
 
+[flowchart
+  markdown
+  newLines
+  markdown --> newLines
+]
+
 extra text!
 
 

@@ -15,7 +15,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@antfu/install-pkg@npm:^1.0.0":
+"@antfu/install-pkg@npm:^1.0.0, @antfu/install-pkg@npm:^1.1.0":
   version: 1.1.0
   resolution: "@antfu/install-pkg@npm:1.1.0"
   dependencies:
@@ -29,6 +29,13 @@ __metadata:
   version: 8.1.1
   resolution: "@antfu/utils@npm:8.1.1"
   checksum: 10c0/cd55d322496f0324323a7bd312bbdc305db02f5c74c53d59213a00a7ecfd66926b6755a41f27c6e664a687cd7a967d3a8b12d3ea57f264ae45dd1c5c181f5160
+  languageName: node
+  linkType: hard
+
+"@antfu/utils@npm:^9.2.0":
+  version: 9.3.0
+  resolution: "@antfu/utils@npm:9.3.0"
+  checksum: 10c0/69135a94c8cc8f48b19d6e81ec53b6997f306fd8688d759e298fa9216779b76e86f5947d7917eccf10d6d000516d5efd3120bf23cbe0c770c9454a36e8a18a3f
   languageName: node
   linkType: hard
 
@@ -532,7 +539,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@braintree/sanitize-url@npm:^7.0.4":
+"@braintree/sanitize-url@npm:^7.0.4, @braintree/sanitize-url@npm:^7.1.1":
   version: 7.1.1
   resolution: "@braintree/sanitize-url@npm:7.1.1"
   checksum: 10c0/fdfc1759c4244e287693ce1e9d42d649423e7c203fdccf27a571f8951ddfe34baa5273b7e6a8dd3007d7676859c7a0a9819be0ab42a3505f8505ad0eefecf7c1
@@ -931,6 +938,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@iconify/utils@npm:^3.0.1":
+  version: 3.0.2
+  resolution: "@iconify/utils@npm:3.0.2"
+  dependencies:
+    "@antfu/install-pkg": "npm:^1.1.0"
+    "@antfu/utils": "npm:^9.2.0"
+    "@iconify/types": "npm:^2.0.0"
+    debug: "npm:^4.4.1"
+    globals: "npm:^15.15.0"
+    kolorist: "npm:^1.8.0"
+    local-pkg: "npm:^1.1.1"
+    mlly: "npm:^1.7.4"
+  checksum: 10c0/ac9f9362b0d0143dd9861bcc64a0699f607f4f9df902aab3875b06832a89dd6a0e8ba2e1c43e927073a84661bf2882f1c79b5a3159a3cee53570d080b535c12c
+  languageName: node
+  linkType: hard
+
 "@isaacs/cliui@npm:^8.0.2":
   version: 8.0.2
   resolution: "@isaacs/cliui@npm:8.0.2"
@@ -1316,6 +1339,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mermaid-js/parser@npm:^0.6.3":
+  version: 0.6.3
+  resolution: "@mermaid-js/parser@npm:0.6.3"
+  dependencies:
+    langium: "npm:3.3.1"
+  checksum: 10c0/9711174ff31f32d93c8da03ed6b1a1380f5ccfb27ffcdfaf42236da4b381aa0602752b3afc7893582d5ccdfc79b0465c69afe963b825328049575831f4ddd28e
+  languageName: node
+  linkType: hard
+
 "@napi-rs/wasm-runtime@npm:^0.2.11":
   version: 0.2.12
   resolution: "@napi-rs/wasm-runtime@npm:0.2.12"
@@ -1619,6 +1651,7 @@ __metadata:
     "@ranki/plugin-component-frame-v2": "workspace:^"
     "@ranki/plugin-component-frame-v2-code": "workspace:^"
     "@ranki/plugin-component-frame-v2-latex": "workspace:^"
+    "@ranki/plugin-component-frame-v2-mermaid": "workspace:^"
     "@ranki/plugin-grammar-constants-v2": "workspace:^"
     "@ranki/plugin-grammar-params-v2": "workspace:^"
     "@ranki/plugin-grammar-rich-number-v2": "workspace:^"
@@ -1630,6 +1663,7 @@ __metadata:
     "@ranki/plugin-render-base-v2": "workspace:^"
     "@ranki/plugin-render-frame-v2-code": "workspace:^"
     "@ranki/plugin-render-frame-v2-latex": "workspace:^"
+    "@ranki/plugin-render-frame-v2-mermaid": "workspace:^"
     "@types/prismjs": "npm:^1"
     "@types/react": "npm:^19.1.13"
     "@types/react-dom": "npm:^19.1.9"
@@ -1740,6 +1774,17 @@ __metadata:
 "@ranki/plugin-component-frame-v2-latex@workspace:^, @ranki/plugin-component-frame-v2-latex@workspace:src/plugins/component/frame-v2-latex":
   version: 0.0.0-use.local
   resolution: "@ranki/plugin-component-frame-v2-latex@workspace:src/plugins/component/frame-v2-latex"
+  dependencies:
+    "@ranki/config-typescript": "workspace:^"
+    "@ranki/package-api-v2": "workspace:^"
+    "@ranki/plugin-parser-frame-v2": "workspace:^"
+    typescript: "npm:^5.8.3"
+  languageName: unknown
+  linkType: soft
+
+"@ranki/plugin-component-frame-v2-mermaid@workspace:^, @ranki/plugin-component-frame-v2-mermaid@workspace:src/plugins/component/frame-v2-mermaid":
+  version: 0.0.0-use.local
+  resolution: "@ranki/plugin-component-frame-v2-mermaid@workspace:src/plugins/component/frame-v2-mermaid"
   dependencies:
     "@ranki/config-typescript": "workspace:^"
     "@ranki/package-api-v2": "workspace:^"
@@ -1904,7 +1949,22 @@ __metadata:
     "@types/node": "npm:^24.5.2"
     concurrently: "npm:^9.2.1"
     mathjax-full: "npm:^3.2.2"
-    ohm-js: "npm:^17.2.1"
+    typescript: "npm:^5.8.3"
+    vite: "npm:^7.2.2"
+  languageName: unknown
+  linkType: soft
+
+"@ranki/plugin-render-frame-v2-mermaid@workspace:^, @ranki/plugin-render-frame-v2-mermaid@workspace:src/plugins/render/frame-v2-mermaid":
+  version: 0.0.0-use.local
+  resolution: "@ranki/plugin-render-frame-v2-mermaid@workspace:src/plugins/render/frame-v2-mermaid"
+  dependencies:
+    "@ranki/config-typescript": "workspace:^"
+    "@ranki/package-anki-ui": "workspace:^"
+    "@ranki/package-api-v2": "workspace:^"
+    "@ranki/package-render-v2": "workspace:^"
+    "@types/node": "npm:^24.5.2"
+    concurrently: "npm:^9.2.1"
+    mermaid: "npm:^11.12.1"
     typescript: "npm:^5.8.3"
     vite: "npm:^7.2.2"
   languageName: unknown
@@ -4095,10 +4155,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dagre-d3-es@npm:7.0.13":
+  version: 7.0.13
+  resolution: "dagre-d3-es@npm:7.0.13"
+  dependencies:
+    d3: "npm:^7.9.0"
+    lodash-es: "npm:^4.17.21"
+  checksum: 10c0/4eca80dbbad4075311e3853930f99486024785b54210541796d4216140d91744738ee51125e2692c3532af148fbc2e690171750583916ed2ad553150abb198c7
+  languageName: node
+  linkType: hard
+
 "dayjs@npm:^1.11.13":
   version: 1.11.13
   resolution: "dayjs@npm:1.11.13"
   checksum: 10c0/a3caf6ac8363c7dade9d1ee797848ddcf25c1ace68d9fe8678ecf8ba0675825430de5d793672ec87b24a69bf04a1544b176547b2539982275d5542a7955f35b7
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.18":
+  version: 1.11.19
+  resolution: "dayjs@npm:1.11.19"
+  checksum: 10c0/7d8a6074a343f821f81ea284d700bd34ea6c7abbe8d93bce7aba818948957c1b7f56131702e5e890a5622cdfc05dcebe8aed0b8313bdc6838a594d7846b0b000
   languageName: node
   linkType: hard
 
@@ -4895,7 +4972,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^15.14.0":
+"globals@npm:^15.14.0, globals@npm:^15.15.0":
   version: 15.15.0
   resolution: "globals@npm:15.15.0"
   checksum: 10c0/f9ae80996392ca71316495a39bec88ac43ae3525a438b5626cd9d5ce9d5500d0a98a266409605f8cd7241c7acf57c354a48111ea02a767ba4f374b806d6861fe
@@ -5965,6 +6042,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"local-pkg@npm:^1.1.1":
+  version: 1.1.2
+  resolution: "local-pkg@npm:1.1.2"
+  dependencies:
+    mlly: "npm:^1.7.4"
+    pkg-types: "npm:^2.3.0"
+    quansync: "npm:^0.2.11"
+  checksum: 10c0/1bcfcc5528dea95cba3caa478126a348d3985aad9f69ecf7802c13efef90897e1c5ff7851974332c5e6d4a4698efe610fef758a068c8bc3feb5322aeb35d5993
+  languageName: node
+  linkType: hard
+
 "locate-path@npm:^5.0.0":
   version: 5.0.0
   resolution: "locate-path@npm:5.0.0"
@@ -6089,6 +6177,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"marked@npm:^16.2.1":
+  version: 16.4.2
+  resolution: "marked@npm:16.4.2"
+  bin:
+    marked: bin/marked.js
+  checksum: 10c0/fc6051142172454f2023f3d6b31cca92879ec8e1b96457086a54c70354c74b00e1b6543a76a1fad6d399366f52b90a848f6ffb8e1d65a5baff87f3ba9b8f1847
+  languageName: node
+  linkType: hard
+
 "mathjax-full@npm:^3.2.2":
   version: 3.2.2
   resolution: "mathjax-full@npm:3.2.2"
@@ -6112,6 +6209,34 @@ __metadata:
   version: 1.4.1
   resolution: "merge2@npm:1.4.1"
   checksum: 10c0/254a8a4605b58f450308fc474c82ac9a094848081bf4c06778200207820e5193726dc563a0d2c16468810516a5c97d9d3ea0ca6585d23c58ccfff2403e8dbbeb
+  languageName: node
+  linkType: hard
+
+"mermaid@npm:^11.12.1":
+  version: 11.12.1
+  resolution: "mermaid@npm:11.12.1"
+  dependencies:
+    "@braintree/sanitize-url": "npm:^7.1.1"
+    "@iconify/utils": "npm:^3.0.1"
+    "@mermaid-js/parser": "npm:^0.6.3"
+    "@types/d3": "npm:^7.4.3"
+    cytoscape: "npm:^3.29.3"
+    cytoscape-cose-bilkent: "npm:^4.1.0"
+    cytoscape-fcose: "npm:^2.2.0"
+    d3: "npm:^7.9.0"
+    d3-sankey: "npm:^0.12.3"
+    dagre-d3-es: "npm:7.0.13"
+    dayjs: "npm:^1.11.18"
+    dompurify: "npm:^3.2.5"
+    katex: "npm:^0.16.22"
+    khroma: "npm:^2.1.0"
+    lodash-es: "npm:^4.17.21"
+    marked: "npm:^16.2.1"
+    roughjs: "npm:^4.6.6"
+    stylis: "npm:^4.3.6"
+    ts-dedent: "npm:^2.2.0"
+    uuid: "npm:^11.1.0"
+  checksum: 10c0/0dd07a5986bb25ca038f68f7a187a0b6ccf5fa8c738603c3145bd4b6289d50312053818f52617cf575a6652e6c57809ae115c016725f7ce446496be5971a150a
   languageName: node
   linkType: hard
 
@@ -6656,6 +6781,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pkg-types@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "pkg-types@npm:2.3.0"
+  dependencies:
+    confbox: "npm:^0.2.2"
+    exsolve: "npm:^1.0.7"
+    pathe: "npm:^2.0.3"
+  checksum: 10c0/d2bbddc5b81bd4741e1529c08ef4c5f1542bbdcf63498b73b8e1d84cff71806d1b8b1577800549bb569cb7aa20056257677b979bff48c97967cba7e64f72ae12
+  languageName: node
+  linkType: hard
+
 "points-on-curve@npm:0.2.0, points-on-curve@npm:^0.2.0":
   version: 0.2.0
   resolution: "points-on-curve@npm:0.2.0"
@@ -6748,6 +6884,13 @@ __metadata:
   version: 7.0.1
   resolution: "pure-rand@npm:7.0.1"
   checksum: 10c0/9cade41030f5ec95f5d55a11a71404cd6f46b69becaad892097cd7f58e2c6248cd0a933349ca7d21336ab629f1da42ffe899699b671bc4651600eaf6e57f837e
+  languageName: node
+  linkType: hard
+
+"quansync@npm:^0.2.11":
+  version: 0.2.11
+  resolution: "quansync@npm:0.2.11"
+  checksum: 10c0/cb9a1f8ebce074069f2f6a78578873ffedd9de9f6aa212039b44c0870955c04a71c3b1311b5d97f8ac2f2ec476de202d0a5c01160cb12bc0a11b7ef36d22ef56
   languageName: node
   linkType: hard
 

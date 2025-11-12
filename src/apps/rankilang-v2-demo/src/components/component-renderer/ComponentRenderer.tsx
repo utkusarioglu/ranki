@@ -50,13 +50,18 @@ export const ComponentRenderer: FC<ComponentRendererProps> = ({
             </div>
 
             <div>
+              <label htmlFor="width" className="roboto">
+                Width
+              </label>
               <input
+                id="width"
                 type="range"
                 min={100}
                 defaultValue={width}
                 max={1000}
                 onChange={(e) => setWidth(+e.target.value)}
               />
+              <span className="monospace roboto">{width}</span>
             </div>
 
             {showParts ? (

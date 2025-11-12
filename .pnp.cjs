@@ -71,6 +71,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/plugins/component/frame-v2-latex"\
     },\
     {\
+      "name": "@ranki/plugin-component-frame-v2-mermaid",\
+      "reference": "workspace:src/plugins/component/frame-v2-mermaid"\
+    },\
+    {\
       "name": "@ranki/plugin-grammar-constants-v2",\
       "reference": "workspace:src/plugins/grammar/constants-v2"\
     },\
@@ -113,6 +117,10 @@ const RAW_RUNTIME_STATE =
     {\
       "name": "@ranki/plugin-render-frame-v2-latex",\
       "reference": "workspace:src/plugins/render/frame-v2-latex"\
+    },\
+    {\
+      "name": "@ranki/plugin-render-frame-v2-mermaid",\
+      "reference": "workspace:src/plugins/render/frame-v2-mermaid"\
     }\
   ],\
   "enableTopLevelFallback": true,\
@@ -133,6 +141,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/plugin-component-frame-v2", ["workspace:src/plugins/component/frame-v2"]],\
     ["@ranki/plugin-component-frame-v2-code", ["workspace:src/plugins/component/frame-v2-code"]],\
     ["@ranki/plugin-component-frame-v2-latex", ["workspace:src/plugins/component/frame-v2-latex"]],\
+    ["@ranki/plugin-component-frame-v2-mermaid", ["workspace:src/plugins/component/frame-v2-mermaid"]],\
     ["@ranki/plugin-grammar-constants-v2", ["workspace:src/plugins/grammar/constants-v2"]],\
     ["@ranki/plugin-grammar-params-v2", ["workspace:src/plugins/grammar/params-v2"]],\
     ["@ranki/plugin-grammar-rich-number-v2", ["workspace:src/plugins/grammar/rich-number-v2"]],\
@@ -144,6 +153,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/plugin-render-base-v2", ["workspace:src/plugins/render/base-v2"]],\
     ["@ranki/plugin-render-frame-v2-code", ["workspace:src/plugins/render/frame-v2-code"]],\
     ["@ranki/plugin-render-frame-v2-latex", ["workspace:src/plugins/render/frame-v2-latex"]],\
+    ["@ranki/plugin-render-frame-v2-mermaid", ["workspace:src/plugins/render/frame-v2-mermaid"]],\
     ["@ranki/root", ["workspace:."]]\
   ],\
   "fallbackPool": [\
@@ -189,6 +199,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/dev/.yarn/berry/cache/@antfu-utils-npm-8.1.1-1dadb3c836-10c0.zip/node_modules/@antfu/utils/",\
         "packageDependencies": [\
           ["@antfu/utils", "npm:8.1.1"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:9.3.0", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@antfu-utils-npm-9.3.0-07a7919fb8-10c0.zip/node_modules/@antfu/utils/",\
+        "packageDependencies": [\
+          ["@antfu/utils", "npm:9.3.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -1665,6 +1682,21 @@ const RAW_RUNTIME_STATE =
           ["mlly", "npm:1.7.4"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:3.0.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@iconify-utils-npm-3.0.2-ac7c49ac88-10c0.zip/node_modules/@iconify/utils/",\
+        "packageDependencies": [\
+          ["@antfu/install-pkg", "npm:1.1.0"],\
+          ["@antfu/utils", "npm:9.3.0"],\
+          ["@iconify/types", "npm:2.0.0"],\
+          ["@iconify/utils", "npm:3.0.2"],\
+          ["debug", "virtual:643ed7cc338bcf145a82d8b05b3bef6bcf150ca545df386225596f10ce53cc90b88b3ca83e348ade1ccea5f3f8e76c92d2f0e2ba544da60d40aff9921c56872d#npm:4.4.1"],\
+          ["globals", "npm:15.15.0"],\
+          ["kolorist", "npm:1.8.0"],\
+          ["local-pkg", "npm:1.1.2"],\
+          ["mlly", "npm:1.7.4"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["@isaacs/cliui", [\
@@ -2106,6 +2138,14 @@ const RAW_RUNTIME_STATE =
           ["langium", "npm:3.3.1"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:0.6.3", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@mermaid-js-parser-npm-0.6.3-3dd00f0fa6-10c0.zip/node_modules/@mermaid-js/parser/",\
+        "packageDependencies": [\
+          ["@mermaid-js/parser", "npm:0.6.3"],\
+          ["langium", "npm:3.3.1"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["@napi-rs/wasm-runtime", [\
@@ -2429,6 +2469,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/plugin-component-frame-v2", "workspace:src/plugins/component/frame-v2"],\
           ["@ranki/plugin-component-frame-v2-code", "workspace:src/plugins/component/frame-v2-code"],\
           ["@ranki/plugin-component-frame-v2-latex", "workspace:src/plugins/component/frame-v2-latex"],\
+          ["@ranki/plugin-component-frame-v2-mermaid", "workspace:src/plugins/component/frame-v2-mermaid"],\
           ["@ranki/plugin-grammar-constants-v2", "workspace:src/plugins/grammar/constants-v2"],\
           ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
           ["@ranki/plugin-grammar-rich-number-v2", "workspace:src/plugins/grammar/rich-number-v2"],\
@@ -2440,6 +2481,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/plugin-render-base-v2", "workspace:src/plugins/render/base-v2"],\
           ["@ranki/plugin-render-frame-v2-code", "workspace:src/plugins/render/frame-v2-code"],\
           ["@ranki/plugin-render-frame-v2-latex", "workspace:src/plugins/render/frame-v2-latex"],\
+          ["@ranki/plugin-render-frame-v2-mermaid", "workspace:src/plugins/render/frame-v2-mermaid"],\
           ["@types/prismjs", "npm:1.26.5"],\
           ["@types/react", "npm:19.1.13"],\
           ["@types/react-dom", "virtual:56e235665721e97d09a872fed4e209638785440a96a0182c8b7851ddc5b5197c6079e0a6f7acdf0f15cfa65463f170f278a22d104f9a30aae09628eeff3200a9#npm:19.1.9"],\
@@ -2585,6 +2627,19 @@ const RAW_RUNTIME_STATE =
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/plugin-component-frame-v2-latex", "workspace:src/plugins/component/frame-v2-latex"],\
+          ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/plugin-component-frame-v2-mermaid", [\
+      ["workspace:src/plugins/component/frame-v2-mermaid", {\
+        "packageLocation": "./src/plugins/component/frame-v2-mermaid/",\
+        "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/plugin-component-frame-v2-mermaid", "workspace:src/plugins/component/frame-v2-mermaid"],\
           ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
@@ -2757,7 +2812,24 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:24.5.2"],\
           ["concurrently", "npm:9.2.1"],\
           ["mathjax-full", "npm:3.2.2"],\
-          ["ohm-js", "npm:17.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vite", "virtual:2df575e1538e88a6a59db4ac4a439d2de68f6e3f154aed257c6e9865f65c89bc4a789646fbcb72a57c0e787b28c0b5fea2bdd8d202805df94f97b99eeba25e64#npm:7.2.2"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/plugin-render-frame-v2-mermaid", [\
+      ["workspace:src/plugins/render/frame-v2-mermaid", {\
+        "packageLocation": "./src/plugins/render/frame-v2-mermaid/",\
+        "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
+          ["@ranki/plugin-render-frame-v2-mermaid", "workspace:src/plugins/render/frame-v2-mermaid"],\
+          ["@types/node", "npm:24.5.2"],\
+          ["concurrently", "npm:9.2.1"],\
+          ["mermaid", "npm:11.12.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
           ["vite", "virtual:2df575e1538e88a6a59db4ac4a439d2de68f6e3f154aed257c6e9865f65c89bc4a789646fbcb72a57c0e787b28c0b5fea2bdd8d202805df94f97b99eeba25e64#npm:7.2.2"]\
         ],\
@@ -5486,6 +5558,15 @@ const RAW_RUNTIME_STATE =
           ["lodash-es", "npm:4.17.21"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:7.0.13", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/dagre-d3-es-npm-7.0.13-74688ad543-10c0.zip/node_modules/dagre-d3-es/",\
+        "packageDependencies": [\
+          ["d3", "npm:7.9.0"],\
+          ["dagre-d3-es", "npm:7.0.13"],\
+          ["lodash-es", "npm:4.17.21"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["dayjs", [\
@@ -5493,6 +5574,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/dev/.yarn/berry/cache/dayjs-npm-1.11.13-d478bb9479-10c0.zip/node_modules/dayjs/",\
         "packageDependencies": [\
           ["dayjs", "npm:1.11.13"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:1.11.19", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/dayjs-npm-1.11.19-7112eeb750-10c0.zip/node_modules/dayjs/",\
+        "packageDependencies": [\
+          ["dayjs", "npm:1.11.19"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -7631,6 +7719,16 @@ const RAW_RUNTIME_STATE =
           ["quansync", "npm:0.2.10"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:1.1.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/local-pkg-npm-1.1.2-04ade6b6c7-10c0.zip/node_modules/local-pkg/",\
+        "packageDependencies": [\
+          ["local-pkg", "npm:1.1.2"],\
+          ["mlly", "npm:1.7.4"],\
+          ["pkg-types", "npm:2.3.0"],\
+          ["quansync", "npm:0.2.11"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["locate-path", [\
@@ -7770,6 +7868,13 @@ const RAW_RUNTIME_STATE =
           ["marked", "npm:16.1.1"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:16.4.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/marked-npm-16.4.2-80bdca5d9b-10c0.zip/node_modules/marked/",\
+        "packageDependencies": [\
+          ["marked", "npm:16.4.2"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["mathjax-full", [\
@@ -7804,6 +7909,33 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["mermaid", [\
+      ["npm:11.12.1", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/mermaid-npm-11.12.1-c156cc7a90-10c0.zip/node_modules/mermaid/",\
+        "packageDependencies": [\
+          ["@braintree/sanitize-url", "npm:7.1.1"],\
+          ["@iconify/utils", "npm:3.0.2"],\
+          ["@mermaid-js/parser", "npm:0.6.3"],\
+          ["@types/d3", "npm:7.4.3"],\
+          ["cytoscape", "npm:3.32.1"],\
+          ["cytoscape-cose-bilkent", "virtual:86c938ac76707a56b2280975fb75c8a398f2c8ed4059d0c998d02f70aa49a82e1700ee6609702fb0391f89a632165a1939a94ac3417f00048c57e015e9a4d567#npm:4.1.0"],\
+          ["cytoscape-fcose", "virtual:86c938ac76707a56b2280975fb75c8a398f2c8ed4059d0c998d02f70aa49a82e1700ee6609702fb0391f89a632165a1939a94ac3417f00048c57e015e9a4d567#npm:2.2.0"],\
+          ["d3", "npm:7.9.0"],\
+          ["d3-sankey", "npm:0.12.3"],\
+          ["dagre-d3-es", "npm:7.0.13"],\
+          ["dayjs", "npm:1.11.19"],\
+          ["dompurify", "npm:3.2.6"],\
+          ["katex", "npm:0.16.22"],\
+          ["khroma", "npm:2.1.0"],\
+          ["lodash-es", "npm:4.17.21"],\
+          ["marked", "npm:16.4.2"],\
+          ["mermaid", "npm:11.12.1"],\
+          ["roughjs", "npm:4.6.6"],\
+          ["stylis", "npm:4.3.6"],\
+          ["ts-dedent", "npm:2.2.0"],\
+          ["uuid", "npm:11.1.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:11.9.0", {\
         "packageLocation": "../home/dev/.yarn/berry/cache/mermaid-npm-11.9.0-86c938ac76-10c0.zip/node_modules/mermaid/",\
         "packageDependencies": [\
@@ -8403,6 +8535,16 @@ const RAW_RUNTIME_STATE =
           ["pkg-types", "npm:2.2.0"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:2.3.0", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/pkg-types-npm-2.3.0-e7381b4aaa-10c0.zip/node_modules/pkg-types/",\
+        "packageDependencies": [\
+          ["confbox", "npm:0.2.2"],\
+          ["exsolve", "npm:1.0.7"],\
+          ["pathe", "npm:2.0.3"],\
+          ["pkg-types", "npm:2.3.0"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["points-on-curve", [\
@@ -8520,6 +8662,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/dev/.yarn/berry/cache/quansync-npm-0.2.10-f84635960e-10c0.zip/node_modules/quansync/",\
         "packageDependencies": [\
           ["quansync", "npm:0.2.10"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:0.2.11", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/quansync-npm-0.2.11-f7bf964a44-10c0.zip/node_modules/quansync/",\
+        "packageDependencies": [\
+          ["quansync", "npm:0.2.11"]\
         ],\
         "linkType": "HARD"\
       }]\

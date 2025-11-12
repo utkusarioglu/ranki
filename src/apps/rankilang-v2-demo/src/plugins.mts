@@ -10,6 +10,12 @@ import { rankiFrameV2ComponentsPluginCode } from "@ranki/plugin-component-frame-
 import { rankiBaseV2ComponentsPluginDefault } from "@ranki/plugin-component-base-v2-default";
 import { rankiFrameV2ComponentsPluginLatex } from "@ranki/plugin-component-frame-v2-latex";
 import { rankiFrameV2ComponentsPlugin } from "@ranki/plugin-component-frame-v2";
+import { rankiFrameV2ComponentsPluginMermaid } from "@ranki/plugin-component-frame-v2-mermaid";
+import { renderPluginBaseV2Render } from "@ranki/plugin-render-base-v2";
+import { renderPluginFrameV2Latex } from "@ranki/plugin-render-frame-v2-latex";
+import { renderPluginFrameV2Code } from "@ranki/plugin-render-frame-v2-code";
+import { renderPluginFrameV2Mermaid } from "@ranki/plugin-render-frame-v2-mermaid";
+import { Render } from "@ranki/package-render-v2";
 
 export const pluginObjects = [
   rankiBaseV2ParserPlugin,
@@ -27,4 +33,12 @@ export const componentObjects = [
   rankiFrameV2ComponentsPlugin,
   rankiFrameV2ComponentsPluginCode,
   rankiFrameV2ComponentsPluginLatex,
+  rankiFrameV2ComponentsPluginMermaid,
 ];
+
+[
+  renderPluginBaseV2Render,
+  renderPluginFrameV2Latex,
+  renderPluginFrameV2Code,
+  renderPluginFrameV2Mermaid,
+].forEach((p) => Render.addPlugin(p));

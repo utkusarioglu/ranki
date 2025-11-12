@@ -1,13 +1,4 @@
-import { renderPluginBaseV2Render } from "@ranki/plugin-render-base-v2";
-import { renderPluginFrameV2Latex } from "@ranki/plugin-render-frame-v2-latex";
-import { renderPluginFrameV2Code } from "@ranki/plugin-render-frame-v2-code";
 import style from "./async.module.css";
-
-[
-  renderPluginBaseV2Render,
-  renderPluginFrameV2Latex,
-  renderPluginFrameV2Code,
-].forEach((p) => Render.addPlugin(p));
 
 import {
   Render,

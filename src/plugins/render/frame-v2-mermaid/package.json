@@ -1,5 +1,5 @@
 {
-  "name": "@ranki/plugin-render-frame-v2-latex",
+  "name": "@ranki/plugin-render-frame-v2-mermaid",
   "private": true,
   "type": "module",
   "scripts": {
@@ -25,6 +25,6 @@
   },
   "dependencies": {
     "@ranki/package-anki-ui": "workspace:^",
-    "mathjax-full": "^3.2.2"
+    "mermaid": "^11.12.1"
   }
 }
