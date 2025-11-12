@@ -1,6 +1,87 @@
+.horizontal-scroll-container {
+  --thumb-color: var(--scrollbar-thumb-color, #ff0000);
+
+  touch-action: pan-x;
+  overflow-y: hidden;
+  overflow-x: overlay;
+  margin-block-end: -0.5em;
+
+  &::-webkit-scrollbar {
+    appearance: none;
+    height: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    transition: background 1s ease;
+    /* background: transparent;*/
+  }
+
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      background: var(--thumb-color) !important;
+    }
+  }
+}
+
+.horizontal-scroll {
+  padding-block-end: 0.5em;
+  display: flex;
+  align-items: center;
+}
+
+.horizontal-scroll-main-content {
+  flex-grow: 1;
+  padding-inline: 1em;
+  scroll-snap-align: start end;
+  scroll-snap-stop: always;
+}
+
+.horizontal-scroll-hidden-left {
+  flex-grow: 0;
+  margin-inline-end: 0.2em;
+  padding-inline-start: 1em;
+}
+
+.horizontal-scroll-hidden-right {
+  flex-grow: 1;
+  max-width: 1em;
+  margin-inline-end: 0.2em;
+  padding-inline-start: 1em;
+}
+
+@media (pointer: coarse) {
+  .horizontal-scroll-container {
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+
+    &::-webkit-scrollbar {
+      /* appearance: none; */
+      height: 1px;
+    }
+    /* &::-webkit-scrollbar-track {
+      width: none;
+    } */
+  }
+
+  /* &::-webkit-scrollbar {
+    appearance: none;
+  } */
+
+  /* & .horizontal-scroll-main-content::after {
+    content: "";
+    display: inline-block;
+    height: 1px;
+    background-color: red;
+  } */
+}
+
 @media (pointer: coarse) {
   .latex-block {
-    &.line-container {
+    /* &.horizontal-scroll-container {
       overflow-x: scroll;
       scroll-snap-type: x mandatory;
 
@@ -10,26 +91,24 @@
       &::-webkit-scrollbar-track {
         width: none;
       }
-    }
+    } */
 
     /* &.line-number {
       padding-inline-start: 1em;
     } */
 
-    & .equation-container {
-      scroll-snap-align: start end;
-      scroll-snap-stop: always;
-      /* min-width: auto; */
-    }
+    /* & .equation-container { */
+    /* min-width: auto; */
+    /* } */
 
-    & .equation::after {
+    /* & .equation::after {
       content: "";
       display: inline-block;
       height: 1px;
-    }
+    } */
 
     & .equation {
-      padding-inline: 1em;
+      /* padding-inline: 1em; */
       min-width: 100vw;
       box-sizing: border-box;
     }
@@ -37,23 +116,18 @@
 }
 
 .latex-block {
+  /* & .equation-container {
+    flex-grow: 1;
+  } */
+
   & .horizontal-scroll {
     display: flex;
     align-items: center;
   }
 
-  & .equation-container {
-    flex-grow: 1;
-    /* min-width: 100vw; */
-  }
-
   & .line-number {
     color: gray;
-    margin-inline-end: 0.2em;
-    padding-inline-start: 1em;
-    /* padding-inline-end: 1em; */
-    flex-grow: 0;
-    font-size: 0.8em;
+    font-size: 0.6em;
   }
 
   & .equation {

@@ -3,12 +3,19 @@
     overflow-x: scroll;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
+    padding-block: 0.5em;
+    scrollbar-gutter: overlay;
 
     &::-webkit-scrollbar {
       appearance: none;
+      height: 1px;
+      width: 1px;
     }
     &::-webkit-scrollbar-track {
-      width: 1px;
+      background: black;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #252525;
     }
   }
 
@@ -30,6 +37,7 @@
   }
 
   & pre {
+    box-sizing: border-box;
     padding-inline: 1em;
     scroll-snap-stop: always;
     scroll-snap-align: start end;

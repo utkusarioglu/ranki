@@ -1,13 +1,14 @@
 .code-block {
   &.block-wrapper {
     margin-bottom: 1em;
-    padding-block-end: 1em;
+    padding-block-end: 0.5em;
     background-color: #151515;
   }
 
   &.hud {
     font-size: 0.6em;
     padding-inline: 1em;
+    padding-block-end: 0.2em;
     display: flex;
     gap: 1em;
 
