@@ -1,47 +1,16 @@
 .code-block {
-  &.section {
-    overflow-x: scroll;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    padding-block: 0.5em;
-    scrollbar-gutter: overlay;
-
-    &::-webkit-scrollbar {
-      appearance: none;
-      height: 1px;
-      width: 1px;
-    }
-    &::-webkit-scrollbar-track {
-      background: black;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: #252525;
-    }
-  }
-
-  & .horizontal-scroller {
-    display: flex;
-  }
-
-  & .line-numbers {
+  & .left {
+    color: gray;
     font-family: monospace;
     font-size: 13px;
-    color: gray;
-    white-space: pre;
   }
 
-  & pre,
-  & code {
-    margin: 0;
+  code {
     padding: 0;
+    margin: 0;
   }
-
-  & pre {
-    box-sizing: border-box;
-    padding-inline: 1em;
-    scroll-snap-stop: always;
-    scroll-snap-align: start end;
-    min-width: 100vw;
-    margin-inline-start: 0.2em;
+  pre {
+    margin: 0;
+    padding: 0.5em 0;
   }
 }

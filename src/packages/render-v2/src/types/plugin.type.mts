@@ -40,8 +40,9 @@ export type RankiRenderNodeOnLoadCallback = () => Promise<void>;
 export type RankiRenderNode = {
   element: HTMLElement | DocumentFragment | Text;
   css?: RankiRenderNodeCssSpec[];
-  slots?: {
-    children: HTMLElement;
-  };
+  slots?: Record<string, HTMLElement>;
+  // slots?: {
+  //   children: HTMLElement;
+  // };
   onLoad?: RankiRenderNodeOnLoadCallback[];
 };

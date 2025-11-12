@@ -25,6 +25,7 @@
     }
   },
   "dependencies": {
+    "@ranki/package-anki-ui": "workspace:^",
     "mathjax-full": "^3.2.2"
   }
 }

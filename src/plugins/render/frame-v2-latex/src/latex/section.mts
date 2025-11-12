@@ -1,17 +1,16 @@
 import { assertTransformLeaf } from "@ranki/package-api-v2/helpers";
 import type { RankiRenderPluginItemRenderFunction } from "@ranki/package-render-v2";
 import { renderMathjaxTo } from "./latex.mjs";
-import html from "./section.html?raw";
 import css from "./section.css?raw";
+import { AnkiUi } from "@ranki/package-anki-ui";
 
 export const latexSection: RankiRenderPluginItemRenderFunction = async (t) => {
   assertTransformLeaf(t);
-  const container = document.createElement("div");
-  container.innerHTML = html;
-  const element = container.firstElementChild! as HTMLDivElement;
-  const equation = element.querySelector<HTMLDivElement>(".equation")!;
-  const lineNum = container.querySelector(".line-number") as HTMLSpanElement;
-  lineNum.innerText = ["(", t.depth.toString(), ")"].join("");
+  const element = document.createElement("div");
+  element.classList.add("latex-block");
+  const h = AnkiUi.horizontalScroller();
+  element.appendChild(h.element);
+  h.slots!.left.innerText = ["(", t.depth.toString(), ")"].join("");
 
   return {
     element,
@@ -20,10 +19,11 @@ export const latexSection: RankiRenderPluginItemRenderFunction = async (t) => {
         id: "latex-block-section",
         css,
       },
+      ...h.css!,
     ],
     onLoad: [
       async () => {
-        renderMathjaxTo(equation, t.source.raw);
+        renderMathjaxTo(h.slots!.content, t.source.raw);
       },
     ],
   };

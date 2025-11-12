@@ -1,5 +1,5 @@
 {
-  "name": "@ranki/plugin-render-frame-v2-code",
+  "name": "@ranki/package-anki-ui",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,12 +10,8 @@
   },
   "devDependencies": {
     "@ranki/config-typescript": "workspace:^",
-    "@ranki/package-api-v2": "workspace:^",
     "@ranki/package-render-v2": "workspace:^",
-    "@types/node": "^24.5.2",
-    "@types/prismjs": "^1",
     "concurrently": "^9.2.1",
-    "ohm-js": "^17.2.1",
     "typescript": "^5.8.3",
     "vite": "^7.2.2"
   },
@@ -24,9 +20,5 @@
       "types": "./types/export.d.mts",
       "default": "./lib/export.js"
     }
-  },
-  "dependencies": {
-    "@ranki/package-anki-ui": "workspace:^",
-    "prismjs": "^1.30.0"
   }
 }

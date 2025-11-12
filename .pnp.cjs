@@ -39,6 +39,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/packages/anki-config"\
     },\
     {\
+      "name": "@ranki/package-anki-ui",\
+      "reference": "workspace:src/packages/anki-ui"\
+    },\
+    {\
       "name": "@ranki/package-api-v2",\
       "reference": "workspace:src/packages/api-v2"\
     },\
@@ -121,6 +125,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/app-rankilang-v2-demo", ["workspace:src/apps/rankilang-v2-demo"]],\
     ["@ranki/config-typescript", ["workspace:src/config/typescript"]],\
     ["@ranki/package-anki-config", ["workspace:src/packages/anki-config"]],\
+    ["@ranki/package-anki-ui", ["workspace:src/packages/anki-ui"]],\
     ["@ranki/package-api-v2", ["workspace:src/packages/api-v2"]],\
     ["@ranki/package-rankilang-v2", ["workspace:src/packages/rankilang-v2"]],\
     ["@ranki/package-render-v2", ["workspace:src/packages/render-v2"]],\
@@ -2477,6 +2482,20 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
+    ["@ranki/package-anki-ui", [\
+      ["workspace:src/packages/anki-ui", {\
+        "packageLocation": "./src/packages/anki-ui/",\
+        "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
+          ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
+          ["concurrently", "npm:9.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vite", "virtual:f225b753ba89546619821065e6033d9ab65725d8b3660c9c14da583db2ac91530213151af58c5b37560624f525ad4a8d5ce633b6bcc4810193a81077018e9da7#npm:7.2.2"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
     ["@ranki/package-api-v2", [\
       ["workspace:src/packages/api-v2", {\
         "packageLocation": "./src/packages/api-v2/",\
@@ -2711,6 +2730,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./src/plugins/render/frame-v2-code/",\
         "packageDependencies": [\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
           ["@ranki/plugin-render-frame-v2-code", "workspace:src/plugins/render/frame-v2-code"],\
@@ -2730,6 +2750,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./src/plugins/render/frame-v2-latex/",\
         "packageDependencies": [\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
           ["@ranki/plugin-render-frame-v2-latex", "workspace:src/plugins/render/frame-v2-latex"],\
@@ -10047,6 +10068,64 @@ const RAW_RUNTIME_STATE =
           ["tinyglobby", "npm:0.2.14"],\
           ["tsx", null],\
           ["vite", "virtual:cb1d79df3b4901790c8808db427c397bd3f613c8181bce1e1c99f654fcf8f1484eb3efeaaa7477306f7c95ff2d882d1e762cb59fa3743be7fbfd628566f4b6c1#npm:7.0.6"],\
+          ["yaml", null]\
+        ],\
+        "packagePeers": [\
+          "@types/jiti",\
+          "@types/less",\
+          "@types/lightningcss",\
+          "@types/node",\
+          "@types/sass-embedded",\
+          "@types/sass",\
+          "@types/stylus",\
+          "@types/sugarss",\
+          "@types/terser",\
+          "@types/tsx",\
+          "@types/yaml",\
+          "jiti",\
+          "less",\
+          "lightningcss",\
+          "sass-embedded",\
+          "sass",\
+          "stylus",\
+          "sugarss",\
+          "terser",\
+          "tsx",\
+          "yaml"\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["virtual:f225b753ba89546619821065e6033d9ab65725d8b3660c9c14da583db2ac91530213151af58c5b37560624f525ad4a8d5ce633b6bcc4810193a81077018e9da7#npm:7.2.2", {\
+        "packageLocation": "./.yarn/__virtual__/vite-virtual-a63787d37a/2/home/dev/.yarn/berry/cache/vite-npm-7.2.2-7a1f855c04-10c0.zip/node_modules/vite/",\
+        "packageDependencies": [\
+          ["@types/jiti", null],\
+          ["@types/less", null],\
+          ["@types/lightningcss", null],\
+          ["@types/node", null],\
+          ["@types/sass", null],\
+          ["@types/sass-embedded", null],\
+          ["@types/stylus", null],\
+          ["@types/sugarss", null],\
+          ["@types/terser", null],\
+          ["@types/tsx", null],\
+          ["@types/yaml", null],\
+          ["esbuild", "npm:0.25.8"],\
+          ["fdir", "virtual:0e783aadbd2b4b8e6f6056033c0b290501892d23bc7c5dad5477e00e48ad8bd3e4434c3962a52dd75a58e06dbb7218094a494bac954ef2f7f6fdb65d9717e5f4#npm:6.5.0"],\
+          ["fsevents", "patch:fsevents@npm%3A2.3.3#optional!builtin<compat/fsevents>::version=2.3.3&hash=df0bf1"],\
+          ["jiti", null],\
+          ["less", null],\
+          ["lightningcss", null],\
+          ["picomatch", "npm:4.0.3"],\
+          ["postcss", "npm:8.5.6"],\
+          ["rollup", "npm:4.52.2"],\
+          ["sass", null],\
+          ["sass-embedded", null],\
+          ["stylus", null],\
+          ["sugarss", null],\
+          ["terser", null],\
+          ["tinyglobby", "npm:0.2.15"],\
+          ["tsx", null],\
+          ["vite", "virtual:f225b753ba89546619821065e6033d9ab65725d8b3660c9c14da583db2ac91530213151af58c5b37560624f525ad4a8d5ce633b6bcc4810193a81077018e9da7#npm:7.2.2"],\
           ["yaml", null]\
         ],\
         "packagePeers": [\

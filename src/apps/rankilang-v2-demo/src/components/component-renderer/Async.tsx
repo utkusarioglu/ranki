@@ -101,6 +101,17 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
       contentDocument.head.appendChild(sc);
     }
 
+    if (!contentDocument.querySelector("style.vars")) {
+      const vars = contentDocument.createElement("style");
+      vars.className = "vars";
+      vars.innerHTML = `
+        :root {
+          --scrollbar-thumb-color: #FFFF00;
+        }
+      `;
+      contentDocument.head.appendChild(vars);
+    }
+
     contentDocument.body.style = Object.entries({
       // display: "grid",
       margin: 0,

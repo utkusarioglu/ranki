@@ -1666,6 +1666,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@ranki/package-anki-ui@workspace:^, @ranki/package-anki-ui@workspace:src/packages/anki-ui":
+  version: 0.0.0-use.local
+  resolution: "@ranki/package-anki-ui@workspace:src/packages/anki-ui"
+  dependencies:
+    "@ranki/config-typescript": "workspace:^"
+    "@ranki/package-render-v2": "workspace:^"
+    concurrently: "npm:^9.2.1"
+    typescript: "npm:^5.8.3"
+    vite: "npm:^7.2.2"
+  languageName: unknown
+  linkType: soft
+
 "@ranki/package-api-v2@workspace:^, @ranki/package-api-v2@workspace:src/packages/api-v2":
   version: 0.0.0-use.local
   resolution: "@ranki/package-api-v2@workspace:src/packages/api-v2"
@@ -1868,6 +1880,7 @@ __metadata:
   resolution: "@ranki/plugin-render-frame-v2-code@workspace:src/plugins/render/frame-v2-code"
   dependencies:
     "@ranki/config-typescript": "workspace:^"
+    "@ranki/package-anki-ui": "workspace:^"
     "@ranki/package-api-v2": "workspace:^"
     "@ranki/package-render-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"
@@ -1885,6 +1898,7 @@ __metadata:
   resolution: "@ranki/plugin-render-frame-v2-latex@workspace:src/plugins/render/frame-v2-latex"
   dependencies:
     "@ranki/config-typescript": "workspace:^"
+    "@ranki/package-anki-ui": "workspace:^"
     "@ranki/package-api-v2": "workspace:^"
     "@ranki/package-render-v2": "workspace:^"
     "@types/node": "npm:^24.5.2"

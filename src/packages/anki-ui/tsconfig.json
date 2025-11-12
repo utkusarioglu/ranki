@@ -1,0 +1,16 @@
+{
+  "extends": "@ranki/config-typescript/tsconfig.package.json",
+  "compilerOptions": {
+    "outDir": "lib",
+    "rootDir": "src",
+    "declarationDir": "types",
+    "skipLibCheck": true,
+    "emitDeclarationOnly": true
+  },
+  "include": ["src/**/*"],
+  "references": [
+    {
+      "path": "../render-v2"
+    }
+  ]
+}
