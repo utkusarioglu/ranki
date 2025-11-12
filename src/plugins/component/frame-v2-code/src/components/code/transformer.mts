@@ -1,5 +1,8 @@
 import type { ComponentPluginTransformFunc } from "@ranki/package-api-v2";
-import { assertValidationParent } from "@ranki/package-api-v2/helpers";
+import {
+  assertValidationParent,
+  assertValidationSingleChild,
+} from "@ranki/package-api-v2/helpers";
 import {
   v2_fpCommon,
   pausedContainer,
@@ -8,16 +11,16 @@ import {
 
 const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
+  assertValidationSingleChild(v);
   return v.context.newTransformNode(v, [
     {
       kind: "leaf",
       tag: "computer_science.code.block.section",
       hoist: 0,
       params: v.plugins.transformer.params,
-      source: {
-        type: "raw",
-        raw: v.source.raw,
-      },
+      // TODO this needs to access the child because the `PayloadPlain` parent
+      // doesn't have the prefix and suffix yet merged into the content
+      source: v.children[0].source,
     },
   ]);
 };

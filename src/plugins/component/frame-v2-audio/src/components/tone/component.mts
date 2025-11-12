@@ -1,12 +1,10 @@
 import type { ComponentPluginComponent } from "@ranki/package-api-v2";
 import { placeholder } from "../../placeholder.mjs";
-import { transformList } from "./code.transformer.mjs";
-// import { v2_fp } from "../../transfor/code.transformer.mjs";
-// import { transform } from "../../transformers/main.mjs";
+import { transformList } from "./transformer.mjs";
 
-export const codeComponent: ComponentPluginComponent = {
-  chain: ["frame", "v2", "computer_science", "code", "block"],
-  aliases: ["code"],
+export const flowchartComponent: ComponentPluginComponent = {
+  chain: ["frame", "v2", "charts", "mermaid", "flowchart"],
+  aliases: ["flowchart"],
   stages: {
     // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
     // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
@@ -17,8 +15,8 @@ export const codeComponent: ComponentPluginComponent = {
           // @ts-expect-error
           plugins: {
             requested: [
-              "RankiParamsV2",
-              "RankiFrameV2",
+              // "RankiParamsV2",
+              // "RankiFrameV2",
               // "RankiRichNumberV2",
               // "RankiBaseV2",
               // "RankiConstantsV2",

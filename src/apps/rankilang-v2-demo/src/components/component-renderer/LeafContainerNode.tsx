@@ -58,7 +58,7 @@ export const LeafContainerNode: FC<LeafContainerNodeProps> = ({
           </div>
         </div>
         <div className={style.nativeRenderContainer}>
-          <AsyncRender items={[item]} options={options} />
+          <AsyncRender items={[item]} width={200} options={options} />
         </div>
       </div>
     </div>

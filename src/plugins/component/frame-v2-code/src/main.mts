@@ -1,5 +1,5 @@
 import type { RankiPluginComponent } from "@ranki/package-api-v2";
-import { codeComponent } from "./components/code/code.component.mjs";
+import { codeComponent } from "./components/code/component.mjs";
 import { anchorComponent } from "./components/anchor/anchor.component.mjs";
 
 export const rankiFrameV2ComponentsPluginCode: RankiPluginComponent = {

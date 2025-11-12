@@ -3,17 +3,22 @@ import {
   assertTransformExists,
   assertValidationLeaf,
   assertValidationParent,
+  assertValidationSingleChild,
   flattenValidationChildren,
 } from "@ranki/package-api-v2/helpers";
 
 const root_ignore: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
+  assertValidationSingleChild(v);
+  // TODO this needs to access the child because the `PayloadPlain` parent
+  // doesn't have the prefix and suffix yet merged into the content
+  const source = v.children[0].source;
   return v.context.newTransformNode(v, [
     {
       tag: "span",
       kind: "leaf",
       hoist: 0,
-      source: v.children[0].source,
+      source,
     },
   ]);
 };

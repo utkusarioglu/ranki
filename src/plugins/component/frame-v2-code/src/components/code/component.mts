@@ -1,10 +1,12 @@
 import type { ComponentPluginComponent } from "@ranki/package-api-v2";
 import { placeholder } from "../../placeholder.mjs";
-import { transformList } from "./flowchart.transformer.mjs";
+import { transformList } from "./transformer.mjs";
+// import { v2_fp } from "../../transfor/code.transformer.mjs";
+// import { transform } from "../../transformers/main.mjs";
 
-export const flowchartComponent: ComponentPluginComponent = {
-  chain: ["frame", "v2", "charts", "mermaid", "flowchart"],
-  aliases: ["flowchart"],
+export const codeComponent: ComponentPluginComponent = {
+  chain: ["frame", "v2", "computer_science", "code", "block"],
+  aliases: ["code"],
   stages: {
     // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
     // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
@@ -12,10 +14,6 @@ export const flowchartComponent: ComponentPluginComponent = {
     ast: {
       directives: [
         {
-          // @ts-expect-error
-          content: {
-            prefix: "flowchart\n",
-          },
           // @ts-expect-error
           plugins: {
             requested: [

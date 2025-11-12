@@ -63,6 +63,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/plugins/component/frame-v2"\
     },\
     {\
+      "name": "@ranki/plugin-component-frame-v2-audio",\
+      "reference": "workspace:src/plugins/component/frame-v2-audio"\
+    },\
+    {\
       "name": "@ranki/plugin-component-frame-v2-code",\
       "reference": "workspace:src/plugins/component/frame-v2-code"\
     },\
@@ -139,6 +143,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/package-render-v2", ["workspace:src/packages/render-v2"]],\
     ["@ranki/plugin-component-base-v2-default", ["workspace:src/plugins/component/base-v2"]],\
     ["@ranki/plugin-component-frame-v2", ["workspace:src/plugins/component/frame-v2"]],\
+    ["@ranki/plugin-component-frame-v2-audio", ["workspace:src/plugins/component/frame-v2-audio"]],\
     ["@ranki/plugin-component-frame-v2-code", ["workspace:src/plugins/component/frame-v2-code"]],\
     ["@ranki/plugin-component-frame-v2-latex", ["workspace:src/plugins/component/frame-v2-latex"]],\
     ["@ranki/plugin-component-frame-v2-mermaid", ["workspace:src/plugins/component/frame-v2-mermaid"]],\
@@ -2601,6 +2606,19 @@ const RAW_RUNTIME_STATE =
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/plugin-component-frame-v2", "workspace:src/plugins/component/frame-v2"],\
+          ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/plugin-component-frame-v2-audio", [\
+      ["workspace:src/plugins/component/frame-v2-audio", {\
+        "packageLocation": "./src/plugins/component/frame-v2-audio/",\
+        "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/plugin-component-frame-v2-audio", "workspace:src/plugins/component/frame-v2-audio"],\
           ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\

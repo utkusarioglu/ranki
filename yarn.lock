@@ -1760,6 +1760,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@ranki/plugin-component-frame-v2-audio@workspace:src/plugins/component/frame-v2-audio":
+  version: 0.0.0-use.local
+  resolution: "@ranki/plugin-component-frame-v2-audio@workspace:src/plugins/component/frame-v2-audio"
+  dependencies:
+    "@ranki/config-typescript": "workspace:^"
+    "@ranki/package-api-v2": "workspace:^"
+    "@ranki/plugin-parser-frame-v2": "workspace:^"
+    typescript: "npm:^5.8.3"
+  languageName: unknown
+  linkType: soft
+
 "@ranki/plugin-component-frame-v2-code@workspace:^, @ranki/plugin-component-frame-v2-code@workspace:src/plugins/component/frame-v2-code":
   version: 0.0.0-use.local
   resolution: "@ranki/plugin-component-frame-v2-code@workspace:src/plugins/component/frame-v2-code"

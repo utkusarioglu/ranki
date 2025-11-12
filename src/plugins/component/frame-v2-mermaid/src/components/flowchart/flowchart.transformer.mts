@@ -12,27 +12,22 @@ import {
 const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
   assertValidationSingleChild(v);
-  // TODO this needs to access the child because the `PayloadPlain` parent
-  // doesn't have the prefix and suffix yet merged into the content
-  const raw = v.children[0].source.raw;
-
   return v.context.newTransformNode(v, [
     {
       kind: "leaf",
       tag: ["graphing", "mermaid", "block", "section"].join("."),
       hoist: 0,
       params: v.plugins.transformer.params,
-      source: {
-        type: "raw",
-        raw,
-      },
+      // TODO this needs to access the child because the `PayloadPlain` parent
+      // doesn't have the prefix and suffix yet merged into the content
+      source: v.children[0].source,
     },
   ]);
 };
 
 const v2_fp: ComponentPluginTransformFunc = (v) => {
   const children = v2_fpCommon(v);
-  const code = v.context.newTransformNode(v, [
+  return v.context.newTransformNode(v, [
     {
       tag: ["graphing", "mermaid", "block", "container"].join("."),
       kind: "parent",
@@ -40,7 +35,6 @@ const v2_fp: ComponentPluginTransformFunc = (v) => {
       children,
     },
   ]);
-  return code;
 };
 
 export const transformList = {

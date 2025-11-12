@@ -42,7 +42,7 @@ export const anchorComponent: ComponentPluginComponent = {
     },
     validator: placeholder,
     transformers: {
-      root: "v2_fp",
+      root: "",
       list: transformList,
     },
   },
