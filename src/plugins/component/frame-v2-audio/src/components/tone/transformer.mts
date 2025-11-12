@@ -17,7 +17,7 @@ const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
   return v.context.newTransformNode(v, [
     {
       kind: "leaf",
-      tag: ["graphing", "mermaid", "block", "section"].join("."),
+      tag: ["audio", "audio-context", "tone-js", "block", "section"].join("."),
       hoist: 0,
       params: v.plugins.transformer.params,
       source: v.children[0].source,
@@ -29,7 +29,9 @@ const v2_fp: ComponentPluginTransformFunc = (v) => {
   const children = v2_fpCommon(v);
   const code = v.context.newTransformNode(v, [
     {
-      tag: ["graphing", "mermaid", "block", "container"].join("."),
+      tag: ["audio", "audio-context", "tone-js", "block", "container"].join(
+        ".",
+      ),
       kind: "parent",
       hoist: 0,
       children,

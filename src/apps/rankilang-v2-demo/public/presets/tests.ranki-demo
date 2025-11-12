@@ -1,3 +1,4 @@
+
 --- less Math and code and inline
 [latex
 \rho \left( \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla)\mathbf{u} \right)
@@ -26,6 +27,29 @@ class Cat {
 
 extra text!
 
+--- Tones
+Bach
+
+[tones
+C4 D4 E4 G4
+F4 F4 A4 G4
+G4 C5 B4 C5
+G4 E4 C4 D4
+E4 F4 G4 A4
+G4 F4 E4 D4
+E4 C4 B3 C4
+D4 G3 B3 D4
+F4 E4 D4 E4
+C4 D4 E4 G4
+F4 F4 A4 G4
+G4 C5 B4 C5
+G4 E4 C4 D4
+E4 F4 G4 F4
+E4 D4 C4 G3
+C4 B3 C4 E4
+G4 C5 G4 E4
+C4
+]
 
 --- Math and code and inline
 # f sad 1 fsd 123 [latex|\textstyle \dfrac{1}{2}]

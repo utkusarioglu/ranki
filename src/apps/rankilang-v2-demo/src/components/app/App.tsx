@@ -1,7 +1,7 @@
 import { Output } from "../output/Output";
 import style from "./app.module.css";
 import { Inputs } from "../inputs/Inputs";
-import { useEffect, useState } from "react";
+import { useDeferredValue, useEffect, useState } from "react";
 import type { PresetGroup } from "../../services/preset/preset.types";
 import { fetchPresets } from "../../services/preset/preset.mjs";
 import yaml from "yaml";
@@ -43,6 +43,7 @@ function usePublicData() {
 export function App() {
   const { languageDefaultConfigStr, presetGroups, isLoading } = usePublicData();
   const [sharedState, setSharedState] = useState<SharedState>(null);
+  const deferredState = useDeferredValue(sharedState);
 
   if (isLoading) {
     return (
@@ -58,7 +59,7 @@ export function App() {
         presetGroups={presetGroups}
         initialLanguageUserConfigStr={languageDefaultConfigStr}
       />
-      <Output state={sharedState} />
+      <Output state={deferredState} />
     </div>
   );
 }

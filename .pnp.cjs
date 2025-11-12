@@ -115,6 +115,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/plugins/render/base-v2"\
     },\
     {\
+      "name": "@ranki/plugin-render-frame-v2-audio",\
+      "reference": "workspace:src/plugins/render/frame-v2-audio"\
+    },\
+    {\
       "name": "@ranki/plugin-render-frame-v2-code",\
       "reference": "workspace:src/plugins/render/frame-v2-code"\
     },\
@@ -156,6 +160,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/plugin-parser-frame-v1", ["workspace:src/plugins/parser/frame-v1"]],\
     ["@ranki/plugin-parser-frame-v2", ["workspace:src/plugins/parser/frame-v2"]],\
     ["@ranki/plugin-render-base-v2", ["workspace:src/plugins/render/base-v2"]],\
+    ["@ranki/plugin-render-frame-v2-audio", ["workspace:src/plugins/render/frame-v2-audio"]],\
     ["@ranki/plugin-render-frame-v2-code", ["workspace:src/plugins/render/frame-v2-code"]],\
     ["@ranki/plugin-render-frame-v2-latex", ["workspace:src/plugins/render/frame-v2-latex"]],\
     ["@ranki/plugin-render-frame-v2-mermaid", ["workspace:src/plugins/render/frame-v2-mermaid"]],\
@@ -2472,6 +2477,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
           ["@ranki/plugin-component-base-v2-default", "workspace:src/plugins/component/base-v2"],\
           ["@ranki/plugin-component-frame-v2", "workspace:src/plugins/component/frame-v2"],\
+          ["@ranki/plugin-component-frame-v2-audio", "workspace:src/plugins/component/frame-v2-audio"],\
           ["@ranki/plugin-component-frame-v2-code", "workspace:src/plugins/component/frame-v2-code"],\
           ["@ranki/plugin-component-frame-v2-latex", "workspace:src/plugins/component/frame-v2-latex"],\
           ["@ranki/plugin-component-frame-v2-mermaid", "workspace:src/plugins/component/frame-v2-mermaid"],\
@@ -2484,6 +2490,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/plugin-parser-frame-v1", "workspace:src/plugins/parser/frame-v1"],\
           ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
           ["@ranki/plugin-render-base-v2", "workspace:src/plugins/render/base-v2"],\
+          ["@ranki/plugin-render-frame-v2-audio", "workspace:src/plugins/render/frame-v2-audio"],\
           ["@ranki/plugin-render-frame-v2-code", "workspace:src/plugins/render/frame-v2-code"],\
           ["@ranki/plugin-render-frame-v2-latex", "workspace:src/plugins/render/frame-v2-latex"],\
           ["@ranki/plugin-render-frame-v2-mermaid", "workspace:src/plugins/render/frame-v2-mermaid"],\
@@ -2798,6 +2805,24 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
+    ["@ranki/plugin-render-frame-v2-audio", [\
+      ["workspace:src/plugins/render/frame-v2-audio", {\
+        "packageLocation": "./src/plugins/render/frame-v2-audio/",\
+        "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
+          ["@ranki/plugin-render-frame-v2-audio", "workspace:src/plugins/render/frame-v2-audio"],\
+          ["@types/node", "npm:24.5.2"],\
+          ["concurrently", "npm:9.2.1"],\
+          ["tone", "npm:15.1.22"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vite", "virtual:a2c26bcdb49bb92277422ae8dde8e05245271d6bc4e31fed4719e1a14192c860f2ae229829ca10b403abf4e9c5a71cd849d71c6e8f2fee0275efe1496e597082#npm:7.2.2"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
     ["@ranki/plugin-render-frame-v2-code", [\
       ["workspace:src/plugins/render/frame-v2-code", {\
         "packageLocation": "./src/plugins/render/frame-v2-code/",\
@@ -2813,7 +2838,7 @@ const RAW_RUNTIME_STATE =
           ["ohm-js", "npm:17.2.1"],\
           ["prismjs", "npm:1.30.0"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
-          ["vite", "virtual:2df575e1538e88a6a59db4ac4a439d2de68f6e3f154aed257c6e9865f65c89bc4a789646fbcb72a57c0e787b28c0b5fea2bdd8d202805df94f97b99eeba25e64#npm:7.2.2"]\
+          ["vite", "virtual:a2c26bcdb49bb92277422ae8dde8e05245271d6bc4e31fed4719e1a14192c860f2ae229829ca10b403abf4e9c5a71cd849d71c6e8f2fee0275efe1496e597082#npm:7.2.2"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -2831,7 +2856,7 @@ const RAW_RUNTIME_STATE =
           ["concurrently", "npm:9.2.1"],\
           ["mathjax-full", "npm:3.2.2"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
-          ["vite", "virtual:2df575e1538e88a6a59db4ac4a439d2de68f6e3f154aed257c6e9865f65c89bc4a789646fbcb72a57c0e787b28c0b5fea2bdd8d202805df94f97b99eeba25e64#npm:7.2.2"]\
+          ["vite", "virtual:a2c26bcdb49bb92277422ae8dde8e05245271d6bc4e31fed4719e1a14192c860f2ae229829ca10b403abf4e9c5a71cd849d71c6e8f2fee0275efe1496e597082#npm:7.2.2"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -2849,7 +2874,7 @@ const RAW_RUNTIME_STATE =
           ["concurrently", "npm:9.2.1"],\
           ["mermaid", "npm:11.12.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
-          ["vite", "virtual:2df575e1538e88a6a59db4ac4a439d2de68f6e3f154aed257c6e9865f65c89bc4a789646fbcb72a57c0e787b28c0b5fea2bdd8d202805df94f97b99eeba25e64#npm:7.2.2"]\
+          ["vite", "virtual:a2c26bcdb49bb92277422ae8dde8e05245271d6bc4e31fed4719e1a14192c860f2ae229829ca10b403abf4e9c5a71cd849d71c6e8f2fee0275efe1496e597082#npm:7.2.2"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -4541,6 +4566,17 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/dev/.yarn/berry/cache/async-npm-3.2.6-aa4f5aa081-10c0.zip/node_modules/async/",\
         "packageDependencies": [\
           ["async", "npm:3.2.6"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["automation-events", [\
+      ["npm:7.1.13", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/automation-events-npm-7.1.13-e7ddd98a42-10c0.zip/node_modules/automation-events/",\
+        "packageDependencies": [\
+          ["@babel/runtime", "npm:7.28.4"],\
+          ["automation-events", "npm:7.1.13"],\
+          ["tslib", "npm:2.8.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9205,6 +9241,18 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["standardized-audio-context", [\
+      ["npm:25.3.77", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/standardized-audio-context-npm-25.3.77-f9834dff31-10c0.zip/node_modules/standardized-audio-context/",\
+        "packageDependencies": [\
+          ["@babel/runtime", "npm:7.28.4"],\
+          ["automation-events", "npm:7.1.13"],\
+          ["standardized-audio-context", "npm:25.3.77"],\
+          ["tslib", "npm:2.8.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["std-env", [\
       ["npm:3.9.0", {\
         "packageLocation": "../home/dev/.yarn/berry/cache/std-env-npm-3.9.0-67cc0f541d-10c0.zip/node_modules/std-env/",\
@@ -9462,6 +9510,17 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["is-number", "npm:7.0.0"],\
           ["to-regex-range", "npm:5.0.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["tone", [\
+      ["npm:15.1.22", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/tone-npm-15.1.22-e05d84764d-10c0.zip/node_modules/tone/",\
+        "packageDependencies": [\
+          ["standardized-audio-context", "npm:25.3.77"],\
+          ["tone", "npm:15.1.22"],\
+          ["tslib", "npm:2.8.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9914,64 +9973,6 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:2df575e1538e88a6a59db4ac4a439d2de68f6e3f154aed257c6e9865f65c89bc4a789646fbcb72a57c0e787b28c0b5fea2bdd8d202805df94f97b99eeba25e64#npm:7.2.2", {\
-        "packageLocation": "./.yarn/__virtual__/vite-virtual-548d467a1c/2/home/dev/.yarn/berry/cache/vite-npm-7.2.2-7a1f855c04-10c0.zip/node_modules/vite/",\
-        "packageDependencies": [\
-          ["@types/jiti", null],\
-          ["@types/less", null],\
-          ["@types/lightningcss", null],\
-          ["@types/node", "npm:24.5.2"],\
-          ["@types/sass", null],\
-          ["@types/sass-embedded", null],\
-          ["@types/stylus", null],\
-          ["@types/sugarss", null],\
-          ["@types/terser", null],\
-          ["@types/tsx", null],\
-          ["@types/yaml", null],\
-          ["esbuild", "npm:0.25.8"],\
-          ["fdir", "virtual:0e783aadbd2b4b8e6f6056033c0b290501892d23bc7c5dad5477e00e48ad8bd3e4434c3962a52dd75a58e06dbb7218094a494bac954ef2f7f6fdb65d9717e5f4#npm:6.5.0"],\
-          ["fsevents", "patch:fsevents@npm%3A2.3.3#optional!builtin<compat/fsevents>::version=2.3.3&hash=df0bf1"],\
-          ["jiti", null],\
-          ["less", null],\
-          ["lightningcss", null],\
-          ["picomatch", "npm:4.0.3"],\
-          ["postcss", "npm:8.5.6"],\
-          ["rollup", "npm:4.52.2"],\
-          ["sass", null],\
-          ["sass-embedded", null],\
-          ["stylus", null],\
-          ["sugarss", null],\
-          ["terser", null],\
-          ["tinyglobby", "npm:0.2.15"],\
-          ["tsx", null],\
-          ["vite", "virtual:2df575e1538e88a6a59db4ac4a439d2de68f6e3f154aed257c6e9865f65c89bc4a789646fbcb72a57c0e787b28c0b5fea2bdd8d202805df94f97b99eeba25e64#npm:7.2.2"],\
-          ["yaml", null]\
-        ],\
-        "packagePeers": [\
-          "@types/jiti",\
-          "@types/less",\
-          "@types/lightningcss",\
-          "@types/node",\
-          "@types/sass-embedded",\
-          "@types/sass",\
-          "@types/stylus",\
-          "@types/sugarss",\
-          "@types/terser",\
-          "@types/tsx",\
-          "@types/yaml",\
-          "jiti",\
-          "less",\
-          "lightningcss",\
-          "sass-embedded",\
-          "sass",\
-          "stylus",\
-          "sugarss",\
-          "terser",\
-          "tsx",\
-          "yaml"\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:7.0.6", {\
         "packageLocation": "./.yarn/__virtual__/vite-virtual-7e6a9f1503/2/home/dev/.yarn/berry/cache/vite-npm-7.0.6-be57657245-10c0.zip/node_modules/vite/",\
         "packageDependencies": [\
@@ -10119,6 +10120,64 @@ const RAW_RUNTIME_STATE =
           ["tinyglobby", "npm:0.2.14"],\
           ["tsx", null],\
           ["vite", "virtual:8147cfa7789f1cf557dda6a0e2043ddd0b608cd376c42f596f267f7b9dfcc20fcf20abf467b9bd93364c0aaf7e48c645e902a0d9b619bbb6e62e705c245cff0d#npm:7.0.6"],\
+          ["yaml", null]\
+        ],\
+        "packagePeers": [\
+          "@types/jiti",\
+          "@types/less",\
+          "@types/lightningcss",\
+          "@types/node",\
+          "@types/sass-embedded",\
+          "@types/sass",\
+          "@types/stylus",\
+          "@types/sugarss",\
+          "@types/terser",\
+          "@types/tsx",\
+          "@types/yaml",\
+          "jiti",\
+          "less",\
+          "lightningcss",\
+          "sass-embedded",\
+          "sass",\
+          "stylus",\
+          "sugarss",\
+          "terser",\
+          "tsx",\
+          "yaml"\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["virtual:a2c26bcdb49bb92277422ae8dde8e05245271d6bc4e31fed4719e1a14192c860f2ae229829ca10b403abf4e9c5a71cd849d71c6e8f2fee0275efe1496e597082#npm:7.2.2", {\
+        "packageLocation": "./.yarn/__virtual__/vite-virtual-583b678ad4/2/home/dev/.yarn/berry/cache/vite-npm-7.2.2-7a1f855c04-10c0.zip/node_modules/vite/",\
+        "packageDependencies": [\
+          ["@types/jiti", null],\
+          ["@types/less", null],\
+          ["@types/lightningcss", null],\
+          ["@types/node", "npm:24.5.2"],\
+          ["@types/sass", null],\
+          ["@types/sass-embedded", null],\
+          ["@types/stylus", null],\
+          ["@types/sugarss", null],\
+          ["@types/terser", null],\
+          ["@types/tsx", null],\
+          ["@types/yaml", null],\
+          ["esbuild", "npm:0.25.8"],\
+          ["fdir", "virtual:0e783aadbd2b4b8e6f6056033c0b290501892d23bc7c5dad5477e00e48ad8bd3e4434c3962a52dd75a58e06dbb7218094a494bac954ef2f7f6fdb65d9717e5f4#npm:6.5.0"],\
+          ["fsevents", "patch:fsevents@npm%3A2.3.3#optional!builtin<compat/fsevents>::version=2.3.3&hash=df0bf1"],\
+          ["jiti", null],\
+          ["less", null],\
+          ["lightningcss", null],\
+          ["picomatch", "npm:4.0.3"],\
+          ["postcss", "npm:8.5.6"],\
+          ["rollup", "npm:4.52.2"],\
+          ["sass", null],\
+          ["sass-embedded", null],\
+          ["stylus", null],\
+          ["sugarss", null],\
+          ["terser", null],\
+          ["tinyglobby", "npm:0.2.15"],\
+          ["tsx", null],\
+          ["vite", "virtual:a2c26bcdb49bb92277422ae8dde8e05245271d6bc4e31fed4719e1a14192c860f2ae229829ca10b403abf4e9c5a71cd849d71c6e8f2fee0275efe1496e597082#npm:7.2.2"],\
           ["yaml", null]\
         ],\
         "packagePeers": [\

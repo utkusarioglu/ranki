@@ -11,10 +11,12 @@ import { rankiBaseV2ComponentsPluginDefault } from "@ranki/plugin-component-base
 import { rankiFrameV2ComponentsPluginLatex } from "@ranki/plugin-component-frame-v2-latex";
 import { rankiFrameV2ComponentsPlugin } from "@ranki/plugin-component-frame-v2";
 import { rankiFrameV2ComponentsPluginMermaid } from "@ranki/plugin-component-frame-v2-mermaid";
+import { rankiFrameV2ComponentsPluginAudio } from "@ranki/plugin-component-frame-v2-audio";
 import { renderPluginBaseV2Render } from "@ranki/plugin-render-base-v2";
 import { renderPluginFrameV2Latex } from "@ranki/plugin-render-frame-v2-latex";
 import { renderPluginFrameV2Code } from "@ranki/plugin-render-frame-v2-code";
 import { renderPluginFrameV2Mermaid } from "@ranki/plugin-render-frame-v2-mermaid";
+import { renderPluginFrameV2Audio } from "@ranki/plugin-render-frame-v2-audio";
 import { Render } from "@ranki/package-render-v2";
 
 export const pluginObjects = [
@@ -34,6 +36,7 @@ export const componentObjects = [
   rankiFrameV2ComponentsPluginCode,
   rankiFrameV2ComponentsPluginLatex,
   rankiFrameV2ComponentsPluginMermaid,
+  rankiFrameV2ComponentsPluginAudio,
 ];
 
 [
@@ -41,4 +44,5 @@ export const componentObjects = [
   renderPluginFrameV2Latex,
   renderPluginFrameV2Code,
   renderPluginFrameV2Mermaid,
+  renderPluginFrameV2Audio,
 ].forEach((p) => Render.addPlugin(p));

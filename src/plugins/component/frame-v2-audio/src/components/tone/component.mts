@@ -2,9 +2,9 @@ import type { ComponentPluginComponent } from "@ranki/package-api-v2";
 import { placeholder } from "../../placeholder.mjs";
 import { transformList } from "./transformer.mjs";
 
-export const flowchartComponent: ComponentPluginComponent = {
-  chain: ["frame", "v2", "charts", "mermaid", "flowchart"],
-  aliases: ["flowchart"],
+export const tonesComponent: ComponentPluginComponent = {
+  chain: ["frame", "v2", "audio", "audio-context", "tone-js", "tones"],
+  aliases: ["tones"],
   stages: {
     // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
     // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL

@@ -1,0 +1,13 @@
+.audio-block {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  place-items: center;
+
+  & .note {
+    color: gray;
+  }
+
+  & .note.played {
+    color: white;
+  }
+}

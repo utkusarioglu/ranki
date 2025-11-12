@@ -464,7 +464,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.5":
+"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.25.6, @babel/runtime@npm:^7.28.4":
   version: 7.28.4
   resolution: "@babel/runtime@npm:7.28.4"
   checksum: 10c0/792ce7af9750fb9b93879cc9d1db175701c4689da890e6ced242ea0207c9da411ccf16dc04e689cc01158b28d7898c40d75598f4559109f761c12ce01e959bf7
@@ -1649,6 +1649,7 @@ __metadata:
     "@ranki/package-render-v2": "workspace:^"
     "@ranki/plugin-component-base-v2-default": "workspace:^"
     "@ranki/plugin-component-frame-v2": "workspace:^"
+    "@ranki/plugin-component-frame-v2-audio": "workspace:^"
     "@ranki/plugin-component-frame-v2-code": "workspace:^"
     "@ranki/plugin-component-frame-v2-latex": "workspace:^"
     "@ranki/plugin-component-frame-v2-mermaid": "workspace:^"
@@ -1661,6 +1662,7 @@ __metadata:
     "@ranki/plugin-parser-frame-v1": "workspace:^"
     "@ranki/plugin-parser-frame-v2": "workspace:^"
     "@ranki/plugin-render-base-v2": "workspace:^"
+    "@ranki/plugin-render-frame-v2-audio": "workspace:^"
     "@ranki/plugin-render-frame-v2-code": "workspace:^"
     "@ranki/plugin-render-frame-v2-latex": "workspace:^"
     "@ranki/plugin-render-frame-v2-mermaid": "workspace:^"
@@ -1760,7 +1762,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ranki/plugin-component-frame-v2-audio@workspace:src/plugins/component/frame-v2-audio":
+"@ranki/plugin-component-frame-v2-audio@workspace:^, @ranki/plugin-component-frame-v2-audio@workspace:src/plugins/component/frame-v2-audio":
   version: 0.0.0-use.local
   resolution: "@ranki/plugin-component-frame-v2-audio@workspace:src/plugins/component/frame-v2-audio"
   dependencies:
@@ -1928,6 +1930,22 @@ __metadata:
     "@types/node": "npm:^24.5.2"
     ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"
+  languageName: unknown
+  linkType: soft
+
+"@ranki/plugin-render-frame-v2-audio@workspace:^, @ranki/plugin-render-frame-v2-audio@workspace:src/plugins/render/frame-v2-audio":
+  version: 0.0.0-use.local
+  resolution: "@ranki/plugin-render-frame-v2-audio@workspace:src/plugins/render/frame-v2-audio"
+  dependencies:
+    "@ranki/config-typescript": "workspace:^"
+    "@ranki/package-anki-ui": "workspace:^"
+    "@ranki/package-api-v2": "workspace:^"
+    "@ranki/package-render-v2": "workspace:^"
+    "@types/node": "npm:^24.5.2"
+    concurrently: "npm:^9.2.1"
+    tone: "npm:15.1.22"
+    typescript: "npm:^5.8.3"
+    vite: "npm:^7.2.2"
   languageName: unknown
   linkType: soft
 
@@ -3322,6 +3340,16 @@ __metadata:
   version: 3.2.6
   resolution: "async@npm:3.2.6"
   checksum: 10c0/36484bb15ceddf07078688d95e27076379cc2f87b10c03b6dd8a83e89475a3c8df5848859dd06a4c95af1e4c16fc973de0171a77f18ea00be899aca2a4f85e70
+  languageName: node
+  linkType: hard
+
+"automation-events@npm:^7.0.9":
+  version: 7.1.13
+  resolution: "automation-events@npm:7.1.13"
+  dependencies:
+    "@babel/runtime": "npm:^7.28.4"
+    tslib: "npm:^2.8.1"
+  checksum: 10c0/72a09fef21f0242c2cd49a4d5b59d165ac07b6836e65acc7f6b06643d9b4468b0815bb5644f4a45d62742ad4a7275535f4fd9e140393c8774f6f412a47f9fd83
   languageName: node
   linkType: hard
 
@@ -7457,6 +7485,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"standardized-audio-context@npm:^25.3.70":
+  version: 25.3.77
+  resolution: "standardized-audio-context@npm:25.3.77"
+  dependencies:
+    "@babel/runtime": "npm:^7.25.6"
+    automation-events: "npm:^7.0.9"
+    tslib: "npm:^2.7.0"
+  checksum: 10c0/41d5e3a64b881691fecd709313045ab9bddb864ed79c6eb51490056cec080e808e9f5b3ef94d734567b9da88f9c95e68cc63a3a0343374b2f865b1a961fb46ef
+  languageName: node
+  linkType: hard
+
 "std-env@npm:^3.9.0":
   version: 3.9.0
   resolution: "std-env@npm:3.9.0"
@@ -7688,6 +7727,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tone@npm:15.1.22":
+  version: 15.1.22
+  resolution: "tone@npm:15.1.22"
+  dependencies:
+    standardized-audio-context: "npm:^25.3.70"
+    tslib: "npm:^2.3.1"
+  checksum: 10c0/dd11cd2b0645fec5e188919ace1494deeae30f10775b493e2a4ab44e1be0bf3087dce6c0db78da91f88eddf2fd5f1430a3cc52e2d2d5f76076efe949aa056e64
+  languageName: node
+  linkType: hard
+
 "tree-kill@npm:1.2.2":
   version: 1.2.2
   resolution: "tree-kill@npm:1.2.2"
@@ -7762,7 +7811,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.1.0, tslib@npm:^2.4.0":
+"tslib@npm:^2.1.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.7.0, tslib@npm:^2.8.1":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
