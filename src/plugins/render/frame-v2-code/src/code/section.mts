@@ -44,7 +44,7 @@ export const codeSection: RankiRenderPluginItemRenderFunction = async (t) => {
       },
       ...h.css!,
     ],
-    onLoad: [
+    afterMount: [
       async () => {
         element.addEventListener("click", async () => {
           try {

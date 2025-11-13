@@ -129,6 +129,10 @@ const RAW_RUNTIME_STATE =
     {\
       "name": "@ranki/plugin-render-frame-v2-mermaid",\
       "reference": "workspace:src/plugins/render/frame-v2-mermaid"\
+    },\
+    {\
+      "name": "@ranki/plugin-render-frame-v2-music",\
+      "reference": "workspace:src/plugins/render/frame-v2-music"\
     }\
   ],\
   "enableTopLevelFallback": true,\
@@ -164,6 +168,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/plugin-render-frame-v2-code", ["workspace:src/plugins/render/frame-v2-code"]],\
     ["@ranki/plugin-render-frame-v2-latex", ["workspace:src/plugins/render/frame-v2-latex"]],\
     ["@ranki/plugin-render-frame-v2-mermaid", ["workspace:src/plugins/render/frame-v2-mermaid"]],\
+    ["@ranki/plugin-render-frame-v2-music", ["workspace:src/plugins/render/frame-v2-music"]],\
     ["@ranki/root", ["workspace:."]]\
   ],\
   "fallbackPool": [\
@@ -2494,6 +2499,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/plugin-render-frame-v2-code", "workspace:src/plugins/render/frame-v2-code"],\
           ["@ranki/plugin-render-frame-v2-latex", "workspace:src/plugins/render/frame-v2-latex"],\
           ["@ranki/plugin-render-frame-v2-mermaid", "workspace:src/plugins/render/frame-v2-mermaid"],\
+          ["@ranki/plugin-render-frame-v2-music", "workspace:src/plugins/render/frame-v2-music"],\
           ["@types/prismjs", "npm:1.26.5"],\
           ["@types/react", "npm:19.1.13"],\
           ["@types/react-dom", "virtual:56e235665721e97d09a872fed4e209638785440a96a0182c8b7851ddc5b5197c6079e0a6f7acdf0f15cfa65463f170f278a22d104f9a30aae09628eeff3200a9#npm:19.1.9"],\
@@ -2874,6 +2880,24 @@ const RAW_RUNTIME_STATE =
           ["concurrently", "npm:9.2.1"],\
           ["mermaid", "npm:11.12.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vite", "virtual:a2c26bcdb49bb92277422ae8dde8e05245271d6bc4e31fed4719e1a14192c860f2ae229829ca10b403abf4e9c5a71cd849d71c6e8f2fee0275efe1496e597082#npm:7.2.2"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/plugin-render-frame-v2-music", [\
+      ["workspace:src/plugins/render/frame-v2-music", {\
+        "packageLocation": "./src/plugins/render/frame-v2-music/",\
+        "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
+          ["@ranki/plugin-render-frame-v2-music", "workspace:src/plugins/render/frame-v2-music"],\
+          ["@types/node", "npm:24.5.2"],\
+          ["concurrently", "npm:9.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vexflow", "npm:5.0.0"],\
           ["vite", "virtual:a2c26bcdb49bb92277422ae8dde8e05245271d6bc4e31fed4719e1a14192c860f2ae229829ca10b403abf4e9c5a71cd849d71c6e8f2fee0275efe1496e597082#npm:7.2.2"]\
         ],\
         "linkType": "SOFT"\
@@ -9947,6 +9971,15 @@ const RAW_RUNTIME_STATE =
           ["@types/istanbul-lib-coverage", "npm:2.0.6"],\
           ["convert-source-map", "npm:2.0.0"],\
           ["v8-to-istanbul", "npm:9.3.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["vexflow", [\
+      ["npm:5.0.0", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/vexflow-npm-5.0.0-2a0c15dc79-10c0.zip/node_modules/vexflow/",\
+        "packageDependencies": [\
+          ["vexflow", "npm:5.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\

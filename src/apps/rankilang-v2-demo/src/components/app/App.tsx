@@ -43,7 +43,6 @@ function usePublicData() {
 export function App() {
   const { languageDefaultConfigStr, presetGroups, isLoading } = usePublicData();
   const [sharedState, setSharedState] = useState<SharedState>(null);
-  const deferredState = useDeferredValue(sharedState);
 
   if (isLoading) {
     return (
@@ -59,7 +58,7 @@ export function App() {
         presetGroups={presetGroups}
         initialLanguageUserConfigStr={languageDefaultConfigStr}
       />
-      <Output state={deferredState} />
+      <Output state={sharedState} />
     </div>
   );
 }

@@ -44,5 +44,6 @@ export type RankiRenderNode = {
   // slots?: {
   //   children: HTMLElement;
   // };
-  onLoad?: RankiRenderNodeOnLoadCallback[];
+  afterMount?: RankiRenderNodeOnLoadCallback[];
+  beforeUnmount?: RankiRenderNodeOnLoadCallback[];
 };

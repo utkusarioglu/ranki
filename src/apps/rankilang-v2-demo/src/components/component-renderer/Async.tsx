@@ -74,6 +74,8 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
       }
     };
 
+    // contentDocument.head.innerHTML = '<meta charset="UTF-7">';
+
     window.addEventListener("message", message);
 
     if (!contentDocument.querySelector(`script.${name}-observer`)) {
@@ -120,6 +122,7 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
       .join("; ");
 
     contentDocument.body.innerText = "";
+    const beforeUnmount: (() => {})[] = [];
     p.map((f) => {
       f.css?.forEach(({ id, css }) => {
         const htmlId = name + "-" + id;
@@ -133,13 +136,18 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
 
       contentDocument.body.appendChild(f.element);
 
-      f.onLoad?.forEach((f) => f());
+      f.afterMount?.forEach((f) => f());
 
+      f.beforeUnmount && beforeUnmount.push(...f.beforeUnmount);
       // return () => {
       //   window.removeEventListener("message", message);
-      //   f.element.remove();
+      //   f.beforeUnmount?.forEach((f) => f());
+      //   // f.element.remove();
       // };
     });
+    return () => {
+      beforeUnmount.forEach((f) => f());
+    };
   }, [p, colorScheme]);
 
   return (

@@ -37,7 +37,7 @@ export const mermaidSection: RankiRenderPluginItemRenderFunction = async (
 
   return {
     element,
-    onLoad: [
+    afterMount: [
       async () => {
         mermaid.initialize({ startOnLoad: false, ...mermaidConfig });
         const { svg } = await mermaid.render(id, raw);

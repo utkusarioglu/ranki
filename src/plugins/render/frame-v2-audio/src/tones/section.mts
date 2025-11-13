@@ -29,7 +29,7 @@ interface NotePack {
 }
 
 function createTone(tones: NotePack[]) {
-  console.log(tones);
+  Tone.getTransport().stop();
   const synth = new Tone.PolySynth(Tone.Synth).toDestination();
   const now = Tone.now();
   const ctx = Tone.getContext();
@@ -37,7 +37,7 @@ function createTone(tones: NotePack[]) {
     if (note.note.length !== 2) {
       return;
     }
-    const time = now + i * 0.3;
+    const time = now + i * 0.25;
     synth.triggerAttackRelease(note.note, "8n", time);
 
     ctx.setTimeout(() => {
@@ -82,13 +82,21 @@ export const section: RankiRenderPluginItemRenderFunction = async (t) => {
         css,
       },
     ],
-    onLoad: [
+    afterMount: [
       async () => {
+        console.log("calling after mount");
         try {
           createTone(notes);
         } catch {
           Tone.getTransport().stop();
         }
+      },
+    ],
+    beforeUnmount: [
+      async () => {
+        console.log("stopping during unmount");
+        Tone.getTransport().stop();
+        console.log("stopping during unmount2");
       },
     ],
   };

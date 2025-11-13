@@ -1666,6 +1666,7 @@ __metadata:
     "@ranki/plugin-render-frame-v2-code": "workspace:^"
     "@ranki/plugin-render-frame-v2-latex": "workspace:^"
     "@ranki/plugin-render-frame-v2-mermaid": "workspace:^"
+    "@ranki/plugin-render-frame-v2-music": "workspace:^"
     "@types/prismjs": "npm:^1"
     "@types/react": "npm:^19.1.13"
     "@types/react-dom": "npm:^19.1.9"
@@ -1995,6 +1996,22 @@ __metadata:
     concurrently: "npm:^9.2.1"
     mermaid: "npm:^11.12.1"
     typescript: "npm:^5.8.3"
+    vite: "npm:^7.2.2"
+  languageName: unknown
+  linkType: soft
+
+"@ranki/plugin-render-frame-v2-music@workspace:^, @ranki/plugin-render-frame-v2-music@workspace:src/plugins/render/frame-v2-music":
+  version: 0.0.0-use.local
+  resolution: "@ranki/plugin-render-frame-v2-music@workspace:src/plugins/render/frame-v2-music"
+  dependencies:
+    "@ranki/config-typescript": "workspace:^"
+    "@ranki/package-anki-ui": "workspace:^"
+    "@ranki/package-api-v2": "workspace:^"
+    "@ranki/package-render-v2": "workspace:^"
+    "@types/node": "npm:^24.5.2"
+    concurrently: "npm:^9.2.1"
+    typescript: "npm:^5.8.3"
+    vexflow: "npm:^5.0.0"
     vite: "npm:^7.2.2"
   languageName: unknown
   linkType: soft
@@ -8159,6 +8176,13 @@ __metadata:
     "@types/istanbul-lib-coverage": "npm:^2.0.1"
     convert-source-map: "npm:^2.0.0"
   checksum: 10c0/968bcf1c7c88c04df1ffb463c179558a2ec17aa49e49376120504958239d9e9dad5281aa05f2a78542b8557f2be0b0b4c325710262f3b838b40d703d5ed30c23
+  languageName: node
+  linkType: hard
+
+"vexflow@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "vexflow@npm:5.0.0"
+  checksum: 10c0/8737a4414bf90f960d4ef91d24ec43c9fabbac6cc95df67c593af9c51da8311bc907c562c7c4836ed0b1c8060b19838649b4540886b60a9de8b36d1d15aad8c1
   languageName: node
   linkType: hard
 

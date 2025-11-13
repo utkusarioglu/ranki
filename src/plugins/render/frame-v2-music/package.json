@@ -1,0 +1,30 @@
+{
+  "name": "@ranki/plugin-render-frame-v2-music",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build",
+    "watch2": "vite dev",
+    "watch": "concurrently -n 'Latex:tsc,Latex:vite' -c yellow,cyan \"tsc --watch --preserveWatchOutput\" \"vite build --watch\"",
+    "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo"
+  },
+  "devDependencies": {
+    "@ranki/config-typescript": "workspace:^",
+    "@ranki/package-api-v2": "workspace:^",
+    "@ranki/package-render-v2": "workspace:^",
+    "@types/node": "^24.5.2",
+    "concurrently": "^9.2.1",
+    "typescript": "^5.8.3",
+    "vite": "^7.2.2"
+  },
+  "exports": {
+    ".": {
+      "types": "./types/export.d.mts",
+      "default": "./lib/export.js"
+    }
+  },
+  "dependencies": {
+    "@ranki/package-anki-ui": "workspace:^",
+    "vexflow": "^5.0.0"
+  }
+}

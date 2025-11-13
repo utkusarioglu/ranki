@@ -32,6 +32,7 @@
     "@ranki/plugin-render-frame-v2-code": "workspace:^",
     "@ranki/plugin-render-frame-v2-latex": "workspace:^",
     "@ranki/plugin-render-frame-v2-mermaid": "workspace:^",
+    "@ranki/plugin-render-frame-v2-music": "workspace:^",
     "prismjs": "^1.30.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

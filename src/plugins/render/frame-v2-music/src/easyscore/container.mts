@@ -11,7 +11,7 @@ export const tonesContainer: RankiRenderPluginItemRenderFunction = async (
   const block = AnkiUi.titledBlock([
     {
       type: "programming-language",
-      text: "Tones",
+      text: "Score",
     },
   ]);
 

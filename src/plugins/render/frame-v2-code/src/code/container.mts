@@ -40,7 +40,7 @@ export const codeContainer: RankiRenderPluginItemRenderFunction = async (
       },
       ...block.css!,
     ],
-    onLoad: [
+    afterMount: [
       async () => {
         await new Promise((r) => setTimeout(r, 1e3));
         let val = 0;
