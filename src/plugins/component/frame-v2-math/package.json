@@ -1,5 +1,5 @@
 {
-  "name": "@ranki/plugin-component-frame-v2-latex",
+  "name": "@ranki/plugin-component-frame-v2-math",
   "private": true,
   "type": "module",
   "scripts": {

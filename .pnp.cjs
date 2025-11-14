@@ -71,8 +71,8 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/plugins/component/frame-v2-code"\
     },\
     {\
-      "name": "@ranki/plugin-component-frame-v2-latex",\
-      "reference": "workspace:src/plugins/component/frame-v2-latex"\
+      "name": "@ranki/plugin-component-frame-v2-math",\
+      "reference": "workspace:src/plugins/component/frame-v2-math"\
     },\
     {\
       "name": "@ranki/plugin-component-frame-v2-mermaid",\
@@ -133,6 +133,10 @@ const RAW_RUNTIME_STATE =
     {\
       "name": "@ranki/plugin-render-frame-v2-music",\
       "reference": "workspace:src/plugins/render/frame-v2-music"\
+    },\
+    {\
+      "name": "@ranki/plugin-render-frame-v2-nerdamer",\
+      "reference": "workspace:src/plugins/render/frame-v2-nerdamer"\
     }\
   ],\
   "enableTopLevelFallback": true,\
@@ -153,7 +157,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/plugin-component-frame-v2", ["workspace:src/plugins/component/frame-v2"]],\
     ["@ranki/plugin-component-frame-v2-audio", ["workspace:src/plugins/component/frame-v2-audio"]],\
     ["@ranki/plugin-component-frame-v2-code", ["workspace:src/plugins/component/frame-v2-code"]],\
-    ["@ranki/plugin-component-frame-v2-latex", ["workspace:src/plugins/component/frame-v2-latex"]],\
+    ["@ranki/plugin-component-frame-v2-math", ["workspace:src/plugins/component/frame-v2-math"]],\
     ["@ranki/plugin-component-frame-v2-mermaid", ["workspace:src/plugins/component/frame-v2-mermaid"]],\
     ["@ranki/plugin-grammar-constants-v2", ["workspace:src/plugins/grammar/constants-v2"]],\
     ["@ranki/plugin-grammar-params-v2", ["workspace:src/plugins/grammar/params-v2"]],\
@@ -169,6 +173,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/plugin-render-frame-v2-latex", ["workspace:src/plugins/render/frame-v2-latex"]],\
     ["@ranki/plugin-render-frame-v2-mermaid", ["workspace:src/plugins/render/frame-v2-mermaid"]],\
     ["@ranki/plugin-render-frame-v2-music", ["workspace:src/plugins/render/frame-v2-music"]],\
+    ["@ranki/plugin-render-frame-v2-nerdamer", ["workspace:src/plugins/render/frame-v2-nerdamer"]],\
     ["@ranki/root", ["workspace:."]]\
   ],\
   "fallbackPool": [\
@@ -2504,7 +2509,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/plugin-component-frame-v2", "workspace:src/plugins/component/frame-v2"],\
           ["@ranki/plugin-component-frame-v2-audio", "workspace:src/plugins/component/frame-v2-audio"],\
           ["@ranki/plugin-component-frame-v2-code", "workspace:src/plugins/component/frame-v2-code"],\
-          ["@ranki/plugin-component-frame-v2-latex", "workspace:src/plugins/component/frame-v2-latex"],\
+          ["@ranki/plugin-component-frame-v2-math", "workspace:src/plugins/component/frame-v2-math"],\
           ["@ranki/plugin-component-frame-v2-mermaid", "workspace:src/plugins/component/frame-v2-mermaid"],\
           ["@ranki/plugin-grammar-constants-v2", "workspace:src/plugins/grammar/constants-v2"],\
           ["@ranki/plugin-grammar-params-v2", "workspace:src/plugins/grammar/params-v2"],\
@@ -2520,6 +2525,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/plugin-render-frame-v2-latex", "workspace:src/plugins/render/frame-v2-latex"],\
           ["@ranki/plugin-render-frame-v2-mermaid", "workspace:src/plugins/render/frame-v2-mermaid"],\
           ["@ranki/plugin-render-frame-v2-music", "workspace:src/plugins/render/frame-v2-music"],\
+          ["@ranki/plugin-render-frame-v2-nerdamer", "workspace:src/plugins/render/frame-v2-nerdamer"],\
           ["@types/prismjs", "npm:1.26.5"],\
           ["@types/react", "npm:19.1.13"],\
           ["@types/react-dom", "virtual:56e235665721e97d09a872fed4e209638785440a96a0182c8b7851ddc5b5197c6079e0a6f7acdf0f15cfa65463f170f278a22d104f9a30aae09628eeff3200a9#npm:19.1.9"],\
@@ -2671,13 +2677,13 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
-    ["@ranki/plugin-component-frame-v2-latex", [\
-      ["workspace:src/plugins/component/frame-v2-latex", {\
-        "packageLocation": "./src/plugins/component/frame-v2-latex/",\
+    ["@ranki/plugin-component-frame-v2-math", [\
+      ["workspace:src/plugins/component/frame-v2-math", {\
+        "packageLocation": "./src/plugins/component/frame-v2-math/",\
         "packageDependencies": [\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
-          ["@ranki/plugin-component-frame-v2-latex", "workspace:src/plugins/component/frame-v2-latex"],\
+          ["@ranki/plugin-component-frame-v2-math", "workspace:src/plugins/component/frame-v2-math"],\
           ["@ranki/plugin-parser-frame-v2", "workspace:src/plugins/parser/frame-v2"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
@@ -2924,6 +2930,26 @@ const RAW_RUNTIME_STATE =
           ["vexflow", "npm:5.0.0"],\
           ["vite", "virtual:ef08aca973705c11310a2bcdb831b0269d3b2bb02810cf4c878301c058138e03f493858b78dac3066cae51ce96a7859532e71123be79438da76645ab49eb5901#npm:7.2.2"],\
           ["yaml", "npm:2.8.1"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/plugin-render-frame-v2-nerdamer", [\
+      ["workspace:src/plugins/render/frame-v2-nerdamer", {\
+        "packageLocation": "./src/plugins/render/frame-v2-nerdamer/",\
+        "packageDependencies": [\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
+          ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
+          ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\
+          ["@ranki/plugin-render-frame-v2-nerdamer", "workspace:src/plugins/render/frame-v2-nerdamer"],\
+          ["@types/node", "npm:24.5.2"],\
+          ["@types/plotly.js", "npm:3.0.8"],\
+          ["concurrently", "npm:9.2.1"],\
+          ["nerdamer", "npm:1.1.13"],\
+          ["plotly.js-dist-min", "npm:3.2.0"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vite", "virtual:a2c26bcdb49bb92277422ae8dde8e05245271d6bc4e31fed4719e1a14192c860f2ae229829ca10b403abf4e9c5a71cd849d71c6e8f2fee0275efe1496e597082#npm:7.2.2"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -3832,6 +3858,15 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@types/node", "npm:24.5.2"],\
           ["undici-types", "npm:7.12.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/plotly.js", [\
+      ["npm:3.0.8", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@types-plotly.js-npm-3.0.8-5c0c7fb365-10c0.zip/node_modules/@types/plotly.js/",\
+        "packageDependencies": [\
+          ["@types/plotly.js", "npm:3.0.8"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -8739,6 +8774,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["nerdamer", [\
+      ["npm:1.1.13", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/nerdamer-npm-1.1.13-4455ffb437-10c0.zip/node_modules/nerdamer/",\
+        "packageDependencies": [\
+          ["nerdamer", "npm:1.1.13"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["node-abi", [\
       ["npm:3.81.0", {\
         "packageLocation": "../home/dev/.yarn/berry/cache/node-abi-npm-3.81.0-43f6aacb38-10c0.zip/node_modules/node-abi/",\
@@ -9174,6 +9218,15 @@ const RAW_RUNTIME_STATE =
           ["exsolve", "npm:1.0.7"],\
           ["pathe", "npm:2.0.3"],\
           ["pkg-types", "npm:2.3.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["plotly.js-dist-min", [\
+      ["npm:3.2.0", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/plotly.js-dist-min-npm-3.2.0-52f251c823-10c0.zip/node_modules/plotly.js-dist-min/",\
+        "packageDependencies": [\
+          ["plotly.js-dist-min", "npm:3.2.0"]\
         ],\
         "linkType": "HARD"\
       }]\

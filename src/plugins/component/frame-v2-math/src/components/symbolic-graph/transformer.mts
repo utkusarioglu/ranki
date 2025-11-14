@@ -9,13 +9,15 @@ import {
   v2PayloadSection,
 } from "@ranki/plugin-parser-frame-v2/transformers";
 
+const common = ["frame", "v2", "math", "symbolic", "plot", "block"];
+
 const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
   assertValidationSingleChild(v);
   return v.context.newTransformNode(v, [
     {
       kind: "leaf",
-      tag: ["frame", "v2", "math", "latex", "block", "section"].join("."),
+      tag: [...common, "section"].join("."),
       hoist: 0,
       params: v.plugins.transformer.params,
       // TODO this needs to access the child because the `PayloadPlain` parent
@@ -30,7 +32,7 @@ const v2_fp: ComponentPluginTransformFunc = (v) => {
 
   const code = v.context.newTransformNode(v, [
     {
-      tag: ["frame", "v2", "math", "latex", "block", "container"].join("."),
+      tag: [...common, "container"].join("."),
       kind: "parent",
       hoist: 0,
       children,

@@ -8,7 +8,7 @@ import { rankiRichStructureV2ParserPlugin } from "@ranki/plugin-grammar-rich-str
 import { rankiFrameV1ParserPlugin } from "@ranki/plugin-parser-frame-v1";
 import { rankiFrameV2ComponentsPluginCode } from "@ranki/plugin-component-frame-v2-code";
 import { rankiBaseV2ComponentsPluginDefault } from "@ranki/plugin-component-base-v2-default";
-import { rankiFrameV2ComponentsPluginLatex } from "@ranki/plugin-component-frame-v2-latex";
+import { rankiFrameV2ComponentsPluginMath } from "@ranki/plugin-component-frame-v2-math";
 import { rankiFrameV2ComponentsPlugin } from "@ranki/plugin-component-frame-v2";
 import { rankiFrameV2ComponentsPluginMermaid } from "@ranki/plugin-component-frame-v2-mermaid";
 import { rankiFrameV2ComponentsPluginAudio } from "@ranki/plugin-component-frame-v2-audio";
@@ -18,6 +18,7 @@ import { renderPluginFrameV2Code } from "@ranki/plugin-render-frame-v2-code";
 import { renderPluginFrameV2Mermaid } from "@ranki/plugin-render-frame-v2-mermaid";
 import { renderPluginFrameV2Audio } from "@ranki/plugin-render-frame-v2-audio";
 import { renderPluginFrameV2Music } from "@ranki/plugin-render-frame-v2-music";
+import { renderPluginFrameV2Nerdamer } from "@ranki/plugin-render-frame-v2-nerdamer";
 import { Render } from "@ranki/package-render-v2";
 
 export const pluginObjects = [
@@ -35,7 +36,7 @@ export const componentObjects = [
   rankiBaseV2ComponentsPluginDefault,
   rankiFrameV2ComponentsPlugin,
   rankiFrameV2ComponentsPluginCode,
-  rankiFrameV2ComponentsPluginLatex,
+  rankiFrameV2ComponentsPluginMath,
   rankiFrameV2ComponentsPluginMermaid,
   rankiFrameV2ComponentsPluginAudio,
 ];
@@ -47,4 +48,5 @@ export const componentObjects = [
   renderPluginFrameV2Mermaid,
   renderPluginFrameV2Audio,
   renderPluginFrameV2Music,
+  renderPluginFrameV2Nerdamer,
 ].forEach((p) => Render.addPlugin(p));
