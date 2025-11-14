@@ -17,7 +17,7 @@ export const ComponentRenderer: FC<ComponentRendererProps> = ({
   options,
 }) => {
   const [showParts, setShowParts] = useState(false);
-  const [width, setWidth] = useState(200);
+  const [width, setWidth] = useState(320);
   return (
     <div className={style.container}>
       {Object.entries(parsed.theaters).map(([theater, o]) => {
