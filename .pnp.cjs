@@ -2917,6 +2917,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jstoxml", "npm:5.0.0"],\
           ["@types/node", "npm:24.5.2"],\
           ["concurrently", "npm:9.2.1"],\
+          ["json-xml-parse", "npm:1.3.0"],\
           ["jstoxml", "npm:7.0.1"],\
           ["opensheetmusicdisplay", "npm:1.9.2"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
@@ -8003,6 +8004,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/dev/.yarn/berry/cache/json-stable-stringify-without-jsonify-npm-1.0.1-b65772b28b-10c0.zip/node_modules/json-stable-stringify-without-jsonify/",\
         "packageDependencies": [\
           ["json-stable-stringify-without-jsonify", "npm:1.0.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["json-xml-parse", [\
+      ["npm:1.3.0", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/json-xml-parse-npm-1.3.0-2040e657ac-10c0.zip/node_modules/json-xml-parse/",\
+        "packageDependencies": [\
+          ["json-xml-parse", "npm:1.3.0"]\
         ],\
         "linkType": "HARD"\
       }]\

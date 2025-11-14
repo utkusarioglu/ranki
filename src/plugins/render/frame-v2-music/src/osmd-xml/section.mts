@@ -3,15 +3,22 @@ import type { RankiRenderPluginItemRenderFunction } from "@ranki/package-render-
 import { AnkiUi } from "@ranki/package-anki-ui";
 import { OpenSheetMusicDisplay } from "opensheetmusicdisplay";
 import css from "./section.css?raw";
-import yaml from "yaml";
-import { toXML } from "jstoxml";
+// import yaml from "yaml";
+// import { toXML } from "jstoxml";
+// import { jsXml } from "json-xml-parse";
 
 export const section: RankiRenderPluginItemRenderFunction = async (t) => {
   assertTransformLeaf(t);
   const hs = AnkiUi.horizontalScroller();
-  const raw = t.source.raw.trim();
-  const o = yaml.parse(raw);
-  const xml = toXML(o, { header: true });
+  const div = document.createElement("pre");
+  hs.slots!.content.appendChild(div);
+
+  const xml = t.source.raw.trim();
+  // const o = yaml.parse(raw);
+  // const xml = jsXml.toXmlString(o);
+  // const xml = toXML(o, { indent: "  " });
+  console.log(xml);
+  // div.innerText = xml;
 
   return {
     element: hs.element,

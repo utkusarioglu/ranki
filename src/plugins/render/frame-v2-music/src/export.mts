@@ -1,6 +1,7 @@
 import type { RankiPluginRenderer } from "@ranki/package-render-v2";
 import { easyScoreRenderers } from "./easyscore/renderers.mjs";
 import { osmdYmlRenderers } from "./osmd-yml/renderers.mjs";
+import { osmdXmlRenderers } from "./osmd-xml/renderers.mjs";
 
 export const renderPluginFrameV2Music: RankiPluginRenderer = {
   type: "renderer",
@@ -11,6 +12,7 @@ export const renderPluginFrameV2Music: RankiPluginRenderer = {
   items: [
     ...easyScoreRenderers,
     ...osmdYmlRenderers,
+    ...osmdXmlRenderers,
     // {
     //   tag: [
     //     "music",
