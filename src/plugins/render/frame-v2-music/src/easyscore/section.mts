@@ -1,6 +1,7 @@
 import { assertTransformLeaf } from "@ranki/package-api-v2/helpers";
 import type { RankiRenderPluginItemRenderFunction } from "@ranki/package-render-v2";
 import { AnkiUi } from "@ranki/package-anki-ui";
+// @ts-expect-error
 import { Factory } from "vexflow";
 import cssTemplate from "./section.css?raw";
 import fontTextBase64 from "./leland.txt?raw";
@@ -66,7 +67,6 @@ export const section: RankiRenderPluginItemRenderFunction = async (t) => {
       time,
     };
   });
-  console.log({ voices });
 
   let attached = false;
 
@@ -98,7 +98,7 @@ export const section: RankiRenderPluginItemRenderFunction = async (t) => {
 
           const vf = new Factory({
             renderer: {
-              // @ts-expect-error
+              // @ts-ignore wrong type def by vexflow
               elementId: div,
               width: 200,
               height: 150,

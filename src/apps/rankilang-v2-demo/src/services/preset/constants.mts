@@ -1,5 +1,9 @@
 export const PRESET_FILES = [
   {
+    basename: "music",
+    groupName: "Music",
+  },
+  {
     basename: "tests",
     groupName: "Tests",
   },

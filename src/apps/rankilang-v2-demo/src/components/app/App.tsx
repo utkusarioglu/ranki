@@ -1,7 +1,7 @@
 import { Output } from "../output/Output";
 import style from "./app.module.css";
 import { Inputs } from "../inputs/Inputs";
-import { useDeferredValue, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { PresetGroup } from "../../services/preset/preset.types";
 import { fetchPresets } from "../../services/preset/preset.mjs";
 import yaml from "yaml";
