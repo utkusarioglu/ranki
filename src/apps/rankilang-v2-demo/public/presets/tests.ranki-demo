@@ -1,3 +1,8 @@
+--- Vexchord
+[chord
+hi
+]
+
 ---Symbolic math graph
 [sym_graph
 x^4 - x^3 - 3 + sin(x*100)

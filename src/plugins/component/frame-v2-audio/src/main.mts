@@ -3,6 +3,7 @@ import { tonesComponent } from "./components/tone/component.mjs";
 import { easyScoreComponent } from "./components/easyscore/component.mjs";
 import { musicYmlComponent } from "./components/musicyml/component.mjs";
 import { musicXmlComponent } from "./components/musicxml/component.mjs";
+import { vexchordsComponent } from "./components/vexchord/component.mjs";
 
 export const rankiFrameV2ComponentsPluginAudio: RankiPluginComponent = {
   meta: {
@@ -15,5 +16,6 @@ export const rankiFrameV2ComponentsPluginAudio: RankiPluginComponent = {
     easyScoreComponent,
     musicYmlComponent,
     musicXmlComponent,
+    vexchordsComponent,
   ],
 };

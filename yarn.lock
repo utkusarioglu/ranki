@@ -2038,6 +2038,7 @@ __metadata:
     jstoxml: "npm:^7.0.1"
     opensheetmusicdisplay: "npm:^1.9.2"
     typescript: "npm:^5.8.3"
+    vexchords: "npm:^1.2.0"
     vexflow: "npm:^5.0.0"
     vite: "npm:^7.2.2"
     yaml: "npm:^2.8.1"
@@ -2403,6 +2404,13 @@ __metadata:
   dependencies:
     "@sinonjs/commons": "npm:^3.0.1"
   checksum: 10c0/a707476efd523d2138ef6bba916c83c4a377a8372ef04fad87499458af9f01afc58f4f245c5fd062793d6d70587309330c6f96947b5bd5697961c18004dc3e26
+  languageName: node
+  linkType: hard
+
+"@svgdotjs/svg.js@npm:^3.0.12":
+  version: 3.2.5
+  resolution: "@svgdotjs/svg.js@npm:3.2.5"
+  checksum: 10c0/c0b3b801166a3a99a6a451ccbb1230f47b6e1533697a36c3d366d6a828bffd076fa318e75a6165912f58687dc796492ce1138e350b61da7270d96d4d034cd044
   languageName: node
   linkType: hard
 
@@ -8996,6 +9004,15 @@ __metadata:
     "@types/istanbul-lib-coverage": "npm:^2.0.1"
     convert-source-map: "npm:^2.0.0"
   checksum: 10c0/968bcf1c7c88c04df1ffb463c179558a2ec17aa49e49376120504958239d9e9dad5281aa05f2a78542b8557f2be0b0b4c325710262f3b838b40d703d5ed30c23
+  languageName: node
+  linkType: hard
+
+"vexchords@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "vexchords@npm:1.2.0"
+  dependencies:
+    "@svgdotjs/svg.js": "npm:^3.0.12"
+  checksum: 10c0/c37598e8db48f416d51731a5d6834fce6b35c552259f794b8c43fdd61eda37063ed01236e999b497806332fe2e0e9a708d7d53055eccc1e55d1f7110fac35d46
   languageName: node
   linkType: hard
 

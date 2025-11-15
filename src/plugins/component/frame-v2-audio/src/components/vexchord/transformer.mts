@@ -9,7 +9,7 @@ import {
   v2PayloadSection,
 } from "@ranki/plugin-parser-frame-v2/transformers";
 
-const common = ["music", "score", "vexflow", "easyscore", "block"];
+const common = ["music", "diagram", "vexchords", "block"];
 
 const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);

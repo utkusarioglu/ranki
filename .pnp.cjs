@@ -2927,6 +2927,7 @@ const RAW_RUNTIME_STATE =
           ["jstoxml", "npm:7.0.1"],\
           ["opensheetmusicdisplay", "npm:1.9.2"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vexchords", "npm:1.2.0"],\
           ["vexflow", "npm:5.0.0"],\
           ["vite", "virtual:ef08aca973705c11310a2bcdb831b0269d3b2bb02810cf4c878301c058138e03f493858b78dac3066cae51ce96a7859532e71123be79438da76645ab49eb5901#npm:7.2.2"],\
           ["yaml", "npm:2.8.1"]\
@@ -3350,6 +3351,15 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@sinonjs/commons", "npm:3.0.1"],\
           ["@sinonjs/fake-timers", "npm:13.0.5"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@svgdotjs/svg.js", [\
+      ["npm:3.2.5", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@svgdotjs-svg.js-npm-3.2.5-7b6c372fc5-10c0.zip/node_modules/@svgdotjs/svg.js/",\
+        "packageDependencies": [\
+          ["@svgdotjs/svg.js", "npm:3.2.5"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -10856,6 +10866,16 @@ const RAW_RUNTIME_STATE =
           ["@types/istanbul-lib-coverage", "npm:2.0.6"],\
           ["convert-source-map", "npm:2.0.0"],\
           ["v8-to-istanbul", "npm:9.3.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["vexchords", [\
+      ["npm:1.2.0", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/vexchords-npm-1.2.0-ca6030c52d-10c0.zip/node_modules/vexchords/",\
+        "packageDependencies": [\
+          ["@svgdotjs/svg.js", "npm:3.2.5"],\
+          ["vexchords", "npm:1.2.0"]\
         ],\
         "linkType": "HARD"\
       }]\
