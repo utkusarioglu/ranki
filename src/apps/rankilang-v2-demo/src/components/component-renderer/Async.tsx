@@ -70,7 +70,15 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
 
     const message = (e: MessageEvent<any>) => {
       if (e.data.type === `resize-${name}`) {
-        setHeight(e.data.height);
+        const newHeight = e.data.height;
+        setHeight(newHeight);
+        // setHeight((currHeight) => {
+        //   if (currHeight + 1 < newHeight || newHeight < currHeight - 1) {
+        //     return newHeight;
+        //   } else {
+        //     return height;
+        //   }
+        // });
       }
     };
 
@@ -101,21 +109,43 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
         :root {
           --scrollbar-thumb-color: #FFFF00;
         }
+        body {
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          justify-content: center;
+          align-items: center;
+          font-family: Arial, Helvetica, sans-serif;
+          
+          /*
+            This hack allows peaceful reconciliation of height
+            between the child body and the iframe element.
+            Setting height: 100% caused a runaway increase of height,
+            this doesn't cause that.
+          */
+          &::after {
+            content: "";
+            display: block;
+            height: 0.1px;
+          }
+        }
       `;
       contentDocument.head.appendChild(vars);
     }
 
     contentDocument.body.style = Object.entries({
-      // display: "grid",
-      margin: 0,
-      padding: 0,
-      // height: "max-content",
-      // width: "max-content",
-      overflow: "hidden",
-      "justify-content": "center",
-      "align-items": "center",
-      "font-family": "Arial, Helvetica, sans-serif",
       color: colorScheme === "dark" ? "white" : "black",
+      // // display: "grid",
+      // // height: "100%",
+      // margin: 0,
+      // padding: 0,
+      // // height: "max-content",
+      // // width: "max-content",
+      // overflow: "hidden",
+      // "justify-content": "center",
+      // "align-items": "center",
+      // "font-family": "Arial, Helvetica, sans-serif",
+      // color: colorScheme === "dark" ? "white" : "black",
       // border: "2px solid red",
     })
       .map((p) => p.join(": "))
@@ -139,11 +169,6 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
       f.afterMount?.forEach((f) => f());
 
       f.beforeUnmount && beforeUnmount.push(...f.beforeUnmount);
-      // return () => {
-      //   window.removeEventListener("message", message);
-      //   f.beforeUnmount?.forEach((f) => f());
-      //   // f.element.remove();
-      // };
     });
     return () => {
       beforeUnmount.forEach((f) => f());

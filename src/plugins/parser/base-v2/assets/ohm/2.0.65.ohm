@@ -22,7 +22,7 @@ RankiBaseV2 <: RankiConstantsV2 {
   lexemes = lexeme (clearance lexeme)*
   
   lexeme = 
-    | decorated --decorated
+    | decorated --none
 
   decorated = 
     | word &wordEnd --base

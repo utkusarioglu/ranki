@@ -5,8 +5,10 @@ import {
 } from "@ranki/package-api-v2/helpers";
 import {
   v2_fpCommon,
-  pausedContainer,
-  v2PayloadSection,
+  // pausedContainer,
+  // v2PayloadSection,
+  // v2PayloadSectionItem,
+  frameV2CommonTransforms,
 } from "@ranki/plugin-parser-frame-v2/transformers";
 
 const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
@@ -38,9 +40,25 @@ const v2_fp: ComponentPluginTransformFunc = (v) => {
   return code;
 };
 
+const v2_f: ComponentPluginTransformFunc = (v) => {
+  const children = v2_fpCommon(v);
+  const code = v.context.newTransformNode(v, [
+    {
+      tag: "computer_science.code.block.container",
+      kind: "parent",
+      hoist: 0,
+      children,
+    },
+  ]);
+  return code;
+};
+
 export const transformList = {
+  ...frameV2CommonTransforms,
   v2_fp,
-  pausedContainer,
+  v2_f,
   v2PayloadPlain,
-  v2PayloadSection,
+  // pausedContainer,
+  // v2PayloadSection,
+  // v2PayloadSectionItem,
 };

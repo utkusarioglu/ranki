@@ -5,7 +5,7 @@ import "prismjs/components/prism-python.js";
 import "prismjs/components/prism-javascript.js";
 import prismCss from "./prism/prism-atom-dark.css?raw";
 import css from "./section.css?raw";
-import { TEMPgetLanguageName } from "./TEMPgetLanguageName.mjs";
+import { NO_LANGUAGE, TEMPgetLanguageName } from "./TEMPgetLanguageName.mjs";
 import { AnkiUi } from "@ranki/package-anki-ui";
 
 export const codeSection: RankiRenderPluginItemRenderFunction = async (t) => {
@@ -19,7 +19,8 @@ export const codeSection: RankiRenderPluginItemRenderFunction = async (t) => {
   pre.appendChild(code);
   h.slots!.content.appendChild(pre);
 
-  const raw = t.source.raw.trim();
+  // ANKI trim new lines
+  const raw = t.source.raw.replace(/^[\r\n]+|[\r\n]+$/g, "");
 
   // TODO prism already offers a line numbers solution. so use that instead
   h.slots!.left.innerHTML = Array(raw.split("\n").length)
@@ -28,7 +29,10 @@ export const codeSection: RankiRenderPluginItemRenderFunction = async (t) => {
     .join("<br>");
 
   const language = TEMPgetLanguageName(t);
-  const highlighted = Prism.highlight(raw, Prism.languages[language], language);
+  const highlighted =
+    language === NO_LANGUAGE
+      ? raw
+      : Prism.highlight(raw, Prism.languages[language], language);
   code.innerHTML = highlighted;
 
   return {

@@ -160,23 +160,23 @@ export type ReducedTransformNode =
 // Pick<TransformNode, TransformNodeRequired> &
 // Partial<Omit<TransformNode, TransformNodeRequired>>;
 
-type ReducedTransformNodeHoist = {
-  hoist: number;
-};
+// type ReducedTransformNodeHoist = {
+//   hoist: number;
+// };
 
 export type ReducedTransformNodeParent = Pick<
   TransformNodeParent,
   TransformNodeParentRequired
 > &
-  Partial<Omit<TransformNodeParent, TransformNodeParentRequired>> &
-  ReducedTransformNodeHoist;
+  Partial<Omit<TransformNodeParent, TransformNodeParentRequired>>;
+// & ReducedTransformNodeHoist;
 
 export type ReducedTransformNodeLeaf = Pick<
   TransformNodeLeaf,
   TransformNodeLeafRequired
 > &
-  Partial<Omit<TransformNodeLeaf, TransformNodeLeafRequired>> &
-  ReducedTransformNodeHoist;
+  Partial<Omit<TransformNodeLeaf, TransformNodeLeafRequired>>;
+// & ReducedTransformNodeHoist;
 
 export interface RankiLangContextInstance {
   getPlugins: RankiLangInstance["getPlugins"];

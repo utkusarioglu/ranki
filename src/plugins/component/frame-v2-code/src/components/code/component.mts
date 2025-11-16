@@ -14,7 +14,7 @@ export const codeComponent: ComponentPluginComponent = {
     ast: {
       directives: [
         {
-          // @ts-expect-error
+          // @ts-ignore
           plugins: {
             requested: [
               "RankiParamsV2",
@@ -23,6 +23,14 @@ export const codeComponent: ComponentPluginComponent = {
               // "RankiBaseV2",
               // "RankiConstantsV2",
             ],
+            // config: {
+            //   RankiFrameV2: {
+            //     tokens: {
+            //       opener: "-[",
+            //       closer: "]-",
+            //     },
+            //   },
+            // },
           },
         },
       ],
@@ -38,6 +46,8 @@ export const codeComponent: ComponentPluginComponent = {
           shorthands: {
             p: ["content", "prefix"],
             r: ["plugins", "requested"],
+            o: ["plugins", "config", "RankiFrameV2", "tokens", "opener"],
+            c: ["plugins", "config", "RankiFrameV2", "tokens", "closer"],
           },
         },
       },

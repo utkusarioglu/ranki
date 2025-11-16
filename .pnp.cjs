@@ -2947,7 +2947,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:24.5.2"],\
           ["@types/plotly.js", "npm:3.0.8"],\
           ["concurrently", "npm:9.2.1"],\
-          ["nerdamer", "npm:1.1.13"],\
+          ["nerdamer-prime", "npm:1.2.5"],\
           ["plotly.js-dist-min", "npm:3.2.0"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
           ["vite", "virtual:a2c26bcdb49bb92277422ae8dde8e05245271d6bc4e31fed4719e1a14192c860f2ae229829ca10b403abf4e9c5a71cd849d71c6e8f2fee0275efe1496e597082#npm:7.2.2"]\
@@ -8784,11 +8784,11 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["nerdamer", [\
-      ["npm:1.1.13", {\
-        "packageLocation": "../home/dev/.yarn/berry/cache/nerdamer-npm-1.1.13-4455ffb437-10c0.zip/node_modules/nerdamer/",\
+    ["nerdamer-prime", [\
+      ["npm:1.2.5", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/nerdamer-prime-npm-1.2.5-cd575d0494-10c0.zip/node_modules/nerdamer-prime/",\
         "packageDependencies": [\
-          ["nerdamer", "npm:1.1.13"]\
+          ["nerdamer-prime", "npm:1.2.5"]\
         ],\
         "linkType": "HARD"\
       }]\

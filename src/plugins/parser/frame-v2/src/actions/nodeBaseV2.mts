@@ -1,6 +1,13 @@
-import type { AstNodeParentReduced } from "@ranki/package-api-v2";
+import type {
+  AstNode,
+  AstNodeParentReduced,
+  RankiLangContextInstance,
+} from "@ranki/package-api-v2";
 import { getContext as c } from "@ranki/package-api-v2/helpers";
-import { joinNodes, zipNodes } from "@ranki/package-api-v2/helpers";
+import {
+  // joinNodes,
+  zipNodes,
+} from "@ranki/package-api-v2/helpers";
 import type * as ohm from "ohm-js";
 import type { ParseNodeFrameV2 } from "../types/node.mjs";
 
@@ -33,10 +40,6 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
       {
         subtree: {},
         children: [v2.node(context)],
-        // transformer: {
-        //   handler: "RankiFrameV2",
-        //   chain: "block_v2",
-        // },
       },
     );
   },
@@ -82,6 +85,13 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
 
   pauseList(v2PayloadSection1, pausedContainer, v2PayloadSection2) {
     const context = c(this).newChild(this, "block");
+    const children = zipNodes<RankiLangContextInstance, AstNode>(
+      context,
+      v2PayloadSection1,
+      pausedContainer,
+      v2PayloadSection2,
+    );
+
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
@@ -94,23 +104,19 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
       },
       {
         subtree: {},
-        children: zipNodes(
-          context,
-          v2PayloadSection1,
-          pausedContainer,
-          v2PayloadSection2,
-        ),
+        children,
       },
     );
   },
 
-  v2PayloadSection(
-    v2PayloadSectionItem1,
-    whitespaceSeparator,
-    v2PayloadSectionItem2,
-    whitespace2,
+  v2PayloadSectionItem(
+    item,
+    whitespace,
+    // v2PayloadSectionItem2,
+    // whitespace2,
   ) {
     const context = c(this).newChild(this, "block");
+    const children = item.node(context);
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
@@ -118,19 +124,49 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
           spaces: {
             suffix: {
               type: "whitespace",
-              raw: whitespace2.sourceString,
+              raw: whitespace.sourceString,
             },
           },
-          separators: whitespaceSeparator.separator(context),
+          separators: [],
+          // separators: whitespaceSeparator.separator(context),
         },
       },
       {
         subtree: {},
-        children: joinNodes(
-          context,
-          v2PayloadSectionItem1,
-          v2PayloadSectionItem2,
-        ),
+        children: [children],
+      },
+    );
+  },
+
+  v2PayloadSection(
+    v2PayloadSectionItem1,
+    // whitespaceSeparator,
+    // v2PayloadSectionItem2,
+    // whitespace2,
+  ) {
+    const context = c(this).newChild(this, "block");
+    return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
+      {
+        kind: "parent",
+        shape: {
+          spaces: {
+            // suffix: {
+            //   type: "whitespace",
+            //   raw: whitespace2.sourceString,
+            // },
+          },
+          separators: [],
+          // separators: whitespaceSeparator.separator(context),
+        },
+      },
+      {
+        subtree: {},
+        children: v2PayloadSectionItem1.node(context),
+        // children: joinNodes(
+        //   context,
+        //   v2PayloadSectionItem1,
+        //   v2PayloadSectionItem2,
+        // ),
       },
     );
   },

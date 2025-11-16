@@ -2,7 +2,7 @@ import type {
   ComponentPluginValidationFunc,
   ComponentPluginComponent,
 } from "@ranki/package-api-v2";
-import { transformList } from "../transform/all.mjs";
+import { transformList } from "./transforms.mjs";
 
 const placeholder: ComponentPluginValidationFunc = (validation) => ({
   warnings: [["COMPONENT VALIDATION", validation.kind].join(" ")],

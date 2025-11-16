@@ -5,8 +5,10 @@ import {
 } from "@ranki/package-api-v2/helpers";
 import {
   v2_fpCommon,
-  pausedContainer,
-  v2PayloadSection,
+  // pausedContainer,
+  // v2PayloadSection,
+  // v2PayloadSectionItem,
+  frameV2CommonTransforms,
 } from "@ranki/plugin-parser-frame-v2/transformers";
 
 const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
@@ -55,8 +57,10 @@ const v2_fp: ComponentPluginTransformFunc = (v) => {
 };
 
 export const transformList = {
+  ...frameV2CommonTransforms,
   v2_fp,
-  pausedContainer,
+  // pausedContainer,
   v2PayloadPlain,
-  v2PayloadSection,
+  // v2PayloadSection,
+  // v2PayloadSectionItem,
 };

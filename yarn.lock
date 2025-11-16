@@ -2056,7 +2056,7 @@ __metadata:
     "@types/node": "npm:^24.5.2"
     "@types/plotly.js": "npm:^3"
     concurrently: "npm:^9.2.1"
-    nerdamer: "npm:^1.1.13"
+    nerdamer-prime: "npm:^1.2.5"
     plotly.js-dist-min: "npm:^3.2.0"
     typescript: "npm:^5.8.3"
     vite: "npm:^7.2.2"
@@ -6991,10 +6991,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nerdamer@npm:^1.1.13":
-  version: 1.1.13
-  resolution: "nerdamer@npm:1.1.13"
-  checksum: 10c0/356adcf0dfea6a9813da90347434ced17fd313659e310132a2bd6b89c972bb5bda07f2a3d8598063ed27eeb8d1ebd6a391f4eb0d2672936499674b790383e612
+"nerdamer-prime@npm:^1.2.5":
+  version: 1.2.5
+  resolution: "nerdamer-prime@npm:1.2.5"
+  checksum: 10c0/c3547ccdebd21b4b334f806fca925d0668bc7373b9fdf76f324c4d22af8cbce356a1fa9beea9fd985dfe4ff3133c23aad58687c0d8f6af7ac8824c50378582ce
   languageName: node
   linkType: hard
 

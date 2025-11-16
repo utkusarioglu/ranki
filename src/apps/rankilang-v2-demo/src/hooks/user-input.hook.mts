@@ -92,6 +92,7 @@ export function useUserInput(
         ],
       );
       const parsed = rankiLang.parse({ [theater]: rankiStr });
+      console.log({ parsed });
       const config = rankiLang.getConfig().merged;
       setSharedState({
         type: "loaded",

@@ -5,6 +5,7 @@ import type {
   NodeArgsFrameV2ConfigFp_f_Reduced,
   NodeArgsFrameV2ConfigP_Reduced,
   NodeArgsFrameV2ConfigFp_F_Reduced,
+  NodeArgsFrameV2ConfigE_Reduced,
 } from "../types/args.mjs";
 import type { ArgsAndParamsV2 } from "@ranki/plugin-grammar-params-v2";
 import type { ComponentChain } from "@ranki/package-api-v2";
@@ -160,5 +161,34 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
         },
       },
     );
+  },
+
+  v2FrameConfigE(wi1, v2Type, wi2) {
+    const context = c(this).newChild(this, "block");
+    const chainList: ComponentChain[] = v2Type.frameSpecV2(context);
+
+    return context.newAstNode<NodeArgsFrameV2ConfigE_Reduced, NodeArgsFrameV2>({
+      type: "RankiFrameV2",
+      version: "v2",
+      variant: "e",
+      chainList,
+      shape: {
+        spaces: {
+          prefix: {
+            type: "wi",
+            raw: wi1.sourceString,
+          },
+          suffix: {
+            type: "wi",
+            raw: wi2.sourceString,
+          },
+        },
+        separators: [],
+      },
+      params: {
+        variant: "none",
+        items: [],
+      },
+    });
   },
 };

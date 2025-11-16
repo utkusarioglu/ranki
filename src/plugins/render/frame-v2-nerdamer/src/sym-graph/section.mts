@@ -1,7 +1,7 @@
 import { assertTransformLeaf } from "@ranki/package-api-v2/helpers";
 import type { RankiRenderPluginItemRenderFunction } from "@ranki/package-render-v2";
 import { AnkiUi } from "@ranki/package-anki-ui";
-import nerdamer from "nerdamer";
+import nerdamer from "nerdamer-prime";
 import css from "./section.css?raw";
 // @ts-expect-error
 import Plotly from "plotly.js-dist-min";

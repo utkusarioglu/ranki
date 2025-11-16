@@ -78,6 +78,10 @@ export class ValidatorLibrary {
 
   getComponentValidator(obj: ValidationNode): ComponentValidationFuncEntry {
     // TODO
+    if (!obj.plugins) {
+      console.log("ERROR PLUGINS OBJ:", obj);
+      throw new Error("OBJ.PLUGINS NOT DEFINED");
+    }
     // @ts-expect-error
     const current = obj.plugins.parser.current;
     if (!current) {
@@ -108,103 +112,103 @@ export class ValidatorLibrary {
     astNode: AstNode,
     context: RankiLangContextInstance,
   ): ValidationNode {
-    try {
-      const parserValidator = this.getParserValidator(astNode);
-      if (astNode.kind === "parent") {
-        const subtree = astNode.subtree
-          ? Object.entries(astNode.subtree).reduce(
-              (a, [name, c]) => (
-                (a[name] = this.validate(c as AstNode, context)), a
-              ),
-              {} as Record<string, ValidationNode>,
-            )
-          : {};
+    // try {
+    const parserValidator = this.getParserValidator(astNode);
+    if (astNode.kind === "parent") {
+      const subtree = astNode.subtree
+        ? Object.entries(astNode.subtree).reduce(
+            (a, [name, c]) => (
+              (a[name] = this.validate(c as AstNode, context)), a
+            ),
+            {} as Record<string, ValidationNode>,
+          )
+        : {};
 
-        const validated = {
-          validation: {
-            errors: [],
-            warnings: [],
-          },
-          ...astNode,
-          subtree,
-          children: astNode.children.map((c) => this.validate(c, context)),
-        } as ValidationNodeParent;
+      const validated = {
+        validation: {
+          errors: [],
+          warnings: [],
+        },
+        ...astNode,
+        subtree,
+        children: astNode.children.map((c) => this.validate(c, context)),
+      } as ValidationNodeParent;
 
-        const parserValidatorResult = parserValidator.validate(astNode);
-        validated.validation.errors.push(
-          ...parserValidatorResult.errors.map((entry) => ({
-            source: parserValidator.source,
-            entry,
-          })),
-        );
-        validated.validation.warnings.push(
-          ...parserValidatorResult.warnings.map((entry) => ({
-            source: parserValidator.source,
-            entry,
-          })),
-        );
-        const componentValidator = this.getComponentValidator(validated);
+      const parserValidatorResult = parserValidator.validate(astNode);
+      validated.validation.errors.push(
+        ...parserValidatorResult.errors.map((entry) => ({
+          source: parserValidator.source,
+          entry,
+        })),
+      );
+      validated.validation.warnings.push(
+        ...parserValidatorResult.warnings.map((entry) => ({
+          source: parserValidator.source,
+          entry,
+        })),
+      );
+      const componentValidator = this.getComponentValidator(validated);
 
-        const componentValidatorResult = componentValidator.validate(validated);
+      const componentValidatorResult = componentValidator.validate(validated);
 
-        validated.validation.errors.push(
-          ...componentValidatorResult.errors.map((entry) => ({
-            source: componentValidator.code,
-            entry,
-          })),
-        );
-        validated.validation.warnings.push(
-          ...componentValidatorResult.warnings.map((entry) => ({
-            source: componentValidator.code,
-            entry,
-          })),
-        );
+      validated.validation.errors.push(
+        ...componentValidatorResult.errors.map((entry) => ({
+          source: componentValidator.code,
+          entry,
+        })),
+      );
+      validated.validation.warnings.push(
+        ...componentValidatorResult.warnings.map((entry) => ({
+          source: componentValidator.code,
+          entry,
+        })),
+      );
 
-        return validated;
-      } else {
-        const validated = {
-          validation: {
-            errors: [],
-            warnings: [],
-          },
-          ...astNode,
-        } as ValidationNodeLeaf;
+      return validated;
+    } else {
+      const validated = {
+        validation: {
+          errors: [],
+          warnings: [],
+        },
+        ...astNode,
+      } as ValidationNodeLeaf;
 
-        const parserValidatorResult = parserValidator.validate(astNode);
-        validated.validation.errors.push(
-          ...parserValidatorResult.errors.map((entry) => ({
-            source: parserValidator.source,
-            entry,
-          })),
-        );
-        validated.validation.warnings.push(
-          ...parserValidatorResult.warnings.map((entry) => ({
-            source: parserValidator.source,
-            entry,
-          })),
-        );
-        const componentValidator = this.getComponentValidator(validated);
+      const parserValidatorResult = parserValidator.validate(astNode);
+      validated.validation.errors.push(
+        ...parserValidatorResult.errors.map((entry) => ({
+          source: parserValidator.source,
+          entry,
+        })),
+      );
+      validated.validation.warnings.push(
+        ...parserValidatorResult.warnings.map((entry) => ({
+          source: parserValidator.source,
+          entry,
+        })),
+      );
+      const componentValidator = this.getComponentValidator(validated);
 
-        const componentValidatorResult = componentValidator.validate(validated);
+      const componentValidatorResult = componentValidator.validate(validated);
 
-        validated.validation.errors.push(
-          ...componentValidatorResult.errors.map((entry) => ({
-            source: componentValidator.code,
-            entry,
-          })),
-        );
-        validated.validation.warnings.push(
-          ...componentValidatorResult.warnings.map((entry) => ({
-            source: componentValidator.code,
-            entry,
-          })),
-        );
+      validated.validation.errors.push(
+        ...componentValidatorResult.errors.map((entry) => ({
+          source: componentValidator.code,
+          entry,
+        })),
+      );
+      validated.validation.warnings.push(
+        ...componentValidatorResult.warnings.map((entry) => ({
+          source: componentValidator.code,
+          entry,
+        })),
+      );
 
-        return validated;
-      }
-    } catch (e: unknown) {
-      console.error(astNode, e);
-      throw new Error((e as Error).message);
+      return validated;
     }
+    // } catch (e: unknown) {
+    //   console.error("a", astNode, e);
+    //   throw new Error((e as Error).message);
+    // }
   }
 }

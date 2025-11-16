@@ -5,8 +5,10 @@ import {
 } from "@ranki/package-api-v2/helpers";
 import {
   v2_fpCommon,
-  pausedContainer,
-  v2PayloadSection,
+  // pausedContainer,
+  // v2PayloadSection,
+  // v2PayloadSectionItem,
+  frameV2CommonTransforms,
 } from "@ranki/plugin-parser-frame-v2/transformers";
 
 const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
@@ -16,7 +18,7 @@ const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
     {
       kind: "leaf",
       // tag: "html.primitive.anchor.basic.section",
-      tag: "span",
+      tag: ["base", "v2", "word", "generic"].join("."),
       hoist: 0,
       params: v.plugins.transformer.params,
       source: v.children[0].source,
@@ -28,7 +30,7 @@ const v2_fp: ComponentPluginTransformFunc = (v) => {
   const children = v2_fpCommon(v);
   const code = v.context.newTransformNode(v, [
     {
-      tag: "html.primitive.anchor.basic.container",
+      tag: ["html", "primitive", "anchor", "basic", "container"].join("."),
       kind: "parent",
       hoist: 0,
       children,
@@ -38,8 +40,10 @@ const v2_fp: ComponentPluginTransformFunc = (v) => {
 };
 
 export const transformList = {
+  ...frameV2CommonTransforms,
   v2_fp,
-  pausedContainer,
+  // pausedContainer,
   v2PayloadPlain,
-  v2PayloadSection,
+  // v2PayloadSection,
+  // v2PayloadSectionItem,
 };

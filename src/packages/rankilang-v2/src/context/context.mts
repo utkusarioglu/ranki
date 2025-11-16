@@ -239,7 +239,7 @@ export class RankiLangContext implements RankiLangContextInstance {
           const leafTn = {
             tag: mama.tag,
             kind: mama.kind,
-            hoist: mama.hoist,
+            hoist: mama.hoist || 0,
             print: (v as ValidationNodeLeaf).print || true,
             creator: v.creator,
             depth: v.shape.depth.total,
@@ -261,7 +261,7 @@ export class RankiLangContext implements RankiLangContextInstance {
           const l1 = {
             tag: mama.tag,
             kind: mama.kind,
-            hoist: mama.hoist,
+            hoist: mama.hoist || 0,
             creator: v.creator,
             depth: v.shape.depth.total,
             // !FIX I'm pretty sure this is conceptually faulty

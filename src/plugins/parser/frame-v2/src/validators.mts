@@ -8,7 +8,7 @@ export const validators: RankiPluginParserValidationCallback = () => ({
   v2_fp: placeholder,
   v2Payload_p: placeholder,
   pauseList: placeholder,
-  v2PayloadSection: placeholder,
+  v2PayloadSectionItem: placeholder,
   v2PayloadPlain: placeholder,
   pausedContainer: placeholder,
   v2Payload_P: placeholder,
