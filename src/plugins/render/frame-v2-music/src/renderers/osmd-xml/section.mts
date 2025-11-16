@@ -9,7 +9,7 @@ export const section: RankiRenderPluginItemRenderFunction = async (t) => {
   const hs = AnkiUi.horizontalScroller();
   const div = document.createElement("div");
   div.style.width = "100%";
-  hs.slots!.content.appendChild(div);
+  hs.slots.children.appendChild(div);
 
   const xml = t.source.raw.trim();
 
@@ -23,10 +23,11 @@ export const section: RankiRenderPluginItemRenderFunction = async (t) => {
       ...hs.css!,
     ],
     afterMount: [
+      ...hs.afterMount,
       async () => {
         renderOsmd(div, xml);
       },
     ],
-    beforeUnmount: [async () => {}],
+    beforeUnmount: [...hs.beforeUnmount],
   };
 };

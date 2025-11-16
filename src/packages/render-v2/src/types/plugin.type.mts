@@ -37,10 +37,22 @@ export interface RankiRenderNodeCssSpec {
 
 export type RankiRenderNodeOnLoadCallback = () => Promise<void>;
 
+export type RankiRenderHelper = {
+  element: HTMLElement | DocumentFragment | Text;
+  css: RankiRenderNodeCssSpec[];
+  slots: {
+    children: HTMLElement;
+  };
+  subtree: Record<string, () => HTMLElement>;
+  afterMount: RankiRenderNodeOnLoadCallback[];
+  beforeUnmount: RankiRenderNodeOnLoadCallback[];
+};
+
 export type RankiRenderNode = {
   element: HTMLElement | DocumentFragment | Text;
   css?: RankiRenderNodeCssSpec[];
   slots?: Record<string, HTMLElement>;
+  // subtree?: Record<string, () => HTMLElement>;
   // slots?: {
   //   children: HTMLElement;
   // };

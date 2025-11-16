@@ -62,10 +62,12 @@ export const section: RankiRenderPluginItemRenderFunction = async (t) => {
   assertTransformLeaf(t);
   const hs = AnkiUi.horizontalScroller();
 
-  drawChord(hs.slots!.content);
+  drawChord(hs.slots.children);
 
   return {
     element: hs.element,
     css: [...hs.css!],
+    afterMount: [...hs.afterMount],
+    beforeUnmount: [...hs.beforeUnmount],
   };
 };

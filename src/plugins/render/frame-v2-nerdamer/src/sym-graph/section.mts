@@ -73,7 +73,6 @@ function doTheDeed(div: HTMLElement, mathString: string) {
 export const section: RankiRenderPluginItemRenderFunction = async (t) => {
   assertTransformLeaf(t);
   const h = AnkiUi.horizontalScroller();
-  h.slots!.left.innerText = ["(", t.depth.toString(), ")"].join("");
 
   return {
     element: h.element,
@@ -84,9 +83,11 @@ export const section: RankiRenderPluginItemRenderFunction = async (t) => {
       },
       ...h.css!,
     ],
+    beforeUnmount: [...h.beforeUnmount],
     afterMount: [
+      ...h.afterMount,
       async () => {
-        doTheDeed(h.slots!.content, t.source.raw);
+        doTheDeed(h.slots.children, t.source.raw);
       },
     ],
   };

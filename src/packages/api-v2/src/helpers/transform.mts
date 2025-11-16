@@ -73,18 +73,23 @@ export function assertTransformParent(
   t: TransformNode,
 ): asserts t is TransformNodeParent {
   if (t.kind !== "parent")
-    throw new Error(`EXPECTED TRANSFORM NODE ${t.creator} TO BE A PARENT`);
+    throw new Error(
+      `EXPECTED TRANSFORM NODE ${t.tag}:${t.creator} TO BE A PARENT`,
+    );
 }
 
 export function assertTransformLeaf(
   t: TransformNode,
 ): asserts t is TransformNodeLeaf {
   if (t.kind !== "leaf")
-    throw new Error(`EXPECTED TRANSFORM NODE ${t.creator} TO BE A LEAF`);
+    throw new Error(
+      `EXPECTED TRANSFORM NODE ${t.tag}:${t.creator} TO BE A LEAF`,
+    );
 }
 
 export function assertTransformExists(
   t: TransformNode[] | null,
 ): asserts t is TransformNode[] {
-  if (t === null) throw new Error("EXPECTED LEGAL TRANSFORM NODE ARRAY");
+  if (t === null)
+    throw new Error("EXPECTED LEGAL TRANSFORM NODE ARRAY AND NOT NULL");
 }

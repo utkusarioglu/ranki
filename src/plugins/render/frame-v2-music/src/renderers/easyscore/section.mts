@@ -36,7 +36,7 @@ export const section: RankiRenderPluginItemRenderFunction = async (t) => {
   assertTransformLeaf(t);
   const hs = AnkiUi.horizontalScroller();
   const div = document.createElement("div");
-  hs.slots!.content.appendChild(div);
+  hs.slots.children.appendChild(div);
 
   const lines = t.source.raw.trim().split("\n");
   const voices = lines.map((line, i) => {
@@ -82,6 +82,7 @@ export const section: RankiRenderPluginItemRenderFunction = async (t) => {
       ...hs.css!,
     ],
     afterMount: [
+      ...hs.beforeUnmount,
       async () => {
         if (attached) {
           return;
@@ -123,12 +124,12 @@ export const section: RankiRenderPluginItemRenderFunction = async (t) => {
           // Draw it!
           vf.draw();
         } catch (e) {
-          hs.slots!.content.innerText =
+          hs.slots.children.innerText =
             (e as Error).stack ||
             "Error cannot be displayed. but there is an error";
         }
       },
     ],
-    beforeUnmount: [async () => {}],
+    beforeUnmount: [...hs.beforeUnmount],
   };
 };

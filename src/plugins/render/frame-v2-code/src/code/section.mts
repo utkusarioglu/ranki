@@ -17,13 +17,13 @@ export const codeSection: RankiRenderPluginItemRenderFunction = async (t) => {
   const pre = document.createElement("pre");
   const code = document.createElement("code");
   pre.appendChild(code);
-  h.slots!.content.appendChild(pre);
+  h.slots.children.appendChild(pre);
 
   // ANKI trim new lines
   const raw = t.source.raw.replace(/^[\r\n]+|[\r\n]+$/g, "");
 
   // TODO prism already offers a line numbers solution. so use that instead
-  h.slots!.left.innerHTML = Array(raw.split("\n").length)
+  h.subtree.left().innerHTML = Array(raw.split("\n").length)
     .fill(null)
     .map((_, i) => (i + 1).toString().padStart(3, " "))
     .join("<br>");
@@ -38,6 +38,7 @@ export const codeSection: RankiRenderPluginItemRenderFunction = async (t) => {
   return {
     element,
     css: [
+      ...h.css!,
       {
         id: "prism-atom-dark",
         css: prismCss,
@@ -46,9 +47,10 @@ export const codeSection: RankiRenderPluginItemRenderFunction = async (t) => {
         id: "code-block-section",
         css,
       },
-      ...h.css!,
     ],
+    beforeUnmount: [...h.beforeUnmount],
     afterMount: [
+      ...h.afterMount,
       async () => {
         element.addEventListener("click", async () => {
           try {

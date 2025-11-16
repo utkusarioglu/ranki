@@ -88,7 +88,11 @@ const decorated_base: ComponentPluginTransformFunc = (v) => {
     v.shape.spaces["suffix"].type !== "nl" ? v.shape.spaces["suffix"].raw : "";
 
   const child = children[0];
-  assertTransformLeaf(child);
+  // assertTransformLeaf(child);
+  if (child.kind === "parent") {
+    return v.context.newTransformNode(v, [child]);
+  }
+
   const creator = child.creator;
   switch (creator) {
     case "word_base":
@@ -157,39 +161,41 @@ const p: ComponentPluginTransformFunc = (v) => {
   ]);
 };
 
+// !FIX this currently makes new frames a member of the same lexeme
+// I cannot decide whether frames should automatically create a new lexeme
+// or be a part of any that exists.
 const lexemes: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
   const childrenUncombined = v.context.parseTransform(v.children);
-  // console.log({ v, children });
-  // const lexemes = flattenValidationChildren(v);
-  // const children = v.context.parseTransform(lexemes);
-  // console.log({ children });
   assertTransformExists(childrenUncombined);
 
   const children: TransformNode[] = [];
-  childrenUncombined.forEach((c) => {
+  childrenUncombined.forEach((child) => {
     if (!children.length) {
-      children.push(c);
+      children.push(child);
       return;
     }
-    assertTransformLeaf(c);
+    // assertTransformLeaf(c);
+    if (child.kind === "parent") {
+      return children.push(...v.context.newTransformNode(v, [child]));
+    }
 
     const prev = children.at(-1)!;
     assertTransformLeaf(prev);
-    switch (c.tag) {
+    switch (child.tag) {
       case ["base", "v2", "number", "generic"].join("."):
-        children.push(c);
+        children.push(child);
         break;
       case ["base", "v2", "word", "generic"].join("."):
-        if (prev.tag === c.tag) {
-          prev.source.raw += c.source.raw;
+        if (prev.tag === child.tag) {
+          prev.source.raw += child.source.raw;
         } else {
-          children.push(c);
+          children.push(child);
         }
         break;
       default:
-        console.log(c);
-        throw new Error(`UNRECOGNIZED CHILD TAG: ${c.creator}`);
+        console.log(child);
+        throw new Error(`UNRECOGNIZED CHILD TAG: ${child.creator}`);
     }
   });
 

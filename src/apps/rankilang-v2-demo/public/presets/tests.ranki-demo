@@ -1,3 +1,16 @@
+--- Paused with a frame inside pause
+[code
+def hello():
+  print("hellooo")
+,,
+also [a, "google"|hi]
+,,
+# Second part
+def bunny():
+  yield "yes"
+]
+
+
 ---Sexy code
 hey    yes 2 1*n Ab
 

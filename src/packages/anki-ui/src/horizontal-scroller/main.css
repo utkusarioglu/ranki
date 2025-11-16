@@ -44,19 +44,17 @@ horizontal-scroll {
     scroll-snap-stop: always;
     min-width: 100vw;
     box-sizing: border-box;
-    /* display: flex; */
-    /* justify-content: center; */
   }
 
   &.left {
-    display: block;
+    display: none;
     flex-grow: 0;
     margin-inline-end: 0.2em;
     padding-inline-start: 1em;
   }
 
   &.right {
-    display: block;
+    display: none;
     flex-grow: 1;
     max-width: 1em;
     margin-inline-end: 0.2em;

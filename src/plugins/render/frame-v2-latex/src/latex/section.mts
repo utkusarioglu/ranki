@@ -10,7 +10,7 @@ export const latexSection: RankiRenderPluginItemRenderFunction = async (t) => {
   element.classList.add("latex-block");
   const h = AnkiUi.horizontalScroller();
   element.appendChild(h.element);
-  h.slots!.left.innerText = ["(", t.depth.toString(), ")"].join("");
+  h.subtree.left().innerText = ["(", t.depth.toString(), ")"].join("");
 
   return {
     element,
@@ -23,7 +23,7 @@ export const latexSection: RankiRenderPluginItemRenderFunction = async (t) => {
     ],
     afterMount: [
       async () => {
-        renderMathjaxTo(h.slots!.content, t.source.raw);
+        renderMathjaxTo(h.slots.children, t.source.raw);
       },
     ],
   };

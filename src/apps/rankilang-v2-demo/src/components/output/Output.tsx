@@ -54,7 +54,7 @@ export const Output: FC<OutputProps> = ({ state }) => {
     return (
       <div className={style.errorContainer}>
         <h3 className={[style.errorHeading, "monospace"].join(" ")}>Error</h3>
-        <pre>{state.error}</pre>
+        <pre className={style.errorPre}>{state.error}</pre>
       </div>
     );
   }

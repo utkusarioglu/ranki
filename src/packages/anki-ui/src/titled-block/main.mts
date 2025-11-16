@@ -1,4 +1,4 @@
-import type { RankiRenderNode } from "@ranki/package-render-v2";
+import type { RankiRenderHelper } from "@ranki/package-render-v2";
 import html from "./main.html?raw";
 import css from "./main.css?raw";
 
@@ -7,7 +7,7 @@ interface TitledBlockHudItem {
   text: string;
 }
 
-export function titledBlock(hudItems: TitledBlockHudItem[]): RankiRenderNode {
+export function titledBlock(hudItems: TitledBlockHudItem[]): RankiRenderHelper {
   const container = document.createElement("div");
   container.innerHTML = html;
   const element = container.querySelector<HTMLElement>(".container")!;
@@ -27,11 +27,14 @@ export function titledBlock(hudItems: TitledBlockHudItem[]): RankiRenderNode {
     slots: {
       children,
     },
+    subtree: {},
     css: [
       {
         id: "titled-block",
         css,
       },
     ],
+    afterMount: [],
+    beforeUnmount: [],
   };
 }

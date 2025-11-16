@@ -62,8 +62,16 @@
 
 .errorContainer {
   padding: 1em;
+  overflow: hidden;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .errorHeading {
   padding-bottom: 0.5em;
+}
+
+.errorPre {
+  height: 100%;
+  overflow: auto;
 }
