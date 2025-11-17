@@ -26,7 +26,7 @@ export const codeContainer: RankiRenderPluginItemRenderFunction = async (
     },
   ]);
   const children = document.createElement("div");
-  block.slots!.children.appendChild(children);
+  block.slots.children!.appendChild(children);
 
   return {
     element: block.element,

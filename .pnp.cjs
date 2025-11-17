@@ -2502,6 +2502,7 @@ const RAW_RUNTIME_STATE =
           ["@eslint/js", "npm:9.36.0"],\
           ["@ranki/app-rankilang-v2-demo", "workspace:src/apps/rankilang-v2-demo"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
           ["@ranki/package-api-v2", "workspace:src/packages/api-v2"],\
           ["@ranki/package-rankilang-v2", "workspace:src/packages/rankilang-v2"],\
           ["@ranki/package-render-v2", "workspace:src/packages/render-v2"],\

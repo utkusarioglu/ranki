@@ -17,7 +17,7 @@ export const codeSection: RankiRenderPluginItemRenderFunction = async (t) => {
   const pre = document.createElement("pre");
   const code = document.createElement("code");
   pre.appendChild(code);
-  h.slots.children.appendChild(pre);
+  h.slots.children!.appendChild(pre);
 
   // ANKI trim new lines
   const raw = t.source.raw.replace(/^[\r\n]+|[\r\n]+$/g, "");

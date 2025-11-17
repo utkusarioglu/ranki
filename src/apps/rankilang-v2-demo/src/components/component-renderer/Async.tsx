@@ -18,6 +18,7 @@ import {
 } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import type { SyncFC } from "../../react.type.mts";
+import { AnkiUi } from "@ranki/package-anki-ui";
 
 function wrapPromise(promise: Promise<RenderFunctionReturn[]>) {
   let status = "pending";
@@ -112,6 +113,7 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
         body {
           margin: 0;
           padding: 0;
+          padding-top: 3em;
           overflow: hidden;
           justify-content: center;
           align-items: center;
@@ -135,24 +137,42 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
 
     contentDocument.body.style = Object.entries({
       color: colorScheme === "dark" ? "white" : "black",
-      // // display: "grid",
-      // // height: "100%",
-      // margin: 0,
-      // padding: 0,
-      // // height: "max-content",
-      // // width: "max-content",
-      // overflow: "hidden",
-      // "justify-content": "center",
-      // "align-items": "center",
-      // "font-family": "Arial, Helvetica, sans-serif",
-      // color: colorScheme === "dark" ? "white" : "black",
-      // border: "2px solid red",
     })
       .map((p) => p.join(": "))
       .join("; ");
 
     contentDocument.body.innerText = "";
     const beforeUnmount: (() => {})[] = [];
+    const hud = AnkiUi.cardHud({
+      hasReplacements: true,
+      errorLevel: "none",
+      parseMode: "v1",
+      address: {
+        prefix: ["hello"],
+        exposed: ["All", "Dev", "Algo"],
+        suffix: ["cat"],
+      },
+      tags: ["hello", "fricking", "world"],
+      marked: true,
+      flag: {
+        type: 1,
+        message: "Questionable information",
+      },
+      card: {
+        type: "AB",
+        face: "B",
+      },
+    });
+    contentDocument.body.appendChild(hud.element);
+    const hudStyleExists = document.head.querySelector("style.anki-hud");
+    if (hudStyleExists) {
+      document.head.removeChild(hudStyleExists);
+    }
+    const hudStyle = document.createElement("style");
+    hudStyle.className = "anki-hud";
+    hudStyle.textContent = hud.css.map(({ css }) => css).join("\n");
+    contentDocument.head.appendChild(hudStyle);
+
     p.map((f) => {
       f.css?.forEach(({ id, css }) => {
         const htmlId = name + "-" + id;

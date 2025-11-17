@@ -9,7 +9,7 @@ export const section: RankiRenderPluginItemRenderFunction = async (t) => {
   const hs = AnkiUi.horizontalScroller();
   const div = document.createElement("div");
   div.style.width = "100%";
-  hs.slots.children.appendChild(div);
+  hs.slots.children!.appendChild(div);
 
   const xml = t.source.raw.trim();
 

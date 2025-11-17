@@ -87,7 +87,7 @@ export const section: RankiRenderPluginItemRenderFunction = async (t) => {
     afterMount: [
       ...h.afterMount,
       async () => {
-        doTheDeed(h.slots.children, t.source.raw);
+        doTheDeed(h.slots.children!, t.source.raw);
       },
     ],
   };

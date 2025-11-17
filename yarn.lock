@@ -1666,6 +1666,7 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:^9.36.0"
     "@ranki/config-typescript": "workspace:^"
+    "@ranki/package-anki-ui": "workspace:^"
     "@ranki/package-api-v2": "workspace:^"
     "@ranki/package-rankilang-v2": "workspace:^"
     "@ranki/package-render-v2": "workspace:^"

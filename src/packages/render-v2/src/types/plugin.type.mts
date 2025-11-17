@@ -41,7 +41,7 @@ export type RankiRenderHelper = {
   element: HTMLElement | DocumentFragment | Text;
   css: RankiRenderNodeCssSpec[];
   slots: {
-    children: HTMLElement;
+    children?: HTMLElement;
   };
   subtree: Record<string, () => HTMLElement>;
   afterMount: RankiRenderNodeOnLoadCallback[];

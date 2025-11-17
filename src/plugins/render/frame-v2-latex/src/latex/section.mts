@@ -23,7 +23,7 @@ export const latexSection: RankiRenderPluginItemRenderFunction = async (t) => {
     ],
     afterMount: [
       async () => {
-        renderMathjaxTo(h.slots.children, t.source.raw);
+        renderMathjaxTo(h.slots.children!, t.source.raw);
       },
     ],
   };
