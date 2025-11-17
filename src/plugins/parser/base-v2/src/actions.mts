@@ -49,7 +49,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
         chain: ["base", "v2", "default"],
         params: [],
       })
-      .newChild(this, "block");
+      .newChild(this, "inline");
     return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",
@@ -66,7 +66,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
       {
         children: [
           (() => {
-            const leafContext = context.newChild(this, "inline");
+            const leafContext = context.newChild(this);
             return leafContext.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
               kind: "leaf",
               print: true,
@@ -86,7 +86,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
   },
 
   section_empty(_all) {
-    const context = c(this).newChild(this, "block");
+    const context = c(this).newChild(this, "inline");
 
     return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
       kind: "leaf",
@@ -105,7 +105,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
         chain: ["base", "v2", "default"],
         params: [],
       })
-      .newChild(this, "block");
+      .newChild(this);
     return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",
@@ -130,7 +130,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
   },
 
   section_base(block, blockSep, block2) {
-    const context = c(this).newChild(this, "block");
+    const context = c(this).newChild(this);
     return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",
@@ -147,7 +147,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
 
   // TODO nl
   p(line1, nl, line2) {
-    const context = c(this).newChild(this, "block");
+    const context = c(this).newChild(this);
     return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",
@@ -190,7 +190,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
 
   // TODO clearance
   lexemes(lexeme1, clearance, lexeme2) {
-    const context = c(this).newChild(this, "inline");
+    const context = c(this).newChild(this);
     return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",
@@ -207,7 +207,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
   },
 
   decorated_base(word, wordEnd) {
-    const context = c(this).newChild(this, "inline");
+    const context = c(this).newChild(this);
     return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",
@@ -230,7 +230,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
   },
 
   decorated_fallback(word, wordEnd) {
-    const parentContext = c(this).newChild(this, "inline");
+    const parentContext = c(this).newChild(this);
     return parentContext.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
       {
         kind: "parent",
@@ -248,7 +248,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
         subtree: {},
         children: [
           (() => {
-            const leafContext = parentContext.newChild(this, "inline");
+            const leafContext = parentContext.newChild(this);
             return leafContext.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
               kind: "leaf",
               print: true,
@@ -268,7 +268,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
   },
 
   word_base(_base) {
-    const context = c(this).newChild(this, "inline");
+    const context = c(this).newChild(this);
     return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
       kind: "leaf",
       print: true,
@@ -280,7 +280,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
   },
 
   word_number(_number) {
-    const context = c(this).newChild(this, "inline");
+    const context = c(this).newChild(this);
     return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
       kind: "leaf",
       print: true,
@@ -298,7 +298,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
 
   // TODO should this exist?
   clearance(_clearance1) {
-    const context = c(this).newChild(this, "inline");
+    const context = c(this).newChild(this);
     return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>(
       {
         kind: "leaf",
@@ -316,7 +316,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
 
   // TODO should this exist?
   whitespace(_wm, _wi) {
-    const context = c(this).newChild(this, "inline");
+    const context = c(this).newChild(this);
     return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>(
       {
         kind: "leaf",

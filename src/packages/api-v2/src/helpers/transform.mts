@@ -72,19 +72,23 @@ export const createTransformer: CreateTransformerFunc = (
 export function assertTransformParent(
   t: TransformNode,
 ): asserts t is TransformNodeParent {
-  if (t.kind !== "parent")
+  if (t.kind !== "parent") {
+    console.log("TRANSFORM PARENT ERROR NODE:\n", t);
     throw new Error(
       `EXPECTED TRANSFORM NODE ${t.tag}:${t.creator} TO BE A PARENT`,
     );
+  }
 }
 
 export function assertTransformLeaf(
   t: TransformNode,
 ): asserts t is TransformNodeLeaf {
-  if (t.kind !== "leaf")
+  if (t.kind !== "leaf") {
+    console.log("TRANSFORM LEAF ERROR NODE:\n", t);
     throw new Error(
       `EXPECTED TRANSFORM NODE ${t.tag}:${t.creator} TO BE A LEAF`,
     );
+  }
 }
 
 export function assertTransformExists(

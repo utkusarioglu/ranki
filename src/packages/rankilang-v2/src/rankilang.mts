@@ -108,8 +108,8 @@ export class RankiLang implements RankiLangInstance {
       parsers: this.parsers,
       config: this.config,
       validators: this.validators,
-      // transformers: this.transformers,
     })
+      .setDirection("block")
       .newParserBoundary({
         type: "RankiBaseV2",
         chainList: [["base", "v2", "default"]],

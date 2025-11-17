@@ -70,7 +70,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   v2Payload_p(pauseRoot) {
-    const context = c(this).newChild(this, "block");
+    const context = c(this).newChild(this, "inline");
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
@@ -84,7 +84,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   pauseList(v2PayloadSection1, pausedContainer, v2PayloadSection2) {
-    const context = c(this).newChild(this, "block");
+    const context = c(this).newChild(this);
     const children = zipNodes<RankiLangContextInstance, AstNode>(
       context,
       v2PayloadSection1,
@@ -115,7 +115,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     // v2PayloadSectionItem2,
     // whitespace2,
   ) {
-    const context = c(this).newChild(this, "block");
+    const context = c(this).newChild(this);
     const children = item.node(context);
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
@@ -144,7 +144,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     // v2PayloadSectionItem2,
     // whitespace2,
   ) {
-    const context = c(this).newChild(this, "block");
+    const context = c(this).newChild(this);
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
@@ -174,9 +174,9 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
   v2PayloadPlain(plain) {
     // TODO i'm so not sure if this is what's supposed to happen here
     // this uses a context that was created in a parent to produce a parser deeper in the chain
-    const context = c(this).newChild(this, "block");
+    const context = c(this).newChild(this);
 
-    const child = context.newChild(this, "block").parseAst(plain.sourceString);
+    const child = context.newChild(this).parseAst(plain.sourceString);
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
@@ -201,11 +201,9 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const DEFAULT_HOIST_LEVEL = 1;
     const hoistStr = pauseStart.sourceString.slice(1, -1);
     const hoist = hoistStr === "" ? DEFAULT_HOIST_LEVEL : +hoistStr;
-    const parentContext = c(this).newChild(this, "block");
+    const parentContext = c(this).newChild(this);
 
-    const leafContext = parentContext
-      .newChild(this, "block")
-      .useLineageBoundary(hoist);
+    const leafContext = parentContext.newChild(this).useLineageBoundary(hoist);
     const child = leafContext.parseAst(pausedPayload.sourceString);
 
     return parentContext.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(

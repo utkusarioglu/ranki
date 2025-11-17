@@ -4,11 +4,10 @@ import type {
 } from "@ranki/package-api-v2";
 import {
   assertTransformExists,
-  assertTransformLeaf,
+  // assertTransformLeaf,
   assertValidationLeaf,
   assertValidationParent,
   assertValidationSingleChild,
-  // flattenValidationChildren,
 } from "@ranki/package-api-v2/helpers";
 
 const root_structure: ComponentPluginTransformFunc = (v) => {
@@ -56,7 +55,7 @@ const word_base: ComponentPluginTransformFunc = (v) => {
 
   return v.context.newTransformNode(v, [
     {
-      tag: ["base", "v2", "word", "generic"].join("."),
+      tag: ["base", "v2", "text", "generic"].join("."),
       kind: "leaf",
       source: v.source,
     },
@@ -67,7 +66,7 @@ const word_number: ComponentPluginTransformFunc = (v) => {
   assertValidationLeaf(v);
   return v.context.newTransformNode(v, [
     {
-      tag: ["base", "v2", "word", "generic"].join("."),
+      tag: ["base", "v2", "text", "generic"].join("."),
       kind: "leaf",
       source: v.source,
     },
@@ -98,7 +97,7 @@ const decorated_base: ComponentPluginTransformFunc = (v) => {
     case "word_base":
       return v.context.newTransformNode(v, [
         {
-          tag: ["base", "v2", "word", "generic"].join("."),
+          tag: ["base", "v2", "text", "generic"].join("."),
           kind: "leaf",
           source: {
             type: "raw",
@@ -138,7 +137,7 @@ const decorated_fallback: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
   return v.context.newTransformNode(v, [
     {
-      tag: ["base", "v2", "word", "generic"].join("."),
+      tag: ["base", "v2", "text", "generic"].join("."),
       kind: "leaf",
       source: {
         type: "raw",
@@ -169,26 +168,34 @@ const lexemes: ComponentPluginTransformFunc = (v) => {
   const childrenUncombined = v.context.parseTransform(v.children);
   assertTransformExists(childrenUncombined);
 
+  let carry = "";
   const children: TransformNode[] = [];
-  childrenUncombined.forEach((child) => {
+  childrenUncombined.forEach((child, i) => {
     if (!children.length) {
       children.push(child);
       return;
     }
     // assertTransformLeaf(c);
     if (child.kind === "parent") {
+      carry = v.children[i].shape.spaces["suffix"].raw;
       return children.push(...v.context.newTransformNode(v, [child]));
     }
 
     const prev = children.at(-1)!;
-    assertTransformLeaf(prev);
+    if (prev.kind === "parent") {
+      child.source.raw = carry + child.source.raw;
+      carry = "";
+      return children.push(child);
+    }
+    // assertTransformLeaf(prev);
     switch (child.tag) {
       case ["base", "v2", "number", "generic"].join("."):
         children.push(child);
         break;
-      case ["base", "v2", "word", "generic"].join("."):
+      case ["base", "v2", "text", "generic"].join("."):
         if (prev.tag === child.tag) {
-          prev.source.raw += child.source.raw;
+          prev.source.raw += carry + child.source.raw;
+          carry = "";
         } else {
           children.push(child);
         }

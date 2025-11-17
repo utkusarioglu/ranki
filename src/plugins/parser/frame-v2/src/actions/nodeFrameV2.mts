@@ -18,7 +18,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       v2FrameConfig.v2FrameConfig(frameConfigContext);
 
     const parentContext = frameConfigContext
-      .newChild(this, "block")
+      .newChild(this)
       .newComponentBoundary({
         handler: frameConfig.type,
         // !fix I don't like this
@@ -26,13 +26,11 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
         params: frameConfig.params.items,
       });
 
-    const childContext = parentContext
-      .newChild(this, "block")
-      .newParserBoundary({
-        type: frameConfig.type,
-        chainList: frameConfig.chainList,
-        params: frameConfig.params.items,
-      });
+    const childContext = parentContext.newChild(this).newParserBoundary({
+      type: frameConfig.type,
+      chainList: frameConfig.chainList,
+      params: frameConfig.params.items,
+    });
     const child = v2Payload.node(childContext);
 
     return parentContext.newAstNode<
@@ -56,7 +54,7 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   v2_f(_v2Start, v2FrameConfig, _v2End) {
-    const context = c(this).newChild(this, "block");
+    const context = c(this).newChild(this);
     const frameConfig: NodeArgsFrameV2ConfigP =
       v2FrameConfig.v2FrameConfig(context);
     context.newComponentBoundary({

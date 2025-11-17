@@ -7,6 +7,7 @@ import type {
   AstNodeLeaf,
   AstNodeLeafSource,
   AstNodeTransformerDefinition,
+  NodeDirection,
 } from "../stages/ast.type.mjs";
 import type { RankiLangInstance } from "./rankilang.type.mjs";
 import type { RankiPluginParser } from "../plugins/parser.type.mjs";
@@ -184,6 +185,8 @@ export interface RankiLangContextInstance {
   getAllConfig: () => RankiLanguageConfig;
   getMergedConfig: () => RankiLanguageConfig["merged"];
   getPluginConfig: <T>(pluginName: string) => T;
+  setDirection(direction: NodeDirection): RankiLangContextInstance;
+  getDirection(): NodeDirection;
 
   getComponent(
     handlerName: string,

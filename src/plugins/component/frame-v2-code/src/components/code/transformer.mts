@@ -5,9 +5,6 @@ import {
 } from "@ranki/package-api-v2/helpers";
 import {
   v2_fpCommon,
-  // pausedContainer,
-  // v2PayloadSection,
-  // v2PayloadSectionItem,
   frameV2CommonTransforms,
 } from "@ranki/plugin-parser-frame-v2/transformers";
 
@@ -17,7 +14,7 @@ const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
   return v.context.newTransformNode(v, [
     {
       kind: "leaf",
-      tag: "computer_science.code.block.section",
+      tag: ["computer_science", "code", "section", v.shape.direction].join("."),
       hoist: 0,
       params: v.plugins.transformer.params,
       // TODO this needs to access the child because the `PayloadPlain` parent
@@ -31,7 +28,9 @@ const v2_fp: ComponentPluginTransformFunc = (v) => {
   const children = v2_fpCommon(v);
   const code = v.context.newTransformNode(v, [
     {
-      tag: "computer_science.code.block.container",
+      tag: ["computer_science", "code", "container", v.shape.direction].join(
+        ".",
+      ),
       kind: "parent",
       hoist: 0,
       children,
@@ -44,7 +43,9 @@ const v2_f: ComponentPluginTransformFunc = (v) => {
   const children = v2_fpCommon(v);
   const code = v.context.newTransformNode(v, [
     {
-      tag: "computer_science.code.block.container",
+      tag: ["computer_science", "code", "container", v.shape.direction].join(
+        ".",
+      ),
       kind: "parent",
       hoist: 0,
       children,
@@ -58,7 +59,4 @@ export const transformList = {
   v2_fp,
   v2_f,
   v2PayloadPlain,
-  // pausedContainer,
-  // v2PayloadSection,
-  // v2PayloadSectionItem,
 };

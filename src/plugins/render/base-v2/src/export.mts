@@ -150,7 +150,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
     },
 
     {
-      tag: ["base", "v2", "word", "generic"].join("."),
+      tag: ["base", "v2", "text", "generic"].join("."),
       engine: "vanilla-js",
       load: "static",
       // @ts-ignore

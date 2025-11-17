@@ -18,7 +18,7 @@ const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
     {
       kind: "leaf",
       // tag: "html.primitive.anchor.basic.section",
-      tag: ["base", "v2", "word", "generic"].join("."),
+      tag: ["base", "v2", "text", "generic"].join("."),
       hoist: 0,
       params: v.plugins.transformer.params,
       source: v.children[0].source,

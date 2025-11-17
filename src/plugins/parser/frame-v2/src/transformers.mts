@@ -35,7 +35,6 @@ export const v2PayloadSection: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
   const all = v.context.parseTransform(v.children);
   assertTransformExists(all);
-  console.log("v2PayloadSection", all);
   const merged: TransformNode[] = [];
   let carry = "";
   all.forEach((n, i) => {
@@ -73,7 +72,6 @@ export const v2PayloadSection: ComponentPluginTransformFunc = (v) => {
         }
     }
   });
-  console.log("merged", merged);
   return v.context.newTransformNode(v, merged);
 };
 

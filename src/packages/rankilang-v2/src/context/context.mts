@@ -18,6 +18,7 @@ import type {
   AstNodeTransformerDefinition,
   ComponentChain,
   ComponentPluginTransformFunc,
+  NodeDirection,
 } from "@ranki/package-api-v2";
 import { RankiLangParserBoundary } from "./parser-boundary.mjs";
 import type { RankiLangContextHooks } from "./context.type.mjs";
@@ -26,6 +27,7 @@ import { assertTransformExists } from "@ranki/package-api-v2/helpers";
 export class RankiLangContext implements RankiLangContextInstance {
   private parserBoundary!: RankiLangParserBoundary;
   private parserExpandedDefinition!: RankiLangParseDefinition;
+  private direction!: NodeDirection;
   private provided: RankiLanguageProvidedConfig[] = [];
   private hooks: RankiLangContextHooks;
   private transformerDefinition!: AstNodeTransformerDefinition;
@@ -46,6 +48,7 @@ export class RankiLangContext implements RankiLangContextInstance {
       parserExpandedDefinition: RankiLangParseDefinition;
       provided: RankiLanguageProvidedConfig[];
       transformerDefinition: AstNodeTransformerDefinition;
+      direction: NodeDirection;
     },
   ) {
     this.theater = p.theater;
@@ -61,6 +64,7 @@ export class RankiLangContext implements RankiLangContextInstance {
         ...transfers.parserExpandedDefinition,
         isBoundary: false,
       };
+      this.direction = transfers.direction;
       this.transformerDefinition = {
         ...transfers.transformerDefinition,
         isBoundary: false,
@@ -70,6 +74,19 @@ export class RankiLangContext implements RankiLangContextInstance {
 
   setOhmNode(ohmNode: ohm.Node) {
     this.ohmNode = ohmNode;
+  }
+
+  setDirection(direction: NodeDirection): RankiLangContextInstance {
+    this.direction = direction;
+    return this;
+  }
+
+  getDirection(): NodeDirection {
+    if (!this.direction) {
+      console.log("ERROR AST NODE:\n", this);
+      throw new Error("DIRECTION NOT DEFINED");
+    }
+    return this.direction;
   }
 
   newAstNode<P extends BindingNode, Output extends BindingNode>(
@@ -106,6 +123,7 @@ export class RankiLangContext implements RankiLangContextInstance {
       p.shape = {
         ...this.getContextArgs(),
         ...p.shape,
+        direction: this.getDirection(),
         hoist: en?.hoist || 0,
       };
     }
@@ -239,6 +257,7 @@ export class RankiLangContext implements RankiLangContextInstance {
           const leafTn = {
             tag: mama.tag,
             kind: mama.kind,
+            direction: mama.direction || v.shape.direction,
             hoist: mama.hoist || 0,
             print: (v as ValidationNodeLeaf).print || true,
             creator: v.creator,
@@ -262,6 +281,7 @@ export class RankiLangContext implements RankiLangContextInstance {
             tag: mama.tag,
             kind: mama.kind,
             hoist: mama.hoist || 0,
+            direction: mama.direction || v.shape.direction,
             creator: v.creator,
             depth: v.shape.depth.total,
             // !FIX I'm pretty sure this is conceptually faulty
@@ -304,10 +324,12 @@ export class RankiLangContext implements RankiLangContextInstance {
 
   newChild(
     ohmNode: ohm.Node,
-    direction?: "block" | "inline",
+    direction?: NodeDirection,
   ): RankiLangContextInstance {
     const blockDepth = this.blockDepth + (direction === "block" ? 1 : 0);
     const inlineDepth = this.inlineDepth + (direction === "inline" ? 1 : 0);
+    // // TODO
+    // this.direction = direction || "block";
 
     const inst = new RankiLangContext(
       {
@@ -323,6 +345,7 @@ export class RankiLangContext implements RankiLangContextInstance {
         parserBoundary: this.parserBoundary,
         transformerDefinition: this.transformerDefinition,
         provided: this.provided,
+        direction: direction || this.direction,
       },
     );
     inst.setOhmNode(ohmNode);
@@ -368,11 +391,7 @@ export class RankiLangContext implements RankiLangContextInstance {
     }
   }
 
-  getTransformer(
-    v: ValidationNode,
-    // chain: ComponentChain,
-    // creator: string,
-  ): ComponentPluginTransformFunc {
+  getTransformer(v: ValidationNode): ComponentPluginTransformFunc {
     return this.hooks.components.getTransformer(v);
   }
 

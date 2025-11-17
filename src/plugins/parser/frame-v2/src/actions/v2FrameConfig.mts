@@ -59,7 +59,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
     wi3,
     sepRight,
   ) {
-    const context = c(this).newChild(this, "block");
+    const context = c(this).newChild(this, "inline");
     const config: ArgsAndParamsV2 =
       v2ParamListInlineContainer.shapeAndParamsV2(context);
 
@@ -164,7 +164,7 @@ export const v2FrameConfig: ohm.ActionDict<NodeArgsFrameV2> = {
   },
 
   v2FrameConfigE(wi1, v2Type, wi2) {
-    const context = c(this).newChild(this, "block");
+    const context = c(this).newChild(this);
     const chainList: ComponentChain[] = v2Type.frameSpecV2(context);
 
     return context.newAstNode<NodeArgsFrameV2ConfigE_Reduced, NodeArgsFrameV2>({

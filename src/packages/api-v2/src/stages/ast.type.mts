@@ -26,7 +26,9 @@ export type AstNodeLeafReduced = Omit<
   source?: AstNodeLeaf["source"];
 };
 
-export type ShapeReduced = Omit<AstNodeCommon["shape"], "depth" | "hoist">;
+export type ShapeOmitted = "depth" | "hoist" | "direction";
+
+export type ShapeReduced = Omit<AstNodeCommon["shape"], ShapeOmitted>;
 
 export type AstNodeParentReduced = Omit<
   AstNodeParent,
@@ -72,6 +74,8 @@ export interface AstNodeTransformerDefinition {
   params: GenericParam[];
 }
 
+export type NodeDirection = "block" | "inline";
+
 interface AstNodeCommon {
   creator: string;
   parent: AstNode;
@@ -85,6 +89,7 @@ interface AstNodeCommon {
     grammars: {};
   }; // this is supposed to be overwritten by implementers which have subtrees
   shape: {
+    direction: NodeDirection;
     hoist: number;
     spaces: Record<string, WhitespaceEntry>;
     separators: SeparatorEntry[];

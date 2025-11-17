@@ -10,6 +10,8 @@ export type {
   AstNodeReduced,
   ShapeReduced,
   AstNodeTransformerDefinition,
+  NodeDirection,
+  ShapeOmitted,
 } from "./ast.type.mjs";
 export * from "./validation.type.mjs";
 export * from "./transform.type.mjs";

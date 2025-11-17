@@ -1,5 +1,9 @@
 import type { ParamsV2Spec } from "@ranki/plugin-grammar-params-v2";
-import type { AstNodeLeaf, AstNodeParent } from "@ranki/package-api-v2";
+import type {
+  AstNodeLeaf,
+  AstNodeParent,
+  ShapeOmitted,
+} from "@ranki/package-api-v2";
 
 export type Single = string;
 
@@ -65,6 +69,6 @@ export type ParseNodeRichStructureV2ParentReduced = Omit<
   | "children"
   | "context"
 > & {
-  shape: Omit<ParseNodeRichStructureV2Parent["shape"], "depth" | "hoist">;
+  shape: Omit<ParseNodeRichStructureV2Parent["shape"], ShapeOmitted>;
   source?: ParseNodeRichStructureV2Parent["source"];
 };

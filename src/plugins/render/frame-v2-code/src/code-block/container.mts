@@ -4,7 +4,7 @@ import css from "./container.css?raw";
 import { TEMPgetLanguageName } from "./TEMPgetLanguageName.mjs";
 import { AnkiUi } from "@ranki/package-anki-ui";
 
-export const codeContainer: RankiRenderPluginItemRenderFunction = async (
+export const container: RankiRenderPluginItemRenderFunction = async (
   t,
   options,
 ) => {
