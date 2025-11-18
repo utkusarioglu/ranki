@@ -9,13 +9,13 @@ export const renderPluginFrameV2Mermaid: RankiPluginRenderer = {
   },
   items: [
     {
-      tag: ["graphing", "mermaid", "block", "container"].join("."),
+      tag: ["graphing", "mermaid", "container", "block"].join("."),
       engine: "vanilla-js",
       load: "static",
       renderer: mermaidContainer,
     },
     {
-      tag: ["graphing", "mermaid", "block", "section"].join("."),
+      tag: ["graphing", "mermaid", "section", "block"].join("."),
       engine: "vanilla-js",
       load: "lazy",
       renderer: () =>

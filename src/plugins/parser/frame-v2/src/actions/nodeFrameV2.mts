@@ -33,23 +33,25 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
     });
     const child = v2Payload.node(childContext);
 
-    return parentContext.newAstNode<
-      ParseNodeFrameV2FpReduced,
-      ParseNodeFrameV2
-    >(
-      {
-        kind: "parent",
-        shape: {
-          separators: [],
-          spaces: {},
-        },
-      },
-      {
-        subtree: {
-          frameConfig,
-        },
-        children: [child],
-      },
+    return (
+      parentContext
+        // .setDirection(frameConfig.shape.direction)
+        .setDirection(child.shape.direction)
+        .newAstNode<ParseNodeFrameV2FpReduced, ParseNodeFrameV2>(
+          {
+            kind: "parent",
+            shape: {
+              separators: [],
+              spaces: {},
+            },
+          },
+          {
+            subtree: {
+              frameConfig,
+            },
+            children: [child],
+          },
+        )
     );
   },
 
@@ -63,29 +65,29 @@ export const nodeFrameV2: ohm.ActionDict<ParseNodeFrameV2> = {
       params: frameConfig.params.items,
     });
 
-    const child = context
-      .newChild(this)
-      .newParserBoundary({
-        type: frameConfig.type,
-        chainList: frameConfig.chainList,
-        params: frameConfig.params.items,
-      })
-      .parseAst("");
+    const childContext = context.newChild(this).newParserBoundary({
+      type: frameConfig.type,
+      chainList: frameConfig.chainList,
+      params: frameConfig.params.items,
+    });
+    const child = childContext.parseAst("");
 
-    return context.newAstNode<ParseNodeFrameV2FReduced, ParseNodeFrameV2>(
-      {
-        kind: "parent",
-        shape: {
-          separators: [],
-          spaces: {},
+    return context
+      .setDirection(child.root.shape.direction)
+      .newAstNode<ParseNodeFrameV2FReduced, ParseNodeFrameV2>(
+        {
+          kind: "parent",
+          shape: {
+            separators: [],
+            spaces: {},
+          },
         },
-      },
-      {
-        subtree: {
-          frameConfig,
+        {
+          subtree: {
+            frameConfig,
+          },
+          children: [child.root],
         },
-        children: [child.root],
-      },
-    );
+      );
   },
 };

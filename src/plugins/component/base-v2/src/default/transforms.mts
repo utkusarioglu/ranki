@@ -28,7 +28,7 @@ const section_empty: ComponentPluginTransformFunc = (v) => {
   assertValidationLeaf(v);
   return v.context.newTransformNode(v, [
     {
-      tag: ["base", "v2", "nothing"].join("."),
+      tag: ["base", "v2", "nothing", v.shape.direction].join("."),
       kind: "leaf",
       source: v.source,
     },
@@ -43,7 +43,7 @@ const root_ignore: ComponentPluginTransformFunc = (v) => {
   const source = v.children[0].source;
   return v.context.newTransformNode(v, [
     {
-      tag: ["base", "v2", "ignored"].join("."),
+      tag: ["base", "v2", "ignored", v.shape.direction].join("."),
       kind: "leaf",
       source,
     },
@@ -55,7 +55,7 @@ const word_base: ComponentPluginTransformFunc = (v) => {
 
   return v.context.newTransformNode(v, [
     {
-      tag: ["base", "v2", "text", "generic"].join("."),
+      tag: ["base", "v2", "text", "generic", v.shape.direction].join("."),
       kind: "leaf",
       source: v.source,
     },
@@ -66,7 +66,7 @@ const word_number: ComponentPluginTransformFunc = (v) => {
   assertValidationLeaf(v);
   return v.context.newTransformNode(v, [
     {
-      tag: ["base", "v2", "text", "generic"].join("."),
+      tag: ["base", "v2", "text", "generic", v.shape.direction].join("."),
       kind: "leaf",
       source: v.source,
     },
@@ -97,7 +97,7 @@ const decorated_base: ComponentPluginTransformFunc = (v) => {
     case "word_base":
       return v.context.newTransformNode(v, [
         {
-          tag: ["base", "v2", "text", "generic"].join("."),
+          tag: ["base", "v2", "text", "generic", v.shape.direction].join("."),
           kind: "leaf",
           source: {
             type: "raw",
@@ -110,7 +110,7 @@ const decorated_base: ComponentPluginTransformFunc = (v) => {
     case "word_number":
       return v.context.newTransformNode(v, [
         {
-          tag: ["base", "v2", "number", "generic"].join("."),
+          tag: ["base", "v2", "number", "generic", v.shape.direction].join("."),
           kind: "leaf",
           source: {
             type: "raw",
@@ -137,7 +137,7 @@ const decorated_fallback: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
   return v.context.newTransformNode(v, [
     {
-      tag: ["base", "v2", "text", "generic"].join("."),
+      tag: ["base", "v2", "text", "generic", v.shape.direction].join("."),
       kind: "leaf",
       source: {
         type: "raw",
@@ -153,7 +153,7 @@ const p: ComponentPluginTransformFunc = (v) => {
   assertTransformExists(children);
   return v.context.newTransformNode(v, [
     {
-      tag: ["base", "v2", "paragraph"].join("."),
+      tag: ["base", "v2", "paragraph", v.shape.direction].join("."),
       kind: "parent",
       children,
     },
@@ -189,10 +189,10 @@ const lexemes: ComponentPluginTransformFunc = (v) => {
     }
     // assertTransformLeaf(prev);
     switch (child.tag) {
-      case ["base", "v2", "number", "generic"].join("."):
+      case ["base", "v2", "number", "generic", v.shape.direction].join("."):
         children.push(child);
         break;
-      case ["base", "v2", "text", "generic"].join("."):
+      case ["base", "v2", "text", "generic", v.shape.direction].join("."):
         if (prev.tag === child.tag) {
           prev.source.raw += carry + child.source.raw;
           carry = "";
@@ -208,7 +208,7 @@ const lexemes: ComponentPluginTransformFunc = (v) => {
 
   return v.context.newTransformNode(v, [
     {
-      tag: ["base", "v2", "lexeme"].join("."),
+      tag: ["base", "v2", "lexeme", v.shape.direction].join("."),
       kind: "parent",
       children,
     },
@@ -223,7 +223,7 @@ const line: ComponentPluginTransformFunc = (v) => {
   assertTransformExists(children);
   return v.context.newTransformNode(v, [
     {
-      tag: ["base", "v2", "line"].join("."),
+      tag: ["base", "v2", "line", v.shape.direction].join("."),
       kind: "parent",
       children,
     },

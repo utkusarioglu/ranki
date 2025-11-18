@@ -8,13 +8,15 @@ import {
   frameV2CommonTransforms,
 } from "@ranki/plugin-parser-frame-v2/transformers";
 
+const common = ["computer_science", "code"];
+
 const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
   assertValidationSingleChild(v);
   return v.context.newTransformNode(v, [
     {
       kind: "leaf",
-      tag: ["computer_science", "code", "section", v.shape.direction].join("."),
+      tag: [...common, "section", v.shape.direction].join("."),
       hoist: 0,
       params: v.plugins.transformer.params,
       // TODO this needs to access the child because the `PayloadPlain` parent
@@ -28,9 +30,7 @@ const v2_fp: ComponentPluginTransformFunc = (v) => {
   const children = v2_fpCommon(v);
   const code = v.context.newTransformNode(v, [
     {
-      tag: ["computer_science", "code", "container", v.shape.direction].join(
-        ".",
-      ),
+      tag: [...common, "container", v.shape.direction].join("."),
       kind: "parent",
       hoist: 0,
       children,
@@ -43,9 +43,7 @@ const v2_f: ComponentPluginTransformFunc = (v) => {
   const children = v2_fpCommon(v);
   const code = v.context.newTransformNode(v, [
     {
-      tag: ["computer_science", "code", "container", v.shape.direction].join(
-        ".",
-      ),
+      tag: [...common, "container", v.shape.direction].join("."),
       kind: "parent",
       hoist: 0,
       children,

@@ -6,9 +6,9 @@ import {
 import {
   frameV2CommonTransforms,
   v2_fpCommon,
-  // pausedContainer,
-  // v2PayloadSection,
 } from "@ranki/plugin-parser-frame-v2/transformers";
+
+const common = ["audio", "audio-context", "tone-js"];
 
 const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
@@ -18,7 +18,7 @@ const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
   return v.context.newTransformNode(v, [
     {
       kind: "leaf",
-      tag: ["audio", "audio-context", "tone-js", "block", "section"].join("."),
+      tag: [...common, "section", v.shape.direction].join("."),
       hoist: 0,
       params: v.plugins.transformer.params,
       source: v.children[0].source,
@@ -30,9 +30,7 @@ const v2_fp: ComponentPluginTransformFunc = (v) => {
   const children = v2_fpCommon(v);
   const code = v.context.newTransformNode(v, [
     {
-      tag: ["audio", "audio-context", "tone-js", "block", "container"].join(
-        ".",
-      ),
+      tag: [...common, "container", v.shape.direction].join("."),
       kind: "parent",
       hoist: 0,
       children,

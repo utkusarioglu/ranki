@@ -9,13 +9,13 @@ export const renderPluginFrameV2Latex: RankiPluginRenderer = {
   },
   items: [
     {
-      tag: ["frame", "v2", "math", "latex", "block", "container"].join("."),
+      tag: ["frame", "v2", "math", "latex", "container", "block"].join("."),
       engine: "vanilla-js",
       load: "static",
       renderer: latexContainer,
     },
     {
-      tag: ["frame", "v2", "math", "latex", "block", "section"].join("."),
+      tag: ["frame", "v2", "math", "latex", "section", "block"].join("."),
       engine: "vanilla-js",
       load: "lazy",
       renderer: () => import("./latex/section.mjs").then((i) => i.latexSection),

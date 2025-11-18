@@ -135,10 +135,10 @@ export class RankiLangContext implements RankiLangContextInstance {
       };
     }
 
+    if (!p.subtree) {
+      p.subtree = {};
+    }
     if (en && en.subtree) {
-      if (!p.subtree) {
-        p.subtree = {};
-      }
       Object.entries(en.subtree).forEach(([k, v]) => {
         v = { parent: p, ...v };
         // @ts-expect-error

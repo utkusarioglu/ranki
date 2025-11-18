@@ -13,7 +13,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
   },
   items: [
     {
-      tag: ["base", "v2", "paragraph"].join("."),
+      tag: ["base", "v2", "paragraph", "block"].join("."),
       engine: "vanilla-js",
       load: "static",
       renderer: async (t) => {
@@ -46,7 +46,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
     },
 
     {
-      tag: ["base", "v2", "line"].join("."),
+      tag: ["base", "v2", "line", "inline"].join("."),
       engine: "vanilla-js",
       load: "static",
       renderer: async (t) => {
@@ -67,7 +67,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
     },
 
     {
-      tag: ["base", "v2", "lexeme"].join("."),
+      tag: ["base", "v2", "lexeme", "inline"].join("."),
       engine: "vanilla-js",
       load: "static",
       renderer: async (t) => {
@@ -89,7 +89,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
     },
 
     {
-      tag: ["base", "v2", "nothing"].join("."),
+      tag: ["base", "v2", "nothing", "inline"].join("."),
       engine: "vanilla-js",
       load: "static",
       renderer: async (t) => {
@@ -101,7 +101,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
     },
 
     {
-      tag: ["base", "v2", "ignored"].join("."),
+      tag: ["base", "v2", "ignored", "inline"].join("."),
       engine: "vanilla-js",
       load: "static",
       renderer: async (t) => {
@@ -130,7 +130,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
     },
 
     {
-      tag: ["base", "v2", "decorated_base"].join("."),
+      tag: ["base", "v2", "decorated_base", "inline"].join("."),
       engine: "vanilla-js",
       load: "static",
       renderer: async (t) => {
@@ -150,7 +150,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
     },
 
     {
-      tag: ["base", "v2", "text", "generic"].join("."),
+      tag: ["base", "v2", "text", "generic", "inline"].join("."),
       engine: "vanilla-js",
       load: "static",
       // @ts-ignore
@@ -171,7 +171,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
     },
 
     {
-      tag: ["base", "v2", "number", "generic"].join("."),
+      tag: ["base", "v2", "number", "generic", "inline"].join("."),
       engine: "vanilla-js",
       load: "static",
       // @ts-ignore
@@ -206,7 +206,7 @@ export const renderPluginBaseV2Render: RankiPluginRenderer = {
     },
 
     {
-      tag: "html.primitive.anchor.basic.container",
+      tag: "html.primitive.anchor.basic.container.inline",
       engine: "vanilla-js",
       load: "static",
       renderer: async (t) => {

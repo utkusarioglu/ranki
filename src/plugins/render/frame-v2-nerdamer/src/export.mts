@@ -1,7 +1,7 @@
 import type { RankiPluginRenderer } from "@ranki/package-render-v2";
 import { container } from "./sym-graph/container.mjs";
 
-const common = ["frame", "v2", "math", "symbolic", "plot", "block"];
+const common = ["frame", "v2", "math", "symbolic", "plot"];
 
 export const renderPluginFrameV2Nerdamer: RankiPluginRenderer = {
   type: "renderer",
@@ -11,13 +11,13 @@ export const renderPluginFrameV2Nerdamer: RankiPluginRenderer = {
   },
   items: [
     {
-      tag: [...common, "container"].join("."),
+      tag: [...common, "container", "block"].join("."),
       engine: "vanilla-js",
       load: "static",
       renderer: container,
     },
     {
-      tag: [...common, "section"].join("."),
+      tag: [...common, "section", "block"].join("."),
       engine: "vanilla-js",
       load: "lazy",
       renderer: () => import("./sym-graph/section.mjs").then((i) => i.section),

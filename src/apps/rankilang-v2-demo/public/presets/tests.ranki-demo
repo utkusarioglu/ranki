@@ -1,3 +1,11 @@
+--- Requests "paragraph inline" because transformer currently doesn't climb to the "inline - block" boundary when there is a pause
+[code|hi,,fd,,fd]
+
+--- Should be block, and the dash is weird
+[code
+hi
+]
+
 --- Hey yes
 hey    yes 2 1*n Ab [code, "python"|hi] yes
 the one after this has v2 issues

@@ -9,7 +9,7 @@ export const renderPluginFrameV2Audio: RankiPluginRenderer = {
   },
   items: [
     {
-      tag: ["audio", "audio-context", "tone-js", "block", "container"].join(
+      tag: ["audio", "audio-context", "tone-js", "container", "block"].join(
         ".",
       ),
       engine: "vanilla-js",
@@ -17,7 +17,7 @@ export const renderPluginFrameV2Audio: RankiPluginRenderer = {
       renderer: tonesContainer,
     },
     {
-      tag: ["audio", "audio-context", "tone-js", "block", "section"].join("."),
+      tag: ["audio", "audio-context", "tone-js", "section", "block"].join("."),
       engine: "vanilla-js",
       load: "lazy",
       renderer: () => import("./tones/section.mjs").then((i) => i.section),

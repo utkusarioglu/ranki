@@ -5,11 +5,10 @@ import {
 } from "@ranki/package-api-v2/helpers";
 import {
   v2_fpCommon,
-  // pausedContainer,
-  // v2PayloadSection,
-  // v2PayloadSectionItem,
   frameV2CommonTransforms,
 } from "@ranki/plugin-parser-frame-v2/transformers";
+
+const common = ["music", "score", "osmd", "musicxml", "xml"];
 
 const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
@@ -19,15 +18,7 @@ const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
   return v.context.newTransformNode(v, [
     {
       kind: "leaf",
-      tag: [
-        "music",
-        "score",
-        "osmd",
-        "musicxml",
-        "xml",
-        "block",
-        "section",
-      ].join("."),
+      tag: [...common, "section", v.shape.direction].join("."),
       hoist: 0,
       params: v.plugins.transformer.params,
       source: v.children[0].source,
@@ -39,15 +30,7 @@ const v2_fp: ComponentPluginTransformFunc = (v) => {
   const children = v2_fpCommon(v);
   const code = v.context.newTransformNode(v, [
     {
-      tag: [
-        "music",
-        "score",
-        "osmd",
-        "musicxml",
-        "xml",
-        "block",
-        "container",
-      ].join("."),
+      tag: [...common, "container", v.shape.direction].join("."),
       kind: "parent",
       hoist: 0,
       children,
@@ -59,8 +42,5 @@ const v2_fp: ComponentPluginTransformFunc = (v) => {
 export const transformList = {
   ...frameV2CommonTransforms,
   v2_fp,
-  // pausedContainer,
   v2PayloadPlain,
-  // v2PayloadSection,
-  // v2PayloadSectionItem,
 };
