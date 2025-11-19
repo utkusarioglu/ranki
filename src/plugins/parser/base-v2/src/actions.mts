@@ -42,7 +42,7 @@ const separator: ohm.ActionDict<SeparatorEntry> = {
 };
 
 const node: ohm.ActionDict<BaseV2Node> = {
-  root_ignore(_ignore, wm, rest) {
+  rootBlock_ignore(_ignore, wm, rest) {
     const context = c(this)
       .newComponentBoundary({
         handler: "RankiBaseV2",
@@ -98,7 +98,7 @@ const node: ohm.ActionDict<BaseV2Node> = {
     });
   },
 
-  root_structure(whitespace1, structure, whitespace2) {
+  rootBlock_structure(whitespace1, structure, whitespace2) {
     const context = c(this)
       .newComponentBoundary({
         handler: "RankiBaseV2",

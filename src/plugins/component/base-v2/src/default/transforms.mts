@@ -10,7 +10,7 @@ import {
   assertValidationSingleChild,
 } from "@ranki/package-api-v2/helpers";
 
-const root_structure: ComponentPluginTransformFunc = (v) => {
+const rootBlock_structure: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
   const children = v.context.parseTransform(v.children);
   assertTransformExists(children);
@@ -42,7 +42,7 @@ const section_empty: ComponentPluginTransformFunc = (v) => {
   ]);
 };
 
-const root_ignore: ComponentPluginTransformFunc = (v) => {
+const rootBlock_ignore: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
   assertValidationSingleChild(v);
   // TODO this needs to access the child because the `PayloadPlain` parent
@@ -238,11 +238,11 @@ const line: ComponentPluginTransformFunc = (v) => {
 };
 
 export const transformList = {
-  root_structure,
+  rootBlock_structure,
+  rootBlock_ignore,
   section_base,
   section_empty,
   p,
-  root_ignore,
   line,
   decorated_base,
   word_base,

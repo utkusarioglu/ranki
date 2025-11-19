@@ -13,7 +13,7 @@ export const rankiConstantsV2ParserPlugin: RankiPluginGrammar<RankiConstantsV2Pa
     dependencies: [],
     config: {},
     tokenizer: () => ({
-      root: "",
+      rootBlock: "",
     }),
     grammar: buildGrammar,
     validators: () => ({}),

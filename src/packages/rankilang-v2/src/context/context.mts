@@ -55,7 +55,7 @@ export class RankiLangContext implements RankiLangContextInstance {
     this.role = p.role;
     this.blockDepth = p.blockDepth || 0;
     this.inlineDepth = p.inlineDepth || 0;
-    this.startRule = p.startRule || "root";
+    this.startRule = p.startRule || "rootBlock";
     this.hooks = hooks;
 
     if (transfers) {

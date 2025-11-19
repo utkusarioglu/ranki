@@ -12,9 +12,15 @@ import type * as ohm from "ohm-js";
 import type { ParseNodeFrameV2 } from "../types/node.mjs";
 
 export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
+  // word_v2(v2) {
+  //   const context = c(this).newChild(this).setDirection("inline");
+  //   console.log("v2 called");
+  //   return v2.node(context);
+  // },
   block_v2(indentation, v2, wi, _ender) {
     const context = c(this)
       .newChild(this, "block")
+      .setDirection("block")
       .newComponentBoundary({
         handler: "RankiFrameV2",
         chain: ["frame", "v2", "block"],
@@ -69,7 +75,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     const context = c(this)
       .newChild(this, "inline")
       // .setStartRule("frameV2LineRoot");
-      .setStartRule("rootLine");
+      .setStartRule("rootBlock");
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",

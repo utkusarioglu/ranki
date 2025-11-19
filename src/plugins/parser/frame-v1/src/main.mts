@@ -2,7 +2,7 @@ import type {
   RankiGrammarTokens,
   RankiPluginParser,
 } from "@ranki/package-api-v2";
-import grammar from "../assets/ohm/2.0.64.ohm?raw";
+import grammar from "../assets/ohm/2.0.65.ohm?raw";
 import { actions } from "./actions.mjs";
 // import { handler } from "./handler.mjs";
 // import { transformers } from "./transformers.mjs";
@@ -29,7 +29,7 @@ export const rankiFrameV1ParserPlugin: RankiPluginParser<RankiFrameV1ParserPlugi
   {
     type: "parser",
     meta: {
-      version: "2.0.64",
+      version: "2.0.65",
       name: "RankiFrameV1",
     },
     // handler,
