@@ -177,6 +177,10 @@ export class RankiLangContext implements RankiLangContextInstance {
     return this;
   }
 
+  getComponentDefinition(): AstNodeTransformerDefinition {
+    return this.transformerDefinition;
+  }
+
   useLineageBoundary(hoist: number): RankiLangContextInstance {
     const lineage = this.parserBoundary.getLineage();
     const boundary = lineage[lineage.length - hoist];
@@ -185,6 +189,12 @@ export class RankiLangContext implements RankiLangContextInstance {
     }
     this.parserBoundary = boundary;
     this.parserExpandedDefinition = boundary.getExpandedDefinition();
+    // !FIX this shouldn't be here. this should be received through a lineage call just like the parser. THIS IS CRITICAL
+    this.newComponentBoundary({
+      handler: "RankiBaseV2",
+      chain: ["base", "v2", "default"],
+      params: [],
+    });
     return this;
   }
 
@@ -320,6 +330,11 @@ export class RankiLangContext implements RankiLangContextInstance {
 
   getStartRule(): string {
     return this.startRule;
+  }
+
+  setStartRule(ruleName: string): RankiLangContextInstance {
+    this.startRule = ruleName;
+    return this;
   }
 
   newChild(

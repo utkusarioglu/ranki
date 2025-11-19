@@ -24,6 +24,13 @@ const section_base: ComponentPluginTransformFunc = (v) => {
   return v.context.newTransformNode(v, children);
 };
 
+export const rootLine: ComponentPluginTransformFunc = (v) => {
+  assertValidationParent(v);
+  const children = v.context.parseTransform(v.children);
+  assertTransformExists(children);
+  return v.context.newTransformNode(v, children);
+};
+
 const section_empty: ComponentPluginTransformFunc = (v) => {
   assertValidationLeaf(v);
   return v.context.newTransformNode(v, [
@@ -242,4 +249,5 @@ export const transformList = {
   word_number,
   decorated_fallback,
   lexemes,
+  rootLine,
 };

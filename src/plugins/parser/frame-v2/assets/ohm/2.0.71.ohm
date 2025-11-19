@@ -21,6 +21,9 @@ RankiFrameV2 <: RankiParamsV2 {
     | v2Start 
     | v2End_explicit 
     // | v2End_exact
+  
+  // This is what inline pauses target
+  // frameV2LineRoot = lexemes
 
   // v2PayloadPlain =  (~v2PayloadPlainIllegal any)+
   v2PayloadPlain =  
@@ -36,7 +39,9 @@ RankiFrameV2 <: RankiParamsV2 {
 
   pauseStart = tFrameV2Pause digit* tFrameV2Pause
   pauseEnd = tFrameV2Pause tFrameV2Pause
-  pausedContainer = pauseStart pausedPayload pauseEnd
+  pausedContainer =
+    | wm pauseStart pausedPayload pauseEnd --P
+    | pauseStart pausedPayload pauseEnd --p
 
   // !FIX this would break with nested pauses
   pausedPayload = (~(pauseEnd | v2End) any)+
@@ -44,7 +49,7 @@ RankiFrameV2 <: RankiParamsV2 {
   v2ChainList = paramKey (clearance paramKey)*
   
   v2Payload = 
-    | wi nl pauseList --P
+    | wm pauseList --P
     | pauseList --p
 
   v2End =

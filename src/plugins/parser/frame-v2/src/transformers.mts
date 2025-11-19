@@ -5,7 +5,6 @@ import type {
 } from "@ranki/package-api-v2";
 import {
   assertTransformExists,
-  // assertTransformLeaf,
   assertValidationParent,
   assertValidationSingleChild,
 } from "@ranki/package-api-v2/helpers";
@@ -75,7 +74,17 @@ export const v2PayloadSection: ComponentPluginTransformFunc = (v) => {
   return v.context.newTransformNode(v, merged);
 };
 
-export const pausedContainer: ComponentPluginTransformFunc = (v) => {
+export const pausedContainer_p: ComponentPluginTransformFunc = (v) => {
+  assertValidationParent(v);
+  const children = v.context.parseTransform(v.children);
+  assertTransformExists(children);
+  children.forEach((t) => {
+    t.hoist = v.shape.hoist;
+  });
+  return v.context.newTransformNode(v, children);
+};
+
+export const pausedContainer_P: ComponentPluginTransformFunc = (v) => {
   assertValidationParent(v);
   const children = v.context.parseTransform(v.children);
   assertTransformExists(children);
@@ -136,5 +145,7 @@ export const v2_fpCommon: ComponentPluginTransformFunc = (v) => {
 export const frameV2CommonTransforms = {
   v2PayloadSection,
   v2PayloadSectionItem,
-  pausedContainer,
+  pausedContainer_p,
+  pausedContainer_P,
+  // rootLine,
 };

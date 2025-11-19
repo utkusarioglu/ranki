@@ -44,7 +44,7 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     );
   },
 
-  v2Payload_P(wi1, nl, pauseRoot) {
+  v2Payload_P(wm, pauseRoot) {
     const context = c(this).newChild(this, "block");
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
@@ -52,12 +52,8 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
         shape: {
           spaces: {
             prefix: {
-              type: "wi",
-              raw: wi1.sourceString,
-            },
-            wiAndPause: {
-              type: "nl",
-              raw: nl.sourceString,
+              type: "wm",
+              raw: wm.sourceString,
             },
           },
           separators: [],
@@ -70,7 +66,10 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
   },
 
   v2Payload_p(pauseRoot) {
-    const context = c(this).newChild(this, "inline");
+    const context = c(this)
+      .newChild(this, "inline")
+      // .setStartRule("frameV2LineRoot");
+      .setStartRule("rootLine");
     return context.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
       {
         kind: "parent",
@@ -197,13 +196,16 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
     );
   },
 
-  pausedContainer(pauseStart, pausedPayload, _pauseEnd) {
+  pausedContainer_p(pauseStart, pausedPayload, _pauseEnd) {
     const DEFAULT_HOIST_LEVEL = 1;
     const hoistStr = pauseStart.sourceString.slice(1, -1);
     const hoist = hoistStr === "" ? DEFAULT_HOIST_LEVEL : +hoistStr;
     const parentContext = c(this).newChild(this);
 
-    const leafContext = parentContext.newChild(this).useLineageBoundary(hoist);
+    const leafContext = parentContext
+      .newChild(this)
+      .useLineageBoundary(hoist)
+      .setStartRule("rootLine");
     const child = leafContext.parseAst(pausedPayload.sourceString);
 
     return parentContext.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
@@ -211,6 +213,38 @@ export const nodeBaseV2: ohm.ActionDict<ParseNodeFrameV2> = {
         kind: "parent",
         shape: {
           spaces: {},
+          separators: [],
+        },
+      },
+      {
+        hoist,
+        subtree: {},
+        children: [child.root],
+      },
+    );
+  },
+  pausedContainer_P(wm, pauseStart, pausedPayload, _pauseEnd) {
+    const DEFAULT_HOIST_LEVEL = 1;
+    const hoistStr = pauseStart.sourceString.slice(1, -1);
+    const hoist = hoistStr === "" ? DEFAULT_HOIST_LEVEL : +hoistStr;
+    const parentContext = c(this).newChild(this);
+
+    const leafContext = parentContext
+      .newChild(this)
+      .useLineageBoundary(hoist)
+      .setStartRule("rootLine");
+    const child = leafContext.parseAst(pausedPayload.sourceString);
+
+    return parentContext.newAstNode<AstNodeParentReduced, ParseNodeFrameV2>(
+      {
+        kind: "parent",
+        shape: {
+          spaces: {
+            prefix: {
+              type: "wm",
+              raw: wm.sourceString,
+            },
+          },
           separators: [],
         },
       },

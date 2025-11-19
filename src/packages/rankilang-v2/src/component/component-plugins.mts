@@ -105,6 +105,7 @@ export class ComponentPlugins {
     const key = this.createTransformerKey(chain, creator);
     const transform = this.transformers.get(key);
     if (!transform) {
+      console.log("ERRING VALIDATION NODE:\n", v);
       throw new Error(`REQUESTED UNREGISTERED TRANSFORM: ${key}`);
     }
     return transform;

@@ -4,7 +4,7 @@ import type {
   RankiLangParseDefinition,
 } from "@ranki/package-api-v2";
 import type { ParamV2 } from "@ranki/plugin-grammar-params-v2";
-import type { ConvertParamsParams } from "../types/handler.mjs";
+import type { ConvertParamsParams } from "./types/handler.mjs";
 
 function convertParams<T extends ParamV2>(
   params: T[],

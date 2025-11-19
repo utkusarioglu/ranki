@@ -162,6 +162,31 @@ const node: ohm.ActionDict<BaseV2Node> = {
     );
   },
 
+  rootLine(wi1, lexemes, wi2) {
+    const context = c(this).newChild(this, "inline");
+    return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
+      {
+        kind: "parent",
+        shape: {
+          spaces: {
+            prefix: {
+              type: "wi",
+              raw: wi1.sourceString,
+            },
+            suffix: {
+              type: "wi",
+              raw: wi2.sourceString,
+            },
+          },
+          separators: [],
+        },
+      },
+      {
+        children: [lexemes.node(context)],
+      },
+    );
+  },
+
   // TODO line modifiers
   line(indentation1, _lineModifiers, lexemes, wi1) {
     const context = c(this).newChild(this, "inline");

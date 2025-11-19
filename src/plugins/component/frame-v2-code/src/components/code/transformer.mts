@@ -15,13 +15,21 @@ const v2PayloadPlain: ComponentPluginTransformFunc = (v) => {
   assertValidationSingleChild(v);
   return v.context.newTransformNode(v, [
     {
-      kind: "leaf",
+      kind: "parent",
       tag: [...common, "section", v.shape.direction].join("."),
-      hoist: 0,
+      // hoist: 0,
       params: v.plugins.transformer.params,
       // TODO this needs to access the child because the `PayloadPlain` parent
       // doesn't have the prefix and suffix yet merged into the content
-      source: v.children[0].source,
+      // source: v.children[0].source,
+      children: v.context.newTransformNode(v, [
+        {
+          kind: "leaf",
+          tag: [...common, "text", v.shape.direction].join("."),
+          params: v.plugins.transformer.params,
+          source: v.children[0].source,
+        },
+      ]),
     },
   ]);
 };

@@ -225,6 +225,7 @@ export interface RankiLangContextInstance {
   getParserDefinition(): RankiLangParseDefinition;
 
   getStartRule(): string;
+  setStartRule(ruleName: string): RankiLangContextInstance;
 
   newAstNode<P extends BindingNode, Output extends BindingNode>(
     p: P,

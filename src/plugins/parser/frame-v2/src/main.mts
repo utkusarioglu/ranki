@@ -4,7 +4,7 @@ import grammar from "../assets/ohm/2.0.71.ohm?raw";
 import type { RankiFrameV2ParserPluginConfig } from "./types/config.mjs";
 import { tokenizer, config } from "./config.mjs";
 import { validators } from "./validators.mjs";
-import { paramParser } from "./handler/params.mjs";
+import { paramParser } from "./params.mjs";
 
 export const rankiFrameV2ParserPlugin: RankiPluginParser<RankiFrameV2ParserPluginConfig> =
   {
