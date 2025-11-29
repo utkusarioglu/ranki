@@ -6,7 +6,7 @@ import type {
   Position,
   IdSummary,
 } from "@ranki/package-dqm-api-v2";
-import { nonNullable, writeOnce } from "../decorators.mjs";
+import { nonNullable, writeOnce } from "../utils/decorators.mjs";
 import { DqmError } from "@ranki/package-utils";
 
 export class Id implements IId {

@@ -5,7 +5,7 @@ import type {
   Alias,
   Chain,
 } from "@ranki/package-dqm-api-v2";
-import { nonNullable } from "../../decorators.mjs";
+import { nonNullable } from "../../utils/decorators.mjs";
 import { IdLib } from "../../id/id-lib.mjs";
 import { Param } from "./param.mjs";
 import { DqmError } from "@ranki/package-utils";

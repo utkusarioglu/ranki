@@ -9,7 +9,7 @@ import type {
   Audience,
 } from "@ranki/package-dqm-api-v2";
 import { DqmError } from "@ranki/package-utils";
-import { dependsOn, nonNullable } from "../decorators.mjs";
+import { dependsOn, nonNullable } from "../utils/decorators.mjs";
 import { ALL_AUDIENCES } from "./param/param.constants.mjs";
 import { Cps } from "./cps.mjs";
 
@@ -33,7 +33,6 @@ export class Cpx implements ICpx {
     //   this.params.addParam(param);
     // });
     this.params = params;
-    console.log({ params: this.params });
     return this;
   }
 
@@ -51,7 +50,6 @@ export class Cpx implements ICpx {
 
   @dependsOn("parent", "plugins")
   newChild() {
-    console.log(this.parent, this.config);
     return new Cpx()
       .setParent(this)
       .hookPlugins(this.plugins)
@@ -81,8 +79,6 @@ export class Cpx implements ICpx {
           id: idList[0],
           params: this.getParamsByAudience(0),
         });
-      // .setParams(this.getParams(0))
-      // .setId(idList[0]);
     };
 
     switch (idList.length) {
@@ -124,7 +120,6 @@ export class Cpx implements ICpx {
   }
 
   parse(input: CpxParseInput): ICpx {
-    console.log("input", input);
     this.getRootCps().parse(input);
     return this;
   }

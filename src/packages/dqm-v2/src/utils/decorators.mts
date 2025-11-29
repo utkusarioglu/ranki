@@ -1,17 +1,5 @@
 import { DqmError } from "@ranki/package-utils";
-
-// @ts-expect-error
-function assertMethodContext<T extends { kind: string }>(
-  context: T,
-  obj: any,
-): asserts context is any {
-  if (context.kind !== "method") {
-    throw new DqmError("METHOD_DECORATOR_ON_WRONG_CONTEXT", {
-      context,
-      ...obj,
-    });
-  }
-}
+// import { assertMethodContext} from "./assertions.mjs"
 
 // ANKI this is the new decorator syntax
 export function dependsOn(...properties: string[]) {
@@ -42,24 +30,6 @@ export function dependsOn(...properties: string[]) {
     Object.assign(handler, { value: handler });
 
     return handler;
-    //   return {
-    //     initialize(_instance: This) {},
-    //     value: function (this: This, ...args: Args): Return {
-    //       properties.forEach((property) => {
-    //         if ((this as any)[property] === undefined) {
-    //           throw new DqmError("REQUIRED_VALUE_UNDEFINED", {
-    //             obj: this,
-    //             key: context.name,
-    //             property,
-    //             properties,
-    //           });
-    //         }
-    //       });
-
-    //       return value.apply(this, args);
-    //     },
-    //   };
-    // } as any;
   };
 }
 
@@ -83,15 +53,6 @@ export function nonNullable() {
     Object.assign(handler, { value: handler });
 
     return handler;
-    // return {
-    //   value: function (this: This, ...args: Args): Return {
-    //     const response = value.apply(this, args);
-    //     if (response === undefined) {
-    //       throw new DqmError("UNDEFINED_VALUE", { context });
-    //     }
-    //     return response;
-    //   },
-    // } as any;
   };
 }
 
@@ -113,15 +74,4 @@ export function writeOnce(targetKey: string) {
     Object.assign(handler, { value: handler });
     return handler;
   };
-
-  //   return {
-  //     initialize(_instance: This) {},
-  //     value: function (this: This, ...args: Args): Return {
-  //       if ((this as any)[targetKey] !== undefined) {
-  //         throw new DqmError("ALREADY_DEFINED", { value });
-  //       }
-  //       return value.apply(this, args);
-  //     },
-  //   };
-  // } as any;
 }

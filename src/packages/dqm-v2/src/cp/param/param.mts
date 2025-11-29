@@ -11,7 +11,7 @@ import type {
   ParamDefaultValue,
   ChannelParamSpecs,
 } from "@ranki/package-dqm-api-v2";
-import { nonNullable, dependsOn } from "../../decorators.mjs";
+import { nonNullable, dependsOn } from "../../utils/decorators.mjs";
 import { Id } from "../../id/id.mjs";
 import { ALL_AUDIENCES } from "./param.constants.mjs";
 import { DqmError } from "@ranki/package-utils";

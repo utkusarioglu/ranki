@@ -43,7 +43,6 @@ export class Dqm {
       .setParams([])
       .setIdList([["base", "v2", "default"]])
       .parse(inputs);
-    console.log(inputs, cpx);
     return cpx;
   }
 }

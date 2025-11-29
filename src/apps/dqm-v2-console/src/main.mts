@@ -7,7 +7,6 @@ export function main() {
     const res = dqm.parse("hi");
     console.log({ res });
   } catch (e) {
-    console.log(e);
     console.log((e as any).toString());
   }
 }

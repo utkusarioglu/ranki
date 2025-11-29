@@ -5,16 +5,12 @@ import type {
   IDqmComponent,
   IParams,
   ICpx,
-  // Chain,
-  // Alias,
-  // IParam,
   CpxParseInput,
   CpsDefinition,
 } from "@ranki/package-dqm-api-v2";
-// import { dependsOn } from "../decorators.mjs";
 import { Id } from "../id/id.mjs";
 import { Params } from "./param/params.mjs";
-import { assertExists } from "../libs/utils.mjs";
+import { assertExists } from "../utils/assertions.mjs";
 
 export class Cps implements ICps {
   private id = new Id();
@@ -34,23 +30,6 @@ export class Cps implements ICps {
     this.parent = cps;
     return this;
   }
-
-  // @dependsOn("component")
-  // setParams(params: IParam[]) {
-  //   // TODO this only sets the values from the component specification
-  //   // the default config could also define some values for components
-  //   this.params.setSchema(this.component.stages.ast);
-  //   params.forEach((param) => {
-  //     this.params.addParam(param);
-  //   });
-  //   return this;
-  // }
-
-  // setId(id: Chain | Alias): ICps {
-  //   this.id.setId(id);
-  //   this.component = this.plugins.getComponent(id);
-  //   return this;
-  // }
 
   setDefinition(def: CpsDefinition): ICps {
     this.id.setId(def.id);

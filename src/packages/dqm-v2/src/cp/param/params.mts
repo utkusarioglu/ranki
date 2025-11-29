@@ -7,7 +7,7 @@ import type {
   IParams,
   ParamChannel,
 } from "@ranki/package-dqm-api-v2";
-import { dependsOn, nonNullable } from "../../decorators.mjs";
+import { dependsOn, nonNullable } from "../../utils/decorators.mjs";
 import { ChannelParams } from "./channel-params.mjs";
 
 type Libs = Map<ParamChannel, ChannelParams>;
