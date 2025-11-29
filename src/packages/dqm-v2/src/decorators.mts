@@ -1,28 +1,17 @@
 import { DqmError } from "@ranki/package-utils";
 
-// ANKI this is the new decorator syntax
-// export function requiresSpecs<This extends any, Args extends any[], Return>(
-//   value: (this: This, ...args: Args) => Return,
-//   context: ClassMethodDecoratorContext<
-//     This,
-//     (this: This, ...args: Args) => Return
-//   >,
-// ) {
-//   if (context.kind !== "method") {
-//     throw new DqmError("INCOMPATIBLE_DECORATOR", { context });
-//   }
-
-//   return function (this: This, ...args: Args): Return {
-//     if ((this as any).specs === undefined) {
-//       throw new DqmError("REQUIRED_VALUE_UNDEFINED", {
-//         obj: this,
-//         key: context.name,
-//       });
-//     }
-
-//     return value.apply(this, args);
-//   };
-// }
+// @ts-expect-error
+function assertMethodContext<T extends { kind: string }>(
+  context: T,
+  obj: any,
+): asserts context is any {
+  if (context.kind !== "method") {
+    throw new DqmError("METHOD_DECORATOR_ON_WRONG_CONTEXT", {
+      context,
+      ...obj,
+    });
+  }
+}
 
 // ANKI this is the new decorator syntax
 export function dependsOn(...properties: string[]) {
@@ -33,11 +22,9 @@ export function dependsOn(...properties: string[]) {
       (this: This, ...args: Args) => Return
     >,
   ) {
-    if (context.kind !== "method") {
-      throw new DqmError("INCOMPATIBLE_DECORATOR", { context });
-    }
+    // assertMethodContext(context, { properties });
 
-    return function (this: This, ...args: Args): Return {
+    const handler = function (this: This, ...args: Args): Return {
       properties.forEach((property) => {
         if ((this as any)[property] === undefined) {
           throw new DqmError("REQUIRED_VALUE_UNDEFINED", {
@@ -51,30 +38,32 @@ export function dependsOn(...properties: string[]) {
 
       return value.apply(this, args);
     };
+
+    Object.assign(handler, { value: handler });
+
+    return handler;
+    //   return {
+    //     initialize(_instance: This) {},
+    //     value: function (this: This, ...args: Args): Return {
+    //       properties.forEach((property) => {
+    //         if ((this as any)[property] === undefined) {
+    //           throw new DqmError("REQUIRED_VALUE_UNDEFINED", {
+    //             obj: this,
+    //             key: context.name,
+    //             property,
+    //             properties,
+    //           });
+    //         }
+    //       });
+
+    //       return value.apply(this, args);
+    //     },
+    //   };
+    // } as any;
   };
 }
 
-export function nonNullable<This extends any, Args extends any[], Return>(
-  value: (this: This, ...args: Args) => Return,
-  context: ClassMethodDecoratorContext<
-    This,
-    (this: This, ...args: Args) => Return
-  >,
-) {
-  if (context.kind !== "method") {
-    throw new DqmError("INCOMPATIBLE_DECORATOR", { context });
-  }
-
-  return function (this: This, ...args: Args): Return {
-    const response = value.apply(this, args);
-    if (response === undefined) {
-      throw new DqmError("UNDEFINED_VALUE", { context });
-    }
-    return response;
-  };
-}
-
-export function writeOnce(targetKey: string) {
+export function nonNullable() {
   return function <This extends any, Args extends any[], Return>(
     value: (this: This, ...args: Args) => Return,
     context: ClassMethodDecoratorContext<
@@ -82,15 +71,57 @@ export function writeOnce(targetKey: string) {
       (this: This, ...args: Args) => Return
     >,
   ) {
-    if (context.kind !== "method") {
-      throw new DqmError("INCOMPATIBLE_DECORATOR", { context });
-    }
+    // assertMethodContext(context, {});
 
-    return function (this: This, ...args: Args): Return {
+    const handler = function (this: This, ...args: Args): Return {
+      const response = value.apply(this, args);
+      if (response === undefined) {
+        throw new DqmError("UNDEFINED_VALUE", { context });
+      }
+      return response;
+    };
+    Object.assign(handler, { value: handler });
+
+    return handler;
+    // return {
+    //   value: function (this: This, ...args: Args): Return {
+    //     const response = value.apply(this, args);
+    //     if (response === undefined) {
+    //       throw new DqmError("UNDEFINED_VALUE", { context });
+    //     }
+    //     return response;
+    //   },
+    // } as any;
+  };
+}
+
+export function writeOnce(targetKey: string) {
+  return function <This extends any, Args extends any[], Return>(
+    value: (this: This, ...args: Args) => Return,
+    _context: ClassMethodDecoratorContext<
+      This,
+      (this: This, ...args: Args) => Return
+    >,
+  ) {
+    // assertMethodContext(context, {});
+    const handler = function (this: This, ...args: Args): Return {
       if ((this as any)[targetKey] !== undefined) {
         throw new DqmError("ALREADY_DEFINED", { value });
       }
       return value.apply(this, args);
     };
+    Object.assign(handler, { value: handler });
+    return handler;
   };
+
+  //   return {
+  //     initialize(_instance: This) {},
+  //     value: function (this: This, ...args: Args): Return {
+  //       if ((this as any)[targetKey] !== undefined) {
+  //         throw new DqmError("ALREADY_DEFINED", { value });
+  //       }
+  //       return value.apply(this, args);
+  //     },
+  //   };
+  // } as any;
 }

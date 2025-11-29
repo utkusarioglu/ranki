@@ -10,17 +10,28 @@
     }
   },
   "scripts": {
-    "console-old": "yarn vite-node src/console.mts",
-    "console": "node src/console.mts",
+    "console": "yarn rollup -c && node dist/console.js",
     "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/plugin-proposal-decorators": "^7.28.0",
+    "@babel/preset-typescript": "^7.28.5",
     "@ranki/config-typescript": "workspace:^",
+    "@rollup/plugin-babel": "^6.1.0",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "@swc/core": "^1.15.3",
+    "@types/babel__core": "^7",
     "@types/node": "^24.3.1",
-    "typescript": "^5.9.2",
+    "rollup": "^4.53.3",
+    "rollup-plugin-swc": "^0.2.1",
+    "typescript": "^5.9.3",
     "yaml": "^2.8.1"
   },
   "dependencies": {
+    "@dqm/plugin-base-v2": "workspace:^",
     "@ranki/package-dqm-v2": "workspace:^"
   }
 }

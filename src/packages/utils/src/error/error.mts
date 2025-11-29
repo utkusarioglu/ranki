@@ -6,7 +6,7 @@ export class DqmError extends Error {
   private code: string;
 
   constructor(code: string, objects: Objects) {
-    super(ERROR_CODES[code] || `!!!ERROR CODE NOT REGISTERED: "${code}"!!!`);
+    super(ERROR_CODES[code] || `${code} (unregistered)`);
     this.code = code;
     this.objects = objects;
   }

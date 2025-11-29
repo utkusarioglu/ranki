@@ -1,7 +1,7 @@
-import type { Alias, Chain } from "@ranki/package-dqm-api-v2";
+import type { AliasString, ChainString } from "@ranki/package-dqm-api-v2";
 
 export type AliasCollision = {
-  alias: Alias;
-  replaced: Chain;
-  current: Chain;
+  alias: AliasString;
+  replaced: ChainString;
+  current: ChainString;
 };

@@ -33,11 +33,12 @@ export class Cpx implements ICpx {
     //   this.params.addParam(param);
     // });
     this.params = params;
+    console.log({ params: this.params });
     return this;
   }
 
   @dependsOn("params")
-  getParams(audience: Audience): IParam[] {
+  getParamsByAudience(audience: Audience): IParam[] {
     return this.params.filter((p) =>
       [ALL_AUDIENCES, audience].includes(p.getAudience()),
     );
@@ -62,20 +63,26 @@ export class Cpx implements ICpx {
     return this;
   }
 
-  @nonNullable
   getParent(): ICpx {
     return this.parent;
   }
 
+  @dependsOn("params")
   setIdList(idList: IdList): ICpx {
     const createRoot = () => {
+      const parentCpx = this.getParent();
+      const parentCps = parentCpx ? parentCpx.getLeafCps() : null;
       return new Cps()
-        .setId(idList[0])
-        .setParams(this.getParams(0))
-        .setParent(this.getParent().getLeafCps())
         .hookConfig(this.config)
+        .hookPlugins(this.plugins)
+        .setParent(parentCps)
         .setCpx(this)
-        .setPlugins(this.plugins);
+        .setDefinition({
+          id: idList[0],
+          params: this.getParamsByAudience(0),
+        });
+      // .setParams(this.getParams(0))
+      // .setId(idList[0]);
     };
 
     switch (idList.length) {
@@ -90,24 +97,28 @@ export class Cpx implements ICpx {
         for (let i = 1; i < idList.length; i++) {
           const prev = curr;
           curr = new Cps()
-            .setId(idList[i])
-            .setParams(this.getParams(i))
             .hookConfig(this.config)
+            .hookPlugins(this.plugins)
             .setCpx(this)
             .setParent(prev)
-            .setPlugins(this.plugins);
+            .setDefinition({
+              id: idList[i],
+              params: this.getParamsByAudience(i),
+            });
+          // .setParams(this.getParams(i))
+          // .setId(idList[i]);
           this.cps.push(curr);
         }
         return this;
     }
   }
 
-  @nonNullable
+  @nonNullable()
   getLeafCps(): ICps {
     return this.cps.at(-1)!;
   }
 
-  @nonNullable
+  @nonNullable()
   getRootCps(): ICps {
     return this.cps[0];
   }

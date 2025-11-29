@@ -31,7 +31,7 @@ export class Param implements IParam {
     return this;
   }
 
-  @nonNullable
+  @nonNullable()
   getSpecs(): ChannelParamSpecs {
     return this.specs;
   }
@@ -45,7 +45,7 @@ export class Param implements IParam {
     return this;
   }
 
-  @nonNullable
+  @nonNullable()
   getAudience(): Audience {
     return this.audience;
   }
@@ -58,7 +58,7 @@ export class Param implements IParam {
     return this;
   }
 
-  @nonNullable
+  @nonNullable()
   getOperator(): Operator {
     return this.operator;
   }

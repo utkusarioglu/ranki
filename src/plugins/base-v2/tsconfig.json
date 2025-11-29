@@ -5,13 +5,13 @@
     "rootDir": "src",
     "declarationDir": "types",
     "paths": {
-      "@ranki/package-dqm-api-v2": ["../../../packages/dqm-api-v2/*"]
+      "@ranki/package-dqm-api-v2": ["../../packages/dqm-api-v2/*"]
     }
   },
   "include": ["src/**/*"],
   "references": [
     {
-      "path": "../../../packages/dqm-api-v2"
+      "path": "../../packages/dqm-api-v2"
     }
   ]
 }

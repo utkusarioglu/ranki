@@ -5,17 +5,14 @@
     "src/config/*",
     "src/apps/*",
     "src/packages/*",
-    "src/plugins/parser/*",
-    "src/plugins/grammar/*",
-    "src/plugins/component/*",
-    "src/plugins/render/*"
+    "src/plugins/*"
   ],
   "packageManager": "yarn@4.10.2",
   "scripts": {
     "build": "turbo run build",
     "watch": "turbo run watch",
     "dev--v2-demo": "turbo run dev --filter @ranki/app-rankilang-v2-demo",
-    "console--v2": "cd src/apps/rankilang-v2-console && yarn console",
+    "console--v2": "cd src/apps/dqm-v2-console && yarn console",
     "lint": "turbo run lint",
     "clean-all": "rm -rf .turbo && yarn turbo run clean-all"
   },

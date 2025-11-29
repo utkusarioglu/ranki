@@ -1,4 +1,4 @@
-import { DqmError } from "../export.mjs";
+import { DqmError } from "../error/error.mjs";
 import type { ConfigTypes } from "./config.types.mjs";
 
 function assertExists<C extends {}>(value: C | undefined): asserts value is C {

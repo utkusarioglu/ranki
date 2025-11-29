@@ -99,7 +99,7 @@ export class Id implements IId {
     return this.alias;
   }
 
-  @nonNullable
+  @nonNullable()
   getChain(): Chain {
     return this.chain;
   }

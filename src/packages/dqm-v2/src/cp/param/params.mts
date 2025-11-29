@@ -44,7 +44,7 @@ export class Params implements IParams {
   }
 
   @dependsOn("schema")
-  @nonNullable
+  @nonNullable()
   findById(channel: ParamChannel, id: Alias | Chain): IParam | never {
     const lib = this.libs.get(channel)!;
     return lib.findById(id);

@@ -40,8 +40,8 @@ export class Dqm {
     const cpx = new Cpx()
       .hookPlugins(this.plugins)
       .hookConfig(this.config)
-      .setIdList([["base", "v2", "default"]])
       .setParams([])
+      .setIdList([["base", "v2", "default"]])
       .parse(inputs);
     console.log(inputs, cpx);
     return cpx;

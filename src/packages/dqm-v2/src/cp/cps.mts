@@ -5,14 +5,16 @@ import type {
   IDqmComponent,
   IParams,
   ICpx,
-  Chain,
-  Alias,
-  IParam,
+  // Chain,
+  // Alias,
+  // IParam,
   CpxParseInput,
+  CpsDefinition,
 } from "@ranki/package-dqm-api-v2";
-import { dependsOn } from "../decorators.mjs";
+// import { dependsOn } from "../decorators.mjs";
 import { Id } from "../id/id.mjs";
 import { Params } from "./param/params.mjs";
+import { assertExists } from "../libs/utils.mjs";
 
 export class Cps implements ICps {
   private id = new Id();
@@ -22,12 +24,6 @@ export class Cps implements ICps {
   private component!: IDqmComponent;
   private params: IParams = new Params();
   private cpx!: ICpx;
-
-  setId(id: Chain | Alias): ICps {
-    this.id.setId(id);
-    this.component = this.plugins.getComponent(id);
-    return this;
-  }
 
   hookConfig(config: IConfig): ICps {
     this.config = config.clone();
@@ -39,12 +35,28 @@ export class Cps implements ICps {
     return this;
   }
 
-  @dependsOn("component")
-  setParams(params: IParam[]) {
-    // TODO this only sets the values from the component specification
-    // the default config could also define some values for components
+  // @dependsOn("component")
+  // setParams(params: IParam[]) {
+  //   // TODO this only sets the values from the component specification
+  //   // the default config could also define some values for components
+  //   this.params.setSchema(this.component.stages.ast);
+  //   params.forEach((param) => {
+  //     this.params.addParam(param);
+  //   });
+  //   return this;
+  // }
+
+  // setId(id: Chain | Alias): ICps {
+  //   this.id.setId(id);
+  //   this.component = this.plugins.getComponent(id);
+  //   return this;
+  // }
+
+  setDefinition(def: CpsDefinition): ICps {
+    this.id.setId(def.id);
+    this.component = this.plugins.getComponent(def.id);
     this.params.setSchema(this.component.stages.ast);
-    params.forEach((param) => {
+    def.params.forEach((param) => {
       this.params.addParam(param);
     });
     return this;
@@ -59,7 +71,8 @@ export class Cps implements ICps {
     return this.cpx;
   }
 
-  setPlugins(plugins: IPlugins): ICps {
+  hookPlugins(plugins: IPlugins): ICps {
+    assertExists(plugins, "cps.plugins");
     this.plugins = plugins;
     return this;
   }

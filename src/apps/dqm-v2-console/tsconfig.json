@@ -4,8 +4,8 @@
     "outDir": "lib",
     "rootDir": "src",
     "declarationDir": "types",
-    "allowImportingTsExtensions": true,
-    "emitDeclarationOnly": true
+    "useDefineForClassFields": true,
+    "experimentalDecorators": true
   },
   "include": ["src/**/*"]
 }

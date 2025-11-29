@@ -6,7 +6,7 @@ import type {
   Chain,
   ChainList,
 } from "./plugins/component/id/id.types.mjs";
-import type { IParam } from "./export.types.mjs";
+import type { CpsDefinition, IParam } from "./export.types.mjs";
 
 export interface ICpx {
   newChild(): ICpx;
@@ -22,12 +22,13 @@ export interface ICpx {
 }
 
 export interface ICps {
-  setId(id: Alias | Chain): ICps;
-  setPlugins(plugins: IPlugins): ICps;
+  // setId(id: Alias | Chain): ICps;
+  hookPlugins(plugins: IPlugins): ICps;
   hookConfig(Config: IConfig): ICps;
-  setParent(cps: ICps): ICps;
+  setParent(cps: ICps | null): ICps;
   parse(input: CpxParseInput): ICps;
-  setParams(params: IParam[]): ICps;
+  // setParams(params: IParam[]): ICps;
+  setDefinition(def: CpsDefinition): ICps;
   setCpx(cpx: ICpx): ICps;
   getCpx(): ICpx;
 }

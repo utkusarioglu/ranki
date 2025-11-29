@@ -11,17 +11,17 @@ type Criteria = {
 type ILibComponent = IPluginLib<In, Out, Criteria>;
 
 export class ComponentLib implements ILibComponent {
-  private components = new Map<string, In>();
+  private sets = new Map<string, In>();
   private idLib = new IdLib<Out>();
 
   add(plugin: In): ILibComponent {
-    if (!this.components.has(plugin.meta.name)) {
+    if (this.sets.has(plugin.meta.name)) {
       throw new DqmError("PLUGIN_ALREADY_REGISTERED", {
-        component: this.components,
+        component: this.sets,
         plugin,
       });
     }
-    this.components.set(plugin.meta.name, plugin);
+    this.sets.set(plugin.meta.name, plugin);
     plugin.list.forEach((c) => {
       this.idLib.add(c.meta.id, c);
     });
@@ -29,6 +29,6 @@ export class ComponentLib implements ILibComponent {
   }
 
   get({ id }: Criteria): Out {
-    return this.idLib.getObjectById(id);
+    return this.idLib.getObjectById(id.join("."));
   }
 }

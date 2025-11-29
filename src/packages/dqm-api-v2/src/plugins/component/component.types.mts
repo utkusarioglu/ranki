@@ -1,5 +1,5 @@
 import type { Alias, Chain, IdSummary } from "./id/id.types.mjs";
-import type { ParamType, ParamValue } from "./param.types.mjs";
+import type { IParam, ParamType, ParamValue } from "./param.types.mjs";
 
 export interface ParamDefaultValue {
   name: string;
@@ -20,4 +20,9 @@ export interface ChannelParamSpecs {
 export interface ComponentParamsSchema {
   settings: ChannelParamSpecs;
   configs: ChannelParamSpecs;
+}
+
+export interface CpsDefinition {
+  id: Alias | Chain;
+  params: IParam[];
 }

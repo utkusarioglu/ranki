@@ -64,21 +64,21 @@ export class ChannelParams {
           obj: this,
         });
       }
-      def = this.lib.getObjectById(posChain);
+      def = this.lib.getObjectById(posChain.join("."));
       def.getId().setPosition(pos);
     }
 
     // #2
     const alias = user.getId().getAlias();
     if (alias) {
-      def = this.lib.getObjectById(alias);
+      def = this.lib.getObjectById(alias.join("."));
       def.getId().setId(alias);
     }
 
     // #3
     const chain = user.getId().getChain();
     if (!def) {
-      def = this.lib.getObjectById(chain);
+      def = this.lib.getObjectById(chain.join("."));
     }
 
     // #4
@@ -101,8 +101,8 @@ export class ChannelParams {
     return this;
   }
 
-  @nonNullable
+  @nonNullable()
   findById(id: Alias | Chain): IParam | never {
-    return this.lib.getObjectById(id);
+    return this.lib.getObjectById(id.join("."));
   }
 }
