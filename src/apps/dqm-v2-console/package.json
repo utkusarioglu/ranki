@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "name": "@ranki/app-dqm-v2-console",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./lib/main.mjs",
+      "types": "./lib/main.d.ts",
+      "default": "./lib/main.mjs"
+    }
+  },
+  "scripts": {
+    "console-old": "yarn vite-node src/console.mts",
+    "console": "node src/console.mts",
+    "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo"
+  },
+  "devDependencies": {
+    "@ranki/config-typescript": "workspace:^",
+    "@types/node": "^24.3.1",
+    "typescript": "^5.9.2",
+    "yaml": "^2.8.1"
+  },
+  "dependencies": {
+    "@ranki/package-dqm-v2": "workspace:^"
+  }
+}

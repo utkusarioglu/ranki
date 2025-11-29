@@ -1,53 +1,33 @@
-import type {
-  ComponentPluginValidationFunc,
-  ComponentPluginComponent,
-} from "@ranki/package-api-v2";
-import { transformList } from "./transforms.mjs";
+import type { IDqmComponent } from "@ranki/package-dqm-api-v2";
+// import { transformList } from "./transforms.mjs";
 
-const placeholder: ComponentPluginValidationFunc = (validation) => ({
-  warnings: [["COMPONENT VALIDATION", validation.kind].join(" ")],
-  errors: [],
-});
+// const placeholder: any = (validation) => ({
+//   warnings: [["COMPONENT VALIDATION", validation.kind].join(" ")],
+//   errors: [],
+// });
 
-export const rankiBaseDefault: ComponentPluginComponent = {
-  chain: ["base", "v2", "default"],
-  aliases: [],
+export const baseDefault: IDqmComponent = {
+  type: "component",
+  meta: {
+    id: {
+      chain: ["base", "v2", "default"],
+      aliases: [],
+    },
+    description: "Provides default component structure for BaseV2",
+  },
   stages: {
     // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
     // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
-    preprocess: (c) => c,
+    preprocessing: (c) => c,
     ast: {
-      directives: [
-        // {
-        // plugins: {
-        // requested: null,
-        // requested: [
-        // "RankiParamsV2",
-        // "RankiRichStructureV2",
-        // "RankiRichNumberV2",
-        // ],
-        // standards: ["RankiBaseV2", "RankiConstantsV2"],
-        // },
-        // content: {
-        //   prefix: "% ignore \n",
-        // },
-        // },
-      ],
-      params: {
-        setting: {
-          positional: [],
-          shorthands: {},
-        },
-        directive: {
-          positional: [],
-          shorthands: {},
-        },
+      configs: {
+        positionals: [],
+        params: [],
       },
-    },
-    validator: placeholder,
-    transformers: {
-      root: "a",
-      list: transformList,
+      settings: {
+        positionals: [],
+        params: [],
+      },
     },
   },
 };

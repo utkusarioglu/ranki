@@ -3,12 +3,15 @@
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": "src",
-    "declarationDir": "types"
+    "declarationDir": "types",
+    "paths": {
+      "@ranki/package-dqm-api-v2": ["../../../packages/dqm-api-v2/*"]
+    }
   },
   "include": ["src/**/*"],
   "references": [
     {
-      "path": "../../../packages/api-v2"
+      "path": "../../../packages/dqm-api-v2"
     }
   ]
 }

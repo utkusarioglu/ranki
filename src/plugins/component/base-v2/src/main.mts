@@ -1,11 +1,12 @@
-import type { RankiPluginComponent } from "@ranki/package-api-v2";
-import { rankiBaseDefault } from "./default/default.mjs";
+import type { IDqmPluginComponentSet } from "@ranki/package-dqm-api-v2";
+import { baseDefault } from "./default/default.mjs";
 
-export const rankiBaseV2ComponentsPluginDefault: RankiPluginComponent = {
+export const rankiBaseV2ComponentsPluginDefault: IDqmPluginComponentSet = {
+  type: "component-set",
   meta: {
-    name: "RankiBaseV2:Default",
+    name: "BaseV2",
     version: "0.0.0",
+    description: "Provides the default set for BaseV2",
   },
-  handler: "RankiBaseV2",
-  list: [rankiBaseDefault],
+  list: [baseDefault],
 };

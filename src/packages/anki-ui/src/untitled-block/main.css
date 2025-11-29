@@ -1,9 +1,0 @@
-untitled-block {
-  &.container {
-    display: block;
-    margin-block: 1em;
-  }
-  &.children {
-    display: block;
-  }
-}

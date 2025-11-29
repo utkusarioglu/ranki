@@ -1,8 +1,0 @@
-.modebar-container {
-  opacity: 0.5;
-
-  & button {
-    background-color: #202020;
-    border: 0px solid transparent;
-  }
-}

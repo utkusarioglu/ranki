@@ -1,5 +1,5 @@
 {
-  "name": "@ranki/plugin-component-base-v2-default",
+  "name": "@ranki/plugin-component-base-v2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@ranki/config-typescript": "workspace:^",
-    "@ranki/package-api-v2": "workspace:^",
+    "@ranki/package-dqm-api-v2": "workspace:^",
     "typescript": "^5.8.3"
   },
   "exports": {

@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "name": "@ranki/package-dqm-api-v2",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./lib/export.types.mjs",
+      "types": "./types/export.types.d.mts",
+      "default": "./lib/export.types.mjs"
+    }
+  },
+  "scripts": {
+    "build": "yarn tsc",
+    "watch": "tsc --watch --preserveWatchOutput --preserveWatchOutput",
+    "console": "yarn tsx src/console.mts",
+    "test": "vitest",
+    "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo"
+  },
+  "devDependencies": {
+    "@ranki/config-typescript": "workspace:^",
+    "ohm-js": "^17.2.1",
+    "typescript": "^5.9.2"
+  }
+}

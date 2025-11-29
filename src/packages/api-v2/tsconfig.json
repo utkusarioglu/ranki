@@ -1,9 +1,0 @@
-{
-  "extends": "@ranki/config-typescript/tsconfig.package.json",
-  "compilerOptions": {
-    "declarationDir": "types",
-    "outDir": "lib",
-    "rootDir": "src"
-  },
-  "include": ["src/**/*"]
-}
