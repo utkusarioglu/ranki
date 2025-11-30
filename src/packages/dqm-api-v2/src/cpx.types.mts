@@ -22,15 +22,16 @@ export interface ICpx {
 }
 
 export interface ICps {
-  // setId(id: Alias | Chain): ICps;
   hookPlugins(plugins: IPlugins): ICps;
   hookConfig(Config: IConfig): ICps;
+
   setParent(cps: ICps | null): ICps;
-  parse(input: CpxParseInput): ICps;
-  // setParams(params: IParam[]): ICps;
   setDefinition(def: CpsDefinition): ICps;
   setCpx(cpx: ICpx): ICps;
+
   getCpx(): ICpx;
+
+  parse(input: CpxParseInput): ICps;
 }
 
 export interface IPluginLib<

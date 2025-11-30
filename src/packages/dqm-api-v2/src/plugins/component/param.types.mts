@@ -4,8 +4,6 @@ import type {
 } from "./component.types.mjs";
 import type { IId } from "./id/id.types.mjs";
 
-// export type ParamKey = string[] & { type?: "ParamKey" };
-
 export type ParamType = "string" | "number" | "boolean" | "chain";
 
 export type ParamChannel = string & { type?: "ParamChannel" }; // setting, config

@@ -16,6 +16,7 @@ export interface IDqmComponent {
   meta: {
     id: IdSummary;
     description: string;
+    version: string;
   };
   stages: {
     preprocessing?: (v: string) => string;

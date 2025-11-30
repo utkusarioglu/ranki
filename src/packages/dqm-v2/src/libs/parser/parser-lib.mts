@@ -1,14 +1,6 @@
-import type { IPluginLib, IDqmPluginParser } from "@ranki/package-dqm-api-v2";
-import { Config, DqmError } from "@ranki/package-utils";
-
-type T = IDqmPluginParser;
-
-type Criteria = {
-  name: string;
-  config: Config<any>;
-};
-
-type ILibParser = IPluginLib<T, T, Criteria>;
+import type { IDqmPluginParser } from "@ranki/package-dqm-api-v2";
+import { DqmError } from "@ranki/package-utils";
+import type { ILibParser, T, Criteria } from "./parser-lib.types.mjs";
 
 export class ParserLib implements ILibParser {
   private plugins = new Map<string, T>();
