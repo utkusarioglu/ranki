@@ -1,1 +1,1 @@
-export const ALL_AUDIENCES = -1;
+export const ALL_AUDIENCES = 0;

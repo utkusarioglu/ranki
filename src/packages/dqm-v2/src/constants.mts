@@ -13,6 +13,5 @@ export const DEFAULT_CONFIG: DqmConfig = {
     standards: ["ConstantsV2", "BaseV2"],
     requested: [],
     config: {},
-    // config: pluginConfig.config,
   },
 };

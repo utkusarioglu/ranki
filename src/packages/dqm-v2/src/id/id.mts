@@ -6,7 +6,7 @@ import type {
   Position,
   IdSummary,
 } from "@ranki/package-dqm-api-v2";
-import { nonNullable, writeOnce } from "../utils/decorators.mjs";
+import { rejectValues, writeOnce } from "../utils/decorators.mjs";
 import { DqmError } from "@ranki/package-utils";
 
 export class Id implements IId {
@@ -99,7 +99,7 @@ export class Id implements IId {
     return this.alias;
   }
 
-  @nonNullable()
+  @rejectValues(undefined)
   getChain(): Chain {
     return this.chain;
   }

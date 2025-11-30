@@ -7,4 +7,5 @@ export interface IParams {
   setSchema(schema: ComponentParamsSchema): IParams;
   getSchema(): ComponentParamsSchema;
   findById(channel: ParamChannel, id: Alias | Chain): IParam | never;
+  buildObject<T>(channel: ParamChannel): T;
 }

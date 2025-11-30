@@ -4,7 +4,7 @@ import type {
   IdSummary,
 } from "@ranki/package-dqm-api-v2";
 import type { AliasCollision } from "./id-lib.types.mjs";
-import { nonNullable } from "../utils/decorators.mjs";
+import { rejectValues } from "../utils/decorators.mjs";
 import { DqmError } from "@ranki/package-utils";
 import { assertExists } from "../utils/assertions.mjs";
 
@@ -37,12 +37,12 @@ export class IdLib<Out> {
     });
   }
 
-  @nonNullable()
+  @rejectValues(undefined)
   getChainByAlias(alias: AliasString): ChainString {
     return this.activeAliases.get(alias)!;
   }
 
-  @nonNullable()
+  @rejectValues(undefined)
   getObjectById(id: AliasString | ChainString): Out {
     switch (id.length) {
       case 0:

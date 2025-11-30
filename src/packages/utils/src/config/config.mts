@@ -1,26 +1,22 @@
-import type { IConfig } from "@ranki/package-dqm-api-v2";
+import type { ConfigEntryCode, IConfig } from "@ranki/package-dqm-api-v2";
 import { DqmError } from "../error/error.mjs";
-import type { ConfigTypes } from "./config.types.mjs";
+import type { LocalConfig, ConfigTypes, ObjectPath } from "./config.types.mjs";
+import { assertNotExists, assertExists } from "./hooks.mjs";
 
-function assertExists<C extends {}>(value: C | undefined): asserts value is C {
-  if (value === undefined) {
-    throw new DqmError("VALUE_NOT_DEFINED", {});
+export class Config implements IConfig {
+  private configs: Record<ConfigEntryCode, LocalConfig> = {};
+  private order: ConfigEntryCode[] = [];
+
+  setOrder(order: ConfigEntryCode[]): IConfig {
+    this.order = order;
+    return this;
   }
-}
 
-function assertNotExists<C extends {}>(
-  value: C | undefined,
-): asserts value is undefined {
-  if (value !== undefined) {
-    throw new DqmError("VALUE_DEFINED", {});
+  getOrder(): ConfigEntryCode[] {
+    return this.order;
   }
-}
 
-export class Config<C extends {}> implements IConfig {
-  private configs: Record<string, C> = {};
-  private order: string[] = [];
-
-  addConfig(code: string, config: C) {
+  pushConfig(code: ConfigEntryCode, config: LocalConfig): IConfig {
     const c = this.configs[code];
     assertNotExists(c);
     this.order.push(code);
@@ -28,14 +24,14 @@ export class Config<C extends {}> implements IConfig {
     return this;
   }
 
-  replaceConfig(code: string, config: C) {
+  replaceConfig<C>(code: ConfigEntryCode, config: C): IConfig {
     const c = this.configs[code];
     assertExists(c);
     this.configs[code] = config;
     return this;
   }
 
-  dropConfig(code: string) {
+  dropConfig(code: ConfigEntryCode): IConfig {
     const c = this.configs[code];
     if (c === undefined) {
       return this;
@@ -45,13 +41,13 @@ export class Config<C extends {}> implements IConfig {
     return this;
   }
 
-  getConfig<T>(code: string): T {
-    const c = this.configs[code];
-    assertExists<C>(c);
+  getConfig<T>(name: ConfigEntryCode): T {
+    const c = this.configs[name];
+    assertExists(c);
     return c as unknown as T;
   }
 
-  private determineType(curr: any): ConfigTypes {
+  private determineType(curr: LocalConfig): ConfigTypes {
     const t = typeof curr;
     if (curr === undefined || ["bigint", "function", "symbol"].includes(t)) {
       return "undefined";
@@ -89,13 +85,33 @@ export class Config<C extends {}> implements IConfig {
    *
    * @param objs array of config objects to merge
    */
-  private buildLevel(objs: any[]): any {
+  private buildLevel(path: ObjectPath, objs: LocalConfig[]): LocalConfig {
     if (objs.length === 0) {
       throw new DqmError("ARRAY_EMPTY", {});
     }
+    if (objs.length === 1) {
+      return objs[0];
+    }
     let base = objs[0];
+    let baseType = this.determineType(base);
     for (let i = 1; i < objs.length; i++) {
       const curr = objs[i];
+      const currType = this.determineType(curr);
+      if (currType !== baseType) {
+        const arrays =
+          currType.startsWith("array") && baseType.startsWith("array");
+        const kvs = currType.startsWith("kv") && baseType.startsWith("kv");
+        const skip = currType === "undefined";
+        const revert = currType === "null";
+
+        if (!arrays && !kvs && !revert && !skip) {
+          throw new DqmError("INCONSISTENT_CONFIG_TYPES", {
+            objs,
+            currType,
+            baseType,
+          });
+        }
+      }
       switch (this.determineType(curr)) {
         case "string":
         case "number":
@@ -110,36 +126,45 @@ export class Config<C extends {}> implements IConfig {
           base = objs[0];
           break;
         case "array-populated":
-          base.push(...curr);
+          base = base.map((_: any, i: number) =>
+            this.buildLevel(
+              [path, i].join("."),
+              objs.map((v) => v[i]),
+            ),
+          );
           break;
         case "kv-populated":
-          base = { ...base, ...curr };
+          base = Object.keys(base).reduce((a, k) => {
+            // @ts-ignore
+            a[k] = this.buildLevel(
+              [path, k].join("."),
+              objs.map((o) => o[k]),
+            );
+            return a;
+          }, {});
           break;
         default:
-          throw new DqmError("UNRESOLVED_TYPE", { curr });
+          throw new DqmError("UNRESOLVED_TYPE", { curr, path });
       }
     }
+    return base;
   }
 
-  merge(): IConfig {
+  mergeTo(code: ConfigEntryCode): IConfig {
     const d = this.configs["default"];
     assertExists(d);
     const nonDefaultOrdered = this.order
       .filter((v) => v !== "default")
-      .reduce((a, c) => (a.push(this.configs[c]), a), [] as C[]);
+      .reduce((a, c) => (a.push(c), a), [] as LocalConfig[]);
+    const configs = ["default", ...nonDefaultOrdered].map(
+      (n) => this.configs[n],
+    );
 
-    const merged = this.buildLevel(["default", ...nonDefaultOrdered]);
-    this.configs["merged"] = merged;
+    const merged = this.buildLevel("", configs);
+    this.configs[code] = merged;
+    console.log(JSON.stringify(this.configs[code], null, 2));
     return this;
   }
-
-  // getMerged<T>() {
-  //   const merged = this.configs["merged"];
-  //   if (!merged) {
-  //     throw new DqmError("CONFIG_NOT_MERGED", { obj: this });
-  //   }
-  //   return merged as unknown as T;
-  // }
 
   clone() {
     const c = new Config();
@@ -147,74 +172,4 @@ export class Config<C extends {}> implements IConfig {
     c.order = [...this.order];
     return c;
   }
-
-  // clone(newProvidedConfigs: RankiLanguageProvidedConfig[]) {
-  //   // TODO can't decide whether provided configs should be merged with `this.providedConfigs`
-  //   const providedConfigs = !!newProvidedConfigs.length
-  //     ? newProvidedConfigs
-  //     : this.providedConfigs;
-  //   return new RankiLangConfig(this.pluginsConfig, providedConfigs);
-  // }
-
-  // // TODO any
-  // private static merge(configs: any[]): RankiLanguageMergedConfig {
-  //   if (configs.length < 1) {
-  //     throw new Error("NO CONFIG GIVEN");
-  //   }
-  //   if (configs.length === 1) {
-  //     return configs[0];
-  //   }
-  //   const base = configs.shift();
-  //   const rest = configs.filter((v) => !!v);
-
-  //   rest.forEach((i) => {
-  //     if (Array.isArray(i)) {
-  //       throw new Error(`ARRAY WHEN OBJECT IS EXPECTED: ${JSON.stringify(i)}`);
-  //     }
-  //   });
-
-  //   Object.entries(base).forEach(([k, _v]) => {
-  //     const restDefined = rest.map((v) => v[k]).filter((v) => v !== undefined);
-
-  //     if (typeof base[k] === "object" && !Array.isArray(base[k])) {
-  //       RankiLangConfig.merge([base[k], ...restDefined]);
-  //     } else if (Array.isArray(base[k])) {
-  //       const s = new Set(base[k]);
-  //       restDefined.forEach((a) => {
-  //         if (!Array.isArray(a) && a !== null) {
-  //           throw new Error(
-  //             `THE FOLLOWING ASSIGNMENT WAS EXPECTED TO BE AN ARRAY: ${k}: ${a}`,
-  //           );
-  //         } else if (a === null) {
-  //           s.clear();
-  //         } else {
-  //           // @ts-expect-error
-  //           a.map((i) => s.add(i));
-  //         }
-  //       });
-  //       base[k] = Array.from(s);
-  //     } else if (restDefined.length) {
-  //       let lastValid = restDefined[restDefined.length - 1];
-  //       switch (typeof base[k]) {
-  //         case "string":
-  //           lastValid = lastValid.toString();
-  //           break;
-  //         case "number":
-  //           lastValid = +lastValid;
-  //           break;
-  //         default:
-  //           throw new Error(
-  //             `IRRECONCILABLE TYPE CONVERSION. EXPECTED ${typeof base[
-  //               k
-  //             ]} BUT GOT ${lastValid} DURING MUTATION: ${
-  //               base[k]
-  //             } => ${lastValid}`,
-  //           );
-  //       }
-
-  //       base[k] = lastValid;
-  //     }
-  //   });
-  //   return base;
-  // }
 }

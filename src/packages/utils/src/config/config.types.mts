@@ -8,3 +8,7 @@ export type ConfigTypes =
   | "kv-populated"
   | "null"
   | "undefined";
+
+export type LocalConfig = any;
+
+export type ObjectPath = string & { type?: "ObjectPath" };

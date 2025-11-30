@@ -11,7 +11,7 @@ import type {
   ParamDefaultValue,
   ChannelParamSpecs,
 } from "@ranki/package-dqm-api-v2";
-import { nonNullable, dependsOn } from "../../utils/decorators.mjs";
+import { rejectValues, dependsOn } from "../../utils/decorators.mjs";
 import { Id } from "../../id/id.mjs";
 import { ALL_AUDIENCES } from "./param.constants.mjs";
 import { DqmError } from "@ranki/package-utils";
@@ -31,7 +31,7 @@ export class Param implements IParam {
     return this;
   }
 
-  @nonNullable()
+  @rejectValues(undefined)
   getSpecs(): ChannelParamSpecs {
     return this.specs;
   }
@@ -45,7 +45,7 @@ export class Param implements IParam {
     return this;
   }
 
-  @nonNullable()
+  @rejectValues(undefined)
   getAudience(): Audience {
     return this.audience;
   }
@@ -58,7 +58,7 @@ export class Param implements IParam {
     return this;
   }
 
-  @nonNullable()
+  @rejectValues(undefined)
   getOperator(): Operator {
     return this.operator;
   }
@@ -73,7 +73,7 @@ export class Param implements IParam {
     return this.id;
   }
 
-  @dependsOn("schema", "defaultValues")
+  @dependsOn("specs", "defaultValues")
   setValues(values: ParamValueSpec[]): IParam {
     if (values.length > this.defaultValues.length) {
       throw new DqmError("TOO_MANY_VALUES", {
@@ -86,7 +86,7 @@ export class Param implements IParam {
     return this;
   }
 
-  @dependsOn("schema")
+  @dependsOn("specs")
   setDefaultValues(valueSpec: ParamDefaultValue[]): IParam {
     this.defaultValues = valueSpec;
     return this;

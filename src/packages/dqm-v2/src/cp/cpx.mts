@@ -10,7 +10,7 @@ import type {
   IAstNode,
 } from "@ranki/package-dqm-api-v2";
 import { DqmError } from "@ranki/package-utils";
-import { dependsOn, nonNullable } from "../utils/decorators.mjs";
+import { dependsOn, rejectValues } from "../utils/decorators.mjs";
 import { ALL_AUDIENCES } from "./param/param.constants.mjs";
 import { Cps } from "./cps.mjs";
 
@@ -110,12 +110,12 @@ export class Cpx implements ICpx {
     }
   }
 
-  @nonNullable()
+  @rejectValues(undefined)
   getLeafCps(): ICps {
     return this.cps.at(-1)!;
   }
 
-  @nonNullable()
+  @rejectValues(undefined)
   getRootCps(): ICps {
     return this.cps[0];
   }

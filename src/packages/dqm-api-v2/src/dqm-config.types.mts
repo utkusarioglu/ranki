@@ -4,9 +4,8 @@ type DqmStages = "ast" | "validate" | "transform";
 
 type DqmPluginCode = string;
 
-interface DqmPluginsConfig {
-  // TODO
-}
+export type DqmPluginsConfig = Record<string, any>;
+// TODO
 
 // export type DqmGrammarTokens = Record<
 //   string,

@@ -7,6 +7,8 @@ import type {
   IAstNode,
   ICpx,
   ICps,
+  DqmPluginsConfig,
+  DqmConfig,
 } from "@ranki/package-dqm-api-v2";
 import { DqmError } from "@ranki/package-utils";
 import type { ILibParser, T, Criteria } from "./parser-lib.types.mjs";
@@ -20,6 +22,16 @@ export class ParserLib implements ILibParser {
   private grammars = new Map<GrammarName, T>();
   private parsers = new Map<ParserHashString, CreateParserReturn>();
   private reports: Record<ParserHashString, DqmAstReport> = {};
+
+  getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfig {
+    return this.grammars.entries().reduce(
+      (a, [k, v]) => (
+        // @ts-expect-error
+        (a[k] = v.config(defaultConfig)), a
+      ),
+      {},
+    );
+  }
 
   add(plugin: IDqmPluginGrammar): ILibParser {
     if (this.grammars.has(plugin.meta.name)) {

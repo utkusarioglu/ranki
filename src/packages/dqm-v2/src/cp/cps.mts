@@ -13,6 +13,8 @@ import { Id } from "../id/id.mjs";
 import { Params } from "./param/params.mjs";
 import { assertExists } from "../utils/assertions.mjs";
 
+const MERGE_TARGET = "merged";
+
 export class Cps implements ICps {
   private id = new Id();
   private parent!: ICps;
@@ -39,6 +41,11 @@ export class Cps implements ICps {
     def.params.forEach((param) => {
       this.params.addParam(param);
     });
+    // TODO $ may not be the token the user prefers. or $ may be mapped to a value like "config"
+    this.config
+      .pushConfig("cps", this.params.buildObject("config"))
+      .mergeTo(MERGE_TARGET);
+
     return this;
   }
 
@@ -69,7 +76,7 @@ export class Cps implements ICps {
     // TODO
     const { parse } = this.plugins.getParser(
       "NOT_SURE_IF_THIS_IS_NEEDED",
-      this.config.getConfig("default"),
+      this.config.getConfig(MERGE_TARGET),
     );
     // TODO
     return parse(input.inputs[input.theater], "rootBlock", {

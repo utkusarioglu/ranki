@@ -33,7 +33,7 @@ export function dependsOn(...properties: string[]) {
   };
 }
 
-export function nonNullable() {
+export function rejectValues(...values: any[]) {
   return function <This extends any, Args extends any[], Return>(
     value: (this: This, ...args: Args) => Return,
     context: ClassMethodDecoratorContext<
@@ -42,10 +42,13 @@ export function nonNullable() {
     >,
   ) {
     // assertMethodContext(context, {});
+    if (!values.length) {
+      throw new DqmError("EMPTY_ARRAY", {});
+    }
 
     const handler = function (this: This, ...args: Args): Return {
       const response = value.apply(this, args);
-      if (response === undefined) {
+      if (values.some((v) => v === response)) {
         throw new DqmError("UNDEFINED_VALUE", { context });
       }
       return response;

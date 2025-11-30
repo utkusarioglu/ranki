@@ -1,7 +1,6 @@
 import * as ohm from "ohm-js";
 import type { DqmConfig } from "../../dqm-config.types.mjs";
 import type { ICps, ICpx } from "../../cpx.types.mjs";
-// import type { CpsDefinition } from "../export.types.mjs";
 
 export interface IDqmPluginGrammar<ConfigShape = {}> {
   type: "grammar";
@@ -12,7 +11,7 @@ export interface IDqmPluginGrammar<ConfigShape = {}> {
   };
   dependencies: string[];
   tokenizer: () => DqmGrammarTokens;
-  config: (parentConfig: DqmConfig) => ConfigShape;
+  config: (defaultConfig: DqmConfig) => ConfigShape;
   grammar: (config: DqmConfig) => string;
   actions: () => ActionsDictRecord;
   // TODO

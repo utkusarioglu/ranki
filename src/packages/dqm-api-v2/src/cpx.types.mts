@@ -10,6 +10,7 @@ import type {
   CpsDefinition,
   CreateParserReturn,
   DqmConfig,
+  DqmPluginsConfig,
   IAstNode,
   IParam,
 } from "./export.types.mjs";
@@ -53,10 +54,18 @@ export interface IPlugins {
   getComponent(id: Chain | Alias): IDqmComponent;
   getParser(name: string, config: DqmConfig): CreateParserReturn;
   addPlugin(plugin: IDqmPlugin): IPlugins;
+  getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfig;
 }
+
+export type ConfigEntryCode = string & { type?: "ConfigEntryCode" };
 
 export interface IConfig {
   clone(): IConfig;
-  getConfig<T>(code: string): T;
-  merge(): IConfig;
+  getConfig<T>(code: ConfigEntryCode): T;
+  setOrder(order: ConfigEntryCode[]): IConfig;
+  getOrder(): ConfigEntryCode[];
+  mergeTo(code: ConfigEntryCode): IConfig;
+  pushConfig<C>(code: ConfigEntryCode, config: C): IConfig;
+  replaceConfig<C>(code: ConfigEntryCode, config: C): IConfig;
+  dropConfig(code: ConfigEntryCode): IConfig;
 }

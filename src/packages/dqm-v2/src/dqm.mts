@@ -12,15 +12,17 @@ import { Config } from "@ranki/package-utils";
 
 export class Dqm {
   private plugins: IPlugins = new Libs();
-  private config = new Config<DqmConfig>();
+  private config = new Config();
 
   constructor(configs: Record<string, DqmConfig>, plugins: IDqmPlugin[]) {
-    this.config.addConfig("default", DEFAULT_CONFIG);
-    Object.entries(configs).forEach(([k, v]) => {
-      this.config.addConfig(k, v);
-    });
     plugins.forEach((plugin) => {
       this.plugins.addPlugin(plugin);
+    });
+    DEFAULT_CONFIG.plugins.config =
+      this.plugins.getGrammarDefaultConfigs(DEFAULT_CONFIG);
+    this.config.pushConfig("default", DEFAULT_CONFIG);
+    Object.entries(configs).forEach(([k, v]) => {
+      this.config.pushConfig(k, v);
     });
   }
 

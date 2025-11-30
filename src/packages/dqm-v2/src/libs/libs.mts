@@ -6,6 +6,7 @@ import type {
   Alias,
   DqmConfig,
   CreateParserReturn,
+  DqmPluginsConfig,
 } from "@ranki/package-dqm-api-v2";
 import { DqmError } from "@ranki/package-utils";
 import { ComponentLib } from "./component/component-lib.mjs";
@@ -39,5 +40,7 @@ export class Libs implements IPlugins {
     return this.parsers.get({ name, config });
   }
 
-  // getParser(def) {}
+  getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfig {
+    return this.parsers.getGrammarDefaultConfigs(defaultConfig);
+  }
 }

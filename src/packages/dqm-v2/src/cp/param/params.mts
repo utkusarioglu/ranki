@@ -7,7 +7,7 @@ import type {
   IParams,
   ParamChannel,
 } from "@ranki/package-dqm-api-v2";
-import { dependsOn, nonNullable } from "../../utils/decorators.mjs";
+import { dependsOn, rejectValues } from "../../utils/decorators.mjs";
 import { ChannelParams } from "./channel-params.mjs";
 
 type Libs = Map<ParamChannel, ChannelParams>;
@@ -44,9 +44,26 @@ export class Params implements IParams {
   }
 
   @dependsOn("schema")
-  @nonNullable()
+  @rejectValues(undefined)
   findById(channel: ParamChannel, id: Alias | Chain): IParam | never {
     const lib = this.libs.get(channel)!;
     return lib.findById(id);
+  }
+
+  buildObject<T>(channel: ParamChannel): T {
+    // TODO
+    console.log({ channel, libs: this.libs });
+    return {
+      stage: "ast",
+      plugins: {
+        config: {
+          BaseV2: {
+            tokens: {
+              ignore: "meow",
+            },
+          },
+        },
+      },
+    } as T;
   }
 }
