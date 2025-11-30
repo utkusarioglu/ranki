@@ -1,3 +1,4 @@
+import type { IConfig } from "@ranki/package-dqm-api-v2";
 import { DqmError } from "../error/error.mjs";
 import type { ConfigTypes } from "./config.types.mjs";
 
@@ -15,7 +16,7 @@ function assertNotExists<C extends {}>(
   }
 }
 
-export class Config<C extends {}> {
+export class Config<C extends {}> implements IConfig {
   private configs: Record<string, C> = {};
   private order: string[] = [];
 
@@ -44,10 +45,10 @@ export class Config<C extends {}> {
     return this;
   }
 
-  getConfig(code: string) {
+  getConfig<T>(code: string): T {
     const c = this.configs[code];
     assertExists<C>(c);
-    return c;
+    return c as unknown as T;
   }
 
   private determineType(curr: any): ConfigTypes {
@@ -120,15 +121,25 @@ export class Config<C extends {}> {
     }
   }
 
-  build(): C {
+  merge(): IConfig {
     const d = this.configs["default"];
     assertExists(d);
     const nonDefaultOrdered = this.order
       .filter((v) => v !== "default")
       .reduce((a, c) => (a.push(this.configs[c]), a), [] as C[]);
 
-    return this.buildLevel(["default", ...nonDefaultOrdered]);
+    const merged = this.buildLevel(["default", ...nonDefaultOrdered]);
+    this.configs["merged"] = merged;
+    return this;
   }
+
+  // getMerged<T>() {
+  //   const merged = this.configs["merged"];
+  //   if (!merged) {
+  //     throw new DqmError("CONFIG_NOT_MERGED", { obj: this });
+  //   }
+  //   return merged as unknown as T;
+  // }
 
   clone() {
     const c = new Config();

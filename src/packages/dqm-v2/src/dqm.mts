@@ -4,6 +4,7 @@ import type {
   DqmConfig,
   IPlugins,
   IDqmPlugin,
+  IAstNode,
 } from "@ranki/package-dqm-api-v2";
 import { Cpx } from "./cp/cpx.mjs";
 import { DEFAULT_CONFIG } from "./constants.mjs";
@@ -35,14 +36,14 @@ export class Dqm {
         };
   }
 
-  parse(rawInputs: DqmParseInput) {
+  parse(rawInputs: DqmParseInput): IAstNode {
     const inputs = this.processInput(rawInputs);
-    const cpx = new Cpx()
+    const astNode = new Cpx()
       .hookPlugins(this.plugins)
       .hookConfig(this.config)
       .setParams([])
       .setIdList([["base", "v2", "default"]])
       .parse(inputs);
-    return cpx;
+    return astNode;
   }
 }

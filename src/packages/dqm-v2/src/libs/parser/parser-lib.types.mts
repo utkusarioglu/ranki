@@ -1,11 +1,15 @@
-import type { IDqmPluginParser, IPluginLib } from "@ranki/package-dqm-api-v2";
-import type { Config } from "@ranki/package-utils";
+import type {
+  CreateParserReturn,
+  DqmConfig,
+  IDqmPluginGrammar,
+  IPluginLib,
+} from "@ranki/package-dqm-api-v2";
 
-export type T = IDqmPluginParser;
+export type T = IDqmPluginGrammar;
 
 export type Criteria = {
   name: string;
-  config: Config<any>;
+  config: DqmConfig;
 };
 
-export type ILibParser = IPluginLib<T, T, Criteria>;
+export type ILibParser = IPluginLib<T, CreateParserReturn, Criteria>;

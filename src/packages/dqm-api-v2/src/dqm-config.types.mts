@@ -1,3 +1,5 @@
+import type { DqmGrammarTokens } from "./plugins/grammar/grammar.types.mjs";
+
 type DqmStages = "ast" | "validate" | "transform";
 
 type DqmPluginCode = string;
@@ -6,10 +8,10 @@ interface DqmPluginsConfig {
   // TODO
 }
 
-export type DqmGrammarTokens = Record<
-  string,
-  boolean | number | string | string[]
->;
+// export type DqmGrammarTokens = Record<
+//   string,
+//   boolean | number | string | string[]
+// >;
 
 export interface DqmConfig {
   stage: DqmStages;

@@ -2399,6 +2399,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./src/packages/utils/",\
         "packageDependencies": [\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
           ["@ranki/package-utils", "workspace:src/packages/utils"],\
           ["@types/node", "npm:24.3.1"],\
           ["tsx", "npm:4.20.5"],\

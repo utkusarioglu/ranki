@@ -6,7 +6,13 @@ import type {
   Chain,
   ChainList,
 } from "./plugins/component/id/id.types.mjs";
-import type { CpsDefinition, IParam } from "./export.types.mjs";
+import type {
+  CpsDefinition,
+  CreateParserReturn,
+  DqmConfig,
+  IAstNode,
+  IParam,
+} from "./export.types.mjs";
 
 export interface ICpx {
   newChild(): ICpx;
@@ -15,7 +21,7 @@ export interface ICpx {
   hookConfig(Config: IConfig): ICpx;
   setParent(cpx: ICpx): ICpx;
   getParent(): ICpx;
-  parse(input: CpxParseInput): ICpx;
+  parse(input: CpxParseInput): IAstNode;
   setParams(params: IParam[]): ICpx;
   getLeafCps(): ICps;
   getRootCps(): ICps;
@@ -31,12 +37,12 @@ export interface ICps {
 
   getCpx(): ICpx;
 
-  parse(input: CpxParseInput): ICps;
+  parse(input: CpxParseInput): IAstNode;
 }
 
 export interface IPluginLib<
   In extends IDqmPluginExtends,
-  Out extends IDqmPluginExtends,
+  Out extends any,
   Criteria extends any,
 > {
   get(criteria: Criteria): Out;
@@ -45,9 +51,12 @@ export interface IPluginLib<
 
 export interface IPlugins {
   getComponent(id: Chain | Alias): IDqmComponent;
+  getParser(name: string, config: DqmConfig): CreateParserReturn;
   addPlugin(plugin: IDqmPlugin): IPlugins;
 }
 
 export interface IConfig {
   clone(): IConfig;
+  getConfig<T>(code: string): T;
+  merge(): IConfig;
 }

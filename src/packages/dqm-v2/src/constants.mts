@@ -10,7 +10,7 @@ export const DEFAULT_CONFIG: DqmConfig = {
     suffix: "",
   },
   plugins: {
-    standards: ["RankiConstantsV2", "RankiBaseV2"],
+    standards: ["ConstantsV2", "BaseV2"],
     requested: [],
     config: {},
     // config: pluginConfig.config,

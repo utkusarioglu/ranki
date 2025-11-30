@@ -4,6 +4,8 @@ import type {
   IDqmComponent,
   Chain,
   Alias,
+  DqmConfig,
+  CreateParserReturn,
 } from "@ranki/package-dqm-api-v2";
 import { DqmError } from "@ranki/package-utils";
 import { ComponentLib } from "./component/component-lib.mjs";
@@ -19,7 +21,7 @@ export class Libs implements IPlugins {
         case "component-set":
           this.components.add(entry);
           break;
-        case "parser":
+        case "grammar":
           this.parsers.add(entry);
           break;
         default:
@@ -31,6 +33,10 @@ export class Libs implements IPlugins {
 
   getComponent(chain: Alias | Chain): IDqmComponent {
     return this.components.get({ id: chain });
+  }
+
+  getParser(name: string, config: DqmConfig): CreateParserReturn {
+    return this.parsers.get({ name, config });
   }
 
   // getParser(def) {}

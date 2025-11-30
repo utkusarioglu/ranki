@@ -1,28 +1,12 @@
 import type { IDqmPlugin } from "@ranki/package-dqm-api-v2";
-import { baseDefault } from "./components/default/default.mjs";
+import { constantsV2Grammar } from "./parsers/constants-v2/constants-v2.mjs";
+import { baseV2Grammar } from "./parsers/base-v2/base-v2.mjs";
+import { baseV2Components } from "./components/component-set.mjs";
 
 const baseV2: IDqmPlugin = [
-  {
-    type: "grammar",
-    meta: {
-      name: "BaseV2",
-      description: "Default parser for RankiV2",
-      version: "0.0.0",
-    },
-    dependencies: [],
-    config: () => ({}),
-    grammar: () => "",
-    actions: () => ({}),
-  },
-  {
-    type: "component-set",
-    meta: {
-      name: "BaseV2",
-      version: "0.0.0",
-      description: "Provides the default set for BaseV2",
-    },
-    list: [baseDefault],
-  },
+  constantsV2Grammar,
+  baseV2Grammar,
+  baseV2Components,
 ];
 
 export default baseV2;

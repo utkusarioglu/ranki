@@ -1,6 +1,7 @@
 import * as ohm from "ohm-js";
 import type { DqmConfig } from "../../dqm-config.types.mjs";
-import type { CpsDefinition } from "../export.types.mjs";
+import type { ICps, ICpx } from "../../cpx.types.mjs";
+// import type { CpsDefinition } from "../export.types.mjs";
 
 export interface IDqmPluginGrammar<ConfigShape = {}> {
   type: "grammar";
@@ -10,12 +11,18 @@ export interface IDqmPluginGrammar<ConfigShape = {}> {
     version: string;
   };
   dependencies: string[];
+  tokenizer: () => DqmGrammarTokens;
   config: (parentConfig: DqmConfig) => ConfigShape;
   grammar: (config: DqmConfig) => string;
-  actions: () => Record<string, ohm.ActionDict<unknown>>;
+  actions: () => ActionsDictRecord;
   // TODO
   // validators:
 }
+
+export type ActionsDictRecord = Record<
+  string,
+  Record<string, ohm.ActionDict<any>>
+>;
 
 export interface DqmAstReport {
   cache: {
@@ -36,12 +43,18 @@ export interface DqmAstReport {
 }
 
 export interface CreateParserReturn {
-  expandedDefinition: CpsDefinition & { hash: string };
-  callback: ParseAstFunction;
+  // expandedDefinition: CpsDefinition & { hash: string };
+  parse: ParseAstFunction;
 }
 
 export type ParseAstFunction = (
   raw: string,
+  startRule: string,
+  context: {
+    cpx: ICpx;
+    cps: ICps;
+    // ast: IAstNode;
+  },
   // context: RankiLangContextInstance,
 ) => RankiLangParseFunctionReturn;
 
@@ -56,3 +69,8 @@ export interface DqmConsolidatedAstReport {
 }
 
 export interface IAstNode {}
+
+export type DqmGrammarTokens = Record<
+  string,
+  boolean | number | string | string[]
+>;

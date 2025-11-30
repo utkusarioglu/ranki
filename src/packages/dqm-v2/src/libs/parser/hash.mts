@@ -1,22 +1,14 @@
-// import { djb2Hash, stringifyContext } from "./utils.mjs";
-// import type {
-//   // RankiLangAstContext,
-//   RankiLangParseDefinition,
-// } from "@ranki/package-api-v2";
-// import type { RankiLangConfig } from "../../config.mjs";
-import type { CpsDefinition, DqmConfig } from "@ranki/package-dqm-api-v2";
+import type { DqmConfig } from "@ranki/package-dqm-api-v2";
+
+export type ParserHashString = string & { type?: "ParserHash" };
 
 export class ParserHash {
-  static compute(
-    def: CpsDefinition,
-    config: DqmConfig,
-    // context: RankiLangAstContext,
-  ): string {
-    const stringified = ParserHash.stringifyContext(def, config);
-    return ParserHash.djb2Hash(stringified).toString();
+  static compute(name: string, config: DqmConfig): ParserHashString {
+    const stringified = ParserHash.stringifyContext(name, config);
+    return ParserHash.djb2Hash(stringified).toString() as ParserHashString;
   }
 
-  private static djb2Hash(str: string) {
+  private static djb2Hash(str: string): number {
     let h = 5381;
     for (let i = 0; i < str.length; i++) {
       h = ((h << 5) + h) ^ str.charCodeAt(i); // h * 33 ^ c
@@ -24,11 +16,7 @@ export class ParserHash {
     return h >>> 0;
   }
 
-  private static stringifyContext(
-    def: CpsDefinition,
-    config: DqmConfig,
-    // context: RankiLangAstContext,
-  ): string {
-    return [def.id.join("."), JSON.stringify(config)].join("");
+  private static stringifyContext(name: string, config: DqmConfig): string {
+    return [name, JSON.stringify(config)].join("");
   }
 }

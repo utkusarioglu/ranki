@@ -7,6 +7,7 @@ import type {
   IdList,
   ICps,
   Audience,
+  IAstNode,
 } from "@ranki/package-dqm-api-v2";
 import { DqmError } from "@ranki/package-utils";
 import { dependsOn, nonNullable } from "../utils/decorators.mjs";
@@ -119,8 +120,7 @@ export class Cpx implements ICpx {
     return this.cps[0];
   }
 
-  parse(input: CpxParseInput): ICpx {
-    this.getRootCps().parse(input);
-    return this;
+  parse(input: CpxParseInput): IAstNode {
+    return this.getRootCps().parse(input);
   }
 }

@@ -7,6 +7,7 @@ import type {
   ICpx,
   CpxParseInput,
   CpsDefinition,
+  IAstNode,
 } from "@ranki/package-dqm-api-v2";
 import { Id } from "../id/id.mjs";
 import { Params } from "./param/params.mjs";
@@ -64,8 +65,17 @@ export class Cps implements ICps {
     return this.config;
   }
 
-  parse(input: CpxParseInput): ICps {
-    console.log(input);
-    return this;
+  parse(input: CpxParseInput): IAstNode {
+    // TODO
+    const { parse } = this.plugins.getParser(
+      "NOT_SURE_IF_THIS_IS_NEEDED",
+      this.config.getConfig("default"),
+    );
+    // TODO
+    return parse(input.inputs[input.theater], "rootBlock", {
+      cpx: this.cpx,
+      cps: this,
+      // ast: this.cpx.getRootCps().
+    });
   }
 }

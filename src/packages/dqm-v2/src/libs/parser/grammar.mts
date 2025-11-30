@@ -1,5 +1,5 @@
 import * as ohm from "ohm-js";
-import type { DqmConfig, IDqmPluginParser } from "@ranki/package-dqm-api-v2";
+import type { DqmConfig, IDqmPluginGrammar } from "@ranki/package-dqm-api-v2";
 
 export interface GrammarSpecs {
   parentGrammar: string;
@@ -27,7 +27,7 @@ function adjustParent(specs: GrammarSpecs, raw: string): ParserPluginGrammar {
 export function buildGrammar(
   config: DqmConfig,
   importChain: string[],
-  finder: (s: string) => IDqmPluginParser,
+  finder: (s: string) => IDqmPluginGrammar,
 ) {
   const matchers: Record<string, ParserPluginGrammar> = {};
   let grammarParents = {};
