@@ -699,6 +699,7 @@ __metadata:
   dependencies:
     "@ranki/config-typescript": "workspace:^"
     "@ranki/package-dqm-api-v2": "workspace:^"
+    ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft

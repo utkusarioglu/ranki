@@ -1,6 +1,7 @@
 import * as ohm from "ohm-js";
 import type { DqmConfig } from "../../dqm-config.types.mjs";
 import type { ICps, ICpx } from "../../cpx.types.mjs";
+import type { IAstNode } from "../../nodes/ast.types.mjs";
 
 export interface IDqmPluginGrammar<ConfigShape = {}> {
   type: "grammar";
@@ -66,8 +67,6 @@ export interface DqmConsolidatedAstReport {
   count: number;
   list: DqmAstReport[];
 }
-
-export interface IAstNode {}
 
 export type DqmGrammarTokens = Record<
   string,

@@ -1363,6 +1363,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/plugin-base-v2", "workspace:src/plugins/base-v2"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
