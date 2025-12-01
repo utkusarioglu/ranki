@@ -1,4 +1,4 @@
-import { DqmError } from "@ranki/package-utils";
+import { DqmError } from "@dqm/package-utils";
 // import { assertMethodContext} from "./assertions.mjs"
 
 // ANKI this is the new decorator syntax

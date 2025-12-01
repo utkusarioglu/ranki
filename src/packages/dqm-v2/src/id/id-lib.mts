@@ -2,10 +2,10 @@ import type {
   AliasString,
   ChainString,
   IdSummary,
-} from "@ranki/package-dqm-api-v2";
+} from "@dqm/package-dqm-api-v2";
 import type { AliasCollision } from "./id-lib.types.mjs";
 import { rejectValues } from "../utils/decorators.mjs";
-import { DqmError } from "@ranki/package-utils";
+import { DqmError } from "@dqm/package-utils";
 import { assertExists } from "../utils/assertions.mjs";
 
 export class IdLib<Out> {

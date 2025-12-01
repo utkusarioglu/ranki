@@ -8,8 +8,8 @@ import type {
   ICps,
   Audience,
   IAstNode,
-} from "@ranki/package-dqm-api-v2";
-import { DqmError } from "@ranki/package-utils";
+} from "@dqm/package-dqm-api-v2";
+import { DqmError } from "@dqm/package-utils";
 import { dependsOn, rejectValues } from "../utils/decorators.mjs";
 import { ALL_AUDIENCES } from "./param/param.constants.mjs";
 import { Cps } from "./cps.mjs";

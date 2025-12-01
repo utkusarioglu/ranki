@@ -31,7 +31,7 @@
     "yaml": "^2.8.1"
   },
   "dependencies": {
-    "@dqm/plugin-base-v2": "workspace:^",
-    "@ranki/package-dqm-v2": "workspace:^"
+    "@dqm/package-dqm-v2": "workspace:^",
+    "@dqm/plugin-base-v2": "workspace:^"
   }
 }

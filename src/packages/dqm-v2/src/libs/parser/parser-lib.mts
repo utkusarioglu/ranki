@@ -9,8 +9,8 @@ import type {
   ICps,
   DqmPluginsConfig,
   DqmConfig,
-} from "@ranki/package-dqm-api-v2";
-import { DqmError } from "@ranki/package-utils";
+} from "@dqm/package-dqm-api-v2";
+import { DqmError } from "@dqm/package-utils";
 import type { ILibParser, T, Criteria } from "./parser-lib.types.mjs";
 import { ParserHash, type ParserHashString } from "./hash.mjs";
 import { expandDependencies, topologicalSort } from "./utils.mjs";

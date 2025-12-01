@@ -1,4 +1,4 @@
-import type { IDqmPluginComponentSet } from "@ranki/package-dqm-api-v2";
+import type { IDqmPluginComponentSet } from "@dqm/package-dqm-api-v2";
 import { baseDefault } from "./default/default.mjs";
 
 export const baseV2Components: IDqmPluginComponentSet = {

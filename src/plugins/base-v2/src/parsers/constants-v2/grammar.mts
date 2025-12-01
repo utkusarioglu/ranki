@@ -1,4 +1,4 @@
-import type { DqmGrammarTokens, DqmConfig } from "@ranki/package-dqm-api-v2";
+import type { DqmGrammarTokens, DqmConfig } from "@dqm/package-dqm-api-v2";
 
 export function buildGrammar(merged: DqmConfig) {
   const tokens: DqmGrammarTokens = {};

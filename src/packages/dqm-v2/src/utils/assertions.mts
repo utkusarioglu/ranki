@@ -1,4 +1,4 @@
-import { DqmError } from "@ranki/package-utils";
+import { DqmError } from "@dqm/package-utils";
 
 export function assertExists(v: any, obj: any): asserts v is object {
   if (v === undefined) {

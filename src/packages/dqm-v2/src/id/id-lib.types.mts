@@ -1,4 +1,4 @@
-import type { AliasString, ChainString } from "@ranki/package-dqm-api-v2";
+import type { AliasString, ChainString } from "@dqm/package-dqm-api-v2";
 
 export type AliasCollision = {
   alias: AliasString;

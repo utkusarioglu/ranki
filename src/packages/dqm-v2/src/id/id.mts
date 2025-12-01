@@ -5,9 +5,9 @@ import type {
   IId,
   Position,
   IdSummary,
-} from "@ranki/package-dqm-api-v2";
+} from "@dqm/package-dqm-api-v2";
 import { rejectValues, writeOnce } from "../utils/decorators.mjs";
-import { DqmError } from "@ranki/package-utils";
+import { DqmError } from "@dqm/package-utils";
 
 export class Id implements IId {
   private map!: IIdMap;

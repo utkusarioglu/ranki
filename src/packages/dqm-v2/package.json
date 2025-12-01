@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@ranki/package-dqm-v2",
+  "name": "@dqm/package-dqm-v2",
   "type": "module",
   "exports": {
     ".": {
@@ -17,14 +17,14 @@
     "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo"
   },
   "devDependencies": {
+    "@dqm/package-dqm-api-v2": "workspace:^",
     "@ranki/config-typescript": "workspace:^",
-    "@ranki/package-dqm-api-v2": "workspace:^",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
   },
   "dependencies": {
-    "@ranki/package-utils": "workspace:^",
+    "@dqm/package-utils": "workspace:^",
     "ohm-js": "^17.2.1"
   }
 }

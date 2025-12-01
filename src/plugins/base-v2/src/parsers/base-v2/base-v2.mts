@@ -1,4 +1,4 @@
-import type { IDqmPluginGrammar } from "@ranki/package-dqm-api-v2";
+import type { IDqmPluginGrammar } from "@dqm/package-dqm-api-v2";
 import { tokenizer } from "./tokenizer.mjs";
 import { config } from "./base-v2.config.mjs";
 import type { BaseV2GrammarConfig } from "./base-v2.types.mjs";

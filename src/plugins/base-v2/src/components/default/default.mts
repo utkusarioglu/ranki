@@ -1,4 +1,4 @@
-import type { IDqmComponent } from "@ranki/package-dqm-api-v2";
+import type { IDqmComponent } from "@dqm/package-dqm-api-v2";
 
 export const baseDefault: IDqmComponent = {
   type: "component",

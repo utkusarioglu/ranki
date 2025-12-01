@@ -5,7 +5,15 @@
     "rootDir": "src",
     "declarationDir": "types",
     "useDefineForClassFields": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "paths": {
+      "@dqm/package-dqm-v2": ["../../packages/dqm-v2/*"]
+    }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "references": [
+    {
+      "path": "../../packages/dqm-v2"
+    }
+  ]
 }

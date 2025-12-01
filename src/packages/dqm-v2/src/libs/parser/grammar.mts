@@ -1,5 +1,5 @@
 import * as ohm from "ohm-js";
-import type { DqmConfig, IDqmPluginGrammar } from "@ranki/package-dqm-api-v2";
+import type { DqmConfig, IDqmPluginGrammar } from "@dqm/package-dqm-api-v2";
 
 export interface GrammarSpecs {
   parentGrammar: string;

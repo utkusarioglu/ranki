@@ -1,5 +1,5 @@
-import type { Alias, Chain, IPluginLib } from "@ranki/package-dqm-api-v2";
-import { DqmError } from "@ranki/package-utils";
+import type { Alias, Chain, IPluginLib } from "@dqm/package-dqm-api-v2";
+import { DqmError } from "@dqm/package-utils";
 import type { In, Out } from "./component-lib.types.mjs";
 import { IdLib } from "../../id/id-lib.mjs";
 

@@ -1,4 +1,4 @@
-import type { IDqmPluginGrammar } from "@ranki/package-dqm-api-v2";
+import type { IDqmPluginGrammar } from "@dqm/package-dqm-api-v2";
 
 // ANKI
 export function expandDependencies(plugins: IDqmPluginGrammar[]): void {

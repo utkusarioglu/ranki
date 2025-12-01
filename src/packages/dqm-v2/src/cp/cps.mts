@@ -8,7 +8,7 @@ import type {
   CpxParseInput,
   CpsDefinition,
   IAstNode,
-} from "@ranki/package-dqm-api-v2";
+} from "@dqm/package-dqm-api-v2";
 import { Id } from "../id/id.mjs";
 import { Params } from "./param/params.mjs";
 import { assertExists } from "../utils/assertions.mjs";

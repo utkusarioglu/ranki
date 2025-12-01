@@ -693,12 +693,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@dqm/package-dqm-api-v2@workspace:^, @dqm/package-dqm-api-v2@workspace:src/packages/dqm-api-v2":
+  version: 0.0.0-use.local
+  resolution: "@dqm/package-dqm-api-v2@workspace:src/packages/dqm-api-v2"
+  dependencies:
+    "@ranki/config-typescript": "workspace:^"
+    ohm-js: "npm:^17.2.1"
+    typescript: "npm:^5.9.2"
+  languageName: unknown
+  linkType: soft
+
+"@dqm/package-dqm-v2@workspace:^, @dqm/package-dqm-v2@workspace:src/packages/dqm-v2":
+  version: 0.0.0-use.local
+  resolution: "@dqm/package-dqm-v2@workspace:src/packages/dqm-v2"
+  dependencies:
+    "@dqm/package-dqm-api-v2": "workspace:^"
+    "@dqm/package-utils": "workspace:^"
+    "@ranki/config-typescript": "workspace:^"
+    ohm-js: "npm:^17.2.1"
+    tsx: "npm:^4.20.5"
+    typescript: "npm:^5.9.2"
+    vitest: "npm:^3.2.4"
+  languageName: unknown
+  linkType: soft
+
+"@dqm/package-utils@workspace:^, @dqm/package-utils@workspace:src/packages/utils":
+  version: 0.0.0-use.local
+  resolution: "@dqm/package-utils@workspace:src/packages/utils"
+  dependencies:
+    "@dqm/package-dqm-api-v2": "workspace:^"
+    "@ranki/config-typescript": "workspace:^"
+    "@types/node": "npm:^24.3.1"
+    tsx: "npm:^4.20.5"
+    typescript: "npm:^5.9.2"
+  languageName: unknown
+  linkType: soft
+
 "@dqm/plugin-base-v2@workspace:^, @dqm/plugin-base-v2@workspace:src/plugins/base-v2":
   version: 0.0.0-use.local
   resolution: "@dqm/plugin-base-v2@workspace:src/plugins/base-v2"
   dependencies:
+    "@dqm/package-dqm-api-v2": "workspace:^"
+    "@dqm/package-utils": "workspace:^"
     "@ranki/config-typescript": "workspace:^"
-    "@ranki/package-dqm-api-v2": "workspace:^"
     ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"
   languageName: unknown
@@ -1527,9 +1564,9 @@ __metadata:
     "@babel/core": "npm:^7.28.5"
     "@babel/plugin-proposal-decorators": "npm:^7.28.0"
     "@babel/preset-typescript": "npm:^7.28.5"
+    "@dqm/package-dqm-v2": "workspace:^"
     "@dqm/plugin-base-v2": "workspace:^"
     "@ranki/config-typescript": "workspace:^"
-    "@ranki/package-dqm-v2": "workspace:^"
     "@rollup/plugin-babel": "npm:^6.1.0"
     "@rollup/plugin-commonjs": "npm:^29.0.0"
     "@rollup/plugin-node-resolve": "npm:^16.0.3"
@@ -1571,42 +1608,6 @@ __metadata:
 "@ranki/config-typescript@workspace:^, @ranki/config-typescript@workspace:src/config/typescript":
   version: 0.0.0-use.local
   resolution: "@ranki/config-typescript@workspace:src/config/typescript"
-  languageName: unknown
-  linkType: soft
-
-"@ranki/package-dqm-api-v2@workspace:^, @ranki/package-dqm-api-v2@workspace:src/packages/dqm-api-v2":
-  version: 0.0.0-use.local
-  resolution: "@ranki/package-dqm-api-v2@workspace:src/packages/dqm-api-v2"
-  dependencies:
-    "@ranki/config-typescript": "workspace:^"
-    ohm-js: "npm:^17.2.1"
-    typescript: "npm:^5.9.2"
-  languageName: unknown
-  linkType: soft
-
-"@ranki/package-dqm-v2@workspace:^, @ranki/package-dqm-v2@workspace:src/packages/dqm-v2":
-  version: 0.0.0-use.local
-  resolution: "@ranki/package-dqm-v2@workspace:src/packages/dqm-v2"
-  dependencies:
-    "@ranki/config-typescript": "workspace:^"
-    "@ranki/package-dqm-api-v2": "workspace:^"
-    "@ranki/package-utils": "workspace:^"
-    ohm-js: "npm:^17.2.1"
-    tsx: "npm:^4.20.5"
-    typescript: "npm:^5.9.2"
-    vitest: "npm:^3.2.4"
-  languageName: unknown
-  linkType: soft
-
-"@ranki/package-utils@workspace:^, @ranki/package-utils@workspace:src/packages/utils":
-  version: 0.0.0-use.local
-  resolution: "@ranki/package-utils@workspace:src/packages/utils"
-  dependencies:
-    "@ranki/config-typescript": "workspace:^"
-    "@ranki/package-dqm-api-v2": "workspace:^"
-    "@types/node": "npm:^24.3.1"
-    tsx: "npm:^4.20.5"
-    typescript: "npm:^5.9.2"
   languageName: unknown
   linkType: soft
 

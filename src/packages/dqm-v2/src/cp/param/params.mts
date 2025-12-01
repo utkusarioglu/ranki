@@ -6,7 +6,7 @@ import type {
   IParam,
   IParams,
   ParamChannel,
-} from "@ranki/package-dqm-api-v2";
+} from "@dqm/package-dqm-api-v2";
 import { dependsOn, rejectValues } from "../../utils/decorators.mjs";
 import { ChannelParams } from "./channel-params.mjs";
 

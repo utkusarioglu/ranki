@@ -1,4 +1,4 @@
-import type { DqmGrammarTokens } from "@ranki/package-dqm-api-v2";
+import type { DqmGrammarTokens } from "@dqm/package-dqm-api-v2";
 import type { BaseV2GrammarConfig } from "./base-v2.types.mjs";
 
 export function tokenizer(config: BaseV2GrammarConfig) {

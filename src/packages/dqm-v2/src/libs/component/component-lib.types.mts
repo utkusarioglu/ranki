@@ -1,7 +1,7 @@
 import type {
   IDqmPluginComponentSet,
   IDqmComponent,
-} from "@ranki/package-dqm-api-v2";
+} from "@dqm/package-dqm-api-v2";
 
 export type In = IDqmPluginComponentSet;
 

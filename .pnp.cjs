@@ -27,15 +27,15 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/config/typescript"\
     },\
     {\
-      "name": "@ranki/package-dqm-api-v2",\
+      "name": "@dqm/package-dqm-api-v2",\
       "reference": "workspace:src/packages/dqm-api-v2"\
     },\
     {\
-      "name": "@ranki/package-dqm-v2",\
+      "name": "@dqm/package-dqm-v2",\
       "reference": "workspace:src/packages/dqm-v2"\
     },\
     {\
-      "name": "@ranki/package-utils",\
+      "name": "@dqm/package-utils",\
       "reference": "workspace:src/packages/utils"\
     },\
     {\
@@ -47,13 +47,13 @@ const RAW_RUNTIME_STATE =
   "ignorePatternData": "(^(?:\\\\.yarn\\\\/sdks(?:\\\\/(?!\\\\.{1,2}(?:\\\\/|$))(?:(?:(?!(?:^|\\\\/)\\\\.{1,2}(?:\\\\/|$)).)*?)|$))$)",\
   "pnpZipBackend": "libzip",\
   "fallbackExclusionList": [\
+    ["@dqm/package-dqm-api-v2", ["workspace:src/packages/dqm-api-v2"]],\
+    ["@dqm/package-dqm-v2", ["workspace:src/packages/dqm-v2"]],\
+    ["@dqm/package-utils", ["workspace:src/packages/utils"]],\
     ["@dqm/plugin-base-v2", ["workspace:src/plugins/base-v2"]],\
     ["@ranki/app-dqm-v2-console", ["workspace:src/apps/dqm-v2-console"]],\
     ["@ranki/app-ranki-v1", ["workspace:src/apps/ranki-v1"]],\
     ["@ranki/config-typescript", ["workspace:src/config/typescript"]],\
-    ["@ranki/package-dqm-api-v2", ["workspace:src/packages/dqm-api-v2"]],\
-    ["@ranki/package-dqm-v2", ["workspace:src/packages/dqm-v2"]],\
-    ["@ranki/package-utils", ["workspace:src/packages/utils"]],\
     ["@ranki/root", ["workspace:."]]\
   ],\
   "fallbackPool": [\
@@ -1356,13 +1356,56 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@dqm/package-dqm-api-v2", [\
+      ["workspace:src/packages/dqm-api-v2", {\
+        "packageLocation": "./src/packages/dqm-api-v2/",\
+        "packageDependencies": [\
+          ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["ohm-js", "npm:17.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@dqm/package-dqm-v2", [\
+      ["workspace:src/packages/dqm-v2", {\
+        "packageLocation": "./src/packages/dqm-v2/",\
+        "packageDependencies": [\
+          ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["@dqm/package-dqm-v2", "workspace:src/packages/dqm-v2"],\
+          ["@dqm/package-utils", "workspace:src/packages/utils"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["ohm-js", "npm:17.2.1"],\
+          ["tsx", "npm:4.20.5"],\
+          ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"],\
+          ["vitest", "virtual:0eaad501106ac891bb84593f0f33d87e4516284c995715aba69d87356891651dfcc369cc2e0161d81b5b73182cdfb90bf28a533d4cfc71202066f20e50dc2336#npm:3.2.4"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@dqm/package-utils", [\
+      ["workspace:src/packages/utils", {\
+        "packageLocation": "./src/packages/utils/",\
+        "packageDependencies": [\
+          ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["@dqm/package-utils", "workspace:src/packages/utils"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@types/node", "npm:24.3.1"],\
+          ["tsx", "npm:4.20.5"],\
+          ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
     ["@dqm/plugin-base-v2", [\
       ["workspace:src/plugins/base-v2", {\
         "packageLocation": "./src/plugins/base-v2/",\
         "packageDependencies": [\
+          ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["@dqm/package-utils", "workspace:src/packages/utils"],\
           ["@dqm/plugin-base-v2", "workspace:src/plugins/base-v2"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
-          ["@ranki/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
           ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
         ],\
@@ -2313,10 +2356,10 @@ const RAW_RUNTIME_STATE =
           ["@babel/core", "npm:7.28.5"],\
           ["@babel/plugin-proposal-decorators", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:7.28.0"],\
           ["@babel/preset-typescript", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:7.28.5"],\
+          ["@dqm/package-dqm-v2", "workspace:src/packages/dqm-v2"],\
           ["@dqm/plugin-base-v2", "workspace:src/plugins/base-v2"],\
           ["@ranki/app-dqm-v2-console", "workspace:src/apps/dqm-v2-console"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
-          ["@ranki/package-dqm-v2", "workspace:src/packages/dqm-v2"],\
           ["@rollup/plugin-babel", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:6.1.0"],\
           ["@rollup/plugin-commonjs", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:29.0.0"],\
           ["@rollup/plugin-node-resolve", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:16.0.3"],\
@@ -2363,48 +2406,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./src/config/typescript/",\
         "packageDependencies": [\
           ["@ranki/config-typescript", "workspace:src/config/typescript"]\
-        ],\
-        "linkType": "SOFT"\
-      }]\
-    ]],\
-    ["@ranki/package-dqm-api-v2", [\
-      ["workspace:src/packages/dqm-api-v2", {\
-        "packageLocation": "./src/packages/dqm-api-v2/",\
-        "packageDependencies": [\
-          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
-          ["@ranki/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
-          ["ohm-js", "npm:17.2.1"],\
-          ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
-        ],\
-        "linkType": "SOFT"\
-      }]\
-    ]],\
-    ["@ranki/package-dqm-v2", [\
-      ["workspace:src/packages/dqm-v2", {\
-        "packageLocation": "./src/packages/dqm-v2/",\
-        "packageDependencies": [\
-          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
-          ["@ranki/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
-          ["@ranki/package-dqm-v2", "workspace:src/packages/dqm-v2"],\
-          ["@ranki/package-utils", "workspace:src/packages/utils"],\
-          ["ohm-js", "npm:17.2.1"],\
-          ["tsx", "npm:4.20.5"],\
-          ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"],\
-          ["vitest", "virtual:abd5bc9b04fa97bffd112d4239028773d3f9d35ac9914ccff317560d972eb94500eac52378bd136d931d29889dd1be1471e032e9fc953249ac90e63295a678c5#npm:3.2.4"]\
-        ],\
-        "linkType": "SOFT"\
-      }]\
-    ]],\
-    ["@ranki/package-utils", [\
-      ["workspace:src/packages/utils", {\
-        "packageLocation": "./src/packages/utils/",\
-        "packageDependencies": [\
-          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
-          ["@ranki/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
-          ["@ranki/package-utils", "workspace:src/packages/utils"],\
-          ["@types/node", "npm:24.3.1"],\
-          ["tsx", "npm:4.20.5"],\
-          ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -3824,12 +3825,12 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:d96861cf7d36e9626cc1a603d2525964b86b6b063c20911124c63b638850efc1e61484bbfef236fe731bece4753f154efecf291e0f0d4a54b51aac232fa6cad3#npm:3.2.4", {\
-        "packageLocation": "./.yarn/__virtual__/@vitest-mocker-virtual-f259fd75a7/2/home/dev/.yarn/berry/cache/@vitest-mocker-npm-3.2.4-48badb1f19-10c0.zip/node_modules/@vitest/mocker/",\
+      ["virtual:ceafcbdd1f27781688d1626a82e588d31dbf43803ccc7f3c0856368f21dd70ce05a95e074c296242828123cbc1996fcc0d92406e3279980309b280e58b979ca0#npm:3.2.4", {\
+        "packageLocation": "./.yarn/__virtual__/@vitest-mocker-virtual-e37e132e51/2/home/dev/.yarn/berry/cache/@vitest-mocker-npm-3.2.4-48badb1f19-10c0.zip/node_modules/@vitest/mocker/",\
         "packageDependencies": [\
           ["@types/msw", null],\
           ["@types/vite", null],\
-          ["@vitest/mocker", "virtual:d96861cf7d36e9626cc1a603d2525964b86b6b063c20911124c63b638850efc1e61484bbfef236fe731bece4753f154efecf291e0f0d4a54b51aac232fa6cad3#npm:3.2.4"],\
+          ["@vitest/mocker", "virtual:ceafcbdd1f27781688d1626a82e588d31dbf43803ccc7f3c0856368f21dd70ce05a95e074c296242828123cbc1996fcc0d92406e3279980309b280e58b979ca0#npm:3.2.4"],\
           ["@vitest/spy", "npm:3.2.4"],\
           ["estree-walker", "npm:3.0.3"],\
           ["magic-string", "npm:0.30.17"],\
@@ -8776,8 +8777,8 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:abd5bc9b04fa97bffd112d4239028773d3f9d35ac9914ccff317560d972eb94500eac52378bd136d931d29889dd1be1471e032e9fc953249ac90e63295a678c5#npm:3.2.4", {\
-        "packageLocation": "./.yarn/__virtual__/vitest-virtual-d96861cf7d/2/home/dev/.yarn/berry/cache/vitest-npm-3.2.4-7a07f931b1-10c0.zip/node_modules/vitest/",\
+      ["virtual:0eaad501106ac891bb84593f0f33d87e4516284c995715aba69d87356891651dfcc369cc2e0161d81b5b73182cdfb90bf28a533d4cfc71202066f20e50dc2336#npm:3.2.4", {\
+        "packageLocation": "./.yarn/__virtual__/vitest-virtual-ceafcbdd1f/2/home/dev/.yarn/berry/cache/vitest-npm-3.2.4-7a07f931b1-10c0.zip/node_modules/vitest/",\
         "packageDependencies": [\
           ["@edge-runtime/vm", null],\
           ["@types/chai", "npm:5.2.2"],\
@@ -8790,7 +8791,7 @@ const RAW_RUNTIME_STATE =
           ["@types/vitest__ui", null],\
           ["@vitest/browser", null],\
           ["@vitest/expect", "npm:3.2.4"],\
-          ["@vitest/mocker", "virtual:d96861cf7d36e9626cc1a603d2525964b86b6b063c20911124c63b638850efc1e61484bbfef236fe731bece4753f154efecf291e0f0d4a54b51aac232fa6cad3#npm:3.2.4"],\
+          ["@vitest/mocker", "virtual:ceafcbdd1f27781688d1626a82e588d31dbf43803ccc7f3c0856368f21dd70ce05a95e074c296242828123cbc1996fcc0d92406e3279980309b280e58b979ca0#npm:3.2.4"],\
           ["@vitest/pretty-format", "npm:3.2.4"],\
           ["@vitest/runner", "npm:3.2.4"],\
           ["@vitest/snapshot", "npm:3.2.4"],\
@@ -8813,7 +8814,7 @@ const RAW_RUNTIME_STATE =
           ["tinyrainbow", "npm:2.0.0"],\
           ["vite", "virtual:cb1d79df3b4901790c8808db427c397bd3f613c8181bce1e1c99f654fcf8f1484eb3efeaaa7477306f7c95ff2d882d1e762cb59fa3743be7fbfd628566f4b6c1#npm:7.0.6"],\
           ["vite-node", "npm:3.2.4"],\
-          ["vitest", "virtual:abd5bc9b04fa97bffd112d4239028773d3f9d35ac9914ccff317560d972eb94500eac52378bd136d931d29889dd1be1471e032e9fc953249ac90e63295a678c5#npm:3.2.4"],\
+          ["vitest", "virtual:0eaad501106ac891bb84593f0f33d87e4516284c995715aba69d87356891651dfcc369cc2e0161d81b5b73182cdfb90bf28a533d4cfc71202066f20e50dc2336#npm:3.2.4"],\
           ["why-is-node-running", "npm:2.3.0"]\
         ],\
         "packagePeers": [\

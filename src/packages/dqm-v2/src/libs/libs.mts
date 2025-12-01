@@ -7,8 +7,8 @@ import type {
   DqmConfig,
   CreateParserReturn,
   DqmPluginsConfig,
-} from "@ranki/package-dqm-api-v2";
-import { DqmError } from "@ranki/package-utils";
+} from "@dqm/package-dqm-api-v2";
+import { DqmError } from "@dqm/package-utils";
 import { ComponentLib } from "./component/component-lib.mjs";
 import { ParserLib } from "./parser/parser-lib.mjs";
 

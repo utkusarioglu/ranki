@@ -3,7 +3,7 @@ import type {
   DqmConfig,
   IDqmPluginGrammar,
   IPluginLib,
-} from "@ranki/package-dqm-api-v2";
+} from "@dqm/package-dqm-api-v2";
 
 export type T = IDqmPluginGrammar;
 

@@ -1,4 +1,4 @@
-import type { DqmConfig } from "@ranki/package-dqm-api-v2";
+import type { DqmConfig } from "@dqm/package-dqm-api-v2";
 
 export type ParserHashString = string & { type?: "ParserHash" };
 

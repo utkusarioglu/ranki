@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@ranki/package-dqm-api-v2",
+  "name": "@dqm/package-dqm-api-v2",
   "type": "module",
   "exports": {
     ".": {

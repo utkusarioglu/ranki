@@ -1,4 +1,4 @@
-import type { ConfigEntryCode, IConfig } from "@ranki/package-dqm-api-v2";
+import type { ConfigEntryCode, IConfig } from "@dqm/package-dqm-api-v2";
 import { DqmError } from "../error/error.mjs";
 import type { LocalConfig, ConfigTypes, ObjectPath } from "./config.types.mjs";
 import { assertNotExists, assertExists } from "./hooks.mjs";

@@ -5,10 +5,10 @@ import type {
   IPlugins,
   IDqmPlugin,
   IAstNode,
-} from "@ranki/package-dqm-api-v2";
+} from "@dqm/package-dqm-api-v2";
 import { Cpx } from "./cp/cpx.mjs";
 import { DEFAULT_CONFIG } from "./constants.mjs";
-import { Config } from "@ranki/package-utils";
+import { Config } from "@dqm/package-utils";
 
 export class Dqm {
   private plugins: IPlugins = new Libs();

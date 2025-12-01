@@ -1,4 +1,4 @@
-import type { IDqmPluginGrammar } from "@ranki/package-dqm-api-v2";
+import type { IDqmPluginGrammar } from "@dqm/package-dqm-api-v2";
 import { buildGrammar } from "./grammar.mjs";
 
 export const constantsV2Grammar: IDqmPluginGrammar = {

@@ -1,12 +1,12 @@
 import type * as ohm from "ohm-js";
-import type { IAstNode } from "@ranki/package-dqm-api-v2";
-import { getContext as c } from "@ranki/package-api-v2/helpers";
-import { joinNodes } from "@ranki/package-api-v2/helpers";
-import type {
-  BaseV2Node,
-  BaseV2NodeLeafReduced,
-  BaseV2NodeParentReduced,
-} from "./type.mjs";
+import { AstNode } from "@dqm/package-utils";
+// import { getContext as c } from "@ranki/package-api-v2/helpers";
+// import { joinNodes } from "@ranki/package-api-v2/helpers";
+// import type {
+//   BaseV2Node,
+//   BaseV2NodeLeafReduced,
+//   BaseV2NodeParentReduced,
+// } from "./type.mjs";
 export interface SeparatorEntry {
   type:
     | "block"
@@ -17,8 +17,6 @@ export interface SeparatorEntry {
     | "structure";
   raw: string;
 }
-
-class AstNode implements IAstNode {}
 
 const separatorList: ohm.ActionDict<SeparatorEntry[]> = {
   _iter(...children) {
