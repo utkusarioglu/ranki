@@ -11,22 +11,20 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { Id } from "../../id/id.mjs";
 import { Params } from "./param/params.mjs";
-// import { assertExists } from "@dqm/package-utils";
+import { CommonTransports } from "../common-transports.mjs";
 
 const MERGE_TARGET = "merged";
 
-export class Cps implements ICps {
+export class Cps extends CommonTransports implements ICps {
   private id = new Id();
   private parent!: ICps;
-  private config!: IConfig;
-  private plugins!: IPlugins;
   private component!: IDqmComponent;
   private params: IParams = new Params();
   private cpx!: ICpx;
 
   constructor(plugins: IPlugins, config: IConfig) {
-    this.plugins = plugins;
-    this.config = config.clone();
+    super(plugins, config);
+    this.cloneConfig();
   }
 
   setParent(cps: ICps): ICps {
@@ -36,13 +34,13 @@ export class Cps implements ICps {
 
   setDefinition(def: CpsDefinition): ICps {
     this.id.setId(def.id);
-    this.component = this.plugins.getComponent(def.id);
+    this.component = this.getPlugins().getComponent(def.id);
     this.params.setSchema(this.component.stages.ast);
     def.params.forEach((param) => {
       this.params.addParam(param);
     });
     // TODO $ may not be the token the user prefers. or $ may be mapped to a value like "config"
-    this.config
+    this.getConfig()
       .pushConfig("cps", this.params.buildObject("config"))
       .mergeTo(MERGE_TARGET);
 
@@ -58,25 +56,15 @@ export class Cps implements ICps {
     return this.cpx;
   }
 
-  // hookPlugins(plugins: IPlugins): ICps {
-  //   assertExists(plugins, "cps.plugins");
-  //   this.plugins = plugins;
-  //   return this;
-  // }
-
   getParent(): ICps {
     return this.parent;
   }
 
-  getConfig(): IConfig {
-    return this.config;
-  }
-
   parse(input: CpxParseInput): IAstNode {
     // TODO
-    const { parse } = this.plugins.getParser(
+    const { parse } = this.getPlugins().getParser(
       "NOT_SURE_IF_THIS_IS_NEEDED",
-      this.config.getConfig(MERGE_TARGET),
+      this.getConfig().getConfig(MERGE_TARGET),
     );
     // TODO
     const ast = this.cpx.getRootAst();

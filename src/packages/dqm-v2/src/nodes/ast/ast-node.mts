@@ -1,5 +1,6 @@
 import type {
   ActionMethod,
+  AstSourceString,
   ContentDirection,
   IAstNode,
   IAstNodeContext,
@@ -7,14 +8,14 @@ import type {
   IAstNodeNature,
   IAstSpaceNode,
   IAstTokenNode,
-  IConfig,
+  NodeName,
   ICpx,
-  IPlugins,
+  CreatorName,
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
-import { assertNotExists, rejectValues } from "@dqm/package-utils";
+import { assertNotExists, assertParent } from "@dqm/package-utils";
+import { CommonTransports } from "../common-transports.mjs";
 
-type NodeName = string & { type?: "NodeName" };
 type TokenNode = IAstTokenNode & {
   left: NodeName;
   right: NodeName;
@@ -27,9 +28,8 @@ type SpaceNode = IAstSpaceNode & {
 type OrderNode = IAstNode | TokenNode;
 type SubtreeNodes = Map<NodeName, IAstNode>;
 
-export class AstNode implements IAstNode {
+export class AstNode extends CommonTransports implements IAstNode {
   private cpx!: ICpx;
-  private plugins!: IPlugins;
   private parent!: IAstNode;
   private children: IAstNode[] = [];
   private direction!: ContentDirection;
@@ -40,12 +40,18 @@ export class AstNode implements IAstNode {
   private spaceNodes: SpaceNode[] = [];
   private subtreeNodes: SubtreeNodes = new Map<NodeName, IAstNode>();
   private childrenNodes: IAstNode[] = [];
-  private config!: IConfig;
   private kind!: IAstNodeKind;
 
-  constructor(plugins: IPlugins, config: IConfig) {
-    this.plugins = plugins;
-    this.config = config;
+  getCreator(): CreatorName {
+    return this.ohm.ctorName;
+  }
+
+  getSubtreeNodes(): Record<NodeName, IAstNode> {
+    return Object.fromEntries(this.subtreeNodes);
+  }
+
+  getChildrenNodes(): IAstNode[] {
+    return this.childrenNodes;
   }
 
   setKind(kind: IAstNodeKind): IAstNode {
@@ -57,14 +63,8 @@ export class AstNode implements IAstNode {
     return this.kind;
   }
 
-  @rejectValues(undefined)
-  private getConfig(): IConfig {
-    return this.config;
-  }
-
-  @rejectValues(undefined)
-  private getPlugins(): IPlugins {
-    return this.plugins;
+  getSourceString(): AstSourceString {
+    return this.ohm.sourceString;
   }
 
   // @ts-ignore
@@ -85,8 +85,7 @@ export class AstNode implements IAstNode {
     const newCpxMold = new Cpx(this.getPlugins(), this.getConfig())
       .setRootAst(this)
       .setParent(oldCpx);
-    const newCpx = cpxCallback(newCpxMold);
-    this.cpx = newCpx;
+    this.cpx = cpxCallback(newCpxMold);
     return this;
   }
   getCpx(): ICpx {
@@ -132,27 +131,28 @@ export class AstNode implements IAstNode {
 
   // TODO
   setChildrenNodes(
-    method: ActionMethod,
     required: ohm.Node[],
-    alt: ohm.Node[],
+    _alt: ohm.Node[] = [],
+    method: ActionMethod = "node",
   ): IAstNode {
+    assertParent(this, { obj: this });
     const context = this.prepareContext();
     const requiredNodes = required.map((n) => n[method](context));
-    const altNodes = alt.map((n) => n[method](context));
-    console.log({ requiredNodes, altNodes });
-
+    // const altNodes = alt.map((n) => n[method](context));
+    this.children.push(...requiredNodes);
     return this;
   }
 
   pushSpaceNode(
-    left: string,
-    right: string,
-    method: ActionMethod,
+    left: ohm.Node | null,
+    right: ohm.Node | null,
     node: ohm.Node,
+    method: ActionMethod = "space",
   ): IAstNode {
+    assertParent(this, { obj: this });
     const entry = {
-      left,
-      right,
+      left: left?.ctorName || null,
+      right: right?.ctorName || null,
       ...node[method](this.prepareContext()),
     };
     this.orderNodes.push(entry);
@@ -161,14 +161,15 @@ export class AstNode implements IAstNode {
   }
 
   pushTokenNode(
-    left: string,
-    right: string,
-    method: ActionMethod,
+    left: ohm.Node | null,
+    right: ohm.Node | null,
     node: ohm.Node,
+    method: ActionMethod = "token",
   ): IAstNode {
+    assertParent(this, { obj: this });
     const entry = {
-      left,
-      right,
+      left: left?.ctorName || null,
+      right: right?.ctorName || null,
       ...node[method](this.prepareContext()),
     };
     this.orderNodes.push(entry);
@@ -176,11 +177,13 @@ export class AstNode implements IAstNode {
     return this;
   }
 
-  pushSubtreeNode(name: string, method: ActionMethod, ast: ohm.Node): IAstNode {
+  pushSubtreeNode(ast: ohm.Node, method: ActionMethod = "node"): IAstNode {
+    assertParent(this, { obj: this });
+    const name = ast.ctorName;
     const newNode = ast[method](this.prepareContext());
     this.orderNodes.push(newNode);
     const preexisting = this.subtreeNodes.get(name);
-    assertNotExists(preexisting);
+    assertNotExists(preexisting, { preexisting, name, method, ast });
     this.subtreeNodes.set(name, newNode);
     return this;
   }

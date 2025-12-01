@@ -4,7 +4,7 @@ import type * as ohm from "ohm-js";
 export type ContentDirection = "block" | "inline";
 export type IAstNodeNature = "literal" | "synthetic";
 export type ActionMethod = string & { type?: "OhmActionMethod" };
-export type IAstNodeKind = "parent" | "child";
+export type IAstNodeKind = "parent" | "leaf";
 
 type CpxFuncParam = (cpx: ICpx) => ICpx;
 
@@ -26,6 +26,11 @@ export type IAstNodeConstructor = new (
   plugins: IPlugins,
   config: IConfig,
 ) => ICpx;
+
+export type NodeName = string & { type?: "NodeName" };
+export type CreatorName = string & { type?: "OhmJsCreatorName" };
+
+export type AstSourceString = string & { type?: "AstSourceString" };
 export interface IAstNode {
   setKind(kind: IAstNodeKind): IAstNode;
   getKind(): IAstNodeKind;
@@ -33,6 +38,10 @@ export interface IAstNode {
   setParent(parent: IAstNode): IAstNode;
   setCpx(cpx: ICpx): IAstNode;
   getCpx(): ICpx;
+  getSourceString(): AstSourceString;
+  getChildrenNodes(): IAstNode[];
+  getSubtreeNodes(): Record<NodeName, IAstNode>;
+  getCreator(): CreatorName;
   /**
    * This is supposed to create a new cpx and then let the node build it
    * inside the callback:
@@ -66,25 +75,25 @@ export interface IAstNode {
    * in turn their sources end up reconstructing the source
    */
   setChildrenNodes(
-    method: ActionMethod,
     required: ohm.Node[],
-    alt: ohm.Node[],
+    zipped?: ohm.Node[],
+    method?: ActionMethod,
   ): IAstNode;
   /**
    *  these children methods could be combined into one with some clever param shape
    */
   // setChildrenListOf(method: ActionMethod, alt: ohm.Node[]): IAstNode;
   pushSpaceNode(
-    left: string,
-    right: string,
-    method: ActionMethod,
+    left: ohm.Node | null,
+    right: ohm.Node | null,
     node: ohm.Node,
+    method?: ActionMethod,
   ): IAstNode;
   pushTokenNode(
-    left: string,
-    right: string,
-    method: ActionMethod,
+    left: ohm.Node | null,
+    right: ohm.Node | null,
     node: ohm.Node,
+    method?: ActionMethod,
   ): IAstNode;
-  pushSubtreeNode(name: string, method: ActionMethod, ast: ohm.Node): IAstNode;
+  pushSubtreeNode(ast: ohm.Node, method?: ActionMethod): IAstNode;
 }

@@ -2,9 +2,10 @@ import { DqmError } from "./export.mjs";
 
 export function assertNotExists<C extends {}>(
   value: C | undefined,
+  obj: any,
 ): asserts value is undefined {
   if (value !== undefined) {
-    throw new DqmError("VALUE_DEFINED", {});
+    throw new DqmError("VALUE_DEFINED", obj);
   }
 }
 
@@ -23,5 +24,11 @@ export function assertMethodContext<T extends { kind: string }>(
       context,
       ...obj,
     });
+  }
+}
+
+export function assertParent(self: any, obj: any) {
+  if (self.kind === "leaf") {
+    throw new DqmError("REQUIRES_PARENT", obj);
   }
 }

@@ -18,7 +18,7 @@ export class Config implements IConfig {
 
   pushConfig(code: ConfigEntryCode, config: LocalConfig): IConfig {
     const c = this.configs[code];
-    assertNotExists(c);
+    assertNotExists(c, { code, config, configs: this.configs });
     this.order.push(code);
     this.configs[code] = config;
     return this;

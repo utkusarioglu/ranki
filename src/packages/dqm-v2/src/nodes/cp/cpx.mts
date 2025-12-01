@@ -1,7 +1,7 @@
 import type {
   ICpx,
-  IPlugins,
-  IConfig,
+  // IPlugins,
+  // IConfig,
   CpxParseInput,
   IParam,
   IdList,
@@ -12,29 +12,30 @@ import type {
 import { DqmError, dependsOn, rejectValues } from "@dqm/package-utils";
 import { ALL_AUDIENCES } from "./param/param.constants.mjs";
 import { Cps } from "./cps.mjs";
+import { CommonTransports } from "../common-transports.mjs";
 
-export class Cpx implements ICpx {
+export class Cpx extends CommonTransports implements ICpx {
   private parent!: ICpx;
-  private config!: IConfig;
-  private plugins!: IPlugins;
+  // private config!: IConfig;
+  // private plugins!: IPlugins;
   private params!: IParam[];
   private cps: ICps[] = [];
   private rootAst!: IAstNode;
 
-  constructor(plugins: IPlugins, config: IConfig) {
-    this.plugins = plugins;
-    this.config = config.clone();
-  }
+  // constructor(plugins: IPlugins, config: IConfig) {
+  //   this.plugins = plugins;
+  //   this.config = config.clone();
+  // }
 
-  @rejectValues(undefined)
-  private getConfig(): IConfig {
-    return this.config;
-  }
+  // @rejectValues(undefined)
+  // private getConfig(): IConfig {
+  //   return this.config;
+  // }
 
-  @rejectValues(undefined)
-  private getPlugins(): IPlugins {
-    return this.plugins;
-  }
+  // @rejectValues(undefined)
+  // private getPlugins(): IPlugins {
+  //   return this.plugins;
+  // }
 
   setRootAst(ast: IAstNode): ICpx {
     this.rootAst = ast;

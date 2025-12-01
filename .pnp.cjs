@@ -2359,6 +2359,7 @@ const RAW_RUNTIME_STATE =
           ["@babel/core", "npm:7.28.5"],\
           ["@babel/plugin-proposal-decorators", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:7.28.0"],\
           ["@babel/preset-typescript", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:7.28.5"],\
+          ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
           ["@dqm/package-dqm-v2", "workspace:src/packages/dqm-v2"],\
           ["@dqm/plugin-base-v2", "workspace:src/plugins/base-v2"],\
           ["@ranki/app-dqm-v2-console", "workspace:src/apps/dqm-v2-console"],\
@@ -2373,7 +2374,7 @@ const RAW_RUNTIME_STATE =
           ["rollup", "npm:4.53.3"],\
           ["rollup-plugin-swc", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:0.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"],\
-          ["yaml", "npm:2.8.1"]\
+          ["yaml", "npm:2.8.2"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -9148,10 +9149,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:2.8.1", {\
-        "packageLocation": "../home/dev/.yarn/berry/cache/yaml-npm-2.8.1-b364b3bec4-10c0.zip/node_modules/yaml/",\
+      ["npm:2.8.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/yaml-npm-2.8.2-6cbf7c73c4-10c0.zip/node_modules/yaml/",\
         "packageDependencies": [\
-          ["yaml", "npm:2.8.1"]\
+          ["yaml", "npm:2.8.2"]\
         ],\
         "linkType": "HARD"\
       }]\

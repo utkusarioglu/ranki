@@ -9,7 +9,7 @@ export interface ICps {
   setParent(cps: ICps | null): ICps;
   setDefinition(def: CpsDefinition): ICps;
   setCpx(cpx: ICpx): ICps;
-  getConfig(): IConfig;
+  // getConfig(): IConfig;
 
   getCpx(): ICpx;
 

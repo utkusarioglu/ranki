@@ -5,6 +5,7 @@
     "target": "esnext",
     "composite": true,
     "verbatimModuleSyntax": true,
+    "declarationMap": true,
 
     /* Linting */
     "strict": true,
