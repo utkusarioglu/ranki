@@ -162,7 +162,6 @@ export class Config implements IConfig {
 
     const merged = this.buildLevel("", configs);
     this.configs[code] = merged;
-    console.log(JSON.stringify(this.configs[code], null, 2));
     return this;
   }
 

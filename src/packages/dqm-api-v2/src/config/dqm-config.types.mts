@@ -4,7 +4,14 @@ type DqmStages = "ast" | "validate" | "transform";
 
 type DqmPluginCode = string;
 
+export type DqmPluginsTokens = Record<string, DqmGrammarTokens>;
 export type DqmPluginsConfig = Record<string, any>;
+
+export type DqmPluginsConfigDefaults = {
+  tokens: DqmPluginsTokens;
+  config: DqmPluginsConfig;
+};
+
 // TODO
 
 /**
@@ -19,7 +26,7 @@ export interface DqmConfig {
     config: DqmPluginsConfig;
   };
   grammar: {
-    tokens: Record<string, DqmGrammarTokens>;
+    tokens: DqmPluginsTokens;
   };
   content: {
     prefix: string;

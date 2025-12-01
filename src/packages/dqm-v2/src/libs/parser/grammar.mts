@@ -1,5 +1,6 @@
 import * as ohm from "ohm-js";
 import type { DqmConfig, IDqmPluginGrammar } from "@dqm/package-dqm-api-v2";
+import type { GrammarActionsDict } from "./parser-lib.mjs";
 
 export interface GrammarSpecs {
   parentGrammar: string;
@@ -64,7 +65,7 @@ export function buildGrammar(
 export function compileOhmActionDicts(
   matcher: ohm.Grammar,
   sortedSet: Set<string>,
-  parsers: Record<string, Record<string, ohm.ActionDict<any>>>,
+  parsers: GrammarActionsDict,
 ) {
   let semantics = matcher.createSemantics();
   const operations = {};

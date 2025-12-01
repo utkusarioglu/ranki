@@ -1,14 +1,38 @@
-import type { ICpx } from "../../export.types.mjs";
+import type { IConfig, ICpx, IPlugins } from "../../export.types.mjs";
 import type * as ohm from "ohm-js";
 
 export type ContentDirection = "block" | "inline";
 export type IAstNodeNature = "literal" | "synthetic";
 export type ActionMethod = string & { type?: "OhmActionMethod" };
+export type IAstNodeKind = "parent" | "child";
 
 type CpxFuncParam = (cpx: ICpx) => ICpx;
 
+export type IAstNodeContext = {
+  // cpx: ICpx;
+  // cps: ICps;
+  ast: IAstNode;
+};
+
+export interface IAstSpaceNode {
+  type: "block" | "clearance" | "nl" | "whitespace";
+  raw: string;
+}
+
+export interface IAstTokenNode {
+  type: string;
+  raw: string;
+}
+
 export interface IAstNode {
+  setKind(kind: IAstNodeKind): IAstNode;
+  getKind(): IAstNodeKind;
+  hookPlugins(plugins: IPlugins): IAstNode;
+  hookConfig(config: IConfig): IAstNode;
   newAst(): IAstNode;
+  setParent(parent: IAstNode): IAstNode;
+  setCpx(cpx: ICpx): IAstNode;
+  getCpx(): ICpx;
   /**
    * This is supposed to create a new cpx and then let the node build it
    * inside the callback:
@@ -18,7 +42,7 @@ export interface IAstNode {
    *    .setStartRule(...)
    *  )
    */
-  newCpx(f: CpxFuncParam): IAstNode;
+  newCpx(cpxCallback: CpxFuncParam): IAstNode;
   /**
    * If `newCpx` works, these three won't be needed
    */
@@ -44,7 +68,7 @@ export interface IAstNode {
    * The order of the rest of the methods is important as they are placed in an array,
    * in turn their sources end up reconstructing the source
    */
-  setChildrenNonEmptyListOf(
+  setChildrenNodes(
     method: ActionMethod,
     required: ohm.Node[],
     alt: ohm.Node[],
@@ -52,9 +76,14 @@ export interface IAstNode {
   /**
    *  these children methods could be combined into one with some clever param shape
    */
-  setChildrenListOf(method: ActionMethod, alt: ohm.Node[]): IAstNode;
-  pushSpace(method: ActionMethod, node: ohm.Node): IAstNode;
-  pushToken(
+  // setChildrenListOf(method: ActionMethod, alt: ohm.Node[]): IAstNode;
+  pushSpaceNode(
+    left: string,
+    right: string,
+    method: ActionMethod,
+    node: ohm.Node,
+  ): IAstNode;
+  pushTokenNode(
     left: string,
     right: string,
     method: ActionMethod,

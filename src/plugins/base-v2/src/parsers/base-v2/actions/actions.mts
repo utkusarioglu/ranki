@@ -1,5 +1,10 @@
 import type * as ohm from "ohm-js";
-import { AstNode } from "@dqm/package-utils";
+import { getAst } from "@dqm/package-utils";
+import type {
+  IAstNode,
+  IAstSpaceNode,
+  IAstTokenNode,
+} from "@dqm/package-dqm-api-v2";
 // import { getContext as c } from "@ranki/package-api-v2/helpers";
 // import { joinNodes } from "@ranki/package-api-v2/helpers";
 // import type {
@@ -7,24 +12,36 @@ import { AstNode } from "@dqm/package-utils";
 //   BaseV2NodeLeafReduced,
 //   BaseV2NodeParentReduced,
 // } from "./type.mjs";
-export interface SeparatorEntry {
-  type:
-    | "block"
-    | "clearance"
-    | "nl"
-    | "whitespace"
-    // ! fix this doesn't belong here. it belongs in richStructure
-    | "structure";
-  raw: string;
-}
+// export interface SeparatorEntry {
+//   type:
+//     | "block"
+//     | "clearance"
+//     | "nl"
+//     | "whitespace"
+//     // ! fix this doesn't belong here. it belongs in richStructure
+//     | "structure";
+//   raw: string;
+// }
 
-const separatorList: ohm.ActionDict<SeparatorEntry[]> = {
-  _iter(...children) {
-    return children.map((ch) => ch.separator(c(this)));
-  },
+type TokenDict = ohm.ActionDict<IAstTokenNode[] | IAstTokenNode>;
+type SpaceDict = ohm.ActionDict<IAstSpaceNode[] | IAstSpaceNode>;
+type AstDict = ohm.ActionDict<IAstNode[] | IAstNode>;
+
+// const separatorList: TokenDict = {};
+const token: TokenDict = {
+  // ignore(ig) {
+  //   return {
+  //     type: "ignore",
+  //     raw: ig.sourceString,
+  //   };
+  // },
 };
 
-const separator: ohm.ActionDict<SeparatorEntry> = {
+const space: SpaceDict = {
+  _iter(...children) {
+    // TODO this exposes this.args.context
+    return children.map((ch) => ch.separator(this.args.context));
+  },
   blockSep_base(_n1, _wi1, _nl, _wi) {
     return {
       type: "block",
@@ -51,349 +68,378 @@ const separator: ohm.ActionDict<SeparatorEntry> = {
   },
 };
 
-const node: ohm.ActionDict<BaseV2Node> = {
+const node: AstDict = {
   rootBlock_ignore(_ignore, wm, rest) {
-    const context = c(this)
-      .newComponentBoundary({
-        handler: "RankiBaseV2",
-        chain: ["base", "v2", "default"],
-        params: [],
-      })
-      .newChild(this, "inline");
-    return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
-      {
-        kind: "parent",
-        shape: {
-          spaces: {
-            ignoreAndRest: {
-              type: "wm",
-              raw: wm.sourceString,
-            },
-          },
-          separators: [],
-        },
-      },
-      {
-        children: [
-          (() => {
-            const leafContext = context.newChild(this);
-            return leafContext.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
-              kind: "leaf",
-              print: true,
-              shape: {
-                spaces: {},
-                separators: [],
-              },
-              source: {
-                type: "raw",
-                raw: rest.sourceString,
-              },
-            });
-          })(),
-        ],
-      },
+    return (
+      getAst(this)
+        .newAst()
+        .newCpx((cpx) =>
+          cpx.setParams([]).setIdList([["base", "v2", "default"]]),
+        )
+        .setOhmNode(this)
+        .setKind("parent")
+        // .pushTokenNode("start", "wm", "token", ignore)
+        .pushSpaceNode("ignore", "rest", "space", wm)
+        .pushSubtreeNode("rest", "node", rest)
     );
+    // const context = c(this)
+    //   .newComponentBoundary({
+    //     handler: "RankiBaseV2",
+    //     chain: ["base", "v2", "default"],
+    //     params: [],
+    //   })
+    //   .newChild(this, "inline");
+    // return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
+    //   {
+    //     kind: "parent",
+    //     shape: {
+    //       spaces: {
+    //         ignoreAndRest: {
+    //           type: "wm",
+    //           raw: wm.sourceString,
+    //         },
+    //       },
+    //       separators: [],
+    //     },
+    //   },
+    //   {
+    //     children: [
+    //       (() => {
+    //         const leafContext = context.newChild(this);
+    //         return leafContext.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
+    //           kind: "leaf",
+    //           print: true,
+    //           shape: {
+    //             spaces: {},
+    //             separators: [],
+    //           },
+    //           source: {
+    //             type: "raw",
+    //             raw: rest.sourceString,
+    //           },
+    //         });
+    //       })(),
+    //     ],
+    //   },
+    // );
   },
 
-  section_empty(_all) {
-    const context = c(this).newChild(this, "inline");
+  // section_empty(_all) {
+  //   const context = c(this).newChild(this, "inline");
 
-    return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
-      kind: "leaf",
-      print: true,
-      shape: {
-        spaces: {},
-        separators: [],
-      },
-    });
-  },
+  //   return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
+  //     kind: "leaf",
+  //     print: true,
+  //     shape: {
+  //       spaces: {},
+  //       separators: [],
+  //     },
+  //   });
+  // },
 
-  rootBlock_structure(whitespace1, structure, whitespace2) {
-    const context = c(this)
-      .newComponentBoundary({
-        handler: "RankiBaseV2",
-        chain: ["base", "v2", "default"],
-        params: [],
-      })
-      .newChild(this);
-    return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
-      {
-        kind: "parent",
-        shape: {
-          spaces: {
-            prefix: {
-              type: "whitespace",
-              raw: whitespace1.sourceString,
-            },
-            suffix: {
-              type: "whitespace",
-              raw: whitespace2.sourceString,
-            },
-          },
-          separators: [],
-        },
-      },
-      {
-        children: [structure.node(context)],
-      },
+  rootBlock_structure(whitespace1, _structure, whitespace2) {
+    return (
+      getAst(this)
+        .newAst()
+        .newCpx((cpx) =>
+          cpx.setParams([]).setIdList([["base", "v2", "default"]]),
+        )
+        .setOhmNode(this)
+        .setKind("parent")
+        // .pushTokenNode("start", "wm", "token", ignore)
+        .pushSpaceNode("start", "structure", "space", whitespace1)
+        .pushSpaceNode("structure", "end", "space", whitespace2)
     );
+    // .pushSubtreeNode("rest", "node", rest)
+
+    // const context = c(this)
+    //   .newComponentBoundary({
+    //     handler: "RankiBaseV2",
+    //     chain: ["base", "v2", "default"],
+    //     params: [],
+    //   })
+    //   .newChild(this);
+    // return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
+    //   {
+    //     kind: "parent",
+    //     shape: {
+    //       spaces: {
+    //         prefix: {
+    //           type: "whitespace",
+    //           raw: whitespace1.sourceString,
+    //         },
+    //         suffix: {
+    //           type: "whitespace",
+    //           raw: whitespace2.sourceString,
+    //         },
+    //       },
+    //       separators: [],
+    //     },
+    //   },
+    //   {
+    //     children: [structure.node(context)],
+    //   },
+    // );
   },
 
-  section_base(block, blockSep, block2) {
-    const context = c(this).newChild(this);
-    return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
-      {
-        kind: "parent",
-        shape: {
-          spaces: {},
-          separators: blockSep.separator(context),
-        },
-      },
-      {
-        children: joinNodes(context, block, block2),
-      },
-    );
-  },
+  // section_base(block, blockSep, block2) {
+  //   const context = c(this).newChild(this);
+  //   return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
+  //     {
+  //       kind: "parent",
+  //       shape: {
+  //         spaces: {},
+  //         separators: blockSep.separator(context),
+  //       },
+  //     },
+  //     {
+  //       children: joinNodes(context, block, block2),
+  //     },
+  //   );
+  // },
 
-  // TODO nl
-  p(line1, nl, line2) {
-    const context = c(this).newChild(this);
-    return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
-      {
-        kind: "parent",
-        shape: {
-          spaces: {},
-          separators: nl.separator(context),
-        },
-      },
-      {
-        children: joinNodes(context, line1, line2),
-      },
-    );
-  },
+  // // TODO nl
+  // p(line1, nl, line2) {
+  //   const context = c(this).newChild(this);
+  //   return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
+  //     {
+  //       kind: "parent",
+  //       shape: {
+  //         spaces: {},
+  //         separators: nl.separator(context),
+  //       },
+  //     },
+  //     {
+  //       children: joinNodes(context, line1, line2),
+  //     },
+  //   );
+  // },
 
-  rootLine(wi1, lexemes, wi2) {
-    const context = c(this).newChild(this, "inline");
-    return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
-      {
-        kind: "parent",
-        shape: {
-          spaces: {
-            prefix: {
-              type: "wi",
-              raw: wi1.sourceString,
-            },
-            suffix: {
-              type: "wi",
-              raw: wi2.sourceString,
-            },
-          },
-          separators: [],
-        },
-      },
-      {
-        children: [lexemes.node(context)],
-      },
-    );
-  },
+  // rootLine(wi1, lexemes, wi2) {
+  //   const context = c(this).newChild(this, "inline");
+  //   return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
+  //     {
+  //       kind: "parent",
+  //       shape: {
+  //         spaces: {
+  //           prefix: {
+  //             type: "wi",
+  //             raw: wi1.sourceString,
+  //           },
+  //           suffix: {
+  //             type: "wi",
+  //             raw: wi2.sourceString,
+  //           },
+  //         },
+  //         separators: [],
+  //       },
+  //     },
+  //     {
+  //       children: [lexemes.node(context)],
+  //     },
+  //   );
+  // },
 
-  // TODO line modifiers
-  line(indentation1, _lineModifiers, lexemes, wi1) {
-    const context = c(this).newChild(this, "inline");
-    return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
-      {
-        kind: "parent",
-        shape: {
-          spaces: {
-            prefix: {
-              type: "indentation",
-              raw: indentation1.sourceString,
-            },
-            suffix: {
-              type: "wi",
-              raw: wi1.sourceString,
-            },
-          },
-          separators: [],
-        },
-      },
-      {
-        children: [lexemes.node(context)],
-      },
-    );
-  },
+  // // TODO line modifiers
+  // line(indentation1, _lineModifiers, lexemes, wi1) {
+  //   const context = c(this).newChild(this, "inline");
+  //   return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
+  //     {
+  //       kind: "parent",
+  //       shape: {
+  //         spaces: {
+  //           prefix: {
+  //             type: "indentation",
+  //             raw: indentation1.sourceString,
+  //           },
+  //           suffix: {
+  //             type: "wi",
+  //             raw: wi1.sourceString,
+  //           },
+  //         },
+  //         separators: [],
+  //       },
+  //     },
+  //     {
+  //       children: [lexemes.node(context)],
+  //     },
+  //   );
+  // },
 
-  // TODO clearance
-  lexemes(lexeme1, clearance, lexeme2) {
-    const context = c(this).newChild(this);
-    return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
-      {
-        kind: "parent",
-        shape: {
-          spaces: {},
-          separators: clearance.separator(context),
-        },
-      },
-      {
-        subtree: {},
-        children: joinNodes(context, lexeme1, lexeme2),
-      },
-    );
-  },
+  // // TODO clearance
+  // lexemes(lexeme1, clearance, lexeme2) {
+  //   const context = c(this).newChild(this);
+  //   return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
+  //     {
+  //       kind: "parent",
+  //       shape: {
+  //         spaces: {},
+  //         separators: clearance.separator(context),
+  //       },
+  //     },
+  //     {
+  //       subtree: {},
+  //       children: joinNodes(context, lexeme1, lexeme2),
+  //     },
+  //   );
+  // },
 
-  decorated_base(word, wordEnd) {
-    const context = c(this).newChild(this);
-    return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
-      {
-        kind: "parent",
-        shape: {
-          spaces: {
-            suffix: {
-              // !fix this would return an `any` type
-              type: wordEnd.creatorName(context),
-              raw: wordEnd.sourceString,
-            },
-          },
-          separators: [],
-        },
-      },
-      {
-        subtree: {},
-        children: [word.node(context)],
-      },
-    );
-  },
+  // decorated_base(word, wordEnd) {
+  //   const context = c(this).newChild(this);
+  //   return context.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
+  //     {
+  //       kind: "parent",
+  //       shape: {
+  //         spaces: {
+  //           suffix: {
+  //             // !fix this would return an `any` type
+  //             type: wordEnd.creatorName(context),
+  //             raw: wordEnd.sourceString,
+  //           },
+  //         },
+  //         separators: [],
+  //       },
+  //     },
+  //     {
+  //       subtree: {},
+  //       children: [word.node(context)],
+  //     },
+  //   );
+  // },
 
-  decorated_fallback(word, wordEnd) {
-    const parentContext = c(this).newChild(this);
-    return parentContext.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
-      {
-        kind: "parent",
-        shape: {
-          spaces: {
-            suffix: {
-              type: wordEnd.creatorName(parentContext),
-              raw: wordEnd.sourceString,
-            },
-          },
-          separators: [],
-        },
-      },
-      {
-        subtree: {},
-        children: [
-          (() => {
-            const leafContext = parentContext.newChild(this);
-            return leafContext.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
-              kind: "leaf",
-              print: true,
-              shape: {
-                spaces: {},
-                separators: [],
-              },
-              source: {
-                type: "raw",
-                raw: word.sourceString,
-              },
-            });
-          })(),
-        ],
-      },
-    );
-  },
+  // decorated_fallback(word, wordEnd) {
+  //   const parentContext = c(this).newChild(this);
+  //   return parentContext.newAstNode<BaseV2NodeParentReduced, BaseV2Node>(
+  //     {
+  //       kind: "parent",
+  //       shape: {
+  //         spaces: {
+  //           suffix: {
+  //             type: wordEnd.creatorName(parentContext),
+  //             raw: wordEnd.sourceString,
+  //           },
+  //         },
+  //         separators: [],
+  //       },
+  //     },
+  //     {
+  //       subtree: {},
+  //       children: [
+  //         (() => {
+  //           const leafContext = parentContext.newChild(this);
+  //           return leafContext.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
+  //             kind: "leaf",
+  //             print: true,
+  //             shape: {
+  //               spaces: {},
+  //               separators: [],
+  //             },
+  //             source: {
+  //               type: "raw",
+  //               raw: word.sourceString,
+  //             },
+  //           });
+  //         })(),
+  //       ],
+  //     },
+  //   );
+  // },
 
-  word_base(_base) {
-    const context = c(this).newChild(this);
-    return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
-      kind: "leaf",
-      print: true,
-      shape: {
-        spaces: {},
-        separators: [],
-      },
-    });
-  },
+  // word_base(_base) {
+  //   const context = c(this).newChild(this);
+  //   return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
+  //     kind: "leaf",
+  //     print: true,
+  //     shape: {
+  //       spaces: {},
+  //       separators: [],
+  //     },
+  //   });
+  // },
 
-  word_number(_number) {
-    const context = c(this).newChild(this);
-    return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
-      kind: "leaf",
-      print: true,
-      shape: {
-        spaces: {},
-        separators: [],
-      },
-      source: {
-        type: "number",
-        raw: this.sourceString,
-        number: +this.sourceString,
-      },
-    });
-  },
+  // word_number(_number) {
+  //   const context = c(this).newChild(this);
+  //   return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
+  //     kind: "leaf",
+  //     print: true,
+  //     shape: {
+  //       spaces: {},
+  //       separators: [],
+  //     },
+  //     source: {
+  //       type: "number",
+  //       raw: this.sourceString,
+  //       number: +this.sourceString,
+  //     },
+  //   });
+  // },
 
-  // TODO should this exist?
-  clearance(_clearance1) {
-    const context = c(this).newChild(this);
-    return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>(
-      {
-        kind: "leaf",
-        print: true,
-        shape: {
-          spaces: {},
-          separators: [],
-        },
-      },
-      {
-        sourceType: "text",
-      },
-    );
-  },
+  // // TODO should this exist?
+  // clearance(_clearance1) {
+  //   const context = c(this).newChild(this);
+  //   return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>(
+  //     {
+  //       kind: "leaf",
+  //       print: true,
+  //       shape: {
+  //         spaces: {},
+  //         separators: [],
+  //       },
+  //     },
+  //     {
+  //       sourceType: "text",
+  //     },
+  //   );
+  // },
 
-  // TODO should this exist?
-  whitespace(_wm, _wi) {
-    const context = c(this).newChild(this);
-    return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>(
-      {
-        kind: "leaf",
-        print: true,
-        shape: {
-          spaces: {},
-          separators: [],
-        },
-      },
-      {
-        sourceType: "text",
-      },
-    );
-  },
+  // // TODO should this exist?
+  // whitespace(_wm, _wi) {
+  //   const context = c(this).newChild(this);
+  //   return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>(
+  //     {
+  //       kind: "leaf",
+  //       print: true,
+  //       shape: {
+  //         spaces: {},
+  //         separators: [],
+  //       },
+  //     },
+  //     {
+  //       sourceType: "text",
+  //     },
+  //   );
+  // },
 };
 
-const creatorName: ohm.ActionDict<string> = {
-  nl(_nl) {
-    return this.ctorName;
-  },
-  end(_end) {
-    return this.ctorName;
-  },
-  clearance(_clearance1) {
-    return this.ctorName;
-  },
-};
+// const creatorName: ohm.ActionDict<string> = {
+// nl(_nl) {
+//   return this.ctorName;
+// },
+// end(_end) {
+//   return this.ctorName;
+// },
+// clearance(_clearance1) {
+//   return this.ctorName;
+// },
+// };
 
-const nodeList: ohm.ActionDict<IAstNode[]> = {
-  _iter(...children) {
-    return children.map((ch) => ch.node(c(this)));
-  },
-};
+// const nodeList: ohm.ActionDict<IAstNode[]> = {
+//   _iter(...children) {
+//     return children.map((ch) => ch.node(c(this)));
+//   },
+// };
 
 export const actions = {
-  node: {
-    ...node,
-    ...nodeList,
-  },
-  creatorName,
-  separator: {
-    ...separator,
-    ...separatorList,
-  },
+  // node: {
+  //   ...node,
+  //   // ...nodeList,
+  // },
+  node,
+  // creatorName,
+  space,
+  token,
+  // separator: {
+  //   ...separator,
+  //   // ...separatorList,
+  // },
 };

@@ -6,7 +6,8 @@ import type {
   DqmConfig,
   CreateParserReturn,
   IDqmPlugin,
-  DqmPluginsConfig,
+  DqmPluginsConfigDefaults,
+  ICpxConstructor,
 } from "../../export.types.mjs";
 
 /**
@@ -29,5 +30,6 @@ export interface IPlugins {
   getComponent(id: Chain | Alias): IDqmComponent;
   getParser(name: string, config: DqmConfig): CreateParserReturn;
   addPlugin(plugin: IDqmPlugin): IPlugins;
-  getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfig;
+  getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults;
+  getCpxConstructor(): ICpxConstructor;
 }

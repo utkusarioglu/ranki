@@ -79,10 +79,12 @@ export class Cps implements ICps {
       this.config.getConfig(MERGE_TARGET),
     );
     // TODO
+    const ast = this.cpx.getRootAst();
+    console.log({ ast });
     const obj = parse(input.inputs[input.theater], "rootBlock", {
-      cpx: this.cpx,
-      cps: this,
-      // ast: this.cpx.getRootCps().
+      // cpx: this.cpx,
+      // cps: this,
+      ast,
     });
     return obj.root;
   }

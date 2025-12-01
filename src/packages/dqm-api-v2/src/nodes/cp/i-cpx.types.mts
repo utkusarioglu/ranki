@@ -16,4 +16,9 @@ export interface ICpx {
   setParams(params: IParam[]): ICpx;
   getLeafCps(): ICps;
   getRootCps(): ICps;
+
+  setRootAst(ast: IAstNode): ICpx;
+  getRootAst(): IAstNode;
 }
+
+export type ICpxConstructor = new () => ICpx;

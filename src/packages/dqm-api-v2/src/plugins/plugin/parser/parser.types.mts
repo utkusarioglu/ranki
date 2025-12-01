@@ -1,8 +1,7 @@
 import type {
   DqmConfig,
-  ICpx,
-  ICps,
   IAstNode,
+  IAstNodeContext,
 } from "../../../export.types.mjs";
 
 export interface DqmAstReport {
@@ -31,10 +30,7 @@ export interface CreateParserReturn {
 export type ParseAstFunction = (
   raw: string,
   startRule: string,
-  context: {
-    cpx: ICpx;
-    cps: ICps;
-  },
+  context: IAstNodeContext,
 ) => RankiLangParseFunctionReturn;
 
 export interface RankiLangParseFunctionReturn {

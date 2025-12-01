@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch --preserveWatchOutput",
+    "build": "tsc && vite build",
+    "watch": "concurrently -n 'Latex:tsc,Latex:vite' -c yellow,cyan \"tsc --watch --preserveWatchOutput\" \"vite build --watch\"",
     "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo"
   },
   "dependencies": {
@@ -13,13 +13,15 @@
   "devDependencies": {
     "@dqm/package-dqm-api-v2": "workspace:^",
     "@ranki/config-typescript": "workspace:^",
+    "concurrently": "^9.2.1",
     "ohm-js": "^17.2.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vite": "^7.2.2"
   },
   "exports": {
     ".": {
-      "types": "./types/main.mjs",
-      "default": "./lib/main.mjs"
+      "types": "./types/export.d.mts",
+      "default": "./lib/export.js"
     }
   }
 }

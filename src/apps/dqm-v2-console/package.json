@@ -10,7 +10,8 @@
     }
   },
   "scripts": {
-    "console": "yarn rollup -c && node dist/console.js",
+    "console": "node dist/console.js",
+    "build": "yarn rollup -c",
     "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo"
   },
   "devDependencies": {

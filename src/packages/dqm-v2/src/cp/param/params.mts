@@ -52,7 +52,9 @@ export class Params implements IParams {
 
   buildObject<T>(channel: ParamChannel): T {
     // TODO
-    console.log({ channel, libs: this.libs });
+    if (!channel) {
+      console.log({ channel, libs: this.libs });
+    }
     return {
       stage: "ast",
       plugins: {

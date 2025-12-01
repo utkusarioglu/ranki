@@ -29,7 +29,7 @@ export function buildGrammar(merged: DqmConfig) {
   };
 
   const configStr = [
-    "RankiConstantsV2 {",
+    "ConstantsV2 {",
     ...Object.entries(tokens).map(([k, v]) => {
       const values = stringifyValues(v);
       return `  ${k} = ${values}`;

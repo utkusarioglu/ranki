@@ -6,9 +6,8 @@ import type {
   IDqmPlugin,
   IAstNode,
 } from "@dqm/package-dqm-api-v2";
-import { Cpx } from "./cp/cpx.mjs";
 import { DEFAULT_CONFIG } from "./constants.mjs";
-import { Config } from "@dqm/package-utils";
+import { AstNode, Config } from "@dqm/package-utils";
 
 export class Dqm {
   private plugins: IPlugins = new Libs();
@@ -18,8 +17,10 @@ export class Dqm {
     plugins.forEach((plugin) => {
       this.plugins.addPlugin(plugin);
     });
-    DEFAULT_CONFIG.plugins.config =
+    const pluginDefaults =
       this.plugins.getGrammarDefaultConfigs(DEFAULT_CONFIG);
+    DEFAULT_CONFIG.plugins.config = pluginDefaults.config;
+    DEFAULT_CONFIG.grammar.tokens = pluginDefaults.tokens;
     this.config.pushConfig("default", DEFAULT_CONFIG);
     Object.entries(configs).forEach(([k, v]) => {
       this.config.pushConfig(k, v);
@@ -40,11 +41,24 @@ export class Dqm {
 
   parse(rawInputs: DqmParseInput): IAstNode {
     const inputs = this.processInput(rawInputs);
-    const astNode = new Cpx()
-      .hookPlugins(this.plugins)
+    // const astNode = new Cpx()
+    //   .hookPlugins(this.plugins)
+    //   .hookConfig(this.config)
+    //   .setParams([])
+    //   .setIdList([["base", "v2", "default"]])
+    //   .parse(inputs);
+    const astNode = new AstNode()
       .hookConfig(this.config)
-      .setParams([])
-      .setIdList([["base", "v2", "default"]])
+      .hookPlugins(this.plugins)
+      .setNature("synthetic")
+      .newCpx((cpx) =>
+        cpx
+          // .hookPlugins(this.plugins)
+          // .hookConfig(this.config)
+          .setParams([])
+          .setIdList([["base", "v2", "default"]]),
+      )
+      .getCpx()
       .parse(inputs);
     return astNode;
   }

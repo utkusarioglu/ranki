@@ -20,6 +20,17 @@ export class Cpx implements ICpx {
   private plugins!: IPlugins;
   private params!: IParam[];
   private cps: ICps[] = [];
+  private rootAst!: IAstNode;
+
+  setRootAst(ast: IAstNode): ICpx {
+    this.rootAst = ast;
+    return this;
+  }
+
+  @dependsOn("rootAst")
+  getRootAst(): IAstNode {
+    return this.rootAst;
+  }
 
   hookPlugins(plugins: IPlugins): ICpx {
     this.plugins = plugins;

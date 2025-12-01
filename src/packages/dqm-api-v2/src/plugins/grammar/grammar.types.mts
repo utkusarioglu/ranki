@@ -22,7 +22,4 @@ export type DqmGrammarTokens = Record<
   boolean | number | string | string[]
 >;
 
-export type ActionsDictRecord = Record<
-  string,
-  Record<string, ohm.ActionDict<any>>
->;
+export type ActionsDictRecord = Record<string, ohm.ActionDict<any>>;

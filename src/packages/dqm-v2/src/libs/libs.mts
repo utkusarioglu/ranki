@@ -6,11 +6,13 @@ import type {
   Alias,
   DqmConfig,
   CreateParserReturn,
-  DqmPluginsConfig,
+  DqmPluginsConfigDefaults,
+  ICpxConstructor,
 } from "@dqm/package-dqm-api-v2";
 import { DqmError } from "@dqm/package-utils";
 import { ComponentLib } from "./component/component-lib.mjs";
 import { ParserLib } from "./parser/parser-lib.mjs";
+import { Cpx } from "../cp/cpx.mjs";
 
 export class Libs implements IPlugins {
   private components = new ComponentLib();
@@ -40,7 +42,11 @@ export class Libs implements IPlugins {
     return this.parsers.get({ name, config });
   }
 
-  getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfig {
+  getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults {
     return this.parsers.getGrammarDefaultConfigs(defaultConfig);
+  }
+
+  getCpxConstructor(): ICpxConstructor {
+    return Cpx;
   }
 }

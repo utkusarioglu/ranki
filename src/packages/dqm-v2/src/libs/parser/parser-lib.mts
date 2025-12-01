@@ -5,10 +5,9 @@ import type {
   DqmAstReport,
   ParseAstFunction,
   IAstNode,
-  ICpx,
-  ICps,
-  DqmPluginsConfig,
+  DqmPluginsConfigDefaults,
   DqmConfig,
+  IAstNodeContext,
 } from "@dqm/package-dqm-api-v2";
 import { DqmError } from "@dqm/package-utils";
 import type { ILibParser, T, Criteria } from "./parser-lib.types.mjs";
@@ -17,20 +16,25 @@ import { expandDependencies, topologicalSort } from "./utils.mjs";
 import { buildGrammar, compileOhmActionDicts } from "./grammar.mjs";
 
 type GrammarName = string & { type?: "GrammarName" };
+export type GrammarActionsDict = Record<GrammarName, ActionsDictRecord>;
 
 export class ParserLib implements ILibParser {
   private grammars = new Map<GrammarName, T>();
   private parsers = new Map<ParserHashString, CreateParserReturn>();
   private reports: Record<ParserHashString, DqmAstReport> = {};
 
-  getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfig {
-    return this.grammars.entries().reduce(
+  getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults {
+    const config = this.grammars.entries().reduce(
       (a, [k, v]) => (
         // @ts-expect-error
         (a[k] = v.config(defaultConfig)), a
       ),
       {},
     );
+    const tokens = this.grammars
+      .values()
+      .reduce((a, c) => ((a[c.meta.name] = c.tokenizer()), a), {} as any);
+    return { tokens, config };
   }
 
   add(plugin: IDqmPluginGrammar): ILibParser {
@@ -130,11 +134,7 @@ export class ParserLib implements ILibParser {
     const parseAst: ParseAstFunction = (
       raw: string,
       startRule: string,
-      context: {
-        cpx: ICpx;
-        cps: ICps;
-        // ast: IAstNode;
-      },
+      context: IAstNodeContext,
       // context: RankiLangContextInstance,
     ) => {
       const matched = matcher.match(raw, startRule);
@@ -189,7 +189,7 @@ export class ParserLib implements ILibParser {
   }
 
   //!FIX I don't like this. it's getting all actions for all grammars. it could choose to get the ones that it needs
-  private getActions(): ActionsDictRecord {
+  private getActions(): GrammarActionsDict {
     return this.grammars.values().reduce(
       // @ts-expect-error
       (a, c) => ((a[c.meta.name] = c.actions()), a),
