@@ -5,7 +5,7 @@ import type {
   Alias,
   Chain,
 } from "@dqm/package-dqm-api-v2";
-import { IdLib } from "../../id/id-lib.mjs";
+import { IdLib } from "../../../id/id-lib.mjs";
 import { Param } from "./param.mjs";
 import { DqmError, rejectValues } from "@dqm/package-utils";
 

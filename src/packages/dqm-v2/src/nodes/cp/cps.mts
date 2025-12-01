@@ -9,7 +9,7 @@ import type {
   CpsDefinition,
   IAstNode,
 } from "@dqm/package-dqm-api-v2";
-import { Id } from "../id/id.mjs";
+import { Id } from "../../id/id.mjs";
 import { Params } from "./param/params.mjs";
 // import { assertExists } from "@dqm/package-utils";
 

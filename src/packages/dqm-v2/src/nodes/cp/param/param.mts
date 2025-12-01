@@ -11,7 +11,7 @@ import type {
   ParamDefaultValue,
   ChannelParamSpecs,
 } from "@dqm/package-dqm-api-v2";
-import { Id } from "../../id/id.mjs";
+import { Id } from "../../../id/id.mjs";
 import { ALL_AUDIENCES } from "./param.constants.mjs";
 import { DqmError, rejectValues, dependsOn } from "@dqm/package-utils";
 

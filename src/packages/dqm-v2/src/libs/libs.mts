@@ -12,7 +12,7 @@ import type {
 import { DqmError } from "@dqm/package-utils";
 import { ComponentLib } from "./component/component-lib.mjs";
 import { ParserLib } from "./parser/parser-lib.mjs";
-import { Cpx } from "../cp/cpx.mjs";
+import { Cpx } from "../nodes/cp/cpx.mjs";
 
 export class Libs implements IPlugins {
   private components = new ComponentLib();
