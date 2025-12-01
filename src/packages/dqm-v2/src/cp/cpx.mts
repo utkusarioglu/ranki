@@ -21,6 +21,21 @@ export class Cpx implements ICpx {
   private cps: ICps[] = [];
   private rootAst!: IAstNode;
 
+  constructor(plugins: IPlugins, config: IConfig) {
+    this.plugins = plugins;
+    this.config = config.clone();
+  }
+
+  @rejectValues(undefined)
+  private getConfig(): IConfig {
+    return this.config;
+  }
+
+  @rejectValues(undefined)
+  private getPlugins(): IPlugins {
+    return this.plugins;
+  }
+
   setRootAst(ast: IAstNode): ICpx {
     this.rootAst = ast;
     return this;
@@ -29,11 +44,6 @@ export class Cpx implements ICpx {
   @dependsOn("rootAst")
   getRootAst(): IAstNode {
     return this.rootAst;
-  }
-
-  hookPlugins(plugins: IPlugins): ICpx {
-    this.plugins = plugins;
-    return this;
   }
 
   setParams(params: IParam[]) {
@@ -54,19 +64,6 @@ export class Cpx implements ICpx {
     );
   }
 
-  hookConfig(config: IConfig): ICpx {
-    this.config = config;
-    return this;
-  }
-
-  @dependsOn("parent", "plugins")
-  newChild() {
-    return new Cpx()
-      .setParent(this)
-      .hookPlugins(this.plugins)
-      .hookConfig(this.config);
-  }
-
   setParent(parent: ICpx) {
     this.parent = parent;
     return this;
@@ -81,15 +78,15 @@ export class Cpx implements ICpx {
     const createRoot = () => {
       const parentCpx = this.getParent();
       const parentCps = parentCpx ? parentCpx.getLeafCps() : null;
-      return new Cps()
-        .hookConfig(this.config)
-        .hookPlugins(this.plugins)
-        .setParent(parentCps)
-        .setCpx(this)
-        .setDefinition({
-          id: idList[0],
-          params: this.getParamsByAudience(0),
-        });
+      const newCps = new Cps(this.getPlugins(), this.getConfig());
+      if (parentCps) {
+        newCps.setParent(parentCps);
+      }
+      newCps.setCpx(this).setDefinition({
+        id: idList[0],
+        params: this.getParamsByAudience(0),
+      });
+      return newCps as ICps;
     };
 
     switch (idList.length) {
@@ -103,17 +100,13 @@ export class Cpx implements ICpx {
         this.cps.push(curr);
         for (let i = 1; i < idList.length; i++) {
           const prev = curr;
-          curr = new Cps()
-            .hookConfig(this.config)
-            .hookPlugins(this.plugins)
+          curr = new Cps(this.getPlugins(), this.getConfig())
             .setCpx(this)
             .setParent(prev)
             .setDefinition({
               id: idList[i],
               params: this.getParamsByAudience(i),
             });
-          // .setParams(this.getParams(i))
-          // .setId(idList[i]);
           this.cps.push(curr);
         }
         return this;

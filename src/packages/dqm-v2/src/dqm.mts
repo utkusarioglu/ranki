@@ -42,15 +42,7 @@ export class Dqm {
 
   parse(rawInputs: DqmParseInput): IAstNode {
     const inputs = this.processInput(rawInputs);
-    // const astNode = new Cpx()
-    //   .hookPlugins(this.plugins)
-    //   .hookConfig(this.config)
-    //   .setParams([])
-    //   .setIdList([["base", "v2", "default"]])
-    //   .parse(inputs);
-    const astNode = new AstNode()
-      .hookConfig(this.config)
-      .hookPlugins(this.plugins)
+    const astNode = new AstNode(this.plugins, this.config)
       .setNature("synthetic")
       .newCpx((cpx) => cpx.setParams([]).setIdList([["base", "v2", "default"]]))
       .getCpx()

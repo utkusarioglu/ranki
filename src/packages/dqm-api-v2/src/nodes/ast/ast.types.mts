@@ -9,8 +9,6 @@ export type IAstNodeKind = "parent" | "child";
 type CpxFuncParam = (cpx: ICpx) => ICpx;
 
 export type IAstNodeContext = {
-  // cpx: ICpx;
-  // cps: ICps;
   ast: IAstNode;
 };
 
@@ -24,11 +22,13 @@ export interface IAstTokenNode {
   raw: string;
 }
 
+export type IAstNodeConstructor = new (
+  plugins: IPlugins,
+  config: IConfig,
+) => ICpx;
 export interface IAstNode {
   setKind(kind: IAstNodeKind): IAstNode;
   getKind(): IAstNodeKind;
-  hookPlugins(plugins: IPlugins): IAstNode;
-  hookConfig(config: IConfig): IAstNode;
   newAst(): IAstNode;
   setParent(parent: IAstNode): IAstNode;
   setCpx(cpx: ICpx): IAstNode;
@@ -46,9 +46,6 @@ export interface IAstNode {
   /**
    * If `newCpx` works, these three won't be needed
    */
-  // setCpx(cpx: ICpx): IAstNode;
-  // setCps(cps: ICps): IAstNode;
-  // setParent(parent: IAstNode): IAstNode;
 
   setDirection(direction: ContentDirection): IAstNode;
 

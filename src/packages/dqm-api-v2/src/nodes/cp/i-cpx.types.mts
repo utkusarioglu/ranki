@@ -6,10 +6,7 @@ import type { IConfig } from "../../config/i-config.types.mjs";
 import type { IPlugins } from "../../plugins/plugin/plugins.types.mjs";
 
 export interface ICpx {
-  newChild(): ICpx;
   setIdList(idList: ChainList): ICpx;
-  hookPlugins(plugins: IPlugins): ICpx;
-  hookConfig(Config: IConfig): ICpx;
   setParent(cpx: ICpx): ICpx;
   getParent(): ICpx;
   parse(input: CpxParseInput): IAstNode;
@@ -21,4 +18,4 @@ export interface ICpx {
   getRootAst(): IAstNode;
 }
 
-export type ICpxConstructor = new () => ICpx;
+export type ICpxConstructor = new (plugins: IPlugins, config: IConfig) => ICpx;

@@ -11,7 +11,7 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { Id } from "../id/id.mjs";
 import { Params } from "./param/params.mjs";
-import { assertExists } from "@dqm/package-utils";
+// import { assertExists } from "@dqm/package-utils";
 
 const MERGE_TARGET = "merged";
 
@@ -24,9 +24,9 @@ export class Cps implements ICps {
   private params: IParams = new Params();
   private cpx!: ICpx;
 
-  hookConfig(config: IConfig): ICps {
+  constructor(plugins: IPlugins, config: IConfig) {
+    this.plugins = plugins;
     this.config = config.clone();
-    return this;
   }
 
   setParent(cps: ICps): ICps {
@@ -58,11 +58,11 @@ export class Cps implements ICps {
     return this.cpx;
   }
 
-  hookPlugins(plugins: IPlugins): ICps {
-    assertExists(plugins, "cps.plugins");
-    this.plugins = plugins;
-    return this;
-  }
+  // hookPlugins(plugins: IPlugins): ICps {
+  //   assertExists(plugins, "cps.plugins");
+  //   this.plugins = plugins;
+  //   return this;
+  // }
 
   getParent(): ICps {
     return this.parent;

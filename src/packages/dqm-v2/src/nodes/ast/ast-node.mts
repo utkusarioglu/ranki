@@ -12,7 +12,7 @@ import type {
   IPlugins,
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
-import { assertNotExists } from "@dqm/package-utils";
+import { assertNotExists, rejectValues } from "@dqm/package-utils";
 
 type NodeName = string & { type?: "NodeName" };
 type TokenNode = IAstTokenNode & {
@@ -43,6 +43,11 @@ export class AstNode implements IAstNode {
   private config!: IConfig;
   private kind!: IAstNodeKind;
 
+  constructor(plugins: IPlugins, config: IConfig) {
+    this.plugins = plugins;
+    this.config = config;
+  }
+
   setKind(kind: IAstNodeKind): IAstNode {
     this.kind = kind;
     return this;
@@ -52,15 +57,12 @@ export class AstNode implements IAstNode {
     return this.kind;
   }
 
-  hookConfig(config: IConfig): IAstNode {
-    this.config = config;
-    return this;
-  }
-
+  @rejectValues(undefined)
   private getConfig(): IConfig {
     return this.config;
   }
 
+  @rejectValues(undefined)
   private getPlugins(): IPlugins {
     return this.plugins;
   }
@@ -80,9 +82,7 @@ export class AstNode implements IAstNode {
   newCpx(cpxCallback: (cpx: ICpx) => ICpx): IAstNode {
     const Cpx = this.getPlugins().getCpxConstructor();
     const oldCpx = this.cpx;
-    const newCpxMold = new Cpx()
-      .hookPlugins(this.getPlugins())
-      .hookConfig(this.getConfig())
+    const newCpxMold = new Cpx(this.getPlugins(), this.getConfig())
       .setRootAst(this)
       .setParent(oldCpx);
     const newCpx = cpxCallback(newCpxMold);
@@ -91,11 +91,6 @@ export class AstNode implements IAstNode {
   }
   getCpx(): ICpx {
     return this.cpx;
-  }
-
-  hookPlugins(plugins: IPlugins): IAstNode {
-    this.plugins = plugins;
-    return this;
   }
 
   setParent(parent: IAstNode): IAstNode {
@@ -124,11 +119,9 @@ export class AstNode implements IAstNode {
   }
 
   newAst(): IAstNode {
-    const newAst = new AstNode()
-      .hookConfig(this.getConfig())
-      .hookPlugins(this.getPlugins())
+    const newAst = new AstNode(this.getPlugins(), this.getConfig())
       .setParent(this)
-      .setCpx(this.cpx);
+      .setCpx(this.getCpx());
     this.children.push(newAst);
     return newAst;
   }

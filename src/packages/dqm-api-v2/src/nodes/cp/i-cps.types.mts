@@ -6,9 +6,6 @@ import type { IPlugins } from "../../plugins/plugin/plugins.types.mjs";
 import type { IConfig } from "../../config/i-config.types.mjs";
 
 export interface ICps {
-  hookPlugins(plugins: IPlugins): ICps;
-  hookConfig(Config: IConfig): ICps;
-
   setParent(cps: ICps | null): ICps;
   setDefinition(def: CpsDefinition): ICps;
   setCpx(cpx: ICpx): ICps;
@@ -18,3 +15,5 @@ export interface ICps {
 
   parse(input: CpxParseInput): IAstNode;
 }
+
+export type ICpsConstructor = new (plugins: IPlugins, config: IConfig) => ICpx;
