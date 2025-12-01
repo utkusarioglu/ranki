@@ -1,4 +1,4 @@
-import type { ICps, ICpx } from "../export.types.mjs";
+import type { ICpx } from "../../export.types.mjs";
 import type * as ohm from "ohm-js";
 
 export type ContentDirection = "block" | "inline";

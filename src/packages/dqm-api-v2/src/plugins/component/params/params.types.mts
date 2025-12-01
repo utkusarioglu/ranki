@@ -1,5 +1,5 @@
-import type { Alias, Chain } from "./id/id.types.mjs";
-import type { ComponentParamsSchema } from "./component.types.mjs";
+import type { Alias, Chain } from "../id/id.types.mjs";
+import type { ComponentParamsSchema } from "../component.types.mjs";
 import type { IParam, ParamChannel } from "./param.types.mjs";
 
 export interface IParams {

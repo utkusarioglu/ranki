@@ -1,8 +1,8 @@
 import type {
   ChannelParamSpecs,
   ParamDefaultValue,
-} from "./component.types.mjs";
-import type { IId } from "./id/id.types.mjs";
+} from "../component.types.mjs";
+import type { IId } from "../id/id.types.mjs";
 
 export type ParamType = "string" | "number" | "boolean" | "chain";
 

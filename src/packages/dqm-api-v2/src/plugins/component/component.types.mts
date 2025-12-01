@@ -1,5 +1,18 @@
 import type { Alias, Chain, IdSummary } from "./id/id.types.mjs";
-import type { IParam, ParamType, ParamValue } from "./param.types.mjs";
+import type { IParam, ParamType, ParamValue } from "./params/param.types.mjs";
+
+export interface IDqmComponent {
+  type: "component";
+  meta: {
+    id: IdSummary;
+    description: string;
+    version: string;
+  };
+  stages: {
+    preprocessing?: (v: string) => string;
+    ast: ComponentParamsSchema;
+  };
+}
 
 export interface ParamDefaultValue {
   name: string;
