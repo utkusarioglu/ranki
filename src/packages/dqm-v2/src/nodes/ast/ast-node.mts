@@ -12,7 +12,7 @@ import type {
   IPlugins,
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
-import { assertNotExists } from "../config/hooks.mjs";
+import { assertNotExists } from "@dqm/package-utils";
 
 type NodeName = string & { type?: "NodeName" };
 type TokenNode = IAstTokenNode & {

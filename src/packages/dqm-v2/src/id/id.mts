@@ -6,8 +6,7 @@ import type {
   Position,
   IdSummary,
 } from "@dqm/package-dqm-api-v2";
-import { rejectValues, writeOnce } from "../utils/decorators.mjs";
-import { DqmError } from "@dqm/package-utils";
+import { DqmError, rejectValues, writeOnce } from "@dqm/package-utils";
 
 export class Id implements IId {
   private map!: IIdMap;

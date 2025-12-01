@@ -7,7 +7,8 @@ import type {
   IAstNode,
 } from "@dqm/package-dqm-api-v2";
 import { DEFAULT_CONFIG } from "./constants.mjs";
-import { AstNode, Config } from "@dqm/package-utils";
+import { AstNode } from "./nodes/ast/ast-node.mjs";
+import { Config } from "@dqm/package-utils";
 
 export class Dqm {
   private plugins: IPlugins = new Libs();
@@ -51,13 +52,7 @@ export class Dqm {
       .hookConfig(this.config)
       .hookPlugins(this.plugins)
       .setNature("synthetic")
-      .newCpx((cpx) =>
-        cpx
-          // .hookPlugins(this.plugins)
-          // .hookConfig(this.config)
-          .setParams([])
-          .setIdList([["base", "v2", "default"]]),
-      )
+      .newCpx((cpx) => cpx.setParams([]).setIdList([["base", "v2", "default"]]))
       .getCpx()
       .parse(inputs);
     return astNode;

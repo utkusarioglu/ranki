@@ -7,7 +7,7 @@ import type {
   IParams,
   ParamChannel,
 } from "@dqm/package-dqm-api-v2";
-import { dependsOn, rejectValues } from "../../utils/decorators.mjs";
+import { dependsOn, rejectValues } from "@dqm/package-utils";
 import { ChannelParams } from "./channel-params.mjs";
 
 type Libs = Map<ParamChannel, ChannelParams>;

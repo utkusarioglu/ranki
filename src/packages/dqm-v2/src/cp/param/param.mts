@@ -11,10 +11,9 @@ import type {
   ParamDefaultValue,
   ChannelParamSpecs,
 } from "@dqm/package-dqm-api-v2";
-import { rejectValues, dependsOn } from "../../utils/decorators.mjs";
 import { Id } from "../../id/id.mjs";
 import { ALL_AUDIENCES } from "./param.constants.mjs";
-import { DqmError } from "@dqm/package-utils";
+import { DqmError, rejectValues, dependsOn } from "@dqm/package-utils";
 
 export class Param implements IParam {
   private audience: Audience = ALL_AUDIENCES;

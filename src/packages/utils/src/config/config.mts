@@ -1,7 +1,7 @@
 import type { ConfigEntryCode, IConfig } from "@dqm/package-dqm-api-v2";
 import { DqmError } from "../error/error.mjs";
 import type { LocalConfig, ConfigTypes, ObjectPath } from "./config.types.mjs";
-import { assertNotExists, assertExists } from "./hooks.mjs";
+import { assertNotExists, assertExists } from "../assertions.mjs";
 
 export class Config implements IConfig {
   private configs: Record<ConfigEntryCode, LocalConfig> = {};
@@ -26,7 +26,7 @@ export class Config implements IConfig {
 
   replaceConfig<C>(code: ConfigEntryCode, config: C): IConfig {
     const c = this.configs[code];
-    assertExists(c);
+    assertExists(c, { config, code });
     this.configs[code] = config;
     return this;
   }
@@ -43,7 +43,7 @@ export class Config implements IConfig {
 
   getConfig<T>(name: ConfigEntryCode): T {
     const c = this.configs[name];
-    assertExists(c);
+    assertExists(c, { name, configs: this.configs });
     return c as unknown as T;
   }
 
@@ -152,7 +152,7 @@ export class Config implements IConfig {
 
   mergeTo(code: ConfigEntryCode): IConfig {
     const d = this.configs["default"];
-    assertExists(d);
+    assertExists(d, { code, configs: this.configs });
     const nonDefaultOrdered = this.order
       .filter((v) => v !== "default")
       .reduce((a, c) => (a.push(c), a), [] as LocalConfig[]);

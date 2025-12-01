@@ -1,4 +1,12 @@
-import { DqmError } from "@dqm/package-utils";
+import { DqmError } from "./export.mjs";
+
+export function assertNotExists<C extends {}>(
+  value: C | undefined,
+): asserts value is undefined {
+  if (value !== undefined) {
+    throw new DqmError("VALUE_DEFINED", {});
+  }
+}
 
 export function assertExists(v: any, obj: any): asserts v is object {
   if (v === undefined) {

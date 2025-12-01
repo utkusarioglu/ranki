@@ -4,9 +4,7 @@ import type {
   IdSummary,
 } from "@dqm/package-dqm-api-v2";
 import type { AliasCollision } from "./id-lib.types.mjs";
-import { rejectValues } from "../utils/decorators.mjs";
-import { DqmError } from "@dqm/package-utils";
-import { assertExists } from "../utils/assertions.mjs";
+import { DqmError, assertExists, rejectValues } from "@dqm/package-utils";
 
 export class IdLib<Out> {
   private activeChains = new Map<ChainString, Out>();

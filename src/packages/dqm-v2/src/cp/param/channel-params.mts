@@ -5,10 +5,9 @@ import type {
   Alias,
   Chain,
 } from "@dqm/package-dqm-api-v2";
-import { rejectValues } from "../../utils/decorators.mjs";
 import { IdLib } from "../../id/id-lib.mjs";
 import { Param } from "./param.mjs";
-import { DqmError } from "@dqm/package-utils";
+import { DqmError, rejectValues } from "@dqm/package-utils";
 
 export class ChannelParams {
   private schema!: ChannelParamSpecs;

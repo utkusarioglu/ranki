@@ -1,4 +1,5 @@
 export { DqmError } from "./error/error.mjs";
 export { Config } from "./config/config.mjs";
-export { AstNode } from "./ast-node/ast-node.mjs";
-export { getAst } from "./ast-node/ast.mjs";
+export * from "./assertions.mjs";
+export { getAst } from "./ast.mjs";
+export * from "./decorators.mjs";

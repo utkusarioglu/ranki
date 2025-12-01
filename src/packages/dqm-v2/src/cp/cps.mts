@@ -11,7 +11,7 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { Id } from "../id/id.mjs";
 import { Params } from "./param/params.mjs";
-import { assertExists } from "../utils/assertions.mjs";
+import { assertExists } from "@dqm/package-utils";
 
 const MERGE_TARGET = "merged";
 
@@ -80,12 +80,17 @@ export class Cps implements ICps {
     );
     // TODO
     const ast = this.cpx.getRootAst();
-    console.log({ ast });
-    const obj = parse(input.inputs[input.theater], "rootBlock", {
-      // cpx: this.cpx,
-      // cps: this,
-      ast,
-    });
+    const obj = parse(
+      input.inputs[input.theater],
+      // TODO this likely will come from the `direction` property of some ast
+      // node
+      "rootBlock",
+      {
+        // cpx: this.cpx,
+        // cps: this,
+        ast,
+      },
+    );
     return obj.root;
   }
 }
