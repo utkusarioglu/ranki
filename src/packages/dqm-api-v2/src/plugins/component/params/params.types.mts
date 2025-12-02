@@ -3,8 +3,8 @@ import type { ComponentParamsSchema } from "../component.types.mjs";
 import type { IParam, ParamChannel } from "./param.types.mjs";
 
 export interface IParams {
-  addParam(param: IParam): IParams;
-  setSchema(schema: ComponentParamsSchema): IParams;
+  pushParam(param: IParam): this;
+  setSchema(schema: ComponentParamsSchema): this;
   getSchema(): ComponentParamsSchema;
   findById(channel: ParamChannel, id: Alias | Chain): IParam | never;
   buildObject<T>(channel: ParamChannel): T;

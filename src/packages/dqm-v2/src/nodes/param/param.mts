@@ -11,11 +11,12 @@ import type {
   ParamDefaultValue,
   ChannelParamSpecs,
 } from "@dqm/package-dqm-api-v2";
-import { Id } from "../../../id/id.mjs";
+import { Id } from "../../id/id.mjs";
 import { ALL_AUDIENCES } from "./param.constants.mjs";
 import { DqmError, rejectValues, dependsOn } from "@dqm/package-utils";
+import { AstNode } from "../ast/ast-node.mjs";
 
-export class Param implements IParam {
+export class Param extends AstNode implements IParam {
   private audience: Audience = ALL_AUDIENCES;
   private operator!: Operator;
   private values: ParamValueSpec[] = [];
@@ -25,7 +26,7 @@ export class Param implements IParam {
   private channel!: ParamChannel;
   private producer: ParamProducer = "instance-declaration";
 
-  setSpecs(specs: ChannelParamSpecs): IParam {
+  setSpecs(specs: ChannelParamSpecs): this {
     this.specs = specs;
     return this;
   }
@@ -39,7 +40,7 @@ export class Param implements IParam {
    * Tokens like `$.key`.
    */
   @dependsOn("specs")
-  setAudience(audience: Audience): never | IParam {
+  setAudience(audience: Audience): never | this {
     this.audience = audience;
     return this;
   }
@@ -52,7 +53,7 @@ export class Param implements IParam {
   /**
    * = += -= =+ =- etc
    */
-  setOperator(operator: Operator): IParam {
+  setOperator(operator: Operator): this {
     this.operator = operator;
     return this;
   }
@@ -73,7 +74,7 @@ export class Param implements IParam {
   }
 
   @dependsOn("specs", "defaultValues")
-  setValues(values: ParamValueSpec[]): IParam {
+  setValues(values: ParamValueSpec[]): this {
     if (values.length > this.defaultValues.length) {
       throw new DqmError("TOO_MANY_VALUES", {
         values,
@@ -86,7 +87,7 @@ export class Param implements IParam {
   }
 
   @dependsOn("specs")
-  setDefaultValues(valueSpec: ParamDefaultValue[]): IParam {
+  setDefaultValues(valueSpec: ParamDefaultValue[]): this {
     this.defaultValues = valueSpec;
     return this;
   }
@@ -95,7 +96,7 @@ export class Param implements IParam {
     return this.values;
   }
 
-  setChannel(channel: ParamChannel): IParam {
+  setChannel(channel: ParamChannel): this {
     this.channel = channel;
     return this;
   }
@@ -104,7 +105,7 @@ export class Param implements IParam {
     return this.channel;
   }
 
-  setProducer(producer: ParamProducer): IParam {
+  setProducer(producer: ParamProducer): this {
     this.producer = producer;
     return this;
   }

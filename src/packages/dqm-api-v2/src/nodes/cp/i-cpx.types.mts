@@ -2,8 +2,7 @@ import type { CpxParseInput } from "../../dqm.types.mjs";
 import type { ChainList } from "../../plugins/component/id/id.types.mjs";
 import type { IAstNode, IParam } from "../../export.types.mjs";
 import type { ICps } from "./i-cps.types.mjs";
-import type { IConfig } from "../../config/i-config.types.mjs";
-import type { IPlugins } from "../../plugins/plugin/plugins.types.mjs";
+import type { CommonTransportsConstructorParams } from "../common-transports.types.mjs";
 
 export interface ICpx {
   setIdList(idList: ChainList): ICpx;
@@ -18,4 +17,6 @@ export interface ICpx {
   getRootAst(): IAstNode;
 }
 
-export type ICpxConstructor = new (plugins: IPlugins, config: IConfig) => ICpx;
+export type ICpxConstructor = new (
+  transports: CommonTransportsConstructorParams,
+) => ICpx;

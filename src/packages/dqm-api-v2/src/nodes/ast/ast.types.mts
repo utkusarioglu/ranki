@@ -1,4 +1,4 @@
-import type { IConfig, ICpx, IPlugins } from "../../export.types.mjs";
+import type { IConfig, ICpx, IParam, IPlugins } from "../../export.types.mjs";
 import type * as ohm from "ohm-js";
 
 export type ContentDirection = "block" | "inline";
@@ -40,11 +40,12 @@ export type ChildrenNodes = IAstNode[] & { type?: "ChildrenNodes" };
 export type AstSourceString = string & { type?: "AstSourceString" };
 export type CreationMethod = string & { type?: "CreationMethod" };
 export interface IAstNode {
-  setKind(kind: IAstNodeKind): IAstNode;
+  setKind(kind: IAstNodeKind): this;
   getKind(): IAstNodeKind;
   newAst(): IAstNode;
-  setParent(parent: IAstNode): IAstNode;
-  setCpx(cpx: ICpx): IAstNode;
+  newParam(): IParam;
+  setParent(parent: IAstNode): this;
+  setCpx(cpx: ICpx): this;
   getCpx(): ICpx;
   getSourceString(): AstSourceString;
   getChildrenNodes(): ChildrenNodes;
@@ -53,14 +54,14 @@ export interface IAstNode {
   getNext(): IAstNode | null;
   getSubtreeNodes(): SubtreeNodes;
   getCreator(): CreatorName;
-  setPrev(prev: IAstNode): IAstNode;
-  setNext(next: IAstNode): IAstNode;
+  setPrev(prev: IAstNode): this;
+  setNext(next: IAstNode): this;
   // setRelationship(type: IAstNodeRelationship): IAstNode;
-  setRelationship(relationship: IAstNodeRelationship): IAstNode;
+  setRelationship(relationship: IAstNodeRelationship): this;
   /**
    * Defines the method in the action dictionary that was called to create this node
    */
-  setCreationMethod(method: CreationMethod): IAstNode;
+  setCreationMethod(method: CreationMethod): this;
   getCreationMethod(): CreationMethod;
   /**
    * This is supposed to create a new cpx and then let the node build it
@@ -71,25 +72,25 @@ export interface IAstNode {
    *    .setStartRule(...)
    *  )
    */
-  newCpx(cpxCallback: CpxFuncParam): IAstNode;
+  newCpx(cpxCallback: CpxFuncParam): this;
   /**
    * If `newCpx` works, these three won't be needed
    */
 
-  setDirection(direction: ContentDirection): IAstNode;
+  setDirection(direction: ContentDirection): this;
   getDirection(): ContentDirection;
 
   /**
    * this will set things like the source and the creatorName
    */
-  setOhmNode(node: ohm.Node): IAstNode;
+  setOhmNode(node: ohm.Node): this;
 
   /**
    * literal for nodes created by what's in the course dqm, synthetic
    * for nodes created through processes such as wrapping words with
    * bold because of *<word>*
    */
-  setNature(nature: IAstNodeNature): IAstNode;
+  setNature(nature: IAstNodeNature): this;
 
   /**
    * The order of the rest of the methods is important as they are placed in an array,
@@ -118,7 +119,7 @@ export interface IAstNode {
   // ): IAstNode;
   // pushSubtreeNode(ast: ohm.Node, method?: ActionMethod): IAstNode;
 
-  pushNodes(...nodes: PushedNodeDefinition[]): IAstNode;
+  pushNodes(...nodes: PushedNodeDefinition[]): this;
 }
 
 // export interface PushedNodeDefinition {

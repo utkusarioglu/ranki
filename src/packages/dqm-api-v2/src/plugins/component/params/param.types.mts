@@ -1,3 +1,4 @@
+import type { IAstNode } from "../../../export.types.mjs";
 import type {
   ChannelParamSpecs,
   ParamDefaultValue,
@@ -27,14 +28,14 @@ export interface ParamValueSpec {
 
 export type ParamValuePrimitive = string | number;
 
-export interface IParam {
-  setAudience(channel: Audience): IParam;
-  setOperator(operator: Operator): IParam;
-  setProducer(producer: ParamProducer): IParam;
-  setValues(values: ParamValueSpec[]): IParam;
-  setSpecs(config: ChannelParamSpecs): IParam;
-  setChannel(channel: ParamChannel): IParam;
-  setDefaultValues(valueSpec: ParamDefaultValue[]): IParam;
+export interface IParam extends IAstNode {
+  setAudience(channel: Audience): this;
+  setOperator(operator: Operator): this;
+  setProducer(producer: ParamProducer): this;
+  setValues(values: ParamValueSpec[]): this;
+  setSpecs(config: ChannelParamSpecs): this;
+  setChannel(channel: ParamChannel): this;
+  setDefaultValues(valueSpec: ParamDefaultValue[]): this;
 
   getAudience(): Audience;
   getOperator(): Operator;

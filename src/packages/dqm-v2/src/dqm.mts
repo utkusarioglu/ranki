@@ -5,6 +5,7 @@ import type {
   IPlugins,
   IDqmPlugin,
   IAstNode,
+  CommonTransportsConstructorParams,
 } from "@dqm/package-dqm-api-v2";
 import { DEFAULT_CONFIG } from "./constants.mjs";
 import { AstNode } from "./nodes/ast/ast-node.mjs";
@@ -42,7 +43,11 @@ export class Dqm {
 
   parse(rawInputs: DqmParseInput): IAstNode {
     const inputs = this.processInput(rawInputs);
-    const astNode = new AstNode(this.plugins, this.config)
+    const transports: CommonTransportsConstructorParams = {
+      plugins: this.plugins,
+      config: this.config,
+    };
+    const astNode = new AstNode(transports)
       .setNature("synthetic")
       .newCpx((cpx) => cpx.setParams([]).setIdList([["base", "v2", "default"]]))
       .setDirection("block")

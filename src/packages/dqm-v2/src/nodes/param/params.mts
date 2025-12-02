@@ -9,22 +9,23 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { dependsOn, rejectValues } from "@dqm/package-utils";
 import { ChannelParams } from "./channel-params.mjs";
+import { CommonTransports } from "../common-transports.mjs";
 
 type Libs = Map<ParamChannel, ChannelParams>;
 
-export class Params implements IParams {
+export class Params extends CommonTransports implements IParams {
   private schema!: ComponentParamsSchema;
   private libs: Libs = new Map();
 
   @dependsOn("schema")
-  addParam(user: IParam): IParams {
+  pushParam(user: IParam): this {
     const channel = user.getChannel();
     const lib = this.libs.get(channel)!;
     lib.addParam(user);
     return this;
   }
 
-  setSchema(schema: ComponentParamsSchema): IParams {
+  setSchema(schema: ComponentParamsSchema): this {
     this.schema = schema;
     this.processSchema();
     return this;
@@ -34,7 +35,9 @@ export class Params implements IParams {
     Object.entries(this.schema).forEach((v) => {
       const channel = v[0] as ParamChannel;
       const specs = v[1] as ChannelParamSpecs;
-      const cp = new ChannelParams(channel).setSchema(specs);
+      const cp = new ChannelParams(this.getTransports(), channel).setSchema(
+        specs,
+      );
       this.libs.set(channel, cp);
     });
   }

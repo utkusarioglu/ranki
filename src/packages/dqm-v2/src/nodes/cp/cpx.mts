@@ -10,7 +10,7 @@ import type {
   IAstNode,
 } from "@dqm/package-dqm-api-v2";
 import { DqmError, dependsOn, rejectValues } from "@dqm/package-utils";
-import { ALL_AUDIENCES } from "./param/param.constants.mjs";
+import { ALL_AUDIENCES } from "../param/param.constants.mjs";
 import { Cps } from "./cps.mjs";
 import { CommonTransports } from "../common-transports.mjs";
 
@@ -79,7 +79,7 @@ export class Cpx extends CommonTransports implements ICpx {
     const createRoot = () => {
       const parentCpx = this.getParent();
       const parentCps = parentCpx ? parentCpx.getLeafCps() : null;
-      const newCps = new Cps(this.getPlugins(), this.getConfig());
+      const newCps = new Cps(this.getTransports());
       if (parentCps) {
         newCps.setParent(parentCps);
       }
@@ -101,7 +101,7 @@ export class Cpx extends CommonTransports implements ICpx {
         this.cps.push(curr);
         for (let i = 1; i < idList.length; i++) {
           const prev = curr;
-          curr = new Cps(this.getPlugins(), this.getConfig())
+          curr = new Cps(this.getTransports())
             .setCpx(this)
             .setParent(prev)
             .setDefinition({

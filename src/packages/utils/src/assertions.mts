@@ -37,8 +37,8 @@ export function assertMethodContext<T extends { kind: string }>(
   }
 }
 
-export function assertParent(self: any, obj: any) {
-  if (self.kind === "leaf") {
+export function assertParent(self: { getKind: () => string }, obj: any) {
+  if (self.getKind() !== "parent") {
     throw new DqmError("REQUIRES_PARENT", obj);
   }
 }

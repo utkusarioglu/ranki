@@ -4,17 +4,23 @@ import type {
   ParamChannel,
   Alias,
   Chain,
+  CommonTransportsConstructorParams,
 } from "@dqm/package-dqm-api-v2";
-import { IdLib } from "../../../id/id-lib.mjs";
+import { IdLib } from "../../id/id-lib.mjs";
 import { Param } from "./param.mjs";
 import { DqmError, rejectValues } from "@dqm/package-utils";
+import { CommonTransports } from "../common-transports.mjs";
 
-export class ChannelParams {
+export class ChannelParams extends CommonTransports {
   private schema!: ChannelParamSpecs;
   private lib = new IdLib<IParam>();
   private channel;
 
-  constructor(channel: ParamChannel) {
+  constructor(
+    transports: CommonTransportsConstructorParams,
+    channel: ParamChannel,
+  ) {
+    super(transports);
     this.channel = channel;
   }
 
@@ -31,7 +37,7 @@ export class ChannelParams {
    */
   private processSchema() {
     this.schema.params.forEach((p) => {
-      const param = new Param() // #1
+      const param = new Param(this.getTransports()) // #1
         .setChannel(this.channel)
         .setProducer("component-default")
         .setSpecs(this.schema)

@@ -1,16 +1,15 @@
 import type {
   ICps,
-  IConfig,
-  IPlugins,
   IDqmComponent,
   IParams,
   ICpx,
   CpxParseInput,
   CpsDefinition,
   IAstNode,
+  CommonTransportsConstructorParams,
 } from "@dqm/package-dqm-api-v2";
 import { Id } from "../../id/id.mjs";
-import { Params } from "./param/params.mjs";
+import { Params } from "../param/params.mjs";
 import { CommonTransports } from "../common-transports.mjs";
 
 const MERGE_TARGET = "merged";
@@ -19,11 +18,11 @@ export class Cps extends CommonTransports implements ICps {
   private id = new Id();
   private parent!: ICps;
   private component!: IDqmComponent;
-  private params: IParams = new Params();
+  private params: IParams = new Params(this.getTransports());
   private cpx!: ICpx;
 
-  constructor(plugins: IPlugins, config: IConfig) {
-    super(plugins, config);
+  constructor(params: CommonTransportsConstructorParams) {
+    super(params);
     this.cloneConfig();
   }
 
@@ -37,7 +36,7 @@ export class Cps extends CommonTransports implements ICps {
     this.component = this.getPlugins().getComponent(def.id);
     this.params.setSchema(this.component.stages.ast);
     def.params.forEach((param) => {
-      this.params.addParam(param);
+      this.params.pushParam(param);
     });
     // TODO $ may not be the token the user prefers. or $ may be mapped to a value like "config"
     this.getConfig()

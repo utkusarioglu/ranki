@@ -14,15 +14,18 @@ import type {
   SubtreeNodes,
   ChildrenNodes,
   CreationMethod,
+  IParam,
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
 import {
   assertArrayNotEmpty,
+  assertParent,
   dependsOn,
   DqmError,
   rejectValues,
 } from "@dqm/package-utils";
 import { CommonTransports } from "../common-transports.mjs";
+import { Param } from "../param/param.mjs";
 
 export type WorkedNodeDefinition = [IAstNodeRelationship, ohm.Node[]];
 
@@ -56,10 +59,10 @@ export class AstNode extends CommonTransports implements IAstNode {
   }
 
   // TODO this needs a lot of work
-  newCpx(cpxCallback: (cpx: ICpx) => ICpx): IAstNode {
+  newCpx(cpxCallback: (cpx: ICpx) => ICpx): this {
     const Cpx = this.getPlugins().getCpxConstructor();
     const oldCpx = this.cpx;
-    const newCpxMold = new Cpx(this.getPlugins(), this.getConfig())
+    const newCpxMold = new Cpx(this.getTransports())
       .setRootAst(this)
       .setParent(oldCpx);
     this.cpx = cpxCallback(newCpxMold);
@@ -67,7 +70,7 @@ export class AstNode extends CommonTransports implements IAstNode {
   }
 
   newAst(): IAstNode {
-    const newAst = new AstNode(this.getPlugins(), this.getConfig())
+    const newAst = new AstNode(this.getTransports())
       .setParent(this)
       .setCpx(this.getCpx())
       .setDirection(this.getDirection());
@@ -75,8 +78,19 @@ export class AstNode extends CommonTransports implements IAstNode {
     return newAst;
   }
 
+  newParam(): IParam {
+    const newParam = new Param(this.getTransports());
+    newParam
+      .setParent(this)
+      .setCpx(this.getCpx())
+      .setDirection(this.getDirection());
+    this.children.push(newParam);
+    return newParam;
+  }
+
   @dependsOn("kind")
-  pushNodes(...nodeSetRaw: PushedNodeDefinition[]): IAstNode {
+  pushNodes(...nodeSetRaw: PushedNodeDefinition[]): this {
+    assertParent(this, { nodeSetRaw });
     assertArrayNotEmpty(nodeSetRaw, { method: "pushNodes" });
 
     const areIter = nodeSetRaw.map((n) => n[1].isIteration());
@@ -140,7 +154,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this;
   }
 
-  setCreationMethod(method: string): IAstNode {
+  setCreationMethod(method: string): this {
     this.creationMethod = method;
     return this;
   }
@@ -149,7 +163,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this.creationMethod;
   }
 
-  setRelationship(type: IAstNodeRelationship): IAstNode {
+  setRelationship(type: IAstNodeRelationship): this {
     this.relationship = type;
     return this;
   }
@@ -158,7 +172,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this.relationship;
   }
 
-  setPrev(prev: IAstNode): IAstNode {
+  setPrev(prev: IAstNode): this {
     this.prev = prev;
     return this;
   }
@@ -167,7 +181,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this.prev;
   }
 
-  setNext(next: IAstNode): IAstNode {
+  setNext(next: IAstNode): this {
     this.next = next;
     return this;
   }
@@ -188,7 +202,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this.childrenNodes;
   }
 
-  setKind(kind: IAstNodeKind): IAstNode {
+  setKind(kind: IAstNodeKind): this {
     this.kind = kind;
     return this;
   }
@@ -205,27 +219,27 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this.cpx;
   }
 
-  setParent(parent: IAstNode): IAstNode {
+  setParent(parent: IAstNode): this {
     this.parent = parent;
     return this;
   }
 
-  setCpx(cpx: ICpx): IAstNode {
+  setCpx(cpx: ICpx): this {
     this.cpx = cpx;
     return this;
   }
 
-  setDirection(direction: ContentDirection): IAstNode {
+  setDirection(direction: ContentDirection): this {
     this.direction = direction;
     return this;
   }
 
-  setOhmNode(node: ohm.Node): IAstNode {
+  setOhmNode(node: ohm.Node): this {
     this.ohm = node;
     return this;
   }
 
-  setNature(nature: IAstNodeNature): IAstNode {
+  setNature(nature: IAstNodeNature): this {
     this.nature = nature;
     return this;
   }
