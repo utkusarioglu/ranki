@@ -41,7 +41,7 @@
     },
     {
       "type": "shell",
-      "command": "yarn turbo run build --filter @ranki/package* --filter @ranki/plugin*",
+      "command": "yarn turbo run build --filter @ranki/package* --filter @dqm/*",
       "label": "Build RankiLang V2 Support",
       "detail": "Build packages and plugins that are imported by RankiLang V2",
       "icon": {
