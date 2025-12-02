@@ -1,5 +1,5 @@
 {
-  "name": "@dqm/plugin-base-v2",
+  "name": "@dqm/plugin-frame-v2",
   "private": true,
   "type": "module",
   "scripts": {

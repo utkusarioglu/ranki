@@ -744,6 +744,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@dqm/plugin-frame-v2@workspace:src/plugins/frame-v2":
+  version: 0.0.0-use.local
+  resolution: "@dqm/plugin-frame-v2@workspace:src/plugins/frame-v2"
+  dependencies:
+    "@dqm/package-dqm-api-v2": "workspace:^"
+    "@dqm/package-utils": "workspace:^"
+    "@ranki/config-typescript": "workspace:^"
+    concurrently: "npm:^9.2.1"
+    ohm-js: "npm:^17.2.1"
+    typescript: "npm:^5.8.3"
+    vite: "npm:^7.2.2"
+  languageName: unknown
+  linkType: soft
+
 "@emnapi/core@npm:^1.4.3":
   version: 1.4.5
   resolution: "@emnapi/core@npm:1.4.5"
