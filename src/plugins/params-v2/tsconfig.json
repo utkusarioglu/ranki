@@ -6,8 +6,7 @@
     "declarationDir": "types",
     "paths": {
       "@dqm/package-dqm-api-v2": ["../../packages/dqm-api-v2/*"],
-      "@dqm/package-utils": ["../../packages/utils/*"],
-      "@dqm/plugin-params-v2": ["../params-v2/*"]
+      "@dqm/package-utils": ["../../packages/utils/*"]
     }
   },
   "include": ["src/**/*"],
@@ -17,9 +16,6 @@
     },
     {
       "path": "../../packages/utils"
-    },
-    {
-      "path": "../params-v2"
     }
   ]
 }

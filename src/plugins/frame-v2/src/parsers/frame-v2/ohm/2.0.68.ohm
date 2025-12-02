@@ -1,0 +1,68 @@
+RankiFrameV2 <: RankiParamsV2 {
+  root := ...
+
+  block :=
+    | indentation v2 wi &(nl | end) --v2 
+    | ...
+    
+  word :=
+    | v2
+    | ...
+
+  paramValueItem :=
+    | v2 --v2
+    | ...
+  
+  // pauseRoot = pauseList
+  pauseList = v2PayloadSection (pausedContainer v2PayloadSection)*
+
+  v2PayloadPlainIllegal = pauseStart | v2Start | v2End_explicit | v2End_exact
+  v2PayloadPlain =  (~v2PayloadPlainIllegal any)+
+  
+  v2PayloadSectionItem = 
+    | v2 --v2
+    | v2PayloadPlain --plain
+  
+  v2PayloadSection = v2PayloadSectionItem (whitespace v2PayloadSectionItem)* whitespace
+
+  pauseStart = tFrameV2Pause digit* tFrameV2Pause
+  pauseEnd = tFrameV2Pause tFrameV2Pause
+  pausedContainer = pauseStart pausedPayload pauseEnd
+
+  // !FIX this would break with nested pauses
+  pausedPayload = (~(pauseEnd | v2End) any)+
+  
+  v2Chain = paramKey (clearance paramKey)*
+  
+  v2Payload = 
+    | wi nl pauseList --P
+    | pauseList --p
+
+  v2End =
+    | tFrameV2RightOuter "-"? digit+ --exact
+    |  tFrameV2RightOuter --explicit
+    | end --implicit
+
+  v2Start = tFrameV2LeftOuter
+  
+  v2FrameConfigFp =
+    |   wi 
+      v2Chain wi 
+      v2ParamListBlockContainer wi
+        tFrameV2SeparatorParam?  --F
+    |   wi 
+      v2Chain wi 
+      v2ParamListInlineContainer wi 
+        tFrameV2SeparatorParam? --f
+
+  v2FrameConfigP = wi v2Chain wi (tFrameV2SeparatorParam | nl)
+
+  v2FrameConfig =
+    | v2FrameConfigFp --fp
+    | v2FrameConfigP --p
+
+  v2 = 
+    | v2Start v2FrameConfig v2Payload v2End --fp
+    | v2Start v2FrameConfig v2End --f
+    | v2Start wi v2Chain wi v2End --e 
+}

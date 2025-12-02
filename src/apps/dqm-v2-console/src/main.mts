@@ -4,16 +4,18 @@ import { fileURLToPath } from "node:url";
 import { Dqm } from "@dqm/package-dqm-v2";
 import baseV2 from "@dqm/plugin-base-v2";
 import frameV2 from "@dqm/plugin-frame-v2";
+import paramsV2 from "@dqm/plugin-params-v2";
 import yaml from "yaml";
 import { sanitize } from "./sanitize.mjs";
 
-const repoRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.join(dirname, "..");
 const filePath = path.join(repoRoot, "assets/example.dqm");
 
 const file = fs.readFileSync(filePath).toString();
 
 export function main(raw: string) {
-  const dqm = new Dqm({}, [baseV2, frameV2]);
+  const dqm = new Dqm({}, [baseV2, frameV2, paramsV2]);
   try {
     const res = dqm.parse(raw);
     const sanitized = sanitize(res);

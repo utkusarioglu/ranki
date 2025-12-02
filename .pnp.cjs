@@ -45,6 +45,10 @@ const RAW_RUNTIME_STATE =
     {\
       "name": "@dqm/plugin-frame-v2",\
       "reference": "workspace:src/plugins/frame-v2"\
+    },\
+    {\
+      "name": "@dqm/plugin-params-v2",\
+      "reference": "workspace:src/plugins/params-v2"\
     }\
   ],\
   "enableTopLevelFallback": true,\
@@ -56,6 +60,7 @@ const RAW_RUNTIME_STATE =
     ["@dqm/package-utils", ["workspace:src/packages/utils"]],\
     ["@dqm/plugin-base-v2", ["workspace:src/plugins/base-v2"]],\
     ["@dqm/plugin-frame-v2", ["workspace:src/plugins/frame-v2"]],\
+    ["@dqm/plugin-params-v2", ["workspace:src/plugins/params-v2"]],\
     ["@ranki/app-dqm-v2-console", ["workspace:src/apps/dqm-v2-console"]],\
     ["@ranki/app-ranki-v1", ["workspace:src/apps/ranki-v1"]],\
     ["@ranki/config-typescript", ["workspace:src/config/typescript"]],\
@@ -1396,7 +1401,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
           ["@dqm/package-utils", "workspace:src/packages/utils"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
-          ["@types/node", "npm:24.3.1"],\
+          ["@types/node", "npm:24.10.1"],\
           ["ohm-js", "npm:17.2.1"],\
           ["tsx", "npm:4.20.5"],\
           ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
@@ -1427,6 +1432,22 @@ const RAW_RUNTIME_STATE =
           ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
           ["@dqm/package-utils", "workspace:src/packages/utils"],\
           ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["concurrently", "npm:9.2.1"],\
+          ["ohm-js", "npm:17.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vite", "virtual:c6547897edfd46555a9b569db6c14578ad40c524e7e15c3bf4e72892ffbce1642a01ad3874d3b7d6a7fec5b373e598bb21518fc3b71727326030e380ba5224d0#npm:7.2.6"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@dqm/plugin-params-v2", [\
+      ["workspace:src/plugins/params-v2", {\
+        "packageLocation": "./src/plugins/params-v2/",\
+        "packageDependencies": [\
+          ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["@dqm/package-utils", "workspace:src/packages/utils"],\
+          ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["concurrently", "npm:9.2.1"],\
           ["ohm-js", "npm:17.2.1"],\
@@ -2384,6 +2405,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/package-dqm-v2", "workspace:src/packages/dqm-v2"],\
           ["@dqm/plugin-base-v2", "workspace:src/plugins/base-v2"],\
           ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
+          ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
           ["@ranki/app-dqm-v2-console", "workspace:src/apps/dqm-v2-console"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@rollup/plugin-babel", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:6.1.0"],\
@@ -3590,6 +3612,14 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@types/node", "npm:24.1.0"],\
           ["undici-types", "npm:7.8.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:24.10.1", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@types-node-npm-24.10.1-d514f50dfd-10c0.zip/node_modules/@types/node/",\
+        "packageDependencies": [\
+          ["@types/node", "npm:24.10.1"],\
+          ["undici-types", "npm:7.16.0"]\
         ],\
         "linkType": "HARD"\
       }],\
@@ -8603,6 +8633,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/dev/.yarn/berry/cache/undici-types-npm-7.10.0-cd8324b9eb-10c0.zip/node_modules/undici-types/",\
         "packageDependencies": [\
           ["undici-types", "npm:7.10.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:7.16.0", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/undici-types-npm-7.16.0-0e23b08124-10c0.zip/node_modules/undici-types/",\
+        "packageDependencies": [\
+          ["undici-types", "npm:7.16.0"]\
         ],\
         "linkType": "HARD"\
       }],\

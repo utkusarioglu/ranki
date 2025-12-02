@@ -3,6 +3,10 @@
   "name": "@dqm/package-utils",
   "type": "module",
   "exports": {
+    "./bundler": {
+      "import": "./lib/bundler.mjs",
+      "types": "./types/bundler.d.mjs"
+    },
     ".": {
       "import": "./lib/export.mjs",
       "types": "./types/export.d.mjs"
@@ -18,7 +22,7 @@
   "devDependencies": {
     "@dqm/package-dqm-api-v2": "workspace:^",
     "@ranki/config-typescript": "workspace:^",
-    "@types/node": "^24.3.1",
+    "@types/node": "^24.10.1",
     "ohm-js": "^17.2.1",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2"

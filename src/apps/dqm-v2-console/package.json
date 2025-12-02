@@ -35,6 +35,7 @@
   "dependencies": {
     "@dqm/package-dqm-v2": "workspace:^",
     "@dqm/plugin-base-v2": "workspace:^",
-    "@dqm/plugin-frame-v2": "workspace:^"
+    "@dqm/plugin-frame-v2": "workspace:^",
+    "@dqm/plugin-params-v2": "workspace:^"
   }
 }

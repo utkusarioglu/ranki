@@ -723,7 +723,7 @@ __metadata:
   dependencies:
     "@dqm/package-dqm-api-v2": "workspace:^"
     "@ranki/config-typescript": "workspace:^"
-    "@types/node": "npm:^24.3.1"
+    "@types/node": "npm:^24.10.1"
     ohm-js: "npm:^17.2.1"
     tsx: "npm:^4.20.5"
     typescript: "npm:^5.9.2"
@@ -747,6 +747,20 @@ __metadata:
 "@dqm/plugin-frame-v2@workspace:^, @dqm/plugin-frame-v2@workspace:src/plugins/frame-v2":
   version: 0.0.0-use.local
   resolution: "@dqm/plugin-frame-v2@workspace:src/plugins/frame-v2"
+  dependencies:
+    "@dqm/package-dqm-api-v2": "workspace:^"
+    "@dqm/package-utils": "workspace:^"
+    "@ranki/config-typescript": "workspace:^"
+    concurrently: "npm:^9.2.1"
+    ohm-js: "npm:^17.2.1"
+    typescript: "npm:^5.8.3"
+    vite: "npm:^7.2.2"
+  languageName: unknown
+  linkType: soft
+
+"@dqm/plugin-params-v2@workspace:^, @dqm/plugin-params-v2@workspace:src/plugins/params-v2":
+  version: 0.0.0-use.local
+  resolution: "@dqm/plugin-params-v2@workspace:src/plugins/params-v2"
   dependencies:
     "@dqm/package-dqm-api-v2": "workspace:^"
     "@dqm/package-utils": "workspace:^"
@@ -1585,6 +1599,7 @@ __metadata:
     "@dqm/package-dqm-v2": "workspace:^"
     "@dqm/plugin-base-v2": "workspace:^"
     "@dqm/plugin-frame-v2": "workspace:^"
+    "@dqm/plugin-params-v2": "workspace:^"
     "@ranki/config-typescript": "workspace:^"
     "@rollup/plugin-babel": "npm:^6.1.0"
     "@rollup/plugin-commonjs": "npm:^29.0.0"
@@ -2603,6 +2618,15 @@ __metadata:
   dependencies:
     undici-types: "npm:~7.8.0"
   checksum: 10c0/6c4686bc144f6ce7bffd4cadc3e1196e2217c1da4c639c637213719c8a3ee58b6c596b994befcbffeacd9d9eb0c3bff6529d2bc27da5d1cb9d58b1da0056f9f4
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^24.10.1":
+  version: 24.10.1
+  resolution: "@types/node@npm:24.10.1"
+  dependencies:
+    undici-types: "npm:~7.16.0"
+  checksum: 10c0/d6bca7a78f550fbb376f236f92b405d676003a8a09a1b411f55920ef34286ee3ee51f566203920e835478784df52662b5b2af89159d9d319352e9ea21801c002
   languageName: node
   linkType: hard
 
@@ -7107,6 +7131,13 @@ __metadata:
   version: 7.10.0
   resolution: "undici-types@npm:7.10.0"
   checksum: 10c0/8b00ce50e235fe3cc601307f148b5e8fb427092ee3b23e8118ec0a5d7f68eca8cee468c8fc9f15cbb2cf2a3797945ebceb1cbd9732306a1d00e0a9b6afa0f635
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~7.16.0":
+  version: 7.16.0
+  resolution: "undici-types@npm:7.16.0"
+  checksum: 10c0/3033e2f2b5c9f1504bdc5934646cb54e37ecaca0f9249c983f7b1fc2e87c6d18399ebb05dc7fd5419e02b2e915f734d872a65da2e3eeed1813951c427d33cc9a
   languageName: node
   linkType: hard
 
