@@ -15,10 +15,14 @@ import type {
   ChildrenNodes,
   CreationMethod,
   IParam,
+  AstSourceView,
+  AstSourceViewDecoder,
+  AstSourceViewBase,
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
 import {
   assertArrayNotEmpty,
+  assertLeaf,
   assertParent,
   dependsOn,
   DqmError,
@@ -46,6 +50,10 @@ export class AstNode extends CommonTransports implements IAstNode {
   private next: IAstNode | null = null;
   private relationship!: IAstNodeRelationship;
   private creationMethod!: string;
+  private sourceDecoder!: {
+    type: string;
+    decoder: AstSourceViewDecoder;
+  };
 
   // @ts-ignore
   private dummyMethodToSilenceErrors() {
@@ -69,19 +77,21 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this;
   }
 
-  newAst(): IAstNode {
+  newAst(ohm: ohm.Node): IAstNode {
     const newAst = new AstNode(this.getTransports())
       .setParent(this)
+      .setOhmNode(ohm)
       .setCpx(this.getCpx())
       .setDirection(this.getDirection());
     this.children.push(newAst);
     return newAst;
   }
 
-  newParam(): IParam {
+  newParam(ohm: ohm.Node): IParam {
     const newParam = new Param(this.getTransports());
     newParam
       .setParent(this)
+      .setOhmNode(ohm)
       .setCpx(this.getCpx())
       .setDirection(this.getDirection());
     this.children.push(newParam);
@@ -154,6 +164,44 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this;
   }
 
+  /**
+   * @dev
+   * #1 I simply don't mind TS1270 here
+   */
+  // @ts-expect-error #1
+  @dependsOn("kind", "ohm", "sourceDecoder")
+  getSourceView<T extends AstSourceViewBase>(): AstSourceView<T> {
+    assertLeaf(this, {});
+    const raw = this.ohm.sourceString;
+    try {
+      // @ts-expect-error #1
+      return {
+        type: this.sourceDecoder.type,
+        raw,
+        ...this.sourceDecoder.decoder(raw),
+      };
+    } catch (e) {
+      throw new DqmError("AST_DECODER_FAILURE", {
+        error: e,
+        raw,
+        decoder: this.sourceDecoder,
+      });
+    }
+  }
+
+  @dependsOn("kind")
+  setSourceViewDecoder<T extends AstSourceViewBase>(
+    type: string,
+    decoder: AstSourceViewDecoder<T>,
+  ): this {
+    assertLeaf(this, { type, decoder });
+    this.sourceDecoder = {
+      type,
+      decoder,
+    };
+    return this;
+  }
+
   setCreationMethod(method: string): this {
     this.creationMethod = method;
     return this;
@@ -168,7 +216,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this;
   }
 
-  getType(): IAstNodeRelationship {
+  getRelationship(): IAstNodeRelationship {
     return this.relationship;
   }
 
@@ -190,6 +238,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this.next;
   }
 
+  @rejectValues(undefined)
   getCreator(): CreatorName {
     return this.ohm.ctorName;
   }
@@ -207,14 +256,17 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this;
   }
 
+  @rejectValues(undefined)
   getKind(): IAstNodeKind {
     return this.kind;
   }
 
+  @rejectValues(undefined)
   getSourceString(): AstSourceString {
     return this.ohm.sourceString;
   }
 
+  @rejectValues(undefined)
   getCpx(): ICpx {
     return this.cpx;
   }
@@ -234,7 +286,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this;
   }
 
-  setOhmNode(node: ohm.Node): this {
+  private setOhmNode(node: ohm.Node): this {
     this.ohm = node;
     return this;
   }

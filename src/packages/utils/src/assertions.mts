@@ -42,3 +42,9 @@ export function assertParent(self: { getKind: () => string }, obj: any) {
     throw new DqmError("REQUIRES_PARENT", obj);
   }
 }
+
+export function assertLeaf(self: { getKind: () => string }, obj: any) {
+  if (self.getKind() !== "leaf") {
+    throw new DqmError("REQUIRES_LEAF", obj);
+  }
+}

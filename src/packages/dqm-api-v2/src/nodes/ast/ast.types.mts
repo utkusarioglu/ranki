@@ -39,24 +39,43 @@ export type ChildrenNodes = IAstNode[] & { type?: "ChildrenNodes" };
 
 export type AstSourceString = string & { type?: "AstSourceString" };
 export type CreationMethod = string & { type?: "CreationMethod" };
+
+export interface AstSourceViewCommon {
+  type: string;
+  raw: string;
+}
+
+export type AstSourceView<Custom extends AstSourceViewBase> =
+  AstSourceViewCommon & Custom;
+
+export type AstSourceViewBase = Record<string, any>;
+
+export type AstSourceViewDecoder<
+  Custom extends AstSourceViewBase = AstSourceViewBase,
+> = (input: string) => Custom;
+
 export interface IAstNode {
   setKind(kind: IAstNodeKind): this;
   getKind(): IAstNodeKind;
-  newAst(): IAstNode;
-  newParam(): IParam;
+  newAst(ohm: ohm.Node): IAstNode;
+  newParam(ohm: ohm.Node): IParam;
   setParent(parent: IAstNode): this;
   setCpx(cpx: ICpx): this;
   getCpx(): ICpx;
   getSourceString(): AstSourceString;
+  getSourceView<T extends AstSourceViewBase>(): AstSourceView<T>;
+  setSourceViewDecoder<T extends AstSourceViewBase>(
+    typeName: string,
+    decoder: AstSourceViewDecoder<T>,
+  ): this;
   getChildrenNodes(): ChildrenNodes;
-  getType(): IAstNodeRelationship;
+  getRelationship(): IAstNodeRelationship;
   getPrev(): IAstNode | null;
   getNext(): IAstNode | null;
   getSubtreeNodes(): SubtreeNodes;
   getCreator(): CreatorName;
   setPrev(prev: IAstNode): this;
   setNext(next: IAstNode): this;
-  // setRelationship(type: IAstNodeRelationship): IAstNode;
   setRelationship(relationship: IAstNodeRelationship): this;
   /**
    * Defines the method in the action dictionary that was called to create this node
@@ -73,17 +92,13 @@ export interface IAstNode {
    *  )
    */
   newCpx(cpxCallback: CpxFuncParam): this;
-  /**
-   * If `newCpx` works, these three won't be needed
-   */
-
   setDirection(direction: ContentDirection): this;
   getDirection(): ContentDirection;
 
   /**
    * this will set things like the source and the creatorName
    */
-  setOhmNode(node: ohm.Node): this;
+  // setOhmNode(node: ohm.Node): this;
 
   /**
    * literal for nodes created by what's in the course dqm, synthetic
@@ -91,45 +106,8 @@ export interface IAstNode {
    * bold because of *<word>*
    */
   setNature(nature: IAstNodeNature): this;
-
-  /**
-   * The order of the rest of the methods is important as they are placed in an array,
-   * in turn their sources end up reconstructing the source
-   */
-  // setChildrenNodes(
-  //   required: ohm.Node[],
-  //   zipped?: ohm.Node[],
-  //   method?: ActionMethod,
-  // ): IAstNode;
-  /**
-   *  these children methods could be combined into one with some clever param shape
-   */
-  // setChildrenListOf(method: ActionMethod, alt: ohm.Node[]): IAstNode;
-  // pushSpaceNode(
-  //   left: ohm.Node | null,
-  //   right: ohm.Node | null,
-  //   node: ohm.Node,
-  //   method?: ActionMethod,
-  // ): IAstNode;
-  // pushTokenNode(
-  //   left: ohm.Node | null,
-  //   right: ohm.Node | null,
-  //   node: ohm.Node,
-  //   method?: ActionMethod,
-  // ): IAstNode;
-  // pushSubtreeNode(ast: ohm.Node, method?: ActionMethod): IAstNode;
-
   pushNodes(...nodes: PushedNodeDefinition[]): this;
 }
-
-// export interface PushedNodeDefinition {
-//   relationship: "subtree" | "child" | "space" | "token";
-//   node: ohm.Node;
-// }
-
 export type PushedNodeDefinition = [IAstNodeRelationship, ohm.Node];
 
-// ]
-//   relationship: "subtree" | "child" | "space" | "token";
-//   node: ohm.Node;
-// }
+export type IAstNodeActionDict = ohm.ActionDict<IAstNode[] | IAstNode>;
