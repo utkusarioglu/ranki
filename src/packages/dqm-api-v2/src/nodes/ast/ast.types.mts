@@ -107,6 +107,7 @@ export interface IAstNode {
    */
   setNature(nature: IAstNodeNature): this;
   pushNodes(...nodes: PushedNodeDefinition[]): this;
+  pushIgnoredNodes(...nodes: ohm.Node[]): this;
 }
 export type PushedNodeDefinition = [IAstNodeRelationship, ohm.Node];
 

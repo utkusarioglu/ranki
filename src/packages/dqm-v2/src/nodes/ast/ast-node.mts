@@ -45,14 +45,21 @@ export class AstNode extends CommonTransports implements IAstNode {
   private spaceNodes: SpaceNodes = [];
   private subtreeNodes: SubtreeNodes = [];
   private childrenNodes: ChildrenNodes = [];
+  private ignoredNodes: ohm.Node[] = [];
   private kind!: IAstNodeKind;
   private prev: IAstNode | null = null;
   private next: IAstNode | null = null;
   private relationship!: IAstNodeRelationship;
   private creationMethod!: string;
-  private sourceDecoder!: {
+  private sourceDecoder: {
     type: string;
     decoder: AstSourceViewDecoder;
+  } = {
+    type: "string",
+    decoder: (raw: string) => ({
+      type: "string",
+      raw,
+    }),
   };
 
   // @ts-ignore
@@ -169,7 +176,7 @@ export class AstNode extends CommonTransports implements IAstNode {
    * #1 I simply don't mind TS1270 here
    */
   // @ts-expect-error #1
-  @dependsOn("kind", "ohm", "sourceDecoder")
+  @dependsOn("kind", "ohm")
   getSourceView<T extends AstSourceViewBase>(): AstSourceView<T> {
     assertLeaf(this, {});
     const raw = this.ohm.sourceString;
@@ -299,6 +306,11 @@ export class AstNode extends CommonTransports implements IAstNode {
   @rejectValues(undefined)
   getDirection(): ContentDirection {
     return this.direction;
+  }
+
+  pushIgnoredNodes(...nodes: ohm.Node[]): this {
+    this.ignoredNodes.push(...nodes);
+    return this;
   }
 
   private prepareContext(): IAstNodeContext {

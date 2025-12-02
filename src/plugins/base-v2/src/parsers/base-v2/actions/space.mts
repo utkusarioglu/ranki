@@ -5,16 +5,28 @@ export const space: IAstNodeActionDict = {
   _iter(...children) {
     return children.map((ch) => ch.space(buildContext(this)));
   },
-  blockSep_base(_n1, _wi1, _nl, _wi) {
-    return grabAst(this).newAst(this).setKind("leaf");
+  blockSep_base(n1, wi1, nl, wi) {
+    return grabAst(this)
+      .newAst(this)
+      .setKind("leaf")
+      .pushIgnoredNodes(n1, wi1, nl, wi);
   },
-  clearance(_all) {
-    return grabAst(this).newAst(this).setKind("leaf");
+  clearance(all) {
+    return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(all);
   },
-  nl(_all) {
-    return grabAst(this).newAst(this).setKind("leaf");
+  nl(all) {
+    return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(all);
   },
-  whitespace(_one, _two) {
-    return grabAst(this).newAst(this).setKind("leaf");
+  wm(spaces, nl) {
+    return grabAst(this)
+      .newAst(this)
+      .setKind("leaf")
+      .pushIgnoredNodes(spaces, nl);
+  },
+  whitespace(one, two) {
+    return grabAst(this)
+      .newAst(this)
+      .setKind("leaf")
+      .pushIgnoredNodes(one, two);
   },
 };

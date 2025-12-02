@@ -1,11 +1,13 @@
 BaseV2 <: ConstantsV2 {
   rootBlock := 
-    | tBaseV2Ignore wm any* --ignore
+    | tBaseV2Ignore wm ignored --ignore
     | whitespace structure whitespace --structure
 
   rootLine = wi lexemes wi
 
   structure = section --base
+
+  ignored = any*
 
   section =  
     | block (blockSep block)* --base
@@ -30,6 +32,10 @@ BaseV2 <: ConstantsV2 {
     | word &wordEnd --base
     | hChar<~(nl | space) any>+ &wordEnd --fallback
  
+  /*
+  word base accepts a word like yes". it accepts the quote at the end, which
+  doesn't seem right
+  */
   word = 
     | number --number
     | hChar<~(nl | space | end) any>+ --base

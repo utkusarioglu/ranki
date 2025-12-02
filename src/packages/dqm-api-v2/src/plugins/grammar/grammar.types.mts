@@ -1,5 +1,5 @@
-import * as ohm from "ohm-js";
 import type { DqmConfig } from "../../config/dqm-config.types.mjs";
+import type { IAstNodeActionDict } from "../../export.types.mjs";
 
 export interface IDqmPluginGrammar<ConfigShape = {}> {
   type: "grammar";
@@ -22,4 +22,4 @@ export type DqmGrammarTokens = Record<
   boolean | number | string | string[]
 >;
 
-export type ActionsDictRecord = Record<string, ohm.ActionDict<any>>;
+export type ActionsDictRecord = Record<string, IAstNodeActionDict>;

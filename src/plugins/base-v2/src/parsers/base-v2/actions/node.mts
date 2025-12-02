@@ -9,6 +9,7 @@ export const node: IAstNodeActionDict = {
   _iter(...children) {
     return children.map((ch) => ch.separator(buildContext(this)));
   },
+
   rootBlock_ignore(ignore, wm, rest) {
     return grabAst(this)
       .newAst(this)
@@ -20,17 +21,14 @@ export const node: IAstNodeActionDict = {
       .pushNodes(["subtree", rest]);
   },
 
-  // section_empty(_all) {
-  //   const context = c(this).newChild(this, "inline");
-  //   return context.newAstNode<BaseV2NodeLeafReduced, BaseV2Node>({
-  //     kind: "leaf",
-  //     print: true,
-  //     shape: {
-  //       spaces: {},
-  //       separators: [],
-  //     },
-  //   });
-  // },
+  ignored(ignored) {
+    return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(ignored);
+  },
+
+  section_empty(_all) {
+    return grabAst(this).newAst(this).setKind("leaf").setDirection("inline");
+  },
+
   rootBlock_structure(whitespace1, structure, whitespace2) {
     return grabAst(this)
       .newAst(this)
@@ -99,19 +97,19 @@ export const node: IAstNodeActionDict = {
   decorated_fallback(word, wordEnd) {
     return grabAst(this)
       .newAst(this)
-      .setKind("parent")
-      .pushNodes(["subtree", word])
-      .pushNodes(["token", wordEnd]);
+      .setKind("leaf")
+      .pushIgnoredNodes(word, wordEnd);
   },
 
-  word_base(_base) {
-    return grabAst(this).newAst(this).setKind("leaf");
+  word_base(base) {
+    return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(base);
   },
 
-  word_number(_number) {
+  word_number(number) {
     return grabAst(this)
       .newAst(this)
       .setKind("leaf")
+      .pushIgnoredNodes(number)
       .setSourceViewDecoder("number", (v) => ({ number: +v }));
   },
 };
