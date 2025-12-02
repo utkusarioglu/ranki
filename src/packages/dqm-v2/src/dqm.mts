@@ -45,6 +45,7 @@ export class Dqm {
     const astNode = new AstNode(this.plugins, this.config)
       .setNature("synthetic")
       .newCpx((cpx) => cpx.setParams([]).setIdList([["base", "v2", "default"]]))
+      .setDirection("block")
       .getCpx()
       .parse(inputs);
     return astNode;

@@ -1,32 +1,30 @@
 import type {
-  ActionMethod,
   AstSourceString,
   ContentDirection,
   IAstNode,
   IAstNodeContext,
   IAstNodeKind,
   IAstNodeNature,
-  IAstSpaceNode,
-  IAstTokenNode,
-  NodeName,
   ICpx,
   CreatorName,
+  PushedNodeDefinition,
+  IAstNodeRelationship,
+  TokenNodes,
+  SpaceNodes,
+  SubtreeNodes,
+  ChildrenNodes,
+  CreationMethod,
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
-import { assertNotExists, assertParent } from "@dqm/package-utils";
+import {
+  assertArrayNotEmpty,
+  dependsOn,
+  DqmError,
+  rejectValues,
+} from "@dqm/package-utils";
 import { CommonTransports } from "../common-transports.mjs";
 
-type TokenNode = IAstTokenNode & {
-  left: NodeName;
-  right: NodeName;
-};
-
-type SpaceNode = IAstSpaceNode & {
-  left: NodeName;
-  right: NodeName;
-};
-type OrderNode = IAstNode | TokenNode;
-type SubtreeNodes = Map<NodeName, IAstNode>;
+export type WorkedNodeDefinition = [IAstNodeRelationship, ohm.Node[]];
 
 export class AstNode extends CommonTransports implements IAstNode {
   private cpx!: ICpx;
@@ -35,40 +33,19 @@ export class AstNode extends CommonTransports implements IAstNode {
   private direction!: ContentDirection;
   private ohm!: ohm.Node;
   private nature: IAstNodeNature = "literal";
-  private orderNodes: OrderNode[] = [];
-  private tokenNodes: TokenNode[] = [];
-  private spaceNodes: SpaceNode[] = [];
-  private subtreeNodes: SubtreeNodes = new Map<NodeName, IAstNode>();
-  private childrenNodes: IAstNode[] = [];
+  private orderNodes: IAstNode[] = [];
+  private tokenNodes: TokenNodes = [];
+  private spaceNodes: SpaceNodes = [];
+  private subtreeNodes: SubtreeNodes = [];
+  private childrenNodes: ChildrenNodes = [];
   private kind!: IAstNodeKind;
-
-  getCreator(): CreatorName {
-    return this.ohm.ctorName;
-  }
-
-  getSubtreeNodes(): Record<NodeName, IAstNode> {
-    return Object.fromEntries(this.subtreeNodes);
-  }
-
-  getChildrenNodes(): IAstNode[] {
-    return this.childrenNodes;
-  }
-
-  setKind(kind: IAstNodeKind): IAstNode {
-    this.kind = kind;
-    return this;
-  }
-
-  getKind(): IAstNodeKind {
-    return this.kind;
-  }
-
-  getSourceString(): AstSourceString {
-    return this.ohm.sourceString;
-  }
+  private prev: IAstNode | null = null;
+  private next: IAstNode | null = null;
+  private relationship!: IAstNodeRelationship;
+  private creationMethod!: string;
 
   // @ts-ignore
-  private dummyMethodtoSilenceErrors() {
+  private dummyMethodToSilenceErrors() {
     console.log(
       this.parent,
       this.direction,
@@ -88,6 +65,142 @@ export class AstNode extends CommonTransports implements IAstNode {
     this.cpx = cpxCallback(newCpxMold);
     return this;
   }
+
+  newAst(): IAstNode {
+    const newAst = new AstNode(this.getPlugins(), this.getConfig())
+      .setParent(this)
+      .setCpx(this.getCpx())
+      .setDirection(this.getDirection());
+    this.children.push(newAst);
+    return newAst;
+  }
+
+  @dependsOn("kind")
+  pushNodes(...nodeSetRaw: PushedNodeDefinition[]): IAstNode {
+    assertArrayNotEmpty(nodeSetRaw, { method: "pushNodes" });
+
+    const areIter = nodeSetRaw.map((n) => n[1].isIteration());
+    const isIter = areIter.some((v) => v === true);
+    const inconsistentIter = isIter && areIter.some((v) => v !== true);
+    if (inconsistentIter) {
+      throw new DqmError("INCONSISTENT_ITERATOR_NODES", {
+        nodeSetRaw,
+        areIter,
+      });
+    }
+    const nodeSet: WorkedNodeDefinition[] = isIter
+      ? nodeSetRaw.map(([relationship, nodes]) => [
+          relationship,
+          nodes.children,
+        ])
+      : nodeSetRaw.map(([relationship, nodes]) => [relationship, [nodes]]);
+
+    if (nodeSet.some(([_, nodes]) => nodes.length !== nodeSet[0][1].length)) {
+      throw new DqmError("INCONSISTENT_ZIP_MEMBER_HEIGHTS", { nodeSet });
+    }
+    const context = this.prepareContext();
+
+    [...Array.from(nodeSet[0][1].keys())].forEach((i) => {
+      nodeSet.forEach(([relationship, nodes]) => {
+        let method;
+        switch (relationship) {
+          case "subtree":
+          case "child":
+            method = "node";
+            break;
+          default:
+            method = relationship;
+        }
+        const parsedRaw = nodes[i][method](context) as IAstNode | IAstNode[];
+        const parsedList = Array.isArray(parsedRaw) ? parsedRaw : [parsedRaw];
+        parsedList.forEach((parsed) => {
+          parsed.setRelationship(relationship).setCreationMethod(method);
+          if (this.orderNodes.length) {
+            const prevNode = this.orderNodes.at(-1)!;
+            parsed.setPrev(prevNode);
+            prevNode.setNext(parsed);
+          }
+          this.orderNodes.push(parsed);
+          switch (relationship) {
+            case "subtree":
+              this.subtreeNodes.push(parsed);
+              break;
+            case "child":
+              this.childrenNodes.push(parsed);
+              break;
+            case "space":
+              this.spaceNodes.push(parsed);
+              break;
+            case "token":
+              this.tokenNodes.push(parsed);
+          }
+        });
+      });
+    });
+    return this;
+  }
+
+  setCreationMethod(method: string): IAstNode {
+    this.creationMethod = method;
+    return this;
+  }
+
+  getCreationMethod(): CreationMethod {
+    return this.creationMethod;
+  }
+
+  setRelationship(type: IAstNodeRelationship): IAstNode {
+    this.relationship = type;
+    return this;
+  }
+
+  getType(): IAstNodeRelationship {
+    return this.relationship;
+  }
+
+  setPrev(prev: IAstNode): IAstNode {
+    this.prev = prev;
+    return this;
+  }
+
+  getPrev(): IAstNode | null {
+    return this.prev;
+  }
+
+  setNext(next: IAstNode): IAstNode {
+    this.next = next;
+    return this;
+  }
+
+  getNext(): IAstNode | null {
+    return this.next;
+  }
+
+  getCreator(): CreatorName {
+    return this.ohm.ctorName;
+  }
+
+  getSubtreeNodes(): IAstNode[] {
+    return this.subtreeNodes;
+  }
+
+  getChildrenNodes(): IAstNode[] {
+    return this.childrenNodes;
+  }
+
+  setKind(kind: IAstNodeKind): IAstNode {
+    this.kind = kind;
+    return this;
+  }
+
+  getKind(): IAstNodeKind {
+    return this.kind;
+  }
+
+  getSourceString(): AstSourceString {
+    return this.ohm.sourceString;
+  }
+
   getCpx(): ICpx {
     return this.cpx;
   }
@@ -117,74 +230,12 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this;
   }
 
-  newAst(): IAstNode {
-    const newAst = new AstNode(this.getPlugins(), this.getConfig())
-      .setParent(this)
-      .setCpx(this.getCpx());
-    this.children.push(newAst);
-    return newAst;
+  @rejectValues(undefined)
+  getDirection(): ContentDirection {
+    return this.direction;
   }
 
   private prepareContext(): IAstNodeContext {
     return { ast: this };
-  }
-
-  // TODO
-  setChildrenNodes(
-    required: ohm.Node[],
-    _alt: ohm.Node[] = [],
-    method: ActionMethod = "node",
-  ): IAstNode {
-    assertParent(this, { obj: this });
-    const context = this.prepareContext();
-    const requiredNodes = required.map((n) => n[method](context));
-    // const altNodes = alt.map((n) => n[method](context));
-    this.children.push(...requiredNodes);
-    return this;
-  }
-
-  pushSpaceNode(
-    left: ohm.Node | null,
-    right: ohm.Node | null,
-    node: ohm.Node,
-    method: ActionMethod = "space",
-  ): IAstNode {
-    assertParent(this, { obj: this });
-    const entry = {
-      left: left?.ctorName || null,
-      right: right?.ctorName || null,
-      ...node[method](this.prepareContext()),
-    };
-    this.orderNodes.push(entry);
-    this.spaceNodes.push(entry);
-    return this;
-  }
-
-  pushTokenNode(
-    left: ohm.Node | null,
-    right: ohm.Node | null,
-    node: ohm.Node,
-    method: ActionMethod = "token",
-  ): IAstNode {
-    assertParent(this, { obj: this });
-    const entry = {
-      left: left?.ctorName || null,
-      right: right?.ctorName || null,
-      ...node[method](this.prepareContext()),
-    };
-    this.orderNodes.push(entry);
-    this.tokenNodes.push(entry);
-    return this;
-  }
-
-  pushSubtreeNode(ast: ohm.Node, method: ActionMethod = "node"): IAstNode {
-    assertParent(this, { obj: this });
-    const name = ast.ctorName;
-    const newNode = ast[method](this.prepareContext());
-    this.orderNodes.push(newNode);
-    const preexisting = this.subtreeNodes.get(name);
-    assertNotExists(preexisting, { preexisting, name, method, ast });
-    this.subtreeNodes.set(name, newNode);
-    return this;
   }
 }

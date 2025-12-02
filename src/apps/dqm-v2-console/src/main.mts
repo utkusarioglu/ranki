@@ -5,27 +5,27 @@ import type {
   AstSourceString,
   CreatorName,
   IAstNode,
-  NodeName,
 } from "@dqm/package-dqm-api-v2";
 
 type Sanitized = {
   creator: CreatorName;
   source: AstSourceString;
-  subtree: Record<NodeName, Sanitized>;
+  subtree?: Sanitized[];
   children?: Sanitized[];
 };
 
 function sanitize(node: IAstNode): Sanitized {
   const children = node.getChildrenNodes().map((n) => sanitize(n));
-  const subtree = Object.entries(node.getSubtreeNodes()).reduce(
-    (a, [k, v]) => ((a[k] = sanitize(v)), a),
-    {} as Sanitized["subtree"],
-  );
+  // const subtree = Object.entries(node.getSubtreeNodes()).reduce(
+  //   (a, [k, v]) => ((a[k] = sanitize(v)), a),
+  //   {} as Sanitized["subtree"],
+  // );
+  const subtree = node.getSubtreeNodes().map((n) => sanitize(n));
 
   return {
     creator: node.getCreator(),
     source: node.getSourceString(),
-    subtree,
+    ...(subtree.length ? { subtree } : {}),
     ...(children.length ? { children } : {}),
   };
 }

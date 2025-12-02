@@ -15,6 +15,16 @@ export function assertExists(v: any, obj: any): asserts v is object {
   }
 }
 
+export function assertArrayNotEmpty(
+  this: any,
+  a: any[],
+  rest: Record<string, any>,
+) {
+  if (!a.length) {
+    throw new DqmError("EMPTY_ARRAY", { obj: this, ...rest });
+  }
+}
+
 export function assertMethodContext<T extends { kind: string }>(
   context: T,
   obj: any,
