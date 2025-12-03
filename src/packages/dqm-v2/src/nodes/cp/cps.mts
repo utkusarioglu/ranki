@@ -71,7 +71,7 @@ export class Cps extends CommonTransports implements ICps {
       input.inputs[input.theater],
       // TODO this likely will come from the `direction` property of some ast
       // node
-      "rootBlock",
+      "baseV2RootBlock",
       {
         // cpx: this.cpx,
         // cps: this,

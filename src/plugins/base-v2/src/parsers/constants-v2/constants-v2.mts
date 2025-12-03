@@ -10,7 +10,7 @@ export const constantsV2Grammar: IDqmPluginGrammar = {
   },
   dependencies: [],
   tokenizer: () => ({
-    rootBlock: "",
+    baseV2RootBlock: "",
   }),
   config: () => ({}),
   grammar: buildGrammar,

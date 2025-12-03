@@ -10,7 +10,7 @@ export const node: IAstNodeActionDict = {
     return children.map((ch) => ch.separator(buildContext(this)));
   },
 
-  rootBlock_ignore(ignore, wm, rest) {
+  baseV2RootBlock_ignored(ignore, wm, rest) {
     return grabAst(this)
       .newAst(this)
       .newCpx((cpx) => cpx.setParams(PARAMS).setIdList(COMPONENT))
@@ -21,15 +21,15 @@ export const node: IAstNodeActionDict = {
       .pushNodes(["subtree", rest]);
   },
 
-  ignored(ignored) {
+  baseV2Ignored(ignored) {
     return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(ignored);
   },
 
-  section_empty(_all) {
+  baseV2Section_empty(_all) {
     return grabAst(this).newAst(this).setKind("leaf").setDirection("inline");
   },
 
-  rootBlock_structure(whitespace1, structure, whitespace2) {
+  baseV2RootBlock_structured(whitespace1, structure, whitespace2) {
     return grabAst(this)
       .newAst(this)
       .newCpx((cpx) => cpx.setParams(PARAMS).setIdList(COMPONENT))
@@ -40,7 +40,7 @@ export const node: IAstNodeActionDict = {
       .pushNodes(["space", whitespace2]);
   },
 
-  section_base(block, blockSep, block2) {
+  baseV2Section_base(block, blockSep, block2) {
     return grabAst(this)
       .newAst(this)
       .setKind("parent")
@@ -48,7 +48,7 @@ export const node: IAstNodeActionDict = {
       .pushNodes(["token", blockSep], ["subtree", block2]);
   },
 
-  p(line1, nl, line2) {
+  baseV2P(line1, nl, line2) {
     return grabAst(this)
       .newAst(this)
       .setKind("parent")
@@ -56,7 +56,7 @@ export const node: IAstNodeActionDict = {
       .pushNodes(["space", nl], ["subtree", line2]);
   },
 
-  rootLine(wi1, lexemes, wi2) {
+  baseV2RootLine(wi1, lexemes, wi2) {
     return grabAst(this)
       .newAst(this)
       .setKind("parent")
@@ -67,7 +67,7 @@ export const node: IAstNodeActionDict = {
   },
 
   // TODO line modifiers
-  line(indentation1, lineModifiers, lexemes, wi) {
+  baseV2Line(indentation1, lineModifiers, lexemes, wi) {
     return grabAst(this)
       .newAst(this)
       .setKind("parent")
@@ -78,7 +78,7 @@ export const node: IAstNodeActionDict = {
       .pushNodes(["space", wi]);
   },
 
-  lexemes(lexeme1, clearance, lexeme2) {
+  baseV2Lexemes(lexeme1, clearance, lexeme2) {
     return grabAst(this)
       .newAst(this)
       .setKind("parent")
@@ -86,7 +86,7 @@ export const node: IAstNodeActionDict = {
       .pushNodes(["space", clearance], ["subtree", lexeme2]);
   },
 
-  decorated_base(word, wordEnd) {
+  baseV2Decorated_base(word, wordEnd) {
     return grabAst(this)
       .newAst(this)
       .setKind("parent")
@@ -94,18 +94,18 @@ export const node: IAstNodeActionDict = {
       .pushNodes(["token", wordEnd]);
   },
 
-  decorated_fallback(word, wordEnd) {
+  baseV2Decorated_fallback(word, wordEnd) {
     return grabAst(this)
       .newAst(this)
       .setKind("leaf")
       .pushIgnoredNodes(word, wordEnd);
   },
 
-  word_base(base) {
+  baseV2Word_base(base) {
     return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(base);
   },
 
-  word_number(number) {
+  baseV2Word_baseV2Number(number) {
     return grabAst(this)
       .newAst(this)
       .setKind("leaf")

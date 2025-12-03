@@ -1,4 +1,4 @@
-import { DqmError } from "./export.mjs";
+import { DqmError } from "./error/error.mjs";
 
 export function assertNotExists<C extends {}>(
   value: C | undefined,

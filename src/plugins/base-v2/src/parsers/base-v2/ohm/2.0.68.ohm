@@ -1,101 +1,101 @@
 BaseV2 <: ConstantsV2 {
-  rootBlock := 
-    | tBaseV2Ignore wm ignored --ignore
-    | whitespace structure whitespace --structure
+  baseV2RootBlock := 
+    | tBaseV2Ignore sBaseV2WasteMultiline baseV2Ignored --ignored
+    | sBaseV2Whitespace baseV2Structure sBaseV2Whitespace --structured
 
-  rootLine = wi lexemes wi
+  baseV2RootLine = sBaseV2WasteInline baseV2Lexemes sBaseV2WasteInline
 
-  structure = section --base
+  baseV2Structure = baseV2Section --base
 
-  ignored = any*
+  baseV2Ignored = any*
 
-  section =  
-    | block (blockSep block)* --base
+  baseV2Section =  
+    | baseV2Block (baseV2BlockSep baseV2Block)* --base
     | "" --empty
     
-  blockSep = nl wi (nl wi)+ --base
+  baseV2BlockSep = nl sBaseV2WasteInline (nl sBaseV2WasteInline)+ --base
   
-  block  = 
-    | p --p
+  baseV2Block = 
+    | baseV2P --baseV2P
   
-  p = line (nl line)*
+  baseV2P = baseV2Line (nl baseV2Line)*
   
-  line = indentation lineModifiers lexemes wi
-  lineModifiers  = ""
+  baseV2Line = sBaseV2Indentation baseV2LineModifiers baseV2Lexemes sBaseV2WasteInline
+  baseV2LineModifiers  = ""
     
-  lexemes = lexeme (clearance lexeme)*
+  baseV2Lexemes = baseV2Lexeme (sBaseV2Clearance baseV2Lexeme)*
   
-  lexeme = 
-    | decorated --none
+  baseV2Lexeme = 
+    | baseV2Decorated --none
 
-  decorated = 
-    | word &wordEnd --base
-    | hChar<~(nl | space) any>+ &wordEnd --fallback
+  baseV2Decorated = 
+    | baseV2Word &tBaseV2WordEnd --base
+    | hChar<~(nl | space) any>+ &tBaseV2WordEnd --fallback
  
   /*
-  word base accepts a word like yes". it accepts the quote at the end, which
+  !FIX word base accepts a word like yes". it accepts the quote at the end, which
   doesn't seem right
   */
-  word = 
-    | number --number
+  baseV2Word = 
+    | baseV2Number --baseV2Number
     | hChar<~(nl | space | end) any>+ --base
   
-  number (Number) = 
+  baseV2Number (Number) = 
     | digit+ --digits
   
-  wordEnd =  clearance | nl | end
+  tBaseV2WordEnd =  sBaseV2Clearance | nl | end
 
-  hWord<t> = t &wordEnd
+  hWord<t> = t &tBaseV2WordEnd
   
   hCheck<t> = &t t
   
-  quoteSingle =
+  tBaseV2QuoteSingle =
     | "'" --open
     | "'" --close
     
-  quoteDouble =
+  tBaseV2QuoteDouble =
     | "\"" --open
     | "\"" --close
 
-  bracketRound = 
+  tBaseV2BracketRound = 
     | "(" --open
     | ")" --close
   
-  bracketSquare =
+  tBaseV2BracketSquare =
     | "[" --open
     | "]" --close
   
-  bracketCurly = 
+  tBaseV2BracketCurly = 
     | "{" --open
     | "}" --close
     
-  quotes = 
-    | quoteSingle --single
-    | quoteDouble --double
+  baseV2Quotes = 
+    | tBaseV2QuoteSingle --single
+    | tBaseV2QuoteDouble --double
     
-  brackets = 
-    | bracketRound --round
-    | bracketSquare --square
-    | bracketCurly --curly
+  baseV2Brackets = 
+    | tBaseV2BracketRound --round
+    | tBaseV2BracketSquare --square
+    | tBaseV2BracketCurly --curly
 
-  wordToken = ""
-  lineToken = ""
+  tBaseV2WordToken = ""
+  tBaseV2LineToken = ""
 
   hChar<c> = 
-    | tBaseV2Escape wordToken --escaped
+    | tBaseV2Escape tBaseV2WordToken --escaped
     | tBaseV2Escape c --redundant
     | c --regular
     
-  indentation = spaces
-  clearance = space+
+  sBaseV2Indentation = spaces
+  sBaseV2Clearance = space+
   
-  wm (waste multiline) 
+  sBaseV2WasteMultiline (waste multiline) 
     = spaces nl
     
-  wi (waste inline) 
+  sBaseV2WasteInline (waste inline) 
     = spaces
     
-  whitespace = wm* wi
+  sBaseV2Whitespace = sBaseV2WasteMultiline* sBaseV2WasteInline
   
   // unchangeable tokens
   space := " " | "\t"

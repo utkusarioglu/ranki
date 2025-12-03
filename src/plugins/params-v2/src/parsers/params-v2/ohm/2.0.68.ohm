@@ -1,68 +1,72 @@
 ParamsV2 <: BaseV2 {
-  v2ParamListBlockContainer = tParamsV2SeparatorParam wi 
-          nl wi 
-        v2ParamListBlock wi 
+  paramsV2ParamListBlockContainer = tParamsV2SeparatorParam sBaseV2WasteInline 
+          nl sBaseV2WasteInline 
+        paramsV2ParamListBlock sBaseV2WasteInline 
           tParamsV2SeparatorParam?
   
-  v2ParamListInlineContainer = tParamsV2SeparatorParam wi 
-      v2ParamListInline wi 
+  paramsV2ParamListInlineContainer = tParamsV2SeparatorParam sBaseV2WasteInline 
+      paramsV2ParamListInline sBaseV2WasteInline 
         tParamsV2SeparatorParam?
         
-  v2SepLeftInline = wi tParamsV2SeparatorParam wi
-  v2SepLeftBlock = wi tParamsV2SeparatorParam? wi nl wi
-  v2ParamListInline = param (v2SepLeftInline param)*
-  v2ParamListBlock = param (v2SepLeftBlock param)*
+  paramsV2SepLeftInline = sBaseV2WasteInline tParamsV2SeparatorParam sBaseV2WasteInline
+  paramsV2SepLeftBlock = sBaseV2WasteInline tParamsV2SeparatorParam? sBaseV2WasteInline nl sBaseV2WasteInline
+  paramsV2ParamListInline = paramsV2Param (paramsV2SepLeftInline paramsV2Param)*
+  paramsV2ParamListBlock = paramsV2Param (paramsV2SepLeftBlock paramsV2Param)*
 
-  operator =
+  paramsV2Operator =
     | tParamsV2OperatorRemove
     | tParamsV2OperatorAppend
     | tParamsV2OperatorAssign
 
-  param =
-    | paramDirective
-    | paramSetting
+  paramsV2Param =
+    | paramsV2Directive
+    | paramsV2Setting
 
-  paramFormatOperator = paramKey wi operator wi paramValues 
-  paramFormatNegative = tParamsV2Negation paramKey
-  paramFormatPositive = paramKey 
-  paramFormatPositional = paramValueItem
+  paramsV2FormatOperator = 
+    paramsV2Key sBaseV2WasteInline 
+    paramsV2Operator sBaseV2WasteInline 
+    paramsV2Values 
 
-  paramSettingNamespace = digit+ "."
+  paramsV2FormatNegative = tParamsV2Negation paramsV2Key
+  paramsV2FormatPositive = paramsV2Key
+  paramsV2FormatPositional = paramsV2ValueItem
 
-  paramSetting = 
-    | paramSettingNamespace? paramFormatOperator 
-    | paramSettingNamespace? paramFormatNegative
-    | paramSettingNamespace? paramFormatPositive
-    | paramSettingNamespace? paramFormatPositional
+  paramsV2SettingNamespace = digit+ "."
 
-  paramDirective = 
-    | tParamsV2DirectiveParam paramFormatOperator 
-    | tParamsV2DirectiveParam paramFormatNegative
-    | tParamsV2DirectiveParam paramFormatPositive
-    | tParamsV2DirectiveParam paramFormatPositional
+  paramsV2Setting = 
+    | paramsV2SettingNamespace? paramsV2FormatOperator 
+    | paramsV2SettingNamespace? paramsV2FormatNegative
+    | paramsV2SettingNamespace? paramsV2FormatPositive
+    | paramsV2SettingNamespace? paramsV2FormatPositional
 
-  paramKeyWordLegal = alnum | "_" | "-"
-  paramKeyWord = letter (paramKeyWordLegal)*
-  paramKey = paramKeyWord ("." paramKeyWord)*
+  paramsV2Directive = 
+    | tParamsV2DirectiveParam paramsV2FormatOperator 
+    | tParamsV2DirectiveParam paramsV2FormatNegative
+    | tParamsV2DirectiveParam paramsV2FormatPositive
+    | tParamsV2DirectiveParam paramsV2FormatPositional
 
-  paramValues = paramValueItem (clearance paramValueItem)*
+  paramsV2KeyWordLegal = alnum | "_" | "-"
+  paramsV2KeyWord = letter (paramsV2KeyWordLegal)*
+  paramsV2Key = paramsV2KeyWord ("." paramsV2KeyWord)*
 
-  paramValueItem = 
-    | quoted<quoteSingle>
-    | quoted<quoteDouble>
-    | paramValueItemPrimitive
+  paramsV2Values = paramsV2ValueItem (sBaseV2Clearance paramsV2ValueItem)*
+
+  paramsV2ValueItem = 
+    | hQuoted<quoteSingle>
+    | hQuoted<quoteDouble>
+    | paramsV2ValueItemPrimitive
     
-  quoted<q> = q quotedContent<q>* q
-  quotedContent<q> = 
+  hQuoted<q> = q hQuotedContent<q>* q
+  hQuotedContent<q> = 
     | tBaseV2Escape q --escaped
     | ~q any --content
 
-  paramValueItemPrimitive =
+  paramsV2ValueItemPrimitive =
     | number --number
     | caseInsensitive<"true"> --true
     | caseInsensitive<"false"> --false
-    | &(upper+ clearance) upper+ --uppercase
-    | &(lower+ clearance) lower+ --lowercase
-    | &(letter+ clearance) letter+ --chars
+    | &(upper+ sBaseV2Clearance) upper+ --uppercase
+    | &(lower+ sBaseV2Clearance) lower+ --lowercase
+    | &(letter+ sBaseV2Clearance) letter+ --chars
     | (letter | digit)+ --mixed
 }

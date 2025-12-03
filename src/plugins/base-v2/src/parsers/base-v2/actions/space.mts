@@ -5,28 +5,41 @@ export const space: IAstNodeActionDict = {
   _iter(...children) {
     return children.map((ch) => ch.space(buildContext(this)));
   },
-  blockSep_base(n1, wi1, nl, wi) {
+
+  baseV2BlockSep_base(n1, wi1, nl, wi) {
     return grabAst(this)
       .newAst(this)
       .setKind("leaf")
       .pushIgnoredNodes(n1, wi1, nl, wi);
   },
-  clearance(all) {
+
+  sBaseV2Clearance(all) {
     return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(all);
   },
-  nl(all) {
+
+  sBaseV2Indentation(all) {
     return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(all);
   },
-  wm(spaces, nl) {
+
+  sBaseV2WasteInline(all) {
+    return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(all);
+  },
+
+  sBaseV2WasteMultiline(spaces, nl) {
     return grabAst(this)
       .newAst(this)
       .setKind("leaf")
       .pushIgnoredNodes(spaces, nl);
   },
-  whitespace(one, two) {
+
+  sBaseV2Whitespace(one, two) {
     return grabAst(this)
       .newAst(this)
       .setKind("leaf")
       .pushIgnoredNodes(one, two);
+  },
+
+  nl(all) {
+    return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(all);
   },
 };
