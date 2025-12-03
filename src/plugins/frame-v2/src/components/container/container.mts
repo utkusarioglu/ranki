@@ -1,6 +1,6 @@
 import type { IDqmComponent } from "@dqm/package-dqm-api-v2";
 
-export const baseDefault: IDqmComponent = {
+export const frameV2ContainerComponent: IDqmComponent = {
   type: "component",
   meta: {
     id: {

@@ -34,7 +34,7 @@ FrameV2 <: ParamsV2 {
   frameV2PauseStart = tFrameV2Pause digit* tFrameV2Pause
   frameV2PauseEnd = tFrameV2Pause tFrameV2Pause
   frameV2PausedContainer =
-    | sBaseV2WasteInline frameV2PauseStart frameV2PausedPayload frameV2PauseEnd --P
+    | sBaseV2WasteMultiline frameV2PauseStart frameV2PausedPayload frameV2PauseEnd --P
     | frameV2PauseStart frameV2PausedPayload frameV2PauseEnd --p
 
   // !FIX this would break sBaseV2WasteInlineth nested pauses

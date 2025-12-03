@@ -1,0 +1,25 @@
+{
+  "extends": "@ranki/config-typescript/tsconfig.plugin.component.json",
+  "compilerOptions": {
+    "outDir": "lib",
+    "rootDir": "src",
+    "declarationDir": "types",
+    "paths": {
+      "@dqm/package-dqm-api-v2": ["../../packages/dqm-api-v2/*"],
+      "@dqm/package-utils": ["../../packages/utils/*"],
+      "@dqm/plugin-params-v2": ["../params-v2/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "references": [
+    {
+      "path": "../../packages/dqm-api-v2"
+    },
+    {
+      "path": "../../packages/utils"
+    },
+    {
+      "path": "../params-v2"
+    }
+  ]
+}

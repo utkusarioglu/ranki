@@ -23,7 +23,7 @@ import type * as ohm from "ohm-js";
 import {
   assertArrayNotEmpty,
   assertLeaf,
-  assertParent,
+  // assertParent,
   dependsOn,
   DqmError,
   rejectValues,
@@ -32,6 +32,10 @@ import { CommonTransports } from "../common-transports.mjs";
 import { Param } from "../param/param.mjs";
 
 export type WorkedNodeDefinition = [IAstNodeRelationship, ohm.Node[]];
+export type LeafDecoder = {
+  type: string;
+  decoder: AstSourceViewDecoder;
+};
 
 export class AstNode extends CommonTransports implements IAstNode {
   private cpx!: ICpx;
@@ -46,21 +50,22 @@ export class AstNode extends CommonTransports implements IAstNode {
   private subtreeNodes: SubtreeNodes = [];
   private childrenNodes: ChildrenNodes = [];
   private ignoredNodes: ohm.Node[] = [];
-  private kind!: IAstNodeKind;
+  private kind: IAstNodeKind = "leaf";
   private prev: IAstNode | null = null;
   private next: IAstNode | null = null;
   private relationship!: IAstNodeRelationship;
   private creationMethod!: string;
-  private sourceDecoder: {
-    type: string;
-    decoder: AstSourceViewDecoder;
-  } = {
-    type: "string",
-    decoder: (raw: string) => ({
+  private leafDecoder!: LeafDecoder;
+
+  private defaultLeafDecoder(): LeafDecoder {
+    return {
       type: "string",
-      raw,
-    }),
-  };
+      decoder: (raw: string) => ({
+        type: "string",
+        raw,
+      }),
+    };
+  }
 
   // @ts-ignore
   private dummyMethodToSilenceErrors() {
@@ -79,6 +84,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     const oldCpx = this.cpx;
     const newCpxMold = new Cpx(this.getTransports())
       .setRootAst(this)
+      // !FIX this setting the parent like this is faulty it clashes with paused container climbing up
       .setParent(oldCpx);
     this.cpx = cpxCallback(newCpxMold);
     return this;
@@ -105,10 +111,22 @@ export class AstNode extends CommonTransports implements IAstNode {
     return newParam;
   }
 
+  /**
+   * @dev
+   * #1 The check for leafDecoder relates to only leaves being able to define a
+   * decoder. If a decoder is defined, the node shouldn't be able to become a
+   * parent. Which means, pushing nodes to the node shouldn't be possible. */
   @dependsOn("kind")
   pushNodes(...nodeSetRaw: PushedNodeDefinition[]): this {
-    assertParent(this, { nodeSetRaw });
     assertArrayNotEmpty(nodeSetRaw, { method: "pushNodes" });
+    // #1
+    if (this.leafDecoder) {
+      throw new DqmError("ATTEMPTING_TO_PUSH_NODES_TO_LEAF", {
+        nodeSetRaw,
+        decoder: this.leafDecoder,
+      });
+    }
+    this.setKind("parent");
 
     const areIter = nodeSetRaw.map((n) => n[1].isIteration());
     const isIter = areIter.some((v) => v === true);
@@ -177,32 +195,38 @@ export class AstNode extends CommonTransports implements IAstNode {
    */
   // @ts-expect-error #1
   @dependsOn("kind", "ohm")
-  getSourceView<T extends AstSourceViewBase>(): AstSourceView<T> {
+  getLeafView<T extends AstSourceViewBase>(): AstSourceView<T> {
     assertLeaf(this, {});
     const raw = this.ohm.sourceString;
     try {
-      // @ts-expect-error #1
-      return {
-        type: this.sourceDecoder.type,
-        raw,
-        ...this.sourceDecoder.decoder(raw),
-      };
+      if (this.leafDecoder) {
+        // @ts-expect-error #1
+        return {
+          type: this.leafDecoder.type,
+          raw,
+          ...this.leafDecoder.decoder(raw),
+        };
+      } else {
+        const decoder = this.defaultLeafDecoder();
+        // @ts-expect-error #1
+        return decoder.decoder(raw);
+      }
     } catch (e) {
       throw new DqmError("AST_DECODER_FAILURE", {
         error: e,
         raw,
-        decoder: this.sourceDecoder,
+        decoder: this.leafDecoder,
       });
     }
   }
 
   @dependsOn("kind")
-  setSourceViewDecoder<T extends AstSourceViewBase>(
+  setLeafViewDecoder<T extends AstSourceViewBase>(
     type: string,
     decoder: AstSourceViewDecoder<T>,
   ): this {
     assertLeaf(this, { type, decoder });
-    this.sourceDecoder = {
+    this.leafDecoder = {
       type,
       decoder,
     };
@@ -258,7 +282,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this.childrenNodes;
   }
 
-  setKind(kind: IAstNodeKind): this {
+  private setKind(kind: IAstNodeKind): this {
     this.kind = kind;
     return this;
   }

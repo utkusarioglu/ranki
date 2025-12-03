@@ -3,21 +3,22 @@ import { grabAst } from "@dqm/package-utils";
 
 export const token: IAstNodeActionDict = {
   tBaseV2WordEnd(end) {
-    return grabAst(this).newAst(end).setKind("leaf");
+    return grabAst(this).newAst(end);
   },
+
   baseV2BlockSep_base(nl1, wi1, nl2, wi2) {
-    return grabAst(this)
-      .newAst(this)
-      .setKind("leaf")
-      .pushIgnoredNodes(nl1, wi1, nl2, wi2);
+    return grabAst(this).newAst(this).pushIgnoredNodes(nl1, wi1, nl2, wi2);
   },
+
   baseV2LineModifiers(modifiers) {
-    return grabAst(this)
-      .newAst(this)
-      .setKind("leaf")
-      .pushIgnoredNodes(modifiers);
+    return grabAst(this).newAst(this).pushIgnoredNodes(modifiers);
   },
+
+  nl(nl) {
+    return grabAst(this).newAst(this).pushIgnoredNodes(nl);
+  },
+
   tBaseV2Ignore(token) {
-    return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(token);
+    return grabAst(this).newAst(this).pushIgnoredNodes(token);
   },
 };

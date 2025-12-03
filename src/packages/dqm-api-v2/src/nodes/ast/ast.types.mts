@@ -55,7 +55,7 @@ export type AstSourceViewDecoder<
 > = (input: string) => Custom;
 
 export interface IAstNode {
-  setKind(kind: IAstNodeKind): this;
+  // setKind(kind: IAstNodeKind): this;
   getKind(): IAstNodeKind;
   newAst(ohm: ohm.Node): IAstNode;
   newParam(ohm: ohm.Node): IParam;
@@ -63,8 +63,8 @@ export interface IAstNode {
   setCpx(cpx: ICpx): this;
   getCpx(): ICpx;
   getSourceString(): AstSourceString;
-  getSourceView<T extends AstSourceViewBase>(): AstSourceView<T>;
-  setSourceViewDecoder<T extends AstSourceViewBase>(
+  getLeafView<T extends AstSourceViewBase>(): AstSourceView<T>;
+  setLeafViewDecoder<T extends AstSourceViewBase>(
     typeName: string,
     decoder: AstSourceViewDecoder<T>,
   ): this;

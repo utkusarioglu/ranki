@@ -8,6 +8,7 @@ import type {
   ICps,
   Audience,
   IAstNode,
+  ChainList,
 } from "@dqm/package-dqm-api-v2";
 import { DqmError, dependsOn, rejectValues } from "@dqm/package-utils";
 import { ALL_AUDIENCES } from "../param/param.constants.mjs";
@@ -16,26 +17,17 @@ import { CommonTransports } from "../common-transports.mjs";
 
 export class Cpx extends CommonTransports implements ICpx {
   private parent!: ICpx;
-  // private config!: IConfig;
-  // private plugins!: IPlugins;
   private params!: IParam[];
   private cps: ICps[] = [];
   private rootAst!: IAstNode;
 
-  // constructor(plugins: IPlugins, config: IConfig) {
-  //   this.plugins = plugins;
-  //   this.config = config.clone();
-  // }
+  getChainList(): ChainList {
+    return this.cps.map((cps) => cps.getId().getChain());
+  }
 
-  // @rejectValues(undefined)
-  // private getConfig(): IConfig {
-  //   return this.config;
-  // }
-
-  // @rejectValues(undefined)
-  // private getPlugins(): IPlugins {
-  //   return this.plugins;
-  // }
+  getIdList(): IdList {
+    return this.cps.map((cps) => cps.getId().getId());
+  }
 
   setRootAst(ast: IAstNode): ICpx {
     this.rootAst = ast;

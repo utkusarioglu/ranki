@@ -7,39 +7,30 @@ export const space: IAstNodeActionDict = {
   },
 
   baseV2BlockSep_base(n1, wi1, nl, wi) {
-    return grabAst(this)
-      .newAst(this)
-      .setKind("leaf")
-      .pushIgnoredNodes(n1, wi1, nl, wi);
+    return grabAst(this).newAst(this).pushIgnoredNodes(n1, wi1, nl, wi);
   },
 
   sBaseV2Clearance(all) {
-    return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(all);
+    return grabAst(this).newAst(this).pushIgnoredNodes(all);
   },
 
   sBaseV2Indentation(all) {
-    return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(all);
+    return grabAst(this).newAst(this).pushIgnoredNodes(all);
   },
 
   sBaseV2WasteInline(all) {
-    return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(all);
+    return grabAst(this).newAst(this).pushIgnoredNodes(all);
   },
 
   sBaseV2WasteMultiline(spaces, nl) {
-    return grabAst(this)
-      .newAst(this)
-      .setKind("leaf")
-      .pushIgnoredNodes(spaces, nl);
+    return grabAst(this).newAst(this).pushIgnoredNodes(spaces, nl);
   },
 
   sBaseV2Whitespace(one, two) {
-    return grabAst(this)
-      .newAst(this)
-      .setKind("leaf")
-      .pushIgnoredNodes(one, two);
+    return grabAst(this).newAst(this).pushIgnoredNodes(one, two);
   },
 
   nl(all) {
-    return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(all);
+    return grabAst(this).newAst(this).pushIgnoredNodes(all);
   },
 };

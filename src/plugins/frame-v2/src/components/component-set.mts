@@ -1,4 +1,5 @@
 import type { IDqmPluginComponentSet } from "@dqm/package-dqm-api-v2";
+import { frameV2ContainerComponent } from "./container/container.mjs";
 
 export const frameV2Container: IDqmPluginComponentSet = {
   type: "component-set",
@@ -7,5 +8,5 @@ export const frameV2Container: IDqmPluginComponentSet = {
     version: "0.0.0",
     description: "Provides the container component for every FrameV2 plugin",
   },
-  list: [],
+  list: [frameV2ContainerComponent],
 };

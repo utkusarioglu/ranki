@@ -1,8 +1,8 @@
-import type {} from "@dqm/package-dqm-api-v2";
+import type { ChainList } from "@dqm/package-dqm-api-v2";
 import type { IParam, IAstNodeActionDict } from "@dqm/package-dqm-api-v2";
 import { buildContext, grabAst } from "@dqm/package-utils";
 
-const COMPONENT = [["base", "v2", "default"]];
+const COMPONENT: ChainList = [["base", "v2", "default"]];
 const PARAMS: IParam[] = [];
 
 export const node: IAstNodeActionDict = {
@@ -14,7 +14,6 @@ export const node: IAstNodeActionDict = {
     return grabAst(this)
       .newAst(this)
       .newCpx((cpx) => cpx.setParams(PARAMS).setIdList(COMPONENT))
-      .setKind("parent")
       .setDirection("block")
       .pushNodes(["token", ignore])
       .pushNodes(["space", wm])
@@ -22,18 +21,20 @@ export const node: IAstNodeActionDict = {
   },
 
   baseV2Ignored(ignored) {
-    return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(ignored);
+    return grabAst(this).newAst(this).pushIgnoredNodes(ignored);
   },
 
-  baseV2Section_empty(_all) {
-    return grabAst(this).newAst(this).setKind("leaf").setDirection("inline");
+  baseV2Section_empty(all) {
+    return grabAst(this)
+      .newAst(this)
+      .setDirection("inline")
+      .pushIgnoredNodes(all);
   },
 
   baseV2RootBlock_structured(whitespace1, structure, whitespace2) {
     return grabAst(this)
       .newAst(this)
       .newCpx((cpx) => cpx.setParams(PARAMS).setIdList(COMPONENT))
-      .setKind("parent")
       .setDirection("block")
       .pushNodes(["space", whitespace1])
       .pushNodes(["subtree", structure])
@@ -43,7 +44,6 @@ export const node: IAstNodeActionDict = {
   baseV2Section_base(block, blockSep, block2) {
     return grabAst(this)
       .newAst(this)
-      .setKind("parent")
       .pushNodes(["subtree", block])
       .pushNodes(["token", blockSep], ["subtree", block2]);
   },
@@ -51,7 +51,6 @@ export const node: IAstNodeActionDict = {
   baseV2P(line1, nl, line2) {
     return grabAst(this)
       .newAst(this)
-      .setKind("parent")
       .pushNodes(["subtree", line1])
       .pushNodes(["space", nl], ["subtree", line2]);
   },
@@ -59,7 +58,6 @@ export const node: IAstNodeActionDict = {
   baseV2RootLine(wi1, lexemes, wi2) {
     return grabAst(this)
       .newAst(this)
-      .setKind("parent")
       .setDirection("inline")
       .pushNodes(["space", wi1])
       .pushNodes(["subtree", lexemes])
@@ -70,7 +68,6 @@ export const node: IAstNodeActionDict = {
   baseV2Line(indentation1, lineModifiers, lexemes, wi) {
     return grabAst(this)
       .newAst(this)
-      .setKind("parent")
       .setDirection("inline")
       .pushNodes(["space", indentation1])
       .pushNodes(["token", lineModifiers])
@@ -81,7 +78,6 @@ export const node: IAstNodeActionDict = {
   baseV2Lexemes(lexeme1, clearance, lexeme2) {
     return grabAst(this)
       .newAst(this)
-      .setKind("parent")
       .pushNodes(["subtree", lexeme1])
       .pushNodes(["space", clearance], ["subtree", lexeme2]);
   },
@@ -89,27 +85,22 @@ export const node: IAstNodeActionDict = {
   baseV2Decorated_base(word, wordEnd) {
     return grabAst(this)
       .newAst(this)
-      .setKind("parent")
       .pushNodes(["subtree", word])
       .pushNodes(["token", wordEnd]);
   },
 
   baseV2Decorated_fallback(word, wordEnd) {
-    return grabAst(this)
-      .newAst(this)
-      .setKind("leaf")
-      .pushIgnoredNodes(word, wordEnd);
+    return grabAst(this).newAst(this).pushIgnoredNodes(word, wordEnd);
   },
 
   baseV2Word_base(base) {
-    return grabAst(this).newAst(this).setKind("leaf").pushIgnoredNodes(base);
+    return grabAst(this).newAst(this).pushIgnoredNodes(base);
   },
 
   baseV2Word_baseV2Number(number) {
     return grabAst(this)
       .newAst(this)
-      .setKind("leaf")
       .pushIgnoredNodes(number)
-      .setSourceViewDecoder("number", (v) => ({ number: +v }));
+      .setLeafViewDecoder("number", (v) => ({ number: +v }));
   },
 };
