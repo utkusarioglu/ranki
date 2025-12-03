@@ -1,0 +1,52 @@
+{
+  "name": "@dqm/dqm-v2-demo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@dqm/package-dqm-v2": "workspace:^",
+    "@dqm/plugin-base-v2": "workspace:^",
+    "@dqm/plugin-frame-v2": "workspace:^",
+    "@dqm/plugin-frame-v2-code": "workspace:^",
+    "@dqm/plugin-params-v2": "workspace:^",
+    "@mantine/code-highlight": "^8.3.9",
+    "@mantine/core": "^8.3.9",
+    "@mantine/hooks": "^8.3.9",
+    "highlight.js": "^11.11.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "shiki": "^3.19.0",
+    "yaml": "^2.8.2",
+    "zustand": "^5.0.9"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/plugin-proposal-decorators": "^7.28.0",
+    "@babel/preset-typescript": "^7.28.5",
+    "@dqm/package-dqm-api-v2": "workspace:^",
+    "@eslint/js": "^9.39.1",
+    "@rollup/plugin-babel": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@types/babel__core": "^7",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "postcss": "^8.5.6",
+    "postcss-preset-mantine": "^1.18.0",
+    "postcss-simple-vars": "^7.0.1",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^7.2.4"
+  }
+}
