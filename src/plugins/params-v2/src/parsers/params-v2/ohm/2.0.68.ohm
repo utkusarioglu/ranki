@@ -52,8 +52,8 @@ ParamsV2 <: BaseV2 {
   paramsV2Values = paramsV2ValueItem (sBaseV2Clearance paramsV2ValueItem)*
 
   paramsV2ValueItem = 
-    | hQuoted<quoteSingle>
-    | hQuoted<quoteDouble>
+    | hQuoted<tBaseV2QuoteSingle>
+    | hQuoted<tBaseV2QuoteDouble>
     | paramsV2ValueItemPrimitive
     
   hQuoted<q> = q hQuotedContent<q>* q
@@ -62,7 +62,7 @@ ParamsV2 <: BaseV2 {
     | ~q any --content
 
   paramsV2ValueItemPrimitive =
-    | number --number
+    | baseV2Number --number
     | caseInsensitive<"true"> --true
     | caseInsensitive<"false"> --false
     | &(upper+ sBaseV2Clearance) upper+ --uppercase

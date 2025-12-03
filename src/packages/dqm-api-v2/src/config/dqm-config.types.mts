@@ -1,11 +1,16 @@
 import type { DqmGrammarTokens } from "../plugins/grammar/grammar.types.mjs";
+import type { ConfigEntryCode } from "./i-config.types.mjs";
 
 type DqmStages = "ast" | "validate" | "transform";
 
-type DqmPluginCode = string;
+export type DqmPluginName = string & { type?: "DqmPluginName" };
 
 export type DqmPluginsTokens = Record<string, DqmGrammarTokens>;
 export type DqmPluginsConfig = Record<string, any>;
+
+export type DqmPluginVersion = string & { type?: "DqmPluginVersion" };
+
+export type DqmConfigPack = Record<ConfigEntryCode, DqmConfig>;
 
 export type DqmPluginsConfigDefaults = {
   tokens: DqmPluginsTokens;
@@ -21,8 +26,8 @@ export type DqmPluginsConfigDefaults = {
 export interface DqmConfig {
   stage: DqmStages;
   plugins: {
-    standards: DqmPluginCode[];
-    requested: DqmPluginCode[];
+    standards: DqmPluginName[];
+    requested: DqmPluginName[];
     config: DqmPluginsConfig;
   };
   grammar: {

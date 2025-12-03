@@ -1,15 +1,15 @@
 FrameV2 <: ParamsV2 {
-  rootBlock := ...
+  baseV2RootBlock := ...
 
-  block :=
+  baseV2Block :=
     | sBaseV2Indentation frameV2 sBaseV2WasteInline &(nl | end) --frameV2 
     | ...
     
-  word :=
+  baseV2Word :=
     | frameV2 --frameV2
     | ...
 
-  paramValueItem :=
+  paramsV2ValueItem :=
     | frameV2 --frameV2
     | ...
   
@@ -26,8 +26,8 @@ FrameV2 <: ParamsV2 {
     | (~frameV2PayloadPlainIllegal any)+ --fallback
   
   frameV2PayloadSectionItem = 
-    | frameV2 whitespace
-    | frameV2PayloadPlain whitespace
+    | frameV2 sBaseV2Whitespace
+    | frameV2PayloadPlain sBaseV2Whitespace
   
   frameV2PayloadSection = frameV2PayloadSectionItem+
 
@@ -40,7 +40,7 @@ FrameV2 <: ParamsV2 {
   // !FIX this would break sBaseV2WasteInlineth nested pauses
   frameV2PausedPayload = (~(frameV2PauseEnd | frameV2End) any)+
   
-  frameV2ChainList = paramKey (clearance paramKey)*
+  frameV2ChainList = paramsV2Key (sBaseV2Clearance paramsV2Key)*
   
   frameV2Payload = 
     | sBaseV2WasteInline frameV2PauseList --P
@@ -56,11 +56,11 @@ FrameV2 <: ParamsV2 {
   frameV2FrameConfigFp =
     |   sBaseV2WasteInline 
       frameV2ChainList sBaseV2WasteInline 
-      v2ParamListBlockContainer sBaseV2WasteInline
+      paramsV2ParamListBlockContainer sBaseV2WasteInline
         tFrameV2SeparatorParam?  --F
     |   sBaseV2WasteInline 
       frameV2ChainList sBaseV2WasteInline 
-      v2ParamListInlineContainer sBaseV2WasteInline 
+      paramsV2ParamListInlineContainer sBaseV2WasteInline 
         tFrameV2SeparatorParam? --f
 
   frameV2FrameConfigP = 

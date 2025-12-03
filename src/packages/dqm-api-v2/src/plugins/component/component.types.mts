@@ -1,3 +1,4 @@
+import type { DqmPluginVersion } from "../../export.types.mjs";
 import type { Alias, Chain, IdSummary } from "./id/id.types.mjs";
 import type { IParam, ParamType, ParamValue } from "./params/param.types.mjs";
 
@@ -6,7 +7,7 @@ export interface IDqmComponent {
   meta: {
     id: IdSummary;
     description: string;
-    version: string;
+    version: DqmPluginVersion;
   };
   stages: {
     preprocessing?: (v: string) => string;

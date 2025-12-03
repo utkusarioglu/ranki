@@ -126,19 +126,18 @@ export class Config implements IConfig {
           base = objs[0];
           break;
         case "array-populated":
-          base = base.map((_: any, i: number) =>
-            this.buildLevel(
-              [path, i].join("."),
-              objs.map((v) => v[i]),
-            ),
-          );
+          base = [
+            ...base,
+            // !FIX I think this is wrong. array children aren't merged and maybe they should be
+            ...curr,
+          ];
           break;
         case "kv-populated":
           base = Object.keys(base).reduce((a, k) => {
             // @ts-ignore
             a[k] = this.buildLevel(
               [path, k].join("."),
-              objs.map((o) => o[k]),
+              objs.map((o) => o[k]).filter((v) => v !== undefined),
             );
             return a;
           }, {});
@@ -147,6 +146,17 @@ export class Config implements IConfig {
           throw new DqmError("UNRESOLVED_TYPE", { curr, path });
       }
     }
+
+    // if (path.startsWith(".plugins.requested")) {
+    //   console.log(
+    //     "--",
+    //     path,
+    //     JSON.stringify(objs, null, 2),
+    //     "\n",
+    //     base,
+    //     "\n\n",
+    //   );
+    // }
     return base;
   }
 

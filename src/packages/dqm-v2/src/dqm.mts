@@ -1,11 +1,11 @@
 import { Libs } from "./libs/libs.mjs";
 import type {
   DqmParseInput,
-  DqmConfig,
   IPlugins,
   IDqmPlugin,
   IAstNode,
   CommonTransportsConstructorParams,
+  DqmConfigPack,
 } from "@dqm/package-dqm-api-v2";
 import { DEFAULT_CONFIG } from "./constants.mjs";
 import { AstNode } from "./nodes/ast/ast-node.mjs";
@@ -15,12 +15,18 @@ export class Dqm {
   private plugins: IPlugins = new Libs();
   private config = new Config();
 
-  constructor(configs: Record<string, DqmConfig>, plugins: IDqmPlugin[]) {
+  /**
+   * @dev
+   * #1 I'm not happy with DEFAULT_CONFIG being mutated twice. Correct config
+   * shape would allow defining these values at once
+   */
+  constructor(configs: DqmConfigPack, plugins: IDqmPlugin[]) {
     plugins.forEach((plugin) => {
       this.plugins.addPlugin(plugin);
     });
     const pluginDefaults =
       this.plugins.getGrammarDefaultConfigs(DEFAULT_CONFIG);
+    // #1
     DEFAULT_CONFIG.plugins.config = pluginDefaults.config;
     DEFAULT_CONFIG.grammar.tokens = pluginDefaults.tokens;
     this.config.pushConfig("default", DEFAULT_CONFIG);

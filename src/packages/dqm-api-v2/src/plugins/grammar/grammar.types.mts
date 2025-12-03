@@ -1,12 +1,16 @@
-import type { DqmConfig } from "../../config/dqm-config.types.mjs";
+import type {
+  DqmConfig,
+  DqmPluginName,
+  DqmPluginVersion,
+} from "../../config/dqm-config.types.mjs";
 import type { IAstNodeActionDict } from "../../export.types.mjs";
 
 export interface IDqmPluginGrammar<ConfigShape = {}> {
   type: "grammar";
   meta: {
-    name: string;
+    name: DqmPluginName;
     description: string;
-    version: string;
+    version: DqmPluginVersion;
   };
   dependencies: string[];
   tokenizer: () => DqmGrammarTokens;

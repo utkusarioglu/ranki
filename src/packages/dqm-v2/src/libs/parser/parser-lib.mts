@@ -8,6 +8,7 @@ import type {
   DqmPluginsConfigDefaults,
   DqmConfig,
   IAstNodeContext,
+  DqmPluginName,
 } from "@dqm/package-dqm-api-v2";
 import { DqmError } from "@dqm/package-utils";
 import type { ILibParser, T, Criteria } from "./parser-lib.types.mjs";
@@ -15,7 +16,8 @@ import { ParserHash, type ParserHashString } from "./hash.mjs";
 import { expandDependencies, topologicalSort } from "./utils.mjs";
 import { buildGrammar, compileOhmActionDicts } from "./grammar.mjs";
 
-type GrammarName = string & { type?: "GrammarName" };
+type GrammarName = DqmPluginName & { subtype?: "GrammarName" };
+
 export type GrammarActionsDict = Record<GrammarName, ActionsDictRecord>;
 
 export class ParserLib implements ILibParser {

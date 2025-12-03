@@ -7,6 +7,7 @@ import type {
   CpsDefinition,
   IAstNode,
   CommonTransportsConstructorParams,
+  DqmConfig,
 } from "@dqm/package-dqm-api-v2";
 import { Id } from "../../id/id.mjs";
 import { Params } from "../param/params.mjs";
@@ -60,10 +61,12 @@ export class Cps extends CommonTransports implements ICps {
   }
 
   parse(input: CpxParseInput): IAstNode {
+    const activeConfig = this.getConfig().getConfig<DqmConfig>(MERGE_TARGET);
+    console.log({ order: this.getConfig().getOrder() });
     // TODO
     const { parse } = this.getPlugins().getParser(
       "NOT_SURE_IF_THIS_IS_NEEDED",
-      this.getConfig().getConfig(MERGE_TARGET),
+      activeConfig,
     );
     // TODO
     const ast = this.cpx.getRootAst();

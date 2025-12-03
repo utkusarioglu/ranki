@@ -15,7 +15,18 @@ const filePath = path.join(repoRoot, "assets/example.dqm");
 const file = fs.readFileSync(filePath).toString();
 
 export function main(raw: string) {
-  const dqm = new Dqm({}, [baseV2, frameV2, paramsV2]);
+  const dqm = new Dqm(
+    {
+      // @ts-ignore it expects the entire object
+      console: {
+        // @ts-ignore it expects the entire object
+        plugins: {
+          requested: ["ParamsV2", "FrameV2"],
+        },
+      },
+    },
+    [baseV2, frameV2, paramsV2],
+  );
   try {
     const res = dqm.parse(raw);
     const sanitized = sanitize(res);
