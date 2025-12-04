@@ -1,0 +1,5 @@
+@use "@blueprintjs/core/lib/scss/variables" as b;
+
+.root {
+  background-color: b.$pt-dark-app-background-color;
+}

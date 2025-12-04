@@ -5,35 +5,61 @@ import type {
   AstSourceView,
 } from "@dqm/package-dqm-api-v2";
 
-type Sanitized = {
+type Sanitized = Partial<{
   creator: CreatorName;
   source: AstSourceString | AstSourceView<any>;
   idList: string;
   subtree?: Sanitized[];
-  CHILDREN?: Sanitized[];
-};
-export function sanitize(node: IAstNode): Sanitized {
-  const children = node.getChildrenNodes().map((n) => sanitize(n));
-  const subtree = node.getSubtreeNodes().map((n) => sanitize(n));
-  // const subtree = subtreeNodes.reduce(
-  //   (a, n, i) => (
-  //     // @ts-ignore
-  //     (a[i] = sanitize(n)), a
-  //   ),
-  //   {},
-  // );
-  const source =
-    node.getKind() === "leaf" ? node.getLeafView() : node.getSourceString();
+  children?: Sanitized[];
+}>;
 
-  return {
-    creator: node.getCreator(),
-    idList: node
-      .getCpx()
-      .getIdList()
-      .map((v) => v.join("."))
-      .join(" | "),
-    source,
-    ...(subtree.length ? { subtree } : {}),
-    ...(children.length ? { CHILDREN: children } : {}),
-  };
+export type SanitizationFeature =
+  | "creator"
+  | "idList"
+  | "subtree"
+  | "children"
+  | "source";
+
+export function sanitize(node: IAstNode, features: string[]): Sanitized {
+  const children = node.getChildrenNodes().map((n) => sanitize(n, features));
+  const subtree = node.getSubtreeNodes().map((n) => sanitize(n, features));
+  const sanitized: Sanitized = {};
+
+  features.forEach((feature) => {
+    switch (feature) {
+      case "creator":
+        sanitized["creator"] = node.getCreator();
+        break;
+      case "idList":
+        sanitized["idList"] = node
+          .getCpx()
+          .getIdList()
+          .map((v) => v.join("."))
+          .join(" | ");
+        break;
+      case "children":
+        if (children.length) {
+          sanitized["children"] = children;
+        }
+        break;
+      case "subtree":
+        if (subtree.length) {
+          sanitized["subtree"] = subtree;
+        }
+        break;
+      case "source":
+        sanitized["source"] =
+          node.getKind() === "leaf"
+            ? node.getLeafView()
+            : {
+                type: "string",
+                raw: node.getSourceString(),
+              };
+        break;
+      default:
+        throw new Error(`Unrecognized sanitize feature: ${feature}`);
+    }
+  });
+
+  return sanitized;
 }

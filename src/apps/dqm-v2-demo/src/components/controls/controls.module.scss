@@ -1,0 +1,9 @@
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.codeInputTextArea {
+  min-height: 10em !important;
+  resize: none;
+}

@@ -1,0 +1,17 @@
+@use "vendor.scss";
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.fill-container {
+  min-width: 100%;
+  min-height: 100%;
+}
+
+* {
+  outline: none !important;
+}

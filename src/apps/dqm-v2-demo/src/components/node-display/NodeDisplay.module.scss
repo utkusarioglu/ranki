@@ -1,0 +1,28 @@
+.nodeRow {
+  overflow: hidden;
+}
+
+.withSource {
+  display: grid;
+  // grid-template-columns: 2fr minmax(200px, 30svw);
+  grid-template-columns: 1fr clamp(100px, 20svw, 300px);
+}
+
+.subtree {
+  // border-left: 1px solid blue;
+}
+
+.children {
+  border-top: 3px dashed black;
+  border-left: 3px dashed black;
+  padding-left: 0.5em;
+}
+
+.rawSourcePre {
+  background-color: black !important;
+}
+
+.rawSourceCode {
+  border: 1px solid gray;
+  box-decoration-break: clone;
+}
