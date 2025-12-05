@@ -6,9 +6,6 @@ interface UiStore {
   openDrawer: () => void;
   closeDrawer: () => void;
   setDrawerWidth: (width: number) => void;
-  // raw: string;
-  // parsed: string;
-  // setRaw: (raw: string) => void;
 }
 
 export const useUiStore = create<UiStore>((set) => ({

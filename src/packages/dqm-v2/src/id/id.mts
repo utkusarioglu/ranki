@@ -5,15 +5,25 @@ import type {
   IId,
   Position,
   IdSummary,
+  IdUnique,
 } from "@dqm/package-dqm-api-v2";
 import { DqmError, rejectValues, writeOnce } from "@dqm/package-utils";
 
 export class Id implements IId {
+  private unique: IdUnique;
   private map!: IIdMap;
   private position!: Position;
   private id!: Alias | Chain;
   private alias!: Alias;
   private chain!: Chain;
+
+  constructor() {
+    this.unique = Math.random().toString(36).slice(2);
+  }
+
+  getUnique(): IdUnique {
+    return this.unique;
+  }
 
   getSummary(): IdSummary {
     const aliases = this.alias ? [this.alias.join(".")] : [];

@@ -115,7 +115,11 @@ export class AstNode extends CommonTransports implements IAstNode {
    * @dev
    * #1 The check for leafDecoder relates to only leaves being able to define a
    * decoder. If a decoder is defined, the node shouldn't be able to become a
-   * parent. Which means, pushing nodes to the node shouldn't be possible. */
+   * parent. Which means, pushing nodes to the node shouldn't be possible.
+   *
+   * #2 This is experimental. The aim is to see if the `subtree` and `child`
+   * distinction can be made through the unique id of CPS
+   * */
   @dependsOn("kind")
   pushNodes(...nodeSetRaw: PushedNodeDefinition[]): this {
     assertArrayNotEmpty(nodeSetRaw, { method: "pushNodes" });
@@ -153,8 +157,12 @@ export class AstNode extends CommonTransports implements IAstNode {
       nodeSet.forEach(([relationship, nodes]) => {
         let method;
         switch (relationship) {
-          case "subtree":
+          case "node":
           case "child":
+          case "subtree":
+            // #2
+            // case "subtree":
+            // case "child":
             method = "node";
             break;
           default:
@@ -171,12 +179,27 @@ export class AstNode extends CommonTransports implements IAstNode {
           }
           this.orderNodes.push(parsed);
           switch (relationship) {
-            case "subtree":
-              this.subtreeNodes.push(parsed);
-              break;
+            // @ts-ignore
             case "child":
-              this.childrenNodes.push(parsed);
+            // @ts-ignore
+            case "subtree":
+            case "node":
+              if (
+                this.getCpx().getId().getUnique() ===
+                parsed.getCpx().getId().getUnique()
+              ) {
+                this.subtreeNodes.push(parsed);
+              } else {
+                this.childrenNodes.push(parsed);
+              }
               break;
+            // #2
+            // case "subtree":
+            //   this.subtreeNodes.push(parsed);
+            //   break;
+            // case "child":
+            //   this.childrenNodes.push(parsed);
+            //   break;
             case "space":
               this.spaceNodes.push(parsed);
               break;
@@ -335,6 +358,10 @@ export class AstNode extends CommonTransports implements IAstNode {
   pushIgnoredNodes(...nodes: ohm.Node[]): this {
     this.ignoredNodes.push(...nodes);
     return this;
+  }
+
+  getIgnoredNodes(): ohm.Node[] {
+    return this.ignoredNodes;
   }
 
   private prepareContext(): IAstNodeContext {

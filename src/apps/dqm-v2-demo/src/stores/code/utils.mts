@@ -38,11 +38,29 @@ function sanitizeAstSingle(
 
   features.forEach((feature) => {
     switch (feature) {
+      case "creationMethod":
+        sanitized[feature] = astNode.getCreationMethod();
+        break;
+      case "ignoredCount":
+        sanitized[feature] = astNode.getIgnoredNodes().length;
+        break;
+      case "kind":
+        sanitized[feature] = astNode.getKind();
+        break;
+      case "subtreeCount":
+        sanitized[feature] = astNode.getSubtreeNodes().length;
+        break;
+      case "childCount":
+        sanitized[feature] = astNode.getChildrenNodes().length;
+        break;
+      case "cpxUnique":
+        sanitized[feature] = astNode.getCpx().getId().getUnique();
+        break;
       case "creator":
-        sanitized["creator"] = astNode.getCreator();
+        sanitized[feature] = astNode.getCreator();
         break;
       case "idList":
-        sanitized["idList"] = astNode
+        sanitized[feature] = astNode
           .getCpx()
           .getIdList()
           .map((v) => v.join("."))
@@ -50,16 +68,16 @@ function sanitizeAstSingle(
         break;
       case "children":
         if (children.length) {
-          sanitized["children"] = children;
+          sanitized[feature] = children;
         }
         break;
       case "subtree":
         if (subtree.length) {
-          sanitized["subtree"] = subtree;
+          sanitized[feature] = subtree;
         }
         break;
       case "source":
-        sanitized["source"] =
+        sanitized[feature] =
           astNode.getKind() === "leaf"
             ? astNode.getLeafView()
             : {
@@ -135,5 +153,10 @@ export function createDefaults(relevant: ParseRelevant): CreateDefaultsReturn {
   };
 }
 
-export const wrapVisible = (all: AstSanitizationFeature[]) =>
-  all.map((id) => ({ visible: true, id }));
+export const wrapVisible = (
+  visible: AstSanitizationFeature[],
+  hidden: AstSanitizationFeature[],
+) => [
+  ...visible.map((id) => ({ visible: true, id })),
+  ...hidden.map((id) => ({ visible: false, id })),
+];

@@ -22,7 +22,14 @@ export interface IAstTokenNode {
   raw: string;
 }
 
-export type IAstNodeRelationship = "child" | "subtree" | "space" | "token";
+// export type IAstNodeRelationship = "child" | "subtree" | "space" | "token";
+export type IAstNodeRelationship =
+  | "child"
+  | "subtree"
+  | "space"
+  | "token"
+  | "node";
+// export type IAstNodeRelationship = "node" | "space" | "token";
 
 export type IAstNodeConstructor = new (
   plugins: IPlugins,
@@ -55,7 +62,6 @@ export type AstSourceViewDecoder<
 > = (input: string) => Custom;
 
 export interface IAstNode {
-  // setKind(kind: IAstNodeKind): this;
   getKind(): IAstNodeKind;
   newAst(ohm: ohm.Node): IAstNode;
   newParam(ohm: ohm.Node): IParam;
@@ -77,6 +83,7 @@ export interface IAstNode {
   setPrev(prev: IAstNode): this;
   setNext(next: IAstNode): this;
   setRelationship(relationship: IAstNodeRelationship): this;
+  getIgnoredNodes(): ohm.Node[];
   /**
    * Defines the method in the action dictionary that was called to create this node
    */

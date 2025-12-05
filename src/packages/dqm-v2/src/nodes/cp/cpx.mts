@@ -9,17 +9,24 @@ import type {
   Audience,
   IAstNode,
   ChainList,
+  IId,
 } from "@dqm/package-dqm-api-v2";
 import { DqmError, dependsOn, rejectValues } from "@dqm/package-utils";
 import { ALL_AUDIENCES } from "../param/param.constants.mjs";
 import { Cps } from "./cps.mjs";
 import { CommonTransports } from "../common-transports.mjs";
+import { Id } from "../../id/id.mjs";
 
 export class Cpx extends CommonTransports implements ICpx {
+  private id = new Id();
   private parent!: ICpx;
   private params!: IParam[];
   private cps: ICps[] = [];
   private rootAst!: IAstNode;
+
+  getId(): IId {
+    return this.id;
+  }
 
   getChainList(): ChainList {
     return this.cps.map((cps) => cps.getId().getChain());

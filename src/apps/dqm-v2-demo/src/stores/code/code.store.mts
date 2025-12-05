@@ -44,6 +44,39 @@ hi
 ]
     `.trim() + "\n",
   },
+  {
+    icon: "code",
+    title: "Nested Code Block",
+    description: "Basic code block",
+    raw:
+      `
+[code
+hi
+
+  [code
+  hello [code|yees]
+  ]
+]
+    `.trim() + "\n",
+  },
+  {
+    icon: "code",
+    title: "Code, text, number",
+    description: "Mix of nested code, text and number",
+    raw: `
+hello 123 h!
+
+[code
+hi
+
+  [code
+  hello [code|yees]
+  ]
+]
+
+bunny
+    `.trim(),
+  },
 ];
 
 export const useCodeStore = create<CodeStore>((set) => ({
@@ -51,9 +84,18 @@ export const useCodeStore = create<CodeStore>((set) => ({
 
   ...createDefaults({
     inputs,
-    astDragProps: wrapVisible(["creator", "idList"]),
-    astNoDragProps: wrapVisible(["source"]),
-    astLineageProps: wrapVisible(["children", "subtree"]),
+    astDragProps: wrapVisible(
+      ["creator", "idList", "kind"],
+      [
+        "childCount",
+        "cpxUnique",
+        "creationMethod",
+        "ignoredCount",
+        "subtreeCount",
+      ],
+    ),
+    astNoDragProps: wrapVisible(["source"], []),
+    astLineageProps: wrapVisible(["children", "subtree"], []),
   }),
 
   setAllInputs: (dqms: DqmRecord) =>

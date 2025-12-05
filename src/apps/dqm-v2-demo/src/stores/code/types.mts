@@ -8,14 +8,23 @@ import type {
   DqmParseInputString,
   DqmRecord,
   DqmParseInputStructured,
+  IdUnique,
+  IAstNodeKind,
+  CreationMethod,
 } from "@dqm/package-dqm-api-v2";
 
 export type SanitizedNode = Partial<{
+  cpxUnique: IdUnique;
   creator: CreatorName;
   source: AstSourceString | AstSourceView<any>;
   idList: string;
+  childCount: number;
+  subtreeCount: number;
+  ignoredCount: number;
   subtree?: SanitizedNode[];
   children?: SanitizedNode[];
+  kind: IAstNodeKind;
+  creationMethod: CreationMethod;
 }>;
 
 export type SanitizedAst = {
@@ -23,12 +32,7 @@ export type SanitizedAst = {
   sanitized: SanitizedNode;
 };
 
-export type AstSanitizationFeature =
-  | "creator"
-  | "idList"
-  | "subtree"
-  | "children"
-  | "source";
+export type AstSanitizationFeature = keyof SanitizedNode;
 
 export type CodeStoreProcessed = Pick<
   CodeStore,
