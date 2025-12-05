@@ -1,5 +1,6 @@
 import {
   Button,
+  InputGroup,
   TextArea,
   H3,
   FormGroup,
@@ -10,7 +11,7 @@ import {
   type TabId,
   Label,
 } from "@blueprintjs/core";
-import { useCodeStore } from "../../stores/code.store.mts";
+import { useCodeStore } from "../../stores/code/code.store.mts";
 import { useUiStore } from "../../stores/ui.store.mts";
 import s from "./controls.module.scss";
 import type { BlueprintIcons_16Id } from "@blueprintjs/icons/lib/esm/generated/16px/blueprint-icons-16";
@@ -29,7 +30,7 @@ const TEXT_TEMPLATES: TextTemplates[] = [
     icon: "new-text-box",
     title: "Hello world",
     description: "Two words",
-    raw: "Hello Wordl",
+    raw: "Hello World",
   },
   {
     icon: "numerical",
@@ -117,18 +118,19 @@ const ObjectSanitizer = () => {
 const DqmInput = () => {
   const code = useCodeStore();
   return (
-    <FormGroup label="Code">
+    <FormGroup label="Theater">
+      <InputGroup />
       <TextArea
         className={s.codeInputTextArea}
         fill
         autoResize
-        onChange={(e) => code.setRaw(e.target.value)}
-        value={code.raw}
+        onChange={(e) => code.setTheaterDqms("default", e.target.value)}
+        value={code.inputs.dqms["default"]}
       />
       {TEXT_TEMPLATES.map(({ raw, title, description, icon }) => (
         <Button
           key={title}
-          onClick={() => code.setRaw(raw)}
+          onClick={() => code.setTheaterDqms("default", raw)}
           fill
           alignText="start"
         >

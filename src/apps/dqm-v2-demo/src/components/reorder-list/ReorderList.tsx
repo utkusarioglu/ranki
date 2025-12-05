@@ -1,8 +1,8 @@
 import { useRef, type FC, type RefObject } from "react";
-import { Card, Button, Text, Code } from "@blueprintjs/core";
+import { Card, Button, Code } from "@blueprintjs/core";
 import { useDrag, useDrop, DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useCodeStore, type CodeStore } from "../../stores/code.store.mts";
+import { useCodeStore } from "../../stores/code/code.store.mts";
 
 const ItemType = {
   ROW: "ROW",
@@ -126,62 +126,61 @@ const DraggableRow: FC<DraggableRowProps> = ({
 };
 
 interface EditableReorderListProps {
-  list: ArrayKeys<CodeStore>;
-  method: FunctionKeys<CodeStore>;
+  list: "dragProps" | "lineageProps" | "noDragProps";
+  method: "setDragFeature" | "setLineageFeature" | "setNoDragFeature";
   allowDragging: boolean;
 }
 
-// ANKI
+// @ts-expect-error ANKI
 type FunctionKeys<T> = {
   [K in keyof T]: T[K] extends (...args: any[]) => any ? K : never;
 }[keyof T];
 
-// ANKI
+// @ts-expect-error ANKI
 type ArrayKeys<T> = {
   [K in keyof T]: T[K] extends Array<any> ? K : never;
 }[keyof T];
 
 export const ReorderList: FC<EditableReorderListProps> = ({
-  list,
-  method,
+  list: listName,
+  method: methodName,
   allowDragging,
 }) => {
-  const code = useCodeStore();
+  const list = useCodeStore((s) => s[listName]);
+  const method = useCodeStore((s) => s[methodName]);
 
   const move = (from: number, to: number) => {
-    const newItems = code[list];
+    const newItems = list;
     const [removed] = newItems.splice(from, 1);
     newItems.splice(to, 0, removed);
-    code[method](newItems);
+    method(newItems);
   };
 
   const toggleVisibleFac = (index: number) => {
     return () => {
-      const newItems = [...code[list]];
+      const newItems = [...list];
       newItems[index] = {
         visible: !newItems[index].visible,
         id: newItems[index].id,
       };
-      code[method](newItems);
+      method(newItems);
     };
   };
 
   return (
     <DndProvider backend={HTML5Backend}>
-      {code[list]
-        // @ts-expect-error code[list] is not inferred
-        .map((item, i) => (
-          <DraggableRow
-            allowDragging={allowDragging}
-            key={i}
-            id={item.id}
-            index={i}
-            text={item.id}
-            move={move}
-            visible={item.visible}
-            toggleVisible={toggleVisibleFac(i)}
-          />
-        ))}
+      {list.map((item, i) => (
+        <DraggableRow
+          allowDragging={allowDragging}
+          key={i}
+          id={item.id}
+          index={i}
+          text={item.id}
+          move={move}
+          visible={item.visible}
+          toggleVisible={toggleVisibleFac(i)}
+        />
+      ))}
     </DndProvider>
   );
 };

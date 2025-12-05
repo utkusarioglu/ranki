@@ -2,11 +2,10 @@ import type { FC } from "react";
 import { YamlDisplay } from "../yaml-display/YamlDisplay";
 import style from "./NodeDisplay.module.scss";
 import { Pre, Code } from "@blueprintjs/core";
-
-type Node = Record<string, any> & { subtree: Node[]; children: Node[] };
+import type { SanitizedNode } from "../../stores/code/types.mts";
 
 interface NodeDisplayProps {
-  node: Node;
+  node: SanitizedNode;
   path: string;
   depth: number;
   index: number;
@@ -15,7 +14,7 @@ interface NodeDisplayProps {
 const DEPTH_STEP = 30;
 
 export const NodeDisplay: FC<NodeDisplayProps> = ({
-  node: { subtree, children, source, isChild, ...rest },
+  node: { subtree, children, source, ...rest },
   path,
   depth,
   index,

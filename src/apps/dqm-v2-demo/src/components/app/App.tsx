@@ -1,44 +1,9 @@
-import {
-  BlueprintProvider,
-  Button,
-  TextArea,
-  Drawer,
-  H3,
-  EntityTitle,
-  Text,
-  FormGroup,
-  H6,
-  H4,
-  H5,
-} from "@blueprintjs/core";
-import { useCodeStore } from "../../stores/code.store.mts";
+import { BlueprintProvider, Button, Drawer, H1 } from "@blueprintjs/core";
+import { useCodeStore } from "../../stores/code/code.store.mts";
 import { useUiStore } from "../../stores/ui.store.mts";
 import s from "./app.module.scss";
 import { NodeDisplay } from "../node-display/NodeDisplay";
 import { Controls } from "../controls/Controls";
-
-// const TEXT_TEMPLATES = [
-//   {
-//     title: "Hello world",
-//     description: "Two words",
-//     raw: "Hello Wordl",
-//   },
-//   {
-//     title: "Integer",
-//     description: "Basic integer parsing",
-//     raw: "1 234",
-//   },
-//   {
-//     title: "Code block",
-//     description: "Basic code block",
-//     raw:
-//       `
-// [code
-// hi
-// ]
-//     `.trim() + "\n",
-//   },
-// ];
 
 function App() {
   const code = useCodeStore();
@@ -66,7 +31,12 @@ function App() {
             transitionProperty: "margin-left",
           }}
         >
-          <NodeDisplay node={code.sanitized} path="" depth={0} index={0} />
+          {Object.entries(code.processed.sanitized).map(([theater, node]) => (
+            <div key={theater}>
+              <H1>{theater}</H1>
+              <NodeDisplay node={node} path="" depth={0} index={0} />
+            </div>
+          ))}
         </div>
       </div>
     </BlueprintProvider>
