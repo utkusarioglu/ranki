@@ -3,7 +3,7 @@ import type {
   CreateDefaultsReturn,
   ParseRelevant,
   SanitizedNode,
-  SanitizationFeature,
+  AstSanitizationFeature,
   ParseResult,
   SanitizationProp,
   SanitizedAst,
@@ -16,7 +16,7 @@ import frameV2Code from "@dqm/plugin-frame-v2-code";
 
 export function sanitizeAst(
   parsed: DqmParseOutput,
-  features: SanitizationFeature[],
+  features: AstSanitizationFeature[],
 ): SanitizedAst[] {
   return parsed.map((p) => ({
     theater: p.theater,
@@ -78,12 +78,12 @@ function sanitizeAstSingle(
 export const filterIds = (...all: SanitizationProp[][]) =>
   all
     .map((a) => a.filter(({ visible }) => visible).map((v) => v.id))
-    .reduce((a, c) => [...a, ...c], [] as SanitizationFeature[]);
+    .reduce((a, c) => [...a, ...c], [] as AstSanitizationFeature[]);
 
 export function parseRaw({
-  dragProps,
-  noDragProps,
-  lineageProps,
+  astDragProps,
+  astNoDragProps,
+  astLineageProps,
   inputs,
 }: ParseRelevant): ParseResult {
   const dqm = new Dqm(
@@ -99,7 +99,11 @@ export function parseRaw({
     [baseV2, frameV2, paramsV2, frameV2Code],
   );
   try {
-    const filteredIds = filterIds(dragProps, lineageProps, noDragProps);
+    const filteredIds = filterIds(
+      astDragProps,
+      astLineageProps,
+      astNoDragProps,
+    );
     const parsed = dqm.parse(inputs);
     const sanitizedAst = sanitizeAst(parsed, filteredIds);
     return {
@@ -131,5 +135,5 @@ export function createDefaults(relevant: ParseRelevant): CreateDefaultsReturn {
   };
 }
 
-export const wrapVisible = (all: SanitizationFeature[]) =>
+export const wrapVisible = (all: AstSanitizationFeature[]) =>
   all.map((id) => ({ visible: true, id }));

@@ -51,9 +51,9 @@ export const useCodeStore = create<CodeStore>((set) => ({
 
   ...createDefaults({
     inputs,
-    dragProps: wrapVisible(["creator", "idList"]),
-    noDragProps: wrapVisible(["source"]),
-    lineageProps: wrapVisible(["children", "subtree"]),
+    astDragProps: wrapVisible(["creator", "idList"]),
+    astNoDragProps: wrapVisible(["source"]),
+    astLineageProps: wrapVisible(["children", "subtree"]),
   }),
 
   setAllInputs: (dqms: DqmRecord) =>
@@ -64,9 +64,9 @@ export const useCodeStore = create<CodeStore>((set) => ({
       };
       return createDefaults({
         inputs,
-        dragProps: state.dragProps,
-        lineageProps: state.lineageProps,
-        noDragProps: state.noDragProps,
+        astDragProps: state.astDragProps,
+        astLineageProps: state.astLineageProps,
+        astNoDragProps: state.astNoDragProps,
       });
     }),
 
@@ -76,38 +76,44 @@ export const useCodeStore = create<CodeStore>((set) => ({
       inputs[index].dqm = dqm;
       return createDefaults({
         inputs,
-        dragProps: state.dragProps,
-        lineageProps: state.lineageProps,
-        noDragProps: state.noDragProps,
+        astDragProps: state.astDragProps,
+        astLineageProps: state.astLineageProps,
+        astNoDragProps: state.astNoDragProps,
       });
     }),
 
   setDragFeatureList: (dragProps: SanitizationProp[]) =>
-    set(({ lineageProps, noDragProps, parsed }) => {
-      return {
-        dragProps,
-        sanitizedAst: sanitizeAst(
-          parsed,
-          filterIds(dragProps, lineageProps, noDragProps),
-        ),
-      };
-    }),
+    set(
+      ({
+        astLineageProps: lineageProps,
+        astNoDragProps: noDragProps,
+        parsed,
+      }) => {
+        return {
+          astDragProps: dragProps,
+          sanitizedAst: sanitizeAst(
+            parsed,
+            filterIds(dragProps, lineageProps, noDragProps),
+          ),
+        };
+      },
+    ),
 
   setLineageFeatureList: (lineageProps: SanitizationProp[]) =>
-    set(({ dragProps, noDragProps, parsed }) => ({
-      lineageProps,
+    set(({ astDragProps, astNoDragProps, parsed }) => ({
+      astLineageProps: lineageProps,
       sanitizedAst: sanitizeAst(
         parsed,
-        filterIds(dragProps, lineageProps, noDragProps),
+        filterIds(astDragProps, lineageProps, astNoDragProps),
       ),
     })),
 
   setNoDragFeatureList: (noDragProps: SanitizationProp[]) =>
-    set(({ dragProps, lineageProps, parsed }) => ({
-      noDragProps,
+    set(({ astDragProps, astLineageProps, parsed }) => ({
+      astNoDragProps: noDragProps,
       sanitizedAst: sanitizeAst(
         parsed,
-        filterIds(dragProps, lineageProps, noDragProps),
+        filterIds(astDragProps, astLineageProps, noDragProps),
       ),
     })),
 
@@ -120,9 +126,9 @@ export const useCodeStore = create<CodeStore>((set) => ({
       });
       return createDefaults({
         inputs,
-        dragProps: state.dragProps,
-        lineageProps: state.lineageProps,
-        noDragProps: state.noDragProps,
+        astDragProps: state.astDragProps,
+        astLineageProps: state.astLineageProps,
+        astNoDragProps: state.astNoDragProps,
       });
     }),
 
@@ -133,9 +139,9 @@ export const useCodeStore = create<CodeStore>((set) => ({
 
       return createDefaults({
         inputs,
-        dragProps: state.dragProps,
-        lineageProps: state.lineageProps,
-        noDragProps: state.noDragProps,
+        astDragProps: state.astDragProps,
+        astLineageProps: state.astLineageProps,
+        astNoDragProps: state.astNoDragProps,
       });
     }),
 
@@ -144,12 +150,11 @@ export const useCodeStore = create<CodeStore>((set) => ({
       const inputs = [...state.inputs];
       inputs[index].theater = theater;
 
-      console.log(inputs, index, theater);
       return createDefaults({
         inputs,
-        dragProps: state.dragProps,
-        lineageProps: state.lineageProps,
-        noDragProps: state.noDragProps,
+        astDragProps: state.astDragProps,
+        astLineageProps: state.astLineageProps,
+        astNoDragProps: state.astNoDragProps,
       });
     }),
 }));

@@ -23,7 +23,7 @@ export type SanitizedAst = {
   sanitized: SanitizedNode;
 };
 
-export type SanitizationFeature =
+export type AstSanitizationFeature =
   | "creator"
   | "idList"
   | "subtree"
@@ -45,9 +45,9 @@ export interface TextTemplate {
 export interface CodeStore {
   textTemplates: TextTemplate[];
 
-  dragProps: SanitizationProp[];
-  lineageProps: SanitizationProp[];
-  noDragProps: SanitizationProp[];
+  astDragProps: SanitizationProp[];
+  astLineageProps: SanitizationProp[];
+  astNoDragProps: SanitizationProp[];
 
   inputs: DqmParseInputStructured;
   parsed: DqmParseOutput;
@@ -78,20 +78,20 @@ export type ParseResult = ParseResultSuccess | ParseResultFail;
 
 export type ParseRelevant = Pick<
   CodeStore,
-  "dragProps" | "lineageProps" | "noDragProps" | "inputs"
+  "astDragProps" | "astLineageProps" | "astNoDragProps" | "inputs"
 >;
 
 export type CreateDefaultsReturn = Pick<
   CodeStore,
-  | "dragProps"
-  | "lineageProps"
-  | "noDragProps"
+  | "astDragProps"
+  | "astLineageProps"
+  | "astNoDragProps"
   | "inputs"
   | "parsed"
   | "sanitizedAst"
 >;
 
 export interface SanitizationProp {
-  id: SanitizationFeature;
+  id: AstSanitizationFeature;
   visible: boolean;
 }

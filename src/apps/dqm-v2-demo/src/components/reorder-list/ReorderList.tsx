@@ -128,7 +128,7 @@ const DraggableRow: FC<DraggableRowProps> = ({
 };
 
 interface EditableReorderListProps {
-  list: "dragProps" | "lineageProps" | "noDragProps";
+  list: "astDragProps" | "astLineageProps" | "astNoDragProps";
   method:
     | "setDragFeatureList"
     | "setLineageFeatureList"

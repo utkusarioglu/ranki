@@ -104,16 +104,20 @@ const AstSanitizerOptions = () => {
   return (
     <>
       <Label>Node Properties</Label>
-      <ReorderList list="dragProps" method="setDragFeatureList" allowDragging />
+      <ReorderList
+        list="astDragProps"
+        method="setDragFeatureList"
+        allowDragging
+      />
       <Label>Linage Properties</Label>
       <ReorderList
-        list="lineageProps"
+        list="astLineageProps"
         method="setLineageFeatureList"
         allowDragging
       />
       <Label>Other Properties</Label>
       <ReorderList
-        list="noDragProps"
+        list="astNoDragProps"
         method="setNoDragFeatureList"
         allowDragging={false}
       />
