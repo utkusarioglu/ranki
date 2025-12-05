@@ -4,10 +4,6 @@ import { useDrag, useDrop, DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useCodeStore } from "../../stores/code/code.store.mts";
 
-const ItemType = {
-  ROW: "ROW",
-};
-
 export interface DraggableRowProps {
   type: string;
   id: string;

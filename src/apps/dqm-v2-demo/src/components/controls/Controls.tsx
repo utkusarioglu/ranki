@@ -64,6 +64,43 @@ export const Controls = () => {
 
 const ViewOptions = () => {
   const TABS_PARENT_ID = useId();
+  const [selectedTabId, setSelectedTabId] = useState<TabId>("render");
+  return (
+    <>
+      <Tabs
+        id={TABS_PARENT_ID}
+        onChange={setSelectedTabId}
+        selectedTabId={selectedTabId}
+        fill
+      >
+        <Tab id="render" title="Render" />
+        <Tab id="graph" title="Graph" />
+        <Tab id="node" title="Node" />
+      </Tabs>
+      <TabPanel
+        id="render"
+        selectedTabId={selectedTabId}
+        parentId={TABS_PARENT_ID}
+        panel={<NotYet />}
+      />
+      <TabPanel
+        id="graph"
+        selectedTabId={selectedTabId}
+        parentId={TABS_PARENT_ID}
+        panel={<NotYet />}
+      />
+      <TabPanel
+        id="node"
+        selectedTabId={selectedTabId}
+        parentId={TABS_PARENT_ID}
+        panel={<NodeOptions />}
+      />
+    </>
+  );
+};
+
+const NodeOptions = () => {
+  const TABS_PARENT_ID = useId();
   const [selectedTabId, setSelectedTabId] = useState<TabId>("ast");
 
   return (
@@ -75,6 +112,8 @@ const ViewOptions = () => {
         fill
       >
         <Tab id="ast" title="Ast" />
+        <Tab id="cpx" title="Cpx" />
+        <Tab id="cps" title="Cps" />
         <Tab id="validation" title="Validation" />
         <Tab id="transform" title="Transform" />
       </Tabs>
@@ -85,16 +124,28 @@ const ViewOptions = () => {
         panel={<AstSanitizerOptions />}
       />
       <TabPanel
+        id="cpx"
+        selectedTabId={selectedTabId}
+        parentId={TABS_PARENT_ID}
+        panel={<NotYet />}
+      />
+      <TabPanel
+        id="cps"
+        selectedTabId={selectedTabId}
+        parentId={TABS_PARENT_ID}
+        panel={<NotYet />}
+      />
+      <TabPanel
         id="validation"
         selectedTabId={selectedTabId}
         parentId={TABS_PARENT_ID}
-        panel={<ValidationSanitizerOptions />}
+        panel={<NotYet />}
       />
       <TabPanel
         id="transform"
         selectedTabId={selectedTabId}
         parentId={TABS_PARENT_ID}
-        panel={<TransformSanitizerOptions />}
+        panel={<NotYet />}
       />
     </>
   );
@@ -125,11 +176,7 @@ const AstSanitizerOptions = () => {
   );
 };
 
-const ValidationSanitizerOptions = () => {
-  return <p>too early</p>;
-};
-
-const TransformSanitizerOptions = () => {
+const NotYet = () => {
   return <p>too early</p>;
 };
 
