@@ -1,15 +1,12 @@
-import type {
-  DqmParseOutput,
-  DqmParseTheater,
-  IAstNode,
-} from "@dqm/package-dqm-api-v2";
+import type { DqmParseOutput, IAstNode } from "@dqm/package-dqm-api-v2";
 import type {
   CreateDefaultsReturn,
   ParseRelevant,
   SanitizedNode,
   SanitizationFeature,
   ParseResult,
-  Prop,
+  SanitizationProp,
+  SanitizedAst,
 } from "./types.mts";
 import { Dqm } from "@dqm/package-dqm-v2";
 import baseV2 from "@dqm/plugin-base-v2";
@@ -17,25 +14,26 @@ import frameV2 from "@dqm/plugin-frame-v2";
 import paramsV2 from "@dqm/plugin-params-v2";
 import frameV2Code from "@dqm/plugin-frame-v2-code";
 
-export function sanitizeAll(
+export function sanitizeAst(
   parsed: DqmParseOutput,
   features: SanitizationFeature[],
-): Record<DqmParseTheater, SanitizedNode> {
-  return Object.fromEntries(
-    Object.entries(parsed).map(([theater, dqm]) => [
-      theater,
-      sanitizeSingle(dqm, features),
-    ]),
-  );
+): SanitizedAst[] {
+  return parsed.map((p) => ({
+    theater: p.theater,
+    sanitized: sanitizeAstSingle(p.ast, features),
+  }));
 }
 
-function sanitizeSingle(astNode: IAstNode, features: string[]): SanitizedNode {
+function sanitizeAstSingle(
+  astNode: IAstNode,
+  features: string[],
+): SanitizedNode {
   const children = astNode
     .getChildrenNodes()
-    .map((n) => sanitizeSingle(n, features));
+    .map((n) => sanitizeAstSingle(n, features));
   const subtree = astNode
     .getSubtreeNodes()
-    .map((n) => sanitizeSingle(n, features));
+    .map((n) => sanitizeAstSingle(n, features));
   const sanitized: SanitizedNode = {};
 
   features.forEach((feature) => {
@@ -77,7 +75,7 @@ function sanitizeSingle(astNode: IAstNode, features: string[]): SanitizedNode {
   return sanitized;
 }
 
-export const filterIds = (...all: Prop[][]) =>
+export const filterIds = (...all: SanitizationProp[][]) =>
   all
     .map((a) => a.filter(({ visible }) => visible).map((v) => v.id))
     .reduce((a, c) => [...a, ...c], [] as SanitizationFeature[]);
@@ -103,13 +101,13 @@ export function parseRaw({
   try {
     const filteredIds = filterIds(dragProps, lineageProps, noDragProps);
     const parsed = dqm.parse(inputs);
-    const sanitized = sanitizeAll(parsed, filteredIds);
+    const sanitizedAst = sanitizeAst(parsed, filteredIds);
     return {
       state: "success",
       data: {
-        ...inputs,
+        inputs,
         parsed,
-        sanitized,
+        sanitizedAst,
       },
     };
   } catch (e) {
@@ -128,7 +126,8 @@ export function createDefaults(relevant: ParseRelevant): CreateDefaultsReturn {
   }
   return {
     ...relevant,
-    processed: processed.data,
+    ...processed.data,
+    // processed: processed.data,
   };
 }
 

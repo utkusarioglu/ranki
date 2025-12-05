@@ -9,6 +9,7 @@ const ItemType = {
 };
 
 export interface DraggableRowProps {
+  type: string;
   id: string;
   index: number;
   text: string;
@@ -65,6 +66,7 @@ const DragCard: FC<DragCardProps> = ({
 };
 
 const DraggableRow: FC<DraggableRowProps> = ({
+  type,
   id,
   index,
   move,
@@ -77,8 +79,8 @@ const DraggableRow: FC<DraggableRowProps> = ({
 
   // --- Drag source ---
   const [{ isDragging }, drag] = useDrag({
-    type: ItemType.ROW,
-    item: { id, index },
+    type,
+    item: () => ({ id, index }),
     canDrag: () => allowDragging,
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
@@ -87,7 +89,7 @@ const DraggableRow: FC<DraggableRowProps> = ({
 
   // --- Drop target ---
   const [, drop] = useDrop({
-    accept: ItemType.ROW,
+    accept: type,
     hover(item: any, monitor) {
       if (!ref.current) return;
 
@@ -127,7 +129,10 @@ const DraggableRow: FC<DraggableRowProps> = ({
 
 interface EditableReorderListProps {
   list: "dragProps" | "lineageProps" | "noDragProps";
-  method: "setDragFeature" | "setLineageFeature" | "setNoDragFeature";
+  method:
+    | "setDragFeatureList"
+    | "setLineageFeatureList"
+    | "setNoDragFeatureList";
   allowDragging: boolean;
 }
 
@@ -142,35 +147,35 @@ type ArrayKeys<T> = {
 }[keyof T];
 
 export const ReorderList: FC<EditableReorderListProps> = ({
-  list: listName,
-  method: methodName,
+  list,
+  method,
   allowDragging,
 }) => {
-  const list = useCodeStore((s) => s[listName]);
-  const method = useCodeStore((s) => s[methodName]);
+  const code = useCodeStore();
 
   const move = (from: number, to: number) => {
-    const newItems = list;
+    const newItems = code[list];
     const [removed] = newItems.splice(from, 1);
     newItems.splice(to, 0, removed);
-    method(newItems);
+    code[method](newItems);
   };
 
   const toggleVisibleFac = (index: number) => {
     return () => {
-      const newItems = [...list];
+      const newItems = [...code[list]];
       newItems[index] = {
         visible: !newItems[index].visible,
         id: newItems[index].id,
       };
-      method(newItems);
+      code[method](newItems);
     };
   };
 
   return (
     <DndProvider backend={HTML5Backend}>
-      {list.map((item, i) => (
+      {code[list].map((item, i) => (
         <DraggableRow
+          type={list}
           allowDragging={allowDragging}
           key={i}
           id={item.id}

@@ -7,7 +7,7 @@ import frameV2 from "@dqm/plugin-frame-v2";
 import paramsV2 from "@dqm/plugin-params-v2";
 import frameV2Code from "@dqm/plugin-frame-v2-code";
 import yaml from "yaml";
-import { sanitize } from "./sanitize.mjs";
+import { sanitizeSingle } from "./sanitize.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.join(dirname, "..");
@@ -16,6 +16,7 @@ const filePath = path.join(repoRoot, "assets/example.dqm");
 const file = fs.readFileSync(filePath).toString();
 
 export function main(raw: string) {
+  const FEATURES = ["idList", "creator", "source", "subtree", "children"];
   const dqm = new Dqm(
     {
       // @ts-ignore it expects the entire object
@@ -30,7 +31,10 @@ export function main(raw: string) {
   );
   try {
     const res = dqm.parse(raw);
-    const sanitized = sanitize(res);
+    const sanitized = res.map((n) => ({
+      theater: n.theater,
+      sanitized: sanitizeSingle(n.ast, FEATURES),
+    }));
     console.log(yaml.stringify(sanitized));
   } catch (e) {
     console.log((e as any).toString());

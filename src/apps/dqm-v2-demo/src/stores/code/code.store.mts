@@ -5,23 +5,50 @@ import type {
   DqmParseTheater,
   DqmRecord,
 } from "@dqm/package-dqm-api-v2";
-import type { CodeStore, Prop } from "./types.mts";
+import type { CodeStore, SanitizationProp, TextTemplate } from "./types.mts";
 import {
   createDefaults,
   filterIds,
-  sanitizeAll,
+  sanitizeAst,
   wrapVisible,
 } from "./utils.mts";
 
-const inputs: DqmParseInputStructured = {
-  dqms: {
-    default: "hello default bunny",
+const inputs: DqmParseInputStructured = [
+  {
+    theater: "default",
+    dqm: "hello default bunny",
   },
-  theater: "default",
-  role: "default",
-};
+];
+
+const TEXT_TEMPLATES: TextTemplate[] = [
+  {
+    icon: "new-text-box",
+    title: "Hello world",
+    description: "Two words",
+    raw: "Hello World",
+  },
+  {
+    icon: "numerical",
+    title: "Integer",
+    description: "Basic integer parsing",
+    raw: "1 234",
+  },
+  {
+    icon: "code",
+    title: "Code block",
+    description: "Basic code block",
+    raw:
+      `
+[code
+hi
+]
+    `.trim() + "\n",
+  },
+];
 
 export const useCodeStore = create<CodeStore>((set) => ({
+  textTemplates: TEXT_TEMPLATES,
+
   ...createDefaults({
     inputs,
     dragProps: wrapVisible(["creator", "idList"]),
@@ -29,7 +56,7 @@ export const useCodeStore = create<CodeStore>((set) => ({
     lineageProps: wrapVisible(["children", "subtree"]),
   }),
 
-  setAllDqms: (dqms: DqmRecord) =>
+  setAllInputs: (dqms: DqmRecord) =>
     set((state) => {
       const inputs = {
         ...state.inputs,
@@ -43,15 +70,66 @@ export const useCodeStore = create<CodeStore>((set) => ({
       });
     }),
 
-  setTheaterDqms: (theater: DqmParseTheater, dqm: DqmParseInputString) =>
+  setTheaterDqmByIndex: (index: number, dqm: DqmParseInputString) =>
     set((state) => {
-      const inputs = {
-        ...state.inputs,
-        dqms: {
-          ...state.inputs.dqms,
-          [theater]: dqm,
-        },
+      const inputs = [...state.inputs];
+      inputs[index].dqm = dqm;
+      return createDefaults({
+        inputs,
+        dragProps: state.dragProps,
+        lineageProps: state.lineageProps,
+        noDragProps: state.noDragProps,
+      });
+    }),
+
+  setDragFeatureList: (dragProps: SanitizationProp[]) =>
+    set(({ lineageProps, noDragProps, parsed }) => {
+      return {
+        dragProps,
+        sanitizedAst: sanitizeAst(
+          parsed,
+          filterIds(dragProps, lineageProps, noDragProps),
+        ),
       };
+    }),
+
+  setLineageFeatureList: (lineageProps: SanitizationProp[]) =>
+    set(({ dragProps, noDragProps, parsed }) => ({
+      lineageProps,
+      sanitizedAst: sanitizeAst(
+        parsed,
+        filterIds(dragProps, lineageProps, noDragProps),
+      ),
+    })),
+
+  setNoDragFeatureList: (noDragProps: SanitizationProp[]) =>
+    set(({ dragProps, lineageProps, parsed }) => ({
+      noDragProps,
+      sanitizedAst: sanitizeAst(
+        parsed,
+        filterIds(dragProps, lineageProps, noDragProps),
+      ),
+    })),
+
+  pushTheater: () =>
+    set((state) => {
+      const inputs = [...state.inputs];
+      inputs.push({
+        theater: "theater" + inputs.length,
+        dqm: "",
+      });
+      return createDefaults({
+        inputs,
+        dragProps: state.dragProps,
+        lineageProps: state.lineageProps,
+        noDragProps: state.noDragProps,
+      });
+    }),
+
+  removeTheaterByIndex: (index: number) =>
+    set((state) => {
+      const inputs = [...state.inputs];
+      inputs.splice(index, 1);
 
       return createDefaults({
         inputs,
@@ -61,41 +139,17 @@ export const useCodeStore = create<CodeStore>((set) => ({
       });
     }),
 
-  setDragFeature: (dragProps: Prop[]) =>
-    set(({ lineageProps, noDragProps, processed }) => {
-      return {
-        dragProps,
-        processed: {
-          ...processed,
-          sanitized: sanitizeAll(
-            processed.parsed,
-            filterIds(dragProps, lineageProps, noDragProps),
-          ),
-        },
-      };
+  setTheaterNameByIndex: (index: number, theater: DqmParseTheater) =>
+    set((state) => {
+      const inputs = [...state.inputs];
+      inputs[index].theater = theater;
+
+      console.log(inputs, index, theater);
+      return createDefaults({
+        inputs,
+        dragProps: state.dragProps,
+        lineageProps: state.lineageProps,
+        noDragProps: state.noDragProps,
+      });
     }),
-
-  setLineageFeature: (lineageProps: Prop[]) =>
-    set(({ dragProps, noDragProps, processed }) => ({
-      lineageProps,
-      processed: {
-        ...processed,
-        sanitized: sanitizeAll(
-          processed.parsed,
-          filterIds(dragProps, lineageProps, noDragProps),
-        ),
-      },
-    })),
-
-  setNoDragFeature: (noDragProps: Prop[]) =>
-    set(({ dragProps, lineageProps, processed }) => ({
-      noDragProps,
-      processed: {
-        ...processed,
-        sanitized: sanitizeAll(
-          processed.parsed,
-          filterIds(dragProps, lineageProps, noDragProps),
-        ),
-      },
-    })),
 }));

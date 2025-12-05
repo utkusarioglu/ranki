@@ -3,9 +3,15 @@ import type {
   DqmParseInput,
   IPlugins,
   IDqmPlugin,
-  IAstNode,
   CommonTransportsConstructorParams,
   DqmConfigPack,
+  DqmParseInputStructured,
+  DqmParseRole,
+  DqmParseTheater,
+  DqmParseInputString,
+  DqmParseOutput,
+  ChainList,
+  IParam,
 } from "@dqm/package-dqm-api-v2";
 import { DEFAULT_CONFIG } from "./constants.mjs";
 import { AstNode } from "./nodes/ast/ast-node.mjs";
@@ -35,30 +41,48 @@ export class Dqm {
     });
   }
 
-  private processInput(rawInputs: DqmParseInput) {
-    return typeof rawInputs !== "string"
+  private processInput(rawInputs: DqmParseInput): DqmParseInputStructured {
+    return Array.isArray(rawInputs)
       ? rawInputs
-      : {
-          inputs: {
-            default: rawInputs,
+      : [
+          {
+            theater: "default",
+            dqm: rawInputs,
           },
-          theater: "default",
-          role: "default",
-        };
+        ];
   }
 
-  parse(rawInputs: DqmParseInput): IAstNode {
+  parse(rawInputs: DqmParseInput): DqmParseOutput {
     const inputs = this.processInput(rawInputs);
+    const component: ChainList = [["base", "v2", "default"]];
+    const params: IParam[] = [];
     const transports: CommonTransportsConstructorParams = {
       plugins: this.plugins,
       config: this.config,
     };
-    const astNode = new AstNode(transports)
-      .setNature("synthetic")
-      .newCpx((cpx) => cpx.setParams([]).setIdList([["base", "v2", "default"]]))
-      .setDirection("block")
-      .getCpx()
-      .parse(inputs);
-    return astNode;
+    const parsed = inputs.map((input) => {
+      return {
+        theater: input.theater,
+        ast: new AstNode(transports)
+          .setNature("synthetic")
+          .newCpx((cpx) => cpx.setParams(params).setIdList(component))
+          .setDirection("block")
+          .getCpx()
+          .parse(input),
+      };
+    });
+
+    return parsed;
   }
 }
+
+// TODO this needs its own module
+// TODO dqm should import all the types necessary for a consumer. The consumer shouldn't have to know about the api package.
+export type {
+  DqmParseTheater,
+  DqmParseRole,
+  DqmParseInput,
+  DqmParseInputString,
+  DqmParseInputStructured,
+  DqmParseOutput,
+};

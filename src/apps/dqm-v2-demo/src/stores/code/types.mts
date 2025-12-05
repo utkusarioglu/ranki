@@ -1,12 +1,13 @@
+import type { BlueprintIcons_16Id } from "@blueprintjs/icons/lib/esm/generated/16px/blueprint-icons-16";
 import type {
   CreatorName,
   AstSourceString,
   AstSourceView,
-  DqmParseInputStructured,
   DqmParseOutput,
   DqmParseTheater,
   DqmParseInputString,
   DqmRecord,
+  DqmParseInputStructured,
 } from "@dqm/package-dqm-api-v2";
 
 export type SanitizedNode = Partial<{
@@ -17,6 +18,11 @@ export type SanitizedNode = Partial<{
   children?: SanitizedNode[];
 }>;
 
+export type SanitizedAst = {
+  theater: DqmParseTheater;
+  sanitized: SanitizedNode;
+};
+
 export type SanitizationFeature =
   | "creator"
   | "idList"
@@ -24,32 +30,43 @@ export type SanitizationFeature =
   | "children"
   | "source";
 
-export type DqmProcessed = DqmParseInputStructured & {
-  parsed: DqmParseOutput;
-  sanitized: Record<DqmParseTheater, SanitizedNode>;
-};
+export type CodeStoreProcessed = Pick<
+  CodeStore,
+  "inputs" | "parsed" | "sanitizedAst"
+>;
+
+export interface TextTemplate {
+  icon: BlueprintIcons_16Id;
+  title: string;
+  description: string;
+  raw: string;
+}
 
 export interface CodeStore {
-  dragProps: Prop[];
-  lineageProps: Prop[];
-  noDragProps: Prop[];
+  textTemplates: TextTemplate[];
+
+  dragProps: SanitizationProp[];
+  lineageProps: SanitizationProp[];
+  noDragProps: SanitizationProp[];
 
   inputs: DqmParseInputStructured;
-  processed: DqmProcessed;
+  parsed: DqmParseOutput;
+  sanitizedAst: SanitizedAst[];
 
-  setAllDqms: (inputs: DqmRecord) => void;
-  setTheaterDqms: (
-    theater: DqmParseTheater,
-    input: DqmParseInputString,
-  ) => void;
-  setDragFeature: (feature: Prop[]) => void;
-  setLineageFeature: (feature: Prop[]) => void;
-  setNoDragFeature: (feature: Prop[]) => void;
+  setAllInputs: (inputs: DqmRecord) => void;
+  setTheaterDqmByIndex: (index: number, dqm: DqmParseInputString) => void;
+  setTheaterNameByIndex: (index: number, theater: DqmParseTheater) => void;
+  // setTheaterVisibilityByIndex: (index: number, visible: boolean) => void;
+  pushTheater: () => void;
+  removeTheaterByIndex: (index: number) => void;
+  setDragFeatureList: (feature: SanitizationProp[]) => void;
+  setLineageFeatureList: (feature: SanitizationProp[]) => void;
+  setNoDragFeatureList: (feature: SanitizationProp[]) => void;
 }
 
 interface ParseResultSuccess {
   state: "success";
-  data: DqmProcessed;
+  data: CodeStoreProcessed;
 }
 
 interface ParseResultFail {
@@ -66,10 +83,15 @@ export type ParseRelevant = Pick<
 
 export type CreateDefaultsReturn = Pick<
   CodeStore,
-  "dragProps" | "lineageProps" | "noDragProps" | "inputs" | "processed"
+  | "dragProps"
+  | "lineageProps"
+  | "noDragProps"
+  | "inputs"
+  | "parsed"
+  | "sanitizedAst"
 >;
 
-export interface Prop {
+export interface SanitizationProp {
   id: SanitizationFeature;
   visible: boolean;
 }

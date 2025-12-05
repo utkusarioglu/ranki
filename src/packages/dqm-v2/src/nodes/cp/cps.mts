@@ -74,8 +74,10 @@ export class Cps extends CommonTransports implements ICps {
     );
     // TODO
     const ast = this.cpx.getRootAst();
+    // const dqmInput = input
     const obj = parse(
-      input.inputs[input.theater],
+      input.dqm,
+      // input.dqms[input.theater],
       // TODO this likely will come from the `direction` property of some ast
       // node
       "baseV2RootBlock",

@@ -1,9 +1,21 @@
+@use "@blueprintjs/core/lib/scss/variables" as b;
+
 .titleRow {
   display: flex;
   justify-content: space-between;
 }
 
 .codeInputTextArea {
-  min-height: 10em !important;
-  resize: none;
+  min-height: 8em !important;
+  min-width: 100%;
+  resize: none !important;
+}
+
+.container {
+  padding: b.$pt-spacing * 2;
+}
+
+.templateItem {
+  padding: b.$pt-spacing * 2;
+  cursor: pointer;
 }

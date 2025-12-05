@@ -1,4 +1,10 @@
-import { BlueprintProvider, Button, Drawer, H1 } from "@blueprintjs/core";
+import {
+  BlueprintProvider,
+  Button,
+  Drawer,
+  H1,
+  NonIdealState,
+} from "@blueprintjs/core";
 import { useCodeStore } from "../../stores/code/code.store.mts";
 import { useUiStore } from "../../stores/ui.store.mts";
 import s from "./app.module.scss";
@@ -6,7 +12,6 @@ import { NodeDisplay } from "../node-display/NodeDisplay";
 import { Controls } from "../controls/Controls";
 
 function App() {
-  const code = useCodeStore();
   const ui = useUiStore();
 
   return (
@@ -31,16 +36,30 @@ function App() {
             transitionProperty: "margin-left",
           }}
         >
-          {Object.entries(code.processed.sanitized).map(([theater, node]) => (
-            <div key={theater}>
-              <H1>{theater}</H1>
-              <NodeDisplay node={node} path="" depth={0} index={0} />
-            </div>
-          ))}
+          <SanitizedNodeList />
         </div>
       </div>
     </BlueprintProvider>
   );
 }
+
+const SanitizedNodeList = () => {
+  const code = useCodeStore();
+
+  if (!code.sanitizedAst.length) {
+    return <NonIdealState>No Theaters</NonIdealState>;
+  }
+
+  return (
+    <>
+      {code.sanitizedAst.map(({ theater, sanitized }) => (
+        <div key={theater}>
+          <H1>{theater}</H1>
+          <NodeDisplay node={sanitized} path="" depth={0} index={0} />
+        </div>
+      ))}
+    </>
+  );
+};
 
 export default App;
