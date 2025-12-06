@@ -1,0 +1,22 @@
+.theaterTitle {
+  margin-block: var(--ant-padding);
+  padding-block: 0;
+  padding-inline: var(--ant-padding);
+  & > code {
+    margin-inline: 0;
+  }
+}
+
+.title {
+  margin-block: var(--ant-padding);
+  padding-block: 0;
+  padding-inline: var(--ant-padding);
+}
+
+.nope {
+  width: 100%;
+  height: 100svh;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}

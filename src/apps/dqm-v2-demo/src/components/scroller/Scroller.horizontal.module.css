@@ -1,0 +1,23 @@
+.container {
+  overflow: overlay;
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    height: 1px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--ant-color-bg-base);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--ant-color-primary);
+  }
+}
+
+.scroller {
+  overflow: hidden;
+  height: 100%;
+  width: max-content;
+  min-width: 100%;
+}

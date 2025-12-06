@@ -1,0 +1,36 @@
+.row {
+  margin: 0;
+  margin-bottom: var(--ant-padding-sm);
+}
+
+.yaml {
+  overflow: hidden;
+  background-color: var(--ant-color-bg-container);
+}
+
+.withSource {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+}
+
+.children {
+  border-top: 3px dashed var(--ant-color-primary);
+  border-left: 3px dashed var(--ant-color-primary);
+  padding-left: var(--ant-padding-sm);
+  padding-top: var(--ant-padding-sm);
+}
+
+.rawSourcePre {
+  min-width: max-content;
+  width: 20svw;
+  max-width: 200px;
+  background-color: black !important;
+  padding: var(--ant-padding-sm);
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.rawSourceCode {
+  border: 1px solid gray;
+  box-decoration-break: clone;
+}

@@ -1,8 +1,13 @@
 import { useRef, type FC, type RefObject } from "react";
-import { Card, Button, Code } from "@blueprintjs/core";
 import { useDrag, useDrop, DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useCodeStore } from "../../stores/code/code.store.mts";
+import { Button, Card, Flex, Typography } from "antd";
+import {
+  DragOutlined,
+  EyeInvisibleOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
 
 export interface DraggableRowProps {
   type: string;
@@ -33,30 +38,31 @@ const DragCard: FC<DragCardProps> = ({
 }) => {
   return (
     <Card
-      elevation={isDragging ? 3 : 1}
+      // elevation={isDragging ? 3 : 1}
       style={{
         opacity: isDragging ? 0.4 : 1,
-        marginBottom: 8,
-        padding: 8,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        gap: 10,
+        // marginBottom: 8,
+        // padding: 8,
+        // display: "flex",
+        // alignItems: "center",
+        // justifyContent: "space-between",
+        // gap: 10,
         cursor: allowDragging ? "move" : "default",
+        marginBottom: "0.5em",
       }}
+      variant="borderless"
+      size="small"
       ref={ref}
     >
-      <div style={{ padding: "0 8px", width: "1em" }}>
-        {allowDragging ? "☰" : ""}
-      </div>
-
-      <Code>{text}</Code>
-
-      <Button
-        icon={visible ? "eye-on" : "eye-off"}
-        size="small"
-        onClick={() => toggleVisible()}
-      />
+      <Flex justify="space-between">
+        <DragOutlined style={{ opacity: +allowDragging }} />
+        <Typography.Text code>{text}</Typography.Text>
+        <Button
+          icon={visible ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+          size="small"
+          onClick={() => toggleVisible()}
+        />
+      </Flex>
     </Card>
   );
 };

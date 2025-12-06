@@ -1,0 +1,16 @@
+html,
+body,
+#root {
+  padding: 0;
+  margin: 0;
+  width: 100lvw;
+  height: 100lvh;
+}
+
+body {
+  background-color: var(--ant-color-bg-base);
+}
+
+.padding-inline {
+  padding-inline: var(--ant-padding);
+}

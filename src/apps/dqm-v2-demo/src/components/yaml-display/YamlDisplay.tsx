@@ -1,8 +1,8 @@
-import { Pre, Code } from "@blueprintjs/core";
 import type { FC } from "react";
 import hljs from "highlight.js";
 import yamlLang from "highlight.js/lib/languages/yaml";
 import yaml from "yaml";
+import style from "./YamlDisplay.module.css";
 
 hljs.registerLanguage("yaml", yamlLang);
 
@@ -17,12 +17,12 @@ export const YamlDisplay: FC<YamlDisplayProps> = ({ obj }) => {
   }).value;
 
   return (
-    <Pre>
-      <Code
+    <pre className={style.pre}>
+      <code
         dangerouslySetInnerHTML={{
           __html: highlighted,
         }}
       />
-    </Pre>
+    </pre>
   );
 };

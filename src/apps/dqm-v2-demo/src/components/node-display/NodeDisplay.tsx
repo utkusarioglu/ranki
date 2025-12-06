@@ -1,7 +1,6 @@
 import type { FC } from "react";
 import { YamlDisplay } from "../yaml-display/YamlDisplay";
-import style from "./NodeDisplay.module.scss";
-import { Pre, Code } from "@blueprintjs/core";
+import style from "./NodeDisplay.module.css";
 import type { SanitizedNode } from "../../stores/code/types.mts";
 
 interface NodeDisplayProps {
@@ -23,17 +22,19 @@ export const NodeDisplay: FC<NodeDisplayProps> = ({
   const newPath = path + "/" + newDepth + "-" + index;
   return (
     <div>
-      <div
-        className={[style.nodeRow, source && style.withSource]
-          .filter((v) => !!v)
-          .join(" ")}
-      >
-        <YamlDisplay obj={rest} />
-        {source ? (
-          <Pre className={style.rawSourcePre}>
-            <Code className={style.rawSourceCode}>{source.raw}</Code>
-          </Pre>
-        ) : null}
+      <div className={style.row}>
+        <div
+          className={[style.yaml, source && style.withSource]
+            .filter((v) => !!v)
+            .join(" ")}
+        >
+          <YamlDisplay obj={rest} />
+          {source ? (
+            <pre className={style.rawSourcePre}>
+              <code className={style.rawSourceCode}>{source.raw}</code>
+            </pre>
+          ) : null}
+        </div>
       </div>
       {subtree && subtree.length ? (
         <div style={{ marginLeft: DEPTH_STEP }} className={style.subtree}>
@@ -49,7 +50,12 @@ export const NodeDisplay: FC<NodeDisplayProps> = ({
         </div>
       ) : null}
       {children && children.length ? (
-        <div style={{ marginLeft: DEPTH_STEP }} className={style.children}>
+        <div
+          style={{
+            marginLeft: DEPTH_STEP,
+          }}
+          className={style.children}
+        >
           {children.map((c, i) => (
             <NodeDisplay
               key={newPath + i}

@@ -1,0 +1,23 @@
+.cover {
+  height: 100lvh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.splitter {
+  height: 100%;
+
+  & :global(.ant-splitter-bar-dragger::before) {
+    background: var(--ant-color-bg-base) !important;
+  }
+}
+
+.panel {
+  overflow: hidden !important;
+}
+
+.mobile {
+  height: 100%;
+  width: 100%;
+  overflow: overlay;
+}
