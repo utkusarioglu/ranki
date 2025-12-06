@@ -3,6 +3,7 @@ import { Button, Flex } from "antd";
 import { DqmInputCard } from "./DqmInputCard";
 import style from "./DqmInputOptions.module.css";
 import { SaveOutlined } from "@ant-design/icons";
+import { TemplatesDrawer } from "./TemplatesDrawer";
 
 export const DqmInputOptions = () => {
   const code = useCodeStore();
@@ -23,6 +24,7 @@ export const DqmInputOptions = () => {
       <Button style={{ width: "100%" }} onClick={() => code.pushTheater()}>
         Add New Theater
       </Button>
+      <TemplatesDrawer />
     </div>
   );
 };

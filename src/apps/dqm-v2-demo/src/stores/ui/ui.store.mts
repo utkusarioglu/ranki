@@ -1,15 +1,24 @@
 import { create } from "zustand";
 
-type Percent = string;
+type Percent = number;
+
+type TemplateDrawerModeType = "arrangement" | "single";
+
+export type TemplateDrawerModeOpen = {
+  type: TemplateDrawerModeType;
+  index: number;
+};
+
+type TemplateDrawerMode = null | TemplateDrawerModeOpen;
 
 interface UiStore {
   isNarrow: boolean;
   isMenuOpen: boolean;
-  menuWidth: Percent; // percent
+  templateDrawerState: TemplateDrawerMode;
+  menuWidth: Percent;
   setMenuOpen: (open: boolean) => void;
-  // openMenu: () => void;
-  // closeMenu: () => void;
   setMenuWidth: (width: Percent) => void;
+  setTemplateDrawerState: (mode: TemplateDrawerMode) => void;
 }
 
 const NARROW_THRESHOLD = 800;
@@ -20,16 +29,18 @@ media.addEventListener("change", (e) => {
 });
 
 export const useUiStore = create<UiStore>((set) => ({
+  templateDrawerState: null,
   isNarrow: window.innerWidth < NARROW_THRESHOLD,
   isMenuOpen: window.innerWidth > NARROW_THRESHOLD,
-  menuWidth: "25%",
+  menuWidth:
+    window.innerWidth > NARROW_THRESHOLD
+      ? window.innerWidth * 0.25
+      : window.innerWidth,
   setMenuWidth: (menuWidth) => set(() => ({ menuWidth })),
   setMenuOpen: (open: boolean) =>
     set(() => ({
       isMenuOpen: open,
     })),
-  // closeMenu: () =>
-  //   set(() => ({
-  //     isMenuOpen: false,
-  //   })),
+  setTemplateDrawerState: (state) =>
+    set(() => ({ templateDrawerState: state })),
 }));

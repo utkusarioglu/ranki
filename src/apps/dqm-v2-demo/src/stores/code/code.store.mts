@@ -5,8 +5,14 @@ import type {
   DqmParseTheater,
   DqmRecord,
 } from "@dqm/package-dqm-api-v2";
-import type { CodeStore, SanitizationProp, TextTemplate } from "./types.mts";
+import type {
+  CodeStore,
+  SanitizationProp,
+  TemplateGroup,
+  TemplateText,
+} from "./types.mts";
 import {
+  buildTemplateLists,
   createDefaults,
   filterIds,
   sanitizeAst,
@@ -16,26 +22,44 @@ import {
 const inputs: DqmParseInputStructured = [
   {
     theater: "default",
-    dqm: "hello default bunny",
+    dqm: "Try some Dqm",
   },
 ];
 
-const TEXT_TEMPLATES: TextTemplate[] = [
+const TEMPLATE_GROUPS: TemplateGroup[] = [
   {
-    icon: "new-text-box",
-    title: "Hello world",
+    label: "Local storage",
+    description: "Entries saved in local storage",
+    group: "Storage",
+  },
+  {
+    label: "Basic input",
+    description: "Basic input features enabled by BaseV2",
+    group: "Basic",
+  },
+  {
+    label: "Frames",
+    description: "FrameV2 frames",
+    group: "FrameV2",
+  },
+];
+
+const TEMPLATE_TEXTS: TemplateText[] = [
+  {
+    group: "Basic",
+    label: "Hello world",
     description: "Two words",
     raw: "Hello World",
   },
   {
-    icon: "numerical",
-    title: "Integer",
+    group: "Basic",
+    label: "Integer",
     description: "Basic integer parsing",
     raw: "1 234",
   },
   {
-    icon: "code",
-    title: "Code block",
+    group: "FrameV2",
+    label: "Code block",
     description: "Basic code block",
     raw:
       `
@@ -45,8 +69,8 @@ hi
     `.trim() + "\n",
   },
   {
-    icon: "code",
-    title: "Nested Code Block",
+    group: "FrameV2",
+    label: "Nested Code Block",
     description: "Basic code block",
     raw:
       `
@@ -60,8 +84,8 @@ hi
     `.trim() + "\n",
   },
   {
-    icon: "code",
-    title: "Code, text, number",
+    group: "FrameV2",
+    label: "Code, text, number",
     description: "Mix of nested code, text and number",
     raw: `
 hello 123 h!
@@ -80,7 +104,7 @@ bunny
 ];
 
 export const useCodeStore = create<CodeStore>((set) => ({
-  textTemplates: TEXT_TEMPLATES,
+  templateLists: buildTemplateLists(TEMPLATE_GROUPS, TEMPLATE_TEXTS),
 
   ...createDefaults({
     inputs,
@@ -116,6 +140,18 @@ export const useCodeStore = create<CodeStore>((set) => ({
     set((state) => {
       const inputs = [...state.inputs];
       inputs[index].dqm = dqm;
+      return createDefaults({
+        inputs,
+        astDragProps: state.astDragProps,
+        astLineageProps: state.astLineageProps,
+        astNoDragProps: state.astNoDragProps,
+      });
+    }),
+
+  setTheaterDqmByMenuKey: (index: number, key: number) =>
+    set((state) => {
+      const inputs = [...state.inputs];
+      inputs[index].dqm = TEMPLATE_TEXTS[key].raw;
       return createDefaults({
         inputs,
         astDragProps: state.astDragProps,

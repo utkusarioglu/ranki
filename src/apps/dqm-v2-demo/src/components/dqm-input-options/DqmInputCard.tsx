@@ -1,16 +1,9 @@
 import { useCodeStore } from "../../stores/code/code.store.mts";
 import style from "./DqmInputCard.module.css";
-import { useState, type FC } from "react";
-import { Button, Card, Flex, Input, Space } from "antd";
-import {
-  CloseOutlined,
-  DownOutlined,
-  EyeFilled,
-  EyeInvisibleFilled,
-  SaveFilled,
-  SaveOutlined,
-  UpOutlined,
-} from "@ant-design/icons";
+import { type FC } from "react";
+import { Button, Flex, Input } from "antd";
+import { CloseOutlined, EyeFilled, SaveOutlined } from "@ant-design/icons";
+import { useUiStore } from "../../stores/ui/ui.store.mts";
 
 interface DqmInputProps {
   index: number;
@@ -18,7 +11,7 @@ interface DqmInputProps {
 export const DqmInputCard: FC<DqmInputProps> = ({ index }) => {
   const { dqm, theater } = useCodeStore((s) => s.inputs[index]);
   const code = useCodeStore();
-  const [tMenu, setTMenu] = useState(false);
+  const ui = useUiStore();
 
   return (
     <div className={style.container}>
@@ -27,25 +20,12 @@ export const DqmInputCard: FC<DqmInputProps> = ({ index }) => {
           value={theater}
           onChange={(e) => code.setTheaterNameByIndex(index, e.target.value)}
         />
-        <Button
-          icon={tMenu ? <EyeFilled /> : <EyeInvisibleFilled />}
-          // onClick={() => setTMenu((t) => !t)}
-        />
+        <Button icon={<EyeFilled />} />
         <Button
           icon={<CloseOutlined />}
           onClick={() => code.removeTheaterByIndex(index)}
         />
       </Flex>
-      {tMenu &&
-        code.textTemplates.map(({ icon, title, raw, description }) => (
-          <Card
-            className={style.templateItem}
-            key={title}
-            onClick={() => code.setTheaterDqmByIndex(index, raw)}
-          >
-            {title}
-          </Card>
-        ))}
       <Input.TextArea
         className={style.textarea}
         autoSize
@@ -56,7 +36,17 @@ export const DqmInputCard: FC<DqmInputProps> = ({ index }) => {
         <Button>
           <SaveOutlined />
         </Button>
-        <Button onClick={() => setTMenu((v) => !v)}>Templates</Button>
+        {/* <TemplateMenu index={index} /> */}
+        <Button
+          onClick={() =>
+            ui.setTemplateDrawerState({
+              type: "single",
+              index,
+            })
+          }
+        >
+          Templates
+        </Button>
       </Flex>
     </div>
   );

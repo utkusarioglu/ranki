@@ -1,4 +1,3 @@
-import type { BlueprintIcons_16Id } from "@blueprintjs/icons/lib/esm/generated/16px/blueprint-icons-16";
 import type {
   CreatorName,
   AstSourceString,
@@ -12,6 +11,8 @@ import type {
   IAstNodeKind,
   CreationMethod,
 } from "@dqm/package-dqm-api-v2";
+// import type { MenuProps } from "antd";
+import type { TemplateLists } from "./utils.mts";
 
 export type SanitizedNode = Partial<{
   cpxUnique: IdUnique;
@@ -38,16 +39,23 @@ export type CodeStoreProcessed = Pick<
   CodeStore,
   "inputs" | "parsed" | "sanitizedAst"
 >;
+export interface TemplateGroup {
+  label: string;
+  description: string;
+  group: string;
+}
 
-export interface TextTemplate {
-  icon: BlueprintIcons_16Id;
-  title: string;
+export interface TemplateText {
+  group: string;
+  label: string;
   description: string;
   raw: string;
 }
 
+// export type MenuItem = Required<MenuProps>["items"][number];
+
 export interface CodeStore {
-  textTemplates: TextTemplate[];
+  templateLists: TemplateLists;
 
   astDragProps: SanitizationProp[];
   astLineageProps: SanitizationProp[];
@@ -59,6 +67,7 @@ export interface CodeStore {
 
   setAllInputs: (inputs: DqmRecord) => void;
   setTheaterDqmByIndex: (index: number, dqm: DqmParseInputString) => void;
+  setTheaterDqmByMenuKey: (index: number, key: number) => void;
   setTheaterNameByIndex: (index: number, theater: DqmParseTheater) => void;
   // setTheaterVisibilityByIndex: (index: number, visible: boolean) => void;
   pushTheater: () => void;

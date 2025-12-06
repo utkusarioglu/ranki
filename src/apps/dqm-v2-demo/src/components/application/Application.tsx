@@ -49,7 +49,11 @@ const NarrowLayout = () => {
 const WideLayout = () => {
   const ui = useUiStore();
   return (
-    <Splitter className={style.splitter} draggerIcon={null}>
+    <Splitter
+      className={style.splitter}
+      draggerIcon={null}
+      onResizeEnd={(e) => ui.setMenuWidth(e[0])}
+    >
       {ui.isMenuOpen ? (
         <Splitter.Panel
           className={style.panel}

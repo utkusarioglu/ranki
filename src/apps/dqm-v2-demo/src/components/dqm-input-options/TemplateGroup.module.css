@@ -1,0 +1,7 @@
+.container {
+  padding-inline: var(--ant-padding);
+}
+
+.hgroup {
+  margin-bottom: var(--ant-padding);
+}

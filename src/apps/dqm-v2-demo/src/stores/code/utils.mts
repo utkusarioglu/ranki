@@ -7,6 +7,8 @@ import type {
   ParseResult,
   SanitizationProp,
   SanitizedAst,
+  TemplateGroup,
+  TemplateText,
 } from "./types.mts";
 import { Dqm } from "@dqm/package-dqm-v2";
 import baseV2 from "@dqm/plugin-base-v2";
@@ -160,3 +162,35 @@ export const wrapVisible = (
   ...visible.map((id) => ({ visible: true, id })),
   ...hidden.map((id) => ({ visible: false, id })),
 ];
+
+export type TemplateGroupWithList = TemplateGroup & { list: TemplateText[] };
+export type TemplateLists = TemplateGroupWithList[];
+
+export function buildTemplateLists(
+  groups: TemplateGroup[],
+  texts: TemplateText[],
+): TemplateLists {
+  const gMap = new Map<string, TemplateGroupWithList>();
+  groups.forEach((g) =>
+    gMap.set(g.group, {
+      ...g,
+      list: [],
+    }),
+  );
+
+  texts.forEach((t, i) => {
+    const g = gMap.get(t.group);
+    if (!g) {
+      throw new Error(`Nonexistent group: ${t.group}`);
+    }
+    g.list.push(t);
+  });
+
+  for (const g of gMap) {
+    if (!gMap.get(g[0])!.list.length) {
+      gMap.delete(g[0]);
+    }
+  }
+
+  return Array.from(gMap.values());
+}
