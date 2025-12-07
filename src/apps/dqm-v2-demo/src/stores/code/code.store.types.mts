@@ -11,8 +11,7 @@ import type {
   IAstNodeKind,
   CreationMethod,
 } from "@dqm/package-dqm-api-v2";
-// import type { MenuProps } from "antd";
-import type { TemplateLists } from "./utils.mts";
+import type { TemplateGroupWithList } from "./utils.mts";
 
 export type SanitizedNode = Partial<{
   cpxUnique: IdUnique;
@@ -37,7 +36,7 @@ export type AstSanitizationFeature = keyof SanitizedNode;
 
 export type CodeStoreProcessed = Pick<
   CodeStore,
-  "inputs" | "parsed" | "sanitizedAst"
+  "inputs" | "parsed" | "sanitizedAst" | "viewed"
 >;
 export interface TemplateGroup {
   label: string;
@@ -45,36 +44,59 @@ export interface TemplateGroup {
   group: string;
 }
 
-export interface TemplateText {
-  group: string;
+export interface TemplateTextFetched {
   label: string;
   description: string;
   raw: string;
 }
 
-// export type MenuItem = Required<MenuProps>["items"][number];
+export type TemplateTextProcessed = TemplateTextFetched & {
+  id: string;
+};
 
-export interface CodeStore {
-  templateLists: TemplateLists;
+export interface ArrangementTemplateRef {
+  theater: string;
+  group: string;
+  index: number;
+}
+
+export interface Arrangement {
+  label: string;
+  description: string;
+  templates: ArrangementTemplateRef[];
+}
+
+export type CodeStore = CodeStoreState & CodeStoreActions;
+
+export interface CodeStoreState {
+  templates: TemplateGroupWithList[];
+  arrangements: Arrangement[];
 
   astDragProps: SanitizationProp[];
   astLineageProps: SanitizationProp[];
   astNoDragProps: SanitizationProp[];
 
   inputs: DqmParseInputStructured;
+  viewed: DqmParseInputStructured;
+  history: DqmParseInputStructured[];
+
   parsed: DqmParseOutput;
   sanitizedAst: SanitizedAst[];
+}
 
+export interface CodeStoreActions {
   setAllInputs: (inputs: DqmRecord) => void;
   setTheaterDqmByIndex: (index: number, dqm: DqmParseInputString) => void;
-  setTheaterDqmByMenuKey: (index: number, key: number) => void;
   setTheaterNameByIndex: (index: number, theater: DqmParseTheater) => void;
-  // setTheaterVisibilityByIndex: (index: number, visible: boolean) => void;
   pushTheater: () => void;
   removeTheaterByIndex: (index: number) => void;
   setDragFeatureList: (feature: SanitizationProp[]) => void;
   setLineageFeatureList: (feature: SanitizationProp[]) => void;
   setNoDragFeatureList: (feature: SanitizationProp[]) => void;
+  setTemplateLists: (lists: TemplateGroupWithList[]) => void;
+  setArrangementList: (list: Arrangement[]) => void;
+  setTheatersFromHistory: (index: number) => void;
+  pushTheatersToHistory: () => void;
 }
 
 interface ParseResultSuccess {
@@ -91,7 +113,7 @@ export type ParseResult = ParseResultSuccess | ParseResultFail;
 
 export type ParseRelevant = Pick<
   CodeStore,
-  "astDragProps" | "astLineageProps" | "astNoDragProps" | "inputs"
+  "astDragProps" | "astLineageProps" | "astNoDragProps" | "inputs" | "viewed"
 >;
 
 export type CreateDefaultsReturn = Pick<
@@ -101,6 +123,7 @@ export type CreateDefaultsReturn = Pick<
   | "astNoDragProps"
   | "inputs"
   | "parsed"
+  | "viewed"
   | "sanitizedAst"
 >;
 

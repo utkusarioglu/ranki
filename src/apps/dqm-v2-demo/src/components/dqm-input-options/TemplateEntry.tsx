@@ -1,16 +1,18 @@
-import { Card, Typography } from "antd";
-import type { TemplateText } from "../../stores/code/types.mts";
+import { Button, Card, Typography } from "antd";
 import type { WithIndex } from "./TemplatesDrawer";
 import type { FC } from "react";
 import style from "./TemplateEntry.module.css";
+import { PreCode } from "../pre-code/PreCode";
+import type { TemplateTextProcessed } from "../../stores/code/code.store.types.mts";
 
 type TemplateEntryProps = WithIndex & {
-  entry: TemplateText;
+  entry: TemplateTextProcessed;
 };
 
 export const TemplateEntry: FC<TemplateEntryProps> = ({
   entry,
-  onClick,
+  useOnClick,
+  previewOnClick,
   active,
 }) => {
   const isActive = entry.raw === active;
@@ -19,15 +21,16 @@ export const TemplateEntry: FC<TemplateEntryProps> = ({
       className={[style.container, isActive && style.active]
         .filter((v) => v)
         .join(" ")}
-      onClick={() => onClick(entry.raw)}
     >
-      <Typography.Title className={style.title} level={4}>
+      <Typography.Title className={style.title} level={5}>
         {entry.label}
       </Typography.Title>
       <Typography className={style.description}>{entry.description}</Typography>
-      <pre className={style.pre}>
-        <code>{entry.raw}</code>
-      </pre>
+      <PreCode className={style.sample}>{entry.raw}</PreCode>
+      <div className={style.action}>
+        <Button onClick={() => previewOnClick(entry.raw)}>Preview</Button>
+        <Button onClick={() => useOnClick(entry.raw)}>Use</Button>
+      </div>
     </Card>
   );
 };

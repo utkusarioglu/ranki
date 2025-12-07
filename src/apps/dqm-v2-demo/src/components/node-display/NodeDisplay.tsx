@@ -1,7 +1,8 @@
 import type { FC } from "react";
 import { YamlDisplay } from "../yaml-display/YamlDisplay";
 import style from "./NodeDisplay.module.css";
-import type { SanitizedNode } from "../../stores/code/types.mts";
+import type { SanitizedNode } from "../../stores/code/code.store.types.mts";
+import { PreCode } from "../pre-code/PreCode";
 
 interface NodeDisplayProps {
   node: SanitizedNode;
@@ -22,18 +23,14 @@ export const NodeDisplay: FC<NodeDisplayProps> = ({
   const newPath = path + "/" + newDepth + "-" + index;
   return (
     <div>
-      <div className={style.row}>
+      <div className={style.parent}>
         <div
           className={[style.yaml, source && style.withSource]
             .filter((v) => !!v)
             .join(" ")}
         >
           <YamlDisplay obj={rest} />
-          {source ? (
-            <pre className={style.rawSourcePre}>
-              <code className={style.rawSourceCode}>{source.raw}</code>
-            </pre>
-          ) : null}
+          {source ? <PreCode>{source.raw}</PreCode> : null}
         </div>
       </div>
       {subtree && subtree.length ? (

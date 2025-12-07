@@ -1,0 +1,3 @@
+export const NARROW_LAYOUT_THRESHOLD = 800;
+
+export const WIDE_LAYOUT_LEFT_MENU_WIDTH_RATIO = 0.25;

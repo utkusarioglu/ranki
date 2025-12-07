@@ -1,0 +1,7 @@
+.splitter {
+  height: 100%;
+
+  & :global(.ant-splitter-bar-dragger::before) {
+    background: var(--ant-color-bg-base) !important;
+  }
+}

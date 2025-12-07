@@ -1,6 +1,14 @@
+.hgroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: var(--ant-padding);
+  margin-block: var(--ant-padding);
+}
+
 .title {
   padding: 0;
-  margin: var(--ant-padding);
+  margin: 0;
 }
 
 .container {

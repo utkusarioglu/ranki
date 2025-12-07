@@ -12,13 +12,16 @@ type TemplateGroupProps = WithIndex & {
 export const TemplateGroup: FC<TemplateGroupProps> = ({
   group,
   index,
-  onClick,
+  useOnClick,
+  previewOnClick,
   active,
 }) => {
   return (
     <div className={style.container}>
       <hgroup className={style.hgroup}>
-        <Typography.Title level={3}>{group.label}</Typography.Title>
+        <Typography.Title className={style.title} level={4}>
+          {group.label}
+        </Typography.Title>
         <Typography.Text>{group.description}</Typography.Text>
       </hgroup>
       <div>
@@ -28,7 +31,8 @@ export const TemplateGroup: FC<TemplateGroupProps> = ({
             key={e.label}
             entry={e}
             index={index}
-            onClick={onClick}
+            useOnClick={useOnClick}
+            previewOnClick={previewOnClick}
           />
         ))}
       </div>

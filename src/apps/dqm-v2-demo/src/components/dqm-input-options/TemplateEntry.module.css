@@ -1,25 +1,23 @@
 .container {
+  overflow: hidden;
   margin-bottom: var(--ant-padding);
   border-color: var(--ant-color-bg-base);
-  cursor: pointer;
+  /* cursor: pointer; */
   transition-property: border-color;
   transition-duration: 0.5s;
 
-  &:hover {
+  /* &:hover {
     border-color: var(--ant-color-primary);
-  }
+  } */
 
   /* padding: var(--ant-padding); */
   & > :global(.ant-card-body) {
     padding: var(--ant-padding) 0;
   }
-}
 
-.active h4,
-.active article,
-.active pre {
-  color: var(--ant-color-primary) !important;
-  /* scale: 2; */
+  &.active {
+    border-color: var(--ant-color-primary);
+  }
 }
 
 .title {
@@ -31,8 +29,13 @@
   padding: 0 var(--ant-padding);
 }
 
-.pre {
-  background-color: #050505;
-  padding: calc(var(--ant-padding) / 2) var(--ant-padding);
+.sample {
   margin-block: var(--ant-padding) 0;
+}
+
+.action {
+  padding-top: var(--ant-padding);
+  padding-inline: var(--ant-padding);
+  display: flex;
+  gap: var(--ant-padding);
 }

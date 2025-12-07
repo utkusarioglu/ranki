@@ -6,17 +6,16 @@ import type {
   DqmRecord,
 } from "@dqm/package-dqm-api-v2";
 import type {
+  Arrangement,
   CodeStore,
   SanitizationProp,
-  TemplateGroup,
-  TemplateText,
-} from "./types.mts";
+} from "./code.store.types.mts";
 import {
-  buildTemplateLists,
   createDefaults,
   filterIds,
   sanitizeAst,
   wrapVisible,
+  type TemplateGroupWithList,
 } from "./utils.mts";
 
 const inputs: DqmParseInputStructured = [
@@ -26,88 +25,14 @@ const inputs: DqmParseInputStructured = [
   },
 ];
 
-const TEMPLATE_GROUPS: TemplateGroup[] = [
-  {
-    label: "Local storage",
-    description: "Entries saved in local storage",
-    group: "Storage",
-  },
-  {
-    label: "Basic input",
-    description: "Basic input features enabled by BaseV2",
-    group: "Basic",
-  },
-  {
-    label: "Frames",
-    description: "FrameV2 frames",
-    group: "FrameV2",
-  },
-];
-
-const TEMPLATE_TEXTS: TemplateText[] = [
-  {
-    group: "Basic",
-    label: "Hello world",
-    description: "Two words",
-    raw: "Hello World",
-  },
-  {
-    group: "Basic",
-    label: "Integer",
-    description: "Basic integer parsing",
-    raw: "1 234",
-  },
-  {
-    group: "FrameV2",
-    label: "Code block",
-    description: "Basic code block",
-    raw:
-      `
-[code
-hi
-]
-    `.trim() + "\n",
-  },
-  {
-    group: "FrameV2",
-    label: "Nested Code Block",
-    description: "Basic code block",
-    raw:
-      `
-[code
-hi
-
-  [code
-  hello [code|yees]
-  ]
-]
-    `.trim() + "\n",
-  },
-  {
-    group: "FrameV2",
-    label: "Code, text, number",
-    description: "Mix of nested code, text and number",
-    raw: `
-hello 123 h!
-
-[code
-hi
-
-  [code
-  hello [code|yees]
-  ]
-]
-
-bunny
-    `.trim(),
-  },
-];
-
 export const useCodeStore = create<CodeStore>((set) => ({
-  templateLists: buildTemplateLists(TEMPLATE_GROUPS, TEMPLATE_TEXTS),
+  templates: [],
+  arrangements: [],
+  history: [],
 
   ...createDefaults({
     inputs,
+    viewed: inputs,
     astDragProps: wrapVisible(
       ["creator", "idList", "kind"],
       [
@@ -122,6 +47,35 @@ export const useCodeStore = create<CodeStore>((set) => ({
     astLineageProps: wrapVisible(["children", "subtree"], []),
   }),
 
+  pushTheatersToHistory: () =>
+    set((state) => {
+      const history = [state.inputs, ...state.history];
+      return {
+        history,
+      };
+    }),
+
+  setTheatersFromHistory: (index: number) =>
+    set((state) => {
+      const inputs = state.history[index] || [];
+      const history = state.history.slice(1);
+      console.log(inputs, history);
+      return {
+        history,
+        inputs,
+      };
+    }),
+
+  setArrangementList: (list: Arrangement[]) =>
+    set(() => ({ arrangements: list })),
+
+  setTemplateLists: (list: TemplateGroupWithList[]) =>
+    set(() => {
+      return {
+        templates: list,
+      };
+    }),
+
   setAllInputs: (dqms: DqmRecord) =>
     set((state) => {
       const inputs = {
@@ -130,6 +84,7 @@ export const useCodeStore = create<CodeStore>((set) => ({
       };
       return createDefaults({
         inputs,
+        viewed: inputs,
         astDragProps: state.astDragProps,
         astLineageProps: state.astLineageProps,
         astNoDragProps: state.astNoDragProps,
@@ -142,18 +97,7 @@ export const useCodeStore = create<CodeStore>((set) => ({
       inputs[index].dqm = dqm;
       return createDefaults({
         inputs,
-        astDragProps: state.astDragProps,
-        astLineageProps: state.astLineageProps,
-        astNoDragProps: state.astNoDragProps,
-      });
-    }),
-
-  setTheaterDqmByMenuKey: (index: number, key: number) =>
-    set((state) => {
-      const inputs = [...state.inputs];
-      inputs[index].dqm = TEMPLATE_TEXTS[key].raw;
-      return createDefaults({
-        inputs,
+        viewed: inputs,
         astDragProps: state.astDragProps,
         astLineageProps: state.astLineageProps,
         astNoDragProps: state.astNoDragProps,
@@ -204,6 +148,7 @@ export const useCodeStore = create<CodeStore>((set) => ({
       });
       return createDefaults({
         inputs,
+        viewed: inputs,
         astDragProps: state.astDragProps,
         astLineageProps: state.astLineageProps,
         astNoDragProps: state.astNoDragProps,
@@ -217,6 +162,7 @@ export const useCodeStore = create<CodeStore>((set) => ({
 
       return createDefaults({
         inputs,
+        viewed: inputs,
         astDragProps: state.astDragProps,
         astLineageProps: state.astLineageProps,
         astNoDragProps: state.astNoDragProps,
@@ -230,6 +176,7 @@ export const useCodeStore = create<CodeStore>((set) => ({
 
       return createDefaults({
         inputs,
+        viewed: inputs,
         astDragProps: state.astDragProps,
         astLineageProps: state.astLineageProps,
         astNoDragProps: state.astNoDragProps,

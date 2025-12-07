@@ -6,16 +6,13 @@ import {
 } from "@ant-design/icons";
 import { useUiStore } from "../../stores/ui/ui.store.mts";
 import { AppTitle } from "../app-title/AppTitle";
+import { TitleRow } from "../title-row/TitleRow";
 
 export const TitleBarWide = () => {
   const ui = useUiStore();
   const { token } = theme.useToken();
   return (
-    <Flex
-      style={{ marginInline: token.padding }}
-      justify="space-between"
-      align="center"
-    >
+    <TitleRow>
       {ui.isMenuOpen ? null : (
         <>
           <Button onClick={() => ui.setMenuOpen(true)}>
@@ -26,7 +23,7 @@ export const TitleBarWide = () => {
       <Typography.Title style={{ margin: 0 }} level={3}>
         Dqm<span style={{ color: token.colorTextSecondary }}>v2</span>
       </Typography.Title>
-      <div style={{ paddingBlock: token.padding }}>
+      <div>
         <Button variant="filled">
           <InfoCircleOutlined />
         </Button>
@@ -36,28 +33,23 @@ export const TitleBarWide = () => {
           </Button>
         ) : null}
       </div>
-    </Flex>
+    </TitleRow>
   );
 };
 
 export const TitleBarNarrow = () => {
   const ui = useUiStore();
-  const { token } = theme.useToken();
   return (
-    <Flex
-      style={{ marginInline: token.padding }}
-      justify="space-between"
-      align="center"
-    >
+    <TitleRow>
       <Button onClick={() => ui.setMenuOpen(!ui.isMenuOpen)}>
         <MenuOutlined />
       </Button>
       <AppTitle />
-      <div style={{ paddingBlock: token.padding }}>
+      <div>
         <Button variant="filled">
           <InfoCircleOutlined />
         </Button>
       </div>
-    </Flex>
+    </TitleRow>
   );
 };

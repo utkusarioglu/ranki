@@ -1,0 +1,21 @@
+group: frame-v2
+label: FrameV2
+description: Components powered by FrameV2
+list:
+- label: Code block
+  description: Unnested basic code block
+  raw: |
+    [code
+      () => {}
+    ]
+- label: Nested code block
+  description: Code block which contains other code blocks
+  raw: |
+    [code
+    hi
+
+      [code
+      hello [code|yees]
+      ]
+    ]
+  

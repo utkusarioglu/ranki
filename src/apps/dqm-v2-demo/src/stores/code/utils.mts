@@ -8,8 +8,8 @@ import type {
   SanitizationProp,
   SanitizedAst,
   TemplateGroup,
-  TemplateText,
-} from "./types.mts";
+  TemplateTextProcessed,
+} from "./code.store.types.mts";
 import { Dqm } from "@dqm/package-dqm-v2";
 import baseV2 from "@dqm/plugin-base-v2";
 import frameV2 from "@dqm/plugin-frame-v2";
@@ -105,6 +105,7 @@ export function parseRaw({
   astNoDragProps,
   astLineageProps,
   inputs,
+  viewed,
 }: ParseRelevant): ParseResult {
   const dqm = new Dqm(
     {
@@ -130,6 +131,7 @@ export function parseRaw({
       state: "success",
       data: {
         inputs,
+        viewed,
         parsed,
         sanitizedAst,
       },
@@ -163,34 +165,37 @@ export const wrapVisible = (
   ...hidden.map((id) => ({ visible: false, id })),
 ];
 
-export type TemplateGroupWithList = TemplateGroup & { list: TemplateText[] };
-export type TemplateLists = TemplateGroupWithList[];
+export type TemplateGroupWithList = TemplateGroup & {
+  list: TemplateTextProcessed[];
+};
 
-export function buildTemplateLists(
-  groups: TemplateGroup[],
-  texts: TemplateText[],
-): TemplateLists {
-  const gMap = new Map<string, TemplateGroupWithList>();
-  groups.forEach((g) =>
-    gMap.set(g.group, {
-      ...g,
-      list: [],
-    }),
-  );
+// export type TemplateLists = TemplateGroupWithList[];
 
-  texts.forEach((t, i) => {
-    const g = gMap.get(t.group);
-    if (!g) {
-      throw new Error(`Nonexistent group: ${t.group}`);
-    }
-    g.list.push(t);
-  });
+// export function buildTemplateLists(
+//   groups: TemplateGroup[],
+//   texts: TemplateText[],
+// ): TemplateLists {
+//   const gMap = new Map<string, TemplateGroupWithList>();
+//   groups.forEach((g) =>
+//     gMap.set(g.group, {
+//       ...g,
+//       list: [],
+//     }),
+//   );
 
-  for (const g of gMap) {
-    if (!gMap.get(g[0])!.list.length) {
-      gMap.delete(g[0]);
-    }
-  }
+//   texts.forEach((t) => {
+//     const g = gMap.get(t.group);
+//     if (!g) {
+//       throw new Error(`Nonexistent group: ${t.group}`);
+//     }
+//     g.list.push(t);
+//   });
 
-  return Array.from(gMap.values());
-}
+//   for (const g of gMap) {
+//     if (!gMap.get(g[0])!.list.length) {
+//       gMap.delete(g[0]);
+//     }
+//   }
+
+//   return Array.from(gMap.values());
+// }

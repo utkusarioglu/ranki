@@ -1,0 +1,15 @@
+group: basic
+label: Basic Input
+description: Basic input features enabled by BaseV2
+list:
+- label: Ignored One liner
+  description: BaseV2 ignoring everything after the ignore token
+  raw: |
+    % ignore
+    this text is ignored.
+- label: Hello World
+  description: Two basic words
+  raw: Hello World
+- label: Integer
+  description: Basic integer parsing
+  raw: 1 234

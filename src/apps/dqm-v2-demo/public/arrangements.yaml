@@ -1,0 +1,9 @@
+- label: Simple Placeholder
+  description: Two documents where the second one uses a placeholder from the first
+  templates: 
+    - theater: a
+      group: basic
+      index: 1
+    - theater: b
+      group: basic
+      index: 2

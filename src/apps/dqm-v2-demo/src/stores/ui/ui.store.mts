@@ -1,41 +1,28 @@
 import { create } from "zustand";
+import type { AppState, UiStore } from "./ui.store.types.mts";
+import {
+  NARROW_LAYOUT_THRESHOLD,
+  WIDE_LAYOUT_LEFT_MENU_WIDTH_RATIO,
+} from "./ui.store.constants.mts";
 
-type Percent = number;
-
-type TemplateDrawerModeType = "arrangement" | "single";
-
-export type TemplateDrawerModeOpen = {
-  type: TemplateDrawerModeType;
-  index: number;
-};
-
-type TemplateDrawerMode = null | TemplateDrawerModeOpen;
-
-interface UiStore {
-  isNarrow: boolean;
-  isMenuOpen: boolean;
-  templateDrawerState: TemplateDrawerMode;
-  menuWidth: Percent;
-  setMenuOpen: (open: boolean) => void;
-  setMenuWidth: (width: Percent) => void;
-  setTemplateDrawerState: (mode: TemplateDrawerMode) => void;
-}
-
-const NARROW_THRESHOLD = 800;
-
+/**
+ * TODO This doesn't belong here
+ */
 const media = window.matchMedia("(max-width: 800px");
 media.addEventListener("change", (e) => {
   useUiStore.setState(() => ({ isNarrow: e.matches }));
 });
 
 export const useUiStore = create<UiStore>((set) => ({
+  appState: "init",
   templateDrawerState: null,
-  isNarrow: window.innerWidth < NARROW_THRESHOLD,
-  isMenuOpen: window.innerWidth > NARROW_THRESHOLD,
+  isNarrow: window.innerWidth < NARROW_LAYOUT_THRESHOLD,
+  isMenuOpen: window.innerWidth > NARROW_LAYOUT_THRESHOLD,
   menuWidth:
-    window.innerWidth > NARROW_THRESHOLD
-      ? window.innerWidth * 0.25
+    window.innerWidth > NARROW_LAYOUT_THRESHOLD
+      ? window.innerWidth * WIDE_LAYOUT_LEFT_MENU_WIDTH_RATIO
       : window.innerWidth,
+
   setMenuWidth: (menuWidth) => set(() => ({ menuWidth })),
   setMenuOpen: (open: boolean) =>
     set(() => ({
@@ -43,4 +30,5 @@ export const useUiStore = create<UiStore>((set) => ({
     })),
   setTemplateDrawerState: (state) =>
     set(() => ({ templateDrawerState: state })),
+  setAppState: (state: AppState) => set(() => ({ appState: state })),
 }));

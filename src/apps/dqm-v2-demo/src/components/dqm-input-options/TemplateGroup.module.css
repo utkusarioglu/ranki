@@ -3,5 +3,10 @@
 }
 
 .hgroup {
+  margin-top: 0;
   margin-bottom: var(--ant-padding);
+}
+
+.title {
+  margin: 0;
 }

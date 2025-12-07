@@ -1,15 +1,20 @@
 import { useUiStore } from "../../stores/ui/ui.store.mts";
-import { App, ConfigProvider, Layout, Splitter, theme } from "antd";
-import { WideMenu } from "../controls/Controls";
+import { App, ConfigProvider, Layout, theme } from "antd";
 import style from "./Application.module.css";
-import { TitleBarNarrow, TitleBarWide } from "../title-bar/TitleBar";
-import { NarrowDrawer } from "../narrow-drawer/NarrowDrawer";
-import { ContentContainer } from "../content-container/ContentContainer";
-import { Scroller } from "../scroller/Scroller";
+import { useEffect, useRef } from "react";
+import yaml from "yaml";
+import { useCodeStore } from "../../stores/code/code.store.mts";
+import {
+  ClockCircleOutlined,
+  LoadingOutlined,
+  WarningOutlined,
+} from "@ant-design/icons";
+import { WideLayout } from "../wide-layout/WideLayout";
+import { NarrowLayout } from "../narrow-layout/NarrowLayout";
+import { AppNonIdeal } from "../app-non-ideal/AppNonIdeal";
+import { TIMEOUT_MSEC, TEMPLATE_FILES } from "./Application.constants.mts";
 
 function Application() {
-  const ui = useUiStore();
-
   return (
     <ConfigProvider
       theme={{
@@ -26,7 +31,7 @@ function Application() {
       <App className={style.cover}>
         <Layout className={style.cover}>
           <Layout.Content>
-            {ui.isNarrow ? <NarrowLayout /> : <WideLayout />}
+            <ApplicationStateFork />
           </Layout.Content>
         </Layout>
       </App>
@@ -34,44 +39,79 @@ function Application() {
   );
 }
 
-const NarrowLayout = () => {
-  return (
-    <Scroller direction="vertical">
-      <div className={style.mobile}>
-        <TitleBarNarrow />
-        <ContentContainer />
-        <NarrowDrawer />
-      </div>
-    </Scroller>
-  );
+function useResourceFetch() {
+  const ui = useUiStore();
+  const code = useCodeStore();
+
+  const running = useRef(false);
+  const resolved = useRef(false);
+
+  useEffect(() => {
+    if (running.current) {
+      return;
+    }
+    running.current = true;
+
+    const timeout = new Promise<string>((_, j) =>
+      setTimeout(() => j("timeout"), TIMEOUT_MSEC),
+    );
+
+    const templates = Promise.all(
+      TEMPLATE_FILES.map((filename) => fetchYaml(filename)),
+    )
+      .then((v) => code.setTemplateLists(v))
+      .catch(() => {
+        if (!resolved.current) {
+          throw "error";
+        }
+      });
+
+    const arrangements = fetchYaml("/arrangements.yaml")
+      .then((a) => code.setArrangementList(a))
+      .catch(() => {
+        if (!resolved.current) {
+          throw "error";
+        }
+      });
+
+    Promise.race([timeout, templates, arrangements])
+      .then(() => {
+        ui.setAppState("loaded");
+      })
+      .catch((state) => ui.setAppState(state));
+
+    return () => {
+      resolved.current = true;
+    };
+  }, []);
+
+  return { appState: ui.appState };
+}
+
+const fetchYaml = async (filename: string) =>
+  fetch(filename)
+    .then((d) => d.text())
+    .then((t) => yaml.parse(t));
+
+const ApplicationStateFork = () => {
+  const { appState } = useResourceFetch();
+
+  switch (appState) {
+    case "init":
+    case "loading":
+      return <AppNonIdeal Icon={LoadingOutlined} text="Loading..." />;
+    case "loaded":
+      return <AppLoaded />;
+    case "timeout":
+      return <AppNonIdeal Icon={ClockCircleOutlined} text="Timeout" />;
+    case "error":
+      return <AppNonIdeal Icon={WarningOutlined} text="Error" />;
+  }
 };
 
-const WideLayout = () => {
+const AppLoaded = () => {
   const ui = useUiStore();
-  return (
-    <Splitter
-      className={style.splitter}
-      draggerIcon={null}
-      onResizeEnd={(e) => ui.setMenuWidth(e[0])}
-    >
-      {ui.isMenuOpen ? (
-        <Splitter.Panel
-          className={style.panel}
-          defaultSize={ui.menuWidth}
-          min={250}
-          max="50%"
-        >
-          <WideMenu />
-        </Splitter.Panel>
-      ) : null}
-      <Splitter.Panel className={style.panel}>
-        <Scroller direction="vertical">
-          {ui.isMenuOpen ? null : <TitleBarWide />}
-          <ContentContainer />
-        </Scroller>
-      </Splitter.Panel>
-    </Splitter>
-  );
+  return <>{ui.isNarrow ? <NarrowLayout /> : <WideLayout />}</>;
 };
 
 export default Application;
