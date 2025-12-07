@@ -105,7 +105,7 @@ export function parseRaw({
   astNoDragProps,
   astLineageProps,
   inputs,
-  viewed,
+  views: viewed,
 }: ParseRelevant): ParseResult {
   const dqm = new Dqm(
     {
@@ -131,7 +131,7 @@ export function parseRaw({
       state: "success",
       data: {
         inputs,
-        viewed,
+        views: viewed,
         parsed,
         sanitizedAst,
       },

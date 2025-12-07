@@ -81,7 +81,7 @@ const TemplateGroups: FC<TemplateGroupsProps> = ({ mode }) => {
             <Button
               variant="link"
               onClick={() => {
-                code.setTheatersFromHistory(0);
+                code.setArrangementFromHistory(0);
                 ui.setTemplateDrawerState(null);
               }}
             >
@@ -100,7 +100,7 @@ const TemplateGroups: FC<TemplateGroupsProps> = ({ mode }) => {
                 code.setTheaterDqmByIndex(mode.index, raw);
               }}
               previewOnClick={(raw: string) => {
-                code.pushTheatersToHistory();
+                code.pushArrangementToHistory();
                 code.setTheaterDqmByIndex(mode.index, raw);
               }}
             />

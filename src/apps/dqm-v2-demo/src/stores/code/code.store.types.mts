@@ -36,7 +36,7 @@ export type AstSanitizationFeature = keyof SanitizedNode;
 
 export type CodeStoreProcessed = Pick<
   CodeStore,
-  "inputs" | "parsed" | "sanitizedAst" | "viewed"
+  "inputs" | "parsed" | "sanitizedAst" | "views"
 >;
 export interface TemplateGroup {
   label: string;
@@ -76,8 +76,9 @@ export interface CodeStoreState {
   astLineageProps: SanitizationProp[];
   astNoDragProps: SanitizationProp[];
 
+  autoUpdate: boolean;
   inputs: DqmParseInputStructured;
-  viewed: DqmParseInputStructured;
+  views: DqmParseInputStructured;
   history: DqmParseInputStructured[];
 
   parsed: DqmParseOutput;
@@ -86,17 +87,23 @@ export interface CodeStoreState {
 
 export interface CodeStoreActions {
   setAllInputs: (inputs: DqmRecord) => void;
+  setAllViews: (inputs: DqmRecord) => void;
+
   setTheaterDqmByIndex: (index: number, dqm: DqmParseInputString) => void;
   setTheaterNameByIndex: (index: number, theater: DqmParseTheater) => void;
-  pushTheater: () => void;
+
+  pushNewTheater: () => void;
   removeTheaterByIndex: (index: number) => void;
+
   setDragFeatureList: (feature: SanitizationProp[]) => void;
   setLineageFeatureList: (feature: SanitizationProp[]) => void;
   setNoDragFeatureList: (feature: SanitizationProp[]) => void;
-  setTemplateLists: (lists: TemplateGroupWithList[]) => void;
-  setArrangementList: (list: Arrangement[]) => void;
-  setTheatersFromHistory: (index: number) => void;
-  pushTheatersToHistory: () => void;
+
+  setTemplates: (lists: TemplateGroupWithList[]) => void;
+  setArrangements: (list: Arrangement[]) => void;
+
+  setArrangementFromHistory: (index: number) => void;
+  pushArrangementToHistory: () => void;
 }
 
 interface ParseResultSuccess {
@@ -113,7 +120,7 @@ export type ParseResult = ParseResultSuccess | ParseResultFail;
 
 export type ParseRelevant = Pick<
   CodeStore,
-  "astDragProps" | "astLineageProps" | "astNoDragProps" | "inputs" | "viewed"
+  "astDragProps" | "astLineageProps" | "astNoDragProps" | "inputs" | "views"
 >;
 
 export type CreateDefaultsReturn = Pick<
@@ -123,7 +130,7 @@ export type CreateDefaultsReturn = Pick<
   | "astNoDragProps"
   | "inputs"
   | "parsed"
-  | "viewed"
+  | "views"
   | "sanitizedAst"
 >;
 

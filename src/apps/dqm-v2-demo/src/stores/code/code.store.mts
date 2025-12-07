@@ -29,10 +29,11 @@ export const useCodeStore = create<CodeStore>((set) => ({
   templates: [],
   arrangements: [],
   history: [],
+  autoUpdate: true,
 
   ...createDefaults({
     inputs,
-    viewed: inputs,
+    views: inputs,
     astDragProps: wrapVisible(
       ["creator", "idList", "kind"],
       [
@@ -47,7 +48,7 @@ export const useCodeStore = create<CodeStore>((set) => ({
     astLineageProps: wrapVisible(["children", "subtree"], []),
   }),
 
-  pushTheatersToHistory: () =>
+  pushArrangementToHistory: () =>
     set((state) => {
       const history = [state.inputs, ...state.history];
       return {
@@ -55,7 +56,7 @@ export const useCodeStore = create<CodeStore>((set) => ({
       };
     }),
 
-  setTheatersFromHistory: (index: number) =>
+  setArrangementFromHistory: (index: number) =>
     set((state) => {
       const inputs = state.history[index] || [];
       const history = state.history.slice(1);
@@ -66,14 +67,28 @@ export const useCodeStore = create<CodeStore>((set) => ({
       };
     }),
 
-  setArrangementList: (list: Arrangement[]) =>
-    set(() => ({ arrangements: list })),
+  setArrangements: (list: Arrangement[]) => set(() => ({ arrangements: list })),
 
-  setTemplateLists: (list: TemplateGroupWithList[]) =>
+  setTemplates: (list: TemplateGroupWithList[]) =>
     set(() => {
       return {
         templates: list,
       };
+    }),
+
+  setAllViews: (dqms: DqmRecord) =>
+    set((state) => {
+      const inputs = {
+        ...state.inputs,
+        dqms: dqms,
+      };
+      return createDefaults({
+        inputs,
+        views: inputs,
+        astDragProps: state.astDragProps,
+        astLineageProps: state.astLineageProps,
+        astNoDragProps: state.astNoDragProps,
+      });
     }),
 
   setAllInputs: (dqms: DqmRecord) =>
@@ -82,13 +97,14 @@ export const useCodeStore = create<CodeStore>((set) => ({
         ...state.inputs,
         dqms: dqms,
       };
-      return createDefaults({
-        inputs,
-        viewed: inputs,
-        astDragProps: state.astDragProps,
-        astLineageProps: state.astLineageProps,
-        astNoDragProps: state.astNoDragProps,
-      });
+      return { inputs };
+      // return createDefaults({
+      //   inputs,
+      //   views: inputs,
+      //   astDragProps: state.astDragProps,
+      //   astLineageProps: state.astLineageProps,
+      //   astNoDragProps: state.astNoDragProps,
+      // });
     }),
 
   setTheaterDqmByIndex: (index: number, dqm: DqmParseInputString) =>
@@ -97,7 +113,7 @@ export const useCodeStore = create<CodeStore>((set) => ({
       inputs[index].dqm = dqm;
       return createDefaults({
         inputs,
-        viewed: inputs,
+        views: inputs,
         astDragProps: state.astDragProps,
         astLineageProps: state.astLineageProps,
         astNoDragProps: state.astNoDragProps,
@@ -139,7 +155,7 @@ export const useCodeStore = create<CodeStore>((set) => ({
       ),
     })),
 
-  pushTheater: () =>
+  pushNewTheater: () =>
     set((state) => {
       const inputs = [...state.inputs];
       inputs.push({
@@ -148,7 +164,7 @@ export const useCodeStore = create<CodeStore>((set) => ({
       });
       return createDefaults({
         inputs,
-        viewed: inputs,
+        views: inputs,
         astDragProps: state.astDragProps,
         astLineageProps: state.astLineageProps,
         astNoDragProps: state.astNoDragProps,
@@ -162,7 +178,7 @@ export const useCodeStore = create<CodeStore>((set) => ({
 
       return createDefaults({
         inputs,
-        viewed: inputs,
+        views: inputs,
         astDragProps: state.astDragProps,
         astLineageProps: state.astLineageProps,
         astNoDragProps: state.astNoDragProps,
@@ -176,7 +192,7 @@ export const useCodeStore = create<CodeStore>((set) => ({
 
       return createDefaults({
         inputs,
-        viewed: inputs,
+        views: inputs,
         astDragProps: state.astDragProps,
         astLineageProps: state.astLineageProps,
         astNoDragProps: state.astNoDragProps,

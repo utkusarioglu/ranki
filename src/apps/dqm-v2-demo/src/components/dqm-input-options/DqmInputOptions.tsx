@@ -32,7 +32,7 @@ export const DqmInputOptions = () => {
           <DqmInputCard key={t.theater} index={i} />
         ))}
       </div>
-      <Button style={{ width: "100%" }} onClick={() => code.pushTheater()}>
+      <Button style={{ width: "100%" }} onClick={() => code.pushNewTheater()}>
         Add New Theater
       </Button>
       <TemplatesDrawer />

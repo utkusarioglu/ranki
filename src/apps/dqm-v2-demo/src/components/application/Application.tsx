@@ -59,7 +59,7 @@ function useResourceFetch() {
     const templates = Promise.all(
       TEMPLATE_FILES.map((filename) => fetchYaml(filename)),
     )
-      .then((v) => code.setTemplateLists(v))
+      .then((v) => code.setTemplates(v))
       .catch(() => {
         if (!resolved.current) {
           throw "error";
@@ -67,7 +67,7 @@ function useResourceFetch() {
       });
 
     const arrangements = fetchYaml("/arrangements.yaml")
-      .then((a) => code.setArrangementList(a))
+      .then((a) => code.setArrangements(a))
       .catch(() => {
         if (!resolved.current) {
           throw "error";
