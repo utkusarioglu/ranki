@@ -1745,6 +1745,7 @@ const RAW_RUNTIME_STATE =
           ["react-dnd", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:16.0.1"],\
           ["react-dnd-html5-backend", "npm:16.0.1"],\
           ["react-dom", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:19.2.1"],\
+          ["react-error-boundary", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:6.0.0"],\
           ["typescript", "patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"],\
           ["typescript-eslint", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:8.48.1"],\
           ["vite", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:7.2.6"],\
@@ -11281,6 +11282,29 @@ const RAW_RUNTIME_STATE =
           ["react", "npm:19.2.1"],\
           ["react-dom", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:19.2.1"],\
           ["scheduler", "npm:0.27.0"]\
+        ],\
+        "packagePeers": [\
+          "@types/react",\
+          "react"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["react-error-boundary", [\
+      ["npm:6.0.0", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/react-error-boundary-npm-6.0.0-66eefd4679-10c0.zip/node_modules/react-error-boundary/",\
+        "packageDependencies": [\
+          ["react-error-boundary", "npm:6.0.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:6.0.0", {\
+        "packageLocation": "./.yarn/__virtual__/react-error-boundary-virtual-04ec8d92da/2/home/dev/.yarn/berry/cache/react-error-boundary-npm-6.0.0-66eefd4679-10c0.zip/node_modules/react-error-boundary/",\
+        "packageDependencies": [\
+          ["@babel/runtime", "npm:7.28.4"],\
+          ["@types/react", "npm:19.2.7"],\
+          ["react", "npm:19.2.1"],\
+          ["react-error-boundary", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:6.0.0"]\
         ],\
         "packagePeers": [\
           "@types/react",\
