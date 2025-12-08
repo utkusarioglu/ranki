@@ -13,29 +13,33 @@ import { WideLayout } from "../wide-layout/WideLayout";
 import { NarrowLayout } from "../narrow-layout/NarrowLayout";
 import { AppNonIdeal } from "../app-non-ideal/AppNonIdeal";
 import { TIMEOUT_MSEC, TEMPLATE_FILES } from "./Application.constants.mts";
+import { ErrorBoundary } from "react-error-boundary";
+import { ErrorFallback } from "../error-fallback/ErrorFallback";
 
 function Application() {
   return (
-    <ConfigProvider
-      theme={{
-        algorithm: theme.darkAlgorithm,
-        token: {
-          colorBgBase: "#151515", // global background
-          colorBgContainer: "#202020", // card/component background
-          borderRadius: 0,
-          colorPrimary: "#E6AE07",
-          colorTextSecondary: "#404040",
-        },
-      }}
-    >
-      <App className={style.cover}>
-        <Layout className={style.cover}>
-          <Layout.Content>
-            <ApplicationStateFork />
-          </Layout.Content>
-        </Layout>
-      </App>
-    </ConfigProvider>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <ConfigProvider
+        theme={{
+          algorithm: theme.darkAlgorithm,
+          token: {
+            colorBgBase: "#151515", // global background
+            colorBgContainer: "#202020", // card/component background
+            borderRadius: 0,
+            colorPrimary: "#E6AE07",
+            colorTextSecondary: "#404040",
+          },
+        }}
+      >
+        <App className={style.cover}>
+          <Layout className={style.cover}>
+            <Layout.Content>
+              <ApplicationStateFork />
+            </Layout.Content>
+          </Layout>
+        </App>
+      </ConfigProvider>
+    </ErrorBoundary>
   );
 }
 

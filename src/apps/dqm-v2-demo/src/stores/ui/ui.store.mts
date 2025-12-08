@@ -2,6 +2,7 @@ import { create } from "zustand";
 import type { AppState, UiStore } from "./ui.store.types.mts";
 import {
   NARROW_LAYOUT_THRESHOLD,
+  WIDE_LAYOUT_LEFT_MENU_WIDTH_MIN,
   WIDE_LAYOUT_LEFT_MENU_WIDTH_RATIO,
 } from "./ui.store.constants.mts";
 
@@ -20,7 +21,10 @@ export const useUiStore = create<UiStore>((set) => ({
   isMenuOpen: window.innerWidth > NARROW_LAYOUT_THRESHOLD,
   menuWidth:
     window.innerWidth > NARROW_LAYOUT_THRESHOLD
-      ? window.innerWidth * WIDE_LAYOUT_LEFT_MENU_WIDTH_RATIO
+      ? Math.max(
+          window.innerWidth * WIDE_LAYOUT_LEFT_MENU_WIDTH_RATIO,
+          WIDE_LAYOUT_LEFT_MENU_WIDTH_MIN,
+        )
       : window.innerWidth,
 
   setMenuWidth: (menuWidth) => set(() => ({ menuWidth })),
