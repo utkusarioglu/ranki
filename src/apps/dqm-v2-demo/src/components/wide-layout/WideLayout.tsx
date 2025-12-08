@@ -4,7 +4,7 @@ import style from "./WideLayout.module.css";
 import { Scroller } from "../scroller/Scroller";
 import { TitleBarWide } from "../title-bar/TitleBar";
 import { ContentContainer } from "../content-container/ContentContainer";
-import { WideMenu } from "../controls/Controls";
+import { TabManager } from "../tab-manager/TabManager";
 
 export const WideLayout = () => {
   const ui = useUiStore();
@@ -18,7 +18,7 @@ export const WideLayout = () => {
         <Splitter.Panel
           className={style.panel}
           defaultSize={ui.menuWidth}
-          min={250}
+          min={325}
           max="50%"
         >
           <WideMenu />
@@ -31,5 +31,14 @@ export const WideLayout = () => {
         </Scroller>
       </Splitter.Panel>
     </Splitter>
+  );
+};
+
+export const WideMenu = () => {
+  return (
+    <Scroller direction="vertical">
+      <TitleBarWide />
+      <TabManager />
+    </Scroller>
   );
 };

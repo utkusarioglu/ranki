@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-// import resolve from "@rollup/plugin-node-resolve";
 import babel from "@rollup/plugin-babel";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 
 export default defineConfig({
   plugins: [
@@ -10,6 +10,10 @@ export default defineConfig({
       extensions: [".mts", ".ts", ".js", ".mjs"],
       presets: [["@babel/preset-typescript", { allowDeclareFields: true }]],
       plugins: [["@babel/plugin-proposal-decorators", { version: "2023-05" }]],
+    }),
+    tanstackRouter({
+      target: "react",
+      autoCodeSplitting: true,
     }),
     react(),
   ],

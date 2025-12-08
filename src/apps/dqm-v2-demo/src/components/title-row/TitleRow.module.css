@@ -1,4 +1,6 @@
 .container {
   padding-block: var(--ant-padding);
   margin-inline: var(--ant-padding);
+  display: flex;
+  align-items: center;
 }

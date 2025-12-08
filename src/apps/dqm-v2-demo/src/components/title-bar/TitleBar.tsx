@@ -1,4 +1,4 @@
-import { Button, Flex, Typography, theme } from "antd";
+import { Button } from "antd";
 import {
   DoubleLeftOutlined,
   InfoCircleOutlined,
@@ -7,10 +7,12 @@ import {
 import { useUiStore } from "../../stores/ui/ui.store.mts";
 import { AppTitle } from "../app-title/AppTitle";
 import { TitleRow } from "../title-row/TitleRow";
+import { useNavigate } from "@tanstack/react-router";
 
 export const TitleBarWide = () => {
   const ui = useUiStore();
-  const { token } = theme.useToken();
+  // const { token } = theme.useToken();
+  const navigate = useNavigate();
   return (
     <TitleRow>
       {ui.isMenuOpen ? null : (
@@ -20,11 +22,19 @@ export const TitleBarWide = () => {
           </Button>
         </>
       )}
-      <Typography.Title style={{ margin: 0 }} level={3}>
+      <AppTitle />
+      {/* <Typography.Title style={{ margin: 0 }} level={3}>
         Dqm<span style={{ color: token.colorTextSecondary }}>v2</span>
-      </Typography.Title>
+      </Typography.Title> */}
       <div>
-        <Button variant="filled">
+        <Button
+          onClick={() =>
+            navigate({
+              to: "/info",
+            })
+          }
+          variant="filled"
+        >
           <InfoCircleOutlined />
         </Button>
         {ui.isMenuOpen ? (

@@ -1,3 +1,9 @@
 .version {
   color: var(--ant-color-text-secondary);
 }
+
+.title {
+  margin: 0 !important;
+  padding: 0;
+  cursor: pointer;
+}
