@@ -17,8 +17,13 @@
   }
 }
 
+.viewport {
+  height: 100%;
+}
+
 .scroller {
-  overflow: hidden;
+  /* overflow: hidden; */
   width: 100%;
-  height: max-content;
+  /* height: max-content; */
+  height: 100%;
 }

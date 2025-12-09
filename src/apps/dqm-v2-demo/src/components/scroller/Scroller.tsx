@@ -7,6 +7,8 @@ interface ScrollerProps {
   className?: string;
 }
 
+// ANKI here the vertical scroller needs an intermediary called `viewport` to
+// deal with `min-height` breaking the 100% height detection
 export const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
   children,
   direction,
@@ -28,12 +30,14 @@ export const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
     case "vertical":
       return (
         <div className={vertical.container}>
-          <div
-            className={[vertical.scroller, className]
-              .filter((v) => v)
-              .join(" ")}
-          >
-            {children}
+          <div className={vertical.viewport}>
+            <div
+              className={[vertical.scroller, className]
+                .filter((v) => v)
+                .join(" ")}
+            >
+              {children}
+            </div>
           </div>
         </div>
       );

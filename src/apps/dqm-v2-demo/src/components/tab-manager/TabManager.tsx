@@ -13,6 +13,7 @@ import { NodeOptions } from "../node-options/NodeOptions";
 import { AstSanitizerOptions } from "../ast-sanitizer-options/AstSanitizerOptions";
 import { type FC, type PropsWithChildren, type ReactNode } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { RenderSettings } from "../render-settings/RenderSettings";
 
 type Level = {
   key: string;
@@ -51,7 +52,7 @@ const levels: Level[] = [
       {
         key: "1",
         label: "Render",
-        TabChild: <NotYet />,
+        TabChild: <RenderSettings />,
         route: "/render/document",
         icon: <FundProjectionScreenOutlined />,
       },
