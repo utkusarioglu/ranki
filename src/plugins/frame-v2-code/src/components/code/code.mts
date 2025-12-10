@@ -5,7 +5,7 @@ export const frameV2CodeBlockComponent: IDqmComponent = {
   meta: {
     id: {
       chain: ["frame", "v2", "code"],
-      aliases: [],
+      aliases: ["code"],
     },
     description: "Component that understands computer code",
     version: "0.0.0",
@@ -21,7 +21,21 @@ export const frameV2CodeBlockComponent: IDqmComponent = {
       },
       settings: {
         positionals: [],
-        params: [],
+        params: [
+          {
+            id: {
+              chain: ["hello", "cat"],
+              aliases: ["h"],
+            },
+            values: [
+              {
+                name: "first_number",
+                type: "number",
+                defaultValue: 1,
+              },
+            ],
+          },
+        ],
       },
     },
   },

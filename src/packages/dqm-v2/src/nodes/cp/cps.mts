@@ -9,6 +9,7 @@ import type {
   CommonTransportsConstructorParams,
   DqmConfig,
   IId,
+  Alias,
 } from "@dqm/package-dqm-api-v2";
 import { Id } from "../../id/id.mjs";
 import { Params } from "../param/params.mjs";
@@ -38,8 +39,11 @@ export class Cps extends CommonTransports implements ICps {
   }
 
   setDefinition(def: CpsDefinition): ICps {
-    this.id.setId(def.id);
-    this.component = this.getPlugins().getComponent(def.id);
+    this.component = this.getPlugins().getComponentById(def.id);
+    this.id.setId(this.component.meta.id.chain);
+    if (def.id.length === 1) {
+      this.id.setAlias(def.id as Alias);
+    }
     this.params.setSchema(this.component.stages.ast);
     def.params.forEach((param) => {
       this.params.pushParam(param);

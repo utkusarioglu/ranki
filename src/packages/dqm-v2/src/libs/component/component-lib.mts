@@ -29,6 +29,6 @@ export class ComponentLib implements ILibComponent {
   }
 
   get({ id }: Criteria): Out {
-    return this.idLib.getObjectById(id.join("."));
+    return this.idLib.getObjectById(id);
   }
 }

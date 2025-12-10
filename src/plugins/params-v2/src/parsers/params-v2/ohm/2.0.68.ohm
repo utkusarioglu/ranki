@@ -31,13 +31,13 @@ ParamsV2 <: BaseV2 {
   paramsV2FormatPositive = paramsV2Key
   paramsV2FormatPositional = paramsV2ValueItem
 
-  paramsV2SettingNamespace = digit+ "."
+  paramsV2SettingAudience = digit+ tParamsV2SeparatorKeyLevel
 
   paramsV2Setting = 
-    | paramsV2SettingNamespace? paramsV2FormatOperator 
-    | paramsV2SettingNamespace? paramsV2FormatNegative
-    | paramsV2SettingNamespace? paramsV2FormatPositive
-    | paramsV2SettingNamespace? paramsV2FormatPositional
+    | paramsV2SettingAudience? paramsV2FormatOperator 
+    | paramsV2SettingAudience? paramsV2FormatNegative
+    | paramsV2SettingAudience? paramsV2FormatPositive
+    | paramsV2SettingAudience? paramsV2FormatPositional
 
   paramsV2Directive = 
     | tParamsV2DirectiveParam paramsV2FormatOperator 
@@ -47,7 +47,7 @@ ParamsV2 <: BaseV2 {
 
   paramsV2KeyWordLegal = alnum | "_" | "-"
   paramsV2KeyWord = letter (paramsV2KeyWordLegal)*
-  paramsV2Key = paramsV2KeyWord ("." paramsV2KeyWord)*
+  paramsV2Key = paramsV2KeyWord (tParamsV2SeparatorKeyLevel paramsV2KeyWord)*
 
   paramsV2Values = paramsV2ValueItem (sBaseV2Clearance paramsV2ValueItem)*
 

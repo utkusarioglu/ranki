@@ -11,6 +11,14 @@ export class DqmError extends Error {
     this.objects = objects;
   }
 
+  private stringifyObjects() {
+    try {
+      return JSON.stringify(this.objects, null, 2);
+    } catch (e) {
+      return "(Stringification failed)";
+    }
+  }
+
   toString() {
     return [
       "DQM ERROR:",
@@ -20,7 +28,8 @@ export class DqmError extends Error {
       this.code,
       "",
       "OBJECTS:",
-      JSON.stringify(this.objects, null, 2),
+      this.stringifyObjects(),
+      // JSON.stringify(this.objects, null, 2),
       "",
       "STACK:",
       this.stack,

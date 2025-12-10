@@ -4,22 +4,22 @@ import type {
   Audience,
   IParam,
   Operator,
-  ParamValueSpec,
   ParamChannel,
   ParamProducer,
   IId,
   ParamDefaultValue,
   ChannelParamSpecs,
+  AstSourceView,
 } from "@dqm/package-dqm-api-v2";
 import { Id } from "../../id/id.mjs";
 import { ALL_AUDIENCES } from "./param.constants.mjs";
-import { DqmError, rejectValues, dependsOn } from "@dqm/package-utils";
+import { rejectValues, dependsOn, DqmError } from "@dqm/package-utils";
 import { AstNode } from "../ast/ast-node.mjs";
 
 export class Param extends AstNode implements IParam {
   private audience: Audience = ALL_AUDIENCES;
   private operator!: Operator;
-  private values: ParamValueSpec[] = [];
+  private values: AstSourceView[] = [];
   private defaultValues: ParamDefaultValue[] = [];
   private id = new Id();
   private specs!: ChannelParamSpecs;
@@ -63,7 +63,7 @@ export class Param extends AstNode implements IParam {
     return this.operator;
   }
 
-  @dependsOn("specs")
+  // @dependsOn("specs")
   setId(id: Alias | Chain): IParam {
     this.id.setId(id);
     return this;
@@ -73,17 +73,22 @@ export class Param extends AstNode implements IParam {
     return this.id;
   }
 
+  // @dependsOn("specs", "defaultValues")
+  setValues(values: AstSourceView[]): this {
+    this.values = values;
+    return this;
+  }
+
+  // TODO
   @dependsOn("specs", "defaultValues")
-  setValues(values: ParamValueSpec[]): this {
-    if (values.length > this.defaultValues.length) {
+  checkValues() {
+    if (this.values.length > this.defaultValues.length) {
       throw new DqmError("TOO_MANY_VALUES", {
-        values,
+        values: this.values,
         defaults: this.defaultValues,
         obj: this,
       });
     }
-    this.values = values;
-    return this;
   }
 
   @dependsOn("specs")
@@ -92,7 +97,7 @@ export class Param extends AstNode implements IParam {
     return this;
   }
 
-  getValues(): ParamValueSpec[] {
+  getValues(): AstSourceView[] {
     return this.values;
   }
 

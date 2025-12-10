@@ -1,10 +1,17 @@
 import type {
+  Alias,
   AliasString,
+  Chain,
   ChainString,
   IdSummary,
 } from "@dqm/package-dqm-api-v2";
 import type { AliasCollision } from "./id-lib.types.mjs";
-import { DqmError, assertExists, rejectValues } from "@dqm/package-utils";
+import {
+  DqmError,
+  assertArrayNotEmpty,
+  assertExists,
+  rejectValues,
+} from "@dqm/package-utils";
 
 export class IdLib<Out> {
   private activeChains = new Map<ChainString, Out>();
@@ -41,19 +48,26 @@ export class IdLib<Out> {
   }
 
   @rejectValues(undefined)
-  getObjectById(id: AliasString | ChainString): Out {
+  getObjectById(id: Alias | Chain): Out {
+    assertArrayNotEmpty(id, {});
     switch (id.length) {
-      case 0:
-        throw new DqmError("EMPTY_ARRAY", { obj: this });
       case 1:
-        const chainString = this.getChainByAlias(id as AliasString);
-        const obj = this.activeChains.get(chainString);
-        assertExists(obj, { chainString });
-        return obj;
+        return this.getObjectByAlias(id as Alias);
       default:
-        const obj2 = this.activeChains.get(id as ChainString);
-        assertExists(obj2, { active: this.activeChains });
-        return obj2;
+        return this.getObjectByChain(id as Chain);
     }
+  }
+
+  getObjectByAlias(alias: Alias): Out {
+    const chainString = this.getChainByAlias(alias.join(".") as AliasString);
+    const obj = this.activeChains.get(chainString);
+    assertExists(obj, { chainString });
+    return obj;
+  }
+
+  getObjectByChain(chain: Chain): Out {
+    const obj = this.activeChains.get(chain.join(".") as ChainString);
+    assertExists(obj, { active: this.activeChains });
+    return obj;
   }
 }

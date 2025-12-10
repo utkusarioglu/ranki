@@ -2,6 +2,14 @@ group: frame-v2
 label: FrameV2
 description: Components powered by FrameV2
 list:
+- label: Code block with params
+  description: Uses params and pauses
+  raw: |
+    [code, hello.cat=5
+    hi,,PAUSED!,,hello
+    ]
+
+    2
 - label: Code block
   description: Unnested basic code block
   raw: |

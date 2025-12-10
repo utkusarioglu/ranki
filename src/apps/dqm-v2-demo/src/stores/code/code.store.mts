@@ -35,8 +35,9 @@ export const useCodeStore = create<CodeStore>((set) => ({
     inputs,
     views: inputs,
     astDragProps: wrapVisible(
-      ["creator", "idList", "kind"],
+      ["creator", "idList", "kind", "constructorName"],
       [
+        "chainList",
         "childCount",
         "cpxUnique",
         "creationMethod",

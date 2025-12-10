@@ -1,38 +1,12 @@
 import type {
-  CreatorName,
-  AstSourceString,
-  AstSourceView,
   DqmParseOutput,
   DqmParseTheater,
   DqmParseInputString,
   DqmRecord,
   DqmParseInputStructured,
-  IdUnique,
-  IAstNodeKind,
-  CreationMethod,
 } from "@dqm/package-dqm-api-v2";
 import type { TemplateGroupWithList } from "./utils.mts";
-
-export type SanitizedNode = Partial<{
-  cpxUnique: IdUnique;
-  creator: CreatorName;
-  source: AstSourceString | AstSourceView<any>;
-  idList: string;
-  childCount: number;
-  subtreeCount: number;
-  ignoredCount: number;
-  subtree?: SanitizedNode[];
-  children?: SanitizedNode[];
-  kind: IAstNodeKind;
-  creationMethod: CreationMethod;
-}>;
-
-export type SanitizedAst = {
-  theater: DqmParseTheater;
-  sanitized: SanitizedNode;
-};
-
-export type AstSanitizationFeature = keyof SanitizedNode;
+import type { SanitizedAst, AstSanitizationFeature } from "./utils.types.mts";
 
 export type CodeStoreProcessed = Pick<
   CodeStore,

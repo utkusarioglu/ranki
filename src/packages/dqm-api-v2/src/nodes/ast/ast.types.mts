@@ -24,11 +24,9 @@ export interface IAstTokenNode {
 
 // export type IAstNodeRelationship = "child" | "subtree" | "space" | "token";
 export type IAstNodeRelationship =
-  | "child"
-  | "subtree"
-  | "space"
-  | "token"
-  | "node";
+  // | "child"
+  // | "subtree"
+  "space" | "token" | "node";
 // export type IAstNodeRelationship = "node" | "space" | "token";
 
 export type IAstNodeConstructor = new (
@@ -52,8 +50,9 @@ export interface AstSourceViewCommon {
   raw: string;
 }
 
-export type AstSourceView<Custom extends AstSourceViewBase> =
-  AstSourceViewCommon & Custom;
+export type AstSourceView<
+  Custom extends AstSourceViewBase = AstSourceViewBase,
+> = AstSourceViewCommon & Custom;
 
 export type AstSourceViewBase = Record<string, any>;
 
@@ -79,6 +78,7 @@ export interface IAstNode {
   getPrev(): IAstNode | null;
   getNext(): IAstNode | null;
   getSubtreeNodes(): SubtreeNodes;
+  findSubtreeNodeByCreator(creator: CreatorName): IAstNode | undefined;
   getCreator(): CreatorName;
   setPrev(prev: IAstNode): this;
   setNext(next: IAstNode): this;

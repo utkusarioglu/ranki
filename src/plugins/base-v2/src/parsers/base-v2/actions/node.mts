@@ -17,7 +17,7 @@ export const node: IAstNodeActionDict = {
       .setDirection("block")
       .pushNodes(["token", ignore])
       .pushNodes(["space", wm])
-      .pushNodes(["subtree", rest]);
+      .pushNodes(["node", rest]);
   },
 
   baseV2Ignored(ignored) {
@@ -37,22 +37,22 @@ export const node: IAstNodeActionDict = {
       .newCpx((cpx) => cpx.setParams(PARAMS).setIdList(COMPONENT))
       .setDirection("block")
       .pushNodes(["space", whitespace1])
-      .pushNodes(["subtree", structure])
+      .pushNodes(["node", structure])
       .pushNodes(["space", whitespace2]);
   },
 
   baseV2Section_base(block, blockSep, block2) {
     return grabAst(this)
       .newAst(this)
-      .pushNodes(["subtree", block])
-      .pushNodes(["token", blockSep], ["subtree", block2]);
+      .pushNodes(["node", block])
+      .pushNodes(["token", blockSep], ["node", block2]);
   },
 
   baseV2P(line1, nl, line2) {
     return grabAst(this)
       .newAst(this)
-      .pushNodes(["subtree", line1])
-      .pushNodes(["space", nl], ["subtree", line2]);
+      .pushNodes(["node", line1])
+      .pushNodes(["space", nl], ["node", line2]);
   },
 
   baseV2RootLine(wi1, lexemes, wi2) {
@@ -60,7 +60,7 @@ export const node: IAstNodeActionDict = {
       .newAst(this)
       .setDirection("inline")
       .pushNodes(["space", wi1])
-      .pushNodes(["subtree", lexemes])
+      .pushNodes(["node", lexemes])
       .pushNodes(["space", wi2]);
   },
 
@@ -71,21 +71,21 @@ export const node: IAstNodeActionDict = {
       .setDirection("inline")
       .pushNodes(["space", indentation1])
       .pushNodes(["token", lineModifiers])
-      .pushNodes(["subtree", lexemes])
+      .pushNodes(["node", lexemes])
       .pushNodes(["space", wi]);
   },
 
   baseV2Lexemes(lexeme1, clearance, lexeme2) {
     return grabAst(this)
       .newAst(this)
-      .pushNodes(["subtree", lexeme1])
-      .pushNodes(["space", clearance], ["subtree", lexeme2]);
+      .pushNodes(["node", lexeme1])
+      .pushNodes(["space", clearance], ["node", lexeme2]);
   },
 
   baseV2Decorated_base(word, wordEnd) {
     return grabAst(this)
       .newAst(this)
-      .pushNodes(["subtree", word])
+      .pushNodes(["node", word])
       .pushNodes(["token", wordEnd]);
   },
 

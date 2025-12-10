@@ -16,7 +16,7 @@ export function dependsOn(...properties: string[]) {
       properties.forEach((property) => {
         if ((this as any)[property] === undefined) {
           throw new DqmError("REQUIRED_VALUE_UNDEFINED", {
-            obj: this,
+            // obj: this,
             key: context.name,
             property,
             properties,

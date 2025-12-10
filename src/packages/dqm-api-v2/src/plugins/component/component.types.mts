@@ -1,6 +1,6 @@
 import type { DqmPluginVersion } from "../../export.types.mjs";
 import type { Alias, Chain, IdSummary } from "./id/id.types.mjs";
-import type { IParam, ParamType, ParamValue } from "./params/param.types.mjs";
+import type { IParam } from "./params/param.types.mjs";
 
 export interface IDqmComponent {
   type: "component";
@@ -16,9 +16,9 @@ export interface IDqmComponent {
 }
 
 export interface ParamDefaultValue {
-  name: string;
-  type: ParamType;
-  defaultValue: ParamValue;
+  name: string; // this is for displaying a name in user instructions
+  type: string;
+  defaultValue: unknown;
 }
 
 export interface ComponentSingleParamSpec {
@@ -27,7 +27,7 @@ export interface ComponentSingleParamSpec {
 }
 
 export interface ChannelParamSpecs {
-  positionals: (Chain | Alias)[];
+  positionals: Chain[];
   params: ComponentSingleParamSpec[];
 }
 

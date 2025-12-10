@@ -34,7 +34,7 @@ export class Libs implements IPlugins {
     return this;
   }
 
-  getComponent(chain: Alias | Chain): IDqmComponent {
+  getComponentById(chain: Alias | Chain): IDqmComponent {
     return this.components.get({ id: chain });
   }
 

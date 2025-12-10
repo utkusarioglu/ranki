@@ -9,10 +9,11 @@ export type IIdMap = {
 
 export interface IId {
   setPosition(pos: Position): IId;
-  setMap(mapping: IIdMap): IId;
+  // setMap(mapping: IIdMap): IId;
   setId(id: Alias | Chain): IId;
   setChain(chain: Chain): IId;
   getUnique(): IdUnique;
+  setAlias(alias: Alias): IId;
 
   getSummary(): IdSummary;
   getId(): Alias | Chain;

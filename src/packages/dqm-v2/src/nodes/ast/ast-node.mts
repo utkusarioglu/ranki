@@ -78,6 +78,10 @@ export class AstNode extends CommonTransports implements IAstNode {
     );
   }
 
+  findSubtreeNodeByCreator(creator: CreatorName): IAstNode {
+    return this.subtreeNodes.find((n) => n.getCreator() === creator)!;
+  }
+
   // TODO this needs a lot of work
   newCpx(cpxCallback: (cpx: ICpx) => ICpx): this {
     const Cpx = this.getPlugins().getCpxConstructor();
@@ -158,11 +162,9 @@ export class AstNode extends CommonTransports implements IAstNode {
         let method;
         switch (relationship) {
           case "node":
-          case "child":
-          case "subtree":
             // #2
-            // case "subtree":
             // case "child":
+            // case "subtree":
             method = "node";
             break;
           default:

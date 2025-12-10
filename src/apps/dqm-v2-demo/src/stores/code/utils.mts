@@ -2,14 +2,16 @@ import type { DqmParseOutput, IAstNode } from "@dqm/package-dqm-api-v2";
 import type {
   CreateDefaultsReturn,
   ParseRelevant,
-  SanitizedNode,
-  AstSanitizationFeature,
   ParseResult,
   SanitizationProp,
-  SanitizedAst,
   TemplateGroup,
   TemplateTextProcessed,
 } from "./code.store.types.mts";
+import type {
+  SanitizedNode,
+  AstSanitizationFeature,
+  SanitizedAst,
+} from "./utils.types.mts";
 import { Dqm } from "@dqm/package-dqm-v2";
 import baseV2 from "@dqm/plugin-base-v2";
 import frameV2 from "@dqm/plugin-frame-v2";
@@ -40,6 +42,9 @@ function sanitizeAstSingle(
 
   features.forEach((feature) => {
     switch (feature) {
+      case "constructorName":
+        sanitized[feature] = astNode.constructor.name;
+        break;
       case "creationMethod":
         sanitized[feature] = astNode.getCreationMethod();
         break;
@@ -68,6 +73,14 @@ function sanitizeAstSingle(
           .map((v) => v.join("."))
           .join(" | ");
         break;
+      case "chainList":
+        sanitized[feature] = astNode
+          .getCpx()
+          .getChainList()
+          .map((v) => v.join("."))
+          .join(" | ");
+        break;
+
       case "children":
         if (children.length) {
           sanitized[feature] = children;

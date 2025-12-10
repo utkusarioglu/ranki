@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { YamlDisplay } from "../yaml-display/YamlDisplay";
 import style from "./NodeDisplay.module.css";
-import type { SanitizedNode } from "../../stores/code/code.store.types.mts";
+import type { SanitizedNode } from "../../stores/code/utils.types.mts";
 import { PreCode } from "../pre-code/PreCode";
 
 interface NodeDisplayProps {

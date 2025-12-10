@@ -27,7 +27,7 @@ export interface IPluginLib<
 }
 
 export interface IPlugins {
-  getComponent(id: Chain | Alias): IDqmComponent;
+  getComponentById(id: Chain | Alias): IDqmComponent;
   getParser(name: string, config: DqmConfig): CreateParserReturn;
   addPlugin(plugin: IDqmPlugin): IPlugins;
   getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults;

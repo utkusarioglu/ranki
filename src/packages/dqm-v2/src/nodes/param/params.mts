@@ -7,7 +7,7 @@ import type {
   IParams,
   ParamChannel,
 } from "@dqm/package-dqm-api-v2";
-import { dependsOn, rejectValues } from "@dqm/package-utils";
+import { assertExists, dependsOn, rejectValues } from "@dqm/package-utils";
 import { ChannelParams } from "./channel-params.mjs";
 import { CommonTransports } from "../common-transports.mjs";
 
@@ -50,6 +50,7 @@ export class Params extends CommonTransports implements IParams {
   @rejectValues(undefined)
   findById(channel: ParamChannel, id: Alias | Chain): IParam | never {
     const lib = this.libs.get(channel)!;
+    assertExists(lib, { channel, id });
     return lib.findById(id);
   }
 

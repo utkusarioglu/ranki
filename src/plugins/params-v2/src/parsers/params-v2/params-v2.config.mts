@@ -4,6 +4,7 @@ export const config: ParamsV2GrammarConfig = {
   tokens: {
     separator: {
       param: ",",
+      keyLevel: ".",
     },
     key: {
       negation: "!",

@@ -55,52 +55,37 @@ export class ChannelParams extends CommonTransports {
    * #4 This is meant to be a fail-safe every param should be accessible by chain
    */
   addParam(user: IParam) {
-    let posChain: Chain | Alias | undefined;
-    let def: IParam | undefined = undefined;
-
-    // #1
-    const pos = user.getId().getPosition();
-    if (pos) {
-      posChain = this.schema.positionals[pos];
-      if (!posChain) {
-        throw new DqmError("FAULTY_POSITION", {
-          schema: this.schema,
-          pos,
-          obj: this,
-        });
-      }
-      def = this.lib.getObjectById(posChain.join("."));
-      def.getId().setPosition(pos);
-    }
-
-    // #2
     const alias = user.getId().getAlias();
-    if (alias) {
-      def = this.lib.getObjectById(alias.join("."));
-      def.getId().setId(alias);
-    }
-
-    // #3
+    const position = user.getId().getPosition();
     const chain = user.getId().getChain();
-    if (!def) {
-      def = this.lib.getObjectById(chain.join("."));
-    }
+    let p: IParam;
 
-    // #4
-    if (!def) {
-      throw new DqmError("FAILED_PARAM_ADDRESSING", {
-        pos,
+    if (alias && position) {
+      throw new DqmError("UNEXPECTED_CONFIGURATION", {
+        why: "Param has both alias and position defined. This shouldn't be possible",
+        alias,
+        pos: position,
+      });
+    } else if (position) {
+      const chain = this.schema.positionals[position];
+      p = this.lib.getObjectById(chain);
+      p.getId().setPosition(position);
+    } else if (alias) {
+      p = this.lib.getObjectById(alias);
+      p.getId().setAlias(alias);
+    } else if (chain) {
+      p = this.lib.getObjectById(chain);
+    } else {
+      throw new DqmError("UNRECOGNIZED_PARAM", {
         chain,
         alias,
-        obj: this,
-        param: user,
+        position,
       });
     }
 
-    def
+    p.setProducer("instance-declaration")
       .setAudience(user.getAudience())
-      .setOperator(user.getOperator())
-      .setProducer("instance-declaration")
+      .setChannel(user.getChannel())
       .setValues(user.getValues());
 
     return this;
@@ -108,6 +93,6 @@ export class ChannelParams extends CommonTransports {
 
   @rejectValues(undefined)
   findById(id: Alias | Chain): IParam | never {
-    return this.lib.getObjectById(id.join("."));
+    return this.lib.getObjectById(id);
   }
 }

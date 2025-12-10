@@ -1,11 +1,11 @@
-import type { IAstNode } from "../../../export.types.mjs";
+import type { AstSourceView, IAstNode } from "../../../export.types.mjs";
 import type {
   ChannelParamSpecs,
   ParamDefaultValue,
 } from "../component.types.mjs";
-import type { IId } from "../id/id.types.mjs";
+import type { Alias, Chain, IId } from "../id/id.types.mjs";
 
-export type ParamType = "string" | "number" | "boolean" | "chain";
+// export type ParamType = "string" | "number" | "boolean" | "chain";
 
 export type ParamChannel = string & { type?: "ParamChannel" }; // setting, config
 
@@ -19,12 +19,12 @@ export type Audience = (string | number) & { type?: "ParamAudience" };
 
 export type Operator = "assign" | "append" | "prepend" | "shift" | "unshift";
 
-export type ParamValue = string | number | boolean;
+// export type ParamValue = string | number | boolean;
 
-export interface ParamValueSpec {
-  type: ParamType;
-  value: ParamValue;
-}
+// export type ParamValueSpec = {
+//   type: ParamType;
+//   raw: ParamValue;
+// } & Record<string, unknown>;
 
 export type ParamValuePrimitive = string | number;
 
@@ -32,14 +32,15 @@ export interface IParam extends IAstNode {
   setAudience(channel: Audience): this;
   setOperator(operator: Operator): this;
   setProducer(producer: ParamProducer): this;
-  setValues(values: ParamValueSpec[]): this;
+  setValues(values: AstSourceView[]): this;
   setSpecs(config: ChannelParamSpecs): this;
   setChannel(channel: ParamChannel): this;
   setDefaultValues(valueSpec: ParamDefaultValue[]): this;
+  setId(id: Alias | Chain): IParam;
 
   getAudience(): Audience;
   getOperator(): Operator;
-  getValues(): ParamValueSpec[];
+  getValues(): AstSourceView[];
   getId(): IId;
   getSpecs(): ChannelParamSpecs;
   getChannel(): ParamChannel;

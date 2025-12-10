@@ -9,5 +9,6 @@ export function tokenizer(config: ParamsV2GrammarConfig): DqmGrammarTokens {
   tokens["tParamsV2OperatorAssign"] = config.tokens.operators.assign;
   tokens["tParamsV2OperatorAppend"] = config.tokens.operators.append;
   tokens["tParamsV2OperatorRemove"] = config.tokens.operators.remove;
+  tokens["tParamsV2SeparatorKeyLevel"] = config.tokens.separator.keyLevel;
   return tokens;
 }
