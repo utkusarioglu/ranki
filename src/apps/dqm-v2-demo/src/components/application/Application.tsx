@@ -3,7 +3,7 @@ import { App, ConfigProvider, Layout, theme } from "antd";
 import style from "./Application.module.css";
 import { useEffect, useRef } from "react";
 import yaml from "yaml";
-import { useCodeStore } from "../../stores/code/code.store.mts";
+import { useCodeStore } from "../../stores/dqm/dqm.store.mts";
 import {
   ClockCircleOutlined,
   LoadingOutlined,

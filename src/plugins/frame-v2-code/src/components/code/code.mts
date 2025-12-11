@@ -24,7 +24,20 @@ export const frameV2CodeBlockComponent: IDqmComponent = {
         params: [
           {
             id: {
-              chain: ["hello", "cat"],
+              chain: ["prettier", "auto_format"],
+              aliases: ["p"],
+            },
+            values: [
+              {
+                name: "Auto Format",
+                type: "boolean",
+                defaultValue: true,
+              },
+            ],
+          },
+          {
+            id: {
+              chain: ["path", "cat"],
               aliases: ["h"],
             },
             values: [

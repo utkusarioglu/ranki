@@ -3,7 +3,7 @@ import type { WithIndex } from "./TemplatesDrawer";
 import type { FC } from "react";
 import style from "./TemplateEntry.module.css";
 import { PreCode } from "../pre-code/PreCode";
-import type { TemplateTextProcessed } from "../../stores/code/code.store.types.mts";
+import type { TemplateTextProcessed } from "../../stores/dqm/dqm.store.types.mts";
 
 type TemplateEntryProps = WithIndex & {
   entry: TemplateTextProcessed;

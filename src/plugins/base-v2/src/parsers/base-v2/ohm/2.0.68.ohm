@@ -85,6 +85,11 @@ BaseV2 <: ConstantsV2 {
     | tBaseV2Escape tBaseV2WordToken --escaped
     | tBaseV2Escape c --redundant
     | c --regular
+
+  hWrapped<q> = q hWrappedContent<q>* q
+  hWrappedContent<q> = 
+    | tBaseV2Escape q --escaped
+    | ~q any --content
     
   sBaseV2Indentation = spaces
   sBaseV2Clearance = space+

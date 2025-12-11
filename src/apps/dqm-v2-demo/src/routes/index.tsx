@@ -1,10 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { DocumentRender } from "../components/document-render/DocumentRender";
 
 export const Route = createFileRoute("/")({
-  component: DocumentRender,
+  component: () => <p>have the templates here</p>,
 });
-
-// function RouteComponent() {
-//   return <div>Hello "/"!</div>;
-// }

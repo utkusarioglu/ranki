@@ -3,6 +3,20 @@
   margin-bottom: calc(var(--ant-padding) / 2);
 }
 
+.switches {
+  gap: 1em;
+  padding-inline: var(--ant-padding);
+  padding-bottom: var(--ant-padding);
+}
+
+.lineage {
+  border-left: 1px solid var(--ant-color-bg-base);
+
+  &:hover {
+    border-left-color: var(--ant-color-bg-container);
+  }
+}
+
 .yaml {
   overflow: hidden;
   background-color: var(--ant-color-bg-container);
@@ -13,9 +27,29 @@
   grid-template-columns: 1fr clamp(150px, 20svw, 300px);
 }
 
-.children {
-  border-top: 3px dashed var(--ant-color-primary);
-  border-left: 3px dashed var(--ant-color-primary);
+.dashed {
+  border-top: 3px dashed var(--color);
+  border-left: 3px dashed var(--color) !important;
   padding-left: var(--ant-padding-sm);
   padding-top: var(--ant-padding-sm);
+}
+
+.children {
+  composes: dashed;
+  --color: var(--ant-color-primary);
+}
+
+.token {
+  composes: dashed;
+  --color: var(--ant-green-6);
+}
+
+.space {
+  composes: dashed;
+  --color: var(--ant-pink-6);
+}
+
+.newCpx {
+  composes: dashed;
+  --color: var(--ant-blue-6);
 }

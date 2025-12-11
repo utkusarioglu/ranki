@@ -37,13 +37,13 @@ FrameV2 <: ParamsV2 {
     | sBaseV2WasteMultiline frameV2PauseStart frameV2PausedPayload frameV2PauseEnd --P
     | frameV2PauseStart frameV2PausedPayload frameV2PauseEnd --p
 
-  // !FIX this would break sBaseV2WasteInlineth nested pauses
+  // !FIX this would break sBaseV2WasteInline nested pauses
   frameV2PausedPayload = (~(frameV2PauseEnd | frameV2End) any)+
   
   frameV2ChainList = paramsV2Key (sBaseV2Clearance paramsV2Key)*
   
   frameV2Payload = 
-    | sBaseV2WasteInline frameV2PauseList --P
+    | sBaseV2WasteMultiline frameV2PauseList --P
     | frameV2PauseList --p
 
   frameV2End =

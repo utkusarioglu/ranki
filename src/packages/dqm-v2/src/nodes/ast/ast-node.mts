@@ -23,7 +23,6 @@ import type * as ohm from "ohm-js";
 import {
   assertArrayNotEmpty,
   assertLeaf,
-  // assertParent,
   dependsOn,
   DqmError,
   rejectValues,
@@ -56,6 +55,7 @@ export class AstNode extends CommonTransports implements IAstNode {
   private relationship!: IAstNodeRelationship;
   private creationMethod!: string;
   private leafDecoder!: LeafDecoder;
+  private meaning!: string;
 
   private defaultLeafDecoder(): LeafDecoder {
     return {
@@ -80,6 +80,14 @@ export class AstNode extends CommonTransports implements IAstNode {
 
   findSubtreeNodeByCreator(creator: CreatorName): IAstNode {
     return this.subtreeNodes.find((n) => n.getCreator() === creator)!;
+  }
+
+  findTokenNodeByCreator(creator: CreatorName): IAstNode {
+    return this.tokenNodes.find((n) => n.getCreator() === creator)!;
+  }
+
+  findSpaceNodeByCreator(creator: CreatorName): IAstNode {
+    return this.spaceNodes.find((n) => n.getCreator() === creator)!;
   }
 
   // TODO this needs a lot of work
@@ -364,6 +372,24 @@ export class AstNode extends CommonTransports implements IAstNode {
 
   getIgnoredNodes(): ohm.Node[] {
     return this.ignoredNodes;
+  }
+
+  setMeaning(meaning: string): this {
+    this.meaning = meaning;
+    return this;
+  }
+
+  getTokenNodes(): TokenNodes {
+    return this.tokenNodes;
+  }
+
+  getSpaceNodes(): SpaceNodes {
+    return this.spaceNodes;
+  }
+
+  @rejectValues(undefined)
+  getMeaning(): string {
+    return this.meaning;
   }
 
   private prepareContext(): IAstNodeContext {

@@ -8,21 +8,21 @@ ParamsV2 <: BaseV2 {
       paramsV2ParamListInline sBaseV2WasteInline 
         tParamsV2SeparatorParam?
         
-  paramsV2SepLeftInline = sBaseV2WasteInline tParamsV2SeparatorParam sBaseV2WasteInline
+  paramsV2SepInline = sBaseV2WasteInline tParamsV2SeparatorParam sBaseV2WasteInline
   paramsV2SepLeftBlock = sBaseV2WasteInline tParamsV2SeparatorParam? sBaseV2WasteInline nl sBaseV2WasteInline
-  paramsV2ParamListInline = paramsV2Param (paramsV2SepLeftInline paramsV2Param)*
+  paramsV2ParamListInline = paramsV2Param (paramsV2SepInline paramsV2Param)*
   paramsV2ParamListBlock = paramsV2Param (paramsV2SepLeftBlock paramsV2Param)*
 
   paramsV2Operator =
     | tParamsV2OperatorRemove
-    | tParamsV2OperatorAppend
-    | tParamsV2OperatorAssign
+    | tParamsV2OperatorAppend 
+    | tParamsV2OperatorAssign 
 
   paramsV2Param =
     | paramsV2Directive
     | paramsV2Setting
 
-  paramsV2FormatOperator = 
+  paramsV2FormatAssigned = 
     paramsV2Key sBaseV2WasteInline 
     paramsV2Operator sBaseV2WasteInline 
     paramsV2Values 
@@ -34,13 +34,13 @@ ParamsV2 <: BaseV2 {
   paramsV2SettingAudience = digit+ tParamsV2SeparatorKeyLevel
 
   paramsV2Setting = 
-    | paramsV2SettingAudience? paramsV2FormatOperator 
+    | paramsV2SettingAudience? paramsV2FormatAssigned 
     | paramsV2SettingAudience? paramsV2FormatNegative
     | paramsV2SettingAudience? paramsV2FormatPositive
     | paramsV2SettingAudience? paramsV2FormatPositional
 
   paramsV2Directive = 
-    | tParamsV2DirectiveParam paramsV2FormatOperator 
+    | tParamsV2DirectiveParam paramsV2FormatAssigned 
     | tParamsV2DirectiveParam paramsV2FormatNegative
     | tParamsV2DirectiveParam paramsV2FormatPositive
     | tParamsV2DirectiveParam paramsV2FormatPositional
@@ -52,14 +52,9 @@ ParamsV2 <: BaseV2 {
   paramsV2Values = paramsV2ValueItem (sBaseV2Clearance paramsV2ValueItem)*
 
   paramsV2ValueItem = 
-    | hQuoted<tBaseV2QuoteSingle>
-    | hQuoted<tBaseV2QuoteDouble>
+    | hWrapped<tBaseV2QuoteSingle>
+    | hWrapped<tBaseV2QuoteDouble>
     | paramsV2ValueItemPrimitive
-    
-  hQuoted<q> = q hQuotedContent<q>* q
-  hQuotedContent<q> = 
-    | tBaseV2Escape q --escaped
-    | ~q any --content
 
   paramsV2ValueItemPrimitive =
     | baseV2Number --number

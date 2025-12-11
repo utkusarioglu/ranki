@@ -1,0 +1,20 @@
+.container {
+  border-radius: initial;
+  height: max-content;
+
+  & :global(.ant-switch-handle::before) {
+    border-radius: initial;
+  }
+}
+
+.large {
+  & :global(.ant-switch-inner) {
+    padding-block: 0.35em;
+  }
+
+  & :global(.ant-switch-handle) {
+    box-sizing: border-box;
+    height: calc(100% - 4px);
+    padding-block: 1px;
+  }
+}

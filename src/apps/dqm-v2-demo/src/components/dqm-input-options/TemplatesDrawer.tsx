@@ -2,7 +2,7 @@ import { Button, Drawer, Typography } from "antd";
 import { useUiStore } from "../../stores/ui/ui.store.mts";
 import { type TemplateDrawerModeOpen } from "../../stores/ui/ui.store.types.mts";
 import style from "./TemplatesDrawer.module.css";
-import { useCodeStore } from "../../stores/code/code.store.mts";
+import { useCodeStore } from "../../stores/dqm/dqm.store.mts";
 import { type FC } from "react";
 import { Scroller } from "../scroller/Scroller";
 import { TemplateGroup } from "./TemplateGroup";
@@ -81,7 +81,7 @@ const TemplateGroups: FC<TemplateGroupsProps> = ({ mode }) => {
             <Button
               variant="link"
               onClick={() => {
-                code.setArrangementFromHistory(0);
+                // code.setArrangementFromHistory(0);
                 ui.setTemplateDrawerState(null);
               }}
             >
@@ -100,7 +100,7 @@ const TemplateGroups: FC<TemplateGroupsProps> = ({ mode }) => {
                 code.setTheaterDqmByIndex(mode.index, raw);
               }}
               previewOnClick={(raw: string) => {
-                code.pushArrangementToHistory();
+                // code.pushArrangementToHistory();
                 code.setTheaterDqmByIndex(mode.index, raw);
               }}
             />

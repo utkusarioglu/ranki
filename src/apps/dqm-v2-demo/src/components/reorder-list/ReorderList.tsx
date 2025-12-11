@@ -1,7 +1,7 @@
 import { useRef, type FC, type RefObject } from "react";
 import { useDrag, useDrop, DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useCodeStore } from "../../stores/code/code.store.mts";
+import { useCodeStore } from "../../stores/dqm/dqm.store.mts";
 import { Button, Card, Flex, Typography } from "antd";
 import {
   DragOutlined,
@@ -38,15 +38,8 @@ const DragCard: FC<DragCardProps> = ({
 }) => {
   return (
     <Card
-      // elevation={isDragging ? 3 : 1}
       style={{
         opacity: isDragging ? 0.4 : 1,
-        // marginBottom: 8,
-        // padding: 8,
-        // display: "flex",
-        // alignItems: "center",
-        // justifyContent: "space-between",
-        // gap: 10,
         cursor: allowDragging ? "move" : "default",
         marginBottom: "0.5em",
       }}

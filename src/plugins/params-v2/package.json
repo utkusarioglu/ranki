@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",
-    "watch": "concurrently -n 'Latex:tsc,Latex:vite' -c yellow,cyan \"tsc --watch --preserveWatchOutput\" \"vite build --watch\"",
+    "watch": "concurrently -n 'ParamsV2' -c yellow,cyan \"tsc --watch --preserveWatchOutput\" \"vite build --watch\"",
     "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo && rm -rf vite*timestamp-* || true"
   },
   "dependencies": {

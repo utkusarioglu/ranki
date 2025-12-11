@@ -1,17 +1,12 @@
 import type {
-  DqmParseOutput,
   DqmParseTheater,
   DqmParseInputString,
   DqmRecord,
   DqmParseInputStructured,
 } from "@dqm/package-dqm-api-v2";
 import type { TemplateGroupWithList } from "./utils.mts";
-import type { SanitizedAst, AstSanitizationFeature } from "./utils.types.mts";
+import type { AstSanitizationFeature } from "../../utils/dqm.utils.types.mts";
 
-export type CodeStoreProcessed = Pick<
-  CodeStore,
-  "inputs" | "parsed" | "sanitizedAst" | "views"
->;
 export interface TemplateGroup {
   label: string;
   description: string;
@@ -53,15 +48,13 @@ export interface CodeStoreState {
   autoUpdate: boolean;
   inputs: DqmParseInputStructured;
   views: DqmParseInputStructured;
-  history: DqmParseInputStructured[];
-
-  parsed: DqmParseOutput;
-  sanitizedAst: SanitizedAst[];
 }
 
 export interface CodeStoreActions {
   setAllInputs: (inputs: DqmRecord) => void;
-  setAllViews: (inputs: DqmRecord) => void;
+  setAllViewsFromInputs: () => void;
+
+  setAutoUpdate: (update: boolean) => void;
 
   setTheaterDqmByIndex: (index: number, dqm: DqmParseInputString) => void;
   setTheaterNameByIndex: (index: number, theater: DqmParseTheater) => void;
@@ -75,37 +68,11 @@ export interface CodeStoreActions {
 
   setTemplates: (lists: TemplateGroupWithList[]) => void;
   setArrangements: (list: Arrangement[]) => void;
-
-  setArrangementFromHistory: (index: number) => void;
-  pushArrangementToHistory: () => void;
 }
-
-interface ParseResultSuccess {
-  state: "success";
-  data: CodeStoreProcessed;
-}
-
-interface ParseResultFail {
-  state: "fail";
-  error: string;
-}
-
-export type ParseResult = ParseResultSuccess | ParseResultFail;
-
-export type ParseRelevant = Pick<
-  CodeStore,
-  "astDragProps" | "astLineageProps" | "astNoDragProps" | "inputs" | "views"
->;
 
 export type CreateDefaultsReturn = Pick<
   CodeStore,
-  | "astDragProps"
-  | "astLineageProps"
-  | "astNoDragProps"
-  | "inputs"
-  | "parsed"
-  | "views"
-  | "sanitizedAst"
+  "astDragProps" | "astLineageProps" | "astNoDragProps" | "inputs" | "views"
 >;
 
 export interface SanitizationProp {

@@ -103,4 +103,15 @@ export const node: IAstNodeActionDict = {
       .pushIgnoredNodes(number)
       .setLeafViewDecoder("number", (v) => ({ number: +v }));
   },
+
+  hWrapped(token1, content, token2) {
+    return grabAst(this).newAst(content).pushIgnoredNodes(token1, token2);
+    // .pushNodes(["token", token1])
+    // .pushNodes(["node", content])
+    // .pushNodes(["token", token2]);
+  },
+
+  // hWrappedContent(one) {
+  //   return grabAst(this).newAst(this).pushIgnoredNodes(one);
+  // },
 };

@@ -14,11 +14,23 @@ export const token: IAstNodeActionDict = {
     return grabAst(this).newAst(this).pushIgnoredNodes(modifiers);
   },
 
+  tBaseV2Ignore(token) {
+    return grabAst(this).newAst(this).pushIgnoredNodes(token);
+  },
+
+  tBaseV2QuoteDouble(token) {
+    return grabAst(this).newAst(this).pushIgnoredNodes(token);
+  },
+
+  tBaseV2QuoteSingle(token) {
+    return grabAst(this).newAst(this).pushIgnoredNodes(token);
+  },
+
   nl(nl) {
     return grabAst(this).newAst(this).pushIgnoredNodes(nl);
   },
 
-  tBaseV2Ignore(token) {
-    return grabAst(this).newAst(this).pushIgnoredNodes(token);
+  end(nl) {
+    return grabAst(this).newAst(this).pushIgnoredNodes(nl);
   },
 };

@@ -73,17 +73,31 @@ export interface IAstNode {
     typeName: string,
     decoder: AstSourceViewDecoder<T>,
   ): this;
+
   getChildrenNodes(): ChildrenNodes;
+  getTokenNodes(): TokenNodes;
+  getSpaceNodes(): SpaceNodes;
+
   getRelationship(): IAstNodeRelationship;
   getPrev(): IAstNode | null;
   getNext(): IAstNode | null;
   getSubtreeNodes(): SubtreeNodes;
   findSubtreeNodeByCreator(creator: CreatorName): IAstNode | undefined;
+  findTokenNodeByCreator(creator: CreatorName): IAstNode | undefined;
+  findSpaceNodeByCreator(creator: CreatorName): IAstNode | undefined;
   getCreator(): CreatorName;
   setPrev(prev: IAstNode): this;
   setNext(next: IAstNode): this;
   setRelationship(relationship: IAstNodeRelationship): this;
   getIgnoredNodes(): ohm.Node[];
+
+  /**
+   * Associates a token with its intended meaning. Such as `assignment` for `=`
+   * in params.
+   */
+  setMeaning(meaning: string): this;
+  getMeaning(): string;
+
   /**
    * Defines the method in the action dictionary that was called to create this node
    */

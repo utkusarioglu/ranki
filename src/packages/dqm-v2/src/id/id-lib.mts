@@ -43,8 +43,8 @@ export class IdLib<Out> {
   }
 
   @rejectValues(undefined)
-  getChainByAlias(alias: AliasString): ChainString {
-    return this.activeAliases.get(alias)!;
+  getChainByAlias(alias: Alias): ChainString {
+    return this.activeAliases.get(alias.join("."))!;
   }
 
   @rejectValues(undefined)
@@ -59,7 +59,7 @@ export class IdLib<Out> {
   }
 
   getObjectByAlias(alias: Alias): Out {
-    const chainString = this.getChainByAlias(alias.join(".") as AliasString);
+    const chainString = this.getChainByAlias(alias);
     const obj = this.activeChains.get(chainString);
     assertExists(obj, { chainString });
     return obj;

@@ -1,4 +1,4 @@
-import { useCodeStore } from "../../stores/code/code.store.mts";
+import { useCodeStore } from "../../stores/dqm/dqm.store.mts";
 import style from "./DqmInputCard.module.css";
 import { type FC } from "react";
 import { Button, Flex, Input } from "antd";
@@ -36,7 +36,6 @@ export const DqmInputCard: FC<DqmInputProps> = ({ index }) => {
         <Button>
           <SaveOutlined />
         </Button>
-        {/* <TemplateMenu index={index} /> */}
         <Button
           onClick={() =>
             ui.setTemplateDrawerState({

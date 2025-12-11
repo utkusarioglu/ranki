@@ -1,22 +1,22 @@
 import type { DqmParseOutput, IAstNode } from "@dqm/package-dqm-api-v2";
+import type { SanitizationProp } from "../stores/dqm/dqm.store.types.mts";
 import type {
-  CreateDefaultsReturn,
   ParseRelevant,
-  ParseResult,
-  SanitizationProp,
-  TemplateGroup,
-  TemplateTextProcessed,
-} from "./code.store.types.mts";
-import type {
   SanitizedNode,
   AstSanitizationFeature,
   SanitizedAst,
-} from "./utils.types.mts";
+  ParseResult,
+} from "./dqm.utils.types.mts";
 import { Dqm } from "@dqm/package-dqm-v2";
 import baseV2 from "@dqm/plugin-base-v2";
 import frameV2 from "@dqm/plugin-frame-v2";
 import paramsV2 from "@dqm/plugin-params-v2";
 import frameV2Code from "@dqm/plugin-frame-v2-code";
+
+export const filterIds = (...all: SanitizationProp[][]) =>
+  all
+    .map((a) => a.filter(({ visible }) => visible).map((v) => v.id))
+    .reduce((a, c) => [...a, ...c], [] as AstSanitizationFeature[]);
 
 export function sanitizeAst(
   parsed: DqmParseOutput,
@@ -32,16 +32,15 @@ function sanitizeAstSingle(
   astNode: IAstNode,
   features: string[],
 ): SanitizedNode {
-  const children = astNode
-    .getChildrenNodes()
-    .map((n) => sanitizeAstSingle(n, features));
-  const subtree = astNode
-    .getSubtreeNodes()
-    .map((n) => sanitizeAstSingle(n, features));
   const sanitized: SanitizedNode = {};
 
   features.forEach((feature) => {
     switch (feature) {
+      case "meaning":
+        try {
+          sanitized[feature] = astNode.getMeaning();
+        } catch {}
+        break;
       case "constructorName":
         sanitized[feature] = astNode.constructor.name;
         break;
@@ -81,14 +80,36 @@ function sanitizeAstSingle(
           .join(" | ");
         break;
 
-      case "children":
-        if (children.length) {
-          sanitized[feature] = children;
+      case "childrenNodes":
+        const childrenNodes = astNode
+          .getChildrenNodes()
+          .map((n) => sanitizeAstSingle(n, features));
+        if (childrenNodes.length) {
+          sanitized[feature] = childrenNodes;
         }
         break;
-      case "subtree":
-        if (subtree.length) {
-          sanitized[feature] = subtree;
+      case "subtreeNodes":
+        const subtreeNodes = astNode
+          .getSubtreeNodes()
+          .map((n) => sanitizeAstSingle(n, features));
+        if (subtreeNodes.length) {
+          sanitized[feature] = subtreeNodes;
+        }
+        break;
+      case "tokenNodes":
+        const tokenNodes = astNode
+          .getTokenNodes()
+          .map((n) => sanitizeAstSingle(n, features));
+        if (tokenNodes.length) {
+          sanitized[feature] = tokenNodes;
+        }
+        break;
+      case "spaceNodes":
+        const spaceNodes = astNode
+          .getSpaceNodes()
+          .map((n) => sanitizeAstSingle(n, features));
+        if (spaceNodes.length) {
+          sanitized[feature] = spaceNodes;
         }
         break;
       case "source":
@@ -108,17 +129,12 @@ function sanitizeAstSingle(
   return sanitized;
 }
 
-export const filterIds = (...all: SanitizationProp[][]) =>
-  all
-    .map((a) => a.filter(({ visible }) => visible).map((v) => v.id))
-    .reduce((a, c) => [...a, ...c], [] as AstSanitizationFeature[]);
-
 export function parseRaw({
   astDragProps,
   astNoDragProps,
   astLineageProps,
-  inputs,
-  views: viewed,
+  // inputs,
+  views,
 }: ParseRelevant): ParseResult {
   const dqm = new Dqm(
     {
@@ -138,77 +154,20 @@ export function parseRaw({
       astLineageProps,
       astNoDragProps,
     );
-    const parsed = dqm.parse(inputs);
-    const sanitizedAst = sanitizeAst(parsed, filteredIds);
+    const parsed = dqm.parse(views);
+    const sanitized = sanitizeAst(parsed, filteredIds);
     return {
       state: "success",
       data: {
-        inputs,
-        views: viewed,
         parsed,
-        sanitizedAst,
+        sanitized,
       },
     };
   } catch (e) {
     console.log(e);
     return {
       state: "fail",
-      error: (e as unknown as Error).toString(),
+      error: e as any,
     };
   }
 }
-
-export function createDefaults(relevant: ParseRelevant): CreateDefaultsReturn {
-  const processed = parseRaw(relevant);
-  if (processed.state !== "success") {
-    throw new Error("Fault in default values", { cause: processed.error });
-  }
-  return {
-    ...relevant,
-    ...processed.data,
-    // processed: processed.data,
-  };
-}
-
-export const wrapVisible = (
-  visible: AstSanitizationFeature[],
-  hidden: AstSanitizationFeature[],
-) => [
-  ...visible.map((id) => ({ visible: true, id })),
-  ...hidden.map((id) => ({ visible: false, id })),
-];
-
-export type TemplateGroupWithList = TemplateGroup & {
-  list: TemplateTextProcessed[];
-};
-
-// export type TemplateLists = TemplateGroupWithList[];
-
-// export function buildTemplateLists(
-//   groups: TemplateGroup[],
-//   texts: TemplateText[],
-// ): TemplateLists {
-//   const gMap = new Map<string, TemplateGroupWithList>();
-//   groups.forEach((g) =>
-//     gMap.set(g.group, {
-//       ...g,
-//       list: [],
-//     }),
-//   );
-
-//   texts.forEach((t) => {
-//     const g = gMap.get(t.group);
-//     if (!g) {
-//       throw new Error(`Nonexistent group: ${t.group}`);
-//     }
-//     g.list.push(t);
-//   });
-
-//   for (const g of gMap) {
-//     if (!gMap.get(g[0])!.list.length) {
-//       gMap.delete(g[0]);
-//     }
-//   }
-
-//   return Array.from(gMap.values());
-// }
