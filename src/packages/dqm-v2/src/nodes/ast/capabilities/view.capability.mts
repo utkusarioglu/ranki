@@ -3,11 +3,12 @@ import type {
   AstSourceString,
   AstSourceView,
   AstSourceViewDecoder,
+  IAstNode,
 } from "@dqm/package-dqm-api-v2";
 import { assertLeaf, DqmError } from "@dqm/package-utils";
 import type { LeafDecoder } from "../ast-node.types.mjs";
 
-export function viewCapability<T>(self: T) {
+export function viewCapability<T extends Pick<IAstNode, "getKind">>(self: T) {
   let leafDecoder!: LeafDecoder;
 
   function defaultLeafDecoder(): LeafDecoder {
@@ -33,7 +34,6 @@ export function viewCapability<T>(self: T) {
     getLeafView<G extends AstSourceViewBase>(
       raw: AstSourceString,
     ): AstSourceView<G> {
-      // @ts-expect-error
       assertLeaf(self, {});
       // const raw = this.getSourceString();
       try {
@@ -58,12 +58,10 @@ export function viewCapability<T>(self: T) {
       }
     },
 
-    // @dependsOn("kind")
     setLeafViewDecoder<G extends AstSourceViewBase>(
       type: string,
       decoder: AstSourceViewDecoder<G>,
     ): T {
-      // @ts-expect-error
       assertLeaf(self, { type, decoder });
       leafDecoder = {
         type,

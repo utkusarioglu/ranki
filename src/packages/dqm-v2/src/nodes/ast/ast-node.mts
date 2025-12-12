@@ -9,16 +9,16 @@ import type {
 import type * as ohm from "ohm-js";
 import { assertNotExists, rejectValues } from "@dqm/package-utils";
 import { CommonTransports } from "../common-transports.mjs";
-import { verticesCapability } from "./capabilities/verticesCapability.mjs";
-import { nodesCapability } from "./capabilities/nodesCapability.mjs";
-import { semanticCapability } from "./capabilities/semanticCapability.mjs";
-import { ohmCapability } from "./capabilities/ohmCapability.mjs";
-import { viewCapability } from "./capabilities/viewCapability.mjs";
+import { verticesCapability } from "./capabilities/vertices.capability.mjs";
+import { syntaxCapability } from "./capabilities/syntax.capability.mjs";
+import { semanticCapability } from "./capabilities/semantic.capability.mjs";
+import { ohmCapability } from "./capabilities/ohm.capability.mjs";
+import { viewCapability } from "./capabilities/view.capability.mjs";
 
 export class AstNode extends CommonTransports implements IAstNode {
   private semantic = semanticCapability(this);
   private vertices = verticesCapability(this);
-  private nodes = nodesCapability(this);
+  private syntax = syntaxCapability(this);
   private ohm = ohmCapability(this);
   private view = viewCapability(this);
   private cpx!: ICpx;
@@ -65,11 +65,11 @@ export class AstNode extends CommonTransports implements IAstNode {
   }
 
   // VIEW
-  setLeafViewDecoder = this.view.setLeafViewDecoder.bind(this.view);
   getLeafView<T extends AstSourceViewBase>(): AstSourceView<T> {
     const raw = this.getSourceString();
     return this.view.getLeafView(raw);
   }
+  setLeafViewDecoder = this.view.setLeafViewDecoder.bind(this.view);
 
   // OHM
   setOhmNode = this.ohm.setOhmNode.bind(this.ohm);
@@ -96,18 +96,6 @@ export class AstNode extends CommonTransports implements IAstNode {
   setNext = this.vertices.setNext.bind(this.vertices);
 
   // NODES
-  getChildrenNodes = this.nodes.getChildrenNodes.bind(this.nodes);
-  getTokenNodes = this.nodes.getTokenNodes.bind(this.nodes);
-  getSpaceNodes = this.nodes.getSpaceNodes.bind(this.nodes);
-  getSubtreeNodes = this.nodes.getSubtreeNodes.bind(this.nodes);
-  findSubtreeNodeByCreator = this.nodes.findSubtreeNodeByCreator.bind(
-    this.nodes,
-  );
-  findTokenNodeByCreator = this.nodes.findTokenNodeByCreator.bind(this.nodes);
-  findSpaceNodeByCreator = this.nodes.findSpaceNodeByCreator.bind(this.nodes);
-  getIgnoredNodes = this.nodes.getIgnoredNodes.bind(this.nodes);
-  pushIgnoredNodes = this.nodes.pushIgnoredNodes.bind(this.nodes);
-
   /**
    * @dev
    * #1 The check for leafDecoder relates to only leaves being able to define a
@@ -117,7 +105,6 @@ export class AstNode extends CommonTransports implements IAstNode {
    * #2 This is experimental. The aim is to see if the `subtree` and `child`
    * distinction can be made through the unique id of CPS
    * */
-  // @dependsOn("kind")
   pushNodes(...nodeSetRaw: PushedNodeDefinition[]): this {
     // #1
     assertNotExists(this.view.getDefinedLeafDecoder(), {
@@ -126,7 +113,19 @@ export class AstNode extends CommonTransports implements IAstNode {
     });
     this.semantic.setKind("parent");
     const cpxUnique = this.getCpx().getId().getUnique();
-    this.nodes.pushNodes(nodeSetRaw, cpxUnique);
+    this.syntax.pushNodes(nodeSetRaw, cpxUnique);
     return this;
   }
+
+  getChildrenNodes = this.syntax.getChildrenNodes.bind(this.syntax);
+  getTokenNodes = this.syntax.getTokenNodes.bind(this.syntax);
+  getSpaceNodes = this.syntax.getSpaceNodes.bind(this.syntax);
+  getSubtreeNodes = this.syntax.getSubtreeNodes.bind(this.syntax);
+  findSubtreeNodeByCreator = this.syntax.findSubtreeNodeByCreator.bind(
+    this.syntax,
+  );
+  findTokenNodeByCreator = this.syntax.findTokenNodeByCreator.bind(this.syntax);
+  findSpaceNodeByCreator = this.syntax.findSpaceNodeByCreator.bind(this.syntax);
+  getIgnoredNodes = this.syntax.getIgnoredNodes.bind(this.syntax);
+  pushIgnoredNodes = this.syntax.pushIgnoredNodes.bind(this.syntax);
 }

@@ -13,7 +13,7 @@ import { assertArrayNotEmpty, DqmError } from "@dqm/package-utils";
 import type * as ohm from "ohm-js";
 import type { WorkedNodeDefinition } from "../ast-node.types.mjs";
 
-export function nodesCapability<T>(self: T) {
+export function syntaxCapability<T>(self: T) {
   const allNodes: IAstNode[] = [];
   const tokenNodes: TokenNodes = [];
   const spaceNodes: SpaceNodes = [];
@@ -86,10 +86,7 @@ export function nodesCapability<T>(self: T) {
             allNodes.push(parsed);
             switch (relationship) {
               case "node":
-                if (
-                  // this.getCpx().getId().getUnique() ===
-                  cpxUnique === parsed.getCpx().getId().getUnique()
-                ) {
+                if (cpxUnique === parsed.getCpx().getId().getUnique()) {
                   subtreeNodes.push(parsed);
                 } else {
                   childrenNodes.push(parsed);
