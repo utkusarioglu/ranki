@@ -1,11 +1,13 @@
-import type { AstSourceView, IAstNode } from "../../../export.types.mjs";
+import type {
+  AstSourceView,
+  CommonTransportsConstructorParams,
+  IAstNode,
+} from "../../../export.types.mjs";
 import type {
   ChannelParamSpecs,
   ParamDefaultValue,
 } from "../component.types.mjs";
 import type { Alias, Chain, IId } from "../id/id.types.mjs";
-
-// export type ParamType = "string" | "number" | "boolean" | "chain";
 
 export type ParamChannel = string & { type?: "ParamChannel" }; // setting, config
 
@@ -18,13 +20,6 @@ export type ParamProducer = "instance-declaration" | "component-default";
 export type Audience = (string | number) & { type?: "ParamAudience" };
 
 export type Operator = "assign" | "append" | "prepend" | "shift" | "unshift";
-
-// export type ParamValue = string | number | boolean;
-
-// export type ParamValueSpec = {
-//   type: ParamType;
-//   raw: ParamValue;
-// } & Record<string, unknown>;
 
 export type ParamValuePrimitive = string | number;
 
@@ -46,3 +41,7 @@ export interface IParam extends IAstNode {
   getChannel(): ParamChannel;
   getProducer(): ParamProducer;
 }
+
+export type IParamConstructor = new (
+  c: CommonTransportsConstructorParams,
+) => IParam;

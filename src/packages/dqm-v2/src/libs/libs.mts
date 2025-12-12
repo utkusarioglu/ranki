@@ -8,11 +8,15 @@ import type {
   CreateParserReturn,
   DqmPluginsConfigDefaults,
   ICpxConstructor,
+  IParamConstructor,
+  IAstNodeConstructor,
 } from "@dqm/package-dqm-api-v2";
 import { DqmError } from "@dqm/package-utils";
 import { ComponentLib } from "./component/component-lib.mjs";
 import { ParserLib } from "./parser/parser-lib.mjs";
 import { Cpx } from "../nodes/cp/cpx.mjs";
+import { Param } from "../nodes/param/param.mjs";
+import { AstNode } from "../nodes/ast/ast-node.mjs";
 
 export class Libs implements IPlugins {
   private components = new ComponentLib();
@@ -48,5 +52,13 @@ export class Libs implements IPlugins {
 
   getCpxConstructor(): ICpxConstructor {
     return Cpx;
+  }
+
+  getParamConstructor(): IParamConstructor {
+    return Param;
+  }
+
+  getAstNodeConstructor(): IAstNodeConstructor {
+    return AstNode;
   }
 }

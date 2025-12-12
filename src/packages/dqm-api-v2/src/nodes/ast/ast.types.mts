@@ -1,4 +1,8 @@
-import type { IConfig, ICpx, IParam, IPlugins } from "../../export.types.mjs";
+import type {
+  CommonTransportsConstructorParams,
+  ICpx,
+  IParam,
+} from "../../export.types.mjs";
 import type * as ohm from "ohm-js";
 
 export type ContentDirection = "block" | "inline";
@@ -6,7 +10,7 @@ export type IAstNodeNature = "literal" | "synthetic";
 export type ActionMethod = string & { type?: "OhmActionMethod" };
 export type IAstNodeKind = "parent" | "leaf";
 
-type CpxFuncParam = (cpx: ICpx) => ICpx;
+export type CpxFuncParam = (cpx: ICpx) => ICpx;
 
 export type IAstNodeContext = {
   ast: IAstNode;
@@ -22,17 +26,11 @@ export interface IAstTokenNode {
   raw: string;
 }
 
-// export type IAstNodeRelationship = "child" | "subtree" | "space" | "token";
-export type IAstNodeRelationship =
-  // | "child"
-  // | "subtree"
-  "space" | "token" | "node";
-// export type IAstNodeRelationship = "node" | "space" | "token";
+export type IAstNodeRelationship = "space" | "token" | "node";
 
 export type IAstNodeConstructor = new (
-  plugins: IPlugins,
-  config: IConfig,
-) => ICpx;
+  c: CommonTransportsConstructorParams,
+) => IAstNode;
 
 export type NodeName = string & { type?: "NodeName" };
 export type CreatorName = string & { type?: "OhmJsCreatorName" };
@@ -61,12 +59,21 @@ export type AstSourceViewDecoder<
 > = (input: string) => Custom;
 
 export interface IAstNode {
-  getKind(): IAstNodeKind;
+  /**
+   * This is supposed to create a new cpx and then let the node build it
+   * inside the callback:
+   *
+   * .newCpx(cpx => cpx
+   *    .setDefinition(...)
+   *    .setStartRule(...)
+   *  )
+   */
+  newCpx(cpxCallback: CpxFuncParam): this;
   newAst(ohm: ohm.Node): IAstNode;
   newParam(ohm: ohm.Node): IParam;
-  setParent(parent: IAstNode): this;
   setCpx(cpx: ICpx): this;
   getCpx(): ICpx;
+
   getSourceString(): AstSourceString;
   getLeafView<T extends AstSourceViewBase>(): AstSourceView<T>;
   setLeafViewDecoder<T extends AstSourceViewBase>(
@@ -74,22 +81,27 @@ export interface IAstNode {
     decoder: AstSourceViewDecoder<T>,
   ): this;
 
+  getRelationship(): IAstNodeRelationship;
+
+  setParent(parent: IAstNode): this;
+  getPrev(): IAstNode | null;
+  getNext(): IAstNode | null;
+  setPrev(prev: IAstNode): this;
+  setNext(next: IAstNode): this;
+
   getChildrenNodes(): ChildrenNodes;
   getTokenNodes(): TokenNodes;
   getSpaceNodes(): SpaceNodes;
-
-  getRelationship(): IAstNodeRelationship;
-  getPrev(): IAstNode | null;
-  getNext(): IAstNode | null;
   getSubtreeNodes(): SubtreeNodes;
   findSubtreeNodeByCreator(creator: CreatorName): IAstNode | undefined;
   findTokenNodeByCreator(creator: CreatorName): IAstNode | undefined;
   findSpaceNodeByCreator(creator: CreatorName): IAstNode | undefined;
-  getCreator(): CreatorName;
-  setPrev(prev: IAstNode): this;
-  setNext(next: IAstNode): this;
-  setRelationship(relationship: IAstNodeRelationship): this;
   getIgnoredNodes(): ohm.Node[];
+  pushNodes(...nodes: PushedNodeDefinition[]): this;
+  pushIgnoredNodes(...nodes: ohm.Node[]): this;
+
+  getCreator(): CreatorName;
+  setRelationship(relationship: IAstNodeRelationship): this;
 
   /**
    * Associates a token with its intended meaning. Such as `assignment` for `=`
@@ -103,23 +115,8 @@ export interface IAstNode {
    */
   setCreationMethod(method: CreationMethod): this;
   getCreationMethod(): CreationMethod;
-  /**
-   * This is supposed to create a new cpx and then let the node build it
-   * inside the callback:
-   *
-   * .newCpx(cpx => cpx
-   *    .setDefinition(...)
-   *    .setStartRule(...)
-   *  )
-   */
-  newCpx(cpxCallback: CpxFuncParam): this;
   setDirection(direction: ContentDirection): this;
   getDirection(): ContentDirection;
-
-  /**
-   * this will set things like the source and the creatorName
-   */
-  // setOhmNode(node: ohm.Node): this;
 
   /**
    * literal for nodes created by what's in the course dqm, synthetic
@@ -127,8 +124,7 @@ export interface IAstNode {
    * bold because of *<word>*
    */
   setNature(nature: IAstNodeNature): this;
-  pushNodes(...nodes: PushedNodeDefinition[]): this;
-  pushIgnoredNodes(...nodes: ohm.Node[]): this;
+  getKind(): IAstNodeKind;
 }
 export type PushedNodeDefinition = [IAstNodeRelationship, ohm.Node];
 

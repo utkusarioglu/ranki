@@ -1,94 +1,27 @@
 import type {
-  AstSourceString,
-  ContentDirection,
   IAstNode,
-  IAstNodeContext,
-  IAstNodeKind,
-  IAstNodeNature,
   ICpx,
-  CreatorName,
   PushedNodeDefinition,
-  IAstNodeRelationship,
-  TokenNodes,
-  SpaceNodes,
-  SubtreeNodes,
-  ChildrenNodes,
-  CreationMethod,
   IParam,
   AstSourceView,
-  AstSourceViewDecoder,
   AstSourceViewBase,
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
-import {
-  assertArrayNotEmpty,
-  assertLeaf,
-  dependsOn,
-  DqmError,
-  rejectValues,
-} from "@dqm/package-utils";
+import { assertNotExists, rejectValues } from "@dqm/package-utils";
 import { CommonTransports } from "../common-transports.mjs";
-import { Param } from "../param/param.mjs";
-
-export type WorkedNodeDefinition = [IAstNodeRelationship, ohm.Node[]];
-export type LeafDecoder = {
-  type: string;
-  decoder: AstSourceViewDecoder;
-};
+import { verticesCapability } from "./capabilities/verticesCapability.mjs";
+import { nodesCapability } from "./capabilities/nodesCapability.mjs";
+import { semanticCapability } from "./capabilities/semanticCapability.mjs";
+import { ohmCapability } from "./capabilities/ohmCapability.mjs";
+import { viewCapability } from "./capabilities/viewCapability.mjs";
 
 export class AstNode extends CommonTransports implements IAstNode {
+  private semantic = semanticCapability(this);
+  private vertices = verticesCapability(this);
+  private nodes = nodesCapability(this);
+  private ohm = ohmCapability(this);
+  private view = viewCapability(this);
   private cpx!: ICpx;
-  private parent!: IAstNode;
-  private children: IAstNode[] = [];
-  private direction!: ContentDirection;
-  private ohm!: ohm.Node;
-  private nature: IAstNodeNature = "literal";
-  private orderNodes: IAstNode[] = [];
-  private tokenNodes: TokenNodes = [];
-  private spaceNodes: SpaceNodes = [];
-  private subtreeNodes: SubtreeNodes = [];
-  private childrenNodes: ChildrenNodes = [];
-  private ignoredNodes: ohm.Node[] = [];
-  private kind: IAstNodeKind = "leaf";
-  private prev: IAstNode | null = null;
-  private next: IAstNode | null = null;
-  private relationship!: IAstNodeRelationship;
-  private creationMethod!: string;
-  private leafDecoder!: LeafDecoder;
-  private meaning!: string;
-
-  private defaultLeafDecoder(): LeafDecoder {
-    return {
-      type: "string",
-      decoder: (raw: string) => ({
-        type: "string",
-        raw,
-      }),
-    };
-  }
-
-  // @ts-ignore
-  private dummyMethodToSilenceErrors() {
-    console.log(
-      this.parent,
-      // this.direction,
-      // this.ohm,
-      this.nature,
-      // this.childrenNodes,
-    );
-  }
-
-  findSubtreeNodeByCreator(creator: CreatorName): IAstNode {
-    return this.subtreeNodes.find((n) => n.getCreator() === creator)!;
-  }
-
-  findTokenNodeByCreator(creator: CreatorName): IAstNode {
-    return this.tokenNodes.find((n) => n.getCreator() === creator)!;
-  }
-
-  findSpaceNodeByCreator(creator: CreatorName): IAstNode {
-    return this.spaceNodes.find((n) => n.getCreator() === creator)!;
-  }
 
   // TODO this needs a lot of work
   newCpx(cpxCallback: (cpx: ICpx) => ICpx): this {
@@ -103,25 +36,77 @@ export class AstNode extends CommonTransports implements IAstNode {
   }
 
   newAst(ohm: ohm.Node): IAstNode {
-    const newAst = new AstNode(this.getTransports())
-      .setParent(this)
-      .setOhmNode(ohm)
-      .setCpx(this.getCpx())
-      .setDirection(this.getDirection());
-    this.children.push(newAst);
-    return newAst;
+    return this.newChild(this.getPlugins().getAstNodeConstructor(), ohm);
   }
 
   newParam(ohm: ohm.Node): IParam {
-    const newParam = new Param(this.getTransports());
-    newParam
+    return this.newChild(this.getPlugins().getParamConstructor(), ohm);
+  }
+
+  private newChild(ChildConstructor: any, ohm: ohm.Node) {
+    const child = new ChildConstructor(this.getTransports());
+    child
       .setParent(this)
       .setOhmNode(ohm)
       .setCpx(this.getCpx())
       .setDirection(this.getDirection());
-    this.children.push(newParam);
-    return newParam;
+    this.vertices.pushChild(child);
+    return child;
   }
+
+  @rejectValues(undefined)
+  getCpx(): ICpx {
+    return this.cpx;
+  }
+
+  setCpx(cpx: ICpx): this {
+    this.cpx = cpx;
+    return this;
+  }
+
+  // VIEW
+  setLeafViewDecoder = this.view.setLeafViewDecoder.bind(this.view);
+  getLeafView<T extends AstSourceViewBase>(): AstSourceView<T> {
+    const raw = this.getSourceString();
+    return this.view.getLeafView(raw);
+  }
+
+  // OHM
+  setOhmNode = this.ohm.setOhmNode.bind(this.ohm);
+  getSourceString = this.ohm.getSourceString.bind(this.ohm);
+  getCreator = this.ohm.getCreator.bind(this.ohm);
+
+  // SEMANTIC
+  getKind = this.semantic.getKind.bind(this.semantic);
+  setDirection = this.semantic.setDirection.bind(this.semantic);
+  setNature = this.semantic.setNature.bind(this.semantic);
+  setMeaning = this.semantic.setMeaning.bind(this.semantic);
+  getDirection = this.semantic.getDirection.bind(this.semantic);
+  getMeaning = this.semantic.getMeaning.bind(this.semantic);
+  getCreationMethod = this.semantic.getCreationMethod.bind(this.semantic);
+  setCreationMethod = this.semantic.setCreationMethod.bind(this.semantic);
+  setRelationship = this.semantic.setRelationship.bind(this.semantic);
+  getRelationship = this.semantic.getRelationship.bind(this.semantic);
+
+  // VERTICES
+  setParent = this.vertices.setParent.bind(this.vertices);
+  getNext = this.vertices.getNext.bind(this.vertices);
+  getPrev = this.vertices.getPrev.bind(this.vertices);
+  setPrev = this.vertices.setPrev.bind(this.vertices);
+  setNext = this.vertices.setNext.bind(this.vertices);
+
+  // NODES
+  getChildrenNodes = this.nodes.getChildrenNodes.bind(this.nodes);
+  getTokenNodes = this.nodes.getTokenNodes.bind(this.nodes);
+  getSpaceNodes = this.nodes.getSpaceNodes.bind(this.nodes);
+  getSubtreeNodes = this.nodes.getSubtreeNodes.bind(this.nodes);
+  findSubtreeNodeByCreator = this.nodes.findSubtreeNodeByCreator.bind(
+    this.nodes,
+  );
+  findTokenNodeByCreator = this.nodes.findTokenNodeByCreator.bind(this.nodes);
+  findSpaceNodeByCreator = this.nodes.findSpaceNodeByCreator.bind(this.nodes);
+  getIgnoredNodes = this.nodes.getIgnoredNodes.bind(this.nodes);
+  pushIgnoredNodes = this.nodes.pushIgnoredNodes.bind(this.nodes);
 
   /**
    * @dev
@@ -132,256 +117,16 @@ export class AstNode extends CommonTransports implements IAstNode {
    * #2 This is experimental. The aim is to see if the `subtree` and `child`
    * distinction can be made through the unique id of CPS
    * */
-  @dependsOn("kind")
+  // @dependsOn("kind")
   pushNodes(...nodeSetRaw: PushedNodeDefinition[]): this {
-    assertArrayNotEmpty(nodeSetRaw, { method: "pushNodes" });
     // #1
-    if (this.leafDecoder) {
-      throw new DqmError("ATTEMPTING_TO_PUSH_NODES_TO_LEAF", {
-        nodeSetRaw,
-        decoder: this.leafDecoder,
-      });
-    }
-    this.setKind("parent");
-
-    const areIter = nodeSetRaw.map((n) => n[1].isIteration());
-    const isIter = areIter.some((v) => v === true);
-    const inconsistentIter = isIter && areIter.some((v) => v !== true);
-    if (inconsistentIter) {
-      throw new DqmError("INCONSISTENT_ITERATOR_NODES", {
-        nodeSetRaw,
-        areIter,
-      });
-    }
-    const nodeSet: WorkedNodeDefinition[] = isIter
-      ? nodeSetRaw.map(([relationship, nodes]) => [
-          relationship,
-          nodes.children,
-        ])
-      : nodeSetRaw.map(([relationship, nodes]) => [relationship, [nodes]]);
-
-    if (nodeSet.some(([_, nodes]) => nodes.length !== nodeSet[0][1].length)) {
-      throw new DqmError("INCONSISTENT_ZIP_MEMBER_HEIGHTS", { nodeSet });
-    }
-    const context = this.prepareContext();
-
-    [...Array.from(nodeSet[0][1].keys())].forEach((i) => {
-      nodeSet.forEach(([relationship, nodes]) => {
-        let method;
-        switch (relationship) {
-          case "node":
-            // #2
-            // case "child":
-            // case "subtree":
-            method = "node";
-            break;
-          default:
-            method = relationship;
-        }
-        const parsedRaw = nodes[i][method](context) as IAstNode | IAstNode[];
-        const parsedList = Array.isArray(parsedRaw) ? parsedRaw : [parsedRaw];
-        parsedList.forEach((parsed) => {
-          parsed.setRelationship(relationship).setCreationMethod(method);
-          if (this.orderNodes.length) {
-            const prevNode = this.orderNodes.at(-1)!;
-            parsed.setPrev(prevNode);
-            prevNode.setNext(parsed);
-          }
-          this.orderNodes.push(parsed);
-          switch (relationship) {
-            case "node":
-              if (
-                this.getCpx().getId().getUnique() ===
-                parsed.getCpx().getId().getUnique()
-              ) {
-                this.subtreeNodes.push(parsed);
-              } else {
-                this.childrenNodes.push(parsed);
-              }
-              break;
-            case "space":
-              this.spaceNodes.push(parsed);
-              break;
-            case "token":
-              this.tokenNodes.push(parsed);
-          }
-        });
-      });
+    assertNotExists(this.view.getDefinedLeafDecoder(), {
+      why: "Leaf nodes cannot have children nodes",
+      nodeSetRaw,
     });
+    this.semantic.setKind("parent");
+    const cpxUnique = this.getCpx().getId().getUnique();
+    this.nodes.pushNodes(nodeSetRaw, cpxUnique);
     return this;
-  }
-
-  /**
-   * @dev
-   * #1 I simply don't mind TS1270 here
-   */
-  // @ts-expect-error #1
-  @dependsOn("kind", "ohm")
-  getLeafView<T extends AstSourceViewBase>(): AstSourceView<T> {
-    assertLeaf(this, {});
-    const raw = this.ohm.sourceString;
-    try {
-      if (this.leafDecoder) {
-        // @ts-expect-error #1
-        return {
-          type: this.leafDecoder.type,
-          raw,
-          ...this.leafDecoder.decoder(raw),
-        };
-      } else {
-        const decoder = this.defaultLeafDecoder();
-        // @ts-expect-error #1
-        return decoder.decoder(raw);
-      }
-    } catch (e) {
-      throw new DqmError("AST_DECODER_FAILURE", {
-        error: e,
-        raw,
-        decoder: this.leafDecoder,
-      });
-    }
-  }
-
-  @dependsOn("kind")
-  setLeafViewDecoder<T extends AstSourceViewBase>(
-    type: string,
-    decoder: AstSourceViewDecoder<T>,
-  ): this {
-    assertLeaf(this, { type, decoder });
-    this.leafDecoder = {
-      type,
-      decoder,
-    };
-    return this;
-  }
-
-  setCreationMethod(method: string): this {
-    this.creationMethod = method;
-    return this;
-  }
-
-  getCreationMethod(): CreationMethod {
-    return this.creationMethod;
-  }
-
-  setRelationship(type: IAstNodeRelationship): this {
-    this.relationship = type;
-    return this;
-  }
-
-  getRelationship(): IAstNodeRelationship {
-    return this.relationship;
-  }
-
-  setPrev(prev: IAstNode): this {
-    this.prev = prev;
-    return this;
-  }
-
-  getPrev(): IAstNode | null {
-    return this.prev;
-  }
-
-  setNext(next: IAstNode): this {
-    this.next = next;
-    return this;
-  }
-
-  getNext(): IAstNode | null {
-    return this.next;
-  }
-
-  @rejectValues(undefined)
-  getCreator(): CreatorName {
-    return this.ohm.ctorName;
-  }
-
-  getSubtreeNodes(): IAstNode[] {
-    return this.subtreeNodes;
-  }
-
-  getChildrenNodes(): IAstNode[] {
-    return this.childrenNodes;
-  }
-
-  private setKind(kind: IAstNodeKind): this {
-    this.kind = kind;
-    return this;
-  }
-
-  @rejectValues(undefined)
-  getKind(): IAstNodeKind {
-    return this.kind;
-  }
-
-  @rejectValues(undefined)
-  getSourceString(): AstSourceString {
-    return this.ohm.sourceString;
-  }
-
-  @rejectValues(undefined)
-  getCpx(): ICpx {
-    return this.cpx;
-  }
-
-  setParent(parent: IAstNode): this {
-    this.parent = parent;
-    return this;
-  }
-
-  setCpx(cpx: ICpx): this {
-    this.cpx = cpx;
-    return this;
-  }
-
-  setDirection(direction: ContentDirection): this {
-    this.direction = direction;
-    return this;
-  }
-
-  private setOhmNode(node: ohm.Node): this {
-    this.ohm = node;
-    return this;
-  }
-
-  setNature(nature: IAstNodeNature): this {
-    this.nature = nature;
-    return this;
-  }
-
-  @rejectValues(undefined)
-  getDirection(): ContentDirection {
-    return this.direction;
-  }
-
-  pushIgnoredNodes(...nodes: ohm.Node[]): this {
-    this.ignoredNodes.push(...nodes);
-    return this;
-  }
-
-  getIgnoredNodes(): ohm.Node[] {
-    return this.ignoredNodes;
-  }
-
-  setMeaning(meaning: string): this {
-    this.meaning = meaning;
-    return this;
-  }
-
-  getTokenNodes(): TokenNodes {
-    return this.tokenNodes;
-  }
-
-  getSpaceNodes(): SpaceNodes {
-    return this.spaceNodes;
-  }
-
-  @rejectValues(undefined)
-  getMeaning(): string {
-    return this.meaning;
-  }
-
-  private prepareContext(): IAstNodeContext {
-    return { ast: this };
   }
 }

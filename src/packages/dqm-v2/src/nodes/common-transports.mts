@@ -5,6 +5,11 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { rejectValues } from "@dqm/package-utils";
 
+export interface ITransports {
+  config: IConfig;
+  plugins: IPlugins;
+}
+
 export class CommonTransports {
   private config: IConfig;
   private plugins: IPlugins;
@@ -28,7 +33,7 @@ export class CommonTransports {
     this.config = this.config.clone();
   }
 
-  protected getTransports() {
+  protected getTransports(): ITransports {
     return {
       config: this.getConfig(),
       plugins: this.getPlugins(),

@@ -8,6 +8,8 @@ import type {
   IDqmPlugin,
   DqmPluginsConfigDefaults,
   ICpxConstructor,
+  IParamConstructor,
+  IAstNodeConstructor,
 } from "../../export.types.mjs";
 
 /**
@@ -32,4 +34,6 @@ export interface IPlugins {
   addPlugin(plugin: IDqmPlugin): IPlugins;
   getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults;
   getCpxConstructor(): ICpxConstructor;
+  getParamConstructor(): IParamConstructor;
+  getAstNodeConstructor(): IAstNodeConstructor;
 }
