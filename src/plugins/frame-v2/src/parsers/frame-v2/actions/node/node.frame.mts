@@ -57,7 +57,6 @@ export const nodeFrame: IAstNodeActionDict = {
 function parseFrame(parent: IAstNode) {
   // #1
   const frameV2FrameConfigFp = parent.getSubtreeNodes()[0];
-  // const frameV2FrameConfigFp = parent;
   assertExists(frameV2FrameConfigFp, { method: "config" });
   const keyNode =
     frameV2FrameConfigFp.findSubtreeNodeByCreator("frameV2ChainList");

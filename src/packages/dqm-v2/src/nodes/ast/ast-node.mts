@@ -71,10 +71,10 @@ export class AstNode extends CommonTransports implements IAstNode {
   private dummyMethodToSilenceErrors() {
     console.log(
       this.parent,
-      this.direction,
-      this.ohm,
+      // this.direction,
+      // this.ohm,
       this.nature,
-      this.childrenNodes,
+      // this.childrenNodes,
     );
   }
 
@@ -189,10 +189,6 @@ export class AstNode extends CommonTransports implements IAstNode {
           }
           this.orderNodes.push(parsed);
           switch (relationship) {
-            // @ts-ignore
-            case "child":
-            // @ts-ignore
-            case "subtree":
             case "node":
               if (
                 this.getCpx().getId().getUnique() ===
@@ -203,13 +199,6 @@ export class AstNode extends CommonTransports implements IAstNode {
                 this.childrenNodes.push(parsed);
               }
               break;
-            // #2
-            // case "subtree":
-            //   this.subtreeNodes.push(parsed);
-            //   break;
-            // case "child":
-            //   this.childrenNodes.push(parsed);
-            //   break;
             case "space":
               this.spaceNodes.push(parsed);
               break;
