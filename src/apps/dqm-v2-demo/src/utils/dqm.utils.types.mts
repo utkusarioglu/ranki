@@ -1,63 +1,18 @@
-import type {
-  IdUnique,
-  CreatorName,
-  AstSourceString,
-  AstSourceView,
-  IAstNodeKind,
-  CreationMethod,
-  DqmParseTheater,
-  DqmParseOutput,
-} from "@dqm/package-dqm-api-v2";
-import type { CodeStore } from "../stores/dqm/dqm.store.types.mts";
+// import type { DqmParseTheater, DqmParseOutput } from "@dqm/package-dqm-api-v2";
 
-export type SanitizedNode = Partial<{
-  cpxUnique: IdUnique;
-  creator: CreatorName;
-  source: AstSourceString | AstSourceView<any>;
+// export interface SuccessfulParse {
+//   parsed: DqmParseOutput;
+//   sanitized: SanitizedAst[];
+// }
 
-  idList: string;
-  chainList: string;
+// interface ParseResultSuccess {
+//   state: "success";
+//   data: SuccessfulParse;
+// }
 
-  childCount: number;
-  subtreeCount: number;
-  ignoredCount: number;
+// interface ParseResultFail {
+//   state: "fail";
+//   error: string;
+// }
 
-  subtreeNodes?: SanitizedNode[];
-  childrenNodes?: SanitizedNode[];
-  tokenNodes?: SanitizedNode[];
-  spaceNodes?: SanitizedNode[];
-
-  kind: IAstNodeKind;
-  creationMethod: CreationMethod;
-  constructorName: string;
-  meaning: string | undefined;
-}>;
-
-export type SanitizedAst = {
-  theater: DqmParseTheater;
-  sanitized: SanitizedNode;
-};
-
-export type AstSanitizationFeature = keyof SanitizedNode;
-
-export interface SuccessfulParse {
-  parsed: DqmParseOutput;
-  sanitized: SanitizedAst[];
-}
-
-interface ParseResultSuccess {
-  state: "success";
-  data: SuccessfulParse;
-}
-
-interface ParseResultFail {
-  state: "fail";
-  error: string;
-}
-
-export type ParseResult = ParseResultSuccess | ParseResultFail;
-
-export type ParseRelevant = Pick<
-  CodeStore,
-  "astDragProps" | "astLineageProps" | "astNoDragProps" | "views"
->;
+// export type ParseResult = ParseResultSuccess | ParseResultFail;

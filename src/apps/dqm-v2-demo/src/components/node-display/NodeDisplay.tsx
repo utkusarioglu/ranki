@@ -1,70 +1,53 @@
 import { useState, type FC } from "react";
 import { YamlDisplay } from "../yaml-display/YamlDisplay";
 import style from "./NodeDisplay.module.css";
-import type { SanitizedNode } from "../../utils/dqm.utils.types.mjs";
 import { PreCode } from "../pre-code/PreCode";
 import { BlockySwitch } from "../blocky-switch/BlockySwitch";
-import { Flex } from "antd";
+import { Flex, Typography } from "antd";
+import type { SanitizedNodePartial } from "../../stores/ast-view/sanitized-ast-node.mts";
+import type { IdUnique } from "@dqm/package-dqm-api-v2";
 
 interface NodeDisplayProps {
-  node: SanitizedNode;
+  node: SanitizedNodePartial;
   path: string;
   depth: number;
   index: number;
-  parentUnique: string | undefined;
+  parentUnique?: IdUnique;
 }
 
 const DEPTH_STEP = 30;
 
 export const NodeDisplay: FC<NodeDisplayProps> = ({
   node: {
-    subtreeNodes,
-    childrenNodes,
-    spaceNodes,
-    tokenNodes,
-    source,
-    ...rest
+    key,
+    fields: { props, children, stable },
   },
   path,
   depth,
   index,
   parentUnique,
 }) => {
-  const [lineage, setLineage] = useState(
-    [
-      {
-        title: "Subtree",
-        visible: true,
-        className: "subtree",
-        nodes: subtreeNodes,
-      },
-      {
-        title: "Spaces",
-        visible: true,
-        className: "space",
-        nodes: spaceNodes,
-      },
-      {
-        title: "Tokens",
-        visible: true,
-        className: "token",
-        nodes: tokenNodes,
-      },
-      {
-        title: "Children",
-        visible: true,
-        className: "children",
-        nodes: childrenNodes,
-      },
-    ].filter((v) => v.nodes && v.nodes.length),
-  );
+  const childrenKeys = Object.keys(children);
+  const [childrenVisible, setChildrenVisible] = useState<
+    Record<string, boolean>
+  >(Object.fromEntries(childrenKeys.map((k) => [k, true])));
 
   const newDepth = depth + 1;
   const newPath = path + "/" + newDepth + "-" + index;
+  const cpxUniqueDefined = props.cpxUnique !== undefined;
+  const parentUniqueDefined = parentUnique !== undefined;
   const isNewCpx =
-    rest.cpxUnique !== undefined && parentUnique !== undefined
-      ? rest.cpxUnique !== parentUnique
+    cpxUniqueDefined && parentUniqueDefined
+      ? props.cpxUnique !== parentUnique
       : false;
+
+  const childrenRenderList = Object.entries(children)
+    .filter(([childType]) => childrenVisible[childType])
+    .filter((v) => (v[1] as SanitizedNodePartial[]).length) as [
+    string,
+    SanitizedNodePartial[],
+  ][];
+
   return (
     <div
       className={[style.lineage, isNewCpx && style.newCpx]
@@ -73,90 +56,59 @@ export const NodeDisplay: FC<NodeDisplayProps> = ({
     >
       <div className={style.parent}>
         <div
-          className={[style.yaml, source && style.withSource]
-            .filter((v) => !!v)
+          className={[style.yaml, stable.source && style.withSource]
+            .filter((v) => v)
             .join(" ")}
         >
           <div>
-            <YamlDisplay obj={rest} />
+            {Object.keys(props).length ? (
+              <YamlDisplay obj={props} />
+            ) : (
+              <Typography className={style.selectNodeProp}>
+                No node properties selected
+              </Typography>
+            )}
             <Flex className={style.switches}>
-              {lineage.map(({ title, visible }, i) => (
+              {Object.keys(childrenVisible).map((name) => (
                 <BlockySwitch
-                  key={title}
+                  key={name}
                   size="small"
-                  checkedChildren={title}
-                  value={visible}
-                  onChange={(e) =>
-                    setLineage((l) => {
-                      const n = [...l];
-                      n[i] = {
-                        ...n[i],
-                        visible: e,
+                  checkedChildren={name}
+                  value={childrenVisible[name]}
+                  onChange={() =>
+                    setChildrenVisible((l) => {
+                      return {
+                        ...l,
+                        [name]: !l[name],
                       };
-                      console.log(n, i);
-                      return n;
                     })
                   }
                 />
               ))}
             </Flex>
           </div>
-          {source ? <PreCode>{source.raw}</PreCode> : null}
+          {stable.source ? <PreCode>{stable.source.raw}</PreCode> : null}
         </div>
       </div>
-      {lineage
-        .filter((v) => v.visible)
-        .map(({ nodes, className }) =>
-          nodes && nodes.length ? (
-            <div
-              key={[style.dashed, className].join(" ")}
-              style={{ marginLeft: DEPTH_STEP }}
-              className={style[className]}
-            >
-              {nodes.map((c, i) => (
-                <NodeDisplay
-                  parentUnique={rest.cpxUnique}
-                  key={newPath + i}
-                  node={c}
-                  path={newPath}
-                  index={i}
-                  depth={newDepth}
-                />
-              ))}
-            </div>
-          ) : null,
-        )}
-      {/* {subtreeNodes && subtreeNodes.length ? (
-        <div style={{ marginLeft: DEPTH_STEP }} className={style.subtree}>
-          {subtreeNodes.map((c, i) => (
-            <NodeDisplay
-              key={newPath + i}
-              node={c}
-              path={newPath}
-              index={i}
-              depth={newDepth}
-            />
-          ))}
-        </div>
-      ) : null}
-      {childrenNodes && childrenNodes.length ? (
+
+      {childrenRenderList.map(([childType, nodes]) => (
         <div
-          style={{
-            marginLeft: DEPTH_STEP,
-          }}
-          className={style.children}
+          key={childType + newPath}
+          style={{ marginLeft: DEPTH_STEP }}
+          className={style[childType]}
         >
-          {childrenNodes.map((c, i) => (
+          {nodes.map((n, i) => (
             <NodeDisplay
-              key={newPath + i}
-              node={c}
-              index={i}
+              parentUnique={props.cpxUnique}
+              key={key + n.key + i}
+              node={n}
               path={newPath}
+              index={i}
               depth={newDepth}
             />
           ))}
         </div>
-      ) : null} */}
+      ))}
     </div>
   );
 };

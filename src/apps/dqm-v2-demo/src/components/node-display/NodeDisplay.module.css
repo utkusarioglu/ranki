@@ -34,17 +34,17 @@
   padding-top: var(--ant-padding-sm);
 }
 
-.children {
+.childrenNodes {
   composes: dashed;
   --color: var(--ant-color-primary);
 }
 
-.token {
+.tokenNodes {
   composes: dashed;
   --color: var(--ant-green-6);
 }
 
-.space {
+.spaceNodes {
   composes: dashed;
   --color: var(--ant-pink-6);
 }
@@ -52,4 +52,8 @@
 .newCpx {
   composes: dashed;
   --color: var(--ant-blue-6);
+}
+
+.selectNodeProp {
+  padding: var(--ant-padding);
 }

@@ -1,9 +1,14 @@
 import type {
   CommonTransportsConstructorParams,
+  CounterStat,
   ICpx,
   IParam,
 } from "../../export.types.mjs";
 import type * as ohm from "ohm-js";
+
+export type PushedNodeDefinition = [IAstNodeRelationship, ohm.Node];
+
+export type IAstNodeActionDict = ohm.ActionDict<IAstNode[] | IAstNode>;
 
 export type ContentDirection = "block" | "inline";
 export type IAstNodeNature = "literal" | "synthetic";
@@ -58,7 +63,13 @@ export type AstSourceViewDecoder<
   Custom extends AstSourceViewBase = AstSourceViewBase,
 > = (input: string) => Custom;
 
-export interface IAstNode {
+export interface IAstNode
+  extends IAstNodeCounterCapabilities,
+    IAstNodeOhmCapabilities,
+    IAstNodeSemanticCapabilities,
+    IAstNodeSyntaxCapabilities,
+    IAstNodeVerticesCapabilities,
+    IAstNodeViewCapabilities {
   /**
    * This is supposed to create a new cpx and then let the node build it
    * inside the callback:
@@ -71,37 +82,24 @@ export interface IAstNode {
   newCpx(cpxCallback: CpxFuncParam): this;
   newAst(ohm: ohm.Node): IAstNode;
   newParam(ohm: ohm.Node): IParam;
-  setCpx(cpx: ICpx): this;
+  // setCpx(cpx: ICpx): this;
   getCpx(): ICpx;
+}
 
+export interface IAstNodeCounterCapabilities {
+  setChildIndex(n: CounterStat): this;
+  getChildIndex(): CounterStat;
+  getInlineDepth(): CounterStat;
+  getBlockDepth(): CounterStat;
+}
+
+export interface IAstNodeOhmCapabilities {
   getSourceString(): AstSourceString;
-  getLeafView<T extends AstSourceViewBase>(): AstSourceView<T>;
-  setLeafViewDecoder<T extends AstSourceViewBase>(
-    typeName: string,
-    decoder: AstSourceViewDecoder<T>,
-  ): this;
-
-  getRelationship(): IAstNodeRelationship;
-
-  setParent(parent: IAstNode): this;
-  getPrev(): IAstNode | null;
-  getNext(): IAstNode | null;
-  setPrev(prev: IAstNode): this;
-  setNext(next: IAstNode): this;
-
-  getChildrenNodes(): ChildrenNodes;
-  getTokenNodes(): TokenNodes;
-  getSpaceNodes(): SpaceNodes;
-  getSubtreeNodes(): SubtreeNodes;
-  findSubtreeNodeByCreator(creator: CreatorName): IAstNode | undefined;
-  findTokenNodeByCreator(creator: CreatorName): IAstNode | undefined;
-  findSpaceNodeByCreator(creator: CreatorName): IAstNode | undefined;
-  getIgnoredNodes(): ohm.Node[];
-  pushNodes(...nodes: PushedNodeDefinition[]): this;
-  pushIgnoredNodes(...nodes: ohm.Node[]): this;
-
   getCreator(): CreatorName;
-  setRelationship(relationship: IAstNodeRelationship): this;
+}
+
+export interface IAstNodeSemanticCapabilities {
+  getKind(): IAstNodeKind;
 
   /**
    * Associates a token with its intended meaning. Such as `assignment` for `=`
@@ -118,14 +116,42 @@ export interface IAstNode {
   setDirection(direction: ContentDirection): this;
   getDirection(): ContentDirection;
 
+  setRelationship(relationship: IAstNodeRelationship): this;
+
   /**
    * literal for nodes created by what's in the course dqm, synthetic
    * for nodes created through processes such as wrapping words with
    * bold because of *<word>*
    */
   setNature(nature: IAstNodeNature): this;
-  getKind(): IAstNodeKind;
+  getRelationship(): IAstNodeRelationship;
 }
-export type PushedNodeDefinition = [IAstNodeRelationship, ohm.Node];
 
-export type IAstNodeActionDict = ohm.ActionDict<IAstNode[] | IAstNode>;
+export interface IAstNodeSyntaxCapabilities {
+  getChildrenNodes(): ChildrenNodes;
+  getTokenNodes(): TokenNodes;
+  getSpaceNodes(): SpaceNodes;
+  getSubtreeNodes(): SubtreeNodes;
+  findSubtreeNodeByCreator(creator: CreatorName): IAstNode | undefined;
+  findTokenNodeByCreator(creator: CreatorName): IAstNode | undefined;
+  findSpaceNodeByCreator(creator: CreatorName): IAstNode | undefined;
+  getIgnoredNodes(): ohm.Node[];
+  pushNodes(...nodes: PushedNodeDefinition[]): this;
+  pushIgnoredNodes(...nodes: ohm.Node[]): this;
+}
+
+export interface IAstNodeVerticesCapabilities {
+  setParent(parent: IAstNode): this;
+  getPrev(): IAstNode | null;
+  getNext(): IAstNode | null;
+  setPrev(prev: IAstNode): this;
+  setNext(next: IAstNode): this;
+}
+
+export interface IAstNodeViewCapabilities {
+  getLeafView<T extends AstSourceViewBase>(): AstSourceView<T>;
+  setLeafViewDecoder<T extends AstSourceViewBase>(
+    typeName: string,
+    decoder: AstSourceViewDecoder<T>,
+  ): this;
+}

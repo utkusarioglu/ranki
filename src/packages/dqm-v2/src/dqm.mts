@@ -16,6 +16,7 @@ import type {
 import { DEFAULT_CONFIG } from "./constants.mjs";
 import { AstNode } from "./nodes/ast/ast-node.mjs";
 import { Config } from "@dqm/package-utils";
+import { Id } from "./id/id.mjs";
 
 export class Dqm {
   private plugins: IPlugins = new Libs();
@@ -27,6 +28,7 @@ export class Dqm {
    * shape would allow defining these values at once
    */
   constructor(configs: DqmConfigPack, plugins: IDqmPlugin[]) {
+    Id.resetUnique();
     plugins.forEach((plugin) => {
       this.plugins.addPlugin(plugin);
     });

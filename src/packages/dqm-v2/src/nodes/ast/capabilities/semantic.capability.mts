@@ -16,8 +16,8 @@ export function semanticCapability<T>(self: T) {
   let direction!: ContentDirection;
 
   return {
-    setKind(kind: IAstNodeKind): T {
-      kind = kind;
+    setKind(k: IAstNodeKind): T {
+      kind = k;
       return self;
     },
 

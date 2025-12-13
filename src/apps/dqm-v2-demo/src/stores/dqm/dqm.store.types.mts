@@ -3,9 +3,8 @@ import type {
   DqmParseInputString,
   DqmRecord,
   DqmParseInputStructured,
+  DqmParseOutput,
 } from "@dqm/package-dqm-api-v2";
-import type { TemplateGroupWithList } from "./utils.mts";
-import type { AstSanitizationFeature } from "../../utils/dqm.utils.types.mts";
 
 export interface TemplateGroup {
   label: string;
@@ -38,22 +37,29 @@ export interface Arrangement {
 export type CodeStore = CodeStoreState & CodeStoreActions;
 
 export interface CodeStoreState {
+  deferParsing: boolean;
   templates: TemplateGroupWithList[];
   arrangements: Arrangement[];
 
-  astDragProps: SanitizationProp[];
-  astLineageProps: SanitizationProp[];
-  astNoDragProps: SanitizationProp[];
-
+  parsed: ParseResult;
   autoUpdate: boolean;
   inputs: DqmParseInputStructured;
-  views: DqmParseInputStructured;
 }
+
+interface SanitizeResultSuccess {
+  state: "success";
+  data: DqmParseOutput;
+}
+
+interface ParseResultFail {
+  state: "fail";
+  error: string;
+}
+
+export type ParseResult = SanitizeResultSuccess | ParseResultFail;
 
 export interface CodeStoreActions {
   setAllInputs: (inputs: DqmRecord) => void;
-  setAllViewsFromInputs: () => void;
-
   setAutoUpdate: (update: boolean) => void;
 
   setTheaterDqmByIndex: (index: number, dqm: DqmParseInputString) => void;
@@ -62,20 +68,12 @@ export interface CodeStoreActions {
   pushNewTheater: () => void;
   removeTheaterByIndex: (index: number) => void;
 
-  setDragFeatureList: (feature: SanitizationProp[]) => void;
-  setLineageFeatureList: (feature: SanitizationProp[]) => void;
-  setNoDragFeatureList: (feature: SanitizationProp[]) => void;
-
   setTemplates: (lists: TemplateGroupWithList[]) => void;
   setArrangements: (list: Arrangement[]) => void;
+  parseInput: () => void;
+  setDeferParsing: (defer: boolean) => void;
 }
 
-export type CreateDefaultsReturn = Pick<
-  CodeStore,
-  "astDragProps" | "astLineageProps" | "astNoDragProps" | "inputs" | "views"
->;
-
-export interface SanitizationProp {
-  id: AstSanitizationFeature;
-  visible: boolean;
-}
+export type TemplateGroupWithList = TemplateGroup & {
+  list: TemplateTextProcessed[];
+};

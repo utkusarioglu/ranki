@@ -1,5 +1,5 @@
 import { useCodeStore } from "../../stores/dqm/dqm.store.mts";
-import { Button, Flex, Switch } from "antd";
+import { Button, Flex } from "antd";
 import { DqmInputCard } from "./DqmInputCard";
 import style from "./DqmInputOptions.module.css";
 import { SaveOutlined } from "@ant-design/icons";
@@ -37,9 +37,17 @@ export const DqmInputOptions = () => {
             onChange={(e) => code.setAutoUpdate(e)}
             value={code.autoUpdate}
           />
-          {!code.autoUpdate ? (
-            <Button onClick={() => code.setAllViewsFromInputs()}>Update</Button>
-          ) : null}
+          {code.autoUpdate ? (
+            <BlockySwitch
+              size="large"
+              checkedChildren={"Defer"}
+              unCheckedChildren={"No Defer"}
+              onChange={() => code.setDeferParsing(!code.deferParsing)}
+              value={code.deferParsing}
+            />
+          ) : (
+            <Button onClick={() => code.parseInput()}>Update</Button>
+          )}
         </Flex>
       </div>
 

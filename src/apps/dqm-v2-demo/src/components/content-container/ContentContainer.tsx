@@ -9,7 +9,7 @@ export const ContentContainer = () => {
   return (
     <ErrorBoundary
       FallbackComponent={ErrorFallback}
-      key={JSON.stringify(code.views)}
+      key={JSON.stringify(code.inputs)}
     >
       <Scroller direction="vertical">
         <Outlet />

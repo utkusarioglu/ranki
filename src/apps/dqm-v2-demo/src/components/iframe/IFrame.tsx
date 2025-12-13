@@ -3,28 +3,10 @@ import injected from "./IFrame.injected.css?raw";
 import injectedDark from "./IFrame.injected.dark.css?raw";
 import injectedLight from "./IFrame.injected.light.css?raw";
 import resizeObserverTpl from "./IFrame.injected.resize.js.tpl?raw";
-
-// import {
-//   Render,
-//   type RenderClientOptions,
-//   type RenderFunctionReturn,
-// } from "@ranki/package-render-v2";
-// import type { TransformNode } from "@ranki/package-api-v2";
-import {
-  Suspense,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type Dispatch,
-  type FC,
-  type SetStateAction,
-} from "react";
+import { Suspense, useEffect, useMemo, useRef, useState, type FC } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-// import type { SyncFC } from "./react.type.mts";
 import { ErrorFallback } from "../error-fallback/ErrorFallback";
 import { pushScript, pushStyle } from "./utils.mts";
-// import { AnkiUi } from "@ranki/package-anki-ui";
 
 function wrapPromise(promise: Promise<any>) {
   let status = "pending";

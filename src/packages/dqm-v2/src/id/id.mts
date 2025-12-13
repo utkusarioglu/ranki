@@ -14,6 +14,7 @@ import {
 } from "@dqm/package-utils";
 
 export class Id implements IId {
+  private static uniqueCounter = 0;
   private unique: IdUnique;
   // private map!: IIdMap;
   private position!: Position;
@@ -22,7 +23,17 @@ export class Id implements IId {
   private chain!: Chain;
 
   constructor() {
-    this.unique = Math.random().toString(36).slice(2);
+    this.unique = Id.getUnique();
+    // this.unique = Math.random().toString(36).slice(2);
+  }
+
+  private static getUnique() {
+    Id.uniqueCounter++;
+    return Id.uniqueCounter;
+  }
+
+  static resetUnique() {
+    Id.uniqueCounter = 0;
   }
 
   getUnique(): IdUnique {
@@ -46,48 +57,6 @@ export class Id implements IId {
   getPosition(): Position | undefined {
     return this.position;
   }
-
-  // setMap(map: IIdMap): IId {
-  //   this.map = map;
-  //   this.processAlias();
-  //   this.processPosition();
-  //   return this;
-  // }
-
-  // private processPosition() {
-  //   if (!this.position) {
-  //     return;
-  //   }
-  //   if (this.map.position.length < this.position + 1) {
-  //     throw new DqmError("UNDEFINED_ID_POSITION", {
-  //       position: this.position,
-  //       positions: this.map.position,
-  //       obj: this,
-  //     });
-  //   }
-  //   this.chain = this.map.position[this.position];
-  // }
-
-  // private processAlias() {
-  //   switch (this.id.length) {
-  //     case 0:
-  //       throw new DqmError("EMPTY_ARRAY", { obj: this });
-  //     case 1:
-  //       const alias = this.id as Alias;
-  //       this.setAlias(alias);
-  //       const chain = this.map.alias.get(alias);
-  //       if (!chain) {
-  //         throw new DqmError("UNDEFINED_CHAIN", {
-  //           alias,
-  //           mapping: this.map,
-  //         });
-  //       }
-  //       this.setChain(chain);
-  //       break;
-  //     default:
-  //       this.setChain(this.id as Chain);
-  //   }
-  // }
 
   @writeOnce("id")
   setId(id: Alias | Chain): IId {

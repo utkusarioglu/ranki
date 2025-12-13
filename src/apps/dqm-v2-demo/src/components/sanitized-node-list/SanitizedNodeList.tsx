@@ -3,38 +3,27 @@ import { NodeDisplay } from "../node-display/NodeDisplay";
 import { Typography } from "antd";
 import style from "./SanitizedNodeList.module.css";
 import { Scroller } from "../scroller/Scroller";
-import { useEffect, useState } from "react";
-import type { ParseResult } from "../../utils/dqm.utils.types.mts";
-import { parseRaw } from "../../utils/dqm.utils.mts";
 import { useErrorBoundary } from "react-error-boundary";
+import { useAstViewStore } from "../../stores/ast-view/ast-view.store.mts";
+import { createSanitized } from "../../stores/ast-view/sanitized-ast-node.mts";
 
-function useSanitizedAst(): ParseResult | null {
-  const code = useCodeStore();
-  const [nodes, setNodes] = useState<ParseResult | null>(null);
-  useEffect(() => {
-    setNodes(parseRaw(code));
-  }, [
-    code.views,
-    code.astDragProps,
-    code.astLineageProps,
-    code.astNoDragProps,
-  ]);
-
-  return nodes;
+function useSanitizedAst() {
+  const parsed = useCodeStore((s) => s.parsed);
+  const props = useAstViewStore((s) => s.props);
+  const children = useAstViewStore((s) => s.children);
+  const stable = useAstViewStore((s) => s.stable);
+  return createSanitized(parsed, { props, children, stable });
 }
 
 export const SanitizedNodeList = () => {
   const sanitized = useSanitizedAst();
   const boundary = useErrorBoundary();
 
-  if (sanitized === null) {
-    return <h1>null</h1>;
-  }
-
   if (sanitized.state === "fail") {
     boundary.showBoundary(sanitized.error);
     return null;
   }
+
   const nodes = sanitized.data.sanitized;
 
   if (!nodes.length) {

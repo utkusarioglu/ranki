@@ -1,173 +1,187 @@
-import type { DqmParseOutput, IAstNode } from "@dqm/package-dqm-api-v2";
-import type { SanitizationProp } from "../stores/dqm/dqm.store.types.mts";
-import type {
-  ParseRelevant,
-  SanitizedNode,
-  AstSanitizationFeature,
-  SanitizedAst,
-  ParseResult,
-} from "./dqm.utils.types.mts";
-import { Dqm } from "@dqm/package-dqm-v2";
-import baseV2 from "@dqm/plugin-base-v2";
-import frameV2 from "@dqm/plugin-frame-v2";
-import paramsV2 from "@dqm/plugin-params-v2";
-import frameV2Code from "@dqm/plugin-frame-v2-code";
+// import type { DqmParseOutput, IAstNode } from "@dqm/package-dqm-api-v2";
+// import type {
+//   SanitizedNodePartial,
+//   SanitizedAst,
+//   ParseResult,
+//   SanitizedNodeProps,
+//   SanitizedNodeChildren,
+//   SanitizedNodeStable,
+// } from "./dqm.utils.types.mts";
+// import type {
+//   AstViewStoreState,
+//   SanitizedNodeView,
+//   SanitizedNodeViewVisible,
+// } from "../stores/ast-view/ast-view.store.types.mts";
 
-export const filterIds = (...all: SanitizationProp[][]) =>
-  all
-    .map((a) => a.filter(({ visible }) => visible).map((v) => v.id))
-    .reduce((a, c) => [...a, ...c], [] as AstSanitizationFeature[]);
+// function filterIds(all: SanitizedNodeView): SanitizedNodeViewVisible {
+//   // @ts-expect-error
+//   return Object.fromEntries(
+//     Object.entries(all).map(([k, v]) => {
+//       // @ts-expect-error
+//       const b = v.filter((l) => l.visible);
 
-export function sanitizeAst(
-  parsed: DqmParseOutput,
-  features: AstSanitizationFeature[],
-): SanitizedAst[] {
-  return parsed.map((p) => ({
-    theater: p.theater,
-    sanitized: sanitizeAstSingle(p.ast, features),
-  }));
-}
+//       return [k, b];
+//     }),
+//   );
+// }
 
-function sanitizeAstSingle(
-  astNode: IAstNode,
-  features: string[],
-): SanitizedNode {
-  const sanitized: SanitizedNode = {};
+// function sanitizeAst(
+//   parsed: DqmParseOutput,
+//   features: SanitizedNodeViewVisible,
+// ): SanitizedAst[] {
+//   return parsed.map((p) => ({
+//     theater: p.theater,
+//     sanitized: sanitizeAstSingle(p.ast, features),
+//   }));
+// }
 
-  features.forEach((feature) => {
-    switch (feature) {
-      case "meaning":
-        try {
-          sanitized[feature] = astNode.getMeaning();
-        } catch {}
-        break;
-      case "constructorName":
-        sanitized[feature] = astNode.constructor.name;
-        break;
-      case "creationMethod":
-        sanitized[feature] = astNode.getCreationMethod();
-        break;
-      case "ignoredCount":
-        sanitized[feature] = astNode.getIgnoredNodes().length;
-        break;
-      case "kind":
-        sanitized[feature] = astNode.getKind();
-        break;
-      case "subtreeCount":
-        sanitized[feature] = astNode.getSubtreeNodes().length;
-        break;
-      case "childCount":
-        sanitized[feature] = astNode.getChildrenNodes().length;
-        break;
-      case "cpxUnique":
-        sanitized[feature] = astNode.getCpx().getId().getUnique();
-        break;
-      case "creator":
-        sanitized[feature] = astNode.getCreator();
-        break;
-      case "idList":
-        sanitized[feature] = astNode
-          .getCpx()
-          .getIdList()
-          .map((v) => v.join("."))
-          .join(" | ");
-        break;
-      case "chainList":
-        sanitized[feature] = astNode
-          .getCpx()
-          .getChainList()
-          .map((v) => v.join("."))
-          .join(" | ");
-        break;
+// function sanitizeAstSingle(
+//   astNode: IAstNode,
+//   features: SanitizedNodeViewVisible,
+// ): SanitizedNodePartial {
+//   const props: Partial<SanitizedNodeProps> = {};
+//   const children: Partial<SanitizedNodeChildren> = {};
+//   const stable: Partial<SanitizedNodeStable> = {};
 
-      case "childrenNodes":
-        const childrenNodes = astNode
-          .getChildrenNodes()
-          .map((n) => sanitizeAstSingle(n, features));
-        if (childrenNodes.length) {
-          sanitized[feature] = childrenNodes;
-        }
-        break;
-      case "subtreeNodes":
-        const subtreeNodes = astNode
-          .getSubtreeNodes()
-          .map((n) => sanitizeAstSingle(n, features));
-        if (subtreeNodes.length) {
-          sanitized[feature] = subtreeNodes;
-        }
-        break;
-      case "tokenNodes":
-        const tokenNodes = astNode
-          .getTokenNodes()
-          .map((n) => sanitizeAstSingle(n, features));
-        if (tokenNodes.length) {
-          sanitized[feature] = tokenNodes;
-        }
-        break;
-      case "spaceNodes":
-        const spaceNodes = astNode
-          .getSpaceNodes()
-          .map((n) => sanitizeAstSingle(n, features));
-        if (spaceNodes.length) {
-          sanitized[feature] = spaceNodes;
-        }
-        break;
-      case "source":
-        sanitized[feature] =
-          astNode.getKind() === "leaf"
-            ? astNode.getLeafView()
-            : {
-                type: "string",
-                raw: astNode.getSourceString(),
-              };
-        break;
-      default:
-        throw new Error(`Unrecognized sanitize feature: ${feature}`);
-    }
-  });
+//   features.props.forEach(({ id }) => {
+//     switch (id) {
+//       case "inlineDepth":
+//         props[id] = astNode.getInlineDepth();
+//         break;
+//       case "blockDepth":
+//         props[id] = astNode.getBlockDepth();
+//         break;
+//       case "childIndex":
+//         props[id] = astNode.getChildIndex();
+//         break;
+//       case "meaning":
+//         try {
+//           props[id] = astNode.getMeaning();
+//         } catch {}
+//         break;
+//       case "constructorName":
+//         props[id] = astNode.constructor.name;
+//         break;
+//       case "creationMethod":
+//         props[id] = astNode.getCreationMethod();
+//         break;
+//       case "ignoredCount":
+//         props[id] = astNode.getIgnoredNodes().length;
+//         break;
+//       case "kind":
+//         props[id] = astNode.getKind();
+//         break;
+//       case "subtreeCount":
+//         props[id] = astNode.getSubtreeNodes().length;
+//         break;
+//       case "childCount":
+//         props[id] = astNode.getChildrenNodes().length;
+//         break;
+//       case "cpxUnique":
+//         props[id] = astNode.getCpx().getId().getUnique();
+//         break;
+//       case "creator":
+//         props[id] = astNode.getCreator();
+//         break;
+//       case "idList":
+//         props[id] = astNode
+//           .getCpx()
+//           .getIdList()
+//           .map((v) => v.join("."))
+//           .join(" | ");
+//         break;
+//       case "chainList":
+//         props[id] = astNode
+//           .getCpx()
+//           .getChainList()
+//           .map((v) => v.join("."))
+//           .join(" | ");
+//         break;
+//     }
+//   });
 
-  return sanitized;
-}
+//   features.children.forEach(({ id }) => {
+//     switch (id) {
+//       case "childrenNodes":
+//         const childrenNodes = astNode
+//           .getChildrenNodes()
+//           .map((n) => sanitizeAstSingle(n, features));
+//         if (childrenNodes.length) {
+//           children[id] = childrenNodes;
+//         }
+//         break;
+//       case "subtreeNodes":
+//         const subtreeNodes = astNode
+//           .getSubtreeNodes()
+//           .map((n) => sanitizeAstSingle(n, features));
+//         if (subtreeNodes.length) {
+//           children[id] = subtreeNodes;
+//         }
+//         break;
+//       case "tokenNodes":
+//         const tokenNodes = astNode
+//           .getTokenNodes()
+//           .map((n) => sanitizeAstSingle(n, features));
+//         if (tokenNodes.length) {
+//           children[id] = tokenNodes;
+//         }
+//         break;
+//       case "spaceNodes":
+//         const spaceNodes = astNode
+//           .getSpaceNodes()
+//           .map((n) => sanitizeAstSingle(n, features));
+//         if (spaceNodes.length) {
+//           children[id] = spaceNodes;
+//         }
+//         break;
+//     }
+//   });
 
-export function parseRaw({
-  astDragProps,
-  astNoDragProps,
-  astLineageProps,
-  // inputs,
-  views,
-}: ParseRelevant): ParseResult {
-  const dqm = new Dqm(
-    {
-      // @ts-ignore it expects the entire object
-      console: {
-        // @ts-ignore it expects the entire object
-        plugins: {
-          requested: ["ParamsV2", "FrameV2"],
-        },
-      },
-    },
-    [baseV2, frameV2, paramsV2, frameV2Code],
-  );
-  try {
-    const filteredIds = filterIds(
-      astDragProps,
-      astLineageProps,
-      astNoDragProps,
-    );
-    const parsed = dqm.parse(views);
-    const sanitized = sanitizeAst(parsed, filteredIds);
-    return {
-      state: "success",
-      data: {
-        parsed,
-        sanitized,
-      },
-    };
-  } catch (e) {
-    console.log(e);
-    return {
-      state: "fail",
-      error: e as any,
-    };
-  }
-}
+//   features.stable.forEach(({ id }) => {
+//     switch (id) {
+//       case "source":
+//         stable[id] =
+//           astNode.getKind() === "leaf"
+//             ? astNode.getLeafView()
+//             : {
+//                 type: "string",
+//                 raw: astNode.getSourceString(),
+//               };
+//         break;
+//       default:
+//         throw new Error(`Unrecognized sanitize feature: ${id}`);
+//     }
+//   });
+
+//   const sanitized: SanitizedNodePartial = {
+//     props,
+//     children,
+//     stable,
+//   };
+//   return sanitized;
+// }
+
+// export function createSanitized(
+//   parsed: DqmParseOutput,
+//   props: AstViewStoreState["props"],
+//   children: AstViewStoreState["children"],
+//   stable: AstViewStoreState["stable"],
+// ): ParseResult {
+//   try {
+//     const filteredIds = filterIds({ props, children, stable });
+//     const sanitized = sanitizeAst(parsed, filteredIds);
+//     return {
+//       state: "success",
+//       data: {
+//         parsed,
+//         sanitized,
+//       },
+//     };
+//   } catch (e) {
+//     console.log(e);
+//     return {
+//       state: "fail",
+//       error: e as any,
+//     };
+//   }
+// }

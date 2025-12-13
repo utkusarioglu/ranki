@@ -1,6 +1,6 @@
 export type Position = number & { type?: "IdPosition" };
 
-export type IdUnique = string & { type?: "IdUnique" };
+export type IdUnique = number & { type?: "IdUnique" };
 
 export type IIdMap = {
   position: Chain[];

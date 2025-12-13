@@ -12,7 +12,15 @@ import { DqmInputOptions } from "../dqm-input-options/DqmInputOptions";
 import { NodeOptions } from "../node-options/NodeOptions";
 import { AstSanitizerOptions } from "../ast-sanitizer-options/AstSanitizerOptions";
 import { type FC, type PropsWithChildren, type ReactNode } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import {
+  useChildMatches,
+  useLocation,
+  useMatch,
+  useMatches,
+  useMatchRoute,
+  useNavigate,
+  useRouteContext,
+} from "@tanstack/react-router";
 import { RenderSettings } from "../render-settings/RenderSettings";
 
 type Level = {
@@ -25,6 +33,7 @@ type Level = {
 };
 
 interface TabManagerProps {
+  current: number;
   levels: Level[];
 }
 
@@ -38,65 +47,65 @@ const NotYet = () => {
 
 const levels: Level[] = [
   {
-    key: "1",
+    key: "dqm",
     label: "Dqm",
     TabChild: <DqmInputOptions />,
     icon: <FormOutlined />,
   },
   {
-    key: "2",
+    key: "view",
     label: "View",
     TabChild: <ViewOptions />,
     icon: <FileTextOutlined />,
     childLevels: [
       {
-        key: "1",
+        key: "render",
         label: "Render",
         TabChild: <RenderSettings />,
-        route: "/render/document",
+        route: "/view/render/document",
         icon: <FundProjectionScreenOutlined />,
       },
       {
-        key: "2",
+        key: "graph",
         label: "Graph",
         TabChild: <NotYet />,
         icon: <ShareAltOutlined />,
       },
       {
-        key: "3",
+        key: "nodes",
         label: "Node",
         TabChild: <NodeOptions />,
         icon: <BoxPlotOutlined />,
         childLevels: [
           {
-            key: "1",
+            key: "ast",
             label: "Ast",
             TabChild: <AstSanitizerOptions />,
-            route: "/nodes/ast",
+            route: "/view/nodes/ast",
           },
           {
-            key: "2",
+            key: "cpx",
             label: "Cpx",
             TabChild: <NotYet />,
-            route: "/nodes/cpx",
+            route: "/view/nodes/cpx",
           },
           {
-            key: "3",
+            key: "cps",
             label: "Cps",
             TabChild: <NotYet />,
           },
           {
-            key: "4",
+            key: "val",
             label: "Val",
             TabChild: <NotYet />,
           },
           {
-            key: "5",
+            key: "trn",
             label: "Trn",
             TabChild: <NotYet />,
           },
           {
-            key: "6",
+            key: "ren",
             label: "Ren",
             TabChild: <NotYet />,
           },
@@ -105,7 +114,7 @@ const levels: Level[] = [
     ],
   },
   {
-    key: "3",
+    key: "plugins",
     label: "Plugins",
     TabChild: <NotYet />,
     icon: <InboxOutlined />,
@@ -125,8 +134,13 @@ const Activator: FC<PropsWithChildren<ActivatorProps>> = ({
   return <>{children}</>;
 };
 
-export const TabLevel: FC<TabManagerProps> = ({ levels }) => {
-  const defaultKey = "1";
+export const TabLevel: FC<TabManagerProps> = ({ levels, current }) => {
+  let defaultKey = "1";
+  const currSlice = useLocation().pathname.split("/").slice(1);
+  const curr = currSlice[current];
+  if (current > 0) {
+    defaultKey = curr;
+  }
   const { token } = theme.useToken();
 
   const prepared = levels.map((l) => ({
@@ -134,7 +148,7 @@ export const TabLevel: FC<TabManagerProps> = ({ levels }) => {
     label: l.label,
     icon: l.icon,
     children: l.childLevels ? (
-      <TabLevel levels={l.childLevels} />
+      <TabLevel levels={l.childLevels} current={current + 1} />
     ) : (
       <Activator route={l.route}>{l.TabChild}</Activator>
     ),
@@ -153,4 +167,4 @@ export const TabLevel: FC<TabManagerProps> = ({ levels }) => {
   );
 };
 
-export const TabManager = () => <TabLevel levels={levels} />;
+export const TabManager = () => <TabLevel levels={levels} current={0} />;

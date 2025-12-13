@@ -1,9 +1,9 @@
 import type { FC } from "react";
-import type { TemplateGroupWithList } from "../../stores/dqm/utils.mts";
 import type { WithIndex } from "./TemplatesDrawer";
 import { Typography } from "antd";
 import { TemplateEntry } from "./TemplateEntry";
 import style from "./TemplateGroup.module.css";
+import type { TemplateGroupWithList } from "../../stores/dqm/dqm.store.types.mts";
 
 type TemplateGroupProps = WithIndex & {
   group: TemplateGroupWithList;

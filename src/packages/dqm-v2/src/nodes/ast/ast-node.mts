@@ -5,6 +5,7 @@ import type {
   IParam,
   AstSourceView,
   AstSourceViewBase,
+  CpxFuncParam,
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
 import { assertNotExists, rejectValues } from "@dqm/package-utils";
@@ -14,6 +15,7 @@ import { syntaxCapability } from "./capabilities/syntax.capability.mjs";
 import { semanticCapability } from "./capabilities/semantic.capability.mjs";
 import { ohmCapability } from "./capabilities/ohm.capability.mjs";
 import { viewCapability } from "./capabilities/view.capability.mjs";
+import { counterCapability } from "./capabilities/counter.capability.mjs";
 
 export class AstNode extends CommonTransports implements IAstNode {
   private semantic = semanticCapability(this);
@@ -21,10 +23,11 @@ export class AstNode extends CommonTransports implements IAstNode {
   private syntax = syntaxCapability(this);
   private ohm = ohmCapability(this);
   private view = viewCapability(this);
+  private counter = counterCapability(this);
   private cpx!: ICpx;
 
   // TODO this needs a lot of work
-  newCpx(cpxCallback: (cpx: ICpx) => ICpx): this {
+  newCpx(cpxCallback: CpxFuncParam): this {
     const Cpx = this.getPlugins().getCpxConstructor();
     const oldCpx = this.cpx;
     const newCpxMold = new Cpx(this.getTransports())
@@ -43,12 +46,32 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this.newChild(this.getPlugins().getParamConstructor(), ohm);
   }
 
+  private postCreationActions() {
+    if (this.vertices.getChildren().length) {
+      return;
+    }
+    this.counter.incrementDirection(this.getDirection());
+  }
+
+  /**
+   * @dev
+   * #1 When `newChild` is called, it is assumed that the parent's creation is
+   * already complete. This allows us to do calculations such as
+   */
   private newChild(ChildConstructor: any, ohm: ohm.Node) {
+    //#1
+    const childrenCount = this.vertices.getChildren().length;
+    if (!childrenCount) {
+      this.postCreationActions();
+    }
+
     const child = new ChildConstructor(this.getTransports());
     child
       .setParent(this)
       .setOhmNode(ohm)
       .setCpx(this.getCpx())
+      .setChildIndex(childrenCount)
+      .setInheritedCounters(this.counter.getInheritedCounters())
       .setDirection(this.getDirection());
     this.vertices.pushChild(child);
     return child;
@@ -64,6 +87,13 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this;
   }
 
+  // COUNTER
+  setChildIndex = this.counter.setChildIndex.bind(this.counter);
+  getChildIndex = this.counter.getChildIndex.bind(this.counter);
+  setInheritedCounters = this.counter.setInheritedCounters.bind(this.counter);
+  getInlineDepth = this.counter.getInlineDepth.bind(this.counter);
+  getBlockDepth = this.counter.getBlockDepth.bind(this.counter);
+
   // VIEW
   getLeafView<T extends AstSourceViewBase>(): AstSourceView<T> {
     const raw = this.getSourceString();
@@ -77,8 +107,8 @@ export class AstNode extends CommonTransports implements IAstNode {
   getCreator = this.ohm.getCreator.bind(this.ohm);
 
   // SEMANTIC
-  getKind = this.semantic.getKind.bind(this.semantic);
   setDirection = this.semantic.setDirection.bind(this.semantic);
+  getKind = this.semantic.getKind.bind(this.semantic);
   setNature = this.semantic.setNature.bind(this.semantic);
   setMeaning = this.semantic.setMeaning.bind(this.semantic);
   getDirection = this.semantic.getDirection.bind(this.semantic);

@@ -11,9 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as InfoRouteImport } from './routes/info'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as RenderDocumentIndexRouteImport } from './routes/render/document/index'
-import { Route as NodesCpxIndexRouteImport } from './routes/nodes/cpx/index'
-import { Route as NodesAstIndexRouteImport } from './routes/nodes/ast/index'
+import { Route as ViewRenderDocumentIndexRouteImport } from './routes/view/render/document/index'
+import { Route as ViewNodesCpxIndexRouteImport } from './routes/view/nodes/cpx/index'
+import { Route as ViewNodesAstIndexRouteImport } from './routes/view/nodes/ast/index'
 
 const InfoRoute = InfoRouteImport.update({
   id: '/info',
@@ -25,64 +25,74 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RenderDocumentIndexRoute = RenderDocumentIndexRouteImport.update({
-  id: '/render/document/',
-  path: '/render/document/',
+const ViewRenderDocumentIndexRoute = ViewRenderDocumentIndexRouteImport.update({
+  id: '/view/render/document/',
+  path: '/view/render/document/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const NodesCpxIndexRoute = NodesCpxIndexRouteImport.update({
-  id: '/nodes/cpx/',
-  path: '/nodes/cpx/',
+const ViewNodesCpxIndexRoute = ViewNodesCpxIndexRouteImport.update({
+  id: '/view/nodes/cpx/',
+  path: '/view/nodes/cpx/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const NodesAstIndexRoute = NodesAstIndexRouteImport.update({
-  id: '/nodes/ast/',
-  path: '/nodes/ast/',
+const ViewNodesAstIndexRoute = ViewNodesAstIndexRouteImport.update({
+  id: '/view/nodes/ast/',
+  path: '/view/nodes/ast/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/info': typeof InfoRoute
-  '/nodes/ast': typeof NodesAstIndexRoute
-  '/nodes/cpx': typeof NodesCpxIndexRoute
-  '/render/document': typeof RenderDocumentIndexRoute
+  '/view/nodes/ast': typeof ViewNodesAstIndexRoute
+  '/view/nodes/cpx': typeof ViewNodesCpxIndexRoute
+  '/view/render/document': typeof ViewRenderDocumentIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/info': typeof InfoRoute
-  '/nodes/ast': typeof NodesAstIndexRoute
-  '/nodes/cpx': typeof NodesCpxIndexRoute
-  '/render/document': typeof RenderDocumentIndexRoute
+  '/view/nodes/ast': typeof ViewNodesAstIndexRoute
+  '/view/nodes/cpx': typeof ViewNodesCpxIndexRoute
+  '/view/render/document': typeof ViewRenderDocumentIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/info': typeof InfoRoute
-  '/nodes/ast/': typeof NodesAstIndexRoute
-  '/nodes/cpx/': typeof NodesCpxIndexRoute
-  '/render/document/': typeof RenderDocumentIndexRoute
+  '/view/nodes/ast/': typeof ViewNodesAstIndexRoute
+  '/view/nodes/cpx/': typeof ViewNodesCpxIndexRoute
+  '/view/render/document/': typeof ViewRenderDocumentIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/info' | '/nodes/ast' | '/nodes/cpx' | '/render/document'
+  fullPaths:
+    | '/'
+    | '/info'
+    | '/view/nodes/ast'
+    | '/view/nodes/cpx'
+    | '/view/render/document'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/info' | '/nodes/ast' | '/nodes/cpx' | '/render/document'
+  to:
+    | '/'
+    | '/info'
+    | '/view/nodes/ast'
+    | '/view/nodes/cpx'
+    | '/view/render/document'
   id:
     | '__root__'
     | '/'
     | '/info'
-    | '/nodes/ast/'
-    | '/nodes/cpx/'
-    | '/render/document/'
+    | '/view/nodes/ast/'
+    | '/view/nodes/cpx/'
+    | '/view/render/document/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   InfoRoute: typeof InfoRoute
-  NodesAstIndexRoute: typeof NodesAstIndexRoute
-  NodesCpxIndexRoute: typeof NodesCpxIndexRoute
-  RenderDocumentIndexRoute: typeof RenderDocumentIndexRoute
+  ViewNodesAstIndexRoute: typeof ViewNodesAstIndexRoute
+  ViewNodesCpxIndexRoute: typeof ViewNodesCpxIndexRoute
+  ViewRenderDocumentIndexRoute: typeof ViewRenderDocumentIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -101,25 +111,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/render/document/': {
-      id: '/render/document/'
-      path: '/render/document'
-      fullPath: '/render/document'
-      preLoaderRoute: typeof RenderDocumentIndexRouteImport
+    '/view/render/document/': {
+      id: '/view/render/document/'
+      path: '/view/render/document'
+      fullPath: '/view/render/document'
+      preLoaderRoute: typeof ViewRenderDocumentIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/nodes/cpx/': {
-      id: '/nodes/cpx/'
-      path: '/nodes/cpx'
-      fullPath: '/nodes/cpx'
-      preLoaderRoute: typeof NodesCpxIndexRouteImport
+    '/view/nodes/cpx/': {
+      id: '/view/nodes/cpx/'
+      path: '/view/nodes/cpx'
+      fullPath: '/view/nodes/cpx'
+      preLoaderRoute: typeof ViewNodesCpxIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/nodes/ast/': {
-      id: '/nodes/ast/'
-      path: '/nodes/ast'
-      fullPath: '/nodes/ast'
-      preLoaderRoute: typeof NodesAstIndexRouteImport
+    '/view/nodes/ast/': {
+      id: '/view/nodes/ast/'
+      path: '/view/nodes/ast'
+      fullPath: '/view/nodes/ast'
+      preLoaderRoute: typeof ViewNodesAstIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -128,9 +138,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   InfoRoute: InfoRoute,
-  NodesAstIndexRoute: NodesAstIndexRoute,
-  NodesCpxIndexRoute: NodesCpxIndexRoute,
-  RenderDocumentIndexRoute: RenderDocumentIndexRoute,
+  ViewNodesAstIndexRoute: ViewNodesAstIndexRoute,
+  ViewNodesCpxIndexRoute: ViewNodesCpxIndexRoute,
+  ViewRenderDocumentIndexRoute: ViewRenderDocumentIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,13 +1,13 @@
 import { useRef, type FC, type RefObject } from "react";
 import { useDrag, useDrop, DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useCodeStore } from "../../stores/dqm/dqm.store.mts";
 import { Button, Card, Flex, Typography } from "antd";
 import {
   DragOutlined,
   EyeInvisibleOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
+import { useAstViewStore } from "../../stores/ast-view/ast-view.store.mts";
 
 export interface DraggableRowProps {
   type: string;
@@ -123,11 +123,8 @@ const DraggableRow: FC<DraggableRowProps> = ({
 };
 
 interface EditableReorderListProps {
-  list: "astDragProps" | "astLineageProps" | "astNoDragProps";
-  method:
-    | "setDragFeatureList"
-    | "setLineageFeatureList"
-    | "setNoDragFeatureList";
+  list: "props" | "children" | "stable";
+  method: "setProps" | "setChildren" | "setStable";
   allowDragging: boolean;
 }
 
@@ -146,12 +143,14 @@ export const ReorderList: FC<EditableReorderListProps> = ({
   method,
   allowDragging,
 }) => {
-  const code = useCodeStore();
+  const code = useAstViewStore();
 
   const move = (from: number, to: number) => {
     const newItems = code[list];
     const [removed] = newItems.splice(from, 1);
+    // @ts-ignore
     newItems.splice(to, 0, removed);
+    // @ts-ignore
     code[method](newItems);
   };
 
@@ -162,6 +161,7 @@ export const ReorderList: FC<EditableReorderListProps> = ({
         visible: !newItems[index].visible,
         id: newItems[index].id,
       };
+      // @ts-ignore
       code[method](newItems);
     };
   };
