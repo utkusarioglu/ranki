@@ -1,14 +1,14 @@
-import { useCodeStore } from "../../stores/dqm/dqm.store.mts";
+import { useDqmStore } from "../../stores/dqm/dqm.store.mts";
 import { Button, Flex } from "antd";
 import { DqmInputCard } from "./DqmInputCard";
 import style from "./DqmInputOptions.module.css";
 import { SaveOutlined } from "@ant-design/icons";
-import { TemplatesDrawer } from "./TemplatesDrawer";
+import { MenuDrawer } from "./MenuDrawer";
 import { useUiStore } from "../../stores/ui/ui.store.mts";
 import { BlockySwitch } from "../blocky-switch/BlockySwitch";
 
 export const DqmInputOptions = () => {
-  const code = useCodeStore();
+  const code = useDqmStore();
   const ui = useUiStore();
 
   return (
@@ -59,7 +59,7 @@ export const DqmInputOptions = () => {
       <Button style={{ width: "100%" }} onClick={() => code.pushNewTheater()}>
         Add New Theater
       </Button>
-      <TemplatesDrawer />
+      <MenuDrawer />
     </div>
   );
 };

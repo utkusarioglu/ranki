@@ -6,11 +6,6 @@
   margin-block: var(--ant-padding);
 }
 
-.title {
-  padding: 0;
-  margin: 0;
-}
-
 .container {
   /* ANKI */
   & :global(.ant-drawer-header) {

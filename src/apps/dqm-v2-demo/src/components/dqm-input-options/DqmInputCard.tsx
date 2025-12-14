@@ -1,4 +1,4 @@
-import { useCodeStore } from "../../stores/dqm/dqm.store.mts";
+import { useDqmStore } from "../../stores/dqm/dqm.store.mts";
 import style from "./DqmInputCard.module.css";
 import { type FC } from "react";
 import { Button, Flex, Input } from "antd";
@@ -9,8 +9,8 @@ interface DqmInputProps {
   index: number;
 }
 export const DqmInputCard: FC<DqmInputProps> = ({ index }) => {
-  const { dqm, theater } = useCodeStore((s) => s.inputs[index]);
-  const code = useCodeStore();
+  const { dqm, theater } = useDqmStore((s) => s.inputs[index]);
+  const code = useDqmStore();
   const ui = useUiStore();
 
   return (

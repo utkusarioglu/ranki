@@ -1,0 +1,41 @@
+.container {
+  overflow: hidden;
+  margin-bottom: var(--ant-padding);
+  border-color: var(--ant-color-bg-base);
+  /* cursor: pointer; */
+  transition-property: border-color;
+  transition-duration: 0.5s;
+
+  /* &:hover {
+    border-color: var(--ant-color-primary);
+  } */
+
+  /* padding: var(--ant-padding); */
+  & > :global(.ant-card-body) {
+    padding: var(--ant-padding) 0;
+  }
+
+  &.active {
+    border-color: var(--ant-color-primary);
+  }
+}
+
+.title {
+  padding: 0 var(--ant-padding);
+  margin: 0;
+}
+
+.description {
+  padding: 0 var(--ant-padding);
+}
+
+.sample {
+  margin-block: var(--ant-padding) 0;
+}
+
+.action {
+  padding-top: var(--ant-padding);
+  padding-inline: var(--ant-padding);
+  display: flex;
+  gap: var(--ant-padding);
+}

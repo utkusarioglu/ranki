@@ -2,10 +2,10 @@ import { Outlet } from "@tanstack/react-router";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "../error-fallback/ErrorFallback";
 import { Scroller } from "../scroller/Scroller";
-import { useCodeStore } from "../../stores/dqm/dqm.store.mts";
+import { useDqmStore } from "../../stores/dqm/dqm.store.mts";
 
 export const ContentContainer = () => {
-  const code = useCodeStore();
+  const code = useDqmStore();
   return (
     <ErrorBoundary
       FallbackComponent={ErrorFallback}

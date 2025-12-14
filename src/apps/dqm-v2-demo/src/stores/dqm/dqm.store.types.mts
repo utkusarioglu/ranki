@@ -1,65 +1,26 @@
 import type {
   DqmParseTheater,
   DqmParseInputString,
-  DqmRecord,
   DqmParseInputStructured,
-  DqmParseOutput,
 } from "@dqm/package-dqm-api-v2";
+import type { ArrangementTemplateGroup } from "../../components/dqm-input-options/templates/arrangement-template/ArrangementTemplate.types.mts";
+import type { SingleTemplateGroup } from "../../components/dqm-input-options/templates/single-template/SingleTemplate.types.mts";
+import type { ParseResult } from "./dqm.utils.types.mts";
 
-export interface TemplateGroup {
-  label: string;
-  description: string;
-  group: string;
-}
+export type DqmStore = DqmStoreState & DqmStoreActions;
 
-export interface TemplateTextFetched {
-  label: string;
-  description: string;
-  raw: string;
-}
-
-export type TemplateTextProcessed = TemplateTextFetched & {
-  id: string;
-};
-
-export interface ArrangementTemplateRef {
-  theater: string;
-  group: string;
-  index: number;
-}
-
-export interface Arrangement {
-  label: string;
-  description: string;
-  templates: ArrangementTemplateRef[];
-}
-
-export type CodeStore = CodeStoreState & CodeStoreActions;
-
-export interface CodeStoreState {
+export interface DqmStoreState {
   deferParsing: boolean;
-  templates: TemplateGroupWithList[];
-  arrangements: Arrangement[];
+  singleTemplates: SingleTemplateGroup[];
+  arrangementTemplates: ArrangementTemplateGroup[];
 
   parsed: ParseResult;
   autoUpdate: boolean;
   inputs: DqmParseInputStructured;
 }
 
-interface SanitizeResultSuccess {
-  state: "success";
-  data: DqmParseOutput;
-}
-
-interface ParseResultFail {
-  state: "fail";
-  error: string;
-}
-
-export type ParseResult = SanitizeResultSuccess | ParseResultFail;
-
-export interface CodeStoreActions {
-  setAllInputs: (inputs: DqmRecord) => void;
+export interface DqmStoreActions {
+  setAllInputs: (inputs: DqmParseInputStructured) => void;
   setAutoUpdate: (update: boolean) => void;
 
   setTheaterDqmByIndex: (index: number, dqm: DqmParseInputString) => void;
@@ -68,12 +29,10 @@ export interface CodeStoreActions {
   pushNewTheater: () => void;
   removeTheaterByIndex: (index: number) => void;
 
-  setTemplates: (lists: TemplateGroupWithList[]) => void;
-  setArrangements: (list: Arrangement[]) => void;
+  setSingleTemplates: (lists: SingleTemplateGroup[]) => void;
+  setArrangementTemplates: (list: ArrangementTemplateGroup[]) => void;
   parseInput: () => void;
   setDeferParsing: (defer: boolean) => void;
 }
 
-export type TemplateGroupWithList = TemplateGroup & {
-  list: TemplateTextProcessed[];
-};
+export type CreateDqmParseNeeded = "autoUpdate" | "parsed" | "inputs";

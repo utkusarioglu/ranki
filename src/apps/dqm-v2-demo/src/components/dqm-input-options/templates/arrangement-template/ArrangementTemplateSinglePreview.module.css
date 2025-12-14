@@ -1,0 +1,5 @@
+.title {
+  color: var(--ant-text-secondary);
+  margin: var(--ant-padding-sm) 0;
+  padding: 0 var(--ant-padding);
+}

@@ -1,67 +1,18 @@
-import type {
-  IdUnique,
-  CreatorName,
-  AstSourceString,
-  AstSourceView,
-  IAstNodeKind,
-  CreationMethod,
-  CounterStat,
-  DqmParseTheater,
-  DqmParseOutput,
-} from "@dqm/package-dqm-api-v2";
+import type { DqmParseOutput } from "@dqm/package-dqm-api-v2";
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
-import type { SanitizedNodeView } from "./ast-view.store.types.mts";
-import type { ParseResult } from "../dqm/dqm.store.types.mts";
+import type { SanitizedNodeView } from "../ast-view.store.types.mts";
+import type { ParseResult } from "../../dqm/dqm.utils.types.mts";
+import type {
+  SanitizedNodeViewPreferences,
+  SanitizedNodePartial,
+  SanitizedNodeStable,
+  SanitizedNodeChildren,
+  SanitizedNodeProps,
+  SanitizedAst,
+  SanitizeResult,
+} from "./sanitized-ast-node.types.mts";
 
-export type SanitizedAst = {
-  theater: DqmParseTheater;
-  sanitized: SanitizedNodePartial;
-};
-
-export type SanitizedNodePartial = {
-  key: string;
-  fields: {
-    props: Partial<SanitizedNodeProps>;
-    children: Partial<SanitizedNodeChildren>;
-    stable: Partial<SanitizedNodeStable>;
-  };
-};
-
-export interface SanitizedNodeProps {
-  creator: CreatorName;
-  idList: string;
-  kind: IAstNodeKind;
-  constructorName: string;
-  cpxUnique: IdUnique;
-  childIndex: CounterStat;
-  blockDepth: CounterStat;
-  inlineDepth: CounterStat;
-  chainList: string;
-  childCount: number;
-  ignoredCount: number;
-  subtreeCount: number;
-  meaning: string | undefined;
-  creationMethod: CreationMethod;
-}
-
-export interface SanitizedNodeChildren {
-  subtreeNodes: SanitizedNodePartial[];
-  childrenNodes: SanitizedNodePartial[];
-  tokenNodes: SanitizedNodePartial[];
-  spaceNodes: SanitizedNodePartial[];
-}
-
-export interface SanitizedNodeStable {
-  source: AstSourceString | AstSourceView<any>;
-}
-
-interface SanitizedNodeViewPreferences {
-  props: (keyof SanitizedNodeProps)[];
-  children: (keyof SanitizedNodeChildren)[];
-  stable: (keyof SanitizedNodeStable)[];
-}
-
-export class SanitizedAstNode {
+class SanitizedAstNode {
   private node: IAstNode;
   private visible: SanitizedNodeViewPreferences;
 
@@ -266,20 +217,3 @@ function filterIds(all: SanitizedNodeView): SanitizedNodeViewPreferences {
     }),
   );
 }
-
-export interface SuccessfulSanitize {
-  // parsed: DqmParseOutput;
-  sanitized: SanitizedAst[];
-}
-
-interface SanitizeResultSuccess {
-  state: "success";
-  data: SuccessfulSanitize;
-}
-
-interface SanitizeResultFail {
-  state: "fail";
-  error: string;
-}
-
-export type SanitizeResult = SanitizeResultSuccess | SanitizeResultFail;

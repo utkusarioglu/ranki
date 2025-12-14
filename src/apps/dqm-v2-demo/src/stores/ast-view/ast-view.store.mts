@@ -4,7 +4,7 @@ import type {
   SanitizedNodeChildren,
   SanitizedNodeProps,
   SanitizedNodeStable,
-} from "./sanitized-ast-node.mjs";
+} from "./utils/sanitized-ast-node.types.mts";
 
 export const useAstViewStore = create<AstViewStore>((set) => ({
   props: wrapVisible<SanitizedNodeProps>(

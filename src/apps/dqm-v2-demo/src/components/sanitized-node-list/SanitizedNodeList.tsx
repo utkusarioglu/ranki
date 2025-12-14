@@ -1,14 +1,14 @@
-import { useCodeStore } from "../../stores/dqm/dqm.store.mts";
+import { useDqmStore } from "../../stores/dqm/dqm.store.mts";
 import { NodeDisplay } from "../node-display/NodeDisplay";
 import { Typography } from "antd";
 import style from "./SanitizedNodeList.module.css";
 import { Scroller } from "../scroller/Scroller";
 import { useErrorBoundary } from "react-error-boundary";
 import { useAstViewStore } from "../../stores/ast-view/ast-view.store.mts";
-import { createSanitized } from "../../stores/ast-view/sanitized-ast-node.mts";
+import { createSanitized } from "../../stores/ast-view/utils/sanitized-ast-node.mts";
 
 function useSanitizedAst() {
-  const parsed = useCodeStore((s) => s.parsed);
+  const parsed = useDqmStore((s) => s.parsed);
   const props = useAstViewStore((s) => s.props);
   const children = useAstViewStore((s) => s.children);
   const stable = useAstViewStore((s) => s.stable);

@@ -1,15 +1,15 @@
 import { Button, Card, Typography } from "antd";
-import type { WithIndex } from "./TemplatesDrawer";
+import type { WithIndexSingleTemplate } from "./SingleTemplate.types.mts";
 import type { FC } from "react";
-import style from "./TemplateEntry.module.css";
-import { PreCode } from "../pre-code/PreCode";
-import type { TemplateTextProcessed } from "../../stores/dqm/dqm.store.types.mts";
+import style from "./SingleTemplateEntry.module.css";
+import { PreCode } from "../../../pre-code/PreCode";
+import type { SingleTemplate } from "./SingleTemplate.types.mts";
 
-type TemplateEntryProps = WithIndex & {
-  entry: TemplateTextProcessed;
+type SingleTemplateEntryProps = WithIndexSingleTemplate & {
+  entry: SingleTemplate;
 };
 
-export const TemplateEntry: FC<TemplateEntryProps> = ({
+export const SingleTemplateEntry: FC<SingleTemplateEntryProps> = ({
   entry,
   useOnClick,
   previewOnClick,

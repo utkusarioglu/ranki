@@ -4,7 +4,7 @@ import style from "./NodeDisplay.module.css";
 import { PreCode } from "../pre-code/PreCode";
 import { BlockySwitch } from "../blocky-switch/BlockySwitch";
 import { Flex, Typography } from "antd";
-import type { SanitizedNodePartial } from "../../stores/ast-view/sanitized-ast-node.mts";
+import type { SanitizedNodePartial } from "../../stores/ast-view/utils/sanitized-ast-node.types.mts";
 import type { IdUnique } from "@dqm/package-dqm-api-v2";
 
 interface NodeDisplayProps {

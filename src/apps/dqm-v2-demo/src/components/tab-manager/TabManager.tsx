@@ -12,15 +12,7 @@ import { DqmInputOptions } from "../dqm-input-options/DqmInputOptions";
 import { NodeOptions } from "../node-options/NodeOptions";
 import { AstSanitizerOptions } from "../ast-sanitizer-options/AstSanitizerOptions";
 import { type FC, type PropsWithChildren, type ReactNode } from "react";
-import {
-  useChildMatches,
-  useLocation,
-  useMatch,
-  useMatches,
-  useMatchRoute,
-  useNavigate,
-  useRouteContext,
-} from "@tanstack/react-router";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 import { RenderSettings } from "../render-settings/RenderSettings";
 
 type Level = {

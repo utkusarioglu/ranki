@@ -1,20 +1,25 @@
 import type { FC } from "react";
-import type { WithIndex } from "./TemplatesDrawer";
 import { Typography } from "antd";
-import { TemplateEntry } from "./TemplateEntry";
-import style from "./TemplateGroup.module.css";
-import type { TemplateGroupWithList } from "../../stores/dqm/dqm.store.types.mts";
+import style from "./ArrangementTemplateGroup.module.css";
+import { ArrangementTemplateEntry } from "./ArrangementTemplateEntry";
+import type {
+  ArrangementTemplateGroup as ArrangementTemplateGroupType,
+  WithIndexArrangementTemplates,
+} from "./ArrangementTemplate.types.mts";
+import type { SingleTemplateGroup } from "../single-template/SingleTemplate.types.mts";
 
-type TemplateGroupProps = WithIndex & {
-  group: TemplateGroupWithList;
+type TemplateGroupProps = WithIndexArrangementTemplates & {
+  group: ArrangementTemplateGroupType;
+  singles: SingleTemplateGroup[];
 };
 
-export const TemplateGroup: FC<TemplateGroupProps> = ({
+export const ArrangementTemplateGroup: FC<TemplateGroupProps> = ({
   group,
   index,
   useOnClick,
   previewOnClick,
   active,
+  singles,
 }) => {
   return (
     <div className={style.container}>
@@ -26,7 +31,8 @@ export const TemplateGroup: FC<TemplateGroupProps> = ({
       </hgroup>
       <div>
         {group.list.map((e) => (
-          <TemplateEntry
+          <ArrangementTemplateEntry
+            singles={singles}
             active={active}
             key={e.label}
             entry={e}
