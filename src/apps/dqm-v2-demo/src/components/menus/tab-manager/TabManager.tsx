@@ -7,13 +7,11 @@ import {
   InboxOutlined,
   ShareAltOutlined,
 } from "@ant-design/icons";
-import { ViewOptions } from "../../view-options/ViewOptions";
 import { DqmInputOptions } from "../dqm-input-options/DqmInputOptions";
-import { NodeOptions } from "../../node-options/NodeOptions";
-import { AstSanitizerOptions } from "../../ast-sanitizer-options/AstSanitizerOptions";
+import { AstSanitizerOptions } from "../ast-sanitizer-options/AstSanitizerOptions";
 import { type FC, type PropsWithChildren, type ReactNode } from "react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { RenderSettings } from "../../render-settings/RenderSettings";
+import { RenderSettings } from "../render-settings/RenderSettings";
 
 type Level = {
   key: string;
@@ -47,7 +45,7 @@ const levels: Level[] = [
   {
     key: "view",
     label: "View",
-    TabChild: <ViewOptions />,
+    // TabChild: <ViewOptions />,
     icon: <FileTextOutlined />,
     childLevels: [
       {
@@ -66,7 +64,7 @@ const levels: Level[] = [
       {
         key: "nodes",
         label: "Node",
-        TabChild: <NodeOptions />,
+        // TabChild: <NodeOptions />,
         icon: <BoxPlotOutlined />,
         childLevels: [
           {

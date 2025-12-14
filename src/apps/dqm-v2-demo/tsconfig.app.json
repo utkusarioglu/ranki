@@ -26,7 +26,10 @@
     "paths": {
       "_stores/*": ["./src/stores/*"],
       "_views/*": ["./src/components/views/*"],
-      "_styles/*": ["./src/styles/*"]
+      "_styles/*": ["./src/styles/*"],
+      "_displays/*": ["./src/components/displays/*"],
+      "_menus/*": ["./src/components/menus/*"],
+      "_layouts/*": ["./src/components/layouts/*"]
     }
   },
   "include": ["src"]

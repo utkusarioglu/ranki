@@ -8,6 +8,7 @@ import style from "./DqmInputCard.module.css";
 interface DqmInputProps {
   index: number;
 }
+
 export const DqmInputCard: FC<DqmInputProps> = ({ index }) => {
   const { dqm, theater } = useDqmStore((s) => s.inputs[index]);
   const code = useDqmStore();

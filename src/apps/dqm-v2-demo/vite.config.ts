@@ -13,6 +13,9 @@ export default defineConfig({
       _stores: path.join(repoRoot, "src/stores"),
       _views: path.join(repoRoot, "src/components/views"),
       _styles: path.join(repoRoot, "src/styles"),
+      _displays: path.join(repoRoot, "src/components/displays"),
+      _menus: path.join(repoRoot, "src/components/menus"),
+      _layouts: path.join(repoRoot, "src/components/layouts"),
     },
   },
   plugins: [

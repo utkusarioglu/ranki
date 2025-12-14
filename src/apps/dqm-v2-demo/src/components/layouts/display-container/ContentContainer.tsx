@@ -4,7 +4,7 @@ import { ErrorFallback } from "_views/error-fallback/ErrorFallback";
 import { Scroller } from "_views/scroller/Scroller";
 import { useDqmStore } from "_stores/dqm/dqm.store.mts";
 
-export const ContentContainer = () => {
+export const DisplayContainer = () => {
   const code = useDqmStore();
   return (
     <ErrorBoundary

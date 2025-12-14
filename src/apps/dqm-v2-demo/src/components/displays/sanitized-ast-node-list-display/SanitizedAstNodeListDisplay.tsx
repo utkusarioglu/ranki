@@ -3,9 +3,9 @@ import { createSanitized } from "_stores/ast-view/utils/sanitized-ast-node.mts";
 import { useDqmStore } from "_stores/dqm/dqm.store.mts";
 import { Typography } from "antd";
 import { useErrorBoundary } from "react-error-boundary";
-import { NodeDisplay } from "../node-display/NodeDisplay";
-import { Scroller } from "../views/scroller/Scroller";
-import style from "./SanitizedNodeList.module.css";
+import { AstNodeDisplay } from "./ast-node-display/NodeDisplay";
+import { Scroller } from "_views/scroller/Scroller";
+import style from "./SanitizedAstNodeListDisplay.module.css";
 
 function useSanitizedAst() {
   const parsed = useDqmStore((s) => s.parsed);
@@ -51,7 +51,7 @@ export const SanitizedNodeList = () => {
             {theater}
           </Typography.Title>
           <Scroller className="padding-inline" direction="horizontal">
-            <NodeDisplay
+            <AstNodeDisplay
               parentUnique={undefined}
               node={sanitized}
               path=""

@@ -1,10 +1,10 @@
 import { useUiStore } from "_stores/ui/ui.store.mts";
 import { App, ConfigProvider, Layout, theme } from "antd";
 import style from "./Application.module.css";
-import { WideLayout } from "../wide-layout/WideLayout";
-import { NarrowLayout } from "../narrow-layout/NarrowLayout";
+import { WideLayout } from "_layouts/wide-layout/WideLayout";
+import { NarrowLayout } from "_layouts/narrow-layout/NarrowLayout";
 import { ErrorBoundary } from "react-error-boundary";
-import { ErrorFallback } from "../views/error-fallback/ErrorFallback";
+import { ErrorFallback } from "_views/error-fallback/ErrorFallback";
 
 function Application() {
   return (

@@ -1,7 +1,7 @@
 import {
   useArrangementTemplateFetch,
   useSingleTemplateFetch,
-} from "../../templates/hooks.mts";
+} from "../hooks.mts";
 import { DrawerTitleRow } from "_views/drawer-title-row/DrawerTitleRow";
 import { ArrangementTemplateGroup } from "./ArrangementTemplateGroup";
 import { useDqmStore } from "_stores/dqm/dqm.store.mts";

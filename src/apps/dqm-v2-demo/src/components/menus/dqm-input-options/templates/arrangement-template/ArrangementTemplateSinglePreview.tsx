@@ -3,7 +3,7 @@ import type { SingleTemplate } from "../single-template/SingleTemplate.types.mts
 import type { ArrangementTemplateSingleRef } from "./ArrangementTemplate.types.mts";
 import style from "./ArrangementTemplateSinglePreview.module.css";
 import { Typography } from "antd";
-import { PreCode } from "../../../../views/pre-code/PreCode";
+import { PreCode } from "_views/pre-code/PreCode";
 
 interface ArrangementTemplateSinglePreviewProps {
   singleRef: ArrangementTemplateSingleRef;

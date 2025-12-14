@@ -7,7 +7,7 @@ import { Flex, Typography } from "antd";
 import type { SanitizedNodePartial } from "_stores/ast-view/utils/sanitized-ast-node.types.mts";
 import type { IdUnique } from "@dqm/package-dqm-api-v2";
 
-interface NodeDisplayProps {
+interface AstNodeDisplayProps {
   node: SanitizedNodePartial;
   path: string;
   depth: number;
@@ -17,7 +17,7 @@ interface NodeDisplayProps {
 
 const DEPTH_STEP = 30;
 
-export const NodeDisplay: FC<NodeDisplayProps> = ({
+export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
   node: {
     key,
     fields: { props, children, stable },
@@ -98,7 +98,7 @@ export const NodeDisplay: FC<NodeDisplayProps> = ({
           className={style[childType]}
         >
           {nodes.map((n, i) => (
-            <NodeDisplay
+            <AstNodeDisplay
               parentUnique={props.cpxUnique}
               key={key + n.key + i}
               node={n}

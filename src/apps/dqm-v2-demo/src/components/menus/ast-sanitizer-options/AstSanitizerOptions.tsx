@@ -1,5 +1,5 @@
 import { Typography } from "antd";
-import { ReorderList } from "../reorder-list/ReorderList";
+import { ReorderList } from "../../reorder-list/ReorderList";
 
 export const AstSanitizerOptions = () => {
   return (
