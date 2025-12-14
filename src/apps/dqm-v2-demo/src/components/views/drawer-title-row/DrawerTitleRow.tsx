@@ -2,8 +2,8 @@ import { CloseOutlined } from "@ant-design/icons";
 import { Button, Typography } from "antd";
 import { type FC, type PropsWithChildren } from "react";
 import style from "./DrawerTitleRow.module.css";
-import { useUiStore } from "../../../stores/ui/ui.store.mts";
-import { TitleRow } from "../../title-row/TitleRow";
+import { useUiStore } from "_stores/ui/ui.store.mts";
+import { TitleRow } from "_views/title-row/TitleRow";
 
 export const DrawerTitleRow: FC<PropsWithChildren> = ({ children }) => {
   const ui = useUiStore();

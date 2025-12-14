@@ -1,8 +1,8 @@
+import { useUiStore } from "_stores/ui/ui.store.mts";
+import { type TemplateDrawerModeOpen } from "_stores/ui/ui.store.types.mts";
+import { Scroller } from "_views/scroller/Scroller";
 import { Drawer } from "antd";
 import { type FC } from "react";
-import { useUiStore } from "../../stores/ui/ui.store.mts";
-import { type TemplateDrawerModeOpen } from "../../stores/ui/ui.store.types.mts";
-import { Scroller } from "../scroller/Scroller";
 import style from "./MenuDrawer.module.css";
 import { ArrangementTemplates } from "./templates/arrangement-template/ArrangementTemplates";
 import { SingleTemplates } from "./templates/single-template/SingleTemplates";

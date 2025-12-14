@@ -2,10 +2,10 @@ import {
   useArrangementTemplateFetch,
   useSingleTemplateFetch,
 } from "../../templates/hooks.mts";
-import { DrawerTitleRow } from "../../drawer-title-row/DrawerTitleRow";
+import { DrawerTitleRow } from "_views/drawer-title-row/DrawerTitleRow";
 import { ArrangementTemplateGroup } from "./ArrangementTemplateGroup";
-import { useDqmStore } from "../../../../stores/dqm/dqm.store.mts";
-import { useUiStore } from "../../../../stores/ui/ui.store.mts";
+import { useDqmStore } from "_stores/dqm/dqm.store.mts";
+import { useUiStore } from "_stores/ui/ui.store.mts";
 import type { FC } from "react";
 import type { MenuDrawerSwitchProps } from "../../MenuDrawer";
 

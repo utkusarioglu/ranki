@@ -2,7 +2,7 @@ import { Button, Card, Typography } from "antd";
 import type { WithIndexSingleTemplate } from "./SingleTemplate.types.mts";
 import type { FC } from "react";
 import style from "./SingleTemplateEntry.module.css";
-import { PreCode } from "../../../pre-code/PreCode";
+import { PreCode } from "_views/pre-code/PreCode";
 import type { SingleTemplate } from "./SingleTemplate.types.mts";
 
 type SingleTemplateEntryProps = WithIndexSingleTemplate & {

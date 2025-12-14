@@ -1,5 +1,5 @@
 import { Button, Typography } from "antd";
-import { useUiStore } from "../../stores/ui/ui.store.mts";
+import { useUiStore } from "_stores/ui/ui.store.mts";
 
 export const RenderSettings = () => {
   const ui = useUiStore();

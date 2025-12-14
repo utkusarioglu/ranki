@@ -2,8 +2,19 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import babel from "@rollup/plugin-babel";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import url from "node:url";
+import path from "node:path";
+
+const repoRoot = path.dirname(url.fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      _stores: path.join(repoRoot, "src/stores"),
+      _views: path.join(repoRoot, "src/components/views"),
+      _styles: path.join(repoRoot, "src/styles"),
+    },
+  },
   plugins: [
     babel({
       babelHelpers: "bundled",
@@ -25,12 +36,4 @@ export default defineConfig({
     host: true,
     port: 5000,
   },
-  // build: {
-  //   rollupOptions: {
-  //     // output: {
-  //     //   format: "esm",
-  //     // },
-  //     plugins: [resolve({ extensions: [".mts", ".ts", ".js", ".mjs"] })],
-  //   },
-  // },
 });

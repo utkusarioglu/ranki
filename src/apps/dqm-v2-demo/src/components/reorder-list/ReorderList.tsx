@@ -7,7 +7,7 @@ import {
   EyeInvisibleOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
-import { useAstViewStore } from "../../stores/ast-view/ast-view.store.mts";
+import { useAstViewStore } from "_stores/ast-view/ast-view.store.mts";
 
 export interface DraggableRowProps {
   type: string;

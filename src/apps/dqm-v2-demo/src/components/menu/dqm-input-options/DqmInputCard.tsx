@@ -1,9 +1,9 @@
-import { useDqmStore } from "../../stores/dqm/dqm.store.mts";
-import style from "./DqmInputCard.module.css";
-import { type FC } from "react";
-import { Button, Flex, Input } from "antd";
 import { CloseOutlined, EyeFilled, SaveOutlined } from "@ant-design/icons";
-import { useUiStore } from "../../stores/ui/ui.store.mts";
+import { useDqmStore } from "_stores/dqm/dqm.store.mts";
+import { useUiStore } from "_stores/ui/ui.store.mts";
+import { Button, Flex, Input } from "antd";
+import { type FC } from "react";
+import style from "./DqmInputCard.module.css";
 
 interface DqmInputProps {
   index: number;

@@ -7,13 +7,13 @@ import {
   InboxOutlined,
   ShareAltOutlined,
 } from "@ant-design/icons";
-import { ViewOptions } from "../view-options/ViewOptions";
+import { ViewOptions } from "../../view-options/ViewOptions";
 import { DqmInputOptions } from "../dqm-input-options/DqmInputOptions";
-import { NodeOptions } from "../node-options/NodeOptions";
-import { AstSanitizerOptions } from "../ast-sanitizer-options/AstSanitizerOptions";
+import { NodeOptions } from "../../node-options/NodeOptions";
+import { AstSanitizerOptions } from "../../ast-sanitizer-options/AstSanitizerOptions";
 import { type FC, type PropsWithChildren, type ReactNode } from "react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { RenderSettings } from "../render-settings/RenderSettings";
+import { RenderSettings } from "../../render-settings/RenderSettings";
 
 type Level = {
   key: string;

@@ -22,7 +22,12 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "paths": {
+      "_stores/*": ["./src/stores/*"],
+      "_views/*": ["./src/components/views/*"],
+      "_styles/*": ["./src/styles/*"]
+    }
   },
   "include": ["src"]
 }

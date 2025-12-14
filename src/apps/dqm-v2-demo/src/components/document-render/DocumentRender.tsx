@@ -1,6 +1,6 @@
-import { useUiStore } from "../../stores/ui/ui.store.mts";
-import { AsyncIFrame } from "../iframe/IFrame";
-import type { ResourceProps } from "../iframe/IFrame";
+import { useUiStore } from "_stores/ui/ui.store.mts";
+import { AsyncIFrame } from "_views/iframe/IFrame";
+import type { ResourceProps } from "_views/iframe/IFrame";
 import style from "./DocumentRender.module.css";
 
 const bod = document.createElement("div");

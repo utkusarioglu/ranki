@@ -1,11 +1,11 @@
-import { useDqmStore } from "../../stores/dqm/dqm.store.mts";
-import { NodeDisplay } from "../node-display/NodeDisplay";
+import { useAstViewStore } from "_stores/ast-view/ast-view.store.mts";
+import { createSanitized } from "_stores/ast-view/utils/sanitized-ast-node.mts";
+import { useDqmStore } from "_stores/dqm/dqm.store.mts";
 import { Typography } from "antd";
-import style from "./SanitizedNodeList.module.css";
-import { Scroller } from "../scroller/Scroller";
 import { useErrorBoundary } from "react-error-boundary";
-import { useAstViewStore } from "../../stores/ast-view/ast-view.store.mts";
-import { createSanitized } from "../../stores/ast-view/utils/sanitized-ast-node.mts";
+import { NodeDisplay } from "../node-display/NodeDisplay";
+import { Scroller } from "../views/scroller/Scroller";
+import style from "./SanitizedNodeList.module.css";
 
 function useSanitizedAst() {
   const parsed = useDqmStore((s) => s.parsed);

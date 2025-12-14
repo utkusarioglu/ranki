@@ -4,14 +4,13 @@ import {
   InfoCircleOutlined,
   MenuOutlined,
 } from "@ant-design/icons";
-import { useUiStore } from "../../stores/ui/ui.store.mts";
-import { AppTitle } from "../app-title/AppTitle";
-import { TitleRow } from "../title-row/TitleRow";
+import { useUiStore } from "_stores/ui/ui.store.mts";
+import { AppTitle } from "_views/app-title/AppTitle";
+import { TitleRow } from "../views/title-row/TitleRow";
 import { useNavigate } from "@tanstack/react-router";
 
 export const TitleBarWide = () => {
   const ui = useUiStore();
-  // const { token } = theme.useToken();
   const navigate = useNavigate();
   return (
     <TitleRow>
@@ -23,18 +22,8 @@ export const TitleBarWide = () => {
         </>
       )}
       <AppTitle />
-      {/* <Typography.Title style={{ margin: 0 }} level={3}>
-        Dqm<span style={{ color: token.colorTextSecondary }}>v2</span>
-      </Typography.Title> */}
       <div>
-        <Button
-          onClick={() =>
-            navigate({
-              to: "/info",
-            })
-          }
-          variant="filled"
-        >
+        <Button onClick={() => navigate({ to: "/info" })} variant="filled">
           <InfoCircleOutlined />
         </Button>
         {ui.isMenuOpen ? (

@@ -1,11 +1,11 @@
-import { useDqmStore } from "../../stores/dqm/dqm.store.mts";
+import { SaveOutlined } from "@ant-design/icons";
+import { useDqmStore } from "_stores/dqm/dqm.store.mts";
+import { useUiStore } from "_stores/ui/ui.store.mts";
+import { BlockySwitch } from "_views/blocky-switch/BlockySwitch";
 import { Button, Flex } from "antd";
 import { DqmInputCard } from "./DqmInputCard";
 import style from "./DqmInputOptions.module.css";
-import { SaveOutlined } from "@ant-design/icons";
 import { MenuDrawer } from "./MenuDrawer";
-import { useUiStore } from "../../stores/ui/ui.store.mts";
-import { BlockySwitch } from "../blocky-switch/BlockySwitch";
 
 export const DqmInputOptions = () => {
   const code = useDqmStore();

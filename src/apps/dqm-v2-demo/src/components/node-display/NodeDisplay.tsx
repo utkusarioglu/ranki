@@ -1,10 +1,10 @@
 import { useState, type FC } from "react";
-import { YamlDisplay } from "../yaml-display/YamlDisplay";
+import { YamlDisplay } from "_views/yaml-display/YamlDisplay";
 import style from "./NodeDisplay.module.css";
-import { PreCode } from "../pre-code/PreCode";
-import { BlockySwitch } from "../blocky-switch/BlockySwitch";
+import { PreCode } from "_views/pre-code/PreCode";
+import { BlockySwitch } from "_views/blocky-switch/BlockySwitch";
 import { Flex, Typography } from "antd";
-import type { SanitizedNodePartial } from "../../stores/ast-view/utils/sanitized-ast-node.types.mts";
+import type { SanitizedNodePartial } from "_stores/ast-view/utils/sanitized-ast-node.types.mts";
 import type { IdUnique } from "@dqm/package-dqm-api-v2";
 
 interface NodeDisplayProps {

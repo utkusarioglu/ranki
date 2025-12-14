@@ -1,6 +1,6 @@
-import { ContentContainer } from "../content-container/ContentContainer";
+import { ContentContainer } from "../content/content-container/ContentContainer";
 import { NarrowDrawer } from "../narrow-drawer/NarrowDrawer";
-import { Scroller } from "../scroller/Scroller";
+import { Scroller } from "../views/scroller/Scroller";
 import { TitleBarNarrow } from "../title-bar/TitleBar";
 import style from "./NarrowLayout.module.css";
 

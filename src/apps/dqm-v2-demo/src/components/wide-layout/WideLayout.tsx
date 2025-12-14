@@ -1,10 +1,10 @@
 import { Splitter } from "antd";
-import { useUiStore } from "../../stores/ui/ui.store.mts";
+import { useUiStore } from "_stores/ui/ui.store.mts";
 import style from "./WideLayout.module.css";
-import { Scroller } from "../scroller/Scroller";
+import { Scroller } from "../views/scroller/Scroller";
 import { TitleBarWide } from "../title-bar/TitleBar";
-import { ContentContainer } from "../content-container/ContentContainer";
-import { TabManager } from "../tab-manager/TabManager";
+import { ContentContainer } from "../content/content-container/ContentContainer";
+import { TabManager } from "../menu/tab-manager/TabManager";
 import { WIDE_LAYOUT_LEFT_MENU_WIDTH_MIN } from "../../stores/ui/ui.store.constants.mts";
 
 export const WideLayout = () => {

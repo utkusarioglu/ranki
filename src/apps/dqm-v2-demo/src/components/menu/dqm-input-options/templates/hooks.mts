@@ -1,6 +1,6 @@
 import yaml from "yaml";
 import { useEffect } from "react";
-import { useDqmStore } from "../../../stores/dqm/dqm.store.mts";
+import { useDqmStore } from "_stores/dqm/dqm.store.mts";
 import {
   SINGLE_TEMPLATES_FILES,
   ARRANGEMENT_TEMPLATES_FILES,

@@ -1,9 +1,8 @@
 import { Drawer } from "antd";
 import { TitleBarNarrow } from "../title-bar/TitleBar";
-import { useUiStore } from "../../stores/ui/ui.store.mts";
-// import { HighLevelTabs } from "../tab-manager/Controls";
+import { useUiStore } from "_stores/ui/ui.store.mts";
 import style from "./NarrowDrawer.module.css";
-import { TabManager } from "../tab-manager/TabManager";
+import { TabManager } from "../menu/tab-manager/TabManager";
 
 export const NarrowDrawer = () => {
   const ui = useUiStore();
@@ -17,7 +16,6 @@ export const NarrowDrawer = () => {
       open={ui.isMenuOpen}
     >
       <TabManager />
-      {/* <HighLevelTabs /> */}
     </Drawer>
   );
 };
