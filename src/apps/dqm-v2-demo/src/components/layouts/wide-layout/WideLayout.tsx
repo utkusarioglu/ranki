@@ -2,10 +2,11 @@ import { Splitter } from "antd";
 import { useUiStore } from "_stores/ui/ui.store.mts";
 import style from "./WideLayout.module.css";
 import { Scroller } from "_views/scroller/Scroller";
-import { TitleBarWide } from "../../title-bar/TitleBar";
+import { TitleBarWide } from "_layouts/title-bar/TitleBar";
 import { DisplayContainer } from "_layouts/display-container/ContentContainer";
 import { TabManager } from "_menus/tab-manager/TabManager";
 import { WIDE_LAYOUT_LEFT_MENU_WIDTH_MIN } from "_stores/ui/ui.store.constants.mts";
+import { MenuDrawer } from "_layouts/menu-drawer/MenuDrawer";
 
 export const WideLayout = () => {
   const ui = useUiStore();
@@ -38,6 +39,7 @@ export const WideMenu = () => {
     <Scroller direction="vertical">
       <TitleBarWide />
       <TabManager />
+      <MenuDrawer />
     </Scroller>
   );
 };

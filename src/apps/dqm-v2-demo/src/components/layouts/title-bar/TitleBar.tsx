@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import { useUiStore } from "_stores/ui/ui.store.mts";
 import { AppTitle } from "_views/app-title/AppTitle";
-import { TitleRow } from "../views/title-row/TitleRow";
+import { TitleRow } from "../../views/title-row/TitleRow";
 import { useNavigate } from "@tanstack/react-router";
 
 export const TitleBarWide = () => {

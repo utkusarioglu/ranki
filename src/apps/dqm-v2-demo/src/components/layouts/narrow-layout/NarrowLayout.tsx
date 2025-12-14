@@ -1,17 +1,21 @@
 import { DisplayContainer } from "_layouts/display-container/ContentContainer";
 import { NarrowDrawer } from "_layouts/narrow-drawer/NarrowDrawer";
 import { Scroller } from "_views/scroller/Scroller";
-import { TitleBarNarrow } from "../../title-bar/TitleBar";
+import { TitleBarNarrow } from "_layouts/title-bar/TitleBar";
 import style from "./NarrowLayout.module.css";
+import { MenuDrawer } from "_layouts/menu-drawer/MenuDrawer";
 
 export const NarrowLayout = () => {
   return (
-    <Scroller direction="vertical">
-      <div className={style.mobile}>
-        <TitleBarNarrow />
-        <DisplayContainer />
-        <NarrowDrawer />
-      </div>
-    </Scroller>
+    <>
+      <Scroller direction="vertical">
+        <div className={style.mobile}>
+          <TitleBarNarrow />
+          <DisplayContainer />
+          <NarrowDrawer />
+        </div>
+      </Scroller>
+      <MenuDrawer />
+    </>
   );
 };

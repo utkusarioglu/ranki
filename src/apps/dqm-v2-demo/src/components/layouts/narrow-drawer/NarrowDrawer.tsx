@@ -1,5 +1,5 @@
 import { Drawer } from "antd";
-import { TitleBarNarrow } from "../../title-bar/TitleBar";
+import { TitleBarNarrow } from "_layouts/title-bar/TitleBar";
 import { useUiStore } from "_stores/ui/ui.store.mts";
 import style from "./NarrowDrawer.module.css";
 import { TabManager } from "_menus/tab-manager/TabManager";

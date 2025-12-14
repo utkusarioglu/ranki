@@ -5,7 +5,7 @@ import injectedLight from "./IFrame.injected.light.css?raw";
 import resizeObserverTpl from "./IFrame.injected.resize.js.tpl?raw";
 import { Suspense, useEffect, useMemo, useRef, useState, type FC } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { ErrorFallback } from "../error-fallback/ErrorFallback";
+import { ErrorFallback } from "_views/error-fallback/ErrorFallback";
 import { pushScript, pushStyle } from "./utils.mts";
 
 function wrapPromise(promise: Promise<any>) {

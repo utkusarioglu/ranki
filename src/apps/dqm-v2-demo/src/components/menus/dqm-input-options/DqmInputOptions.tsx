@@ -5,7 +5,7 @@ import { BlockySwitch } from "_views/blocky-switch/BlockySwitch";
 import { Button, Flex } from "antd";
 import { DqmInputCard } from "./DqmInputCard";
 import style from "./DqmInputOptions.module.css";
-import { MenuDrawer } from "./MenuDrawer";
+// import { MenuDrawer } from "./MenuDrawer";
 
 export const DqmInputOptions = () => {
   const code = useDqmStore();
@@ -59,7 +59,7 @@ export const DqmInputOptions = () => {
       <Button style={{ width: "100%" }} onClick={() => code.pushNewTheater()}>
         Add New Theater
       </Button>
-      <MenuDrawer />
+      {/* <MenuDrawer /> */}
     </div>
   );
 };
