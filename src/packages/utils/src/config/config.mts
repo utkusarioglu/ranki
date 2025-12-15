@@ -1,7 +1,7 @@
-import type { ConfigEntryCode, IConfig } from "@dqm/package-dqm-api-v2";
 import { DqmError } from "../error/error.mjs";
 import type { LocalConfig, ConfigTypes, ObjectPath } from "./config.types.mjs";
 import { assertNotExists, assertExists } from "../assertions.mjs";
+import type { ConfigEntryCode, IConfig } from "@dqm/package-dqm-api-v2";
 
 export class Config implements IConfig {
   private configs: Record<ConfigEntryCode, LocalConfig> = {};

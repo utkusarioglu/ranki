@@ -3,7 +3,7 @@ import type {
   AstSourceString,
   IAstNode,
   AstSourceView,
-} from "@dqm/package-dqm-api-v2";
+} from "../../../packages/dqm-api-v2/types/export.mjs";
 
 export type SanitizedNode = Partial<{
   creator: CreatorName;

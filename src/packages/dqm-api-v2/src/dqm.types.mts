@@ -1,4 +1,4 @@
-import type { IAstNode } from "./export.types.mjs";
+import type { IAstNode } from "./nodes/ast/export.types.mjs";
 
 export type DqmParseInput = DqmParseInputString | DqmParseInputStructured;
 
@@ -10,7 +10,6 @@ export type DqmParseTheater = string & { type?: "DqmParseTheater" };
 
 export type DqmParseRole = string & { type?: "DqmParseRole" };
 
-// export type DqmParseOutput = Record<DqmParseTheater, IAstNode>;
 export interface DqmParseOutputTheater {
   theater: DqmParseTheater;
   ast: IAstNode;
@@ -21,7 +20,5 @@ export type DqmRecord = Record<DqmParseTheater, DqmParseInputString>;
 
 export interface CpxParseInput {
   dqm: DqmParseInputString;
-  // dqms: DqmRecord;
   theater: DqmParseTheater;
-  // role: DqmParseRole;
 }

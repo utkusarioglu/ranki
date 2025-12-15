@@ -4,7 +4,6 @@ import type {
   SpaceNodes,
   SubtreeNodes,
   ChildrenNodes,
-  IAstNodeContext,
   PushedNodeDefinition,
   IdUnique,
   CreatorName,
@@ -12,7 +11,13 @@ import type {
 import { assertArrayNotEmpty, DqmError } from "@dqm/package-utils";
 import type * as ohm from "ohm-js";
 import type { WorkedNodeDefinition } from "../ast-node.types.mjs";
+import { prepareContext } from "../ast.utils.mjs";
 
+/**
+ * @dev
+ * #1 It expects an IAstNode but the generic T doesn't extend IAstNode.
+ * Extending it would cause some type issues but it's doable in the future.
+ */
 export function syntaxCapability<T>(self: T) {
   const allNodes: IAstNode[] = [];
   const tokenNodes: TokenNodes = [];
@@ -20,11 +25,6 @@ export function syntaxCapability<T>(self: T) {
   const subtreeNodes: SubtreeNodes = [];
   const childrenNodes: ChildrenNodes = [];
   const ignoredNodes: ohm.Node[] = [];
-
-  function prepareContext(): IAstNodeContext {
-    // @ts-expect-error TS2322
-    return { ast: self };
-  }
 
   return {
     /**
@@ -59,7 +59,8 @@ export function syntaxCapability<T>(self: T) {
       if (nodeSet.some(([_, nodes]) => nodes.length !== nodeSet[0][1].length)) {
         throw new DqmError("INCONSISTENT_ZIP_MEMBER_HEIGHTS", { nodeSet });
       }
-      const context = prepareContext();
+      // @ts-expect-error #1
+      const context = prepareContext(self);
 
       [...Array.from(nodeSet[0][1].keys())].forEach((i) => {
         nodeSet.forEach(([relationship, nodes]) => {

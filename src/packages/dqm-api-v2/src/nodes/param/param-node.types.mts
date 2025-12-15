@@ -1,13 +1,12 @@
 import type {
-  AstSourceView,
-  CommonTransportsConstructorParams,
-  IAstNode,
-} from "../../../export.types.mjs";
-import type {
+  Alias,
+  Chain,
   ChannelParamSpecs,
+  IId,
   ParamDefaultValue,
-} from "../component.types.mjs";
-import type { Alias, Chain, IId } from "../id/id.types.mjs";
+} from "../../plugins/component/export.types.mjs";
+import type { AstSourceView, IAstNode } from "../ast/ast-node.types.mjs";
+import type { CommonTransportsConstructorParams } from "../common-transports.types.mjs";
 
 export type ParamChannel = string & { type?: "ParamChannel" }; // setting, config
 

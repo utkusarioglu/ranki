@@ -1,4 +1,4 @@
-import type { DqmConfig } from "@dqm/package-dqm-api-v2";
+import type { Alias, DqmConfig } from "@dqm/package-dqm-api-v2";
 
 export const DEFAULT_CONFIG: DqmConfig = {
   stage: "transform",
@@ -15,3 +15,5 @@ export const DEFAULT_CONFIG: DqmConfig = {
     config: {},
   },
 };
+
+export const POSITIONAL_PARAM: Alias = ["$POSITIONAL$"];

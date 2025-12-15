@@ -35,7 +35,9 @@ export function main(raw: string) {
       theater: n.theater,
       sanitized: sanitizeSingle(n.ast, FEATURES),
     }));
-    console.log(yaml.stringify(sanitized));
+    if (process.argv.includes("print")) {
+      console.log(yaml.stringify(sanitized));
+    }
   } catch (e) {
     console.log((e as any).toString());
   }

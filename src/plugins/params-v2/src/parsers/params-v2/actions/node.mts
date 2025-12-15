@@ -1,8 +1,16 @@
 import type { IAstNodeActionDict } from "@dqm/package-dqm-api-v2";
-import { assertExists, DqmError, grabAst } from "@dqm/package-utils";
+import {
+  assertExists,
+  DqmError,
+  grabAst,
+  grabConstant,
+  grabError,
+} from "@dqm/package-utils";
 
 export const node: IAstNodeActionDict = {
   paramsV2Key(paramsV2KeyWord1, tParamsV2SeparatorKeyLevel, paramsV2KeyWord2) {
+    grabError(this)({ code: "test", why: "because reasons" });
+
     return grabAst(this)
       .newAst(this)
       .pushNodes(["node", paramsV2KeyWord1])
@@ -103,7 +111,7 @@ export const node: IAstNodeActionDict = {
             {
               type: "boolean",
               raw: "true",
-              boolean: creator === "paramsV2FormatPositive",
+              value: creator === "paramsV2FormatPositive",
             },
           ]);
         }
@@ -115,7 +123,7 @@ export const node: IAstNodeActionDict = {
             .getSubtreeNodes()
             .map((v) => v.getLeafView());
           // .map((v) => v.getLeafView());
-          p.setValues(values);
+          p.setValues(values).setId(grabConstant(this, "POSITIONAL_PARAM"));
           // const key =
           //   paramsV2FormatNode.findSubtreeNodeByCreator("paramsV2Key");
           // console.log({ key: key?.getSourceString() });
@@ -179,69 +187,6 @@ export const node: IAstNodeActionDict = {
       .newAst(this)
       .pushNodes(["node", paramsV2ValueItem1])
       .pushNodes(["space", sBaseV2Clearance], ["node", paramsV2ValueItem2]);
-  },
-
-  paramsV2ValueItemPrimitive_number(n) {
-    return grabAst(this)
-      .newAst(this)
-      .pushIgnoredNodes(n)
-      .setLeafViewDecoder("number", (v) => ({
-        number: +v,
-      }));
-  },
-
-  paramsV2ValueItemPrimitive_lowercase(lower, sBaseV2Clearance, lowerPlus) {
-    return grabAst(this)
-      .newAst(this)
-      .pushIgnoredNodes(lower, sBaseV2Clearance, lowerPlus)
-      .setLeafViewDecoder("string", () => ({
-        subtype: "lowercase",
-      }));
-  },
-
-  paramsV2ValueItemPrimitive_uppercase(upper, sBaseV2Clearance, upperPlus) {
-    return grabAst(this)
-      .newAst(this)
-      .pushIgnoredNodes(upper, sBaseV2Clearance, upperPlus)
-      .setLeafViewDecoder("string", () => ({
-        subtype: "uppercase",
-      }));
-  },
-
-  paramsV2ValueItemPrimitive_chars(letter, sBaseV2Clearance, letterPlus) {
-    return grabAst(this)
-      .newAst(this)
-      .pushIgnoredNodes(letter, sBaseV2Clearance, letterPlus)
-      .setLeafViewDecoder("string", () => ({
-        subtype: "chars",
-      }));
-  },
-
-  paramsV2ValueItemPrimitive_mixed(letterDigit) {
-    return grabAst(this)
-      .newAst(this)
-      .pushIgnoredNodes(letterDigit)
-      .setLeafViewDecoder("string", () => ({
-        subtype: "mixed",
-      }));
-  },
-
-  paramsV2ValueItemPrimitive_true(n) {
-    return grabAst(this)
-      .newAst(this)
-      .pushIgnoredNodes(n)
-      .setLeafViewDecoder("boolean", () => ({
-        boolean: true,
-      }));
-  },
-
-  paramsV2ValueItemPrimitive_false(n) {
-    return grabAst(this)
-      .newAst(this)
-      .pushIgnoredNodes(n)
-      .setLeafViewDecoder("boolean", () => ({
-        boolean: false,
-      }));
   },
 
   paramsV2Operator(token) {

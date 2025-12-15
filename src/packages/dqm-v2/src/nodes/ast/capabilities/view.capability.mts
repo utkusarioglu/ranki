@@ -1,8 +1,8 @@
 import type {
-  AstSourceViewBase,
+  AstSourceViewAdditional,
   AstSourceString,
   AstSourceView,
-  AstSourceViewDecoder,
+  AstSourceViewDecoderCustom,
   IAstNode,
 } from "@dqm/package-dqm-api-v2";
 import { assertLeaf, DqmError } from "@dqm/package-utils";
@@ -11,12 +11,13 @@ import type { LeafDecoder } from "../ast-node.types.mjs";
 export function viewCapability<T extends Pick<IAstNode, "getKind">>(self: T) {
   let leafDecoder!: LeafDecoder;
 
-  function defaultLeafDecoder(): LeafDecoder {
+  function defaultLeafDecoder(): LeafDecoder<string> {
     return {
       type: "string",
-      decoder: (raw: string) => ({
+      decode: (raw: string) => ({
         type: "string",
         raw,
+        value: raw,
       }),
     };
   }
@@ -31,23 +32,24 @@ export function viewCapability<T extends Pick<IAstNode, "getKind">>(self: T) {
      * #1 I simply don't mind TS1270 here
      */
     // @dependsOn("kind", "ohm")
-    getLeafView<G extends AstSourceViewBase>(
-      raw: AstSourceString,
-    ): AstSourceView<G> {
+    getLeafView<G = any>(raw: AstSourceString): AstSourceView<G> {
       assertLeaf(self, {});
       // const raw = this.getSourceString();
       try {
         if (leafDecoder) {
-          // @ts-expect-error #1
           return {
             type: leafDecoder.type,
             raw,
-            ...leafDecoder.decoder(raw),
+            ...leafDecoder.decode(raw),
           };
         } else {
           const decoder = defaultLeafDecoder();
-          // @ts-expect-error #1
-          return decoder.decoder(raw);
+          // @ts-expect-error TS2322
+          return {
+            type: decoder.type,
+            raw,
+            ...decoder.decode(raw),
+          };
         }
       } catch (e) {
         throw new DqmError("AST_DECODER_FAILURE", {
@@ -58,14 +60,14 @@ export function viewCapability<T extends Pick<IAstNode, "getKind">>(self: T) {
       }
     },
 
-    setLeafViewDecoder<G extends AstSourceViewBase>(
+    setLeafViewDecoder<G extends AstSourceViewAdditional>(
       type: string,
-      decoder: AstSourceViewDecoder<G>,
+      decoder: AstSourceViewDecoderCustom<G>,
     ): T {
       assertLeaf(self, { type, decoder });
       leafDecoder = {
         type,
-        decoder,
+        decode: decoder,
       };
       return self;
     },

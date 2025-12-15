@@ -4,7 +4,6 @@ import type {
   PushedNodeDefinition,
   IParam,
   AstSourceView,
-  AstSourceViewBase,
   CpxFuncParam,
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
@@ -95,7 +94,7 @@ export class AstNode extends CommonTransports implements IAstNode {
   getBlockDepth = this.counter.getBlockDepth.bind(this.counter);
 
   // VIEW
-  getLeafView<T extends AstSourceViewBase>(): AstSourceView<T> {
+  getLeafView<T = any>(): AstSourceView<T> {
     const raw = this.getSourceString();
     return this.view.getLeafView(raw);
   }

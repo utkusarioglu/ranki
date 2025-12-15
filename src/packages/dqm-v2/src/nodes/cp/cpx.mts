@@ -1,7 +1,5 @@
 import type {
   ICpx,
-  // IPlugins,
-  // IConfig,
   CpxParseInput,
   IParam,
   IdList,

@@ -7,6 +7,11 @@
       "import": "./lib/export.types.mjs",
       "types": "./types/export.types.d.mts",
       "default": "./lib/export.types.mjs"
+    },
+    "./constants": {
+      "import": "./lib/export.mjs",
+      "types": "./types/export.d.mts",
+      "default": "./lib/export.mjs"
     }
   },
   "scripts": {

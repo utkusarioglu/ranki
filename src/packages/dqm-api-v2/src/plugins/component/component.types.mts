@@ -1,6 +1,5 @@
-import type { DqmPluginVersion } from "../../export.types.mjs";
+import type { DqmPluginVersion, IParam } from "../../export.types.mjs";
 import type { Alias, Chain, IdSummary } from "./id/id.types.mjs";
-import type { IParam } from "./params/param.types.mjs";
 
 export interface IDqmComponent {
   type: "component";
@@ -32,8 +31,10 @@ export interface ChannelParamSpecs {
 }
 
 export interface ComponentParamsSchema {
-  settings: ChannelParamSpecs;
-  configs: ChannelParamSpecs;
+  channels: {
+    settings: ChannelParamSpecs;
+    configs: ChannelParamSpecs;
+  };
 }
 
 export interface CpsDefinition {

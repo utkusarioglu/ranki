@@ -1,8 +1,8 @@
+import type { DqmConfig } from "../../../config/dqm-config.types.mjs";
 import type {
-  DqmConfig,
   IAstNode,
   IAstNodeContext,
-} from "../../../export.types.mjs";
+} from "../../../nodes/ast/ast-node.types.mjs";
 
 export interface DqmAstReport {
   cache: {
@@ -34,7 +34,6 @@ export type ParseAstFunction = (
 ) => RankiLangParseFunctionReturn;
 
 export interface RankiLangParseFunctionReturn {
-  // props: Record<string, any>;
   root: IAstNode;
 }
 

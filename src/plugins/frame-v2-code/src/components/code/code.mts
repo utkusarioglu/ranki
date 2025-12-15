@@ -15,40 +15,44 @@ export const frameV2CodeBlockComponent: IDqmComponent = {
     // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
     preprocessing: (c) => c,
     ast: {
-      configs: {
-        positionals: [],
-        params: [],
-      },
-      settings: {
-        positionals: [],
-        params: [
-          {
-            id: {
-              chain: ["prettier", "auto_format"],
-              aliases: ["p"],
-            },
-            values: [
-              {
-                name: "Auto Format",
-                type: "boolean",
-                defaultValue: true,
+      // TODO you need "channels: {}" to wrap these
+      // TODO you need a settings object here to tell how component wants to handle missing params etc
+      channels: {
+        configs: {
+          positionals: [],
+          params: [],
+        },
+        settings: {
+          positionals: ["prettier.auto_format".split(".")],
+          params: [
+            {
+              id: {
+                chain: ["prettier", "auto_format"],
+                aliases: ["p"],
               },
-            ],
-          },
-          {
-            id: {
-              chain: ["path", "cat"],
-              aliases: ["h"],
+              values: [
+                {
+                  name: "Auto Format",
+                  type: "boolean",
+                  defaultValue: true,
+                },
+              ],
             },
-            values: [
-              {
-                name: "first_number",
-                type: "number",
-                defaultValue: 1,
+            {
+              id: {
+                chain: ["path", "cat"],
+                aliases: ["h"],
               },
-            ],
-          },
-        ],
+              values: [
+                {
+                  name: "first_number",
+                  type: "number",
+                  defaultValue: 1,
+                },
+              ],
+            },
+          ],
+        },
       },
     },
   },

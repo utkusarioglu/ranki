@@ -7,15 +7,17 @@ import type {
   CommonTransportsConstructorParams,
 } from "@dqm/package-dqm-api-v2";
 import { IdLib } from "../../id/id-lib.mjs";
-import { Param } from "./param.mjs";
-import { DqmError, rejectValues } from "@dqm/package-utils";
-import { CommonTransports } from "../common-transports.mjs";
+import { Param } from "../../nodes/param/param.mjs";
+import { rejectValues } from "@dqm/package-utils";
+import { CommonTransports } from "../../nodes/common-transports.mjs";
+import { POSITIONAL_PARAM } from "../../constants.mjs";
 
-export class ChannelParams extends CommonTransports {
+export class ParamsChannelLib extends CommonTransports {
   private schema!: ChannelParamSpecs;
   private lib = new IdLib<IParam>();
   private failed: IParam[] = [];
   private channel;
+  private currentPosition = 0;
 
   constructor(
     transports: CommonTransportsConstructorParams,
@@ -59,37 +61,23 @@ export class ChannelParams extends CommonTransports {
     let p: IParam;
     try {
       const alias = user.getId().getAlias();
-      const position = user.getId().getPosition();
-
-      // const chain = user.getId().getChain();
-
-      // console.log({ alias, position, chain });
-      if (alias && position) {
-        throw new DqmError("UNEXPECTED_CONFIGURATION", {
-          why: "Param has both alias and position defined. This shouldn't be possible",
-          alias,
-          pos: position,
-        });
-      } else if (position) {
-        const chain = this.schema.positionals[position];
-        p = this.lib.getObjectById(chain);
-        p.getId().setPosition(position);
-      } else if (alias) {
-        p = this.lib.getObjectById(alias);
-        // const chain = this.lib.getChainByAlias(alias);
-
-        p.getId().setAlias(alias);
+      if (alias) {
+        if (alias.join(".") === POSITIONAL_PARAM.join(".")) {
+          const position = this.currentPosition++;
+          const chain = this.schema.positionals[position];
+          p = this.lib.getObjectByChain(chain);
+          p.getId().setPosition(position);
+        } else {
+          p = this.lib.getObjectByAlias(alias);
+          p.getId().setAlias(alias);
+        }
       } else {
         const chain = user.getId().getChain();
         p = this.lib.getObjectById(chain);
       }
-      // else {
-      //   throw new DqmError("UNRECOGNIZED_PARAM", {
-      //     chain,
-      //     alias,
-      //     position,
-      //   });
-      // }
+
+      // TODO here you need to decide what to do if a param isn't defined. Do
+      // you want to ignore it or yell?
 
       p.setProducer("instance-declaration")
         .setAudience(user.getAudience())
@@ -98,7 +86,7 @@ export class ChannelParams extends CommonTransports {
     } catch (e) {
       this.failed.push(user);
       // TODO this should be reflected in validation
-      console.log("failed push", { user, e, p: p! });
+      console.log("failed push", { user, e, p: p!, cause: e });
     }
 
     return this;
@@ -107,5 +95,28 @@ export class ChannelParams extends CommonTransports {
   @rejectValues(undefined)
   findById(id: Alias | Chain): IParam | never {
     return this.lib.getObjectById(id);
+  }
+
+  getCompilation<T>(): T {
+    const c: any = {};
+
+    for (const [chainString, param] of this.lib.peekActiveChains()) {
+      let curr = c;
+      const chain: Chain = chainString.split(".");
+      chain.forEach((part, i, all) => {
+        if (i < all.length - 1) {
+          if (!curr[part]) {
+            curr[part] = {};
+          }
+          curr = curr[part];
+        } else {
+          const values = param.getValues().map((v) => v.value);
+          curr[part] = values.length === 1 ? values[0] : values;
+        }
+        //   c[part] =
+      });
+    }
+
+    return c;
   }
 }

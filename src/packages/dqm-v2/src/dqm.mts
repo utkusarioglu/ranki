@@ -1,22 +1,22 @@
 import { Libs } from "./libs/libs.mjs";
-import type {
-  DqmParseInput,
-  IPlugins,
-  IDqmPlugin,
-  CommonTransportsConstructorParams,
-  DqmConfigPack,
-  DqmParseInputStructured,
-  DqmParseRole,
-  DqmParseTheater,
-  DqmParseInputString,
-  DqmParseOutput,
-  ChainList,
-  IParam,
-} from "@dqm/package-dqm-api-v2";
 import { DEFAULT_CONFIG } from "./constants.mjs";
 import { AstNode } from "./nodes/ast/ast-node.mjs";
 import { Config } from "@dqm/package-utils";
 import { Id } from "./id/id.mjs";
+import type {
+  ChainList,
+  CommonTransportsConstructorParams,
+  DqmConfigPack,
+  DqmParseInput,
+  DqmParseInputString,
+  DqmParseInputStructured,
+  DqmParseOutput,
+  DqmParseRole,
+  DqmParseTheater,
+  IDqmPlugin,
+  IParam,
+  IPlugins,
+} from "@dqm/package-dqm-api-v2";
 
 export class Dqm {
   private plugins: IPlugins = new Libs();

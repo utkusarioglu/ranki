@@ -12,16 +12,18 @@ import type {
   Alias,
 } from "@dqm/package-dqm-api-v2";
 import { Id } from "../../id/id.mjs";
-import { Params } from "../param/params.mjs";
+import { ParamsLib } from "../../libs/params/params-lib.mjs";
 import { CommonTransports } from "../common-transports.mjs";
+import { prepareContext } from "../ast/ast.utils.mjs";
 
 const MERGE_TARGET = "merged";
+// const CONFIG_CHANNEL = "configs";
 
 export class Cps extends CommonTransports implements ICps {
   private id = new Id();
   private parent!: ICps;
   private component!: IDqmComponent;
-  private params: IParams = new Params(this.getTransports());
+  private paramsLib: IParams = new ParamsLib(this.getTransports());
   private cpx!: ICpx;
 
   constructor(params: CommonTransportsConstructorParams) {
@@ -44,13 +46,23 @@ export class Cps extends CommonTransports implements ICps {
     if (def.id.length === 1) {
       this.id.setAlias(def.id as Alias);
     }
-    this.params.setSchema(this.component.stages.ast);
+    this.paramsLib.setSchema(this.component.stages.ast);
     def.params.forEach((param) => {
-      this.params.pushParam(param);
+      this.paramsLib.pushParam(param);
     });
     // TODO $ may not be the token the user prefers. or $ may be mapped to a value like "config"
+    const componentParamConfig =
+      this.paramsLib.getChannelCompilationByChannelName("settings");
+
+    console.log(JSON.stringify(componentParamConfig, null, 2));
+
     this.getConfig()
-      .pushConfig("cps", this.params.buildObject("config"))
+      .pushConfig(
+        "cps",
+        componentParamConfig,
+        // this.paramsLib.getChannelCompilationByChannelName(CONFIG_CHANNEL),
+        // this.paramsLib.getChannelCompilationByChannelName("settings"),
+      )
       .mergeTo(MERGE_TARGET);
 
     return this;
@@ -76,20 +88,12 @@ export class Cps extends CommonTransports implements ICps {
       "NOT_SURE_IF_THIS_IS_NEEDED",
       activeConfig,
     );
-    // TODO
-    const ast = this.cpx.getRootAst();
-    // const dqmInput = input
     const obj = parse(
       input.dqm,
-      // input.dqms[input.theater],
       // TODO this likely will come from the `direction` property of some ast
       // node
       "baseV2RootBlock",
-      {
-        // cpx: this.cpx,
-        // cps: this,
-        ast,
-      },
+      prepareContext(this.cpx.getRootAst()),
     );
     return obj.root;
   }

@@ -15,13 +15,15 @@ export const baseDefault: IDqmComponent = {
     // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
     preprocessing: (c) => c,
     ast: {
-      configs: {
-        positionals: [],
-        params: [],
-      },
-      settings: {
-        positionals: [],
-        params: [],
+      channels: {
+        configs: {
+          positionals: [],
+          params: [],
+        },
+        settings: {
+          positionals: [],
+          params: [],
+        },
       },
     },
   },

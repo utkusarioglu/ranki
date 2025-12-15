@@ -101,7 +101,7 @@ export const node: IAstNodeActionDict = {
     return grabAst(this)
       .newAst(this)
       .pushIgnoredNodes(number)
-      .setLeafViewDecoder("number", (v) => ({ number: +v }));
+      .setLeafViewDecoder("number", (v) => ({ value: +v }));
   },
 
   hWrapped(token1, content, token2) {

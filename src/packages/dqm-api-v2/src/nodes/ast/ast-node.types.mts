@@ -1,10 +1,8 @@
-import type {
-  CommonTransportsConstructorParams,
-  CounterStat,
-  ICpx,
-  IParam,
-} from "../../export.types.mjs";
 import type * as ohm from "ohm-js";
+import type { ICpx } from "../cp/i-cpx.types.mjs";
+import type { CommonTransportsConstructorParams } from "../common-transports.types.mjs";
+import type { IParam } from "../param/param-node.types.mjs";
+import type { CounterStat } from "./ast-counter.types.mjs";
 
 export type PushedNodeDefinition = [IAstNodeRelationship, ohm.Node];
 
@@ -48,20 +46,27 @@ export type ChildrenNodes = IAstNode[] & { type?: "ChildrenNodes" };
 export type AstSourceString = string & { type?: "AstSourceString" };
 export type CreationMethod = string & { type?: "CreationMethod" };
 
+/**
+ * @dev
+ * #1 This property's type can be anything depending on what decoder is defined
+ * for the node.
+ */
 export interface AstSourceViewCommon {
   type: string;
   raw: string;
 }
 
-export type AstSourceView<
-  Custom extends AstSourceViewBase = AstSourceViewBase,
-> = AstSourceViewCommon & Custom;
+export type AstSourceView<Custom = any> = AstSourceViewCommon &
+  AstSourceViewAdditional<Custom>;
 
-export type AstSourceViewBase = Record<string, any>;
+export type AstSourceViewAdditional<Value = any> = {
+  subType?: string;
+  value: Value;
+};
 
-export type AstSourceViewDecoder<
-  Custom extends AstSourceViewBase = AstSourceViewBase,
-> = (input: string) => Custom;
+export type AstSourceViewDecoderCustom<Value> = (
+  input: string,
+) => AstSourceViewAdditional<Value>;
 
 export interface IAstNode
   extends IAstNodeCounterCapabilities,
@@ -149,9 +154,9 @@ export interface IAstNodeVerticesCapabilities {
 }
 
 export interface IAstNodeViewCapabilities {
-  getLeafView<T extends AstSourceViewBase>(): AstSourceView<T>;
-  setLeafViewDecoder<T extends AstSourceViewBase>(
+  getLeafView<T = any>(): AstSourceView<T>;
+  setLeafViewDecoder(
     typeName: string,
-    decoder: AstSourceViewDecoder<T>,
+    decoder: AstSourceViewDecoderCustom<any>,
   ): this;
 }

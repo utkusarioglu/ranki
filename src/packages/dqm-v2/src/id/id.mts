@@ -1,7 +1,6 @@
 import type {
   Alias,
   Chain,
-  // IIdMap,
   IId,
   Position,
   IdSummary,
@@ -16,7 +15,6 @@ import {
 export class Id implements IId {
   private static uniqueCounter = 0;
   private unique: IdUnique;
-  // private map!: IIdMap;
   private position!: Position;
   private id!: Alias | Chain;
   private alias!: Alias;
@@ -24,7 +22,6 @@ export class Id implements IId {
 
   constructor() {
     this.unique = Id.getUnique();
-    // this.unique = Math.random().toString(36).slice(2);
   }
 
   private static getUnique() {

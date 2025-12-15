@@ -1,4 +1,5 @@
-export * from "./dqm.types.mjs";
-export * from "./plugins/export.types.mjs";
-export * from "./nodes/export.types.mjs";
-export * from "./config/export.types.mjs";
+export type * from "./dqm.types.mjs";
+export type * from "./plugins/export.types.mjs";
+export type * from "./nodes/export.types.mjs";
+export type * from "./config/export.types.mjs";
+export type * from "./errors/dqm-plugin-error.types.mjs";

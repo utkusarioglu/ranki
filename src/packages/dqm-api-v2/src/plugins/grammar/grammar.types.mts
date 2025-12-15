@@ -3,7 +3,7 @@ import type {
   DqmPluginName,
   DqmPluginVersion,
 } from "../../config/dqm-config.types.mjs";
-import type { IAstNodeActionDict } from "../../export.types.mjs";
+import type { IAstNodeActionDict } from "../../nodes/ast/ast-node.types.mjs";
 
 export interface IDqmPluginGrammar<ConfigShape = {}> {
   type: "grammar";

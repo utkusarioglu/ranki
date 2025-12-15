@@ -70,4 +70,8 @@ export class IdLib<Out> {
     assertExists(obj, { active: this.activeChains });
     return obj;
   }
+
+  peekActiveChains(): Map<ChainString, Out> {
+    return this.activeChains;
+  }
 }
