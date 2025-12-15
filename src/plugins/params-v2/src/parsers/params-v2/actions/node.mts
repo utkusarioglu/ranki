@@ -1,11 +1,10 @@
 import type { IAstNodeActionDict } from "@dqm/package-dqm-api-v2";
 import {
-  assertExists,
   grabAssertExists,
   grabAst,
   grabConstant,
   grabError,
-} from "@dqm/package-utils";
+} from "@dqm/package-plugin-utils";
 
 export const node: IAstNodeActionDict = {
   paramsV2Key(paramsV2KeyWord1, tParamsV2SeparatorKeyLevel, paramsV2KeyWord2) {
@@ -58,7 +57,12 @@ export const node: IAstNodeActionDict = {
       .pushNodes(["node", paramsV2Format]);
 
     const paramsV2FormatNode = p.getSubtreeNodes().at(-1);
-    assertExists(paramsV2FormatNode, {});
+    grabAssertExists(
+      this,
+      paramsV2FormatNode,
+      "paramsV2Format has to be the last node in paramsV2Setting",
+      {},
+    );
 
     const creator = paramsV2FormatNode.getCreator();
     switch (creator) {
@@ -98,7 +102,12 @@ export const node: IAstNodeActionDict = {
           }
           const valuesNode =
             paramsV2FormatNode.findSubtreeNodeByCreator("paramsV2Values");
-          assertExists(valuesNode, {});
+          grabAssertExists(
+            this,
+            valuesNode,
+            "paramsV2Values is an expected node",
+            {},
+          );
           const values = valuesNode
             .getSubtreeNodes()
             .map((v) => v.getLeafView());
@@ -111,7 +120,12 @@ export const node: IAstNodeActionDict = {
         {
           const key =
             paramsV2FormatNode.findSubtreeNodeByCreator("paramsV2Key");
-          assertExists(key, {});
+          grabAssertExists(
+            this,
+            key,
+            `paramsV2Key is an expected node for ${creator}`,
+            {},
+          );
           p.setId(
             paramsV2FormatNode
               .getSubtreeNodes()

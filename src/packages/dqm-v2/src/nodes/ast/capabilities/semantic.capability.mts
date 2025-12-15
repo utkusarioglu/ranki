@@ -5,7 +5,7 @@ import type {
   ContentDirection,
   CreationMethod,
 } from "@dqm/package-dqm-api-v2";
-import { assertExists } from "@dqm/package-utils";
+import { assertExists } from "@dqm/package-dqm-utils";
 
 export function semanticCapability<T>(self: T) {
   let meaning!: string;

@@ -5,7 +5,7 @@ import type {
   AstSourceViewDecoderCustom,
   IAstNode,
 } from "@dqm/package-dqm-api-v2";
-import { assertLeaf, DqmError } from "@dqm/package-utils";
+import { assertLeaf, DqmError } from "@dqm/package-dqm-utils";
 import type { LeafDecoder } from "../ast-node.types.mjs";
 
 export function viewCapability<T extends Pick<IAstNode, "getKind">>(self: T) {

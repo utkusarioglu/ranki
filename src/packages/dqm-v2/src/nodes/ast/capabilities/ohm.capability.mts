@@ -1,5 +1,5 @@
 import type { CreatorName, AstSourceString } from "@dqm/package-dqm-api-v2";
-import { assertExists } from "@dqm/package-utils";
+import { assertExists } from "@dqm/package-dqm-utils";
 import type * as ohm from "ohm-js";
 
 export function ohmCapability<T>(self: T) {

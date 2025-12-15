@@ -4,7 +4,8 @@ import type {
   IAstNodeActionDict,
   IParam,
 } from "@dqm/package-dqm-api-v2";
-import { assertExists, grabAst } from "@dqm/package-utils";
+import * as ohm from "ohm-js";
+import { grabAssertExists, grabAst } from "@dqm/package-plugin-utils";
 
 const COMPONENT: ChainList = [["frame", "v2", "container"]];
 const PARAMS: IParam[] = [];
@@ -25,7 +26,7 @@ export const nodeFrame: IAstNodeActionDict = {
       .newAst(this)
       .pushNodes(["node", frameV2FrameConfig]);
 
-    parseFrame(parent)
+    parseFrame(this, parent)
       .pushNodes(["token", frameV2Start])
       .pushIgnoredNodes(frameV2FrameConfig)
       .pushNodes(["token", frameV2End]);
@@ -38,7 +39,7 @@ export const nodeFrame: IAstNodeActionDict = {
       .newAst(this)
       .pushNodes(["node", frameV2FrameConfig]);
 
-    parseFrame(parent)
+    parseFrame(this, parent)
       .pushNodes(["token", frameV2Start])
       .pushIgnoredNodes(frameV2FrameConfig)
       .pushNodes(["node", frameV2Payload])
@@ -54,13 +55,20 @@ export const nodeFrame: IAstNodeActionDict = {
  * kinds of `frameV2FrameConfig` creators. Their common point is that they
  * are the first and only subtree node of their parent.
  */
-function parseFrame(parent: IAstNode) {
+function parseFrame(self: ohm.Node, parent: IAstNode) {
   // #1
   const frameV2FrameConfigFp = parent.getSubtreeNodes()[0];
-  assertExists(frameV2FrameConfigFp, { method: "config" });
+  grabAssertExists(
+    self,
+    frameV2FrameConfigFp,
+    "frameV2FrameConfigFp is an expected node",
+    { method: "config" },
+  );
   const keyNode =
     frameV2FrameConfigFp.findSubtreeNodeByCreator("frameV2ChainList");
-  assertExists(keyNode, { method: "key" });
+  grabAssertExists(self, keyNode, "frameV2ChainList is an expected node", {
+    method: "key",
+  });
   const idList = keyNode
     .getSubtreeNodes()
     .map((v) => v.getSubtreeNodes().map((v) => v.getSourceString()));
@@ -75,7 +83,12 @@ function parseFrame(parent: IAstNode) {
     const paramListInline = paramListInlineContainer.findSubtreeNodeByCreator(
       "paramsV2ParamListInline",
     );
-    assertExists(paramListInline, {});
+    grabAssertExists(
+      self,
+      paramListInline,
+      "paramsV2ParamListInline is an expected node",
+      {},
+    );
     params = paramListInline.getSubtreeNodes() as IParam[];
   }
 

@@ -13,7 +13,7 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { Id } from "../../id/id.mjs";
 import { ALL_AUDIENCES } from "./param.constants.mjs";
-import { rejectValues, dependsOn, DqmError } from "@dqm/package-utils";
+import { rejectValues, dependsOn, DqmError } from "@dqm/package-dqm-utils";
 import { AstNode } from "../ast/ast-node.mjs";
 
 export class Param extends AstNode implements IParam {

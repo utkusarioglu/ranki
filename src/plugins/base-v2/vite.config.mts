@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
-import { bundleOhm } from "@dqm/package-utils/bundler";
+import { bundleOhm } from "@dqm/package-plugin-utils/bundler";
 
 export default defineConfig({
   define: {

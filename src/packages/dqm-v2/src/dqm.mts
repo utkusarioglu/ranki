@@ -1,7 +1,7 @@
 import { Libs } from "./libs/libs.mjs";
 import { DEFAULT_CONFIG } from "./constants.mjs";
 import { AstNode } from "./nodes/ast/ast-node.mjs";
-import { Config } from "@dqm/package-utils";
+import { Config } from "@dqm/package-dqm-utils";
 import { Id } from "./id/id.mjs";
 import type {
   ChainList,

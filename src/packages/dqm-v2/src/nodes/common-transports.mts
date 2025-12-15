@@ -3,7 +3,7 @@ import type {
   IConfig,
   IPlugins,
 } from "@dqm/package-dqm-api-v2";
-import { rejectValues } from "@dqm/package-utils";
+import { rejectValues } from "@dqm/package-dqm-utils";
 
 export interface ITransports {
   config: IConfig;

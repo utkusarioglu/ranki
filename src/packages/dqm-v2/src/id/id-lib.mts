@@ -11,7 +11,7 @@ import {
   assertArrayNotEmpty,
   assertExists,
   rejectValues,
-} from "@dqm/package-utils";
+} from "@dqm/package-dqm-utils";
 
 export class IdLib<Out> {
   private activeChains = new Map<ChainString, Out>();

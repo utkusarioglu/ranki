@@ -8,7 +8,7 @@ import type {
   IdUnique,
   CreatorName,
 } from "@dqm/package-dqm-api-v2";
-import { assertArrayNotEmpty, DqmError } from "@dqm/package-utils";
+import { assertArrayNotEmpty, DqmError } from "@dqm/package-dqm-utils";
 import type * as ohm from "ohm-js";
 import type { WorkedNodeDefinition } from "../ast-node.types.mjs";
 import { prepareContext } from "../ast.utils.mjs";

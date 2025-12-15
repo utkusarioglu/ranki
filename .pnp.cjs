@@ -35,12 +35,16 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/packages/dqm-api-v2"\
     },\
     {\
+      "name": "@dqm/package-dqm-utils",\
+      "reference": "workspace:src/packages/dqm-utils"\
+    },\
+    {\
       "name": "@dqm/package-dqm-v2",\
       "reference": "workspace:src/packages/dqm-v2"\
     },\
     {\
-      "name": "@dqm/package-utils",\
-      "reference": "workspace:src/packages/utils"\
+      "name": "@dqm/package-plugin-utils",\
+      "reference": "workspace:src/packages/plugin-utils"\
     },\
     {\
       "name": "@dqm/plugin-base-v2",\
@@ -65,8 +69,9 @@ const RAW_RUNTIME_STATE =
   "fallbackExclusionList": [\
     ["@dqm/dqm-v2-demo", ["workspace:src/apps/dqm-v2-demo"]],\
     ["@dqm/package-dqm-api-v2", ["workspace:src/packages/dqm-api-v2"]],\
+    ["@dqm/package-dqm-utils", ["workspace:src/packages/dqm-utils"]],\
     ["@dqm/package-dqm-v2", ["workspace:src/packages/dqm-v2"]],\
-    ["@dqm/package-utils", ["workspace:src/packages/utils"]],\
+    ["@dqm/package-plugin-utils", ["workspace:src/packages/plugin-utils"]],\
     ["@dqm/plugin-base-v2", ["workspace:src/plugins/base-v2"]],\
     ["@dqm/plugin-frame-v2", ["workspace:src/plugins/frame-v2"]],\
     ["@dqm/plugin-frame-v2-code", ["workspace:src/plugins/frame-v2-code"]],\
@@ -1767,13 +1772,28 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
+    ["@dqm/package-dqm-utils", [\
+      ["workspace:src/packages/dqm-utils", {\
+        "packageLocation": "./src/packages/dqm-utils/",\
+        "packageDependencies": [\
+          ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["@dqm/package-dqm-utils", "workspace:src/packages/dqm-utils"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@types/node", "npm:24.10.1"],\
+          ["ohm-js", "npm:17.2.1"],\
+          ["tsx", "npm:4.20.5"],\
+          ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
     ["@dqm/package-dqm-v2", [\
       ["workspace:src/packages/dqm-v2", {\
         "packageLocation": "./src/packages/dqm-v2/",\
         "packageDependencies": [\
           ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["@dqm/package-dqm-utils", "workspace:src/packages/dqm-utils"],\
           ["@dqm/package-dqm-v2", "workspace:src/packages/dqm-v2"],\
-          ["@dqm/package-utils", "workspace:src/packages/utils"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["ohm-js", "npm:17.2.1"],\
           ["tsx", "npm:4.20.5"],\
@@ -1783,12 +1803,12 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
-    ["@dqm/package-utils", [\
-      ["workspace:src/packages/utils", {\
-        "packageLocation": "./src/packages/utils/",\
+    ["@dqm/package-plugin-utils", [\
+      ["workspace:src/packages/plugin-utils", {\
+        "packageLocation": "./src/packages/plugin-utils/",\
         "packageDependencies": [\
           ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
-          ["@dqm/package-utils", "workspace:src/packages/utils"],\
+          ["@dqm/package-plugin-utils", "workspace:src/packages/plugin-utils"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@types/node", "npm:24.10.1"],\
           ["ohm-js", "npm:17.2.1"],\
@@ -1803,7 +1823,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./src/plugins/base-v2/",\
         "packageDependencies": [\
           ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
-          ["@dqm/package-utils", "workspace:src/packages/utils"],\
+          ["@dqm/package-plugin-utils", "workspace:src/packages/plugin-utils"],\
           ["@dqm/plugin-base-v2", "workspace:src/plugins/base-v2"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["concurrently", "npm:9.2.1"],\
@@ -1819,7 +1839,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./src/plugins/frame-v2/",\
         "packageDependencies": [\
           ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
-          ["@dqm/package-utils", "workspace:src/packages/utils"],\
+          ["@dqm/package-plugin-utils", "workspace:src/packages/plugin-utils"],\
           ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["concurrently", "npm:9.2.1"],\
@@ -1835,7 +1855,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./src/plugins/frame-v2-code/",\
         "packageDependencies": [\
           ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
-          ["@dqm/package-utils", "workspace:src/packages/utils"],\
+          ["@dqm/package-plugin-utils", "workspace:src/packages/plugin-utils"],\
           ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
           ["@dqm/plugin-frame-v2-code", "workspace:src/plugins/frame-v2-code"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
@@ -1852,7 +1872,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./src/plugins/params-v2/",\
         "packageDependencies": [\
           ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
-          ["@dqm/package-utils", "workspace:src/packages/utils"],\
+          ["@dqm/package-plugin-utils", "workspace:src/packages/plugin-utils"],\
           ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["concurrently", "npm:9.2.1"],\

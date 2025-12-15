@@ -1,9 +1,8 @@
 import type { IAstNodeActionDict } from "@dqm/package-dqm-api-v2";
-import { grabAst } from "@dqm/package-utils";
+import { grabAst } from "@dqm/package-plugin-utils";
 
 export const nodeValueItem: IAstNodeActionDict = {
   paramsV2ValueItemPrimitive_number(n) {
-    console.log("number triggered");
     return grabAst(this)
       .newAst(this)
       .pushIgnoredNodes(n)

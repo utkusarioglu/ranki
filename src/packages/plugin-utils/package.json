@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@dqm/package-utils",
+  "name": "@dqm/package-plugin-utils",
   "type": "module",
   "exports": {
     "./bundler": {

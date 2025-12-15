@@ -1,6 +1,5 @@
 import type * as ohm from "ohm-js";
 
-import { assertExists } from "./assertions.mjs";
 import type {
   IDqmPluginErrorCode,
   IDqmErrorDetails,
@@ -19,10 +18,12 @@ export function buildContext(self: ohm.Node): IAstNodeContext {
 
 export function grabConstant<T>(self: ohm.Node, constantCode: string): T {
   const val = self.args.context.constants[constantCode];
-  assertExists(val, {
-    why: "Requested nonexistent constant code",
-    constantCode,
-  });
+  grabAssertExists(
+    self,
+    "ASSERT_EXISTS",
+    `Required constant ${constantCode} is absent`,
+    {},
+  );
   return val as T;
 }
 

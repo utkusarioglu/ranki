@@ -10,7 +10,7 @@ import type {
   IAstNodeContext,
   DqmPluginName,
 } from "@dqm/package-dqm-api-v2";
-import { DqmError } from "@dqm/package-utils";
+import { DqmError } from "@dqm/package-dqm-utils";
 import type { ILibParser, T, Criteria } from "./parser-lib.types.mjs";
 import { ParserHash, type ParserHashString } from "./hash.mjs";
 import { expandDependencies, topologicalSort } from "./utils.mjs";

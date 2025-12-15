@@ -1,5 +1,5 @@
 import type { IAstNodeActionDict } from "@dqm/package-dqm-api-v2";
-import { buildContext, grabAst } from "@dqm/package-utils";
+import { buildContext, grabAst } from "@dqm/package-plugin-utils";
 
 export const space: IAstNodeActionDict = {
   _iter(...children) {

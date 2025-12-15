@@ -7,7 +7,7 @@ import type {
   IParams,
   ParamChannel,
 } from "@dqm/package-dqm-api-v2";
-import { assertExists, dependsOn, rejectValues } from "@dqm/package-utils";
+import { assertExists, dependsOn, rejectValues } from "@dqm/package-dqm-utils";
 import { ParamsChannelLib } from "./params-channel-lib.mjs";
 import { CommonTransports } from "../../nodes/common-transports.mjs";
 

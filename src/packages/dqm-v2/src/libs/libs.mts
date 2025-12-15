@@ -11,7 +11,7 @@ import type {
   IParamConstructor,
   IAstNodeConstructor,
 } from "@dqm/package-dqm-api-v2";
-import { DqmError } from "@dqm/package-utils";
+import { DqmError } from "@dqm/package-dqm-utils";
 import { ComponentLib } from "./component/component-lib.mjs";
 import { ParserLib } from "./parser/parser-lib.mjs";
 import { Cpx } from "../nodes/cp/cpx.mjs";

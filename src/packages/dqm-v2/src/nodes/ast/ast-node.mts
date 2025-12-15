@@ -7,7 +7,7 @@ import type {
   CpxFuncParam,
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
-import { assertNotExists, rejectValues } from "@dqm/package-utils";
+import { assertNotExists, rejectValues } from "@dqm/package-dqm-utils";
 import { CommonTransports } from "../common-transports.mjs";
 import { verticesCapability } from "./capabilities/vertices.capability.mjs";
 import { syntaxCapability } from "./capabilities/syntax.capability.mjs";

@@ -9,7 +9,7 @@ import type {
   ChainList,
   IId,
 } from "@dqm/package-dqm-api-v2";
-import { DqmError, dependsOn, rejectValues } from "@dqm/package-utils";
+import { DqmError, dependsOn, rejectValues } from "@dqm/package-dqm-utils";
 import { ALL_AUDIENCES } from "../param/param.constants.mjs";
 import { Cps } from "./cps.mjs";
 import { CommonTransports } from "../common-transports.mjs";

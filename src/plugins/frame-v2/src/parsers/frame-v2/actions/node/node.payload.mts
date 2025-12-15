@@ -1,16 +1,5 @@
-import type {
-  // ChainList,
-  // IAstNode,
-  IAstNodeActionDict,
-  // IParam,
-} from "@dqm/package-dqm-api-v2";
-import {
-  // assertExists,
-  grabAst,
-} from "@dqm/package-utils";
-
-// const COMPONENT: ChainList = [["frame", "v2", "container"]];
-// const PARAMS: IParam[] = [];
+import type { IAstNodeActionDict } from "@dqm/package-dqm-api-v2";
+import { grabAst } from "@dqm/package-plugin-utils";
 
 export const nodePayload: IAstNodeActionDict = {
   frameV2Payload_P(sBaseV2WasteInline, frameV2PauseList) {

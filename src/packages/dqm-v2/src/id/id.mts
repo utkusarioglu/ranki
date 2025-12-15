@@ -10,7 +10,7 @@ import {
   assertArrayNotEmpty,
   rejectValues,
   writeOnce,
-} from "@dqm/package-utils";
+} from "@dqm/package-dqm-utils";
 
 export class Id implements IId {
   private static uniqueCounter = 0;

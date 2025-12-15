@@ -1,5 +1,5 @@
 import type { IAstNodeActionDict } from "@dqm/package-dqm-api-v2";
-import { grabAst } from "@dqm/package-utils";
+import { grabAst } from "@dqm/package-plugin-utils";
 
 export const nodeFrameConfig: IAstNodeActionDict = {
   frameV2FrameConfigE(

@@ -1,5 +1,5 @@
 import type { Alias, Chain, IPluginLib } from "@dqm/package-dqm-api-v2";
-import { DqmError } from "@dqm/package-utils";
+import { DqmError } from "@dqm/package-dqm-utils";
 import type { In, Out } from "./component-lib.types.mjs";
 import { IdLib } from "../../id/id-lib.mjs";
 

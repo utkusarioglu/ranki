@@ -1,12 +1,15 @@
 {
   "private": true,
-  "name": "@dqm/package-dqm-v2",
+  "name": "@dqm/package-dqm-utils",
   "type": "module",
   "exports": {
+    "./bundler": {
+      "import": "./lib/bundler.mjs",
+      "types": "./types/bundler.d.mjs"
+    },
     ".": {
       "import": "./lib/export.mjs",
-      "types": "./types/export.d.mjs",
-      "default": "./lib/export.mjs"
+      "types": "./types/export.d.mjs"
     }
   },
   "scripts": {
@@ -19,12 +22,9 @@
   "devDependencies": {
     "@dqm/package-dqm-api-v2": "workspace:^",
     "@ranki/config-typescript": "workspace:^",
+    "@types/node": "^24.10.1",
+    "ohm-js": "^17.2.1",
     "tsx": "^4.20.5",
-    "typescript": "^5.9.2",
-    "vitest": "^3.2.4"
-  },
-  "dependencies": {
-    "@dqm/package-dqm-utils": "workspace:^",
-    "ohm-js": "^17.2.1"
+    "typescript": "^5.9.2"
   }
 }
