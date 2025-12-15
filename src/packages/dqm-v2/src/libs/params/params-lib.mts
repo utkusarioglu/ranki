@@ -55,30 +55,10 @@ export class ParamsLib extends CommonTransports implements IParams {
   }
 
   getChannelCompilationByChannelName<T>(channel: ParamChannel): T {
-    // // TODO
-    // if (!channel) {
-    //   console.log({ channel, libs: this.paramsMap });
-    // }
-    // let c: any = {};
-
     try {
       return this.paramsMap.get(channel)!.getCompilation<T>();
     } catch (e) {
-      console.log("FAILED");
       return {} as T;
     }
-
-    // return {
-    //   stage: "ast",
-    //   plugins: {
-    //     config: {
-    //       BaseV2: {
-    //         tokens: {
-    //           ignore: "meow",
-    //         },
-    //       },
-    //     },
-    //   },
-    // } as T;
   }
 }

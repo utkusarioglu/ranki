@@ -1,7 +1,7 @@
 import type { IAstNodeActionDict } from "@dqm/package-dqm-api-v2";
 import {
   assertExists,
-  DqmError,
+  grabAssertExists,
   grabAst,
   grabConstant,
   grabError,
@@ -9,8 +9,6 @@ import {
 
 export const node: IAstNodeActionDict = {
   paramsV2Key(paramsV2KeyWord1, tParamsV2SeparatorKeyLevel, paramsV2KeyWord2) {
-    grabError(this)({ code: "test", why: "because reasons" });
-
     return grabAst(this)
       .newAst(this)
       .pushNodes(["node", paramsV2KeyWord1])
@@ -68,10 +66,19 @@ export const node: IAstNodeActionDict = {
         {
           const key =
             paramsV2FormatNode.findSubtreeNodeByCreator("paramsV2Key");
-          assertExists(key, { what: "key" });
+          grabAssertExists(this, key, "Assigned parameters have to have keys", {
+            creator,
+          });
           const op =
             paramsV2FormatNode.findSubtreeNodeByCreator("paramsV2Operator");
-          assertExists(op, { why: "Needs an operator" });
+          grabAssertExists(
+            this,
+            op,
+            "Assigned parameters are required to have an operator set",
+            {
+              creator,
+            },
+          );
           const meaning = op.getTokenNodes()[0].getMeaning();
           switch (meaning) {
             case "assign":
@@ -82,9 +89,12 @@ export const node: IAstNodeActionDict = {
               p.setOperator(meaning);
               break;
             default:
-              throw new DqmError("UNDEFINED_MEANING", {
-                meaning,
-              });
+              throw grabError(
+                this,
+                "UNDEFINED_MEANING",
+                "Failed switch selection",
+                { meaning },
+              );
           }
           const valuesNode =
             paramsV2FormatNode.findSubtreeNodeByCreator("paramsV2Values");

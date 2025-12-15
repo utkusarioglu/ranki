@@ -39,7 +39,13 @@ export function main(raw: string) {
       console.log(yaml.stringify(sanitized));
     }
   } catch (e) {
-    console.log((e as any).toString());
+    try {
+      // @ts-ignore
+      console.log(yaml.stringify(e.toDetailedJSON()));
+    } catch {
+      // @ts-ignore
+      console.log(e.toString());
+    }
   }
 }
 
