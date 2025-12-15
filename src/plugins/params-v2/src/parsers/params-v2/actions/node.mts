@@ -1,6 +1,6 @@
 import type { IAstNodeActionDict } from "@dqm/package-dqm-api-v2";
 import {
-  grabAssertExists,
+  grabAssertNodeExists,
   grabAst,
   grabConstant,
   grabError,
@@ -57,12 +57,7 @@ export const node: IAstNodeActionDict = {
       .pushNodes(["node", paramsV2Format]);
 
     const paramsV2FormatNode = p.getSubtreeNodes().at(-1);
-    grabAssertExists(
-      this,
-      paramsV2FormatNode,
-      "paramsV2Format has to be the last node in paramsV2Setting",
-      {},
-    );
+    grabAssertNodeExists(this, paramsV2FormatNode, "paramsV2Format");
 
     const creator = paramsV2FormatNode.getCreator();
     switch (creator) {
@@ -70,19 +65,10 @@ export const node: IAstNodeActionDict = {
         {
           const key =
             paramsV2FormatNode.findSubtreeNodeByCreator("paramsV2Key");
-          grabAssertExists(this, key, "Assigned parameters have to have keys", {
-            creator,
-          });
+          grabAssertNodeExists(this, key, "paramsV2Key", { creator });
           const op =
             paramsV2FormatNode.findSubtreeNodeByCreator("paramsV2Operator");
-          grabAssertExists(
-            this,
-            op,
-            "Assigned parameters are required to have an operator set",
-            {
-              creator,
-            },
-          );
+          grabAssertNodeExists(this, op, "paramsV2Operator", { creator });
           const meaning = op.getTokenNodes()[0].getMeaning();
           switch (meaning) {
             case "assign":
@@ -102,12 +88,7 @@ export const node: IAstNodeActionDict = {
           }
           const valuesNode =
             paramsV2FormatNode.findSubtreeNodeByCreator("paramsV2Values");
-          grabAssertExists(
-            this,
-            valuesNode,
-            "paramsV2Values is an expected node",
-            {},
-          );
+          grabAssertNodeExists(this, valuesNode, "paramsV2Values");
           const values = valuesNode
             .getSubtreeNodes()
             .map((v) => v.getLeafView());
@@ -120,12 +101,7 @@ export const node: IAstNodeActionDict = {
         {
           const key =
             paramsV2FormatNode.findSubtreeNodeByCreator("paramsV2Key");
-          grabAssertExists(
-            this,
-            key,
-            `paramsV2Key is an expected node for ${creator}`,
-            {},
-          );
+          grabAssertNodeExists(this, key, "paramsV2Key", { creator });
           p.setId(
             paramsV2FormatNode
               .getSubtreeNodes()

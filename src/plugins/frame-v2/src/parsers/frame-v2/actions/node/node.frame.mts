@@ -5,7 +5,7 @@ import type {
   IParam,
 } from "@dqm/package-dqm-api-v2";
 import * as ohm from "ohm-js";
-import { grabAssertExists, grabAst } from "@dqm/package-plugin-utils";
+import { grabAssertNodeExists, grabAst } from "@dqm/package-plugin-utils";
 
 const COMPONENT: ChainList = [["frame", "v2", "container"]];
 const PARAMS: IParam[] = [];
@@ -58,17 +58,10 @@ export const nodeFrame: IAstNodeActionDict = {
 function parseFrame(self: ohm.Node, parent: IAstNode) {
   // #1
   const frameV2FrameConfigFp = parent.getSubtreeNodes()[0];
-  grabAssertExists(
-    self,
-    frameV2FrameConfigFp,
-    "frameV2FrameConfigFp is an expected node",
-    { method: "config" },
-  );
+  grabAssertNodeExists(self, frameV2FrameConfigFp, "frameV2FrameConfigFp");
   const keyNode =
     frameV2FrameConfigFp.findSubtreeNodeByCreator("frameV2ChainList");
-  grabAssertExists(self, keyNode, "frameV2ChainList is an expected node", {
-    method: "key",
-  });
+  grabAssertNodeExists(self, keyNode, "frameV2ChainList");
   const idList = keyNode
     .getSubtreeNodes()
     .map((v) => v.getSubtreeNodes().map((v) => v.getSourceString()));
@@ -83,12 +76,7 @@ function parseFrame(self: ohm.Node, parent: IAstNode) {
     const paramListInline = paramListInlineContainer.findSubtreeNodeByCreator(
       "paramsV2ParamListInline",
     );
-    grabAssertExists(
-      self,
-      paramListInline,
-      "paramsV2ParamListInline is an expected node",
-      {},
-    );
+    grabAssertNodeExists(self, paramListInline, "paramsV2ParamListInline");
     params = paramListInline.getSubtreeNodes() as IParam[];
   }
 

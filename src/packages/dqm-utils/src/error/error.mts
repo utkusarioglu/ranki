@@ -29,7 +29,6 @@ export class DqmError extends Error {
       "",
       "OBJECTS:",
       this.stringifyObjects(),
-      // JSON.stringify(this.objects, null, 2),
       "",
       "STACK:",
       this.stack,

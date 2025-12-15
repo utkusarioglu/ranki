@@ -1,5 +1,4 @@
 import { DqmError } from "./error/error.mjs";
-// import { assertMethodContext} from "./assertions.mjs"
 
 // ANKI this is the new decorator syntax
 export function dependsOn(...properties: string[]) {
