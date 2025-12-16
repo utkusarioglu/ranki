@@ -1,0 +1,9 @@
+.message {
+  margin-top: var(--ant-padding);
+  margin-inline: var(--ant-padding);
+}
+
+.textarea {
+  /* background-color: #050505 !important; */
+  background-color: var(--color-bg-sample) !important;
+}

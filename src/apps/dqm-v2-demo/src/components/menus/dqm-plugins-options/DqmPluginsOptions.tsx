@@ -1,19 +1,21 @@
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
-import { PluginCard } from "./plugin-card/PluginCard";
+import { PluginCard } from "./plugin-package-card/PluginPackageCard";
 import style from "./DqmPluginsOptions.module.css";
 import type {
-  SetPluginMemberEnabled,
-  SetPluginEnabled,
-  SetPluginInstalled,
+  SetPluginAsInstalled,
+  SetPluginAsRequested,
+  SetPluginAsStandard,
+  SetPluginPackageAsEnabled,
 } from "_stores/dqm/dqm.store.types.mjs";
 
-export interface WithSetPluginMemberEnabled {
-  setPluginMemberEnabled: SetPluginMemberEnabled;
+export interface WithPluginActions {
+  setPluginAsInstalled: SetPluginAsInstalled;
+  setPluginAsStandard: SetPluginAsStandard;
+  setPluginAsRequested: SetPluginAsRequested;
 }
 
-export interface WithSetPluginEnabledInstalled {
-  setPluginEnabled: SetPluginEnabled;
-  setPluginInstalled: SetPluginInstalled;
+export interface WithPluginPackageActions {
+  setPluginPackageAsEnabled: SetPluginPackageAsEnabled;
 }
 
 export const DqmPluginsOptions = () => {
@@ -21,13 +23,14 @@ export const DqmPluginsOptions = () => {
 
   return (
     <div className={style.container}>
-      {dqm.pluginSelection.map((plugin) => (
+      {dqm.pluginSelection.map((pluginPackage) => (
         <PluginCard
-          key={plugin.name}
-          plugin={plugin}
-          setPluginMemberEnabled={dqm.setPluginMemberEnabled}
-          setPluginEnabled={dqm.setPluginEnabled}
-          setPluginInstalled={dqm.setPluginInstalled}
+          key={pluginPackage.name}
+          pluginPackage={pluginPackage}
+          setPluginAsInstalled={dqm.setPluginAsInstalled}
+          setPluginAsRequested={dqm.setPluginAsRequested}
+          setPluginAsStandard={dqm.setPluginAsStandard}
+          setPluginPackageAsEnabled={dqm.setPluginPackageAsEnabled}
         />
       ))}
     </div>

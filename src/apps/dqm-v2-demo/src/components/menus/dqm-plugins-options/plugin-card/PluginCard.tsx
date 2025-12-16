@@ -1,55 +1,65 @@
-import type { PluginData } from "_stores/dqm/dqm.store.types.mjs";
+import type { PluginStoreType } from "_stores/dqm/dqm.store.types.mjs";
 import { BlockySwitch } from "_views/blocky-switch/BlockySwitch";
-import { Card, Flex, Typography } from "antd";
+import { Flex, Typography } from "antd";
 import type { FC } from "react";
-import { PluginMember } from "../plugin-member/PluginMember";
 import style from "./PluginCard.module.css";
-import type {
-  WithSetPluginEnabledInstalled,
-  WithSetPluginMemberEnabled,
-} from "../DqmPluginsOptions";
+import type { WithPluginActions } from "../DqmPluginsOptions";
 
-type PluginCardProps = WithSetPluginMemberEnabled &
-  WithSetPluginEnabledInstalled & {
-    plugin: PluginData;
-  };
+type PluginMemberProps = WithPluginActions & {
+  plugin: PluginStoreType;
+};
 
-export const PluginCard: FC<PluginCardProps> = ({
-  plugin,
-  setPluginMemberEnabled,
-  setPluginEnabled,
-  setPluginInstalled,
+export const PluginMember: FC<PluginMemberProps> = ({
+  plugin: {
+    name,
+    pluginType,
+    packageIndex,
+    pluginIndex,
+    description,
+    installed,
+    requested,
+    standard,
+  },
+  setPluginAsStandard,
+  setPluginAsRequested,
+  setPluginAsInstalled,
 }) => {
   return (
-    <Card className={style.container}>
-      <Flex justify="space-between" align="center">
-        <Typography.Title level={4} className={style.title}>
-          {plugin.name}
-        </Typography.Title>
-      </Flex>
+    <div className={style.container}>
       <div>
-        {plugin.members.map((member) => (
-          <PluginMember
-            key={member.memberType + member.name}
-            member={member}
-            setPluginMemberEnabled={setPluginMemberEnabled}
-          />
-        ))}
+        <Typography.Title code level={4} className={style.title}>
+          {name}
+        </Typography.Title>
+        <Typography.Text code type="secondary">
+          {pluginType}
+        </Typography.Text>
       </div>
-      <Flex justify="end">
+
+      <Typography className={style.text}>{description}</Typography>
+
+      <Flex justify="end" className={style.controls}>
         <BlockySwitch
-          checkedChildren={"Enabled"}
-          unCheckedChildren={"Disabled"}
-          onChange={(e) => setPluginEnabled(plugin.pluginIndex, e)}
-          value={plugin.enabled}
+          checkedChildren={"Std"}
+          unCheckedChildren={"!Std"}
+          size="small"
+          onChange={(v) => setPluginAsStandard(packageIndex, pluginIndex, v)}
+          value={standard}
         />
         <BlockySwitch
-          checkedChildren={"Installed"}
-          unCheckedChildren={"Skipped"}
-          onChange={(e) => setPluginInstalled(plugin.pluginIndex, e)}
-          value={plugin.installed}
+          checkedChildren={"Req"}
+          unCheckedChildren={"!Req"}
+          size="small"
+          onChange={(v) => setPluginAsRequested(packageIndex, pluginIndex, v)}
+          value={requested}
+        />
+        <BlockySwitch
+          checkedChildren={"Inst"}
+          unCheckedChildren={"!Inst"}
+          size="small"
+          onChange={(v) => setPluginAsInstalled(packageIndex, pluginIndex, v)}
+          value={installed}
         />
       </Flex>
-    </Card>
+    </div>
   );
 };

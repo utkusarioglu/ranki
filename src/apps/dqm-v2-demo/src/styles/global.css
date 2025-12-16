@@ -1,3 +1,7 @@
+:root {
+  --color-bg-sample: #050505;
+}
+
 html,
 body,
 #root {

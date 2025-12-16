@@ -5,17 +5,20 @@ import { INPUTS, AUTO_UPDATE } from "./dqm.initial.mts";
 import { createDqmParsedProp } from "./dqm.utils.mts";
 import { deferredParseDqmInput } from "./dqm.subscriptions.mts";
 import { pluginSelectionInit } from "./dqm.plugins.mts";
-import type { DqmConfigPack } from "@dqm/package-dqm-api-v2";
 
-const DEFAULT_CONFIG_PACK: DqmConfigPack = {
-  // @ts-ignore it expects the entire object
-  console: {
-    // @ts-ignore it expects the entire object
-    plugins: {
-      requested: ["ParamsV2", "FrameV2"],
-    },
-  },
-};
+// const DEFAULT_CONFIG_PACK: ExpandedConfigPackEntry[] = [
+// {
+//   id: "pluginSelectionConfig",
+//   editable: false,
+//   message: "This configuration entry is controlled by the Plugins tab",
+//   config: {
+//     // @ts-expect-error
+//     plugins: {
+//       requested: ["ParamsV2", "FrameV2"],
+//     },
+//   },
+// },
+// ];
 
 export const useDqmStore = create(
   subscribeWithSelector<DqmStore>((set) => ({
@@ -25,51 +28,96 @@ export const useDqmStore = create(
     arrangementTemplates: [],
     autoUpdate: AUTO_UPDATE,
     astView: {},
-    configPack: DEFAULT_CONFIG_PACK,
+    configPack: [],
     pluginSelection: pluginSelectionInit,
     ...createDqmParsedProp({
       inputs: INPUTS,
       autoUpdate: AUTO_UPDATE,
       parsed: { state: "success", data: [] },
-      configPack: DEFAULT_CONFIG_PACK,
+      configPack: [],
       pluginSelection: pluginSelectionInit,
     }),
 
-    setPluginMemberEnabled: (pluginIndex, memberIndex, enabled) =>
+    setPluginPackageAsEnabled: (packageIndex, enabled) =>
       set((state) => {
-        console.log(pluginIndex, memberIndex, enabled);
         const pluginSelection = [...state.pluginSelection];
-        const alteredPlugin = { ...state.pluginSelection[pluginIndex] };
-        const alteredMember = {
-          ...state.pluginSelection[pluginIndex].members[memberIndex],
+        const alteredPackage = {
+          ...state.pluginSelection[packageIndex],
           enabled,
         };
-        alteredPlugin.members[memberIndex] = alteredMember;
-        pluginSelection[pluginIndex] = alteredPlugin;
+        pluginSelection[packageIndex] = alteredPackage;
         return { pluginSelection };
       }),
 
-    setPluginEnabled: (pluginIndex, enabled) =>
+    setPluginAsInstalled: (packageIndex, pluginIndex, installed) =>
       set((state) => {
-        const pluginSelection = [...state.pluginSelection];
-        const alteredPlugin = {
-          ...state.pluginSelection[pluginIndex],
-          enabled,
-        };
-        pluginSelection[pluginIndex] = alteredPlugin;
-        return { pluginSelection };
-      }),
-
-    setPluginInstalled: (pluginIndex, installed) =>
-      set((state) => {
-        const pluginSelection = [...state.pluginSelection];
-        const alteredPlugin = {
-          ...state.pluginSelection[pluginIndex],
+        const plugins = [...state.pluginSelection[packageIndex].plugins];
+        plugins[pluginIndex] = {
+          ...plugins[pluginIndex],
           installed,
         };
-        pluginSelection[pluginIndex] = alteredPlugin;
+        const alteredPackage = {
+          ...state.pluginSelection[packageIndex],
+          plugins,
+        };
+        const pluginSelection = [...state.pluginSelection];
+        pluginSelection[packageIndex] = alteredPackage;
         return { pluginSelection };
       }),
+
+    setPluginAsRequested: (packageIndex, pluginIndex, requested) =>
+      set((state) => {
+        const plugins = [...state.pluginSelection[packageIndex].plugins];
+        plugins[pluginIndex] = {
+          ...plugins[pluginIndex],
+          requested,
+        };
+        const alteredPackage = {
+          ...state.pluginSelection[packageIndex],
+          plugins,
+        };
+        const pluginSelection = [...state.pluginSelection];
+        pluginSelection[packageIndex] = alteredPackage;
+        return { pluginSelection };
+      }),
+
+    setPluginAsStandard: (packageIndex, pluginIndex, standard) =>
+      set((state) => {
+        const plugins = [...state.pluginSelection[packageIndex].plugins];
+        plugins[pluginIndex] = {
+          ...plugins[pluginIndex],
+          standard,
+        };
+        const alteredPackage = {
+          ...state.pluginSelection[packageIndex],
+          plugins,
+        };
+        const pluginSelection = [...state.pluginSelection];
+        pluginSelection[packageIndex] = alteredPackage;
+        return { pluginSelection };
+      }),
+
+    // setPluginEnabled: (pluginIndex, enabled) =>
+    //   set((state) => {
+    //     const pluginSelection = [...state.pluginSelection];
+    //     const alteredPlugin = {
+    //       ...state.pluginSelection[pluginIndex],
+    //       enabled,
+    //     };
+    //     pluginSelection[pluginIndex] = alteredPlugin;
+    //     return { pluginSelection };
+    //   }),
+
+    // setPluginInstalled: (pluginIndex, installed) =>
+    //   set((state) => {
+    //     const pluginSelection = [...state.pluginSelection];
+    //     const alteredPlugin = {
+    //       ...state.pluginSelection[pluginIndex],
+    //       installed,
+    //     };
+    //     pluginSelection[pluginIndex] = alteredPlugin;
+    //     return { pluginSelection };
+    //   }),
 
     setAutoUpdate: (autoUpdate) => set(() => ({ autoUpdate })),
     setArrangementTemplates: (arrangements) =>

@@ -56,7 +56,7 @@ export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
     >
       <div className={style.parent}>
         <div
-          className={[style.yaml, stable.source && style.withSource]
+          className={[style.yaml, stable.sourceString && style.withSource]
             .filter((v) => v)
             .join(" ")}
         >
@@ -87,7 +87,9 @@ export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
               ))}
             </Flex>
           </div>
-          {stable.source ? <PreCode>{stable.source.raw}</PreCode> : null}
+          {stable.sourceString ? (
+            <PreCode>{stable.sourceString}</PreCode>
+          ) : null}
         </div>
       </div>
 

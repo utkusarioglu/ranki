@@ -18,15 +18,17 @@ const file = fs.readFileSync(filePath).toString();
 export function main(raw: string) {
   const FEATURES = ["idList", "creator", "source", "subtree", "children"];
   const dqm = new Dqm(
-    {
-      // @ts-ignore it expects the entire object
-      console: {
-        // @ts-ignore it expects the entire object
-        plugins: {
-          requested: ["ParamsV2", "FrameV2"],
+    [
+      {
+        id: "console",
+        config: {
+          // @ts-ignore it expects the entire object
+          plugins: {
+            requested: ["ParamsV2", "FrameV2"],
+          },
         },
       },
-    },
+    ],
     [baseV2, frameV2, paramsV2, frameV2Code],
   );
   try {

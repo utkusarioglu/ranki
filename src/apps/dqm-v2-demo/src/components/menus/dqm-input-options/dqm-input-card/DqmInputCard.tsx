@@ -4,6 +4,7 @@ import { useUiStore } from "_stores/ui/ui.store.mts";
 import { Button, Flex, Input } from "antd";
 import { type FC } from "react";
 import style from "./DqmInputCard.module.css";
+import { SkinnyCard } from "_views/skinny-card/SkinnyCard";
 
 interface DqmInputProps {
   index: number;
@@ -15,17 +16,19 @@ export const DqmInputCard: FC<DqmInputProps> = ({ index }) => {
   const ui = useUiStore();
 
   return (
-    <div className={style.container}>
-      <Flex>
+    <SkinnyCard>
+      <Flex className={style.row}>
         <Input
           value={theater}
           onChange={(e) => code.setTheaterNameByIndex(index, e.target.value)}
         />
-        <Button icon={<EyeFilled />} />
-        <Button
-          icon={<CloseOutlined />}
-          onClick={() => code.removeTheaterByIndex(index)}
-        />
+        <Flex>
+          <Button icon={<EyeFilled />} />
+          <Button
+            icon={<CloseOutlined />}
+            onClick={() => code.removeTheaterByIndex(index)}
+          />
+        </Flex>
       </Flex>
       <Input.TextArea
         className={style.textarea}
@@ -48,6 +51,6 @@ export const DqmInputCard: FC<DqmInputProps> = ({ index }) => {
           Templates
         </Button>
       </Flex>
-    </div>
+    </SkinnyCard>
   );
 };

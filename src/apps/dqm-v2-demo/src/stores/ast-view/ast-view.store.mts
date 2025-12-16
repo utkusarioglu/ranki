@@ -25,7 +25,7 @@ export const useAstViewStore = create<AstViewStore>((set) => ({
     ["childrenNodes", "subtreeNodes"],
     ["tokenNodes", "spaceNodes"],
   ),
-  stable: wrapVisible<SanitizedNodeStable>(["source"], []),
+  stable: wrapVisible<SanitizedNodeStable>(["sourceString"], []),
 
   sanitized: null,
   parsed: {

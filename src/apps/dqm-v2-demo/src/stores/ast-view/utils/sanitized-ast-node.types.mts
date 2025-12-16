@@ -6,7 +6,6 @@ import type {
   CounterStat,
   CreationMethod,
   AstSourceString,
-  AstSourceView,
 } from "@dqm/package-dqm-api-v2";
 
 export interface SuccessfulSanitize {
@@ -62,7 +61,8 @@ export interface SanitizedNodeChildren {
 }
 
 export interface SanitizedNodeStable {
-  source: AstSourceString | AstSourceView<any>;
+  // sourceString: string; // AstSourceString | AstSourceView<any>;
+  sourceString: AstSourceString;
 }
 export interface SanitizedNodeViewPreferences {
   props: (keyof SanitizedNodeProps)[];

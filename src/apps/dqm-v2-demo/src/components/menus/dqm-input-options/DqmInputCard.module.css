@@ -1,9 +1,0 @@
-.textarea {
-  min-height: 8em !important;
-  min-width: 100%;
-  resize: none !important;
-}
-
-.container {
-  margin-bottom: var(--ant-padding);
-}

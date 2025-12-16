@@ -34,7 +34,7 @@ export const DocumentRender = () => {
   );
 
   const requestHeight = (h: number) => {
-    console.log("r", h);
+    console.log("height request:", h);
   };
 
   return (

@@ -1,5 +1,5 @@
 .container {
-  margin-bottom: var(--ant-padding);
+  margin-bottom: 0;
 }
 
 .row {

@@ -1,0 +1,18 @@
+.titleRow {
+  padding: 0;
+  margin-inline: var(--ant-padding);
+  margin-block: 0 var(--ant-padding);
+}
+
+.title {
+  padding: 0;
+  margin: 0 !important;
+}
+
+.container {
+  margin-bottom: var(--ant-padding);
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}

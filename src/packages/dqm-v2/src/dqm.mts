@@ -27,7 +27,7 @@ export class Dqm {
    * #1 I'm not happy with DEFAULT_CONFIG being mutated twice. Correct config
    * shape would allow defining these values at once
    */
-  constructor(configs: DqmConfigPack, plugins: IDqmPlugin[]) {
+  constructor(configPacks: DqmConfigPack, plugins: IDqmPlugin[]) {
     Id.resetUnique();
     plugins.forEach((plugin) => {
       this.plugins.addPlugin(plugin);
@@ -38,8 +38,8 @@ export class Dqm {
     DEFAULT_CONFIG.plugins.config = pluginDefaults.config;
     DEFAULT_CONFIG.grammar.tokens = pluginDefaults.tokens;
     this.config.pushConfig("default", DEFAULT_CONFIG);
-    Object.entries(configs).forEach(([k, v]) => {
-      this.config.pushConfig(k, v);
+    configPacks.map(({ id, config }) => {
+      this.config.pushConfig(id, config);
     });
   }
 

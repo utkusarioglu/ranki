@@ -4,9 +4,19 @@
 }
 
 .container {
-  margin-bottom: var(--ant-padding);
+  margin-bottom: var(--ant-padding-sm);
+  background-color: #050505;
+  padding: var(--ant-padding);
 
   &:last-of-type {
     margin-bottom: 0;
   }
+}
+
+.text {
+  margin-block: var(--ant-padding);
+}
+
+.controls {
+  gap: var(--ant-padding);
 }

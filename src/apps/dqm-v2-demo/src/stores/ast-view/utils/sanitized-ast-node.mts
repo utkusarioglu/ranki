@@ -47,14 +47,16 @@ class SanitizedAstNode {
     const stable: Partial<SanitizedNodeStable> = {};
     this.visible.stable.forEach((id) => {
       switch (id) {
-        case "source":
-          stable[id] =
-            this.node.getKind() === "leaf"
-              ? this.node.getLeafView()
-              : {
-                  type: "string",
-                  raw: this.node.getSourceString(),
-                };
+        case "sourceString":
+          stable[id] = this.node.getSourceString();
+          // this.node.getKind() === "leaf"
+          //   ? this.node.getLeafView().raw
+          //   : this.node.getSourceString();
+          // : {
+          //     type: "string",
+          //     raw: this.node.getSourceString(),
+          //     value: this.node.getSourceString(),
+          //   };
           break;
         default:
           throw new Error(`Unrecognized sanitize feature: ${id}`);

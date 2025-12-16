@@ -1,0 +1,18 @@
+.textarea {
+  min-height: 8em !important;
+  min-width: 100%;
+  resize: none !important;
+
+  &::-webkit-scrollbar {
+    appearance: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    display: none;
+  }
+}
+
+.row {
+  margin-bottom: var(--ant-padding-sm);
+  gap: var(--ant-padding-sm);
+}

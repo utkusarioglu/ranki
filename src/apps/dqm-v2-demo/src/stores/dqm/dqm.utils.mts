@@ -1,14 +1,16 @@
 import { Dqm } from "@dqm/package-dqm-v2";
-// import baseV2 from "@dqm/plugin-base-v2";
-// import frameV2 from "@dqm/plugin-frame-v2";
-// import paramsV2 from "@dqm/plugin-params-v2";
-// import frameV2Code from "@dqm/plugin-frame-v2-code";
 import type {
   DqmConfigPack,
+  DqmConfigPackEntry,
   DqmParseInputStructured,
+  DqmPluginName,
   IDqmPlugin,
 } from "@dqm/package-dqm-api-v2";
-import type { CreateDqmParseNeeded, DqmStore } from "./dqm.store.types.mts";
+import type {
+  CreateDqmParseNeeded,
+  DqmStore,
+  PluginStoreWrapper,
+} from "./dqm.store.types.mts";
 import type { ParseResult } from "./dqm.utils.types.mts";
 
 export function parseDqm(
@@ -16,22 +18,8 @@ export function parseDqm(
   config: DqmConfigPack,
   plugins: IDqmPlugin[],
 ): ParseResult {
-  console.log(config, plugins);
   try {
-    const dqm = new Dqm(
-      config,
-      plugins,
-      // {
-      //   // @ts-ignore it expects the entire object
-      //   console: {
-      //     // @ts-ignore it expects the entire object
-      //     plugins: {
-      //       requested: ["ParamsV2", "FrameV2"],
-      //     },
-      //   },
-      // },
-      // [baseV2, frameV2, paramsV2, frameV2Code],
-    );
+    const dqm = new Dqm(config, plugins);
     const data = dqm.parse(input);
 
     return {
@@ -57,26 +45,45 @@ export function createDqmParsedProp(
 
   const plugins = state.pluginSelection
     .map((p) => {
-      const members = p.members.filter((m) => m.enabled);
-      if (members.length && p.installed) {
-        return {
-          ...p,
-          members,
-          installed: true,
-        };
-      } else {
-        return {
-          ...p,
-          installed: false,
-        };
-      }
+      const plugins = p.plugins.filter((m) => m.installed);
+      return { ...p, plugins };
     })
-    .filter((p) => p.installed)
-    .map((p) => p.members.map((m) => m.member));
+    .filter((p) => p.enabled && !!p.plugins.length)
+    .map((p) => p.plugins.map((m) => m.plugin));
+
+  const config: DqmConfigPack = [
+    ...state.configPack,
+    buildPluginSelectionConfig(state.pluginSelection),
+  ];
 
   return {
-    parsed: parseDqm(state.inputs, state.configPack, plugins),
+    parsed: parseDqm(state.inputs, config, plugins),
   };
+}
+
+export function buildPluginSelectionConfig(
+  pluginSelection: PluginStoreWrapper[],
+): DqmConfigPackEntry {
+  const standards: DqmPluginName[] = [];
+  pluginSelection.forEach((pac) =>
+    pac.plugins.forEach((plu) => plu.standard && standards.push(plu.name)),
+  );
+  const requested: DqmPluginName[] = [];
+  pluginSelection.forEach((pac) =>
+    pac.plugins.forEach((plu) => plu.requested && requested.push(plu.name)),
+  );
+
+  const pluginSelectionConfig: DqmConfigPackEntry = {
+    id: "pluginSelectionConfig",
+    config: {
+      // @ts-expect-error
+      plugins: {
+        ...(standards.length && { standards }),
+        ...(requested.length && { requested }),
+      },
+    },
+  };
+  return pluginSelectionConfig;
 }
 
 export function debounce<T extends (...args: any[]) => void>(

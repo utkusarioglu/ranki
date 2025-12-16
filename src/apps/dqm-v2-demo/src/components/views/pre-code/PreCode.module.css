@@ -1,9 +1,7 @@
 .pre {
   min-width: max-content;
   width: 100%;
-  /* width: 20svw; */
-  /* max-width: 200px; */
-  background-color: black !important;
+  background-color: var(--color-bg-sample) !important;
   padding: var(--ant-padding);
   margin: 0;
   box-sizing: border-box;

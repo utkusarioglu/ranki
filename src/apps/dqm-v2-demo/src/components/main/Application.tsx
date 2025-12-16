@@ -18,6 +18,16 @@ function Application() {
             borderRadius: 0,
             colorPrimary: "#E6AE07",
             colorTextSecondary: "#404040",
+            colorBorder: "transparent",
+          },
+          components: {
+            Input: {
+              colorBgContainer: "var(--color-bg-sample)", // card/component background
+            },
+            Button: {
+              // colorBorder: "var(--ant-color-bg-base)",
+              colorBgContainer: "#252525",
+            },
           },
         }}
       >

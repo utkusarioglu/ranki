@@ -14,6 +14,7 @@ import { type FC, type PropsWithChildren, type ReactNode } from "react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { RenderSettings } from "../render-settings/RenderSettings";
 import { DqmPluginsOptions } from "_menus/dqm-plugins-options/DqmPluginsOptions";
+import { DqmConfigOptions } from "_menus/dqm-config-options/DqmConfigOptions";
 
 type Level = {
   key: string;
@@ -41,7 +42,6 @@ const levels: Level[] = [
   {
     key: "dqm",
     label: "Dqm",
-    // TabChild: <DqmInputOptions />,
     icon: <FormOutlined />,
     childLevels: [
       {
@@ -53,7 +53,7 @@ const levels: Level[] = [
       {
         key: "config",
         label: "Config",
-        TabChild: <NotYet />,
+        TabChild: <DqmConfigOptions />,
         icon: <SettingOutlined />,
       },
       {
@@ -67,7 +67,6 @@ const levels: Level[] = [
   {
     key: "view",
     label: "View",
-    // TabChild: <ViewOptions />,
     icon: <FileTextOutlined />,
     childLevels: [
       {
@@ -86,7 +85,6 @@ const levels: Level[] = [
       {
         key: "nodes",
         label: "Node",
-        // TabChild: <NodeOptions />,
         icon: <BoxPlotOutlined />,
         childLevels: [
           {

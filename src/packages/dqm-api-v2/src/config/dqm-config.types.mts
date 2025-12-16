@@ -10,7 +10,8 @@ export type DqmPluginsConfig = Record<string, any>;
 
 export type DqmPluginVersion = string & { type?: "DqmPluginVersion" };
 
-export type DqmConfigPack = Record<ConfigEntryCode, DqmConfig>;
+export type DqmConfigPackEntry = { id: ConfigEntryCode; config: DqmConfig };
+export type DqmConfigPack = DqmConfigPackEntry[];
 
 export type DqmPluginsConfigDefaults = {
   tokens: DqmPluginsTokens;
