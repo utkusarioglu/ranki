@@ -12,7 +12,9 @@ export const MenuFormItem: FC<PropsWithChildren<MenuFormItemProps>> = ({
 }) => {
   return (
     <Form.Item label={label} className={style.container}>
-      <Flex className={style.row}>{children}</Flex>
+      <Flex align="center" className={style.row}>
+        {children}
+      </Flex>
     </Form.Item>
   );
 };

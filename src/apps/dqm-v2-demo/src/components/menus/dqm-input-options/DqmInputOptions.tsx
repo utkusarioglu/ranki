@@ -1,11 +1,9 @@
-import { SaveOutlined } from "@ant-design/icons";
 import { useDqmStore } from "_stores/dqm/dqm.store.mts";
-import { useUiStore } from "_stores/ui/ui.store.mts";
 import { Button, Form } from "antd";
 import { DqmInputCard } from "./DqmInputCard";
 import style from "./DqmInputOptions.module.css";
 import { UpdatesForm } from "./updates-form/UpdatesForm";
-import { MenuFormItem } from "_views/menu-form-item/MenuFormItem";
+import { ArrangementForm } from "./arrangement-form/ArrangementForm";
 
 export const DqmInputOptions = () => {
   const code = useDqmStore();
@@ -28,25 +26,5 @@ export const DqmInputOptions = () => {
         Add New Theater
       </Button>
     </div>
-  );
-};
-
-const ArrangementForm = () => {
-  const ui = useUiStore();
-  return (
-    <MenuFormItem label="Arrangement">
-      <Button
-        size="small"
-        onClick={() =>
-          ui.setTemplateDrawerState({
-            type: "arrangement",
-            index: 0,
-          })
-        }
-      >
-        Load
-      </Button>
-      <Button size="small">Save</Button>
-    </MenuFormItem>
   );
 };

@@ -1,7 +1,7 @@
 import { useDqmStore } from "_stores/dqm/dqm.store.mts";
 import { BlockySwitch } from "_views/blocky-switch/BlockySwitch";
 import { MenuFormItem } from "_views/menu-form-item/MenuFormItem";
-import { Button, Flex, Form } from "antd";
+import { Button } from "antd";
 
 export const UpdatesForm = () => {
   const dqm = useDqmStore();
@@ -23,7 +23,9 @@ export const UpdatesForm = () => {
           value={dqm.deferParsing}
         />
       ) : (
-        <Button onClick={() => dqm.parseInput()}>Update</Button>
+        <Button size="small" onClick={() => dqm.parseInput()}>
+          Update
+        </Button>
       )}
     </MenuFormItem>
   );
