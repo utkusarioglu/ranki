@@ -5,11 +5,15 @@ import { Scroller } from "_views/scroller/Scroller";
 import { useDqmStore } from "_stores/dqm/dqm.store.mts";
 
 export const DisplayContainer = () => {
-  const code = useDqmStore();
+  const { inputs, pluginSelection, configPack } = useDqmStore();
   return (
     <ErrorBoundary
       FallbackComponent={ErrorFallback}
-      key={JSON.stringify(code.inputs)}
+      key={JSON.stringify({
+        inputs,
+        pluginSelection,
+        configPack,
+      })}
     >
       <Scroller direction="vertical">
         <Outlet />

@@ -5,6 +5,7 @@ import {
   FormOutlined,
   FundProjectionScreenOutlined,
   InboxOutlined,
+  SettingOutlined,
   ShareAltOutlined,
 } from "@ant-design/icons";
 import { DqmInputOptions } from "../dqm-input-options/DqmInputOptions";
@@ -12,6 +13,7 @@ import { AstSanitizerOptions } from "../ast-sanitizer-options/AstSanitizerOption
 import { type FC, type PropsWithChildren, type ReactNode } from "react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { RenderSettings } from "../render-settings/RenderSettings";
+import { DqmPluginsOptions } from "_menus/dqm-plugins-options/DqmPluginsOptions";
 
 type Level = {
   key: string;
@@ -39,8 +41,28 @@ const levels: Level[] = [
   {
     key: "dqm",
     label: "Dqm",
-    TabChild: <DqmInputOptions />,
+    // TabChild: <DqmInputOptions />,
     icon: <FormOutlined />,
+    childLevels: [
+      {
+        key: "inputs",
+        label: "Inputs",
+        TabChild: <DqmInputOptions />,
+        icon: <FormOutlined />,
+      },
+      {
+        key: "config",
+        label: "Config",
+        TabChild: <NotYet />,
+        icon: <SettingOutlined />,
+      },
+      {
+        key: "plugins",
+        label: "Plugins",
+        TabChild: <DqmPluginsOptions />,
+        icon: <InboxOutlined />,
+      },
+    ],
   },
   {
     key: "view",
@@ -102,12 +124,6 @@ const levels: Level[] = [
         ],
       },
     ],
-  },
-  {
-    key: "plugins",
-    label: "Plugins",
-    TabChild: <NotYet />,
-    icon: <InboxOutlined />,
   },
 ];
 

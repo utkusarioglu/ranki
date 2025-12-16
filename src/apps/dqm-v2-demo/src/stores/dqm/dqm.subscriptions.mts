@@ -11,7 +11,6 @@ export const deferredParseDqmInput = () => {
     if (deferParsing) {
       debounceEvent();
     } else {
-      console.log("p");
       parseInput();
     }
   }

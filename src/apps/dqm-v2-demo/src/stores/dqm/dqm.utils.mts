@@ -1,25 +1,36 @@
 import { Dqm } from "@dqm/package-dqm-v2";
-import baseV2 from "@dqm/plugin-base-v2";
-import frameV2 from "@dqm/plugin-frame-v2";
-import paramsV2 from "@dqm/plugin-params-v2";
-import frameV2Code from "@dqm/plugin-frame-v2-code";
-import type { DqmParseInputStructured } from "@dqm/package-dqm-api-v2";
+// import baseV2 from "@dqm/plugin-base-v2";
+// import frameV2 from "@dqm/plugin-frame-v2";
+// import paramsV2 from "@dqm/plugin-params-v2";
+// import frameV2Code from "@dqm/plugin-frame-v2-code";
+import type {
+  DqmConfigPack,
+  DqmParseInputStructured,
+  IDqmPlugin,
+} from "@dqm/package-dqm-api-v2";
 import type { CreateDqmParseNeeded, DqmStore } from "./dqm.store.types.mts";
 import type { ParseResult } from "./dqm.utils.types.mts";
 
-export function parseDqm(input: DqmParseInputStructured): ParseResult {
+export function parseDqm(
+  input: DqmParseInputStructured,
+  config: DqmConfigPack,
+  plugins: IDqmPlugin[],
+): ParseResult {
+  console.log(config, plugins);
   try {
     const dqm = new Dqm(
-      {
-        // @ts-ignore it expects the entire object
-        console: {
-          // @ts-ignore it expects the entire object
-          plugins: {
-            requested: ["ParamsV2", "FrameV2"],
-          },
-        },
-      },
-      [baseV2, frameV2, paramsV2, frameV2Code],
+      config,
+      plugins,
+      // {
+      //   // @ts-ignore it expects the entire object
+      //   console: {
+      //     // @ts-ignore it expects the entire object
+      //     plugins: {
+      //       requested: ["ParamsV2", "FrameV2"],
+      //     },
+      //   },
+      // },
+      // [baseV2, frameV2, paramsV2, frameV2Code],
     );
     const data = dqm.parse(input);
 
@@ -43,8 +54,28 @@ export function createDqmParsedProp(
   if (!state.autoUpdate) {
     return { parsed: state.parsed };
   }
+
+  const plugins = state.pluginSelection
+    .map((p) => {
+      const members = p.members.filter((m) => m.enabled);
+      if (members.length && p.installed) {
+        return {
+          ...p,
+          members,
+          installed: true,
+        };
+      } else {
+        return {
+          ...p,
+          installed: false,
+        };
+      }
+    })
+    .filter((p) => p.installed)
+    .map((p) => p.members.map((m) => m.member));
+
   return {
-    parsed: parseDqm(state.inputs),
+    parsed: parseDqm(state.inputs, state.configPack, plugins),
   };
 }
 
