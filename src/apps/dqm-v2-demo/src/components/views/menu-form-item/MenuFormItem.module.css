@@ -1,0 +1,7 @@
+.container {
+  margin-bottom: var(--ant-padding);
+}
+
+.row {
+  gap: var(--ant-padding-sm);
+}
