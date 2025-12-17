@@ -2,12 +2,6 @@
   margin: var(--ant-padding);
 }
 
-/* .arrangement {
-  width: 100%;
-
-  margin-bottom: var(--ant-padding);
-} */
-
 .band {
   background-color: var(--ant-color-bg-container);
   padding: var(--ant-padding);

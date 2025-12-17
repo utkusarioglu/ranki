@@ -12,6 +12,7 @@ import type {
   PluginStoreWrapper,
 } from "./dqm.store.types.mts";
 import type { ParseResult } from "./dqm.utils.types.mts";
+import yaml from "yaml";
 
 export function parseDqm(
   input: DqmParseInputStructured,
@@ -43,22 +44,31 @@ export function createDqmParsedProp(
     return { parsed: state.parsed };
   }
 
-  const plugins = state.pluginSelection
-    .map((p) => {
-      const plugins = p.plugins.filter((m) => m.installed);
-      return { ...p, plugins };
-    })
-    .filter((p) => p.enabled && !!p.plugins.length)
-    .map((p) => p.plugins.map((m) => m.plugin));
+  try {
+    const plugins = state.pluginSelection
+      .map((p) => {
+        const plugins = p.plugins.filter((m) => m.installed);
+        return { ...p, plugins };
+      })
+      .filter((p) => p.enabled && !!p.plugins.length)
+      .map((p) => p.plugins.map((m) => m.plugin));
 
-  const config: DqmConfigPack = [
-    ...state.configPack,
-    buildPluginSelectionConfig(state.pluginSelection),
-  ];
-
-  return {
-    parsed: parseDqm(state.inputs, config, plugins),
-  };
+    const config: DqmConfigPack = [
+      ...state.configPack
+        .filter((c) => !!c.configString.length)
+        .map((c) => ({
+          id: c.configCode,
+          config: yaml.parse(c.configString),
+        })),
+      buildPluginSelectionConfig(state.pluginSelection),
+    ];
+    return {
+      parsed: parseDqm(state.inputs, config, plugins),
+    };
+  } catch (e) {
+    console.log(e);
+    return { parsed: state.parsed };
+  }
 }
 
 export function buildPluginSelectionConfig(

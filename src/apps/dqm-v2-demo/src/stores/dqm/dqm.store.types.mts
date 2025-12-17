@@ -3,7 +3,7 @@ import type {
   DqmParseInputString,
   DqmParseInputStructured,
   IDqmPlugin,
-  DqmConfigPack,
+  ConfigEntryCode,
 } from "@dqm/package-dqm-api-v2";
 import type { ArrangementTemplateGroup } from "../../components/menus/dqm-input-options/templates/arrangement-template/ArrangementTemplate.types.mts";
 import type { SingleTemplateGroup } from "../../components/menus/dqm-input-options/templates/single-template/SingleTemplate.types.mts";
@@ -31,12 +31,17 @@ export interface PluginStoreWrapper {
   enabled: boolean;
 }
 
+export interface ConfigInput {
+  configCode: string;
+  configString: string;
+}
+
 export interface DqmStoreState {
   deferParsing: boolean;
   singleTemplates: SingleTemplateGroup[];
   arrangementTemplates: ArrangementTemplateGroup[];
   pluginSelection: PluginStoreWrapper[];
-  configPack: DqmConfigPack;
+  configPack: ConfigInput[];
 
   parsed: ParseResult;
   autoUpdate: boolean;
@@ -58,11 +63,6 @@ export interface DqmStoreActions {
   parseInput: () => void;
   setDeferParsing: (defer: boolean) => void;
 
-  // setPluginMemberEnabled(
-  //   pluginIndex: number,
-  //   memberIndex: number,
-  //   enabled: boolean,
-  // ): void;
   setPluginPackageAsEnabled(pluginIndex: number, enabled: boolean): void;
 
   setPluginAsInstalled(
@@ -82,19 +82,21 @@ export interface DqmStoreActions {
     requested: boolean,
   ): void;
 
-  // parsePluginSelectionsConfig: () => void;
+  pushNewConfig: () => void;
 
-  // setPluginInstalled(pluginIndex: number, installed: boolean): void;
+  setConfigCodeByIndex: (index: number, code: ConfigEntryCode) => void;
+  setConfigValueByIndex: (index: number, value: string) => void;
+  removeConfigByIndex: (index: number) => void;
 }
 
 export type SetPluginAsInstalled = DqmStoreActions["setPluginAsInstalled"];
 
 export type SetPluginPackageAsEnabled =
   DqmStoreActions["setPluginPackageAsEnabled"];
-export type SetPluginAsStandard = DqmStoreActions["setPluginAsStandard"];
-export type SetPluginAsRequested = DqmStoreActions["setPluginAsRequested"];
 
-// export type SetPluginInstalled = DqmStoreActions["setPluginInstalled"];
+export type SetPluginAsStandard = DqmStoreActions["setPluginAsStandard"];
+
+export type SetPluginAsRequested = DqmStoreActions["setPluginAsRequested"];
 
 export type CreateDqmParseNeeded =
   | "autoUpdate"

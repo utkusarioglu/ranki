@@ -27,6 +27,7 @@ function Application() {
             Button: {
               // colorBorder: "var(--ant-color-bg-base)",
               colorBgContainer: "#252525",
+              colorBorderDisabled: "transparent",
             },
           },
         }}

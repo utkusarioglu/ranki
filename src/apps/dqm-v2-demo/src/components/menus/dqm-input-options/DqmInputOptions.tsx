@@ -21,6 +21,7 @@ export const DqmInputOptions = () => {
           ))}
         </div>
       </div>
+
       <div className={style.band}>
         <Button style={{ width: "100%" }} onClick={() => code.pushNewTheater()}>
           Add New Theater

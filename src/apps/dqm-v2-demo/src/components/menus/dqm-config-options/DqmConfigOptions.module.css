@@ -1,3 +1,8 @@
 .container {
   padding: var(--ant-padding);
 }
+
+.band {
+  padding: var(--ant-padding);
+  background-color: var(--ant-color-bg-container);
+}

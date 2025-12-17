@@ -1,24 +1,10 @@
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
-import type { DqmStore } from "./dqm.store.types.mts";
+import type { ConfigInput, DqmStore } from "./dqm.store.types.mts";
 import { INPUTS, AUTO_UPDATE } from "./dqm.initial.mts";
 import { createDqmParsedProp } from "./dqm.utils.mts";
 import { deferredParseDqmInput } from "./dqm.subscriptions.mts";
 import { pluginSelectionInit } from "./dqm.plugins.mts";
-
-// const DEFAULT_CONFIG_PACK: ExpandedConfigPackEntry[] = [
-// {
-//   id: "pluginSelectionConfig",
-//   editable: false,
-//   message: "This configuration entry is controlled by the Plugins tab",
-//   config: {
-//     // @ts-expect-error
-//     plugins: {
-//       requested: ["ParamsV2", "FrameV2"],
-//     },
-//   },
-// },
-// ];
 
 export const useDqmStore = create(
   subscribeWithSelector<DqmStore>((set) => ({
@@ -37,6 +23,52 @@ export const useDqmStore = create(
       configPack: [],
       pluginSelection: pluginSelectionInit,
     }),
+
+    pushNewConfig: () =>
+      set((state) => {
+        const index = state.configPack.length;
+        const configPack: ConfigInput[] = [
+          ...state.configPack,
+          {
+            configCode: `config${index}`,
+            configString: "",
+          },
+        ];
+        return {
+          configPack,
+        };
+      }),
+
+    setConfigCodeByIndex: (index, configCode) =>
+      set((state) => {
+        const configPack = [...state.configPack];
+        configPack[index] = {
+          ...configPack[index],
+          configCode,
+        };
+        return {
+          configPack,
+        };
+      }),
+
+    removeConfigByIndex: (index) =>
+      set((state) => {
+        const configPack: ConfigInput[] = [...state.configPack];
+        configPack.splice(index, 1);
+        return { configPack };
+      }),
+
+    setConfigValueByIndex: (index, configString) =>
+      set((state) => {
+        const configPack = [...state.configPack];
+        configPack[index] = {
+          ...configPack[index],
+          configString,
+        };
+        return {
+          configPack,
+        };
+      }),
 
     setPluginPackageAsEnabled: (packageIndex, enabled) =>
       set((state) => {
@@ -96,28 +128,6 @@ export const useDqmStore = create(
         pluginSelection[packageIndex] = alteredPackage;
         return { pluginSelection };
       }),
-
-    // setPluginEnabled: (pluginIndex, enabled) =>
-    //   set((state) => {
-    //     const pluginSelection = [...state.pluginSelection];
-    //     const alteredPlugin = {
-    //       ...state.pluginSelection[pluginIndex],
-    //       enabled,
-    //     };
-    //     pluginSelection[pluginIndex] = alteredPlugin;
-    //     return { pluginSelection };
-    //   }),
-
-    // setPluginInstalled: (pluginIndex, installed) =>
-    //   set((state) => {
-    //     const pluginSelection = [...state.pluginSelection];
-    //     const alteredPlugin = {
-    //       ...state.pluginSelection[pluginIndex],
-    //       installed,
-    //     };
-    //     pluginSelection[pluginIndex] = alteredPlugin;
-    //     return { pluginSelection };
-    //   }),
 
     setAutoUpdate: (autoUpdate) => set(() => ({ autoUpdate })),
     setArrangementTemplates: (arrangements) =>
@@ -181,5 +191,10 @@ useDqmStore.subscribe(
 
 useDqmStore.subscribe(
   (s) => s.pluginSelection,
+  () => deferredParseDqmInput(),
+);
+
+useDqmStore.subscribe(
+  (s) => s.configPack,
   () => deferredParseDqmInput(),
 );

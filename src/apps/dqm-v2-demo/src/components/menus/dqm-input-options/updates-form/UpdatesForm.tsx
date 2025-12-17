@@ -14,6 +14,7 @@ export const UpdatesForm = () => {
         onChange={(e) => dqm.setAutoUpdate(e)}
         value={dqm.autoUpdate}
       />
+
       {dqm.autoUpdate ? (
         <BlockySwitch
           size="small"

@@ -3,7 +3,16 @@
   margin-inline: var(--ant-padding);
 }
 
+.input {
+  background-color: var(--color-bg-sample) !important;
+}
+
 .textarea {
   /* background-color: #050505 !important; */
   background-color: var(--color-bg-sample) !important;
+}
+
+.row {
+  gap: var(--ant-padding-sm);
+  margin-bottom: var(--ant-padding-sm);
 }
