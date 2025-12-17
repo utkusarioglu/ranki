@@ -37,21 +37,23 @@ export const PluginMember: FC<PluginMemberProps> = ({
 
       <Typography className={style.text}>{description}</Typography>
 
-      <Flex justify="end" className={style.controls}>
-        <BlockySwitch
-          checkedChildren={"Std"}
-          unCheckedChildren={"!Std"}
-          size="small"
-          onChange={(v) => setPluginAsStandard(packageIndex, pluginIndex, v)}
-          value={standard}
-        />
-        <BlockySwitch
-          checkedChildren={"Req"}
-          unCheckedChildren={"!Req"}
-          size="small"
-          onChange={(v) => setPluginAsRequested(packageIndex, pluginIndex, v)}
-          value={requested}
-        />
+      <Flex justify="space-between" className={style.controls}>
+        <Flex className={style.controls}>
+          <BlockySwitch
+            checkedChildren={"Std"}
+            unCheckedChildren={"!Std"}
+            size="small"
+            onChange={(v) => setPluginAsStandard(packageIndex, pluginIndex, v)}
+            value={standard}
+          />
+          <BlockySwitch
+            checkedChildren={"Req"}
+            unCheckedChildren={"!Req"}
+            size="small"
+            onChange={(v) => setPluginAsRequested(packageIndex, pluginIndex, v)}
+            value={requested}
+          />
+        </Flex>
         <BlockySwitch
           checkedChildren={"Inst"}
           unCheckedChildren={"!Inst"}
