@@ -58,7 +58,10 @@ export class Id implements IId {
   @writeOnce("id")
   setId(id: Alias | Chain): IId {
     this.id = id;
-    assertArrayNotEmpty(this.id, { id });
+    assertArrayNotEmpty(this.id, {
+      why: "Empty arrays do not allow discerning the requested information",
+      details: { id },
+    });
     switch (id.length) {
       case 1:
         this.setAlias(id as Alias);

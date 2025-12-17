@@ -50,7 +50,10 @@ export class ParamsLib extends CommonTransports implements IParams {
   @rejectValues(undefined)
   findById(channel: ParamChannel, id: Alias | Chain): IParam | never {
     const lib = this.paramsMap.get(channel)!;
-    assertExists(lib, { channel, id });
+    assertExists(lib, {
+      why: "Requested param hasn't been registered during initialization.",
+      details: { channel, id },
+    });
     return lib.findById(id);
   }
 

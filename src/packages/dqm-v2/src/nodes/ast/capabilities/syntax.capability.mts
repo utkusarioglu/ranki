@@ -8,10 +8,11 @@ import type {
   IdUnique,
   CreatorName,
 } from "@dqm/package-dqm-api-v2";
-import { assertArrayNotEmpty, DqmError } from "@dqm/package-dqm-utils";
+import { assertArrayNotEmpty } from "@dqm/package-dqm-utils";
 import type * as ohm from "ohm-js";
 import type { WorkedNodeDefinition } from "../ast-node.types.mjs";
 import { prepareContext } from "../ast.utils.mjs";
+import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
 
 /**
  * @dev
@@ -38,15 +39,23 @@ export function syntaxCapability<T>(self: T) {
      * */
     // @dependsOn("kind")
     pushNodes(nodeSetRaw: PushedNodeDefinition[], cpxUnique: IdUnique): T {
-      assertArrayNotEmpty(nodeSetRaw, { method: "pushNodes" });
+      assertArrayNotEmpty(nodeSetRaw, {
+        why: "Empty array would mean a redundant push call",
+        details: { method: "pushNodes" },
+      });
 
       const areIter = nodeSetRaw.map((n) => n[1].isIteration());
       const isIter = areIter.some((v) => v === true);
       const inconsistentIter = isIter && areIter.some((v) => v !== true);
       if (inconsistentIter) {
-        throw new DqmError("INCONSISTENT_ITERATOR_NODES", {
-          nodeSetRaw,
-          areIter,
+        throw new DqmAppError({
+          code: "INCONSISTENT_ITERATOR_NODES",
+          why: "Given nodes need to have the same iteration status",
+          cause: null,
+          details: {
+            nodeSetRaw,
+            areIter,
+          },
         });
       }
       const nodeSet: WorkedNodeDefinition[] = isIter
@@ -57,7 +66,12 @@ export function syntaxCapability<T>(self: T) {
         : nodeSetRaw.map(([relationship, nodes]) => [relationship, [nodes]]);
 
       if (nodeSet.some(([_, nodes]) => nodes.length !== nodeSet[0][1].length)) {
-        throw new DqmError("INCONSISTENT_ZIP_MEMBER_HEIGHTS", { nodeSet });
+        throw new DqmAppError({
+          code: "INCONSISTENT_ZIP_MEMBER_HEIGHTS",
+          why: "Given arrays have different lengths and cannot be zipped",
+          cause: null,
+          details: { nodeSet },
+        });
       }
       // @ts-expect-error #1
       const context = prepareContext(self);

@@ -1,6 +1,10 @@
-import { DqmError } from "../error/error.mjs";
+import { DqmConfigError } from "./error/error.mjs";
 import type { LocalConfig, ConfigTypes, ObjectPath } from "./config.types.mjs";
-import { assertNotExists, assertExists } from "../assertions.mjs";
+import {
+  assertNotExists,
+  assertExists,
+  assertArrayNotEmpty,
+} from "./error/assertions.mjs";
 import type { ConfigEntryCode, IConfig } from "@dqm/package-dqm-api-v2";
 
 export class Config implements IConfig {
@@ -18,7 +22,14 @@ export class Config implements IConfig {
 
   pushConfig(code: ConfigEntryCode, config: LocalConfig): IConfig {
     const c = this.configs[code];
-    assertNotExists(c, { code, config, configs: this.configs });
+    assertNotExists(c, {
+      why: "Config entry codes cannot be overwritten",
+      details: {
+        code,
+        config,
+        configs: this.configs,
+      },
+    });
     this.order.push(code);
     this.configs[code] = config;
     return this;
@@ -26,7 +37,10 @@ export class Config implements IConfig {
 
   replaceConfig<C>(code: ConfigEntryCode, config: C): IConfig {
     const c = this.configs[code];
-    assertExists(c, { config, code });
+    assertExists(c, {
+      why: "Cannot replace a config that has no entry.",
+      details: { config, code },
+    });
     this.configs[code] = config;
     return this;
   }
@@ -43,7 +57,13 @@ export class Config implements IConfig {
 
   getConfig<T>(name: ConfigEntryCode): T {
     const c = this.configs[name];
-    assertExists(c, { name, configs: this.configs });
+    assertExists(c, {
+      why: "Config entry codes need to correspond to a valid config",
+      details: {
+        name,
+        configs: this.configs,
+      },
+    });
     return c as unknown as T;
   }
 
@@ -70,7 +90,12 @@ export class Config implements IConfig {
         }
       }
     }
-    throw new DqmError("UNRESOLVED_TYPE", { curr, t });
+    throw new DqmConfigError({
+      code: "UNRESOLVED_TYPE",
+      cause: null,
+      why: "Given value does not coincide with any of the type buckets",
+      details: { curr, t },
+    });
   }
 
   /**
@@ -86,9 +111,12 @@ export class Config implements IConfig {
    * @param objs array of config objects to merge
    */
   private buildLevel(path: ObjectPath, objs: LocalConfig[]): LocalConfig {
-    if (objs.length === 0) {
-      throw new DqmError("ARRAY_EMPTY", {});
-    }
+    assertArrayNotEmpty(objs, {
+      why: "Cannot build a level with no members",
+      details: {
+        path,
+      },
+    });
     if (objs.length === 1) {
       return objs[0];
     }
@@ -105,10 +133,15 @@ export class Config implements IConfig {
         const revert = currType === "null";
 
         if (!arrays && !kvs && !revert && !skip) {
-          throw new DqmError("INCONSISTENT_CONFIG_TYPES", {
-            objs,
-            currType,
-            baseType,
+          throw new DqmConfigError({
+            code: "INCONSISTENT_CONFIG_TYPES",
+            why: "Given value is not in the permitted list of type coercions",
+            cause: null,
+            details: {
+              objs,
+              currType,
+              baseType,
+            },
           });
         }
       }
@@ -142,27 +175,17 @@ export class Config implements IConfig {
             return a;
           }, {});
           break;
-        default:
-          throw new DqmError("UNRESOLVED_TYPE", { curr, path });
       }
     }
-
-    // if (path.startsWith(".plugins.requested")) {
-    //   console.log(
-    //     "--",
-    //     path,
-    //     JSON.stringify(objs, null, 2),
-    //     "\n",
-    //     base,
-    //     "\n\n",
-    //   );
-    // }
     return base;
   }
 
   mergeTo(code: ConfigEntryCode): IConfig {
     const d = this.configs["default"];
-    assertExists(d, { code, configs: this.configs });
+    assertExists(d, {
+      why: "The default configuration is the basis for the rest and has to be defined",
+      details: { code, configs: this.configs },
+    });
     const nonDefaultOrdered = this.order
       .filter((v) => v !== "default")
       .reduce((a, c) => (a.push(c), a), [] as LocalConfig[]);

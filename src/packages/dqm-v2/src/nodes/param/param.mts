@@ -13,8 +13,9 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { Id } from "../../id/id.mjs";
 import { ALL_AUDIENCES } from "./param.constants.mjs";
-import { rejectValues, dependsOn, DqmError } from "@dqm/package-dqm-utils";
+import { rejectValues, dependsOn } from "@dqm/package-dqm-utils";
 import { AstNode } from "../ast/ast-node.mjs";
+import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
 export class Param extends AstNode implements IParam {
   private audience: Audience = ALL_AUDIENCES;
@@ -83,10 +84,15 @@ export class Param extends AstNode implements IParam {
   @dependsOn("specs", "defaultValues")
   checkValues() {
     if (this.values.length > this.defaultValues.length) {
-      throw new DqmError("TOO_MANY_VALUES", {
-        values: this.values,
-        defaults: this.defaultValues,
-        obj: this,
+      throw new DqmAppError({
+        code: "TOO_MANY_VALUES",
+        why: "Params are tuples and cannot define larger arrays than their default values",
+        cause: null,
+        details: {
+          values: this.values,
+          defaults: this.defaultValues,
+          obj: this,
+        },
       });
     }
   }

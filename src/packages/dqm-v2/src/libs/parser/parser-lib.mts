@@ -10,11 +10,11 @@ import type {
   IAstNodeContext,
   DqmPluginName,
 } from "@dqm/package-dqm-api-v2";
-import { DqmError } from "@dqm/package-dqm-utils";
 import type { ILibParser, T, Criteria } from "./parser-lib.types.mjs";
 import { ParserHash, type ParserHashString } from "./hash.mjs";
 import { expandDependencies, topologicalSort } from "./utils.mjs";
 import { buildGrammar, compileOhmActionDicts } from "./grammar.mjs";
+import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
 type GrammarName = DqmPluginName & { subtype?: "GrammarName" };
 
@@ -41,9 +41,14 @@ export class ParserLib implements ILibParser {
 
   add(plugin: IDqmPluginGrammar): ILibParser {
     if (this.grammars.has(plugin.meta.name)) {
-      throw new DqmError("PLUGIN_GRAMMAR_REGISTERED", {
-        list: this.grammars,
-        plugin,
+      throw new DqmAppError({
+        code: "PLUGIN_GRAMMAR_REGISTERED",
+        why: "Plugin names have to be unique",
+        cause: null,
+        details: {
+          list: this.grammars,
+          plugin,
+        },
       });
     }
     this.grammars.set(plugin.meta.name, plugin);
@@ -76,7 +81,12 @@ export class ParserLib implements ILibParser {
         new Set(config.plugins.standards),
       );
       if (missingStandard.length) {
-        throw new DqmError("MISSING_STANDARD_PARSERS", { missingStandard });
+        throw new DqmAppError({
+          code: "MISSING_STANDARD_PARSERS",
+          why: "Standard parsers are required for base functionality",
+          cause: null,
+          details: { missingStandard },
+        });
       }
     }
     {
@@ -84,7 +94,12 @@ export class ParserLib implements ILibParser {
         new Set(config.plugins.requested),
       );
       if (missingRequested.length) {
-        throw new DqmError("MISSING_REQUESTED_PARSERS", { missingRequested });
+        throw new DqmAppError({
+          code: "MISSING_REQUESTED_PARSERS",
+          why: "Components cannot function without their requested parsers",
+          details: { missingRequested },
+          cause: null,
+        });
       }
     }
 
@@ -126,9 +141,14 @@ export class ParserLib implements ILibParser {
       config,
     };
     if (this.reports[hash]) {
-      throw new DqmError("PARSER_HASH_COLLISION", {
-        hash,
-        reports: this.reports,
+      throw new DqmAppError({
+        code: "PARSER_HASH_COLLISION",
+        why: "Current configuration returns the same hash with a previous unrelated configuration",
+        cause: null,
+        details: {
+          hash,
+          reports: this.reports,
+        },
       });
     }
     this.reports[hash] = report;

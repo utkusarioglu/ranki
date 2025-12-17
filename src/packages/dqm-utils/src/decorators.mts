@@ -1,4 +1,5 @@
-import { DqmError } from "./error/error.mjs";
+import { assertArrayNotEmpty } from "./assertions.mjs";
+import { DqmUtilError } from "./util-error/util-error.mjs";
 
 // ANKI this is the new decorator syntax
 export function dependsOn(...properties: string[]) {
@@ -14,11 +15,15 @@ export function dependsOn(...properties: string[]) {
     const handler = function (this: This, ...args: Args): Return {
       properties.forEach((property) => {
         if ((this as any)[property] === undefined) {
-          throw new DqmError("REQUIRED_VALUE_UNDEFINED", {
-            // obj: this,
-            key: context.name,
-            property,
-            properties,
+          throw new DqmUtilError({
+            code: "REQUIRED_VALUE_UNDEFINED",
+            why: "A value required by the class method is undefined",
+            cause: null,
+            details: {
+              key: context.name,
+              property,
+              properties,
+            },
           });
         }
       });
@@ -41,14 +46,22 @@ export function rejectValues(...values: any[]) {
     >,
   ) {
     // assertMethodContext(context, {});
-    if (!values.length) {
-      throw new DqmError("EMPTY_ARRAY", {});
-    }
+    assertArrayNotEmpty(values, {
+      why: "rejectValues requires a non-empty array of values to know what to reject.",
+    });
+    // if (!values.length) {
+    //   throw new DqmUtilError("EMPTY_ARRAY", {});
+    // }
 
     const handler = function (this: This, ...args: Args): Return {
       const response = value.apply(this, args);
       if (values.some((v) => v === response)) {
-        throw new DqmError("UNDEFINED_VALUE", { context });
+        throw new DqmUtilError({
+          code: "VALUE_REJECTED",
+          why: "The method returned a value that it was required to reject",
+          cause: null,
+          details: { context },
+        });
       }
       return response;
     };
@@ -69,7 +82,12 @@ export function writeOnce(targetKey: string) {
     // assertMethodContext(context, {});
     const handler = function (this: This, ...args: Args): Return {
       if ((this as any)[targetKey] !== undefined) {
-        throw new DqmError("ALREADY_DEFINED", { value });
+        throw new DqmUtilError({
+          code: "ALREADY_DEFINED",
+          why: "A method that can only be set once was called a second time",
+          cause: null,
+          details: { value },
+        });
       }
       return value.apply(this, args);
     };

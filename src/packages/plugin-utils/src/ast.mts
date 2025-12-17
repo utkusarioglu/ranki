@@ -1,5 +1,4 @@
 import type * as ohm from "ohm-js";
-
 import type { IAstNode, IAstNodeContext } from "@dqm/package-dqm-api-v2";
 import { grabAssertExists } from "./assertions.mjs";
 

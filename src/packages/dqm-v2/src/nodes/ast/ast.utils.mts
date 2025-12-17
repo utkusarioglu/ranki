@@ -1,9 +1,10 @@
 import type {
   IAstNode,
-  IDqmPluginRequiredParams,
+  IDqmPluginErrorCode,
+  IDqmErrorBaseRequiredParams,
 } from "@dqm/package-dqm-api-v2";
 import { POSITIONAL_PARAM } from "../../constants.mjs";
-import { DqmPluginError } from "../../errors/dqm-plugin.error.mjs";
+import { DqmPluginError } from "../../errors/plugin-error/dqm-plugin-error.mjs";
 
 /**
  *
@@ -11,7 +12,7 @@ import { DqmPluginError } from "../../errors/dqm-plugin.error.mjs";
  * @returns The context param definition specified at the ohm parse operation.
  */
 export function prepareContext(ast: IAstNode) {
-  const error = (p: IDqmPluginRequiredParams) => {
+  const error = (p: IDqmErrorBaseRequiredParams<IDqmPluginErrorCode>) => {
     return new DqmPluginError({
       ...p,
       ast,
@@ -19,11 +20,11 @@ export function prepareContext(ast: IAstNode) {
     });
   };
 
-  const exists = (value: any, why: string, details = {}) => {
-    if (value === undefined) {
-      throw error({ code: "ASSERT_EXISTS", why, details });
-    }
-  };
+  // const exists = (value: any, why: string, details = {}) => {
+  //   if (value === undefined) {
+  //     throw error({ code: "ASSERT_EXISTS", why, details });
+  //   }
+  // };
 
   return {
     ast,
@@ -34,14 +35,9 @@ export function prepareContext(ast: IAstNode) {
       err: {
         error,
       },
-      assert: {
-        exists,
-        // exists: (value: any, why: string, details = {}) => {
-        //   if (value === undefined) {
-        //     throw error({ code: "ASSERT_EXISTS", why, details });
-        //   }
-        // },
-      },
+      // assert: {
+      //   exists,
+      // },
     },
   };
 }

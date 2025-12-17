@@ -8,6 +8,7 @@ import paramsV2 from "@dqm/plugin-params-v2";
 import frameV2Code from "@dqm/plugin-frame-v2-code";
 import yaml from "yaml";
 import { sanitizeSingle } from "./sanitize.mjs";
+import type { IDqmError } from "@dqm/package-dqm-api-v2";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.join(dirname, "..");
@@ -43,7 +44,7 @@ export function main(raw: string) {
   } catch (e) {
     try {
       // @ts-ignore
-      console.log(yaml.stringify(e.toDetailedJSON()));
+      console.log(yaml.stringify((e as IDqmError).toExtendedJSON()));
     } catch {
       // @ts-ignore
       console.log(e.toString());

@@ -13,10 +13,12 @@ import type {
   DqmParseOutput,
   DqmParseRole,
   DqmParseTheater,
+  IDqmErrorCause,
   IDqmPlugin,
   IParam,
   IPlugins,
 } from "@dqm/package-dqm-api-v2";
+import { DqmAppError } from "./errors/dqm-app-error/dqm-app-error.mjs";
 
 export class Dqm {
   private plugins: IPlugins = new Libs();
@@ -55,26 +57,36 @@ export class Dqm {
   }
 
   parse(rawInputs: DqmParseInput): DqmParseOutput {
-    const inputs = this.processInput(rawInputs);
-    const component: ChainList = [["base", "v2", "default"]];
-    const params: IParam[] = [];
-    const transports: CommonTransportsConstructorParams = {
-      plugins: this.plugins,
-      config: this.config,
-    };
-    const parsed = inputs.map((input) => {
-      return {
-        theater: input.theater,
-        ast: new AstNode(transports)
-          .setNature("synthetic")
-          .newCpx((cpx) => cpx.setParams(params).setIdList(component))
-          .setDirection("block")
-          .getCpx()
-          .parse(input),
+    try {
+      const inputs = this.processInput(rawInputs);
+      const component: ChainList = [["base", "v2", "default"]];
+      const params: IParam[] = [];
+      const transports: CommonTransportsConstructorParams = {
+        plugins: this.plugins,
+        config: this.config,
       };
-    });
-
-    return parsed;
+      const parsed = inputs.map((input) => {
+        return {
+          theater: input.theater,
+          ast: new AstNode(transports)
+            .setNature("synthetic")
+            .newCpx((cpx) => cpx.setParams(params).setIdList(component))
+            .setDirection("block")
+            .getCpx()
+            .parse(input),
+        };
+      });
+      return parsed;
+    } catch (e) {
+      throw new DqmAppError({
+        code: "appTest",
+        cause: e as IDqmErrorCause,
+        details: {
+          boundary: true,
+        },
+        why: "Check cause",
+      });
+    }
   }
 }
 

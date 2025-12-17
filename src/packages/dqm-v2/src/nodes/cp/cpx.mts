@@ -9,11 +9,12 @@ import type {
   ChainList,
   IId,
 } from "@dqm/package-dqm-api-v2";
-import { DqmError, dependsOn, rejectValues } from "@dqm/package-dqm-utils";
+import { dependsOn, rejectValues } from "@dqm/package-dqm-utils";
 import { ALL_AUDIENCES } from "../param/param.constants.mjs";
 import { Cps } from "./cps.mjs";
 import { CommonTransports } from "../common-transports.mjs";
 import { Id } from "../../id/id.mjs";
+import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
 export class Cpx extends CommonTransports implements ICpx {
   private id = new Id();
@@ -89,7 +90,12 @@ export class Cpx extends CommonTransports implements ICpx {
 
     switch (idList.length) {
       case 0:
-        throw new DqmError("CHAIN_LIST_EMPTY", { cpx: this });
+        throw new DqmAppError({
+          code: "CHAIN_LIST_EMPTY",
+          why: "Was given an Id of length 0",
+          cause: null,
+          details: { cpx: this },
+        });
       case 1:
         this.cps.push(createRoot());
         return this;

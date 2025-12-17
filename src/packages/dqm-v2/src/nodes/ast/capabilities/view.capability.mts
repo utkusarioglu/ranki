@@ -5,8 +5,9 @@ import type {
   AstSourceViewDecoderCustom,
   IAstNode,
 } from "@dqm/package-dqm-api-v2";
-import { assertLeaf, DqmError } from "@dqm/package-dqm-utils";
+import { assertLeaf } from "@dqm/package-dqm-utils";
 import type { LeafDecoder } from "../ast-node.types.mjs";
+import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
 
 export function viewCapability<T extends Pick<IAstNode, "getKind">>(self: T) {
   let leafDecoder!: LeafDecoder;
@@ -33,7 +34,7 @@ export function viewCapability<T extends Pick<IAstNode, "getKind">>(self: T) {
      */
     // @dependsOn("kind", "ohm")
     getLeafView<G = any>(raw: AstSourceString): AstSourceView<G> {
-      assertLeaf(self, {});
+      assertLeaf(self, { why: "Leaf views are only defined for Leaf nodes" });
       // const raw = this.getSourceString();
       try {
         if (leafDecoder) {
@@ -52,10 +53,15 @@ export function viewCapability<T extends Pick<IAstNode, "getKind">>(self: T) {
           };
         }
       } catch (e) {
-        throw new DqmError("AST_DECODER_FAILURE", {
-          error: e,
-          raw,
-          decoder: leafDecoder,
+        throw new DqmAppError({
+          code: "AST_DECODER_FAILURE",
+          why: "Source decoding has failed",
+          cause: null,
+          details: {
+            error: e,
+            raw,
+            decoder: leafDecoder,
+          },
         });
       }
     },
@@ -64,7 +70,10 @@ export function viewCapability<T extends Pick<IAstNode, "getKind">>(self: T) {
       type: string,
       decoder: AstSourceViewDecoderCustom<G>,
     ): T {
-      assertLeaf(self, { type, decoder });
+      assertLeaf(self, {
+        why: "leaf view decoder is only needed for leaf nodes",
+        details: { type, decoder },
+      });
       leafDecoder = {
         type,
         decode: decoder,

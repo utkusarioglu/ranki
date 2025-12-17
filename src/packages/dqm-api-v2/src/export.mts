@@ -1,1 +1,1 @@
-export * from "./constants/errors.mjs";
+export * from "./constants/plugin-errors.constants.mjs";

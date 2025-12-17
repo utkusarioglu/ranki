@@ -138,7 +138,9 @@ export class AstNode extends CommonTransports implements IAstNode {
     // #1
     assertNotExists(this.view.getDefinedLeafDecoder(), {
       why: "Leaf nodes cannot have children nodes",
-      nodeSetRaw,
+      details: {
+        nodeSetRaw,
+      },
     });
     this.semantic.setKind("parent");
     const cpxUnique = this.getCpx().getId().getUnique();

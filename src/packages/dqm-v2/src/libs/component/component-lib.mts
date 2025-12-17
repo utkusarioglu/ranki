@@ -1,7 +1,7 @@
 import type { Alias, Chain, IPluginLib } from "@dqm/package-dqm-api-v2";
-import { DqmError } from "@dqm/package-dqm-utils";
 import type { In, Out } from "./component-lib.types.mjs";
 import { IdLib } from "../../id/id-lib.mjs";
+import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
 type Criteria = {
   // type: string;
@@ -16,9 +16,14 @@ export class ComponentLib implements ILibComponent {
 
   add(plugin: In): ILibComponent {
     if (this.sets.has(plugin.meta.name)) {
-      throw new DqmError("PLUGIN_ALREADY_REGISTERED", {
-        component: this.sets,
-        plugin,
+      throw new DqmAppError({
+        code: "PLUGIN_ALREADY_REGISTERED",
+        why: "Another plugin with the same name has already been registered",
+        cause: null,
+        details: {
+          component: this.sets,
+          plugin,
+        },
       });
     }
     this.sets.set(plugin.meta.name, plugin);

@@ -1,50 +1,84 @@
-import { DqmError } from "./error/error.mjs";
+import {
+  DqmUtilError,
+  type DqmPluginErrorConstructorParams,
+} from "./util-error/util-error.mjs";
+
+type AssertionExtra = Pick<DqmPluginErrorConstructorParams, "why" | "details">;
 
 export function assertNotExists<C extends {}>(
   value: C | undefined,
-  obj: any,
+  extra: AssertionExtra,
+  // obj: any,
 ): asserts value is undefined {
   if (value !== undefined) {
-    throw new DqmError("VALUE_DEFINED", obj);
+    throw new DqmUtilError({
+      code: "VALUE_DEFINED",
+      cause: null,
+      ...extra,
+    });
   }
 }
 
-export function assertExists(v: any, obj: any): asserts v is object {
+export function assertExists(
+  v: any,
+  extra: AssertionExtra,
+): asserts v is object {
   if (v === undefined) {
-    throw new DqmError("VALUE_UNDEFINED", obj);
+    throw new DqmUtilError({
+      code: "VALUE_UNDEFINED",
+      cause: null,
+      ...extra,
+    });
   }
 }
 
 export function assertArrayNotEmpty(
-  this: any,
+  // this: any,
   a: any[],
-  rest: Record<string, any>,
+  extra: AssertionExtra,
+  // rest: Record<string, any>,
 ) {
   if (!a.length) {
-    throw new DqmError("EMPTY_ARRAY", { obj: this, ...rest });
+    throw new DqmUtilError({ code: "EMPTY_ARRAY", cause: null, ...extra });
   }
 }
 
 export function assertMethodContext<T extends { kind: string }>(
   context: T,
-  obj: any,
+  // obj: any,
+  extra: AssertionExtra,
 ): asserts context is any {
   if (context.kind !== "method") {
-    throw new DqmError("METHOD_DECORATOR_ON_WRONG_CONTEXT", {
-      context,
-      ...obj,
+    throw new DqmUtilError({
+      code: "METHOD_DECORATOR_ON_WRONG_CONTEXT",
+      cause: null,
+      ...extra,
     });
   }
 }
 
-export function assertParent(self: { getKind: () => string }, obj: any) {
+export function assertParent(
+  self: { getKind: () => string },
+  extra: AssertionExtra,
+) {
   if (self.getKind() !== "parent") {
-    throw new DqmError("REQUIRES_PARENT", obj);
+    throw new DqmUtilError({
+      code: "REQUIRES_PARENT",
+      cause: null,
+      ...extra,
+    });
   }
 }
 
-export function assertLeaf(self: { getKind: () => string }, obj: any) {
+export function assertLeaf(
+  self: { getKind: () => string },
+  extra: AssertionExtra,
+) {
   if (self.getKind() !== "leaf") {
-    throw new DqmError("REQUIRES_LEAF", obj);
+    throw new DqmUtilError({
+      code: "REQUIRES_LEAF",
+      cause: null,
+      ...extra,
+    });
   }
 }
