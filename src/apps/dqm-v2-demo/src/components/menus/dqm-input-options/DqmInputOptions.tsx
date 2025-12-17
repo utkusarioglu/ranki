@@ -16,9 +16,13 @@ export const DqmInputOptions = () => {
 
       <div className={style.container}>
         <div>
-          {code.inputs.map((t, i) => (
-            <DqmInputCard key={t.theater} index={i} />
-          ))}
+          {
+            // TODO the children shouldn't need to know their index. custom
+            // callbacks can fix this.
+            code.inputs.map((_t, i) => (
+              <DqmInputCard key={i} index={i} />
+            ))
+          }
         </div>
       </div>
 

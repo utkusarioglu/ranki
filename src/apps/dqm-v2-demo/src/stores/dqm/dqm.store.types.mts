@@ -4,6 +4,8 @@ import type {
   DqmParseInputStructured,
   IDqmPlugin,
   ConfigEntryCode,
+  DqmConfigPackEntry,
+  DqmConfig,
 } from "@dqm/package-dqm-api-v2";
 import type { ArrangementTemplateGroup } from "../../components/menus/dqm-input-options/templates/arrangement-template/ArrangementTemplate.types.mts";
 import type { SingleTemplateGroup } from "../../components/menus/dqm-input-options/templates/single-template/SingleTemplate.types.mts";
@@ -31,10 +33,9 @@ export interface PluginStoreWrapper {
   enabled: boolean;
 }
 
-export interface ConfigInput {
-  configCode: string;
+export type ConfigInput = DqmConfigPackEntry & {
   configString: string;
-}
+};
 
 export interface DqmStoreState {
   deferParsing: boolean;
@@ -43,6 +44,7 @@ export interface DqmStoreState {
   pluginSelection: PluginStoreWrapper[];
   configPack: ConfigInput[];
 
+  parseEpoch: number;
   parsed: ParseResult;
   autoUpdate: boolean;
   inputs: DqmParseInputStructured;
@@ -85,7 +87,11 @@ export interface DqmStoreActions {
   pushNewConfig: () => void;
 
   setConfigCodeByIndex: (index: number, code: ConfigEntryCode) => void;
-  setConfigValueByIndex: (index: number, value: string) => void;
+  setConfigValueByIndex: (
+    index: number,
+    configStr: string,
+    config: DqmConfig,
+  ) => void;
   removeConfigByIndex: (index: number) => void;
 }
 
@@ -103,4 +109,5 @@ export type CreateDqmParseNeeded =
   | "parsed"
   | "inputs"
   | "pluginSelection"
-  | "configPack";
+  | "configPack"
+  | "parseEpoch";

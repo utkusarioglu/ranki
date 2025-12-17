@@ -23,6 +23,7 @@ function Application() {
           components: {
             Input: {
               colorBgContainer: "var(--color-bg-sample)", // card/component background
+              fontFamily: "monospace",
             },
             Button: {
               // colorBorder: "var(--ant-color-bg-base)",

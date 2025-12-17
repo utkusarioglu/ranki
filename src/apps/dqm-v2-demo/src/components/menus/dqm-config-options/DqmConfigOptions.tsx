@@ -1,9 +1,11 @@
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
-import { Button, Flex } from "antd";
-import { DqmConfigEntry } from "./DqmConfigEntry";
+import { Button, Flex, Form } from "antd";
+import { DqmConfigEntry, DqmConfigEntryFixed } from "./DqmConfigEntry";
 import style from "./DqmConfigOptions.module.css";
 import { buildPluginSelectionConfig } from "_stores/dqm/dqm.utils.mjs";
 import yaml from "yaml";
+import type { DqmConfig } from "@dqm/package-dqm-api-v2";
+import { UpdatesForm } from "_menus/dqm-input-options/updates-form/UpdatesForm";
 
 export const DqmConfigOptions = () => {
   const dqm = useDqmStore();
@@ -12,8 +14,8 @@ export const DqmConfigOptions = () => {
     dqm.setConfigCodeByIndex(i, code);
   };
 
-  const setValue = (i: number) => (value: string) => {
-    dqm.setConfigValueByIndex(i, value);
+  const setValue = (i: number) => (configStr: string, config: DqmConfig) => {
+    dqm.setConfigValueByIndex(i, configStr, config);
   };
 
   const removeConfig = (i: number) => () => {
@@ -24,10 +26,13 @@ export const DqmConfigOptions = () => {
 
   return (
     <>
+      <Form className={style.band}>
+        <UpdatesForm />
+      </Form>
       <div className={style.container}>
         {dqm.configPack.map((entry, i) => (
           <DqmConfigEntry
-            key={entry.configCode}
+            key={i}
             entry={entry}
             setCode={setCode(i)}
             setValue={setValue(i)}
@@ -35,16 +40,13 @@ export const DqmConfigOptions = () => {
           />
         ))}
 
-        <DqmConfigEntry
+        <DqmConfigEntryFixed
           entry={{
-            configCode: fixedConfig.id,
+            id: fixedConfig.id,
+            config: fixedConfig.config,
             configString: yaml.stringify(fixedConfig.config),
           }}
-          message="This configuration entry is controlled by the Plugins tab"
-          editable={false}
-          setCode={setCode(0)}
-          setValue={setValue(0)}
-          removeConfig={removeConfig(0)}
+          message="This entry is controlled by the Plugins tab"
         />
       </div>
 

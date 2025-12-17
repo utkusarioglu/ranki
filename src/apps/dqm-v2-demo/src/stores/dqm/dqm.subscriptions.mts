@@ -3,7 +3,7 @@ import { debounce } from "./dqm.utils.mts";
 
 const debounceEvent = debounce(() => {
   useDqmStore.getState().parseInput();
-}, 300);
+}, 500);
 
 export const deferredParseDqmInput = () => {
   const { autoUpdate, deferParsing, parseInput } = useDqmStore.getState();

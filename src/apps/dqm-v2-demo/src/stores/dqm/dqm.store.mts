@@ -22,6 +22,7 @@ export const useDqmStore = create(
       parsed: { state: "success", data: [] },
       configPack: [],
       pluginSelection: pluginSelectionInit,
+      parseEpoch: 0,
     }),
 
     pushNewConfig: () =>
@@ -30,9 +31,10 @@ export const useDqmStore = create(
         const configPack: ConfigInput[] = [
           ...state.configPack,
           {
-            configCode: `config${index}`,
+            id: `config${index}`,
+            config: {},
             configString: "",
-          },
+          } as ConfigInput,
         ];
         return {
           configPack,
@@ -44,7 +46,7 @@ export const useDqmStore = create(
         const configPack = [...state.configPack];
         configPack[index] = {
           ...configPack[index],
-          configCode,
+          id: configCode,
         };
         return {
           configPack,
@@ -58,12 +60,13 @@ export const useDqmStore = create(
         return { configPack };
       }),
 
-    setConfigValueByIndex: (index, configString) =>
+    setConfigValueByIndex: (index, configString, config) =>
       set((state) => {
         const configPack = [...state.configPack];
         configPack[index] = {
           ...configPack[index],
           configString,
+          config,
         };
         return {
           configPack,

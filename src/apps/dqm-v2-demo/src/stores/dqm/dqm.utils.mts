@@ -39,9 +39,12 @@ export function parseDqm(
 export function createDqmParsedProp(
   state: Pick<DqmStore, CreateDqmParseNeeded> &
     Partial<Omit<DqmStore, CreateDqmParseNeeded>>,
-): Pick<DqmStore, "parsed"> {
+): Pick<DqmStore, "parsed" | "parseEpoch"> {
   if (!state.autoUpdate) {
-    return { parsed: state.parsed };
+    return {
+      parsed: state.parsed,
+      parseEpoch: 0,
+    };
   }
 
   try {
@@ -57,17 +60,21 @@ export function createDqmParsedProp(
       ...state.configPack
         .filter((c) => !!c.configString.length)
         .map((c) => ({
-          id: c.configCode,
+          id: c.id,
           config: yaml.parse(c.configString),
         })),
       buildPluginSelectionConfig(state.pluginSelection),
     ];
     return {
       parsed: parseDqm(state.inputs, config, plugins),
+      parseEpoch: Date.now(),
     };
   } catch (e) {
     console.log(e);
-    return { parsed: state.parsed };
+    return {
+      parsed: state.parsed,
+      parseEpoch: state.parseEpoch,
+    };
   }
 }
 
