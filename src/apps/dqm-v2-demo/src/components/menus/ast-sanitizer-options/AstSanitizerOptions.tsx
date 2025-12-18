@@ -1,7 +1,7 @@
 import { Typography } from "antd";
 import { ReorderList } from "../../views/reorder-list/ReorderList";
 import { type ItemProps } from "_views/reorder-list/ReorderList.types.mjs";
-import { AstPropRowBuilder } from "./AstPropRow";
+import { astPropRowBuilder } from "./AstPropRow";
 import { useAstViewStore } from "_stores/ast-view/ast-view.store.mjs";
 import { useCallback, useMemo } from "react";
 
@@ -20,7 +20,7 @@ export const AstSanitizerOptions = () => {
     [],
   );
 
-  const component = useMemo(() => AstPropRowBuilder({ toggleVisible }), []);
+  const component = useMemo(() => astPropRowBuilder({ toggleVisible }), []);
 
   return (
     <div className="padding-inline">

@@ -1,6 +1,6 @@
 import { useDqmStore } from "_stores/dqm/dqm.store.mts";
 import { Button, Form } from "antd";
-import { DqmInputCardBuilder } from "./dqm-input-card/DqmInputCard";
+import { dqmInputCardBuilder } from "./dqm-input-card/DqmInputCard";
 import style from "./DqmInputOptions.module.css";
 import { UpdatesForm } from "./updates-form/UpdatesForm";
 import { ArrangementForm } from "./arrangement-form/ArrangementForm";
@@ -14,7 +14,7 @@ export const DqmInputOptions = () => {
 
   const component = useMemo(
     () =>
-      DqmInputCardBuilder({
+      dqmInputCardBuilder({
         setTheaterNameByIndex: code.setTheaterNameByIndex,
         setTheaterDqmByIndex: code.setTheaterDqmByIndex,
         setTemplateDrawerState: ui.setTemplateDrawerState,

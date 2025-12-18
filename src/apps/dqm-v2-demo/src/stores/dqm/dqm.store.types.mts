@@ -84,6 +84,7 @@ export interface DqmStoreActions {
     requested: boolean,
   ): void;
 
+  setAllConfig: (configPack: ConfigInput[]) => void;
   pushNewConfig: () => void;
 
   setConfigCodeByIndex: (index: number, code: ConfigEntryCode) => void;

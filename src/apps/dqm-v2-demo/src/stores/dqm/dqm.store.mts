@@ -25,6 +25,8 @@ export const useDqmStore = create(
       parseEpoch: 0,
     }),
 
+    setAllConfig: (configPack) => set(() => ({ configPack })),
+
     pushNewConfig: () =>
       set((state) => {
         const index = state.configPack.length;

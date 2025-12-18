@@ -1,19 +1,12 @@
 import { CloseOutlined } from "@ant-design/icons";
 import { SkinnyCard } from "_views/skinny-card/SkinnyCard";
 import { Button, Flex, Input, Typography } from "antd";
-import { useEffect, useState, type FC } from "react";
+import { useEffect, useState, type FC, type Ref } from "react";
 import style from "./DqmConfigEntry.module.css";
 import type { ConfigInput } from "_stores/dqm/dqm.store.types.mjs";
 import type { DqmConfig } from "@dqm/package-dqm-api-v2";
 import yaml from "yaml";
 import type { BaseType } from "antd/es/typography/Base";
-
-interface DqmConfigEntryProps {
-  entry: ConfigInput;
-  setCode: (code: string) => void;
-  setValue: (configStr: string, config: DqmConfig) => void;
-  removeConfig: () => void;
-}
 
 type CardMessage = null | {
   type: BaseType;
@@ -45,10 +38,17 @@ type LocalState = {
   configStr: string;
 };
 
+type UseLocalStateParams = {
+  item: ConfigInput;
+  setConfigValueByIndex: DqmConfigEntryFactoryFuncProps["setConfigValueByIndex"];
+  index: number;
+};
+
 function useLocalState({
-  entry: { configString },
-  setValue,
-}: Pick<DqmConfigEntryProps, "setValue" | "entry">) {
+  item: { configString },
+  setConfigValueByIndex,
+  index,
+}: UseLocalStateParams) {
   const [local, setLocal] = useState<LocalState>({
     configStr: "",
     message: null,
@@ -70,7 +70,7 @@ function useLocalState({
           message: value.length > 0 ? WHITESPACE_MESSAGE : EMPTY_MESSAGE,
           configStr: value,
         });
-        setValue("", {} as DqmConfig);
+        setConfigValueByIndex(index, "", {} as DqmConfig);
         return;
       }
       try {
@@ -79,7 +79,7 @@ function useLocalState({
           configStr: value,
           message: null,
         });
-        setValue(value, parsed);
+        setConfigValueByIndex(index, value, parsed);
       } catch (e) {
         setLocal({
           configStr: value,
@@ -91,45 +91,11 @@ function useLocalState({
   };
 }
 
-export const DqmConfigEntry: FC<DqmConfigEntryProps> = ({
-  entry,
-  setCode,
-  setValue,
-  removeConfig,
-}) => {
-  const { message, configStr, setConfigCode } = useLocalState({
-    entry,
-    setValue,
-  });
-
-  return (
-    <SkinnyCard>
-      <Flex className={style.row}>
-        <Input
-          value={entry.id}
-          className={style.input}
-          onChange={(e) => setCode(e.target.value)}
-        />
-        <Button icon={<CloseOutlined />} onClick={() => removeConfig()} />
-      </Flex>
-      <Input.TextArea
-        className={style.textarea}
-        value={configStr}
-        autoSize
-        onChange={(e) => setConfigCode(e.target.value)}
-      />
-      {message !== null ? (
-        <div className={style.message}>
-          <Typography.Text type={message.type}>{message.text}</Typography.Text>
-        </div>
-      ) : null}
-    </SkinnyCard>
-  );
-};
 interface DqmConfigEntryFixedProps {
   entry: ConfigInput;
   message: string;
 }
+
 export const DqmConfigEntryFixed: FC<DqmConfigEntryFixedProps> = ({
   entry,
   message,
@@ -152,3 +118,62 @@ export const DqmConfigEntryFixed: FC<DqmConfigEntryFixedProps> = ({
     </SkinnyCard>
   );
 };
+
+interface DqmConfigEntryFactoryFuncProps {
+  setConfigCodeByIndex: (index: number, code: string) => void;
+  setConfigValueByIndex: (
+    index: number,
+    configStr: string,
+    config: DqmConfig,
+  ) => void;
+  removeConfigByIndex: (index: number) => void;
+}
+
+type DqmConfigEntryFactoryFunc = (
+  p: DqmConfigEntryFactoryFuncProps,
+) => FC<DqmConfigEntryProps>;
+
+interface DqmConfigEntryProps {
+  item: ConfigInput;
+  index: number;
+  ref: Ref<HTMLDivElement>;
+}
+
+export const dqmConfigEntryFactory: DqmConfigEntryFactoryFunc =
+  ({ setConfigCodeByIndex, setConfigValueByIndex, removeConfigByIndex }) =>
+  ({ item, index, ref }) => {
+    const { message, configStr, setConfigCode } = useLocalState({
+      item,
+      setConfigValueByIndex,
+      index,
+    });
+
+    return (
+      <SkinnyCard ref={ref} style={{ cursor: "grabbing" }}>
+        <Flex className={style.row}>
+          <Input
+            value={item.id}
+            className={style.input}
+            onChange={(e) => setConfigCodeByIndex(index, e.target.value)}
+          />
+          <Button
+            icon={<CloseOutlined />}
+            onClick={() => removeConfigByIndex(index)}
+          />
+        </Flex>
+        <Input.TextArea
+          className={style.textarea}
+          value={configStr}
+          autoSize
+          onChange={(e) => setConfigCode(e.target.value)}
+        />
+        {message !== null ? (
+          <div className={style.message}>
+            <Typography.Text type={message.type}>
+              {message.text}
+            </Typography.Text>
+          </div>
+        ) : null}
+      </SkinnyCard>
+    );
+  };

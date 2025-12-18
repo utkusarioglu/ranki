@@ -19,7 +19,7 @@ type AstPropRowBuilder = (
   p: AstPropRowBuilderProps,
 ) => FC<DragCardProps<VisibleBooleanCommon>>;
 
-export const AstPropRowBuilder: AstPropRowBuilder =
+export const astPropRowBuilder: AstPropRowBuilder =
   ({ toggleVisible }) =>
   ({ isDragging, ref, list, onChange, item, index, enableDrag }) => {
     return (

@@ -37,7 +37,7 @@ type DqmInputCardBuilderFunc = (
 
 export type AstPropRowComponent = FC<DqmInputPropsItem>;
 
-export const DqmInputCardBuilder: DqmInputCardBuilderFunc =
+export const dqmInputCardBuilder: DqmInputCardBuilderFunc =
   (s) =>
   ({ index, item: { theater, dqm }, ref }) => {
     return (
