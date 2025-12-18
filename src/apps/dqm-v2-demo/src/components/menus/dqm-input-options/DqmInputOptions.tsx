@@ -1,12 +1,27 @@
 import { useDqmStore } from "_stores/dqm/dqm.store.mts";
 import { Button, Form } from "antd";
-import { DqmInputCard } from "./dqm-input-card/DqmInputCard";
+import { DqmInputCardBuilder } from "./dqm-input-card/DqmInputCard";
 import style from "./DqmInputOptions.module.css";
 import { UpdatesForm } from "./updates-form/UpdatesForm";
 import { ArrangementForm } from "./arrangement-form/ArrangementForm";
+import { ReorderList } from "_views/reorder-list/ReorderList";
+import { useUiStore } from "_stores/ui/ui.store.mjs";
+import { useMemo } from "react";
 
 export const DqmInputOptions = () => {
   const code = useDqmStore();
+  const ui = useUiStore();
+
+  const component = useMemo(
+    () =>
+      DqmInputCardBuilder({
+        setTheaterNameByIndex: code.setTheaterNameByIndex,
+        setTheaterDqmByIndex: code.setTheaterDqmByIndex,
+        setTemplateDrawerState: ui.setTemplateDrawerState,
+        removeTheaterByIndex: code.removeTheaterByIndex,
+      }),
+    [],
+  );
 
   return (
     <>
@@ -15,15 +30,13 @@ export const DqmInputOptions = () => {
       </Form>
 
       <div className={style.container}>
-        <div>
-          {
-            // TODO the children shouldn't need to know their index. custom
-            // callbacks can fix this.
-            code.inputs.map((_t, i) => (
-              <DqmInputCard key={i} index={i} />
-            ))
-          }
-        </div>
+        <ReorderList
+          list={code.inputs}
+          onChange={code.setAllInputs}
+          id="inputs"
+          enableDrag
+          component={component}
+        />
       </div>
 
       <div className={style.band}>

@@ -3,18 +3,24 @@ import { ReorderList } from "../../views/reorder-list/ReorderList";
 import { type ItemProps } from "_views/reorder-list/ReorderList.types.mjs";
 import { AstPropRowBuilder } from "./AstPropRow";
 import { useAstViewStore } from "_stores/ast-view/ast-view.store.mjs";
+import { useCallback, useMemo } from "react";
 
 export const AstSanitizerOptions = () => {
   const view = useAstViewStore();
 
-  const toggleVisible = ({ list, index, onChange }: ItemProps<any>) => {
-    const newItems = [...list];
-    newItems[index] = {
-      visible: !newItems[index].visible,
-      id: newItems[index].id,
-    };
-    onChange(newItems);
-  };
+  const toggleVisible = useCallback(
+    ({ list, index, onChange }: ItemProps<any>) => {
+      const newItems = [...list];
+      newItems[index] = {
+        visible: !newItems[index].visible,
+        id: newItems[index].id,
+      };
+      onChange(newItems);
+    },
+    [],
+  );
+
+  const component = useMemo(() => AstPropRowBuilder({ toggleVisible }), []);
 
   return (
     <div className="padding-inline">
@@ -24,7 +30,7 @@ export const AstSanitizerOptions = () => {
         onChange={view.setProps}
         id="props"
         enableDrag
-        component={AstPropRowBuilder({ toggleVisible })}
+        component={component}
       />
       <Typography.Title level={5}>Linage Properties</Typography.Title>
       <ReorderList
@@ -32,7 +38,7 @@ export const AstSanitizerOptions = () => {
         onChange={view.setChildren}
         id="children"
         enableDrag
-        component={AstPropRowBuilder({ toggleVisible })}
+        component={component}
       />
       <Typography.Title level={5}>Stable Properties</Typography.Title>
       <ReorderList
@@ -40,7 +46,7 @@ export const AstSanitizerOptions = () => {
         onChange={view.setStable}
         id="stable"
         enableDrag={false}
-        component={AstPropRowBuilder({ toggleVisible })}
+        component={component}
       />
     </div>
   );

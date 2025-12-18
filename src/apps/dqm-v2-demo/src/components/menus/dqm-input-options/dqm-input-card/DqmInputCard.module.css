@@ -16,3 +16,15 @@
   margin-bottom: var(--ant-padding-sm);
   gap: var(--ant-padding-sm);
 }
+
+.bottom {
+  gap: var(--ant-padding-sm);
+  padding-inline: var(--ant-padding);
+}
+.actions {
+  gap: var(--ant-padding-sm);
+}
+
+.card {
+  cursor: grabbing;
+}

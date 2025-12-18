@@ -86,8 +86,6 @@ const DraggableRow: FC<DraggableRowProps> = ({
     },
   });
 
-  // drag(drop(ref));
-
   return (
     <Component
       ref={(node) => {
