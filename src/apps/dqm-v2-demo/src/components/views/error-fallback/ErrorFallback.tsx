@@ -21,6 +21,7 @@ export const ErrorFallback: FC<FallbackProps> = ({
   // const [errType, content] = first.split(":").map((v) => v.trim());
 
   let j: {} = {};
+  // @ts-ignore
   let e = "";
   try {
     j = (error as IDqmError).toExtendedJSON();

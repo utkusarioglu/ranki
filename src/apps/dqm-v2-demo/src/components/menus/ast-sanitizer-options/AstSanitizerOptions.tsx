@@ -1,15 +1,47 @@
 import { Typography } from "antd";
-import { ReorderList } from "../../reorder-list/ReorderList";
+import { ReorderList } from "../../views/reorder-list/ReorderList";
+import { type ItemProps } from "_views/reorder-list/ReorderList.types.mjs";
+import { AstPropRowBuilder } from "./AstPropRow";
+import { useAstViewStore } from "_stores/ast-view/ast-view.store.mjs";
 
 export const AstSanitizerOptions = () => {
+  const view = useAstViewStore();
+
+  const toggleVisible = ({ list, index, onChange }: ItemProps<any>) => {
+    const newItems = [...list];
+    newItems[index] = {
+      visible: !newItems[index].visible,
+      id: newItems[index].id,
+    };
+    onChange(newItems);
+  };
+
   return (
     <div className="padding-inline">
       <Typography.Title level={5}>Node Properties</Typography.Title>
-      <ReorderList list="props" method="setProps" allowDragging />
+      <ReorderList
+        list={view.props}
+        onChange={view.setProps}
+        id="props"
+        enableDrag
+        component={AstPropRowBuilder({ toggleVisible })}
+      />
       <Typography.Title level={5}>Linage Properties</Typography.Title>
-      <ReorderList list="children" method="setChildren" allowDragging />
+      <ReorderList
+        list={view.children}
+        onChange={view.setChildren}
+        id="children"
+        enableDrag
+        component={AstPropRowBuilder({ toggleVisible })}
+      />
       <Typography.Title level={5}>Stable Properties</Typography.Title>
-      <ReorderList list="stable" method="setStable" allowDragging={false} />
+      <ReorderList
+        list={view.stable}
+        onChange={view.setStable}
+        id="stable"
+        enableDrag={false}
+        component={AstPropRowBuilder({ toggleVisible })}
+      />
     </div>
   );
 };
