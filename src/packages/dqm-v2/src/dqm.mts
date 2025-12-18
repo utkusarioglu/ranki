@@ -13,7 +13,6 @@ import type {
   DqmParseOutput,
   DqmParseRole,
   DqmParseTheater,
-  IDqmErrorCause,
   IDqmPlugin,
   IParam,
   IPlugins,
@@ -79,12 +78,12 @@ export class Dqm {
       return parsed;
     } catch (e) {
       throw new DqmAppError({
-        code: "appTest",
-        cause: e as IDqmErrorCause,
+        code: "PARSE_FAIL",
+        why: "Something within parse logic has failed",
+        cause: e,
         details: {
           boundary: true,
         },
-        why: "Check cause",
       });
     }
   }

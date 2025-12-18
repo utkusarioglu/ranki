@@ -10,7 +10,7 @@ export const DEFAULT_CONFIG: DqmConfig = {
     suffix: "",
   },
   plugins: {
-    standards: ["ConstantsV2", "BaseV2"],
+    standards: ["grammar:ConstantsV2", "grammar:BaseV2"],
     requested: [],
     config: {},
   },

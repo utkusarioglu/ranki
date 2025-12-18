@@ -1,6 +1,8 @@
 import * as ohm from "ohm-js";
 import type { DqmConfig, IDqmPluginGrammar } from "@dqm/package-dqm-api-v2";
 import type { GrammarActionsDict } from "./parser-lib.mjs";
+import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
+import { assertExists } from "@dqm/package-dqm-utils";
 
 export interface GrammarSpecs {
   parentGrammar: string;
@@ -15,7 +17,15 @@ export interface ParserPluginGrammar {
 function adjustParent(specs: GrammarSpecs, raw: string): ParserPluginGrammar {
   const altered = raw.replace(/<:\s*(\w+)\s*\{/, (_match, _word) => {
     if (specs.parentGrammar === "") {
-      throw new Error("GRAMMAR EXPECTS A PARENT BUT NONE WAS GIVEN");
+      throw new DqmAppError({
+        code: "NO_PARENT_GRAMMAR",
+        why: "Parent adjustment algorithm expects a preset parent field.",
+        cause: null,
+        details: {
+          specs,
+          raw,
+        },
+      });
     }
     return `<: ${specs.parentGrammar} {`; // replace `word` however you want
   });
@@ -27,18 +37,20 @@ function adjustParent(specs: GrammarSpecs, raw: string): ParserPluginGrammar {
 
 export function buildGrammar(
   config: DqmConfig,
-  importChain: string[],
+  importChainUrn: string[],
   finder: (s: string) => IDqmPluginGrammar,
 ) {
+  const importChainName = importChainUrn.map((v) => v.split(":").at(-1)!);
   const matchers: Record<string, ParserPluginGrammar> = {};
   let grammarParents = {};
   let sources: string[] = [];
-  for (let si = 0; si < importChain.length; si++) {
-    const name = importChain[si];
-    const parserPlugin = finder(name);
+  for (let si = 0; si < importChainUrn.length; si++) {
+    const urn = importChainUrn[si];
+    const name = importChainName[si];
+    const parserPlugin = finder(urn);
     const matcher = adjustParent(
       {
-        parentGrammar: si === 0 ? "" : importChain[si - 1],
+        parentGrammar: si === 0 ? "" : importChainName[si - 1],
         dependencies: grammarParents,
       },
       parserPlugin.grammar(config),
@@ -51,13 +63,12 @@ export function buildGrammar(
     };
   }
 
-  const last = importChain.at(-1);
-  // @ts-expect-error
+  const last = importChainName.at(-1)!;
   const matcher = matchers[last].grammar;
 
-  if (!matcher) {
-    throw new Error("CANNOT DEDUCE MATCHER");
-  }
+  assertExists(matcher, {
+    why: "matcher has to be defined at this point in the code",
+  });
 
   return { matcher, sources };
 }

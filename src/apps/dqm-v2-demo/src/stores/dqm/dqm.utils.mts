@@ -83,11 +83,17 @@ export function buildPluginSelectionConfig(
 ): DqmConfigPackEntry {
   const standards: DqmPluginName[] = [];
   pluginSelection.forEach((pac) =>
-    pac.plugins.forEach((plu) => plu.standard && standards.push(plu.name)),
+    pac.plugins.forEach(
+      (plu) =>
+        plu.standard && standards.push([plu.pluginType, plu.name].join(":")),
+    ),
   );
   const requested: DqmPluginName[] = [];
   pluginSelection.forEach((pac) =>
-    pac.plugins.forEach((plu) => plu.requested && requested.push(plu.name)),
+    pac.plugins.forEach(
+      (plu) =>
+        plu.requested && requested.push([plu.pluginType, plu.name].join(":")),
+    ),
   );
 
   const pluginSelectionConfig: DqmConfigPackEntry = {

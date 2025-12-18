@@ -12,7 +12,7 @@ export const paramsV2Grammar: IDqmPluginGrammar<ParamsV2GrammarConfig> = {
     description: "Allows components to consume the ParamV2 format parameters",
     version,
   },
-  dependencies: ["BaseV2"],
+  dependencies: ["grammar:BaseV2"],
   config: () => config,
   tokenizer: () => tokenizer(config),
   grammar: () => grammar,

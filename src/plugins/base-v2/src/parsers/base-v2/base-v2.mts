@@ -12,7 +12,7 @@ export const baseV2Grammar: IDqmPluginGrammar<BaseV2GrammarConfig> = {
     description: "Default parser for RankiV2",
     version,
   },
-  dependencies: ["ConstantsV2"],
+  dependencies: ["grammar:ConstantsV2"],
   config: () => config,
   tokenizer: () => tokenizer(config),
   grammar: () => grammar,

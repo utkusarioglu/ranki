@@ -12,7 +12,7 @@ export const frameV2Grammar: IDqmPluginGrammar<FrameV2GrammarConfig> = {
     description: "The parser required to interpret FrameV2 syntax",
     version,
   },
-  dependencies: ["ParamsV2", "BaseV2"],
+  dependencies: ["grammar:ParamsV2", "grammar:BaseV2"],
   config: () => config,
   tokenizer: () => tokenizer(config),
   grammar: () => grammar,

@@ -4,7 +4,6 @@ import { IdLib } from "../../id/id-lib.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
 type Criteria = {
-  // type: string;
   id: Alias | Chain;
 };
 
@@ -14,8 +13,13 @@ export class ComponentLib implements ILibComponent {
   private sets = new Map<string, In>();
   private idLib = new IdLib<Out>();
 
+  private buildKey(type: string, name: string) {
+    return [type, name].join(":");
+  }
+
   add(plugin: In): ILibComponent {
-    if (this.sets.has(plugin.meta.name)) {
+    const setKey = this.buildKey(plugin.type, plugin.meta.name);
+    if (this.sets.has(setKey)) {
       throw new DqmAppError({
         code: "PLUGIN_ALREADY_REGISTERED",
         why: "Another plugin with the same name has already been registered",
@@ -26,7 +30,7 @@ export class ComponentLib implements ILibComponent {
         },
       });
     }
-    this.sets.set(plugin.meta.name, plugin);
+    this.sets.set(setKey, plugin);
     plugin.list.forEach((c) => {
       this.idLib.add(c.meta.id, c);
     });

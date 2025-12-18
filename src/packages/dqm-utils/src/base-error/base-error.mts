@@ -86,6 +86,7 @@ export abstract class DqmBaseError extends Error implements IDqmError {
 
   toJSON() {
     return {
+      producer: this.errorType,
       why: this.why,
       code: this.message,
       text: this.text,

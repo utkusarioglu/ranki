@@ -1,21 +1,42 @@
 import type { IDqmPluginGrammar } from "@dqm/package-dqm-api-v2";
+import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
 // ANKI
 export function expandDependencies(plugins: IDqmPluginGrammar[]): void {
-  const lookup = Object.fromEntries(plugins.map((p) => [p.meta.name, p]));
+  const lookup = Object.fromEntries(
+    plugins.map((p) => [[p.type, p.meta.name].join(":"), p]),
+  );
   const cache = new Map<string, Set<string>>();
 
   function getAllDeps(name: string, visited = new Set<string>()): Set<string> {
     if (cache.has(name)) return cache.get(name)!;
     if (visited.has(name))
-      throw new Error(`CIRCULAR DEPENDENCY involving ${name}`);
+      throw new DqmAppError({
+        code: "CIRCULAR_DEPENDENCY",
+        why: "Circular dependencies prevent determining a viable grammar inheritance chain",
+        cause: null,
+        details: {
+          name,
+        },
+      });
 
     visited.add(name);
     const plugin = lookup[name];
     const result = new Set<string>();
 
     for (const dep of plugin.dependencies) {
-      if (!lookup[dep]) throw new Error(`DEPENDENCY ABSENT ${dep}`);
+      if (!lookup[dep])
+        throw new DqmAppError({
+          code: "DEPENDENCY_ABSENT",
+          why: "Plugin hints at a dependency that hasn't been installed",
+          details: {
+            pluginName: plugin.meta.name,
+            pluginType: plugin.type,
+            missingDependency: dep,
+            pluginReportedDependencies: Array.from(plugin.dependencies),
+          },
+          cause: null,
+        });
       result.add(dep);
       for (const transitive of getAllDeps(dep, visited)) {
         result.add(transitive);
@@ -29,7 +50,7 @@ export function expandDependencies(plugins: IDqmPluginGrammar[]): void {
 
   // Mutate each plugin.dependencies to include transitive deps
   plugins.forEach((p) => {
-    p.dependencies = Array.from(getAllDeps(p.meta.name));
+    p.dependencies = Array.from(getAllDeps([p.type, p.meta.name].join(":")));
   });
 }
 
@@ -39,16 +60,29 @@ export function topologicalSort(
 ): IDqmPluginGrammar["meta"]["name"][] {
   const sorted: string[] = [];
   const adjacencies = plugins.reduce((a, c) => {
-    a[c.meta.name] = new Set();
+    const urn = [c.type, c.meta.name].join(":");
+    a[urn] = new Set();
     return a;
   }, {} as Record<string, Set<string>>);
 
   plugins.forEach((p) => {
     p.dependencies.forEach((d) => {
       if (!adjacencies.hasOwnProperty(d)) {
-        throw new Error(`DEPENDENCY ABSENT ${d}`);
+        throw new DqmAppError({
+          code: "DEPENDENCY_ABSENT",
+          why: "Plugin hints at a dependency that hasn't been installed",
+          details: {
+            pluginName: p.meta.name,
+            pluginType: p.type,
+            missingDependency: d,
+            pluginReportedDependencies: Array.from(p.dependencies),
+            adjacencies,
+          },
+          cause: null,
+        });
       }
-      adjacencies[d].add(p.meta.name);
+      const urn = [p.type, p.meta.name].join(":");
+      adjacencies[d].add(urn);
     });
   });
 
@@ -58,7 +92,7 @@ export function topologicalSort(
   }, {} as Record<string, number>);
 
   plugins
-    .map((p) => p.meta.name)
+    .map((p) => [p.type, p.meta.name].join(":"))
     .forEach((n) => {
       for (let a of adjacencies[n]) {
         counts[a]++;
@@ -70,10 +104,7 @@ export function topologicalSort(
     .map(([k, _v]) => k);
 
   while (queue.length) {
-    const curr = queue.shift();
-    if (!curr) {
-      throw new Error("curr NOT DEFINED");
-    }
+    const curr = queue.shift()!;
     sorted.push(curr);
 
     for (let n of adjacencies[curr]) {
@@ -84,8 +115,15 @@ export function topologicalSort(
   }
 
   if (sorted.length !== plugins.length) {
-    console.warn(sorted, plugins);
-    throw new Error("CIRCULAR PLUGIN DEPENDENCY");
+    throw new DqmAppError({
+      code: "CIRCULAR_DEPENDENCY",
+      why: "Circular dependencies prevent determining a viable grammar inheritance chain",
+      cause: null,
+      details: {
+        sorted,
+        plugins,
+      },
+    });
   }
 
   return sorted;

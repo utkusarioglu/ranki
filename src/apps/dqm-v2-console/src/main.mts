@@ -25,7 +25,11 @@ export function main(raw: string) {
         config: {
           // @ts-ignore it expects the entire object
           plugins: {
-            requested: ["ParamsV2", "FrameV2"],
+            requested: [
+              "grammar:ParamsV2",
+              "grammar:FrameV2",
+              "component-set:BaseV2",
+            ],
           },
         },
       },
