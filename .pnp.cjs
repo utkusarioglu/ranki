@@ -1737,16 +1737,20 @@ const RAW_RUNTIME_STATE =
           ["@tanstack/router-core", "npm:1.140.0"],\
           ["@tanstack/router-plugin", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:1.140.0"],\
           ["@types/babel__core", "npm:7.20.5"],\
+          ["@types/cytoscape-fcose", "npm:2.2.5"],\
           ["@types/node", "npm:24.10.1"],\
           ["@types/react", "npm:19.2.7"],\
           ["@types/react-dom", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:19.2.3"],\
           ["@vitejs/plugin-react", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:5.1.1"],\
           ["antd", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:6.0.1"],\
+          ["cytoscape", "npm:3.33.1"],\
+          ["cytoscape-fcose", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:2.2.0"],\
           ["eslint", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:9.39.1"],\
           ["eslint-plugin-react-hooks", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:7.0.1"],\
           ["eslint-plugin-react-refresh", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:0.4.24"],\
           ["highlight.js", "npm:11.11.1"],\
           ["react", "npm:19.2.1"],\
+          ["react-cytoscapejs", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:2.0.0"],\
           ["react-dnd", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:16.0.1"],\
           ["react-dnd-html5-backend", "npm:16.0.1"],\
           ["react-dom", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:19.2.1"],\
@@ -5502,6 +5506,16 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@types/cytoscape-fcose", [\
+      ["npm:2.2.5", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@types-cytoscape-fcose-npm-2.2.5-8e7465f1e9-10c0.zip/node_modules/@types/cytoscape-fcose/",\
+        "packageDependencies": [\
+          ["@types/cytoscape-fcose", "npm:2.2.5"],\
+          ["cytoscape", "npm:3.33.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@types/d3", [\
       ["npm:7.4.3", {\
         "packageLocation": "../home/dev/.yarn/berry/cache/@types-d3-npm-7.4.3-e923ea3006-10c0.zip/node_modules/@types/d3/",\
@@ -7480,6 +7494,13 @@ const RAW_RUNTIME_STATE =
           ["cytoscape", "npm:3.32.1"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:3.33.1", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/cytoscape-npm-3.33.1-c9d5e1661e-10c0.zip/node_modules/cytoscape/",\
+        "packageDependencies": [\
+          ["cytoscape", "npm:3.33.1"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["cytoscape-cose-bilkent", [\
@@ -7520,6 +7541,20 @@ const RAW_RUNTIME_STATE =
           ["cose-base", "npm:2.2.0"],\
           ["cytoscape", "npm:3.32.1"],\
           ["cytoscape-fcose", "virtual:86c938ac76707a56b2280975fb75c8a398f2c8ed4059d0c998d02f70aa49a82e1700ee6609702fb0391f89a632165a1939a94ac3417f00048c57e015e9a4d567#npm:2.2.0"]\
+        ],\
+        "packagePeers": [\
+          "@types/cytoscape",\
+          "cytoscape"\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:2.2.0", {\
+        "packageLocation": "./.yarn/__virtual__/cytoscape-fcose-virtual-2861e70da1/2/home/dev/.yarn/berry/cache/cytoscape-fcose-npm-2.2.0-06f382e763-10c0.zip/node_modules/cytoscape-fcose/",\
+        "packageDependencies": [\
+          ["@types/cytoscape", null],\
+          ["cose-base", "npm:2.2.0"],\
+          ["cytoscape", "npm:3.33.1"],\
+          ["cytoscape-fcose", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:2.2.0"]\
         ],\
         "packagePeers": [\
           "@types/cytoscape",\
@@ -10274,6 +10309,16 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["loose-envify", [\
+      ["npm:1.4.0", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/loose-envify-npm-1.4.0-6307b72ccf-10c0.zip/node_modules/loose-envify/",\
+        "packageDependencies": [\
+          ["js-tokens", "npm:4.0.0"],\
+          ["loose-envify", "npm:1.4.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["loupe", [\
       ["npm:3.2.0", {\
         "packageLocation": "../home/dev/.yarn/berry/cache/loupe-npm-3.2.0-6593ad3abb-10c0.zip/node_modules/loupe/",\
@@ -10714,6 +10759,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["object-assign", [\
+      ["npm:4.1.1", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/object-assign-npm-4.1.1-1004ad6dec-10c0.zip/node_modules/object-assign/",\
+        "packageDependencies": [\
+          ["object-assign", "npm:4.1.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["ohm-js", [\
       ["npm:17.1.0", {\
         "packageLocation": "../home/dev/.yarn/berry/cache/ohm-js-npm-17.1.0-3b64d4d78d-10c0.zip/node_modules/ohm-js/",\
@@ -11092,6 +11146,18 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["prop-types", [\
+      ["npm:15.8.1", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/prop-types-npm-15.8.1-17c71ee7ee-10c0.zip/node_modules/prop-types/",\
+        "packageDependencies": [\
+          ["loose-envify", "npm:1.4.0"],\
+          ["object-assign", "npm:4.1.1"],\
+          ["prop-types", "npm:15.8.1"],\
+          ["react-is", "npm:16.13.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["punycode", [\
       ["npm:2.3.1", {\
         "packageLocation": "../home/dev/.yarn/berry/cache/punycode-npm-2.3.1-97543c420d-10c0.zip/node_modules/punycode/",\
@@ -11242,6 +11308,33 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/dev/.yarn/berry/cache/react-npm-19.2.1-ee2feff9fc-10c0.zip/node_modules/react/",\
         "packageDependencies": [\
           ["react", "npm:19.2.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["react-cytoscapejs", [\
+      ["npm:2.0.0", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/react-cytoscapejs-npm-2.0.0-586a5126b3-10c0.zip/node_modules/react-cytoscapejs/",\
+        "packageDependencies": [\
+          ["react-cytoscapejs", "npm:2.0.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:2.0.0", {\
+        "packageLocation": "./.yarn/__virtual__/react-cytoscapejs-virtual-d79d439718/2/home/dev/.yarn/berry/cache/react-cytoscapejs-npm-2.0.0-586a5126b3-10c0.zip/node_modules/react-cytoscapejs/",\
+        "packageDependencies": [\
+          ["@types/cytoscape", null],\
+          ["@types/react", "npm:19.2.7"],\
+          ["cytoscape", "npm:3.33.1"],\
+          ["prop-types", "npm:15.8.1"],\
+          ["react", "npm:19.2.1"],\
+          ["react-cytoscapejs", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:2.0.0"]\
+        ],\
+        "packagePeers": [\
+          "@types/cytoscape",\
+          "@types/react",\
+          "cytoscape",\
+          "react"\
         ],\
         "linkType": "HARD"\
       }]\

@@ -11,17 +11,21 @@ import type { IParam } from "../param/param-node.types.mjs";
 
 export interface ICpx {
   getId(): IId;
-  setIdList(idList: ChainList): ICpx;
+  setIdList(idList: ChainList): this;
   getChainList(): ChainList;
   getIdList(): IdList;
-  setParent(cpx: ICpx): ICpx;
+  setParent(cpx: ICpx): this;
   getParent(): ICpx;
+  pushChild(cpx: ICpx): this;
+  getChildren(): ICpx[];
+
   parse(input: CpxParseInput): IAstNode;
-  setParams(params: IParam[]): ICpx;
+  setParams(params: IParam[]): this;
   getLeafCps(): ICps;
   getRootCps(): ICps;
+  getCpsList(): ICps[];
 
-  setRootAst(ast: IAstNode): ICpx;
+  setRootAst(ast: IAstNode): this;
   getRootAst(): IAstNode;
 }
 

@@ -80,6 +80,7 @@ const levels: Level[] = [
         key: "graph",
         label: "Graph",
         TabChild: <NotYet />,
+        route: "/view/graph",
         icon: <ShareAltOutlined />,
       },
       {

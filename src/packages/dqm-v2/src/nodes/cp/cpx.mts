@@ -19,6 +19,7 @@ import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 export class Cpx extends CommonTransports implements ICpx {
   private id = new Id();
   private parent!: ICpx;
+  private children: ICpx[] = [];
   private params!: IParam[];
   private cps: ICps[] = [];
   private rootAst!: IAstNode;
@@ -35,7 +36,7 @@ export class Cpx extends CommonTransports implements ICpx {
     return this.cps.map((cps) => cps.getId().getId());
   }
 
-  setRootAst(ast: IAstNode): ICpx {
+  setRootAst(ast: IAstNode): this {
     this.rootAst = ast;
     return this;
   }
@@ -65,6 +66,9 @@ export class Cpx extends CommonTransports implements ICpx {
 
   setParent(parent: ICpx) {
     this.parent = parent;
+    if (this.parent) {
+      this.parent.pushChild(this);
+    }
     return this;
   }
 
@@ -72,8 +76,17 @@ export class Cpx extends CommonTransports implements ICpx {
     return this.parent;
   }
 
+  pushChild(cpx: ICpx): this {
+    this.children.push(cpx);
+    return this;
+  }
+
+  getChildren(): ICpx[] {
+    return this.children;
+  }
+
   @dependsOn("params")
-  setIdList(idList: IdList): ICpx {
+  setIdList(idList: IdList): this {
     const createRoot = () => {
       const parentCpx = this.getParent();
       const parentCps = parentCpx ? parentCpx.getLeafCps() : null;
@@ -125,6 +138,10 @@ export class Cpx extends CommonTransports implements ICpx {
   @rejectValues(undefined)
   getRootCps(): ICps {
     return this.cps[0];
+  }
+
+  getCpsList(): ICps[] {
+    return this.cps;
   }
 
   parse(input: CpxParseInput): IAstNode {

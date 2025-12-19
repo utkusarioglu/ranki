@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as InfoRouteImport } from './routes/info'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ViewGraphIndexRouteImport } from './routes/view/graph/index'
 import { Route as ViewRenderDocumentIndexRouteImport } from './routes/view/render/document/index'
 import { Route as ViewNodesCpxIndexRouteImport } from './routes/view/nodes/cpx/index'
 import { Route as ViewNodesAstIndexRouteImport } from './routes/view/nodes/ast/index'
@@ -23,6 +24,11 @@ const InfoRoute = InfoRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ViewGraphIndexRoute = ViewGraphIndexRouteImport.update({
+  id: '/view/graph/',
+  path: '/view/graph/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ViewRenderDocumentIndexRoute = ViewRenderDocumentIndexRouteImport.update({
@@ -44,6 +50,7 @@ const ViewNodesAstIndexRoute = ViewNodesAstIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/info': typeof InfoRoute
+  '/view/graph': typeof ViewGraphIndexRoute
   '/view/nodes/ast': typeof ViewNodesAstIndexRoute
   '/view/nodes/cpx': typeof ViewNodesCpxIndexRoute
   '/view/render/document': typeof ViewRenderDocumentIndexRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/info': typeof InfoRoute
+  '/view/graph': typeof ViewGraphIndexRoute
   '/view/nodes/ast': typeof ViewNodesAstIndexRoute
   '/view/nodes/cpx': typeof ViewNodesCpxIndexRoute
   '/view/render/document': typeof ViewRenderDocumentIndexRoute
@@ -59,6 +67,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/info': typeof InfoRoute
+  '/view/graph/': typeof ViewGraphIndexRoute
   '/view/nodes/ast/': typeof ViewNodesAstIndexRoute
   '/view/nodes/cpx/': typeof ViewNodesCpxIndexRoute
   '/view/render/document/': typeof ViewRenderDocumentIndexRoute
@@ -68,6 +77,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/info'
+    | '/view/graph'
     | '/view/nodes/ast'
     | '/view/nodes/cpx'
     | '/view/render/document'
@@ -75,6 +85,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/info'
+    | '/view/graph'
     | '/view/nodes/ast'
     | '/view/nodes/cpx'
     | '/view/render/document'
@@ -82,6 +93,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/info'
+    | '/view/graph/'
     | '/view/nodes/ast/'
     | '/view/nodes/cpx/'
     | '/view/render/document/'
@@ -90,6 +102,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   InfoRoute: typeof InfoRoute
+  ViewGraphIndexRoute: typeof ViewGraphIndexRoute
   ViewNodesAstIndexRoute: typeof ViewNodesAstIndexRoute
   ViewNodesCpxIndexRoute: typeof ViewNodesCpxIndexRoute
   ViewRenderDocumentIndexRoute: typeof ViewRenderDocumentIndexRoute
@@ -109,6 +122,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/view/graph/': {
+      id: '/view/graph/'
+      path: '/view/graph'
+      fullPath: '/view/graph'
+      preLoaderRoute: typeof ViewGraphIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/view/render/document/': {
@@ -138,6 +158,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   InfoRoute: InfoRoute,
+  ViewGraphIndexRoute: ViewGraphIndexRoute,
   ViewNodesAstIndexRoute: ViewNodesAstIndexRoute,
   ViewNodesCpxIndexRoute: ViewNodesCpxIndexRoute,
   ViewRenderDocumentIndexRoute: ViewRenderDocumentIndexRoute,

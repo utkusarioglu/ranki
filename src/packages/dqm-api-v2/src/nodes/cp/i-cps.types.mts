@@ -6,15 +6,18 @@ import type { CpsDefinition } from "../../plugins/component/component.types.mjs"
 import type { IId } from "../../plugins/component/id/id.types.mjs";
 
 export interface ICps {
-  setParent(cps: ICps | null): ICps;
-  setDefinition(def: CpsDefinition): ICps;
-  setCpx(cpx: ICpx): ICps;
+  setParent(cps: ICps | null): this;
+  setDefinition(def: CpsDefinition): this;
+  setCpx(cpx: ICpx): this;
 
   getId(): IId;
 
   getCpx(): ICpx;
 
   parse(input: CpxParseInput): IAstNode;
+
+  pushChild(child: ICps): this;
+  getChildren(): ICps[];
 }
 
 export type ICpsConstructor = new (

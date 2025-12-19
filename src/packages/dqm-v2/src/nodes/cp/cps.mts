@@ -17,11 +17,12 @@ import { CommonTransports } from "../common-transports.mjs";
 import { prepareContext } from "../ast/ast.utils.mjs";
 
 const MERGE_TARGET = "merged";
-// const CONFIG_CHANNEL = "configs";
+const CONFIG_CHANNEL = "configs";
 
 export class Cps extends CommonTransports implements ICps {
   private id = new Id();
   private parent!: ICps;
+  private children: ICps[] = [];
   private component!: IDqmComponent;
   private paramsLib: IParams = new ParamsLib(this.getTransports());
   private cpx!: ICpx;
@@ -35,12 +36,24 @@ export class Cps extends CommonTransports implements ICps {
     return this.id;
   }
 
-  setParent(cps: ICps): ICps {
+  setParent(cps: ICps): this {
     this.parent = cps;
+    if (this.parent) {
+      this.parent.pushChild(this);
+    }
     return this;
   }
 
-  setDefinition(def: CpsDefinition): ICps {
+  pushChild(child: ICps): this {
+    this.children.push(child);
+    return this;
+  }
+
+  getChildren(): ICps[] {
+    return this.children;
+  }
+
+  setDefinition(def: CpsDefinition): this {
     this.component = this.getPlugins().getComponentById(def.id);
     this.id.setId(this.component.meta.id.chain);
     if (def.id.length === 1) {
@@ -52,7 +65,7 @@ export class Cps extends CommonTransports implements ICps {
     });
     // TODO $ may not be the token the user prefers. or $ may be mapped to a value like "config"
     const componentParamConfig =
-      this.paramsLib.getChannelCompilationByChannelName("settings");
+      this.paramsLib.getChannelCompilationByChannelName(CONFIG_CHANNEL);
 
     this.getConfig()
       .pushConfig("cps", componentParamConfig)
@@ -61,7 +74,7 @@ export class Cps extends CommonTransports implements ICps {
     return this;
   }
 
-  setCpx(cpx: ICpx): ICps {
+  setCpx(cpx: ICpx): this {
     this.cpx = cpx;
     return this;
   }
