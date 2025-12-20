@@ -13,6 +13,7 @@ import type * as ohm from "ohm-js";
 import type { WorkedNodeDefinition } from "../ast-node.types.mjs";
 import { prepareContext } from "../ast.utils.mjs";
 import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
+import { assertExists } from "@dqm/package-dqm-utils";
 
 /**
  * @dev
@@ -101,7 +102,11 @@ export function syntaxCapability<T>(self: T) {
             allNodes.push(parsed);
             switch (relationship) {
               case "node":
-                if (cpxUnique === parsed.getCpx().getId().getUnique()) {
+                const cpx = parsed.getCpx();
+                assertExists(cpx, {
+                  why: "Cpx should be available in this point in the code",
+                });
+                if (cpxUnique === cpx.getId().getUnique()) {
                   subtreeNodes.push(parsed);
                 } else {
                   childrenNodes.push(parsed);

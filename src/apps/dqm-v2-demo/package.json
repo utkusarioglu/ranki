@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "6.x",
+    "@dqm/package-dqm-utils": "workspace:^",
     "@dqm/package-dqm-v2": "workspace:^",
     "@dqm/plugin-base-v2": "workspace:^",
     "@dqm/plugin-frame-v2": "workspace:^",

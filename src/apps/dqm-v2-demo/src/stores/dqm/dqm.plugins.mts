@@ -4,7 +4,8 @@ import paramsV2 from "@dqm/plugin-params-v2";
 import frameV2Code from "@dqm/plugin-frame-v2-code";
 import type { PluginStoreWrapper } from "./dqm.store.types.mts";
 
-export const pluginSelectionInit: PluginStoreWrapper[] = [
+// @ts-ignore
+const defaultPluginSelection = [
   {
     name: "BaseV2",
     plugin: baseV2,
@@ -33,21 +34,56 @@ export const pluginSelectionInit: PluginStoreWrapper[] = [
     requested: false,
     installed: false,
   },
-].map(({ name, plugin, standard, requested, installed }, packageIndex) => ({
-  name: name,
-  enabled: true,
-  packageIndex,
-  plugins: plugin.map((plugin, pluginIndex) => ({
+];
+
+const devPluginSelection = [
+  {
+    name: "BaseV2",
+    plugin: baseV2,
+    standard: true,
+    requested: false,
+    installed: true,
+  },
+  {
+    name: "FrameV2",
+    plugin: frameV2,
+    standard: false,
+    requested: true,
+    installed: true,
+  },
+  {
+    name: "ParamsV2",
+    plugin: paramsV2,
+    standard: false,
+    requested: true,
+    installed: true,
+  },
+  {
+    name: "FrameV2Code",
+    plugin: frameV2Code,
+    standard: false,
+    requested: false,
+    installed: true,
+  },
+];
+
+export const pluginSelectionInit: PluginStoreWrapper[] = devPluginSelection.map(
+  ({ name, plugin, standard, requested, installed }, packageIndex) => ({
+    name: name,
+    enabled: true,
     packageIndex,
-    pluginIndex,
+    plugins: plugin.map((plugin, pluginIndex) => ({
+      packageIndex,
+      pluginIndex,
 
-    name: plugin.meta.name,
-    description: plugin.meta.description,
-    plugin,
-    pluginType: plugin.type,
+      name: plugin.meta.name,
+      description: plugin.meta.description,
+      plugin,
+      pluginType: plugin.type,
 
-    installed,
-    standard,
-    requested,
-  })),
-}));
+      installed,
+      standard,
+      requested,
+    })),
+  }),
+);

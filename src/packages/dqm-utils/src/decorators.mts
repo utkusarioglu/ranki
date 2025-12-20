@@ -14,7 +14,8 @@ export function dependsOn(...properties: string[]) {
 
     const handler = function (this: This, ...args: Args): Return {
       properties.forEach((property) => {
-        if ((this as any)[property] === undefined) {
+        const val = (this as any)[property];
+        if (val === undefined || val === null) {
           throw new DqmUtilError({
             code: "REQUIRED_VALUE_UNDEFINED",
             why: "A value required by the class method is undefined",

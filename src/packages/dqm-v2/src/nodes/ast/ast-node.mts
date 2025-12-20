@@ -15,6 +15,7 @@ import { semanticCapability } from "./capabilities/semantic.capability.mjs";
 import { ohmCapability } from "./capabilities/ohm.capability.mjs";
 import { viewCapability } from "./capabilities/view.capability.mjs";
 import { counterCapability } from "./capabilities/counter.capability.mjs";
+import { assertExists } from "@dqm/package-dqm-utils";
 
 export class AstNode extends CommonTransports implements IAstNode {
   private semantic = semanticCapability(this);
@@ -23,7 +24,7 @@ export class AstNode extends CommonTransports implements IAstNode {
   private ohm = ohmCapability(this);
   private view = viewCapability(this);
   private counter = counterCapability(this);
-  private cpx!: ICpx;
+  private cpx: ICpx | null = null;
 
   // TODO this needs a lot of work
   newCpx(cpxCallback: CpxFuncParam): this {
@@ -77,7 +78,7 @@ export class AstNode extends CommonTransports implements IAstNode {
   }
 
   @rejectValues(undefined)
-  getCpx(): ICpx {
+  getCpx(): ICpx | null {
     return this.cpx;
   }
 
@@ -119,10 +120,12 @@ export class AstNode extends CommonTransports implements IAstNode {
 
   // VERTICES
   setParent = this.vertices.setParent.bind(this.vertices);
+  getParent = this.vertices.getParent.bind(this.vertices);
   getNext = this.vertices.getNext.bind(this.vertices);
   getPrev = this.vertices.getPrev.bind(this.vertices);
   setPrev = this.vertices.setPrev.bind(this.vertices);
   setNext = this.vertices.setNext.bind(this.vertices);
+  getChildren = this.vertices.getChildren.bind(this.vertices);
 
   // NODES
   /**
@@ -143,7 +146,11 @@ export class AstNode extends CommonTransports implements IAstNode {
       },
     });
     this.semantic.setKind("parent");
-    const cpxUnique = this.getCpx().getId().getUnique();
+    const cpx = this.getCpx();
+    assertExists(cpx, {
+      why: "Pushing a child expects an already defined cpx",
+    });
+    const cpxUnique = cpx.getId().getUnique();
     this.syntax.pushNodes(nodeSetRaw, cpxUnique);
     return this;
   }

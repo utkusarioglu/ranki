@@ -7,6 +7,13 @@ import type { IId } from "../../plugins/component/id/id.types.mjs";
 
 export interface ICps {
   setParent(cps: ICps | null): this;
+  getParent(): ICps | null;
+
+  setPrev(prev: ICps): this;
+  setNext(next: ICps): this;
+  getPrev(): ICps | null;
+  getNext(): ICps | null;
+
   setDefinition(def: CpsDefinition): this;
   setCpx(cpx: ICpx): this;
 

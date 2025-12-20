@@ -21,7 +21,9 @@ const CONFIG_CHANNEL = "configs";
 
 export class Cps extends CommonTransports implements ICps {
   private id = new Id();
-  private parent!: ICps;
+  private parent: ICps | null = null;
+  private prev: ICps | null = null;
+  private next: ICps | null = null;
   private children: ICps[] = [];
   private component!: IDqmComponent;
   private paramsLib: IParams = new ParamsLib(this.getTransports());
@@ -30,6 +32,24 @@ export class Cps extends CommonTransports implements ICps {
   constructor(params: CommonTransportsConstructorParams) {
     super(params);
     this.cloneConfig();
+  }
+
+  setPrev(prev: ICps): this {
+    this.prev = prev;
+    return this;
+  }
+
+  setNext(next: ICps): this {
+    this.next = next;
+    return this;
+  }
+
+  getPrev(): ICps | null {
+    return this.prev;
+  }
+
+  getNext(): ICps | null {
+    return this.next;
   }
 
   getId(): IId {
@@ -83,7 +103,7 @@ export class Cps extends CommonTransports implements ICps {
     return this.cpx;
   }
 
-  getParent(): ICps {
+  getParent(): ICps | null {
     return this.parent;
   }
 

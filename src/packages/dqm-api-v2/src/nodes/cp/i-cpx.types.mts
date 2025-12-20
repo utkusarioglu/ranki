@@ -14,13 +14,20 @@ export interface ICpx {
   setIdList(idList: ChainList): this;
   getChainList(): ChainList;
   getIdList(): IdList;
-  setParent(cpx: ICpx): this;
-  getParent(): ICpx;
+  setParent(cpx: ICpx | null): this;
+  getParent(): ICpx | null;
+
+  setPrev(prev: ICpx): this;
+  setNext(next: ICpx): this;
+  getPrev(): ICpx | null;
+  getNext(): ICpx | null;
+
   pushChild(cpx: ICpx): this;
   getChildren(): ICpx[];
 
   parse(input: CpxParseInput): IAstNode;
   setParams(params: IParam[]): this;
+  getParams(): IParam[] | null;
   getLeafCps(): ICps;
   getRootCps(): ICps;
   getCpsList(): ICps[];

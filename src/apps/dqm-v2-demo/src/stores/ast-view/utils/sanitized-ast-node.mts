@@ -11,6 +11,7 @@ import type {
   SanitizedAst,
   SanitizeResult,
 } from "./sanitized-ast-node.types.mts";
+import { assertExists } from "../../../errors/assertions.mts";
 
 class SanitizedAstNode {
   private node: IAstNode;
@@ -109,6 +110,7 @@ class SanitizedAstNode {
 
   private getProps() {
     const props: Partial<SanitizedNodeProps> = {};
+    const cpx = this.node.getCpx();
     this.visible.props.forEach((id) => {
       switch (id) {
         case "inlineDepth":
@@ -144,21 +146,28 @@ class SanitizedAstNode {
           props[id] = this.node.getChildrenNodes().length;
           break;
         case "cpxUnique":
-          props[id] = this.node.getCpx().getId().getUnique();
+          assertExists(cpx, {
+            why: "Cpx is required to access a cpx property",
+          });
+          props[id] = cpx.getId().getUnique();
           break;
         case "creator":
           props[id] = this.node.getCreator();
           break;
         case "idList":
-          props[id] = this.node
-            .getCpx()
+          assertExists(cpx, {
+            why: "Cpx is required to access a cpx property",
+          });
+          props[id] = cpx
             .getIdList()
             .map((v) => v.join("."))
             .join(" | ");
           break;
         case "chainList":
-          props[id] = this.node
-            .getCpx()
+          assertExists(cpx, {
+            why: "Cpx is required to access a cpx property",
+          });
+          props[id] = cpx
             .getChainList()
             .map((v) => v.join("."))
             .join(" | ");

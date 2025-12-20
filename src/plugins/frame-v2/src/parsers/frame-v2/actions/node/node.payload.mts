@@ -50,6 +50,7 @@ export const nodePayload: IAstNodeActionDict = {
       .newCpx((cpx) =>
         // !FIX this mess relates to the .setParent() call in `newCpx()`
         // !FIX ALSO, don't forget that the parent of any kind of frame is frame.v2.container. so, this needs to climb twice, not once
+        // @ts-expect-error
         cpx.getParent().getParent().getParent(),
       )
       .pushIgnoredNodes(frameV2PauseStart)

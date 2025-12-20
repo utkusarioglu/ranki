@@ -69,7 +69,7 @@ export class DqmPluginError extends DqmBaseError implements IDqmPluginError {
     let chainListString = "(failed to determine)";
     try {
       chainListString = this.ast
-        .getCpx()
+        .getCpx()!
         .getIdList()
         .map((v) => v.join("."))
         .join(" | ");

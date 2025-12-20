@@ -71,7 +71,7 @@ export class Dqm {
             .setNature("synthetic")
             .newCpx((cpx) => cpx.setParams(params).setIdList(component))
             .setDirection("block")
-            .getCpx()
+            .getCpx()!
             .parse(input),
         };
       });

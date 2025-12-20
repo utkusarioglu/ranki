@@ -88,7 +88,7 @@ export interface IAstNode
   newAst(ohm: ohm.Node): IAstNode;
   newParam(ohm: ohm.Node): IParam;
   // setCpx(cpx: ICpx): this;
-  getCpx(): ICpx;
+  getCpx(): ICpx | null;
 }
 
 export interface IAstNodeCounterCapabilities {
@@ -147,10 +147,12 @@ export interface IAstNodeSyntaxCapabilities {
 
 export interface IAstNodeVerticesCapabilities {
   setParent(parent: IAstNode): this;
+  getParent(): IAstNode | null;
   getPrev(): IAstNode | null;
   getNext(): IAstNode | null;
   setPrev(prev: IAstNode): this;
   setNext(next: IAstNode): this;
+  getChildren(): IAstNode[];
 }
 
 export interface IAstNodeViewCapabilities {

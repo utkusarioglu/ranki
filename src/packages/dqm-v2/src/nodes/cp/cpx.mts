@@ -18,11 +18,31 @@ import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
 export class Cpx extends CommonTransports implements ICpx {
   private id = new Id();
-  private parent!: ICpx;
+  private parent: ICpx | null = null;
+  private prev: ICpx | null = null;
+  private next: ICpx | null = null;
   private children: ICpx[] = [];
-  private params!: IParam[];
+  private params: IParam[] | null = null;
   private cps: ICps[] = [];
   private rootAst!: IAstNode;
+
+  setPrev(prev: ICpx): this {
+    this.prev = prev;
+    return this;
+  }
+
+  setNext(next: ICpx): this {
+    this.next = next;
+    return this;
+  }
+
+  getPrev(): ICpx | null {
+    return this.prev;
+  }
+
+  getNext(): ICpx | null {
+    return this.next;
+  }
 
   getId(): IId {
     return this.id;
@@ -59,9 +79,13 @@ export class Cpx extends CommonTransports implements ICpx {
 
   @dependsOn("params")
   getParamsByAudience(audience: Audience): IParam[] {
-    return this.params.filter((p) =>
+    return this.params!.filter((p) =>
       [ALL_AUDIENCES, audience].includes(p.getAudience()),
     );
+  }
+
+  getParams(): IParam[] | null {
+    return this.params;
   }
 
   setParent(parent: ICpx) {
@@ -72,7 +96,7 @@ export class Cpx extends CommonTransports implements ICpx {
     return this;
   }
 
-  getParent(): ICpx {
+  getParent(): ICpx | null {
     return this.parent;
   }
 
