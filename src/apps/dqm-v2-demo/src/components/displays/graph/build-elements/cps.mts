@@ -1,13 +1,12 @@
 import type { ICps } from "@dqm/package-dqm-api-v2";
-import type { E, Traversal } from "./build.types";
-import { Id } from "./id.mts";
+import { Registry } from "./registry.mts";
 import { classes } from "./utils.mts";
 
-export function traverseCps(root: ICps, cpsDepth: number): Traversal {
-  if (root === undefined) {
-    return undefined;
+export function traverseCps(root: ICps | null, cpsDepth: number): void {
+  if (!root) {
+    return;
   }
-  const id = Id.getNew(root);
+  const id = Registry.getNew(root);
   const node = {
     data: {
       id,
@@ -15,58 +14,41 @@ export function traverseCps(root: ICps, cpsDepth: number): Traversal {
     },
     classes: classes("cps", cpsDepth === 0 && "root", `depth-${cpsDepth}`),
   };
+  Registry.registerNode(node);
 
-  const cpxEdges: E[] = [];
   const creatorCpx = root.getCpx();
-  cpxEdges.push({
+  Registry.registerEdge({
     data: {
-      source: Id.getId(creatorCpx),
+      source: Registry.getId(creatorCpx),
       target: id,
       label: "delegates",
     },
     classes: classes("cpx-cps"),
   });
 
-  const parentCpsEdges: E[] = [];
   const parentCps = root.getParent();
   if (parentCps) {
-    parentCpsEdges.push({
+    Registry.registerEdge({
       data: {
-        source: Id.getId(parentCps),
+        source: Registry.getId(parentCps),
         target: id,
         label: "child",
       },
-      classes: classes("cps-cps"),
+      classes: classes("cps-cps", "relationship-child"),
     });
   }
 
-  const siblingEdges: E[] = [];
   const prevCpx = root.getPrev();
   if (prevCpx) {
-    siblingEdges.push({
+    Registry.registerEdge({
       data: {
-        source: Id.getId(prevCpx),
+        source: Registry.getId(prevCpx),
         target: id,
         label: "sibling",
       },
-      classes: classes("cps-cps", "sibling"),
+      classes: classes("cps-cps", "relationship-sibling"),
     });
   }
 
-  const childrenCps = root
-    .getChildren()
-    .map((c) => traverseCps(c, cpsDepth + 1))
-    .filter((v) => !!v);
-
-  return {
-    raw: root,
-    node,
-    relations: {
-      childrenCps,
-    },
-    edges: {
-      cpxEdges,
-      siblingEdges,
-    },
-  };
+  root.getChildren().forEach((c) => traverseCps(c, cpsDepth + 1));
 }

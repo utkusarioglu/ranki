@@ -2,12 +2,21 @@ type Percent = number;
 
 type TemplateDrawerModeType = "arrangement" | "single";
 
-export type TemplateDrawerModeOpen = {
+export type MenuDrawerModeOpen = TemplateDrawerModeOpen | GraphDrawerModeOpen;
+type TemplateDrawerModeOpen = {
   type: TemplateDrawerModeType;
   index: number;
 };
 
-type TemplateDrawerMode = null | TemplateDrawerModeOpen;
+type GraphDrawerModeOpen = {
+  type: "graph";
+  data: {
+    type: "string";
+    data: any;
+  };
+};
+
+type TemplateDrawerMode = null | MenuDrawerModeOpen;
 
 export type UiStore = UiStoreStates & UiStoreActions;
 

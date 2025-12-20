@@ -1,82 +1,40 @@
 import type { ICpx, IParam } from "@dqm/package-dqm-api-v2";
-import type { E, Traversal, TraversalNode } from "./build.types";
-import { Id } from "./id.mts";
+import { Registry } from "./registry.mts";
 import { classes } from "./utils.mts";
 
-export function traverseParams(root: ICpx): Traversal {
+export function traverseParams(root: ICpx): void {
+  if (!root) {
+    return;
+  }
   const params = root.getParams();
-  let childrenParams: TraversalNode[] = [];
   if (params) {
-    childrenParams = params.map((p) => traverseParam(p)).filter((v) => !!v);
+    params.forEach((p) => traverseParam(p));
   }
 
-  const childrenCpx = root
-    .getChildren()
-    .map((r) => traverseParams(r))
-    .filter((v) => !!v);
-
-  return {
-    raw: root,
-    node: null,
-    relations: {
-      childrenCpx,
-      childrenParams,
-    },
-    edges: {
-      // parentEdges,
-      // siblingEdges,
-    },
-  };
+  root.getChildren().forEach((r) => traverseParams(r));
 }
 
-function traverseParam(root: IParam): Traversal {
+function traverseParam(root: IParam | null): void {
   if (!root) {
-    return undefined;
+    return;
   }
-  const id = Id.getNew(root);
-  const elem = Id.getSource(id);
-  console.log("elem", elem);
-  const node = {
-    data: {
-      id,
-      label: "param:" + root.getId().getId().join("."),
-    },
-    classes: classes("param"),
-  };
+  const node = Registry.getNode(root);
+  node.data.label = "param:" + root.getId().getId().join(".");
+  node.classes = classes("param");
+  const id = node.data.id;
 
-  const cpxEdges: E[] = [];
-  const cpsEdges: E[] = [];
   const creatorCpx = root.getCpx();
   if (creatorCpx) {
-    const source = Id.getId(creatorCpx);
-    cpxEdges.push({
-      data: {
-        source,
-        target: id,
-        label: "customizes",
-      },
-      classes: classes("cpx-param"),
-    });
+    const source = Registry.getId(creatorCpx);
+    const e = Registry.getEdge(source, id);
+    e.classes = classes("cpx-param");
+    e.data.label = "customizes";
 
     creatorCpx.getCpsList().forEach((n) => {
-      cpsEdges.push({
-        data: {
-          source: Id.getId(n),
-          target: id,
-          label: "customizes2",
-        },
-        classes: classes("cps-param"),
-      });
+      const source = Registry.getId(n);
+      const e = Registry.getEdge(source, id);
+      e.classes = classes("cps-param");
+      e.data.label = "customizes";
     });
   }
-
-  return {
-    raw: root,
-    node,
-    relations: {},
-    edges: {
-      cpxEdges,
-      cpsEdges,
-    },
-  };
 }

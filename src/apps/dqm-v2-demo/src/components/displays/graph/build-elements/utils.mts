@@ -2,9 +2,9 @@ import type { E, Flattened, N, TraversalNode } from "./build.types";
 
 export const classes = (...cls: any[]) => cls.filter((v) => !!v).join(" ");
 
-type TExtend<T> = {
+type TExtend<T> = null | {
   getParent(): T | null;
-} | null;
+};
 
 type GetRootReturn<T> = [root: T | null, climbs: number];
 

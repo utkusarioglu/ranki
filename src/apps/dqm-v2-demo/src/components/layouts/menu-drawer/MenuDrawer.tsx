@@ -3,7 +3,7 @@ import { Scroller } from "_views/scroller/Scroller";
 import { Drawer } from "antd";
 import { type FC } from "react";
 import style from "./MenuDrawer.module.css";
-import { MenuDrawerSwitch } from "_menus/dqm-input-options/MenuDrawer";
+import { MenuDrawerSwitch } from "_menus/dqm-input-options/MenuDrawerSwitch";
 
 export const MenuDrawer: FC = ({}) => {
   const ui = useUiStore();

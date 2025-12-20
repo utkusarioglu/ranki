@@ -1,10 +1,10 @@
-import { type TemplateDrawerModeOpen } from "_stores/ui/ui.store.types.mts";
+import { type MenuDrawerModeOpen } from "_stores/ui/ui.store.types.mts";
 import { type FC } from "react";
 import { ArrangementTemplates } from "./templates/arrangement-template/ArrangementTemplates";
 import { SingleTemplates } from "./templates/single-template/SingleTemplates";
 
 export type MenuDrawerSwitchProps = {
-  mode: TemplateDrawerModeOpen;
+  mode: MenuDrawerModeOpen;
 };
 
 export const MenuDrawerSwitch: FC<MenuDrawerSwitchProps> = ({ mode }) => {
@@ -13,5 +13,7 @@ export const MenuDrawerSwitch: FC<MenuDrawerSwitchProps> = ({ mode }) => {
       return <ArrangementTemplates mode={mode} />;
     case "single":
       return <SingleTemplates mode={mode} />;
+    case "graph":
+      return <div>={JSON.stringify(mode)}=</div>;
   }
 };

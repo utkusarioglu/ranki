@@ -12,6 +12,11 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
       "text-halign": "left",
       "text-margin-x": -6,
       "font-size": fontSize,
+      "text-background-color": token.colorBgContainer,
+      "text-background-opacity": 0.8,
+      "text-background-shape": "roundrectangle", // or rectangle
+      "text-background-padding": "4px",
+
       color: token.colorPrimary,
       "background-color": token.colorPrimary,
     },

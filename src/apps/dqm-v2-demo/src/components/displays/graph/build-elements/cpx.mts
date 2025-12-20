@@ -1,13 +1,12 @@
 import type { ICpx } from "@dqm/package-dqm-api-v2";
-import type { E, Traversal } from "./build.types";
-import { Id } from "./id.mts";
+import { Registry } from "./registry.mts";
 import { classes } from "./utils.mts";
 
-export function traverseCpx(root: ICpx, cpxDepth: number): Traversal {
+export function traverseCpx(root: ICpx | null, cpxDepth: number): void {
   if (!root) {
-    return undefined;
+    return;
   }
-  const id = Id.getNew(root);
+  const id = Registry.getNew(root);
   const node = {
     data: {
       id,
@@ -20,14 +19,14 @@ export function traverseCpx(root: ICpx, cpxDepth: number): Traversal {
     },
     classes: classes("cpx", cpxDepth === 0 && "root"),
   };
+  Registry.registerNode(node);
 
-  const parentEdges: E[] = [];
   const parentCpx = root.getParent();
   if (parentCpx) {
-    if (Id.has(parentCpx)) {
-      parentEdges.push({
+    if (Registry.has(parentCpx)) {
+      Registry.registerEdge({
         data: {
-          source: Id.getId(parentCpx),
+          source: Registry.getId(parentCpx),
           target: node.data.id,
           label: "child",
         },
@@ -36,12 +35,11 @@ export function traverseCpx(root: ICpx, cpxDepth: number): Traversal {
     }
   }
 
-  const siblingEdges: E[] = [];
   const prevCpx = root.getPrev();
   if (prevCpx) {
-    siblingEdges.push({
+    Registry.registerEdge({
       data: {
-        source: Id.getId(prevCpx),
+        source: Registry.getId(prevCpx),
         target: id,
         label: "sibling",
       },
@@ -49,20 +47,5 @@ export function traverseCpx(root: ICpx, cpxDepth: number): Traversal {
     });
   }
 
-  const childrenCpx = root
-    .getChildren()
-    .map((r) => traverseCpx(r, cpxDepth + 1))
-    .filter((v) => !!v);
-
-  return {
-    raw: root,
-    node,
-    relations: {
-      childrenCpx,
-    },
-    edges: {
-      parentEdges,
-      siblingEdges,
-    },
-  };
+  root.getChildren().forEach((r) => traverseCpx(r, cpxDepth + 1));
 }

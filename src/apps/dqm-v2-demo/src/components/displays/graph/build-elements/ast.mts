@@ -1,22 +1,16 @@
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
-import type { E, Traversal } from "./build.types";
-import { Id } from "./id.mts";
+import { Registry } from "./registry.mts";
 import { classes } from "./utils.mts";
 
 /**
  * @dev
  * #1 This comes up at the very root of the graph
  */
-export function traverseAst(
-  root: IAstNode,
-  astDepth: number,
-  // relationship: string,
-  // subRelationship: string,
-): Traversal {
+export function traverseAst(root: IAstNode | null, astDepth: number): void {
   if (!root) {
-    return undefined;
+    return;
   }
-  const id = Id.getNew(root);
+  const id = Registry.getNew(root);
   let creator;
   try {
     creator = root.getCreator();
@@ -40,17 +34,15 @@ export function traverseAst(
       .filter((v) => !!v)
       .join(" "),
   };
+  Registry.registerNode(node);
 
-  const cpxEdges: E[] = [];
-  const cpsEdges: E[] = [];
   const creatorCpx = root.getCpx();
   if (creatorCpx) {
-    const headAstId = Id.getId(creatorCpx.getRootAst());
+    const headAstId = Registry.getId(creatorCpx.getRootAst());
     const isHeadAst = headAstId === id;
-
-    cpxEdges.push({
+    Registry.registerEdge({
       data: {
-        source: Id.getId(creatorCpx),
+        source: Registry.getId(creatorCpx),
         target: id,
         label: "maintains",
       },
@@ -58,9 +50,9 @@ export function traverseAst(
     });
 
     creatorCpx.getCpsList().map((c) => {
-      cpsEdges.push({
+      Registry.registerEdge({
         data: {
-          source: Id.getId(c),
+          source: Registry.getId(c),
           target: id,
           label: "cps-ast",
         },
@@ -69,41 +61,39 @@ export function traverseAst(
     });
   }
 
-  const astParentEdges: E[] = [];
   const astParent = root.getParent();
   if (astParent) {
     const astParentCpx = astParent.getCpx();
     if (
       astParentCpx &&
       creatorCpx &&
-      Id.getId(astParentCpx) !== Id.getId(creatorCpx)
+      Registry.getId(astParentCpx) !== Registry.getId(creatorCpx)
     ) {
-      astParentEdges.push({
+      Registry.registerEdge({
         data: {
-          source: Id.getId(astParent),
+          source: Registry.getId(astParent),
           target: id,
           label: "external",
         },
         classes: classes("ast-ast", "relationship-external"),
       });
     } else {
-      astParentEdges.push({
+      Registry.registerEdge({
         data: {
-          source: Id.getId(astParent),
+          source: Registry.getId(astParent),
           target: id,
-          label: "external",
+          label: "child",
         },
         classes: classes("ast-ast", `relationship-${relationship}`),
       });
     }
   }
 
-  const siblingEdges: E[] = [];
   const prevCpx = root.getPrev();
   if (prevCpx) {
-    siblingEdges.push({
+    Registry.registerEdge({
       data: {
-        source: Id.getId(prevCpx),
+        source: Registry.getId(prevCpx),
         target: id,
         label: "sibling",
       },
@@ -111,22 +101,5 @@ export function traverseAst(
     });
   }
 
-  const childrenNodes = root
-    .getChildren()
-    .map((n) => traverseAst(n, astDepth + 1))
-    .filter((v) => !!v);
-
-  return {
-    raw: root,
-    node,
-    relations: {
-      childrenNodes,
-    },
-    edges: {
-      cpsEdges,
-      cpxEdges,
-      astParentEdges,
-      siblingEdges,
-    },
-  };
+  root.getChildren().forEach((n) => traverseAst(n, astDepth + 1));
 }

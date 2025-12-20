@@ -10,6 +10,7 @@ export const ErrorFallback: FC<FallbackProps> = ({
   error,
   resetErrorBoundary,
 }) => {
+  console.log("eee", error);
   // const message = (error.stack || error.message || error || "Error") as string;
 
   // const lines = message.split("\n");

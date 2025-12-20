@@ -7,7 +7,7 @@ import { ArrangementTemplateGroup } from "./ArrangementTemplateGroup";
 import { useDqmStore } from "_stores/dqm/dqm.store.mts";
 import { useUiStore } from "_stores/ui/ui.store.mts";
 import type { FC } from "react";
-import type { MenuDrawerSwitchProps } from "../../MenuDrawer";
+import type { MenuDrawerSwitchProps } from "../../MenuDrawerSwitch";
 
 type ArrangementTemplatesProps = MenuDrawerSwitchProps;
 
@@ -18,6 +18,10 @@ export const ArrangementTemplates: FC<ArrangementTemplatesProps> = ({
   useArrangementTemplateFetch();
   const dqm = useDqmStore();
   const ui = useUiStore();
+
+  if (mode.type !== "arrangement") {
+    return <div>You shouldn't be able to reach here</div>;
+  }
 
   return (
     <>

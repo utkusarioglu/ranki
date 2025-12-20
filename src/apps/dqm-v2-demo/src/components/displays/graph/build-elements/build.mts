@@ -1,14 +1,14 @@
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
 import type { Flattened } from "./build.types";
-import { Id } from "./id.mts";
+import { Registry } from "./registry.mts";
 import { traverseCpx } from "./cpx.mts";
 import { traverseCps } from "./cps.mts";
-import { flatten, getRoot } from "./utils.mts";
+import { getRoot } from "./utils.mts";
 import { traverseAst } from "./ast.mts";
 import { traverseParams } from "./param.mts";
 
 export function buildElements(currAst: IAstNode): Flattened | null {
-  Id.reset();
+  Registry.reset();
   const currCpx = currAst.getCpx();
   if (!currCpx) {
     return null;
@@ -17,39 +17,13 @@ export function buildElements(currAst: IAstNode): Flattened | null {
   if (!rootCpx) {
     return null;
   }
-  const cpxTraversed = traverseCpx(rootCpx, cpxClimbs);
-  if (!cpxTraversed) {
-    return null;
-  }
-
+  traverseCpx(rootCpx, cpxClimbs);
   const currCps = currCpx.getRootCps();
   const [rootCps, cpsClimb] = getRoot(currCps);
-  if (!rootCps) {
-    return null;
-  }
-  const cpsTraversed = traverseCps(rootCps, cpsClimb);
-  if (!cpsTraversed) {
-    return null;
-  }
+  traverseCps(rootCps, cpsClimb);
 
-  const [rootAst, astClimbs] = getRoot(currAst);
-  if (!rootAst) {
-    return null;
-  }
-  const astTraversed = traverseAst(rootAst, astClimbs);
-  if (!astTraversed) {
-    return null;
-  }
-  const paramsTraversed = traverseParams(rootCpx);
-  if (!paramsTraversed) {
-    return null;
-  }
+  traverseAst(...getRoot(currAst));
+  traverseParams(rootCpx);
 
-  const flattened = flatten([
-    cpxTraversed,
-    cpsTraversed,
-    astTraversed,
-    paramsTraversed,
-  ]);
-  return flattened;
+  return Registry.getProductArray();
 }

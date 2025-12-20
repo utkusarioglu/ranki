@@ -1,5 +1,3 @@
-const REPULSION_FACTOR = 1000;
-
 export const layout = {
   name: "fcose",
   // name: "breadthfirst",

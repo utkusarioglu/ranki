@@ -4,7 +4,7 @@ import { useUiStore } from "_stores/ui/ui.store.mts";
 import { DrawerTitleRow } from "_views/drawer-title-row/DrawerTitleRow";
 import { SingleTemplateGroup } from "./SingleTemplateGroup";
 import { useSingleTemplateFetch } from "../hooks.mts";
-import type { MenuDrawerSwitchProps } from "../../MenuDrawer";
+import type { MenuDrawerSwitchProps } from "../../MenuDrawerSwitch";
 
 type SingleTemplatesProps = MenuDrawerSwitchProps;
 
@@ -12,6 +12,10 @@ export const SingleTemplates: FC<SingleTemplatesProps> = ({ mode }) => {
   useSingleTemplateFetch();
   const dqm = useDqmStore();
   const ui = useUiStore();
+
+  if (mode.type !== "single") {
+    return <div>You shouldn't be able to reach here</div>;
+  }
 
   return (
     <>

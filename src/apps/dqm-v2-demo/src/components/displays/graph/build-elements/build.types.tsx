@@ -29,8 +29,8 @@ export type WM = WeakMap<IAstNode | ICpx | ICps, IdValue>;
 
 export type Elems = Map<IdValue, any>;
 
-export type Product = E | N;
-export type ProductMap = Map<IdValue, Product>;
+export type NodeMap = Map<IdValue, N>;
+export type EdgeMap = Map<string, E>;
 
 export type Traversal = TraversalNode | null | undefined;
 
