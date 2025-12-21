@@ -29,7 +29,9 @@
       "_styles/*": ["./src/styles/*"],
       "_displays/*": ["./src/components/displays/*"],
       "_menus/*": ["./src/components/menus/*"],
-      "_layouts/*": ["./src/components/layouts/*"]
+      "_layouts/*": ["./src/components/layouts/*"],
+      "_assertions": ["./src/errors/assertions.mts"],
+      "_error": ["./src/errors/dqm-demo-error.mts"]
     }
   },
   "include": ["src"]

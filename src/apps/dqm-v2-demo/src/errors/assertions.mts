@@ -17,3 +17,11 @@ export function assertExists(
     });
   }
 }
+
+export function assertNever(extra: AssertionExtra): never {
+  throw new DqmDemoError({
+    code: "NEVER_EVENT",
+    cause: null,
+    ...extra,
+  });
+}

@@ -16,6 +16,8 @@ export default defineConfig({
       _displays: path.join(repoRoot, "src/components/displays"),
       _menus: path.join(repoRoot, "src/components/menus"),
       _layouts: path.join(repoRoot, "src/components/layouts"),
+      _assertions: path.join(repoRoot, "src/errors/assertions.mts"),
+      _error: path.join(repoRoot, "src/errors/dqm-demo-error.mts"),
     },
   },
   plugins: [

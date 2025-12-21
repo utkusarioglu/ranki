@@ -20,9 +20,9 @@ export const YamlDisplay: FC<YamlDisplayProps> = ({ obj }) => {
       code: "PARSE_FAIL",
       why: "Yaml parse failed for a node",
       cause: e,
-      details: {
-        obj,
-      },
+      // details: {
+      //   obj,
+      // },
     });
   }
   const highlighted = hljs.highlight(code, {

@@ -129,6 +129,7 @@ export interface IAstNodeSemanticCapabilities {
    * bold because of *<word>*
    */
   setNature(nature: IAstNodeNature): this;
+  getNature(): IAstNodeNature;
   getRelationship(): IAstNodeRelationship;
 }
 

@@ -1,6 +1,23 @@
-import type { UiStore } from "_stores/ui/ui.store.types.mjs";
+import type {
+  GraphDrawerDataTypes,
+  UiStore,
+} from "_stores/ui/ui.store.types.mjs";
 import type { EventObject } from "cytoscape";
+import { Registry } from "./build-elements/registry.mts";
+import type { N } from "./build-elements/build.types";
 
+function storePositions(eles) {
+  eles.forEach((ele) => {
+    if (!ele.scratch("_origPos")) {
+      ele.scratch("_origPos", { ...ele.position() });
+    }
+  });
+}
+
+/**
+ * @dev
+   #1 Crossing types they are all dependent on `type` and `Registry` to work correctly
+ */
 export function onTapNode(
   e: EventObject,
   ui: UiStore,
@@ -27,10 +44,20 @@ export function onTapNode(
     easing: "ease-in-out",
   });
 
-  const data = e.target.data();
+  // DRAWER
+  const cyNode: N = {
+    data: e.target.data(),
+    classes: e.target.classes(),
+  };
+  console.log("cy", cyNode);
   ui.setTemplateDrawerState({
     type: "graph",
-    data,
+    // @ts-expect-error #1
+    data: {
+      type: cyNode.data.label.split(":")[0] as GraphDrawerDataTypes,
+      dqmNode: Registry.getSource(cyNode.data.id),
+      cyNode,
+    },
   });
 }
 

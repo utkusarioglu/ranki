@@ -8,7 +8,7 @@ export const buildStyleSheet = (token: GlobalToken, fontSize: number) => [
   {
     selector: ".dimmed",
     style: {
-      opacity: 0,
+      opacity: 0.01,
     },
   },
   {

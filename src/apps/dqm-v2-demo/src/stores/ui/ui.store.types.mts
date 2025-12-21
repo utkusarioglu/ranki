@@ -1,3 +1,6 @@
+import type { IAstNode, ICps, ICpx, IParam } from "@dqm/package-dqm-api-v2";
+import type { N } from "_displays/graph/build-elements/build.types";
+
 type Percent = number;
 
 type TemplateDrawerModeType = "arrangement" | "single";
@@ -8,12 +11,41 @@ type TemplateDrawerModeOpen = {
   index: number;
 };
 
-type GraphDrawerModeOpen = {
+export type GraphDrawerModeOpen = {
   type: "graph";
-  data: {
-    type: "string";
-    data: any;
-  };
+  data: GraphDrawerData;
+};
+
+export type GraphDrawerDataTypes = GraphDrawerData["type"];
+
+export type GraphDrawerData =
+  | GraphDrawerAst
+  | GraphDrawerCpx
+  | GraphDrawerCps
+  | GraphDrawerParam;
+
+export type GraphDrawerAst = {
+  type: "ast";
+  dqmNode: IAstNode;
+  cyNode: N;
+};
+
+export type GraphDrawerCpx = {
+  type: "cpx";
+  dqmNode: ICpx;
+  cyNode: N;
+};
+
+export type GraphDrawerCps = {
+  type: "cps";
+  dqmNode: ICps;
+  cyNode: N;
+};
+
+export type GraphDrawerParam = {
+  type: "param";
+  dqmNode: IParam;
+  cyNode: N;
 };
 
 type TemplateDrawerMode = null | MenuDrawerModeOpen;

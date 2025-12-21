@@ -124,6 +124,7 @@ export const node: IAstNodeActionDict = {
             .map((v) => v.getLeafView());
           // .map((v) => v.getLeafView());
           p.setValues(values).setId(grabConstant(this, "POSITIONAL_PARAM"));
+          p.setOperator("assign");
           // const key =
           //   paramsV2FormatNode.findSubtreeNodeByCreator("paramsV2Key");
           // console.log({ key: key?.getSourceString() });

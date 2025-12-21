@@ -110,6 +110,7 @@ export class AstNode extends CommonTransports implements IAstNode {
   setDirection = this.semantic.setDirection.bind(this.semantic);
   getKind = this.semantic.getKind.bind(this.semantic);
   setNature = this.semantic.setNature.bind(this.semantic);
+  getNature = this.semantic.getNature.bind(this.semantic);
   setMeaning = this.semantic.setMeaning.bind(this.semantic);
   getDirection = this.semantic.getDirection.bind(this.semantic);
   getMeaning = this.semantic.getMeaning.bind(this.semantic);
