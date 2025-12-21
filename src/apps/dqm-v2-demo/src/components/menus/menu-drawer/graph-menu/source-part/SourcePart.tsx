@@ -3,13 +3,13 @@ import { PreCode } from "_views/pre-code/PreCode";
 import type { FC } from "react";
 import { ParamTable } from "../param-table/ParamTable";
 import { SectionTitle } from "../section-title/SectionTitle";
-import type { Rows } from "../utils";
+import { tryCatch, type Rows } from "../utils";
 
 interface GraphMenuSourcePartProps {
   node: IAstNode | IParam;
 }
 export const GraphMenuSourcePart: FC<GraphMenuSourcePartProps> = ({ node }) => {
-  const sourceString = node.getSourceString();
+  const sourceString = tryCatch(() => node.getSourceString());
 
   const rows: Rows = [["Length", () => sourceString.length]];
 

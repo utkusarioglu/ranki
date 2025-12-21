@@ -11,13 +11,18 @@ import { useUiStore } from "_stores/ui/ui.store.mjs";
 import { useCallback, useMemo, useRef, type FC } from "react";
 import { onTapNode, onTapNothing } from "./events.mts";
 import type { DqmParseOutput } from "@dqm/package-dqm-api-v2";
+import { useErrorBoundary } from "react-error-boundary";
 
 Cytoscape.use(fcose);
 
 export const AstGraph = () => {
   const dqm = useDqmStore();
+  const boundary = useErrorBoundary();
+
   if (dqm.parsed.state !== "success") {
-    return <div>Parse fail</div>;
+    boundary.showBoundary(dqm.parsed.error);
+    return null;
+    // return <div>Parse fail</div>;
   }
 
   return <AstGraphSuccess data={dqm.parsed.data} />;
