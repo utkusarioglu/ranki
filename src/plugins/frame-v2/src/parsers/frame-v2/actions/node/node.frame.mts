@@ -14,7 +14,7 @@ export const nodeFrame: IAstNodeActionDict = {
   baseV2Block_frameV2(sBaseV2Indentation, frameV2, sBaseV2WasteInline, nlEnd) {
     return grabAst(this)
       .newAst(this)
-      .newCpx((cpx) => cpx.setParams(PARAMS).setIdList(COMPONENT))
+      .newCpx((cpx) => cpx.setRawParams(PARAMS).setIdList(COMPONENT))
       .pushNodes(["space", sBaseV2Indentation])
       .pushNodes(["node", frameV2])
       .pushNodes(["space", sBaseV2WasteInline])
@@ -81,6 +81,6 @@ function parseFrame(self: ohm.Node, parent: IAstNode) {
   }
 
   return frameV2FrameConfigFp.newCpx((cpx) =>
-    cpx.setParams(params).setIdList(idList),
+    cpx.setRawParams(params).setIdList(idList),
   );
 }

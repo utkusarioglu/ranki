@@ -61,15 +61,9 @@ export class Dqm {
 
   parse(rawInputs: DqmParseInput): DqmParseOutput {
     try {
-      // const merged = this.config
-      //   .mergeTo("merged")
-      //   .getConfig<DqmConfig>("merged");
       const initial = this.config.getConfig<DqmConfig>(INITIAL_CONFIG_NAME);
       const inputs = this.processInput(rawInputs);
-      // const component: ChainList = [["base", "v2", "default"]];
       const { chain, params } = initial.plugins.defaultComponent;
-      // const component: ChainList = defaultComponentChain.chainList;
-      // const params: IParam[] = defaultComponentChain.params;
       const transports: CommonTransportsConstructorParams = {
         plugins: this.plugins,
         config: this.config,
@@ -79,7 +73,7 @@ export class Dqm {
           theater: input.theater,
           ast: new AstNode(transports)
             .setNature("synthetic")
-            .newCpx((cpx) => cpx.setParams(params).setIdList([chain]))
+            .newCpx((cpx) => cpx.setRawParams(params).setIdList([chain]))
             .setDirection("block")
             .getCpx()!
             .parse(input),

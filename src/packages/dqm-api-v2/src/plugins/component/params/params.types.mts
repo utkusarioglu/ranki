@@ -11,4 +11,5 @@ export interface IParams {
   getSchema(): ComponentParamsSchema;
   findById(channel: ParamChannel, id: Alias | Chain): IParam | never;
   getChannelCompilationByChannelName<T>(channel: ParamChannel): T;
+  getParams(): IParam[];
 }

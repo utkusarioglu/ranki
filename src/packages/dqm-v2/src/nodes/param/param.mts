@@ -26,6 +26,16 @@ export class Param extends AstNode implements IParam {
   private specs!: ChannelParamSpecs;
   private channel!: ParamChannel;
   private producer: ParamProducer = "instance-declaration";
+  private rawParam: IParam | null = null;
+
+  setRawParam(rawParam: IParam): this {
+    this.rawParam = rawParam;
+    return this;
+  }
+
+  getRawParam(): IParam | null {
+    return this.rawParam;
+  }
 
   setSpecs(specs: ChannelParamSpecs): this {
     this.specs = specs;
@@ -101,6 +111,10 @@ export class Param extends AstNode implements IParam {
   setDefaultValues(valueSpec: ParamDefaultValue[]): this {
     this.defaultValues = valueSpec;
     return this;
+  }
+
+  getDefaultValues(): ParamDefaultValue[] {
+    return this.defaultValues;
   }
 
   getValues(): AstSourceView[] {

@@ -12,7 +12,7 @@ export const GraphMenuCpx: FC<GraphMenuCpxProps> = ({ data }) => {
 
   return (
     <>
-      <DrawerTitleRow>Properties</DrawerTitleRow>
+      <DrawerTitleRow>Cpx Node</DrawerTitleRow>
       <GraphMenuCpxPart cpx={d} />
     </>
   );

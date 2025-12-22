@@ -29,6 +29,7 @@ export interface DqmConfig {
   stage: DqmStages;
   plugins: {
     onAbsentComponent: "fail" | "useDefaultComponent";
+    onOrphanParam: "fail" | "ignore";
     defaultComponent: {
       chain: Chain;
       params: any[]; // TODO

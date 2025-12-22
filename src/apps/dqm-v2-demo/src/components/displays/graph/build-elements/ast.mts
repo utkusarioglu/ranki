@@ -25,14 +25,20 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
       id,
       label: "ast:" + creator,
     },
-    classes: [
+    classes: classes(
       "ast",
       `relationship-${relationship}`,
       astDepth === 0 && "root",
       `depth-${astDepth}`,
-    ]
-      .filter((v) => !!v)
-      .join(" "),
+    ),
+    // classes: [
+    //   "ast",
+    //   `relationship-${relationship}`,
+    //   astDepth === 0 && "root",
+    //   `depth-${astDepth}`,
+    // ]
+    //   .filter((v) => !!v)
+    //   .join(" "),
   };
   Registry.registerNode(node);
 

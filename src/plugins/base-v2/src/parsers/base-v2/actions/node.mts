@@ -13,7 +13,7 @@ export const node: IAstNodeActionDict = {
   baseV2RootBlock_ignored(ignore, wm, rest) {
     return grabAst(this)
       .newAst(this)
-      .newCpx((cpx) => cpx.setParams(PARAMS).setIdList(COMPONENT))
+      .newCpx((cpx) => cpx.setRawParams(PARAMS).setIdList(COMPONENT))
       .setDirection("block")
       .pushNodes(["token", ignore])
       .pushNodes(["space", wm])
@@ -34,7 +34,7 @@ export const node: IAstNodeActionDict = {
   baseV2RootBlock_structured(whitespace1, structure, whitespace2) {
     return grabAst(this)
       .newAst(this)
-      .newCpx((cpx) => cpx.setParams(PARAMS).setIdList(COMPONENT))
+      .newCpx((cpx) => cpx.setRawParams(PARAMS).setIdList(COMPONENT))
       .setDirection("block")
       .pushNodes(["space", whitespace1])
       .pushNodes(["node", structure])

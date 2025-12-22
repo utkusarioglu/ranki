@@ -1,7 +1,7 @@
 import { type FC } from "react";
-import { type Rows } from "../utils";
+import { type PropertyTableRows } from "../tables/PropertyTable";
 import { SectionTitle } from "../section-title/SectionTitle";
-import { ParamTable } from "../param-table/ParamTable";
+import { PropertyTable } from "../tables/PropertyTable";
 import type { ICps } from "@dqm/package-dqm-api-v2";
 
 interface GraphMenuCpsPartProps {
@@ -9,7 +9,7 @@ interface GraphMenuCpsPartProps {
 }
 
 export const GraphMenuCpsPart: FC<GraphMenuCpsPartProps> = ({ cps: a }) => {
-  const astRows: Rows = [
+  const astRows: PropertyTableRows = [
     ["Id", () => a.getId().getId().join(".")],
     ["Child Count", () => a.getChildren().length],
     ["On Fail Mode", () => (a.getOnFailMode() ? "true" : "false")],
@@ -18,7 +18,7 @@ export const GraphMenuCpsPart: FC<GraphMenuCpsPartProps> = ({ cps: a }) => {
   return (
     <>
       <SectionTitle>Cps Props</SectionTitle>
-      <ParamTable rows={astRows} />
+      <PropertyTable rows={astRows} />
     </>
   );
 };

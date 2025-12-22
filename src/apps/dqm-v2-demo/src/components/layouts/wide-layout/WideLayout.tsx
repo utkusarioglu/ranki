@@ -7,6 +7,8 @@ import { DisplayContainer } from "_layouts/display-container/ContentContainer";
 import { TabManager } from "_menus/tab-manager/TabManager";
 import { WIDE_LAYOUT_LEFT_MENU_WIDTH_MIN } from "_stores/ui/ui.store.constants.mts";
 import { MenuDrawer } from "_layouts/menu-drawer/MenuDrawer";
+import { ErrorBoundary } from "react-error-boundary";
+import { ErrorFallback } from "_views/error-fallback/ErrorFallback";
 
 export const WideLayout = () => {
   const ui = useUiStore();
@@ -37,9 +39,11 @@ export const WideLayout = () => {
 export const WideMenu = () => {
   return (
     <Scroller direction="vertical">
-      <TitleBarWide />
-      <TabManager />
-      <MenuDrawer />
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <TitleBarWide />
+        <TabManager />
+        <MenuDrawer />
+      </ErrorBoundary>
     </Scroller>
   );
 };

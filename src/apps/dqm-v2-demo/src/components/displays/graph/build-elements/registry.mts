@@ -37,7 +37,7 @@ export class Registry {
     const n = Registry.seen.get(node);
     if (!n) {
       // console.log("node:", node, "elems:", Id.elems, "seen:", Id.seen);
-      console.log("node:", node, "seen:", Registry.seen);
+      // console.log("node:", node, "seen:", Registry.seen);
       throw new Error("Node hasn't been seen before");
     }
     return n;

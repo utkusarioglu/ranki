@@ -54,7 +54,7 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "node.param",
+    selector: "node.rawParam",
     style: {
       width: 20,
       height: 20,
@@ -66,6 +66,35 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
       "font-size": fontSize,
       color: "#05F",
       "background-color": "#05F",
+    },
+  },
+
+  {
+    selector: "node.param",
+    style: {
+      width: 20,
+      height: 20,
+      shape: "hexagon",
+      label: "data(label)",
+      "text-valign": "center",
+      "text-halign": "left",
+      "text-margin-x": -6,
+      "font-size": fontSize,
+    },
+  },
+  {
+    selector: "node.param.producer-instance-declaration",
+    style: {
+      color: "#0FF",
+      "background-color": "#0FF",
+    },
+  },
+
+  {
+    selector: "node.param.producer-component-default",
+    style: {
+      color: "#0F4",
+      "background-color": "#0F4",
     },
   },
 

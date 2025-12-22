@@ -85,7 +85,7 @@ function useLocalState({
           configStr: value,
           message: ERROR_MESSAGE,
         });
-        console.log(e);
+        // console.log(e);
       }
     },
   };

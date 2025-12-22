@@ -10,6 +10,7 @@ import type {
   DqmConfig,
   IId,
   Alias,
+  IParam,
 } from "@dqm/package-dqm-api-v2";
 import { Id } from "../../id/id.mjs";
 import { ParamsLib } from "../../libs/params/params-lib.mjs";
@@ -35,6 +36,10 @@ export class Cps extends CommonTransports implements ICps {
   constructor(params: CommonTransportsConstructorParams) {
     super(params);
     this.cloneConfig();
+  }
+
+  getParams(): IParam[] {
+    return this.paramsLib.getParams();
   }
 
   setPrev(prev: ICps): this {
@@ -119,7 +124,6 @@ export class Cps extends CommonTransports implements ICps {
 
   setDefinition(def: CpsDefinition): this {
     this.determineComponent(def);
-    // this.component = this.getPlugins().getComponentById(def.id);
     this.id.setId(this.component.meta.id.chain);
     if (def.id.length === 1) {
       this.id.setAlias(def.id as Alias);

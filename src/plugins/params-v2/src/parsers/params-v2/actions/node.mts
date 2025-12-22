@@ -107,6 +107,7 @@ export const node: IAstNodeActionDict = {
               .getSubtreeNodes()
               .map((k) => k.getSourceString()),
           );
+          p.setOperator("assign");
           p.setValues([
             {
               type: "boolean",

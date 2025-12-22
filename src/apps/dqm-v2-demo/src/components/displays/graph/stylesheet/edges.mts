@@ -46,7 +46,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "edge.cpx-param",
+    selector: "edge.cpx-rawParam",
     style: {
       "line-color": "#05F",
       color: "#05F",
@@ -54,7 +54,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     },
   },
   {
-    selector: "edge.cpx-param",
+    selector: "edge.cpx-rawParam",
     style: {
       "line-color": "#06F",
       color: "#06F",
@@ -142,4 +142,40 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
       width: 0.2,
     },
   },
+
+  {
+    selector: "edge.cps-param.producer-instance-declaration",
+    style: {
+      "line-color": "#0FF",
+      color: "#0FF",
+      width: 1,
+    },
+  },
+
+  {
+    selector: "edge.cps-param.producer-component-default",
+    style: {
+      "line-color": "#0F4",
+      color: "#0F4",
+      width: 1,
+    },
+  },
+
+  {
+    selector: "edge.param-rawParam",
+    style: {
+      "line-color": "#45f",
+      color: "#45f",
+      width: 1,
+    },
+  },
+
+  // {
+  //   selector: "edge.param-param.sibling",
+  //   style: {
+  //     "line-color": "#044",
+  //     color: "#044",
+  //     width: 1,
+  //   },
+  // },
 ];

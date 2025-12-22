@@ -17,6 +17,12 @@ export class ParamsLib extends CommonTransports implements IParams {
   private schema!: ComponentParamsSchema;
   private paramsMap: Libs = new Map();
 
+  getParams(): IParam[] {
+    return Array.from(this.paramsMap.values())
+      .map((v) => v.getParams())
+      .flat();
+  }
+
   @dependsOn("schema")
   pushParam(user: IParam): this {
     const channel = user.getChannel();

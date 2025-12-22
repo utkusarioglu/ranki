@@ -1,15 +1,16 @@
 import { type FC } from "react";
-import { type Rows } from "../utils";
+import { type PropertyTableRows } from "../tables/PropertyTable";
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
 import { SectionTitle } from "../section-title/SectionTitle";
-import { ParamTable } from "../param-table/ParamTable";
+import { PropertyTable } from "../tables/PropertyTable";
 
 interface GraphMenuAstPartProps {
   ast: IAstNode;
 }
 
 export const GraphMenuAstPart: FC<GraphMenuAstPartProps> = ({ ast: a }) => {
-  const astRows: Rows = [
+  const astRows: PropertyTableRows = [
+    ["Creator", () => a.getCreator()],
     ["Kind", () => a.getKind()],
     ["Block Depth", () => a.getBlockDepth()],
     ["Inline Depth", () => a.getBlockDepth()],
@@ -28,7 +29,7 @@ export const GraphMenuAstPart: FC<GraphMenuAstPartProps> = ({ ast: a }) => {
   return (
     <>
       <SectionTitle>Ast Props</SectionTitle>
-      <ParamTable rows={astRows} />
+      <PropertyTable rows={astRows} />
     </>
   );
 };

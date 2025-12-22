@@ -2,9 +2,12 @@
   min-width: max-content;
   width: 100%;
   background-color: var(--color-bg-sample) !important;
-  padding: var(--ant-padding);
   margin: 0;
   box-sizing: border-box;
+}
+
+.padded {
+  padding: var(--ant-padding);
 }
 
 .code {

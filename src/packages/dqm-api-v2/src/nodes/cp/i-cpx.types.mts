@@ -26,8 +26,8 @@ export interface ICpx {
   getChildren(): ICpx[];
 
   parse(input: CpxParseInput): IAstNode;
-  setParams(params: IParam[]): this;
-  getParams(): IParam[] | null;
+  setRawParams(params: IParam[]): this;
+  getRawParams(): IParam[] | null;
   getLeafCps(): ICps;
   getRootCps(): ICps;
   getCpsList(): ICps[];

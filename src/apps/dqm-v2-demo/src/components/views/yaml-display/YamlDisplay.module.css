@@ -1,4 +1,8 @@
 .pre {
-  padding: var(--ant-padding);
   margin: 0;
+  padding: 0;
+}
+
+.padded {
+  padding: var(--ant-padding);
 }

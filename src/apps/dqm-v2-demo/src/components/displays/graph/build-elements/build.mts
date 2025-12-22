@@ -5,7 +5,8 @@ import { traverseCpx } from "./cpx.mts";
 import { traverseCps } from "./cps.mts";
 import { getRoot } from "./utils.mts";
 import { traverseAst } from "./ast.mts";
-import { traverseParams } from "./param.mts";
+import { traverseRawParams } from "./raw-param.mts";
+import { traverseParams } from "./params.mts";
 
 export function buildElements(currAst: IAstNode): Flattened | null {
   Registry.reset();
@@ -23,7 +24,8 @@ export function buildElements(currAst: IAstNode): Flattened | null {
   traverseCps(rootCps, cpsClimb);
 
   traverseAst(...getRoot(currAst));
-  traverseParams(rootCpx);
+  traverseRawParams(rootCpx);
+  traverseParams(currCps);
 
   return Registry.getProductArray();
 }

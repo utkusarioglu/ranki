@@ -16,13 +16,17 @@ import { CommonTransports } from "../common-transports.mjs";
 import { Id } from "../../id/id.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
+/**
+ * These are param values provided by the source. These haven't been merged
+ * with the defaults of their respective components yet.
+ */
 export class Cpx extends CommonTransports implements ICpx {
   private id = new Id();
   private parent: ICpx | null = null;
   private prev: ICpx | null = null;
   private next: ICpx | null = null;
   private children: ICpx[] = [];
-  private params: IParam[] | null = null;
+  private rawParams: IParam[] | null = null; // #1
   private cps: ICps[] = [];
   private rootAst!: IAstNode;
 
@@ -66,26 +70,26 @@ export class Cpx extends CommonTransports implements ICpx {
     return this.rootAst;
   }
 
-  setParams(params: IParam[]) {
+  setRawParams(params: IParam[]) {
     // TODO this only sets the values from the component specification
     // the default config could also define some values for components
     // this.params.setSchema(this.component.stages.ast);
     // params.forEach((param) => {
     //   this.params.addParam(param);
     // });
-    this.params = params;
+    this.rawParams = params;
     return this;
   }
 
-  @dependsOn("params")
-  getParamsByAudience(audience: Audience): IParam[] {
-    return this.params!.filter((p) =>
+  @dependsOn("rawParams")
+  getRawParamsByAudience(audience: Audience): IParam[] {
+    return this.rawParams!.filter((p) =>
       [ALL_AUDIENCES, audience].includes(p.getAudience()),
     );
   }
 
-  getParams(): IParam[] | null {
-    return this.params;
+  getRawParams(): IParam[] | null {
+    return this.rawParams;
   }
 
   setParent(parent: ICpx) {
@@ -109,7 +113,7 @@ export class Cpx extends CommonTransports implements ICpx {
     return this.children;
   }
 
-  @dependsOn("params")
+  @dependsOn("rawParams")
   setIdList(idList: IdList): this {
     const createRoot = () => {
       const parentCpx = this.getParent();
@@ -120,7 +124,7 @@ export class Cpx extends CommonTransports implements ICpx {
       }
       newCps.setCpx(this).setDefinition({
         id: idList[0],
-        params: this.getParamsByAudience(0),
+        params: this.getRawParamsByAudience(0),
       });
       return newCps as ICps;
     };
@@ -146,7 +150,7 @@ export class Cpx extends CommonTransports implements ICpx {
             .setParent(prev)
             .setDefinition({
               id: idList[i],
-              params: this.getParamsByAudience(i),
+              params: this.getRawParamsByAudience(i),
             });
           this.cps.push(curr);
         }

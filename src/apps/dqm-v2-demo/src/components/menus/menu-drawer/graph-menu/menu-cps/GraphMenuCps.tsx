@@ -12,7 +12,7 @@ export const GraphMenuCps: FC<GraphMenuCpsProps> = ({ data }) => {
 
   return (
     <>
-      <DrawerTitleRow>Properties</DrawerTitleRow>
+      <DrawerTitleRow>Cps Node</DrawerTitleRow>
       <GraphMenuCpsPart cps={d} />
     </>
   );

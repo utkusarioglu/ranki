@@ -29,7 +29,10 @@ export interface IParam extends IAstNode {
   setValues(values: AstSourceView[]): this;
   setSpecs(config: ChannelParamSpecs): this;
   setChannel(channel: ParamChannel): this;
+
   setDefaultValues(valueSpec: ParamDefaultValue[]): this;
+  getDefaultValues(): ParamDefaultValue[];
+
   setId(id: Alias | Chain): IParam;
 
   getAudience(): Audience;
@@ -39,6 +42,9 @@ export interface IParam extends IAstNode {
   getSpecs(): ChannelParamSpecs;
   getChannel(): ParamChannel;
   getProducer(): ParamProducer;
+
+  getRawParam(): IParam | null;
+  setRawParam(p: IParam): this;
 }
 
 export type IParamConstructor = new (

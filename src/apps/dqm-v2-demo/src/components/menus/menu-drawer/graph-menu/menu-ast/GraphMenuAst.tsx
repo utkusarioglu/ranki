@@ -13,7 +13,7 @@ export const GraphMenuAst: FC<GraphMenuAstProps> = ({ data }) => {
 
   return (
     <>
-      <DrawerTitleRow>Properties</DrawerTitleRow>
+      <DrawerTitleRow>Ast Node</DrawerTitleRow>
       <GraphMenuSourcePart node={d} />
       <GraphMenuAstPart ast={d} />
     </>

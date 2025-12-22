@@ -18,6 +18,10 @@ export class IdLib<Out> {
   private activeAliases = new Map<AliasString, ChainString>();
   private aliasCollisions: AliasCollision[] = [];
 
+  getAllValues() {
+    return Array.from(this.activeChains.values());
+  }
+
   add(id: IdSummary, out: Out) {
     const chainString = id.chain.join(".");
     const aliasStrings = id.aliases;

@@ -9,9 +9,10 @@ hljs.registerLanguage("yaml", yamlLang);
 
 interface YamlDisplayProps {
   obj: Record<string, any> | string;
+  padded?: boolean;
 }
 
-export const YamlDisplay: FC<YamlDisplayProps> = ({ obj }) => {
+export const YamlDisplay: FC<YamlDisplayProps> = ({ obj, padded = true }) => {
   let code = "";
   if (typeof obj !== "string") {
     try {
@@ -35,7 +36,11 @@ export const YamlDisplay: FC<YamlDisplayProps> = ({ obj }) => {
   }).value;
 
   return (
-    <pre className={style.pre}>
+    <pre
+      className={[style.pre, padded && style.padded]
+        .filter((v) => !!v)
+        .join(" ")}
+    >
       <code
         dangerouslySetInnerHTML={{
           __html: highlighted,

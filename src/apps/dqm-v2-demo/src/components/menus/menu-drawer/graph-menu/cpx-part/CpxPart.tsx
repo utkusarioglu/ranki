@@ -1,15 +1,15 @@
 import { type FC } from "react";
-import { type Rows } from "../utils";
+import { type PropertyTableRows } from "../tables/PropertyTable";
 import type { ICpx } from "@dqm/package-dqm-api-v2";
 import { SectionTitle } from "../section-title/SectionTitle";
-import { ParamTable } from "../param-table/ParamTable";
+import { PropertyTable } from "../tables/PropertyTable";
 
 interface GraphMenuAstPartProps {
   cpx: ICpx;
 }
 
 export const GraphMenuCpxPart: FC<GraphMenuAstPartProps> = ({ cpx: a }) => {
-  const astRows: Rows = [
+  const astRows: PropertyTableRows = [
     ["Unique Id", () => a.getId().getUnique()],
     [
       "Chain List",
@@ -27,7 +27,7 @@ export const GraphMenuCpxPart: FC<GraphMenuAstPartProps> = ({ cpx: a }) => {
           .map((v) => v.join("."))
           .join("|"),
     ],
-    ["Param Count", () => a.getParams()?.length],
+    ["Raw Param Count", () => a.getRawParams()?.length],
     ["Children Count", () => a.getChildren().length],
     ["Cps Count", () => a.getCpsList().length],
     ["Root Cps Id", () => a.getRootCps().getId().getId().join(".")],
@@ -38,7 +38,7 @@ export const GraphMenuCpxPart: FC<GraphMenuAstPartProps> = ({ cpx: a }) => {
   return (
     <>
       <SectionTitle>Cpx Props</SectionTitle>
-      <ParamTable rows={astRows} />
+      <PropertyTable rows={astRows} />
     </>
   );
 };

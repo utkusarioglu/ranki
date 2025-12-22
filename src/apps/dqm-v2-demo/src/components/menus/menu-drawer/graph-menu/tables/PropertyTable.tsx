@@ -1,19 +1,23 @@
 import { useMemo, type FC } from "react";
-import { tryCatch, type Rows } from "../utils";
+import { tryCatch } from "../utils";
 import { Table, Typography } from "antd";
 
-const buildDataSource = (rows: Rows) =>
+type PropertyTableValueTuple = [string, (...any: any[]) => any];
+
+export type PropertyTableRows = PropertyTableValueTuple[];
+
+interface PropertyTableProps {
+  rows: PropertyTableRows;
+}
+
+const buildDataSource = (rows: PropertyTableRows) =>
   rows.map(([p, v]) => ({
     key: p.toString().replace(" ", "_").toLowerCase(),
     prop: p,
     val: tryCatch(v),
   }));
 
-interface ParamTableProps {
-  rows: Rows;
-}
-
-export const ParamTable: FC<ParamTableProps> = ({ rows }) => {
+export const PropertyTable: FC<PropertyTableProps> = ({ rows }) => {
   const dataSource = useMemo(() => buildDataSource(rows), [rows]);
   return (
     <Table dataSource={dataSource} pagination={false}>

@@ -22,6 +22,7 @@ export type GraphDrawerData =
   | GraphDrawerAst
   | GraphDrawerCpx
   | GraphDrawerCps
+  | GraphDrawerRawParam
   | GraphDrawerParam;
 
 export type GraphDrawerAst = {
@@ -39,6 +40,12 @@ export type GraphDrawerCpx = {
 export type GraphDrawerCps = {
   type: "cps";
   dqmNode: ICps;
+  cyNode: N;
+};
+
+export type GraphDrawerRawParam = {
+  type: "rawParam";
+  dqmNode: IParam;
   cyNode: N;
 };
 
