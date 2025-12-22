@@ -1,6 +1,6 @@
 import type { ICpx, IParam } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
-import { classes } from "./utils.mts";
+import { cls } from "./utils.mts";
 
 export function traverseRawParams(root: ICpx): void {
   if (!root) {
@@ -20,7 +20,7 @@ function traverseParam(root: IParam | null): void {
   }
   const node = Registry.getNode(root);
   node.data.label = "rawParam:" + root.getId().getId().join(".");
-  node.classes = classes("rawParam");
+  node.classes = cls("rawParam");
   const id = node.data.id;
 
   // TODO register param sibling relationship as well. the code below does ast-ast sibling instead so it's not the right call.
@@ -43,7 +43,7 @@ function traverseParam(root: IParam | null): void {
   if (creatorCpx) {
     const source = Registry.getId(creatorCpx);
     const e = Registry.getEdge(source, id);
-    e.classes = classes("cpx-rawParam");
+    e.classes = cls("cpx-rawParam");
     e.data.label = "collects";
 
     // creatorCpx.getCpsList().forEach((n) => {

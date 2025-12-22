@@ -1,6 +1,6 @@
 import type { E, Flattened, N, TraversalNode } from "./build.types";
 
-export const classes = (...cls: any[]) => cls.filter((v) => !!v).join(" ");
+export const cls = (...cls: any[]) => cls.filter((v) => !!v).join(" ");
 
 type TExtend<T> = null | {
   getParent(): T | null;

@@ -1,6 +1,6 @@
 import type { ICps } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
-import { classes } from "./utils.mts";
+import { cls } from "./utils.mts";
 
 export function traverseCps(root: ICps | null, cpsDepth: number): void {
   if (!root) {
@@ -12,7 +12,7 @@ export function traverseCps(root: ICps | null, cpsDepth: number): void {
       id,
       label: "cps:" + root.getId().getChain().join("."),
     },
-    classes: classes("cps", cpsDepth === 0 && "root", `depth-${cpsDepth}`),
+    classes: cls("cps", cpsDepth === 0 && "root", `depth-${cpsDepth}`),
   };
   Registry.registerNode(node);
 
@@ -23,7 +23,7 @@ export function traverseCps(root: ICps | null, cpsDepth: number): void {
       target: id,
       label: "delegates",
     },
-    classes: classes("cpx-cps"),
+    classes: cls("cpx-cps"),
   });
 
   const parentCps = root.getParent();
@@ -34,7 +34,7 @@ export function traverseCps(root: ICps | null, cpsDepth: number): void {
         target: id,
         label: "child",
       },
-      classes: classes("cps-cps", "relationship-child"),
+      classes: cls("cps-cps", "relationship-child"),
     });
   }
 
@@ -46,7 +46,7 @@ export function traverseCps(root: ICps | null, cpsDepth: number): void {
         target: id,
         label: "sibling",
       },
-      classes: classes("cps-cps", "relationship-sibling"),
+      classes: cls("cps-cps", "relationship-sibling"),
     });
   }
 

@@ -8,10 +8,11 @@ import { theme } from "antd";
 import { buildStyleSheet } from "./stylesheet/stylesheet.mts";
 import { layout } from "./layout.mts";
 import { useUiStore } from "_stores/ui/ui.store.mjs";
-import { useCallback, useMemo, useRef, type FC } from "react";
+import { useCallback, useEffect, useMemo, useRef, type FC } from "react";
 import { onTapNode, onTapNothing } from "./events.mts";
 import type { DqmParseOutput } from "@dqm/package-dqm-api-v2";
 import { useErrorBoundary } from "react-error-boundary";
+import { useGraphViewStore } from "_stores/graph-view/graph-view.store.mjs";
 
 Cytoscape.use(fcose);
 
@@ -35,8 +36,75 @@ export const AstGraphSuccess: FC<AstGraphSuccessProps> = ({ data }) => {
   const fontSize = 8;
   const animationDuration = 600;
   const cyRef = useRef<Core | null>(null);
+  const graphView = useGraphViewStore();
   const ui = useUiStore();
   const { token } = theme.useToken();
+
+  useEffect(() => {
+    if (cyRef.current) {
+      const elements = cyRef.current.elements("node.ast");
+      if (graphView.ast) {
+        elements.removeClass("hidden");
+      } else {
+        elements.addClass("hidden");
+      }
+    }
+  }, [graphView.ast]);
+
+  useEffect(() => {
+    if (cyRef.current) {
+      const elements = cyRef.current.elements("node.cpx");
+      if (graphView.cpx) {
+        elements.removeClass("hidden");
+      } else {
+        elements.addClass("hidden");
+      }
+    }
+  }, [graphView.cpx]);
+
+  useEffect(() => {
+    if (cyRef.current) {
+      const elements = cyRef.current.elements("node.cps");
+      if (graphView.cps) {
+        elements.removeClass("hidden");
+      } else {
+        elements.addClass("hidden");
+      }
+    }
+  }, [graphView.cps]);
+
+  useEffect(() => {
+    if (cyRef.current) {
+      const elements = cyRef.current.elements("node.param");
+      if (graphView.param) {
+        elements.removeClass("hidden");
+      } else {
+        elements.addClass("hidden");
+      }
+    }
+  }, [graphView.param]);
+
+  useEffect(() => {
+    if (cyRef.current) {
+      const elements = cyRef.current.elements("node.rawParam");
+      if (graphView.rawParam) {
+        elements.removeClass("hidden");
+      } else {
+        elements.addClass("hidden");
+      }
+    }
+  }, [graphView.rawParam]);
+
+  useEffect(() => {
+    if (cyRef.current) {
+      const elements = cyRef.current.elements("edge");
+      if (graphView.edgeLabels) {
+        elements.removeClass("hidden-label");
+      } else {
+        elements.addClass("hidden-label");
+      }
+    }
+  }, [graphView.edgeLabels]);
 
   const cbOnTapNode = useCallback(
     (e: EventObject) => onTapNode(e, ui, animationDuration),

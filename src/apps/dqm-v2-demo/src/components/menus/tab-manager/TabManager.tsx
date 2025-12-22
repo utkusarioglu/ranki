@@ -15,6 +15,7 @@ import { useLocation, useNavigate } from "@tanstack/react-router";
 import { RenderSettings } from "../render-settings/RenderSettings";
 import { DqmPluginsOptions } from "_menus/dqm-plugins-options/DqmPluginsOptions";
 import { DqmConfigOptions } from "_menus/dqm-config-options/DqmConfigOptions";
+import { GraphOptions } from "_menus/graph-options/GraphOptions";
 
 type Level = {
   key: string;
@@ -79,7 +80,7 @@ const levels: Level[] = [
       {
         key: "graph",
         label: "Graph",
-        TabChild: <NotYet />,
+        TabChild: <GraphOptions />,
         route: "/view/graph",
         icon: <ShareAltOutlined />,
       },

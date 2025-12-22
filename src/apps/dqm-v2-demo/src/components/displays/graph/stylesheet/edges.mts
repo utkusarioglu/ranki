@@ -6,6 +6,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     selector: "edge",
     style: {
       label: "data(label)",
+
       "text-valign": "center",
       "text-halign": "left",
       "text-margin-x": -6,
@@ -38,10 +39,10 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     selector: "edge.cpx-ast",
     style: {
       "line-color": "#202020",
-      color: "#202020",
+      color: "#AAA",
       "line-style": "dashed",
       width: 1,
-      opacity: 0,
+      // opacity: 0,
     },
   },
 
@@ -77,7 +78,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
       color: "#409",
       "line-style": "dashed",
       width: 0.1,
-      opacity: 0,
+      // opacity: 0,
     },
   },
 
@@ -88,7 +89,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
       color: "#999",
       "line-style": "dashed",
       width: 0.1,
-      opacity: 0,
+      // opacity: 0,
     },
   },
 
@@ -97,7 +98,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     style: {
       "line-color": "#999",
       color: "#999",
-      opacity: 1,
+      // opacity: 1,
       width: 0.5,
     },
   },
@@ -107,7 +108,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
       "line-color": "#556633",
       color: "#556633",
       width: 1,
-      opacity: 0,
+      // opacity: 0,
     },
   },
   {

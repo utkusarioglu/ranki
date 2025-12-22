@@ -11,6 +11,21 @@ export const buildStyleSheet = (token: GlobalToken, fontSize: number) => [
       opacity: 0.01,
     },
   },
+
+  {
+    selector: ".hidden",
+    style: {
+      opacity: 0,
+    },
+  },
+  {
+    selector: ".hidden-label",
+    style: {
+      "text-background-opacity": 0,
+      "text-opacity": 0,
+    },
+  },
+
   {
     selector: ".focused",
     style: {

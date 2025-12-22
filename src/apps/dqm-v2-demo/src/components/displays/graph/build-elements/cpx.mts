@@ -1,6 +1,6 @@
 import type { ICpx } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
-import { classes } from "./utils.mts";
+import { cls } from "./utils.mts";
 
 export function traverseCpx(root: ICpx | null, cpxDepth: number): void {
   if (!root) {
@@ -17,7 +17,7 @@ export function traverseCpx(root: ICpx | null, cpxDepth: number): void {
           .map((v) => v.join("."))
           .join(" | "),
     },
-    classes: classes("cpx", cpxDepth === 0 && "root"),
+    classes: cls("cpx", cpxDepth === 0 && "root"),
   };
   Registry.registerNode(node);
 
@@ -30,7 +30,7 @@ export function traverseCpx(root: ICpx | null, cpxDepth: number): void {
           target: node.data.id,
           label: "child",
         },
-        classes: classes("cpx-cpx", "parent", `depth-${cpxDepth}`),
+        classes: cls("cpx-cpx", "parent", `depth-${cpxDepth}`),
       });
     }
   }
@@ -43,7 +43,7 @@ export function traverseCpx(root: ICpx | null, cpxDepth: number): void {
         target: id,
         label: "sibling",
       },
-      classes: classes("cpx-cpx", "sibling"),
+      classes: cls("cpx-cpx", "sibling"),
     });
   }
 

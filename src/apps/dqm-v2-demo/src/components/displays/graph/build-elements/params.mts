@@ -1,6 +1,6 @@
 import type { ICps, IParam } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
-import { classes } from "./utils.mts";
+import { cls } from "./utils.mts";
 import type { E, IdValue, N } from "./build.types";
 
 function traverseParam(cpsId: IdValue, param: IParam) {
@@ -11,7 +11,7 @@ function traverseParam(cpsId: IdValue, param: IParam) {
       id,
       label: "param:" + param.getId().getChain().join("."),
     },
-    classes: classes("param", `producer-${producer}`),
+    classes: cls("param", `producer-${producer}`),
   };
   Registry.registerNode(node);
 
@@ -24,7 +24,7 @@ function traverseParam(cpsId: IdValue, param: IParam) {
         target: Registry.getId(rawParam),
         label: "represents",
       },
-      classes: classes("param-rawParam"),
+      classes: cls("param-rawParam"),
     });
   }
 
@@ -34,7 +34,7 @@ function traverseParam(cpsId: IdValue, param: IParam) {
       target: id,
       label: "customizes",
     },
-    classes: classes("cps-param", `producer-${producer}`),
+    classes: cls("cps-param", `producer-${producer}`),
   });
 
   const prev = param.getPrev();
@@ -47,7 +47,7 @@ function traverseParam(cpsId: IdValue, param: IParam) {
         target: id,
         label: "sibling",
       },
-      classes: classes("param-param", "sibling"),
+      classes: cls("param-param", "sibling"),
     };
     Registry.registerEdge(edge);
   }

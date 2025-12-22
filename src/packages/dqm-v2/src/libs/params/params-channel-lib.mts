@@ -60,26 +60,37 @@ export class ParamsChannelLib extends CommonTransports {
     });
   }
 
+  /**
+   * @dev
+   * #1 Tries to update the param by positional first
+   * #2 If not positional, alias is used to update the param
+   * #3 If alias fails as well, then chain is directly used
+   * #4 This is meant to be a fail-safe. Every param should be accessible by chain
+   */
   private determineParam(user: IParam): IParam | undefined {
     try {
       let p: IParam;
       const alias = user.getId().getAlias();
       if (alias) {
+        // #1
         if (alias.join(".") === POSITIONAL_PARAM.join(".")) {
           const position = this.currentPosition++;
           const chain = this.schema.positionals[position];
           p = this.lib.getObjectByChain(chain);
           p.getId().setPosition(position);
         } else {
+          // #2
           p = this.lib.getObjectByAlias(alias);
           p.getId().setAlias(alias);
         }
       } else {
+        // #3
         const chain = user.getId().getChain();
         p = this.lib.getObjectById(chain);
       }
       assertExists(p, {
         why: "All methods for determining the booked param have been depleted.",
+        details: { alias },
       });
       return p;
     } catch (e) {
@@ -105,62 +116,30 @@ export class ParamsChannelLib extends CommonTransports {
 
   /**
    * @dev
-   * #1 Tries to update the param by positional first
-   * #2 If not positional, alias is used to update the param
-   * #3 If alias fails as well, then chain is directly used
-   * #4 This is meant to be a fail-safe every param should be accessible by chain
+   * #1 Some of these don't work because they depend on `newAst` or `newParam`
+   * method.
+   * #2 In case orphan params are set to be ignored, `p` may return undefined.
    */
   addParam(user: IParam) {
     let p = this.determineParam(user);
     if (!p) {
-      return;
+      return; // #2
     }
     try {
-      // const alias = user.getId().getAlias();
-      // if (alias) {
-      //   if (alias.join(".") === POSITIONAL_PARAM.join(".")) {
-      //     const position = this.currentPosition++;
-      //     const chain = this.schema.positionals[position];
-      //     p = this.lib.getObjectByChain(chain);
-      //     p.getId().setPosition(position);
-      //   } else {
-      //     p = this.lib.getObjectByAlias(alias);
-      //     p.getId().setAlias(alias);
-      //   }
-      // } else {
-      //   const chain = user.getId().getChain();
-      //   p = this.lib.getObjectById(chain);
-      // }
-
-      // TODO here you need to decide what to do if a param isn't defined. Do
-      // you want to ignore it or yell?
-
+      // #1
       p.setRawParam(user)
         .setProducer("instance-declaration")
+        .setRelationship(user.getRelationship())
+        .setCreationMethod(user.getCreationMethod())
+        // .setMeaning(user.getMeaning())
+        .setDirection(user.getDirection())
         .setAudience(user.getAudience())
         .setChannel(user.getChannel())
         .setOperator(user.getOperator())
         .setValues(user.getValues());
     } catch (e) {
-      // const initial =
-      //   this.getConfig().getConfig<DqmConfig>(INITIAL_CONFIG_NAME);
-      // switch (initial.plugins.onOrphanParam) {
-      //   case "ignore":
-      //     this.failed.push(user);
-      //     break;
-      //   default:
-      //     throw new DqmAppError({
-      //       code: "ORPHAN_PARAM",
-      //       why: "Param doesn't exist in schema and the initial configuration is set to fail on orphan params",
-      //       cause: e,
-      //       details: {
-      //         userSuppliedParamId: user.getId().getId(),
-      //         schema: this.schema,
-      //       },
-      //     });
-      // }
-      // // TODO this should be reflected in validation
-      // console.log("failed push", { user, e, p: p!, cause: e });
+      // TODO get rid of this
+      console.log("value transfer failed", e);
     }
 
     return this;

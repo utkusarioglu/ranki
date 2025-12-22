@@ -1,6 +1,6 @@
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
-import { classes } from "./utils.mts";
+import { cls } from "./utils.mts";
 
 /**
  * @dev
@@ -25,20 +25,12 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
       id,
       label: "ast:" + creator,
     },
-    classes: classes(
+    classes: cls(
       "ast",
       `relationship-${relationship}`,
       astDepth === 0 && "root",
       `depth-${astDepth}`,
     ),
-    // classes: [
-    //   "ast",
-    //   `relationship-${relationship}`,
-    //   astDepth === 0 && "root",
-    //   `depth-${astDepth}`,
-    // ]
-    //   .filter((v) => !!v)
-    //   .join(" "),
   };
   Registry.registerNode(node);
 
@@ -52,7 +44,7 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
         target: id,
         label: "maintains",
       },
-      classes: classes("cpx-ast", isHeadAst ? "head" : "secondary"),
+      classes: cls("cpx-ast", isHeadAst ? "head" : "secondary"),
     });
 
     creatorCpx.getCpsList().map((c) => {
@@ -62,7 +54,7 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
           target: id,
           label: "cps-ast",
         },
-        classes: classes("cps-ast", isHeadAst ? "head" : "secondary"),
+        classes: cls("cps-ast", isHeadAst ? "head" : "secondary"),
       });
     });
   }
@@ -81,7 +73,7 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
           target: id,
           label: "external",
         },
-        classes: classes("ast-ast", "relationship-external"),
+        classes: cls("ast-ast", "relationship-external"),
       });
     } else {
       Registry.registerEdge({
@@ -90,7 +82,7 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
           target: id,
           label: "child",
         },
-        classes: classes("ast-ast", `relationship-${relationship}`),
+        classes: cls("ast-ast", `relationship-${relationship}`),
       });
     }
   }
@@ -103,7 +95,7 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
         target: id,
         label: "sibling",
       },
-      classes: classes("ast-ast", "sibling"),
+      classes: cls("ast-ast", "sibling"),
     });
   }
 
