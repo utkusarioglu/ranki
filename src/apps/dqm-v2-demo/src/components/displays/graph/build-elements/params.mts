@@ -24,7 +24,7 @@ function traverseParam(cpsId: IdValue, param: IParam) {
         target: Registry.getId(rawParam),
         label: "represents",
       },
-      classes: cls("param-rawParam"),
+      classes: cls("source-param", "target-rawParam"),
     });
   }
 
@@ -34,7 +34,7 @@ function traverseParam(cpsId: IdValue, param: IParam) {
       target: id,
       label: "customizes",
     },
-    classes: cls("cps-param", `producer-${producer}`),
+    classes: cls("source-cps", "target-param", `producer-${producer}`),
   });
 
   const prev = param.getPrev();
@@ -47,7 +47,7 @@ function traverseParam(cpsId: IdValue, param: IParam) {
         target: id,
         label: "sibling",
       },
-      classes: cls("param-param", "sibling"),
+      classes: cls("source-param", "target-param", "sibling"),
     };
     Registry.registerEdge(edge);
   }

@@ -6,14 +6,35 @@ export const GraphOptions = () => {
 
   return (
     <div>
-      <BlockySwitch onChange={(e) => graph.setAst(e)} title="Ast" />
-      <BlockySwitch onChange={(e) => graph.setCpx(e)} title="Cpx" />
-      <BlockySwitch onChange={(e) => graph.setCps(e)} title="Cps" />
-      <BlockySwitch onChange={(e) => graph.setParam(e)} title="Param" />
-      <BlockySwitch onChange={(e) => graph.setRawParam(e)} title="RawParam" />
+      <BlockySwitch
+        onChange={(e) => graph.setAst(e)}
+        title="Ast"
+        value={graph.ast}
+      />
+      <BlockySwitch
+        onChange={(e) => graph.setCpx(e)}
+        title="Cpx"
+        value={graph.cpx}
+      />
+      <BlockySwitch
+        onChange={(e) => graph.setCps(e)}
+        title="Cps"
+        value={graph.cps}
+      />
+      <BlockySwitch
+        onChange={(e) => graph.setParam(e)}
+        title="Param"
+        value={graph.param}
+      />
+      <BlockySwitch
+        onChange={(e) => graph.setRawParam(e)}
+        title="RawParam"
+        value={graph.rawParam}
+      />
       <BlockySwitch
         onChange={(e) => graph.setEdgeLabels(e)}
         title="EdgeLabels"
+        value={graph.edgeLabels}
       />
     </div>
   );

@@ -23,7 +23,7 @@ export function traverseCps(root: ICps | null, cpsDepth: number): void {
       target: id,
       label: "delegates",
     },
-    classes: cls("cpx-cps"),
+    classes: cls("source-cpx", "target-cps"),
   });
 
   const parentCps = root.getParent();
@@ -34,7 +34,7 @@ export function traverseCps(root: ICps | null, cpsDepth: number): void {
         target: id,
         label: "child",
       },
-      classes: cls("cps-cps", "relationship-child"),
+      classes: cls("source-cps", "target-cps", "relationship-child"),
     });
   }
 
@@ -46,7 +46,7 @@ export function traverseCps(root: ICps | null, cpsDepth: number): void {
         target: id,
         label: "sibling",
       },
-      classes: cls("cps-cps", "relationship-sibling"),
+      classes: cls("source-cps", "target-cps", "relationship-sibling"),
     });
   }
 

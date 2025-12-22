@@ -30,7 +30,7 @@ export function traverseCpx(root: ICpx | null, cpxDepth: number): void {
           target: node.data.id,
           label: "child",
         },
-        classes: cls("cpx-cpx", "parent", `depth-${cpxDepth}`),
+        classes: cls("source-cpx", "target-cpx", "parent", `depth-${cpxDepth}`),
       });
     }
   }
@@ -43,7 +43,7 @@ export function traverseCpx(root: ICpx | null, cpxDepth: number): void {
         target: id,
         label: "sibling",
       },
-      classes: cls("cpx-cpx", "sibling"),
+      classes: cls("source-cpx", "target-cpx", "sibling"),
     });
   }
 

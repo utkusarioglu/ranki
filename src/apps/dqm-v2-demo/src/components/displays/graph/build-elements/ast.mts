@@ -44,7 +44,11 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
         target: id,
         label: "maintains",
       },
-      classes: cls("cpx-ast", isHeadAst ? "head" : "secondary"),
+      classes: cls(
+        "source-cpx",
+        "target-ast",
+        isHeadAst ? "head" : "secondary",
+      ),
     });
 
     creatorCpx.getCpsList().map((c) => {
@@ -54,7 +58,11 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
           target: id,
           label: "cps-ast",
         },
-        classes: cls("cps-ast", isHeadAst ? "head" : "secondary"),
+        classes: cls(
+          "source-cps",
+          "target-ast",
+          isHeadAst ? "head" : "secondary",
+        ),
       });
     });
   }
@@ -73,7 +81,7 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
           target: id,
           label: "external",
         },
-        classes: cls("ast-ast", "relationship-external"),
+        classes: cls("source-ast", "target-ast", "relationship-external"),
       });
     } else {
       Registry.registerEdge({
@@ -82,7 +90,11 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
           target: id,
           label: "child",
         },
-        classes: cls("ast-ast", `relationship-${relationship}`),
+        classes: cls(
+          "source-ast",
+          "target-ast",
+          `relationship-${relationship}`,
+        ),
       });
     }
   }
@@ -95,7 +107,7 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
         target: id,
         label: "sibling",
       },
-      classes: cls("ast-ast", "sibling"),
+      classes: cls("source-ast", "target-ast", "sibling"),
     });
   }
 

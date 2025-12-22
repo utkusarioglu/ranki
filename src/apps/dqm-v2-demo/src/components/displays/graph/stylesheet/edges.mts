@@ -20,7 +20,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "edge.cpx-cpx",
+    selector: "edge.source-cpx.target-cpx",
     style: {
       "line-color": token.colorPrimary,
       color: token.colorPrimary,
@@ -28,7 +28,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     },
   },
   {
-    selector: "edge.cpx-cps",
+    selector: "edge.source-cpx.target-cps",
     style: {
       "line-color": token.colorBgSolid,
       color: token.colorBgSolid,
@@ -36,7 +36,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     },
   },
   {
-    selector: "edge.cpx-ast",
+    selector: "edge.source-cpx.target-ast",
     style: {
       "line-color": "#202020",
       color: "#AAA",
@@ -47,7 +47,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "edge.cpx-rawParam",
+    selector: "edge.source-cpx.target-rawParam",
     style: {
       "line-color": "#05F",
       color: "#05F",
@@ -55,7 +55,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     },
   },
   {
-    selector: "edge.cpx-rawParam",
+    selector: "edge.source-cpx.target-rawParam",
     style: {
       "line-color": "#06F",
       color: "#06F",
@@ -64,7 +64,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "edge.cps-cps.relationship-child",
+    selector: "edge.source-cps.target-cps.relationship-child",
     style: {
       "line-color": "#904",
       color: "#904",
@@ -72,7 +72,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     },
   },
   {
-    selector: "edge.cps-cps.relationship-sibling",
+    selector: "edge.source-cps.target-cps.relationship-sibling",
     style: {
       "line-color": "#409",
       color: "#409",
@@ -83,7 +83,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "edge.cps-ast.secondary",
+    selector: "edge.source-cps.target-ast.secondary",
     style: {
       "line-color": "#999",
       color: "#999",
@@ -94,7 +94,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "edge.cps-ast.head",
+    selector: "edge.source-cps.target-ast.head",
     style: {
       "line-color": "#999",
       color: "#999",
@@ -103,7 +103,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     },
   },
   {
-    selector: "edge.ast-ast.sibling",
+    selector: "edge.source-ast.target-ast.sibling",
     style: {
       "line-color": "#556633",
       color: "#556633",
@@ -112,7 +112,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     },
   },
   {
-    selector: "edge.ast-ast.relationship-node",
+    selector: "edge.source-ast.target-ast.relationship-node",
     style: {
       "line-color": "#aaa",
       color: "#aaa",
@@ -120,7 +120,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     },
   },
   {
-    selector: "edge.ast-ast.relationship-token",
+    selector: "edge.source-ast.target-ast.relationship-token",
     style: {
       width: 1,
       "line-color": "#404",
@@ -128,7 +128,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     },
   },
   {
-    selector: "edge.ast-ast.relationship-space",
+    selector: "edge.source-ast.target-ast.relationship-space",
     style: {
       "line-color": "#044",
       color: "#044",
@@ -136,7 +136,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     },
   },
   {
-    selector: "edge.ast-ast.relationship-external",
+    selector: "edge.source-ast.target-ast.relationship-external",
     style: {
       "line-color": "#FF0000",
       color: "#FF0000",
@@ -145,7 +145,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "edge.cps-param.producer-instance-declaration",
+    selector: "edge.source-cps.target-param.producer-instance-declaration",
     style: {
       "line-color": "#0FF",
       color: "#0FF",
@@ -154,7 +154,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "edge.cps-param.producer-component-default",
+    selector: "edge.source-cps.target-param.producer-component-default",
     style: {
       "line-color": "#0F4",
       color: "#0F4",
@@ -163,7 +163,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "edge.param-rawParam",
+    selector: "edge.source-param.target-rawParam",
     style: {
       "line-color": "#45f",
       color: "#45f",

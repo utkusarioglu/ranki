@@ -43,7 +43,7 @@ function traverseParam(root: IParam | null): void {
   if (creatorCpx) {
     const source = Registry.getId(creatorCpx);
     const e = Registry.getEdge(source, id);
-    e.classes = cls("cpx-rawParam");
+    e.classes = cls("source-cpx", "target-rawParam");
     e.data.label = "collects";
 
     // creatorCpx.getCpsList().forEach((n) => {
