@@ -8,23 +8,28 @@ import { DqmDemoError } from "../../../errors/dqm-demo-error.mts";
 hljs.registerLanguage("yaml", yamlLang);
 
 interface YamlDisplayProps {
-  obj: Record<string, any>;
+  obj: Record<string, any> | string;
 }
 
 export const YamlDisplay: FC<YamlDisplayProps> = ({ obj }) => {
   let code = "";
-  try {
-    code = yaml.stringify(obj);
-  } catch (e) {
-    throw new DqmDemoError({
-      code: "PARSE_FAIL",
-      why: "Yaml parse failed for a node",
-      cause: e,
-      // details: {
-      //   obj,
-      // },
-    });
+  if (typeof obj !== "string") {
+    try {
+      code = yaml.stringify(obj);
+    } catch (e) {
+      throw new DqmDemoError({
+        code: "PARSE_FAIL",
+        why: "Yaml parse failed for a node",
+        cause: e,
+        // details: {
+        //   obj,
+        // },
+      });
+    }
+  } else {
+    code = obj;
   }
+
   const highlighted = hljs.highlight(code, {
     language: "yaml",
   }).value;

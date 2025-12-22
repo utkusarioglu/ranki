@@ -6,41 +6,111 @@ import type { IDqmError } from "@dqm/package-dqm-api-v2";
 import { Scroller } from "_views/scroller/Scroller";
 import { YamlDisplay } from "_views/yaml-display/YamlDisplay";
 
+type Attempt = AttemptSuccess | AttemptFail;
+
+type O = object | string;
+
+interface AttemptSuccess {
+  success: true;
+  raw: O;
+  method: string;
+  value: any;
+  comment: string;
+}
+interface AttemptFail {
+  success: false;
+  raw: O;
+  method: string;
+  error: any;
+  comment: string;
+}
+
+type ErrorCall = {
+  error: () => O;
+  stringify: (error: O) => string;
+  method: string;
+  comment: string;
+};
+
+const attempt = (fn: ErrorCall): Attempt => {
+  let raw: O = "(failed)";
+  try {
+    raw = fn.error();
+    return {
+      success: true,
+      raw,
+      value: fn.stringify(raw),
+      method: fn.method,
+      comment: fn.comment,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      raw,
+      error: err,
+      method: fn.method,
+      comment: fn.comment,
+    };
+  }
+};
+
 export const ErrorFallback: FC<FallbackProps> = ({
   error,
   resetErrorBoundary,
 }) => {
-  console.log("eee", error);
-  // const message = (error.stack || error.message || error || "Error") as string;
+  console.log("ERROR:", error);
 
-  // const lines = message.split("\n");
-  // const first = lines[0];
-  // const stack = lines
-  //   .slice(1)
-  //   .map((v) => v.trim())
-  //   .join("\n");
-  // const [errType, content] = first.split(":").map((v) => v.trim());
+  const customErr = error as IDqmError;
+  let errorVisualizationAttempts: Attempt[] = [];
 
-  let j: {} = {};
-  // @ts-ignore
-  let e = "";
-  try {
-    j = (error as IDqmError).toExtendedJSON();
-    e = yaml.stringify(j);
-  } catch (rr) {
-    e = error;
+  const errorCalls: ErrorCall[] = [
+    {
+      error: () => customErr.toExtendedJSON(),
+      stringify: (e) => yaml.stringify(e),
+      method: "toExtendedJSON",
+      comment: "Errors and their causes have successfully been parsed.",
+    },
+    {
+      error: () => customErr.toJSON(),
+      stringify: (e) => yaml.stringify(e),
+      method: "toJSON",
+      comment:
+        "Extended error parsing has failed. Standard JSON parsing is utilized instead.",
+    },
+    {
+      error: () => customErr.toString(),
+      stringify: (e) => e.toString(),
+      method: "toString",
+      comment:
+        "The error messages couldn't be parsed as JSON. You are viewing the string version of the error",
+    },
+  ];
+
+  for (const fn of errorCalls) {
+    errorVisualizationAttempts.push(attempt(fn));
   }
+
+  const errorVisualization = errorVisualizationAttempts.find(
+    (v) => v.success,
+  ) || {
+    value: errorVisualizationAttempts,
+    comment: [
+      "No visualization method succeeded in producing a serializable response.",
+      "You are viewing the fallback method. Please consult the console for more details.",
+    ].join(" "),
+  };
+
+  console.log("VISUALIZATIONS", errorVisualizationAttempts);
 
   return (
     <div role="alert" className={style.container}>
       <Scroller direction="vertical">
         <div className={style.content}>
           <h1 className={style.title}>Error</h1>
-          {/* <h1 className={style.title}>{errType}</h1>
-          <pre className={style.message}>{content}</pre>
-          <pre className={style.stack}>{stack}</pre> */}
-          <YamlDisplay obj={j} />
-          {/* <pre>{e}</pre> */}
+          {errorVisualization.comment ? (
+            <p>{errorVisualization.comment}</p>
+          ) : null}
+          <YamlDisplay obj={errorVisualization.value} />
           <button className={style.reset} onClick={() => resetErrorBoundary()}>
             Reset Error
           </button>

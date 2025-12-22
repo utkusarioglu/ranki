@@ -10,6 +10,11 @@ export const DEFAULT_CONFIG: DqmConfig = {
     suffix: "",
   },
   plugins: {
+    onAbsentComponent: "useDefaultComponent",
+    defaultComponent: {
+      chain: ["base", "v2", "default"],
+      params: [],
+    },
     standards: ["grammar:ConstantsV2", "grammar:BaseV2"],
     requested: [],
     config: {},
@@ -17,3 +22,10 @@ export const DEFAULT_CONFIG: DqmConfig = {
 };
 
 export const POSITIONAL_PARAM: Alias = ["$POSITIONAL$"];
+
+export const DEFAULT_CONFIG_NAME = "default";
+
+/**
+ * Configuration created for the dqm instance creation.
+ */
+export const INITIAL_CONFIG_NAME = "initial";

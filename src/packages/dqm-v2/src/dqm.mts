@@ -1,11 +1,15 @@
 import { Libs } from "./libs/libs.mjs";
-import { DEFAULT_CONFIG } from "./constants.mjs";
+import {
+  DEFAULT_CONFIG,
+  DEFAULT_CONFIG_NAME,
+  INITIAL_CONFIG_NAME,
+} from "./constants.mjs";
 import { AstNode } from "./nodes/ast/ast-node.mjs";
 import { Config } from "@dqm/package-dqm-utils";
 import { Id } from "./id/id.mjs";
 import type {
-  ChainList,
   CommonTransportsConstructorParams,
+  DqmConfig,
   DqmConfigPack,
   DqmParseInput,
   DqmParseInputString,
@@ -14,7 +18,6 @@ import type {
   DqmParseRole,
   DqmParseTheater,
   IDqmPlugin,
-  IParam,
   IPlugins,
 } from "@dqm/package-dqm-api-v2";
 import { DqmAppError } from "./errors/dqm-app-error/dqm-app-error.mjs";
@@ -38,10 +41,11 @@ export class Dqm {
     // #1
     DEFAULT_CONFIG.plugins.config = pluginDefaults.config;
     DEFAULT_CONFIG.grammar.tokens = pluginDefaults.tokens;
-    this.config.pushConfig("default", DEFAULT_CONFIG);
+    this.config.pushConfig(DEFAULT_CONFIG_NAME, DEFAULT_CONFIG);
     configPacks.map(({ id, config }) => {
       this.config.pushConfig(id, config);
     });
+    this.config.mergeTo(INITIAL_CONFIG_NAME);
   }
 
   private processInput(rawInputs: DqmParseInput): DqmParseInputStructured {
@@ -57,9 +61,15 @@ export class Dqm {
 
   parse(rawInputs: DqmParseInput): DqmParseOutput {
     try {
+      // const merged = this.config
+      //   .mergeTo("merged")
+      //   .getConfig<DqmConfig>("merged");
+      const initial = this.config.getConfig<DqmConfig>(INITIAL_CONFIG_NAME);
       const inputs = this.processInput(rawInputs);
-      const component: ChainList = [["base", "v2", "default"]];
-      const params: IParam[] = [];
+      // const component: ChainList = [["base", "v2", "default"]];
+      const { chain, params } = initial.plugins.defaultComponent;
+      // const component: ChainList = defaultComponentChain.chainList;
+      // const params: IParam[] = defaultComponentChain.params;
       const transports: CommonTransportsConstructorParams = {
         plugins: this.plugins,
         config: this.config,
@@ -69,7 +79,7 @@ export class Dqm {
           theater: input.theater,
           ast: new AstNode(transports)
             .setNature("synthetic")
-            .newCpx((cpx) => cpx.setParams(params).setIdList(component))
+            .newCpx((cpx) => cpx.setParams(params).setIdList([chain]))
             .setDirection("block")
             .getCpx()!
             .parse(input),

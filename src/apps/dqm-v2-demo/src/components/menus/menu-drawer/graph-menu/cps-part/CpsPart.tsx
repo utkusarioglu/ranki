@@ -12,6 +12,7 @@ export const GraphMenuCpsPart: FC<GraphMenuCpsPartProps> = ({ cps: a }) => {
   const astRows: Rows = [
     ["Id", () => a.getId().getId().join(".")],
     ["Child Count", () => a.getChildren().length],
+    ["On Fail Mode", () => (a.getOnFailMode() ? "true" : "false")],
   ];
 
   return (

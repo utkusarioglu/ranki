@@ -67,11 +67,11 @@ function placeRadially(
 
 function restorePositions(cy: Core, animationDuration: number) {
   cy.nodes().forEach((node) => {
-    const pos = node.scratch("_origPos");
-    if (!pos) return;
+    const position = node.scratch("_origPos");
+    if (!position) return;
 
     node.animate(
-      { position: pos },
+      { position },
       {
         duration: animationDuration,
         easing: "ease-in-out",
@@ -122,7 +122,6 @@ export function onTapNode(
     data: e.target.data(),
     classes: e.target.classes(),
   };
-  console.log("cy", cyNode);
   ui.setTemplateDrawerState({
     type: "graph",
     // @ts-expect-error #1

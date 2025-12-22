@@ -15,6 +15,8 @@ import { Id } from "../../id/id.mjs";
 import { ParamsLib } from "../../libs/params/params-lib.mjs";
 import { CommonTransports } from "../common-transports.mjs";
 import { prepareContext } from "../ast/ast.utils.mjs";
+import { INITIAL_CONFIG_NAME } from "../../constants.mjs";
+import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
 const MERGE_TARGET = "merged";
 const CONFIG_CHANNEL = "configs";
@@ -28,6 +30,7 @@ export class Cps extends CommonTransports implements ICps {
   private component!: IDqmComponent;
   private paramsLib: IParams = new ParamsLib(this.getTransports());
   private cpx!: ICpx;
+  private onFailMode = false;
 
   constructor(params: CommonTransportsConstructorParams) {
     super(params);
@@ -56,6 +59,10 @@ export class Cps extends CommonTransports implements ICps {
     return this.id;
   }
 
+  getOnFailMode() {
+    return this.onFailMode;
+  }
+
   setParent(cps: ICps): this {
     this.parent = cps;
     if (this.parent) {
@@ -73,23 +80,65 @@ export class Cps extends CommonTransports implements ICps {
     return this.children;
   }
 
+  private setToFailMode() {
+    this.onFailMode = true;
+  }
+
+  /**
+   * @dev
+   * #1 Note that initial component cannot be overwritten
+   * #2 TODO a warning should be issued if a component fails
+   */
+  private determineComponent(def: CpsDefinition): void {
+    try {
+      this.component = this.getPlugins().getComponentById(def.id);
+    } catch (e) {
+      const initial =
+        this.getConfig().getConfig<DqmConfig>(INITIAL_CONFIG_NAME);
+      switch (initial.plugins.onAbsentComponent) {
+        case "useDefaultComponent":
+          this.setToFailMode();
+          // #1 #2
+          const { chain } = initial.plugins.defaultComponent;
+          this.component = this.getPlugins().getComponentById(chain);
+          break;
+        default:
+          throw new DqmAppError({
+            code: "DEPENDENCY_ABSENT",
+            why: "Source requested a component that wasn't installed by any of the plugins",
+            cause: e,
+            details: {
+              def,
+              INITIAL_CONFIG_NAME,
+              config: this.getConfig(),
+            },
+          });
+      }
+    }
+  }
+
   setDefinition(def: CpsDefinition): this {
-    this.component = this.getPlugins().getComponentById(def.id);
+    this.determineComponent(def);
+    // this.component = this.getPlugins().getComponentById(def.id);
     this.id.setId(this.component.meta.id.chain);
     if (def.id.length === 1) {
       this.id.setAlias(def.id as Alias);
     }
     this.paramsLib.setSchema(this.component.stages.ast);
-    def.params.forEach((param) => {
-      this.paramsLib.pushParam(param);
-    });
-    // TODO $ may not be the token the user prefers. or $ may be mapped to a value like "config"
-    const componentParamConfig =
-      this.paramsLib.getChannelCompilationByChannelName(CONFIG_CHANNEL);
+    if (!this.getOnFailMode()) {
+      def.params.forEach((param) => {
+        this.paramsLib.pushParam(param);
+      });
+      // TODO $ may not be the token the user prefers. or $ may be mapped to a value like "config"
+      const componentParamConfig =
+        this.paramsLib.getChannelCompilationByChannelName(CONFIG_CHANNEL);
 
-    this.getConfig()
-      .pushConfig("cps", componentParamConfig)
-      .mergeTo(MERGE_TARGET);
+      this.getConfig()
+        .pushConfig("cps", componentParamConfig)
+        .mergeTo(MERGE_TARGET);
+    } else {
+      this.getConfig().mergeTo(MERGE_TARGET);
+    }
 
     return this;
   }

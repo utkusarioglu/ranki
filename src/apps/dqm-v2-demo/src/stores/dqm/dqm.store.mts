@@ -8,7 +8,7 @@ import { pluginSelectionInit } from "./dqm.plugins.mts";
 
 export const useDqmStore = create(
   subscribeWithSelector<DqmStore>((set) => ({
-    deferParsing: false,
+    deferParsing: true,
     inputs: INPUTS,
     singleTemplates: [],
     arrangementTemplates: [],

@@ -41,7 +41,7 @@ export function dependsOn(...properties: string[]) {
 export function rejectValues(...values: any[]) {
   return function <This extends any, Args extends any[], Return>(
     value: (this: This, ...args: Args) => Return,
-    context: ClassMethodDecoratorContext<
+    _context: ClassMethodDecoratorContext<
       This,
       (this: This, ...args: Args) => Return
     >,
@@ -61,7 +61,10 @@ export function rejectValues(...values: any[]) {
           code: "VALUE_REJECTED",
           why: "The method returned a value that it was required to reject",
           cause: null,
-          details: { context },
+          details: {
+            response,
+            values,
+          },
         });
       }
       return response;

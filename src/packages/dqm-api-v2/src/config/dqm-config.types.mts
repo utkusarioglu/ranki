@@ -1,3 +1,4 @@
+import type { Chain } from "../export.types.mjs";
 import type { DqmGrammarTokens } from "../plugins/grammar/grammar.types.mjs";
 import type { ConfigEntryCode } from "./i-config.types.mjs";
 
@@ -27,6 +28,11 @@ export type DqmPluginsConfigDefaults = {
 export interface DqmConfig {
   stage: DqmStages;
   plugins: {
+    onAbsentComponent: "fail" | "useDefaultComponent";
+    defaultComponent: {
+      chain: Chain;
+      params: any[]; // TODO
+    };
     standards: DqmPluginName[];
     requested: DqmPluginName[];
     config: DqmPluginsConfig;

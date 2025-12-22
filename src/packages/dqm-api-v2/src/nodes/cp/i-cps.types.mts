@@ -25,6 +25,8 @@ export interface ICps {
 
   pushChild(child: ICps): this;
   getChildren(): ICps[];
+
+  getOnFailMode(): boolean;
 }
 
 export type ICpsConstructor = new (
