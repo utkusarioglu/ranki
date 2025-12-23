@@ -8,19 +8,21 @@ export const buildStyleSheet = (token: GlobalToken, fontSize: number) => [
   {
     selector: ".dimmed",
     style: {
-      opacity: 0.01,
+      opacity: 0,
+      events: "no",
+      display: "none",
     },
   },
 
   {
-    selector: ".hidden",
+    selector: "[hidden]",
     style: {
       opacity: 0,
     },
   },
 
   {
-    selector: ".hidden-label",
+    selector: "[hidden_label]",
     style: {
       "text-background-opacity": 0,
       "text-opacity": 0,

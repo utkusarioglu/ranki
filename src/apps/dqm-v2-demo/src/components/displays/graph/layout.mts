@@ -1,6 +1,5 @@
 export const layout = {
   name: "fcose",
-  // name: "breadthfirst",
   seed: 12345,
   directed: true,
   circle: false,

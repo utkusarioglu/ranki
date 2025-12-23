@@ -10,30 +10,19 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
       label: "data(label)",
       "text-valign": "bottom",
       "text-halign": "center",
-      // "text-margin-x": -6,
       "text-margin-y": 6,
       "font-size": fontSize,
       "text-background-color": token.colorBgContainer,
       "text-background-opacity": 0.8,
       "text-background-shape": "roundrectangle", // or rectangle
       "text-background-padding": "4px",
-
-      color: token.colorPrimary,
-      "background-color": token.colorPrimary,
     },
   },
 
   {
     selector: "node.cpx",
     style: {
-      // width: 20,
-      // height: 20,
       shape: "rectangle",
-      // label: "data(label)",
-      // "text-valign": "center",
-      // "text-halign": "left",
-      // "text-margin-x": -6,
-      // "font-size": fontSize,
       color: token.colorPrimary,
       "background-color": token.colorPrimary,
     },
@@ -43,28 +32,13 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
     style: {
       width: 40,
       height: 40,
-      // shape: "rectangle",
-      // label: "data(label)",
-      // "text-valign": "center",
-      // "text-halign": "left",
-      // "text-margin-x": -6,
-      // "font-size": fontSize,
-      // color: token.colorPrimary,
-      // "background-color": token.colorPrimary,
     },
   },
 
   {
     selector: "node.rawParam",
     style: {
-      // width: 20,
-      // height: 20,
       shape: "hexagon",
-      // label: "data(label)",
-      // "text-valign": "center",
-      // "text-halign": "left",
-      // "text-margin-x": -6,
-      // "font-size": fontSize,
       color: "#05F",
       "background-color": "#05F",
     },
@@ -73,14 +47,7 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
   {
     selector: "node.param",
     style: {
-      // width: 20,
-      // height: 20,
       shape: "hexagon",
-      // label: "data(label)",
-      // "text-valign": "center",
-      // "text-halign": "left",
-      // "text-margin-x": -6,
-      // "font-size": fontSize,
     },
   },
   {
@@ -102,14 +69,7 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
   {
     selector: "node.cps",
     style: {
-      // width: 20,
-      // height: 20,
       shape: "triangle",
-      // label: "data(label)",
-      // "text-valign": "center",
-      // "text-halign": "left",
-      // "text-margin-x": -6,
-      // "font-size": fontSize,
       color: "#CCC",
       "background-color": "#CCC",
     },
@@ -119,30 +79,13 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
     style: {
       width: 40,
       height: 40,
-      // shape: "triangle",
-      // label: "data(label)",
-      // "text-valign": "center",
-      // "text-halign": "left",
-      // "text-margin-x": -6,
-      // "font-size": fontSize,
-      // color: "#CCC",
-      // "background-color": "#CCC",
     },
   },
 
   {
     selector: "node.ast",
     style: {
-      // width: 20,
-      // height: 20,
       shape: "diamond",
-      // label: "data(label)",
-      // "text-valign": "center",
-      // "text-halign": "left",
-      // "text-margin-x": -6,
-      // "font-size": fontSize,
-      // color: "#006644",
-      // "background-color": "#006644",
     },
   },
   {

@@ -6,7 +6,10 @@ import { cls } from "./utils.mts";
  * @dev
  * #1 This comes up at the very root of the graph
  */
-export function traverseAst(root: IAstNode | null, astDepth: number): void {
+export function traverseAst(
+  root: IAstNode | null,
+  totalAstDepth: number,
+): void {
   if (!root) {
     return;
   }
@@ -19,6 +22,9 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
   }
 
   const relationship = root.getRelationship() || "undefined";
+  const creatorCpx = root.getCpx();
+  const headAstId = creatorCpx ? Registry.getId(creatorCpx.getRootAst()) : -1;
+  const isHeadAst = headAstId === id;
 
   const node = {
     data: {
@@ -28,16 +34,13 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
     classes: cls(
       "ast",
       `relationship-${relationship}`,
-      astDepth === 0 && "root",
-      `depth-${astDepth}`,
+      `total-depth-${totalAstDepth}`,
+      isHeadAst ? "head" : "extension",
     ),
   };
   Registry.registerNode(node);
 
-  const creatorCpx = root.getCpx();
   if (creatorCpx) {
-    const headAstId = Registry.getId(creatorCpx.getRootAst());
-    const isHeadAst = headAstId === id;
     Registry.registerEdge({
       data: {
         source: Registry.getId(creatorCpx),
@@ -47,7 +50,8 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
       classes: cls(
         "source-cpx",
         "target-ast",
-        isHeadAst ? "head" : "secondary",
+        `total-depth-${totalAstDepth}`,
+        isHeadAst ? "head" : "extension",
       ),
     });
 
@@ -61,7 +65,8 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
         classes: cls(
           "source-cps",
           "target-ast",
-          isHeadAst ? "head" : "secondary",
+          `total-depth-${totalAstDepth}`,
+          isHeadAst ? "head" : "extension",
         ),
       });
     });
@@ -81,7 +86,13 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
           target: id,
           label: "external",
         },
-        classes: cls("source-ast", "target-ast", "relationship-external"),
+        classes: cls(
+          "source-ast",
+          "target-ast",
+          "relationship-external",
+          `total-depth-${totalAstDepth}`,
+          isHeadAst ? "head" : "extension",
+        ),
       });
     } else {
       Registry.registerEdge({
@@ -94,6 +105,8 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
           "source-ast",
           "target-ast",
           `relationship-${relationship}`,
+          `total-depth-${totalAstDepth}`,
+          isHeadAst ? "head" : "extension",
         ),
       });
     }
@@ -107,9 +120,15 @@ export function traverseAst(root: IAstNode | null, astDepth: number): void {
         target: id,
         label: "sibling",
       },
-      classes: cls("source-ast", "target-ast", "sibling"),
+      classes: cls(
+        "source-ast",
+        "target-ast",
+        "relationship-sibling",
+        `total-depth-${totalAstDepth}`,
+        isHeadAst ? "head" : "extension",
+      ),
     });
   }
 
-  root.getChildren().forEach((n) => traverseAst(n, astDepth + 1));
+  root.getChildren().forEach((n) => traverseAst(n, totalAstDepth + 1));
 }

@@ -83,7 +83,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "edge.source-cps.target-ast.secondary",
+    selector: "edge.source-cps.target-ast.extension",
     style: {
       "line-color": "#999",
       color: "#999",
@@ -103,7 +103,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     },
   },
   {
-    selector: "edge.source-ast.target-ast.sibling",
+    selector: "edge.source-ast.target-ast.relationship-sibling",
     style: {
       "line-color": "#556633",
       color: "#556633",
