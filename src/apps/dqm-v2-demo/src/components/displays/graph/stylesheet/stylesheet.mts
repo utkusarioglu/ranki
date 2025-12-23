@@ -18,6 +18,7 @@ export const buildStyleSheet = (token: GlobalToken, fontSize: number) => [
       opacity: 0,
     },
   },
+
   {
     selector: ".hidden-label",
     style: {

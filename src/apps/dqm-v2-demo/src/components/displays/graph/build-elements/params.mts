@@ -16,7 +16,6 @@ function traverseParam(cpsId: IdValue, param: IParam) {
   Registry.registerNode(node);
 
   const rawParam = param.getRawParam();
-  console.log(param, rawParam);
   if (rawParam) {
     Registry.registerEdge({
       data: {
@@ -40,7 +39,6 @@ function traverseParam(cpsId: IdValue, param: IParam) {
   const prev = param.getPrev();
   if (prev) {
     const source = Registry.getId(prev);
-    console.log(source);
     const edge: E = {
       data: {
         source,

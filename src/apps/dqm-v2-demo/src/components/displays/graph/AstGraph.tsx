@@ -26,6 +26,10 @@ export const AstGraph = () => {
     // return <div>Parse fail</div>;
   }
 
+  if (dqm.parsed.data.length < 1) {
+    return <div>No theaters</div>;
+  }
+
   return <AstGraphSuccess data={dqm.parsed.data} />;
 };
 interface AstGraphSuccessProps {
