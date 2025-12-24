@@ -1,8 +1,6 @@
 import type { CpxParseInput } from "../../dqm.types.mjs";
 import type {
   AliasList,
-  // AliasListString,
-  // AliasStringList,
   ChainList,
   ChainListString,
   ChainStringList,
@@ -15,6 +13,10 @@ import type { CommonTransportsConstructorParams } from "../common-transports.typ
 import type { IAstNode } from "../ast/ast-node.types.mjs";
 import type { IParam } from "../param/param-node.types.mjs";
 import type { UniqueValue } from "../../export.types.mjs";
+
+export type ICpxConstructor = new (
+  transports: CommonTransportsConstructorParams,
+) => ICpx;
 
 export interface ICpx {
   getUnique(): UniqueValue;
@@ -56,7 +58,3 @@ export interface ICpx {
   setRootAst(ast: IAstNode): this;
   getRootAst(): IAstNode;
 }
-
-export type ICpxConstructor = new (
-  transports: CommonTransportsConstructorParams,
-) => ICpx;

@@ -10,7 +10,7 @@ interface GraphMenuAstPartProps {
 
 export const GraphMenuCpxPart: FC<GraphMenuAstPartProps> = ({ cpx: a }) => {
   const astRows: PropertyTableRows = [
-    ["Unique Id", () => a.getId().getUnique()],
+    ["Unique Id", () => a.getUnique()],
     [
       "Chain List",
       () =>

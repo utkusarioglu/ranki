@@ -11,13 +11,15 @@ import type {
   SanitizedAst,
   SanitizeResult,
 } from "./sanitized-ast-node.types.mts";
-import { assertExists } from "../../../errors/assertions.mts";
+import { assertExists } from "_assertions";
 
 class SanitizedAstNode {
   private node: IAstNode;
   private visible: SanitizedNodeViewPreferences;
 
   constructor(node: IAstNode, visible: SanitizedNodeViewPreferences) {
+    // const newSanitized = createSanitizedView(node);
+    // console.log("get creator", newSanitized.getCreator());
     this.node = node;
     this.visible = visible;
   }

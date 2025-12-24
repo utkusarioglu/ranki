@@ -2,10 +2,10 @@ import type {
   DqmParseTheater,
   CreatorName,
   IAstNodeKind,
-  IdUnique,
   CounterStat,
   CreationMethod,
   AstSourceString,
+  UniqueValue,
 } from "@dqm/package-dqm-api-v2";
 
 export interface SuccessfulSanitize {
@@ -41,7 +41,7 @@ export interface SanitizedNodeProps {
   idList: string;
   kind: IAstNodeKind;
   constructorName: string;
-  cpxUnique: IdUnique;
+  cpxUnique: UniqueValue;
   childIndex: CounterStat;
   blockDepth: CounterStat;
   inlineDepth: CounterStat;
@@ -65,6 +65,7 @@ export interface SanitizedNodeStable {
   sourceString: AstSourceString;
 }
 export interface SanitizedNodeViewPreferences {
+  hidden: (keyof SanitizedNodeProps)[];
   props: (keyof SanitizedNodeProps)[];
   children: (keyof SanitizedNodeChildren)[];
   stable: (keyof SanitizedNodeStable)[];

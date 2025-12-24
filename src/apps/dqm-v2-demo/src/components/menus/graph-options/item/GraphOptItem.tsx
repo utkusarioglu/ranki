@@ -1,4 +1,3 @@
-import { LOOKUP } from "_displays/graph/LOOKUP";
 import type {
   GraphViewStore,
   GraphViewStoreStateKey,
