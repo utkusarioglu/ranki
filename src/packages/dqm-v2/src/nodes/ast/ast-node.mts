@@ -151,7 +151,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     assertExists(cpx, {
       why: "Pushing a child expects an already defined cpx",
     });
-    const cpxUnique = cpx.getId().getUnique();
+    const cpxUnique = cpx.getUnique();
     this.syntax.pushNodes(nodeSetRaw, cpxUnique);
     return this;
   }

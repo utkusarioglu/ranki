@@ -8,17 +8,16 @@ import type {
   ChainStringList,
   IdList,
   IdListString,
-  // IdString,
   IdStringList,
-  IId,
 } from "../../plugins/component/id/id.types.mjs";
 import type { ICps } from "./i-cps.types.mjs";
 import type { CommonTransportsConstructorParams } from "../common-transports.types.mjs";
 import type { IAstNode } from "../ast/ast-node.types.mjs";
 import type { IParam } from "../param/param-node.types.mjs";
+import type { UniqueValue } from "../../export.types.mjs";
 
 export interface ICpx {
-  getId(): IId;
+  getUnique(): UniqueValue;
 
   getIdStringList(): IdStringList;
   getIdListString(): IdListString;

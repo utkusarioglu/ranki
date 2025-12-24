@@ -149,7 +149,7 @@ class SanitizedAstNode {
           assertExists(cpx, {
             why: "Cpx is required to access a cpx property",
           });
-          props[id] = cpx.getId().getUnique();
+          props[id] = cpx.getUnique();
           break;
         case "creator":
           props[id] = this.node.getCreator();

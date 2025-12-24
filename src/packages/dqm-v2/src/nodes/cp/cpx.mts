@@ -7,19 +7,20 @@ import type {
   Audience,
   IAstNode,
   ChainList,
-  IId,
   ChainStringList,
   ChainListString,
   IdStringList,
   IdListString,
   AliasList,
+  UniqueValue,
+  CommonTransportsConstructorParams,
 } from "@dqm/package-dqm-api-v2";
 import { dependsOn, rejectValues } from "@dqm/package-dqm-utils";
 import { ALL_AUDIENCES } from "../param/param.constants.mjs";
 import { Cps } from "./cps.mjs";
 import { CommonTransports } from "../common-transports.mjs";
-import { Id } from "../../id/id.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
+import { Unique } from "../../unique/unique.mjs";
 
 export const CHAIN_STRING_SEPARATOR = "/";
 export const ID_STRING_SEPARATOR = "#";
@@ -30,7 +31,8 @@ export const ALIAS_STRING_SEPARATOR = "|";
  * with the defaults of their respective components yet.
  */
 export class Cpx extends CommonTransports implements ICpx {
-  private id = new Id();
+  private uniqueValue: UniqueValue;
+  // private id = new Id();
   private parent: ICpx | null = null;
   private prev: ICpx | null = null;
   private next: ICpx | null = null;
@@ -38,6 +40,12 @@ export class Cpx extends CommonTransports implements ICpx {
   private rawParams: IParam[] | null = null; // #1
   private cps: ICps[] = [];
   private rootAst!: IAstNode;
+
+  constructor(params: CommonTransportsConstructorParams) {
+    super(params);
+    this.uniqueValue = Unique.getNewUnique();
+    // this.cloneConfig();
+  }
 
   // getIdString(): IdString {
   //   return this.getId().getIdString();
@@ -61,10 +69,14 @@ export class Cpx extends CommonTransports implements ICpx {
     return this.next;
   }
 
-  // TODO is this really needed?
-  getId(): IId {
-    return this.id;
+  getUnique() {
+    return this.uniqueValue;
   }
+
+  // TODO is this really needed?
+  // getId(): IId {
+  //   return this.id;
+  // }
 
   getChainList(): ChainList {
     return this.cps.map((cps) => cps.getId().getChain());

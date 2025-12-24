@@ -5,8 +5,8 @@ import type {
   SubtreeNodes,
   ChildrenNodes,
   PushedNodeDefinition,
-  IdUnique,
   CreatorName,
+  UniqueValue,
 } from "@dqm/package-dqm-api-v2";
 import { assertArrayNotEmpty } from "@dqm/package-dqm-utils";
 import type * as ohm from "ohm-js";
@@ -39,7 +39,7 @@ export function syntaxCapability<T>(self: T) {
      * distinction can be made through the unique id of CPS
      * */
     // @dependsOn("kind")
-    pushNodes(nodeSetRaw: PushedNodeDefinition[], cpxUnique: IdUnique): T {
+    pushNodes(nodeSetRaw: PushedNodeDefinition[], cpxUnique: UniqueValue): T {
       assertArrayNotEmpty(nodeSetRaw, {
         why: "Empty array would mean a redundant push call",
         details: { method: "pushNodes" },
@@ -106,7 +106,7 @@ export function syntaxCapability<T>(self: T) {
                 assertExists(cpx, {
                   why: "Cpx should be available in this point in the code",
                 });
-                if (cpxUnique === cpx.getId().getUnique()) {
+                if (cpxUnique === cpx.getUnique()) {
                   subtreeNodes.push(parsed);
                 } else {
                   childrenNodes.push(parsed);

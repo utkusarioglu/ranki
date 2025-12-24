@@ -6,7 +6,6 @@ import {
 } from "./constants.mjs";
 import { AstNode } from "./nodes/ast/ast-node.mjs";
 import { Config } from "@dqm/package-dqm-utils";
-import { Id } from "./id/id.mjs";
 import type {
   CommonTransportsConstructorParams,
   DqmConfig,
@@ -21,6 +20,7 @@ import type {
   IPlugins,
 } from "@dqm/package-dqm-api-v2";
 import { DqmAppError } from "./errors/dqm-app-error/dqm-app-error.mjs";
+import { Unique } from "./unique/unique.mjs";
 
 export class Dqm {
   private plugins: IPlugins = new Libs();
@@ -32,7 +32,7 @@ export class Dqm {
    * shape would allow defining these values at once
    */
   constructor(configPacks: DqmConfigPack, plugins: IDqmPlugin[]) {
-    Id.resetUnique();
+    Unique.reset();
     plugins.forEach((plugin) => {
       this.plugins.addPlugin(plugin);
     });
