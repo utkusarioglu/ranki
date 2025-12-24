@@ -1,7 +1,15 @@
 import type { CpxParseInput } from "../../dqm.types.mjs";
 import type {
+  AliasList,
+  // AliasListString,
+  // AliasStringList,
   ChainList,
+  ChainListString,
+  ChainStringList,
   IdList,
+  IdListString,
+  // IdString,
+  IdStringList,
   IId,
 } from "../../plugins/component/id/id.types.mjs";
 import type { ICps } from "./i-cps.types.mjs";
@@ -11,8 +19,22 @@ import type { IParam } from "../param/param-node.types.mjs";
 
 export interface ICpx {
   getId(): IId;
+
+  getIdStringList(): IdStringList;
+  getIdListString(): IdListString;
+
   setIdList(idList: ChainList): this;
+
+  /**
+   * No AliasStringList and no AliasListString because alias for the cps can be
+   * undefined.
+   */
+  getAliasList(): AliasList;
+
   getChainList(): ChainList;
+  getChainStringList(): ChainStringList;
+  getChainListString(): ChainListString;
+
   getIdList(): IdList;
   setParent(cpx: ICpx | null): this;
   getParent(): ICpx | null;

@@ -10,12 +10,7 @@ export function traverseCpx(root: ICpx | null, cpxDepth: number): void {
   const node = {
     data: {
       id,
-      label:
-        "cpx:" +
-        root
-          .getChainList()
-          .map((v) => v.join("."))
-          .join(" | "),
+      label: "cpx:" + root.getChainListString(),
     },
     classes: cls("cpx", cpxDepth === 0 && "root"),
   };

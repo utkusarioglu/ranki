@@ -8,6 +8,11 @@ import type {
   IAstNode,
   ChainList,
   IId,
+  ChainStringList,
+  ChainListString,
+  IdStringList,
+  IdListString,
+  AliasList,
 } from "@dqm/package-dqm-api-v2";
 import { dependsOn, rejectValues } from "@dqm/package-dqm-utils";
 import { ALL_AUDIENCES } from "../param/param.constants.mjs";
@@ -15,6 +20,10 @@ import { Cps } from "./cps.mjs";
 import { CommonTransports } from "../common-transports.mjs";
 import { Id } from "../../id/id.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
+
+export const CHAIN_STRING_SEPARATOR = "/";
+export const ID_STRING_SEPARATOR = "#";
+export const ALIAS_STRING_SEPARATOR = "|";
 
 /**
  * These are param values provided by the source. These haven't been merged
@@ -29,6 +38,10 @@ export class Cpx extends CommonTransports implements ICpx {
   private rawParams: IParam[] | null = null; // #1
   private cps: ICps[] = [];
   private rootAst!: IAstNode;
+
+  // getIdString(): IdString {
+  //   return this.getId().getIdString();
+  // }
 
   setPrev(prev: ICpx): this {
     this.prev = prev;
@@ -48,6 +61,7 @@ export class Cpx extends CommonTransports implements ICpx {
     return this.next;
   }
 
+  // TODO is this really needed?
   getId(): IId {
     return this.id;
   }
@@ -56,9 +70,41 @@ export class Cpx extends CommonTransports implements ICpx {
     return this.cps.map((cps) => cps.getId().getChain());
   }
 
+  getChainStringList(): ChainStringList {
+    return this.cps.map((cps) => cps.getId().getChainString());
+  }
+
+  getIdStringList(): IdStringList {
+    return this.cps.map((cps) => cps.getId().getIdString());
+  }
+
+  getIdListString(): IdListString {
+    return this.cps
+      .map((cps) => cps.getId().getIdString())
+      .join(ID_STRING_SEPARATOR);
+  }
+
+  getChainListString(): ChainListString {
+    return this.cps
+      .map((cps) => cps.getId().getChainString())
+      .join(CHAIN_STRING_SEPARATOR);
+  }
+
   getIdList(): IdList {
     return this.cps.map((cps) => cps.getId().getId());
   }
+
+  getAliasList(): AliasList {
+    return this.cps.map((c) => c.getId().getAlias());
+  }
+
+  // getAliasStringList(): AliasStringList {
+  //   return this.cps.map((c) => c.getId().getAliasString())
+  // }
+
+  // getAliasListString(): AliasListString {
+  //   return this.cps.map((c) => c.getId().getAlias()).join()
+  // }
 
   setRootAst(ast: IAstNode): this {
     this.rootAst = ast;

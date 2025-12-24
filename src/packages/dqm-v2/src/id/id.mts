@@ -5,12 +5,19 @@ import type {
   Position,
   IdSummary,
   IdUnique,
+  AliasString,
+  ChainString,
+  IdString,
 } from "@dqm/package-dqm-api-v2";
 import {
   assertArrayNotEmpty,
   rejectValues,
   writeOnce,
 } from "@dqm/package-dqm-utils";
+
+export const ID_SEPARATOR = "-";
+export const ALIAS_SEPARATOR = "_";
+export const CHAIN_SEPARATOR = ".";
 
 export class Id implements IId {
   private static uniqueCounter = 0;
@@ -35,6 +42,24 @@ export class Id implements IId {
 
   getUnique(): IdUnique {
     return this.unique;
+  }
+
+  /**
+   * @dev
+   * #1 This shouldn't matter. aliases by definition are of length 1.
+   * But for safety a separator is still defined to be able to distinguish any
+   * possible issues..
+   */
+  getAliasString(): AliasString {
+    return this.alias.join(ALIAS_SEPARATOR); // #1
+  }
+
+  getChainString(): ChainString {
+    return this.chain.join(CHAIN_SEPARATOR);
+  }
+
+  getIdString(): IdString {
+    return this.id.join(ID_SEPARATOR);
   }
 
   getSummary(): IdSummary {
