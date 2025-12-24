@@ -1,22 +1,27 @@
 import type { ICpx } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
 import { cls } from "./utils.mts";
+import { createSanitizedView } from "../../../../utils/sanitizer.mts";
+import { assertTryCatchSuccess } from "_assertions";
 
-export function traverseCpx(root: ICpx | null, cpxDepth: number): void {
-  if (!root) {
+export function traverseCpx(raw: ICpx | null, cpxDepth: number): void {
+  if (!raw) {
     return;
   }
-  const id = Registry.getNew(root);
+  const root = createSanitizedView(raw);
+  const id = Registry.getNew(raw);
   const node = {
     data: {
       id,
-      label: "cpx:" + root.getChainListString(),
+      label: "cpx:" + root.getChainListString().value,
     },
     classes: cls("cpx", cpxDepth === 0 && "root"),
   };
   Registry.registerNode(node);
 
-  const parentCpx = root.getParent();
+  const parentCpxPre = root.getParent();
+  assertTryCatchSuccess(parentCpxPre, { why: "parentCpx required" });
+  const parentCpx = parentCpxPre.value;
   if (parentCpx) {
     if (Registry.has(parentCpx)) {
       Registry.registerEdge({
@@ -30,7 +35,9 @@ export function traverseCpx(root: ICpx | null, cpxDepth: number): void {
     }
   }
 
-  const prevCpx = root.getPrev();
+  const prevCpxPre = root.getPrev();
+  assertTryCatchSuccess(prevCpxPre, { why: "prevCpx required" });
+  const prevCpx = prevCpxPre.value;
   if (prevCpx) {
     Registry.registerEdge({
       data: {
@@ -42,5 +49,7 @@ export function traverseCpx(root: ICpx | null, cpxDepth: number): void {
     });
   }
 
-  root.getChildren().forEach((r) => traverseCpx(r, cpxDepth + 1));
+  const childrenPre = root.getChildren();
+  assertTryCatchSuccess(childrenPre, { why: "Children required" });
+  childrenPre.value.forEach((r) => traverseCpx(r, cpxDepth + 1));
 }

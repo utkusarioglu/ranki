@@ -38,7 +38,14 @@ export class Registry {
     if (!n) {
       // console.log("node:", node, "elems:", Id.elems, "seen:", Id.seen);
       // console.log("node:", node, "seen:", Registry.seen);
-      throw new Error("Node hasn't been seen before");
+      throw new DqmDemoError({
+        code: "UNREGISTERED_NODE",
+        why: "Cannot return ids for nodes that hasn't been registered",
+        cause: null,
+        details: {
+          node: node,
+        },
+      });
     }
     return n;
   }

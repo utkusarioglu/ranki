@@ -1,6 +1,8 @@
 import type { ICpx, IParam } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
 import { cls } from "./utils.mts";
+import { createSanitizedView } from "../../../../utils/sanitizer.mts";
+import { assertTryCatchSuccess } from "_assertions";
 
 export function traverseRawParams(root: ICpx): void {
   if (!root) {
@@ -14,43 +16,28 @@ export function traverseRawParams(root: ICpx): void {
   root.getChildren().forEach((r) => traverseRawParams(r));
 }
 
-function traverseParam(root: IParam | null): void {
-  if (!root) {
+function traverseParam(raw: IParam | null): void {
+  if (!raw) {
     return;
   }
-  const node = Registry.getNode(root);
-  node.data.label = "rawParam:" + root.getId().getId().join(".");
+  const node = Registry.getNode(raw);
+  const root = createSanitizedView(raw);
+  const idPre = root.getId();
+  assertTryCatchSuccess(idPre, { why: "id is required" });
+  const idString = idPre.value.getIdString();
+  node.data.label = "rawParam:" + idString;
   node.classes = cls("rawParam");
   const id = node.data.id;
 
   // TODO register param sibling relationship as well. the code below does ast-ast sibling instead so it's not the right call.
-  // const prevParam = root.getPrev();
-  // if (prevParam) {
-  //   const prevParamId = Registry.getId(prevParam);
-  //   const edge = Registry.getEdge(prevParamId, id);
-  //   edge.classes = "param-param sibling";
-  //   // Registry.registerEdge({
-  //   //   data: {
-  //   //     source: prevParamId,
-  //   //     target: id,
-  //   //     label: "sibling",
-  //   //   },
-  //   //   classes: "param-param sibling",
-  //   // });
-  // }
 
-  const creatorCpx = root.getCpx();
+  const creatorCpxPre = root.getCpx();
+  assertTryCatchSuccess(creatorCpxPre, { why: "Creator cpx required" });
+  const creatorCpx = creatorCpxPre.value;
   if (creatorCpx) {
     const source = Registry.getId(creatorCpx);
     const e = Registry.getEdge(source, id);
     e.classes = cls("source-cpx", "target-rawParam");
     e.data.label = "collects";
-
-    // creatorCpx.getCpsList().forEach((n) => {
-    //   const source = Registry.getId(n);
-    //   const e = Registry.getEdge(source, id);
-    //   e.classes = classes("cps-rawParam");
-    //   e.data.label = "customizes";
-    // });
   }
 }

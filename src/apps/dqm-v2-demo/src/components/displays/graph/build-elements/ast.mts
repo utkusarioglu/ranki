@@ -1,28 +1,31 @@
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
 import { cls } from "./utils.mts";
+import { createSanitizedView } from "../../../../utils/sanitizer.mts";
+import { assertTryCatchSuccess } from "_assertions";
 
 /**
  * @dev
  * #1 This comes up at the very root of the graph
  */
-export function traverseAst(
-  root: IAstNode | null,
-  totalAstDepth: number,
-): void {
-  if (!root) {
+export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
+  if (!raw) {
     return;
   }
-  const id = Registry.getNew(root);
-  let creator;
-  try {
-    creator = root.getCreator();
-  } catch (e) {
-    creator = "(undefined)";
-  }
+  // let creator;
+  // try {
+  //   creator = root.getCreator();
+  // } catch (e) {
+  //   creator = "(undefined)";
+  // }
+  const root = createSanitizedView(raw);
+  const id = Registry.getNew(raw);
+  const creator = root.getCreator().value;
 
-  const relationship = root.getRelationship() || "undefined";
-  const creatorCpx = root.getCpx();
+  const relationship = root.getRelationship().value;
+  const creatorCpxPre = root.getCpx();
+  assertTryCatchSuccess(creatorCpxPre, { why: "creatorCpx expected" });
+  const creatorCpx = creatorCpxPre.value;
   const headAstId = creatorCpx ? Registry.getId(creatorCpx.getRootAst()) : -1;
   const isHeadAst = headAstId === id;
 
@@ -72,7 +75,9 @@ export function traverseAst(
     });
   }
 
-  const astParent = root.getParent();
+  const astParentPre = root.getParent();
+  assertTryCatchSuccess(astParentPre, { why: "astParent required" });
+  const astParent = astParentPre.value;
   if (astParent) {
     const astParentCpx = astParent.getCpx();
     if (
@@ -112,7 +117,9 @@ export function traverseAst(
     }
   }
 
-  const prevCpx = root.getPrev();
+  const prevCpxPre = root.getPrev();
+  assertTryCatchSuccess(prevCpxPre, { why: "previous cpx is required" });
+  const prevCpx = prevCpxPre.value;
   if (prevCpx) {
     Registry.registerEdge({
       data: {
@@ -130,5 +137,7 @@ export function traverseAst(
     });
   }
 
-  root.getChildren().forEach((n) => traverseAst(n, totalAstDepth + 1));
+  const children = root.getChildren();
+  assertTryCatchSuccess(children, { why: "children required" });
+  children.value.forEach((n) => traverseAst(n, totalAstDepth + 1));
 }

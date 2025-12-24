@@ -1,22 +1,29 @@
 import type { ICps } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
 import { cls } from "./utils.mts";
+import { createSanitizedView } from "../../../../utils/sanitizer.mts";
+import { assertTryCatchSuccess } from "_assertions";
 
-export function traverseCps(root: ICps | null, cpsDepth: number): void {
-  if (!root) {
+export function traverseCps(raw: ICps | null, cpsDepth: number): void {
+  if (!raw) {
     return;
   }
-  const id = Registry.getNew(root);
+  const root = createSanitizedView(raw);
+  const id = Registry.getNew(raw);
+  const cpsId = root.getId();
+  assertTryCatchSuccess(cpsId, { why: "Cps Id is required" });
   const node = {
     data: {
       id,
-      label: "cps:" + root.getId().getChain().join("."),
+      label: "cps:" + cpsId.value.getIdString(),
     },
     classes: cls("cps", cpsDepth === 0 && "root", `depth-${cpsDepth}`),
   };
   Registry.registerNode(node);
 
-  const creatorCpx = root.getCpx();
+  const creatorCpxPre = root.getCpx();
+  assertTryCatchSuccess(creatorCpxPre, { why: "Creator Cpx required" });
+  const creatorCpx = creatorCpxPre.value;
   Registry.registerEdge({
     data: {
       source: Registry.getId(creatorCpx),
@@ -26,7 +33,9 @@ export function traverseCps(root: ICps | null, cpsDepth: number): void {
     classes: cls("source-cpx", "target-cps"),
   });
 
-  const parentCps = root.getParent();
+  const parentCpsPre = root.getParent();
+  assertTryCatchSuccess(parentCpsPre, { why: "parent cps is required" });
+  const parentCps = parentCpsPre.value;
   if (parentCps) {
     Registry.registerEdge({
       data: {
@@ -38,7 +47,9 @@ export function traverseCps(root: ICps | null, cpsDepth: number): void {
     });
   }
 
-  const prevCpx = root.getPrev();
+  const prevCpxPre = root.getPrev();
+  assertTryCatchSuccess(prevCpxPre, { why: "previous cpx is required" });
+  const prevCpx = prevCpxPre.value;
   if (prevCpx) {
     Registry.registerEdge({
       data: {
@@ -50,5 +61,7 @@ export function traverseCps(root: ICps | null, cpsDepth: number): void {
     });
   }
 
-  root.getChildren().forEach((c) => traverseCps(c, cpsDepth + 1));
+  const children = root.getChildren();
+  assertTryCatchSuccess(children, { why: "children required" });
+  children.value.forEach((n) => traverseCps(n, cpsDepth + 1));
 }
