@@ -4,15 +4,16 @@ import style from "./NodeDisplay.module.css";
 import { PreCode } from "_views/pre-code/PreCode";
 import { BlockySwitch } from "_views/blocky-switch/BlockySwitch";
 import { Flex, Typography } from "antd";
-import type { SanitizedNodePartial } from "_stores/ast-view/utils/sanitized-ast-node.types.mts";
+import type { SanitizedNodePartialNew } from "_stores/ast-view/utils/sanitized-ast-node.types.mts";
 import type { UniqueValue } from "@dqm/package-dqm-api-v2";
+import { TryCatchView } from "_views/try-catch/try-catch";
 
 interface AstNodeDisplayProps {
-  node: SanitizedNodePartial;
+  node: SanitizedNodePartialNew;
   path: string;
   depth: number;
   index: number;
-  parentUnique?: UniqueValue;
+  parentUnique?: UniqueValue | "(failed)";
 }
 
 const DEPTH_STEP = 30;
@@ -20,7 +21,7 @@ const DEPTH_STEP = 30;
 export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
   node: {
     key,
-    fields: { props, children, stable },
+    fields: { props, children, stable, hidden },
   },
   path,
   depth,
@@ -34,19 +35,17 @@ export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
 
   const newDepth = depth + 1;
   const newPath = path + "/" + newDepth + "-" + index;
-  const cpxUniqueDefined = props.cpxUnique !== undefined;
+  const cpxUniqueDefined = hidden.cpxUnique !== undefined;
   const parentUniqueDefined = parentUnique !== undefined;
+  const cpxUnique = hidden.cpxUnique.value || -1000;
   const isNewCpx =
     cpxUniqueDefined && parentUniqueDefined
-      ? props.cpxUnique !== parentUnique
+      ? cpxUnique !== parentUnique
       : false;
 
-  const childrenRenderList = Object.entries(children)
-    .filter(([childType]) => childrenVisible[childType])
-    .filter((v) => (v[1] as SanitizedNodePartial[]).length) as [
-    string,
-    SanitizedNodePartial[],
-  ][];
+  const childrenRenderList = Object.entries(children).filter(
+    ([childType]) => childrenVisible[childType],
+  );
 
   return (
     <div
@@ -62,7 +61,11 @@ export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
         >
           <div>
             {Object.keys(props).length ? (
-              <YamlDisplay obj={props} />
+              <YamlDisplay
+                obj={Object.fromEntries(
+                  Object.entries(props).map(([k, v]) => [k, v.value]),
+                )}
+              />
             ) : (
               <Typography className={style.selectNodeProp}>
                 No node properties selected
@@ -87,9 +90,11 @@ export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
               ))}
             </Flex>
           </div>
-          {stable.sourceString ? (
-            <PreCode>{stable.sourceString}</PreCode>
-          ) : null}
+          <TryCatchView<string>
+            item={stable.sourceString}
+            Undefined={() => null}
+            Success={({ item }) => <PreCode>{String(item.value)}</PreCode>}
+          />
         </div>
       </div>
 
@@ -99,16 +104,20 @@ export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
           style={{ marginLeft: DEPTH_STEP }}
           className={style[childType]}
         >
-          {nodes.map((n, i) => (
-            <AstNodeDisplay
-              parentUnique={props.cpxUnique}
-              key={key + n.key + i}
-              node={n}
-              path={newPath}
-              index={i}
-              depth={newDepth}
-            />
-          ))}
+          {nodes.state === "success" ? (
+            nodes.value.map((n, i) => (
+              <AstNodeDisplay
+                parentUnique={cpxUnique}
+                key={key + n.key + i}
+                node={n}
+                path={newPath}
+                index={i}
+                depth={newDepth}
+              />
+            ))
+          ) : (
+            <p>fail</p>
+          )}
         </div>
       ))}
     </div>

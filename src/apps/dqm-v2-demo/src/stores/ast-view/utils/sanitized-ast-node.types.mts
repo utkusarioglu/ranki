@@ -6,46 +6,57 @@ import type {
   CreationMethod,
   AstSourceString,
   UniqueValue,
+  IdListString,
 } from "@dqm/package-dqm-api-v2";
+import type { TryCatch } from "../../../utils/utils.mts";
 
-export interface SuccessfulSanitize {
-  sanitized: SanitizedAst[];
+export interface SuccessfulSanitizeNew {
+  sanitized: SanitizedAstNew[];
 }
-interface SanitizeResultSuccess {
+interface SanitizeResultSuccessNew {
   state: "success";
-  data: SuccessfulSanitize;
+  data: SuccessfulSanitizeNew;
 }
 interface SanitizeResultFail {
   state: "fail";
   error: string;
 }
 
-export type SanitizeResult = SanitizeResultSuccess | SanitizeResultFail;
+export type SanitizeResultNew = SanitizeResultSuccessNew | SanitizeResultFail;
 
-export type SanitizedAst = {
+export type SanitizedAstNew = {
   theater: DqmParseTheater;
-  sanitized: SanitizedNodePartial;
+  sanitized: SanitizedNodePartialNew;
 };
 
-export type SanitizedNodePartial = {
+export type SanitizedNodePartialNew = {
   key: string;
   fields: {
-    props: Partial<SanitizedNodeProps>;
-    children: Partial<SanitizedNodeChildren>;
-    stable: Partial<SanitizedNodeStable>;
+    hidden: PropSanitizer<SanitizedNodeHidden>;
+    props: Partial<PropSanitizer<SanitizedNodeProps>>;
+    children: Partial<PropSanitizer<SanitizedNodeChildren>>;
+    stable: Partial<PropSanitizer<SanitizedNodeStable>>;
   };
 };
 
+type PropSanitizer<T extends object> = {
+  [K in keyof T]: T[K] extends any ? TryCatch<T[K]> : never;
+};
+
+export interface SanitizedNodeHidden {
+  cpxUnique: UniqueValue;
+}
+
 export interface SanitizedNodeProps {
   creator: CreatorName;
-  idList: string;
+  idListString: IdListString;
   kind: IAstNodeKind;
   constructorName: string;
   cpxUnique: UniqueValue;
   childIndex: CounterStat;
   blockDepth: CounterStat;
   inlineDepth: CounterStat;
-  chainList: string;
+  chainListString: string;
   childCount: number;
   ignoredCount: number;
   subtreeCount: number;
@@ -54,18 +65,17 @@ export interface SanitizedNodeProps {
 }
 
 export interface SanitizedNodeChildren {
-  subtreeNodes: SanitizedNodePartial[];
-  childrenNodes: SanitizedNodePartial[];
-  tokenNodes: SanitizedNodePartial[];
-  spaceNodes: SanitizedNodePartial[];
+  subtreeNodes: SanitizedNodePartialNew[];
+  childrenNodes: SanitizedNodePartialNew[];
+  tokenNodes: SanitizedNodePartialNew[];
+  spaceNodes: SanitizedNodePartialNew[];
 }
 
 export interface SanitizedNodeStable {
-  // sourceString: string; // AstSourceString | AstSourceView<any>;
   sourceString: AstSourceString;
 }
 export interface SanitizedNodeViewPreferences {
-  hidden: (keyof SanitizedNodeProps)[];
+  hidden: (keyof SanitizedNodeHidden)[];
   props: (keyof SanitizedNodeProps)[];
   children: (keyof SanitizedNodeChildren)[];
   stable: (keyof SanitizedNodeStable)[];

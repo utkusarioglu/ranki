@@ -1,29 +1,36 @@
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
-import type { ConfigInput, DqmStore } from "./dqm.store.types.mts";
+import type {
+  ConfigInput,
+  DqmStore,
+  DqmStoreState,
+} from "./dqm.store.types.mts";
 import { INPUTS, AUTO_UPDATE } from "./dqm.initial.mts";
 import { createDqmParsedProp } from "./dqm.utils.mts";
 import { deferredParseDqmInput } from "./dqm.subscriptions.mts";
 import { pluginSelectionInit } from "./dqm.plugins.mts";
 
-export const useDqmStore = create(
-  subscribeWithSelector<DqmStore>((set) => ({
-    deferParsing: true,
+const dqmStoreInitial: DqmStoreState = {
+  deferParsing: true,
+  inputs: INPUTS,
+  singleTemplates: [],
+  arrangementTemplates: [],
+  autoUpdate: AUTO_UPDATE,
+  configPack: [],
+  pluginSelection: pluginSelectionInit,
+  ...createDqmParsedProp({
     inputs: INPUTS,
-    singleTemplates: [],
-    arrangementTemplates: [],
     autoUpdate: AUTO_UPDATE,
-    astView: {},
+    parsed: { state: "success", data: [] },
     configPack: [],
     pluginSelection: pluginSelectionInit,
-    ...createDqmParsedProp({
-      inputs: INPUTS,
-      autoUpdate: AUTO_UPDATE,
-      parsed: { state: "success", data: [] },
-      configPack: [],
-      pluginSelection: pluginSelectionInit,
-      parseEpoch: 0,
-    }),
+    parseEpoch: 0,
+  }),
+};
+
+export const useDqmStore = create(
+  subscribeWithSelector<DqmStore>((set) => ({
+    ...dqmStoreInitial,
 
     setAllConfig: (configPack) => set(() => ({ configPack })),
 

@@ -1,3 +1,4 @@
+import type { TryCatch, TryCatchSuccess } from "../utils/utils.mts";
 import {
   DqmDemoError,
   type DqmPluginErrorConstructorParams,
@@ -24,4 +25,17 @@ export function assertNever(extra: AssertionExtra): never {
     cause: null,
     ...extra,
   });
+}
+
+export function assertTryCatchSuccess<T>(
+  v: TryCatch<T>,
+  extra: AssertionExtra,
+): asserts v is TryCatchSuccess<T> {
+  if (v.state === "fail") {
+    throw new DqmDemoError({
+      code: "TRY_CATCH_FAIL",
+      cause: v.error,
+      ...extra,
+    });
+  }
 }

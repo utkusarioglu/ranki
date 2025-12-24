@@ -1,33 +1,52 @@
-import type { ICpx } from "@dqm/package-dqm-api-v2";
 import { tryCatch, type TryCatch } from "./utils.mts";
 
-type Consume<T> = TryCatch<T>;
-
 // ANKI
-type ClassSanitizer<T> = {
+export type ClassSanitizer<T> = {
   [K in keyof T]: T[K] extends (...args: infer A) => infer R
-    ? (...args: A) => Consume<R>
-    : Consume<T[K]>;
+    ? (...args: A) => TryCatch<R>
+    : TryCatch<T[K]>;
 } & {
   original: T;
 };
 
-export type ICpxSanitized = ClassSanitizer<ICpx>;
+// ANKI
+function getAllMethodKeys(obj: object): PropertyKey[] {
+  const keys = new Set<PropertyKey>();
+
+  let cur = obj;
+  while (cur && cur !== Object.prototype) {
+    for (const k of Reflect.ownKeys(cur)) {
+      if (k !== "constructor") keys.add(k);
+    }
+    cur = Object.getPrototypeOf(cur);
+  }
+
+  return [...keys];
+}
 
 // ANKI
 function wrapWithTryCatch<T extends object>(
   instance: T,
-  consume: <K extends keyof T>(key: K, value: any) => any,
+  consume: <K extends PropertyKey>(key: K, value: any) => any,
 ): ClassSanitizer<T> {
-  const out = {} as any;
+  const out = Object.create(Object.getPrototypeOf(instance));
 
-  for (const k of Object.keys(instance) as (keyof T)[]) {
-    const v = instance[k];
+  for (const k of getAllMethodKeys(instance)) {
+    const desc =
+      Object.getOwnPropertyDescriptor(Object.getPrototypeOf(instance), k) ??
+      Object.getOwnPropertyDescriptor(instance, k);
 
-    out[k] =
-      typeof v === "function"
-        ? (...args: any[]) => consume(k, () => v.apply(instance, args))
-        : v;
+    if (!desc) continue;
+
+    if (typeof desc.value === "function") {
+      Object.defineProperty(out, k, {
+        ...desc,
+        value: (...args: any[]) =>
+          consume(k, () => desc.value!.apply(instance, args)),
+      });
+    } else {
+      Object.defineProperty(out, k, desc);
+    }
   }
 
   return out;
@@ -42,5 +61,3 @@ export function createSanitizedView<C extends object>(
     original: source,
   });
 }
-
-// export const SanitizedCpx = createSanitizedView<ICpx>({} as ICpx);

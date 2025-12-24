@@ -4,115 +4,86 @@ import type { SanitizedNodeView } from "../ast-view.store.types.mts";
 import type { ParseResult } from "../../dqm/dqm.utils.types.mts";
 import type {
   SanitizedNodeViewPreferences,
-  SanitizedNodePartial,
-  SanitizedNodeStable,
-  SanitizedNodeChildren,
-  SanitizedNodeProps,
-  SanitizedAst,
-  SanitizeResult,
+  SanitizedNodePartialNew,
+  SanitizedAstNew,
+  SanitizeResultNew,
 } from "./sanitized-ast-node.types.mts";
-import { assertExists } from "_assertions";
+// import { assertExists } from "_assertions";
+import {
+  createSanitizedView,
+  type ClassSanitizer,
+} from "../../../utils/sanitizer.mts";
+import { tryCatch, type TryCatch } from "../../../utils/utils.mts";
+import { assertExists, assertTryCatchSuccess } from "_assertions";
 
-class SanitizedAstNode {
-  private node: IAstNode;
+class AstSanitizedNarrowed {
+  private node: ClassSanitizer<IAstNode>;
   private visible: SanitizedNodeViewPreferences;
 
-  constructor(node: IAstNode, visible: SanitizedNodeViewPreferences) {
-    // const newSanitized = createSanitizedView(node);
-    // console.log("get creator", newSanitized.getCreator());
-    this.node = node;
-    this.visible = visible;
+  constructor(
+    sanitized: ClassSanitizer<IAstNode>,
+    features: SanitizedNodeViewPreferences,
+  ) {
+    this.node = sanitized;
+    this.visible = features;
   }
 
-  build(): SanitizedNodePartial {
+  build(): SanitizedNodePartialNew {
     const props = this.getProps();
     const children = this.getChildren();
     const stable = this.getStable();
+    const hidden = this.getHidden();
 
     const fields = {
       props,
       children,
       stable,
+      hidden,
     };
 
     return {
       // TODO this is very bad
-      key: JSON.stringify([
-        this.visible.children,
-        this.visible.props,
-        this.visible.stable,
-      ]),
+      key: Date.now().toString(),
+      // key: JSON.stringify([
+      //   this.visible.children,
+      //   this.visible.props,
+      //   this.visible.stable,
+      // ]),
       fields,
     };
   }
 
-  private getStable(): Partial<SanitizedNodeStable> {
-    const stable: Partial<SanitizedNodeStable> = {};
-    this.visible.stable.forEach((id) => {
-      switch (id) {
-        case "sourceString":
-          stable[id] = this.node.getSourceString();
-          // this.node.getKind() === "leaf"
-          //   ? this.node.getLeafView().raw
-          //   : this.node.getSourceString();
-          // : {
-          //     type: "string",
-          //     raw: this.node.getSourceString(),
-          //     value: this.node.getSourceString(),
-          //   };
-          break;
-        default:
-          throw new Error(`Unrecognized sanitize feature: ${id}`);
-      }
-    });
-    return stable;
+  private getHidden() {
+    const cpxUnique = tryCatch("getUnique", () =>
+      this.cpx(this.node).getUnique(),
+    );
+    const hidden: SanitizedNodePartialNew["fields"]["hidden"] = {
+      cpxUnique,
+    };
+    return hidden;
   }
 
-  private getChildren(): Partial<SanitizedNodeChildren> {
-    const children: Partial<SanitizedNodeChildren> = {};
-    this.visible.children.forEach((id) => {
-      switch (id) {
-        case "childrenNodes":
-          const childrenNodes = this.node
-            .getChildrenNodes()
-            .map((n) => new SanitizedAstNode(n, this.visible).build());
-          // .map((n) => sanitizeAstSingle(n, features));
-          if (childrenNodes.length) {
-            children[id] = childrenNodes;
-          }
-          break;
-        case "subtreeNodes":
-          const subtreeNodes = this.node
-            .getSubtreeNodes()
-            .map((n) => new SanitizedAstNode(n, this.visible).build());
-          if (subtreeNodes.length) {
-            children[id] = subtreeNodes;
-          }
-          break;
-        case "tokenNodes":
-          const tokenNodes = this.node
-            .getTokenNodes()
-            .map((n) => new SanitizedAstNode(n, this.visible).build());
-          if (tokenNodes.length) {
-            children[id] = tokenNodes;
-          }
-          break;
-        case "spaceNodes":
-          const spaceNodes = this.node
-            .getSpaceNodes()
-            .map((n) => new SanitizedAstNode(n, this.visible).build());
-          if (spaceNodes.length) {
-            children[id] = spaceNodes;
-          }
-          break;
-      }
+  private subProperty<T>(val: TryCatch<T>, property: keyof T): TryCatch<any> {
+    if (val.state === "fail") {
+      return val;
+    }
+    return tryCatch("subtreeCount", () => val.value[property]);
+  }
+
+  private cpx(node: ClassSanitizer<IAstNode>) {
+    const cpx = node.getCpx();
+    assertTryCatchSuccess(cpx, {
+      why: "Cpx is needed for many operations",
     });
-    return children;
+    const value = cpx.value;
+    assertExists(value, {
+      why: "Cpx cannot be null for this request",
+    });
+    return value;
   }
 
   private getProps() {
-    const props: Partial<SanitizedNodeProps> = {};
-    const cpx = this.node.getCpx();
+    const props: SanitizedNodePartialNew["fields"]["props"] = {};
     this.visible.props.forEach((id) => {
       switch (id) {
         case "inlineDepth":
@@ -125,75 +96,138 @@ class SanitizedAstNode {
           props[id] = this.node.getChildIndex();
           break;
         case "meaning":
-          try {
-            props[id] = this.node.getMeaning();
-          } catch {}
+          props[id] = this.node.getMeaning();
           break;
         case "constructorName":
-          props[id] = this.node.constructor.name;
+          props[id] = tryCatch(
+            "constructorName",
+            () => this.node.constructor.name,
+          );
           break;
         case "creationMethod":
           props[id] = this.node.getCreationMethod();
           break;
         case "ignoredCount":
-          props[id] = this.node.getIgnoredNodes().length;
+          props[id] = this.subProperty(this.node.getIgnoredNodes(), "length");
           break;
+
         case "kind":
           props[id] = this.node.getKind();
           break;
+
         case "subtreeCount":
-          props[id] = this.node.getSubtreeNodes().length;
+          props[id] = this.subProperty(this.node.getTokenNodes(), "length");
           break;
+
         case "childCount":
-          props[id] = this.node.getChildrenNodes().length;
+          props[id] = this.subProperty(this.node.getChildrenNodes(), "length");
           break;
-        case "cpxUnique":
-          assertExists(cpx, {
-            why: "Cpx is required to access a cpx property",
-          });
-          props[id] = cpx.getUnique();
+        case "cpxUnique": {
+          props[id] = tryCatch("getUnique", () =>
+            this.cpx(this.node).getUnique(),
+          );
           break;
+        }
         case "creator":
           props[id] = this.node.getCreator();
           break;
-        case "idList":
-          assertExists(cpx, {
-            why: "Cpx is required to access a cpx property",
-          });
-          props[id] = cpx
-            .getIdList()
-            .map((v) => v.join("."))
-            .join(" | ");
+        case "idListString": {
+          props[id] = tryCatch("getUnique", () =>
+            this.cpx(this.node).getIdListString(),
+          );
           break;
-        case "chainList":
-          assertExists(cpx, {
-            why: "Cpx is required to access a cpx property",
-          });
-          props[id] = cpx
-            .getChainList()
-            .map((v) => v.join("."))
-            .join(" | ");
+        }
+        case "chainListString": {
+          props[id] = tryCatch("chainListString", () =>
+            this.cpx(this.node).getChainListString(),
+          );
           break;
+        }
       }
     });
     return props;
+  }
+
+  private recurse(list: TryCatch<IAstNode[]>) {
+    if (list.state === "fail") {
+      return list;
+    }
+
+    const narrowed = list.value.map((n) => {
+      const sanitized = createSanitizedView<IAstNode>(n);
+      return new AstSanitizedNarrowed(sanitized, this.visible).build();
+    });
+
+    if (narrowed.length) {
+      return tryCatch("narrowed", () => narrowed);
+    }
+  }
+
+  private getChildren() {
+    const children: SanitizedNodePartialNew["fields"]["children"] = {};
+    this.visible.children.forEach((id) => {
+      switch (id) {
+        case "childrenNodes": {
+          const val = this.recurse(this.node.getChildrenNodes());
+          if (val) children[id] = val;
+          break;
+        }
+
+        case "subtreeNodes": {
+          const val = this.recurse(this.node.getSubtreeNodes());
+          if (val) children[id] = val;
+          break;
+        }
+
+        case "tokenNodes": {
+          const val = this.recurse(this.node.getTokenNodes());
+          if (val) children[id] = val;
+          break;
+        }
+
+        case "spaceNodes": {
+          const val = this.recurse(this.node.getSpaceNodes());
+          if (val) children[id] = val;
+          break;
+        }
+      }
+    });
+    return children;
+  }
+
+  private getStable() {
+    const stable: SanitizedNodePartialNew["fields"]["stable"] = {};
+
+    this.visible.stable.forEach((id) => {
+      switch (id) {
+        case "sourceString":
+          stable[id] = this.node.getSourceString();
+          break;
+        default:
+          throw new Error(`Unrecognized sanitize feature: ${id}`);
+      }
+    });
+    return stable;
   }
 }
 
 function sanitizeAst(
   parsed: DqmParseOutput,
   features: SanitizedNodeViewPreferences,
-): SanitizedAst[] {
-  return parsed.map((p) => ({
-    theater: p.theater,
-    sanitized: new SanitizedAstNode(p.ast, features).build(),
-  }));
+): SanitizedAstNew[] {
+  return parsed.map((p) => {
+    const sanitized = createSanitizedView<IAstNode>(p.ast);
+    return {
+      theater: p.theater,
+      sanitized: new AstSanitizedNarrowed(sanitized, features).build(),
+    };
+  });
 }
 
 export function createSanitized(
   parsed: ParseResult,
   visible: SanitizedNodeView,
-): SanitizeResult {
+): SanitizeResultNew {
   try {
     if (parsed.state !== "success") {
       return {

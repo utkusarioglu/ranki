@@ -12,7 +12,8 @@ function useSanitizedAst() {
   const props = useAstViewStore((s) => s.props);
   const children = useAstViewStore((s) => s.children);
   const stable = useAstViewStore((s) => s.stable);
-  return createSanitized(parsed, { props, children, stable });
+  const hidden = useAstViewStore((s) => s.hidden);
+  return createSanitized(parsed, { props, children, stable, hidden });
 }
 
 export const SanitizedNodeList = () => {

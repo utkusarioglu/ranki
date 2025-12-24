@@ -1,10 +1,10 @@
-type TryCatchSuccess<T> = {
+export type TryCatchSuccess<T> = {
   state: "success";
   key: Key;
   value: T;
 };
 
-type TryCatchFail = {
+export type TryCatchFail = {
   state: "fail";
   key: Key;
   value: "(failed)";
@@ -15,6 +15,13 @@ type Key = string | number | symbol;
 
 export type TryCatch<T> = TryCatchSuccess<T> | TryCatchFail;
 
+/**
+ *
+ * @param key This is meant as an error id. can be removed if it doesn't
+ * deliver the expected use.
+ * @param callback
+ * @returns
+ */
 export function tryCatch<T>(key: Key, callback: () => T): TryCatch<T> {
   try {
     return {

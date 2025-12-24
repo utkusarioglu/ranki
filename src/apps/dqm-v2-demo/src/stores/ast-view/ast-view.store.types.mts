@@ -1,5 +1,6 @@
 import type {
   SanitizedNodeChildren,
+  SanitizedNodeHidden,
   SanitizedNodeProps,
   SanitizedNodeStable,
 } from "./utils/sanitized-ast-node.types.mts";
@@ -7,6 +8,7 @@ import type {
 export interface AstViewStore extends AstViewStoreState, AstViewStoreActions {}
 
 export interface AstViewStoreState {
+  hidden: SanitizedNodeHiddenView;
   props: SanitizedNodePropsView;
   children: SanitizedNodeChildrenView;
   stable: SanitizedNodeStableView;
@@ -19,6 +21,7 @@ export interface AstViewStoreActions {
 }
 
 type SanitizedNodePropsView = VisibleBoolean<SanitizedNodeProps>[];
+type SanitizedNodeHiddenView = VisibleBoolean<SanitizedNodeHidden>[];
 type SanitizedNodeChildrenView = VisibleBoolean<SanitizedNodeChildren>[];
 type SanitizedNodeStableView = VisibleBoolean<SanitizedNodeStable>[];
 
@@ -30,6 +33,7 @@ type VisibleBoolean<T> = { id: keyof T; visible: boolean };
 export type VisibleBooleanCommon = { id: string; visible: boolean };
 
 export interface SanitizedNodeView {
+  hidden: SanitizedNodePropsView;
   props: SanitizedNodePropsView;
   children: SanitizedNodeChildrenView;
   stable: SanitizedNodeStableView;
