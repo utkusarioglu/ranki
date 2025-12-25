@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { IAstNodeRelationship } from "./semantic.cap.types.mjs";
+import type { IAstNodeRelationship } from "./node-semantic.cap.types.mjs";
 import type { CreatorName } from "./ohm.cap.types.mjs";
 
 export type ChildrenNodes<T> = T[] & { type?: "ChildrenNodes" };

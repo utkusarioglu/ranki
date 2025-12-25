@@ -1,6 +1,9 @@
-export * from "./vertices.cap.types.mjs";
-export * from "./view.cap.types.mjs";
-export * from "./syntax.cap.types.mjs";
-export * from "./semantic.cap.types.mjs";
-export * from "./ohm.cap.types.mjs";
-export * from "./counter.cap.types.mjs";
+export type * from "./vertices.cap.types.mjs";
+export type * from "./view.cap.types.mjs";
+export type * from "./syntax.cap.types.mjs";
+export type * from "./node-semantic.cap.types.mjs";
+export type * from "./ohm.cap.types.mjs";
+export type * from "./counter.cap.types.mjs";
+export type * from "./param-semantic.cap.types.mjs";
+export type * from "./param-value.cap.types.mjs";
+export type * from "./param-specs.cap.types.mjs";

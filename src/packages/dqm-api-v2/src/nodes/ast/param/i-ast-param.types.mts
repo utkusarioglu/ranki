@@ -1,58 +1,43 @@
 import type {
   Alias,
   Chain,
-  ChannelParamSpecs,
   CommonTransportsConstructorParams,
+  IAstParamSpecsCapability,
   IId,
-  ParamChannel,
-  ParamDefaultValue,
 } from "../../../export.types.mjs";
-import type { AstSourceView } from "../capabilities/view.cap.types.mjs";
+import type { IAstNode } from "../export.types.mjs";
 import type {
-  Audience,
-  IAstNode,
-  Operator,
-  ParamProducer,
-} from "../export.types.mjs";
+  IAstParamSemanticCapability,
+  IAstParamValueCapability,
+} from "../capabilities/export.types.mjs";
 
-export type IAstParamNode = IAstNode & IParamOther & IParamIdCapability;
+export interface IAstParamNode
+  extends IAstNode,
+    IAstParamSpecsCapability,
+    IAstParamIdCapability,
+    IAstParamSemanticCapability,
+    IAstParamValueCapability,
+    IAstParamRawCapability {}
 
-export interface IParamOther {
-  setAudience(channel: Audience): this;
-  setOperator(operator: Operator): this;
-  setProducer(producer: ParamProducer): this;
-  setValues(values: AstSourceView[]): this;
-  setSpecs(config: ChannelParamSpecs): this;
-  setChannel(channel: ParamChannel): this;
-
-  setDefaultValues(valueSpec: ParamDefaultValue[]): this;
-  getDefaultValues(): ParamDefaultValue[];
-
-  setId(id: Alias | Chain): IAstParamNode;
-
-  getAudience(): Audience;
-  getOperator(): Operator;
-  getValues(): AstSourceView[];
-  // getId(): IId;
-  getSpecs(): ChannelParamSpecs;
-  getChannel(): ParamChannel;
-  getProducer(): ParamProducer;
-
+export interface IAstParamRawCapability {
   getRawParam(): IAstParamNode | null;
   setRawParam(p: IAstParamNode): this;
 }
 
-export type IParamIdCapability = Pick<
-  IId,
-  | "getId"
-  | "getIdString"
-  | "getAlias"
-  | "getAliasString"
-  | "getChain"
-  | "getChainString"
-  | "setAlias"
-  | "setPosition"
->;
+export interface IAstParamIdCapability
+  extends Pick<
+    IId,
+    | "getId"
+    | "getIdString"
+    | "getAlias"
+    | "getAliasString"
+    | "getChain"
+    | "getChainString"
+    | "setAlias"
+    | "setPosition"
+  > {
+  setId(id: Alias | Chain): this;
+}
 
 export type IParamConstructor = new (
   c: CommonTransportsConstructorParams,

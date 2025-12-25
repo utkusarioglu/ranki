@@ -10,4 +10,14 @@ export type Audience = (string | number) & { type?: "ParamAudience" };
 
 export type Operator = "assign" | "append" | "prepend" | "shift" | "unshift";
 
-export type ParamValuePrimitive = string | number;
+export interface IAstParamSemanticCapability {
+  setAudience(channel: Audience): this;
+  getAudience(): Audience;
+  setOperator(operator: Operator): this;
+  getOperator(): Operator;
+
+  setProducer(producer: ParamProducer): this;
+  getProducer(): ParamProducer;
+  setChannel(channel: ParamChannel): this;
+  getChannel(): ParamChannel;
+}
