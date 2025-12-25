@@ -3,7 +3,7 @@ import { AstNode } from "../base/ast-node.mjs";
 import { rawParamCapability } from "./capabilities/raw-param.cap.mjs";
 import { paramSemanticCapability } from "./capabilities/param-semantic.cap.mjs";
 import { paramValueCapability } from "./capabilities/param-value.cap.mjs";
-import { idCapability } from "./capabilities/id.cap.mjs";
+import { idCapability } from "../../capabilities/id.cap.mjs";
 import { paramSpecsCapability } from "./capabilities/specs.cap.mjs";
 
 export class AstParamNode extends AstNode implements IAstParamNode {

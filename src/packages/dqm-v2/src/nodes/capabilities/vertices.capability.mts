@@ -1,3 +1,8 @@
+/**
+ * @dev
+ * #1 TODO this is pattern breaking. none of the other vertex relations call
+ * their counterpart to set themselves as an edge.
+ */
 export function verticesCapability<T, Coll>(self: T) {
   let next: Coll | null = null;
   let prev: Coll | null = null;
@@ -26,6 +31,7 @@ export function verticesCapability<T, Coll>(self: T) {
     setParent(p: Coll | null): T {
       parent = p;
 
+      // #1
       // @ts-expect-error
       if (parent && parent.pushChild) {
         // @ts-expect-error

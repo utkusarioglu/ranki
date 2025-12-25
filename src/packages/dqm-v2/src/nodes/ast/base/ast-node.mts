@@ -1,40 +1,42 @@
 import type {
   IAstNode,
-  ICpx,
   PushedNodeDefinition,
   IAstParamNode,
   AstSourceView,
   CpxFuncParam,
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
-import { assertNotExists, rejectValues } from "@dqm/package-dqm-utils";
+import { assertNotExists } from "@dqm/package-dqm-utils";
 import { CommonTransports } from "../../common-transports.mjs";
-import { verticesCapability } from "../../vertices.capability.mjs";
-import { syntaxCapability } from "../capabilities/syntax.capability.mjs";
-import { semanticCapability } from "../capabilities/semantic.capability.mjs";
-import { ohmCapability } from "../capabilities/ohm.capability.mjs";
-import { viewCapability } from "../capabilities/view.capability.mjs";
-import { counterCapability } from "../capabilities/counter.capability.mjs";
-import { assertExists } from "@dqm/package-dqm-utils";
+import { verticesCapability } from "../../capabilities/vertices.capability.mjs";
+import { syntaxCapability } from "./capabilities/syntax.capability.mjs";
+import { semanticCapability } from "./capabilities/semantic.capability.mjs";
+import { ohmCapability } from "./capabilities/ohm.capability.mjs";
+import { viewCapability } from "./capabilities/view.capability.mjs";
+import { counterCapability } from "./capabilities/counter.capability.mjs";
+import { cpxCollection } from "../../cp/capabilities/cpx-collection.cap.mjs";
 
 export class AstNode extends CommonTransports implements IAstNode {
+  private cpx = cpxCollection(this);
   private semantic = semanticCapability(this);
   private vertices = verticesCapability<this, IAstNode>(this);
   private syntax = syntaxCapability(this);
   private ohm = ohmCapability(this);
   private view = viewCapability(this);
   private counter = counterCapability(this);
-  private cpx: ICpx | null = null;
 
   // TODO this needs a lot of work
   newCpx(cpxCallback: CpxFuncParam): this {
     const Cpx = this.getPlugins().getCpxConstructor();
-    const oldCpx = this.cpx;
+    let oldCpx = null;
+    try {
+      oldCpx = this.getCpx();
+    } catch (e) {}
     const newCpxMold = new Cpx(this.getTransports())
       .setRootAst(this)
       // !FIX this setting the parent like this is faulty it clashes with paused container climbing up
       .setParent(oldCpx);
-    this.cpx = cpxCallback(newCpxMold);
+    this.cpx.setCpx(cpxCallback(newCpxMold));
     return this;
   }
 
@@ -75,16 +77,6 @@ export class AstNode extends CommonTransports implements IAstNode {
       .setDirection(this.getDirection());
     this.vertices.pushChild(child);
     return child;
-  }
-
-  @rejectValues(undefined)
-  getCpx(): ICpx | null {
-    return this.cpx;
-  }
-
-  setCpx(cpx: ICpx): this {
-    this.cpx = cpx;
-    return this;
   }
 
   // COUNTER
@@ -149,11 +141,7 @@ export class AstNode extends CommonTransports implements IAstNode {
       },
     });
     this.semantic.setKind("parent");
-    const cpx = this.getCpx();
-    assertExists(cpx, {
-      why: "Pushing a child expects an already defined cpx",
-    });
-    const cpxUnique = cpx.getUnique();
+    const cpxUnique = this.getCpx().getUnique();
     this.syntax.pushNodes(nodeSetRaw, cpxUnique);
     return this;
   }
@@ -169,4 +157,8 @@ export class AstNode extends CommonTransports implements IAstNode {
   findSpaceNodeByCreator = this.syntax.findSpaceNodeByCreator.bind(this.syntax);
   getIgnoredNodes = this.syntax.getIgnoredNodes.bind(this.syntax);
   pushIgnoredNodes = this.syntax.pushIgnoredNodes.bind(this.syntax);
+
+  // CPX
+  getCpx = this.cpx.getCpx.bind(this.cpx);
+  setCpx = this.cpx.setCpx.bind(this.cpx);
 }

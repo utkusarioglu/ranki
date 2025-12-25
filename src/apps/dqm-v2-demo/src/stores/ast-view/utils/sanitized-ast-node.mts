@@ -13,7 +13,11 @@ import {
   createSanitizedView,
   type ClassSanitizer,
 } from "../../../utils/sanitizer.mts";
-import { tryCatch, type TryCatch } from "../../../utils/utils.mts";
+import {
+  tryCatch,
+  tryCatchLeap,
+  type TryCatch,
+} from "../../../utils/utils.mts";
 import { assertExists, assertTryCatchSuccess } from "_assertions";
 
 class AstSanitizedNarrowed {
@@ -63,13 +67,6 @@ class AstSanitizedNarrowed {
     return hidden;
   }
 
-  private subProperty<T>(val: TryCatch<T>, property: keyof T): TryCatch<any> {
-    if (val.state === "fail") {
-      return val;
-    }
-    return tryCatch("subtreeCount", () => val.value[property]);
-  }
-
   private cpx(node: ClassSanitizer<IAstNode>) {
     const cpx = node.getCpx();
     assertTryCatchSuccess(cpx, {
@@ -108,7 +105,10 @@ class AstSanitizedNarrowed {
           props[id] = this.node.getCreationMethod();
           break;
         case "ignoredCount":
-          props[id] = this.subProperty(this.node.getIgnoredNodes(), "length");
+          props[id] = tryCatchLeap(
+            this.node.getIgnoredNodes(),
+            (o) => o.length,
+          );
           break;
 
         case "kind":
@@ -116,11 +116,17 @@ class AstSanitizedNarrowed {
           break;
 
         case "subtreeCount":
-          props[id] = this.subProperty(this.node.getTokenNodes(), "length");
+          props[id] = tryCatchLeap(
+            this.node.getSubtreeNodes(),
+            (o) => o.length,
+          );
           break;
 
         case "childCount":
-          props[id] = this.subProperty(this.node.getChildrenNodes(), "length");
+          props[id] = tryCatchLeap(
+            this.node.getChildrenNodes(),
+            (o) => o.length,
+          );
           break;
         case "cpxUnique": {
           props[id] = tryCatch("getUnique", () =>

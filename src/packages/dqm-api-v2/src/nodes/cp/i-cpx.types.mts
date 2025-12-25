@@ -23,16 +23,17 @@ export type ICpxConstructor = new (
 ) => ICpx;
 
 export interface ICpx
-  extends Other,
+  extends ICpxUniqueCapability,
     IVerticesCapability<ICpx>,
-    UniquenessCapability,
     RawParamsCapability,
-    CollectionCapability {}
-interface Other {
+    CpsCollectionCapability,
+    AstCollectionCapability {}
+interface ICpxUniqueCapability {
   parse(input: CpxParseInput): IAstNode;
+  getUnique(): UniqueValue;
 }
 
-export interface CollectionCapability {
+export interface CpsCollectionCapability {
   getIdStringList(): IdStringList;
   getIdListString(): IdListString;
 
@@ -53,7 +54,9 @@ export interface CollectionCapability {
   getLeafCps(): ICps;
   getRootCps(): ICps;
   getCpsList(): ICps[];
+}
 
+export interface AstCollectionCapability {
   setRootAst(ast: IAstNode): this;
   getRootAst(): IAstNode;
 }
@@ -62,8 +65,4 @@ export interface RawParamsCapability {
   setRawParams(params: IAstParamNode[]): this;
   getRawParams(): IAstParamNode[] | null;
   getRawParamsByAudience(audience: Audience): IAstParamNode[];
-}
-
-export interface UniquenessCapability {
-  getUnique(): UniqueValue;
 }

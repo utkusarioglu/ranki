@@ -15,8 +15,8 @@ import { CommonTransports } from "../common-transports.mjs";
 import { prepareContext } from "../ast/base/ast.utils.mjs";
 import { INITIAL_CONFIG_NAME } from "../../constants.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
-import { idCapability } from "../ast/param/capabilities/id.cap.mjs";
-import { verticesCapability } from "../vertices.capability.mjs";
+import { idCapability } from "../capabilities/id.cap.mjs";
+import { verticesCapability } from "../capabilities/vertices.capability.mjs";
 import { cpxCollection } from "./capabilities/cpx-collection.cap.mjs";
 
 const MERGE_TARGET = "merged";

@@ -1,5 +1,6 @@
 import type { CpxParseInput } from "../../dqm.types.mjs";
 import type {
+  CpxCollectionCapability,
   IAstNode,
   IAstParamNode,
   IVerticesCapability,
@@ -11,33 +12,15 @@ import type { IId } from "../../plugins/component/id/id.types.mjs";
 
 export interface ICps
   extends ICpsIdCapability,
-    ICpsOther,
-    IVerticesCapability<ICps> {}
+    ICpsUniqueCapability,
+    IVerticesCapability<ICps>,
+    CpxCollectionCapability {}
 
-export interface ICpsOther {
+export interface ICpsUniqueCapability {
   setDefinition(def: CpsDefinition): this;
-
   getParams(): IAstParamNode[];
-
-  setCpx(cpx: ICpx): this;
-  getCpx(): ICpx;
-
   parse(input: CpxParseInput): IAstNode;
   getOnFailMode(): boolean;
-
-  // getId(): IId;
-  // getId(): Alias | Chain;
-  // getIdString(): AliasString | ChainString
-  // getAliasString(): AliasString
-
-  // setParent(cps: ICps | null): this;
-  // getParent(): ICps | null;
-  // setPrev(prev: ICps): this;
-  // setNext(next: ICps): this;
-  // getPrev(): ICps | null;
-  // getNext(): ICps | null;
-  // pushChild(child: ICps): this;
-  // getChildren(): ICps[];
 }
 
 export type ICpsIdCapability = Pick<

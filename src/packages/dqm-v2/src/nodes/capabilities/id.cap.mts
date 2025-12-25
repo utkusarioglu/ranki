@@ -1,5 +1,5 @@
 import type { Alias, Chain } from "@dqm/package-dqm-api-v2";
-import { Id } from "../../../../id/id.mjs";
+import { Id } from "../../id/id.mjs";
 
 export function idCapability<T>(self: T) {
   const id = new Id();

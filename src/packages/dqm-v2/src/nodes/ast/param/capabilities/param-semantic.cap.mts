@@ -20,11 +20,6 @@ export function paramSemanticCapability<T>(self: T) {
     },
 
     getAudience(): Audience {
-      // // TODO this assertion may not be relevant anymore now that param and raw
-      // // param will be separated from each other
-      // assertExists(audience, {
-      //   why: "Asking for the audience while it hasn't been defined strongly suggests that there is an architectural issue.",
-      // });
       return audience;
     },
 
@@ -36,7 +31,6 @@ export function paramSemanticCapability<T>(self: T) {
       return self;
     },
 
-    // @rejectValues(undefined)
     getOperator(): Operator {
       assertExists(operator, {
         why: "Asking for an operator while it hasn't been defined strongly suggests that there is an architectural issue.",

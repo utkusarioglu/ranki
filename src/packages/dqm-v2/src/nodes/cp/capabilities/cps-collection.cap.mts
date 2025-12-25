@@ -3,7 +3,6 @@ import type {
   ChainList,
   ChainListString,
   ChainStringList,
-  IAstNode,
   ICps,
   ICpx,
   IdList,
@@ -13,7 +12,6 @@ import type {
 import { Cps } from "../cps.mjs";
 import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
 import type { CommonTransports } from "../../common-transports.mjs";
-import { assertExists } from "@dqm/package-dqm-utils";
 import { assertArrayNotEmpty } from "@dqm/package-dqm-utils";
 
 export const CHAIN_STRING_SEPARATOR = "/";
@@ -26,9 +24,8 @@ export const ALIAS_STRING_SEPARATOR = "|";
  * extend `ICpx`, then this error goes away but the class definition for
  * `collection` detects the circular reference and assumes the `any` type.
  */
-export function collectionCapability<T>(self: T) {
+export function cpsCollectionCapability<T>(self: T) {
   let cps: ICps[] = [];
-  let rootAst: IAstNode;
 
   return {
     setIdList(
@@ -130,16 +127,6 @@ export function collectionCapability<T>(self: T) {
 
     getAliasList(): AliasList {
       return cps.map((c) => c.getAlias());
-    },
-
-    setRootAst(ast: IAstNode): T {
-      rootAst = ast;
-      return self;
-    },
-
-    getRootAst(): IAstNode {
-      assertExists(rootAst, { why: "Root ast has to be defined" });
-      return rootAst;
     },
   };
 }

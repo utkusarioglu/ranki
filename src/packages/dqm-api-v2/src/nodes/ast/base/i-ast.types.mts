@@ -1,5 +1,4 @@
 import type * as ohm from "ohm-js";
-import type { ICpx } from "../../cp/i-cpx.types.mjs";
 import type { IAstParamNode } from "../param/export.types.mjs";
 import type { CpxFuncParam } from "./i-ast-node.types.mjs";
 import type {
@@ -9,6 +8,7 @@ import type {
   IAstNodeSemanticCapabilities,
   IAstNodeOhmCapabilities,
   IAstNodeCounterCapabilities,
+  CpxCollectionCapability,
 } from "../capabilities/export.types.mjs";
 
 export interface IAstNode
@@ -19,7 +19,8 @@ export interface IAstNode
     Omit<IVerticesCapability<IAstNode>, "pushChild">,
     Vertices,
     IAstNodeViewCapabilities,
-    IAstNodeUniqueCapability {}
+    IAstNodeUniqueCapability,
+    CpxCollectionCapability {}
 
 type Vertices = Pick<
   IVerticesCapability<IAstNode>,
@@ -45,5 +46,4 @@ export interface IAstNodeUniqueCapability {
   newCpx(cpxCallback: CpxFuncParam): this;
   newAst(ohm: ohm.Node): IAstNode;
   newParam(ohm: ohm.Node): IAstParamNode;
-  getCpx(): ICpx | null;
 }

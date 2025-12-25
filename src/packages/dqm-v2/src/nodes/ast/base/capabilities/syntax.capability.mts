@@ -10,9 +10,9 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { assertArrayNotEmpty } from "@dqm/package-dqm-utils";
 import type * as ohm from "ohm-js";
-import type { WorkedNodeDefinition } from "../base/ast-node.types.mjs";
-import { prepareContext } from "../base/ast.utils.mjs";
-import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
+import type { WorkedNodeDefinition } from "../ast-node.types.mjs";
+import { prepareContext } from "../ast.utils.mjs";
+import { DqmAppError } from "../../../../errors/dqm-app-error/dqm-app-error.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
 
 /**

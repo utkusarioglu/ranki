@@ -6,7 +6,6 @@ export function paramValueCapability<T>(self: T) {
   let defaultValues: ParamDefaultValue[] = [];
 
   return {
-    // @dependsOn("specs")
     setDefaultValues(valueSpec: ParamDefaultValue[]): T {
       defaultValues = valueSpec;
       return self;
@@ -16,7 +15,6 @@ export function paramValueCapability<T>(self: T) {
       return defaultValues;
     },
 
-    // @dependsOn("specs", "defaultValues")
     setValues(v: AstSourceView[]): T {
       values = v;
       return self;
@@ -26,8 +24,6 @@ export function paramValueCapability<T>(self: T) {
       return values;
     },
 
-    // TODO
-    // @dependsOn("specs", "defaultValues")
     checkValues() {
       if (values.length > defaultValues.length) {
         throw new DqmAppError({
