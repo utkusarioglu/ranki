@@ -3,7 +3,7 @@ import type { ComponentParamsSchema } from "../component.types.mjs";
 import type {
   IParam,
   ParamChannel,
-} from "../../../nodes/param/param-node.types.mjs";
+} from "../../../nodes/param/export.types.mjs";
 
 export interface IParams {
   pushParam(param: IParam): this;

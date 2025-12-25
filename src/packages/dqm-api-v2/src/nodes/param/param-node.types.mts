@@ -1,13 +1,3 @@
-import type {
-  Alias,
-  Chain,
-  ChannelParamSpecs,
-  IId,
-  ParamDefaultValue,
-} from "../../plugins/component/export.types.mjs";
-import type { AstSourceView, IAstNode } from "../ast/export.types.mjs";
-import type { CommonTransportsConstructorParams } from "../common-transports.types.mjs";
-
 export type ParamChannel = string & { type?: "ParamChannel" }; // setting, config
 
 /**
@@ -21,46 +11,3 @@ export type Audience = (string | number) & { type?: "ParamAudience" };
 export type Operator = "assign" | "append" | "prepend" | "shift" | "unshift";
 
 export type ParamValuePrimitive = string | number;
-
-export type IParam = IAstNode & IParamOther & IParamIdCapability;
-
-export interface IParamOther {
-  setAudience(channel: Audience): this;
-  setOperator(operator: Operator): this;
-  setProducer(producer: ParamProducer): this;
-  setValues(values: AstSourceView[]): this;
-  setSpecs(config: ChannelParamSpecs): this;
-  setChannel(channel: ParamChannel): this;
-
-  setDefaultValues(valueSpec: ParamDefaultValue[]): this;
-  getDefaultValues(): ParamDefaultValue[];
-
-  setId(id: Alias | Chain): IParam;
-
-  getAudience(): Audience;
-  getOperator(): Operator;
-  getValues(): AstSourceView[];
-  // getId(): IId;
-  getSpecs(): ChannelParamSpecs;
-  getChannel(): ParamChannel;
-  getProducer(): ParamProducer;
-
-  getRawParam(): IParam | null;
-  setRawParam(p: IParam): this;
-}
-
-export type IParamIdCapability = Pick<
-  IId,
-  | "getId"
-  | "getIdString"
-  | "getAlias"
-  | "getAliasString"
-  | "getChain"
-  | "getChainString"
-  | "setAlias"
-  | "setPosition"
->;
-
-export type IParamConstructor = new (
-  c: CommonTransportsConstructorParams,
-) => IParam;

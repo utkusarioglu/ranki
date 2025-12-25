@@ -2,9 +2,9 @@ import type {
   DqmConfig,
   DqmPluginsConfigDefaults,
 } from "../../config/dqm-config.types.mjs";
-import type { IAstNodeConstructor } from "../../nodes/ast/ast-node.types.mjs";
+import type { IAstNodeConstructor } from "../../nodes/ast/i-ast-node.types.mjs";
 import type { ICpxConstructor } from "../../nodes/cp/export.types.mjs";
-import type { IParamConstructor } from "../../nodes/param/param-node.types.mjs";
+import type { IParamConstructor } from "../../nodes/param/export.types.mjs";
 import type { IDqmComponent } from "../component/component.types.mjs";
 import type { Alias, Chain } from "../component/id/id.types.mjs";
 import type { CreateParserReturn } from "./parser/parser.types.mjs";
