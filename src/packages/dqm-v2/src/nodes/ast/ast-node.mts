@@ -105,6 +105,8 @@ export class AstNode extends CommonTransports implements IAstNode {
   setOhmNode = this.ohm.setOhmNode.bind(this.ohm);
   getSourceString = this.ohm.getSourceString.bind(this.ohm);
   getCreator = this.ohm.getCreator.bind(this.ohm);
+  getStartIndex = this.ohm.getStartIndex.bind(this.ohm);
+  getEndIndex = this.ohm.getEndIndex.bind(this.ohm);
 
   // SEMANTIC
   setDirection = this.semantic.setDirection.bind(this.semantic);

@@ -10,8 +10,18 @@ export function ohmCapability<T>(self: T) {
       return ohm.ctorName;
     },
 
+    getStartIndex(): number {
+      assertExists(ohm, { why: "Ohm needs to be defined" });
+      return ohm.source.startIdx;
+    },
+
+    getEndIndex(): number {
+      assertExists(ohm, { why: "Ohm needs to be defined" });
+      return ohm.source.endIdx;
+    },
+
     getSourceString(): AstSourceString {
-      assertExists(ohm.sourceString, { why: "Ohm needs to be defined" });
+      assertExists(ohm, { why: "Ohm needs to be defined" });
       return ohm.sourceString;
     },
 

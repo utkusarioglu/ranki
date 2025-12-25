@@ -1,4 +1,4 @@
-import type { IAstNode, IParam } from "@dqm/package-dqm-api-v2";
+import type { IAstNode, IAstParamNode } from "@dqm/package-dqm-api-v2";
 import { PreCode } from "_views/pre-code/PreCode";
 import type { FC } from "react";
 import { PropertyTable } from "../tables/PropertyTable";
@@ -9,12 +9,14 @@ import { TryCatchView } from "_views/try-catch/try-catch";
 import { tryCatchLeap } from "_utils/utils.mjs";
 
 interface GraphMenuSourcePartProps {
-  node: ClassSanitizer<IAstNode> | ClassSanitizer<IParam>;
+  node: ClassSanitizer<IAstNode> | ClassSanitizer<IAstParamNode>;
 }
 
 export const GraphMenuSourcePart: FC<GraphMenuSourcePartProps> = ({ node }) => {
   const rows: PropertyTableRows = [
     ["Length", tryCatchLeap(node.getSourceString(), (o) => o.length)],
+    ["Start Index", node.getStartIndex()],
+    ["End Index", node.getEndIndex()],
   ];
 
   return (
