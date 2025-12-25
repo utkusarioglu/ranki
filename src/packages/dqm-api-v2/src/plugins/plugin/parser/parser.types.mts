@@ -2,7 +2,7 @@ import type { DqmConfig } from "../../../config/dqm-config.types.mjs";
 import type {
   IAstNode,
   IAstNodeContext,
-} from "../../../nodes/ast/ast-node.types.mjs";
+} from "../../../nodes/ast/export.types.mjs";
 
 export interface DqmAstReport {
   cache: {

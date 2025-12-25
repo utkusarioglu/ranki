@@ -12,7 +12,6 @@ import type {
   IdString,
   AliasString,
   ChainString,
-  IId,
 } from "@dqm/package-dqm-api-v2";
 import { Id } from "../../id/id.mjs";
 import { ALL_AUDIENCES } from "./param.constants.mjs";
