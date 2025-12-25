@@ -8,7 +8,7 @@ import type {
   DqmConfig,
 } from "@dqm/package-dqm-api-v2";
 import { IdLib } from "../../id/id-lib.mjs";
-import { Param } from "../../nodes/param/param.mjs";
+import { AstParamNode } from "../../nodes/param/param.mjs";
 import { rejectValues } from "@dqm/package-dqm-utils";
 import { CommonTransports } from "../../nodes/common-transports.mjs";
 import { INITIAL_CONFIG_NAME, POSITIONAL_PARAM } from "../../constants.mjs";
@@ -50,7 +50,7 @@ export class ParamsChannelLib extends CommonTransports {
    */
   private processSchema() {
     this.schema.params.forEach((p) => {
-      const param = new Param(this.getTransports()) // #1
+      const param = new AstParamNode(this.getTransports()) // #1
         .setChannel(this.channel)
         .setProducer("component-default")
         .setSpecs(this.schema)

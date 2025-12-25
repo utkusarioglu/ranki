@@ -14,7 +14,7 @@ import type {
 import { ComponentLib } from "./component/component-lib.mjs";
 import { ParserLib } from "./parser/parser-lib.mjs";
 import { Cpx } from "../nodes/cp/cpx.mjs";
-import { Param } from "../nodes/param/param.mjs";
+import { AstParamNode } from "../nodes/param/param.mjs";
 import { AstNode } from "../nodes/ast/ast-node.mjs";
 import { DqmAppError } from "../errors/dqm-app-error/dqm-app-error.mjs";
 
@@ -60,7 +60,7 @@ export class Libs implements IPlugins {
   }
 
   getParamConstructor(): IParamConstructor {
-    return Param;
+    return AstParamNode;
   }
 
   getAstNodeConstructor(): IAstNodeConstructor {

@@ -19,7 +19,7 @@ import { rejectValues, dependsOn } from "@dqm/package-dqm-utils";
 import { AstNode } from "../ast/ast-node.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
-export class Param extends AstNode implements IAstParamNode {
+export class AstParamNode extends AstNode implements IAstParamNode {
   private audience: Audience = ALL_AUDIENCES;
   private operator!: Operator;
   private values: AstSourceView[] = [];
