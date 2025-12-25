@@ -3,7 +3,7 @@ import type { ICpx } from "../../cp/i-cpx.types.mjs";
 import type { IAstParamNode } from "../param/export.types.mjs";
 import type { CpxFuncParam } from "./i-ast-node.types.mjs";
 import type {
-  IAstNodeVerticesCapabilities,
+  IVerticesCapability,
   IAstNodeViewCapabilities,
   IAstNodeSyntaxCapabilities,
   IAstNodeSemanticCapabilities,
@@ -16,9 +16,21 @@ export interface IAstNode
     IAstNodeOhmCapabilities,
     IAstNodeSemanticCapabilities,
     IAstNodeSyntaxCapabilities<IAstNode>,
-    IAstNodeVerticesCapabilities<IAstNode>,
+    Omit<IVerticesCapability<IAstNode>, "pushChild">,
+    Vertices,
     IAstNodeViewCapabilities,
     IAstNodeUniqueCapability {}
+
+type Vertices = Pick<
+  IVerticesCapability<IAstNode>,
+  | "setParent"
+  | "getParent"
+  | "getPrev"
+  | "setPrev"
+  | "setNext"
+  | "getNext"
+  | "getChildren"
+>;
 
 export interface IAstNodeUniqueCapability {
   /**

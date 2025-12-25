@@ -11,15 +11,45 @@ import type {
 import type { ICps } from "./i-cps.types.mjs";
 import type { CommonTransportsConstructorParams } from "../common-transports.types.mjs";
 import type { IAstParamNode } from "../ast/export.types.mjs";
-import type { IAstNode, UniqueValue } from "../../export.types.mjs";
+import type {
+  IAstNode,
+  UniqueValue,
+  IVerticesCapability,
+} from "../../export.types.mjs";
 
 export type ICpxConstructor = new (
   transports: CommonTransportsConstructorParams,
 ) => ICpx;
 
-export interface ICpx {
-  getUnique(): UniqueValue;
+export interface ICpx
+  extends Other,
+    IdListCapability,
+    IVerticesCapability<ICpx>,
+    UniquenessCapability,
+    RawParamsCapability,
+    CollectionCapability {}
+interface Other {
+  parse(input: CpxParseInput): IAstNode;
+}
 
+export interface CollectionCapability {
+  getLeafCps(): ICps;
+  getRootCps(): ICps;
+  getCpsList(): ICps[];
+  setRootAst(ast: IAstNode): this;
+  getRootAst(): IAstNode;
+}
+
+export interface RawParamsCapability {
+  setRawParams(params: IAstParamNode[]): this;
+  getRawParams(): IAstParamNode[] | null;
+}
+
+export interface UniquenessCapability {
+  getUnique(): UniqueValue;
+}
+
+export interface IdListCapability {
   getIdStringList(): IdStringList;
   getIdListString(): IdListString;
 
@@ -36,24 +66,4 @@ export interface ICpx {
   getChainListString(): ChainListString;
 
   getIdList(): IdList;
-  setParent(cpx: ICpx | null): this;
-  getParent(): ICpx | null;
-
-  setPrev(prev: ICpx): this;
-  setNext(next: ICpx): this;
-  getPrev(): ICpx | null;
-  getNext(): ICpx | null;
-
-  pushChild(cpx: ICpx): this;
-  getChildren(): ICpx[];
-
-  parse(input: CpxParseInput): IAstNode;
-  setRawParams(params: IAstParamNode[]): this;
-  getRawParams(): IAstParamNode[] | null;
-  getLeafCps(): ICps;
-  getRootCps(): ICps;
-  getCpsList(): ICps[];
-
-  setRootAst(ast: IAstNode): this;
-  getRootAst(): IAstNode;
 }
