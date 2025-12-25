@@ -20,16 +20,20 @@ export const CHAIN_STRING_SEPARATOR = "/";
 export const ID_STRING_SEPARATOR = "#";
 export const ALIAS_STRING_SEPARATOR = "|";
 
+/**
+ * @dev
+ * #1 This prevents circular type inference. If generic `T` is defined to
+ * extend `ICpx`, then this error goes away but the class definition for
+ * `collection` detects the circular reference and assumes the `any` type.
+ */
 export function collectionCapability<T>(self: T) {
   let cps: ICps[] = [];
   let rootAst: IAstNode;
 
   return {
-    // @dependsOn("rawParams")
     setIdList(
       idList: IdList,
       getParent: ICpx["getParent"],
-      // getLeafCps: ICpx["getLeafCps"],
       getTransports: CommonTransports["getTransports"],
       getRawParamsByAudience: ICpx["getRawParamsByAudience"],
     ): T {
@@ -42,7 +46,7 @@ export function collectionCapability<T>(self: T) {
         }
         newCps
           .setCpx(
-            // @ts-expect-error
+            // @ts-expect-error #1
             self,
           )
           .setDefinition({
@@ -70,10 +74,9 @@ export function collectionCapability<T>(self: T) {
             const prev = curr;
             curr = new Cps(getTransports())
               .setCpx(
-                // @ts-expect-error
+                // @ts-expect-error # 1
                 self,
               )
-              // @ts-expect-error
               .setParent(prev)
               .setDefinition({
                 id: idList[i],
@@ -89,13 +92,7 @@ export function collectionCapability<T>(self: T) {
       assertArrayNotEmpty(cps, { why: "Cpx has to collect at least one Cps" });
       return cps.at(-1)!;
     },
-    // @rejectValues(undefined)
-    // getLeafCps(): ICps {
-    //   assertArrayNotEmpty(cps, { why: "Cpx has to collect at least one Cps" });
-    //   return cps.at(-1)!;
-    // },
 
-    // @rejectValues(undefined)
     getRootCps(): ICps {
       assertArrayNotEmpty(cps, { why: "Cpx has to collect at least one Cps" });
       return cps[0];
@@ -140,7 +137,6 @@ export function collectionCapability<T>(self: T) {
       return self;
     },
 
-    // @dependsOn("rootAst")
     getRootAst(): IAstNode {
       assertExists(rootAst, { why: "Root ast has to be defined" });
       return rootAst;

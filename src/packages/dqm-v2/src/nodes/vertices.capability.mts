@@ -1,29 +1,29 @@
-export function verticesCapability<T>(self: T) {
-  let next: T | null = null;
-  let prev: T | null = null;
-  let parent: T | null = null;
-  let children: T[] = [];
+export function verticesCapability<T, Coll>(self: T) {
+  let next: Coll | null = null;
+  let prev: Coll | null = null;
+  let parent: Coll | null = null;
+  let children: Coll[] = [];
 
   return {
-    setPrev(p: T): T {
+    setPrev(p: Coll): T {
       prev = p;
       return self;
     },
 
-    getPrev(): T | null {
+    getPrev(): Coll | null {
       return prev;
     },
 
-    setNext(n: T): T {
+    setNext(n: Coll): T {
       next = n;
       return self;
     },
 
-    getNext(): T | null {
+    getNext(): Coll | null {
       return next;
     },
 
-    setParent(p: T | null): T {
+    setParent(p: Coll | null): T {
       parent = p;
 
       // @ts-expect-error
@@ -35,16 +35,16 @@ export function verticesCapability<T>(self: T) {
       return self;
     },
 
-    getParent(): T | null {
+    getParent(): Coll | null {
       return parent;
     },
 
-    pushChild(c: T): T {
+    pushChild(c: Coll): T {
       children.push(c);
       return self;
     },
 
-    getChildren(): T[] {
+    getChildren(): Coll[] {
       return children;
     },
   };

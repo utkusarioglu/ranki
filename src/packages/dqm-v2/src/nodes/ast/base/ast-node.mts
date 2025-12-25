@@ -19,7 +19,7 @@ import { assertExists } from "@dqm/package-dqm-utils";
 
 export class AstNode extends CommonTransports implements IAstNode {
   private semantic = semanticCapability(this);
-  private vertices = verticesCapability(this);
+  private vertices = verticesCapability<this, IAstNode>(this);
   private syntax = syntaxCapability(this);
   private ohm = ohmCapability(this);
   private view = viewCapability(this);
