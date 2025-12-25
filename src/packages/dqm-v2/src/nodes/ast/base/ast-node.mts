@@ -9,7 +9,7 @@ import type {
 import type * as ohm from "ohm-js";
 import { assertNotExists, rejectValues } from "@dqm/package-dqm-utils";
 import { CommonTransports } from "../../common-transports.mjs";
-import { verticesCapability } from "../capabilities/vertices.capability.mjs";
+import { verticesCapability } from "../../vertices.capability.mjs";
 import { syntaxCapability } from "../capabilities/syntax.capability.mjs";
 import { semanticCapability } from "../capabilities/semantic.capability.mjs";
 import { ohmCapability } from "../capabilities/ohm.capability.mjs";

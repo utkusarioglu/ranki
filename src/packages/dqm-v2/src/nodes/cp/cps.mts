@@ -2,7 +2,6 @@ import type {
   ICps,
   IDqmComponent,
   IParams,
-  ICpx,
   CpxParseInput,
   CpsDefinition,
   IAstNode,
@@ -10,30 +9,36 @@ import type {
   DqmConfig,
   Alias,
   IAstParamNode,
-  Chain,
-  IdString,
-  AliasString,
-  ChainString,
+  // Chain,
+  // IdString,
+  // AliasString,
+  // ChainString,
 } from "@dqm/package-dqm-api-v2";
-import { Id } from "../../id/id.mjs";
+// import { Id } from "../../id/id.mjs";
 import { ParamsLib } from "../../libs/params/params-lib.mjs";
 import { CommonTransports } from "../common-transports.mjs";
 import { prepareContext } from "../ast/base/ast.utils.mjs";
 import { INITIAL_CONFIG_NAME } from "../../constants.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
+import { idCapability } from "../ast/param/capabilities/id.cap.mjs";
+import { verticesCapability } from "../vertices.capability.mjs";
+import { cpxCollection } from "./capabilities/cpx-collection.cap.mjs";
 
 const MERGE_TARGET = "merged";
 const CONFIG_CHANNEL = "configs";
 
 export class Cps extends CommonTransports implements ICps {
-  private id = new Id();
-  private parent: ICps | null = null;
-  private prev: ICps | null = null;
-  private next: ICps | null = null;
-  private children: ICps[] = [];
+  private id = idCapability(this);
+  private vertices = verticesCapability(this);
+  private cpx = cpxCollection(this);
+  // private id = new Id();
+  // private parent: ICps | null = null;
+  // private prev: ICps | null = null;
+  // private next: ICps | null = null;
+  // private children: ICps[] = [];
   private component!: IDqmComponent;
   private paramsLib: IParams = new ParamsLib(this.getTransports());
-  private cpx!: ICpx;
+  // private cpx!: ICpx;
   private onFailMode = false;
 
   constructor(params: CommonTransportsConstructorParams) {
@@ -45,71 +50,99 @@ export class Cps extends CommonTransports implements ICps {
     return this.paramsLib.getParams();
   }
 
-  setPrev(prev: ICps): this {
-    this.prev = prev;
-    return this;
-  }
+  // ID
+  setAlias = this.id.setAlias;
+  getAlias = this.id.getAlias;
+  getAliasString = this.id.getAliasString;
+  setPosition = this.id.setPosition;
+  getId = this.id.getId;
+  setId = this.id.setId;
+  getIdString = this.id.getIdString;
+  getChain = this.id.getChain;
+  getChainString = this.id.getChainString;
 
-  setNext(next: ICps): this {
-    this.next = next;
-    return this;
-  }
+  // getId(): Alias | Chain {
+  //   return this.id.getId();
+  // }
 
-  getPrev(): ICps | null {
-    return this.prev;
-  }
+  // getIdString(): IdString {
+  //   return this.id.getIdString();
+  // }
 
-  getNext(): ICps | null {
-    return this.next;
-  }
+  // getAlias(): Alias | undefined {
+  //   return this.id.getAlias();
+  // }
 
-  getId(): Alias | Chain {
-    return this.id.getId();
-  }
+  // getAliasString(): AliasString {
+  //   return this.id.getAliasString();
+  // }
 
-  getIdString(): IdString {
-    return this.id.getIdString();
-  }
+  // getChain(): Chain {
+  //   return this.id.getChain();
+  // }
 
-  getAlias(): Alias | undefined {
-    return this.id.getAlias();
-  }
+  // getChainString(): ChainString {
+  //   return this.id.getChainString();
+  // }
 
-  getAliasString(): AliasString {
-    return this.id.getAliasString();
-  }
+  // VERTICES
+  setParent = this.vertices.setParent.bind(this.vertices);
+  getParent = this.vertices.getParent.bind(this.vertices);
+  getNext = this.vertices.getNext.bind(this.vertices);
+  getPrev = this.vertices.getPrev.bind(this.vertices);
+  setPrev = this.vertices.setPrev.bind(this.vertices);
+  setNext = this.vertices.setNext.bind(this.vertices);
+  getChildren = this.vertices.getChildren.bind(this.vertices);
+  pushChild = this.vertices.pushChild.bind(this.vertices);
 
-  getChain(): Chain {
-    return this.id.getChain();
-  }
+  // CPX
+  getCpx = this.cpx.getCpx.bind(this.cpx);
+  setCpx = this.cpx.setCpx.bind(this.cpx);
 
-  getChainString(): ChainString {
-    return this.id.getChainString();
+  // setPrev(prev: ICps): this {
+  //   this.prev = prev;
+  //   return this;
+  // }
+
+  // setNext(next: ICps): this {
+  //   this.next = next;
+  //   return this;
+  // }
+
+  // getPrev(): ICps | null {
+  //   return this.prev;
+  // }
+
+  // getNext(): ICps | null {
+  //   return this.next;
+  // }
+  // getParent(): ICps | null {
+  //   return this.parent;
+  // }
+
+  // setParent(cps: ICps): this {
+  //   this.parent = cps;
+  //   if (this.parent) {
+  //     this.parent.pushChild(this);
+  //   }
+  //   return this;
+  // }
+
+  // pushChild(child: ICps): this {
+  //   this.children.push(child);
+  //   return this;
+  // }
+
+  // getChildren(): ICps[] {
+  //   return this.children;
+  // }
+
+  private setToFailMode() {
+    this.onFailMode = true;
   }
 
   getOnFailMode() {
     return this.onFailMode;
-  }
-
-  setParent(cps: ICps): this {
-    this.parent = cps;
-    if (this.parent) {
-      this.parent.pushChild(this);
-    }
-    return this;
-  }
-
-  pushChild(child: ICps): this {
-    this.children.push(child);
-    return this;
-  }
-
-  getChildren(): ICps[] {
-    return this.children;
-  }
-
-  private setToFailMode() {
-    this.onFailMode = true;
   }
 
   /**
@@ -170,19 +203,6 @@ export class Cps extends CommonTransports implements ICps {
     return this;
   }
 
-  setCpx(cpx: ICpx): this {
-    this.cpx = cpx;
-    return this;
-  }
-
-  getCpx(): ICpx {
-    return this.cpx;
-  }
-
-  getParent(): ICps | null {
-    return this.parent;
-  }
-
   parse(input: CpxParseInput): IAstNode {
     const activeConfig = this.getConfig().getConfig<DqmConfig>(MERGE_TARGET);
     // TODO
@@ -195,7 +215,7 @@ export class Cps extends CommonTransports implements ICps {
       // TODO this likely will come from the `direction` property of some ast
       // node
       "baseV2RootBlock",
-      prepareContext(this.cpx.getRootAst()),
+      prepareContext(this.getCpx().getRootAst()),
     );
     return obj.root;
   }

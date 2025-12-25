@@ -15,6 +15,7 @@ import type {
   IAstNode,
   UniqueValue,
   IVerticesCapability,
+  Audience,
 } from "../../export.types.mjs";
 
 export type ICpxConstructor = new (
@@ -23,7 +24,6 @@ export type ICpxConstructor = new (
 
 export interface ICpx
   extends Other,
-    IdListCapability,
     IVerticesCapability<ICpx>,
     UniquenessCapability,
     RawParamsCapability,
@@ -33,23 +33,6 @@ interface Other {
 }
 
 export interface CollectionCapability {
-  getLeafCps(): ICps;
-  getRootCps(): ICps;
-  getCpsList(): ICps[];
-  setRootAst(ast: IAstNode): this;
-  getRootAst(): IAstNode;
-}
-
-export interface RawParamsCapability {
-  setRawParams(params: IAstParamNode[]): this;
-  getRawParams(): IAstParamNode[] | null;
-}
-
-export interface UniquenessCapability {
-  getUnique(): UniqueValue;
-}
-
-export interface IdListCapability {
   getIdStringList(): IdStringList;
   getIdListString(): IdListString;
 
@@ -66,4 +49,21 @@ export interface IdListCapability {
   getChainListString(): ChainListString;
 
   getIdList(): IdList;
+
+  getLeafCps(): ICps;
+  getRootCps(): ICps;
+  getCpsList(): ICps[];
+
+  setRootAst(ast: IAstNode): this;
+  getRootAst(): IAstNode;
+}
+
+export interface RawParamsCapability {
+  setRawParams(params: IAstParamNode[]): this;
+  getRawParams(): IAstParamNode[] | null;
+  getRawParamsByAudience(audience: Audience): IAstParamNode[];
+}
+
+export interface UniquenessCapability {
+  getUnique(): UniqueValue;
 }
