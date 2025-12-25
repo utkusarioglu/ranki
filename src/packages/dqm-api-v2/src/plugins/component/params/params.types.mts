@@ -3,7 +3,7 @@ import type { ComponentParamsSchema } from "../component.types.mjs";
 import type {
   IAstParamNode,
   ParamChannel,
-} from "../../../nodes/param/export.types.mjs";
+} from "../../../nodes/ast/export.types.mjs";
 
 export interface IParams {
   pushParam(param: IAstParamNode): this;

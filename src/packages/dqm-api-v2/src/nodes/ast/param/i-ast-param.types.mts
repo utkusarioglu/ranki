@@ -6,7 +6,7 @@ import type {
   IId,
   ParamChannel,
   ParamDefaultValue,
-} from "../../export.types.mjs";
+} from "../../../export.types.mjs";
 import type {
   AstSourceView,
   Audience,

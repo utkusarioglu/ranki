@@ -10,7 +10,7 @@ import type {
 } from "../../plugins/component/id/id.types.mjs";
 import type { ICps } from "./i-cps.types.mjs";
 import type { CommonTransportsConstructorParams } from "../common-transports.types.mjs";
-import type { IAstParamNode } from "../param/export.types.mjs";
+import type { IAstParamNode } from "../ast/export.types.mjs";
 import type { IAstNode, UniqueValue } from "../../export.types.mjs";
 
 export type ICpxConstructor = new (

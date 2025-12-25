@@ -1,5 +1,5 @@
 import type * as ohm from "ohm-js";
-import type { ICpx } from "../cp/i-cpx.types.mjs";
+import type { ICpx } from "../../cp/i-cpx.types.mjs";
 import type { IAstParamNode } from "../param/export.types.mjs";
 import type { CounterStat } from "./ast-counter.types.mjs";
 import type {
