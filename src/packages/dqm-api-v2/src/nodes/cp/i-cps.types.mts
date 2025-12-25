@@ -1,5 +1,5 @@
 import type { CpxParseInput } from "../../dqm.types.mjs";
-import type { IAstNode, IParam } from "../export.types.mjs";
+import type { IAstNode, IAstParamNode } from "../export.types.mjs";
 import type { ICpx } from "./i-cpx.types.mjs";
 import type { CommonTransportsConstructorParams } from "../common-transports.types.mjs";
 import type { CpsDefinition } from "../../plugins/component/component.types.mjs";
@@ -17,7 +17,7 @@ export interface ICpsOther {
 
   setDefinition(def: CpsDefinition): this;
 
-  getParams(): IParam[];
+  getParams(): IAstParamNode[];
 
   setCpx(cpx: ICpx): this;
 

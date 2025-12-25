@@ -1,9 +1,12 @@
 import type { ChainList } from "@dqm/package-dqm-api-v2";
-import type { IParam, IAstNodeActionDict } from "@dqm/package-dqm-api-v2";
+import type {
+  IAstParamNode,
+  IAstNodeActionDict,
+} from "@dqm/package-dqm-api-v2";
 import { buildContext, grabAst } from "@dqm/package-plugin-utils";
 
 const COMPONENT: ChainList = [["base", "v2", "default"]];
-const PARAMS: IParam[] = [];
+const PARAMS: IAstParamNode[] = [];
 
 export const node: IAstNodeActionDict = {
   _iter(...children) {

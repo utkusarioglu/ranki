@@ -9,7 +9,7 @@ import type {
   CommonTransportsConstructorParams,
   DqmConfig,
   Alias,
-  IParam,
+  IAstParamNode,
   Chain,
   IdString,
   AliasString,
@@ -41,7 +41,7 @@ export class Cps extends CommonTransports implements ICps {
     this.cloneConfig();
   }
 
-  getParams(): IParam[] {
+  getParams(): IAstParamNode[] {
     return this.paramsLib.getParams();
   }
 

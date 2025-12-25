@@ -2,7 +2,7 @@ import type {
   IAstNode,
   ICpx,
   PushedNodeDefinition,
-  IParam,
+  IAstParamNode,
   AstSourceView,
   CpxFuncParam,
 } from "@dqm/package-dqm-api-v2";
@@ -42,7 +42,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     return this.newChild(this.getPlugins().getAstNodeConstructor(), ohm);
   }
 
-  newParam(ohm: ohm.Node): IParam {
+  newParam(ohm: ohm.Node): IAstParamNode {
     return this.newChild(this.getPlugins().getParamConstructor(), ohm);
   }
 

@@ -2,13 +2,13 @@ import type {
   ChainList,
   IAstNode,
   IAstNodeActionDict,
-  IParam,
+  IAstParamNode,
 } from "@dqm/package-dqm-api-v2";
 import * as ohm from "ohm-js";
 import { grabAssertNodeExists, grabAst } from "@dqm/package-plugin-utils";
 
 const COMPONENT: ChainList = [["frame", "v2", "container"]];
-const PARAMS: IParam[] = [];
+const PARAMS: IAstParamNode[] = [];
 
 export const nodeFrame: IAstNodeActionDict = {
   baseV2Block_frameV2(sBaseV2Indentation, frameV2, sBaseV2WasteInline, nlEnd) {
@@ -66,7 +66,7 @@ function parseFrame(self: ohm.Node, parent: IAstNode) {
     .getSubtreeNodes()
     .map((v) => v.getSubtreeNodes().map((v) => v.getSourceString()));
 
-  let params: IParam[] = [];
+  let params: IAstParamNode[] = [];
 
   const paramListInlineContainer =
     frameV2FrameConfigFp.findSubtreeNodeByCreator(
@@ -77,7 +77,7 @@ function parseFrame(self: ohm.Node, parent: IAstNode) {
       "paramsV2ParamListInline",
     );
     grabAssertNodeExists(self, paramListInline, "paramsV2ParamListInline");
-    params = paramListInline.getSubtreeNodes() as IParam[];
+    params = paramListInline.getSubtreeNodes() as IAstParamNode[];
   }
 
   return frameV2FrameConfigFp.newCpx((cpx) =>

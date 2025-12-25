@@ -1,7 +1,7 @@
 import type {
   ICpx,
   CpxParseInput,
-  IParam,
+  IAstParamNode,
   IdList,
   ICps,
   Audience,
@@ -37,7 +37,7 @@ export class Cpx extends CommonTransports implements ICpx {
   private prev: ICpx | null = null;
   private next: ICpx | null = null;
   private children: ICpx[] = [];
-  private rawParams: IParam[] | null = null; // #1
+  private rawParams: IAstParamNode[] | null = null; // #1
   private cps: ICps[] = [];
   private rootAst!: IAstNode;
 
@@ -126,7 +126,7 @@ export class Cpx extends CommonTransports implements ICpx {
     return this.rootAst;
   }
 
-  setRawParams(params: IParam[]) {
+  setRawParams(params: IAstParamNode[]) {
     // TODO this only sets the values from the component specification
     // the default config could also define some values for components
     // this.params.setSchema(this.component.stages.ast);
@@ -138,13 +138,13 @@ export class Cpx extends CommonTransports implements ICpx {
   }
 
   @dependsOn("rawParams")
-  getRawParamsByAudience(audience: Audience): IParam[] {
+  getRawParamsByAudience(audience: Audience): IAstParamNode[] {
     return this.rawParams!.filter((p) =>
       [ALL_AUDIENCES, audience].includes(p.getAudience()),
     );
   }
 
-  getRawParams(): IParam[] | null {
+  getRawParams(): IAstParamNode[] | null {
     return this.rawParams;
   }
 

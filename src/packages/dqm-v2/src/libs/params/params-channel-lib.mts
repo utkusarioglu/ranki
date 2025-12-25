@@ -1,6 +1,6 @@
 import type {
   ChannelParamSpecs,
-  IParam,
+  IAstParamNode,
   ParamChannel,
   Alias,
   Chain,
@@ -17,8 +17,8 @@ import { assertExists } from "@dqm/package-dqm-utils";
 
 export class ParamsChannelLib extends CommonTransports {
   private schema!: ChannelParamSpecs;
-  private lib = new IdLib<IParam>();
-  private failed: IParam[] = [];
+  private lib = new IdLib<IAstParamNode>();
+  private failed: IAstParamNode[] = [];
   private channel;
   private currentPosition = 0;
 
@@ -67,9 +67,9 @@ export class ParamsChannelLib extends CommonTransports {
    * #3 If alias fails as well, then chain is directly used
    * #4 This is meant to be a fail-safe. Every param should be accessible by chain
    */
-  private determineParam(user: IParam): IParam | undefined {
+  private determineParam(user: IAstParamNode): IAstParamNode | undefined {
     try {
-      let p: IParam;
+      let p: IAstParamNode;
       const alias = user.getAlias();
       if (alias) {
         // #1
@@ -120,7 +120,7 @@ export class ParamsChannelLib extends CommonTransports {
    * method.
    * #2 In case orphan params are set to be ignored, `p` may return undefined.
    */
-  addParam(user: IParam) {
+  addParam(user: IAstParamNode) {
     let p = this.determineParam(user);
     if (!p) {
       return; // #2
@@ -146,7 +146,7 @@ export class ParamsChannelLib extends CommonTransports {
   }
 
   @rejectValues(undefined)
-  findById(id: Alias | Chain): IParam | never {
+  findById(id: Alias | Chain): IAstParamNode | never {
     return this.lib.getObjectById(id);
   }
 

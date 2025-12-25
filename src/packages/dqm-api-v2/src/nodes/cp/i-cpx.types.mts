@@ -10,7 +10,7 @@ import type {
 } from "../../plugins/component/id/id.types.mjs";
 import type { ICps } from "./i-cps.types.mjs";
 import type { CommonTransportsConstructorParams } from "../common-transports.types.mjs";
-import type { IParam } from "../param/export.types.mjs";
+import type { IAstParamNode } from "../param/export.types.mjs";
 import type { IAstNode, UniqueValue } from "../../export.types.mjs";
 
 export type ICpxConstructor = new (
@@ -48,8 +48,8 @@ export interface ICpx {
   getChildren(): ICpx[];
 
   parse(input: CpxParseInput): IAstNode;
-  setRawParams(params: IParam[]): this;
-  getRawParams(): IParam[] | null;
+  setRawParams(params: IAstParamNode[]): this;
+  getRawParams(): IAstParamNode[] | null;
   getLeafCps(): ICps;
   getRootCps(): ICps;
   getCpsList(): ICps[];

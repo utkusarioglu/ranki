@@ -2,7 +2,7 @@ import type {
   Alias,
   Chain,
   Audience,
-  IParam,
+  IAstParamNode,
   Operator,
   ParamChannel,
   ParamProducer,
@@ -19,7 +19,7 @@ import { rejectValues, dependsOn } from "@dqm/package-dqm-utils";
 import { AstNode } from "../ast/ast-node.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
-export class Param extends AstNode implements IParam {
+export class Param extends AstNode implements IAstParamNode {
   private audience: Audience = ALL_AUDIENCES;
   private operator!: Operator;
   private values: AstSourceView[] = [];
@@ -28,14 +28,14 @@ export class Param extends AstNode implements IParam {
   private specs!: ChannelParamSpecs;
   private channel!: ParamChannel;
   private producer: ParamProducer = "instance-declaration";
-  private rawParam: IParam | null = null;
+  private rawParam: IAstParamNode | null = null;
 
-  setRawParam(rawParam: IParam): this {
+  setRawParam(rawParam: IAstParamNode): this {
     this.rawParam = rawParam;
     return this;
   }
 
-  getRawParam(): IParam | null {
+  getRawParam(): IAstParamNode | null {
     return this.rawParam;
   }
 
@@ -77,7 +77,7 @@ export class Param extends AstNode implements IParam {
   }
 
   // @dependsOn("specs")
-  setId(id: Alias | Chain): IParam {
+  setId(id: Alias | Chain): IAstParamNode {
     this.id.setId(id);
     return this;
   }

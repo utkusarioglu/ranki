@@ -15,7 +15,7 @@ import type {
   ParamProducer,
 } from "../export.types.mjs";
 
-export type IParam = IAstNode & IParamOther & IParamIdCapability;
+export type IAstParamNode = IAstNode & IParamOther & IParamIdCapability;
 
 export interface IParamOther {
   setAudience(channel: Audience): this;
@@ -28,7 +28,7 @@ export interface IParamOther {
   setDefaultValues(valueSpec: ParamDefaultValue[]): this;
   getDefaultValues(): ParamDefaultValue[];
 
-  setId(id: Alias | Chain): IParam;
+  setId(id: Alias | Chain): IAstParamNode;
 
   getAudience(): Audience;
   getOperator(): Operator;
@@ -38,8 +38,8 @@ export interface IParamOther {
   getChannel(): ParamChannel;
   getProducer(): ParamProducer;
 
-  getRawParam(): IParam | null;
-  setRawParam(p: IParam): this;
+  getRawParam(): IAstParamNode | null;
+  setRawParam(p: IAstParamNode): this;
 }
 
 export type IParamIdCapability = Pick<
@@ -56,4 +56,4 @@ export type IParamIdCapability = Pick<
 
 export type IParamConstructor = new (
   c: CommonTransportsConstructorParams,
-) => IParam;
+) => IAstParamNode;

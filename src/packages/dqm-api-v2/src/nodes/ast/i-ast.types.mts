@@ -1,6 +1,6 @@
 import type * as ohm from "ohm-js";
 import type { ICpx } from "../cp/i-cpx.types.mjs";
-import type { IParam } from "../param/export.types.mjs";
+import type { IAstParamNode } from "../param/export.types.mjs";
 import type { CounterStat } from "./ast-counter.types.mjs";
 import type {
   AstSourceString,
@@ -38,7 +38,7 @@ export interface IAstNode
    */
   newCpx(cpxCallback: CpxFuncParam): this;
   newAst(ohm: ohm.Node): IAstNode;
-  newParam(ohm: ohm.Node): IParam;
+  newParam(ohm: ohm.Node): IAstParamNode;
   getCpx(): ICpx | null;
 }
 

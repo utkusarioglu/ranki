@@ -1,4 +1,4 @@
-import type { DqmPluginVersion, IParam } from "../../export.types.mjs";
+import type { DqmPluginVersion, IAstParamNode } from "../../export.types.mjs";
 import type { Alias, Chain, IdSummary } from "./id/id.types.mjs";
 
 export interface IDqmComponent {
@@ -39,5 +39,5 @@ export interface ComponentParamsSchema {
 
 export interface CpsDefinition {
   id: Alias | Chain;
-  params: IParam[];
+  params: IAstParamNode[];
 }
