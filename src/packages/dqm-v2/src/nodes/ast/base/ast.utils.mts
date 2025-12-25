@@ -3,8 +3,8 @@ import type {
   IDqmPluginErrorCode,
   IDqmErrorBaseRequiredParams,
 } from "@dqm/package-dqm-api-v2";
-import { POSITIONAL_PARAM } from "../../constants.mjs";
-import { DqmPluginError } from "../../errors/plugin-error/dqm-plugin-error.mjs";
+import { POSITIONAL_PARAM } from "../../../constants.mjs";
+import { DqmPluginError } from "../../../errors/plugin-error/dqm-plugin-error.mjs";
 
 /**
  *

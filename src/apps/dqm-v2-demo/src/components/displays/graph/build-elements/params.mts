@@ -1,11 +1,11 @@
-import type { ICps, IParam } from "@dqm/package-dqm-api-v2";
+import type { ICps, IAstParamNode } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
 import { cls } from "./utils.mts";
 import type { E, IdValue, N } from "./build.types";
 import { createSanitizedView } from "../../../../utils/sanitizer.mts";
 import { assertTryCatchSuccess } from "_assertions";
 
-function traverseParam(cpsId: IdValue, raw: IParam) {
+function traverseParam(cpsId: IdValue, raw: IAstParamNode) {
   const id = Registry.getNew(raw);
   const root = createSanitizedView(raw);
   Registry.registerSanitized(id, root);

@@ -1,4 +1,4 @@
-import type { IParam, ParamDefaultValue } from "@dqm/package-dqm-api-v2";
+import type { IAstParamNode, ParamDefaultValue } from "@dqm/package-dqm-api-v2";
 import type { FC } from "react";
 import { SectionTitle } from "../section-title/SectionTitle";
 import {
@@ -9,7 +9,7 @@ import type { ClassSanitizer } from "_utils/sanitizer.mjs";
 import { tryCatch, type TryCatch } from "_utils/utils.mjs";
 
 interface GraphMenuDefaultParamPartProps {
-  param: ClassSanitizer<IParam>;
+  param: ClassSanitizer<IAstParamNode>;
 }
 
 export const GraphMenuDefaultParamPart: FC<GraphMenuDefaultParamPartProps> = ({

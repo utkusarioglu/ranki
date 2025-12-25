@@ -1,5 +1,5 @@
 import type { IAstParamNode } from "@dqm/package-dqm-api-v2";
-import { AstNode } from "../ast/ast-node.mjs";
+import { AstNode } from "../base/ast-node.mjs";
 import { rawParamCapability } from "./capabilities/raw-param.cap.mjs";
 import { paramSemanticCapability } from "./capabilities/param-semantic.cap.mjs";
 import { paramValueCapability } from "./capabilities/param-value.cap.mjs";

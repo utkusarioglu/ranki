@@ -1,4 +1,4 @@
-import type { IParam } from "@dqm/package-dqm-api-v2";
+import type { IAstParamNode } from "@dqm/package-dqm-api-v2";
 import type { FC } from "react";
 import { PropertyTable } from "../tables/PropertyTable";
 import { SectionTitle } from "../section-title/SectionTitle";
@@ -11,7 +11,7 @@ import type { ClassSanitizer } from "_utils/sanitizer.mjs";
 import { tryCatch, tryCatchLeap } from "_utils/utils.mjs";
 
 interface GraphMenuParamPartProps {
-  param: ClassSanitizer<IParam>;
+  param: ClassSanitizer<IAstParamNode>;
 }
 
 export const GraphMenuParamPart: FC<GraphMenuParamPartProps> = ({

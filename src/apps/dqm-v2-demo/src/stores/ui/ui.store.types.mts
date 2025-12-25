@@ -1,4 +1,9 @@
-import type { IAstNode, ICps, ICpx, IParam } from "@dqm/package-dqm-api-v2";
+import type {
+  IAstNode,
+  ICps,
+  ICpx,
+  IAstParamNode,
+} from "@dqm/package-dqm-api-v2";
 import type { N } from "_displays/graph/build-elements/build.types";
 import type { ClassSanitizer } from "../../utils/sanitizer.mts";
 
@@ -46,13 +51,13 @@ export type GraphDrawerCps = {
 
 export type GraphDrawerRawParam = {
   type: "rawParam";
-  sanitizedDqmNode: ClassSanitizer<IParam>;
+  sanitizedDqmNode: ClassSanitizer<IAstParamNode>;
   cyNode: N;
 };
 
 export type GraphDrawerParam = {
   type: "param";
-  sanitizedDqmNode: ClassSanitizer<IParam>;
+  sanitizedDqmNode: ClassSanitizer<IAstParamNode>;
   cyNode: N;
 };
 

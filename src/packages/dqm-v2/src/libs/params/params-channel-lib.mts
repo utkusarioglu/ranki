@@ -8,7 +8,7 @@ import type {
   DqmConfig,
 } from "@dqm/package-dqm-api-v2";
 import { IdLib } from "../../id/id-lib.mjs";
-import { AstParamNode } from "../../nodes/param/param.mjs";
+import { AstParamNode } from "../../nodes/ast/param/param.mjs";
 import { rejectValues } from "@dqm/package-dqm-utils";
 import { CommonTransports } from "../../nodes/common-transports.mjs";
 import { INITIAL_CONFIG_NAME, POSITIONAL_PARAM } from "../../constants.mjs";

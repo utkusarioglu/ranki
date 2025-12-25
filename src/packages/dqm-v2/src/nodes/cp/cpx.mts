@@ -16,7 +16,7 @@ import type {
   CommonTransportsConstructorParams,
 } from "@dqm/package-dqm-api-v2";
 import { dependsOn, rejectValues } from "@dqm/package-dqm-utils";
-import { ALL_AUDIENCES } from "../param/param.constants.mjs";
+import { ALL_AUDIENCES } from "../ast/param/param.constants.mjs";
 import { Cps } from "./cps.mjs";
 import { CommonTransports } from "../common-transports.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";

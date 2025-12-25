@@ -1,4 +1,4 @@
-import type { ICpx, IParam } from "@dqm/package-dqm-api-v2";
+import type { ICpx, IAstParamNode } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
 import { cls } from "./utils.mts";
 import { createSanitizedView } from "../../../../utils/sanitizer.mts";
@@ -16,7 +16,7 @@ export function traverseRawParams(root: ICpx): void {
   root.getChildren().forEach((r) => traverseRawParams(r));
 }
 
-function traverseParam(raw: IParam | null): void {
+function traverseParam(raw: IAstParamNode | null): void {
   if (!raw) {
     return;
   }

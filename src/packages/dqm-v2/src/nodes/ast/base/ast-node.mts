@@ -8,13 +8,13 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
 import { assertNotExists, rejectValues } from "@dqm/package-dqm-utils";
-import { CommonTransports } from "../common-transports.mjs";
-import { verticesCapability } from "./capabilities/vertices.capability.mjs";
-import { syntaxCapability } from "./capabilities/syntax.capability.mjs";
-import { semanticCapability } from "./capabilities/semantic.capability.mjs";
-import { ohmCapability } from "./capabilities/ohm.capability.mjs";
-import { viewCapability } from "./capabilities/view.capability.mjs";
-import { counterCapability } from "./capabilities/counter.capability.mjs";
+import { CommonTransports } from "../../common-transports.mjs";
+import { verticesCapability } from "../capabilities/vertices.capability.mjs";
+import { syntaxCapability } from "../capabilities/syntax.capability.mjs";
+import { semanticCapability } from "../capabilities/semantic.capability.mjs";
+import { ohmCapability } from "../capabilities/ohm.capability.mjs";
+import { viewCapability } from "../capabilities/view.capability.mjs";
+import { counterCapability } from "../capabilities/counter.capability.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
 
 export class AstNode extends CommonTransports implements IAstNode {

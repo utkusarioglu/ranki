@@ -18,7 +18,7 @@ import type {
 import { Id } from "../../id/id.mjs";
 import { ParamsLib } from "../../libs/params/params-lib.mjs";
 import { CommonTransports } from "../common-transports.mjs";
-import { prepareContext } from "../ast/ast.utils.mjs";
+import { prepareContext } from "../ast/base/ast.utils.mjs";
 import { INITIAL_CONFIG_NAME } from "../../constants.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
