@@ -7,8 +7,8 @@ import type {
   ParamChannel,
   ParamDefaultValue,
 } from "../../../export.types.mjs";
+import type { AstSourceView } from "../capabilities/view.cap.types.mjs";
 import type {
-  AstSourceView,
   Audience,
   IAstNode,
   Operator,

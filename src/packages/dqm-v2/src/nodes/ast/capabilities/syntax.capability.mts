@@ -22,10 +22,10 @@ import { assertExists } from "@dqm/package-dqm-utils";
  */
 export function syntaxCapability<T>(self: T) {
   const allNodes: IAstNode[] = [];
-  const tokenNodes: TokenNodes = [];
-  const spaceNodes: SpaceNodes = [];
-  const subtreeNodes: SubtreeNodes = [];
-  const childrenNodes: ChildrenNodes = [];
+  const tokenNodes: TokenNodes<IAstNode> = [];
+  const spaceNodes: SpaceNodes<IAstNode> = [];
+  const subtreeNodes: SubtreeNodes<IAstNode> = [];
+  const childrenNodes: ChildrenNodes<IAstNode> = [];
   const ignoredNodes: ohm.Node[] = [];
 
   return {
@@ -158,11 +158,11 @@ export function syntaxCapability<T>(self: T) {
       return ignoredNodes;
     },
 
-    getTokenNodes(): TokenNodes {
+    getTokenNodes(): TokenNodes<IAstNode> {
       return tokenNodes;
     },
 
-    getSpaceNodes(): SpaceNodes {
+    getSpaceNodes(): SpaceNodes<IAstNode> {
       return spaceNodes;
     },
 

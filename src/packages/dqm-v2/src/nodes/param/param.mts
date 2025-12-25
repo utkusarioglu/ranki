@@ -8,10 +8,10 @@ import type {
   ParamProducer,
   ParamDefaultValue,
   ChannelParamSpecs,
-  AstSourceView,
   IdString,
   AliasString,
   ChainString,
+  AstSourceView,
 } from "@dqm/package-dqm-api-v2";
 import { Id } from "../../id/id.mjs";
 import { ALL_AUDIENCES } from "./param.constants.mjs";
