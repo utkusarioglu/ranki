@@ -1,5 +1,6 @@
 import type { IAstNode, ICps, ICpx, IParam } from "@dqm/package-dqm-api-v2";
 import type { N } from "_displays/graph/build-elements/build.types";
+import type { ClassSanitizer } from "../../utils/sanitizer.mts";
 
 type Percent = number;
 
@@ -27,31 +28,31 @@ export type GraphDrawerData =
 
 export type GraphDrawerAst = {
   type: "ast";
-  dqmNode: IAstNode;
+  sanitizedDqmNode: ClassSanitizer<IAstNode>;
   cyNode: N;
 };
 
 export type GraphDrawerCpx = {
   type: "cpx";
-  dqmNode: ICpx;
+  sanitizedDqmNode: ClassSanitizer<ICpx>;
   cyNode: N;
 };
 
 export type GraphDrawerCps = {
   type: "cps";
-  dqmNode: ICps;
+  sanitizedDqmNode: ClassSanitizer<ICps>;
   cyNode: N;
 };
 
 export type GraphDrawerRawParam = {
   type: "rawParam";
-  dqmNode: IParam;
+  sanitizedDqmNode: ClassSanitizer<IParam>;
   cyNode: N;
 };
 
 export type GraphDrawerParam = {
   type: "param";
-  dqmNode: IParam;
+  sanitizedDqmNode: ClassSanitizer<IParam>;
   cyNode: N;
 };
 

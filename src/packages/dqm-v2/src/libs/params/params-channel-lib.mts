@@ -55,7 +55,7 @@ export class ParamsChannelLib extends CommonTransports {
         .setProducer("component-default")
         .setSpecs(this.schema)
         .setDefaultValues(p.values);
-      param.getId().setId(p.id.chain); // #2
+      param.setId(p.id.chain); // #2
       this.lib.add(p.id, param);
     });
   }
@@ -70,22 +70,22 @@ export class ParamsChannelLib extends CommonTransports {
   private determineParam(user: IParam): IParam | undefined {
     try {
       let p: IParam;
-      const alias = user.getId().getAlias();
+      const alias = user.getAlias();
       if (alias) {
         // #1
         if (alias.join(".") === POSITIONAL_PARAM.join(".")) {
           const position = this.currentPosition++;
           const chain = this.schema.positionals[position];
           p = this.lib.getObjectByChain(chain);
-          p.getId().setPosition(position);
+          p.setPosition(position);
         } else {
           // #2
           p = this.lib.getObjectByAlias(alias);
-          p.getId().setAlias(alias);
+          p.setAlias(alias);
         }
       } else {
         // #3
-        const chain = user.getId().getChain();
+        const chain = user.getChain();
         p = this.lib.getObjectById(chain);
       }
       assertExists(p, {
@@ -106,7 +106,7 @@ export class ParamsChannelLib extends CommonTransports {
             why: "Param doesn't exist in schema and the initial configuration is set to fail on orphan params",
             cause: e,
             details: {
-              userSuppliedParamId: user.getId().getId(),
+              userSuppliedParamId: user.getId(),
               schema: this.schema,
             },
           });

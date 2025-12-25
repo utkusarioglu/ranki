@@ -20,6 +20,7 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
   // }
   const root = createSanitizedView(raw);
   const id = Registry.getNew(raw);
+  Registry.registerSanitized(id, root);
   const creator = root.getCreator().value;
 
   const relationship = root.getRelationship().value;

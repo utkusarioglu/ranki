@@ -8,7 +8,7 @@ interface GraphMenuCpsProps {
 }
 
 export const GraphMenuCps: FC<GraphMenuCpsProps> = ({ data }) => {
-  const d = data.dqmNode;
+  const d = data.sanitizedDqmNode;
 
   return (
     <>

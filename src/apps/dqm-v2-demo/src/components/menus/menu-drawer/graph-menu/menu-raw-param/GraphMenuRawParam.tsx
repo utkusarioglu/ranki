@@ -10,7 +10,7 @@ interface GraphMenuRawParamProps {
 }
 
 export const GraphMenuRawParam: FC<GraphMenuRawParamProps> = ({ data }) => {
-  const d = data.dqmNode;
+  const d = data.sanitizedDqmNode;
 
   return (
     <>

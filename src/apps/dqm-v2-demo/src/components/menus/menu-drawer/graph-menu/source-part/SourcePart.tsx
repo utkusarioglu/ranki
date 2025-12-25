@@ -3,21 +3,28 @@ import { PreCode } from "_views/pre-code/PreCode";
 import type { FC } from "react";
 import { PropertyTable } from "../tables/PropertyTable";
 import { SectionTitle } from "../section-title/SectionTitle";
-import { tryCatch } from "../utils";
 import { type PropertyTableRows } from "../tables/PropertyTable";
+import type { ClassSanitizer } from "_utils/sanitizer.mts";
+import { TryCatchView } from "_views/try-catch/try-catch";
+import { tryCatchLeap } from "_utils/utils.mjs";
 
 interface GraphMenuSourcePartProps {
-  node: IAstNode | IParam;
+  node: ClassSanitizer<IAstNode> | ClassSanitizer<IParam>;
 }
-export const GraphMenuSourcePart: FC<GraphMenuSourcePartProps> = ({ node }) => {
-  const sourceString = tryCatch(() => node.getSourceString());
 
-  const rows: PropertyTableRows = [["Length", () => sourceString.length]];
+export const GraphMenuSourcePart: FC<GraphMenuSourcePartProps> = ({ node }) => {
+  const rows: PropertyTableRows = [
+    ["Length", tryCatchLeap(node.getSourceString(), (o) => o.length)],
+  ];
 
   return (
     <>
       <SectionTitle>Source</SectionTitle>
-      <PreCode>{sourceString}</PreCode>
+      <TryCatchView
+        item={node.getSourceString()}
+        Success={({ item }) => <PreCode>{String(item.value)}</PreCode>}
+      />
+      {/* <PreCode>{sourceString}</PreCode> */}
       <PropertyTable rows={rows} />
     </>
   );

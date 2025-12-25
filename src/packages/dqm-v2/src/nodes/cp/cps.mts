@@ -8,9 +8,12 @@ import type {
   IAstNode,
   CommonTransportsConstructorParams,
   DqmConfig,
-  IId,
   Alias,
   IParam,
+  Chain,
+  IdString,
+  AliasString,
+  ChainString,
 } from "@dqm/package-dqm-api-v2";
 import { Id } from "../../id/id.mjs";
 import { ParamsLib } from "../../libs/params/params-lib.mjs";
@@ -60,8 +63,28 @@ export class Cps extends CommonTransports implements ICps {
     return this.next;
   }
 
-  getId(): IId {
-    return this.id;
+  getId(): Alias | Chain {
+    return this.id.getId();
+  }
+
+  getIdString(): IdString {
+    return this.id.getIdString();
+  }
+
+  getAlias(): Alias | undefined {
+    return this.id.getAlias();
+  }
+
+  getAliasString(): AliasString {
+    return this.id.getAliasString();
+  }
+
+  getChain(): Chain {
+    return this.id.getChain();
+  }
+
+  getChainString(): ChainString {
+    return this.id.getChainString();
   }
 
   getOnFailMode() {

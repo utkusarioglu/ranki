@@ -6,10 +6,13 @@ import type {
   Operator,
   ParamChannel,
   ParamProducer,
-  IId,
   ParamDefaultValue,
   ChannelParamSpecs,
   AstSourceView,
+  IdString,
+  AliasString,
+  ChainString,
+  IId,
 } from "@dqm/package-dqm-api-v2";
 import { Id } from "../../id/id.mjs";
 import { ALL_AUDIENCES } from "./param.constants.mjs";
@@ -80,8 +83,34 @@ export class Param extends AstNode implements IParam {
     return this;
   }
 
-  getId(): IId {
-    return this.id;
+  setAlias = this.id.setAlias.bind(this.id);
+  setPosition = this.id.setPosition.bind(this.id);
+
+  // getId(): IId {
+  //   return this.id;
+  // }
+  getId(): Alias | Chain {
+    return this.id.getId();
+  }
+
+  getIdString(): IdString {
+    return this.id.getIdString();
+  }
+
+  getAlias(): Alias | undefined {
+    return this.id.getAlias();
+  }
+
+  getAliasString(): AliasString {
+    return this.id.getAliasString();
+  }
+
+  getChain(): Chain {
+    return this.id.getChain();
+  }
+
+  getChainString(): ChainString {
+    return this.id.getChainString();
   }
 
   // @dependsOn("specs", "defaultValues")

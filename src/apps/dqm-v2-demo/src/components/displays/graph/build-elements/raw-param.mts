@@ -22,9 +22,10 @@ function traverseParam(raw: IParam | null): void {
   }
   const node = Registry.getNode(raw);
   const root = createSanitizedView(raw);
-  const idPre = root.getId();
-  assertTryCatchSuccess(idPre, { why: "id is required" });
-  const idString = idPre.value.getIdString();
+  // Registry.registerSanitized(node.data.id, root);
+  const idStringPre = root.getId();
+  assertTryCatchSuccess(idStringPre, { why: "id is required" });
+  const idString = idStringPre.value;
   node.data.label = "rawParam:" + idString;
   node.classes = cls("rawParam");
   const id = node.data.id;

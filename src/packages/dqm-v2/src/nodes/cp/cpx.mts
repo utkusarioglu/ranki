@@ -79,35 +79,33 @@ export class Cpx extends CommonTransports implements ICpx {
   // }
 
   getChainList(): ChainList {
-    return this.cps.map((cps) => cps.getId().getChain());
+    return this.cps.map((cps) => cps.getChain());
   }
 
   getChainStringList(): ChainStringList {
-    return this.cps.map((cps) => cps.getId().getChainString());
+    return this.cps.map((cps) => cps.getChainString());
   }
 
   getIdStringList(): IdStringList {
-    return this.cps.map((cps) => cps.getId().getIdString());
+    return this.cps.map((cps) => cps.getIdString());
   }
 
   getIdListString(): IdListString {
-    return this.cps
-      .map((cps) => cps.getId().getIdString())
-      .join(ID_STRING_SEPARATOR);
+    return this.cps.map((cps) => cps.getIdString()).join(ID_STRING_SEPARATOR);
   }
 
   getChainListString(): ChainListString {
     return this.cps
-      .map((cps) => cps.getId().getChainString())
+      .map((cps) => cps.getChainString())
       .join(CHAIN_STRING_SEPARATOR);
   }
 
   getIdList(): IdList {
-    return this.cps.map((cps) => cps.getId().getId());
+    return this.cps.map((cps) => cps.getId());
   }
 
   getAliasList(): AliasList {
-    return this.cps.map((c) => c.getId().getAlias());
+    return this.cps.map((c) => c.getAlias());
   }
 
   // getAliasStringList(): AliasStringList {

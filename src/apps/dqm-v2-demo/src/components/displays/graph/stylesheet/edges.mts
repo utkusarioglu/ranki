@@ -154,6 +154,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
   },
 
   {
+    // !FIX
     selector: "edge.source-cps.target-param.producer-component-default",
     style: {
       "line-color": "#0F4",

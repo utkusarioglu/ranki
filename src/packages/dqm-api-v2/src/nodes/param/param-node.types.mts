@@ -22,7 +22,9 @@ export type Operator = "assign" | "append" | "prepend" | "shift" | "unshift";
 
 export type ParamValuePrimitive = string | number;
 
-export interface IParam extends IAstNode {
+export type IParam = IAstNode & IParamOther & IParamIdCapability;
+
+export interface IParamOther {
   setAudience(channel: Audience): this;
   setOperator(operator: Operator): this;
   setProducer(producer: ParamProducer): this;
@@ -38,7 +40,7 @@ export interface IParam extends IAstNode {
   getAudience(): Audience;
   getOperator(): Operator;
   getValues(): AstSourceView[];
-  getId(): IId;
+  // getId(): IId;
   getSpecs(): ChannelParamSpecs;
   getChannel(): ParamChannel;
   getProducer(): ParamProducer;
@@ -46,6 +48,18 @@ export interface IParam extends IAstNode {
   getRawParam(): IParam | null;
   setRawParam(p: IParam): this;
 }
+
+export type IParamIdCapability = Pick<
+  IId,
+  | "getId"
+  | "getIdString"
+  | "getAlias"
+  | "getAliasString"
+  | "getChain"
+  | "getChainString"
+  | "setAlias"
+  | "setPosition"
+>;
 
 export type IParamConstructor = new (
   c: CommonTransportsConstructorParams,

@@ -1,6 +1,15 @@
-import { assertExists } from "../../../../errors/assertions.mts";
-import { DqmDemoError } from "../../../../errors/dqm-demo-error.mts";
-import type { E, EdgeMap, Elems, IdValue, N, NodeMap, WM } from "./build.types";
+import { assertExists } from "_assertions";
+import { DqmDemoError } from "_error";
+import type {
+  E,
+  EdgeMap,
+  Elems,
+  IdValue,
+  N,
+  NodeMap,
+  SanitizedMap,
+  WM,
+} from "./build.types";
 
 export const INIT_ID = 1e6;
 
@@ -10,6 +19,7 @@ export class Registry {
   private static sources: Elems = new Map();
   private static nodes: NodeMap = new Map();
   private static edges: EdgeMap = new Map();
+  private static sanitized: SanitizedMap = new Map();
 
   static reset() {
     Registry.id = INIT_ID;
@@ -17,6 +27,7 @@ export class Registry {
     Registry.nodes = new Map();
     Registry.sources = new Map();
     Registry.edges = new Map();
+    Registry.sanitized = new Map();
   }
 
   static has(node: any): boolean {
@@ -36,8 +47,6 @@ export class Registry {
   static getId(node: any): IdValue {
     const n = Registry.seen.get(node);
     if (!n) {
-      // console.log("node:", node, "elems:", Id.elems, "seen:", Id.seen);
-      // console.log("node:", node, "seen:", Registry.seen);
       throw new DqmDemoError({
         code: "UNREGISTERED_NODE",
         why: "Cannot return ids for nodes that hasn't been registered",
@@ -53,10 +62,29 @@ export class Registry {
   static getSource<T>(id: number): T {
     const n = Registry.sources.get(+id);
     if (!n) {
-      // console.log("id:", id, "elems:", Id.elems, "seen:", Id.seen);
       throw new Error("Node hasn't been seen before");
     }
     return n;
+  }
+
+  static registerSanitized(id: IdValue, sanitized: any) {
+    if (Registry.sanitized.has(id)) {
+      throw new DqmDemoError({
+        code: "VALUE_EXISTS",
+        why: "A sanitized package has already been registered for the given id",
+        details: { id, nodes: Registry.nodes },
+        cause: null,
+      });
+    }
+    Registry.sanitized.set(id, sanitized);
+  }
+
+  static getSanitized(id: IdValue) {
+    const sanitized = this.sanitized.get(+id);
+    assertExists(sanitized, {
+      why: "Tried to get the sanitized package for an id that hasn't registered its node",
+    });
+    return sanitized;
   }
 
   static registerNode(node: N) {
@@ -89,10 +117,6 @@ export class Registry {
 
   static getEdge(source: IdValue, target: IdValue): E {
     const key = Registry.makeEdgeKey(source, target);
-    // const id = this.seen.get(source);
-    // assertExists(id, {
-    //   why: "Tried to get the id of a source that hasn't been registered",
-    // });
     const edge = this.edges.get(key);
     assertExists(edge, {
       why: "Tried to get the node for an id that hasn't registered its node",

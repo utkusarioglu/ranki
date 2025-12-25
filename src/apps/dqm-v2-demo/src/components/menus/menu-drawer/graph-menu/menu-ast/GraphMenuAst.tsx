@@ -9,7 +9,7 @@ interface GraphMenuAstProps {
 }
 
 export const GraphMenuAst: FC<GraphMenuAstProps> = ({ data }) => {
-  const d = data.dqmNode;
+  const d = data.sanitizedDqmNode;
 
   return (
     <>

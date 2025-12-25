@@ -30,6 +30,8 @@
       "_displays/*": ["./src/components/displays/*"],
       "_menus/*": ["./src/components/menus/*"],
       "_layouts/*": ["./src/components/layouts/*"],
+      "_utils/*": ["./src/utils/*"],
+      "_types/*": ["./src/types/*"],
       "_assertions": ["./src/errors/assertions.mts"],
       "_error": ["./src/errors/dqm-demo-error.mts"]
     }

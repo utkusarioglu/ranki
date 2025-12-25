@@ -1,8 +1,9 @@
 import { useMemo, type FC } from "react";
-import { tryCatch } from "../utils";
 import { Table, Typography } from "antd";
+import type { TryCatch } from "_utils/utils.mjs";
+import { TryCatchView } from "_views/try-catch/try-catch";
 
-type PropertyTableValueTuple = [string, (...any: any[]) => any];
+type PropertyTableValueTuple = [string, TryCatch<any>];
 
 export type PropertyTableRows = PropertyTableValueTuple[];
 
@@ -11,10 +12,10 @@ interface PropertyTableProps {
 }
 
 const buildDataSource = (rows: PropertyTableRows) =>
-  rows.map(([p, v]) => ({
+  rows.map(([p, val]) => ({
     key: p.toString().replace(" ", "_").toLowerCase(),
     prop: p,
-    val: tryCatch(v),
+    val,
   }));
 
 export const PropertyTable: FC<PropertyTableProps> = ({ rows }) => {
@@ -26,7 +27,22 @@ export const PropertyTable: FC<PropertyTableProps> = ({ rows }) => {
         title="Value"
         dataIndex="val"
         key="value"
-        render={(val) => <Typography.Text code>{val}</Typography.Text>}
+        render={(val) => (
+          <TryCatchView
+            item={val}
+            Undefined={() => (
+              <Typography.Text type="secondary">(undefined)</Typography.Text>
+            )}
+            Fail={({ item }) => (
+              <Typography.Text type="secondary">
+                {String(item.value)}
+              </Typography.Text>
+            )}
+            Success={({ item }) => (
+              <Typography.Text code>{String(item.value)}</Typography.Text>
+            )}
+          />
+        )}
       />
     </Table>
   );

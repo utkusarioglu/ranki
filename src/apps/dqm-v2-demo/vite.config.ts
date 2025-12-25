@@ -18,6 +18,8 @@ export default defineConfig({
       _layouts: path.join(repoRoot, "src/components/layouts"),
       _assertions: path.join(repoRoot, "src/errors/assertions.mts"),
       _error: path.join(repoRoot, "src/errors/dqm-demo-error.mts"),
+      _utils: path.join(repoRoot, "src/utils"),
+      _types: path.join(repoRoot, "src/types"),
     },
   },
   plugins: [

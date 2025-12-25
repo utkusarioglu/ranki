@@ -38,3 +38,11 @@ export function tryCatch<T>(key: Key, callback: () => T): TryCatch<T> {
     };
   }
 }
+
+export function tryCatchLeap<T>(o: TryCatch<T>, cb: (n: any) => any) {
+  if (o.state === "fail") {
+    return o;
+  } else {
+    return tryCatch("1", () => cb(o.value));
+  }
+}

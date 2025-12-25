@@ -5,7 +5,8 @@ import type { CommonTransportsConstructorParams } from "../common-transports.typ
 import type { CpsDefinition } from "../../plugins/component/component.types.mjs";
 import type { IId } from "../../plugins/component/id/id.types.mjs";
 
-export interface ICps {
+export type ICps = ICpsIdCapability & ICpsOther;
+export interface ICpsOther {
   setParent(cps: ICps | null): this;
   getParent(): ICps | null;
 
@@ -20,7 +21,10 @@ export interface ICps {
 
   setCpx(cpx: ICpx): this;
 
-  getId(): IId;
+  // getId(): IId;
+  // getId(): Alias | Chain;
+  // getIdString(): AliasString | ChainString
+  // getAliasString(): AliasString
 
   getCpx(): ICpx;
 
@@ -31,6 +35,16 @@ export interface ICps {
 
   getOnFailMode(): boolean;
 }
+
+export type ICpsIdCapability = Pick<
+  IId,
+  | "getId"
+  | "getIdString"
+  | "getAlias"
+  | "getAliasString"
+  | "getChain"
+  | "getChainString"
+>;
 
 export type ICpsConstructor = new (
   transports: CommonTransportsConstructorParams,

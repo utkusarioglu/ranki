@@ -7,22 +7,27 @@ import { assertTryCatchSuccess } from "_assertions";
 
 function traverseParam(cpsId: IdValue, raw: IParam) {
   const id = Registry.getNew(raw);
-  const param = createSanitizedView(raw);
-  const producer = param.getProducer();
-  const paramIdPre = param.getId();
-  assertTryCatchSuccess(paramIdPre, { why: "param id is required" });
-  const paramId = paramIdPre.value;
+  const root = createSanitizedView(raw);
+  Registry.registerSanitized(id, root);
+  const producerPre = root.getProducer();
+  assertTryCatchSuccess(producerPre, {
+    why: "param producer needs to be defined",
+  });
+  const producer = producerPre.value;
+  const chainStringPre = root.getChainString();
+  assertTryCatchSuccess(chainStringPre, { why: "param id is required" });
+  const chainString = chainStringPre.value;
 
   const node: N = {
     data: {
       id,
-      label: "param:" + paramId.getChainString(),
+      label: "param:" + chainString,
     },
     classes: cls("param", `producer-${producer}`),
   };
   Registry.registerNode(node);
 
-  const rawParamPre = param.getRawParam();
+  const rawParamPre = root.getRawParam();
   assertTryCatchSuccess(rawParamPre, { why: "rawParam is required" });
   const rawParam = rawParamPre.value;
   if (rawParam) {
@@ -45,7 +50,7 @@ function traverseParam(cpsId: IdValue, raw: IParam) {
     classes: cls("source-cps", "target-param", `producer-${producer}`),
   });
 
-  const prevPre = param.getPrev();
+  const prevPre = root.getPrev();
   assertTryCatchSuccess(prevPre, { why: "previous param is required" });
   const prev = prevPre.value;
   if (prev) {

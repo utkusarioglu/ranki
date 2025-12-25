@@ -10,12 +10,14 @@ export function traverseCps(raw: ICps | null, cpsDepth: number): void {
   }
   const root = createSanitizedView(raw);
   const id = Registry.getNew(raw);
-  const cpsId = root.getId();
-  assertTryCatchSuccess(cpsId, { why: "Cps Id is required" });
+  Registry.registerSanitized(id, root);
+  const cpsIdStringPre = root.getIdString();
+  assertTryCatchSuccess(cpsIdStringPre, { why: "Cps Id is required" });
+  const cpsIdString = cpsIdStringPre.value;
   const node = {
     data: {
       id,
-      label: "cps:" + cpsId.value.getIdString(),
+      label: "cps:" + cpsIdString,
     },
     classes: cls("cps", cpsDepth === 0 && "root", `depth-${cpsDepth}`),
   };

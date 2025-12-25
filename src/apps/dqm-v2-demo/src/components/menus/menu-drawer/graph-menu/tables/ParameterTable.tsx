@@ -1,18 +1,18 @@
 import { useMemo, type FC } from "react";
-import { tryCatch } from "../utils";
 import { Table, Typography } from "antd";
 import { YamlDisplay } from "_views/yaml-display/YamlDisplay";
+import type { TryCatch } from "_utils/utils.mjs";
+import { TryCatchView } from "_views/try-catch/try-catch";
 
-type ParameterTableValueTuple = [string, () => any, () => () => any];
+export type ParameterTableValueTuple = [string, TryCatch<any>];
 
 export type ParameterTableRows = ParameterTableValueTuple[];
 
 const buildDataSource = (rows: ParameterTableRows) =>
-  rows.map(([p, r, v]) => ({
+  rows.map(([p, value]) => ({
     key: p.toString().replace(" ", "_").toLowerCase(),
     prop: p,
-    raw: tryCatch(r),
-    value: tryCatch(v),
+    value,
   }));
 
 interface ParamTableProps {
@@ -26,15 +26,34 @@ export const ParameterTable: FC<ParamTableProps> = ({ rows }) => {
       <Table.Column title="Type" dataIndex="key" key="key" />
       <Table.Column
         title="Raw"
-        dataIndex="raw"
+        dataIndex="value"
         key="raw"
-        render={(val) => <Typography.Text code>{val}</Typography.Text>}
+        render={(val) => <Typography.Text code>{val.value}</Typography.Text>}
       />
       <Table.Column
         title="Value"
         dataIndex="value"
         key="value"
-        render={(val) => <YamlDisplay obj={val} padded={false} />}
+        render={(item) => (
+          <TryCatchView
+            item={item}
+            Undefined={() => (
+              <Typography.Text type="secondary">(undefined)</Typography.Text>
+            )}
+            Fail={({ item }) => (
+              <Typography.Text type="secondary">
+                {String(item.value)}
+              </Typography.Text>
+            )}
+            Success={({ item }) => (
+              <YamlDisplay
+                // @ts-ignore
+                obj={item.value}
+                padded={false}
+              />
+            )}
+          />
+        )}
       />
     </Table>
   );

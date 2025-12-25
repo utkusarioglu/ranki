@@ -10,6 +10,7 @@ export function traverseCpx(raw: ICpx | null, cpxDepth: number): void {
   }
   const root = createSanitizedView(raw);
   const id = Registry.getNew(raw);
+  Registry.registerSanitized(id, root);
   const node = {
     data: {
       id,

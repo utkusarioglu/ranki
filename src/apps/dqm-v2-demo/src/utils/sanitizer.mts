@@ -1,6 +1,9 @@
 import { tryCatch, type TryCatch } from "./utils.mts";
 
 // ANKI
+export type ClassSanitizerUnion<T> = T extends any ? ClassSanitizer<T> : never;
+
+// ANKI
 export type ClassSanitizer<T> = {
   [K in keyof T]: T[K] extends (...args: infer A) => infer R
     ? (...args: A) => TryCatch<R>

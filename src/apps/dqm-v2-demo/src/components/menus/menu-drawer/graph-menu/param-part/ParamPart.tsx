@@ -5,28 +5,36 @@ import { SectionTitle } from "../section-title/SectionTitle";
 import type { PropertyTableRows } from "../tables/PropertyTable";
 import {
   ParameterTable,
-  type ParameterTableRows,
+  type ParameterTableValueTuple,
 } from "../tables/ParameterTable";
+import type { ClassSanitizer } from "_utils/sanitizer.mjs";
+import { tryCatch, tryCatchLeap } from "_utils/utils.mjs";
 
 interface GraphMenuParamPartProps {
-  param: IParam;
+  param: ClassSanitizer<IParam>;
 }
 
 export const GraphMenuParamPart: FC<GraphMenuParamPartProps> = ({
   param: p,
 }) => {
   const paramRows: PropertyTableRows = [
-    ["Audience", () => p.getAudience()],
-    ["Operator", () => p.getOperator()],
-    ["Alias", () => p.getId().getAlias()],
-    ["Chain", () => p.getId().getChain().join(".")],
-    ["Producer", () => p.getProducer()],
-    ["Value Count", () => p.getValues().length],
+    ["Audience", p.getAudience()],
+    ["Operator", p.getOperator()],
+    ["Alias", p.getAlias()],
+    ["Chain", p.getChainString()],
+    ["Producer", p.getProducer()],
+    ["Value Count", tryCatchLeap(p.getValues(), (o) => o.length)],
   ];
 
-  const values: ParameterTableRows = p
-    .getValues()
-    .map((v) => [v.type, () => v.raw, () => v.value]);
+  const valuesPre = p.getValues();
+  if (valuesPre.state === "fail") {
+    return <div>failed</div>;
+  }
+
+  const values = valuesPre.value.map<ParameterTableValueTuple>((v, i) => [
+    v.type,
+    tryCatch(i, () => v.value),
+  ]);
 
   // const defaultValues: ParameterTableRows = p
   //   .getDefaultValues()

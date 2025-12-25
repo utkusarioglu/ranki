@@ -1,13 +1,15 @@
-import type { IParam } from "@dqm/package-dqm-api-v2";
+import type { IParam, ParamDefaultValue } from "@dqm/package-dqm-api-v2";
 import type { FC } from "react";
 import { SectionTitle } from "../section-title/SectionTitle";
 import {
   ParameterTable,
-  type ParameterTableRows,
+  type ParameterTableValueTuple,
 } from "../tables/ParameterTable";
+import type { ClassSanitizer } from "_utils/sanitizer.mjs";
+import { tryCatch, type TryCatch } from "_utils/utils.mjs";
 
 interface GraphMenuDefaultParamPartProps {
-  param: IParam;
+  param: ClassSanitizer<IParam>;
 }
 
 export const GraphMenuDefaultParamPart: FC<GraphMenuDefaultParamPartProps> = ({
@@ -26,13 +28,19 @@ export const GraphMenuDefaultParamPart: FC<GraphMenuDefaultParamPartProps> = ({
   //   .getValues()
   //   .map((v) => [v.type, () => v.raw, () => v.value]);
 
-  const defaultValues: ParameterTableRows = p
-    .getDefaultValues()
-    .map((v) => [
+  const defaultValuesPre: TryCatch<ParamDefaultValue[]> = p.getDefaultValues();
+  // ParameterTableRows[]
+  if (defaultValuesPre.state === "fail") {
+    return <div>failed</div>;
+  }
+  const defaultValues = defaultValuesPre.value.map<ParameterTableValueTuple>(
+    (v) => [
       v.type,
-      () => v.defaultValue as any,
-      () => v.defaultValue as any,
-    ]);
+      tryCatch(v.type, () => v.defaultValue),
+      // () => v.defaultValue as any,
+      // () => v.defaultValue as any,
+    ],
+  );
 
   return (
     <>

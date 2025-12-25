@@ -1,4 +1,6 @@
 import type { ICpx, IAstNode, ICps } from "@dqm/package-dqm-api-v2";
+import type { DqmNodeTypes } from "_types/vendor/dqm.types.mjs";
+import type { ClassSanitizerUnion } from "_utils/sanitizer.mjs";
 
 /**
  * Cytoscape Edge
@@ -31,6 +33,9 @@ export type Elems = Map<IdValue, any>;
 
 export type NodeMap = Map<IdValue, N>;
 export type EdgeMap = Map<string, E>;
+export type SanitizedMap = Map<IdValue, SanitizedDqmNodeTypes>;
+
+export type SanitizedDqmNodeTypes = ClassSanitizerUnion<DqmNodeTypes>;
 
 export type Traversal = TraversalNode | null | undefined;
 

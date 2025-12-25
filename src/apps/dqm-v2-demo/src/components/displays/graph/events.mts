@@ -127,7 +127,7 @@ export function onTapNode(
     // @ts-expect-error #1
     data: {
       type: cyNode.data.label.split(":")[0] as GraphDrawerDataTypes,
-      dqmNode: Registry.getSource(cyNode.data.id),
+      sanitizedDqmNode: Registry.getSanitized(cyNode.data.id),
       cyNode,
     },
   });
