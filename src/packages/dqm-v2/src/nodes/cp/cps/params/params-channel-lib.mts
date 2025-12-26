@@ -9,7 +9,6 @@ import type {
   ICpsParam,
 } from "@dqm/package-dqm-api-v2";
 import { IdLib } from "../../../../id/id-lib.mjs";
-// import { AstParamNode } from "../../nodes/ast/param/param.mjs";
 import { rejectValues } from "@dqm/package-dqm-utils";
 import { CommonTransports } from "../../../../nodes/common-transports.mjs";
 import {
@@ -56,12 +55,6 @@ export class ParamsChannelLib extends CommonTransports {
   private processSchema() {
     this.schema.params.forEach((p) => {
       const param = new CpsParam(p.id.chain, this.channel, p.values); // #1
-      // .setChannel(this.channel)
-      // .setProducer("component-default")
-      // .setSpecs(this.schema)
-      // .setId(p.id.chain)
-      // .setDefaultValues(p.values);
-      // param.setId(p.id.chain); // #2
       this.lib.add(p.id, param);
     });
   }
@@ -122,27 +115,15 @@ export class ParamsChannelLib extends CommonTransports {
 
   /**
    * @dev
-   * #1 Some of these don't work because they depend on `newAst` or `newParam`
-   * method.
-   * #2 In case orphan params are set to be ignored, `p` may return undefined.
+   * #1 In case orphan params are set to be ignored, `p` may return undefined.
    */
   addParam(user: IAstParamNode) {
     let p = this.determineParam(user);
     if (!p) {
-      return; // #2
+      return; // #1
     }
     try {
-      // #1
       p.setAstParam(user);
-      // .setProducer("instance-declaration")
-      // .setRelationship(user.getRelationship())
-      // .setCreationMethod(user.getCreationMethod())
-      // .setMeaning(user.getMeaning())
-      // .setDirection(user.getDirection())
-      // .setAudience(user.getAudience())
-      // .setChannel(user.getChannel())
-      // .setOperator(user.getOperator())
-      // .setValues(user.getValues());
     } catch (e) {
       // TODO get rid of this
       console.log("value transfer failed", e);
