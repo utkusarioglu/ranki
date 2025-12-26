@@ -2,17 +2,19 @@ import type { IAstParamNode } from "@dqm/package-dqm-api-v2";
 import { AstNode } from "../base/ast-node.mjs";
 import { rawParamCapability } from "./capabilities/raw-param.cap.mjs";
 import { paramSemanticCapability } from "./capabilities/param-semantic.cap.mjs";
-import { paramValueCapability } from "./capabilities/param-value.cap.mjs";
+import { astParamValueCapability } from "./capabilities/ast-param-value.cap.mjs";
 import { idCapability } from "../../capabilities/id.cap.mjs";
 import { paramSpecsCapability } from "./capabilities/specs.cap.mjs";
 
 export class AstParamNode extends AstNode implements IAstParamNode {
+  // TODO REMOVE THIS
   private rawParam = rawParamCapability(this);
   private paramSemantic = paramSemanticCapability(this);
-  private value = paramValueCapability(this);
+  private value = astParamValueCapability(this);
   private id = idCapability(this);
   private specs = paramSpecsCapability(this);
 
+  // TODO REMOVE THIS
   // RAW PARAM
   setRawParam = this.rawParam.setRawParam.bind(this.rawParam);
   getRawParam = this.rawParam.getRawParam.bind(this.rawParam);

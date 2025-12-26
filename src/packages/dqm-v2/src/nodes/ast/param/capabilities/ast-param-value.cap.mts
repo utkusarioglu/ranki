@@ -1,16 +1,19 @@
 import type { AstSourceView, ParamDefaultValue } from "@dqm/package-dqm-api-v2";
 import { DqmAppError } from "../../../../errors/dqm-app-error/dqm-app-error.mjs";
 
-export function paramValueCapability<T>(self: T) {
+export function astParamValueCapability<T>(self: T) {
   let values: AstSourceView[] = [];
+  // TODO REMOVE THIS
   let defaultValues: ParamDefaultValue[] = [];
 
   return {
+    // TODO REMOVE THIS
     setDefaultValues(valueSpec: ParamDefaultValue[]): T {
       defaultValues = valueSpec;
       return self;
     },
 
+    // TODO REMOVE THIS
     getDefaultValues(): ParamDefaultValue[] {
       return defaultValues;
     },
@@ -24,6 +27,7 @@ export function paramValueCapability<T>(self: T) {
       return values;
     },
 
+    // TODO REMOVE THIS
     checkValues() {
       if (values.length > defaultValues.length) {
         throw new DqmAppError({

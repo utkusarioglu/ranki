@@ -11,11 +11,11 @@ import { assertExists, dependsOn, rejectValues } from "@dqm/package-dqm-utils";
 import { ParamsChannelLib } from "./params-channel-lib.mjs";
 import { CommonTransports } from "../../nodes/common-transports.mjs";
 
-type Libs = Map<ParamChannel, ParamsChannelLib>;
+type ParamsMap = Map<ParamChannel, ParamsChannelLib>;
 
 export class ParamsLib extends CommonTransports implements IParams {
   private schema!: ComponentParamsSchema;
-  private paramsMap: Libs = new Map();
+  private paramsMap: ParamsMap = new Map();
 
   getParams(): IAstParamNode[] {
     return Array.from(this.paramsMap.values())
