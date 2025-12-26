@@ -6,18 +6,20 @@ import type {
   Chain,
   CommonTransportsConstructorParams,
   DqmConfig,
+  ICpsParam,
 } from "@dqm/package-dqm-api-v2";
 import { IdLib } from "../../id/id-lib.mjs";
-import { AstParamNode } from "../../nodes/ast/param/param.mjs";
+// import { AstParamNode } from "../../nodes/ast/param/param.mjs";
 import { rejectValues } from "@dqm/package-dqm-utils";
 import { CommonTransports } from "../../nodes/common-transports.mjs";
 import { INITIAL_CONFIG_NAME, POSITIONAL_PARAM } from "../../constants.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
+import { CpsParam } from "../../nodes/cp/cps-param.mjs";
 
 export class ParamsChannelLib extends CommonTransports {
   private schema!: ChannelParamSpecs;
-  private lib = new IdLib<IAstParamNode>();
+  private lib = new IdLib<ICpsParam>();
   private failed: IAstParamNode[] = [];
   private channel;
   private currentPosition = 0;
@@ -50,12 +52,13 @@ export class ParamsChannelLib extends CommonTransports {
    */
   private processSchema() {
     this.schema.params.forEach((p) => {
-      const param = new AstParamNode(this.getTransports()) // #1
-        .setChannel(this.channel)
-        .setProducer("component-default")
-        .setSpecs(this.schema)
+      const param = new CpsParam(this.channel) // #1
+        // .setChannel(this.channel)
+        // .setProducer("component-default")
+        // .setSpecs(this.schema)
+        .setId(p.id.chain)
         .setDefaultValues(p.values);
-      param.setId(p.id.chain); // #2
+      // param.setId(p.id.chain); // #2
       this.lib.add(p.id, param);
     });
   }
@@ -67,10 +70,10 @@ export class ParamsChannelLib extends CommonTransports {
    * #3 If alias fails as well, then chain is directly used
    * #4 This is meant to be a fail-safe. Every param should be accessible by chain
    */
-  private determineParam(user: IAstParamNode): IAstParamNode | undefined {
+  private determineParam(ast: IAstParamNode): ICpsParam | undefined {
     try {
-      let p: IAstParamNode;
-      const alias = user.getAlias();
+      let p: ICpsParam;
+      const alias = ast.getAlias();
       if (alias) {
         // #1
         if (alias.join(".") === POSITIONAL_PARAM.join(".")) {
@@ -85,7 +88,7 @@ export class ParamsChannelLib extends CommonTransports {
         }
       } else {
         // #3
-        const chain = user.getChain();
+        const chain = ast.getChain();
         p = this.lib.getObjectById(chain);
       }
       assertExists(p, {
@@ -98,7 +101,7 @@ export class ParamsChannelLib extends CommonTransports {
         this.getConfig().getConfig<DqmConfig>(INITIAL_CONFIG_NAME);
       switch (initial.plugins.onOrphanParam) {
         case "ignore":
-          this.failed.push(user);
+          this.failed.push(ast);
           break;
         default:
           throw new DqmAppError({
@@ -106,7 +109,7 @@ export class ParamsChannelLib extends CommonTransports {
             why: "Param doesn't exist in schema and the initial configuration is set to fail on orphan params",
             cause: e,
             details: {
-              userSuppliedParamId: user.getId(),
+              userSuppliedParamId: ast.getId(),
               schema: this.schema,
             },
           });
@@ -127,16 +130,16 @@ export class ParamsChannelLib extends CommonTransports {
     }
     try {
       // #1
-      p.setRawParam(user)
-        .setProducer("instance-declaration")
-        .setRelationship(user.getRelationship())
-        .setCreationMethod(user.getCreationMethod())
-        // .setMeaning(user.getMeaning())
-        .setDirection(user.getDirection())
-        .setAudience(user.getAudience())
-        .setChannel(user.getChannel())
-        .setOperator(user.getOperator())
-        .setValues(user.getValues());
+      p.setAstParam(user);
+      // .setProducer("instance-declaration")
+      // .setRelationship(user.getRelationship())
+      // .setCreationMethod(user.getCreationMethod())
+      // .setMeaning(user.getMeaning())
+      // .setDirection(user.getDirection())
+      // .setAudience(user.getAudience())
+      // .setChannel(user.getChannel())
+      // .setOperator(user.getOperator())
+      // .setValues(user.getValues());
     } catch (e) {
       // TODO get rid of this
       console.log("value transfer failed", e);
@@ -146,7 +149,7 @@ export class ParamsChannelLib extends CommonTransports {
   }
 
   @rejectValues(undefined)
-  findById(id: Alias | Chain): IAstParamNode | never {
+  findById(id: Alias | Chain): ICpsParam | never {
     return this.lib.getObjectById(id);
   }
 

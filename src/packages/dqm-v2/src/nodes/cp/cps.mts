@@ -8,7 +8,7 @@ import type {
   CommonTransportsConstructorParams,
   DqmConfig,
   Alias,
-  IAstParamNode,
+  ICpsParam,
 } from "@dqm/package-dqm-api-v2";
 import { ParamsLib } from "../../libs/params/params-lib.mjs";
 import { CommonTransports } from "../common-transports.mjs";
@@ -35,7 +35,7 @@ export class Cps extends CommonTransports implements ICps {
     this.cloneConfig();
   }
 
-  getParams(): IAstParamNode[] {
+  getParams(): ICpsParam[] {
     return this.paramsLib.getParams();
   }
 

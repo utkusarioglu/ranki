@@ -1,0 +1,44 @@
+import type {
+  Alias,
+  Chain,
+  IAstParamSpecsCapability,
+  IId,
+  ParamDefaultValue,
+} from "../../export.types.mjs";
+import type { IAstParamCapability } from "../ast/capabilities/raw-param.cap.types.mjs";
+import type { AstSourceView } from "../export.types.mjs";
+// import type { RawParamsCapability } from "./export.types.mjs";
+
+export interface ICpsParam
+  extends ICpsParamIdCapability,
+    CpsParamValuesCapability,
+    IAstParamCapability<ICpsParam>,
+    IAstParamSpecsCapability {
+  //
+}
+
+export interface CpsParamValuesCapability {
+  // setValues(values: AstSourceView[]): this;
+  getAstValues(): AstSourceView[];
+
+  // TODO this should return a merge of default and ast values
+  getValues(): AstSourceView[];
+
+  setDefaultValues(valueSpec: ParamDefaultValue[]): this;
+  getDefaultValues(): ParamDefaultValue[];
+}
+
+export interface ICpsParamIdCapability
+  extends Pick<
+    IId,
+    | "getId"
+    | "getIdString"
+    | "getAlias"
+    | "getAliasString"
+    | "getChain"
+    | "getChainString"
+    | "setAlias"
+    | "setPosition"
+  > {
+  setId(id: Alias | Chain): this;
+}

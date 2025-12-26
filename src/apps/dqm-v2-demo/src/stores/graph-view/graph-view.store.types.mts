@@ -42,12 +42,12 @@ export interface GraphViewStoreState {
   edge_cps_label: boolean;
 
   // PARAM
-  param: boolean;
-  param_label: boolean;
-  node_param: boolean;
-  node_param_label: boolean;
-  edge_param: boolean;
-  edge_param_label: boolean;
+  cpsParam: boolean;
+  cpsParam_label: boolean;
+  node_cpsParam: boolean;
+  node_cpsParam_label: boolean;
+  edge_cpsParam: boolean;
+  edge_cpsParam_label: boolean;
 
   // RAW PARAM
   astParam: boolean;

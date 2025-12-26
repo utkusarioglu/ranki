@@ -1,4 +1,4 @@
-import type { IAstParamNode } from "@dqm/package-dqm-api-v2";
+import type { IAstParamNode, ICpsParam } from "@dqm/package-dqm-api-v2";
 import type { FC } from "react";
 import { PropertyTable } from "../tables/PropertyTable";
 import { SectionTitle } from "../section-title/SectionTitle";
@@ -10,31 +10,32 @@ import {
 import type { ClassSanitizer } from "_utils/sanitizer.mjs";
 import { tryCatch, tryCatchLeap } from "_utils/utils.mjs";
 
-interface GraphMenuParamPartProps {
-  param: ClassSanitizer<IAstParamNode>;
+interface GraphMenuParamSemanticPartProps {
+  param: ClassSanitizer<ICpsParam | IAstParamNode>;
 }
 
-export const GraphMenuParamPart: FC<GraphMenuParamPartProps> = ({
-  param: p,
-}) => {
+export const GraphMenuParamSemanticPart: FC<
+  GraphMenuParamSemanticPartProps
+> = ({ param: p }) => {
   const paramRows: PropertyTableRows = [
     ["Audience", p.getAudience()],
     ["Operator", p.getOperator()],
+    ["Channel", p.getChannel()],
     ["Alias", p.getAlias()],
     ["Chain", p.getChainString()],
     ["Producer", p.getProducer()],
-    ["Value Count", tryCatchLeap(p.getValues(), (o) => o.length)],
+    // ["Ast Value Count", tryCatchLeap(p.getAstValues(), (o) => o.length)],
   ];
 
-  const valuesPre = p.getValues();
-  if (valuesPre.state === "fail") {
-    return <div>failed</div>;
-  }
+  // const valuesPre = p.getValues();
+  // if (valuesPre.state === "fail") {
+  //   return <div>failed</div>;
+  // }
 
-  const values = valuesPre.value.map<ParameterTableValueTuple>((v, i) => [
-    v.type,
-    tryCatch(i, () => v.value),
-  ]);
+  // const values = valuesPre.value.map<ParameterTableValueTuple>((v, i) => [
+  //   v.type,
+  //   tryCatch(i, () => v.value),
+  // ]);
 
   // const defaultValues: ParameterTableRows = p
   //   .getDefaultValues()
@@ -46,10 +47,10 @@ export const GraphMenuParamPart: FC<GraphMenuParamPartProps> = ({
 
   return (
     <>
-      <SectionTitle>Param Props</SectionTitle>
+      <SectionTitle>Semantic Props</SectionTitle>
       <PropertyTable rows={paramRows} />
-      <SectionTitle>Value Props</SectionTitle>
-      <ParameterTable rows={values} />
+      {/* <SectionTitle>Value Props</SectionTitle>
+      <ParameterTable rows={values} /> */}
       {/* <SectionTitle>Default Value Props</SectionTitle>
       <ParameterTable rows={defaultValues} /> */}
     </>

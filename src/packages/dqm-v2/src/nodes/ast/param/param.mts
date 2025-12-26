@@ -1,27 +1,27 @@
 import type { IAstParamNode } from "@dqm/package-dqm-api-v2";
 import { AstNode } from "../base/ast-node.mjs";
-import { rawParamCapability } from "./capabilities/raw-param.cap.mjs";
+// import { astParamCapability } from "./capabilities/raw-param.cap.mjs";
 import { paramSemanticCapability } from "./capabilities/param-semantic.cap.mjs";
 import { astParamValueCapability } from "./capabilities/ast-param-value.cap.mjs";
 import { idCapability } from "../../capabilities/id.cap.mjs";
-import { paramSpecsCapability } from "./capabilities/specs.cap.mjs";
+// import { paramSpecsCapability } from "./capabilities/specs.cap.mjs";
 
 export class AstParamNode extends AstNode implements IAstParamNode {
   // TODO REMOVE THIS
-  private rawParam = rawParamCapability(this);
+  // private rawParam = astParamCapability(this);
   private paramSemantic = paramSemanticCapability(this);
   private value = astParamValueCapability(this);
   private id = idCapability(this);
-  private specs = paramSpecsCapability(this);
+  // private specs = paramSpecsCapability(this);
 
-  // TODO REMOVE THIS
-  // RAW PARAM
-  setRawParam = this.rawParam.setRawParam.bind(this.rawParam);
-  getRawParam = this.rawParam.getRawParam.bind(this.rawParam);
+  // // TODO REMOVE THIS
+  // // RAW PARAM
+  // setRawParam = this.rawParam.setRawParam.bind(this.rawParam);
+  // getRawParam = this.rawParam.getRawParam.bind(this.rawParam);
 
-  // SPECS
-  getSpecs = this.specs.getSpecs;
-  setSpecs = this.specs.setSpecs;
+  // // SPECS
+  // getSpecs = this.specs.getSpecs;
+  // setSpecs = this.specs.setSpecs;
 
   // PARAM SEMANTIC
   setAudience = this.paramSemantic.setAudience.bind(this.paramSemantic);

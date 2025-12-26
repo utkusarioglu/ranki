@@ -1,11 +1,11 @@
-import type { ICps, IAstParamNode } from "@dqm/package-dqm-api-v2";
+import type { ICps, IAstParamNode, ICpsParam } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
 import { cls } from "./utils.mts";
 import type { E, IdValue, N } from "./build.types";
 import { createSanitizedView } from "../../../../utils/sanitizer.mts";
 import { assertTryCatchSuccess } from "_assertions";
 
-function traverseParam(cpsId: IdValue, raw: IAstParamNode) {
+function traverseCpsParam(cpsId: IdValue, raw: ICpsParam) {
   const id = Registry.getNew(raw);
   const root = createSanitizedView(raw);
   Registry.registerSanitized(id, root);
@@ -21,13 +21,13 @@ function traverseParam(cpsId: IdValue, raw: IAstParamNode) {
   const node: N = {
     data: {
       id,
-      label: "Param:" + chainString,
+      label: "CpsParam:" + chainString,
     },
-    classes: cls("param", `producer-${producer}`),
+    classes: cls("cpsParam", `producer-${producer}`),
   };
   Registry.registerNode(node);
 
-  const astParamPre = root.getRawParam();
+  const astParamPre = root.getAstParam();
   assertTryCatchSuccess(astParamPre, { why: "astParam is required" });
   const astParam = astParamPre.value;
   if (astParam) {
@@ -37,7 +37,7 @@ function traverseParam(cpsId: IdValue, raw: IAstParamNode) {
         target: Registry.getId(astParam),
         label: "represents",
       },
-      classes: cls("source-param", "target-astParam"),
+      classes: cls("source-cpsParam", "target-astParam"),
     });
   }
 
@@ -47,24 +47,24 @@ function traverseParam(cpsId: IdValue, raw: IAstParamNode) {
       target: id,
       label: "customizes",
     },
-    classes: cls("source-cps", "target-param", `producer-${producer}`),
+    classes: cls("source-cps", "target-cpsParam", `producer-${producer}`),
   });
 
-  const prevPre = root.getPrev();
-  assertTryCatchSuccess(prevPre, { why: "previous param is required" });
-  const prev = prevPre.value;
-  if (prev) {
-    const source = Registry.getId(prev);
-    const edge: E = {
-      data: {
-        source,
-        target: id,
-        label: "sibling",
-      },
-      classes: cls("source-param", "target-param", "sibling"),
-    };
-    Registry.registerEdge(edge);
-  }
+  // const prevPre = root.getPrev();
+  // assertTryCatchSuccess(prevPre, { why: "previous param is required" });
+  // const prev = prevPre.value;
+  // if (prev) {
+  //   const source = Registry.getId(prev);
+  //   const edge: E = {
+  //     data: {
+  //       source,
+  //       target: id,
+  //       label: "sibling",
+  //     },
+  //     classes: cls("source-param", "target-param", "sibling"),
+  //   };
+  //   Registry.registerEdge(edge);
+  // }
 }
 
 export function traverseParams(raw: ICps) {
@@ -74,8 +74,8 @@ export function traverseParams(raw: ICps) {
   const cpsId = Registry.getId(raw);
   const root = createSanitizedView(raw);
   const paramsPre = root.getParams();
-  assertTryCatchSuccess(paramsPre, { why: "params is required" });
-  paramsPre.value.map((p) => traverseParam(cpsId, p));
+  assertTryCatchSuccess(paramsPre, { why: "cps params is required" });
+  paramsPre.value.map((p) => traverseCpsParam(cpsId, p));
 
   const childrenPre = root.getChildren();
   assertTryCatchSuccess(childrenPre, { why: "Children is required" });

@@ -62,7 +62,7 @@ export interface AstCollectionCapability {
 }
 
 export interface RawParamsCapability {
-  setRawParams(params: IAstParamNode[]): this;
-  getRawParams(): IAstParamNode[] | null;
-  getRawParamsByAudience(audience: Audience): IAstParamNode[];
+  setAstParams(params: IAstParamNode[]): this;
+  getAstParams(): IAstParamNode[] | null;
+  getAstParamsByAudience(audience: Audience): IAstParamNode[];
 }

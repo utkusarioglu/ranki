@@ -8,7 +8,7 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { CommonTransports } from "../common-transports.mjs";
 import { Unique } from "../../unique/unique.mjs";
-import { rawParamsCapability } from "./capabilities/raw-params.cap.mjs";
+import { rawParamsCapability as astParamsCapability } from "./capabilities/raw-params.cap.mjs";
 import { verticesCapability } from "../capabilities/vertices.capability.mjs";
 import { cpsCollectionCapability } from "./capabilities/cps-collection.cap.mjs";
 import { astCollectionCapability } from "./capabilities/ast-collection.cap.mjs";
@@ -20,7 +20,7 @@ import { astCollectionCapability } from "./capabilities/ast-collection.cap.mjs";
 export class Cpx extends CommonTransports implements ICpx {
   private cps = cpsCollectionCapability(this);
   private ast = astCollectionCapability(this);
-  private rawParams = rawParamsCapability(this);
+  private astParams = astParamsCapability(this);
   private vertices = verticesCapability<this, ICpx>(this);
   private uniqueValue: UniqueValue;
 
@@ -48,10 +48,10 @@ export class Cpx extends CommonTransports implements ICpx {
   pushChild = this.vertices.pushChild.bind(this.vertices);
 
   // RAW PARAMS
-  setRawParams = this.rawParams.setRawParams.bind(this.rawParams);
-  getRawParams = this.rawParams.getRawParams.bind(this.rawParams);
-  getRawParamsByAudience = this.rawParams.getRawParamsByAudience.bind(
-    this.rawParams,
+  setAstParams = this.astParams.setAstParams.bind(this.astParams);
+  getAstParams = this.astParams.getAstParams.bind(this.astParams);
+  getAstParamsByAudience = this.astParams.getAstParamsByAudience.bind(
+    this.astParams,
   );
 
   // COLLECTION
@@ -60,7 +60,7 @@ export class Cpx extends CommonTransports implements ICpx {
       idList,
       this.getParent.bind(this),
       this.getTransports.bind(this),
-      this.getRawParamsByAudience.bind(this),
+      this.getAstParamsByAudience.bind(this),
     );
     return this;
   }

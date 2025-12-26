@@ -8,7 +8,7 @@ export function traverseRawParams(root: ICpx): void {
   if (!root) {
     return;
   }
-  const params = root.getRawParams();
+  const params = root.getAstParams();
   if (params) {
     params.forEach((p) => traverseParam(p));
   }

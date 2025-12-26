@@ -6,6 +6,7 @@ import type {
   IAstParamNode,
   IParams,
   ParamChannel,
+  ICpsParam,
 } from "@dqm/package-dqm-api-v2";
 import { assertExists, dependsOn, rejectValues } from "@dqm/package-dqm-utils";
 import { ParamsChannelLib } from "./params-channel-lib.mjs";
@@ -17,7 +18,7 @@ export class ParamsLib extends CommonTransports implements IParams {
   private schema!: ComponentParamsSchema;
   private paramsMap: ParamsMap = new Map();
 
-  getParams(): IAstParamNode[] {
+  getParams(): ICpsParam[] {
     return Array.from(this.paramsMap.values())
       .map((v) => v.getParams())
       .flat();
@@ -54,7 +55,7 @@ export class ParamsLib extends CommonTransports implements IParams {
 
   @dependsOn("schema")
   @rejectValues(undefined)
-  findById(channel: ParamChannel, id: Alias | Chain): IAstParamNode | never {
+  findById(channel: ParamChannel, id: Alias | Chain): ICpsParam | never {
     const lib = this.paramsMap.get(channel)!;
     assertExists(lib, {
       why: "Requested param hasn't been registered during initialization.",

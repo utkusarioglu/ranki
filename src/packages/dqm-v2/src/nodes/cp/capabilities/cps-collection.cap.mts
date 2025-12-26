@@ -32,7 +32,7 @@ export function cpsCollectionCapability<T>(self: T) {
       idList: IdList,
       getParent: ICpx["getParent"],
       getTransports: CommonTransports["getTransports"],
-      getRawParamsByAudience: ICpx["getRawParamsByAudience"],
+      getAstParamsByAudience: ICpx["getAstParamsByAudience"],
     ): T {
       const createRoot = () => {
         const parentCpx = getParent();
@@ -48,7 +48,7 @@ export function cpsCollectionCapability<T>(self: T) {
           )
           .setDefinition({
             id: idList[0],
-            params: getRawParamsByAudience(0),
+            params: getAstParamsByAudience(0),
           });
         return newCps as ICps;
       };
@@ -77,7 +77,7 @@ export function cpsCollectionCapability<T>(self: T) {
               .setParent(prev)
               .setDefinition({
                 id: idList[i],
-                params: getRawParamsByAudience(i),
+                params: getAstParamsByAudience(i),
               });
             cps.push(curr);
           }

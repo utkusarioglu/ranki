@@ -213,44 +213,44 @@ export const LOOKUP: GraphSwitches = {
     ],
   },
 
-  param: {
+  cpsParam: {
     title: "All Param",
   },
-  param_label: {
+  cpsParam_label: {
     title: "Param Labels",
   },
-  node_param: {
+  node_cpsParam: {
     title: "Param Nodes",
     cy: [
       {
-        selectors: ["node.param"],
+        selectors: ["node.cpsParam"],
         dataKey: "hidden",
       },
     ],
   },
-  node_param_label: {
+  node_cpsParam_label: {
     title: "Param Node Labels",
     cy: [
       {
-        selectors: ["node.param"],
+        selectors: ["node.cpsParam"],
         dataKey: "hidden_label",
       },
     ],
   },
-  edge_param: {
+  edge_cpsParam: {
     title: "Param Edges",
     cy: [
       {
-        selectors: ["edge.source-param", "edge.target-param"],
+        selectors: ["edge.source-cpsParam", "edge.target-cpsParam"],
         dataKey: "hidden",
       },
     ],
   },
-  edge_param_label: {
+  edge_cpsParam_label: {
     title: "Param Edge Labels",
     cy: [
       {
-        selectors: ["edge.source-param", "edge.target-param"],
+        selectors: ["edge.source-cpsParam", "edge.target-cpsParam"],
         dataKey: "hidden_label",
       },
     ],

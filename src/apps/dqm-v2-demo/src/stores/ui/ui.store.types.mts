@@ -3,6 +3,7 @@ import type {
   ICps,
   ICpx,
   IAstParamNode,
+  ICpsParam,
 } from "@dqm/package-dqm-api-v2";
 import type { N } from "_displays/graph/build-elements/build.types";
 import type { ClassSanitizer } from "../../utils/sanitizer.mts";
@@ -29,7 +30,7 @@ export type GraphDrawerData =
   | GraphDrawerCpx
   | GraphDrawerCps
   | GraphDrawerAstParam
-  | GraphDrawerParam;
+  | GraphDrawerCpsParam;
 
 export type GraphDrawerAst = {
   type: "Ast";
@@ -55,9 +56,9 @@ export type GraphDrawerAstParam = {
   cyNode: N;
 };
 
-export type GraphDrawerParam = {
-  type: "Param";
-  sanitizedDqmNode: ClassSanitizer<IAstParamNode>;
+export type GraphDrawerCpsParam = {
+  type: "CpsParam";
+  sanitizedDqmNode: ClassSanitizer<ICpsParam>;
   cyNode: N;
 };
 

@@ -2,7 +2,8 @@ import type { CpxParseInput } from "../../dqm.types.mjs";
 import type {
   CpxCollectionCapability,
   IAstNode,
-  IAstParamNode,
+  // IAstParamNode,
+  ICpsParam,
   IVerticesCapability,
 } from "../export.types.mjs";
 import type { ICpx } from "./i-cpx.types.mjs";
@@ -18,7 +19,7 @@ export interface ICps
 
 export interface ICpsUniqueCapability {
   setDefinition(def: CpsDefinition): this;
-  getParams(): IAstParamNode[];
+  getParams(): ICpsParam[];
   parse(input: CpxParseInput): IAstNode;
   getOnFailMode(): boolean;
 }

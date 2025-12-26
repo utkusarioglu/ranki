@@ -48,6 +48,8 @@ export abstract class DqmBaseError extends Error implements IDqmError {
               return {
                 method,
                 text: call,
+                // @ts-expect-error
+                stack: this.cause.stack,
               };
             default:
               return {

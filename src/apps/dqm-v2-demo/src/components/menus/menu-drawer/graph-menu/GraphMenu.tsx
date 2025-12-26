@@ -5,7 +5,7 @@ import { GraphMenuAstParam } from "./menu-ast-param/GraphMenuAstParam";
 import { GraphMenuAst } from "./menu-ast/GraphMenuAst";
 import { GraphMenuCpx } from "./menu-cpx/GraphMenuCpx";
 import { GraphMenuCps } from "./menu-cps/GraphMenuCps";
-import { GraphMenuParam } from "./menu-param/GraphMenuParam";
+import { GraphMenuCpsParam } from "./menu-cps-param/GraphMenuCpsParam";
 
 interface GraphMenuProps {
   mode: GraphDrawerModeOpen;
@@ -17,8 +17,8 @@ export const GraphMenu: FC<GraphMenuProps> = ({ mode }) => {
       return <GraphMenuAst data={mode.data} />;
     case "AstParam":
       return <GraphMenuAstParam data={mode.data} />;
-    case "Param":
-      return <GraphMenuParam data={mode.data} />;
+    case "CpsParam":
+      return <GraphMenuCpsParam data={mode.data} />;
     case "Cpx":
       return <GraphMenuCpx data={mode.data} />;
     case "Cps":

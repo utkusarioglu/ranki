@@ -73,7 +73,7 @@ export class Dqm {
           theater: input.theater,
           ast: new AstNode(transports)
             .setNature("synthetic")
-            .newCpx((cpx) => cpx.setRawParams(params).setIdList([chain]))
+            .newCpx((cpx) => cpx.setAstParams(params).setIdList([chain]))
             .setDirection("block")
             .getCpx()!
             .parse(input),

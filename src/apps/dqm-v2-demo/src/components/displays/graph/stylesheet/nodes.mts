@@ -45,13 +45,13 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "node.param",
+    selector: "node.cpsParam",
     style: {
       shape: "hexagon",
     },
   },
   {
-    selector: "node.param.producer-instance-declaration",
+    selector: "node.cpsParam.producer-instance-declaration",
     style: {
       color: "#0FF",
       "background-color": "#0FF",
@@ -59,7 +59,7 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "node.param.producer-component-default",
+    selector: "node.cpsParam.producer-component-default",
     style: {
       color: "#0F4",
       "background-color": "#0F4",

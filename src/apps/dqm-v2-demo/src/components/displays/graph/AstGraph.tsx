@@ -102,10 +102,10 @@ export const AstGraphSuccess: FC<AstGraphSuccessProps> = ({ elements }) => {
   useCyStateBind(cyRef, "edge_cps");
   useCyStateBind(cyRef, "edge_cps_label");
 
-  useCyStateBind(cyRef, "node_param");
-  useCyStateBind(cyRef, "node_param_label");
-  useCyStateBind(cyRef, "edge_param");
-  useCyStateBind(cyRef, "edge_param_label");
+  useCyStateBind(cyRef, "node_cpsParam");
+  useCyStateBind(cyRef, "node_cpsParam_label");
+  useCyStateBind(cyRef, "edge_cpsParam");
+  useCyStateBind(cyRef, "edge_cpsParam_label");
 
   useCyStateBind(cyRef, "node_astParam");
   useCyStateBind(cyRef, "node_astParam_label");

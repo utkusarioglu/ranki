@@ -43,12 +43,12 @@ export const graphViewStoreInitialState: GraphViewStoreState = {
   edge_cps: true,
   edge_cps_label: true,
 
-  param: true,
-  param_label: true,
-  node_param: true,
-  node_param_label: true,
-  edge_param: true,
-  edge_param_label: true,
+  cpsParam: true,
+  cpsParam_label: true,
+  node_cpsParam: true,
+  node_cpsParam_label: true,
+  edge_cpsParam: true,
+  edge_cpsParam_label: true,
 
   astParam: true,
   astParam_label: true,

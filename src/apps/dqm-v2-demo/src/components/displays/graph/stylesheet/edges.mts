@@ -145,7 +145,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "edge.source-cps.target-param.producer-instance-declaration",
+    selector: "edge.source-cps.target-cpsParam.producer-instance-declaration",
     style: {
       "line-color": "#0FF",
       color: "#0FF",
@@ -155,7 +155,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
 
   {
     // !FIX
-    selector: "edge.source-cps.target-param.producer-component-default",
+    selector: "edge.source-cps.target-cpsParam.producer-component-default",
     style: {
       "line-color": "#0F4",
       color: "#0F4",
@@ -164,7 +164,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "edge.source-param.target-astParam",
+    selector: "edge.source-cpsParam.target-astParam",
     style: {
       "line-color": "#45f",
       color: "#45f",
