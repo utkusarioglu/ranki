@@ -7,6 +7,9 @@ import { Registry } from "./build-elements/registry.mts";
 import type { N } from "./build-elements/build.types";
 import type cytoscape from "cytoscape";
 
+const CIRCLE_TILT = Math.PI / -12;
+const RADIUS_LOW_THRESHOLD = 120;
+
 /**
  * @dev
  * #1 Cytoscape lacks type for this but it works.
@@ -15,14 +18,17 @@ function placeRadially(
   cy: Core,
   focused: cytoscape.NodeSingular,
   neighbors: cytoscape.NodeCollection,
-  radius: number = 120,
+  radiusFactor: number = 30,
   animationDuration: number,
+  padding: number = 50,
 ) {
   const n = neighbors.length;
+  let radius = Math.ceil(Math.sqrt(n)) * radiusFactor;
+  radius = Math.max(radius, RADIUS_LOW_THRESHOLD);
   const center = focused.position();
 
   neighbors.forEach((node, i) => {
-    const angle = (2 * Math.PI * i) / n;
+    const angle = (2 * Math.PI * i) / n + CIRCLE_TILT;
 
     node.animate(
       {
@@ -38,7 +44,7 @@ function placeRadially(
     );
   });
 
-  const padding = 50;
+  // const padding = 40;
   const rect = radius + padding;
 
   const boundingBox = {
@@ -49,12 +55,27 @@ function placeRadially(
   };
 
   setTimeout(() => {
+    const container = cy.container()!;
+    const cw = container.clientWidth;
+    const ch = container.clientHeight;
+
+    const bbWidth = boundingBox.x2 - boundingBox.x1;
+    const bbHeight = boundingBox.y2 - boundingBox.y1;
+
+    const zoom = Math.min(
+      (cw - padding * 2) / bbWidth,
+      (ch - padding * 2) / bbHeight,
+    );
+
+    const centerX = (boundingBox.x1 + boundingBox.x2) / 2;
+    const centerY = (boundingBox.y1 + boundingBox.y2) / 2;
+
     cy.animate(
       {
-        fit: {
-          // @ts-expect-error #1
-          boundingBox,
-          padding,
+        zoom,
+        pan: {
+          x: cw / 2 - zoom * centerX,
+          y: ch / 2 - zoom * centerY,
         },
       },
       {
@@ -63,6 +84,22 @@ function placeRadially(
       },
     );
   }, animationDuration / 2);
+
+  // setTimeout(() => {
+  //   cy.animate(
+  //     {
+  //       fit: {
+  //         // @ts-expect-error #1
+  //         boundingBox,
+  //         padding,
+  //       },
+  //     },
+  //     {
+  //       duration: animationDuration,
+  //       easing: "ease-in-out",
+  //     },
+  //   );
+  // }, animationDuration / 2);
 }
 
 function restorePositions(cy: Core, animationDuration: number) {
@@ -115,7 +152,7 @@ export function onTapNode(
 
   storePositions(focus.not(node));
 
-  placeRadially(cy, node, focus.not(node), 120, animationDuration);
+  placeRadially(cy, node, focus.not(node), 30, animationDuration, 40);
 
   // DRAWER
   const cyNode: N = {
