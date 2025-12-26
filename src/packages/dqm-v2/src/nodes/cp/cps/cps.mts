@@ -9,15 +9,16 @@ import type {
   DqmConfig,
   Alias,
   ICpsParam,
+  ParamChannel,
 } from "@dqm/package-dqm-api-v2";
-import { ParamsLib } from "../../libs/params/params-lib.mjs";
-import { CommonTransports } from "../common-transports.mjs";
-import { prepareContext } from "../ast/base/ast.utils.mjs";
-import { INITIAL_CONFIG_NAME } from "../../constants.mjs";
-import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
-import { idCapability } from "../capabilities/id.cap.mjs";
-import { verticesCapability } from "../capabilities/vertices.capability.mjs";
-import { cpxCollection } from "./capabilities/cpx-collection.cap.mjs";
+import { ParamsLib } from "./params/params-lib.mjs";
+import { CommonTransports } from "../../common-transports.mjs";
+import { prepareContext } from "../../ast/base/ast.utils.mjs";
+import { INITIAL_CONFIG_NAME } from "../../../constants.mjs";
+import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
+import { idCapability } from "../../capabilities/id.cap.mjs";
+import { verticesCapability } from "../../capabilities/vertices.capability.mjs";
+import { cpxCollection } from "../capabilities/cpx-collection.cap.mjs";
 
 const MERGE_TARGET = "merged";
 const CONFIG_CHANNEL = "configs";
@@ -103,6 +104,14 @@ export class Cps extends CommonTransports implements ICps {
     }
 
     return this;
+  }
+
+  getChannelCompilation(channel: ParamChannel) {
+    return this.paramsLib.getChannelCompilationByChannelName(channel);
+  }
+
+  getChannels(): ParamChannel[] {
+    return this.paramsLib.getChannelNames();
   }
 
   parse(input: CpxParseInput): IAstNode {

@@ -22,8 +22,7 @@ export interface CpsParamValuesCapability {
   // setValues(values: AstSourceView[]): this;
   getAstValues(): AstSourceView[];
 
-  // TODO this should return a merge of default and ast values
-  getValues(): ICpsParamValue;
+  getMergedValues(): ICpsParamValue;
 
   setDefaultValues(valueSpec: ParamDefaultValue[]): this;
   getDefaultValues(): ParamDefaultValue[];

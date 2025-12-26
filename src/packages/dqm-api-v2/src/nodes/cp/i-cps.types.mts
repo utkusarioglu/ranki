@@ -5,6 +5,7 @@ import type {
   // IAstParamNode,
   ICpsParam,
   IVerticesCapability,
+  ParamChannel,
 } from "../export.types.mjs";
 import type { ICpx } from "./i-cpx.types.mjs";
 import type { CommonTransportsConstructorParams } from "../common-transports.types.mjs";
@@ -22,6 +23,8 @@ export interface ICpsUniqueCapability {
   getParams(): ICpsParam[];
   parse(input: CpxParseInput): IAstNode;
   getOnFailMode(): boolean;
+  getChannelCompilation(channel: ParamChannel): any;
+  getChannels(): ParamChannel[];
 }
 
 export type ICpsIdCapability = Pick<

@@ -6,12 +6,12 @@ import type {
   CommonTransportsConstructorParams,
   ChainList,
 } from "@dqm/package-dqm-api-v2";
-import { CommonTransports } from "../common-transports.mjs";
-import { Unique } from "../../unique/unique.mjs";
-import { rawParamsCapability as astParamsCapability } from "./capabilities/raw-params.cap.mjs";
-import { verticesCapability } from "../capabilities/vertices.capability.mjs";
-import { cpsCollectionCapability } from "./capabilities/cps-collection.cap.mjs";
-import { astCollectionCapability } from "./capabilities/ast-collection.cap.mjs";
+import { CommonTransports } from "../../common-transports.mjs";
+import { Unique } from "../../../unique/unique.mjs";
+import { astParamsCapability } from "../capabilities/ast-params.cap.mjs";
+import { verticesCapability } from "../../capabilities/vertices.capability.mjs";
+import { cpsCollectionCapability } from "../capabilities/cps-collection.cap.mjs";
+import { astCollectionCapability } from "../capabilities/ast-collection.cap.mjs";
 
 /**
  * These are param values provided by the source. These haven't been merged

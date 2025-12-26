@@ -9,7 +9,7 @@ import type {
   IdListString,
   IdStringList,
 } from "@dqm/package-dqm-api-v2";
-import { Cps } from "../cps.mjs";
+import { Cps } from "../cps/cps.mjs";
 import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
 import type { CommonTransports } from "../../common-transports.mjs";
 import { assertArrayNotEmpty } from "@dqm/package-dqm-utils";

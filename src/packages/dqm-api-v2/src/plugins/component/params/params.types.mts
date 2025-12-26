@@ -10,4 +10,5 @@ export interface IParams {
   findById(channel: ParamChannel, id: Alias | Chain): ICpsParam | never;
   getChannelCompilationByChannelName<T>(channel: ParamChannel): T;
   getParams(): ICpsParam[];
+  getChannelNames(): ParamChannel[];
 }

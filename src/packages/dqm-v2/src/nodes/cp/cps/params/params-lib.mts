@@ -10,7 +10,7 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { assertExists, dependsOn, rejectValues } from "@dqm/package-dqm-utils";
 import { ParamsChannelLib } from "./params-channel-lib.mjs";
-import { CommonTransports } from "../../nodes/common-transports.mjs";
+import { CommonTransports } from "../../../common-transports.mjs";
 
 type ParamsMap = Map<ParamChannel, ParamsChannelLib>;
 
@@ -70,5 +70,9 @@ export class ParamsLib extends CommonTransports implements IParams {
     } catch (e) {
       return {} as T;
     }
+  }
+
+  getChannelNames(): ParamChannel[] {
+    return Array.from(this.paramsMap.keys());
   }
 }

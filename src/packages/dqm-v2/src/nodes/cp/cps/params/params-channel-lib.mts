@@ -8,14 +8,17 @@ import type {
   DqmConfig,
   ICpsParam,
 } from "@dqm/package-dqm-api-v2";
-import { IdLib } from "../../id/id-lib.mjs";
+import { IdLib } from "../../../../id/id-lib.mjs";
 // import { AstParamNode } from "../../nodes/ast/param/param.mjs";
 import { rejectValues } from "@dqm/package-dqm-utils";
-import { CommonTransports } from "../../nodes/common-transports.mjs";
-import { INITIAL_CONFIG_NAME, POSITIONAL_PARAM } from "../../constants.mjs";
-import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
+import { CommonTransports } from "../../../../nodes/common-transports.mjs";
+import {
+  INITIAL_CONFIG_NAME,
+  POSITIONAL_PARAM,
+} from "../../../../constants.mjs";
+import { DqmAppError } from "../../../../errors/dqm-app-error/dqm-app-error.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
-import { CpsParam } from "../../nodes/cp/cps-param.mjs";
+import { CpsParam } from "./cps-param.mjs";
 
 export class ParamsChannelLib extends CommonTransports {
   private schema!: ChannelParamSpecs;
@@ -166,7 +169,7 @@ export class ParamsChannelLib extends CommonTransports {
           }
           curr = curr[part];
         } else {
-          const values = param.getValues().map((v) => v.value);
+          const values = param.getMergedValues().map((v) => v.value);
           curr[part] = values.length === 1 ? values[0] : values;
         }
         //   c[part] =

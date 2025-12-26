@@ -28,12 +28,12 @@ export const GraphMenuCpsParamPart: FC<GraphMenuParamPartProps> = ({
       "Default Value Count",
       tryCatchLeap(p.getDefaultValues(), (o) => o.length),
     ],
-    ["User Value Count", tryCatchLeap(p.getValues(), (o) => o.length)],
+    ["User Value Count", tryCatchLeap(p.getMergedValues(), (o) => o.length)],
   ];
 
-  const valuesPre = p.getValues();
+  const valuesPre = p.getMergedValues();
   if (valuesPre.state === "fail") {
-    return <div>failed</div>;
+    return <div>Merged values failed</div>;
   }
   const values = valuesPre.value.map<ParameterTableValueTuple>((v, i) => [
     v.type,
@@ -42,7 +42,7 @@ export const GraphMenuCpsParamPart: FC<GraphMenuParamPartProps> = ({
 
   const astValuesPre = p.getAstValues();
   if (astValuesPre.state === "fail") {
-    return <div>failed</div>;
+    return <div>ast values failed</div>;
   }
   const astValues = astValuesPre.value.map<ParameterTableValueTuple>((v, i) => [
     v.type,
@@ -51,7 +51,7 @@ export const GraphMenuCpsParamPart: FC<GraphMenuParamPartProps> = ({
 
   const defaultValuesPre = p.getDefaultValues();
   if (defaultValuesPre.state === "fail") {
-    return <div>failed</div>;
+    return <div>default values failed</div>;
   }
   const defaultValues = defaultValuesPre.value.map<ParameterTableValueTuple>(
     (v) => [

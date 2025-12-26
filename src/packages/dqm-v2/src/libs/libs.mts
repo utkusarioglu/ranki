@@ -13,7 +13,7 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { ComponentLib } from "./component/component-lib.mjs";
 import { ParserLib } from "./parser/parser-lib.mjs";
-import { Cpx } from "../nodes/cp/cpx.mjs";
+import { Cpx } from "../nodes/cp/cpx/cpx.mjs";
 import { AstParamNode } from "../nodes/ast/param/param.mjs";
 import { AstNode } from "../nodes/ast/base/ast-node.mjs";
 import { DqmAppError } from "../errors/dqm-app-error/dqm-app-error.mjs";

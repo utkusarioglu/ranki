@@ -2,7 +2,7 @@ import type { Audience, IAstParamNode } from "@dqm/package-dqm-api-v2";
 import { ALL_AUDIENCES } from "../../ast/param/param.constants.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
 
-export function rawParamsCapability<T>(self: T) {
+export function astParamsCapability<T>(self: T) {
   let astParams: IAstParamNode[];
 
   return {
