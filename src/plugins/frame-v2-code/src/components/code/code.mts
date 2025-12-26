@@ -23,7 +23,7 @@ export const frameV2CodeBlockComponent: IDqmComponent = {
           params: [],
         },
         settings: {
-          positionals: ["prettier.auto_format".split(".")],
+          positionals: [["prettier", "auto_format"]],
           params: [
             {
               id: {
@@ -48,6 +48,16 @@ export const frameV2CodeBlockComponent: IDqmComponent = {
                   name: "first_number",
                   type: "number",
                   defaultValue: 1,
+                },
+                {
+                  name: "second_value",
+                  type: "string",
+                  defaultValue: "def",
+                },
+                {
+                  name: "third_value",
+                  type: "boolean",
+                  defaultValue: false,
                 },
               ],
             },

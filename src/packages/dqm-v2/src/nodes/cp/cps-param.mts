@@ -1,7 +1,10 @@
 import type {
+  AstSourceView,
+  Chain,
   // AstSourceView,
   IAstParamNode,
   ICpsParam,
+  ICpsParamValue,
   ParamChannel,
   ParamDefaultValue,
   ParamProducer,
@@ -10,6 +13,7 @@ import type {
 import { idCapability } from "../capabilities/id.cap.mjs";
 import { astParamCapability } from "../ast/param/capabilities/raw-param.cap.mjs";
 import { paramSpecsCapability } from "../ast/param/capabilities/specs.cap.mjs";
+import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
 export class CpsParam implements ICpsParam {
   private values = cpsParamValuesCapability(this);
@@ -19,8 +23,14 @@ export class CpsParam implements ICpsParam {
   private channel: ParamChannel;
   private producer: ParamProducer = "component-default";
 
-  constructor(channel: ParamChannel) {
+  constructor(
+    chain: Chain,
+    channel: ParamChannel,
+    defaultValues: ParamDefaultValue[],
+  ) {
+    this.id.setId(chain);
     this.channel = channel;
+    this.values.setDefaultValues(defaultValues);
   }
 
   // SPECS
@@ -39,24 +49,21 @@ export class CpsParam implements ICpsParam {
   getChainString = this.id.getChainString;
 
   // VALUE
-  // setValues = this.values.setValues.bind(this.values);
   getDefaultValues = this.values.getDefaultValues.bind(this.values);
   setDefaultValues = this.values.setDefaultValues.bind(this.values);
+  getValues = this.values.getMergedValues.bind(this.values);
 
   // RAW PARAM
   setAstParam(p: IAstParamNode): ICpsParam {
     this.astParam.setAstParam(p);
     this.producer = "instance-declaration";
+    this.values.mergeValues(this.getAstValues());
     return this;
   }
   getAstValues = this.astParam.getValues;
   getAstParam = this.astParam.getAstParam;
   getAudience = this.astParam.getAudience;
   getOperator = this.astParam.getOperator;
-
-  getValues() {
-    return this.getAstValues();
-  }
 
   getChannel(): ParamChannel {
     return this.channel;
@@ -65,20 +72,12 @@ export class CpsParam implements ICpsParam {
   getProducer(): ParamProducer {
     return this.producer;
   }
-
-  // get audience
-  // get channel
-  // get producer
-  // get operator
-
-  // get key
-  // get object form (like a nested object)
-  // get ast param
 }
 
 export function cpsParamValuesCapability<T>(self: T) {
   // let values: AstSourceView[] = [];
   let defaultValues: ParamDefaultValue[] = [];
+  let mergedValues: ICpsParamValue = [];
 
   return {
     setDefaultValues(valueSpec: ParamDefaultValue[]): T {
@@ -90,27 +89,64 @@ export function cpsParamValuesCapability<T>(self: T) {
       return defaultValues;
     },
 
-    // setValues(v: AstSourceView[]): T {
-    //   values = v;
-    //   return self;
-    // },
+    getMergedValues(): ICpsParamValue {
+      return mergedValues;
+    },
 
-    // getValues(): AstSourceView[] {
-    //   return values;
-    // },
+    /**
+     * @dev
+     * #1 Ast type determination is done by the grammar. Default value type is
+     * reported by the plugin itself.
+     */
+    mergeValues(astValues: AstSourceView[]) {
+      this.checkValueLength(astValues);
+      defaultValues.forEach((dv, i) => {
+        const av = astValues[i];
+        if (!av) {
+          mergedValues.push({
+            type: dv.type,
+            name: dv.name,
+            defaultValue: dv.defaultValue,
+            value: dv.defaultValue,
+          });
+          return;
+        }
+        // #1
+        if (av.type !== dv.type) {
+          throw new DqmAppError({
+            code: "INCONSISTENT_TYPE",
+            why: "Reported types of the default and the user values do not match",
+            cause: null,
+            details: {
+              astValues,
+              defaultValues,
+              currentDefaultValue: dv,
+              currentAstValue: av,
+            },
+          });
+        }
+        mergedValues.push({
+          type: dv.type,
+          subtype: av.subType,
+          name: dv.name,
+          defaultValue: dv.defaultValue,
+          value: av.value,
+        });
+      });
+    },
 
-    // checkValues() {
-    //   if (values.length > defaultValues.length) {
-    //     throw new DqmAppError({
-    //       code: "TOO_MANY_VALUES",
-    //       why: "Params are tuples and cannot define larger arrays than their default values",
-    //       cause: null,
-    //       details: {
-    //         values: values,
-    //         defaults: defaultValues,
-    //       },
-    //     });
-    //   }
-    // },
+    checkValueLength(astValues: AstSourceView[]) {
+      if (astValues.length > defaultValues.length) {
+        throw new DqmAppError({
+          code: "TOO_MANY_VALUES",
+          why: "Params are tuples and cannot define larger arrays than their default values",
+          cause: null,
+          details: {
+            values: astValues,
+            defaults: defaultValues,
+          },
+        });
+      }
+    },
   };
 }

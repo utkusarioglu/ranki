@@ -3,17 +3,30 @@ import { Table, Typography } from "antd";
 import { YamlDisplay } from "_views/yaml-display/YamlDisplay";
 import type { TryCatch } from "_utils/utils.mjs";
 import { TryCatchView } from "_views/try-catch/try-catch";
+import { DqmDemoError } from "_error";
 
 export type ParameterTableValueTuple = [string, TryCatch<any>];
 
 export type ParameterTableRows = ParameterTableValueTuple[];
 
-const buildDataSource = (rows: ParameterTableRows) =>
-  rows.map(([p, value]) => ({
-    key: p.toString().replace(" ", "_").toLowerCase(),
-    prop: p,
-    value,
-  }));
+const buildDataSource = (rows: ParameterTableRows) => {
+  try {
+    return rows.map(([p, value]) => ({
+      key: p.toString().replace(" ", "_").toLowerCase(),
+      prop: p,
+      value,
+    }));
+  } catch (e) {
+    throw new DqmDemoError({
+      code: "DATA_BUILD_FAIL",
+      why: "build data source method failed unexpectedly",
+      cause: e,
+      details: {
+        rows,
+      },
+    });
+  }
+};
 
 interface ParamTableProps {
   rows: ParameterTableRows;

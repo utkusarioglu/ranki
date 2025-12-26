@@ -40,13 +40,14 @@ export const GraphMenuCpsParamPart: FC<GraphMenuParamPartProps> = ({
     tryCatch(i, () => v.value),
   ]);
 
-  const userValuesPre = p.getValues();
-  if (userValuesPre.state === "fail") {
+  const astValuesPre = p.getAstValues();
+  if (astValuesPre.state === "fail") {
     return <div>failed</div>;
   }
-  const userValues = userValuesPre.value.map<ParameterTableValueTuple>(
-    (v, i) => [v.type, tryCatch(i, () => v.value)],
-  );
+  const astValues = astValuesPre.value.map<ParameterTableValueTuple>((v, i) => [
+    v.type,
+    tryCatch(i, () => v.value),
+  ]);
 
   const defaultValuesPre = p.getDefaultValues();
   if (defaultValuesPre.state === "fail") {
@@ -67,8 +68,8 @@ export const GraphMenuCpsParamPart: FC<GraphMenuParamPartProps> = ({
       <PropertyTable rows={paramRows} />
       <SectionTitle>Merged Values</SectionTitle>
       <ParameterTable rows={values} />
-      <SectionTitle>User Values</SectionTitle>
-      <ParameterTable rows={userValues} />
+      <SectionTitle>Ast Values</SectionTitle>
+      <ParameterTable rows={astValues} />
       <SectionTitle>Default Values</SectionTitle>
       <ParameterTable rows={defaultValues} />
     </>

@@ -45,9 +45,9 @@ export class AstParamNode extends AstNode implements IAstParamNode {
   getChainString = this.id.getChainString;
 
   // VALUE
-  setDefaultValues = this.value.setDefaultValues.bind(this.value);
-  getDefaultValues = this.value.getDefaultValues.bind(this.value);
+  // setDefaultValues = this.value.setDefaultValues.bind(this.value);
+  // getDefaultValues = this.value.getDefaultValues.bind(this.value);
   setValues = this.value.setValues.bind(this.value);
   getValues = this.value.getValues.bind(this.value);
-  checkValues = this.value.checkValues.bind(this.value);
+  // checkValues = this.value.checkValues.bind(this.value);
 }

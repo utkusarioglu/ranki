@@ -52,12 +52,12 @@ export class ParamsChannelLib extends CommonTransports {
    */
   private processSchema() {
     this.schema.params.forEach((p) => {
-      const param = new CpsParam(this.channel) // #1
-        // .setChannel(this.channel)
-        // .setProducer("component-default")
-        // .setSpecs(this.schema)
-        .setId(p.id.chain)
-        .setDefaultValues(p.values);
+      const param = new CpsParam(p.id.chain, this.channel, p.values); // #1
+      // .setChannel(this.channel)
+      // .setProducer("component-default")
+      // .setSpecs(this.schema)
+      // .setId(p.id.chain)
+      // .setDefaultValues(p.values);
       // param.setId(p.id.chain); // #2
       this.lib.add(p.id, param);
     });

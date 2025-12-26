@@ -52,6 +52,7 @@ export abstract class DqmBaseError extends Error implements IDqmError {
                 stack: this.cause.stack,
               };
             default:
+              console.log(this.cause);
               return {
                 method,
                 ...call,

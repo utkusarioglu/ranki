@@ -2,6 +2,7 @@ import type {
   Alias,
   Chain,
   IAstParamSpecsCapability,
+  ICpsParamValue,
   IId,
   ParamDefaultValue,
 } from "../../export.types.mjs";
@@ -22,7 +23,7 @@ export interface CpsParamValuesCapability {
   getAstValues(): AstSourceView[];
 
   // TODO this should return a merge of default and ast values
-  getValues(): AstSourceView[];
+  getValues(): ICpsParamValue;
 
   setDefaultValues(valueSpec: ParamDefaultValue[]): this;
   getDefaultValues(): ParamDefaultValue[];
