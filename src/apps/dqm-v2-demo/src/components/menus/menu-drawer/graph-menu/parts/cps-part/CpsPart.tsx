@@ -21,10 +21,6 @@ export const GraphMenuCpsPart: FC<GraphMenuCpsPartProps> = ({ cps: a }) => {
     ],
   ];
 
-  // console.log(a.getCha);
-  console.log(a.getChannels());
-  console.log(a.getChannelCompilation("settings"));
-
   return (
     <>
       <SectionTitle>Cps Props</SectionTitle>

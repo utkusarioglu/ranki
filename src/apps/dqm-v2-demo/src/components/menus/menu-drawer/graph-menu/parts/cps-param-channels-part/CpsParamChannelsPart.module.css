@@ -1,0 +1,7 @@
+.title {
+  padding-inline: var(--ant-padding-sm);
+}
+
+.code {
+  background-color: var(--color-bg-sample);
+}
