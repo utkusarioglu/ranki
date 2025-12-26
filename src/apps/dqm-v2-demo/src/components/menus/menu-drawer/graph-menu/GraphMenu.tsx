@@ -1,11 +1,11 @@
 import type { GraphDrawerModeOpen } from "_stores/ui/ui.store.types.mjs";
 import type { FC } from "react";
 import { assertNever } from "_assertions";
-import { GraphMenuAstParam } from "./menu-ast-param/GraphMenuAstParam";
-import { GraphMenuAst } from "./menu-ast/GraphMenuAst";
-import { GraphMenuCpx } from "./menu-cpx/GraphMenuCpx";
-import { GraphMenuCps } from "./menu-cps/GraphMenuCps";
-import { GraphMenuCpsParam } from "./menu-cps-param/GraphMenuCpsParam";
+import { GraphMenuAstParam } from "./menus/menu-ast-param/GraphMenuAstParam";
+import { GraphMenuAst } from "./menus/menu-ast/GraphMenuAst";
+import { GraphMenuCpx } from "./menus/menu-cpx/GraphMenuCpx";
+import { GraphMenuCps } from "./menus/menu-cps/GraphMenuCps";
+import { GraphMenuCpsParam } from "./menus/menu-cps-param/GraphMenuCpsParam";
 
 interface GraphMenuProps {
   mode: GraphDrawerModeOpen;

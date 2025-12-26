@@ -1,7 +1,7 @@
-import type { ICps, IAstParamNode, ICpsParam } from "@dqm/package-dqm-api-v2";
+import type { ICps, ICpsParam } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
 import { cls } from "./utils.mts";
-import type { E, IdValue, N } from "./build.types";
+import type { IdValue, N } from "./build.types";
 import { createSanitizedView } from "../../../../utils/sanitizer.mts";
 import { assertTryCatchSuccess } from "_assertions";
 

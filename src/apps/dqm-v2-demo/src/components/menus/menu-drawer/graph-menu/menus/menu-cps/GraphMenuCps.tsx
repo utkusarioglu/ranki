@@ -1,7 +1,7 @@
 import type { GraphDrawerCps } from "_stores/ui/ui.store.types.mjs";
 import { type FC } from "react";
 import { DrawerTitleRow } from "_views/drawer-title-row/DrawerTitleRow";
-import { GraphMenuCpsPart } from "../cps-part/CpsPart";
+import { GraphMenuCpsPart } from "../../parts/cps-part/CpsPart";
 
 interface GraphMenuCpsProps {
   data: GraphDrawerCps;

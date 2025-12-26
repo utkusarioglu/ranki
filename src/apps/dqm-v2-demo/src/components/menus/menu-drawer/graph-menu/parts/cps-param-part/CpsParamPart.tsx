@@ -1,12 +1,12 @@
 import type { ICpsParam } from "@dqm/package-dqm-api-v2";
 import type { FC } from "react";
-import { PropertyTable } from "../tables/PropertyTable";
-import { SectionTitle } from "../section-title/SectionTitle";
-import type { PropertyTableRows } from "../tables/PropertyTable";
+import { PropertyTable } from "../../tables/PropertyTable";
+import { SectionTitle } from "../../section-title/SectionTitle";
+import type { PropertyTableRows } from "../../tables/PropertyTable";
 import {
   ParameterTable,
   type ParameterTableValueTuple,
-} from "../tables/ParameterTable";
+} from "../../tables/ParameterTable";
 import type { ClassSanitizer } from "_utils/sanitizer.mjs";
 import { tryCatch, tryCatchLeap } from "_utils/utils.mjs";
 
@@ -18,11 +18,6 @@ export const GraphMenuCpsParamPart: FC<GraphMenuParamPartProps> = ({
   param: p,
 }) => {
   const paramRows: PropertyTableRows = [
-    // ["Audience", p.getAudience()],
-    // ["Operator", p.getOperator()],
-    // ["Alias", p.getAlias()],
-    // ["Chain", p.getChainString()],
-    // ["Producer", p.getProducer()],
     ["Ast Value Count", tryCatchLeap(p.getAstValues(), (o) => o.length)],
     [
       "Default Value Count",
@@ -54,12 +49,7 @@ export const GraphMenuCpsParamPart: FC<GraphMenuParamPartProps> = ({
     return <div>default values failed</div>;
   }
   const defaultValues = defaultValuesPre.value.map<ParameterTableValueTuple>(
-    (v) => [
-      v.type,
-      tryCatch(v.type, () => v.defaultValue),
-      // () => v.defaultValue as any,
-      // () => v.defaultValue as any,
-    ],
+    (v) => [v.type, tryCatch(v.type, () => v.defaultValue)],
   );
 
   return (

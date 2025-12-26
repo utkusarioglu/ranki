@@ -1,9 +1,9 @@
 import type { IAstNode, IAstParamNode } from "@dqm/package-dqm-api-v2";
 import { PreCode } from "_views/pre-code/PreCode";
 import type { FC } from "react";
-import { PropertyTable } from "../tables/PropertyTable";
-import { SectionTitle } from "../section-title/SectionTitle";
-import { type PropertyTableRows } from "../tables/PropertyTable";
+import { PropertyTable } from "../../tables/PropertyTable";
+import { SectionTitle } from "../../section-title/SectionTitle";
+import { type PropertyTableRows } from "../../tables/PropertyTable";
 import type { ClassSanitizer } from "_utils/sanitizer.mts";
 import { TryCatchView } from "_views/try-catch/try-catch";
 import { tryCatchLeap } from "_utils/utils.mjs";
