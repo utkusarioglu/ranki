@@ -256,44 +256,44 @@ export const LOOKUP: GraphSwitches = {
     ],
   },
 
-  rawParam: {
-    title: "Raw Params",
+  astParam: {
+    title: "AstParam Nodes",
   },
-  rawParam_label: {
-    title: "Raw Param Labels",
+  astParam_label: {
+    title: "AstParam Labels",
   },
-  node_rawParam: {
-    title: "Raw Param Nodes",
+  node_astParam: {
+    title: "AstParam Nodes",
     cy: [
       {
-        selectors: ["node.rawParam"],
+        selectors: ["node.astParam"],
         dataKey: "hidden",
       },
     ],
   },
-  node_rawParam_label: {
-    title: "Raw Param Node Labels",
+  node_astParam_label: {
+    title: "AstParam Node Labels",
     cy: [
       {
-        selectors: ["node.rawParam"],
+        selectors: ["node.astParam"],
         dataKey: "hidden_label",
       },
     ],
   },
-  edge_rawParam: {
-    title: "Raw Param Edges",
+  edge_astParam: {
+    title: "AstParam Edges",
     cy: [
       {
-        selectors: ["edge.source-rawParam", "edge.target-rawParam"],
+        selectors: ["edge.source-astParam", "edge.target-astParam"],
         dataKey: "hidden",
       },
     ],
   },
-  edge_rawParam_label: {
-    title: "Raw Param Edge Labels",
+  edge_astParam_label: {
+    title: "AstParam Edge Labels",
     cy: [
       {
-        selectors: ["edge.source-rawParam", "edge.target-rawParam"],
+        selectors: ["edge.source-astParam", "edge.target-astParam"],
         dataKey: "hidden_label",
       },
     ],

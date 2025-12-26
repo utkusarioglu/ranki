@@ -36,7 +36,7 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "node.rawParam",
+    selector: "node.astParam",
     style: {
       shape: "hexagon",
       color: "#05F",

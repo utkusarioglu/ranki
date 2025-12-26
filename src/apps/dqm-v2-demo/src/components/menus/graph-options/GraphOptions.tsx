@@ -25,7 +25,7 @@ const SECTIONS: SectionProps[] = [
         "cpx",
         "cps",
         "param",
-        "rawParam",
+        "astParam",
       ].includes(v),
   },
   {
@@ -58,7 +58,7 @@ const SECTIONS: SectionProps[] = [
   },
   {
     title: "RawParam",
-    filter: (v) => v.split("_").includes("rawParam"),
+    filter: (v) => v.split("_").includes("astParam"),
   },
 ];
 

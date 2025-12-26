@@ -50,12 +50,12 @@ export const graphViewStoreInitialState: GraphViewStoreState = {
   edge_param: true,
   edge_param_label: true,
 
-  rawParam: true,
-  rawParam_label: true,
-  node_rawParam: true,
-  node_rawParam_label: true,
-  edge_rawParam: true,
-  edge_rawParam_label: true,
+  astParam: true,
+  astParam_label: true,
+  node_astParam: true,
+  node_astParam_label: true,
+  edge_astParam: true,
+  edge_astParam_label: true,
 };
 
 export const useGraphViewStore = create<GraphViewStore>((set) => ({

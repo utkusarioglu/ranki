@@ -5,7 +5,7 @@ import { traverseCpx } from "./cpx.mts";
 import { traverseCps } from "./cps.mts";
 import { getRoot } from "./utils.mts";
 import { traverseAst } from "./ast.mts";
-import { traverseRawParams } from "./raw-param.mts";
+import { traverseRawParams } from "./ast-param.mts";
 import { traverseParams } from "./params.mts";
 
 export function buildElements(currAst: IAstNode): Flattened | null {

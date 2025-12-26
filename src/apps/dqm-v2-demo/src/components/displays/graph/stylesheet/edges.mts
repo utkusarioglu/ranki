@@ -47,7 +47,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "edge.source-cpx.target-rawParam",
+    selector: "edge.source-cpx.target-astParam",
     style: {
       "line-color": "#05F",
       color: "#05F",
@@ -55,7 +55,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     },
   },
   {
-    selector: "edge.source-cpx.target-rawParam",
+    selector: "edge.source-cpx.target-astParam",
     style: {
       "line-color": "#06F",
       color: "#06F",
@@ -164,7 +164,7 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
   },
 
   {
-    selector: "edge.source-param.target-rawParam",
+    selector: "edge.source-param.target-astParam",
     style: {
       "line-color": "#45f",
       color: "#45f",

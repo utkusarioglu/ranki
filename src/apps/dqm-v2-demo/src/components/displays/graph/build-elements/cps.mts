@@ -17,7 +17,7 @@ export function traverseCps(raw: ICps | null, cpsDepth: number): void {
   const node = {
     data: {
       id,
-      label: "cps:" + cpsIdString,
+      label: "Cps:" + cpsIdString,
     },
     classes: cls("cps", cpsDepth === 0 && "root", `depth-${cpsDepth}`),
   };

@@ -50,12 +50,12 @@ export interface GraphViewStoreState {
   edge_param_label: boolean;
 
   // RAW PARAM
-  rawParam: boolean;
-  rawParam_label: boolean;
-  node_rawParam: boolean;
-  node_rawParam_label: boolean;
-  edge_rawParam: boolean;
-  edge_rawParam_label: boolean;
+  astParam: boolean;
+  astParam_label: boolean;
+  node_astParam: boolean;
+  node_astParam_label: boolean;
+  edge_astParam: boolean;
+  edge_astParam_label: boolean;
 }
 
 export type GraphViewStoreStateKey = keyof GraphViewStoreState;

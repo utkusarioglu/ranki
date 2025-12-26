@@ -107,10 +107,10 @@ export const AstGraphSuccess: FC<AstGraphSuccessProps> = ({ elements }) => {
   useCyStateBind(cyRef, "edge_param");
   useCyStateBind(cyRef, "edge_param_label");
 
-  useCyStateBind(cyRef, "node_rawParam");
-  useCyStateBind(cyRef, "node_rawParam_label");
-  useCyStateBind(cyRef, "edge_rawParam");
-  useCyStateBind(cyRef, "edge_rawParam_label");
+  useCyStateBind(cyRef, "node_astParam");
+  useCyStateBind(cyRef, "node_astParam_label");
+  useCyStateBind(cyRef, "edge_astParam");
+  useCyStateBind(cyRef, "edge_astParam_label");
 
   const cbOnTapNode = useCallback(
     (e: EventObject) => onTapNode(e, ui, animationDuration),

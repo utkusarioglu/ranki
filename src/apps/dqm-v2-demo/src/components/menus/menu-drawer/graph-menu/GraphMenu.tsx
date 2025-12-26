@@ -1,7 +1,7 @@
 import type { GraphDrawerModeOpen } from "_stores/ui/ui.store.types.mjs";
 import type { FC } from "react";
 import { assertNever } from "_assertions";
-import { GraphMenuRawParam } from "./menu-raw-param/GraphMenuRawParam";
+import { GraphMenuAstParam } from "./menu-ast-param/GraphMenuAstParam";
 import { GraphMenuAst } from "./menu-ast/GraphMenuAst";
 import { GraphMenuCpx } from "./menu-cpx/GraphMenuCpx";
 import { GraphMenuCps } from "./menu-cps/GraphMenuCps";
@@ -13,15 +13,15 @@ interface GraphMenuProps {
 
 export const GraphMenu: FC<GraphMenuProps> = ({ mode }) => {
   switch (mode.data.type) {
-    case "ast":
+    case "Ast":
       return <GraphMenuAst data={mode.data} />;
-    case "rawParam":
-      return <GraphMenuRawParam data={mode.data} />;
-    case "param":
+    case "AstParam":
+      return <GraphMenuAstParam data={mode.data} />;
+    case "Param":
       return <GraphMenuParam data={mode.data} />;
-    case "cpx":
+    case "Cpx":
       return <GraphMenuCpx data={mode.data} />;
-    case "cps":
+    case "Cps":
       return <GraphMenuCps data={mode.data} />;
 
     default:

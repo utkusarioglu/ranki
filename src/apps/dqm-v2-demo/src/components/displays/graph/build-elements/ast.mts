@@ -33,7 +33,7 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
   const node = {
     data: {
       id,
-      label: "ast:" + creator,
+      label: "Ast:" + creator,
     },
     classes: cls(
       "ast",

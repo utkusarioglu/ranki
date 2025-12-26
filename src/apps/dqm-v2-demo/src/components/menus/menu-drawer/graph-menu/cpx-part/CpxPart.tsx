@@ -15,7 +15,7 @@ export const GraphMenuCpxPart: FC<GraphMenuAstPartProps> = ({ cpx: a }) => {
     ["Unique Id", a.getUnique()],
     ["Chain List", a.getChainListString()],
     ["Id List", a.getIdListString()],
-    ["Raw Param Count", tryCatchLeap(a.getRawParams(), (o) => o.length)],
+    ["AstParam Count", tryCatchLeap(a.getRawParams(), (o) => o.length)],
     ["Children Count", tryCatchLeap(a.getChildren(), (o) => o.length)],
     ["Cps Count", tryCatchLeap(a.getCpsList(), (o) => o.length)],
     ["Root Cps Id", tryCatchLeap(a.getRootCps(), (o) => o.getIdString())],

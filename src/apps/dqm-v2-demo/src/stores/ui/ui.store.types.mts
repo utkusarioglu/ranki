@@ -28,35 +28,35 @@ export type GraphDrawerData =
   | GraphDrawerAst
   | GraphDrawerCpx
   | GraphDrawerCps
-  | GraphDrawerRawParam
+  | GraphDrawerAstParam
   | GraphDrawerParam;
 
 export type GraphDrawerAst = {
-  type: "ast";
+  type: "Ast";
   sanitizedDqmNode: ClassSanitizer<IAstNode>;
   cyNode: N;
 };
 
 export type GraphDrawerCpx = {
-  type: "cpx";
+  type: "Cpx";
   sanitizedDqmNode: ClassSanitizer<ICpx>;
   cyNode: N;
 };
 
 export type GraphDrawerCps = {
-  type: "cps";
+  type: "Cps";
   sanitizedDqmNode: ClassSanitizer<ICps>;
   cyNode: N;
 };
 
-export type GraphDrawerRawParam = {
-  type: "rawParam";
+export type GraphDrawerAstParam = {
+  type: "AstParam";
   sanitizedDqmNode: ClassSanitizer<IAstParamNode>;
   cyNode: N;
 };
 
 export type GraphDrawerParam = {
-  type: "param";
+  type: "Param";
   sanitizedDqmNode: ClassSanitizer<IAstParamNode>;
   cyNode: N;
 };

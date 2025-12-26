@@ -21,23 +21,23 @@ function traverseParam(cpsId: IdValue, raw: IAstParamNode) {
   const node: N = {
     data: {
       id,
-      label: "param:" + chainString,
+      label: "Param:" + chainString,
     },
     classes: cls("param", `producer-${producer}`),
   };
   Registry.registerNode(node);
 
-  const rawParamPre = root.getRawParam();
-  assertTryCatchSuccess(rawParamPre, { why: "rawParam is required" });
-  const rawParam = rawParamPre.value;
-  if (rawParam) {
+  const astParamPre = root.getRawParam();
+  assertTryCatchSuccess(astParamPre, { why: "astParam is required" });
+  const astParam = astParamPre.value;
+  if (astParam) {
     Registry.registerEdge({
       data: {
         source: id,
-        target: Registry.getId(rawParam),
+        target: Registry.getId(astParam),
         label: "represents",
       },
-      classes: cls("source-param", "target-rawParam"),
+      classes: cls("source-param", "target-astParam"),
     });
   }
 
