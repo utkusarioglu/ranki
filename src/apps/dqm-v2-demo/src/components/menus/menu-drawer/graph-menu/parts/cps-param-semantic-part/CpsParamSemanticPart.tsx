@@ -1,4 +1,4 @@
-import type { IAstParamNode, ICpsParam } from "@dqm/package-dqm-api-v2";
+import type { ICpsParam } from "@dqm/package-dqm-api-v2";
 import type { FC } from "react";
 import { PropertyTable } from "../../tables/PropertyTable";
 import {
@@ -9,20 +9,13 @@ import type { PropertyTableRows } from "../../tables/PropertyTable";
 import type { ClassSanitizer } from "_utils/sanitizer.mjs";
 
 interface GraphMenuCpsParamSemanticPartProps {
-  param: ClassSanitizer<ICpsParam | IAstParamNode>;
+  param: ClassSanitizer<ICpsParam>;
 }
 
 export const GraphMenuCpsParamSemanticPart: FC<
   GraphMenuCpsParamSemanticPartProps
 > = ({ param: p }) => {
-  const paramRows: PropertyTableRows = [
-    // ["Audience", p.getAudience()],
-    // ["Operator", p.getOperator()],
-    // ["Channel", p.getChannel()],
-    // ["Alias", p.getAlias()],
-    // ["Chain", p.getChainString()],
-    ["Producer", p.getProducer()],
-  ];
+  const paramRows: PropertyTableRows = [["Producer", p.getProducer()]];
 
   return (
     <>

@@ -5,9 +5,7 @@ import {
   SectionTitleCode,
 } from "../../section-title/SectionTitle";
 import type { ClassSanitizer } from "_utils/sanitizer.mjs";
-import { ExceptionCard } from "_views/exception-card/ExceptionCard";
 import { Typography } from "antd";
-import { YamlDisplay } from "_views/yaml-display/YamlDisplay";
 import { TryCatchSourceCard } from "_views/try-catch-source-card/TryCatchSourceCard";
 
 interface GraphMenuMergedConfigPartProps {
