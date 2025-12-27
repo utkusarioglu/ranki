@@ -31,9 +31,8 @@ export interface ChannelParamSpecs {
 }
 
 export interface ComponentParamsSchema {
-  channels: {
-    settings: ChannelParamSpecs;
-    configs: ChannelParamSpecs;
+  channels: Record<string, ChannelParamSpecs> & {
+    default: ChannelParamSpecs;
   };
 }
 

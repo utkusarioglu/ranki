@@ -18,11 +18,11 @@ export const frameV2CodeBlockComponent: IDqmComponent = {
       // TODO you need "channels: {}" to wrap these
       // TODO you need a settings object here to tell how component wants to handle missing params etc
       channels: {
-        configs: {
+        $: {
           positionals: [],
           params: [],
         },
-        settings: {
+        default: {
           positionals: [["prettier", "auto_format"]],
           params: [
             {

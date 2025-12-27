@@ -4,19 +4,19 @@ import { cls } from "./utils.mts";
 import { createSanitizedView } from "_utils/sanitizer.mts";
 import { assertTryCatchSuccess } from "_assertions";
 
-export function traverseRawParams(root: ICpx): void {
+export function traverseAstParams(root: ICpx): void {
   if (!root) {
     return;
   }
   const params = root.getAstParams();
   if (params) {
-    params.forEach((p) => traverseParam(p));
+    params.forEach((p) => traverseAstParam(p));
   }
 
-  root.getChildren().forEach((r) => traverseRawParams(r));
+  root.getChildren().forEach((r) => traverseAstParams(r));
 }
 
-function traverseParam(raw: IAstParamNode | null): void {
+function traverseAstParam(raw: IAstParamNode | null): void {
   if (!raw) {
     return;
   }
@@ -36,9 +36,24 @@ function traverseParam(raw: IAstParamNode | null): void {
   assertTryCatchSuccess(creatorCpxPre, { why: "Creator cpx required" });
   const creatorCpx = creatorCpxPre.value;
   if (creatorCpx) {
-    const source = Registry.getId(creatorCpx);
-    const e = Registry.getEdge(source, id);
-    e.classes = cls("source-cpx", "target-astParam");
-    e.data.label = "collects";
+    // const source = Registry.getId(creatorCpx);
+
+    Registry.registerEdge({
+      data: {
+        source: Registry.getId(creatorCpx),
+        target: id,
+        label: "maintains",
+      },
+      classes: cls(
+        "source-cpx",
+        "target-astParam",
+        // `total-depth-${totalAstDepth}`,
+        // isHeadAst ? "head" : "extension",
+      ),
+    });
+
+    // const e = Registry.getEdge(source, id);
+    // e.classes = cls("source-cpx", "target-astParam");
+    // e.data.label = "collects";
   }
 }

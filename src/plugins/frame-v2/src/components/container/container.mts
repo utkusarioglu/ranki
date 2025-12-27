@@ -16,11 +16,11 @@ export const frameV2ContainerComponent: IDqmComponent = {
     preprocessing: (c) => c,
     ast: {
       channels: {
-        configs: {
-          positionals: [],
-          params: [],
-        },
-        settings: {
+        // configs: {
+        //   positionals: [],
+        //   params: [],
+        // },
+        default: {
           positionals: [],
           params: [],
         },

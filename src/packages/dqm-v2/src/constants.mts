@@ -12,6 +12,7 @@ export const DEFAULT_CONFIG: DqmConfig = {
   plugins: {
     onAbsentComponent: "useDefaultComponent",
     onOrphanParam: "ignore",
+    configChannelToken: "$",
     defaultComponent: {
       chain: ["base", "v2", "default"],
       params: [],

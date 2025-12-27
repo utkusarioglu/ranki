@@ -23,6 +23,11 @@ export const node: IAstNodeActionDict = {
       .pushIgnoredNodes(letter, paramsV2KeyWordLegal);
   },
 
+  paramsV2SettingAudience(val) {
+    return grabAst(this).newAst(this).pushIgnoredNodes(val);
+    // .setMeaning(val.sourceString);
+  },
+
   paramsV2ParamListInlineContainer(
     tParamsV2SeparatorParam1,
     sBaseV2WasteInline1,
@@ -50,14 +55,51 @@ export const node: IAstNodeActionDict = {
       .pushNodes(["token", paramsV2SepLeftInline], ["node", paramsV2Param2]);
   },
 
-  paramsV2Setting(paramsV2SettingAudience, paramsV2Format) {
+  paramsV2ChannelAndAudience(
+    tParamsV2DirectiveParam,
+    paramsV2SettingAudience,
+    tParamsV2SeparatorKeyLevel,
+  ) {
+    return grabAst(this)
+      .newParam(this)
+      .pushNodes(["token", tParamsV2DirectiveParam])
+      .pushNodes(["node", paramsV2SettingAudience])
+      .pushIgnoredNodes(tParamsV2SeparatorKeyLevel);
+  },
+
+  paramsV2Param(
+    // tParamsV2DirectiveParam,
+    // paramsV2SettingAudience,
+    paramsV2ChannelAndAudience,
+    paramsV2Format,
+  ) {
     const p = grabAst(this)
       .newParam(this)
-      .pushNodes(["node", paramsV2SettingAudience])
+      .pushNodes(["node", paramsV2ChannelAndAudience])
       .pushNodes(["node", paramsV2Format]);
 
-    const paramsV2FormatNode = p.getSubtreeNodes().at(-1);
-    grabAssertNodeExists(this, paramsV2FormatNode, "paramsV2Format");
+    const [first, second] = p.getSubtreeNodes();
+
+    const [paramsV2ChannelAndAudienceNode, paramsV2FormatNode] =
+      second === undefined ? [undefined, first] : [first, second];
+
+    if (paramsV2ChannelAndAudienceNode) {
+      const [audience] = paramsV2ChannelAndAudienceNode.getSubtreeNodes();
+      const [channel] = paramsV2ChannelAndAudienceNode.getTokenNodes();
+      if (audience) {
+        p.setAudience(+audience.getSourceString());
+      }
+      if (channel) {
+        p.setChannel(channel.getMeaning());
+        console.log("ch", p.getChannel());
+      }
+      // console.log({
+      //   channel: channel !== undefined ? channel.getMeaning() : null,
+      //   audience: audience !== undefined ? audience.getMeaning() : null,
+      // });
+    }
+    // const paramsV2FormatNode = subs.at(-1);
+    // grabAssertNodeExists(this, paramsV2FormatNode, "paramsV2Format");
 
     const creator = paramsV2FormatNode.getCreator();
     switch (creator) {
@@ -145,10 +187,10 @@ export const node: IAstNodeActionDict = {
         break;
     }
 
-    p
-      // this is wrong,
-      // .setAudience(0)
-      .setChannel("settings");
+    // p
+    //   // this is wrong,
+    //   // .setAudience(0)
+    //   .setChannel("settings");
 
     return p;
   },

@@ -19,9 +19,10 @@ import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
 import { idCapability } from "../../capabilities/id.cap.mjs";
 import { verticesCapability } from "../../capabilities/vertices.capability.mjs";
 import { cpxCollection } from "../capabilities/cpx-collection.cap.mjs";
+import { assertNever } from "../../../errors/dqm-app-error/assertions.mjs";
 
 const MERGE_TARGET = "merged";
-const CONFIG_CHANNEL = "configs";
+// const CONFIG_CHANNEL = "$";
 
 export class Cps extends CommonTransports implements ICps {
   private id = idCapability(this);
@@ -66,7 +67,7 @@ export class Cps extends CommonTransports implements ICps {
           const { chain } = initial.plugins.defaultComponent;
           this.component = this.getPlugins().getComponentById(chain);
           break;
-        default:
+        case "fail":
           throw new DqmAppError({
             code: "DEPENDENCY_ABSENT",
             why: "Source requested a component that wasn't installed by any of the plugins",
@@ -77,12 +78,17 @@ export class Cps extends CommonTransports implements ICps {
               config: this.getConfig(),
             },
           });
+        default:
+          assertNever({
+            why: "All possible absent component options should have been depleted",
+          });
       }
     }
   }
 
   setDefinition(def: CpsDefinition): this {
     this.determineComponent(def);
+    const config = this.getConfig();
     this.id.setId(this.component.meta.id.chain);
     if (def.id.length === 1) {
       this.id.setAlias(def.id as Alias);
@@ -93,14 +99,19 @@ export class Cps extends CommonTransports implements ICps {
         this.paramsLib.pushParam(param);
       });
       // TODO $ may not be the token the user prefers. or $ may be mapped to a value like "config"
-      const componentParamConfig =
-        this.paramsLib.getChannelCompilationByChannelName(CONFIG_CHANNEL);
-
-      this.getConfig()
-        .pushConfig("cps", componentParamConfig)
-        .mergeTo(MERGE_TARGET);
+      const configChannelToken =
+        config.getConfig<DqmConfig>(INITIAL_CONFIG_NAME)!.plugins
+          .configChannelToken;
+      try {
+        const componentParamConfig =
+          this.paramsLib.getChannelCompilationByChannelName(configChannelToken);
+        config.pushConfig("cps", componentParamConfig);
+      } catch (e) {
+      } finally {
+        config.mergeTo(MERGE_TARGET);
+      }
     } else {
-      this.getConfig().mergeTo(MERGE_TARGET);
+      config.mergeTo(MERGE_TARGET);
     }
 
     return this;

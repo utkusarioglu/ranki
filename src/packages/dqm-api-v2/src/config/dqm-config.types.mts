@@ -30,6 +30,7 @@ export interface DqmConfig {
   plugins: {
     onAbsentComponent: "fail" | "useDefaultComponent";
     onOrphanParam: "fail" | "ignore";
+    configChannelToken: string;
     defaultComponent: {
       chain: Chain;
       params: any[]; // TODO

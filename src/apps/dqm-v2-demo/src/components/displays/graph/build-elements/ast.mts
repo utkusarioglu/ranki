@@ -45,19 +45,19 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
   Registry.registerNode(node);
 
   if (creatorCpx) {
-    Registry.registerEdge({
-      data: {
-        source: Registry.getId(creatorCpx),
-        target: id,
-        label: "maintains",
-      },
-      classes: cls(
-        "source-cpx",
-        "target-ast",
-        `total-depth-${totalAstDepth}`,
-        isHeadAst ? "head" : "extension",
-      ),
-    });
+    // Registry.registerEdge({
+    //   data: {
+    //     source: Registry.getId(creatorCpx),
+    //     target: id,
+    //     label: "maintains",
+    //   },
+    //   classes: cls(
+    //     "source-cpx",
+    //     "target-ast",
+    //     `total-depth-${totalAstDepth}`,
+    //     isHeadAst ? "head" : "extension",
+    //   ),
+    // });
 
     creatorCpx.getCpsList().map((c) => {
       Registry.registerEdge({

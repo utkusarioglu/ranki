@@ -5,7 +5,7 @@ import { ALL_AUDIENCES } from "../param.constants.mjs";
 export function paramSemanticCapability<T>(self: T) {
   let audience: Audience = ALL_AUDIENCES;
   let operator: Operator;
-  let channel!: ParamChannel;
+  let channel: ParamChannel;
 
   return {
     setAudience(a: Audience): T {

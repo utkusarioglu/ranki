@@ -14,6 +14,8 @@ import { CommonTransports } from "../../../common-transports.mjs";
 
 type ParamsMap = Map<ParamChannel, ParamsChannelLib>;
 
+const DEFAULT_CHANNEL = "default"; // this has to coincide with the channel in component type in api repo
+
 export class ParamsLib extends CommonTransports implements IParams {
   private schema!: ComponentParamsSchema;
   private paramsMap: ParamsMap = new Map();
@@ -26,7 +28,7 @@ export class ParamsLib extends CommonTransports implements IParams {
 
   @dependsOn("schema")
   pushParam(user: IAstParamNode): this {
-    const channel = user.getChannel();
+    const channel = user.getChannel() || DEFAULT_CHANNEL;
     this.getChannel(channel).addParam(user);
     return this;
   }

@@ -1,0 +1,73 @@
+ParamsV2 <: BaseV2 {
+  paramsV2ParamListBlockContainer = tParamsV2SeparatorParam sBaseV2WasteInline 
+          nl sBaseV2WasteInline 
+        paramsV2ParamListBlock sBaseV2WasteInline 
+          tParamsV2SeparatorParam?
+  
+  paramsV2ParamListInlineContainer = tParamsV2SeparatorParam sBaseV2WasteInline 
+      paramsV2ParamListInline sBaseV2WasteInline 
+        tParamsV2SeparatorParam?
+        
+  paramsV2SepInline = sBaseV2WasteInline tParamsV2SeparatorParam sBaseV2WasteInline
+  paramsV2SepLeftBlock = sBaseV2WasteInline tParamsV2SeparatorParam? sBaseV2WasteInline nl sBaseV2WasteInline
+  paramsV2ParamListInline = paramsV2Param (paramsV2SepInline paramsV2Param)*
+  paramsV2ParamListBlock = paramsV2Param (paramsV2SepLeftBlock paramsV2Param)*
+
+  // TODO THIS ISN'T COMPLETE
+  paramsV2Operator =
+    | tParamsV2OperatorRemove
+    | tParamsV2OperatorAppend 
+    | tParamsV2OperatorAssign 
+
+  // paramsV2Param =
+  //   // | paramsV2Directive
+  //   | paramsV2Setting
+
+  paramsV2FormatAssigned = 
+    paramsV2Key sBaseV2WasteInline 
+    paramsV2Operator sBaseV2WasteInline 
+    paramsV2Values 
+
+  paramsV2FormatNegative = tParamsV2Negation paramsV2Key
+  paramsV2FormatPositive = paramsV2Key
+  paramsV2FormatPositional = paramsV2ValueItem
+
+  paramsV2SettingAudience = digit+
+
+  paramsV2ChannelAndAudience = 
+    tParamsV2DirectiveParam? 
+    paramsV2SettingAudience? 
+    tParamsV2SeparatorKeyLevel
+
+  paramsV2Param = 
+    | paramsV2ChannelAndAudience? paramsV2FormatAssigned
+    | paramsV2ChannelAndAudience? paramsV2FormatNegative
+    | paramsV2ChannelAndAudience? paramsV2FormatPositive
+    | paramsV2ChannelAndAudience? paramsV2FormatPositional
+
+  // paramsV2Directive = 
+  //   | tParamsV2DirectiveParam paramsV2FormatAssigned 
+  //   | tParamsV2DirectiveParam paramsV2FormatNegative
+  //   | tParamsV2DirectiveParam paramsV2FormatPositive
+  //   | tParamsV2DirectiveParam paramsV2FormatPositional
+
+  paramsV2KeyWordLegal = alnum | "_" | "-"
+  paramsV2KeyWord = letter (paramsV2KeyWordLegal)*
+  paramsV2Key = paramsV2KeyWord (tParamsV2SeparatorKeyLevel paramsV2KeyWord)*
+
+  paramsV2Values = paramsV2ValueItem (sBaseV2Clearance paramsV2ValueItem)*
+
+  paramsV2ValueItem = 
+    | hWrapped<tBaseV2QuoteSingle>
+    | hWrapped<tBaseV2QuoteDouble>
+    | paramsV2ValueItemPrimitive
+
+  paramsV2ValueItemPrimitive =
+    | baseV2Number --number
+    | caseInsensitive<"true"> --true
+    | caseInsensitive<"false"> --false
+    | &(upper+ sBaseV2Clearance) upper+ --uppercase
+    | &(lower+ sBaseV2Clearance) lower+ --lowercase
+    | &(letter+ sBaseV2Clearance) letter+ --chars
+    | (letter | digit)+ --mixed
+}

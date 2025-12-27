@@ -6,7 +6,7 @@ list:
   label: Code block with params
   description: Uses params and pauses
   raw: |
-    [code, hello.cat=5
+    [code, prettier.auto_format=true
     hi,,PAUSED!,,hello
     ]
 
