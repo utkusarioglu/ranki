@@ -28,8 +28,8 @@ export class AstParamNode extends AstNode implements IAstParamNode {
   getAudience = this.paramSemantic.getAudience.bind(this.paramSemantic);
   setOperator = this.paramSemantic.setOperator.bind(this.paramSemantic);
   getOperator = this.paramSemantic.getOperator.bind(this.paramSemantic);
-  setProducer = this.paramSemantic.setProducer.bind(this.paramSemantic);
-  getProducer = this.paramSemantic.getProducer.bind(this.paramSemantic);
+  // setProducer = this.paramSemantic.setProducer.bind(this.paramSemantic);
+  // getProducer = this.paramSemantic.getProducer.bind(this.paramSemantic);
   setChannel = this.paramSemantic.setChannel.bind(this.paramSemantic);
   getChannel = this.paramSemantic.getChannel.bind(this.paramSemantic);
 

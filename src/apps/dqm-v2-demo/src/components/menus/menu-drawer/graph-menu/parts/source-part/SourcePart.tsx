@@ -7,6 +7,7 @@ import { type PropertyTableRows } from "../../tables/PropertyTable";
 import type { ClassSanitizer } from "_utils/sanitizer.mts";
 import { TryCatchView } from "_views/try-catch/try-catch";
 import { tryCatchLeap } from "_utils/utils.mjs";
+import { ExceptionCard } from "_views/exception-card/ExceptionCard";
 
 interface GraphMenuSourcePartProps {
   node: ClassSanitizer<IAstNode> | ClassSanitizer<IAstParamNode>;
@@ -24,9 +25,9 @@ export const GraphMenuSourcePart: FC<GraphMenuSourcePartProps> = ({ node }) => {
       <SectionTitle>Source</SectionTitle>
       <TryCatchView
         item={node.getSourceString()}
+        Fail={() => <ExceptionCard>Source code retrieval failed</ExceptionCard>}
         Success={({ item }) => <PreCode>{String(item.value)}</PreCode>}
       />
-      {/* <PreCode>{sourceString}</PreCode> */}
       <PropertyTable rows={rows} />
     </>
   );

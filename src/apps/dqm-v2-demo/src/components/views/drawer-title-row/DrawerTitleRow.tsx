@@ -24,3 +24,9 @@ export const DrawerTitleRow: FC<PropsWithChildren> = ({ children }) => {
     </TitleRow>
   );
 };
+
+export const DrawerTitleCode: FC<PropsWithChildren> = ({ children }) => (
+  <Typography.Title code className={style.code} level={3}>
+    {children}
+  </Typography.Title>
+);

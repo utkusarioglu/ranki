@@ -1,9 +1,10 @@
-import type { FC, ReactNode } from "react";
+import type { FC, PropsWithChildren, ReactNode } from "react";
 import type {
   TryCatch,
   TryCatchFail,
   TryCatchSuccess,
 } from "../../../utils/utils.mts";
+import { Typography } from "antd";
 
 interface TryCatchProps<T> {
   item: TryCatch<T> | undefined;
@@ -19,7 +20,7 @@ export const TryCatchView: TryCatchViewComponent = ({
   item,
   Fail = TryCatchViewFail,
   Success = TryCatchViewSuccess,
-  Undefined = TryCatchViewUndefined,
+  Undefined = TryCatchViewUnfavorable,
 }) => {
   if (!item) {
     return <Undefined />;
@@ -28,7 +29,14 @@ export const TryCatchView: TryCatchViewComponent = ({
     case "fail":
       return <Fail item={item} />;
     case "success":
-      return <Success item={item} />;
+      switch (item.value) {
+        case undefined:
+          return <TryCatchViewUnfavorable>(undefined)</TryCatchViewUnfavorable>;
+        case null:
+          return <TryCatchViewUnfavorable>(null)</TryCatchViewUnfavorable>;
+        default:
+          return <Success item={item} />;
+      }
   }
 };
 
@@ -38,11 +46,11 @@ interface TryCatchViewFailProps {
 
 const TryCatchViewFail: FC<TryCatchViewFailProps> = ({ item }) => {
   console.log("component:TryCatchViewFail", item);
-  return <span>(failed)</span>;
+  return <TryCatchViewUnfavorable>(failed)</TryCatchViewUnfavorable>;
 };
 
-const TryCatchViewUndefined: FC = () => {
-  return <span>(undefined)</span>;
+const TryCatchViewUnfavorable: FC<PropsWithChildren> = ({ children }) => {
+  return <Typography.Text type="secondary">{children}</Typography.Text>;
 };
 
 type TryCatchViewSuccessProps<T> = {

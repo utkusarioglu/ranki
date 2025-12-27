@@ -1,7 +1,10 @@
 import type { ICpsParam } from "@dqm/package-dqm-api-v2";
 import type { FC } from "react";
 import { PropertyTable } from "../../tables/PropertyTable";
-import { SectionTitle } from "../../section-title/SectionTitle";
+import {
+  SectionTitle,
+  SectionTitleCode,
+} from "../../section-title/SectionTitle";
 import type { PropertyTableRows } from "../../tables/PropertyTable";
 import type { ClassSanitizer } from "_utils/sanitizer.mjs";
 import { tryCatchLeap } from "_utils/utils.mjs";
@@ -24,7 +27,9 @@ export const GraphMenuCpsParamCountsPart: FC<GraphMenuParamPartProps> = ({
 
   return (
     <>
-      <SectionTitle>Param Props</SectionTitle>
+      <SectionTitle>
+        <SectionTitleCode>ICpsParam</SectionTitleCode> Props
+      </SectionTitle>
       <PropertyTable rows={paramRows} />
     </>
   );

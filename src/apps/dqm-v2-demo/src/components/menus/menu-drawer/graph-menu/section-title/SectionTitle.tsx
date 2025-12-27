@@ -7,3 +7,9 @@ export const SectionTitle: FC<PropsWithChildren> = ({ children }) => (
     {children}
   </Typography.Title>
 );
+
+export const SectionTitleCode: FC<PropsWithChildren> = ({ children }) => (
+  <Typography.Title code className={style.code} level={4}>
+    {children}
+  </Typography.Title>
+);

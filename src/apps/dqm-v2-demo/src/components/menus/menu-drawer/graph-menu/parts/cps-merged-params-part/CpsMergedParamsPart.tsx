@@ -7,6 +7,8 @@ import {
 } from "../../tables/ParameterTable";
 import type { ClassSanitizer } from "_utils/sanitizer.mjs";
 import { tryCatch } from "_utils/utils.mjs";
+import { ExceptionCard } from "_views/exception-card/ExceptionCard";
+import { Typography } from "antd";
 
 interface GraphMenuParamPartProps {
   param: ClassSanitizer<ICpsParam>;
@@ -16,9 +18,13 @@ export const GraphMenuCpsMergedParamsPart: FC<GraphMenuParamPartProps> = ({
   param: p,
 }) => {
   const valuesPre = p.getMergedValues();
-  console.log(valuesPre);
   if (valuesPre.state === "fail") {
-    return <div>Merged values failed</div>;
+    return (
+      <ExceptionCard>
+        <Typography.Text code>ICpsParam</Typography.Text> merged values
+        retrieval failed
+      </ExceptionCard>
+    );
   }
   const values = valuesPre.value.map<ParameterTableValueTuple>((v, i) => [
     v.type,

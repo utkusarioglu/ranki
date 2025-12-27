@@ -10,7 +10,7 @@ import { ALL_AUDIENCES } from "../param.constants.mjs";
 export function paramSemanticCapability<T>(self: T) {
   let audience: Audience = ALL_AUDIENCES;
   let operator: Operator;
-  let producer: ParamProducer = "instance-declaration";
+  // let producer: ParamProducer = "instance-declaration";
   let channel!: ParamChannel;
 
   return {
@@ -38,14 +38,14 @@ export function paramSemanticCapability<T>(self: T) {
       return operator;
     },
 
-    setProducer(p: ParamProducer): T {
-      producer = p;
-      return self;
-    },
+    // setProducer(p: ParamProducer): T {
+    //   producer = p;
+    //   return self;
+    // },
 
-    getProducer(): ParamProducer {
-      return producer;
-    },
+    // getProducer(): ParamProducer {
+    //   return producer;
+    // },
 
     setChannel(c: ParamChannel): T {
       channel = c;

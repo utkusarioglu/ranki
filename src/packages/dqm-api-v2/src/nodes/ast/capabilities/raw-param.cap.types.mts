@@ -10,5 +10,5 @@ export interface IAstParamCapability<T> extends IAstParamSemanticSection {
 
 type IAstParamSemanticSection = Pick<
   IAstParamSemanticCapability,
-  "getAudience" | "getChannel" | "getProducer" | "getOperator"
+  "getAudience" | "getChannel" | "getOperator"
 >;

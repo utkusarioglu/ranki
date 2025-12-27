@@ -3,8 +3,8 @@ import { type FC } from "react";
 import { DrawerTitleRow } from "_views/drawer-title-row/DrawerTitleRow";
 import { GraphMenuAstPart } from "../../parts/ast-part/AstPart";
 import { GraphMenuSourcePart } from "../../parts/source-part/SourcePart";
-import { GraphMenuParamSemanticPart } from "../../parts/param-semantic-part/ParamSemanticPart";
 import { GraphMenuAstParamPart } from "../../parts/ast-param-part/AstParamPart";
+import { GraphMenuAstParamSemanticPart } from "../../parts/ast-param-semantic-part/AstParamSemanticPart";
 
 interface GraphMenuAstParamProps {
   data: GraphDrawerAstParam;
@@ -17,9 +17,9 @@ export const GraphMenuAstParam: FC<GraphMenuAstParamProps> = ({ data }) => {
     <>
       <DrawerTitleRow>AstParam Node</DrawerTitleRow>
       <GraphMenuSourcePart node={d} />
-      <GraphMenuParamSemanticPart param={d} />
-      <GraphMenuAstPart ast={d} />
+      <GraphMenuAstParamSemanticPart param={d} />
       <GraphMenuAstParamPart param={d} />
+      <GraphMenuAstPart ast={d} />
     </>
   );
 };

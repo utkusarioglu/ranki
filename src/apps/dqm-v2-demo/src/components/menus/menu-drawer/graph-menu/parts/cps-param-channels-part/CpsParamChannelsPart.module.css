@@ -5,3 +5,13 @@
 .code {
   background-color: var(--color-bg-sample);
 }
+
+.channel {
+  margin-block-start: 0;
+}
+
+.channelCard {
+  padding-block: var(--ant-padding);
+  background-color: var(--ant-color-bg-container);
+  margin-bottom: var(--ant-padding);
+}

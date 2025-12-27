@@ -5,6 +5,7 @@ import type {
   ICpsParamValue,
   IId,
   ParamDefaultValue,
+  ParamProducer,
 } from "../../export.types.mjs";
 import type { IAstParamCapability } from "../ast/capabilities/raw-param.cap.types.mjs";
 import type { AstSourceView } from "../export.types.mjs";
@@ -14,8 +15,13 @@ export interface ICpsParam
   extends ICpsParamIdCapability,
     CpsParamValuesCapability,
     IAstParamCapability<ICpsParam>,
-    IAstParamSpecsCapability {
+    IAstParamSpecsCapability,
+    ICpsParamSemanticCapability {
   //
+}
+
+export interface ICpsParamSemanticCapability {
+  getProducer(): ParamProducer;
 }
 
 export interface CpsParamValuesCapability {

@@ -16,8 +16,8 @@ export interface IAstParamSemanticCapability {
   setOperator(operator: Operator): this;
   getOperator(): Operator;
 
-  setProducer(producer: ParamProducer): this;
-  getProducer(): ParamProducer;
+  // setProducer(producer: ParamProducer): this;
+  // getProducer(): ParamProducer;
   setChannel(channel: ParamChannel): this;
   getChannel(): ParamChannel;
 }

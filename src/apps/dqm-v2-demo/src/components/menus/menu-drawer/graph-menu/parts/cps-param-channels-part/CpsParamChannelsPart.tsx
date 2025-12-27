@@ -1,13 +1,12 @@
 import { type FC } from "react";
-import { type PropertyTableRows } from "../../tables/PropertyTable";
 import { SectionTitle } from "../../section-title/SectionTitle";
-import { PropertyTable } from "../../tables/PropertyTable";
 import type { ICps } from "@dqm/package-dqm-api-v2";
 import type { ClassSanitizer } from "_utils/sanitizer.mjs";
 import { Typography } from "antd";
 import { TryCatchView } from "_views/try-catch/try-catch";
 import { YamlDisplay } from "_views/yaml-display/YamlDisplay";
 import style from "./CpsParamChannelsPart.module.css";
+import { ExceptionCard } from "_views/exception-card/ExceptionCard";
 
 interface CpsParamChannelsPartProps {
   cps: ClassSanitizer<ICps>;
@@ -18,7 +17,12 @@ export const CpsParamChannelsPart: FC<CpsParamChannelsPartProps> = ({
 }) => {
   const channelsPre = c.getChannels();
   if (channelsPre.state === "fail") {
-    return <div>Channel collection failed</div>;
+    return (
+      <ExceptionCard>
+        <Typography.Text code>ICpsParam</Typography.Text> channels list
+        retrieval failed
+      </ExceptionCard>
+    );
   }
   const channels = channelsPre.value;
 
@@ -27,9 +31,9 @@ export const CpsParamChannelsPart: FC<CpsParamChannelsPartProps> = ({
       <SectionTitle>Channel Compilations</SectionTitle>
       <div>
         {channels.map((channel) => (
-          <div key={channel}>
+          <div key={channel} className={style.channelCard}>
             <div className={style.title}>
-              <Typography.Title level={5} code>
+              <Typography.Title level={5} code className={style.channel}>
                 {channel}
               </Typography.Title>
             </div>
