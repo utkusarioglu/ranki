@@ -41,7 +41,6 @@ export class CpsParam implements ICpsParam {
   setAstParam(p: IAstParamNode): ICpsParam {
     this.astParam.setAstParam(p);
     this.producer = "instance-declaration";
-    this.values.mergeValues(this.getAstValues());
     return this;
   }
   getAstValues = this.astParam.getValues;
@@ -65,7 +64,9 @@ export class CpsParam implements ICpsParam {
   getChainString = this.id.getChainString;
 
   // VALUE
+  getMergedValues() {
+    return this.values.getMergedValues(this.getAstValues());
+  }
   getDefaultValues = this.values.getDefaultValues.bind(this.values);
   setDefaultValues = this.values.setDefaultValues.bind(this.values);
-  getMergedValues = this.values.getMergedValues.bind(this.values);
 }

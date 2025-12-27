@@ -1,30 +1,19 @@
-import type { IAstParamNode } from "@dqm/package-dqm-api-v2";
-import { assertExists } from "@dqm/package-dqm-utils";
+import type { IAstParamNode, Operator } from "@dqm/package-dqm-api-v2";
+import { ALL_AUDIENCES } from "../param.constants.mjs";
+
+const DEFAULT_OPERATOR: Operator = "assign";
 
 export function astParamCapability<T>(self: T) {
   let astParam: IAstParamNode | null = null;
 
-  function getAstParam(): IAstParamNode {
-    assertExists(astParam, {
-      why: "Expecting ast param to be defined when it's not is an architectural issue",
-    });
-    return astParam;
-  }
   return {
     setAstParam(r: IAstParamNode): T {
       astParam = r;
       return self;
     },
-    getAstParam,
-
-    // setAudience: (...a) => getAstParam().setAudience(...a),
-    getAudience: () => getAstParam().getAudience(),
-    // setOperator: getAstParam().setOperator,
-    getOperator: () => getAstParam().getOperator(),
-    // setProducer: getAstParam().setProducer,
-    getProducer: () => getAstParam().getProducer(),
-    getValues: () => getAstParam().getValues(),
-    // setChannel: getAstParam().setChannel,
-    // getChannel: getAstParam().getChannel,
+    getAstParam: () => astParam,
+    getAudience: () => astParam?.getAudience() || ALL_AUDIENCES,
+    getOperator: () => astParam?.getOperator() || DEFAULT_OPERATOR,
+    getValues: () => astParam?.getValues() || null,
   };
 }

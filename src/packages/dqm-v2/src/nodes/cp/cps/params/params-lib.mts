@@ -27,8 +27,7 @@ export class ParamsLib extends CommonTransports implements IParams {
   @dependsOn("schema")
   pushParam(user: IAstParamNode): this {
     const channel = user.getChannel();
-    const lib = this.paramsMap.get(channel)!;
-    lib.addParam(user);
+    this.getChannel(channel).addParam(user);
     return this;
   }
 
@@ -56,20 +55,20 @@ export class ParamsLib extends CommonTransports implements IParams {
   @dependsOn("schema")
   @rejectValues(undefined)
   findById(channel: ParamChannel, id: Alias | Chain): ICpsParam | never {
-    const lib = this.paramsMap.get(channel)!;
-    assertExists(lib, {
-      why: "Requested param hasn't been registered during initialization.",
-      details: { channel, id },
+    return this.getChannel(channel).findById(id);
+  }
+
+  private getChannel(channel: ParamChannel) {
+    const ch = this.paramsMap.get(channel);
+    assertExists(ch, {
+      why: "The requested channel should exist if this method is called",
+      details: { channel },
     });
-    return lib.findById(id);
+    return ch;
   }
 
   getChannelCompilationByChannelName<T>(channel: ParamChannel): T {
-    try {
-      return this.paramsMap.get(channel)!.getCompilation<T>();
-    } catch (e) {
-      return {} as T;
-    }
+    return this.getChannel(channel).getCompilation<T>();
   }
 
   getChannelNames(): ParamChannel[] {

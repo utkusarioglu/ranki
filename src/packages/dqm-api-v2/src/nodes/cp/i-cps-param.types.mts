@@ -20,7 +20,7 @@ export interface ICpsParam
 
 export interface CpsParamValuesCapability {
   // setValues(values: AstSourceView[]): this;
-  getAstValues(): AstSourceView[];
+  getAstValues(): AstSourceView[] | null;
 
   getMergedValues(): ICpsParamValue;
 

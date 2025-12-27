@@ -1,5 +1,5 @@
 import type { ICpsParam } from "@dqm/package-dqm-api-v2";
-import type { FC } from "react";
+import type { FC, PropsWithChildren } from "react";
 import {
   ParameterTable,
   type ParameterTableValueTuple,
@@ -19,11 +19,23 @@ export const AstParamTable: FC<AstParamTableProps> = ({ param: p }) => {
     return (
       <div className={style.container}>
         <Typography>
+          Retrieval of
+          <Typography.Text code>AstParam</Typography.Text>
+          values failed unexpectedly
+        </Typography>
+      </div>
+    );
+  }
+  // const astValues = astValuesPre.value;
+  if (!astValuesPre.value) {
+    return (
+      <ExceptionContainer>
+        <Typography>
           No
           <Typography.Text code>AstParam</Typography.Text>
           links to this <Typography.Text code>CpsParam</Typography.Text>
         </Typography>
-      </div>
+      </ExceptionContainer>
     );
   }
   const astValues = astValuesPre.value.map<ParameterTableValueTuple>((v, i) => [
@@ -32,4 +44,8 @@ export const AstParamTable: FC<AstParamTableProps> = ({ param: p }) => {
   ]);
 
   return <ParameterTable rows={astValues} />;
+};
+
+const ExceptionContainer: FC<PropsWithChildren> = ({ children }) => {
+  return <div className={style.container}>{children}</div>;
 };

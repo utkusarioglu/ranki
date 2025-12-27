@@ -16,6 +16,7 @@ export const GraphMenuCpsMergedParamsPart: FC<GraphMenuParamPartProps> = ({
   param: p,
 }) => {
   const valuesPre = p.getMergedValues();
+  console.log(valuesPre);
   if (valuesPre.state === "fail") {
     return <div>Merged values failed</div>;
   }

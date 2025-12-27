@@ -4,12 +4,10 @@ import type {
   ParamDefaultValue,
 } from "@dqm/package-dqm-api-v2";
 import { DqmAppError } from "../../../../../errors/dqm-app-error/dqm-app-error.mjs";
-// import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
 export function cpsParamValuesCapability<T>(self: T) {
-  // let values: AstSourceView[] = [];
   let defaultValues: ParamDefaultValue[] = [];
-  let mergedValues: ICpsParamValue = [];
+  let mergedValues: ICpsParamValue;
 
   return {
     setDefaultValues(valueSpec: ParamDefaultValue[]): T {
@@ -21,7 +19,8 @@ export function cpsParamValuesCapability<T>(self: T) {
       return defaultValues;
     },
 
-    getMergedValues(): ICpsParamValue {
+    getMergedValues(astValues: AstSourceView[] | null): ICpsParamValue {
+      this.mergeValues(astValues);
       return mergedValues;
     },
 
@@ -30,8 +29,18 @@ export function cpsParamValuesCapability<T>(self: T) {
      * #1 Ast type determination is done by the grammar. Default value type is
      * reported by the plugin itself.
      */
-    mergeValues(astValues: AstSourceView[]) {
+    mergeValues(astValues: AstSourceView[] | null) {
+      if (!astValues) {
+        mergedValues = defaultValues.map((d) => ({
+          type: d.type,
+          name: d.name,
+          defaultValue: d.defaultValue,
+          value: d.defaultValue,
+        }));
+        return;
+      }
       this.checkValueLength(astValues);
+      mergedValues = [];
       defaultValues.forEach((dv, i) => {
         const av = astValues[i];
         if (!av) {
