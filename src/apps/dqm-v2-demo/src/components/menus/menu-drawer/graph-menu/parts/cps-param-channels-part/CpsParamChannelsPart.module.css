@@ -1,17 +1,3 @@
-.title {
-  padding-inline: var(--ant-padding-sm);
-}
-
-.code {
-  background-color: var(--color-bg-sample);
-}
-
-.channel {
+.channelName {
   margin-block-start: 0;
-}
-
-.channelCard {
-  padding-block: var(--ant-padding);
-  background-color: var(--ant-color-bg-container);
-  margin-bottom: var(--ant-padding);
 }

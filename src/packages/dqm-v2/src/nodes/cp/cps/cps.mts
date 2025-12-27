@@ -114,12 +114,16 @@ export class Cps extends CommonTransports implements ICps {
     return this.paramsLib.getChannelNames();
   }
 
+  getMergedConfig(): DqmConfig {
+    return this.getConfig().getConfig<DqmConfig>(MERGE_TARGET);
+  }
+
   parse(input: CpxParseInput): IAstNode {
-    const activeConfig = this.getConfig().getConfig<DqmConfig>(MERGE_TARGET);
+    const mergedConfig = this.getMergedConfig();
     // TODO
     const { parse } = this.getPlugins().getParser(
       "NOT_SURE_IF_THIS_IS_NEEDED",
-      activeConfig,
+      mergedConfig,
     );
     const obj = parse(
       input.dqm,

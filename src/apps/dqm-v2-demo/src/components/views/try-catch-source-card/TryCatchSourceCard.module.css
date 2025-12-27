@@ -1,0 +1,14 @@
+.title {
+  padding-inline: var(--ant-padding-sm);
+  margin-bottom: 1em;
+}
+
+.code {
+  background-color: var(--color-bg-sample);
+}
+
+.channelCard {
+  padding-block: var(--ant-padding);
+  background-color: var(--ant-color-bg-container);
+  margin-bottom: var(--ant-padding);
+}

@@ -1,16 +1,10 @@
-import type {
-  Audience,
-  Operator,
-  ParamChannel,
-  ParamProducer,
-} from "@dqm/package-dqm-api-v2";
+import type { Audience, Operator, ParamChannel } from "@dqm/package-dqm-api-v2";
 import { assertExists } from "@dqm/package-dqm-utils";
 import { ALL_AUDIENCES } from "../param.constants.mjs";
 
 export function paramSemanticCapability<T>(self: T) {
   let audience: Audience = ALL_AUDIENCES;
   let operator: Operator;
-  // let producer: ParamProducer = "instance-declaration";
   let channel!: ParamChannel;
 
   return {
