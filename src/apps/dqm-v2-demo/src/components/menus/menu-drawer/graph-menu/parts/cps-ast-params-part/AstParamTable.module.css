@@ -1,0 +1,4 @@
+.container {
+  padding: var(--ant-padding);
+  background-color: var(--ant-color-bg-container);
+}
