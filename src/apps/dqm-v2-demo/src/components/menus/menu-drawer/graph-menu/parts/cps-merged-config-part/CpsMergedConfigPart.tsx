@@ -27,7 +27,7 @@ export const GraphMenuCpsMergedConfigPart: FC<
             <Typography.Text code>Cps</Typography.Text> instance
           </Typography.Text>
         }
-        item={p.getMergedConfig()}
+        item={p.getDqmConfig()}
       />
     </>
   );

@@ -124,6 +124,12 @@ export function syntaxCapability<T>(self: T) {
       return self;
     },
 
+    pushParsedChild(child: IAstNode) {
+      childrenNodes.push(child);
+      allNodes.push(child);
+      return self;
+    },
+
     pushOrderNode(n: IAstNode): T {
       allNodes.push(n);
       return self;

@@ -43,8 +43,9 @@ export const nodeValueItem: IAstNodeActionDict = {
     return grabAst(this)
       .newAst(this)
       .pushIgnoredNodes(letterDigit)
-      .setLeafViewDecoder("string", () => ({
-        value: "mixed",
+      .setLeafViewDecoder("string", (value) => ({
+        subType: "mixed",
+        value,
       }));
   },
 

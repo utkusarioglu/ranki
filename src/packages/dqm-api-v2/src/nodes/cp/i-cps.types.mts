@@ -26,7 +26,7 @@ export interface ICpsUniqueCapability {
   getOnFailMode(): boolean;
   getChannelCompilation(channel: ParamChannel): any;
   getChannels(): ParamChannel[];
-  getMergedConfig(): DqmConfig;
+  getDqmConfig(): DqmConfig;
 }
 
 export type ICpsIdCapability = Pick<

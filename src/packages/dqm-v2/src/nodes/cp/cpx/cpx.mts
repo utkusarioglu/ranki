@@ -5,6 +5,7 @@ import type {
   UniqueValue,
   CommonTransportsConstructorParams,
   ChainList,
+  ICps,
 } from "@dqm/package-dqm-api-v2";
 import { CommonTransports } from "../../common-transports.mjs";
 import { Unique } from "../../../unique/unique.mjs";
@@ -34,7 +35,7 @@ export class Cpx extends CommonTransports implements ICpx {
   }
 
   parse(input: CpxParseInput): IAstNode {
-    return this.getRootCps().parse(input);
+    return this.getTargetCps().parse(input);
   }
 
   // VERTICES
@@ -75,6 +76,8 @@ export class Cpx extends CommonTransports implements ICpx {
   getChainStringList = this.cps.getChainStringList.bind(this.cps);
   getIdList = this.cps.getIdList.bind(this.cps);
   getAliasList = this.cps.getAliasList.bind(this.cps);
+  setTargetCps = this.cps.setTargetCps.bind(this.cps);
+  getTargetCps = this.cps.getTargetCps.bind(this.cps);
 
   // AST
   getRootAst = this.ast.getRootAst.bind(this.cps);

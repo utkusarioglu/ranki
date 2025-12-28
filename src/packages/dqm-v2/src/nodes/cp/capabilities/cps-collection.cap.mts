@@ -28,6 +28,7 @@ export const ALIAS_STRING_SEPARATOR = "|";
  */
 export function cpsCollectionCapability<T>(self: T) {
   let cps: ICps[] = [];
+  let targetCps: ICps;
 
   return {
     setIdList(
@@ -85,6 +86,18 @@ export function cpsCollectionCapability<T>(self: T) {
           }
           return self;
       }
+    },
+
+    setTargetCps(c: ICps): T {
+      targetCps = c;
+      return self;
+    },
+
+    getTargetCps(): ICps {
+      if (targetCps) {
+        return targetCps;
+      }
+      return this.getLeafCps();
     },
 
     getLeafCps(): ICps {

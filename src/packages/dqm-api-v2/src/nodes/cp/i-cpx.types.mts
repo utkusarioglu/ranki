@@ -54,6 +54,8 @@ export interface CpsCollectionCapability {
   getLeafCps(): ICps;
   getRootCps(): ICps;
   getCpsList(): ICps[];
+  setTargetCps(cps: ICps): this;
+  getTargetCps(): ICps;
 }
 
 export interface AstCollectionCapability {

@@ -46,4 +46,6 @@ export interface IAstNodeUniqueCapability {
   newCpx(cpxCallback: CpxFuncParam): this;
   newAst(ohm: ohm.Node): IAstNode;
   newParam(ohm: ohm.Node): IAstParamNode;
+  setCpsClimb(climb: number | null): this;
+  parse(source: string): this;
 }

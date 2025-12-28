@@ -37,9 +37,9 @@ export class ParamsLib extends CommonTransports implements IParams {
   }
 
   @dependsOn("schema")
-  pushParam(ast: IAstParamNode): this {
-    const channel = ast.getChannel() || DEFAULT_CHANNEL;
-    this.getChannel(channel).addParam(ast);
+  pushParam(user: IAstParamNode): this {
+    const channel = user.getChannel() || DEFAULT_CHANNEL;
+    this.getChannel(channel).addParam(user);
     return this;
   }
 
@@ -110,7 +110,7 @@ export class ParamsLib extends CommonTransports implements IParams {
     }
   }
 
-  getMergedConfig(): DqmConfig {
+  getDqmConfig(): DqmConfig {
     return this.getConfig().getConfig(MERGE_TARGET);
   }
 }

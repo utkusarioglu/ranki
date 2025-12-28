@@ -15,6 +15,9 @@ import { ohmCapability } from "./capabilities/ohm.capability.mjs";
 import { viewCapability } from "./capabilities/view.capability.mjs";
 import { counterCapability } from "./capabilities/counter.capability.mjs";
 import { cpxCollection } from "../../cp/capabilities/cpx-collection.cap.mjs";
+import { assertExists } from "@dqm/package-dqm-utils";
+
+const DEFAULT_CLIMB = 1;
 
 export class AstNode extends CommonTransports implements IAstNode {
   private cpx = cpxCollection(this);
@@ -24,6 +27,34 @@ export class AstNode extends CommonTransports implements IAstNode {
   private ohm = ohmCapability(this);
   private view = viewCapability(this);
   private counter = counterCapability(this);
+
+  parse(source: string): this {
+    const cpx = this.getCpx();
+    assertExists(cpx, { why: "Cpx has to be defined for parsing to occur" });
+    // TODO theater is wrong
+    const parsed = cpx.parse({ dqm: source, theater: "default" });
+    this.syntax.pushParsedChild(parsed);
+    return this;
+  }
+
+  setCpsClimb(climb: number | null): this {
+    let current = this.getCpx().getLeafCps();
+    climb = climb === null ? DEFAULT_CLIMB : climb;
+    let c = 0;
+    while (c < climb) {
+      c++;
+      const parent = current.getParent();
+      assertExists(parent, { why: "Requested pause climb demands a parent" });
+      current = parent;
+    }
+    const cpx = current.getCpx();
+    assertExists(cpx, {
+      why: "Requested climb Cps needs to have an assigned Cpx",
+    });
+    cpx.setTargetCps(current);
+    this.setCpx(cpx);
+    return this;
+  }
 
   // TODO this needs a lot of work
   newCpx(cpxCallback: CpxFuncParam): this {

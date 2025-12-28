@@ -100,18 +100,9 @@ export class Cps extends CommonTransports implements ICps {
         this.paramsAndConfig.pushParam(param);
       });
       this.paramsAndConfig.createMergedConfig();
-      // // TODO $ may not be the token the user prefers. or $ may be mapped to a value like "config"
-      // const configChannelToken =
-      //   config.getConfig<DqmConfig>(INITIAL_CONFIG_NAME)!.plugins
-      //     .configChannelToken;
-      // try {
-      //   const componentParamConfig =
-      //     this.paramsLib.getChannelCompilation(configChannelToken);
-      //   config.pushConfig("cps", componentParamConfig);
-      // } catch (e) {}
+    } else {
+      this.paramsAndConfig.createInitialConfig();
     }
-    // config.mergeTo(MERGE_TARGET);
-    this.paramsAndConfig.createInitialConfig();
     return this;
   }
 
@@ -123,19 +114,25 @@ export class Cps extends CommonTransports implements ICps {
     return this.paramsAndConfig.getChannelNames();
   }
 
-  getMergedConfig(): DqmConfig {
-    return this.paramsAndConfig.getMergedConfig();
+  getDqmConfig(): DqmConfig {
+    return this.paramsAndConfig.getDqmConfig();
   }
 
   parse(input: CpxParseInput): IAstNode {
-    const mergedConfig = this.getMergedConfig();
+    const mergedConfig = this.getDqmConfig();
     // TODO
     const { parse } = this.getPlugins().getParser(
       "NOT_SURE_IF_THIS_IS_NEEDED",
       mergedConfig,
     );
-    const obj = parse(
+    const prefixed = [
+      mergedConfig.content.prefix,
       input.dqm,
+      mergedConfig.content.suffix,
+    ].join("");
+    const obj = parse(
+      prefixed,
+      // input.dqm,
       // TODO this likely will come from the `direction` property of some ast
       // node
       "baseV2RootBlock",

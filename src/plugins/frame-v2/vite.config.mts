@@ -3,7 +3,7 @@ import { bundleOhm } from "@dqm/package-plugin-utils/bundler";
 
 export default defineConfig({
   define: {
-    ...bundleOhm("2.0.73", "FRAME_V2", "./src/parsers/frame-v2/ohm"),
+    ...bundleOhm("2.0.74", "FRAME_V2", "./src/parsers/frame-v2/ohm"),
   },
   build: {
     lib: {

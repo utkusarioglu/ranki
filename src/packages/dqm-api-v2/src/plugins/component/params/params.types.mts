@@ -17,7 +17,7 @@ export interface IParams {
   getParams(): ICpsParam[];
   getChannelNames(): ParamChannel[];
   createMergedConfig(): void;
-  getMergedConfig(): DqmConfig;
+  getDqmConfig(): DqmConfig;
   createInitialConfig(): void;
   initConfig(unique: UniqueValue): this;
 }

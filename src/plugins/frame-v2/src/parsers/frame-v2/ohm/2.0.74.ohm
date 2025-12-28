@@ -1,0 +1,83 @@
+FrameV2 <: ParamsV2 {
+  baseV2RootBlock := ...
+
+  baseV2Block :=
+    | sBaseV2Indentation frameV2 sBaseV2WasteInline &(nl | end) --frameV2 
+    | ...
+    
+  baseV2Word :=
+    | frameV2 --frameV2
+    | ...
+
+  paramsV2ValueItem :=
+    | frameV2 --frameV2
+    | ...
+  
+  frameV2PauseList 
+    = frameV2PayloadSection (frameV2PausedContainer frameV2PayloadSection)*
+
+  frameV2PayloadPlainIllegal = 
+    | frameV2PauseStart 
+    | frameV2Start 
+    | frameV2End_explicit 
+  
+  frameV2PayloadPlain =  
+    | frameV2Start (~frameV2End any)* frameV2End --failedFrameV2
+    | (~frameV2PayloadPlainIllegal any)+ --fallback
+  
+  frameV2PayloadSectionItem = 
+    | frameV2 sBaseV2Whitespace
+    | frameV2PayloadPlain sBaseV2Whitespace
+  
+  frameV2PayloadSection = frameV2PayloadSectionItem+
+
+  frameV2PauseDepth = digit+
+  frameV2PauseStart = tFrameV2Pause frameV2PauseDepth? tFrameV2Pause
+  frameV2PauseEnd = tFrameV2Pause tFrameV2Pause
+  frameV2PausedContainer =
+    | sBaseV2WasteMultiline frameV2PauseStart frameV2PausedPayload frameV2PauseEnd --P
+    | frameV2PauseStart frameV2PausedPayload frameV2PauseEnd --p
+
+  // !FIX this would break sBaseV2WasteInline nested pauses
+  frameV2PausedPayload = (~(frameV2PauseEnd | frameV2End) any)+
+  
+  frameV2ChainList = paramsV2Key (sBaseV2Clearance paramsV2Key)*
+  
+  frameV2Payload = 
+    | sBaseV2WasteMultiline frameV2PauseList --P
+    | frameV2PauseList --p
+
+  frameV2End =
+    | tFrameV2RightOuter "-"? digit+ --exact
+    |  tFrameV2RightOuter --explicit
+    | end --implicit
+
+  frameV2Start = tFrameV2LeftOuter
+  
+  frameV2FrameConfigFp =
+    |   sBaseV2WasteInline 
+      frameV2ChainList sBaseV2WasteInline 
+      paramsV2ParamListBlockContainer sBaseV2WasteInline
+        tFrameV2SeparatorParam?  --F
+    |   sBaseV2WasteInline 
+      frameV2ChainList sBaseV2WasteInline 
+      paramsV2ParamListInlineContainer sBaseV2WasteInline 
+        tFrameV2SeparatorParam? --f
+
+  frameV2FrameConfigP = 
+      sBaseV2WasteInline 
+    frameV2ChainList 
+      sBaseV2WasteInline 
+    (tFrameV2SeparatorParam | &nl)
+
+  frameV2FrameConfigE = sBaseV2WasteInline frameV2ChainList sBaseV2WasteInline
+
+  frameV2FrameConfig =
+    | frameV2FrameConfigFp --fp
+    | frameV2FrameConfigP --p
+    | frameV2FrameConfigE --e
+
+  frameV2 = 
+    | frameV2Start frameV2FrameConfig frameV2Payload frameV2End --fp
+    | frameV2Start frameV2FrameConfig frameV2End --f
+}

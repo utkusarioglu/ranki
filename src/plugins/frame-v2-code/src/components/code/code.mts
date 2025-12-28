@@ -28,7 +28,21 @@ export const frameV2CodeBlockComponent: IDqmComponent = {
     params: {
       $: {
         positionals: [],
-        params: [],
+        params: [
+          {
+            id: {
+              chain: ["content", "prefix"],
+              aliases: ["p"],
+            },
+            values: [
+              {
+                name: "Prefix string",
+                type: "string",
+                defaultValue: "",
+              },
+            ],
+          },
+        ],
       },
       default: {
         positionals: [["prettier", "auto_format"]],

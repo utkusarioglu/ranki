@@ -1,5 +1,5 @@
 import type { IAstNodeActionDict } from "@dqm/package-dqm-api-v2";
-import { grabAst } from "@dqm/package-plugin-utils";
+import { grabAssertExists, grabAst } from "@dqm/package-plugin-utils";
 
 export const nodePayload: IAstNodeActionDict = {
   frameV2Payload_P(sBaseV2WasteInline, frameV2PauseList) {
@@ -37,7 +37,28 @@ export const nodePayload: IAstNodeActionDict = {
   },
 
   frameV2PayloadPlain(all) {
-    return grabAst(this).newAst(this).pushIgnoredNodes(all);
+    return grabAst(this)
+      .newAst(this)
+      .pushIgnoredNodes(all)
+      .parse(all.sourceString);
+    // return node;
+  },
+
+  frameV2PauseDepth(all) {
+    return grabAst(this)
+      .newAst(this)
+      .pushIgnoredNodes(all)
+      .setLeafViewDecoder("number", (v) => ({
+        value: +v,
+      }));
+  },
+
+  frameV2PauseStart(tFrameV2Pause1, frameV2PauseDepth, tFrameV2Pause2) {
+    return grabAst(this)
+      .newAst(this)
+      .pushIgnoredNodes(tFrameV2Pause1)
+      .pushNodes(["node", frameV2PauseDepth])
+      .pushIgnoredNodes(tFrameV2Pause2);
   },
 
   frameV2PausedContainer_p(
@@ -45,20 +66,24 @@ export const nodePayload: IAstNodeActionDict = {
     frameV2PausedPayload,
     frameV2PauseEnd,
   ) {
-    return grabAst(this)
+    const node = grabAst(this)
       .newAst(this)
-      .newCpx((cpx) =>
-        // !FIX this mess relates to the .setParent() call in `newCpx()`
-        // !FIX ALSO, don't forget that the parent of any kind of frame is frame.v2.container. so, this needs to climb twice, not once
-        // @ts-expect-error
-        cpx.getParent().getParent().getParent(),
-      )
-      .pushIgnoredNodes(frameV2PauseStart)
-      .pushNodes(["node", frameV2PausedPayload])
-      .pushIgnoredNodes(frameV2PauseEnd);
+      .pushNodes(["node", frameV2PauseStart])
+      .pushIgnoredNodes(frameV2PausedPayload, frameV2PauseEnd);
+
+    const [start] = node.getSubtreeNodes();
+    grabAssertExists(this, start, "Start is required for depth detection");
+    const [depth] = start.getSubtreeNodes();
+    const climb = depth ? depth.getLeafView().value : null;
+    node.setCpsClimb(climb).parse(frameV2PausedPayload.sourceString);
+
+    return node;
   },
 
-  frameV2PausedPayload(any) {
-    return grabAst(this).newAst(this).pushIgnoredNodes(any);
-  },
+  // frameV2PausedPayload(any) {
+  //   return grabAst(this)
+  //     .newAst(this)
+  //     .pushIgnoredNodes(any)
+  //     .parse(this.sourceString);
+  // },
 };
