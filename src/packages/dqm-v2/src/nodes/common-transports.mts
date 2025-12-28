@@ -1,5 +1,6 @@
 import type {
   CommonTransportsConstructorParams,
+  ConfigName,
   IConfig,
   IPlugins,
 } from "@dqm/package-dqm-api-v2";
@@ -29,8 +30,8 @@ export class CommonTransports {
     return this.plugins;
   }
 
-  protected cloneConfig() {
-    this.config = this.config.clone();
+  protected cloneConfig(name: ConfigName) {
+    this.config = this.config.clone(name);
   }
 
   protected getTransports(): ITransports {

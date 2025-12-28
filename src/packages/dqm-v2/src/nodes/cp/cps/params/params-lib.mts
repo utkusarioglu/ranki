@@ -8,7 +8,7 @@ import type {
   ParamChannel,
   ICpsParam,
   DqmConfig,
-  CommonTransportsConstructorParams,
+  UniqueValue,
 } from "@dqm/package-dqm-api-v2";
 import { assertExists, dependsOn, rejectValues } from "@dqm/package-dqm-utils";
 import { ParamsChannelLib } from "./params-channel-lib.mjs";
@@ -25,9 +25,9 @@ export class ParamsLib extends CommonTransports implements IParams {
   private schema!: ComponentCustomizations;
   private paramsMap: ParamsMap = new Map();
 
-  constructor(params: CommonTransportsConstructorParams) {
-    super(params);
-    this.cloneConfig();
+  initConfig(unique: UniqueValue): this {
+    this.cloneConfig(unique.toString());
+    return this;
   }
 
   getParams(): ICpsParam[] {
@@ -37,9 +37,9 @@ export class ParamsLib extends CommonTransports implements IParams {
   }
 
   @dependsOn("schema")
-  pushParam(user: IAstParamNode): this {
-    const channel = user.getChannel() || DEFAULT_CHANNEL;
-    this.getChannel(channel).addParam(user);
+  pushParam(ast: IAstParamNode): this {
+    const channel = ast.getChannel() || DEFAULT_CHANNEL;
+    this.getChannel(channel).addParam(ast);
     return this;
   }
 

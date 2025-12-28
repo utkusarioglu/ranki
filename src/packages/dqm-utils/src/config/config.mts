@@ -1,17 +1,25 @@
 import { DqmConfigError } from "./error/error.mjs";
-import type { LocalConfig, ConfigTypes, ObjectPath } from "./config.types.mjs";
+import type { LocalConfig, ObjectPath } from "./config.types.mjs";
 import {
   assertNotExists,
   assertExists,
   assertArrayNotEmpty,
+  assertNotIllegal,
 } from "./error/assertions.mjs";
-import type { ConfigEntryCode, IConfig } from "@dqm/package-dqm-api-v2";
+import type {
+  ConfigEntryCode,
+  ConfigName,
+  IConfig,
+} from "@dqm/package-dqm-api-v2";
+import { TypeEngine } from "./type-engine.mjs";
 
 export class Config implements IConfig {
   private configs: Record<ConfigEntryCode, LocalConfig> = {};
   private order: ConfigEntryCode[] = [];
+  private parent: IConfig | null = null;
+  private name: ConfigName = "(unnamed)";
 
-  setOrder(order: ConfigEntryCode[]): IConfig {
+  setOrder(order: ConfigEntryCode[]): this {
     this.order = order;
     return this;
   }
@@ -20,7 +28,7 @@ export class Config implements IConfig {
     return this.order;
   }
 
-  pushConfig(code: ConfigEntryCode, config: LocalConfig): IConfig {
+  pushConfig(code: ConfigEntryCode, config: LocalConfig): this {
     const c = this.configs[code];
     assertNotExists(c, {
       why: "Config entry codes cannot be overwritten",
@@ -35,7 +43,28 @@ export class Config implements IConfig {
     return this;
   }
 
-  replaceConfig<C>(code: ConfigEntryCode, config: C): IConfig {
+  pushProperty(path: string, value: any): this {
+    const c: any = {};
+    let curr = c;
+    const chain: string[] = path.split(".");
+    chain.forEach((part, i, all) => {
+      if (i < all.length - 1) {
+        if (!curr[part]) {
+          curr[part] = {};
+        }
+        curr = curr[part];
+      } else {
+        // const values = value;
+        // curr[part] = values.length === 1 ? values[0] : values;
+        curr[part] = value;
+      }
+      //   c[part] =
+    });
+    this.pushConfig(path, c);
+    return this;
+  }
+
+  replaceConfig<C>(code: ConfigEntryCode, config: C): this {
     const c = this.configs[code];
     assertExists(c, {
       why: "Cannot replace a config that has no entry.",
@@ -45,7 +74,7 @@ export class Config implements IConfig {
     return this;
   }
 
-  dropConfig(code: ConfigEntryCode): IConfig {
+  dropConfig(code: ConfigEntryCode): this {
     const c = this.configs[code];
     if (c === undefined) {
       return this;
@@ -65,37 +94,6 @@ export class Config implements IConfig {
       },
     });
     return c as unknown as T;
-  }
-
-  private determineType(curr: LocalConfig): ConfigTypes {
-    const t = typeof curr;
-    if (curr === undefined || ["bigint", "function", "symbol"].includes(t)) {
-      return "undefined";
-    } else if (curr === null) {
-      return "null";
-    } else if (["string", "number", "boolean"].includes(t)) {
-      return t as ConfigTypes;
-    } else {
-      if (Array.isArray(curr)) {
-        if (curr.length === 0) {
-          return "array-empty";
-        } else {
-          return "array-populated";
-        }
-      } else if (t === "object") {
-        if (Object.keys(t).length === 0) {
-          return "kv-empty";
-        } else {
-          return "kv-populated";
-        }
-      }
-    }
-    throw new DqmConfigError({
-      code: "UNRESOLVED_TYPE",
-      cause: null,
-      why: "Given value does not coincide with any of the type buckets",
-      details: { curr, t },
-    });
   }
 
   /**
@@ -121,36 +119,34 @@ export class Config implements IConfig {
       return objs[0];
     }
     let base = objs[0];
-    let baseType = this.determineType(base);
+    let baseType = TypeEngine.determineType(base);
+    assertNotIllegal(baseType, {});
     for (let i = 1; i < objs.length; i++) {
       const curr = objs[i];
-      const currType = this.determineType(curr);
-      if (currType !== baseType) {
-        const arrays =
-          currType.startsWith("array") && baseType.startsWith("array");
-        const kvs = currType.startsWith("kv") && baseType.startsWith("kv");
-        const skip = currType === "undefined";
-        const revert = currType === "null";
-
-        if (!arrays && !kvs && !revert && !skip) {
-          throw new DqmConfigError({
-            code: "INCONSISTENT_CONFIG_TYPES",
-            why: "Given value is not in the permitted list of type coercions",
-            cause: null,
-            details: {
-              objs,
-              currType,
-              baseType,
-            },
-          });
-        }
+      const currType = TypeEngine.determineType(curr);
+      assertNotIllegal(currType, {});
+      if (!TypeEngine.determineConsistency(base, baseType, curr, currType)) {
+        throw new DqmConfigError({
+          code: "INCONSISTENT_CONFIG_TYPES",
+          why: "Given value is not in the permitted list of type coercions",
+          cause: null,
+          details: {
+            objs,
+            curr,
+            base,
+            currType,
+            baseType,
+          },
+        });
       }
-      switch (this.determineType(curr)) {
+      switch (currType) {
+        case "bigint":
         case "string":
         case "number":
         case "boolean":
         case "array-empty":
         case "kv-empty":
+        case "tuple":
           base = curr;
           break;
         case "undefined":
@@ -180,7 +176,7 @@ export class Config implements IConfig {
     return base;
   }
 
-  mergeTo(code: ConfigEntryCode): IConfig {
+  mergeTo(code: ConfigEntryCode): this {
     const d = this.configs["default"];
     assertExists(d, {
       why: "The default configuration is the basis for the rest and has to be defined",
@@ -198,10 +194,20 @@ export class Config implements IConfig {
     return this;
   }
 
-  clone() {
+  clone(name: ConfigName): IConfig {
     const c = new Config();
     c.configs = { ...this.configs };
     c.order = [...this.order];
+    c.parent = this;
+    c.name = name;
     return c;
+  }
+
+  getParent(): IConfig | null {
+    return this.parent;
+  }
+
+  getName(): ConfigName {
+    return this.name;
   }
 }

@@ -5,6 +5,7 @@ import type {
   DqmConfig,
   IAstParamNode,
   ICpsParam,
+  UniqueValue,
 } from "../../../export.types.mjs";
 
 export interface IParams {
@@ -18,4 +19,5 @@ export interface IParams {
   createMergedConfig(): void;
   getMergedConfig(): DqmConfig;
   createInitialConfig(): void;
+  initConfig(unique: UniqueValue): this;
 }

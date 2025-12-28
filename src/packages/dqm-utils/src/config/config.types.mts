@@ -1,13 +1,16 @@
 export type ConfigTypes =
   | "string"
+  | "bigint"
   | "number"
   | "boolean"
   | "array-empty"
   | "array-populated"
+  | "tuple"
   | "kv-empty"
   | "kv-populated"
   | "null"
-  | "undefined";
+  | "undefined"
+  | "illegal";
 
 export type LocalConfig = any;
 
