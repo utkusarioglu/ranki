@@ -118,7 +118,7 @@ export class ParamsChannelLib extends CommonTransports {
    * #1 In case orphan params are set to be ignored, `p` may return undefined.
    */
   addParam(user: IAstParamNode) {
-    let p = this.determineParam(user);
+    const p = this.determineParam(user);
     if (!p) {
       return; // #1
     }

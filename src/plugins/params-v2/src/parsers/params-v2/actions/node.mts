@@ -91,7 +91,6 @@ export const node: IAstNodeActionDict = {
       }
       if (channel) {
         p.setChannel(channel.getMeaning());
-        console.log("ch", p.getChannel());
       }
       // console.log({
       //   channel: channel !== undefined ? channel.getMeaning() : null,

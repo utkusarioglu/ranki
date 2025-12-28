@@ -106,14 +106,9 @@ export class Cps extends CommonTransports implements ICps {
         const componentParamConfig =
           this.paramsLib.getChannelCompilationByChannelName(configChannelToken);
         config.pushConfig("cps", componentParamConfig);
-      } catch (e) {
-      } finally {
-        config.mergeTo(MERGE_TARGET);
-      }
-    } else {
-      config.mergeTo(MERGE_TARGET);
+      } catch (e) {}
     }
-
+    config.mergeTo(MERGE_TARGET);
     return this;
   }
 

@@ -64,7 +64,7 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
         data: {
           source: Registry.getId(c),
           target: id,
-          label: "cps-ast",
+          label: "abstracts",
         },
         classes: cls(
           "source-cps",

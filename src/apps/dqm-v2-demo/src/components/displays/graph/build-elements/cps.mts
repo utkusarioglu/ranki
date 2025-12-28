@@ -30,7 +30,7 @@ export function traverseCps(raw: ICps | null, cpsDepth: number): void {
     data: {
       source: Registry.getId(creatorCpx),
       target: id,
-      label: "delegates",
+      label: "aggregates",
     },
     classes: cls("source-cpx", "target-cps"),
   });

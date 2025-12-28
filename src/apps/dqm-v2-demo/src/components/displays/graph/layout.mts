@@ -1,12 +1,13 @@
 export const layout = {
   name: "fcose",
-  seed: 12345,
+  // seed: 12345,
   directed: true,
   circle: false,
   animate: false,
   randomize: true,
-  gravity: 0.25,
-  gravityRange: 3.8,
+  // gravity: 0.25,
+  gravity: 0,
+  // gravityRange: 3.8,
   numIter: 1000,
   initialEnergyOnIncremental: 0.3,
 
@@ -18,10 +19,10 @@ export const layout = {
     if (e.hasClass("cpx-cps")) return 50;
     if (e.hasClass("cps-ast") && e.hasClass("head")) return 60;
 
-    if (e.hasClass("cps-ast") || e.hasClass("cpx-ast")) {
+    if (e.hasClass("cps-ast")) {
       for (let d = 0; d < 20; d++) {
         if (e.hasClass(`depth-${d}`)) {
-          return 50 * d;
+          return 500 * d;
         }
       }
     }
@@ -29,20 +30,20 @@ export const layout = {
   },
 
   edgeElasticity: (e: any) => {
-    if (e.hasClass("relations-external")) return 0.02;
+    if (e.hasClass("relations-external")) return 1;
     if (e.hasClass("sibling")) return 0;
 
     if (e.hasClass("cpx-cpx")) return 0.05;
     if (e.hasClass("cpx-cps")) return 0.6;
     if (e.hasClass("cps-ast") && e.hasClass("head")) return 0.4;
 
-    if (e.hasClass("cps-ast") || e.hasClass("cpx-ast")) {
-      for (let d = 0; d < 20; d++) {
-        if (e.hasClass(`depth-${d}`)) {
-          return 0;
-        }
-      }
-    }
+    // if (e.hasClass("cps-ast")) {
+    //   for (let d = 0; d < 20; d++) {
+    //     if (e.hasClass(`depth-${d}`)) {
+    //       return 0;
+    //     }
+    //   }
+    // }
 
     // if (e.hasClass("cpx-ast")) return 0.1;
     // if (e.hasClass("cps-ast")) return 0.1;
@@ -52,7 +53,7 @@ export const layout = {
   nodeRepulsion: (n: any) => {
     if (n.hasClass("cpx")) return 8000;
     if (n.hasClass("cps")) return 5000;
-    if (n.hasClass("ast")) return 10000;
+    if (n.hasClass("ast")) return 1000;
     return 2000;
   },
 };

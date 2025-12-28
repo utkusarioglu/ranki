@@ -23,6 +23,8 @@ export const ALIAS_STRING_SEPARATOR = "|";
  * #1 This prevents circular type inference. If generic `T` is defined to
  * extend `ICpx`, then this error goes away but the class definition for
  * `collection` detects the circular reference and assumes the `any` type.
+ *
+ * #2 Audience #0 means all audiences by default
  */
 export function cpsCollectionCapability<T>(self: T) {
   let cps: ICps[] = [];
@@ -48,7 +50,7 @@ export function cpsCollectionCapability<T>(self: T) {
           )
           .setDefinition({
             id: idList[0],
-            params: getAstParamsByAudience(0),
+            params: getAstParamsByAudience(1), // #2
           });
         return newCps as ICps;
       };
