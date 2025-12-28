@@ -5,7 +5,6 @@ import type {
   CpxParseInput,
   CpsDefinition,
   IAstNode,
-  CommonTransportsConstructorParams,
   DqmConfig,
   Alias,
   ICpsParam,
@@ -21,24 +20,21 @@ import { verticesCapability } from "../../capabilities/vertices.capability.mjs";
 import { cpxCollection } from "../capabilities/cpx-collection.cap.mjs";
 import { assertNever } from "../../../errors/dqm-app-error/assertions.mjs";
 
-const MERGE_TARGET = "merged";
-// const CONFIG_CHANNEL = "$";
-
 export class Cps extends CommonTransports implements ICps {
   private id = idCapability(this);
   private vertices = verticesCapability<this, ICps>(this);
   private cpx = cpxCollection(this);
   private component!: IDqmComponent;
-  private paramsLib: IParams = new ParamsLib(this.getTransports());
+  private paramsAndConfig: IParams = new ParamsLib(this.getTransports());
   private onFailMode = false;
 
-  constructor(params: CommonTransportsConstructorParams) {
-    super(params);
-    this.cloneConfig();
-  }
+  // constructor(params: CommonTransportsConstructorParams) {
+  //   super(params);
+  //   this.cloneConfig();
+  // }
 
   getParams(): ICpsParam[] {
-    return this.paramsLib.getParams();
+    return this.paramsAndConfig.getParams();
   }
 
   private setToFailMode() {
@@ -88,40 +84,42 @@ export class Cps extends CommonTransports implements ICps {
 
   setDefinition(def: CpsDefinition): this {
     this.determineComponent(def);
-    const config = this.getConfig();
+    // const config = this.getConfig();
     this.id.setId(this.component.meta.id.chain);
     if (def.id.length === 1) {
       this.id.setAlias(def.id as Alias);
     }
-    this.paramsLib.setSchema(this.component.stages.ast);
+    this.paramsAndConfig.setSchema(this.component.customizations);
     if (!this.getOnFailMode()) {
       def.params.forEach((param) => {
-        this.paramsLib.pushParam(param);
+        this.paramsAndConfig.pushParam(param);
       });
-      // TODO $ may not be the token the user prefers. or $ may be mapped to a value like "config"
-      const configChannelToken =
-        config.getConfig<DqmConfig>(INITIAL_CONFIG_NAME)!.plugins
-          .configChannelToken;
-      try {
-        const componentParamConfig =
-          this.paramsLib.getChannelCompilationByChannelName(configChannelToken);
-        config.pushConfig("cps", componentParamConfig);
-      } catch (e) {}
+      this.paramsAndConfig.createMergedConfig();
+      // // TODO $ may not be the token the user prefers. or $ may be mapped to a value like "config"
+      // const configChannelToken =
+      //   config.getConfig<DqmConfig>(INITIAL_CONFIG_NAME)!.plugins
+      //     .configChannelToken;
+      // try {
+      //   const componentParamConfig =
+      //     this.paramsLib.getChannelCompilation(configChannelToken);
+      //   config.pushConfig("cps", componentParamConfig);
+      // } catch (e) {}
     }
-    config.mergeTo(MERGE_TARGET);
+    // config.mergeTo(MERGE_TARGET);
+    this.paramsAndConfig.createInitialConfig();
     return this;
   }
 
   getChannelCompilation(channel: ParamChannel) {
-    return this.paramsLib.getChannelCompilationByChannelName(channel);
+    return this.paramsAndConfig.getChannelCompilation(channel);
   }
 
   getChannels(): ParamChannel[] {
-    return this.paramsLib.getChannelNames();
+    return this.paramsAndConfig.getChannelNames();
   }
 
   getMergedConfig(): DqmConfig {
-    return this.getConfig().getConfig<DqmConfig>(MERGE_TARGET);
+    return this.paramsAndConfig.getMergedConfig();
   }
 
   parse(input: CpxParseInput): IAstNode {

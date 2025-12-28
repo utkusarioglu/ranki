@@ -8,9 +8,9 @@ export interface IDqmComponent {
     description: string;
     version: DqmPluginVersion;
   };
+  customizations: ComponentCustomizations;
   stages: {
     preprocessing?: (v: string) => string;
-    ast: ComponentParamsSchema;
   };
 }
 
@@ -30,10 +30,11 @@ export interface ChannelParamSpecs {
   params: ComponentSingleParamSpec[];
 }
 
-export interface ComponentParamsSchema {
-  channels: Record<string, ChannelParamSpecs> & {
+export interface ComponentCustomizations {
+  params: Record<string, ChannelParamSpecs> & {
     default: ChannelParamSpecs;
   };
+  config: Record<string, any[]> & { default: any[] };
 }
 
 export interface CpsDefinition {
