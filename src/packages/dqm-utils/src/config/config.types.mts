@@ -4,6 +4,7 @@ export type ConfigTypes =
   | "number"
   | "boolean"
   | "array-empty"
+  | "array-scalar"
   | "array-populated"
   | "tuple"
   | "kv-empty"

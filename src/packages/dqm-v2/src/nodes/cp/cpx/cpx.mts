@@ -5,7 +5,6 @@ import type {
   UniqueValue,
   CommonTransportsConstructorParams,
   ChainList,
-  ICps,
 } from "@dqm/package-dqm-api-v2";
 import { CommonTransports } from "../../common-transports.mjs";
 import { Unique } from "../../../unique/unique.mjs";

@@ -18,6 +18,8 @@ export class TypeEngine {
       if (Array.isArray(curr)) {
         if (curr.length === 0) {
           return "array-empty";
+        } else if (curr.length === 1) {
+          return "array-scalar";
         } else {
           const first = curr[0];
           if (curr.slice(1).some((v) => typeof v !== typeof first)) {
@@ -61,13 +63,16 @@ export class TypeEngine {
       }
       return true;
     } else if (currType !== baseType) {
+      const arrayScalar =
+        currType === "array-scalar" &&
+        ["string", "number", "boolean"].includes(baseType);
       const arrays =
         currType.startsWith("array") && baseType.startsWith("array");
       const kvs = currType.startsWith("kv") && baseType.startsWith("kv");
       const skip = currType === "undefined";
       const revert = currType === "null";
 
-      if (!arrays && !kvs && !revert && !skip) {
+      if (!arrays && !kvs && !revert && !skip && !arrayScalar) {
         return false;
       }
     }

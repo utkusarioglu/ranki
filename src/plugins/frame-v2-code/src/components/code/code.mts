@@ -14,6 +14,13 @@ export const frameV2CodeBlockComponent: IDqmComponent = {
     // TODO you need "channels: {}" to wrap these
     // TODO you need a settings object here to tell how component wants to handle missing params etc
     config: {
+      $: {
+        // @ts-expect-error
+        content: {
+          prefix: "CODE!",
+          suffix: "!!CODE!",
+        },
+      },
       default: [
         {
           prettier: {
