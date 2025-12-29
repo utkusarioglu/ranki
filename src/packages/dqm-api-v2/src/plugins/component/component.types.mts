@@ -39,8 +39,8 @@ export interface ComponentCustomizations<T = any> {
   config: {
     dqm?: DeepPartialSerializable<DqmConfig>[];
     component: {
-      default: T[];
-    } & Record<string, T[]>;
+      default: T;
+    } & Record<string, T>;
   };
   params: Record<string, ChannelParamSpecs> & {
     default: ChannelParamSpecs;

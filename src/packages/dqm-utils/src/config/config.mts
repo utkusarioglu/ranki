@@ -28,6 +28,10 @@ export class Config implements IConfig {
     return this.order;
   }
 
+  hasConfig(code: ConfigEntryCode): boolean {
+    return this.configs[code] !== undefined;
+  }
+
   pushConfig(code: ConfigEntryCode, config: LocalConfig): this {
     const c = this.configs[code];
     assertNotExists(c, {

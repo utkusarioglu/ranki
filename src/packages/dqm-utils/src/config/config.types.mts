@@ -3,16 +3,27 @@ export type ConfigTypes =
   | "bigint"
   | "number"
   | "boolean"
-  | "array-empty"
-  | "array-scalar"
-  | "array-populated"
-  | "tuple"
   | "kv-empty"
   | "kv-populated"
   | "null"
   | "undefined"
-  | "illegal";
+  | "illegal"
+  | "array-empty"
+  // The rest are the only types params can assign
+  | "array-scalar"
+  | "array-populated"
+  | "tuple";
 
 export type LocalConfig = any;
 
 export type ObjectPath = string & { type?: "ObjectPath" };
+
+export type TypeOfResult =
+  | "string"
+  | "number"
+  | "boolean"
+  | "bigint"
+  | "symbol"
+  | "undefined"
+  | "object"
+  | "function";

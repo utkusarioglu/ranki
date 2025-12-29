@@ -13,7 +13,7 @@ export const frameV2ContainerComponent: IDqmComponent = {
   customizations: {
     config: {
       component: {
-        default: [{}],
+        default: {},
       },
     },
     params: {

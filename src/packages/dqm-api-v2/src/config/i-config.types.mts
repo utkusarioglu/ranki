@@ -10,6 +10,7 @@ export type ConfigName = string & { type?: "ConfigName" };
 export interface IConfig {
   clone(name: ConfigName): IConfig;
   getConfig<T>(code: ConfigEntryCode): T;
+  hasConfig(code: ConfigEntryCode): boolean;
   setOrder(order: ConfigEntryCode[]): this;
   getOrder(): ConfigEntryCode[];
   mergeTo(code: ConfigEntryCode): this;

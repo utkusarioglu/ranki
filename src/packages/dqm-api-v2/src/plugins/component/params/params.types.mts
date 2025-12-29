@@ -20,4 +20,6 @@ export interface IParams {
   getDqmConfig(): DqmConfig;
   createInitialConfig(): void;
   initConfig(unique: UniqueValue): this;
+
+  getComponentConfig<T>(): T;
 }

@@ -114,6 +114,10 @@ export class Cps extends CommonTransports implements ICps {
     return this.paramsAndConfig.getDqmConfig();
   }
 
+  getComponentConfig<T>(): T {
+    return this.paramsAndConfig.getComponentConfig();
+  }
+
   parse(input: CpxParseInput): IAstNode {
     const mergedConfig = this.getDqmConfig();
     // TODO

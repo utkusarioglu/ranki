@@ -7,6 +7,7 @@ import type {
   CommonTransportsConstructorParams,
   DqmConfig,
   ICpsParam,
+  MutationEntry,
 } from "@dqm/package-dqm-api-v2";
 import { IdLib } from "../../../../id/id-lib.mjs";
 import { rejectValues } from "@dqm/package-dqm-utils";
@@ -127,7 +128,10 @@ export class ParamsChannelLib extends CommonTransports {
       p.setAstParam(user);
     } catch (e) {
       // TODO get rid of this
-      console.log("value transfer failed", e);
+      console.log(
+        "User assigned a param that isn't defined in the component customization",
+        e,
+      );
     }
 
     return this;
@@ -136,6 +140,16 @@ export class ParamsChannelLib extends CommonTransports {
   @rejectValues(undefined)
   findById(id: Alias | Chain): ICpsParam | never {
     return this.lib.getObjectById(id);
+  }
+
+  getMutationEntries(): MutationEntry[] {
+    return Array.from(this.lib.peekActiveChains())
+      .map(([_, param]) => param.getMutationEntries())
+      .flat();
+
+    // for (const [chainString, param] of this.lib.peekActiveChains()) {
+
+    // }
   }
 
   getCompilation<T>(): T {

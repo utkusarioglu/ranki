@@ -9,21 +9,28 @@ import type {
   ICpsParam,
   DqmConfig,
   UniqueValue,
+  IConfig,
 } from "@dqm/package-dqm-api-v2";
-import { assertExists, dependsOn, rejectValues } from "@dqm/package-dqm-utils";
+import {
+  assertExists,
+  Config,
+  dependsOn,
+  rejectValues,
+} from "@dqm/package-dqm-utils";
 import { ParamsChannelLib } from "./params-channel-lib.mjs";
 import { CommonTransports } from "../../../common-transports.mjs";
 import { INITIAL_CONFIG_NAME } from "../../../../constants.mjs";
 import { DqmAppError } from "../../../../errors/dqm-app-error/dqm-app-error.mjs";
 
-type ParamsMap = Map<ParamChannel, ParamsChannelLib>;
+type ChannelsMap = Map<ParamChannel, ParamsChannelLib>;
 
 const MERGE_TARGET = "merged";
 const CHANNEL_COMPONENT_DEFAULT = "default"; // this has to coincide with the channel in component type in api repo
 
 export class ParamsLib extends CommonTransports implements IParams {
   private customizations!: ComponentCustomizations;
-  private paramsMap: ParamsMap = new Map();
+  private channels: ChannelsMap = new Map();
+  private componentConfig!: IConfig;
 
   initConfig(unique: UniqueValue): this {
     this.cloneConfig(unique.toString());
@@ -31,7 +38,7 @@ export class ParamsLib extends CommonTransports implements IParams {
   }
 
   getParams(): ICpsParam[] {
-    return Array.from(this.paramsMap.values())
+    return Array.from(this.channels.values())
       .map((v) => v.getParams())
       .flat();
   }
@@ -56,7 +63,7 @@ export class ParamsLib extends CommonTransports implements IParams {
       const cp = new ParamsChannelLib(this.getTransports(), channel).setSchema(
         specs,
       );
-      this.paramsMap.set(channel, cp);
+      this.channels.set(channel, cp);
     });
   }
 
@@ -71,7 +78,7 @@ export class ParamsLib extends CommonTransports implements IParams {
   }
 
   private getChannel(channel: ParamChannel) {
-    const ch = this.paramsMap.get(channel);
+    const ch = this.channels.get(channel);
     assertExists(ch, {
       why: "The requested channel should exist if this method is called",
       details: { channel },
@@ -84,7 +91,7 @@ export class ParamsLib extends CommonTransports implements IParams {
   }
 
   getChannelNames(): ParamChannel[] {
-    return Array.from(this.paramsMap.keys());
+    return Array.from(this.channels.keys());
   }
 
   createInitialConfig() {
@@ -115,5 +122,21 @@ export class ParamsLib extends CommonTransports implements IParams {
 
   getDqmConfig(): DqmConfig {
     return this.getConfig().getConfig(MERGE_TARGET);
+  }
+
+  getComponentConfig<T>(): T {
+    const MERGE_TARGET = "COMPONENT_CONFIG";
+    this.componentConfig = new Config().pushConfig(
+      "default",
+      this.customizations.config.component,
+    );
+    for (const [channel, lib] of this.channels) {
+      const entries = lib.getMutationEntries();
+      entries.forEach(({ type, chainString, value }) => {
+        const key = `Param:${channel}:${type}:${chainString}`;
+        this.componentConfig.pushConfig(key, value);
+      });
+    }
+    return this.componentConfig.mergeTo(MERGE_TARGET).getConfig(MERGE_TARGET);
   }
 }

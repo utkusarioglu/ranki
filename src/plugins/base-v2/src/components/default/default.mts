@@ -13,7 +13,7 @@ export const baseDefault: IDqmComponent = {
   customizations: {
     config: {
       component: {
-        default: [{}],
+        default: {},
       },
     },
     params: {

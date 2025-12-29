@@ -28,6 +28,7 @@ export interface ICpsUniqueCapability {
   getChannelCompilation(channel: ParamChannel): any;
   getChannels(): ParamChannel[];
   getDqmConfig(): DqmConfig;
+  getComponentConfig<T>(): T;
 }
 
 export type ICpsIdCapability = Pick<

@@ -1,13 +1,18 @@
 import type {
   Chain,
+  IAstParamNode,
   // IAstParamNode,
   ICpsParam,
+  MutationEntry,
   ParamChannel,
   // ParamDefaultValue,
   // ParamProducer,
 } from "@dqm/package-dqm-api-v2";
 import { idCapability } from "../../../capabilities/id.cap.mjs";
 import { astParamCapability } from "../../../ast/param/capabilities/raw-param.cap.mjs";
+import { TypeEngine } from "@dqm/package-dqm-utils";
+import { assertNever } from "../../../../errors/dqm-app-error/assertions.mjs";
+import { assertExists } from "@dqm/package-dqm-utils";
 // import { paramSpecsCapability } from "../../../ast/param/capabilities/specs.cap.mjs";
 // import { cpsParamValuesCapability } from "./capabilities/cps-param-values.cap.mjs";
 // import { assertExists } from "@dqm/package-dqm-utils";
@@ -34,26 +39,108 @@ export class CpsParam implements ICpsParam {
     return this.channel;
   }
 
-  // getProducer(): ParamProducer {
-  //   return this.producer;
-  // }
+  getMutationEntries(): MutationEntry[] {
+    if (!this.isCoupled()) {
+      return [];
+    }
+    const chain = this.getChain();
+    const chainString = this.getChainString();
+    const astValues = this.getAstValues();
+    const tuple = astValues.map((v) => v.value);
+    const tupleType = TypeEngine.determineType(tuple);
+
+    const channel = this.getChannel();
+    const eraser: any = { [channel]: {} };
+    const mutation: any = { [channel]: {} };
+    let currE = mutation[channel];
+    let currM = eraser[channel];
+    let includeEraser = false;
+    const chainLast = chain.at(-1);
+    assertExists(chainLast, {
+      why: "Chains are expected to be multi element string arrays",
+    });
+    chain.slice(0, -1).forEach((part) => {
+      currM[part] = {};
+      currE[part] = {};
+      currM = currM[part];
+      currE = currE[part];
+    });
+    currE[chainLast] = tuple;
+    const operator = this.getOperator();
+    switch (tupleType) {
+      case "array-scalar":
+      case "tuple":
+        break;
+      case "array-populated":
+        switch (operator) {
+          case "assign":
+            includeEraser = true;
+            currM[chainLast] = [];
+            break;
+          case "append":
+          case "prepend":
+            // case "shift":
+            break;
+          default:
+            assertNever({
+              why: "Params are not expected carry this operator",
+              details: {
+                tuple,
+                tupleType,
+                chain,
+                operator,
+              },
+            });
+        }
+        break;
+      default:
+        assertNever({
+          why: "Params are not expected to store this type",
+          details: {
+            tuple,
+            tupleType,
+            chain,
+            operator,
+          },
+        });
+    }
+
+    if (includeEraser) {
+      return [
+        {
+          type: "eraser",
+          chainString,
+          value: eraser,
+        },
+        {
+          type: "mutator",
+          chainString,
+          value: mutation,
+        },
+      ];
+    } else {
+      return [
+        {
+          type: "mutator",
+          chainString,
+          value: mutation,
+        },
+      ];
+    }
+  }
 
   // RAW PARAM
-  // setAstParam(p: IAstParamNode): ICpsParam {
-  //   this.astParam.setAstParam(p);
-  //   // this.producer = "instance-declaration";
-  //   return this;
-  // }
-  setAstParam = this.astParam.setAstParam;
+  setAstParam(p: IAstParamNode): ICpsParam {
+    this.astParam.setAstParam(p);
+    // this.producer = "instance-declaration";
+    return this;
+  }
+  // setAstParam = this.astParam.setAstParam;
   getAstValues = this.astParam.getValues;
   getAstParam = this.astParam.getAstParam;
   getAudience = this.astParam.getAudience;
   getOperator = this.astParam.getOperator;
   isCoupled = this.astParam.isCoupled;
-
-  // SPECS
-  // getSpecs = this.specs.getSpecs;
-  // setSpecs = this.specs.setSpecs;
 
   // ID
   setAlias = this.id.setAlias;
@@ -65,20 +152,4 @@ export class CpsParam implements ICpsParam {
   getIdString = this.id.getIdString;
   getChain = this.id.getChain;
   getChainString = this.id.getChainString;
-
-  // VALUE
-  // getMergedValues() {
-  //   const values = this.astParam.getValues();
-  //   assertExists(values, {
-  //     why: "If values are being called, it means that CpsParam is linked with AstParam and it should have values.",
-  //   });
-  //   return values.map((v) => ({
-  //     type: v.type,
-  //     subtype: v.subType,
-  //     value: v.value,
-  //   }));
-  //   // return this.values.getMergedValues(this.getAstValues());
-  // }
-  // getDefaultValues = this.values.getDefaultValues.bind(this.values);
-  // setDefaultValues = this.values.setDefaultValues.bind(this.values);
 }

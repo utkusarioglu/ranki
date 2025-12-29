@@ -1,6 +1,7 @@
 import type {
   Alias,
   Chain,
+  ChainString,
   // IAstParamSpecsCapability,
   // ICpsParamValue,
   IId,
@@ -25,9 +26,16 @@ export interface ICpsParam
 //   getProducer(): ParamProducer;
 // }
 
+export interface MutationEntry {
+  type: "mutator" | "eraser";
+  chainString: ChainString;
+  value: any;
+}
+
 export interface CpsParamValuesCapability {
   // setValues(values: AstSourceView[]): this;
   getAstValues(): AstSourceView[] | never;
+  getMutationEntries(): MutationEntry[];
 
   // getMergedValues(): ICpsParamValue;
 

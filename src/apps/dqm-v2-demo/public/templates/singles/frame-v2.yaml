@@ -2,6 +2,11 @@ group: frame-v2
 label: FrameV2
 description: Components powered by FrameV2
 list:
+- id: inline-code
+  label: Inline code block
+  description: Most basic inline code block
+  raw: |
+    [code|func]
 - id: code-params
   label: Code block with params
   description: Uses params and pauses

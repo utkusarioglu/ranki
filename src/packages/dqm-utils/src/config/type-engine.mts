@@ -1,5 +1,9 @@
 import { DqmConfigError } from "./error/error.mjs";
-import type { LocalConfig, ConfigTypes } from "./config.types.mjs";
+import type {
+  LocalConfig,
+  ConfigTypes,
+  TypeOfResult,
+} from "./config.types.mjs";
 
 const TUPLE_SKIP = "_";
 
@@ -54,11 +58,11 @@ export class TypeEngine {
       if (curr.length !== base.length) {
         return false;
       }
-      const baseTypes = base.map((v: any) => typeof v);
+      const baseTypes = base.map((v: any) => typeof v) as TypeOfResult[];
       const currTypes = curr.map((v: any, i: number) =>
         v === TUPLE_SKIP ? typeof base[i] : typeof v,
-      );
-      if ([baseTypes, currTypes].some(([b, c], i) => b[i] !== c[i])) {
+      ) as TypeOfResult[];
+      if (baseTypes.some((b, i) => b !== currTypes[i])) {
         return false;
       }
       return true;
