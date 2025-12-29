@@ -1,10 +1,7 @@
 import type { IAstParamNode } from "@dqm/package-dqm-api-v2";
 import type { FC } from "react";
 import { PropertyTable } from "../../tables/PropertyTable";
-import {
-  SectionTitle,
-  SectionTitleCode,
-} from "../../section-title/SectionTitle";
+import { SectionTitle } from "../../section-title/SectionTitle";
 import type { PropertyTableRows } from "../../tables/PropertyTable";
 import type { ClassSanitizer } from "_utils/sanitizer.mjs";
 
@@ -25,10 +22,7 @@ export const GraphMenuAstParamSemanticPart: FC<
 
   return (
     <>
-      <SectionTitle>
-        <SectionTitleCode>IAstParamNode</SectionTitleCode>
-        Semantic Props
-      </SectionTitle>
+      <SectionTitle parts={["code:IAstParamNode", "Semantic Props"]} />
       <PropertyTable rows={paramRows} />
     </>
   );

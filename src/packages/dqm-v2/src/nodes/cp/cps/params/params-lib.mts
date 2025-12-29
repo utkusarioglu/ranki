@@ -58,8 +58,6 @@ export class ParamsLib extends CommonTransports implements IParams {
 
   private processSchema() {
     Object.entries(this.customizations.params).forEach(([channel, specs]) => {
-      // const channel = v[0] as ParamChannel;
-      // const specs = v[1] as ChannelParamSpecs;
       const cp = new ParamsChannelLib(this.getTransports(), channel).setSchema(
         specs,
       );

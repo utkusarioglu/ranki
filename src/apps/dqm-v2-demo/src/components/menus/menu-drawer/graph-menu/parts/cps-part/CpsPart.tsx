@@ -1,9 +1,6 @@
 import { type FC } from "react";
 import { type PropertyTableRows } from "../../tables/PropertyTable";
-import {
-  SectionTitle,
-  SectionTitleCode,
-} from "../../section-title/SectionTitle";
+import { SectionTitle } from "../../section-title/SectionTitle";
 import { PropertyTable } from "../../tables/PropertyTable";
 import type { ICps } from "@dqm/package-dqm-api-v2";
 import type { ClassSanitizer } from "_utils/sanitizer.mjs";
@@ -25,9 +22,7 @@ export const GraphMenuCpsPart: FC<GraphMenuCpsPartProps> = ({ cps: a }) => {
 
   return (
     <>
-      <SectionTitle>
-        <SectionTitleCode>Cps</SectionTitleCode> Props
-      </SectionTitle>
+      <SectionTitle parts={["code:Cps", "Props"]} />
       <PropertyTable rows={astRows} />
     </>
   );

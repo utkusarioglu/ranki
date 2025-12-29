@@ -1,10 +1,7 @@
 import type { IAstParamNode } from "@dqm/package-dqm-api-v2";
 import type { FC } from "react";
 import { PropertyTable } from "../../tables/PropertyTable";
-import {
-  SectionTitle,
-  SectionTitleCode,
-} from "../../section-title/SectionTitle";
+import { SectionTitle } from "../../section-title/SectionTitle";
 import type { PropertyTableRows } from "../../tables/PropertyTable";
 import {
   ParameterTable,
@@ -41,14 +38,9 @@ export const GraphMenuAstParamPart: FC<GraphMenuParamPartProps> = ({
 
   return (
     <>
-      <SectionTitle>
-        <SectionTitleCode>IAstParamNode</SectionTitleCode> Value Props
-      </SectionTitle>
+      <SectionTitle parts={["code:IAstParamNode", "Value Props"]} />
       <PropertyTable rows={paramRows} />
-      <SectionTitle>
-        <SectionTitleCode>IAstParamNode</SectionTitleCode>
-        Values
-      </SectionTitle>
+      <SectionTitle parts={["code:IAstParamNode", "Values"]} />
       <ParameterTable rows={values} />
     </>
   );

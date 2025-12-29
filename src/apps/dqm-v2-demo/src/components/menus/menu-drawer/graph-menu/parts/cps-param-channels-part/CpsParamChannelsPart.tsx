@@ -30,16 +30,15 @@ export const CpsParamChannelsPart: FC<CpsParamChannelsPartProps> = ({
       <SectionTitle>Channel Compilations</SectionTitle>
       <div>
         {channels.map((channel) => (
-          <>
-            <TryCatchSourceCard
-              topDescription={
-                <Typography.Title level={5} code className={style.channelName}>
-                  {channel}
-                </Typography.Title>
-              }
-              item={c.getChannelCompilation(channel)}
-            />
-          </>
+          <TryCatchSourceCard
+            key={channel}
+            topDescription={
+              <Typography.Title level={5} code className={style.channelName}>
+                {channel}
+              </Typography.Title>
+            }
+            item={c.getChannelCompilation(channel)}
+          />
         ))}
       </div>
     </>

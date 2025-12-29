@@ -47,15 +47,13 @@ export class ParamsChannelLib extends CommonTransports {
 
   /**
    * @dev
-   * #1 Creates all params with their default values
-   * these later get updated by the param instances created by the parsed language
-   * #2 Sets only the chain because a param may have multiple aliases. If the
-   * source uses an alias, the corresponding chain is determines from the
-   * schema and the param is determined through the chain.
+   * #1 Creates all params that the component plugin sets to be assignable by
+   * the source code. Anything AstParam that don't bind with the chain or alias
+   * of one of the CpsParam is handled in accordance with the error settings.
+   * It may throw or can be silently discarded.
    */
   private processSchema() {
     this.schema.params.forEach((p) => {
-      // const param = new CpsParam(p.id.chain, this.channel, p.values); // #1
       const param = new CpsParam(p.id.chain, this.channel); // #1
       this.lib.add(p.id, param);
     });
@@ -124,16 +122,7 @@ export class ParamsChannelLib extends CommonTransports {
     if (!p) {
       return; // #1
     }
-    try {
-      p.setAstParam(user);
-    } catch (e) {
-      // TODO get rid of this
-      console.log(
-        "User assigned a param that isn't defined in the component customization",
-        e,
-      );
-    }
-
+    p.setAstParam(user);
     return this;
   }
 
@@ -146,10 +135,6 @@ export class ParamsChannelLib extends CommonTransports {
     return Array.from(this.lib.peekActiveChains())
       .map(([_, param]) => param.getMutationEntries())
       .flat();
-
-    // for (const [chainString, param] of this.lib.peekActiveChains()) {
-
-    // }
   }
 
   getCompilation<T>(): T {
@@ -171,7 +156,6 @@ export class ParamsChannelLib extends CommonTransports {
           const values = param.getAstValues().map((v) => v.value);
           curr[part] = values.length === 1 ? values[0] : values;
         }
-        //   c[part] =
       });
     }
 

@@ -14,7 +14,7 @@ export function traverseCpx(raw: ICpx | null, cpxDepth: number): void {
   const node = {
     data: {
       id,
-      label: uniqueLabel("Cpx", root.getChainListString(), root.getUnique()),
+      label: uniqueLabel("Cpx", root.getChainListString(), raw.getUnique()),
       // label: [
       //   "Cpx:",
       //   root.getChainListString().value,

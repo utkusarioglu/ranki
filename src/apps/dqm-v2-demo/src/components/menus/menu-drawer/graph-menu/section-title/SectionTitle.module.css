@@ -1,8 +1,13 @@
-.title {
+.container {
   padding-inline: var(--ant-padding);
+  margin-block: var(--ant-padding);
 }
 
 .code {
   margin-left: -0.5rem;
+  display: inline;
+}
+
+.part {
   display: inline;
 }

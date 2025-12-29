@@ -7,6 +7,9 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     style: {
       label: "data(label)",
       "curve-style": "straight",
+      // "curve-style": "segments",
+      // "curve-style": "taxi",
+      "control-point-step-size": 200,
 
       "text-valign": "center",
       "text-halign": "left",
