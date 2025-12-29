@@ -12,7 +12,9 @@ export const baseDefault: IDqmComponent = {
   },
   customizations: {
     config: {
-      default: [{}],
+      component: {
+        default: [{}],
+      },
     },
     params: {
       $: {
@@ -25,9 +27,9 @@ export const baseDefault: IDqmComponent = {
       },
     },
   },
-  stages: {
-    // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
-    // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
-    preprocessing: (c) => c,
-  },
+  // stages: {
+  //   // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
+  //   // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
+  //   preprocessing: (c) => c,
+  // },
 };

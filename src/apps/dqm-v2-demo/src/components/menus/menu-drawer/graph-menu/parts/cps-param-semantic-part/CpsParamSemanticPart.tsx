@@ -15,7 +15,9 @@ interface GraphMenuCpsParamSemanticPartProps {
 export const GraphMenuCpsParamSemanticPart: FC<
   GraphMenuCpsParamSemanticPartProps
 > = ({ param: p }) => {
-  const paramRows: PropertyTableRows = [["Producer", p.getProducer()]];
+  const paramRows: PropertyTableRows = [
+    // ["Producer", p.getProducer()]
+  ];
 
   return (
     <>

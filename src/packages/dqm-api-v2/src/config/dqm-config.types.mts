@@ -43,6 +43,7 @@ export interface DqmConfig {
     tokens: DqmPluginsTokens;
   };
   content: {
+    trim: boolean;
     prefix: string;
     suffix: string;
   };

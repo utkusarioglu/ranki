@@ -1,56 +1,59 @@
 import type {
   Chain,
-  IAstParamNode,
+  // IAstParamNode,
   ICpsParam,
   ParamChannel,
-  ParamDefaultValue,
-  ParamProducer,
+  // ParamDefaultValue,
+  // ParamProducer,
 } from "@dqm/package-dqm-api-v2";
 import { idCapability } from "../../../capabilities/id.cap.mjs";
 import { astParamCapability } from "../../../ast/param/capabilities/raw-param.cap.mjs";
-import { paramSpecsCapability } from "../../../ast/param/capabilities/specs.cap.mjs";
-import { cpsParamValuesCapability } from "./capabilities/cps-param-values.cap.mjs";
+// import { paramSpecsCapability } from "../../../ast/param/capabilities/specs.cap.mjs";
+// import { cpsParamValuesCapability } from "./capabilities/cps-param-values.cap.mjs";
+// import { assertExists } from "@dqm/package-dqm-utils";
 
 export class CpsParam implements ICpsParam {
-  private values = cpsParamValuesCapability(this);
+  // private values = cpsParamValuesCapability(this);
   private id = idCapability(this);
   private astParam = astParamCapability(this);
-  private specs = paramSpecsCapability(this);
+  // private specs = paramSpecsCapability(this);
   private channel: ParamChannel;
-  private producer: ParamProducer = "component-default";
+  // private producer: ParamProducer = "component-default";
 
   constructor(
     chain: Chain,
     channel: ParamChannel,
-    defaultValues: ParamDefaultValue[],
+    // defaultValues: ParamDefaultValue[],
   ) {
     this.id.setId(chain);
     this.channel = channel;
-    this.values.setDefaultValues(defaultValues);
+    // this.values.setDefaultValues(defaultValues);
   }
 
   getChannel(): ParamChannel {
     return this.channel;
   }
 
-  getProducer(): ParamProducer {
-    return this.producer;
-  }
+  // getProducer(): ParamProducer {
+  //   return this.producer;
+  // }
 
   // RAW PARAM
-  setAstParam(p: IAstParamNode): ICpsParam {
-    this.astParam.setAstParam(p);
-    this.producer = "instance-declaration";
-    return this;
-  }
+  // setAstParam(p: IAstParamNode): ICpsParam {
+  //   this.astParam.setAstParam(p);
+  //   // this.producer = "instance-declaration";
+  //   return this;
+  // }
+  setAstParam = this.astParam.setAstParam;
   getAstValues = this.astParam.getValues;
   getAstParam = this.astParam.getAstParam;
   getAudience = this.astParam.getAudience;
   getOperator = this.astParam.getOperator;
+  isCoupled = this.astParam.isCoupled;
 
   // SPECS
-  getSpecs = this.specs.getSpecs;
-  setSpecs = this.specs.setSpecs;
+  // getSpecs = this.specs.getSpecs;
+  // setSpecs = this.specs.setSpecs;
 
   // ID
   setAlias = this.id.setAlias;
@@ -64,9 +67,18 @@ export class CpsParam implements ICpsParam {
   getChainString = this.id.getChainString;
 
   // VALUE
-  getMergedValues() {
-    return this.values.getMergedValues(this.getAstValues());
-  }
-  getDefaultValues = this.values.getDefaultValues.bind(this.values);
-  setDefaultValues = this.values.setDefaultValues.bind(this.values);
+  // getMergedValues() {
+  //   const values = this.astParam.getValues();
+  //   assertExists(values, {
+  //     why: "If values are being called, it means that CpsParam is linked with AstParam and it should have values.",
+  //   });
+  //   return values.map((v) => ({
+  //     type: v.type,
+  //     subtype: v.subType,
+  //     value: v.value,
+  //   }));
+  //   // return this.values.getMergedValues(this.getAstValues());
+  // }
+  // getDefaultValues = this.values.getDefaultValues.bind(this.values);
+  // setDefaultValues = this.values.setDefaultValues.bind(this.values);
 }

@@ -1,9 +1,9 @@
 export interface ICpsParamValueItem {
-  name: string;
+  // name: string;
   subtype?: string;
   type: string;
   value: any;
-  defaultValue: any;
+  // defaultValue: any;
 }
 
 export type ICpsParamValue = ICpsParamValueItem[];

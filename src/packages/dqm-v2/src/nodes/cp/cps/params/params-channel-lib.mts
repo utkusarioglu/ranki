@@ -54,7 +54,8 @@ export class ParamsChannelLib extends CommonTransports {
    */
   private processSchema() {
     this.schema.params.forEach((p) => {
-      const param = new CpsParam(p.id.chain, this.channel, p.values); // #1
+      // const param = new CpsParam(p.id.chain, this.channel, p.values); // #1
+      const param = new CpsParam(p.id.chain, this.channel); // #1
       this.lib.add(p.id, param);
     });
   }
@@ -141,6 +142,9 @@ export class ParamsChannelLib extends CommonTransports {
     const c: any = {};
 
     for (const [chainString, param] of this.lib.peekActiveChains()) {
+      if (!param.isCoupled()) {
+        continue;
+      }
       let curr = c;
       const chain: Chain = chainString.split(".");
       chain.forEach((part, i, all) => {
@@ -150,7 +154,7 @@ export class ParamsChannelLib extends CommonTransports {
           }
           curr = curr[part];
         } else {
-          const values = param.getMergedValues().map((v) => v.value);
+          const values = param.getAstValues().map((v) => v.value);
           curr[part] = values.length === 1 ? values[0] : values;
         }
         //   c[part] =

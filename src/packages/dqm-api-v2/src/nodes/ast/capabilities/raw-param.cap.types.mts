@@ -6,6 +6,7 @@ import type {
 export interface IAstParamCapability<T> extends IAstParamSemanticSection {
   getAstParam(): IAstParamNode | null;
   setAstParam(p: IAstParamNode): T;
+  isCoupled(): boolean;
 }
 
 type IAstParamSemanticSection = Pick<

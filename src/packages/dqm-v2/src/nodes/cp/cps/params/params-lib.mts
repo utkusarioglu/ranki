@@ -2,7 +2,7 @@ import type {
   Alias,
   Chain,
   ComponentCustomizations,
-  ChannelParamSpecs,
+  // ChannelParamSpecs,
   IAstParamNode,
   IParams,
   ParamChannel,
@@ -19,10 +19,10 @@ import { DqmAppError } from "../../../../errors/dqm-app-error/dqm-app-error.mjs"
 type ParamsMap = Map<ParamChannel, ParamsChannelLib>;
 
 const MERGE_TARGET = "merged";
-const DEFAULT_CHANNEL = "default"; // this has to coincide with the channel in component type in api repo
+const CHANNEL_COMPONENT_DEFAULT = "default"; // this has to coincide with the channel in component type in api repo
 
 export class ParamsLib extends CommonTransports implements IParams {
-  private schema!: ComponentCustomizations;
+  private customizations!: ComponentCustomizations;
   private paramsMap: ParamsMap = new Map();
 
   initConfig(unique: UniqueValue): this {
@@ -36,23 +36,23 @@ export class ParamsLib extends CommonTransports implements IParams {
       .flat();
   }
 
-  @dependsOn("schema")
+  @dependsOn("customizations")
   pushParam(user: IAstParamNode): this {
-    const channel = user.getChannel() || DEFAULT_CHANNEL;
+    const channel = user.getChannel() || CHANNEL_COMPONENT_DEFAULT;
     this.getChannel(channel).addParam(user);
     return this;
   }
 
   setSchema(schema: ComponentCustomizations): this {
-    this.schema = schema;
+    this.customizations = schema;
     this.processSchema();
     return this;
   }
 
   private processSchema() {
-    Object.entries(this.schema.params).forEach((v) => {
-      const channel = v[0] as ParamChannel;
-      const specs = v[1] as ChannelParamSpecs;
+    Object.entries(this.customizations.params).forEach(([channel, specs]) => {
+      // const channel = v[0] as ParamChannel;
+      // const specs = v[1] as ChannelParamSpecs;
       const cp = new ParamsChannelLib(this.getTransports(), channel).setSchema(
         specs,
       );
@@ -61,10 +61,10 @@ export class ParamsLib extends CommonTransports implements IParams {
   }
 
   getSchema(): ComponentCustomizations {
-    return this.schema;
+    return this.customizations;
   }
 
-  @dependsOn("schema")
+  @dependsOn("customizations")
   @rejectValues(undefined)
   findById(channel: ParamChannel, id: Alias | Chain): ICpsParam | never {
     return this.getChannel(channel).findById(id);
@@ -99,6 +99,9 @@ export class ParamsLib extends CommonTransports implements IParams {
           .configChannelToken;
       const componentParamConfig =
         this.getChannel(configChannelToken).getCompilation<DqmConfig>();
+      this.customizations.config?.dqm?.forEach((d, i) => {
+        config.pushConfig("component-base-" + i, d);
+      });
       config.pushConfig("cps", componentParamConfig);
       config.mergeTo(MERGE_TARGET);
     } catch (e) {

@@ -12,7 +12,9 @@ export const frameV2ContainerComponent: IDqmComponent = {
   },
   customizations: {
     config: {
-      default: [{}],
+      component: {
+        default: [{}],
+      },
     },
     params: {
       $: {
@@ -25,13 +27,13 @@ export const frameV2ContainerComponent: IDqmComponent = {
       },
     },
   },
-  stages: {
-    // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
-    // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
-    preprocessing: (c) => c,
-    // ast: {
-    //   channels: {
-    //   },
-    // },
-  },
+  // stages: {
+  //   // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
+  //   // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
+  //   preprocessing: (c) => c,
+  //   // ast: {
+  //   //   channels: {
+  //   //   },
+  //   // },
+  // },
 };

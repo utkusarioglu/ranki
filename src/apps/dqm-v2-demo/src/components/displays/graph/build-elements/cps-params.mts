@@ -9,11 +9,11 @@ function traverseCpsParam(cpsId: IdValue, raw: ICpsParam) {
   const id = Registry.getNew(raw);
   const root = createSanitizedView(raw);
   Registry.registerSanitized(id, root);
-  const producerPre = root.getProducer();
-  assertTryCatchSuccess(producerPre, {
-    why: "param producer needs to be defined",
-  });
-  const producer = producerPre.value;
+  // const producerPre = root.getProducer();
+  // assertTryCatchSuccess(producerPre, {
+  //   why: "param producer needs to be defined",
+  // });
+  // const producer = producerPre.value;
   const chainStringPre = root.getChainString();
   assertTryCatchSuccess(chainStringPre, { why: "param id is required" });
   const chainString = chainStringPre.value;
@@ -23,7 +23,10 @@ function traverseCpsParam(cpsId: IdValue, raw: ICpsParam) {
       id,
       label: "CpsParam:" + chainString,
     },
-    classes: cls("cpsParam", `producer-${producer}`),
+    classes: cls(
+      "cpsParam",
+      // `producer-${producer}`
+    ),
   };
   Registry.registerNode(node);
 
@@ -47,7 +50,11 @@ function traverseCpsParam(cpsId: IdValue, raw: ICpsParam) {
       target: cpsId,
       label: "configures",
     },
-    classes: cls("source-cps", "target-cpsParam", `producer-${producer}`),
+    classes: cls(
+      "source-cps",
+      "target-cpsParam",
+      // `producer-${producer}`
+    ),
   });
 
   // const prevPre = root.getPrev();

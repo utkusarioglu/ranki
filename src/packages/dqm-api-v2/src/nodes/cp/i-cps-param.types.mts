@@ -1,11 +1,11 @@
 import type {
   Alias,
   Chain,
-  IAstParamSpecsCapability,
-  ICpsParamValue,
+  // IAstParamSpecsCapability,
+  // ICpsParamValue,
   IId,
-  ParamDefaultValue,
-  ParamProducer,
+  // ParamDefaultValue,
+  // ParamProducer,
 } from "../../export.types.mjs";
 import type { IAstParamCapability } from "../ast/capabilities/raw-param.cap.types.mjs";
 import type { AstSourceView } from "../export.types.mjs";
@@ -14,24 +14,25 @@ import type { AstSourceView } from "../export.types.mjs";
 export interface ICpsParam
   extends ICpsParamIdCapability,
     CpsParamValuesCapability,
-    IAstParamCapability<ICpsParam>,
-    IAstParamSpecsCapability,
-    ICpsParamSemanticCapability {
+    IAstParamCapability<ICpsParam> {
+  // ,
+  // IAstParamSpecsCapability,
+  // ICpsParamSemanticCapability
   //
 }
 
-export interface ICpsParamSemanticCapability {
-  getProducer(): ParamProducer;
-}
+// export interface ICpsParamSemanticCapability {
+//   getProducer(): ParamProducer;
+// }
 
 export interface CpsParamValuesCapability {
   // setValues(values: AstSourceView[]): this;
-  getAstValues(): AstSourceView[] | null;
+  getAstValues(): AstSourceView[] | never;
 
-  getMergedValues(): ICpsParamValue;
+  // getMergedValues(): ICpsParamValue;
 
-  setDefaultValues(valueSpec: ParamDefaultValue[]): this;
-  getDefaultValues(): ParamDefaultValue[];
+  // setDefaultValues(valueSpec: ParamDefaultValue[]): this;
+  // getDefaultValues(): ParamDefaultValue[];
 }
 
 export interface ICpsParamIdCapability

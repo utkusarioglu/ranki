@@ -121,11 +121,11 @@ export class Cps extends CommonTransports implements ICps {
       "NOT_SURE_IF_THIS_IS_NEEDED",
       mergedConfig,
     );
-    const prefixed = [
-      mergedConfig.content.prefix,
-      input.dqm,
-      mergedConfig.content.suffix,
-    ].join("");
+    const prefix = mergedConfig.content.prefix;
+    const suffix = mergedConfig.content.suffix;
+    const trimmed = mergedConfig.content.trim ? input.dqm.trim() : input.dqm;
+
+    const prefixed = [prefix, trimmed, suffix].join("");
     const obj = parse(
       prefixed,
       // input.dqm,

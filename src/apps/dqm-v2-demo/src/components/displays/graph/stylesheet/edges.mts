@@ -160,19 +160,19 @@ export const buildEdges = (token: GlobalToken, fontSize: number) => [
     },
   },
 
-  {
-    selector: "edge.source-cps.target-cpsParam.producer-instance-declaration",
-    style: {
-      "line-color": "#0FF",
-      "target-arrow-color": "#0FF",
-      color: "#0FF",
-      width: 1,
-    },
-  },
+  // {
+  //   selector: "edge.source-cps.target-cpsParam.producer-instance-declaration",
+  //   style: {
+  //     "line-color": "#0FF",
+  //     "target-arrow-color": "#0FF",
+  //     color: "#0FF",
+  //     width: 1,
+  //   },
+  // },
 
   {
     // !FIX
-    selector: "edge.source-cps.target-cpsParam.producer-component-default",
+    selector: "edge.source-cps.target-cpsParam",
     style: {
       "line-color": "#0F4",
       "target-arrow-color": "#0F4",

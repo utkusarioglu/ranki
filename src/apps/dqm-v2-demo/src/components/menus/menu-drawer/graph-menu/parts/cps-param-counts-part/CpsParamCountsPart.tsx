@@ -18,11 +18,11 @@ export const GraphMenuCpsParamCountsPart: FC<GraphMenuParamPartProps> = ({
 }) => {
   const paramRows: PropertyTableRows = [
     ["Ast Value Count", tryCatchLeap(p.getAstValues(), (o) => o.length)],
-    [
-      "Default Value Count",
-      tryCatchLeap(p.getDefaultValues(), (o) => o.length),
-    ],
-    ["User Value Count", tryCatchLeap(p.getMergedValues(), (o) => o.length)],
+    // [
+    //   "Default Value Count",
+    //   tryCatchLeap(p.getDefaultValues(), (o) => o.length),
+    // ],
+    // ["User Value Count", tryCatchLeap(p.getAstValues(), (o) => o.length)],
   ];
 
   return (

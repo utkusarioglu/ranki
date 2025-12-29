@@ -1,6 +1,15 @@
 import type { IDqmComponent } from "@dqm/package-dqm-api-v2";
 
-export const frameV2CodeBlockComponent: IDqmComponent = {
+interface ComponentType {
+  prettier: {
+    auto_format: boolean;
+  };
+  path: {
+    cat: [number, string, boolean];
+  };
+}
+
+export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
   type: "component",
   meta: {
     id: {
@@ -14,23 +23,27 @@ export const frameV2CodeBlockComponent: IDqmComponent = {
     // TODO you need "channels: {}" to wrap these
     // TODO you need a settings object here to tell how component wants to handle missing params etc
     config: {
-      $: {
-        // @ts-expect-error
-        content: {
-          prefix: "CODE!",
-          suffix: "!!CODE!",
-        },
-      },
-      default: [
+      dqm: [
         {
-          prettier: {
-            auto_format: true,
-          },
-          path: {
-            cat: [1, "def", false],
+          content: {
+            trim: true,
+            prefix: "PREFIX",
+            suffix: "SUFFIX",
           },
         },
       ],
+      component: {
+        default: [
+          {
+            prettier: {
+              auto_format: true,
+            },
+            path: {
+              cat: [1, "def", false],
+            },
+          },
+        ],
+      },
     },
     params: {
       $: {
@@ -41,13 +54,13 @@ export const frameV2CodeBlockComponent: IDqmComponent = {
               chain: ["content", "prefix"],
               aliases: ["p"],
             },
-            values: [
-              {
-                name: "Prefix string",
-                type: "string",
-                defaultValue: "",
-              },
-            ],
+            // values: [
+            //   {
+            //     name: "Prefix string",
+            //     type: "string",
+            //     defaultValue: "",
+            //   },
+            // ],
           },
         ],
       },
@@ -59,48 +72,48 @@ export const frameV2CodeBlockComponent: IDqmComponent = {
               chain: ["prettier", "auto_format"],
               aliases: ["p"],
             },
-            values: [
-              {
-                name: "Auto Format",
-                //
-                type: "boolean",
-                defaultValue: true,
-              },
-            ],
+            // values: [
+            //   {
+            //     name: "Auto Format",
+            //     //
+            //     type: "boolean",
+            //     defaultValue: true,
+            //   },
+            // ],
           },
           {
             id: {
               chain: ["path", "cat"],
               aliases: ["h"],
             },
-            values: [
-              {
-                name: "first_number",
-                //
-                type: "number",
-                defaultValue: 1,
-              },
-              {
-                name: "second_value",
-                //
-                type: "string",
-                defaultValue: "def",
-              },
-              {
-                name: "third_value",
-                //
-                type: "boolean",
-                defaultValue: false,
-              },
-            ],
+            // values: [
+            //   {
+            //     name: "first_number",
+            //     //
+            //     type: "number",
+            //     defaultValue: 1,
+            //   },
+            //   {
+            //     name: "second_value",
+            //     //
+            //     type: "string",
+            //     defaultValue: "def",
+            //   },
+            //   {
+            //     name: "third_value",
+            //     //
+            //     type: "boolean",
+            //     defaultValue: false,
+            //   },
+            // ],
           },
         ],
       },
     },
   },
-  stages: {
-    // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
-    // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
-    preprocessing: (c) => c,
-  },
+  // stages: {
+  //   // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
+  //   // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
+  //   preprocessing: (c) => c,
+  // },
 };

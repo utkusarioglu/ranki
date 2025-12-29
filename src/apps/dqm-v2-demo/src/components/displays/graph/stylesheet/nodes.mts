@@ -51,20 +51,20 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
     },
   },
   {
-    selector: "node.cpsParam.producer-instance-declaration",
+    selector: "node.cpsParam",
     style: {
       color: "#0FF",
       "background-color": "#0FF",
     },
   },
 
-  {
-    selector: "node.cpsParam.producer-component-default",
-    style: {
-      color: "#0F4",
-      "background-color": "#0F4",
-    },
-  },
+  // {
+  //   selector: "node.cpsParam.producer-component-default",
+  //   style: {
+  //     color: "#0F4",
+  //     "background-color": "#0F4",
+  //   },
+  // },
 
   {
     selector: "node.cps",

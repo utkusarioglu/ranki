@@ -17,7 +17,7 @@ interface GraphMenuParamPartProps {
 export const GraphMenuCpsMergedParamsPart: FC<GraphMenuParamPartProps> = ({
   param: p,
 }) => {
-  const valuesPre = p.getMergedValues();
+  const valuesPre = p.getAstValues();
   if (valuesPre.state === "fail") {
     return (
       <ExceptionCard>

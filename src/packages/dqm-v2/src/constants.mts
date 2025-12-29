@@ -6,6 +6,7 @@ export const DEFAULT_CONFIG: DqmConfig = {
     tokens: {},
   },
   content: {
+    trim: false,
     prefix: "",
     suffix: "",
   },
