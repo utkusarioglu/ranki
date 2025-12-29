@@ -16,6 +16,7 @@ interface GraphMenuAstPartProps {
 export const GraphMenuAstPart: FC<GraphMenuAstPartProps> = ({ ast: a }) => {
   const astRows: PropertyTableRows = [
     ["Creator", a.getCreator()],
+    ["Unique", a.getUnique()],
     ["Kind", a.getKind()],
     ["Block Depth", a.getBlockDepth()],
     ["Inline Depth", a.getBlockDepth()],

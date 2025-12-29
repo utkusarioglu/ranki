@@ -13,9 +13,9 @@ import type { CommonTransportsConstructorParams } from "../common-transports.typ
 import type { IAstParamNode } from "../ast/export.types.mjs";
 import type {
   IAstNode,
-  UniqueValue,
   IVerticesCapability,
   Audience,
+  ICommonTransports,
 } from "../../export.types.mjs";
 
 export type ICpxConstructor = new (
@@ -23,14 +23,14 @@ export type ICpxConstructor = new (
 ) => ICpx;
 
 export interface ICpx
-  extends ICpxUniqueCapability,
+  extends ICommonTransports,
+    ICpxUniqueCapability,
     IVerticesCapability<ICpx>,
     RawParamsCapability,
     CpsCollectionCapability,
     AstCollectionCapability {}
 interface ICpxUniqueCapability {
   parse(input: CpxParseInput): IAstNode;
-  getUnique(): UniqueValue;
 }
 
 export interface CpsCollectionCapability {

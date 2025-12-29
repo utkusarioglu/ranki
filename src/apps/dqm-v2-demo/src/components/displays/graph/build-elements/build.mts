@@ -6,7 +6,7 @@ import { traverseCps } from "./cps.mts";
 import { getRoot } from "./utils.mts";
 import { traverseAst } from "./ast.mts";
 import { traverseAstParams } from "./ast-param.mts";
-import { traverseParams } from "./params.mts";
+import { traverseParams } from "./cps-params.mts";
 
 export function buildElements(currAst: IAstNode): Flattened | null {
   Registry.reset();

@@ -2,12 +2,9 @@ import type {
   ICpx,
   CpxParseInput,
   IAstNode,
-  UniqueValue,
-  CommonTransportsConstructorParams,
   ChainList,
 } from "@dqm/package-dqm-api-v2";
 import { CommonTransports } from "../../common-transports.mjs";
-import { Unique } from "../../../unique/unique.mjs";
 import { astParamsCapability } from "../capabilities/ast-params.cap.mjs";
 import { verticesCapability } from "../../capabilities/vertices.capability.mjs";
 import { cpsCollectionCapability } from "../capabilities/cps-collection.cap.mjs";
@@ -22,16 +19,6 @@ export class Cpx extends CommonTransports implements ICpx {
   private ast = astCollectionCapability(this);
   private astParams = astParamsCapability(this);
   private vertices = verticesCapability<this, ICpx>(this);
-  private uniqueValue: UniqueValue;
-
-  constructor(ct: CommonTransportsConstructorParams) {
-    super(ct);
-    this.uniqueValue = Unique.getNewUnique();
-  }
-
-  getUnique() {
-    return this.uniqueValue;
-  }
 
   parse(input: CpxParseInput): IAstNode {
     return this.getTargetCps().parse(input);

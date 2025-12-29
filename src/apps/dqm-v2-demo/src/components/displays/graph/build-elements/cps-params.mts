@@ -33,9 +33,9 @@ function traverseCpsParam(cpsId: IdValue, raw: ICpsParam) {
   if (astParam) {
     Registry.registerEdge({
       data: {
-        source: id,
-        target: Registry.getId(astParam),
-        label: "represents",
+        source: Registry.getId(astParam),
+        target: id,
+        label: "mutates",
       },
       classes: cls("source-cpsParam", "target-astParam"),
     });
@@ -43,9 +43,9 @@ function traverseCpsParam(cpsId: IdValue, raw: ICpsParam) {
 
   Registry.registerEdge({
     data: {
-      source: cpsId,
-      target: id,
-      label: "customizes",
+      source: id,
+      target: cpsId,
+      label: "configures",
     },
     classes: cls("source-cps", "target-cpsParam", `producer-${producer}`),
   });

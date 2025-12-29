@@ -1,6 +1,6 @@
 import type { ICpx, IAstParamNode } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
-import { cls } from "./utils.mts";
+import { cls, uniqueLabel } from "./utils.mts";
 import { createSanitizedView } from "_utils/sanitizer.mts";
 import { assertTryCatchSuccess } from "_assertions";
 
@@ -23,10 +23,15 @@ function traverseAstParam(raw: IAstParamNode | null): void {
   const node = Registry.getNode(raw);
   const root = createSanitizedView(raw);
   // Registry.registerSanitized(node.data.id, root);
-  const idStringPre = root.getId();
-  assertTryCatchSuccess(idStringPre, { why: "id is required" });
-  const idString = idStringPre.value;
-  node.data.label = "AstParam:" + idString;
+  // const idStringPre = root.getIdString();
+  // assertTryCatchSuccess(idStringPre, { why: "id is required" });
+  // const idString = idStringPre.value;
+  // node.data.label = "AstParam:" + idString;
+  node.data.label = uniqueLabel(
+    "AstParam",
+    root.getIdString(),
+    raw.getUnique(),
+  );
   node.classes = cls("astParam");
   const id = node.data.id;
 
@@ -42,7 +47,7 @@ function traverseAstParam(raw: IAstParamNode | null): void {
       data: {
         source: Registry.getId(creatorCpx),
         target: id,
-        label: "maintains",
+        label: "aggregates",
       },
       classes: cls(
         "source-cpx",

@@ -1,6 +1,6 @@
 import type { ICpx } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
-import { cls } from "./utils.mts";
+import { cls, uniqueLabel } from "./utils.mts";
 import { createSanitizedView } from "../../../../utils/sanitizer.mts";
 import { assertTryCatchSuccess } from "_assertions";
 
@@ -14,7 +14,14 @@ export function traverseCpx(raw: ICpx | null, cpxDepth: number): void {
   const node = {
     data: {
       id,
-      label: "Cpx:" + root.getChainListString().value,
+      label: uniqueLabel("Cpx", root.getChainListString(), root.getUnique()),
+      // label: [
+      //   "Cpx:",
+      //   root.getChainListString().value,
+      //   " (",
+      //   root.getUnique().value,
+      //   ")",
+      // ].join(""),
     },
     classes: cls("cpx", cpxDepth === 0 && "root"),
   };
@@ -29,7 +36,7 @@ export function traverseCpx(raw: ICpx | null, cpxDepth: number): void {
         data: {
           source: Registry.getId(parentCpx),
           target: node.data.id,
-          label: "child",
+          label: "parentOf",
         },
         classes: cls("source-cpx", "target-cpx", "parent", `depth-${cpxDepth}`),
       });
@@ -44,7 +51,7 @@ export function traverseCpx(raw: ICpx | null, cpxDepth: number): void {
       data: {
         source: Registry.getId(prevCpx),
         target: id,
-        label: "sibling",
+        label: "precedes",
       },
       classes: cls("source-cpx", "target-cpx", "sibling"),
     });

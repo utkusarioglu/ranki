@@ -1,4 +1,6 @@
+import type { TryCatch } from "_utils/utils.mjs";
 import type { E, Flattened, N, TraversalNode } from "./build.types";
+import type { UniqueValue } from "@dqm/package-dqm-api-v2";
 
 export const cls = (...cls: any[]) => cls.filter((v) => !!v).join(" ");
 
@@ -33,4 +35,12 @@ export function flatten(a: TraversalNode[]): Flattened {
   });
 
   return nodes;
+}
+
+export function uniqueLabel(
+  type: string,
+  name: TryCatch<string>,
+  unique: UniqueValue,
+) {
+  return [type, ":", name.value, " (", unique, ")"].join("");
 }

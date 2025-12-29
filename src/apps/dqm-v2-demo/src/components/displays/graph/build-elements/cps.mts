@@ -1,6 +1,6 @@
 import type { ICps } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
-import { cls } from "./utils.mts";
+import { cls, uniqueLabel } from "./utils.mts";
 import { createSanitizedView } from "../../../../utils/sanitizer.mts";
 import { assertTryCatchSuccess } from "_assertions";
 
@@ -12,12 +12,13 @@ export function traverseCps(raw: ICps | null, cpsDepth: number): void {
   const id = Registry.getNew(raw);
   Registry.registerSanitized(id, root);
   const cpsIdStringPre = root.getIdString();
-  assertTryCatchSuccess(cpsIdStringPre, { why: "Cps Id is required" });
-  const cpsIdString = cpsIdStringPre.value;
+  // assertTryCatchSuccess(cpsIdStringPre, { why: "Cps Id is required" });
+  // const cpsIdString = cpsIdStringPre.value;
   const node = {
     data: {
       id,
-      label: "Cps:" + cpsIdString,
+      label: uniqueLabel("Cps", cpsIdStringPre, raw.getUnique()),
+      // label: ["Cps:", cpsIdString, " (", root.getUnique().value, ")"].join(""),
     },
     classes: cls("cps", cpsDepth === 0 && "root", `depth-${cpsDepth}`),
   };
@@ -43,7 +44,7 @@ export function traverseCps(raw: ICps | null, cpsDepth: number): void {
       data: {
         source: Registry.getId(parentCps),
         target: id,
-        label: "child",
+        label: "parentOf",
       },
       classes: cls("source-cps", "target-cps", "relationship-child"),
     });

@@ -3,8 +3,10 @@ import type {
   ConfigName,
   IConfig,
   IPlugins,
+  UniqueValue,
 } from "@dqm/package-dqm-api-v2";
 import { rejectValues } from "@dqm/package-dqm-utils";
+import { Unique } from "../unique/unique.mjs";
 
 export interface ITransports {
   config: IConfig;
@@ -12,12 +14,19 @@ export interface ITransports {
 }
 
 export class CommonTransports {
+  private unique: UniqueValue;
   private config: IConfig;
   private plugins: IPlugins;
 
   constructor({ plugins, config }: CommonTransportsConstructorParams) {
+    this.unique = Unique.getNewUnique();
     this.plugins = plugins;
     this.config = config;
+  }
+
+  @rejectValues(undefined)
+  getUnique(): UniqueValue {
+    return this.unique;
   }
 
   @rejectValues(undefined)

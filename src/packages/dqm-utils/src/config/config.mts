@@ -149,6 +149,19 @@ export class Config implements IConfig {
         case "tuple":
           base = curr;
           break;
+        case "array-scalar":
+          switch (baseType) {
+            case "string":
+              base = curr[0].toString();
+              break;
+            case "number":
+              base = +curr[0];
+              break;
+            case "boolean":
+              base = curr[0].toString().toUpperCase() === "TRUE" ? true : false;
+              break;
+          }
+          break;
         case "undefined":
           break;
         case "null":

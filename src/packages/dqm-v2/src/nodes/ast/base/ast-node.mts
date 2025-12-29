@@ -33,6 +33,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     assertExists(cpx, { why: "Cpx has to be defined for parsing to occur" });
     // TODO theater is wrong
     const parsed = cpx.parse({ dqm: source, theater: "default" });
+    parsed.setParent(this);
     this.syntax.pushParsedChild(parsed);
     return this;
   }
@@ -63,10 +64,14 @@ export class AstNode extends CommonTransports implements IAstNode {
     try {
       oldCpx = this.getCpx();
     } catch (e) {}
+    const prevCpx = oldCpx?.getChildren().at(-1);
     const newCpxMold = new Cpx(this.getTransports())
       .setRootAst(this)
       // !FIX this setting the parent like this is faulty it clashes with paused container climbing up
       .setParent(oldCpx);
+    if (prevCpx) {
+      newCpxMold.setPrev(prevCpx);
+    }
     this.cpx.setCpx(cpxCallback(newCpxMold));
     return this;
   }
@@ -89,7 +94,8 @@ export class AstNode extends CommonTransports implements IAstNode {
   /**
    * @dev
    * #1 When `newChild` is called, it is assumed that the parent's creation is
-   * already complete. This allows us to do calculations such as
+   * already complete. This allows us to do calculations such as determining
+   * `direction`
    */
   private newChild(ChildConstructor: any, ohm: ohm.Node) {
     //#1

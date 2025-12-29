@@ -9,7 +9,6 @@ import type {
   Alias,
   ICpsParam,
   ParamChannel,
-  UniqueValue,
   CommonTransportsConstructorParams,
 } from "@dqm/package-dqm-api-v2";
 import { ParamsLib } from "./params/params-lib.mjs";
@@ -21,10 +20,8 @@ import { idCapability } from "../../capabilities/id.cap.mjs";
 import { verticesCapability } from "../../capabilities/vertices.capability.mjs";
 import { cpxCollection } from "../capabilities/cpx-collection.cap.mjs";
 import { assertNever } from "../../../errors/dqm-app-error/assertions.mjs";
-import { Unique } from "../../../unique/unique.mjs";
 
 export class Cps extends CommonTransports implements ICps {
-  private unique: UniqueValue;
   private id = idCapability(this);
   private vertices = verticesCapability<this, ICps>(this);
   private cpx = cpxCollection(this);
@@ -34,8 +31,7 @@ export class Cps extends CommonTransports implements ICps {
 
   constructor(params: CommonTransportsConstructorParams) {
     super(params);
-    this.unique = Unique.getNewUnique();
-    this.paramsAndConfig.initConfig(this.unique);
+    this.paramsAndConfig.initConfig(this.getUnique());
   }
 
   getParams(): ICpsParam[] {

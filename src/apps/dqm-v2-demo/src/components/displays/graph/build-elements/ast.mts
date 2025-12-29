@@ -1,6 +1,6 @@
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
-import { cls } from "./utils.mts";
+import { cls, uniqueLabel } from "./utils.mts";
 import { createSanitizedView } from "../../../../utils/sanitizer.mts";
 import { assertTryCatchSuccess } from "_assertions";
 
@@ -12,16 +12,10 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
   if (!raw) {
     return;
   }
-  // let creator;
-  // try {
-  //   creator = root.getCreator();
-  // } catch (e) {
-  //   creator = "(undefined)";
-  // }
   const root = createSanitizedView(raw);
   const id = Registry.getNew(raw);
   Registry.registerSanitized(id, root);
-  const creator = root.getCreator().value;
+  // const creator = root.getCreator();
 
   const relationship = root.getRelationship().value;
   const creatorCpxPre = root.getCpx();
@@ -33,7 +27,8 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
   const node = {
     data: {
       id,
-      label: "Ast:" + creator,
+      label: uniqueLabel("Ast", root.getCreator(), raw.getUnique()),
+      // label: "Ast:" + creator,
     },
     classes: cls(
       "ast",
@@ -64,7 +59,7 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
         data: {
           source: Registry.getId(c),
           target: id,
-          label: "abstracts",
+          label: "composes",
         },
         classes: cls(
           "source-cps",
@@ -90,7 +85,7 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
         data: {
           source: Registry.getId(astParent),
           target: id,
-          label: "external",
+          label: "foreignParentOf",
         },
         classes: cls(
           "source-ast",
@@ -105,7 +100,7 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
         data: {
           source: Registry.getId(astParent),
           target: id,
-          label: "child",
+          label: "parentOf",
         },
         classes: cls(
           "source-ast",
@@ -126,7 +121,7 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
       data: {
         source: Registry.getId(prevCpx),
         target: id,
-        label: "sibling",
+        label: "precedes",
       },
       classes: cls(
         "source-ast",

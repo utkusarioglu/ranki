@@ -10,9 +10,11 @@ import type {
   IAstNodeCounterCapabilities,
   CpxCollectionCapability,
 } from "../capabilities/export.types.mjs";
+import type { ICommonTransports } from "../../common-transports.types.mjs";
 
 export interface IAstNode
-  extends IAstNodeCounterCapabilities,
+  extends ICommonTransports,
+    IAstNodeCounterCapabilities,
     IAstNodeOhmCapabilities,
     IAstNodeSemanticCapabilities,
     IAstNodeSyntaxCapabilities<IAstNode>,
