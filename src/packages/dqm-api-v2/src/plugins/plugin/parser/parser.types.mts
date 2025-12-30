@@ -23,7 +23,6 @@ export interface DqmAstReport {
 }
 
 export interface CreateParserReturn {
-  // expandedDefinition: CpsDefinition & { hash: string };
   parse: ParseAstFunction;
 }
 

@@ -26,16 +26,16 @@ export class Cps extends CommonTransports implements ICps {
   private vertices = verticesCapability<this, ICps>(this);
   private cpx = cpxCollection(this);
   private component!: IDqmComponent;
-  private paramsAndConfig: IParams = new ParamsLib(this.getTransports());
+  private customizations: IParams = new ParamsLib(this.getTransports());
   private onFailMode = false;
 
   constructor(params: CommonTransportsConstructorParams) {
     super(params);
-    this.paramsAndConfig.initConfig(this.getUnique());
+    this.customizations.initConfig(this.getUnique());
   }
 
   getParams(): ICpsParam[] {
-    return this.paramsAndConfig.getParams();
+    return this.customizations.getParams();
   }
 
   private setToFailMode() {
@@ -85,54 +85,44 @@ export class Cps extends CommonTransports implements ICps {
 
   setDefinition(def: CpsDefinition): this {
     this.determineComponent(def);
-    // const config = this.getConfig();
     this.id.setId(this.component.meta.id.chain);
     if (def.id.length === 1) {
       this.id.setAlias(def.id as Alias);
     }
-    this.paramsAndConfig.setSchema(this.component.customizations);
-    if (!this.getOnFailMode()) {
-      def.params.forEach((param) => {
-        this.paramsAndConfig.pushParam(param);
-      });
-      this.paramsAndConfig.createMergedConfig();
-    } else {
-      this.paramsAndConfig.createInitialConfig();
+    this.customizations.setSchema(this.component.customizations);
+    if (this.getOnFailMode()) {
+      return this;
     }
+    def.params.forEach((param) => {
+      this.customizations.pushParam(param);
+    });
     return this;
   }
 
-  getChannelCompilation(channel: ParamChannel) {
-    return this.paramsAndConfig.getChannelCompilation(channel);
-  }
-
   getChannels(): ParamChannel[] {
-    return this.paramsAndConfig.getChannelNames();
-  }
-
-  getDqmConfig(): DqmConfig {
-    return this.paramsAndConfig.getDqmConfig();
+    return this.customizations.getChannelNames();
   }
 
   getComponentConfig<T>(): T {
-    return this.paramsAndConfig.getComponentConfig();
+    return this.customizations.getComponentConfig();
   }
 
   parse(input: CpxParseInput): IAstNode {
-    const mergedConfig = this.getDqmConfig();
+    const config = this.getOnFailMode()
+      ? this.customizations.getInitialDqmConfig()
+      : this.customizations.getDqmConfig();
     // TODO
     const { parse } = this.getPlugins().getParser(
       "NOT_SURE_IF_THIS_IS_NEEDED",
-      mergedConfig,
+      config,
     );
-    const prefix = mergedConfig.content.prefix;
-    const suffix = mergedConfig.content.suffix;
-    const trimmed = mergedConfig.content.trim ? input.dqm.trim() : input.dqm;
+    const prefix = config.content.prefix;
+    const suffix = config.content.suffix;
+    const trimmed = config.content.trim ? input.dqm.trim() : input.dqm;
 
     const prefixed = [prefix, trimmed, suffix].join("");
     const obj = parse(
       prefixed,
-      // input.dqm,
       // TODO this likely will come from the `direction` property of some ast
       // node
       "baseV2RootBlock",

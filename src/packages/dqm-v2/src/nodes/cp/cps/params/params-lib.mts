@@ -2,7 +2,6 @@ import type {
   Alias,
   Chain,
   ComponentCustomizations,
-  // ChannelParamSpecs,
   IAstParamNode,
   IParams,
   ParamChannel,
@@ -20,11 +19,9 @@ import {
 import { ParamsChannelLib } from "./params-channel-lib.mjs";
 import { CommonTransports } from "../../../common-transports.mjs";
 import { INITIAL_CONFIG_NAME } from "../../../../constants.mjs";
-import { DqmAppError } from "../../../../errors/dqm-app-error/dqm-app-error.mjs";
 
 type ChannelsMap = Map<ParamChannel, ParamsChannelLib>;
 
-const MERGE_TARGET = "merged";
 const CHANNEL_COMPONENT_DEFAULT = "default"; // this has to coincide with the channel in component type in api repo
 
 export class ParamsLib extends CommonTransports implements IParams {
@@ -57,6 +54,10 @@ export class ParamsLib extends CommonTransports implements IParams {
   }
 
   private processSchema() {
+    this.componentConfig = new Config().pushConfig(
+      "default",
+      this.customizations.config.component,
+    );
     Object.entries(this.customizations.params).forEach(([channel, specs]) => {
       const cp = new ParamsChannelLib(this.getTransports(), channel).setSchema(
         specs,
@@ -84,50 +85,43 @@ export class ParamsLib extends CommonTransports implements IParams {
     return ch;
   }
 
-  getChannelCompilation<T>(channel: ParamChannel): T {
-    return this.getChannel(channel).getCompilation<T>();
-  }
-
   getChannelNames(): ParamChannel[] {
     return Array.from(this.channels.keys());
   }
 
-  createInitialConfig() {
-    return this.getConfig().mergeTo(MERGE_TARGET);
-  }
-
-  createMergedConfig(): void {
-    try {
-      const config = this.getConfig();
-      const configChannelToken =
-        config.getConfig<DqmConfig>(INITIAL_CONFIG_NAME)!.plugins
-          .configChannelToken;
-      const componentParamConfig =
-        this.getChannel(configChannelToken).getCompilation<DqmConfig>();
-      this.customizations.config?.dqm?.forEach((d, i) => {
-        config.pushConfig("component-base-" + i, d);
-      });
-      config.pushConfig("cps", componentParamConfig);
-      config.mergeTo(MERGE_TARGET);
-    } catch (e) {
-      throw new DqmAppError({
-        code: "CONFIG_MERGE_FAIL",
-        why: "Config merge call failed",
-        cause: e,
-      });
-    }
-  }
-
+  // !FIX this is what's causing the issue
   getDqmConfig(): DqmConfig {
-    return this.getConfig().getConfig(MERGE_TARGET);
+    const dqmTarget = "DqmConfig:" + this.getUnique();
+    const config = this.getConfig();
+    if (config.hasConfig(dqmTarget)) {
+      return config.getConfig(dqmTarget);
+    }
+    const configChannelToken =
+      config.getConfig<DqmConfig>(INITIAL_CONFIG_NAME)!.plugins
+        .configChannelToken;
+
+    this.customizations.config?.dqm?.forEach((d, i) => {
+      config.pushConfig("ComponentDqm:" + this.getUnique() + ":" + i, d);
+    });
+
+    const entries = this.getChannel(configChannelToken).getMutationEntries();
+    entries.forEach(({ type, chainString, value }) => {
+      const key = `Config:${type}:${chainString}`;
+      config.pushConfig(key, value);
+    });
+
+    return config.mergeTo(dqmTarget).getConfig(dqmTarget);
+  }
+
+  getInitialDqmConfig(): DqmConfig {
+    return this.getConfig().getConfig(INITIAL_CONFIG_NAME);
   }
 
   getComponentConfig<T>(): T {
-    const MERGE_TARGET = "COMPONENT_CONFIG";
-    this.componentConfig = new Config().pushConfig(
-      "default",
-      this.customizations.config.component,
-    );
+    const componentTarget = "ComponentConfig:" + this.getUnique();
+    if (this.componentConfig.hasConfig(componentTarget)) {
+      return this.componentConfig.getConfig(componentTarget);
+    }
     for (const [channel, lib] of this.channels) {
       const entries = lib.getMutationEntries();
       entries.forEach(({ type, chainString, value }) => {
@@ -135,6 +129,8 @@ export class ParamsLib extends CommonTransports implements IParams {
         this.componentConfig.pushConfig(key, value);
       });
     }
-    return this.componentConfig.mergeTo(MERGE_TARGET).getConfig(MERGE_TARGET);
+    return this.componentConfig
+      .mergeTo(componentTarget)
+      .getConfig(componentTarget);
   }
 }

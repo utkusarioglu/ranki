@@ -2,8 +2,6 @@ import type { UniqueValue } from "../unique/unique.types.mjs";
 
 export type Position = number & { type?: "IdPosition" };
 
-// export type IdUnique = number & { type?: "IdUnique" };
-
 export type IdString = string & { type?: "IdString" };
 export type IdStringList = IdString[] & { type?: "IdStringList" };
 export type IdListString = string & { type?: "IdListString" };
@@ -15,7 +13,6 @@ export type IIdMap = {
 
 export interface IId {
   setPosition(pos: Position): IId;
-  // setMap(mapping: IIdMap): IId;
   setId(id: Alias | Chain): IId;
   setChain(chain: Chain): IId;
   getUnique(): UniqueValue;

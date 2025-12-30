@@ -14,20 +14,10 @@ export interface IDqmComponent<T = any> {
     version: DqmPluginVersion;
   };
   customizations: ComponentCustomizations<T>;
-  // stages: {
-  //   preprocessing?: (v: string) => string;
-  // };
-}
-
-export interface ParamDefaultValue {
-  name: string; // this is for displaying a name in user instructions
-  // type: string;
-  // defaultValue: unknown;
 }
 
 export interface ComponentSingleParamSpec {
   id: IdSummary;
-  // values: ParamDefaultValue[];
 }
 
 export interface ChannelParamSpecs {

@@ -13,13 +13,10 @@ export interface IParams {
   setSchema(schema: ComponentCustomizations): this;
   getSchema(): ComponentCustomizations;
   findById(channel: ParamChannel, id: Alias | Chain): ICpsParam | never;
-  getChannelCompilation<T>(channel: ParamChannel): T;
   getParams(): ICpsParam[];
   getChannelNames(): ParamChannel[];
-  createMergedConfig(): void;
+  getInitialDqmConfig(): DqmConfig;
   getDqmConfig(): DqmConfig;
-  createInitialConfig(): void;
   initConfig(unique: UniqueValue): this;
-
   getComponentConfig<T>(): T;
 }

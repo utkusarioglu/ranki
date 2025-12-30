@@ -11,7 +11,7 @@ import type { ICpx } from "./i-cpx.types.mjs";
 import type { CommonTransportsConstructorParams } from "../common-transports.types.mjs";
 import type { CpsDefinition } from "../../plugins/component/component.types.mjs";
 import type { IId } from "../../plugins/component/id/id.types.mjs";
-import type { DqmConfig, ICommonTransports } from "../../export.types.mjs";
+import type { ICommonTransports } from "../../export.types.mjs";
 
 export interface ICps
   extends ICommonTransports,
@@ -25,9 +25,9 @@ export interface ICpsUniqueCapability {
   getParams(): ICpsParam[];
   parse(input: CpxParseInput): IAstNode;
   getOnFailMode(): boolean;
-  getChannelCompilation(channel: ParamChannel): any;
+  // getChannelCompilation(channel: ParamChannel): any;
   getChannels(): ParamChannel[];
-  getDqmConfig(): DqmConfig;
+  // getDqmConfig(): DqmConfig;
   getComponentConfig<T>(): T;
 }
 

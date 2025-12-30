@@ -136,29 +136,4 @@ export class ParamsChannelLib extends CommonTransports {
       .map(([_, param]) => param.getMutationEntries())
       .flat();
   }
-
-  getCompilation<T>(): T {
-    const c: any = {};
-
-    for (const [chainString, param] of this.lib.peekActiveChains()) {
-      if (!param.isCoupled()) {
-        continue;
-      }
-      let curr = c;
-      const chain: Chain = chainString.split(".");
-      chain.forEach((part, i, all) => {
-        if (i < all.length - 1) {
-          if (!curr[part]) {
-            curr[part] = {};
-          }
-          curr = curr[part];
-        } else {
-          const values = param.getAstValues().map((v) => v.value);
-          curr[part] = values.length === 1 ? values[0] : values;
-        }
-      });
-    }
-
-    return c;
-  }
 }

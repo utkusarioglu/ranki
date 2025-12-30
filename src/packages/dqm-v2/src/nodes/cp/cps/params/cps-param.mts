@@ -1,38 +1,23 @@
 import type {
   Chain,
-  IAstParamNode,
-  // IAstParamNode,
   ICpsParam,
   MutationEntry,
   ParamChannel,
-  // ParamDefaultValue,
-  // ParamProducer,
 } from "@dqm/package-dqm-api-v2";
 import { idCapability } from "../../../capabilities/id.cap.mjs";
 import { astParamCapability } from "../../../ast/param/capabilities/raw-param.cap.mjs";
 import { TypeEngine } from "@dqm/package-dqm-utils";
 import { assertNever } from "../../../../errors/dqm-app-error/assertions.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
-// import { paramSpecsCapability } from "../../../ast/param/capabilities/specs.cap.mjs";
-// import { cpsParamValuesCapability } from "./capabilities/cps-param-values.cap.mjs";
-// import { assertExists } from "@dqm/package-dqm-utils";
 
 export class CpsParam implements ICpsParam {
-  // private values = cpsParamValuesCapability(this);
   private id = idCapability(this);
   private astParam = astParamCapability(this);
-  // private specs = paramSpecsCapability(this);
   private channel: ParamChannel;
-  // private producer: ParamProducer = "component-default";
 
-  constructor(
-    chain: Chain,
-    channel: ParamChannel,
-    // defaultValues: ParamDefaultValue[],
-  ) {
+  constructor(chain: Chain, channel: ParamChannel) {
     this.id.setId(chain);
     this.channel = channel;
-    // this.values.setDefaultValues(defaultValues);
   }
 
   getChannel(): ParamChannel {
@@ -130,12 +115,7 @@ export class CpsParam implements ICpsParam {
   }
 
   // RAW PARAM
-  setAstParam(p: IAstParamNode): ICpsParam {
-    this.astParam.setAstParam(p);
-    // this.producer = "instance-declaration";
-    return this;
-  }
-  // setAstParam = this.astParam.setAstParam;
+  setAstParam = this.astParam.setAstParam;
   getAstValues = this.astParam.getValues;
   getAstParam = this.astParam.getAstParam;
   getAudience = this.astParam.getAudience;
