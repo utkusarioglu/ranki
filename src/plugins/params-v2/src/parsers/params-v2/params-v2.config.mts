@@ -8,7 +8,7 @@ export const config: ParamsV2GrammarConfig = {
     },
     key: {
       negation: "!",
-      directive: "$",
+      channels: ["$", "#"],
     },
     operators: {
       assign: "=",

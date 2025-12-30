@@ -131,9 +131,9 @@ export class ParamsChannelLib extends CommonTransports {
     return this.lib.getObjectById(id);
   }
 
-  getMutationEntries(): MutationEntry[] {
+  getMutationEntries(includeChannel: boolean): MutationEntry[] {
     return Array.from(this.lib.peekActiveChains())
-      .map(([_, param]) => param.getMutationEntries())
+      .map(([_, param]) => param.getMutationEntries(includeChannel))
       .flat();
   }
 }

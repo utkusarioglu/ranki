@@ -5,7 +5,8 @@ export interface ParamsV2GrammarConfig {
       keyLevel: string;
     };
     key: {
-      directive: string;
+      channels: string[];
+      // directive: string;
       negation: string;
     };
     operators: {

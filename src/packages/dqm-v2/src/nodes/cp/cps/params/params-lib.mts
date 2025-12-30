@@ -103,7 +103,8 @@ export class ParamsLib extends CommonTransports implements IParams {
       config.pushConfig("ComponentDqm:" + this.getUnique() + ":" + i, d);
     });
 
-    const entries = this.getChannel(configChannelToken).getMutationEntries();
+    const entries =
+      this.getChannel(configChannelToken).getMutationEntries(false);
     entries.forEach(({ type, chainString, value }) => {
       const key = `Config:${type}:${chainString}`;
       config.pushConfig(key, value);
@@ -121,8 +122,15 @@ export class ParamsLib extends CommonTransports implements IParams {
     if (this.componentConfig.hasConfig(componentTarget)) {
       return this.componentConfig.getConfig(componentTarget);
     }
+    const configChannelToken =
+      this.getConfig().getConfig<DqmConfig>(INITIAL_CONFIG_NAME)!.plugins
+        .configChannelToken;
     for (const [channel, lib] of this.channels) {
-      const entries = lib.getMutationEntries();
+      if (channel === configChannelToken) {
+        continue;
+      }
+      const entries = lib.getMutationEntries(true);
+      console.log("et", entries);
       entries.forEach(({ type, chainString, value }) => {
         const key = `Param:${channel}:${type}:${chainString}`;
         this.componentConfig.pushConfig(key, value);

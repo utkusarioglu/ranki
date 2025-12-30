@@ -39,12 +39,25 @@ export const CpsParamMutationEntriesPart: FC<
     content = (
       <TryCatchSourceCard
         topDescription={
-          <Typography.Text>
-            These are sent to Customization library to merge with the component
-            config.
-          </Typography.Text>
+          <>
+            <p>
+              <Typography.Text>
+                These are sent to Customization library to merge with the
+                component config.
+              </Typography.Text>
+            </p>
+            <p>
+              <Typography.Text>
+                Note that <Typography.Text code>channel</Typography.Text> is
+                included in <Typography.Text code>value</Typography.Text> in
+                this presentation. During consumption{" "}
+                <Typography.Text code>channel</Typography.Text> is omitted for{" "}
+                <Typography.Text code>DqmConfig</Typography.Text>.
+              </Typography.Text>
+            </p>
+          </>
         }
-        item={c.getMutationEntries()}
+        item={c.getMutationEntries(true)}
       />
     );
   }

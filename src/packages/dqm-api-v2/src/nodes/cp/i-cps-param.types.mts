@@ -1,30 +1,11 @@
-import type {
-  Alias,
-  Chain,
-  ChainString,
-  // IAstParamSpecsCapability,
-  // ICpsParamValue,
-  IId,
-  // ParamDefaultValue,
-  // ParamProducer,
-} from "../../export.types.mjs";
+import type { Alias, Chain, ChainString, IId } from "../../export.types.mjs";
 import type { IAstParamCapability } from "../ast/capabilities/raw-param.cap.types.mjs";
 import type { AstSourceView } from "../export.types.mjs";
-// import type { RawParamsCapability } from "./export.types.mjs";
 
 export interface ICpsParam
   extends ICpsParamIdCapability,
     CpsParamValuesCapability,
-    IAstParamCapability<ICpsParam> {
-  // ,
-  // IAstParamSpecsCapability,
-  // ICpsParamSemanticCapability
-  //
-}
-
-// export interface ICpsParamSemanticCapability {
-//   getProducer(): ParamProducer;
-// }
+    IAstParamCapability<ICpsParam> {}
 
 export interface MutationEntry {
   type: "mutator" | "eraser";
@@ -33,14 +14,8 @@ export interface MutationEntry {
 }
 
 export interface CpsParamValuesCapability {
-  // setValues(values: AstSourceView[]): this;
   getAstValues(): AstSourceView[] | never;
-  getMutationEntries(): MutationEntry[];
-
-  // getMergedValues(): ICpsParamValue;
-
-  // setDefaultValues(valueSpec: ParamDefaultValue[]): this;
-  // getDefaultValues(): ParamDefaultValue[];
+  getMutationEntries(includeChannel: boolean): MutationEntry[];
 }
 
 export interface ICpsParamIdCapability

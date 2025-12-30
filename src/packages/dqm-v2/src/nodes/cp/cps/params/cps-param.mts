@@ -24,7 +24,7 @@ export class CpsParam implements ICpsParam {
     return this.channel;
   }
 
-  getMutationEntries(): MutationEntry[] {
+  getMutationEntries(includeChannel: boolean): MutationEntry[] {
     if (!this.isCoupled()) {
       return [];
     }
@@ -34,22 +34,22 @@ export class CpsParam implements ICpsParam {
     const tuple = astValues.map((v) => v.value);
     const tupleType = TypeEngine.determineType(tuple);
     const channel = this.getChannel();
-    const eraser: any = { [channel]: {} };
-    const mutation: any = { [channel]: {} };
-    let currE = mutation[channel];
-    let currM = eraser[channel];
+    const eraser: any = includeChannel ? { [channel]: {} } : {};
+    const mutation: any = includeChannel ? { [channel]: {} } : {};
+    let currE = includeChannel ? eraser[channel] : eraser;
+    let currM = includeChannel ? mutation[channel] : mutation;
     let includeEraser = false;
     const chainLast = chain.at(-1);
     assertExists(chainLast, {
       why: "Chains are expected to be multi element string arrays",
     });
     chain.slice(0, -1).forEach((part) => {
-      currM[part] = {};
       currE[part] = {};
-      currM = currM[part];
+      currM[part] = {};
       currE = currE[part];
+      currM = currM[part];
     });
-    currE[chainLast] = tuple;
+    currM[chainLast] = tuple;
     const operator = this.getOperator();
     switch (tupleType) {
       case "array-scalar":
@@ -59,7 +59,7 @@ export class CpsParam implements ICpsParam {
         switch (operator) {
           case "assign":
             includeEraser = true;
-            currM[chainLast] = [];
+            currE[chainLast] = [];
             break;
           case "append":
           case "prepend":

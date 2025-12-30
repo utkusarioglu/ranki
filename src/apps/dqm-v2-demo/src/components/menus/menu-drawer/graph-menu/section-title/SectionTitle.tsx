@@ -27,11 +27,11 @@ export const SectionTitle: FC<PropsWithChildren<SectionTitleProps>> = ({
         parts &&
         parts.map((part) =>
           part.startsWith("code:") ? (
-            <Typography.Title level={4} code className={style.code}>
+            <Typography.Title level={4} code className={style.code} key={part}>
               {part.replace("code:", "")}
             </Typography.Title>
           ) : (
-            <Typography.Title level={4} className={style.part}>
+            <Typography.Title level={4} className={style.part} key={part}>
               {part}
             </Typography.Title>
           ),

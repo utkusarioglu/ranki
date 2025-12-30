@@ -26,7 +26,7 @@ export const token: IAstNodeActionDict = {
     return grabAst(this).newAst(end).setMeaning("negation");
   },
 
-  tParamsV2DirectiveParam(end) {
+  tParamsV2Channel(end) {
     return grabAst(this).newAst(end).setMeaning(end.sourceString);
   },
 
