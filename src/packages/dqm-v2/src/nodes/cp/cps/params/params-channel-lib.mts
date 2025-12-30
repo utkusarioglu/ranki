@@ -5,20 +5,17 @@ import type {
   Alias,
   Chain,
   CommonTransportsConstructorParams,
-  DqmConfig,
   ICpsParam,
   MutationEntry,
 } from "@dqm/package-dqm-api-v2";
 import { IdLib } from "../../../../id/id-lib.mjs";
 import { rejectValues } from "@dqm/package-dqm-utils";
 import { CommonTransports } from "../../../../nodes/common-transports.mjs";
-import {
-  INITIAL_CONFIG_NAME,
-  POSITIONAL_PARAM,
-} from "../../../../constants.mjs";
+import { POSITIONAL_PARAM } from "../../../../constants.mjs";
 import { DqmAppError } from "../../../../errors/dqm-app-error/dqm-app-error.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
 import { CpsParam } from "./cps-param.mjs";
+import { assertNever } from "../../../../errors/dqm-app-error/assertions.mjs";
 
 export class ParamsChannelLib extends CommonTransports {
   private schema!: ChannelParamSpecs;
@@ -93,23 +90,33 @@ export class ParamsChannelLib extends CommonTransports {
       });
       return p;
     } catch (e) {
-      const initial =
-        this.getConfig().getConfig<DqmConfig>(INITIAL_CONFIG_NAME);
-      switch (initial.plugins.onOrphanParam) {
-        case "ignore":
-          this.failed.push(ast);
-          break;
-        default:
-          throw new DqmAppError({
-            code: "ORPHAN_PARAM",
-            why: "Param doesn't exist in schema and the initial configuration is set to fail on orphan params",
-            cause: e,
-            details: {
-              userSuppliedParamId: ast.getId(),
-              schema: this.schema,
-            },
-          });
-      }
+      this.handleOrphanParam(e, ast);
+    }
+  }
+
+  private handleOrphanParam(error: unknown, ast: IAstParamNode) {
+    const initial = this.getInitialConfig();
+    switch (initial.plugins.onOrphanParam) {
+      case "ignore":
+        break;
+      case "warn":
+        this.failed.push(ast);
+        break;
+      case "fail":
+        throw new DqmAppError({
+          code: "ORPHAN_PARAM",
+          why: "Param doesn't exist in schema and the initial configuration is set to fail on orphan params",
+          cause: error,
+          details: {
+            userSuppliedParamId: ast.getId(),
+            schema: this.schema,
+          },
+        });
+      default:
+        assertNever({
+          why: "All orphan param choices should have been depleted",
+          cause: error,
+        });
     }
   }
 

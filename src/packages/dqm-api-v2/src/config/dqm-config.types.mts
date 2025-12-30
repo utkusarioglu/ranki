@@ -1,4 +1,4 @@
-import type { Chain } from "../export.types.mjs";
+import type { Chain, ParamChannel } from "../export.types.mjs";
 import type { DqmGrammarTokens } from "../plugins/grammar/grammar.types.mjs";
 import type { DeepPartialSerializable } from "../util.types.mjs";
 import type { ConfigEntryCode } from "./i-config.types.mjs";
@@ -15,10 +15,18 @@ export type DqmPluginVersion = string & { type?: "DqmPluginVersion" };
 export type DqmConfigPackEntry = { id: ConfigEntryCode; config: DqmConfig };
 export type DqmConfigPack = DqmConfigPackEntry[];
 
+export type DqmConfigOnOrphanParam = "fail" | "warn" | "ignore";
+
+export type DqmConfigOnOrphanChannel = "fail" | "warn" | "ignore";
+
+export type DqmConfigOnAbsentComponent = "fail" | "useDefaultComponent";
+
 export type DqmPluginsConfigDefaults = {
   tokens: DqmPluginsTokens;
   config: DqmPluginsConfig;
 };
+
+// export type DqmConfigChannelToken = string & { type?: "DqmConfigChannelToken" };
 
 // TODO
 
@@ -32,9 +40,10 @@ export type DqmPluginsConfigDefaults = {
 export interface DqmConfig {
   stage: DqmStages;
   plugins: {
-    onAbsentComponent: "fail" | "useDefaultComponent";
-    onOrphanParam: "fail" | "ignore";
-    configChannelToken: string;
+    onAbsentComponent: DqmConfigOnAbsentComponent;
+    onOrphanChannel: DqmConfigOnOrphanChannel;
+    onOrphanParam: DqmConfigOnOrphanParam;
+    configChannelToken: ParamChannel;
     fallback: {
       chain: Chain;
       config: DeepPartialSerializable<DqmConfig>; // #1

@@ -5,7 +5,6 @@ import type {
   CpxParseInput,
   CpsDefinition,
   IAstNode,
-  DqmConfig,
   Alias,
   ICpsParam,
   CommonTransportsConstructorParams,
@@ -61,8 +60,9 @@ export class Cps extends CommonTransports implements ICps {
    * #1 Note that initial component cannot be overwritten
    * #2 TODO a warning should be issued if a component fails
    */
-  private setUpFailModeComponent(error: unknown, def: CpsDefinition) {
-    const initial = this.getConfig().getConfig<DqmConfig>(INITIAL_CONFIG_NAME);
+  private setFailModeComponent(error: unknown, def: CpsDefinition) {
+    // const initial = this.getConfig().getConfig<DqmConfig>(INITIAL_CONFIG_NAME);
+    const initial = this.getInitialConfig();
     // #1 #2
     const { chain } = initial.plugins.fallback;
     try {
@@ -80,7 +80,7 @@ export class Cps extends CommonTransports implements ICps {
             details: {
               def,
               INITIAL_CONFIG_NAME,
-              config: this.getConfig(),
+              initialConfig: initial,
             },
           });
         default:
@@ -93,7 +93,7 @@ export class Cps extends CommonTransports implements ICps {
         code: "DEFAULT_COMPONENT_FAILURE",
         why: "Fail mode tried to set up the default component for the Cps but this operation also failed.",
         cause: e,
-        details: { def, chain },
+        details: { def, chain, initialConfig: initial },
       });
     }
   }
@@ -104,7 +104,7 @@ export class Cps extends CommonTransports implements ICps {
       this.component = this.getPlugins().getComponentById(def.id);
       this.settledId = this.intendedId;
     } catch (e) {
-      this.setUpFailModeComponent(e, def);
+      this.setFailModeComponent(e, def);
     }
   }
 
@@ -126,8 +126,8 @@ export class Cps extends CommonTransports implements ICps {
 
   parse(input: CpxParseInput): IAstNode {
     const config = this.isOnFailMode()
-      ? this.customizations.getInitialDqmConfig()
-      : this.customizations.getDqmConfig();
+      ? this.getInitialConfig()
+      : this.customizations.getParsedDqmConfig();
     // TODO
     const { parse } = this.getPlugins().getParser(
       "NOT_SURE_IF_THIS_IS_NEEDED",
@@ -136,7 +136,6 @@ export class Cps extends CommonTransports implements ICps {
     const prefix = config.content.prefix;
     const suffix = config.content.suffix;
     const trimmed = config.content.trim ? input.dqm.trim() : input.dqm;
-
     const prefixed = [prefix, trimmed, suffix].join("");
     const obj = parse(
       prefixed,
@@ -150,8 +149,10 @@ export class Cps extends CommonTransports implements ICps {
 
   // CUSTOMIZATIONS
   getChannels = this.customizations.getChannelNames.bind(this.customizations);
-  getDqmConfig = this.customizations.getDqmConfig.bind(this.customizations);
-  getComponentConfig = this.customizations.getComponentConfig.bind(
+  getDqmConfig = this.customizations.getParsedDqmConfig.bind(
+    this.customizations,
+  );
+  getComponentConfig = this.customizations.getParsedComponentConfig.bind(
     this.customizations,
   );
 

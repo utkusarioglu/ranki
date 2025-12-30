@@ -1,6 +1,4 @@
 import type {
-  Alias,
-  Chain,
   ComponentCustomizations,
   IAstParamNode,
   IParams,
@@ -9,25 +7,28 @@ import type {
   DqmConfig,
   UniqueValue,
   IConfig,
+  DqmConfigOnOrphanChannel,
 } from "@dqm/package-dqm-api-v2";
 import {
   assertExists,
   Config,
   dependsOn,
-  rejectValues,
+  writeOnce,
 } from "@dqm/package-dqm-utils";
 import { ParamsChannelLib } from "./params-channel-lib.mjs";
 import { CommonTransports } from "../../../common-transports.mjs";
-import { INITIAL_CONFIG_NAME } from "../../../../constants.mjs";
+import { DqmAppError } from "../../../../errors/dqm-app-error/dqm-app-error.mjs";
+import { assertNever } from "../../../../errors/dqm-app-error/assertions.mjs";
 
 type ChannelsMap = Map<ParamChannel, ParamsChannelLib>;
 
-const CHANNEL_COMPONENT_DEFAULT = "default"; // this has to coincide with the channel in component type in api repo
+const CHANNEL_COMPONENT_DEFAULT: ParamChannel = "default"; // this has to coincide with the channel in component type in api repo
 
 export class ParamsLib extends CommonTransports implements IParams {
   private customizations!: ComponentCustomizations;
   private channels: ChannelsMap = new Map();
   private componentConfig!: IConfig;
+  private orphanChannels: IAstParamNode[] = [];
 
   initConfig(unique: UniqueValue): this {
     this.cloneConfig(unique.toString());
@@ -40,13 +41,49 @@ export class ParamsLib extends CommonTransports implements IParams {
       .flat();
   }
 
+  private handleOrphanChannel(
+    e: unknown,
+    channel: ParamChannel,
+    user: IAstParamNode,
+  ) {
+    const onOrphanChannel = this.getOrphanChannelChoice();
+    switch (onOrphanChannel) {
+      case "fail":
+        throw new DqmAppError({
+          code: "ORPHAN_CHANNEL",
+          why: `A param has been defined in a channel that isn't supported by the component`,
+          cause: e,
+          details: { channel, channels: this.channels.keys() },
+        });
+      case "warn":
+        this.orphanChannels.push(user);
+        break;
+      case "ignore":
+        break;
+      default:
+        assertNever({
+          why: "All possible orphan channel choices should have ben depleted",
+          details: {
+            onOrphanChannel,
+            channel,
+            channels: this.channels.keys(),
+          },
+        });
+    }
+  }
+
   @dependsOn("customizations")
   pushParam(user: IAstParamNode): this {
     const channel = user.getChannel() || CHANNEL_COMPONENT_DEFAULT;
-    this.getChannel(channel).addParam(user);
+    try {
+      this.getChannel(channel).addParam(user);
+    } catch (e) {
+      this.handleOrphanChannel(e, channel, user);
+    }
     return this;
   }
 
+  @writeOnce("customizations")
   setSchema(schema: ComponentCustomizations): this {
     this.customizations = schema;
     this.processSchema();
@@ -70,11 +107,11 @@ export class ParamsLib extends CommonTransports implements IParams {
     return this.customizations;
   }
 
-  @dependsOn("customizations")
-  @rejectValues(undefined)
-  findById(channel: ParamChannel, id: Alias | Chain): ICpsParam | never {
-    return this.getChannel(channel).findById(id);
-  }
+  // @dependsOn("customizations")
+  // @rejectValues(undefined)
+  // findById(channel: ParamChannel, id: Alias | Chain): ICpsParam | never {
+  //   return this.getChannel(channel).findById(id);
+  // }
 
   private getChannel(channel: ParamChannel) {
     const ch = this.channels.get(channel);
@@ -89,16 +126,13 @@ export class ParamsLib extends CommonTransports implements IParams {
     return Array.from(this.channels.keys());
   }
 
-  getDqmConfig(): DqmConfig {
+  getParsedDqmConfig(): DqmConfig {
     const dqmTarget = "DqmConfig:" + this.getUnique();
     const config = this.getConfig();
     if (config.hasConfig(dqmTarget)) {
       return config.getConfig(dqmTarget);
     }
-    const configChannelToken =
-      config.getConfig<DqmConfig>(INITIAL_CONFIG_NAME)!.plugins
-        .configChannelToken;
-
+    const configChannelToken = this.getConfigChannelToken();
     this.customizations.config?.dqm?.forEach((d, i) => {
       config.pushConfig("ComponentDqm:" + this.getUnique() + ":" + i, d);
     });
@@ -113,24 +147,21 @@ export class ParamsLib extends CommonTransports implements IParams {
     return config.mergeTo(dqmTarget).getConfig(dqmTarget);
   }
 
-  getInitialDqmConfig(): DqmConfig {
-    return this.getConfig().getConfig(INITIAL_CONFIG_NAME);
-  }
+  // getInitialDqmConfig(): DqmConfig {
+  //   return this.getConfig().getConfig(INITIAL_CONFIG_NAME);
+  // }
 
-  getComponentConfig<T>(): T {
+  getParsedComponentConfig<T>(): T {
     const componentTarget = "ComponentConfig:" + this.getUnique();
     if (this.componentConfig.hasConfig(componentTarget)) {
       return this.componentConfig.getConfig(componentTarget);
     }
-    const configChannelToken =
-      this.getConfig().getConfig<DqmConfig>(INITIAL_CONFIG_NAME)!.plugins
-        .configChannelToken;
+    const configChannelToken = this.getConfigChannelToken();
     for (const [channel, lib] of this.channels) {
       if (channel === configChannelToken) {
         continue;
       }
       const entries = lib.getMutationEntries(true);
-      console.log("et", entries);
       entries.forEach(({ type, chainString, value }) => {
         const key = `Param:${channel}:${type}:${chainString}`;
         this.componentConfig.pushConfig(key, value);
@@ -139,5 +170,13 @@ export class ParamsLib extends CommonTransports implements IParams {
     return this.componentConfig
       .mergeTo(componentTarget)
       .getConfig(componentTarget);
+  }
+
+  private getConfigChannelToken(): string {
+    return this.getInitialConfig().plugins.configChannelToken;
+  }
+
+  private getOrphanChannelChoice(): DqmConfigOnOrphanChannel {
+    return this.getInitialConfig().plugins.onOrphanChannel;
   }
 }

@@ -1,19 +1,22 @@
 import type {
   CommonTransportsConstructorParams,
   ConfigName,
+  DqmConfig,
+  ICommonTransports,
   IConfig,
   IPlugins,
   UniqueValue,
 } from "@dqm/package-dqm-api-v2";
 import { rejectValues } from "@dqm/package-dqm-utils";
 import { Unique } from "../unique/unique.mjs";
+import { DEFAULT_CONFIG_NAME, INITIAL_CONFIG_NAME } from "../constants.mjs";
 
 export interface ITransports {
   config: IConfig;
   plugins: IPlugins;
 }
 
-export class CommonTransports {
+export class CommonTransports implements ICommonTransports {
   private unique: UniqueValue;
   private config: IConfig;
   private plugins: IPlugins;
@@ -22,6 +25,14 @@ export class CommonTransports {
     this.unique = Unique.getNewUnique();
     this.plugins = plugins;
     this.config = config;
+  }
+
+  getInitialConfig(): DqmConfig {
+    return this.getConfig().getConfig<DqmConfig>(INITIAL_CONFIG_NAME);
+  }
+
+  getDefaultConfig(): DqmConfig {
+    return this.getConfig().getConfig<DqmConfig>(DEFAULT_CONFIG_NAME);
   }
 
   @rejectValues(undefined)

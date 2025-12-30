@@ -20,12 +20,6 @@ export function prepareContext(ast: IAstNode) {
     });
   };
 
-  // const exists = (value: any, why: string, details = {}) => {
-  //   if (value === undefined) {
-  //     throw error({ code: "ASSERT_EXISTS", why, details });
-  //   }
-  // };
-
   return {
     ast,
     constants: {
@@ -35,9 +29,6 @@ export function prepareContext(ast: IAstNode) {
       err: {
         error,
       },
-      // assert: {
-      //   exists,
-      // },
     },
   };
 }
