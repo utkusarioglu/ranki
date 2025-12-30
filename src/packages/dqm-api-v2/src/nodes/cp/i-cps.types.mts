@@ -10,7 +10,11 @@ import type {
 import type { ICpx } from "./i-cpx.types.mjs";
 import type { CommonTransportsConstructorParams } from "../common-transports.types.mjs";
 import type { CpsDefinition } from "../../plugins/component/component.types.mjs";
-import type { IId } from "../../plugins/component/id/id.types.mjs";
+import type {
+  Alias,
+  Chain,
+  IId,
+} from "../../plugins/component/id/id.types.mjs";
 import type { DqmConfig, ICommonTransports } from "../../export.types.mjs";
 
 export interface ICps
@@ -24,10 +28,13 @@ export interface ICpsUniqueCapability {
   setDefinition(def: CpsDefinition): this;
   getParams(): ICpsParam[];
   parse(input: CpxParseInput): IAstNode;
-  getOnFailMode(): boolean;
+  isOnFailMode(): boolean;
   getChannels(): ParamChannel[];
   getDqmConfig(): DqmConfig;
   getComponentConfig<T>(): T;
+
+  getIntendedId(): Chain | Alias;
+  getSettledId(): Chain | Alias | null;
 }
 
 export type ICpsIdCapability = Pick<

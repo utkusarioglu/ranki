@@ -1,5 +1,6 @@
 import type { Chain } from "../export.types.mjs";
 import type { DqmGrammarTokens } from "../plugins/grammar/grammar.types.mjs";
+import type { DeepPartialSerializable } from "../util.types.mjs";
 import type { ConfigEntryCode } from "./i-config.types.mjs";
 
 type DqmStages = "ast" | "validate" | "transform";
@@ -24,6 +25,9 @@ export type DqmPluginsConfigDefaults = {
 /**
  * This is the shape of the config for the Dqm. It has nothing to do with
  * merging or managing the config. That is handled by `IConfig`
+ *
+ * @dev
+ * #1 TODO this is currently not factored in.
  */
 export interface DqmConfig {
   stage: DqmStages;
@@ -31,10 +35,15 @@ export interface DqmConfig {
     onAbsentComponent: "fail" | "useDefaultComponent";
     onOrphanParam: "fail" | "ignore";
     configChannelToken: string;
-    defaultComponent: {
+    fallback: {
       chain: Chain;
-      params: any[]; // TODO
+      config: DeepPartialSerializable<DqmConfig>; // #1
     };
+    default: {
+      chain: Chain;
+      config: DeepPartialSerializable<DqmConfig>; // #1
+    };
+
     standards: DqmPluginName[];
     requested: DqmPluginName[];
     config: DqmPluginsConfig;

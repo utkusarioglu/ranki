@@ -9,6 +9,7 @@ import type {
   Alias,
   ICpsParam,
   CommonTransportsConstructorParams,
+  Chain,
 } from "@dqm/package-dqm-api-v2";
 import { ParamsLib } from "./params/params-lib.mjs";
 import { CommonTransports } from "../../common-transports.mjs";
@@ -27,10 +28,20 @@ export class Cps extends CommonTransports implements ICps {
   private component!: IDqmComponent;
   private customizations: IParams = new ParamsLib(this.getTransports());
   private onFailMode = false;
+  private intendedId!: Chain | Alias;
+  private settledId: Chain | Alias | null = null;
 
   constructor(params: CommonTransportsConstructorParams) {
     super(params);
     this.customizations.initConfig(this.getUnique());
+  }
+
+  getIntendedId(): Chain | Alias {
+    return this.intendedId;
+  }
+
+  getSettledId(): Chain | Alias | null {
+    return this.settledId;
   }
 
   getParams(): ICpsParam[] {
@@ -41,7 +52,7 @@ export class Cps extends CommonTransports implements ICps {
     this.onFailMode = true;
   }
 
-  getOnFailMode() {
+  isOnFailMode() {
     return this.onFailMode;
   }
 
@@ -50,24 +61,22 @@ export class Cps extends CommonTransports implements ICps {
    * #1 Note that initial component cannot be overwritten
    * #2 TODO a warning should be issued if a component fails
    */
-  private determineComponent(def: CpsDefinition): void {
+  private setUpFailModeComponent(error: unknown, def: CpsDefinition) {
+    const initial = this.getConfig().getConfig<DqmConfig>(INITIAL_CONFIG_NAME);
+    // #1 #2
+    const { chain } = initial.plugins.fallback;
     try {
-      this.component = this.getPlugins().getComponentById(def.id);
-    } catch (e) {
-      const initial =
-        this.getConfig().getConfig<DqmConfig>(INITIAL_CONFIG_NAME);
       switch (initial.plugins.onAbsentComponent) {
         case "useDefaultComponent":
           this.setToFailMode();
-          // #1 #2
-          const { chain } = initial.plugins.defaultComponent;
           this.component = this.getPlugins().getComponentById(chain);
+          this.settledId = chain;
           break;
         case "fail":
           throw new DqmAppError({
             code: "DEPENDENCY_ABSENT",
             why: "Source requested a component that wasn't installed by any of the plugins",
-            cause: e,
+            cause: error,
             details: {
               def,
               INITIAL_CONFIG_NAME,
@@ -79,6 +88,23 @@ export class Cps extends CommonTransports implements ICps {
             why: "All possible absent component options should have been depleted",
           });
       }
+    } catch (e) {
+      throw new DqmAppError({
+        code: "DEFAULT_COMPONENT_FAILURE",
+        why: "Fail mode tried to set up the default component for the Cps but this operation also failed.",
+        cause: e,
+        details: { def, chain },
+      });
+    }
+  }
+
+  private determineComponent(def: CpsDefinition): void {
+    this.intendedId = def.id;
+    try {
+      this.component = this.getPlugins().getComponentById(def.id);
+      this.settledId = this.intendedId;
+    } catch (e) {
+      this.setUpFailModeComponent(e, def);
     }
   }
 
@@ -89,7 +115,7 @@ export class Cps extends CommonTransports implements ICps {
       this.id.setAlias(def.id as Alias);
     }
     this.customizations.setSchema(this.component.customizations);
-    if (this.getOnFailMode()) {
+    if (this.isOnFailMode()) {
       return this;
     }
     def.params.forEach((param) => {
@@ -99,7 +125,7 @@ export class Cps extends CommonTransports implements ICps {
   }
 
   parse(input: CpxParseInput): IAstNode {
-    const config = this.getOnFailMode()
+    const config = this.isOnFailMode()
       ? this.customizations.getInitialDqmConfig()
       : this.customizations.getDqmConfig();
     // TODO

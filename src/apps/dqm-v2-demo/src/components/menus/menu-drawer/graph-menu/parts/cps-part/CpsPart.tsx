@@ -16,7 +16,7 @@ export const GraphMenuCpsPart: FC<GraphMenuCpsPartProps> = ({ cps: a }) => {
     ["Child Count", tryCatchLeap(a.getChildren(), (o) => o.length)],
     [
       "On Fail Mode",
-      tryCatchLeap(a.getOnFailMode(), (o) => (o.value ? "true" : "false")),
+      tryCatchLeap(a.isOnFailMode(), (o) => (o ? "true" : "false")),
     ],
   ];
 

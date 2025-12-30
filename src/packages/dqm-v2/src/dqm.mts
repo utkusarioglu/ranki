@@ -63,7 +63,7 @@ export class Dqm {
     try {
       const initial = this.config.getConfig<DqmConfig>(INITIAL_CONFIG_NAME);
       const inputs = this.processInput(rawInputs);
-      const { chain, params } = initial.plugins.defaultComponent;
+      const { chain } = initial.plugins.default;
       const transports: CommonTransportsConstructorParams = {
         plugins: this.plugins,
         config: this.config,
@@ -73,7 +73,7 @@ export class Dqm {
           theater: input.theater,
           ast: new AstNode(transports)
             .setNature("synthetic")
-            .newCpx((cpx) => cpx.setAstParams(params).setIdList([chain]))
+            .newCpx((cpx) => cpx.setAstParams([]).setIdList([chain]))
             .setDirection("block")
             .getCpx()!
             .parse(input),

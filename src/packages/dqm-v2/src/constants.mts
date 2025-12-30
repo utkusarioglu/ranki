@@ -14,9 +14,13 @@ export const DEFAULT_CONFIG: DqmConfig = {
     onAbsentComponent: "useDefaultComponent",
     onOrphanParam: "ignore",
     configChannelToken: "$",
-    defaultComponent: {
+    fallback: {
       chain: ["base", "v2", "default"],
-      params: [],
+      config: {},
+    },
+    default: {
+      chain: ["base", "v2", "default"],
+      config: {},
     },
     standards: ["grammar:ConstantsV2", "grammar:BaseV2"],
     requested: [],

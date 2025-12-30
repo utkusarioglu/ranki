@@ -89,7 +89,6 @@ export class ParamsLib extends CommonTransports implements IParams {
     return Array.from(this.channels.keys());
   }
 
-  // !FIX this is what's causing the issue
   getDqmConfig(): DqmConfig {
     const dqmTarget = "DqmConfig:" + this.getUnique();
     const config = this.getConfig();
