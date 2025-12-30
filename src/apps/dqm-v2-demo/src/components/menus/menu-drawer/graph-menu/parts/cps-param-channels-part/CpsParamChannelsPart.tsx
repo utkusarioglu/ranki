@@ -6,6 +6,7 @@ import { Typography } from "antd";
 import style from "./CpsParamChannelsPart.module.css";
 import { ExceptionCard } from "_views/exception-card/ExceptionCard";
 import { TryCatchSourceCard } from "_views/try-catch-source-card/TryCatchSourceCard";
+import { tryCatch } from "_utils/utils.mjs";
 
 interface CpsParamChannelsPartProps {
   cps: ClassSanitizer<ICps>;
@@ -14,30 +15,30 @@ interface CpsParamChannelsPartProps {
 export const CpsParamChannelsPart: FC<CpsParamChannelsPartProps> = ({
   cps: c,
 }) => {
-  const channelsPre = c.getChannels();
-  if (channelsPre.state === "fail") {
+  const paramsPre = c.getParams();
+  if (paramsPre.state === "fail") {
     return (
       <ExceptionCard>
-        <Typography.Text code>ICpsParam</Typography.Text> channels list
-        retrieval failed
+        <Typography.Text code>ICps</Typography.Text> param retrieval failed
       </ExceptionCard>
     );
   }
-  const channels = channelsPre.value;
+  const params = paramsPre.value;
 
   return (
     <>
-      <SectionTitle>Channel Compilations</SectionTitle>
+      <SectionTitle>Mutation entries</SectionTitle>
       <div>
-        {channels.map((channel) => (
+        {params.map((param) => (
           <TryCatchSourceCard
-            key={channel}
+            key={param.getIdString()}
             topDescription={
-              <Typography.Title level={5} code className={style.channelName}>
-                {channel}
-              </Typography.Title>
+              <Typography.Text className={style.channelName}>
+                <Typography.Text code>{param.getIdString()}</Typography.Text>
+                {param.isCoupled() ? "is" : "is not"} coupled.
+              </Typography.Text>
             }
-            item={c.getChannelCompilation(channel)}
+            item={tryCatch("mutationEntries", () => param.getMutationEntries())}
           />
         ))}
       </div>

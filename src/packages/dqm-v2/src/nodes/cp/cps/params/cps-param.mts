@@ -33,7 +33,6 @@ export class CpsParam implements ICpsParam {
     const astValues = this.getAstValues();
     const tuple = astValues.map((v) => v.value);
     const tupleType = TypeEngine.determineType(tuple);
-
     const channel = this.getChannel();
     const eraser: any = { [channel]: {} };
     const mutation: any = { [channel]: {} };

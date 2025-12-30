@@ -8,7 +8,6 @@ import type {
   DqmConfig,
   Alias,
   ICpsParam,
-  ParamChannel,
   CommonTransportsConstructorParams,
 } from "@dqm/package-dqm-api-v2";
 import { ParamsLib } from "./params/params-lib.mjs";
@@ -99,14 +98,6 @@ export class Cps extends CommonTransports implements ICps {
     return this;
   }
 
-  getChannels(): ParamChannel[] {
-    return this.customizations.getChannelNames();
-  }
-
-  getComponentConfig<T>(): T {
-    return this.customizations.getComponentConfig();
-  }
-
   parse(input: CpxParseInput): IAstNode {
     const config = this.getOnFailMode()
       ? this.customizations.getInitialDqmConfig()
@@ -130,6 +121,13 @@ export class Cps extends CommonTransports implements ICps {
     );
     return obj.root;
   }
+
+  // CUSTOMIZATIONS
+  getChannels = this.customizations.getChannelNames.bind(this.customizations);
+  getDqmConfig = this.customizations.getDqmConfig.bind(this.customizations);
+  getComponentConfig = this.customizations.getComponentConfig.bind(
+    this.customizations,
+  );
 
   // ID
   setAlias = this.id.setAlias;

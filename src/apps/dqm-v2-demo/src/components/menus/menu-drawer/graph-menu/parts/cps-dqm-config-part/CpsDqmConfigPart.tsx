@@ -5,21 +5,18 @@ import type { ClassSanitizer } from "_utils/sanitizer.mjs";
 import { Typography } from "antd";
 import { TryCatchSourceCard } from "_views/try-catch-source-card/TryCatchSourceCard";
 
-interface GraphMenuMergedConfigPartProps {
+interface CpsDqmConfigPartProps {
   cps: ClassSanitizer<ICps>;
 }
 
-export const GraphMenuCpsMergedConfigPart: FC<
-  GraphMenuMergedConfigPartProps
-> = ({ cps: p }) => {
+export const CpsDqmConfigPart: FC<CpsDqmConfigPartProps> = ({ cps: p }) => {
   return (
     <>
-      <SectionTitle parts={["code:ICps", "Merged Config"]} />
+      <SectionTitle parts={["code:ICps", "Dqm Config"]} />
       <TryCatchSourceCard
         topDescription={
           <Typography.Text>
-            This is the configuration used for creating the parser for this{" "}
-            <Typography.Text code>Cps</Typography.Text> instance
+            This is the object that the component hands to the parser
           </Typography.Text>
         }
         item={p.getDqmConfig()}

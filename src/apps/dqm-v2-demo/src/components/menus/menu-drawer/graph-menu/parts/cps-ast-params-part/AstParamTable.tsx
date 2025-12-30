@@ -14,6 +14,29 @@ export type AstParamTableProps = {
 };
 
 export const AstParamTable: FC<AstParamTableProps> = ({ param: p }) => {
+  const astCoupled = p.isCoupled();
+  if (astCoupled.state === "fail") {
+    return (
+      <ExceptionCard>
+        <Typography>
+          Retrieval of
+          <Typography.Text code>AstParam</Typography.Text>
+          coupling state failed unexpectedly
+        </Typography>
+      </ExceptionCard>
+    );
+  }
+
+  if (astCoupled.value === false) {
+    return (
+      <ExceptionCard>
+        This <Typography.Text code>CpsParam</Typography.Text>
+        is not coupled with any <Typography.Text code>AstParam</Typography.Text>
+        .
+      </ExceptionCard>
+    );
+  }
+
   const astValuesPre = p.getAstValues();
   if (astValuesPre.state === "fail") {
     return (
