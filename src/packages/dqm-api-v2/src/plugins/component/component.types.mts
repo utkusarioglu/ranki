@@ -2,6 +2,7 @@ import type {
   DqmConfig,
   DqmPluginVersion,
   IAstParamNode,
+  ICps,
 } from "../../export.types.mjs";
 import type { DeepPartialSerializable } from "../../util.types.mjs";
 import type { Alias, Chain, IdSummary } from "./id/id.types.mjs";
@@ -14,7 +15,10 @@ export interface IDqmComponent<T = any> {
     version: DqmPluginVersion;
   };
   customizations: ComponentCustomizations<T>;
+  validation: IDqmValidationFunction[];
 }
+
+export type IDqmValidationFunction = (cps: ICps) => void;
 
 export interface ComponentSingleParamSpec {
   id: IdSummary;

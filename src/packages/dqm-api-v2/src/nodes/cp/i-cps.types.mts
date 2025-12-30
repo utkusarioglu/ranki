@@ -22,7 +22,12 @@ export interface ICps
     ICpsIdCapability,
     ICpsUniqueCapability,
     IVerticesCapability<ICps>,
-    CpxCollectionCapability {}
+    CpxCollectionCapability,
+    CpsValidationCapability {}
+
+export interface CpsValidationCapability {
+  validate(): void;
+}
 
 export interface ICpsUniqueCapability {
   setDefinition(def: CpsDefinition): this;

@@ -27,6 +27,7 @@ export const frameV2ContainerComponent: IDqmComponent = {
       },
     },
   },
+  validation: [],
   // stages: {
   //   // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
   //   // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL

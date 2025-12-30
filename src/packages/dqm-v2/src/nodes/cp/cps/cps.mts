@@ -9,6 +9,7 @@ import type {
   ICpsParam,
   CommonTransportsConstructorParams,
   Chain,
+  DqmInternalConfig,
 } from "@dqm/package-dqm-api-v2";
 import { ParamsLib } from "./params/params-lib.mjs";
 import { CommonTransports } from "../../common-transports.mjs";
@@ -33,6 +34,11 @@ export class Cps extends CommonTransports implements ICps {
   constructor(params: CommonTransportsConstructorParams) {
     super(params);
     this.customizations.initConfig(this.getUnique());
+  }
+
+  validate(): void {
+    this.getChildren().forEach((c) => c.validate());
+    this.component.validation.forEach((v) => v(this));
   }
 
   getIntendedId(): Chain | Alias {
@@ -128,10 +134,17 @@ export class Cps extends CommonTransports implements ICps {
     const config = this.isOnFailMode()
       ? this.getInitialConfig()
       : this.customizations.getParsedDqmConfig();
+    const tokens = this.getPlugins().getTokens(config);
+    const internal: DqmInternalConfig = {
+      ...config,
+      grammar: {
+        tokens,
+      },
+    };
     // TODO
     const { parse } = this.getPlugins().getParser(
       "NOT_SURE_IF_THIS_IS_NEEDED",
-      config,
+      internal,
     );
     const prefix = config.content.prefix;
     const suffix = config.content.suffix;

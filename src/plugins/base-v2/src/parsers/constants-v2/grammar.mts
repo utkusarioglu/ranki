@@ -1,6 +1,9 @@
-import type { DqmGrammarTokens, DqmConfig } from "@dqm/package-dqm-api-v2";
+import type {
+  DqmGrammarTokens,
+  DqmInternalConfig,
+} from "@dqm/package-dqm-api-v2";
 
-export function buildGrammar(merged: DqmConfig) {
+export function buildGrammar(merged: DqmInternalConfig) {
   const tokens: DqmGrammarTokens = {};
 
   Object.entries(merged.grammar.tokens).forEach(([src, list]) => {

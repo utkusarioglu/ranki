@@ -22,7 +22,7 @@ export type DqmConfigOnOrphanChannel = "fail" | "warn" | "ignore";
 export type DqmConfigOnAbsentComponent = "fail" | "useDefaultComponent";
 
 export type DqmPluginsConfigDefaults = {
-  tokens: DqmPluginsTokens;
+  // tokens: DqmPluginsTokens;
   config: DqmPluginsConfig;
 };
 
@@ -57,12 +57,15 @@ export interface DqmConfig {
     requested: DqmPluginName[];
     config: DqmPluginsConfig;
   };
-  grammar: {
-    tokens: DqmPluginsTokens;
-  };
   content: {
     trim: boolean;
     prefix: string;
     suffix: string;
+  };
+}
+
+export interface DqmInternalConfig extends DqmConfig {
+  grammar: {
+    tokens: DqmPluginsTokens;
   };
 }

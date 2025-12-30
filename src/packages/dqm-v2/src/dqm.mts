@@ -21,10 +21,12 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { DqmAppError } from "./errors/dqm-app-error/dqm-app-error.mjs";
 import { Unique } from "./unique/unique.mjs";
+import { assertExists } from "@dqm/package-dqm-utils";
 
 export class Dqm {
   private plugins: IPlugins = new Libs();
   private config = new Config();
+  private parsed!: DqmParseOutput;
 
   /**
    * @dev
@@ -40,7 +42,7 @@ export class Dqm {
       this.plugins.getGrammarDefaultConfigs(DEFAULT_CONFIG);
     // #1
     DEFAULT_CONFIG.plugins.config = pluginDefaults.config;
-    DEFAULT_CONFIG.grammar.tokens = pluginDefaults.tokens;
+    // DEFAULT_CONFIG.grammar.tokens = pluginDefaults.tokens;
     this.config.pushConfig(DEFAULT_CONFIG_NAME, DEFAULT_CONFIG);
     configPacks.map(({ id, config }) => {
       this.config.pushConfig(id, config);
@@ -60,6 +62,12 @@ export class Dqm {
   }
 
   parse(rawInputs: DqmParseInput): DqmParseOutput {
+    this.ast(rawInputs);
+    this.validate();
+    return this.parsed;
+  }
+
+  private ast(rawInputs: DqmParseInput): DqmParseOutput {
     try {
       const initial = this.config.getConfig<DqmConfig>(INITIAL_CONFIG_NAME);
       const inputs = this.processInput(rawInputs);
@@ -68,7 +76,7 @@ export class Dqm {
         plugins: this.plugins,
         config: this.config,
       };
-      const parsed = inputs.map((input) => {
+      this.parsed = inputs.map((input) => {
         return {
           theater: input.theater,
           ast: new AstNode(transports)
@@ -79,7 +87,7 @@ export class Dqm {
             .parse(input),
         };
       });
-      return parsed;
+      return this.parsed;
     } catch (e) {
       throw new DqmAppError({
         code: "PARSE_FAIL",
@@ -90,6 +98,16 @@ export class Dqm {
         },
       });
     }
+  }
+
+  private validate() {
+    this.parsed.forEach((v) => {
+      const cpx = v.ast.getCpx();
+      assertExists(cpx, {
+        why: "Parsed asts are expected to have an attached Cpx",
+      });
+      cpx.getRootCps().validate();
+    });
   }
 }
 

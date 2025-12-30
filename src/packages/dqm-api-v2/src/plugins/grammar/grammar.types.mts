@@ -1,5 +1,6 @@
 import type {
   DqmConfig,
+  DqmInternalConfig,
   DqmPluginName,
   DqmPluginVersion,
 } from "../../config/dqm-config.types.mjs";
@@ -13,9 +14,11 @@ export interface IDqmPluginGrammar<ConfigShape = {}> {
     version: DqmPluginVersion;
   };
   dependencies: string[];
-  tokenizer: () => DqmGrammarTokens;
+  // tokenizer: (s: ConfigShape) => DqmGrammarTokens;
+  // TODO any
+  tokenizer: (s: any) => DqmGrammarTokens;
   config: (defaultConfig: DqmConfig) => ConfigShape;
-  grammar: (config: DqmConfig) => string;
+  grammar: (config: DqmInternalConfig) => string;
   actions: () => ActionsDictRecord;
   // TODO
   // validators:

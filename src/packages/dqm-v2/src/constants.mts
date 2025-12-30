@@ -2,9 +2,9 @@ import type { Alias, DqmConfig } from "@dqm/package-dqm-api-v2";
 
 export const DEFAULT_CONFIG: DqmConfig = {
   stage: "transform",
-  grammar: {
-    tokens: {},
-  },
+  // grammar: {
+  //   tokens: {},
+  // },
   content: {
     trim: false,
     prefix: "",

@@ -73,4 +73,9 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
       },
     },
   },
+  validation: [
+    // (c) => {
+    //   console.log("val", c.getId());
+    // },
+  ],
 };

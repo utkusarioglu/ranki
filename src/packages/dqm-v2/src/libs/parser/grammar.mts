@@ -1,5 +1,8 @@
 import * as ohm from "ohm-js";
-import type { DqmConfig, IDqmPluginGrammar } from "@dqm/package-dqm-api-v2";
+import type {
+  DqmInternalConfig,
+  IDqmPluginGrammar,
+} from "@dqm/package-dqm-api-v2";
 import type { GrammarActionsDict } from "./parser-lib.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
@@ -36,7 +39,7 @@ function adjustParent(specs: GrammarSpecs, raw: string): ParserPluginGrammar {
 }
 
 export function buildGrammar(
-  config: DqmConfig,
+  config: DqmInternalConfig,
   importChainUrn: string[],
   finder: (s: string) => IDqmPluginGrammar,
 ) {

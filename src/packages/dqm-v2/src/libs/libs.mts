@@ -10,6 +10,8 @@ import type {
   ICpxConstructor,
   IParamConstructor,
   IAstNodeConstructor,
+  DqmPluginsTokens,
+  DqmInternalConfig,
 } from "@dqm/package-dqm-api-v2";
 import { ComponentLib } from "./component/component-lib.mjs";
 import { ParserLib } from "./parser/parser-lib.mjs";
@@ -47,7 +49,7 @@ export class Libs implements IPlugins {
     return this.components.get({ id: chain });
   }
 
-  getParser(name: string, config: DqmConfig): CreateParserReturn {
+  getParser(name: string, config: DqmInternalConfig): CreateParserReturn {
     return this.parsers.get({ name, config });
   }
 
@@ -65,5 +67,9 @@ export class Libs implements IPlugins {
 
   getAstNodeConstructor(): IAstNodeConstructor {
     return AstNode;
+  }
+
+  getTokens(config: DqmConfig): DqmPluginsTokens {
+    return this.parsers.getGrammarTokens(config);
   }
 }

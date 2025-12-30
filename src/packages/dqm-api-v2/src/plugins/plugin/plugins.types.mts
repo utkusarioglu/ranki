@@ -1,6 +1,8 @@
 import type {
   DqmConfig,
+  DqmInternalConfig,
   DqmPluginsConfigDefaults,
+  DqmPluginsTokens,
 } from "../../config/dqm-config.types.mjs";
 import type { IAstNodeConstructor } from "../../nodes/ast/base/i-ast-node.types.mjs";
 import type { ICpxConstructor } from "../../nodes/cp/export.types.mjs";
@@ -28,10 +30,11 @@ export interface IPluginLib<
 
 export interface IPlugins {
   getComponentById(id: Chain | Alias): IDqmComponent;
-  getParser(name: string, config: DqmConfig): CreateParserReturn;
+  getParser(name: string, config: DqmInternalConfig): CreateParserReturn;
   addPlugin(plugin: IDqmPlugin): IPlugins;
   getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults;
   getCpxConstructor(): ICpxConstructor;
   getParamConstructor(): IParamConstructor;
   getAstNodeConstructor(): IAstNodeConstructor;
+  getTokens(config: DqmConfig): DqmPluginsTokens;
 }

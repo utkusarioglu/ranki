@@ -14,7 +14,7 @@ export const frameV2Grammar: IDqmPluginGrammar<FrameV2GrammarConfig> = {
   },
   dependencies: ["grammar:ParamsV2", "grammar:BaseV2"],
   config: () => config,
-  tokenizer: () => tokenizer(config),
+  tokenizer,
   grammar: () => grammar,
   actions: () => actions,
 };

@@ -14,7 +14,7 @@ export const baseV2Grammar: IDqmPluginGrammar<BaseV2GrammarConfig> = {
   },
   dependencies: ["grammar:ConstantsV2"],
   config: () => config,
-  tokenizer: () => tokenizer(config),
+  tokenizer,
   grammar: () => grammar,
   actions: () => actions,
 };

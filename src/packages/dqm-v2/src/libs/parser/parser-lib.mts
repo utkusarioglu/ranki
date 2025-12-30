@@ -9,6 +9,7 @@ import type {
   DqmConfig,
   IAstNodeContext,
   DqmPluginName,
+  DqmPluginsTokens,
 } from "@dqm/package-dqm-api-v2";
 import type { ILibParser, T, Criteria } from "./parser-lib.types.mjs";
 import { ParserHash, type ParserHashString } from "./hash.mjs";
@@ -37,13 +38,25 @@ export class ParserLib implements ILibParser {
       ),
       {},
     );
-    const tokens = this.grammars
-      .values()
-      .reduce(
-        (a, c) => ((a[this.buildKey(c.type, c.meta.name)] = c.tokenizer()), a),
-        {} as any,
-      );
-    return { tokens, config };
+    // const tokens = this.getGrammarTokens();
+    return {
+      // tokens,
+      config,
+    };
+  }
+
+  getGrammarTokens(config: DqmConfig): DqmPluginsTokens {
+    return Object.fromEntries(
+      this.grammars
+        .values()
+        .map((c) => {
+          const key = this.buildKey(c.type, c.meta.name);
+          const tokens = config.plugins.config[key];
+          const tokenized = tokens === undefined ? null : c.tokenizer(tokens);
+          return [key, tokenized];
+        })
+        .filter((a) => a[1] !== null),
+    );
   }
 
   add(plugin: IDqmPluginGrammar): ILibParser {
