@@ -1,3 +1,4 @@
+import type { TrnBuilt } from "./export.types.mjs";
 import type { IAstNode } from "./nodes/ast/export.types.mjs";
 
 export type DqmParseInput = DqmParseInputString | DqmParseInputStructured;
@@ -22,3 +23,10 @@ export interface CpxParseInput {
   dqm: DqmParseInputString;
   theater: DqmParseTheater;
 }
+
+export interface DqmTransformOutputTheater {
+  theater: DqmParseTheater;
+  trn: TrnBuilt[];
+}
+
+export type DqmTransformOutput = DqmTransformOutputTheater[];

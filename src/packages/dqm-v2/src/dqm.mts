@@ -16,8 +16,12 @@ import type {
   DqmParseOutput,
   DqmParseRole,
   DqmParseTheater,
+  DqmTransformOutput,
   IDqmPlugin,
+  IDqmRendererConstructor,
   IPlugins,
+  RenderReport,
+  RenderRoots,
 } from "@dqm/package-dqm-api-v2";
 import { DqmAppError } from "./errors/dqm-app-error/dqm-app-error.mjs";
 import { Unique } from "./unique/unique.mjs";
@@ -27,22 +31,27 @@ export class Dqm {
   private plugins: IPlugins = new Libs();
   private config = new Config();
   private parsed!: DqmParseOutput;
+  private transformed!: DqmTransformOutput;
+  private renderer: IDqmRendererConstructor | null = null;
+
+  constructor(configPacks: DqmConfigPack, plugins: IDqmPlugin[]) {
+    Unique.reset();
+    plugins.forEach((plugin) => {
+      this.plugins.addPlugin(plugin);
+    });
+    this.buildInitialConfig(configPacks);
+  }
 
   /**
    * @dev
    * #1 I'm not happy with DEFAULT_CONFIG being mutated twice. Correct config
    * shape would allow defining these values at once
    */
-  constructor(configPacks: DqmConfigPack, plugins: IDqmPlugin[]) {
-    Unique.reset();
-    plugins.forEach((plugin) => {
-      this.plugins.addPlugin(plugin);
-    });
+  private buildInitialConfig(configPacks: DqmConfigPack) {
     const pluginDefaults =
       this.plugins.getGrammarDefaultConfigs(DEFAULT_CONFIG);
     // #1
     DEFAULT_CONFIG.plugins.config = pluginDefaults.config;
-    // DEFAULT_CONFIG.grammar.tokens = pluginDefaults.tokens;
     this.config.pushConfig(DEFAULT_CONFIG_NAME, DEFAULT_CONFIG);
     configPacks.map(({ id, config }) => {
       this.config.pushConfig(id, config);
@@ -64,7 +73,22 @@ export class Dqm {
   parse(rawInputs: DqmParseInput): DqmParseOutput {
     this.ast(rawInputs);
     this.validate();
+    this.transform();
     return this.parsed;
+  }
+
+  setRenderer(r: IDqmRendererConstructor): this {
+    this.renderer = r;
+    return this;
+  }
+
+  render(rawInputs: DqmParseInput, roots: RenderRoots): RenderReport {
+    this.parse(rawInputs);
+    assertExists(this.renderer, {
+      why: "Cannot render without a renderer set",
+    });
+    const ren = new this.renderer();
+    return ren.render(this.transformed, roots);
   }
 
   private ast(rawInputs: DqmParseInput): DqmParseOutput {
@@ -107,6 +131,23 @@ export class Dqm {
         why: "Parsed asts are expected to have an attached Cpx",
       });
       cpx.getRootCps().validate();
+    });
+  }
+
+  private transform() {
+    this.transformed = this.parsed.map((v) => {
+      const cpx = v.ast.getCpx();
+      assertExists(cpx, {
+        why: "Parsed asts are expected to have an attached Cpx",
+      });
+      return {
+        theater: v.theater,
+        trn: cpx
+          .getRootCps()
+          .transform()
+          .map((t) => t.build())
+          .flat(),
+      };
     });
   }
 }

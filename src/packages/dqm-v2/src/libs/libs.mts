@@ -12,6 +12,7 @@ import type {
   IAstNodeConstructor,
   DqmPluginsTokens,
   DqmInternalConfig,
+  ITrnNodeConstructor,
 } from "@dqm/package-dqm-api-v2";
 import { ComponentLib } from "./component/component-lib.mjs";
 import { ParserLib } from "./parser/parser-lib.mjs";
@@ -19,6 +20,7 @@ import { Cpx } from "../nodes/cp/cpx/cpx.mjs";
 import { AstParamNode } from "../nodes/ast/param/param.mjs";
 import { AstNode } from "../nodes/ast/base/ast-node.mjs";
 import { DqmAppError } from "../errors/dqm-app-error/dqm-app-error.mjs";
+import { TrnNode } from "../nodes/trn/trn.mjs";
 
 export class Libs implements IPlugins {
   private components = new ComponentLib();
@@ -49,8 +51,8 @@ export class Libs implements IPlugins {
     return this.components.get({ id: chain });
   }
 
-  getParser(name: string, config: DqmInternalConfig): CreateParserReturn {
-    return this.parsers.get({ name, config });
+  getParser(config: DqmInternalConfig): CreateParserReturn {
+    return this.parsers.get({ config });
   }
 
   getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults {
@@ -67,6 +69,10 @@ export class Libs implements IPlugins {
 
   getAstNodeConstructor(): IAstNodeConstructor {
     return AstNode;
+  }
+
+  getTrnNodeConstructor(): ITrnNodeConstructor {
+    return TrnNode;
   }
 
   getTokens(config: DqmConfig): DqmPluginsTokens {

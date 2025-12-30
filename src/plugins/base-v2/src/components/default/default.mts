@@ -28,9 +28,10 @@ export const baseDefault: IDqmComponent = {
     },
   },
   validation: [],
-  // stages: {
-  //   // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
-  //   // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
-  //   preprocessing: (c) => c,
-  // },
+  transform: (t) => {
+    const n = t.setChain(["basic", "v2", "things"]);
+    const source = t.getRootAst().getSourceString();
+    n.setSource("-" + source + "-");
+    return [n];
+  },
 };

@@ -47,6 +47,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/packages/plugin-utils"\
     },\
     {\
+      "name": "@dqm/package-static-renderer",\
+      "reference": "workspace:src/packages/static-renderer"\
+    },\
+    {\
       "name": "@dqm/plugin-base-v2",\
       "reference": "workspace:src/plugins/base-v2"\
     },\
@@ -72,6 +76,7 @@ const RAW_RUNTIME_STATE =
     ["@dqm/package-dqm-utils", ["workspace:src/packages/dqm-utils"]],\
     ["@dqm/package-dqm-v2", ["workspace:src/packages/dqm-v2"]],\
     ["@dqm/package-plugin-utils", ["workspace:src/packages/plugin-utils"]],\
+    ["@dqm/package-static-renderer", ["workspace:src/packages/static-renderer"]],\
     ["@dqm/plugin-base-v2", ["workspace:src/plugins/base-v2"]],\
     ["@dqm/plugin-frame-v2", ["workspace:src/plugins/frame-v2"]],\
     ["@dqm/plugin-frame-v2-code", ["workspace:src/plugins/frame-v2-code"]],\
@@ -1726,6 +1731,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
           ["@dqm/package-dqm-utils", "workspace:src/packages/dqm-utils"],\
           ["@dqm/package-dqm-v2", "workspace:src/packages/dqm-v2"],\
+          ["@dqm/package-static-renderer", "workspace:src/packages/static-renderer"],\
           ["@dqm/plugin-base-v2", "workspace:src/plugins/base-v2"],\
           ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
           ["@dqm/plugin-frame-v2-code", "workspace:src/plugins/frame-v2-code"],\
@@ -1817,7 +1823,20 @@ const RAW_RUNTIME_STATE =
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@types/node", "npm:24.10.1"],\
           ["ohm-js", "npm:17.2.1"],\
-          ["tsx", "npm:4.20.5"],\
+          ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@dqm/package-static-renderer", [\
+      ["workspace:src/packages/static-renderer", {\
+        "packageLocation": "./src/packages/static-renderer/",\
+        "packageDependencies": [\
+          ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["@dqm/package-dqm-utils", "workspace:src/packages/dqm-utils"],\
+          ["@dqm/package-static-renderer", "workspace:src/packages/static-renderer"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@types/node", "npm:24.10.1"],\
           ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\

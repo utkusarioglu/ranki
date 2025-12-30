@@ -10,6 +10,7 @@ import type {
   CommonTransportsConstructorParams,
   Chain,
   DqmInternalConfig,
+  ITrnNode,
 } from "@dqm/package-dqm-api-v2";
 import { ParamsLib } from "./params/params-lib.mjs";
 import { CommonTransports } from "../../common-transports.mjs";
@@ -39,6 +40,13 @@ export class Cps extends CommonTransports implements ICps {
   validate(): void {
     this.getChildren().forEach((c) => c.validate());
     this.component.validation.forEach((v) => v(this));
+  }
+
+  transform(): ITrnNode[] {
+    const children = this.getChildren().map((c) => c.transform());
+    const Trn = this.getPlugins().getTrnNodeConstructor();
+    const trn = new Trn(this, children, this.getTransports());
+    return this.component.transform(trn);
   }
 
   getIntendedId(): Chain | Alias {
@@ -142,10 +150,7 @@ export class Cps extends CommonTransports implements ICps {
       },
     };
     // TODO
-    const { parse } = this.getPlugins().getParser(
-      "NOT_SURE_IF_THIS_IS_NEEDED",
-      internal,
-    );
+    const { parse } = this.getPlugins().getParser(internal);
     const prefix = config.content.prefix;
     const suffix = config.content.suffix;
     const trimmed = config.content.trim ? input.dqm.trim() : input.dqm;

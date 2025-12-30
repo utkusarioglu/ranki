@@ -2,6 +2,7 @@ import { useUiStore } from "_stores/ui/ui.store.mts";
 import { AsyncIFrame } from "_views/iframe/IFrame";
 import type { ResourceProps } from "_views/iframe/IFrame";
 import style from "./DocumentRender.module.css";
+import { TrialRender } from "./Trial";
 
 const bod = document.createElement("div");
 const h1 = document.createElement("h1");
@@ -45,13 +46,14 @@ export const DocumentRender = () => {
           scale: ui.previewScale,
         }}
       >
-        <AsyncIFrame
+        <TrialRender />
+        {/* <AsyncIFrame
           resource={promise}
           options={options}
           width={ui.previewSize[0]}
           height={ui.previewSize[1]}
           requestHeight={requestHeight}
-        />
+        /> */}
       </div>
     </div>
   );

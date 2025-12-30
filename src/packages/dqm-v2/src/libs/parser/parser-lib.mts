@@ -77,7 +77,7 @@ export class ParserLib implements ILibParser {
   }
 
   get(criteria: Criteria): CreateParserReturn {
-    const hash = ParserHash.compute(criteria.name, criteria.config);
+    const hash = ParserHash.compute(criteria.config);
     const cached = this.parsers.get(hash);
     if (cached) {
       return cached;
@@ -92,8 +92,7 @@ export class ParserLib implements ILibParser {
     hash: ParserHashString,
     {
       // TODO name is likely not relevant
-      // @ts-expect-error
-      name,
+      // name,
       config,
     }: Criteria,
   ): ParseAstFunction {

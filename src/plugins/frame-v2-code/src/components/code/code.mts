@@ -9,6 +9,8 @@ interface ComponentType {
   };
 }
 
+const PLUGIN_PATH = ["plugins", "config", "grammar:FrameV2"];
+
 export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
   type: "component",
   meta: {
@@ -26,8 +28,8 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
         {
           content: {
             trim: true,
-            prefix: "PREFIX",
-            suffix: "SUFFIX",
+            prefix: "",
+            suffix: "",
           },
         },
       ],
@@ -50,6 +52,18 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
             id: {
               chain: ["content", "prefix"],
               aliases: ["p"],
+            },
+          },
+          {
+            id: {
+              chain: [...PLUGIN_PATH, "tokens", "opener"],
+              aliases: ["o"],
+            },
+          },
+          {
+            id: {
+              chain: [...PLUGIN_PATH, "tokens", "closer"],
+              aliases: ["c"],
             },
           },
         ],
@@ -78,4 +92,5 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
     //   console.log("val", c.getId());
     // },
   ],
+  transform: () => [],
 };

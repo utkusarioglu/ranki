@@ -8,7 +8,7 @@ import type {
 export type T = IDqmPluginGrammar;
 
 export type Criteria = {
-  name: string;
+  // name: string;
   config: DqmInternalConfig;
 };
 

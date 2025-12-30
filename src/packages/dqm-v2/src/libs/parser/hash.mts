@@ -3,8 +3,8 @@ import type { DqmConfig } from "@dqm/package-dqm-api-v2";
 export type ParserHashString = string & { type?: "ParserHash" };
 
 export class ParserHash {
-  static compute(name: string, config: DqmConfig): ParserHashString {
-    const stringified = ParserHash.stringifyContext(name, config);
+  static compute(config: DqmConfig): ParserHashString {
+    const stringified = ParserHash.stringifyContext(config);
     return ParserHash.djb2Hash(stringified).toString() as ParserHashString;
   }
 
@@ -16,7 +16,7 @@ export class ParserHash {
     return h >>> 0;
   }
 
-  private static stringifyContext(name: string, config: DqmConfig): string {
-    return [name, JSON.stringify(config)].join("");
+  private static stringifyContext(config: DqmConfig): string {
+    return JSON.stringify(config);
   }
 }
