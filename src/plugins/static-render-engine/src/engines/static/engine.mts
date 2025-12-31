@@ -5,6 +5,7 @@ import type {
   IDqmRendererClientPreferences,
   RenderReport,
   RenderRoots,
+  Assertions,
 } from "@dqm/package-dqm-api-v2";
 import { RendererLibrary } from "./library.mjs";
 
@@ -15,36 +16,31 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
     this.library.addPlugin(plugin);
   }
 
-  render(
+  async render(
     trn: DqmTransformOutput,
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
-  ): RenderReport {
+    cbs: Assertions,
+  ): Promise<RenderReport> {
     trn.forEach(({ theater, trn }) => {
       const root = roots[theater];
       if (!root) {
         throw new Error("root[theater] absent -> replace this error handling");
       }
       root.innerText = "";
-      trn.forEach((t) => {
+      trn.forEach(async (t) => {
         const r = this.library.getPlugin(t.chain);
-        const o = r.sync(t, pref);
+        const o = r.sync(t, pref, cbs);
         root.appendChild(o.element);
-        // t.chain;
+        if (r.deferred) {
+          const d = await r.deferred();
+          const n = d(t, pref, cbs);
+          root.replaceChild(o.element, n.element);
+          // attach children here in lazy case
+        } else {
+          // attach children here in sync case
+        }
       });
-      // const elem = document.createElement("div");
-      // elem.innerText = trn
-      //   .map((t) => {
-      //     switch (t.kind) {
-      //       case "parent":
-      //         return "parent";
-      //       case "leaf":
-      //         return t.source;
-      //     }
-      //   })
-      //   .join("\n\n");
-      // root.innerText = "";
-      // root.appendChild(elem);
     });
     return {};
   }

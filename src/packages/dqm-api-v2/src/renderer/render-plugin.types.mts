@@ -2,7 +2,11 @@ import type {
   DqmPluginName,
   DqmPluginVersion,
 } from "../config/export.types.mjs";
-import type { TrnBuilt } from "../nodes/export.types.mjs";
+import type {
+  TrnBuilt,
+  TrnBuiltLeaf,
+  TrnBuiltParent,
+} from "../nodes/export.types.mjs";
 import type { Chain, IDqmPluginExtends } from "../plugins/export.types.mjs";
 import type { DqmRenderEngineName } from "./render-engine-plugin.mjs";
 
@@ -46,9 +50,15 @@ export interface IDqmRendererClientPreferences {
   scheme: "light" | "dark";
 }
 
+export type Assertions = {
+  parent(t: TrnBuilt): asserts t is TrnBuiltParent;
+  leaf(t: TrnBuilt): asserts t is TrnBuiltLeaf;
+};
+
 export type RenderFunction = (
   trn: TrnBuilt,
   pref: IDqmRendererClientPreferences,
+  tools: Assertions,
 ) => RenderNode;
 
 export type RenderNode = {

@@ -2,6 +2,7 @@ import type { DqmTransformOutput } from "../dqm.types.mjs";
 import type {
   IDqmPluginRenderer,
   IDqmRendererClientPreferences,
+  Assertions,
 } from "./render-plugin.types.mjs";
 
 export interface RenderReport {}
@@ -13,6 +14,7 @@ export interface IDqmRenderEngine {
     trn: DqmTransformOutput,
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
+    tools: Assertions,
   ): RenderReport;
 
   addPlugin(plugin: IDqmPluginRenderer): void;

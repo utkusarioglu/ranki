@@ -26,7 +26,11 @@ import { AstParamNode } from "../nodes/ast/param/param.mjs";
 import { AstNode } from "../nodes/ast/base/ast-node.mjs";
 import { DqmAppError } from "../errors/dqm-app-error/dqm-app-error.mjs";
 import { TrnNode } from "../nodes/trn/trn.mjs";
-import { assertExists } from "@dqm/package-dqm-utils";
+import { assertExists, assertNull } from "@dqm/package-dqm-utils";
+import {
+  assertLeaf,
+  assertParent,
+} from "../errors/render-error/assertions.mjs";
 
 export class Libs implements IPlugins {
   private components = new ComponentLib();
@@ -43,6 +47,9 @@ export class Libs implements IPlugins {
     plugin.forEach((entry) => {
       switch (entry.type) {
         case "render-engine":
+          assertNull(this.renderEngine, {
+            why: "Current only one render engine can be installed",
+          });
           this.renderEngine = new entry.engine();
           break;
         case "renderer":
@@ -77,7 +84,10 @@ export class Libs implements IPlugins {
     assertExists(this.renderEngine, {
       why: "Cannot render if no rendering engine is installed",
     });
-    return this.renderEngine.render(rawInputs, roots, pref);
+    return this.renderEngine.render(rawInputs, roots, pref, {
+      parent: assertParent,
+      leaf: assertLeaf,
+    });
   }
 
   getComponentById(chain: Alias | Chain): IDqmComponent {

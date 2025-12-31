@@ -1,4 +1,15 @@
-import type { IDqmPluginRenderer } from "@dqm/package-dqm-api-v2";
+import type { IDqmPluginRenderer, Assertions } from "@dqm/package-dqm-api-v2";
+
+function randomColor(scheme: "light" | "dark") {
+  const h = Math.random() * 360;
+  const s = 60 + Math.random() * 20; // avoid gray/muted
+  const l =
+    scheme === "dark"
+      ? 20 + Math.random() * 20 // 20–40%
+      : 65 + Math.random() * 20; // 65–85%
+
+  return `hsl(${h} ${s}% ${l}%)`;
+}
 
 export const debugRenderer: IDqmPluginRenderer = {
   type: "renderer",
@@ -13,16 +24,15 @@ export const debugRenderer: IDqmPluginRenderer = {
     {
       load: "sync",
       chain: ["debug", "block", "container"],
-      sync: (t, o) => {
+      sync: (t, o, { leaf }) => {
+        const assertLeaf: Assertions["leaf"] = leaf;
+        assertLeaf(t);
         const element = document.createElement("div");
-        switch (t.kind) {
-          case "leaf":
-            element.innerText = t.source + " " + o.scheme;
-            break;
-          case "parent":
-            element.innerText = "is parent" + o.scheme + "|";
-            break;
-        }
+        element.style.padding = "10px";
+        element.style.backgroundColor = o.scheme === "dark" ? "#000" : "#FFF";
+        element.style.color = o.scheme === "dark" ? "#FFF" : "#000";
+        element.style.border = `2px dotted ${randomColor(o.scheme)}`;
+        element.innerText = t.source;
         return {
           element,
         };

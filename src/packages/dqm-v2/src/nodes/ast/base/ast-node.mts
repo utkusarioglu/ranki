@@ -6,7 +6,7 @@ import type {
   CpxFuncParam,
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
-import { assertNotExists } from "@dqm/package-dqm-utils";
+import { assertNotUndefined } from "@dqm/package-dqm-utils";
 import { CommonTransports } from "../../common-transports.mjs";
 import { verticesCapability } from "../../capabilities/vertices.capability.mjs";
 import { syntaxCapability } from "./capabilities/syntax.capability.mjs";
@@ -171,7 +171,7 @@ export class AstNode extends CommonTransports implements IAstNode {
    * */
   pushNodes(...nodeSetRaw: PushedNodeDefinition[]): this {
     // #1
-    assertNotExists(this.view.getDefinedLeafDecoder(), {
+    assertNotUndefined(this.view.getDefinedLeafDecoder(), {
       why: "Leaf nodes cannot have children nodes",
       details: {
         nodeSetRaw,

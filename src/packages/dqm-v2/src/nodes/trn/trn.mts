@@ -3,6 +3,7 @@ import type {
   CommonTransportsConstructorParams,
   DqmConfig,
   IAstNode,
+  IAstNodeKind,
   ICps,
   ITrnNode,
   TrnBuilt,
@@ -18,6 +19,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
   private subtree: ITrnNode[] = [];
   private chain!: Chain;
   private source!: string;
+  private kind: IAstNodeKind = "leaf";
 
   constructor(
     cps: ICps,
@@ -68,6 +70,14 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     return this.children;
   }
 
+  private setKind(kind: IAstNodeKind) {
+    this.kind = kind;
+  }
+
+  private getKind(): IAstNodeKind {
+    return this.kind;
+  }
+
   // pushChild(child: ITrnNode): this {
   //   return this;
   // }
@@ -82,7 +92,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
    * render step.
    */
   build(): TrnBuilt[] {
-    const kind = this.subtree.length > 0 ? "parent" : "leaf";
+    const kind = this.getKind();
     const component = this.getComponentConfig();
     const dqm = this.getDqmConfig();
     switch (kind) {
@@ -130,6 +140,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
    * where to get its children.
    */
   newTrnNode(): ITrnNode {
+    this.setKind("parent");
     const cloned = new TrnNode(
       this.getCps(),
       [], // #1

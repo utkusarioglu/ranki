@@ -5,7 +5,7 @@ import {
 
 type AssertionExtra = Pick<DqmPluginErrorConstructorParams, "why" | "details">;
 
-export function assertNotExists<C extends {}>(
+export function assertNotUndefined<C extends {}>(
   value: C | undefined,
   extra: AssertionExtra,
   // obj: any,
@@ -13,6 +13,20 @@ export function assertNotExists<C extends {}>(
   if (value !== undefined) {
     throw new DqmUtilError({
       code: "VALUE_DEFINED",
+      cause: null,
+      ...extra,
+    });
+  }
+}
+
+export function assertNull<C extends {}>(
+  value: C | null,
+  extra: AssertionExtra,
+  // obj: any,
+): asserts value is null {
+  if (value !== null) {
+    throw new DqmUtilError({
+      code: "VALUE_NOT_NULL",
       cause: null,
       ...extra,
     });
