@@ -17,7 +17,9 @@ import type {
   RenderRoots,
   IDqmRendererClientPreferences,
   RenderReport,
-  DqmTransformOutput,
+  DqmSerializeOutput,
+  CreatorName,
+  IDqmComponentTransformer,
 } from "@dqm/package-dqm-api-v2";
 import { ComponentLib } from "./component/component-lib.mjs";
 import { ParserLib } from "./parser/parser-lib.mjs";
@@ -30,10 +32,13 @@ import { assertExists, assertNull } from "@dqm/package-dqm-utils";
 import {
   assertLeaf,
   assertParent,
+  assertExists as exists,
 } from "../errors/render-error/assertions.mjs";
+import { TransformLib } from "./transform/transform-lib.mjs";
 
 export class Libs implements IPlugins {
   private components = new ComponentLib();
+  private transformers = new TransformLib();
   private parsers = new ParserLib();
   private renderEngine: IDqmRenderEngine | null = null;
 
@@ -60,6 +65,9 @@ export class Libs implements IPlugins {
           break;
         case "component-set":
           this.components.add(entry);
+          entry.list.forEach((c) => {
+            this.transformers.add(c);
+          });
           break;
         case "grammar":
           this.parsers.add(entry);
@@ -77,7 +85,7 @@ export class Libs implements IPlugins {
   }
 
   render(
-    rawInputs: DqmTransformOutput,
+    rawInputs: DqmSerializeOutput,
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
   ): RenderReport {
@@ -87,7 +95,12 @@ export class Libs implements IPlugins {
     return this.renderEngine.render(rawInputs, roots, pref, {
       parent: assertParent,
       leaf: assertLeaf,
+      exists,
     });
+  }
+
+  getTransformer(creator: CreatorName): IDqmComponentTransformer {
+    return this.transformers.get({ creator });
   }
 
   getComponentById(chain: Alias | Chain): IDqmComponent {

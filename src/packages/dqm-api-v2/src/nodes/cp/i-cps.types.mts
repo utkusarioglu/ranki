@@ -15,11 +15,7 @@ import type {
   Chain,
   IId,
 } from "../../plugins/component/id/id.types.mjs";
-import type {
-  DqmConfig,
-  ICommonTransports,
-  ITrnNode,
-} from "../../export.types.mjs";
+import type { DqmConfig, ICommonTransports } from "../../export.types.mjs";
 
 export interface ICps
   extends ICommonTransports,
@@ -27,16 +23,17 @@ export interface ICps
     ICpsUniqueCapability,
     IVerticesCapability<ICps>,
     CpxCollectionCapability,
-    CpsValidationCapability,
-    CpsTransformCapability {}
+    CpsValidationCapability {
+  // CpsTransformCapability
+}
 
 export interface CpsValidationCapability {
   validate(): void;
 }
 
-export interface CpsTransformCapability {
-  transform(): ITrnNode[];
-}
+// export interface CpsTransformCapability {
+//   transform(): ITrnNode[];
+// }
 
 export interface ICpsUniqueCapability {
   setDefinition(def: CpsDefinition): this;

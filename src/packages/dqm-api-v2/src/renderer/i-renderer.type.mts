@@ -1,4 +1,4 @@
-import type { DqmTransformOutput } from "../dqm.types.mjs";
+import type { DqmSerializeOutput } from "../dqm.types.mjs";
 import type {
   IDqmPluginRenderer,
   IDqmRendererClientPreferences,
@@ -11,7 +11,7 @@ export type RenderRoots = Record<string, HTMLDivElement>;
 
 export interface IDqmRenderEngine {
   render(
-    trn: DqmTransformOutput,
+    trn: DqmSerializeOutput,
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
     tools: Assertions,

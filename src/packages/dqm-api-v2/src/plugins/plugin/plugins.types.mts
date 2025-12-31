@@ -6,13 +6,19 @@ import type {
 } from "../../config/dqm-config.types.mjs";
 import type { IAstNodeConstructor } from "../../nodes/ast/base/i-ast-node.types.mjs";
 import type { ICpxConstructor } from "../../nodes/cp/export.types.mjs";
-import type { IParamConstructor } from "../../nodes/ast/export.types.mjs";
-import type { IDqmComponent } from "../component/component.types.mjs";
+import type {
+  CreatorName,
+  IParamConstructor,
+} from "../../nodes/ast/export.types.mjs";
+import type {
+  IDqmComponent,
+  IDqmComponentTransformer,
+} from "../component/component.types.mjs";
 import type { Alias, Chain } from "../component/id/id.types.mjs";
 import type { CreateParserReturn } from "./parser/parser.types.mjs";
 import type { IDqmPlugin, IDqmPluginExtends } from "./plugin.types.mjs";
 import type {
-  DqmTransformOutput,
+  DqmSerializeOutput,
   IDqmRendererClientPreferences,
   ITrnNodeConstructor,
   RenderReport,
@@ -46,9 +52,10 @@ export interface IPlugins {
   getTrnNodeConstructor(): ITrnNodeConstructor;
   getTokens(config: DqmConfig): DqmPluginsTokens;
   addPlugins(plugins: IDqmPlugin[]): void;
+  getTransformer(creator: CreatorName): IDqmComponentTransformer;
 
   render(
-    transformOutput: DqmTransformOutput,
+    transformOutput: DqmSerializeOutput,
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
   ): RenderReport;

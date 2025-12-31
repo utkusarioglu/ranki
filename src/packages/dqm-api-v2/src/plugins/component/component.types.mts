@@ -17,10 +17,10 @@ export interface IDqmComponent<T = any> {
   };
   customizations: ComponentCustomizations<T>;
   validation: IDqmValidationFunction[];
-  transform: IDqmComponentTransformCb;
+  transformers: Record<string, IDqmComponentTransformer>;
 }
 
-export type IDqmComponentTransformCb = (c: ITrnNode) => ITrnNode[];
+export type IDqmComponentTransformer = (c: ITrnNode) => void;
 
 export type IDqmValidationFunction = (cps: ICps) => void;
 

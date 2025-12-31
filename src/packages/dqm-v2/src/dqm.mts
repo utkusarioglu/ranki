@@ -16,6 +16,7 @@ import type {
   DqmParseOutput,
   DqmParseRole,
   DqmParseTheater,
+  DqmSerializeOutput,
   DqmTransformOutput,
   IDqmPlugin,
   IPlugins,
@@ -26,12 +27,14 @@ import { assertExists } from "@dqm/package-dqm-utils";
 import type { RenderRoots } from "@dqm/package-dqm-api-v2";
 import type { IDqmRendererClientPreferences } from "@dqm/package-dqm-api-v2";
 import type { RenderReport } from "@dqm/package-dqm-api-v2";
+import { TrnNode } from "./nodes/trn/trn.mjs";
 
 export class Dqm {
   private plugins: IPlugins = new Libs();
   private config = new Config();
   private parsed!: DqmParseOutput;
   private transformed!: DqmTransformOutput;
+  private serialized!: DqmSerializeOutput;
 
   constructor(configPacks: DqmConfigPack, plugins: IDqmPlugin[]) {
     Unique.reset();
@@ -74,6 +77,7 @@ export class Dqm {
     this.ast(rawInputs);
     this.validate();
     this.transform();
+    this.serialize();
     return this.parsed;
   }
 
@@ -84,7 +88,7 @@ export class Dqm {
   ): RenderReport {
     try {
       this.parse(rawInputs);
-      return this.plugins.render(this.transformed, roots, pref);
+      return this.plugins.render(this.serialized, roots, pref);
     } catch (e) {
       throw new DqmAppError({
         code: "RENDER_FAIL",
@@ -97,15 +101,19 @@ export class Dqm {
     }
   }
 
+  private getTransports(): CommonTransportsConstructorParams {
+    return {
+      plugins: this.plugins,
+      config: this.config,
+    };
+  }
+
   private ast(rawInputs: DqmParseInput): DqmParseOutput {
     try {
       const initial = this.config.getConfig<DqmConfig>(INITIAL_CONFIG_NAME);
       const inputs = this.processInput(rawInputs);
       const { chain } = initial.plugins.default;
-      const transports: CommonTransportsConstructorParams = {
-        plugins: this.plugins,
-        config: this.config,
-      };
+      const transports = this.getTransports();
       this.parsed = inputs.map((input) => {
         return {
           theater: input.theater,
@@ -142,19 +150,23 @@ export class Dqm {
 
   private transform() {
     this.transformed = this.parsed.map((v) => {
-      const cpx = v.ast.getCpx();
-      assertExists(cpx, {
-        why: "Parsed asts are expected to have an attached Cpx",
-      });
+      // const cpx = v.ast.getCpx();
+      // assertExists(cpx, {
+      //   why: "Parsed asts are expected to have an attached Cpx",
+      // });
+      const trn = new TrnNode(v.ast, this.getTransports());
       return {
         theater: v.theater,
-        trn: cpx
-          .getRootCps()
-          .transform()
-          .map((t) => t.build())
-          .flat(),
+        trn,
       };
     });
+  }
+
+  private serialize() {
+    this.serialized = this.transformed.map(({ theater, trn }) => ({
+      theater,
+      serialized: trn.build(),
+    }));
   }
 }
 

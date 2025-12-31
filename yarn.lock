@@ -970,8 +970,9 @@ __metadata:
     "@dqm/package-dqm-api-v2": "workspace:^"
     "@dqm/package-plugin-utils": "workspace:^"
     "@ranki/config-typescript": "workspace:^"
-    "@types/node": "npm:^24.10.1"
-    typescript: "npm:^5.9.2"
+    concurrently: "npm:^9.2.1"
+    typescript: "npm:^5.8.3"
+    vite: "npm:^7.2.2"
   languageName: unknown
   linkType: soft
 

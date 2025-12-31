@@ -1,4 +1,5 @@
 import type { IDqmComponent } from "@dqm/package-dqm-api-v2";
+import { transformers } from "./transforms.mjs";
 
 export const baseDefault: IDqmComponent = {
   type: "component",
@@ -28,10 +29,5 @@ export const baseDefault: IDqmComponent = {
     },
   },
   validation: [],
-  transform: (t) => {
-    const n = t.setChain(["debug", "block", "container"]);
-    const source = t.getRootAst().getSourceString();
-    n.setSource("-" + source + "-");
-    return [n];
-  },
+  transformers,
 };

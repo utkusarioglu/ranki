@@ -3,9 +3,9 @@ import type {
   DqmPluginVersion,
 } from "../config/export.types.mjs";
 import type {
-  TrnBuilt,
-  TrnBuiltLeaf,
-  TrnBuiltParent,
+  ISerializedNode,
+  ISerializedLeaf,
+  ISerializedParent,
 } from "../nodes/export.types.mjs";
 import type { Chain, IDqmPluginExtends } from "../plugins/export.types.mjs";
 import type { DqmRenderEngineName } from "./render-engine-plugin.mjs";
@@ -51,12 +51,16 @@ export interface IDqmRendererClientPreferences {
 }
 
 export type Assertions = {
-  parent(t: TrnBuilt): asserts t is TrnBuiltParent;
-  leaf(t: TrnBuilt): asserts t is TrnBuiltLeaf;
+  // TODO any
+  parent(t: ISerializedNode, extra: any): asserts t is ISerializedParent;
+  // TODO any
+  leaf(t: ISerializedNode, extra: any): asserts t is ISerializedLeaf;
+  // TODO any
+  exists(a: any, extra: any): asserts a is object;
 };
 
 export type RenderFunction = (
-  trn: TrnBuilt,
+  trn: ISerializedNode,
   pref: IDqmRendererClientPreferences,
   tools: Assertions,
 ) => RenderNode;
@@ -64,7 +68,7 @@ export type RenderFunction = (
 export type RenderNode = {
   element: HTMLElement | DocumentFragment | Text;
   css?: RankiRenderNodeCssSpec[];
-  slots?: Record<string, HTMLElement>;
+  getMount?: () => HTMLElement;
   afterMount?: RenderNodeOnMountCallback[];
   beforeUnmount?: RenderNodeOnUnmountCallback[];
 };

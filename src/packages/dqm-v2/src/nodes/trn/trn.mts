@@ -5,30 +5,42 @@ import type {
   IAstNode,
   IAstNodeKind,
   ICps,
+  ICpx,
   ITrnNode,
-  TrnBuilt,
+  ISerializedNode,
 } from "@dqm/package-dqm-api-v2";
 import { CommonTransports } from "../common-transports.mjs";
 import { verticesCapability } from "../capabilities/vertices.capability.mjs";
-import { assertExists } from "@dqm/package-dqm-utils";
+import { assertExists, rejectValues } from "@dqm/package-dqm-utils";
 
 export class TrnNode extends CommonTransports implements ITrnNode {
   private vertices = verticesCapability<this, ITrnNode>(this);
-  private cps: ICps;
-  private children: ITrnNode[][];
+  // private cpx: ICpx;
+  private children!: ITrnNode[];
+  private ast: IAstNode;
   private subtree: ITrnNode[] = [];
   private chain!: Chain;
   private source!: string;
   private kind: IAstNodeKind = "leaf";
 
   constructor(
-    cps: ICps,
-    children: ITrnNode[][],
+    // cpx: ICpx,
+    ast: IAstNode,
+    // children: ITrnNode[][],
     t: CommonTransportsConstructorParams,
   ) {
     super(t);
-    this.cps = cps;
-    this.children = children;
+    // this.cpx = cpx;
+    this.ast = ast;
+    // this.children = children;
+    this.processTransform();
+  }
+
+  private processTransform() {
+    const transformer = this.getPlugins().getTransformer(
+      this.getAst().getCreator(),
+    );
+    transformer(this);
   }
 
   setChain(chain: Chain): this {
@@ -36,16 +48,25 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     return this;
   }
 
-  private getCps(): ICps {
-    return this.cps;
+  private getCpx(): ICpx {
+    const cpx = this.getAst().getCpx();
+    assertExists(cpx, { why: "Working ast nodes all need to have a cpx" });
+    return cpx;
   }
 
-  getRootAst(): IAstNode {
-    const cpx = this.getCps().getCpx();
-    assertExists(cpx, { why: "Cps has to exist for the transformer to work" });
-    const rootAst = cpx.getRootAst();
-    return rootAst;
+  getAst(): IAstNode {
+    return this.ast;
   }
+
+  private getLeafCps(): ICps {
+    const cpx = this.getCpx();
+    return cpx.getLeafCps();
+  }
+
+  // private getRootAst(): IAstNode {
+  //   const cpx = this.getCpx();
+  //   return cpx.getRootAst();
+  // }
 
   // setDirection(direction: ContentDirection): this {
   //   return this;
@@ -56,17 +77,17 @@ export class TrnNode extends CommonTransports implements ITrnNode {
   // }
 
   getComponentConfig<T>(): T {
-    return this.getCps().getComponentConfig();
+    return this.getLeafCps().getComponentConfig();
   }
 
   getDqmConfig(): DqmConfig {
-    return this.getCps().getDqmConfig();
+    return this.getLeafCps().getDqmConfig();
   }
 
   /**
    * Read the node for the IAstNodeConstructor `children` arg
    */
-  getDescendants(): ITrnNode[][] {
+  getDescendants(): ITrnNode[] {
     return this.children;
   }
 
@@ -87,20 +108,26 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     return this;
   }
 
+  @rejectValues(undefined)
+  private getChain() {
+    return this.chain;
+  }
+
   /**
    * Collapses the class to an object. this way it's going to be ready for the
    * render step.
    */
-  build(): TrnBuilt[] {
+  build(): ISerializedNode[] {
     const kind = this.getKind();
     const component = this.getComponentConfig();
     const dqm = this.getDqmConfig();
+    const chain = this.getChain();
     switch (kind) {
       case "parent":
         return [
           {
             kind,
-            chain: this.chain,
+            chain,
             component,
             dqm,
             children: this.subtree.map((v) => v.build()).flat(),
@@ -110,7 +137,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
         return [
           {
             kind,
-            chain: this.chain,
+            chain,
             component,
             dqm,
             source: this.source,
@@ -126,8 +153,8 @@ export class TrnNode extends CommonTransports implements ITrnNode {
    */
   clone(): ITrnNode {
     const cloned = new TrnNode(
-      this.getCps(),
-      this.children,
+      this.getAst(),
+      // this.children,
       this.getTransports(),
     );
     return cloned;
@@ -139,11 +166,11 @@ export class TrnNode extends CommonTransports implements ITrnNode {
    * source of children. The transform function shouldn't be confused about
    * where to get its children.
    */
-  newTrnNode(): ITrnNode {
+  newTrnNode(ast: IAstNode): ITrnNode {
     this.setKind("parent");
     const cloned = new TrnNode(
-      this.getCps(),
-      [], // #1
+      ast,
+      // [], // #1
       this.getTransports(),
     );
     cloned.setParent(this);

@@ -24,15 +24,41 @@ export const debugRenderer: IDqmPluginRenderer = {
     {
       load: "sync",
       chain: ["debug", "block", "container"],
-      sync: (t, o, { leaf }) => {
-        const assertLeaf: Assertions["leaf"] = leaf;
-        assertLeaf(t);
+      sync: (ser, pref, { parent }) => {
+        const assertParent: Assertions["parent"] = parent;
+        assertParent(ser, {});
         const element = document.createElement("div");
         element.style.padding = "10px";
-        element.style.backgroundColor = o.scheme === "dark" ? "#000" : "#FFF";
-        element.style.color = o.scheme === "dark" ? "#FFF" : "#000";
-        element.style.border = `2px dotted ${randomColor(o.scheme)}`;
-        element.innerText = t.source;
+        element.style.backgroundColor =
+          pref.scheme === "dark" ? "#000" : "#FFF";
+        element.style.color = pref.scheme === "dark" ? "#FFF" : "#000";
+        element.style.border = `5px dotted ${randomColor(pref.scheme)}`;
+        let children: HTMLDivElement;
+        return {
+          element,
+          getMount: () => {
+            if (!children) {
+              children = document.createElement("div");
+              element.appendChild(children);
+            }
+            return children;
+          },
+        };
+      },
+    },
+    {
+      load: "sync",
+      chain: ["debug", "leaf", "container"],
+      sync: (ser, pref, { leaf }) => {
+        const assertLeaf: Assertions["leaf"] = leaf;
+        assertLeaf(ser, {});
+        const element = document.createElement("div");
+        element.style.padding = "2px";
+        element.style.backgroundColor =
+          pref.scheme === "dark" ? "#000" : "#FFF";
+        element.style.color = pref.scheme === "dark" ? "#FFF" : "#000";
+        element.style.border = `2px dotted ${randomColor(pref.scheme)}`;
+        element.innerText = ser.source;
         return {
           element,
         };

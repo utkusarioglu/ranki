@@ -3,49 +3,29 @@ import type {
   CommonTransportsConstructorParams,
   DqmConfig,
   IAstNode,
-  ICps,
+  // ICpx,
 } from "../../export.types.mjs";
+import type { ISerializedNode } from "../ser/i-serialized.types.mjs";
 
-export type TrnBuilt = TrnBuiltParent | TrnBuiltLeaf;
-
-interface TrnBuiltCommon {
-  chain: Chain;
-  // direction: ContentDirection;
-
-  // creator: string;
-  // depth: number;
-  // hoist: number;
-  dqm: DqmConfig;
-  component: any;
-  // params: AstNodeTransformerDefinition["params"];
-}
-
-export type TrnBuiltLeaf = TrnBuiltCommon & {
-  kind: "leaf";
-  source: string;
-};
-
-export type TrnBuiltParent = TrnBuiltCommon & {
-  kind: "parent";
-  children: TrnBuilt[];
-};
-
-export type TfmHoist = number & { type?: "TransformHoist" };
+// export type TfmHoist = number & { type?: "TransformHoist" };
 
 export type ITrnNodeConstructor = new (
-  cps: ICps,
+  // cpx: ICpx,
+  ast: IAstNode,
   /**
    * I Cannot decide whether this should be [][] or just []. maybe it's useful
    * to be able to tell which child the package comes from.
    */
-  children: ITrnNode[][],
+  // children: ITrnNode[][],
   t: CommonTransportsConstructorParams,
 ) => ITrnNode;
 
 export interface ITrnNode {
   setChain(chain: Chain): this;
+
+  getAst(): IAstNode;
   // getCps(): ICps;
-  getRootAst(): IAstNode;
+  // getRootAst(): IAstNode;
   // setDirection(direction: ContentDirection): this;
   // setHoist(hoist: TfmHoist): this;
 
@@ -55,7 +35,7 @@ export interface ITrnNode {
   /**
    * Read the node for the IAstNodeConstructor `children` arg
    */
-  getDescendants(): ITrnNode[][];
+  getDescendants(): ITrnNode[];
   pushChild(child: ITrnNode): this;
 
   /**
@@ -67,7 +47,7 @@ export interface ITrnNode {
    * Collapses the class to an object. this way it's going to be ready for the
    * render step.
    */
-  build(): TrnBuilt[];
+  build(): ISerializedNode[];
 
   /**
    * In case of hoist, this is going to be called to produce a replica of the
@@ -76,5 +56,5 @@ export interface ITrnNode {
    */
   clone(): ITrnNode;
 
-  newTrnNode(): ITrnNode;
+  newTrnNode(ast: IAstNode): ITrnNode;
 }

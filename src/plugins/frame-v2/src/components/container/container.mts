@@ -1,4 +1,5 @@
 import type { IDqmComponent } from "@dqm/package-dqm-api-v2";
+import { transformers } from "./transformers.mjs";
 
 export const frameV2ContainerComponent: IDqmComponent = {
   type: "component",
@@ -28,7 +29,7 @@ export const frameV2ContainerComponent: IDqmComponent = {
     },
   },
   validation: [],
-  transform: () => [],
+  transformers,
   // stages: {
   //   // DO NOT DO TRIMMING HERE, DO THAT IN TRANSFORM.
   //   // THIS IS FOR GETTING RID OF HTML ENCODING AND SUCH AT THE COMPONENT LEVEL
