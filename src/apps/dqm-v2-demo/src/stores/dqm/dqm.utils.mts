@@ -14,28 +14,28 @@ import type {
 import type { ParseResult } from "./dqm.utils.types.mts";
 import yaml from "yaml";
 
-export function renderDqm(
-  input: DqmParseInputStructured,
-  config: DqmConfigPack,
-  plugins: IDqmPlugin[],
-): ParseResult {
-  try {
-    const dqm = new Dqm(config, plugins);
-    // dqm.setRenderer(DqmStaticRenderer);
-    const data = dqm.parse(input);
+// export function renderDqm(
+//   input: DqmParseInputStructured,
+//   config: DqmConfigPack,
+//   plugins: IDqmPlugin[],
+// ): ParseResult {
+//   try {
+//     const dqm = new Dqm(config, plugins);
+//     // dqm.setRenderer(DqmStaticRenderer);
+//     const data = dqm.parse(input);
 
-    return {
-      state: "success",
-      data,
-    };
-  } catch (e) {
-    return {
-      state: "fail",
-      // TODO this isn't a string
-      error: e as string,
-    };
-  }
-}
+//     return {
+//       state: "success",
+//       data,
+//     };
+//   } catch (e) {
+//     return {
+//       state: "fail",
+//       // TODO this isn't a string
+//       error: e as string,
+//     };
+//   }
+// }
 
 export function parseDqm(
   input: DqmParseInputStructured,

@@ -11,7 +11,13 @@ import type { IDqmComponent } from "../component/component.types.mjs";
 import type { Alias, Chain } from "../component/id/id.types.mjs";
 import type { CreateParserReturn } from "./parser/parser.types.mjs";
 import type { IDqmPlugin, IDqmPluginExtends } from "./plugin.types.mjs";
-import type { ITrnNodeConstructor } from "../../export.types.mjs";
+import type {
+  DqmTransformOutput,
+  IDqmRendererClientPreferences,
+  ITrnNodeConstructor,
+  RenderReport,
+  RenderRoots,
+} from "../../export.types.mjs";
 
 /**
  * Provides a common surface area for Plugin libraries such as component and parser
@@ -32,11 +38,18 @@ export interface IPluginLib<
 export interface IPlugins {
   getComponentById(id: Chain | Alias): IDqmComponent;
   getParser(config: DqmInternalConfig): CreateParserReturn;
-  addPlugin(plugin: IDqmPlugin): IPlugins;
+  // addPlugin(plugin: IDqmPlugin): IPlugins;
   getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults;
   getCpxConstructor(): ICpxConstructor;
   getParamConstructor(): IParamConstructor;
   getAstNodeConstructor(): IAstNodeConstructor;
   getTrnNodeConstructor(): ITrnNodeConstructor;
   getTokens(config: DqmConfig): DqmPluginsTokens;
+  addPlugins(plugins: IDqmPlugin[]): void;
+
+  render(
+    transformOutput: DqmTransformOutput,
+    roots: RenderRoots,
+    pref: IDqmRendererClientPreferences,
+  ): RenderReport;
 }

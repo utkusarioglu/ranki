@@ -29,7 +29,7 @@ export const baseDefault: IDqmComponent = {
   },
   validation: [],
   transform: (t) => {
-    const n = t.setChain(["basic", "v2", "things"]);
+    const n = t.setChain(["debug", "block", "container"]);
     const source = t.getRootAst().getSourceString();
     n.setSource("-" + source + "-");
     return [n];

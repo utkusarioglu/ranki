@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@dqm/package-static-renderer",
+  "name": "@dqm/plugin-static-render-engine",
   "type": "module",
   "exports": {
     ".": {
@@ -14,13 +14,13 @@
     "test": "vitest",
     "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo"
   },
-  "dependencies": {
-    "@dqm/package-dqm-utils": "workspace:^"
-  },
   "devDependencies": {
     "@dqm/package-dqm-api-v2": "workspace:^",
     "@ranki/config-typescript": "workspace:^",
     "@types/node": "^24.10.1",
     "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@dqm/package-plugin-utils": "workspace:^"
   }
 }

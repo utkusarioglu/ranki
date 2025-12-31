@@ -13,6 +13,11 @@ import type {
   DqmPluginsTokens,
   DqmInternalConfig,
   ITrnNodeConstructor,
+  IDqmRenderEngine,
+  RenderRoots,
+  IDqmRendererClientPreferences,
+  RenderReport,
+  DqmTransformOutput,
 } from "@dqm/package-dqm-api-v2";
 import { ComponentLib } from "./component/component-lib.mjs";
 import { ParserLib } from "./parser/parser-lib.mjs";
@@ -21,14 +26,31 @@ import { AstParamNode } from "../nodes/ast/param/param.mjs";
 import { AstNode } from "../nodes/ast/base/ast-node.mjs";
 import { DqmAppError } from "../errors/dqm-app-error/dqm-app-error.mjs";
 import { TrnNode } from "../nodes/trn/trn.mjs";
+import { assertExists } from "@dqm/package-dqm-utils";
 
 export class Libs implements IPlugins {
   private components = new ComponentLib();
   private parsers = new ParserLib();
+  private renderEngine: IDqmRenderEngine | null = null;
+
+  addPlugins(plugins: IDqmPlugin[]): void {
+    plugins.forEach((plugin) => {
+      this.addPlugin(plugin);
+    });
+  }
 
   addPlugin(plugin: IDqmPlugin): IPlugins {
     plugin.forEach((entry) => {
       switch (entry.type) {
+        case "render-engine":
+          this.renderEngine = new entry.engine();
+          break;
+        case "renderer":
+          assertExists(this.renderEngine, {
+            why: "Cannot accept renderer plugins before instantiating a rendering engine",
+          });
+          this.renderEngine.addPlugin(entry);
+          break;
         case "component-set":
           this.components.add(entry);
           break;
@@ -45,6 +67,17 @@ export class Libs implements IPlugins {
       }
     });
     return this;
+  }
+
+  render(
+    rawInputs: DqmTransformOutput,
+    roots: RenderRoots,
+    pref: IDqmRendererClientPreferences,
+  ): RenderReport {
+    assertExists(this.renderEngine, {
+      why: "Cannot render if no rendering engine is installed",
+    });
+    return this.renderEngine.render(rawInputs, roots, pref);
   }
 
   getComponentById(chain: Alias | Chain): IDqmComponent {

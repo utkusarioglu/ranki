@@ -18,27 +18,27 @@ import type {
   DqmParseTheater,
   DqmTransformOutput,
   IDqmPlugin,
-  IDqmRendererConstructor,
   IPlugins,
-  RenderReport,
-  RenderRoots,
 } from "@dqm/package-dqm-api-v2";
 import { DqmAppError } from "./errors/dqm-app-error/dqm-app-error.mjs";
 import { Unique } from "./unique/unique.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
+import type { RenderRoots } from "@dqm/package-dqm-api-v2";
+import type { IDqmRendererClientPreferences } from "@dqm/package-dqm-api-v2";
+import type { RenderReport } from "@dqm/package-dqm-api-v2";
 
 export class Dqm {
   private plugins: IPlugins = new Libs();
   private config = new Config();
   private parsed!: DqmParseOutput;
   private transformed!: DqmTransformOutput;
-  private renderer: IDqmRendererConstructor | null = null;
 
   constructor(configPacks: DqmConfigPack, plugins: IDqmPlugin[]) {
     Unique.reset();
-    plugins.forEach((plugin) => {
-      this.plugins.addPlugin(plugin);
-    });
+    this.plugins.addPlugins(plugins);
+    // plugins.forEach((plugin) => {
+    //   this.plugins.addPlugin(plugin);
+    // });
     this.buildInitialConfig(configPacks);
   }
 
@@ -77,18 +77,24 @@ export class Dqm {
     return this.parsed;
   }
 
-  setRenderer(r: IDqmRendererConstructor): this {
-    this.renderer = r;
-    return this;
-  }
-
-  render(rawInputs: DqmParseInput, roots: RenderRoots): RenderReport {
-    this.parse(rawInputs);
-    assertExists(this.renderer, {
-      why: "Cannot render without a renderer set",
-    });
-    const ren = new this.renderer();
-    return ren.render(this.transformed, roots);
+  render(
+    rawInputs: DqmParseInput,
+    roots: RenderRoots,
+    pref: IDqmRendererClientPreferences,
+  ): RenderReport {
+    try {
+      this.parse(rawInputs);
+      return this.plugins.render(this.transformed, roots, pref);
+    } catch (e) {
+      throw new DqmAppError({
+        code: "RENDER_FAIL",
+        why: "Something within render logic has failed",
+        cause: e,
+        details: {
+          boundary: true,
+        },
+      });
+    }
   }
 
   private ast(rawInputs: DqmParseInput): DqmParseOutput {
