@@ -1,5 +1,5 @@
 import type {
-  ChainList,
+  // ChainList,
   IAstNode,
   IAstNodeActionDict,
   IAstParamNode,
@@ -7,18 +7,20 @@ import type {
 import * as ohm from "ohm-js";
 import { grabAssertNodeExists, grabAst } from "@dqm/package-plugin-utils";
 
-const COMPONENT: ChainList = [["frame", "v2", "container"]];
-const PARAMS: IAstParamNode[] = [];
+// const COMPONENT: ChainList = [["frame", "v2", "container"]];
+// const PARAMS: IAstParamNode[] = [];
 
 export const nodeFrame: IAstNodeActionDict = {
   baseV2Block_frameV2(sBaseV2Indentation, frameV2, sBaseV2WasteInline, nlEnd) {
-    return grabAst(this)
-      .newAst(this)
-      .newCpx((cpx) => cpx.setAstParams(PARAMS).setIdList(COMPONENT))
-      .pushNodes(["space", sBaseV2Indentation])
-      .pushNodes(["node", frameV2])
-      .pushNodes(["space", sBaseV2WasteInline])
-      .pushNodes(["token", nlEnd]);
+    return (
+      grabAst(this)
+        .newAst(this)
+        // .newCpx((cpx) => cpx.setAstParams(PARAMS).setIdList(COMPONENT))
+        .pushNodes(["space", sBaseV2Indentation])
+        .pushNodes(["node", frameV2])
+        .pushNodes(["space", sBaseV2WasteInline])
+        .pushNodes(["token", nlEnd])
+    );
   },
 
   frameV2_f(frameV2Start, frameV2FrameConfig, frameV2End) {

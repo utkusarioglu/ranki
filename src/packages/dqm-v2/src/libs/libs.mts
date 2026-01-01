@@ -12,14 +12,14 @@ import type {
   IAstNodeConstructor,
   DqmPluginsTokens,
   DqmInternalConfig,
-  ITrnNodeConstructor,
   IDqmRenderEngine,
   RenderRoots,
   IDqmRendererClientPreferences,
   RenderReport,
   DqmSerializeOutput,
-  CreatorName,
-  IDqmComponentTransformer,
+  IDqmComponentTransformFunction,
+  ITrnCpsNodeConstructor,
+  ITrnCpxNodeConstructor,
 } from "@dqm/package-dqm-api-v2";
 import { ComponentLib } from "./component/component-lib.mjs";
 import { ParserLib } from "./parser/parser-lib.mjs";
@@ -27,18 +27,19 @@ import { Cpx } from "../nodes/cp/cpx/cpx.mjs";
 import { AstParamNode } from "../nodes/ast/param/param.mjs";
 import { AstNode } from "../nodes/ast/base/ast-node.mjs";
 import { DqmAppError } from "../errors/dqm-app-error/dqm-app-error.mjs";
-import { TrnNode } from "../nodes/trn/trn.mjs";
 import { assertExists, assertNull } from "@dqm/package-dqm-utils";
 import {
   assertLeaf,
   assertParent,
   assertExists as exists,
 } from "../errors/render-error/assertions.mjs";
-import { TransformLib } from "./transform/transform-lib.mjs";
+import { TrnCpsNode } from "../nodes/trn/trn-cps.mjs";
+import { TrnCpxNode } from "../nodes/trn/trn-cpx.mjs";
+// import { TransformLib } from "./transform/transform-lib.mjs";
 
 export class Libs implements IPlugins {
   private components = new ComponentLib();
-  private transformers = new TransformLib();
+  // private transformers = new TransformLib();
   private parsers = new ParserLib();
   private renderEngine: IDqmRenderEngine | null = null;
 
@@ -65,9 +66,9 @@ export class Libs implements IPlugins {
           break;
         case "component-set":
           this.components.add(entry);
-          entry.list.forEach((c) => {
-            this.transformers.add(c);
-          });
+          // entry.list.forEach((c) => {
+          //   this.transformers.add(c);
+          // });
           break;
         case "grammar":
           this.parsers.add(entry);
@@ -99,8 +100,13 @@ export class Libs implements IPlugins {
     });
   }
 
-  getTransformer(creator: CreatorName): IDqmComponentTransformer {
-    return this.transformers.get({ creator });
+  // getTransformer(creator: CreatorName): IDqmComponentTransformer {
+  //   return this.transformers.get({ creator });
+  // }
+
+  getCpsTransformer(chain: Chain): IDqmComponentTransformFunction {
+    return this.getComponentById(chain).transformer;
+    // return this.transformers.get({ chain });
   }
 
   getComponentById(chain: Alias | Chain): IDqmComponent {
@@ -127,8 +133,12 @@ export class Libs implements IPlugins {
     return AstNode;
   }
 
-  getTrnNodeConstructor(): ITrnNodeConstructor {
-    return TrnNode;
+  getTrnCpsNodeConstructor(): ITrnCpsNodeConstructor {
+    return TrnCpsNode;
+  }
+
+  getTrnCpxNodeConstructor(): ITrnCpxNodeConstructor {
+    return TrnCpxNode;
   }
 
   getTokens(config: DqmConfig): DqmPluginsTokens {

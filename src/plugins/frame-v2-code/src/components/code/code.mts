@@ -1,5 +1,4 @@
 import type { IDqmComponent } from "@dqm/package-dqm-api-v2";
-import { transformers } from "./transformers.mjs";
 
 interface ComponentType {
   prettier: {
@@ -93,5 +92,8 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
     //   console.log("val", c.getId());
     // },
   ],
-  transformers,
+  transformer: (tc) => {
+    // tc.setSource("code block");
+    console.log(tc.cps.getChain());
+  },
 };

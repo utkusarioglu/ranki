@@ -10,6 +10,7 @@ import type {
   CommonTransportsConstructorParams,
   Chain,
   DqmInternalConfig,
+  IDqmComponentTransformFunction,
 } from "@dqm/package-dqm-api-v2";
 import { ParamsLib } from "./params/params-lib.mjs";
 import { CommonTransports } from "../../common-transports.mjs";
@@ -66,6 +67,10 @@ export class Cps extends CommonTransports implements ICps {
 
   isOnFailMode() {
     return this.onFailMode;
+  }
+
+  getTransformer(): IDqmComponentTransformFunction {
+    return this.component.transformer;
   }
 
   /**

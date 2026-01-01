@@ -9,7 +9,10 @@ import type {
 } from "../export.types.mjs";
 import type { ICpx } from "./i-cpx.types.mjs";
 import type { CommonTransportsConstructorParams } from "../common-transports.types.mjs";
-import type { CpsDefinition } from "../../plugins/component/component.types.mjs";
+import type {
+  CpsDefinition,
+  IDqmComponentTransformFunction,
+} from "../../plugins/component/component.types.mjs";
 import type {
   Alias,
   Chain,
@@ -23,17 +26,16 @@ export interface ICps
     ICpsUniqueCapability,
     IVerticesCapability<ICps>,
     CpxCollectionCapability,
-    CpsValidationCapability {
-  // CpsTransformCapability
-}
+    CpsValidationCapability,
+    CpsTransformCapability {}
 
 export interface CpsValidationCapability {
   validate(): void;
 }
 
-// export interface CpsTransformCapability {
-//   transform(): ITrnNode[];
-// }
+export interface CpsTransformCapability {
+  getTransformer(): IDqmComponentTransformFunction;
+}
 
 export interface ICpsUniqueCapability {
   setDefinition(def: CpsDefinition): this;

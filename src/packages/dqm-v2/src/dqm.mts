@@ -27,7 +27,7 @@ import { assertExists } from "@dqm/package-dqm-utils";
 import type { RenderRoots } from "@dqm/package-dqm-api-v2";
 import type { IDqmRendererClientPreferences } from "@dqm/package-dqm-api-v2";
 import type { RenderReport } from "@dqm/package-dqm-api-v2";
-import { TrnNode } from "./nodes/trn/trn.mjs";
+import { TrnCpxNode } from "./nodes/trn/trn-cpx.mjs";
 
 export class Dqm {
   private plugins: IPlugins = new Libs();
@@ -150,11 +150,12 @@ export class Dqm {
 
   private transform() {
     this.transformed = this.parsed.map((v) => {
-      // const cpx = v.ast.getCpx();
-      // assertExists(cpx, {
-      //   why: "Parsed asts are expected to have an attached Cpx",
-      // });
-      const trn = new TrnNode(v.ast, this.getTransports());
+      const cpx = v.ast.getCpx();
+      assertExists(cpx, {
+        why: "Parsed asts are expected to have an attached Cpx",
+      });
+      const trn = new TrnCpxNode(cpx, this.getTransports());
+      // const trn = new TrnNode(v.ast, this.getTransports());
       return {
         theater: v.theater,
         trn,
