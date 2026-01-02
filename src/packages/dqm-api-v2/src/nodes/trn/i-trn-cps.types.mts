@@ -13,16 +13,23 @@ export interface ITrnCpsNode extends IVerticesCapability<ITrnCpsNode> {
   getKind(): IAstNodeKind;
   setSource(s: AstSourceString): this;
 
+  accepts(c: TransformClass): this;
+
   getRootAst(): IAstNode;
 
   newChild(): ITrnCpsNode;
   transform(): ITrnCpsNode;
   serialize(): ISerializedNode[];
 
-  setTransformClass(t: TransformClass): this;
-  getTransformClass(): TransformClass;
+  // setTransformClass(t: TransformClass): this;
+  // getTransformClass(): TransformClass;
 }
 
 export type ITrnCpsNodeConstructor = new (
   s: CommonTransportsConstructorParams,
 ) => ITrnCpsNode;
+
+export interface ITrnCpsNodeAccepts {
+  node: ITrnCpsNode;
+  transformClass: TransformClass;
+}

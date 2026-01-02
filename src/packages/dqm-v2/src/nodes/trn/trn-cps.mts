@@ -13,6 +13,7 @@ import { verticesCapability } from "../capabilities/vertices.capability.mjs";
 import { assertNever } from "../../errors/dqm-app-error/assertions.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 import { rejectValues } from "@dqm/package-dqm-utils";
+import type { TrnCpsRootNode } from "./trn-cps-root.mjs";
 
 export class TrnCpsNode extends CommonTransports implements ITrnCpsNode {
   private root!: ITrnCpsRootNode;
@@ -20,16 +21,23 @@ export class TrnCpsNode extends CommonTransports implements ITrnCpsNode {
   private source!: AstSourceString;
   private kind: IAstNodeKind = "parent";
   public chain!: Chain;
-  public transformClass!: TransformClass;
+  // public transformClass!: TransformClass;
+  private localAccepts!: TransformClass | null;
 
-  setTransformClass(t: TransformClass): this {
-    this.transformClass = t;
+  accepts(c: TransformClass): this {
+    this.localAccepts = c;
+    (this.root as TrnCpsRootNode).acceptsRoot(c, this);
     return this;
   }
 
-  getTransformClass(): TransformClass {
-    return this.transformClass;
-  }
+  // setTransformClass(t: TransformClass): this {
+  //   this.transformClass = t;
+  //   return this;
+  // }
+
+  // getTransformClass(): TransformClass {
+  //   return this.transformClass;
+  // }
 
   @rejectValues(undefined)
   getRoot() {
@@ -109,6 +117,34 @@ export class TrnCpsNode extends CommonTransports implements ITrnCpsNode {
   }
 
   transform(): ITrnCpsNode {
+    const kind = this.getKind();
+    switch (kind) {
+      case "parent":
+        const accepts = this.localAccepts;
+        if (accepts) {
+          const cpsTransform = this.getPlugins().getTransformer(accepts);
+          cpsTransform(this);
+        } else {
+          const children = this.getChildren();
+          children.map((v) => v.transform());
+        }
+        break;
+      case "leaf":
+        if (!this.getSource()) {
+          throw new DqmAppError({
+            code: "VALUE_UNDEFINED",
+            why: "leaves need to define source",
+            cause: null,
+          });
+        }
+        break;
+      default:
+        assertNever({ why: "All `kind` options have been depleted" });
+    }
+    // this.acceptsList.map((a) => {
+    //   const transformer = this.getPlugins().getTransformer(a.transformClass);
+    //   transformer();
+    // });
     // TODO call transform
     return this;
   }
