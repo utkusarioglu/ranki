@@ -28,7 +28,5 @@ export const frameV2ContainerComponent: IDqmComponent = {
     },
   },
   validation: [],
-  transformer: (tc) => {
-    console.log(tc.cps.getChain());
-  },
+  transformers: {},
 };

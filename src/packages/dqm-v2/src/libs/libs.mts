@@ -20,6 +20,8 @@ import type {
   IDqmComponentTransformFunction,
   ITrnCpsNodeConstructor,
   ITrnCpxNodeConstructor,
+  TransformClass,
+  ITrnCpsRootNodeConstructor,
 } from "@dqm/package-dqm-api-v2";
 import { ComponentLib } from "./component/component-lib.mjs";
 import { ParserLib } from "./parser/parser-lib.mjs";
@@ -35,11 +37,12 @@ import {
 } from "../errors/render-error/assertions.mjs";
 import { TrnCpsNode } from "../nodes/trn/trn-cps.mjs";
 import { TrnCpxNode } from "../nodes/trn/trn-cpx.mjs";
-// import { TransformLib } from "./transform/transform-lib.mjs";
+import { TransformLib } from "./transform/transform-lib.mjs";
+import { TrnCpsRootNode } from "../nodes/trn/trn-cps-root.mjs";
 
 export class Libs implements IPlugins {
   private components = new ComponentLib();
-  // private transformers = new TransformLib();
+  private transformers = new TransformLib();
   private parsers = new ParserLib();
   private renderEngine: IDqmRenderEngine | null = null;
 
@@ -66,9 +69,9 @@ export class Libs implements IPlugins {
           break;
         case "component-set":
           this.components.add(entry);
-          // entry.list.forEach((c) => {
-          //   this.transformers.add(c);
-          // });
+          entry.list.forEach((c) => {
+            this.transformers.add(c);
+          });
           break;
         case "grammar":
           this.parsers.add(entry);
@@ -100,13 +103,10 @@ export class Libs implements IPlugins {
     });
   }
 
-  // getTransformer(creator: CreatorName): IDqmComponentTransformer {
-  //   return this.transformers.get({ creator });
-  // }
-
-  getCpsTransformer(chain: Chain): IDqmComponentTransformFunction {
-    return this.getComponentById(chain).transformer;
-    // return this.transformers.get({ chain });
+  getTransformer(
+    transformClass: TransformClass,
+  ): IDqmComponentTransformFunction {
+    return this.transformers.get({ transformClass });
   }
 
   getComponentById(chain: Alias | Chain): IDqmComponent {
@@ -121,6 +121,11 @@ export class Libs implements IPlugins {
     return this.parsers.getGrammarDefaultConfigs(defaultConfig);
   }
 
+  getTokens(config: DqmConfig): DqmPluginsTokens {
+    return this.parsers.getGrammarTokens(config);
+  }
+
+  // CONSTRUCTORS
   getCpxConstructor(): ICpxConstructor {
     return Cpx;
   }
@@ -137,11 +142,11 @@ export class Libs implements IPlugins {
     return TrnCpsNode;
   }
 
-  getTrnCpxNodeConstructor(): ITrnCpxNodeConstructor {
-    return TrnCpxNode;
+  getTrnCpsRootNodeConstructor(): ITrnCpsRootNodeConstructor {
+    return TrnCpsRootNode;
   }
 
-  getTokens(config: DqmConfig): DqmPluginsTokens {
-    return this.parsers.getGrammarTokens(config);
+  getTrnCpxNodeConstructor(): ITrnCpxNodeConstructor {
+    return TrnCpxNode;
   }
 }

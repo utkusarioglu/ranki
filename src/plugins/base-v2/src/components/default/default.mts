@@ -1,5 +1,5 @@
 import type { IDqmComponent } from "@dqm/package-dqm-api-v2";
-// import { transformers } from "./transforms.mjs";
+import { transformers } from "./transformers.mjs";
 
 export const baseDefault: IDqmComponent = {
   type: "component",
@@ -29,7 +29,5 @@ export const baseDefault: IDqmComponent = {
     },
   },
   validation: [],
-  transformer: (tc) => {
-    console.log(tc.cps.getChain());
-  },
+  transformers,
 };

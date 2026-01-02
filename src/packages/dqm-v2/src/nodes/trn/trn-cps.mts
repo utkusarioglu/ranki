@@ -1,27 +1,87 @@
 import type {
   AstSourceString,
-  CommonTransportsConstructorParams,
+  Chain,
+  IAstNode,
   IAstNodeKind,
-  ICps,
   ISerializedNode,
   ITrnCpsNode,
+  ITrnCpsRootNode,
+  TransformClass,
 } from "@dqm/package-dqm-api-v2";
 import { CommonTransports } from "../common-transports.mjs";
 import { verticesCapability } from "../capabilities/vertices.capability.mjs";
 import { assertNever } from "../../errors/dqm-app-error/assertions.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
+import { rejectValues } from "@dqm/package-dqm-utils";
 
 export class TrnCpsNode extends CommonTransports implements ITrnCpsNode {
+  private root!: ITrnCpsRootNode;
   private vertices = verticesCapability<this, ITrnCpsNode>(this);
-  public readonly cps;
   private source!: AstSourceString;
   private kind: IAstNodeKind = "parent";
-  // public readonly cpsChildren: ITrnCpsNode[] = [];
+  public chain!: Chain;
+  public transformClass!: TransformClass;
 
-  constructor(cps: ICps, s: CommonTransportsConstructorParams) {
-    super(s);
-    this.cps = cps;
-    this.cps.getTransformer()(this);
+  setTransformClass(t: TransformClass): this {
+    this.transformClass = t;
+    return this;
+  }
+
+  getTransformClass(): TransformClass {
+    return this.transformClass;
+  }
+
+  @rejectValues(undefined)
+  getRoot() {
+    return this.root;
+  }
+
+  serialize(): ISerializedNode[] {
+    const root = this.getRoot();
+    const component = root.getComponentConfig();
+    const chain = this.getChain();
+    const kind = this.getKind();
+    switch (kind) {
+      case "leaf":
+        return [
+          {
+            kind,
+            chain,
+            // dqm,
+            component,
+            source: this.getSource(),
+          },
+        ];
+      case "parent":
+        const children = this.getChildren()
+          .map((c) => c.serialize())
+          .flat();
+        return [
+          {
+            kind,
+            chain,
+            // dqm,
+            component,
+            children,
+          },
+        ];
+      default:
+        assertNever({ why: "All `kinds` should have been depleted" });
+    }
+  }
+
+  setRoot(root: ITrnCpsRootNode): this {
+    this.root = root;
+    return this;
+  }
+
+  setChain(chain: Chain): this {
+    this.chain = chain;
+    return this;
+  }
+
+  getChain(): Chain {
+    return this.chain;
   }
 
   getKind(): IAstNodeKind {
@@ -29,67 +89,32 @@ export class TrnCpsNode extends CommonTransports implements ITrnCpsNode {
   }
 
   setSource(source: AstSourceString): this {
-    // if (this.kind === "parent") {
-    //   throw new DqmAppError({
-    //     code: "VALUE_DEFINED",
-    //     why: "The node has already been marked as parent, parent nodes cannot have source strings",
-    //     cause: null,
-    //     details: {
-    //       chain: this.cps.getChain(),
-    //     },
-    //   });
-    // }
     this.kind = "leaf";
     this.source = source;
     return this;
   }
 
-  newTrnCpsNode(): ITrnCpsNode {
+  getRootAst(): IAstNode {
+    return this.getRoot().getRootAst();
+  }
+
+  newChild(): ITrnCpsNode {
+    const root = this.getRoot();
     const transports = this.getTransports();
     const TrnCps = this.getPlugins().getTrnCpsNodeConstructor();
-    const n = new TrnCps(this.cps, transports);
-    n.setParent(this);
-    this.pushChild(n);
+    const n = new TrnCps(transports);
+    (n as TrnCpsNode).setParent(this).setRoot(root);
 
     return n;
   }
 
-  private getSource(): AstSourceString {
-    return this.source;
+  transform(): ITrnCpsNode {
+    // TODO call transform
+    return this;
   }
 
-  build(): ISerializedNode[] {
-    const kind = this.kind;
-    const dqm = this.cps.getDqmConfig();
-    const component = this.cps.getComponentConfig();
-    switch (kind) {
-      case "leaf":
-        return [
-          {
-            kind,
-            chain: ["debug", "leaf", "container"],
-            source: this.getSource(),
-            dqm,
-            component,
-          },
-        ];
-      case "parent":
-        return [
-          {
-            kind,
-            dqm,
-            component,
-            chain: ["debug", "block", "container"],
-            children: this.getChildren()
-              .map((v) => v.build())
-              .flat(),
-          },
-        ];
-      default:
-        assertNever({
-          why: "All possible `kind` paths should have been depleted",
-        });
-    }
+  private getSource(): AstSourceString {
+    return this.source;
   }
 
   // VERTICES
@@ -100,7 +125,7 @@ export class TrnCpsNode extends CommonTransports implements ITrnCpsNode {
         why: "The node has already been marked as leaf, leaf nodes cannot have children",
         cause: null,
         details: {
-          chain: this.cps.getChain(),
+          chain: this.getChain(),
         },
       });
     }

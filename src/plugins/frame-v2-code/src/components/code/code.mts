@@ -92,8 +92,5 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
     //   console.log("val", c.getId());
     // },
   ],
-  transformer: (tc) => {
-    // tc.setSource("code block");
-    console.log(tc.cps.getChain());
-  },
+  transformers: {},
 };

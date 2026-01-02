@@ -2,17 +2,14 @@ import type { CpxParseInput } from "../../dqm.types.mjs";
 import type {
   CpxCollectionCapability,
   IAstNode,
-  // IAstParamNode,
   ICpsParam,
+  ITrnCpsNode,
   IVerticesCapability,
   ParamChannel,
 } from "../export.types.mjs";
 import type { ICpx } from "./i-cpx.types.mjs";
 import type { CommonTransportsConstructorParams } from "../common-transports.types.mjs";
-import type {
-  CpsDefinition,
-  IDqmComponentTransformFunction,
-} from "../../plugins/component/component.types.mjs";
+import type { CpsDefinition } from "../../plugins/component/component.types.mjs";
 import type {
   Alias,
   Chain,
@@ -27,6 +24,7 @@ export interface ICps
     IVerticesCapability<ICps>,
     CpxCollectionCapability,
     CpsValidationCapability,
+    CpsTransformCapability,
     CpsTransformCapability {}
 
 export interface CpsValidationCapability {
@@ -34,7 +32,8 @@ export interface CpsValidationCapability {
 }
 
 export interface CpsTransformCapability {
-  getTransformer(): IDqmComponentTransformFunction;
+  setTrnCpsRootNode(n: ITrnCpsNode): this;
+  getTrnCpsRootNode(): ITrnCpsNode | null;
 }
 
 export interface ICpsUniqueCapability {

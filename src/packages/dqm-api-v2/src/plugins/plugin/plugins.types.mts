@@ -10,6 +10,7 @@ import type { IParamConstructor } from "../../nodes/ast/export.types.mjs";
 import type {
   IDqmComponent,
   IDqmComponentTransformFunction,
+  TransformClass,
 } from "../component/component.types.mjs";
 import type { Alias, Chain } from "../component/id/id.types.mjs";
 import type { CreateParserReturn } from "./parser/parser.types.mjs";
@@ -18,6 +19,7 @@ import type {
   DqmSerializeOutput,
   IDqmRendererClientPreferences,
   ITrnCpsNodeConstructor,
+  ITrnCpsRootNodeConstructor,
   ITrnCpxNodeConstructor,
   RenderReport,
   RenderRoots,
@@ -49,13 +51,19 @@ export interface IPlugins {
   getTokens(config: DqmConfig): DqmPluginsTokens;
   addPlugins(plugins: IDqmPlugin[]): void;
 
-  getCpsTransformer(chain: Chain): IDqmComponentTransformFunction;
-  getTrnCpxNodeConstructor(): ITrnCpxNodeConstructor;
-  getTrnCpsNodeConstructor(): ITrnCpsNodeConstructor;
+  getTransformer(
+    transformClass: TransformClass,
+  ): IDqmComponentTransformFunction;
+  // getCpsTransformers(chain: Chain): IDqmComponentTransformFunction;
 
   render(
     transformOutput: DqmSerializeOutput,
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
   ): RenderReport;
+
+  // CONSTRUCTORS
+  getTrnCpxNodeConstructor(): ITrnCpxNodeConstructor;
+  getTrnCpsNodeConstructor(): ITrnCpsNodeConstructor;
+  getTrnCpsRootNodeConstructor(): ITrnCpsRootNodeConstructor;
 }

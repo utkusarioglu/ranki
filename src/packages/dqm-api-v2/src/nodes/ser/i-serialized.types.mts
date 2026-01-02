@@ -1,4 +1,4 @@
-import type { Chain, DqmConfig } from "../../export.types.mjs";
+import type { Chain } from "../../export.types.mjs";
 
 export type ISerializedNode = ISerializedParent | ISerializedLeaf;
 
@@ -8,7 +8,7 @@ interface ISerializedCommon {
   // creator: string;
   // depth: number;
   // hoist: number;
-  dqm: DqmConfig;
+  // dqm: DqmConfig;
   component: any;
 }
 
