@@ -18,14 +18,13 @@ export type ILibGrammarCriteria = {
 
 export type T = IDqmPluginGrammar;
 
-export type ILibGrammar = IPluginLib<T, NewGetReturn, ILibGrammarCriteria> & {
-  // getActions(): GrammarActionsDict;
-  getNames(): Set<PluginUrn<"grammar">>;
-  // getMultiple(names: Set<PluginUrn<"grammar">>): GetMultipleReturn;
-  // newGet(s: Set<PluginUrn<"grammar">>): NewGetReturn;
+export type ILibGrammar = IPluginLib<T, NewGetReturn, ILibGrammarCriteria> &
+  ILibGrammarUnique;
 
+interface ILibGrammarUnique {
+  getNames(): Set<PluginUrn<"grammar">>;
   getSingle(grammarName: PluginUrn<"grammar">): IDqmPluginGrammar;
-};
+}
 
 export interface NewGetReturn {
   matcher: Grammar;

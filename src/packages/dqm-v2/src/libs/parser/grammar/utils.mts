@@ -1,7 +1,7 @@
 import type { IDqmPluginGrammar, PluginUrn } from "@dqm/package-dqm-api-v2";
-import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
-import { Serialize } from "../../utils/serialize.mjs";
-import { PluginFilter } from "../../utils/plugin.mjs";
+import { Serialize } from "../../../utils/serialize.mjs";
+import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
+import { PluginFilter } from "../../../utils/plugin.mjs";
 
 // ANKI
 export function expandDependencies(plugins: IDqmPluginGrammar[]): void {

@@ -5,9 +5,9 @@ import type {
   ILibGrammar,
   PluginUrn,
 } from "@dqm/package-dqm-api-v2";
-import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
-import { Serialize } from "../../utils/serialize.mjs";
+import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
+import { Serialize } from "../../../utils/serialize.mjs";
 
 export interface GrammarSpecs {
   parentGrammar: string;

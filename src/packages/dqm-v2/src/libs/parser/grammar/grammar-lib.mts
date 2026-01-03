@@ -11,11 +11,11 @@ import type {
   NewGetReturn,
 } from "@dqm/package-dqm-api-v2";
 import { rejectValues } from "@dqm/package-dqm-utils";
-import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
-import { Serialize } from "../../utils/serialize.mjs";
 import { expandDependencies, topologicalSort } from "./utils.mjs";
-import { PluginFilter } from "../../utils/plugin.mjs";
 import { OhmGrammar } from "./ohm-grammar.mjs";
+import { Serialize } from "../../../utils/serialize.mjs";
+import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
+import { PluginFilter } from "../../../utils/plugin.mjs";
 
 export class GrammarLib implements ILibGrammar {
   private grammars = new Map<PluginUrn<"grammar">, IDqmPluginGrammar>();

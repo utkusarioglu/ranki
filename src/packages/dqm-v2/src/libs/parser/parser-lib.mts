@@ -5,16 +5,27 @@ import type {
   DqmPluginsTokens,
   ParserHashString,
   DqmInternalConfig,
+  IPluginLib,
+  IDqmPluginGrammar,
 } from "@dqm/package-dqm-api-v2";
 import { ParserHash } from "./hash.mjs";
 import { Parser } from "./parser/parser.mjs";
-import type { GrammarLib } from "../grammar/grammar-lib.mjs";
+import { GrammarLib } from "./grammar/grammar-lib.mjs";
 
-export class ParserCollection {
-  private readonly grammarLib: GrammarLib;
+export type T = IDqmPluginGrammar;
 
-  constructor(grammarLib: GrammarLib) {
-    this.grammarLib = grammarLib;
+export type ILibGrammarCriteria = {
+  internalConfig: DqmInternalConfig;
+};
+
+export type ILibParser = IPluginLib<T, IParser, ILibGrammarCriteria>;
+
+export class ParserLib implements ILibParser {
+  private readonly grammarLib = new GrammarLib();
+
+  add(plugin: T): IPluginLib<T, IParser, ILibGrammarCriteria> {
+    this.grammarLib.add(plugin);
+    return this;
   }
 
   private parsers = new Map<ParserHashString, IParser>();
@@ -27,7 +38,7 @@ export class ParserCollection {
     return this.grammarLib.getGrammarTokens(config);
   }
 
-  getParser(internalConfig: DqmInternalConfig): IParser {
+  get({ internalConfig }: ILibGrammarCriteria): IParser {
     const hash = ParserHash.compute(internalConfig);
     const cached = this.parsers.get(hash);
     if (cached) {

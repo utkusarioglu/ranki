@@ -24,7 +24,6 @@ import type {
   ITrnCpsRootNodeConstructor,
 } from "@dqm/package-dqm-api-v2";
 import { ComponentLib } from "./component/component-lib.mjs";
-import { ParserCollection } from "./parser/parser-collection.mjs";
 import { Cpx } from "../nodes/cp/cpx/cpx.mjs";
 import { AstParamNode } from "../nodes/ast/param/param.mjs";
 import { AstNode } from "../nodes/ast/base/ast-node.mjs";
@@ -39,13 +38,12 @@ import { TrnCpsNode } from "../nodes/trn/trn-cps.mjs";
 import { TrnCpxNode } from "../nodes/trn/trn-cpx.mjs";
 import { TransformLib } from "./transform/transform-lib.mjs";
 import { TrnCpsRootNode } from "../nodes/trn/trn-cps-root.mjs";
-import { GrammarLib } from "./grammar/grammar-lib.mjs";
+import { ParserLib } from "./parser/parser-lib.mjs";
 
 export class Libs implements IPlugins {
-  private readonly grammars = new GrammarLib();
+  private readonly parsers = new ParserLib();
   private readonly components = new ComponentLib();
   private readonly transformers = new TransformLib();
-  private readonly parsers = new ParserCollection(this.grammars);
   private renderEngine: IDqmRenderEngine | null = null;
 
   addPlugins(plugins: IDqmPlugin[]): void {
@@ -76,7 +74,7 @@ export class Libs implements IPlugins {
           });
           break;
         case "grammar":
-          this.grammars.add(entry);
+          this.parsers.add(entry);
           break;
         default:
           throw new DqmAppError({
@@ -116,7 +114,7 @@ export class Libs implements IPlugins {
   }
 
   getParser(internalConfig: DqmInternalConfig): IParser {
-    return this.parsers.getParser(internalConfig);
+    return this.parsers.get({ internalConfig });
   }
 
   getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults {
