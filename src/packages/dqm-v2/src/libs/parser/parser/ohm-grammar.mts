@@ -2,12 +2,12 @@ import * as ohm from "ohm-js";
 import type {
   DqmInternalConfig,
   GrammarActionsDict,
-  IDqmPluginGrammar,
+  ILibGrammar,
   PluginUrn,
 } from "@dqm/package-dqm-api-v2";
 import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
-import { Serialize } from "../../../serialize.mjs";
+import { Serialize } from "../../../utils/serialize.mjs";
 
 export interface GrammarSpecs {
   parentGrammar: string;
@@ -45,19 +45,18 @@ export class OhmGrammar {
   }
 
   static build(
+    sorted: PluginUrn<"grammar">[],
     config: DqmInternalConfig,
-    importChainUrn: PluginUrn[],
-    finder: (s: string) => IDqmPluginGrammar,
+    grammarLib: ILibGrammar,
   ) {
-    // const importChainName = importChainUrn.map((v) => v.split(":").at(-1)!);
-    const importChainName = importChainUrn.map(Serialize.getPluginName);
+    const importChainName = sorted.map(Serialize.getPluginName);
     const matchers: Record<string, OhmGrammarAdjusted> = {};
     let grammarParents = {};
     let sources: string[] = [];
-    for (let si = 0; si < importChainUrn.length; si++) {
-      const urn = importChainUrn[si];
+    for (let si = 0; si < sorted.length; si++) {
+      const urn = sorted[si];
       const name = importChainName[si];
-      const parserPlugin = finder(urn);
+      const parserPlugin = grammarLib.get({ grammarName: urn });
       const matcher = this.adjustParent(
         {
           parentGrammar: si === 0 ? "" : importChainName[si - 1],

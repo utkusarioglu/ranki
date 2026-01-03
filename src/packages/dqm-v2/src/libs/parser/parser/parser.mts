@@ -7,12 +7,13 @@ import type {
   ParserHashString,
   DqmInternalConfig,
   ILibGrammar,
-  DqmPluginName,
+  PluginUrn,
 } from "@dqm/package-dqm-api-v2";
 import { OhmGrammar } from "./ohm-grammar.mjs";
 import type { Grammar, Semantics } from "ohm-js";
 import { assertArrayEmpty, assertExists } from "@dqm/package-dqm-utils";
 import { ParserReport } from "./report.mjs";
+import { PluginFilter } from "../../../utils/plugin.mjs";
 
 export class Parser implements IParser {
   private readonly hash: ParserHashString;
@@ -34,13 +35,10 @@ export class Parser implements IParser {
     this.create();
   }
 
-  private filterGrammars(p: DqmPluginName[]): Set<DqmPluginName> {
-    return new Set(p.filter((v) => v.startsWith("grammar:")));
-  }
-
-  private create(): void {
-    const standards = this.filterGrammars(this.config.plugins.standards);
-    const requested = this.filterGrammars(this.config.plugins.requested);
+  private getGrammarLists() {
+    const plugins = this.config.plugins;
+    const standards = new Set(PluginFilter.grammars(plugins.standards));
+    const requested = new Set(PluginFilter.grammars(plugins.requested));
 
     assertArrayEmpty(this.checkMissing(standards), {
       why: "A parser listed in the merged config object is is not installed",
@@ -56,27 +54,31 @@ export class Parser implements IParser {
       },
     });
 
-    const activeGrammars = new Set([...standards, ...requested]);
+    const all = new Set([...standards, ...requested]);
 
-    const { sorted, graph } = this.grammarLib.getMultiple(activeGrammars);
+    return { all, standards, requested };
+  }
+
+  private create(): void {
+    const { all, standards, requested } = this.getGrammarLists();
+    const { sorted, graph } = this.grammarLib.getMultiple(all);
     const { matcher, sources } = OhmGrammar.build(
-      this.config,
       sorted,
-      (grammarName) => {
-        return this.grammarLib.get({ grammarName });
-      },
+      this.config,
+      this.grammarLib,
     );
 
     const actions = this.grammarLib.getActions();
     const { semantics, participants, methods } = OhmGrammar.compileActionDicts(
       matcher,
-      activeGrammars,
+      all,
       actions,
     );
     this.matcher = matcher;
     this.semantics = semantics;
 
     this.report
+      .setStandards(standards)
       .setRequested(requested)
       .setImportChain(sorted)
       .setDependencyGraph(graph)
@@ -107,7 +109,7 @@ export class Parser implements IParser {
     return this.report.getReport();
   }
 
-  private checkMissing(set: Set<string>): string[] {
+  private checkMissing(set: Set<PluginUrn<"grammar">>): string[] {
     const importedPluginNameSet = this.grammarLib.getNames();
     const missing = [];
     for (const name of set) {

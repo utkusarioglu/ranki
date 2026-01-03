@@ -39,9 +39,6 @@ export class Dqm {
   constructor(configPacks: DqmConfigPack, plugins: IDqmPlugin[]) {
     Unique.reset();
     this.plugins.addPlugins(plugins);
-    // plugins.forEach((plugin) => {
-    //   this.plugins.addPlugin(plugin);
-    // });
     this.buildInitialConfig(configPacks);
   }
 

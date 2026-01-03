@@ -1,13 +1,12 @@
 import type {
   ActionsDictRecord,
-  DqmPluginName,
   IDqmPluginGrammar,
   IPluginLib,
   PluginUrn,
 } from "../export.types.mjs";
 
 export type ILibGrammarCriteria = {
-  grammarName: GrammarName;
+  grammarName: PluginUrn<"grammar">;
 };
 
 export type T = IDqmPluginGrammar;
@@ -18,15 +17,16 @@ export type ILibGrammar = IPluginLib<
   ILibGrammarCriteria
 > & {
   getActions(): GrammarActionsDict;
-  getNames(): Set<GrammarName>;
-  getMultiple(names: Set<GrammarName>): GetMultipleReturn;
+  getNames(): Set<PluginUrn<"grammar">>;
+  getMultiple(names: Set<PluginUrn<"grammar">>): GetMultipleReturn;
 };
 
 export type GetMultipleReturn = {
-  graph: Record<GrammarName, GrammarName[]>;
-  sorted: PluginUrn[];
+  graph: Record<PluginUrn<"grammar">, PluginUrn<"grammar">[]>;
+  sorted: PluginUrn<"grammar">[];
 };
 
-export type GrammarName = DqmPluginName & { subtype?: "GrammarName" };
-
-export type GrammarActionsDict = Record<GrammarName, ActionsDictRecord>;
+export type GrammarActionsDict = Record<
+  PluginUrn<"grammar">,
+  ActionsDictRecord
+>;

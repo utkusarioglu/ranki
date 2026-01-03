@@ -5,6 +5,7 @@ import type {
   DqmPluginVersion,
 } from "../../config/dqm-config.types.mjs";
 import type { IAstNodeActionDict } from "../../nodes/ast/base/i-ast-node.types.mjs";
+import type { PluginUrn } from "../export.types.mjs";
 
 export interface IDqmPluginGrammar<ConfigShape = {}> {
   type: "grammar";
@@ -13,15 +14,11 @@ export interface IDqmPluginGrammar<ConfigShape = {}> {
     description: string;
     version: DqmPluginVersion;
   };
-  dependencies: string[];
-  // tokenizer: (s: ConfigShape) => DqmGrammarTokens;
-  // TODO any
+  dependencies: PluginUrn[];
   tokenizer: (s: any) => DqmGrammarTokens;
   config: (defaultConfig: DqmConfig) => ConfigShape;
   grammar: (config: DqmInternalConfig) => string;
   actions: () => ActionsDictRecord;
-  // TODO
-  // validators:
 }
 
 export type DqmGrammarTokens = Record<

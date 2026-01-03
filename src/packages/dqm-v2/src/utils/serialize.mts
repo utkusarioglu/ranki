@@ -1,13 +1,13 @@
 import type {
   DqmPluginName,
-  DqmPluginParserName,
+  IDqmPluginGrammar,
   IDqmPluginTypeNames,
   PluginUrn,
 } from "@dqm/package-dqm-api-v2";
 
 export class Serialize {
-  static grammarName(type: string, name: string): DqmPluginParserName {
-    return [type, name].join(":");
+  static grammarName(p: IDqmPluginGrammar): PluginUrn<"grammar"> {
+    return `grammar:${p.meta.name}`;
   }
 
   static getPluginName<T extends IDqmPluginTypeNames>(

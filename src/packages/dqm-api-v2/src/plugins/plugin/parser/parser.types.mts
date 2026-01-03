@@ -2,9 +2,12 @@ import type {
   DqmConfig,
   DqmPluginParserName,
 } from "../../../config/dqm-config.types.mjs";
-import type { GrammarName, ParserHashString } from "../../../export.types.mjs";
+import type { ParserHashString, PluginUrn } from "../../../export.types.mjs";
 
-export type DependencyGraph = Record<GrammarName, GrammarName[]>;
+export type DependencyGraph = Record<
+  PluginUrn<"grammar">,
+  PluginUrn<"grammar">[]
+>;
 
 export type Contributors = Record<string, string[]>;
 
@@ -18,6 +21,7 @@ export interface DqmAstReport {
     usageCount: number;
   };
   graph: {
+    standards: DqmPluginParserName[];
     requested: DqmPluginParserName[];
     sorted: DqmPluginParserName[];
     dependencies: DependencyGraph;

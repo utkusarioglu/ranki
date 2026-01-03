@@ -16,6 +16,7 @@ export class ParserReport {
   private readonly hash: ParserHashString;
   private readonly config: DqmInternalConfig;
   private requested: RequestedSet | null = null;
+  private standards: RequestedSet | null = null;
   private importChain: DqmPluginName[] | null = null;
   private dependencyGraph: DependencyGraph | null = null;
   private contributors: Contributors | null = null;
@@ -30,6 +31,11 @@ export class ParserReport {
 
   incrementUsageCount() {
     this.usageCount++;
+  }
+
+  setStandards(s: RequestedSet): this {
+    this.standards = s;
+    return this;
   }
 
   setRequested(requested: RequestedSet): this {
@@ -63,6 +69,9 @@ export class ParserReport {
   }
 
   getReport(): DqmAstReport {
+    assertExists(this.standards, {
+      why: "Standards has to be set by the parser",
+    });
     assertExists(this.requested, {
       why: "RequestedSet has to be set by the parser",
     });
@@ -87,6 +96,7 @@ export class ParserReport {
         usageCount: this.usageCount,
       },
       graph: {
+        standards: Array.from(this.standards),
         requested: Array.from(this.requested),
         sorted: this.importChain,
         dependencies: this.dependencyGraph,

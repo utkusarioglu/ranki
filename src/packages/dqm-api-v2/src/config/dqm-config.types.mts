@@ -1,11 +1,12 @@
-import type { Chain, ParamChannel } from "../export.types.mjs";
+import type { Chain, ParamChannel, PluginUrn } from "../export.types.mjs";
 import type { DqmGrammarTokens } from "../plugins/grammar/grammar.types.mjs";
 import type { DeepPartialSerializable } from "../util.types.mjs";
 import type { ConfigEntryCode } from "./i-config.types.mjs";
 
 type DqmStages = "ast" | "validate" | "transform";
 
-export type DqmPluginName = string & { type?: "DqmPluginName" };
+export type DqmPluginName = DqmPluginNameR & { type?: "DqmPluginName" };
+export type DqmPluginNameR = string;
 
 export type DqmPluginParserName = DqmPluginName & {
   subType?: "DqmPluginParserName";
@@ -57,8 +58,8 @@ export interface DqmConfig {
       config: DeepPartialSerializable<DqmConfig>; // #1
     };
 
-    standards: DqmPluginName[];
-    requested: DqmPluginName[];
+    standards: PluginUrn[];
+    requested: PluginUrn[];
     config: DqmPluginsConfig;
   };
   content: {

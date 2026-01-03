@@ -1,5 +1,4 @@
 import type {
-  GrammarName,
   IDqmPluginGrammar,
   GrammarActionsDict,
   DqmConfig,
@@ -8,28 +7,28 @@ import type {
   ILibGrammar,
   ILibGrammarCriteria,
   GetMultipleReturn,
+  PluginUrn,
 } from "@dqm/package-dqm-api-v2";
 import { rejectValues } from "@dqm/package-dqm-utils";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
-import { Serialize } from "../../serialize.mjs";
+import { Serialize } from "../../utils/serialize.mjs";
 import { expandDependencies, topologicalSort } from "./utils.mjs";
+import { PluginFilter } from "../../utils/plugin.mjs";
 
 export class GrammarLib implements ILibGrammar {
-  private grammars = new Map<GrammarName, IDqmPluginGrammar>();
+  private grammars = new Map<PluginUrn<"grammar">, IDqmPluginGrammar>();
 
   getActions(): GrammarActionsDict {
     return this.grammars
       .values()
       .reduce(
-        (a, c) => (
-          (a[Serialize.grammarName(c.type, c.meta.name)] = c.actions()), a
-        ),
+        (a, c) => ((a[Serialize.grammarName(c)] = c.actions()), a),
         {} as GrammarActionsDict,
       );
   }
 
-  getNames(): Set<GrammarName> {
-    return new Set<GrammarName>(this.grammars.keys());
+  getNames(): Set<PluginUrn<"grammar">> {
+    return new Set<PluginUrn<"grammar">>(this.grammars.keys());
   }
 
   getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults {
@@ -50,7 +49,7 @@ export class GrammarLib implements ILibGrammar {
       this.grammars
         .values()
         .map((c) => {
-          const key = Serialize.grammarName(c.type, c.meta.name);
+          const key = Serialize.grammarName(c);
           const tokens = config.plugins.config[key];
           const tokenized = tokens === undefined ? null : c.tokenizer(tokens);
           return [key, tokenized];
@@ -60,7 +59,7 @@ export class GrammarLib implements ILibGrammar {
   }
 
   add(plugin: IDqmPluginGrammar): this {
-    const key = Serialize.grammarName(plugin.type, plugin.meta.name);
+    const key = Serialize.grammarName(plugin);
     if (this.grammars.has(key)) {
       throw new DqmAppError({
         code: "PLUGIN_GRAMMAR_REGISTERED",
@@ -81,18 +80,17 @@ export class GrammarLib implements ILibGrammar {
     return this.grammars.get(grammarName)!;
   }
 
-  getMultiple(names: Set<GrammarName>): GetMultipleReturn {
+  getMultiple(names: Set<PluginUrn<"grammar">>): GetMultipleReturn {
     const activePluginsArr = this.pickPlugins(names);
     const importChain = this.sortPlugins(activePluginsArr);
     const dependencyGraph = this.dependencyGraph(activePluginsArr);
     return {
-      // activePluginsArr,
       sorted: importChain,
       graph: dependencyGraph,
     };
   }
 
-  private pickPlugins(set: Set<string>): IDqmPluginGrammar[] {
+  private pickPlugins(set: Set<PluginUrn<"grammar">>): IDqmPluginGrammar[] {
     const activePluginsArr: IDqmPluginGrammar[] = [];
     for (let grammarName of set) {
       activePluginsArr.push(this.get({ grammarName }));
@@ -107,12 +105,12 @@ export class GrammarLib implements ILibGrammar {
 
   private dependencyGraph(
     activePluginsArr: IDqmPluginGrammar[],
-  ): Record<GrammarName, GrammarName[]> {
+  ): Record<PluginUrn<"grammar">, PluginUrn<"grammar">[]> {
     const dependencyGraph = activePluginsArr.reduce(
       (a, v) => (
-        (a[Serialize.grammarName(v.type, v.meta.name)] = v.dependencies), a
+        (a[Serialize.grammarName(v)] = PluginFilter.grammars(v.dependencies)), a
       ),
-      {} as Record<string, string[]>,
+      {} as Record<PluginUrn<"grammar">, PluginUrn<"grammar">[]>,
     );
     return dependencyGraph;
   }

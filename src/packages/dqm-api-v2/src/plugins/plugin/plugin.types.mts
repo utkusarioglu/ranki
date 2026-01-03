@@ -1,4 +1,4 @@
-import type { DqmPluginName } from "../../export.types.mjs";
+import type { DqmPluginNameR } from "../../export.types.mjs";
 import type {
   IDqmPluginRenderer,
   IDqmPluginRenderEngine,
@@ -20,6 +20,6 @@ export type IDqmPluginExtends = { type: string };
 
 export type PluginUrn<
   PluginType extends IDqmPluginTypeNames = IDqmPluginTypeNames,
-> = `${PluginType}:${DqmPluginName}`;
+> = `${PluginType}:${DqmPluginNameR}`;
 
-export type PluginParserUrn = `parser:${DqmPluginName}`;
+// export type PluginParserUrn = `parser:${DqmPluginName}`;
