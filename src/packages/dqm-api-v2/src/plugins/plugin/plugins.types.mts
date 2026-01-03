@@ -13,9 +13,9 @@ import type {
   TransformClass,
 } from "../component/component.types.mjs";
 import type { Alias, Chain } from "../component/id/id.types.mjs";
-import type { CreateParserReturn } from "./parser/parser.types.mjs";
 import type { IDqmPlugin, IDqmPluginExtends } from "./plugin.types.mjs";
 import type {
+  CreateParserReturn,
   DqmSerializeOutput,
   IDqmRendererClientPreferences,
   ITrnCpsNodeConstructor,

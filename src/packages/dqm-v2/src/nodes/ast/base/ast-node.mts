@@ -4,6 +4,7 @@ import type {
   IAstParamNode,
   AstSourceView,
   CpxFuncParam,
+  IParser,
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
 import { assertNotUndefined } from "@dqm/package-dqm-utils";
@@ -27,6 +28,7 @@ export class AstNode extends CommonTransports implements IAstNode {
   private ohm = ohmCapability(this);
   private view = viewCapability(this);
   private counter = counterCapability(this);
+  private parser: IParser | null = null;
 
   parse(source: string): this {
     const cpx = this.getCpx();
@@ -198,4 +200,14 @@ export class AstNode extends CommonTransports implements IAstNode {
   // CPX
   getCpx = this.cpx.getCpx.bind(this.cpx);
   setCpx = this.cpx.setCpx.bind(this.cpx);
+
+  // PARSER REFERENCE
+  setParser(parser: IParser): this {
+    this.parser = parser;
+    return this;
+  }
+
+  getParser(): IParser | null {
+    return this.parser;
+  }
 }

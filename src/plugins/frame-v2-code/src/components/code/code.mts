@@ -87,6 +87,14 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
       },
     },
   },
+  /**
+   * THis is where you check whether a particular component wants to be the
+   * sole host of a cpx. such as `placeholder`.
+   *
+   * There should be a common library of validations. a callback
+   * `soleComponent` could be added here to check whether the cpx only contains
+   * a single cps.
+   */
   validation: [
     // (c) => {
     //   console.log("val", c.getId());

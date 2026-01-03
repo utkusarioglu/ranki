@@ -11,6 +11,7 @@ import type {
   CpxCollectionCapability,
 } from "../capabilities/export.types.mjs";
 import type { ICommonTransports } from "../../common-transports.types.mjs";
+import type { IParser } from "../../../export.types.mjs";
 
 export interface IAstNode
   extends ICommonTransports,
@@ -22,7 +23,13 @@ export interface IAstNode
     Vertices,
     IAstNodeViewCapabilities,
     IAstNodeUniqueCapability,
-    CpxCollectionCapability {}
+    CpxCollectionCapability,
+    IAstNodeParserReferenceCapability {}
+
+export interface IAstNodeParserReferenceCapability {
+  setParser(parser: IParser): this;
+  getParser(): IParser | null;
+}
 
 type Vertices = Pick<
   IVerticesCapability<IAstNode>,
