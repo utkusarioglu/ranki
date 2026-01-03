@@ -1,4 +1,4 @@
-import type { UniqueValue } from "../unique/unique.types.mjs";
+// import type { UniqueValue } from "../unique/unique.types.mjs";
 
 export type Position = number & { type?: "IdPosition" };
 
@@ -15,7 +15,7 @@ export interface IId {
   setPosition(pos: Position): IId;
   setId(id: Alias | Chain): IId;
   setChain(chain: Chain): IId;
-  getUnique(): UniqueValue;
+  // getUnique(): UniqueValue;
   setAlias(alias: Alias): IId;
 
   getSummary(): IdSummary;

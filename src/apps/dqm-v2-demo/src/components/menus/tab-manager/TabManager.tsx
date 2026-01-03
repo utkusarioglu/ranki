@@ -1,5 +1,6 @@
 import { Tabs, theme } from "antd";
 import {
+  BookOutlined,
   BoxPlotOutlined,
   FileTextOutlined,
   FormOutlined,
@@ -124,6 +125,13 @@ const levels: Level[] = [
         ],
       },
     ],
+  },
+
+  {
+    key: "registry",
+    label: "Registry",
+    icon: <BookOutlined />,
+    TabChild: <NotYet />,
   },
 ];
 

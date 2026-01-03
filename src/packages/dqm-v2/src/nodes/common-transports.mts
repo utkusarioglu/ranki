@@ -22,7 +22,7 @@ export class CommonTransports implements ICommonTransports {
   private plugins: IPlugins;
 
   constructor({ plugins, config }: CommonTransportsConstructorParams) {
-    this.unique = Unique.getNewUnique();
+    this.unique = Unique.getNewUnique(this);
     this.plugins = plugins;
     this.config = config;
   }

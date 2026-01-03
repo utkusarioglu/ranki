@@ -4,7 +4,6 @@ import type {
   IId,
   Position,
   IdSummary,
-  UniqueValue,
   AliasString,
   ChainString,
   IdString,
@@ -14,36 +13,16 @@ import {
   rejectValues,
   writeOnce,
 } from "@dqm/package-dqm-utils";
-import { Unique } from "../unique/unique.mjs";
 
 export const ID_SEPARATOR = "-";
 export const ALIAS_SEPARATOR = "_";
 export const CHAIN_SEPARATOR = ".";
 
 export class Id implements IId {
-  // private static uniqueCounter = 0;
-  private uniqueValue: UniqueValue;
   private position!: Position;
   private id!: Alias | Chain;
   private alias!: Alias;
   private chain!: Chain;
-
-  constructor() {
-    this.uniqueValue = Unique.getNewUnique();
-  }
-
-  // private static getUnique() {
-  //   Id.uniqueCounter++;
-  //   return Id.uniqueCounter;
-  // }
-
-  // static resetUnique() {
-  //   Id.uniqueValue = 0;
-  // }
-
-  getUnique(): UniqueValue {
-    return this.uniqueValue;
-  }
 
   /**
    * @dev
