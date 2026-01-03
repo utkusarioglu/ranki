@@ -1,19 +1,12 @@
 import type {
-  ActionsDictRecord,
   DqmAstReport,
   DqmConfig,
-  DqmPluginName,
   IAstNode,
   IAstNodeContext,
-  IDqmPluginGrammar,
+  ILibGrammar,
 } from "../export.types.mjs";
 
-// export interface IParser {
-//   parse(): this;
-// }
-
 export interface IParser {
-  // parse: ParseAstFunction;
   getReport(): DqmAstReport | null;
   parse(
     raw: string,
@@ -22,11 +15,6 @@ export interface IParser {
   ): RankiLangParseFunctionReturn;
 }
 
-// export type ParseAstFunction = (
-//   raw: string,
-//   startRule: string,
-//   context: IAstNodeContext,
-// ) => RankiLangParseFunctionReturn;
 export type ParseAstFunction = IParser["parse"];
 
 export interface RankiLangParseFunctionReturn {
@@ -36,18 +24,7 @@ export interface RankiLangParseFunctionReturn {
 export type IParserConstructor = new (
   hash: ParserHashString,
   config: DqmConfig,
-  hooks: IParserConstructorHooks,
+  grammarLib: ILibGrammar,
 ) => IParser;
 
-export type IParserConstructorHooks = {
-  getGrammar: (g: GrammarName) => IDqmPluginGrammar;
-  namesSet: () => Set<GrammarName>;
-  getActions: () => GrammarActionsDict;
-};
-
 export type ParserHashString = string & { type?: "ParserHash" };
-
-// GRAMMAR
-export type GrammarName = DqmPluginName & { subtype?: "GrammarName" };
-
-export type GrammarActionsDict = Record<GrammarName, ActionsDictRecord>;

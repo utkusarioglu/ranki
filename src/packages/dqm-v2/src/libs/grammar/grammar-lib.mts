@@ -5,19 +5,12 @@ import type {
   DqmConfig,
   DqmPluginsConfigDefaults,
   DqmPluginsTokens,
-  IPluginLib,
+  ILibGrammar,
+  ILibGrammarCriteria,
 } from "@dqm/package-dqm-api-v2";
 import { rejectValues } from "@dqm/package-dqm-utils";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 import { Serialize } from "../../serialize.mjs";
-
-export type Criteria = {
-  grammarName: GrammarName;
-};
-
-export type T = IDqmPluginGrammar;
-
-export type ILibGrammar = IPluginLib<T, IDqmPluginGrammar, Criteria>;
 
 export class GrammarLib implements ILibGrammar {
   private grammars = new Map<GrammarName, IDqmPluginGrammar>();
@@ -33,7 +26,7 @@ export class GrammarLib implements ILibGrammar {
       );
   }
 
-  namesSet(): Set<GrammarName> {
+  getNames(): Set<GrammarName> {
     return new Set<GrammarName>(this.grammars.keys());
   }
 
@@ -82,7 +75,7 @@ export class GrammarLib implements ILibGrammar {
   }
 
   @rejectValues(undefined)
-  get({ grammarName }: Criteria): IDqmPluginGrammar {
+  get({ grammarName }: ILibGrammarCriteria): IDqmPluginGrammar {
     return this.grammars.get(grammarName)!;
   }
 }

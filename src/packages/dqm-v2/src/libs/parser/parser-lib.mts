@@ -1,19 +1,22 @@
 import type {
   IParser,
-  IDqmPluginGrammar,
   DqmPluginsConfigDefaults,
   DqmConfig,
   DqmPluginsTokens,
   ParserHashString,
-  GrammarName,
+  DqmInternalConfig,
 } from "@dqm/package-dqm-api-v2";
-import type { ILibParser, Criteria } from "./parser-lib.types.mjs";
 import { ParserHash } from "./hash.mjs";
 import { Parser } from "./parser.mjs";
-import { GrammarLib } from "./grammar-lib.mjs";
+import type { GrammarLib } from "../grammar/grammar-lib.mjs";
 
-export class ParserLib implements ILibParser {
-  private grammarLib = new GrammarLib();
+export class ParserLib {
+  private readonly grammarLib: GrammarLib;
+
+  constructor(grammarLib: GrammarLib) {
+    this.grammarLib = grammarLib;
+  }
+
   private parsers = new Map<ParserHashString, IParser>();
 
   getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults {
@@ -24,23 +27,13 @@ export class ParserLib implements ILibParser {
     return this.grammarLib.getGrammarTokens(config);
   }
 
-  add(plugin: IDqmPluginGrammar): ILibParser {
-    this.grammarLib.add(plugin);
-    return this;
-  }
-
-  get(criteria: Criteria): IParser {
-    const hash = ParserHash.compute(criteria.config);
+  getParser(internalConfig: DqmInternalConfig): IParser {
+    const hash = ParserHash.compute(internalConfig);
     const cached = this.parsers.get(hash);
     if (cached) {
       return cached;
     }
-    const parser = new Parser(hash, criteria.config, {
-      getGrammar: (grammarName: GrammarName) =>
-        this.grammarLib.get({ grammarName }),
-      namesSet: this.grammarLib.namesSet.bind(this.grammarLib),
-      getActions: this.grammarLib.getActions.bind(this.grammarLib),
-    });
+    const parser = new Parser(hash, internalConfig, this.grammarLib);
     this.parsers.set(hash, parser);
     return parser;
   }

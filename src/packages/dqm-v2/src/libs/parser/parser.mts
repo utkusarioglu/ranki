@@ -7,8 +7,9 @@ import type {
   RankiLangParseFunctionReturn,
   ParserHashString,
   DqmInternalConfig,
-  IParserConstructorHooks,
+  // IParserConstructorHooks,
   GrammarName,
+  ILibGrammar,
 } from "@dqm/package-dqm-api-v2";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 import { expandDependencies, topologicalSort } from "./utils.mjs";
@@ -20,7 +21,7 @@ import { assertExists } from "@dqm/package-dqm-utils";
 export class Parser implements IParser {
   private hash: ParserHashString;
   private config: DqmInternalConfig;
-  private readonly hooks: IParserConstructorHooks;
+  private readonly grammarLib: ILibGrammar;
   private report: DqmAstReport | null = null;
   private matcher: Grammar | null = null;
   private semantics: Semantics | null = null;
@@ -28,11 +29,11 @@ export class Parser implements IParser {
   constructor(
     hash: ParserHashString,
     config: DqmInternalConfig,
-    hooks: IParserConstructorHooks,
+    grammarLib: ILibGrammar,
   ) {
     this.hash = hash;
     this.config = config;
-    this.hooks = hooks;
+    this.grammarLib = grammarLib;
     this.create();
   }
 
@@ -77,11 +78,15 @@ export class Parser implements IParser {
     const activePluginsArr = this.pickPlugins(activePluginNames);
     const importChain = this.sortPlugins(activePluginsArr);
     const dependencyGraph = this.dependencyGraph(activePluginsArr);
-    const { matcher, sources } = buildGrammar(this.config, importChain, (n) => {
-      return this.hooks.getGrammar(n);
-    });
+    const { matcher, sources } = buildGrammar(
+      this.config,
+      importChain,
+      (grammarName) => {
+        return this.grammarLib.get({ grammarName });
+      },
+    );
 
-    const actions = this.hooks.getActions();
+    const actions = this.grammarLib.getActions();
     const { semantics, participants, methods } = compileOhmActionDicts(
       matcher,
       activePluginNames,
@@ -132,7 +137,7 @@ export class Parser implements IParser {
   }
 
   private checkMissing(set: Set<string>): string[] {
-    const importedPluginNameSet = this.hooks.namesSet();
+    const importedPluginNameSet = this.grammarLib.getNames();
     const missing = [];
     for (const name of set) {
       if (!importedPluginNameSet.has(name)) {
@@ -148,8 +153,8 @@ export class Parser implements IParser {
 
   private pickPlugins(set: Set<string>): IDqmPluginGrammar[] {
     const activePluginsArr: IDqmPluginGrammar[] = [];
-    for (let name of set) {
-      activePluginsArr.push(this.hooks.getGrammar(name));
+    for (let grammarName of set) {
+      activePluginsArr.push(this.grammarLib.get({ grammarName }));
     }
     return activePluginsArr;
   }

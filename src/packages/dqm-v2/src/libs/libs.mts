@@ -39,11 +39,13 @@ import { TrnCpsNode } from "../nodes/trn/trn-cps.mjs";
 import { TrnCpxNode } from "../nodes/trn/trn-cpx.mjs";
 import { TransformLib } from "./transform/transform-lib.mjs";
 import { TrnCpsRootNode } from "../nodes/trn/trn-cps-root.mjs";
+import { GrammarLib } from "./grammar/grammar-lib.mjs";
 
 export class Libs implements IPlugins {
-  private components = new ComponentLib();
-  private transformers = new TransformLib();
-  private parsers = new ParserLib();
+  private readonly grammars = new GrammarLib();
+  private readonly components = new ComponentLib();
+  private readonly transformers = new TransformLib();
+  private readonly parsers = new ParserLib(this.grammars);
   private renderEngine: IDqmRenderEngine | null = null;
 
   addPlugins(plugins: IDqmPlugin[]): void {
@@ -74,7 +76,8 @@ export class Libs implements IPlugins {
           });
           break;
         case "grammar":
-          this.parsers.add(entry);
+          // this.parsers.add(entry);
+          this.grammars.add(entry);
           break;
         default:
           throw new DqmAppError({
@@ -113,8 +116,8 @@ export class Libs implements IPlugins {
     return this.components.get({ id: chain });
   }
 
-  getParser(config: DqmInternalConfig): IParser {
-    return this.parsers.get({ config });
+  getParser(internalConfig: DqmInternalConfig): IParser {
+    return this.parsers.getParser(internalConfig);
   }
 
   getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults {
