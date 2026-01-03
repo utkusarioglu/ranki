@@ -1,15 +1,8 @@
 import type {
-  // IParser,
   IDqmPluginGrammar,
-  // ActionsDictRecord,
   DqmAstReport,
   IAstNode,
-  // DqmPluginsConfigDefaults,
-  // DqmConfig,
   IAstNodeContext,
-  // DqmPluginName,
-  // DqmPluginsTokens,
-  // ParserHashString,
   IParser,
   RankiLangParseFunctionReturn,
   ParserHashString,
@@ -44,15 +37,9 @@ export class Parser implements IParser {
   }
 
   private create(): void {
-    // const standards = config.plugins.standards.filter((v) =>
-    //   v.startsWith("grammar:"),
-    // );
     const standardsSet = new Set(
       this.config.plugins.standards.filter((v) => v.startsWith("grammar:")),
     );
-    // const requested = config.plugins.requested.filter((v) =>
-    //   v.startsWith("grammar:"),
-    // );
     const requestedSet = new Set(
       this.config.plugins.requested.filter((v) => v.startsWith("grammar:")),
     );
@@ -86,14 +73,12 @@ export class Parser implements IParser {
       }
     }
 
-    // const activePluginNames = new Set([...standards, ...requested]);
     const activePluginNames = new Set([...standardsSet, ...requestedSet]);
     const activePluginsArr = this.pickPlugins(activePluginNames);
     const importChain = this.sortPlugins(activePluginsArr);
     const dependencyGraph = this.dependencyGraph(activePluginsArr);
     const { matcher, sources } = buildGrammar(this.config, importChain, (n) => {
       return this.hooks.getGrammar(n);
-      // return this.grammars.get(n)!;
     });
 
     const actions = this.hooks.getActions();
@@ -122,27 +107,6 @@ export class Parser implements IParser {
       },
       config: this.config,
     };
-    // if (this.report) {
-    //   throw new DqmAppError({
-    //     code: "PARSER_HASH_COLLISION",
-    //     why: "Current configuration returns the same hash with a previous unrelated configuration",
-    //     cause: null,
-    //     details: {
-    //       hash: this.hash,
-    //       reports: this.report,
-    //     },
-    //   });
-    // }
-    // this.report = report;
-
-    // const parseAst: ParseAstFunction = (
-    //   raw: string,
-    //   startRule: string,
-    //   context: IAstNodeContext,
-    //   // context: RankiLangContextInstance,
-    // ) => {};
-
-    // return parseAst;
   }
 
   parse(
@@ -183,10 +147,8 @@ export class Parser implements IParser {
   }
 
   private pickPlugins(set: Set<string>): IDqmPluginGrammar[] {
-    // const activePluginsArr = this.getList().filter((v) => set.has(v.meta.name));
     const activePluginsArr: IDqmPluginGrammar[] = [];
     for (let name of set) {
-      // activePluginsArr.push(this.grammars.get(name)!);
       activePluginsArr.push(this.hooks.getGrammar(name));
     }
     return activePluginsArr;
@@ -209,15 +171,4 @@ export class Parser implements IParser {
     );
     return dependencyGraph;
   }
-
-  // private getActions(): GrammarActionsDict {
-  //   return this.grammars
-  //     .values()
-  //     .reduce(
-  //       (a, c) => (
-  //         (a[Serialize.grammarName(c.type, c.meta.name)] = c.actions()), a
-  //       ),
-  //       {} as GrammarActionsDict,
-  //     );
-  // }
 }
