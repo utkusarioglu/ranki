@@ -3,6 +3,7 @@ import type {
   DqmPluginName,
   IDqmPluginGrammar,
   IPluginLib,
+  PluginUrn,
 } from "../export.types.mjs";
 
 export type ILibGrammarCriteria = {
@@ -18,6 +19,12 @@ export type ILibGrammar = IPluginLib<
 > & {
   getActions(): GrammarActionsDict;
   getNames(): Set<GrammarName>;
+  getMultiple(names: Set<GrammarName>): GetMultipleReturn;
+};
+
+export type GetMultipleReturn = {
+  graph: Record<GrammarName, GrammarName[]>;
+  sorted: PluginUrn[];
 };
 
 export type GrammarName = DqmPluginName & { subtype?: "GrammarName" };

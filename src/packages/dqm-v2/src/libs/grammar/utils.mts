@@ -1,5 +1,5 @@
-import type { IDqmPluginGrammar } from "@dqm/package-dqm-api-v2";
-import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
+import type { IDqmPluginGrammar, PluginUrn } from "@dqm/package-dqm-api-v2";
+import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
 // ANKI
 export function expandDependencies(plugins: IDqmPluginGrammar[]): void {
@@ -55,10 +55,8 @@ export function expandDependencies(plugins: IDqmPluginGrammar[]): void {
 }
 
 // ANKI
-export function topologicalSort(
-  plugins: IDqmPluginGrammar[],
-): IDqmPluginGrammar["meta"]["name"][] {
-  const sorted: string[] = [];
+export function topologicalSort(plugins: IDqmPluginGrammar[]): PluginUrn[] {
+  const sorted: PluginUrn[] = [];
   const adjacencies = plugins.reduce((a, c) => {
     const urn = [c.type, c.meta.name].join(":");
     a[urn] = new Set();
@@ -105,6 +103,7 @@ export function topologicalSort(
 
   while (queue.length) {
     const curr = queue.shift()!;
+    // @ts-expect-error
     sorted.push(curr);
 
     for (let n of adjacencies[curr]) {

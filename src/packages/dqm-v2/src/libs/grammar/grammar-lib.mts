@@ -7,10 +7,12 @@ import type {
   DqmPluginsTokens,
   ILibGrammar,
   ILibGrammarCriteria,
+  GetMultipleReturn,
 } from "@dqm/package-dqm-api-v2";
 import { rejectValues } from "@dqm/package-dqm-utils";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 import { Serialize } from "../../serialize.mjs";
+import { expandDependencies, topologicalSort } from "./utils.mjs";
 
 export class GrammarLib implements ILibGrammar {
   private grammars = new Map<GrammarName, IDqmPluginGrammar>();
@@ -77,5 +79,41 @@ export class GrammarLib implements ILibGrammar {
   @rejectValues(undefined)
   get({ grammarName }: ILibGrammarCriteria): IDqmPluginGrammar {
     return this.grammars.get(grammarName)!;
+  }
+
+  getMultiple(names: Set<GrammarName>): GetMultipleReturn {
+    const activePluginsArr = this.pickPlugins(names);
+    const importChain = this.sortPlugins(activePluginsArr);
+    const dependencyGraph = this.dependencyGraph(activePluginsArr);
+    return {
+      // activePluginsArr,
+      sorted: importChain,
+      graph: dependencyGraph,
+    };
+  }
+
+  private pickPlugins(set: Set<string>): IDqmPluginGrammar[] {
+    const activePluginsArr: IDqmPluginGrammar[] = [];
+    for (let grammarName of set) {
+      activePluginsArr.push(this.get({ grammarName }));
+    }
+    return activePluginsArr;
+  }
+
+  private sortPlugins(activePluginsArr: IDqmPluginGrammar[]) {
+    expandDependencies(activePluginsArr);
+    return topologicalSort(activePluginsArr);
+  }
+
+  private dependencyGraph(
+    activePluginsArr: IDqmPluginGrammar[],
+  ): Record<GrammarName, GrammarName[]> {
+    const dependencyGraph = activePluginsArr.reduce(
+      (a, v) => (
+        (a[Serialize.grammarName(v.type, v.meta.name)] = v.dependencies), a
+      ),
+      {} as Record<string, string[]>,
+    );
+    return dependencyGraph;
   }
 }
