@@ -12,12 +12,12 @@ export interface IParser {
     raw: string,
     startRule: string,
     context: IAstNodeContext,
-  ): RankiLangParseFunctionReturn;
+  ): ILibParserParseReturn;
 }
 
 export type ParseAstFunction = IParser["parse"];
 
-export interface RankiLangParseFunctionReturn {
+export interface ILibParserParseReturn {
   root: IAstNode;
 }
 

@@ -2,12 +2,24 @@ import type {
   DqmConfig,
   DqmPluginParserName,
 } from "../../../config/dqm-config.types.mjs";
-import type { ParserHashString, PluginUrn } from "../../../export.types.mjs";
+import type {
+  IDqmPluginGrammar,
+  ParserHashString,
+  PluginUrn,
+} from "../../../export.types.mjs";
 
-export type DependencyGraph = Record<
+export type PluginDictionary = Record<PluginUrn<"grammar">, IDqmPluginGrammar>;
+
+export type DependencyList = Record<
   PluginUrn<"grammar">,
   PluginUrn<"grammar">[]
 >;
+
+export type GrammarDictSet = Record<PluginUrn<"grammar">, GrammarSet>;
+export type GrammarMapSet = Map<PluginUrn<"grammar">, GrammarSet>;
+
+export type GrammarSet = Set<PluginUrn<"grammar">>;
+export type GrammarList = PluginUrn<"grammar">[];
 
 export type Contributors = Record<string, string[]>;
 
@@ -20,16 +32,17 @@ export interface DqmAstReport {
     hash: ParserHashString;
     usageCount: number;
   };
-  graph: {
+  grammar: {
     standards: DqmPluginParserName[];
     requested: DqmPluginParserName[];
     sorted: DqmPluginParserName[];
-    dependencies: DependencyGraph;
+    graphs: {
+      specified: DependencyList;
+      deduced: DependencyList;
+    };
     contributors: Contributors;
     methods: DqmParserGraphMethods;
-  };
-  grammar: {
-    source: OhmGrammarSource;
+    sources: OhmGrammarSource[];
   };
   config: DqmConfig;
 }

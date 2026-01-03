@@ -6,7 +6,6 @@ import type {
   Alias,
   DqmConfig,
   IParser,
-  DqmPluginsConfigDefaults,
   ICpxConstructor,
   IParamConstructor,
   IAstNodeConstructor,
@@ -22,6 +21,7 @@ import type {
   ITrnCpxNodeConstructor,
   TransformClass,
   ITrnCpsRootNodeConstructor,
+  DqmGrammarPluginsAggregatedConfig,
 } from "@dqm/package-dqm-api-v2";
 import { ComponentLib } from "./component/component-lib.mjs";
 import { Cpx } from "../nodes/cp/cpx/cpx.mjs";
@@ -117,7 +117,9 @@ export class Libs implements IPlugins {
     return this.parsers.get({ internalConfig });
   }
 
-  getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults {
+  getGrammarDefaultConfigs(
+    defaultConfig: DqmConfig,
+  ): DqmGrammarPluginsAggregatedConfig {
     return this.parsers.getGrammarDefaultConfigs(defaultConfig);
   }
 

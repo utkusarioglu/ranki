@@ -52,13 +52,6 @@ export class Cps extends CommonTransports implements ICps {
     this.component.validation.forEach((v) => v(this));
   }
 
-  // transform(): ITrnNode[] {
-  //   const children = this.getChildren().map((c) => c.transform());
-  //   const Trn = this.getPlugins().getTrnNodeConstructor();
-  //   const trn = new Trn(this, children, this.getTransports());
-  //   return this.component.transformers(trn);
-  // }
-
   getIntendedId(): Chain | Alias {
     return this.intendedId;
   }
@@ -165,14 +158,14 @@ export class Cps extends CommonTransports implements ICps {
     const suffix = config.content.suffix;
     const trimmed = config.content.trim ? input.dqm.trim() : input.dqm;
     const prefixed = [prefix, trimmed, suffix].join("");
-    const obj = parser.parse(
+    const parsed = parser.parse(
       prefixed,
       // TODO this likely will come from the `direction` property of some ast
       // node
       "baseV2RootBlock",
       prepareContext(this.getCpx().getRootAst()),
     );
-    return obj.root;
+    return parsed.root;
   }
 
   // CUSTOMIZATIONS

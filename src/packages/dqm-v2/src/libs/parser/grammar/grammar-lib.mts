@@ -2,16 +2,18 @@ import type {
   IDqmPluginGrammar,
   GrammarActionsDict,
   DqmConfig,
-  DqmPluginsConfigDefaults,
   DqmPluginsTokens,
   ILibGrammar,
   ILibGrammarCriteria,
-  GetMultipleReturn,
   PluginUrn,
-  NewGetReturn,
+  ILibGrammarGetReturn,
+  DependencyList,
+  PluginDictionary,
+  GrammarSet,
+  DqmGrammarPluginsAggregatedConfig,
 } from "@dqm/package-dqm-api-v2";
 import { rejectValues } from "@dqm/package-dqm-utils";
-import { expandDependencies, topologicalSort } from "./utils.mjs";
+import { GrammarPluginUtils } from "./grammar-plugin-utils.mjs";
 import { OhmGrammar } from "./ohm-grammar.mjs";
 import { Serialize } from "../../../utils/serialize.mjs";
 import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
@@ -20,25 +22,22 @@ import { PluginFilter } from "../../../utils/plugin.mjs";
 export class GrammarLib implements ILibGrammar {
   private grammars = new Map<PluginUrn<"grammar">, IDqmPluginGrammar>();
 
-  private getActions(): GrammarActionsDict {
+  listMissing(set: GrammarSet): GrammarSet {
+    const missing = new Set(set);
+    for (let p of set) {
+      if (this.grammars.has(p)) {
+        missing.delete(p);
+      }
+    }
+    return missing;
+  }
+
+  getGrammarDefaultConfigs(
+    defaultConfig: DqmConfig,
+  ): DqmGrammarPluginsAggregatedConfig {
     return Object.fromEntries(
-      this.grammars
-        .values()
-        .map((g) => [Serialize.grammarName(g), g.actions()]),
-    );
-  }
-
-  getNames(): Set<PluginUrn<"grammar">> {
-    return new Set<PluginUrn<"grammar">>(this.grammars.keys());
-  }
-
-  getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults {
-    const config = Object.fromEntries(
       this.grammars.entries().map(([k, v]) => [k, v.config(defaultConfig)]),
     );
-    return {
-      config,
-    };
   }
 
   getGrammarTokens(config: DqmConfig): DqmPluginsTokens {
@@ -72,65 +71,61 @@ export class GrammarLib implements ILibGrammar {
     return this;
   }
 
-  @rejectValues(undefined)
-  getSingle(grammarName: PluginUrn<"grammar">): IDqmPluginGrammar {
-    return this.grammars.get(grammarName)!;
-  }
-
-  get({ grammarNames, config }: ILibGrammarCriteria): NewGetReturn {
-    const { sorted, graph } = this.getMultiple(grammarNames);
-    const { matcher, sources } = OhmGrammar.build(sorted, config, this);
-
-    const actions = this.getActions();
-    const {
-      semantics,
-      contributors: contributors,
-      methods,
-    } = OhmGrammar.compileActionDicts(matcher, grammarNames, actions);
+  get({ grammarNames, config }: ILibGrammarCriteria): ILibGrammarGetReturn {
+    const plugins = this.collectPlugins(grammarNames);
+    const specifiedGraph = this.buildGraph(plugins);
+    const sorted = GrammarPluginUtils.sort(plugins);
+    const { matcher, sources } = OhmGrammar.build(plugins, sorted, config);
+    const deducedGraph = this.buildGraph(plugins);
+    const actions = this.collectActions();
+    const { semantics, contributors, methods } = OhmGrammar.compileActionDicts(
+      matcher,
+      grammarNames,
+      actions,
+    );
 
     return {
+      graphs: {
+        specified: specifiedGraph,
+        deduced: deducedGraph,
+      },
       matcher,
       semantics,
       sorted,
       sources,
-      graph,
       contributors,
       methods,
     };
   }
 
-  private getMultiple(names: Set<PluginUrn<"grammar">>): GetMultipleReturn {
-    const activePluginsArr = this.pickPlugins(names);
-    const importChain = this.sortPlugins(activePluginsArr);
-    const dependencyGraph = this.dependencyGraph(activePluginsArr);
-    return {
-      sorted: importChain,
-      graph: dependencyGraph,
-    };
+  @rejectValues(undefined)
+  private getPlugin(grammarName: PluginUrn<"grammar">): IDqmPluginGrammar {
+    return this.grammars.get(grammarName)!;
   }
 
-  private pickPlugins(set: Set<PluginUrn<"grammar">>): IDqmPluginGrammar[] {
-    const activePluginsArr: IDqmPluginGrammar[] = [];
-    for (let grammarName of set) {
-      activePluginsArr.push(this.getSingle(grammarName));
-    }
-    return activePluginsArr;
-  }
-
-  private sortPlugins(activePluginsArr: IDqmPluginGrammar[]) {
-    expandDependencies(activePluginsArr);
-    return topologicalSort(activePluginsArr);
-  }
-
-  private dependencyGraph(
-    activePluginsArr: IDqmPluginGrammar[],
-  ): Record<PluginUrn<"grammar">, PluginUrn<"grammar">[]> {
-    const dependencyGraph = activePluginsArr.reduce(
-      (a, v) => (
-        (a[Serialize.grammarName(v)] = PluginFilter.grammars(v.dependencies)), a
-      ),
-      {} as Record<PluginUrn<"grammar">, PluginUrn<"grammar">[]>,
+  private collectPlugins(set: GrammarSet): PluginDictionary {
+    return Object.fromEntries(
+      Array.from(set).map((grammarName) => [
+        grammarName,
+        this.getPlugin(grammarName),
+      ]),
     );
-    return dependencyGraph;
+  }
+
+  private buildGraph(dict: PluginDictionary): DependencyList {
+    return Object.fromEntries(
+      Object.entries(dict).map(([n, v]) => [
+        n,
+        PluginFilter.grammars(v.dependencies),
+      ]),
+    );
+  }
+
+  private collectActions(): GrammarActionsDict {
+    return Object.fromEntries(
+      this.grammars
+        .values()
+        .map((g) => [Serialize.grammarName(g), g.actions()]),
+    );
   }
 }

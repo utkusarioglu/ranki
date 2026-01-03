@@ -1,7 +1,7 @@
 import type {
   DqmConfig,
   DqmInternalConfig,
-  DqmPluginsConfigDefaults,
+  DqmGrammarPluginsAggregatedConfig,
   DqmPluginsTokens,
 } from "../../config/dqm-config.types.mjs";
 import type { IAstNodeConstructor } from "../../nodes/ast/base/i-ast-node.types.mjs";
@@ -38,13 +38,15 @@ export interface IPluginLib<
   Criteria extends any,
 > {
   get(criteria: Criteria): Out;
-  add(plugin: In): IPluginLib<In, Out, Criteria>;
+  add(plugin: In): this;
 }
 
 export interface IPlugins {
   getComponentById(id: Chain | Alias): IDqmComponent;
   getParser(config: DqmInternalConfig): IParser;
-  getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults;
+  getGrammarDefaultConfigs(
+    defaultConfig: DqmConfig,
+  ): DqmGrammarPluginsAggregatedConfig;
   getCpxConstructor(): ICpxConstructor;
   getParamConstructor(): IParamConstructor;
   getAstNodeConstructor(): IAstNodeConstructor;
@@ -54,7 +56,6 @@ export interface IPlugins {
   getTransformer(
     transformClass: TransformClass,
   ): IDqmComponentTransformFunction;
-  // getCpsTransformers(chain: Chain): IDqmComponentTransformFunction;
 
   render(
     transformOutput: DqmSerializeOutput,

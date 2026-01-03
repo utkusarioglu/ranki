@@ -3,7 +3,8 @@ import type {
   Contributors,
   DqmInternalConfig,
   GrammarActionsDict,
-  ILibGrammar,
+  IAstNodeActionDict,
+  PluginDictionary,
   PluginUrn,
 } from "@dqm/package-dqm-api-v2";
 import { assertExists } from "@dqm/package-dqm-utils";
@@ -21,34 +22,10 @@ export interface OhmGrammarAdjusted {
 }
 
 export class OhmGrammar {
-  private static adjustParent(
-    specs: GrammarSpecs,
-    raw: string,
-  ): OhmGrammarAdjusted {
-    const altered = raw.replace(/<:\s*(\w+)\s*\{/, (_match, _word) => {
-      if (specs.parentGrammar === "") {
-        throw new DqmAppError({
-          code: "NO_PARENT_GRAMMAR",
-          why: "Parent adjustment algorithm expects a preset parent field.",
-          cause: null,
-          details: {
-            specs,
-            raw,
-          },
-        });
-      }
-      return `<: ${specs.parentGrammar} {`;
-    });
-    return {
-      altered,
-      grammar: ohm.grammar(altered, specs.dependencies),
-    };
-  }
-
   static build(
+    plugins: PluginDictionary,
     sorted: PluginUrn<"grammar">[],
     internalConfig: DqmInternalConfig,
-    grammarLib: ILibGrammar,
   ) {
     const importChainName = sorted.map(Serialize.getPluginName);
     const matchers: Record<string, OhmGrammarAdjusted> = {};
@@ -57,7 +34,7 @@ export class OhmGrammar {
     for (let si = 0; si < sorted.length; si++) {
       const urn = sorted[si];
       const name = importChainName[si];
-      const parserPlugin = grammarLib.getSingle(urn);
+      const parserPlugin = plugins[urn];
       const matcher = this.adjustParent(
         {
           parentGrammar: si === 0 ? "" : importChainName[si - 1],
@@ -83,45 +60,65 @@ export class OhmGrammar {
     return { matcher, sources };
   }
 
+  private static adjustParent(
+    specs: GrammarSpecs,
+    raw: string,
+  ): OhmGrammarAdjusted {
+    const altered = raw.replace(/<:\s*(\w+)\s*\{/, (_match, _word) => {
+      if (specs.parentGrammar === "") {
+        throw new DqmAppError({
+          code: "NO_PARENT_GRAMMAR",
+          why: "Parent adjustment algorithm expects a preset parent field.",
+          cause: null,
+          details: {
+            specs,
+            raw,
+          },
+        });
+      }
+      return `<: ${specs.parentGrammar} {`;
+    });
+    return {
+      altered,
+      grammar: ohm.grammar(altered, specs.dependencies),
+    };
+  }
+
   static compileActionDicts(
     matcher: ohm.Grammar,
-    sortedSet: Set<string>,
+    sortedSet: Set<PluginUrn<"grammar">>,
     parsers: GrammarActionsDict,
   ) {
     let semantics = matcher.createSemantics();
-    const operations = {};
+    type Operations = Record<string, IAstNodeActionDict>;
+    const operations: Operations = {};
     const contributors: Contributors = {};
 
     Object.entries(parsers).forEach(([parserName, parser]) => {
-      if (!sortedSet.has(parserName)) {
+      if (!sortedSet.has(parserName as PluginUrn<"grammar">)) {
         return;
       }
       Object.entries(parser).forEach(([operationName, actionDict]) => {
         if (!operations.hasOwnProperty(operationName)) {
-          // @ts-expect-error
           operations[operationName] = {};
           contributors[operationName] = [];
         }
         contributors[operationName].push(parserName);
-        // @ts-expect-error
         operations[operationName] = {
-          // @ts-expect-error
           ...operations[operationName],
           ...actionDict,
         };
       });
     });
 
-    const methods = Object.entries(operations).reduce((a, [k, v]) => {
-      // @ts-expect-error
-      a[k] = Object.keys(v);
-      return a;
-    }, {});
+    const methods = Object.fromEntries(
+      Object.entries(operations).map(([k, v]) => [k, Object.keys(v)]),
+    );
 
     Object.entries(operations).forEach(([operationName, actionDict]) => {
       semantics = semantics.addOperation(
         `${operationName}(context)`,
-        actionDict as ohm.ActionDict<unknown>,
+        actionDict,
       );
     });
 

@@ -46,9 +46,15 @@ export function assertExists(
   }
 }
 
+export function assertSetEmpty(a: Set<any>, extra: AssertionExtra) {
+  if (a.size) {
+    throw new DqmUtilError({ code: "SET_NOT_EMPTY", cause: null, ...extra });
+  }
+}
+
 export function assertArrayNotEmpty(a: any[], extra: AssertionExtra) {
   if (!a.length) {
-    throw new DqmUtilError({ code: "EMPTY_ARRAY", cause: null, ...extra });
+    throw new DqmUtilError({ code: "ARRAY_EMPTY", cause: null, ...extra });
   }
 }
 

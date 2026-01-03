@@ -51,7 +51,7 @@ export class Dqm {
     const pluginDefaults =
       this.plugins.getGrammarDefaultConfigs(DEFAULT_CONFIG);
     // #1
-    DEFAULT_CONFIG.plugins.config = pluginDefaults.config;
+    DEFAULT_CONFIG.plugins.config = pluginDefaults;
     this.config.pushConfig(DEFAULT_CONFIG_NAME, DEFAULT_CONFIG);
     configPacks.map(({ id, config }) => {
       this.config.pushConfig(id, config);

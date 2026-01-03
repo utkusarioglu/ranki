@@ -17,7 +17,7 @@ export class ComponentLib implements ILibComponent {
     return [type, name].join(":");
   }
 
-  add(plugin: In): ILibComponent {
+  add(plugin: In): this {
     const setKey = this.buildKey(plugin.type, plugin.meta.name);
     if (this.sets.has(setKey)) {
       throw new DqmAppError({

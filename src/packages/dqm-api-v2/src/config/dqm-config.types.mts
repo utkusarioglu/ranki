@@ -13,7 +13,7 @@ export type DqmPluginParserName = DqmPluginName & {
 };
 
 export type DqmPluginsTokens = Record<string, DqmGrammarTokens>;
-export type DqmPluginsConfig = Record<string, any>;
+export type DqmGrammarPluginsAggregatedConfig = Record<string, any>;
 
 export type DqmPluginVersion = string & { type?: "DqmPluginVersion" };
 
@@ -26,10 +26,11 @@ export type DqmConfigOnOrphanChannel = "fail" | "warn" | "ignore";
 
 export type DqmConfigOnAbsentComponent = "fail" | "useDefaultComponent";
 
-export type DqmPluginsConfigDefaults = {
-  // tokens: DqmPluginsTokens;
-  config: DqmPluginsConfig;
-};
+// export type DqmPluginsConfigDefaults = DqmPluginsConfig;
+//   {
+//   // tokens: DqmPluginsTokens;
+//   config: DqmPluginsConfig;
+// };
 
 // export type DqmConfigChannelToken = string & { type?: "DqmConfigChannelToken" };
 
@@ -60,7 +61,7 @@ export interface DqmConfig {
 
     standards: PluginUrn[];
     requested: PluginUrn[];
-    config: DqmPluginsConfig;
+    config: DqmGrammarPluginsAggregatedConfig;
   };
   content: {
     trim: boolean;

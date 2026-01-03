@@ -8,7 +8,8 @@ import type {
   PluginUrn,
   Contributors,
   DqmParserGraphMethods,
-  DependencyGraph,
+  DependencyList,
+  GrammarSet,
 } from "../export.types.mjs";
 
 export type ILibGrammarCriteria = {
@@ -18,28 +19,34 @@ export type ILibGrammarCriteria = {
 
 export type T = IDqmPluginGrammar;
 
-export type ILibGrammar = IPluginLib<T, NewGetReturn, ILibGrammarCriteria> &
+export type ILibGrammar = IPluginLib<
+  T,
+  ILibGrammarGetReturn,
+  ILibGrammarCriteria
+> &
   ILibGrammarUnique;
 
 interface ILibGrammarUnique {
-  getNames(): Set<PluginUrn<"grammar">>;
-  getSingle(grammarName: PluginUrn<"grammar">): IDqmPluginGrammar;
+  listMissing(set: GrammarSet): GrammarSet;
 }
 
-export interface NewGetReturn {
+export interface ILibGrammarGetReturn {
   matcher: Grammar;
   semantics: Semantics;
   sorted: PluginUrn<"grammar">[];
   sources: OhmGrammarSource[];
   contributors: Contributors;
   methods: DqmParserGraphMethods;
-  graph: DependencyGraph;
+  graphs: {
+    specified: DependencyList;
+    deduced: DependencyList;
+  };
 }
 
-export type GetMultipleReturn = {
-  graph: Record<PluginUrn<"grammar">, PluginUrn<"grammar">[]>;
-  sorted: PluginUrn<"grammar">[];
-};
+// export type GetMultipleReturn = {
+//   graph: Record<PluginUrn<"grammar">, PluginUrn<"grammar">[]>;
+//   sorted: PluginUrn<"grammar">[];
+// };
 
 export type GrammarActionsDict = Record<
   PluginUrn<"grammar">,

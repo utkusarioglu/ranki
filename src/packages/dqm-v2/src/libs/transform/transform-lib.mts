@@ -20,7 +20,7 @@ export type ILibTransformer = IPluginLib<
 export class TransformLib implements ILibTransformer {
   private transformers: TransformMap = new Map();
 
-  add(comp: IDqmComponent): ILibTransformer {
+  add(comp: IDqmComponent): this {
     Object.entries(comp.transformers).forEach(([creator, transformer]) => {
       assertNotExists(this.transformers.get(creator), {
         why: "No two transformer should have the same creator",
