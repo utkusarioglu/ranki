@@ -15,7 +15,7 @@ import type {
 import type { Alias, Chain } from "../component/id/id.types.mjs";
 import type { IDqmPlugin, IDqmPluginExtends } from "./plugin.types.mjs";
 import type {
-  CreateParserReturn,
+  IParser,
   DqmSerializeOutput,
   IDqmRendererClientPreferences,
   ITrnCpsNodeConstructor,
@@ -43,7 +43,7 @@ export interface IPluginLib<
 
 export interface IPlugins {
   getComponentById(id: Chain | Alias): IDqmComponent;
-  getParser(config: DqmInternalConfig): CreateParserReturn;
+  getParser(config: DqmInternalConfig): IParser;
   getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults;
   getCpxConstructor(): ICpxConstructor;
   getParamConstructor(): IParamConstructor;

@@ -1,5 +1,5 @@
 import type {
-  CreateParserReturn,
+  IParser,
   IDqmPluginGrammar,
   ActionsDictRecord,
   DqmAstReport,
@@ -23,7 +23,7 @@ export type GrammarActionsDict = Record<GrammarName, ActionsDictRecord>;
 
 export class ParserLib implements ILibParser {
   private grammars = new Map<GrammarName, T>();
-  private parsers = new Map<ParserHashString, CreateParserReturn>();
+  private parsers = new Map<ParserHashString, IParser>();
   private reports: Record<ParserHashString, DqmAstReport> = {};
 
   private buildKey(type: string, name: string) {
@@ -76,14 +76,14 @@ export class ParserLib implements ILibParser {
     return this;
   }
 
-  get(criteria: Criteria): CreateParserReturn {
+  get(criteria: Criteria): IParser {
     const hash = ParserHash.compute(criteria.config);
     const cached = this.parsers.get(hash);
     if (cached) {
       return cached;
     }
     const built = this.createNew(hash, criteria);
-    const parser: CreateParserReturn = { parse: built };
+    const parser: IParser = { parse: built };
     this.parsers.set(hash, parser);
     return parser;
   }

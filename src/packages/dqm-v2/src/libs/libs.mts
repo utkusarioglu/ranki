@@ -5,7 +5,7 @@ import type {
   Chain,
   Alias,
   DqmConfig,
-  CreateParserReturn,
+  IParser,
   DqmPluginsConfigDefaults,
   ICpxConstructor,
   IParamConstructor,
@@ -113,7 +113,7 @@ export class Libs implements IPlugins {
     return this.components.get({ id: chain });
   }
 
-  getParser(config: DqmInternalConfig): CreateParserReturn {
+  getParser(config: DqmInternalConfig): IParser {
     return this.parsers.get({ config });
   }
 

@@ -1,5 +1,5 @@
 import type {
-  CreateParserReturn,
+  IParser,
   DqmInternalConfig,
   IDqmPluginGrammar,
   IPluginLib,
@@ -12,4 +12,4 @@ export type Criteria = {
   config: DqmInternalConfig;
 };
 
-export type ILibParser = IPluginLib<T, CreateParserReturn, Criteria>;
+export type ILibParser = IPluginLib<T, IParser, Criteria>;
