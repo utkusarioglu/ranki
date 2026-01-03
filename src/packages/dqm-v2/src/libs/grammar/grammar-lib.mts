@@ -19,12 +19,11 @@ export class GrammarLib implements ILibGrammar {
   private grammars = new Map<PluginUrn<"grammar">, IDqmPluginGrammar>();
 
   getActions(): GrammarActionsDict {
-    return this.grammars
-      .values()
-      .reduce(
-        (a, c) => ((a[Serialize.grammarName(c)] = c.actions()), a),
-        {} as GrammarActionsDict,
-      );
+    return Object.fromEntries(
+      this.grammars
+        .values()
+        .map((g) => [Serialize.grammarName(g), g.actions()]),
+    );
   }
 
   getNames(): Set<PluginUrn<"grammar">> {
@@ -32,12 +31,8 @@ export class GrammarLib implements ILibGrammar {
   }
 
   getGrammarDefaultConfigs(defaultConfig: DqmConfig): DqmPluginsConfigDefaults {
-    const config = this.grammars.entries().reduce(
-      (a, [k, v]) => (
-        // @ts-expect-error
-        (a[k] = v.config(defaultConfig)), a
-      ),
-      {},
+    const config = Object.fromEntries(
+      this.grammars.entries().map(([k, v]) => [k, v.config(defaultConfig)]),
     );
     return {
       config,
