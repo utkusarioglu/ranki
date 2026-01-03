@@ -4,7 +4,7 @@ import type {
   GrammarActionsDict,
   IDqmPluginGrammar,
 } from "@dqm/package-dqm-api-v2";
-import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
+import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
 
 export interface GrammarSpecs {

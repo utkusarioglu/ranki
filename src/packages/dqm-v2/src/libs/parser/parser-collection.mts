@@ -7,10 +7,10 @@ import type {
   DqmInternalConfig,
 } from "@dqm/package-dqm-api-v2";
 import { ParserHash } from "./hash.mjs";
-import { Parser } from "./parser.mjs";
+import { Parser } from "./parser/parser.mjs";
 import type { GrammarLib } from "../grammar/grammar-lib.mjs";
 
-export class ParserLib {
+export class ParserCollection {
   private readonly grammarLib: GrammarLib;
 
   constructor(grammarLib: GrammarLib) {

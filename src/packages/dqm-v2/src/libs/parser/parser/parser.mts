@@ -7,24 +7,24 @@ import type {
   RankiLangParseFunctionReturn,
   ParserHashString,
   DqmInternalConfig,
-  // IParserConstructorHooks,
   GrammarName,
   ILibGrammar,
+  DqmPluginName,
 } from "@dqm/package-dqm-api-v2";
-import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 import { expandDependencies, topologicalSort } from "./utils.mjs";
 import { buildGrammar, compileOhmActionDicts } from "./grammar.mjs";
-import { Serialize } from "../../serialize.mjs";
+import { Serialize } from "../../../serialize.mjs";
 import type { Grammar, Semantics } from "ohm-js";
-import { assertExists } from "@dqm/package-dqm-utils";
+import { assertArrayEmpty, assertExists } from "@dqm/package-dqm-utils";
+import { ParserReport } from "./report.mjs";
 
 export class Parser implements IParser {
-  private hash: ParserHashString;
-  private config: DqmInternalConfig;
+  private readonly hash: ParserHashString;
+  private readonly config: DqmInternalConfig;
   private readonly grammarLib: ILibGrammar;
-  private report: DqmAstReport | null = null;
   private matcher: Grammar | null = null;
   private semantics: Semantics | null = null;
+  private readonly report: ParserReport;
 
   constructor(
     hash: ParserHashString,
@@ -34,45 +34,31 @@ export class Parser implements IParser {
     this.hash = hash;
     this.config = config;
     this.grammarLib = grammarLib;
+    this.report = new ParserReport(this.hash, this.config);
     this.create();
   }
 
-  private create(): void {
-    const standardsSet = new Set(
-      this.config.plugins.standards.filter((v) => v.startsWith("grammar:")),
-    );
-    const requestedSet = new Set(
-      this.config.plugins.requested.filter((v) => v.startsWith("grammar:")),
-    );
+  private filterGrammars(p: DqmPluginName[]): Set<DqmPluginName> {
+    return new Set(p.filter((v) => v.startsWith("grammar:")));
+  }
 
-    {
-      const missingStandard = this.checkMissing(standardsSet);
-      if (missingStandard.length) {
-        throw new DqmAppError({
-          code: "MISSING_STANDARD_PARSERS",
-          why: "A parser listed in the merged config object is is not installed",
-          cause: null,
-          details: {
-            missingStandard,
-            configDemandedParsers: standardsSet,
-          },
-        });
-      }
-    }
-    {
-      const missingRequested = this.checkMissing(requestedSet);
-      if (missingRequested.length) {
-        throw new DqmAppError({
-          code: "MISSING_REQUESTED_PARSERS",
-          why: "Components cannot function without their requested parsers",
-          details: {
-            missingRequested,
-            configRequestedParsers: requestedSet,
-          },
-          cause: null,
-        });
-      }
-    }
+  private create(): void {
+    const standardsSet = this.filterGrammars(this.config.plugins.standards);
+    const requestedSet = this.filterGrammars(this.config.plugins.requested);
+
+    assertArrayEmpty(this.checkMissing(standardsSet), {
+      why: "A parser listed in the merged config object is is not installed",
+      details: {
+        configDemandedParsers: standardsSet,
+      },
+    });
+
+    assertArrayEmpty(this.checkMissing(requestedSet), {
+      why: "Components cannot function without their requested parsers",
+      details: {
+        configRequestedParsers: requestedSet,
+      },
+    });
 
     const activePluginNames = new Set([...standardsSet, ...requestedSet]);
     const activePluginsArr = this.pickPlugins(activePluginNames);
@@ -95,23 +81,13 @@ export class Parser implements IParser {
     this.matcher = matcher;
     this.semantics = semantics;
 
-    this.report = {
-      cache: {
-        hash: this.hash,
-        usageCount: 0,
-      },
-      graph: {
-        requested: Array.from(requestedSet),
-        sorted: importChain,
-        dependencies: dependencyGraph,
-        contributors: participants,
-        methods,
-      },
-      grammar: {
-        source: sources.join("\n"),
-      },
-      config: this.config,
-    };
+    this.report
+      .setRequested(requestedSet)
+      .setImportChain(importChain)
+      .setDependencyGraph(dependencyGraph)
+      .setContributors(participants)
+      .setMethods(methods)
+      .setSources(sources);
   }
 
   parse(
@@ -125,15 +101,15 @@ export class Parser implements IParser {
     assertExists(this.semantics, {
       why: "Semantics needs to be created in order to parse",
     });
-    assertExists(this.report, {
-      why: "Report needs to be created in order to parse",
-    });
     const matched = this.matcher.match(raw, startRule);
-    // const mergedContext = context.newChild();
 
     const root: IAstNode = this.semantics(matched).node(context);
-    this.report.cache.usageCount++;
+    this.report.incrementUsageCount();
     return { root };
+  }
+
+  getReport(): DqmAstReport {
+    return this.report.getReport();
   }
 
   private checkMissing(set: Set<string>): string[] {
@@ -145,10 +121,6 @@ export class Parser implements IParser {
       }
     }
     return missing;
-  }
-
-  getReport(): DqmAstReport | null {
-    return this.report;
   }
 
   private pickPlugins(set: Set<string>): IDqmPluginGrammar[] {

@@ -1,19 +1,31 @@
-import type { DqmConfig } from "../../../config/dqm-config.types.mjs";
+import type {
+  DqmConfig,
+  DqmPluginParserName,
+} from "../../../config/dqm-config.types.mjs";
+import type { GrammarName, ParserHashString } from "../../../export.types.mjs";
+
+export type DependencyGraph = Record<GrammarName, GrammarName[]>;
+
+export type Contributors = Record<string, string[]>;
+
+export type DqmParserGraphMethods = Record<string, string[]>;
+
+export type DqmSource = string & { type?: "DqmSource" };
 
 export interface DqmAstReport {
   cache: {
-    hash: string;
+    hash: ParserHashString;
     usageCount: number;
   };
   graph: {
-    requested: string[];
-    sorted: string[];
-    dependencies: Record<string, string[]>;
-    contributors: Record<string, string[]>;
-    methods: Record<string, string[]>;
+    requested: DqmPluginParserName[];
+    sorted: DqmPluginParserName[];
+    dependencies: DependencyGraph;
+    contributors: Contributors;
+    methods: DqmParserGraphMethods;
   };
   grammar: {
-    source: string;
+    source: DqmSource;
   };
   config: DqmConfig;
 }

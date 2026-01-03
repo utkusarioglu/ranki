@@ -46,14 +46,23 @@ export function assertExists(
   }
 }
 
-export function assertArrayNotEmpty(
-  // this: any,
-  a: any[],
-  extra: AssertionExtra,
-  // rest: Record<string, any>,
-) {
+export function assertArrayNotEmpty(a: any[], extra: AssertionExtra) {
   if (!a.length) {
     throw new DqmUtilError({ code: "EMPTY_ARRAY", cause: null, ...extra });
+  }
+}
+
+export function assertArrayEmpty(a: any[], extra: AssertionExtra) {
+  if (a.length) {
+    throw new DqmUtilError({
+      code: "ARRAY_NOT_EMPTY",
+      cause: null,
+      why: extra.why,
+      details: {
+        array: a,
+        ...extra.details,
+      },
+    });
   }
 }
 

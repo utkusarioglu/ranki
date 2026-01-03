@@ -24,7 +24,7 @@ import type {
   ITrnCpsRootNodeConstructor,
 } from "@dqm/package-dqm-api-v2";
 import { ComponentLib } from "./component/component-lib.mjs";
-import { ParserLib } from "./parser/parser-lib.mjs";
+import { ParserCollection } from "./parser/parser-collection.mjs";
 import { Cpx } from "../nodes/cp/cpx/cpx.mjs";
 import { AstParamNode } from "../nodes/ast/param/param.mjs";
 import { AstNode } from "../nodes/ast/base/ast-node.mjs";
@@ -45,7 +45,7 @@ export class Libs implements IPlugins {
   private readonly grammars = new GrammarLib();
   private readonly components = new ComponentLib();
   private readonly transformers = new TransformLib();
-  private readonly parsers = new ParserLib(this.grammars);
+  private readonly parsers = new ParserCollection(this.grammars);
   private renderEngine: IDqmRenderEngine | null = null;
 
   addPlugins(plugins: IDqmPlugin[]): void {

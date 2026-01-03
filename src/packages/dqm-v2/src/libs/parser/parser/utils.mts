@@ -1,5 +1,5 @@
 import type { IDqmPluginGrammar } from "@dqm/package-dqm-api-v2";
-import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
+import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
 
 // ANKI
 export function expandDependencies(plugins: IDqmPluginGrammar[]): void {
