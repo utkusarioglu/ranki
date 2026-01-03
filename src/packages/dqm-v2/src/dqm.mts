@@ -75,9 +75,9 @@ export class Dqm {
 
   parse(rawInputs: DqmParseInput): DqmParseOutput {
     this.ast(rawInputs);
-    this.validate();
-    this.transform();
-    this.serialize();
+    // this.validate();
+    // this.transform();
+    // this.serialize();
     return this.parsed;
   }
 
@@ -138,6 +138,7 @@ export class Dqm {
     }
   }
 
+  // @ts-expect-error
   private validate() {
     this.parsed.forEach((v) => {
       const cpx = v.ast.getCpx();
@@ -148,6 +149,7 @@ export class Dqm {
     });
   }
 
+  // @ts-expect-error
   private transform() {
     this.transformed = new DqmTransformer(this.getTransports()).transform(
       this.parsed,
@@ -155,6 +157,7 @@ export class Dqm {
     // this.transformed = transform(this.parsed, this.getTransports());
   }
 
+  // @ts-expect-error
   private serialize() {
     this.serialized = this.transformed.map(({ theater, trn }) => ({
       theater,

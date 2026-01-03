@@ -1,9 +1,9 @@
 import * as ohm from "ohm-js";
 import type {
   DqmInternalConfig,
+  GrammarActionsDict,
   IDqmPluginGrammar,
 } from "@dqm/package-dqm-api-v2";
-import type { GrammarActionsDict } from "./parser-lib.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
 

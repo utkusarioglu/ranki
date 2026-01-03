@@ -160,12 +160,12 @@ export class Cps extends CommonTransports implements ICps {
       },
     };
     // TODO
-    const { parse } = this.getPlugins().getParser(internal);
+    const parser = this.getPlugins().getParser(internal);
     const prefix = config.content.prefix;
     const suffix = config.content.suffix;
     const trimmed = config.content.trim ? input.dqm.trim() : input.dqm;
     const prefixed = [prefix, trimmed, suffix].join("");
-    const obj = parse(
+    const obj = parser.parse(
       prefixed,
       // TODO this likely will come from the `direction` property of some ast
       // node

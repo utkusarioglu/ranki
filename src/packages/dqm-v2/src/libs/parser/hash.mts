@@ -1,6 +1,4 @@
-import type { DqmConfig } from "@dqm/package-dqm-api-v2";
-
-export type ParserHashString = string & { type?: "ParserHash" };
+import type { DqmConfig, ParserHashString } from "@dqm/package-dqm-api-v2";
 
 export class ParserHash {
   static compute(config: DqmConfig): ParserHashString {

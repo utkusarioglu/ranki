@@ -7,6 +7,10 @@ type DqmStages = "ast" | "validate" | "transform";
 
 export type DqmPluginName = string & { type?: "DqmPluginName" };
 
+export type DqmPluginParserName = DqmPluginName & {
+  subType?: "DqmPluginParserName";
+};
+
 export type DqmPluginsTokens = Record<string, DqmGrammarTokens>;
 export type DqmPluginsConfig = Record<string, any>;
 
