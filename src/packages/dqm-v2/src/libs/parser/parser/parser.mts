@@ -9,7 +9,6 @@ import type {
   ILibGrammar,
   PluginUrn,
 } from "@dqm/package-dqm-api-v2";
-import { OhmGrammar } from "./ohm-grammar.mjs";
 import type { Grammar, Semantics } from "ohm-js";
 import { assertArrayEmpty, assertExists } from "@dqm/package-dqm-utils";
 import { ParserReport } from "./report.mjs";
@@ -61,30 +60,21 @@ export class Parser implements IParser {
 
   private create(): void {
     const { all, standards, requested } = this.getGrammarLists();
-    const { sorted, graph } = this.grammarLib.getMultiple(all);
-    const { matcher, sources } = OhmGrammar.build(
-      sorted,
-      this.config,
-      this.grammarLib,
-    );
-
-    const actions = this.grammarLib.getActions();
-    const { semantics, participants, methods } = OhmGrammar.compileActionDicts(
-      matcher,
-      all,
-      actions,
-    );
-    this.matcher = matcher;
-    this.semantics = semantics;
+    const grammar = this.grammarLib.get({
+      grammarNames: all,
+      config: this.config,
+    });
+    this.matcher = grammar.matcher;
+    this.semantics = grammar.semantics;
 
     this.report
       .setStandards(standards)
       .setRequested(requested)
-      .setImportChain(sorted)
-      .setDependencyGraph(graph)
-      .setContributors(participants)
-      .setMethods(methods)
-      .setSources(sources);
+      .setImportChain(grammar.sorted)
+      .setDependencyGraph(grammar.graph)
+      .setContributors(grammar.contributors)
+      .setMethods(grammar.methods)
+      .setSources(grammar.sources);
   }
 
   parse(

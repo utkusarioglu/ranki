@@ -5,9 +5,9 @@ import type {
   ILibGrammar,
   PluginUrn,
 } from "@dqm/package-dqm-api-v2";
-import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
+import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
-import { Serialize } from "../../../utils/serialize.mjs";
+import { Serialize } from "../../utils/serialize.mjs";
 
 export interface GrammarSpecs {
   parentGrammar: string;
@@ -56,7 +56,7 @@ export class OhmGrammar {
     for (let si = 0; si < sorted.length; si++) {
       const urn = sorted[si];
       const name = importChainName[si];
-      const parserPlugin = grammarLib.get({ grammarName: urn });
+      const parserPlugin = grammarLib.getSingle(urn);
       const matcher = this.adjustParent(
         {
           parentGrammar: si === 0 ? "" : importChainName[si - 1],
@@ -89,7 +89,7 @@ export class OhmGrammar {
   ) {
     let semantics = matcher.createSemantics();
     const operations = {};
-    const participants = {};
+    const contributors = {};
 
     Object.entries(parsers).forEach(([parserName, parser]) => {
       if (!sortedSet.has(parserName)) {
@@ -100,10 +100,10 @@ export class OhmGrammar {
           // @ts-expect-error
           operations[operationName] = {};
           // @ts-expect-error
-          participants[operationName] = [];
+          contributors[operationName] = [];
         }
         // @ts-expect-error
-        participants[operationName].push(parserName);
+        contributors[operationName].push(parserName);
         // @ts-expect-error
         operations[operationName] = {
           // @ts-expect-error
@@ -127,7 +127,7 @@ export class OhmGrammar {
     });
 
     return {
-      participants,
+      contributors,
       semantics,
       operations,
       methods,

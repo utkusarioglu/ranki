@@ -13,7 +13,7 @@ export type Contributors = Record<string, string[]>;
 
 export type DqmParserGraphMethods = Record<string, string[]>;
 
-export type DqmSource = string & { type?: "DqmSource" };
+export type OhmGrammarSource = string & { type?: "OhmGrammarSource" };
 
 export interface DqmAstReport {
   cache: {
@@ -29,7 +29,7 @@ export interface DqmAstReport {
     methods: DqmParserGraphMethods;
   };
   grammar: {
-    source: DqmSource;
+    source: OhmGrammarSource;
   };
   config: DqmConfig;
 }

@@ -8,17 +8,19 @@ import type {
   ILibGrammarCriteria,
   GetMultipleReturn,
   PluginUrn,
+  NewGetReturn,
 } from "@dqm/package-dqm-api-v2";
 import { rejectValues } from "@dqm/package-dqm-utils";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 import { Serialize } from "../../utils/serialize.mjs";
 import { expandDependencies, topologicalSort } from "./utils.mjs";
 import { PluginFilter } from "../../utils/plugin.mjs";
+import { OhmGrammar } from "./ohm-grammar.mjs";
 
 export class GrammarLib implements ILibGrammar {
   private grammars = new Map<PluginUrn<"grammar">, IDqmPluginGrammar>();
 
-  getActions(): GrammarActionsDict {
+  private getActions(): GrammarActionsDict {
     return Object.fromEntries(
       this.grammars
         .values()
@@ -71,11 +73,33 @@ export class GrammarLib implements ILibGrammar {
   }
 
   @rejectValues(undefined)
-  get({ grammarName }: ILibGrammarCriteria): IDqmPluginGrammar {
+  getSingle(grammarName: PluginUrn<"grammar">): IDqmPluginGrammar {
     return this.grammars.get(grammarName)!;
   }
 
-  getMultiple(names: Set<PluginUrn<"grammar">>): GetMultipleReturn {
+  get({ grammarNames, config }: ILibGrammarCriteria): NewGetReturn {
+    const { sorted, graph } = this.getMultiple(grammarNames);
+    const { matcher, sources } = OhmGrammar.build(sorted, config, this);
+
+    const actions = this.getActions();
+    const {
+      semantics,
+      contributors: contributors,
+      methods,
+    } = OhmGrammar.compileActionDicts(matcher, grammarNames, actions);
+
+    return {
+      matcher,
+      semantics,
+      sorted,
+      sources,
+      graph,
+      contributors,
+      methods,
+    };
+  }
+
+  private getMultiple(names: Set<PluginUrn<"grammar">>): GetMultipleReturn {
     const activePluginsArr = this.pickPlugins(names);
     const importChain = this.sortPlugins(activePluginsArr);
     const dependencyGraph = this.dependencyGraph(activePluginsArr);
@@ -88,7 +112,7 @@ export class GrammarLib implements ILibGrammar {
   private pickPlugins(set: Set<PluginUrn<"grammar">>): IDqmPluginGrammar[] {
     const activePluginsArr: IDqmPluginGrammar[] = [];
     for (let grammarName of set) {
-      activePluginsArr.push(this.get({ grammarName }));
+      activePluginsArr.push(this.getSingle(grammarName));
     }
     return activePluginsArr;
   }

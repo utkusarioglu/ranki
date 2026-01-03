@@ -5,7 +5,7 @@ import type {
   DqmInternalConfig,
   DqmParserGraphMethods,
   DqmPluginName,
-  DqmSource,
+  OhmGrammarSource,
   ParserHashString,
 } from "@dqm/package-dqm-api-v2";
 import { assertExists } from "@dqm/package-dqm-utils";
@@ -21,7 +21,7 @@ export class ParserReport {
   private dependencyGraph: DependencyGraph | null = null;
   private contributors: Contributors | null = null;
   private methods: DqmParserGraphMethods | null = null;
-  private sources: DqmSource[] | null = null;
+  private sources: OhmGrammarSource[] | null = null;
   private usageCount = 0;
 
   constructor(hash: ParserHashString, config: DqmInternalConfig) {
@@ -63,7 +63,7 @@ export class ParserReport {
     return this;
   }
 
-  setSources(s: DqmSource[]): this {
+  setSources(s: OhmGrammarSource[]): this {
     this.sources = s;
     return this;
   }

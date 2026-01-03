@@ -76,7 +76,6 @@ export class Libs implements IPlugins {
           });
           break;
         case "grammar":
-          // this.parsers.add(entry);
           this.grammars.add(entry);
           break;
         default:
