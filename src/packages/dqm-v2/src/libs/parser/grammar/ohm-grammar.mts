@@ -1,5 +1,6 @@
 import * as ohm from "ohm-js";
 import type {
+  Contributors,
   DqmInternalConfig,
   GrammarActionsDict,
   ILibGrammar,
@@ -36,7 +37,7 @@ export class OhmGrammar {
           },
         });
       }
-      return `<: ${specs.parentGrammar} {`; // replace `word` however you want
+      return `<: ${specs.parentGrammar} {`;
     });
     return {
       altered,
@@ -46,7 +47,7 @@ export class OhmGrammar {
 
   static build(
     sorted: PluginUrn<"grammar">[],
-    config: DqmInternalConfig,
+    internalConfig: DqmInternalConfig,
     grammarLib: ILibGrammar,
   ) {
     const importChainName = sorted.map(Serialize.getPluginName);
@@ -62,7 +63,7 @@ export class OhmGrammar {
           parentGrammar: si === 0 ? "" : importChainName[si - 1],
           dependencies: grammarParents,
         },
-        parserPlugin.grammar(config),
+        parserPlugin.grammar(internalConfig),
       );
       matchers[name] = matcher;
       sources.push(matcher.altered);
@@ -89,7 +90,7 @@ export class OhmGrammar {
   ) {
     let semantics = matcher.createSemantics();
     const operations = {};
-    const contributors = {};
+    const contributors: Contributors = {};
 
     Object.entries(parsers).forEach(([parserName, parser]) => {
       if (!sortedSet.has(parserName)) {
@@ -99,10 +100,8 @@ export class OhmGrammar {
         if (!operations.hasOwnProperty(operationName)) {
           // @ts-expect-error
           operations[operationName] = {};
-          // @ts-expect-error
           contributors[operationName] = [];
         }
-        // @ts-expect-error
         contributors[operationName].push(parserName);
         // @ts-expect-error
         operations[operationName] = {
