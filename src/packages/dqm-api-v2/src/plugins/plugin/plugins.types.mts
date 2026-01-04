@@ -6,11 +6,13 @@ import type {
 } from "../../config/dqm-config.types.mjs";
 import type { IAstNodeConstructor } from "../../nodes/ast/base/i-ast-node.types.mjs";
 import type { ICpxConstructor } from "../../nodes/cp/export.types.mjs";
-import type { IParamConstructor } from "../../nodes/ast/export.types.mjs";
+import type {
+  IParamConstructor,
+  TransformClass,
+} from "../../nodes/ast/export.types.mjs";
 import type {
   IDqmComponent,
   IDqmComponentTransformFunction,
-  TransformClass,
 } from "../component/component.types.mjs";
 import type { Alias, Chain } from "../component/id/id.types.mjs";
 import type { IDqmPlugin, IDqmPluginExtends } from "./plugin.types.mjs";

@@ -22,7 +22,6 @@ export function assertNotUndefined<C extends {}>(
 export function assertNull<C extends {}>(
   value: C | null,
   extra: AssertionExtra,
-  // obj: any,
 ): asserts value is null {
   if (value !== null) {
     throw new DqmUtilError({
@@ -37,7 +36,7 @@ export function assertExists(
   v: any,
   extra: AssertionExtra,
 ): asserts v is object {
-  if (v === undefined) {
+  if (v === undefined || v === null) {
     throw new DqmUtilError({
       code: "VALUE_UNDEFINED",
       cause: null,

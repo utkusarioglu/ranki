@@ -1,6 +1,7 @@
 import type { DqmConfig } from "../../export.types.mjs";
 import type {
   CommonTransportsConstructorParams,
+  // IAstNode,
   ICps,
   ITrnCpsNode,
   TrnCpxRegistry,
@@ -14,12 +15,10 @@ export interface ITrnCpsRootNode
   getComponentConfig(): any;
   getDqmConfig(): DqmConfig;
 
-  // acceptsRoot(t: TransformClass, node: ITrnCpsNode): this;
-
   /**
    * Recursively calls transform on all of its regular children and root children, dfs
    */
-  transform(): this;
+  // transform(ast: IAstNode): this;
 }
 
 export interface ITrnCpsVerticesCapability {

@@ -5,10 +5,8 @@ import type {
   ICps,
   ISerializedNode,
   ITrnCpsNode,
-  ITrnCpsNodeAccepts,
   ITrnCpsRootNode,
   ITrnCpxNode,
-  TransformClass,
   TrnCpxRegistry,
 } from "@dqm/package-dqm-api-v2";
 import { TrnCpsNode } from "./trn-cps.mjs";
@@ -16,10 +14,12 @@ import { assertExists } from "@dqm/package-dqm-utils";
 import { verticesCapability } from "../capabilities/vertices.capability.mjs";
 
 export class TrnCpsRootNode extends TrnCpsNode implements ITrnCpsRootNode {
-  private rootVertices = verticesCapability<this, ITrnCpsRootNode>(this);
-  public readonly cps!: ICps;
+  private readonly rootVertices = verticesCapability<this, ITrnCpsRootNode>(
+    this,
+  );
+  public readonly cps: ICps;
   private trnCpx!: ITrnCpxNode;
-  private acceptsList: ITrnCpsNodeAccepts[] = [];
+  // private acceptsList: ITrnCpsNodeAccepts[] = [];
 
   constructor(
     cps: ICps,
@@ -30,30 +30,16 @@ export class TrnCpsRootNode extends TrnCpsNode implements ITrnCpsRootNode {
     this.setRoot(this);
     this.cps = cps;
     this.determineCpx(registry);
-    this.callRootChildren(registry, s);
+    // this.callRootChildren(registry, s);
   }
 
-  acceptsRoot(c: TransformClass, node: ITrnCpsNode): this {
-    this.acceptsList.push({
-      transformClass: c,
-      node,
-    });
-    return this;
-  }
-
-  transform(): this {
-    const direction = this.getRootAst().getDirection();
-    const transformClass = [this.cps.getChainString(), direction].join(":");
-    const cpsTransform = this.getPlugins().getTransformer(transformClass);
-    const children = this.getChildren();
-    console.log({ children });
-    children.forEach((r) => r.transform());
-    cpsTransform(this);
-    // const roots = this.getRootChildren().map((r) => r.transform());
-
-    // TODO you gotta call the regular children of this root node here.
-    return this;
-  }
+  // acceptsRoot(c: TransformClass, node: ITrnCpsNode): this {
+  //   this.acceptsList.push({
+  //     transformClass: c,
+  //     node,
+  //   });
+  //   return this;
+  // }
 
   override serialize(): ISerializedNode[] {
     this.getRootChildren().map((r) => r.serialize());
@@ -61,16 +47,16 @@ export class TrnCpsRootNode extends TrnCpsNode implements ITrnCpsRootNode {
     return own;
   }
 
-  private callRootChildren(
-    registry: TrnCpxRegistry,
-    s: CommonTransportsConstructorParams,
-  ) {
-    const TrnCpsRoot = this.getPlugins().getTrnCpsRootNodeConstructor();
-    this.cps.getChildren().forEach((c) => {
-      const newNode = new TrnCpsRoot(c, registry, s).setRootParent(this);
-      this.pushRootChild(newNode);
-    });
-  }
+  // private callRootChildren(
+  //   registry: TrnCpxRegistry,
+  //   s: CommonTransportsConstructorParams,
+  // ) {
+  //   const TrnCpsRoot = this.getPlugins().getTrnCpsRootNodeConstructor();
+  //   this.cps.getChildren().forEach((c) => {
+  //     const newNode = new TrnCpsRoot(c, registry, s).setRootParent(this);
+  //     this.pushRootChild(newNode);
+  //   });
+  // }
 
   private determineCpx(registry: TrnCpxRegistry) {
     const cpx = this.cps.getCpx();
@@ -90,7 +76,7 @@ export class TrnCpsRootNode extends TrnCpsNode implements ITrnCpsRootNode {
     return n;
   }
 
-  getTrnCpx(): ITrnCpxNode {
+  getTCpx(): ITrnCpxNode {
     return this.trnCpx;
   }
 

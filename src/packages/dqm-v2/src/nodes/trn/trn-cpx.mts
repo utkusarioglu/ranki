@@ -8,6 +8,7 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { CommonTransports } from "../common-transports.mjs";
 import { rejectValues } from "@dqm/package-dqm-utils";
+import { assertExists } from "@dqm/package-dqm-utils";
 
 export class TrnCpxNode extends CommonTransports implements ITrnCpxNode {
   public readonly cpx;
@@ -27,9 +28,19 @@ export class TrnCpxNode extends CommonTransports implements ITrnCpxNode {
     this.initChildrenTrnCpx();
   }
 
+  private getCpx(): ICpx {
+    return this.cpx;
+  }
+
   transform(): this {
     this.getChildrenTrnCpx().forEach((c) => c.transform());
-    this.getOwnedTrnCpsRootHead().transform();
+    const ast = this.getCpx().getRootAst();
+    const tcs = ast.collectTransformClasses();
+    const tc = ast.getTransformClass();
+    assertExists(tc, {
+      why: "Transform class for the root ast node needs to be defined",
+    });
+    this.getOwnedTrnCpsRootHead().transform(tcs, tc);
     return this;
   }
 

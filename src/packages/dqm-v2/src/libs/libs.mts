@@ -145,6 +145,7 @@ export class Libs implements IPlugins {
   }
 
   getTrnCpsRootNodeConstructor(): ITrnCpsRootNodeConstructor {
+    // @ts-ignore
     return TrnCpsRootNode;
   }
 

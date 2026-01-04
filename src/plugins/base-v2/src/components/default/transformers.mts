@@ -6,33 +6,33 @@ const LEAF = ["debug", "leaf", "container"];
 
 // const baseV2RootBlock_structured
 const blockRoot: IDqmComponentTransformFunction = (trn) => {
-  console.log("blockRoot");
   trn
     .setChain(PARENT)
     .newChild()
     .setChain(PARENT)
-    .accepts("base.v2.default:section");
+    .newChild()
+    .setChain(PARENT)
+    .newChild()
+    // .setChain(PARENT)
+    .setTransformClass("BASE_V2_SECTION_BASE");
 };
 
 const section: IDqmComponentTransformFunction = (trn) => {
-  const ast = trn.getRootAst();
-  console.log(
-    "SECTION",
-    ast.getSubtreeNodes().map((v) => v.getCreator()),
-  );
+  const ast = trn.getAst();
   trn
     .setChain(PARENT)
     .newChild()
-    .setChain(PARENT)
-    .newChild()
-    .setChain(PARENT)
-    .newChild()
+    // .setChain(PARENT)
+    // .newChild()
+    // .setChain(PARENT)
+    // .newChild()
     .setChain(LEAF)
     .setSource(ast.getSourceString());
 };
 
 export const transformers = {
-  "base.v2.default:block": blockRoot,
-  "base.v2.default:section": section,
+  // "base.v2.default:block": blockRoot,
+  BASE_V2_ROOT_BLOCK_STRUCTURED: blockRoot,
+  BASE_V2_SECTION_BASE: section,
   // baseV2RootBlock_structured,
 };

@@ -7,37 +7,121 @@ import type {
   ITrnCpsNode,
   ITrnCpsRootNode,
   TransformClass,
+  TransformClassDict,
 } from "@dqm/package-dqm-api-v2";
 import { CommonTransports } from "../common-transports.mjs";
 import { verticesCapability } from "../capabilities/vertices.capability.mjs";
 import { assertNever } from "../../errors/dqm-app-error/assertions.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
-import { rejectValues } from "@dqm/package-dqm-utils";
-import type { TrnCpsRootNode } from "./trn-cps-root.mjs";
+import { assertExists, rejectValues } from "@dqm/package-dqm-utils";
+import { transformClassCapability } from "../ast/base/capabilities/transform.capability.mjs";
+
+type ITcpsDict = TransformClassDict<ITrnCpsNode>;
+type AstDict = TransformClassDict<IAstNode>;
 
 export class TrnCpsNode extends CommonTransports implements ITrnCpsNode {
+  private readonly vertices = verticesCapability<this, ITrnCpsNode>(this);
+  // @ts-ignore
+  private readonly acceptedTc = transformClassCapability<
+    ITrnCpsNode,
+    ITcpsDict
+  >(this);
+  public ast: IAstNode | null = null;
   private root!: ITrnCpsRootNode;
-  private vertices = verticesCapability<this, ITrnCpsNode>(this);
   private source!: AstSourceString;
   private kind: IAstNodeKind = "parent";
   public chain!: Chain;
-  // public transformClass!: TransformClass;
-  private localAccepts!: TransformClass | null;
+  // private acceptedTc: TransformClass | null = null;
 
-  accepts(c: TransformClass): this {
-    this.localAccepts = c;
-    (this.root as TrnCpsRootNode).acceptsRoot(c, this);
-    return this;
-  }
-
-  // setTransformClass(t: TransformClass): this {
-  //   this.transformClass = t;
+  // acceptsTransformClass(c: TransformClass): this {
+  //   this.acceptedTc.setTransformClass(c);
   //   return this;
   // }
 
-  // getTransformClass(): TransformClass {
-  //   return this.transformClass;
-  // }
+  collectTransformClasses(): ITcpsDict {
+    const subtree = this.getChildren();
+    return this.acceptedTc.getTransformClassDict(subtree);
+  }
+
+  // @ts-ignore
+  setTransformClass = this.acceptedTc.setTransformClass.bind(this.acceptedTc);
+  // @ts-ignore
+  getTransformClass = this.acceptedTc.getTransformClass.bind(this.acceptedTc);
+
+  getChildrenTransformClassDict(): [TransformClass, ITrnCpsNode] | null {
+    const children = this.getChildren();
+    const map = this.acceptedTc.getChildrenTransformClassDict(children);
+    if (map.size === 0) {
+      return null;
+      // throw new DqmAppError({
+      //   code: "VALUE_DEFINED",
+      //   why: "Parent Tcps nodes need to have have a non-empty transform class dicts",
+      //   cause: null,
+      // });
+    } else if (map.size > 1) {
+      throw new DqmAppError({
+        code: "TOO_MANY",
+        why: "Tcps need to have a one-to-one relationship with acceptedTcs you need to split this transformer into many",
+        cause: null,
+      });
+    } else {
+      return map.entries().next().value!;
+    }
+  }
+
+  transform(tcs: AstDict, tc: TransformClass): this {
+    const ast = tcs.get(tc);
+    assertExists(ast, {
+      why: "Ast graph defines no TransformClass entry required during cps transform",
+      details: {
+        transformClass: tc,
+        TransformClassDict: Object.fromEntries(
+          tcs.entries().map(([k, v]) => [k, v.getCreator()]),
+        ),
+      },
+    });
+    this.setAst(ast);
+    const cpsTransform = this.getPlugins().getTransformer(tc);
+    cpsTransform(this);
+    const kind = this.getKind();
+    switch (kind) {
+      case "parent":
+        const dict = this.getChildrenTransformClassDict();
+        if (dict === null) {
+          // console.log("null reached", this.getChain());
+          return this;
+        }
+        const [childTc, node] = dict;
+        // @ts-ignore
+        // console.log(childTc, tcs[childTc]!.getCreator());
+        node.transform(tcs, childTc);
+        break;
+      case "leaf":
+        if (!this.getSource()) {
+          throw new DqmAppError({
+            code: "VALUE_UNDEFINED",
+            why: "leaves need to define source",
+            cause: null,
+          });
+        }
+        break;
+      default:
+        assertNever({ why: "All `kind` options have been depleted" });
+    }
+    return this;
+  }
+
+  setAst(ast: IAstNode): this {
+    this.ast = ast;
+    return this;
+  }
+
+  getAst(): IAstNode {
+    assertExists(this.ast, {
+      why: "Ast needs to be set for every TrnCps node",
+    });
+    return this.ast;
+  }
 
   @rejectValues(undefined)
   getRoot() {
@@ -46,7 +130,10 @@ export class TrnCpsNode extends CommonTransports implements ITrnCpsNode {
 
   serialize(): ISerializedNode[] {
     const root = this.getRoot();
-    const component = root.getComponentConfig();
+    const data = {
+      component: root.getComponentConfig(),
+      dqm: root.getDqmConfig(),
+    };
     const chain = this.getChain();
     const kind = this.getKind();
     switch (kind) {
@@ -55,8 +142,7 @@ export class TrnCpsNode extends CommonTransports implements ITrnCpsNode {
           {
             kind,
             chain,
-            // dqm,
-            component,
+            data,
             source: this.getSource(),
           },
         ];
@@ -68,8 +154,7 @@ export class TrnCpsNode extends CommonTransports implements ITrnCpsNode {
           {
             kind,
             chain,
-            // dqm,
-            component,
+            data,
             children,
           },
         ];
@@ -102,10 +187,6 @@ export class TrnCpsNode extends CommonTransports implements ITrnCpsNode {
     return this;
   }
 
-  getRootAst(): IAstNode {
-    return this.getRoot().getRootAst();
-  }
-
   newChild(): ITrnCpsNode {
     const root = this.getRoot();
     const transports = this.getTransports();
@@ -114,39 +195,6 @@ export class TrnCpsNode extends CommonTransports implements ITrnCpsNode {
     (n as TrnCpsNode).setParent(this).setRoot(root);
 
     return n;
-  }
-
-  transform(): ITrnCpsNode {
-    const kind = this.getKind();
-    switch (kind) {
-      case "parent":
-        const accepts = this.localAccepts;
-        if (accepts) {
-          const cpsTransform = this.getPlugins().getTransformer(accepts);
-          cpsTransform(this);
-        } else {
-          const children = this.getChildren();
-          children.map((v) => v.transform());
-        }
-        break;
-      case "leaf":
-        if (!this.getSource()) {
-          throw new DqmAppError({
-            code: "VALUE_UNDEFINED",
-            why: "leaves need to define source",
-            cause: null,
-          });
-        }
-        break;
-      default:
-        assertNever({ why: "All `kind` options have been depleted" });
-    }
-    // this.acceptsList.map((a) => {
-    //   const transformer = this.getPlugins().getTransformer(a.transformClass);
-    //   transformer();
-    // });
-    // TODO call transform
-    return this;
   }
 
   private getSource(): AstSourceString {

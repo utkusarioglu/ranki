@@ -4,7 +4,7 @@ import type {
   IAstParamNode,
   ICps,
   ITrnCpsNode,
-  // ITrnCpsRootNode,
+  TransformClass,
 } from "../../export.types.mjs";
 import type { DeepPartialSerializable } from "../../util.types.mjs";
 import type { Alias, Chain, IdSummary } from "./id/id.types.mjs";
@@ -21,8 +21,6 @@ export interface IDqmComponent<T = any> {
   // transformer: IDqmComponentTransformFunction;
   transformers: Record<TransformClass, IDqmComponentTransformFunction>;
 }
-
-export type TransformClass = string & { type?: "TransformClass" };
 
 export type IDqmComponentTransformFunction = (trnCps: ITrnCpsNode) => void;
 

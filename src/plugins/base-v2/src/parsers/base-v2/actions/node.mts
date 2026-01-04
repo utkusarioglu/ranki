@@ -38,6 +38,7 @@ export const node: IAstNodeActionDict = {
     return grabAst(this)
       .newAst(this)
       .newCpx((cpx) => cpx.setAstParams(PARAMS).setIdList(COMPONENT))
+      .setTransformClass("BASE_V2_ROOT_BLOCK_STRUCTURED")
       .setDirection("block")
       .pushNodes(["space", whitespace1])
       .pushNodes(["node", structure])
@@ -47,6 +48,7 @@ export const node: IAstNodeActionDict = {
   baseV2Section_base(block, blockSep, block2) {
     return grabAst(this)
       .newAst(this)
+      .setTransformClass("BASE_V2_SECTION_BASE")
       .pushNodes(["node", block])
       .pushNodes(["token", blockSep], ["node", block2]);
   },

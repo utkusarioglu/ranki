@@ -8,3 +8,4 @@ build
 *.tsbuildinfo
 
 src/.defunct
+vite.config.mts.timestamp*

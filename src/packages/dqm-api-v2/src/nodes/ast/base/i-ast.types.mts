@@ -12,6 +12,7 @@ import type {
 } from "../capabilities/export.types.mjs";
 import type { ICommonTransports } from "../../common-transports.types.mjs";
 import type { IParser } from "../../../export.types.mjs";
+import type { IAstNodeTransformCapability } from "../capabilities/transform.cap.types.mjs";
 
 export interface IAstNode
   extends ICommonTransports,
@@ -24,7 +25,8 @@ export interface IAstNode
     IAstNodeViewCapabilities,
     IAstNodeUniqueCapability,
     CpxCollectionCapability,
-    IAstNodeParserReferenceCapability {}
+    IAstNodeParserReferenceCapability,
+    IAstNodeTransformCapability<IAstNode> {}
 
 export interface IAstNodeParserReferenceCapability {
   setParser(parser: IParser): this;

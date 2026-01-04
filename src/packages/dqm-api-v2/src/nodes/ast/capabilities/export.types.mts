@@ -8,3 +8,4 @@ export type * from "./param-semantic.cap.types.mjs";
 export type * from "./param-value.cap.types.mjs";
 export type * from "./param-specs.cap.types.mjs";
 export type * from "./cpx-collection.cap.types.mjs";
+export type * from "./transform.cap.types.mjs";

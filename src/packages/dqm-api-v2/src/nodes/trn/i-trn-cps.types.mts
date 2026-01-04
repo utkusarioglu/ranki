@@ -4,25 +4,30 @@ import type {
   CommonTransportsConstructorParams,
   IAstNode,
   IAstNodeKind,
+  IAstNodeTransformCapability,
   ISerializedNode,
   IVerticesCapability,
+  TransformClassDict,
 } from "../export.types.mjs";
 
-export interface ITrnCpsNode extends IVerticesCapability<ITrnCpsNode> {
+export interface ITrnCpsNode
+  extends IVerticesCapability<ITrnCpsNode>,
+    IAstNodeTransformCapability<ITrnCpsNode> {
   setChain(chain: Chain): this;
   getKind(): IAstNodeKind;
   setSource(s: AstSourceString): this;
 
-  accepts(c: TransformClass): this;
+  // acceptsTransformClass(c: TransformClass): this;
+  // getAcceptedTransformClass(): [TransformClass, ITrnCpsNode];
 
-  getRootAst(): IAstNode;
+  // getRootAst(): IAstNode;
 
   newChild(): ITrnCpsNode;
-  transform(): ITrnCpsNode;
+  transform(tcDict: TransformClassDict<IAstNode>, tc: TransformClass): this;
   serialize(): ISerializedNode[];
 
-  // setTransformClass(t: TransformClass): this;
-  // getTransformClass(): TransformClass;
+  setAst(ast: IAstNode): this;
+  getAst(): IAstNode;
 }
 
 export type ITrnCpsNodeConstructor = new (

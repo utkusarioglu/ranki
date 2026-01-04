@@ -5,6 +5,7 @@ import type {
   AstSourceView,
   CpxFuncParam,
   IParser,
+  TransformClassDict,
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
 import { assertNotUndefined } from "@dqm/package-dqm-utils";
@@ -17,17 +18,23 @@ import { viewCapability } from "./capabilities/view.capability.mjs";
 import { counterCapability } from "./capabilities/counter.capability.mjs";
 import { cpxCollection } from "../../cp/capabilities/cpx-collection.cap.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
+import { transformClassCapability } from "./capabilities/transform.capability.mjs";
 
 const DEFAULT_CLIMB = 1;
 
 export class AstNode extends CommonTransports implements IAstNode {
-  private cpx = cpxCollection(this);
-  private semantic = semanticCapability(this);
-  private vertices = verticesCapability<this, IAstNode>(this);
-  private syntax = syntaxCapability(this);
-  private ohm = ohmCapability(this);
-  private view = viewCapability(this);
-  private counter = counterCapability(this);
+  private readonly cpx = cpxCollection(this);
+  private readonly semantic = semanticCapability(this);
+  private readonly vertices = verticesCapability<this, IAstNode>(this);
+  private readonly syntax = syntaxCapability(this);
+  private readonly ohm = ohmCapability(this);
+  private readonly view = viewCapability(this);
+  private readonly counter = counterCapability(this);
+  // @ts-expect-error
+  private readonly tc = transformClassCapability<
+    IAstNode,
+    TransformClassDict<IAstNode>
+  >(this);
   private parser: IParser | null = null;
 
   parse(source: string): this {
@@ -210,4 +217,14 @@ export class AstNode extends CommonTransports implements IAstNode {
   getParser(): IParser | null {
     return this.parser;
   }
+
+  // TRANSFORM CLASS
+  collectTransformClasses(): TransformClassDict<IAstNode> {
+    const subtree = this.getSubtreeNodes();
+    return this.tc.getTransformClassDict(subtree);
+  }
+  // @ts-ignore
+  setTransformClass = this.tc.setTransformClass.bind(this.tc);
+  // @ts-ignore
+  getTransformClass = this.tc.getTransformClass.bind(this.tc);
 }
