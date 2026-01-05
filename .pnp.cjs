@@ -3207,6 +3207,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
           ["@dqm/plugin-frame-v2-code", "workspace:src/plugins/frame-v2-code"],\
           ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
+          ["@dqm/plugin-static-render-engine", "workspace:src/plugins/static-render-engine"],\
           ["@ranki/app-dqm-v2-console", "workspace:src/apps/dqm-v2-console"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@rollup/plugin-babel", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:6.1.0"],\

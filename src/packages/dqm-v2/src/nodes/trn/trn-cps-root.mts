@@ -1,7 +1,7 @@
 import type {
   CommonTransportsConstructorParams,
   DqmConfig,
-  IAstNode,
+  // IAstNode,
   ICps,
   ISerializedNode,
   ITrnCpsNode,
@@ -19,7 +19,6 @@ export class TrnCpsRootNode extends TrnCpsNode implements ITrnCpsRootNode {
   );
   public readonly cps: ICps;
   private trnCpx!: ITrnCpxNode;
-  // private acceptsList: ITrnCpsNodeAccepts[] = [];
 
   constructor(
     cps: ICps,
@@ -30,33 +29,13 @@ export class TrnCpsRootNode extends TrnCpsNode implements ITrnCpsRootNode {
     this.setRoot(this);
     this.cps = cps;
     this.determineCpx(registry);
-    // this.callRootChildren(registry, s);
   }
-
-  // acceptsRoot(c: TransformClass, node: ITrnCpsNode): this {
-  //   this.acceptsList.push({
-  //     transformClass: c,
-  //     node,
-  //   });
-  //   return this;
-  // }
 
   override serialize(): ISerializedNode[] {
     this.getRootChildren().map((r) => r.serialize());
     const own = super.serialize();
     return own;
   }
-
-  // private callRootChildren(
-  //   registry: TrnCpxRegistry,
-  //   s: CommonTransportsConstructorParams,
-  // ) {
-  //   const TrnCpsRoot = this.getPlugins().getTrnCpsRootNodeConstructor();
-  //   this.cps.getChildren().forEach((c) => {
-  //     const newNode = new TrnCpsRoot(c, registry, s).setRootParent(this);
-  //     this.pushRootChild(newNode);
-  //   });
-  // }
 
   private determineCpx(registry: TrnCpxRegistry) {
     const cpx = this.cps.getCpx();
@@ -71,8 +50,6 @@ export class TrnCpsRootNode extends TrnCpsNode implements ITrnCpsRootNode {
     const TrnCps = this.getPlugins().getTrnCpsNodeConstructor();
     const n = new TrnCps(transports);
     (n as TrnCpsNode).setParent(this).setRoot(this);
-    // this.pushChild(n);
-
     return n;
   }
 
@@ -90,11 +67,11 @@ export class TrnCpsRootNode extends TrnCpsNode implements ITrnCpsRootNode {
     return this;
   }
 
-  getRootAst(): IAstNode {
-    const cpx = this.cps.getCpx();
-    assertExists(cpx, { why: "Cps implies cpx" });
-    return cpx.getRootAst();
-  }
+  // getRootAst(): IAstNode {
+  //   const cpx = this.cps.getCpx();
+  //   assertExists(cpx, { why: "Cps implies cpx" });
+  //   return cpx.getRootAst();
+  // }
 
   getComponentConfig() {
     return this.cps.getComponentConfig();

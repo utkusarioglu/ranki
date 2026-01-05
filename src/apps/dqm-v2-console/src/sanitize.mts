@@ -3,7 +3,7 @@ import type {
   AstSourceString,
   IAstNode,
   AstSourceView,
-} from "../../../packages/dqm-api-v2/types/export.mjs";
+} from "@dqm/package-dqm-api-v2";
 
 export type SanitizedNode = Partial<{
   creator: CreatorName;
@@ -32,7 +32,7 @@ export function sanitizeSingle(
         break;
       case "idList":
         sanitized["idList"] = astNode
-          .getCpx()
+          .getCpx()!
           .getIdList()
           .map((v) => v.join("."))
           .join(" | ");
@@ -54,6 +54,7 @@ export function sanitizeSingle(
             : {
                 type: "string",
                 raw: astNode.getSourceString(),
+                value: astNode.getSourceString(),
               };
         break;
       default:

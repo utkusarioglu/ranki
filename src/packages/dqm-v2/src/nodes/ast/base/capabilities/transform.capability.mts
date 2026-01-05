@@ -38,7 +38,7 @@ export function transformClassCapability<
     },
     getTransformClass(): TransformClass {
       assertExists(transformClass, {
-        why: "TransformClass called before being defined this implies an architecture issue",
+        why: "TransformClass called before being defined. Did you set the related transform class in ast?",
       });
       return transformClass;
     },

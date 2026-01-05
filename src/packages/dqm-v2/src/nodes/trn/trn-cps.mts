@@ -31,12 +31,6 @@ export class TrnCpsNode extends CommonTransports implements ITrnCpsNode {
   private source!: AstSourceString;
   private kind: IAstNodeKind = "parent";
   public chain!: Chain;
-  // private acceptedTc: TransformClass | null = null;
-
-  // acceptsTransformClass(c: TransformClass): this {
-  //   this.acceptedTc.setTransformClass(c);
-  //   return this;
-  // }
 
   collectTransformClasses(): ITcpsDict {
     const subtree = this.getChildren();
@@ -97,13 +91,8 @@ export class TrnCpsNode extends CommonTransports implements ITrnCpsNode {
         node.transform(tcs, childTc);
         break;
       case "leaf":
-        if (!this.getSource()) {
-          throw new DqmAppError({
-            code: "VALUE_UNDEFINED",
-            why: "leaves need to define source",
-            cause: null,
-          });
-        }
+        const source = this.getSource();
+        assertExists(source, { why: "leaves need to define source" });
         break;
       default:
         assertNever({ why: "All `kind` options have been depleted" });

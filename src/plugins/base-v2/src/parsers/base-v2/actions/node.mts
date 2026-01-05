@@ -18,6 +18,7 @@ export const node: IAstNodeActionDict = {
       .newAst(this)
       .newCpx((cpx) => cpx.setAstParams(PARAMS).setIdList(COMPONENT))
       .setDirection("block")
+      .setTransformClass("BASE_V2_ROOT_BLOCK_IGNORED")
       .pushNodes(["token", ignore])
       .pushNodes(["space", wm])
       .pushNodes(["node", rest]);
@@ -29,6 +30,7 @@ export const node: IAstNodeActionDict = {
 
   baseV2Section_empty(all) {
     return grabAst(this)
+      .setTransformClass("BASE_V2_EMPTY_DOCUMENT")
       .newAst(this)
       .setDirection("inline")
       .pushIgnoredNodes(all);
@@ -48,7 +50,7 @@ export const node: IAstNodeActionDict = {
   baseV2Section_base(block, blockSep, block2) {
     return grabAst(this)
       .newAst(this)
-      .setTransformClass("BASE_V2_SECTION_BASE")
+      .setTransformClass("BASE_V2_SECTION_FILLED")
       .pushNodes(["node", block])
       .pushNodes(["token", blockSep], ["node", block2]);
   },
@@ -56,6 +58,7 @@ export const node: IAstNodeActionDict = {
   baseV2P(line1, nl, line2) {
     return grabAst(this)
       .newAst(this)
+      .setTransformClass("BASE_V2_PARAGRAPH")
       .pushNodes(["node", line1])
       .pushNodes(["space", nl], ["node", line2]);
   },
@@ -74,6 +77,7 @@ export const node: IAstNodeActionDict = {
     return grabAst(this)
       .newAst(this)
       .setDirection("inline")
+      .setTransformClass("BASE_V2_LINE")
       .pushNodes(["space", indentation1])
       .pushNodes(["token", lineModifiers])
       .pushNodes(["node", lexemes])
@@ -83,6 +87,7 @@ export const node: IAstNodeActionDict = {
   baseV2Lexemes(lexeme1, clearance, lexeme2) {
     return grabAst(this)
       .newAst(this)
+      .setTransformClass("BASE_V2_LEXEME")
       .pushNodes(["node", lexeme1])
       .pushNodes(["space", clearance], ["node", lexeme2]);
   },
@@ -90,33 +95,40 @@ export const node: IAstNodeActionDict = {
   baseV2Decorated_base(word, wordEnd) {
     return grabAst(this)
       .newAst(this)
+      .setTransformClass("BASE_V2_WORD")
       .pushNodes(["node", word])
       .pushNodes(["token", wordEnd]);
   },
 
   baseV2Decorated_fallback(word, wordEnd) {
-    return grabAst(this).newAst(this).pushIgnoredNodes(word, wordEnd);
+    return (
+      grabAst(this)
+        .newAst(this)
+        // .setTransformClass("BASE_V2_WORD")
+        .pushIgnoredNodes(word, wordEnd)
+    );
   },
 
   baseV2Word_base(base) {
-    return grabAst(this).newAst(this).pushIgnoredNodes(base);
+    return (
+      grabAst(this)
+        .newAst(this)
+        // .setTransformClass("BASE_V2_WORD")
+        .pushIgnoredNodes(base)
+    );
   },
 
   baseV2Word_baseV2Number(number) {
-    return grabAst(this)
-      .newAst(this)
-      .pushIgnoredNodes(number)
-      .setLeafViewDecoder("number", (v) => ({ value: +v }));
+    return (
+      grabAst(this)
+        .newAst(this)
+        // .setTransformClass("BASE_V2_NUMBER")
+        .pushIgnoredNodes(number)
+        .setLeafViewDecoder("number", (v) => ({ value: +v }))
+    );
   },
 
   hWrapped(token1, content, token2) {
     return grabAst(this).newAst(content).pushIgnoredNodes(token1, token2);
-    // .pushNodes(["token", token1])
-    // .pushNodes(["node", content])
-    // .pushNodes(["token", token2]);
   },
-
-  // hWrappedContent(one) {
-  //   return grabAst(this).newAst(this).pushIgnoredNodes(one);
-  // },
 };

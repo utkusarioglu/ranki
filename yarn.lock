@@ -2120,6 +2120,7 @@ __metadata:
     "@dqm/plugin-frame-v2": "workspace:^"
     "@dqm/plugin-frame-v2-code": "workspace:^"
     "@dqm/plugin-params-v2": "workspace:^"
+    "@dqm/plugin-static-render-engine": "workspace:^"
     "@ranki/config-typescript": "workspace:^"
     "@rollup/plugin-babel": "npm:^6.1.0"
     "@rollup/plugin-commonjs": "npm:^29.0.0"

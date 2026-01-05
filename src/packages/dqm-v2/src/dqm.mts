@@ -75,6 +75,7 @@ export class Dqm {
     this.validate();
     this.transform();
     this.serialize();
+    console.log(this.serialized);
     // console.log(Unique.getRegistrySnapshot());
     return this.parsed;
   }
