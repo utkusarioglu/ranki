@@ -4,14 +4,14 @@ import type {
   ITCpsNode,
   ITCpxNode,
 } from "@dqm/package-dqm-api-v2";
-import { verticesCapability } from "../capabilities/vertices.capability.mjs";
+import { edgeCapability } from "../capabilities/edge.capability.mjs";
 import { trnCapability } from "./capabilities/trn.cap.mjs";
 
 export class TCpsNode implements ITCpsNode {
   public readonly cps: ICps;
   public readonly tCpx: ITCpxNode;
   private trn = trnCapability(this);
-  public readonly tCpsV = verticesCapability<any, ITCpsNode>(this);
+  public readonly tCpsV = edgeCapability<ITCpsNode>(this, "TCps");
   // private chain!: Chain;
   // private source!: AstSourceString;
   // private tc: TransformClass | null = null;
@@ -49,9 +49,9 @@ export class TCpsNode implements ITCpsNode {
   // }
 
   // VERTICES
-  setParent = this.tCpsV.setParent.bind(this.tCpsV);
-  pushChild = this.tCpsV.pushChild.bind(this.tCpsV);
-  getChildren = this.tCpsV.getChildren.bind(this.tCpsV);
+  setTCpsParent = this.tCpsV.setParent.bind(this.tCpsV);
+  pushTCpsEdge = this.tCpsV.pushEdge.bind(this.tCpsV);
+  getTCpsEdges = this.tCpsV.getEdges.bind(this.tCpsV);
 
   // TRN
   assignTrn = this.trn.assignTrn.bind(this.trn);

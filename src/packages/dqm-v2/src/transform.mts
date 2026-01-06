@@ -49,7 +49,7 @@ export class DqmTransformer extends CommonTransports {
       this.buildTrnNodeGraph(curr.getRootAst(), "subtree");
       // tCps.assignTrn(trn);
       // tCpx.assignTrn(trn);
-      l.push(...curr.getChildren());
+      l.push(...curr.getCpxEdges());
     }
 
     return {
@@ -69,8 +69,8 @@ export class DqmTransformer extends CommonTransports {
     function dfs(cpx: ICpx): TCpxNode {
       const tCpx = new TCpxNode(cpx);
       pushToTCpxRegistry(cpx, tCpx);
-      cpx.getChildren().forEach((c) => {
-        dfs(c).setParent(tCpx);
+      cpx.getCpxEdges().forEach((c) => {
+        dfs(c).setTCpxParent(tCpx);
       });
       return tCpx;
     }
@@ -89,8 +89,8 @@ export class DqmTransformer extends CommonTransports {
       });
       const tCps = new TCpsNode(cps, tCpx);
 
-      cps.getChildren().forEach((c) => {
-        dfs(c).setParent(tCps);
+      cps.getCpsEdges().forEach((c) => {
+        dfs(c).setTCpsParent(tCps);
       });
 
       tCps.tCpx.pushTCpsEdge(tCps);
@@ -138,7 +138,7 @@ export class DqmTransformer extends CommonTransports {
         const trn = new TrnNode(ast, tCpx, tCps, self.getTransports());
 
         if (currentMetaParent) {
-          trn.setParent(currentMetaParent);
+          trn.setTrnParent(currentMetaParent);
         } else {
           root.push(trn);
         }

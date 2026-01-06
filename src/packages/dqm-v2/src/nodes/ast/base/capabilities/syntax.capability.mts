@@ -96,8 +96,8 @@ export function syntaxCapability<T>(self: T) {
             parsed.setRelationship(relationship).setCreationMethod(method);
             if (allNodes.length) {
               const prevNode = allNodes.at(-1)!;
-              parsed.setPrev(prevNode);
-              prevNode.setNext(parsed);
+              parsed.setAstPrev(prevNode);
+              // prevNode.setNext(parsed);
             }
             allNodes.push(parsed);
             switch (relationship) {

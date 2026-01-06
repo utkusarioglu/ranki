@@ -18,13 +18,13 @@ import { prepareContext } from "../../ast/base/ast.utils.mjs";
 import { INITIAL_CONFIG_NAME } from "../../../constants.mjs";
 import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
 import { idCapability } from "../../capabilities/id.cap.mjs";
-import { verticesCapability } from "../../capabilities/vertices.capability.mjs";
+import { edgeCapability } from "../../capabilities/edge.capability.mjs";
 import { cpxCollection } from "../capabilities/cpx-collection.cap.mjs";
 import { assertNever } from "../../../errors/dqm-app-error/assertions.mjs";
 
 export class Cps extends CommonTransports implements ICps {
   private id = idCapability(this);
-  private vertices = verticesCapability<this, ICps>(this);
+  private cpsE = edgeCapability<ICps>(this, "Cps");
   private cpx = cpxCollection(this);
   private component!: IDqmComponent;
   private customizations: IParams = new ParamsLib(this.getTransports());
@@ -48,7 +48,7 @@ export class Cps extends CommonTransports implements ICps {
   }
 
   validate(): void {
-    this.getChildren().forEach((c) => c.validate());
+    this.getCpsEdges().forEach((c) => c.validate());
     this.component.validation.forEach((v) => v(this));
   }
 
@@ -189,14 +189,14 @@ export class Cps extends CommonTransports implements ICps {
   getChainString = this.id.getChainString;
 
   // VERTICES
-  setParent = this.vertices.setParent.bind(this.vertices);
-  getParent = this.vertices.getParent.bind(this.vertices);
-  getNext = this.vertices.getNext.bind(this.vertices);
-  getPrev = this.vertices.getPrev.bind(this.vertices);
-  setPrev = this.vertices.setPrev.bind(this.vertices);
-  setNext = this.vertices.setNext.bind(this.vertices);
-  getChildren = this.vertices.getChildren.bind(this.vertices);
-  pushChild = this.vertices.pushChild.bind(this.vertices);
+  setCpsParent = this.cpsE.setParent.bind(this.cpsE);
+  getCpsParent = this.cpsE.getParent.bind(this.cpsE);
+  getCpsNext = this.cpsE.getNext.bind(this.cpsE);
+  getCpsPrev = this.cpsE.getPrev.bind(this.cpsE);
+  setCpsPrev = this.cpsE.setPrev.bind(this.cpsE);
+  setCpsNext = this.cpsE.setNext.bind(this.cpsE);
+  getCpsEdges = this.cpsE.getEdges.bind(this.cpsE);
+  pushCpsEdge = this.cpsE.pushEdge.bind(this.cpsE);
 
   // CPX
   getCpx = this.cpx.getCpx.bind(this.cpx);

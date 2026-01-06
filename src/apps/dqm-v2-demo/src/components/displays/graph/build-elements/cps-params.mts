@@ -84,7 +84,7 @@ export function traverseParams(raw: ICps) {
   assertTryCatchSuccess(paramsPre, { why: "cps params is required" });
   paramsPre.value.map((p) => traverseCpsParam(cpsId, p));
 
-  const childrenPre = root.getChildren();
+  const childrenPre = root.getCpsEdges();
   assertTryCatchSuccess(childrenPre, { why: "Children is required" });
   childrenPre.value.map((c) => traverseParams(c));
 }

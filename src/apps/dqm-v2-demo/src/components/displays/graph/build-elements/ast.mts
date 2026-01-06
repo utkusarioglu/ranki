@@ -71,7 +71,7 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
     });
   }
 
-  const astParentPre = root.getParent();
+  const astParentPre = root.getAstParent();
   assertTryCatchSuccess(astParentPre, { why: "astParent required" });
   const astParent = astParentPre.value;
   if (astParent) {
@@ -113,7 +113,7 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
     }
   }
 
-  const prevCpxPre = root.getPrev();
+  const prevCpxPre = root.getAstPrev();
   assertTryCatchSuccess(prevCpxPre, { why: "previous cpx is required" });
   const prevCpx = prevCpxPre.value;
   if (prevCpx) {
@@ -133,7 +133,7 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
     });
   }
 
-  const children = root.getChildren();
+  const children = root.getAstEdges();
   assertTryCatchSuccess(children, { why: "children required" });
   children.value.forEach((n) => traverseAst(n, totalAstDepth + 1));
 }

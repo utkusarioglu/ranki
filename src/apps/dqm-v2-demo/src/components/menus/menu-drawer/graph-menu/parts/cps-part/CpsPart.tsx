@@ -13,7 +13,7 @@ interface GraphMenuCpsPartProps {
 export const GraphMenuCpsPart: FC<GraphMenuCpsPartProps> = ({ cps: a }) => {
   const astRows: PropertyTableRows = [
     ["Id", a.getIdString()],
-    ["Child Count", tryCatchLeap(a.getChildren(), (o) => o.length)],
+    ["Child Count", tryCatchLeap(a.getCpsEdges(), (o) => o.length)],
     [
       "On Fail Mode",
       tryCatchLeap(a.isOnFailMode(), (o) => (o ? "true" : "false")),

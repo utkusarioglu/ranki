@@ -13,7 +13,7 @@ export function traverseAstParams(root: ICpx): void {
     params.forEach((p) => traverseAstParam(p));
   }
 
-  root.getChildren().forEach((r) => traverseAstParams(r));
+  root.getCpxEdges().forEach((r) => traverseAstParams(r));
 }
 
 function traverseAstParam(raw: IAstParamNode | null): void {

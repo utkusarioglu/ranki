@@ -27,7 +27,7 @@ export function traverseCpx(raw: ICpx | null, cpxDepth: number): void {
   };
   Registry.registerNode(node);
 
-  const parentCpxPre = root.getParent();
+  const parentCpxPre = root.getCpxEdges();
   assertTryCatchSuccess(parentCpxPre, { why: "parentCpx required" });
   const parentCpx = parentCpxPre.value;
   if (parentCpx) {
@@ -43,7 +43,7 @@ export function traverseCpx(raw: ICpx | null, cpxDepth: number): void {
     }
   }
 
-  const prevCpxPre = root.getPrev();
+  const prevCpxPre = root.getCpxPrev();
   assertTryCatchSuccess(prevCpxPre, { why: "prevCpx required" });
   const prevCpx = prevCpxPre.value;
   if (prevCpx) {
@@ -57,7 +57,7 @@ export function traverseCpx(raw: ICpx | null, cpxDepth: number): void {
     });
   }
 
-  const childrenPre = root.getChildren();
+  const childrenPre = root.getCpxEdges();
   assertTryCatchSuccess(childrenPre, { why: "Children required" });
   childrenPre.value.forEach((r) => traverseCpx(r, cpxDepth + 1));
 }

@@ -4,20 +4,21 @@ import type { UniqueValue } from "@dqm/package-dqm-api-v2";
 
 export const cls = (...cls: any[]) => cls.filter((v) => !!v).join(" ");
 
-type TExtend<T> = null | {
-  getParent(): T | null;
-};
+// type TExtend<T> = null | {
+//   getParent(): T | null;
+// };
 
 type GetRootReturn<T> = [root: T | null, climbs: number];
 
-export function getRoot<T extends TExtend<T>>(n: T): GetRootReturn<T> {
+export function getRoot<T>(n: T, method: string): GetRootReturn<T> {
   let prev: T | null = n;
   let curr: T | null = n;
   let climbs = 1;
   while (curr !== null) {
     climbs--;
     prev = curr;
-    curr = curr.getParent();
+    // @ts-expect-error
+    curr = curr[method]();
   }
   return [prev, climbs];
 }

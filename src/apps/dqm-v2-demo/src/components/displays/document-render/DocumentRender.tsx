@@ -1,4 +1,5 @@
 import { useUiStore } from "_stores/ui/ui.store.mts";
+// @ts-expect-error
 import { AsyncIFrame } from "_views/iframe/IFrame";
 import type { ResourceProps } from "_views/iframe/IFrame";
 import style from "./DocumentRender.module.css";
@@ -21,7 +22,7 @@ const obj = [
     ],
   },
 ];
-
+// @ts-expect-error
 const options = {
   scheme: "dark",
 };
@@ -30,10 +31,12 @@ export const DocumentRender = () => {
   const ui = useUiStore();
 
   // const [height, requestHeight] = useState<number>(ui.previewSize[1]);
+  // @ts-expect-error
   const promise = new Promise<ResourceProps[]>((r) =>
     setTimeout(() => r(obj), 0),
   );
 
+  // @ts-expect-error
   const requestHeight = (h: number) => {
     console.log("height request:", h);
   };

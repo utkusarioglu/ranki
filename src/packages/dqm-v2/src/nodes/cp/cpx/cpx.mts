@@ -6,7 +6,7 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { CommonTransports } from "../../common-transports.mjs";
 import { astParamsCapability } from "../capabilities/ast-params.cap.mjs";
-import { verticesCapability } from "../../capabilities/vertices.capability.mjs";
+import { edgeCapability } from "../../capabilities/edge.capability.mjs";
 import { cpsCollectionCapability } from "../capabilities/cps-collection.cap.mjs";
 import { astCollectionCapability } from "../capabilities/ast-collection.cap.mjs";
 
@@ -18,21 +18,21 @@ export class Cpx extends CommonTransports implements ICpx {
   private cps = cpsCollectionCapability(this);
   private ast = astCollectionCapability(this);
   private astParams = astParamsCapability(this);
-  private vertices = verticesCapability<this, ICpx>(this);
+  private cpxE = edgeCapability<ICpx>(this, "Cpx");
 
   parse(input: CpxParseInput): IAstNode {
     return this.getTargetCps().parse(input);
   }
 
   // VERTICES
-  setParent = this.vertices.setParent.bind(this.vertices);
-  getParent = this.vertices.getParent.bind(this.vertices);
-  getNext = this.vertices.getNext.bind(this.vertices);
-  getPrev = this.vertices.getPrev.bind(this.vertices);
-  setPrev = this.vertices.setPrev.bind(this.vertices);
-  setNext = this.vertices.setNext.bind(this.vertices);
-  getChildren = this.vertices.getChildren.bind(this.vertices);
-  pushChild = this.vertices.pushChild.bind(this.vertices);
+  setCpxParent = this.cpxE.setParent.bind(this.cpxE);
+  getCpxParent = this.cpxE.getParent.bind(this.cpxE);
+  getCpxNext = this.cpxE.getNext.bind(this.cpxE);
+  getCpxPrev = this.cpxE.getPrev.bind(this.cpxE);
+  setCpxPrev = this.cpxE.setPrev.bind(this.cpxE);
+  setCpxNext = this.cpxE.setNext.bind(this.cpxE);
+  getCpxEdges = this.cpxE.getEdges.bind(this.cpxE);
+  pushCpxEdge = this.cpxE.pushEdge.bind(this.cpxE);
 
   // RAW PARAMS
   setAstParams = this.astParams.setAstParams.bind(this.astParams);
@@ -45,7 +45,7 @@ export class Cpx extends CommonTransports implements ICpx {
   setIdList(idList: ChainList): this {
     this.cps.setIdList(
       idList,
-      this.getParent.bind(this),
+      this.getCpxParent.bind(this),
       this.getTransports.bind(this),
       this.getAstParamsByAudience.bind(this),
     );

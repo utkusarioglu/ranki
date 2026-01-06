@@ -14,16 +14,16 @@ export function buildElements(currAst: IAstNode): Flattened | null {
   if (!currCpx) {
     return null;
   }
-  const [rootCpx, cpxClimbs] = getRoot(currCpx);
+  const [rootCpx, cpxClimbs] = getRoot(currCpx, "getCpxParent");
   if (!rootCpx) {
     return null;
   }
   traverseCpx(rootCpx, cpxClimbs);
   const currCps = currCpx.getRootCps();
-  const [rootCps, cpsClimb] = getRoot(currCps);
+  const [rootCps, cpsClimb] = getRoot(currCps, "getCpsParent");
   traverseCps(rootCps, cpsClimb);
 
-  traverseAst(...getRoot(currAst));
+  traverseAst(...getRoot(currAst, "getAstParent"));
   traverseAstParams(rootCpx);
   traverseParams(currCps);
 

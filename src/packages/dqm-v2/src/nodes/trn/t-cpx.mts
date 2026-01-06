@@ -5,12 +5,12 @@ import type {
   ITCpxNode,
 } from "@dqm/package-dqm-api-v2";
 import { trnCapability } from "./capabilities/trn.cap.mjs";
-import { verticesCapability } from "../capabilities/vertices.capability.mjs";
+import { edgeCapability } from "../capabilities/edge.capability.mjs";
 
 export class TCpxNode implements ITCpxNode {
   public readonly cpx: ICpx;
   public readonly tCps: ITCpsNode[] = [];
-  private tCpxV = verticesCapability<this, ITCpxNode>(this);
+  private tCpxV = edgeCapability<ITCpxNode>(this, "TCpx");
   private trn = trnCapability(this);
 
   constructor(cpx: ICpx) {
@@ -18,14 +18,14 @@ export class TCpxNode implements ITCpxNode {
   }
 
   transform(): this {
-    this.getChildren().forEach((t) => t.transform());
+    this.getTCpxEdges().forEach((t) => t.transform());
     this.trn.getTrn().forEach((t) => t.transform());
     // console.log(this.cpx.getChainListString(), this.trn.getTrn());
     return this;
   }
 
   serialize(): ISerializedNode[] {
-    this.getChildren().forEach((t) => t.transform());
+    this.getTCpxEdges().forEach((t) => t.transform());
     this.trn.getTrn().forEach((t) => t.transform());
     return this.tCps[0].serialize();
   }
@@ -40,7 +40,7 @@ export class TCpxNode implements ITCpxNode {
   getTrn = this.trn.getTrn.bind(this.trn);
 
   // vertices
-  setParent = this.tCpxV.setParent.bind(this.tCpxV);
-  pushChild = this.tCpxV.pushChild.bind(this.tCpxV);
-  getChildren = this.tCpxV.getChildren.bind(this.tCpxV);
+  setTCpxParent = this.tCpxV.setParent.bind(this.tCpxV);
+  pushTCpxEdge = this.tCpxV.pushEdge.bind(this.tCpxV);
+  getTCpxEdges = this.tCpxV.getEdges.bind(this.tCpxV);
 }

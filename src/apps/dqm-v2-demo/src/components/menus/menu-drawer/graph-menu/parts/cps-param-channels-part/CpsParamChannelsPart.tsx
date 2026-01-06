@@ -38,7 +38,9 @@ export const CpsParamChannelsPart: FC<CpsParamChannelsPartProps> = ({
                 {param.isCoupled() ? "is" : "is not"} coupled.
               </Typography.Text>
             }
-            item={tryCatch("mutationEntries", () => param.getMutationEntries())}
+            item={tryCatch("mutationEntries", () =>
+              param.getMutationEntries(true),
+            )}
           />
         ))}
       </div>

@@ -33,7 +33,7 @@ export function cpsCollectionCapability<T>(self: T) {
   return {
     setIdList(
       idList: IdList,
-      getParent: ICpx["getParent"],
+      getParent: ICpx["getCpxParent"],
       getTransports: CommonTransports["getTransports"],
       getAstParamsByAudience: ICpx["getAstParamsByAudience"],
     ): T {
@@ -42,7 +42,7 @@ export function cpsCollectionCapability<T>(self: T) {
         const parentCps = parentCpx ? parentCpx.getLeafCps() : null;
         const newCps: ICps = new Cps(getTransports());
         if (parentCps) {
-          newCps.setParent(parentCps);
+          newCps.setCpsParent(parentCps);
         }
         newCps
           .setCpx(
@@ -77,7 +77,7 @@ export function cpsCollectionCapability<T>(self: T) {
                 // @ts-expect-error # 1
                 self,
               )
-              .setParent(prev)
+              .setCpsParent(prev)
               .setDefinition({
                 id: idList[i],
                 params: getAstParamsByAudience(i),

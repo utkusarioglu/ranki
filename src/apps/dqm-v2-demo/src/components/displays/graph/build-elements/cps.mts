@@ -36,7 +36,7 @@ export function traverseCps(raw: ICps | null, cpsDepth: number): void {
     classes: cls("source-cpx", "target-cps"),
   });
 
-  const parentCpsPre = root.getParent();
+  const parentCpsPre = root.getCpsParent();
   assertTryCatchSuccess(parentCpsPre, { why: "parent cps is required" });
   const parentCps = parentCpsPre.value;
   if (parentCps) {
@@ -50,7 +50,7 @@ export function traverseCps(raw: ICps | null, cpsDepth: number): void {
     });
   }
 
-  const prevCpxPre = root.getPrev();
+  const prevCpxPre = root.getCpsPrev();
   assertTryCatchSuccess(prevCpxPre, { why: "previous cpx is required" });
   const prevCpx = prevCpxPre.value;
   if (prevCpx) {
@@ -64,7 +64,7 @@ export function traverseCps(raw: ICps | null, cpsDepth: number): void {
     });
   }
 
-  const children = root.getChildren();
+  const children = root.getCpsEdges();
   assertTryCatchSuccess(children, { why: "children required" });
   children.value.forEach((n) => traverseCps(n, cpsDepth + 1));
 }

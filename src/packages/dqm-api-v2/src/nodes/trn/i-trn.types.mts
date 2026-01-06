@@ -5,16 +5,29 @@ import type {
   IAstNode,
   IAstNodeKind,
   IAstNodeTransformCapability,
+  IEdgeCapability,
   ISerializedNode,
   ITCpsNode,
   ITCpxNode,
-  IVerticesCapability,
+  // IVerticesCapability,
   // TransformClass,
 } from "../export.types.mjs";
+type TrnEdges = IEdgeCapability<
+  ITrnNode,
+  ITrnNode,
+  "Trn",
+  "setTrnParent" | "getTrnEdges" | "pushTrnEdge"
+  // "getTrnEdges"
+  // | "setTrnParent"
+  // | "getTrnParent"
+  // | "setTrnPrev"
+  // | "getTrnPrev"
+>;
 
 export interface ITrnNode
   extends ITrnNodeUnique,
-    Pick<IVerticesCapability<ITrnNode>, "setParent" | "getChildren">,
+    TrnEdges,
+    // Pick<IVerticesCapability<ITrnNode>, "setParent" | "getChildren">,
     Pick<IAstNodeTransformCapability, "getTransformClass"> {}
 
 interface ITrnNodeUnique {

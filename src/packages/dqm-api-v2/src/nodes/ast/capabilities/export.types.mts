@@ -1,4 +1,4 @@
-export type * from "./vertices.cap.types.mjs";
+export type * from "./edges.cap.types.mjs";
 export type * from "./view.cap.types.mjs";
 export type * from "./syntax.cap.types.mjs";
 export type * from "./node-semantic.cap.types.mjs";

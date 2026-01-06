@@ -9,9 +9,10 @@ import type {
   ISerializedNode,
   IAstNodeKind,
 } from "@dqm/package-dqm-api-v2";
-import { verticesCapability } from "../capabilities/vertices.capability.mjs";
+import { edgeCapability } from "../capabilities/edge.capability.mjs";
 import { CommonTransports } from "../common-transports.mjs";
 import { assertExists, assertLeaf } from "@dqm/package-dqm-utils";
+// @ts-expect-error
 import { assertNever } from "../../errors/dqm-app-error/assertions.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
@@ -31,9 +32,12 @@ export class TrnNode extends CommonTransports implements ITrnNode {
   public readonly ast: IAstNode;
   public readonly tCpx: ITCpxNode;
   public readonly tCpsList: ITCpsNode[];
+  // @ts-expect-error
   private selectTCps: ITCpsNode | null = null;
-  private readonly trnV = verticesCapability<this, ITrnNode>(this);
+  private readonly trnV = edgeCapability<ITrnNode>(this, "Trn");
+  // @ts-expect-error
   private chain!: Chain;
+  // @ts-expect-error
   private source!: AstSourceString;
   private kind: IAstNodeKind = "parent";
   private slot!: ITrnNode;
@@ -56,7 +60,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
   }
 
   getSlot(): ITrnNode {
-    const slots = [this.slot, ...this.getChildren().map((v) => v.getSlot())];
+    const slots = [this.slot, ...this.getTrnEdges().map((v) => v.getSlot())];
     const kind = this.getKind();
     if (slots.length > 1) {
       throw new DqmAppError({
@@ -76,58 +80,59 @@ export class TrnNode extends CommonTransports implements ITrnNode {
   }
 
   serialize(): ISerializedNode[] {
-    assertExists(this.chain, {
-      why: "Chain needs to be set for every trn node",
-      details: {
-        astCreator: this.ast.getCreator(),
-        tc: this.ast.getTransformClass(),
-        chain: this.chain,
-      },
-    });
-    assertExists(this.selectTCps, { why: "There needs to be a selected tcps" });
-    const kind = this.getKind();
-    const chain = this.chain;
-    const cps = this.selectTCps.cps;
-    const dqm = cps.getDqmConfig();
-    const component = cps.getComponentConfig();
-    switch (kind) {
-      case "parent":
-        const children = this.getChildren()
-          .map((v) => v.serialize())
-          .flat();
-        console.log(this.chain, children);
-        return [
-          {
-            kind,
-            chain,
-            data: {
-              dqm,
-              component,
-            },
-            children,
-          },
-        ];
-      case "leaf":
-        assertExists(this.source, {
-          why: "leaves need to have their source set",
-        });
-        return [
-          {
-            kind,
-            chain,
-            data: {
-              dqm,
-              component,
-            },
-            source: this.source,
-          },
-        ];
-      default:
-        assertNever({
-          why: "Unrecognized `kind` encountered",
-          details: { kind },
-        });
-    }
+    return DUMMY_SERIALIZATION;
+    // assertExists(this.chain, {
+    //   why: "Chain needs to be set for every trn node",
+    //   details: {
+    //     astCreator: this.ast.getCreator(),
+    //     tc: this.ast.getTransformClass(),
+    //     chain: this.chain,
+    //   },
+    // });
+    // assertExists(this.selectTCps, { why: "There needs to be a selected tcps" });
+    // const kind = this.getKind();
+    // const chain = this.chain;
+    // const cps = this.selectTCps.cps;
+    // const dqm = cps.getDqmConfig();
+    // const component = cps.getComponentConfig();
+    // switch (kind) {
+    //   case "parent":
+    //     const children = this.getTrnEdges()
+    //       .map((v) => v.serialize())
+    //       .flat();
+    //     console.log(this.chain, children);
+    //     return [
+    //       {
+    //         kind,
+    //         chain,
+    //         data: {
+    //           dqm,
+    //           component,
+    //         },
+    //         children,
+    //       },
+    //     ];
+    //   case "leaf":
+    //     assertExists(this.source, {
+    //       why: "leaves need to have their source set",
+    //     });
+    //     return [
+    //       {
+    //         kind,
+    //         chain,
+    //         data: {
+    //           dqm,
+    //           component,
+    //         },
+    //         source: this.source,
+    //       },
+    //     ];
+    //   default:
+    //     assertNever({
+    //       why: "Unrecognized `kind` encountered",
+    //       details: { kind },
+    //     });
+    // }
   }
 
   /**
@@ -170,7 +175,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
       this.tCpx,
       this.tCpsList,
       this.getTransports(),
-    ).setParent(this);
+    ).setTrnParent(this);
     return trn;
   }
 
@@ -188,7 +193,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
   getTransformClass = () => this.ast.getTransformClass();
 
   // VERTICES
-  setParent = this.trnV.setParent.bind(this.trnV);
-  pushChild = this.trnV.pushChild.bind(this.trnV);
-  getChildren = this.trnV.getChildren.bind(this.trnV);
+  setTrnParent = this.trnV.setParent.bind(this.trnV);
+  pushTrnEdge = this.trnV.pushEdge.bind(this.trnV);
+  getTrnEdges = this.trnV.getEdges.bind(this.trnV);
 }

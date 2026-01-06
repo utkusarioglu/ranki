@@ -10,10 +10,9 @@ import type {
 } from "../../plugins/component/id/id.types.mjs";
 import type { ICps } from "./i-cps.types.mjs";
 import type { CommonTransportsConstructorParams } from "../common-transports.types.mjs";
-import type { IAstParamNode } from "../ast/export.types.mjs";
+import type { IAstParamNode, IEdgeCapability } from "../ast/export.types.mjs";
 import type {
   IAstNode,
-  IVerticesCapability,
   Audience,
   ICommonTransports,
 } from "../../export.types.mjs";
@@ -22,10 +21,23 @@ export type ICpxConstructor = new (
   transports: CommonTransportsConstructorParams,
 ) => ICpx;
 
+type ICpxEdges = IEdgeCapability<
+  ICpx,
+  ICpx,
+  "Cpx",
+  | "getCpxEdges"
+  | "setCpxParent"
+  | "getCpxParent"
+  | "getCpxPrev"
+  | "pushCpxEdge"
+  | "setCpxPrev"
+>;
+
 export interface ICpx
   extends ICommonTransports,
     ICpxUniqueCapability,
-    IVerticesCapability<ICpx>,
+    // IVerticesCapability<ICpx>,
+    ICpxEdges,
     RawParamsCapability,
     CpsCollectionCapability,
     AstCollectionCapability {}

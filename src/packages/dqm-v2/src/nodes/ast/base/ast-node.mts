@@ -9,7 +9,7 @@ import type {
 import type * as ohm from "ohm-js";
 import { assertNotUndefined } from "@dqm/package-dqm-utils";
 import { CommonTransports } from "../../common-transports.mjs";
-import { verticesCapability } from "../../capabilities/vertices.capability.mjs";
+import { edgeCapability } from "../../capabilities/edge.capability.mjs";
 import { syntaxCapability } from "./capabilities/syntax.capability.mjs";
 import { semanticCapability } from "./capabilities/semantic.capability.mjs";
 import { ohmCapability } from "./capabilities/ohm.capability.mjs";
@@ -24,7 +24,7 @@ const DEFAULT_CLIMB = 1;
 export class AstNode extends CommonTransports implements IAstNode {
   private readonly cpx = cpxCollection(this);
   private readonly semantic = semanticCapability(this);
-  private readonly vertices = verticesCapability<this, IAstNode>(this);
+  private readonly astE = edgeCapability<IAstNode>(this, "Ast");
   private readonly syntax = syntaxCapability(this);
   private readonly ohm = ohmCapability(this);
   private readonly view = viewCapability(this);
@@ -42,7 +42,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     assertExists(cpx, { why: "Cpx has to be defined for parsing to occur" });
     // TODO theater is wrong
     const parsed = cpx.parse({ dqm: source, theater: "default" });
-    parsed.setParent(this);
+    parsed.setAstParent(this);
     this.syntax.pushParsedChild(parsed);
     return this;
   }
@@ -53,7 +53,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     let c = 0;
     while (c < climb) {
       c++;
-      const parent = current.getParent();
+      const parent = current.getCpsParent();
       assertExists(parent, { why: "Requested pause climb demands a parent" });
       current = parent;
     }
@@ -73,27 +73,33 @@ export class AstNode extends CommonTransports implements IAstNode {
     try {
       oldCpx = this.getCpx();
     } catch (e) {}
-    const prevCpx = oldCpx?.getChildren().at(-1);
+    const prevCpx = oldCpx?.getCpxEdges().at(-1);
     const newCpxMold = new Cpx(this.getTransports()).setRootAst(this);
     // !FIX this setting the parent like this is faulty it clashes with paused container climbing up
-    newCpxMold.setParent(oldCpx);
+    newCpxMold.setCpxParent(oldCpx);
     if (prevCpx) {
-      newCpxMold.setPrev(prevCpx);
+      newCpxMold.setCpxPrev(prevCpx);
     }
     this.cpx.setCpx(cpxCallback(newCpxMold));
     return this;
   }
 
   newAst(ohm: ohm.Node): IAstNode {
-    return this.newChild(this.getPlugins().getAstNodeConstructor(), ohm);
+    return this.newChild<IAstNode>(
+      this.getPlugins().getAstNodeConstructor(),
+      ohm,
+    );
   }
 
   newParam(ohm: ohm.Node): IAstParamNode {
-    return this.newChild(this.getPlugins().getParamConstructor(), ohm);
+    return this.newChild<IAstParamNode>(
+      this.getPlugins().getParamConstructor(),
+      ohm,
+    );
   }
 
   private postCreationActions() {
-    if (this.vertices.getChildren().length) {
+    if (this.astE.getEdges().length) {
       return;
     }
     this.counter.incrementDirection(this.getDirection());
@@ -105,23 +111,23 @@ export class AstNode extends CommonTransports implements IAstNode {
    * already complete. This allows us to do calculations such as determining
    * `direction`
    */
-  private newChild(ChildConstructor: any, ohm: ohm.Node) {
+  private newChild<T>(ChildConstructor: any, ohm: ohm.Node) {
     //#1
-    const childrenCount = this.vertices.getChildren().length;
+    const childrenCount = this.astE.getEdges().length;
     if (!childrenCount) {
       this.postCreationActions();
     }
 
-    const child = new ChildConstructor(this.getTransports());
+    const child: AstNode = new ChildConstructor(this.getTransports());
     child
-      .setParent(this)
+      .setAstParent(this)
       .setOhmNode(ohm)
       .setCpx(this.getCpx())
       .setChildIndex(childrenCount)
       .setInheritedCounters(this.counter.getInheritedCounters())
       .setDirection(this.getDirection());
-    this.vertices.pushChild(child);
-    return child;
+    this.astE.pushEdge(child);
+    return child as T;
   }
 
   // COUNTER
@@ -159,13 +165,13 @@ export class AstNode extends CommonTransports implements IAstNode {
   getRelationship = this.semantic.getRelationship.bind(this.semantic);
 
   // VERTICES
-  setParent = this.vertices.setParent.bind(this.vertices);
-  getParent = this.vertices.getParent.bind(this.vertices);
-  getNext = this.vertices.getNext.bind(this.vertices);
-  getPrev = this.vertices.getPrev.bind(this.vertices);
-  setPrev = this.vertices.setPrev.bind(this.vertices);
-  setNext = this.vertices.setNext.bind(this.vertices);
-  getChildren = this.vertices.getChildren.bind(this.vertices);
+  setAstParent = this.astE.setParent.bind(this.astE);
+  getAstParent = this.astE.getParent.bind(this.astE);
+  getAstNext = this.astE.getNext.bind(this.astE);
+  getAstPrev = this.astE.getPrev.bind(this.astE);
+  setAstPrev = this.astE.setPrev.bind(this.astE);
+  setAstNext = this.astE.setNext.bind(this.astE);
+  getAstEdges = this.astE.getEdges.bind(this.astE);
 
   // NODES
   /**

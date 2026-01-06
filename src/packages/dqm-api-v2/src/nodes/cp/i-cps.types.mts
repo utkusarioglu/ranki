@@ -3,8 +3,9 @@ import type {
   CpxCollectionCapability,
   IAstNode,
   ICpsParam,
+  IEdgeCapability,
   ITCpsNode,
-  IVerticesCapability,
+  // IVerticesCapability,
   ParamChannel,
 } from "../export.types.mjs";
 import type { ICpx } from "./i-cpx.types.mjs";
@@ -17,11 +18,24 @@ import type {
 } from "../../plugins/component/id/id.types.mjs";
 import type { DqmConfig, ICommonTransports } from "../../export.types.mjs";
 
+type ICpsEdges = IEdgeCapability<
+  ICps,
+  ICps,
+  "Cps",
+  | "getCpsEdges"
+  | "setCpsParent"
+  | "getCpsParent"
+  | "getCpsPrev"
+  | "pushCpsEdge"
+  | "setCpsPrev"
+>;
+
 export interface ICps
   extends ICommonTransports,
     ICpsIdCapability,
     ICpsUniqueCapability,
-    IVerticesCapability<ICps>,
+    ICpsEdges,
+    // IVerticesCapability<ICps>,
     CpxCollectionCapability,
     CpsValidationCapability,
     CpsTransformCapability,
