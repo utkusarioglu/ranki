@@ -138,7 +138,7 @@ export class DqmTransformer extends CommonTransports {
         const trn = new TrnNode(ast, tCpx, tCps, self.getTransports());
 
         if (currentMetaParent) {
-          trn.setTrnParent(currentMetaParent);
+          trn.setForeignTrnParent(currentMetaParent);
         } else {
           root.push(trn);
         }

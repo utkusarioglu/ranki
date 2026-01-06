@@ -6,28 +6,29 @@ import type {
   IAstNodeKind,
   IAstNodeTransformCapability,
   IEdgeCapability,
-  ISerializedNode,
   ITCpsNode,
   ITCpxNode,
-  // IVerticesCapability,
-  // TransformClass,
+  SerializedPackage,
 } from "../export.types.mjs";
-type TrnEdges = IEdgeCapability<
+
+type ForeignTrnEdges = IEdgeCapability<
   ITrnNode,
   ITrnNode,
-  "Trn",
-  "setTrnParent" | "getTrnEdges" | "pushTrnEdge"
-  // "getTrnEdges"
-  // | "setTrnParent"
-  // | "getTrnParent"
-  // | "setTrnPrev"
-  // | "getTrnPrev"
+  "ForeignTrn",
+  "setForeignTrnParent" | "getForeignTrnEdges" | "pushForeignTrnEdge"
+>;
+
+type LocalTrnEdges = IEdgeCapability<
+  ITrnNode,
+  ITrnNode,
+  "LocalTrn",
+  "setLocalTrnParent" | "getLocalTrnEdges" | "pushLocalTrnEdge"
 >;
 
 export interface ITrnNode
   extends ITrnNodeUnique,
-    TrnEdges,
-    // Pick<IVerticesCapability<ITrnNode>, "setParent" | "getChildren">,
+    ForeignTrnEdges,
+    LocalTrnEdges,
     Pick<IAstNodeTransformCapability, "getTransformClass"> {}
 
 interface ITrnNodeUnique {
@@ -37,14 +38,17 @@ interface ITrnNodeUnique {
 
   transform(): this;
 
-  serialize(): ISerializedNode[];
+  serialize(): SerializedPackage;
+  // getSerialized(): SerializedPackage | null;
   setSource(s: AstSourceString): this;
   newChild(): ITrnNode;
   getAst(): IAstNode;
   setChain(c: Chain): this;
   getKind(): IAstNodeKind;
-  setSlot(): this;
-  getSlot(): ITrnNode;
+
+  // getMount(): ITrnNode;
+  setAsMount(): void;
+  // setSelectedTCps(t: ITCpsNode): void;
 }
 
 export type ITrnNodeConstructor = new (

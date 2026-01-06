@@ -22,6 +22,7 @@ type IAstNodeEdges = IEdgeCapability<
   | "setAstParent"
   | "getAstParent"
   | "setAstPrev"
+  | "getAstNext"
   | "getAstPrev"
   | "pushAstEdge"
   // | "pushAstEdge"

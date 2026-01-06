@@ -1,4 +1,7 @@
 import { assertExists } from "@dqm/package-dqm-utils";
+import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
+
+type EdgeCount = number | null;
 
 /**
  * @dev
@@ -11,6 +14,7 @@ export function edgeCapability<Coll>(self: any, edgeName: string) {
   let prev: Coll | null = null;
   let parent: Coll | null = null;
   let children: Coll[] = [];
+  let edgeCount: EdgeCount = null;
   const n = edgeName;
 
   const names = {
@@ -77,12 +81,28 @@ export function edgeCapability<Coll>(self: any, edgeName: string) {
     },
 
     pushEdge(c: Coll): Self {
+      if (edgeCount !== null && edgeCount > children.length) {
+        throw new DqmAppError({
+          code: "ARRAY_TOO_LARGE",
+          why: "Set value of edge count does not allow more edges to be pushed",
+          cause: null,
+          details: {
+            edgeCount,
+            children,
+          },
+        });
+      }
       children.push(c);
       return self;
     },
 
     getEdges(): Coll[] {
       return children;
+    },
+
+    limitEdgeCount(count: EdgeCount) {
+      edgeCount = count;
+      return this;
     },
   };
 }

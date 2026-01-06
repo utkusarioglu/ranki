@@ -1,5 +1,10 @@
 import type { Chain, DqmConfig } from "../../export.types.mjs";
 
+export interface SerializedPackage {
+  serialized: ISerializedNode[];
+  mount?: (c: ISerializedNode[]) => void | undefined;
+}
+
 export type ISerializedNode = ISerializedParent | ISerializedLeaf;
 
 interface ISerializedCommon {

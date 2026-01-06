@@ -74,7 +74,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
       sync: (ser, pref, { parent }) => {
         const assertKind: Assertions["parent"] = parent;
         assertKind(ser, {});
-        const element = document.createElement("span");
+        const element = document.createElement("div");
         element.className = "line";
         pref.scheme === "dark" ? "#000" : "#FFF";
         element.style.color = pref.scheme === "dark" ? "#FFF" : "#000";
@@ -90,6 +90,22 @@ export const baseV2Renderer: IDqmPluginRenderer = {
       sync: (ser, pref, { parent }) => {
         const assertKind: Assertions["parent"] = parent;
         assertKind(ser, {});
+        const element = document.createElement("span");
+        element.className = "lexeme";
+        pref.scheme === "dark" ? "#000" : "#FFF";
+        element.style.color = pref.scheme === "dark" ? "#FFF" : "#000";
+        return {
+          element,
+          getMount: () => element,
+        };
+      },
+    },
+    {
+      load: "sync",
+      chain: ["base", "v2", "decorated"],
+      sync: (ser, pref, { parent }) => {
+        const assertKind: Assertions["parent"] = parent;
+        assertKind(ser, { why: "decorated" });
         const element = document.createElement("span");
         element.className = "lexeme";
         pref.scheme === "dark" ? "#000" : "#FFF";
@@ -124,6 +140,23 @@ export const baseV2Renderer: IDqmPluginRenderer = {
       sync: (ser, pref, { leaf }) => {
         const assertKind: Assertions["leaf"] = leaf;
         assertKind(ser, { why: "number" });
+        const element = document.createElement("span");
+        element.className = "lexeme";
+        pref.scheme === "dark" ? "#000" : "#FFF";
+        element.style.color = pref.scheme === "dark" ? "#F00" : "#00F";
+        element.innerText = ser.source;
+        return {
+          element,
+          getMount: () => element,
+        };
+      },
+    },
+    {
+      load: "sync",
+      chain: ["base", "v2", "whitespace"],
+      sync: (ser, pref, { leaf }) => {
+        const assertKind: Assertions["leaf"] = leaf;
+        assertKind(ser, { why: "whitespace" });
         const element = document.createElement("span");
         element.className = "lexeme";
         pref.scheme === "dark" ? "#000" : "#FFF";

@@ -25,8 +25,8 @@ export class TCpxNode implements ITCpxNode {
   }
 
   serialize(): ISerializedNode[] {
-    this.getTCpxEdges().forEach((t) => t.transform());
-    this.trn.getTrn().forEach((t) => t.transform());
+    // this.getTCpxEdges().forEach((t) => t.transform());
+    // this.trn.getTrn().forEach((t) => t.transform());
     return this.tCps[0].serialize();
   }
 

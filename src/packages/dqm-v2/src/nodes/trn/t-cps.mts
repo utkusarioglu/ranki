@@ -32,9 +32,9 @@ export class TCpsNode implements ITCpsNode {
   // }
 
   serialize(): ISerializedNode[] {
-    return this.getTrn()
-      .map((t) => t.serialize())
-      .flat();
+    const trn = this.getTrn();
+    console.log("cps, serialization", trn.length);
+    return trn.map((t) => t.serialize().serialized).flat();
     // return [];
     //   console.log(this.chain, this.source);
   }

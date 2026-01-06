@@ -59,11 +59,11 @@ type GetPrev<T, N extends string> = {
 };
 
 type SetNext<H, T, N extends string> = {
-  [K in `set${N}Prev`]: (prev: T | null) => H;
+  [K in `set${N}Next`]: (prev: T | null) => H;
 };
 
 type GetNext<T, N extends string> = {
-  [K in `get${N}Prev`]: () => T | null;
+  [K in `get${N}Next`]: () => T | null;
 };
 
 type PushEdge<H, T, N extends string> = {

@@ -1,4 +1,7 @@
-import type { IDqmComponentTransformFunction } from "@dqm/package-dqm-api-v2";
+import type {
+  IAstNode,
+  IDqmComponentTransformFunction,
+} from "@dqm/package-dqm-api-v2";
 
 type TF = IDqmComponentTransformFunction;
 
@@ -16,35 +19,55 @@ const empty: TF = (trn) => {
   trn.setChain(["base", "v2", "ignored"]).setSource("");
 };
 
-// const blockRoot: TF = (trn) => {
-//   trn.setChain(PARENT).newChild()
-// };
-
 const section: TF = (trn) => {
-  trn.setChain(["base", "v2", "section"]);
+  trn.setChain(["base", "v2", "section"]).setAsMount();
 };
 
 const paragraph: TF = (trn) => {
-  console.log("paragraph called");
-  trn.setChain(["base", "v2", "paragraph"]);
+  console.log("paragraph");
+  trn.setChain(["base", "v2", "paragraph"]).setAsMount();
 };
 
 const line: TF = (trn) => {
-  trn.setChain(["base", "v2", "line"]);
+  trn.setChain(["base", "v2", "line"]).setAsMount();
 };
 const lexeme: TF = (trn) => {
-  trn.setChain(["base", "v2", "lexeme"]);
+  trn.setChain(["base", "v2", "lexeme"]).setAsMount();
+};
+
+const decorated: TF = (trn) => {
+  const ast = trn.getAst();
+  trn.setChain(["base", "v2", "decorated"]);
+  trn.newChild().setChain(["base", "v2", "decorated"]).setAsMount();
+  trn
+    .newChild()
+    .setChain(["base", "v2", "whitespace"])
+    .setSource(trailingSpace(ast));
 };
 
 const word: TF = (trn) => {
-  const source = trn.getAst().getSourceString();
-  trn.setChain(["base", "v2", "word"]).setSource(source);
+  trn
+    .setChain(["base", "v2", "word"])
+    .setSource(trn.getAst().getSourceString());
 };
 
 const number: TF = (trn) => {
-  const source = trn.getAst().getSourceString();
-  trn.setChain(["base", "v2", "number"]).setSource(source);
+  trn
+    .setChain(["base", "v2", "number"])
+    .setSource(trn.getAst().getSourceString());
 };
+
+// @ts-ignore
+function trailingSpace(ast: IAstNode): string {
+  const prev = ast.getAstNext();
+  if (prev) {
+    const method = prev.getCreationMethod();
+    if (method === "space") {
+      return prev.getSourceString();
+    }
+  }
+  return "";
+}
 
 export const transformers = {
   BASE_V2_WORD: word,
@@ -56,4 +79,5 @@ export const transformers = {
   BASE_V2_LINE: line,
   BASE_V2_LEXEME: lexeme,
   BASE_V2_NUMBER: number,
+  BASE_V2_DECORATED: decorated,
 };

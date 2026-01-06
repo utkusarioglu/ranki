@@ -97,7 +97,7 @@ export const node: IAstNodeActionDict = {
   baseV2Decorated_base(word, wordEnd) {
     return grabAst(this)
       .newAst(this)
-      .setTransformClass("BASE_V2_WORD")
+      .setTransformClass("BASE_V2_DECORATED")
       .pushNodes(["node", word])
       .pushNodes(["token", wordEnd]);
   },
@@ -112,22 +112,18 @@ export const node: IAstNodeActionDict = {
   },
 
   baseV2Word_base(base) {
-    return (
-      grabAst(this)
-        .newAst(this)
-        // .setTransformClass("BASE_V2_WORD")
-        .pushIgnoredNodes(base)
-    );
+    return grabAst(this)
+      .newAst(this)
+      .setTransformClass("BASE_V2_WORD")
+      .pushIgnoredNodes(base);
   },
 
   baseV2Word_baseV2Number(number) {
-    return (
-      grabAst(this)
-        .newAst(this)
-        // .setTransformClass("BASE_V2_NUMBER")
-        .pushIgnoredNodes(number)
-        .setLeafViewDecoder("number", (v) => ({ value: +v }))
-    );
+    return grabAst(this)
+      .newAst(this)
+      .setTransformClass("BASE_V2_NUMBER")
+      .pushIgnoredNodes(number)
+      .setLeafViewDecoder("number", (v) => ({ value: +v }));
   },
 
   hWrapped(token1, content, token2) {
