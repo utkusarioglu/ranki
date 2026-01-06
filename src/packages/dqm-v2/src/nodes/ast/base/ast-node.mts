@@ -5,7 +5,6 @@ import type {
   AstSourceView,
   CpxFuncParam,
   IParser,
-  TransformClassDict,
 } from "@dqm/package-dqm-api-v2";
 import type * as ohm from "ohm-js";
 import { assertNotUndefined } from "@dqm/package-dqm-utils";
@@ -30,10 +29,11 @@ export class AstNode extends CommonTransports implements IAstNode {
   private readonly ohm = ohmCapability(this);
   private readonly view = viewCapability(this);
   private readonly counter = counterCapability(this);
-  // @ts-expect-error
+  // @ts-ignore
   private readonly tc = transformClassCapability<
     IAstNode,
-    TransformClassDict<IAstNode>
+    // @ts-ignore
+    TransformClassDict
   >(this);
   private parser: IParser | null = null;
 
@@ -74,10 +74,9 @@ export class AstNode extends CommonTransports implements IAstNode {
       oldCpx = this.getCpx();
     } catch (e) {}
     const prevCpx = oldCpx?.getChildren().at(-1);
-    const newCpxMold = new Cpx(this.getTransports())
-      .setRootAst(this)
-      // !FIX this setting the parent like this is faulty it clashes with paused container climbing up
-      .setParent(oldCpx);
+    const newCpxMold = new Cpx(this.getTransports()).setRootAst(this);
+    // !FIX this setting the parent like this is faulty it clashes with paused container climbing up
+    newCpxMold.setParent(oldCpx);
     if (prevCpx) {
       newCpxMold.setPrev(prevCpx);
     }
@@ -219,10 +218,10 @@ export class AstNode extends CommonTransports implements IAstNode {
   }
 
   // TRANSFORM CLASS
-  collectTransformClasses(): TransformClassDict<IAstNode> {
-    const subtree = this.getSubtreeNodes();
-    return this.tc.getTransformClassDict(subtree);
-  }
+  // collectTransformClasses(): TransformClassDict<IAstNode> {
+  //   const subtree = this.getSubtreeNodes();
+  //   return this.tc.getTransformClassDict(subtree);
+  // }
   // @ts-ignore
   setTransformClass = this.tc.setTransformClass.bind(this.tc);
   // @ts-ignore

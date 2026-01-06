@@ -26,3 +26,16 @@ export function assertNotExists(
     });
   }
 }
+
+export function assertExists(
+  value: any,
+  extra: AssertionExtra,
+): asserts value is object {
+  if (value === undefined) {
+    throw new DqmAppError({
+      code: "VALUE_DEFINED",
+      cause: extra.cause || null,
+      ...extra,
+    });
+  }
+}

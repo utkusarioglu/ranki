@@ -16,35 +16,24 @@ const empty: TF = (trn) => {
   trn.setChain(["base", "v2", "ignored"]).setSource("");
 };
 
-const blockRoot: TF = (trn) => {
-  trn.setChain(PARENT).newChild().setTransformClass("BASE_V2_SECTION_FILLED");
-};
+// const blockRoot: TF = (trn) => {
+//   trn.setChain(PARENT).newChild()
+// };
 
 const section: TF = (trn) => {
-  trn
-    .setChain(["base", "v2", "section"])
-    .newChild()
-    .setTransformClass("BASE_V2_PARAGRAPH");
+  trn.setChain(["base", "v2", "section"]);
 };
 
 const paragraph: TF = (trn) => {
-  trn
-    .setChain(["base", "v2", "paragraph"])
-    .newChild()
-    .setTransformClass("BASE_V2_LINE");
+  console.log("paragraph called");
+  trn.setChain(["base", "v2", "paragraph"]);
 };
 
 const line: TF = (trn) => {
-  trn
-    .setChain(["base", "v2", "line"])
-    .newChild()
-    .setTransformClass("BASE_V2_LEXEME");
+  trn.setChain(["base", "v2", "line"]);
 };
 const lexeme: TF = (trn) => {
-  trn
-    .setChain(["base", "v2", "lexeme"])
-    .newChild()
-    .setTransformClass("BASE_V2_WORD");
+  trn.setChain(["base", "v2", "lexeme"]);
 };
 
 const word: TF = (trn) => {
@@ -61,11 +50,10 @@ export const transformers = {
   BASE_V2_WORD: word,
   BASE_V2_PARAGRAPH: paragraph,
   BASE_V2_EMPTY_DOCUMENT: empty,
-  BASE_V2_ROOT_BLOCK_STRUCTURED: blockRoot,
+  // BASE_V2_ROOT_BLOCK_STRUCTURED: blockRoot,
   BASE_V2_SECTION_FILLED: section,
   BASE_V2_ROOT_BLOCK_IGNORED: ignored,
   BASE_V2_LINE: line,
   BASE_V2_LEXEME: lexeme,
   BASE_V2_NUMBER: number,
-  // baseV2RootBlock_structured,
 };

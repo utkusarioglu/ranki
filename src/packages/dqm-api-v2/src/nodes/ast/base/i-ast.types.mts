@@ -26,7 +26,7 @@ export interface IAstNode
     IAstNodeUniqueCapability,
     CpxCollectionCapability,
     IAstNodeParserReferenceCapability,
-    IAstNodeTransformCapability<IAstNode> {}
+    IAstNodeTransformCapability {}
 
 export interface IAstNodeParserReferenceCapability {
   setParser(parser: IParser): this;

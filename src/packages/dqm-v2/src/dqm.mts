@@ -75,7 +75,7 @@ export class Dqm {
     this.validate();
     this.transform();
     this.serialize();
-    console.log(this.serialized);
+    // console.log(this.serialized);
     // console.log(Unique.getRegistrySnapshot());
     return this.parsed;
   }
@@ -155,9 +155,9 @@ export class Dqm {
   }
 
   private serialize() {
-    this.serialized = this.transformed.map(({ theater, trn }) => ({
+    this.serialized = this.transformed.map(({ theater, tCpx }) => ({
       theater,
-      serialized: trn.serialize(),
+      serialized: tCpx.serialize(),
     }));
   }
 }

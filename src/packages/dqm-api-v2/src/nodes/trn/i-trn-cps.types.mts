@@ -1,40 +1,39 @@
-import type { Chain, TransformClass } from "../../export.types.mjs";
-import type {
-  AstSourceString,
-  CommonTransportsConstructorParams,
-  IAstNode,
-  IAstNodeKind,
-  IAstNodeTransformCapability,
-  ISerializedNode,
-  IVerticesCapability,
-  TransformClassDict,
-} from "../export.types.mjs";
+// import type { Chain, TransformClass } from "../../export.types.mjs";
+// import type {
+//   AstSourceString,
+//   CommonTransportsConstructorParams,
+//   IAstNode,
+//   IAstNodeKind,
+//   IAstNodeTransformCapability,
+//   ISerializedNode,
+//   IVerticesCapability,
+// } from "../export.types.mjs";
 
-export interface ITrnCpsNode
-  extends IVerticesCapability<ITrnCpsNode>,
-    IAstNodeTransformCapability<ITrnCpsNode> {
-  setChain(chain: Chain): this;
-  getKind(): IAstNodeKind;
-  setSource(s: AstSourceString): this;
+// export interface ITrnCpsNode
+//   extends IVerticesCapability<ITrnCpsNode>,
+//     IAstNodeTransformCapability {
+//   setChain(chain: Chain): this;
+//   getKind(): IAstNodeKind;
+//   setSource(s: AstSourceString): this;
 
-  // acceptsTransformClass(c: TransformClass): this;
-  // getAcceptedTransformClass(): [TransformClass, ITrnCpsNode];
+//   // acceptsTransformClass(c: TransformClass): this;
+//   // getAcceptedTransformClass(): [TransformClass, ITrnCpsNode];
 
-  // getRootAst(): IAstNode;
+//   // getRootAst(): IAstNode;
 
-  newChild(): ITrnCpsNode;
-  transform(tcDict: TransformClassDict<IAstNode>, tc: TransformClass): this;
-  serialize(): ISerializedNode[];
+//   newChild(): ITrnCpsNode;
+//   // transform(tcDict: TransformClassDict<IAstNode>, tc: TransformClass): this;
+//   serialize(): ISerializedNode[];
 
-  setAst(ast: IAstNode): this;
-  getAst(): IAstNode;
-}
+//   setAst(ast: IAstNode): this;
+//   getAst(): IAstNode;
+// }
 
-export type ITrnCpsNodeConstructor = new (
-  s: CommonTransportsConstructorParams,
-) => ITrnCpsNode;
+// export type ITrnCpsNodeConstructor = new (
+//   s: CommonTransportsConstructorParams,
+// ) => ITrnCpsNode;
 
-export interface ITrnCpsNodeAccepts {
-  node: ITrnCpsNode;
-  transformClass: TransformClass;
-}
+// export interface ITrnCpsNodeAccepts {
+//   node: ITrnCpsNode;
+//   transformClass: TransformClass;
+// }

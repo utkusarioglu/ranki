@@ -11,7 +11,7 @@ import { deferredParseDqmInput } from "./dqm.subscriptions.mts";
 import { pluginSelectionInit } from "./dqm.plugins.mts";
 
 const dqmStoreInitial: DqmStoreState = {
-  deferParsing: true,
+  deferParsing: false,
   inputs: INPUTS,
   singleTemplates: [],
   arrangementTemplates: [],

@@ -1,11 +1,8 @@
-import type {
-  TransformClass,
-  TransformClassDict,
-} from "@dqm/package-dqm-api-v2";
+import type { TransformClass } from "@dqm/package-dqm-api-v2";
 import { DqmAppError } from "../../../../errors/dqm-app-error/dqm-app-error.mjs";
-import { assertExists } from "@dqm/package-dqm-utils";
 
 function insertOne<Stored>(
+  // @ts-expect-error
   a: TransformClassDict<Stored>,
   tc: TransformClass,
   node: Stored,
@@ -25,6 +22,7 @@ function insertOne<Stored>(
 
 export function transformClassCapability<
   T,
+  // @ts-expect-error
   Dict extends TransformClassDict<any>,
 >(self: T) {
   type Stored = T;
@@ -36,10 +34,10 @@ export function transformClassCapability<
       transformClass = tc;
       return self;
     },
-    getTransformClass(): TransformClass {
-      assertExists(transformClass, {
-        why: "TransformClass called before being defined. Did you set the related transform class in ast?",
-      });
+    getTransformClass(): TransformClass | null {
+      // assertExists(transformClass, {
+      //   why: "TransformClass called before being defined. Did you set the related transform class in ast?",
+      // });
       return transformClass;
     },
     getChildrenTransformClassDict(subtree: Stored[]): Dict {
@@ -56,14 +54,14 @@ export function transformClassCapability<
       }, new Map() as Dict);
       return merged;
     },
-    getTransformClassDict(subtree: Stored[]): Dict {
-      const merged = this.getChildrenTransformClassDict(subtree);
+    // getTransformClassDict(subtree: Stored[]): Dict {
+    //   const merged = this.getChildrenTransformClassDict(subtree);
 
-      if (transformClass) {
-        insertOne(merged, transformClass, self);
-      }
+    //   if (transformClass) {
+    //     insertOne(merged, transformClass, self);
+    //   }
 
-      return merged;
-    },
+    //   return merged;
+    // },
   };
 }

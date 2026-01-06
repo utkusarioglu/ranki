@@ -10,7 +10,7 @@ import type {
   CommonTransportsConstructorParams,
   Chain,
   DqmInternalConfig,
-  ITrnCpsNode,
+  ITCpsNode,
 } from "@dqm/package-dqm-api-v2";
 import { ParamsLib } from "./params/params-lib.mjs";
 import { CommonTransports } from "../../common-transports.mjs";
@@ -31,19 +31,19 @@ export class Cps extends CommonTransports implements ICps {
   private onFailMode = false;
   private intendedId!: Chain | Alias;
   private settledId: Chain | Alias | null = null;
-  private trnCpsRootNode: ITrnCpsNode | null = null;
+  private trnCpsRootNode: ITCpsNode | null = null;
 
   constructor(params: CommonTransportsConstructorParams) {
     super(params);
     this.customizations.initConfig(this.getUnique());
   }
 
-  setTrnCpsRootNode(n: ITrnCpsNode): this {
+  setTCpsRootNode(n: ITCpsNode): this {
     this.trnCpsRootNode = n;
     return this;
   }
 
-  getTrnCpsRootNode(): ITrnCpsNode | null {
+  getTCpsRootNode(): ITCpsNode | null {
     return this.trnCpsRootNode;
   }
 

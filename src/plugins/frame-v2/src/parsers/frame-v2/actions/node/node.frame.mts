@@ -26,6 +26,7 @@ export const nodeFrame: IAstNodeActionDict = {
   frameV2_f(frameV2Start, frameV2FrameConfig, frameV2End) {
     const parent = grabAst(this)
       .newAst(this)
+      .setTransformClass("FRAME_V2")
       .pushNodes(["node", frameV2FrameConfig]);
 
     parseFrame(this, parent)
@@ -39,6 +40,7 @@ export const nodeFrame: IAstNodeActionDict = {
   frameV2_fp(frameV2Start, frameV2FrameConfig, frameV2Payload, frameV2End) {
     const parent = grabAst(this)
       .newAst(this)
+      .setTransformClass("FRAME_V2")
       .pushNodes(["node", frameV2FrameConfig]);
 
     parseFrame(this, parent)

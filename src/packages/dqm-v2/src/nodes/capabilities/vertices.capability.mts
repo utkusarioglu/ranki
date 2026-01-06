@@ -10,8 +10,15 @@ export function verticesCapability<T, Coll>(self: T) {
   let children: Coll[] = [];
 
   return {
-    setPrev(p: Coll): T {
+    setPrev(p: Coll, bidirectional: boolean = true): T {
       prev = p;
+      if (bidirectional) {
+        // @ts-expect-error
+        if (p && p.setNext) {
+          // @ts-expect-error
+          p.setNext(self);
+        }
+      }
       return self;
     },
 
@@ -28,14 +35,16 @@ export function verticesCapability<T, Coll>(self: T) {
       return next;
     },
 
-    setParent(p: Coll | null): T {
+    setParent(p: Coll | null, bidirectional: boolean = true): T {
       parent = p;
 
-      // #1
-      // @ts-expect-error
-      if (parent && parent.pushChild) {
+      if (bidirectional) {
+        // #1
         // @ts-expect-error
-        parent.pushChild(self);
+        if (parent && parent.pushChild) {
+          // @ts-expect-error
+          parent.pushChild(self);
+        }
       }
 
       return self;

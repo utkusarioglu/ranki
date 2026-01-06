@@ -20,11 +20,12 @@ import type {
   IParser,
   DqmSerializeOutput,
   IDqmRendererClientPreferences,
-  ITrnCpsNodeConstructor,
-  ITrnCpsRootNodeConstructor,
-  ITrnCpxNodeConstructor,
+  // ITrnCpsNodeConstructor,
+  // ITrnCpsRootNodeConstructor,
+  // ITrnCpxNodeConstructor,
   RenderReport,
   RenderRoots,
+  ITrnNodeConstructor,
 } from "../../export.types.mjs";
 
 /**
@@ -49,9 +50,6 @@ export interface IPlugins {
   getGrammarDefaultConfigs(
     defaultConfig: DqmConfig,
   ): DqmGrammarPluginsAggregatedConfig;
-  getCpxConstructor(): ICpxConstructor;
-  getParamConstructor(): IParamConstructor;
-  getAstNodeConstructor(): IAstNodeConstructor;
   getTokens(config: DqmConfig): DqmPluginsTokens;
   addPlugins(plugins: IDqmPlugin[]): void;
 
@@ -66,7 +64,11 @@ export interface IPlugins {
   ): RenderReport;
 
   // CONSTRUCTORS
-  getTrnCpxNodeConstructor(): ITrnCpxNodeConstructor;
-  getTrnCpsNodeConstructor(): ITrnCpsNodeConstructor;
-  getTrnCpsRootNodeConstructor(): ITrnCpsRootNodeConstructor;
+  getTrnNodeConstructor(): ITrnNodeConstructor;
+  getCpxConstructor(): ICpxConstructor;
+  getParamConstructor(): IParamConstructor;
+  getAstNodeConstructor(): IAstNodeConstructor;
+  // getTrnCpxNodeConstructor(): ITrnCpxNodeConstructor;
+  // getTrnCpsNodeConstructor(): ITrnCpsNodeConstructor;
+  // getTrnCpsRootNodeConstructor(): ITrnCpsRootNodeConstructor;
 }

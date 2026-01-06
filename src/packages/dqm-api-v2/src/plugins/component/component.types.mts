@@ -3,7 +3,7 @@ import type {
   DqmPluginVersion,
   IAstParamNode,
   ICps,
-  ITrnCpsNode,
+  ITrnNode,
   TransformClass,
 } from "../../export.types.mjs";
 import type { DeepPartialSerializable } from "../../util.types.mjs";
@@ -18,11 +18,10 @@ export interface IDqmComponent<T = any> {
   };
   customizations: ComponentCustomizations<T>;
   validation: IDqmValidationFunction[];
-  // transformer: IDqmComponentTransformFunction;
   transformers: Record<TransformClass, IDqmComponentTransformFunction>;
 }
 
-export type IDqmComponentTransformFunction = (trnCps: ITrnCpsNode) => void;
+export type IDqmComponentTransformFunction = (trn: ITrnNode) => void;
 
 export type IDqmValidationFunction = (cps: ICps) => void;
 

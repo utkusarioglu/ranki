@@ -3,7 +3,7 @@ import type {
   CpxCollectionCapability,
   IAstNode,
   ICpsParam,
-  ITrnCpsNode,
+  ITCpsNode,
   IVerticesCapability,
   ParamChannel,
 } from "../export.types.mjs";
@@ -32,8 +32,8 @@ export interface CpsValidationCapability {
 }
 
 export interface CpsTransformCapability {
-  setTrnCpsRootNode(n: ITrnCpsNode): this;
-  getTrnCpsRootNode(): ITrnCpsNode | null;
+  setTCpsRootNode(n: ITCpsNode): this;
+  getTCpsRootNode(): ITCpsNode | null;
 }
 
 export interface ICpsUniqueCapability {

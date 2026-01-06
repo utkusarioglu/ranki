@@ -1,4 +1,4 @@
-import type { ITrnCpxNode } from "./export.types.mjs";
+import type { ITCpxNode } from "./export.types.mjs";
 import type { IAstNode } from "./nodes/ast/export.types.mjs";
 import type { ISerializedNode } from "./nodes/ser/i-serialized.types.mjs";
 
@@ -27,7 +27,7 @@ export interface CpxParseInput {
 
 export interface DqmTransformOutputTheater {
   theater: DqmParseTheater;
-  trn: ITrnCpxNode;
+  tCpx: ITCpxNode;
 }
 
 export type DqmTransformOutput = DqmTransformOutputTheater[];

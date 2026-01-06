@@ -2,10 +2,18 @@ import baseV2 from "@dqm/plugin-base-v2";
 import frameV2 from "@dqm/plugin-frame-v2";
 import paramsV2 from "@dqm/plugin-params-v2";
 import frameV2Code from "@dqm/plugin-frame-v2-code";
+import staticRenderEngine from "@dqm/plugin-static-render-engine";
 import type { PluginStoreWrapper } from "./dqm.store.types.mts";
 
 // @ts-ignore
 const defaultPluginSelection = [
+  {
+    name: "Static Render Engine",
+    plugin: staticRenderEngine,
+    standard: false,
+    requested: false,
+    installed: false,
+  },
   {
     name: "BaseV2",
     plugin: baseV2,
@@ -37,6 +45,13 @@ const defaultPluginSelection = [
 ];
 
 const devPluginSelection = [
+  {
+    name: "Static Render Engine",
+    plugin: staticRenderEngine,
+    standard: true,
+    requested: true,
+    installed: true,
+  },
   {
     name: "BaseV2",
     plugin: baseV2,

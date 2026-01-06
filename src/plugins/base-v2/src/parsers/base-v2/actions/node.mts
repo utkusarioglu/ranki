@@ -37,14 +37,16 @@ export const node: IAstNodeActionDict = {
   },
 
   baseV2RootBlock_structured(whitespace1, structure, whitespace2) {
-    return grabAst(this)
-      .newAst(this)
-      .newCpx((cpx) => cpx.setAstParams(PARAMS).setIdList(COMPONENT))
-      .setTransformClass("BASE_V2_ROOT_BLOCK_STRUCTURED")
-      .setDirection("block")
-      .pushNodes(["space", whitespace1])
-      .pushNodes(["node", structure])
-      .pushNodes(["space", whitespace2]);
+    return (
+      grabAst(this)
+        .newAst(this)
+        .newCpx((cpx) => cpx.setAstParams(PARAMS).setIdList(COMPONENT))
+        // .setTransformClass("BASE_V2_ROOT_BLOCK_STRUCTURED")
+        .setDirection("block")
+        .pushNodes(["space", whitespace1])
+        .pushNodes(["node", structure])
+        .pushNodes(["space", whitespace2])
+    );
   },
 
   baseV2Section_base(block, blockSep, block2) {
