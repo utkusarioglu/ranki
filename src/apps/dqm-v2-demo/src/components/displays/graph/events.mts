@@ -4,7 +4,7 @@ import type {
 } from "_stores/ui/ui.store.types.mjs";
 import type { Core, EventObject } from "cytoscape";
 import { Registry } from "./build-elements/registry.mts";
-import type { N } from "./build-elements/build.types";
+import type { N } from "./build-elements/build.types.mts";
 import type cytoscape from "cytoscape";
 
 const CIRCLE_TILT = Math.PI / -12;

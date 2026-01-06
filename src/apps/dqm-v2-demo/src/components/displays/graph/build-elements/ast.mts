@@ -1,7 +1,7 @@
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
 import { cls, uniqueLabel } from "./utils.mts";
-import { createSanitizedView } from "../../../../utils/sanitizer.mts";
+import { createSanitizedView } from "_utils/sanitizer.mts";
 import { assertTryCatchSuccess } from "_assertions";
 
 /**
@@ -13,9 +13,9 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
     return;
   }
   const root = createSanitizedView(raw);
+  // log(root);
   const id = Registry.getNew(raw);
   Registry.registerSanitized(id, root);
-  // const creator = root.getCreator();
 
   const relationship = root.getRelationship().value;
   const creatorCpxPre = root.getCpx();
@@ -134,6 +134,7 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
   }
 
   const children = root.getAstEdges();
+
   assertTryCatchSuccess(children, { why: "children required" });
   children.value.forEach((n) => traverseAst(n, totalAstDepth + 1));
 }

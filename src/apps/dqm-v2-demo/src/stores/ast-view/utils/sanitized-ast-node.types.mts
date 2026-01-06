@@ -48,6 +48,7 @@ export interface SanitizedNodeHidden {
 }
 
 export interface SanitizedNodeProps {
+  astUnique: UniqueValue;
   creator: CreatorName;
   idListString: IdListString;
   kind: IAstNodeKind;

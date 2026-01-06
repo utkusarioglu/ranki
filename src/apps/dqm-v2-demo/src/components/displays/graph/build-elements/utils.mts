@@ -1,5 +1,5 @@
 import type { TryCatch } from "_utils/utils.mjs";
-import type { E, Flattened, N, TraversalNode } from "./build.types";
+import type { E, Flattened, N, TraversalNode } from "./build.types.mts";
 import type { UniqueValue } from "@dqm/package-dqm-api-v2";
 
 export const cls = (...cls: any[]) => cls.filter((v) => !!v).join(" ");

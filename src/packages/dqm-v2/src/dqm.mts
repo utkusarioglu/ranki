@@ -28,6 +28,7 @@ import type { RenderRoots } from "@dqm/package-dqm-api-v2";
 import type { IDqmRendererClientPreferences } from "@dqm/package-dqm-api-v2";
 import type { RenderReport } from "@dqm/package-dqm-api-v2";
 import { DqmTransformer } from "./transform.mjs";
+import { Cpx } from "./nodes/cp/cpx/cpx.mjs";
 
 export class Dqm {
   private plugins: IPlugins = new Libs();
@@ -114,14 +115,18 @@ export class Dqm {
       const { chain } = initial.plugins.default;
       const transports = this.getTransports();
       this.parsed = inputs.map((input) => {
+        const cpx = new Cpx(transports).setAstParams([]).setIdList([chain]);
+        const ast = new AstNode(transports);
+        cpx.setRootAst(ast);
+        ast
+          .setNature("synthetic")
+          .setCpx(cpx)
+          // .newCpx((cpx) => cpx.setAstParams([]).setIdList([chain]))
+          .setDirection("block");
+        const parsedAst = cpx.parse(input);
         return {
           theater: input.theater,
-          ast: new AstNode(transports)
-            .setNature("synthetic")
-            .newCpx((cpx) => cpx.setAstParams([]).setIdList([chain]))
-            .setDirection("block")
-            .getCpx()!
-            .parse(input),
+          ast: parsedAst,
         };
       });
       return this.parsed;

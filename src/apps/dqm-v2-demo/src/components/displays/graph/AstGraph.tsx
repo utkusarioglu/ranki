@@ -21,7 +21,7 @@ import { useErrorBoundary } from "react-error-boundary";
 import { useGraphViewStore } from "_stores/graph-view/graph-view.store.mjs";
 import type { GraphViewStoreStateKey } from "_stores/graph-view/graph-view.store.types.mjs";
 import { LOOKUP } from "./LOOKUP";
-import type { Flattened } from "./build-elements/build.types";
+import type { Flattened } from "./build-elements/build.types.mts";
 import { assertExists } from "_assertions";
 
 Cytoscape.use(fcose);

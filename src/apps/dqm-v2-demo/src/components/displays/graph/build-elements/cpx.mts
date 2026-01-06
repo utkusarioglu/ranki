@@ -27,20 +27,18 @@ export function traverseCpx(raw: ICpx | null, cpxDepth: number): void {
   };
   Registry.registerNode(node);
 
-  const parentCpxPre = root.getCpxEdges();
+  const parentCpxPre = root.getCpxParent();
   assertTryCatchSuccess(parentCpxPre, { why: "parentCpx required" });
   const parentCpx = parentCpxPre.value;
   if (parentCpx) {
-    if (Registry.has(parentCpx)) {
-      Registry.registerEdge({
-        data: {
-          source: Registry.getId(parentCpx),
-          target: node.data.id,
-          label: "parentOf",
-        },
-        classes: cls("source-cpx", "target-cpx", "parent", `depth-${cpxDepth}`),
-      });
-    }
+    Registry.registerEdge({
+      data: {
+        source: Registry.getId(parentCpx),
+        target: node.data.id,
+        label: "parentOf",
+      },
+      classes: cls("source-cpx", "target-cpx", "parent", `depth-${cpxDepth}`),
+    });
   }
 
   const prevCpxPre = root.getCpxPrev();

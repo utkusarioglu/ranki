@@ -83,6 +83,10 @@ class AstSanitizedNarrowed {
     const props: SanitizedNodePartialNew["fields"]["props"] = {};
     this.visible.props.forEach((id) => {
       switch (id) {
+        case "astUnique":
+          // !FIX doesn't work because your class sanitizer needs reflect api
+          props[id] = this.node.getUnique();
+          break;
         case "inlineDepth":
           props[id] = this.node.getInlineDepth();
           break;

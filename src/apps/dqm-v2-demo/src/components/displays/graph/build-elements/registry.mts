@@ -9,7 +9,7 @@ import type {
   NodeMap,
   SanitizedMap,
   WM,
-} from "./build.types";
+} from "./build.types.mts";
 
 export const INIT_ID = 1e6;
 
@@ -47,12 +47,13 @@ export class Registry {
   static getId(node: any): IdValue {
     const n = Registry.seen.get(node);
     if (!n) {
+      console.log("-", node);
       throw new DqmDemoError({
         code: "UNREGISTERED_NODE",
         why: "Cannot return ids for nodes that hasn't been registered",
         cause: null,
         details: {
-          node: node,
+          node: node.constructor.name,
         },
       });
     }

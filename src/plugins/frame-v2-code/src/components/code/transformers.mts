@@ -1,4 +1,6 @@
-// import type { IDqmComponentTransformer } from "@dqm/package-dqm-api-v2";
+import type { IDqmComponentTransformFunction } from "@dqm/package-dqm-api-v2";
+
+type TF = IDqmComponentTransformFunction;
 
 // // const PARENT = ["debug", "block", "container"];
 // const LEAF = ["debug", "leaf", "container"];
@@ -13,6 +15,8 @@
 //   trn.setSource(payload.map((v) => v.getCreator()).join("----"));
 // };
 
-// export const transformers = {
-//   frameV2_fp,
-// };
+const FRAME_V2_PAYLOAD_PLAIN: TF = () => {};
+
+export const transformers = {
+  FRAME_V2_PAYLOAD_PLAIN,
+};

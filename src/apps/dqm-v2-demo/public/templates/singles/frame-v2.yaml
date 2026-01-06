@@ -38,11 +38,11 @@ list:
   label: Graph Carnage
   description: Many nested frames to create a graph carnage
   raw: |
-    [code, hello.cat=5, p
-    hi,,PAUSED!,,hello [code, "5"|bunny 5]
+    [code code, hello.cat=5, p
+    hi,,PAUSED!,,hello [code code, "5"|bunny 5]
     ]
 
-    2 [code|graph,, df ,,is [code|carnage] on]
+    2 [code|graph,, df ,,is [code code code|carnage] on]
 
 
   

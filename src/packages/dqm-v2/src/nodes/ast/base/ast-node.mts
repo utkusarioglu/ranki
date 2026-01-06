@@ -42,7 +42,7 @@ export class AstNode extends CommonTransports implements IAstNode {
     assertExists(cpx, { why: "Cpx has to be defined for parsing to occur" });
     // TODO theater is wrong
     const parsed = cpx.parse({ dqm: source, theater: "default" });
-    parsed.setAstParent(this);
+    // parsed.setAstParent(this);
     this.syntax.pushParsedChild(parsed);
     return this;
   }
@@ -69,14 +69,15 @@ export class AstNode extends CommonTransports implements IAstNode {
   // TODO this needs a lot of work
   newCpx(cpxCallback: CpxFuncParam): this {
     const Cpx = this.getPlugins().getCpxConstructor();
-    let oldCpx = null;
+    let parentCpx = null;
+    let prevCpx = null;
     try {
-      oldCpx = this.getCpx();
+      parentCpx = this.getCpx();
+      prevCpx = parentCpx?.getCpxEdges().at(-1);
     } catch (e) {}
-    const prevCpx = oldCpx?.getCpxEdges().at(-1);
     const newCpxMold = new Cpx(this.getTransports()).setRootAst(this);
     // !FIX this setting the parent like this is faulty it clashes with paused container climbing up
-    newCpxMold.setCpxParent(oldCpx);
+    newCpxMold.setCpxParent(parentCpx);
     if (prevCpx) {
       newCpxMold.setCpxPrev(prevCpx);
     }
@@ -99,7 +100,7 @@ export class AstNode extends CommonTransports implements IAstNode {
   }
 
   private postCreationActions() {
-    if (this.astE.getEdges().length) {
+    if (this.getAstEdges().length) {
       return;
     }
     this.counter.incrementDirection(this.getDirection());
@@ -113,7 +114,7 @@ export class AstNode extends CommonTransports implements IAstNode {
    */
   private newChild<T>(ChildConstructor: any, ohm: ohm.Node) {
     //#1
-    const childrenCount = this.astE.getEdges().length;
+    const childrenCount = this.getAstEdges().length;
     if (!childrenCount) {
       this.postCreationActions();
     }
@@ -126,7 +127,6 @@ export class AstNode extends CommonTransports implements IAstNode {
       .setChildIndex(childrenCount)
       .setInheritedCounters(this.counter.getInheritedCounters())
       .setDirection(this.getDirection());
-    this.astE.pushEdge(child);
     return child as T;
   }
 
@@ -172,6 +172,7 @@ export class AstNode extends CommonTransports implements IAstNode {
   setAstPrev = this.astE.setPrev.bind(this.astE);
   setAstNext = this.astE.setNext.bind(this.astE);
   getAstEdges = this.astE.getEdges.bind(this.astE);
+  pushAstEdge = this.astE.pushEdge.bind(this.astE);
 
   // NODES
   /**

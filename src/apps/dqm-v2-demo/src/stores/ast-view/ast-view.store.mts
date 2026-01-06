@@ -9,7 +9,7 @@ import type {
 
 export const useAstViewStore = create<AstViewStore>((set) => ({
   props: wrapVisible<SanitizedNodeProps>(
-    ["creator", "idListString", "kind", "constructorName"],
+    ["creator", "idListString", "kind", "constructorName", "astUnique"],
     [
       "cpxUnique",
       "inlineDepth",

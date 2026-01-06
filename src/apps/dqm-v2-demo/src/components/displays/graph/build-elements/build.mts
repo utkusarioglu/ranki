@@ -1,5 +1,5 @@
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
-import type { Flattened } from "./build.types";
+import type { Flattened } from "./build.types.mts";
 import { Registry } from "./registry.mts";
 import { traverseCpx } from "./cpx.mts";
 import { traverseCps } from "./cps.mts";

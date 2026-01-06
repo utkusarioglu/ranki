@@ -5,7 +5,7 @@ import type {
   IAstParamNode,
   ICpsParam,
 } from "@dqm/package-dqm-api-v2";
-import type { N } from "_displays/graph/build-elements/build.types";
+import type { N } from "_displays/graph/build-elements/build.types.mjs";
 import type { ClassSanitizer } from "../../utils/sanitizer.mts";
 
 type Percent = number;
