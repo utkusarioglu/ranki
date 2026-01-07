@@ -1,22 +1,24 @@
-import type { IDqmComponentTransformFunction } from "@dqm/package-dqm-api-v2";
+import type { IDqmComponentTransformFunction as TF } from "@dqm/package-dqm-api-v2";
 
-type TF = IDqmComponentTransformFunction;
+const FRAME_V2: TF = (trn) => {
+  trn.setChain(["debug", "block", "container"]).setAsMount();
+};
 
-// // const PARENT = ["debug", "block", "container"];
-// const LEAF = ["debug", "leaf", "container"];
+const FRAME_V2_PAYLOAD_PLAIN: TF = (trn) => {
+  trn
+    .setChain(["debug", "leaf", "container"])
+    .setSource(trn.getAst().getSourceString());
+};
 
-// const frameV2_fp: IDqmComponentTransformer = (trn) => {
-//   trn.setChain(LEAF);
-
-//   const payload = trn.getAst().getSubtreeNodes();
-//   // const pauseList = payload.getSubtreeNodes();
-//   // const section = pauseList.getSubtreeNodes();
-
-//   trn.setSource(payload.map((v) => v.getCreator()).join("----"));
-// };
-
-const FRAME_V2_PAYLOAD_PLAIN: TF = () => {};
+// @ts-expect-error
+const FRAME_V2_PAUSED: TF = (trn) => {
+  trn
+    .setChain(["debug", "leaf", "container-2"])
+    .setSource(trn.getAst().getSourceString());
+};
 
 export const transformers = {
   FRAME_V2_PAYLOAD_PLAIN,
+  // FRAME_V2_PAUSED,
+  FRAME_V2,
 };

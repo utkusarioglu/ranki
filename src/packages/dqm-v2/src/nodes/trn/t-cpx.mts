@@ -20,13 +20,15 @@ export class TCpxNode implements ITCpxNode {
   transform(): this {
     this.getTCpxEdges().forEach((t) => t.transform());
     this.trn.getTrn().forEach((t) => t.transform());
-    // console.log(this.cpx.getChainListString(), this.trn.getTrn());
     return this;
   }
 
   serialize(): ISerializedNode[] {
-    // this.getTCpxEdges().forEach((t) => t.transform());
-    // this.trn.getTrn().forEach((t) => t.transform());
+    // return this.tCps.map((t) => t.serialize()).flat();
+    // console.log(
+    //   "tt",
+    //   this.tCps.map((t) => t.serialize()),
+    // );
     return this.tCps[0].serialize();
   }
 

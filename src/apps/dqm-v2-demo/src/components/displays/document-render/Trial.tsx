@@ -6,6 +6,7 @@ import frameV2Code from "@dqm/plugin-frame-v2-code";
 import staticRender from "@dqm/plugin-static-render-engine";
 import { Dqm } from "@dqm/package-dqm-v2";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
+import { buildPluginSelectionConfig } from "_stores/dqm/dqm.utils.mjs";
 
 export const TrialRender = () => {
   const d = useDqmStore();
@@ -15,10 +16,12 @@ export const TrialRender = () => {
     if (!r.current) {
       return;
     }
+
+    const fixedConfig = buildPluginSelectionConfig(d.pluginSelection);
     // const ren = new DqmStaticRenderer();
     // ren.addPlugin();
     const dqm = new Dqm(
-      [],
+      [fixedConfig],
       [staticRender, baseV2, frameV2, frameV2Code, paramsV2],
     );
     dqm.render(

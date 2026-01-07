@@ -1,4 +1,5 @@
 import type { IDqmComponent } from "@dqm/package-dqm-api-v2";
+import { transformers } from "./transformers.mjs";
 
 export const frameV2ContainerComponent: IDqmComponent = {
   type: "component",
@@ -28,5 +29,5 @@ export const frameV2ContainerComponent: IDqmComponent = {
     },
   },
   validation: [],
-  transformers: {},
+  transformers,
 };

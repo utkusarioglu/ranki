@@ -137,6 +137,11 @@ export class DqmTransformer extends CommonTransports {
         const tCps = tCpx.tCps;
         const trn = new TrnNode(ast, tCpx, tCps, self.getTransports());
 
+        // // TODO REMOVE
+        // if (ast.getCreator().includes("frameV2")) {
+        //   console.log(ast.getCreator(), trn);
+        // }
+
         if (currentMetaParent) {
           trn.setForeignTrnParent(currentMetaParent);
         } else {

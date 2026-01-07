@@ -107,7 +107,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
         const assertKind: Assertions["parent"] = parent;
         assertKind(ser, { why: "decorated" });
         const element = document.createElement("span");
-        element.className = "lexeme";
+        element.className = "decorated";
         pref.scheme === "dark" ? "#000" : "#FFF";
         element.style.color = pref.scheme === "dark" ? "#FFF" : "#000";
         return {
@@ -124,7 +124,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
         const assertKind: Assertions["leaf"] = leaf;
         assertKind(ser, { why: "word" });
         const element = document.createElement("span");
-        element.className = "lexeme";
+        element.className = "word";
         pref.scheme === "dark" ? "#000" : "#FFF";
         element.style.color = pref.scheme === "dark" ? "#FFF" : "#000";
         element.innerText = ser.source;
@@ -141,7 +141,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
         const assertKind: Assertions["leaf"] = leaf;
         assertKind(ser, { why: "number" });
         const element = document.createElement("span");
-        element.className = "lexeme";
+        element.className = "number";
         pref.scheme === "dark" ? "#000" : "#FFF";
         element.style.color = pref.scheme === "dark" ? "#F00" : "#00F";
         element.innerText = ser.source;
@@ -158,7 +158,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
         const assertKind: Assertions["leaf"] = leaf;
         assertKind(ser, { why: "whitespace" });
         const element = document.createElement("span");
-        element.className = "lexeme";
+        element.className = "whitespace";
         pref.scheme === "dark" ? "#000" : "#FFF";
         element.style.color = pref.scheme === "dark" ? "#F00" : "#00F";
         element.innerText = ser.source;

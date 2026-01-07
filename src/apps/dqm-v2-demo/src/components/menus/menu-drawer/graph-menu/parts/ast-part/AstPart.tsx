@@ -18,6 +18,7 @@ export const GraphMenuAstPart: FC<GraphMenuAstPartProps> = ({ ast: a }) => {
     ["Block Depth", a.getBlockDepth()],
     ["Inline Depth", a.getBlockDepth()],
     ["Creation Method", a.getCreationMethod()],
+    ["Transform Class", a.getTransformClass()],
     ["Direction", a.getDirection()],
     ["Relationship", a.getRelationship()],
     ["Nature", a.getNature()],

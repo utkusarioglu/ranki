@@ -24,7 +24,6 @@ const section: TF = (trn) => {
 };
 
 const paragraph: TF = (trn) => {
-  console.log("paragraph");
   trn.setChain(["base", "v2", "paragraph"]).setAsMount();
 };
 

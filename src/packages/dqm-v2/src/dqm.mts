@@ -164,6 +164,7 @@ export class Dqm {
       theater,
       serialized: tCpx.serialize(),
     }));
+    console.log("SER", this.serialized);
   }
 }
 

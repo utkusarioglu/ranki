@@ -69,9 +69,10 @@ export const nodePayload: IAstNodeActionDict = {
   ) {
     const node = grabAst(this)
       .newAst(this)
-      .setTransformClass("FRAME_V2_PAUSED")
+      // .setTransformClass("FRAME_V2_PAUSED")
       .pushNodes(["node", frameV2PauseStart])
-      .pushIgnoredNodes(frameV2PausedPayload, frameV2PauseEnd);
+      .pushNodes(["node", frameV2PausedPayload])
+      .pushIgnoredNodes(frameV2PauseEnd);
 
     const [start] = node.getSubtreeNodes();
     grabAssertExists(this, start, "Start is required for depth detection");
@@ -80,6 +81,17 @@ export const nodePayload: IAstNodeActionDict = {
     node.setCpsClimb(climb).parse(frameV2PausedPayload.sourceString);
 
     return node;
+  },
+
+  frameV2PausedPayload(all) {
+    return (
+      grabAst(this)
+        .newAst(this)
+        .setTransformClass("FRAME_V2_PAUSED")
+        // .pushNodes(["node", frameV2PauseStart])
+        // .pushNodes(["node", frameV2PausedPayload])
+        .pushIgnoredNodes(all)
+    );
   },
 
   // frameV2PausedPayload(any) {

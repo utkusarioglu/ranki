@@ -74,5 +74,23 @@ export const debugRenderer: IDqmPluginRenderer = {
         };
       },
     },
+    {
+      load: "sync",
+      chain: ["debug", "leaf", "container-2"],
+      sync: (ser, pref, { leaf }) => {
+        const assertLeaf: Assertions["leaf"] = leaf;
+        assertLeaf(ser, {});
+        const element = document.createElement("div");
+        element.style.padding = "2px";
+        element.style.backgroundColor =
+          pref.scheme === "dark" ? "#00F" : "#FF0";
+        element.style.color = pref.scheme === "dark" ? "#FF0" : "#00f";
+        element.style.border = `2px dotted ${randomColor(pref.scheme)}`;
+        element.innerText = ser.source;
+        return {
+          element,
+        };
+      },
+    },
   ],
 };
