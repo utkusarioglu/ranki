@@ -1,4 +1,4 @@
-import type { ChannelParamSpecs } from "../../../export.types.mjs";
+import type { ChannelParamSpecs } from "../../export.types.mjs";
 
 export interface IAstParamSpecsCapability {
   getSpecs(): ChannelParamSpecs;

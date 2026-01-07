@@ -5,7 +5,6 @@ import type {
   ICpsParam,
   IEdgeCapability,
   ITCpsNode,
-  // IVerticesCapability,
   ParamChannel,
 } from "../export.types.mjs";
 import type { ICpx } from "./i-cpx.types.mjs";
@@ -35,7 +34,6 @@ export interface ICps
     ICpsIdCapability,
     ICpsUniqueCapability,
     ICpsEdges,
-    // IVerticesCapability<ICps>,
     CpxCollectionCapability,
     CpsValidationCapability,
     CpsTransformCapability,

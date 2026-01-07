@@ -9,10 +9,6 @@ export type ISerializedNode = ISerializedParent | ISerializedLeaf;
 
 interface ISerializedCommon {
   chain: Chain;
-  // direction: ContentDirection;
-  // creator: string;
-  // depth: number;
-  // hoist: number;
   data: {
     dqm: DqmConfig;
     component: any;

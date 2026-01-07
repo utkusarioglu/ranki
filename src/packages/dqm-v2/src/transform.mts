@@ -47,8 +47,6 @@ export class DqmTransformer extends CommonTransports {
     while (l.length) {
       const curr = l.shift()!;
       this.buildTrnNodeGraph(curr.getRootAst(), "subtree");
-      // tCps.assignTrn(trn);
-      // tCpx.assignTrn(trn);
       l.push(...curr.getCpxEdges());
     }
 
@@ -136,11 +134,6 @@ export class DqmTransformer extends CommonTransports {
         });
         const tCps = tCpx.tCps;
         const trn = new TrnNode(ast, tCpx, tCps, self.getTransports());
-
-        // // TODO REMOVE
-        // if (ast.getCreator().includes("frameV2")) {
-        //   console.log(ast.getCreator(), trn);
-        // }
 
         if (currentMetaParent) {
           trn.setForeignTrnParent(currentMetaParent);

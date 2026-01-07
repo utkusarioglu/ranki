@@ -1,5 +1,5 @@
 import type { Alias, Chain, ChainString, IId } from "../../export.types.mjs";
-import type { IAstParamCapability } from "../ast/capabilities/raw-param.cap.types.mjs";
+import type { IAstParamCapability } from "../capabilities/raw-param.cap.types.mjs";
 import type { AstSourceView } from "../export.types.mjs";
 
 export interface ICpsParam

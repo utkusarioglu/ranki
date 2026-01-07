@@ -1,4 +1,4 @@
-import type { ITrnNode } from "../i-trn.types.mjs";
+import type { ITrnNode } from "../trn/i-trn.types.mjs";
 
 export interface ITrnCapability {
   assignTrn(t: ITrnNode[]): this;

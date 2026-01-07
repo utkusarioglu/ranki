@@ -6,10 +6,7 @@ import type {
 } from "../../config/dqm-config.types.mjs";
 import type { IAstNodeConstructor } from "../../nodes/ast/base/i-ast-node.types.mjs";
 import type { ICpxConstructor } from "../../nodes/cp/export.types.mjs";
-import type {
-  IParamConstructor,
-  TransformClass,
-} from "../../nodes/ast/export.types.mjs";
+import type { IParamConstructor } from "../../nodes/ast/export.types.mjs";
 import type {
   IDqmComponent,
   IDqmComponentTransformFunction,
@@ -26,6 +23,7 @@ import type {
   RenderReport,
   RenderRoots,
   ITrnNodeConstructor,
+  TransformClass,
 } from "../../export.types.mjs";
 
 /**
@@ -69,7 +67,4 @@ export interface IPlugins {
   getCpxConstructor(): ICpxConstructor;
   getParamConstructor(): IParamConstructor;
   getAstNodeConstructor(): IAstNodeConstructor;
-  // getTrnCpxNodeConstructor(): ITrnCpxNodeConstructor;
-  // getTrnCpsNodeConstructor(): ITrnCpsNodeConstructor;
-  // getTrnCpsRootNodeConstructor(): ITrnCpsRootNodeConstructor;
 }

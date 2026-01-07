@@ -39,16 +39,13 @@ interface ITrnNodeUnique {
   transform(): this;
 
   serialize(): SerializedPackage;
-  // getSerialized(): SerializedPackage | null;
   setSource(s: AstSourceString): this;
   newChild(): ITrnNode;
   getAst(): IAstNode;
   setChain(c: Chain): this;
   getKind(): IAstNodeKind;
 
-  // getMount(): ITrnNode;
   setAsMount(): void;
-  // setSelectedTCps(t: ITCpsNode): void;
 }
 
 export type ITrnNodeConstructor = new (

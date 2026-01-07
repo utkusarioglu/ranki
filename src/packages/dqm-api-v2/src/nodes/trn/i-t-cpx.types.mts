@@ -2,9 +2,8 @@ import type {
   ICpx,
   IEdgeCapability,
   ISerializedNode,
-  // IVerticesCapability,
 } from "../export.types.mjs";
-import type { ITrnCapability } from "./capabilities/trn.cap.types.mjs";
+import type { ITrnCapability } from "../capabilities/trn.cap.types.mjs";
 import type { ITCpsNode } from "./i-t-cps.types.mjs";
 
 type TCpxEdges = IEdgeCapability<
@@ -12,19 +11,9 @@ type TCpxEdges = IEdgeCapability<
   ITCpxNode,
   "TCpx",
   "setTCpxParent" | "getTCpxEdges" | "pushTCpxEdge"
-  // "getTCpsEdges"
-  // | "setTCpsParent"
-  // | "getTCpsParent"
-  // | "setTCpsPrev"
-  // | "getTCpsPrev"
 >;
 
-export interface ITCpxNode extends ITCpxNodeUnique, ITrnCapability, TCpxEdges {
-  //   Pick<
-  //     IVerticesCapability<ITCpxNode>,
-  //     "getChildren" | "setParent" | "pushChild"
-  // >
-}
+export interface ITCpxNode extends ITCpxNodeUnique, ITrnCapability, TCpxEdges {}
 
 interface ITCpxNodeUnique {
   readonly cpx: ICpx;

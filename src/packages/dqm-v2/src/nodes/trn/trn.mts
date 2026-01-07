@@ -17,18 +17,6 @@ import { assertExists, assertParent } from "@dqm/package-dqm-utils";
 import { assertNever } from "../../errors/dqm-app-error/assertions.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 
-// @ts-ignore
-const DUMMY_SERIALIZATION: ISerializedNode[] = [
-  {
-    kind: "leaf",
-    chain: ["debug", "leaf", "container"],
-    // @ts-expect-error
-    dqm: {},
-    component: {},
-    source: "(temp trn serialization)",
-  },
-];
-
 export class TrnNode extends CommonTransports implements ITrnNode {
   public readonly ast: IAstNode;
   public readonly tCpx: ITCpxNode;
@@ -120,7 +108,6 @@ export class TrnNode extends CommonTransports implements ITrnNode {
       this.isMount
         ? (v: ISerializedNode[]) => {
             v.forEach((a) => curr.children.push(a));
-            // curr.children = v;
           }
         : undefined,
       ...local.map((v) => v.mount),
@@ -149,11 +136,9 @@ export class TrnNode extends CommonTransports implements ITrnNode {
       return {
         serialized: [curr],
         mount: mountCb,
-        // local,
       };
     }
 
-    // const mount = this.getMount().getSerialized();
     const foreign = this.getForeignTrnEdges()
       .map((v) => v.serialize())
       .flat();

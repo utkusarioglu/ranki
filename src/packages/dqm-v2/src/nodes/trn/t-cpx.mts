@@ -24,11 +24,6 @@ export class TCpxNode implements ITCpxNode {
   }
 
   serialize(): ISerializedNode[] {
-    // return this.tCps.map((t) => t.serialize()).flat();
-    // console.log(
-    //   "tt",
-    //   this.tCps.map((t) => t.serialize()),
-    // );
     return this.tCps[0].serialize();
   }
 

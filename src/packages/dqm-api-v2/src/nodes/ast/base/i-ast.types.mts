@@ -9,10 +9,10 @@ import type {
   IAstNodeOhmCapabilities,
   IAstNodeCounterCapabilities,
   CpxCollectionCapability,
-} from "../capabilities/export.types.mjs";
+} from "../../capabilities/export.types.mjs";
 import type { ICommonTransports } from "../../common-transports.types.mjs";
 import type { IParser } from "../../../export.types.mjs";
-import type { IAstNodeTransformCapability } from "../capabilities/transform.cap.types.mjs";
+import type { IAstNodeTransformCapability } from "../../capabilities/transform.cap.types.mjs";
 
 type IAstNodeEdges = IEdgeCapability<
   IAstNode,
@@ -25,15 +25,7 @@ type IAstNodeEdges = IEdgeCapability<
   | "getAstNext"
   | "getAstPrev"
   | "pushAstEdge"
-  // | "pushAstEdge"
 >;
-// | "setParent"
-// | "getParent"
-// | "getPrev"
-// | "setPrev"
-// | "setNext"
-// | "getNext"
-// | "getChildren"
 
 export interface IAstNode
   extends ICommonTransports,
@@ -42,8 +34,6 @@ export interface IAstNode
     IAstNodeSemanticCapabilities,
     IAstNodeSyntaxCapabilities<IAstNode>,
     IAstNodeEdges,
-    // Omit<IVerticesCapability<IAstNode>, "pushChild">,
-    // Vertices,
     IAstNodeViewCapabilities,
     IAstNodeUniqueCapability,
     CpxCollectionCapability,
@@ -54,17 +44,6 @@ export interface IAstNodeParserReferenceCapability {
   setParser(parser: IParser): this;
   getParser(): IParser | null;
 }
-
-// type Vertices = Pick<
-//   IVerticesCapability<IAstNode>,
-//   | "setParent"
-//   | "getParent"
-//   | "getPrev"
-//   | "setPrev"
-//   | "setNext"
-//   | "getNext"
-//   | "getChildren"
-// >;
 
 export interface IAstNodeUniqueCapability {
   /**

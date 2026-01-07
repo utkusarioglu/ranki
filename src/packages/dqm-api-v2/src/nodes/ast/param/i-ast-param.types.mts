@@ -2,24 +2,19 @@ import type {
   Alias,
   Chain,
   CommonTransportsConstructorParams,
-  IAstParamValueCapability,
-  // IAstParamSpecsCapability,
   IId,
 } from "../../../export.types.mjs";
 import type { IAstNode } from "../export.types.mjs";
 import type {
+  IAstParamValueCapability,
   IAstParamSemanticCapability,
-  // IAstParamValueCapability,
-} from "../capabilities/export.types.mjs";
+} from "../../capabilities/export.types.mjs";
 
 export interface IAstParamNode
   extends IAstNode,
-    // IAstParamSpecsCapability,
     IAstParamIdCapability,
     IAstParamSemanticCapability,
-    // ,
     IAstParamValueCapability {}
-// IAstParamRawCapability
 
 export interface IAstParamIdCapability
   extends Pick<

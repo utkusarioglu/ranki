@@ -1,12 +1,3 @@
-// export type IVerticesCapability<T, N extends string> = {
-//   [K in `get${N}Prev`]: () => T | null;
-// };
-
-// O: Host object type
-// T : Collection
-// N: Collection Name
-// M: Method
-
 /**
  * Generic type for the setters and getters for multiple edges.
  *
