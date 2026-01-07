@@ -164,6 +164,7 @@ export class Dqm {
         props: ["component", "dqm", "astRootCreator"],
       }),
     }));
+    console.log("serialized", this.serialized);
   }
 }
 

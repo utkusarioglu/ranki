@@ -85,18 +85,30 @@ export class DqmTransformer extends CommonTransports {
       assertExists(tCpx, {
         why: "Cps references a cpx that has no tCpx counterpart",
       });
-      const tCps = new TCpsNode(cps, tCpx);
+      const tCps = new TCpsNode(cps, tCpx, self.getTransports());
 
+      // const next = cps.getCpsNext();
+      // if (next) {
+      //   console.log("NEXT", next);
+      //   dfs(next);
+      // } else {
       cps.getCpsEdges().forEach((c) => {
         dfs(c).setTCpsParent(tCps);
       });
+      // }
+      tCpx.pushTCpsEdge(tCps);
+      console.log(cps.getChainString(), tCpx.tCps);
 
-      tCps.tCpx.pushTCpsEdge(tCps);
       return tCps;
     }
     dfs(cps);
   }
 
+  /**
+   * @dev
+   * #1 By default all nodes are assigned to the leaf cps. pause states can
+   * have them climb up.
+   */
   private buildTrnNodeGraph(
     ast: IAstNode,
     family: "subtree" | "children",
@@ -132,8 +144,18 @@ export class DqmTransformer extends CommonTransports {
         assertExists(tCpx, {
           why: "Cps references a cpx that has no tCpx counterpart",
         });
-        const tCps = tCpx.tCps;
-        const trn = new TrnNode(ast, tCpx, tCps, self.getTransports());
+        const tCpsList = tCpx.tCps;
+        const tCps = tCpsList.at(-1)!;
+        assertExists(tCps, {
+          why: "Every tCpx needs to contain at least one tCps",
+        });
+        const trn = new TrnNode(
+          ast,
+          tCpx,
+          tCps,
+          tCpsList,
+          self.getTransports(),
+        );
 
         if (currentMetaParent) {
           trn.setForeignTrnParent(currentMetaParent);
@@ -153,6 +175,9 @@ export class DqmTransformer extends CommonTransports {
       why: "There are no transform class marked nodes in the subtree",
     });
     root[0].tCpx.assignTrn(root);
-    root[0].tCpsList.forEach((s) => s.assignTrn(root));
+
+    // #1
+    root[0].tCpsList.at(-1)!.assignTrn(root);
+    // root[0].tCpsList.forEach((s) => s.assignTrn(root));
   }
 }

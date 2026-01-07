@@ -5,6 +5,7 @@ export interface HtmlPrimitiveAnchorComponentConfig {
   default: {
     attribute: {
       href: string;
+      target: string;
     };
   };
   // path: {
@@ -41,6 +42,7 @@ export const frameV2AnchorComponent: IDqmComponent<HtmlPrimitiveAnchorComponentC
           default: {
             attribute: {
               href: "https://www.google.com",
+              target: "_blank",
             },
           },
         },
@@ -70,12 +72,21 @@ export const frameV2AnchorComponent: IDqmComponent<HtmlPrimitiveAnchorComponentC
           ],
         },
         default: {
-          positionals: [["attribute", "href"]],
+          positionals: [
+            ["attribute", "href"],
+            ["attribute", "target"],
+          ],
           params: [
             {
               id: {
                 chain: ["attribute", "href"],
                 aliases: ["h"],
+              },
+            },
+            {
+              id: {
+                chain: ["attribute", "target"],
+                aliases: ["t"],
               },
             },
             // {

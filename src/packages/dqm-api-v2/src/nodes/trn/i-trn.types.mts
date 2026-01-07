@@ -52,6 +52,7 @@ interface ITrnNodeUnique {
 export type ITrnNodeConstructor = new (
   ast: IAstNode,
   tCpx: ITCpxNode,
-  tCps: ITCpsNode[],
+  tCps: ITCpsNode,
+  tCpsList: ITCpsNode[],
   s: CommonTransportsConstructorParams,
 ) => ITrnNode;

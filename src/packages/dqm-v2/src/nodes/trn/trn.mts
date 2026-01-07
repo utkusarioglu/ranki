@@ -22,10 +22,10 @@ import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 export class TrnNode extends CommonTransports implements ITrnNode {
   public readonly ast: IAstNode;
   public readonly tCpx: ITCpxNode;
+  public readonly tCps: ITCpsNode;
   public readonly tCpsList: ITCpsNode[];
   private readonly foreignTrn = edgeCapability<ITrnNode>(this, "ForeignTrn");
   private readonly localTrn = edgeCapability<ITrnNode>(this, "LocalTrn");
-  private selectTCps: ITCpsNode | null = null;
   private chain!: Chain;
   private source!: AstSourceString;
   private kind: IAstNodeKind = "parent";
@@ -36,13 +36,15 @@ export class TrnNode extends CommonTransports implements ITrnNode {
   constructor(
     ast: IAstNode,
     tCpx: ITCpxNode,
-    tCps: ITCpsNode[],
+    tCps: ITCpsNode,
+    tCpsList: ITCpsNode[],
     s: CommonTransportsConstructorParams,
   ) {
     super(s);
     this.ast = ast;
     this.tCpx = tCpx;
-    this.tCpsList = tCps;
+    this.tCps = tCps;
+    this.tCpsList = tCpsList;
   }
 
   setAsMount() {
@@ -52,8 +54,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
   private produceProps(p: SerializeMethodParams) {
     type Producers = Record<SerializationPropertiesUnion, () => any>;
     type PropsReturn = Record<SerializationPropertiesUnion, any>;
-    assertExists(this.selectTCps, { why: "There needs to be a selected tcps" });
-    const cps = this.selectTCps.cps;
+    const cps = this.tCps.cps;
     const producers: Producers = {
       astRootCreator: () => this.tCpx.cpx.getRootAst().getCreator(),
       chain: () => this.chain,
@@ -133,12 +134,6 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     ].filter((v) => v !== undefined);
 
     if (mounts.length > 1) {
-      console.log(
-        this.chain,
-        mounts,
-        local,
-        this.getLocalTrnEdges().map((v) => v.ast.getSourceString()),
-      );
       throw new DqmAppError({
         code: "MULTIPLE_MOUNTS",
         why: "Only a single mount can exist in a local trn tree",
@@ -162,17 +157,12 @@ export class TrnNode extends CommonTransports implements ITrnNode {
       .map((v) => v.serialize(p))
       .flat();
 
-    if (foreign.length > 0 && mountCb === undefined) {
-      throw new DqmAppError({
-        code: "NO_MOUNT",
-        why: "Trn Node has foreign children but offers no mount for them",
-        cause: null,
+    if (foreign.length) {
+      assertExists(mountCb, {
+        why: "Mount Cb has to be defined to mount foreign trn",
       });
+      mountCb(foreign.map((f) => f.serialized).flat());
     }
-    assertExists(mountCb, {
-      why: "Mount Cb has to be defined to mount foreign trn",
-    });
-    mountCb(foreign.map((f) => f.serialized).flat());
     return {
       serialized: [curr],
     };
@@ -184,26 +174,22 @@ export class TrnNode extends CommonTransports implements ITrnNode {
    */
   transform(): this {
     if (!this.isLocalEdge) {
-      this.getForeignTrnEdges().map((v) => v.transform());
+      this.getForeignTrnEdges().forEach((v) => v.transform());
     }
 
-    const leafTCps = this.tCpsList.at(-1); // #1
-    assertExists(leafTCps, { why: "At least one tCps needs to be defined" });
-    this.selectTCps = leafTCps;
     const tc = this.ast.getTransformClass();
     assertExists(tc, {
       why: "TransformClass needs to be defined for transform to work",
     });
-    const componentChain = this.selectTCps.cps.getChain();
+    const componentChain = this.tCps.cps.getChain();
     const transformer = this.getPlugins().getTransformer(componentChain, tc);
     transformer(this);
-    this.transformLocal(this.selectTCps);
+    this.transformLocal();
     return this;
   }
 
-  transformLocal(s: ITCpsNode) {
-    this.selectTCps = s;
-    this.getLocalTrnEdges().map((v) => (v as TrnNode).transformLocal(s));
+  transformLocal() {
+    this.getLocalTrnEdges().map((v) => (v as TrnNode).transformLocal());
   }
 
   getAst(): IAstNode {
@@ -226,6 +212,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     const trn = new TrnNode(
       this.ast,
       this.tCpx,
+      this.tCps,
       this.tCpsList,
       this.getTransports(),
     ).setLocalTrnParent(this);

@@ -25,6 +25,7 @@ type ICpsEdges = IEdgeCapability<
   | "setCpsParent"
   | "getCpsParent"
   | "getCpsPrev"
+  | "getCpsNext"
   | "pushCpsEdge"
   | "setCpsPrev"
 >;

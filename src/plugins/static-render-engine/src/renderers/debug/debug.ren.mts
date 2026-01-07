@@ -103,7 +103,7 @@ export const debugRenderer: IDqmPluginRenderer = {
         const assertLeaf: Assertions["leaf"] = leaf;
         assertLeaf(ser, {});
         const element = document.createElement("div");
-        element.classList.add("leaf-container");
+        element.classList.add("debug-payload-block");
         element.style.padding = "2px";
         element.style.backgroundColor =
           pref.scheme === "dark" ? "#000" : "#FFF";
@@ -123,7 +123,7 @@ export const debugRenderer: IDqmPluginRenderer = {
         const assertLeaf: Assertions["leaf"] = leaf;
         assertLeaf(ser, {});
         const element = document.createElement("span");
-        element.classList.add("container-2");
+        element.classList.add("debug-payload-inline");
         element.style.padding = "2px";
         element.style.backgroundColor =
           pref.scheme === "dark"

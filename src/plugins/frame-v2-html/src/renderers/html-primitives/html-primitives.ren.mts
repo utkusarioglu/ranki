@@ -19,13 +19,14 @@ export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
         const element = document.createElement("a");
         element.classList.add("anchor-container");
         element.classList.add("leaf-container");
-        element.href = (
-          ser.props.component as HtmlPrimitiveAnchorComponentConfig
-        ).default.attribute.href;
+        const component = ser.props
+          .component as HtmlPrimitiveAnchorComponentConfig;
+        element.href = component.default.attribute.href;
+        element.target = component.default.attribute.target;
         element.style.padding = "2px";
         element.style.backgroundColor =
           pref.scheme === "dark" ? "#000" : "#FFF";
-        element.style.color = pref.scheme === "dark" ? "#FFF" : "#000";
+        element.style.color = "#00F";
 
         element.addEventListener("mouseenter", () => {
           element.style.scale = "1.5";
