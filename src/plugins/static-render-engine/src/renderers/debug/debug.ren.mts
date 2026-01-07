@@ -34,6 +34,7 @@ export const debugRenderer: IDqmPluginRenderer = {
           pref.scheme === "dark" ? "#000" : "#FFF";
         element.style.color = pref.scheme === "dark" ? "#FFF" : "#000";
         element.style.border = `5px dotted ${randomColor(pref.scheme)}`;
+        element.style.marginBlock = "1em";
         element.addEventListener("mouseenter", () => {
           element.style.borderStyle = "solid";
         });
