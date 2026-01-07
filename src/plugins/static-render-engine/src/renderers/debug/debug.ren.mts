@@ -28,6 +28,7 @@ export const debugRenderer: IDqmPluginRenderer = {
         const assertParent: Assertions["parent"] = parent;
         assertParent(ser, {});
         const element = document.createElement("div");
+        element.classList.add("block-container");
         element.style.padding = "10px";
         element.style.backgroundColor =
           pref.scheme === "dark" ? "#000" : "#FFF";
@@ -63,6 +64,7 @@ export const debugRenderer: IDqmPluginRenderer = {
         const assertLeaf: Assertions["leaf"] = leaf;
         assertLeaf(ser, {});
         const element = document.createElement("div");
+        element.classList.add("leaf-container");
         element.style.padding = "2px";
         element.style.backgroundColor =
           pref.scheme === "dark" ? "#000" : "#FFF";
@@ -76,14 +78,17 @@ export const debugRenderer: IDqmPluginRenderer = {
     },
     {
       load: "sync",
-      chain: ["debug", "leaf", "container-2"],
+      chain: ["debug", "block", "container-2"],
       sync: (ser, pref, { leaf }) => {
         const assertLeaf: Assertions["leaf"] = leaf;
         assertLeaf(ser, {});
         const element = document.createElement("div");
+        element.classList.add("container-2");
         element.style.padding = "2px";
         element.style.backgroundColor =
-          pref.scheme === "dark" ? "#00F" : "#FF0";
+          pref.scheme === "dark"
+            ? "linear-gradient(#00F, #FFF)"
+            : "linear-gradient(#FF0, #000)";
         element.style.color = pref.scheme === "dark" ? "#FF0" : "#00f";
         element.style.border = `2px dotted ${randomColor(pref.scheme)}`;
         element.innerText = ser.source;

@@ -2,6 +2,16 @@ group: frame-v2
 label: FrameV2
 description: Components powered by FrameV2
 list:
+- id: pause-test
+  label: Pause Test
+  description: Paused code + anchor
+  raw: |
+    [code|a,,p,,c]
+
+    [a, "https://www.cat.com"|h]
+
+    [code|ff]
+
 - id: inline-code
   label: Inline code block
   description: Most basic inline code block

@@ -9,7 +9,9 @@ import type {
 import type { DeepPartialSerializable } from "../../util.types.mjs";
 import type { Alias, Chain, IdSummary } from "./id/id.types.mjs";
 
-export interface IDqmComponent<T = any> {
+export interface IDqmComponent<
+  T extends IComponentCustomizationConfig = IComponentCustomizationConfig,
+> {
   type: "component";
   meta: {
     id: IdSummary;
@@ -34,12 +36,18 @@ export interface ChannelParamSpecs {
   params: ComponentSingleParamSpec[];
 }
 
-export interface ComponentCustomizations<T = any> {
+// TODO this type is faulty
+export interface IComponentCustomizationConfig {
+  default: {};
+}
+
+export interface ComponentCustomizations<
+  T extends IComponentCustomizationConfig = IComponentCustomizationConfig,
+> {
   config: {
     dqm?: DeepPartialSerializable<DqmConfig>[];
-    component: {
-      default: T;
-    } & Record<string, T>;
+    // TODO this type is faulty
+    component: T & Record<string, object>;
   };
   params: Record<string, ChannelParamSpecs> & {
     default: ChannelParamSpecs;

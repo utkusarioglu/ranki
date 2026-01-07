@@ -190,7 +190,8 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     assertExists(tc, {
       why: "TransformClass needs to be defined for transform to work",
     });
-    const transformer = this.getPlugins().getTransformer(tc);
+    const componentChain = this.selectTCps.cps.getChain();
+    const transformer = this.getPlugins().getTransformer(componentChain, tc);
     transformer(this);
     this.transformLocal(this.selectTCps);
     return this;

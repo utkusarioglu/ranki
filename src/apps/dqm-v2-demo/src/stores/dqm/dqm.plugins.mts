@@ -2,6 +2,7 @@ import baseV2 from "@dqm/plugin-base-v2";
 import frameV2 from "@dqm/plugin-frame-v2";
 import paramsV2 from "@dqm/plugin-params-v2";
 import frameV2Code from "@dqm/plugin-frame-v2-code";
+import frameV2Html from "@dqm/plugin-frame-v2-html";
 import staticRenderEngine from "@dqm/plugin-static-render-engine";
 import type { PluginStoreWrapper } from "./dqm.store.types.mts";
 
@@ -42,6 +43,13 @@ const defaultPluginSelection = [
     requested: false,
     installed: false,
   },
+  {
+    name: "FrameV2Html",
+    plugin: frameV2Html,
+    standard: false,
+    requested: false,
+    installed: false,
+  },
 ];
 
 const devPluginSelection = [
@@ -78,6 +86,13 @@ const devPluginSelection = [
     plugin: frameV2Code,
     standard: false,
     requested: false,
+    installed: true,
+  },
+  {
+    name: "FrameV2Html",
+    plugin: frameV2Html,
+    standard: true,
+    requested: true,
     installed: true,
   },
 ];

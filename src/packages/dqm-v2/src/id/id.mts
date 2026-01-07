@@ -13,10 +13,7 @@ import {
   rejectValues,
   writeOnce,
 } from "@dqm/package-dqm-utils";
-
-export const ID_SEPARATOR = "-";
-export const ALIAS_SEPARATOR = "_";
-export const CHAIN_SEPARATOR = ".";
+import { Serialize } from "../utils/serialize.mjs";
 
 export class Id implements IId {
   private position!: Position;
@@ -31,15 +28,17 @@ export class Id implements IId {
    * possible issues..
    */
   getAliasString(): AliasString {
-    return this.alias.join(ALIAS_SEPARATOR); // #1
+    // return this.alias.join(ALIAS_SEPARATOR);
+    return Serialize.alias(this.alias); // #1
   }
 
   getChainString(): ChainString {
-    return this.chain.join(CHAIN_SEPARATOR);
+    return Serialize.chain(this.chain);
   }
 
   getIdString(): IdString {
-    return this.id.join(ID_SEPARATOR);
+    return Serialize.id(this.id);
+    // return this.id.join(ID_SEPARATOR);
   }
 
   getSummary(): IdSummary {

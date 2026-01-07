@@ -16,6 +16,7 @@ export const nodePayload: IAstNodeActionDict = {
   ) {
     return grabAst(this)
       .newAst(this)
+      .setTransformClass("FRAME_V2")
       .pushNodes(["node", frameV2PayloadSection])
       .pushNodes(
         ["node", frameV2PausedContainer],
@@ -87,7 +88,7 @@ export const nodePayload: IAstNodeActionDict = {
     return (
       grabAst(this)
         .newAst(this)
-        .setTransformClass("FRAME_V2_PAUSED")
+        // .setTransformClass("FRAME_V2_PAUSED")
         // .pushNodes(["node", frameV2PauseStart])
         // .pushNodes(["node", frameV2PausedPayload])
         .pushIgnoredNodes(all)

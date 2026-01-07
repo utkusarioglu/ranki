@@ -1,12 +1,17 @@
-import type { IDqmComponent } from "@dqm/package-dqm-api-v2";
+import type {
+  IComponentCustomizationConfig,
+  IDqmComponent,
+} from "@dqm/package-dqm-api-v2";
 import { transformers } from "./transformers.mjs";
 
-interface ComponentType {
-  prettier: {
-    auto_format: boolean;
-  };
-  path: {
-    cat: [number, string, boolean];
+interface ComponentType extends IComponentCustomizationConfig {
+  default: {
+    prettier: {
+      auto_format: boolean;
+    };
+    path: {
+      cat: [number, string, boolean];
+    };
   };
 }
 

@@ -59,6 +59,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/plugins/frame-v2-code"\
     },\
     {\
+      "name": "@dqm/plugin-frame-v2-html",\
+      "reference": "workspace:src/plugins/frame-v2-html"\
+    },\
+    {\
       "name": "@dqm/plugin-params-v2",\
       "reference": "workspace:src/plugins/params-v2"\
     },\
@@ -79,6 +83,7 @@ const RAW_RUNTIME_STATE =
     ["@dqm/plugin-base-v2", ["workspace:src/plugins/base-v2"]],\
     ["@dqm/plugin-frame-v2", ["workspace:src/plugins/frame-v2"]],\
     ["@dqm/plugin-frame-v2-code", ["workspace:src/plugins/frame-v2-code"]],\
+    ["@dqm/plugin-frame-v2-html", ["workspace:src/plugins/frame-v2-html"]],\
     ["@dqm/plugin-params-v2", ["workspace:src/plugins/params-v2"]],\
     ["@dqm/plugin-static-render-engine", ["workspace:src/plugins/static-render-engine"]],\
     ["@ranki/app-dqm-v2-console", ["workspace:src/apps/dqm-v2-console"]],\
@@ -1734,6 +1739,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/plugin-base-v2", "workspace:src/plugins/base-v2"],\
           ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
           ["@dqm/plugin-frame-v2-code", "workspace:src/plugins/frame-v2-code"],\
+          ["@dqm/plugin-frame-v2-html", "workspace:src/plugins/frame-v2-html"],\
           ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
           ["@dqm/plugin-static-render-engine", "workspace:src/plugins/static-render-engine"],\
           ["@eslint/js", "npm:9.39.1"],\
@@ -1868,6 +1874,23 @@ const RAW_RUNTIME_STATE =
           ["@dqm/package-plugin-utils", "workspace:src/packages/plugin-utils"],\
           ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
           ["@dqm/plugin-frame-v2-code", "workspace:src/plugins/frame-v2-code"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["concurrently", "npm:9.2.1"],\
+          ["ohm-js", "npm:17.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vite", "virtual:c6547897edfd46555a9b569db6c14578ad40c524e7e15c3bf4e72892ffbce1642a01ad3874d3b7d6a7fec5b373e598bb21518fc3b71727326030e380ba5224d0#npm:7.2.6"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@dqm/plugin-frame-v2-html", [\
+      ["workspace:src/plugins/frame-v2-html", {\
+        "packageLocation": "./src/plugins/frame-v2-html/",\
+        "packageDependencies": [\
+          ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["@dqm/package-plugin-utils", "workspace:src/packages/plugin-utils"],\
+          ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
+          ["@dqm/plugin-frame-v2-html", "workspace:src/plugins/frame-v2-html"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["concurrently", "npm:9.2.1"],\
           ["ohm-js", "npm:17.2.1"],\
@@ -3206,6 +3229,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/plugin-base-v2", "workspace:src/plugins/base-v2"],\
           ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
           ["@dqm/plugin-frame-v2-code", "workspace:src/plugins/frame-v2-code"],\
+          ["@dqm/plugin-frame-v2-html", "workspace:src/plugins/frame-v2-html"],\
           ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
           ["@dqm/plugin-static-render-engine", "workspace:src/plugins/static-render-engine"],\
           ["@ranki/app-dqm-v2-console", "workspace:src/apps/dqm-v2-console"],\

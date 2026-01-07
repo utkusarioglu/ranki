@@ -54,6 +54,7 @@ export interface IPlugins {
   addPlugins(plugins: IDqmPlugin[]): void;
 
   getTransformer(
+    chain: Chain,
     transformClass: TransformClass,
   ): IDqmComponentTransformFunction;
 

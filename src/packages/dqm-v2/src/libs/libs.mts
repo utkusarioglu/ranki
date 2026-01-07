@@ -106,9 +106,10 @@ export class Libs implements IPlugins {
   }
 
   getTransformer(
+    chain: Chain,
     transformClass: TransformClass,
   ): IDqmComponentTransformFunction {
-    return this.transformers.get({ transformClass });
+    return this.transformers.get({ chain, transformClass });
   }
 
   getComponentById(chain: Alias | Chain): IDqmComponent {
