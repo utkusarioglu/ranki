@@ -76,8 +76,6 @@ export class Dqm {
     this.validate();
     this.transform();
     this.serialize();
-    // console.log(this.serialized);
-    // console.log(Unique.getRegistrySnapshot());
     return this.parsed;
   }
 
@@ -162,9 +160,10 @@ export class Dqm {
   private serialize() {
     this.serialized = this.transformed.map(({ theater, tCpx }) => ({
       theater,
-      serialized: tCpx.serialize(),
+      serialized: tCpx.serialize({
+        props: ["component", "dqm", "astRootCreator"],
+      }),
     }));
-    console.log("SER", this.serialized);
   }
 }
 

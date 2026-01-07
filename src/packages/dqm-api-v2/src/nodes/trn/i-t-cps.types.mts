@@ -2,6 +2,7 @@ import type {
   ICps,
   IEdgeCapability,
   ISerializedNode,
+  SerializeMethodParams,
 } from "../export.types.mjs";
 import type { ITrnCapability } from "../capabilities/trn.cap.types.mjs";
 import type { ITCpxNode } from "./i-t-cpx.types.mjs";
@@ -22,5 +23,5 @@ interface ICpsUniqueCapability {
   readonly cps: ICps;
   readonly tCpx: ITCpxNode;
 
-  serialize(): ISerializedNode[];
+  serialize(p: SerializeMethodParams): ISerializedNode[];
 }

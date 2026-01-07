@@ -20,7 +20,7 @@ export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
         element.classList.add("anchor-container");
         element.classList.add("leaf-container");
         element.href = (
-          ser.data.component as HtmlPrimitiveAnchorComponentConfig
+          ser.props.component as HtmlPrimitiveAnchorComponentConfig
         ).default.attribute.href;
         element.style.padding = "2px";
         element.style.backgroundColor =

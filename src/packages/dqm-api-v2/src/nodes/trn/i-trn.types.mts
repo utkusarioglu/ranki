@@ -9,6 +9,7 @@ import type {
   ITCpsNode,
   ITCpxNode,
   SerializedPackage,
+  SerializeMethodParams,
 } from "../export.types.mjs";
 
 type ForeignTrnEdges = IEdgeCapability<
@@ -38,7 +39,7 @@ interface ITrnNodeUnique {
 
   transform(): this;
 
-  serialize(): SerializedPackage;
+  serialize(p: SerializeMethodParams): SerializedPackage;
   setSource(s: AstSourceString): this;
   newChild(): ITrnNode;
   getAst(): IAstNode;

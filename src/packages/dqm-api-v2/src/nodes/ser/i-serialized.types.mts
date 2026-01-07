@@ -1,4 +1,4 @@
-import type { Chain, DqmConfig } from "../../export.types.mjs";
+import type { Chain } from "../../export.types.mjs";
 
 export interface SerializedPackage {
   serialized: ISerializedNode[];
@@ -9,10 +9,7 @@ export type ISerializedNode = ISerializedParent | ISerializedLeaf;
 
 interface ISerializedCommon {
   chain: Chain;
-  data: {
-    dqm: DqmConfig;
-    component: any;
-  };
+  props: Partial<Record<SerializationPropertiesUnion, any>>;
 }
 
 export type ISerializedLeaf = ISerializedCommon & {
@@ -23,4 +20,21 @@ export type ISerializedLeaf = ISerializedCommon & {
 export type ISerializedParent = ISerializedCommon & {
   kind: "parent";
   children: ISerializedNode[];
+};
+
+export type AstTypes = "astRootCreator";
+export type CpsTypes = "chain";
+export type AppTypes = "dqm";
+export type ComponentTypes = "component";
+
+export type SerializationPropertiesUnion =
+  | AstTypes
+  | CpsTypes
+  | AppTypes
+  | ComponentTypes;
+
+// export type SerializationProperties = Set<SerializationPropertiesUnion>;
+
+export type SerializeMethodParams = {
+  props: SerializationPropertiesUnion[];
 };

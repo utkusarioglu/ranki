@@ -3,6 +3,7 @@ import type {
   ISerializedNode,
   ITCpsNode,
   ITCpxNode,
+  SerializeMethodParams,
 } from "@dqm/package-dqm-api-v2";
 import { trnCapability } from "./capabilities/trn.cap.mjs";
 import { edgeCapability } from "../capabilities/edge.capability.mjs";
@@ -23,8 +24,8 @@ export class TCpxNode implements ITCpxNode {
     return this;
   }
 
-  serialize(): ISerializedNode[] {
-    return this.tCps[0].serialize();
+  serialize(p: SerializeMethodParams): ISerializedNode[] {
+    return this.tCps[0].serialize(p);
   }
 
   pushTCpsEdge(tCps: ITCpsNode): this {

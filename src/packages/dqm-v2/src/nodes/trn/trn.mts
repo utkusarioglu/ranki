@@ -10,6 +10,8 @@ import type {
   IAstNodeKind,
   SerializedPackage,
   ISerializedParent,
+  SerializeMethodParams,
+  SerializationPropertiesUnion,
 } from "@dqm/package-dqm-api-v2";
 import { edgeCapability } from "../capabilities/edge.capability.mjs";
 import { CommonTransports } from "../common-transports.mjs";
@@ -47,7 +49,25 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     this.isMount = true;
   }
 
-  serialize(): SerializedPackage {
+  private produceProps(p: SerializeMethodParams) {
+    type Producers = Record<SerializationPropertiesUnion, () => any>;
+    type PropsReturn = Record<SerializationPropertiesUnion, any>;
+    assertExists(this.selectTCps, { why: "There needs to be a selected tcps" });
+    const cps = this.selectTCps.cps;
+    const producers: Producers = {
+      astRootCreator: () => this.tCpx.cpx.getRootAst().getCreator(),
+      chain: () => this.chain,
+      component: () => cps.getComponentConfig(),
+      dqm: () => cps.getDqmConfig(),
+    };
+    const data: Partial<PropsReturn> = {};
+    p.props.forEach((k) => {
+      data[k] = producers[k]();
+    });
+    return data;
+  }
+
+  serialize(p: SerializeMethodParams): SerializedPackage {
     assertExists(this.chain, {
       why: "Chain needs to be set for every trn node",
       details: {
@@ -56,17 +76,12 @@ export class TrnNode extends CommonTransports implements ITrnNode {
         chain: this.chain,
       },
     });
-    assertExists(this.selectTCps, { why: "There needs to be a selected tcps" });
     const kind = this.getKind();
     const chain = this.chain;
-    const cps = this.selectTCps.cps;
-    const data = {
-      dqm: cps.getDqmConfig(),
-      component: cps.getComponentConfig(),
-    };
+    const props = this.produceProps(p);
     switch (kind) {
       case "parent":
-        this.serialized = this.serializeParent(chain, data);
+        this.serialized = this.serializeParent(chain, props, p);
         break;
       case "leaf":
         assertExists(this.source, {
@@ -77,7 +92,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
             {
               kind,
               chain,
-              data,
+              props,
               source: this.source,
             },
           ],
@@ -92,15 +107,19 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     return this.serialized;
   }
 
-  private serializeParent(chain: Chain, data: ISerializedNode["data"]) {
+  private serializeParent(
+    chain: Chain,
+    props: ISerializedNode["props"],
+    p: SerializeMethodParams,
+  ) {
     const local = this.getLocalTrnEdges()
-      .map((v) => v.serialize())
+      .map((v) => v.serialize(p))
       .flat();
 
     const curr: ISerializedParent = {
       kind: "parent",
       chain,
-      data,
+      props,
       children: local.map((v) => v.serialized).flat(),
     };
 
@@ -140,7 +159,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     }
 
     const foreign = this.getForeignTrnEdges()
-      .map((v) => v.serialize())
+      .map((v) => v.serialize(p))
       .flat();
 
     if (foreign.length > 0 && mountCb === undefined) {
@@ -169,7 +188,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     }
 
     const leafTCps = this.tCpsList.at(-1); // #1
-    assertExists(leafTCps, { why: "At least one tcps needs to be defined" });
+    assertExists(leafTCps, { why: "At least one tCps needs to be defined" });
     this.selectTCps = leafTCps;
     const tc = this.ast.getTransformClass();
     assertExists(tc, {
