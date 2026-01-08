@@ -18,6 +18,7 @@ import type {
   DqmParseTheater,
   DqmSerializeOutput,
   DqmTransformOutput,
+  GroupedPluginExamples,
   IDqmPlugin,
   IPlugins,
 } from "@dqm/package-dqm-api-v2";
@@ -77,6 +78,10 @@ export class Dqm {
     this.transform();
     this.serialize();
     return this.parsed;
+  }
+
+  getPluginExamples(): GroupedPluginExamples {
+    return this.plugins.getPluginExamples();
   }
 
   render(
@@ -164,7 +169,7 @@ export class Dqm {
         props: ["component", "dqm", "astRootCreator"],
       }),
     }));
-    console.log("serialized", this.serialized);
+    // console.log("serialized", this.serialized);
   }
 }
 

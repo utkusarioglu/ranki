@@ -17,14 +17,12 @@ import type {
   IParser,
   DqmSerializeOutput,
   IDqmRendererClientPreferences,
-  // ITrnCpsNodeConstructor,
-  // ITrnCpsRootNodeConstructor,
-  // ITrnCpxNodeConstructor,
   RenderReport,
   RenderRoots,
   ITrnNodeConstructor,
   TransformClass,
 } from "../../export.types.mjs";
+import type { GroupedPluginExamples } from "../examples/example.types.mjs";
 
 /**
  * Provides a common surface area for Plugin libraries such as component and parser
@@ -61,6 +59,8 @@ export interface IPlugins {
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
   ): RenderReport;
+
+  getPluginExamples(): GroupedPluginExamples;
 
   // CONSTRUCTORS
   getTrnNodeConstructor(): ITrnNodeConstructor;

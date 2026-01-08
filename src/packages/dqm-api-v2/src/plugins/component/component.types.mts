@@ -7,6 +7,7 @@ import type {
   TransformClass,
 } from "../../export.types.mjs";
 import type { DeepPartialSerializable } from "../../util.types.mjs";
+import type { IDqmPluginExample } from "../examples/example.types.mjs";
 import type { Alias, Chain, IdSummary } from "./id/id.types.mjs";
 
 export interface IDqmComponent<
@@ -17,6 +18,7 @@ export interface IDqmComponent<
     id: IdSummary;
     description: string;
     version: DqmPluginVersion;
+    examples?: IDqmPluginExample[];
   };
   customizations: ComponentCustomizations<T>;
   validation: IDqmValidationFunction[];

@@ -17,10 +17,7 @@ import type {
   RenderReport,
   DqmSerializeOutput,
   IDqmComponentTransformFunction,
-  // ITrnCpsNodeConstructor,
-  // ITrnCpxNodeConstructor,
   TransformClass,
-  // ITrnCpsRootNodeConstructor,
   DqmGrammarPluginsAggregatedConfig,
   ITrnNodeConstructor,
 } from "@dqm/package-dqm-api-v2";
@@ -36,12 +33,10 @@ import {
   assertParent,
   assertExists as exists,
 } from "../errors/render-error/assertions.mjs";
-// import { TrnCpsNode } from "../nodes/trn/trn-cps.mjs";
-// import { TrnCpxNode } from "../nodes/trn/trn-cpx.mjs";
 import { TransformLib } from "./transform/transform-lib.mjs";
-// import { TrnCpsRootNode } from "../nodes/trn/trn-cps-root.mjs";
 import { ParserLib } from "./parser/parser-lib.mjs";
 import { TrnNode } from "../nodes/trn/trn.mjs";
+import type { GroupedPluginExamples } from "@dqm/package-dqm-api-v2";
 
 export class Libs implements IPlugins {
   private readonly parsers = new ParserLib();
@@ -96,6 +91,10 @@ export class Libs implements IPlugins {
     return this;
   }
 
+  getPluginExamples(): GroupedPluginExamples {
+    return this.components.getPluginExamples();
+  }
+
   render(
     rawInputs: DqmSerializeOutput,
     roots: RenderRoots,
@@ -148,17 +147,4 @@ export class Libs implements IPlugins {
   getTrnNodeConstructor(): ITrnNodeConstructor {
     return TrnNode;
   }
-
-  // getTrnCpsNodeConstructor(): ITrnCpsNodeConstructor {
-  //   return TrnCpsNode;
-  // }
-
-  // getTrnCpsRootNodeConstructor(): ITrnCpsRootNodeConstructor {
-  //   // @ts-ignore
-  //   return TrnCpsRootNode;
-  // }
-
-  // getTrnCpxNodeConstructor(): ITrnCpxNodeConstructor {
-  //   return TrnCpxNode;
-  // }
 }

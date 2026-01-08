@@ -1,11 +1,21 @@
-import type { Alias, Chain, IPluginLib } from "@dqm/package-dqm-api-v2";
-import type { In, Out } from "./component-lib.types.mjs";
+import type {
+  Alias,
+  Chain,
+  IDqmComponent,
+  IDqmPluginComponentSet,
+  IPluginLib,
+} from "@dqm/package-dqm-api-v2";
 import { IdLib } from "../../id/id-lib.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
+import type { GroupedPluginExamples } from "@dqm/package-dqm-api-v2";
 
 type Criteria = {
   id: Alias | Chain;
 };
+
+export type In = IDqmPluginComponentSet;
+
+export type Out = IDqmComponent;
 
 type ILibComponent = IPluginLib<In, Out, Criteria>;
 
@@ -39,5 +49,22 @@ export class ComponentLib implements ILibComponent {
 
   get({ id }: Criteria): Out {
     return this.idLib.getObjectById(id);
+  }
+
+  getPluginExamples(): GroupedPluginExamples {
+    const c: GroupedPluginExamples = Object.fromEntries(
+      Array.from(this.sets.entries())
+        .map(([k, v]) =>
+          v.list
+            .filter((c) => c.meta.examples)
+            .map((c) =>
+              c.meta.examples!.map((e) => [`${k}/${v.meta.name}`, e]).flat(),
+            ),
+        )
+        .flat()
+        .filter((v) => v.length),
+    );
+
+    return c;
   }
 }
