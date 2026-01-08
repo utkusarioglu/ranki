@@ -1,15 +1,6 @@
 import type { IDqmPluginRenderer, Assertions } from "@dqm/package-dqm-api-v2";
-
-function randomColor(scheme: "light" | "dark") {
-  const h = Math.random() * 360;
-  const s = 60 + Math.random() * 20; // avoid gray/muted
-  const l =
-    scheme === "dark"
-      ? 20 + Math.random() * 20 // 20–40%
-      : 65 + Math.random() * 20; // 65–85%
-
-  return `hsl(${h} ${s}% ${l}%)`;
-}
+import { randomColor } from "./randomColor.mjs";
+import { debugPayloadBlock } from "./debug-payload-block/container.ren.mjs";
 
 export const debugRenderer: IDqmPluginRenderer = {
   type: "renderer",
@@ -21,8 +12,9 @@ export const debugRenderer: IDqmPluginRenderer = {
     version: "0.0.0",
   },
   list: [
+    debugPayloadBlock,
     {
-      load: "sync",
+      // load: "sync",
       chain: ["debug", "container", "block"],
       sync: (ser, pref, { parent }) => {
         const assertParent: Assertions["parent"] = parent;
@@ -59,7 +51,7 @@ export const debugRenderer: IDqmPluginRenderer = {
       },
     },
     {
-      load: "sync",
+      // load: "sync",
       chain: ["debug", "container", "inline"],
       sync: (ser, pref, { parent }) => {
         const assertParent: Assertions["parent"] = parent;
@@ -96,28 +88,10 @@ export const debugRenderer: IDqmPluginRenderer = {
       },
     },
 
-    {
-      load: "sync",
-      chain: ["debug", "payload", "block"],
-      sync: (ser, pref, { leaf }) => {
-        const assertLeaf: Assertions["leaf"] = leaf;
-        assertLeaf(ser, {});
-        const element = document.createElement("div");
-        element.classList.add("debug-payload-block");
-        element.style.padding = "2px";
-        element.style.backgroundColor =
-          pref.scheme === "dark" ? "#000" : "#FFF";
-        element.style.color = pref.scheme === "dark" ? "#FFF" : "#000";
-        element.style.border = `2px dotted ${randomColor(pref.scheme)}`;
-        element.innerText = ser.source;
-        return {
-          element,
-        };
-      },
-    },
+    // {},
 
     {
-      load: "sync",
+      // load: "sync",
       chain: ["debug", "payload", "inline"],
       sync: (ser, pref, { leaf }) => {
         const assertLeaf: Assertions["leaf"] = leaf;

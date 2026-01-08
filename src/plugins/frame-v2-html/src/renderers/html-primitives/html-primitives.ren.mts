@@ -11,7 +11,7 @@ export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
   },
   list: [
     {
-      load: "sync",
+      // load: "sync",
       chain: ["html", "primitive", "anchor", "container"],
       sync: (ser, pref, { parent }) => {
         const assertParent: Assertions["parent"] = parent;
@@ -41,7 +41,7 @@ export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
       },
     },
     {
-      load: "sync",
+      // load: "sync",
       chain: ["html", "primitive", "anchor", "payload"],
       sync: (ser, _pref, { leaf }) => {
         const assertLeaf: Assertions["leaf"] = leaf;

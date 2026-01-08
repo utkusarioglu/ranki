@@ -10,7 +10,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
   },
   list: [
     {
-      load: "sync",
+      // load: "sync",
       chain: ["base", "v2", "ignored"],
       sync: (ser, pref, { leaf }) => {
         const assertKind: Assertions["leaf"] = leaf;
@@ -39,7 +39,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
       },
     },
     {
-      load: "sync",
+      // load: "sync",
       chain: ["base", "v2", "section"],
       sync: (ser, pref, { parent }) => {
         const assertKind: Assertions["parent"] = parent;
@@ -54,7 +54,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
       },
     },
     {
-      load: "sync",
+      // load: "sync",
       chain: ["base", "v2", "paragraph"],
       sync: (ser, pref, { parent }) => {
         const assertKind: Assertions["parent"] = parent;
@@ -69,7 +69,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
       },
     },
     {
-      load: "sync",
+      // load: "sync",
       chain: ["base", "v2", "line"],
       sync: (ser, pref, { parent }) => {
         const assertKind: Assertions["parent"] = parent;
@@ -85,7 +85,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
       },
     },
     {
-      load: "sync",
+      // load: "sync",
       chain: ["base", "v2", "lexeme"],
       sync: (ser, pref, { parent }) => {
         const assertKind: Assertions["parent"] = parent;
@@ -101,7 +101,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
       },
     },
     {
-      load: "sync",
+      // load: "sync",
       chain: ["base", "v2", "decorated"],
       sync: (ser, pref, { parent }) => {
         const assertKind: Assertions["parent"] = parent;
@@ -118,7 +118,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
     },
 
     {
-      load: "sync",
+      // load: "sync",
       chain: ["base", "v2", "word"],
       sync: (ser, pref, { leaf }) => {
         const assertKind: Assertions["leaf"] = leaf;
@@ -135,7 +135,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
       },
     },
     {
-      load: "sync",
+      // load: "sync",
       chain: ["base", "v2", "number"],
       sync: (ser, pref, { leaf }) => {
         const assertKind: Assertions["leaf"] = leaf;
@@ -152,7 +152,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
       },
     },
     {
-      load: "sync",
+      // load: "sync",
       chain: ["base", "v2", "whitespace"],
       sync: (ser, pref, { leaf }) => {
         const assertKind: Assertions["leaf"] = leaf;

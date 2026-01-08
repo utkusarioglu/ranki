@@ -58,7 +58,7 @@ export class TCpxNode implements ITCpxNode {
   }
 
   pushTCpsEdge(tCps: ITCpsNode): this {
-    console.log("push", tCps.cps.getChainString());
+    // console.log("push", tCps.cps.getChainString());
     this.tCps.push(tCps);
     return this;
   }

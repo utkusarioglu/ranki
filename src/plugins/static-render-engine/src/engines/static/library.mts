@@ -9,8 +9,11 @@ import type {
 
 type RendererMap = Map<ChainString, IDqmRenderPluginRenderer>;
 
-type GetPluginReturn = Pick<IDqmRenderPluginRendererSync, "sync"> &
-  Partial<Pick<IDqmRenderPluginRendererLazy, "deferred">>;
+// type GetPluginReturn = Pick<IDqmRenderPluginRendererSync, "sync"> &
+//   Partial<Pick<IDqmRenderPluginRendererLazy, "deferred">>;
+type GetPluginReturn =
+  | IDqmRenderPluginRendererSync
+  | IDqmRenderPluginRendererLazy;
 
 const JOIN = ".";
 
@@ -29,8 +32,9 @@ export class RendererLibrary {
     if (!p) {
       throw new Error(`No renderer ${chainString} (REPLACE THIS ERROR)`);
     }
-    return {
-      sync: p.sync,
-    };
+    return p;
+    // return {
+    //   sync: p.sync,
+    // };
   }
 }

@@ -97,7 +97,7 @@ export class DqmTransformer extends CommonTransports {
       });
       // }
       tCpx.pushTCpsEdge(tCps);
-      console.log(cps.getChainString(), tCpx.tCps);
+      // console.log(cps.getChainString(), tCpx.tCps);
 
       return tCps;
     }

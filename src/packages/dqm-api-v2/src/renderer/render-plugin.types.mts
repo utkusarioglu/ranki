@@ -31,19 +31,19 @@ interface IDqmRenderPluginRendererCommon {
    */
   // engine: "dqm-static-renderer";
   chain: Chain;
+  sync: RenderFunction; // for skeletons
+  deferred?: () => Promise<RenderFunction>;
 }
 
 export interface IDqmRenderPluginRendererSync
   extends IDqmRenderPluginRendererCommon {
-  load: "sync";
-  sync: RenderFunction;
+  // load: "sync";
+  // sync: RenderFunction;
 }
 
 export interface IDqmRenderPluginRendererLazy
   extends IDqmRenderPluginRendererCommon {
-  load: "lazy";
-  sync: RenderFunction; // for skeletons
-  deferred: () => Promise<RenderFunction>;
+  // load: "lazy";
 }
 
 export interface IDqmRendererClientPreferences {
@@ -67,13 +67,13 @@ export type RenderFunction = (
 
 export type RenderNode = {
   element: HTMLElement | DocumentFragment | Text;
-  css?: RankiRenderNodeCssSpec[];
+  css?: RenderNodeCssSpec[];
   getMount?: () => HTMLElement;
   afterMount?: RenderNodeOnMountCallback[];
   beforeUnmount?: RenderNodeOnUnmountCallback[];
 };
 
-export interface RankiRenderNodeCssSpec {
+export interface RenderNodeCssSpec {
   id: string;
   css: string;
 }
