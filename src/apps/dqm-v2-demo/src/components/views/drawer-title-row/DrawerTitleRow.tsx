@@ -8,7 +8,7 @@ import { TitleRow } from "_views/title-row/TitleRow";
 export const DrawerTitleRow: FC<PropsWithChildren> = ({ children }) => {
   const ui = useUiStore();
   return (
-    <TitleRow>
+    <TitleRow isAbsolute={false}>
       <Typography.Title className={style.title} level={3}>
         {children}
       </Typography.Title>

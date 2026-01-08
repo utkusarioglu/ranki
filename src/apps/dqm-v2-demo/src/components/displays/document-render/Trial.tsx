@@ -1,11 +1,4 @@
-import {
-  memo,
-  useEffect,
-  useMemo,
-  useRef,
-  type FC,
-  type RefObject,
-} from "react";
+import { useMemo, useRef } from "react";
 import baseV2 from "@dqm/plugin-base-v2";
 import frameV2 from "@dqm/plugin-frame-v2";
 import paramsV2 from "@dqm/plugin-params-v2";
@@ -89,31 +82,31 @@ export const TrialRender = () => {
   );
 };
 
-interface ControllerProps {
-  ref: RefObject<HTMLIFrameElement | null>;
-  doc: Document | null;
-}
+// interface ControllerProps {
+//   ref: RefObject<HTMLIFrameElement | null>;
+//   doc: Document | null;
+// }
 
-const Controller: FC<ControllerProps> = ({ doc, ref }) => {
-  const d = useDqmStore();
-  useEffect(() => {
-    // if (!ref.current) {
-    //   return;
-    // }
-    // const doc = ref.current.contentDocument;
-    if (!doc) {
-      return;
-    }
+// const Controller: FC<ControllerProps> = ({ doc, ref }) => {
+//   const d = useDqmStore();
+//   useEffect(() => {
+//     // if (!ref.current) {
+//     //   return;
+//     // }
+//     // const doc = ref.current.contentDocument;
+//     if (!doc) {
+//       return;
+//     }
 
-    dqmOnLoad(doc, d.pluginSelection, d.inputs);
+//     dqmOnLoad(doc, d.pluginSelection, d.inputs);
 
-    // ref.current.addEventListener("load", loaded);
+//     // ref.current.addEventListener("load", loaded);
 
-    // return () => doc.removeEventListener("load", loaded);
-  }, [doc, d.inputs]);
+//     // return () => doc.removeEventListener("load", loaded);
+//   }, [doc, d.inputs]);
 
-  return null;
-};
+//   return null;
+// };
 
 // export const TrialRender = () => {
 //   const d = useDqmStore();
@@ -141,22 +134,22 @@ const Controller: FC<ControllerProps> = ({ doc, ref }) => {
 //   );
 // };
 
-const IframeHost = memo(function IframeHost({
-  ref,
-  onReady,
-}: {
-  onReady: (doc: Document) => void;
-  ref: RefObject<HTMLIFrameElement | null>;
-}) {
-  return (
-    <iframe
-      ref={ref}
-      srcDoc={iframeSrc}
-      onLoad={() => {
-        const doc = ref.current?.contentDocument;
-        if (doc) onReady(doc);
-      }}
-      style={{ width: 250, height: 400, border: "none" }}
-    />
-  );
-});
+// const IframeHost = memo(function IframeHost({
+//   ref,
+//   onReady,
+// }: {
+//   onReady: (doc: Document) => void;
+//   ref: RefObject<HTMLIFrameElement | null>;
+// }) {
+//   return (
+//     <iframe
+//       ref={ref}
+//       srcDoc={iframeSrc}
+//       onLoad={() => {
+//         const doc = ref.current?.contentDocument;
+//         if (doc) onReady(doc);
+//       }}
+//       style={{ width: 250, height: 400, border: "none" }}
+//     />
+//   );
+// });
