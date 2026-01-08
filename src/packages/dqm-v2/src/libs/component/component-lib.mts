@@ -8,6 +8,7 @@ import type {
 import { IdLib } from "../../id/id-lib.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 import type { GroupedPluginExamples } from "@dqm/package-dqm-api-v2";
+import { Serialize } from "../../utils/serialize.mjs";
 
 type Criteria = {
   id: Alias | Chain;
@@ -52,19 +53,21 @@ export class ComponentLib implements ILibComponent {
   }
 
   getPluginExamples(): GroupedPluginExamples {
-    const c: GroupedPluginExamples = Object.fromEntries(
+    // REPLACE this is hard to debug
+    return Object.fromEntries(
       Array.from(this.sets.entries())
-        .map(([k, v]) =>
-          v.list
-            .filter((c) => c.meta.examples)
-            .map((c) =>
-              c.meta.examples!.map((e) => [`${k}/${v.meta.name}`, e]).flat(),
-            ),
-        )
-        .flat()
-        .filter((v) => v.length),
+        .map(([packageName, s]) => [
+          packageName,
+          s.list
+            .map((component) => [
+              Serialize.chain(component.meta.id.chain),
+              component.meta.examples,
+            ])
+            .filter((v) => v[1]),
+        ])
+        .filter((v) => v[1].length)
+        // @ts-ignore
+        .map(([p, r]) => [p, Object.fromEntries(r)]),
     );
-
-    return c;
   }
 }

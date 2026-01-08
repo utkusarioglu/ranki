@@ -2,99 +2,84 @@ group: frame-v2
 label: FrameV2
 description: Components powered by FrameV2
 list:
-- id: easyscore-basic
-  label: EasyScore
-  description: Basic EasyScore content
-  raw: |
-    before
+# - id: easyscore-basic
+#   label: 
+#   description: 
+#   raw: |
+#     before
 
-    [easyscore
-    C#5/q, B4, A4, G#4; up
-    C#4/h, C#4; down
-    ]
+#     [easyscore
+#     C#5/q, B4, A4, G#4; up
+#     C#4/h, C#4; down
+#     ]
 
-    after
+#     after
 
-- id: pause-test
-  label: Pause Test
-  description: Paused code + anchor
-  raw: |
-    [code|a,,p,,c]
+# - id: pause-test
+#   label: Pause Test
+#   description: 
+#   raw: |
+#     [code|a,,p,,c]
 
-    [code code|a,,p,,c]
+#     [code code|a,,p,,c]
 
-    meow [a, "https://www.cat.com"|h] 5 cat
+#     meow [a, "https://www.cat.com"|h] 5 cat
 
-    [code|ff]
+#     [code|ff]
 
-- id: tones-bach
-  labels: Bach
-  description: Let's listen to some Bach
-  raw: |
-    Bach
+# - id: tones-bach
+#   labels: 
+#   description: 
+#   raw: |
+#     Bach
 
-    [tones
-    C4 D4 E4 G4
-    F4 F4 A4 G4
-    G4 C5 B4 C5
-    G4 E4 C4 D4
-    E4 F4 G4 A4
-    G4 F4 E4 D4
-    E4 C4 B3 C4
-    D4 G3 B3 D4
-    F4 E4 D4 E4
-    C4 D4 E4 G4
-    F4 F4 A4 G4
-    G4 C5 B4 C5
-    G4 E4 C4 D4
-    E4 F4 G4 F4
-    E4 D4 C4 G3
-    C4 B3 C4 E4
-    G4 C5 G4 E4
-    C4
-    ]
+#     [tones
+#     C4 D4 E4 G4
+#     F4 F4 A4 G4
+#     G4 C5 B4 C5
+#     G4 E4 C4 D4
+#     E4 F4 G4 A4
+#     G4 F4 E4 D4
+#     E4 C4 B3 C4
+#     D4 G3 B3 D4
+#     F4 E4 D4 E4
+#     C4 D4 E4 G4
+#     F4 F4 A4 G4
+#     G4 C5 B4 C5
+#     G4 E4 C4 D4
+#     E4 F4 G4 F4
+#     E4 D4 C4 G3
+#     C4 B3 C4 E4
+#     G4 C5 G4 E4
+#     C4
+#     ]
 
-- id: inline-code
-  label: Inline code block
-  description: Most basic inline code block
-  raw: |
-    [code|func]
-- id: code-params
-  label: Code block with params
-  description: Uses params and pauses
-  raw: |
-    [code, prettier.auto_format=true
-    hi,,PAUSED!,,hello
-    ]
+# - id: code-params
+#   label: 
+#   description: 
+#   raw: |
+# - id: code-block
+#   label: Code block
+#   description: Unnested basic code block
+#   raw: |
+#     [code
+#       () => {}
+#     ]
+# - id: code-block-nested
+#   label: 
+#   description: 
+#   raw: |
+#     [code
+#     hi
 
-    2
-- id: code-block
-  label: Code block
-  description: Unnested basic code block
-  raw: |
-    [code
-      () => {}
-    ]
-- id: code-block-nested
-  label: Nested code block
-  description: Code block which contains other code blocks
-  raw: |
-    [code
-    hi
-
-      [code
-      hello [code|yees]
-      ]
-    ]
-- id: graph-carnage
-  label: Graph Carnage
-  description: Many nested frames to create a graph carnage
-  raw: |
-    [code code, hello.cat=5, p
-    hi,,PAUSED!,,hello [code code, "5"|bunny 5]
-    ]
-
-    2 [code|graph,, df ,,is [code code code|carnage] on]
+#       [code
+#       hello [code|yees]
+#       ]
+#     ]
+# - id: graph-carnage
+#   label: 
+#   description: 
+#   raw: |
 
 
   

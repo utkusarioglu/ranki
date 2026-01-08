@@ -127,7 +127,6 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
   private attachChildren(
     serialized: ISerializedNode,
     pref: IDqmRendererClientPreferences,
-    // cbs: Assertions,
     node: RenderNode,
   ) {
     if (node.getMount) {
@@ -174,7 +173,6 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
     serializedOutput: DqmSerializeOutput,
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
-    // cbs: Assertions,
   ): Promise<RenderReport> {
     this.initialize();
     serializedOutput.forEach(({ theater, serialized }) => {

@@ -40,7 +40,7 @@
     "@dqm/plugin-frame-v2-code": "workspace:^",
     "@dqm/plugin-frame-v2-html": "workspace:^",
     "@dqm/plugin-params-v2": "workspace:^",
-    "@dqm/plugin-static-render-engine": "workspace:^",
-    "@dqm/plugin-sre-music": "workspace:^"
+    "@dqm/plugin-sre-music": "workspace:^",
+    "@dqm/plugin-static-render-engine": "workspace:^"
   }
 }
