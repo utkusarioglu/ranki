@@ -824,6 +824,7 @@ __metadata:
     "@dqm/plugin-frame-v2-code": "workspace:^"
     "@dqm/plugin-frame-v2-html": "workspace:^"
     "@dqm/plugin-params-v2": "workspace:^"
+    "@dqm/plugin-sre-music": "workspace:^"
     "@dqm/plugin-static-render-engine": "workspace:^"
     "@eslint/js": "npm:^9.39.1"
     "@rollup/plugin-babel": "npm:^6.1.0"
@@ -933,9 +934,7 @@ __metadata:
     "@ranki/package-anki-ui": "workspace:^"
     concurrently: "npm:^9.2.1"
     ohm-js: "npm:^17.2.1"
-    tone: "npm:15.1.22"
     typescript: "npm:^5.8.3"
-    vexflow: "npm:^5.0.0"
     vite: "npm:^7.2.2"
   languageName: unknown
   linkType: soft
@@ -994,6 +993,24 @@ __metadata:
     concurrently: "npm:^9.2.1"
     ohm-js: "npm:^17.2.1"
     typescript: "npm:^5.8.3"
+    vite: "npm:^7.2.2"
+  languageName: unknown
+  linkType: soft
+
+"@dqm/plugin-sre-music@workspace:^, @dqm/plugin-sre-music@workspace:src/plugins/sre-music":
+  version: 0.0.0-use.local
+  resolution: "@dqm/plugin-sre-music@workspace:src/plugins/sre-music"
+  dependencies:
+    "@dqm/package-dqm-api-v2": "workspace:^"
+    "@dqm/package-plugin-utils": "workspace:^"
+    "@dqm/plugin-frame-v2": "workspace:^"
+    "@ranki/config-typescript": "workspace:^"
+    "@ranki/package-anki-ui": "workspace:^"
+    concurrently: "npm:^9.2.1"
+    ohm-js: "npm:^17.2.1"
+    tone: "npm:15.1.22"
+    typescript: "npm:^5.8.3"
+    vexflow: "npm:^5.0.0"
     vite: "npm:^7.2.2"
   languageName: unknown
   linkType: soft

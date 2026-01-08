@@ -3,7 +3,6 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
   type FC,
   type RefObject,
 } from "react";
@@ -13,6 +12,7 @@ import paramsV2 from "@dqm/plugin-params-v2";
 import frameV2Code from "@dqm/plugin-frame-v2-code";
 import frameV2Audio from "@dqm/plugin-frame-v2-audio";
 import frameV2Html from "@dqm/plugin-frame-v2-html";
+import sreMusic from "@dqm/plugin-sre-music";
 import staticRender from "@dqm/plugin-static-render-engine";
 import { Dqm } from "@dqm/package-dqm-v2";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
@@ -21,7 +21,6 @@ import { assertExists } from "_assertions";
 import iframeSrc from "./iframe.html?raw";
 import type { PluginStoreWrapper } from "_stores/dqm/dqm.store.types.mjs";
 import type { DqmParseInputStructured } from "@dqm/package-dqm-api-v2";
-import { useSearch } from "@tanstack/react-router";
 
 function dqmOnLoad(
   doc: Document,
@@ -45,6 +44,7 @@ function dqmOnLoad(
       paramsV2,
       frameV2Html,
       frameV2Audio,
+      sreMusic,
     ],
   );
   // console.log(doc.querySelector("body"));
@@ -84,27 +84,7 @@ export const TrialRender = () => {
 
   return (
     <div>
-      {/* <Controller doc={ready} ref={ref} /> */}
       <div key="stable">{ifa}</div>
-      {/* <IframeHost
-        ref={ref}
-        onReady={(doc) => {
-          console.log("render");
-          // console.log(doc);
-          // dqmOnLoad(doc, d.pluginSelection, d.inputs);
-        }}
-      />
-      <iframe
-        ref={ref}
-        key={"stable"}
-        style={{ width: 250, height: 400, border: "none" }}
-        srcDoc={iframeSrc}
-        // onLoad={() => {
-        //   const doc = r.current?.contentDocument;
-        //   assertExists(doc, { why: "doc is needed" });
-        //   dqmOnLoad(doc, d.pluginSelection, d.inputs);
-        // }}
-      /> */}
     </div>
   );
 };

@@ -75,6 +75,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/plugins/params-v2"\
     },\
     {\
+      "name": "@dqm/plugin-sre-music",\
+      "reference": "workspace:src/plugins/sre-music"\
+    },\
+    {\
       "name": "@dqm/plugin-static-render-engine",\
       "reference": "workspace:src/plugins/static-render-engine"\
     }\
@@ -94,6 +98,7 @@ const RAW_RUNTIME_STATE =
     ["@dqm/plugin-frame-v2-code", ["workspace:src/plugins/frame-v2-code"]],\
     ["@dqm/plugin-frame-v2-html", ["workspace:src/plugins/frame-v2-html"]],\
     ["@dqm/plugin-params-v2", ["workspace:src/plugins/params-v2"]],\
+    ["@dqm/plugin-sre-music", ["workspace:src/plugins/sre-music"]],\
     ["@dqm/plugin-static-render-engine", ["workspace:src/plugins/static-render-engine"]],\
     ["@ranki/app-dqm-v2-console", ["workspace:src/apps/dqm-v2-console"]],\
     ["@ranki/app-ranki-v1", ["workspace:src/apps/ranki-v1"]],\
@@ -1752,6 +1757,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/plugin-frame-v2-code", "workspace:src/plugins/frame-v2-code"],\
           ["@dqm/plugin-frame-v2-html", "workspace:src/plugins/frame-v2-html"],\
           ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
+          ["@dqm/plugin-sre-music", "workspace:src/plugins/sre-music"],\
           ["@dqm/plugin-static-render-engine", "workspace:src/plugins/static-render-engine"],\
           ["@eslint/js", "npm:9.39.1"],\
           ["@rollup/plugin-babel", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:6.1.0"],\
@@ -1889,9 +1895,7 @@ const RAW_RUNTIME_STATE =
           ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
           ["concurrently", "npm:9.2.1"],\
           ["ohm-js", "npm:17.2.1"],\
-          ["tone", "npm:15.1.22"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
-          ["vexflow", "npm:5.0.0"],\
           ["vite", "virtual:c6547897edfd46555a9b569db6c14578ad40c524e7e15c3bf4e72892ffbce1642a01ad3874d3b7d6a7fec5b373e598bb21518fc3b71727326030e380ba5224d0#npm:7.2.6"]\
         ],\
         "linkType": "SOFT"\
@@ -1942,6 +1946,26 @@ const RAW_RUNTIME_STATE =
           ["concurrently", "npm:9.2.1"],\
           ["ohm-js", "npm:17.2.1"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vite", "virtual:c6547897edfd46555a9b569db6c14578ad40c524e7e15c3bf4e72892ffbce1642a01ad3874d3b7d6a7fec5b373e598bb21518fc3b71727326030e380ba5224d0#npm:7.2.6"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@dqm/plugin-sre-music", [\
+      ["workspace:src/plugins/sre-music", {\
+        "packageLocation": "./src/plugins/sre-music/",\
+        "packageDependencies": [\
+          ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["@dqm/package-plugin-utils", "workspace:src/packages/plugin-utils"],\
+          ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
+          ["@dqm/plugin-sre-music", "workspace:src/plugins/sre-music"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
+          ["concurrently", "npm:9.2.1"],\
+          ["ohm-js", "npm:17.2.1"],\
+          ["tone", "npm:15.1.22"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vexflow", "npm:5.0.0"],\
           ["vite", "virtual:c6547897edfd46555a9b569db6c14578ad40c524e7e15c3bf4e72892ffbce1642a01ad3874d3b7d6a7fec5b373e598bb21518fc3b71727326030e380ba5224d0#npm:7.2.6"]\
         ],\
         "linkType": "SOFT"\

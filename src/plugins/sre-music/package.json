@@ -1,5 +1,5 @@
 {
-  "name": "@dqm/plugin-frame-v2-audio",
+  "name": "@dqm/plugin-sre-music",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,7 +10,9 @@
   "dependencies": {
     "@dqm/package-plugin-utils": "workspace:^",
     "@dqm/plugin-frame-v2": "workspace:^",
-    "@ranki/package-anki-ui": "workspace:^"
+    "@ranki/package-anki-ui": "workspace:^",
+    "tone": "15.1.22",
+    "vexflow": "^5.0.0"
   },
   "devDependencies": {
     "@dqm/package-dqm-api-v2": "workspace:^",
