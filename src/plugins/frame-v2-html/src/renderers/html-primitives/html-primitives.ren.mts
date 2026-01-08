@@ -13,11 +13,11 @@ export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
     {
       chain: ["html", "primitive", "anchor", "container"],
       kind: "parent",
-      sync: ({ trn, pref }) => {
+      sync: ({ ser, pref }) => {
         const element = document.createElement("a");
         element.classList.add("anchor-container");
         element.classList.add("leaf-container");
-        const component = trn.props
+        const component = ser.props
           .component as HtmlPrimitiveAnchorComponentConfig;
         const href = component.default.attribute.href;
         if (href === "") {
@@ -26,7 +26,7 @@ export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
           // come up in regular use and maybe this should be formalized for
           // parents so that this hacky access wouldn't need to happen
           const source =
-            trn.children[0].kind === "leaf" ? trn.children[0].source : "/";
+            ser.children[0].kind === "leaf" ? ser.children[0].source : "/";
           const placeholder = component.default.link.placeholder;
           element.href = placeholder.replace("%", source);
         } else {
@@ -55,8 +55,8 @@ export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
     {
       chain: ["html", "primitive", "anchor", "payload"],
       kind: "leaf",
-      sync: ({ trn }) => {
-        const element = document.createTextNode(trn.source);
+      sync: ({ ser }) => {
+        const element = document.createTextNode(ser.source);
         return {
           element,
         };

@@ -62,7 +62,7 @@ export type Assertions = {
 };
 
 export interface RenderFunctionParams<T> {
-  trn: T;
+  ser: T;
   pref: IDqmRendererClientPreferences;
 }
 

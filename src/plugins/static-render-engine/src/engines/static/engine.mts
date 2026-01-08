@@ -30,7 +30,7 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
 
   private produceRenderNode<T>(
     kind: IAstNodeKind,
-    trn: T,
+    ser: T,
     pref: IDqmRendererClientPreferences,
     callback: (p: RenderFunctionParams<T>) => RenderNode,
   ) {
@@ -39,20 +39,20 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
       case "parent":
         const assertParent: Assertions["parent"] = this.assertions.parent;
         // @ts-expect-error
-        assertParent(trn, {
+        assertParent(ser, {
           why: "Renderer only accepts parent trn nodes",
-          details: { trn },
+          details: { ser },
         });
-        sync = callback({ trn, pref });
+        sync = callback({ ser, pref });
         break;
       case "leaf":
         const assertLeaf: Assertions["leaf"] = this.assertions.leaf;
         // @ts-expect-error
-        assertLeaf(trn, {
+        assertLeaf(ser, {
           why: "Renderer only accepts leaf trn nodes",
-          details: { trn },
+          details: { ser },
         });
-        sync = callback({ trn, pref });
+        sync = callback({ ser, pref });
         break;
       default:
         const assertNever: Assertions["never"] = this.assertions.never;

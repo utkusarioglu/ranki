@@ -52,13 +52,13 @@ function createTone(tones: NotePack[]) {
 export const payload: R = {
   chain: ["audio", "audio-context", "tone-js", "payload", "block"],
   kind: "leaf",
-  sync: ({ trn }) => {
+  sync: ({ ser }) => {
     const element = document.createElement("div");
     element.classList.add("audio-block");
 
     killTone();
 
-    const noteTexts: string[] = trn.source
+    const noteTexts: string[] = ser.source
       .split("\n")
       .map((v) => v.trim())
       .join(" ")

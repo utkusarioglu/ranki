@@ -36,14 +36,14 @@ const fontName = "Leland";
 export const payload: R = {
   chain: [...TAGS, "payload", "block"],
   kind: "leaf",
-  sync: ({ trn }) => {
+  sync: ({ ser }) => {
     const hs = AnkiUi.horizontalScroller();
     const div = document.createElement("div");
     const children = hs.getMount!();
     children.appendChild(div);
     // hs.slots.children!.appendChild(div);
 
-    const lines = trn.source.trim().split("\n");
+    const lines = ser.source.trim().split("\n");
     const voices = lines.map((line, i) => {
       const parts = line.split(";");
       const notes = parts[0].trim();

@@ -14,7 +14,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
     {
       chain: ["base", "v2", "ignored"],
       kind: "leaf",
-      sync: ({ trn, pref }) => {
+      sync: ({ ser: trn, pref }) => {
         const element = document.createElement("div");
         element.style.padding = "10px";
         element.style.backgroundColor =
@@ -111,7 +111,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
     {
       chain: ["base", "v2", "word"],
       kind: "leaf",
-      sync: ({ trn, pref }) => {
+      sync: ({ ser: trn, pref }) => {
         const element = document.createElement("span");
         element.className = "word";
         pref.scheme === "dark" ? "#000" : "#FFF";
@@ -126,7 +126,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
     {
       chain: ["base", "v2", "number"],
       kind: "leaf",
-      sync: ({ trn, pref }) => {
+      sync: ({ ser: trn, pref }) => {
         const element = document.createElement("span");
         element.className = "number";
         pref.scheme === "dark" ? "#000" : "#FFF";
@@ -141,7 +141,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
     {
       chain: ["base", "v2", "whitespace"],
       kind: "leaf",
-      sync: ({ trn, pref }) => {
+      sync: ({ ser: trn, pref }) => {
         const element = document.createElement("span");
         element.className = "whitespace";
         pref.scheme === "dark" ? "#000" : "#FFF";

@@ -17,7 +17,7 @@ export const debugRenderer: IDqmPluginRenderer = {
       // load: "sync",
       chain: ["debug", "container", "block"],
       kind: "parent",
-      sync: ({ trn, pref }) => {
+      sync: ({ ser, pref }) => {
         const element = document.createElement("div");
         element.classList.add("debug-container-block");
         element.style.padding = "10px";
@@ -34,7 +34,7 @@ export const debugRenderer: IDqmPluginRenderer = {
         });
         element.addEventListener("click", (e) => {
           e.stopPropagation();
-          console.log(trn);
+          console.log(ser);
         });
         let children: HTMLDivElement;
         return {
@@ -53,7 +53,7 @@ export const debugRenderer: IDqmPluginRenderer = {
       // load: "sync",
       chain: ["debug", "container", "inline"],
       kind: "parent",
-      sync: ({ trn, pref }) => {
+      sync: ({ ser, pref }) => {
         const element = document.createElement("span");
         element.classList.add("debug-container-inline");
         element.style.paddingInline = "10px";
@@ -70,7 +70,7 @@ export const debugRenderer: IDqmPluginRenderer = {
         });
         element.addEventListener("click", (e) => {
           e.stopPropagation();
-          console.log(trn);
+          console.log(ser);
         });
         let children: HTMLSpanElement;
         return {
@@ -92,7 +92,7 @@ export const debugRenderer: IDqmPluginRenderer = {
       // load: "sync",
       chain: ["debug", "payload", "inline"],
       kind: "leaf",
-      sync: ({ trn, pref }) => {
+      sync: ({ ser, pref }) => {
         const element = document.createElement("span");
         element.classList.add("debug-payload-inline");
         element.style.padding = "2px";
@@ -102,7 +102,7 @@ export const debugRenderer: IDqmPluginRenderer = {
             : "linear-gradient(#FF0, #000)";
         element.style.color = pref.scheme === "dark" ? "#FF0" : "#00f";
         element.style.border = `2px dotted ${randomColor(pref.scheme)}`;
-        element.innerText = trn.source;
+        element.innerText = ser.source;
         return {
           element,
         };

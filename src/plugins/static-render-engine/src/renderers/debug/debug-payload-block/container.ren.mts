@@ -11,13 +11,12 @@ function getElement<Elem extends HTMLElement = HTMLDivElement>(html: string) {
 }
 
 export const debugPayloadBlock: IDqmRenderPluginRenderer = {
-  // load: "lazy",
   chain: ["debug", "payload", "block"],
   kind: "leaf",
-  sync: ({ trn, pref }) => {
+  sync: ({ ser, pref }) => {
     const element = getElement(html);
     element.style.borderColor = randomColor(pref.scheme);
-    element.innerText = "(" + trn.source + ")";
+    element.innerText = "(" + ser.source + ")";
     return {
       element,
       afterMount: [
@@ -51,10 +50,10 @@ export const debugPayloadBlock: IDqmRenderPluginRenderer = {
   deferred: async () => {
     await new Promise<void>((r) => setTimeout(r, 5000));
 
-    return ({ trn, pref }) => {
+    return ({ ser, pref }) => {
       const element = getElement(html);
       element.style.borderColor = randomColor(pref.scheme);
-      element.innerText = trn.source;
+      element.innerText = ser.source;
       return {
         element,
         afterMount: [
