@@ -9,7 +9,7 @@ export const NarrowDrawer = () => {
   return (
     <Drawer
       className={style.container}
-      title={<TitleBarNarrow />}
+      title={<TitleBarNarrow isAbsolute={false} />}
       placement="left"
       closable={false}
       onClose={() => ui.setMenuOpen(false)}

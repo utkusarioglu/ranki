@@ -42,7 +42,7 @@ export const SanitizedNodeList = () => {
   }
 
   return (
-    <>
+    <div className={style.container}>
       <Typography.Title className={style.title} level={3}>
         Node / Ast
       </Typography.Title>
@@ -62,6 +62,6 @@ export const SanitizedNodeList = () => {
           </Scroller>
         </div>
       ))}
-    </>
+    </div>
   );
 };

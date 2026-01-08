@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>Iframe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet">
+    <style>
+      :root {
+        --color-fg-1-hex: #054;
+        --padding-1: 1em;
+        --font-primary: roboto
+      }
+
+      html, body {
+        font-family: var(--font-primary);
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      body {
+        overflow-x: none;
+        overflow-y: overlay;
+      }
+      
+      body::-webkit-scrollbar {
+        appearance: none;
+        width: 2px;
+      }
+
+      body::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      body::-webkit-scrollbar-thumb {
+        background: var(--color-fg-1-hex)
+      }
+    </style>
+  </head>
+  <body>
+    <div id="A"></div>
+    <div id="B"></div>
+  </body>
+</html>

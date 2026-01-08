@@ -128,7 +128,9 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
     serializedOutput.forEach(({ theater, serialized }) => {
       const root = roots[theater];
       if (!root) {
-        throw new Error("root[theater] absent -> replace this error handling");
+        throw new Error(
+          `theater ${theater} absent -> replace this error handling`,
+        );
       }
       root.innerText = "";
       serialized.forEach(async (t) => this.single(t, pref, cbs, root));

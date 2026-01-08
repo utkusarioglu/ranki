@@ -8,12 +8,13 @@ import { useUiStore } from "_stores/ui/ui.store.mts";
 import { AppTitle } from "_views/app-title/AppTitle";
 import { TitleRow } from "../../views/title-row/TitleRow";
 import { useNavigate } from "@tanstack/react-router";
+import type { FC } from "react";
 
 export const TitleBarWide = () => {
   const ui = useUiStore();
   const navigate = useNavigate();
   return (
-    <TitleRow>
+    <TitleRow isAbsolute={!ui.isMenuOpen}>
       {ui.isMenuOpen ? null : (
         <>
           <Button onClick={() => ui.setMenuOpen(true)}>
@@ -35,11 +36,14 @@ export const TitleBarWide = () => {
     </TitleRow>
   );
 };
+interface TitleBarNarrowProps {
+  isAbsolute: boolean;
+}
 
-export const TitleBarNarrow = () => {
+export const TitleBarNarrow: FC<TitleBarNarrowProps> = ({ isAbsolute }) => {
   const ui = useUiStore();
   return (
-    <TitleRow>
+    <TitleRow isAbsolute={isAbsolute}>
       <Button onClick={() => ui.setMenuOpen(!ui.isMenuOpen)}>
         <MenuOutlined />
       </Button>

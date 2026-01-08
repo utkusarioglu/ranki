@@ -10,7 +10,7 @@ export const NarrowLayout = () => {
     <>
       <Scroller direction="vertical">
         <div className={style.mobile}>
-          <TitleBarNarrow />
+          <TitleBarNarrow isAbsolute={true} />
           <DisplayContainer />
           <NarrowDrawer />
         </div>

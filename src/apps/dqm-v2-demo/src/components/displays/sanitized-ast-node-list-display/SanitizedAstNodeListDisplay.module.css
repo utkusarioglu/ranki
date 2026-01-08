@@ -1,3 +1,7 @@
+.container {
+  padding-top: 3.5em;
+}
+
 .theaterTitle {
   margin-block: var(--ant-padding);
   padding-block: 0;

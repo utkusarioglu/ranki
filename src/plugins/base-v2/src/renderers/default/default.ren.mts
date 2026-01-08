@@ -1,4 +1,5 @@
 import type { IDqmPluginRenderer, Assertions } from "@dqm/package-dqm-api-v2";
+import { paragraph } from "./paragraph/paragraph.mjs";
 
 export const baseV2Renderer: IDqmPluginRenderer = {
   type: "renderer",
@@ -9,6 +10,7 @@ export const baseV2Renderer: IDqmPluginRenderer = {
     version: "0.0.0",
   },
   list: [
+    paragraph,
     {
       chain: ["base", "v2", "ignored"],
       sync: (ser, pref, { leaf }) => {
@@ -51,20 +53,20 @@ export const baseV2Renderer: IDqmPluginRenderer = {
         };
       },
     },
-    {
-      chain: ["base", "v2", "paragraph"],
-      sync: (ser, pref, { parent }) => {
-        const assertKind: Assertions["parent"] = parent;
-        assertKind(ser, {});
-        const element = document.createElement("p");
-        pref.scheme === "dark" ? "#000" : "#FFF";
-        element.style.color = pref.scheme === "dark" ? "#FFF" : "#000";
-        return {
-          element,
-          getMount: () => element,
-        };
-      },
-    },
+    // {
+    //   chain: ["base", "v2", "paragraph"],
+    //   sync: (ser, pref, { parent }) => {
+    //     const assertKind: Assertions["parent"] = parent;
+    //     assertKind(ser, {});
+    //     const element = document.createElement("p");
+    //     pref.scheme === "dark" ? "#000" : "#FFF";
+    //     element.style.color = pref.scheme === "dark" ? "#FFF" : "#000";
+    //     return {
+    //       element,
+    //       getMount: () => element,
+    //     };
+    //   },
+    // },
     {
       chain: ["base", "v2", "line"],
       sync: (ser, pref, { parent }) => {
