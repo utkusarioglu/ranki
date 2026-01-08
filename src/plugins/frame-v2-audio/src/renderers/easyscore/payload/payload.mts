@@ -1,7 +1,4 @@
-import type {
-  Assertions,
-  IDqmRenderPluginRenderer as R,
-} from "@dqm/package-dqm-api-v2";
+import type { IDqmRenderPluginRenderer as R } from "@dqm/package-dqm-api-v2";
 import { AnkiUi } from "@ranki/package-anki-ui";
 import { Factory } from "vexflow";
 import cssTemplate from "./payload.css?raw";
@@ -38,16 +35,15 @@ const fontName = "Leland";
 
 export const payload: R = {
   chain: [...TAGS, "payload", "block"],
-  sync: (ser, _pref, { leaf }) => {
-    const assertKind: Assertions["leaf"] = leaf;
-    assertKind(ser, {});
+  kind: "leaf",
+  sync: ({ trn }) => {
     const hs = AnkiUi.horizontalScroller();
     const div = document.createElement("div");
     const children = hs.getMount!();
     children.appendChild(div);
     // hs.slots.children!.appendChild(div);
 
-    const lines = ser.source.trim().split("\n");
+    const lines = trn.source.trim().split("\n");
     const voices = lines.map((line, i) => {
       const parts = line.split(";");
       const notes = parts[0].trim();

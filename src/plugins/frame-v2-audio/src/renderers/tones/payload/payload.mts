@@ -1,7 +1,4 @@
-import type {
-  Assertions,
-  IDqmRenderPluginRenderer as R,
-} from "@dqm/package-dqm-api-v2";
+import type { IDqmRenderPluginRenderer as R } from "@dqm/package-dqm-api-v2";
 import * as Tone from "tone";
 import css from "./payload.css?raw";
 
@@ -54,15 +51,14 @@ function createTone(tones: NotePack[]) {
 
 export const payload: R = {
   chain: ["audio", "audio-context", "tone-js", "payload", "block"],
-  sync: (ser, _pref, { leaf }) => {
-    const assertKind: Assertions["leaf"] = leaf;
-    assertKind(ser, {});
+  kind: "leaf",
+  sync: ({ trn }) => {
     const element = document.createElement("div");
     element.classList.add("audio-block");
 
     killTone();
 
-    const noteTexts: string[] = ser.source
+    const noteTexts: string[] = trn.source
       .split("\n")
       .map((v) => v.trim())
       .join(" ")

@@ -3,17 +3,12 @@ import type {
   ChainString,
   IDqmPluginRenderer,
   IDqmRenderPluginRenderer,
-  IDqmRenderPluginRendererLazy,
-  IDqmRenderPluginRendererSync,
 } from "@dqm/package-dqm-api-v2";
 
 type RendererMap = Map<ChainString, IDqmRenderPluginRenderer>;
 
 // type GetPluginReturn = Pick<IDqmRenderPluginRendererSync, "sync"> &
 //   Partial<Pick<IDqmRenderPluginRendererLazy, "deferred">>;
-type GetPluginReturn =
-  | IDqmRenderPluginRendererSync
-  | IDqmRenderPluginRendererLazy;
 
 const JOIN = ".";
 
@@ -26,7 +21,7 @@ export class RendererLibrary {
     });
   }
 
-  getPlugin(chain: Chain): GetPluginReturn {
+  getPlugin(chain: Chain): IDqmRenderPluginRenderer {
     const chainString = chain.join(JOIN);
     const p = this.renderers.get(chainString);
     if (!p) {

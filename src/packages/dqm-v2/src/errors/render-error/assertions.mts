@@ -66,3 +66,11 @@ export function assertExists(
     });
   }
 }
+
+export function assertNever(extra: AssertionOther): never {
+  throw new DqmRenderError({
+    code: "NEVER_EVENT",
+    cause: extra.cause || null,
+    ...extra,
+  });
+}

@@ -1,4 +1,4 @@
-import type { IDqmPluginRenderer, Assertions } from "@dqm/package-dqm-api-v2";
+import type { IDqmPluginRenderer } from "@dqm/package-dqm-api-v2";
 import type { HtmlPrimitiveAnchorComponentConfig } from "../../components/anchor/anchor.mjs";
 
 export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
@@ -12,13 +12,12 @@ export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
   list: [
     {
       chain: ["html", "primitive", "anchor", "container"],
-      sync: (ser, pref, { parent }) => {
-        const assertParent: Assertions["parent"] = parent;
-        assertParent(ser, {});
+      kind: "parent",
+      sync: ({ trn, pref }) => {
         const element = document.createElement("a");
         element.classList.add("anchor-container");
         element.classList.add("leaf-container");
-        const component = ser.props
+        const component = trn.props
           .component as HtmlPrimitiveAnchorComponentConfig;
         const href = component.default.attribute.href;
         if (href === "") {
@@ -27,7 +26,7 @@ export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
           // come up in regular use and maybe this should be formalized for
           // parents so that this hacky access wouldn't need to happen
           const source =
-            ser.children[0].kind === "leaf" ? ser.children[0].source : "/";
+            trn.children[0].kind === "leaf" ? trn.children[0].source : "/";
           const placeholder = component.default.link.placeholder;
           element.href = placeholder.replace("%", source);
         } else {
@@ -55,10 +54,9 @@ export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
     },
     {
       chain: ["html", "primitive", "anchor", "payload"],
-      sync: (ser, _pref, { leaf }) => {
-        const assertLeaf: Assertions["leaf"] = leaf;
-        assertLeaf(ser, {});
-        const element = document.createTextNode(ser.source);
+      kind: "leaf",
+      sync: ({ trn }) => {
+        const element = document.createTextNode(trn.source);
         return {
           element,
         };

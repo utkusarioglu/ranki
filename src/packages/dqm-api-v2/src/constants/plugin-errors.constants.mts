@@ -1,5 +1,6 @@
 export const DQM_PLUGIN_ERROR_CODES = {
   ASSERT_EXISTS: "Required value undefined",
+  NEVER_EVENT: "NEVER_EVENT",
 
   UNDEFINED_MEANING: "Parameter operator's meaning value is unrecognized",
 

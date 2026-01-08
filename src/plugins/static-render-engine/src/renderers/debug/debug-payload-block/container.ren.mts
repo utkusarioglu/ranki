@@ -1,7 +1,4 @@
-import type {
-  Assertions,
-  IDqmRenderPluginRenderer,
-} from "@dqm/package-dqm-api-v2";
+import type { IDqmRenderPluginRenderer } from "@dqm/package-dqm-api-v2";
 import { randomColor } from "../randomColor.mjs";
 import style from "./container.css?raw";
 import html from "./container.html?raw";
@@ -16,12 +13,11 @@ function getElement<Elem extends HTMLElement = HTMLDivElement>(html: string) {
 export const debugPayloadBlock: IDqmRenderPluginRenderer = {
   // load: "lazy",
   chain: ["debug", "payload", "block"],
-  sync: (ser, pref, { leaf }) => {
-    const assertLeaf: Assertions["leaf"] = leaf;
-    assertLeaf(ser, {});
+  kind: "leaf",
+  sync: ({ trn, pref }) => {
     const element = getElement(html);
     element.style.borderColor = randomColor(pref.scheme);
-    element.innerText = "(" + ser.source + ")";
+    element.innerText = "(" + trn.source + ")";
     return {
       element,
       afterMount: [
@@ -55,12 +51,10 @@ export const debugPayloadBlock: IDqmRenderPluginRenderer = {
   deferred: async () => {
     await new Promise<void>((r) => setTimeout(r, 5000));
 
-    return (ser, pref, { leaf }) => {
-      const assertLeaf: Assertions["leaf"] = leaf;
-      assertLeaf(ser, {});
+    return ({ trn, pref }) => {
       const element = getElement(html);
       element.style.borderColor = randomColor(pref.scheme);
-      element.innerText = ser.source;
+      element.innerText = trn.source;
       return {
         element,
         afterMount: [

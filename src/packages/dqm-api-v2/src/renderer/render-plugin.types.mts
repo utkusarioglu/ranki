@@ -3,8 +3,8 @@ import type {
   DqmPluginVersion,
 } from "../config/export.types.mjs";
 import type {
-  ISerializedNode,
   ISerializedLeaf,
+  ISerializedNode,
   ISerializedParent,
 } from "../nodes/export.types.mjs";
 import type { Chain, IDqmPluginExtends } from "../plugins/export.types.mjs";
@@ -22,33 +22,34 @@ export interface IDqmPluginRenderer extends IDqmPluginExtends {
 }
 
 export type IDqmRenderPluginRenderer =
-  | IDqmRenderPluginRendererSync
-  | IDqmRenderPluginRendererLazy;
+  | IDqmRenderPluginRendererParent
+  | IDqmRenderPluginRendererLeaf;
 
 interface IDqmRenderPluginRendererCommon {
   /**
    * This api could be useful if multiple renderers are allowed
    */
-  // engine: "dqm-static-renderer";
   chain: Chain;
-  sync: RenderFunction; // for skeletons
-  deferred?: () => Promise<RenderFunction>;
 }
 
-export interface IDqmRenderPluginRendererSync
+export interface IDqmRenderPluginRendererParent
   extends IDqmRenderPluginRendererCommon {
-  // load: "sync";
-  // sync: RenderFunction;
+  kind: "parent";
+  sync: RenderFunction<ISerializedParent>; // for skeletons or sync renderers
+  deferred?: () => Promise<RenderFunction<ISerializedParent>>;
 }
 
-export interface IDqmRenderPluginRendererLazy
+export interface IDqmRenderPluginRendererLeaf
   extends IDqmRenderPluginRendererCommon {
-  // load: "lazy";
+  kind: "leaf";
+  sync: RenderFunction<ISerializedLeaf>; // for skeletons or sync renderers
+  deferred?: () => Promise<RenderFunction<ISerializedLeaf>>;
 }
 
 export interface IDqmRendererClientPreferences {
   scheme: "light" | "dark";
 }
+// export type AssertionName = "parent" | "leaf";
 
 export type Assertions = {
   // TODO any
@@ -57,13 +58,15 @@ export type Assertions = {
   leaf(t: ISerializedNode, extra: any): asserts t is ISerializedLeaf;
   // TODO any
   exists(a: any, extra: any): asserts a is object;
+  never(extra: any): never;
 };
 
-export type RenderFunction = (
-  trn: ISerializedNode,
-  pref: IDqmRendererClientPreferences,
-  tools: Assertions,
-) => RenderNode;
+export interface RenderFunctionParams<T> {
+  trn: T;
+  pref: IDqmRendererClientPreferences;
+}
+
+export type RenderFunction<T> = (p: RenderFunctionParams<T>) => RenderNode;
 
 export type RenderNode = {
   element: HTMLElement | DocumentFragment | Text;

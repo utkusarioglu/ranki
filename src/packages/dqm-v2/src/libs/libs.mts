@@ -32,6 +32,7 @@ import { DqmAppError } from "../errors/dqm-app-error/dqm-app-error.mjs";
 import { assertExists, assertNull } from "@dqm/package-dqm-utils";
 import {
   assertLeaf,
+  assertNever,
   assertParent,
   assertExists as exists,
 } from "../errors/render-error/assertions.mjs";
@@ -61,7 +62,12 @@ export class Libs implements IPlugins {
           assertNull(this.renderEngine, {
             why: "Current only one render engine can be installed",
           });
-          this.renderEngine = new entry.engine();
+          this.renderEngine = new entry.engine({
+            parent: assertParent,
+            leaf: assertLeaf,
+            exists,
+            never: assertNever,
+          });
           break;
         case "renderer":
           assertExists(this.renderEngine, {
@@ -98,11 +104,7 @@ export class Libs implements IPlugins {
     assertExists(this.renderEngine, {
       why: "Cannot render if no rendering engine is installed",
     });
-    return this.renderEngine.render(rawInputs, roots, pref, {
-      parent: assertParent,
-      leaf: assertLeaf,
-      exists,
-    });
+    return this.renderEngine.render(rawInputs, roots, pref);
   }
 
   getTransformer(

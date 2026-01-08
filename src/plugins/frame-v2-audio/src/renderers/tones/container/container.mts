@@ -1,15 +1,11 @@
-import type {
-  Assertions,
-  IDqmRenderPluginRenderer as R,
-} from "@dqm/package-dqm-api-v2";
+import type { IDqmRenderPluginRenderer as R } from "@dqm/package-dqm-api-v2";
 import { AnkiUi } from "@ranki/package-anki-ui";
 // import css from "./container.css?raw";
 
 export const container: R = {
   chain: ["audio", "audio-context", "tone-js", "container", "block"],
-  sync: (ser, _pref, { parent }) => {
-    const assertKind: Assertions["parent"] = parent;
-    assertKind(ser, {});
+  kind: "parent",
+  sync: () => {
     const block = AnkiUi.titledBlock([
       {
         type: "programming-language",

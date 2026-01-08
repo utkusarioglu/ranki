@@ -14,10 +14,11 @@ export interface IDqmRenderEngine {
     trn: DqmSerializeOutput,
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
-    tools: Assertions,
   ): RenderReport;
 
   addPlugin(plugin: IDqmPluginRenderer): void;
 }
 
-export type IDqmRenderEngineConstructor = new () => IDqmRenderEngine;
+export type IDqmRenderEngineConstructor = new (
+  assertions: Assertions,
+) => IDqmRenderEngine;

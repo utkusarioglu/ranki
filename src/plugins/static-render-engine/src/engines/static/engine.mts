@@ -4,26 +4,64 @@ import type {
   IDqmRendererClientPreferences,
   RenderReport,
   RenderRoots,
-  Assertions,
   DqmSerializeOutput,
   ISerializedNode,
   RenderNodeCssSpec,
   RenderNode,
-  // ISerializedParent,
-  // RenderNodeOnMountCallback,
-  // RenderNodeOnUnmountCallback,
+  Assertions,
+  IAstNodeKind,
+  RenderFunctionParams,
 } from "@dqm/package-dqm-api-v2";
 import { RendererLibrary } from "./library.mjs";
 
 export class DqmStaticRenderer implements IDqmRenderEngine {
   private library = new RendererLibrary();
   private css = new Map<RenderNodeCssSpec["id"], RenderNodeCssSpec>();
-  // private afterMount: RenderNodeOnMountCallback[] = [];
-  // private beforeUnmount: RenderNodeOnUnmountCallback[] = [];
   private head: HTMLHeadElement | null = null;
+  private assertions: Assertions;
+
+  constructor(assertions: Assertions) {
+    this.assertions = assertions;
+  }
 
   addPlugin(plugin: IDqmPluginRenderer): void {
     this.library.addPlugin(plugin);
+  }
+
+  private produceRenderNode<T>(
+    kind: IAstNodeKind,
+    trn: T,
+    pref: IDqmRendererClientPreferences,
+    callback: (p: RenderFunctionParams<T>) => RenderNode,
+  ) {
+    let sync: RenderNode;
+    switch (kind) {
+      case "parent":
+        const assertParent: Assertions["parent"] = this.assertions.parent;
+        // @ts-expect-error
+        assertParent(trn, {
+          why: "Renderer only accepts parent trn nodes",
+          details: { trn },
+        });
+        sync = callback({ trn, pref });
+        break;
+      case "leaf":
+        const assertLeaf: Assertions["leaf"] = this.assertions.leaf;
+        // @ts-expect-error
+        assertLeaf(trn, {
+          why: "Renderer only accepts leaf trn nodes",
+          details: { trn },
+        });
+        sync = callback({ trn, pref });
+        break;
+      default:
+        const assertNever: Assertions["never"] = this.assertions.never;
+        assertNever({
+          why: "Renderer assigned an unrecognized `kind` type",
+          details: { kind },
+        });
+    }
+    return sync;
   }
 
   /**
@@ -43,11 +81,17 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
   private async single(
     serialized: ISerializedNode,
     pref: IDqmRendererClientPreferences,
-    cbs: Assertions,
     root: HTMLElement,
   ) {
     const renderer = this.library.getPlugin(serialized.chain);
-    const sync = renderer.sync(serialized, pref, cbs);
+    const kind = renderer.kind;
+    let sync = this.produceRenderNode(
+      kind,
+      serialized,
+      pref,
+      // @ts-expect-error
+      (a) => renderer.sync(a),
+    );
     root.appendChild(sync.element);
     sync.css?.forEach((c) => {
       this.css.set(c.id, c);
@@ -60,29 +104,37 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
       // #2
       sync.beforeUnmount?.forEach((f) => f());
       const deferred = await renderer.deferred();
-      const def = deferred(serialized, pref, cbs);
+
+      const def = this.produceRenderNode(
+        kind,
+        serialized,
+        pref,
+        // @ts-expect-error
+        (a) => deferred(a),
+      );
+      // const def = deferred(serialized, pref);
       root.replaceChild(def.element, sync.element);
       def.afterMount?.forEach((f) => f());
 
       // #1
-      this.attachChildren(serialized, pref, cbs, def);
+      this.attachChildren(serialized, pref, def);
     } else {
       // #1
-      this.attachChildren(serialized, pref, cbs, sync);
+      this.attachChildren(serialized, pref, sync);
     }
   }
 
   private attachChildren(
     serialized: ISerializedNode,
     pref: IDqmRendererClientPreferences,
-    cbs: Assertions,
+    // cbs: Assertions,
     node: RenderNode,
   ) {
     if (node.getMount) {
       switch (serialized.kind) {
         case "parent":
           if (!node.getMount) {
-            const assertExists: Assertions["exists"] = cbs.exists;
+            const assertExists: Assertions["exists"] = this.assertions.exists;
             assertExists(node.getMount, {
               why: "getMount needs to be defined for ISerializedNodes that have children",
             });
@@ -91,7 +143,7 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
             );
           }
           const mount = node.getMount();
-          serialized.children.forEach((c) => this.single(c, pref, cbs, mount));
+          serialized.children.forEach((c) => this.single(c, pref, mount));
       }
     }
   }
@@ -122,7 +174,7 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
     serializedOutput: DqmSerializeOutput,
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
-    cbs: Assertions,
+    // cbs: Assertions,
   ): Promise<RenderReport> {
     this.initialize();
     serializedOutput.forEach(({ theater, serialized }) => {
@@ -133,7 +185,7 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
         );
       }
       root.innerText = "";
-      serialized.forEach(async (t) => this.single(t, pref, cbs, root));
+      serialized.forEach(async (t) => this.single(t, pref, root));
     });
 
     const head = this.getHead(roots);

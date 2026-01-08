@@ -1,4 +1,4 @@
-import type { IDqmPluginRenderer, Assertions } from "@dqm/package-dqm-api-v2";
+import type { IDqmPluginRenderer } from "@dqm/package-dqm-api-v2";
 import { randomColor } from "./randomColor.mjs";
 import { debugPayloadBlock } from "./debug-payload-block/container.ren.mjs";
 
@@ -16,9 +16,8 @@ export const debugRenderer: IDqmPluginRenderer = {
     {
       // load: "sync",
       chain: ["debug", "container", "block"],
-      sync: (ser, pref, { parent }) => {
-        const assertParent: Assertions["parent"] = parent;
-        assertParent(ser, {});
+      kind: "parent",
+      sync: ({ trn, pref }) => {
         const element = document.createElement("div");
         element.classList.add("debug-container-block");
         element.style.padding = "10px";
@@ -35,7 +34,7 @@ export const debugRenderer: IDqmPluginRenderer = {
         });
         element.addEventListener("click", (e) => {
           e.stopPropagation();
-          console.log(ser);
+          console.log(trn);
         });
         let children: HTMLDivElement;
         return {
@@ -53,9 +52,8 @@ export const debugRenderer: IDqmPluginRenderer = {
     {
       // load: "sync",
       chain: ["debug", "container", "inline"],
-      sync: (ser, pref, { parent }) => {
-        const assertParent: Assertions["parent"] = parent;
-        assertParent(ser, {});
+      kind: "parent",
+      sync: ({ trn, pref }) => {
         const element = document.createElement("span");
         element.classList.add("debug-container-inline");
         element.style.paddingInline = "10px";
@@ -72,7 +70,7 @@ export const debugRenderer: IDqmPluginRenderer = {
         });
         element.addEventListener("click", (e) => {
           e.stopPropagation();
-          console.log(ser);
+          console.log(trn);
         });
         let children: HTMLSpanElement;
         return {
@@ -93,9 +91,8 @@ export const debugRenderer: IDqmPluginRenderer = {
     {
       // load: "sync",
       chain: ["debug", "payload", "inline"],
-      sync: (ser, pref, { leaf }) => {
-        const assertLeaf: Assertions["leaf"] = leaf;
-        assertLeaf(ser, {});
+      kind: "leaf",
+      sync: ({ trn, pref }) => {
         const element = document.createElement("span");
         element.classList.add("debug-payload-inline");
         element.style.padding = "2px";
@@ -105,7 +102,7 @@ export const debugRenderer: IDqmPluginRenderer = {
             : "linear-gradient(#FF0, #000)";
         element.style.color = pref.scheme === "dark" ? "#FF0" : "#00f";
         element.style.border = `2px dotted ${randomColor(pref.scheme)}`;
-        element.innerText = ser.source;
+        element.innerText = trn.source;
         return {
           element,
         };
