@@ -3,6 +3,7 @@ import baseV2 from "@dqm/plugin-base-v2";
 import frameV2 from "@dqm/plugin-frame-v2";
 import paramsV2 from "@dqm/plugin-params-v2";
 import frameV2Code from "@dqm/plugin-frame-v2-code";
+import frameV2Audio from "@dqm/plugin-frame-v2-audio";
 import frameV2Html from "@dqm/plugin-frame-v2-html";
 import staticRender from "@dqm/plugin-static-render-engine";
 import { Dqm } from "@dqm/package-dqm-v2";
@@ -23,7 +24,15 @@ export const TrialRender = () => {
     // ren.addPlugin();
     const dqm = new Dqm(
       [fixedConfig],
-      [staticRender, baseV2, frameV2, frameV2Code, paramsV2, frameV2Html],
+      [
+        staticRender,
+        baseV2,
+        frameV2,
+        frameV2Code,
+        paramsV2,
+        frameV2Html,
+        frameV2Audio,
+      ],
     );
     dqm.render(
       d.inputs,

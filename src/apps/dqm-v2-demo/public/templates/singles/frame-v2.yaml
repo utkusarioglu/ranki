@@ -14,6 +14,33 @@ list:
 
     [code|ff]
 
+- id: tones-bach
+  labels: Bach
+  description: Let's listen to some Bach
+  raw: |
+    Bach
+
+    [tones
+    C4 D4 E4 G4
+    F4 F4 A4 G4
+    G4 C5 B4 C5
+    G4 E4 C4 D4
+    E4 F4 G4 A4
+    G4 F4 E4 D4
+    E4 C4 B3 C4
+    D4 G3 B3 D4
+    F4 E4 D4 E4
+    C4 D4 E4 G4
+    F4 F4 A4 G4
+    G4 C5 B4 C5
+    G4 E4 C4 D4
+    E4 F4 G4 F4
+    E4 D4 C4 G3
+    C4 B3 C4 E4
+    G4 C5 G4 E4
+    C4
+    ]
+
 - id: inline-code
   label: Inline code block
   description: Most basic inline code block

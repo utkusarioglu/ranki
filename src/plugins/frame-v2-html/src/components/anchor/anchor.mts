@@ -3,6 +3,9 @@ import { transformers } from "./transformers.mjs";
 
 export interface HtmlPrimitiveAnchorComponentConfig {
   default: {
+    link: {
+      placeholder: string;
+    };
     attribute: {
       href: string;
       target: string;
@@ -40,8 +43,11 @@ export const frameV2AnchorComponent: IDqmComponent<HtmlPrimitiveAnchorComponentC
         ],
         component: {
           default: {
+            link: {
+              placeholder: "https://www.%.com",
+            },
             attribute: {
-              href: "https://www.google.com",
+              href: "",
               target: "_blank",
             },
           },

@@ -69,6 +69,8 @@ export type RenderNode = {
   element: HTMLElement | DocumentFragment | Text;
   css?: RenderNodeCssSpec[];
   getMount?: () => HTMLElement;
+  // DECIDE this is relevant for external ui tools but it has no use for render units
+  subtree?: Record<string, () => HTMLElement>;
   afterMount?: RenderNodeOnMountCallback[];
   beforeUnmount?: RenderNodeOnUnmountCallback[];
 };

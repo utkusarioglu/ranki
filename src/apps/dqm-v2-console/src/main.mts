@@ -6,6 +6,7 @@ import baseV2 from "@dqm/plugin-base-v2";
 import frameV2 from "@dqm/plugin-frame-v2";
 import paramsV2 from "@dqm/plugin-params-v2";
 import frameV2Code from "@dqm/plugin-frame-v2-code";
+import frameV2Audio from "@dqm/plugin-frame-v2-audio";
 import staticRenderer from "@dqm/plugin-static-render-engine";
 import yaml from "yaml";
 import { sanitizeSingle } from "./sanitize.mjs";
@@ -35,7 +36,7 @@ export function main(raw: string) {
         },
       },
     ],
-    [staticRenderer, baseV2, frameV2, paramsV2, frameV2Code],
+    [staticRenderer, baseV2, frameV2, paramsV2, frameV2Code, frameV2Audio],
   );
   try {
     const res = dqm.parse(raw);

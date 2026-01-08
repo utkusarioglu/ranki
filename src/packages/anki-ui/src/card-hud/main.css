@@ -1,0 +1,112 @@
+anki-hud {
+  display: inline-block;
+  color: #ccc;
+  font-size: 0.9rem;
+
+  &.container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    gap: 0.5em;
+    padding-top: 0.5em;
+    padding-inline: 0.5em;
+    overflow: hidden;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-x: scroll;
+
+    &::-webkit-scrollbar {
+      appearance: none;
+    }
+    &::-webkit-scrollbar-track {
+      height: 1px;
+    }
+
+    /* &.error-level-none {
+      background-image: linear-gradient(#003333ff, #00000000 70%);
+    } */
+
+    &.error-level-warning {
+      background-image: linear-gradient(#555500ff, #00000000 70%);
+    }
+    &.error-level-error {
+      background-image: linear-gradient(#550000ff, #00000000 70%);
+    }
+  }
+
+  &.flex,
+  &.review,
+  &.exposed,
+  &.parser,
+  &.address {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  &.scroller {
+    display: flex;
+    gap: 0.5em;
+  }
+
+  &.card {
+    display: flex;
+  }
+
+  /* &.bordered {
+    border: 1px solid gray;
+  } */
+
+  &.full-padding {
+    padding: 0.5em 0.6em;
+  }
+
+  &.outer-padding {
+    padding: 0.25em 0.3em;
+  }
+
+  &.half-padding {
+    padding: 0.25em 0.4em;
+  }
+  &.inline-padding {
+    padding-inline: 0.25em;
+  }
+
+  &.tags {
+    display: flex;
+    gap: 0.4em;
+  }
+
+  &.fill-1 {
+    background-color: #151515;
+  }
+
+  &.fill-2 {
+    background-color: #202020;
+  }
+
+  &.color-2 {
+    color: #999;
+  }
+
+  &.curved-1 {
+    border-radius: 0.5em;
+    overflow: hidden;
+  }
+
+  &.curved-2 {
+    border-radius: 0.3em;
+    overflow: hidden;
+  }
+
+  &.smaller {
+    font-size: 0.7em;
+    padding-block: 0;
+  }
+
+  &.flag-type-1 {
+    background-color: #55000055;
+  }
+}

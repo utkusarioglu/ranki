@@ -5,7 +5,8 @@ export const staticRenderer: IDqmPluginRenderEngine = {
   type: "render-engine",
   meta: {
     name: "DqmStaticRenderer",
-    description: "A simple, stateless rendering engine",
+    description:
+      "Stateless rendering engine for fire-and-forget environments such as blog posts and Anki.",
     version: "0.0.0",
   },
   engine: DqmStaticRenderer,

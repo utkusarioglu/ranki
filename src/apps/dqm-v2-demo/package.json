@@ -15,6 +15,7 @@
     "@dqm/package-dqm-v2": "workspace:^",
     "@dqm/plugin-base-v2": "workspace:^",
     "@dqm/plugin-frame-v2": "workspace:^",
+    "@dqm/plugin-frame-v2-audio": "workspace:^",
     "@dqm/plugin-frame-v2-code": "workspace:^",
     "@dqm/plugin-frame-v2-html": "workspace:^",
     "@dqm/plugin-params-v2": "workspace:^",
