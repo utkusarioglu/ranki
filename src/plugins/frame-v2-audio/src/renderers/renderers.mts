@@ -1,5 +1,6 @@
 import type { IDqmPluginRenderer } from "@dqm/package-dqm-api-v2";
 import { tones } from "./tones/tones.mjs";
+import { easyScore } from "./easyscore/easyscore.mjs";
 
 export const renderer: IDqmPluginRenderer = {
   type: "renderer",
@@ -9,5 +10,5 @@ export const renderer: IDqmPluginRenderer = {
     description: "Audio renderers",
     version: "0.0.0",
   },
-  list: [...tones],
+  list: [...tones, ...easyScore],
 };

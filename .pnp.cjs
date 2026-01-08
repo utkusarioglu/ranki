@@ -1891,6 +1891,7 @@ const RAW_RUNTIME_STATE =
           ["ohm-js", "npm:17.2.1"],\
           ["tone", "npm:15.1.22"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vexflow", "npm:5.0.0"],\
           ["vite", "virtual:c6547897edfd46555a9b569db6c14578ad40c524e7e15c3bf4e72892ffbce1642a01ad3874d3b7d6a7fec5b373e598bb21518fc3b71727326030e380ba5224d0#npm:7.2.6"]\
         ],\
         "linkType": "SOFT"\
@@ -12893,6 +12894,15 @@ const RAW_RUNTIME_STATE =
           ["@types/istanbul-lib-coverage", "npm:2.0.6"],\
           ["convert-source-map", "npm:2.0.0"],\
           ["v8-to-istanbul", "npm:9.3.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["vexflow", [\
+      ["npm:5.0.0", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/vexflow-npm-5.0.0-2a0c15dc79-10c0.zip/node_modules/vexflow/",\
+        "packageDependencies": [\
+          ["vexflow", "npm:5.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\

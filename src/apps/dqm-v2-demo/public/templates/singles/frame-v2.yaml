@@ -2,6 +2,19 @@ group: frame-v2
 label: FrameV2
 description: Components powered by FrameV2
 list:
+- id: easyscore-basic
+  label: EasyScore
+  description: Basic EasyScore content
+  raw: |
+    before
+
+    [easyscore
+    C#5/q, B4, A4, G#4; up
+    C#4/h, C#4; down
+    ]
+
+    after
+
 - id: pause-test
   label: Pause Test
   description: Paused code + anchor

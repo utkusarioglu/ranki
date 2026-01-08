@@ -12,3 +12,13 @@ declare module "*.html?raw" {
   const html: string;
   export default html;
 }
+
+declare module "*.txt?raw" {
+  const html: string;
+  export default html;
+}
+
+declare module "*.dqm?raw" {
+  const html: string;
+  export default html;
+}

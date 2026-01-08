@@ -1,5 +1,6 @@
 import type { IDqmPluginComponentSet } from "@dqm/package-dqm-api-v2";
-import { tones } from "./tones/tones.mjs";
+import { tones } from "./tones/component.mjs";
+import { easyScore } from "./easyscore/component.mjs";
 
 export const frameV2Tones: IDqmPluginComponentSet = {
   type: "component-set",
@@ -8,5 +9,5 @@ export const frameV2Tones: IDqmPluginComponentSet = {
     version: "0.0.0",
     description: "Audio components",
   },
-  list: [tones],
+  list: [tones, easyScore],
 };
