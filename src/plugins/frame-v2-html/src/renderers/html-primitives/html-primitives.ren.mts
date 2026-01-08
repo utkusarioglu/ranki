@@ -11,7 +11,6 @@ export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
   },
   list: [
     {
-      // load: "sync",
       chain: ["html", "primitive", "anchor", "container"],
       sync: (ser, pref, { parent }) => {
         const assertParent: Assertions["parent"] = parent;
@@ -26,10 +25,11 @@ export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
         element.style.padding = "2px";
         element.style.backgroundColor =
           pref.scheme === "dark" ? "#000" : "#FFF";
+        element.style.display = "inline-block";
         element.style.color = "#00F";
 
         element.addEventListener("mouseenter", () => {
-          element.style.scale = "1.5";
+          element.style.scale = "2";
         });
         element.addEventListener("mouseleave", () => {
           element.style.scale = "1";
@@ -41,7 +41,6 @@ export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
       },
     },
     {
-      // load: "sync",
       chain: ["html", "primitive", "anchor", "payload"],
       sync: (ser, _pref, { leaf }) => {
         const assertLeaf: Assertions["leaf"] = leaf;
