@@ -12,6 +12,7 @@
     "@dqm/plugin-frame-v2": "workspace:^",
     "@ranki/package-anki-ui": "workspace:^",
     "tone": "15.1.22",
+    "vexchords": "^1.2.0",
     "vexflow": "^5.0.0"
   },
   "devDependencies": {
