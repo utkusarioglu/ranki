@@ -54,16 +54,31 @@ export default defineConfig({
             );
           }
 
-          console.log(
-            [
+          console.log("");
+
+          const templates = ["A", "B"]
+            .map(
+              (face) => [
+                chalk.gray(`Html Template ${face}:`),
+                fs
+                  .readFileSync(path.join(OUT_DIR, TEMPLATE_FILE))
+                  .toString()
+                  .replace("%FACE%", face),
+              ],
               "",
-              chalk.gray("Html Template:"),
-              fs.readFileSync(path.join(OUT_DIR, TEMPLATE_FILE)),
-              // "",
-              // chalk.gray("Css Template:")
-              // ""
-            ].join("\n"),
-          );
+            )
+            .flat()
+            .join("\n");
+          console.log(templates);
+          // console.log(
+          //   [
+          //     chalk.gray("Html Template:"),
+          //     fs.readFileSync(path.join(OUT_DIR, TEMPLATE_FILE)),
+          //     // "",
+          //     // chalk.gray("Css Template:")
+          //     // ""
+          //   ].join("\n"),
+          // );
         }, 3000);
       },
     },

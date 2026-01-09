@@ -1,17 +1,11 @@
-<data class="ranki-v2-input front">{{A}}</data>
-<data class="ranki-v2-input back">{{B}}</data>
-<script>
-  window.ranki = {
-    version: "v2",
-    metadata: {
-      deck: `{{Deck}}`,
-      subdeck: `{{Subdeck}}`,
-      tags: `{{Tags}}`,
-      type: `{{Type}}`,
-      flag: `{{CardFlag}}`,
-      card: `{{Card}}`,
-    }
-  }
-</script>
-<script type="module" src="/src/main.mts">hi</script>
-<div id="ranki-v2-root">hi</div>
+<data class="ranki-v2-input A">{{A}}</data>
+<data class="ranki-v2-input B">{{B}}</data>
+<data class="ranki-v2-data deck">{{Deck}}</data>
+<data class="ranki-v2-data face">%FACE%</data>
+<data class="ranki-v2-data subdeck">{{Subdeck}}</data>
+<data class="ranki-v2-data tags">{{Tags}}</data>
+<data class="ranki-v2-data type">{{Type}}</data>
+<data class="ranki-v2-data flag">{{CardFlag}}</data>
+<data class="ranki-v2-data card">{{Card}}</data>
+<script type="module" src="/src/main.mts"></script>
+<div id="ranki-v2-root"></div>
