@@ -27,6 +27,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/apps/ranki-v1"\
     },\
     {\
+      "name": "@ranki/app-ranki-v2",\
+      "reference": "workspace:src/apps/ranki-v2"\
+    },\
+    {\
       "name": "@ranki/config-typescript",\
       "reference": "workspace:src/config/typescript"\
     },\
@@ -112,6 +116,7 @@ const RAW_RUNTIME_STATE =
     ["@dqm/plugin-static-render-engine", ["workspace:src/plugins/static-render-engine"]],\
     ["@ranki/app-dqm-v2-console", ["workspace:src/apps/dqm-v2-console"]],\
     ["@ranki/app-ranki-v1", ["workspace:src/apps/ranki-v1"]],\
+    ["@ranki/app-ranki-v2", ["workspace:src/apps/ranki-v2"]],\
     ["@ranki/config-typescript", ["workspace:src/config/typescript"]],\
     ["@ranki/package-anki-ui", ["workspace:src/packages/anki-ui"]],\
     ["@ranki/root", ["workspace:."]]\
@@ -3411,6 +3416,20 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
+    ["@ranki/app-ranki-v2", [\
+      ["workspace:src/apps/ranki-v2", {\
+        "packageLocation": "./src/apps/ranki-v2/",\
+        "packageDependencies": [\
+          ["@ranki/app-ranki-v2", "workspace:src/apps/ranki-v2"],\
+          ["@types/node", "npm:25.0.3"],\
+          ["chalk", "npm:5.6.2"],\
+          ["typescript", "patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"],\
+          ["vite", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:7.2.6"],\
+          ["yaml", "npm:2.8.2"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
     ["@ranki/config-typescript", [\
       ["workspace:src/config/typescript", {\
         "packageLocation": "./src/config/typescript/",\
@@ -6162,6 +6181,14 @@ const RAW_RUNTIME_STATE =
           ["undici-types", "npm:7.10.0"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:25.0.3", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@types-node-npm-25.0.3-b5e8cb0cae-10c0.zip/node_modules/@types/node/",\
+        "packageDependencies": [\
+          ["@types/node", "npm:25.0.3"],\
+          ["undici-types", "npm:7.16.0"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["@types/prismjs", [\
@@ -7494,6 +7521,13 @@ const RAW_RUNTIME_STATE =
           ["ansi-styles", "npm:4.3.0"],\
           ["chalk", "npm:4.1.2"],\
           ["supports-color", "npm:7.2.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:5.6.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/chalk-npm-5.6.2-ecbd482482-10c0.zip/node_modules/chalk/",\
+        "packageDependencies": [\
+          ["chalk", "npm:5.6.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -13908,6 +13942,64 @@ const RAW_RUNTIME_STATE =
           ["tinyglobby", "npm:0.2.15"],\
           ["tsx", null],\
           ["vite", "virtual:40d88c8d55d9d9d450a43649aa913b3fbe3c87a45d12d75f9bd094a11acd7b185ccc11d809f9571300d383373ef0dfe8d5b6ea383b4915230e838d5d88094de1#npm:7.2.6"],\
+          ["yaml", "npm:2.8.2"]\
+        ],\
+        "packagePeers": [\
+          "@types/jiti",\
+          "@types/less",\
+          "@types/lightningcss",\
+          "@types/node",\
+          "@types/sass-embedded",\
+          "@types/sass",\
+          "@types/stylus",\
+          "@types/sugarss",\
+          "@types/terser",\
+          "@types/tsx",\
+          "@types/yaml",\
+          "jiti",\
+          "less",\
+          "lightningcss",\
+          "sass-embedded",\
+          "sass",\
+          "stylus",\
+          "sugarss",\
+          "terser",\
+          "tsx",\
+          "yaml"\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:7.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/vite-virtual-44226bb90a/2/home/dev/.yarn/berry/cache/vite-npm-7.2.6-ad61dd907f-10c0.zip/node_modules/vite/",\
+        "packageDependencies": [\
+          ["@types/jiti", null],\
+          ["@types/less", null],\
+          ["@types/lightningcss", null],\
+          ["@types/node", "npm:25.0.3"],\
+          ["@types/sass", null],\
+          ["@types/sass-embedded", null],\
+          ["@types/stylus", null],\
+          ["@types/sugarss", null],\
+          ["@types/terser", null],\
+          ["@types/tsx", null],\
+          ["@types/yaml", null],\
+          ["esbuild", "npm:0.25.8"],\
+          ["fdir", "virtual:0e783aadbd2b4b8e6f6056033c0b290501892d23bc7c5dad5477e00e48ad8bd3e4434c3962a52dd75a58e06dbb7218094a494bac954ef2f7f6fdb65d9717e5f4#npm:6.5.0"],\
+          ["fsevents", "patch:fsevents@npm%3A2.3.3#optional!builtin<compat/fsevents>::version=2.3.3&hash=df0bf1"],\
+          ["jiti", null],\
+          ["less", null],\
+          ["lightningcss", null],\
+          ["picomatch", "npm:4.0.3"],\
+          ["postcss", "npm:8.5.6"],\
+          ["rollup", "npm:4.53.3"],\
+          ["sass", null],\
+          ["sass-embedded", null],\
+          ["stylus", null],\
+          ["sugarss", null],\
+          ["terser", null],\
+          ["tinyglobby", "npm:0.2.15"],\
+          ["tsx", null],\
+          ["vite", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:7.2.6"],\
           ["yaml", "npm:2.8.2"]\
         ],\
         "packagePeers": [\

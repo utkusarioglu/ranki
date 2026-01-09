@@ -2282,6 +2282,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@ranki/app-ranki-v2@workspace:src/apps/ranki-v2":
+  version: 0.0.0-use.local
+  resolution: "@ranki/app-ranki-v2@workspace:src/apps/ranki-v2"
+  dependencies:
+    "@types/node": "npm:^25.0.3"
+    chalk: "npm:^5.6.2"
+    typescript: "npm:~5.9.3"
+    vite: "npm:^7.2.4"
+    yaml: "npm:^2.8.2"
+  languageName: unknown
+  linkType: soft
+
 "@ranki/config-typescript@workspace:^, @ranki/config-typescript@workspace:src/config/typescript":
   version: 0.0.0-use.local
   resolution: "@ranki/config-typescript@workspace:src/config/typescript"
@@ -4107,6 +4119,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^25.0.3":
+  version: 25.0.3
+  resolution: "@types/node@npm:25.0.3"
+  dependencies:
+    undici-types: "npm:~7.16.0"
+  checksum: 10c0/b7568f0d765d9469621615e2bb257c7fd1953d95e9acbdb58dffb6627a2c4150d405a4600aa1ad8a40182a94fe5f903cafd3c0a2f5132814debd0e3bfd61f835
+  languageName: node
+  linkType: hard
+
 "@types/prismjs@npm:^1":
   version: 1.26.5
   resolution: "@types/prismjs@npm:1.26.5"
@@ -5102,6 +5123,13 @@ __metadata:
     ansi-styles: "npm:^4.1.0"
     supports-color: "npm:^7.1.0"
   checksum: 10c0/4a3fef5cc34975c898ffe77141450f679721df9dde00f6c304353fa9c8b571929123b26a0e4617bde5018977eb655b31970c297b91b63ee83bb82aeb04666880
+  languageName: node
+  linkType: hard
+
+"chalk@npm:^5.6.2":
+  version: 5.6.2
+  resolution: "chalk@npm:5.6.2"
+  checksum: 10c0/99a4b0f0e7991796b1e7e3f52dceb9137cae2a9dfc8fc0784a550dc4c558e15ab32ed70b14b21b52beb2679b4892b41a0aa44249bcb996f01e125d58477c6976
   languageName: node
   linkType: hard
 
