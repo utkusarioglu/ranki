@@ -7,6 +7,9 @@ import { examples } from "./examples/examples.mjs";
 
 interface ComponentType extends IComponentCustomizationConfig {
   default: {
+    language: {
+      name: string;
+    };
     prettier: {
       auto_format: boolean;
     };
@@ -43,6 +46,9 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
       ],
       component: {
         default: {
+          language: {
+            name: "</>",
+          },
           prettier: {
             auto_format: true,
           },
@@ -77,8 +83,17 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
         ],
       },
       default: {
-        positionals: [["prettier", "auto_format"]],
+        positionals: [
+          ["language", "name"],
+          ["prettier", "auto_format"],
+        ],
         params: [
+          {
+            id: {
+              chain: ["language", "name"],
+              aliases: ["l"],
+            },
+          },
           {
             id: {
               chain: ["prettier", "auto_format"],

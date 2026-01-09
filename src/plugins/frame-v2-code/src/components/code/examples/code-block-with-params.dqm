@@ -1,3 +1,4 @@
-[code, prettier.auto_format=true
-hi,,PAUSED!,,hello
+[code, python
+def hello():
+  print "world"
 ]

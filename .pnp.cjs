@@ -75,6 +75,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/plugins/params-v2"\
     },\
     {\
+      "name": "@dqm/plugin-sre-code",\
+      "reference": "workspace:src/plugins/sre-code"\
+    },\
+    {\
       "name": "@dqm/plugin-sre-music",\
       "reference": "workspace:src/plugins/sre-music"\
     },\
@@ -102,6 +106,7 @@ const RAW_RUNTIME_STATE =
     ["@dqm/plugin-frame-v2-code", ["workspace:src/plugins/frame-v2-code"]],\
     ["@dqm/plugin-frame-v2-html", ["workspace:src/plugins/frame-v2-html"]],\
     ["@dqm/plugin-params-v2", ["workspace:src/plugins/params-v2"]],\
+    ["@dqm/plugin-sre-code", ["workspace:src/plugins/sre-code"]],\
     ["@dqm/plugin-sre-music", ["workspace:src/plugins/sre-music"]],\
     ["@dqm/plugin-sre-osmd", ["workspace:src/plugins/sre-osmd"]],\
     ["@dqm/plugin-static-render-engine", ["workspace:src/plugins/static-render-engine"]],\
@@ -1762,6 +1767,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/plugin-frame-v2-code", "workspace:src/plugins/frame-v2-code"],\
           ["@dqm/plugin-frame-v2-html", "workspace:src/plugins/frame-v2-html"],\
           ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
+          ["@dqm/plugin-sre-code", "workspace:src/plugins/sre-code"],\
           ["@dqm/plugin-sre-music", "workspace:src/plugins/sre-music"],\
           ["@dqm/plugin-sre-osmd", "workspace:src/plugins/sre-osmd"],\
           ["@dqm/plugin-static-render-engine", "workspace:src/plugins/static-render-engine"],\
@@ -1951,6 +1957,25 @@ const RAW_RUNTIME_STATE =
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["concurrently", "npm:9.2.1"],\
           ["ohm-js", "npm:17.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vite", "virtual:c6547897edfd46555a9b569db6c14578ad40c524e7e15c3bf4e72892ffbce1642a01ad3874d3b7d6a7fec5b373e598bb21518fc3b71727326030e380ba5224d0#npm:7.2.6"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@dqm/plugin-sre-code", [\
+      ["workspace:src/plugins/sre-code", {\
+        "packageLocation": "./src/plugins/sre-code/",\
+        "packageDependencies": [\
+          ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["@dqm/package-plugin-utils", "workspace:src/packages/plugin-utils"],\
+          ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
+          ["@dqm/plugin-sre-code", "workspace:src/plugins/sre-code"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
+          ["@types/prismjs", "npm:1.26.5"],\
+          ["concurrently", "npm:9.2.1"],\
+          ["prismjs", "npm:1.30.0"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
           ["vite", "virtual:c6547897edfd46555a9b569db6c14578ad40c524e7e15c3bf4e72892ffbce1642a01ad3874d3b7d6a7fec5b373e598bb21518fc3b71727326030e380ba5224d0#npm:7.2.6"]\
         ],\
@@ -3339,6 +3364,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/plugin-frame-v2-code", "workspace:src/plugins/frame-v2-code"],\
           ["@dqm/plugin-frame-v2-html", "workspace:src/plugins/frame-v2-html"],\
           ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
+          ["@dqm/plugin-sre-code", "workspace:src/plugins/sre-code"],\
           ["@dqm/plugin-sre-music", "workspace:src/plugins/sre-music"],\
           ["@dqm/plugin-sre-osmd", "workspace:src/plugins/sre-osmd"],\
           ["@dqm/plugin-static-render-engine", "workspace:src/plugins/static-render-engine"],\
@@ -6134,6 +6160,15 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@types/node", "npm:24.3.1"],\
           ["undici-types", "npm:7.10.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/prismjs", [\
+      ["npm:1.26.5", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@types-prismjs-npm-1.26.5-5c39951991-10c0.zip/node_modules/@types/prismjs/",\
+        "packageDependencies": [\
+          ["@types/prismjs", "npm:1.26.5"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -11861,6 +11896,15 @@ const RAW_RUNTIME_STATE =
           ["ansi-styles", "npm:5.2.0"],\
           ["pretty-format", "npm:30.0.5"],\
           ["react-is", "npm:18.3.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["prismjs", [\
+      ["npm:1.30.0", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/prismjs-npm-1.30.0-c3c5ff824c-10c0.zip/node_modules/prismjs/",\
+        "packageDependencies": [\
+          ["prismjs", "npm:1.30.0"]\
         ],\
         "linkType": "HARD"\
       }]\
