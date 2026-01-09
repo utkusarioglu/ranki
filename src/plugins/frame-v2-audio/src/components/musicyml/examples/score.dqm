@@ -1,0 +1,35 @@
+score
+
+[musicyml
+score-partwise:
+  part-list:
+    score-part:
+      _attrs:
+        id: guitar
+      part-name: Guitar
+  part:
+    _attrs:
+      id: guitar
+    measure:
+      _attrs:
+        implicit: no
+        number: 1
+      attributes:
+        divisions: 10080
+        key: 
+          fifths: 0
+        time:
+          beats: 4
+          beat-type: 4
+        clef:
+          sign: G
+          line: 2
+        staves: 1
+      note:
+        duration: 10080
+        type: quarter
+        pitch:
+          step: G
+          octave: 4
+        staff: 1
+]

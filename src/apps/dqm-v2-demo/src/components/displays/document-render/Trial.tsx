@@ -6,6 +6,7 @@ import frameV2Code from "@dqm/plugin-frame-v2-code";
 import frameV2Audio from "@dqm/plugin-frame-v2-audio";
 import frameV2Html from "@dqm/plugin-frame-v2-html";
 import sreMusic from "@dqm/plugin-sre-music";
+import sreOsmd from "@dqm/plugin-sre-osmd";
 import staticRender from "@dqm/plugin-static-render-engine";
 import { Dqm } from "@dqm/package-dqm-v2";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
@@ -38,6 +39,7 @@ function dqmOnLoad(
       frameV2Html,
       frameV2Audio,
       sreMusic,
+      sreOsmd,
     ],
   );
   // console.log(doc.querySelector("body"));
