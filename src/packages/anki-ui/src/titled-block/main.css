@@ -1,5 +1,6 @@
 titled-block {
   &.container {
+    position: relative;
     display: block;
     margin-block: 1em;
     padding-block-end: 0.5em;
@@ -28,6 +29,10 @@ titled-block {
 
     &.file-path {
       background-color: #0f0544;
+    }
+
+    &.title {
+      background-color: #344;
     }
   }
 }

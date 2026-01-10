@@ -20,7 +20,15 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "paths": {
+      "@dqm/package-utils": ["../../packages/dqm-utils"]
+    }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../../packages/dqm-utils"
+    }
+  ]
 }

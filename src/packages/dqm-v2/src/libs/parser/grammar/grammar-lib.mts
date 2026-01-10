@@ -36,7 +36,10 @@ export class GrammarLib implements ILibGrammar {
     defaultConfig: DqmConfig,
   ): DqmGrammarPluginsAggregatedConfig {
     return Object.fromEntries(
-      this.grammars.entries().map(([k, v]) => [k, v.config(defaultConfig)]),
+      Array.from(this.grammars.entries()).map(([k, v]) => [
+        k,
+        v.config(defaultConfig),
+      ]),
     );
   }
 
@@ -123,9 +126,10 @@ export class GrammarLib implements ILibGrammar {
 
   private collectActions(): GrammarActionsDict {
     return Object.fromEntries(
-      this.grammars
-        .values()
-        .map((g) => [Serialize.grammarName(g), g.actions()]),
+      Array.from(this.grammars.values()).map((g) => [
+        Serialize.grammarName(g),
+        g.actions(),
+      ]),
     );
   }
 }

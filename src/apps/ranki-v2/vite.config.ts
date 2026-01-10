@@ -8,6 +8,7 @@ const OUT_DIR = "build";
 const TARGET_DIR = "/target";
 const TEMPLATE_FILE = "template.html";
 const PAD = 15;
+const TARGET = "ES5";
 
 const compose = fs
   .readFileSync("/workdir/.docker/docker-compose.yml")
@@ -20,6 +21,10 @@ const targetPath =
   ).source || chalk.red("Failed to determine");
 
 export default defineConfig({
+  server: {
+    host: true,
+    port: 5000,
+  },
   plugins: [
     {
       name: "post-build-copy",
@@ -84,6 +89,8 @@ export default defineConfig({
     },
   ],
   build: {
+    minify: false,
+    // target: TARGET,
     outDir: OUT_DIR,
     assetsDir: ".",
     rollupOptions: {
@@ -118,6 +125,9 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
+    // esbuildOptions: {
+    //   target: TARGET,
+    // },
     include: [
       // "langium",
       "mathjax-full/js/mathjax.js",

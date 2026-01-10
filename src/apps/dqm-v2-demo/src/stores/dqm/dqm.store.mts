@@ -4,11 +4,33 @@ import type {
   ConfigInput,
   DqmStore,
   DqmStoreState,
+  PluginStoreWrapper,
 } from "./dqm.store.types.mts";
 import { INPUTS, AUTO_UPDATE } from "./dqm.initial.mts";
 import { createDqmParsedProp } from "./dqm.utils.mts";
 import { deferredParseDqmInput } from "./dqm.subscriptions.mts";
-import { pluginSelectionInit } from "./dqm.plugins.mts";
+import { devPluginSelection } from "./dqm.plugins.mts";
+
+export const pluginSelectionInit: PluginStoreWrapper[] = devPluginSelection.map(
+  ({ name, plugin, standard, requested, installed }, packageIndex) => ({
+    name: name,
+    enabled: true,
+    packageIndex,
+    plugins: plugin.map((plugin, pluginIndex) => ({
+      packageIndex,
+      pluginIndex,
+
+      name: plugin.meta.name,
+      description: plugin.meta.description,
+      plugin,
+      pluginType: plugin.type,
+
+      installed,
+      standard,
+      requested,
+    })),
+  }),
+);
 
 const dqmStoreInitial: DqmStoreState = {
   deferParsing: false,

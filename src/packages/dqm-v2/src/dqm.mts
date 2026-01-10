@@ -11,11 +11,8 @@ import type {
   DqmConfig,
   DqmConfigPack,
   DqmParseInput,
-  DqmParseInputString,
   DqmParseInputStructured,
   DqmParseOutput,
-  DqmParseRole,
-  DqmParseTheater,
   DqmSerializeOutput,
   DqmTransformOutput,
   GroupedPluginExamples,
@@ -172,14 +169,3 @@ export class Dqm {
     // console.log("serialized", this.serialized);
   }
 }
-
-// TODO this needs its own module
-// TODO dqm should import all the types necessary for a consumer. The consumer shouldn't have to know about the api package.
-export type {
-  DqmParseTheater,
-  DqmParseRole,
-  DqmParseInput,
-  DqmParseInputString,
-  DqmParseInputStructured,
-  DqmParseOutput,
-};

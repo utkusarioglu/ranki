@@ -1,4 +1,6 @@
 horizontal-scroll {
+  display: block;
+
   &.container {
     --thumb-color: var(--scrollbar-thumb-color, #ff0000);
 

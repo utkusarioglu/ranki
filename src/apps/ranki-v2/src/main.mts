@@ -1,3 +1,21 @@
+// import "core-js/es/array/from";
+// import "core-js/es/map";
+// import "core-js/es/map/iterator";
+
+if (typeof Map !== "undefined") {
+  // @ts-expect-error
+  const orig = Map.prototype.values;
+  // @ts-expect-error
+  Map.prototype.values = function () {
+    // @ts-expect-error
+    const out = [];
+    this.forEach((v) => out.push(v));
+    // @ts-expect-error
+    return out;
+  };
+}
+
+import { doDqm } from "./do-dqm.mts";
 import "./style.css";
 
 function onReady(fn: any) {
@@ -51,17 +69,28 @@ function main() {
   root.appendChild(hud);
 
   // @ts-expect-error
-  const faces: string[] = FACE_ASSIGNMENTS[data.face];
+  const selectedFaces: string[] = FACE_ASSIGNMENTS[data.face];
 
-  faces.forEach((f) => {
-    const selector = [INPUT_SELECTOR, f].join(".");
-    console.log("s", selector);
+  const inputs = selectedFaces.map((face) => {
+    const selector = [INPUT_SELECTOR, face].join(".");
     const r = document.querySelector(selector)!;
-    const container = document.createElement("div");
-    container.classList.add("face");
-    container.innerText = r.innerHTML;
-    root.appendChild(container);
+    return { theater: face, dqm: r.innerHTML };
   });
+
+  const content = document.createElement("div");
+  content.classList.add("ranki-v2-content");
+  root.appendChild(content);
+
+  const faces = Object.fromEntries(
+    selectedFaces.map((f) => {
+      const container = document.createElement("div");
+      container.classList.add("face");
+      content.appendChild(container);
+      return [f, container];
+    }),
+  );
+
+  doDqm(inputs, faces, { scheme: "dark" });
 
   root.classList.add(RENDERED_SELECTOR);
 }

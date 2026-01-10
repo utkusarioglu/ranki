@@ -822,6 +822,7 @@ __metadata:
     "@dqm/plugin-frame-v2": "workspace:^"
     "@dqm/plugin-frame-v2-audio": "workspace:^"
     "@dqm/plugin-frame-v2-code": "workspace:^"
+    "@dqm/plugin-frame-v2-debug": "workspace:^"
     "@dqm/plugin-frame-v2-html": "workspace:^"
     "@dqm/plugin-params-v2": "workspace:^"
     "@dqm/plugin-sre-code": "workspace:^"
@@ -956,6 +957,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@dqm/plugin-frame-v2-debug@workspace:^, @dqm/plugin-frame-v2-debug@workspace:src/plugins/frame-v2-debug":
+  version: 0.0.0-use.local
+  resolution: "@dqm/plugin-frame-v2-debug@workspace:src/plugins/frame-v2-debug"
+  dependencies:
+    "@dqm/package-dqm-api-v2": "workspace:^"
+    "@dqm/package-plugin-utils": "workspace:^"
+    "@dqm/plugin-frame-v2": "workspace:^"
+    "@ranki/config-typescript": "workspace:^"
+    concurrently: "npm:^9.2.1"
+    typescript: "npm:^5.8.3"
+    vite: "npm:^7.2.2"
+  languageName: unknown
+  linkType: soft
+
 "@dqm/plugin-frame-v2-html@workspace:^, @dqm/plugin-frame-v2-html@workspace:src/plugins/frame-v2-html":
   version: 0.0.0-use.local
   resolution: "@dqm/plugin-frame-v2-html@workspace:src/plugins/frame-v2-html"
@@ -1065,9 +1080,13 @@ __metadata:
     "@dqm/package-dqm-api-v2": "workspace:^"
     "@dqm/package-plugin-utils": "workspace:^"
     "@ranki/config-typescript": "workspace:^"
+    "@ranki/package-anki-ui": "workspace:^"
+    "@types/prismjs": "npm:^1"
     concurrently: "npm:^9.2.1"
+    prismjs: "npm:^1.30.0"
     typescript: "npm:^5.8.3"
     vite: "npm:^7.2.2"
+    yaml: "npm:^2.8.2"
   languageName: unknown
   linkType: soft
 
@@ -2286,8 +2305,22 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ranki/app-ranki-v2@workspace:src/apps/ranki-v2"
   dependencies:
+    "@dqm/package-dqm-utils": "workspace:^"
+    "@dqm/package-dqm-v2": "workspace:^"
+    "@dqm/plugin-base-v2": "workspace:^"
+    "@dqm/plugin-frame-v2": "workspace:^"
+    "@dqm/plugin-frame-v2-audio": "workspace:^"
+    "@dqm/plugin-frame-v2-code": "workspace:^"
+    "@dqm/plugin-frame-v2-debug": "workspace:^"
+    "@dqm/plugin-frame-v2-html": "workspace:^"
+    "@dqm/plugin-params-v2": "workspace:^"
+    "@dqm/plugin-sre-code": "workspace:^"
+    "@dqm/plugin-sre-music": "workspace:^"
+    "@dqm/plugin-sre-osmd": "workspace:^"
+    "@dqm/plugin-static-render-engine": "workspace:^"
     "@types/node": "npm:^25.0.3"
     chalk: "npm:^5.6.2"
+    core-js: "npm:^3.47.0"
     typescript: "npm:~5.9.3"
     vite: "npm:^7.2.4"
     yaml: "npm:^2.8.2"
@@ -5388,6 +5421,13 @@ __metadata:
   version: 2.0.0
   resolution: "cookie-es@npm:2.0.0"
   checksum: 10c0/3b2459030a5ad2bc715aeb27a32f274340670bfc5031ac29e1fba804212517411bb617880d3fe66ace2b64dfb28f3049e2d1ff40d4bec342154ccdd124deaeaa
+  languageName: node
+  linkType: hard
+
+"core-js@npm:^3.47.0":
+  version: 3.47.0
+  resolution: "core-js@npm:3.47.0"
+  checksum: 10c0/9b1a7088b7c660c7b8f1d4c90bb1816a8d5352ebdcb7bc742e3a0e4eb803316b5aa17bacb8769522342196351a5430178f46914644f2bfdb94ce0ced3c7fd523
   languageName: node
   linkType: hard
 

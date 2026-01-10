@@ -13,6 +13,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* *,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+} */
+
 #ranki-v2-root {
   contain: layout paint style;
   position: fixed;
@@ -26,14 +33,22 @@
   background-color: #000;
 }
 
+.ranki-v2-content {
+  max-height: 100%;
+  max-width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  touch-action: pan-y;
+}
+
 .ranki-v2-input {
   display: none;
 }
 
 .face {
   margin-bottom: 1em;
-  padding: 1em;
-  background-color: #223;
+  /* padding: 1em;
+  background-color: #223; */
 }
 
 .hud {

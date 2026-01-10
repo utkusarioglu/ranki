@@ -71,6 +71,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/plugins/frame-v2-code"\
     },\
     {\
+      "name": "@dqm/plugin-frame-v2-debug",\
+      "reference": "workspace:src/plugins/frame-v2-debug"\
+    },\
+    {\
       "name": "@dqm/plugin-frame-v2-html",\
       "reference": "workspace:src/plugins/frame-v2-html"\
     },\
@@ -108,6 +112,7 @@ const RAW_RUNTIME_STATE =
     ["@dqm/plugin-frame-v2", ["workspace:src/plugins/frame-v2"]],\
     ["@dqm/plugin-frame-v2-audio", ["workspace:src/plugins/frame-v2-audio"]],\
     ["@dqm/plugin-frame-v2-code", ["workspace:src/plugins/frame-v2-code"]],\
+    ["@dqm/plugin-frame-v2-debug", ["workspace:src/plugins/frame-v2-debug"]],\
     ["@dqm/plugin-frame-v2-html", ["workspace:src/plugins/frame-v2-html"]],\
     ["@dqm/plugin-params-v2", ["workspace:src/plugins/params-v2"]],\
     ["@dqm/plugin-sre-code", ["workspace:src/plugins/sre-code"]],\
@@ -1770,6 +1775,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
           ["@dqm/plugin-frame-v2-audio", "workspace:src/plugins/frame-v2-audio"],\
           ["@dqm/plugin-frame-v2-code", "workspace:src/plugins/frame-v2-code"],\
+          ["@dqm/plugin-frame-v2-debug", "workspace:src/plugins/frame-v2-debug"],\
           ["@dqm/plugin-frame-v2-html", "workspace:src/plugins/frame-v2-html"],\
           ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
           ["@dqm/plugin-sre-code", "workspace:src/plugins/sre-code"],\
@@ -1935,6 +1941,22 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
+    ["@dqm/plugin-frame-v2-debug", [\
+      ["workspace:src/plugins/frame-v2-debug", {\
+        "packageLocation": "./src/plugins/frame-v2-debug/",\
+        "packageDependencies": [\
+          ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["@dqm/package-plugin-utils", "workspace:src/packages/plugin-utils"],\
+          ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
+          ["@dqm/plugin-frame-v2-debug", "workspace:src/plugins/frame-v2-debug"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["concurrently", "npm:9.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vite", "virtual:c6547897edfd46555a9b569db6c14578ad40c524e7e15c3bf4e72892ffbce1642a01ad3874d3b7d6a7fec5b373e598bb21518fc3b71727326030e380ba5224d0#npm:7.2.6"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
     ["@dqm/plugin-frame-v2-html", [\
       ["workspace:src/plugins/frame-v2-html", {\
         "packageLocation": "./src/plugins/frame-v2-html/",\
@@ -2041,9 +2063,13 @@ const RAW_RUNTIME_STATE =
           ["@dqm/package-plugin-utils", "workspace:src/packages/plugin-utils"],\
           ["@dqm/plugin-static-render-engine", "workspace:src/plugins/static-render-engine"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
+          ["@types/prismjs", "npm:1.26.5"],\
           ["concurrently", "npm:9.2.1"],\
+          ["prismjs", "npm:1.30.0"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
-          ["vite", "virtual:c6547897edfd46555a9b569db6c14578ad40c524e7e15c3bf4e72892ffbce1642a01ad3874d3b7d6a7fec5b373e598bb21518fc3b71727326030e380ba5224d0#npm:7.2.6"]\
+          ["vite", "virtual:40d88c8d55d9d9d450a43649aa913b3fbe3c87a45d12d75f9bd094a11acd7b185ccc11d809f9571300d383373ef0dfe8d5b6ea383b4915230e838d5d88094de1#npm:7.2.6"],\
+          ["yaml", "npm:2.8.2"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -3420,9 +3446,23 @@ const RAW_RUNTIME_STATE =
       ["workspace:src/apps/ranki-v2", {\
         "packageLocation": "./src/apps/ranki-v2/",\
         "packageDependencies": [\
+          ["@dqm/package-dqm-utils", "workspace:src/packages/dqm-utils"],\
+          ["@dqm/package-dqm-v2", "workspace:src/packages/dqm-v2"],\
+          ["@dqm/plugin-base-v2", "workspace:src/plugins/base-v2"],\
+          ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
+          ["@dqm/plugin-frame-v2-audio", "workspace:src/plugins/frame-v2-audio"],\
+          ["@dqm/plugin-frame-v2-code", "workspace:src/plugins/frame-v2-code"],\
+          ["@dqm/plugin-frame-v2-debug", "workspace:src/plugins/frame-v2-debug"],\
+          ["@dqm/plugin-frame-v2-html", "workspace:src/plugins/frame-v2-html"],\
+          ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
+          ["@dqm/plugin-sre-code", "workspace:src/plugins/sre-code"],\
+          ["@dqm/plugin-sre-music", "workspace:src/plugins/sre-music"],\
+          ["@dqm/plugin-sre-osmd", "workspace:src/plugins/sre-osmd"],\
+          ["@dqm/plugin-static-render-engine", "workspace:src/plugins/static-render-engine"],\
           ["@ranki/app-ranki-v2", "workspace:src/apps/ranki-v2"],\
           ["@types/node", "npm:25.0.3"],\
           ["chalk", "npm:5.6.2"],\
+          ["core-js", "npm:3.47.0"],\
           ["typescript", "patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"],\
           ["vite", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:7.2.6"],\
           ["yaml", "npm:2.8.2"]\
@@ -7832,6 +7872,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/dev/.yarn/berry/cache/cookie-es-npm-2.0.0-92eb5b359b-10c0.zip/node_modules/cookie-es/",\
         "packageDependencies": [\
           ["cookie-es", "npm:2.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["core-js", [\
+      ["npm:3.47.0", {\
+        "packageLocation": "./.yarn/unplugged/core-js-npm-3.47.0-cf3c257d1a/node_modules/core-js/",\
+        "packageDependencies": [\
+          ["core-js", "npm:3.47.0"]\
         ],\
         "linkType": "HARD"\
       }]\

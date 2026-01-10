@@ -25,6 +25,9 @@ import { assertArrayNotEmpty } from "@dqm/package-dqm-utils";
 
 export type TCpxRegistry = WeakMap<ICpx, ITCpxNode>;
 
+// BUG payloadless framev2 don't work because tcps expects at least one trn
+// node. so maybe an empty leaf should be pushed for payloadless frames
+
 export class DqmTransformer extends CommonTransports {
   private tCpxRegistry: TCpxRegistry = new WeakMap();
 
