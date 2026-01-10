@@ -5,10 +5,17 @@ import chalk from "chalk";
 import yaml from "yaml";
 
 const OUT_DIR = "build";
-const TARGET_DIR = "/target";
+const DOCKER_TARGET_PATH = "/target";
+// const DEMO_APP_COPY_PATH = "/workdir/src/apps/dqm-v2-demo/public";
+const DEMO_APP_COPY_PATH = "/workdir/src/apps/dqm-v2-demo/src/.ranki-v2";
+const TARGET_DIRS = [DOCKER_TARGET_PATH, DEMO_APP_COPY_PATH];
 const TEMPLATE_FILE = "template.html";
 const PAD = 15;
-const TARGET = "ES5";
+// const TARGET = "ES5";
+
+try {
+  fs.mkdirSync(DEMO_APP_COPY_PATH);
+} catch (e) {}
 
 const compose = fs
   .readFileSync("/workdir/.docker/docker-compose.yml")
@@ -17,7 +24,7 @@ const bind = yaml.parse(compose);
 const targetPath =
   bind.services.dev.volumes.find(
     // @ts-expect-error
-    (v) => v.target === TARGET_DIR,
+    (v) => v.target === DOCKER_TARGET_PATH,
   ).source || chalk.red("Failed to determine");
 
 export default defineConfig({
@@ -46,17 +53,19 @@ export default defineConfig({
               console.log(chalk.gray("Ignoring:".padEnd(PAD)), file.name);
               continue;
             }
-            const source = path.join(OUT_DIR, file.name);
-            const target = path.join(TARGET_DIR, file.name);
-            fs.copyFileSync(source, target);
-            console.log(
-              [
-                chalk.green("Copied:".padEnd(PAD)),
-                source,
-                chalk.gray("=>"),
-                target,
-              ].join(" "),
-            );
+            const sourceAbspath = path.join(OUT_DIR, file.name);
+            TARGET_DIRS.forEach((targetDir) => {
+              const targetAbspath = path.join(targetDir, file.name);
+              fs.copyFileSync(sourceAbspath, targetAbspath);
+              console.log(
+                [
+                  chalk.green("Copied:".padEnd(PAD)),
+                  sourceAbspath,
+                  chalk.gray("=>"),
+                  targetAbspath,
+                ].join(" "),
+              );
+            });
           }
 
           console.log("");

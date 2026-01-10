@@ -20,6 +20,7 @@ export default defineConfig({
       _error: path.join(repoRoot, "src/errors/dqm-demo-error.mts"),
       _utils: path.join(repoRoot, "src/utils"),
       _types: path.join(repoRoot, "src/types"),
+      _ranki_v2: path.join(repoRoot, "src/.ranki-v2"),
     },
   },
   plugins: [

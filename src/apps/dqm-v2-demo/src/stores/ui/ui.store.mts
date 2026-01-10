@@ -5,6 +5,7 @@ import {
   WIDE_LAYOUT_LEFT_MENU_WIDTH_MIN,
   WIDE_LAYOUT_LEFT_MENU_WIDTH_RATIO,
 } from "./ui.store.constants.mts";
+import { getFitting } from "./utils.mts";
 
 /**
  * TODO This doesn't belong here
@@ -26,10 +27,8 @@ export const useUiStore = create<UiStore>((set) => ({
           WIDE_LAYOUT_LEFT_MENU_WIDTH_MIN,
         )
       : window.innerWidth,
-  previewSize: [512, 768],
+  previewSize: getFitting(9 / 16, 50),
   previewScale: 1,
-  // previewWidth: 512,
-  // previewHeight: 768,
 
   setMenuWidth: (menuWidth) => set(() => ({ menuWidth })),
   setMenuOpen: (open: boolean) =>

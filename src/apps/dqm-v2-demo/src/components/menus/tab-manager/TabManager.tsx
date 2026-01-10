@@ -74,9 +74,33 @@ const levels: Level[] = [
       {
         key: "render",
         label: "Render",
-        TabChild: <RenderSettings />,
-        route: "/view/render/document",
+        // TabChild: <RenderSettings />,
+        // route: "/view/render/document",
         icon: <FundProjectionScreenOutlined />,
+        childLevels: [
+          {
+            key: "document",
+            label: "Document",
+            TabChild: <RenderSettings />,
+            route: "/view/render/document",
+            // childLevels: [
+
+            // ],
+
+            // icon: <FundProjectionScreenOutlined />,
+          },
+          {
+            key: "anki-desktop",
+            label: "Anki",
+            TabChild: <RenderSettings />,
+            route: "/view/render/anki-desktop",
+            // childLevels: [
+
+            // ],
+
+            // icon: <FundProjectionScreenOutlined />,
+          },
+        ],
       },
       {
         key: "graph",

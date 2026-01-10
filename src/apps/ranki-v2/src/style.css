@@ -13,6 +13,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* html,
+body,
+#ranki-v2-root {
+  padding: 0 !important;
+  margin: 0 !important;
+} */
 /* *,
 *::before,
 *::after {
@@ -36,9 +42,22 @@
 .ranki-v2-content {
   max-height: 100%;
   max-width: 100%;
-  overflow-y: scroll;
+  overflow-y: overlay;
   overflow-x: hidden;
   touch-action: pan-y;
+
+  &::-webkit-scrollbar {
+    appearance: none;
+    width: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #aba;
+  }
 }
 
 .ranki-v2-input {

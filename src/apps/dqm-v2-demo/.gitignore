@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 /.tanstack
+
+/public/ranki-v2
+/src/.ranki-v2
