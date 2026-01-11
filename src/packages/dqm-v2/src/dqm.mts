@@ -9,7 +9,7 @@ import { Config } from "@dqm/package-dqm-utils";
 import type {
   CommonTransportsConstructorParams,
   DqmConfig,
-  DqmConfigPack,
+  DqmConfigPackPartial,
   DqmParseInput,
   DqmParseInputStructured,
   DqmParseOutput,
@@ -35,7 +35,7 @@ export class Dqm {
   private transformed!: DqmTransformOutput;
   private serialized!: DqmSerializeOutput;
 
-  constructor(configPacks: DqmConfigPack, plugins: IDqmPlugin[]) {
+  constructor(configPacks: DqmConfigPackPartial, plugins: IDqmPlugin[]) {
     Unique.reset();
     this.plugins.addPlugins(plugins);
     this.buildInitialConfig(configPacks);
@@ -46,7 +46,7 @@ export class Dqm {
    * #1 I'm not happy with DEFAULT_CONFIG being mutated twice. Correct config
    * shape would allow defining these values at once
    */
-  private buildInitialConfig(configPacks: DqmConfigPack) {
+  private buildInitialConfig(configPacks: DqmConfigPackPartial) {
     const pluginDefaults =
       this.plugins.getGrammarDefaultConfigs(DEFAULT_CONFIG);
     // #1

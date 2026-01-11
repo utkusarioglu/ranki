@@ -44,7 +44,8 @@ horizontal-scroll {
     padding-inline: 1em;
     scroll-snap-align: start end;
     scroll-snap-stop: always;
-    min-width: 100vw;
+    /* DECIDE this variable comes from ranki. it needs clear naming and purpose */
+    min-width: min(100vw, var(--face-width-min));
     box-sizing: border-box;
   }
 
@@ -74,5 +75,9 @@ horizontal-scroll {
         height: 1px;
       }
     }
+  }
+
+  &.content {
+    min-width: 100vw;
   }
 }

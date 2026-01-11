@@ -24,9 +24,15 @@ export const payload: R = {
     h.getMount!().appendChild(pre);
     const span = document.createElement("span");
     code.appendChild(span);
+    const left = h.subtree!.left();
 
     const language = ser.props.component?.default?.language.name || NO_LANGUAGE;
     const raw = ser.source.replace(/^[\r\n]+|[\r\n]+$/g, "");
+
+    left.innerHTML = Array(raw.split("\n").length)
+      .fill(null)
+      .map((_, i) => (i + 1).toString().padStart(3, " "))
+      .join("<br>");
 
     const highlighted =
       language === NO_LANGUAGE

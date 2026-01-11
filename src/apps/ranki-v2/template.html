@@ -1,11 +1,21 @@
-<data class="ranki-v2-input A">{{A}}</data>
-<data class="ranki-v2-input B">{{B}}</data>
-<data class="ranki-v2-data deck">{{Deck}}</data>
-<data class="ranki-v2-data face">%FACE%</data>
-<data class="ranki-v2-data subdeck">{{Subdeck}}</data>
-<data class="ranki-v2-data tags">{{Tags}}</data>
-<data class="ranki-v2-data type">{{Type}}</data>
-<data class="ranki-v2-data flag">{{CardFlag}}</data>
-<data class="ranki-v2-data card">{{Card}}</data>
+<script class="ranki-v2-data face">{{FACE}}</script>
+
+<script class="ranki-v2-input A">{{A}}</script>
+<script class="ranki-v2-input B">{{B}}</script>
+
+<script class="ranki-v2-data deck" type="text/plain">{{Deck}}</script>
+<script class="ranki-v2-data subdeck" type="text/plain">{{Subdeck}}</script>
+<script class="ranki-v2-data tags" type="text/plain">{{Tags}}</script>
+<script class="ranki-v2-data type" type="text/plain">{{Type}}</script>
+<script class="ranki-v2-data flag" type="text/plain">{{CardFlag}}</script>
+<script class="ranki-v2-data card" type="text/plain">{{Card}}</script>
+
+<script class="ranki-v2-config template" type="text/yaml">
+{{TEMPLATE_CONFIG}}
+</script>
+<script class="ranki-v2-config card" type="text/yaml">
+{{CardConfig}}
+</script>
+
 <script type="module" src="/src/main.mts"></script>
 <div id="ranki-v2-root"></div>

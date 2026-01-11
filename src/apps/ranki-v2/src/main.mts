@@ -1,23 +1,12 @@
-// import "core-js/es/array/from";
-// import "core-js/es/map";
-// import "core-js/es/map/iterator";
-
-if (typeof Map !== "undefined") {
-  // @ts-expect-error
-  const orig = Map.prototype.values;
-  // @ts-expect-error
-  Map.prototype.values = function () {
-    // @ts-expect-error
-    const out = [];
-    this.forEach((v) => out.push(v));
-    // @ts-expect-error
-    return out;
-  };
-}
-
-import { AnkiUi } from "@ranki/package-anki-ui";
+import "./polyfills.mjs";
 import { doDqm } from "./do-dqm.mts";
 import "./style.css";
+import { cardHud } from "./components/card-hud/main.mts";
+import { collectData } from "./collect/collect.mts";
+import { cardContent } from "./components/card-content/card-content.mts";
+import { createGeneralError } from "./components/general-error/general-error.mts";
+import { RankiAppError } from "./error.mts";
+import { DQM_BASE_CONFIG } from "./constants.mts";
 
 function onReady(fn: any) {
   if (document.readyState === "loading") {
@@ -34,119 +23,77 @@ function onReady(fn: any) {
   }
 }
 
-const DATA_SELECTOR = "data.ranki-v2-data";
-const INPUT_SELECTOR = "data.ranki-v2-input";
 const ROOT_SELECTOR = "#ranki-v2-root";
 const RENDERED_SELECTOR = "ranki-rendered";
 
-const FACE_ASSIGNMENTS = { A: ["A"], B: ["A", "B"] };
-
 /**
  * @dev
- * #1 Basically the theater needs to be the last class name
+ * #1 DECIDE THis is below data collection because there may be a hash involved
+ * in determining whether to render a certain face
  */
 function main() {
-  const root = document.querySelector<HTMLDivElement>(ROOT_SELECTOR);
-  if (!root) {
-    // REPLACE
-    throw new Error("no root");
-  }
-  if (root.classList.contains(RENDERED_SELECTOR)) {
-    return;
-  }
-  root.innerHTML = "";
-  const dataElems = document.querySelectorAll(DATA_SELECTOR);
-  const data = Object.fromEntries(
-    Array.from(dataElems).map((data) => [
-      data.className.split(" ").at(-1)!.trim(), // #1
-      data.innerHTML,
-    ]),
-  );
-  console.log("data", data);
-  const RANKI_TAG_INDICATOR = "+R2-";
-
-  const tagsArr = data.tags
-    .trim()
-    .split(" ")
-    .filter((v) => v.length);
-  const rankiTags: string[] = [];
-  const neutralTags: string[] = [];
-  let marked = false;
-  tagsArr.forEach((t) => {
-    if (t.startsWith(RANKI_TAG_INDICATOR)) {
-      rankiTags.push(t);
-    } else if (t === "marked") {
-      marked = true;
-    } else {
-      neutralTags.push(t);
+  try {
+    const root = document.querySelector<HTMLDivElement>(ROOT_SELECTOR);
+    if (!root) {
+      throw new RankiAppError({
+        code: "NO_ROOT",
+        why: "Cannot render the application without a root in the template",
+        cause: null,
+      });
     }
-  });
-  const address = data.deck.split("::");
-  const hud = AnkiUi.cardHud({
-    order: ["parser", "card", "address", "review", "tags"],
-    parser: {
-      hasReplacements: true,
-      parseMode: "v2",
-      errorLevel: "none",
-    },
-    address: {
-      prefix: ["d"],
-      exposed: address,
-      suffix: [],
-    },
-    tags: neutralTags,
-    review: {
-      marked,
-      flag: {
-        type: "flag1",
-        message: "Outdated",
+    const { data, inputs, selectedFaces, address, neutralTags, marked } =
+      collectData();
+    // #1
+    if (root.classList.contains(RENDERED_SELECTOR)) {
+      return;
+    }
+    root.innerHTML = "";
+
+    const hud = cardHud({
+      order: ["parser", "card", "address", "review", "tags"],
+      parser: {
+        hasReplacements: true,
+        parseMode: "v2",
+        errorLevel: "none",
       },
-    },
-    card: {
-      type: data.type,
-      face: data.face,
-    },
-  });
-  // const hud = document.createElement("div");
-  // hud.classList.add("hud");
-  // hud.innerHTML = [data.deck, data.subdeck, data.type, data.card].join(" ");
-  root.appendChild(hud.element);
-  hud.css?.forEach((c) => {
-    const e = document.createElement("style");
-    e.id = c.id;
-    e.innerHTML = c.css;
-    root.appendChild(e);
-  });
-  // root.appendChild(hud.css)
+      address: {
+        prefix: [],
+        exposed: address,
+        suffix: [],
+      },
+      tags: neutralTags,
+      review: {
+        marked,
+        flag: {
+          type: data.flag,
+          message: "Some message",
+        },
+      },
+      card: {
+        type: data.type,
+        face: data.face,
+      },
+    });
+    // const hud = document.createElement("div");
+    // hud.classList.add("hud");
+    // hud.innerHTML = [data.deck, data.subdeck, data.type, data.card].join(" ");
+    root.appendChild(hud.element);
+    hud.css?.forEach((c) => {
+      const e = document.createElement("style");
+      e.id = c.id;
+      e.innerHTML = c.css;
+      root.appendChild(e);
+    });
 
-  // @ts-expect-error
-  const selectedFaces: string[] = FACE_ASSIGNMENTS[data.face];
+    const { faces } = cardContent(root, selectedFaces);
+    // root.appendChild(hud.css)
 
-  const inputs = selectedFaces.map((face) => {
-    const selector = [INPUT_SELECTOR, face].join(".");
-    const r = document.querySelector(selector)!;
-    return { theater: face, dqm: r.innerHTML };
-  });
+    doDqm(inputs, faces, [DQM_BASE_CONFIG], { scheme: "dark" });
 
-  const content = document.createElement("div");
-  content.classList.add("ranki-v2-content");
-  const faceContainer = document.createElement("div");
-  faceContainer.classList.add("ranki-v2-face-container");
-  content.appendChild(faceContainer);
-  root.appendChild(content);
-
-  const faces = Object.fromEntries(
-    selectedFaces.map((f) => {
-      const container = document.createElement("div");
-      container.classList.add("face");
-      faceContainer.appendChild(container);
-      return [f, container];
-    }),
-  );
-
-  doDqm(inputs, faces, { scheme: "dark" });
-
-  root.classList.add(RENDERED_SELECTOR);
+    root.classList.add(RENDERED_SELECTOR);
+  } catch (e) {
+    createGeneralError(document.body, e);
+  }
 }
 
 onReady(main);

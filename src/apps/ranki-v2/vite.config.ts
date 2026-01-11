@@ -1,5 +1,4 @@
 import { defineConfig } from "vite";
-import path from "path";
 import fs from "node:fs";
 import chalk from "chalk";
 import yaml from "yaml";
@@ -13,6 +12,9 @@ const DEMO_APP_COPY_PATH = "/workdir/src/apps/dqm-v2-demo/public/ranki-v2";
 const TARGET_DIRS = [DOCKER_TARGET_PATH, DEMO_APP_COPY_PATH];
 const TEMPLATE_FILE = "template.html";
 const PAD = 15;
+
+const __abspath = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__abspath);
 // const TARGET = "ES5";
 
 try {
@@ -79,7 +81,11 @@ export default defineConfig({
                 fs
                   .readFileSync(path.join(OUT_DIR, TEMPLATE_FILE))
                   .toString()
-                  .replace("%FACE%", face),
+                  .replace("{{FACE}}", face)
+                  .replace(
+                    "{{TEMPLATE_CONFIG}}",
+                    "# Place your template config here",
+                  ),
               ],
               "",
             )

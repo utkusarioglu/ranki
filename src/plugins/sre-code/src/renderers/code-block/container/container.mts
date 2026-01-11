@@ -35,18 +35,18 @@ export const container: R = {
         ...block.css!,
       ],
       afterMount: [
-        async () => {
-          // await new Promise((r) => setTimeout(r, 1e3));
-          let val = 0;
-          const grow = () => {
-            (block.element as HTMLElement).style.opacity = val.toString();
-            val += 0.01;
-            if (val < 1) {
-              window.requestAnimationFrame(grow);
-            }
-          };
-          window.requestAnimationFrame(grow);
-        },
+        // async () => {
+        //   // await new Promise((r) => setTimeout(r, 1e3));
+        //   let val = 0;
+        //   const grow = () => {
+        //     (block.element as HTMLElement).style.opacity = val.toString();
+        //     val += 0.01;
+        //     if (val < 1) {
+        //       window.requestAnimationFrame(grow);
+        //     }
+        //   };
+        //   window.requestAnimationFrame(grow);
+        // },
       ],
     };
   },

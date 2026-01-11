@@ -1,3 +1,4 @@
+import { createHorizontalScroller } from "../../horizontal-scroller/horizontal-scroller.mts";
 import type { HudProps } from "../main.mjs";
 
 export function createHudContainer(props: HudProps) {
@@ -10,16 +11,4 @@ export function createHudContainer(props: HudProps) {
 
   const scroller = createHorizontalScroller(center);
   return { container, scroller };
-}
-
-function createHorizontalScroller(attach: HTMLElement) {
-  const container = document.createElement("ranki-horizontal-scroller");
-  container.classList.add("container");
-  attach.appendChild(container);
-
-  const scroller = document.createElement("ranki-horizontal-scroller");
-  scroller.classList.add("scroller");
-  container.appendChild(scroller);
-
-  return scroller;
 }

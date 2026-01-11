@@ -77,10 +77,8 @@ interface AnkiDesktopIFrameProps {
   pref: IDqmRendererClientPreferences;
   size: NumberTuple;
   files: RankiFiles;
-  // html: string;
-  // css: string;
-  // js: string;
 }
+
 export const AnkiDesktopIFrame: FC<AnkiDesktopIFrameProps> = ({
   inputs,
   pref,
@@ -89,7 +87,11 @@ export const AnkiDesktopIFrame: FC<AnkiDesktopIFrameProps> = ({
 }) => {
   const ref = useRef<HTMLIFrameElement>(null);
   const replaced = createCardElements(files, {
-    "%FACE%": "A",
+    // These need to be replaced in the demo app
+    "{{FACE}}": "A",
+    "{{TEMPLATE_CONFIG}}": "   ",
+    // These come from anki
+    "{{CardConfig}}": "   ",
     "{{A}}": inputs[0].dqm,
     "{{B}}": "[code|hi]",
     "{{Deck}}": "Tests::Test",

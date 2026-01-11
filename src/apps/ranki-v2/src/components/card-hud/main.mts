@@ -1,4 +1,4 @@
-import type { RenderNode } from "@dqm/package-dqm-api-v2";
+import type { RenderNode } from "@dqm/package-dqm-v2";
 import css from "./main.css?raw";
 import { createParserFeature } from "./features/parser.mjs";
 import { createHudContainer } from "./features/container.mjs";

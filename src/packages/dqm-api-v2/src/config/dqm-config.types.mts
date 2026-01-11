@@ -18,7 +18,12 @@ export type DqmGrammarPluginsAggregatedConfig = Record<string, any>;
 export type DqmPluginVersion = string & { type?: "DqmPluginVersion" };
 
 export type DqmConfigPackEntry = { id: ConfigEntryCode; config: DqmConfig };
+export type DqmConfigPackEntryPartial = {
+  id: ConfigEntryCode;
+  config: DeepPartialSerializable<DqmConfig>;
+};
 export type DqmConfigPack = DqmConfigPackEntry[];
+export type DqmConfigPackPartial = DqmConfigPackEntryPartial[];
 
 export type DqmConfigOnOrphanParam = "fail" | "warn" | "ignore";
 
