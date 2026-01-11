@@ -4,6 +4,7 @@
     "outDir": "lib",
     "rootDir": "src",
     "declarationDir": "types",
+    "skipLibCheck": true,
     "paths": {
       "@dqm/package-dqm-api-v2": ["../../packages/dqm-api-v2/*"],
       "@dqm/package-dqm-utils": ["../../packages/plugin-utils/*"]

@@ -3,10 +3,11 @@ import { AnkiUi } from "@ranki/package-anki-ui";
 import { NO_LANGUAGE, TAGS } from "../constants.mjs";
 import css from "./payload.css?raw";
 import Prism from "prismjs";
+import prismCss from "./prism/prism-atom-dark.css?raw";
 import "prismjs/components/prism-python.js";
 import "prismjs/components/prism-javascript.js";
 import "prismjs/components/prism-typescript.js";
-import prismCss from "./prism/prism-atom-dark.css?raw";
+import "prismjs/components/prism-bash.js";
 
 export const payload: R = {
   chain: [...TAGS, "payload", "block"],

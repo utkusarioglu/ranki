@@ -12,6 +12,7 @@ services:
     init: true
     ports:
       - 5000:5000/tcp
+      - 3000:3000/tcp
     volumes:
       - type: bind
         source: ..

@@ -11,6 +11,9 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --padding-1: 1em;
+  --face-width-min: 500px;
 }
 
 /* html,
@@ -60,12 +63,21 @@ body,
   }
 }
 
+.ranki-v2-face-container {
+  margin-inline: auto;
+  display: grid;
+  width: max-content;
+  min-width: var(--face-width-min);
+  gap: 1em;
+}
+
 .ranki-v2-input {
   display: none;
 }
 
 .face {
   margin-bottom: 1em;
+  max-width: var(--face-width-min);
   /* padding: 1em;
   background-color: #223; */
 }

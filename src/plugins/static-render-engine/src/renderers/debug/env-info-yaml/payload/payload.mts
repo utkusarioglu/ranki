@@ -6,13 +6,12 @@ import Prism from "prismjs";
 import yaml from "yaml";
 import "prismjs/components/prism-yaml.js";
 import prismCss from "./prism/prism-atom-dark.css?raw";
-import { collectEnvironmentInfo2 } from "./collect2.mjs";
+import { collectEnvironmentInfo } from "./collect.mjs";
 
 export const payload: R = {
   chain: [...TAGS, "payload", "block"],
   kind: "leaf",
-  sync: ({ ser, pref }) => {
-    console.log("f", ser.props);
+  sync: ({ pref }) => {
     const element = document.createElement("div");
     const h = AnkiUi.horizontalScroller();
     element.innerText = "(collecting info)";
@@ -44,7 +43,7 @@ export const payload: R = {
           code.appendChild(span);
 
           const language = "yaml";
-          const envInfo = await collectEnvironmentInfo2();
+          const envInfo = await collectEnvironmentInfo();
           const raw = {
             pref,
             envInfo,

@@ -12,9 +12,14 @@ import type {
 import { pluginsAsArray } from "_stores/dqm/dqm.plugins.mjs";
 import type { NumberTuple } from "_stores/ui/ui.store.types.mjs";
 import style from "./AnkiDesktopIFrame.module.css";
-import rankiV2Js from "_ranki_v2/_ranki2.js?raw";
-import rankiV2Css from "_ranki_v2/_ranki2.css?raw";
-import rankiV2Html from "_ranki_v2/template.html?raw";
+import type { RankiFiles } from "./AnkiDesktop";
+// import rankiV2JsUrl from "_ranki_v2/_ranki2.js?url";
+// import rankiV2CssUrl from "_ranki_v2/_ranki2.css?url";
+// import rankiV2HtmlUrl from "_ranki_v2/template.html?url";
+
+// fetch(rankiV2CssUrl)
+//   .then((t) => t.text())
+//   .then((t) => console.log("t", t));
 
 function dqmOnLoad(
   doc: Document,
@@ -24,7 +29,7 @@ function dqmOnLoad(
 ) {
   const a = doc.querySelector<HTMLDivElement>("#A");
   if (!a) {
-    console.log("no luck");
+    // console.log("no luck");
     return;
   }
   const fixedConfig = buildPluginSelectionConfig(pluginSelection);
@@ -35,19 +40,6 @@ function dqmOnLoad(
   dqm.render(inputs, { [inputs[0].theater]: a }, pref);
 }
 
-type Parts = {
-  html: string;
-  js: string;
-  css: string;
-};
-function getRankiFiles(): Parts {
-  return {
-    html: rankiV2Html,
-    js: rankiV2Js,
-    css: rankiV2Css,
-  };
-}
-
 type CardElements = {
   fragment: DocumentFragment;
   html: string;
@@ -56,7 +48,7 @@ type CardElements = {
 };
 
 function createCardElements(
-  parts: Parts,
+  parts: RankiFiles,
   re: Record<string, string>,
 ): CardElements {
   let html = parts.html;
@@ -73,6 +65,7 @@ function createCardElements(
   js.innerHTML = parts.js;
 
   const css = document.createElement("style");
+  // console.log("css", parts.css);
   css.innerHTML = parts.css;
 
   return { fragment, html, js, css };
@@ -83,21 +76,25 @@ interface AnkiDesktopIFrameProps {
   inputs: DqmParseInputStructured;
   pref: IDqmRendererClientPreferences;
   size: NumberTuple;
+  files: RankiFiles;
+  // html: string;
+  // css: string;
+  // js: string;
 }
 export const AnkiDesktopIFrame: FC<AnkiDesktopIFrameProps> = ({
   inputs,
   pref,
   size,
+  files,
 }) => {
   const ref = useRef<HTMLIFrameElement>(null);
-  const parts = getRankiFiles();
-  const replaced = createCardElements(parts, {
+  const replaced = createCardElements(files, {
     "%FACE%": "A",
     "{{A}}": inputs[0].dqm,
     "{{B}}": "[code|hi]",
-    "{{Deck}}": "test",
-    "{{Subdeck}}": "test",
-    "{{Tags}}": "",
+    "{{Deck}}": "Tests::Test",
+    "{{Subdeck}}": "Test",
+    "{{Tags}}": "    ",
     "{{Type}}": "A",
     "{{CardFlag}}": "flag0",
     "{{Card}}": "card",
@@ -117,7 +114,8 @@ export const AnkiDesktopIFrame: FC<AnkiDesktopIFrameProps> = ({
           assertExists(insert, {
             why: "Anki template should have an insertion point",
           });
-          insert.replaceWith(replaced.fragment);
+          // insert.replaceWith(replaced.fragment);
+          // doc.body.appendChild(replaced.fragment);
           doc.body.appendChild(replaced.fragment);
           doc.body.appendChild(replaced.css);
           doc.body.appendChild(replaced.js);

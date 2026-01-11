@@ -22,15 +22,15 @@ interface ComponentType extends IComponentCustomizationConfig {
 // @ts-expect-error
 const PLUGIN_PATH = ["plugins", "config", "grammar:FrameV2"];
 
-export const debugComponent: IDqmComponent<ComponentType> = {
+export const environmentInfoYaml: IDqmComponent<ComponentType> = {
   type: "component",
   meta: {
     id: {
-      chain: ["frame", "v2", "debug", "environment_info"],
+      chain: ["frame", "v2", "debug", "environment_info", "yaml"],
       aliases: [],
     },
     description:
-      "Prints information about the environment of the language instance",
+      "Prints information about the environment of the language instance in yaml format",
     version: "0.0.0",
     examples,
   },

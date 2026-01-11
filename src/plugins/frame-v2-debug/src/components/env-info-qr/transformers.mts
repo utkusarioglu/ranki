@@ -1,6 +1,6 @@
 import type { IDqmComponentTransformFunction as TF } from "@dqm/package-dqm-api-v2";
 
-const TAGS = ["debug", "environment_info"];
+const TAGS = ["debug", "environment_info", "qr"];
 
 const FRAME_V2: TF = (trn) => {
   const direction = trn.getAst().getDirection();

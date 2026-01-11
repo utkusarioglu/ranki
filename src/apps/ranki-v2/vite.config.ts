@@ -3,11 +3,13 @@ import path from "path";
 import fs from "node:fs";
 import chalk from "chalk";
 import yaml from "yaml";
+import url from "node:url";
+import path from "node:path";
 
 const OUT_DIR = "build";
 const DOCKER_TARGET_PATH = "/target";
 // const DEMO_APP_COPY_PATH = "/workdir/src/apps/dqm-v2-demo/public";
-const DEMO_APP_COPY_PATH = "/workdir/src/apps/dqm-v2-demo/src/.ranki-v2";
+const DEMO_APP_COPY_PATH = "/workdir/src/apps/dqm-v2-demo/public/ranki-v2";
 const TARGET_DIRS = [DOCKER_TARGET_PATH, DEMO_APP_COPY_PATH];
 const TEMPLATE_FILE = "template.html";
 const PAD = 15;
@@ -30,7 +32,7 @@ const targetPath =
 export default defineConfig({
   server: {
     host: true,
-    port: 5000,
+    port: 3000,
   },
   plugins: [
     {
@@ -84,16 +86,7 @@ export default defineConfig({
             .flat()
             .join("\n");
           console.log(templates);
-          // console.log(
-          //   [
-          //     chalk.gray("Html Template:"),
-          //     fs.readFileSync(path.join(OUT_DIR, TEMPLATE_FILE)),
-          //     // "",
-          //     // chalk.gray("Css Template:")
-          //     // ""
-          //   ].join("\n"),
-          // );
-        }, 3000);
+        }, 3e3);
       },
     },
   ],

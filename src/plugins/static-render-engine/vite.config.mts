@@ -5,6 +5,16 @@ export default defineConfig({
   define: {
     // ...bundleOhm("2.0.70", "PARAMS_V2", "./src/parsers/params-v2/ohm"),
   },
+  resolve: {
+    // conditions: ["browser", "import", "default"],
+    // @ts-ignore
+    // alias: {
+    //   fs: false,
+    //   path: false,
+    //   stream: false,
+    //   buffer: false,
+    // },
+  },
   build: {
     lib: {
       entry: "src/export.mts",

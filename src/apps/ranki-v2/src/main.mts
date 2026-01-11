@@ -15,6 +15,7 @@ if (typeof Map !== "undefined") {
   };
 }
 
+import { AnkiUi } from "@ranki/package-anki-ui";
 import { doDqm } from "./do-dqm.mts";
 import "./style.css";
 
@@ -62,11 +63,61 @@ function main() {
     ]),
   );
   console.log("data", data);
+  const RANKI_TAG_INDICATOR = "+R2-";
 
-  const hud = document.createElement("div");
-  hud.classList.add("hud");
-  hud.innerHTML = [data.deck, data.subdeck, data.type, data.card].join(" ");
-  root.appendChild(hud);
+  const tagsArr = data.tags
+    .trim()
+    .split(" ")
+    .filter((v) => v.length);
+  const rankiTags: string[] = [];
+  const neutralTags: string[] = [];
+  let marked = false;
+  tagsArr.forEach((t) => {
+    if (t.startsWith(RANKI_TAG_INDICATOR)) {
+      rankiTags.push(t);
+    } else if (t === "marked") {
+      marked = true;
+    } else {
+      neutralTags.push(t);
+    }
+  });
+  const address = data.deck.split("::");
+  const hud = AnkiUi.cardHud({
+    order: ["parser", "card", "address", "review", "tags"],
+    parser: {
+      hasReplacements: true,
+      parseMode: "v2",
+      errorLevel: "none",
+    },
+    address: {
+      prefix: ["d"],
+      exposed: address,
+      suffix: [],
+    },
+    tags: neutralTags,
+    review: {
+      marked,
+      flag: {
+        type: "flag1",
+        message: "Outdated",
+      },
+    },
+    card: {
+      type: data.type,
+      face: data.face,
+    },
+  });
+  // const hud = document.createElement("div");
+  // hud.classList.add("hud");
+  // hud.innerHTML = [data.deck, data.subdeck, data.type, data.card].join(" ");
+  root.appendChild(hud.element);
+  hud.css?.forEach((c) => {
+    const e = document.createElement("style");
+    e.id = c.id;
+    e.innerHTML = c.css;
+    root.appendChild(e);
+  });
+  // root.appendChild(hud.css)
 
   // @ts-expect-error
   const selectedFaces: string[] = FACE_ASSIGNMENTS[data.face];
@@ -79,13 +130,16 @@ function main() {
 
   const content = document.createElement("div");
   content.classList.add("ranki-v2-content");
+  const faceContainer = document.createElement("div");
+  faceContainer.classList.add("ranki-v2-face-container");
+  content.appendChild(faceContainer);
   root.appendChild(content);
 
   const faces = Object.fromEntries(
     selectedFaces.map((f) => {
       const container = document.createElement("div");
       container.classList.add("face");
-      content.appendChild(container);
+      faceContainer.appendChild(container);
       return [f, container];
     }),
   );

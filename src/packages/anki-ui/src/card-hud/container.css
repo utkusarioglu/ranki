@@ -1,0 +1,40 @@
+ranki-hud-container {
+  display: block;
+  color: #ccc;
+  font-size: 0.9rem;
+
+  &.container {
+    --positioning: center;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    gap: 0.5em;
+    padding-top: 0.5em;
+    /* padding-inline: 0.5em; */
+    overflow: hidden;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-x: overlay;
+    justify-content: var(--positioning);
+
+    &.error-level-warning {
+      background-image: linear-gradient(#555500ff, #00000000 70%);
+    }
+    &.error-level-error {
+      background-image: linear-gradient(#550000ff, #00000000 70%);
+    }
+
+    /* &.error-level-none {
+      background-image: linear-gradient(#003333ff, #00000000 70%);
+    } */
+  }
+
+  &.center {
+    /* display: flex; */
+    max-width: 100%;
+    margin-inline: auto;
+  }
+}
