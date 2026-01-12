@@ -1,0 +1,16 @@
+ranki-vertical-scroller {
+  display: block;
+
+  &.container {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: overlay;
+  }
+
+  &.scroller {
+    width: 100%;
+    overflow: hidden;
+    min-height: 100%;
+  }
+}

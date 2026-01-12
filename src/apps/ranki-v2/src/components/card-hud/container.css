@@ -6,10 +6,10 @@ ranki-hud-container {
   &.container {
     --positioning: center;
 
-    position: absolute;
-    top: 0;
+    position: sticky;
+    /* top: 0;
     left: 0;
-    right: 0;
+    right: 0; */
     display: flex;
     gap: 0.5em;
     padding-top: 0.5em;

@@ -106,7 +106,7 @@ export default defineConfig({
           } catch (e) {
             console.log(e);
           }
-        }, 3e3);
+        }, 5e3);
       },
     },
   ],

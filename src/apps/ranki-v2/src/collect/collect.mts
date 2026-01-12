@@ -23,6 +23,7 @@ const FACE_ASSIGNMENTS = { A: ["A"], B: ["A", "B"] };
  * #1 Basically the theater needs to be the last class name
  */
 export function collectData(): DataCollection {
+  console.log("collect start");
   const dataElems = document.querySelectorAll(DATA_SELECTOR);
   // @ts-expect-error
   const data: DataCollection["data"] = Object.fromEntries(

@@ -26,7 +26,7 @@ export const environmentInfoQr: IDqmComponent<ComponentType> = {
   type: "component",
   meta: {
     id: {
-      chain: ["frame", "v2", "debug", "environment_info", "qr"],
+      chain: ["frame", "v2", "debug", "env_info", "qr"],
       aliases: [],
     },
     description:

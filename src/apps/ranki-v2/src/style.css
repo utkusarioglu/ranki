@@ -69,7 +69,7 @@ body,
   margin-inline: auto;
   display: grid;
   width: max-content;
-  min-width: var(--face-width-min);
+  min-width: var(--content-width);
   gap: 1em;
 }
 
@@ -79,7 +79,7 @@ body,
 
 .face {
   margin-bottom: 1em;
-  max-width: var(--face-width-min);
+  max-width: var(--content-width);
   /* padding: 1em;
   background-color: #223; */
 }
@@ -89,4 +89,8 @@ body,
   top: 0;
   left: 0;
   right: 0;
+}
+
+.content-grid {
+  display: grid;
 }
