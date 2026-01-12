@@ -5,6 +5,7 @@ import paramsV2 from "@dqm/plugin-params-v2";
 import frameV2Code from "@dqm/plugin-frame-v2-code";
 import frameV2Audio from "@dqm/plugin-frame-v2-audio";
 import frameV2Html from "@dqm/plugin-frame-v2-html";
+import frameV2Mermaid from "@dqm/plugin-frame-v2-mermaid";
 import sreMusic from "@dqm/plugin-sre-music";
 import frameV2Debug from "@dqm/plugin-frame-v2-debug";
 import sreOsmd from "@dqm/plugin-sre-osmd";
@@ -18,6 +19,7 @@ const pluginsAsObject = {
   frameV2Code,
   frameV2Audio,
   frameV2Html,
+  frameV2Mermaid,
   sreMusic,
   sreOsmd,
   sreCode,

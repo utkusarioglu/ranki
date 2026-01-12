@@ -100,7 +100,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@antfu/install-pkg@npm:^1.0.0":
+"@antfu/install-pkg@npm:^1.0.0, @antfu/install-pkg@npm:^1.1.0":
   version: 1.1.0
   resolution: "@antfu/install-pkg@npm:1.1.0"
   dependencies:
@@ -758,7 +758,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@braintree/sanitize-url@npm:^7.0.4":
+"@braintree/sanitize-url@npm:^7.0.4, @braintree/sanitize-url@npm:^7.1.1":
   version: 7.1.1
   resolution: "@braintree/sanitize-url@npm:7.1.1"
   checksum: 10c0/fdfc1759c4244e287693ce1e9d42d649423e7c203fdccf27a571f8951ddfe34baa5273b7e6a8dd3007d7676859c7a0a9819be0ab42a3505f8505ad0eefecf7c1
@@ -824,6 +824,7 @@ __metadata:
     "@dqm/plugin-frame-v2-code": "workspace:^"
     "@dqm/plugin-frame-v2-debug": "workspace:^"
     "@dqm/plugin-frame-v2-html": "workspace:^"
+    "@dqm/plugin-frame-v2-mermaid": "workspace:^"
     "@dqm/plugin-params-v2": "workspace:^"
     "@dqm/plugin-sre-code": "workspace:^"
     "@dqm/plugin-sre-music": "workspace:^"
@@ -986,6 +987,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@dqm/plugin-frame-v2-mermaid@workspace:^, @dqm/plugin-frame-v2-mermaid@workspace:src/plugins/frame-v2-mermaid":
+  version: 0.0.0-use.local
+  resolution: "@dqm/plugin-frame-v2-mermaid@workspace:src/plugins/frame-v2-mermaid"
+  dependencies:
+    "@dqm/package-dqm-api-v2": "workspace:^"
+    "@dqm/package-plugin-utils": "workspace:^"
+    "@dqm/plugin-frame-v2": "workspace:^"
+    "@ranki/config-typescript": "workspace:^"
+    concurrently: "npm:^9.2.1"
+    ohm-js: "npm:^17.2.1"
+    typescript: "npm:^5.8.3"
+    vite: "npm:^7.2.2"
+  languageName: unknown
+  linkType: soft
+
 "@dqm/plugin-frame-v2@workspace:^, @dqm/plugin-frame-v2@workspace:src/plugins/frame-v2":
   version: 0.0.0-use.local
   resolution: "@dqm/plugin-frame-v2@workspace:src/plugins/frame-v2"
@@ -1026,6 +1042,23 @@ __metadata:
     "@types/prismjs": "npm:^1"
     concurrently: "npm:^9.2.1"
     prismjs: "npm:^1.30.0"
+    typescript: "npm:^5.8.3"
+    vite: "npm:^7.2.2"
+  languageName: unknown
+  linkType: soft
+
+"@dqm/plugin-sre-mermaid@workspace:src/plugins/sre-mermaid":
+  version: 0.0.0-use.local
+  resolution: "@dqm/plugin-sre-mermaid@workspace:src/plugins/sre-mermaid"
+  dependencies:
+    "@dqm/package-dqm-api-v2": "workspace:^"
+    "@dqm/package-plugin-utils": "workspace:^"
+    "@dqm/plugin-frame-v2": "workspace:^"
+    "@ranki/config-typescript": "workspace:^"
+    "@ranki/package-anki-ui": "workspace:^"
+    "@types/prismjs": "npm:^1"
+    concurrently: "npm:^9.2.1"
+    mermaid: "npm:^11.12.1"
     typescript: "npm:^5.8.3"
     vite: "npm:^7.2.2"
   languageName: unknown
@@ -1641,6 +1674,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@iconify/utils@npm:^3.0.1":
+  version: 3.1.0
+  resolution: "@iconify/utils@npm:3.1.0"
+  dependencies:
+    "@antfu/install-pkg": "npm:^1.1.0"
+    "@iconify/types": "npm:^2.0.0"
+    mlly: "npm:^1.8.0"
+  checksum: 10c0/a39445e892b248486c186306e1ccba4b07ed1d5b21b143ddf279b33062063173feb84954b9a82e05713b927872787d6c0081073d23f55c44294de37615d4a1f7
+  languageName: node
+  linkType: hard
+
 "@isaacs/cliui@npm:^8.0.2":
   version: 8.0.2
   resolution: "@isaacs/cliui@npm:8.0.2"
@@ -2033,6 +2077,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mermaid-js/parser@npm:^0.6.3":
+  version: 0.6.3
+  resolution: "@mermaid-js/parser@npm:0.6.3"
+  dependencies:
+    langium: "npm:3.3.1"
+  checksum: 10c0/9711174ff31f32d93c8da03ed6b1a1380f5ccfb27ffcdfaf42236da4b381aa0602752b3afc7893582d5ccdfc79b0465c69afe963b825328049575831f4ddd28e
+  languageName: node
+  linkType: hard
+
 "@napi-rs/wasm-runtime@npm:^0.2.11":
   version: 0.2.12
   resolution: "@napi-rs/wasm-runtime@npm:0.2.12"
@@ -2259,7 +2312,9 @@ __metadata:
     "@dqm/plugin-frame-v2": "workspace:^"
     "@dqm/plugin-frame-v2-audio": "workspace:^"
     "@dqm/plugin-frame-v2-code": "workspace:^"
+    "@dqm/plugin-frame-v2-debug": "workspace:^"
     "@dqm/plugin-frame-v2-html": "workspace:^"
+    "@dqm/plugin-frame-v2-mermaid": "workspace:^"
     "@dqm/plugin-params-v2": "workspace:^"
     "@dqm/plugin-sre-code": "workspace:^"
     "@dqm/plugin-sre-music": "workspace:^"
@@ -2316,6 +2371,7 @@ __metadata:
     "@dqm/plugin-frame-v2-code": "workspace:^"
     "@dqm/plugin-frame-v2-debug": "workspace:^"
     "@dqm/plugin-frame-v2-html": "workspace:^"
+    "@dqm/plugin-frame-v2-mermaid": "workspace:^"
     "@dqm/plugin-params-v2": "workspace:^"
     "@dqm/plugin-sre-code": "workspace:^"
     "@dqm/plugin-sre-music": "workspace:^"
@@ -5897,7 +5953,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:^1.11.11":
+"dagre-d3-es@npm:7.0.13":
+  version: 7.0.13
+  resolution: "dagre-d3-es@npm:7.0.13"
+  dependencies:
+    d3: "npm:^7.9.0"
+    lodash-es: "npm:^4.17.21"
+  checksum: 10c0/4eca80dbbad4075311e3853930f99486024785b54210541796d4216140d91744738ee51125e2692c3532af148fbc2e690171750583916ed2ad553150abb198c7
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.11, dayjs@npm:^1.11.18":
   version: 1.11.19
   resolution: "dayjs@npm:1.11.19"
   checksum: 10c0/7d8a6074a343f821f81ea284d700bd34ea6c7abbe8d93bce7aba818948957c1b7f56131702e5e890a5622cdfc05dcebe8aed0b8313bdc6838a594d7846b0b000
@@ -8308,6 +8374,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"marked@npm:^16.2.1":
+  version: 16.4.2
+  resolution: "marked@npm:16.4.2"
+  bin:
+    marked: bin/marked.js
+  checksum: 10c0/fc6051142172454f2023f3d6b31cca92879ec8e1b96457086a54c70354c74b00e1b6543a76a1fad6d399366f52b90a848f6ffb8e1d65a5baff87f3ba9b8f1847
+  languageName: node
+  linkType: hard
+
 "mathjax-full@npm:^3.2.2":
   version: 3.2.2
   resolution: "mathjax-full@npm:3.2.2"
@@ -8324,6 +8399,34 @@ __metadata:
   version: 2.0.0
   resolution: "merge-stream@npm:2.0.0"
   checksum: 10c0/867fdbb30a6d58b011449b8885601ec1690c3e41c759ecd5a9d609094f7aed0096c37823ff4a7190ef0b8f22cc86beb7049196ff68c016e3b3c671d0dac91ce5
+  languageName: node
+  linkType: hard
+
+"mermaid@npm:^11.12.1":
+  version: 11.12.2
+  resolution: "mermaid@npm:11.12.2"
+  dependencies:
+    "@braintree/sanitize-url": "npm:^7.1.1"
+    "@iconify/utils": "npm:^3.0.1"
+    "@mermaid-js/parser": "npm:^0.6.3"
+    "@types/d3": "npm:^7.4.3"
+    cytoscape: "npm:^3.29.3"
+    cytoscape-cose-bilkent: "npm:^4.1.0"
+    cytoscape-fcose: "npm:^2.2.0"
+    d3: "npm:^7.9.0"
+    d3-sankey: "npm:^0.12.3"
+    dagre-d3-es: "npm:7.0.13"
+    dayjs: "npm:^1.11.18"
+    dompurify: "npm:^3.2.5"
+    katex: "npm:^0.16.22"
+    khroma: "npm:^2.1.0"
+    lodash-es: "npm:^4.17.21"
+    marked: "npm:^16.2.1"
+    roughjs: "npm:^4.6.6"
+    stylis: "npm:^4.3.6"
+    ts-dedent: "npm:^2.2.0"
+    uuid: "npm:^11.1.0"
+  checksum: 10c0/00969b96171f1f11cf897df205d932237a6303041d9519b82bd727cfca43507b54cbf28dfb951aa7ff5e6129607f2297703a464361fc95942db9364c579da9f3
   languageName: node
   linkType: hard
 
@@ -8569,6 +8672,18 @@ __metadata:
     pkg-types: "npm:^1.3.0"
     ufo: "npm:^1.5.4"
   checksum: 10c0/69e738218a13d6365caf930e0ab4e2b848b84eec261597df9788cefb9930f3e40667be9cb58a4718834ba5f97a6efeef31d3b5a95f4388143fd4e0d0deff72ff
+  languageName: node
+  linkType: hard
+
+"mlly@npm:^1.8.0":
+  version: 1.8.0
+  resolution: "mlly@npm:1.8.0"
+  dependencies:
+    acorn: "npm:^8.15.0"
+    pathe: "npm:^2.0.3"
+    pkg-types: "npm:^1.3.1"
+    ufo: "npm:^1.6.1"
+  checksum: 10c0/f174b844ae066c71e9b128046677868e2e28694f0bbeeffbe760b2a9d8ff24de0748d0fde6fabe706700c1d2e11d3c0d7a53071b5ea99671592fac03364604ab
   languageName: node
   linkType: hard
 
@@ -9011,7 +9126,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pkg-types@npm:^1.3.0":
+"pkg-types@npm:^1.3.0, pkg-types@npm:^1.3.1":
   version: 1.3.1
   resolution: "pkg-types@npm:1.3.1"
   dependencies:
@@ -10771,6 +10886,13 @@ __metadata:
   version: 1.6.1
   resolution: "ufo@npm:1.6.1"
   checksum: 10c0/5a9f041e5945fba7c189d5410508cbcbefef80b253ed29aa2e1f8a2b86f4bd51af44ee18d4485e6d3468c92be9bf4a42e3a2b72dcaf27ce39ce947ec994f1e6b
+  languageName: node
+  linkType: hard
+
+"ufo@npm:^1.6.1":
+  version: 1.6.2
+  resolution: "ufo@npm:1.6.2"
+  checksum: 10c0/cc2610b48803d4c73b375e4fd43b0db63e9413726637a4974be2a382a5c971696a64d28d0f107d6ff3b4570e0a031f436d79fe545c3c070d6525130a4abaf39c
   languageName: node
   linkType: hard
 

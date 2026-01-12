@@ -1,0 +1,28 @@
+{
+  "name": "@dqm/plugin-frame-v2-mermaid",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build",
+    "watch": "concurrently -n 'Latex:tsc,Latex:vite' -c yellow,cyan \"tsc --watch --preserveWatchOutput\" \"vite build --watch\"",
+    "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo && rm -rf vite*timestamp-* || true"
+  },
+  "dependencies": {
+    "@dqm/package-plugin-utils": "workspace:^",
+    "@dqm/plugin-frame-v2": "workspace:^"
+  },
+  "devDependencies": {
+    "@dqm/package-dqm-api-v2": "workspace:^",
+    "@ranki/config-typescript": "workspace:^",
+    "concurrently": "^9.2.1",
+    "ohm-js": "^17.2.1",
+    "typescript": "^5.8.3",
+    "vite": "^7.2.2"
+  },
+  "exports": {
+    ".": {
+      "types": "./types/export.d.mts",
+      "default": "./lib/export.js"
+    }
+  }
+}

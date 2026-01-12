@@ -19,6 +19,7 @@
     "@dqm/plugin-frame-v2-code": "workspace:^",
     "@dqm/plugin-frame-v2-debug": "workspace:^",
     "@dqm/plugin-frame-v2-html": "workspace:^",
+    "@dqm/plugin-frame-v2-mermaid": "workspace:^",
     "@dqm/plugin-params-v2": "workspace:^",
     "@dqm/plugin-sre-code": "workspace:^",
     "@dqm/plugin-sre-music": "workspace:^",

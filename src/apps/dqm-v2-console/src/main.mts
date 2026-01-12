@@ -2,15 +2,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { Dqm } from "@dqm/package-dqm-v2";
-import baseV2 from "@dqm/plugin-base-v2";
-import frameV2 from "@dqm/plugin-frame-v2";
-import paramsV2 from "@dqm/plugin-params-v2";
-import frameV2Code from "@dqm/plugin-frame-v2-code";
-import frameV2Audio from "@dqm/plugin-frame-v2-audio";
-import staticRenderer from "@dqm/plugin-static-render-engine";
 import yaml from "yaml";
 import { sanitizeSingle } from "./sanitize.mjs";
 import type { IDqmError } from "@dqm/package-dqm-api-v2";
+import { pluginsAsArray } from "./dqm.plugins.mjs";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.join(dirname, "..");
@@ -36,7 +31,7 @@ export function main(raw: string) {
         },
       },
     ],
-    [staticRenderer, baseV2, frameV2, paramsV2, frameV2Code, frameV2Audio],
+    pluginsAsArray,
   );
   try {
     const res = dqm.parse(raw);

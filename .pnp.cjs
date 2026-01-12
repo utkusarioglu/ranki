@@ -79,12 +79,20 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/plugins/frame-v2-html"\
     },\
     {\
+      "name": "@dqm/plugin-frame-v2-mermaid",\
+      "reference": "workspace:src/plugins/frame-v2-mermaid"\
+    },\
+    {\
       "name": "@dqm/plugin-params-v2",\
       "reference": "workspace:src/plugins/params-v2"\
     },\
     {\
       "name": "@dqm/plugin-sre-code",\
       "reference": "workspace:src/plugins/sre-code"\
+    },\
+    {\
+      "name": "@dqm/plugin-sre-mermaid",\
+      "reference": "workspace:src/plugins/sre-mermaid"\
     },\
     {\
       "name": "@dqm/plugin-sre-music",\
@@ -114,8 +122,10 @@ const RAW_RUNTIME_STATE =
     ["@dqm/plugin-frame-v2-code", ["workspace:src/plugins/frame-v2-code"]],\
     ["@dqm/plugin-frame-v2-debug", ["workspace:src/plugins/frame-v2-debug"]],\
     ["@dqm/plugin-frame-v2-html", ["workspace:src/plugins/frame-v2-html"]],\
+    ["@dqm/plugin-frame-v2-mermaid", ["workspace:src/plugins/frame-v2-mermaid"]],\
     ["@dqm/plugin-params-v2", ["workspace:src/plugins/params-v2"]],\
     ["@dqm/plugin-sre-code", ["workspace:src/plugins/sre-code"]],\
+    ["@dqm/plugin-sre-mermaid", ["workspace:src/plugins/sre-mermaid"]],\
     ["@dqm/plugin-sre-music", ["workspace:src/plugins/sre-music"]],\
     ["@dqm/plugin-sre-osmd", ["workspace:src/plugins/sre-osmd"]],\
     ["@dqm/plugin-static-render-engine", ["workspace:src/plugins/static-render-engine"]],\
@@ -1777,6 +1787,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/plugin-frame-v2-code", "workspace:src/plugins/frame-v2-code"],\
           ["@dqm/plugin-frame-v2-debug", "workspace:src/plugins/frame-v2-debug"],\
           ["@dqm/plugin-frame-v2-html", "workspace:src/plugins/frame-v2-html"],\
+          ["@dqm/plugin-frame-v2-mermaid", "workspace:src/plugins/frame-v2-mermaid"],\
           ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
           ["@dqm/plugin-sre-code", "workspace:src/plugins/sre-code"],\
           ["@dqm/plugin-sre-music", "workspace:src/plugins/sre-music"],\
@@ -1974,6 +1985,23 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
+    ["@dqm/plugin-frame-v2-mermaid", [\
+      ["workspace:src/plugins/frame-v2-mermaid", {\
+        "packageLocation": "./src/plugins/frame-v2-mermaid/",\
+        "packageDependencies": [\
+          ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["@dqm/package-plugin-utils", "workspace:src/packages/plugin-utils"],\
+          ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
+          ["@dqm/plugin-frame-v2-mermaid", "workspace:src/plugins/frame-v2-mermaid"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["concurrently", "npm:9.2.1"],\
+          ["ohm-js", "npm:17.2.1"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vite", "virtual:c6547897edfd46555a9b569db6c14578ad40c524e7e15c3bf4e72892ffbce1642a01ad3874d3b7d6a7fec5b373e598bb21518fc3b71727326030e380ba5224d0#npm:7.2.6"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
     ["@dqm/plugin-params-v2", [\
       ["workspace:src/plugins/params-v2", {\
         "packageLocation": "./src/plugins/params-v2/",\
@@ -2003,6 +2031,25 @@ const RAW_RUNTIME_STATE =
           ["@types/prismjs", "npm:1.26.5"],\
           ["concurrently", "npm:9.2.1"],\
           ["prismjs", "npm:1.30.0"],\
+          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
+          ["vite", "virtual:c6547897edfd46555a9b569db6c14578ad40c524e7e15c3bf4e72892ffbce1642a01ad3874d3b7d6a7fec5b373e598bb21518fc3b71727326030e380ba5224d0#npm:7.2.6"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@dqm/plugin-sre-mermaid", [\
+      ["workspace:src/plugins/sre-mermaid", {\
+        "packageLocation": "./src/plugins/sre-mermaid/",\
+        "packageDependencies": [\
+          ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["@dqm/package-plugin-utils", "workspace:src/packages/plugin-utils"],\
+          ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
+          ["@dqm/plugin-sre-mermaid", "workspace:src/plugins/sre-mermaid"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
+          ["@types/prismjs", "npm:1.26.5"],\
+          ["concurrently", "npm:9.2.1"],\
+          ["mermaid", "npm:11.12.2"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
           ["vite", "virtual:c6547897edfd46555a9b569db6c14578ad40c524e7e15c3bf4e72892ffbce1642a01ad3874d3b7d6a7fec5b373e598bb21518fc3b71727326030e380ba5224d0#npm:7.2.6"]\
         ],\
@@ -2715,6 +2762,16 @@ const RAW_RUNTIME_STATE =
           ["mlly", "npm:1.7.4"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:3.1.0", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@iconify-utils-npm-3.1.0-88caa72a03-10c0.zip/node_modules/@iconify/utils/",\
+        "packageDependencies": [\
+          ["@antfu/install-pkg", "npm:1.1.0"],\
+          ["@iconify/types", "npm:2.0.0"],\
+          ["@iconify/utils", "npm:3.1.0"],\
+          ["mlly", "npm:1.8.0"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["@isaacs/cliui", [\
@@ -3163,6 +3220,14 @@ const RAW_RUNTIME_STATE =
           ["langium", "npm:3.3.1"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:0.6.3", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@mermaid-js-parser-npm-0.6.3-3dd00f0fa6-10c0.zip/node_modules/@mermaid-js/parser/",\
+        "packageDependencies": [\
+          ["@mermaid-js/parser", "npm:0.6.3"],\
+          ["langium", "npm:3.3.1"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["@napi-rs/wasm-runtime", [\
@@ -3396,7 +3461,9 @@ const RAW_RUNTIME_STATE =
           ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
           ["@dqm/plugin-frame-v2-audio", "workspace:src/plugins/frame-v2-audio"],\
           ["@dqm/plugin-frame-v2-code", "workspace:src/plugins/frame-v2-code"],\
+          ["@dqm/plugin-frame-v2-debug", "workspace:src/plugins/frame-v2-debug"],\
           ["@dqm/plugin-frame-v2-html", "workspace:src/plugins/frame-v2-html"],\
+          ["@dqm/plugin-frame-v2-mermaid", "workspace:src/plugins/frame-v2-mermaid"],\
           ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
           ["@dqm/plugin-sre-code", "workspace:src/plugins/sre-code"],\
           ["@dqm/plugin-sre-music", "workspace:src/plugins/sre-music"],\
@@ -3457,6 +3524,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/plugin-frame-v2-code", "workspace:src/plugins/frame-v2-code"],\
           ["@dqm/plugin-frame-v2-debug", "workspace:src/plugins/frame-v2-debug"],\
           ["@dqm/plugin-frame-v2-html", "workspace:src/plugins/frame-v2-html"],\
+          ["@dqm/plugin-frame-v2-mermaid", "workspace:src/plugins/frame-v2-mermaid"],\
           ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
           ["@dqm/plugin-sre-code", "workspace:src/plugins/sre-code"],\
           ["@dqm/plugin-sre-music", "workspace:src/plugins/sre-music"],\
@@ -8438,6 +8506,15 @@ const RAW_RUNTIME_STATE =
           ["lodash-es", "npm:4.17.21"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:7.0.13", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/dagre-d3-es-npm-7.0.13-74688ad543-10c0.zip/node_modules/dagre-d3-es/",\
+        "packageDependencies": [\
+          ["d3", "npm:7.9.0"],\
+          ["dagre-d3-es", "npm:7.0.13"],\
+          ["lodash-es", "npm:4.17.21"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["dayjs", [\
@@ -11143,6 +11220,13 @@ const RAW_RUNTIME_STATE =
           ["marked", "npm:16.1.1"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:16.4.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/marked-npm-16.4.2-80bdca5d9b-10c0.zip/node_modules/marked/",\
+        "packageDependencies": [\
+          ["marked", "npm:16.4.2"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["mathjax-full", [\
@@ -11168,6 +11252,33 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["mermaid", [\
+      ["npm:11.12.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/mermaid-npm-11.12.2-2289a702ef-10c0.zip/node_modules/mermaid/",\
+        "packageDependencies": [\
+          ["@braintree/sanitize-url", "npm:7.1.1"],\
+          ["@iconify/utils", "npm:3.1.0"],\
+          ["@mermaid-js/parser", "npm:0.6.3"],\
+          ["@types/d3", "npm:7.4.3"],\
+          ["cytoscape", "npm:3.32.1"],\
+          ["cytoscape-cose-bilkent", "virtual:86c938ac76707a56b2280975fb75c8a398f2c8ed4059d0c998d02f70aa49a82e1700ee6609702fb0391f89a632165a1939a94ac3417f00048c57e015e9a4d567#npm:4.1.0"],\
+          ["cytoscape-fcose", "virtual:86c938ac76707a56b2280975fb75c8a398f2c8ed4059d0c998d02f70aa49a82e1700ee6609702fb0391f89a632165a1939a94ac3417f00048c57e015e9a4d567#npm:2.2.0"],\
+          ["d3", "npm:7.9.0"],\
+          ["d3-sankey", "npm:0.12.3"],\
+          ["dagre-d3-es", "npm:7.0.13"],\
+          ["dayjs", "npm:1.11.19"],\
+          ["dompurify", "npm:3.2.6"],\
+          ["katex", "npm:0.16.22"],\
+          ["khroma", "npm:2.1.0"],\
+          ["lodash-es", "npm:4.17.21"],\
+          ["marked", "npm:16.4.2"],\
+          ["mermaid", "npm:11.12.2"],\
+          ["roughjs", "npm:4.6.6"],\
+          ["stylis", "npm:4.3.6"],\
+          ["ts-dedent", "npm:2.2.0"],\
+          ["uuid", "npm:11.1.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:11.9.0", {\
         "packageLocation": "../home/dev/.yarn/berry/cache/mermaid-npm-11.9.0-86c938ac76-10c0.zip/node_modules/mermaid/",\
         "packageDependencies": [\
@@ -11419,6 +11530,17 @@ const RAW_RUNTIME_STATE =
           ["pathe", "npm:2.0.3"],\
           ["pkg-types", "npm:1.3.1"],\
           ["ufo", "npm:1.6.1"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:1.8.0", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/mlly-npm-1.8.0-448698f313-10c0.zip/node_modules/mlly/",\
+        "packageDependencies": [\
+          ["acorn", "npm:8.15.0"],\
+          ["mlly", "npm:1.8.0"],\
+          ["pathe", "npm:2.0.3"],\
+          ["pkg-types", "npm:1.3.1"],\
+          ["ufo", "npm:1.6.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -13809,6 +13931,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/dev/.yarn/berry/cache/ufo-npm-1.6.1-9c6ba58c23-10c0.zip/node_modules/ufo/",\
         "packageDependencies": [\
           ["ufo", "npm:1.6.1"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:1.6.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/ufo-npm-1.6.2-36d3072151-10c0.zip/node_modules/ufo/",\
+        "packageDependencies": [\
+          ["ufo", "npm:1.6.2"]\
         ],\
         "linkType": "HARD"\
       }]\
