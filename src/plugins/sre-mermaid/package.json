@@ -11,15 +11,16 @@
     "@dqm/package-plugin-utils": "workspace:^",
     "@dqm/plugin-frame-v2": "workspace:^",
     "@ranki/package-anki-ui": "workspace:^",
-    "mermaid": "^11.12.1"
+    "mermaid": "^11.12.2"
   },
   "devDependencies": {
     "@dqm/package-dqm-api-v2": "workspace:^",
     "@ranki/config-typescript": "workspace:^",
-    "@types/prismjs": "^1",
+    "@types/node": "^25.0.6",
+    "@types/trusted-types": "^2",
     "concurrently": "^9.2.1",
-    "typescript": "^5.8.3",
-    "vite": "^7.2.2"
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   },
   "exports": {
     ".": {

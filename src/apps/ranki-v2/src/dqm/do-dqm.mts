@@ -6,7 +6,7 @@ import type {
   DqmConfigPackPartial,
 } from "@dqm/package-dqm-v2";
 import { pluginsAsArray } from "./dqm.plugins.mts";
-import { RankiAppError } from "./error.mts";
+import { RankiAppError } from "../error.mts";
 
 export function doDqm(
   inputs: DqmParseInput,

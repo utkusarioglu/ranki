@@ -23,17 +23,68 @@ export const payload: R = {
   sync: ({ ser }) => {
     const element = document.createElement("div");
     element.classList.add("mermaid-block");
-    const id = ser.source.length.toString();
+    element.innerHTML = "Loading mermaid...";
+    const id = "mermaid-" + ser.source.length.toString();
     element.id = id;
-    const raw = ser.source.trim();
+    const p = new DOMParser();
+    const doc = p.parseFromString(ser.source, "text/html");
+    const raw = doc.body.textContent;
+    // const raw = ser.source;
 
     return {
       element,
       afterMount: [
         async () => {
-          mermaid.initialize({ startOnLoad: false, ...mermaidConfig });
-          const { svg } = await mermaid.render(id, raw);
-          element.innerHTML = svg;
+          try {
+            await new Promise<void>((r) => setTimeout(r, 2000));
+            // mermaid.initialize({
+            //   startOnLoad: false,
+            //   securityLevel: "loose",
+            //   ...mermaidConfig,
+            // });
+            // const { svg } = await mermaid.render(id, raw);
+            // console.log("svg", svg);
+            // element.innerHTML = svg;
+            mermaid.initialize({
+              startOnLoad: false,
+              securityLevel: "strict",
+              deterministicIds: true,
+
+              // CRITICAL for v11
+              htmlLabels: false,
+
+              flowchart: {
+                htmlLabels: false,
+                useMaxWidth: false,
+              },
+
+              sequence: {
+                // @ts-expect-error
+                htmlLabels: false,
+                useMaxWidth: false,
+              },
+
+              gantt: {
+                useMaxWidth: false,
+              },
+
+              // Reduce internal observers
+              maxTextSize: 100_000,
+              ...mermaidConfig,
+            });
+
+            const { svg } = await mermaid.mermaidAPI.render(
+              `mmd-${Date.now()}`,
+              raw,
+              undefined,
+              // @ts-expect-error
+              element, // IMPORTANT in v11
+            );
+            element.innerHTML = svg;
+          } catch (e) {
+            element.innerHTML = "Something went wrong with Mermaid";
+            console.error(e);
+          }
         },
       ],
     };

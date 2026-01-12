@@ -44,4 +44,11 @@ export default defineConfig({
     host: true,
     port: 5000,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        inlineDynamicImports: true,
+      },
+    },
+  },
 });

@@ -32,6 +32,7 @@ export function collectData(): DataCollection {
     ]),
   );
 
+  // @ts-expect-error
   let config = {};
   try {
     const configElems = document.querySelectorAll(CONFIG_SELECTOR);
@@ -44,8 +45,8 @@ export function collectData(): DataCollection {
   } catch (e) {
     console.log(e);
   }
-  console.log("data", data);
-  console.log("config", config);
+  // console.log("data", data);
+  // console.log("config", config);
 
   // @ts-expect-error
   const selectedFaces: CardFaceArray = FACE_ASSIGNMENTS[data.face];

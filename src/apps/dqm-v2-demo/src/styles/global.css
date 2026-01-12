@@ -9,6 +9,7 @@ body,
   margin: 0;
   width: 100lvw;
   height: 100lvh;
+  overflow: hidden;
 }
 
 body {

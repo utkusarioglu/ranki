@@ -27,6 +27,7 @@
     "@dqm/plugin-frame-v2-mermaid": "workspace:^",
     "@dqm/plugin-params-v2": "workspace:^",
     "@dqm/plugin-sre-code": "workspace:^",
+    "@dqm/plugin-sre-mermaid": "workspace:^",
     "@dqm/plugin-sre-music": "workspace:^",
     "@dqm/plugin-sre-osmd": "workspace:^",
     "@dqm/plugin-static-render-engine": "workspace:^",

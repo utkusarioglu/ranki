@@ -1,12 +1,12 @@
 import type { IDqmPluginComponentSet } from "@dqm/package-dqm-api-v2";
-import { frameV2FlowchartComponent } from "./flowchart/flowchart.mjs";
+import { frameV2MermaidComponent } from "./mermaid/mermaid.mjs";
 
-export const frameV2Html: IDqmPluginComponentSet = {
+export const frameV2Mermaid: IDqmPluginComponentSet = {
   type: "component-set",
   meta: {
-    name: "FrameV2:Html",
+    name: "FrameV2:Mermaid",
     version: "0.0.0",
-    description: "FrameV2 Html elements",
+    description: "Mermaid charts",
   },
-  list: [frameV2FlowchartComponent],
+  list: [frameV2MermaidComponent],
 };

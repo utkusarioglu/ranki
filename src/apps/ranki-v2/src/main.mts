@@ -1,12 +1,12 @@
 import "./polyfills.mjs";
-import { doDqm } from "./do-dqm.mts";
+import { doDqm } from "./dqm/do-dqm.mts";
 import "./style.css";
 import { cardHud } from "./components/card-hud/main.mts";
 import { collectData } from "./collect/collect.mts";
 import { cardContent } from "./components/card-content/card-content.mts";
 import { createGeneralError } from "./components/general-error/general-error.mts";
 import { RankiAppError } from "./error.mts";
-import { DQM_BASE_CONFIG } from "./constants.mts";
+import { DQM_BASE_CONFIG } from "./dqm/constants.mts";
 
 function onReady(fn: any) {
   if (document.readyState === "loading") {

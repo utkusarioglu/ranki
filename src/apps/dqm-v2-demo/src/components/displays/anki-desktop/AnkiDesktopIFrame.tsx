@@ -13,13 +13,7 @@ import { pluginsAsArray } from "_stores/dqm/dqm.plugins.mjs";
 import type { NumberTuple } from "_stores/ui/ui.store.types.mjs";
 import style from "./AnkiDesktopIFrame.module.css";
 import type { RankiFiles } from "./AnkiDesktop";
-// import rankiV2JsUrl from "_ranki_v2/_ranki2.js?url";
-// import rankiV2CssUrl from "_ranki_v2/_ranki2.css?url";
-// import rankiV2HtmlUrl from "_ranki_v2/template.html?url";
-
-// fetch(rankiV2CssUrl)
-//   .then((t) => t.text())
-//   .then((t) => console.log("t", t));
+import { DqmDemoError } from "_error";
 
 function dqmOnLoad(
   doc: Document,
@@ -43,32 +37,49 @@ function dqmOnLoad(
 type CardElements = {
   fragment: DocumentFragment;
   html: string;
-  js: HTMLScriptElement;
-  css: HTMLStyleElement;
+  jss: HTMLScriptElement[];
+  css: HTMLStyleElement[];
 };
 
 function createCardElements(
   parts: RankiFiles,
   re: Record<string, string>,
 ): CardElements {
-  let html = parts.html;
+  const htmlTemplates = Object.values(parts.html);
+  if (htmlTemplates.length > 1) {
+    throw new DqmDemoError({
+      code: "TOO_MANY_TEMPLATES",
+      why: "Only a single template is expected",
+      cause: null,
+    });
+  }
+  let html = htmlTemplates[0];
   Object.entries(re).forEach(([s, r]) => {
     html = html.replace(s, r);
   });
 
-  const t = document.createElement("template");
-  t.innerHTML = html;
-  const fragment = t.content;
+  // const jss: HTMLScriptElement[] = [];
+  const tpl = document.createElement("template");
+  tpl.innerHTML = html;
+  const fragment = tpl.content;
 
-  const js = document.createElement("script");
-  js.type = "module";
-  js.innerHTML = parts.js;
+  const js = Object.entries(parts.js).map(([name, j]) => {
+    const jsScript = document.createElement("script");
+    jsScript.type = "module";
+    jsScript.id = name.replace(".", "-");
+    jsScript.innerHTML = j;
+    return jsScript;
+  });
 
-  const css = document.createElement("style");
-  // console.log("css", parts.css);
-  css.innerHTML = parts.css;
+  const css = Object.entries(parts.css).map(([name, j]) => {
+    const style = document.createElement("style");
+    // jsScript.type = "module";
+    style.id = name.replace(".", "-");
+    style.innerHTML = j;
+    return style;
+  });
 
-  return { fragment, html, js, css };
+  return { fragment, html, jss: js, css };
 }
 
 const s = useDqmStore.getState();
@@ -116,11 +127,16 @@ export const AnkiDesktopIFrame: FC<AnkiDesktopIFrameProps> = ({
           assertExists(insert, {
             why: "Anki template should have an insertion point",
           });
-          // insert.replaceWith(replaced.fragment);
-          // doc.body.appendChild(replaced.fragment);
+          const base = doc.querySelector("base") as HTMLBaseElement;
+          base.href = window.location.origin;
           doc.body.appendChild(replaced.fragment);
-          doc.body.appendChild(replaced.css);
-          doc.body.appendChild(replaced.js);
+
+          replaced.css.forEach((css) => {
+            doc.body.appendChild(css);
+          });
+          replaced.jss.forEach((js) => {
+            doc.body.appendChild(js);
+          });
           dqmOnLoad(doc, s.pluginSelection, s.inputs, pref);
         }}
       />

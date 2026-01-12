@@ -3,28 +3,29 @@ import { transformers } from "./transformers.mjs";
 
 export interface HtmlPrimitiveAnchorComponentConfig {
   default: {
-    link: {
-      placeholder: string;
-    };
-    attribute: {
-      href: string;
-      target: string;
-    };
+    // link: {
+    //   placeholder: string;
+    // };
+    // attribute: {
+    //   href: string;
+    //   target: string;
+    // };
   };
   // path: {
   //   cat: [number, string, boolean];
   // };
 }
 
+// @ts-expect-error
 const PLUGIN_PATH = ["plugins", "config", "grammar:FrameV2"];
 
-export const frameV2FlowchartComponent: IDqmComponent<HtmlPrimitiveAnchorComponentConfig> =
+export const frameV2MermaidComponent: IDqmComponent<HtmlPrimitiveAnchorComponentConfig> =
   {
     type: "component",
     meta: {
       id: {
-        chain: ["frame", "v2", "charts", "mermaid", "flowchart"],
-        aliases: ["flowchart"],
+        chain: ["frame", "v2", "charts", "mermaid"],
+        aliases: ["mermaid"],
       },
       description: "Html anchor element",
       version: "0.0.0",
@@ -43,13 +44,13 @@ export const frameV2FlowchartComponent: IDqmComponent<HtmlPrimitiveAnchorCompone
         ],
         component: {
           default: {
-            link: {
-              placeholder: "https://www.%.com",
-            },
-            attribute: {
-              href: "",
-              target: "_blank",
-            },
+            // link: {
+            //   placeholder: "https://www.%.com",
+            // },
+            // attribute: {
+            //   href: "",
+            //   target: "_blank",
+            // },
           },
         },
       },
@@ -57,44 +58,44 @@ export const frameV2FlowchartComponent: IDqmComponent<HtmlPrimitiveAnchorCompone
         $: {
           positionals: [],
           params: [
-            {
-              id: {
-                chain: ["content", "prefix"],
-                aliases: ["p"],
-              },
-            },
-            {
-              id: {
-                chain: [...PLUGIN_PATH, "tokens", "opener"],
-                aliases: ["o"],
-              },
-            },
-            {
-              id: {
-                chain: [...PLUGIN_PATH, "tokens", "closer"],
-                aliases: ["c"],
-              },
-            },
+            // {
+            //   id: {
+            //     chain: ["content", "prefix"],
+            //     aliases: ["p"],
+            //   },
+            // },
+            // {
+            //   id: {
+            //     chain: [...PLUGIN_PATH, "tokens", "opener"],
+            //     aliases: ["o"],
+            //   },
+            // },
+            // {
+            //   id: {
+            //     chain: [...PLUGIN_PATH, "tokens", "closer"],
+            //     aliases: ["c"],
+            //   },
+            // },
           ],
         },
         default: {
           positionals: [
-            ["attribute", "href"],
-            ["attribute", "target"],
+            //   ["attribute", "href"],
+            //   ["attribute", "target"],
           ],
           params: [
-            {
-              id: {
-                chain: ["attribute", "href"],
-                aliases: ["h"],
-              },
-            },
-            {
-              id: {
-                chain: ["attribute", "target"],
-                aliases: ["t"],
-              },
-            },
+            //   {
+            //     id: {
+            //       chain: ["attribute", "href"],
+            //       aliases: ["h"],
+            //     },
+            //   },
+            //   {
+            //     id: {
+            //       chain: ["attribute", "target"],
+            //       aliases: ["t"],
+            //     },
+            //   },
             // {
             //   id: {
             //     chain: ["path", "cat"],

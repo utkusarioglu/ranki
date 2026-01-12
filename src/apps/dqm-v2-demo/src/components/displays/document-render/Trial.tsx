@@ -19,7 +19,7 @@ function dqmOnLoad(
     return;
   }
   const fixedConfig = buildPluginSelectionConfig(pluginSelection);
-  // console.log(JSON.stringify(fixedConfig));
+  console.log("Fixed", JSON.stringify(fixedConfig));
   const dqm = new Dqm([fixedConfig], pluginsAsArray);
   assertExists(a, {
     why: "body element has to be available for dqm to render",

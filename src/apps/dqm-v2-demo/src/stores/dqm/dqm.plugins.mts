@@ -10,12 +10,14 @@ import sreMusic from "@dqm/plugin-sre-music";
 import frameV2Debug from "@dqm/plugin-frame-v2-debug";
 import sreOsmd from "@dqm/plugin-sre-osmd";
 import sreCode from "@dqm/plugin-sre-code";
+import sreMermaid from "@dqm/plugin-sre-mermaid";
 
 const pluginsAsObject = {
   staticRenderEngine,
   baseV2,
   frameV2,
   paramsV2,
+  frameV2Debug,
   frameV2Code,
   frameV2Audio,
   frameV2Html,
@@ -23,7 +25,7 @@ const pluginsAsObject = {
   sreMusic,
   sreOsmd,
   sreCode,
-  frameV2Debug,
+  sreMermaid,
 };
 
 export const pluginsAsArray = Object.values(pluginsAsObject);

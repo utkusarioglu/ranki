@@ -18,8 +18,17 @@ const __dirname = path.dirname(__abspath);
 // const TARGET = "ES5";
 
 try {
+  fs.rmSync(DEMO_APP_COPY_PATH, { recursive: true, force: true });
+} catch (e) {
+  console.log("PATH REMOVAL FAILED", e);
+  process.exit(1);
+}
+try {
   fs.mkdirSync(DEMO_APP_COPY_PATH);
-} catch (e) {}
+} catch (e) {
+  console.log("PATH CREATION FAILED", e);
+  process.exit(1);
+}
 
 const compose = fs
   .readFileSync("/workdir/.docker/docker-compose.yml")
@@ -72,32 +81,37 @@ export default defineConfig({
             });
           }
 
-          console.log("");
+          const templateHtml = path.join(OUT_DIR, TEMPLATE_FILE);
 
-          const templates = ["A", "B"]
-            .map(
-              (face) => [
-                chalk.gray(`Html Template ${face}:`),
-                fs
-                  .readFileSync(path.join(OUT_DIR, TEMPLATE_FILE))
-                  .toString()
-                  .replace("{{FACE}}", face)
-                  .replace(
-                    "{{TEMPLATE_CONFIG}}",
-                    "# Place your template config here",
-                  ),
-              ],
-              "",
-            )
-            .flat()
-            .join("\n");
-          console.log(templates);
+          console.log("");
+          try {
+            const templates = ["A", "B"]
+              .map(
+                (face) => [
+                  chalk.gray(`Html Template ${face}:`),
+                  fs
+                    .readFileSync(templateHtml)
+                    .toString()
+                    .replace("{{FACE}}", face)
+                    .replace(
+                      "{{TEMPLATE_CONFIG}}",
+                      "# Place your template config here",
+                    ),
+                ],
+                "",
+              )
+              .flat()
+              .join("\n");
+            console.log(templates);
+          } catch (e) {
+            console.log(e);
+          }
         }, 3e3);
       },
     },
   ],
   build: {
-    minify: false,
+    minify: true,
     // target: TARGET,
     outDir: OUT_DIR,
     assetsDir: ".",
@@ -109,16 +123,16 @@ export default defineConfig({
       //   "langium" // I have no idea why this causes issues
       // ],
       output: {
-        inlineDynamicImports: false,
-        manualChunks: (id) => {
-          if (id.includes("mermaid") || id.includes("katex")) {
-            return "_ranki2_mermaid";
-          } else if (id.includes("mathjax.mts")) {
-            return "_ranki2_mathjax";
-          }
-        },
+        inlineDynamicImports: true,
+        // manualChunks: (id) => {
+        //   if (id.includes("mermaid") || id.includes("katex")) {
+        //     return "_ranki2_mermaid";
+        //   } else if (id.includes("mathjax.mts")) {
+        //     return "_ranki2_mathjax";
+        //   }
+        // },
         entryFileNames: "_ranki2.js", // The name of your output bundle
-        chunkFileNames: "[name].js",
+        chunkFileNames: "_ranki2_[name].js",
         format: "es", // Use 'es' for modern output, or 'iife' for self-contained
         assetFileNames: (assetInfo) => {
           if (assetInfo.name!.endsWith("css")) {
