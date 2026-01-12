@@ -19,16 +19,15 @@ export interface HtmlPrimitiveAnchorComponentConfig {
 // @ts-expect-error
 const PLUGIN_PATH = ["plugins", "config", "grammar:FrameV2"];
 
-export const frameV2MermaidComponent: IDqmComponent<HtmlPrimitiveAnchorComponentConfig> =
+export const frameV2FlowchartLrComponent: IDqmComponent<HtmlPrimitiveAnchorComponentConfig> =
   {
     type: "component",
     meta: {
       id: {
-        chain: ["frame", "v2", "charts", "mermaid"],
-        aliases: ["mermaid"],
+        chain: ["frame", "v2", "charts", "mermaid", "flowchart", "lr"],
+        aliases: ["flowchart_lr"],
       },
-      description:
-        "Raw Mermaid block which expects you to type in the diagram type",
+      description: "Mermaid Left-Right flowchart",
       version: "0.0.0",
     },
     customizations: {
@@ -38,7 +37,7 @@ export const frameV2MermaidComponent: IDqmComponent<HtmlPrimitiveAnchorComponent
           {
             content: {
               trim: true,
-              prefix: "",
+              prefix: "flowchart LR\n",
               suffix: "",
             },
           },

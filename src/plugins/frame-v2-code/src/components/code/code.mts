@@ -37,6 +37,16 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
     config: {
       dqm: [
         {
+          plugins: {
+            config: {
+              "grammar:FrameV2": {
+                tokens: {
+                  opener: "[[",
+                  closer: "]]",
+                },
+              },
+            },
+          },
           content: {
             trim: true,
             prefix: "",

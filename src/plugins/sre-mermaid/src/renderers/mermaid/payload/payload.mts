@@ -1,6 +1,7 @@
 import type { IDqmRenderPluginRenderer as R } from "@dqm/package-dqm-api-v2";
 import { TAGS } from "../constants.mjs";
 import mermaid, { type MermaidConfig } from "mermaid";
+import css from "./payload.css?raw";
 
 const mermaidConfig: MermaidConfig = {
   theme: "base",
@@ -33,10 +34,16 @@ export const payload: R = {
 
     return {
       element,
+      css: [
+        {
+          id: "mermaid-block",
+          css,
+        },
+      ],
       afterMount: [
         async () => {
           try {
-            await new Promise<void>((r) => setTimeout(r, 2000));
+            // await new Promise<void>((r) => setTimeout(r, 2000));
             // mermaid.initialize({
             //   startOnLoad: false,
             //   securityLevel: "loose",
@@ -73,14 +80,15 @@ export const payload: R = {
               ...mermaidConfig,
             });
 
-            const { svg } = await mermaid.mermaidAPI.render(
+            const { svg: svgString } = await mermaid.render(
               `mmd-${Date.now()}`,
               raw,
               undefined,
               // @ts-expect-error
               element, // IMPORTANT in v11
             );
-            element.innerHTML = svg;
+            // svg.setAttribute("viewBox", `0 0 ${vb.width} ${vb.height}`);
+            element.innerHTML = svgString;
           } catch (e) {
             element.innerHTML = "Something went wrong with Mermaid";
             console.error(e);

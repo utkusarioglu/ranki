@@ -1,0 +1,3 @@
+.mermaid-block > * {
+  width: var(--content-width);
+}

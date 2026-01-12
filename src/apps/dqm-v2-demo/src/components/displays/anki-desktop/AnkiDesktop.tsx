@@ -1,4 +1,4 @@
-import style from "./DocumentRender.module.css";
+import style from "./AnkiDesktop.module.css";
 import { AnkiDesktopIFrame } from "./AnkiDesktopIFrame";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
 import type { IDqmRendererClientPreferences } from "@dqm/package-dqm-api-v2";
