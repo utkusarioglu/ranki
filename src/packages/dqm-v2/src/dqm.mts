@@ -81,11 +81,11 @@ export class Dqm {
     return this.plugins.getPluginExamples();
   }
 
-  render(
+  async render(
     rawInputs: DqmParseInput,
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
-  ): RenderReport {
+  ): Promise<RenderReport> {
     try {
       this.parse(rawInputs);
       return this.plugins.render(this.serialized, roots, pref);

@@ -4,6 +4,7 @@ import type {
   IDqmRendererClientPreferences,
 } from "@dqm/package-dqm-v2";
 import { RANKI_TAG_INDICATOR } from "./collect.constants.mts";
+import type { HudProps } from "../components/card-hud/hud.types.mts";
 
 export type AnkiFlag = `flag${number}`;
 
@@ -28,17 +29,37 @@ export type RankiTag = `${typeof RANKI_TAG_INDICATOR}${string}`;
 
 export type RankiTags = RankiTag[];
 
+export type HtmlTagClassCollection = [HtmlTagMode, HtmlTagOs, HtmlTagEnv];
+
+export type HtmlTagMode = "night-mode" | "day-mode";
+export type HtmlTagOs = "win" | "android";
+export type HtmlTagEnv = "chrome";
+export type HtmlAttrDir = "ltr" | "rtl";
+export type HtmlAttrTheme = "dark" | "light";
+
+export interface AnkiTemplateFields {
+  flag: AnkiFlag;
+  deck: AnkiDeck;
+  tags: AnkiRawTags;
+  type: AnkiCardType;
+  face: AnkiCardFace;
+}
+
 export interface DataCollection {
-  data: {
-    flag: AnkiFlag;
-    deck: AnkiDeck;
-    tags: AnkiRawTags;
-    type: AnkiCardType;
-    face: AnkiCardFace;
+  raw: {
+    html: {
+      mode: HtmlTagMode;
+      os: HtmlTagOs;
+      env: HtmlTagEnv;
+      dir: HtmlAttrDir;
+      dataBsTheme: HtmlAttrTheme;
+    };
+    fields: AnkiTemplateFields;
   };
-  pref: IDqmRendererClientPreferences
+  hud: HudProps;
+  pref: IDqmRendererClientPreferences;
   inputs: DqmParseInputStructured;
-  selectedFaces: CardFaceArray;
+  theaterOrder: CardFaceArray;
   address: AnkiDeckParts;
   marked: AnkiMarked;
   neutralTags: AnkiNeutralTags;

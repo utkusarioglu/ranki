@@ -58,7 +58,7 @@ export interface IPlugins {
     transformOutput: DqmSerializeOutput,
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
-  ): RenderReport;
+  ): Promise<RenderReport>;
 
   getPluginExamples(): GroupedPluginExamples;
 

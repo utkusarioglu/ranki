@@ -7,44 +7,11 @@ import { createCardFeature } from "./features/card.mjs";
 import { createTagsFeature } from "./features/tags.mjs";
 import horizontalScrollerCss from "./scroller.css?raw";
 import hudCss from "./container.css?raw";
-import type { RankiRenderNode } from "../../types/render-node.mts";
-
-export type HudComponentNames =
-  | "parser"
-  | "address"
-  | "tags"
-  | "review"
-  | "card";
-
-export interface HudProps {
-  order: HudComponentNames[];
-  parser: {
-    hasReplacements: boolean;
-    parseMode: "v1" | "v2" | "ignored";
-    errorLevel: "none" | "warning" | "error";
-  };
-
-  address: {
-    prefix: string[];
-    exposed: string[];
-    suffix: string[];
-  };
-  tags: string[];
-  review: {
-    marked: boolean;
-    flag: {
-      type: `flag${number}`;
-      message: string;
-    };
-  };
-  card: {
-    type: string;
-    face: string;
-  };
-}
+import type { RankiComponent } from "../../types/ranki-component.types.mts";
+import type { HudProps } from "./hud.types.mts";
 
 //
-export function cardHud(props: HudProps): RankiRenderNode {
+export function createHud(props: HudProps): RankiComponent {
   const { element, refs } = createHudContainer(props);
   const scroller = refs!["scroller"];
   props.order.forEach((p) => {

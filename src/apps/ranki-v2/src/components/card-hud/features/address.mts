@@ -1,4 +1,4 @@
-import type { HudProps } from "../main.mjs";
+import type { HudProps } from "../hud.types.mts";
 
 export function createAddressFeature(props: HudProps, attach: HTMLElement) {
   const address = document.createElement("anki-hud");

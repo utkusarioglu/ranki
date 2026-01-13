@@ -1,4 +1,4 @@
-import type { HudProps } from "../main.mjs";
+import type { HudProps } from "../hud.types.mts";
 
 export function createTagsFeature(props: HudProps, attach: HTMLElement) {
   if (props.tags.filter((v) => v).length) {

@@ -1,37 +1,23 @@
-import "./polyfills.mjs";
+import "./utils/polyfills.mjs";
 import "./style.css";
-import { doDqm } from "./dqm/do-dqm.mts";
+import { renderDqm } from "./dqm/render-dqm.mts";
 import { collectData } from "./collect/collect.mts";
-import { createStructure as createApp } from "./components/card-content/card-content.mts";
-import { createGeneralError } from "./components/general-error/general-error.mts";
-import { RankiAppError } from "./error.mts";
+import { createApp } from "./components/card-content/card-content.mts";
+import { createAppErrorScreen } from "./components/general-error/general-error.mts";
+import { RankiAppError } from "./error/ranki-app-error.mts";
+import { onReady } from "./utils/onReady.mts";
 
-function onReady(fn: any) {
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", fn, { once: true });
-  } else {
-    fn();
-
-    const mut = new MutationObserver(fn);
-    mut.observe(document.querySelector("body")!, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-    });
-  }
-}
-
-const ROOT_SELECTOR = "#ranki-v2-root";
-const RENDERED_SELECTOR = "ranki-rendered";
+const ROOT_ID_SELECTOR = "#ranki-v2-root";
+const RENDERED_CLASS_SELECTOR = "ranki-rendered";
 
 /**
  * @dev
  * #1 DECIDE THis is below data collection because there may be a hash involved
  * in determining whether to render a certain face
  */
-function main() {
+async function main() {
   try {
-    const root = document.querySelector<HTMLDivElement>(ROOT_SELECTOR);
+    const root = document.querySelector<HTMLDivElement>(ROOT_ID_SELECTOR);
     if (!root) {
       throw new RankiAppError({
         code: "NO_ROOT",
@@ -40,23 +26,23 @@ function main() {
       });
     }
     // #1
-    if (root.classList.contains(RENDERED_SELECTOR)) {
+    if (root.classList.contains(RENDERED_CLASS_SELECTOR)) {
       return;
     }
-    root.classList.add(RENDERED_SELECTOR);
+    root.classList.add(RENDERED_CLASS_SELECTOR);
     root.innerHTML = "";
 
     try {
       const collected = collectData();
-      const { faces } = createApp(collected, root);
-      const report = doDqm(collected, faces);
+      const { roots } = createApp(collected, root);
+      const report = await renderDqm(collected, roots);
       console.log("report", report);
     } catch (e) {
-      const error = createGeneralError(e);
+      const error = createAppErrorScreen(e);
       root.appendChild(error.element);
     }
   } catch (e) {
-    const error = createGeneralError(e);
+    const error = createAppErrorScreen(e);
     document.body.innerText = "";
     document.body.appendChild(error.element);
   }

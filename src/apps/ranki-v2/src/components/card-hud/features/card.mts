@@ -1,4 +1,4 @@
-import type { HudProps } from "../main.mjs";
+import type { HudProps } from "../hud.types.mts";
 
 export function createCardFeature(props: HudProps, attach: HTMLElement) {
   const card = document.createElement("anki-hud");

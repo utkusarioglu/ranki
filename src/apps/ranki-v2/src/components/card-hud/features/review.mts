@@ -1,4 +1,4 @@
-import type { HudProps } from "../main.mjs";
+import type { HudProps } from "../hud.types.mts";
 
 export function createReviewFeature(props: HudProps, attach: HTMLElement) {
   if (props.review.marked || props.review.flag.type !== "flag0") {

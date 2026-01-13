@@ -194,6 +194,6 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
       head.appendChild(c);
     }
 
-    return {};
+    return Promise.resolve({ finished: true });
   }
 }

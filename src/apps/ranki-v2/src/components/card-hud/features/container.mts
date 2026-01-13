@@ -1,10 +1,10 @@
-import type { RankiRenderNode } from "../../../types/render-node.mts";
+import type { RankiComponent } from "../../../types/ranki-component.types.mts";
 import { createHorizontalScroller } from "../../horizontal-scroller/horizontal-scroller.mts";
-import type { HudProps } from "../main.mjs";
+import type { HudProps } from "../hud.types.mts";
 
 export function createHudContainer(
   props: HudProps,
-): RankiRenderNode<HTMLElement> {
+): RankiComponent<HTMLElement> {
   const container = document.createElement("ranki-hud-container");
   container.classList.add("container");
   container.classList.add(`error-level-${props.parser.errorLevel}`);

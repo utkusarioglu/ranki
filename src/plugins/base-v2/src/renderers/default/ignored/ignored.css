@@ -1,0 +1,4 @@
+.base-v2-ignored {
+  padding-inline: var(--padding-1);
+  margin-block: var(--padding-1);
+}

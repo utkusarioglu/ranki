@@ -1,7 +1,7 @@
 import v from "./vertical-scroller.css?raw";
-import type { RankiRenderNode } from "../../types/render-node.mts";
+import type { RankiComponent } from "../../types/ranki-component.types.mts";
 
-export function createVerticalScroller(attach: HTMLElement): RankiRenderNode {
+export function createVerticalScroller(attach: HTMLElement): RankiComponent {
   // const style = document.createElement("style");
   // style.className = "vertical-scroller";
   // style.innerHTML = v;

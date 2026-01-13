@@ -99,7 +99,7 @@ export class Libs implements IPlugins {
     rawInputs: DqmSerializeOutput,
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
-  ): RenderReport {
+  ): Promise<RenderReport> {
     assertExists(this.renderEngine, {
       why: "Cannot render if no rendering engine is installed",
     });

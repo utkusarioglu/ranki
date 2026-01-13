@@ -4,8 +4,12 @@ import type {
   AnkiMarked,
   AnkiNeutralTags,
   AnkiRawTag,
+  AnkiTemplateFields,
   CardFaceArray,
   DataCollection,
+  HtmlAttrDir,
+  HtmlAttrTheme,
+  HtmlTagClassCollection,
   RankiTag,
   RankiTags,
 } from "./collect.types.mts";
@@ -15,17 +19,28 @@ import {
   INPUT_SELECTOR,
   RANKI_TAG_INDICATOR,
 } from "./collect.constants.mts";
+import { assertExists } from "@dqm/package-dqm-utils";
 
 const FACE_ASSIGNMENTS = { A: ["A"], B: ["A", "B"] };
 
 /**
  * @dev
  * #1 Basically the theater needs to be the last class name
+ * #2 This is very fragile
  */
 export function collectData(): DataCollection {
+  const htmlElem = document.querySelector("html");
+  assertExists(htmlElem, { why: "Cannot collect data without html element" });
+  // #2
+  const [mode, os, env] = htmlElem.className.split(
+    " ",
+  ) as HtmlTagClassCollection;
+  const dir = htmlElem.getAttribute("dir") as HtmlAttrDir;
+  const dataBsTheme = htmlElem.getAttribute("data-bs-theme") as HtmlAttrTheme;
+
   const dataElems = document.querySelectorAll(DATA_SELECTOR);
   // @ts-expect-error
-  const data: DataCollection["data"] = Object.fromEntries(
+  const fields: AnkiTemplateFields = Object.fromEntries(
     Array.from(dataElems).map((data) => [
       data.className.split(" ").at(-1)!.trim(), // #1
       data.innerHTML,
@@ -45,20 +60,18 @@ export function collectData(): DataCollection {
   } catch (e) {
     console.log(e);
   }
-  // console.log("data", data);
-  // console.log("config", config);
 
   // @ts-expect-error
-  const selectedFaces: CardFaceArray = FACE_ASSIGNMENTS[data.face];
+  const theaterOrder: CardFaceArray = FACE_ASSIGNMENTS[fields.face];
 
-  const inputs = selectedFaces.map((face) => {
+  const inputs = theaterOrder.map((face) => {
     const selector = [INPUT_SELECTOR, face].join(".");
     const r = document.querySelector(selector)!;
     return { theater: face, dqm: r.innerHTML };
   });
-  const address = data.deck.split("::") as AnkiDeckParts;
+  const address = fields.deck.split("::") as AnkiDeckParts;
 
-  const tagsArr = data.tags
+  const tagsArr = fields.tags
     .trim()
     .split(" ")
     .filter((v) => v.length);
@@ -76,10 +89,44 @@ export function collectData(): DataCollection {
   });
 
   return {
+    raw: {
+      html: {
+        os,
+        env,
+        mode,
+        dir,
+        dataBsTheme,
+      },
+      fields,
+    },
+    hud: {
+      order: ["parser", "card", "address", "review", "tags"],
+      parser: {
+        hasReplacements: true,
+        parseMode: "v2",
+        errorLevel: "none",
+      },
+      address: {
+        prefix: [],
+        exposed: address,
+        suffix: [],
+      },
+      tags: neutralTags,
+      review: {
+        marked,
+        flag: {
+          type: fields.flag,
+          message: "Some message",
+        },
+      },
+      card: {
+        type: fields.type,
+        face: fields.face,
+      },
+    },
     pref: { scheme: "dark" },
-    data,
     inputs,
-    selectedFaces,
+    theaterOrder,
     address,
     marked,
     neutralTags,

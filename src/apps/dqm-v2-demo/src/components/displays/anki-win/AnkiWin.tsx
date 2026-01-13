@@ -15,6 +15,7 @@ const FILES = {
 const URL_TEMPLATE = "/ranki-v2/%";
 
 function useRankiFiles(): RankiFiles {
+  const dqm = useDqmStore();
   const [files, setFiles] = useState<RankiFiles>({
     epoch: 0,
     html: {},
@@ -50,7 +51,7 @@ function useRankiFiles(): RankiFiles {
         ),
       )
       .then((v) => setFiles(v));
-  }, []);
+  }, [dqm.inputs]);
   return files;
 }
 
@@ -98,7 +99,7 @@ export const AnkiWin = () => {
         <div>
           <div className={style.ankiBottom} />
           <div className={style.osBottom}>
-            <button>#</button>
+            <button />
           </div>
         </div>
       </div>

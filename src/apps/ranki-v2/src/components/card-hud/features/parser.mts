@@ -1,4 +1,4 @@
-import type { HudProps } from "../main.mjs";
+import type { HudProps } from "../hud.types.mts";
 
 export function createParserFeature(props: HudProps, attach: HTMLElement) {
   const parser = document.createElement("anki-hud");

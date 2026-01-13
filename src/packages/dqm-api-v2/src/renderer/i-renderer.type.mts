@@ -5,7 +5,10 @@ import type {
   Assertions,
 } from "./render-plugin.types.mjs";
 
-export interface RenderReport {}
+// TODO
+export interface RenderReport {
+  finished: true;
+}
 
 export type RenderRoots = Record<string, HTMLDivElement>;
 
@@ -14,7 +17,7 @@ export interface IDqmRenderEngine {
     trn: DqmSerializeOutput,
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
-  ): RenderReport;
+  ): Promise<RenderReport>;
 
   addPlugin(plugin: IDqmPluginRenderer): void;
 }

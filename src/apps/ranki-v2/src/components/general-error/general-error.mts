@@ -1,6 +1,6 @@
-import type { RankiRenderNode } from "../../types/render-node.mts";
+import type { RankiComponent } from "../../types/ranki-component.types.mts";
 
-export function createGeneralError(error: unknown): RankiRenderNode {
+export function createAppErrorScreen(error: unknown): RankiComponent {
   const container = document.createElement("div");
   const h1 = document.createElement("h1");
   h1.innerText = "Error";

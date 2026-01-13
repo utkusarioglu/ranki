@@ -1,17 +1,16 @@
 import { Dqm } from "@dqm/package-dqm-v2";
 import type { RenderReport, RenderRoots } from "@dqm/package-dqm-v2";
 import { pluginsAsArray } from "./dqm.plugins.mts";
-import { RankiAppError } from "../error.mts";
+import { RankiAppError } from "../error/ranki-app-error.mts";
 import type { DataCollection } from "../collect/collect.types.mts";
 import { DQM_BASE_CONFIG } from "./constants.mts";
 
-export function doDqm(
+export async function renderDqm(
   collected: DataCollection,
-  faces: RenderRoots,
-): RenderReport {
+  roots: RenderRoots,
+): Promise<RenderReport> {
   const inputs = collected.inputs;
   const pref = collected.pref;
-  const roots = faces;
   const config = [DQM_BASE_CONFIG];
   try {
     const dqm = new Dqm(config, pluginsAsArray);
