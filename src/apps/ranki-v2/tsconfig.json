@@ -22,13 +22,17 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "paths": {
-      "@dqm/package-utils": ["../../packages/dqm-utils"]
+      "@dqm/package-utils": ["../../packages/dqm-utils"],
+      "@dqm/package-dqm-v2": ["../../packages/dqm-v2"]
     }
   },
   "include": ["src"],
   "references": [
     {
       "path": "../../packages/dqm-utils"
+    },
+    {
+      "path": "../../packages/dqm-v2"
     }
   ]
 }

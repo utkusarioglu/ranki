@@ -1,18 +1,27 @@
 import v from "./vertical-scroller.css?raw";
+import type { RankiRenderNode } from "../../types/render-node.mts";
 
-export function createVerticalScroller(attach: HTMLElement) {
-  const style = document.createElement("style");
-  style.className = "vertical-scroller";
-  style.innerHTML = v;
-  attach.appendChild(style);
+export function createVerticalScroller(attach: HTMLElement): RankiRenderNode {
+  // const style = document.createElement("style");
+  // style.className = "vertical-scroller";
+  // style.innerHTML = v;
+  // attach.appendChild(style);
 
   const container = document.createElement("ranki-vertical-scroller");
   container.classList.add("container");
   attach.appendChild(container);
 
-  const scroller = document.createElement("ranki-vertical-scroller");
-  scroller.classList.add("scroller");
-  container.appendChild(scroller);
+  const element = document.createElement("ranki-vertical-scroller");
+  element.classList.add("scroller");
+  container.appendChild(element);
 
-  return scroller;
+  return {
+    element,
+    css: [
+      {
+        id: "vertical-scroller",
+        css: v,
+      },
+    ],
+  };
 }

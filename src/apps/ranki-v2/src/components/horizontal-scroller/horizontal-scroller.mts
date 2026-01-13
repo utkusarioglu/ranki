@@ -1,4 +1,6 @@
-export function createHorizontalScroller(attach: HTMLElement) {
+import type { RankiRenderNode } from "../../types/render-node.mts";
+
+export function createHorizontalScroller(attach: HTMLElement): RankiRenderNode {
   const container = document.createElement("ranki-horizontal-scroller");
   container.classList.add("container");
   attach.appendChild(container);
@@ -7,5 +9,5 @@ export function createHorizontalScroller(attach: HTMLElement) {
   scroller.classList.add("scroller");
   container.appendChild(scroller);
 
-  return scroller;
+  return { element: scroller };
 }

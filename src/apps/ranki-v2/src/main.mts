@@ -46,13 +46,19 @@ function main() {
     }
     root.classList.add(RENDERED_SELECTOR);
     root.innerHTML = "";
-    const collected = collectData();
-    console.log("collect end", collected);
 
-    const { faces } = createStructure(collected, root);
-    doDqm(collected.inputs, faces, [DQM_BASE_CONFIG], { scheme: "dark" });
+    try {
+      const collected = collectData();
+      const { faces } = createStructure(collected, root);
+      doDqm(collected.inputs, faces, [DQM_BASE_CONFIG], { scheme: "dark" });
+    } catch (e) {
+      const error = createGeneralError(e);
+      root.appendChild(error.element);
+    }
   } catch (e) {
-    createGeneralError(document.body, e);
+    const error = createGeneralError(e);
+    document.body.innerText = "";
+    document.body.appendChild(error.element);
   }
 }
 

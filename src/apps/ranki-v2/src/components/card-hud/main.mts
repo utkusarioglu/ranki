@@ -1,4 +1,3 @@
-import type { RenderNode } from "@dqm/package-dqm-v2";
 import css from "./main.css?raw";
 import { createParserFeature } from "./features/parser.mjs";
 import { createHudContainer } from "./features/container.mjs";
@@ -8,6 +7,7 @@ import { createCardFeature } from "./features/card.mjs";
 import { createTagsFeature } from "./features/tags.mjs";
 import horizontalScrollerCss from "./scroller.css?raw";
 import hudCss from "./container.css?raw";
+import type { RankiRenderNode } from "../../types/render-node.mts";
 
 export type HudComponentNames =
   | "parser"
@@ -44,8 +44,9 @@ export interface HudProps {
 }
 
 //
-export function cardHud(props: HudProps): RenderNode {
-  const { container: element, scroller } = createHudContainer(props);
+export function cardHud(props: HudProps): RankiRenderNode {
+  const { element, refs } = createHudContainer(props);
+  const scroller = refs!["scroller"];
   props.order.forEach((p) => {
     switch (p) {
       case "address":

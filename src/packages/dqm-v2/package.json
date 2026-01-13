@@ -4,8 +4,8 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./lib/export.mjs",
       "types": "./types/export.d.mjs",
+      "import": "./lib/export.mjs",
       "default": "./lib/export.mjs"
     }
   },

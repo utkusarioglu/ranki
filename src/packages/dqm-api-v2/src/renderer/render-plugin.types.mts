@@ -68,8 +68,10 @@ export interface RenderFunctionParams<T> {
 
 export type RenderFunction<T> = (p: RenderFunctionParams<T>) => RenderNode;
 
-export type RenderNode = {
-  element: HTMLElement | DocumentFragment | Text;
+export type RenderNodeElementTypes = HTMLElement | DocumentFragment | Text;
+
+export type RenderNode<GElement = RenderNodeElementTypes> = {
+  element: GElement;
   css?: RenderNodeCssSpec[];
   getMount?: () => HTMLElement;
   // DECIDE this is relevant for external ui tools but it has no use for render units
