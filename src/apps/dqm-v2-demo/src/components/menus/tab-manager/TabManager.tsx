@@ -83,22 +83,18 @@ const levels: Level[] = [
             label: "Document",
             TabChild: <RenderSettings />,
             route: "/view/render/document",
-            // childLevels: [
-
-            // ],
-
-            // icon: <FundProjectionScreenOutlined />,
           },
           {
-            key: "anki-desktop",
-            label: "Anki",
+            key: "anki-win",
+            label: "Anki Win",
             TabChild: <RenderSettings />,
-            route: "/view/render/anki-desktop",
-            // childLevels: [
-
-            // ],
-
-            // icon: <FundProjectionScreenOutlined />,
+            route: "/view/render/anki/win",
+          },
+          {
+            key: "anki-android",
+            label: "Ankidroid",
+            TabChild: <RenderSettings />,
+            route: "/view/render/anki/android",
           },
         ],
       },

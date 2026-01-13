@@ -2,10 +2,9 @@ import "./polyfills.mjs";
 import "./style.css";
 import { doDqm } from "./dqm/do-dqm.mts";
 import { collectData } from "./collect/collect.mts";
-import { createStructure } from "./components/card-content/card-content.mts";
+import { createStructure as createApp } from "./components/card-content/card-content.mts";
 import { createGeneralError } from "./components/general-error/general-error.mts";
 import { RankiAppError } from "./error.mts";
-import { DQM_BASE_CONFIG } from "./dqm/constants.mts";
 
 function onReady(fn: any) {
   if (document.readyState === "loading") {
@@ -49,8 +48,9 @@ function main() {
 
     try {
       const collected = collectData();
-      const { faces } = createStructure(collected, root);
-      doDqm(collected.inputs, faces, [DQM_BASE_CONFIG], { scheme: "dark" });
+      const { faces } = createApp(collected, root);
+      const report = doDqm(collected, faces);
+      console.log("report", report);
     } catch (e) {
       const error = createGeneralError(e);
       root.appendChild(error.element);

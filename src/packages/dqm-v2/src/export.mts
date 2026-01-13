@@ -12,6 +12,7 @@ export type {
   DqmConfigPackEntry,
   DqmConfigPackEntryPartial,
   DqmConfigPackPartial,
+  RenderReport,
 } from "@dqm/package-dqm-api-v2";
 
 export { Dqm } from "./dqm.mjs";

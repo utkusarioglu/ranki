@@ -3,7 +3,6 @@ import { Dqm } from "@dqm/package-dqm-v2";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
 import { buildPluginSelectionConfig } from "_stores/dqm/dqm.utils.mjs";
 import { assertExists } from "_assertions";
-import iframeSrc from "./anki-desktop.html?url";
 import type { PluginStoreWrapper } from "_stores/dqm/dqm.store.types.mjs";
 import type {
   DqmParseInputStructured,
@@ -11,8 +10,7 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { pluginsAsArray } from "_stores/dqm/dqm.plugins.mjs";
 import type { NumberTuple } from "_stores/ui/ui.store.types.mjs";
-import style from "./AnkiDesktopIFrame.module.css";
-import type { RankiFiles } from "./AnkiDesktop";
+import style from "./AnkiIFrame.module.css";
 import { DqmDemoError } from "_error";
 
 function dqmOnLoad(
@@ -23,7 +21,6 @@ function dqmOnLoad(
 ) {
   const a = doc.querySelector<HTMLDivElement>("#A");
   if (!a) {
-    // console.log("no luck");
     return;
   }
   const fixedConfig = buildPluginSelectionConfig(pluginSelection);
@@ -39,6 +36,13 @@ type CardElements = {
   html: string;
   jss: HTMLScriptElement[];
   css: HTMLStyleElement[];
+};
+
+export type RankiFiles = {
+  epoch: number;
+  html: Record<string, string>;
+  css: Record<string, string>;
+  js: Record<string, string>;
 };
 
 function createCardElements(
@@ -58,7 +62,6 @@ function createCardElements(
     html = html.replace(s, r);
   });
 
-  // const jss: HTMLScriptElement[] = [];
   const tpl = document.createElement("template");
   tpl.innerHTML = html;
   const fragment = tpl.content;
@@ -73,7 +76,6 @@ function createCardElements(
 
   const css = Object.entries(parts.css).map(([name, j]) => {
     const style = document.createElement("style");
-    // jsScript.type = "module";
     style.id = name.replace(".", "-");
     style.innerHTML = j;
     return style;
@@ -88,13 +90,15 @@ interface AnkiDesktopIFrameProps {
   pref: IDqmRendererClientPreferences;
   size: NumberTuple;
   files: RankiFiles;
+  src: string;
 }
 
-export const AnkiDesktopIFrame: FC<AnkiDesktopIFrameProps> = ({
+export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
   inputs,
   pref,
   size,
   files,
+  src,
 }) => {
   const ref = useRef<HTMLIFrameElement>(null);
   const replaced = createCardElements(files, {
@@ -119,16 +123,14 @@ export const AnkiDesktopIFrame: FC<AnkiDesktopIFrameProps> = ({
         ref={ref}
         className={style.container}
         style={{ width: size[0], height: size[1] }}
-        src={iframeSrc}
+        src={src}
         onLoad={() => {
           const doc = ref.current?.contentDocument!;
           assertExists(doc, { why: "doc is needed" });
-          const insert = doc.querySelector("span#template-insert");
-          assertExists(insert, {
-            why: "Anki template should have an insertion point",
-          });
           const base = doc.querySelector("base") as HTMLBaseElement;
-          base.href = window.location.origin;
+          if (base) {
+            base.href = window.location.origin;
+          }
           doc.body.appendChild(replaced.fragment);
 
           replaced.css.forEach((css) => {

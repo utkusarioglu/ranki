@@ -1,6 +1,7 @@
 import type {
   DqmParseInputStructured,
   DqmParseTheater,
+  IDqmRendererClientPreferences,
 } from "@dqm/package-dqm-v2";
 import { RANKI_TAG_INDICATOR } from "./collect.constants.mts";
 
@@ -35,6 +36,7 @@ export interface DataCollection {
     type: AnkiCardType;
     face: AnkiCardFace;
   };
+  pref: IDqmRendererClientPreferences
   inputs: DqmParseInputStructured;
   selectedFaces: CardFaceArray;
   address: AnkiDeckParts;

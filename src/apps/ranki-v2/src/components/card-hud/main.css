@@ -42,11 +42,11 @@ anki-hud {
   }
 
   &.fill-1 {
-    background-color: #151515;
+    background-color: var(--color-surface-1-hex);
   }
 
   &.fill-2 {
-    background-color: #202020;
+    background-color: var(--color-surface-2-hex);
   }
 
   &.color-2 {

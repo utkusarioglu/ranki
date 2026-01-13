@@ -2520,9 +2520,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@ranki/app-ranki-v1@workspace:src/apps/ranki-v1":
+"@ranki/app-ranki-v1@workspace:src/legacy/ranki-v1":
   version: 0.0.0-use.local
-  resolution: "@ranki/app-ranki-v1@workspace:src/apps/ranki-v1"
+  resolution: "@ranki/app-ranki-v1@workspace:src/legacy/ranki-v1"
   dependencies:
     "@types/jest": "npm:^30.0.0"
     "@types/node": "npm:^24.0.13"

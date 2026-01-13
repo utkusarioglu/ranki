@@ -13,9 +13,10 @@ import { Route as InfoRouteImport } from './routes/info'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ViewGraphIndexRouteImport } from './routes/view/graph/index'
 import { Route as ViewRenderDocumentIndexRouteImport } from './routes/view/render/document/index'
-import { Route as ViewRenderAnkiDesktopIndexRouteImport } from './routes/view/render/anki-desktop/index'
 import { Route as ViewNodesCpxIndexRouteImport } from './routes/view/nodes/cpx/index'
 import { Route as ViewNodesAstIndexRouteImport } from './routes/view/nodes/ast/index'
+import { Route as ViewRenderAnkiWinIndexRouteImport } from './routes/view/render/anki/win/index'
+import { Route as ViewRenderAnkiAndroidIndexRouteImport } from './routes/view/render/anki/android/index'
 
 const InfoRoute = InfoRouteImport.update({
   id: '/info',
@@ -37,12 +38,6 @@ const ViewRenderDocumentIndexRoute = ViewRenderDocumentIndexRouteImport.update({
   path: '/view/render/document/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ViewRenderAnkiDesktopIndexRoute =
-  ViewRenderAnkiDesktopIndexRouteImport.update({
-    id: '/view/render/anki-desktop/',
-    path: '/view/render/anki-desktop/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const ViewNodesCpxIndexRoute = ViewNodesCpxIndexRouteImport.update({
   id: '/view/nodes/cpx/',
   path: '/view/nodes/cpx/',
@@ -53,6 +48,17 @@ const ViewNodesAstIndexRoute = ViewNodesAstIndexRouteImport.update({
   path: '/view/nodes/ast/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ViewRenderAnkiWinIndexRoute = ViewRenderAnkiWinIndexRouteImport.update({
+  id: '/view/render/anki/win/',
+  path: '/view/render/anki/win/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ViewRenderAnkiAndroidIndexRoute =
+  ViewRenderAnkiAndroidIndexRouteImport.update({
+    id: '/view/render/anki/android/',
+    path: '/view/render/anki/android/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,8 +66,9 @@ export interface FileRoutesByFullPath {
   '/view/graph': typeof ViewGraphIndexRoute
   '/view/nodes/ast': typeof ViewNodesAstIndexRoute
   '/view/nodes/cpx': typeof ViewNodesCpxIndexRoute
-  '/view/render/anki-desktop': typeof ViewRenderAnkiDesktopIndexRoute
   '/view/render/document': typeof ViewRenderDocumentIndexRoute
+  '/view/render/anki/android': typeof ViewRenderAnkiAndroidIndexRoute
+  '/view/render/anki/win': typeof ViewRenderAnkiWinIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -69,8 +76,9 @@ export interface FileRoutesByTo {
   '/view/graph': typeof ViewGraphIndexRoute
   '/view/nodes/ast': typeof ViewNodesAstIndexRoute
   '/view/nodes/cpx': typeof ViewNodesCpxIndexRoute
-  '/view/render/anki-desktop': typeof ViewRenderAnkiDesktopIndexRoute
   '/view/render/document': typeof ViewRenderDocumentIndexRoute
+  '/view/render/anki/android': typeof ViewRenderAnkiAndroidIndexRoute
+  '/view/render/anki/win': typeof ViewRenderAnkiWinIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -79,8 +87,9 @@ export interface FileRoutesById {
   '/view/graph/': typeof ViewGraphIndexRoute
   '/view/nodes/ast/': typeof ViewNodesAstIndexRoute
   '/view/nodes/cpx/': typeof ViewNodesCpxIndexRoute
-  '/view/render/anki-desktop/': typeof ViewRenderAnkiDesktopIndexRoute
   '/view/render/document/': typeof ViewRenderDocumentIndexRoute
+  '/view/render/anki/android/': typeof ViewRenderAnkiAndroidIndexRoute
+  '/view/render/anki/win/': typeof ViewRenderAnkiWinIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -90,8 +99,9 @@ export interface FileRouteTypes {
     | '/view/graph'
     | '/view/nodes/ast'
     | '/view/nodes/cpx'
-    | '/view/render/anki-desktop'
     | '/view/render/document'
+    | '/view/render/anki/android'
+    | '/view/render/anki/win'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -99,8 +109,9 @@ export interface FileRouteTypes {
     | '/view/graph'
     | '/view/nodes/ast'
     | '/view/nodes/cpx'
-    | '/view/render/anki-desktop'
     | '/view/render/document'
+    | '/view/render/anki/android'
+    | '/view/render/anki/win'
   id:
     | '__root__'
     | '/'
@@ -108,8 +119,9 @@ export interface FileRouteTypes {
     | '/view/graph/'
     | '/view/nodes/ast/'
     | '/view/nodes/cpx/'
-    | '/view/render/anki-desktop/'
     | '/view/render/document/'
+    | '/view/render/anki/android/'
+    | '/view/render/anki/win/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -118,8 +130,9 @@ export interface RootRouteChildren {
   ViewGraphIndexRoute: typeof ViewGraphIndexRoute
   ViewNodesAstIndexRoute: typeof ViewNodesAstIndexRoute
   ViewNodesCpxIndexRoute: typeof ViewNodesCpxIndexRoute
-  ViewRenderAnkiDesktopIndexRoute: typeof ViewRenderAnkiDesktopIndexRoute
   ViewRenderDocumentIndexRoute: typeof ViewRenderDocumentIndexRoute
+  ViewRenderAnkiAndroidIndexRoute: typeof ViewRenderAnkiAndroidIndexRoute
+  ViewRenderAnkiWinIndexRoute: typeof ViewRenderAnkiWinIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -152,13 +165,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ViewRenderDocumentIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/view/render/anki-desktop/': {
-      id: '/view/render/anki-desktop/'
-      path: '/view/render/anki-desktop'
-      fullPath: '/view/render/anki-desktop'
-      preLoaderRoute: typeof ViewRenderAnkiDesktopIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/view/nodes/cpx/': {
       id: '/view/nodes/cpx/'
       path: '/view/nodes/cpx'
@@ -173,6 +179,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ViewNodesAstIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/view/render/anki/win/': {
+      id: '/view/render/anki/win/'
+      path: '/view/render/anki/win'
+      fullPath: '/view/render/anki/win'
+      preLoaderRoute: typeof ViewRenderAnkiWinIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/view/render/anki/android/': {
+      id: '/view/render/anki/android/'
+      path: '/view/render/anki/android'
+      fullPath: '/view/render/anki/android'
+      preLoaderRoute: typeof ViewRenderAnkiAndroidIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -182,8 +202,9 @@ const rootRouteChildren: RootRouteChildren = {
   ViewGraphIndexRoute: ViewGraphIndexRoute,
   ViewNodesAstIndexRoute: ViewNodesAstIndexRoute,
   ViewNodesCpxIndexRoute: ViewNodesCpxIndexRoute,
-  ViewRenderAnkiDesktopIndexRoute: ViewRenderAnkiDesktopIndexRoute,
   ViewRenderDocumentIndexRoute: ViewRenderDocumentIndexRoute,
+  ViewRenderAnkiAndroidIndexRoute: ViewRenderAnkiAndroidIndexRoute,
+  ViewRenderAnkiWinIndexRoute: ViewRenderAnkiWinIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
