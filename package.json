@@ -4,6 +4,7 @@
   "workspaces": [
     "src/config/*",
     "src/apps/*",
+    "src/legacy/*",
     "src/packages/*",
     "src/plugins/*"
   ],
