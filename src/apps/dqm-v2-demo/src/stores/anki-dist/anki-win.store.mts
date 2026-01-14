@@ -8,4 +8,6 @@ export const useAnkiWinStore = createAnkiStore({
   colorScheme: "dark",
   cardConfig: "",
   templateConfig: "",
+  deck: "Tests::Test",
+  tags: "",
 });

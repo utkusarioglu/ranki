@@ -6,4 +6,6 @@ export const useAnkiAndroidStore = createAnkiStore({
   colorScheme: "dark",
   cardConfig: "",
   templateConfig: "",
+  deck: "Tests::Test",
+  tags: "",
 });

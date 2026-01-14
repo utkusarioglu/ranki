@@ -8,10 +8,10 @@ import { useAnkiAndroidStore } from "_stores/anki-dist/anki-android.store.mjs";
 
 export const AnkiAndroid = () => {
   const dqm = useDqmStore();
-  const win = useAnkiAndroidStore();
+  const android = useAnkiAndroidStore();
   const ui = useUiStore();
 
-  const pref: IDqmRendererClientPreferences = { scheme: win.colorScheme };
+  const pref: IDqmRendererClientPreferences = { scheme: android.colorScheme };
 
   return (
     <AnkiScreen
@@ -43,13 +43,16 @@ export const AnkiAndroid = () => {
       }
       deviceClassName={style.device}
       src={ankiAndroidSrc}
-      aspect={win.previewAspect}
-      scale={win.previewScale}
+      aspect={android.previewAspect}
+      scale={android.previewScale}
       reservedWidth={ui.menuWidth}
       inputs={dqm.inputs}
-      templateConfig={win.templateConfig}
-      cardConfig={win.cardConfig}
+      templateConfig={android.templateConfig}
+      cardConfig={android.cardConfig}
       pref={pref}
+      deck={android.deck}
+      tags={android.tags}
+      flag={android.flag}
     />
   );
 };

@@ -43,6 +43,9 @@ export const AnkiWindows = () => {
       templateConfig={win.templateConfig}
       cardConfig={win.cardConfig}
       pref={pref}
+      deck={win.deck}
+      tags={win.tags}
+      flag={win.flag}
     />
   );
 };

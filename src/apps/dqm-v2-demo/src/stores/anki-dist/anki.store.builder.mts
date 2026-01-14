@@ -8,12 +8,12 @@ export const createAnkiStore = (defaults: AnkiDistStoreStates) =>
   create<AnkiDistStore>((set) => ({
     ...defaults,
 
-    setColorScheme: (c) => set(() => ({ colorScheme: c })),
-    setPreviewAspect: (n) => set(() => ({ previewAspect: n })),
-    setPreviewScale: (n: number) =>
-      set(() => ({
-        previewScale: n,
-      })),
-    setCardConfig: (c) => set(() => ({ cardConfig: c })),
-    setTemplateConfig: (c) => set(() => ({ templateConfig: c })),
+    setColorScheme: (colorScheme) => set(() => ({ colorScheme })),
+    setPreviewAspect: (previewAspect) => set(() => ({ previewAspect })),
+    setPreviewScale: (previewScale) => set(() => ({ previewScale })),
+    setCardConfig: (cardConfig) => set(() => ({ cardConfig })),
+    setTemplateConfig: (templateConfig) => set(() => ({ templateConfig })),
+    setTags: (tags) => set(() => ({ tags })),
+    setDeck: (deck) => set(() => ({ deck: deck.trim() })),
+    setFlag: (flag) => set(() => ({ flag })),
   }));

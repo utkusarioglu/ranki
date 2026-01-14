@@ -8,7 +8,12 @@ import type {
 import style from "./AnkiIFrame.module.css";
 import { createCardElements, dqmOnLoad } from "./utils";
 import type { RankiFiles } from "./AnkiScreen";
-import type { RankiConfigString } from "_stores/anki-dist/anki.store.types.mjs";
+import type {
+  RankiConfigString,
+  RankiDeckString,
+  RankiFlag,
+  RankiTagString,
+} from "_stores/anki-dist/anki.store.types.mjs";
 const s = useDqmStore.getState();
 
 export interface AnkiDesktopIFrameProps {
@@ -17,6 +22,9 @@ export interface AnkiDesktopIFrameProps {
   files: RankiFiles;
   templateConfig: RankiConfigString;
   cardConfig: RankiConfigString;
+  tags: RankiTagString;
+  deck: RankiDeckString;
+  flag: RankiFlag;
   src: string;
 }
 
@@ -32,6 +40,9 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
   src,
   cardConfig,
   templateConfig,
+  tags,
+  deck,
+  flag,
 }) => {
   const ref = useRef<HTMLIFrameElement>(null);
   const replaced = createCardElements(inputs, files, {
@@ -46,17 +57,17 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
     // "{{B}}": inputs[1].dqm,
 
     "{{Card}}": "card",
-    "{{Deck}}": "Tests::Test",
-    "{{Subdeck}}": "Test",
-    "{{Tags}}": "    ",
     "{{Type}}": "A",
-    "{{CardFlag}}": "flag0",
+    "{{Tags}}": tags,
+    "{{Deck}}": deck,
+    "{{Subdeck}}": deck.split("::").at(-1)!,
+    "{{CardFlag}}": flag,
   });
 
   return (
     <iframe
       // #1
-      key={templateConfig + cardConfig}
+      key={[templateConfig, cardConfig, tags, deck, tags].join(" ")}
       ref={ref}
       className={style.container}
       src={src}

@@ -1,8 +1,4 @@
 import { type FC, type ReactNode } from "react";
-import type {
-  DqmParseInputStructured,
-  IDqmRendererClientPreferences,
-} from "@dqm/package-dqm-api-v2";
 import style from "./AnkiIFrame.module.css";
 import { getSizing, useRankiFiles } from "./utils";
 import { AnkiIFrame, type AnkiDesktopIFrameProps } from "./anki-iframe";
@@ -21,11 +17,7 @@ export type RankiFiles = {
   js: Record<string, string>;
 };
 
-interface AnkiScreenProps
-  extends Pick<
-    AnkiDesktopIFrameProps,
-    "inputs" | "src" | "pref" | "templateConfig" | "cardConfig"
-  > {
+interface AnkiScreenProps extends Omit<AnkiDesktopIFrameProps, "files"> {
   Top: ReactNode;
   Bottom: ReactNode;
   deviceClassName: string;
@@ -49,6 +41,9 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   pref,
   templateConfig,
   cardConfig,
+  tags,
+  deck,
+  flag,
 }) => {
   const files = useRankiFiles([]);
   if (files.epoch === 0) {
@@ -80,6 +75,9 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
           inputs={inputs}
           templateConfig={templateConfig}
           cardConfig={cardConfig}
+          tags={tags}
+          deck={deck}
+          flag={flag}
         />
         {Bottom}
       </div>
