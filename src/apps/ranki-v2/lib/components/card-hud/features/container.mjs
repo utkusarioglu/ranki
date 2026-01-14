@@ -1,4 +1,4 @@
-import { createHorizontalScroller } from "../../horizontal-scroller/horizontal-scroller.mts";
+import { createHorizontalScroller } from "../../horizontal-scroller/horizontal-scroller.mjs";
 export function createHudContainer(props) {
     const container = document.createElement("ranki-hud-container");
     container.classList.add("container");

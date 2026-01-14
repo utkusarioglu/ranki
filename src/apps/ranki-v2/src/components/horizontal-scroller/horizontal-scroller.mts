@@ -1,4 +1,4 @@
-import type { RankiComponent } from "../../types/ranki-component.types.mts";
+import type { RankiComponent } from "../../types/ranki-component.types.mjs";
 
 export function createHorizontalScroller(attach: HTMLElement): RankiComponent {
   const container = document.createElement("ranki-horizontal-scroller");

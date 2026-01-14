@@ -1,4 +1,4 @@
-import type { RankiConfig } from "./types/config.types.mts";
+import type { RankiConfig } from "../types/config.types.mjs";
 
 export const RANKI_INITIAL_CONFIG: RankiConfig = {
   base: {

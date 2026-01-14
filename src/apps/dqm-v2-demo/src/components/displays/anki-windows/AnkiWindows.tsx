@@ -40,6 +40,8 @@ export const AnkiWindows = () => {
       scale={win.previewScale}
       reservedWidth={ui.menuWidth}
       inputs={dqm.inputs}
+      templateConfig={win.templateConfig}
+      cardConfig={win.cardConfig}
       pref={pref}
     />
   );

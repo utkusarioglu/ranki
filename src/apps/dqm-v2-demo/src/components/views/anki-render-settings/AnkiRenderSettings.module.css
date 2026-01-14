@@ -1,3 +1,17 @@
 .container {
   padding: var(--ant-padding);
 }
+
+.textarea {
+  min-height: 8em !important;
+  min-width: 100%;
+  resize: none !important;
+
+  &::-webkit-scrollbar {
+    appearance: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    display: none;
+  }
+}

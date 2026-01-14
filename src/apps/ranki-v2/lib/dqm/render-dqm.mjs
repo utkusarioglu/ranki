@@ -1,7 +1,7 @@
 import { Dqm } from "@dqm/package-dqm-v2";
-import { pluginsAsArray } from "./dqm.plugins.mts";
-import { RankiAppError } from "../error/ranki-app-error.mts";
-import { DQM_BASE_CONFIG } from "./constants.mts";
+import { pluginsAsArray } from "./dqm.plugins.mjs";
+import { RankiAppError } from "../error/ranki-app-error.mjs";
+import { DQM_BASE_CONFIG } from "./constants.mjs";
 export async function renderDqm(collected, roots) {
     const inputs = collected.inputs;
     const pref = collected.pref;

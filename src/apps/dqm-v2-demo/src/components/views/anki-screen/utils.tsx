@@ -11,7 +11,7 @@ import { DqmDemoError } from "_error";
 import type { RankiFiles, CardElements } from "./AnkiScreen";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
 import { useEffect, useState } from "react";
-import { INPUT_TYPE_CLASS_SELECTOR } from "@ranki/app-ranki-v2";
+import { INPUT_TYPE_CLASS_SELECTOR } from "@ranki/app-ranki-v2/constants";
 
 export function dqmOnLoad(
   doc: Document,
@@ -30,8 +30,6 @@ export function dqmOnLoad(
   });
   dqm.render(inputs, { [inputs[0].theater]: a }, pref);
 }
-
-// const RANKI_V2_INPUT_SELECTOR = "script.ranki-v2-input";
 
 export function createCardElements(
   inputs: DqmParseInputStructured,
@@ -75,12 +73,13 @@ export function createCardElements(
     fragment.removeChild(e);
   });
 
-  const inputClass = INPUT_TYPE_CLASS_SELECTOR.split(".").slice(1, 0).join(".");
+  const inputClass = INPUT_TYPE_CLASS_SELECTOR.split(".").slice(1).join(".");
+  console.log("inputClass", inputClass);
   inputs.forEach((i) => {
     const e = document.createElement("script");
     e.className = [inputClass, i.theater].join(" ");
     e.type = "text/dqm";
-    e.innerHTML = ["{{", i.theater, "}}"].join("");
+    e.innerHTML = i.dqm;
     fragment.appendChild(e);
   });
 
@@ -132,8 +131,7 @@ const FILES = {
 
 const URL_TEMPLATE = "/ranki-v2/%";
 
-export function useRankiFiles(): RankiFiles {
-  const dqm = useDqmStore();
+export function useRankiFiles(triggers: any[]): RankiFiles {
   const [files, setFiles] = useState<RankiFiles>({
     epoch: 0,
     html: {},
@@ -169,6 +167,6 @@ export function useRankiFiles(): RankiFiles {
         ),
       )
       .then((v) => setFiles(v));
-  }, [dqm.inputs]);
+  }, triggers);
   return files;
 }

@@ -1,6 +1,6 @@
-import type { RankiComponent } from "../../../types/ranki-component.types.mts";
-import { createHorizontalScroller } from "../../horizontal-scroller/horizontal-scroller.mts";
-import type { HudProps } from "../hud.types.mts";
+import type { RankiComponent } from "../../../types/ranki-component.types.mjs";
+import { createHorizontalScroller } from "../../horizontal-scroller/horizontal-scroller.mjs";
+import type { HudProps } from "../hud.types.mjs";
 
 export function createHudContainer(
   props: HudProps,

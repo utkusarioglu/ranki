@@ -1,14 +1,14 @@
-import type { HudProps } from "../hud.types.mts";
+import type { HudProps } from "../hud.types.mjs";
 
 export function createTagsFeature(props: HudProps, attach: HTMLElement) {
   if (props.tags.filter((v) => v).length) {
-    const tags = document.createElement("anki-hud");
+    const tags = document.createElement("ranki-hud-item");
     tags.classList.add("curved-1");
     tags.classList.add("fill-1");
     tags.classList.add("outer-padding");
     tags.classList.add("tags");
     props.tags.forEach((tag) => {
-      const t = document.createElement("anki-hud");
+      const t = document.createElement("ranki-hud-item");
       t.classList.add("tag");
       t.classList.add("curved-2");
       t.classList.add("half-padding");

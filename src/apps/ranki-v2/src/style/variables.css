@@ -1,0 +1,16 @@
+:root {
+  color-scheme: light dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --padding-1: 1em;
+  --face-width-min: 500px;
+
+  --content-width: min(var(--face-width-min), 100vw);
+  --color-surface-1-hex: #0c0c0c;
+  --color-surface-2-hex: #0d1216;
+  --color-surface-3-hex: #444;
+  --color-bg-hex: #000000;
+}

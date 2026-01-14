@@ -4,15 +4,19 @@
   "version": "0.0.0",
   "type": "module",
   "exports": {
-    "./sdk": {
-      "import": "./lib/export.mjs",
-      "types": "./types/export.d.mts",
-      "default": "./lib/export.mjs"
+    "./constants": {
+      "import": "./lib/export.constants.mjs",
+      "types": "./types/export.constants.d.mts",
+      "default": "./lib/export.constants.mjs"
+    },
+    "./types": {
+      "types": "./types/export.types.d.mts"
     }
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "lib": "tsc -p tsconfig.lib.json",
+    "build": "yarn lib && vite build",
     "preview": "vite preview",
     "clean-target": "scripts/clean-target.sh"
   },

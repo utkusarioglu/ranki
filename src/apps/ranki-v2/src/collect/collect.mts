@@ -12,14 +12,15 @@ import type {
   HtmlTagClassCollection,
   RankiTag,
   RankiTags,
-} from "./collect.types.mts";
+} from "./collect.types.mjs";
 import {
   CONFIG_TYPE_CLASS_SELECTOR,
   DATA_TYPE_CLASS_SELECTOR,
   INPUT_TYPE_CLASS_SELECTOR,
   RANKI_TAG_INDICATOR,
-} from "../selector.constants..mts";
+} from "../selector.constants.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
+import { RankiAppError } from "../error/ranki-app-error.mts";
 
 const FACE_ASSIGNMENTS = { A: ["A"], B: ["A", "B"] };
 
@@ -67,8 +68,25 @@ export function collectData(): DataCollection {
   const inputs = theaterOrder.map((face) => {
     const selector = [INPUT_TYPE_CLASS_SELECTOR, face].join(".");
     const r = document.querySelector(selector)!;
+    if (!r) {
+      throw new RankiAppError({
+        code: "NO_FACE",
+        why: `Cannot find face ${face}`,
+        cause: null,
+        details: { INPUT_TYPE_CLASS_SELECTOR, theaterOrder, face },
+      });
+    }
     return { theater: face, dqm: r.innerHTML };
   });
+  if (!inputs.length) {
+    throw new RankiAppError({
+      code: "NO_FACES",
+      why: "Cannot find any faces to render. Ranki requires at least one face",
+      cause: null,
+      details: { INPUT_TYPE_CLASS_SELECTOR, theaterOrder },
+    });
+  }
+
   const address = fields.deck.split("::") as AnkiDeckParts;
 
   const tagsArr = fields.tags

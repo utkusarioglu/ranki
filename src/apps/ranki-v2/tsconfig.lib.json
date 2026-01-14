@@ -11,7 +11,14 @@
       "@dqm/package-dqm-v2": ["../../packages/dqm-v2"]
     }
   },
-  "include": ["src/**/*"],
+  "include": [
+    "src/export.constants.mts",
+    "src/selector.constants.mts",
+    "src/export.types.mts",
+    "src/types/util.types.mts",
+    "src/components/card-hud/hud.types.mts",
+    "src/types/config.types.mts"
+  ],
   "references": [
     {
       "path": "../../packages/dqm-utils"

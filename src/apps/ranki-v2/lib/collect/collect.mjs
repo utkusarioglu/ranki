@@ -1,5 +1,5 @@
 import yaml from "yaml";
-import { CONFIG_TYPE_CLASS_SELECTOR, DATA_TYPE_CLASS_SELECTOR, INPUT_TYPE_CLASS_SELECTOR, RANKI_TAG_INDICATOR, } from "../selector.constants..mts";
+import { CONFIG_TYPE_CLASS_SELECTOR, DATA_TYPE_CLASS_SELECTOR, INPUT_TYPE_CLASS_SELECTOR, RANKI_TAG_INDICATOR, } from "../selector.constants.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
 const FACE_ASSIGNMENTS = { A: ["A"], B: ["A", "B"] };
 /**

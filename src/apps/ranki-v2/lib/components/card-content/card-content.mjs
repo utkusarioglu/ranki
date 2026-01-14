@@ -1,5 +1,5 @@
-import { createHud } from "../card-hud/main.mts";
-import { createVerticalScroller } from "../vertical-scroller/vertical-scroller.mts";
+import { createHud } from "../card-hud/main.mjs";
+import { createVerticalScroller } from "../vertical-scroller/vertical-scroller.mjs";
 function createFaces(selectedFaces) {
     const faceContainer = document.createElement("div");
     faceContainer.classList.add("ranki-v2-face-container");

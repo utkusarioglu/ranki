@@ -1,0 +1,13 @@
+.ranki-v2-general-error {
+  width: var(--content-width);
+  margin-inline: auto;
+
+  & > h1,
+  & > p {
+    color: #550000;
+  }
+
+  & > pre {
+    color: gray;
+  }
+}

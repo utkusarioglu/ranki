@@ -7,8 +7,8 @@ import { createCardFeature } from "./features/card.mjs";
 import { createTagsFeature } from "./features/tags.mjs";
 import horizontalScrollerCss from "./scroller.css?raw";
 import hudCss from "./container.css?raw";
-import type { RankiComponent } from "../../types/ranki-component.types.mts";
-import type { HudProps } from "./hud.types.mts";
+import type { RankiComponent } from "../../types/ranki-component.types.mjs";
+import type { HudProps } from "./hud.types.mjs";
 
 //
 export function createHud(props: HudProps): RankiComponent {
@@ -40,7 +40,7 @@ export function createHud(props: HudProps): RankiComponent {
     element,
     css: [
       {
-        id: "anki-hud",
+        id: "ranki-hud",
         css,
       },
       {

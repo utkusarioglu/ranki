@@ -1,11 +1,12 @@
 import "./utils/polyfills.mjs";
-import "./style.css";
-import { renderDqm } from "./dqm/render-dqm.mts";
-import { collectData } from "./collect/collect.mts";
-import { createApp } from "./components/card-content/card-content.mts";
-import { createAppErrorScreen } from "./components/general-error/general-error.mts";
-import { RankiAppError } from "./error/ranki-app-error.mts";
-import { onReady } from "./utils/onReady.mts";
+import "./style/variables.css";
+import "./style/template.css";
+import { renderDqm } from "./dqm/render-dqm.mjs";
+import { collectData } from "./collect/collect.mjs";
+import { createApp } from "./components/app/app.mjs";
+import { createAppErrorScreen } from "./components/general-error/general-error.mjs";
+import { RankiAppError } from "./error/ranki-app-error.mjs";
+import { onReady } from "./utils/onReady.mjs";
 
 const ROOT_ID_SELECTOR = "#ranki-v2-root";
 const RENDERED_CLASS_SELECTOR = "ranki-rendered";

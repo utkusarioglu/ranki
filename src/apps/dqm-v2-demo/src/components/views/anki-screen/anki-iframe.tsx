@@ -8,64 +8,75 @@ import type {
 import style from "./AnkiIFrame.module.css";
 import { createCardElements, dqmOnLoad } from "./utils";
 import type { RankiFiles } from "./AnkiScreen";
+import type { RankiConfigString } from "_stores/anki-dist/anki.store.types.mjs";
 const s = useDqmStore.getState();
 
-interface AnkiDesktopIFrameProps {
+export interface AnkiDesktopIFrameProps {
   inputs: DqmParseInputStructured;
   pref: IDqmRendererClientPreferences;
   files: RankiFiles;
+  templateConfig: RankiConfigString;
+  cardConfig: RankiConfigString;
   src: string;
 }
 
+/**
+ * @dev
+ * #1 FIX this is a stop-gap measure. a better solution for all inputs that
+ * don't demand a reload would be much more useful
+ */
 export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
   inputs,
   pref,
   files,
   src,
+  cardConfig,
+  templateConfig,
 }) => {
   const ref = useRef<HTMLIFrameElement>(null);
   const replaced = createCardElements(inputs, files, {
     // These need to be replaced in the demo app
-    "{{FACE}}": "B",
-    "{{TEMPLATE_CONFIG}}": "   ",
+    "{{FACE}}": "A",
+    "{{TEMPLATE_CONFIG}}": templateConfig,
     // These come from anki
-    "{{CardConfig}}": "   ",
-    "{{A}}": inputs[0].dqm,
-    "{{B}}": inputs[1].dqm,
+    "{{CardConfig}}": cardConfig,
+
+    // These are created by `inputs`
+    // "{{A}}": inputs[0].dqm,
+    // "{{B}}": inputs[1].dqm,
+
+    "{{Card}}": "card",
     "{{Deck}}": "Tests::Test",
     "{{Subdeck}}": "Test",
     "{{Tags}}": "    ",
     "{{Type}}": "A",
     "{{CardFlag}}": "flag0",
-    "{{Card}}": "card",
   });
 
   return (
-    <>
-      <iframe
-        ref={ref}
-        className={style.container}
-        // style={{ width: size[0], height: size[1] }}
-        style={{ width: "100%", height: "100%" }}
-        src={src}
-        onLoad={() => {
-          const doc = ref.current?.contentDocument!;
-          assertExists(doc, { why: "doc is needed" });
-          const base = doc.querySelector("base") as HTMLBaseElement;
-          if (base) {
-            base.href = window.location.origin;
-          }
-          doc.body.appendChild(replaced.fragment);
+    <iframe
+      // #1
+      key={templateConfig + cardConfig}
+      ref={ref}
+      className={style.container}
+      src={src}
+      onLoad={() => {
+        const doc = ref.current?.contentDocument!;
+        assertExists(doc, { why: "doc is needed" });
+        const base = doc.querySelector("base") as HTMLBaseElement;
+        if (base) {
+          base.href = window.location.origin;
+        }
+        doc.body.appendChild(replaced.fragment);
 
-          replaced.css.forEach((css) => {
-            doc.body.appendChild(css);
-          });
-          replaced.jss.forEach((js) => {
-            doc.body.appendChild(js);
-          });
-          dqmOnLoad(doc, s.pluginSelection, s.inputs, pref);
-        }}
-      />
-    </>
+        replaced.css.forEach((css) => {
+          doc.body.appendChild(css);
+        });
+        replaced.jss.forEach((js) => {
+          doc.body.appendChild(js);
+        });
+        dqmOnLoad(doc, s.pluginSelection, s.inputs, pref);
+      }}
+    />
   );
 };
