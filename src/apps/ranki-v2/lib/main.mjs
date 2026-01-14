@@ -1,0 +1,49 @@
+import "./utils/polyfills.mjs";
+import "./style.css";
+import { renderDqm } from "./dqm/render-dqm.mts";
+import { collectData } from "./collect/collect.mts";
+import { createApp } from "./components/card-content/card-content.mts";
+import { createAppErrorScreen } from "./components/general-error/general-error.mts";
+import { RankiAppError } from "./error/ranki-app-error.mts";
+import { onReady } from "./utils/onReady.mts";
+const ROOT_ID_SELECTOR = "#ranki-v2-root";
+const RENDERED_CLASS_SELECTOR = "ranki-rendered";
+/**
+ * @dev
+ * #1 DECIDE THis is below data collection because there may be a hash involved
+ * in determining whether to render a certain face
+ */
+async function main() {
+    try {
+        const root = document.querySelector(ROOT_ID_SELECTOR);
+        if (!root) {
+            throw new RankiAppError({
+                code: "NO_ROOT",
+                why: "Cannot render the application without a root in the template",
+                cause: null,
+            });
+        }
+        // #1
+        if (root.classList.contains(RENDERED_CLASS_SELECTOR)) {
+            return;
+        }
+        root.classList.add(RENDERED_CLASS_SELECTOR);
+        root.innerHTML = "";
+        try {
+            const collected = collectData();
+            const { roots } = createApp(collected, root);
+            const report = await renderDqm(collected, roots);
+            console.log("report", report);
+        }
+        catch (e) {
+            const error = createAppErrorScreen(e);
+            root.appendChild(error.element);
+        }
+    }
+    catch (e) {
+        const error = createAppErrorScreen(e);
+        document.body.innerText = "";
+        document.body.appendChild(error.element);
+    }
+}
+onReady(main);

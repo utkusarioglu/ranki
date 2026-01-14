@@ -26,6 +26,7 @@
     "@dqm/plugin-sre-music": "workspace:^",
     "@dqm/plugin-sre-osmd": "workspace:^",
     "@dqm/plugin-static-render-engine": "workspace:^",
+    "@ranki/app-ranki-v2": "workspace:^",
     "@tanstack/react-router": "^1.140.0",
     "@tanstack/react-router-devtools": "^1.140.0",
     "@tanstack/router-core": "^1.140.0",

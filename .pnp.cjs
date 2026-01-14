@@ -1795,6 +1795,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/plugin-sre-osmd", "workspace:src/plugins/sre-osmd"],\
           ["@dqm/plugin-static-render-engine", "workspace:src/plugins/static-render-engine"],\
           ["@eslint/js", "npm:9.39.1"],\
+          ["@ranki/app-ranki-v2", "workspace:src/apps/ranki-v2"],\
           ["@rollup/plugin-babel", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:6.1.0"],\
           ["@rollup/plugin-node-resolve", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:16.0.3"],\
           ["@tanstack/react-router", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:1.140.0"],\
@@ -3717,6 +3718,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/plugin-sre-osmd", "workspace:src/plugins/sre-osmd"],\
           ["@dqm/plugin-static-render-engine", "workspace:src/plugins/static-render-engine"],\
           ["@ranki/app-ranki-v2", "workspace:src/apps/ranki-v2"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
           ["@types/node", "npm:25.0.6"],\
           ["chalk", "npm:5.6.2"],\

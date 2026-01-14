@@ -3,7 +3,7 @@ import type {
   DqmParseTheater,
   IDqmRendererClientPreferences,
 } from "@dqm/package-dqm-v2";
-import { RANKI_TAG_INDICATOR } from "./collect.constants.mts";
+import { RANKI_TAG_INDICATOR } from "../selector.constants..mts";
 import type { HudProps } from "../components/card-hud/hud.types.mts";
 
 export type AnkiFlag = `flag${number}`;

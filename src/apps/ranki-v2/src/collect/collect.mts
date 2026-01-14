@@ -14,11 +14,11 @@ import type {
   RankiTags,
 } from "./collect.types.mts";
 import {
-  CONFIG_SELECTOR,
-  DATA_SELECTOR,
-  INPUT_SELECTOR,
+  CONFIG_TYPE_CLASS_SELECTOR,
+  DATA_TYPE_CLASS_SELECTOR,
+  INPUT_TYPE_CLASS_SELECTOR,
   RANKI_TAG_INDICATOR,
-} from "./collect.constants.mts";
+} from "../selector.constants..mts";
 import { assertExists } from "@dqm/package-dqm-utils";
 
 const FACE_ASSIGNMENTS = { A: ["A"], B: ["A", "B"] };
@@ -38,7 +38,7 @@ export function collectData(): DataCollection {
   const dir = htmlElem.getAttribute("dir") as HtmlAttrDir;
   const dataBsTheme = htmlElem.getAttribute("data-bs-theme") as HtmlAttrTheme;
 
-  const dataElems = document.querySelectorAll(DATA_SELECTOR);
+  const dataElems = document.querySelectorAll(DATA_TYPE_CLASS_SELECTOR);
   // @ts-expect-error
   const fields: AnkiTemplateFields = Object.fromEntries(
     Array.from(dataElems).map((data) => [
@@ -50,7 +50,7 @@ export function collectData(): DataCollection {
   // @ts-expect-error
   let config = {};
   try {
-    const configElems = document.querySelectorAll(CONFIG_SELECTOR);
+    const configElems = document.querySelectorAll(CONFIG_TYPE_CLASS_SELECTOR);
     config = Object.fromEntries(
       Array.from(configElems).map((data) => [
         data.className.split(" ").at(-1)!.trim(), // #1
@@ -65,7 +65,7 @@ export function collectData(): DataCollection {
   const theaterOrder: CardFaceArray = FACE_ASSIGNMENTS[fields.face];
 
   const inputs = theaterOrder.map((face) => {
-    const selector = [INPUT_SELECTOR, face].join(".");
+    const selector = [INPUT_TYPE_CLASS_SELECTOR, face].join(".");
     const r = document.querySelector(selector)!;
     return { theater: face, dqm: r.innerHTML };
   });

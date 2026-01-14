@@ -11,6 +11,7 @@ import { DqmDemoError } from "_error";
 import type { RankiFiles, CardElements } from "./AnkiScreen";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
 import { useEffect, useState } from "react";
+import { INPUT_TYPE_CLASS_SELECTOR } from "@ranki/app-ranki-v2";
 
 export function dqmOnLoad(
   doc: Document,
@@ -29,7 +30,11 @@ export function dqmOnLoad(
   });
   dqm.render(inputs, { [inputs[0].theater]: a }, pref);
 }
+
+// const RANKI_V2_INPUT_SELECTOR = "script.ranki-v2-input";
+
 export function createCardElements(
+  inputs: DqmParseInputStructured,
   parts: RankiFiles,
   re: Record<string, string>,
 ): CardElements {
@@ -63,6 +68,20 @@ export function createCardElements(
     style.id = name.replace(".", "-");
     style.innerHTML = j;
     return style;
+  });
+
+  const inputElems = fragment.querySelectorAll(INPUT_TYPE_CLASS_SELECTOR);
+  inputElems.forEach((e) => {
+    fragment.removeChild(e);
+  });
+
+  const inputClass = INPUT_TYPE_CLASS_SELECTOR.split(".").slice(1, 0).join(".");
+  inputs.forEach((i) => {
+    const e = document.createElement("script");
+    e.className = [inputClass, i.theater].join(" ");
+    e.type = "text/dqm";
+    e.innerHTML = ["{{", i.theater, "}}"].join("");
+    fragment.appendChild(e);
   });
 
   return { fragment, html, jss: js, css };

@@ -24,14 +24,14 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
   src,
 }) => {
   const ref = useRef<HTMLIFrameElement>(null);
-  const replaced = createCardElements(files, {
+  const replaced = createCardElements(inputs, files, {
     // These need to be replaced in the demo app
-    "{{FACE}}": "A",
+    "{{FACE}}": "B",
     "{{TEMPLATE_CONFIG}}": "   ",
     // These come from anki
     "{{CardConfig}}": "   ",
     "{{A}}": inputs[0].dqm,
-    "{{B}}": "[code|hi]",
+    "{{B}}": inputs[1].dqm,
     "{{Deck}}": "Tests::Test",
     "{{Subdeck}}": "Test",
     "{{Tags}}": "    ",

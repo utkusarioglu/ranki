@@ -3,6 +3,13 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "exports": {
+    "./sdk": {
+      "import": "./lib/export.mjs",
+      "types": "./types/export.d.mts",
+      "default": "./lib/export.mjs"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -10,6 +17,7 @@
     "clean-target": "scripts/clean-target.sh"
   },
   "devDependencies": {
+    "@ranki/config-typescript": "workspace:^",
     "@types/node": "^25.0.6",
     "chalk": "^5.6.2",
     "typescript": "~5.9.3",
