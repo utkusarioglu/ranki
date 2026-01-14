@@ -16,12 +16,22 @@ export const AnkiAndroid = () => {
   return (
     <AnkiScreen
       Top={
-        <div className={style.top}>
-          {Array(7)
-            .fill(null)
-            .map(() => (
+        <div>
+          <div className={style.osTop}>
+            <div>
               <div />
-            ))}
+            </div>
+            <div>
+              <div />
+            </div>
+          </div>
+          <div className={style.ankiTop}>
+            {Array(7)
+              .fill(null)
+              .map(() => (
+                <div />
+              ))}
+          </div>
         </div>
       }
       Bottom={

@@ -25,6 +25,7 @@
 .device {
   transition-duration: 0.4s;
   transition-property: border-width width height border-radius;
+  transition-timing-function: ease-in-out;
   border-style: solid;
   border-color: var(--ant-color-primary);
   border-width: 1px;
