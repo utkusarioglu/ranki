@@ -12,10 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as InfoRouteImport } from './routes/info'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ViewGraphIndexRouteImport } from './routes/view/graph/index'
-import { Route as ViewRenderDocumentIndexRouteImport } from './routes/view/render/document/index'
+import { Route as ViewRenderBlogIndexRouteImport } from './routes/view/render/blog/index'
 import { Route as ViewNodesCpxIndexRouteImport } from './routes/view/nodes/cpx/index'
 import { Route as ViewNodesAstIndexRouteImport } from './routes/view/nodes/ast/index'
-import { Route as ViewRenderAnkiWinIndexRouteImport } from './routes/view/render/anki/win/index'
+import { Route as ViewRenderAnkiWindowsIndexRouteImport } from './routes/view/render/anki/windows/index'
 import { Route as ViewRenderAnkiAndroidIndexRouteImport } from './routes/view/render/anki/android/index'
 
 const InfoRoute = InfoRouteImport.update({
@@ -33,9 +33,9 @@ const ViewGraphIndexRoute = ViewGraphIndexRouteImport.update({
   path: '/view/graph/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ViewRenderDocumentIndexRoute = ViewRenderDocumentIndexRouteImport.update({
-  id: '/view/render/document/',
-  path: '/view/render/document/',
+const ViewRenderBlogIndexRoute = ViewRenderBlogIndexRouteImport.update({
+  id: '/view/render/blog/',
+  path: '/view/render/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ViewNodesCpxIndexRoute = ViewNodesCpxIndexRouteImport.update({
@@ -48,11 +48,12 @@ const ViewNodesAstIndexRoute = ViewNodesAstIndexRouteImport.update({
   path: '/view/nodes/ast/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ViewRenderAnkiWinIndexRoute = ViewRenderAnkiWinIndexRouteImport.update({
-  id: '/view/render/anki/win/',
-  path: '/view/render/anki/win/',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const ViewRenderAnkiWindowsIndexRoute =
+  ViewRenderAnkiWindowsIndexRouteImport.update({
+    id: '/view/render/anki/windows/',
+    path: '/view/render/anki/windows/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ViewRenderAnkiAndroidIndexRoute =
   ViewRenderAnkiAndroidIndexRouteImport.update({
     id: '/view/render/anki/android/',
@@ -66,9 +67,9 @@ export interface FileRoutesByFullPath {
   '/view/graph': typeof ViewGraphIndexRoute
   '/view/nodes/ast': typeof ViewNodesAstIndexRoute
   '/view/nodes/cpx': typeof ViewNodesCpxIndexRoute
-  '/view/render/document': typeof ViewRenderDocumentIndexRoute
+  '/view/render/blog': typeof ViewRenderBlogIndexRoute
   '/view/render/anki/android': typeof ViewRenderAnkiAndroidIndexRoute
-  '/view/render/anki/win': typeof ViewRenderAnkiWinIndexRoute
+  '/view/render/anki/windows': typeof ViewRenderAnkiWindowsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -76,9 +77,9 @@ export interface FileRoutesByTo {
   '/view/graph': typeof ViewGraphIndexRoute
   '/view/nodes/ast': typeof ViewNodesAstIndexRoute
   '/view/nodes/cpx': typeof ViewNodesCpxIndexRoute
-  '/view/render/document': typeof ViewRenderDocumentIndexRoute
+  '/view/render/blog': typeof ViewRenderBlogIndexRoute
   '/view/render/anki/android': typeof ViewRenderAnkiAndroidIndexRoute
-  '/view/render/anki/win': typeof ViewRenderAnkiWinIndexRoute
+  '/view/render/anki/windows': typeof ViewRenderAnkiWindowsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -87,9 +88,9 @@ export interface FileRoutesById {
   '/view/graph/': typeof ViewGraphIndexRoute
   '/view/nodes/ast/': typeof ViewNodesAstIndexRoute
   '/view/nodes/cpx/': typeof ViewNodesCpxIndexRoute
-  '/view/render/document/': typeof ViewRenderDocumentIndexRoute
+  '/view/render/blog/': typeof ViewRenderBlogIndexRoute
   '/view/render/anki/android/': typeof ViewRenderAnkiAndroidIndexRoute
-  '/view/render/anki/win/': typeof ViewRenderAnkiWinIndexRoute
+  '/view/render/anki/windows/': typeof ViewRenderAnkiWindowsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -99,9 +100,9 @@ export interface FileRouteTypes {
     | '/view/graph'
     | '/view/nodes/ast'
     | '/view/nodes/cpx'
-    | '/view/render/document'
+    | '/view/render/blog'
     | '/view/render/anki/android'
-    | '/view/render/anki/win'
+    | '/view/render/anki/windows'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -109,9 +110,9 @@ export interface FileRouteTypes {
     | '/view/graph'
     | '/view/nodes/ast'
     | '/view/nodes/cpx'
-    | '/view/render/document'
+    | '/view/render/blog'
     | '/view/render/anki/android'
-    | '/view/render/anki/win'
+    | '/view/render/anki/windows'
   id:
     | '__root__'
     | '/'
@@ -119,9 +120,9 @@ export interface FileRouteTypes {
     | '/view/graph/'
     | '/view/nodes/ast/'
     | '/view/nodes/cpx/'
-    | '/view/render/document/'
+    | '/view/render/blog/'
     | '/view/render/anki/android/'
-    | '/view/render/anki/win/'
+    | '/view/render/anki/windows/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -130,9 +131,9 @@ export interface RootRouteChildren {
   ViewGraphIndexRoute: typeof ViewGraphIndexRoute
   ViewNodesAstIndexRoute: typeof ViewNodesAstIndexRoute
   ViewNodesCpxIndexRoute: typeof ViewNodesCpxIndexRoute
-  ViewRenderDocumentIndexRoute: typeof ViewRenderDocumentIndexRoute
+  ViewRenderBlogIndexRoute: typeof ViewRenderBlogIndexRoute
   ViewRenderAnkiAndroidIndexRoute: typeof ViewRenderAnkiAndroidIndexRoute
-  ViewRenderAnkiWinIndexRoute: typeof ViewRenderAnkiWinIndexRoute
+  ViewRenderAnkiWindowsIndexRoute: typeof ViewRenderAnkiWindowsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -158,11 +159,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ViewGraphIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/view/render/document/': {
-      id: '/view/render/document/'
-      path: '/view/render/document'
-      fullPath: '/view/render/document'
-      preLoaderRoute: typeof ViewRenderDocumentIndexRouteImport
+    '/view/render/blog/': {
+      id: '/view/render/blog/'
+      path: '/view/render/blog'
+      fullPath: '/view/render/blog'
+      preLoaderRoute: typeof ViewRenderBlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/view/nodes/cpx/': {
@@ -179,11 +180,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ViewNodesAstIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/view/render/anki/win/': {
-      id: '/view/render/anki/win/'
-      path: '/view/render/anki/win'
-      fullPath: '/view/render/anki/win'
-      preLoaderRoute: typeof ViewRenderAnkiWinIndexRouteImport
+    '/view/render/anki/windows/': {
+      id: '/view/render/anki/windows/'
+      path: '/view/render/anki/windows'
+      fullPath: '/view/render/anki/windows'
+      preLoaderRoute: typeof ViewRenderAnkiWindowsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/view/render/anki/android/': {
@@ -202,9 +203,9 @@ const rootRouteChildren: RootRouteChildren = {
   ViewGraphIndexRoute: ViewGraphIndexRoute,
   ViewNodesAstIndexRoute: ViewNodesAstIndexRoute,
   ViewNodesCpxIndexRoute: ViewNodesCpxIndexRoute,
-  ViewRenderDocumentIndexRoute: ViewRenderDocumentIndexRoute,
+  ViewRenderBlogIndexRoute: ViewRenderBlogIndexRoute,
   ViewRenderAnkiAndroidIndexRoute: ViewRenderAnkiAndroidIndexRoute,
-  ViewRenderAnkiWinIndexRoute: ViewRenderAnkiWinIndexRoute,
+  ViewRenderAnkiWindowsIndexRoute: ViewRenderAnkiWindowsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

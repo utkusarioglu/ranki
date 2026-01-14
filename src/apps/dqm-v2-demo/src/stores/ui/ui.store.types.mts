@@ -68,7 +68,7 @@ export type UiStore = UiStoreStates & UiStoreActions;
 
 export type AppState = "init" | "loading" | "loaded" | "error" | "timeout";
 
-export type NumberTuple = [number, number];
+// export type NumberTuple = [number, number];
 
 export interface UiStoreStates {
   appState: AppState;
@@ -76,9 +76,6 @@ export interface UiStoreStates {
   isMenuOpen: boolean;
   templateDrawerState: TemplateDrawerMode;
   menuWidth: Percent;
-
-  previewSize: NumberTuple;
-  previewScale: number;
 }
 
 export interface UiStoreActions {
@@ -86,6 +83,4 @@ export interface UiStoreActions {
   setMenuWidth: (width: Percent) => void;
   setTemplateDrawerState: (mode: TemplateDrawerMode) => void;
   setAppState: (state: AppState) => void;
-  setPreviewSize: (n: NumberTuple) => void;
-  setPreviewScale: (n: number) => void;
 }

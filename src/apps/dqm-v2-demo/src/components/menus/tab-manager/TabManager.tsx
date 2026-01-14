@@ -13,10 +13,11 @@ import { DqmInputOptions } from "../dqm-input-options/DqmInputOptions";
 import { AstSanitizerOptions } from "../ast-sanitizer-options/AstSanitizerOptions";
 import { type FC, type PropsWithChildren, type ReactNode } from "react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { RenderSettings } from "../render-settings/RenderSettings";
 import { DqmPluginsOptions } from "_menus/dqm-plugins-options/DqmPluginsOptions";
 import { DqmConfigOptions } from "_menus/dqm-config-options/DqmConfigOptions";
 import { GraphOptions } from "_menus/graph-options/GraphOptions";
+import { AnkiWinRenderSettings } from "_menus/anki-win-render-settings/AnkiWinRenderSettings";
+import { AnkiAndroidRenderSettings } from "_menus/anki-android-render-settings/AnkiAndroidRenderSettings";
 
 type Level = {
   key: string;
@@ -79,22 +80,22 @@ const levels: Level[] = [
         icon: <FundProjectionScreenOutlined />,
         childLevels: [
           {
-            key: "document",
-            label: "Document",
-            TabChild: <RenderSettings />,
-            route: "/view/render/document",
-          },
-          {
             key: "anki-win",
             label: "Anki Win",
-            TabChild: <RenderSettings />,
-            route: "/view/render/anki/win",
+            TabChild: <AnkiWinRenderSettings />,
+            route: "/view/render/anki/windows",
           },
           {
             key: "anki-android",
             label: "Ankidroid",
-            TabChild: <RenderSettings />,
+            TabChild: <AnkiAndroidRenderSettings />,
             route: "/view/render/anki/android",
+          },
+          {
+            key: "blog",
+            label: "Blog",
+            TabChild: <NotYet />,
+            route: "/view/render/blog",
           },
         ],
       },
