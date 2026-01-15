@@ -1,8 +1,10 @@
 untitled-block {
   &.container {
     display: block;
-    margin-block: 1em;
+    margin: 0;
+    /* margin-bottom: 1em; */
   }
+
   &.children {
     display: block;
   }

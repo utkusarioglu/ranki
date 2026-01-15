@@ -1,0 +1,18 @@
+ranki-hr {
+  --hr-height: 10px;
+
+  display: block;
+
+  &.container {
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--hr-height);
+    padding-inline: 4em;
+  }
+
+  &.hr {
+    background-color: var(--color-hr-hex);
+    height: 100%;
+    border-radius: calc(var(--hr-height) / 2);
+  }
+}

@@ -1,4 +1,10 @@
+/**
+* @dev
+* #1 The margin between block elements are controlled at section level. So, p,
+* titled block or others don't set their own margins.
+*/
 .base-v2-paragraph {
   padding-inline: var(--padding-1);
-  margin-block: var(--padding-1);
+  /* #1 */
+  margin-block: 0;
 }

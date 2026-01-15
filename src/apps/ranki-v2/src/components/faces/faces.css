@@ -5,20 +5,12 @@
   background-color: #223; */
 }
 
-.ranki-v2-hr {
-  height: 6px;
-  color: var(--color-surface-3-hex);
-  background: var(--color-surface-3-hex);
-  font-size: 0;
-  border: 0;
-  border-radius: 5px;
-  width: 80%;
-}
-
 .ranki-v2-face-container {
   margin-inline: auto;
   min-width: var(--content-width);
   display: grid;
+  grid-template-columns: 1fr;
+  gap: 2em;
   align-content: center;
 
   /* ANKI selects the child only if it's the only child */
@@ -28,9 +20,15 @@
   }
 
   /* ANKI selects the first child only if it's not the only child */
+  /**
+  This aligns the question tot he bottom when there is an answer on the screen.
+  This is needed because the 30svh creates a bit of a whitespace between the
+  top and the start of the question. There are other ways to do this but this
+  holds for now.
+  */
   & > .ranki-v2-face:first-child:not(:last-child) {
     min-height: 30svh;
     display: flex;
-    align-items: flex-end;
+    align-items: end;
   }
 }
