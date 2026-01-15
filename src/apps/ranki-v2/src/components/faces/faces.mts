@@ -1,7 +1,8 @@
 import type { CardFaceArray } from "../../collect/collect.types.mts";
 import type { RankiComponent } from "../../types/ranki-component.types.mts";
 import type { RenderRoots } from "@dqm/package-dqm-v2";
-import css from "./faces.css?raw";
+import "./faces.css";
+// import css from "./faces.css?raw";
 
 /**
  * @dev
@@ -31,11 +32,11 @@ export function createFaces(selectedFaces: CardFaceArray): RankiComponent {
     objects: {
       faces,
     },
-    css: [
-      {
-        id: "face",
-        css,
-      },
-    ],
+    // css: [
+    //   {
+    //     id: "face",
+    //     css,
+    //   },
+    // ],
   };
 }

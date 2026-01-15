@@ -1,5 +1,5 @@
 .ranki-v2-face {
-  margin-bottom: 1em;
+  /* margin-bottom: 1em; */
   max-width: var(--content-width);
   /* padding: 1em;
   background-color: #223; */
@@ -18,5 +18,19 @@
 .ranki-v2-face-container {
   margin-inline: auto;
   min-width: var(--content-width);
-  gap: 1em;
+  display: grid;
+  align-content: center;
+
+  /* ANKI selects the child only if it's the only child */
+  & > .ranki-v2-face:first-child:last-child {
+    /* REMOVE */
+    text-align: center;
+  }
+
+  /* ANKI selects the first child only if it's not the only child */
+  & > .ranki-v2-face:first-child:not(:last-child) {
+    min-height: 30svh;
+    display: flex;
+    align-items: flex-end;
+  }
 }

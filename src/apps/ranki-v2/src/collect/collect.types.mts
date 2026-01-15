@@ -4,7 +4,7 @@ import type {
   IDqmRendererClientPreferences,
 } from "@dqm/package-dqm-v2";
 import { RANKI_TAG_INDICATOR } from "../selector.constants.mjs";
-import type { HudProps } from "../components/card-hud/hud.types.mjs";
+import type { HudProps } from "../components/hud/hud.types.mjs";
 
 export type AnkiFlag = `flag${number}`;
 
@@ -12,6 +12,7 @@ export type AnkiCardType = string & { type: "AnkiCardType" };
 export type AnkiCardFace = string & { type: "AnkiCardFace" };
 
 export type AnkiDeck = string & { type: "AnkiDeck" };
+export type AnkiCard = string & { type: "AnkiCard" };
 export type AnkiRawTags = string & { type: "AnkiRawTags" };
 export type AnkiRawTag = string & { type: "AnkiRawTag" };
 
@@ -43,6 +44,7 @@ export interface AnkiTemplateFields {
   tags: AnkiRawTags;
   type: AnkiCardType;
   face: AnkiCardFace;
+  card: AnkiCard;
 }
 
 export interface DataCollection {

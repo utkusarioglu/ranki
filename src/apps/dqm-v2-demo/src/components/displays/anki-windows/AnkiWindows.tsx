@@ -48,6 +48,7 @@ export const AnkiWindows = () => {
       flag={win.flag}
       face={win.face}
       cardType={win.cardType}
+      card={win.card}
     />
   );
 };

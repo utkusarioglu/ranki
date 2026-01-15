@@ -8,27 +8,35 @@ import path from "node:path";
 const OUT_DIR = "build";
 const DOCKER_TARGET_PATH = "/target";
 // const DEMO_APP_COPY_PATH = "/workdir/src/apps/dqm-v2-demo/public";
-const DEMO_APP_COPY_PATH = "/workdir/src/apps/dqm-v2-demo/public/ranki-v2";
-const TARGET_DIRS = [DOCKER_TARGET_PATH, DEMO_APP_COPY_PATH];
+const DEMO_APP_DEV_COPY_PATH = "/workdir/src/apps/dqm-v2-demo/public/ranki-v2";
+const DEMO_APP_DIST_COPY_PATH = "/workdir/src/apps/dqm-v2-demo/dist/ranki-v2";
+const TARGET_DIRS = [
+  DOCKER_TARGET_PATH,
+  DEMO_APP_DEV_COPY_PATH,
+  DEMO_APP_DIST_COPY_PATH,
+];
 const TEMPLATE_FILE = "template.html";
 const PAD = 15;
 
 const __abspath = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__abspath);
 // const TARGET = "ES5";
+const RM_DIRS = [DEMO_APP_DEV_COPY_PATH, DEMO_APP_DIST_COPY_PATH];
 
-try {
-  fs.rmSync(DEMO_APP_COPY_PATH, { recursive: true, force: true });
-} catch (e) {
-  console.log("PATH REMOVAL FAILED", e);
-  process.exit(1);
-}
-try {
-  fs.mkdirSync(DEMO_APP_COPY_PATH);
-} catch (e) {
-  console.log("PATH CREATION FAILED", e);
-  process.exit(1);
-}
+RM_DIRS.forEach((rmPath) => {
+  try {
+    fs.rmSync(rmPath, { recursive: true, force: true });
+  } catch (e) {
+    console.log("PATH REMOVAL FAILED", e);
+    process.exit(1);
+  }
+  try {
+    fs.mkdirSync(rmPath);
+  } catch (e) {
+    console.log("PATH CREATION FAILED", e);
+    process.exit(1);
+  }
+});
 
 const compose = fs
   .readFileSync("/workdir/.docker/docker-compose.yml")

@@ -55,6 +55,7 @@ export const AnkiAndroid = () => {
       flag={android.flag}
       face={android.face}
       cardType={android.cardType}
+      card={android.card}
     />
   );
 };

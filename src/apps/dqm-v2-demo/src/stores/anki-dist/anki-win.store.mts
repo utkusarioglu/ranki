@@ -13,4 +13,5 @@ export const useAnkiWinStore = createAnkiStore({
   face: "Q",
   flag: "flag0",
   cardType: "+R2-AB:BA",
+  card: "AB",
 });

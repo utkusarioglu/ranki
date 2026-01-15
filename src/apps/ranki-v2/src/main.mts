@@ -1,6 +1,7 @@
 import "./utils/polyfills.mjs";
 import "./style/variables.css";
 import "./style/template.css";
+import "./style/vendor-dqm.css";
 import { renderDqm } from "./dqm/render-dqm.mjs";
 import { collectData } from "./collect/collect.mjs";
 import { createApp } from "./components/app/app.mjs";

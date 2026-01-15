@@ -125,10 +125,15 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
           <CheckOutlined />
         </Button>
       ))}
-      <Typography>Card Type</Typography>
+      <Typography>Type</Typography>
       <Input
         value={store.cardType}
         onChange={(e) => store.setCardType(e.target.value)}
+      />
+      <Typography>Card</Typography>
+      <Input
+        value={store.card}
+        onChange={(e) => store.setCard(e.target.value)}
       />
       <Typography>Deck</Typography>
       <Input

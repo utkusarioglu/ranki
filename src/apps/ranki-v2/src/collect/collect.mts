@@ -5,7 +5,6 @@ import type {
   AnkiNeutralTags,
   AnkiRawTag,
   AnkiTemplateFields,
-  CardFaceArray,
   DataCollection,
   HtmlAttrDir,
   HtmlAttrTheme,
@@ -150,6 +149,7 @@ export function collectData(): DataCollection {
       },
       card: {
         type: fields.type,
+        card: fields.card,
         face: fields.face,
       },
     },

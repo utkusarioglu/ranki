@@ -9,7 +9,6 @@ import { buildPluginSelectionConfig } from "_stores/dqm/dqm.utils.mjs";
 import { Dqm } from "@dqm/package-dqm-v2";
 import { DqmDemoError } from "_error";
 import type { RankiFiles, CardElements } from "./AnkiScreen";
-import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
 import { useEffect, useState } from "react";
 import { INPUT_TYPE_CLASS_SELECTOR } from "@ranki/app-ranki-v2/constants";
 

@@ -5,8 +5,5 @@
   right: 0;
   bottom: 0;
   top: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   background-color: var(--color-bg-hex);
 }

@@ -1,19 +1,22 @@
-import css from "./main.css?raw";
+// import css from "./main.css?raw";
 import { createParserFeature } from "./features/parser.mjs";
 import { createHudContainer } from "./features/container.mjs";
 import { createReviewFeature } from "./features/review.mjs";
 import { createAddressFeature } from "./features/address.mjs";
 import { createCardFeature } from "./features/card.mjs";
 import { createTagsFeature } from "./features/tags.mjs";
-import horizontalScrollerCss from "./scroller.css?raw";
-import hudCss from "./container.css?raw";
+// import hudCss from "./container.css?raw";
 import type { RankiComponent } from "../../types/ranki-component.types.mjs";
 import type { HudProps } from "./hud.types.mjs";
+import "./hud-scroller.css";
+import "./hud-item.css";
+import "./container.css";
 
 //
 export function createHud(props: HudProps): RankiComponent {
   const { element, refs } = createHudContainer(props);
   const scroller = refs!["scroller"];
+  scroller.classList.add("hud-scroller");
   props.order.forEach((p) => {
     switch (p) {
       case "address":
@@ -38,19 +41,15 @@ export function createHud(props: HudProps): RankiComponent {
 
   return {
     element,
-    css: [
-      {
-        id: "ranki-hud",
-        css,
-      },
-      {
-        id: "ranki-horizontal-scroller",
-        css: horizontalScrollerCss,
-      },
-      {
-        id: "ranki-hud-container",
-        css: hudCss,
-      },
-    ],
+    // css: [
+    //   {
+    //     id: "ranki-hud",
+    //     css,
+    //   },
+    //   {
+    //     id: "ranki-hud-container",
+    //     css: hudCss,
+    //   },
+    // ],
   };
 }

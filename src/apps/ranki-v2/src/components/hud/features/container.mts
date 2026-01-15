@@ -12,14 +12,14 @@ export function createHudContainer(
   center.classList.add("center");
   container.append(center);
   const scroller = createHorizontalScroller(center);
-  center.appendChild(scroller.element);
+  center.appendChild(scroller.refs!["container"]);
 
   return {
     element: container,
     refs: {
       scroller: scroller.element,
     },
-    css: scroller.css,
+    // css: scroller.css,
   };
   // return { container, scroller };
 }

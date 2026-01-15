@@ -2,7 +2,7 @@ import type {
   DqmConfigPackPartial,
   DqmParseTheater,
 } from "@dqm/package-dqm-v2";
-import type { HudComponentNames } from "../components/card-hud/hud.types.mjs";
+import type { HudComponentNames } from "../components/hud/hud.types.mjs";
 import type { DeepPartialSerializable } from "./util.types.mjs";
 
 export type Deck = string;

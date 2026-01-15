@@ -1,3 +1,9 @@
+import type {
+  AnkiCard,
+  AnkiCardFace,
+  AnkiCardType,
+} from "../../collect/collect.types.mjs";
+
 export type HudComponentNames =
   | "parser"
   | "address"
@@ -26,7 +32,8 @@ export interface HudProps {
     };
   };
   card: {
-    type: string;
-    face: string;
+    type: AnkiCardType;
+    face: AnkiCardFace;
+    card: AnkiCard;
   };
 }

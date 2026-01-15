@@ -1,6 +1,6 @@
 import "./app.css";
 import type { DataCollection } from "../../collect/collect.types.mjs";
-import { createHud } from "../card-hud/main.mjs";
+import { createHud } from "../hud/hud.mjs";
 import { createVerticalScroller } from "../vertical-scroller/vertical-scroller.mjs";
 import { createFaces } from "../faces/faces.mts";
 

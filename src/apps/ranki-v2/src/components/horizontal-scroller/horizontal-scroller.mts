@@ -1,4 +1,5 @@
 import type { RankiComponent } from "../../types/ranki-component.types.mjs";
+import "./horizontal-scroller.css";
 
 export function createHorizontalScroller(attach: HTMLElement): RankiComponent {
   const container = document.createElement("ranki-horizontal-scroller");
@@ -9,5 +10,5 @@ export function createHorizontalScroller(attach: HTMLElement): RankiComponent {
   scroller.classList.add("scroller");
   container.appendChild(scroller);
 
-  return { element: scroller };
+  return { element: scroller, refs: { container } };
 }

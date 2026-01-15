@@ -18,6 +18,8 @@ export const baseV2Renderer: IDqmPluginRenderer = {
       kind: "parent",
       sync: () => {
         const element = document.createElement("section");
+        element.classList.add("dqm-v2");
+        element.classList.add("dqm-v2-section");
         return {
           element,
           getMount: () => element,

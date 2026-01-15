@@ -9,6 +9,7 @@ import style from "./AnkiIFrame.module.css";
 import { createCardElements, dqmOnLoad } from "./utils";
 import type { RankiFiles } from "./AnkiScreen";
 import type {
+  RankiCard,
   RankiCardType,
   RankiConfigString,
   RankiDeckString,
@@ -30,6 +31,7 @@ export interface AnkiDesktopIFrameProps {
   src: string;
   face: RankiFace;
   cardType: RankiCardType;
+  card: RankiCard;
 }
 
 /**
@@ -49,6 +51,7 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
   flag,
   face,
   cardType,
+  card,
 }) => {
   const ref = useRef<HTMLIFrameElement>(null);
   const replaced = createCardElements(inputs, files, {
@@ -62,7 +65,7 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
     // "{{A}}": inputs[0].dqm,
     // "{{B}}": inputs[1].dqm,
 
-    "{{Card}}": "card",
+    "{{Card}}": card,
     "{{Type}}": cardType,
     "{{Tags}}": tags,
     "{{Deck}}": deck,
@@ -73,9 +76,16 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
   return (
     <iframe
       // #1
-      key={[templateConfig, cardConfig, tags, deck, cardType, flag, face].join(
-        " ",
-      )}
+      key={[
+        templateConfig,
+        cardConfig,
+        tags,
+        deck,
+        cardType,
+        flag,
+        face,
+        card,
+      ].join(" ")}
       ref={ref}
       className={style.container}
       src={src}

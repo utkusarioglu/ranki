@@ -20,5 +20,6 @@ ranki-vertical-scroller {
     width: 100%;
     overflow: hidden;
     min-height: 100%;
+    height: max-content;
   }
 }

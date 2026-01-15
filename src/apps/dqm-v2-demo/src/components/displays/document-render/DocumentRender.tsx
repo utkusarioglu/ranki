@@ -1,4 +1,3 @@
-import { useUiStore } from "_stores/ui/ui.store.mts";
 // @ts-expect-error
 import { AsyncIFrame } from "_views/iframe/IFrame";
 import type { ResourceProps } from "_views/iframe/IFrame";
@@ -28,8 +27,6 @@ const options = {
 };
 
 export const DocumentRender = () => {
-  const ui = useUiStore();
-
   // const [height, requestHeight] = useState<number>(ui.previewSize[1]);
   // @ts-expect-error
   const promise = new Promise<ResourceProps[]>((r) =>
@@ -45,9 +42,9 @@ export const DocumentRender = () => {
     <div className={style.container}>
       <div
         className={style.frame}
-        style={{
-          scale: ui.previewScale,
-        }}
+        // style={{
+        //   scale: ui.previewScale,
+        // }}
       >
         <TrialRender />
         {/* <AsyncIFrame
