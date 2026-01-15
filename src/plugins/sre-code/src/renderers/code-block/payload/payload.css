@@ -5,11 +5,12 @@
     font-size: 13px;
   }
 
-  code {
+  & code {
     padding: 0;
     margin: 0;
   }
-  pre {
+
+  & pre {
     margin: 0;
     padding: 0.5em 0;
   }

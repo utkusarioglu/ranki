@@ -4,13 +4,11 @@ titled-block {
     display: block;
     margin-block: 1em;
     padding-block-end: 0.5em;
-    padding-block-start: 1em;
-    /* background-image: linear-gradient(90deg, #101010, #151515); */
     background-color: var(--color-surface-1-hex);
   }
 
   &.hud {
-    display: block;
+    overflow: hidden;
     font-size: 0.6em;
     padding-inline: 1em;
     padding-block-end: 0.2em;

@@ -72,20 +72,21 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
     "{{Subdeck}}": deck.split("::").at(-1)!,
     "{{CardFlag}}": flag,
   });
+  const key = [
+    templateConfig,
+    cardConfig,
+    tags,
+    deck,
+    cardType,
+    flag,
+    face,
+    card,
+  ].join(" ");
 
   return (
     <iframe
       // #1
-      key={[
-        templateConfig,
-        cardConfig,
-        tags,
-        deck,
-        cardType,
-        flag,
-        face,
-        card,
-      ].join(" ")}
+      key={key}
       ref={ref}
       className={style.container}
       src={src}

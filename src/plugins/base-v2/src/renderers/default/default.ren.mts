@@ -1,6 +1,7 @@
 import type { IDqmPluginRenderer } from "@dqm/package-dqm-api-v2";
 import { paragraph } from "./paragraph/paragraph.mjs";
 import { ignored } from "./ignored/ignored.mjs";
+import { section } from "./section/section.mjs";
 
 export const baseV2Renderer: IDqmPluginRenderer = {
   type: "renderer",
@@ -13,19 +14,8 @@ export const baseV2Renderer: IDqmPluginRenderer = {
   list: [
     paragraph,
     ignored,
-    {
-      chain: ["base", "v2", "section"],
-      kind: "parent",
-      sync: () => {
-        const element = document.createElement("section");
-        element.classList.add("dqm-v2");
-        element.classList.add("dqm-v2-section");
-        return {
-          element,
-          getMount: () => element,
-        };
-      },
-    },
+    section,
+
     {
       chain: ["base", "v2", "line"],
       kind: "parent",

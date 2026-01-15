@@ -24,7 +24,7 @@
   /* ANKI selects the child only if it's the only child */
   & > .ranki-v2-face:first-child:last-child {
     /* REMOVE */
-    text-align: center;
+    /* text-align: center; */
   }
 
   /* ANKI selects the first child only if it's not the only child */

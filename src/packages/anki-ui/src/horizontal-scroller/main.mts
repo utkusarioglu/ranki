@@ -16,10 +16,12 @@ export function horizontalScroller(): RenderNode {
     subtree: {
       left: () => {
         left.style.display = "block";
+        children.classList.add("has-left");
         return left;
       },
       right: () => {
         right.style.display = "block";
+        children.classList.add("has-right");
         return right;
       },
     },

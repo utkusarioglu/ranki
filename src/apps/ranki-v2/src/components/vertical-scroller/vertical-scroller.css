@@ -12,7 +12,7 @@ ranki-vertical-scroller {
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: red;
+      background: red;
     }
   }
 
@@ -21,5 +21,21 @@ ranki-vertical-scroller {
     overflow: hidden;
     min-height: 100%;
     height: max-content;
+  }
+}
+
+/**
+FIX This hides the thick framework-level scrollbars on the "new" anki study
+screen. Styling on these doesn't work so I'm hiding them all.
+*/
+@media (pointer: coarse) {
+  ranki-vertical-scroller {
+    &.container {
+      &::-webkit-scrollbar {
+        display: none;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE 10+ / old Edge */
+      }
+    }
   }
 }

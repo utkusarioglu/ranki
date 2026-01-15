@@ -11,15 +11,16 @@ horizontal-scroll {
     margin-block-end: -0.5em;
 
     &::-webkit-scrollbar {
-      appearance: none;
-      height: 3px;
+      display: none;
+      /* appearance: none; */
+      /* height: 3px; */
     }
 
-    &::-webkit-scrollbar-track {
+    /* &::-webkit-scrollbar-track {
       background: transparent;
-    }
+    } */
 
-    &::-webkit-scrollbar-thumb {
+    /* &::-webkit-scrollbar-thumb {
       background: transparent;
       transition: background 1s ease;
     }
@@ -28,10 +29,11 @@ horizontal-scroll {
       &::-webkit-scrollbar-thumb {
         background: var(--thumb-color) !important;
       }
-    }
+    } */
   }
 
   &.wrapper {
+    width: 100%;
     padding-block-end: 0.5em;
     display: flex;
     align-items: center;
@@ -44,8 +46,6 @@ horizontal-scroll {
     padding-inline: 1em;
     scroll-snap-align: start end;
     scroll-snap-stop: always;
-    /* DECIDE this variable comes from ranki. it needs clear naming and purpose */
-    min-width: min(100vw, var(--face-width-min));
     box-sizing: border-box;
   }
 
@@ -72,12 +72,16 @@ horizontal-scroll {
       scroll-snap-type: x mandatory;
 
       &::-webkit-scrollbar {
-        height: 1px;
+        display: none;
+        /* height: 1px; */
       }
     }
-  }
 
-  &.content {
-    min-width: 100vw;
+    &.content {
+      &:not(:has(.has-left)) {
+        /* DECIDE this variable comes from ranki. it needs clear naming and purpose */
+        min-width: min(100vw, var(--face-width-min));
+      }
+    }
   }
 }

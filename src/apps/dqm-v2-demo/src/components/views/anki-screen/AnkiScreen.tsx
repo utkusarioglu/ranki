@@ -48,7 +48,17 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   cardType,
   card,
 }) => {
-  const files = useRankiFiles([]);
+  const key = [
+    templateConfig,
+    cardConfig,
+    tags,
+    deck,
+    cardType,
+    flag,
+    face,
+    card,
+  ];
+  const files = useRankiFiles(key);
   if (files.epoch === 0) {
     return (
       <div className={style.loading}>
