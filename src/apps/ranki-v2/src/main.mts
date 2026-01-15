@@ -39,13 +39,13 @@ async function main() {
       const report = await renderDqm(collected, roots);
       console.log("report", report);
     } catch (e) {
-      const error = createAppErrorScreen(e);
-      root.appendChild(error.element);
+      createAppErrorScreen(root, e);
+      // root.appendChild(error.element);
     }
   } catch (e) {
-    const error = createAppErrorScreen(e);
-    document.body.innerText = "";
-    document.body.appendChild(error.element);
+    createAppErrorScreen(document.body, e);
+    // document.body.innerText = "";
+    // document.body.appendChild(error.element);
   }
 }
 

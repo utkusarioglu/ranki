@@ -1,12 +1,14 @@
 import type {
   AnkiDistStore,
   ColorSchemes,
+  RankiFace,
   RankiFlag,
 } from "_stores/anki-dist/anki.store.types.mjs";
 import { Button, Input, Typography } from "antd";
 import type { FC } from "react";
 import { getAspect, getAspectText } from "./utils.mts";
 import style from "./AnkiRenderSettings.module.css";
+import { CheckOutlined } from "@ant-design/icons";
 
 type AnkiRenderSettingsProps = {
   aspectRatios: string[];
@@ -57,6 +59,8 @@ const FLAGS: Flag[] = [
   },
 ];
 
+const FACES: RankiFace[] = ["Q", "N"];
+
 export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
   aspectRatios,
   scales,
@@ -99,18 +103,33 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
           {s}
         </Button>
       ))}
+      <Typography>Face</Typography>
+      {FACES.map((face) => (
+        <Button
+          key={face}
+          onClick={() => store.setFace(face)}
+          type={face === store.face ? "primary" : "default"}
+        >
+          {face}
+        </Button>
+      ))}
       <Typography>Flag</Typography>
       {FLAGS.map((flag) => (
         <Button
           onClick={() => store.setFlag(flag.flag)}
           style={{
             backgroundColor: flag.color,
-            color: flag.flag === store.flag ? "default" : flag.color,
+            color: flag.flag === store.flag ? "#FFF" : "transparent",
           }}
         >
-          {flag.flag === store.flag ? "........" : "."}
+          <CheckOutlined />
         </Button>
       ))}
+      <Typography>Card Type</Typography>
+      <Input
+        value={store.cardType}
+        onChange={(e) => store.setCardType(e.target.value)}
+      />
       <Typography>Deck</Typography>
       <Input
         value={store.deck}

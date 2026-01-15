@@ -85,7 +85,7 @@ export default defineConfig({
 
           console.log("");
           try {
-            const templates = ["A", "B"]
+            const templates = ["Q", "N"]
               .map(
                 (face) => [
                   chalk.gray(`Html Template ${face}:`),
@@ -111,7 +111,7 @@ export default defineConfig({
     },
   ],
   build: {
-    minify: true,
+    minify: false,
     // target: TARGET,
     outDir: OUT_DIR,
     assetsDir: ".",

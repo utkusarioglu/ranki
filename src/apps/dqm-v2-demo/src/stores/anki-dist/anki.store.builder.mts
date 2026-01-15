@@ -16,4 +16,6 @@ export const createAnkiStore = (defaults: AnkiDistStoreStates) =>
     setTags: (tags) => set(() => ({ tags })),
     setDeck: (deck) => set(() => ({ deck: deck.trim() })),
     setFlag: (flag) => set(() => ({ flag })),
+    setFace: (face) => set(() => ({ face })),
+    setCardType: (cardType) => set(() => ({ cardType })),
   }));

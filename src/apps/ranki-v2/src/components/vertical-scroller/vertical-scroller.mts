@@ -1,5 +1,5 @@
-import v from "./vertical-scroller.css?raw";
 import type { RankiComponent } from "../../types/ranki-component.types.mjs";
+import "./vertical-scroller.css";
 
 export function createVerticalScroller(attach: HTMLElement): RankiComponent {
   // const style = document.createElement("style");
@@ -17,11 +17,11 @@ export function createVerticalScroller(attach: HTMLElement): RankiComponent {
 
   return {
     element,
-    css: [
-      {
-        id: "vertical-scroller",
-        css: v,
-      },
-    ],
+    // css: [
+    //   {
+    //     id: "vertical-scroller",
+    //     css: v,
+    //   },
+    // ],
   };
 }

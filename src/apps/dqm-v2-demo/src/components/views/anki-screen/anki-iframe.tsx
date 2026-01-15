@@ -9,8 +9,10 @@ import style from "./AnkiIFrame.module.css";
 import { createCardElements, dqmOnLoad } from "./utils";
 import type { RankiFiles } from "./AnkiScreen";
 import type {
+  RankiCardType,
   RankiConfigString,
   RankiDeckString,
+  RankiFace,
   RankiFlag,
   RankiTagString,
 } from "_stores/anki-dist/anki.store.types.mjs";
@@ -26,6 +28,8 @@ export interface AnkiDesktopIFrameProps {
   deck: RankiDeckString;
   flag: RankiFlag;
   src: string;
+  face: RankiFace;
+  cardType: RankiCardType;
 }
 
 /**
@@ -43,11 +47,13 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
   tags,
   deck,
   flag,
+  face,
+  cardType,
 }) => {
   const ref = useRef<HTMLIFrameElement>(null);
   const replaced = createCardElements(inputs, files, {
     // These need to be replaced in the demo app
-    "{{FACE}}": "A",
+    "{{FACE}}": face,
     "{{TEMPLATE_CONFIG}}": templateConfig,
     // These come from anki
     "{{CardConfig}}": cardConfig,
@@ -57,7 +63,7 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
     // "{{B}}": inputs[1].dqm,
 
     "{{Card}}": "card",
-    "{{Type}}": "A",
+    "{{Type}}": cardType,
     "{{Tags}}": tags,
     "{{Deck}}": deck,
     "{{Subdeck}}": deck.split("::").at(-1)!,
@@ -67,7 +73,9 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
   return (
     <iframe
       // #1
-      key={[templateConfig, cardConfig, tags, deck, tags].join(" ")}
+      key={[templateConfig, cardConfig, tags, deck, cardType, flag, face].join(
+        " ",
+      )}
       ref={ref}
       className={style.container}
       src={src}

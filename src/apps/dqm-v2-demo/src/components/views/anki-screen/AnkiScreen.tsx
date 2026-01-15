@@ -44,6 +44,8 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   tags,
   deck,
   flag,
+  face,
+  cardType,
 }) => {
   const files = useRankiFiles([]);
   if (files.epoch === 0) {
@@ -78,6 +80,8 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
           tags={tags}
           deck={deck}
           flag={flag}
+          face={face}
+          cardType={cardType}
         />
         {Bottom}
       </div>

@@ -53,6 +53,8 @@ export const AnkiAndroid = () => {
       deck={android.deck}
       tags={android.tags}
       flag={android.flag}
+      face={android.face}
+      cardType={android.cardType}
     />
   );
 };

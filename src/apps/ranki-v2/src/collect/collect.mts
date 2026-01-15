@@ -19,10 +19,10 @@ import {
   INPUT_TYPE_CLASS_SELECTOR,
   RANKI_TAG_INDICATOR,
 } from "../selector.constants.mjs";
-import { assertExists } from "@dqm/package-dqm-utils";
+import { assertArrayNotEmpty, assertExists } from "@dqm/package-dqm-utils";
 import { RankiAppError } from "../error/ranki-app-error.mts";
 
-const FACE_ASSIGNMENTS = { A: ["A"], B: ["A", "B"] };
+const FACE_ASSIGNMENTS = { Q: ["A"], N: ["A", "B"] };
 
 /**
  * @dev
@@ -63,7 +63,18 @@ export function collectData(): DataCollection {
   }
 
   // @ts-expect-error
-  const theaterOrder: CardFaceArray = FACE_ASSIGNMENTS[fields.face];
+  const theaterOrder: undefined | string[] = FACE_ASSIGNMENTS[fields.face];
+  assertExists(theaterOrder, {
+    why: "Cannot process without a valid face assignment",
+    details: { FACE_ASSIGNMENTS, face: fields.face },
+  });
+  assertArrayNotEmpty(theaterOrder, {
+    why: "Given theater order has to be a non-empty array",
+    details: { FACE_ASSIGNMENTS, face: fields.face },
+  });
+
+  // // @ts-expect-error
+  // const theaterOrder: CardFaceArray = FACE_ASSIGNMENTS[fields.face];
 
   const inputs = theaterOrder.map((face) => {
     const selector = [INPUT_TYPE_CLASS_SELECTOR, face].join(".");

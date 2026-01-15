@@ -6,6 +6,8 @@ export type RankiTagString = string;
 export type RankiDeckString = string;
 export type RankiFlag = `flag${number}`;
 
+export type RankiFace = "Q" | "N";
+export type RankiCardType = string;
 export interface AnkiDistStoreStates {
   previewAspect: number;
   previewScale: number;
@@ -15,6 +17,8 @@ export interface AnkiDistStoreStates {
   tags: RankiTagString;
   deck: RankiDeckString;
   flag: RankiFlag;
+  face: RankiFace;
+  cardType: RankiCardType;
 }
 
 export interface AnkiDistStoreActions {
@@ -26,4 +30,6 @@ export interface AnkiDistStoreActions {
   setTags: (t: RankiTagString) => void;
   setDeck: (d: RankiDeckString) => void;
   setFlag: (d: RankiFlag) => void;
+  setFace: (d: RankiFace) => void;
+  setCardType: (c: RankiCardType) => void;
 }

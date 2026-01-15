@@ -10,7 +10,7 @@ import { DqmBaseError } from "@dqm/package-dqm-utils";
 //   IDqmErrorBaseRequiredParams<keyof typeof DQM_APP_ERROR_CONSTANTS>;
 
 export class RankiAppError extends DqmBaseError {
-  public errorType: string = "DQM_APP";
+  public errorType: string = "RANKI_APP";
 
   // @ts-expect-error
   override getErrorText(code: keyof typeof DQM_APP_ERROR_CONSTANTS): string {

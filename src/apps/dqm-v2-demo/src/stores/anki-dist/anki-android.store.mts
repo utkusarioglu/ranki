@@ -8,4 +8,7 @@ export const useAnkiAndroidStore = createAnkiStore({
   templateConfig: "",
   deck: "Tests::Test",
   tags: "",
+  face: "Q",
+  flag: "flag0",
+  cardType: "+R2-AB:BA",
 });
