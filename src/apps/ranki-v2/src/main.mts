@@ -8,6 +8,7 @@ import { createApp } from "./components/app/app.mjs";
 import { createAppErrorScreen } from "./components/general-error/general-error.mjs";
 import { RankiAppError } from "./error/ranki-app-error.mjs";
 import { onReady } from "./utils/onReady.mjs";
+import { createConfigs } from "./config/config.mts";
 
 const ROOT_ID_SELECTOR = "#ranki-v2-root";
 const RENDERED_CLASS_SELECTOR = "ranki-rendered";
@@ -35,18 +36,20 @@ async function main() {
     root.innerHTML = "";
 
     try {
-      const collected = collectData();
-      const { roots } = createApp(collected, root);
-      const report = await renderDqm(collected, roots);
-      console.log("report", report);
+      const collected = await collectData();
+      console.log("collected", collected);
+      const config = createConfigs(collected);
+      console.log("final", config);
+      const { roots } = createApp(config.ranki, root);
+      // @ts-expect-error
+      const report =
+        //
+        await renderDqm(config.dqm, roots);
     } catch (e) {
       createAppErrorScreen(root, e);
-      // root.appendChild(error.element);
     }
   } catch (e) {
     createAppErrorScreen(document.body, e);
-    // document.body.innerText = "";
-    // document.body.appendChild(error.element);
   }
 }
 

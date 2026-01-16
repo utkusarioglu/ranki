@@ -129,6 +129,7 @@ const FILES = {
 };
 
 const URL_TEMPLATE = "/ranki-v2/%";
+// const URL_TEMPLATE = "http://localhost:3000/%";
 
 export function useRankiFiles(triggers: any[]): RankiFiles {
   const [files, setFiles] = useState<RankiFiles>({

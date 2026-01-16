@@ -7,7 +7,6 @@ import path from "node:path";
 
 const OUT_DIR = "build";
 const DOCKER_TARGET_PATH = "/target";
-// const DEMO_APP_COPY_PATH = "/workdir/src/apps/dqm-v2-demo/public";
 const DEMO_APP_DEV_COPY_PATH = "/workdir/src/apps/dqm-v2-demo/public/ranki-v2";
 const DEMO_APP_DIST_COPY_PATH = "/workdir/src/apps/dqm-v2-demo/dist/ranki-v2";
 const TARGET_DIRS = [
@@ -16,11 +15,11 @@ const TARGET_DIRS = [
   DEMO_APP_DIST_COPY_PATH,
 ];
 const TEMPLATE_FILE = "template.html";
+const INCLUDE_FILES = ["ranki2_user_config.yml"];
 const PAD = 15;
 
 const __abspath = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__abspath);
-// const TARGET = "ES5";
 const RM_DIRS = [DEMO_APP_DEV_COPY_PATH, DEMO_APP_DIST_COPY_PATH];
 
 RM_DIRS.forEach((rmPath) => {
@@ -69,6 +68,7 @@ export default defineConfig({
           for (const file of files) {
             if (
               !file.name.startsWith("_ranki2") &&
+              !INCLUDE_FILES.includes(file.name) &&
               file.name !== TEMPLATE_FILE
             ) {
               console.log(chalk.gray("Ignoring:".padEnd(PAD)), file.name);
@@ -104,7 +104,8 @@ export default defineConfig({
                     .replace(
                       "{{TEMPLATE_CONFIG}}",
                       "# Place your template config here",
-                    ),
+                    )
+                    .replace("{{STORAGE_CONFIG}}", "/ranki2_user_config.yml"),
                 ],
                 "",
               )

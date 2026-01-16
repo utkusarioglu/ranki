@@ -1,4 +1,5 @@
 {
+  "extends": "@ranki/config-typescript/tsconfig.app.json",
   "compilerOptions": {
     "target": "ES2022",
     "useDefineForClassFields": true,

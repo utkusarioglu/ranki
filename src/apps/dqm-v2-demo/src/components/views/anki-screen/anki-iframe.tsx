@@ -58,6 +58,7 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
     // These need to be replaced in the demo app
     "{{FACE}}": face,
     "{{TEMPLATE_CONFIG}}": templateConfig,
+    "{{STORAGE_CONFIG}}": "/ranki-v2/ranki2_user_config.yml",
     // These come from anki
     "{{CardConfig}}": cardConfig,
 

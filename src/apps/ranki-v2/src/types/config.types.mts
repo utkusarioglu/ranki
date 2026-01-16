@@ -1,11 +1,11 @@
-import type {
-  DqmConfigPackPartial,
-  DqmParseTheater,
-} from "@dqm/package-dqm-v2";
+import type { DqmConfigPackPartial } from "@dqm/package-dqm-v2";
 import type { HudComponentNames } from "../components/hud/hud.types.mjs";
 import type { DeepPartialSerializable } from "./util.types.mjs";
+import type { CardFaceArray } from "../collect/collect.types.mts";
 
 export type Deck = string;
+
+export type MatchTypes = "exact" | "glob" | "regex";
 
 export type DeckSettings = DeckExactSettings &
   DeckGlobSettings &
@@ -24,8 +24,8 @@ export type DeckRegexSettings = DeckCommonSettings & {
 };
 
 interface DeckCommonSettings {
-  theme?: string;
-  config?: RankiBaseConfigPartial;
+  theme: string;
+  config: RankiBaseConfigPartial;
 }
 
 interface HudConfig {
@@ -34,16 +34,17 @@ interface HudConfig {
 
 // TODO
 export type CardTypeSettings = {
-  theme?: string;
-  config?: RankiBaseConfigPartial;
+  theme: string;
+  config: RankiBaseConfigPartial;
 };
 
 export interface RankiIndicatorMessage {
-  message?: string;
-  indicator?: RankiIndicator;
+  message: string;
+  indicator: RankiIndicator;
 }
 
-type AnkiFlagColors =
+export type AnkiFlagColors =
+  | "none"
   | "red"
   | "orange"
   | "green"
@@ -53,28 +54,28 @@ type AnkiFlagColors =
   | "purple";
 
 export type RankiIndicator = "none" | "line" | "radial" | "linear";
+export type AnkiFlagColorIndices = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-type RankiBaseConfigPartial = DeepPartialSerializable<RankiBaseConfig>;
+export type RankiBaseConfigPartial = DeepPartialSerializable<RankiBaseConfig>;
 
 export interface TagSettings {
   exact: string;
-  message?: string;
-  indicator?: RankiIndicator;
-  config?: RankiBaseConfigPartial;
-  // base?: RankiBaseConfig;
-  // dqm?: DqmConfigPackPartial;
+  message: string;
+  indicator: RankiIndicator;
+  config: RankiBaseConfigPartial;
 }
 
-interface RankiBaseConfig {
+export type RankiLayout = "row" | "column";
+
+export interface RankiBaseConfig {
   // TODO you need deck address stripping and hiding here
 
-  question: DqmParseTheater[];
-  answer: DqmParseTheater[];
-  divider: boolean;
+  question: CardFaceArray;
+  answer: CardFaceArray;
 
   scheme: "dark" | "light" | "system";
   theme: string;
-  layout: "row" | "column";
+  layout: RankiLayout;
 
   flags: Record<AnkiFlagColors, RankiIndicatorMessage>;
   mark: RankiIndicatorMessage;
@@ -83,9 +84,12 @@ interface RankiBaseConfig {
   dqm: DqmConfigPackPartial;
 }
 
+export type RankiGlobalConfigPartial =
+  DeepPartialSerializable<RankiGlobalConfig>;
+
 // DECIDE this here is in the order that the config would ingest it, giving
 // tags the highest priority
-export interface RankiConfig {
+export interface RankiGlobalConfig {
   base: RankiBaseConfig;
   cards: CardTypeSettings[];
   decks: DeckSettings[];

@@ -1,10 +1,5 @@
-import type {
-  DqmParseInputStructured,
-  DqmParseTheater,
-  IDqmRendererClientPreferences,
-} from "@dqm/package-dqm-v2";
+import type { DqmParseTheater } from "@dqm/package-dqm-v2";
 import { RANKI_TAG_INDICATOR } from "../selector.constants.mjs";
-import type { HudProps } from "../components/hud/hud.types.mjs";
 
 export type AnkiFlag = `flag${number}`;
 
@@ -18,7 +13,9 @@ export type AnkiRawTag = string & { type: "AnkiRawTag" };
 
 export type AnkiDeckParts = AnkiDeck[] & { type: "AnkiDeckParts" };
 
-export type CardFace = DqmParseTheater;
+export type RankiScreenElement = "ranki:hr" | "ranki:vr";
+
+export type CardFace = DqmParseTheater | RankiScreenElement;
 
 export type CardFaceArray = CardFace[];
 
@@ -47,23 +44,30 @@ export interface AnkiTemplateFields {
   card: AnkiCard;
 }
 
+export type ConfigLocations = "template" | "card" | "user";
+
+export type CollectedConfig = Record<ConfigLocations, string>;
+
+export type CollectedHtmlTagAttributes = {
+  mode: HtmlTagMode;
+  os: HtmlTagOs;
+  env: HtmlTagEnv;
+  dir: HtmlAttrDir;
+  dataBsTheme: HtmlAttrTheme;
+};
+
+export type RankiFaces = Record<string, HTMLDivElement>;
+
 export interface DataCollection {
-  raw: {
-    html: {
-      mode: HtmlTagMode;
-      os: HtmlTagOs;
-      env: HtmlTagEnv;
-      dir: HtmlAttrDir;
-      dataBsTheme: HtmlAttrTheme;
-    };
-    fields: AnkiTemplateFields;
-  };
-  hud: HudProps;
-  pref: IDqmRendererClientPreferences;
-  inputs: DqmParseInputStructured;
-  theaterOrder: CardFaceArray;
+  htmlAttr: CollectedHtmlTagAttributes;
+  fields: AnkiTemplateFields;
+  faces: RankiFaces;
   address: AnkiDeckParts;
+  config: CollectedConfig;
+}
+
+export interface FilteredTags {
+  neutral: AnkiNeutralTags;
+  ranki: RankiTags;
   marked: AnkiMarked;
-  neutralTags: AnkiNeutralTags;
-  rankiTags: RankiTags;
 }

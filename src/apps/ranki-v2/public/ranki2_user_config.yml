@@ -1,0 +1,5 @@
+base: 
+  flags:
+    red:
+      message: Questionable Information
+      indicator: none

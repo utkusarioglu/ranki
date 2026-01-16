@@ -1,16 +1,16 @@
 import "./app.css";
-import type { DataCollection } from "../../collect/collect.types.mjs";
 import { createHud } from "../hud/hud.mjs";
 import { createVerticalScroller } from "../vertical-scroller/vertical-scroller.mjs";
 import { createFaces } from "../faces/faces.mts";
+import type { RankiAppConfig } from "../../config/config.types.mts";
 
-export function createApp(collected: DataCollection, root: HTMLElement) {
-  const { theaterOrder: selectedFaces, hud } = collected;
+export function createApp(collected: RankiAppConfig, root: HTMLElement) {
+  const { order, hud } = collected;
   const scroller = createVerticalScroller(root);
   (scroller.element as HTMLDivElement).classList.add("content-grid");
 
   const hudNode = createHud(hud);
-  const facesNode = createFaces(selectedFaces);
+  const facesNode = createFaces(order);
   [hudNode, facesNode].forEach((n) => {
     scroller.element.appendChild(n.element);
   });

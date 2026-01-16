@@ -1,34 +1,89 @@
-import yaml from "yaml";
 import type {
   AnkiDeckParts,
-  AnkiMarked,
-  AnkiNeutralTags,
-  AnkiRawTag,
   AnkiTemplateFields,
+  CollectedConfig,
+  CollectedHtmlTagAttributes,
   DataCollection,
   HtmlAttrDir,
   HtmlAttrTheme,
   HtmlTagClassCollection,
-  RankiTag,
-  RankiTags,
+  RankiFaces,
 } from "./collect.types.mjs";
 import {
+  CONFIG_FILE_CLASS_SELECTOR,
   CONFIG_TYPE_CLASS_SELECTOR,
   DATA_TYPE_CLASS_SELECTOR,
   INPUT_TYPE_CLASS_SELECTOR,
-  RANKI_TAG_INDICATOR,
 } from "../selector.constants.mjs";
-import { assertArrayNotEmpty, assertExists } from "@dqm/package-dqm-utils";
+import { assertExists } from "@dqm/package-dqm-utils";
 import { RankiAppError } from "../error/ranki-app-error.mts";
 
-const FACE_ASSIGNMENTS = { Q: ["A"], N: ["A", "B"] };
+function getClassType(e: Element) {
+  return e.className.split(" ").at(-1)!.trim(); // #1
+}
 
-/**
- * @dev
- * #1 Basically the theater needs to be the last class name
- * #2 This is very fragile
- */
-export function collectData(): DataCollection {
+async function getConfig(): Promise<CollectedConfig> {
+  let config = {} as CollectedConfig;
+  try {
+    const configElems = document.querySelectorAll(CONFIG_TYPE_CLASS_SELECTOR);
+    config = Object.fromEntries(
+      Array.from(configElems).map((data) => [
+        getClassType(data),
+        data.innerHTML,
+        // yaml.parse(data.innerHTML),
+      ]),
+    ) as CollectedConfig;
+  } catch (e) {
+    console.log(e);
+  }
+  try {
+    const configFiles = document.querySelectorAll(CONFIG_FILE_CLASS_SELECTOR);
+    const configFromFiles = await Promise.all(
+      Array.from(configFiles).map(async (e) => {
+        const src = e.getAttribute("src");
+        assertExists(src, {
+          why: "Src property is required for config file elements",
+        });
+        try {
+          const obj = await fetch(src).then((t) => t.text());
+          // .then((j) => yaml.parse(j));
+          return [getClassType(e), obj];
+        } catch (e) {
+          throw new RankiAppError({
+            code: "MISSING_CONFIG",
+            why: "Fetch of the template config files have failed",
+            cause: e,
+            details: {
+              src,
+            },
+          });
+        }
+      }),
+    );
+    config = { ...config, ...Object.fromEntries(configFromFiles) };
+  } catch (e) {
+    throw new RankiAppError({
+      code: "FAILED_USER_CONFIG_RETRIEVAL",
+      why: "User config retrieval failed",
+      cause: e,
+    });
+  }
+  return config;
+}
+
+function getFields(): AnkiTemplateFields {
+  const dataElems = document.querySelectorAll(DATA_TYPE_CLASS_SELECTOR);
+  const fields = Object.fromEntries(
+    Array.from(dataElems).map((data) => [
+      getClassType(data),
+      // data.className.split(" ").at(-1)!.trim(), // #1
+      data.innerHTML,
+    ]),
+  ) as unknown as AnkiTemplateFields;
+  return fields;
+}
+
+function getHtmlTagAttributes(): CollectedHtmlTagAttributes {
   const htmlElem = document.querySelector("html");
   assertExists(htmlElem, { why: "Cannot collect data without html element" });
   // #2
@@ -37,128 +92,47 @@ export function collectData(): DataCollection {
   ) as HtmlTagClassCollection;
   const dir = htmlElem.getAttribute("dir") as HtmlAttrDir;
   const dataBsTheme = htmlElem.getAttribute("data-bs-theme") as HtmlAttrTheme;
+  return { mode, os, env, dir, dataBsTheme };
+}
 
-  const dataElems = document.querySelectorAll(DATA_TYPE_CLASS_SELECTOR);
-  // @ts-expect-error
-  const fields: AnkiTemplateFields = Object.fromEntries(
-    Array.from(dataElems).map((data) => [
-      data.className.split(" ").at(-1)!.trim(), // #1
-      data.innerHTML,
-    ]),
-  );
+function getFaces(): RankiFaces {
+  // const faces: RankiFaces = {};
+  const faces = Object.fromEntries(
+    Array.from(document.querySelectorAll(INPUT_TYPE_CLASS_SELECTOR)).map(
+      (e) => [getClassType(e), e],
+    ),
+  ) as RankiFaces;
+  return faces;
+}
 
-  // @ts-expect-error
-  let config = {};
-  try {
-    const configElems = document.querySelectorAll(CONFIG_TYPE_CLASS_SELECTOR);
-    config = Object.fromEntries(
-      Array.from(configElems).map((data) => [
-        data.className.split(" ").at(-1)!.trim(), // #1
-        yaml.parse(data.innerHTML),
-      ]),
-    );
-  } catch (e) {
-    console.log(e);
-  }
-
-  // @ts-expect-error
-  const theaterOrder: undefined | string[] = FACE_ASSIGNMENTS[fields.face];
-  assertExists(theaterOrder, {
-    why: "Cannot process without a valid face assignment",
-    details: { FACE_ASSIGNMENTS, face: fields.face },
-  });
-  assertArrayNotEmpty(theaterOrder, {
-    why: "Given theater order has to be a non-empty array",
-    details: { FACE_ASSIGNMENTS, face: fields.face },
-  });
-
-  // // @ts-expect-error
-  // const theaterOrder: CardFaceArray = FACE_ASSIGNMENTS[fields.face];
-
-  const inputs = theaterOrder.map((face) => {
-    const selector = [INPUT_TYPE_CLASS_SELECTOR, face].join(".");
-    const r = document.querySelector(selector)!;
-    if (!r) {
-      throw new RankiAppError({
-        code: "NO_FACE",
-        why: `Cannot find face ${face}`,
-        cause: null,
-        details: { INPUT_TYPE_CLASS_SELECTOR, theaterOrder, face },
-      });
-    }
-    return { theater: face, dqm: r.innerHTML };
-  });
-  if (!inputs.length) {
-    throw new RankiAppError({
-      code: "NO_FACES",
-      why: "Cannot find any faces to render. Ranki requires at least one face",
-      cause: null,
-      details: { INPUT_TYPE_CLASS_SELECTOR, theaterOrder },
-    });
-  }
+/**
+ * @dev
+ * #1 Basically the theater needs to be the last class name
+ * #2 This is very fragile
+ */
+export async function collectData(): Promise<DataCollection> {
+  const htmlAttr = getHtmlTagAttributes();
+  const fields = getFields();
+  const config = await getConfig();
+  const faces = getFaces();
 
   const address = fields.deck.split("::") as AnkiDeckParts;
 
-  const tagsArr = fields.tags
-    .trim()
-    .split(" ")
-    .filter((v) => v.length);
-  const rankiTags = [] as RankiTags;
-  const neutralTags = [] as AnkiNeutralTags;
-  let marked = false as AnkiMarked;
-  tagsArr.forEach((t) => {
-    if (t.startsWith(RANKI_TAG_INDICATOR)) {
-      rankiTags.push(t as RankiTag);
-    } else if (t === "marked") {
-      marked = true as AnkiMarked;
-    } else {
-      neutralTags.push(t as AnkiRawTag);
-    }
-  });
-
   return {
-    raw: {
-      html: {
-        os,
-        env,
-        mode,
-        dir,
-        dataBsTheme,
-      },
-      fields,
-    },
-    hud: {
-      order: ["parser", "card", "address", "review", "tags"],
-      parser: {
-        hasReplacements: true,
-        parseMode: "v2",
-        errorLevel: "none",
-      },
-      address: {
-        prefix: [],
-        exposed: address,
-        suffix: [],
-      },
-      tags: neutralTags,
-      review: {
-        marked,
-        flag: {
-          type: fields.flag,
-          message: "Some message",
-        },
-      },
-      card: {
-        type: fields.type,
-        card: fields.card,
-        face: fields.face,
-      },
-    },
-    pref: { scheme: "dark" },
-    inputs,
-    theaterOrder,
+    // raw: {
+    htmlAttr,
+    fields,
     address,
-    marked,
-    neutralTags,
-    rankiTags,
+    faces,
+    // tags
+    // marked,
+    // },
+    // hud,
+    // pref: { scheme: "dark" },
+    // inputs,
+    // theaterOrder,
+    // neutralTags,
+    // rankiTags,
+    config,
   };
 }

@@ -7,7 +7,12 @@ export const useAnkiWinStore = createAnkiStore({
   previewAspect: 16 / 9,
   colorScheme: "dark",
   cardConfig: "",
-  templateConfig: "",
+  templateConfig: `
+  decks:
+    - exact: Tests::Test
+      config:
+        aa: true 
+  `,
   deck: "Tests::Test",
   tags: "",
   face: "Q",

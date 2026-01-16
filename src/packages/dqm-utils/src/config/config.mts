@@ -164,6 +164,11 @@ export class Config implements IConfig {
             case "boolean":
               base = curr[0].toString().toUpperCase() === "TRUE" ? true : false;
               break;
+            // DECIDE this needs way more work. this is put here to fix the
+            // ranki decks, tags array merging issue but this needs
+            // definitions for more types. *There is no clear contract here.*
+            default:
+              base = [...base, curr[0]];
           }
           break;
         case "undefined":

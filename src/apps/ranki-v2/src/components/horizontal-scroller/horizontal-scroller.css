@@ -8,12 +8,13 @@ ranki-horizontal-scroller {
     overflow-y: hidden;
 
     &::-webkit-scrollbar {
-      height: 1px;
+      display: none;
+      /* height: 1px; */
     }
 
-    &::-webkit-scrollbar-thumb {
+    /* &::-webkit-scrollbar-thumb {
       background-color: red;
-    }
+    } */
   }
 
   &.scroller {

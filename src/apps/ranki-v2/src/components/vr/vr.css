@@ -1,0 +1,18 @@
+ranki-vr {
+  --vr-width: 10px;
+
+  display: block;
+
+  &.container {
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--vr-width);
+    padding-inline: 4em;
+  }
+
+  &.vr {
+    background-color: var(--color-vr-hex);
+    height: 100%;
+    border-radius: calc(var(--vr-width) / 2);
+  }
+}

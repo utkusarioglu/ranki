@@ -17,5 +17,8 @@
     "**/.project": true,
     "**/.settings": true,
     "**/.factorypath": true
+  },
+  "[html]": {
+    "editor.defaultFormatter": null
   }
 }

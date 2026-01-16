@@ -1,5 +1,4 @@
 import "./general-error.css";
-import type { RankiComponent } from "../../types/ranki-component.types.mjs";
 import { RankiAppError } from "../../error/ranki-app-error.mts";
 import { createVerticalScroller } from "../vertical-scroller/vertical-scroller.mts";
 import yaml from "yaml";
@@ -7,7 +6,7 @@ import yaml from "yaml";
 export function createAppErrorScreen(
   attach: HTMLElement,
   error: unknown,
-): RankiComponent {
+): void {
   attach.innerText = "";
   const scroller = createVerticalScroller(attach);
   const container = document.createElement("div");
@@ -42,8 +41,4 @@ export function createAppErrorScreen(
   } catch (e) {
     pre.innerHTML = JSON.stringify(obj, null, 2);
   }
-
-  return {
-    element: container,
-  };
 }
