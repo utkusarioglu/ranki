@@ -1,4 +1,5 @@
 import "./utils/polyfills.mjs";
+import "./style/vendor-anki.css";
 import "./style/variables.css";
 import "./style/template.css";
 import "./style/vendor-dqm.css";
