@@ -17,6 +17,7 @@ import {
 } from "../selector.constants.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
 import { RankiAppError } from "../error/ranki-app-error.mts";
+import { hash } from "./hash.mts";
 
 function getClassType(e: Element) {
   return e.className.split(" ").at(-1)!.trim(); // #1
@@ -119,6 +120,7 @@ export async function collectData(): Promise<DataCollection> {
   const address = fields.deck.split("::") as AnkiDeckParts;
 
   return {
+    hash: hash(JSON.stringify([htmlAttr, fields, config, faces, address])),
     // raw: {
     htmlAttr,
     fields,

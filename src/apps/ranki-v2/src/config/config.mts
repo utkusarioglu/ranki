@@ -17,16 +17,14 @@ import type {
   RankiTag,
   RankiTags,
 } from "../collect/collect.types.mjs";
-import {
-  INPUT_TYPE_CLASS_SELECTOR,
-  RANKI_TAG_INDICATOR,
-} from "../selector.constants.mjs";
+import { INPUT_TYPE_CLASS_SELECTOR } from "../selector.constants.mjs";
 import { assertArrayNotEmpty, assertExists } from "@dqm/package-dqm-utils";
 import { RankiAppError } from "../error/ranki-app-error.mts";
 import type {
   Conf,
   RankiDqmConfig,
   RankiGlobalConfig,
+  RankiTagPrefix,
 } from "./config.types.mts";
 import type { HudProps } from "../components/hud/hud.types.mts";
 import type {
@@ -101,7 +99,7 @@ function buildBaseConfig(
 
 export function createConfigs(raw: DataCollection): Conf {
   const globalConfig = buildGlobalConfig(raw);
-  const tags = filterTags(raw);
+  const tags = filterTags(raw, globalConfig.base.rankiTagPrefix);
   const config = buildBaseConfig(globalConfig, tags, raw);
 
   const order = getFaceOrder(config, raw);
@@ -223,7 +221,10 @@ function getInputs(
   return inputs;
 }
 
-function filterTags(collected: DataCollection): FilteredTags {
+function filterTags(
+  collected: DataCollection,
+  rankiTagPrefix: RankiTagPrefix,
+): FilteredTags {
   const tagsArr = collected.fields.tags
     .trim()
     .split(" ")
@@ -232,7 +233,7 @@ function filterTags(collected: DataCollection): FilteredTags {
   const neutral = [] as AnkiNeutralTags;
   let marked = false as AnkiMarked;
   tagsArr.forEach((t) => {
-    if (t.startsWith(RANKI_TAG_INDICATOR)) {
+    if (t.startsWith(rankiTagPrefix)) {
       ranki.push(t as RankiTag);
     } else if (t === "marked") {
       marked = true as AnkiMarked;

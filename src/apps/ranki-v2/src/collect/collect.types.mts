@@ -1,5 +1,5 @@
 import type { DqmParseTheater } from "@dqm/package-dqm-v2";
-import { RANKI_TAG_INDICATOR } from "../selector.constants.mjs";
+import type { RankiTagPrefix } from "../config/config.types.mts";
 
 export type AnkiFlag = `flag${number}`;
 
@@ -23,7 +23,7 @@ export type AnkiMarked = boolean & { type: "AnkiMarked" };
 
 export type AnkiNeutralTags = AnkiRawTag[];
 
-export type RankiTag = `${typeof RANKI_TAG_INDICATOR}${string}`;
+export type RankiTag = `${RankiTagPrefix}${string}`;
 
 export type RankiTags = RankiTag[];
 
@@ -59,6 +59,7 @@ export type CollectedHtmlTagAttributes = {
 export type RankiFaces = Record<string, HTMLDivElement>;
 
 export interface DataCollection {
+  hash: string;
   htmlAttr: CollectedHtmlTagAttributes;
   fields: AnkiTemplateFields;
   faces: RankiFaces;

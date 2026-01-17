@@ -71,6 +71,8 @@ export type RankiBaseConfigPartial = DeepPartialSerializable<RankiBaseConfig>;
 
 export type RankiLayout = "row" | "column";
 
+export type RankiTagPrefix = string & { type: "RankiTagPrefix" };
+
 export interface RankiBaseConfig {
   // TODO you need deck address stripping and hiding here
   faces: Record<AnkiCardFace, CardFaceArray>;
@@ -82,6 +84,7 @@ export interface RankiBaseConfig {
 
   flags: Record<AnkiFlagColors, RankiIndicatorMessage>;
   marked: RankiIndicatorMessage;
+  rankiTagPrefix: RankiTagPrefix;
 
   hud: HudConfig;
   dqm: DqmConfigPackPartial;

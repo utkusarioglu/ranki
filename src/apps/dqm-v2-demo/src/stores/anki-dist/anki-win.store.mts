@@ -12,11 +12,11 @@ export const useAnkiWinStore = createAnkiStore({
     - exact: Tests::Test
       config:
         aa: true 
-  `,
+  `.trim(),
   deck: "Tests::Test",
   tags: "",
   face: "Q",
   flag: "flag0",
-  cardType: "+R2-AB:BA",
+  cardType: "+R:AB:BA",
   card: "AB",
 });

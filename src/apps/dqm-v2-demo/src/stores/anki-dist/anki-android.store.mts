@@ -10,6 +10,6 @@ export const useAnkiAndroidStore = createAnkiStore({
   tags: "",
   face: "Q",
   flag: "flag0",
-  cardType: "+R2-AB:BA",
+  cardType: "+R:AB:BA",
   card: "AB",
 });

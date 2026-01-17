@@ -1,5 +1,17 @@
 base: 
   flags:
     red:
-      message: Questionable Information
-      indicator: none
+      message: Questionable information
+    orange:
+      message: Derive more cards
+    green: 
+      message: Needs elaboration
+    blue:
+      message: Possibly outdated
+    pink: 
+      message: Rendering issues
+    turquoise:
+      message: Too extensive
+    purple:
+      message: Poor wording or formatting
+    
