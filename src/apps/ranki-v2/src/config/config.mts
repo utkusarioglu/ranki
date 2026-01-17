@@ -1,10 +1,12 @@
 import yaml from "yaml";
 import { Config } from "@dqm/package-dqm-utils";
-import { RANKI_INITIAL_CONFIG } from "./config.constants.mts";
+import { FLAG_COLOR_ORDER, RANKI_INITIAL_CONFIG } from "./config.constants.mts";
 import type { RankiConfig } from "../export.types.mts";
-import type { DqmParseInputStructured } from "@dqm/package-dqm-v2";
 import type {
-  AnkiDeck,
+  DqmParseInputStructured,
+  DqmParseTheater,
+} from "@dqm/package-dqm-v2";
+import type {
   AnkiMarked,
   AnkiNeutralTags,
   AnkiRawTag,
@@ -21,127 +23,135 @@ import {
 } from "../selector.constants.mjs";
 import { assertArrayNotEmpty, assertExists } from "@dqm/package-dqm-utils";
 import { RankiAppError } from "../error/ranki-app-error.mts";
-import type { Conf } from "./config.types.mts";
+import type {
+  Conf,
+  RankiDqmConfig,
+  RankiGlobalConfig,
+} from "./config.types.mts";
 import type { HudProps } from "../components/hud/hud.types.mts";
-import { DQM_BASE_CONFIG } from "./dqm.constants.mjs";
 import type {
   AnkiFlagColorIndices,
   AnkiFlagColors,
-  DeckSettings,
-  MatchTypes,
   RankiBaseConfig,
-  RankiBaseConfigPartial,
   RankiGlobalConfigPartial,
-} from "../types/config.types.mts";
-import { assertNever } from "../error/assertions.mts";
+} from "./config.types.mts";
+import { checkMatch } from "./determine.mts";
 
-const FACE_ASSIGNMENTS = { Q: ["A"], N: ["A", "B"] };
-
-function determineMatchType<T extends Record<MatchTypes, {}>>(
-  a: T,
-): MatchTypes | "multi" {
-  const isExact = a.exact !== undefined;
-  const isRegex = a.regex !== undefined;
-  const isGlob = a.glob !== undefined;
-  const manyMatch = [isExact, isRegex, isGlob].filter((v) => v).length > 1;
-  if (manyMatch) {
-    return "multi";
-  } else if (isExact) {
-    return "exact";
-  } else if (isRegex) {
-    return "regex";
-  } else if (isGlob) {
-    return "glob";
-  } else {
-    throw new RankiAppError({
-      code: "UNKNOWN_MATCHER",
-      why: "Unrecognized matcher returned",
-      cause: null,
-      details: { item: a },
-    });
-  }
-}
-
-// function determineTagConfig(userTags: FilteredTags, globalConfig: RankiConfig) {
-//   const configs: RankiBaseConfigPartial[] = [];
-//   globalConfig.tags.forEach((tag) => {
-
-//   })
-// }
-function determineDeckConfig(
-  currentDeck: AnkiDeck,
-  globalConfig: RankiConfig,
-): DeckSettings | undefined {
-  for (const deck of globalConfig.decks) {
-    const matchType = determineMatchType(deck);
-    if (matchType === "multi") {
-      throw new RankiAppError({
-        code: "DECK_MULTIPLE_MATCHERS",
-        why: "Deck spec can only define one of glob, regex, exact",
-        cause: null,
-        details: { deck },
-      });
-    }
-    switch (matchType) {
-      case "exact":
-        if (deck.exact === currentDeck) {
-          return deck;
-        }
-        break;
-      default:
-        assertNever({
-          why: "Unrecognized match type",
-          details: { matchType, deck },
-        });
-    }
-  }
-  return undefined;
-}
-
-export function createConfigs(collected: DataCollection): Conf {
-  const globalConfig = buildGlobalConfig(collected);
-  const rankiConfig = new Config();
-  rankiConfig.pushConfig("default", globalConfig.base);
-
-  const appConfig = new Config();
+function buildBaseConfig(
+  globalConfig: RankiGlobalConfig,
+  tags: FilteredTags,
+  raw: DataCollection,
+) {
+  const appConfig = new Config("app");
   appConfig.pushConfig("default", globalConfig.base);
-  const bucket: RankiBaseConfigPartial[] = [];
-  const deckConfig = determineDeckConfig(collected.fields.deck, globalConfig);
-  if (deckConfig) {
-    appConfig.pushConfig("deck", deckConfig.config);
-    bucket.push(deckConfig.config);
+  [
+    {
+      name: "deck",
+      curr: raw.fields.deck,
+      matchers: globalConfig.decks,
+    },
+    {
+      name: "card",
+      curr: raw.fields.card,
+      matchers: globalConfig.cards,
+    },
+    {
+      name: "type",
+      curr: raw.fields.type,
+      matchers: globalConfig.types,
+    },
+    {
+      name: "face",
+      curr: raw.fields.face,
+      matchers: globalConfig.faces,
+    },
+  ].forEach(({ name, curr, matchers }) => {
+    const conf = checkMatch(curr, matchers);
+    if (conf) {
+      appConfig.pushConfig(name, conf.config);
+    }
+  });
+
+  tags.neutral.forEach((t) => {
+    const conf = checkMatch(t, globalConfig.tags);
+    if (conf) {
+      appConfig.pushConfig(`tag:neutral:${t}`, conf.config);
+    }
+  });
+
+  tags.ranki.forEach((t) => {
+    const conf = checkMatch(t, globalConfig.tags);
+    if (conf) {
+      appConfig.pushConfig(`tag:ranki:${t}`, conf.config);
+    }
+  });
+
+  if (tags.marked) {
+    const marked = globalConfig.tags.find((v) => v.exact === "marked");
+    if (marked) {
+      appConfig.pushConfig("tag:marked", marked.config);
+    }
   }
+
   const config = appConfig
     .mergeTo("merged")
     .getConfig<RankiBaseConfig>("merged");
+  return config;
+}
 
-  console.log("co", config, bucket);
+export function createConfigs(raw: DataCollection): Conf {
+  const globalConfig = buildGlobalConfig(raw);
+  const tags = filterTags(raw);
+  const config = buildBaseConfig(globalConfig, tags, raw);
 
-  const tags = filterTags(collected);
-  const hud = buildHudConfig(config, collected, tags);
-  const order = getFaceOrder(collected);
-  const inputs = getInputs(collected, order);
+  const order = getFaceOrder(config, raw);
+
+  const hud = buildHudConfig(config, raw, tags);
 
   return {
     ranki: {
       hud,
       order,
     },
-    dqm: {
-      inputs,
-      pref: { scheme: "dark" },
-      config: [DQM_BASE_CONFIG],
-    },
+    dqm: buildDqmConfig(raw, order, config),
   };
 }
 
-function getFaceOrder(collected: DataCollection): CardFaceArray {
-  const order: undefined | CardFaceArray =
-    // @ts-expect-error
-    FACE_ASSIGNMENTS[collected.fields.face];
+/**
+ * @dev
+ * #1 DECIDE For some reason anki has two different attributes for theme. one in
+ * className of html and the other is data-bs-theme again in html. I'm not sure
+ * which one is the correct one to use.
+ */
+function buildDqmConfig(
+  raw: DataCollection,
+  order: CardFaceArray,
+  config: RankiBaseConfig,
+): RankiDqmConfig {
+  const inputs = getInputs(
+    raw,
+    order.filter((v) => !v.startsWith("ranki")),
+  );
+  const scheme =
+    config.design.scheme === "system"
+      ? raw.htmlAttr.dataBsTheme // #1
+      : config.design.scheme;
+
+  return {
+    inputs,
+    pref: { scheme },
+    config: config.dqm,
+  };
+}
+
+function getFaceOrder(
+  config: RankiBaseConfig,
+  collected: DataCollection,
+): CardFaceArray {
+  const order: undefined | CardFaceArray = config.faces[collected.fields.face];
   assertExists(order, {
     why: "Cannot process without a valid face assignment",
-    details: { FACE_ASSIGNMENTS, face: collected.fields.face },
+    details: { faces: config.faces, face: collected.fields.face },
   });
   return order;
 }
@@ -178,18 +188,16 @@ function buildGlobalConfig(collected: DataCollection): RankiConfig {
     }
   });
 
-  const merged = gConfig.mergeTo("merged").getConfig<RankiConfig>("merged");
-
-  return merged;
+  return gConfig.mergeTo("merged").getConfig<RankiConfig>("merged");
 }
 
 function getInputs(
   collected: DataCollection,
-  theaterOrder: CardFaceArray,
+  theaterOrder: DqmParseTheater[],
 ): DqmParseInputStructured {
   assertArrayNotEmpty(theaterOrder, {
     why: "Given theater order has to be a non-empty array",
-    details: { FACE_ASSIGNMENTS, face: collected.fields.face },
+    details: { order: theaterOrder, face: collected.fields.face },
   });
 
   const inputs = theaterOrder.map((face) => {
@@ -220,31 +228,20 @@ function filterTags(collected: DataCollection): FilteredTags {
     .trim()
     .split(" ")
     .filter((v) => v.length);
-  const rankiTags = [] as RankiTags;
-  const neutralTags = [] as AnkiNeutralTags;
+  const ranki = [] as RankiTags;
+  const neutral = [] as AnkiNeutralTags;
   let marked = false as AnkiMarked;
   tagsArr.forEach((t) => {
     if (t.startsWith(RANKI_TAG_INDICATOR)) {
-      rankiTags.push(t as RankiTag);
+      ranki.push(t as RankiTag);
     } else if (t === "marked") {
       marked = true as AnkiMarked;
     } else {
-      neutralTags.push(t as AnkiRawTag);
+      neutral.push(t as AnkiRawTag);
     }
   });
-  return { neutral: neutralTags, ranki: rankiTags, marked };
+  return { neutral, ranki, marked };
 }
-
-const FLAG_COLOR_ORDER: AnkiFlagColors[] = [
-  "none",
-  "red",
-  "orange",
-  "green",
-  "blue",
-  "pink",
-  "turquoise",
-  "purple",
-];
 
 function buildHudConfig(
   config: RankiBaseConfig,
@@ -257,21 +254,30 @@ function buildHudConfig(
   const flagColor = FLAG_COLOR_ORDER[flagColorIndex]! as AnkiFlagColors;
   return {
     order: config.hud.order,
+    visibility: config.hud.visibility,
+    // TODO
     parser: {
       hasReplacements: true,
       parseMode: "v2",
       errorLevel: "none",
     },
+    // TODO
     address: {
       prefix: [],
       exposed: collected.address,
       suffix: [],
     },
-    tags: tags.neutral,
+    tags: {
+      count: tags.neutral.length + tags.ranki.length,
+      neutral: tags.neutral,
+      ranki: tags.ranki,
+    },
+    // TODO maybe you need tag messages here
     review: {
-      marked: tags.marked,
+      marked: tags.marked && config.marked,
       flag: {
         type: collected.fields.flag,
+        color: flagColor,
         message: config.flags[flagColor].message,
       },
     },

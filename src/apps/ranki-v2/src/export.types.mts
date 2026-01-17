@@ -1,1 +1,1 @@
-export type { RankiGlobalConfig as RankiConfig } from "./types/config.types.mjs";
+export type { RankiGlobalConfig as RankiConfig } from "./config/config.types.mjs";

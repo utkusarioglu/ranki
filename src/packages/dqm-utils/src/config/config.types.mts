@@ -27,3 +27,5 @@ export type TypeOfResult =
   | "undefined"
   | "object"
   | "function";
+
+export type LogMode = "normal" | "verbose";

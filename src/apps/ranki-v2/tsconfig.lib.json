@@ -17,7 +17,7 @@
     "src/export.types.mts",
     "src/types/util.types.mts",
     "src/components/hud/hud.types.mts",
-    "src/types/config.types.mts",
+    "src/config/config.types.mts",
     "src/collect/collect.types.mts"
   ],
   "references": [

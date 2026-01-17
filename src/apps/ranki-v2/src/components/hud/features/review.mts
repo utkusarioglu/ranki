@@ -8,7 +8,7 @@ export function createReviewFeature(props: HudProps, attach: HTMLElement) {
     if (props.review.marked) {
       const marked = document.createElement("ranki-hud-item");
       marked.classList.add("half-padding");
-      marked.innerText = props.review.flag.message;
+      marked.innerText = props.review.marked.message;
       review.appendChild(marked);
     }
 

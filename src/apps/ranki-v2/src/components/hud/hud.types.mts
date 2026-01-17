@@ -2,7 +2,10 @@ import type {
   AnkiCard,
   AnkiCardFace,
   AnkiCardType,
+  AnkiRawTag,
+  RankiTag,
 } from "../../collect/collect.types.mjs";
+import type { AnkiFlagColors } from "../../config/config.types.mts";
 
 export type HudComponentNames =
   | "parser"
@@ -11,8 +14,11 @@ export type HudComponentNames =
   | "review"
   | "card";
 
+export type HudVisibility = "visible" | "pull" | "pullWhenShort";
+
 export interface HudProps {
   order: HudComponentNames[];
+  visibility: HudVisibility;
   parser: {
     hasReplacements: boolean;
     parseMode: "v1" | "v2" | "ignored";
@@ -23,11 +29,16 @@ export interface HudProps {
     exposed: string[];
     suffix: string[];
   };
-  tags: string[];
+  tags: {
+    count: number;
+    neutral: AnkiRawTag[];
+    ranki: RankiTag[];
+  };
   review: {
-    marked: boolean;
+    marked: undefined | { message: string };
     flag: {
       type: `flag${number}`;
+      color: AnkiFlagColors;
       message: string;
     };
   };

@@ -1,5 +1,5 @@
 import { DqmConfigError } from "./error/error.mjs";
-import type { LocalConfig, ObjectPath } from "./config.types.mjs";
+import type { LocalConfig, LogMode, ObjectPath } from "./config.types.mjs";
 import {
   assertNotExists,
   assertExists,
@@ -18,6 +18,18 @@ export class Config implements IConfig {
   private order: ConfigEntryCode[] = [];
   private parent: IConfig | null = null;
   private name: ConfigName = "(unnamed)";
+  private logMode: LogMode = "normal";
+
+  constructor(name?: string) {
+    if (name) {
+      this.name = name;
+    }
+  }
+
+  setLogMode(mode: LogMode): this {
+    this.logMode = mode;
+    return this;
+  }
 
   setOrder(order: ConfigEntryCode[]): this {
     this.order = order;
@@ -113,6 +125,9 @@ export class Config implements IConfig {
    * @param objs array of config objects to merge
    */
   private buildLevel(path: ObjectPath, objs: LocalConfig[]): LocalConfig {
+    if (this.logMode === "verbose") {
+      console.log("-", path, objs);
+    }
     assertArrayNotEmpty(objs, {
       why: "Cannot build a level with no members",
       details: {

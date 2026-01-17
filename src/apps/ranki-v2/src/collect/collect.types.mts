@@ -4,7 +4,7 @@ import { RANKI_TAG_INDICATOR } from "../selector.constants.mjs";
 export type AnkiFlag = `flag${number}`;
 
 export type AnkiCardType = string & { type: "AnkiCardType" };
-export type AnkiCardFace = string & { type: "AnkiCardFace" };
+export type AnkiCardFace = string & { type?: "AnkiCardFace" };
 
 export type AnkiDeck = string & { type: "AnkiDeck" };
 export type AnkiCard = string & { type: "AnkiCard" };

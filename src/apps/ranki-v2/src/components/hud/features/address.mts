@@ -1,3 +1,4 @@
+import { ANKI_DECK_SEPARATOR } from "../../../config/config.constants.mts";
 import type { HudProps } from "../hud.types.mjs";
 
 export function createAddressFeature(props: HudProps, attach: HTMLElement) {
@@ -32,7 +33,7 @@ export function createAddressFeature(props: HudProps, attach: HTMLElement) {
     sp.classList.add("address-divider");
     sp.classList.add("color-2");
     sp.classList.add("inline-padding");
-    sp.innerText = "::";
+    sp.innerText = ANKI_DECK_SEPARATOR;
     addressParts.push(sp);
   });
   addressParts.slice(0, -1).forEach((p) => {

@@ -1,7 +1,11 @@
 import type {
+  AnkiFlagColors,
   RankiGlobalConfig,
   RankiGlobalConfigPartial,
-} from "../types/config.types.mjs";
+} from "./config.types.mjs";
+import { DQM_BASE_CONFIG } from "./dqm.constants.mts";
+
+export const ANKI_DECK_SEPARATOR = "::";
 
 // REMOVE
 export const RANKI_UTKU_CONFIG: RankiGlobalConfigPartial = {
@@ -41,11 +45,15 @@ export const RANKI_UTKU_CONFIG: RankiGlobalConfigPartial = {
 
 export const RANKI_INITIAL_CONFIG: RankiGlobalConfig = {
   base: {
-    question: ["A"],
-    answer: ["A", "ranki:hr", "B"],
-    scheme: "system",
-    theme: "gray",
-    layout: "row",
+    faces: {
+      Q: ["A"],
+      N: ["A", "ranki:hr", "B"],
+    },
+    design: {
+      scheme: "system",
+      theme: "gray",
+      layout: "row",
+    },
     flags: {
       none: {
         message: "",
@@ -80,16 +88,30 @@ export const RANKI_INITIAL_CONFIG: RankiGlobalConfig = {
         indicator: "none",
       },
     },
-    mark: {
+    marked: {
       message: "Study",
       indicator: "none",
     },
     hud: {
       order: ["parser", "card", "address", "review", "tags"],
+      visibility: "visible",
     },
-    dqm: [],
+    dqm: [DQM_BASE_CONFIG],
   },
   decks: [],
   cards: [],
+  types: [],
+  faces: [],
   tags: [],
 };
+
+export const FLAG_COLOR_ORDER: AnkiFlagColors[] = [
+  "none",
+  "red",
+  "orange",
+  "green",
+  "blue",
+  "pink",
+  "turquoise",
+  "purple",
+];
