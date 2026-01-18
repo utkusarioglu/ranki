@@ -1,4 +1,18 @@
 base: 
+  design:
+    palette: custom-1
+    palettes:
+      - name: custom-1
+        hues:
+          red: 0
+          orange: 30
+          yellow: 55
+          green: 120
+          blue: 210
+          purple: 270
+          magenta: 320
+        lightness: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
+        saturation: 50
   flags:
     red:
       message: Questionable information
@@ -23,19 +37,3 @@ tags:
     config:
       design:
         theme: print
-  - exact: +r:palette-custom-1
-    config:
-      design:
-        palette: custom-1
-        palettes:
-          - name: custom-1
-            hues:
-              red: 0
-              orange: 30
-              yellow: 55
-              green: 120
-              blue: 210
-              purple: 270
-              magenta: 320
-            lightness: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
-            saturation: 50
