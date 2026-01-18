@@ -7,6 +7,10 @@ export const INPUTS: DqmParseInputStructured = JSON.parse(
     theater: "A",
     dqm: "hello dqm",
   },
+  {
+    theater: "B",
+    dqm: "hello world!",
+  },
 ];
 
 export const AUTO_UPDATE =

@@ -1,6 +1,7 @@
 .ranki-v2-general-error {
   width: var(--content-width);
   margin-inline: auto;
+  background-color: black;
 
   & > h1,
   & > p {

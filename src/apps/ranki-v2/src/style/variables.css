@@ -9,11 +9,6 @@
   --face-width-min: 500px;
 
   --content-width: min(var(--face-width-min), 100vw);
-  --color-surface-1-hex: #0c0c0c;
-  --color-surface-2-hex: #0d1216;
-  --color-surface-3-hex: #444;
-  --color-bg-hex: #000000;
-  --color-hr-hex: #444444;
-  --color-vr-hex: #444444;
   --hud-height: 40px;
+  --color-divider-bg: var(--color-surface-1-hex);
 }

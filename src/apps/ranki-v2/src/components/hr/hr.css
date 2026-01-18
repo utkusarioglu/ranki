@@ -11,7 +11,7 @@ ranki-hr {
   }
 
   &.hr {
-    background-color: var(--color-hr-hex);
+    background-color: var(--scheme-surface-2);
     height: 100%;
     border-radius: calc(var(--hr-height) / 2);
   }

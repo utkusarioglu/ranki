@@ -11,7 +11,7 @@ ranki-vr {
   }
 
   &.vr {
-    background-color: var(--color-vr-hex);
+    background-color: var(--scheme-surface-2);
     height: 100%;
     border-radius: calc(var(--vr-width) / 2);
   }

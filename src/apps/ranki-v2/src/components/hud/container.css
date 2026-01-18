@@ -1,6 +1,6 @@
 ranki-hud-container {
   display: block;
-  color: #ccc;
+  /* color: #ccc; */
   font-size: 0.9rem;
 
   &.container {
@@ -11,7 +11,7 @@ ranki-hud-container {
     left: 0;
     right: 0; */
     display: flex;
-    gap: 0.5em;
+    /* gap: 0.5em; */
     padding-top: 0.5em;
     /* padding-inline: 0.5em; */
     overflow: hidden;

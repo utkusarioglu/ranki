@@ -1,58 +1,25 @@
 import type {
   AnkiFlagColors,
+  RankiAppTheme,
   RankiGlobalConfig,
+  RankiPalette,
   RankiTagPrefix,
 } from "./config.types.mjs";
 import { DQM_BASE_CONFIG } from "./dqm.constants.mts";
 
 export const ANKI_DECK_SEPARATOR = "::";
 
-// // REMOVE
-// export const RANKI_UTKU_CONFIG: RankiGlobalConfigPartial = {
-//   base: {
-//     flags: {
-//       red: {
-//         message: "Questionable Information",
-//         indicator: "radial",
-//       },
-//       orange: {
-//         message: "Derive more cards",
-//         indicator: "none",
-//       },
-//       green: {
-//         message: "Needs elaboration",
-//         indicator: "none",
-//       },
-//       blue: {
-//         message: "Possibly Outdated",
-//         indicator: "none",
-//       },
-//       pink: {
-//         message: "Rendering Issues",
-//         indicator: "none",
-//       },
-//       turquoise: {
-//         message: "Too Extensive",
-//         indicator: "none",
-//       },
-//       purple: {
-//         message: "Poor Wording or Formatting",
-//         indicator: "none",
-//       },
-//     },
-//   },
-// };
-
 export const RANKI_INITIAL_CONFIG: RankiGlobalConfig = {
   base: {
-    rankiTagPrefix: "+R:" as RankiTagPrefix,
     faces: {
       Q: ["A"],
       N: ["A", "ranki:hr", "B"],
     },
     design: {
       scheme: "system",
-      theme: "gray",
+      palette: "none" as RankiPalette,
+      palettes: [],
+      theme: "utku" as RankiAppTheme,
       layout: "row",
     },
     flags: {
@@ -89,9 +56,15 @@ export const RANKI_INITIAL_CONFIG: RankiGlobalConfig = {
         indicator: "none",
       },
     },
-    marked: {
-      message: "Study",
-      indicator: "none",
+    tags: {
+      ranki: {
+        prefix: "+r:" as RankiTagPrefix,
+        hide: true,
+      },
+      marked: {
+        message: "Study",
+        indicator: "none",
+      },
     },
     hud: {
       order: ["parser", "card", "address", "review", "tags"],

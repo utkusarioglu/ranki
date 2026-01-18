@@ -22,6 +22,8 @@ import { assertArrayNotEmpty, assertExists } from "@dqm/package-dqm-utils";
 import { RankiAppError } from "../error/ranki-app-error.mts";
 import type {
   Conf,
+  RankiAppConfig,
+  RankiAppDeterminedScheme,
   RankiDqmConfig,
   RankiGlobalConfig,
   RankiTagPrefix,
@@ -99,19 +101,39 @@ function buildBaseConfig(
 
 export function createConfigs(raw: DataCollection): Conf {
   const globalConfig = buildGlobalConfig(raw);
-  const tags = filterTags(raw, globalConfig.base.rankiTagPrefix);
+  const tags = filterTags(raw, globalConfig.base.tags.ranki.prefix);
   const config = buildBaseConfig(globalConfig, tags, raw);
-
   const order = getFaceOrder(config, raw);
 
-  const hud = buildHudConfig(config, raw, tags);
+  const scheme =
+    config.design.scheme === "system"
+      ? raw.htmlAttr.dataBsTheme // #1
+      : config.design.scheme;
 
   return {
-    ranki: {
-      hud,
-      order,
+    ranki: buildRankiAppConfig(config, raw, tags, order, scheme),
+    dqm: buildDqmConfig(raw, order, config, scheme),
+  };
+}
+
+function buildRankiAppConfig(
+  config: RankiBaseConfig,
+  raw: DataCollection,
+  tags: FilteredTags,
+  order: CardFaceArray,
+  scheme: RankiAppDeterminedScheme,
+): RankiAppConfig {
+  const hud = buildHudConfig(config, raw, tags);
+  return {
+    hud,
+    order,
+    design: {
+      scheme,
+      palette: config.design.palette,
+      palettes: config.design.palettes,
+      theme: config.design.theme,
+      layout: config.design.layout,
     },
-    dqm: buildDqmConfig(raw, order, config),
   };
 }
 
@@ -125,15 +147,12 @@ function buildDqmConfig(
   raw: DataCollection,
   order: CardFaceArray,
   config: RankiBaseConfig,
+  scheme: RankiAppDeterminedScheme,
 ): RankiDqmConfig {
   const inputs = getInputs(
     raw,
     order.filter((v) => !v.startsWith("ranki")),
   );
-  const scheme =
-    config.design.scheme === "system"
-      ? raw.htmlAttr.dataBsTheme // #1
-      : config.design.scheme;
 
   return {
     inputs,
@@ -269,13 +288,16 @@ function buildHudConfig(
       suffix: [],
     },
     tags: {
-      count: tags.neutral.length + tags.ranki.length,
+      count: config.tags.ranki.hide
+        ? tags.neutral.length
+        : tags.neutral.length + tags.ranki.length,
       neutral: tags.neutral,
       ranki: tags.ranki,
+      hideRanki: config.tags.ranki.hide,
     },
     // TODO maybe you need tag messages here
     review: {
-      marked: tags.marked && config.marked,
+      marked: tags.marked && config.tags.marked,
       flag: {
         type: collected.fields.flag,
         color: flagColor,

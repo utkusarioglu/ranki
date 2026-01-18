@@ -1,22 +1,16 @@
-// import { create } from "zustand";
-// import type { AnkiDistStore } from "./anki.store.types.mts";
 import { createAnkiStore } from "./anki.store.builder.mts";
+import { CARD_CONFIG, TEMPLATE_CONFIG } from "./constants.common.mts";
 
 export const useAnkiWinStore = createAnkiStore({
   previewScale: 1.25,
   previewAspect: 16 / 9,
   colorScheme: "dark",
-  cardConfig: "",
-  templateConfig: `
-  decks:
-    - exact: Tests::Test
-      config:
-        aa: true 
-  `.trim(),
+  cardConfig: CARD_CONFIG,
+  templateConfig: TEMPLATE_CONFIG,
   deck: "Tests::Test",
   tags: "",
   face: "Q",
   flag: "flag0",
-  cardType: "+R:AB:BA",
+  cardType: "+r:AB:BA",
   card: "AB",
 });

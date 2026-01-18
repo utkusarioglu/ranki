@@ -1,8 +1,11 @@
 import "./utils/polyfills.mjs";
 import "./style/vendor-anki.css";
+import "./style/schemes.css";
+import "./style/palettes.css";
 import "./style/variables.css";
-import "./style/template.css";
+import "./style/theme.css";
 import "./style/vendor-dqm.css";
+import "./style/ranki-v2-root.css";
 import { renderDqm } from "./dqm/render-dqm.mjs";
 import { collectData } from "./collect/collect.mjs";
 import { createApp } from "./components/app/app.mjs";
@@ -36,19 +39,17 @@ async function main() {
     root.classList.add(RENDERED_CLASS_SELECTOR);
     root.innerHTML = "";
 
-    try {
-      const collected = await collectData();
-      console.log("collected", collected);
-      const config = createConfigs(collected);
-      console.log("final", config);
-      const { roots } = createApp(config.ranki, root);
-      // @ts-expect-error
-      const report =
-        //
-        await renderDqm(config.dqm, roots);
-    } catch (e) {
-      createAppErrorScreen(root, e);
-    }
+    // try {
+    const collected = await collectData();
+    const config = createConfigs(collected);
+    const { roots } = createApp(config.ranki, root);
+    // @ts-expect-error
+    const report =
+      //
+      await renderDqm(config.dqm, roots);
+    // } catch (e) {
+    //   createAppErrorScreen(root, e);
+    // }
   } catch (e) {
     createAppErrorScreen(document.body, e);
   }

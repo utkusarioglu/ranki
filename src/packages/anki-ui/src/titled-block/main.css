@@ -7,7 +7,7 @@ titled-block {
     margin: 0;
     /* margin-bottom: 1em; */
     padding-block-end: 0.5em;
-    background-color: var(--color-surface-1-hex);
+    background: var(--scheme-surface-1);
   }
 
   &.hud {
@@ -27,15 +27,15 @@ titled-block {
     border-bottom-right-radius: 1em;
 
     &.programming-language {
-      background-color: #050505;
+      background: var(--scheme-surface-2);
     }
 
     &.file-path {
-      background-color: #0f0544;
+      background: var(--scheme-orange-base);
     }
 
     &.title {
-      background-color: #344;
+      background: var(--scheme-text-1);
     }
   }
 }

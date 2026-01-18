@@ -1,6 +1,6 @@
 ranki-hud-item {
   display: inline-block;
-  color: #ccc;
+  /* color: #ccc; */
   font-size: 0.9rem;
 
   &.flex,
@@ -42,15 +42,15 @@ ranki-hud-item {
   }
 
   &.fill-1 {
-    background-color: var(--color-surface-1-hex);
+    background: var(--scheme-surface-1);
   }
 
   &.fill-2 {
-    background-color: var(--color-surface-2-hex);
+    background: var(--scheme-surface-2);
   }
 
   &.color-2 {
-    color: #999;
+    color: var(--scheme-text-2);
   }
 
   &.curved-1 {

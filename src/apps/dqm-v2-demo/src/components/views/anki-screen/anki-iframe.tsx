@@ -1,12 +1,15 @@
 import { useRef, type FC } from "react";
-import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
+// import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
 import { assertExists } from "_assertions";
 import type {
   DqmParseInputStructured,
   IDqmRendererClientPreferences,
 } from "@dqm/package-dqm-api-v2";
 import style from "./AnkiIFrame.module.css";
-import { createCardElements, dqmOnLoad } from "./utils";
+import {
+  createCardElements,
+  // dqmOnLoad
+} from "./utils";
 import type { RankiFiles } from "./AnkiScreen";
 import type {
   RankiCard,
@@ -17,7 +20,7 @@ import type {
   RankiFlag,
   RankiTagString,
 } from "_stores/anki-dist/anki.store.types.mjs";
-const s = useDqmStore.getState();
+// const s = useDqmStore.getState();
 
 export interface AnkiDesktopIFrameProps {
   inputs: DqmParseInputStructured;
@@ -82,6 +85,7 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
     flag,
     face,
     card,
+    pref.scheme,
   ].join(" ");
 
   return (
@@ -106,7 +110,7 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
         replaced.jss.forEach((js) => {
           doc.body.appendChild(js);
         });
-        dqmOnLoad(doc, s.pluginSelection, s.inputs, pref);
+        // dqmOnLoad(doc, s.pluginSelection, s.inputs, pref);
       }}
     />
   );

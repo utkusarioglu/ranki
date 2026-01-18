@@ -73,18 +73,32 @@ export type RankiLayout = "row" | "column";
 
 export type RankiTagPrefix = string & { type: "RankiTagPrefix" };
 
+export type RankiBaseScheme = "dark" | "light" | "system";
+
+export type RankiPalette = string & { type: "RankiPalette" };
+
+export interface RankiBaseDesign {
+  scheme: RankiBaseScheme;
+  palette: RankiPalette;
+  palettes: PaletteSpecs[];
+  theme: RankiAppTheme;
+  layout: RankiLayout;
+}
+
 export interface RankiBaseConfig {
   // TODO you need deck address stripping and hiding here
   faces: Record<AnkiCardFace, CardFaceArray>;
-  design: {
-    scheme: "dark" | "light" | "system";
-    theme: string;
-    layout: RankiLayout;
-  };
+  design: RankiBaseDesign;
 
   flags: Record<AnkiFlagColors, RankiIndicatorMessage>;
-  marked: RankiIndicatorMessage;
-  rankiTagPrefix: RankiTagPrefix;
+  tags: {
+    ranki: {
+      prefix: RankiTagPrefix;
+      hide: boolean;
+    };
+    marked: RankiIndicatorMessage;
+  };
+  // rankiTagPrefix: ;
 
   hud: HudConfig;
   dqm: DqmConfigPackPartial;
@@ -104,7 +118,20 @@ export interface RankiGlobalConfig {
   tags: DeckSettings[];
 }
 
+export type RankiAppDeterminedScheme = "light" | "dark";
+
+export type RankiAppTheme = string & { type: "RankiAppTheme" };
+
+export interface RankiAppDesign {
+  scheme: RankiAppDeterminedScheme;
+  palette: RankiPalette;
+  palettes: PaletteSpecs[];
+  theme: RankiAppTheme;
+  layout: RankiLayout;
+}
+
 export interface RankiAppConfig {
+  design: RankiAppDesign;
   hud: HudProps;
   order: CardFaceArray;
 }
@@ -119,3 +146,37 @@ export interface Conf {
   ranki: RankiAppConfig;
   dqm: RankiDqmConfig;
 }
+
+export interface PaletteSpecs {
+  name: string;
+  hues: Hues;
+  lightness: Lightness;
+  saturation: Saturation;
+}
+
+export type Hues = Record<string, number>;
+export type Lightness = [
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+];
+export type Saturation = number & { type: "Saturation" };
+
+export type ColorLevel = string; // index of Lightness
+// | "0"
+// | "1"
+// | "2"
+// | "3"
+// | "4"
+// | "5"
+// | "6"
+// | "7"
+// | "8"
+// | "9";
+export type Palette = Record<string, Record<ColorLevel, string>>;

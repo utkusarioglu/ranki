@@ -33,6 +33,7 @@ export interface HudProps {
     count: number;
     neutral: AnkiRawTag[];
     ranki: RankiTag[];
+    hideRanki: boolean;
   };
   review: {
     marked: undefined | { message: string };

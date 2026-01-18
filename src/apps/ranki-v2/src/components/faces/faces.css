@@ -6,6 +6,8 @@
 }
 
 .ranki-v2-face-container {
+  --face-clearance: 10svh;
+
   margin-inline: auto;
   min-width: var(--content-width);
   display: grid;
@@ -27,13 +29,13 @@
   holds for now.
   */
   & > .ranki-v2-face:first-child:not(:last-child) {
-    min-height: 30svh;
+    margin-top: var(--face-clearance);
     display: flex;
     align-items: end;
   }
 
   & > .ranki-v2-face:last-child:not(:first-child) {
-    padding-bottom: 30svh;
+    margin-bottom: var(--face-clearance);
     /* display: flex;
     align-items: end; */
   }

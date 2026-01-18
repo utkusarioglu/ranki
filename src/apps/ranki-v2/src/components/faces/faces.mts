@@ -31,12 +31,6 @@ export function createFaces(selectedFaces: CardFaceArray): RankiComponent {
             faceContainer.appendChild(container);
             return [faceName, container];
         }
-        // #1 #2
-        // if (a.length - 1 > i) {
-        // const hr = document.createElement("hr");
-        // hr.classList.add("ranki-v2-hr");
-        // faceContainer.appendChild(hr);
-        // }
       })
       .filter((v) => v !== undefined),
   );
@@ -45,11 +39,5 @@ export function createFaces(selectedFaces: CardFaceArray): RankiComponent {
     objects: {
       faces,
     },
-    // css: [
-    //   {
-    //     id: "face",
-    //     css,
-    //   },
-    // ],
   };
 }
