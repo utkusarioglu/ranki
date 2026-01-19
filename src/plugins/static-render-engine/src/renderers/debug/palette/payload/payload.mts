@@ -7,28 +7,43 @@ export const payload: R = {
   kind: "leaf",
   sync: () => {
     const element = document.createElement("div");
+    element.className = "palette";
+    const hues = document.createElement("div");
     [
-      "tone",
       "red",
       "orange",
       "yellow",
       "green",
+      "turquoise",
       "blue",
       "purple",
       "magenta",
     ].map((v) => {
-      const cE = document.createElement("div");
-      Array(10)
+      const hue = document.createElement("div");
+      hue.classList = "row";
+      Array(6)
         .fill(null)
         .map((_, i) => {
-          const t = document.createElement("div");
-          t.style.backgroundColor = `var(--palette-${v}-${i}-hex)`;
-          t.innerText = `${v}-${i}`;
-          cE.appendChild(t);
+          const col = document.createElement("div");
+          col.style.backgroundColor = `var(--palette-${v}-${i}-hex)`;
+          col.innerText = i.toString();
+          hue.appendChild(col);
         });
-      element.appendChild(cE);
+      hues.appendChild(hue);
     });
-    element.className = "palette";
+
+    const tones = document.createElement("div");
+    tones.className = "row";
+    ["dark", "0", "1", "2", "3", "4", "5", "bright"].forEach((n) => {
+      const col = document.createElement("div");
+      col.style.backgroundColor = `var(--palette-tone-${n}-hex)`;
+      col.innerText = n;
+      tones.appendChild(col);
+    });
+
+    // hues.className = "hues";
+    element.appendChild(hues);
+    element.appendChild(tones);
 
     return {
       element,

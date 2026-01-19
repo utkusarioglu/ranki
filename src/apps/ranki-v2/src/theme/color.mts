@@ -2,7 +2,7 @@ import type {
   ColorLevel,
   Palette,
   PaletteSpecs,
-} from "./config/config.types.mts";
+} from "../config/config.types.mts";
 
 function hslToHex(h: number, s: number, l: number): string {
   s /= 100;
@@ -53,6 +53,11 @@ function generatePaletteVariables(s: PaletteSpecs) {
       ]),
     )
     .flat();
+  const staticColors = [
+    ["--palette-tone-dark-hex", "#000"],
+    ["--palette-tone-bright-hex", "#FFF"],
+  ];
+  vars.push(...staticColors);
   const id = "palette-" + s.name;
   return [`:root.${id} {`, ...vars.map(([n, v]) => `  ${n}: ${v};`), "}"].join(
     "\n",
@@ -62,6 +67,7 @@ function generatePaletteVariables(s: PaletteSpecs) {
 export function generatePaletteStyle(attach: HTMLElement, s: PaletteSpecs) {
   const html = generatePaletteVariables(s);
   const style = document.createElement("style");
+  style.id = s.name;
   style.innerHTML = html;
   attach.appendChild(style);
 }

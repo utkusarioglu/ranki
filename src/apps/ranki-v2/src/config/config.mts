@@ -7,6 +7,7 @@ import type {
   DqmParseTheater,
 } from "@dqm/package-dqm-v2";
 import type {
+  AnkiCardFace,
   AnkiMarked,
   AnkiNeutralTags,
   AnkiRawTag,
@@ -111,7 +112,14 @@ export function createConfigs(raw: DataCollection): Conf {
       : config.design.scheme;
 
   return {
-    ranki: buildRankiAppConfig(config, raw, tags, order, scheme),
+    ranki: buildRankiAppConfig(
+      config,
+      raw,
+      tags,
+      order,
+      scheme,
+      raw.fields.face,
+    ),
     dqm: buildDqmConfig(raw, order, config, scheme),
   };
 }
@@ -122,13 +130,16 @@ function buildRankiAppConfig(
   tags: FilteredTags,
   order: CardFaceArray,
   scheme: RankiAppDeterminedScheme,
+  face: AnkiCardFace,
 ): RankiAppConfig {
   const hud = buildHudConfig(config, raw, tags);
   return {
+    face,
     hud,
     order,
     design: {
       scheme,
+      animationDuration: config.design.animationDuration,
       palette: config.design.palette,
       palettes: config.design.palettes,
       theme: config.design.theme,

@@ -13,10 +13,10 @@ export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
     {
       chain: ["html", "primitive", "anchor", "container"],
       kind: "parent",
-      sync: ({ ser, pref }) => {
+      sync: ({ ser }) => {
         const element = document.createElement("a");
-        element.classList.add("anchor-container");
-        element.classList.add("leaf-container");
+        // element.classList.add("anchor-container");
+        // element.classList.add("leaf-container");
         const component = ser.props
           .component as HtmlPrimitiveAnchorComponentConfig;
         const href = component.default.attribute.href;
@@ -34,18 +34,18 @@ export const htmlPrimitivesRenderer: IDqmPluginRenderer = {
         }
 
         element.target = component.default.attribute.target;
-        element.style.padding = "2px";
-        element.style.backgroundColor =
-          pref.scheme === "dark" ? "#000" : "#FFF";
-        element.style.display = "inline-block";
-        element.style.color = "#00F";
+        // element.style.padding = "2px";
+        // element.style.backgroundColor =
+        // pref.scheme === "dark" ? "#000" : "#FFF";
+        // element.style.display = "inline-block";
+        // element.style.color = "#00F";
 
-        element.addEventListener("mouseenter", () => {
-          element.style.scale = "2";
-        });
-        element.addEventListener("mouseleave", () => {
-          element.style.scale = "1";
-        });
+        // element.addEventListener("mouseenter", () => {
+        //   element.style.scale = "2";
+        // });
+        // element.addEventListener("mouseleave", () => {
+        //   element.style.scale = "1";
+        // });
         return {
           element,
           getMount: () => element,

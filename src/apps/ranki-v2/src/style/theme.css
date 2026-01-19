@@ -1,31 +1,31 @@
 :root.theme-utku {
-  --theme-dark-surface-0: var(--palette-tone-0-hex);
-  --theme-dark-surface-1: var(--palette-tone-1-hex);
-  --theme-dark-surface-2: var(--palette-tone-2-hex);
-  --theme-dark-text-0: var(--palette-tone-9-hex);
-  --theme-dark-text-1: var(--palette-tone-8-hex);
+  --theme-dark-surface-0: var(--palette-tone-dark-hex);
+  --theme-dark-surface-1: var(--palette-tone-0-hex);
+  --theme-dark-surface-2: var(--palette-tone-1-hex);
+  --theme-dark-text-0: var(--palette-tone-5-hex);
+  --theme-dark-text-1: var(--palette-tone-4-hex);
 
-  --theme-dark-red-base: var(--palette-red-5-hex);
-  --theme-dark-orange-base: var(--palette-orange-5-hex);
-  --theme-dark-yellow-base: var(--palette-yellow-5-hex);
-  --theme-dark-green-base: var(--palette-green-5-hex);
-  --theme-dark-blue-base: var(--palette-blue-5-hex);
-  --theme-dark-purple-base: var(--palette-purple-5-hex);
-  --theme-dark-magenta-base: var(--palette-magenta-5-hex);
+  --theme-dark-red-base: var(--palette-red-2-hex);
+  --theme-dark-orange-base: var(--palette-orange-2-hex);
+  --theme-dark-yellow-base: var(--palette-yellow-2-hex);
+  --theme-dark-green-base: var(--palette-green-2-hex);
+  --theme-dark-blue-base: var(--palette-blue-2-hex);
+  --theme-dark-purple-base: var(--palette-purple-2-hex);
+  --theme-dark-magenta-base: var(--palette-magenta-2-hex);
 
-  --theme-light-surface-0: var(--palette-blue-9-hex);
-  --theme-light-surface-1: var(--palette-blue-8-hex);
-  --theme-light-surface-2: var(--palette-blue-7-hex);
+  --theme-light-surface-0: var(--palette-blue-5-hex);
+  --theme-light-surface-1: var(--palette-blue-4-hex);
+  --theme-light-surface-2: var(--palette-blue-3-hex);
   --theme-light-text-0: var(--palette-tone-0-hex);
   --theme-light-text-1: var(--palette-tone-1-hex);
 
-  --theme-light-red-base: var(--palette-red-5-hex);
-  --theme-light-orange-base: var(--palette-orange-5-hex);
-  --theme-light-yellow-base: var(--palette-yellow-5-hex);
-  --theme-light-green-base: var(--palette-green-5-hex);
-  --theme-light-blue-base: var(--palette-blue-5-hex);
-  --theme-light-purple-base: var(--palette-purple-5-hex);
-  --theme-light-magenta-base: var(--palette-magenta-5-hex);
+  --theme-light-red-base: var(--palette-red-3-hex);
+  --theme-light-orange-base: var(--palette-orange-3-hex);
+  --theme-light-yellow-base: var(--palette-yellow-3-hex);
+  --theme-light-green-base: var(--palette-green-3-hex);
+  --theme-light-blue-base: var(--palette-blue-3-hex);
+  --theme-light-purple-base: var(--palette-purple-3-hex);
+  --theme-light-magenta-base: var(--palette-magenta-3-hex);
 }
 
 /* DECIDE is this a theme or a scheme? */

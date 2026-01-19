@@ -16,6 +16,7 @@ export const RANKI_INITIAL_CONFIG: RankiGlobalConfig = {
       N: ["A", "ranki:hr", "B"],
     },
     design: {
+      animationDuration: "0.4s",
       scheme: "system",
       palette: "none" as RankiPalette,
       palettes: [],

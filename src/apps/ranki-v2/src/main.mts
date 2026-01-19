@@ -13,6 +13,7 @@ import { createAppErrorScreen } from "./components/general-error/general-error.m
 import { RankiAppError } from "./error/ranki-app-error.mjs";
 import { onReady } from "./utils/onReady.mjs";
 import { createConfigs } from "./config/config.mts";
+import { createTheme } from "./theme/theme.mts";
 
 const ROOT_ID_SELECTOR = "#ranki-v2-root";
 const RENDERED_CLASS_SELECTOR = "ranki-rendered";
@@ -42,6 +43,7 @@ async function main() {
     // try {
     const collected = await collectData();
     const config = createConfigs(collected);
+    createTheme(document.documentElement, document.body, config.ranki);
     const { roots } = createApp(config.ranki, root);
     // @ts-expect-error
     const report =

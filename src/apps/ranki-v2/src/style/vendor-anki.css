@@ -2,3 +2,8 @@ body,
 #qa {
   opacity: 1 !important;
 }
+
+body {
+  background: var(--scheme-surface-0) !important;
+  color: var(--scheme-text-0) !important;
+}

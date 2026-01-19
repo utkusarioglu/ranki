@@ -3,15 +3,16 @@ base:
     palette: custom-1
     palettes:
       - name: custom-1
-        hues:
+        hues: 
           red: 0
           orange: 30
           yellow: 55
-          green: 120
+          green: 130
+          turquoise: 170
           blue: 210
           purple: 270
           magenta: 320
-        lightness: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
+        lightness: [15, 20, 30, 60, 70, 80]
         saturation: 50
   flags:
     red:
@@ -37,3 +38,20 @@ tags:
     config:
       design:
         theme: print
+  # - exact: +r:palette-custom-2
+  #   config:
+  #     design:
+  #       palette: custom-2
+  #       palettes:
+  #         - name: custom-2
+  #           hues: 
+  #             red: 0
+  #             orange: 20
+  #             yellow: 55
+  #             green: 130
+  #             turquoise: 180
+  #             blue: 210
+  #             purple: 270
+  #             magenta: 320
+  #           lightness: [10, 20, 40, 60, 80, 90]
+  #           saturation: 80

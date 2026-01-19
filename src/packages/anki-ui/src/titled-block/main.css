@@ -27,7 +27,7 @@ titled-block {
     border-bottom-right-radius: 1em;
 
     &.programming-language {
-      background: var(--scheme-surface-2);
+      background: var(--scheme-surface-0);
     }
 
     &.file-path {
@@ -35,7 +35,7 @@ titled-block {
     }
 
     &.title {
-      background: var(--scheme-text-1);
+      background: var(--scheme-surface-1);
     }
   }
 }

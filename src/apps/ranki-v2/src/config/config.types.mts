@@ -32,7 +32,6 @@ export type DeckRegexSettings = DeckCommonSettings & {
 };
 
 interface DeckCommonSettings {
-  // theme: string;
   message: string;
   indicator: RankiIndicator;
   config: RankiBaseConfigPartial;
@@ -42,12 +41,6 @@ interface HudConfig {
   order: HudComponentNames[];
   visibility: HudVisibility;
 }
-
-// TODO
-// export type CardTypeSettings = {
-//   theme: string;
-//   config: RankiBaseConfigPartial;
-// };
 
 export interface RankiIndicatorMessage {
   message: string;
@@ -65,6 +58,7 @@ export type AnkiFlagColors =
   | "purple";
 
 export type RankiIndicator = "none" | "line" | "radial" | "linear";
+
 export type AnkiFlagColorIndices = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export type RankiBaseConfigPartial = DeepPartialSerializable<RankiBaseConfig>;
@@ -77,7 +71,10 @@ export type RankiBaseScheme = "dark" | "light" | "system";
 
 export type RankiPalette = string & { type: "RankiPalette" };
 
+export type AnimationDuration = `${string}s`;
+
 export interface RankiBaseDesign {
+  animationDuration: AnimationDuration;
   scheme: RankiBaseScheme;
   palette: RankiPalette;
   palettes: PaletteSpecs[];
@@ -98,7 +95,6 @@ export interface RankiBaseConfig {
     };
     marked: RankiIndicatorMessage;
   };
-  // rankiTagPrefix: ;
 
   hud: HudConfig;
   dqm: DqmConfigPackPartial;
@@ -123,6 +119,7 @@ export type RankiAppDeterminedScheme = "light" | "dark";
 export type RankiAppTheme = string & { type: "RankiAppTheme" };
 
 export interface RankiAppDesign {
+  animationDuration: AnimationDuration;
   scheme: RankiAppDeterminedScheme;
   palette: RankiPalette;
   palettes: PaletteSpecs[];
@@ -131,6 +128,7 @@ export interface RankiAppDesign {
 }
 
 export interface RankiAppConfig {
+  face: AnkiCardFace;
   design: RankiAppDesign;
   hud: HudProps;
   order: CardFaceArray;
@@ -169,14 +167,5 @@ export type Lightness = [
 export type Saturation = number & { type: "Saturation" };
 
 export type ColorLevel = string; // index of Lightness
-// | "0"
-// | "1"
-// | "2"
-// | "3"
-// | "4"
-// | "5"
-// | "6"
-// | "7"
-// | "8"
-// | "9";
+
 export type Palette = Record<string, Record<ColorLevel, string>>;

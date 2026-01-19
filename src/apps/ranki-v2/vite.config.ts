@@ -15,7 +15,7 @@ const TARGET_DIRS = [
   DEMO_APP_DIST_COPY_PATH,
 ];
 const TEMPLATE_FILE = "template.html";
-const INCLUDE_FILES = ["ranki2_user_config.yml"];
+const INCLUDE_FILES = ["_ranki2_user_config.yml"];
 const PAD = 15;
 
 const __abspath = url.fileURLToPath(import.meta.url);
@@ -105,7 +105,7 @@ export default defineConfig({
                       "{{TEMPLATE_CONFIG}}",
                       "# Place your template config here",
                     )
-                    .replace("{{STORAGE_CONFIG}}", "/ranki2_user_config.yml"),
+                    .replace("{{STORAGE_CONFIG}}", "/_ranki2_user_config.yml"),
                 ],
                 "",
               )
