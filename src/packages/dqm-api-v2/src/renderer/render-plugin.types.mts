@@ -32,15 +32,13 @@ interface IDqmRenderPluginRendererCommon {
   chain: Chain;
 }
 
-export interface IDqmRenderPluginRendererParent
-  extends IDqmRenderPluginRendererCommon {
+export interface IDqmRenderPluginRendererParent extends IDqmRenderPluginRendererCommon {
   kind: "parent";
   sync: RenderFunction<ISerializedParent>; // for skeletons or sync renderers
   deferred?: () => Promise<RenderFunction<ISerializedParent>>;
 }
 
-export interface IDqmRenderPluginRendererLeaf
-  extends IDqmRenderPluginRendererCommon {
+export interface IDqmRenderPluginRendererLeaf extends IDqmRenderPluginRendererCommon {
   kind: "leaf";
   sync: RenderFunction<ISerializedLeaf>; // for skeletons or sync renderers
   deferred?: () => Promise<RenderFunction<ISerializedLeaf>>;
@@ -48,6 +46,7 @@ export interface IDqmRenderPluginRendererLeaf
 
 export interface IDqmRendererClientPreferences {
   scheme: "light" | "dark";
+  // payload: any;
 }
 // export type AssertionName = "parent" | "leaf";
 

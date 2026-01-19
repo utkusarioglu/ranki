@@ -1,33 +1,8 @@
-// const HUES: Hues = {
-//   red: 0,
-//   orange: 30,
-//   yellow: 55,
-//   green: 120,
-//   blue: 210,
-//   purple: 270,
-//   magenta: 320,
-// } as const;
-
 import type {
   ColorLevel,
   Palette,
   PaletteSpecs,
 } from "./config/config.types.mts";
-
-// const LIGHTNESS: Lightness = {
-//   "0": 0,
-//   "1": 10,
-//   "2": 20,
-//   "3": 30,
-//   "4": 40,
-//   "5": 50,
-//   "6": 60,
-//   "7": 70,
-//   "8": 80,
-//   "9": 90,
-// };
-
-// const SATURATION: Saturation = 50 as Saturation;
 
 function hslToHex(h: number, s: number, l: number): string {
   s /= 100;
@@ -87,7 +62,6 @@ function generatePaletteVariables(s: PaletteSpecs) {
 export function generatePaletteStyle(attach: HTMLElement, s: PaletteSpecs) {
   const html = generatePaletteVariables(s);
   const style = document.createElement("style");
-  // style.id = id;
   style.innerHTML = html;
   attach.appendChild(style);
 }
