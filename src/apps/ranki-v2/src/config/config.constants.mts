@@ -1,7 +1,8 @@
 import type {
   AnkiFlagColors,
   RankiAppTheme,
-  RankiGlobalConfig,
+  RankiConfigChannels,
+  RankiIndicatorName,
   RankiPalette,
   RankiTagPrefix,
 } from "./config.types.mjs";
@@ -9,7 +10,7 @@ import { DQM_BASE_CONFIG } from "./dqm.constants.mts";
 
 export const ANKI_DECK_SEPARATOR = "::";
 
-export const RANKI_INITIAL_CONFIG: RankiGlobalConfig = {
+export const RANKI_INITIAL_CONFIG: RankiConfigChannels = {
   base: {
     faces: {
       Q: ["A"],
@@ -22,6 +23,13 @@ export const RANKI_INITIAL_CONFIG: RankiGlobalConfig = {
       theme: "utku" as RankiAppTheme,
       layout: "row",
     },
+    indicators: [
+      {
+        name: "red-arch" as RankiIndicatorName,
+        style:
+          "radial-gradient(118% 105% at bottom center, transparent 85%, var(--palette-red-2-hex))",
+      },
+    ],
     palettes: [
       {
         name: "generated-default",
@@ -42,35 +50,35 @@ export const RANKI_INITIAL_CONFIG: RankiGlobalConfig = {
     flags: {
       none: {
         message: "",
-        indicator: "none",
+        indicator: "none" as RankiIndicatorName,
       },
       red: {
         message: "",
-        indicator: "none",
+        indicator: "none" as RankiIndicatorName,
       },
       orange: {
         message: "",
-        indicator: "none",
+        indicator: "none" as RankiIndicatorName,
       },
       green: {
         message: "",
-        indicator: "none",
+        indicator: "none" as RankiIndicatorName,
       },
       blue: {
         message: "",
-        indicator: "none",
+        indicator: "none" as RankiIndicatorName,
       },
       pink: {
         message: "",
-        indicator: "none",
+        indicator: "none" as RankiIndicatorName,
       },
       turquoise: {
         message: "",
-        indicator: "none",
+        indicator: "none" as RankiIndicatorName,
       },
       purple: {
         message: "",
-        indicator: "none",
+        indicator: "none" as RankiIndicatorName,
       },
     },
     tags: {
@@ -80,7 +88,7 @@ export const RANKI_INITIAL_CONFIG: RankiGlobalConfig = {
       },
       marked: {
         message: "Study",
-        indicator: "none",
+        indicator: "none" as RankiIndicatorName,
       },
     },
     hud: {

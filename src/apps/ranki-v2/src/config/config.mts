@@ -26,7 +26,7 @@ import type {
   RankiAppConfig,
   RankiAppDeterminedScheme,
   RankiDqmConfig,
-  RankiGlobalConfig,
+  RankiConfigChannels,
   RankiTagPrefix,
 } from "./config.types.mts";
 import type { HudProps } from "../components/hud/hud.types.mts";
@@ -34,12 +34,12 @@ import type {
   AnkiFlagColorIndices,
   AnkiFlagColors,
   RankiBaseConfig,
-  RankiGlobalConfigPartial,
+  RankiConfigChannelsPartial,
 } from "./config.types.mts";
 import { checkMatch } from "./determine.mts";
 
 function buildBaseConfig(
-  globalConfig: RankiGlobalConfig,
+  globalConfig: RankiConfigChannels,
   tags: FilteredTags,
   raw: DataCollection,
 ) {
@@ -145,6 +145,7 @@ function buildRankiAppConfig(
       layout: config.design.layout,
     },
     palettes: config.palettes,
+    indicators: config.indicators,
   };
 }
 
@@ -187,7 +188,7 @@ function getFaceOrder(
 function parseConfig(
   name: string,
   configStr: string,
-): RankiGlobalConfigPartial {
+): RankiConfigChannelsPartial {
   try {
     return yaml.parse(configStr);
   } catch (e) {

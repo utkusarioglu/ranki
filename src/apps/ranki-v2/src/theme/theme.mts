@@ -8,12 +8,7 @@ const THEME_PREFIX = "theme";
 const PALETTE_PREFIX = "palette";
 const REMOVED = [SCHEME_PREFIX, THEME_PREFIX];
 
-export function createDesign(
-  document: Document,
-  // root: HTMLElement,
-  // attach: HTMLElement,
-  config: RankiAppConfig,
-) {
+export function createDesign(document: Document, config: RankiAppConfig) {
   const root = document.documentElement;
   const attach = document.body;
   root.style.setProperty(
@@ -35,7 +30,6 @@ export function createDesign(
     "var(--transition-duration)",
     "important",
   );
-  // const root = document.documentElement;
   const n = config.design.palette;
   root.className = [
     ...root.className
@@ -46,7 +40,6 @@ export function createDesign(
   ].join(" ");
 
   if (n.startsWith(GENERATED_PREFIX)) {
-    // const target = document.body;
     if (attach.querySelector("#" + n)) {
       return;
     }

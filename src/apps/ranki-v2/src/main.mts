@@ -14,6 +14,7 @@ import { RankiAppError } from "./error/ranki-app-error.mjs";
 import { onReady } from "./utils/onReady.mjs";
 import { createConfigs } from "./config/config.mts";
 import { createDesign } from "./theme/theme.mts";
+import { createIndicators } from "./components/indicator/indicator.mts";
 
 const ROOT_ID_SELECTOR = "#ranki-v2-root";
 const RENDERED_CLASS_SELECTOR = "ranki-rendered";
@@ -40,18 +41,15 @@ async function main() {
     root.classList.add(RENDERED_CLASS_SELECTOR);
     root.innerHTML = "";
 
-    // try {
     const collected = await collectData();
     const config = createConfigs(collected);
     createDesign(document, config.ranki);
+    createIndicators(root, config.ranki);
     const { roots } = createApp(config.ranki, root);
     // @ts-expect-error
     const report =
       //
       await renderDqm(config.dqm, roots);
-    // } catch (e) {
-    //   createAppErrorScreen(root, e);
-    // }
   } catch (e) {
     createAppErrorScreen(document.body, e);
   }

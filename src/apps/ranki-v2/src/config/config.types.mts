@@ -33,7 +33,7 @@ export type DeckRegexSettings = DeckCommonSettings & {
 
 interface DeckCommonSettings {
   message: string;
-  indicator: RankiIndicator;
+  indicator: RankiIndicatorName;
   config: RankiBaseConfigPartial;
 }
 
@@ -44,7 +44,7 @@ interface HudConfig {
 
 export interface RankiIndicatorMessage {
   message: string;
-  indicator: RankiIndicator;
+  indicator: RankiIndicatorName;
 }
 
 export type AnkiFlagColors =
@@ -57,7 +57,7 @@ export type AnkiFlagColors =
   | "turquoise"
   | "purple";
 
-export type RankiIndicator = "none" | "line" | "radial" | "linear";
+export type RankiIndicatorName = string & { type: "RankiIndicatorName" };
 
 export type AnkiFlagColorIndices = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -81,12 +81,18 @@ export interface RankiBaseDesign {
   layout: RankiLayout;
 }
 
+export interface RankiIndicatorDefinition {
+  name: RankiIndicatorName;
+  style: string;
+}
+
 export interface RankiBaseConfig {
   // TODO you need deck address stripping and hiding here
   faces: Record<AnkiCardFace, CardFaceArray>;
   design: RankiBaseDesign;
 
   palettes: PaletteSpecs[];
+  indicators: RankiIndicatorDefinition[];
   flags: Record<AnkiFlagColors, RankiIndicatorMessage>;
   tags: {
     ranki: {
@@ -100,12 +106,12 @@ export interface RankiBaseConfig {
   dqm: DqmConfigPackPartial;
 }
 
-export type RankiGlobalConfigPartial =
-  DeepPartialSerializable<RankiGlobalConfig>;
+export type RankiConfigChannelsPartial =
+  DeepPartialSerializable<RankiConfigChannels>;
 
 // DECIDE this here is in the order that the config would ingest it, giving
 // tags the highest priority
-export interface RankiGlobalConfig {
+export interface RankiConfigChannels {
   base: RankiBaseConfig;
   cards: DeckSettings[];
   decks: DeckSettings[];
@@ -130,6 +136,8 @@ export interface RankiAppConfig {
   face: AnkiCardFace;
   design: RankiAppDesign;
   palettes: PaletteSpecs[];
+  indicators: RankiIndicatorDefinition[];
+
   hud: HudProps;
   order: CardFaceArray;
 }
