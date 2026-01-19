@@ -1,19 +1,19 @@
 base: 
-  design:
-    palette: custom-1
-    palettes:
-      - name: custom-1
-        hues: 
-          red: 0
-          orange: 30
-          yellow: 55
-          green: 130
-          turquoise: 170
-          blue: 210
-          purple: 270
-          magenta: 320
-        lightness: [15, 20, 30, 60, 70, 80]
-        saturation: 50
+  # design:
+  #   palette: generated-1
+  # palettes:
+  #   - name: generated-1
+  #     hues: 
+  #       red: 0
+  #       orange: 30
+  #       yellow: 55
+  #       green: 130
+  #       turquoise: 170
+  #       blue: 210
+  #       purple: 270
+  #       magenta: 320
+  #     lightness: [15, 20, 30, 60, 70, 80]
+  #     saturation: 90
   flags:
     red:
       message: Questionable information
@@ -34,24 +34,11 @@ tags:
     config:
       design:
         scheme: light
+  - exact: +r:scheme-dark
+    config:
+      design:
+        scheme: dark
   - exact: +r:theme-print
     config:
       design:
         theme: print
-  # - exact: +r:palette-custom-2
-  #   config:
-  #     design:
-  #       palette: custom-2
-  #       palettes:
-  #         - name: custom-2
-  #           hues: 
-  #             red: 0
-  #             orange: 20
-  #             yellow: 55
-  #             green: 130
-  #             turquoise: 180
-  #             blue: 210
-  #             purple: 270
-  #             magenta: 320
-  #           lightness: [10, 20, 40, 60, 80, 90]
-  #           saturation: 80

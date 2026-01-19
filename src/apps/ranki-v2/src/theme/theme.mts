@@ -2,17 +2,20 @@ import type { RankiAppConfig } from "../config/config.types.mts";
 import { assertExists } from "../error/assertions.mts";
 import { generatePaletteStyle } from "./color.mts";
 
-const GENERATED_PREFIX = "custom";
+const GENERATED_PREFIX = "generated";
 const SCHEME_PREFIX = "scheme";
 const THEME_PREFIX = "theme";
 const PALETTE_PREFIX = "palette";
 const REMOVED = [SCHEME_PREFIX, THEME_PREFIX];
 
-export function createTheme(
-  root: HTMLElement,
-  attach: HTMLElement,
+export function createDesign(
+  document: Document,
+  // root: HTMLElement,
+  // attach: HTMLElement,
   config: RankiAppConfig,
 ) {
+  const root = document.documentElement;
+  const attach = document.body;
   root.style.setProperty(
     "--transition-duration",
     config.design.animationDuration,
@@ -47,7 +50,7 @@ export function createTheme(
     if (attach.querySelector("#" + n)) {
       return;
     }
-    const palette = config.design.palettes.find(({ name }) => n === name);
+    const palette = config.palettes.find(({ name }) => n === name);
     assertExists(palette, {
       why: "Custom palette requires paletteSpecs to be defined",
     });

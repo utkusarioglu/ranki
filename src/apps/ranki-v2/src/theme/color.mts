@@ -30,8 +30,8 @@ function generatePalette({
   for (const [name, hue] of Object.entries(hues)) {
     palette[name] = {} as Record<ColorLevel, string>;
 
-    for (const [level, l] of Object.entries(lightness)) {
-      palette[name][level as ColorLevel] = hslToHex(hue, saturation, l);
+    for (const [level, l] of lightness.entries()) {
+      palette[name][level] = hslToHex(hue, saturation[level], l);
     }
   }
 

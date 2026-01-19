@@ -77,7 +77,6 @@ export interface RankiBaseDesign {
   animationDuration: AnimationDuration;
   scheme: RankiBaseScheme;
   palette: RankiPalette;
-  palettes: PaletteSpecs[];
   theme: RankiAppTheme;
   layout: RankiLayout;
 }
@@ -87,6 +86,7 @@ export interface RankiBaseConfig {
   faces: Record<AnkiCardFace, CardFaceArray>;
   design: RankiBaseDesign;
 
+  palettes: PaletteSpecs[];
   flags: Record<AnkiFlagColors, RankiIndicatorMessage>;
   tags: {
     ranki: {
@@ -122,7 +122,6 @@ export interface RankiAppDesign {
   animationDuration: AnimationDuration;
   scheme: RankiAppDeterminedScheme;
   palette: RankiPalette;
-  palettes: PaletteSpecs[];
   theme: RankiAppTheme;
   layout: RankiLayout;
 }
@@ -130,6 +129,7 @@ export interface RankiAppDesign {
 export interface RankiAppConfig {
   face: AnkiCardFace;
   design: RankiAppDesign;
+  palettes: PaletteSpecs[];
   hud: HudProps;
   order: CardFaceArray;
 }
@@ -153,18 +153,10 @@ export interface PaletteSpecs {
 }
 
 export type Hues = Record<string, number>;
-export type Lightness = [
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-];
-export type Saturation = number & { type: "Saturation" };
+export type Lightness = [number, number, number, number, number, number];
+export type Saturation = [number, number, number, number, number, number];
+
+// = number & { type: "Saturation" };
 
 export type ColorLevel = string; // index of Lightness
 

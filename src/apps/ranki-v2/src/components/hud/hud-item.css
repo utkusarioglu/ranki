@@ -2,6 +2,7 @@ ranki-hud-item {
   display: inline-block;
   /* color: #ccc; */
   font-size: 0.9rem;
+  align-items: center;
 
   &.flex,
   &.review,
@@ -9,7 +10,7 @@ ranki-hud-item {
   &.parser,
   &.address {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     white-space: nowrap;
   }
 

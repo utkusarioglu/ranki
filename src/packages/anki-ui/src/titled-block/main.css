@@ -26,16 +26,13 @@ titled-block {
     border-bottom-left-radius: 1em;
     border-bottom-right-radius: 1em;
 
+    &.title,
     &.programming-language {
       background: var(--scheme-surface-0);
     }
 
     &.file-path {
       background: var(--scheme-orange-base);
-    }
-
-    &.title {
-      background: var(--scheme-surface-1);
     }
   }
 }

@@ -141,10 +141,10 @@ function buildRankiAppConfig(
       scheme,
       animationDuration: config.design.animationDuration,
       palette: config.design.palette,
-      palettes: config.design.palettes,
       theme: config.design.theme,
       layout: config.design.layout,
     },
+    palettes: config.palettes,
   };
 }
 

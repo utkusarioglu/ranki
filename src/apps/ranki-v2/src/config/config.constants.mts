@@ -18,11 +18,27 @@ export const RANKI_INITIAL_CONFIG: RankiGlobalConfig = {
     design: {
       animationDuration: "0.4s",
       scheme: "system",
-      palette: "none" as RankiPalette,
-      palettes: [],
+      palette: "generated-default" as RankiPalette,
       theme: "utku" as RankiAppTheme,
       layout: "row",
     },
+    palettes: [
+      {
+        name: "generated-default",
+        hues: {
+          red: 0,
+          orange: 40,
+          yellow: 55,
+          green: 130,
+          turquoise: 170,
+          blue: 210,
+          purple: 270,
+          magenta: 320,
+        },
+        lightness: [15, 20, 30, 60, 70, 80],
+        saturation: [70, 70, 70, 70, 70, 70],
+      },
+    ],
     flags: {
       none: {
         message: "",
