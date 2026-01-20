@@ -15,9 +15,10 @@ import { onReady } from "./utils/onReady.mjs";
 import { createConfigs } from "./config/config.mts";
 import { createDesign } from "./theme/theme.mts";
 import { createIndicators } from "./components/indicator/indicator.mts";
-
-const ROOT_ID_SELECTOR = "#ranki-v2-root";
-const RENDERED_CLASS_SELECTOR = "ranki-rendered";
+import {
+  RENDERED_CLASS_SELECTOR,
+  ROOT_ID_SELECTOR,
+} from "./selector.constants.mts";
 
 /**
  * @dev

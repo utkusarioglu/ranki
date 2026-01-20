@@ -29,7 +29,16 @@ export const RANKI_INITIAL_CONFIG: RankiConfigChannels = {
       {
         name: "red-arch" as RankiIndicatorName,
         style:
-          "radial-gradient(118% 105% at bottom center, transparent 85%, var(--palette-red-2-hex))",
+          "radial-gradient(150% 107% at bottom center, transparent 90%, var(--palette-red-2-hex))",
+      },
+      {
+        name: "caution" as RankiIndicatorName,
+        style: "linear-gradient(44deg, var(--palette-red-0-hex), transparent)",
+      },
+      {
+        name: "under-construction" as RankiIndicatorName,
+        style:
+          "linear-gradient( 327deg, var(--palette-yellow-1-hex) 20%, transparent 21%, transparent 40%, var(--palette-yellow-1-hex) 41%, transparent 60%)",
       },
     ],
     palettes: [
@@ -49,40 +58,6 @@ export const RANKI_INITIAL_CONFIG: RankiConfigChannels = {
         saturation: [70, 70, 70, 70, 70, 70],
       },
     ],
-    flags: {
-      none: {
-        message: "",
-        indicator: "none" as RankiIndicatorName,
-      },
-      red: {
-        message: "",
-        indicator: "none" as RankiIndicatorName,
-      },
-      orange: {
-        message: "",
-        indicator: "none" as RankiIndicatorName,
-      },
-      green: {
-        message: "",
-        indicator: "none" as RankiIndicatorName,
-      },
-      blue: {
-        message: "",
-        indicator: "none" as RankiIndicatorName,
-      },
-      pink: {
-        message: "",
-        indicator: "none" as RankiIndicatorName,
-      },
-      turquoise: {
-        message: "",
-        indicator: "none" as RankiIndicatorName,
-      },
-      purple: {
-        message: "",
-        indicator: "none" as RankiIndicatorName,
-      },
-    },
     tags: {
       ranki: {
         prefix: "+r:" as RankiTagPrefix,
@@ -91,6 +66,40 @@ export const RANKI_INITIAL_CONFIG: RankiConfigChannels = {
       marked: {
         message: "Study",
         indicator: "none" as RankiIndicatorName,
+      },
+    },
+    flags: {
+      none: {
+        indicator: "none" as RankiIndicatorName,
+        message: "",
+      },
+      red: {
+        indicator: "none" as RankiIndicatorName,
+        message: "",
+      },
+      orange: {
+        indicator: "none" as RankiIndicatorName,
+        message: "",
+      },
+      green: {
+        indicator: "none" as RankiIndicatorName,
+        message: "",
+      },
+      blue: {
+        indicator: "none" as RankiIndicatorName,
+        message: "",
+      },
+      pink: {
+        indicator: "none" as RankiIndicatorName,
+        message: "",
+      },
+      turquoise: {
+        indicator: "none" as RankiIndicatorName,
+        message: "",
+      },
+      purple: {
+        indicator: "none" as RankiIndicatorName,
+        message: "",
       },
     },
     hud: {
@@ -104,6 +113,64 @@ export const RANKI_INITIAL_CONFIG: RankiConfigChannels = {
   types: [],
   faces: [],
   tags: [],
+  flags: {
+    none: {
+      cue: {
+        message: "",
+        indicator: "none" as RankiIndicatorName,
+      },
+      config: {},
+    },
+    red: {
+      cue: {
+        message: "",
+        indicator: "none" as RankiIndicatorName,
+      },
+      config: {},
+    },
+    orange: {
+      cue: {
+        message: "",
+        indicator: "none" as RankiIndicatorName,
+      },
+      config: {},
+    },
+    green: {
+      cue: {
+        message: "",
+        indicator: "none" as RankiIndicatorName,
+      },
+      config: {},
+    },
+    blue: {
+      cue: {
+        message: "",
+        indicator: "none" as RankiIndicatorName,
+      },
+      config: {},
+    },
+    pink: {
+      cue: {
+        message: "",
+        indicator: "none" as RankiIndicatorName,
+      },
+      config: {},
+    },
+    turquoise: {
+      cue: {
+        message: "",
+        indicator: "none" as RankiIndicatorName,
+      },
+      config: {},
+    },
+    purple: {
+      cue: {
+        message: "",
+        indicator: "none" as RankiIndicatorName,
+      },
+      config: {},
+    },
+  },
 };
 
 export const FLAG_COLOR_ORDER: AnkiFlagColors[] = [

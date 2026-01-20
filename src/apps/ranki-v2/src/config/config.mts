@@ -28,8 +28,8 @@ import type {
   RankiDqmConfig,
   RankiConfigChannels,
   RankiTagPrefix,
-  DeckCueSystem,
   BuildRankiBaseConfigReturn,
+  CueRecord,
 } from "./config.types.mts";
 import type { HudProps } from "../components/hud/hud.types.mts";
 import type {
@@ -46,34 +46,47 @@ function buildBaseConfig(
   raw: DataCollection,
 ): BuildRankiBaseConfigReturn {
   const appConfig = new Config("app");
-  const cues: DeckCueSystem[] = [];
+  const cueRecord: CueRecord[] = [];
   appConfig.pushConfig("default", globalConfig.base);
   [
     {
-      name: "deck",
+      kind: "deck" as "deck",
       curr: raw.fields.deck,
       matchers: globalConfig.decks,
     },
     {
-      name: "card",
+      kind: "card" as "card",
       curr: raw.fields.card,
       matchers: globalConfig.cards,
     },
     {
-      name: "type",
+      kind: "type" as "type",
       curr: raw.fields.type,
       matchers: globalConfig.types,
     },
     {
-      name: "face",
+      kind: "face" as "face",
       curr: raw.fields.face,
       matchers: globalConfig.faces,
     },
-  ].forEach(({ name, curr, matchers }) => {
+  ].forEach(({ kind, curr, matchers }) => {
     const conf = checkMatch(curr, matchers);
     if (conf) {
-      appConfig.pushConfig(name, conf.config);
-      cues.push(conf.cue);
+      appConfig.pushConfig(kind, conf.config);
+      if (conf.cue) {
+        cueRecord.push({ kind: kind, issuer: curr, ...conf.cue });
+      }
+    }
+  });
+
+  const flagColorIndex = +raw.fields.flag.slice(-1) as AnkiFlagColorIndices;
+  const currFlagColor = FLAG_COLOR_ORDER[flagColorIndex]! as AnkiFlagColors;
+  Object.entries(globalConfig.flags).forEach(([color, common]) => {
+    if (currFlagColor === color) {
+      appConfig.pushConfig(`flag:${color}`, common.config);
+      if (common.cue) {
+        cueRecord.push({ kind: "flag", issuer: currFlagColor, ...common.cue });
+      }
     }
   });
 
@@ -81,7 +94,9 @@ function buildBaseConfig(
     const conf = checkMatch(t, globalConfig.tags);
     if (conf) {
       appConfig.pushConfig(`tag:neutral:${t}`, conf.config);
-      cues.push(conf.cue);
+      if (conf.cue) {
+        cueRecord.push({ kind: "tag:neutral", issuer: t, ...conf.cue });
+      }
     }
   });
 
@@ -89,7 +104,9 @@ function buildBaseConfig(
     const conf = checkMatch(t, globalConfig.tags);
     if (conf) {
       appConfig.pushConfig(`tag:ranki:${t}`, conf.config);
-      cues.push(conf.cue);
+      if (conf.cue) {
+        cueRecord.push({ kind: "tag:ranki", issuer: t, ...conf.cue });
+      }
     }
   });
 
@@ -97,21 +114,23 @@ function buildBaseConfig(
     const marked = globalConfig.tags.find((v) => v.exact === "marked");
     if (marked) {
       appConfig.pushConfig("tag:marked", marked.config);
-      cues.push(marked.cue);
+      if (marked.cue) {
+        cueRecord.push({ kind: "tag:marked", issuer: "marked", ...marked.cue });
+      }
     }
   }
 
   const config = appConfig
     .mergeTo("merged")
     .getConfig<RankiBaseConfig>("merged");
-  return { config, cues };
+  return { config, cueRecord };
 }
 
 export function createConfigs(raw: DataCollection): Conf {
   const globalConfig = buildGlobalConfig(raw);
   console.log("global", globalConfig);
   const tags = filterTags(raw, globalConfig.base.tags.ranki.prefix);
-  const { config, cues } = buildBaseConfig(globalConfig, tags, raw);
+  const { config, cueRecord } = buildBaseConfig(globalConfig, tags, raw);
   const order = getFaceOrder(config, raw);
   console.log("base ", config);
 
@@ -128,7 +147,7 @@ export function createConfigs(raw: DataCollection): Conf {
       order,
       scheme,
       raw.fields.face,
-      cues,
+      cueRecord,
     ),
     dqm: buildDqmConfig(raw, order, config, scheme),
   };
@@ -141,21 +160,21 @@ function buildRankiAppConfig(
   order: CardFaceArray,
   scheme: RankiAppDeterminedScheme,
   face: AnkiCardFace,
-  cues: DeckCueSystem[],
+  cueRecord: CueRecord[],
 ): RankiAppConfig {
-  console.log("cues", cues);
-  const hud = buildHudConfig(config, raw, tags);
+  const hud = buildHudConfig(config, raw, tags, cueRecord);
   return {
-    face,
     hud,
-    order,
     design: {
+      cueRecord,
       scheme,
       animation: config.design.animation,
       palette: config.design.palette,
       theme: config.design.theme,
       layout: config.design.layout,
     },
+    face,
+    order,
     palettes: config.palettes,
     indicators: config.indicators,
   };
@@ -291,11 +310,16 @@ function buildHudConfig(
   config: RankiBaseConfig,
   collected: DataCollection,
   tags: FilteredTags,
+  cueRecord: CueRecord[],
 ): HudProps {
-  const flagColorIndex = +collected.fields.flag.slice(
-    -1,
-  ) as AnkiFlagColorIndices;
-  const flagColor = FLAG_COLOR_ORDER[flagColorIndex]! as AnkiFlagColors;
+  // const flagColorIndex = +collected.fields.flag.slice(
+  //   -1,
+  // ) as AnkiFlagColorIndices;
+  // const flagColor = FLAG_COLOR_ORDER[flagColorIndex]! as AnkiFlagColors;
+  console.log("cues", cueRecord);
+  const flag = cueRecord.find((v) => v.kind === "flag");
+  const marked = cueRecord.find((v) => v.kind === "tag:marked");
+  console.log("flag", flag);
   return {
     order: config.hud.order,
     visibility: config.hud.visibility,
@@ -321,11 +345,12 @@ function buildHudConfig(
     },
     // TODO maybe you need tag messages here
     review: {
-      marked: tags.marked && config.tags.marked,
+      marked: marked && {
+        message: marked.message,
+      },
       flag: {
-        type: collected.fields.flag,
-        color: flagColor,
-        message: config.flags[flagColor].message,
+        color: (flag?.issuer || "none") as AnkiFlagColors,
+        message: flag?.message || "",
       },
     },
     card: {

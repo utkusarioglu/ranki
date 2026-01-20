@@ -94,9 +94,9 @@ export default defineConfig({
           console.log("");
           try {
             const templates = ["Q", "N"]
-              .map(
-                (face) => [
-                  chalk.gray(`Html Template ${face}:`),
+              .map((face) =>
+                [
+                  chalk.gray(`<!-- TEMPLATE ${face} -->`),
                   fs
                     .readFileSync(templateHtml)
                     .toString()
@@ -106,11 +106,9 @@ export default defineConfig({
                       "# Place your template config here",
                     )
                     .replace("{{STORAGE_CONFIG}}", "/_ranki2_user_config.yml"),
-                ],
-                "",
+                ].join("\n"),
               )
-              .flat()
-              .join("\n");
+              .join("\n\n");
             console.log(templates);
           } catch (e) {
             console.log(e);

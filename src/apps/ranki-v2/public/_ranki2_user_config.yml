@@ -14,28 +14,28 @@ base:
   #       magenta: 320
   #     lightness: [15, 20, 30, 60, 70, 80]
   #     saturation: 90
-  flags:
-    red:
-      cue:
-        message: Questionable information
-    orange:
-      cue:
-        message: Derive more cards
-    green: 
-      cue:
-        message: Needs elaboration
-    blue:
-      cue:
-        message: Possibly outdated
-    pink: 
-      cue:
-        message: Rendering issues
-    turquoise:
-      cue:
-        message: Too extensive
-    purple:
-      cue:
-        message: Poor wording or formatting
+flags:
+  red:
+    cue:
+      message: Questionable information
+  orange:
+    cue:
+      message: Derive more cards
+  green: 
+    cue:
+      message: Needs elaboration
+  blue:
+    cue:
+      message: Possibly outdated
+  pink: 
+    cue:
+      message: Rendering issues
+  turquoise:
+    cue:
+      message: Too extensive
+  purple:
+    cue:
+      message: Poor wording or formatting
 tags:
   - exact: +r:scheme-light
     cue:

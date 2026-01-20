@@ -38,7 +38,7 @@ export interface HudProps {
   review: {
     marked: undefined | { message: string };
     flag: {
-      type: `flag${number}`;
+      // type: `flag${number}`;
       color: AnkiFlagColors;
       message: string;
     };

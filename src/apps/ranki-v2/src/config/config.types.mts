@@ -38,18 +38,26 @@ interface DeckCommonSettings {
 }
 
 export interface DeckCueSystem {
-  name: RankiIndicatorName;
+  indicator: RankiIndicatorName;
   message: string;
+}
+
+export interface CueRecord extends DeckCueSystem {
+  kind:
+    | "card"
+    | "deck"
+    | "type"
+    | "face"
+    | "tag:neutral"
+    | "tag:marked"
+    | "tag:ranki"
+    | "flag";
+  issuer: string;
 }
 
 interface HudConfig {
   order: HudComponentNames[];
   visibility: HudVisibility;
-}
-
-export interface RankiFlagIndicatorMessage {
-  message: string;
-  indicator: RankiIndicatorName;
 }
 
 export type AnkiFlagColors =
@@ -100,13 +108,13 @@ export interface RankiBaseConfig {
 
   palettes: PaletteSpecs[];
   indicators: RankiIndicatorDefinition[];
-  flags: Record<AnkiFlagColors, RankiFlagIndicatorMessage>;
+  flags: Record<AnkiFlagColors, DeckCueSystem>;
   tags: {
     ranki: {
       prefix: RankiTagPrefix;
       hide: boolean;
     };
-    marked: RankiFlagIndicatorMessage;
+    marked: DeckCueSystem;
   };
 
   hud: HudConfig;
@@ -120,10 +128,11 @@ export type RankiConfigChannelsPartial =
 // tags the highest priority
 export interface RankiConfigChannels {
   base: RankiBaseConfig;
-  cards: DeckSettings[];
   decks: DeckSettings[];
+  cards: DeckSettings[];
   types: DeckSettings[];
   faces: DeckSettings[];
+  flags: Record<AnkiFlagColors, DeckCommonSettings>;
   tags: DeckSettings[];
 }
 
@@ -137,6 +146,7 @@ export interface RankiAppDesign {
   palette: RankiPalette;
   theme: RankiAppTheme;
   layout: RankiLayout;
+  cueRecord: CueRecord[];
 }
 
 export interface RankiAppConfig {
@@ -177,5 +187,5 @@ export type Palette = Record<string, Record<ColorLevel, string>>;
 
 export interface BuildRankiBaseConfigReturn {
   config: RankiBaseConfig;
-  cues: DeckCueSystem[];
+  cueRecord: CueRecord[];
 }
