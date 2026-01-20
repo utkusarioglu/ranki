@@ -8,6 +8,8 @@ export function createApp(config: RankiAppConfig, root: HTMLElement) {
   const scroller = createVerticalScroller(root);
   (scroller.element as HTMLDivElement).classList.add("content-grid");
 
+  console.log("appconf", config);
+
   const hudNode = createHud(config.hud);
   const facesNode = createFaces(config.order);
   [hudNode, facesNode].forEach((n) => {

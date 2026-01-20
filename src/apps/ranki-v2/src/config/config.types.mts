@@ -32,9 +32,14 @@ export type DeckRegexSettings = DeckCommonSettings & {
 };
 
 interface DeckCommonSettings {
-  message: string;
-  indicator: RankiIndicatorName;
+  // message: string;
+  cue: DeckCueSystem;
   config: RankiBaseConfigPartial;
+}
+
+export interface DeckCueSystem {
+  name: RankiIndicatorName;
+  message: string;
 }
 
 interface HudConfig {
@@ -42,7 +47,7 @@ interface HudConfig {
   visibility: HudVisibility;
 }
 
-export interface RankiIndicatorMessage {
+export interface RankiFlagIndicatorMessage {
   message: string;
   indicator: RankiIndicatorName;
 }
@@ -95,13 +100,13 @@ export interface RankiBaseConfig {
 
   palettes: PaletteSpecs[];
   indicators: RankiIndicatorDefinition[];
-  flags: Record<AnkiFlagColors, RankiIndicatorMessage>;
+  flags: Record<AnkiFlagColors, RankiFlagIndicatorMessage>;
   tags: {
     ranki: {
       prefix: RankiTagPrefix;
       hide: boolean;
     };
-    marked: RankiIndicatorMessage;
+    marked: RankiFlagIndicatorMessage;
   };
 
   hud: HudConfig;
@@ -169,3 +174,8 @@ export type Saturation = [number, number, number, number, number, number];
 export type ColorLevel = string; // index of Lightness
 
 export type Palette = Record<string, Record<ColorLevel, string>>;
+
+export interface BuildRankiBaseConfigReturn {
+  config: RankiBaseConfig;
+  cues: DeckCueSystem[];
+}

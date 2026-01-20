@@ -1,13 +1,5 @@
 export const CARD_CONFIG = `
 tags:
-  - exact: +r:scheme-light
-    config:
-      design:
-        scheme: light
-  - exact: +r:theme-print
-    config:
-      design:
-        theme: print
   - exact: +r:palette-custom-1
     config:
       design:
@@ -33,5 +25,6 @@ decks:
     config:
       flags:
         red:
-          message: Test deck red flag
+          cue:
+            message: Test deck red flag
 `.trim();

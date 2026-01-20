@@ -73,7 +73,6 @@ export function createCardElements(
   });
 
   const inputClass = INPUT_TYPE_CLASS_SELECTOR.split(".").slice(1).join(".");
-  console.log("inputClass", inputClass);
   inputs.forEach((i) => {
     const e = document.createElement("script");
     e.className = [inputClass, i.theater].join(" ");

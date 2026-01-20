@@ -16,29 +16,42 @@ base:
   #     saturation: 90
   flags:
     red:
-      message: Questionable information
+      cue:
+        message: Questionable information
     orange:
-      message: Derive more cards
+      cue:
+        message: Derive more cards
     green: 
-      message: Needs elaboration
+      cue:
+        message: Needs elaboration
     blue:
-      message: Possibly outdated
+      cue:
+        message: Possibly outdated
     pink: 
-      message: Rendering issues
+      cue:
+        message: Rendering issues
     turquoise:
-      message: Too extensive
+      cue:
+        message: Too extensive
     purple:
-      message: Poor wording or formatting
+      cue:
+        message: Poor wording or formatting
 tags:
   - exact: +r:scheme-light
+    cue:
+      message: "Light scheme"
     config:
       design:
         scheme: light
   - exact: +r:scheme-dark
+    cue: 
+      message: "Dark scheme"
     config:
       design:
         scheme: dark
   - exact: +r:theme-print
+    cue:
+      message: "Print theme"
     config:
       design:
         theme: print

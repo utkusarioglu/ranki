@@ -28,6 +28,8 @@ import type {
   RankiDqmConfig,
   RankiConfigChannels,
   RankiTagPrefix,
+  DeckCueSystem,
+  BuildRankiBaseConfigReturn,
 } from "./config.types.mts";
 import type { HudProps } from "../components/hud/hud.types.mts";
 import type {
@@ -42,8 +44,9 @@ function buildBaseConfig(
   globalConfig: RankiConfigChannels,
   tags: FilteredTags,
   raw: DataCollection,
-) {
+): BuildRankiBaseConfigReturn {
   const appConfig = new Config("app");
+  const cues: DeckCueSystem[] = [];
   appConfig.pushConfig("default", globalConfig.base);
   [
     {
@@ -70,6 +73,7 @@ function buildBaseConfig(
     const conf = checkMatch(curr, matchers);
     if (conf) {
       appConfig.pushConfig(name, conf.config);
+      cues.push(conf.cue);
     }
   });
 
@@ -77,6 +81,7 @@ function buildBaseConfig(
     const conf = checkMatch(t, globalConfig.tags);
     if (conf) {
       appConfig.pushConfig(`tag:neutral:${t}`, conf.config);
+      cues.push(conf.cue);
     }
   });
 
@@ -84,6 +89,7 @@ function buildBaseConfig(
     const conf = checkMatch(t, globalConfig.tags);
     if (conf) {
       appConfig.pushConfig(`tag:ranki:${t}`, conf.config);
+      cues.push(conf.cue);
     }
   });
 
@@ -91,20 +97,23 @@ function buildBaseConfig(
     const marked = globalConfig.tags.find((v) => v.exact === "marked");
     if (marked) {
       appConfig.pushConfig("tag:marked", marked.config);
+      cues.push(marked.cue);
     }
   }
 
   const config = appConfig
     .mergeTo("merged")
     .getConfig<RankiBaseConfig>("merged");
-  return config;
+  return { config, cues };
 }
 
 export function createConfigs(raw: DataCollection): Conf {
   const globalConfig = buildGlobalConfig(raw);
+  console.log("global", globalConfig);
   const tags = filterTags(raw, globalConfig.base.tags.ranki.prefix);
-  const config = buildBaseConfig(globalConfig, tags, raw);
+  const { config, cues } = buildBaseConfig(globalConfig, tags, raw);
   const order = getFaceOrder(config, raw);
+  console.log("base ", config);
 
   const scheme =
     config.design.scheme === "system"
@@ -119,6 +128,7 @@ export function createConfigs(raw: DataCollection): Conf {
       order,
       scheme,
       raw.fields.face,
+      cues,
     ),
     dqm: buildDqmConfig(raw, order, config, scheme),
   };
@@ -131,7 +141,9 @@ function buildRankiAppConfig(
   order: CardFaceArray,
   scheme: RankiAppDeterminedScheme,
   face: AnkiCardFace,
+  cues: DeckCueSystem[],
 ): RankiAppConfig {
+  console.log("cues", cues);
   const hud = buildHudConfig(config, raw, tags);
   return {
     face,

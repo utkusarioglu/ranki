@@ -2,6 +2,7 @@ import type { RankiAppConfig } from "../../config/config.types.mts";
 
 export function createIndicators(root: HTMLDivElement, config: RankiAppConfig) {
   const indicators = config.indicators;
+  // @ts-expect-error
   const redArch = indicators.find(({ name }) => name === "red-arch");
   root.style.background = [
     // redArch?.style,
