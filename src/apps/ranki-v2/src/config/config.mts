@@ -72,10 +72,8 @@ function buildBaseConfig(
   ].forEach(({ kind, curr, matchers }) => {
     const conf = checkMatch(curr, matchers);
     if (conf) {
-      appConfig.pushConfig(kind, conf.config);
-      if (conf.cue) {
-        cueRecord.push({ kind: kind, issuer: curr, ...conf.cue });
-      }
+      conf.config && appConfig.pushConfig(kind, conf.config);
+      conf.cue && cueRecord.push({ kind: kind, issuer: curr, ...conf.cue });
     }
   });
 
@@ -83,40 +81,35 @@ function buildBaseConfig(
   const currFlagColor = FLAG_COLOR_ORDER[flagColorIndex]! as AnkiFlagColors;
   Object.entries(globalConfig.flags).forEach(([color, common]) => {
     if (currFlagColor === color) {
-      appConfig.pushConfig(`flag:${color}`, common.config);
-      if (common.cue) {
+      common.config && appConfig.pushConfig(`flag:${color}`, common.config);
+      common.cue &&
         cueRecord.push({ kind: "flag", issuer: currFlagColor, ...common.cue });
-      }
     }
   });
 
   tags.neutral.forEach((t) => {
     const conf = checkMatch(t, globalConfig.tags);
     if (conf) {
-      appConfig.pushConfig(`tag:neutral:${t}`, conf.config);
-      if (conf.cue) {
+      conf.config && appConfig.pushConfig(`tag:neutral:${t}`, conf.config);
+      conf.cue &&
         cueRecord.push({ kind: "tag:neutral", issuer: t, ...conf.cue });
-      }
     }
   });
 
   tags.ranki.forEach((t) => {
     const conf = checkMatch(t, globalConfig.tags);
     if (conf) {
-      appConfig.pushConfig(`tag:ranki:${t}`, conf.config);
-      if (conf.cue) {
-        cueRecord.push({ kind: "tag:ranki", issuer: t, ...conf.cue });
-      }
+      conf.config && appConfig.pushConfig(`tag:ranki:${t}`, conf.config);
+      conf.cue && cueRecord.push({ kind: "tag:ranki", issuer: t, ...conf.cue });
     }
   });
 
   if (tags.marked) {
     const marked = globalConfig.tags.find((v) => v.exact === "marked");
     if (marked) {
-      appConfig.pushConfig("tag:marked", marked.config);
-      if (marked.cue) {
+      marked.config && appConfig.pushConfig("tag:marked", marked.config);
+      marked.cue &&
         cueRecord.push({ kind: "tag:marked", issuer: "marked", ...marked.cue });
-      }
     }
   }
 

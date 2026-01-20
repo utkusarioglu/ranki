@@ -17,6 +17,7 @@ base:
 flags:
   red:
     cue:
+      indicator: red-arch
       message: Questionable information
   orange:
     cue:
@@ -37,6 +38,12 @@ flags:
     cue:
       message: Poor wording or formatting
 tags:
+  - exact: under-construction
+    cue:
+      indicator: under-construction
+  - exact: caution
+    cue:
+      indicator: caution
   - exact: +r:scheme-light
     cue:
       message: "Light scheme"

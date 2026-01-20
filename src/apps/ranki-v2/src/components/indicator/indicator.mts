@@ -10,7 +10,7 @@ export function createIndicators(root: HTMLDivElement, config: RankiAppConfig) {
   // console.log({ indicators, cues: config.design.cueRecord });
   config.design.cueRecord.forEach((c) => {
     // console.log("c", c);
-    if (c.indicator === "none") {
+    if (!c.indicator || c.indicator === "none") {
       return;
     }
     const ind = indicators.find((v) => v.name === c.indicator);
@@ -23,7 +23,7 @@ export function createIndicators(root: HTMLDivElement, config: RankiAppConfig) {
   });
   // const redArch = indicators.find(({ name }) => name === "red-arch");
   // console.log(active);
-  root.style.background = active.map((v) => v.style).join("\n");
+  root.style.background = active.map((v) => v.style).join(", ");
   //   [
   //   // redArch?.style,
   //   // "radial-gradient(118% 105% at bottom center, transparent 85%, var(--palette-red-2-hex))",
