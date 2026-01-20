@@ -17,7 +17,9 @@ export const RANKI_INITIAL_CONFIG: RankiConfigChannels = {
       N: ["A", "ranki:hr", "B"],
     },
     design: {
-      animationDuration: "0.4s",
+      animation: {
+        fade: "0.4s",
+      },
       scheme: "system",
       palette: "generated-default" as RankiPalette,
       theme: "utku" as RankiAppTheme,

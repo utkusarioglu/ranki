@@ -139,7 +139,7 @@ function buildRankiAppConfig(
     order,
     design: {
       scheme,
-      animationDuration: config.design.animationDuration,
+      animation: config.design.animation,
       palette: config.design.palette,
       theme: config.design.theme,
       layout: config.design.layout,

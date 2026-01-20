@@ -12,5 +12,5 @@
   --hud-height: 40px;
   --color-divider-bg: var(--color-surface-1-hex);
   --transition-property: color, background-color;
-  --transition-duration: 0.5s;
+  --ranki-animation-fade-duration: 0s;
 }

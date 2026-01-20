@@ -7,13 +7,14 @@ const SCHEME_PREFIX = "scheme";
 const THEME_PREFIX = "theme";
 const PALETTE_PREFIX = "palette";
 const REMOVED = [SCHEME_PREFIX, THEME_PREFIX];
+const CSS_FADE_ANIMATION_DURATION = "--ranki-animation-fade-duration";
 
 export function createDesign(document: Document, config: RankiAppConfig) {
   const root = document.documentElement;
   const attach = document.body;
   root.style.setProperty(
-    "--transition-duration",
-    config.design.animationDuration,
+    CSS_FADE_ANIMATION_DURATION,
+    config.design.animation.fade,
   );
 
   if (config.face === "Q") {
@@ -27,7 +28,7 @@ export function createDesign(document: Document, config: RankiAppConfig) {
   }
   document.body.style.setProperty(
     "transition-duration",
-    "var(--transition-duration)",
+    `var(${CSS_FADE_ANIMATION_DURATION})`,
     "important",
   );
   const n = config.design.palette;

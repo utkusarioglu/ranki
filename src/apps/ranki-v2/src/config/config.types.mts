@@ -71,10 +71,12 @@ export type RankiBaseScheme = "dark" | "light" | "system";
 
 export type RankiPalette = string & { type: "RankiPalette" };
 
-export type AnimationDuration = `${string}s`;
+export type RankiAnimation = {
+  fade: `${string}s`;
+};
 
 export interface RankiBaseDesign {
-  animationDuration: AnimationDuration;
+  animation: RankiAnimation;
   scheme: RankiBaseScheme;
   palette: RankiPalette;
   theme: RankiAppTheme;
@@ -125,7 +127,7 @@ export type RankiAppDeterminedScheme = "light" | "dark";
 export type RankiAppTheme = string & { type: "RankiAppTheme" };
 
 export interface RankiAppDesign {
-  animationDuration: AnimationDuration;
+  animation: RankiAnimation;
   scheme: RankiAppDeterminedScheme;
   palette: RankiPalette;
   theme: RankiAppTheme;
@@ -163,8 +165,6 @@ export interface PaletteSpecs {
 export type Hues = Record<string, number>;
 export type Lightness = [number, number, number, number, number, number];
 export type Saturation = [number, number, number, number, number, number];
-
-// = number & { type: "Saturation" };
 
 export type ColorLevel = string; // index of Lightness
 
