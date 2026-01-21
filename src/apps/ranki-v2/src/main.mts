@@ -5,6 +5,7 @@ import "./style/palettes.css";
 import "./style/variables.css";
 import "./style/theme.css";
 import "./style/vendor-dqm.css";
+import "./style/vendor-all.css";
 import "./style/ranki-v2-root.css";
 import { renderDqm } from "./dqm/render-dqm.mjs";
 import { collectData } from "./collect/collect.mjs";

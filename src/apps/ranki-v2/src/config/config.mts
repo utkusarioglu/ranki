@@ -121,11 +121,9 @@ function buildBaseConfig(
 
 export function createConfigs(raw: DataCollection): Conf {
   const globalConfig = buildGlobalConfig(raw);
-  console.log("global", globalConfig);
   const tags = filterTags(raw, globalConfig.base.tags.ranki.prefix);
   const { config, cueRecord } = buildBaseConfig(globalConfig, tags, raw);
   const order = getFaceOrder(config, raw);
-  console.log("base ", config);
 
   const scheme =
     config.design.scheme === "system"
@@ -305,14 +303,8 @@ function buildHudConfig(
   tags: FilteredTags,
   cueRecord: CueRecord[],
 ): HudProps {
-  // const flagColorIndex = +collected.fields.flag.slice(
-  //   -1,
-  // ) as AnkiFlagColorIndices;
-  // const flagColor = FLAG_COLOR_ORDER[flagColorIndex]! as AnkiFlagColors;
-  console.log("cues", cueRecord);
   const flag = cueRecord.find((v) => v.kind === "flag");
   const marked = cueRecord.find((v) => v.kind === "tag:marked");
-  console.log("flag", flag);
   return {
     order: config.hud.order,
     visibility: config.hud.visibility,
