@@ -18,6 +18,7 @@ export async function createConfig(): Promise<Conf> {
   const channels = buildChannelsConfig(raw);
   const tags = groupTags(raw, channels.base.tags.ranki.prefix);
   const base = buildBaseConfig(channels, tags, raw);
+  console.log("base", base);
   return createAppConfig(base, raw, tags);
 }
 

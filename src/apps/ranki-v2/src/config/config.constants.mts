@@ -45,6 +45,42 @@ export const RANKI_INITIAL_CONFIG: RankiChannelsConfig = {
         style:
           "linear-gradient( 327deg, var(--palette-yellow-1-hex) 20%, transparent 21%, transparent 40%, var(--palette-yellow-1-hex) 41%, transparent 60%)",
       },
+      {
+        name: "chatgpt" as RankiIndicatorName,
+        style: `
+radial-gradient(
+  120% 120% at 12% 18%,
+  var(--scheme-surface-1) 0%,
+  transparent 52%
+),
+radial-gradient(
+  110% 110% at 88% 82%,
+  var(--scheme-surface-2) 0%,
+  transparent 58%
+),
+linear-gradient(
+  135deg,
+  transparent 0%,
+  var(--scheme-surface-1) 33%,
+  transparent 66%
+),
+linear-gradient(
+  315deg,
+  transparent 0%,
+  var(--scheme-surface-2) 38%,
+  transparent 72%
+),
+repeating-linear-gradient(
+  0deg,
+  transparent 0px,
+  transparent 22px,
+  var(--scheme-surface-1) 23px,
+  transparent 26px
+)
+`
+          .replace(/\s+/g, " ")
+          .trim(),
+      },
     ],
     palettes: [
       {

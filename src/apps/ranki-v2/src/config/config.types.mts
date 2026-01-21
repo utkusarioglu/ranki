@@ -42,16 +42,18 @@ export interface DeckCueSystem {
   message: string;
 }
 
+export type CueKind =
+  | "card"
+  | "deck"
+  | "type"
+  | "face"
+  | "tag:neutral"
+  | "tag:marked"
+  | "tag:ranki"
+  | "flag";
+
 export interface CueRecord extends DeckCueSystem {
-  kind:
-    | "card"
-    | "deck"
-    | "type"
-    | "face"
-    | "tag:neutral"
-    | "tag:marked"
-    | "tag:ranki"
-    | "flag";
+  kind: CueKind;
   issuer: string;
 }
 

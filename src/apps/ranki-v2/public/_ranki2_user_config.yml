@@ -38,6 +38,10 @@ flags:
     cue:
       message: Poor wording or formatting
 tags:
+  - exact: marked
+    cue: 
+      message: Study
+      indicator: chatgpt
   - exact: under-construction
     cue:
       indicator: under-construction
