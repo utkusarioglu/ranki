@@ -8,9 +8,10 @@ export function isGlobMatch(
   currStr: string,
   matchStr: string,
   separator: string = "/",
-  single: string = "*",
-  multi: string = "**",
+  single: string = "_",
+  multi: string = "__",
 ) {
+  console.log("glob", currStr, matchStr);
   const curr = currStr.split(separator);
   let mp = 0;
   let match: string[] = [];
