@@ -18,6 +18,10 @@ ranki-hud-item {
     display: flex;
   }
 
+  &.gapped {
+    gap: 0.4em;
+  }
+
   /* &.bordered {
     border: 1px solid gray;
   } */

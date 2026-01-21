@@ -9,7 +9,6 @@ import type {
   RankiAppDeterminedScheme,
   RankiAppConfig,
   RankiDqmConfig,
-  AnkiFlagColors,
   BuildRankiBaseConfigReturn,
 } from "../config.types.mts";
 import type {
@@ -20,7 +19,6 @@ import { assertArrayNotEmpty, assertExists } from "@dqm/package-dqm-utils";
 import { RankiAppError } from "../../error/ranki-app-error.mts";
 import { INPUT_TYPE_CLASS_SELECTOR } from "../../selector.constants.mts";
 import {
-  NO_FLAG_COLOR_TOKEN,
   RANKI_INTERNAL_FACE_PREFIX,
   SYSTEM_CONTROLLED_SCHEME_TOKEN,
 } from "../config.constants.mts";
@@ -67,6 +65,7 @@ function buildRankiConfig(
     indicators: base.config.indicators,
   };
 }
+
 /**
  * @dev
  * #1 DECIDE For some reason anki has two different attributes for theme. one in
@@ -90,13 +89,12 @@ function buildDqmConfig(
     config: config.dqm,
   };
 }
+
 function buildHudConfig(
   base: BuildRankiBaseConfigReturn,
   collected: RawFields,
   tags: FilteredTags,
 ): HudProps {
-  const flag = base.cueRecord.find((v) => v.kind === "flag");
-  const marked = base.cueRecord.find((v) => v.kind === "tag:marked");
   return {
     order: base.config.hud.order,
     visibility: base.config.hud.visibility,
@@ -120,16 +118,7 @@ function buildHudConfig(
       ranki: tags.ranki,
       hideRanki: base.config.tags.ranki.hide,
     },
-    // TODO maybe you need tag messages here
-    review: {
-      marked: marked && {
-        message: marked.message,
-      },
-      flag: {
-        color: (flag?.issuer || NO_FLAG_COLOR_TOKEN) as AnkiFlagColors,
-        message: flag?.message || "",
-      },
-    },
+    cues: base.cueRecord,
     card: {
       type: collected.fields.type,
       card: collected.fields.card,

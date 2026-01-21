@@ -1,18 +1,16 @@
-// import css from "./main.css?raw";
 import { createParserFeature } from "./features/parser.mjs";
 import { createHudContainer } from "./features/container.mjs";
-import { createReviewFeature } from "./features/review.mjs";
+import { createCueFeature as createCuesFeature } from "./features/review.mjs";
 import { createAddressFeature } from "./features/address.mjs";
 import { createCardFeature } from "./features/card.mjs";
 import { createTagsFeature } from "./features/tags.mjs";
-// import hudCss from "./container.css?raw";
 import type { RankiComponent } from "../../types/ranki-component.types.mjs";
 import type { HudProps } from "./hud.types.mjs";
 import "./hud-scroller.css";
 import "./hud-item.css";
 import "./container.css";
+import { assertNever } from "../../error/assertions.mts";
 
-//
 export function createHud(props: HudProps): RankiComponent {
   const { element, refs } = createHudContainer(props);
   const scroller = refs!["scroller"];
@@ -25,8 +23,8 @@ export function createHud(props: HudProps): RankiComponent {
       case "card":
         createCardFeature(props, scroller);
         break;
-      case "review":
-        createReviewFeature(props, scroller);
+      case "cues":
+        createCuesFeature(props, scroller);
         break;
       case "parser":
         createParserFeature(props, scroller);
@@ -35,21 +33,14 @@ export function createHud(props: HudProps): RankiComponent {
         createTagsFeature(props, scroller);
         break;
       default:
-        throw new Error(`unrecognized feature: ${p}: REPLACE THIS ERROR`);
+        assertNever({
+          why: "Given property is not a valid hud component",
+          details: { p },
+        });
     }
   });
 
   return {
     element,
-    // css: [
-    //   {
-    //     id: "ranki-hud",
-    //     css,
-    //   },
-    //   {
-    //     id: "ranki-hud-container",
-    //     css: hudCss,
-    //   },
-    // ],
   };
 }

@@ -32,7 +32,6 @@ export type DeckRegexSettings = DeckCommonSettings & {
 };
 
 interface DeckCommonSettings {
-  // message: string;
   cue: DeckCueSystem;
   config: RankiBaseConfigPartial;
 }

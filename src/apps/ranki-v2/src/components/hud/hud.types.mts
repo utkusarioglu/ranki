@@ -5,14 +5,9 @@ import type {
   AnkiRawTag,
   RankiTag,
 } from "../../config/collect/collect.types.mts";
-import type { AnkiFlagColors } from "../../config/config.types.mts";
+import type { CueRecord } from "../../config/config.types.mts";
 
-export type HudComponentNames =
-  | "parser"
-  | "address"
-  | "tags"
-  | "review"
-  | "card";
+export type HudComponentNames = "parser" | "address" | "tags" | "cues" | "card";
 
 export type HudVisibility = "visible" | "pull" | "pullWhenShort";
 
@@ -35,14 +30,7 @@ export interface HudProps {
     ranki: RankiTag[];
     hideRanki: boolean;
   };
-  review: {
-    marked: undefined | { message: string };
-    flag: {
-      // type: `flag${number}`;
-      color: AnkiFlagColors;
-      message: string;
-    };
-  };
+  cues: CueRecord[];
   card: {
     type: AnkiCardType;
     face: AnkiCardFace;
