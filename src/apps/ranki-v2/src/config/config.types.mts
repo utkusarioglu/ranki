@@ -8,7 +8,7 @@ import type {
   HudVisibility,
 } from "../components/hud/hud.types.mjs";
 import type { DeepPartialSerializable } from "../types/util.types.mjs";
-import type { AnkiCardFace, CardFaceArray } from "../collect/collect.types.mts";
+import type { AnkiCardFace, CardFaceArray } from "./collect/collect.types.mts";
 import type { HudProps } from "../components/hud/hud.types.mts";
 
 export type Deck = string;
@@ -122,11 +122,11 @@ export interface RankiBaseConfig {
 }
 
 export type RankiConfigChannelsPartial =
-  DeepPartialSerializable<RankiConfigChannels>;
+  DeepPartialSerializable<RankiChannelsConfig>;
 
 // DECIDE this here is in the order that the config would ingest it, giving
 // tags the highest priority
-export interface RankiConfigChannels {
+export interface RankiChannelsConfig {
   base: RankiBaseConfig;
   decks: DeckSettings[];
   cards: DeckSettings[];

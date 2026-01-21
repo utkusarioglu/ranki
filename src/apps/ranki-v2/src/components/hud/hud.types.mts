@@ -4,7 +4,7 @@ import type {
   AnkiCardType,
   AnkiRawTag,
   RankiTag,
-} from "../../collect/collect.types.mjs";
+} from "../../config/collect/collect.types.mts";
 import type { AnkiFlagColors } from "../../config/config.types.mts";
 
 export type HudComponentNames =

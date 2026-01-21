@@ -3,7 +3,7 @@ import type {
   AnkiTemplateFields,
   CollectedConfig,
   CollectedHtmlTagAttributes,
-  DataCollection,
+  RawFields,
   HtmlAttrDir,
   HtmlAttrTheme,
   HtmlTagClassCollection,
@@ -14,16 +14,16 @@ import {
   CONFIG_TYPE_CLASS_SELECTOR,
   DATA_TYPE_CLASS_SELECTOR,
   INPUT_TYPE_CLASS_SELECTOR,
-} from "../selector.constants.mjs";
+} from "../../selector.constants.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
-import { RankiAppError } from "../error/ranki-app-error.mts";
-import { hash } from "./hash.mts";
+import { RankiAppError } from "../../error/ranki-app-error.mts";
+import { hasher } from "./hasher.mts";
 
 function getClassType(e: Element) {
   return e.className.split(" ").at(-1)!.trim(); // #1
 }
 
-async function getConfig(): Promise<CollectedConfig> {
+async function collectConfigFields(): Promise<CollectedConfig> {
   let config = {} as CollectedConfig;
   try {
     const configElems = document.querySelectorAll(CONFIG_TYPE_CLASS_SELECTOR);
@@ -72,7 +72,7 @@ async function getConfig(): Promise<CollectedConfig> {
   return config;
 }
 
-function getFields(): AnkiTemplateFields {
+function collectAnkiFields(): AnkiTemplateFields {
   const dataElems = document.querySelectorAll(DATA_TYPE_CLASS_SELECTOR);
   const fields = Object.fromEntries(
     Array.from(dataElems).map((data) => [
@@ -84,7 +84,7 @@ function getFields(): AnkiTemplateFields {
   return fields;
 }
 
-function getHtmlTagAttributes(): CollectedHtmlTagAttributes {
+function collectHtmlTagAttributes(): CollectedHtmlTagAttributes {
   const htmlElem = document.querySelector("html");
   assertExists(htmlElem, { why: "Cannot collect data without html element" });
   // #2
@@ -96,7 +96,7 @@ function getHtmlTagAttributes(): CollectedHtmlTagAttributes {
   return { mode, os, env, dir, dataBsTheme };
 }
 
-function getFaces(): RankiFaces {
+function collectFaces(): RankiFaces {
   // const faces: RankiFaces = {};
   const faces = Object.fromEntries(
     Array.from(document.querySelectorAll(INPUT_TYPE_CLASS_SELECTOR)).map(
@@ -111,30 +111,20 @@ function getFaces(): RankiFaces {
  * #1 Basically the theater needs to be the last class name
  * #2 This is very fragile
  */
-export async function collectData(): Promise<DataCollection> {
-  const htmlAttr = getHtmlTagAttributes();
-  const fields = getFields();
-  const config = await getConfig();
-  const faces = getFaces();
-
+export async function collectRaw(): Promise<RawFields> {
+  const htmlAttr = collectHtmlTagAttributes();
+  const fields = collectAnkiFields();
+  const config = await collectConfigFields();
+  const faces = collectFaces();
   const address = fields.deck.split("::") as AnkiDeckParts;
+  const hash = hasher(htmlAttr, fields, config, faces, address);
 
   return {
-    hash: hash(JSON.stringify([htmlAttr, fields, config, faces, address])),
-    // raw: {
+    hash,
     htmlAttr,
     fields,
     address,
     faces,
-    // tags
-    // marked,
-    // },
-    // hud,
-    // pref: { scheme: "dark" },
-    // inputs,
-    // theaterOrder,
-    // neutralTags,
-    // rankiTags,
     config,
   };
 }

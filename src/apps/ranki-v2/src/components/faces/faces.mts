@@ -1,9 +1,9 @@
-import type { CardFaceArray } from "../../collect/collect.types.mts";
 import type { RankiComponent } from "../../types/ranki-component.types.mts";
 import type { RenderRoots } from "@dqm/package-dqm-v2";
 import "./faces.css";
 import { createHr } from "../hr/hr.mts";
 import { createVr } from "../vr/vr.mts";
+import type { CardFaceArray } from "../../config/collect/collect.types.mts";
 // import css from "./faces.css?raw";
 
 /**

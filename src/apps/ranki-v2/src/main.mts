@@ -8,12 +8,11 @@ import "./style/vendor-dqm.css";
 import "./style/vendor-all.css";
 import "./style/ranki-v2-root.css";
 import { renderDqm } from "./dqm/render-dqm.mjs";
-import { collectData } from "./collect/collect.mjs";
 import { createApp } from "./components/app/app.mjs";
 import { createAppErrorScreen } from "./components/general-error/general-error.mjs";
 import { RankiAppError } from "./error/ranki-app-error.mjs";
 import { onReady } from "./utils/onReady.mjs";
-import { createConfigs } from "./config/config.mts";
+import { createConfig } from "./config/config.mts";
 import { createDesign } from "./theme/theme.mts";
 import { createIndicators } from "./components/indicator/indicator.mts";
 import {
@@ -43,8 +42,7 @@ async function main() {
     root.classList.add(RENDERED_CLASS_SELECTOR);
     root.innerHTML = "";
 
-    const collected = await collectData();
-    const config = createConfigs(collected);
+    const config = await createConfig();
     createDesign(document, config.ranki);
     createIndicators(root, config.ranki);
     const { roots } = createApp(config.ranki, root);

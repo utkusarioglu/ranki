@@ -1,7 +1,6 @@
 import type {
-  AnkiFlagColors,
   RankiAppTheme,
-  RankiConfigChannels,
+  RankiChannelsConfig,
   RankiIndicatorName,
   RankiPalette,
   RankiTagPrefix,
@@ -10,11 +9,17 @@ import { DQM_BASE_CONFIG } from "./dqm.constants.mts";
 
 export const ANKI_DECK_SEPARATOR = "::";
 
-export const RANKI_INITIAL_CONFIG: RankiConfigChannels = {
+export const SYSTEM_CONTROLLED_SCHEME_TOKEN = "system";
+
+export const RANKI_INTERNAL_FACE_PREFIX = "ranki";
+
+export const NO_FLAG_COLOR_TOKEN = "none";
+
+export const RANKI_INITIAL_CONFIG: RankiChannelsConfig = {
   base: {
     faces: {
       Q: ["A"],
-      N: ["A", "ranki:hr", "B"],
+      N: ["A", `${RANKI_INTERNAL_FACE_PREFIX}:hr`, "B"],
     },
     design: {
       animation: {
@@ -172,14 +177,3 @@ export const RANKI_INITIAL_CONFIG: RankiConfigChannels = {
     },
   },
 };
-
-export const FLAG_COLOR_ORDER: AnkiFlagColors[] = [
-  "none",
-  "red",
-  "orange",
-  "green",
-  "blue",
-  "pink",
-  "turquoise",
-  "purple",
-];

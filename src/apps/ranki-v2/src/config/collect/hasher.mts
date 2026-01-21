@@ -6,6 +6,6 @@ function djb2Hash(str: string): number {
   return h >>> 0;
 }
 
-export function hash(str: string): string {
-  return djb2Hash(str).toString();
+export function hasher(...items: any[]): string {
+  return djb2Hash(JSON.stringify(items)).toString();
 }

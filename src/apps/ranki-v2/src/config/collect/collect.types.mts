@@ -1,5 +1,5 @@
 import type { DqmParseTheater } from "@dqm/package-dqm-v2";
-import type { RankiTagPrefix } from "../config/config.types.mts";
+import type { RankiTagPrefix } from "../config.types.mts";
 
 export type AnkiFlag = `flag${number}`;
 
@@ -58,7 +58,7 @@ export type CollectedHtmlTagAttributes = {
 
 export type RankiFaces = Record<string, HTMLDivElement>;
 
-export interface DataCollection {
+export interface RawFields {
   hash: string;
   htmlAttr: CollectedHtmlTagAttributes;
   fields: AnkiTemplateFields;
