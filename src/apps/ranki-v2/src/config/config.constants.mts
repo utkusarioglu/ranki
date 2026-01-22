@@ -22,6 +22,11 @@ export const RANKI_INITIAL_CONFIG: RankiChannelsConfig = {
       N: ["A", `${RANKI_INTERNAL_FACE_PREFIX}:hr`, "B"],
     },
     address: {
+      tokens: {
+        separator: "::",
+        hide: "•",
+        trim: "⨯",
+      },
       segments: [],
     },
     design: {

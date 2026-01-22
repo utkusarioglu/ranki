@@ -1,8 +1,13 @@
 import { assertExists } from "@dqm/package-dqm-utils";
-import type { HudAddressSegment } from "../../components/hud/hud.types.mts";
+import type {
+  HudAddressSegment,
+  HudAddressSegmentPart,
+  HudAddressSegmentWithParts,
+} from "../../components/hud/hud.types.mts";
 import type { AnkiDeck, AnkiDeckParts } from "../collect/collect.types.mts";
 import { ANKI_DECK_SEPARATOR } from "../config.constants.mts";
 import type {
+  RankiAddressTokens,
   RankiBaseAddressMutation,
   RankiBaseAddressMutationMode,
 } from "../config.types.mts";
@@ -43,21 +48,11 @@ function translateMarker(parts: AnkiDeckParts, marker: string | number) {
         details: { marker, parts },
       });
   }
-  // const si =
-  //   typeof marker === "number"
-  //     ? marker < 0
-  //       ? parts.length + marker + 1
-  //       : marker
-  //     : parts.indexOf(marker as AnkiDeck);
-  // console.log(si, marker, parts.length);
-  // assertExists(si, {
-  //   why: "Start index has to exist",
-  //   details: { parts, marker },
-  // });
   return si;
 }
 
 export function buildAddressSegments(
+  tokens: RankiAddressTokens,
   mutations: RankiBaseAddressMutation[],
   deck: AnkiDeck,
 ): HudAddressSegment[] {
@@ -81,23 +76,62 @@ export function buildAddressSegments(
     }
   });
 
-  console.log("p", partMode);
-
-  const address = partMode
-    .map((mode, i) => ({
-      mode,
-      text: parts[i]!,
-    }))
-    .reduce((a, c) => {
-      for (let m of ["hide", "trim"]) {
-        if (a.at(-1)?.mode === m && c.mode === m) {
-          return a;
-        }
+  const address: HudAddressSegment[] = [];
+  partLoop: for (let [i, c] of partMode.entries()) {
+    const prev = address.at(-1);
+    for (let m of ["hide", "trim"] as HudAddressSegmentPart["mode"][]) {
+      if (prev?.mode === m && c === m) {
+        (prev as HudAddressSegmentWithParts).parts.push({
+          mode: m,
+          shown: tokens[m],
+          masked: parts[i],
+        });
+        continue partLoop;
       }
-      a.push(c);
-      return a;
-    }, [] as HudAddressSegment[]);
+    }
 
+    if (prev?.mode === "show" && c === "show") {
+      console.log("chosen");
+      address.push({
+        mode: "separator",
+        shown: [tokens.separator],
+      });
+    }
+
+    switch (c) {
+      case "trim":
+      case "hide":
+        if (prev && ["trim", "hide"].includes(prev.mode)) {
+          prev.shown.push(tokens[c]);
+          (prev as HudAddressSegmentWithParts).parts.push({
+            mode: c,
+            shown: tokens[c],
+            masked: parts[i],
+          });
+        } else {
+          const item = {
+            mode: c,
+            shown: [tokens[c]],
+          };
+          address.push({
+            ...item,
+            parts: [
+              {
+                mode: c,
+                shown: tokens[c],
+                masked: parts[i],
+              },
+            ],
+          });
+        }
+        break;
+      default:
+        address.push({
+          mode: c,
+          shown: [parts[i]],
+        });
+    }
+  }
   console.log("a", address);
 
   return address;

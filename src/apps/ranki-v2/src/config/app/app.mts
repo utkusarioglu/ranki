@@ -110,6 +110,7 @@ function buildHudConfig(
   tags: FilteredTags,
 ): HudProps {
   const segments = buildAddressParts(
+    base.config.address.tokens,
     base.config.address.segments,
     collected.fields.deck,
   ); // #1
@@ -123,6 +124,7 @@ function buildHudConfig(
       errorLevel: "none",
     },
     address: {
+      tokens: base.config.address.tokens,
       segments,
     },
     tags: {
