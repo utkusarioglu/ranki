@@ -102,6 +102,13 @@ export interface RankiIndicatorDefinition {
   style: string;
 }
 
+export type RankiBaseAddressMutationMode = "hide" | "trim" | "show";
+export interface RankiBaseAddressMutation {
+  start: string | number;
+  end: string | number;
+  mode: RankiBaseAddressMutationMode;
+}
+
 export interface RankiBaseConfig {
   // TODO you need deck address stripping and hiding here
   faces: Record<AnkiCardFace, CardFaceArray>;
@@ -116,6 +123,9 @@ export interface RankiBaseConfig {
       hide: boolean;
     };
     marked: DeckCueSystem;
+  };
+  address: {
+    segments: RankiBaseAddressMutation[];
   };
 
   hud: HudConfig;

@@ -21,6 +21,9 @@ export const RANKI_INITIAL_CONFIG: RankiChannelsConfig = {
       Q: ["A"],
       N: ["A", `${RANKI_INTERNAL_FACE_PREFIX}:hr`, "B"],
     },
+    address: {
+      segments: [],
+    },
     design: {
       animation: {
         fade: "0.4s",

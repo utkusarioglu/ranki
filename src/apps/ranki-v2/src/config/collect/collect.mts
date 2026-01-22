@@ -1,5 +1,4 @@
 import type {
-  AnkiDeckParts,
   AnkiTemplateFields,
   CollectedConfig,
   CollectedHtmlTagAttributes,
@@ -31,7 +30,6 @@ async function collectConfigFields(): Promise<CollectedConfig> {
       Array.from(configElems).map((data) => [
         getClassType(data),
         data.innerHTML,
-        // yaml.parse(data.innerHTML),
       ]),
     ) as CollectedConfig;
   } catch (e) {
@@ -47,7 +45,6 @@ async function collectConfigFields(): Promise<CollectedConfig> {
         });
         try {
           const obj = await fetch(src).then((t) => t.text());
-          // .then((j) => yaml.parse(j));
           return [getClassType(e), obj];
         } catch (e) {
           throw new RankiAppError({
@@ -75,11 +72,7 @@ async function collectConfigFields(): Promise<CollectedConfig> {
 function collectAnkiFields(): AnkiTemplateFields {
   const dataElems = document.querySelectorAll(DATA_TYPE_CLASS_SELECTOR);
   const fields = Object.fromEntries(
-    Array.from(dataElems).map((data) => [
-      getClassType(data),
-      // data.className.split(" ").at(-1)!.trim(), // #1
-      data.innerHTML,
-    ]),
+    Array.from(dataElems).map((data) => [getClassType(data), data.innerHTML]),
   ) as unknown as AnkiTemplateFields;
   return fields;
 }
@@ -97,7 +90,6 @@ function collectHtmlTagAttributes(): CollectedHtmlTagAttributes {
 }
 
 function collectFaces(): RankiFaces {
-  // const faces: RankiFaces = {};
   const faces = Object.fromEntries(
     Array.from(document.querySelectorAll(INPUT_TYPE_CLASS_SELECTOR)).map(
       (e) => [getClassType(e), e],
@@ -116,14 +108,12 @@ export async function collectRaw(): Promise<RawFields> {
   const fields = collectAnkiFields();
   const config = await collectConfigFields();
   const faces = collectFaces();
-  const address = fields.deck.split("::") as AnkiDeckParts;
-  const hash = hasher(htmlAttr, fields, config, faces, address);
+  const hash = hasher(htmlAttr, fields, config, faces);
 
   return {
     hash,
     htmlAttr,
     fields,
-    address,
     faces,
     config,
   };

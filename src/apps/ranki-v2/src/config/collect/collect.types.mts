@@ -63,7 +63,6 @@ export interface RawFields {
   htmlAttr: CollectedHtmlTagAttributes;
   fields: AnkiTemplateFields;
   faces: RankiFaces;
-  address: AnkiDeckParts;
   config: CollectedConfig;
 }
 

@@ -1,5 +1,5 @@
 import { createAnkiStore } from "./anki.store.builder.mts";
-import { CARD_CONFIG, TEMPLATE_CONFIG } from "./constants.common.mts";
+import { CARD_CONFIG, DECK, TEMPLATE_CONFIG } from "./constants.common.mts";
 
 export const useAnkiAndroidStore = createAnkiStore({
   previewScale: 1,
@@ -7,7 +7,7 @@ export const useAnkiAndroidStore = createAnkiStore({
   colorScheme: "dark",
   cardConfig: CARD_CONFIG,
   templateConfig: TEMPLATE_CONFIG,
-  deck: "Tests::Test",
+  deck: DECK,
   tags: "",
   face: "Q",
   flag: "flag0",

@@ -2,6 +2,7 @@ import type {
   AnkiCard,
   AnkiCardFace,
   AnkiCardType,
+  AnkiDeck,
   AnkiRawTag,
   RankiTag,
 } from "../../config/collect/collect.types.mts";
@@ -10,6 +11,11 @@ import type { CueRecord } from "../../config/config.types.mts";
 export type HudComponentNames = "parser" | "address" | "tags" | "cues" | "card";
 
 export type HudVisibility = "visible" | "pull" | "pullWhenShort";
+
+export interface HudAddressSegment {
+  mode: "hide" | "show" | "trim";
+  text: AnkiDeck;
+}
 
 export interface HudProps {
   order: HudComponentNames[];
@@ -20,9 +26,7 @@ export interface HudProps {
     errorLevel: "none" | "warning" | "error";
   };
   address: {
-    prefix: string[];
-    exposed: string[];
-    suffix: string[];
+    segments: HudAddressSegment[];
   };
   tags: {
     count: number;

@@ -9,7 +9,6 @@ import "./style/vendor-all.css";
 import "./style/ranki-v2-root.css";
 import { renderDqm } from "./dqm/render-dqm.mjs";
 import { createApp } from "./components/app/app.mjs";
-import { createAppErrorScreen } from "./components/general-error/general-error.mjs";
 import { RankiAppError } from "./error/ranki-app-error.mjs";
 import { onReady } from "./utils/onReady.mjs";
 import { createConfig } from "./config/config.mts";
@@ -26,9 +25,12 @@ import {
  * in determining whether to render a certain face
  */
 async function main() {
+  console.log("main");
   try {
-    const root = document.querySelector<HTMLDivElement>(ROOT_ID_SELECTOR);
+    const root = document.querySelector<HTMLDivElement>("#" + ROOT_ID_SELECTOR);
+    console.log("root", root);
     if (!root) {
+      console.log("throwing now");
       throw new RankiAppError({
         code: "NO_ROOT",
         why: "Cannot render the application without a root in the template",
@@ -51,6 +53,8 @@ async function main() {
       //
       await renderDqm(config.dqm, roots);
   } catch (e) {
+    const { createAppErrorScreen } =
+      await import("./components/general-error/general-error.mjs");
     createAppErrorScreen(document.body, e);
   }
 }

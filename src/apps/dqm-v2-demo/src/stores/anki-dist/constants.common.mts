@@ -21,10 +21,16 @@ tags:
 
 export const TEMPLATE_CONFIG = `
 decks:
-  - exact: Tests::Test
+  - glob: __
     config:
-      flags:
-        red:
-          cue:
-            message: Test deck red flag
+      address:
+        segments:
+          - start: 1
+            end: 3
+            mode: hide
+          - start: 3
+            end: 4
+            mode: trim
 `.trim();
+
+export const DECK = "Cat::Dog::Bunny::Bird::Tiger::Goat";

@@ -7,14 +7,15 @@ export function createAddressFeature(props: HudProps, attach: HTMLElement) {
   address.classList.add("fill-1");
   address.classList.add("curved-1");
   address.classList.add("address");
-  if (props.address.prefix.length) {
-    const prefix = document.createElement("ranki-hud-item");
-    prefix.classList.add("half-padding");
-    prefix.classList.add("smaller");
-    prefix.classList.add("color-2");
-    prefix.innerText = "●";
-    address.appendChild(prefix);
-  }
+  // props.address.deck;
+  // if (props.address.prefix.length) {
+  //   const prefix = document.createElement("ranki-hud-item");
+  //   prefix.classList.add("half-padding");
+  //   prefix.classList.add("smaller");
+  //   prefix.classList.add("color-2");
+  //   prefix.innerText = "●";
+  //   address.appendChild(prefix);
+  // }
 
   const exposed = document.createElement("ranki-hud-item");
   address.appendChild(exposed);
@@ -24,11 +25,22 @@ export function createAddressFeature(props: HudProps, attach: HTMLElement) {
   exposed.classList.add("half-padding");
 
   const addressParts: HTMLElement[] = [];
-  props.address.exposed.forEach((a) => {
+  props.address.segments.forEach((a) => {
     const e = document.createElement("ranki-hud-item");
     e.classList.add("address-part");
-    e.innerText = a;
+    switch (a.mode) {
+      case "hide":
+        e.innerText = "-";
+        break;
+      case "trim":
+        e.innerText = "x";
+        break;
+      default:
+        e.innerText = a.text;
+    }
+    // e.innerText = a.mode === "show" ? a.text : "-";
     addressParts.push(e);
+
     const sp = document.createElement("ranki-hud-item");
     sp.classList.add("address-divider");
     sp.classList.add("color-2");
@@ -40,12 +52,12 @@ export function createAddressFeature(props: HudProps, attach: HTMLElement) {
     exposed.appendChild(p);
   });
   attach.appendChild(address);
-  if (props.address.suffix.length) {
-    const suffix = document.createElement("ranki-hud-item");
-    suffix.classList.add("half-padding");
-    suffix.classList.add("smaller");
-    suffix.classList.add("color-2");
-    suffix.innerText = "○";
-    address.appendChild(suffix);
-  }
+  // if (props.address.suffix.length) {
+  //   const suffix = document.createElement("ranki-hud-item");
+  //   suffix.classList.add("half-padding");
+  //   suffix.classList.add("smaller");
+  //   suffix.classList.add("color-2");
+  //   suffix.innerText = "○";
+  //   address.appendChild(suffix);
+  // }
 }

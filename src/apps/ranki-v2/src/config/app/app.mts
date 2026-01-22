@@ -10,6 +10,7 @@ import type {
   RankiAppConfig,
   RankiDqmConfig,
   BuildRankiBaseConfigReturn,
+  RankiBaseAddressMutationMode,
 } from "../config.types.mts";
 import type {
   DqmParseInputStructured,
@@ -22,6 +23,13 @@ import {
   RANKI_INTERNAL_FACE_PREFIX,
   SYSTEM_CONTROLLED_SCHEME_TOKEN,
 } from "../config.constants.mts";
+import { buildAddressSegments as buildAddressParts } from "./buildAddress.mts";
+
+export const MUTATION_MODE_PRECEDENCE: RankiBaseAddressMutationMode[] = [
+  "trim",
+  "hide",
+  "show",
+];
 
 export function createAppConfig(
   base: BuildRankiBaseConfigReturn,
@@ -90,11 +98,21 @@ function buildDqmConfig(
   };
 }
 
+/**
+ * @dev
+ * #1 DECIDE Config modules in general are handling two different tasks:
+ * creating config for components and actually wrangling data for them. This is
+ * fine as long as the behavior is consistent. Right now, it isn't
+ */
 function buildHudConfig(
   base: BuildRankiBaseConfigReturn,
   collected: RawFields,
   tags: FilteredTags,
 ): HudProps {
+  const segments = buildAddressParts(
+    base.config.address.segments,
+    collected.fields.deck,
+  ); // #1
   return {
     order: base.config.hud.order,
     visibility: base.config.hud.visibility,
@@ -104,11 +122,8 @@ function buildHudConfig(
       parseMode: "v2",
       errorLevel: "none",
     },
-    // TODO
     address: {
-      prefix: [],
-      exposed: collected.address,
-      suffix: [],
+      segments,
     },
     tags: {
       count: base.config.tags.ranki.hide
