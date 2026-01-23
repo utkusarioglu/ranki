@@ -1,0 +1,79 @@
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+
+  --transition-duration: var(--rht-transition-duration, 0);
+
+  --c-background: var(--rht-c-background, transparent);
+  --c-border: var(--rht-c-border, 1px solid red);
+  --c-gap: var(--rht-c-gap, 1em);
+  --c-border-radius: var(--rht-c-border-radius, none);
+  --c-padding: var(--rht-c-padding, none);
+
+  --n-background: var(--rht-n-background, transparent);
+  --n-color: var(--rht-n-color, white);
+  --n-border: var(--rht-n-border, 1px solid red);
+  --n-border-radius: var(--rht-n-border-radius, none);
+  --n-padding: var(--rht-n-padding, none);
+
+  --r-color: var(--rht-r-color, gray);
+  --r-border-radius: var(--rht-r-border-radius, none);
+  --r-border: var(--rht-r-border, 1px solid red);
+  --r-background: var(--rht-r-background, transparent);
+  --r-padding: var(--rht-r-padding, none);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  user-select: none;
+  transition-property: background, color, padding, border, opacity, scale;
+  transition-duration: var(--transition-duration);
+}
+
+.container {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 100%;
+  padding: var(--c-padding);
+  background: var(--c-background);
+  border-radius: var(--c-border-radius);
+  border: var(--c-border);
+  gap: var(--c-gap);
+}
+
+.neutral {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  line-height: 1em;
+  height: 100%;
+  background: var(--n-background);
+  padding: var(--n-padding);
+  color: var(--n-color);
+  border-radius: var(--n-border-radius);
+  border: var(--n-border);
+}
+
+.ranki {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  line-height: 1em;
+  height: 100%;
+  /* display: inline-block; */
+  vertical-align: middle;
+  padding: var(--r-padding);
+  border-radius: var(--r-border-radius);
+  color: var(--r-color);
+  background: var(--r-background);
+  border: var(--r-border);
+}

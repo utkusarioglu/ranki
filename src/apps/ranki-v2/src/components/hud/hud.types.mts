@@ -61,17 +61,21 @@ export interface HudParserProps {
   errorLevel: "none" | "warning" | "error";
 }
 
+export interface HudTagsProps {
+  count: number;
+  neutral: AnkiRawTag[];
+  ranki: RankiTag[];
+  hideRanki: boolean;
+}
+
+export type HudCuesProps = CueRecord[];
+
 export interface HudProps {
   order: HudComponentNames[];
   visibility: HudVisibility;
   parser: HudParserProps;
   address: HudAddressProps;
-  tags: {
-    count: number;
-    neutral: AnkiRawTag[];
-    ranki: RankiTag[];
-    hideRanki: boolean;
-  };
-  cues: CueRecord[];
+  tags: HudTagsProps;
+  cues: HudCuesProps;
   card: HudCardProps;
 }

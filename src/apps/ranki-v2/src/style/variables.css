@@ -66,16 +66,46 @@
   --rhp-c-border-radius: 0.5em;
   --rhp-c-gap: 0.2em;
   --rhp-c-padding: 0;
-
   --rhp-v-background: var(--scheme-surface-2);
   --rhp-v-border: none;
   --rhp-v-border-radius: 0.5em;
-  --rhp-v-gap: 0.2em;
   --rhp-v-padding: 0 1em;
-
+  --rhp-v-color: var(--scheme-text-0);
   --rhp-r-background: transparent;
   --rhp-r-border: none;
   --rhp-r-border-radius: 0.5em;
-  --rhp-r-gap: 0.2em;
   --rhp-r-padding: 0 0.7em 0 0.4em;
+  --rhp-r-color: var(--scheme-text-1);
+
+  /* HUD TAGS */
+  --rht-transition-duration: var(--ranki-animation-fade-duration);
+  --rht-c-background: var(--scheme-surface-1);
+  --rht-c-border: none;
+  --rht-c-border-radius: 0.5em;
+  --rht-c-gap: 0.5em;
+  --rht-c-padding: 0;
+  --rht-n-background: var(--scheme-surface-2);
+  --rht-n-border: none;
+  --rht-n-border-radius: 0.5em;
+  --rht-n-padding: 0 1em;
+  --rht-n-color: var(--scheme-text-0);
+  --rht-r-background: transparent;
+  --rht-r-border: none;
+  --rht-r-border-radius: 0.5em;
+  --rht-r-padding: 0 1em 0 0;
+  --rht-r-color: var(--scheme-text-0);
+
+  /* HUD CUES */
+  --rhu-transition-duration: var(--ranki-animation-fade-duration);
+  --rhu-c-background: var(--scheme-surface-1);
+  --rhu-c-border: none;
+  --rhu-c-border-radius: 0.5em;
+  --rhu-c-gap: 0.5em;
+  --rhu-c-padding: 0;
+
+  --rhu-cu-background: var(--scheme-surface-2);
+  --rhu-cu-border: none;
+  --rhu-cu-color: var(--scheme-text-0);
+  --rhu-cu-border-radius: 0.5em;
+  --rhu-cu-padding: 0 1em;
 }

@@ -1,0 +1,80 @@
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+
+  --transition-duration: var(--rhu-transition-duration, 0);
+
+  --c-background: var(--rhu-c-background, transparent);
+  --c-border: var(--rhu-c-border, 1px solid red);
+  --c-gap: var(--rhu-c-gap, 1em);
+  --c-border-radius: var(--rhu-c-border-radius, none);
+  --c-padding: var(--rhu-c-padding, none);
+
+  --cu-background: var(--rhu-cu-background, transparent);
+  --cu-color: var(--rhu-cu-color, white);
+  --cu-border: var(--rhu-cu-border, 1px solid red);
+  --cu-border-radius: var(--rhu-cu-border-radius, none);
+  --cu-padding: var(--rhu-cu-padding, none);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  user-select: none;
+  transition-property: background, color, padding, border, opacity, scale;
+  transition-duration: var(--transition-duration);
+}
+
+.container {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 100%;
+  padding: var(--c-padding);
+  background: var(--c-background);
+  border-radius: var(--c-border-radius);
+  border: var(--c-border);
+  gap: var(--c-gap);
+}
+
+.cue {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  line-height: 1em;
+  height: 100%;
+  background: var(--cu-background);
+  padding: var(--cu-padding);
+  color: var(--cu-color);
+  border-radius: var(--cu-border-radius);
+  border: var(--cu-border);
+
+  /* &:hover {
+    padding: var(--s-hover-padding);
+    background: var(--s-hover-background);
+    color: var(--s-hover-color);
+    border-radius: var(--s-hover-border-radius);
+    border: var(--s-hover-border);
+  } */
+}
+
+/* .divider {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  line-height: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  padding: var(--d-padding);
+  border-radius: var(--d-border-radius);
+  color: var(--d-color);
+  background: var(--d-background);
+  border: var(--d-border);
+} */

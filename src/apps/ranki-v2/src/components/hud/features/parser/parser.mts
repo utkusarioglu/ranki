@@ -1,4 +1,3 @@
-import { assertNever } from "../../../../error/assertions.mts";
 import type { HudParserProps } from "../../hud.types.mts";
 import styles from "./parser.component.css?inline";
 
@@ -8,7 +7,7 @@ type Props = HudParserProps;
 const sheet = new CSSStyleSheet();
 sheet.replaceSync(styles);
 
-class HudAddress extends HTMLElement {
+class HudParser extends HTMLElement {
   private p!: Props;
 
   constructor() {
@@ -47,13 +46,13 @@ class HudAddress extends HTMLElement {
   }
 }
 
-customElements.define(NAME, HudAddress);
+customElements.define(NAME, HudParser);
 
 export function hudParser(props: Props, attach: HTMLElement) {
-  let el: HudAddress | null = document.body.querySelector(NAME);
+  let el: HudParser | null = document.body.querySelector(NAME);
 
   if (!el) {
-    el = document.createElement(NAME) as HudAddress;
+    el = document.createElement(NAME) as HudParser;
     el.props = props;
     attach.appendChild(el);
   }

@@ -7,7 +7,7 @@ type Props = HudCardProps;
 const sheet = new CSSStyleSheet();
 sheet.replaceSync(styles);
 
-class HudAddress extends HTMLElement {
+class HudCard extends HTMLElement {
   private p!: Props;
 
   constructor() {
@@ -70,13 +70,13 @@ class HudAddress extends HTMLElement {
   }
 }
 
-customElements.define(NAME, HudAddress);
+customElements.define(NAME, HudCard);
 
 export function hudCard(props: Props, attach: HTMLElement) {
-  let el: HudAddress | null = document.body.querySelector(NAME);
+  let el: HudCard | null = document.body.querySelector(NAME);
 
   if (!el) {
-    el = document.createElement(NAME) as HudAddress;
+    el = document.createElement(NAME) as HudCard;
     el.props = props;
     attach.appendChild(el);
   }
