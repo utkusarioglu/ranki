@@ -61,8 +61,8 @@ export function hudAddress(props: Props, attach: HTMLElement) {
 
   if (!el) {
     el = document.createElement(NAME) as HudAddress;
-    el.props = props;
     attach.appendChild(el);
+    el.props = props;
   }
 
   return el;

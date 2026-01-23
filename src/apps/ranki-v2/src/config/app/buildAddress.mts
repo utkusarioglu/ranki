@@ -91,7 +91,6 @@ export function buildAddressSegments(
     }
 
     if (prev?.mode === "show" && c === "show") {
-      console.log("chosen");
       address.push({
         mode: "separator",
         shown: [tokens.separator],
@@ -132,7 +131,6 @@ export function buildAddressSegments(
         });
     }
   }
-  console.log("a", address);
 
   return address;
 }

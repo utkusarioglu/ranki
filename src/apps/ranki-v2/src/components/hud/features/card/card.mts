@@ -39,29 +39,6 @@ class HudCard extends HTMLElement {
     face.classList.add("face");
     face.innerText = this.p.face;
     container.appendChild(face);
-
-    // container.innerText = "hi";
-
-    // this.p.segments.forEach((s) => {
-    //   const seg = document.createElement("div");
-    //   switch (s.mode) {
-    //     case "trim":
-    //     case "hide":
-    //     case "separator":
-    //       seg.classList.add("divider");
-    //       break;
-    //     case "show":
-    //       seg.classList.add("segment");
-    //       break;
-    //     default:
-    //       assertNever({
-    //         why: "Unrecognized address segment mode",
-    //         details: { segments: this.p.segments, segment: s },
-    //       });
-    //   }
-    //   seg.innerText = s.shown.join("");
-    //   container.appendChild(seg);
-    // });
     return container;
   }
 
@@ -77,8 +54,8 @@ export function hudCard(props: Props, attach: HTMLElement) {
 
   if (!el) {
     el = document.createElement(NAME) as HudCard;
-    el.props = props;
     attach.appendChild(el);
+    el.props = props;
   }
 
   return el;

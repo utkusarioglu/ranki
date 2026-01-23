@@ -11,6 +11,7 @@ import type {
   RankiDqmConfig,
   BuildRankiBaseConfigReturn,
   RankiBaseAddressMutationMode,
+  CueRecord,
 } from "../config.types.mts";
 import type {
   DqmParseInputStructured,
@@ -99,6 +100,15 @@ function buildDqmConfig(
 }
 
 /**
+ * Removes flag0 cue if it doesn't have a message
+ *
+ * TODO if color is added to the hud, then this needs to check for the presence of color
+ */
+function buildCues(cueRecord: CueRecord[]): CueRecord[] {
+  return cueRecord.filter((v) => v.issuer === "none" && v.message);
+}
+
+/**
  * @dev
  * #1 DECIDE Config modules in general are handling two different tasks:
  * creating config for components and actually wrangling data for them. This is
@@ -114,6 +124,7 @@ function buildHudConfig(
     base.config.address.segments,
     collected.fields.deck,
   ); // #1
+  const cues = buildCues(base.cueRecord);
   return {
     order: base.config.hud.order,
     visibility: base.config.hud.visibility,
@@ -135,7 +146,7 @@ function buildHudConfig(
       ranki: tags.ranki,
       hideRanki: base.config.tags.ranki.hide,
     },
-    cues: base.cueRecord,
+    cues,
     card: {
       type: collected.fields.type,
       card: collected.fields.card,

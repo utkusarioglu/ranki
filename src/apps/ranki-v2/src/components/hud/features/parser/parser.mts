@@ -53,8 +53,8 @@ export function hudParser(props: Props, attach: HTMLElement) {
 
   if (!el) {
     el = document.createElement(NAME) as HudParser;
-    el.props = props;
     attach.appendChild(el);
+    el.props = props;
   }
 
   return el;

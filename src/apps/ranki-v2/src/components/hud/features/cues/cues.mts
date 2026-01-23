@@ -38,6 +38,8 @@ class HudCues extends HTMLElement {
   render() {
     if (this.p.length) {
       this.shadowRoot!.replaceChildren(this.build());
+    } else {
+      this.remove();
     }
   }
 }
@@ -49,8 +51,8 @@ export function hudCues(props: Props, attach: HTMLElement) {
 
   if (!el) {
     el = document.createElement(NAME) as HudCues;
-    el.props = props;
     attach.appendChild(el);
+    el.props = props;
   }
 
   return el;

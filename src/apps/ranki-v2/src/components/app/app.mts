@@ -1,5 +1,5 @@
 import "./app.css";
-import { createHud } from "../hud/hud.mjs";
+import { hud } from "../hud/hud.mjs";
 import { createVerticalScroller } from "../vertical-scroller/vertical-scroller.mjs";
 import { createFaces } from "../faces/faces.mts";
 import type { RankiAppConfig } from "../../config/config.types.mts";
@@ -8,13 +8,13 @@ export function createApp(config: RankiAppConfig, root: HTMLElement) {
   const scroller = createVerticalScroller(root);
   (scroller.element as HTMLDivElement).classList.add("content-grid");
 
-  const hudNode = createHud(config.hud);
+  hud(config.hud, scroller.element);
   const facesNode = createFaces(config.order);
-  [hudNode, facesNode].forEach((n) => {
+  [facesNode].forEach((n) => {
     scroller.element.appendChild(n.element);
   });
 
-  [scroller, hudNode, facesNode]
+  [scroller, facesNode]
     .map((n) => n.css)
     .filter((v) => v !== undefined)
     .flat()

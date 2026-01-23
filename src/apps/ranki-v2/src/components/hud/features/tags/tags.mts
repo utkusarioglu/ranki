@@ -47,6 +47,8 @@ class HudTags extends HTMLElement {
   render() {
     if (this.p.count > 0) {
       this.shadowRoot!.replaceChildren(this.build());
+    } else {
+      this.remove();
     }
   }
 }
@@ -58,8 +60,8 @@ export function hudTags(props: Props, attach: HTMLElement) {
 
   if (!el) {
     el = document.createElement(NAME) as HudTags;
-    el.props = props;
     attach.appendChild(el);
+    el.props = props;
   }
 
   return el;

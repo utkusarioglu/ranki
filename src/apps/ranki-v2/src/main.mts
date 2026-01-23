@@ -25,10 +25,8 @@ import {
  * in determining whether to render a certain face
  */
 async function main() {
-  console.log("main");
   try {
     const root = document.querySelector<HTMLDivElement>("#" + ROOT_ID_SELECTOR);
-    console.log("root", root);
     if (!root) {
       console.log("throwing now");
       throw new RankiAppError({

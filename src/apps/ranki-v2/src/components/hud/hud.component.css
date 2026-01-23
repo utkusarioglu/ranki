@@ -1,0 +1,43 @@
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+
+  position: sticky;
+  padding-top: 0.5em;
+  height: 100%;
+  width: 100%;
+  min-width: 0;
+}
+
+.container {
+  --positioning: center;
+  display: block;
+  font-size: 0.9rem;
+  height: 100%;
+  width: 100%;
+
+  /* position: sticky; */
+  display: flex;
+  overflow: hidden;
+  margin: 0;
+  box-sizing: border-box;
+  overflow-x: overlay;
+  justify-content: var(--positioning);
+}
+
+.center {
+  /* display: flex; */
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.content {
+  display: flex;
+  gap: 1em;
+  padding-inline: var(--padding-1);
+}
