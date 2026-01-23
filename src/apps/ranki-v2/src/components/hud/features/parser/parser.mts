@@ -1,9 +1,9 @@
 import { assertNever } from "../../../../error/assertions.mts";
-import type { HudAddressProps } from "../../hud.types.mts";
-import styles from "./address.component.css?inline";
+import type { HudParserProps } from "../../hud.types.mts";
+import styles from "./parser.component.css?inline";
 
-const NAME = "ranki-hud-address";
-type Props = HudAddressProps;
+const NAME = "ranki-hud-parser";
+type Props = HudParserProps;
 
 const sheet = new CSSStyleSheet();
 sheet.replaceSync(styles);
@@ -25,27 +25,20 @@ class HudAddress extends HTMLElement {
   private build() {
     const container = document.createElement("div");
     container.classList.add("container");
+    container.classList.add(`error-${this.p.errorLevel}`);
 
-    this.p.segments.forEach((s) => {
-      const seg = document.createElement("div");
-      switch (s.mode) {
-        case "trim":
-        case "hide":
-        case "separator":
-          seg.classList.add("divider");
-          break;
-        case "show":
-          seg.classList.add("segment");
-          break;
-        default:
-          assertNever({
-            why: "Unrecognized address segment mode",
-            details: { segments: this.p.segments, segment: s },
-          });
-      }
-      seg.innerText = s.shown.join("");
-      container.appendChild(seg);
-    });
+    const version = document.createElement("div");
+    version.classList.add("version");
+    version.innerText = this.p.parseMode;
+    container.appendChild(version);
+
+    if (this.p.hasReplacements) {
+      const replacements = document.createElement("div");
+      replacements.classList.add("replacements");
+      replacements.innerText = "Δ";
+      container.appendChild(replacements);
+    }
+
     return container;
   }
 
@@ -56,7 +49,7 @@ class HudAddress extends HTMLElement {
 
 customElements.define(NAME, HudAddress);
 
-export function hudAddress(props: Props, attach: HTMLElement) {
+export function hudParser(props: Props, attach: HTMLElement) {
   let el: HudAddress | null = document.body.querySelector(NAME);
 
   if (!el) {

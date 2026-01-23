@@ -49,14 +49,22 @@ export interface HudAddressProps {
   segments: HudAddressSegment[];
 }
 
+export interface HudCardProps {
+  type: AnkiCardType;
+  face: AnkiCardFace;
+  card: AnkiCard;
+}
+
+export interface HudParserProps {
+  hasReplacements: boolean;
+  parseMode: "v1" | "v2" | "ignored";
+  errorLevel: "none" | "warning" | "error";
+}
+
 export interface HudProps {
   order: HudComponentNames[];
   visibility: HudVisibility;
-  parser: {
-    hasReplacements: boolean;
-    parseMode: "v1" | "v2" | "ignored";
-    errorLevel: "none" | "warning" | "error";
-  };
+  parser: HudParserProps;
   address: HudAddressProps;
   tags: {
     count: number;
@@ -65,9 +73,5 @@ export interface HudProps {
     hideRanki: boolean;
   };
   cues: CueRecord[];
-  card: {
-    type: AnkiCardType;
-    face: AnkiCardFace;
-    card: AnkiCard;
-  };
+  card: HudCardProps;
 }

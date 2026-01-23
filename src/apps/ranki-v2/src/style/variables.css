@@ -13,24 +13,69 @@
   --color-divider-bg: var(--color-surface-1-hex);
   --ranki-animation-fade-duration: 0s;
 
+  /* HUD ADDRESS */
+  --rha-transition-duration: var(--ranki-animation-fade-duration);
   --rha-c-background: var(--scheme-surface-1);
   --rha-c-border: none;
   --rha-c-border-radius: 0.5em;
   --rha-c-gap: 0.2em;
-
+  --rha-c-padding: none;
   --rha-s-background: var(--scheme-surface-2);
   --rha-s-color: var(--scheme-text-0);
   --rha-s-border-radius: 0.5em;
   --rha-s-border: none;
-
+  --rha-s-padding: 0 1em;
   --rha-s-hover-background: var(--scheme-surface-3);
   --rha-s-hover-color: var(--scheme-text-0);
   --rha-s-hover-border-radius: 0.5em;
   --rha-s-hover-border: none;
-
+  --rha-s-hover-padding: 0 2em;
   --rha-d-color: var(--scheme-text-1);
   --rha-d-padding: none;
   --rha-d-border-radius: none;
   --rha-d-border: none;
   --rha-d-background: transparent;
+
+  /* HUD CARD */
+  --rhc-transition-duration: var(--ranki-animation-fade-duration);
+  --rhc-c-background: var(--scheme-surface-1);
+  --rhc-c-border: none;
+  --rhc-c-border-radius: 0.5em;
+  --rhc-c-gap: 0.2em;
+  --rhc-c-padding: 0;
+  --rhc-t-background: var(--scheme-surface-2);
+  --rhc-t-color: var(--scheme-text-0);
+  --rhc-t-border-radius: 0.5em;
+  --rhc-t-border: none;
+  --rhc-t-padding: 0 1em;
+  --rhc-ca-background: transparent;
+  --rhc-ca-color: var(--scheme-text-0);
+  --rhc-ca-border-radius: none;
+  --rhc-ca-border: none;
+  --rhc-ca-padding: 0 0.3em;
+  --rhc-f-background: var(--scheme-surface-2);
+  --rhc-f-color: var(--scheme-text-0);
+  --rhc-f-border-radius: 0.5em;
+  --rhc-f-border: none;
+  --rhc-f-padding: 0 1em;
+
+  /* HUD PARSER */
+  --rhp-transition-duration: var(--ranki-animation-fade-duration);
+  --rhp-c-background: var(--scheme-surface-1);
+  --rhp-c-border: none;
+  --rhp-c-border-radius: 0.5em;
+  --rhp-c-gap: 0.2em;
+  --rhp-c-padding: 0;
+
+  --rhp-v-background: var(--scheme-surface-2);
+  --rhp-v-border: none;
+  --rhp-v-border-radius: 0.5em;
+  --rhp-v-gap: 0.2em;
+  --rhp-v-padding: 0 1em;
+
+  --rhp-r-background: transparent;
+  --rhp-r-border: none;
+  --rhp-r-border-radius: 0.5em;
+  --rhp-r-gap: 0.2em;
+  --rhp-r-padding: 0 0.7em 0 0.4em;
 }

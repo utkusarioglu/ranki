@@ -7,26 +7,31 @@
     BlinkMacSystemFont,
     sans-serif;
 
+  --transition-duration: var(--rha-transition-duration, 0);
+
   --c-background: var(--rha-c-background, transparent);
   --c-border: var(--rha-c-border, 1px solid red);
   --c-gap: var(--rha-c-gap, 1em);
   --c-border-radius: var(--rha-c-border-radius, none);
+  --c-padding: var(--rha-c-padding, none);
 
   --s-background: var(--rha-s-background, transparent);
   --s-color: var(--rha-s-color, white);
   --s-border: var(--rha-s-border, 1px solid red);
   --s-border-radius: var(--rha-s-border-radius, none);
+  --s-padding: var(--rha-s-padding, none);
 
   --s-hover-background: var(--rha-s-hover-background, transparent);
   --s-hover-color: var(--rha-s-hover-color, white);
   --s-hover-border: var(--rha-s-hover-border, 1px solid red);
   --s-hover-border-radius: var(--rha-s-hover-border-radius, none);
+  --s-hover-padding: var(--rha-s-hover-padding, none);
 
   --d-color: var(--rha-d-color, gray);
-  --d-padding: var(--rha-d-padding, none);
   --d-border-radius: var(--rha-d-border-radius, none);
   --d-border: var(--rha-d-border, 1px solid red);
   --d-background: var(--rha-d-background, transparent);
+  --d-padding: var(--rha-d-padding, none);
 }
 
 *,
@@ -34,6 +39,8 @@
 *::after {
   box-sizing: inherit;
   user-select: none;
+  transition-property: background, color, padding, border, opacity, scale;
+  transition-duration: var(--transition-duration);
 }
 
 .container {
@@ -41,24 +48,13 @@
   display: flex;
   align-items: center;
   overflow: hidden;
+  height: 100%;
+  padding: var(--c-padding);
   background: var(--c-background);
   border-radius: var(--c-border-radius);
   border: var(--c-border);
-  height: 100%;
   gap: var(--c-gap);
 }
-
-/* .segment-box {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  height: 100%;
-  background: var(--segment-box-background);
-  color: var(--segment-box-color);
-  border-radius: var(--segment-box-border-radius);
-  border: var(--segment-box-border);
-  padding: var(--segment-box-padding);
-} */
 
 .segment {
   box-sizing: border-box;
@@ -66,25 +62,20 @@
   align-items: center;
   line-height: 1em;
   height: 100%;
-  padding-inline: 1em;
   background: var(--s-background);
+  padding: var(--s-padding);
   color: var(--s-color);
   border-radius: var(--s-border-radius);
   border: var(--s-border);
 
   &:hover {
+    padding: var(--s-hover-padding);
     background: var(--s-hover-background);
     color: var(--s-hover-color);
     border-radius: var(--s-hover-border-radius);
     border: var(--s-hover-border);
   }
 }
-
-/* .divider-box {
-  box-sizing: border-box;
-  height: max-content;
-  padding: var(--divider-box-padding);
-} */
 
 .divider {
   display: flex;
@@ -93,6 +84,7 @@
   line-height: 1em;
   display: inline-block;
   vertical-align: middle;
+  padding: var(--d-padding);
   border-radius: var(--d-border-radius);
   color: var(--d-color);
   background: var(--d-background);
