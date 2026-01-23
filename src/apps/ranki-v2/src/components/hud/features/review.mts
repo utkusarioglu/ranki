@@ -1,6 +1,6 @@
 import type { HudProps } from "../hud.types.mjs";
 
-export function createCueFeature(props: HudProps, attach: HTMLElement) {
+export function createCuesFeature(props: HudProps, attach: HTMLElement) {
   if (!props.cues.length) return;
   const elems: HTMLElement[] = [];
 

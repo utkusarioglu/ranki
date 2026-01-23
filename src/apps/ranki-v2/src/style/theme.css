@@ -2,6 +2,7 @@
   --theme-dark-surface-0: var(--palette-tone-dark-hex);
   --theme-dark-surface-1: var(--palette-tone-0-hex);
   --theme-dark-surface-2: var(--palette-tone-1-hex);
+  --theme-dark-surface-3: var(--palette-tone-2-hex);
   --theme-dark-text-0: var(--palette-tone-5-hex);
   --theme-dark-text-1: var(--palette-tone-4-hex);
 
@@ -16,6 +17,7 @@
   --theme-light-surface-0: var(--palette-blue-5-hex);
   --theme-light-surface-1: var(--palette-blue-4-hex);
   --theme-light-surface-2: var(--palette-blue-3-hex);
+  --theme-light-surface-3: var(--palette-blue-2-hex);
   --theme-light-text-0: var(--palette-tone-0-hex);
   --theme-light-text-1: var(--palette-tone-1-hex);
 

@@ -4,6 +4,7 @@ import chalk from "chalk";
 import yaml from "yaml";
 import url from "node:url";
 import path from "node:path";
+import babel from "@rollup/plugin-babel";
 
 const OUT_DIR = "build";
 const DOCKER_TARGET_PATH = "/target";
@@ -53,6 +54,12 @@ export default defineConfig({
     port: 3000,
   },
   plugins: [
+    babel({
+      babelHelpers: "bundled",
+      extensions: [".mts", ".ts", ".js", ".mjs"],
+      presets: [["@babel/preset-typescript", { allowDeclareFields: true }]],
+      plugins: [["@babel/plugin-proposal-decorators", { version: "2023-05" }]],
+    }),
     {
       name: "post-build-copy",
       apply: "build",

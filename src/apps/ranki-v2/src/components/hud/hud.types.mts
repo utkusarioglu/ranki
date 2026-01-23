@@ -44,6 +44,11 @@ export interface HudAddressSegmentWithParts {
   parts: HudAddressSegmentPart[]; // #1
 }
 
+export interface HudAddressProps {
+  tokens: RankiAddressTokens;
+  segments: HudAddressSegment[];
+}
+
 export interface HudProps {
   order: HudComponentNames[];
   visibility: HudVisibility;
@@ -52,10 +57,7 @@ export interface HudProps {
     parseMode: "v1" | "v2" | "ignored";
     errorLevel: "none" | "warning" | "error";
   };
-  address: {
-    tokens: RankiAddressTokens;
-    segments: HudAddressSegment[];
-  };
+  address: HudAddressProps;
   tags: {
     count: number;
     neutral: AnkiRawTag[];

@@ -12,4 +12,25 @@
   --hud-height: 40px;
   --color-divider-bg: var(--color-surface-1-hex);
   --ranki-animation-fade-duration: 0s;
+
+  --rha-c-background: var(--scheme-surface-1);
+  --rha-c-border: none;
+  --rha-c-border-radius: 0.5em;
+  --rha-c-gap: 0.2em;
+
+  --rha-s-background: var(--scheme-surface-2);
+  --rha-s-color: var(--scheme-text-0);
+  --rha-s-border-radius: 0.5em;
+  --rha-s-border: none;
+
+  --rha-s-hover-background: var(--scheme-surface-3);
+  --rha-s-hover-color: var(--scheme-text-0);
+  --rha-s-hover-border-radius: 0.5em;
+  --rha-s-hover-border: none;
+
+  --rha-d-color: var(--scheme-text-1);
+  --rha-d-padding: none;
+  --rha-d-border-radius: none;
+  --rha-d-border: none;
+  --rha-d-background: transparent;
 }

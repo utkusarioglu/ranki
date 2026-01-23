@@ -2549,6 +2549,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ranki/app-ranki-v2@workspace:src/apps/ranki-v2"
   dependencies:
+    "@babel/core": "npm:^7.28.5"
+    "@babel/plugin-proposal-decorators": "npm:^7.28.0"
+    "@babel/preset-typescript": "npm:^7.28.5"
     "@dqm/package-dqm-utils": "workspace:^"
     "@dqm/package-dqm-v2": "workspace:^"
     "@dqm/plugin-base-v2": "workspace:^"
@@ -2566,6 +2569,7 @@ __metadata:
     "@dqm/plugin-static-render-engine": "workspace:^"
     "@ranki/config-typescript": "workspace:^"
     "@ranki/package-anki-ui": "workspace:^"
+    "@rollup/plugin-babel": "npm:^6.1.0"
     "@types/node": "npm:^25.0.6"
     chalk: "npm:^5.6.2"
     core-js: "npm:^3.47.0"
