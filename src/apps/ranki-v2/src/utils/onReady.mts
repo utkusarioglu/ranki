@@ -6,7 +6,7 @@ export function onReady(fn: any) {
     fn();
 
     const mut = new MutationObserver(fn);
-    mut.observe(document.querySelector("body")!, {
+    mut.observe(document.querySelector("#qa")!, {
       childList: true,
       subtree: true,
       attributes: true,

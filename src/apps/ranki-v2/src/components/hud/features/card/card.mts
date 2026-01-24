@@ -55,8 +55,8 @@ export function hudCard(props: Props, attach: HTMLElement) {
   if (!el) {
     el = document.createElement(NAME) as HudCard;
     attach.appendChild(el);
-    el.props = props;
   }
+  el.props = props;
 
   return el;
 }

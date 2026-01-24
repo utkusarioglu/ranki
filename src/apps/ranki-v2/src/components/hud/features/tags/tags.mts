@@ -61,8 +61,8 @@ export function hudTags(props: Props, attach: HTMLElement) {
   if (!el) {
     el = document.createElement(NAME) as HudTags;
     attach.appendChild(el);
-    el.props = props;
   }
+  el.props = props;
 
   return el;
 }

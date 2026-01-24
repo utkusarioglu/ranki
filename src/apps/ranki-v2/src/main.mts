@@ -18,6 +18,13 @@ import {
   RENDERED_CLASS_SELECTOR,
   ROOT_ID_SELECTOR,
 } from "./selector.constants.mts";
+import { hud, hudDefine } from "./components/hud/hud.mts";
+import { hudAddressDefine } from "./components/hud/features/address/address.mts";
+import { devMethods } from "./dev.mts";
+
+devMethods();
+hudAddressDefine();
+hudDefine();
 
 /**
  * @dev
@@ -26,6 +33,13 @@ import {
  */
 async function main() {
   try {
+    console.log("RUN");
+    // const foreign = document.querySelectorAll('script:not([class^="ranki-"])');
+    // foreign.forEach((n) => {
+    //   n.parentElement!.removeChild(n);
+    // });
+    // console.log("f", foreign);
+
     const root = document.querySelector<HTMLDivElement>("#" + ROOT_ID_SELECTOR);
     if (!root) {
       console.log("throwing now");
@@ -43,6 +57,9 @@ async function main() {
     root.innerHTML = "";
 
     const config = await createConfig();
+    hud(config.ranki.hud, document.body);
+    document.body.classList.add("content-grid");
+
     createDesign(document, config.ranki);
     createIndicators(root, config.ranki);
     const { roots } = createApp(config.ranki, root);

@@ -66,3 +66,10 @@ tags:
     config:
       design:
         theme: print
+  - exact: +r:animation-slow
+    cue:
+      message: AnimSlow
+    config:
+      design:
+        animation:
+          fade: 4s

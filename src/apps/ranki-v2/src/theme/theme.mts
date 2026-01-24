@@ -31,6 +31,7 @@ export function createDesign(document: Document, config: RankiAppConfig) {
     `var(${CSS_FADE_ANIMATION_DURATION})`,
     "important",
   );
+
   const n = config.design.palette;
   root.className = [
     ...root.className

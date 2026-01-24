@@ -1,9 +1,41 @@
+html {
+  overflow-x: hidden !important;
+  overflow-y: overlay !important;
+  height: 100% !important;
+  width: 100% !important;
+
+  &::-webkit-scrollbar {
+    display: none !important;
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE 10+ / old Edge */
+  }
+}
+
 body,
 #qa {
   opacity: 1 !important;
 }
 
+/* Removes element from `body` grid flow */
+#qa {
+  position: absolute;
+}
+
 body {
+  padding: 0 !important;
+  margin: 0 !important;
+
+  /* Relevant for theming */
   background: var(--scheme-surface-0) !important;
   color: var(--scheme-text-0) !important;
+
+  /* Allows centering questions */
+  min-height: 100%;
+  height: max-content;
+
+  /* makes the body available for molding by config*/
+  display: grid;
+  grid-template-rows: var(--hud-height) 1fr;
+  flex-direction: column;
+  justify-content: center;
 }

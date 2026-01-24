@@ -15,7 +15,8 @@ const NAME = "ranki-hud";
 type Props = HudProps;
 
 class Hud extends HTMLElement {
-  private p!: Props;
+  private curr!: Props;
+  private prev: Props | null = null;
 
   constructor() {
     super();
@@ -24,11 +25,29 @@ class Hud extends HTMLElement {
   }
 
   set props(p: Props) {
-    this.p = p;
+    this.prev = this.curr;
+    this.curr = p;
     this.render();
   }
 
+  connectedCallback() {
+    console.log("connected hud", this);
+    // if (!this.shadowRoot) {
+    //   this.attachShadow({ mode: "open" });
+    // }
+
+    // if (!this._container?.isConnected) {
+    //   this.shadowRoot.append(this.container());
+    // }
+  }
+
   private container() {
+    const c = this.shadowRoot!.querySelector("div.container");
+    if (c) {
+      console.log("hud reuse");
+      const tail = c.querySelector(".scroll-scroller") as HTMLElement;
+      return { head: c, tail };
+    }
     const container = document.createElement("div");
     container.classList.add("container");
     const center = document.createElement("div");
@@ -38,53 +57,56 @@ class Hud extends HTMLElement {
     scroller.tail.classList.add("content");
     center.appendChild(scroller.head);
     this.shadowRoot!.adoptedStyleSheets.push(scroller.sheet);
+    this.shadowRoot!.replaceChildren(container);
     return { head: container, tail: scroller.tail };
   }
 
   private build() {
     const { head, tail } = this.container();
-    this.p.order.forEach((p) => {
+    this.curr.order.forEach((p) => {
       switch (p) {
         case "address":
-          hudAddress(this.p.address, tail);
+          console.log("hud address");
+          hudAddress(this.curr.address, tail);
           break;
-        case "card":
-          hudCard(this.p.card, tail);
-          break;
-        case "cues":
-          hudCues(this.p.cues, tail);
-          break;
-        case "parser":
-          hudParser(this.p.parser, tail);
-          break;
-        case "tags":
-          hudTags(this.p.tags, tail);
-          break;
-        default:
-          assertNever({
-            why: "Given property is not a valid hud component",
-            details: { p },
-          });
+        // case "card":
+        //   hudCard(this.curr.card, tail);
+        //   break;
+        // case "cues":
+        //   hudCues(this.curr.cues, tail);
+        //   break;
+        // case "parser":
+        //   hudParser(this.curr.parser, tail);
+        //   break;
+        // case "tags":
+        //   hudTags(this.curr.tags, tail);
+        //   break;
+        // default:
+        //   assertNever({
+        //     why: "Given property is not a valid hud component",
+        //     details: { p },
+        //   });
       }
     });
     return head;
   }
 
   render() {
-    this.shadowRoot!.replaceChildren(this.build());
+    this.build();
+    // this.shadowRoot!.replaceChildren(this.build());
   }
 }
 
-customElements.define(NAME, Hud);
+export const hudDefine = () => customElements.define(NAME, Hud);
 
 export function hud(props: Props, attach: HTMLElement) {
-  let el: Hud | null = document.body.querySelector(NAME);
+  let el: Hud | null = attach.querySelector(NAME);
 
   if (!el) {
     el = document.createElement(NAME) as Hud;
     attach.appendChild(el);
-    el.props = props;
   }
+  el.props = props;
 
   return el;
 }

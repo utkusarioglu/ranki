@@ -34,7 +34,7 @@ export function createAppErrorScreen(
   } else {
     errObject = new RankiAppError({
       code: "UNEXPECTED_ERROR",
-      why: "Unforeseen failure",
+      why: "Unforeseen failure mode",
       cause: error,
     });
   }
