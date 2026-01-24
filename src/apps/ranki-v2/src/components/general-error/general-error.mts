@@ -47,6 +47,8 @@ export function createAppErrorScreen(
   container.appendChild(h1);
   container.appendChild(p);
   const pre = document.createElement("pre");
+  pre.style.overflowX = "auto";
+  pre.style.paddingBottom = "1em";
   container.appendChild(pre);
   pre.style.color = COLOR_GRAY;
   const obj = errObject.toExtendedJSON();

@@ -21,8 +21,59 @@ class HudParser extends HTMLElement {
     this.render();
   }
 
+  // SAME
+  connectedCallback() {
+    this.style.setProperty("opacity", "0");
+    this.style.setProperty("width", "0");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        this.style.setProperty("opacity", "1");
+        this.adjustWidth();
+      });
+    });
+  }
+
+  private adjustWidth() {
+    const container = this.shadowRoot!.querySelector(
+      "div.replacements",
+    ) as HTMLDivElement;
+    if (!container) {
+      return;
+    }
+
+    const right = container.getBoundingClientRect().right;
+    const left = this.getLeft();
+    this.style.setProperty("width", right - left + "px");
+  }
+
+  private getLeft() {
+    return this.getBoundingClientRect().left;
+  }
+
+  // SAME
+  exit() {
+    const width = this.getBoundingClientRect().width;
+    this.style.setProperty("width", width + "px");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // this.drain();
+        this.style.setProperty("width", "0px");
+        this.style.setProperty("opacity", "0");
+        this.style.setProperty("margin-right", "0");
+        this.addEventListener("transitionend", () => this.remove(), {
+          once: true,
+        });
+      });
+    });
+  }
+
   private build() {
-    const container = document.createElement("div");
+    let container = this.shadowRoot!.querySelector("div.container");
+    if (container) {
+      return container;
+    }
+    container = document.createElement("div");
+    this.shadowRoot!.replaceChildren(container);
     container.classList.add("container");
     container.classList.add(`error-${this.p.errorLevel}`);
 
@@ -42,14 +93,14 @@ class HudParser extends HTMLElement {
   }
 
   render() {
-    this.shadowRoot!.replaceChildren(this.build());
+    this.build();
   }
 }
 
 customElements.define(NAME, HudParser);
 
 export function hudParser(props: Props, attach: HTMLElement) {
-  let el: HudParser | null = document.body.querySelector(NAME);
+  let el: HudParser | null = attach.querySelector(NAME);
 
   if (!el) {
     el = document.createElement(NAME) as HudParser;

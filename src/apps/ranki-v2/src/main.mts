@@ -21,10 +21,22 @@ import {
 import { hud, hudDefine } from "./components/hud/hud.mts";
 import { hudAddressDefine } from "./components/hud/features/address/address.mts";
 import { devMethods } from "./dev.mts";
+import { hudAddressCrumbDefine } from "./components/hud/features/address/HudAddressCrumb.mts";
+import { hudCardDefine } from "./components/hud/features/card/card.mts";
+import { hudCuesDefine } from "./components/hud/features/cues/cues.mts";
+import { hudCuesCueDefine } from "./components/hud/features/cues/hud-cue.mts";
+import { hudTagsTagDefine } from "./components/hud/features/tags/HudTagsTag.mts";
+import { hudTagsDefine } from "./components/hud/features/tags/tags.mts";
 
 devMethods();
 hudAddressDefine();
 hudDefine();
+hudAddressCrumbDefine();
+hudCardDefine();
+hudCuesCueDefine();
+hudCuesDefine();
+hudTagsTagDefine();
+hudTagsDefine();
 
 /**
  * @dev
@@ -34,12 +46,6 @@ hudDefine();
 async function main() {
   try {
     console.log("RUN");
-    // const foreign = document.querySelectorAll('script:not([class^="ranki-"])');
-    // foreign.forEach((n) => {
-    //   n.parentElement!.removeChild(n);
-    // });
-    // console.log("f", foreign);
-
     const root = document.querySelector<HTMLDivElement>("#" + ROOT_ID_SELECTOR);
     if (!root) {
       console.log("throwing now");
@@ -57,6 +63,7 @@ async function main() {
     root.innerHTML = "";
 
     const config = await createConfig();
+    console.log(config.ranki.hud);
     hud(config.ranki.hud, document.body);
     document.body.classList.add("content-grid");
 

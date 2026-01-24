@@ -38,6 +38,6 @@
 
 .content {
   display: flex;
-  gap: 1em;
+  /* gap: 1em; */
   padding-inline: var(--padding-1);
 }

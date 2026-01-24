@@ -3,7 +3,10 @@ import type {
   FilteredTags,
   CardFaceArray,
 } from "../collect/collect.types.mts";
-import type { HudProps } from "../../components/hud/hud.types.mts";
+import type {
+  HudProps,
+  HudTagListItem,
+} from "../../components/hud/hud.types.mts";
 import type {
   RankiBaseConfig,
   RankiAppDeterminedScheme,
@@ -105,7 +108,9 @@ function buildDqmConfig(
  * TODO if color is added to the hud, then this needs to check for the presence of color
  */
 function buildCues(cueRecord: CueRecord[]): CueRecord[] {
-  return cueRecord.filter((v) => v.issuer === "none" && v.message);
+  return cueRecord.filter(
+    (v) => v.issuer !== "none" || (v.issuer === "none" && v.message),
+  );
 }
 
 /**
@@ -117,7 +122,7 @@ function buildCues(cueRecord: CueRecord[]): CueRecord[] {
 function buildHudConfig(
   base: BuildRankiBaseConfigReturn,
   collected: RawFields,
-  tags: FilteredTags,
+  filteredTags: FilteredTags,
 ): HudProps {
   const segments = buildAddressParts(
     base.config.address.tokens,
@@ -125,6 +130,8 @@ function buildHudConfig(
     collected.fields.deck,
   ); // #1
   const cues = buildCues(base.cueRecord);
+  const tags = buildTags(base, filteredTags);
+  // const tagList = buildTags();
   return {
     order: base.config.hud.order,
     visibility: base.config.hud.visibility,
@@ -138,20 +145,31 @@ function buildHudConfig(
       tokens: base.config.address.tokens,
       segments,
     },
-    tags: {
-      count: base.config.tags.ranki.hide
-        ? tags.neutral.length
-        : tags.neutral.length + tags.ranki.length,
-      neutral: tags.neutral,
-      ranki: tags.ranki,
-      hideRanki: base.config.tags.ranki.hide,
-    },
+    tags,
     cues,
     card: {
       type: collected.fields.type,
       card: collected.fields.card,
       face: collected.fields.face,
     },
+  };
+}
+
+function buildTags(base: BuildRankiBaseConfigReturn, tags: FilteredTags) {
+  const hide = base.config.tags.ranki.hide;
+  const neut = tags.neutral.map((t) => ({ type: "anki" as "anki", text: t }));
+  const list: HudTagListItem[] = hide
+    ? neut
+    : [
+        ...neut,
+        ...tags.ranki.map((t) => ({ type: "ranki" as "ranki", text: t })),
+      ];
+  return {
+    list,
+    count: list.length,
+    neutral: tags.neutral,
+    ranki: tags.ranki,
+    hideRanki: base.config.tags.ranki.hide,
   };
 }
 

@@ -11,7 +11,27 @@ declare global {
 
 export function devMethods() {
   let dark = true;
-  let addressIndex = 0;
+  let deckIndex = 0;
+  const DECKS = [
+    "A::B::C::D",
+    "Cat::Dog",
+    "A::B::C",
+    "A",
+    "A::B",
+    "Cat::Dog::Bunny",
+  ];
+
+  let tagIndex = 0;
+  const TAGS = [
+    "",
+    "study",
+    "",
+    "attention",
+    "",
+    "caution",
+    "dog bunny huny",
+    "",
+  ];
 
   window.ranki = {
     switchScheme() {
@@ -23,15 +43,16 @@ export function devMethods() {
       ) as HTMLScriptElement;
       assertExists(tags, { why: "needed" });
       tags.innerText = [
-        dark ? "+r:scheme-light" : "+r:scheme-dark",
-        "+r:animation-slow",
+        dark ? "+r:scheme-light" : "",
+        // !!tagIndex ? "+r:animation-slow" : "",
+        TAGS[tagIndex++ % TAGS.length],
       ].join(" ");
       dark = !dark;
       const deck = document.querySelector(
         "script.ranki-v2-data.deck",
       ) as HTMLScriptElement;
       assertExists(deck, { why: "needed" });
-      deck.innerText = ["A::B::C::D", "A::B::C", "A", "A::B"][addressIndex++];
+      deck.innerText = DECKS[deckIndex++ % DECKS.length];
     },
   };
 }

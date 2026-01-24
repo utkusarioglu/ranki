@@ -61,8 +61,14 @@ export interface HudParserProps {
   errorLevel: "none" | "warning" | "error";
 }
 
+export interface HudTagListItem {
+  type: "ranki" | "anki";
+  text: string;
+}
+
 export interface HudTagsProps {
   count: number;
+  list: HudTagListItem[];
   neutral: AnkiRawTag[];
   ranki: RankiTag[];
   hideRanki: boolean;

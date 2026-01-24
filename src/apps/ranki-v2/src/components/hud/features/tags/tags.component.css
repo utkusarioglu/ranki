@@ -1,12 +1,7 @@
 :host {
-  display: block;
-  box-sizing: border-box;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
-
+  --transition-property:
+    background, color, padding, border, opacity, scale, transform, width,
+    margin-right;
   --transition-duration: var(--rht-transition-duration, 0);
 
   --c-background: var(--rht-c-background, transparent);
@@ -28,12 +23,29 @@
   --r-padding: var(--rht-r-padding, none);
 }
 
+:host {
+  display: block;
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+  border-radius: var(--c-border-radius);
+  margin-right: 1em;
+  opacity: 1;
+}
+
 *,
 *::before,
 *::after {
   box-sizing: inherit;
   user-select: none;
-  transition-property: background, color, padding, border, opacity, scale;
+  transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
 }
 
@@ -50,7 +62,7 @@
   gap: var(--c-gap);
 }
 
-.neutral {
+hud-tags-tag.anki {
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -63,17 +75,21 @@
   border: var(--n-border);
 }
 
-.ranki {
+hud-tags-tag.ranki {
   display: flex;
   align-items: center;
   box-sizing: border-box;
   line-height: 1em;
   height: 100%;
-  /* display: inline-block; */
   vertical-align: middle;
   padding: var(--r-padding);
   border-radius: var(--r-border-radius);
   color: var(--r-color);
   background: var(--r-background);
   border: var(--r-border);
+}
+
+hud-tags-tag {
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
 }

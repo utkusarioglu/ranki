@@ -16,7 +16,6 @@ type Props = HudProps;
 
 class Hud extends HTMLElement {
   private curr!: Props;
-  private prev: Props | null = null;
 
   constructor() {
     super();
@@ -25,20 +24,8 @@ class Hud extends HTMLElement {
   }
 
   set props(p: Props) {
-    this.prev = this.curr;
     this.curr = p;
     this.render();
-  }
-
-  connectedCallback() {
-    console.log("connected hud", this);
-    // if (!this.shadowRoot) {
-    //   this.attachShadow({ mode: "open" });
-    // }
-
-    // if (!this._container?.isConnected) {
-    //   this.shadowRoot.append(this.container());
-    // }
   }
 
   private container() {
@@ -66,26 +53,25 @@ class Hud extends HTMLElement {
     this.curr.order.forEach((p) => {
       switch (p) {
         case "address":
-          console.log("hud address");
           hudAddress(this.curr.address, tail);
           break;
-        // case "card":
-        //   hudCard(this.curr.card, tail);
-        //   break;
-        // case "cues":
-        //   hudCues(this.curr.cues, tail);
-        //   break;
-        // case "parser":
-        //   hudParser(this.curr.parser, tail);
-        //   break;
-        // case "tags":
-        //   hudTags(this.curr.tags, tail);
-        //   break;
-        // default:
-        //   assertNever({
-        //     why: "Given property is not a valid hud component",
-        //     details: { p },
-        //   });
+        case "card":
+          hudCard(this.curr.card, tail);
+          break;
+        case "cues":
+          hudCues(this.curr.cues, tail);
+          break;
+        case "parser":
+          hudParser(this.curr.parser, tail);
+          break;
+        case "tags":
+          hudTags(this.curr.tags, tail);
+          break;
+        default:
+          assertNever({
+            why: "Given property is not a valid hud component",
+            details: { p },
+          });
       }
     });
     return head;
@@ -93,7 +79,6 @@ class Hud extends HTMLElement {
 
   render() {
     this.build();
-    // this.shadowRoot!.replaceChildren(this.build());
   }
 }
 

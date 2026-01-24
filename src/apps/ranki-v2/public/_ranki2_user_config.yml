@@ -72,4 +72,4 @@ tags:
     config:
       design:
         animation:
-          fade: 4s
+          fade: 3s

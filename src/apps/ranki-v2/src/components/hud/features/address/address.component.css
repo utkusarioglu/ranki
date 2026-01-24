@@ -1,13 +1,8 @@
 :host {
-  display: block;
-  box-sizing: border-box;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
-
   --transition-duration: var(--rha-transition-duration, 0);
+  --transition-property:
+    background, color, padding, border, opacity, scale, transform, width,
+    margin-right;
 
   --c-background: var(--rha-c-background, transparent);
   --c-border: var(--rha-c-border, 1px solid red);
@@ -34,12 +29,35 @@
   --d-padding: var(--rha-d-padding, none);
 }
 
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+  opacity: 1;
+  margin-right: 1em;
+}
+
+:host(.entering) {
+  opacity: 0;
+}
+
+:host(.exiting) {
+  opacity: 0;
+}
+
 *,
 *::before,
 *::after {
   box-sizing: inherit;
   user-select: none;
-  transition-property: background, color, padding, border, opacity, scale;
+  transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
 }
 
@@ -89,4 +107,9 @@
   color: var(--d-color);
   background: var(--d-background);
   border: var(--d-border);
+}
+
+hud-address-crumb {
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
 }

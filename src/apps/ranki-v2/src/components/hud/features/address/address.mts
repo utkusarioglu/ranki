@@ -1,6 +1,7 @@
 import { assertNever } from "../../../../error/assertions.mts";
 import type { HudAddressProps, HudAddressSegment } from "../../hud.types.mts";
 import styles from "./address.component.css?inline";
+import type { HudAddressCrumb } from "./HudAddressCrumb.mts";
 
 const NAME = "ranki-hud-address";
 type Props = HudAddressProps;
@@ -8,21 +9,8 @@ type Props = HudAddressProps;
 const sheet = new CSSStyleSheet();
 sheet.replaceSync(styles);
 
-class HudAddressCrumb extends HTMLElement {
-  connectedCallback() {
-    // behavior setup
-  }
-  exit() {
-    this.classList.add("exiting");
-    this.addEventListener("transitionend", () => this.remove(), { once: true });
-  }
-}
-
-customElements.define("hud-address-crumb", HudAddressCrumb);
-
 class HudAddress extends HTMLElement {
   private curr!: Props;
-  private crumbs: HTMLDivElement[] = [];
 
   constructor() {
     super();
@@ -35,14 +23,38 @@ class HudAddress extends HTMLElement {
     this.render();
   }
 
+  // SAME
   connectedCallback() {
-    console.log("connected address", this);
+    this.style.setProperty("opacity", "0");
+    this.style.setProperty("width", "0");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        this.style.setProperty("opacity", "1");
+        this.adjustWidth();
+      });
+    });
   }
 
-  private container() {
-    let c = this.shadowRoot!.querySelector("div.container");
+  // SAME
+  exit() {
+    const width = this.getBoundingClientRect().width;
+    this.style.setProperty("width", width + "px");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // this.drain();
+        this.style.setProperty("width", "0px");
+        this.style.setProperty("opacity", "0");
+        this.style.setProperty("margin-right", "0");
+        this.addEventListener("transitionend", () => this.remove(), {
+          once: true,
+        });
+      });
+    });
+  }
+
+  private container(): HTMLDivElement {
+    let c = this.shadowRoot!.querySelector("div.container") as HTMLDivElement;
     if (c) {
-      console.log("address reuse");
       return c;
     }
     c = document.createElement("div");
@@ -54,9 +66,14 @@ class HudAddress extends HTMLElement {
 
   private build() {
     const container = this.container();
+    this.subtree(container);
+    this.adjustWidth();
+  }
+
+  private subtree(container: HTMLDivElement) {
     const cn = container.childNodes.length;
     const sn = this.curr.segments.length;
-    const rm = [];
+    const rm: HudAddressCrumb[] = [];
 
     for (let i = 0; i < Math.max(cn, sn); i++) {
       const s = this.curr.segments[i];
@@ -70,25 +87,31 @@ class HudAddress extends HTMLElement {
           this.mutateCrumb(s, e);
         }
       } else {
-        rm.push(container.childNodes[i]);
+        rm.push(container.childNodes[i] as HudAddressCrumb);
       }
     }
-    rm.forEach((r) => {
-      container.removeChild(r);
-    });
+    rm.length &&
+      rm.forEach((r) => {
+        r.exit();
+      });
+  }
 
-    // this.curr.segments.forEach((s, i) => {
-    //   const e = this.shadowRoot!.querySelector(
-    //     `[data-index="${i}"]`,
-    //   ) as HTMLDivElement;
-    //   if (!e) {
-    //     this.createCrumb(s, i, container);
-    //   } else {
-    //     this.mutateCrumb(s, e);
-    //   }
-    // });
-    container.childNodes;
-    return container;
+  private adjustWidth() {
+    const container = this.shadowRoot!.querySelector(
+      "div.container",
+    ) as HTMLDivElement;
+    if (!container) {
+      return;
+    }
+    const right = (
+      container.childNodes[this.curr.segments.length - 1] as HudAddressCrumb
+    ).getRight();
+    const left = this.getLeft();
+    this.style.setProperty("width", right - left + "px");
+  }
+
+  private getLeft() {
+    return this.getBoundingClientRect().left;
   }
 
   private mutateCrumb(s: HudAddressSegment, e: HTMLDivElement) {
@@ -111,7 +134,7 @@ class HudAddress extends HTMLElement {
   }
 
   private createCrumb(s: HudAddressSegment, i: number, container: Element) {
-    const seg = document.createElement("div");
+    const seg = document.createElement("hud-address-crumb");
     switch (s.mode) {
       case "trim":
       case "hide":

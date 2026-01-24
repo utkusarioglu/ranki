@@ -1,13 +1,8 @@
 :host {
-  display: block;
-  box-sizing: border-box;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
-
   --transition-duration: var(--rhu-transition-duration, 0);
+  --transition-property:
+    background, color, padding, border, opacity, scale, transform, width,
+    margin-right;
 
   --c-background: var(--rhu-c-background, transparent);
   --c-border: var(--rhu-c-border, 1px solid red);
@@ -22,12 +17,28 @@
   --cu-padding: var(--rhu-cu-padding, none);
 }
 
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+  border-radius: var(--c-border-radius);
+  margin-right: 1em;
+  opacity: 1;
+}
+
 *,
 *::before,
 *::after {
   box-sizing: inherit;
   user-select: none;
-  transition-property: background, color, padding, border, opacity, scale;
+  transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
 }
 
@@ -44,7 +55,13 @@
   gap: var(--c-gap);
 }
 
-.cue {
+hud-cues-cue {
+  opacity: 1;
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+}
+
+hud-cues-cue.cue {
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -55,26 +72,13 @@
   color: var(--cu-color);
   border-radius: var(--cu-border-radius);
   border: var(--cu-border);
-
-  /* &:hover {
-    padding: var(--s-hover-padding);
-    background: var(--s-hover-background);
-    color: var(--s-hover-color);
-    border-radius: var(--s-hover-border-radius);
-    border: var(--s-hover-border);
-  } */
+  white-space: nowrap;
+}
+/* 
+hud-cues-cue.exiting {
+  opacity: 0;
 }
 
-/* .divider {
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  line-height: 1em;
-  display: inline-block;
-  vertical-align: middle;
-  padding: var(--d-padding);
-  border-radius: var(--d-border-radius);
-  color: var(--d-color);
-  background: var(--d-background);
-  border: var(--d-border);
+hud-cues-cue.entering {
+  opacity: 0;
 } */
