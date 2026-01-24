@@ -29,6 +29,9 @@ body {
   background: var(--scheme-surface-0) !important;
   color: var(--scheme-text-0) !important;
 
+  transition-duration: var(--body-transition-duration, 0) !important;
+  transition-property: background, color !important;
+
   /* Allows centering questions */
   min-height: 100%;
   height: max-content;

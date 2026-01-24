@@ -125,7 +125,8 @@ export default defineConfig({
     },
   ],
   build: {
-    minify: false,
+    // cssCodeSplit: false,
+    minify: true,
     // target: TARGET,
     outDir: OUT_DIR,
     assetsDir: ".",

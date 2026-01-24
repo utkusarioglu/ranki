@@ -12,6 +12,7 @@ declare global {
 export function devMethods() {
   let dark = true;
   let deckIndex = 0;
+  let side = "Q";
   const DECKS = [
     "A::B::C::D",
     "Cat::Dog",
@@ -35,16 +36,19 @@ export function devMethods() {
 
   window.ranki = {
     switchScheme() {
-      const r = document.querySelector(`.${RENDERED_CLASS_SELECTOR}`);
-      assertExists(r, { why: "needed" });
-      r.classList.remove(RENDERED_CLASS_SELECTOR);
+      const qa = document.querySelector("#qa");
+      assertExists(qa, { why: "needed" });
+      const ren = qa.querySelector("div.rendered");
+      if (ren) {
+        qa.removeChild(ren);
+      }
       const tags = document.querySelector(
         "script.ranki-v2-data.tags",
       ) as HTMLScriptElement;
       assertExists(tags, { why: "needed" });
       tags.innerText = [
         dark ? "+r:scheme-light" : "",
-        // !!tagIndex ? "+r:animation-slow" : "",
+        !!tagIndex ? "+r:animation-slow" : "",
         TAGS[tagIndex++ % TAGS.length],
       ].join(" ");
       dark = !dark;
@@ -53,6 +57,11 @@ export function devMethods() {
       ) as HTMLScriptElement;
       assertExists(deck, { why: "needed" });
       deck.innerText = DECKS[deckIndex++ % DECKS.length];
+      const face = document.querySelector(
+        "script.ranki-v2-data.face",
+      ) as HTMLScriptElement;
+      assertExists(face, { why: "needed" });
+      face.innerText = side === "Q" ? "N" : "Q";
     },
   };
 }

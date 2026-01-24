@@ -17,15 +17,15 @@ export function createDesign(document: Document, config: RankiAppConfig) {
     config.design.animation.fade,
   );
 
-  if (config.face === "Q") {
-    document.body.style.setProperty(
-      "transition-property",
-      "var(--transition-property)",
-      "important",
-    );
-  } else {
-    document.body.style.setProperty("transition-property", "none", "important");
-  }
+  // if (config.face === "Q") {
+  //   document.body.style.setProperty(
+  //     "transition-property",
+  //     "var(--transition-property)",
+  //     "important",
+  //   );
+  // } else {
+  //   document.body.style.setProperty("transition-property", "none", "important");
+  // }
   document.body.style.setProperty(
     "transition-duration",
     `var(${CSS_FADE_ANIMATION_DURATION})`,

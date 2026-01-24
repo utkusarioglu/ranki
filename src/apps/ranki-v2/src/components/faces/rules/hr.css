@@ -1,0 +1,25 @@
+:host {
+  --color-hr: var(--face-hr-background-color);
+  --height-hr: var(--face-hr-height);
+  --transition-duration: var(--face-hr-transition-duration, 0);
+  --transition-property: background, color, padding, border, opacity;
+}
+
+rule-horizontal.container {
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--height-hr);
+  padding-inline: 4em;
+}
+
+div.hr {
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+  display: block;
+  background-color: var(--color-hr);
+  height: 100%;
+  border-radius: calc(var(--height-hr) / 2);
+}

@@ -1,5 +1,0 @@
-*,
-*::before,
-*::after {
-  --transition-property: color, background-color !important;
-}

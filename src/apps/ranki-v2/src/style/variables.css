@@ -13,6 +13,9 @@
   --color-divider-bg: var(--color-surface-1-hex);
   --ranki-animation-fade-duration: 0s;
 
+  /* BODY */
+  --body-transition-duration: var(--ranki-animation-fade-duration);
+
   /* HUD ADDRESS */
   --rha-transition-duration: var(--ranki-animation-fade-duration);
   --rha-c-background: var(--scheme-surface-1);
@@ -108,4 +111,12 @@
   --rhu-cu-color: var(--scheme-text-0);
   --rhu-cu-border-radius: 0.5em;
   --rhu-cu-padding: 0 1em;
+
+  /*FACES */
+  --face-hr-background-color: var(--scheme-surface-2);
+  --face-hr-height: 10px;
+  --face-hr-transition-duration: var(--ranki-animation-fade-duration);
+  --face-vr-background-color: var(--scheme-surface-2);
+  --face-vr-width: 10px;
+  --face-vr-transition-duration: var(--ranki-animation-fade-duration);
 }
