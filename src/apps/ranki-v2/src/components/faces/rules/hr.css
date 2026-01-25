@@ -13,6 +13,7 @@ rule-horizontal.container {
   width: 100%;
   height: var(--height-hr);
   padding-inline: 4em;
+  margin-block: 2em;
 }
 
 div.hr {

@@ -13,11 +13,17 @@ import type {
   RenderFunctionParams,
 } from "@dqm/package-dqm-api-v2";
 import { RendererLibrary } from "./library.mjs";
+import { defineSreTheater, type DqmSreTheater } from "./sre-theater.mjs";
 
+// type CssMap = Map<RenderNodeCssSpec["id"], RenderNodeCssSpec>;
+type PushCssCallback = (css: RenderNodeCssSpec) => void;
+
+// TODO move this to a better place
+defineSreTheater();
 export class DqmStaticRenderer implements IDqmRenderEngine {
   private library = new RendererLibrary();
-  private css = new Map<RenderNodeCssSpec["id"], RenderNodeCssSpec>();
-  private head: HTMLHeadElement | null = null;
+  // private css: CssMap = new Map();
+  // private head: HTMLHeadElement | null = null;
   private assertions: Assertions;
 
   constructor(assertions: Assertions) {
@@ -82,6 +88,7 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
     serialized: ISerializedNode,
     pref: IDqmRendererClientPreferences,
     root: HTMLElement,
+    pushCss: PushCssCallback,
   ) {
     const renderer = this.library.getPlugin(serialized.chain);
     const kind = renderer.kind;
@@ -94,7 +101,7 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
     );
     root.appendChild(sync.element);
     sync.css?.forEach((c) => {
-      this.css.set(c.id, c);
+      pushCss(c);
     });
     // #2
     sync.afterMount?.forEach((f) => f());
@@ -117,10 +124,10 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
       def.afterMount?.forEach((f) => f());
 
       // #1
-      this.attachChildren(serialized, pref, def);
+      this.attachChildren(serialized, pref, def, pushCss);
     } else {
       // #1
-      this.attachChildren(serialized, pref, sync);
+      this.attachChildren(serialized, pref, sync, pushCss);
     }
   }
 
@@ -128,6 +135,7 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
     serialized: ISerializedNode,
     pref: IDqmRendererClientPreferences,
     node: RenderNode,
+    pushCss: PushCssCallback,
   ) {
     if (node.getMount) {
       switch (serialized.kind) {
@@ -142,57 +150,67 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
             );
           }
           const mount = node.getMount();
-          serialized.children.forEach((c) => this.single(c, pref, mount));
+          serialized.children.forEach((c) =>
+            this.single(c, pref, mount, pushCss),
+          );
       }
     }
   }
 
-  private initialize() {
-    this.css.clear();
-  }
+  // private initialize() {
+  //   this.css.clear();
+  // }
 
-  private getHead(roots: RenderRoots) {
-    if (this.head) {
-      return this.head;
-    }
-    const firstRoot = Object.values(roots)[0];
-    if (!firstRoot) {
-      // REPLACE
-      throw new Error("NO RENDER ROOTS: REMOVE THIS ERROR");
-    }
-    const head = firstRoot.ownerDocument.querySelector("head");
-    if (!head) {
-      // REPLACE
-      throw new Error("CANNOT FIND HEAD: REMOVE THIS ERROR");
-    }
-    this.head = head;
-    return head;
-  }
+  // private getHead(roots: RenderRoots) {
+  //   if (this.head) {
+  //     return this.head;
+  //   }
+  //   const firstRoot = Object.values(roots)[0];
+  //   if (!firstRoot) {
+  //     // REPLACE
+  //     throw new Error("NO RENDER ROOTS: REMOVE THIS ERROR");
+  //   }
+  //   const head = firstRoot.ownerDocument.querySelector("head");
+  //   if (!head) {
+  //     // REPLACE
+  //     throw new Error("CANNOT FIND HEAD: REMOVE THIS ERROR");
+  //   }
+  //   this.head = head;
+  //   return head;
+  // }
 
   async render(
     serializedOutput: DqmSerializeOutput,
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
   ): Promise<RenderReport> {
-    this.initialize();
+    // this.initialize();
     serializedOutput.forEach(({ theater, serialized }) => {
-      const root = roots[theater];
+      const root = roots.theaters[theater]();
       if (!root) {
         throw new Error(
           `theater ${theater} absent -> replace this error handling`,
         );
       }
-      root.innerText = "";
-      serialized.forEach(async (t) => this.single(t, pref, root));
+      const sreTheater = document.createElement(
+        "dqm-sre-theater",
+      ) as DqmSreTheater;
+      root.replaceChildren(sreTheater);
+      const container = document.createElement("div");
+      sreTheater.setTheater(container);
+
+      const pushCss: PushCssCallback = (spec) => sreTheater.setStyle(spec);
+      // root.innerText = "";
+      serialized.forEach(async (t) => this.single(t, pref, container, pushCss));
     });
 
-    const head = this.getHead(roots);
-    for (const [id, pack] of this.css) {
-      const c = document.createElement("style");
-      c.id = id;
-      c.innerHTML = pack.css;
-      head.appendChild(c);
-    }
+    // const head = this.getHead(roots);
+    // for (const [id, pack] of this.css) {
+    //   const c = document.createElement("style");
+    //   c.id = id;
+    //   c.innerHTML = pack.css;
+    //   head.appendChild(c);
+    // }
 
     return Promise.resolve({ finished: true });
   }

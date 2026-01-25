@@ -30,3 +30,9 @@
   gap: 2em;
   align-content: center;
 }
+
+ranki-faces-face {
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+  opacity: 1;
+}

@@ -5,6 +5,7 @@ import { renderDqm } from "../../dqm/render-dqm.mts";
 import type { RankiDqmConfig } from "../../config/config.types.mts";
 import { hrSheet, RuleHorizontal } from "./rules/hr.mts";
 import { RuleVertical, vrSheet } from "./rules/vr.mts";
+import type { RankiFacesFace } from "./face/face.mts";
 
 const NAME = "ranki-faces";
 type Props = { faces: CardFaceArray; dqm: RankiDqmConfig };
@@ -43,33 +44,33 @@ class RankiFaces extends HTMLElement {
     this.subtree(container);
   }
 
-  private hr(index: number) {
+  private hr(container: HTMLElement, index: number) {
     let hr = this.shadowRoot!.querySelector(
       `rule-horizontal[data-index="${index}"`,
     );
     if (hr) {
-      return hr;
+      return;
     }
     hr = document.createElement("rule-horizontal");
     hr.setAttribute("data-index", index.toString());
     (hr as RuleHorizontal).render();
-    return hr;
+    container.appendChild(hr);
   }
 
-  private vr(index: number) {
+  private vr(container: HTMLElement, index: number) {
     let vr = this.shadowRoot!.querySelector(
       `rule-vertical[data-index="${index}"`,
     );
     if (vr) {
-      return vr;
+      return;
     }
     vr = document.createElement("rule-vertical");
     vr.setAttribute("data-index", index.toString());
     (vr as RuleVertical).render();
-    return vr;
+    container.appendChild(vr);
   }
 
-  private face(faceName: string, index: number) {
+  private face(container: HTMLElement, faceName: string, index: number) {
     const d = this.shadowRoot!.querySelector(
       `ranki-faces-face.${faceName}`,
     ) as HTMLDivElement;
@@ -80,32 +81,43 @@ class RankiFaces extends HTMLElement {
     face.classList.add(faceName);
     face.setAttribute("data-index", index.toString());
     face.classList.add(faceName);
+    container.appendChild(face);
     return face;
   }
 
   private subtree(faceContainer: HTMLDivElement) {
-    const faces: RenderRoots = Object.fromEntries(
-      this.curr.faces
-        .map((faceName, i) => {
-          switch (faceName) {
-            case "ranki:hr":
-              faceContainer.appendChild(this.hr(i));
-              // createHr(faceContainer, i);
-              break;
-            case "ranki:vr":
-              faceContainer.appendChild(this.vr(i));
-              //   createVr(faceContainer, i);
-              break;
-            default:
-              const faceEl = this.face(faceName, i);
-              faceContainer.appendChild(faceEl);
-              return [faceName, faceEl];
-          }
-        })
-        .filter((v) => v !== undefined),
-    );
+    type FaceTypes = RankiFacesFace | RuleHorizontal | RuleVertical;
+    const cn = faceContainer.childNodes.length;
+    const sn = this.curr.faces.length;
+    const rm: FaceTypes[] = [];
+    const roots: RenderRoots = { theaters: {} };
 
-    renderDqm(this.curr.dqm, faces);
+    for (let i = 0; i < Math.max(cn, sn); i++) {
+      const faceName = this.curr.faces[i];
+      if (faceName) {
+        switch (faceName) {
+          case "ranki:hr":
+            this.hr(faceContainer, i);
+            break;
+          case "ranki:vr":
+            this.vr(faceContainer, i);
+            break;
+          default:
+            const faceEl = this.face(faceContainer, faceName, i);
+            if (faceEl) {
+              roots.theaters[faceName] = () => faceEl;
+            }
+        }
+      } else {
+        rm.push(faceContainer.childNodes[i] as FaceTypes);
+      }
+    }
+    rm.length &&
+      rm.forEach((r) => {
+        r.exit();
+      });
+
+    renderDqm(this.curr.dqm, roots);
   }
 
   render() {

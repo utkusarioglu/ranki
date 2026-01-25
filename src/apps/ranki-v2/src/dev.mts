@@ -1,5 +1,4 @@
 import { assertExists } from "./error/assertions.mts";
-import { RENDERED_CLASS_SELECTOR } from "./selector.constants.mts";
 
 declare global {
   interface Window {
@@ -12,7 +11,7 @@ declare global {
 export function devMethods() {
   let dark = true;
   let deckIndex = 0;
-  let side = "Q";
+  let isAnswer = false;
   const DECKS = [
     "A::B::C::D",
     "Cat::Dog",
@@ -61,7 +60,8 @@ export function devMethods() {
         "script.ranki-v2-data.face",
       ) as HTMLScriptElement;
       assertExists(face, { why: "needed" });
-      face.innerText = side === "Q" ? "N" : "Q";
+      face.innerText = isAnswer ? "N" : "Q";
+      isAnswer = !isAnswer;
     },
   };
 }

@@ -10,7 +10,7 @@ export interface RenderReport {
   finished: true;
 }
 
-export type RenderRoots = Record<string, HTMLDivElement>;
+export type RenderRoots = { theaters: Record<string, () => HTMLDivElement> };
 
 export interface IDqmRenderEngine {
   render(

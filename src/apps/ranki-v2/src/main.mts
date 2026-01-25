@@ -14,7 +14,7 @@ import { hudTagsDefine } from "./components/hud/features/tags/tags.mts";
 import { setStyles } from "./style/style.mts";
 import { rankiFaces, rankiFacesDefine } from "./components/faces/faces.mts";
 import { ruleHorizontalDefine } from "./components/faces/rules/hr.mts";
-import { facesFaceDefine } from "./components/faces/face.mts";
+import { facesFaceDefine } from "./components/faces/face/face.mts";
 import { ruleVerticalDefine } from "./components/faces/rules/vr.mts";
 
 devMethods();
