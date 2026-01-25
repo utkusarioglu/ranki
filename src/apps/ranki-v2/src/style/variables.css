@@ -10,7 +10,7 @@
 
   --content-width: min(var(--face-width-min), 100vw);
   --hud-height: 40px;
-  --color-divider-bg: var(--color-surface-1-hex);
+  /* --color-divider-bg: var(--color-surface-1-hex); */
   --ranki-animation-fade-duration: 0s;
 
   /* BODY */

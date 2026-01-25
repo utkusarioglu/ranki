@@ -31,7 +31,6 @@ class Hud extends HTMLElement {
   private container() {
     const c = this.shadowRoot!.querySelector("div.container");
     if (c) {
-      console.log("hud reuse");
       const tail = c.querySelector(".scroll-scroller") as HTMLElement;
       return { head: c, tail };
     }

@@ -39,7 +39,7 @@ async function collectConfigFields(): Promise<CollectedConfig> {
     const configFiles = document.querySelectorAll(CONFIG_FILE_CLASS_SELECTOR);
     const configFromFiles = await Promise.all(
       Array.from(configFiles).map(async (e) => {
-        const src = e.getAttribute("src");
+        const src = e.getAttribute("href");
         assertExists(src, {
           why: "Src property is required for config file elements",
         });

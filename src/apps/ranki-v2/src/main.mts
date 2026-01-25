@@ -50,7 +50,6 @@ function shouldRender() {
  */
 async function main() {
   try {
-    console.log("RUN");
     if (!shouldRender()) {
       return;
     }
@@ -59,7 +58,6 @@ async function main() {
 
     const config = await createConfig();
     hud(config.ranki.hud, document.body);
-    document.body.classList.add("content-grid");
 
     createDesign(document, config.ranki);
     // TODO indicators

@@ -105,7 +105,10 @@ class RankiFaces extends HTMLElement {
           default:
             const faceEl = this.face(faceContainer, faceName, i);
             if (faceEl) {
-              roots.theaters[faceName] = () => faceEl;
+              roots.theaters[faceName] = () => {
+                console.log("face", faceName);
+                return faceEl;
+              };
             }
         }
       } else {

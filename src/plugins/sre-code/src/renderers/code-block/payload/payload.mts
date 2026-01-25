@@ -13,7 +13,6 @@ export const payload: R = {
   chain: [...TAGS, "payload", "block"],
   kind: "leaf",
   sync: ({ ser }) => {
-    console.log("f", ser.props);
     const element = document.createElement("div");
     element.classList.add("code-block");
     const h = AnkiUi.horizontalScroller();
