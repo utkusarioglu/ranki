@@ -1,8 +1,9 @@
 import { RankiFacesElement } from "../face/RankiFacesElement.mts";
 import styles from "./hr.css?inline";
 
-export const hrSheet = new CSSStyleSheet();
-hrSheet.replaceSync(styles);
+// export const hrSheet = new CSSStyleSheet();
+// hrSheet.replaceSync(styles);
+export const hrStyles = styles;
 
 export class RuleHorizontal extends RankiFacesElement {
   render() {

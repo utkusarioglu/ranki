@@ -2,8 +2,8 @@ import type { CardFaceArray } from "../../config/collect/collect.types.mts";
 import styles from "./faces.component.css?inline";
 import { renderDqm } from "../../dqm/render-dqm.mts";
 import type { RankiDqmConfig } from "../../config/config.types.mts";
-import { hrSheet, RuleHorizontal } from "./rules/hr.mts";
-import { RuleVertical, vrSheet } from "./rules/vr.mts";
+import { hrStyles, RuleHorizontal } from "./rules/hr.mts";
+import { RuleVertical, vrStyles } from "./rules/vr.mts";
 import type { RankiFacesFace } from "./face/face.mts";
 import { assertNotUndefined, assertNotNull } from "../../error/assertions.mts";
 import type { PairChildren, RankiFacesPair } from "./pair/pair.mts";
@@ -13,16 +13,33 @@ type RenderedFaces = Record<string, RankiFacesFace>;
 const NAME = "ranki-faces";
 type Props = { faces: CardFaceArray; dqm: RankiDqmConfig };
 
-const sheet = new CSSStyleSheet();
-sheet.replaceSync(styles);
-
 class RankiFaces extends HTMLElement {
   private curr!: Props;
 
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this.shadowRoot!.adoptedStyleSheets = [sheet, hrSheet, vrSheet];
+    this.pushStyles(styles, hrStyles, vrStyles);
+  }
+
+  pushStyles(...styles: string[]) {
+    if ("adoptedStyleSheets" in Document.prototype) {
+      styles.forEach((cssString) => {
+        const sheet = new CSSStyleSheet();
+        sheet.replaceSync(cssString);
+
+        this.shadowRoot!.adoptedStyleSheets = [
+          ...this.shadowRoot!.adoptedStyleSheets,
+          sheet,
+        ];
+      });
+    } else {
+      styles.forEach((cssString) => {
+        const style = document.createElement("style");
+        style.textContent = cssString;
+        this.shadowRoot!.append(style);
+      });
+    }
   }
 
   set props(props: Props) {

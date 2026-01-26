@@ -85,7 +85,13 @@ function collectHtmlTagAttributes(): CollectedHtmlTagAttributes {
     " ",
   ) as HtmlTagClassCollection;
   const dir = htmlElem.getAttribute("dir") as HtmlAttrDir;
-  const dataBsTheme = htmlElem.getAttribute("data-bs-theme") as HtmlAttrTheme;
+  let dataBsTheme = htmlElem.getAttribute("data-bs-theme") as HtmlAttrTheme;
+  dataBsTheme =
+    dataBsTheme !== null
+      ? dataBsTheme
+      : window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
   return { mode, os, env, dir, dataBsTheme };
 }
 

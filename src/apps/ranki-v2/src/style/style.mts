@@ -39,9 +39,13 @@ const LIST = [
 
 export function setStyles() {
   LIST.forEach(({ id, css }) => {
-    const c = document.createElement("style");
-    c.id = id;
-    c.innerHTML = css;
-    document.head.appendChild(c);
+    let s = document.head.querySelector(`style#${id}`);
+    if (s) {
+      return;
+    }
+    s = document.createElement("style");
+    s.id = id;
+    s.innerHTML = css;
+    document.head.appendChild(s);
   });
 }

@@ -1,7 +1,9 @@
 import styles from "./vr.css?inline";
 
-export const vrSheet = new CSSStyleSheet();
-vrSheet.replaceSync(styles);
+// export const vrSheet = new CSSStyleSheet();
+// vrSheet.replaceSync(styles);
+
+export const vrStyles = styles;
 
 export class RuleVertical extends HTMLElement {
   connectedCallback() {
