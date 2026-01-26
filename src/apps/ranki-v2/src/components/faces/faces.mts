@@ -1,4 +1,3 @@
-import type { RenderRoots } from "@dqm/package-dqm-v2";
 import type { CardFaceArray } from "../../config/collect/collect.types.mts";
 import styles from "./faces.component.css?inline";
 import { renderDqm } from "../../dqm/render-dqm.mts";
@@ -6,13 +5,8 @@ import type { RankiDqmConfig } from "../../config/config.types.mts";
 import { hrSheet, RuleHorizontal } from "./rules/hr.mts";
 import { RuleVertical, vrSheet } from "./rules/vr.mts";
 import type { RankiFacesFace } from "./face/face.mts";
-import { DqmAppError } from "../../../../../packages/dqm-v2/src/errors/dqm-app-error/dqm-app-error.mts";
-import {
-  assertNotUndefined,
-  assertNever,
-  assertNotNull,
-} from "../../error/assertions.mts";
-import type { RankiFacesPair } from "./pair/face.mts";
+import { assertNotUndefined, assertNotNull } from "../../error/assertions.mts";
+import type { PairChildren, RankiFacesPair } from "./pair/pair.mts";
 
 type RenderedFaces = Record<string, RankiFacesFace>;
 
@@ -36,70 +30,30 @@ class RankiFaces extends HTMLElement {
     this.render();
   }
 
-  private container() {
-    let c = this.shadowRoot!.querySelector("div.container") as HTMLDivElement;
-    if (c) {
-      return c;
-    }
-    c = document.createElement("div");
-    c.classList.add("container");
-
-    this.shadowRoot!.appendChild(c);
-    return c;
-  }
-
   private build() {
-    const container = this.container();
-    // this.subtree(container);
-    this.pairs(container);
+    this.pairs();
   }
 
   private hr(container: HTMLElement, index: number) {
-    let hr = this.shadowRoot!.querySelector(
-      `rule-horizontal[data-index="${index}"`,
-    );
-    if (hr) {
-      return;
-    }
-    hr = document.createElement("rule-horizontal");
+    const hr = document.createElement("rule-horizontal");
     hr.setAttribute("data-index", index.toString());
     (hr as RuleHorizontal).render();
     container.appendChild(hr);
   }
 
   private vr(container: HTMLElement, index: number) {
-    let vr = this.shadowRoot!.querySelector(
-      `rule-vertical[data-index="${index}"`,
-    );
-    if (vr) {
-      return;
-    }
-    vr = document.createElement("rule-vertical");
+    const vr = document.createElement("rule-vertical");
     vr.setAttribute("data-index", index.toString());
     (vr as RuleVertical).render();
     container.appendChild(vr);
   }
-
-  // private face(container: HTMLElement, faceName: string, index: number) {
-  //   const d = this.shadowRoot!.querySelector(
-  //     `ranki-faces-face.${faceName}`,
-  //   ) as HTMLDivElement;
-  //   if (d) {
-  //     return d;
-  //   }
-  //   const face = document.createElement("ranki-faces-face") as HTMLDivElement;
-  //   face.classList.add(faceName);
-  //   face.setAttribute("data-index", index.toString());
-  //   face.classList.add(faceName);
-  //   container.appendChild(face);
-  //   return face;
-  // }
 
   private renderDqm(): RenderedFaces {
     const faceEntries: [string, RankiFacesFace][] = [];
     const theaterEntries: [string, () => HTMLDivElement][] = [];
     this.curr.dqm.inputs.forEach((n) => {
       const face = document.createElement("ranki-faces-face");
+      face.setAttribute("dqm-source", n.dqm);
       faceEntries.push([n.theater, face as RankiFacesFace]);
       theaterEntries.push([n.theater, () => face as HTMLDivElement]);
     });
@@ -107,31 +61,32 @@ class RankiFaces extends HTMLElement {
     return Object.fromEntries(faceEntries);
   }
 
-  private pairs(container: HTMLDivElement) {
+  private pairs() {
     // TODO
-    const pairs = Array.from(container.children);
+    const pairs = Array.from(this.shadowRoot!.children) as RankiFacesPair[];
     const newFaces = this.renderDqm();
-    console.log(newFaces["A"].getAttribute("dqm-key"));
 
     if (!pairs.length) {
-      this.newPair(container, newFaces);
+      this.populatePair(this.newPair(), newFaces);
       return;
     }
 
+    pairs.slice(0, -1).forEach((v) => v.exit());
     const last = pairs.at(-1)!;
     const matches: boolean[] = [];
     this.curr.faces.forEach((f, i) => {
-      const prev = last.children[i];
+      const prev = last.getChildren()[i];
       if (!prev) {
         return matches.push(false);
       }
       switch (f) {
         case "ranki:hr":
         case "ranki:vr":
-          matches.push(prev.getAttribute("data-index") === i.toString());
+          matches.push(false);
           break;
         default:
-          const prevKey = prev.getAttribute("dqm-key");
+          // const prevKey = prev.getAttribute("dqm-key");
+          const prevKey = prev.getAttribute("dqm-source");
           assertNotUndefined(prevKey, { why: "dqm-key attribute is required" });
           const prevTheater = prev.getAttribute("dqm-theater")!;
           assertNotNull(prevTheater, {
@@ -141,73 +96,64 @@ class RankiFaces extends HTMLElement {
             },
           });
           const curr = newFaces[prevTheater];
-          const newKey = curr.getAttribute("dqm-key");
+          // const newKey = curr.getAttribute("dqm-key");
+          const newKey = curr.getAttribute("dqm-source");
           assertNotUndefined(newKey, { why: "dqm-key attribute is required" });
           matches.push(prevKey === newKey);
       }
     });
-    const noMatch = matches.every((v) => !v);
-    if (noMatch) {
-      return this.newPair(container, newFaces);
+    let failIndex = matches.indexOf(false);
+    if (failIndex === 0) {
+      last.exit();
+      // pairs.forEach((p) => p.exit());
+      return this.populatePair(this.newPair(), newFaces);
     }
-    console.log("m", matches, last, newFaces);
+
+    const ml = matches.length;
+    const ch = last.getChildren();
+    if (ml < ch.length) {
+      for (let i = ml; i < ch.length; i++) {
+        (ch[i] as PairChildren).exit();
+      }
+    } else {
+      const fl = this.curr.faces.length;
+      this.populatePair(last, newFaces, ml - fl + 1);
+    }
   }
 
-  private newPair(container: HTMLDivElement, newFaces: RenderedFaces) {
+  private newPair() {
     const pair = document.createElement("ranki-faces-pair") as RankiFacesPair;
-    container.appendChild(pair);
-    this.curr.faces.forEach((f, i) => {
+    this.shadowRoot!.appendChild(pair);
+    const div = document.createElement("div") as HTMLDivElement;
+    div.classList.add("container");
+    pair.appendChild(div);
+    return pair;
+  }
+
+  private populatePair(
+    pair: RankiFacesPair,
+    newFaces: RenderedFaces,
+    start?: number,
+    end?: number,
+  ) {
+    const startDefinite = start !== undefined ? start : 0;
+    const endDefinite = end !== undefined ? end : this.curr.faces.length;
+    const container = pair.getContainer();
+    for (let i = startDefinite; i < endDefinite; i++) {
+      const f = this.curr.faces[i];
       switch (f) {
         case "ranki:hr":
-          this.hr(pair, i);
+          this.hr(container, i);
           break;
         case "ranki:vr":
-          this.vr(pair, i);
+          this.vr(container, i);
           break;
         default:
-          pair.appendChild(newFaces[f]);
+          const newFace = newFaces[f];
+          container.appendChild(newFace);
       }
-    });
+    }
   }
-
-  // private subtree(faceContainer: HTMLDivElement) {
-  //   type FaceTypes = RankiFacesFace | RuleHorizontal | RuleVertical;
-  //   const cn = faceContainer.childNodes.length;
-  //   const sn = this.curr.faces.length;
-  //   const rm: FaceTypes[] = [];
-  //   const roots: RenderRoots = { theaters: {} };
-
-  //   for (let i = 0; i < Math.max(cn, sn); i++) {
-  //     const faceName = this.curr.faces[i];
-  //     if (faceName) {
-  //       switch (faceName) {
-  //         case "ranki:hr":
-  //           this.hr(faceContainer, i);
-  //           break;
-  //         case "ranki:vr":
-  //           this.vr(faceContainer, i);
-  //           break;
-  //         default:
-  //           const faceEl = this.face(faceContainer, faceName, i);
-  //           if (faceEl) {
-  //             roots.theaters[faceName] = () => {
-  //               console.log("face", faceName);
-  //               return faceEl;
-  //             };
-  //           }
-  //       }
-  //     } else {
-  //       rm.push(faceContainer.childNodes[i] as FaceTypes);
-  //     }
-  //   }
-  //   rm.length &&
-  //     rm.forEach((r) => {
-  //       r.exit();
-  //     });
-
-  //   console.log(this.curr.dqm);
-  //   renderDqm(this.curr.dqm, roots);
-  // }
 
   render() {
     this.build();

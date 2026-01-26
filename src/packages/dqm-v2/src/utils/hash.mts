@@ -16,7 +16,6 @@ export class Hash {
     props: any,
     sourceOrChildrenKeys: string,
   ): ISerializedKey {
-    console.log("--", chain, "-", sourceOrChildrenKeys, "-");
     return Hash.djb2Hash(
       JSON.stringify([chain, props, sourceOrChildrenKeys]),
     ).toString() as ISerializedKey;

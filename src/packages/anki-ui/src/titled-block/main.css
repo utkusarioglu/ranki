@@ -1,4 +1,12 @@
+:host {
+  --transition-property: background, color;
+  --transition-duration: var(--dqm-transition-duration, 5s);
+}
+
 titled-block {
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+
   &.container {
     box-sizing: border-box;
     position: relative;

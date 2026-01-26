@@ -159,7 +159,6 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
   ): Promise<RenderReport> {
-    console.log("ser", serializedOutput);
     serializedOutput.forEach(({ theater, serialized }) => {
       const root = roots.theaters[theater]();
       if (!root) {

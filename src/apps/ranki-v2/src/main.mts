@@ -16,7 +16,7 @@ import { rankiFaces, rankiFacesDefine } from "./components/faces/faces.mts";
 import { ruleHorizontalDefine } from "./components/faces/rules/hr.mts";
 import { facesFaceDefine } from "./components/faces/face/face.mts";
 import { ruleVerticalDefine } from "./components/faces/rules/vr.mts";
-import { facesPairDefine } from "./components/faces/pair/face.mts";
+import { facesPairDefine } from "./components/faces/pair/pair.mts";
 
 devMethods();
 hudAddressDefine();
