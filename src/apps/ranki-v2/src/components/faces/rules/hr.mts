@@ -1,4 +1,4 @@
-import { RankiFacesElement } from "../face/RankiFacesElement.mts";
+import { RankiFacesElement } from "../RankiFacesElement.mts";
 import styles from "./hr.css?inline";
 
 // export const hrSheet = new CSSStyleSheet();

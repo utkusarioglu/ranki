@@ -38,8 +38,18 @@ body {
   height: max-content !important;
 
   /* makes the body available for molding by config*/
-  display: grid;
-  grid-template-rows: var(--hud-height) 1fr;
+  display: grid !important;
+  /* old android view messes with this if vertically_centered is selected*/
+  grid-template-rows: var(--hud-height) 1fr !important;
   flex-direction: column;
   justify-content: center;
+}
+
+/* 
+This takes the first position in the grid and messes up the order.
+It is present in the old ankidroid view and houses #qa.
+*/
+#content {
+  /* display: none !important; */
+  position: absolute !important;
 }

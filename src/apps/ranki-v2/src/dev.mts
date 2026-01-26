@@ -68,6 +68,7 @@ export function devMethods() {
         // !!tagIndex ? "+r:animation-slow" : "",
         // "+r:animation-slow",
         TAGS[tagIndex++ % TAGS.length],
+        "+r:animation::disabled",
       ].join(" ");
       dark = !dark;
       const deck = document.querySelector(

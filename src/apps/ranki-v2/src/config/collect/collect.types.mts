@@ -27,10 +27,7 @@ export type RankiTag = `${RankiTagPrefix}${string}`;
 
 export type RankiTags = RankiTag[];
 
-export type HtmlTagClassCollection = [HtmlTagMode, HtmlTagOs, HtmlTagEnv];
-
-export type HtmlTagMode = "night-mode" | "day-mode";
-export type HtmlTagOs = "win" | "android";
+export type HtmlTagOs = "windows" | "android" | "linux";
 export type HtmlTagEnv = "chrome";
 export type HtmlAttrDir = "ltr" | "rtl";
 export type HtmlAttrTheme = "dark" | "light";
@@ -47,13 +44,34 @@ export interface AnkiTemplateFields {
 export type ConfigLocations = "template" | "card" | "user";
 
 export type CollectedConfig = Record<ConfigLocations, string>;
+export type CollectedWebviewType =
+  | "windows"
+  | "android-old"
+  | "android-new"
+  | "unknown";
 
 export type CollectedHtmlTagAttributes = {
-  mode: HtmlTagMode;
+  raw: {
+    mobile: boolean;
+    linux: boolean;
+    android: boolean;
+    chrome: boolean;
+    windows: boolean;
+    js: boolean;
+    fancy: boolean;
+
+    verticallyCentered: boolean;
+    night_mode: boolean;
+    nightMode: boolean;
+    "night-mode": boolean;
+    dataBsTheme: HtmlAttrTheme;
+    title: string;
+  };
+  webview: CollectedWebviewType;
   os: HtmlTagOs;
   env: HtmlTagEnv;
   dir: HtmlAttrDir;
-  dataBsTheme: HtmlAttrTheme;
+  scheme: HtmlAttrTheme;
 };
 
 export type RankiFaces = Record<string, HTMLDivElement>;

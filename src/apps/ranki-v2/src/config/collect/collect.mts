@@ -5,8 +5,10 @@ import type {
   RawFields,
   HtmlAttrDir,
   HtmlAttrTheme,
-  HtmlTagClassCollection,
   RankiFaces,
+  HtmlTagOs,
+  HtmlTagEnv,
+  CollectedWebviewType,
 } from "./collect.types.mjs";
 import {
   CONFIG_FILE_CLASS_SELECTOR,
@@ -80,19 +82,71 @@ function collectAnkiFields(): AnkiTemplateFields {
 function collectHtmlTagAttributes(): CollectedHtmlTagAttributes {
   const htmlElem = document.querySelector("html");
   assertExists(htmlElem, { why: "Cannot collect data without html element" });
+  const bodyElem = document.body;
+  const titleElem = document.querySelector("title");
+  assertExists(titleElem, { why: "Cannot collect data without title element" });
   // #2
-  const [mode, os, env] = htmlElem.className.split(
-    " ",
-  ) as HtmlTagClassCollection;
+  const htmlClasses = htmlElem.className.split(" ");
+  const bodyClasses = bodyElem.className.split(" ");
+  const cls = new Set([...htmlClasses, ...bodyClasses]);
+
   const dir = htmlElem.getAttribute("dir") as HtmlAttrDir;
-  let dataBsTheme = htmlElem.getAttribute("data-bs-theme") as HtmlAttrTheme;
-  dataBsTheme =
-    dataBsTheme !== null
-      ? dataBsTheme
-      : window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
-  return { mode, os, env, dir, dataBsTheme };
+  const dataBsTheme = htmlElem.getAttribute("data-bs-theme") as HtmlAttrTheme;
+
+  const raw = {
+    mobile: cls.has("mobile"),
+    linux: cls.has("linux"),
+    android: cls.has("android"),
+    chrome: cls.has("chrome"),
+    windows: cls.has("isWin"),
+    js: cls.has("js"),
+    fancy: cls.has("fancy"),
+    dataBsTheme,
+    verticallyCentered: cls.has("vertically_centered"),
+    night_mode: cls.has("night_mode"),
+    nightMode: cls.has("nightMode"),
+    "night-mode": cls.has("night-mode"),
+    title: titleElem.innerText,
+  };
+
+  const OS: HtmlTagOs[] = ["android", "windows", "linux"];
+  const os = OS[[raw.android, raw.windows, raw.linux].indexOf(true)];
+  const ENV: HtmlTagEnv[] = ["chrome"];
+  const env = ENV[[raw.chrome].indexOf(true)];
+  const scheme: HtmlAttrTheme =
+    [
+      dataBsTheme === "dark",
+      raw.night_mode,
+      raw.nightMode,
+      raw["night-mode"],
+    ].indexOf(true) !== -1
+      ? "dark"
+      : "light";
+
+  let webview: CollectedWebviewType;
+  switch (raw.title) {
+    case "AnkiDroid Flashcard":
+      webview = "android-old";
+      break;
+    case "AnkiDroid":
+      webview = "android-new";
+      break;
+    case "previewer":
+    case "main webview":
+      webview = "windows";
+      break;
+    default:
+      webview = "unknown";
+  }
+
+  return {
+    raw,
+    webview,
+    os,
+    env,
+    dir,
+    scheme,
+  };
 }
 
 function collectFaces(): RankiFaces {
@@ -115,6 +169,8 @@ export async function collectRaw(): Promise<RawFields> {
   const config = await collectConfigFields();
   const faces = collectFaces();
   const hash = hasher(htmlAttr, fields, config, faces);
+
+  console.log("h", htmlAttr);
 
   return {
     hash,

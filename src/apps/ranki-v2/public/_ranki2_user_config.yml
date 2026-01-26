@@ -48,28 +48,35 @@ tags:
   - exact: caution
     cue:
       indicator: caution
-  - exact: +r:scheme-light
+  - exact: +r::scheme::light
     cue:
       message: "Light scheme"
     config:
       design:
         scheme: light
-  - exact: +r:scheme-dark
+  - exact: +r::scheme::dark
     cue: 
       message: "Dark scheme"
     config:
       design:
         scheme: dark
-  - exact: +r:theme-print
+  - exact: +r::theme::print
     cue:
       message: "Print theme"
     config:
       design:
         theme: print
-  - exact: +r:animation-slow
+  - exact: +r::animation::slow
     cue:
       message: AnimSlow
     config:
       design:
         animation:
           fade: 3s
+  - exact: +r::animation::disabled
+    cue:
+      message: AnimDisabled
+    config:
+      design:
+        animation:
+          fade: "0"

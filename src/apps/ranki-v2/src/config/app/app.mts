@@ -49,7 +49,7 @@ export function createAppConfig(
 
 function getScheme(base: BuildRankiBaseConfigReturn, raw: RawFields) {
   return base.config.design.scheme === SYSTEM_CONTROLLED_SCHEME_TOKEN
-    ? raw.htmlAttr.dataBsTheme // #1
+    ? raw.htmlAttr.scheme
     : base.config.design.scheme;
 }
 

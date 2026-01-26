@@ -1,5 +1,13 @@
 export class RankiFacesElement extends HTMLElement {
   connectedCallback() {
+    this.addEventListener(
+      "transitionend",
+      () => {
+        console.log("removed");
+        this.style.removeProperty("max-height");
+      },
+      { once: true },
+    );
     this.style.setProperty("opacity", "0");
     this.style.setProperty("max-height", "0");
     const height = window.innerHeight;
@@ -7,13 +15,6 @@ export class RankiFacesElement extends HTMLElement {
       requestAnimationFrame(() => {
         this.style.setProperty("max-height", height + "px");
         this.style.setProperty("opacity", "1");
-        this.addEventListener(
-          "transitioned",
-          () => {
-            this.style.removeProperty("max-height");
-          },
-          { once: true },
-        );
       });
     });
   }
