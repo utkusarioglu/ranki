@@ -159,6 +159,7 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
   ): Promise<RenderReport> {
+    console.log("ser", serializedOutput);
     serializedOutput.forEach(({ theater, serialized }) => {
       const root = roots.theaters[theater]();
       if (!root) {
@@ -171,8 +172,10 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
       ) as DqmSreTheater;
       const key = serialized.map((v) => v.key).join("-");
       sreTheater.setAttribute("dqm-key", key);
+      sreTheater.setAttribute("dqm-theater", theater);
       root.replaceChildren(sreTheater);
       root.setAttribute("dqm-key", key);
+      root.setAttribute("dqm-theater", theater);
       const container = document.createElement("div");
       sreTheater.setTheater(container);
 

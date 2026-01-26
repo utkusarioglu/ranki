@@ -14,11 +14,12 @@ export class Hash {
   static serialKey(
     chain: Chain,
     props: any,
-    childrenKeys: ISerializedKey[],
+    sourceOrChildrenKeys: string,
   ): ISerializedKey {
-    return Hash.djb2Hash(JSON.stringify([chain, props, childrenKeys])).toString(
-      16,
-    ) as ISerializedKey;
+    console.log("--", chain, "-", sourceOrChildrenKeys, "-");
+    return Hash.djb2Hash(
+      JSON.stringify([chain, props, sourceOrChildrenKeys]),
+    ).toString() as ISerializedKey;
   }
 
   private static djb2Hash(str: string): number {

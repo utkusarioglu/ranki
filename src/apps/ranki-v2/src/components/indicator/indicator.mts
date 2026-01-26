@@ -2,7 +2,7 @@ import type {
   RankiAppConfig,
   RankiIndicatorDefinition,
 } from "../../config/config.types.mts";
-import { assertExists } from "../../error/assertions.mts";
+import { assertNotUndefined } from "../../error/assertions.mts";
 
 export function createIndicators(root: HTMLDivElement, config: RankiAppConfig) {
   const indicators = config.indicators;
@@ -14,7 +14,7 @@ export function createIndicators(root: HTMLDivElement, config: RankiAppConfig) {
       return;
     }
     const ind = indicators.find((v) => v.name === c.indicator);
-    assertExists(ind, {
+    assertNotUndefined(ind, {
       why: "Indicator with the given name doesn't exist",
       details: { indicator: c.indicator, indicators },
     });

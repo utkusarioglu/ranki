@@ -86,10 +86,11 @@ export class TrnNode extends CommonTransports implements ITrnNode {
         this.serialized = this.serializeParent(chain, props, p);
         break;
       case "leaf":
-        assertExists(this.source, {
+        const source = this.source;
+        assertExists(source, {
           why: "leaves need to have their source set",
         });
-        const key = Hash.serialKey(chain, props, []);
+        const key = Hash.serialKey(chain, props, source);
         this.serialized = {
           serialized: [
             {
@@ -97,7 +98,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
               key,
               chain,
               props,
-              source: this.source,
+              source,
             },
           ],
         };
@@ -121,14 +122,11 @@ export class TrnNode extends CommonTransports implements ITrnNode {
       .flat();
 
     const children = local.map((v) => v.serialized).flat();
-    const key = Hash.serialKey(
-      chain,
-      props,
-      children.map((v) => v.key),
-    );
-    const curr: ISerializedParent = {
+
+    // const curr: ISerializedParent = {
+    const pre: Omit<ISerializedParent, "key"> = {
       kind: "parent",
-      key,
+      // key: "",
       chain,
       props,
       children,
@@ -137,7 +135,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     const mounts = [
       this.isMount
         ? (v: ISerializedNode[]) => {
-            v.forEach((a) => curr.children.push(a));
+            v.forEach((a) => pre.children.push(a));
           }
         : undefined,
       ...local.map((v) => v.mount),
@@ -157,6 +155,18 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     const mountCb = mounts[0];
 
     if (this.isLocalEdge) {
+      // FIX this is broken it doesn't properly produce keys. likely due to how
+      // foreign nodes are binded. TODO this is repeated at the end of the
+      // file. and that one is also broken
+      const curr: ISerializedParent = {
+        ...pre,
+        key: Hash.serialKey(
+          chain,
+          props,
+          pre.children.map((v) => v.key).join("-") || "no-child",
+        ),
+      };
+
       return {
         serialized: [curr],
         mount: mountCb,
@@ -173,6 +183,16 @@ export class TrnNode extends CommonTransports implements ITrnNode {
       });
       mountCb(foreign.map((f) => f.serialized).flat());
     }
+
+    const curr: ISerializedParent = {
+      ...pre,
+      key: Hash.serialKey(
+        chain,
+        props,
+        pre.children.map((v) => v.key).join("-") || "no-children",
+      ),
+    };
+
     return {
       serialized: [curr],
     };

@@ -1,5 +1,5 @@
 import type { RankiAppConfig } from "../config/config.types.mts";
-import { assertExists } from "../error/assertions.mts";
+import { assertNotUndefined } from "../error/assertions.mts";
 import { generatePaletteStyle } from "./color.mts";
 
 const GENERATED_PREFIX = "generated";
@@ -46,7 +46,7 @@ export function createDesign(document: Document, config: RankiAppConfig) {
       return;
     }
     const palette = config.palettes.find(({ name }) => n === name);
-    assertExists(palette, {
+    assertNotUndefined(palette, {
       why: "Custom palette requires paletteSpecs to be defined",
     });
 

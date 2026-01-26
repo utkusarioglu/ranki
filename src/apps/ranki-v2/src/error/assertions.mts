@@ -27,13 +27,26 @@ export function assertNotExists(
   }
 }
 
-export function assertExists(
+export function assertNotUndefined(
   value: any,
   extra: AssertionExtra,
 ): asserts value is object {
   if (value === undefined) {
     throw new RankiAppError({
       code: "VALUE_DEFINED",
+      cause: extra.cause || null,
+      ...extra,
+    });
+  }
+}
+
+export function assertNotNull(
+  value: any,
+  extra: AssertionExtra,
+): asserts value is object {
+  if (value === null) {
+    throw new RankiAppError({
+      code: "VALUE_NULL",
       cause: extra.cause || null,
       ...extra,
     });
