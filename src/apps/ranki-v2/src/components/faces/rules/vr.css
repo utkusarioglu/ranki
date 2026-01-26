@@ -1,8 +1,8 @@
 :host {
   --color-vr: var(--face-vr-horizontal-background-color);
   --vr-width: var(--face-vr-horizontal-width);
-  --transition-duration: var(--face-vr-transition-duration, 0);
-  --transition-property: background, color, padding, border, opacity;
+  /* --transition-duration: var(--face-vr-transition-duration, 0);
+  --transition-property: background, color, padding, border, opacity, width; */
 }
 
 rule-vertical .container {

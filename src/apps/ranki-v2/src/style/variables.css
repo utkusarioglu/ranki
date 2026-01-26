@@ -15,6 +15,7 @@
 
   /* BODY */
   --body-transition-duration: var(--ranki-animation-fade-duration);
+  --face-transition-duration: var(--ranki-animation-fade-duration);
 
   /* HUD ADDRESS */
   --rha-transition-duration: var(--ranki-animation-fade-duration);

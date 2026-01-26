@@ -3,7 +3,7 @@ import { assertExists } from "./error/assertions.mts";
 declare global {
   interface Window {
     ranki: {
-      switchScheme(t: string): void;
+      switch(t: string): void;
     };
   }
 }
@@ -34,7 +34,7 @@ export function devMethods() {
   ];
 
   window.ranki = {
-    switchScheme() {
+    switch() {
       const qa = document.querySelector("#qa");
       assertExists(qa, { why: "needed" });
       const ren = qa.querySelector("div.rendered");
@@ -47,7 +47,7 @@ export function devMethods() {
       assertExists(tags, { why: "needed" });
       tags.innerText = [
         dark ? "+r:scheme-light" : "",
-        !!tagIndex ? "+r:animation-slow" : "",
+        // !!tagIndex ? "+r:animation-slow" : "",
         TAGS[tagIndex++ % TAGS.length],
       ].join(" ");
       dark = !dark;

@@ -18,6 +18,7 @@ import { CommonTransports } from "../common-transports.mjs";
 import { assertExists, assertParent } from "@dqm/package-dqm-utils";
 import { assertNever } from "../../errors/dqm-app-error/assertions.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
+import { Hash } from "../../utils/hash.mjs";
 
 export class TrnNode extends CommonTransports implements ITrnNode {
   public readonly ast: IAstNode;
@@ -88,10 +89,12 @@ export class TrnNode extends CommonTransports implements ITrnNode {
         assertExists(this.source, {
           why: "leaves need to have their source set",
         });
+        const key = Hash.serialKey(chain, props, []);
         this.serialized = {
           serialized: [
             {
               kind,
+              key,
               chain,
               props,
               source: this.source,
@@ -117,11 +120,18 @@ export class TrnNode extends CommonTransports implements ITrnNode {
       .map((v) => v.serialize(p))
       .flat();
 
-    const curr: ISerializedParent = {
-      kind: "parent",
+    const children = local.map((v) => v.serialized).flat();
+    const key = Hash.serialKey(
       chain,
       props,
-      children: local.map((v) => v.serialized).flat(),
+      children.map((v) => v.key),
+    );
+    const curr: ISerializedParent = {
+      kind: "parent",
+      key,
+      chain,
+      props,
+      children,
     };
 
     const mounts = [

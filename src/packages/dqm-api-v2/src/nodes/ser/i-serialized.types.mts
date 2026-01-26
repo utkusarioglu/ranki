@@ -7,7 +7,10 @@ export interface SerializedPackage {
 
 export type ISerializedNode = ISerializedParent | ISerializedLeaf;
 
+export type ISerializedKey = string & { type: "SerializedKey" };
+
 interface ISerializedCommon {
+  key: ISerializedKey;
   chain: Chain;
   props: Partial<Record<SerializationPropertiesUnion, any>>;
 }

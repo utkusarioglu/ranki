@@ -6,8 +6,10 @@ hrSheet.replaceSync(styles);
 export class RuleHorizontal extends HTMLElement {
   connectedCallback() {
     this.style.setProperty("opacity", "0");
+    this.style.setProperty("max-height", "0");
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
+        this.style.setProperty("max-height", "70px");
         this.style.setProperty("opacity", "1");
       });
     });
@@ -15,10 +17,15 @@ export class RuleHorizontal extends HTMLElement {
 
   exit() {
     this.style.setProperty("opacity", "1");
+    this.style.setProperty("max-height", "70px");
+    this.style.setProperty("transform", "translateY(50px)");
     requestAnimationFrame(() => {
-      this.style.setProperty("opacity", "0");
-      this.addEventListener("transitionend", () => this.remove(), {
-        once: true,
+      requestAnimationFrame(() => {
+        this.style.setProperty("opacity", "0");
+        this.style.setProperty("max-height", "0px");
+        this.addEventListener("transitionend", () => this.remove(), {
+          once: true,
+        });
       });
     });
   }

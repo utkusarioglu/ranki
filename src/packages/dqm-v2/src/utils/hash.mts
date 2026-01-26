@@ -1,5 +1,7 @@
 import type {
+  Chain,
   DqmInternalConfig,
+  ISerializedKey,
   ParserHashString,
 } from "@dqm/package-dqm-api-v2";
 
@@ -7,6 +9,16 @@ export class Hash {
   static internalConfig(config: DqmInternalConfig): ParserHashString {
     const stringified = Hash.stringifyInternalConfig(config);
     return Hash.djb2Hash(stringified).toString() as ParserHashString;
+  }
+
+  static serialKey(
+    chain: Chain,
+    props: any,
+    childrenKeys: ISerializedKey[],
+  ): ISerializedKey {
+    return Hash.djb2Hash(JSON.stringify([chain, props, childrenKeys])).toString(
+      16,
+    ) as ISerializedKey;
   }
 
   private static djb2Hash(str: string): number {

@@ -22,8 +22,6 @@ type PushCssCallback = (css: RenderNodeCssSpec) => void;
 defineSreTheater();
 export class DqmStaticRenderer implements IDqmRenderEngine {
   private library = new RendererLibrary();
-  // private css: CssMap = new Map();
-  // private head: HTMLHeadElement | null = null;
   private assertions: Assertions;
 
   constructor(assertions: Assertions) {
@@ -87,7 +85,7 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
   private async single(
     serialized: ISerializedNode,
     pref: IDqmRendererClientPreferences,
-    root: HTMLElement,
+    root: HTMLElement | DocumentFragment,
     pushCss: PushCssCallback,
   ) {
     const renderer = this.library.getPlugin(serialized.chain);
@@ -119,7 +117,6 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
         // @ts-expect-error
         (a) => deferred(a),
       );
-      // const def = deferred(serialized, pref);
       root.replaceChild(def.element, sync.element);
       def.afterMount?.forEach((f) => f());
 
@@ -157,34 +154,11 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
     }
   }
 
-  // private initialize() {
-  //   this.css.clear();
-  // }
-
-  // private getHead(roots: RenderRoots) {
-  //   if (this.head) {
-  //     return this.head;
-  //   }
-  //   const firstRoot = Object.values(roots)[0];
-  //   if (!firstRoot) {
-  //     // REPLACE
-  //     throw new Error("NO RENDER ROOTS: REMOVE THIS ERROR");
-  //   }
-  //   const head = firstRoot.ownerDocument.querySelector("head");
-  //   if (!head) {
-  //     // REPLACE
-  //     throw new Error("CANNOT FIND HEAD: REMOVE THIS ERROR");
-  //   }
-  //   this.head = head;
-  //   return head;
-  // }
-
   async render(
     serializedOutput: DqmSerializeOutput,
     roots: RenderRoots,
     pref: IDqmRendererClientPreferences,
   ): Promise<RenderReport> {
-    // this.initialize();
     serializedOutput.forEach(({ theater, serialized }) => {
       const root = roots.theaters[theater]();
       if (!root) {
@@ -195,22 +169,16 @@ export class DqmStaticRenderer implements IDqmRenderEngine {
       const sreTheater = document.createElement(
         "dqm-sre-theater",
       ) as DqmSreTheater;
+      const key = serialized.map((v) => v.key).join("-");
+      sreTheater.setAttribute("dqm-key", key);
       root.replaceChildren(sreTheater);
+      root.setAttribute("dqm-key", key);
       const container = document.createElement("div");
       sreTheater.setTheater(container);
 
       const pushCss: PushCssCallback = (spec) => sreTheater.setStyle(spec);
-      // root.innerText = "";
       serialized.forEach(async (t) => this.single(t, pref, container, pushCss));
     });
-
-    // const head = this.getHead(roots);
-    // for (const [id, pack] of this.css) {
-    //   const c = document.createElement("style");
-    //   c.id = id;
-    //   c.innerHTML = pack.css;
-    //   head.appendChild(c);
-    // }
 
     return Promise.resolve({ finished: true });
   }
