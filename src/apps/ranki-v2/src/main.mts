@@ -6,6 +6,7 @@ import { RankiHud } from "./components/hud/hud.mts";
 import { devMethods } from "./dev.mts";
 import { setStyles } from "./style/style.mts";
 import { RankiFaces } from "./components/faces/faces.mts";
+import { RankiIndicator } from "./components/indicator/indicator.mts";
 
 devMethods();
 
@@ -24,9 +25,8 @@ async function main() {
     const config = await createConfig();
     RankiHud.singleton(config.ranki.hud, document.body);
 
-    createDesign(document, config.ranki);
-    // TODO indicators
-    // createIndicators(root, config.ranki);
+    createDesign(config.ranki);
+    RankiIndicator.singleton(config.ranki, document.body);
     RankiFaces.singleton(
       { faces: config.ranki.order, dqm: config.dqm },
       document.body,

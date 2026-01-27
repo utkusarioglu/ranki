@@ -1,0 +1,26 @@
+:host {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  --transition-duration: var(--ranki-animation-indicator-duration);
+}
+
+ranki-indicator-pattern {
+  position: absolute;
+  inset: 0;
+  transition-property: opacity, background;
+  transition-duration: var(--transition-duration);
+  display: block;
+}
+
+ranki-indicator-pattern > .container {
+  /* inset: 0; */
+  /* height: 100vh; */
+  /* z-index: -1; */
+  /* transition-property: opacity, background;
+  transition-duration: 2s; */
+  /* background: transparent; */
+  width: 100%;
+  height: 100%;
+}

@@ -9,7 +9,7 @@ const PALETTE_PREFIX = "palette";
 const REMOVED = [SCHEME_PREFIX, THEME_PREFIX];
 const CSS_FADE_ANIMATION_DURATION = "--ranki-animation-fade-duration";
 
-export function createDesign(document: Document, config: RankiAppConfig) {
+export function createDesign(config: RankiAppConfig) {
   const root = document.documentElement;
   const attach = document.body;
   root.style.setProperty(

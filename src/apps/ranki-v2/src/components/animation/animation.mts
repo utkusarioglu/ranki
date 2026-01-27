@@ -58,7 +58,6 @@ export class RankiAnimation {
 
   static collapseYFadeOut(self: RankiWc<{}>, additional?: PropertiesPack) {
     const height = self.getHeight() || window.innerHeight;
-    console.log(height, self);
     return RankiAnimation.animate(self, {
       wait: additional?.wait,
       twoRafCb: additional?.twoRafCb,
@@ -187,6 +186,7 @@ export class RankiAnimation {
       twoRafCb: additional?.twoRafCb,
       endRemove: additional?.endRemove,
       pre: {
+        opacity: 1,
         ...(additional && additional.pre),
       },
       twoRaf: {

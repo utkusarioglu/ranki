@@ -12,6 +12,7 @@
   --hud-height: 40px;
   /* --color-divider-bg: var(--color-surface-1-hex); */
   --ranki-animation-fade-duration: 0s;
+  --ranki-animation-indicator-duration: 2s;
 
   /* BODY */
   --body-transition-duration: var(--ranki-animation-fade-duration);
