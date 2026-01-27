@@ -170,8 +170,6 @@ export async function collectRaw(): Promise<RawFields> {
   const faces = collectFaces();
   const hash = hasher(htmlAttr, fields, config, faces);
 
-  console.log("h", htmlAttr);
-
   return {
     hash,
     htmlAttr,

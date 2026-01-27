@@ -1,19 +1,32 @@
-import { HudShadowBase } from "../../hud-base.mts";
+import { HudShadowBase, type AnimationTypes } from "../../hud-base.mts";
 import type { HudParserProps } from "../../hud.types.mts";
 import styles from "./parser.component.css?inline";
 
 type Props = HudParserProps;
 
 export class HudParser extends HudShadowBase<Props> {
-  private static name = "ranki-hud-parser";
+  protected static name = "ranki-hud-parser" as const;
+  protected animations: AnimationTypes = {
+    enter: this.animateEntry.bind(this),
+    exit: this.animateExit.bind(this),
+  };
 
   constructor() {
     super(true);
     this.pushStyles(styles);
   }
 
-  connectedCallback() {
-    this.animateEntry();
+  private adjustWidth() {
+    const container = this.shadowRoot!.querySelector(
+      "div.replacements",
+    ) as HTMLDivElement;
+    if (!container) {
+      return;
+    }
+
+    const right = container.getBoundingClientRect().right;
+    const left = this.getLeft();
+    this.setProperties({ width: right - left + "px" });
   }
 
   private animateEntry() {
@@ -31,23 +44,6 @@ export class HudParser extends HudShadowBase<Props> {
         this.adjustWidth();
       });
     });
-  }
-
-  private adjustWidth() {
-    const container = this.shadowRoot!.querySelector(
-      "div.replacements",
-    ) as HTMLDivElement;
-    if (!container) {
-      return;
-    }
-
-    const right = container.getBoundingClientRect().right;
-    const left = this.getLeft();
-    this.setProperties({ width: right - left + "px" });
-  }
-
-  exit() {
-    this.animateExit();
   }
 
   private animateExit() {

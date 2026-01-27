@@ -1,4 +1,4 @@
-import { HudShadowBase } from "../../hud-base.mts";
+import { HudShadowBase, type AnimationTypes } from "../../hud-base.mts";
 import type { HudTagListItem, HudTagsProps } from "../../hud.types.mts";
 import { HudTagsTag } from "./HudTagsTag.mts";
 import styles from "./tags.component.css?inline";
@@ -6,15 +6,15 @@ import styles from "./tags.component.css?inline";
 type Props = HudTagsProps;
 
 export class HudTags extends HudShadowBase<Props> {
-  private static name = "ranki-hud-tags";
+  protected static name = "ranki-hud-tags" as const;
+  protected animations: AnimationTypes = {
+    enter: this.animateEntry.bind(this),
+    exit: this.animateExit.bind(this),
+  };
 
   constructor() {
     super(true);
     this.pushStyles(styles);
-  }
-
-  connectedCallback() {
-    this.animateEntry();
   }
 
   private animateEntry() {
@@ -42,10 +42,6 @@ export class HudTags extends HudShadowBase<Props> {
     const right = last.getRight();
     const left = this.getLeft();
     this.setProperties({ width: right - left + "px" });
-  }
-
-  exit() {
-    this.animateExit();
   }
 
   private animateExit() {

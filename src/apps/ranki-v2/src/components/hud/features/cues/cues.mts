@@ -1,5 +1,5 @@
 import type { CueRecord } from "../../../../config/config.types.mts";
-import { HudShadowBase } from "../../hud-base.mts";
+import { HudShadowBase, type AnimationTypes } from "../../hud-base.mts";
 import type { HudCuesProps } from "../../hud.types.mts";
 import styles from "./cues.component.css?inline";
 import { HudCuesCue } from "./hud-cue.mts";
@@ -7,15 +7,15 @@ import { HudCuesCue } from "./hud-cue.mts";
 type Props = HudCuesProps;
 
 export class HudCues extends HudShadowBase<Props> {
-  private static name = "ranki-hud-cues";
+  protected static name = "ranki-hud-cues" as const;
+  protected animations: AnimationTypes = {
+    enter: this.animateEntry.bind(this),
+    exit: this.animateExit.bind(this),
+  };
 
   constructor() {
     super(true);
     this.pushStyles(styles);
-  }
-
-  connectedCallback() {
-    this.animateEntry();
   }
 
   private animateEntry() {
@@ -50,10 +50,6 @@ export class HudCues extends HudShadowBase<Props> {
     ).getRight();
     const left = this.getLeft();
     this.style.setProperty("width", right - left + "px");
-  }
-
-  exit() {
-    this.animateExit();
   }
 
   private animateExit() {

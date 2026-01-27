@@ -1,5 +1,5 @@
 import { assertNever } from "../../../../error/assertions.mts";
-import { HudShadowBase } from "../../hud-base.mts";
+import { HudShadowBase, type AnimationTypes } from "../../hud-base.mts";
 import type { HudAddressProps, HudAddressSegment } from "../../hud.types.mts";
 import styles from "./address.component.css?inline";
 import { HudAddressCrumb } from "./HudAddressCrumb.mts";
@@ -7,41 +7,56 @@ import { HudAddressCrumb } from "./HudAddressCrumb.mts";
 type Props = HudAddressProps;
 
 export class HudAddress extends HudShadowBase<Props> {
-  private static name = "ranki-hud-address";
+  protected static name = "ranki-hud-address" as const;
+  protected animations: AnimationTypes = {
+    enter: this.animateEntry.bind(this),
+    exit: this.animateExit.bind(this),
+  };
+
   constructor() {
     super(true);
     this.pushStyles(styles);
   }
 
-  connectedCallback() {
-    this.animateEntry();
-  }
-
   private animateEntry() {
-    this.setProperties({ opacity: 0, width: 0 });
-    this.twoRaf(() => {
-      this.setProperties({ opacity: 1 });
-      this.adjustWidth();
-    });
-  }
-
-  private animateExit() {
-    this.addEventListener("transitionend", () => this.remove(), {
-      once: true,
-    });
-    const width = this.getWidth();
-    this.setProperties({ width: width + "px" });
-    this.twoRaf(() => {
-      this.setProperties({
-        width: 0,
-        opacity: 0,
-        "margin-right": 0,
+    return new Promise<void>((r) => {
+      this.addEventListener(
+        "transitionend",
+        () => {
+          r();
+        },
+        { once: true },
+      );
+      this.setProperties({ opacity: 0, width: 0 });
+      this.twoRaf(() => {
+        this.setProperties({ opacity: 1 });
+        this.adjustWidth();
       });
     });
   }
 
-  exit() {
-    this.animateExit();
+  private animateExit() {
+    return new Promise<void>((r) => {
+      this.addEventListener(
+        "transitionend",
+        () => {
+          this.remove();
+          r();
+        },
+        {
+          once: true,
+        },
+      );
+      const width = this.getWidth();
+      this.setProperties({ width: width + "px" });
+      this.twoRaf(() => {
+        this.setProperties({
+          width: 0,
+          opacity: 0,
+          "margin-right": 0,
+        });
+      });
+    });
   }
 
   private adjustWidth() {

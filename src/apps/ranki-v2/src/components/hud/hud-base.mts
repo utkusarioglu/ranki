@@ -1,11 +1,33 @@
+export type AnimationTypes = Record<"enter" | "exit", () => Promise<void>>;
+
 export class HudShadowBase<Props> extends HTMLElement {
   private curr!: Props;
+  protected animations: AnimationTypes = {
+    enter: () => Promise.resolve(),
+    exit: () => Promise.resolve(),
+  };
 
   constructor(hasShadow: boolean) {
     super();
     if (hasShadow) {
       this.attachShadow({ mode: "open" });
     }
+  }
+
+  connectedCallback() {
+    this.runAnimation("enter");
+  }
+
+  exit(): Promise<void> {
+    return this.runAnimation("exit");
+  }
+
+  protected runAnimation(type: "enter" | "exit"): Promise<void> {
+    const animation = this.animations[type];
+    if (animation) {
+      return animation();
+    }
+    return Promise.resolve();
   }
 
   protected setProperties(c: Record<string, string | number>) {

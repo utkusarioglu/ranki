@@ -1,11 +1,11 @@
-import { HudShadowBase } from "../../hud-base.mts";
+import { HudShadowBase, type AnimationTypes } from "../../hud-base.mts";
 
 export class HudTagsTag extends HudShadowBase<{}> {
-  private static name = "hud-tags-tag";
-
-  connectedCallback() {
-    this.animateEntry();
-  }
+  protected static name = "hud-tags-tag" as const;
+  protected animations: AnimationTypes = {
+    enter: this.animateEntry.bind(this),
+    exit: this.animateExit.bind(this),
+  };
 
   private animateEntry() {
     return new Promise<void>((r) => {
@@ -21,10 +21,6 @@ export class HudTagsTag extends HudShadowBase<{}> {
         this.setProperties({ opacity: 1 });
       });
     });
-  }
-
-  exit() {
-    this.animateExit();
   }
 
   private animateExit() {

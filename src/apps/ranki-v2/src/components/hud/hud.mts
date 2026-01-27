@@ -9,10 +9,9 @@ import styles from "./hud.component.css?inline";
 import { horizontalScrollUtil } from "../scroller/horizontal.mts";
 import { HudShadowBase } from "./hud-base.mts";
 
-type Props = HudProps;
+export class Hud extends HudShadowBase<HudProps> {
+  protected static name = "ranki-hud" as const;
 
-export class Hud extends HudShadowBase<Props> {
-  private static name = "ranki-hud";
   constructor() {
     super(true);
     this.pushStyles(styles);

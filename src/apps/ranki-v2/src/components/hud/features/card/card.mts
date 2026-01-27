@@ -1,11 +1,16 @@
-import { HudShadowBase } from "../../hud-base.mts";
+import { HudShadowBase, type AnimationTypes } from "../../hud-base.mts";
 import type { HudCardProps } from "../../hud.types.mts";
 import styles from "./card.component.css?inline";
 
 type Props = HudCardProps;
 
 export class HudCard extends HudShadowBase<Props> {
-  private static name = "ranki-hud-card";
+  protected static name = "ranki-hud-card" as const;
+  protected animations: AnimationTypes = {
+    enter: this.animateEntry.bind(this),
+    exit: this.animateExit.bind(this),
+  };
+
   constructor() {
     super(true);
     this.pushStyles(styles);
@@ -41,10 +46,6 @@ export class HudCard extends HudShadowBase<Props> {
     this.setProperties({ width: right - left + "px" });
   }
 
-  connectedCallback() {
-    this.animateEntry();
-  }
-
   private animateExit(): Promise<void> {
     return new Promise((r) => {
       this.addEventListener(
@@ -67,10 +68,6 @@ export class HudCard extends HudShadowBase<Props> {
         }),
       );
     });
-  }
-
-  exit() {
-    this.animateExit();
   }
 
   private build() {
