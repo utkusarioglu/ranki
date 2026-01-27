@@ -1,42 +1,11 @@
-import { HudShadowBase, type AnimationTypes } from "../../hud-base.mts";
+import { RankiAnimation } from "../../../animation/animation.mts";
+import { RankiHudWc } from "../../hud-wc/hud-wc.mts";
+import { type AnimationTypes } from "../../../animation/animation.mts";
 
-export class HudTagsTag extends HudShadowBase<{}> {
+export class HudTagsTag extends RankiHudWc<{}> {
   protected static name = "hud-tags-tag" as const;
   protected animations: AnimationTypes = {
-    enter: this.animateEntry.bind(this),
-    exit: this.animateExit.bind(this),
+    enter: RankiAnimation.fadeIn(this),
+    exit: RankiAnimation.fadeOut(this),
   };
-
-  private animateEntry() {
-    return new Promise<void>((r) => {
-      this.addEventListener(
-        "transitionend",
-        () => {
-          r();
-        },
-        { once: true },
-      );
-      this.setProperties({ opacity: 0 });
-      this.twoRaf(() => {
-        this.setProperties({ opacity: 1 });
-      });
-    });
-  }
-
-  private animateExit() {
-    return new Promise<void>((r) => {
-      this.addEventListener(
-        "transitionend",
-        () => {
-          this.remove();
-          r();
-        },
-        { once: true },
-      );
-      this.setProperties({ opacity: 1 });
-      this.twoRaf(() => {
-        this.setProperties({ opacity: 0 });
-      });
-    });
-  }
 }

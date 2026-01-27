@@ -1,11 +1,14 @@
-export type AnimationTypes = Record<"enter" | "exit", () => Promise<void>>;
+import type {
+  AnimationTypes,
+  AnimationNames,
+} from "../animation/animation.mts";
 
-export class HudShadowBase<Props> extends HTMLElement {
+export type SetPropertiesArg = Record<string, string | number>;
+
+export class RankiWc<Props> extends HTMLElement {
   private curr!: Props;
-  protected animations: AnimationTypes = {
-    enter: () => Promise.resolve(),
-    exit: () => Promise.resolve(),
-  };
+  private prev: Props | null = null;
+  protected animations: AnimationTypes = {};
 
   constructor(hasShadow: boolean) {
     super();
@@ -18,11 +21,16 @@ export class HudShadowBase<Props> extends HTMLElement {
     this.runAnimation("enter");
   }
 
-  exit(): Promise<void> {
-    return this.runAnimation("exit");
+  static getName() {
+    return this.name;
   }
 
-  protected runAnimation(type: "enter" | "exit"): Promise<void> {
+  async remove(): Promise<void> {
+    await this.runAnimation("exit");
+    super.remove();
+  }
+
+  protected runAnimation(type: AnimationNames): Promise<void> {
     const animation = this.animations[type];
     if (animation) {
       return animation();
@@ -30,13 +38,13 @@ export class HudShadowBase<Props> extends HTMLElement {
     return Promise.resolve();
   }
 
-  protected setProperties(c: Record<string, string | number>) {
+  public setProperties(c: SetPropertiesArg) {
     Object.entries(c).forEach(([p, v]) => {
       this.style.setProperty(p, v.toString());
     });
   }
 
-  protected twoRaf(cb: () => void): Promise<void> {
+  public twoRaf(cb: () => void): Promise<void> {
     return new Promise<void>((r) => {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -79,11 +87,16 @@ export class HudShadowBase<Props> extends HTMLElement {
     }
   }
 
-  getProps(): Props {
+  getCurr(): Props {
     return this.curr;
   }
 
+  getPrev(): Props | null {
+    return this.prev;
+  }
+
   setProps(props: Props) {
+    this.prev = this.curr;
     this.curr = props;
     this.render();
   }
@@ -102,18 +115,18 @@ export class HudShadowBase<Props> extends HTMLElement {
 
   static create<T>(props: T, attach: Element) {
     this.define();
-    const el = document.createElement(this.name) as HudShadowBase<T>;
+    const el = document.createElement(this.name) as RankiWc<T>;
     attach.appendChild(el);
     el.setProps(props);
     return el;
   }
 
   static singleton<T>(props: T, attach: HTMLElement) {
-    let el: HudShadowBase<T> | null = attach.querySelector(this.name);
+    let el: RankiWc<T> | null = attach.querySelector(this.name);
 
     if (!el) {
       this.define();
-      el = document.createElement(this.name) as HudShadowBase<T>;
+      el = document.createElement(this.name) as RankiWc<T>;
       attach.appendChild(el);
     }
     el.setProps(props);

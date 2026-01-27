@@ -86,13 +86,13 @@
   border-radius: var(--s-border-radius);
   border: var(--s-border);
 
-  &:hover {
+  /* &:hover {
     padding: var(--s-hover-padding);
     background: var(--s-hover-background);
     color: var(--s-hover-color);
     border-radius: var(--s-hover-border-radius);
     border: var(--s-hover-border);
-  }
+  } */
 }
 
 .divider {

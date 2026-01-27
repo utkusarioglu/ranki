@@ -1,33 +1,27 @@
-import { HudShadowBase, type AnimationTypes } from "../../hud-base.mts";
+import { RankiAnimation } from "../../../animation/animation.mts";
+import { RankiHudWc } from "../../hud-wc/hud-wc.mts";
+import { type AnimationTypes } from "../../../animation/animation.mts";
 import type { HudTagListItem, HudTagsProps } from "../../hud.types.mts";
 import { HudTagsTag } from "./HudTagsTag.mts";
 import styles from "./tags.component.css?inline";
 
-type Props = HudTagsProps;
-
-export class HudTags extends HudShadowBase<Props> {
+export class HudTags extends RankiHudWc<HudTagsProps> {
   protected static name = "ranki-hud-tags" as const;
   protected animations: AnimationTypes = {
-    enter: this.animateEntry.bind(this),
-    exit: this.animateExit.bind(this),
+    show: RankiAnimation.expandXFadeIn(this, {
+      twoRafCb: this.adjustWidth.bind(this),
+    }),
+    hide: RankiAnimation.expandXFadeIn(this, {
+      twoRaf: {
+        "margin-right": 0,
+        opacity: 0,
+      },
+    }),
   };
 
   constructor() {
     super(true);
     this.pushStyles(styles);
-  }
-
-  private animateEntry() {
-    return new Promise<void>((r) => {
-      this.addEventListener("transitionend", () => {
-        r();
-      });
-      this.setProperties({ opacity: 0, width: 0 });
-      this.twoRaf(() => {
-        this.setProperties({ opacity: 1 });
-        this.adjustWidth();
-      });
-    });
   }
 
   private adjustWidth() {
@@ -37,29 +31,11 @@ export class HudTags extends HudShadowBase<Props> {
     if (!container) {
       return;
     }
-    const props = this.getProps();
+    const props = this.getCurr();
     const last = container.childNodes[props.count - 1] as HudTagsTag;
     const right = last.getRight();
     const left = this.getLeft();
     this.setProperties({ width: right - left + "px" });
-  }
-
-  private animateExit() {
-    return new Promise<void>((r) => {
-      this.addEventListener("transitionend", () => {
-        this.remove();
-        r();
-      });
-      const width = this.getWidth();
-      this.setProperties({ width: width + "px" });
-      this.twoRaf(() => {
-        this.setProperties({
-          width: 0,
-          opacity: 0,
-          "margin-right": 0,
-        });
-      });
-    });
   }
 
   private container() {
@@ -74,7 +50,7 @@ export class HudTags extends HudShadowBase<Props> {
   }
 
   private subtree(container: HTMLDivElement) {
-    const props = this.getProps();
+    const props = this.getCurr();
     const cn = container.childNodes.length;
 
     const sn = props.count;
@@ -97,7 +73,7 @@ export class HudTags extends HudShadowBase<Props> {
     }
     rm.length &&
       rm.forEach((r) => {
-        r.exit();
+        r.remove();
       });
   }
 
@@ -121,10 +97,11 @@ export class HudTags extends HudShadowBase<Props> {
   }
 
   render() {
-    if (this.getProps().count > 0) {
+    if (this.getCurr().count > 0) {
       this.build();
+      this.runAnimation("show");
     } else {
-      this.exit();
+      this.runAnimation("hide");
     }
   }
 }

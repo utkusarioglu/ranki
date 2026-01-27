@@ -7,9 +7,9 @@ import { HudTags } from "./features/tags/tags.mts";
 import { HudCues } from "./features/cues/cues.mts";
 import styles from "./hud.component.css?inline";
 import { horizontalScrollUtil } from "../scroller/horizontal.mts";
-import { HudShadowBase } from "./hud-base.mts";
+import { RankiHudWc } from "./hud-wc/hud-wc.mts";
 
-export class Hud extends HudShadowBase<HudProps> {
+export class Hud extends RankiHudWc<HudProps> {
   protected static name = "ranki-hud" as const;
 
   constructor() {
@@ -38,7 +38,7 @@ export class Hud extends HudShadowBase<HudProps> {
 
   private build() {
     const { head, tail } = this.container();
-    const props = this.getProps();
+    const props = this.getCurr();
     props.order.forEach((p) => {
       switch (p) {
         case "address":

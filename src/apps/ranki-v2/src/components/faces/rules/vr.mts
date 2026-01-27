@@ -19,7 +19,7 @@ export class RuleVertical extends HTMLElement {
     this.style.setProperty("opacity", "1");
     requestAnimationFrame(() => {
       this.style.setProperty("opacity", "0");
-      this.addEventListener("transitionend", () => this.remove(), {
+      this.addEventListener("transitionend", () => this.exit(), {
         once: true,
       });
     });

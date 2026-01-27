@@ -1,36 +1,26 @@
-import { HudShadowBase, type AnimationTypes } from "../../hud-base.mts";
+import { RankiAnimation } from "../../../animation/animation.mts";
+import { RankiHudWc } from "../../hud-wc/hud-wc.mts";
+import { type AnimationTypes } from "../../../animation/animation.mts";
 import type { HudCardProps } from "../../hud.types.mts";
 import styles from "./card.component.css?inline";
 
-type Props = HudCardProps;
-
-export class HudCard extends HudShadowBase<Props> {
+export class HudCard extends RankiHudWc<HudCardProps> {
   protected static name = "ranki-hud-card" as const;
   protected animations: AnimationTypes = {
-    enter: this.animateEntry.bind(this),
-    exit: this.animateExit.bind(this),
+    show: RankiAnimation.expandXFadeIn(this, {
+      twoRafCb: this.adjustWidth.bind(this),
+    }),
+    hide: RankiAnimation.expandXFadeIn(this, {
+      twoRaf: {
+        "margin-right": 0,
+        opacity: 0,
+      },
+    }),
   };
 
   constructor() {
     super(true);
     this.pushStyles(styles);
-  }
-
-  private animateEntry() {
-    return new Promise<void>((r) => {
-      this.addEventListener(
-        "transitioned",
-        () => {
-          r();
-        },
-        { once: true },
-      );
-      this.setProperties({ opacity: 0, width: 0 });
-      this.twoRaf(() => {
-        this.setProperties({ opacity: 1 });
-        this.adjustWidth();
-      });
-    });
   }
 
   private adjustWidth() {
@@ -46,30 +36,6 @@ export class HudCard extends HudShadowBase<Props> {
     this.setProperties({ width: right - left + "px" });
   }
 
-  private animateExit(): Promise<void> {
-    return new Promise((r) => {
-      this.addEventListener(
-        "transitionend",
-        () => {
-          this.remove();
-          r();
-        },
-        {
-          once: true,
-        },
-      );
-      const width = this.getWidth();
-      this.setProperties({ width: width + "px" });
-      this.twoRaf(() =>
-        this.setProperties({
-          width: 0,
-          opacity: 0,
-          "margin-right": 0,
-        }),
-      );
-    });
-  }
-
   private build() {
     const c = this.shadowRoot!.querySelector("div.container") as HTMLDivElement;
     if (c) {
@@ -77,7 +43,7 @@ export class HudCard extends HudShadowBase<Props> {
     }
     const container = document.createElement("div");
     container.classList.add("container");
-    const props = this.getProps();
+    const props = this.getCurr();
 
     const type = document.createElement("div");
     type.classList.add("type");
@@ -115,10 +81,10 @@ export class HudCard extends HudShadowBase<Props> {
 
   render() {
     const container = this.build();
-    const props = this.getProps();
+    const props = this.getCurr();
     this.setType(container, props.type);
     this.setCard(container, props.card);
     this.setFace(container, props.face);
-    this.adjustWidth();
+    this.runAnimation("show");
   }
 }

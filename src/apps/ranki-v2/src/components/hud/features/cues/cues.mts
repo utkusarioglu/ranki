@@ -1,40 +1,28 @@
 import type { CueRecord } from "../../../../config/config.types.mts";
-import { HudShadowBase, type AnimationTypes } from "../../hud-base.mts";
+import { RankiHudWc } from "../../hud-wc/hud-wc.mts";
+import { type AnimationTypes } from "../../../animation/animation.mts";
+import { RankiAnimation } from "../../../animation/animation.mts";
 import type { HudCuesProps } from "../../hud.types.mts";
 import styles from "./cues.component.css?inline";
 import { HudCuesCue } from "./hud-cue.mts";
 
-type Props = HudCuesProps;
-
-export class HudCues extends HudShadowBase<Props> {
+export class HudCues extends RankiHudWc<HudCuesProps> {
   protected static name = "ranki-hud-cues" as const;
   protected animations: AnimationTypes = {
-    enter: this.animateEntry.bind(this),
-    exit: this.animateExit.bind(this),
+    show: RankiAnimation.expandXFadeIn(this, {
+      twoRafCb: this.adjustWidth.bind(this),
+    }),
+    hide: RankiAnimation.expandXFadeIn(this, {
+      twoRaf: {
+        "margin-right": 0,
+        opacity: 0,
+      },
+    }),
   };
 
   constructor() {
     super(true);
     this.pushStyles(styles);
-  }
-
-  private animateEntry() {
-    return new Promise<void>((r) => {
-      this.addEventListener(
-        "transitionend",
-        () => {
-          r();
-        },
-        {
-          once: true,
-        },
-      );
-      this.setProperties({ opacity: 0, width: 0 });
-      this.twoRaf(() => {
-        this.setProperties({ opacity: 1 });
-        this.adjustWidth();
-      });
-    });
   }
 
   private adjustWidth() {
@@ -46,34 +34,10 @@ export class HudCues extends HudShadowBase<Props> {
     }
 
     const right = (
-      container.childNodes[this.getProps().length - 1] as HudCuesCue
+      container.childNodes[this.getCurr().length - 1] as HudCuesCue
     ).getRight();
     const left = this.getLeft();
-    this.style.setProperty("width", right - left + "px");
-  }
-
-  private animateExit() {
-    return new Promise<void>((r) => {
-      this.addEventListener(
-        "transitionend",
-        () => {
-          this.remove();
-          r();
-        },
-        {
-          once: true,
-        },
-      );
-      const width = this.getWidth();
-      this.setProperties({ width: width + "px" });
-      this.twoRaf(() => {
-        this.setProperties({
-          width: 0,
-          opacity: 0,
-          "margin-right": 0,
-        });
-      });
-    });
+    this.setProperties({ width: right - left + "px" });
   }
 
   private container() {
@@ -89,7 +53,7 @@ export class HudCues extends HudShadowBase<Props> {
 
   private build() {
     const container = this.container();
-    const props = this.getProps();
+    const props = this.getCurr();
     const cn = container.childNodes.length;
     const sn = props.length;
     const rm: HudCuesCue[] = [];
@@ -111,7 +75,7 @@ export class HudCues extends HudShadowBase<Props> {
     }
     rm.length &&
       rm.forEach((r) => {
-        r.exit();
+        r.remove();
       });
     this.adjustWidth();
     return container;
@@ -129,10 +93,12 @@ export class HudCues extends HudShadowBase<Props> {
   }
 
   render() {
-    if (this.getProps().length) {
+    const props = this.getCurr();
+    if (props.length) {
       this.build();
+      this.runAnimation("show");
     } else {
-      this.remove();
+      this.runAnimation("hide");
     }
   }
 }

@@ -45,7 +45,7 @@ export class RankiFacesPair extends HTMLElement {
         this.style.setProperty("opacity", "0");
         // this.style.setProperty("max-height", "0");
         this.style.setProperty("transform", "translateY(-50px)");
-        this.addEventListener("transitionend", () => this.remove(), {
+        this.addEventListener("transitionend", () => this.exit(), {
           once: true,
         });
       });

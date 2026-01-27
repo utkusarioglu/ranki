@@ -1,62 +1,27 @@
 import { assertNever } from "../../../../error/assertions.mts";
-import { HudShadowBase, type AnimationTypes } from "../../hud-base.mts";
+import { RankiHudWc } from "../../hud-wc/hud-wc.mts";
+import { type AnimationTypes } from "../../../animation/animation.mts";
+import { RankiAnimation } from "../../../animation/animation.mts";
 import type { HudAddressProps, HudAddressSegment } from "../../hud.types.mts";
 import styles from "./address.component.css?inline";
 import { HudAddressCrumb } from "./HudAddressCrumb.mts";
 
-type Props = HudAddressProps;
-
-export class HudAddress extends HudShadowBase<Props> {
+export class HudAddress extends RankiHudWc<HudAddressProps> {
   protected static name = "ranki-hud-address" as const;
   protected animations: AnimationTypes = {
-    enter: this.animateEntry.bind(this),
-    exit: this.animateExit.bind(this),
+    show: RankiAnimation.fadeIn(this, {
+      pre: {
+        "margin-right": 0,
+      },
+      twoRaf: {
+        "margin-right": "1em",
+      },
+    }),
   };
 
   constructor() {
     super(true);
     this.pushStyles(styles);
-  }
-
-  private animateEntry() {
-    return new Promise<void>((r) => {
-      this.addEventListener(
-        "transitionend",
-        () => {
-          r();
-        },
-        { once: true },
-      );
-      this.setProperties({ opacity: 0, width: 0 });
-      this.twoRaf(() => {
-        this.setProperties({ opacity: 1 });
-        this.adjustWidth();
-      });
-    });
-  }
-
-  private animateExit() {
-    return new Promise<void>((r) => {
-      this.addEventListener(
-        "transitionend",
-        () => {
-          this.remove();
-          r();
-        },
-        {
-          once: true,
-        },
-      );
-      const width = this.getWidth();
-      this.setProperties({ width: width + "px" });
-      this.twoRaf(() => {
-        this.setProperties({
-          width: 0,
-          opacity: 0,
-          "margin-right": 0,
-        });
-      });
-    });
   }
 
   private adjustWidth() {
@@ -68,7 +33,7 @@ export class HudAddress extends HudShadowBase<Props> {
     }
     const right = (
       container.childNodes[
-        this.getProps().segments.length - 1
+        this.getCurr().segments.length - 1
       ] as HudAddressCrumb
     ).getRight();
     const left = this.getLeft();
@@ -95,11 +60,11 @@ export class HudAddress extends HudShadowBase<Props> {
 
   private subtree(container: HTMLDivElement) {
     const cn = container.childNodes.length;
-    const sn = this.getProps().segments.length;
+    const sn = this.getCurr().segments.length;
     const rm: HudAddressCrumb[] = [];
 
     for (let i = 0; i < Math.max(cn, sn); i++) {
-      const s = this.getProps().segments[i];
+      const s = this.getCurr().segments[i];
       if (s) {
         const e = this.shadowRoot!.querySelector(
           `[data-index="${i}"]`,
@@ -115,7 +80,7 @@ export class HudAddress extends HudShadowBase<Props> {
     }
     rm.length &&
       rm.forEach((r) => {
-        r.exit();
+        r.remove();
       });
   }
 
@@ -132,7 +97,7 @@ export class HudAddress extends HudShadowBase<Props> {
       default:
         assertNever({
           why: "Unrecognized address segment mode",
-          details: { segments: this.getProps().segments, segment: s },
+          details: { segments: this.getCurr().segments, segment: s },
         });
     }
     e.innerText = s.shown.join("");
@@ -152,7 +117,7 @@ export class HudAddress extends HudShadowBase<Props> {
       default:
         assertNever({
           why: "Unrecognized address segment mode",
-          details: { segments: this.getProps().segments, segment: s },
+          details: { segments: this.getCurr().segments, segment: s },
         });
     }
     crumb.setAttribute("data-index", i.toString());
@@ -161,5 +126,6 @@ export class HudAddress extends HudShadowBase<Props> {
 
   render() {
     this.build();
+    this.runAnimation("show");
   }
 }

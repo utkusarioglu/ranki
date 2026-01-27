@@ -1,10 +1,25 @@
 import { assertNotNull, assertNotUndefined } from "./error/assertions.mts";
 
+type RankiSetKeys = "deck" | "face" | "type" | "tags" | "a" | "b";
+type RankiSetValues = string | number;
+type RankiSetFunc = Record<RankiSetKeys, RankiSetValues>;
+
+type RankiAlternateFunc = Record<RankiSetKeys, RankiSetValues[]>;
+
 declare global {
   interface Window {
     ranki: {
+      trigger(): HTMLDivElement;
       switch(t: string): void;
-      face(): void;
+      face(f: string): void;
+      a(a: string): void;
+      b(a: string): void;
+      tags(f: string): void;
+      type(f: string): void;
+      flag(f: number): void;
+      deck(d: string): void;
+      set(p: RankiSetFunc): void;
+      alternate(p: RankiAlternateFunc): void;
     };
   }
 }
@@ -51,71 +66,117 @@ export function devMethods() {
   let faceIndex = 0;
 
   window.ranki = {
-    switch() {
-      const qa = document.querySelector("#qa");
+    trigger() {
+      const qa = document.querySelector("#qa") as HTMLDivElement;
       assertNotUndefined(qa, { why: "needed" });
-      const face = qa.querySelector("script.ranki-v2-data.face")!.innerHTML;
       const ren = qa.querySelector("div.rendered");
       if (ren) {
         qa.removeChild(ren);
       }
-      const tags = document.querySelector(
-        "script.ranki-v2-data.tags",
-      ) as HTMLScriptElement;
-      assertNotUndefined(tags, { why: "needed" });
-      tags.innerText = [
-        // dark ? "+r:scheme-light" : "",
-        // !!tagIndex ? "+r:animation-slow" : "",
-        // "+r:animation-slow",
-        TAGS[tagIndex++ % TAGS.length],
-        "+r:animation::disabled",
-      ].join(" ");
+      return qa;
+    },
+    switch() {
+      this.tags(
+        [
+          dark ? "+r:scheme-light" : "",
+          // !!tagIndex ? "+r:animation-slow" : "",
+          // "+r:animation-slow",
+          TAGS[tagIndex++ % TAGS.length],
+          "+r:animation::disabled",
+        ].join(" "),
+      );
       dark = !dark;
-      const deck = document.querySelector(
-        "script.ranki-v2-data.deck",
-      ) as HTMLScriptElement;
-      assertNotNull(deck, { why: "needed" });
-      deck.innerText = DECKS[deckIndex++ % DECKS.length];
+      this.deck(DECKS[deckIndex++ % DECKS.length]);
 
       Object.entries(FACES[faceIndex]).forEach(([faceName, text]) => {
-        const f = document.querySelector(
-          `script.ranki-v2-input.${faceName}`,
-        ) as HTMLScriptElement;
-        assertNotNull(f, { why: "needed" });
-        f.innerText = text;
+        // @ts-expect-error
+        this[faceName](text);
       });
 
-      console.log(face, FACES[faceIndex]);
-      // const b = document.querySelector(
-      //   "script.ranki-v2-input.B",
-      // ) as HTMLScriptElement;
-      // assertNotNull(b, { why: "needed" });
-      // b.innerText = FACES[faceIndex]["B"] || "";
       faceIndex = (faceIndex + 1) % FACES.length;
     },
-    face() {
-      const qa = document.querySelector("#qa");
-      assertNotNull(qa, { why: "needed" });
-      const ren = qa.querySelector("div.rendered");
-      if (ren) {
-        qa.removeChild(ren);
-      }
-      const face = qa.querySelector("script.ranki-v2-data.face");
-      assertNotNull(face, { why: "required" });
-      isAnswer = !isAnswer;
-      face.innerHTML = isAnswer ? "N" : "Q";
-
-      const tags = document.querySelector(
+    face(q) {
+      const qa = this.trigger();
+      const elem = qa.querySelector("script.ranki-v2-data.face");
+      assertNotNull(elem, { why: "required" });
+      elem.innerHTML = q;
+    },
+    a(a) {
+      const qa = this.trigger();
+      const elem = qa.querySelector("script.ranki-v2-input.A");
+      assertNotNull(elem, { why: "required" });
+      elem.innerHTML = a;
+    },
+    b(b) {
+      const qa = this.trigger();
+      const elem = qa.querySelector("script.ranki-v2-input.B");
+      assertNotNull(elem, { why: "required" });
+      elem.innerHTML = b;
+    },
+    tags(t) {
+      const qa = this.trigger();
+      const elem = qa.querySelector(
         "script.ranki-v2-data.tags",
       ) as HTMLScriptElement;
-      assertNotUndefined(tags, { why: "needed" });
-      tags.innerText = [
-        isAnswer ? "+r:scheme-light" : "",
-        // !!tagIndex ? "+r:animation-slow" : "",
-        "+r:animation-slow",
-        // TAGS[tagIndex++ % TAGS.length],
-      ].join(" ");
-      // dark = !dark;
+      assertNotNull(elem, { why: "needed" });
+      elem.innerText = t;
+    },
+    deck(d) {
+      const qa = this.trigger();
+      const elem = qa.querySelector(
+        "script.ranki-v2-data.deck",
+      ) as HTMLScriptElement;
+      assertNotNull(elem, { why: "needed" });
+      elem.innerText = d;
+    },
+    type(d) {
+      const qa = this.trigger();
+      const elem = qa.querySelector(
+        "script.ranki-v2-data.type",
+      ) as HTMLScriptElement;
+      assertNotNull(elem, { why: "needed" });
+      elem.innerText = d;
+    },
+    flag(f) {
+      const qa = this.trigger();
+      const elem = qa.querySelector(
+        "script.ranki-v2-data.flag",
+      ) as HTMLScriptElement;
+      assertNotNull(elem, { why: "needed" });
+      elem.innerText = "flag" + f.toString();
+    },
+    set(p) {
+      Object.entries(p).forEach(([k, v]) => {
+        // @ts-expect-error
+        this[k](v);
+      });
+    },
+    alternate(p, opts?: { limit?: number; duration?: number }) {
+      let count = 0;
+      const limit = opts?.limit || 4;
+      const duration = opts?.duration || 2e3;
+      let interval: number;
+
+      const cb = () => {
+        try {
+          console.log("alternate:", count);
+          const props = Object.fromEntries(
+            Object.entries(p).map(([k, v]) => [k, v[count % v.length]]),
+          ) as RankiSetFunc;
+          this.set(props);
+          count++;
+          if (count > limit) {
+            clearInterval(interval);
+            console.log("alternate: done");
+          }
+        } catch (e) {
+          clearInterval(interval);
+          console.log(e);
+          console.log("alternate: failed");
+        }
+      };
+
+      interval = setInterval(cb, duration);
     },
   };
 }

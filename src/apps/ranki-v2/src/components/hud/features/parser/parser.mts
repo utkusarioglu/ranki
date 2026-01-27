@@ -1,14 +1,21 @@
-import { HudShadowBase, type AnimationTypes } from "../../hud-base.mts";
+import { RankiAnimation } from "../../../animation/animation.mts";
+import { RankiHudWc } from "../../hud-wc/hud-wc.mts";
+import { type AnimationTypes } from "../../../animation/animation.mts";
 import type { HudParserProps } from "../../hud.types.mts";
 import styles from "./parser.component.css?inline";
 
-type Props = HudParserProps;
-
-export class HudParser extends HudShadowBase<Props> {
+export class HudParser extends RankiHudWc<HudParserProps> {
   protected static name = "ranki-hud-parser" as const;
   protected animations: AnimationTypes = {
-    enter: this.animateEntry.bind(this),
-    exit: this.animateExit.bind(this),
+    show: RankiAnimation.expandXFadeIn(this, {
+      twoRafCb: this.adjustWidth.bind(this),
+    }),
+    hide: RankiAnimation.expandXFadeIn(this, {
+      twoRaf: {
+        "margin-right": 0,
+        opacity: 0,
+      },
+    }),
   };
 
   constructor() {
@@ -29,47 +36,12 @@ export class HudParser extends HudShadowBase<Props> {
     this.setProperties({ width: right - left + "px" });
   }
 
-  private animateEntry() {
-    return new Promise<void>((r) => {
-      this.addEventListener(
-        "transitionend",
-        () => {
-          r();
-        },
-        { once: true },
-      );
-      this.setProperties({ opacity: 0, width: 0 });
-      this.twoRaf(() => {
-        this.setProperties({ opacity: 1 });
-        this.adjustWidth();
-      });
-    });
-  }
-
-  private animateExit() {
-    return new Promise<void>((r) => {
-      this.addEventListener(
-        "transitionend",
-        () => {
-          this.remove();
-          r();
-        },
-        { once: true },
-      );
-      const width = this.getWidth();
-      this.setProperties({ width: width + "px" });
-      this.twoRaf(() => {
-        this.setProperties({ width: 0, opacity: 0, "margin-right": 0 });
-      });
-    });
-  }
-
   private build() {
     let container = this.shadowRoot!.querySelector("div.container");
     if (container) {
       return container;
     }
-    const props = this.getProps();
+    const props = this.getCurr();
     container = document.createElement("div");
     this.shadowRoot!.replaceChildren(container);
     container.classList.add("container");
@@ -92,5 +64,6 @@ export class HudParser extends HudShadowBase<Props> {
 
   render() {
     this.build();
+    this.runAnimation("show");
   }
 }

@@ -26,7 +26,7 @@ export class RankiFacesElement extends HTMLElement {
       requestAnimationFrame(() => {
         this.style.setProperty("opacity", "0");
         this.style.setProperty("max-height", "0");
-        this.addEventListener("transitionend", () => this.remove(), {
+        this.addEventListener("transitionend", () => this.exit(), {
           once: true,
         });
       });
