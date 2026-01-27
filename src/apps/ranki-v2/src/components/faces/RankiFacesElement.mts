@@ -3,7 +3,6 @@ export class RankiFacesElement extends HTMLElement {
     this.addEventListener(
       "transitionend",
       () => {
-        console.log("removed");
         this.style.removeProperty("max-height");
       },
       { once: true },

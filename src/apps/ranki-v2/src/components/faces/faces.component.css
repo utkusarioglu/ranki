@@ -31,6 +31,7 @@ ranki-faces-face {
   overflow: visible;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
+  /* transition-timing-function: steps(3, jump-both); */
   max-height: max-content;
   opacity: 1;
   width: var(--min-width);
@@ -42,6 +43,7 @@ ranki-faces-pair {
   overflow: visible;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
+  /* transition-timing-function: steps(3, jump-both); */
   /* max-height: max-content; */
   height: 100%;
   opacity: 1;
