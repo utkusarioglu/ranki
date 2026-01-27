@@ -11,21 +11,21 @@ export class IndicatorPattern extends RankiWc<string> {
     exit: RankiAnimation.fadeOut(this),
   };
 
-  private container() {
-    let div = this.querySelector("div.container") as HTMLDivElement;
-    if (div) {
-      return div;
-    }
-    div = document.createElement("div");
-    div.classList.add("container");
-    this.replaceChildren(div);
-    return div;
-  }
+  // private container() {
+  //   let div = this.querySelector("div.container") as HTMLDivElement;
+  //   if (div) {
+  //     return div;
+  //   }
+  //   div = document.createElement("div");
+  //   div.classList.add("container");
+  //   this.replaceChildren(div);
+  //   return div;
+  // }
 
   build() {
     const curr = this.getCurr();
-    const container = this.container();
-    container.style.background = curr;
+    // const container = this.container();
+    this.style.background = curr;
   }
 
   render(): this {
