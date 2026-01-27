@@ -1,31 +1,21 @@
 import type { HudProps } from "./hud.types.mjs";
 import { assertNever } from "../../error/assertions.mts";
-import { hudAddress } from "./features/address/address.mts";
-import { hudCard } from "./features/card/card.mts";
-import { hudParser } from "./features/parser/parser.mts";
-import { hudTags } from "./features/tags/tags.mts";
-import { hudCues } from "./features/cues/cues.mts";
+import { HudAddress } from "./features/address/address.mts";
+import { HudCard } from "./features/card/card.mts";
+import { HudParser } from "./features/parser/parser.mts";
+import { HudTags } from "./features/tags/tags.mts";
+import { HudCues } from "./features/cues/cues.mts";
 import styles from "./hud.component.css?inline";
 import { horizontalScrollUtil } from "../scroller/horizontal.mts";
+import { HudShadowBase } from "./hud-base.mts";
 
-const sheet = new CSSStyleSheet();
-sheet.replaceSync(styles);
-
-const NAME = "ranki-hud";
 type Props = HudProps;
 
-class Hud extends HTMLElement {
-  private curr!: Props;
-
+export class Hud extends HudShadowBase<Props> {
+  private static name = "ranki-hud";
   constructor() {
-    super();
-    this.attachShadow({ mode: "open" });
-    this.shadowRoot!.adoptedStyleSheets = [sheet];
-  }
-
-  set props(p: Props) {
-    this.curr = p;
-    this.render();
+    super(true);
+    this.pushStyles(styles);
   }
 
   private container() {
@@ -49,22 +39,23 @@ class Hud extends HTMLElement {
 
   private build() {
     const { head, tail } = this.container();
-    this.curr.order.forEach((p) => {
+    const props = this.getProps();
+    props.order.forEach((p) => {
       switch (p) {
         case "address":
-          hudAddress(this.curr.address, tail);
+          HudAddress.singleton(props.address, tail);
           break;
         case "card":
-          hudCard(this.curr.card, tail);
+          HudCard.singleton(props.card, tail);
           break;
         case "cues":
-          hudCues(this.curr.cues, tail);
+          HudCues.singleton(props.cues, tail);
           break;
         case "parser":
-          hudParser(this.curr.parser, tail);
+          HudParser.singleton(props.parser, tail);
           break;
         case "tags":
-          hudTags(this.curr.tags, tail);
+          HudTags.singleton(props.tags, tail);
           break;
         default:
           assertNever({
@@ -79,18 +70,4 @@ class Hud extends HTMLElement {
   render() {
     this.build();
   }
-}
-
-export const hudDefine = () => customElements.define(NAME, Hud);
-
-export function hud(props: Props, attach: HTMLElement) {
-  let el: Hud | null = attach.querySelector(NAME);
-
-  if (!el) {
-    el = document.createElement(NAME) as Hud;
-    attach.appendChild(el);
-  }
-  el.props = props;
-
-  return el;
 }

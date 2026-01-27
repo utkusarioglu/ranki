@@ -1,30 +1,19 @@
-export class HudAddressCrumb extends HTMLElement {
-  getLeft() {
-    return this.getBoundingClientRect().left;
-  }
+import { HudShadowBase } from "../../hud-base.mts";
 
-  getRight() {
-    return this.getBoundingClientRect().right;
-  }
+export class HudAddressCrumb extends HudShadowBase<{}> {
+  private static name = "hud-address-crumb";
 
   connectedCallback() {
-    this.style.setProperty("opacity", "0");
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        this.style.setProperty("opacity", "1");
-      });
+    this.setProperties({ opacity: 0 });
+    this.twoRaf(() => {
+      this.setProperties({ opacity: 1 });
     });
   }
 
   exit() {
-    this.style.setProperty("opacity", "0");
-    requestAnimationFrame(() => {
-      this.addEventListener("transitionend", () => this.remove(), {
-        once: true,
-      });
+    this.addEventListener("transitionend", () => this.remove(), {
+      once: true,
     });
+    this.setProperties({ opacity: 0 });
   }
 }
-
-export const hudAddressCrumbDefine = () =>
-  customElements.define("hud-address-crumb", HudAddressCrumb);

@@ -1,55 +1,63 @@
 import { assertNever } from "../../../../error/assertions.mts";
+import { HudShadowBase } from "../../hud-base.mts";
 import type { HudAddressProps, HudAddressSegment } from "../../hud.types.mts";
 import styles from "./address.component.css?inline";
-import type { HudAddressCrumb } from "./HudAddressCrumb.mts";
+import { HudAddressCrumb } from "./HudAddressCrumb.mts";
 
-const NAME = "ranki-hud-address";
 type Props = HudAddressProps;
 
-const sheet = new CSSStyleSheet();
-sheet.replaceSync(styles);
-
-class HudAddress extends HTMLElement {
-  private curr!: Props;
-
+export class HudAddress extends HudShadowBase<Props> {
+  private static name = "ranki-hud-address";
   constructor() {
-    super();
-    this.attachShadow({ mode: "open" });
-    this.shadowRoot!.adoptedStyleSheets = [sheet];
+    super(true);
+    this.pushStyles(styles);
   }
 
-  set props(props: Props) {
-    this.curr = props;
-    this.render();
-  }
-
-  // SAME
   connectedCallback() {
-    this.style.setProperty("opacity", "0");
-    this.style.setProperty("width", "0");
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        this.style.setProperty("opacity", "1");
-        this.adjustWidth();
+    this.animateEntry();
+  }
+
+  private animateEntry() {
+    this.setProperties({ opacity: 0, width: 0 });
+    this.twoRaf(() => {
+      this.setProperties({ opacity: 1 });
+      this.adjustWidth();
+    });
+  }
+
+  private animateExit() {
+    this.addEventListener("transitionend", () => this.remove(), {
+      once: true,
+    });
+    const width = this.getWidth();
+    this.setProperties({ width: width + "px" });
+    this.twoRaf(() => {
+      this.setProperties({
+        width: 0,
+        opacity: 0,
+        "margin-right": 0,
       });
     });
   }
 
-  // SAME
   exit() {
-    const width = this.getBoundingClientRect().width;
-    this.style.setProperty("width", width + "px");
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        // this.drain();
-        this.style.setProperty("width", "0px");
-        this.style.setProperty("opacity", "0");
-        this.style.setProperty("margin-right", "0");
-        this.addEventListener("transitionend", () => this.remove(), {
-          once: true,
-        });
-      });
-    });
+    this.animateExit();
+  }
+
+  private adjustWidth() {
+    const container = this.shadowRoot!.querySelector(
+      "div.container",
+    ) as HTMLDivElement;
+    if (!container) {
+      return;
+    }
+    const right = (
+      container.childNodes[
+        this.getProps().segments.length - 1
+      ] as HudAddressCrumb
+    ).getRight();
+    const left = this.getLeft();
+    this.style.setProperty("width", right - left + "px");
   }
 
   private container(): HTMLDivElement {
@@ -72,11 +80,11 @@ class HudAddress extends HTMLElement {
 
   private subtree(container: HTMLDivElement) {
     const cn = container.childNodes.length;
-    const sn = this.curr.segments.length;
+    const sn = this.getProps().segments.length;
     const rm: HudAddressCrumb[] = [];
 
     for (let i = 0; i < Math.max(cn, sn); i++) {
-      const s = this.curr.segments[i];
+      const s = this.getProps().segments[i];
       if (s) {
         const e = this.shadowRoot!.querySelector(
           `[data-index="${i}"]`,
@@ -96,24 +104,6 @@ class HudAddress extends HTMLElement {
       });
   }
 
-  private adjustWidth() {
-    const container = this.shadowRoot!.querySelector(
-      "div.container",
-    ) as HTMLDivElement;
-    if (!container) {
-      return;
-    }
-    const right = (
-      container.childNodes[this.curr.segments.length - 1] as HudAddressCrumb
-    ).getRight();
-    const left = this.getLeft();
-    this.style.setProperty("width", right - left + "px");
-  }
-
-  private getLeft() {
-    return this.getBoundingClientRect().left;
-  }
-
   private mutateCrumb(s: HudAddressSegment, e: HTMLDivElement) {
     switch (s.mode) {
       case "trim":
@@ -127,49 +117,34 @@ class HudAddress extends HTMLElement {
       default:
         assertNever({
           why: "Unrecognized address segment mode",
-          details: { segments: this.curr.segments, segment: s },
+          details: { segments: this.getProps().segments, segment: s },
         });
     }
     e.innerText = s.shown.join("");
   }
 
   private createCrumb(s: HudAddressSegment, i: number, container: Element) {
-    const seg = document.createElement("hud-address-crumb");
+    const crumb = HudAddressCrumb.create({}, container);
     switch (s.mode) {
       case "trim":
       case "hide":
       case "separator":
-        seg.classList.add("divider");
+        crumb.addClass("divider");
         break;
       case "show":
-        seg.classList.add("segment");
+        crumb.addClass("segment");
         break;
       default:
         assertNever({
           why: "Unrecognized address segment mode",
-          details: { segments: this.curr.segments, segment: s },
+          details: { segments: this.getProps().segments, segment: s },
         });
     }
-    seg.setAttribute("data-index", i.toString());
-    seg.innerText = s.shown.join("");
-    container.appendChild(seg);
+    crumb.setAttribute("data-index", i.toString());
+    crumb.innerText = s.shown.join("");
   }
 
   render() {
     this.build();
   }
-}
-
-export const hudAddressDefine = () => customElements.define(NAME, HudAddress);
-
-export function hudAddress(props: Props, attach: HTMLElement) {
-  let el: HudAddress | null = attach.querySelector(NAME);
-
-  if (!el) {
-    el = document.createElement(NAME) as HudAddress;
-    attach.appendChild(el);
-  }
-  el.props = props;
-
-  return el;
 }

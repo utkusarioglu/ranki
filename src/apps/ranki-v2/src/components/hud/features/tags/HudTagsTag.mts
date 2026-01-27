@@ -1,31 +1,46 @@
-export class HudTagsTag extends HTMLElement {
-  getLeft() {
-    return this.getBoundingClientRect().left;
-  }
+import { HudShadowBase } from "../../hud-base.mts";
 
-  getRight() {
-    return this.getBoundingClientRect().right;
-  }
+export class HudTagsTag extends HudShadowBase<{}> {
+  private static name = "hud-tags-tag";
 
   connectedCallback() {
-    this.style.setProperty("opacity", "0");
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        this.style.setProperty("opacity", "1");
+    this.animateEntry();
+  }
+
+  private animateEntry() {
+    return new Promise<void>((r) => {
+      this.addEventListener(
+        "transitionend",
+        () => {
+          r();
+        },
+        { once: true },
+      );
+      this.setProperties({ opacity: 0 });
+      this.twoRaf(() => {
+        this.setProperties({ opacity: 1 });
       });
     });
   }
 
   exit() {
-    this.classList.add("opacity", "1");
-    requestAnimationFrame(() => {
-      this.classList.add("opacity", "0");
-      this.addEventListener("transitionend", () => this.remove(), {
-        once: true,
+    this.animateExit();
+  }
+
+  private animateExit() {
+    return new Promise<void>((r) => {
+      this.addEventListener(
+        "transitionend",
+        () => {
+          this.remove();
+          r();
+        },
+        { once: true },
+      );
+      this.setProperties({ opacity: 1 });
+      this.twoRaf(() => {
+        this.setProperties({ opacity: 0 });
       });
     });
   }
 }
-
-export const hudTagsTagDefine = () =>
-  customElements.define("hud-tags-tag", HudTagsTag);

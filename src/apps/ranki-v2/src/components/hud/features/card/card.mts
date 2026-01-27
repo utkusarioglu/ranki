@@ -1,53 +1,76 @@
+import { HudShadowBase } from "../../hud-base.mts";
 import type { HudCardProps } from "../../hud.types.mts";
 import styles from "./card.component.css?inline";
 
-const NAME = "ranki-hud-card";
 type Props = HudCardProps;
 
-const sheet = new CSSStyleSheet();
-sheet.replaceSync(styles);
-
-class HudCard extends HTMLElement {
-  private curr!: Props;
-
+export class HudCard extends HudShadowBase<Props> {
+  private static name = "ranki-hud-card";
   constructor() {
-    super();
-    this.attachShadow({ mode: "open" });
-    this.shadowRoot!.adoptedStyleSheets = [sheet];
+    super(true);
+    this.pushStyles(styles);
   }
 
-  set props(props: Props) {
-    this.curr = props;
-    this.render();
-  }
-
-  // SAME
-  connectedCallback() {
-    this.style.setProperty("opacity", "0");
-    this.style.setProperty("width", "0");
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        this.style.setProperty("opacity", "1");
+  private animateEntry() {
+    return new Promise<void>((r) => {
+      this.addEventListener(
+        "transitioned",
+        () => {
+          r();
+        },
+        { once: true },
+      );
+      this.setProperties({ opacity: 0, width: 0 });
+      this.twoRaf(() => {
+        this.setProperties({ opacity: 1 });
         this.adjustWidth();
       });
     });
   }
 
-  // SAME
-  exit() {
-    const width = this.getBoundingClientRect().width;
-    this.style.setProperty("width", width + "px");
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        // this.drain();
-        this.style.setProperty("width", "0px");
-        this.style.setProperty("opacity", "0");
-        this.style.setProperty("margin-right", "0");
-        this.addEventListener("transitionend", () => this.remove(), {
+  private adjustWidth() {
+    const container = this.shadowRoot!.querySelector(
+      "div.face",
+    ) as HTMLDivElement;
+    if (!container) {
+      return;
+    }
+
+    const right = container.getBoundingClientRect().right;
+    const left = this.getLeft();
+    this.setProperties({ width: right - left + "px" });
+  }
+
+  connectedCallback() {
+    this.animateEntry();
+  }
+
+  private animateExit(): Promise<void> {
+    return new Promise((r) => {
+      this.addEventListener(
+        "transitionend",
+        () => {
+          this.remove();
+          r();
+        },
+        {
           once: true,
-        });
-      });
+        },
+      );
+      const width = this.getWidth();
+      this.setProperties({ width: width + "px" });
+      this.twoRaf(() =>
+        this.setProperties({
+          width: 0,
+          opacity: 0,
+          "margin-right": 0,
+        }),
+      );
     });
+  }
+
+  exit() {
+    this.animateExit();
   }
 
   private build() {
@@ -57,20 +80,21 @@ class HudCard extends HTMLElement {
     }
     const container = document.createElement("div");
     container.classList.add("container");
+    const props = this.getProps();
 
     const type = document.createElement("div");
     type.classList.add("type");
-    type.innerText = this.curr.type;
+    type.innerText = props.type;
     container.appendChild(type);
 
     const card = document.createElement("div");
     card.classList.add("card");
-    card.innerText = this.curr.card;
+    card.innerText = props.card;
     container.appendChild(card);
 
     const face = document.createElement("div");
     face.classList.add("face");
-    face.innerText = this.curr.face;
+    face.innerText = props.face;
     container.appendChild(face);
 
     this.shadowRoot!.replaceChildren(container);
@@ -92,48 +116,12 @@ class HudCard extends HTMLElement {
     e.innerText = face;
   }
 
-  private adjustWidth() {
-    const container = this.shadowRoot!.querySelector(
-      "div.face",
-    ) as HTMLDivElement;
-    if (!container) {
-      return;
-    }
-
-    const right = container.getBoundingClientRect().right;
-    const left = this.getLeft();
-    this.style.setProperty("width", right - left + "px");
-  }
-
-  private getLeft() {
-    return this.getBoundingClientRect().left;
-  }
-
   render() {
     const container = this.build();
-    // requestAnimationFrame(() => {
-    this.setType(container, this.curr.type);
-    this.setCard(container, this.curr.card);
-    this.setFace(container, this.curr.face);
-    // requestAnimationFrame(() => {
-    //   requestAnimationFrame(() => {
+    const props = this.getProps();
+    this.setType(container, props.type);
+    this.setCard(container, props.card);
+    this.setFace(container, props.face);
     this.adjustWidth();
-    //   });
-    // });
-    // });
   }
-}
-
-export const hudCardDefine = () => customElements.define(NAME, HudCard);
-
-export function hudCard(props: Props, attach: HTMLElement) {
-  let el: HudCard | null = attach.querySelector(NAME);
-
-  if (!el) {
-    el = document.createElement(NAME) as HudCard;
-    attach.appendChild(el);
-  }
-  el.props = props;
-
-  return el;
 }

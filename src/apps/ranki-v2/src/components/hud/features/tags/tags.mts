@@ -1,64 +1,68 @@
+import { HudShadowBase } from "../../hud-base.mts";
 import type { HudTagListItem, HudTagsProps } from "../../hud.types.mts";
-import type { HudTagsTag } from "./HudTagsTag.mts";
+import { HudTagsTag } from "./HudTagsTag.mts";
 import styles from "./tags.component.css?inline";
 
-const NAME = "ranki-hud-tags";
 type Props = HudTagsProps;
 
-const sheet = new CSSStyleSheet();
-sheet.replaceSync(styles);
-
-class HudTags extends HTMLElement {
-  private curr!: Props;
+export class HudTags extends HudShadowBase<Props> {
+  private static name = "ranki-hud-tags";
 
   constructor() {
-    super();
-    this.attachShadow({ mode: "open" });
-    this.shadowRoot!.adoptedStyleSheets = [sheet];
+    super(true);
+    this.pushStyles(styles);
   }
 
-  set props(props: Props) {
-    this.curr = props;
-    this.render();
-  }
-
-  // SAME
   connectedCallback() {
-    this.style.setProperty("opacity", "0");
-    this.style.setProperty("width", "0");
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        this.style.setProperty("opacity", "1");
+    this.animateEntry();
+  }
+
+  private animateEntry() {
+    return new Promise<void>((r) => {
+      this.addEventListener("transitionend", () => {
+        r();
+      });
+      this.setProperties({ opacity: 0, width: 0 });
+      this.twoRaf(() => {
+        this.setProperties({ opacity: 1 });
         this.adjustWidth();
       });
     });
   }
 
-  // SAME
-  exit() {
-    const width = this.getBoundingClientRect().width;
-    this.style.setProperty("width", width + "px");
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        this.drain();
-        this.style.setProperty("width", "0px");
-        this.style.setProperty("opacity", "0");
-        this.style.setProperty("margin-right", "0");
-        this.addEventListener("transitionend", () => this.remove(), {
-          once: true,
-        });
-      });
-    });
-  }
-
-  private drain() {
-    const c = this.shadowRoot?.querySelector("div.container") as HTMLDivElement;
-    if (!c) {
+  private adjustWidth() {
+    const container = this.shadowRoot!.querySelector(
+      "div.container",
+    ) as HTMLDivElement;
+    if (!container) {
       return;
     }
-    c.classList.add("exiting");
-    c.childNodes.forEach((n) => {
-      (n as HudTagsTag).exit();
+    const props = this.getProps();
+    const last = container.childNodes[props.count - 1] as HudTagsTag;
+    const right = last.getRight();
+    const left = this.getLeft();
+    this.setProperties({ width: right - left + "px" });
+  }
+
+  exit() {
+    this.animateExit();
+  }
+
+  private animateExit() {
+    return new Promise<void>((r) => {
+      this.addEventListener("transitionend", () => {
+        this.remove();
+        r();
+      });
+      const width = this.getWidth();
+      this.setProperties({ width: width + "px" });
+      this.twoRaf(() => {
+        this.setProperties({
+          width: 0,
+          opacity: 0,
+          "margin-right": 0,
+        });
+      });
     });
   }
 
@@ -74,12 +78,14 @@ class HudTags extends HTMLElement {
   }
 
   private subtree(container: HTMLDivElement) {
+    const props = this.getProps();
     const cn = container.childNodes.length;
-    const sn = this.curr.count;
+
+    const sn = props.count;
     const rm: HudTagsTag[] = [];
 
     for (let i = 0; i < Math.max(cn, sn); i++) {
-      const s = this.curr.list[i];
+      const s = props.list[i];
       if (s) {
         const e = this.shadowRoot!.querySelector(
           `[data-index="${i}"]`,
@@ -111,50 +117,18 @@ class HudTags extends HTMLElement {
   }
 
   createTag(s: HudTagListItem, i: number, container: HTMLDivElement) {
-    const tag = document.createElement("hud-tags-tag");
+    const tag = HudTagsTag.create({}, container);
     tag.classList.add("neutral");
     tag.setAttribute("data-index", i.toString());
-    tag.classList.add(s.type);
+    tag.addClass(s.type);
     tag.innerText = s.text || "";
-    container.appendChild(tag);
   }
 
   render() {
-    if (this.curr.count > 0) {
+    if (this.getProps().count > 0) {
       this.build();
     } else {
       this.exit();
     }
   }
-
-  private getLeft() {
-    return this.getBoundingClientRect().left;
-  }
-
-  private adjustWidth() {
-    const container = this.shadowRoot!.querySelector(
-      "div.container",
-    ) as HTMLDivElement;
-    if (!container) {
-      return;
-    }
-    const last = container.childNodes[this.curr.count - 1] as HudTagsTag;
-    const right = last.getRight();
-    const left = this.getLeft();
-    this.style.setProperty("width", right - left + "px");
-  }
-}
-
-export const hudTagsDefine = () => customElements.define(NAME, HudTags);
-
-export function hudTags(props: Props, attach: HTMLElement) {
-  let el: HudTags | null = attach.querySelector(NAME);
-
-  if (!el) {
-    el = document.createElement(NAME) as HudTags;
-    attach.appendChild(el);
-  }
-  el.props = props;
-
-  return el;
 }

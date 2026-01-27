@@ -2,15 +2,15 @@ import "./utils/polyfills.mjs";
 import { onReady } from "./utils/onReady.mjs";
 import { createConfig } from "./config/config.mts";
 import { createDesign } from "./theme/theme.mts";
-import { hud, hudDefine } from "./components/hud/hud.mts";
-import { hudAddressDefine } from "./components/hud/features/address/address.mts";
+import { Hud } from "./components/hud/hud.mts";
+// import { hudAddressDefine } from "./components/hud/features/address/address.mts";
 import { devMethods } from "./dev.mts";
-import { hudAddressCrumbDefine } from "./components/hud/features/address/HudAddressCrumb.mts";
-import { hudCardDefine } from "./components/hud/features/card/card.mts";
-import { hudCuesDefine } from "./components/hud/features/cues/cues.mts";
-import { hudCuesCueDefine } from "./components/hud/features/cues/hud-cue.mts";
-import { hudTagsTagDefine } from "./components/hud/features/tags/HudTagsTag.mts";
-import { hudTagsDefine } from "./components/hud/features/tags/tags.mts";
+// import { hudAddressCrumbDefine } from "./components/hud/features/address/HudAddressCrumb.mts";
+// import { hudCardDefine } from "./components/hud/features/card/card.mts";
+// import { hudCuesDefine } from "./components/hud/features/cues/cues.mts";
+// import { hudCuesCueDefine } from "./components/hud/features/cues/hud-cue.mts";
+// import { hudTagsTagDefine } from "./components/hud/features/tags/HudTagsTag.mts";
+// import { hudTagsDefine } from "./components/hud/features/tags/tags.mts";
 import { setStyles } from "./style/style.mts";
 import { rankiFaces, rankiFacesDefine } from "./components/faces/faces.mts";
 import { ruleHorizontalDefine } from "./components/faces/rules/hr.mts";
@@ -19,14 +19,14 @@ import { ruleVerticalDefine } from "./components/faces/rules/vr.mts";
 import { facesPairDefine } from "./components/faces/pair/pair.mts";
 
 devMethods();
-hudAddressDefine();
-hudDefine();
-hudAddressCrumbDefine();
-hudCardDefine();
-hudCuesCueDefine();
-hudCuesDefine();
-hudTagsTagDefine();
-hudTagsDefine();
+// hudAddressDefine();
+// hudDefine();
+// hudAddressCrumbDefine();
+// hudCardDefine();
+// hudCuesCueDefine();
+// hudCuesDefine();
+// hudTagsTagDefine();
+// hudTagsDefine();
 ruleHorizontalDefine();
 ruleVerticalDefine();
 rankiFacesDefine();
@@ -59,7 +59,8 @@ async function main() {
     setStyles();
 
     const config = await createConfig();
-    hud(config.ranki.hud, document.body);
+    Hud.singleton(config.ranki.hud, document.body);
+    // hud(config.ranki.hud, document.body);
 
     createDesign(document, config.ranki);
     // TODO indicators

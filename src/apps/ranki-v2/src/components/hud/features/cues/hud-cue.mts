@@ -1,34 +1,46 @@
-export class HudCuesCue extends HTMLElement {
-  getLeft() {
-    return this.getBoundingClientRect().left;
-  }
+import { HudShadowBase } from "../../hud-base.mts";
 
-  getRight() {
-    return this.getBoundingClientRect().right;
-  }
+export class HudCuesCue extends HudShadowBase<{}> {
+  private static name = "hud-cues-cue";
 
   connectedCallback() {
-    // this.classList.add("entering");
-    this.style.setProperty("opacity", "0");
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        this.style.setProperty("opacity", "1");
-        // this.classList.remove("entering");
+    this.animateEntry();
+  }
+
+  private animateEntry() {
+    return new Promise<void>((r) => {
+      this.addEventListener(
+        "transitionend",
+        () => {
+          r();
+        },
+        { once: true },
+      );
+      this.setProperties({ opacity: 0 });
+      this.twoRaf(() => {
+        this.setProperties({ opacity: 1 });
       });
     });
   }
 
   exit() {
-    // this.classList.add("exiting");
-    this.style.setProperty("opacity", "1");
-    requestAnimationFrame(() => {
-      this.style.setProperty("opacity", "0");
-      this.addEventListener("transitionend", () => this.remove(), {
-        once: true,
+    this.animateExit();
+  }
+
+  private animateExit() {
+    return new Promise<void>((r) => {
+      this.addEventListener(
+        "transitionend",
+        () => {
+          this.remove();
+          r();
+        },
+        { once: true },
+      );
+      this.setProperties({ opacity: 1 });
+      this.twoRaf(() => {
+        this.setProperties({ opacity: 0 });
       });
     });
   }
 }
-
-export const hudCuesCueDefine = () =>
-  customElements.define("hud-cues-cue", HudCuesCue);

@@ -1,33 +1,33 @@
+import { HudShadowBase } from "../../hud-base.mts";
 import type { HudParserProps } from "../../hud.types.mts";
 import styles from "./parser.component.css?inline";
 
-const NAME = "ranki-hud-parser";
 type Props = HudParserProps;
 
-const sheet = new CSSStyleSheet();
-sheet.replaceSync(styles);
-
-class HudParser extends HTMLElement {
-  private p!: Props;
+export class HudParser extends HudShadowBase<Props> {
+  private static name = "ranki-hud-parser";
 
   constructor() {
-    super();
-    this.attachShadow({ mode: "open" });
-    this.shadowRoot!.adoptedStyleSheets = [sheet];
+    super(true);
+    this.pushStyles(styles);
   }
 
-  set props(props: Props) {
-    this.p = props;
-    this.render();
-  }
-
-  // SAME
   connectedCallback() {
-    this.style.setProperty("opacity", "0");
-    this.style.setProperty("width", "0");
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        this.style.setProperty("opacity", "1");
+    this.animateEntry();
+  }
+
+  private animateEntry() {
+    return new Promise<void>((r) => {
+      this.addEventListener(
+        "transitionend",
+        () => {
+          r();
+        },
+        { once: true },
+      );
+      this.setProperties({ opacity: 0, width: 0 });
+      this.twoRaf(() => {
+        this.setProperties({ opacity: 1 });
         this.adjustWidth();
       });
     });
@@ -43,26 +43,27 @@ class HudParser extends HTMLElement {
 
     const right = container.getBoundingClientRect().right;
     const left = this.getLeft();
-    this.style.setProperty("width", right - left + "px");
+    this.setProperties({ width: right - left + "px" });
   }
 
-  private getLeft() {
-    return this.getBoundingClientRect().left;
-  }
-
-  // SAME
   exit() {
-    const width = this.getBoundingClientRect().width;
-    this.style.setProperty("width", width + "px");
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        // this.drain();
-        this.style.setProperty("width", "0px");
-        this.style.setProperty("opacity", "0");
-        this.style.setProperty("margin-right", "0");
-        this.addEventListener("transitionend", () => this.remove(), {
-          once: true,
-        });
+    this.animateExit();
+  }
+
+  private animateExit() {
+    return new Promise<void>((r) => {
+      this.addEventListener(
+        "transitionend",
+        () => {
+          this.remove();
+          r();
+        },
+        { once: true },
+      );
+      const width = this.getWidth();
+      this.setProperties({ width: width + "px" });
+      this.twoRaf(() => {
+        this.setProperties({ width: 0, opacity: 0, "margin-right": 0 });
       });
     });
   }
@@ -72,17 +73,18 @@ class HudParser extends HTMLElement {
     if (container) {
       return container;
     }
+    const props = this.getProps();
     container = document.createElement("div");
     this.shadowRoot!.replaceChildren(container);
     container.classList.add("container");
-    container.classList.add(`error-${this.p.errorLevel}`);
+    container.classList.add(`error-${props.errorLevel}`);
 
     const version = document.createElement("div");
     version.classList.add("version");
-    version.innerText = this.p.parseMode;
+    version.innerText = props.parseMode;
     container.appendChild(version);
 
-    if (this.p.hasReplacements) {
+    if (props.hasReplacements) {
       const replacements = document.createElement("div");
       replacements.classList.add("replacements");
       replacements.innerText = "Δ";
@@ -95,18 +97,4 @@ class HudParser extends HTMLElement {
   render() {
     this.build();
   }
-}
-
-customElements.define(NAME, HudParser);
-
-export function hudParser(props: Props, attach: HTMLElement) {
-  let el: HudParser | null = attach.querySelector(NAME);
-
-  if (!el) {
-    el = document.createElement(NAME) as HudParser;
-    attach.appendChild(el);
-  }
-  el.props = props;
-
-  return el;
 }
