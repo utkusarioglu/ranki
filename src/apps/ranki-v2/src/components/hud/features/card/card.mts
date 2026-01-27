@@ -86,5 +86,6 @@ export class HudCard extends RankiHudWc<HudCardProps> {
     this.setCard(container, props.card);
     this.setFace(container, props.face);
     this.runAnimation("show");
+    return this;
   }
 }

@@ -1,30 +1,19 @@
-import type { RankiFacesFace } from "../face/face.mts";
-import type { RuleHorizontal } from "../rules/hr.mts";
+import {
+  RankiAnimation,
+  type AnimationTypes,
+} from "../../animation/animation.mts";
+import type { RankiFacesFace } from "./face/face.mts";
+import { RankiFacesWc } from "../faces-wc/faces-wc.mts";
+import type { RankiRule } from "./rule/rule.mts";
 
-export type PairChildren = RankiFacesFace | RuleHorizontal;
+export type PairChildren = RankiFacesFace | RankiRule;
 
-export class RankiFacesPair extends HTMLElement {
-  connectedCallback() {
-    this.style.setProperty("opacity", "0");
-    this.style.setProperty("transform", "translateY(50px)");
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        this.style.setProperty("opacity", "1");
-        this.style.setProperty("transform", "translateY(0)");
-        // this.style.setProperty("max-height", "550px");
-        this.addEventListener(
-          "transitionend",
-          () => {
-            // this.style.removeProperty("max-height");
-            // this.style.removeProperty("transform");
-          },
-          {
-            once: true,
-          },
-        );
-      });
-    });
-  }
+export class RankiFacesPair extends RankiFacesWc<{}> {
+  public static name = "ranki-faces-pair" as const;
+  protected animations: AnimationTypes = {
+    enter: RankiAnimation.slideUpFadeIn(this),
+    exit: RankiAnimation.slideUpFadeOut(this),
+  };
 
   getContainer(): HTMLDivElement {
     return this.querySelector(".container")!;
@@ -34,24 +23,18 @@ export class RankiFacesPair extends HTMLElement {
     return Array.from(this.getContainer().children) as PairChildren[];
   }
 
-  exit() {
-    // const h = this.getBoundingClientRect().height;
-    this.style.setProperty("opacity", "1");
-    this.style.setProperty("transform", "translateY(0)");
-    // this.style.setProperty("max-height", h + "px");
-    // this.style.setProperty("max-height", "550px");
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        this.style.setProperty("opacity", "0");
-        // this.style.setProperty("max-height", "0");
-        this.style.setProperty("transform", "translateY(-50px)");
-        this.addEventListener("transitionend", () => this.exit(), {
-          once: true,
-        });
-      });
-    });
+  build() {
+    let div = this.querySelector("div.container");
+    if (div) {
+      return;
+    }
+    div = document.createElement("div") as HTMLDivElement;
+    div.classList.add("container");
+    this.appendChild(div);
+  }
+
+  render() {
+    this.build();
+    return this;
   }
 }
-
-export const facesPairDefine = () =>
-  customElements.define("ranki-faces-pair", RankiFacesPair);

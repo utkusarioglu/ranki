@@ -44,6 +44,12 @@ export class RankiWc<Props> extends HTMLElement {
     });
   }
 
+  public removeProperties(c: string[]) {
+    c.forEach((p) => {
+      this.style.removeProperty(p);
+    });
+  }
+
   public twoRaf(cb: () => void): Promise<void> {
     return new Promise<void>((r) => {
       requestAnimationFrame(() => {
@@ -65,6 +71,10 @@ export class RankiWc<Props> extends HTMLElement {
 
   getWidth(): number {
     return this.getBoundingClientRect().width;
+  }
+
+  getHeight(): number {
+    return this.getBoundingClientRect().height;
   }
 
   pushStyles(...styles: string[]) {
@@ -101,7 +111,9 @@ export class RankiWc<Props> extends HTMLElement {
     this.render();
   }
 
-  render() {}
+  render(): this {
+    return this;
+  }
 
   addClass(...cl: string[]) {
     this.classList.add(...cl);
@@ -113,20 +125,34 @@ export class RankiWc<Props> extends HTMLElement {
     }
   }
 
-  static create<T>(props: T, attach: Element) {
+  static createAndAttach<T, C extends RankiWc<T>>(
+    props: T,
+    attach: Element | ShadowRoot,
+  ) {
     this.define();
-    const el = document.createElement(this.name) as RankiWc<T>;
+    const el = document.createElement(this.name) as C;
     attach.appendChild(el);
     el.setProps(props);
     return el;
   }
 
-  static singleton<T>(props: T, attach: HTMLElement) {
+  static create<T, C extends RankiWc<T>>(
+    props: T,
+    // attach: Element | ShadowRoot,
+  ) {
+    this.define();
+    const el = document.createElement(this.name) as C;
+    // attach.appendChild(el);
+    el.setProps(props);
+    return el;
+  }
+
+  static singleton<T, C extends RankiWc<T>>(props: T, attach: HTMLElement) {
     let el: RankiWc<T> | null = attach.querySelector(this.name);
 
     if (!el) {
       this.define();
-      el = document.createElement(this.name) as RankiWc<T>;
+      el = document.createElement(this.name) as C;
       attach.appendChild(el);
     }
     el.setProps(props);

@@ -12,6 +12,7 @@ type PropertiesPack = {
   twoRaf?: SetPropertiesArg;
   twoRafCb?: () => void;
   end?: SetPropertiesArg;
+  endRemove?: string[];
 };
 
 export class RankiAnimation {
@@ -21,6 +22,7 @@ export class RankiAnimation {
         if (pack.wait === undefined || pack.wait === true) {
           const cb = () => {
             self.setProperties({ ...pack.end });
+            pack.endRemove && self.removeProperties(pack.endRemove);
             resolve();
           };
           self.addEventListener("transitionend", cb, { once: true });
@@ -33,10 +35,55 @@ export class RankiAnimation {
       });
   }
 
+  static expandYFadeIn(self: RankiWc<{}>, additional?: PropertiesPack) {
+    return RankiAnimation.animate(self, {
+      wait: additional?.wait,
+      twoRafCb: additional?.twoRafCb,
+      endRemove: [...(additional?.endRemove || []), "max-height"],
+      pre: {
+        opacity: 0,
+        "max-height": 0,
+        ...(additional && additional.pre),
+      },
+      twoRaf: {
+        opacity: 1,
+        "max-height": window.innerHeight + "px",
+        ...(additional && additional.twoRaf),
+      },
+      end: {
+        ...(additional && additional.end),
+      },
+    });
+  }
+
+  static collapseYFadeOut(self: RankiWc<{}>, additional?: PropertiesPack) {
+    const height = self.getHeight() || window.innerHeight;
+    console.log(height, self);
+    return RankiAnimation.animate(self, {
+      wait: additional?.wait,
+      twoRafCb: additional?.twoRafCb,
+      endRemove: additional?.endRemove,
+      pre: {
+        "max-height": height + "px",
+        opacity: 1,
+        ...(additional && additional.pre),
+      },
+      twoRaf: {
+        opacity: 0,
+        "max-height": 0,
+        ...(additional && additional.twoRaf),
+      },
+      end: {
+        ...(additional && additional.end),
+      },
+    });
+  }
+
   static expandXFadeIn(self: RankiWc<{}>, additional?: PropertiesPack) {
     return RankiAnimation.animate(self, {
       wait: additional?.wait,
       twoRafCb: additional?.twoRafCb,
+      endRemove: additional?.endRemove,
       pre: {
         opacity: 0,
         width: 0,
@@ -59,6 +106,7 @@ export class RankiAnimation {
     return RankiAnimation.animate(self, {
       wait: additional?.wait,
       twoRafCb: additional?.twoRafCb,
+      endRemove: additional?.endRemove,
       pre: {
         width: width + "px",
         ...(additional && additional.pre),
@@ -73,10 +121,52 @@ export class RankiAnimation {
     });
   }
 
+  static slideUpFadeIn(self: RankiWc<{}>, additional?: PropertiesPack) {
+    return RankiAnimation.animate(self, {
+      wait: additional?.wait,
+      twoRafCb: additional?.twoRafCb,
+      endRemove: additional?.endRemove,
+      pre: {
+        opacity: 0,
+        transform: "translateY(50px)",
+        ...(additional && additional.pre),
+      },
+      twoRaf: {
+        opacity: 1,
+        transform: "translateY(0)",
+        ...(additional && additional.twoRaf),
+      },
+      end: {
+        ...(additional && additional.end),
+      },
+    });
+  }
+  static slideUpFadeOut(self: RankiWc<{}>, additional?: PropertiesPack) {
+    return RankiAnimation.animate(self, {
+      wait: additional?.wait,
+      twoRafCb: additional?.twoRafCb,
+      endRemove: additional?.endRemove,
+      pre: {
+        // opacity: 0,
+        transform: "translateY(0)",
+        ...(additional && additional.pre),
+      },
+      twoRaf: {
+        opacity: 0,
+        transform: "translateY(-50px)",
+        ...(additional && additional.twoRaf),
+      },
+      end: {
+        ...(additional && additional.end),
+      },
+    });
+  }
+
   static fadeIn(self: RankiWc<{}>, additional?: PropertiesPack) {
     return RankiAnimation.animate(self, {
       wait: additional?.wait,
       twoRafCb: additional?.twoRafCb,
+      endRemove: additional?.endRemove,
       pre: {
         opacity: 0,
         ...(additional && additional.pre),
@@ -95,6 +185,7 @@ export class RankiAnimation {
     return RankiAnimation.animate(self, {
       wait: additional?.wait,
       twoRafCb: additional?.twoRafCb,
+      endRemove: additional?.endRemove,
       pre: {
         ...(additional && additional.pre),
       },

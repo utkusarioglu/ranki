@@ -89,7 +89,7 @@ export class HudTags extends RankiHudWc<HudTagsProps> {
   }
 
   createTag(s: HudTagListItem, i: number, container: HTMLDivElement) {
-    const tag = HudTagsTag.create({}, container);
+    const tag = HudTagsTag.createAndAttach({}, container);
     tag.classList.add("neutral");
     tag.setAttribute("data-index", i.toString());
     tag.addClass(s.type);
@@ -103,5 +103,6 @@ export class HudTags extends RankiHudWc<HudTagsProps> {
     } else {
       this.runAnimation("hide");
     }
+    return this;
   }
 }

@@ -9,7 +9,7 @@ import styles from "./hud.component.css?inline";
 import { horizontalScrollUtil } from "../scroller/horizontal.mts";
 import { RankiHudWc } from "./hud-wc/hud-wc.mts";
 
-export class Hud extends RankiHudWc<HudProps> {
+export class RankiHud extends RankiHudWc<HudProps> {
   protected static name = "ranki-hud" as const;
 
   constructor() {
@@ -68,5 +68,6 @@ export class Hud extends RankiHudWc<HudProps> {
 
   render() {
     this.build();
+    return this;
   }
 }

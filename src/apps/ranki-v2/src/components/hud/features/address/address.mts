@@ -104,7 +104,7 @@ export class HudAddress extends RankiHudWc<HudAddressProps> {
   }
 
   private createCrumb(s: HudAddressSegment, i: number, container: Element) {
-    const crumb = HudAddressCrumb.create({}, container);
+    const crumb = HudAddressCrumb.createAndAttach({}, container);
     switch (s.mode) {
       case "trim":
       case "hide":
@@ -127,5 +127,6 @@ export class HudAddress extends RankiHudWc<HudAddressProps> {
   render() {
     this.build();
     this.runAnimation("show");
+    return this;
   }
 }

@@ -65,5 +65,6 @@ export class HudParser extends RankiHudWc<HudParserProps> {
   render() {
     this.build();
     this.runAnimation("show");
+    return this;
   }
 }

@@ -82,7 +82,7 @@ export class HudCues extends RankiHudWc<HudCuesProps> {
   }
 
   private createCue(c: CueRecord, i: number, container: HTMLDivElement) {
-    const cue = HudCuesCue.create({}, container);
+    const cue = HudCuesCue.createAndAttach({}, container);
     cue.innerText = c.message || c.indicator;
     cue.addClass("cue", `issuer-${c.issuer}`, `kind-${c.kind}`);
     cue.setAttribute("data-index", i.toString());
@@ -100,5 +100,6 @@ export class HudCues extends RankiHudWc<HudCuesProps> {
     } else {
       this.runAnimation("hide");
     }
+    return this;
   }
 }

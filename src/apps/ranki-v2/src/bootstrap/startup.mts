@@ -13,3 +13,15 @@ export function onReady(fn: any) {
     });
   }
 }
+
+export function shouldRender() {
+  const qa = document.querySelector("#qa")!;
+  let r = qa.querySelector("div.rendered");
+  if (r) {
+    return false;
+  }
+  r = document.createElement("div");
+  r.className = "rendered";
+  qa.appendChild(r);
+  return true;
+}

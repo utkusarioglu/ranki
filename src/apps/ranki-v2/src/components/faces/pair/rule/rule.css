@@ -6,7 +6,7 @@
   /* --transition-property: background, color, padding, border, opacity, height, width; */
 }
 
-rule-horizontal.container {
+ranki-rule.container {
   display: block;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
@@ -19,11 +19,21 @@ rule-horizontal.container {
   padding-inline: 4em;
 }
 
-div.hr {
+div.horizontal {
   height: var(--height-hr);
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
   display: block;
   background-color: var(--color-hr);
   border-radius: calc(var(--height-hr) / 2);
+}
+
+/* TODO this is faulty along with the container type. */
+div.vertical {
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+  display: block;
+  background-color: var(--color-vr);
+  height: 100%;
+  border-radius: calc(var(--vr-width) / 2);
 }
