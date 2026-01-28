@@ -16,6 +16,7 @@ declare global {
       b(a: string): void;
       tags(f: string): void;
       type(f: string): void;
+      card(f: string): void;
       flag(f: number): void;
       deck(d: string): void;
       set(p: RankiSetFunc): void;
@@ -78,6 +79,12 @@ export function devMethods() {
     face(q) {
       const qa = this.trigger();
       const elem = qa.querySelector("script.ranki-v2-data.face");
+      assertNotNull(elem, { why: "required" });
+      elem.innerHTML = q;
+    },
+    card(q) {
+      const qa = this.trigger();
+      const elem = qa.querySelector("script.ranki-v2-data.card");
       assertNotNull(elem, { why: "required" });
       elem.innerHTML = q;
     },

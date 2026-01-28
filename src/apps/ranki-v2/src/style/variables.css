@@ -14,6 +14,9 @@
   --ranki-animation-fade-duration: 0s;
   --ranki-animation-indicator-duration: 2s;
 
+  /* INDICATORS */
+  --indicator-opacity: 1;
+
   /* BODY */
   --body-background: rgb(var(--scheme-surface-0));
   --body-color: rgb(var(--scheme-text-0));

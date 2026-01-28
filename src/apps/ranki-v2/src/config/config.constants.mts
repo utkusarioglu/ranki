@@ -18,8 +18,8 @@ export const NO_FLAG_COLOR_TOKEN = "none";
 export const RANKI_INITIAL_CONFIG: RankiChannelsConfig = {
   base: {
     faces: {
-      Q: ["A"],
-      N: ["A", `${RANKI_INTERNAL_FACE_PREFIX}:hr`, "B"],
+      Q: [],
+      N: [],
     },
     address: {
       tokens: {
@@ -162,7 +162,26 @@ repeating-linear-gradient(
     dqm: [DQM_BASE_CONFIG],
   },
   decks: [],
-  cards: [],
+  cards: [
+    {
+      exact: "AB",
+      config: {
+        faces: {
+          Q: ["A"],
+          N: ["A", `${RANKI_INTERNAL_FACE_PREFIX}:rule`, "B"],
+        },
+      },
+    },
+    {
+      exact: "BA",
+      config: {
+        faces: {
+          Q: ["B"],
+          N: ["B", `${RANKI_INTERNAL_FACE_PREFIX}:rule`, "A"],
+        },
+      },
+    },
+  ],
   types: [],
   faces: [],
   tags: [],

@@ -34,6 +34,8 @@
 
 /* DECIDE is this a theme or a scheme? */
 :root.theme-print {
+  --indicator-opacity: 0;
+
   --theme-light-surface-0: 255, 255, 255;
   --theme-light-surface-1: 220, 220, 220;
   --theme-light-surface-2: 180, 180, 180;

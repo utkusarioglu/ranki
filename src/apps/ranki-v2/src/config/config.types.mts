@@ -15,9 +15,10 @@ export type Deck = string;
 
 export type MatchTypes = "exact" | "glob" | "regex";
 
-export type DeckSettings = DeckExactSettings &
-  DeckGlobSettings &
-  DeckRegexSettings;
+export type DeckSettings =
+  | DeckExactSettings
+  | DeckGlobSettings
+  | DeckRegexSettings;
 
 export type DeckExactSettings = DeckCommonSettings & {
   exact: Deck;
@@ -32,7 +33,7 @@ export type DeckRegexSettings = DeckCommonSettings & {
 };
 
 interface DeckCommonSettings {
-  cue: DeckCueSystem;
+  cue?: DeckCueSystem;
   config: RankiBaseConfigPartial;
 }
 

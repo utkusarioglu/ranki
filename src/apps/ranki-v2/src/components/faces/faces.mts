@@ -23,7 +23,7 @@ export class RankiFaces extends RankiFacesWc<Props> {
     this.pairs();
   }
 
-  private hr(container: HTMLElement, index: number) {
+  private rule(container: HTMLElement, index: number) {
     const hr = RankiRule.createAndAttach<{}, RankiRule>(
       {},
       container,
@@ -79,8 +79,9 @@ export class RankiFaces extends RankiFacesWc<Props> {
         return matches.push(false);
       }
       switch (f) {
-        case "ranki:hr":
-        case "ranki:vr":
+        case "ranki:rule":
+          // case "ranki:hr":
+          // case "ranki:vr":
           matches.push(false);
           break;
         default:
@@ -94,9 +95,14 @@ export class RankiFaces extends RankiFacesWc<Props> {
               prevTheater,
             },
           });
-          const curr = newFaces[prevTheater];
+          console.log(newFaces, prevTheater, curr);
+          const newFace = newFaces[prevTheater];
+          if (!newFace) {
+            matches.push(false);
+            return;
+          }
           // const newKey = curr.getAttribute("dqm-key");
-          const newKey = curr.getAttribute("dqm-source");
+          const newKey = newFace.getAttribute("dqm-source");
           assertNotUndefined(newKey, { why: "dqm-key attribute is required" });
           matches.push(prevKey === newKey);
       }
@@ -125,7 +131,6 @@ export class RankiFaces extends RankiFacesWc<Props> {
       {},
       this.shadowRoot!,
     );
-    // .render();
   }
 
   private populatePair(
@@ -141,11 +146,8 @@ export class RankiFaces extends RankiFacesWc<Props> {
     for (let i = startDefinite; i < endDefinite; i++) {
       const f = curr.faces[i];
       switch (f) {
-        case "ranki:hr":
-          this.hr(container, i);
-          break;
-        case "ranki:vr":
-          this.vr(container, i);
+        case "ranki:rule":
+          this.rule(container, i);
           break;
         default:
           const newFace = newFaces[f];

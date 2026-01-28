@@ -12,10 +12,12 @@ export function createAppErrorScreen(
   attach.style.backgroundColor = COLOR_BLACK;
 
   const container = document.createElement("div");
-  attach.prepend(container);
-  container.classList.add("ranki-v2-general-error");
+  attach.append(container);
+  container.style.position = "fixed";
+  container.style.inset = "0";
   container.style.marginInline = "auto";
-  container.style.width = "450px";
+  container.style.padding = "1em";
+  container.style.background = "black";
   const h1 = document.createElement("h1");
   h1.innerText = "Error";
   h1.style.color = COLOR_CRIMSON;
