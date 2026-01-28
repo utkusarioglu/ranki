@@ -10,10 +10,10 @@ export class HudCues extends RankiHudWc<HudCuesProps> {
   protected static name = "ranki-hud-cues" as const;
   protected animations: AnimationTypes = {
     show: RankiAnimation.expandXFadeIn(this, {
-      twoRafCb: this.adjustWidth.bind(this),
+      initialCb: this.adjustWidth.bind(this),
     }),
     hide: RankiAnimation.expandXFadeIn(this, {
-      twoRaf: {
+      initial: {
         "margin-right": 0,
         opacity: 0,
       },
@@ -63,10 +63,14 @@ export class HudCues extends RankiHudWc<HudCuesProps> {
     }
     rm.length &&
       rm.forEach((r) => {
-        r.remove();
+        this.removeCue(r);
       });
     this.adjustWidth();
     return container;
+  }
+
+  private removeCue(r: HudCuesCue) {
+    r.remove();
   }
 
   private createCue(c: CueRecord, i: number, container: HTMLDivElement) {

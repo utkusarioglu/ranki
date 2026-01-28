@@ -7,10 +7,9 @@ export type AnimationTypes = Partial<
 export type AnimationNames = "enter" | "exit" | "hide" | "show";
 
 type PropertiesPack = {
-  wait?: boolean;
-  pre?: SetPropertiesArg;
-  twoRaf?: SetPropertiesArg;
-  twoRafCb?: () => void;
+  setup?: SetPropertiesArg;
+  initial?: SetPropertiesArg;
+  initialCb?: () => void;
   end?: SetPropertiesArg;
   endRemove?: string[];
 };
@@ -19,36 +18,33 @@ export class RankiAnimation {
   private static animate(self: RankiWc<{}>, pack: PropertiesPack) {
     return () =>
       new Promise<void>((resolve) => {
-        if (pack.wait === undefined || pack.wait === true) {
-          const cb = () => {
-            self.setProperties({ ...pack.end });
-            pack.endRemove && self.removeProperties(pack.endRemove);
-            resolve();
-          };
-          self.addEventListener("transitionend", cb, { once: true });
-        }
-        self.setProperties({ ...pack.pre });
+        const cb = () => {
+          self.setProperties({ ...pack.end });
+          pack.endRemove && self.removeProperties(pack.endRemove);
+          resolve();
+        };
+        self.addEventListener("transitionend", cb, { once: true });
+        self.setProperties({ ...pack.setup });
         self.twoRaf(() => {
-          self.setProperties({ ...pack.twoRaf });
-          pack.twoRafCb && pack.twoRafCb();
+          self.setProperties({ ...pack.initial });
+          pack.initialCb && pack.initialCb();
         });
       });
   }
 
   static expandYFadeIn(self: RankiWc<{}>, additional?: PropertiesPack) {
     return RankiAnimation.animate(self, {
-      wait: additional?.wait,
-      twoRafCb: additional?.twoRafCb,
+      initialCb: additional?.initialCb,
       endRemove: [...(additional?.endRemove || []), "max-height"],
-      pre: {
+      setup: {
         opacity: 0,
         "max-height": 0,
-        ...(additional && additional.pre),
+        ...(additional && additional.setup),
       },
-      twoRaf: {
+      initial: {
         opacity: 1,
         "max-height": window.innerHeight + "px",
-        ...(additional && additional.twoRaf),
+        ...(additional && additional.initial),
       },
       end: {
         ...(additional && additional.end),
@@ -59,18 +55,17 @@ export class RankiAnimation {
   static collapseYFadeOut(self: RankiWc<{}>, additional?: PropertiesPack) {
     const height = self.getHeight() || window.innerHeight;
     return RankiAnimation.animate(self, {
-      wait: additional?.wait,
-      twoRafCb: additional?.twoRafCb,
+      initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
-      pre: {
+      setup: {
         "max-height": height + "px",
         opacity: 1,
-        ...(additional && additional.pre),
+        ...(additional && additional.setup),
       },
-      twoRaf: {
+      initial: {
         opacity: 0,
         "max-height": 0,
-        ...(additional && additional.twoRaf),
+        ...(additional && additional.initial),
       },
       end: {
         ...(additional && additional.end),
@@ -80,19 +75,18 @@ export class RankiAnimation {
 
   static expandXFadeIn(self: RankiWc<{}>, additional?: PropertiesPack) {
     return RankiAnimation.animate(self, {
-      wait: additional?.wait,
-      twoRafCb: additional?.twoRafCb,
+      initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
-      pre: {
+      setup: {
         opacity: 0,
         width: 0,
         "margin-right": 0,
-        ...(additional && additional.pre),
+        ...(additional && additional.setup),
       },
-      twoRaf: {
+      initial: {
         opacity: 1,
         "margin-right": "1em",
-        ...(additional && additional.twoRaf),
+        ...(additional && additional.initial),
       },
       end: {
         ...(additional && additional.end),
@@ -103,16 +97,15 @@ export class RankiAnimation {
   static collapseXFadeOut(self: RankiWc<{}>, additional?: PropertiesPack) {
     const width = self.getWidth();
     return RankiAnimation.animate(self, {
-      wait: additional?.wait,
-      twoRafCb: additional?.twoRafCb,
+      initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
-      pre: {
+      setup: {
         width: width + "px",
-        ...(additional && additional.pre),
+        ...(additional && additional.setup),
       },
-      twoRaf: {
+      initial: {
         opacity: 0,
-        ...(additional && additional.twoRaf),
+        ...(additional && additional.initial),
       },
       end: {
         ...(additional && additional.end),
@@ -122,18 +115,17 @@ export class RankiAnimation {
 
   static slideUpFadeIn(self: RankiWc<{}>, additional?: PropertiesPack) {
     return RankiAnimation.animate(self, {
-      wait: additional?.wait,
-      twoRafCb: additional?.twoRafCb,
+      initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
-      pre: {
+      setup: {
         opacity: 0,
         transform: "translateY(50px)",
-        ...(additional && additional.pre),
+        ...(additional && additional.setup),
       },
-      twoRaf: {
+      initial: {
         opacity: 1,
         transform: "translateY(0)",
-        ...(additional && additional.twoRaf),
+        ...(additional && additional.initial),
       },
       end: {
         ...(additional && additional.end),
@@ -142,18 +134,17 @@ export class RankiAnimation {
   }
   static slideUpFadeOut(self: RankiWc<{}>, additional?: PropertiesPack) {
     return RankiAnimation.animate(self, {
-      wait: additional?.wait,
-      twoRafCb: additional?.twoRafCb,
+      initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
-      pre: {
+      setup: {
         // opacity: 0,
         transform: "translateY(0)",
-        ...(additional && additional.pre),
+        ...(additional && additional.setup),
       },
-      twoRaf: {
+      initial: {
         opacity: 0,
         transform: "translateY(-50px)",
-        ...(additional && additional.twoRaf),
+        ...(additional && additional.initial),
       },
       end: {
         ...(additional && additional.end),
@@ -163,16 +154,15 @@ export class RankiAnimation {
 
   static fadeIn(self: RankiWc<{}>, additional?: PropertiesPack) {
     return RankiAnimation.animate(self, {
-      wait: additional?.wait,
-      twoRafCb: additional?.twoRafCb,
+      initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
-      pre: {
+      setup: {
         opacity: 0,
-        ...(additional && additional.pre),
+        ...(additional && additional.setup),
       },
-      twoRaf: {
+      initial: {
         opacity: 1,
-        ...(additional && additional.twoRaf),
+        ...(additional && additional.initial),
       },
       end: {
         ...(additional && additional.end),
@@ -182,16 +172,15 @@ export class RankiAnimation {
 
   static fadeOut(self: RankiWc<{}>, additional?: PropertiesPack) {
     return RankiAnimation.animate(self, {
-      wait: additional?.wait,
-      twoRafCb: additional?.twoRafCb,
+      initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
-      pre: {
+      setup: {
         opacity: 1,
-        ...(additional && additional.pre),
+        ...(additional && additional.setup),
       },
-      twoRaf: {
+      initial: {
         opacity: 0,
-        ...(additional && additional.twoRaf),
+        ...(additional && additional.initial),
       },
       end: {
         ...(additional && additional.end),

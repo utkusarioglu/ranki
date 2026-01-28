@@ -8,10 +8,10 @@ export class HudCard extends RankiHudWc<HudCardProps> {
   protected static name = "ranki-hud-card" as const;
   protected animations: AnimationTypes = {
     show: RankiAnimation.expandXFadeIn(this, {
-      twoRafCb: this.adjustWidth.bind(this),
+      initialCb: this.adjustWidth.bind(this),
     }),
     hide: RankiAnimation.expandXFadeIn(this, {
-      twoRaf: {
+      initial: {
         "margin-right": 0,
         opacity: 0,
       },

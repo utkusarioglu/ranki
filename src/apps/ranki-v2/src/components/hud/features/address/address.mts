@@ -10,10 +10,10 @@ export class HudAddress extends RankiHudWc<HudAddressProps> {
   protected static name = "ranki-hud-address" as const;
   protected animations: AnimationTypes = {
     show: RankiAnimation.fadeIn(this, {
-      pre: {
+      setup: {
         "margin-right": 0,
       },
-      twoRaf: {
+      initial: {
         "margin-right": "1em",
       },
     }),

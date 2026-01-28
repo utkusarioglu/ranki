@@ -36,5 +36,7 @@
 
 .content {
   display: flex;
-  padding-inline: var(--padding-1);
+  padding-left: var(--padding-1);
+  /* TODO this is supposed to be inline-padding minus the gap value between hud items */
+  padding-right: 0;
 }
