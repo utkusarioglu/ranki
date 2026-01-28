@@ -1,6 +1,7 @@
 :host {
-  --color-hr: var(--face-hr-background-color);
-  --height-hr: var(--face-hr-height);
+  --color-hr: var(--face-rule-background-color);
+  --height-hr: var(--face-rule-height);
+  --backdrop-filter: var(--face-rule-backdrop-filter);
   --wrapper-height-hr: 70px;
   /* --transition-duration: var(--face-hr-transition-duration, 10000); */
   /* --transition-property: background, color, padding, border, opacity, height, width; */
@@ -26,6 +27,7 @@ div.horizontal {
   display: block;
   background-color: var(--color-hr);
   border-radius: calc(var(--height-hr) / 2);
+  backdrop-filter: var(--backdrop-filter);
 }
 
 /* TODO this is faulty along with the container type. */
@@ -36,4 +38,5 @@ div.vertical {
   background-color: var(--color-vr);
   height: 100%;
   border-radius: calc(var(--vr-width) / 2);
+  backdrop-filter: var(--backdrop-filter);
 }

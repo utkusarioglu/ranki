@@ -1,21 +1,17 @@
-:host {
-  --transition-property: background, color;
-  --transition-duration: var(--dqm-transition-duration, 5s);
-}
-
 titled-block {
-  transition-property: var(--transition-property);
-  transition-duration: var(--transition-duration);
+  transition-property: color, background, border-radius;
+  transition-duration: var(--isolated-block-transition-duration);
 
   &.container {
+    border-radius: var(--isolated-block-border-radius);
     box-sizing: border-box;
     position: relative;
     display: block;
     width: 100%;
     margin: 0;
-    /* margin-bottom: 1em; */
     padding-block-end: 0.5em;
-    background: var(--scheme-surface-1);
+    background: var(--isolated-block-base-background);
+    backdrop-filter: var(--dqm-isolated-block-base-backdrop-filter);
   }
 
   &.hud {
@@ -36,11 +32,11 @@ titled-block {
 
     &.title,
     &.programming-language {
-      background: var(--scheme-surface-0);
+      background: var(--black);
     }
 
     &.file-path {
-      background: var(--scheme-orange-base);
+      background: var(--orange);
     }
   }
 }

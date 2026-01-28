@@ -41,10 +41,14 @@ tags:
   - exact: marked
     cue: 
       message: Study
-      indicator: chatgpt
-  - exact: under-construction
+      indicator: colorful
+  - exact: leech
+    cue: 
+      message: Leech
+      indicator: checkered
+  - exact: clown-college
     cue:
-      indicator: under-construction
+      indicator: clown-college
   - exact: caution
     cue:
       indicator: caution

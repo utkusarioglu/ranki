@@ -13,6 +13,7 @@
   --scheme-blue-base: var(--theme-dark-blue-base);
   --scheme-purple-base: var(--theme-dark-purple-base);
   --scheme-magenta-base: var(--theme-dark-magenta-base);
+  --scheme-turquoise-base: var(--theme-dark-turquoise-base);
 }
 
 :root.scheme-light {
@@ -30,4 +31,5 @@
   --scheme-blue-base: var(--theme-light-blue-base);
   --scheme-purple-base: var(--theme-light-purple-base);
   --scheme-magenta-base: var(--theme-light-magenta-base);
+  --scheme-turquoise-base: var(--theme-light-turquoise-base);
 }

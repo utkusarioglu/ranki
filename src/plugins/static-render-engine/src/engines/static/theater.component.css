@@ -1,4 +1,14 @@
 :host {
+  --isolated-block-border-radius: var(--dqm-isolated-block-border-radius);
+  --isolated-block-base-background: var(--dqm-isolated-block-base-background);
+  --black: var(--dqm-black);
+  --isolated-block-transition-duration: var(
+    --dqm-isolated-block-transition-duration
+  );
+  --orange: var(--dqm-orange);
+}
+
+:host {
   display: block;
   width: 100%;
   height: auto;

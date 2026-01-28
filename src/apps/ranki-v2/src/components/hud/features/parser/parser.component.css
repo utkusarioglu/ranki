@@ -5,6 +5,7 @@
     margin-right;
 
   --c-background: var(--rhp-c-background, transparent);
+  --c-backdrop-filter: var(--rhp-c-backdrop-filter, transparent);
   --c-border: var(--rhp-c-border, 1px solid red);
   --c-gap: var(--rhp-c-gap, 1em);
   --c-border-radius: var(--rhp-c-border-radius, none);
@@ -58,6 +59,7 @@
   border-radius: var(--c-border-radius);
   border: var(--c-border);
   gap: var(--c-gap);
+  backdrop-filter: var(--c-backdrop-filter);
 }
 
 .version {

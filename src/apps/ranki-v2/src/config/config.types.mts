@@ -201,7 +201,11 @@ export type Saturation = [number, number, number, number, number, number];
 
 export type ColorLevel = string; // index of Lightness
 
-export type Palette = Record<string, Record<ColorLevel, string>>;
+export type ColorFormat = "hex" | "rgb-csv";
+export type Palette = Record<
+  string,
+  Record<ColorLevel, Record<ColorFormat, string>>
+>;
 
 export interface BuildRankiBaseConfigReturn {
   config: RankiBaseConfig;

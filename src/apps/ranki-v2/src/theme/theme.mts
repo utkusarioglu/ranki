@@ -23,6 +23,16 @@ export function createDesign(config: RankiAppConfig) {
     "important",
   );
 
+  // TODO this should come from a variable;
+  // tie css var --face-min-width to this.
+  const match = window.matchMedia("(min-width: 500px)");
+  if (match.matches) {
+    document.body.classList.toggle("width-wide", match.matches);
+  }
+  match.addEventListener("change", (e) => {
+    document.body.classList.toggle("width-wide", e.matches);
+  });
+
   const n = config.design.palette;
   root.className = [
     ...root.className

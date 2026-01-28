@@ -5,6 +5,7 @@
     margin-right;
 
   --c-background: var(--rhu-c-background, transparent);
+  --c-backdrop-filter: var(--rhu-c-backdrop-filter, transparent);
   --c-border: var(--rhu-c-border, 1px solid red);
   --c-gap: var(--rhu-c-gap, 1em);
   --c-border-radius: var(--rhu-c-border-radius, none);
@@ -53,6 +54,7 @@
   border-radius: var(--c-border-radius);
   border: var(--c-border);
   gap: var(--c-gap);
+  backdrop-filter: var(--c-backdrop-filter);
 }
 
 hud-cues-cue {

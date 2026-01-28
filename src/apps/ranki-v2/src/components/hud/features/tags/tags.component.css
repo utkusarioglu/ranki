@@ -5,6 +5,7 @@
   --transition-duration: var(--rht-transition-duration, 0);
 
   --c-background: var(--rht-c-background, transparent);
+  --c-backdrop-filter: var(--rht-c-backdrop-filter, transparent);
   --c-border: var(--rht-c-border, 1px solid red);
   --c-gap: var(--rht-c-gap, 1em);
   --c-border-radius: var(--rht-c-border-radius, none);
@@ -60,6 +61,7 @@
   border-radius: var(--c-border-radius);
   border: var(--c-border);
   gap: var(--c-gap);
+  backdrop-filter: var(--c-backdrop-filter);
 }
 
 hud-tags-tag.anki {
@@ -73,6 +75,7 @@ hud-tags-tag.anki {
   color: var(--n-color);
   border-radius: var(--n-border-radius);
   border: var(--n-border);
+  white-space: nowrap;
 }
 
 hud-tags-tag.ranki {

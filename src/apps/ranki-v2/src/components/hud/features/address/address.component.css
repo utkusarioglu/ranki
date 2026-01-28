@@ -5,6 +5,7 @@
     margin-right;
 
   --c-background: var(--rha-c-background, transparent);
+  --c-backdrop-filter: var(--rha-c-backdrop-filter, none);
   --c-border: var(--rha-c-border, 1px solid red);
   --c-gap: var(--rha-c-gap, 1em);
   --c-border-radius: var(--rha-c-border-radius, none);
@@ -15,12 +16,6 @@
   --s-border: var(--rha-s-border, 1px solid red);
   --s-border-radius: var(--rha-s-border-radius, none);
   --s-padding: var(--rha-s-padding, none);
-
-  --s-hover-background: var(--rha-s-hover-background, transparent);
-  --s-hover-color: var(--rha-s-hover-color, white);
-  --s-hover-border: var(--rha-s-hover-border, 1px solid red);
-  --s-hover-border-radius: var(--rha-s-hover-border-radius, none);
-  --s-hover-padding: var(--rha-s-hover-padding, none);
 
   --d-color: var(--rha-d-color, gray);
   --d-border-radius: var(--rha-d-border-radius, none);
@@ -72,6 +67,7 @@
   border-radius: var(--c-border-radius);
   border: var(--c-border);
   gap: var(--c-gap);
+  backdrop-filter: var(--c-backdrop-filter);
 }
 
 .segment {
@@ -85,14 +81,7 @@
   color: var(--s-color);
   border-radius: var(--s-border-radius);
   border: var(--s-border);
-
-  /* &:hover {
-    padding: var(--s-hover-padding);
-    background: var(--s-hover-background);
-    color: var(--s-hover-color);
-    border-radius: var(--s-hover-border-radius);
-    border: var(--s-hover-border);
-  } */
+  white-space: nowrap;
 }
 
 .divider {
@@ -107,6 +96,7 @@
   color: var(--d-color);
   background: var(--d-background);
   border: var(--d-border);
+  white-space: nowrap;
 }
 
 hud-address-crumb {

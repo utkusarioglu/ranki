@@ -15,28 +15,38 @@
   --ranki-animation-indicator-duration: 2s;
 
   /* BODY */
+  --body-background: rgb(var(--scheme-surface-0));
+  --body-color: rgb(var(--scheme-text-0));
   --body-transition-duration: var(--ranki-animation-fade-duration);
   --face-transition-duration: var(--ranki-animation-fade-duration);
-  --dqm-transition-duration: var(--ranki-animation-fade-duration);
 
+  /* DQM */
+  --dqm-isolated-block-border-radius: 0;
+  --dqm-isolated-block-base-background: rgba(var(--scheme-surface-1), 0.8);
+  --dqm-isolated-block-base-backdrop-filter: blur(20px);
+  --dqm-black: rgb(var(--scheme-surface-0));
+  --dqm-isolated-block-transition-duration: var(
+    --ranki-animation-fade-duration
+  );
+  --dqm-orange: rgb(var(--scheme-orange-base));
+
+  --base: 0.5;
+  --chip: 0.5;
+  --backdrop: blur(10px);
   /* HUD ADDRESS */
   --rha-transition-duration: var(--ranki-animation-fade-duration);
-  --rha-c-background: var(--scheme-surface-1);
+  --rha-c-background: rgba(var(--scheme-surface-1), var(--base));
+  --rha-c-backdrop-filter: var(--backdrop);
   --rha-c-border: none;
   --rha-c-border-radius: 0.5em;
   --rha-c-gap: 0.2em;
   --rha-c-padding: none;
-  --rha-s-background: var(--scheme-surface-2);
-  --rha-s-color: var(--scheme-text-0);
+  --rha-s-background: rgba(var(--scheme-surface-2), var(--chip));
+  --rha-s-color: rgb(var(--scheme-text-0));
   --rha-s-border-radius: 0.5em;
   --rha-s-border: none;
   --rha-s-padding: 0 1em;
-  --rha-s-hover-background: var(--scheme-surface-3);
-  --rha-s-hover-color: var(--scheme-text-0);
-  --rha-s-hover-border-radius: 0.5em;
-  --rha-s-hover-border: none;
-  --rha-s-hover-padding: 0 2em;
-  --rha-d-color: var(--scheme-text-1);
+  --rha-d-color: rgb(var(--scheme-text-1));
   --rha-d-padding: none;
   --rha-d-border-radius: none;
   --rha-d-border: none;
@@ -44,82 +54,88 @@
 
   /* HUD CARD */
   --rhc-transition-duration: var(--ranki-animation-fade-duration);
-  --rhc-c-background: var(--scheme-surface-1);
+  --rhc-c-background: rgba(var(--scheme-surface-1), var(--base));
+  --rhc-c-backdrop-filter: var(--backdrop);
   --rhc-c-border: none;
   --rhc-c-border-radius: 0.5em;
   --rhc-c-gap: 0.2em;
   --rhc-c-padding: 0;
-  --rhc-t-background: var(--scheme-surface-2);
-  --rhc-t-color: var(--scheme-text-0);
+  --rhc-t-background: rgba(var(--scheme-surface-2), var(--chip));
+  --rhc-t-color: rgb(var(--scheme-text-0));
   --rhc-t-border-radius: 0.5em;
   --rhc-t-border: none;
   --rhc-t-padding: 0 1em;
   --rhc-ca-background: transparent;
-  --rhc-ca-color: var(--scheme-text-0);
+  --rhc-ca-color: rgb(var(--scheme-text-0));
   --rhc-ca-border-radius: none;
   --rhc-ca-border: none;
   --rhc-ca-padding: 0 0.3em;
-  --rhc-f-background: var(--scheme-surface-2);
-  --rhc-f-color: var(--scheme-text-0);
+  --rhc-f-background: rgba(var(--scheme-surface-2), var(--chip));
+  --rhc-f-color: rgb(var(--scheme-text-0));
   --rhc-f-border-radius: 0.5em;
   --rhc-f-border: none;
   --rhc-f-padding: 0 1em;
 
   /* HUD PARSER */
   --rhp-transition-duration: var(--ranki-animation-fade-duration);
-  --rhp-c-background: var(--scheme-surface-1);
+  --rhp-c-background: rgba(var(--scheme-surface-1), var(--base));
+  --rhp-c-backdrop-filter: var(--backdrop);
   --rhp-c-border: none;
   --rhp-c-border-radius: 0.5em;
   --rhp-c-gap: 0.2em;
   --rhp-c-padding: 0;
-  --rhp-v-background: var(--scheme-surface-2);
+  --rhp-v-background: rgba(var(--scheme-surface-2), var(--chip));
   --rhp-v-border: none;
   --rhp-v-border-radius: 0.5em;
   --rhp-v-padding: 0 1em;
-  --rhp-v-color: var(--scheme-text-0);
+  --rhp-v-color: rgb(var(--scheme-text-0));
   --rhp-r-background: transparent;
   --rhp-r-border: none;
   --rhp-r-border-radius: 0.5em;
   --rhp-r-padding: 0 0.7em 0 0.4em;
-  --rhp-r-color: var(--scheme-text-1);
+  --rhp-r-color: rgb(var(--scheme-text-1));
 
   /* HUD TAGS */
   --rht-transition-duration: var(--ranki-animation-fade-duration);
-  --rht-c-background: var(--scheme-surface-1);
+  --rht-c-background: rgba(var(--scheme-surface-1), var(--base));
+  --rht-c-backdrop-filter: var(--backdrop);
   --rht-c-border: none;
   --rht-c-border-radius: 0.5em;
   --rht-c-gap: 0.5em;
   --rht-c-padding: 0;
-  --rht-n-background: var(--scheme-surface-2);
+  --rht-n-background: rgba(var(--scheme-surface-2), var(--chip));
   --rht-n-border: none;
   --rht-n-border-radius: 0.5em;
   --rht-n-padding: 0 1em;
-  --rht-n-color: var(--scheme-text-0);
+  --rht-n-color: rgb(var(--scheme-text-0));
   --rht-r-background: transparent;
   --rht-r-border: none;
   --rht-r-border-radius: 0.5em;
   --rht-r-padding: 0 1em 0 0;
-  --rht-r-color: var(--scheme-text-0);
+  --rht-r-color: rgb(var(--scheme-text-0));
 
   /* HUD CUES */
   --rhu-transition-duration: var(--ranki-animation-fade-duration);
-  --rhu-c-background: var(--scheme-surface-1);
+  --rhu-c-background: rgba(var(--scheme-surface-1), var(--base));
+  --rhu-c-backdrop-filter: var(--backdrop);
   --rhu-c-border: none;
   --rhu-c-border-radius: 0.5em;
   --rhu-c-gap: 0.5em;
   --rhu-c-padding: 0;
 
-  --rhu-cu-background: var(--scheme-surface-2);
+  --rhu-cu-background: rgba(var(--scheme-surface-2), var(--chip));
   --rhu-cu-border: none;
-  --rhu-cu-color: var(--scheme-text-0);
+  --rhu-cu-color: rgb(var(--scheme-text-0));
   --rhu-cu-border-radius: 0.5em;
   --rhu-cu-padding: 0 1em;
 
   /*FACES */
-  --face-hr-background-color: var(--scheme-surface-2);
-  --face-hr-height: 10px;
-  --face-hr-transition-duration: var(--ranki-animation-fade-duration);
-  --face-vr-background-color: var(--scheme-surface-2);
-  --face-vr-width: 10px;
-  --face-vr-transition-duration: var(--ranki-animation-fade-duration);
+  --face-rule-background-color: rgba(var(--scheme-surface-2), 0.5);
+  --face-rule-height: 10px;
+  --face-rule-transition-duration: var(--ranki-animation-fade-duration);
+  --face-rule-backdrop-filter: blur(10px);
+}
+
+:root body.width-wide {
+  --dqm-isolated-block-border-radius: 0.5em;
 }

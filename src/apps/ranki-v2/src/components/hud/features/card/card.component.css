@@ -5,6 +5,7 @@
     margin-right;
 
   --c-background: var(--rhc-c-background, transparent);
+  --c-backdrop-filter: var(--rhc-c-backdrop-filter, transparent);
   --c-border: var(--rhc-c-border, 1px solid red);
   --c-gap: var(--rhc-c-gap, 1em);
   --c-border-radius: var(--rhc-c-border-radius, none);
@@ -64,6 +65,7 @@
   border: var(--c-border);
   height: 100%;
   gap: var(--c-gap);
+  backdrop-filter: var(--c-backdrop-filter);
 }
 
 .type {
@@ -77,6 +79,7 @@
   color: var(--t-color);
   border-radius: var(--t-border-radius);
   border: var(--t-border);
+  white-space: nowrap;
 }
 
 .card {
@@ -91,6 +94,7 @@
   padding: var(--ca-padding);
   background: var(--ca-background);
   border: var(--ca-border);
+  white-space: nowrap;
 }
 
 .face {

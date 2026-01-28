@@ -49,45 +49,49 @@ export const RANKI_INITIAL_CONFIG: RankiChannelsConfig = {
         style: "linear-gradient(44deg, var(--palette-red-0-hex), transparent)",
       },
       {
-        name: "under-construction" as RankiIndicatorName,
+        name: "clown-college" as RankiIndicatorName,
         style:
-          "linear-gradient( 327deg, var(--palette-yellow-1-hex) 20%, transparent 21%, transparent 40%, var(--palette-yellow-1-hex) 41%, transparent 60%)",
+          "conic-gradient(from 31deg at 80% 65%, rgb(var(--scheme-red-base)) 121deg, rgb(var(--scheme-blue-base)) 0% 50%,       rgb(var(--scheme-green-base)) 0% calc(180deg + 121deg), rgb(var(--scheme-purple-base)) 0%)",
       },
       {
-        name: "chatgpt" as RankiIndicatorName,
+        name: "colorful" as RankiIndicatorName,
         style: `
 radial-gradient(
   120% 120% at 12% 18%,
-  var(--scheme-surface-1) 0%,
+  rgb(var(--scheme-red-base)) 0%,
   transparent 52%
 ),
 radial-gradient(
   110% 110% at 88% 82%,
-  var(--scheme-surface-2) 0%,
+  rgb(var(--scheme-orange-base)) 0%,
   transparent 58%
 ),
 linear-gradient(
   135deg,
   transparent 0%,
-  var(--scheme-surface-1) 33%,
+  rgb(var(--scheme-green-base)) 33%,
   transparent 66%
 ),
 linear-gradient(
   315deg,
   transparent 0%,
-  var(--scheme-surface-2) 38%,
+  rgb(var(--scheme-blue-base)) 38%,
   transparent 72%
 ),
 repeating-linear-gradient(
   0deg,
   transparent 0px,
   transparent 22px,
-  var(--scheme-surface-1) 23px,
+  rgb(var(--scheme-purple-base)) 23px,
   transparent 26px
 )
 `
           .replace(/\s+/g, " ")
           .trim(),
+      },
+      {
+        name: "checkered" as RankiIndicatorName,
+        style: `repeating-conic-gradient(rgb(var(--scheme-blue-base)) 0 25%, rgb(var(--scheme-surface-0)) 0 50%) 50% / 15vmin 15vmax`,
       },
     ],
     palettes: [

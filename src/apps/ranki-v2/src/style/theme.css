@@ -1,46 +1,48 @@
 :root.theme-utku {
-  --theme-dark-surface-0: var(--palette-tone-dark-hex);
-  --theme-dark-surface-1: var(--palette-tone-0-hex);
-  --theme-dark-surface-2: var(--palette-tone-1-hex);
-  --theme-dark-surface-3: var(--palette-tone-2-hex);
-  --theme-dark-text-0: var(--palette-tone-5-hex);
-  --theme-dark-text-1: var(--palette-tone-4-hex);
+  --theme-dark-surface-0: var(--palette-tone-dark-rgb-csv);
+  --theme-dark-surface-1: var(--palette-tone-0-rgb-csv);
+  --theme-dark-surface-2: var(--palette-tone-1-rgb-csv);
+  --theme-dark-surface-3: var(--palette-tone-2-rgb-csv);
+  --theme-dark-text-0: var(--palette-tone-5-rgb-csv);
+  --theme-dark-text-1: var(--palette-tone-4-rgb-csv);
 
-  --theme-dark-red-base: var(--palette-red-2-hex);
-  --theme-dark-orange-base: var(--palette-orange-2-hex);
-  --theme-dark-yellow-base: var(--palette-yellow-2-hex);
-  --theme-dark-green-base: var(--palette-green-2-hex);
-  --theme-dark-blue-base: var(--palette-blue-2-hex);
-  --theme-dark-purple-base: var(--palette-purple-2-hex);
-  --theme-dark-magenta-base: var(--palette-magenta-2-hex);
+  --theme-dark-red-base: var(--palette-red-2-rgb-csv);
+  --theme-dark-orange-base: var(--palette-orange-2-rgb-csv);
+  --theme-dark-yellow-base: var(--palette-yellow-2-rgb-csv);
+  --theme-dark-green-base: var(--palette-green-2-rgb-csv);
+  --theme-dark-blue-base: var(--palette-blue-2-rgb-csv);
+  --theme-dark-purple-base: var(--palette-purple-2-rgb-csv);
+  --theme-dark-magenta-base: var(--palette-magenta-2-rgb-csv);
+  --theme-dark-turquoise-base: var(--palette-magenta-2-rgb-csv);
 
-  --theme-light-surface-0: var(--palette-blue-5-hex);
-  --theme-light-surface-1: var(--palette-blue-4-hex);
-  --theme-light-surface-2: var(--palette-blue-3-hex);
-  --theme-light-surface-3: var(--palette-blue-2-hex);
-  --theme-light-text-0: var(--palette-tone-0-hex);
-  --theme-light-text-1: var(--palette-tone-1-hex);
+  --theme-light-surface-0: var(--palette-blue-5-rgb-csv);
+  --theme-light-surface-1: var(--palette-blue-4-rgb-csv);
+  --theme-light-surface-2: var(--palette-blue-3-rgb-csv);
+  --theme-light-surface-3: var(--palette-blue-2-rgb-csv);
+  --theme-light-text-0: var(--palette-tone-0-rgb-csv);
+  --theme-light-text-1: var(--palette-tone-1-rgb-csv);
 
-  --theme-light-red-base: var(--palette-red-3-hex);
-  --theme-light-orange-base: var(--palette-orange-3-hex);
-  --theme-light-yellow-base: var(--palette-yellow-3-hex);
-  --theme-light-green-base: var(--palette-green-3-hex);
-  --theme-light-blue-base: var(--palette-blue-3-hex);
-  --theme-light-purple-base: var(--palette-purple-3-hex);
-  --theme-light-magenta-base: var(--palette-magenta-3-hex);
+  --theme-light-red-base: var(--palette-red-3-rgb-csv);
+  --theme-light-orange-base: var(--palette-orange-3-rgb-csv);
+  --theme-light-yellow-base: var(--palette-yellow-3-rgb-csv);
+  --theme-light-green-base: var(--palette-green-3-rgb-csv);
+  --theme-light-blue-base: var(--palette-blue-3-rgb-csv);
+  --theme-light-purple-base: var(--palette-purple-3-rgb-csv);
+  --theme-light-magenta-base: var(--palette-magenta-3-rgb-csv);
+  --theme-light-turquoise-base: var(--palette-magenta-3-rgb-csv);
 }
 
 /* DECIDE is this a theme or a scheme? */
 :root.theme-print {
-  --theme-dark-surface-0: #fff;
-  --theme-dark-surface-1: #ddd;
-  --theme-dark-surface-2: #bbb;
-  --theme-dark-text-0: #000;
-  --theme-dark-text-1: #222;
+  --theme-light-surface-0: 255, 255, 255;
+  --theme-light-surface-1: 220, 220, 220;
+  --theme-light-surface-2: 180, 180, 180;
+  --theme-light-text-0: 0, 0, 0;
+  --theme-light-text-1: 35, 35, 35;
 
-  --theme-light-surface-0: #000;
-  --theme-light-surface-1: #222;
-  --theme-light-surface-2: #444;
-  --theme-light-text-0: #fff;
-  --theme-light-text-1: #ddd;
+  --theme-dark-surface-0: 0, 0, 0;
+  --theme-dark-surface-1: 35, 35, 35;
+  --theme-dark-surface-2: 70, 70, 70;
+  --theme-dark-text-0: 255, 255, 255;
+  --theme-dark-text-1: 220, 220, 200;
 }

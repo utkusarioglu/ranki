@@ -21,7 +21,6 @@
   height: 100%;
   width: 100%;
 
-  /* position: sticky; */
   display: flex;
   overflow: hidden;
   margin: 0;
@@ -31,13 +30,11 @@
 }
 
 .center {
-  /* display: flex; */
   max-width: 100%;
   margin-inline: auto;
 }
 
 .content {
   display: flex;
-  /* gap: 1em; */
   padding-inline: var(--padding-1);
 }

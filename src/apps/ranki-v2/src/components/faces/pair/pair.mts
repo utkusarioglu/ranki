@@ -16,7 +16,7 @@ export class RankiFacesPair extends RankiFacesWc<{}> {
   };
 
   getContainer(): HTMLDivElement {
-    return this.querySelector(".container")!;
+    return this.querySelector("ranki-faces-pair > .container")!;
   }
 
   getChildren(): HTMLElement[] {
@@ -24,7 +24,7 @@ export class RankiFacesPair extends RankiFacesWc<{}> {
   }
 
   build() {
-    let div = this.querySelector("div.container");
+    let div = this.querySelector("ranki-faces-pair > .container");
     if (div) {
       return;
     }
