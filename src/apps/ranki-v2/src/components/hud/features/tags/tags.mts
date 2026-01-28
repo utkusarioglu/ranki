@@ -25,9 +25,7 @@ export class HudTags extends RankiHudWc<HudTagsProps> {
   }
 
   private adjustWidth() {
-    const container = this.shadowRoot!.querySelector(
-      "div.container",
-    ) as HTMLDivElement;
+    const container = this.getContainer();
     if (!container) {
       return;
     }
@@ -36,17 +34,6 @@ export class HudTags extends RankiHudWc<HudTagsProps> {
     const right = last.getRight();
     const left = this.getLeft();
     this.setProperties({ width: right - left + "px" });
-  }
-
-  private container() {
-    let c = this.shadowRoot!.querySelector("div.container") as HTMLDivElement;
-    if (c) {
-      return c;
-    }
-    const container = document.createElement("div");
-    container.classList.add("container");
-    this.shadowRoot!.replaceChildren(container);
-    return container;
   }
 
   private subtree(container: HTMLDivElement) {
@@ -78,7 +65,7 @@ export class HudTags extends RankiHudWc<HudTagsProps> {
   }
 
   private build() {
-    const container = this.container();
+    const [container] = this.createSingletonContainer();
     this.subtree(container);
     this.adjustWidth();
   }

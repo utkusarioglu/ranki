@@ -25,7 +25,7 @@ export class HudParser extends RankiHudWc<HudParserProps> {
 
   private adjustWidth() {
     const container = this.shadowRoot!.querySelector(
-      "div.replacements",
+      ".replacements",
     ) as HTMLDivElement;
     if (!container) {
       return;
@@ -37,15 +37,12 @@ export class HudParser extends RankiHudWc<HudParserProps> {
   }
 
   private build() {
-    let container = this.shadowRoot!.querySelector("div.container");
+    let container = this.getContainer();
     if (container) {
       return container;
     }
     const props = this.getCurr();
-    container = document.createElement("div");
-    this.shadowRoot!.replaceChildren(container);
-    container.classList.add("container");
-    container.classList.add(`error-${props.errorLevel}`);
+    [container] = this.createSingletonContainer([`error-${props.errorLevel}`]);
 
     const version = document.createElement("div");
     version.classList.add("version");

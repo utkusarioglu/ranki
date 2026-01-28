@@ -24,25 +24,22 @@ export class HudCard extends RankiHudWc<HudCardProps> {
   }
 
   private adjustWidth() {
-    const container = this.shadowRoot!.querySelector(
-      "div.face",
-    ) as HTMLDivElement;
-    if (!container) {
+    const face = this.shadowRoot!.querySelector("div.face") as HTMLDivElement;
+    if (!face) {
       return;
     }
 
-    const right = container.getBoundingClientRect().right;
+    const right = face.getBoundingClientRect().right;
     const left = this.getLeft();
     this.setProperties({ width: right - left + "px" });
   }
 
   private build() {
-    const c = this.shadowRoot!.querySelector("div.container") as HTMLDivElement;
-    if (c) {
-      return c;
+    const [container, existing] = this.createSingletonContainer();
+    if (existing) {
+      return container;
     }
-    const container = document.createElement("div");
-    container.classList.add("container");
+    // container = this.createSingletonContainer();
     const props = this.getCurr();
 
     const type = document.createElement("div");
@@ -60,7 +57,6 @@ export class HudCard extends RankiHudWc<HudCardProps> {
     face.innerText = props.face;
     container.appendChild(face);
 
-    this.shadowRoot!.replaceChildren(container);
     return container;
   }
 

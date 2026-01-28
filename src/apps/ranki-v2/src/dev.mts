@@ -10,7 +10,7 @@ declare global {
   interface Window {
     ranki: {
       trigger(): HTMLDivElement;
-      switch(t: string): void;
+      // switch(t: string): void;
       face(f: string): void;
       a(a: string): void;
       b(a: string): void;
@@ -75,26 +75,6 @@ export function devMethods() {
       }
       return qa;
     },
-    switch() {
-      this.tags(
-        [
-          dark ? "+r:scheme-light" : "",
-          // !!tagIndex ? "+r:animation-slow" : "",
-          // "+r:animation-slow",
-          TAGS[tagIndex++ % TAGS.length],
-          "+r:animation::disabled",
-        ].join(" "),
-      );
-      dark = !dark;
-      this.deck(DECKS[deckIndex++ % DECKS.length]);
-
-      Object.entries(FACES[faceIndex]).forEach(([faceName, text]) => {
-        // @ts-expect-error
-        this[faceName](text);
-      });
-
-      faceIndex = (faceIndex + 1) % FACES.length;
-    },
     face(q) {
       const qa = this.trigger();
       const elem = qa.querySelector("script.ranki-v2-data.face");
@@ -151,11 +131,16 @@ export function devMethods() {
         this[k](v);
       });
     },
-    alternate(p, opts?: { limit?: number; duration?: number }) {
+    alternate(p, opts?: { limit?: number; duration?: number; delay?: number }) {
       let count = 0;
       const limit = opts?.limit || 4;
       const duration = opts?.duration || 2e3;
+      const delay = opts?.delay || 0;
       let interval: number;
+
+      if (delay > 0) {
+        console.log(`alternate: starting in ${delay}msec`);
+      }
 
       const cb = () => {
         try {
@@ -176,7 +161,10 @@ export function devMethods() {
         }
       };
 
-      interval = setInterval(cb, duration);
+      setTimeout(() => {
+        cb();
+        interval = setInterval(cb, duration);
+      }, delay);
     },
   };
 }

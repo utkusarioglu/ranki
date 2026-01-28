@@ -25,9 +25,7 @@ export class HudAddress extends RankiHudWc<HudAddressProps> {
   }
 
   private adjustWidth() {
-    const container = this.shadowRoot!.querySelector(
-      "div.container",
-    ) as HTMLDivElement;
+    const container = this.getContainer();
     if (!container) {
       return;
     }
@@ -40,20 +38,8 @@ export class HudAddress extends RankiHudWc<HudAddressProps> {
     this.style.setProperty("width", right - left + "px");
   }
 
-  private container(): HTMLDivElement {
-    let c = this.shadowRoot!.querySelector("div.container") as HTMLDivElement;
-    if (c) {
-      return c;
-    }
-    c = document.createElement("div");
-    c.classList.add("container");
-
-    this.shadowRoot!.appendChild(c);
-    return c;
-  }
-
   private build() {
-    const container = this.container();
+    const [container] = this.createSingletonContainer();
     this.subtree(container);
     this.adjustWidth();
   }
