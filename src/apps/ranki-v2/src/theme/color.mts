@@ -63,7 +63,6 @@ function generatePalette({
 
 function generatePaletteVariables(s: PaletteSpecs) {
   const p = generatePalette(s);
-  console.log(p);
   const vars = Object.entries(p)
     .map(([color, hues]) =>
       Object.entries(hues).map(([level, formats]) =>

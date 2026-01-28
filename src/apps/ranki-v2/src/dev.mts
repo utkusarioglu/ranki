@@ -132,6 +132,11 @@ export function devMethods() {
       });
     },
     alternate(p, opts?: { limit?: number; duration?: number; delay?: number }) {
+      window.addEventListener("ranki-fault", (e) => {
+        faultFound = true;
+        console.log(e);
+      });
+      let faultFound = false;
       let count = 0;
       const limit = opts?.limit || 4;
       const duration = opts?.duration || 2e3;
@@ -143,6 +148,11 @@ export function devMethods() {
       }
 
       const cb = () => {
+        if (faultFound) {
+          clearInterval(interval);
+          console.log("alternate: fault found");
+          return;
+        }
         try {
           console.log("alternate:", count);
           const props = Object.fromEntries(

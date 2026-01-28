@@ -136,13 +136,9 @@ export class RankiWc<Props> extends HTMLElement {
     return el;
   }
 
-  static create<T, C extends RankiWc<T>>(
-    props: T,
-    // attach: Element | ShadowRoot,
-  ) {
+  static create<T, C extends RankiWc<T>>(props: T) {
     this.define();
     const el = document.createElement(this.name) as C;
-    // attach.appendChild(el);
     el.setProps(props);
     return el;
   }
