@@ -1,7 +1,6 @@
-import type { CardFaceArray } from "../../config/collect/collect.types.mts";
 import styles from "./faces.component.css?inline";
 import { renderDqm } from "../../dqm/render-dqm.mts";
-import type { RankiDqmConfig } from "../../config/config.types.mts";
+import type { RankiAppFacesConfig } from "../../config/config.types.mts";
 import { RankiFacesFace } from "./pair/face/face.mts";
 import { assertNotUndefined, assertNotNull } from "../../error/assertions.mts";
 import { RankiFacesPair, type PairChildren } from "./pair/pair.mts";
@@ -10,9 +9,7 @@ import { RankiRule, ruleStyles } from "./pair/rule/rule.mts";
 
 type RenderedFaces = Record<string, RankiFacesFace>;
 
-type Props = { faces: CardFaceArray; dqm: RankiDqmConfig };
-
-export class RankiFaces extends RankiFacesWc<Props> {
+export class RankiFaces extends RankiFacesWc<RankiAppFacesConfig> {
   public static name = "ranki-faces" as const;
   constructor() {
     super(true);
@@ -32,14 +29,14 @@ export class RankiFaces extends RankiFacesWc<Props> {
     hr.setAttribute("data-index", index.toString());
   }
 
-  private vr(container: HTMLElement, index: number) {
-    const hr = RankiRule.createAndAttach<{}, RankiRule>(
-      {},
-      container,
-    ).setVariant("vertical");
-    // .render();
-    hr.setAttribute("data-index", index.toString());
-  }
+  // private vr(container: HTMLElement, index: number) {
+  //   const hr = RankiRule.createAndAttach<{}, RankiRule>(
+  //     {},
+  //     container,
+  //   ).setVariant("vertical");
+  //   // .render();
+  //   hr.setAttribute("data-index", index.toString());
+  // }
 
   private renderDqm(): RenderedFaces {
     const curr = this.getCurr();
@@ -73,7 +70,7 @@ export class RankiFaces extends RankiFacesWc<Props> {
     pairs.slice(0, -1).forEach((v) => v.remove());
     const last = pairs.at(-1)!;
     const matches: boolean[] = [];
-    curr.faces.forEach((f, i) => {
+    curr.order.forEach((f, i) => {
       const prev = last.getChildren()[i];
       if (!prev) {
         return matches.push(false);
@@ -121,7 +118,7 @@ export class RankiFaces extends RankiFacesWc<Props> {
         (ch[i] as PairChildren).remove();
       }
     } else {
-      const fl = curr.faces.length;
+      const fl = curr.order.length;
       this.populatePair(last, newFaces, ml - fl + 1);
     }
   }
@@ -141,10 +138,10 @@ export class RankiFaces extends RankiFacesWc<Props> {
   ) {
     const curr = this.getCurr();
     const startDefinite = start !== undefined ? start : 0;
-    const endDefinite = end !== undefined ? end : curr.faces.length;
+    const endDefinite = end !== undefined ? end : curr.order.length;
     const container = pair.getContainer();
     for (let i = startDefinite; i < endDefinite; i++) {
-      const f = curr.faces[i];
+      const f = curr.order[i];
       switch (f) {
         case "ranki:rule":
           this.rule(container, i);

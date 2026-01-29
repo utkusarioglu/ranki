@@ -43,8 +43,7 @@ export function createAppConfig(
   const order = getFaceOrder(base.config, raw);
   const scheme = getScheme(base, raw);
   const ranki = buildRankiConfig(base, raw, tags, order, scheme);
-  const dqm = buildDqmConfig(raw, order, base.config, scheme);
-  return { ranki, dqm };
+  return ranki;
 }
 
 function getScheme(base: BuildRankiBaseConfigReturn, raw: RawFields) {
@@ -61,23 +60,28 @@ function buildRankiConfig(
   scheme: RankiAppDeterminedScheme,
 ): RankiAppConfig {
   const hud = buildHudConfig(base, raw, tags);
+  const dqm = buildDqmConfig(raw, order, base.config, scheme);
   return {
     hud,
     dev: {
       methods: base.config.dev.methods,
     },
+    indicator: {
+      cues: base.cueRecord,
+      indicatorCollection: base.config.indicators,
+    },
     design: {
-      cueRecord: base.cueRecord,
       scheme,
       animation: base.config.design.animation,
       palette: base.config.design.palette,
       theme: base.config.design.theme,
       layout: base.config.design.layout,
+      paletteCollection: base.config.palettes,
     },
-    face: raw.fields.face,
-    order,
-    palettes: base.config.palettes,
-    indicators: base.config.indicators,
+    faces: {
+      order,
+      dqm,
+    },
   };
 }
 

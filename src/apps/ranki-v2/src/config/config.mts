@@ -7,13 +7,13 @@ import type {
   RankiTag,
   RankiTags,
 } from "./collect/collect.types.mjs";
-import type { Conf, RankiTagPrefix } from "./config.types.mts";
+import type { RankiAppConfig, RankiTagPrefix } from "./config.types.mts";
 import { buildChannelsConfig } from "./channels/channels.mts";
 import { buildBaseConfig } from "./base/base.mts";
 import { createAppConfig } from "./app/app.mts";
 import { collectRaw } from "./collect/collect.mts";
 
-export async function createConfig(): Promise<Conf> {
+export async function createConfig(): Promise<RankiAppConfig> {
   const raw = await collectRaw();
   const channels = buildChannelsConfig(raw);
   const tags = groupTags(raw, channels.base.tags.ranki.prefix);

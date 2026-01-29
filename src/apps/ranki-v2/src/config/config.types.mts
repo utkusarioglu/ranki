@@ -170,33 +170,35 @@ export interface RankiAppDesign {
   palette: RankiPalette;
   theme: RankiAppTheme;
   layout: RankiLayout;
-  cueRecord: CueRecord[];
+  paletteCollection: PaletteSpecs[];
 }
 
 export interface RankiAppDebugConfig {
   methods: boolean;
 }
 
-export interface RankiAppConfig {
-  face: AnkiCardFace;
-  design: RankiAppDesign;
-  palettes: PaletteSpecs[];
-  indicators: RankiIndicatorDefinition[];
-  dev: RankiAppDebugConfig;
-
-  hud: HudProps;
+export interface RankiAppFacesConfig {
   order: CardFaceArray;
+  dqm: RankiDqmConfig;
+}
+
+export interface RankiAppIndicatorConfig {
+  indicatorCollection: RankiIndicatorDefinition[];
+  cues: CueRecord[];
+}
+
+export interface RankiAppConfig {
+  design: RankiAppDesign;
+  indicator: RankiAppIndicatorConfig;
+  dev: RankiAppDebugConfig;
+  hud: HudProps;
+  faces: RankiAppFacesConfig;
 }
 
 export interface RankiDqmConfig {
   inputs: DqmParseInputStructured;
   config: DqmConfigPackPartial;
   pref: IDqmRendererClientPreferences;
-}
-
-export interface Conf {
-  ranki: RankiAppConfig;
-  dqm: RankiDqmConfig;
 }
 
 export interface PaletteSpecs {

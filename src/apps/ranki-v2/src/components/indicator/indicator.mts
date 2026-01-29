@@ -1,5 +1,5 @@
 import type {
-  RankiAppConfig,
+  RankiAppIndicatorConfig,
   RankiIndicatorDefinition,
 } from "../../config/config.types.mts";
 import { assertNotUndefined } from "../../error/assertions.mts";
@@ -7,7 +7,7 @@ import style from "./indicator.component.css?inline";
 import { RankiWc } from "../ranki-wc/ranki-wc.mts";
 import { IndicatorPattern } from "./pattern.mts";
 
-export class RankiIndicator extends RankiWc<RankiAppConfig> {
+export class RankiIndicator extends RankiWc<RankiAppIndicatorConfig> {
   public static name = "ranki-indicator" as const;
   private active: string = "transparent";
 
@@ -18,17 +18,17 @@ export class RankiIndicator extends RankiWc<RankiAppConfig> {
 
   private build() {
     const config = this.getCurr();
-    const indicators = config.indicators;
+    const collection = config.indicatorCollection;
 
     const newPattern: RankiIndicatorDefinition[] = [];
-    config.design.cueRecord.forEach((c) => {
+    config.cues.forEach((c) => {
       if (!c.indicator || c.indicator === "none") {
         return;
       }
-      const ind = indicators.find((v) => v.name === c.indicator);
+      const ind = collection.find((v) => v.name === c.indicator);
       assertNotUndefined(ind, {
         why: "Indicator with the given name doesn't exist",
-        details: { indicator: c.indicator, indicators },
+        details: { indicator: c.indicator, indicators: collection },
       });
       newPattern.push(ind);
     });

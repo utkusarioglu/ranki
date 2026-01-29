@@ -8,28 +8,17 @@ import { setStyles } from "./style/style.mts";
 import { RankiFaces } from "./components/faces/faces.mts";
 import { RankiIndicator } from "./components/indicator/indicator.mts";
 
-/**
- * @dev
- * #1 DECIDE THis is below data collection because there may be a hash involved
- * in determining whether to render a certain face
- */
 async function main() {
   try {
-    if (!shouldRender()) {
-      return;
-    }
+    if (!shouldRender()) return;
 
     setStyles();
     const config = await createConfig();
-    createDevTools(config.ranki.dev);
-    RankiHud.singleton(config.ranki.hud, document.body);
-
-    createDesign(config.ranki);
-    RankiIndicator.singleton(config.ranki, document.body);
-    RankiFaces.singleton(
-      { faces: config.ranki.order, dqm: config.dqm },
-      document.body,
-    );
+    createDevTools(config.dev);
+    RankiHud.singleton(config.hud, document.body);
+    createDesign(config.design);
+    RankiIndicator.singleton(config.indicator, document.body);
+    RankiFaces.singleton(config.faces, document.body);
   } catch (e) {
     const { createAppErrorScreen } =
       await import("./components/general-error/general-error.mjs");
