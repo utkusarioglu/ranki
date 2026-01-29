@@ -8,8 +8,13 @@ import type {
   HudVisibility,
 } from "../components/hud/hud.types.mjs";
 import type { DeepPartialSerializable } from "../types/util.types.mjs";
-import type { AnkiCardFace, CardFaceArray } from "./collect/collect.types.mts";
-import type { HudProps } from "../components/hud/hud.types.mts";
+import type {
+  AnkiCardFace,
+  CardFaceArray,
+  FilteredTags,
+  RawFields,
+} from "./collect/collect.types.mts";
+import type { HudProps as RankiHudState } from "../components/hud/hud.types.mts";
 
 export type Deck = string;
 
@@ -164,7 +169,7 @@ export type RankiAppDeterminedScheme = "light" | "dark";
 
 export type RankiAppTheme = string & { type: "RankiAppTheme" };
 
-export interface RankiAppDesign {
+export interface RankiDesignState {
   animation: RankiAnimation;
   scheme: RankiAppDeterminedScheme;
   palette: RankiPalette;
@@ -173,26 +178,26 @@ export interface RankiAppDesign {
   paletteCollection: PaletteSpecs[];
 }
 
-export interface RankiAppDebugConfig {
+export interface RankiDevState {
   methods: boolean;
 }
 
-export interface RankiAppFacesConfig {
+export interface RankiChallengeState {
   order: CardFaceArray;
   dqm: RankiDqmConfig;
 }
 
-export interface RankiAppIndicatorConfig {
+export interface RankiIndicatorState {
   indicatorCollection: RankiIndicatorDefinition[];
   cues: CueRecord[];
 }
 
-export interface RankiAppConfig {
-  design: RankiAppDesign;
-  indicator: RankiAppIndicatorConfig;
-  dev: RankiAppDebugConfig;
-  hud: HudProps;
-  faces: RankiAppFacesConfig;
+export interface RankiState {
+  design: RankiDesignState;
+  indicator: RankiIndicatorState;
+  dev: RankiDevState;
+  hud: RankiHudState;
+  challenge: RankiChallengeState;
 }
 
 export interface RankiDqmConfig {
@@ -223,4 +228,10 @@ export type Palette = Record<
 export interface BuildRankiBaseConfigReturn {
   config: RankiBaseConfig;
   cueRecord: CueRecord[];
+}
+
+export interface RankiCollectedConfig {
+  base: BuildRankiBaseConfigReturn;
+  raw: RawFields;
+  tags: FilteredTags;
 }

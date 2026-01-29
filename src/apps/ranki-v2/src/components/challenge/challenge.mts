@@ -1,6 +1,6 @@
-import styles from "./faces.component.css?inline";
+import styles from "./challenge.component.css?inline";
 import { renderDqm } from "../../dqm/render-dqm.mts";
-import type { RankiAppFacesConfig } from "../../config/config.types.mts";
+import type { RankiChallengeState } from "../../config/config.types.mts";
 import { RankiFacesFace } from "./pair/face/face.mts";
 import { assertNotUndefined, assertNotNull } from "../../error/assertions.mts";
 import { RankiFacesPair, type PairChildren } from "./pair/pair.mts";
@@ -9,8 +9,8 @@ import { RankiRule, ruleStyles } from "./pair/rule/rule.mts";
 
 type RenderedFaces = Record<string, RankiFacesFace>;
 
-export class RankiFaces extends RankiFacesWc<RankiAppFacesConfig> {
-  public static name = "ranki-faces" as const;
+export class RankiChallenge extends RankiFacesWc<RankiChallengeState> {
+  public static name = "ranki-challenge" as const;
   constructor() {
     super(true);
     this.pushStyles(styles, ruleStyles);
@@ -25,27 +25,15 @@ export class RankiFaces extends RankiFacesWc<RankiAppFacesConfig> {
       {},
       container,
     ).setVariant("horizontal");
-    // .render();
     hr.setAttribute("data-index", index.toString());
   }
-
-  // private vr(container: HTMLElement, index: number) {
-  //   const hr = RankiRule.createAndAttach<{}, RankiRule>(
-  //     {},
-  //     container,
-  //   ).setVariant("vertical");
-  //   // .render();
-  //   hr.setAttribute("data-index", index.toString());
-  // }
 
   private renderDqm(): RenderedFaces {
     const curr = this.getCurr();
     const faceEntries: [string, RankiFacesFace][] = [];
     const theaterEntries: [string, () => HTMLDivElement][] = [];
     curr.dqm.inputs.forEach((n) => {
-      // const face = RankiFacesFace.create({})
       const face = RankiFacesFace.create<{}, RankiFacesFace>({});
-      // const face = document.createElement("ranki-faces-face");
       face.setAttribute("dqm-source", n.dqm);
       faceEntries.push([n.theater, face as RankiFacesFace]);
       theaterEntries.push([n.theater, () => face as unknown as HTMLDivElement]);
@@ -77,8 +65,6 @@ export class RankiFaces extends RankiFacesWc<RankiAppFacesConfig> {
       }
       switch (f) {
         case "ranki:rule":
-          // case "ranki:hr":
-          // case "ranki:vr":
           matches.push(false);
           break;
         default:

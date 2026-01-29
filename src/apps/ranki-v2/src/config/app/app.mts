@@ -10,11 +10,12 @@ import type {
 import type {
   RankiBaseConfig,
   RankiAppDeterminedScheme,
-  RankiAppConfig,
+  RankiState,
   RankiDqmConfig,
   BuildRankiBaseConfigReturn,
   RankiBaseAddressMutationMode,
   CueRecord,
+  RankiCollectedConfig,
 } from "../config.types.mts";
 import type {
   DqmParseInputStructured,
@@ -36,9 +37,10 @@ export const MUTATION_MODE_PRECEDENCE: RankiBaseAddressMutationMode[] = [
 ];
 
 export function createAppConfig(
-  base: BuildRankiBaseConfigReturn,
-  raw: RawFields,
-  tags: FilteredTags,
+  { base, raw, tags }: RankiCollectedConfig,
+  // base: BuildRankiBaseConfigReturn,
+  // raw: RawFields,
+  // tags: FilteredTags,
 ) {
   const order = getFaceOrder(base.config, raw);
   const scheme = getScheme(base, raw);
@@ -58,7 +60,7 @@ function buildRankiConfig(
   tags: FilteredTags,
   order: CardFaceArray,
   scheme: RankiAppDeterminedScheme,
-): RankiAppConfig {
+): RankiState {
   const hud = buildHudConfig(base, raw, tags);
   const dqm = buildDqmConfig(raw, order, base.config, scheme);
   return {
@@ -78,7 +80,7 @@ function buildRankiConfig(
       layout: base.config.design.layout,
       paletteCollection: base.config.palettes,
     },
-    faces: {
+    challenge: {
       order,
       dqm,
     },

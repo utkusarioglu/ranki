@@ -1,7 +1,7 @@
-import type { RankiAppDebugConfig } from "../config/config.types.mts";
+import type { RankiDevState } from "../config/config.types.mts";
 import { RankiDevMethods } from "./dev-methods.mts";
 
-export function createDevTools(conf: RankiAppDebugConfig) {
+export function createDevTools(conf: RankiDevState) {
   if (conf.methods) {
     console.log(
       "Ranki DevMethods available at %cwindow.ranki",
@@ -9,5 +9,8 @@ export function createDevTools(conf: RankiAppDebugConfig) {
     );
 
     window.ranki = RankiDevMethods;
+  } else if (window.ranki) {
+    console.log("Ranki DevMethods removed.");
+    delete window.ranki;
   }
 }

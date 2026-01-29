@@ -75,13 +75,13 @@ export class HudCues extends RankiHudWc<HudCuesProps> {
 
   private createCue(c: CueRecord, i: number, container: HTMLDivElement) {
     const cue = HudCuesCue.createAndAttach({}, container);
-    cue.innerText = c.message || c.indicator;
+    cue.innerText = c.message || c.indicator || "";
     cue.addClass("cue", `issuer-${c.issuer}`, `kind-${c.kind}`);
     cue.setAttribute("data-index", i.toString());
   }
 
   private mutateCue(s: CueRecord, e: HTMLDivElement) {
-    e.innerText = s.message;
+    e.innerText = s.message || "";
   }
 
   render() {

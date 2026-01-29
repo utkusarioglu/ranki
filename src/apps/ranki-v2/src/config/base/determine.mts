@@ -1,5 +1,10 @@
 import { RankiAppError } from "../../error/ranki-app-error.mts";
-import type { MatchTypes } from "../config.types.mts";
+import type {
+  DeckExactSettings,
+  DeckGlobSettings,
+  DeckRegexSettings,
+  MatchTypes,
+} from "../config.types.mts";
 
 import type {
   AnkiCard,
@@ -29,17 +34,25 @@ export function checkIfMatch(
     }
     switch (matchType) {
       case "exact":
-        if (matcher.exact === currentDeck) {
+        if ((matcher as DeckExactSettings).exact === currentDeck) {
           return matcher;
         }
         break;
       case "glob":
-        if (isGlobMatch(currentDeck, matcher.glob, ANKI_DECK_SEPARATOR)) {
+        if (
+          isGlobMatch(
+            currentDeck,
+            (matcher as DeckGlobSettings).glob,
+            ANKI_DECK_SEPARATOR,
+          )
+        ) {
           return matcher;
         }
         break;
       case "regex":
-        if (new RegExp(matcher.regex).test(currentDeck)) {
+        if (
+          new RegExp((matcher as DeckRegexSettings).regex).test(currentDeck)
+        ) {
           return matcher;
         }
         break;
@@ -53,12 +66,12 @@ export function checkIfMatch(
   return undefined;
 }
 
-export function getMatchType<T extends Record<MatchTypes, {}>>(
+export function getMatchType<T extends DeckSettings>(
   a: T,
 ): MatchTypes | "multi" {
-  const isExact = a.exact !== undefined;
-  const isRegex = a.regex !== undefined;
-  const isGlob = a.glob !== undefined;
+  const isExact = (a as DeckExactSettings).exact !== undefined;
+  const isRegex = (a as DeckRegexSettings).regex !== undefined;
+  const isGlob = (a as DeckGlobSettings).glob !== undefined;
   const manyMatch = [isExact, isRegex, isGlob].filter((v) => v).length > 1;
   if (manyMatch) {
     return "multi";

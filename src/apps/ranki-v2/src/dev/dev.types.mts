@@ -25,6 +25,6 @@ interface RankiDebugMethods {
 
 declare global {
   interface Window {
-    ranki: RankiDebugMethods;
+    ranki?: RankiDebugMethods;
   }
 }

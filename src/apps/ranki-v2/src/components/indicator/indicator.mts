@@ -1,5 +1,5 @@
 import type {
-  RankiAppIndicatorConfig,
+  RankiIndicatorState,
   RankiIndicatorDefinition,
 } from "../../config/config.types.mts";
 import { assertNotUndefined } from "../../error/assertions.mts";
@@ -7,7 +7,7 @@ import style from "./indicator.component.css?inline";
 import { RankiWc } from "../ranki-wc/ranki-wc.mts";
 import { IndicatorPattern } from "./pattern.mts";
 
-export class RankiIndicator extends RankiWc<RankiAppIndicatorConfig> {
+export class RankiIndicator extends RankiWc<RankiIndicatorState> {
   public static name = "ranki-indicator" as const;
   private active: string = "transparent";
 

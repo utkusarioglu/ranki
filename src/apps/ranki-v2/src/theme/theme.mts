@@ -1,4 +1,4 @@
-import type { RankiAppDesign } from "../config/config.types.mts";
+import type { RankiDesignState } from "../config/config.types.mts";
 import { assertNotUndefined } from "../error/assertions.mts";
 import { generatePaletteStyle } from "./color.mts";
 
@@ -9,7 +9,7 @@ const PALETTE_PREFIX = "palette";
 const REMOVED = [SCHEME_PREFIX, THEME_PREFIX];
 const CSS_FADE_ANIMATION_DURATION = "--ranki-animation-fade-duration";
 
-export function createDesign(config: RankiAppDesign) {
+export function createDesign(config: RankiDesignState) {
   const root = document.documentElement;
   const attach = document.body;
   root.style.setProperty(CSS_FADE_ANIMATION_DURATION, config.animation.fade);

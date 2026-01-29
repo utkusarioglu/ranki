@@ -86,7 +86,11 @@ function pushMarked(
 ) {
   if (!marked) return;
   const issuer = "marked";
-  const matched = tags.find((v) => v.exact === issuer);
+  const matched = tags.find(
+    (v) =>
+      //@ts-expect-error TODO maybe other modes should be supported too
+      v.exact === issuer,
+  );
   if (matched) {
     matched.config && baseC.pushConfig(kind, matched.config);
     matched.cue && cueRecord.push({ kind, issuer, ...matched.cue });
