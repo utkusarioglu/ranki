@@ -4,7 +4,6 @@ import palettes from "./palettes.css?inline";
 import variables from "./variables.css?inline";
 import theme from "./theme.css?inline";
 import dqm from "./vendor-dqm.css?inline";
-// import root from "./ranki-v2-root.css?inline";
 
 const LIST = [
   {
@@ -31,10 +30,6 @@ const LIST = [
     id: "dqm",
     css: dqm,
   },
-  // {
-  //   id: "dqm",
-  //   css: root,
-  // },
 ];
 
 export function setStyles() {

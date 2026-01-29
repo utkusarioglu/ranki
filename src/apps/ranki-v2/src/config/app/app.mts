@@ -28,7 +28,7 @@ import {
   RANKI_INTERNAL_FACE_PREFIX,
   SYSTEM_CONTROLLED_SCHEME_TOKEN,
 } from "../config.constants.mts";
-import { buildAddressSegments as buildAddressParts } from "./buildAddress.mts";
+import { buildAddressParts } from "./buildAddress.mts";
 
 export const MUTATION_MODE_PRECEDENCE: RankiBaseAddressMutationMode[] = [
   "trim",
@@ -36,12 +36,7 @@ export const MUTATION_MODE_PRECEDENCE: RankiBaseAddressMutationMode[] = [
   "show",
 ];
 
-export function createAppConfig(
-  { base, raw, tags }: RankiCollectedConfig,
-  // base: BuildRankiBaseConfigReturn,
-  // raw: RawFields,
-  // tags: FilteredTags,
-) {
+export function createAppConfig({ base, raw, tags }: RankiCollectedConfig) {
   const order = getFaceOrder(base.config, raw);
   const scheme = getScheme(base, raw);
   const ranki = buildRankiConfig(base, raw, tags, order, scheme);

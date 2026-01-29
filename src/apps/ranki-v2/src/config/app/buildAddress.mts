@@ -51,7 +51,7 @@ function translateMarker(parts: AnkiDeckParts, marker: string | number) {
   return si;
 }
 
-export function buildAddressSegments(
+export function buildAddressParts(
   tokens: RankiAddressTokens,
   mutations: RankiBaseAddressMutation[],
   deck: AnkiDeck,

@@ -31,7 +31,7 @@
   --dqm-isolated-block-transition-duration: var(
     --ranki-animation-fade-duration
   );
-  --dqm-orange: rgb(var(--scheme-orange-base));
+  --dqm-orange: rgb(var(--scheme-orange-1));
 
   --base: 0.5;
   --chip: 0.5;

@@ -3,17 +3,46 @@
   --scheme-surface-1: var(--theme-dark-surface-1);
   --scheme-surface-2: var(--theme-dark-surface-2);
   --scheme-surface-3: var(--theme-dark-surface-3);
+
   --scheme-text-0: var(--theme-dark-text-0);
   --scheme-text-1: var(--theme-dark-text-1);
+  --scheme-text-2: var(--theme-dark-text-2);
 
-  --scheme-red-base: var(--theme-dark-red-base);
-  --scheme-orange-base: var(--theme-dark-orange-base);
-  --scheme-yellow-base: var(--theme-dark-yellow-base);
-  --scheme-green-base: var(--theme-dark-green-base);
-  --scheme-blue-base: var(--theme-dark-blue-base);
-  --scheme-purple-base: var(--theme-dark-purple-base);
-  --scheme-magenta-base: var(--theme-dark-magenta-base);
-  --scheme-turquoise-base: var(--theme-dark-turquoise-base);
+  --scheme-tone-0: var(--theme-dark-tone-0);
+  --scheme-tone-1: var(--theme-dark-tone-1);
+  --scheme-tone-2: var(--theme-dark-tone-2);
+
+  --scheme-red-0: var(--theme-dark-red-0);
+  --scheme-red-1: var(--theme-dark-red-1);
+  --scheme-red-2: var(--theme-dark-red-2);
+
+  --scheme-orange-0: var(--theme-dark-orange-0);
+  --scheme-orange-1: var(--theme-dark-orange-1);
+  --scheme-orange-2: var(--theme-dark-orange-2);
+
+  --scheme-yellow-0: var(--theme-dark-yellow-0);
+  --scheme-yellow-1: var(--theme-dark-yellow-1);
+  --scheme-yellow-2: var(--theme-dark-yellow-2);
+
+  --scheme-green-0: var(--theme-dark-green-0);
+  --scheme-green-1: var(--theme-dark-green-1);
+  --scheme-green-2: var(--theme-dark-green-2);
+
+  --scheme-blue-0: var(--theme-dark-blue-0);
+  --scheme-blue-1: var(--theme-dark-blue-1);
+  --scheme-blue-2: var(--theme-dark-blue-2);
+
+  --scheme-purple-0: var(--theme-dark-purple-0);
+  --scheme-purple-1: var(--theme-dark-purple-1);
+  --scheme-purple-2: var(--theme-dark-purple-2);
+
+  --scheme-magenta-0: var(--theme-dark-magenta-0);
+  --scheme-magenta-1: var(--theme-dark-magenta-1);
+  --scheme-magenta-2: var(--theme-dark-magenta-2);
+
+  --scheme-turquoise-0: var(--theme-dark-turquoise-0);
+  --scheme-turquoise-1: var(--theme-dark-turquoise-1);
+  --scheme-turquoise-2: var(--theme-dark-turquoise-2);
 }
 
 :root.scheme-light {
@@ -21,15 +50,44 @@
   --scheme-surface-1: var(--theme-light-surface-1);
   --scheme-surface-2: var(--theme-light-surface-2);
   --scheme-surface-3: var(--theme-light-surface-3);
+
   --scheme-text-0: var(--theme-light-text-0);
   --scheme-text-1: var(--theme-light-text-1);
+  --scheme-text-2: var(--theme-light-text-2);
 
-  --scheme-red-base: var(--theme-light-red-base);
-  --scheme-orange-base: var(--theme-light-orange-base);
-  --scheme-yellow-base: var(--theme-light-yellow-base);
-  --scheme-green-base: var(--theme-light-green-base);
-  --scheme-blue-base: var(--theme-light-blue-base);
-  --scheme-purple-base: var(--theme-light-purple-base);
-  --scheme-magenta-base: var(--theme-light-magenta-base);
-  --scheme-turquoise-base: var(--theme-light-turquoise-base);
+  --scheme-tone-0: var(--theme-light-tone-0);
+  --scheme-tone-1: var(--theme-light-tone-1);
+  --scheme-tone-2: var(--theme-light-tone-2);
+
+  --scheme-red-0: var(--theme-light-red-0);
+  --scheme-red-1: var(--theme-light-red-1);
+  --scheme-red-2: var(--theme-light-red-2);
+
+  --scheme-orange-0: var(--theme-light-orange-0);
+  --scheme-orange-1: var(--theme-light-orange-1);
+  --scheme-orange-2: var(--theme-light-orange-2);
+
+  --scheme-yellow-0: var(--theme-light-yellow-0);
+  --scheme-yellow-1: var(--theme-light-yellow-1);
+  --scheme-yellow-2: var(--theme-light-yellow-2);
+
+  --scheme-green-0: var(--theme-light-green-0);
+  --scheme-green-1: var(--theme-light-green-1);
+  --scheme-green-2: var(--theme-light-green-2);
+
+  --scheme-blue-0: var(--theme-light-blue-0);
+  --scheme-blue-1: var(--theme-light-blue-1);
+  --scheme-blue-2: var(--theme-light-blue-2);
+
+  --scheme-purple-0: var(--theme-light-purple-0);
+  --scheme-purple-1: var(--theme-light-purple-1);
+  --scheme-purple-2: var(--theme-light-purple-2);
+
+  --scheme-magenta-0: var(--theme-light-magenta-0);
+  --scheme-magenta-1: var(--theme-light-magenta-1);
+  --scheme-magenta-2: var(--theme-light-magenta-2);
+
+  --scheme-turquoise-0: var(--theme-light-turquoise-0);
+  --scheme-turquoise-1: var(--theme-light-turquoise-1);
+  --scheme-turquoise-2: var(--theme-light-turquoise-2);
 }

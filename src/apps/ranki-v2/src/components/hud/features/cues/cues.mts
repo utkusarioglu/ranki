@@ -1,4 +1,3 @@
-import type { CueRecord } from "../../../../config/config.types.mts";
 import { RankiHudWc } from "../../hud-wc/hud-wc.mts";
 import { type AnimationTypes } from "../../../animation/animation.mts";
 import { RankiAnimation } from "../../../animation/animation.mts";
@@ -47,15 +46,15 @@ export class HudCues extends RankiHudWc<HudCuesProps> {
     const rm: HudCuesCue[] = [];
 
     for (let i = 0; i < Math.max(cn, sn); i++) {
-      const s = props[i];
-      if (s) {
-        const e = this.shadowRoot!.querySelector(
+      const record = props[i];
+      if (record) {
+        const cue = this.shadowRoot!.querySelector(
           `[data-index="${i}"]`,
-        ) as HTMLDivElement;
-        if (!e) {
-          this.createCue(s, i, container);
+        ) as HudCuesCue;
+        if (!cue) {
+          HudCuesCue.createAndAttach({ record: record, index: i }, container);
         } else {
-          this.mutateCue(s, e);
+          cue.setMutations(record);
         }
       } else {
         rm.push(container.childNodes[i] as HudCuesCue);
@@ -71,17 +70,6 @@ export class HudCues extends RankiHudWc<HudCuesProps> {
 
   private removeCue(r: HudCuesCue) {
     r.remove();
-  }
-
-  private createCue(c: CueRecord, i: number, container: HTMLDivElement) {
-    const cue = HudCuesCue.createAndAttach({}, container);
-    cue.innerText = c.message || c.indicator || "";
-    cue.addClass("cue", `issuer-${c.issuer}`, `kind-${c.kind}`);
-    cue.setAttribute("data-index", i.toString());
-  }
-
-  private mutateCue(s: CueRecord, e: HTMLDivElement) {
-    e.innerText = s.message || "";
   }
 
   render() {

@@ -23,7 +23,6 @@ export async function collectConfig(): Promise<RankiCollectedConfig> {
   const tags = groupTags(raw, channels.base.tags.ranki.prefix);
   const base = buildBaseConfig(channels, tags, raw);
   return { base, raw, tags };
-  // return createAppConfig(base, raw, tags);
 }
 
 export function createState(collected: RankiCollectedConfig): RankiState {

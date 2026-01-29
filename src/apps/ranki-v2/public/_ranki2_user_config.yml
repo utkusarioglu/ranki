@@ -41,6 +41,8 @@ tags:
   - exact: marked
     cue: 
       message: Study
+      bgColor: blue-2
+      textColor: tone-0
       indicator: colorful
   - exact: leech
     cue: 

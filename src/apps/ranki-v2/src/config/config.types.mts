@@ -42,7 +42,20 @@ interface DeckCommonSettings {
   config: RankiBaseConfigPartial;
 }
 
+type DeckColorNames =
+  | "red"
+  | "orange"
+  | "yellow"
+  | "green"
+  | "blue"
+  | "purple"
+  | "magenta"
+  | "tone";
+type DeckColorLevels = 0 | 1 | 2;
+
 export interface DeckCueSystem {
+  bgColor?: `${DeckColorNames}-${DeckColorLevels}`;
+  textColor?: `${DeckColorNames}-${DeckColorLevels}`;
   indicator?: RankiIndicatorName;
   message?: string;
 }
