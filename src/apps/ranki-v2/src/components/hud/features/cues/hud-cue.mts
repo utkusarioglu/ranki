@@ -25,29 +25,38 @@ export class HudCuesCue extends RankiHudWc<CueProps> {
     this.setProps({ record: c, index: this.getCurr().index });
   }
 
+  /**
+   * FIX
+   * This fails if the cue has no properties other than `indicator`. that means
+   * this shouldn't be created in that case but it still gets created.
+   */
   mutate() {
     const curr = this.getCurr();
     const c = curr.record;
-    if (c.bgColor) {
-      this.style.background = `rgb(var(--scheme-${c.bgColor}))`;
+    if (c.background) {
+      if (c.background.color && c.background.color !== "none") {
+        this.style.background = `rgb(var(--scheme-${c.background.color}))`;
+      } else {
+        this.style.removeProperty("background");
+      }
     } else {
       this.style.removeProperty("background");
     }
     if (c.icon) {
-      let icon = this.querySelector(`ph-${c.icon}`);
+      let icon = this.querySelector(`ph-${c.icon.id}`);
       if (!icon) {
         const oldIcon = this.querySelector(".cue-icon");
         if (oldIcon) {
           oldIcon.parentElement!.removeChild(oldIcon);
         }
 
-        icon = document.createElement(`ph-${c.icon}`);
+        icon = document.createElement(`ph-${c.icon.id}`);
         icon.className = "cue-icon";
         icon.setAttribute("weight", "fill");
         this.prepend(icon);
       }
-      if (c.iconColor) {
-        icon.setAttribute("color", `rgb(var(--scheme-${c.iconColor}))`);
+      if (c.icon.color && c.icon.color !== "none") {
+        icon.setAttribute("color", `rgb(var(--scheme-${c.icon.color}))`);
       } else {
         icon.removeAttribute("color");
       }
@@ -57,26 +66,25 @@ export class HudCuesCue extends RankiHudWc<CueProps> {
         iconElem.parentElement!.removeChild(iconElem);
       }
     }
-    if (c.message) {
+    if (c.message && c.message.text) {
       let span = this.querySelector(".cue-message") as HTMLSpanElement | null;
       if (!span) {
         span = document.createElement("span");
         span.className = "cue-message";
         this.appendChild(span);
       }
-      if (c.textColor) {
-        span.style.color = `rgb(var(--scheme-${c.textColor}))`;
+      if (c.message.color && c.message.color !== "none") {
+        span.style.color = `rgb(var(--scheme-${c.message.color}))`;
       } else {
         span.style.removeProperty("color");
       }
-      span.innerText = c.message;
+      span.innerText = c.message.text;
     } else {
       const messageElem = this.querySelector(".cue-message");
       if (messageElem) {
         messageElem.parentElement!.removeChild(messageElem);
       }
     }
-    // this.innerText = c.message || c.indicator || "";
 
     this.addClass("cue", `issuer-${c.issuer}`, `kind-${c.kind}`);
     this.setAttribute("data-index", curr.index.toString());

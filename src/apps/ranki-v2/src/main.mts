@@ -12,6 +12,10 @@ import type { RankiState } from "./config/config.types.mts";
 async function main() {
   try {
     if (!shouldRender()) return;
+    const err = document.querySelector("#ranki-v2-error");
+    if (err) {
+      err.parentElement?.removeChild(err);
+    }
 
     setStyles();
     const config = await collectConfig();

@@ -16,35 +16,48 @@ flags:
   red:
     cue:
       indicator: red-arch
-      message: Questionable information
+      message: 
+        text: Questionable information
   orange:
     cue:
-      message: Derive more cards
+      message: 
+        text: Derive more cards
   green: 
     cue:
-      message: Needs elaboration
+      message: 
+        text: Needs elaboration
   blue:
     cue:
-      message: Possibly outdated
+      message: 
+        text: Possibly outdated
   pink: 
     cue:
-      message: Rendering issues
+      message: 
+        text: Rendering issues
   turquoise:
     cue:
-      message: Too extensive
+      message: 
+        text: Too extensive
   purple:
     cue:
-      message: Poor wording or formatting
+      message: 
+        text: Poor wording or formatting
 tags:
   - exact: marked
     cue: 
-      message: Study
-      bgColor: blue-2
-      textColor: tone-0
+      icon:
+        id: book-open
+        color: tone-2
+      message: 
+        text: Study
+        color: tone-2
+      background: 
+        color: blue-1
       indicator: colorful
   - exact: leech
     cue: 
-      message: Leech
+      message: 
+        text: Leech
       indicator: checkered
   - exact: clown-college
     cue:
@@ -54,41 +67,46 @@ tags:
       indicator: caution
   - exact: +r::scheme::light
     cue:
-      message: "Light scheme"
+      message: 
+        text: Light scheme
     config:
       design:
         scheme: light
   - exact: +r::scheme::dark
     cue: 
-      message: "Dark scheme"
+      message: 
+        text: Dark scheme
     config:
       design:
         scheme: dark
   - exact: +r::theme::print
     cue:
-      message: "Print theme"
+      message: 
+        text: Print theme
     config:
       design:
         theme: print
   - exact: +r::animation::slow
     cue:
-      message: AnimSlow
+      message: 
+        text: AnimSlow
     config:
       design:
         animation:
           fade: 3s
   - exact: +r::animation::disabled
     cue:
-      message: AnimDisabled
+      message: 
+        text: AnimDisabled
     config:
       design:
         animation:
           fade: "0"
   - exact: +r::palette::saturated
     cue:
-      message: ""
-      icon: disco-ball
-      iconColor: blue-2
+      icon: 
+        id: disco-ball
+        color: blue-2
     config:
       design:
         palette: generated-saturated

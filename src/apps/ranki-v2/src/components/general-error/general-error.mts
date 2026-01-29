@@ -13,6 +13,7 @@ export function createAppErrorScreen(
 
   const container = document.createElement("div");
   attach.append(container);
+  container.id = "ranki-v2-error";
   container.style.position = "fixed";
   container.style.inset = "0";
   container.style.marginInline = "auto";

@@ -19,7 +19,7 @@ function translateMarker(parts: AnkiDeckParts, marker: string | number) {
   let si: number;
   switch (typeof marker) {
     case "number":
-      si = marker < 0 ? parts.length + marker + 1 : marker;
+      si = marker < 0 ? parts.length + marker : marker;
       if (si >= parts.length) {
         throw new RankiAppError({
           code: "INDEX_ERROR",

@@ -1,3 +1,4 @@
+import { FLAG_COLOR_ORDER } from "./anki.constants.mts";
 import type {
   RankiAppTheme,
   RankiChannelsConfig,
@@ -121,42 +122,127 @@ repeating-linear-gradient(
         hide: true,
       },
       marked: {
-        message: "Study",
+        message: {
+          text: "Study",
+        },
+        background: {
+          color: "blue-2",
+        },
         indicator: "none" as RankiIndicatorName,
       },
     },
     flags: {
       none: {
         indicator: "none" as RankiIndicatorName,
-        message: "",
+        background: {
+          color: "none",
+        },
+        icon: {
+          id: "none",
+          color: "none",
+        },
+        message: {
+          text: "",
+          color: "none",
+        },
       },
       red: {
         indicator: "none" as RankiIndicatorName,
-        message: "",
+        background: {
+          color: "none",
+        },
+        icon: {
+          id: "none",
+          color: "none",
+        },
+        message: {
+          text: "",
+          color: "none",
+        },
       },
       orange: {
         indicator: "none" as RankiIndicatorName,
-        message: "",
+        background: {
+          color: "none",
+        },
+        icon: {
+          id: "none",
+          color: "none",
+        },
+        message: {
+          text: "",
+          color: "none",
+        },
       },
       green: {
         indicator: "none" as RankiIndicatorName,
-        message: "",
+        background: {
+          color: "none",
+        },
+        icon: {
+          id: "none",
+          color: "none",
+        },
+        message: {
+          text: "",
+          color: "none",
+        },
       },
       blue: {
         indicator: "none" as RankiIndicatorName,
-        message: "",
+        background: {
+          color: "none",
+        },
+        icon: {
+          id: "none",
+          color: "none",
+        },
+        message: {
+          text: "",
+          color: "none",
+        },
       },
       pink: {
         indicator: "none" as RankiIndicatorName,
-        message: "",
+        background: {
+          color: "none",
+        },
+        icon: {
+          id: "none",
+          color: "none",
+        },
+        message: {
+          text: "",
+          color: "none",
+        },
       },
       turquoise: {
         indicator: "none" as RankiIndicatorName,
-        message: "",
+        background: {
+          color: "none",
+        },
+        icon: {
+          id: "none",
+          color: "none",
+        },
+        message: {
+          text: "",
+          color: "none",
+        },
       },
       purple: {
         indicator: "none" as RankiIndicatorName,
-        message: "",
+        background: {
+          color: "none",
+        },
+        icon: {
+          id: "none",
+          color: "none",
+        },
+        message: {
+          text: "",
+          color: "none",
+        },
       },
     },
     hud: {
@@ -190,13 +276,33 @@ repeating-linear-gradient(
   faces: [],
   tags: [
     {
+      exact: "+r::dqm::ignore",
+      cue: {
+        icon: {
+          id: "blueprint",
+          color: "red-2",
+        },
+      },
+      config: {
+        dqm: [
+          {
+            id: "ranki-tag-dqm-ignore",
+            config: {
+              content: {
+                prefix: "% ignore\n",
+              },
+            },
+          },
+        ],
+      },
+    },
+    {
       exact: "+r::dev::methods",
       cue: {
-        message: "",
-        // bgColor: "red-0",
-        icon: "codesandbox-logo",
-        // textColor: "orange-2",
-        iconColor: "red-2",
+        icon: {
+          id: "codesandbox-logo",
+          color: "red-2",
+        },
       },
       config: {
         dev: {
@@ -207,11 +313,13 @@ repeating-linear-gradient(
     {
       exact: "+r::dev::persist",
       cue: {
-        message: "",
-        // bgColor: "red-0",
-        icon: "diamonds-four",
-        // textColor: "orange-2",
-        iconColor: "red-2",
+        message: {
+          text: "",
+        },
+        icon: {
+          id: "diamonds-four",
+          color: "red-2",
+        },
       },
       config: {
         dev: {
@@ -220,62 +328,45 @@ repeating-linear-gradient(
       },
     },
   ],
+  // @ts-expect-error
   flags: {
     none: {
       cue: {
-        message: "",
+        background: {
+          color: "none",
+        },
+        icon: {
+          id: "none",
+          color: "none",
+        },
+        message: {
+          text: "",
+          color: "none",
+        },
         indicator: "none" as RankiIndicatorName,
       },
       config: {},
     },
-    red: {
-      cue: {
-        message: "",
-        indicator: "none" as RankiIndicatorName,
-      },
-      config: {},
-    },
-    orange: {
-      cue: {
-        message: "",
-        indicator: "none" as RankiIndicatorName,
-      },
-      config: {},
-    },
-    green: {
-      cue: {
-        message: "",
-        indicator: "none" as RankiIndicatorName,
-      },
-      config: {},
-    },
-    blue: {
-      cue: {
-        message: "",
-        indicator: "none" as RankiIndicatorName,
-      },
-      config: {},
-    },
-    pink: {
-      cue: {
-        message: "",
-        indicator: "none" as RankiIndicatorName,
-      },
-      config: {},
-    },
-    turquoise: {
-      cue: {
-        message: "",
-        indicator: "none" as RankiIndicatorName,
-      },
-      config: {},
-    },
-    purple: {
-      cue: {
-        message: "",
-        indicator: "none" as RankiIndicatorName,
-      },
-      config: {},
-    },
+    ...Object.fromEntries(
+      FLAG_COLOR_ORDER.filter((v) => v !== "none").map((color) => [
+        color,
+        {
+          cue: {
+            indicator: "none" as RankiIndicatorName,
+            background: {
+              color: `${color === "pink" ? "magenta" : color}-2`,
+            },
+            message: {
+              text: "",
+              color: "tone-0",
+            },
+            icon: {
+              id: "none",
+              color: "none",
+            },
+          },
+        },
+      ]),
+    ),
   },
 };

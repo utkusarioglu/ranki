@@ -114,7 +114,7 @@ function buildDqmConfig(
  */
 function buildCues(cueRecord: CueRecord[]): CueRecord[] {
   return cueRecord.filter(
-    (v) => v.issuer !== "none" || (v.issuer === "none" && v.message),
+    (v) => v.issuer !== "none" || (v.issuer === "none" && v.message?.text),
   );
 }
 

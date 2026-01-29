@@ -25,7 +25,7 @@ export const payload: R = {
         .fill(null)
         .map((_, i) => {
           const col = document.createElement("div");
-          col.style.backgroundColor = `var(--palette-${v}-${i}-hex)`;
+          col.style.backgroundColor = `rgb(var(--palette-${v}-${i}-rgb-csv))`;
           col.innerText = i.toString();
           hue.appendChild(col);
         });
@@ -36,7 +36,7 @@ export const payload: R = {
     tones.className = "row";
     ["dark", "0", "1", "2", "3", "4", "5", "bright"].forEach((n) => {
       const col = document.createElement("div");
-      col.style.backgroundColor = `var(--palette-tone-${n}-hex)`;
+      col.style.backgroundColor = `rgb(var(--palette-tone-${n}-rgb-csv))`;
       col.innerText = n;
       tones.appendChild(col);
     });

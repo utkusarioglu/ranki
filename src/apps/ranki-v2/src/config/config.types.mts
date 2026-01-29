@@ -38,7 +38,7 @@ export type DeckRegexSettings = DeckCommonSettings & {
 };
 
 interface DeckCommonSettings {
-  cue?: DeckCueSystem;
+  cue?: CueConfig;
   config: RankiBaseConfigPartial;
 }
 
@@ -53,13 +53,19 @@ type DeckColorNames =
   | "tone";
 type DeckColorLevels = 0 | 1 | 2;
 
-export interface DeckCueSystem {
-  bgColor?: `${DeckColorNames}-${DeckColorLevels}`;
-  textColor?: `${DeckColorNames}-${DeckColorLevels}`;
-  icon?: string;
-  iconColor?: `${DeckColorNames}-${DeckColorLevels}`;
+export interface CueConfig {
+  background?: {
+    color: `${DeckColorNames}-${DeckColorLevels}` | "none";
+  };
+  message?: {
+    text: string;
+    color?: `${DeckColorNames}-${DeckColorLevels}` | "none";
+  };
+  icon?: {
+    id: string;
+    color?: `${DeckColorNames}-${DeckColorLevels}` | "none";
+  };
   indicator?: RankiIndicatorName;
-  message?: string;
 }
 
 export type CueKind =
@@ -72,7 +78,7 @@ export type CueKind =
   | "tag:ranki"
   | "flag";
 
-export interface CueRecord extends DeckCueSystem {
+export interface CueRecord extends CueConfig {
   kind: CueKind;
   issuer: string;
 }
@@ -149,13 +155,13 @@ export interface RankiBaseConfig {
 
   palettes: PaletteSpecs[];
   indicators: RankiIndicatorDefinition[];
-  flags: Record<AnkiFlagColors, DeckCueSystem>;
+  flags: Record<AnkiFlagColors, CueConfig>;
   tags: {
     ranki: {
       prefix: RankiTagPrefix;
       hide: boolean;
     };
-    marked: DeckCueSystem;
+    marked: CueConfig;
   };
   address: {
     tokens: RankiAddressTokens;

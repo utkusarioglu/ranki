@@ -10,3 +10,19 @@ export const FLAG_COLOR_ORDER: AnkiFlagColors[] = [
   "turquoise",
   "purple",
 ];
+
+// ...Object.fromEntries(
+//   FLAG_COLOR_ORDER.filter((v) => v !== "none").map((color) => [
+//     color,
+//     {
+//       indicator: "none" as RankiIndicatorName,
+//       background: {
+//         color: `${color}-2`,
+//       },
+//       message: {
+//         text: "",
+//         color: "tone-0",
+//       },
+//     },
+//   ]),
+// ),

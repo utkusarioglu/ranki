@@ -78,7 +78,6 @@ export class RankiChallenge extends RankiFacesWc<RankiChallengeState> {
               prevTheater,
             },
           });
-          console.log(newFaces, prevTheater, curr);
           const newFace = newFaces[prevTheater];
           if (!newFace) {
             matches.push(false);

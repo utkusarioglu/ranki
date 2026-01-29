@@ -24,9 +24,9 @@ function hslToRgb(h: number, s: number, l: number): Rgb {
   return [r, g, b];
 }
 
-function rgbToHex([r, g, b]: Rgb): string {
-  return `#${[r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("")}`;
-}
+// function rgbToHex([r, g, b]: Rgb): string {
+//   return `#${[r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("")}`;
+// }
 
 function rgbToRgbCsv(rgb: Rgb): string {
   return rgb.join(", ");
@@ -46,7 +46,7 @@ function generatePalette({
       palette[name][level] = {} as Record<ColorFormat, string>;
 
       const rgb = hslToRgb(hue, saturation[level], l);
-      palette[name][level]["hex"] = rgbToHex(rgb);
+      // palette[name][level]["hex"] = rgbToHex(rgb);
       palette[name][level]["rgb-csv"] = rgbToRgbCsv(rgb);
     }
   }
@@ -55,7 +55,7 @@ function generatePalette({
   for (const [level, l] of Object.entries(lightness)) {
     palette["tone"][level] = {} as Record<ColorFormat, string>;
     const rgb = hslToRgb(0, 0, l);
-    palette["tone"][level as ColorLevel]["hex"] = rgbToHex(rgb);
+    // palette["tone"][level as ColorLevel]["hex"] = rgbToHex(rgb);
     palette["tone"][level as ColorLevel]["rgb-csv"] = rgbToRgbCsv(rgb);
   }
 
@@ -93,6 +93,6 @@ export function generatePaletteStyle(attach: HTMLElement, s: PaletteSpecs) {
   const style = document.createElement("style");
   style.id = s.name;
   style.className = PALETTE_PREFIX;
-  style.innerHTML = html;
+  style.textContent = html;
   attach.appendChild(style);
 }
