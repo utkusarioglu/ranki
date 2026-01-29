@@ -61,6 +61,7 @@ function buildRankiConfig(
   return {
     hud,
     dev: {
+      persist: base.config.dev.persist,
       methods: base.config.dev.methods,
     },
     indicator: {

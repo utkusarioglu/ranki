@@ -6,11 +6,16 @@ export type RankiSetFunc = Record<RankiSetKeys, RankiSetValues>;
 
 export type RankiPlayFields = Record<RankiSetKeys, RankiSetValues[]>;
 
-interface RankiDebugMethods {
-  trigger(): HTMLDivElement;
-  face(f: string): void;
+export interface IRankiDevMethods {
+  isPersisted: boolean;
+
   a(a: string): void;
   b(a: string): void;
+  c(a: string): void;
+  d(a: string): void;
+  e(a: string): void;
+
+  face(f: string): void;
   tags(f: string): void;
   type(f: string): void;
   card(f: string): void;
@@ -19,12 +24,14 @@ interface RankiDebugMethods {
   templateConfig(d: object): void;
   cardConfig(d: object): void;
 
+  trigger(): HTMLDivElement;
+  persist(on: boolean): void;
   set(p: RankiSetFunc): void;
   play(p: RankiPlayFields): void;
 }
 
 declare global {
   interface Window {
-    ranki?: RankiDebugMethods;
+    ranki?: IRankiDevMethods;
   }
 }

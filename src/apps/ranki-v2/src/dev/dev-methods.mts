@@ -6,6 +6,8 @@ import type {
 } from "./dev.types.mts";
 
 export class RankiDevMethods {
+  static isPersisted = false;
+
   static trigger() {
     const qa = document.querySelector("#qa") as HTMLDivElement;
     assertNotUndefined(qa, { why: "needed" });
@@ -37,13 +39,25 @@ export class RankiDevMethods {
   static card = (v: RankiSetValues) =>
     this.assign("script.ranki-v2-data.card", v);
 
-  static a = (v: RankiSetValues) => this.assign("script.ranki-v2-input.a", v);
-  static b = (v: RankiSetValues) => this.assign("script.ranki-v2-input.b", v);
+  static a = (v: RankiSetValues) => this.assign("script.ranki-v2-input.A", v);
+  static b = (v: RankiSetValues) => this.assign("script.ranki-v2-input.B", v);
+  static c = (v: RankiSetValues) => this.assign("script.ranki-v2-input.C", v);
+  static d = (v: RankiSetValues) => this.assign("script.ranki-v2-input.D", v);
+  static e = (v: RankiSetValues) => this.assign("script.ranki-v2-input.E", v);
 
   static templateConfig = (v: object) =>
     this.assign("script.ranki-v2-config.template", JSON.stringify(v));
   static cardConfig = (v: object) =>
     this.assign("script.ranki-v2-config.card", JSON.stringify(v));
+
+  static persist(on: boolean = true) {
+    if (on) {
+      console.log("Ranki DevMethods will persist during current instance");
+    } else {
+      console.log("Ranki DevMethods will be removed if trigger is removed");
+    }
+    this.isPersisted = on;
+  }
 
   static set(p: RankiSetFunc) {
     Object.entries(p).forEach(([k, v]) => {

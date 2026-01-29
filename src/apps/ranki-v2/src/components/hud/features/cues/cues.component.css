@@ -61,26 +61,25 @@ hud-cues-cue {
   opacity: 1;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
-}
 
-hud-cues-cue.cue {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  line-height: 1em;
-  height: 100%;
-  background: var(--cu-background);
-  padding: var(--cu-padding);
-  color: var(--cu-color);
-  border-radius: var(--cu-border-radius);
-  border: var(--cu-border);
-  white-space: nowrap;
-}
-/* 
-hud-cues-cue.exiting {
-  opacity: 0;
-}
+  &.cue {
+    box-sizing: border-box;
+    display: flex;
+    gap: 0.3em;
+    align-items: center;
+    line-height: 1em;
+    height: 100%;
+    background: var(--cu-background);
+    padding: var(--cu-padding);
+    color: var(--cu-color);
+    border-radius: var(--cu-border-radius);
+    border: var(--cu-border);
+    white-space: nowrap;
+  }
 
-hud-cues-cue.entering {
-  opacity: 0;
-} */
+  & > .cue-message,
+  & > .cue-icon {
+    transition-property: color;
+    transition-duration: var(--transition-duration);
+  }
+}

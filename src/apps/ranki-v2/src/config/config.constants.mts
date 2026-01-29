@@ -22,6 +22,7 @@ export const RANKI_INITIAL_CONFIG: RankiChannelsConfig = {
       N: [],
     },
     dev: {
+      persist: false,
       methods: false,
     },
     address: {
@@ -94,7 +95,7 @@ repeating-linear-gradient(
       },
       {
         name: "checkered" as RankiIndicatorName,
-        style: `repeating-conic-gradient(rgb(var(--scheme-blue-1)) 0 25%, rgb(var(--scheme-surface-0)) 0 50%) 50% / 15vmin 15vmax`,
+        style: `repeating-conic-gradient(rgb(var(--scheme-blue-2)) 0 25%, transparent 0 50%) 50% / 15vmin 15vmax`,
       },
     ],
     palettes: [
@@ -191,13 +192,30 @@ repeating-linear-gradient(
     {
       exact: "+r::dev::methods",
       cue: {
-        message: "DevMethods",
-        bgColor: "red-0",
-        // textColor: "tone-2",
+        message: "",
+        // bgColor: "red-0",
+        icon: "codesandbox-logo",
+        // textColor: "orange-2",
+        iconColor: "red-2",
       },
       config: {
         dev: {
           methods: true,
+        },
+      },
+    },
+    {
+      exact: "+r::dev::persist",
+      cue: {
+        message: "",
+        // bgColor: "red-0",
+        icon: "diamonds-four",
+        // textColor: "orange-2",
+        iconColor: "red-2",
+      },
+      config: {
+        dev: {
+          persist: true,
         },
       },
     },

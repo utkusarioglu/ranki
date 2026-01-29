@@ -1,19 +1,17 @@
 base: 
-  # design:
-  #   palette: generated-1
-  # palettes:
-  #   - name: generated-1
-  #     hues: 
-  #       red: 0
-  #       orange: 30
-  #       yellow: 55
-  #       green: 130
-  #       turquoise: 170
-  #       blue: 210
-  #       purple: 270
-  #       magenta: 320
-  #     lightness: [15, 20, 30, 60, 70, 80]
-  #     saturation: 90
+  palettes:
+    - name: generated-saturated
+      hues: 
+        red: 0
+        orange: 30
+        yellow: 55
+        green: 130
+        turquoise: 170
+        blue: 210
+        purple: 270
+        magenta: 320
+      lightness: [15, 20, 30, 60, 70, 80, 90, 100]
+      saturation: [100, 100, 100, 100, 100, 100, 100, 100]
 flags:
   red:
     cue:
@@ -86,3 +84,11 @@ tags:
       design:
         animation:
           fade: "0"
+  - exact: +r::palette::saturated
+    cue:
+      message: ""
+      icon: disco-ball
+      iconColor: blue-2
+    config:
+      design:
+        palette: generated-saturated

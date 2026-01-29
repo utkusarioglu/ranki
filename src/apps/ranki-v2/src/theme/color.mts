@@ -4,6 +4,7 @@ import type {
   Palette,
   PaletteSpecs,
 } from "../config/config.types.mts";
+import { PALETTE_PREFIX } from "./design.constants.mts";
 
 type Rgb = [number, number, number];
 
@@ -91,6 +92,7 @@ export function generatePaletteStyle(attach: HTMLElement, s: PaletteSpecs) {
   const html = generatePaletteVariables(s);
   const style = document.createElement("style");
   style.id = s.name;
+  style.className = PALETTE_PREFIX;
   style.innerHTML = html;
   attach.appendChild(style);
 }

@@ -47,6 +47,7 @@
     "@dqm/plugin-sre-music": "workspace:^",
     "@dqm/plugin-sre-osmd": "workspace:^",
     "@dqm/plugin-static-render-engine": "workspace:^",
+    "@phosphor-icons/webcomponents": "^2.1.5",
     "@ranki/package-anki-ui": "workspace:^",
     "@rollup/plugin-babel": "^6.1.0",
     "core-js": "^3.47.0",

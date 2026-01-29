@@ -56,6 +56,8 @@ type DeckColorLevels = 0 | 1 | 2;
 export interface DeckCueSystem {
   bgColor?: `${DeckColorNames}-${DeckColorLevels}`;
   textColor?: `${DeckColorNames}-${DeckColorLevels}`;
+  icon?: string;
+  iconColor?: `${DeckColorNames}-${DeckColorLevels}`;
   indicator?: RankiIndicatorName;
   message?: string;
 }
@@ -135,6 +137,7 @@ export interface RankiAddressTokens {
 }
 
 export interface RankiDevToolsConfig {
+  persist: boolean;
   methods: boolean;
 }
 
@@ -192,6 +195,7 @@ export interface RankiDesignState {
 }
 
 export interface RankiDevState {
+  persist: boolean;
   methods: boolean;
 }
 

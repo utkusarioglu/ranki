@@ -3514,6 +3514,25 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@lit-labs/ssr-dom-shim", [\
+      ["npm:1.5.1", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@lit-labs-ssr-dom-shim-npm-1.5.1-3b3c832bd1-10c0.zip/node_modules/@lit-labs/ssr-dom-shim/",\
+        "packageDependencies": [\
+          ["@lit-labs/ssr-dom-shim", "npm:1.5.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@lit/reactive-element", [\
+      ["npm:2.1.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@lit-reactive-element-npm-2.1.2-2c713bebce-10c0.zip/node_modules/@lit/reactive-element/",\
+        "packageDependencies": [\
+          ["@lit-labs/ssr-dom-shim", "npm:1.5.1"],\
+          ["@lit/reactive-element", "npm:2.1.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@mermaid-js/parser", [\
       ["npm:0.6.2", {\
         "packageLocation": "../home/dev/.yarn/berry/cache/@mermaid-js-parser-npm-0.6.2-d446a4cc4e-10c0.zip/node_modules/@mermaid-js/parser/",\
@@ -3732,6 +3751,16 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@phosphor-icons/webcomponents", [\
+      ["npm:2.1.5", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@phosphor-icons-webcomponents-npm-2.1.5-0d09b51318-10c0.zip/node_modules/@phosphor-icons/webcomponents/",\
+        "packageDependencies": [\
+          ["@phosphor-icons/webcomponents", "npm:2.1.5"],\
+          ["lit", "npm:3.3.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@pkgjs/parseargs", [\
       ["npm:0.11.0", {\
         "packageLocation": "../home/dev/.yarn/berry/cache/@pkgjs-parseargs-npm-0.11.0-cd2a3fe948-10c0.zip/node_modules/@pkgjs/parseargs/",\
@@ -3837,6 +3866,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/plugin-sre-music", "workspace:src/plugins/sre-music"],\
           ["@dqm/plugin-sre-osmd", "workspace:src/plugins/sre-osmd"],\
           ["@dqm/plugin-static-render-engine", "workspace:src/plugins/static-render-engine"],\
+          ["@phosphor-icons/webcomponents", "npm:2.1.5"],\
           ["@ranki/app-ranki-v2", "workspace:src/apps/ranki-v2"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
@@ -11489,6 +11519,40 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/dev/.yarn/berry/cache/lines-and-columns-npm-1.2.4-d6c7cc5799-10c0.zip/node_modules/lines-and-columns/",\
         "packageDependencies": [\
           ["lines-and-columns", "npm:1.2.4"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["lit", [\
+      ["npm:3.3.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/lit-npm-3.3.2-7dea58471e-10c0.zip/node_modules/lit/",\
+        "packageDependencies": [\
+          ["@lit/reactive-element", "npm:2.1.2"],\
+          ["lit", "npm:3.3.2"],\
+          ["lit-element", "npm:4.2.2"],\
+          ["lit-html", "npm:3.3.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["lit-element", [\
+      ["npm:4.2.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/lit-element-npm-4.2.2-70d4af2233-10c0.zip/node_modules/lit-element/",\
+        "packageDependencies": [\
+          ["@lit-labs/ssr-dom-shim", "npm:1.5.1"],\
+          ["@lit/reactive-element", "npm:2.1.2"],\
+          ["lit-element", "npm:4.2.2"],\
+          ["lit-html", "npm:3.3.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["lit-html", [\
+      ["npm:3.3.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/lit-html-npm-3.3.2-4a3e00215f-10c0.zip/node_modules/lit-html/",\
+        "packageDependencies": [\
+          ["@types/trusted-types", "npm:2.0.7"],\
+          ["lit-html", "npm:3.3.2"]\
         ],\
         "linkType": "HARD"\
       }]\
