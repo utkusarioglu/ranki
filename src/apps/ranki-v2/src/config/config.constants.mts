@@ -21,6 +21,9 @@ export const RANKI_INITIAL_CONFIG: RankiChannelsConfig = {
       Q: [],
       N: [],
     },
+    dev: {
+      methods: false,
+    },
     address: {
       tokens: {
         separator: "::",
@@ -184,7 +187,19 @@ repeating-linear-gradient(
   ],
   types: [],
   faces: [],
-  tags: [],
+  tags: [
+    {
+      exact: "+r::dev::methods",
+      cue: {
+        message: "DevMethods",
+      },
+      config: {
+        dev: {
+          methods: true,
+        },
+      },
+    },
+  ],
   flags: {
     none: {
       cue: {

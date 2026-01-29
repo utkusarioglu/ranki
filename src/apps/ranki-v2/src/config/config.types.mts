@@ -38,8 +38,8 @@ interface DeckCommonSettings {
 }
 
 export interface DeckCueSystem {
-  indicator: RankiIndicatorName;
-  message: string;
+  indicator?: RankiIndicatorName;
+  message?: string;
 }
 
 export type CueKind =
@@ -116,10 +116,15 @@ export interface RankiAddressTokens {
   trim: string;
 }
 
+export interface RankiDevToolsConfig {
+  methods: boolean;
+}
+
 export interface RankiBaseConfig {
   // TODO you need deck address stripping and hiding here
   faces: Record<AnkiCardFace, CardFaceArray>;
   design: RankiBaseDesign;
+  dev: RankiDevToolsConfig;
 
   palettes: PaletteSpecs[];
   indicators: RankiIndicatorDefinition[];
@@ -168,11 +173,16 @@ export interface RankiAppDesign {
   cueRecord: CueRecord[];
 }
 
+export interface RankiAppDebugConfig {
+  methods: boolean;
+}
+
 export interface RankiAppConfig {
   face: AnkiCardFace;
   design: RankiAppDesign;
   palettes: PaletteSpecs[];
   indicators: RankiIndicatorDefinition[];
+  dev: RankiAppDebugConfig;
 
   hud: HudProps;
   order: CardFaceArray;

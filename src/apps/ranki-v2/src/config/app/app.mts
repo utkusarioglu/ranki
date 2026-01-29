@@ -63,6 +63,9 @@ function buildRankiConfig(
   const hud = buildHudConfig(base, raw, tags);
   return {
     hud,
+    dev: {
+      methods: base.config.dev.methods,
+    },
     design: {
       cueRecord: base.cueRecord,
       scheme,

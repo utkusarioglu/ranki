@@ -1,0 +1,13 @@
+import type { RankiAppDebugConfig } from "../config/config.types.mts";
+import { RankiDevMethods } from "./dev-methods.mts";
+
+export function createDevTools(conf: RankiAppDebugConfig) {
+  if (conf.methods) {
+    console.log(
+      "Ranki DevMethods available at %cwindow.ranki",
+      "background:#000;color:#df981d;padding:2px 6px;",
+    );
+
+    window.ranki = RankiDevMethods;
+  }
+}

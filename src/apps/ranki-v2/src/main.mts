@@ -3,12 +3,10 @@ import { onReady, shouldRender } from "./bootstrap/startup.mjs";
 import { createConfig } from "./config/config.mts";
 import { createDesign } from "./theme/theme.mts";
 import { RankiHud } from "./components/hud/hud.mts";
-import { devMethods } from "./dev.mts";
+import { createDevTools } from "./dev/dev.mts";
 import { setStyles } from "./style/style.mts";
 import { RankiFaces } from "./components/faces/faces.mts";
 import { RankiIndicator } from "./components/indicator/indicator.mts";
-
-devMethods();
 
 /**
  * @dev
@@ -23,6 +21,7 @@ async function main() {
 
     setStyles();
     const config = await createConfig();
+    createDevTools(config.ranki.dev);
     RankiHud.singleton(config.ranki.hud, document.body);
 
     createDesign(config.ranki);
