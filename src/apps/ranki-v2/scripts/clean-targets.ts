@@ -1,3 +1,3 @@
-import { cleanTargets } from "./vite/ranki-artifact-actions";
+import { cleanRankiTargets } from "./vite/ranki-artifact-actions";
 
-cleanTargets();
+cleanRankiTargets();

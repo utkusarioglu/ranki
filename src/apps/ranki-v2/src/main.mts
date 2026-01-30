@@ -1,9 +1,9 @@
 import "./bootstrap/polyfills.mjs";
-import { onReady, shouldRender } from "./bootstrap/startup.mjs";
-import { collectConfig, createState } from "./config/config.mts";
-import { createDesign } from "./theme/theme.mts";
-import { createDevTools } from "./dev/dev.mts";
-import { setStyles } from "./style/style.mts";
+import { onReady, shouldRender } from "_/bootstrap/startup.mjs";
+import { collectConfig, createState } from "_/config/config.mts";
+import { createDesign } from "_/design/design.mts";
+import { createDevTools } from "_/dev/dev.mts";
+import { setStyles } from "_/style/style.mts";
 import { RankiHud } from "_components/hud/hud.mts";
 import { RankiChallenge } from "_components/challenge/challenge.mts";
 import { RankiIndicator } from "_components/indicator/indicator.mts";
