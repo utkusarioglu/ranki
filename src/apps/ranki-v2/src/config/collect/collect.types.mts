@@ -13,7 +13,7 @@ export type AnkiRawTag = string & { type: "AnkiRawTag" };
 
 export type AnkiDeckParts = AnkiDeck[] & { type: "AnkiDeckParts" };
 
-export type RankiScreenElement = "ranki:hr" | "ranki:vr";
+export type RankiScreenElement = "ranki:rule";
 
 export type CardFace = DqmParseTheater | RankiScreenElement;
 

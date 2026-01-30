@@ -12,6 +12,7 @@ import { RankiBigError } from "_components/big-error/big-error.mjs";
 
 export async function main() {
   try {
+    console.log("RUN");
     if (!shouldRender()) return;
     RankiBigError.clear();
     setStyles();

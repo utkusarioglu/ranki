@@ -4,18 +4,28 @@ import {
 } from "_components/animation/animation.mts";
 import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
 import styles from "./rule.css?inline";
+import { assertNotExists, assertNotNull } from "_error/assertions.mjs";
 
 export const ruleStyles = styles;
 
 type Variants = "horizontal" | "vertical";
 
-export class RankiRule extends RankiFacesWc<{}> {
+export class RankiRule extends RankiFacesWc<number> {
   public static name = "ranki-rule" as const;
   private variant: Variants = "horizontal";
   protected animations: AnimationTypes = {
     enter: RankiAnimation.expandYFadeIn(this),
     exit: RankiAnimation.collapseYFadeOut(this),
   };
+
+  getKey() {
+    const index = this.getCurr();
+    return `ranki:rule:${index}`;
+  }
+
+  // setKey(index:  number) {
+  //   this.setAttribute("data-index", index.toString())
+  // }
 
   setVariant(v: "horizontal" | "vertical") {
     this.variant = v;

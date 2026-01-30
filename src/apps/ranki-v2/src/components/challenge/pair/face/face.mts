@@ -10,4 +10,12 @@ export class RankiFacesFace extends RankiFacesWc<{}> {
     enter: RankiAnimation.expandYFadeIn(this),
     exit: RankiAnimation.collapseYFadeOut(this),
   };
+
+  getKey() {
+    return this.getAttribute("dqm-source");
+  }
+
+  setKey(key: string) {
+    this.setAttribute("dqm-source", key);
+  }
 }
