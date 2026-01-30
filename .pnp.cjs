@@ -3874,8 +3874,9 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:25.0.6"],\
           ["chalk", "npm:5.6.2"],\
           ["core-js", "npm:3.47.0"],\
+          ["tsx", "npm:4.21.0"],\
           ["typescript", "patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"],\
-          ["vite", "virtual:c48d9b522322f13d6fd0ad3077a5c388333336b64f1d200a4f0177f8c90be1fb948e5d46491939d64697449093273f60caee0fb41f90b3eae2dbe24fac268b08#npm:7.2.6"],\
+          ["vite", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:7.2.6"],\
           ["vitest", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:4.0.17"],\
           ["yaml", "npm:2.8.2"]\
         ],\
@@ -14828,6 +14829,64 @@ const RAW_RUNTIME_STATE =
           ["tinyglobby", "npm:0.2.15"],\
           ["tsx", null],\
           ["vite", "virtual:40d88c8d55d9d9d450a43649aa913b3fbe3c87a45d12d75f9bd094a11acd7b185ccc11d809f9571300d383373ef0dfe8d5b6ea383b4915230e838d5d88094de1#npm:7.2.6"],\
+          ["yaml", "npm:2.8.2"]\
+        ],\
+        "packagePeers": [\
+          "@types/jiti",\
+          "@types/less",\
+          "@types/lightningcss",\
+          "@types/node",\
+          "@types/sass-embedded",\
+          "@types/sass",\
+          "@types/stylus",\
+          "@types/sugarss",\
+          "@types/terser",\
+          "@types/tsx",\
+          "@types/yaml",\
+          "jiti",\
+          "less",\
+          "lightningcss",\
+          "sass-embedded",\
+          "sass",\
+          "stylus",\
+          "sugarss",\
+          "terser",\
+          "tsx",\
+          "yaml"\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:7.2.6", {\
+        "packageLocation": "./.yarn/__virtual__/vite-virtual-44226bb90a/2/home/dev/.yarn/berry/cache/vite-npm-7.2.6-ad61dd907f-10c0.zip/node_modules/vite/",\
+        "packageDependencies": [\
+          ["@types/jiti", null],\
+          ["@types/less", null],\
+          ["@types/lightningcss", null],\
+          ["@types/node", "npm:25.0.6"],\
+          ["@types/sass", null],\
+          ["@types/sass-embedded", null],\
+          ["@types/stylus", null],\
+          ["@types/sugarss", null],\
+          ["@types/terser", null],\
+          ["@types/tsx", null],\
+          ["@types/yaml", null],\
+          ["esbuild", "npm:0.25.8"],\
+          ["fdir", "virtual:0e783aadbd2b4b8e6f6056033c0b290501892d23bc7c5dad5477e00e48ad8bd3e4434c3962a52dd75a58e06dbb7218094a494bac954ef2f7f6fdb65d9717e5f4#npm:6.5.0"],\
+          ["fsevents", "patch:fsevents@npm%3A2.3.3#optional!builtin<compat/fsevents>::version=2.3.3&hash=df0bf1"],\
+          ["jiti", null],\
+          ["less", null],\
+          ["lightningcss", null],\
+          ["picomatch", "npm:4.0.3"],\
+          ["postcss", "npm:8.5.6"],\
+          ["rollup", "npm:4.53.3"],\
+          ["sass", null],\
+          ["sass-embedded", null],\
+          ["stylus", null],\
+          ["sugarss", null],\
+          ["terser", null],\
+          ["tinyglobby", "npm:0.2.15"],\
+          ["tsx", "npm:4.21.0"],\
+          ["vite", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:7.2.6"],\
           ["yaml", "npm:2.8.2"]\
         ],\
         "packagePeers": [\

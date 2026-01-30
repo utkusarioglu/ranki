@@ -1,7 +1,7 @@
 {
   "name": "@ranki/app-ranki-v2",
   "private": true,
-  "version": "0.0.0",
+  "version": "2.0.0",
   "type": "module",
   "exports": {
     "./constants": {
@@ -18,7 +18,8 @@
     "lib": "tsc -p tsconfig.lib.json",
     "build": "yarn lib && vite build",
     "preview": "vite preview",
-    "clean-target": "scripts/clean-target.sh"
+    "clean-targets": "yarn tsx scripts/clean-targets.ts",
+    "copy-to-targets": "yarn tsx scripts/copy-to-targets.ts"
   },
   "devDependencies": {
     "@babel/core": "^7.28.5",
@@ -27,6 +28,7 @@
     "@ranki/config-typescript": "workspace:^",
     "@types/node": "^25.0.6",
     "chalk": "^5.6.2",
+    "tsx": "^4.21.0",
     "typescript": "~5.9.3",
     "vite": "^7.2.4",
     "vitest": "^4.0.17"
