@@ -9,65 +9,77 @@ import type {
   HtmlTagOs,
   HtmlTagEnv,
   CollectedWebviewType,
+  CollectedConfigEntry,
 } from "./collect.types.mjs";
 import {
-  CONFIG_FILE_CLASS_SELECTOR,
-  CONFIG_TYPE_CLASS_SELECTOR,
+  ALL_CONFIG_TYPES_SELECTOR,
   DATA_TYPE_CLASS_SELECTOR,
   INPUT_TYPE_CLASS_SELECTOR,
 } from "_/selector.constants.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
-import { RankiAppError } from "_error/ranki-app-error.mts";
 import { hasher } from "./hasher.mts";
+import { assertNever } from "_error/assertions.mjs";
+import { RankiAppError } from "_error/ranki-app-error.mjs";
 
 function getClassType(e: Element) {
   return e.className.split(" ").at(-1)!.trim(); // #1
 }
 
+function getResourceType(e: Element) {
+  return e.className.split(" ")[0].replace("r2-", "").trim(); // #1
+}
+
 async function collectConfigFields(): Promise<CollectedConfig> {
-  let config = {} as CollectedConfig;
+  let configPromises: Promise<CollectedConfigEntry>[] = [];
+
   try {
-    const configElems = document.querySelectorAll(CONFIG_TYPE_CLASS_SELECTOR);
-    config = Object.fromEntries(
-      Array.from(configElems).map((data) => [
-        getClassType(data),
-        data.innerHTML,
-      ]),
-    ) as CollectedConfig;
+    const configElems = document.querySelectorAll(ALL_CONFIG_TYPES_SELECTOR);
+    for (let e of configElems) {
+      const resourceType = getResourceType(e);
+      switch (resourceType) {
+        case "config":
+          configPromises.push(
+            Promise.resolve({
+              name: getClassType(e),
+              config: e.innerHTML,
+            }),
+          );
+          break;
+        case "config-file":
+          const src = e.getAttribute("href");
+          try {
+            assertExists(src, {
+              why: "Src property is required for config file elements",
+            });
+            configPromises.push(
+              (async () => ({
+                name: getClassType(e),
+                config: await fetch(src).then((t) => t.text()),
+              }))(),
+            );
+          } catch (e) {
+            throw new RankiAppError({
+              code: "CONFIG_FILE_RETRIEVAL",
+              why: "Fetch of the template config files have failed",
+              cause: e,
+              details: {
+                src,
+              },
+            });
+          }
+          break;
+        default:
+          assertNever({
+            why: "Unrecognized resource type",
+            details: { name: resourceType, html: e.innerHTML },
+          });
+      }
+    }
   } catch (e) {
     console.log(e);
   }
-  try {
-    const configFiles = document.querySelectorAll(CONFIG_FILE_CLASS_SELECTOR);
-    const configFromFiles = await Promise.all(
-      Array.from(configFiles).map(async (e) => {
-        const src = e.getAttribute("href");
-        assertExists(src, {
-          why: "Src property is required for config file elements",
-        });
-        try {
-          const obj = await fetch(src).then((t) => t.text());
-          return [getClassType(e), obj];
-        } catch (e) {
-          throw new RankiAppError({
-            code: "MISSING_CONFIG",
-            why: "Fetch of the template config files have failed",
-            cause: e,
-            details: {
-              src,
-            },
-          });
-        }
-      }),
-    );
-    config = { ...config, ...Object.fromEntries(configFromFiles) };
-  } catch (e) {
-    throw new RankiAppError({
-      code: "FAILED_USER_CONFIG_RETRIEVAL",
-      why: "User config retrieval failed",
-      cause: e,
-    });
-  }
+
+  const config: CollectedConfig = await Promise.all(configPromises);
   return config;
 }
 

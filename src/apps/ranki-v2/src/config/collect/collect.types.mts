@@ -41,9 +41,17 @@ export interface AnkiTemplateFields {
   card: AnkiCard;
 }
 
-export type ConfigLocations = "template" | "card" | "user";
+// export type ConfigLocations = "template" | "card" | "user";
 
-export type CollectedConfig = Record<ConfigLocations, string>;
+// export type CollectedConfig = Record<ConfigLocations, string>;
+
+export interface CollectedConfigEntry {
+  name: string;
+  config: string;
+}
+
+export type CollectedConfig = CollectedConfigEntry[];
+
 export type CollectedWebviewType =
   | "windows"
   | "android-old"
