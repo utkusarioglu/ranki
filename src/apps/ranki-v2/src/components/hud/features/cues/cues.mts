@@ -13,12 +13,7 @@ export class HudCues extends RankiHudWc<HudCuesProps> {
     show: RankiAnimation.expandXFadeIn(this, {
       initialCb: this.adjustWidth.bind(this),
     }),
-    hide: RankiAnimation.expandXFadeIn(this, {
-      initial: {
-        "margin-right": 0,
-        opacity: 0,
-      },
-    }),
+    hide: RankiAnimation.collapseXFadeOut(this, {}),
   };
 
   constructor() {

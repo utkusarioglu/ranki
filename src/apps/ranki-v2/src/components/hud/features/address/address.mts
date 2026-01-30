@@ -14,14 +14,10 @@ import { HudAddressCrumb } from "./HudAddressCrumb.mts";
 export class HudAddress extends RankiHudWc<HudAddressProps> {
   protected static name = "ranki-hud-address" as const;
   protected animations: AnimationTypes = {
-    show: RankiAnimation.fadeIn(this, {
-      setup: {
-        "margin-right": 0,
-      },
-      initial: {
-        "margin-right": "1em",
-      },
+    show: RankiAnimation.expandXFadeIn(this, {
+      initialCb: this.adjustWidth.bind(this),
     }),
+    hide: RankiAnimation.collapseXFadeOut(this, {}),
   };
 
   constructor() {

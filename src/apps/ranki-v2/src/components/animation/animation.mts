@@ -104,10 +104,13 @@ export class RankiAnimation {
       endRemove: additional?.endRemove,
       setup: {
         width: width + "px",
+        "margin-right": "1em",
         ...(additional && additional.setup),
       },
       initial: {
+        "margin-right": 0,
         opacity: 0,
+        width: 0,
         ...(additional && additional.initial),
       },
       end: {

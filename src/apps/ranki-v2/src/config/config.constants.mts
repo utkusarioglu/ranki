@@ -249,7 +249,7 @@ repeating-linear-gradient(
       },
     },
     hud: {
-      order: ["parser", "card", "address", "cues", "tags"],
+      order: ["parser", "cues", "address", "card", "tags"],
       visibility: "visible",
     },
     dqm: [DQM_BASE_CONFIG],
