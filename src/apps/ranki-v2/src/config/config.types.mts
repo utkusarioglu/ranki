@@ -6,7 +6,8 @@ import type {
 import type {
   HudComponentNames,
   HudVisibility,
-} from "../components/hud/hud.types.mjs";
+  RankiHudState,
+} from "_components/hud/hud.types.mjs";
 import type { DeepPartialSerializable } from "../types/util.types.mjs";
 import type {
   AnkiCardFace,
@@ -14,7 +15,6 @@ import type {
   FilteredTags,
   RawFields,
 } from "./collect/collect.types.mts";
-import type { HudProps as RankiHudState } from "../components/hud/hud.types.mts";
 
 export type Deck = string;
 

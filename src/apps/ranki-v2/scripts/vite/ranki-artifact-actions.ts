@@ -20,7 +20,7 @@ function title(t: string) {
   console.log("");
 }
 
-export function cleanTargets() {
+export function cleanRankiTargets() {
   title(" CLEAN TARGETS ");
 
   const RM_DIRS = [DEMO_APP_DEV_COPY_PATH, DEMO_APP_DIST_COPY_PATH];

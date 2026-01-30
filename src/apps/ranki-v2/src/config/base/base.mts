@@ -8,16 +8,16 @@ import type {
   DeckSettings,
   RankiBaseConfig,
   RankiChannelsConfig,
-} from "../config.types.mts";
+} from "_config/config.types.mts";
 import type {
   RawFields,
   FilteredTags,
   AnkiNeutralTags,
   RankiTags,
-} from "../collect/collect.types.mts";
+} from "_config/collect/collect.types.mts";
 import { checkIfMatch } from "./determine.mts";
-import { FLAG_COLOR_ORDER } from "../anki.constants.mts";
-import { assertNever } from "../../error/assertions.mts";
+import { FLAG_COLOR_ORDER } from "_config/anki.constants.mts";
+import { assertNever } from "_error/assertions.mts";
 
 const PRECEDENCE_ORDER: CueKind[] = [
   "deck",

@@ -1,7 +1,7 @@
-import { RankiAnimation } from "../../../animation/animation.mts";
-import { RankiHudWc } from "../../hud-wc/hud-wc.mts";
-import { type AnimationTypes } from "../../../animation/animation.mts";
-import type { HudParserProps } from "../../hud.types.mts";
+import { RankiAnimation } from "_components/animation/animation.mts";
+import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
+import { type AnimationTypes } from "_components/animation/animation.mts";
+import type { HudParserProps } from "_components/hud/hud.types.mts";
 import styles from "./parser.component.css?inline";
 
 export class HudParser extends RankiHudWc<HudParserProps> {

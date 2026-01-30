@@ -1,4 +1,4 @@
-import type { RankiDevState } from "../config/config.types.mts";
+import type { RankiDevState } from "_config/config.types.mts";
 import { RankiDevMethods } from "./dev-methods.mts";
 
 export function createDevTools(conf: RankiDevState) {

@@ -1,5 +1,5 @@
 import type { DqmParseTheater } from "@dqm/package-dqm-v2";
-import type { RankiTagPrefix } from "../config.types.mts";
+import type { RankiTagPrefix } from "_config/config.types.mts";
 
 export type AnkiFlag = `flag${number}`;
 

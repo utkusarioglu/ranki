@@ -1,7 +1,9 @@
-import { RankiHudWc } from "../../hud-wc/hud-wc.mts";
-import { type AnimationTypes } from "../../../animation/animation.mts";
-import { RankiAnimation } from "../../../animation/animation.mts";
-import type { HudCuesProps } from "../../hud.types.mts";
+import {
+  RankiAnimation,
+  type AnimationTypes,
+} from "_components/animation/animation.mts";
+import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
+import type { HudCuesProps } from "_components/hud/hud.types.mts";
 import styles from "./cues.component.css?inline";
 import { HudCuesCue } from "./hud-cue.mts";
 

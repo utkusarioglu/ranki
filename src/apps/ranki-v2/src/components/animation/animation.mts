@@ -1,4 +1,7 @@
-import type { RankiWc, SetPropertiesArg } from "../ranki-wc/ranki-wc.mts";
+import type {
+  RankiWc,
+  SetPropertiesArg,
+} from "_components/ranki-wc/ranki-wc.mts";
 
 export type AnimationTypes = Partial<
   Record<AnimationNames, () => Promise<void>>

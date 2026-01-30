@@ -8,11 +8,12 @@ import { RankiHud } from "_components/hud/hud.mts";
 import { RankiChallenge } from "_components/challenge/challenge.mts";
 import { RankiIndicator } from "_components/indicator/indicator.mts";
 import type { RankiState } from "./config/config.types.mts";
+import { ERROR_ID_SELECTOR } from "./selector.constants.mts";
 
 async function main() {
   try {
     if (!shouldRender()) return;
-    const err = document.querySelector("#ranki-v2-error");
+    const err = document.querySelector(ERROR_ID_SELECTOR);
     if (err) {
       err.parentElement?.removeChild(err);
     }

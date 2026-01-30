@@ -1,6 +1,8 @@
-import { RankiAnimation } from "../../../animation/animation.mts";
-import { RankiHudWc } from "../../hud-wc/hud-wc.mts";
-import { type AnimationTypes } from "../../../animation/animation.mts";
+import {
+  RankiAnimation,
+  type AnimationTypes,
+} from "_components/animation/animation.mts";
+import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
 
 export class HudTagsTag extends RankiHudWc<{}> {
   protected static name = "hud-tags-tag" as const;

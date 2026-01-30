@@ -1,5 +1,5 @@
-import type { RankiDesignState } from "../config/config.types.mts";
-import { assertNotUndefined } from "../error/assertions.mts";
+import type { RankiDesignState } from "_config/config.types.mts";
+import { assertNotUndefined } from "_error/assertions.mts";
 import { generatePaletteStyle } from "./color.mts";
 import {
   CSS_FADE_ANIMATION_DURATION,

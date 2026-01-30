@@ -3,7 +3,7 @@ import type {
   ColorLevel,
   Palette,
   PaletteSpecs,
-} from "../config/config.types.mts";
+} from "_config/config.types.mts";
 import { PALETTE_PREFIX } from "./design.constants.mts";
 
 type Rgb = [number, number, number];

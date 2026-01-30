@@ -1,8 +1,13 @@
-import { assertNever } from "../../../../error/assertions.mts";
-import { RankiHudWc } from "../../hud-wc/hud-wc.mts";
-import { type AnimationTypes } from "../../../animation/animation.mts";
-import { RankiAnimation } from "../../../animation/animation.mts";
-import type { HudAddressProps, HudAddressSegment } from "../../hud.types.mts";
+import {
+  RankiAnimation,
+  type AnimationTypes,
+} from "_components/animation/animation.mts";
+import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
+import type {
+  HudAddressProps,
+  HudAddressSegment,
+} from "_components/hud/hud.types.mts";
+import { assertNever } from "_error/assertions.mts";
 import styles from "./address.component.css?inline";
 import { HudAddressCrumb } from "./HudAddressCrumb.mts";
 

@@ -1,9 +1,14 @@
-import { assertNotUndefined, assertNotNull } from "../error/assertions.mts";
+import { assertNotUndefined, assertNotNull } from "_error/assertions.mts";
 import type {
   RankiPlayFields,
   RankiSetFunc,
   RankiSetValues,
 } from "./dev.types.mts";
+import {
+  CONFIG_TYPE_CLASS_SELECTOR,
+  DATA_TYPE_CLASS_SELECTOR,
+  INPUT_TYPE_CLASS_SELECTOR,
+} from "../selector.constants.mts";
 
 export class RankiDevMethods {
   static isPersisted = false;
@@ -26,29 +31,44 @@ export class RankiDevMethods {
   }
 
   static face = (v: RankiSetValues) =>
-    this.assign("script.ranki-v2-data.face", v);
+    this.assign([DATA_TYPE_CLASS_SELECTOR, "face"].join("."), v);
   static deck = (v: RankiSetValues) =>
-    this.assign("script.ranki-v2-data.deck", v);
+    this.assign([DATA_TYPE_CLASS_SELECTOR, "deck"].join("."), v);
   static tags = (v: RankiSetValues) =>
-    this.assign("script.ranki-v2-data.tags", v);
+    this.assign([DATA_TYPE_CLASS_SELECTOR, "tags"].join("."), v);
   static type = (v: RankiSetValues) =>
-    this.assign("script.ranki-v2-data.type", v);
+    this.assign([DATA_TYPE_CLASS_SELECTOR, "type"].join("."), v);
   // TODO maybe allow color names
   static flag = (v: RankiSetValues) =>
-    this.assign("script.ranki-v2-data.flag", "flag" + v);
+    this.assign([DATA_TYPE_CLASS_SELECTOR, "flag"].join("."), "flag" + v);
   static card = (v: RankiSetValues) =>
-    this.assign("script.ranki-v2-data.card", v);
+    this.assign([DATA_TYPE_CLASS_SELECTOR, "card"].join("."), v);
 
-  static a = (v: RankiSetValues) => this.assign("script.ranki-v2-input.A", v);
-  static b = (v: RankiSetValues) => this.assign("script.ranki-v2-input.B", v);
-  static c = (v: RankiSetValues) => this.assign("script.ranki-v2-input.C", v);
-  static d = (v: RankiSetValues) => this.assign("script.ranki-v2-input.D", v);
-  static e = (v: RankiSetValues) => this.assign("script.ranki-v2-input.E", v);
+  static a = (v: RankiSetValues) =>
+    this.assign(
+      [INPUT_TYPE_CLASS_SELECTOR, "A"].join("."),
+
+      v,
+    );
+  static b = (v: RankiSetValues) =>
+    this.assign([INPUT_TYPE_CLASS_SELECTOR, "B"].join("."), v);
+  static c = (v: RankiSetValues) =>
+    this.assign([INPUT_TYPE_CLASS_SELECTOR, "C"].join("."), v);
+  static d = (v: RankiSetValues) =>
+    this.assign([INPUT_TYPE_CLASS_SELECTOR, "D"].join("."), v);
+  static e = (v: RankiSetValues) =>
+    this.assign([INPUT_TYPE_CLASS_SELECTOR, "E"].join("."), v);
 
   static templateConfig = (v: object) =>
-    this.assign("script.ranki-v2-config.template", JSON.stringify(v));
+    this.assign(
+      [CONFIG_TYPE_CLASS_SELECTOR, "template"].join("."),
+      JSON.stringify(v),
+    );
   static cardConfig = (v: object) =>
-    this.assign("script.ranki-v2-config.card", JSON.stringify(v));
+    this.assign(
+      [CONFIG_TYPE_CLASS_SELECTOR, "card"].join("."),
+      JSON.stringify(v),
+    );
 
   static persist(on: boolean = true) {
     if (on) {

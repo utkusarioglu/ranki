@@ -4,24 +4,19 @@ import path from "node:path";
 import babel from "@rollup/plugin-babel";
 import { OUT_DIR, TEMPLATE_FILE } from "./scripts/vite/vite.constants";
 import {
-  cleanTargets,
+  cleanRankiTargets,
   copyArtifacts,
   displayTemplate,
   rankiArtifactActions,
 } from "./scripts/vite/ranki-artifact-actions";
 import tsConfigPaths from "vite-tsconfig-paths";
 
-const __abspath = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__abspath);
+const viteConfigPath = url.fileURLToPath(import.meta.url);
+const packagePath = path.dirname(viteConfigPath);
 
-cleanTargets();
+cleanRankiTargets();
 
 export default defineConfig({
-  // resolve: {
-  //   alias: {
-  //     _components: "./src/components",
-  //   },
-  // },
   server: {
     host: true,
     port: 3000,
@@ -46,7 +41,7 @@ export default defineConfig({
     assetsDir: ".",
     rollupOptions: {
       input: {
-        main: path.resolve(__dirname, TEMPLATE_FILE),
+        main: path.resolve(packagePath, TEMPLATE_FILE),
       },
       output: {
         inlineDynamicImports: true,

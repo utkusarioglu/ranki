@@ -26,6 +26,9 @@
     "noUncheckedSideEffectImports": true,
     "paths": {
       "_components/*": ["./src/components/*"],
+      "_config/*": ["./src/config/*"],
+      "_error/*": ["./src/error/*"],
+      "_/*": ["./src/*"],
       "@dqm/package-utils": ["../../packages/dqm-utils"],
       "@dqm/package-dqm-v2": ["../../packages/dqm-v2"]
     }

@@ -3,17 +3,20 @@ import type {
   HudAddressSegment,
   HudAddressSegmentPart,
   HudAddressSegmentWithParts,
-} from "../../components/hud/hud.types.mts";
-import type { AnkiDeck, AnkiDeckParts } from "../collect/collect.types.mts";
-import { ANKI_DECK_SEPARATOR } from "../config.constants.mts";
+} from "_components/hud/hud.types.mts";
+import type {
+  AnkiDeck,
+  AnkiDeckParts,
+} from "_config/collect/collect.types.mts";
+import { ANKI_DECK_SEPARATOR } from "_config/config.constants.mts";
 import type {
   RankiAddressTokens,
   RankiBaseAddressMutation,
   RankiBaseAddressMutationMode,
-} from "../config.types.mts";
+} from "_config/config.types.mts";
+import { assertNever } from "_error/assertions.mts";
+import { RankiAppError } from "_error/ranki-app-error.mts";
 import { MUTATION_MODE_PRECEDENCE } from "./app.mts";
-import { assertNever } from "../../error/assertions.mts";
-import { RankiAppError } from "../../error/ranki-app-error.mts";
 
 function translateMarker(parts: AnkiDeckParts, marker: string | number) {
   let si: number;

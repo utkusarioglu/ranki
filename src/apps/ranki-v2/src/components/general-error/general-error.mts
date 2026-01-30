@@ -1,5 +1,6 @@
-import { RankiAppError } from "../../error/ranki-app-error.mts";
+import { RankiAppError } from "_error/ranki-app-error.mts";
 import yaml from "yaml";
+import { ERROR_ID_SELECTOR } from "../../selector.constants.mts";
 
 const COLOR_CRIMSON = "#550000";
 const COLOR_GRAY = "#aaa";
@@ -13,7 +14,7 @@ export function createAppErrorScreen(
 
   const container = document.createElement("div");
   attach.append(container);
-  container.id = "ranki-v2-error";
+  container.id = ERROR_ID_SELECTOR.slice(1);
   container.style.position = "fixed";
   container.style.inset = "0";
   container.style.marginInline = "auto";

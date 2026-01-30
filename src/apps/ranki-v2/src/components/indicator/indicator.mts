@@ -1,10 +1,10 @@
+import { RankiWc } from "_components/ranki-wc/ranki-wc.mts";
 import type {
-  RankiIndicatorState,
   RankiIndicatorDefinition,
-} from "../../config/config.types.mts";
-import { assertNotUndefined } from "../../error/assertions.mts";
+  RankiIndicatorState,
+} from "_config/config.types.mts";
+import { assertNotUndefined } from "_error/assertions.mts";
 import style from "./indicator.component.css?inline";
-import { RankiWc } from "../ranki-wc/ranki-wc.mts";
 import { IndicatorPattern } from "./pattern.mts";
 
 export class RankiIndicator extends RankiWc<RankiIndicatorState> {

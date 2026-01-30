@@ -15,9 +15,9 @@ import {
   CONFIG_TYPE_CLASS_SELECTOR,
   DATA_TYPE_CLASS_SELECTOR,
   INPUT_TYPE_CLASS_SELECTOR,
-} from "../../selector.constants.mjs";
+} from "_/selector.constants.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
-import { RankiAppError } from "../../error/ranki-app-error.mts";
+import { RankiAppError } from "_error/ranki-app-error.mts";
 import { hasher } from "./hasher.mts";
 
 function getClassType(e: Element) {

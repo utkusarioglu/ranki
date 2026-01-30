@@ -16,6 +16,9 @@ export const RANKI_INTERNAL_FACE_PREFIX = "ranki";
 
 export const NO_FLAG_COLOR_TOKEN = "none";
 
+export const GLOB_SINGLE = "_";
+export const GLOB_MULTI = "__";
+
 export const RANKI_INITIAL_CONFIG: RankiChannelsConfig = {
   base: {
     faces: {

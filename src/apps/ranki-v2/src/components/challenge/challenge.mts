@@ -1,11 +1,17 @@
 import styles from "./challenge.component.css?inline";
 import { renderDqm } from "../../dqm/render-dqm.mts";
-import type { RankiChallengeState } from "../../config/config.types.mts";
-import { RankiFacesFace } from "./pair/face/face.mts";
-import { assertNotUndefined, assertNotNull } from "../../error/assertions.mts";
-import { RankiFacesPair, type PairChildren } from "./pair/pair.mts";
-import { RankiFacesWc } from "./faces-wc/faces-wc.mts";
-import { RankiRule, ruleStyles } from "./pair/rule/rule.mts";
+import type { RankiChallengeState } from "_config/config.types.mts";
+import { assertNotUndefined, assertNotNull } from "_error/assertions.mts";
+import { RankiFacesFace } from "_components/challenge/pair/face/face.mts";
+import {
+  RankiFacesPair,
+  type PairChildren,
+} from "_components/challenge/pair/pair.mts";
+import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
+import {
+  RankiRule,
+  ruleStyles,
+} from "_components/challenge/pair/rule/rule.mts";
 
 type RenderedFaces = Record<string, RankiFacesFace>;
 

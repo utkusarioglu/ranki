@@ -1,7 +1,7 @@
 import type {
   AnimationTypes,
   AnimationNames,
-} from "../animation/animation.mts";
+} from "_components/animation/animation.mts";
 
 export type SetPropertiesArg = Record<string, string | number>;
 

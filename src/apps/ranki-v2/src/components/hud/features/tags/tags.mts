@@ -1,7 +1,12 @@
-import { RankiAnimation } from "../../../animation/animation.mts";
-import { RankiHudWc } from "../../hud-wc/hud-wc.mts";
-import { type AnimationTypes } from "../../../animation/animation.mts";
-import type { HudTagListItem, HudTagsProps } from "../../hud.types.mts";
+import {
+  RankiAnimation,
+  type AnimationTypes,
+} from "_components/animation/animation.mts";
+import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
+import type {
+  HudTagListItem,
+  HudTagsProps,
+} from "_components/hud/hud.types.mts";
 import { HudTagsTag } from "./HudTagsTag.mts";
 import styles from "./tags.component.css?inline";
 

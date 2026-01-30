@@ -1,8 +1,10 @@
-import { RankiAnimation } from "../../../animation/animation.mts";
-import { RankiHudWc } from "../../hud-wc/hud-wc.mts";
-import { type AnimationTypes } from "../../../animation/animation.mts";
-import type { CueRecord } from "../../../../config/config.types.mts";
 import "@phosphor-icons/webcomponents";
+import {
+  RankiAnimation,
+  type AnimationTypes,
+} from "_components/animation/animation.mts";
+import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
+import type { CueRecord } from "_config/config.types.mts";
 
 type CueProps = {
   record: CueRecord;

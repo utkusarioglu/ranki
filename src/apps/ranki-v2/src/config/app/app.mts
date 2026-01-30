@@ -1,29 +1,29 @@
-import type {
-  RawFields,
-  FilteredTags,
-  CardFaceArray,
-} from "../collect/collect.types.mts";
-import type {
-  HudProps,
-  HudTagListItem,
-} from "../../components/hud/hud.types.mts";
-import type {
-  RankiBaseConfig,
-  RankiAppDeterminedScheme,
-  RankiState,
-  RankiDqmConfig,
-  BuildRankiBaseConfigReturn,
-  RankiBaseAddressMutationMode,
-  CueRecord,
-  RankiCollectedConfig,
-} from "../config.types.mts";
+import { assertArrayNotEmpty, assertExists } from "@dqm/package-dqm-utils";
 import type {
   DqmParseInputStructured,
   DqmParseTheater,
 } from "@dqm/package-dqm-v2";
-import { assertArrayNotEmpty, assertExists } from "@dqm/package-dqm-utils";
-import { RankiAppError } from "../../error/ranki-app-error.mts";
-import { INPUT_TYPE_CLASS_SELECTOR } from "../../selector.constants.mts";
+import { INPUT_TYPE_CLASS_SELECTOR } from "_/selector.constants.mts";
+import type {
+  HudTagListItem,
+  RankiHudState,
+} from "_components/hud/hud.types.mts";
+import type {
+  CardFaceArray,
+  FilteredTags,
+  RawFields,
+} from "_config/collect/collect.types.mts";
+import type {
+  BuildRankiBaseConfigReturn,
+  CueRecord,
+  RankiAppDeterminedScheme,
+  RankiBaseAddressMutationMode,
+  RankiBaseConfig,
+  RankiCollectedConfig,
+  RankiDqmConfig,
+  RankiState,
+} from "_config/config.types.mts";
+import { RankiAppError } from "_error/ranki-app-error.mts";
 import {
   RANKI_INTERNAL_FACE_PREFIX,
   SYSTEM_CONTROLLED_SCHEME_TOKEN,
@@ -128,7 +128,7 @@ function buildHudConfig(
   base: BuildRankiBaseConfigReturn,
   collected: RawFields,
   filteredTags: FilteredTags,
-): HudProps {
+): RankiHudState {
   const segments = buildAddressParts(
     base.config.address.tokens,
     base.config.address.segments,

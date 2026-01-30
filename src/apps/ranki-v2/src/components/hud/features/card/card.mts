@@ -1,7 +1,9 @@
-import { RankiAnimation } from "../../../animation/animation.mts";
-import { RankiHudWc } from "../../hud-wc/hud-wc.mts";
-import { type AnimationTypes } from "../../../animation/animation.mts";
-import type { HudCardProps } from "../../hud.types.mts";
+import {
+  RankiAnimation,
+  type AnimationTypes,
+} from "_components/animation/animation.mts";
+import { RankiHudWc } from "_components/hud//hud-wc/hud-wc.mts";
+import type { HudCardProps } from "_components/hud/hud.types.mts";
 import styles from "./card.component.css?inline";
 
 export class HudCard extends RankiHudWc<HudCardProps> {

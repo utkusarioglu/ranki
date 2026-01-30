@@ -1,3 +1,9 @@
+import {
+  ANKI_DECK_SEPARATOR,
+  GLOB_MULTI,
+  GLOB_SINGLE,
+} from "_config/config.constants.mjs";
+
 // ANKI
 /**
  * Glob matching with the following types: * ** exact
@@ -7,9 +13,9 @@
 export function isGlobMatch(
   currStr: string,
   matchStr: string,
-  separator: string = "/",
-  single: string = "_",
-  multi: string = "__",
+  separator: string = ANKI_DECK_SEPARATOR,
+  single: string = GLOB_SINGLE,
+  multi: string = GLOB_MULTI,
 ) {
   console.log("glob", currStr, matchStr);
   const curr = currStr.split(separator);

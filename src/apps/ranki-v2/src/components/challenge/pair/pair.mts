@@ -1,10 +1,10 @@
 import {
   RankiAnimation,
   type AnimationTypes,
-} from "../../animation/animation.mts";
-import type { RankiFacesFace } from "./face/face.mts";
-import { RankiFacesWc } from "../faces-wc/faces-wc.mts";
-import type { RankiRule } from "./rule/rule.mts";
+} from "_components/animation/animation.mts";
+import type { RankiFacesFace } from "_components/challenge/pair/face/face.mts";
+import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
+import type { RankiRule } from "_components/challenge/pair/rule/rule.mts";
 
 export type PairChildren = RankiFacesFace | RankiRule;
 

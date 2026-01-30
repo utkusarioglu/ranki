@@ -1,4 +1,4 @@
-import { RankiWc } from "../../ranki-wc/ranki-wc.mts";
+import { RankiWc } from "_components/ranki-wc/ranki-wc.mts";
 
 export class RankiHudWc<Props> extends RankiWc<Props> {
   override connectedCallback(): void {

@@ -1,8 +1,8 @@
 import {
   RankiAnimation,
   type AnimationTypes,
-} from "../animation/animation.mts";
-import { RankiWc } from "../ranki-wc/ranki-wc.mts";
+} from "_components/animation/animation.mts";
+import { RankiWc } from "_components/ranki-wc/ranki-wc.mts";
 
 export class IndicatorPattern extends RankiWc<string> {
   public static name = "ranki-indicator-pattern" as const;

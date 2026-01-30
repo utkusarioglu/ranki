@@ -1,15 +1,15 @@
-import type { HudProps } from "./hud.types.mjs";
-import { assertNever } from "../../error/assertions.mts";
+import { horizontalScrollUtil } from "_components/scroller/horizontal.mts";
+import { assertNever } from "_error/assertions.mts";
 import { HudAddress } from "./features/address/address.mts";
 import { HudCard } from "./features/card/card.mts";
+import { HudCues } from "./features/cues/cues.mts";
 import { HudParser } from "./features/parser/parser.mts";
 import { HudTags } from "./features/tags/tags.mts";
-import { HudCues } from "./features/cues/cues.mts";
-import styles from "./hud.component.css?inline";
-import { horizontalScrollUtil } from "../scroller/horizontal.mts";
 import { RankiHudWc } from "./hud-wc/hud-wc.mts";
+import styles from "./hud.component.css?inline";
+import type { RankiHudState } from "./hud.types.mjs";
 
-export class RankiHud extends RankiHudWc<HudProps> {
+export class RankiHud extends RankiHudWc<RankiHudState> {
   protected static name = "ranki-hud" as const;
 
   constructor() {

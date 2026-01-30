@@ -1,8 +1,8 @@
 import {
   RankiAnimation,
   type AnimationTypes,
-} from "../../../animation/animation.mts";
-import { RankiFacesWc } from "../../faces-wc/faces-wc.mts";
+} from "_components/animation/animation.mts";
+import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
 
 export class RankiFacesFace extends RankiFacesWc<{}> {
   public static name = "ranki-faces-face";
