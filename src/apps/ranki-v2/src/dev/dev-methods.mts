@@ -9,9 +9,16 @@ import {
   DATA_TYPE_CLASS_SELECTOR,
   INPUT_TYPE_CLASS_SELECTOR,
 } from "../selector.constants.mts";
+import { main } from "_/main.mjs";
 
 export class RankiDevMethods {
   static isPersisted = false;
+
+  static async main() {
+    this.tags("");
+    await main();
+    return;
+  }
 
   static trigger() {
     const qa = document.querySelector("#qa") as HTMLDivElement;

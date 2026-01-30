@@ -143,6 +143,7 @@ export interface RankiAddressTokens {
 }
 
 export interface RankiDevToolsConfig {
+  throw: boolean;
   persist: boolean;
   methods: boolean;
 }
@@ -202,6 +203,7 @@ export interface RankiDesignState {
 
 export interface RankiDevState {
   persist: boolean;
+  throw: boolean;
   methods: boolean;
 }
 

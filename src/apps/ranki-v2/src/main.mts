@@ -8,24 +8,18 @@ import { RankiHud } from "_components/hud/hud.mts";
 import { RankiChallenge } from "_components/challenge/challenge.mts";
 import { RankiIndicator } from "_components/indicator/indicator.mts";
 import type { RankiState } from "./config/config.types.mts";
-import { ERROR_ID_SELECTOR } from "./selector.constants.mts";
+import { RankiBigError } from "_components/big-error/big-error.mjs";
 
-async function main() {
+export async function main() {
   try {
     if (!shouldRender()) return;
-    const err = document.querySelector(ERROR_ID_SELECTOR);
-    if (err) {
-      err.parentElement?.removeChild(err);
-    }
-
+    RankiBigError.clear();
     setStyles();
     const config = await collectConfig();
     const state = createState(config);
     render(state);
   } catch (e) {
-    const { createAppErrorScreen } =
-      await import("_components/general-error/general-error.mjs");
-    createAppErrorScreen(document.body, e);
+    RankiBigError.createAndAttach(e, document.body);
   }
 }
 

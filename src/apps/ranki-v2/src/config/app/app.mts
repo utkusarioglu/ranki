@@ -40,6 +40,18 @@ export function createAppConfig({ base, raw, tags }: RankiCollectedConfig) {
   const order = getFaceOrder(base.config, raw);
   const scheme = getScheme(base, raw);
   const ranki = buildRankiConfig(base, raw, tags, order, scheme);
+  if (ranki.dev.throw) {
+    throw new RankiAppError({
+      code: "INTENTIONAL_ERROR",
+      why: "The app was asked to throw this error through a trigger",
+      cause: null,
+      details: {
+        order,
+        scheme,
+        ranki,
+      },
+    });
+  }
   return ranki;
 }
 
@@ -60,10 +72,7 @@ function buildRankiConfig(
   const dqm = buildDqmConfig(raw, order, base.config, scheme);
   return {
     hud,
-    dev: {
-      persist: base.config.dev.persist,
-      methods: base.config.dev.methods,
-    },
+    dev: base.config.dev,
     indicator: {
       cues: base.cueRecord,
       indicatorCollection: base.config.indicators,

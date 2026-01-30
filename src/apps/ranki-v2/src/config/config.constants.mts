@@ -26,6 +26,7 @@ export const RANKI_INITIAL_CONFIG: RankiChannelsConfig = {
       N: [],
     },
     dev: {
+      throw: false,
       persist: false,
       methods: false,
     },
@@ -327,6 +328,14 @@ repeating-linear-gradient(
       config: {
         dev: {
           persist: true,
+        },
+      },
+    },
+    {
+      exact: "+r::dev::throw",
+      config: {
+        dev: {
+          throw: true,
         },
       },
     },
