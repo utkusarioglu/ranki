@@ -25,6 +25,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "paths": {
+      "_components/*": ["./src/components/*"],
       "@dqm/package-utils": ["../../packages/dqm-utils"],
       "@dqm/package-dqm-v2": ["../../packages/dqm-v2"]
     }

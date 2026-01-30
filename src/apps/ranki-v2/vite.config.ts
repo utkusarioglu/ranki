@@ -9,6 +9,7 @@ import {
   displayTemplate,
   rankiArtifactActions,
 } from "./scripts/vite/ranki-artifact-actions";
+import tsConfigPaths from "vite-tsconfig-paths";
 
 const __abspath = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__abspath);
@@ -16,6 +17,11 @@ const __dirname = path.dirname(__abspath);
 cleanTargets();
 
 export default defineConfig({
+  // resolve: {
+  //   alias: {
+  //     _components: "./src/components",
+  //   },
+  // },
   server: {
     host: true,
     port: 3000,
@@ -25,6 +31,7 @@ export default defineConfig({
     port: 3000,
   },
   plugins: [
+    tsConfigPaths(),
     babel({
       babelHelpers: "bundled",
       extensions: [".mts", ".ts", ".js", ".mjs"],

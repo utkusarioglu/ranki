@@ -2,11 +2,11 @@ import "./bootstrap/polyfills.mjs";
 import { onReady, shouldRender } from "./bootstrap/startup.mjs";
 import { collectConfig, createState } from "./config/config.mts";
 import { createDesign } from "./theme/theme.mts";
-import { RankiHud } from "./components/hud/hud.mts";
 import { createDevTools } from "./dev/dev.mts";
 import { setStyles } from "./style/style.mts";
-import { RankiChallenge } from "./components/challenge/challenge.mts";
-import { RankiIndicator } from "./components/indicator/indicator.mts";
+import { RankiHud } from "_components/hud/hud.mts";
+import { RankiChallenge } from "_components/challenge/challenge.mts";
+import { RankiIndicator } from "_components/indicator/indicator.mts";
 import type { RankiState } from "./config/config.types.mts";
 
 async function main() {
@@ -23,7 +23,7 @@ async function main() {
     render(state);
   } catch (e) {
     const { createAppErrorScreen } =
-      await import("./components/general-error/general-error.mjs");
+      await import("_components/general-error/general-error.mjs");
     createAppErrorScreen(document.body, e);
   }
 }
