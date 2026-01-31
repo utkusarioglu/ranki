@@ -21,7 +21,7 @@
     "clean-targets": "yarn tsx scripts/clean-targets.ts && scripts/clean-anki.sh",
     "clean-anki": "scripts/clean-anki.sh",
     "copy-to-targets": "yarn tsx scripts/copy-to-targets.ts",
-    "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo && rm -rf vite*timestamp-* || true"
+    "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig*.tsbuildinfo && rm -rf vite*timestamp-* || true"
   },
   "devDependencies": {
     "@babel/core": "^7.28.5",
