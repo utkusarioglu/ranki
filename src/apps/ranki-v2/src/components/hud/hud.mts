@@ -3,7 +3,7 @@ import { assertNever } from "_error/assertions.mts";
 import { HudAddress } from "./features/address/address.mts";
 import { HudCard } from "./features/card/card.mts";
 import { HudCues } from "./features/cues/cues.mts";
-import { HudParser } from "./features/parser/parser.mts";
+import { HudApp } from "./features/app/app.mts";
 import { HudTags } from "./features/tags/tags.mts";
 import { RankiHudWc } from "./hud-wc/hud-wc.mts";
 import styles from "./hud.component.css?inline";
@@ -50,8 +50,8 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
         case "cues":
           HudCues.singleton(props.cues, tail);
           break;
-        case "parser":
-          HudParser.singleton(props.parser, tail);
+        case "app":
+          HudApp.singleton(props.parser, tail);
           break;
         case "tags":
           HudTags.singleton(props.tags, tail);

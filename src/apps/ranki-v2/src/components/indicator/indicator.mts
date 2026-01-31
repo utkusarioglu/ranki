@@ -33,7 +33,7 @@ export class RankiIndicator extends RankiWc<RankiIndicatorState> {
       newPattern.push(ind);
     });
 
-    const newString = newPattern.map((v) => v.style).join(", ");
+    const newString = newPattern.map((v) => v.style).join(",\n");
     if (newString !== this.active) {
       for (let c of this.shadowRoot!.children) {
         c.remove();

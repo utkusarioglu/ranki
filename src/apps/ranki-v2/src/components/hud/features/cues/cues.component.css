@@ -57,7 +57,7 @@
   backdrop-filter: var(--c-backdrop-filter);
 }
 
-hud-cues-cue {
+hud-cues-chip {
   opacity: 1;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);

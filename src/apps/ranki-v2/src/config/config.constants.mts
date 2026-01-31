@@ -51,16 +51,16 @@ export const RANKI_INITIAL_CONFIG: RankiChannelsConfig = {
       {
         name: "red-arch" as RankiIndicatorName,
         style:
-          "radial-gradient(150% 107% at bottom center, transparent 90%, var(--palette-red-2-hex))",
+          "radial-gradient(150% 107% at bottom center, transparent 90%, rgb(var(--scheme-red-2)))",
       },
       {
         name: "caution" as RankiIndicatorName,
-        style: "linear-gradient(44deg, var(--palette-red-0-hex), transparent)",
+        style: "linear-gradient(44deg, rgb(var(--scheme-red-0)), transparent)",
       },
       {
         name: "clown-college" as RankiIndicatorName,
         style:
-          "conic-gradient(from 31deg at 80% 65%, rgb(var(--scheme-red-1)) 121deg, rgb(var(--scheme-blue-1)) 0% 50%,       rgb(var(--scheme-green-1)) 0% calc(180deg + 121deg), rgb(var(--scheme-purple-1)) 0%)",
+          "conic-gradient(from 31deg at 80% 65%, rgb(var(--scheme-red-1)) 121deg, rgb(var(--scheme-blue-1)) 0% 50%, rgb(var(--scheme-green-1)) 0% calc(180deg + 121deg), rgb(var(--scheme-purple-1)) 0%)",
       },
       {
         name: "colorful" as RankiIndicatorName,
@@ -250,7 +250,7 @@ repeating-linear-gradient(
       },
     },
     hud: {
-      order: ["parser", "cues", "address", "card", "tags"],
+      order: ["app", "cues", "address", "card", "tags"],
       visibility: "visible",
     },
     dqm: [DQM_BASE_CONFIG],

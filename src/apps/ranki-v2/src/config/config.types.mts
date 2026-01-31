@@ -78,6 +78,17 @@ export type CueKind =
   | "tag:ranki"
   | "flag";
 
+export interface ProcessedCue extends CueRecord {
+  has: {
+    icon: boolean;
+    badge: boolean;
+    message: boolean;
+    background: boolean;
+    chip: boolean;
+    indicator: boolean;
+  };
+}
+
 export interface CueRecord extends CueConfig {
   kind: CueKind;
   issuer: string;
@@ -215,7 +226,7 @@ export interface RankiChallengeState {
 
 export interface RankiIndicatorState {
   indicatorCollection: RankiIndicatorDefinition[];
-  cues: CueRecord[];
+  cues: ProcessedCue[];
 }
 
 export interface RankiState {

@@ -4,15 +4,15 @@ import {
   type AnimationTypes,
 } from "_components/animation/animation.mts";
 import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
-import type { CueRecord } from "_config/config.types.mts";
+import type { ProcessedCue } from "_config/config.types.mts";
 
 type CueProps = {
-  record: CueRecord;
+  record: ProcessedCue;
   index: number;
 };
 
-export class HudCuesCue extends RankiHudWc<CueProps> {
-  protected static name = "hud-cues-cue" as const;
+export class HudCuesChip extends RankiHudWc<CueProps> {
+  protected static name = "hud-cues-chip" as const;
   protected animations: AnimationTypes = {
     enter: RankiAnimation.fadeIn(this),
     exit: RankiAnimation.fadeOut(this),
@@ -23,7 +23,7 @@ export class HudCuesCue extends RankiHudWc<CueProps> {
     return this;
   }
 
-  setMutations(c: CueRecord) {
+  setMutations(c: ProcessedCue) {
     this.setProps({ record: c, index: this.getCurr().index });
   }
 

@@ -35,7 +35,7 @@
 
   --base: 0.5;
   --chip: 0.5;
-  --backdrop: blur(10px);
+  --backdrop: blur(3px);
   /* HUD ADDRESS */
   --rha-transition-duration: var(--ranki-animation-fade-duration);
   --rha-c-background: rgba(var(--scheme-surface-1), var(--base));

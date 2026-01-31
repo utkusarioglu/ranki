@@ -13,9 +13,14 @@ import type {
   FilteredTags,
   RawFields,
 } from "_config/collect/collect.types.mts";
+import {
+  RANKI_INTERNAL_FACE_PREFIX,
+  SYSTEM_CONTROLLED_SCHEME_TOKEN,
+} from "_config/config.constants.mts";
 import type {
   BuildRankiBaseConfigReturn,
   CueRecord,
+  ProcessedCue,
   RankiAppDeterminedScheme,
   RankiBaseAddressMutationMode,
   RankiBaseConfig,
@@ -24,10 +29,6 @@ import type {
   RankiState,
 } from "_config/config.types.mts";
 import { RankiAppError } from "_error/ranki-app-error.mts";
-import {
-  RANKI_INTERNAL_FACE_PREFIX,
-  SYSTEM_CONTROLLED_SCHEME_TOKEN,
-} from "../config.constants.mts";
 import { buildAddressParts } from "./buildAddress.mts";
 
 export const MUTATION_MODE_PRECEDENCE: RankiBaseAddressMutationMode[] = [
@@ -68,13 +69,20 @@ function buildRankiConfig(
   order: CardFaceArray,
   scheme: RankiAppDeterminedScheme,
 ): RankiState {
-  const hud = buildHudConfig(base, raw, tags);
+  const cues = buildCues(base.cueRecord);
+  const hud = buildHudConfig(
+    base,
+    raw,
+    tags,
+    cues.filter((c) => c.has.chip),
+  );
   const dqm = buildDqmConfig(raw, order, base.config, scheme);
+
   return {
     hud,
     dev: base.config.dev,
     indicator: {
-      cues: base.cueRecord,
+      cues: cues.filter((c) => c.has.indicator),
       indicatorCollection: base.config.indicators,
     },
     design: {
@@ -118,14 +126,30 @@ function buildDqmConfig(
 }
 
 /**
- * Removes flag0 cue if it doesn't have a message
- *
- * TODO if color is added to the hud, then this needs to check for the presence of color
+ * @dev
+ * #1 Becomes an icon or color only chip at the start of cue hud
+ * #2 Becomes a text (and icon) based chip on the right side of the cue hud
+ * #3 Becomes an indicator in the background
  */
-function buildCues(cueRecord: CueRecord[]): CueRecord[] {
-  return cueRecord.filter(
-    (v) => v.issuer !== "none" || (v.issuer === "none" && v.message?.text),
-  );
+function buildCues(cueRecord: CueRecord[]): ProcessedCue[] {
+  return cueRecord.map((c) => {
+    const icon = !!c.icon && !!c.icon.id && c.icon.id !== "none";
+    const message =
+      !!c.message && !!c.message.text && c.message.text !== "none";
+    const background = !!c.background && c.background.color !== "none";
+    const indicator = !!c.indicator && c.indicator !== "none";
+    return {
+      ...c,
+      has: {
+        icon,
+        badge: (icon || background) && !message, // #1
+        chip: icon || message || background, // #2
+        message,
+        background,
+        indicator, // #3
+      },
+    };
+  });
 }
 
 /**
@@ -138,15 +162,14 @@ function buildHudConfig(
   base: BuildRankiBaseConfigReturn,
   collected: RawFields,
   filteredTags: FilteredTags,
+  cues: ProcessedCue[],
 ): RankiHudState {
   const segments = buildAddressParts(
     base.config.address.tokens,
     base.config.address.segments,
     collected.fields.deck,
   ); // #1
-  const cues = buildCues(base.cueRecord);
   const tags = buildTags(base, filteredTags);
-  // const tagList = buildTags();
   return {
     order: base.config.hud.order,
     visibility: base.config.hud.visibility,

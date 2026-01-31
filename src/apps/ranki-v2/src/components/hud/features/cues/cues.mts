@@ -5,7 +5,7 @@ import {
 import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
 import type { HudCuesProps } from "_components/hud/hud.types.mts";
 import styles from "./cues.component.css?inline";
-import { HudCuesCue } from "./hud-cue.mts";
+import { HudCuesChip } from "./cue-chip.mts";
 
 export class HudCues extends RankiHudWc<HudCuesProps> {
   protected static name = "ranki-hud-cues" as const;
@@ -30,7 +30,7 @@ export class HudCues extends RankiHudWc<HudCuesProps> {
     if (lastIndex === -1) {
       return;
     }
-    const right = (container.childNodes[lastIndex] as HudCuesCue).getRight();
+    const right = (container.childNodes[lastIndex] as HudCuesChip).getRight();
     const left = this.getLeft();
     this.setProperties({ width: right - left + "px" });
   }
@@ -40,21 +40,21 @@ export class HudCues extends RankiHudWc<HudCuesProps> {
     const props = this.getCurr();
     const cn = container.childNodes.length;
     const sn = props.length;
-    const rm: HudCuesCue[] = [];
+    const rm: HudCuesChip[] = [];
 
     for (let i = 0; i < Math.max(cn, sn); i++) {
       const record = props[i];
       if (record) {
         const cue = this.shadowRoot!.querySelector(
           `[data-index="${i}"]`,
-        ) as HudCuesCue;
+        ) as HudCuesChip;
         if (!cue) {
-          HudCuesCue.createAndAttach({ record: record, index: i }, container);
+          HudCuesChip.createAndAttach({ record: record, index: i }, container);
         } else {
           cue.setMutations(record);
         }
       } else {
-        rm.push(container.childNodes[i] as HudCuesCue);
+        rm.push(container.childNodes[i] as HudCuesChip);
       }
     }
     rm.length &&
@@ -65,7 +65,7 @@ export class HudCues extends RankiHudWc<HudCuesProps> {
     return container;
   }
 
-  private removeCue(r: HudCuesCue) {
+  private removeCue(r: HudCuesChip) {
     r.remove();
   }
 

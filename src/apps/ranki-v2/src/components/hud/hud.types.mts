@@ -5,9 +5,12 @@ import type {
   AnkiRawTag,
   RankiTag,
 } from "_config/collect/collect.types.mts";
-import type { CueRecord, RankiAddressTokens } from "_config/config.types.mts";
+import type {
+  ProcessedCue,
+  RankiAddressTokens,
+} from "_config/config.types.mts";
 
-export type HudComponentNames = "parser" | "address" | "tags" | "cues" | "card";
+export type HudComponentNames = "app" | "address" | "tags" | "cues" | "card";
 
 export type HudVisibility = "visible" | "pull" | "pullWhenShort";
 
@@ -71,7 +74,7 @@ export interface HudTagsProps {
   hideRanki: boolean;
 }
 
-export type HudCuesProps = CueRecord[];
+export type HudCuesProps = ProcessedCue[];
 
 export interface RankiHudState {
   order: HudComponentNames[];

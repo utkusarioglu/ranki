@@ -2,10 +2,10 @@ import { RankiAnimation } from "_components/animation/animation.mts";
 import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
 import { type AnimationTypes } from "_components/animation/animation.mts";
 import type { HudParserProps } from "_components/hud/hud.types.mts";
-import styles from "./parser.component.css?inline";
+import styles from "./app.component.css?inline";
 
-export class HudParser extends RankiHudWc<HudParserProps> {
-  protected static name = "ranki-hud-parser" as const;
+export class HudApp extends RankiHudWc<HudParserProps> {
+  protected static name = "ranki-hud-app" as const;
   protected animations: AnimationTypes = {
     show: RankiAnimation.expandXFadeIn(this, {
       initialCb: this.adjustWidth.bind(this),
