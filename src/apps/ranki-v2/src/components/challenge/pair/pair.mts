@@ -30,13 +30,13 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
     if (!this.active.length) {
       return true;
     }
-    const a = props.dqm.inputs.find((v) => v.theater === props.order[0]);
-    if (!a) {
+    const face = props.dqm.inputs.find((v) => v.theater === props.order[0]);
+    if (!face) {
       return false;
     }
 
     // TODO this is temporary. it assumes the key is the source
-    if (this.active[0].getKey() === a.dqm) {
+    if (this.active[0].getKey() === face.dqm) {
       return true;
     } else {
       return false;
@@ -63,31 +63,53 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
     this.build();
     const newFaces = this.renderDqm();
     const firstNew = this.reconcile(newFaces);
-    this.delayedScroll(firstNew);
+    this.delayedScroll(firstNew, "smooth").then(() => console.log("done"));
     return this;
   }
 
-  private delayedScroll(firstNew: number) {
+  private delayedScroll(
+    firstNew: number,
+    behavior: ScrollBehavior,
+  ): Promise<void> {
     const LATENCY = 500;
-    const scrollListener = (() => {
-      clearTimeout(this.timeout);
-    }).bind(this);
-    window.addEventListener("scroll", scrollListener, { once: true });
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
-    this.timeout = setTimeout(() => {
-      window.removeEventListener("scroll", scrollListener);
-      if (firstNew) {
-        const elem = this.active[firstNew];
-        console.log(elem);
-        elem.scrollIntoView({
-          behavior: "smooth",
-        });
-      } else {
-        window.scrollTo({ top: 0 });
+    const EVENTS = ["scroll", "wheel", "touchstart", "keydown"];
+    return new Promise((resolve) => {
+      const cancel = () => {
+        clearTimeout(this.timeout);
+        resolve();
+      };
+      EVENTS.forEach((e) => {
+        window.addEventListener(e, cancel, { once: true, passive: true });
+      });
+      if (this.timeout) {
+        cancel();
       }
-    }, LATENCY);
+      this.timeout = setTimeout(() => {
+        EVENTS.forEach((e) => {
+          window.removeEventListener(e, cancel);
+        });
+        if (!firstNew) {
+          window.scrollTo({ top: 0, behavior });
+          return;
+        }
+        const elem = this.active[firstNew];
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (!entry.isIntersecting) {
+              elem.scrollIntoView({ behavior, block: "center" });
+            }
+            observer.disconnect();
+          },
+          {
+            root: null,
+            threshold: 0,
+          },
+        );
+
+        observer.observe(elem);
+        resolve();
+      }, LATENCY);
+    });
   }
 
   private renderDqm(): RenderedFaces {

@@ -119,6 +119,46 @@ export class RankiAnimation {
     });
   }
 
+  // static blurInFadeIn(self: RankiWc<{}>, additional?: PropertiesPack) {
+  //   return RankiAnimation.animate(self, {
+  //     initialCb: additional?.initialCb,
+  //     endRemove: [...(additional?.endRemove || []), "transform"],
+  //     setup: {
+  //       opacity: 0,
+  //       transform: "blur(50px)",
+  //       ...(additional && additional.setup),
+  //     },
+  //     initial: {
+  //       opacity: 1,
+  //       transform: "blur(0px)",
+  //       ...(additional && additional.initial),
+  //     },
+  //     end: {
+  //       ...(additional && additional.end),
+  //     },
+  //   });
+  // }
+
+  // static blurOutFadeOut(self: RankiWc<{}>, additional?: PropertiesPack) {
+  //   return RankiAnimation.animate(self, {
+  //     initialCb: additional?.initialCb,
+  //     endRemove: [...(additional?.endRemove || []), "transform"],
+  //     setup: {
+  //       opacity: 1,
+  //       transform: "blur(0px)",
+  //       ...(additional && additional.setup),
+  //     },
+  //     initial: {
+  //       opacity: 0,
+  //       transform: "blur(50px)",
+  //       ...(additional && additional.initial),
+  //     },
+  //     end: {
+  //       ...(additional && additional.end),
+  //     },
+  //   });
+  // }
+
   static slideUpFadeIn(self: RankiWc<{}>, additional?: PropertiesPack) {
     return RankiAnimation.animate(self, {
       initialCb: additional?.initialCb,
@@ -138,6 +178,7 @@ export class RankiAnimation {
       },
     });
   }
+
   static slideUpFadeOut(self: RankiWc<{}>, additional?: PropertiesPack) {
     return RankiAnimation.animate(self, {
       initialCb: additional?.initialCb,
