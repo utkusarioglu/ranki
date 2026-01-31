@@ -3,6 +3,7 @@ import {
   type AnimationTypes,
 } from "_components/animation/animation.mts";
 import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
+import { assertNotUndefined } from "_error/assertions.mjs";
 
 export class RankiFacesFace extends RankiFacesWc<{}> {
   public static name = "ranki-faces-face";
@@ -17,5 +18,12 @@ export class RankiFacesFace extends RankiFacesWc<{}> {
 
   setKey(key: string) {
     this.setAttribute("dqm-source", key);
+  }
+
+  checkKey(f: RankiFacesFace | undefined) {
+    assertNotUndefined(f, {
+      why: "Undefined face is required",
+    });
+    return this.getKey() === f.getKey();
   }
 }

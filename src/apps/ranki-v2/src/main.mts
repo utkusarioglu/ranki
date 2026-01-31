@@ -7,12 +7,11 @@ import { setStyles } from "_/style/style.mts";
 import { RankiHud } from "_components/hud/hud.mts";
 import { RankiChallenge } from "_components/challenge/challenge.mts";
 import { RankiIndicator } from "_components/indicator/indicator.mts";
-import type { RankiState } from "./config/config.types.mts";
+import type { RankiState } from "_config/config.types.mts";
 import { RankiBigError } from "_components/big-error/big-error.mjs";
 
 export async function main() {
   try {
-    console.log("RUN");
     if (!shouldRender()) return;
     RankiBigError.clear();
     setStyles();

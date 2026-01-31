@@ -21,23 +21,26 @@ function title(t: string) {
 }
 
 export function cleanRankiTargets() {
-  title(" CLEAN TARGETS ");
+  return new Promise<void>((resolve, reject) => {
+    title(" CLEAN TARGETS ");
 
-  const RM_DIRS = [DEMO_APP_DEV_COPY_PATH, DEMO_APP_DIST_COPY_PATH];
+    const RM_DIRS = [DEMO_APP_DEV_COPY_PATH, DEMO_APP_DIST_COPY_PATH];
 
-  RM_DIRS.forEach((rmPath) => {
-    try {
-      fs.rmSync(rmPath, { recursive: true, force: true });
-    } catch (e) {
-      console.log("PATH REMOVAL FAILED", e);
-      process.exit(1);
-    }
-    try {
-      fs.mkdirSync(rmPath);
-    } catch (e) {
-      console.log("PATH CREATION FAILED", e);
-      process.exit(1);
-    }
+    RM_DIRS.forEach((rmPath) => {
+      try {
+        fs.rmSync(rmPath, { recursive: true, force: true });
+      } catch (e) {
+        console.log("PATH REMOVAL FAILED", e);
+        reject(e);
+      }
+      try {
+        fs.mkdirSync(rmPath);
+      } catch (e) {
+        console.log("PATH CREATION FAILED", e);
+        reject(e);
+      }
+      resolve();
+    });
   });
 }
 
@@ -137,10 +140,9 @@ export function rankiArtifactActions(tasks: (() => Promise<void>)[]) {
   }
 
   return {
-    name: "post-build-copy",
+    name: "ranki-artifact-actions",
     apply: "build",
     buildEnd() {
-      console.log();
       setTimeout(() => chainTasks(), 5e3);
     },
   };

@@ -86,6 +86,7 @@ function buildRankiConfig(
       paletteCollection: base.config.palettes,
     },
     challenge: {
+      face: raw.fields.face,
       order,
       dqm,
     },

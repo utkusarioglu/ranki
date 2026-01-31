@@ -208,6 +208,7 @@ export interface RankiDevState {
 }
 
 export interface RankiChallengeState {
+  face: AnkiCardFace;
   order: CardFaceArray;
   dqm: RankiDqmConfig;
 }

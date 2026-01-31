@@ -3,6 +3,7 @@ html {
   overflow-y: overlay !important;
   height: 100% !important;
   width: 100% !important;
+  scroll-behavior: smooth !important;
 
   &::-webkit-scrollbar {
     display: none !important;
@@ -28,6 +29,7 @@ body,
 body {
   padding: 0 !important;
   margin: 0 !important;
+  scroll-behavior: smooth !important;
 
   /* Relevant for theming */
   background: var(--body-background) !important;

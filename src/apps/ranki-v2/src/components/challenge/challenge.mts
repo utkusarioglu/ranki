@@ -12,33 +12,29 @@ export class RankiChallenge extends RankiFacesWc<RankiChallengeState> {
   }
   private list: RankiFacesPair[] = [];
 
-  private build() {
-    this.newPairs();
-  }
-
-  private createNew(curr: RankiChallengeState) {
+  private createNewPair(curr: RankiChallengeState) {
     this.list.push(RankiFacesPair.createAndAttach(curr, this.shadowRoot!));
   }
 
-  private removePreceding() {
+  private removePrecedingPairs() {
     this.list.slice(0, -1).forEach((p) => p.remove());
   }
 
-  private newPairs() {
+  private build() {
     const curr = this.getCurr();
     if (!this.list.length) {
-      this.createNew(curr);
+      this.createNewPair(curr);
       return;
     }
 
-    this.removePreceding();
+    this.removePrecedingPairs();
 
     const last = this.list.at(-1)!;
     if (last.canReconcile(curr)) {
       last.setProps(curr);
     } else {
       last.remove();
-      this.createNew(curr);
+      this.createNewPair(curr);
     }
   }
 

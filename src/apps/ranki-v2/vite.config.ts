@@ -14,12 +14,13 @@ import tsConfigPaths from "vite-tsconfig-paths";
 const viteConfigPath = url.fileURLToPath(import.meta.url);
 const packagePath = path.dirname(viteConfigPath);
 
-cleanRankiTargets();
-
-export default defineConfig({
+export default defineConfig(() => ({
   server: {
     host: true,
     port: 3000,
+    watch: {
+      usePolling: true,
+    },
   },
   preview: {
     host: true,
@@ -33,7 +34,7 @@ export default defineConfig({
       presets: [["@babel/preset-typescript", { allowDeclareFields: true }]],
       plugins: [["@babel/plugin-proposal-decorators", { version: "2023-05" }]],
     }),
-    rankiArtifactActions([copyArtifacts, displayTemplate]),
+    rankiArtifactActions([cleanRankiTargets, copyArtifacts, displayTemplate]),
   ],
   build: {
     minify: true,
@@ -60,11 +61,11 @@ export default defineConfig({
       },
     },
   },
-  optimizeDeps: {
-    include: [
-      "mathjax-full/js/mathjax.js",
-      "mathjax-full/js/input/tex.js",
-      "mathjax-full/js/output/svg.js",
-    ],
-  },
-});
+  // optimizeDeps: {
+  //   include: [
+  //     "mathjax-full/js/mathjax.js",
+  //     "mathjax-full/js/input/tex.js",
+  //     "mathjax-full/js/output/svg.js",
+  //   ],
+  // },
+}));

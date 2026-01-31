@@ -7,7 +7,12 @@ import { RankiFacesFace } from "_components/challenge/pair/face/face.mts";
 import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
 import { RankiRule } from "_components/challenge/pair/rule/rule.mts";
 import type { RankiChallengeState } from "_config/config.types.mjs";
-import { assertNotNull, assertNotUndefined } from "_error/assertions.mjs";
+import {
+  assertNever,
+  assertNotNull,
+  assertNotUndefined,
+} from "_error/assertions.mjs";
+import type { CardFace } from "_config/collect/collect.types.mjs";
 
 export type PairChildren = RankiFacesFace | RankiRule;
 type RenderedFaces = Record<string, RankiFacesFace>;
@@ -18,10 +23,11 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
     enter: RankiAnimation.slideUpFadeIn(this),
     exit: RankiAnimation.slideUpFadeOut(this),
   };
-  private items: PairChildren[] = [];
+  private active: PairChildren[] = [];
+  private timeout: number | undefined;
 
   canReconcile(props: RankiChallengeState): boolean {
-    if (!this.items.length) {
+    if (!this.active.length) {
       return true;
     }
     const a = props.dqm.inputs.find((v) => v.theater === props.order[0]);
@@ -30,7 +36,7 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
     }
 
     // TODO this is temporary. it assumes the key is the source
-    if (this.items[0].getKey() === a.dqm) {
+    if (this.active[0].getKey() === a.dqm) {
       return true;
     } else {
       return false;
@@ -56,105 +62,139 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
   render() {
     this.build();
     const newFaces = this.renderDqm();
-    const firstNew = this.populatePair(newFaces);
-    if (firstNew) {
-      const elem = this.items[firstNew];
-      elem.scrollIntoView({
-        behavior: "smooth",
-      });
-    }
+    const firstNew = this.reconcile(newFaces);
+    this.delayedScroll(firstNew);
     return this;
+  }
+
+  private delayedScroll(firstNew: number) {
+    const LATENCY = 500;
+    const scrollListener = (() => {
+      clearTimeout(this.timeout);
+    }).bind(this);
+    window.addEventListener("scroll", scrollListener, { once: true });
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    this.timeout = setTimeout(() => {
+      window.removeEventListener("scroll", scrollListener);
+      if (firstNew) {
+        const elem = this.active[firstNew];
+        console.log(elem);
+        elem.scrollIntoView({
+          behavior: "smooth",
+        });
+      } else {
+        window.scrollTo({ top: 0 });
+      }
+    }, LATENCY);
   }
 
   private renderDqm(): RenderedFaces {
     const curr = this.getCurr();
-    const faceEntries: [string, RankiFacesFace][] = [];
-    const theaterEntries: [string, () => HTMLDivElement][] = [];
+    const faces: [string, RankiFacesFace][] = [];
+    const theaters: [string, () => HTMLDivElement][] = [];
     curr.dqm.inputs.forEach((n) => {
       const face = RankiFacesFace.create<{}, RankiFacesFace>({});
       face.setKey(n.dqm);
-      faceEntries.push([n.theater, face as RankiFacesFace]);
-      theaterEntries.push([n.theater, () => face as unknown as HTMLDivElement]);
+      faces.push([n.theater, face as RankiFacesFace]);
+      theaters.push([n.theater, () => face as unknown as HTMLDivElement]);
     });
     renderDqm(this.getCurr().dqm, {
-      theaters: Object.fromEntries(theaterEntries),
+      theaters: Object.fromEntries(theaters),
     });
-    return Object.fromEntries(faceEntries);
+    return Object.fromEntries(faces);
   }
 
-  private populatePair(newTheaters: RenderedFaces) {
+  private reconcile(newTheaters: RenderedFaces) {
     const curr = this.getCurr();
     const container = this.getContainer();
-    let oi = 0;
-    let ii = 0;
-    const workingItems: (PairChildren | null)[] = this.items;
-    let firstNew: number | null = null;
+    const active: (PairChildren | null)[] = this.active;
+    let fi = 0; // face index
+    let ai = 0; // active index
+    let firstNew: number = 0;
 
-    while (oi < curr.order.length || ii < workingItems.length) {
-      const order = curr.order[oi];
-      const incumbent = workingItems[ii];
+    while (fi < curr.order.length || ai < active.length) {
+      const faceName = curr.order[fi];
+      const incumbent = active[ai];
       assertNotNull(incumbent, {
         why: "Null means this.items is not filtered",
       });
-      if (!incumbent && order) {
-        let elem: PairChildren;
-        switch (order) {
-          case "ranki:rule":
-            elem = RankiRule.createAndAttach<number, RankiRule>(
-              oi,
-              container,
-            ).setVariant("horizontal");
-            // container.appendChild(elem);
-            // this.items.push(elem);
-            break;
-          default:
-            elem = newTheaters[order];
-            assertNotUndefined(elem, {
-              why: "Undefined face is required",
-              details: { order, curr },
-            });
-            if (firstNew === null) firstNew = ii;
-        }
-        container.appendChild(elem);
-        this.items.push(elem);
-        oi++;
-        ii++;
-      } else if (incumbent && !order) {
-        incumbent.remove();
-        workingItems[ii] = null;
-        ii++;
+      let action: undefined | "advance" | "create" | "remove";
+      if (!incumbent && faceName) {
+        action = "create";
+      } else if (incumbent && !faceName) {
+        action = "remove";
       } else {
-        switch (order) {
-          case "ranki:rule":
-            const ruleKey = `${order}:${oi}`;
-            if (incumbent.getKey() === ruleKey) {
-              oi++;
-              ii++;
-            } else {
-              incumbent.remove();
-              workingItems[ii] = null;
-              ii++;
-            }
-            break;
-          default:
-            const f = newTheaters[order];
-            assertNotUndefined(f, {
-              why: "Undefined face is required",
-              details: { order, curr },
-            });
-            const faceKey = f.getKey();
-            if (incumbent.getKey() === faceKey) {
-              oi++;
-              ii++;
-            } else {
-              incumbent.remove();
-              workingItems[ii] = null;
-              ii++;
-            }
+        const isValid = this.checkKey(incumbent, fi, faceName, newTheaters);
+        if (isValid) {
+          action = "advance";
+        } else {
+          action = "remove";
         }
       }
+
+      switch (action) {
+        case "advance":
+          fi++;
+          ai++;
+          break;
+        case "remove":
+          incumbent.remove();
+          active[ai] = null;
+          ai++;
+          break;
+        case "create":
+          const elem = this.create(faceName, fi, container, newTheaters);
+          container.appendChild(elem);
+          this.active.push(elem);
+          firstNew === 0 && (firstNew = ai);
+          fi++;
+          ai++;
+          break;
+        default:
+          assertNever({ why: "Unrecognized action", details: { action } });
+      }
     }
-    this.items = workingItems.filter((v) => v !== null);
+    this.active = active.filter((v) => v !== null);
     return firstNew;
+  }
+
+  private create(
+    order: CardFace,
+    oi: number,
+    container: HTMLDivElement,
+    newTheaters: RenderedFaces,
+  ) {
+    let elem: PairChildren;
+    switch (order) {
+      case "ranki:rule":
+        elem = RankiRule.createAndAttach<number, RankiRule>(
+          oi,
+          container,
+        ).setVariant("horizontal");
+        return elem;
+      default:
+        elem = newTheaters[order];
+        assertNotUndefined(elem, {
+          why: "Undefined face is required",
+          details: { order },
+        });
+        return elem;
+    }
+  }
+
+  private checkKey(
+    incumbent: PairChildren,
+    oi: number,
+    order: CardFace,
+    newTheaters: RenderedFaces,
+  ) {
+    switch (order) {
+      case "ranki:rule":
+        return (incumbent as RankiRule).checkKey(oi);
+      default:
+        return (incumbent as RankiFacesFace).checkKey(newTheaters[order]);
+    }
   }
 }

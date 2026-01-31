@@ -4,7 +4,6 @@ import {
 } from "_components/animation/animation.mts";
 import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
 import styles from "./rule.css?inline";
-import { assertNotExists, assertNotNull } from "_error/assertions.mjs";
 
 export const ruleStyles = styles;
 
@@ -23,9 +22,10 @@ export class RankiRule extends RankiFacesWc<number> {
     return `ranki:rule:${index}`;
   }
 
-  // setKey(index:  number) {
-  //   this.setAttribute("data-index", index.toString())
-  // }
+  checkKey(oi: number) {
+    const ruleKey = `ranki:rule:${oi}`;
+    return this.getKey() === ruleKey;
+  }
 
   setVariant(v: "horizontal" | "vertical") {
     this.variant = v;

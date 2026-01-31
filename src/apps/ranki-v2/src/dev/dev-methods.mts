@@ -79,9 +79,9 @@ export class RankiDevMethods {
 
   static persist(on: boolean = true) {
     if (on) {
-      console.log("Ranki DevMethods will persist during current instance");
+      console.log("Ranki DevMethods will persist until reload");
     } else {
-      console.log("Ranki DevMethods will be removed if trigger is removed");
+      console.log("Ranki DevMethods will not persist on state change");
     }
     this.isPersisted = on;
   }
