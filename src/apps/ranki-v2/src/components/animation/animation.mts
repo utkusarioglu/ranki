@@ -107,9 +107,9 @@ export class RankiAnimation {
         ...(additional && additional.setup),
       },
       initial: {
-        "margin-right": 0,
         // opacity: 0,
         // width: 0,
+        "margin-right": 0,
         ...(additional && additional.initial),
       },
       end: {

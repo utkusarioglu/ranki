@@ -29,8 +29,8 @@ export class HudCues extends RankiHudWc<ProcessedCueMapHud> {
   }
 
   private build() {
-    const curr = this.getCurr();
     const [container, exists] = this.createSingletonContainer();
+    const curr = this.getCurr();
     if (exists) {
       [curr.badges, curr.chips, curr.labels].forEach((c, i) => {
         this.subtree[i].setProps(c);
@@ -43,6 +43,7 @@ export class HudCues extends RankiHudWc<ProcessedCueMapHud> {
       HudLabels.singleton(curr.labels, container),
     ].forEach((h) => this.subtree.push(h));
   }
+
   render(): this {
     const curr = this.getCurr();
     this.build();

@@ -4,14 +4,10 @@ import {
   type AnimationTypes,
 } from "_components/animation/animation.mts";
 import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
+import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 import type { ProcessedCue } from "_config/config.types.mts";
 
-type CueProps = {
-  record: ProcessedCue;
-  index: number;
-};
-
-export class HudBadgesBadge extends RankiHudWc<CueProps> {
+export class HudBadgesBadge extends RankiHudWc<ProcessedCue> {
   protected static name = "hud-badges-badge" as const;
   protected animations: AnimationTypes = {
     enter: RankiAnimation.fadeIn(this),
@@ -23,8 +19,8 @@ export class HudBadgesBadge extends RankiHudWc<CueProps> {
     return this;
   }
 
-  setMutations(c: ProcessedCue) {
-    this.setProps({ record: c, index: this.getCurr().index });
+  canReconcile(_p: ProcessedCue): ReconciliationAction {
+    return "mutate";
   }
 
   /**
@@ -34,32 +30,30 @@ export class HudBadgesBadge extends RankiHudWc<CueProps> {
    */
   mutate() {
     const curr = this.getCurr();
-    const c = curr.record;
-    this.setProperties({ "z-index": 100 - curr.index });
-    if (c.background) {
-      if (c.background.color && c.background.color !== "none") {
-        this.style.background = `rgb(var(--scheme-${c.background.color}))`;
+    if (curr.background) {
+      if (curr.background.color && curr.background.color !== "none") {
+        this.style.background = `rgb(var(--scheme-${curr.background.color}))`;
       } else {
         this.style.removeProperty("background");
       }
     } else {
       this.style.removeProperty("background");
     }
-    if (c.icon) {
-      let icon = this.querySelector(`ph-${c.icon.id}`);
+    if (curr.icon) {
+      let icon = this.querySelector(`ph-${curr.icon.id}`);
       if (!icon) {
         const oldIcon = this.querySelector(".cue-icon");
         if (oldIcon) {
           oldIcon.parentElement!.removeChild(oldIcon);
         }
 
-        icon = document.createElement(`ph-${c.icon.id}`);
+        icon = document.createElement(`ph-${curr.icon.id}`);
         icon.className = "cue-icon";
         icon.setAttribute("weight", "fill");
         this.prepend(icon);
       }
-      if (c.icon.color && c.icon.color !== "none") {
-        icon.setAttribute("color", `rgb(var(--scheme-${c.icon.color}))`);
+      if (curr.icon.color && curr.icon.color !== "none") {
+        icon.setAttribute("color", `rgb(var(--scheme-${curr.icon.color}))`);
       } else {
         icon.removeAttribute("color");
       }
@@ -70,27 +64,13 @@ export class HudBadgesBadge extends RankiHudWc<CueProps> {
       }
       this.setProperties({ width: "20px" });
     }
-    // if (c.message && c.message.text) {
-    //   let span = this.querySelector(".cue-message") as HTMLSpanElement | null;
-    //   if (!span) {
-    //     span = document.createElement("span");
-    //     span.className = "cue-message";
-    //     this.appendChild(span);
-    //   }
-    //   if (c.message.color && c.message.color !== "none") {
-    //     span.style.color = `rgb(var(--scheme-${c.message.color}))`;
-    //   } else {
-    //     span.style.removeProperty("color");
-    //   }
-    //   span.innerText = c.message.text;
-    // } else {
-    //   const messageElem = this.querySelector(".cue-message");
-    //   if (messageElem) {
-    //     messageElem.parentElement!.removeChild(messageElem);
-    //   }
-    // }
 
-    this.addClass("cue", `issuer-${c.issuer}`, `kind-${c.kind}`);
-    this.setAttribute("data-index", curr.index.toString());
+    this.addClass("cue", `issuer-${curr.issuer}`, `kind-${curr.kind}`);
+  }
+
+  setZIndex(i: number) {
+    this.setProperties({
+      "z-index": i,
+    });
   }
 }

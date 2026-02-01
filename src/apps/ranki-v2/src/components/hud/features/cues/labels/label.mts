@@ -4,14 +4,10 @@ import {
   type AnimationTypes,
 } from "_components/animation/animation.mts";
 import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
+import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 import type { ProcessedCue } from "_config/config.types.mts";
 
-type CueProps = {
-  record: ProcessedCue;
-  index: number;
-};
-
-export class HudLabelsLabel extends RankiHudWc<CueProps> {
+export class HudLabelsLabel extends RankiHudWc<ProcessedCue> {
   protected static name = "hud-labels-label" as const;
   protected animations: AnimationTypes = {
     enter: RankiAnimation.fadeIn(this),
@@ -23,13 +19,9 @@ export class HudLabelsLabel extends RankiHudWc<CueProps> {
     return this;
   }
 
-  setMutations(c: ProcessedCue) {
-    this.setProps({ record: c, index: this.getCurr().index });
+  canReconcile(_p: ProcessedCue): ReconciliationAction {
+    return "mutate";
   }
-
-  // getKey() {
-  //   return `cue-label:${this.getCurr().index}`;
-  // }
 
   /**
    * FIX
@@ -38,53 +30,29 @@ export class HudLabelsLabel extends RankiHudWc<CueProps> {
    */
   mutate() {
     const curr = this.getCurr();
-    const c = curr.record;
-    if (c.background) {
-      if (c.background.color && c.background.color !== "none") {
-        this.style.background = `rgb(var(--scheme-${c.background.color}))`;
+    if (curr.background) {
+      if (curr.background.color && curr.background.color !== "none") {
+        this.style.background = `rgb(var(--scheme-${curr.background.color}))`;
       } else {
         this.style.removeProperty("background");
       }
     } else {
       this.style.removeProperty("background");
     }
-    // if (c.icon) {
-    //   let icon = this.querySelector(`ph-${c.icon.id}`);
-    //   if (!icon) {
-    //     const oldIcon = this.querySelector(".cue-icon");
-    //     if (oldIcon) {
-    //       oldIcon.parentElement!.removeChild(oldIcon);
-    //     }
 
-    //     icon = document.createElement(`ph-${c.icon.id}`);
-    //     icon.className = "cue-icon";
-    //     icon.setAttribute("weight", "fill");
-    //     this.prepend(icon);
-    //   }
-    //   if (c.icon.color && c.icon.color !== "none") {
-    //     icon.setAttribute("color", `rgb(var(--scheme-${c.icon.color}))`);
-    //   } else {
-    //     icon.removeAttribute("color");
-    //   }
-    // } else {
-    //   const iconElem = this.querySelector(".cue-icon");
-    //   if (iconElem) {
-    //     iconElem.parentElement!.removeChild(iconElem);
-    //   }
-    // }
-    if (c.message && c.message.text) {
+    if (curr.message && curr.message.text) {
       let span = this.querySelector(".cue-message") as HTMLSpanElement | null;
       if (!span) {
         span = document.createElement("span");
         span.className = "cue-message";
         this.appendChild(span);
       }
-      if (c.message.color && c.message.color !== "none") {
-        span.style.color = `rgb(var(--scheme-${c.message.color}))`;
+      if (curr.message.color && curr.message.color !== "none") {
+        span.style.color = `rgb(var(--scheme-${curr.message.color}))`;
       } else {
         span.style.removeProperty("color");
       }
-      span.innerText = c.message.text;
+      span.innerText = curr.message.text;
     } else {
       const messageElem = this.querySelector(".cue-message");
       if (messageElem) {
@@ -92,7 +60,6 @@ export class HudLabelsLabel extends RankiHudWc<CueProps> {
       }
     }
 
-    this.addClass("cue", `issuer-${c.issuer}`, `kind-${c.kind}`);
-    this.setAttribute("data-index", curr.index.toString());
+    this.addClass("cue", `issuer-${curr.issuer}`, `kind-${curr.kind}`);
   }
 }
