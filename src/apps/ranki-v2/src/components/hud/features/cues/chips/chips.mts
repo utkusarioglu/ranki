@@ -42,11 +42,12 @@ export class HudChips extends RankiHudWc<ProcessedCue[]> {
     if (!container) {
       return;
     }
-    const lastIndex = this.getCurr().length - 1;
-    if (lastIndex === -1) {
+    const last = this.subtree.at(-1);
+    if (!last) {
       return;
     }
-    const right = (container.childNodes[lastIndex] as HudChipsChip).getRight();
+
+    const right = last.getRight();
     const left = this.getLeft();
     this.setProperties({ width: right - left + "px" });
   }
@@ -73,11 +74,6 @@ export class HudChips extends RankiHudWc<ProcessedCue[]> {
         action = "remove";
       } else {
         action = active.canReconcile(inc);
-        // if (active.canReconcile(inc)) {
-        //   action = "mutate";
-        // } else {
-        //   action = "remove";
-        // }
       }
 
       switch (action) {
@@ -92,12 +88,9 @@ export class HudChips extends RankiHudWc<ProcessedCue[]> {
           ii++;
           break;
         case "create":
-          working.push(
-            HudChipsChip.createAndAttach<ProcessedCue, HudChipsChip>(
-              inc,
-              container,
-            ),
-          );
+          const elem = this.createChild(inc);
+          working.push(elem);
+          container.appendChild(elem);
           ci++;
           ii++;
           break;
@@ -110,6 +103,10 @@ export class HudChips extends RankiHudWc<ProcessedCue[]> {
 
   private build() {
     this.createSingletonContainer();
+  }
+
+  private createChild(inc: ProcessedCue) {
+    return HudChipsChip.create<ProcessedCue, HudChipsChip>(inc);
   }
 
   render() {

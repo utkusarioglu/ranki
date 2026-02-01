@@ -169,7 +169,7 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
           ai++;
           break;
         case "create":
-          const elem = this.create(faceName, fi, container, newTheaters);
+          const elem = this.createChild(faceName, fi, container, newTheaters);
           container.appendChild(elem);
           this.active.push(elem);
           firstNew === 0 && (firstNew = ai);
@@ -184,7 +184,7 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
     return firstNew;
   }
 
-  private create(
+  private createChild(
     order: CardFace,
     oi: number,
     container: HTMLDivElement,
