@@ -4,18 +4,18 @@
     background, color, padding, border, opacity, scale, transform, width,
     margin-right;
 
-  /* --c-background: var(--rhu-c-background, transparent); */
-  --c-backdrop-filter: var(--rhu-l-c-backdrop-filter, transparent);
-  --c-border: var(--rhu-l-c-border, 1px solid red);
-  --c-gap: var(--rhu-l-c-gap, 1em);
-  --c-border-radius: var(--rhu-l-c-border-radius, none);
-  --c-padding: var(--rhu-l-c-padding, none);
+  --c-background: var(--rhu-c-background, transparent);
+  --c-backdrop-filter: var(--rhu-c-backdrop-filter, transparent);
+  --c-border: var(--rhu-c-border, 1px solid red);
+  --c-gap: var(--rhu-c-gap, 1em);
+  --c-border-radius: var(--rhu-c-border-radius, none);
+  --c-padding: var(--rhu-c-padding, none);
 
-  --cu-background: var(--rhu-l-cu-background, transparent);
-  --cu-color: var(--rhu-l-cu-color, white);
-  --cu-border: var(--rhu-l-cu-border, 1px solid red);
-  --cu-border-radius: var(--rhu-l-cu-border-radius, none);
-  --cu-padding: var(--rhu-l-cu-padding, none);
+  --cu-background: var(--rhu-cu-background, transparent);
+  --cu-color: var(--rhu-cu-color, white);
+  --cu-border: var(--rhu-cu-border, 1px solid red);
+  --cu-border-radius: var(--rhu-cu-border-radius, none);
+  --cu-padding: var(--rhu-cu-padding, none);
 }
 
 :host {
@@ -32,7 +32,6 @@
   border-radius: var(--c-border-radius);
   /* margin-right: 1em; */
   opacity: 1;
-  height: 100%;
 }
 
 *,
@@ -51,14 +50,14 @@
   overflow: hidden;
   height: 100%;
   padding: var(--c-padding);
-  /* background: var(--c-background); */
+  background: var(--c-background);
   border-radius: var(--c-border-radius);
   border: var(--c-border);
-  gap: var(--c-gap);
+  /* gap: var(--c-gap); */
   backdrop-filter: var(--c-backdrop-filter);
 }
 
-hud-labels-label {
+/* hud-labels-label {
   opacity: 1;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
@@ -83,4 +82,4 @@ hud-labels-label {
     transition-property: color;
     transition-duration: var(--transition-duration);
   }
-}
+} */

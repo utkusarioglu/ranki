@@ -11,8 +11,21 @@ export class HudCard extends RankiHudWc<HudCardProps> {
   protected animations: AnimationTypes = {
     show: RankiAnimation.expandXFadeIn(this, {
       initialCb: this.adjustWidth.bind(this),
+      setup: {
+        "margin-right": 0,
+      },
+      initial: {
+        "margin-right": "1em",
+      },
     }),
-    hide: RankiAnimation.collapseXFadeOut(this, {}),
+    hide: RankiAnimation.collapseXFadeOut(this, {
+      setup: {
+        "margin-right": "1em",
+      },
+      initial: {
+        "margin-right": 0,
+      },
+    }),
   };
 
   constructor() {

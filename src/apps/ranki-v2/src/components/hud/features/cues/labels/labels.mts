@@ -12,8 +12,21 @@ export class HudLabels extends RankiHudWc<ProcessedCue[]> {
   protected animations: AnimationTypes = {
     show: RankiAnimation.expandXFadeIn(this, {
       initialCb: this.adjustWidth.bind(this),
+      setup: {
+        "margin-left": 0,
+      },
+      initial: {
+        "margin-left": "0.5em",
+      },
     }),
-    hide: RankiAnimation.collapseXFadeOut(this, {}),
+    hide: RankiAnimation.collapseXFadeOut(this, {
+      setup: {
+        "margin-left": "0.5em",
+      },
+      initial: {
+        "margin-left": 0,
+      },
+    }),
   };
 
   constructor() {

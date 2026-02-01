@@ -159,6 +159,7 @@ function buildCues(cueRecord: CueRecord[]): ProcessedCueMap {
 
   return {
     hud: {
+      count: badges.length + chips.length + labels.length,
       badges,
       chips,
       labels,

@@ -126,11 +126,26 @@
   --rhu-b-c-gap: 0.5em;
   --rhu-b-c-padding: 0;
 
-  --rhu-b-cu-background: rgba(var(--scheme-surface-2), var(--chip));
+  /* --rhu-b-cu-background: rgba(var(--scheme-surface-2), var(--chip)); */
   --rhu-b-cu-border: none;
   --rhu-b-cu-color: rgb(var(--scheme-text-0));
   --rhu-b-cu-border-radius: 0.5em;
   --rhu-b-cu-padding: 0 1em;
+
+  /* HUD CUE LABELS */
+  --rhu-l-transition-duration: var(--ranki-animation-fade-duration);
+  /* --rhu-l-c-background: rgba(var(--scheme-surface-1), var(--base)); */
+  --rhu-l-c-backdrop-filter: var(--backdrop);
+  --rhu-l-c-border: none;
+  --rhu-l-c-border-radius: 0.5em;
+  --rhu-l-c-gap: 0.5em;
+  --rhu-l-c-padding: 0;
+
+  --rhu-l-cu-background: rgba(var(--scheme-surface-2), var(--chip));
+  --rhu-l-cu-border: none;
+  --rhu-l-cu-color: rgb(var(--scheme-text-0));
+  --rhu-l-cu-border-radius: 0.5em;
+  --rhu-l-cu-padding: 0 1em;
 
   /* HUD CUES */
   --rhu-transition-duration: var(--ranki-animation-fade-duration);

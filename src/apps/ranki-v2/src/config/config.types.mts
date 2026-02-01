@@ -79,6 +79,7 @@ export type CueKind =
   | "flag";
 
 export type ProcessedCueMapHud = {
+  count: number;
   badges: CueRecord[];
   chips: CueRecord[];
   labels: CueRecord[];

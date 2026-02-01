@@ -76,6 +76,48 @@ export class RankiAnimation {
     });
   }
 
+  static expandMarginRight(self: RankiWc<{}>, additional?: PropertiesPack) {
+    return RankiAnimation.animate(self, {
+      initialCb: additional?.initialCb,
+      endRemove: additional?.endRemove,
+      setup: {
+        // opacity: 0,
+        // width: 0,
+        "margin-right": 0,
+        ...(additional && additional.setup),
+      },
+      initial: {
+        // opacity: 1,
+        "margin-right": "1em",
+        ...(additional && additional.initial),
+      },
+      end: {
+        ...(additional && additional.end),
+      },
+    });
+  }
+
+  static collapseMarginRight(self: RankiWc<{}>, additional?: PropertiesPack) {
+    return RankiAnimation.animate(self, {
+      initialCb: additional?.initialCb,
+      endRemove: additional?.endRemove,
+      setup: {
+        // width: width + "px",
+        "margin-right": "1em",
+        ...(additional && additional.setup),
+      },
+      initial: {
+        "margin-right": 0,
+        // opacity: 0,
+        // width: 0,
+        ...(additional && additional.initial),
+      },
+      end: {
+        ...(additional && additional.end),
+      },
+    });
+  }
+
   static expandXFadeIn(self: RankiWc<{}>, additional?: PropertiesPack) {
     return RankiAnimation.animate(self, {
       initialCb: additional?.initialCb,
@@ -83,12 +125,12 @@ export class RankiAnimation {
       setup: {
         opacity: 0,
         width: 0,
-        "margin-right": 0,
+        // "margin-right": 0,
         ...(additional && additional.setup),
       },
       initial: {
         opacity: 1,
-        "margin-right": "1em",
+        // "margin-right": "1em",
         ...(additional && additional.initial),
       },
       end: {
@@ -104,11 +146,11 @@ export class RankiAnimation {
       endRemove: additional?.endRemove,
       setup: {
         width: width + "px",
-        "margin-right": "1em",
+        // "margin-right": "1em",
         ...(additional && additional.setup),
       },
       initial: {
-        "margin-right": 0,
+        // "margin-right": 0,
         opacity: 0,
         width: 0,
         ...(additional && additional.initial),

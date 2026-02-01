@@ -10,6 +10,7 @@ import styles from "./hud.component.css?inline";
 import type { RankiHudState } from "./hud.types.mjs";
 import { HudChips } from "./features/cues/chips/chips.mts";
 import { HudBadges } from "./features/cues/badges/badges.mts";
+import { HudCues } from "./features/cues/cues.mts";
 
 export class RankiHud extends RankiHudWc<RankiHudState> {
   protected static name = "ranki-hud" as const;
@@ -50,9 +51,10 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
           HudCard.singleton(props.card, tail);
           break;
         case "cues":
-          HudBadges.singleton(props.cues.badges, tail);
-          HudChips.singleton(props.cues.chips, tail);
-          HudLabels.singleton(props.cues.labels, tail);
+          HudCues.singleton(props.cues, tail);
+          // HudBadges.singleton(props.cues.badges, tail);
+          // HudChips.singleton(props.cues.chips, tail);
+          // HudLabels.singleton(props.cues.labels, tail);
           break;
         case "app":
           HudApp.singleton(props.parser, tail);
