@@ -18,26 +18,10 @@ type Subtree = RankiWc<ProcessedCue[]>[];
 export class HudCues extends RankiHudWc<ProcessedCueMapHud> {
   protected static name = "ranki-hud-cues" as const;
   protected animations: AnimationTypes = {
-    show: RankiAnimation.expandMarginRight(this, {
-      // initialCb: this.adjustWidth.bind(this),
-    }),
+    show: RankiAnimation.expandMarginRight(this, {}),
     hide: RankiAnimation.collapseMarginRight(this, {}),
   };
   private subtree: Subtree = [];
-
-  // private adjustWidth() {
-  //   const container = this.getContainer();
-  //   if (!container) {
-  //     return;
-  //   }
-  //   // const lastIndex = 2;
-  //   // if (lastIndex === -1) {
-  //   //   return;
-  //   // }
-  //   const right = this.subtree.at(-1)!.getRight();
-  //   const left = this.getLeft();
-  //   this.setProperties({ width: right - left + "px" });
-  // }
 
   constructor() {
     super(true);
@@ -64,7 +48,6 @@ export class HudCues extends RankiHudWc<ProcessedCueMapHud> {
     this.build();
     if (curr.count) {
       this.runAnimation("show");
-      // this.adjustWidth();
     } else {
       this.runAnimation("hide");
     }

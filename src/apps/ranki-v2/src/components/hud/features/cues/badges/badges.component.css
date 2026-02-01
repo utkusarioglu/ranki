@@ -11,7 +11,7 @@
   --c-border-radius: var(--rhu-b-c-border-radius, none);
   --c-padding: var(--rhu-b-c-padding, none);
 
-  /* --cu-background: var(--rhu-b-cu-background, transparent); */
+  --cu-background: var(--rhu-b-cu-background, transparent);
   --cu-color: var(--rhu-b-cu-color, white);
   --cu-border: var(--rhu-b-cu-border, 1px solid red);
   --cu-border-radius: var(--rhu-b-cu-border-radius, none);
@@ -51,11 +51,9 @@
   overflow: hidden;
   height: 100%;
   padding: var(--c-padding);
-  /* background: var(--c-background); */
+  background: var(--c-background);
   border-radius: var(--c-border-radius);
   border: var(--c-border);
-  /* gap: var(--c-gap); */
-  backdrop-filter: var(--c-backdrop-filter);
 }
 
 hud-badges-badge {
@@ -69,7 +67,6 @@ hud-badges-badge {
   align-items: center;
   line-height: 1em;
   height: 100%;
-  /* background: var(--cu-background); */
   padding: var(--cu-padding);
   color: var(--cu-color);
   border-radius: var(--cu-border-radius);

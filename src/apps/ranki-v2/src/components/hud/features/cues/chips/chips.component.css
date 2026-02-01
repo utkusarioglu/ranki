@@ -55,7 +55,7 @@
   border-radius: var(--c-border-radius);
   border: var(--c-border);
   gap: var(--c-gap);
-  backdrop-filter: var(--c-backdrop-filter);
+  /* backdrop-filter: var(--c-backdrop-filter); */
 }
 
 hud-chips-chip {

@@ -4,6 +4,7 @@ import type {
 } from "_components/animation/animation.mts";
 
 export type SetPropertiesArg = Record<string, string | number>;
+export type ReconciliationAction = "advance" | "create" | "remove" | "mutate";
 
 export class RankiWc<Props> extends HTMLElement {
   private curr!: Props;

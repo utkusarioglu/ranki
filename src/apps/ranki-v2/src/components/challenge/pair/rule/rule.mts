@@ -4,6 +4,7 @@ import {
 } from "_components/animation/animation.mts";
 import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
 import styles from "./rule.css?inline";
+import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 
 export const ruleStyles = styles;
 
@@ -22,9 +23,9 @@ export class RankiRule extends RankiFacesWc<number> {
     return `ranki:rule:${index}`;
   }
 
-  checkKey(oi: number) {
+  canReconcile(oi: number): ReconciliationAction {
     const ruleKey = `ranki:rule:${oi}`;
-    return this.getKey() === ruleKey;
+    return this.getKey() === ruleKey ? "advance" : "remove";
   }
 
   setVariant(v: "horizontal" | "vertical") {

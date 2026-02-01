@@ -3,6 +3,7 @@ import {
   type AnimationTypes,
 } from "_components/animation/animation.mts";
 import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
+import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 import { assertNotUndefined } from "_error/assertions.mjs";
 
 export class RankiFacesFace extends RankiFacesWc<{}> {
@@ -20,10 +21,10 @@ export class RankiFacesFace extends RankiFacesWc<{}> {
     this.setAttribute("dqm-source", key);
   }
 
-  checkKey(f: RankiFacesFace | undefined) {
+  canReconcile(f: RankiFacesFace | undefined): ReconciliationAction {
     assertNotUndefined(f, {
       why: "Undefined face is required",
     });
-    return this.getKey() === f.getKey();
+    return this.getKey() === f.getKey() ? "advance" : "remove";
   }
 }

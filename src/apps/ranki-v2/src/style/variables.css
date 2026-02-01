@@ -119,7 +119,7 @@
 
   /* HUD CUE BADGES */
   --rhu-b-transition-duration: var(--ranki-animation-fade-duration);
-  --rhu-b-c-background: rgba(var(--scheme-surface-1), var(--base));
+  --rhu-b-c-background: rgba(var(--scheme-surface-2), var(--base));
   --rhu-b-c-backdrop-filter: var(--backdrop);
   --rhu-b-c-border: none;
   --rhu-b-c-border-radius: 0.5em;

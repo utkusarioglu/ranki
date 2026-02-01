@@ -6,6 +6,8 @@ import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
 import type { ProcessedCue } from "_config/config.types.mjs";
 import { HudChipsChip } from "./chip.mts";
 import styles from "./chips.component.css?inline";
+import { assertNever, assertNotNull } from "_error/assertions.mjs";
+import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 
 export class HudChips extends RankiHudWc<ProcessedCue[]> {
   protected static name = "ranki-hud-chips" as const;
@@ -28,6 +30,7 @@ export class HudChips extends RankiHudWc<ProcessedCue[]> {
       },
     }),
   };
+  private subtree: (HudChipsChip | null)[] = [];
 
   constructor() {
     super(true);
@@ -48,40 +51,72 @@ export class HudChips extends RankiHudWc<ProcessedCue[]> {
     this.setProperties({ width: right - left + "px" });
   }
 
-  private build() {
-    const [container] = this.createSingletonContainer();
-    const props = this.getCurr();
-    const cn = container.childNodes.length;
-    const sn = props.length;
-    const rm: HudChipsChip[] = [];
-
-    for (let i = 0; i < Math.max(cn, sn); i++) {
-      const record = props[i];
-      if (record) {
-        const cue = this.shadowRoot!.querySelector(
-          `[data-index="${i}"]`,
-        ) as HudChipsChip;
-        if (!cue) {
-          HudChipsChip.createAndAttach({ record: record, index: i }, container);
-        } else {
-          cue.setMutations(record);
-        }
+  private reconcile() {
+    const container = this.getContainer();
+    assertNotNull(container, {
+      why: "Component needs to be built before reconciliation",
+    });
+    const curr = this.getCurr();
+    let ii = 0; // incoming items index;
+    let ci = 0; // active items index;
+    const working = this.subtree;
+    while (ii < curr.length || ci < this.subtree.length) {
+      let action: ReconciliationAction;
+      const active = working[ci];
+      const inc = curr[ii];
+      assertNotNull(active, {
+        why: "Active element being null means filtering is broken",
+      });
+      if (!active && inc) {
+        action = "create";
+      } else if (active && !inc) {
+        action = "remove";
       } else {
-        rm.push(container.childNodes[i] as HudChipsChip);
+        action = active.canReconcile(inc);
+        // if (active.canReconcile(inc)) {
+        //   action = "mutate";
+        // } else {
+        //   action = "remove";
+        // }
+      }
+
+      switch (action) {
+        case "remove":
+          active.remove();
+          this.subtree[ci] = null;
+          ci++;
+          break;
+        case "mutate":
+          active.setProps(inc);
+          ci++;
+          ii++;
+          break;
+        case "create":
+          working.push(
+            HudChipsChip.createAndAttach<ProcessedCue, HudChipsChip>(
+              inc,
+              container,
+            ),
+          );
+          ci++;
+          ii++;
+          break;
+        default:
+          assertNever({ why: "Unrecognized action", details: { action } });
       }
     }
-    rm.length &&
-      rm.forEach((r) => {
-        r.remove();
-      });
-    this.adjustWidth();
-    return container;
+    this.subtree = working.filter((v) => v !== null);
+  }
+
+  private build() {
+    this.createSingletonContainer();
   }
 
   render() {
     const props = this.getCurr();
     if (props.length) {
       this.build();
+      this.reconcile();
       this.runAnimation("show");
     } else {
       this.runAnimation("hide");

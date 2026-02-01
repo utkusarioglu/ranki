@@ -13,6 +13,7 @@ import {
   assertNotUndefined,
 } from "_error/assertions.mjs";
 import type { CardFace } from "_config/collect/collect.types.mjs";
+import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 
 export type PairChildren = RankiFacesFace | RankiRule;
 type RenderedFaces = Record<string, RankiFacesFace>;
@@ -63,7 +64,7 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
     this.build();
     const newFaces = this.renderDqm();
     const firstNew = this.reconcile(newFaces);
-    this.delayedScroll(firstNew, "smooth").then(() => console.log("done"));
+    this.delayedScroll(firstNew, "smooth");
     return this;
   }
 
@@ -142,18 +143,19 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
       assertNotNull(incumbent, {
         why: "Null means this.items is not filtered",
       });
-      let action: undefined | "advance" | "create" | "remove";
+      let action: ReconciliationAction;
       if (!incumbent && faceName) {
         action = "create";
       } else if (incumbent && !faceName) {
         action = "remove";
       } else {
-        const isValid = this.checkKey(incumbent, fi, faceName, newTheaters);
-        if (isValid) {
-          action = "advance";
-        } else {
-          action = "remove";
-        }
+        action = this.canChildReconcile(incumbent, fi, faceName, newTheaters);
+        // const isValid = this.canChildReconcile(incumbent, fi, faceName, newTheaters);
+        // if (isValid) {
+        //   action = "advance";
+        // } else {
+        //   action = "remove";
+        // }
       }
 
       switch (action) {
@@ -206,7 +208,7 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
     }
   }
 
-  private checkKey(
+  private canChildReconcile(
     incumbent: PairChildren,
     oi: number,
     order: CardFace,
@@ -214,9 +216,9 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
   ) {
     switch (order) {
       case "ranki:rule":
-        return (incumbent as RankiRule).checkKey(oi);
+        return (incumbent as RankiRule).canReconcile(oi);
       default:
-        return (incumbent as RankiFacesFace).checkKey(newTheaters[order]);
+        return (incumbent as RankiFacesFace).canReconcile(newTheaters[order]);
     }
   }
 }
