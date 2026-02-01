@@ -27,6 +27,10 @@ export class HudCuesChip extends RankiHudWc<CueProps> {
     this.setProps({ record: c, index: this.getCurr().index });
   }
 
+  getKey() {
+    return `cue-chip:${this.getCurr().index}`;
+  }
+
   /**
    * FIX
    * This fails if the cue has no properties other than `indicator`. that means

@@ -48,7 +48,7 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
           HudCard.singleton(props.card, tail);
           break;
         case "cues":
-          HudCues.singleton(props.cues, tail);
+          HudCues.singleton(props.cues.labels, tail);
           break;
         case "app":
           HudApp.singleton(props.parser, tail);

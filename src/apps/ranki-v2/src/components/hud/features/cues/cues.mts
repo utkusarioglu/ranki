@@ -3,11 +3,12 @@ import {
   type AnimationTypes,
 } from "_components/animation/animation.mts";
 import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
-import type { HudCuesProps } from "_components/hud/hud.types.mts";
+import type {} from "_components/hud/hud.types.mts";
 import styles from "./cues.component.css?inline";
 import { HudCuesChip } from "./cue-chip.mts";
+import type { ProcessedCue } from "_config/config.types.mjs";
 
-export class HudCues extends RankiHudWc<HudCuesProps> {
+export class HudCues extends RankiHudWc<ProcessedCue[]> {
   protected static name = "ranki-hud-cues" as const;
   protected animations: AnimationTypes = {
     show: RankiAnimation.expandXFadeIn(this, {

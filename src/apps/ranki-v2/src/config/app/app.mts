@@ -21,6 +21,8 @@ import type {
   BuildRankiBaseConfigReturn,
   CueRecord,
   ProcessedCue,
+  ProcessedCueMap,
+  ProcessedCueMapHud,
   RankiAppDeterminedScheme,
   RankiBaseAddressMutationMode,
   RankiBaseConfig,
@@ -70,19 +72,14 @@ function buildRankiConfig(
   scheme: RankiAppDeterminedScheme,
 ): RankiState {
   const cues = buildCues(base.cueRecord);
-  const hud = buildHudConfig(
-    base,
-    raw,
-    tags,
-    cues.filter((c) => c.has.chip),
-  );
+  const hud = buildHudConfig(base, raw, tags, cues.hud);
   const dqm = buildDqmConfig(raw, order, base.config, scheme);
 
   return {
     hud,
     dev: base.config.dev,
     indicator: {
-      cues: cues.filter((c) => c.has.indicator),
+      cues: cues.indicators,
       indicatorCollection: base.config.indicators,
     },
     design: {
@@ -131,25 +128,43 @@ function buildDqmConfig(
  * #2 Becomes a text (and icon) based chip on the right side of the cue hud
  * #3 Becomes an indicator in the background
  */
-function buildCues(cueRecord: CueRecord[]): ProcessedCue[] {
-  return cueRecord.map((c) => {
+function buildCues(cueRecord: CueRecord[]): ProcessedCueMap {
+  const badges: ProcessedCue[] = [];
+  const chips: ProcessedCue[] = [];
+  const labels: ProcessedCue[] = [];
+  const indicators: ProcessedCue[] = [];
+
+  cueRecord.forEach((c) => {
     const icon = !!c.icon && !!c.icon.id && c.icon.id !== "none";
     const message =
       !!c.message && !!c.message.text && c.message.text !== "none";
     const background = !!c.background && c.background.color !== "none";
     const indicator = !!c.indicator && c.indicator !== "none";
-    return {
-      ...c,
-      has: {
-        icon,
-        badge: (icon || background) && !message, // #1
-        chip: icon || message || background, // #2
-        message,
-        background,
-        indicator, // #3
-      },
-    };
+    const badge = (icon || background) && !message; // #1
+    const chip = icon && message; // #2
+    const label = message && !icon;
+    if (badge) {
+      badges.push(c);
+    }
+    if (indicator) {
+      indicators.push(c);
+    }
+    if (chip) {
+      chips.push(c);
+    }
+    if (label) {
+      labels.push(c);
+    }
   });
+
+  return {
+    hud: {
+      badges,
+      chips,
+      labels,
+    },
+    indicators,
+  };
 }
 
 /**
@@ -162,7 +177,7 @@ function buildHudConfig(
   base: BuildRankiBaseConfigReturn,
   collected: RawFields,
   filteredTags: FilteredTags,
-  cues: ProcessedCue[],
+  cues: ProcessedCueMapHud,
 ): RankiHudState {
   const segments = buildAddressParts(
     base.config.address.tokens,

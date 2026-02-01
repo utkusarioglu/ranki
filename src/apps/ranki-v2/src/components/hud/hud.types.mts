@@ -7,6 +7,7 @@ import type {
 } from "_config/collect/collect.types.mts";
 import type {
   ProcessedCue,
+  ProcessedCueMapHud,
   RankiAddressTokens,
 } from "_config/config.types.mts";
 
@@ -74,14 +75,12 @@ export interface HudTagsProps {
   hideRanki: boolean;
 }
 
-export type HudCuesProps = ProcessedCue[];
-
 export interface RankiHudState {
   order: HudComponentNames[];
   visibility: HudVisibility;
   parser: HudParserProps;
   address: HudAddressProps;
   tags: HudTagsProps;
-  cues: HudCuesProps;
+  cues: ProcessedCueMapHud;
   card: HudCardProps;
 }

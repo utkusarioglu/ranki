@@ -78,15 +78,33 @@ export type CueKind =
   | "tag:ranki"
   | "flag";
 
+export type ProcessedCueMapHud = {
+  badges: CueRecord[];
+  chips: CueRecord[];
+  labels: CueRecord[];
+};
+
+export type ProcessedCueMap = {
+  hud: ProcessedCueMapHud;
+  indicators: CueRecord[];
+};
+
 export interface ProcessedCue extends CueRecord {
-  has: {
-    icon: boolean;
-    badge: boolean;
-    message: boolean;
-    background: boolean;
-    chip: boolean;
-    indicator: boolean;
-  };
+  // target: {
+  //   indicator: boolean;
+  //   hud: boolean;
+  // };
+  // is: {
+  //   badge: boolean;
+  //   chip: boolean;
+  //   label: boolean;
+  // };
+  // has: {
+  //   icon: boolean;
+  //   message: boolean;
+  //   background: boolean;
+  //   indicator: boolean;
+  // };
 }
 
 export interface CueRecord extends CueConfig {
