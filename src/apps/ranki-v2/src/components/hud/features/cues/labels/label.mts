@@ -11,8 +11,8 @@ type CueProps = {
   index: number;
 };
 
-export class HudCuesChip extends RankiHudWc<CueProps> {
-  protected static name = "hud-cues-chip" as const;
+export class HudLabelsLabel extends RankiHudWc<CueProps> {
+  protected static name = "hud-labels-label" as const;
   protected animations: AnimationTypes = {
     enter: RankiAnimation.fadeIn(this),
     exit: RankiAnimation.fadeOut(this),
@@ -27,9 +27,9 @@ export class HudCuesChip extends RankiHudWc<CueProps> {
     this.setProps({ record: c, index: this.getCurr().index });
   }
 
-  getKey() {
-    return `cue-chip:${this.getCurr().index}`;
-  }
+  // getKey() {
+  //   return `cue-label:${this.getCurr().index}`;
+  // }
 
   /**
    * FIX
@@ -48,30 +48,30 @@ export class HudCuesChip extends RankiHudWc<CueProps> {
     } else {
       this.style.removeProperty("background");
     }
-    if (c.icon) {
-      let icon = this.querySelector(`ph-${c.icon.id}`);
-      if (!icon) {
-        const oldIcon = this.querySelector(".cue-icon");
-        if (oldIcon) {
-          oldIcon.parentElement!.removeChild(oldIcon);
-        }
+    // if (c.icon) {
+    //   let icon = this.querySelector(`ph-${c.icon.id}`);
+    //   if (!icon) {
+    //     const oldIcon = this.querySelector(".cue-icon");
+    //     if (oldIcon) {
+    //       oldIcon.parentElement!.removeChild(oldIcon);
+    //     }
 
-        icon = document.createElement(`ph-${c.icon.id}`);
-        icon.className = "cue-icon";
-        icon.setAttribute("weight", "fill");
-        this.prepend(icon);
-      }
-      if (c.icon.color && c.icon.color !== "none") {
-        icon.setAttribute("color", `rgb(var(--scheme-${c.icon.color}))`);
-      } else {
-        icon.removeAttribute("color");
-      }
-    } else {
-      const iconElem = this.querySelector(".cue-icon");
-      if (iconElem) {
-        iconElem.parentElement!.removeChild(iconElem);
-      }
-    }
+    //     icon = document.createElement(`ph-${c.icon.id}`);
+    //     icon.className = "cue-icon";
+    //     icon.setAttribute("weight", "fill");
+    //     this.prepend(icon);
+    //   }
+    //   if (c.icon.color && c.icon.color !== "none") {
+    //     icon.setAttribute("color", `rgb(var(--scheme-${c.icon.color}))`);
+    //   } else {
+    //     icon.removeAttribute("color");
+    //   }
+    // } else {
+    //   const iconElem = this.querySelector(".cue-icon");
+    //   if (iconElem) {
+    //     iconElem.parentElement!.removeChild(iconElem);
+    //   }
+    // }
     if (c.message && c.message.text) {
       let span = this.querySelector(".cue-message") as HTMLSpanElement | null;
       if (!span) {

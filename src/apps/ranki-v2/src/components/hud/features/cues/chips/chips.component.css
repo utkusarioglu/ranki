@@ -43,7 +43,7 @@
   transition-duration: var(--transition-duration);
 }
 
-.container {
+:host > .container {
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -57,7 +57,7 @@
   backdrop-filter: var(--c-backdrop-filter);
 }
 
-hud-cues-chip {
+hud-chips-chip {
   opacity: 1;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);

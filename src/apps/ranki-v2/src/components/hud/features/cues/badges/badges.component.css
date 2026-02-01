@@ -1,0 +1,87 @@
+:host {
+  --transition-duration: var(--rhu-b-transition-duration, 0);
+  --transition-property:
+    background, color, padding, border, opacity, scale, transform, width,
+    margin-right;
+
+  --c-background: var(--rhu-b-c-background, transparent);
+  --c-backdrop-filter: var(--rhu-b-c-backdrop-filter, transparent);
+  --c-border: var(--rhu-b-c-border, 1px solid red);
+  --c-gap: var(--rhu-b-c-gap, 1em);
+  --c-border-radius: var(--rhu-b-c-border-radius, none);
+  --c-padding: var(--rhu-b-c-padding, none);
+
+  /* --cu-background: var(--rhu-b-cu-background, transparent); */
+  --cu-color: var(--rhu-b-cu-color, white);
+  --cu-border: var(--rhu-b-cu-border, 1px solid red);
+  --cu-border-radius: var(--rhu-b-cu-border-radius, none);
+  --cu-padding: var(--rhu-b-cu-padding, none);
+}
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+  border-radius: var(--c-border-radius);
+  /* margin-right: 1em; */
+  opacity: 1;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  user-select: none;
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+}
+
+:host > .container {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 100%;
+  padding: var(--c-padding);
+  background: var(--c-background);
+  border-radius: var(--c-border-radius);
+  border: var(--c-border);
+  /* gap: var(--c-gap); */
+  backdrop-filter: var(--c-backdrop-filter);
+}
+
+hud-badges-badge {
+  opacity: 1;
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+
+  box-sizing: border-box;
+  display: flex;
+  gap: 0.3em;
+  align-items: center;
+  line-height: 1em;
+  height: 100%;
+  /* background: var(--cu-background); */
+  padding: var(--cu-padding);
+  color: var(--cu-color);
+  border-radius: var(--cu-border-radius);
+  border: var(--cu-border);
+  white-space: nowrap;
+  margin-left: calc(-1 * var(--cu-border-radius));
+
+  &:first-of-type {
+    margin-left: 0;
+  }
+
+  & > .cue-icon {
+    transition-property: color;
+    transition-duration: var(--transition-duration);
+  }
+}

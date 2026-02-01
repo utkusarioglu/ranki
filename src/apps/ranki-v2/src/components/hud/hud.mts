@@ -2,12 +2,14 @@ import { horizontalScrollUtil } from "_components/scroller/horizontal.mts";
 import { assertNever } from "_error/assertions.mts";
 import { HudAddress } from "./features/address/address.mts";
 import { HudCard } from "./features/card/card.mts";
-import { HudCues } from "./features/cues/cues.mts";
+import { HudLabels } from "./features/cues/labels/labels.mts";
 import { HudApp } from "./features/app/app.mts";
 import { HudTags } from "./features/tags/tags.mts";
 import { RankiHudWc } from "./hud-wc/hud-wc.mts";
 import styles from "./hud.component.css?inline";
 import type { RankiHudState } from "./hud.types.mjs";
+import { HudChips } from "./features/cues/chips/chips.mts";
+import { HudBadges } from "./features/cues/badges/badges.mts";
 
 export class RankiHud extends RankiHudWc<RankiHudState> {
   protected static name = "ranki-hud" as const;
@@ -48,7 +50,9 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
           HudCard.singleton(props.card, tail);
           break;
         case "cues":
-          HudCues.singleton(props.cues.labels, tail);
+          HudBadges.singleton(props.cues.badges, tail);
+          HudChips.singleton(props.cues.chips, tail);
+          HudLabels.singleton(props.cues.labels, tail);
           break;
         case "app":
           HudApp.singleton(props.parser, tail);

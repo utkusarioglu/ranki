@@ -6,7 +6,6 @@ import type {
   RankiTag,
 } from "_config/collect/collect.types.mts";
 import type {
-  ProcessedCue,
   ProcessedCueMapHud,
   RankiAddressTokens,
 } from "_config/config.types.mts";
