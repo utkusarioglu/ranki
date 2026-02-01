@@ -133,13 +133,13 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
     const curr = this.getCurr();
     const container = this.getContainer();
     const active: (PairChildren | null)[] = this.active;
-    let fi = 0; // face index
-    let ai = 0; // active index
+    let ii = 0; // face index
+    let ci = 0; // active index
     let firstNew: number = 0;
 
-    while (fi < curr.order.length || ai < active.length) {
-      const faceName = curr.order[fi];
-      const incumbent = active[ai];
+    while (ii < curr.order.length || ci < active.length) {
+      const faceName = curr.order[ii];
+      const incumbent = active[ci];
       assertNotNull(incumbent, {
         why: "Null means this.items is not filtered",
       });
@@ -149,32 +149,26 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
       } else if (incumbent && !faceName) {
         action = "remove";
       } else {
-        action = this.canChildReconcile(incumbent, fi, faceName, newTheaters);
-        // const isValid = this.canChildReconcile(incumbent, fi, faceName, newTheaters);
-        // if (isValid) {
-        //   action = "advance";
-        // } else {
-        //   action = "remove";
-        // }
+        action = this.canChildReconcile(incumbent, ii, faceName, newTheaters);
       }
 
       switch (action) {
         case "advance":
-          fi++;
-          ai++;
+          ii++;
+          ci++;
           break;
         case "remove":
           incumbent.remove();
-          active[ai] = null;
-          ai++;
+          active[ci] = null;
+          ci++;
           break;
         case "create":
-          const elem = this.createChild(faceName, fi, container, newTheaters);
+          const elem = this.createChild(faceName, ii, container, newTheaters);
           container.appendChild(elem);
           this.active.push(elem);
-          firstNew === 0 && (firstNew = ai);
-          fi++;
-          ai++;
+          firstNew === 0 && (firstNew = ci);
+          ii++;
+          ci++;
           break;
         default:
           assertNever({ why: "Unrecognized action", details: { action } });

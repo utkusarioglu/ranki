@@ -11,9 +11,10 @@ import { assertNotNull } from "_error/assertions.mjs";
 
 export class HudBadges extends RankiHudWc<ProcessedCue[]> {
   protected static name = "ranki-hud-badges" as const;
-  private subtree = new Subtree<HudBadgesBadge, ProcessedCue>(
-    this.createChild.bind(this),
-  );
+  private subtree = new Subtree<HudBadgesBadge, ProcessedCue>({
+    create: this.createSubtreeChild.bind(this),
+    remove: this.removeSubtreeChild.bind(this),
+  });
   protected animations: AnimationTypes = {
     show: RankiAnimation.expandXFadeIn(this, {
       initialCb: this.adjustWidth.bind(this),
@@ -29,10 +30,9 @@ export class HudBadges extends RankiHudWc<ProcessedCue[]> {
   private adjustWidth() {
     const container = this.getContainer();
     if (!container) return;
-    const last = this.subtree.getLast();
-    if (!last) return;
-    const right = last.getRight();
     const left = this.getLeft();
+    const last = this.subtree.getLast();
+    const right = last?.getRight() || left;
     this.setProperties({ width: right - left + "px" });
   }
 
@@ -40,7 +40,7 @@ export class HudBadges extends RankiHudWc<ProcessedCue[]> {
     this.createSingletonContainer();
   }
 
-  createChild(inc: ProcessedCue) {
+  private createSubtreeChild(inc: ProcessedCue) {
     const container = this.getContainer();
     assertNotNull(container, { why: "No container to place children in" });
     const child = HudBadgesBadge.create<ProcessedCue, HudBadgesBadge>(inc);
@@ -49,15 +49,20 @@ export class HudBadges extends RankiHudWc<ProcessedCue[]> {
     return child;
   }
 
+  private removeSubtreeChild(e: HudBadgesBadge) {
+    e.remove();
+    // this.getContainer()?.removeChild(e);
+  }
+
   render() {
     const props = this.getCurr();
+    this.build();
     if (props.length) {
-      this.build();
-      this.subtree.reconcile(props);
       this.runAnimation("show");
     } else {
       this.runAnimation("hide");
     }
+    this.subtree.reconcile(props);
     return this;
   }
 }

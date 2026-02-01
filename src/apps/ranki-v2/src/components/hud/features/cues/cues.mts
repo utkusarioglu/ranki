@@ -18,8 +18,23 @@ type Subtree = RankiWc<ProcessedCue[]>[];
 export class HudCues extends RankiHudWc<ProcessedCueMapHud> {
   protected static name = "ranki-hud-cues" as const;
   protected animations: AnimationTypes = {
-    show: RankiAnimation.expandMarginRight(this, {}),
-    hide: RankiAnimation.collapseMarginRight(this, {}),
+    show: RankiAnimation.fadeIn(this, {
+      // initialCb: this.adjustWidth.bind(this),
+      setup: {
+        "margin-right": 0,
+      },
+      initial: {
+        "margin-right": "1em",
+      },
+    }),
+    hide: RankiAnimation.fadeOut(this, {
+      setup: {
+        "margin-right": "1em",
+      },
+      initial: {
+        "margin-right": 0,
+      },
+    }),
   };
   private subtree: Subtree = [];
 
@@ -28,20 +43,31 @@ export class HudCues extends RankiHudWc<ProcessedCueMapHud> {
     this.pushStyles(styles);
   }
 
+  // private adjustWidth() {
+  //   const container = this.getContainer();
+  //   if (!container) return;
+  //   const left = this.getLeft();
+  //   const last = this.subtree.at(-1);
+  //   const right = last?.getRight() || left;
+  //   this.setProperties({ width: right - left + "px" });
+  // }
+
   private build() {
     const [container, exists] = this.createSingletonContainer();
+    if (exists) return;
     const curr = this.getCurr();
-    if (exists) {
-      [curr.badges, curr.chips, curr.labels].forEach((c, i) => {
-        this.subtree[i].setProps(c);
-      });
-      return;
-    }
     [
       HudBadges.singleton(curr.badges, container),
       HudChips.singleton(curr.chips, container),
       HudLabels.singleton(curr.labels, container),
     ].forEach((h) => this.subtree.push(h));
+  }
+
+  private reconcile() {
+    const curr = this.getCurr();
+    [curr.badges, curr.chips, curr.labels].forEach((c, i) => {
+      this.subtree[i].setProps(c);
+    });
   }
 
   render(): this {
@@ -52,6 +78,7 @@ export class HudCues extends RankiHudWc<ProcessedCueMapHud> {
     } else {
       this.runAnimation("hide");
     }
+    this.reconcile();
     return this;
   }
 }

@@ -7,11 +7,6 @@ import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
 import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 import type { ProcessedCue } from "_config/config.types.mts";
 
-// type CueProps = {
-//   record: ProcessedCue;
-//   index: number;
-// };
-
 export class HudChipsChip extends RankiHudWc<ProcessedCue> {
   protected static name = "hud-chips-chip" as const;
   protected animations: AnimationTypes = {
@@ -27,10 +22,6 @@ export class HudChipsChip extends RankiHudWc<ProcessedCue> {
   canReconcile(_p: ProcessedCue): ReconciliationAction {
     return "mutate";
   }
-
-  // setMutations(c: ProcessedCue) {
-  //   this.setProps({ record: c, index: this.getCurr().index });
-  // }
 
   /**
    * FIX
@@ -93,6 +84,5 @@ export class HudChipsChip extends RankiHudWc<ProcessedCue> {
     }
 
     this.addClass("cue", `issuer-${curr.issuer}`, `kind-${curr.kind}`);
-    // this.setAttribute("data-index", curr.index.toString());
   }
 }

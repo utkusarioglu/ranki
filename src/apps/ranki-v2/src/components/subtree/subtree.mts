@@ -7,24 +7,23 @@ interface ElemMin<Props> extends Node {
   setProps(p: Props): void;
 }
 
-interface OwnerMin<ElemType, Props> {
-  createChild(p: Props): ElemType;
+interface SubtreeHooks<ElemType, Props> {
+  create(p: Props): ElemType;
+  remove(e: ElemType): void;
 }
 
 type CreateChildFn<ElemType, Props> = (p: Props) => ElemType;
+type RemoveChildFn<ElemType> = (e: ElemType) => void;
 
 export class Subtree<ElemType extends ElemMin<Props>, Props> {
   private container!: HTMLElement;
   private subtree: (ElemType | null)[] = [];
-  // private owner: OwnerMin<ElemType, Props>;
-  private createChild!: CreateChildFn<ElemType, Props>;
+  private create!: CreateChildFn<ElemType, Props>;
+  private remove!: RemoveChildFn<ElemType>;
 
-  constructor(
-    // owner: OwnerMin<ElemType, Props>
-    c: CreateChildFn<ElemType, Props>,
-  ) {
-    // this.owner = owner;
-    this.createChild = c;
+  constructor(h: SubtreeHooks<ElemType, Props>) {
+    this.create = h.create;
+    this.remove = h.remove;
   }
 
   getLast() {
@@ -43,6 +42,7 @@ export class Subtree<ElemType extends ElemMin<Props>, Props> {
     let ii = 0; // incoming items index;
     let ci = 0; // active items index;
     const working = this.subtree;
+    console.log({ working, curr });
     while (ii < curr.length || ci < this.subtree.length) {
       let action: ReconciliationAction;
       const active = working[ci];
@@ -59,9 +59,13 @@ export class Subtree<ElemType extends ElemMin<Props>, Props> {
       }
 
       switch (action) {
+        case "advance":
+          ci++;
+          ii++;
+          break;
         case "remove":
-          active.remove();
-          this.subtree[ci] = null;
+          this.remove(active);
+          working[ci] = null;
           ci++;
           break;
         case "mutate":
@@ -70,7 +74,7 @@ export class Subtree<ElemType extends ElemMin<Props>, Props> {
           ii++;
           break;
         case "create":
-          const elem = this.createChild(inc);
+          const elem = this.create(inc);
           working.push(elem);
           ci++;
           ii++;
