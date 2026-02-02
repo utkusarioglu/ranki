@@ -1,5 +1,5 @@
 import { horizontalScrollUtil } from "_components/scroller/horizontal.mts";
-import { assertNever } from "_error/assertions.mts";
+import { assertNever, assertNotNull } from "_error/assertions.mts";
 import { HudAddress } from "./features/address/address.mts";
 import { HudCard } from "./features/card/card.mts";
 import { HudApp } from "./features/app/app.mts";
@@ -7,25 +7,46 @@ import { HudTags } from "./features/tags/tags.mts";
 import { RankiHudWc } from "./hud-wc/hud-wc.mts";
 import styles from "./hud.component.css?inline";
 import type {
+  HudAddressProps,
+  HudCardProps,
   HudComponentNames,
-  HudElementCommon,
+  HudAppProps,
+  HudTagsProps,
   RankiHudState,
 } from "./hud.types.mjs";
 import { HudCues } from "./features/cues/cues.mts";
 import type { RankiWc } from "_components/ranki-wc/ranki-wc.mjs";
+import { Subtree } from "_components/subtree/subtree.mjs";
+import type { ProcessedCueMapHud } from "_config/config.types.mjs";
 
-type SubtreeTypes = {
-  element: RankiWc<any>;
-  state: HudElementCommon;
-};
+interface Wrapped {
+  type: HudComponentNames;
+  state: ChildState;
+}
+
+type ChildState =
+  | HudAppProps
+  | HudAddressProps
+  | HudTagsProps
+  | ProcessedCueMapHud
+  | HudCardProps;
 
 export class RankiHud extends RankiHudWc<RankiHudState> {
   protected static name = "ranki-hud" as const;
-  private subtree: SubtreeTypes[] = [];
+  private subtree = new Subtree<RankiWc<ChildState>, ChildState>({
+    create: this.createSubtreeChild.bind(this),
+    remove: this.removeSubtreeChild.bind(this),
+  });
 
   constructor() {
     super(true);
     this.pushStyles(styles);
+  }
+
+  private getScroller() {
+    return this.getContainer()!.querySelector(
+      ".scroll-scroller",
+    ) as HTMLElement;
   }
 
   private createSingletonHudContainer() {
@@ -47,74 +68,46 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
     return { head: container, tail: scroller.tail };
   }
 
-  private createChild(
-    type: HudComponentNames,
-    state: RankiHudState,
-    container: HTMLElement,
-  ) {
-    switch (type) {
+  private createSubtreeChild(state: Wrapped) {
+    const scroller = this.getScroller();
+    assertNotNull(scroller, { why: "No container" });
+    switch (state.type) {
       case "address":
-        this.subtree.push({
-          state: state.address,
-          element: HudAddress.singleton(state.address, container),
-        });
-        break;
+        return HudAddress.singleton(state.state, scroller);
       case "card":
-        this.subtree.push({
-          state: state.card,
-          element: HudCard.singleton(state.card, container),
-        });
-        break;
+        return HudCard.singleton(state.state, scroller);
       case "cues":
-        this.subtree.push({
-          state: state.cues,
-          element: HudCues.singleton(state.cues, container),
-        });
-        break;
+        return HudCues.singleton(state.state, scroller);
       case "app":
-        this.subtree.push({
-          state: state.parser,
-          element: HudApp.singleton(state.parser, container),
-        });
-        break;
+        return HudApp.singleton(state.state, scroller);
       case "tags":
-        this.subtree.push({
-          state: state.tags,
-          element: HudTags.singleton(state.tags, container),
-        });
-        break;
+        return HudTags.singleton(state.state, scroller);
       default:
         assertNever({
           why: "Given property is not a valid hud component",
-          details: { type },
+          details: { state },
         });
     }
   }
 
-  private build() {
-    const { head, tail } = this.createSingletonHudContainer();
-    const curr = this.getCurr();
-    curr.order.forEach((p) => {
-      this.createChild(p, curr, tail);
-    });
-    return head;
+  private removeSubtreeChild(e: RankiWc<ChildState>) {
+    e.remove();
   }
 
-  private reconcile() {
-    const hasNext = this.subtree
-      .map((s) => s.element.isActive())
-      .reverse()
-      .map((c, i, a) => (c ? (a[i] = true) : (a[i] = a[i - 1] || false)))
-      .reverse();
-    this.subtree.forEach(({ element }, i) => {
-      const val = element.isActive() && hasNext[i];
-      element.setProperties({ "margin-right": val ? "1em" : 0 });
-    });
+  private build() {
+    this.createSingletonHudContainer();
   }
 
   render() {
     this.build();
-    this.reconcile();
+    const curr = this.getCurr();
+    const subtreeState = curr.order.map((type) => {
+      return {
+        type,
+        state: curr.subtree[type],
+      };
+    });
+    this.subtree.reconcile(subtreeState);
     return this;
   }
 }

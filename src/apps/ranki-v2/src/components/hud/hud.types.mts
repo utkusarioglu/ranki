@@ -59,7 +59,7 @@ export interface HudElementCommon {
   count: number;
 }
 
-export interface HudParserProps extends HudElementCommon {
+export interface HudAppProps extends HudElementCommon {
   hasReplacements: boolean;
   parseMode: "v1" | "v2" | "ignored";
   errorLevel: "none" | "warning" | "error";
@@ -80,9 +80,11 @@ export interface HudTagsProps extends HudElementCommon {
 export interface RankiHudState {
   order: HudComponentNames[];
   visibility: HudVisibility;
-  parser: HudParserProps;
-  address: HudAddressProps;
-  tags: HudTagsProps;
-  cues: ProcessedCueMapHud;
-  card: HudCardProps;
+  subtree: {
+    app: HudAppProps;
+    address: HudAddressProps;
+    tags: HudTagsProps;
+    cues: ProcessedCueMapHud;
+    card: HudCardProps;
+  };
 }

@@ -10,6 +10,8 @@ import type {
 import { assertNever } from "_error/assertions.mts";
 import styles from "./address.component.css?inline";
 import { HudAddressCrumb } from "./HudAddressCrumb.mts";
+import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
+import type { WrappedState } from "_components/subtree/subtree.mjs";
 
 export class HudAddress extends RankiHudWc<HudAddressProps> {
   protected static name = "ranki-hud-address" as const;
@@ -23,6 +25,14 @@ export class HudAddress extends RankiHudWc<HudAddressProps> {
   constructor() {
     super(true);
     this.pushStyles(styles);
+  }
+
+  hasNext(n: boolean) {
+    this.setProperties({ "margin-right": n ? "1em" : 0 });
+  }
+
+  canReconcile(s: WrappedState<HudAddressProps>): ReconciliationAction {
+    return s.type === "address" ? "mutate" : "remove";
   }
 
   private adjustWidth() {

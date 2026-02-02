@@ -4,26 +4,26 @@ import type {
   ReconciliationAction,
 } from "_components/ranki-wc/ranki-wc.mjs";
 
-type StateWrapper<State> = { type: string; state: State };
+export type WrappedState<State> = { type: string; state: State };
 
 interface ElemMin<State> extends RankiWc<any> {
-  canReconcile(s: StateWrapper<State>): ReconciliationAction;
+  canReconcile(s: WrappedState<State>): ReconciliationAction;
   remove(): Promise<void>;
   setProps(p: State): void;
   hasNext?: (b: boolean) => void;
 }
 
 interface SubtreeHooks<ElemType, State> {
-  create(p: StateWrapper<State>): ElemType;
+  create(p: WrappedState<State>): ElemType;
   remove(e: ElemType): void;
 }
 
-type CreateChildFn<ElemType, State> = (p: StateWrapper<State>) => ElemType;
+type CreateChildFn<ElemType, State> = (p: WrappedState<State>) => ElemType;
 type RemoveChildFn<ElemType> = (e: ElemType) => void;
 
 type SubtreeType<ElemType, State> = {
   element: ElemType;
-  state: StateWrapper<State>;
+  state: WrappedState<State>;
 };
 
 type SubtreeList<ElemType, State> = SubtreeType<ElemType, State>[];
@@ -49,7 +49,7 @@ export class Subtree<ElemType extends ElemMin<State>, State> {
     return this.subtree.length;
   }
 
-  reconcile(curr: StateWrapper<State>[]) {
+  reconcile(curr: WrappedState<State>[]) {
     let ii = 0; // incoming items index;
     let ci = 0; // active items index;
     const working = this.subtree as WorkingList<ElemType, State>;

@@ -80,7 +80,7 @@ export type CueKind =
   | "flag";
 
 export interface ProcessedCueMapHud extends HudElementCommon {
-  features: {
+  subtree: {
     badges: CueRecord[];
     chips: CueRecord[];
     labels: CueRecord[];

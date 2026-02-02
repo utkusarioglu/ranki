@@ -1,10 +1,12 @@
 import { RankiAnimation } from "_components/animation/animation.mts";
 import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
 import { type AnimationTypes } from "_components/animation/animation.mts";
-import type { HudParserProps } from "_components/hud/hud.types.mts";
+import type { HudAppProps } from "_components/hud/hud.types.mts";
 import styles from "./app.component.css?inline";
+import type { WrappedState } from "_components/subtree/subtree.mjs";
+import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 
-export class HudApp extends RankiHudWc<HudParserProps> {
+export class HudApp extends RankiHudWc<HudAppProps> {
   protected static name = "ranki-hud-app" as const;
   protected animations: AnimationTypes = {
     show: RankiAnimation.expandXFadeIn(this, {
@@ -44,6 +46,10 @@ export class HudApp extends RankiHudWc<HudParserProps> {
     this.setProperties({ width: right - left + "px" });
   }
 
+  hasNext(n: boolean) {
+    this.setProperties({ "margin-right": n ? "1em" : 0 });
+  }
+
   private build() {
     let container = this.getContainer();
     if (container) {
@@ -69,6 +75,10 @@ export class HudApp extends RankiHudWc<HudParserProps> {
 
   isActive(): boolean {
     return true;
+  }
+
+  canReconcile(s: WrappedState<HudAppProps>): ReconciliationAction {
+    return s.type === "app" ? "mutate" : "remove";
   }
 
   render() {

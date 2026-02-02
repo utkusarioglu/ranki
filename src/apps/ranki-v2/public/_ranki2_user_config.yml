@@ -97,6 +97,14 @@ tags:
       design:
         animation:
           fade: 3s
+  - exact: +r::animation::fast
+    cue:
+      message: 
+        text: AnimFast
+    config:
+      design:
+        animation:
+          fade: 0.1s
   - exact: +r::animation::disabled
     cue:
       message: 

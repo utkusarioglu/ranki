@@ -11,11 +11,12 @@ import {
   RankiAnimation,
   type AnimationTypes,
 } from "_components/animation/animation.mjs";
-import type { RankiWc } from "_components/ranki-wc/ranki-wc.mjs";
+import type {
+  RankiWc,
+  ReconciliationAction,
+} from "_components/ranki-wc/ranki-wc.mjs";
 import { assertNever, assertNotNull } from "_error/assertions.mjs";
-import { Subtree } from "_components/subtree/subtree.mjs";
-
-// type Subtree = RankiWc<ProcessedCue[]>[];
+import { Subtree, type WrappedState } from "_components/subtree/subtree.mjs";
 
 type ChildTypes = "badges" | "chips" | "labels";
 
@@ -35,8 +36,6 @@ export class HudCues extends RankiHudWc<ProcessedCueMapHud> {
     remove: this.removeSubtreeChild.bind(this),
   });
 
-  // private subtree: Subtree = [];
-
   constructor() {
     super(true);
     this.pushStyles(styles);
@@ -45,83 +44,39 @@ export class HudCues extends RankiHudWc<ProcessedCueMapHud> {
   private createSubtreeChild(state: Wrapped) {
     const container = this.getContainer();
     assertNotNull(container, { why: "No container to place children in" });
-    let child;
-    // child.setZIndex(100 - this.subtree.getSize());
-
     switch (state.type) {
       case "badges":
-        child = HudBadges.singleton(state.state, container);
-        break;
+        return HudBadges.singleton(state.state, container);
       case "chips":
-        child = HudChips.singleton(state.state, container);
-        break;
+        return HudChips.singleton(state.state, container);
       case "labels":
-        child = HudLabels.singleton(state.state, container);
-        break;
+        return HudLabels.singleton(state.state, container);
       default:
         assertNever({
           why: "Unrecognized cue type",
           details: { state },
         });
     }
-    container.appendChild(child);
-    return child;
   }
 
   private build() {
     this.createSingletonContainer();
-    // if (exists) return;
-    // const ELEMS = ["badges", "chips", "labels"];
-
-    // ELEMS.forEach((e) => {
-    //   switch (e) {
-    //     case "badges":
-    //       break;
-    //     case "chips":
-    //       break;
-    //     case "labels":
-    //       break;
-    //     default:
-    //       assertNever({ why: "Unrecognized cue type", details: { e } });
-    //   }
-    // });
-    // const curr = this.getCurr();
-    // [
-    //   HudBadges.singleton(curr.badges, container),
-    //   HudChips.singleton(curr.chips, container),
-    //   HudLabels.singleton(curr.labels, container),
-    // ].forEach((h) => this.subtree.push(h));
   }
 
   private removeSubtreeChild(e: RankiWc<ProcessedCue[]>) {
     e.remove();
   }
 
-  // private reconcile() {
-  //   const curr = this.getCurr();
-  //   [curr.badges, curr.chips, curr.labels]
-  //     .map((props, i, a) => {
-  //       if (a[i + 1]?.length && a[i].length) {
-  //         return {
-  //           props,
-  //           hasNextNeighbor: true,
-  //         };
-  //       } else {
-  //         return {
-  //           props: props,
-  //           hasNextNeighbor: false,
-  //         };
-  //       }
-  //     })
-  //     .forEach((c, i) => {
-  //       this.subtree[i].setProps(c.props);
-  //       // e.setProps(c.props);
-  //       // e.setProperties({ "margin-right": c.hasNextNeighbor ? "0.5em" : "0" });
-  //     });
-  // }
-
   isActive(): boolean {
     return !!this.getCurr().count;
+  }
+
+  hasNext(n: boolean) {
+    this.setProperties({ "margin-right": n ? "1em" : 0 });
+  }
+
+  canReconcile(s: WrappedState<ProcessedCueMapHud>): ReconciliationAction {
+    return s.type === "cues" ? "mutate" : "remove";
   }
 
   render(): this {
@@ -133,7 +88,7 @@ export class HudCues extends RankiHudWc<ProcessedCueMapHud> {
       this.runAnimation("hide");
     }
     this.subtree.reconcile(
-      Object.entries(curr.features).map(([type, state]) => ({
+      Object.entries(curr.subtree).map(([type, state]) => ({
         type: type as ChildTypes,
         state,
       })),

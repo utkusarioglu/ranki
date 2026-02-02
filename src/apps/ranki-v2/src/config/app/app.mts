@@ -160,7 +160,7 @@ function buildCues(cueRecord: CueRecord[]): ProcessedCueMap {
   return {
     hud: {
       count: badges.length + chips.length + labels.length,
-      features: {
+      subtree: {
         badges,
         chips,
         labels,
@@ -191,25 +191,27 @@ function buildHudConfig(
   return {
     order: base.config.hud.order,
     visibility: base.config.hud.visibility,
-    // TODO
-    parser: {
-      count: 3,
-      hasReplacements: true,
-      parseMode: "v2",
-      errorLevel: "none",
-    },
-    address: {
-      count: segments.length,
-      tokens: base.config.address.tokens,
-      segments,
-    },
-    tags,
-    cues,
-    card: {
-      count: 3,
-      type: collected.fields.type,
-      card: collected.fields.card,
-      face: collected.fields.face,
+    subtree: {
+      // TODO
+      app: {
+        count: 3,
+        hasReplacements: true,
+        parseMode: "v2",
+        errorLevel: "none",
+      },
+      address: {
+        count: segments.length,
+        tokens: base.config.address.tokens,
+        segments,
+      },
+      tags,
+      cues,
+      card: {
+        count: 3,
+        type: collected.fields.type,
+        card: collected.fields.card,
+        face: collected.fields.face,
+      },
     },
   };
 }

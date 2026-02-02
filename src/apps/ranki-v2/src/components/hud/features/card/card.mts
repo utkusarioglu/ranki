@@ -5,32 +5,29 @@ import {
 import { RankiHudWc } from "_components/hud//hud-wc/hud-wc.mts";
 import type { HudCardProps } from "_components/hud/hud.types.mts";
 import styles from "./card.component.css?inline";
+import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
+import type { WrappedState } from "_components/subtree/subtree.mjs";
 
 export class HudCard extends RankiHudWc<HudCardProps> {
   protected static name = "ranki-hud-card" as const;
   protected animations: AnimationTypes = {
     show: RankiAnimation.expandXFadeIn(this, {
       initialCb: this.adjustWidth.bind(this),
-      // setup: {
-      //   "margin-right": 0,
-      // },
-      // initial: {
-      //   "margin-right": "1em",
-      // },
     }),
-    hide: RankiAnimation.collapseXFadeOut(this, {
-      // setup: {
-      //   "margin-right": "1em",
-      // },
-      // initial: {
-      //   "margin-right": 0,
-      // },
-    }),
+    hide: RankiAnimation.collapseXFadeOut(this),
   };
 
   constructor() {
     super(true);
     this.pushStyles(styles);
+  }
+
+  hasNext(n: boolean) {
+    this.setProperties({ "margin-right": n ? "1em" : 0 });
+  }
+
+  canReconcile(s: WrappedState<HudCardProps>): ReconciliationAction {
+    return s.type === "card" ? "mutate" : "remove";
   }
 
   private adjustWidth() {
@@ -49,7 +46,6 @@ export class HudCard extends RankiHudWc<HudCardProps> {
     if (existing) {
       return container;
     }
-    // container = this.createSingletonContainer();
     const props = this.getCurr();
 
     const type = document.createElement("div");

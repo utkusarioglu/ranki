@@ -9,32 +9,29 @@ import type {
 } from "_components/hud/hud.types.mts";
 import { HudTagsTag } from "./HudTagsTag.mts";
 import styles from "./tags.component.css?inline";
+import type { WrappedState } from "_components/subtree/subtree.mjs";
+import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 
 export class HudTags extends RankiHudWc<HudTagsProps> {
   protected static name = "ranki-hud-tags" as const;
   protected animations: AnimationTypes = {
     show: RankiAnimation.expandXFadeIn(this, {
       initialCb: this.adjustWidth.bind(this),
-      // setup: {
-      //   "margin-right": 0,
-      // },
-      // initial: {
-      //   "margin-right": "1em",
-      // },
     }),
-    hide: RankiAnimation.collapseXFadeOut(this, {
-      // setup: {
-      //   "margin-right": "1em",
-      // },
-      // initial: {
-      //   "margin-right": 0,
-      // },
-    }),
+    hide: RankiAnimation.collapseXFadeOut(this, {}),
   };
 
   constructor() {
     super(true);
     this.pushStyles(styles);
+  }
+
+  hasNext(n: boolean) {
+    this.setProperties({ "margin-right": n ? "1em" : 0 });
+  }
+
+  canReconcile(s: WrappedState<HudTagsProps>): ReconciliationAction {
+    return s.type === "tags" ? "mutate" : "remove";
   }
 
   private adjustWidth() {
