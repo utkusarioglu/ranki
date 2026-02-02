@@ -106,11 +106,15 @@ export class Subtree<ElemType extends ElemMin<State>, State> {
   }
 
   private callHasNext() {
-    const hasNext = this.subtree
-      .map((s, i, a) => s.element.isActive() && a.length !== i + 1)
-      .reverse()
-      .map((c, i, a) => (c ? (a[i] = true) : (a[i] = a[i - 1] || false)))
-      .reverse();
+    const hasNext: boolean[] = [];
+    let seenActive = false;
+
+    for (let i = this.subtree.length - 1; i >= 0; i--) {
+      hasNext[i] = seenActive;
+      if (this.subtree[i].element.isActive()) {
+        seenActive = true;
+      }
+    }
 
     this.subtree.forEach(({ element }, i) => {
       const h = element.isActive() && hasNext[i];

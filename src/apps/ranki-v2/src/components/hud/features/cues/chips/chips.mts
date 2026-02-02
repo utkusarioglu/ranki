@@ -58,6 +58,7 @@ export class HudChips extends RankiHudWc<ProcessedCue[]> {
   }
 
   hasNext(b: boolean) {
+    console.log("h", b);
     this.setProperties({ "margin-right": b ? "0.5em" : 0 });
   }
 
