@@ -5,6 +5,7 @@ import type {
 } from "@dqm/package-dqm-v2";
 import type {
   HudComponentNames,
+  HudElementCommon,
   HudVisibility,
   RankiHudState,
 } from "_components/hud/hud.types.mjs";
@@ -78,12 +79,13 @@ export type CueKind =
   | "tag:ranki"
   | "flag";
 
-export type ProcessedCueMapHud = {
-  count: number;
-  badges: CueRecord[];
-  chips: CueRecord[];
-  labels: CueRecord[];
-};
+export interface ProcessedCueMapHud extends HudElementCommon {
+  features: {
+    badges: CueRecord[];
+    chips: CueRecord[];
+    labels: CueRecord[];
+  };
+}
 
 export type ProcessedCueMap = {
   hud: ProcessedCueMapHud;

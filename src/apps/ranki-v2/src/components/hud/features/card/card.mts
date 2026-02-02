@@ -11,20 +11,20 @@ export class HudCard extends RankiHudWc<HudCardProps> {
   protected animations: AnimationTypes = {
     show: RankiAnimation.expandXFadeIn(this, {
       initialCb: this.adjustWidth.bind(this),
-      setup: {
-        "margin-right": 0,
-      },
-      initial: {
-        "margin-right": "1em",
-      },
+      // setup: {
+      //   "margin-right": 0,
+      // },
+      // initial: {
+      //   "margin-right": "1em",
+      // },
     }),
     hide: RankiAnimation.collapseXFadeOut(this, {
-      setup: {
-        "margin-right": "1em",
-      },
-      initial: {
-        "margin-right": 0,
-      },
+      // setup: {
+      //   "margin-right": "1em",
+      // },
+      // initial: {
+      //   "margin-right": 0,
+      // },
     }),
   };
 
@@ -83,6 +83,10 @@ export class HudCard extends RankiHudWc<HudCardProps> {
   private setFace(c: HTMLDivElement, face: string) {
     const e = c.querySelector(".face") as HTMLDivElement;
     e.innerText = face;
+  }
+
+  isActive(): boolean {
+    return true;
   }
 
   render() {

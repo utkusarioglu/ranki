@@ -44,18 +44,22 @@ export interface HudAddressSegmentWithParts {
   parts: HudAddressSegmentPart[]; // #1
 }
 
-export interface HudAddressProps {
+export interface HudAddressProps extends HudElementCommon {
   tokens: RankiAddressTokens;
   segments: HudAddressSegment[];
 }
 
-export interface HudCardProps {
+export interface HudCardProps extends HudElementCommon {
   type: AnkiCardType;
   face: AnkiCardFace;
   card: AnkiCard;
 }
 
-export interface HudParserProps {
+export interface HudElementCommon {
+  count: number;
+}
+
+export interface HudParserProps extends HudElementCommon {
   hasReplacements: boolean;
   parseMode: "v1" | "v2" | "ignored";
   errorLevel: "none" | "warning" | "error";
@@ -66,8 +70,7 @@ export interface HudTagListItem {
   text: string;
 }
 
-export interface HudTagsProps {
-  count: number;
+export interface HudTagsProps extends HudElementCommon {
   list: HudTagListItem[];
   neutral: AnkiRawTag[];
   ranki: RankiTag[];

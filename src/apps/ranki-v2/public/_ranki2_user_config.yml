@@ -58,6 +58,9 @@ tags:
     cue: 
       message: 
         text: Leech
+        color: tone-0
+      background:
+        color: red-2
       indicator: checkered
   - exact: clown-college
     cue:

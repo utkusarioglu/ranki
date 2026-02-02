@@ -31,7 +31,7 @@ import type {
   RankiState,
 } from "_config/config.types.mts";
 import { RankiAppError } from "_error/ranki-app-error.mts";
-import { buildAddressParts } from "./buildAddress.mts";
+import { buildAddressSegments } from "./buildAddress.mts";
 
 export const MUTATION_MODE_PRECEDENCE: RankiBaseAddressMutationMode[] = [
   "trim",
@@ -160,9 +160,11 @@ function buildCues(cueRecord: CueRecord[]): ProcessedCueMap {
   return {
     hud: {
       count: badges.length + chips.length + labels.length,
-      badges,
-      chips,
-      labels,
+      features: {
+        badges,
+        chips,
+        labels,
+      },
     },
     indicators,
   };
@@ -180,7 +182,7 @@ function buildHudConfig(
   filteredTags: FilteredTags,
   cues: ProcessedCueMapHud,
 ): RankiHudState {
-  const segments = buildAddressParts(
+  const segments = buildAddressSegments(
     base.config.address.tokens,
     base.config.address.segments,
     collected.fields.deck,
@@ -191,17 +193,20 @@ function buildHudConfig(
     visibility: base.config.hud.visibility,
     // TODO
     parser: {
+      count: 3,
       hasReplacements: true,
       parseMode: "v2",
       errorLevel: "none",
     },
     address: {
+      count: segments.length,
       tokens: base.config.address.tokens,
       segments,
     },
     tags,
     cues,
     card: {
+      count: 3,
       type: collected.fields.type,
       card: collected.fields.card,
       face: collected.fields.face,

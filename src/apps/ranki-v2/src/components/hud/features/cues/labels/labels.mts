@@ -8,6 +8,12 @@ import { HudLabelsLabel } from "./label.mts";
 import styles from "./labels.component.css?inline";
 import { Subtree } from "_components/subtree/subtree.mjs";
 import { assertNotNull } from "_error/assertions.mjs";
+import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
+
+interface Wrapped {
+  type: "label";
+  state: ProcessedCue;
+}
 
 export class HudLabels extends RankiHudWc<ProcessedCue[]> {
   protected static name = "ranki-hud-labels" as const;
@@ -18,21 +24,8 @@ export class HudLabels extends RankiHudWc<ProcessedCue[]> {
   protected animations: AnimationTypes = {
     show: RankiAnimation.expandXFadeIn(this, {
       initialCb: this.adjustWidth.bind(this),
-      // setup: {
-      //   // "margin-left": 0,
-      // },
-      // initial: {
-      //   "margin-left": "0.5em",
-      // },
     }),
-    hide: RankiAnimation.collapseXFadeOut(this, {
-      // setup: {
-      //   "margin-left": "0.5em",
-      // },
-      // initial: {
-      //   "margin-left": 0,
-      // },
-    }),
+    hide: RankiAnimation.collapseXFadeOut(this),
   };
 
   constructor() {
@@ -53,16 +46,31 @@ export class HudLabels extends RankiHudWc<ProcessedCue[]> {
     this.createSingletonContainer();
   }
 
-  private createSubtreeChild(inc: ProcessedCue) {
+  private createSubtreeChild(inc: Wrapped) {
     const container = this.getContainer();
     assertNotNull(container, { why: "No container to place children in" });
-    const child = HudLabelsLabel.create<ProcessedCue, HudLabelsLabel>(inc);
+    const child = HudLabelsLabel.create<ProcessedCue, HudLabelsLabel>(
+      inc.state,
+    );
     container.appendChild(child);
     return child;
   }
 
   private removeSubtreeChild(e: HudLabelsLabel) {
     e.remove();
+  }
+
+  hasNext(b: boolean) {
+    this.setProperties({ "margin-right": b ? "0.5em" : 0 });
+  }
+
+  isActive(): boolean {
+    return !!this.getCurr().length;
+  }
+
+  canReconcile(p: { type: string }): ReconciliationAction {
+    console.log("c", p);
+    return p.type === "labels" ? "mutate" : "remove";
   }
 
   render() {
@@ -73,7 +81,7 @@ export class HudLabels extends RankiHudWc<ProcessedCue[]> {
     } else {
       this.runAnimation("hide");
     }
-    this.subtree.reconcile(props);
+    this.subtree.reconcile(props.map((state) => ({ type: "label", state })));
     return this;
   }
 }

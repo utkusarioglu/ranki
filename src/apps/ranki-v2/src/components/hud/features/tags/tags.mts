@@ -15,20 +15,20 @@ export class HudTags extends RankiHudWc<HudTagsProps> {
   protected animations: AnimationTypes = {
     show: RankiAnimation.expandXFadeIn(this, {
       initialCb: this.adjustWidth.bind(this),
-      setup: {
-        "margin-right": 0,
-      },
-      initial: {
-        "margin-right": "1em",
-      },
+      // setup: {
+      //   "margin-right": 0,
+      // },
+      // initial: {
+      //   "margin-right": "1em",
+      // },
     }),
     hide: RankiAnimation.collapseXFadeOut(this, {
-      setup: {
-        "margin-right": "1em",
-      },
-      initial: {
-        "margin-right": 0,
-      },
+      // setup: {
+      //   "margin-right": "1em",
+      // },
+      // initial: {
+      //   "margin-right": 0,
+      // },
     }),
   };
 
@@ -94,6 +94,10 @@ export class HudTags extends RankiHudWc<HudTagsProps> {
     tag.setAttribute("data-index", i.toString());
     tag.addClass(s.type);
     tag.innerText = s.text || "";
+  }
+
+  isActive(): boolean {
+    return !!this.getCurr().count;
   }
 
   render() {

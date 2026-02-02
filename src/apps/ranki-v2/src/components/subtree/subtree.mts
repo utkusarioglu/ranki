@@ -1,60 +1,71 @@
 import { assertNever, assertNotNull } from "_error/assertions.mjs";
-import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
+import type {
+  RankiWc,
+  ReconciliationAction,
+} from "_components/ranki-wc/ranki-wc.mjs";
 
-interface ElemMin<Props> extends Node {
-  canReconcile(p: Props): ReconciliationAction;
+type StateWrapper<State> = { type: string; state: State };
+
+interface ElemMin<State> extends RankiWc<any> {
+  canReconcile(s: StateWrapper<State>): ReconciliationAction;
   remove(): Promise<void>;
-  setProps(p: Props): void;
+  setProps(p: State): void;
+  hasNext?: (b: boolean) => void;
 }
 
-interface SubtreeHooks<ElemType, Props> {
-  create(p: Props): ElemType;
+interface SubtreeHooks<ElemType, State> {
+  create(p: StateWrapper<State>): ElemType;
   remove(e: ElemType): void;
 }
 
-type CreateChildFn<ElemType, Props> = (p: Props) => ElemType;
+type CreateChildFn<ElemType, State> = (p: StateWrapper<State>) => ElemType;
 type RemoveChildFn<ElemType> = (e: ElemType) => void;
 
-export class Subtree<ElemType extends ElemMin<Props>, Props> {
-  private container!: HTMLElement;
-  private subtree: (ElemType | null)[] = [];
-  private create!: CreateChildFn<ElemType, Props>;
+type SubtreeType<ElemType, State> = {
+  element: ElemType;
+  state: StateWrapper<State>;
+};
+
+type SubtreeList<ElemType, State> = SubtreeType<ElemType, State>[];
+
+type WorkingList<ElemType, State> = (SubtreeType<ElemType, State> | null)[];
+
+export class Subtree<ElemType extends ElemMin<State>, State> {
+  // private container!: HTMLElement;
+  private subtree: SubtreeList<ElemType, State> = [];
+  private create!: CreateChildFn<ElemType, State>;
   private remove!: RemoveChildFn<ElemType>;
 
-  constructor(h: SubtreeHooks<ElemType, Props>) {
+  constructor(h: SubtreeHooks<ElemType, State>) {
     this.create = h.create;
     this.remove = h.remove;
   }
 
-  getLast() {
-    return this.subtree.at(-1);
+  getLast(): ElemType | undefined {
+    return this.subtree.at(-1)?.element;
   }
 
   getSize() {
     return this.subtree.length;
   }
 
-  reconcile(curr: Props[]) {
-    const container = this.container;
-    assertNotNull(container, {
-      why: "Component needs to be built before reconciliation",
-    });
+  reconcile(curr: StateWrapper<State>[]) {
     let ii = 0; // incoming items index;
     let ci = 0; // active items index;
-    const working = this.subtree;
+    const working = this.subtree as WorkingList<ElemType, State>;
     while (ii < curr.length || ci < this.subtree.length) {
       let action: ReconciliationAction;
       const active = working[ci];
-      const inc = curr[ii];
+      const state = curr[ii];
       assertNotNull(active, {
         why: "Active element being null means filtering is broken",
       });
-      if (!active && inc) {
+      if (!active && state) {
         action = "create";
-      } else if (active && !inc) {
+      } else if (active && !state) {
         action = "remove";
       } else {
-        action = active.canReconcile(inc);
+        action = active.element.canReconcile(state);
       }
 
       switch (action) {
@@ -63,18 +74,18 @@ export class Subtree<ElemType extends ElemMin<Props>, Props> {
           ii++;
           break;
         case "remove":
-          this.remove(active);
+          this.remove(active.element);
           working[ci] = null;
           ci++;
           break;
         case "mutate":
-          active.setProps(inc);
+          active.element.setProps(state.state);
           ci++;
           ii++;
           break;
         case "create":
-          const elem = this.create(inc);
-          working.push(elem);
+          const elem = this.create(state);
+          working.push({ element: elem, state });
           ci++;
           ii++;
           break;
@@ -83,5 +94,19 @@ export class Subtree<ElemType extends ElemMin<Props>, Props> {
       }
     }
     this.subtree = working.filter((v) => v !== null);
+    this.callHasNext();
+  }
+
+  private callHasNext() {
+    const hasNext = this.subtree
+      .map((s, i, a) => s.element.isActive() && a.length !== i + 1)
+      .reverse()
+      .map((c, i, a) => (c ? (a[i] = true) : (a[i] = a[i - 1] || false)))
+      .reverse();
+
+    this.subtree.forEach(({ element }, i) => {
+      const h = element.isActive() && hasNext[i];
+      element.hasNext && element.hasNext(h);
+    });
   }
 }

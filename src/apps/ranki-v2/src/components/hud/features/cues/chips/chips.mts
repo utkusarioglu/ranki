@@ -8,6 +8,11 @@ import { HudChipsChip } from "./chip.mts";
 import styles from "./chips.component.css?inline";
 import { assertNotNull } from "_error/assertions.mjs";
 import { Subtree } from "_components/subtree/subtree.mjs";
+import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
+
+interface Wrapped {
+  state: ProcessedCue;
+}
 
 export class HudChips extends RankiHudWc<ProcessedCue[]> {
   protected static name = "ranki-hud-chips" as const;
@@ -18,21 +23,8 @@ export class HudChips extends RankiHudWc<ProcessedCue[]> {
   protected animations: AnimationTypes = {
     show: RankiAnimation.expandXFadeIn(this, {
       initialCb: this.adjustWidth.bind(this),
-      // setup: {
-      //   // "margin-left": 0,
-      // },
-      // initial: {
-      //   "margin-left": "0.5em",
-      // },
     }),
-    hide: RankiAnimation.collapseXFadeOut(this, {
-      // setup: {
-      //   "margin-left": "0.5em",
-      // },
-      // initial: {
-      //   "margin-left": 0,
-      // },
-    }),
+    hide: RankiAnimation.collapseXFadeOut(this),
   };
 
   constructor() {
@@ -53,17 +45,28 @@ export class HudChips extends RankiHudWc<ProcessedCue[]> {
     this.createSingletonContainer();
   }
 
-  private createSubtreeChild(inc: ProcessedCue) {
+  private createSubtreeChild(inc: Wrapped) {
     const container = this.getContainer();
     assertNotNull(container, { why: "No container to place children in" });
-    const child = HudChipsChip.create<ProcessedCue, HudChipsChip>(inc);
+    const child = HudChipsChip.create<ProcessedCue, HudChipsChip>(inc.state);
     container.appendChild(child);
     return child;
   }
 
   private removeSubtreeChild(e: HudChipsChip) {
     e.remove();
-    // this.getContainer()?.removeChild(e);
+  }
+
+  hasNext(b: boolean) {
+    this.setProperties({ "margin-right": b ? "0.5em" : 0 });
+  }
+
+  isActive(): boolean {
+    return !!this.getCurr().length;
+  }
+
+  canReconcile(p: { type: string }): ReconciliationAction {
+    return "mutate";
   }
 
   render() {
@@ -74,7 +77,7 @@ export class HudChips extends RankiHudWc<ProcessedCue[]> {
     } else {
       this.runAnimation("hide");
     }
-    this.subtree.reconcile(props);
+    this.subtree.reconcile(props.map((state) => ({ type: "chips", state })));
     return this;
   }
 }

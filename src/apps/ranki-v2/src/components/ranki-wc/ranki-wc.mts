@@ -2,6 +2,7 @@ import type {
   AnimationTypes,
   AnimationNames,
 } from "_components/animation/animation.mts";
+import { assertNever } from "_error/assertions.mjs";
 
 export type SetPropertiesArg = Record<string, string | number>;
 export type ReconciliationAction = "advance" | "create" | "remove" | "mutate";
@@ -20,6 +21,11 @@ export class RankiWc<Props> extends HTMLElement {
 
   connectedCallback() {
     this.runAnimation("enter");
+  }
+
+  // TODO
+  isActive(): boolean {
+    assertNever({ why: "This method should be overridden" });
   }
 
   static getName() {
@@ -43,6 +49,10 @@ export class RankiWc<Props> extends HTMLElement {
     Object.entries(c).forEach(([p, v]) => {
       this.style.setProperty(p, v.toString());
     });
+  }
+
+  canReconcile(_p: { type: string; state: Props }): ReconciliationAction {
+    assertNever({ why: "This method should be overridden" });
   }
 
   public removeProperties(c: string[]) {

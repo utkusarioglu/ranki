@@ -8,6 +8,11 @@ import { HudBadgesBadge } from "./badge.mts";
 import styles from "./badges.component.css?inline";
 import { Subtree } from "_components/subtree/subtree.mjs";
 import { assertNotNull } from "_error/assertions.mjs";
+import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
+
+type ChildProp = {
+  state: ProcessedCue;
+};
 
 export class HudBadges extends RankiHudWc<ProcessedCue[]> {
   protected static name = "ranki-hud-badges" as const;
@@ -40,10 +45,12 @@ export class HudBadges extends RankiHudWc<ProcessedCue[]> {
     this.createSingletonContainer();
   }
 
-  private createSubtreeChild(inc: ProcessedCue) {
+  private createSubtreeChild(inc: ChildProp) {
     const container = this.getContainer();
     assertNotNull(container, { why: "No container to place children in" });
-    const child = HudBadgesBadge.create<ProcessedCue, HudBadgesBadge>(inc);
+    const child = HudBadgesBadge.create<ChildProp["state"], HudBadgesBadge>(
+      inc.state,
+    );
     child.setZIndex(100 - this.subtree.getSize());
     container.appendChild(child);
     return child;
@@ -53,9 +60,17 @@ export class HudBadges extends RankiHudWc<ProcessedCue[]> {
     e.remove();
   }
 
-  // hasRightNeighbor() {
-  //   this.setProperties({ "margin-right": "0.5em" });
-  // }
+  isActive(): boolean {
+    return !!this.getCurr().length;
+  }
+
+  canReconcile(p: { type: string }): ReconciliationAction {
+    return "mutate";
+  }
+
+  hasNext(b: boolean) {
+    this.setProperties({ "margin-right": b ? "0.5em" : 0 });
+  }
 
   render() {
     const props = this.getCurr();
@@ -65,7 +80,7 @@ export class HudBadges extends RankiHudWc<ProcessedCue[]> {
     } else {
       this.runAnimation("hide");
     }
-    this.subtree.reconcile(props);
+    this.subtree.reconcile(props.map((state) => ({ type: "badge", state })));
     return this;
   }
 }

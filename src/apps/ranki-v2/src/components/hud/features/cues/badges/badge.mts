@@ -19,9 +19,21 @@ export class HudBadgesBadge extends RankiHudWc<ProcessedCue> {
     return this;
   }
 
-  canReconcile(_p: ProcessedCue): ReconciliationAction {
+  canReconcile(): ReconciliationAction {
     return "mutate";
   }
+
+  isActive(): boolean {
+    return true;
+  }
+
+  // isActive(): boolean {
+  //   return true;
+  // }
+
+  // hasNext(b: boolean) {
+  //   this.setProperties({ "margin-right": b ? "0.5em" : "0" });
+  // }
 
   /**
    * FIX
