@@ -65,7 +65,7 @@ export class HudChips extends RankiHudWc<ProcessedCue[]> {
     return !!this.getCurr().length;
   }
 
-  canReconcile(p: { type: string }): ReconciliationAction {
+  canReconcile(): ReconciliationAction {
     return "mutate";
   }
 

@@ -14,12 +14,23 @@ export class RankiFacesFace extends RankiFacesWc<{}> {
     exit: RankiAnimation.collapseYFadeOut(this),
   };
 
+  isActive(): boolean {
+    return true;
+  }
+
   getKey() {
     return this.getAttribute("dqm-source");
   }
 
   setKey(key: string) {
     this.setAttribute("dqm-source", key);
+  }
+
+  canReconcile(s: WrappedState<RankiFacesFace>): ReconciliationAction {
+    assertNotUndefined(s, {
+      why: "Undefined face is required",
+    });
+    return this.getKey() === s.state.getKey() ? "advance" : "remove";
   }
 
   canReconcile_old(s: WrappedState<RankiFacesFace>): ReconciliationAction {

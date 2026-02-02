@@ -19,9 +19,17 @@ export class RankiRule extends RankiFacesWc<number> {
     exit: RankiAnimation.collapseYFadeOut(this),
   };
 
+  isActive(): boolean {
+    return true;
+  }
+
   getKey() {
     const index = this.getCurr();
     return `ranki:rule:${index}`;
+  }
+
+  canReconcile(oi: WrappedState<number>): ReconciliationAction {
+    return oi.type === "ranki:rule" ? "advance" : "remove";
   }
 
   canReconcile_old(oi: WrappedState<number>): ReconciliationAction {

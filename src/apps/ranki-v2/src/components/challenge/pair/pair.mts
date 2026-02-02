@@ -7,14 +7,9 @@ import { RankiFacesFace } from "_components/challenge/pair/face/face.mts";
 import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
 import { RankiRule } from "_components/challenge/pair/rule/rule.mts";
 import type { RankiChallengeState } from "_config/config.types.mjs";
-import {
-  assertNever,
-  assertNotNull,
-  assertNotUndefined,
-} from "_error/assertions.mjs";
-import type { CardFace } from "_config/collect/collect.types.mjs";
+import { assertNotUndefined } from "_error/assertions.mjs";
 import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
-import type { WrappedState } from "_components/subtree/subtree.mjs";
+import { Subtree, type WrappedState } from "_components/subtree/subtree.mjs";
 
 export type PairChildren = RankiFacesFace | RankiRule;
 type RenderedFaces = Record<string, RankiFacesFace>;
@@ -32,14 +27,17 @@ export class RankiFacesPair extends RankiFacesWc<
     enter: RankiAnimation.slideUpFadeIn(this),
     exit: RankiAnimation.slideUpFadeOut(this),
   };
-  private active: PairChildren[] = [];
+  // @ts-expect-error
+  private subtree = new Subtree<PairChildren, InternalState>({
+    create: this.createSubtreeChild.bind(this),
+    remove: this.removeSubtreeChild.bind(this),
+  });
   private timeout: number | undefined;
 
   canReconcile({
     state,
   }: WrappedState<RankiChallengeState>): ReconciliationAction {
-    console.log(state, this.active);
-    if (!this.active.length) {
+    if (!this.subtree.getSize()) {
       return "create";
     }
     const face = state.dqm.inputs.find((v) => v.theater === state.order[0]);
@@ -48,7 +46,7 @@ export class RankiFacesPair extends RankiFacesWc<
     }
 
     // TODO this is temporary. it assumes the key is the source
-    if (this.active[0].getKey() === face.dqm) {
+    if (this.subtree.getFirst()!.getKey() === face.dqm) {
       return "mutate";
     } else {
       return "remove";
@@ -67,7 +65,7 @@ export class RankiFacesPair extends RankiFacesWc<
   }
 
   isActive(): boolean {
-    return !!this.active.length;
+    return !!this.subtree.getSize();
   }
 
   build() {
@@ -85,17 +83,25 @@ export class RankiFacesPair extends RankiFacesWc<
   render() {
     this.build();
 
-    // REMOVE
-    const newFaces = this.renderDqm();
-    // REMOVE
-    const firstNew = this.reconcile(newFaces);
+    const curr = this.getCurr();
+    const l: any[] = [];
+    curr.order.forEach((type) => {
+      switch (type) {
+        case "ranki:rule":
+          l.push({ type, state: {} });
+          break;
+        default:
+          l.push({ type, state: curr.rendered[type] });
+      }
+    });
 
+    const firstNew = this.subtree.reconcile(l);
     this.delayedScroll(firstNew, "smooth");
     return this;
   }
 
   private delayedScroll(
-    firstNew: number,
+    firstNew: PairChildren | undefined,
     behavior: ScrollBehavior,
   ): Promise<void> {
     const LATENCY = 500;
@@ -119,11 +125,10 @@ export class RankiFacesPair extends RankiFacesWc<
           window.scrollTo({ top: 0, behavior });
           return;
         }
-        const elem = this.active[firstNew];
         const observer = new IntersectionObserver(
           ([entry]) => {
             if (!entry.isIntersecting) {
-              elem.scrollIntoView({ behavior, block: "center" });
+              firstNew.scrollIntoView({ behavior, block: "center" });
             }
             observer.disconnect();
           },
@@ -133,15 +138,13 @@ export class RankiFacesPair extends RankiFacesWc<
           },
         );
 
-        observer.observe(elem);
+        observer.observe(firstNew);
         resolve();
       }, LATENCY);
     });
   }
 
   private renderFaces(rawCurr: RankiChallengeState): RenderedFaces {
-    // const curr = this.getCurr();
-    console.log("c", rawCurr);
     const faces: [string, RankiFacesFace][] = [];
     const theaters: [string, () => HTMLDivElement][] = [];
     rawCurr.dqm.inputs.forEach((n) => {
@@ -156,150 +159,29 @@ export class RankiFacesPair extends RankiFacesWc<
     return Object.fromEntries(faces);
   }
 
-  // REMOVE
-  private renderDqm(): RenderedFaces {
-    const curr = this.getCurr();
-    const faces: [string, RankiFacesFace][] = [];
-    const theaters: [string, () => HTMLDivElement][] = [];
-    curr.dqm.inputs.forEach((n) => {
-      const face = RankiFacesFace.create<{}, RankiFacesFace>({});
-      face.setKey(n.dqm);
-      faces.push([n.theater, face as RankiFacesFace]);
-      theaters.push([n.theater, () => face as unknown as HTMLDivElement]);
-    });
-    renderDqm(this.getCurr().dqm, {
-      theaters: Object.fromEntries(theaters),
-    });
-    return Object.fromEntries(faces);
-  }
-
-  // REMOVE
-  private reconcile(newTheaters: RenderedFaces) {
-    const curr = this.getCurr();
-    const container = this.getContainer();
-    const active: (PairChildren | null)[] = this.active;
-    let ii = 0; // face index
-    let ci = 0; // active index
-    let firstNew: number = 0;
-
-    while (ii < curr.order.length || ci < active.length) {
-      const faceName = curr.order[ii];
-      const incumbent = active[ci];
-      assertNotNull(incumbent, {
-        why: "Null means this.items is not filtered",
-      });
-      let action: ReconciliationAction;
-      if (!incumbent && faceName) {
-        action = "create";
-      } else if (incumbent && !faceName) {
-        action = "remove";
-      } else {
-        action = this.canChildReconcile(incumbent, ii, faceName, newTheaters);
-      }
-
-      switch (action) {
-        case "advance":
-          ii++;
-          ci++;
-          break;
-        case "remove":
-          incumbent.remove();
-          active[ci] = null;
-          ci++;
-          break;
-        case "create":
-          const elem = this.createChild(faceName, ii, container, newTheaters);
-          container.appendChild(elem);
-          this.active.push(elem);
-          firstNew === 0 && (firstNew = ci);
-          ii++;
-          ci++;
-          break;
-        default:
-          assertNever({ why: "Unrecognized action", details: { action } });
-      }
-    }
-    this.active = active.filter((v) => v !== null);
-    return firstNew;
-  }
   private removeSubtreeChild(e: PairChildren) {
     e.remove();
   }
 
-  private createSubtreeChild(
-    s: WrappedState<InternalState>,
-    index: number,
-    // order: CardFace,
-    // oi: number,
-    // container: HTMLDivElement,
-    // newTheaters: RenderedFaces,
-  ) {
+  private createSubtreeChild(s: WrappedState<InternalState>, index: number) {
     const container = this.getContainer();
     let elem: PairChildren;
     switch (s.type) {
       case "ranki:rule":
-        elem = RankiRule.create<number, RankiRule>(
-          index,
-          // container,
-        ).setVariant("horizontal");
-        this.appendChild(container);
+        elem = RankiRule.create<number, RankiRule>(index).setVariant(
+          "horizontal",
+        );
+        container.appendChild(elem);
         return elem;
       default:
-        elem = s.state.rendered[s.state.face];
-        // elem = newTheaters[order];
-        assertNotUndefined(elem, {
+        assertNotUndefined(s.state, {
           why: "Undefined face is required",
           details: { face: s.state.face },
         });
+        // @ts-expect-error
+        container.appendChild(s.state);
 
-        return elem;
-    }
-  }
-
-  // REMOVE
-  private createChild(
-    order: CardFace,
-    oi: number,
-    container: HTMLDivElement,
-    newTheaters: RenderedFaces,
-  ) {
-    let elem: PairChildren;
-    switch (order) {
-      case "ranki:rule":
-        elem = RankiRule.createAndAttach<number, RankiRule>(
-          oi,
-          container,
-        ).setVariant("horizontal");
-        return elem;
-      default:
-        elem = newTheaters[order];
-        assertNotUndefined(elem, {
-          why: "Undefined face is required",
-          details: { order },
-        });
-        container.appendChild(elem);
-        return elem;
-    }
-  }
-
-  // REMOVE
-  private canChildReconcile(
-    incumbent: PairChildren,
-    oi: number,
-    order: CardFace,
-    newTheaters: RenderedFaces,
-  ) {
-    switch (order) {
-      case "ranki:rule":
-        return (incumbent as RankiRule).canReconcile({
-          type: order,
-          state: oi,
-        });
-      default:
-        return (incumbent as RankiFacesFace).canReconcile_old({
-          type: order,
-          state: newTheaters[order],
-        });
+        return s.state;
     }
   }
 }

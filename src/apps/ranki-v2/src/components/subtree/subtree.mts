@@ -54,9 +54,10 @@ export class Subtree<ElemType extends ElemMin<State>, State> {
     return this.subtree.length;
   }
 
-  reconcile(curr: WrappedState<State>[]) {
+  reconcile(curr: WrappedState<State>[]): ElemType | undefined {
     let ii = 0; // incoming items index;
     let ci = 0; // active items index;
+    let firstNew: number = 0;
     const working = this.subtree as WorkingList<ElemType, State>;
     while (ii < curr.length || ci < this.subtree.length) {
       let action: ReconciliationAction;
@@ -89,8 +90,9 @@ export class Subtree<ElemType extends ElemMin<State>, State> {
           ii++;
           break;
         case "create":
-          const elem = this.create(state, ii);
-          working.push({ element: elem, state });
+          const element = this.create(state, ii);
+          working.push({ element, state });
+          firstNew === 0 && (firstNew = ci);
           ci++;
           ii++;
           break;
@@ -100,6 +102,7 @@ export class Subtree<ElemType extends ElemMin<State>, State> {
     }
     this.subtree = working.filter((v) => v !== null);
     this.callHasNext();
+    return this.subtree[firstNew]?.element;
   }
 
   private callHasNext() {
