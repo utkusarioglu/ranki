@@ -3,6 +3,7 @@ import { RankiFacesPair } from "_components/challenge/pair/pair.mts";
 import { ruleStyles } from "_components/challenge/pair/rule/rule.mts";
 import type { RankiChallengeState } from "_config/config.types.mts";
 import styles from "./challenge.component.css?inline";
+import { Subtree, type WrappedState } from "_components/subtree/subtree.mjs";
 
 export class RankiChallenge extends RankiFacesWc<RankiChallengeState> {
   public static name = "ranki-challenge" as const;
@@ -10,36 +11,29 @@ export class RankiChallenge extends RankiFacesWc<RankiChallengeState> {
     super(true);
     this.pushStyles(styles, ruleStyles);
   }
-  private list: RankiFacesPair[] = [];
+  private subtree = new Subtree<RankiFacesPair, RankiChallengeState>({
+    // @ts-expect-error
+    create: this.createNewPair.bind(this),
+    remove: this.removePair.bind(this),
+  });
 
-  private createNewPair(curr: RankiChallengeState) {
-    this.list.push(RankiFacesPair.createAndAttach(curr, this.shadowRoot!));
+  private createNewPair(curr: WrappedState<RankiChallengeState>) {
+    const elem = RankiFacesPair.createAndAttach(curr.state, this.shadowRoot!);
+    this.shadowRoot!.appendChild(elem);
+    return elem;
   }
 
-  private removePrecedingPairs() {
-    this.list.slice(0, -1).forEach((p) => p.remove());
-  }
-
-  private build() {
-    const curr = this.getCurr();
-    if (!this.list.length) {
-      this.createNewPair(curr);
-      return;
-    }
-
-    this.removePrecedingPairs();
-
-    const last = this.list.at(-1)!;
-    if (last.canReconcile(curr)) {
-      last.setProps(curr);
-    } else {
-      last.remove();
-      this.createNewPair(curr);
-    }
+  private removePair(e: RankiFacesPair) {
+    e.remove();
   }
 
   render() {
-    this.build();
+    this.subtree.reconcile([
+      {
+        type: "pair",
+        state: this.getCurr(),
+      },
+    ]);
     return this;
   }
 }

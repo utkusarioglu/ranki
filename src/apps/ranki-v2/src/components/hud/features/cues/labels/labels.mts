@@ -69,7 +69,6 @@ export class HudLabels extends RankiHudWc<ProcessedCue[]> {
   }
 
   canReconcile(p: { type: string }): ReconciliationAction {
-    console.log("c", p);
     return p.type === "labels" ? "mutate" : "remove";
   }
 

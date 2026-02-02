@@ -31,7 +31,6 @@ type SubtreeList<ElemType, State> = SubtreeType<ElemType, State>[];
 type WorkingList<ElemType, State> = (SubtreeType<ElemType, State> | null)[];
 
 export class Subtree<ElemType extends ElemMin<State>, State> {
-  // private container!: HTMLElement;
   private subtree: SubtreeList<ElemType, State> = [];
   private create!: CreateChildFn<ElemType, State>;
   private remove!: RemoveChildFn<ElemType>;
@@ -43,6 +42,9 @@ export class Subtree<ElemType extends ElemMin<State>, State> {
 
   getLast(): ElemType | undefined {
     return this.subtree.at(-1)?.element;
+  }
+  getFirst(): ElemType | undefined {
+    return this.subtree[0]?.element;
   }
 
   getSize() {

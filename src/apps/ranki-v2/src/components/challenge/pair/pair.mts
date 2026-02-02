@@ -14,6 +14,7 @@ import {
 } from "_error/assertions.mjs";
 import type { CardFace } from "_config/collect/collect.types.mjs";
 import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
+import type { WrappedState } from "_components/subtree/subtree.mjs";
 
 export type PairChildren = RankiFacesFace | RankiRule;
 type RenderedFaces = Record<string, RankiFacesFace>;
@@ -27,25 +28,32 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
   private active: PairChildren[] = [];
   private timeout: number | undefined;
 
-  canReconcile(props: RankiChallengeState): boolean {
+  canReconcile({
+    state,
+  }: WrappedState<RankiChallengeState>): ReconciliationAction {
+    console.log(state, this.active);
     if (!this.active.length) {
-      return true;
+      return "create";
     }
-    const face = props.dqm.inputs.find((v) => v.theater === props.order[0]);
+    const face = state.dqm.inputs.find((v) => v.theater === state.order[0]);
     if (!face) {
-      return false;
+      return "remove";
     }
 
     // TODO this is temporary. it assumes the key is the source
     if (this.active[0].getKey() === face.dqm) {
-      return true;
+      return "mutate";
     } else {
-      return false;
+      return "remove";
     }
   }
 
   getContainer(): HTMLDivElement {
     return this.querySelector("ranki-faces-pair > .container")!;
+  }
+
+  isActive(): boolean {
+    return !!this.active.length;
   }
 
   build() {
@@ -118,6 +126,7 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
     const faces: [string, RankiFacesFace][] = [];
     const theaters: [string, () => HTMLDivElement][] = [];
     curr.dqm.inputs.forEach((n) => {
+      // @ts-expect-error
       const face = RankiFacesFace.create<{}, RankiFacesFace>({});
       face.setKey(n.dqm);
       faces.push([n.theater, face as RankiFacesFace]);
@@ -187,6 +196,7 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
     let elem: PairChildren;
     switch (order) {
       case "ranki:rule":
+        // @ts-expect-error
         elem = RankiRule.createAndAttach<number, RankiRule>(
           oi,
           container,
