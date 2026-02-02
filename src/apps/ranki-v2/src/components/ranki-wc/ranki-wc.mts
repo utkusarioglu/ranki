@@ -8,9 +8,9 @@ import { assertNever } from "_error/assertions.mjs";
 export type SetPropertiesArg = Record<string, string | number>;
 export type ReconciliationAction = "advance" | "create" | "remove" | "mutate";
 
-export class RankiWc<Props> extends HTMLElement {
-  private curr!: Props;
-  private prev: Props | null = null;
+export class RankiWc<Props, InternalState = Props> extends HTMLElement {
+  private curr!: InternalState;
+  private prev: InternalState | null = null;
   protected animations: AnimationTypes = {};
 
   constructor(hasShadow: boolean) {
@@ -110,18 +110,22 @@ export class RankiWc<Props> extends HTMLElement {
     }
   }
 
-  getCurr(): Props {
+  getCurr(): InternalState {
     return this.curr;
   }
 
-  getPrev(): Props | null {
+  getPrev(): InternalState | null {
     return this.prev;
   }
 
   setProps(props: Props) {
     this.prev = this.curr;
-    this.curr = props;
+    this.curr = this.buildInternalState(props);
     this.render();
+  }
+
+  protected buildInternalState(props: Props): InternalState {
+    return props as unknown as InternalState;
   }
 
   render(): this {

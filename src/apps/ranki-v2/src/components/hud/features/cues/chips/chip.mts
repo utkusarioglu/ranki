@@ -22,6 +22,7 @@ export class HudChipsChip extends RankiHudWc<ProcessedCue> {
   canReconcile(): ReconciliationAction {
     return "mutate";
   }
+
   isActive(): boolean {
     return true;
   }

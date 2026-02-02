@@ -14,11 +14,14 @@ interface ElemMin<State> extends RankiWc<any> {
 }
 
 interface SubtreeHooks<ElemType, State> {
-  create(p: WrappedState<State>): ElemType;
+  create(p: WrappedState<State>, index: number): ElemType;
   remove(e: ElemType): void;
 }
 
-type CreateChildFn<ElemType, State> = (p: WrappedState<State>) => ElemType;
+type CreateChildFn<ElemType, State> = (
+  p: WrappedState<State>,
+  index: number,
+) => ElemType;
 type RemoveChildFn<ElemType> = (e: ElemType) => void;
 
 type SubtreeType<ElemType, State> = {
@@ -86,7 +89,7 @@ export class Subtree<ElemType extends ElemMin<State>, State> {
           ii++;
           break;
         case "create":
-          const elem = this.create(state);
+          const elem = this.create(state, ii);
           working.push({ element: elem, state });
           ci++;
           ii++;

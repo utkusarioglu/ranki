@@ -19,7 +19,14 @@ import type { WrappedState } from "_components/subtree/subtree.mjs";
 export type PairChildren = RankiFacesFace | RankiRule;
 type RenderedFaces = Record<string, RankiFacesFace>;
 
-export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
+interface InternalState extends RankiChallengeState {
+  rendered: RenderedFaces;
+}
+
+export class RankiFacesPair extends RankiFacesWc<
+  RankiChallengeState,
+  InternalState
+> {
   public static name = "ranki-faces-pair" as const;
   protected animations: AnimationTypes = {
     enter: RankiAnimation.slideUpFadeIn(this),
@@ -48,6 +55,13 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
     }
   }
 
+  protected override buildInternalState(
+    props: RankiChallengeState,
+  ): InternalState {
+    const rendered = this.renderFaces(props);
+    return { ...props, rendered };
+  }
+
   getContainer(): HTMLDivElement {
     return this.querySelector("ranki-faces-pair > .container")!;
   }
@@ -70,8 +84,12 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
 
   render() {
     this.build();
+
+    // REMOVE
     const newFaces = this.renderDqm();
+    // REMOVE
     const firstNew = this.reconcile(newFaces);
+
     this.delayedScroll(firstNew, "smooth");
     return this;
   }
@@ -121,12 +139,29 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
     });
   }
 
+  private renderFaces(rawCurr: RankiChallengeState): RenderedFaces {
+    // const curr = this.getCurr();
+    console.log("c", rawCurr);
+    const faces: [string, RankiFacesFace][] = [];
+    const theaters: [string, () => HTMLDivElement][] = [];
+    rawCurr.dqm.inputs.forEach((n) => {
+      const face = RankiFacesFace.create<{}, RankiFacesFace>({});
+      face.setKey(n.dqm);
+      faces.push([n.theater, face as RankiFacesFace]);
+      theaters.push([n.theater, () => face as unknown as HTMLDivElement]);
+    });
+    renderDqm(rawCurr.dqm, {
+      theaters: Object.fromEntries(theaters),
+    });
+    return Object.fromEntries(faces);
+  }
+
+  // REMOVE
   private renderDqm(): RenderedFaces {
     const curr = this.getCurr();
     const faces: [string, RankiFacesFace][] = [];
     const theaters: [string, () => HTMLDivElement][] = [];
     curr.dqm.inputs.forEach((n) => {
-      // @ts-expect-error
       const face = RankiFacesFace.create<{}, RankiFacesFace>({});
       face.setKey(n.dqm);
       faces.push([n.theater, face as RankiFacesFace]);
@@ -138,6 +173,7 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
     return Object.fromEntries(faces);
   }
 
+  // REMOVE
   private reconcile(newTheaters: RenderedFaces) {
     const curr = this.getCurr();
     const container = this.getContainer();
@@ -186,7 +222,41 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
     this.active = active.filter((v) => v !== null);
     return firstNew;
   }
+  private removeSubtreeChild(e: PairChildren) {
+    e.remove();
+  }
 
+  private createSubtreeChild(
+    s: WrappedState<InternalState>,
+    index: number,
+    // order: CardFace,
+    // oi: number,
+    // container: HTMLDivElement,
+    // newTheaters: RenderedFaces,
+  ) {
+    const container = this.getContainer();
+    let elem: PairChildren;
+    switch (s.type) {
+      case "ranki:rule":
+        elem = RankiRule.create<number, RankiRule>(
+          index,
+          // container,
+        ).setVariant("horizontal");
+        this.appendChild(container);
+        return elem;
+      default:
+        elem = s.state.rendered[s.state.face];
+        // elem = newTheaters[order];
+        assertNotUndefined(elem, {
+          why: "Undefined face is required",
+          details: { face: s.state.face },
+        });
+
+        return elem;
+    }
+  }
+
+  // REMOVE
   private createChild(
     order: CardFace,
     oi: number,
@@ -196,7 +266,6 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
     let elem: PairChildren;
     switch (order) {
       case "ranki:rule":
-        // @ts-expect-error
         elem = RankiRule.createAndAttach<number, RankiRule>(
           oi,
           container,
@@ -208,10 +277,12 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
           why: "Undefined face is required",
           details: { order },
         });
+        container.appendChild(elem);
         return elem;
     }
   }
 
+  // REMOVE
   private canChildReconcile(
     incumbent: PairChildren,
     oi: number,
@@ -220,9 +291,15 @@ export class RankiFacesPair extends RankiFacesWc<RankiChallengeState> {
   ) {
     switch (order) {
       case "ranki:rule":
-        return (incumbent as RankiRule).canReconcile(oi);
+        return (incumbent as RankiRule).canReconcile({
+          type: order,
+          state: oi,
+        });
       default:
-        return (incumbent as RankiFacesFace).canReconcile(newTheaters[order]);
+        return (incumbent as RankiFacesFace).canReconcile_old({
+          type: order,
+          state: newTheaters[order],
+        });
     }
   }
 }

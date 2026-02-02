@@ -5,6 +5,7 @@ import {
 import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
 import styles from "./rule.css?inline";
 import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
+import type { WrappedState } from "_components/subtree/subtree.mjs";
 
 export const ruleStyles = styles;
 
@@ -23,9 +24,8 @@ export class RankiRule extends RankiFacesWc<number> {
     return `ranki:rule:${index}`;
   }
 
-  canReconcile(oi: number): ReconciliationAction {
-    const ruleKey = `ranki:rule:${oi}`;
-    return this.getKey() === ruleKey ? "advance" : "remove";
+  canReconcile_old(oi: WrappedState<number>): ReconciliationAction {
+    return oi.type === "ranki:rule" ? "advance" : "remove";
   }
 
   setVariant(v: "horizontal" | "vertical") {
