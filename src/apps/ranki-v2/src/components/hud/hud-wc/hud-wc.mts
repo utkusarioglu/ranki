@@ -1,5 +1,7 @@
 import { RankiWc } from "_components/ranki-wc/ranki-wc.mts";
 
+export type SingletonContainer = [HTMLDivElement, boolean];
+
 export class RankiHudWc<Props> extends RankiWc<Props> {
   // override connectedCallback(): void {
   //   super.connectedCallback();
@@ -37,7 +39,7 @@ export class RankiHudWc<Props> extends RankiWc<Props> {
 
   protected createSingletonContainer(
     classes: string[] = [],
-  ): [HTMLDivElement, boolean] {
+  ): SingletonContainer {
     let c = this.getContainer();
     if (c) {
       return [c, true];

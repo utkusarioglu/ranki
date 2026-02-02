@@ -4,7 +4,7 @@ import { HudAddress } from "./features/address/address.mts";
 import { HudCard } from "./features/card/card.mts";
 import { HudApp } from "./features/app/app.mts";
 import { HudTags } from "./features/tags/tags.mts";
-import { RankiHudWc } from "./hud-wc/hud-wc.mts";
+import { RankiHudWc, type SingletonContainer } from "./hud-wc/hud-wc.mts";
 import styles from "./hud.component.css?inline";
 import type {
   HudAddressProps,
@@ -49,14 +49,17 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
     ) as HTMLElement;
   }
 
-  private createSingletonHudContainer() {
-    let container = this.shadowRoot!.querySelector("div.container");
+  protected createSingletonContainer(
+    classes: string[] = [],
+  ): SingletonContainer {
+    let container = this.shadowRoot!.querySelector(
+      "div.container",
+    ) as HTMLDivElement;
     if (container) {
-      const tail = container.querySelector(".scroll-scroller") as HTMLElement;
-      return { head: container, tail };
+      return [container, true];
     }
     container = document.createElement("div");
-    container.classList.add("container");
+    container.classList.add("container", ...classes);
     const center = document.createElement("div");
     center.classList.add("center");
     container.append(center);
@@ -65,7 +68,7 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
     center.appendChild(scroller.head);
     this.shadowRoot!.adoptedStyleSheets.push(scroller.sheet);
     this.shadowRoot!.replaceChildren(container);
-    return { head: container, tail: scroller.tail };
+    return [container, false];
   }
 
   private createSubtreeChild(state: Wrapped) {
@@ -95,7 +98,7 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
   }
 
   private build() {
-    this.createSingletonHudContainer();
+    this.createSingletonContainer();
   }
 
   render() {
