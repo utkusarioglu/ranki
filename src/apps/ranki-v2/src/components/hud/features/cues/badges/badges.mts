@@ -51,8 +51,11 @@ export class HudBadges extends RankiHudWc<ProcessedCue[]> {
 
   private removeSubtreeChild(e: HudBadgesBadge) {
     e.remove();
-    // this.getContainer()?.removeChild(e);
   }
+
+  // hasRightNeighbor() {
+  //   this.setProperties({ "margin-right": "0.5em" });
+  // }
 
   render() {
     const props = this.getCurr();

@@ -43,15 +43,6 @@ export class HudCues extends RankiHudWc<ProcessedCueMapHud> {
     this.pushStyles(styles);
   }
 
-  // private adjustWidth() {
-  //   const container = this.getContainer();
-  //   if (!container) return;
-  //   const left = this.getLeft();
-  //   const last = this.subtree.at(-1);
-  //   const right = last?.getRight() || left;
-  //   this.setProperties({ width: right - left + "px" });
-  // }
-
   private build() {
     const [container, exists] = this.createSingletonContainer();
     if (exists) return;
@@ -65,9 +56,25 @@ export class HudCues extends RankiHudWc<ProcessedCueMapHud> {
 
   private reconcile() {
     const curr = this.getCurr();
-    [curr.badges, curr.chips, curr.labels].forEach((c, i) => {
-      this.subtree[i].setProps(c);
-    });
+    [curr.badges, curr.chips, curr.labels]
+      .map((props, i, a) => {
+        if (a[i + 1]?.length && a[i].length) {
+          return {
+            props,
+            hasNextNeighbor: true,
+          };
+        } else {
+          return {
+            props: props,
+            hasNextNeighbor: false,
+          };
+        }
+      })
+      .forEach((c, i) => {
+        const e = this.subtree[i];
+        e.setProps(c.props);
+        e.setProperties({ "margin-right": c.hasNextNeighbor ? "0.5em" : "0" });
+      });
   }
 
   render(): this {

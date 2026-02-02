@@ -42,7 +42,6 @@ export class Subtree<ElemType extends ElemMin<Props>, Props> {
     let ii = 0; // incoming items index;
     let ci = 0; // active items index;
     const working = this.subtree;
-    console.log({ working, curr });
     while (ii < curr.length || ci < this.subtree.length) {
       let action: ReconciliationAction;
       const active = working[ci];

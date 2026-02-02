@@ -17,13 +17,13 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
     this.pushStyles(styles);
   }
 
-  private container() {
-    const c = this.shadowRoot!.querySelector("div.container");
-    if (c) {
-      const tail = c.querySelector(".scroll-scroller") as HTMLElement;
-      return { head: c, tail };
+  private createSingletonHudContainer() {
+    let container = this.shadowRoot!.querySelector("div.container");
+    if (container) {
+      const tail = container.querySelector(".scroll-scroller") as HTMLElement;
+      return { head: container, tail };
     }
-    const container = document.createElement("div");
+    container = document.createElement("div");
     container.classList.add("container");
     const center = document.createElement("div");
     center.classList.add("center");
@@ -37,24 +37,24 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
   }
 
   private build() {
-    const { head, tail } = this.container();
-    const props = this.getCurr();
-    props.order.forEach((p) => {
+    const { head, tail } = this.createSingletonHudContainer();
+    const curr = this.getCurr();
+    curr.order.forEach((p) => {
       switch (p) {
         case "address":
-          HudAddress.singleton(props.address, tail);
+          HudAddress.singleton(curr.address, tail);
           break;
         case "card":
-          HudCard.singleton(props.card, tail);
+          HudCard.singleton(curr.card, tail);
           break;
         case "cues":
-          HudCues.singleton(props.cues, tail);
+          HudCues.singleton(curr.cues, tail);
           break;
         case "app":
-          HudApp.singleton(props.parser, tail);
+          HudApp.singleton(curr.parser, tail);
           break;
         case "tags":
-          HudTags.singleton(props.tags, tail);
+          HudTags.singleton(curr.tags, tail);
           break;
         default:
           assertNever({
