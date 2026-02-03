@@ -67,7 +67,7 @@ export interface HudAppProps extends HudElementCommon {
 
 export interface HudTagListItem {
   type: "ranki" | "anki";
-  text: string;
+  text: AnkiRawTag | RankiTag;
 }
 
 export interface HudTagsProps extends HudElementCommon {

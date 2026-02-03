@@ -9,8 +9,9 @@ import type {
 } from "_components/hud/hud.types.mts";
 import { HudTagsTag } from "./HudTagsTag.mts";
 import styles from "./tags.component.css?inline";
-import type { WrappedState } from "_components/subtree/subtree.mjs";
+import { Subtree, type WrappedState } from "_components/subtree/subtree.mjs";
 import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
+import { assertNotNull } from "_error/assertions.mjs";
 
 export class HudTags extends RankiHudWc<HudTagsProps> {
   protected static name = "ranki-hud-tags" as const;
@@ -20,6 +21,10 @@ export class HudTags extends RankiHudWc<HudTagsProps> {
     }),
     hide: RankiAnimation.collapseXFadeOut(this, {}),
   };
+  private subtree = new Subtree<HudTagsTag, HudTagListItem>({
+    create: this.createSubtreeChild.bind(this),
+    remove: this.removeSubtreeChild.bind(this),
+  });
 
   constructor() {
     super(true);
@@ -34,76 +39,49 @@ export class HudTags extends RankiHudWc<HudTagsProps> {
     return s.type === "tags" ? "mutate" : "remove";
   }
 
+  // TODO
   private adjustWidth() {
     const container = this.getContainer();
-    if (!container) {
-      return;
-    }
-    const props = this.getCurr();
-    const last = container.childNodes[props.count - 1] as HudTagsTag;
-    const right = last.getRight();
+    if (!container) return;
     const left = this.getLeft();
+    const last = this.subtree.getLast();
+    const right = last?.getRight() || left;
     this.setProperties({ width: right - left + "px" });
   }
 
-  private subtree(container: HTMLDivElement) {
-    const props = this.getCurr();
-    const cn = container.childNodes.length;
-
-    const sn = props.count;
-    const rm: HudTagsTag[] = [];
-
-    for (let i = 0; i < Math.max(cn, sn); i++) {
-      const s = props.list[i];
-      if (s) {
-        const e = this.shadowRoot!.querySelector(
-          `[data-index="${i}"]`,
-        ) as HTMLDivElement;
-        if (!e) {
-          this.createTag(s, i, container);
-        } else {
-          this.mutateTag(s, e);
-        }
-      } else {
-        rm.push(container.childNodes[i] as HudTagsTag);
-      }
-    }
-    rm.length &&
-      rm.forEach((r) => {
-        r.remove();
-      });
-  }
-
   private build() {
-    const [container] = this.createSingletonContainer();
-    this.subtree(container);
-    this.adjustWidth();
-  }
-
-  mutateTag(s: HudTagListItem, e: HTMLDivElement) {
-    e.className = s.type;
-    e.innerText = s.text || "";
-  }
-
-  createTag(s: HudTagListItem, i: number, container: HTMLDivElement) {
-    const tag = HudTagsTag.createAndAttach({}, container);
-    tag.classList.add("neutral");
-    tag.setAttribute("data-index", i.toString());
-    tag.addClass(s.type);
-    tag.innerText = s.text || "";
+    this.createSingletonContainer();
   }
 
   isActive(): boolean {
     return !!this.getCurr().count;
   }
 
+  private createSubtreeChild(s: WrappedState<HudTagListItem>) {
+    const container = this.getContainer();
+    assertNotNull(container, { why: "Creation requires container" });
+    return HudTagsTag.createAndAttach<HudTagListItem, HudTagsTag>(
+      s.state,
+      container,
+    );
+  }
+
+  private removeSubtreeChild(e: HudTagsTag) {
+    e.remove();
+  }
+
   render() {
-    if (this.getCurr().count > 0) {
-      this.build();
+    this.build();
+    const curr = this.getCurr();
+    if (curr.count > 0) {
       this.runAnimation("show");
     } else {
       this.runAnimation("hide");
     }
+    this.subtree.reconcile(
+      curr.list.map(({ type, text }) => ({ type, state: { type, text } })),
+    );
+    this.adjustWidth();
     return this;
   }
 }
