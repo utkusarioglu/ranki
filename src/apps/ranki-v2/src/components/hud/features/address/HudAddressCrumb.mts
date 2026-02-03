@@ -4,23 +4,11 @@ import { RankiAnimation } from "_components/animation/animation.mts";
 import type { HudAddressSegment } from "_components/hud/hud.types.mjs";
 import { assertNever } from "_error/assertions.mjs";
 import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
-import type {
-  ReconciliationInfo,
-  WrappedState,
-} from "_components/subtree/subtree.mjs";
 
 export class HudAddressCrumb extends RankiHudWc<HudAddressSegment> {
   protected static name = "hud-address-crumb" as const;
   protected animations: AnimationTypes = {
-    enter: RankiAnimation.fadeIn(this, {
-      // setup: {
-      //   // "max-width": 0,
-      // },
-      // initial: {
-      //   width: "auto",
-      //   // "max-width": "auto",
-      // },
-    }),
+    enter: RankiAnimation.fadeIn(this, {}),
     exit: RankiAnimation.fadeOut(this),
   };
 

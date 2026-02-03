@@ -1,8 +1,7 @@
 :host {
   --transition-duration: var(--rha-transition-duration, 0);
   --transition-property:
-    background, color, padding, border, opacity, scale, transform, width,
-    margin-right, height;
+    background, color, padding, border, opacity, scale, transform, width, height;
 
   --c-background: var(--rha-c-background, transparent);
   --c-backdrop-filter: var(--rha-c-backdrop-filter, none);
@@ -66,7 +65,7 @@
   background: var(--c-background);
   border-radius: var(--c-border-radius);
   border: var(--c-border);
-  gap: var(--c-gap);
+  /* gap: var(--c-gap); */
   backdrop-filter: var(--c-backdrop-filter);
 }
 
@@ -98,6 +97,25 @@
   background: var(--d-background);
   border: var(--d-border);
   white-space: nowrap;
+}
+
+:host > .container .divider {
+  &:first-child {
+    padding-left: var(--c-gap);
+  }
+  &:last-child {
+    padding-right: var(--c-gap);
+  }
+}
+
+/* ANKI */
+:host > .container > .divider:not(:has(+ .divider)) {
+  padding-right: var(--c-gap);
+}
+
+/* ANKI */
+:host > .container > :not(:is(.divider)) + .divider {
+  padding-left: var(--c-gap);
 }
 
 hud-address-crumb {

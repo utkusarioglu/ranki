@@ -17,7 +17,6 @@ export function isGlobMatch(
   single: string = GLOB_SINGLE,
   multi: string = GLOB_MULTI,
 ) {
-  console.log("glob", currStr, matchStr);
   const curr = currStr.split(separator);
   let mp = 0;
   let match: string[] = [];

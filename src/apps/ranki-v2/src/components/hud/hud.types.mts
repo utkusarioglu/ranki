@@ -18,20 +18,27 @@ export type HudVisibility = "visible" | "pull" | "pullWhenShort";
  * @dev
  * #1 This cannot be AnkiDeck as now it also includes separator, trim and hide tokens
  */
-export type HudAddressSegment =
-  | HudAddressSegmentBare
-  | HudAddressSegmentWithParts;
+// export type HudAddressSegment_OLD =
+//   | HudAddressSegmentBare
+//   | HudAddressSegmentWithParts;
 
-export interface HudAddressSegmentPart {
-  mode: "hide" | "trim";
-  shown: string; // #1
-  masked: string;
-}
-export interface HudAddressSegmentBare {
+export interface HudAddressSegment {
   type: "divider" | "segment";
-  mode: "show" | "separator";
+  mode: "show" | "separator" | "hide" | "trim" | "drop";
   shown: string[];
+  masked: string[];
 }
+
+// export interface HudAddressSegmentPart {
+//   mode: "hide" | "trim";
+//   shown: string; // #1
+//   masked: string;
+// }
+// export interface HudAddressSegmentBare {
+//   type: "divider" | "segment";
+//   mode: "show" | "separator";
+//   shown: string[];
+// }
 /**
  * @dev
  * #1 Stores parts that are hidden by trim and hide modes.
@@ -39,12 +46,12 @@ export interface HudAddressSegmentBare {
  * been hiding because of this shape. shown[] element indices should correspond
  * to the parts given.
  */
-export interface HudAddressSegmentWithParts {
-  type: "divider";
-  mode: "hide" | "trim";
-  shown: string[];
-  parts: HudAddressSegmentPart[]; // #1
-}
+// export interface HudAddressSegmentWithParts {
+//   type: "divider" | "segment";
+//   mode: "hide" | "trim";
+//   shown: string[];
+//   // parts: HudAddressSegmentPart[]; // #1
+// }
 
 export interface HudAddressProps extends HudElementCommon {
   tokens: RankiAddressTokens;

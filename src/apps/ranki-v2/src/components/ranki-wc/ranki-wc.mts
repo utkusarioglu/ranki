@@ -77,14 +77,29 @@ export class RankiWc<Props, InternalState = Props> extends HTMLElement {
   }
 
   public twoRaf(cb: () => void): Promise<void> {
-    return new Promise<void>((r) => {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          cb();
-          r();
-        });
-      });
-    });
+    return this.raf(2, cb);
+    // return new Promise<void>((r) => {
+    //   requestAnimationFrame(() => {
+    //     requestAnimationFrame(() => {
+    //       cb();
+    //       r();
+    //     });
+    //   });
+    // });
+  }
+
+  public raf(count: number = 1, cb: () => void): Promise<void> {
+    let curr = 0;
+    function f(resolve: () => void, cb: () => void) {
+      if (curr++ === count) {
+        cb();
+        resolve();
+      } else {
+        requestAnimationFrame(() => f(resolve, cb));
+      }
+    }
+
+    return new Promise<void>((r) => f(r, cb));
   }
 
   getLeft(): number {

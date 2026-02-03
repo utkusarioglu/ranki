@@ -1,9 +1,5 @@
 import { assertExists } from "@dqm/package-dqm-utils";
-import type {
-  HudAddressSegment,
-  HudAddressSegmentPart,
-  HudAddressSegmentWithParts,
-} from "_components/hud/hud.types.mts";
+import type { HudAddressSegment } from "_components/hud/hud.types.mts";
 import type {
   AnkiDeck,
   AnkiDeckParts,
@@ -22,8 +18,8 @@ function translateMarker(parts: AnkiDeckParts, marker: string | number) {
   let si: number;
   switch (typeof marker) {
     case "number":
-      si = marker < 0 ? parts.length + marker : marker;
-      if (si >= parts.length) {
+      si = marker < 0 ? parts.length + marker + 1 : marker;
+      if (si >= parts.length + 1) {
         throw new RankiAppError({
           code: "INDEX_ERROR",
           why: "marker points to an out of bound index",
@@ -54,6 +50,65 @@ function translateMarker(parts: AnkiDeckParts, marker: string | number) {
   return si;
 }
 
+function alt(
+  partMode: RankiBaseAddressMutationMode[],
+  tokens: RankiAddressTokens,
+  parts: AnkiDeckParts,
+) {
+  type HudAddressSegmentWorking = Pick<HudAddressSegment, "type" | "mode"> & {
+    shown: string;
+    masked: string;
+  };
+  const working: HudAddressSegmentWorking[] = [];
+
+  parts.forEach((part, i) => {
+    const mode = partMode[i];
+    const type = ["trim", "hide", "separator"].includes(mode)
+      ? ("divider" as "divider")
+      : ("segment" as "segment");
+    working.push({
+      type,
+      mode,
+      masked: mode === "trim" ? tokens[mode] : part,
+      shown: mode !== "show" ? tokens[mode] : part,
+    });
+  });
+
+  const noSep: HudAddressSegment[] = [];
+  working.forEach((w) => {
+    const prev = noSep.at(-1);
+    const hasPrev = !!prev;
+    const isCombine =
+      hasPrev && ["hide", "trim"].includes(w.mode) && prev.mode === w.mode;
+    if (isCombine) {
+      prev.masked.push(w.masked);
+    } else if (w.mode !== "drop") {
+      noSep.push({
+        ...w,
+        masked: [w.masked],
+        shown: [w.shown],
+      });
+    }
+  });
+
+  const address: HudAddressSegment[] = [];
+  noSep.forEach((w) => {
+    const prev = address.at(-1);
+    const hasPrev = !!prev;
+    if (hasPrev && w.type === "segment" && prev.type === "segment") {
+      address.push({
+        type: "divider",
+        mode: "separator",
+        shown: [tokens.separator],
+        masked: [tokens.separator],
+      });
+    }
+    address.push(w);
+  });
+
+  return address;
+}
+
 export function buildAddressSegments(
   tokens: RankiAddressTokens,
   mutations: RankiBaseAddressMutation[],
@@ -79,69 +134,74 @@ export function buildAddressSegments(
     }
   });
 
-  const address: HudAddressSegment[] = [];
-  partLoop: for (let [i, c] of partMode.entries()) {
-    const prev = address.at(-1);
+  return alt(partMode, tokens, parts);
 
-    const type = ["trim", "hide", "separator"].includes(c)
-      ? ("divider" as "divider")
-      : ("segment" as "segment");
-    for (let m of ["hide", "trim"] as HudAddressSegmentPart["mode"][]) {
-      if (prev?.mode === m && c === m) {
-        (prev as HudAddressSegmentWithParts).parts.push({
-          mode: m,
-          shown: tokens[m],
-          masked: parts[i],
-        });
-        continue partLoop;
-      }
-    }
+  // const address: HudAddressSegment_OLD[] = [];
+  // partLoop: for (let [i, c] of partMode.entries()) {
+  //   const prev = address.at(-1);
 
-    if (prev?.mode === "show" && c === "show") {
-      address.push({
-        type,
-        mode: "separator",
-        shown: [tokens.separator],
-      });
-    }
+  //   const type = ["trim", "hide", "separator"].includes(c)
+  //     ? ("divider" as "divider")
+  //     : ("segment" as "segment");
+  //   for (let m of ["hide", "trim"] as HudAddressSegmentPart["mode"][]) {
+  //     if (prev?.mode === m && c === m) {
+  //       (prev as HudAddressSegmentWithParts).parts.push({
+  //         mode: m,
+  //         shown: tokens[m],
+  //         masked: parts[i],
+  //       });
+  //       continue partLoop;
+  //     }
+  //   }
 
-    switch (c) {
-      case "trim":
-      case "hide":
-        if (prev && ["trim", "hide"].includes(prev.mode)) {
-          prev.shown.push(tokens[c]);
-          (prev as HudAddressSegmentWithParts).parts.push({
-            mode: c,
-            shown: tokens[c],
-            masked: parts[i],
-          });
-        } else {
-          const item = {
-            type,
-            mode: c,
-            shown: [tokens[c]],
-          };
-          address.push({
-            ...item,
-            type: "divider",
-            parts: [
-              {
-                mode: c,
-                shown: tokens[c],
-                masked: parts[i],
-              },
-            ],
-          });
-        }
-        break;
-      default:
-        address.push({
-          type,
-          mode: c,
-          shown: [parts[i]],
-        });
-    }
-  }
+  //   if (prev?.mode === "show" && c === "show") {
+  //     address.push({
+  //       type,
+  //       mode: "separator",
+  //       shown: [tokens.separator],
+  //     });
+  //   }
 
-  return address;
+  //   switch (c) {
+  //     case "trim":
+  //     case "hide":
+  //       if (prev && ["trim", "hide"].includes(prev.mode)) {
+  //         prev.shown.push(tokens[c]);
+  //         (prev as HudAddressSegmentWithParts).parts.push({
+  //           mode: c,
+  //           shown: tokens[c],
+  //           masked: parts[i],
+  //         });
+  //       } else {
+  //         const item = {
+  //           type,
+  //           mode: c,
+  //           shown: [tokens[c]],
+  //         };
+  //         address.push({
+  //           ...item,
+  //           type: "divider",
+  //           parts: [
+  //             {
+  //               mode: c,
+  //               shown: tokens[c],
+  //               masked: parts[i],
+  //             },
+  //           ],
+  //         });
+  //       }
+  //       break;
+  //     // @ts-expect-error
+  //     case "drop":
+  //       break;
+  //     default:
+  //       address.push({
+  //         type,
+  //         mode: c,
+  //         shown: [parts[i]],
+  //       });
+  //   }
+  // }
+
+  // return address;
 }

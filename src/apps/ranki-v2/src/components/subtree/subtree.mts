@@ -55,6 +55,10 @@ export class Subtree<ElemType extends ElemMin<State>, State> {
     return this.subtree[0]?.element;
   }
 
+  getAll() {
+    return this.subtree.map((e) => e.element);
+  }
+
   getSize() {
     return this.subtree.length;
   }

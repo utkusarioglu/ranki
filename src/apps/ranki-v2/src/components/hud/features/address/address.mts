@@ -50,15 +50,6 @@ export class HudAddress extends RankiHudWc<HudAddressProps> {
 
   private build() {
     this.createSingletonContainer();
-
-    const curr = this.getCurr();
-    this.subtree.reconcile(
-      curr.segments.map((state) => ({
-        type: state.type,
-        state,
-      })),
-    );
-    this.adjustWidth();
   }
 
   private createSubtreeChild(s: WrappedState<HudAddressSegment>) {
@@ -79,8 +70,19 @@ export class HudAddress extends RankiHudWc<HudAddressProps> {
   }
 
   render() {
+    const curr = this.getCurr();
     this.build();
-    this.runAnimation("show");
+    if (curr.count) {
+      this.runAnimation("show");
+    } else {
+      this.runAnimation("hide");
+    }
+    this.subtree.reconcile(
+      curr.segments.map((state) => ({
+        type: state.type,
+        state,
+      })),
+    );
     return this;
   }
 }
