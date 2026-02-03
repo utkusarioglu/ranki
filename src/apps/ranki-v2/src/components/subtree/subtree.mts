@@ -6,7 +6,7 @@ import type {
 
 export type WrappedState<State> = { type: string; state: State };
 
-interface ElemMin<State> extends RankiWc<any> {
+interface ElemMin<State> extends RankiWc<State> {
   canReconcile(s: WrappedState<State>): ReconciliationAction;
   remove(): Promise<void>;
   setProps(p: State): void;

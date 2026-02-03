@@ -7,7 +7,7 @@ import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 import type { WrappedState } from "_components/subtree/subtree.mjs";
 import { assertNotUndefined } from "_error/assertions.mjs";
 
-export class RankiFacesFace extends RankiFacesWc<{}> {
+export class RankiFacesFace extends RankiFacesWc<any> {
   public static name = "ranki-faces-face";
   protected animations: AnimationTypes = {
     enter: RankiAnimation.expandYFadeIn(this),

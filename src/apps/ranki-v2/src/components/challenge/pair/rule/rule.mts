@@ -9,11 +9,10 @@ import type { WrappedState } from "_components/subtree/subtree.mjs";
 
 export const ruleStyles = styles;
 
-type Variants = "horizontal" | "vertical";
+export type RankiRuleVariants = "horizontal" | "vertical";
 
-export class RankiRule extends RankiFacesWc<number> {
+export class RankiRule extends RankiFacesWc<RankiRuleVariants> {
   public static name = "ranki-rule" as const;
-  private variant: Variants = "horizontal";
   protected animations: AnimationTypes = {
     enter: RankiAnimation.expandYFadeIn(this),
     exit: RankiAnimation.collapseYFadeOut(this),
@@ -23,22 +22,20 @@ export class RankiRule extends RankiFacesWc<number> {
     return true;
   }
 
+  // DECIDE a surface area without this should be possible.
   getKey() {
     const index = this.getCurr();
     return `ranki:rule:${index}`;
   }
 
-  canReconcile(oi: WrappedState<number>): ReconciliationAction {
-    return oi.type === "ranki:rule" ? "advance" : "remove";
+  canReconcile(s: WrappedState<RankiRuleVariants>): ReconciliationAction {
+    const type = s.type === "ranki:rule";
+    const variant = this.getCurr() === s.state;
+    return type && variant ? "advance" : "remove";
   }
 
   canReconcile_old(oi: WrappedState<number>): ReconciliationAction {
     return oi.type === "ranki:rule" ? "advance" : "remove";
-  }
-
-  setVariant(v: "horizontal" | "vertical") {
-    this.variant = v;
-    return this;
   }
 
   private build() {
@@ -46,8 +43,9 @@ export class RankiRule extends RankiFacesWc<number> {
     if (hr) {
       return;
     }
+    const curr = this.getCurr();
     hr = document.createElement("div");
-    hr.classList.add(this.variant);
+    hr.classList.add(curr);
     this.classList.add("container");
     this.appendChild(hr);
   }

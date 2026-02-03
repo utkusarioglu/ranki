@@ -4,6 +4,7 @@ import { ruleStyles } from "_components/challenge/pair/rule/rule.mts";
 import type { RankiChallengeState } from "_config/config.types.mts";
 import styles from "./challenge.component.css?inline";
 import { Subtree, type WrappedState } from "_components/subtree/subtree.mjs";
+import type { RankiWc } from "_components/ranki-wc/ranki-wc.mjs";
 
 export class RankiChallenge extends RankiFacesWc<RankiChallengeState> {
   public static name = "ranki-challenge" as const;
@@ -11,16 +12,16 @@ export class RankiChallenge extends RankiFacesWc<RankiChallengeState> {
     super(true);
     this.pushStyles(styles, ruleStyles);
   }
-  private subtree = new Subtree<RankiFacesPair, RankiChallengeState>({
-    // @ts-expect-error
+  private subtree = new Subtree<
+    RankiWc<RankiChallengeState>,
+    RankiChallengeState
+  >({
     create: this.createNewPair.bind(this),
     remove: this.removePair.bind(this),
   });
 
   private createNewPair(curr: WrappedState<RankiChallengeState>) {
-    const elem = RankiFacesPair.createAndAttach(curr.state, this.shadowRoot!);
-    this.shadowRoot!.appendChild(elem);
-    return elem;
+    return RankiFacesPair.createAndAttach(curr.state, this.shadowRoot!);
   }
 
   private removePair(e: RankiFacesPair) {

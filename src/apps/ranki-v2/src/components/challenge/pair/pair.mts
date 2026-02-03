@@ -5,7 +5,10 @@ import {
 } from "_components/animation/animation.mts";
 import { RankiFacesFace } from "_components/challenge/pair/face/face.mts";
 import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
-import { RankiRule } from "_components/challenge/pair/rule/rule.mts";
+import {
+  RankiRule,
+  type RankiRuleVariants,
+} from "_components/challenge/pair/rule/rule.mts";
 import type { RankiChallengeState } from "_config/config.types.mjs";
 import { assertNotUndefined } from "_error/assertions.mjs";
 import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
@@ -18,6 +21,8 @@ interface InternalState extends RankiChallengeState {
   rendered: RenderedFaces;
 }
 
+type ChildState = RankiFacesFace | RankiRuleVariants;
+
 export class RankiFacesPair extends RankiFacesWc<
   RankiChallengeState,
   InternalState
@@ -27,8 +32,7 @@ export class RankiFacesPair extends RankiFacesWc<
     enter: RankiAnimation.slideUpFadeIn(this),
     exit: RankiAnimation.slideUpFadeOut(this),
   };
-  // @ts-expect-error
-  private subtree = new Subtree<PairChildren, InternalState>({
+  private subtree = new Subtree<PairChildren, ChildState>({
     create: this.createSubtreeChild.bind(this),
     remove: this.removeSubtreeChild.bind(this),
   });
@@ -88,7 +92,7 @@ export class RankiFacesPair extends RankiFacesWc<
     curr.order.forEach((type) => {
       switch (type) {
         case "ranki:rule":
-          l.push({ type, state: {} });
+          l.push({ type, state: "horizontal" });
           break;
         default:
           l.push({ type, state: curr.rendered[type] });
@@ -122,7 +126,7 @@ export class RankiFacesPair extends RankiFacesWc<
           window.removeEventListener(e, cancel);
         });
         if (!firstNew) {
-          window.scrollTo({ top: 0, behavior });
+          window.scrollTo({ top: 0, left: 0, behavior });
           return;
         }
         const observer = new IntersectionObserver(
@@ -163,25 +167,25 @@ export class RankiFacesPair extends RankiFacesWc<
     e.remove();
   }
 
-  private createSubtreeChild(s: WrappedState<InternalState>, index: number) {
+  private createSubtreeChild(s: WrappedState<ChildState>) {
     const container = this.getContainer();
     let elem: PairChildren;
     switch (s.type) {
       case "ranki:rule":
-        elem = RankiRule.create<number, RankiRule>(index).setVariant(
-          "horizontal",
+        elem = RankiRule.create<RankiRuleVariants, RankiRule>(
+          s.state as RankiRuleVariants,
         );
         container.appendChild(elem);
         return elem;
       default:
-        assertNotUndefined(s.state, {
+        const face = s.state as RankiFacesFace;
+        assertNotUndefined(face, {
           why: "Undefined face is required",
-          details: { face: s.state.face },
+          details: { face: s.state },
         });
-        // @ts-expect-error
-        container.appendChild(s.state);
+        container.appendChild(face as RankiFacesFace);
 
-        return s.state;
+        return face;
     }
   }
 }
