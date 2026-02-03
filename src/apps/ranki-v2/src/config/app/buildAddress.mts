@@ -82,6 +82,10 @@ export function buildAddressSegments(
   const address: HudAddressSegment[] = [];
   partLoop: for (let [i, c] of partMode.entries()) {
     const prev = address.at(-1);
+
+    const type = ["trim", "hide", "separator"].includes(c)
+      ? ("divider" as "divider")
+      : ("segment" as "segment");
     for (let m of ["hide", "trim"] as HudAddressSegmentPart["mode"][]) {
       if (prev?.mode === m && c === m) {
         (prev as HudAddressSegmentWithParts).parts.push({
@@ -95,6 +99,7 @@ export function buildAddressSegments(
 
     if (prev?.mode === "show" && c === "show") {
       address.push({
+        type,
         mode: "separator",
         shown: [tokens.separator],
       });
@@ -112,11 +117,13 @@ export function buildAddressSegments(
           });
         } else {
           const item = {
+            type,
             mode: c,
             shown: [tokens[c]],
           };
           address.push({
             ...item,
+            type: "divider",
             parts: [
               {
                 mode: c,
@@ -129,6 +136,7 @@ export function buildAddressSegments(
         break;
       default:
         address.push({
+          type,
           mode: c,
           shown: [parts[i]],
         });

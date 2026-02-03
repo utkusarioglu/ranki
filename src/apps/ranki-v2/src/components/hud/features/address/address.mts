@@ -7,11 +7,11 @@ import type {
   HudAddressProps,
   HudAddressSegment,
 } from "_components/hud/hud.types.mts";
-import { assertNever } from "_error/assertions.mts";
+import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
+import { Subtree, type WrappedState } from "_components/subtree/subtree.mjs";
+import { assertNotNull } from "_error/assertions.mts";
 import styles from "./address.component.css?inline";
 import { HudAddressCrumb } from "./HudAddressCrumb.mts";
-import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
-import type { WrappedState } from "_components/subtree/subtree.mjs";
 
 export class HudAddress extends RankiHudWc<HudAddressProps> {
   protected static name = "ranki-hud-address" as const;
@@ -21,6 +21,10 @@ export class HudAddress extends RankiHudWc<HudAddressProps> {
     }),
     hide: RankiAnimation.collapseXFadeOut(this, {}),
   };
+  private subtree = new Subtree<HudAddressCrumb, HudAddressSegment>({
+    create: this.createSubtreeChild.bind(this),
+    remove: this.removeSubtreeChild.bind(this),
+  });
 
   constructor() {
     super(true);
@@ -37,88 +41,37 @@ export class HudAddress extends RankiHudWc<HudAddressProps> {
 
   private adjustWidth() {
     const container = this.getContainer();
-    if (!container) {
-      return;
-    }
-    const right = (
-      container.childNodes[
-        this.getCurr().segments.length - 1
-      ] as HudAddressCrumb
-    ).getRight();
+    if (!container) return;
     const left = this.getLeft();
-    this.style.setProperty("width", right - left + "px");
+    const last = this.subtree.getLast();
+    const right = last?.getRight() || left;
+    this.setProperties({ width: right - left + "px" });
   }
 
   private build() {
-    const [container] = this.createSingletonContainer();
-    this.subtree(container);
+    this.createSingletonContainer();
+
+    const curr = this.getCurr();
+    this.subtree.reconcile(
+      curr.segments.map((state) => ({
+        type: state.type,
+        state,
+      })),
+    );
     this.adjustWidth();
   }
 
-  private subtree(container: HTMLDivElement) {
-    const cn = container.childNodes.length;
-    const sn = this.getCurr().segments.length;
-    const rm: HudAddressCrumb[] = [];
-
-    for (let i = 0; i < Math.max(cn, sn); i++) {
-      const s = this.getCurr().segments[i];
-      if (s) {
-        const e = this.shadowRoot!.querySelector(
-          `[data-index="${i}"]`,
-        ) as HTMLDivElement;
-        if (!e) {
-          this.createCrumb(s, i, container);
-        } else {
-          this.mutateCrumb(s, e);
-        }
-      } else {
-        rm.push(container.childNodes[i] as HudAddressCrumb);
-      }
-    }
-    rm.length &&
-      rm.forEach((r) => {
-        r.remove();
-      });
+  private createSubtreeChild(s: WrappedState<HudAddressSegment>) {
+    const container = this.getContainer();
+    assertNotNull(container, { why: "container is required" });
+    return HudAddressCrumb.createAndAttach<HudAddressSegment, HudAddressCrumb>(
+      s.state,
+      container,
+    );
   }
 
-  private mutateCrumb(s: HudAddressSegment, e: HTMLDivElement) {
-    switch (s.mode) {
-      case "trim":
-      case "hide":
-      case "separator":
-        e.className = "divider";
-        break;
-      case "show":
-        e.className = "segment";
-        break;
-      default:
-        assertNever({
-          why: "Unrecognized address segment mode",
-          details: { segments: this.getCurr().segments, segment: s },
-        });
-    }
-    e.innerText = s.shown.join("");
-  }
-
-  private createCrumb(s: HudAddressSegment, i: number, container: Element) {
-    const crumb = HudAddressCrumb.createAndAttach({}, container);
-    switch (s.mode) {
-      case "trim":
-      case "hide":
-      case "separator":
-        crumb.addClass("divider");
-        break;
-      case "show":
-        crumb.addClass("segment");
-        break;
-      default:
-        assertNever({
-          why: "Unrecognized address segment mode",
-          details: { segments: this.getCurr().segments, segment: s },
-        });
-    }
-    crumb.setAttribute("data-index", i.toString());
-    crumb.innerText = s.shown.join("");
+  private removeSubtreeChild(e: HudAddressCrumb) {
+    e.remove();
   }
 
   isActive(): boolean {

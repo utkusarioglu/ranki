@@ -28,6 +28,7 @@ export interface HudAddressSegmentPart {
   masked: string;
 }
 export interface HudAddressSegmentBare {
+  type: "divider" | "segment";
   mode: "show" | "separator";
   shown: string[];
 }
@@ -39,6 +40,7 @@ export interface HudAddressSegmentBare {
  * to the parts given.
  */
 export interface HudAddressSegmentWithParts {
+  type: "divider";
   mode: "hide" | "trim";
   shown: string[];
   parts: HudAddressSegmentPart[]; // #1

@@ -2,7 +2,7 @@
   --transition-duration: var(--rha-transition-duration, 0);
   --transition-property:
     background, color, padding, border, opacity, scale, transform, width,
-    margin-right;
+    margin-right, height;
 
   --c-background: var(--rha-c-background, transparent);
   --c-backdrop-filter: var(--rha-c-backdrop-filter, none);
@@ -89,8 +89,9 @@
   align-items: center;
   box-sizing: border-box;
   line-height: 1em;
-  display: inline-block;
-  vertical-align: middle;
+  display: flex;
+  /* vertical-align: middle; */
+  height: 100%;
   padding: var(--d-padding);
   border-radius: var(--d-border-radius);
   color: var(--d-color);

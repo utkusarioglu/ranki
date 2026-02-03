@@ -6,6 +6,11 @@ import type {
 
 export type WrappedState<State> = { type: string; state: State };
 
+export interface ReconciliationInfo<State> {
+  index: number;
+  subtree: WrappedState<State>[];
+}
+
 interface ElemMin<State> extends RankiWc<State> {
   canReconcile(s: WrappedState<State>): ReconciliationAction;
   remove(): Promise<void>;
@@ -14,13 +19,13 @@ interface ElemMin<State> extends RankiWc<State> {
 }
 
 interface SubtreeHooks<ElemType, State> {
-  create(p: WrappedState<State>, index: number): ElemType;
-  remove(e: ElemType): void;
+  create(state: WrappedState<State>, info: ReconciliationInfo<State>): ElemType;
+  remove(elem: ElemType): void;
 }
 
 type CreateChildFn<ElemType, State> = (
   p: WrappedState<State>,
-  index: number,
+  info: ReconciliationInfo<State>,
 ) => ElemType;
 type RemoveChildFn<ElemType> = (e: ElemType) => void;
 
@@ -90,7 +95,7 @@ export class Subtree<ElemType extends ElemMin<State>, State> {
           ii++;
           break;
         case "create":
-          const element = this.create(state, ii);
+          const element = this.create(state, { index: ii, subtree: curr });
           working.push({ element, state });
           firstNew === 0 && (firstNew = ci);
           ci++;

@@ -2,11 +2,20 @@ import type {
   AnimationTypes,
   AnimationNames,
 } from "_components/animation/animation.mts";
-import type { WrappedState } from "_components/subtree/subtree.mjs";
+import type {
+  ReconciliationInfo,
+  WrappedState,
+} from "_components/subtree/subtree.mjs";
 import { assertNever } from "_error/assertions.mjs";
 
 export type SetPropertiesArg = Record<string, string | number>;
-export type ReconciliationAction = "advance" | "create" | "remove" | "mutate";
+export type ReconciliationAction =
+  | "advance"
+  | "create"
+  | "remove"
+  | "mutate"
+  | "hide"
+  | "show";
 
 export class RankiWc<Props, InternalState = Props> extends HTMLElement {
   private curr!: InternalState;
@@ -52,8 +61,12 @@ export class RankiWc<Props, InternalState = Props> extends HTMLElement {
     });
   }
 
-  // @ts-expect-error
-  canReconcile(s: WrappedState<Props>): ReconciliationAction {
+  canReconcile(
+    // @ts-expect-error
+    s: WrappedState<Props>,
+    // @ts-expect-error
+    info: ReconciliationInfo<Props>,
+  ): ReconciliationAction {
     assertNever({ why: "This method should be overridden" });
   }
 
