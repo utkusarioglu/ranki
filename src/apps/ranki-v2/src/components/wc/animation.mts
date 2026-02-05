@@ -1,25 +1,20 @@
+import { assertNotExists } from "_error/assertions.mjs";
 import type { Wc } from "./wc.mts";
-
-type KeyframeResolver<T> = T | ((endState: Keyframe) => T);
-
-type KeyframeWithResolvers = {
-  [K in keyof Keyframe]?: KeyframeResolver<Keyframe[K]>;
-};
-
-interface WcAnimationIntent {
-  keyframes: KeyframeWithResolvers[];
-  options: KeyframeAnimationOptions;
-}
 
 interface WcAnimationConfig {
   keyframes: Keyframe[];
   options: KeyframeAnimationOptions;
 }
 type WcAnimationEventNames = "enter" | "exit" | "reveal" | "collapse";
-type WcAnimationEventRecord = Record<WcAnimationEventNames, WcAnimationConfig>;
+type WcAnimationEventRecord = Record<
+  WcAnimationEventNames,
+  () => WcAnimationConfig
+>;
 
 type WcDependency = HTMLElement | Wc<any>;
 type WcDependencyCallback = () => WcDependency[];
+
+const ANIMATION_PREFIX = "r-animation-";
 
 export class WcAnimation extends EventTarget {
   private self: Wc<any>;
@@ -32,23 +27,6 @@ export class WcAnimation extends EventTarget {
     this.self = self;
   }
 
-  private intentToConfig(
-    intent: WcAnimationIntent,
-    endState: Keyframe,
-  ): WcAnimationConfig {
-    return {
-      keyframes: intent.keyframes.map((k) =>
-        Object.fromEntries(
-          Object.entries(k).map(([n, v]) => [
-            n,
-            typeof v === "function" ? v(endState) : v,
-          ]),
-        ),
-      ),
-      options: intent.options,
-    };
-  }
-
   private setActive(name: string, animation: Animation) {
     this.active[name] = animation;
   }
@@ -57,13 +35,16 @@ export class WcAnimation extends EventTarget {
     delete this.active[name];
   }
 
-  onLayout(name: string, intent: WcAnimationIntent) {
+  listenEvent(
+    name: string,
+    configCb: (endState: Keyframe) => WcAnimationConfig,
+  ) {
     this.dependencyCb().map((d) => {
       (d as Wc<any>).animation &&
-        (d as Wc<any>).addEventListener(`animation-${name}`, (e) => {
+        (d as Wc<any>).addEventListener(ANIMATION_PREFIX + name, (e) => {
           e.stopPropagation();
           const endState = (e as CustomEvent).detail.endState;
-          this.runOnLayout(name, intent, endState);
+          this.runOnLayout(name, configCb, endState);
         });
     });
     return this;
@@ -71,11 +52,10 @@ export class WcAnimation extends EventTarget {
 
   private runOnLayout(
     name: string,
-    intent: WcAnimationIntent,
+    intent: (endState: Keyframe) => WcAnimationConfig,
     endState: Keyframe,
   ) {
-    const config = this.intentToConfig(intent, endState);
-    this.animate(name, config);
+    this.animate(name, intent(endState));
   }
 
   animate(name: string, config: WcAnimationConfig) {
@@ -88,33 +68,41 @@ export class WcAnimation extends EventTarget {
     return animation;
   }
 
-  setEventLibrary(events: Partial<WcAnimationEventRecord> = {}) {
-    this.events = events;
+  pushPreset(name: WcAnimationEventNames, config: () => WcAnimationConfig) {
+    assertNotExists(this.events[name], {
+      why: "Preset already defined",
+      details: { name },
+    });
+    this.events[name] = config;
     return this;
   }
 
-  setDependencyCb(cb: WcDependencyCallback) {
+  setDependencyCallback(cb: WcDependencyCallback) {
     this.dependencyCb = cb;
     return this;
   }
 
-  async runEvent(event: WcAnimationEventNames) {
+  async runPreset(event: WcAnimationEventNames) {
     const animation = this.events[event];
     if (animation) {
-      return this.animate(event, animation).finished;
+      return this.animate(event, animation()).finished;
     }
     return Promise.resolve();
   }
 
-  async trigger(name: string, keyframe: () => Keyframe) {
-    this.raf(2, () => {
+  async triggerEvent(
+    name: string,
+    keyframe: () => Keyframe,
+    frames: number = 2,
+  ) {
+    this.raf(frames, () => {
       this.dispatchAnimation(name, keyframe());
     });
   }
 
-  dispatchAnimation(name: string, endState: Keyframe) {
+  private dispatchAnimation(name: string, endState: Keyframe) {
     this.self.dispatchEvent(
-      new CustomEvent(`animation-${name}`, { detail: { endState } }),
+      new CustomEvent(ANIMATION_PREFIX + name, { detail: { endState } }),
     );
   }
 

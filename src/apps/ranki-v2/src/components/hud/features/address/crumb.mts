@@ -22,34 +22,44 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
     const text = RText.create.instance(null, this);
     this.elements.push("text", text);
     this.animation
-      .setDependencyCb(() => [text])
-      .onLayout("width", {
+      .setDependencyCallback(() => [text])
+      .listenEvent("width", (endState) => ({
         keyframes: [
           {
-            width: () => this.getBoundingClientRect().width + "px",
+            width: this.getBoundingClientRect().width + "px",
           },
           {
-            width: (endState) => endState.width,
+            width: endState.width,
           },
         ],
         options: {
           duration: 4e2,
           fill: "both",
         },
-      })
-      .setEventLibrary({
-        exit: {
-          keyframes: [
-            {
-              "padding-inline": "0",
-            },
-          ],
-          options: {
-            duration: 4e2,
-            fill: "both",
+      }))
+      .pushPreset("enter", () => ({
+        keyframes: [
+          {
+            "padding-inline": "1",
           },
+        ],
+        options: {
+          duration: 4e2,
+          fill: "both",
         },
-      });
+      }))
+      .pushPreset("exit", () => ({
+        keyframes: [
+          {},
+          {
+            "padding-inline": "0",
+          },
+        ],
+        options: {
+          duration: 4e2,
+          fill: "both",
+        },
+      }));
     this.css.set({
       display: "inline-block",
       position: "fixed",

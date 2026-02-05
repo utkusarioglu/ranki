@@ -40,7 +40,7 @@ export class Wc<Props, InternalState = Props> extends HTMLElement {
   }
 
   connectedCallback() {
-    this.animation.runEvent("enter");
+    this.animation.runPreset("enter");
   }
 
   // TODO
@@ -49,7 +49,7 @@ export class Wc<Props, InternalState = Props> extends HTMLElement {
   }
 
   async remove(): Promise<void> {
-    await this.animation.runEvent("exit");
+    await this.animation.runPreset("exit");
     super.remove();
   }
 

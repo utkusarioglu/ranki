@@ -15,49 +15,47 @@ export class RText extends Wc<RankiTextState> {
       "white-space": "nowrap",
     });
     this.animation
-      .setDependencyCb(() => this.elements.getList("prev", "curr"))
-      .onLayout("width", {
+      .setDependencyCallback(() => this.elements.getList("prev", "curr"))
+      .listenEvent("width", (endState: Keyframe) => ({
         keyframes: [
           {
             width: this.getBoundingClientRect().width + "px",
           },
           {
-            width: (endState) => endState.width,
+            width: endState.width,
           },
         ],
         options: {
           duration: 4e2,
           fill: "both",
         },
-      })
-      .setEventLibrary({
-        enter: {
-          keyframes: [
-            {
-              opacity: 0,
-            },
-            {
-              opacity: 1,
-            },
-          ],
-          options: {
-            duration: 2e3,
+      }))
+      .pushPreset("enter", () => ({
+        keyframes: [
+          {
+            opacity: 0,
           },
-        },
-        exit: {
-          keyframes: [
-            {
-              opacity: 1,
-            },
-            {
-              opacity: 0,
-            },
-          ],
-          options: {
-            duration: 2e3,
+          {
+            opacity: 1,
           },
+        ],
+        options: {
+          duration: 2e3,
         },
-      });
+      }))
+      .pushPreset("exit", () => ({
+        keyframes: [
+          {
+            opacity: 1,
+          },
+          {
+            opacity: 0,
+          },
+        ],
+        options: {
+          duration: 2e3,
+        },
+      }));
   }
 
   async onStateChange(curr: RankiTextState) {
@@ -65,7 +63,7 @@ export class RText extends Wc<RankiTextState> {
     const newText = RTextSpan.create.instance(curr.text, this);
     this.elements.push("curr", newText);
     this.elements.remove("prev");
-    this.animation.trigger("width", () => ({
+    this.animation.triggerEvent("width", () => ({
       width: newText.css.getWidth() + "px",
     }));
   }
@@ -79,8 +77,8 @@ export class RTextSpan extends Wc<string> {
       "grid-area": "1/1",
       width: "max-content",
     });
-    this.animation.setEventLibrary({
-      enter: {
+    this.animation
+      .pushPreset("enter", () => ({
         keyframes: [
           {
             opacity: 0,
@@ -93,8 +91,8 @@ export class RTextSpan extends Wc<string> {
           duration: 4e2,
           fill: "both",
         },
-      },
-      exit: {
+      }))
+      .pushPreset("exit", () => ({
         keyframes: [
           {
             opacity: 1,
@@ -107,8 +105,7 @@ export class RTextSpan extends Wc<string> {
           duration: 4e2,
           fill: "both",
         },
-      },
-    });
+      }));
   }
 
   onStateChange(curr: string) {
