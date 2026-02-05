@@ -19,63 +19,49 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
   }
 
   initialize(): void {
-    this.css.set({
-      display: "inline-block",
-      position: "fixed",
-      // "background-color": "red",
-      border: "1px solid red",
-      width: 0,
-      // overflow: "hidden",
-    });
-    const text = RText.create.instance({ text: "" }, this);
-    this.animation.setEventLibrary({
-      // enter: {
-      //   keyframes: [
-      //     {
-      //       "padding-inline": "0",
-      //     },
-      //     {
-      //       "padding-inline": "1em",
-      //     },
-      //   ],
-      //   options: {
-      //     duration: 4e2,
-      //     fill: "both",
-      //   },
-      // },
-      exit: {
+    const text = RText.create.instance(null, this);
+    this.elements.push("text", text);
+    this.animation
+      .setDependencyCb(() => [text])
+      .onLayout("width", {
         keyframes: [
           {
-            "padding-inline": "0",
+            width: () => this.getBoundingClientRect().width + "px",
+          },
+          {
+            width: (endState) => endState.width,
           },
         ],
         options: {
           duration: 4e2,
           fill: "both",
         },
-      },
+      })
+      .setEventLibrary({
+        exit: {
+          keyframes: [
+            {
+              "padding-inline": "0",
+            },
+          ],
+          options: {
+            duration: 4e2,
+            fill: "both",
+          },
+        },
+      });
+    this.css.set({
+      display: "inline-block",
+      position: "fixed",
+      border: "1px solid red",
+      width: 0,
+      overflow: "hidden",
     });
-    this.elements.push("text", text);
   }
 
   protected onStateChange(curr: HudAddressSegment): void {
     const text = this.elements.get<RText>("text")!;
     text.state.set({ text: curr.shown.join("") });
     this.className = curr.type;
-    this.animation.onLayout("width", {
-      // name: "adjust-width",
-      keyframes: [
-        {
-          width: this.getBoundingClientRect().width + "px",
-        },
-        {
-          width: () => text.animation.getIntent("width")!.width,
-        },
-      ],
-      options: {
-        duration: 4e2,
-        fill: "both",
-      },
-    });
   }
 }

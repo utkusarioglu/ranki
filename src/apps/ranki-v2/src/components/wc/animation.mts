@@ -1,6 +1,6 @@
 import type { Wc } from "./wc.mts";
 
-type KeyframeResolver<T> = T | (() => T);
+type KeyframeResolver<T> = T | ((endState: Keyframe) => T);
 
 type KeyframeWithResolvers = {
   [K in keyof Keyframe]?: KeyframeResolver<Keyframe[K]>;
@@ -26,20 +26,22 @@ export class WcAnimation extends EventTarget {
   public events: Partial<WcAnimationEventRecord> = {};
   private dependencyCb: WcDependencyCallback = () => [];
   private active: Record<string, Animation> = {};
-  private onLayoutCbs: WcAnimationIntent[] = [];
 
   constructor(self: Wc<any>) {
     super();
     this.self = self;
   }
 
-  private intentToConfig(intent: WcAnimationIntent): WcAnimationConfig {
+  private intentToConfig(
+    intent: WcAnimationIntent,
+    endState: Keyframe,
+  ): WcAnimationConfig {
     return {
       keyframes: intent.keyframes.map((k) =>
         Object.fromEntries(
           Object.entries(k).map(([n, v]) => [
             n,
-            typeof v === "function" ? v() : v,
+            typeof v === "function" ? v(endState) : v,
           ]),
         ),
       ),
@@ -55,29 +57,24 @@ export class WcAnimation extends EventTarget {
     delete this.active[name];
   }
 
-  getIntent(name: string) {
-    if (name === "width") {
-      console.log(
-        "getIntent",
-        this.self.tagName,
-        name,
-        (this.active[name]!.effect as KeyframeEffect).getKeyframes().at(-1)!
-          .width,
-      );
-    }
-
-    return (this.active[name]!.effect as KeyframeEffect).getKeyframes().at(-1)!;
+  onLayout(name: string, intent: WcAnimationIntent) {
+    this.dependencyCb().map((d) => {
+      (d as Wc<any>).animation &&
+        (d as Wc<any>).addEventListener(`animation-${name}`, (e) => {
+          e.stopPropagation();
+          const endState = (e as CustomEvent).detail.endState;
+          this.runOnLayout(name, intent, endState);
+        });
+    });
+    return this;
   }
 
-  async onLayout(name: string, intent: WcAnimationIntent) {
-    await this.waitDependencies();
-    const config = this.intentToConfig(intent);
-    console.log(
-      "onLayout",
-      this.self.tagName,
-      name,
-      config.keyframes.at(-1)!.width,
-    );
+  private runOnLayout(
+    name: string,
+    intent: WcAnimationIntent,
+    endState: Keyframe,
+  ) {
+    const config = this.intentToConfig(intent, endState);
     this.animate(name, config);
   }
 
@@ -85,16 +82,20 @@ export class WcAnimation extends EventTarget {
     const animation = this.self.animate(config.keyframes, config.options);
     this.setActive(name, animation);
     animation.finished.then(() => this.removeActive(name));
-    this.waitLayout().then(() => this.dispatchLayout());
+    this.waitLayout().then(() =>
+      this.dispatchAnimation(name, config.keyframes.at(-1)!),
+    );
     return animation;
   }
 
   setEventLibrary(events: Partial<WcAnimationEventRecord> = {}) {
     this.events = events;
+    return this;
   }
 
   setDependencyCb(cb: WcDependencyCallback) {
     this.dependencyCb = cb;
+    return this;
   }
 
   async runEvent(event: WcAnimationEventNames) {
@@ -105,21 +106,15 @@ export class WcAnimation extends EventTarget {
     return Promise.resolve();
   }
 
-  dispatchLayout() {
-    this.self.dispatchEvent(new Event("layout"));
+  async trigger(name: string, keyframe: () => Keyframe) {
+    this.raf(2, () => {
+      this.dispatchAnimation(name, keyframe());
+    });
   }
 
-  async waitDependencies() {
-    await Promise.all(
-      this.dependencyCb().map((d) => {
-        return (d as Wc<any>).animation
-          ? new Promise<void>((r) =>
-              (d as Wc<any>).addEventListener("layout", () => r(), {
-                once: true,
-              }),
-            )
-          : this.waitLayout();
-      }),
+  dispatchAnimation(name: string, endState: Keyframe) {
+    this.self.dispatchEvent(
+      new CustomEvent(`animation-${name}`, { detail: { endState } }),
     );
   }
 

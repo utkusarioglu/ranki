@@ -9,63 +9,65 @@ export class RText extends Wc<RankiTextState> {
 
   initialize(): void {
     this.state.setTrigger((p, c) => p?.text !== c.text);
-    this.animation.setDependencyCb(() => this.elements.getList("prev", "curr"));
     this.css.set({
       overflow: "hidden",
       display: "inline-grid",
       "white-space": "nowrap",
     });
-    this.animation.setEventLibrary({
-      enter: {
+    this.animation
+      .setDependencyCb(() => this.elements.getList("prev", "curr"))
+      .onLayout("width", {
         keyframes: [
           {
-            opacity: 0,
+            width: this.getBoundingClientRect().width + "px",
           },
           {
-            opacity: 1,
+            width: (endState) => endState.width,
           },
         ],
         options: {
-          duration: 2e3,
+          duration: 4e2,
+          fill: "both",
         },
-      },
-      exit: {
-        keyframes: [
-          {
-            opacity: 1,
+      })
+      .setEventLibrary({
+        enter: {
+          keyframes: [
+            {
+              opacity: 0,
+            },
+            {
+              opacity: 1,
+            },
+          ],
+          options: {
+            duration: 2e3,
           },
-          {
-            opacity: 0,
-          },
-        ],
-        options: {
-          duration: 2e3,
         },
-      },
-    });
+        exit: {
+          keyframes: [
+            {
+              opacity: 1,
+            },
+            {
+              opacity: 0,
+            },
+          ],
+          options: {
+            duration: 2e3,
+          },
+        },
+      });
   }
 
   async onStateChange(curr: RankiTextState) {
     this.elements.move("curr", "prev");
     const newText = RTextSpan.create.instance(curr.text, this);
-
-    this.animation.onLayout("width", {
-      keyframes: [
-        {
-          width: this.getBoundingClientRect().width + "px",
-        },
-        {
-          width: () => newText.css.getWidth() + "px",
-        },
-      ],
-      options: {
-        duration: 4e2,
-        fill: "both",
-      },
-    });
-
     this.elements.push("curr", newText);
     this.elements.remove("prev");
+    this.animation.trigger("width", () => ({
+      width: newText.css.getWidth() + "px",
+    }));
   }
 }
 

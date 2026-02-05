@@ -1,4 +1,4 @@
-import { assertNotExists } from "_error/assertions.mjs";
+import { assertArrayNotEmpty, assertNotExists } from "_error/assertions.mjs";
 import type { Wc } from "./wc.mts";
 import type { PropertiesHyphen } from "csstype";
 
@@ -47,6 +47,7 @@ export class WcElements {
   }
 
   getList(...names: string[]): HTMLElement[] {
+    assertArrayNotEmpty(names, { why: "no element names given" });
     return names.map((n) => this.get(n)).filter((v) => !!v);
   }
 

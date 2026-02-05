@@ -52,3 +52,9 @@ export function assertNotNull(
     });
   }
 }
+
+export function assertArrayNotEmpty(a: any[], extra: AssertionExtra) {
+  if (!a.length) {
+    throw new RankiAppError({ code: "ARRAY_EMPTY", cause: null, ...extra });
+  }
+}
