@@ -9,6 +9,7 @@ export class Text extends Wc<RankiTextState> {
 
   initialize(): void {
     this.state.setFilter((p, c) => p?.text !== c.text);
+    this.animation.setDependencyCb(() => this.elements.getList("prev", "curr"));
     this.css.set({
       overflow: "hidden",
       display: "grid",
@@ -47,24 +48,15 @@ export class Text extends Wc<RankiTextState> {
 
   async onStateChange(curr: RankiTextState) {
     this.elements.move("curr", "prev");
-
-    let start = 0;
-    const pre = this.elements.get<Wc<any>>("prev");
-    if (pre) {
-      start = pre.css.getWidth();
-      pre.remove();
-    }
-
-    const post = TextSpan.create.instance(curr.text, this);
-    this.elements.set("curr", post);
+    const newText = TextSpan.create.instance(curr.text, this);
 
     this.animation.onLayout({
       keyframes: [
         {
-          width: start + "px",
+          width: this.getBoundingClientRect().width + "px",
         },
         {
-          width: () => post.css.getWidth() + "px",
+          width: () => newText.css.getWidth() + "px",
         },
       ],
       options: {
@@ -72,6 +64,9 @@ export class Text extends Wc<RankiTextState> {
         fill: "both",
       },
     });
+
+    this.elements.push("curr", newText);
+    this.elements.remove("prev");
   }
 }
 
@@ -95,6 +90,7 @@ export class TextSpan extends Wc<string> {
         ],
         options: {
           duration: 4e2,
+          fill: "both",
         },
       },
       exit: {
@@ -108,6 +104,7 @@ export class TextSpan extends Wc<string> {
         ],
         options: {
           duration: 4e2,
+          fill: "both",
         },
       },
     });

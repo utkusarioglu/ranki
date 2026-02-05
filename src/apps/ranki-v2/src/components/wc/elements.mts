@@ -40,7 +40,17 @@ export class WcElements {
     return el;
   }
 
-  set(name: string, element: HTMLElement) {
+  remove<T extends HTMLElement>(name: string) {
+    const el = this.elements[name] as T;
+    this.elements[name] = undefined;
+    el?.remove();
+  }
+
+  getList(...names: string[]): HTMLElement[] {
+    return names.map((n) => this.get(n)).filter((v) => !!v);
+  }
+
+  push(name: string, element: HTMLElement) {
     assertNotExists(this.elements[name], {
       why: "Element with the given name already exists",
     });

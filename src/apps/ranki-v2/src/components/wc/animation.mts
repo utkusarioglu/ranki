@@ -1,4 +1,3 @@
-import { assertNotNull } from "_error/assertions.mjs";
 import type { Wc } from "./wc.mts";
 
 type KeyframeResolver<T> = T | (() => T);
@@ -19,20 +18,23 @@ interface WcAnimationConfig {
 type WcAnimationEventNames = "enter" | "exit" | "reveal" | "collapse";
 type WcAnimationEventRecord = Record<WcAnimationEventNames, WcAnimationConfig>;
 
-type WcDependencyCallback = () => Wc<any>[];
+type WcDependency = HTMLElement | Wc<any>;
+type WcDependencyCallback = () => WcDependency[];
 
-export class WcAnimation {
+export class WcAnimation extends EventTarget {
   private self: Wc<any>;
   public events: Partial<WcAnimationEventRecord> = {};
-  private depCb: WcDependencyCallback | null = null;
-  public layoutReady = false;
+  private dependencyCb: WcDependencyCallback = () => [];
 
   constructor(self: Wc<any>) {
+    super();
     this.self = self;
   }
 
   async onLayout(intent: WcAnimationIntent) {
-    await this.waitLayout();
+    console.log("before");
+    await this.waitDependencies();
+    console.log("after");
     this.animate({
       keyframes: intent.keyframes.map((k) =>
         Object.fromEntries(
@@ -46,36 +48,53 @@ export class WcAnimation {
     });
   }
 
-  animate({ keyframes, options }: WcAnimationConfig) {
-    return this.self.animate(keyframes, options);
+  async animate({ keyframes, options }: WcAnimationConfig) {
+    const animation = this.self.animate(keyframes, options);
+    await this.waitLayout();
+    this.dispatchLayout();
+    return animation;
   }
 
   setEventLibrary(events: Partial<WcAnimationEventRecord> = {}) {
     this.events = events;
   }
 
-  setDependencyCb(cb: () => Wc<any>[]) {
-    this.depCb = cb;
+  setDependencyCb(cb: WcDependencyCallback) {
+    this.dependencyCb = cb;
   }
 
-  // TODO
-  adjustWidth() {
-    assertNotNull(this.depCb, { why: "Access to dependencies required" });
-  }
-
-  runEvent(event: WcAnimationEventNames) {
+  async runEvent(event: WcAnimationEventNames) {
     const animation = this.events[event];
     if (animation) {
-      return this.animate(animation).finished;
+      return this.animate(animation).then((v) => v.finished);
     }
     return Promise.resolve();
   }
 
+  dispatchLayout() {
+    this.self.dispatchEvent(new Event("layout"));
+  }
+
+  async waitDependencies() {
+    await Promise.all(
+      this.dependencyCb().map((d) => {
+        return (d as Wc<any>).animation
+          ? new Promise<void>((r) =>
+              (d as Wc<any>).addEventListener("layout", () => r(), {
+                once: true,
+              }),
+            )
+          : this.waitLayout();
+      }),
+    );
+  }
+
   /**
-   * Waits for layout to be available
+   * Waits for layout to be available. as a heuristic, 2 frames work reliably.
+   * This doesn't mean it cannot break.
    */
-  waitLayout() {
-    return this.raf(2, () => {});
+  async waitLayout() {
+    await this.raf(2, () => {});
   }
 
   raf(frames: number = 2, cb: () => void): Promise<void> {
