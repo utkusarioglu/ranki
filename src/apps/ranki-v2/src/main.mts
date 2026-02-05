@@ -9,7 +9,8 @@ import { RankiChallenge } from "_components/challenge/challenge.mts";
 import { RankiIndicator } from "_components/indicator/indicator.mts";
 import type { RankiState } from "_config/config.types.mts";
 import { RankiBigError } from "_components/big-error/big-error.mjs";
-import { Text } from "_components/t/t.mjs";
+import { RText } from "_components/text/text.mjs";
+import { RAddressCrumb } from "_components/hud/features/address/crumb.mjs";
 
 export async function main() {
   try {
@@ -47,28 +48,40 @@ function test() {
   //   // { text: "fdfd" },
   //   div,
   // );
-
-  Text.create.singleton(
+  RAddressCrumb.create.singleton(
     {
-      text:
-        "-" +
+      type: "segment",
+      shown: [
+        "-",
         String.fromCharCode(65 + Math.floor(Math.random() * (97 - 65))).repeat(
           Math.floor(Math.random() * 10),
-        ) +
+        ),
         "-",
+      ],
     },
-    // { text: "fdfd" },
     document.body,
   );
+  // RText.create.singleton(
+  //   {
+  //     text:
+  //       "-" +
+  //       String.fromCharCode(65 + Math.floor(Math.random() * (97 - 65))).repeat(
+  //         Math.floor(Math.random() * 10),
+  //       ) +
+  //       "-",
+  //   },
+  //   // { text: "fdfd" },
+  //   document.body,
+  // );
 }
 
 function render(state: RankiState) {
-  test();
   createDevTools(state.dev);
-  // RankiHud.singleton(state.hud, document.body);
-  // createDesign(state.design);
+  RankiHud.singleton(state.hud, document.body);
+  createDesign(state.design);
   // RankiIndicator.singleton(state.indicator, document.body);
   // RankiChallenge.singleton(state.challenge, document.body);
+  test();
 }
 
 onReady(main);

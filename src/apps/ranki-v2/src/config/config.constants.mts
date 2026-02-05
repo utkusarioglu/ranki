@@ -250,7 +250,8 @@ repeating-linear-gradient(
       },
     },
     hud: {
-      order: ["app", "cues", "address", "card", "tags"],
+      // order: ["app", "cues", "address", "card", "tags"],
+      order: ["app"],
       visibility: "visible",
     },
     dqm: [DQM_BASE_CONFIG],

@@ -12,6 +12,7 @@ import { Subtree, type WrappedState } from "_components/subtree/subtree.mjs";
 import { assertNotNull } from "_error/assertions.mts";
 import styles from "./address.component.css?inline";
 import { HudAddressCrumb } from "./HudAddressCrumb.mts";
+import { RAddressCrumb } from "./crumb.mts";
 
 export class HudAddress extends RankiHudWc<HudAddressProps> {
   protected static name = "ranki-hud-address" as const;
@@ -21,7 +22,7 @@ export class HudAddress extends RankiHudWc<HudAddressProps> {
     }),
     hide: RankiAnimation_OLD.collapseXFadeOut(this, {}),
   };
-  private subtree = new Subtree<HudAddressCrumb, HudAddressSegment>({
+  private subtree = new Subtree<RAddressCrumb, HudAddressSegment>({
     create: this.createSubtreeChild.bind(this),
     remove: this.removeSubtreeChild.bind(this),
   });
@@ -44,8 +45,12 @@ export class HudAddress extends RankiHudWc<HudAddressProps> {
     if (!container) return;
     const left = this.getLeft();
     const last = this.subtree.getLast();
-    const right = last?.getRight() || left;
+    const right = last?.css.getRight() || left;
+    console.log("intent", last!.animation.getIntent("width"));
+
+    console.log("r", left, right, right - left);
     this.setProperties({ width: right - left + "px" });
+    // this.setProperties({ width: "200px" });
   }
 
   private build() {
@@ -55,10 +60,11 @@ export class HudAddress extends RankiHudWc<HudAddressProps> {
   private createSubtreeChild(s: WrappedState<HudAddressSegment>) {
     const container = this.getContainer();
     assertNotNull(container, { why: "container is required" });
-    return HudAddressCrumb.createAndAttach<HudAddressSegment, HudAddressCrumb>(
-      s.state,
-      container,
-    );
+    return RAddressCrumb.create.instance(s.state, container);
+    // return HudAddressCrumb.createAndAttach<HudAddressSegment, HudAddressCrumb>(
+    //   s.state,
+    //   container,
+    // );
   }
 
   private removeSubtreeChild(e: HudAddressCrumb) {

@@ -8,11 +8,13 @@ export function WcCreate<T, C extends new () => Wc<T>>(self: C, tag: string) {
   }
 
   return {
-    instance(props: T, attach?: HTMLElement | ShadowRoot): InstanceType<C> {
+    instance(props?: T, attach?: HTMLElement | ShadowRoot): InstanceType<C> {
       define();
       const el = new self() as InstanceType<C>;
       el.initialize();
-      el.state.set(props);
+      if (props) {
+        el.state.set(props);
+      }
       // el.animation.run("enter");
       if (attach) {
         attach.appendChild(el);
@@ -30,12 +32,11 @@ export function WcCreate<T, C extends new () => Wc<T>>(self: C, tag: string) {
       let created = false;
 
       if (!element) {
-        element = this.instance(props);
-        if (attach) {
-          attach.appendChild(element);
-        }
+        element = this.instance(props, attach);
         created = true;
-      } else {
+      }
+
+      if (props) {
         element.state.set(props);
       }
 

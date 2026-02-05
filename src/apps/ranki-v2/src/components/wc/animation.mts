@@ -25,17 +25,16 @@ export class WcAnimation extends EventTarget {
   private self: Wc<any>;
   public events: Partial<WcAnimationEventRecord> = {};
   private dependencyCb: WcDependencyCallback = () => [];
+  private active: Record<string, Animation> = {};
+  private onLayoutCbs: WcAnimationIntent[] = [];
 
   constructor(self: Wc<any>) {
     super();
     this.self = self;
   }
 
-  async onLayout(intent: WcAnimationIntent) {
-    console.log("before");
-    await this.waitDependencies();
-    console.log("after");
-    this.animate({
+  private intentToConfig(intent: WcAnimationIntent): WcAnimationConfig {
+    return {
       keyframes: intent.keyframes.map((k) =>
         Object.fromEntries(
           Object.entries(k).map(([n, v]) => [
@@ -45,13 +44,48 @@ export class WcAnimation extends EventTarget {
         ),
       ),
       options: intent.options,
-    });
+    };
   }
 
-  async animate({ keyframes, options }: WcAnimationConfig) {
-    const animation = this.self.animate(keyframes, options);
-    await this.waitLayout();
-    this.dispatchLayout();
+  private setActive(name: string, animation: Animation) {
+    this.active[name] = animation;
+  }
+
+  private removeActive(name: string) {
+    delete this.active[name];
+  }
+
+  getIntent(name: string) {
+    if (name === "width") {
+      console.log(
+        "getIntent",
+        this.self.tagName,
+        name,
+        (this.active[name]!.effect as KeyframeEffect).getKeyframes().at(-1)!
+          .width,
+      );
+    }
+
+    return (this.active[name]!.effect as KeyframeEffect).getKeyframes().at(-1)!;
+  }
+
+  async onLayout(name: string, intent: WcAnimationIntent) {
+    await this.waitDependencies();
+    const config = this.intentToConfig(intent);
+    console.log(
+      "onLayout",
+      this.self.tagName,
+      name,
+      config.keyframes.at(-1)!.width,
+    );
+    this.animate(name, config);
+  }
+
+  animate(name: string, config: WcAnimationConfig) {
+    const animation = this.self.animate(config.keyframes, config.options);
+    this.setActive(name, animation);
+    animation.finished.then(() => this.removeActive(name));
+    this.waitLayout().then(() => this.dispatchLayout());
     return animation;
   }
 
@@ -66,7 +100,7 @@ export class WcAnimation extends EventTarget {
   async runEvent(event: WcAnimationEventNames) {
     const animation = this.events[event];
     if (animation) {
-      return this.animate(animation).then((v) => v.finished);
+      return this.animate(event, animation).finished;
     }
     return Promise.resolve();
   }

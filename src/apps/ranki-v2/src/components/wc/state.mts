@@ -27,7 +27,7 @@ export class WcState<Props, InternalState = Props> {
     }
   }
 
-  setFilter(cb: FilterCb<InternalState>) {
+  setTrigger(cb: FilterCb<InternalState>) {
     this.filterCb = cb;
   }
 

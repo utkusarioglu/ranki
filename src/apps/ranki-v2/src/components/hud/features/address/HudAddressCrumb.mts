@@ -4,7 +4,7 @@ import { RankiAnimation_OLD } from "_components/animation/animation.mts";
 import type { HudAddressSegment } from "_components/hud/hud.types.mjs";
 // import { assertNever } from "_error/assertions.mjs";
 import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
-import { RankiText, type RankiTextState } from "_components/text/text.mjs";
+import { RText } from "_components/text/text.mjs";
 
 export class HudAddressCrumb extends RankiHudWc<HudAddressSegment> {
   protected static name = "hud-address-crumb" as const;
@@ -12,7 +12,7 @@ export class HudAddressCrumb extends RankiHudWc<HudAddressSegment> {
     enter: RankiAnimation_OLD.fadeIn(this, {}),
     exit: RankiAnimation_OLD.fadeOut(this),
   };
-  private text!: RankiText;
+  private text!: RText;
 
   isActive(): boolean {
     return true;
@@ -25,19 +25,16 @@ export class HudAddressCrumb extends RankiHudWc<HudAddressSegment> {
   private build() {
     if (this.initialized) return;
     this.initialized = true;
-    this.text = RankiText.createAndAttach<RankiTextState, RankiText>(
-      { text: "", animation: { duration: 0 } },
-      this,
-    );
+    this.text = RText.create.instance({ text: "" }, this);
   }
 
   render() {
     this.build();
     const s = this.getCurr();
     this.className = s.type;
-    this.text.setProps({
+    this.text.state.set({
       text: s.shown.join(""),
-      animation: { duration: 1e2 },
+      // animation: { duration: 1e2 },
     });
   }
 }

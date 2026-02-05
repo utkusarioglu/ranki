@@ -1,73 +1,115 @@
-import { RankiWc } from "_components/ranki-wc/ranki-wc.mjs";
+import { Wc } from "_components/wc/wc.mjs";
 
 export interface RankiTextState {
   text: string;
-  animation: { duration: number };
 }
 
-export class RankiText extends RankiWc<RankiTextState> {
-  protected static name = "ranki-text";
-  private active: HTMLSpanElement | null = null;
-  private previous: HTMLSpanElement | null = null;
+export class RText extends Wc<RankiTextState> {
+  public static tag = "r-text";
 
-  private build() {
-    if (this.initialized) return;
-    this.initialized = true;
-    this.setProperties({
-      display: "grid",
-      "transition-property": "width",
+  initialize(): void {
+    this.state.setTrigger((p, c) => p?.text !== c.text);
+    this.animation.setDependencyCb(() => this.elements.getList("prev", "curr"));
+    this.css.set({
+      overflow: "hidden",
+      display: "inline-grid",
+      "white-space": "nowrap",
+    });
+    this.animation.setEventLibrary({
+      enter: {
+        keyframes: [
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+          },
+        ],
+        options: {
+          duration: 2e3,
+        },
+      },
+      exit: {
+        keyframes: [
+          {
+            opacity: 1,
+          },
+          {
+            opacity: 0,
+          },
+        ],
+        options: {
+          duration: 2e3,
+        },
+      },
     });
   }
 
-  private newText(props: KeyframeAnimationOptions) {
-    const curr = this.getCurr();
-    this.active = document.createElement("span");
-    this.active.innerText = curr.text;
-    this.active.style.gridArea = "1/1";
-    this.active.style.width = "max-content";
-    this.active
-      .animate([{ opacity: 0 }, { opacity: 1 }], props)
-      .finished.then(() => {});
-    this.appendChild(this.active);
-    return this.active.getBoundingClientRect().width;
+  async onStateChange(curr: RankiTextState) {
+    this.elements.move("curr", "prev");
+    const newText = RTextSpan.create.instance(curr.text, this);
+
+    this.animation.onLayout("width", {
+      keyframes: [
+        {
+          width: this.getBoundingClientRect().width + "px",
+        },
+        {
+          width: () => newText.css.getWidth() + "px",
+        },
+      ],
+      options: {
+        duration: 4e2,
+        fill: "both",
+      },
+    });
+
+    this.elements.push("curr", newText);
+    this.elements.remove("prev");
+  }
+}
+
+export class RTextSpan extends Wc<string> {
+  public static tag = "r-text-span";
+
+  initialize() {
+    this.css.set({
+      "grid-area": "1/1",
+      width: "max-content",
+    });
+    this.animation.setEventLibrary({
+      enter: {
+        keyframes: [
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+          },
+        ],
+        options: {
+          duration: 4e2,
+          fill: "both",
+        },
+      },
+      exit: {
+        keyframes: [
+          {
+            opacity: 1,
+          },
+          {
+            opacity: 0,
+          },
+        ],
+        options: {
+          duration: 4e2,
+          fill: "both",
+        },
+      },
+    });
   }
 
-  private oldText(props: KeyframeAnimationOptions) {
-    let startWidth = 0;
-    this.previous = this.active;
-    if (this.previous) {
-      startWidth = this.previous.getBoundingClientRect().width;
-      this.previous
-        .animate([{ opacity: 1 }, { opacity: 0 }], props)
-        .finished.then(() => {
-          this.removeChild(this.previous!);
-        });
-    }
-    return startWidth;
-  }
-
-  private animateWidth(
-    props: KeyframeAnimationOptions,
-    start: number,
-    end: number,
-  ) {
-    this.animate(
-      [{ width: start + "px" }, { width: end + "px" }],
-      props,
-    ).finished.then(() => {});
-  }
-
-  render() {
-    this.build();
-    const curr = this.getCurr();
-    if (curr === this.getPrev()) return;
-    const props: KeyframeAnimationOptions = {
-      duration: curr.animation.duration,
-      fill: "both",
-    };
-
-    const startWidth = this.oldText(props);
-    const endWidth = this.newText(props);
-    this.animateWidth(props, startWidth, endWidth);
+  onStateChange(curr: string) {
+    this.innerText = curr;
   }
 }
