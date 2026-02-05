@@ -1,6 +1,6 @@
 import { renderDqm } from "_/dqm/render-dqm.mts";
 import {
-  RankiAnimation,
+  RankiAnimation_OLD,
   type AnimationTypes,
 } from "_components/animation/animation.mts";
 import { RankiFacesFace } from "_components/challenge/pair/face/face.mts";
@@ -29,8 +29,8 @@ export class RankiFacesPair extends RankiFacesWc<
 > {
   public static name = "ranki-faces-pair" as const;
   protected animations: AnimationTypes = {
-    enter: RankiAnimation.slideUpFadeIn(this),
-    exit: RankiAnimation.slideUpFadeOut(this),
+    enter: RankiAnimation_OLD.slideUpFadeIn(this),
+    exit: RankiAnimation_OLD.slideUpFadeOut(this),
   };
   private subtree = new Subtree<PairChildren, ChildState>({
     create: this.createSubtreeChild.bind(this),

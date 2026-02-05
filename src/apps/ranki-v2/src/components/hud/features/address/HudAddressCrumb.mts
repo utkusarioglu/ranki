@@ -1,16 +1,18 @@
 import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
 import { type AnimationTypes } from "_components/animation/animation.mts";
-import { RankiAnimation } from "_components/animation/animation.mts";
+import { RankiAnimation_OLD } from "_components/animation/animation.mts";
 import type { HudAddressSegment } from "_components/hud/hud.types.mjs";
-import { assertNever } from "_error/assertions.mjs";
+// import { assertNever } from "_error/assertions.mjs";
 import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
+import { RankiText, type RankiTextState } from "_components/text/text.mjs";
 
 export class HudAddressCrumb extends RankiHudWc<HudAddressSegment> {
   protected static name = "hud-address-crumb" as const;
   protected animations: AnimationTypes = {
-    enter: RankiAnimation.fadeIn(this, {}),
-    exit: RankiAnimation.fadeOut(this),
+    enter: RankiAnimation_OLD.fadeIn(this, {}),
+    exit: RankiAnimation_OLD.fadeOut(this),
   };
+  private text!: RankiText;
 
   isActive(): boolean {
     return true;
@@ -20,25 +22,22 @@ export class HudAddressCrumb extends RankiHudWc<HudAddressSegment> {
     return "mutate";
   }
 
-  render() {
-    const s = this.getCurr();
-    switch (s.mode) {
-      case "trim":
-      case "hide":
-      case "separator":
-        this.className = "divider";
-        break;
-      case "show":
-        this.className = "segment";
-        break;
-      default:
-        assertNever({
-          why: "Unrecognized address segment mode",
-          details: { curr: this.getCurr(), segment: s },
-        });
-    }
-    this.innerText = s.shown.join("");
+  private build() {
+    if (this.initialized) return;
+    this.initialized = true;
+    this.text = RankiText.createAndAttach<RankiTextState, RankiText>(
+      { text: "", animation: { duration: 0 } },
+      this,
+    );
+  }
 
-    return this;
+  render() {
+    this.build();
+    const s = this.getCurr();
+    this.className = s.type;
+    this.text.setProps({
+      text: s.shown.join(""),
+      animation: { duration: 1e2 },
+    });
   }
 }

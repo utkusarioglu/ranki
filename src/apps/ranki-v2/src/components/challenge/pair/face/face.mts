@@ -1,5 +1,5 @@
 import {
-  RankiAnimation,
+  RankiAnimation_OLD,
   type AnimationTypes,
 } from "_components/animation/animation.mts";
 import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
@@ -10,8 +10,8 @@ import { assertNotUndefined } from "_error/assertions.mjs";
 export class RankiFacesFace extends RankiFacesWc<any> {
   public static name = "ranki-faces-face";
   protected animations: AnimationTypes = {
-    enter: RankiAnimation.expandYFadeIn(this),
-    exit: RankiAnimation.collapseYFadeOut(this),
+    enter: RankiAnimation_OLD.expandYFadeIn(this),
+    exit: RankiAnimation_OLD.collapseYFadeOut(this),
   };
 
   isActive(): boolean {
@@ -39,4 +39,6 @@ export class RankiFacesFace extends RankiFacesWc<any> {
     });
     return this.getKey() === s.state.getKey() ? "advance" : "remove";
   }
+
+  protected render() {}
 }

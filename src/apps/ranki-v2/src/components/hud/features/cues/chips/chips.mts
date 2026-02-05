@@ -1,5 +1,5 @@
 import {
-  RankiAnimation,
+  RankiAnimation_OLD,
   type AnimationTypes,
 } from "_components/animation/animation.mts";
 import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
@@ -21,10 +21,10 @@ export class HudChips extends RankiHudWc<ProcessedCue[]> {
     remove: this.removeSubtreeChild.bind(this),
   });
   protected animations: AnimationTypes = {
-    show: RankiAnimation.expandXFadeIn(this, {
+    show: RankiAnimation_OLD.expandXFadeIn(this, {
       initialCb: this.adjustWidth.bind(this),
     }),
-    hide: RankiAnimation.collapseXFadeOut(this),
+    hide: RankiAnimation_OLD.collapseXFadeOut(this),
   };
 
   constructor() {

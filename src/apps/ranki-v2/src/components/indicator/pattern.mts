@@ -1,5 +1,5 @@
 import {
-  RankiAnimation,
+  RankiAnimation_OLD,
   type AnimationTypes,
 } from "_components/animation/animation.mts";
 import { RankiWc } from "_components/ranki-wc/ranki-wc.mts";
@@ -7,8 +7,8 @@ import { RankiWc } from "_components/ranki-wc/ranki-wc.mts";
 export class IndicatorPattern extends RankiWc<string> {
   public static name = "ranki-indicator-pattern" as const;
   protected animations: AnimationTypes = {
-    enter: RankiAnimation.fadeIn(this),
-    exit: RankiAnimation.fadeOut(this),
+    enter: RankiAnimation_OLD.fadeIn(this),
+    exit: RankiAnimation_OLD.fadeOut(this),
   };
 
   // private container() {

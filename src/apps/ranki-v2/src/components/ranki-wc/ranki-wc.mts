@@ -21,10 +21,13 @@ export class RankiWc<Props, InternalState = Props> extends HTMLElement {
   private curr!: InternalState;
   private prev: InternalState | null = null;
   protected animations: AnimationTypes = {};
+  private hasShadow = false;
+  protected initialized = false;
 
   constructor(hasShadow: boolean) {
     super();
-    if (hasShadow) {
+    this.hasShadow = hasShadow;
+    if (this.hasShadow) {
       this.attachShadow({ mode: "open" });
     }
   }
@@ -47,7 +50,7 @@ export class RankiWc<Props, InternalState = Props> extends HTMLElement {
     super.remove();
   }
 
-  protected runAnimation(type: AnimationNames): Promise<void> {
+  protected runAnimation(type: AnimationNames): Promise<Animation | void> {
     const animation = this.animations[type];
     if (animation) {
       return animation();
@@ -78,14 +81,6 @@ export class RankiWc<Props, InternalState = Props> extends HTMLElement {
 
   public twoRaf(cb: () => void): Promise<void> {
     return this.raf(2, cb);
-    // return new Promise<void>((r) => {
-    //   requestAnimationFrame(() => {
-    //     requestAnimationFrame(() => {
-    //       cb();
-    //       r();
-    //     });
-    //   });
-    // });
   }
 
   public raf(count: number = 1, cb: () => void): Promise<void> {
@@ -149,15 +144,20 @@ export class RankiWc<Props, InternalState = Props> extends HTMLElement {
   setProps(props: Props) {
     this.prev = this.curr;
     this.curr = this.buildInternalState(props);
-    this.render();
+    this.render(this.curr, this.prev);
   }
 
   protected buildInternalState(props: Props): InternalState {
     return props as unknown as InternalState;
   }
 
-  render(): this {
-    return this;
+  protected render(
+    // @ts-expect-error
+    curr: InternalState,
+    // @ts-expect-error
+    prev: InternalState,
+  ) {
+    assertNever({ why: "this method needs to be overridden" });
   }
 
   addClass(...cl: string[]) {

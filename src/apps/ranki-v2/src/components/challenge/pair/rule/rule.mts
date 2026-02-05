@@ -1,5 +1,5 @@
 import {
-  RankiAnimation,
+  RankiAnimation_OLD,
   type AnimationTypes,
 } from "_components/animation/animation.mts";
 import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
@@ -14,8 +14,8 @@ export type RankiRuleVariants = "horizontal" | "vertical";
 export class RankiRule extends RankiFacesWc<RankiRuleVariants> {
   public static name = "ranki-rule" as const;
   protected animations: AnimationTypes = {
-    enter: RankiAnimation.expandYFadeIn(this),
-    exit: RankiAnimation.collapseYFadeOut(this),
+    enter: RankiAnimation_OLD.expandYFadeIn(this),
+    exit: RankiAnimation_OLD.collapseYFadeOut(this),
   };
 
   isActive(): boolean {

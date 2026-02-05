@@ -4,7 +4,7 @@ import type {
 } from "_components/ranki-wc/ranki-wc.mts";
 
 export type AnimationTypes = Partial<
-  Record<AnimationNames, () => Promise<void>>
+  Record<AnimationNames, () => Promise<Animation | void>>
 >;
 
 export type AnimationNames = "enter" | "exit" | "hide" | "show";
@@ -17,10 +17,10 @@ type PropertiesPack = {
   endRemove?: string[];
 };
 
-export class RankiAnimation {
+export class RankiAnimation_OLD {
   private static animate(self: RankiWc<{}>, pack: PropertiesPack) {
     return () =>
-      new Promise<void>((resolve) => {
+      new Promise<void | Animation>((resolve) => {
         const cb = () => {
           self.setProperties({ ...pack.end });
           pack.endRemove && self.removeProperties(pack.endRemove);
@@ -36,7 +36,7 @@ export class RankiAnimation {
   }
 
   static expandYFadeIn(self: RankiWc<{}>, additional?: PropertiesPack) {
-    return RankiAnimation.animate(self, {
+    return RankiAnimation_OLD.animate(self, {
       initialCb: additional?.initialCb,
       endRemove: [...(additional?.endRemove || []), "max-height"],
       setup: {
@@ -57,7 +57,7 @@ export class RankiAnimation {
 
   static collapseYFadeOut(self: RankiWc<{}>, additional?: PropertiesPack) {
     const height = self.getHeight() || window.innerHeight;
-    return RankiAnimation.animate(self, {
+    return RankiAnimation_OLD.animate(self, {
       initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
       setup: {
@@ -77,7 +77,7 @@ export class RankiAnimation {
   }
 
   static expandMarginRight(self: RankiWc<{}>, additional?: PropertiesPack) {
-    return RankiAnimation.animate(self, {
+    return RankiAnimation_OLD.animate(self, {
       initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
       setup: {
@@ -98,7 +98,7 @@ export class RankiAnimation {
   }
 
   static collapseMarginRight(self: RankiWc<{}>, additional?: PropertiesPack) {
-    return RankiAnimation.animate(self, {
+    return RankiAnimation_OLD.animate(self, {
       initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
       setup: {
@@ -119,7 +119,7 @@ export class RankiAnimation {
   }
 
   static expandXFadeIn(self: RankiWc<{}>, additional?: PropertiesPack) {
-    return RankiAnimation.animate(self, {
+    return RankiAnimation_OLD.animate(self, {
       initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
       setup: {
@@ -141,7 +141,7 @@ export class RankiAnimation {
 
   static collapseXFadeOut(self: RankiWc<{}>, additional?: PropertiesPack) {
     const width = self.getWidth();
-    return RankiAnimation.animate(self, {
+    return RankiAnimation_OLD.animate(self, {
       initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
       setup: {
@@ -202,7 +202,7 @@ export class RankiAnimation {
   // }
 
   static slideUpFadeIn(self: RankiWc<{}>, additional?: PropertiesPack) {
-    return RankiAnimation.animate(self, {
+    return RankiAnimation_OLD.animate(self, {
       initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
       setup: {
@@ -222,7 +222,7 @@ export class RankiAnimation {
   }
 
   static slideUpFadeOut(self: RankiWc<{}>, additional?: PropertiesPack) {
-    return RankiAnimation.animate(self, {
+    return RankiAnimation_OLD.animate(self, {
       initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
       setup: {
@@ -242,7 +242,7 @@ export class RankiAnimation {
   }
 
   static fadeIn(self: RankiWc<{}>, additional?: PropertiesPack) {
-    return RankiAnimation.animate(self, {
+    return RankiAnimation_OLD.animate(self, {
       initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
       setup: {
@@ -260,7 +260,7 @@ export class RankiAnimation {
   }
 
   static fadeOut(self: RankiWc<{}>, additional?: PropertiesPack) {
-    return RankiAnimation.animate(self, {
+    return RankiAnimation_OLD.animate(self, {
       initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
       setup: {

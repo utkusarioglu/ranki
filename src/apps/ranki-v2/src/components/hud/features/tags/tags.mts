@@ -1,5 +1,5 @@
 import {
-  RankiAnimation,
+  RankiAnimation_OLD,
   type AnimationTypes,
 } from "_components/animation/animation.mts";
 import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
@@ -16,10 +16,10 @@ import { assertNotNull } from "_error/assertions.mjs";
 export class HudTags extends RankiHudWc<HudTagsProps> {
   protected static name = "ranki-hud-tags" as const;
   protected animations: AnimationTypes = {
-    show: RankiAnimation.expandXFadeIn(this, {
+    show: RankiAnimation_OLD.expandXFadeIn(this, {
       initialCb: this.adjustWidth.bind(this),
     }),
-    hide: RankiAnimation.collapseXFadeOut(this, {}),
+    hide: RankiAnimation_OLD.collapseXFadeOut(this, {}),
   };
   private subtree = new Subtree<HudTagsTag, HudTagListItem>({
     create: this.createSubtreeChild.bind(this),

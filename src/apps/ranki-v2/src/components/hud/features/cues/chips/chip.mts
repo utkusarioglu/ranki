@@ -1,6 +1,6 @@
 import "@phosphor-icons/webcomponents";
 import {
-  RankiAnimation,
+  RankiAnimation_OLD,
   type AnimationTypes,
 } from "_components/animation/animation.mts";
 import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
@@ -10,8 +10,8 @@ import type { ProcessedCue } from "_config/config.types.mts";
 export class HudChipsChip extends RankiHudWc<ProcessedCue> {
   protected static name = "hud-chips-chip" as const;
   protected animations: AnimationTypes = {
-    enter: RankiAnimation.fadeIn(this),
-    exit: RankiAnimation.fadeOut(this),
+    enter: RankiAnimation_OLD.fadeIn(this),
+    exit: RankiAnimation_OLD.fadeOut(this),
   };
 
   render(): this {

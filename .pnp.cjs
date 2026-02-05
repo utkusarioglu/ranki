@@ -3874,6 +3874,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:25.0.6"],\
           ["chalk", "npm:5.6.2"],\
           ["core-js", "npm:3.47.0"],\
+          ["csstype", "npm:3.2.3"],\
           ["tsx", "npm:4.21.0"],\
           ["typescript", "patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"],\
           ["vite", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:7.2.6"],\

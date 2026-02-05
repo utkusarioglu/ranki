@@ -8,7 +8,7 @@ import { HudChips } from "./chips/chips.mts";
 import { HudLabels } from "./labels/labels.mts";
 import styles from "./cues.component.css?inline";
 import {
-  RankiAnimation,
+  RankiAnimation_OLD,
   type AnimationTypes,
 } from "_components/animation/animation.mjs";
 import type {
@@ -28,8 +28,8 @@ interface Wrapped {
 export class HudCues extends RankiHudWc<ProcessedCueMapHud> {
   protected static name = "ranki-hud-cues" as const;
   protected animations: AnimationTypes = {
-    show: RankiAnimation.fadeIn(this),
-    hide: RankiAnimation.fadeOut(this),
+    show: RankiAnimation_OLD.fadeIn(this),
+    hide: RankiAnimation_OLD.fadeOut(this),
   };
   private subtree = new Subtree<RankiWc<ProcessedCue[]>, ProcessedCue[]>({
     create: this.createSubtreeChild.bind(this),
