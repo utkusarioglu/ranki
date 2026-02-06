@@ -1,6 +1,5 @@
 import { horizontalScrollUtil } from "_components/scroller/horizontal.mts";
 import { assertNever, assertNotNull } from "_error/assertions.mts";
-import { HudAddress } from "./features/address/address.mts";
 import { HudCard } from "./features/card/card.mts";
 import { HudApp } from "./features/app/app.mts";
 import { HudTags } from "./features/tags/tags.mts";
@@ -18,6 +17,7 @@ import { HudCues } from "./features/cues/cues.mts";
 import type { RankiWc } from "_components/ranki-wc/ranki-wc.mjs";
 import { Subtree } from "_components/subtree/subtree.mjs";
 import type { ProcessedCueMapHud } from "_config/config.types.mjs";
+import { RAddress } from "./features/address/address.mts";
 
 interface Wrapped {
   type: HudComponentNames;
@@ -76,7 +76,8 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
     assertNotNull(scroller, { why: "No container" });
     switch (state.type) {
       case "address":
-        return HudAddress.singleton(state.state, scroller);
+        // return HudAddress.singleton(state.state, scroller);
+        return RAddress.create.singleton(state.state, scroller).element;
       case "card":
         return HudCard.singleton(state.state, scroller);
       case "cues":

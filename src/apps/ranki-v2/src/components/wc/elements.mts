@@ -17,6 +17,7 @@ export class WcElements {
       classes?: string[];
       style?: PropertiesHyphen;
     },
+    attach?: HTMLElement | ShadowRoot,
   ) {
     if (this.elements[name]) return;
     const el = document.createElement(attributes.tag);
@@ -28,10 +29,14 @@ export class WcElements {
       });
     }
     this.elements[name] = el;
-    if (this.self.isShadow) {
-      this.self.shadowRoot!.appendChild(el);
+    if (!attach) {
+      if (this.self.isShadow) {
+        this.self.shadowRoot!.appendChild(el);
+      } else {
+        this.self.appendChild(el);
+      }
     } else {
-      this.self.appendChild(el);
+      attach.appendChild(el);
     }
   }
 

@@ -1,26 +1,21 @@
 :host {
   --transition-duration: var(--rha-transition-duration, 0);
-  --transition-property:
-    background, color, padding, border, opacity, scale, transform, width, height;
 
   --c-background: var(--rha-c-background, transparent);
   --c-backdrop-filter: var(--rha-c-backdrop-filter, none);
   --c-border: var(--rha-c-border, 1px solid red);
   --c-gap: var(--rha-c-gap, 1em);
   --c-border-radius: var(--rha-c-border-radius, none);
-  --c-padding: var(--rha-c-padding, none);
 
   --s-background: var(--rha-s-background, transparent);
   --s-color: var(--rha-s-color, white);
   --s-border: var(--rha-s-border, 1px solid red);
   --s-border-radius: var(--rha-s-border-radius, none);
-  --s-padding: var(--rha-s-padding, none);
 
   --d-color: var(--rha-d-color, gray);
   --d-border-radius: var(--rha-d-border-radius, none);
   --d-border: var(--rha-d-border, 1px solid red);
   --d-background: var(--rha-d-background, transparent);
-  --d-padding: var(--rha-d-padding, none);
 }
 
 :host {
@@ -61,11 +56,9 @@
   align-items: center;
   overflow: hidden;
   height: 100%;
-  padding: var(--c-padding);
   background: var(--c-background);
   border-radius: var(--c-border-radius);
   border: var(--c-border);
-  /* gap: var(--c-gap); */
   backdrop-filter: var(--c-backdrop-filter);
 }
 
@@ -76,7 +69,6 @@
   line-height: 1em;
   height: 100%;
   background: var(--s-background);
-  padding: var(--s-padding);
   color: var(--s-color);
   border-radius: var(--s-border-radius);
   border: var(--s-border);
@@ -91,7 +83,6 @@
   display: flex;
   /* vertical-align: middle; */
   height: 100%;
-  padding: var(--d-padding);
   border-radius: var(--d-border-radius);
   color: var(--d-color);
   background: var(--d-background);
@@ -99,26 +90,7 @@
   white-space: nowrap;
 }
 
-:host > .container .divider {
-  &:first-child {
-    padding-left: var(--c-gap);
-  }
-  &:last-child {
-    padding-right: var(--c-gap);
-  }
-}
-
-/* ANKI */
-:host > .container > .divider:not(:has(+ .divider)) {
-  padding-right: var(--c-gap);
-}
-
-/* ANKI */
-:host > .container > :not(:is(.divider)) + .divider {
-  padding-left: var(--c-gap);
-}
-
-hud-address-crumb {
+/* hud-address-crumb {
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
-}
+} */

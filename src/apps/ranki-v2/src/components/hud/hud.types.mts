@@ -24,6 +24,10 @@ export type HudVisibility = "visible" | "pull" | "pullWhenShort";
 
 export interface HudAddressSegment {
   type: "divider" | "segment";
+  position: {
+    left: "first" | "local-first" | "middle";
+    right: "last" | "local-last" | "middle";
+  };
   mode: "show" | "separator" | "hide" | "trim" | "drop";
   shown: string[];
   masked: string[];

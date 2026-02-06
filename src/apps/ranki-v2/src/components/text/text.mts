@@ -15,8 +15,7 @@ export class RText extends Wc<RankiTextState> {
       "white-space": "nowrap",
     });
     this.animation
-      .setDependencyCallback(() => this.elements.getList("prev", "curr"))
-      .listenEvent("width", (endState: Keyframe) => ({
+      .registerEventCallback("width", (endState: Keyframe) => ({
         keyframes: [
           {
             width: this.getBoundingClientRect().width + "px",
@@ -40,7 +39,7 @@ export class RText extends Wc<RankiTextState> {
           },
         ],
         options: {
-          duration: 2e3,
+          duration: 4e2,
         },
       }))
       .pushPreset("exit", () => ({
@@ -53,7 +52,7 @@ export class RText extends Wc<RankiTextState> {
           },
         ],
         options: {
-          duration: 2e3,
+          duration: 4e2,
         },
       }));
   }
@@ -62,6 +61,7 @@ export class RText extends Wc<RankiTextState> {
     this.elements.move("curr", "prev");
     const newText = RTextSpan.create.instance(curr.text, this);
     this.elements.push("curr", newText);
+    this.animation.pushDependency("width", newText);
     this.elements.remove("prev");
     this.animation.triggerEvent("width", () => ({
       width: newText.css.getWidth() + "px",

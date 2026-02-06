@@ -11,15 +11,25 @@ type WcAnimationEventRecord = Record<
   () => WcAnimationConfig
 >;
 
-type WcDependency = HTMLElement | Wc<any>;
-type WcDependencyCallback = () => WcDependency[];
+type AnimationCall = (endState: Keyframe) => WcAnimationConfig | void;
+
+// type WcDependency = HTMLElement | Wc<any>;
+// type WcDependencyCallback = () => WcDependency[];
 
 const ANIMATION_PREFIX = "r-animation-";
 
+interface EventPayload {
+  type: string;
+  payload: Keyframe;
+}
+
+// type EventCallback = (e: EventPayload) => void;
+
 export class WcAnimation extends EventTarget {
   private self: Wc<any>;
-  public events: Partial<WcAnimationEventRecord> = {};
-  private dependencyCb: WcDependencyCallback = () => [];
+  public presets: Partial<WcAnimationEventRecord> = {};
+  private eventsCbs: Record<string, AnimationCall> = {};
+  // private dependencyCb: WcDependencyCallback = () => [];
   private active: Record<string, Animation> = {};
 
   constructor(self: Wc<any>) {
@@ -35,56 +45,82 @@ export class WcAnimation extends EventTarget {
     delete this.active[name];
   }
 
-  listenEvent(
-    name: string,
-    configCb: (endState: Keyframe) => WcAnimationConfig | void,
-  ) {
-    this.dependencyCb().map((d) => {
-      (d as Wc<any>).animation &&
-        (d as Wc<any>).addEventListener(ANIMATION_PREFIX + name, (e) => {
-          e.stopPropagation();
-          const endState = (e as CustomEvent).detail.endState;
-          this.runOnLayout(name, configCb, endState);
-        });
+  registerEventCallback(name: string, cb: AnimationCall) {
+    assertNotExists(this.eventsCbs[name], {
+      why: "A callback has already been registered for this event",
+      details: { name },
     });
+    this.eventsCbs[name] = cb;
     return this;
   }
 
+  pushDependency(eventName: string, dependency: Wc<any>) {
+    dependency.addEventListener(ANIMATION_PREFIX, (e) => {
+      e.stopPropagation();
+      const detail: EventPayload = (e as CustomEvent).detail;
+      if (detail.type === eventName) {
+        const endState = detail.payload;
+        const call = this.eventsCbs[eventName];
+        this.runOnLayout(eventName, call, endState);
+      }
+    });
+  }
+
+  // listenEvent(
+  //   name: string,
+  //   configCb: (endState: Keyframe) => WcAnimationConfig | void,
+  // ) {
+  //   this.dependencyCb().map((d) => {
+  //     (d as Wc<any>).animation &&
+  //       (d as Wc<any>).addEventListener(ANIMATION_PREFIX, (e) => {
+  //         e.stopPropagation();
+  //         const detail = (e as CustomEvent).detail;
+  //         if (detail.type === name) {
+  //           const endState = detail.payload;
+  //           this.runOnLayout(name, configCb, endState);
+  //         }
+  //       });
+  //   });
+  //   return this;
+  // }
+
   private runOnLayout(
     name: string,
-    configCb: (endState: Keyframe) => WcAnimationConfig | void,
+    configCb: AnimationCall,
     endState: Keyframe,
   ) {
     const config = configCb(endState);
-    config && this.animate(name, config);
+    if (config) {
+      this.animate(name, config);
+      this.waitLayout().then(() =>
+        this.dispatchAnimation(name, config.keyframes.at(-1)!),
+      );
+    }
   }
 
   animate(name: string, config: WcAnimationConfig) {
     const animation = this.self.animate(config.keyframes, config.options);
     this.setActive(name, animation);
     animation.finished.then(() => this.removeActive(name));
-    this.waitLayout().then(() =>
-      this.dispatchAnimation(name, config.keyframes.at(-1)!),
-    );
     return animation;
   }
 
   pushPreset(name: WcAnimationEventNames, config: () => WcAnimationConfig) {
-    assertNotExists(this.events[name], {
+    assertNotExists(this.presets[name], {
       why: "Preset already defined",
       details: { name },
     });
-    this.events[name] = config;
+    this.presets[name] = config;
     return this;
   }
 
-  setDependencyCallback(cb: WcDependencyCallback) {
-    this.dependencyCb = cb;
-    return this;
-  }
+  // setDependencyCallback(cb: WcDependencyCallback) {
+  //   this.dependencyCb = cb;
+  //   return this;
+  // }
 
   async runPreset(event: WcAnimationEventNames) {
-    const animation = this.events[event];
+    const animation = this.presets[event];
     if (animation) {
       return this.animate(event, animation()).finished;
     }
@@ -102,9 +138,11 @@ export class WcAnimation extends EventTarget {
     });
   }
 
-  private dispatchAnimation(name: string, endState: Keyframe) {
+  private dispatchAnimation(type: string, payload: Keyframe) {
     this.self.dispatchEvent(
-      new CustomEvent(ANIMATION_PREFIX + name, { detail: { endState } }),
+      new CustomEvent(ANIMATION_PREFIX, {
+        detail: { type, payload },
+      }),
     );
   }
 

@@ -54,11 +54,12 @@ function alt(
   partMode: RankiBaseAddressMutationMode[],
   tokens: RankiAddressTokens,
   parts: AnkiDeckParts,
-) {
+): HudAddressSegment[] {
   type HudAddressSegmentWorking = Pick<HudAddressSegment, "type" | "mode"> & {
     shown: string;
     masked: string;
   };
+  type HudAddressSegmentWithoutPosition = Omit<HudAddressSegment, "position">;
   const working: HudAddressSegmentWorking[] = [];
 
   parts.forEach((part, i) => {
@@ -74,7 +75,7 @@ function alt(
     });
   });
 
-  const noSep: HudAddressSegment[] = [];
+  const noSep: HudAddressSegmentWithoutPosition[] = [];
   working.forEach((w) => {
     const prev = noSep.at(-1);
     const hasPrev = !!prev;
@@ -91,20 +92,49 @@ function alt(
     }
   });
 
-  const address: HudAddressSegment[] = [];
+  const wPos: HudAddressSegmentWithoutPosition[] = [];
   noSep.forEach((w) => {
-    const prev = address.at(-1);
+    const prev = wPos.at(-1);
     const hasPrev = !!prev;
     if (hasPrev && w.type === "segment" && prev.type === "segment") {
-      address.push({
+      wPos.push({
         type: "divider",
         mode: "separator",
         shown: [tokens.separator],
         masked: [tokens.separator],
       });
     }
-    address.push(w);
+    wPos.push(w);
   });
+
+  const address: HudAddressSegment[] = [];
+  for (let i = 0; i < wPos.length; i++) {
+    let left: HudAddressSegment["position"]["left"] = "middle";
+    let right: HudAddressSegment["position"]["right"] = "middle";
+
+    if (wPos[i].type === "divider") {
+      if (i === 0) {
+        left = "first";
+      } else if (i > 0 && wPos[i - 1].type !== "divider") {
+        left = "local-first";
+      }
+      if (i === wPos.length - 1) {
+        right = "last";
+      } else if (i < wPos.length - 1 && wPos[i + 1].type !== "divider") {
+        right = "local-last";
+      }
+    }
+
+    address.push({
+      ...wPos[i],
+      position: {
+        left,
+        right,
+      },
+    });
+  }
+
+  console.log(address);
 
   return address;
 }
@@ -135,73 +165,4 @@ export function buildAddressSegments(
   });
 
   return alt(partMode, tokens, parts);
-
-  // const address: HudAddressSegment_OLD[] = [];
-  // partLoop: for (let [i, c] of partMode.entries()) {
-  //   const prev = address.at(-1);
-
-  //   const type = ["trim", "hide", "separator"].includes(c)
-  //     ? ("divider" as "divider")
-  //     : ("segment" as "segment");
-  //   for (let m of ["hide", "trim"] as HudAddressSegmentPart["mode"][]) {
-  //     if (prev?.mode === m && c === m) {
-  //       (prev as HudAddressSegmentWithParts).parts.push({
-  //         mode: m,
-  //         shown: tokens[m],
-  //         masked: parts[i],
-  //       });
-  //       continue partLoop;
-  //     }
-  //   }
-
-  //   if (prev?.mode === "show" && c === "show") {
-  //     address.push({
-  //       type,
-  //       mode: "separator",
-  //       shown: [tokens.separator],
-  //     });
-  //   }
-
-  //   switch (c) {
-  //     case "trim":
-  //     case "hide":
-  //       if (prev && ["trim", "hide"].includes(prev.mode)) {
-  //         prev.shown.push(tokens[c]);
-  //         (prev as HudAddressSegmentWithParts).parts.push({
-  //           mode: c,
-  //           shown: tokens[c],
-  //           masked: parts[i],
-  //         });
-  //       } else {
-  //         const item = {
-  //           type,
-  //           mode: c,
-  //           shown: [tokens[c]],
-  //         };
-  //         address.push({
-  //           ...item,
-  //           type: "divider",
-  //           parts: [
-  //             {
-  //               mode: c,
-  //               shown: tokens[c],
-  //               masked: parts[i],
-  //             },
-  //           ],
-  //         });
-  //       }
-  //       break;
-  //     // @ts-expect-error
-  //     case "drop":
-  //       break;
-  //     default:
-  //       address.push({
-  //         type,
-  //         mode: c,
-  //         shown: [parts[i]],
-  //       });
-  //   }
-  // }
-
-  // return address;
 }

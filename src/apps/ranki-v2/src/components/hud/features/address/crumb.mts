@@ -13,9 +13,37 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
     return "mutate";
   }
 
-  // REMOVE
-  setProps(a: any) {
+  setProps(a: HudAddressSegment) {
     this.state.set(a);
+  }
+
+  private computePadding(curr: HudAddressSegment) {
+    let left = "0px";
+    let right = "0px";
+    switch (curr.type) {
+      case "divider":
+        switch (curr.position.left) {
+          case "first":
+            left = "8px";
+            break;
+          case "local-first":
+            left = "3px";
+            break;
+        }
+        switch (curr.position.right) {
+          case "last":
+            right = "8px";
+            break;
+          case "local-last":
+            right = "3px";
+            break;
+        }
+        break;
+      default:
+        left = "16px";
+        right = "16px";
+    }
+    return { paddingLeft: left, paddingRight: right };
   }
 
   initialize(): void {
@@ -25,23 +53,27 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
       return c.type !== p?.type || c.shown.join("") !== p?.shown.join("");
     });
     this.elements.push("text", text);
+    this.animation.pushDependency("width", text);
     this.animation
-      .setDependencyCallback(() => [text])
-      .listenEvent("width", (endState) => {
+      .registerEventCallback("width", (endState) => {
+        const curr = this.state.curr();
         const c = getComputedStyle(this);
         const p = parseFloat(c.paddingLeft) + parseFloat(c.paddingRight);
         let w = this.getBoundingClientRect().width;
         let start = w - p;
         start = start < 0 ? 0 : start;
-        const end = endState.width;
-        console.log(start, end);
         return {
           keyframes: [
             {
               width: start + "px",
+              paddingLeft: c.paddingLeft,
+              paddingRight: c.paddingRight,
             },
             {
               width: endState.width,
+              ...this.computePadding(curr),
+              // paddingLeft: this.getValue(curr),
+              // paddingRight: this.getValue(curr),
             },
           ],
           options: {
@@ -90,9 +122,6 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
     this.css.set({
       "box-sizing": "content-box",
       display: "grid",
-      // height: "100%",
-      // position: "fixed",
-      // border: "1px solid red",
       width: 0,
       overflow: "hidden",
     });
@@ -101,8 +130,9 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
   protected onStateChange(curr: HudAddressSegment): void {
     const text = this.elements.get<RText>("text")!;
     text.state.set({ text: curr.shown.join("") });
-    this.animation.raf(2, () => {
-      this.className = curr.type;
-    });
+
+    // this.animation.raf(2, () => {
+    this.className = curr.type;
+    // });
   }
 }
