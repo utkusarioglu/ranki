@@ -81,7 +81,7 @@ function render(state: RankiState) {
   createDesign(state.design);
   // RankiIndicator.singleton(state.indicator, document.body);
   // RankiChallenge.singleton(state.challenge, document.body);
-  test();
+  // test();
 }
 
 onReady(main);

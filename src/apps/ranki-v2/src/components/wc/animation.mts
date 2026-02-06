@@ -37,7 +37,7 @@ export class WcAnimation extends EventTarget {
 
   listenEvent(
     name: string,
-    configCb: (endState: Keyframe) => WcAnimationConfig,
+    configCb: (endState: Keyframe) => WcAnimationConfig | void,
   ) {
     this.dependencyCb().map((d) => {
       (d as Wc<any>).animation &&
@@ -52,10 +52,11 @@ export class WcAnimation extends EventTarget {
 
   private runOnLayout(
     name: string,
-    intent: (endState: Keyframe) => WcAnimationConfig,
+    configCb: (endState: Keyframe) => WcAnimationConfig | void,
     endState: Keyframe,
   ) {
-    this.animate(name, intent(endState));
+    const config = configCb(endState);
+    config && this.animate(name, config);
   }
 
   animate(name: string, config: WcAnimationConfig) {
@@ -92,11 +93,12 @@ export class WcAnimation extends EventTarget {
 
   async triggerEvent(
     name: string,
-    keyframe: () => Keyframe,
+    cb: () => Keyframe | undefined,
     frames: number = 2,
   ) {
     this.raf(frames, () => {
-      this.dispatchAnimation(name, keyframe());
+      const config = cb();
+      config && this.dispatchAnimation(name, config);
     });
   }
 

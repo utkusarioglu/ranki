@@ -20,27 +20,43 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
 
   initialize(): void {
     const text = RText.create.instance(null, this);
+    this.state.setTrigger((p, c) => {
+      // TODO
+      return c.type !== p?.type || c.shown.join("") !== p?.shown.join("");
+    });
     this.elements.push("text", text);
     this.animation
       .setDependencyCallback(() => [text])
-      .listenEvent("width", (endState) => ({
-        keyframes: [
-          {
-            width: this.getBoundingClientRect().width + "px",
+      .listenEvent("width", (endState) => {
+        const c = getComputedStyle(this);
+        const p = parseFloat(c.paddingLeft) + parseFloat(c.paddingRight);
+        let w = this.getBoundingClientRect().width;
+        let start = w - p;
+        start = start < 0 ? 0 : start;
+        const end = endState.width;
+        console.log(start, end);
+        return {
+          keyframes: [
+            {
+              width: start + "px",
+            },
+            {
+              width: endState.width,
+            },
+          ],
+          options: {
+            duration: 4e2,
+            fill: "both",
           },
-          {
-            width: endState.width,
-          },
-        ],
-        options: {
-          duration: 4e2,
-          fill: "both",
-        },
-      }))
+        };
+      })
       .pushPreset("enter", () => ({
         keyframes: [
           {
-            "padding-inline": "1",
+            opacity: 0,
+          },
+          {
+            opacity: 1,
           },
         ],
         options: {
@@ -48,22 +64,35 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
           fill: "both",
         },
       }))
-      .pushPreset("exit", () => ({
-        keyframes: [
-          {},
-          {
-            "padding-inline": "0",
+      .pushPreset("exit", () => {
+        const c = getComputedStyle(this);
+        return {
+          keyframes: [
+            {
+              opacity: 1,
+              width: c.width,
+              paddingLeft: c.paddingLeft,
+              paddingRight: c.paddingRight,
+            },
+            {
+              opacity: 0,
+              width: 0,
+              paddingLeft: 0,
+              paddingRight: 0,
+            },
+          ],
+          options: {
+            duration: 4e2,
+            fill: "both",
           },
-        ],
-        options: {
-          duration: 4e2,
-          fill: "both",
-        },
-      }));
+        };
+      });
     this.css.set({
-      display: "inline-block",
-      position: "fixed",
-      border: "1px solid red",
+      "box-sizing": "content-box",
+      display: "grid",
+      // height: "100%",
+      // position: "fixed",
+      // border: "1px solid red",
       width: 0,
       overflow: "hidden",
     });
@@ -72,6 +101,8 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
   protected onStateChange(curr: HudAddressSegment): void {
     const text = this.elements.get<RText>("text")!;
     text.state.set({ text: curr.shown.join("") });
-    this.className = curr.type;
+    this.animation.raf(2, () => {
+      this.className = curr.type;
+    });
   }
 }

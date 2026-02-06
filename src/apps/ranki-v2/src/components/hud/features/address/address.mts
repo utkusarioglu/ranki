@@ -17,9 +17,9 @@ import { RAddressCrumb } from "./crumb.mts";
 export class HudAddress extends RankiHudWc<HudAddressProps> {
   protected static name = "ranki-hud-address" as const;
   protected animations: AnimationTypes = {
-    show: RankiAnimation_OLD.expandXFadeIn(this, {
-      initialCb: this.adjustWidth.bind(this),
-    }),
+    // show: RankiAnimation_OLD.expandXFadeIn(this, {
+    //   // initialCb: this.adjustWidth.bind(this),
+    // }),
     hide: RankiAnimation_OLD.collapseXFadeOut(this, {}),
   };
   private subtree = new Subtree<RAddressCrumb, HudAddressSegment>({
@@ -40,18 +40,18 @@ export class HudAddress extends RankiHudWc<HudAddressProps> {
     return s.type === "address" ? "mutate" : "remove";
   }
 
-  private adjustWidth() {
-    const container = this.getContainer();
-    if (!container) return;
-    const left = this.getLeft();
-    const last = this.subtree.getLast();
-    const right = last?.css.getRight() || left;
-    console.log("intent", last!.animation.getIntent("width"));
+  // private adjustWidth() {
+  //   const container = this.getContainer();
+  //   if (!container) return;
+  //   const left = this.getLeft();
+  //   const last = this.subtree.getLast();
+  //   const right = last?.css.getRight() || left;
+  //   console.log("intent", last!.animation.getIntent("width"));
 
-    console.log("r", left, right, right - left);
-    this.setProperties({ width: right - left + "px" });
-    // this.setProperties({ width: "200px" });
-  }
+  //   console.log("r", left, right, right - left);
+  //   this.setProperties({ width: right - left + "px" });
+  //   // this.setProperties({ width: "200px" });
+  // }
 
   private build() {
     this.createSingletonContainer();
