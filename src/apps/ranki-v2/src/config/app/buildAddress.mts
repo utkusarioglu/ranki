@@ -134,8 +134,6 @@ function alt(
     });
   }
 
-  console.log(address);
-
   return address;
 }
 

@@ -9,6 +9,23 @@ export class WcCss {
     this.self = self;
   }
 
+  computeTotalWidth(s: CSSStyleDeclaration | Keyframe) {
+    return Object.values(this.selectWidthProperties(s)).reduce<number>(
+      (a, c) => a + parseFloat(c!.toString()),
+      0,
+    );
+  }
+
+  selectWidthProperties(c: CSSStyleDeclaration | Keyframe) {
+    return {
+      width: c.width,
+      paddingLeft: c.paddingLeft,
+      paddingRight: c.paddingRight,
+      borderLeft: c.borderLeft,
+      borderRight: c.borderRight,
+    };
+  }
+
   getLeft(): number {
     return this.self.getBoundingClientRect().left;
   }

@@ -2,6 +2,8 @@ import type { HudAddressSegment } from "_components/hud/hud.types.mjs";
 import { RText } from "_components/text/text.mjs";
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 
+const DUR = 5e2;
+
 export class RAddressCrumb extends Wc<HudAddressSegment> {
   static readonly tag = "r-address-crumb";
 
@@ -53,9 +55,9 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
       return c.type !== p?.type || c.shown.join("") !== p?.shown.join("");
     });
     this.elements.push("text", text);
-    this.animation.pushDependency("width", text);
     this.animation
-      .registerEventCallback("width", (endState) => {
+      .pushDependency("width", text)
+      .registerEventCallback("width", ({ keyframe }) => {
         const curr = this.state.curr();
         const c = getComputedStyle(this);
         const p = parseFloat(c.paddingLeft) + parseFloat(c.paddingRight);
@@ -68,16 +70,18 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
               width: start + "px",
               paddingLeft: c.paddingLeft,
               paddingRight: c.paddingRight,
+              borderLeft: c.borderLeft,
+              borderRight: c.borderRight,
             },
             {
-              width: endState.width,
+              width: keyframe.width,
+              borderLeft: c.borderLeft,
+              borderRight: c.borderRight,
               ...this.computePadding(curr),
-              // paddingLeft: this.getValue(curr),
-              // paddingRight: this.getValue(curr),
             },
           ],
           options: {
-            duration: 4e2,
+            duration: DUR,
             fill: "both",
           },
         };
@@ -92,7 +96,7 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
           },
         ],
         options: {
-          duration: 4e2,
+          duration: DUR,
           fill: "both",
         },
       }))
@@ -114,7 +118,7 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
             },
           ],
           options: {
-            duration: 4e2,
+            duration: DUR,
             fill: "both",
           },
         };
@@ -127,12 +131,15 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
     });
   }
 
+  protected onStateSame(): void {
+    this.animation.triggerEvent("width", () => {
+      return this.css.selectWidthProperties(getComputedStyle(this));
+    });
+  }
+
   protected onStateChange(curr: HudAddressSegment): void {
     const text = this.elements.get<RText>("text")!;
     text.state.set({ text: curr.shown.join("") });
-
-    // this.animation.raf(2, () => {
     this.className = curr.type;
-    // });
   }
 }

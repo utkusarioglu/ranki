@@ -4,6 +4,8 @@ export interface RankiTextState {
   text: string;
 }
 
+const DUR = 4e2;
+
 export class RText extends Wc<RankiTextState> {
   public static tag = "r-text";
 
@@ -15,17 +17,17 @@ export class RText extends Wc<RankiTextState> {
       "white-space": "nowrap",
     });
     this.animation
-      .registerEventCallback("width", (endState: Keyframe) => ({
+      .registerEventCallback("width", ({ keyframe }) => ({
         keyframes: [
           {
             width: this.getBoundingClientRect().width + "px",
           },
           {
-            width: endState.width,
+            width: keyframe.width,
           },
         ],
         options: {
-          duration: 4e2,
+          duration: DUR,
           fill: "both",
         },
       }))
@@ -39,7 +41,7 @@ export class RText extends Wc<RankiTextState> {
           },
         ],
         options: {
-          duration: 4e2,
+          duration: DUR,
         },
       }))
       .pushPreset("exit", () => ({
@@ -52,7 +54,7 @@ export class RText extends Wc<RankiTextState> {
           },
         ],
         options: {
-          duration: 4e2,
+          duration: DUR,
         },
       }));
   }
@@ -88,7 +90,7 @@ export class RTextSpan extends Wc<string> {
           },
         ],
         options: {
-          duration: 4e2,
+          duration: DUR,
           fill: "both",
         },
       }))
@@ -102,7 +104,7 @@ export class RTextSpan extends Wc<string> {
           },
         ],
         options: {
-          duration: 4e2,
+          duration: DUR,
           fill: "both",
         },
       }));

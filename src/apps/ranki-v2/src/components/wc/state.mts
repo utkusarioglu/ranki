@@ -3,6 +3,10 @@ type WcStateOnChangeCb<InternalState> = (
   prev: InternalState | null,
 ) => Promise<void> | void;
 
+type WcStateOnSameCb<InternalState> = (
+  curr: InternalState,
+) => Promise<void> | void;
+
 type PropTransformer<Props, InternalState> = (p: Props) => InternalState;
 type FilterCb<InternalState> = (
   prev: InternalState | null,
@@ -11,6 +15,7 @@ type FilterCb<InternalState> = (
 
 export class WcState<Props, InternalState = Props> {
   private onChange: WcStateOnChangeCb<InternalState>;
+  private onSame!: WcStateOnSameCb<InternalState>;
   private prevIs: InternalState | null = null;
   private currIs!: InternalState;
   private transformer: PropTransformer<Props, InternalState> = (p) =>
@@ -19,9 +24,13 @@ export class WcState<Props, InternalState = Props> {
 
   constructor(
     onChange: WcStateOnChangeCb<InternalState>,
+    onSame?: WcStateOnSameCb<InternalState>,
     keyCb?: FilterCb<InternalState>,
   ) {
     this.onChange = onChange;
+    if (onSame) {
+      this.onSame = onSame;
+    }
     if (keyCb) {
       this.filterCb = keyCb;
     }
@@ -38,8 +47,11 @@ export class WcState<Props, InternalState = Props> {
   set(props: Props) {
     this.prevIs = this.currIs;
     this.currIs = this.transformer(props);
-    if (!this.filterCb(this.prevIs, this.currIs)) return;
-    return this.onChange(this.currIs, this.prevIs);
+    if (this.filterCb(this.prevIs, this.currIs)) {
+      return this.onChange(this.currIs, this.prevIs);
+    } else {
+      return this.onSame(this.currIs);
+    }
   }
 
   curr() {

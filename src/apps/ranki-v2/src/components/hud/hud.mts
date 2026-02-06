@@ -76,7 +76,6 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
     assertNotNull(scroller, { why: "No container" });
     switch (state.type) {
       case "address":
-        // return HudAddress.singleton(state.state, scroller);
         return RAddress.create.singleton(state.state, scroller).element;
       case "card":
         return HudCard.singleton(state.state, scroller);

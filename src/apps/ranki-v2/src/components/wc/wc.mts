@@ -23,6 +23,7 @@ export class Wc<Props, InternalState = Props> extends HTMLElement {
   public readonly css = new WcCss(this);
   public readonly state = new WcState<Props, InternalState>(
     this.onStateChange.bind(this),
+    this.onStateSame.bind(this),
   );
   public isShadow = false;
   protected readonly elements = new WcElements(this);
@@ -66,13 +67,17 @@ export class Wc<Props, InternalState = Props> extends HTMLElement {
     assertNever({ why: "this method needs to be overridden" });
   }
 
+  protected onStateSame(
+    // @ts-expect-error
+    curr: InternalState,
+  ) {}
+
   protected onStateChange(
     // @ts-expect-error
     curr: InternalState,
     // @ts-expect-error
     prev: InternalState | null,
   ) {
-    this.initialize();
     assertNever({ why: "this method needs to be overridden" });
   }
 }

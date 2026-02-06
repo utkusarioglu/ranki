@@ -34,13 +34,32 @@ export class RAddress extends Wc<HudAddressProps> {
 
   initialize(): void {
     this.elements.create("container", { tag: "div", classes: ["container"] });
-    let items: number[] = [];
-    this.animation.registerEventCallback("width", (s) => {
-      items.push(parseFloat(s.width!.toString()));
-      const childLength = this.subtree.getAll().length;
-      if (items.length === childLength) {
-        const width = items.reduce((a, c) => a + c, 0);
-        console.log(width, childLength, this.subtree.getAll());
+    let items: number[];
+    let count = 0;
+    this.animation.registerEventCallback("width", ({ keyframe }) => {
+      if (!count) {
+        count = this.subtree.getAll().length;
+        items = [];
+      }
+      items.push(this.css.computeTotalWidth(keyframe));
+      if (items.length === count) {
+        const width = Array.from(items.values()).reduce((a, c) => a + c, 0);
+        const c = getComputedStyle(this);
+        this.animation.animate("width", {
+          keyframes: [
+            {
+              width: c.width,
+            },
+            {
+              width: width + "px",
+            },
+          ],
+          options: {
+            duration: 4e2,
+            fill: "both",
+          },
+        });
+        count = 0;
       }
     });
   }
@@ -61,7 +80,6 @@ export class RAddress extends Wc<HudAddressProps> {
   }
 
   protected onStateChange(curr: HudAddressProps): void {
-    console.log(curr);
     this.subtree.reconcile(
       curr.segments.map((state) => ({
         type: state.type,

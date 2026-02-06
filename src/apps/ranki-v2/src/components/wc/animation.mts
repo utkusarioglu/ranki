@@ -11,7 +11,7 @@ type WcAnimationEventRecord = Record<
   () => WcAnimationConfig
 >;
 
-type AnimationCall = (endState: Keyframe) => WcAnimationConfig | void;
+type AnimationCall = (payload: EventPayload) => WcAnimationConfig | void;
 
 // type WcDependency = HTMLElement | Wc<any>;
 // type WcDependencyCallback = () => WcDependency[];
@@ -19,8 +19,13 @@ type AnimationCall = (endState: Keyframe) => WcAnimationConfig | void;
 const ANIMATION_PREFIX = "r-animation-";
 
 interface EventPayload {
+  keyframe: Keyframe;
+  target: Wc<any>;
+}
+
+interface EventTransport {
   type: string;
-  payload: Keyframe;
+  payload: EventPayload;
 }
 
 // type EventCallback = (e: EventPayload) => void;
@@ -57,51 +62,36 @@ export class WcAnimation extends EventTarget {
   pushDependency(eventName: string, dependency: Wc<any>) {
     dependency.addEventListener(ANIMATION_PREFIX, (e) => {
       e.stopPropagation();
-      const detail: EventPayload = (e as CustomEvent).detail;
+      const detail: EventTransport = (e as CustomEvent).detail;
       if (detail.type === eventName) {
-        const endState = detail.payload;
+        const payload = detail.payload;
         const call = this.eventsCbs[eventName];
-        this.runOnLayout(eventName, call, endState);
+        this.runOnLayout(eventName, call, payload);
       }
     });
+    return this;
   }
-
-  // listenEvent(
-  //   name: string,
-  //   configCb: (endState: Keyframe) => WcAnimationConfig | void,
-  // ) {
-  //   this.dependencyCb().map((d) => {
-  //     (d as Wc<any>).animation &&
-  //       (d as Wc<any>).addEventListener(ANIMATION_PREFIX, (e) => {
-  //         e.stopPropagation();
-  //         const detail = (e as CustomEvent).detail;
-  //         if (detail.type === name) {
-  //           const endState = detail.payload;
-  //           this.runOnLayout(name, configCb, endState);
-  //         }
-  //       });
-  //   });
-  //   return this;
-  // }
 
   private runOnLayout(
     name: string,
     configCb: AnimationCall,
-    endState: Keyframe,
+    payload: EventPayload,
   ) {
-    const config = configCb(endState);
-    if (config) {
-      this.animate(name, config);
-      this.waitLayout().then(() =>
-        this.dispatchAnimation(name, config.keyframes.at(-1)!),
-      );
-    }
+    const config = configCb(payload);
+    config && this.animate(name, config, true);
   }
 
-  animate(name: string, config: WcAnimationConfig) {
+  animate(name: string, config: WcAnimationConfig, emit: boolean = false) {
     const animation = this.self.animate(config.keyframes, config.options);
     this.setActive(name, animation);
     animation.finished.then(() => this.removeActive(name));
+    emit &&
+      this.waitLayout().then(() =>
+        this.dispatchAnimation(name, {
+          keyframe: config.keyframes.at(-1)!,
+          target: this.self,
+        }),
+      );
     return animation;
   }
 
@@ -113,11 +103,6 @@ export class WcAnimation extends EventTarget {
     this.presets[name] = config;
     return this;
   }
-
-  // setDependencyCallback(cb: WcDependencyCallback) {
-  //   this.dependencyCb = cb;
-  //   return this;
-  // }
 
   async runPreset(event: WcAnimationEventNames) {
     const animation = this.presets[event];
@@ -134,11 +119,16 @@ export class WcAnimation extends EventTarget {
   ) {
     this.raf(frames, () => {
       const config = cb();
-      config && this.dispatchAnimation(name, config);
+      config &&
+        this.dispatchAnimation(name, { keyframe: config, target: this.self });
     });
   }
 
-  private dispatchAnimation(type: string, payload: Keyframe) {
+  private dispatchAnimation(
+    type: string,
+    payload: EventPayload,
+    // dependency: Wc<any>,
+  ) {
     this.self.dispatchEvent(
       new CustomEvent(ANIMATION_PREFIX, {
         detail: { type, payload },
