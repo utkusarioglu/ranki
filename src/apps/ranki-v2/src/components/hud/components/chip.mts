@@ -1,12 +1,13 @@
-import type { HudAddressSegment } from "_components/hud/hud.types.mjs";
 import { RText } from "_components/text/text.mjs";
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 
 const DUR = 5e2;
 
-export class RAddressCrumb extends Wc<HudAddressSegment> {
-  static readonly tag = "r-address-crumb";
+export interface MinChipProp {
+  type: string;
+}
 
+export class WcChip<T extends MinChipProp, G = T> extends Wc<T, G> {
   isActive(): boolean {
     return true;
   }
@@ -15,45 +16,19 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
     return "mutate";
   }
 
-  setProps(a: HudAddressSegment) {
+  setProps(a: T) {
     this.state.set(a);
   }
 
-  private computePadding(curr: HudAddressSegment) {
-    let left = "0px";
-    let right = "0px";
-    switch (curr.type) {
-      case "divider":
-        switch (curr.position.left) {
-          case "first":
-            left = "8px";
-            break;
-          case "local-first":
-            left = "3px";
-            break;
-        }
-        switch (curr.position.right) {
-          case "last":
-            right = "8px";
-            break;
-          case "local-last":
-            right = "3px";
-            break;
-        }
-        break;
-      default:
-        left = "16px";
-        right = "16px";
-    }
-    return { paddingLeft: left, paddingRight: right };
-  }
+  // protected computePadding(
+  //   // @ts-expect-error
+  //   curr: T,
+  // ) {
+  //   return { paddingLeft: "16px", paddingRight: "16px" };
+  // }
 
   initialize(): void {
     const text = RText.create.instance(null, this);
-    this.state.setTrigger((p, c) => {
-      // TODO
-      return c.type !== p?.type || c.shown.join("") !== p?.shown.join("");
-    });
     this.elements.push("text", text);
     this.animation
       .pushDependency("width", text)
@@ -77,6 +52,7 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
               width: keyframe.width,
               borderLeftWidth: c.borderLeftWidth,
               borderRightWidth: c.borderRightWidth,
+              // @ts-expect-error
               ...this.computePadding(curr),
             },
           ],
@@ -139,11 +115,5 @@ export class RAddressCrumb extends Wc<HudAddressSegment> {
     this.animation.triggerEvent("width", () => {
       return this.css.selectWidthProperties(getComputedStyle(this));
     });
-  }
-
-  protected onStateChange(curr: HudAddressSegment): void {
-    const text = this.elements.get<RText>("text")!;
-    text.state.set({ text: curr.shown.join("") });
-    this.className = curr.type;
   }
 }

@@ -9,7 +9,7 @@ export interface ReconciliationInfo<State> {
   subtree: WrappedState<State>[];
 }
 
-interface ElemMin<State> extends Wc<State> {
+export interface ElemMin<State> extends Wc<State> {
   canReconcile(s: WrappedState<State>): ReconciliationAction;
   remove(): Promise<void>;
   setProps(p: State): void;

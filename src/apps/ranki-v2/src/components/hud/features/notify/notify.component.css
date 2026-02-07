@@ -1,0 +1,85 @@
+:host {
+  --transition-duration: var(--rhn-transition-duration, 0);
+  --transition-property:
+    background, color, padding, border, opacity, scale, transform, width,
+    margin-right;
+
+  --c-background: var(--rhn-c-background, transparent);
+  --c-backdrop-filter: var(--rhn-c-backdrop-filter, transparent);
+  --c-border: var(--rhn-c-border, 1px solid red);
+  --c-border-radius: var(--rhn-c-border-radius, none);
+
+  --v-background: var(--rhn-v-background, transparent);
+  --v-color: var(--rhn-v-color, white);
+  --v-border: var(--rhn-v-border, 1px solid red);
+  --v-border-radius: var(--rhn-v-border-radius, none);
+
+  --r-color: var(--rhn-r-color, gray);
+  --r-border-radius: var(--rhn-r-border-radius, none);
+  --r-border: var(--rhn-r-border, 1px solid red);
+  --r-background: var(--rhn-r-background, transparent);
+}
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+  opacity: 1;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  user-select: none;
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+}
+
+.container {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 100%;
+  /* padding: var(--c-padding); */
+  background: var(--c-background);
+  border-radius: var(--c-border-radius);
+  border: var(--c-border);
+  /* gap: var(--c-gap); */
+  backdrop-filter: var(--c-backdrop-filter);
+}
+
+.version {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  line-height: 1em;
+  height: 100%;
+  background: var(--v-background);
+  /* padding: var(--v-padding); */
+  color: var(--v-color);
+  border-radius: var(--v-border-radius);
+  border: var(--v-border);
+}
+
+.replacements {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  line-height: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  /* padding: var(--r-padding); */
+  border-radius: var(--r-border-radius);
+  color: var(--r-color);
+  background: var(--r-background);
+  border: var(--r-border);
+}

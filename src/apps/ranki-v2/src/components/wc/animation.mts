@@ -1,4 +1,4 @@
-import { assertNotExists } from "_error/assertions.mjs";
+import { assertNotExists, assertNotUndefined } from "_error/assertions.mjs";
 import type { Wc } from "./wc.mts";
 
 interface WcAnimationConfig {
@@ -13,10 +13,7 @@ type WcAnimationEventRecord = Record<
 
 type AnimationCall = (payload: EventPayload) => WcAnimationConfig | void;
 
-// type WcDependency = HTMLElement | Wc<any>;
-// type WcDependencyCallback = () => WcDependency[];
-
-const ANIMATION_PREFIX = "r-animation-";
+const ANIMATION_PREFIX = "r-animation";
 
 interface EventPayload {
   keyframe: Keyframe;
@@ -28,13 +25,10 @@ interface EventTransport {
   payload: EventPayload;
 }
 
-// type EventCallback = (e: EventPayload) => void;
-
 export class WcAnimation extends EventTarget {
   private self: Wc<any>;
   public presets: Partial<WcAnimationEventRecord> = {};
   private eventsCbs: Record<string, AnimationCall> = {};
-  // private dependencyCb: WcDependencyCallback = () => [];
   private active: Record<string, Animation> = {};
 
   constructor(self: Wc<any>) {
@@ -77,6 +71,10 @@ export class WcAnimation extends EventTarget {
     configCb: AnimationCall,
     payload: EventPayload,
   ) {
+    assertNotUndefined(configCb, {
+      why: "No callback defined for animation dependency",
+      details: { name, payload },
+    });
     const config = configCb(payload);
     config && this.animate(name, config, true);
   }

@@ -77,23 +77,19 @@
   --rhc-f-padding: 0 1em;
 
   /* HUD PARSER */
-  --rhp-transition-duration: var(--ranki-animation-fade-duration);
-  --rhp-c-background: rgba(var(--scheme-surface-1), var(--base));
-  --rhp-c-backdrop-filter: var(--backdrop);
-  --rhp-c-border: none;
-  --rhp-c-border-radius: 0.5em;
-  --rhp-c-gap: 0.2em;
-  --rhp-c-padding: 0;
-  --rhp-v-background: rgba(var(--scheme-surface-2), var(--chip));
-  --rhp-v-border: none;
-  --rhp-v-border-radius: 0.5em;
-  --rhp-v-padding: 0 1em;
-  --rhp-v-color: rgb(var(--scheme-text-0));
-  --rhp-r-background: transparent;
-  --rhp-r-border: none;
-  --rhp-r-border-radius: 0.5em;
-  --rhp-r-padding: 0 0.7em 0 0.4em;
-  --rhp-r-color: rgb(var(--scheme-text-1));
+  --rhn-transition-duration: var(--ranki-animation-fade-duration);
+  --rhn-c-background: rgba(var(--scheme-surface-1), var(--base));
+  --rhn-c-backdrop-filter: var(--backdrop);
+  --rhn-c-border: none;
+  --rhn-c-border-radius: 0.5em;
+  --rhn-v-background: rgba(var(--scheme-surface-2), var(--chip));
+  --rhn-v-border: none;
+  --rhn-v-border-radius: 0.5em;
+  --rhn-v-color: rgb(var(--scheme-text-0));
+  --rhn-r-background: transparent;
+  --rhn-r-border: none;
+  --rhn-r-border-radius: 0.5em;
+  --rhn-r-color: rgb(var(--scheme-text-1));
 
   /* HUD TAGS */
   --rht-transition-duration: var(--ranki-animation-fade-duration);

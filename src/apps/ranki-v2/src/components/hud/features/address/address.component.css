@@ -45,7 +45,7 @@
   }
 }
 
-r-address-crumb {
+r-address-chip {
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
   user-select: none;

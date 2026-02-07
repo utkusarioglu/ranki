@@ -10,7 +10,7 @@ import type {
   RankiAddressTokens,
 } from "_config/config.types.mts";
 
-export type HudComponentNames = "app" | "address" | "tags" | "cues" | "card";
+export type HudComponentNames = "notify" | "address" | "tags" | "cues" | "card";
 
 export type HudVisibility = "visible" | "pull" | "pullWhenShort";
 
@@ -94,7 +94,7 @@ export interface RankiHudState {
   order: HudComponentNames[];
   visibility: HudVisibility;
   subtree: {
-    app: HudAppProps;
+    notify: HudAppProps;
     address: HudAddressProps;
     tags: HudTagsProps;
     cues: ProcessedCueMapHud;

@@ -193,7 +193,7 @@ function buildHudConfig(
     visibility: base.config.hud.visibility,
     subtree: {
       // TODO
-      app: {
+      notify: {
         count: 3,
         hasReplacements: true,
         parseMode: "v2",
