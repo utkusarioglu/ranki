@@ -14,47 +14,17 @@ export class RNotify extends WcHudContainer<
   RNotifyChipProps
 > {
   public static readonly tag = "r-notify" as const;
-  // private subtree = new WcSub<RNotifyChip, RNotifyChipProps>({
-  //   create: this.createSubtreeChild.bind(this),
-  //   remove: this.removeSubtreeChild.bind(this),
-  // });
 
   constructor() {
     super(true);
     this.css.pushStyles(styles);
   }
 
-  // isActive(): boolean {
-  //   return !!this.subtree.getAll().length;
-  // }
-
   canReconcile(s: WrappedState<T>): ReconciliationAction {
     return s.type === "notify" && !!this.subtree.getAll().length
       ? "mutate"
       : "remove";
   }
-  // canReconcile(curr: ): ReconciliationAction {
-
-  // }
-  // canReconcile(): ReconciliationAction {
-  //   return "mutate";
-  // }
-
-  // setProps(e: T) {
-  //   this.state.set(e);
-  //   return this;
-  // }
-
-  // hasNext(n: boolean) {
-  //   this.css.set({ "margin-right": n ? "1em" : 0 });
-  // }
-
-  // initialize(): void {
-  //   this.elements.create("container", {
-  //     tag: "div",
-  //     classes: ["container"],
-  //   });
-  // }
 
   protected createSubtreeChild(s: WrappedState<RNotifyChipProps>) {
     const container = this.elements.get("container")!;
@@ -62,10 +32,6 @@ export class RNotify extends WcHudContainer<
     this.animation.pushDependency("width", ch);
     return ch;
   }
-
-  // protected removeSubtreeChild(e: RNotifyChip) {
-  //   e.remove();
-  // }
 
   protected onStateChange(curr: HudAppProps): void {
     this.subtree.reconcile([
