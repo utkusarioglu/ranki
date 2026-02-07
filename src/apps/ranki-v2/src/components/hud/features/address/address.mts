@@ -8,6 +8,8 @@ import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 import { RAddressCrumb } from "./crumb.mts";
 import { WcSub } from "_components/sub/sub.mjs";
 
+const DUR = 4e2;
+
 export class RAddress extends Wc<HudAddressProps> {
   public static readonly tag = "ranki-hud-address" as const;
   private subtree = new WcSub<RAddressCrumb, HudAddressSegment>({
@@ -32,8 +34,7 @@ export class RAddress extends Wc<HudAddressProps> {
     return s.type === "address" ? "mutate" : "remove";
   }
 
-  initialize(): void {
-    this.elements.create("container", { tag: "div", classes: ["container"] });
+  private setWidthListener() {
     let items: number[];
     let count = 0;
     this.animation.registerEventCallback("width", ({ keyframe }) => {
@@ -43,25 +44,37 @@ export class RAddress extends Wc<HudAddressProps> {
       }
       items.push(this.css.computeTotalWidth(keyframe));
       if (items.length === count) {
-        const width = Array.from(items.values()).reduce((a, c) => a + c, 0);
+        const endWidth = Array.from(items.values()).reduce((a, c) => a + c, 0);
         const c = getComputedStyle(this);
-        this.animation.animate("width", {
-          keyframes: [
-            {
-              width: c.width,
+        const currWidth = parseFloat(c.width!.toString());
+        console.log(endWidth, currWidth, Math.abs(endWidth - currWidth));
+        if (Math.abs(endWidth - currWidth) > 1) {
+          this.animation.animate("width", {
+            keyframes: [
+              {
+                width: currWidth + "px",
+              },
+              {
+                width: endWidth + "px",
+              },
+            ],
+            options: {
+              duration: DUR,
+              fill: "both",
             },
-            {
-              width: width + "px",
-            },
-          ],
-          options: {
-            duration: 4e2,
-            fill: "both",
-          },
-        });
+          });
+        }
         count = 0;
       }
     });
+  }
+
+  initialize(): void {
+    this.elements.create("container", { tag: "div", classes: ["container"] });
+    this.css.set({
+      overflow: "hidden",
+    });
+    this.setWidthListener();
   }
 
   isActive(): boolean {

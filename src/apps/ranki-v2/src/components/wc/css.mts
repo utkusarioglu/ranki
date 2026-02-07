@@ -21,8 +21,8 @@ export class WcCss {
       width: c.width,
       paddingLeft: c.paddingLeft,
       paddingRight: c.paddingRight,
-      borderLeft: c.borderLeft,
-      borderRight: c.borderRight,
+      borderLeftWidth: c.borderLeftWidth,
+      borderRightWidth: c.borderRightWidth,
     };
   }
 
