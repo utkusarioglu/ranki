@@ -87,6 +87,6 @@ export class HudChipsChip extends RankiHudWc<ProcessedCue> {
       }
     }
 
-    this.addClass("cue", `issuer-${curr.issuer}`, `kind-${curr.kind}`);
+    this.addClass("cue", `issuer-${curr.issuer}`, `kind-${curr.type}`);
   }
 }

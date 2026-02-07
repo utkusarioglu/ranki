@@ -93,7 +93,7 @@ function pushMarked(
   );
   if (matched) {
     matched.config && baseC.pushConfig(kind, matched.config);
-    matched.cue && cueRecord.push({ kind, issuer, ...matched.cue });
+    matched.cue && cueRecord.push({ type: kind, issuer, ...matched.cue });
   }
 }
 
@@ -108,7 +108,7 @@ function pushTag(
     const matched = checkIfMatch(issuer, tags);
     if (!matched) return;
     matched.config && baseC.pushConfig(`${kind}:${issuer}`, matched.config);
-    matched.cue && cueRecord.push({ kind, issuer, ...matched.cue });
+    matched.cue && cueRecord.push({ type: kind, issuer, ...matched.cue });
   });
 }
 
@@ -124,7 +124,7 @@ function pushFlag(
     if (issuer !== color) return;
     const kind = "flag";
     common.config && baseC.pushConfig(`${kind}:${color}`, common.config);
-    common.cue && cueRecord.push({ kind, issuer, ...common.cue });
+    common.cue && cueRecord.push({ type: kind, issuer, ...common.cue });
   });
 }
 
@@ -138,5 +138,5 @@ function pushMatch(
   const matched = checkIfMatch(issuer, matchers);
   if (!matched) return;
   matched.config && baseC.pushConfig(kind, matched.config);
-  matched.cue && cueRecord.push({ kind, issuer, ...matched.cue });
+  matched.cue && cueRecord.push({ type: kind, issuer, ...matched.cue });
 }

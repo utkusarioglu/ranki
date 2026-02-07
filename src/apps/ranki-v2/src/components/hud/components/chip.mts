@@ -20,12 +20,25 @@ export class WcChip<T extends MinChipProp, G = T> extends Wc<T, G> {
     this.state.set(a);
   }
 
-  // protected computePadding(
-  //   // @ts-expect-error
-  //   curr: T,
-  // ) {
-  //   return { paddingLeft: "16px", paddingRight: "16px" };
+  // remove(): Promise<void> {
+  //   this.animation.triggerEvent("width", () => {
+  //     return this.css.selectWidthProperties({
+  //       width: 0,
+  //       paddingLeft: 0,
+  //       paddingRight: 0,
+  //       borderLeftWidth: 0,
+  //       borderRightWidth: 0,
+  //     });
+  //   });
+  //   return super.remove();
   // }
+
+  protected computePadding(
+    // @ts-expect-error
+    curr: T,
+  ) {
+    return { paddingLeft: "16px", paddingRight: "16px" };
+  }
 
   initialize(): void {
     const text = RText.create.instance(null, this);

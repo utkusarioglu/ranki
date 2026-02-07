@@ -72,11 +72,15 @@ export class WcHudContainer<T, G, C extends ElemMin<K>, K> extends Wc<T, G> {
     });
   }
 
+  protected onStateSame(): void {
+    this.animation.triggerEvent("width", () => {
+      return this.css.selectWidthProperties(getComputedStyle(this));
+    });
+  }
+
   initialize(): void {
     this.elements.create("container", { tag: "div", classes: ["container"] });
-    this.css.set({
-      overflow: "hidden",
-    });
+    this.css.set({ overflow: "hidden" });
     this.setWidthListener();
   }
 }

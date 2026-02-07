@@ -111,7 +111,7 @@ export interface ProcessedCue extends CueRecord {
 }
 
 export interface CueRecord extends CueConfig {
-  kind: CueKind;
+  type: CueKind;
   issuer: string;
 }
 

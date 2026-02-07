@@ -7,34 +7,30 @@ import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
 import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 import type { ProcessedCue } from "_config/config.types.mts";
 
-export class HudBadgesBadge extends RankiHudWc<ProcessedCue> {
-  protected static name = "hud-badges-badge" as const;
+export class HudLabelsLabel extends RankiHudWc<ProcessedCue> {
+  protected static name = "hud-labels-label" as const;
   protected animations: AnimationTypes = {
     enter: RankiAnimation_OLD.fadeIn(this),
     exit: RankiAnimation_OLD.fadeOut(this),
   };
 
+  // DONE
   render(): this {
     this.mutate();
     return this;
   }
 
+  // DONE
   canReconcile(): ReconciliationAction {
     return "mutate";
   }
 
+  // DONE
   isActive(): boolean {
     return true;
   }
 
-  // isActive(): boolean {
-  //   return true;
-  // }
-
-  // hasNext(b: boolean) {
-  //   this.setProperties({ "margin-right": b ? "0.5em" : "0" });
-  // }
-
+  // DONE
   /**
    * FIX
    * This fails if the cue has no properties other than `indicator`. that means
@@ -51,38 +47,27 @@ export class HudBadgesBadge extends RankiHudWc<ProcessedCue> {
     } else {
       this.style.removeProperty("background");
     }
-    if (curr.icon) {
-      let icon = this.querySelector(`ph-${curr.icon.id}`);
-      if (!icon) {
-        const oldIcon = this.querySelector(".cue-icon");
-        if (oldIcon) {
-          oldIcon.parentElement!.removeChild(oldIcon);
-        }
 
-        icon = document.createElement(`ph-${curr.icon.id}`);
-        icon.className = "cue-icon";
-        icon.setAttribute("weight", "fill");
-        this.prepend(icon);
+    if (curr.message && curr.message.text) {
+      let span = this.querySelector(".cue-message") as HTMLSpanElement | null;
+      if (!span) {
+        span = document.createElement("span");
+        span.className = "cue-message";
+        this.appendChild(span);
       }
-      if (curr.icon.color && curr.icon.color !== "none") {
-        icon.setAttribute("color", `rgb(var(--scheme-${curr.icon.color}))`);
+      if (curr.message.color && curr.message.color !== "none") {
+        span.style.color = `rgb(var(--scheme-${curr.message.color}))`;
       } else {
-        icon.removeAttribute("color");
+        span.style.removeProperty("color");
       }
+      span.innerText = curr.message.text;
     } else {
-      const iconElem = this.querySelector(".cue-icon");
-      if (iconElem) {
-        iconElem.parentElement!.removeChild(iconElem);
+      const messageElem = this.querySelector(".cue-message");
+      if (messageElem) {
+        messageElem.parentElement!.removeChild(messageElem);
       }
-      this.setProperties({ width: "20px" });
     }
 
     this.addClass("cue", `issuer-${curr.issuer}`, `kind-${curr.type}`);
-  }
-
-  setZIndex(i: number) {
-    this.setProperties({
-      "z-index": i,
-    });
   }
 }

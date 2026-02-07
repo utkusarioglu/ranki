@@ -1,68 +1,44 @@
-import "@phosphor-icons/webcomponents";
-import {
-  RankiAnimation_OLD,
-  type AnimationTypes,
-} from "_components/animation/animation.mts";
-import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
-import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
-import type { ProcessedCue } from "_config/config.types.mts";
+import { WcChip } from "_components/hud/components/chip.mjs";
+import { RText } from "_components/text/text.mjs";
+import type { CueRecord, ProcessedCue } from "_config/config.types.mjs";
 
-export class HudLabelsLabel extends RankiHudWc<ProcessedCue> {
-  protected static name = "hud-labels-label" as const;
-  protected animations: AnimationTypes = {
-    enter: RankiAnimation_OLD.fadeIn(this),
-    exit: RankiAnimation_OLD.fadeOut(this),
-  };
+type T = ProcessedCue;
 
-  render(): this {
-    this.mutate();
-    return this;
+export class RCueLabel extends WcChip<T> {
+  static readonly tag = "r-cue-label";
+
+  private mutateMessage(message: CueRecord["message"]) {
+    const text = this.elements.get<RText>("text")!;
+    if (message && message.text) {
+      if (message.color && message.color !== "none") {
+        this.css.set({
+          color: `rgb(var(--scheme-${message.color}))`,
+        });
+      } else {
+        this.css.remove(["color"]);
+      }
+      text.state.set({ text: message.text });
+    } else {
+      text.state.set({ text: "" });
+    }
   }
 
-  canReconcile(): ReconciliationAction {
-    return "mutate";
-  }
-  isActive(): boolean {
-    return true;
-  }
-
-  /**
-   * FIX
-   * This fails if the cue has no properties other than `indicator`. that means
-   * this shouldn't be created in that case but it still gets created.
-   */
-  mutate() {
-    const curr = this.getCurr();
-    if (curr.background) {
-      if (curr.background.color && curr.background.color !== "none") {
-        this.style.background = `rgb(var(--scheme-${curr.background.color}))`;
+  private mutateBackground(background: CueRecord["background"]) {
+    if (background) {
+      if (background.color && background.color !== "none") {
+        this.style.background = `rgb(var(--scheme-${background.color}))`;
       } else {
         this.style.removeProperty("background");
       }
     } else {
       this.style.removeProperty("background");
     }
+  }
 
-    if (curr.message && curr.message.text) {
-      let span = this.querySelector(".cue-message") as HTMLSpanElement | null;
-      if (!span) {
-        span = document.createElement("span");
-        span.className = "cue-message";
-        this.appendChild(span);
-      }
-      if (curr.message.color && curr.message.color !== "none") {
-        span.style.color = `rgb(var(--scheme-${curr.message.color}))`;
-      } else {
-        span.style.removeProperty("color");
-      }
-      span.innerText = curr.message.text;
-    } else {
-      const messageElem = this.querySelector(".cue-message");
-      if (messageElem) {
-        messageElem.parentElement!.removeChild(messageElem);
-      }
-    }
-
-    this.addClass("cue", `issuer-${curr.issuer}`, `kind-${curr.kind}`);
+  protected onStateChange(curr: T): void {
+    this.mutateMessage(curr.message);
+    this.mutateBackground(curr.background);
+    // text.state.set({ text: curr.message!.text });
+    this.className = curr.type;
   }
 }

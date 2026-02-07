@@ -5,7 +5,6 @@ import type {
 } from "_config/config.types.mjs";
 import { HudBadges } from "./badges/badges.mts";
 import { HudChips } from "./chips/chips.mts";
-import { HudLabels } from "./labels/labels.mts";
 import styles from "./cues.component.css?inline";
 import {
   RankiAnimation_OLD,
@@ -17,6 +16,7 @@ import type {
 } from "_components/ranki-wc/ranki-wc.mjs";
 import { assertNever, assertNotNull } from "_error/assertions.mjs";
 import { Subtree, type WrappedState } from "_components/subtree/subtree.mjs";
+import { RCueLabels } from "./labels/labels.mts";
 
 type ChildTypes = "badges" | "chips" | "labels";
 
@@ -45,12 +45,13 @@ export class HudCues extends RankiHudWc<ProcessedCueMapHud> {
     const container = this.getContainer();
     assertNotNull(container, { why: "No container to place children in" });
     switch (state.type) {
+      case "labels":
+        return RCueLabels.create.singleton(state.state, container).element;
+      // return HudLabels.singleton(state.state, container);
       case "badges":
         return HudBadges.singleton(state.state, container);
       case "chips":
         return HudChips.singleton(state.state, container);
-      case "labels":
-        return HudLabels.singleton(state.state, container);
       default:
         assertNever({
           why: "Unrecognized cue type",

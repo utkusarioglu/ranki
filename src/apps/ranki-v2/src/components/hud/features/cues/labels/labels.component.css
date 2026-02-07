@@ -58,7 +58,7 @@
   /* backdrop-filter: var(--c-backdrop-filter); */
 }
 
-hud-labels-label {
+r-cue-label {
   opacity: 1;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
