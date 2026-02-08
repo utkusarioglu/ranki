@@ -25,44 +25,7 @@ export class WcCueChip extends WcChip<T> {
 
   initialize(): void {
     this.setWidthListener();
-    this.animation
-      .pushPreset("enter", () => {
-        const curr = this.state.curr();
-        return {
-          keyframes: [
-            {
-              opacity: 0,
-              ...this.css.zeroWidthProperties(),
-            },
-            {
-              opacity: 1,
-              ...this.computePadding(curr),
-            },
-          ],
-          options: {
-            duration: DUR,
-            fill: "both",
-          },
-        };
-      })
-      .pushPreset("exit", () => {
-        return {
-          keyframes: [
-            {
-              opacity: 1,
-              ...this.css.selectWidthProperties(getComputedStyle(this)),
-            },
-            {
-              opacity: 0,
-              ...this.css.zeroWidthProperties(),
-            },
-          ],
-          options: {
-            duration: DUR,
-            fill: "both",
-          },
-        };
-      });
+    this.pushAnimationPresets();
     this.css.set({
       "box-sizing": "content-box",
       display: "flex",

@@ -27,9 +27,54 @@ export class WcChip<T extends MinChipProp, G = T> extends Wc<T, G> {
     return { paddingLeft: "16px", paddingRight: "16px" };
   }
 
+  protected pushAnimationPresets() {
+    this.animation
+      .pushPreset("enter", () => {
+        const curr = this.state.curr();
+        return {
+          keyframes: [
+            {
+              opacity: 0,
+              ...this.css.zeroWidthProperties(),
+            },
+            {
+              opacity: 1,
+              ...this.computePadding(
+                // @ts-expect-error
+                curr,
+              ),
+            },
+          ],
+          options: {
+            duration: DUR,
+            fill: "both",
+          },
+        };
+      })
+      .pushPreset("exit", () => {
+        return {
+          keyframes: [
+            {
+              opacity: 1,
+              ...this.css.selectWidthProperties(getComputedStyle(this)),
+            },
+            {
+              opacity: 0,
+              ...this.css.zeroWidthProperties(),
+            },
+          ],
+          options: {
+            duration: DUR,
+            fill: "both",
+          },
+        };
+      });
+  }
+
   initialize(): void {
     const text = RText.create.instance(null, this);
     this.elements.push("text", text);
+    this.pushAnimationPresets();
     this.animation
       .pushDependency("width", text)
       .registerEventCallback("width", ({ keyframe }) => {
@@ -54,39 +99,6 @@ export class WcChip<T extends MinChipProp, G = T> extends Wc<T, G> {
                 curr,
               ),
               width: keyframe.width,
-            },
-          ],
-          options: {
-            duration: DUR,
-            fill: "both",
-          },
-        };
-      })
-      .pushPreset("enter", () => ({
-        keyframes: [
-          {
-            opacity: 0,
-            ...this.css.zeroWidthProperties(),
-          },
-          {
-            opacity: 1,
-          },
-        ],
-        options: {
-          duration: DUR,
-          fill: "both",
-        },
-      }))
-      .pushPreset("exit", () => {
-        return {
-          keyframes: [
-            {
-              opacity: 1,
-              ...this.css.selectWidthProperties(getComputedStyle(this)),
-            },
-            {
-              opacity: 0,
-              ...this.css.zeroWidthProperties(),
             },
           ],
           options: {
