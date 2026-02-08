@@ -110,7 +110,6 @@ export class RCueLabel extends WcChip<T> {
     this.animation.registerEventCallback("width", ({ keyframe }) => {
       if (!count) {
         count = this.subtree.getAll().length;
-        console.log("c", count);
         items = [];
       }
       items.push(this.css.computeTotalWidth(keyframe));
@@ -141,6 +140,16 @@ export class RCueLabel extends WcChip<T> {
 
   protected onStateChange(curr: T): void {
     const state: WrappedState<ChildrenProps>[] = [];
+
+    console.log(curr);
+
+    if (curr.background) {
+      this.css.set({
+        background: `rgb(var(--scheme-${curr.background.color}))`,
+      });
+    } else {
+      this.css.remove(["background"]);
+    }
 
     if (curr.icon) {
       state.push({

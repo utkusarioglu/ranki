@@ -29,7 +29,6 @@ export class RIcon extends Wc<T> {
       display: "inline-grid",
       "white-space": "nowrap",
       height: "100%",
-      // "aspect-ratio": "1/1",
     });
     this.animation
       .registerEventCallback("width", ({ keyframe }) => ({
