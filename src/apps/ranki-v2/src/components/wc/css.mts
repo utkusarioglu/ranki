@@ -42,6 +42,18 @@ export class WcCss {
     };
   }
 
+  zeroWidthProperties(): WcWidthProps {
+    return {
+      width: 0,
+      paddingLeft: 0,
+      paddingRight: 0,
+      borderLeftWidth: 0,
+      borderRightWidth: 0,
+      marginLeft: 0,
+      marginRight: 0,
+    };
+  }
+
   getLeft(): number {
     return this.self.getBoundingClientRect().left;
   }

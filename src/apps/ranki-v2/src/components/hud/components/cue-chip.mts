@@ -32,8 +32,7 @@ export class WcCueChip extends WcChip<T> {
           keyframes: [
             {
               opacity: 0,
-              paddingLeft: 0,
-              paddingRight: 0,
+              ...this.css.zeroWidthProperties(),
             },
             {
               opacity: 1,
@@ -47,28 +46,15 @@ export class WcCueChip extends WcChip<T> {
         };
       })
       .pushPreset("exit", () => {
-        const c = getComputedStyle(this);
         return {
           keyframes: [
             {
               opacity: 1,
-              width: c.width,
-              paddingLeft: c.paddingLeft,
-              paddingRight: c.paddingRight,
-              borderLeftWidth: c.borderLeftWidth,
-              borderRightWidth: c.borderRightWidth,
-              marginLeft: c.marginLeft,
-              marginRight: c.marginRight,
+              ...this.css.selectWidthProperties(getComputedStyle(this)),
             },
             {
               opacity: 0,
-              width: 0,
-              paddingLeft: 0,
-              paddingRight: 0,
-              borderLeftWidth: 0,
-              borderRightWidth: 0,
-              marginLeft: 0,
-              marginRight: 0,
+              ...this.css.zeroWidthProperties(),
             },
           ],
           options: {
@@ -80,7 +66,6 @@ export class WcCueChip extends WcChip<T> {
     this.css.set({
       "box-sizing": "content-box",
       display: "flex",
-      // "grid-template-columns": "max-content max-content",
       width: 0,
       overflow: "hidden",
       height: "100%",
@@ -88,7 +73,7 @@ export class WcCueChip extends WcChip<T> {
   }
 
   hasNext(b: boolean) {
-    this.css.set({ "margin-right": b ? "0.3em" : "0" });
+    this.css.set({ "margin-right": b ? "5px" : "0" });
   }
 
   protected createSubtreeChild(s: WrappedState<ChildrenProps>) {

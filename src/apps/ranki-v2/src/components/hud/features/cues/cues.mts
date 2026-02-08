@@ -56,10 +56,6 @@ export class RCues extends WcHudContainer<
     return !!this.state.curr().count;
   }
 
-  // hasNext(n: boolean) {
-  //   this.setProperties({ "margin-right": n ? "1em" : 0 });
-  // }
-
   canReconcile(s: WrappedState<ProcessedCueMapHud>): ReconciliationAction {
     return s.type === "cues" ? "mutate" : "remove";
   }

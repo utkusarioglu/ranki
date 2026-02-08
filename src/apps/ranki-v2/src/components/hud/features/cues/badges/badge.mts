@@ -6,9 +6,15 @@ export class RCueBadge extends WcCueChip {
 
   hasNext(): void {}
 
+  /**
+   * @dev
+   * #1 Prevents inline-flex width limits from producing a phantom margin on
+   * the right side of the icon box.
+   */
   initialize(): void {
     super.initialize();
     this.css.set({
+      // #1
       "max-width": "14px",
     });
   }
@@ -18,8 +24,8 @@ export class RCueBadge extends WcCueChip {
     paddingRight: string;
   } {
     return {
-      paddingLeft: "8px",
-      paddingRight: "8px",
+      paddingLeft: "12px",
+      paddingRight: "12px",
     };
   }
 }

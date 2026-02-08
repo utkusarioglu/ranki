@@ -39,25 +39,21 @@ export class WcChip<T extends MinChipProp, G = T> extends Wc<T, G> {
         let w = this.getBoundingClientRect().width;
         let start = w - p;
         start = start < 0 ? 0 : start;
+
+        const widthProps = this.css.selectWidthProperties(c);
         return {
           keyframes: [
             {
+              ...widthProps,
               width: start + "px",
-              paddingLeft: c.paddingLeft,
-              paddingRight: c.paddingRight,
-              borderLeftWidth: c.borderLeftWidth,
-              borderRightWidth: c.borderRightWidth,
-              marginRight: c.marginRight,
-              marginLeft: c.marginLeft,
             },
             {
+              ...widthProps,
+              ...this.computePadding(
+                // @ts-expect-error
+                curr,
+              ),
               width: keyframe.width,
-              borderLeftWidth: c.borderLeftWidth,
-              borderRightWidth: c.borderRightWidth,
-              marginRight: c.marginRight,
-              marginLeft: c.marginLeft,
-              // @ts-expect-error
-              ...this.computePadding(curr),
             },
           ],
           options: {
@@ -70,6 +66,7 @@ export class WcChip<T extends MinChipProp, G = T> extends Wc<T, G> {
         keyframes: [
           {
             opacity: 0,
+            ...this.css.zeroWidthProperties(),
           },
           {
             opacity: 1,
@@ -81,28 +78,15 @@ export class WcChip<T extends MinChipProp, G = T> extends Wc<T, G> {
         },
       }))
       .pushPreset("exit", () => {
-        const c = getComputedStyle(this);
         return {
           keyframes: [
             {
               opacity: 1,
-              width: c.width,
-              paddingLeft: c.paddingLeft,
-              paddingRight: c.paddingRight,
-              borderLeftWidth: c.borderLeftWidth,
-              borderRightWidth: c.borderRightWidth,
-              marginLeft: c.marginLeft,
-              marginRight: c.marginRight,
+              ...this.css.selectWidthProperties(getComputedStyle(this)),
             },
             {
               opacity: 0,
-              width: 0,
-              paddingLeft: 0,
-              paddingRight: 0,
-              borderLeftWidth: 0,
-              borderRightWidth: 0,
-              marginLeft: 0,
-              marginRight: 0,
+              ...this.css.zeroWidthProperties(),
             },
           ],
           options: {
