@@ -1,35 +1,46 @@
-import {
-  RankiAnimation_OLD,
-  type AnimationTypes,
-} from "_components/animation/animation.mts";
-import { RankiWc } from "_components/ranki-wc/ranki-wc.mts";
+import type { WrappedState } from "_components/subtree/subtree.mjs";
+import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 
-export class IndicatorPattern extends RankiWc<string> {
-  public static name = "ranki-indicator-pattern" as const;
-  protected animations: AnimationTypes = {
-    enter: RankiAnimation_OLD.fadeIn(this),
-    exit: RankiAnimation_OLD.fadeOut(this),
-  };
+const DUR = 2e3;
 
-  // private container() {
-  //   let div = this.querySelector("div.container") as HTMLDivElement;
-  //   if (div) {
-  //     return div;
-  //   }
-  //   div = document.createElement("div");
-  //   div.classList.add("container");
-  //   this.replaceChildren(div);
-  //   return div;
-  // }
+export class RIndicatorPattern extends Wc<string> {
+  public static readonly tag = "r-indicator-pattern" as const;
 
-  build() {
-    const curr = this.getCurr();
-    // const container = this.container();
-    this.style.background = curr;
+  isActive(): boolean {
+    return this.state.curr() !== "transparent";
   }
 
-  render(): this {
-    this.build();
-    return this;
+  setProps(s: string) {
+    this.state.set(s);
+  }
+
+  canReconcile(s: WrappedState<string>): ReconciliationAction {
+    return s.state === this.state.curr() ? "mutate" : "remove";
+  }
+
+  initialize() {
+    this.animation
+      .pushPreset("enter", () => {
+        return {
+          keyframes: [{ opacity: 0 }, { opacity: 1 }],
+          options: {
+            duration: DUR,
+            fill: "both",
+          },
+        };
+      })
+      .pushPreset("exit", () => {
+        return {
+          keyframes: [{ opacity: 1 }, { opacity: 0 }],
+          options: {
+            duration: DUR,
+            fill: "both",
+          },
+        };
+      });
+  }
+
+  protected onStateChange(curr: string): void {
+    this.style.background = curr;
   }
 }

@@ -6,8 +6,7 @@ import { createDevTools } from "_/dev/dev.mts";
 import { setStyles } from "_/style/style.mts";
 // @ts-expect-error
 import { RankiChallenge } from "_components/challenge/challenge.mts";
-// @ts-expect-error
-import { RankiIndicator } from "_components/indicator/indicator.mts";
+import { IRankiIndicator } from "_components/indicator/indicator.mts";
 import type { RankiState } from "_config/config.types.mts";
 import { RankiBigError } from "_components/big-error/big-error.mjs";
 import { RHud } from "_components/hud/hud.mjs";
@@ -30,7 +29,7 @@ function render(state: RankiState) {
   RHud.create.singleton(state.hud, document.body);
   // RankiHud.singleton(state.hud, document.body);
   createDesign(state.design);
-  // RankiIndicator.singleton(state.indicator, document.body);
+  IRankiIndicator.create.singleton(state.indicator, document.body);
   // RankiChallenge.singleton(state.challenge, document.body);
   // test();
 }

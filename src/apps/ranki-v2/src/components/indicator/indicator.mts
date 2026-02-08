@@ -1,23 +1,38 @@
-import { RankiWc } from "_components/ranki-wc/ranki-wc.mts";
 import type {
   RankiIndicatorDefinition,
   RankiIndicatorState,
 } from "_config/config.types.mts";
 import { assertNotUndefined } from "_error/assertions.mts";
 import style from "./indicator.component.css?inline";
-import { IndicatorPattern } from "./pattern.mts";
+import { RIndicatorPattern } from "./pattern.mts";
+import { Wc } from "_components/wc/wc.mjs";
+import { WcSub } from "_components/wc/sub.mjs";
+import type { WrappedState } from "_components/subtree/subtree.mjs";
 
-export class RankiIndicator extends RankiWc<RankiIndicatorState> {
-  public static name = "ranki-indicator" as const;
-  private active: string = "transparent";
+export class IRankiIndicator extends Wc<RankiIndicatorState> {
+  public static readonly tag = "r-indicator" as const;
+  private subtree = new WcSub<RIndicatorPattern, string>({
+    create: this.createSubtreeChild.bind(this),
+    remove: this.removeSubtreeChild.bind(this),
+  });
 
   constructor() {
     super(true);
-    this.pushStyles(style);
+    this.css.pushStyles(style);
   }
 
-  private build() {
-    const config = this.getCurr();
+  private removeSubtreeChild(e: RIndicatorPattern) {
+    e.remove();
+  }
+
+  private createSubtreeChild(state: WrappedState<string>) {
+    return RIndicatorPattern.create.instance(state.state, this.shadowRoot!);
+  }
+
+  initialize(): void {}
+
+  protected onStateChange(curr: RankiIndicatorState): void {
+    const config = curr;
     const collection = config.indicatorCollection;
 
     const newPattern: RankiIndicatorDefinition[] = [];
@@ -34,17 +49,11 @@ export class RankiIndicator extends RankiWc<RankiIndicatorState> {
     });
 
     const newString = newPattern.map((v) => v.style).join(",\n");
-    if (newString !== this.active) {
-      for (let c of this.shadowRoot!.children) {
-        c.remove();
-      }
-      IndicatorPattern.createAndAttach(newString, this.shadowRoot!);
-    }
-    this.active = newString;
-  }
-
-  render(): this {
-    this.build();
-    return this;
+    this.subtree.reconcile([
+      {
+        type: "indicator",
+        state: newString,
+      },
+    ]);
   }
 }
