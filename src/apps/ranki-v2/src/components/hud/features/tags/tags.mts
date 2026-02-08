@@ -1,87 +1,58 @@
-import {
-  RankiAnimation_OLD,
-  type AnimationTypes,
-} from "_components/animation/animation.mts";
-import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
 import type {
   HudTagListItem,
   HudTagsProps,
-} from "_components/hud/hud.types.mts";
-import { HudTagsTag } from "./HudTagsTag.mts";
+} from "_components/hud/hud.types.mjs";
+import { type ReconciliationAction } from "_components/wc/wc.mjs";
 import styles from "./tags.component.css?inline";
-import { Subtree, type WrappedState } from "_components/subtree/subtree.mjs";
-import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
-import { assertNotNull } from "_error/assertions.mjs";
+import { RTag } from "./tag.mts";
+import { type WrappedState } from "_components/wc/sub.mjs";
+import { WcHudContainer } from "_components/hud/components/container.mjs";
 
-export class HudTags extends RankiHudWc<HudTagsProps> {
-  protected static name = "ranki-hud-tags" as const;
-  protected animations: AnimationTypes = {
-    show: RankiAnimation_OLD.expandXFadeIn(this, {
-      initialCb: this.adjustWidth.bind(this),
-    }),
-    hide: RankiAnimation_OLD.collapseXFadeOut(this, {}),
-  };
-  private subtree = new Subtree<HudTagsTag, HudTagListItem>({
-    create: this.createSubtreeChild.bind(this),
-    remove: this.removeSubtreeChild.bind(this),
-  });
+type T = HudTagsProps;
+
+export class RTags extends WcHudContainer<T, T, RTag, HudTagListItem> {
+  public static readonly tag = "r-tags" as const;
 
   constructor() {
     super(true);
-    this.pushStyles(styles);
+    this.css.pushStyles(styles);
   }
 
-  hasNext(n: boolean) {
-    this.setProperties({ "margin-right": n ? "1em" : 0 });
+  canReconcile(s: WrappedState<T>): ReconciliationAction {
+    return s.type === "notify" ? "mutate" : "remove";
   }
 
-  canReconcile(s: WrappedState<HudTagsProps>): ReconciliationAction {
-    return s.type === "tags" ? "mutate" : "remove";
+  protected createSubtreeChild(s: WrappedState<HudTagListItem>) {
+    const container = this.elements.get("container")!;
+    const ch = RTag.create.instance(s.state, container);
+    this.animation.pushDependency("width", ch);
+    return ch;
   }
 
-  // TODO
-  private adjustWidth() {
-    const container = this.getContainer();
-    if (!container) return;
-    const left = this.getLeft();
-    const last = this.subtree.getLast();
-    const right = last?.getRight() || left;
-    this.setProperties({ width: right - left + "px" });
-  }
-
-  private build() {
-    this.createSingletonContainer();
-  }
-
-  isActive(): boolean {
-    return !!this.getCurr().count;
-  }
-
-  private createSubtreeChild(s: WrappedState<HudTagListItem>) {
-    const container = this.getContainer();
-    assertNotNull(container, { why: "Creation requires container" });
-    return HudTagsTag.createAndAttach<HudTagListItem, HudTagsTag>(
-      s.state,
-      container,
-    );
-  }
-
-  private removeSubtreeChild(e: HudTagsTag) {
-    e.remove();
-  }
-
-  render() {
-    this.build();
-    const curr = this.getCurr();
-    if (curr.count > 0) {
-      this.runAnimation("show");
-    } else {
-      this.runAnimation("hide");
-    }
+  protected onStateChange(curr: T): void {
     this.subtree.reconcile(
       curr.list.map(({ type, text }) => ({ type, state: { type, text } })),
     );
-    this.adjustWidth();
-    return this;
+    //   this.subtree.reconcile([
+    //     {
+    //       type: "chip",
+    //       state: {
+    //         type: "version",
+    //         text: curr.parseMode,
+    //       },
+    //     },
+    //     ...(curr.hasReplacements
+    //       ? [
+    //           {
+    //             type: "chip",
+    //             state: {
+    //               type: "delta" as "delta",
+    //               text: "Δ",
+    //             },
+    //           },
+    //         ]
+    //       : []),
+    //   ]);
+    // }
   }
 }

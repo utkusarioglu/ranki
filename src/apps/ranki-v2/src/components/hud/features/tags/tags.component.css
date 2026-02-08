@@ -7,21 +7,17 @@
   --c-background: var(--rht-c-background, transparent);
   --c-backdrop-filter: var(--rht-c-backdrop-filter, transparent);
   --c-border: var(--rht-c-border, 1px solid red);
-  --c-gap: var(--rht-c-gap, 1em);
   --c-border-radius: var(--rht-c-border-radius, none);
-  --c-padding: var(--rht-c-padding, none);
 
   --n-background: var(--rht-n-background, transparent);
   --n-color: var(--rht-n-color, white);
   --n-border: var(--rht-n-border, 1px solid red);
   --n-border-radius: var(--rht-n-border-radius, none);
-  --n-padding: var(--rht-n-padding, none);
 
   --r-color: var(--rht-r-color, gray);
   --r-border-radius: var(--rht-r-border-radius, none);
   --r-border: var(--rht-r-border, 1px solid red);
   --r-background: var(--rht-r-background, transparent);
-  --r-padding: var(--rht-r-padding, none);
 }
 
 :host {
@@ -41,16 +37,7 @@
   opacity: 1;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-  user-select: none;
-  transition-property: var(--transition-property);
-  transition-duration: var(--transition-duration);
-}
-
-.container {
+:host > .container {
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -60,39 +47,20 @@
   background: var(--c-background);
   border-radius: var(--c-border-radius);
   border: var(--c-border);
-  gap: var(--c-gap);
   backdrop-filter: var(--c-backdrop-filter);
 }
 
-hud-tags-tag.anki {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  line-height: 1em;
-  height: 100%;
-  background: var(--n-background);
-  padding: var(--n-padding);
-  color: var(--n-color);
-  border-radius: var(--n-border-radius);
-  border: var(--n-border);
-  white-space: nowrap;
-}
-
-hud-tags-tag.ranki {
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  line-height: 1em;
-  height: 100%;
-  vertical-align: middle;
-  padding: var(--r-padding);
-  border-radius: var(--r-border-radius);
-  color: var(--r-color);
-  background: var(--r-background);
-  border: var(--r-border);
-}
-
-hud-tags-tag {
-  transition-property: var(--transition-property);
-  transition-duration: var(--transition-duration);
+r-tag {
+  &.anki {
+    background: var(--n-background);
+    color: var(--n-color);
+    border-radius: var(--n-border-radius);
+    border: var(--n-border);
+  }
+  &.ranki {
+    border-radius: var(--r-border-radius);
+    color: var(--r-color);
+    background: var(--r-background);
+    border: var(--r-border);
+  }
 }

@@ -1,6 +1,6 @@
 import { horizontalScrollUtil } from "_components/scroller/horizontal.mts";
 import { assertNever, assertNotNull } from "_error/assertions.mts";
-import { HudTags } from "./features/tags/tags.mts";
+import { HudTags } from "./features/tags/tags_OLD.mts";
 import { RankiHudWc, type SingletonContainer } from "./hud-wc/hud-wc.mts";
 import styles from "./hud.component.css?inline";
 import type {
@@ -18,6 +18,7 @@ import { RAddress } from "./features/address/address.mts";
 import { RNotify } from "./features/notify/notify.mts";
 import { RCues } from "./features/cues/cues.mts";
 import { RTemplate } from "./features/template/template.mts";
+import { RTags } from "./features/tags/tags.mts";
 
 interface Wrapped {
   type: HudComponentNames;
@@ -84,7 +85,8 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
       case "template":
         return RTemplate.create.instance(state.state, scroller);
       case "tags":
-        return HudTags.singleton(state.state, scroller);
+        return RTags.create.instance(state.state, scroller);
+      // return HudTags.singleton(state.state, scroller);
       default:
         assertNever({
           why: "Given property is not a valid hud component",

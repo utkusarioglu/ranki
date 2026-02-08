@@ -21,9 +21,7 @@ export class RNotify extends WcHudContainer<
   }
 
   canReconcile(s: WrappedState<T>): ReconciliationAction {
-    return s.type === "notify" && !!this.subtree.getAll().length
-      ? "mutate"
-      : "remove";
+    return s.type === "notify" ? "mutate" : "remove";
   }
 
   protected createSubtreeChild(s: WrappedState<RNotifyChipProps>) {

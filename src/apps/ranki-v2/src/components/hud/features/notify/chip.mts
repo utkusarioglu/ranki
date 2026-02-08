@@ -42,9 +42,4 @@ export class RNotifyChip extends WcChip<
     ];
     this.subtree.reconcile(state);
   }
-
-  // protected onStateChange(curr: RNotifyChipProps): void {
-  //   this.className = curr.type;
-  //   this.reconcileChildren(curr);
-  // }
 }
