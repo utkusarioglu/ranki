@@ -56,7 +56,7 @@
   border: var(--c-border);
 }
 
-hud-badges-badge {
+r-cue-badges {
   opacity: 1;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);

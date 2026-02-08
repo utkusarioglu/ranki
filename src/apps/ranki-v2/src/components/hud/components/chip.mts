@@ -20,19 +20,6 @@ export class WcChip<T extends MinChipProp, G = T> extends Wc<T, G> {
     this.state.set(a);
   }
 
-  // remove(): Promise<void> {
-  //   this.animation.triggerEvent("width", () => {
-  //     return this.css.selectWidthProperties({
-  //       width: 0,
-  //       paddingLeft: 0,
-  //       paddingRight: 0,
-  //       borderLeftWidth: 0,
-  //       borderRightWidth: 0,
-  //     });
-  //   });
-  //   return super.remove();
-  // }
-
   protected computePadding(
     // @ts-expect-error
     curr: T,
@@ -60,11 +47,15 @@ export class WcChip<T extends MinChipProp, G = T> extends Wc<T, G> {
               paddingRight: c.paddingRight,
               borderLeftWidth: c.borderLeftWidth,
               borderRightWidth: c.borderRightWidth,
+              marginRight: c.marginRight,
+              marginLeft: c.marginLeft,
             },
             {
               width: keyframe.width,
               borderLeftWidth: c.borderLeftWidth,
               borderRightWidth: c.borderRightWidth,
+              marginRight: c.marginRight,
+              marginLeft: c.marginLeft,
               // @ts-expect-error
               ...this.computePadding(curr),
             },
@@ -100,6 +91,8 @@ export class WcChip<T extends MinChipProp, G = T> extends Wc<T, G> {
               paddingRight: c.paddingRight,
               borderLeftWidth: c.borderLeftWidth,
               borderRightWidth: c.borderRightWidth,
+              marginLeft: c.marginLeft,
+              marginRight: c.marginRight,
             },
             {
               opacity: 0,
@@ -108,6 +101,8 @@ export class WcChip<T extends MinChipProp, G = T> extends Wc<T, G> {
               paddingRight: 0,
               borderLeftWidth: 0,
               borderRightWidth: 0,
+              marginLeft: 0,
+              marginRight: 0,
             },
           ],
           options: {
@@ -119,6 +114,7 @@ export class WcChip<T extends MinChipProp, G = T> extends Wc<T, G> {
     this.css.set({
       "box-sizing": "content-box",
       display: "grid",
+      "grid-template-columns": "max-content max-content",
       width: 0,
       overflow: "hidden",
     });

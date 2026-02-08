@@ -2,6 +2,18 @@ import type { PropertiesHyphen } from "csstype";
 import type { Wc } from "./wc.mts";
 import { assertNever } from "_error/assertions.mjs";
 
+export type WcWidthPropsValue = string | number | undefined | null;
+
+export interface WcWidthProps {
+  width: WcWidthPropsValue;
+  paddingLeft: WcWidthPropsValue;
+  paddingRight: WcWidthPropsValue;
+  marginLeft: WcWidthPropsValue;
+  marginRight: WcWidthPropsValue;
+  borderLeftWidth: WcWidthPropsValue;
+  borderRightWidth: WcWidthPropsValue;
+}
+
 export class WcCss {
   private self: Wc<any>;
 
@@ -9,18 +21,22 @@ export class WcCss {
     this.self = self;
   }
 
-  computeTotalWidth(s: CSSStyleDeclaration | Keyframe) {
-    return Object.values(this.selectWidthProperties(s)).reduce<number>(
-      (a, c) => a + parseFloat(c!.toString()),
-      0,
-    );
+  computeTotalWidth(s: CSSStyleDeclaration | Keyframe | WcWidthProps) {
+    return Object.values(
+      this.selectWidthProperties(
+        // @ts-expect-error
+        s,
+      ),
+    ).reduce<number>((a, c) => a + parseFloat(c!.toString()), 0);
   }
 
-  selectWidthProperties(c: CSSStyleDeclaration | Keyframe) {
+  selectWidthProperties(c: CSSStyleDeclaration | Keyframe): WcWidthProps {
     return {
       width: c.width,
       paddingLeft: c.paddingLeft,
       paddingRight: c.paddingRight,
+      marginLeft: c.marginLeft,
+      marginRight: c.marginRight,
       borderLeftWidth: c.borderLeftWidth,
       borderRightWidth: c.borderRightWidth,
     };

@@ -4,7 +4,7 @@ import {
 } from "_components/animation/animation.mts";
 import { RankiHudWc } from "_components/hud/hud-wc/hud-wc.mts";
 import type { ProcessedCue } from "_config/config.types.mjs";
-import { HudChipsChip } from "./chip.mts";
+import { HudChipsChip } from "./chip_OLD.mts";
 import styles from "./chips.component.css?inline";
 import { assertNotNull } from "_error/assertions.mjs";
 import { Subtree } from "_components/subtree/subtree.mjs";

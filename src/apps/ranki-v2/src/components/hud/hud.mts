@@ -12,12 +12,12 @@ import type {
   HudTagsProps,
   RankiHudState,
 } from "./hud.types.mjs";
-import { HudCues } from "./features/cues/cues.mts";
 import type { RankiWc } from "_components/ranki-wc/ranki-wc.mjs";
 import { Subtree } from "_components/subtree/subtree.mjs";
 import type { ProcessedCueMapHud } from "_config/config.types.mjs";
 import { RAddress } from "./features/address/address.mts";
 import { RNotify } from "./features/notify/notify.mts";
+import { RCues } from "./features/cues/cues.mts";
 
 interface Wrapped {
   type: HudComponentNames;
@@ -76,13 +76,13 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
     assertNotNull(scroller, { why: "No container" });
     switch (state.type) {
       case "notify":
-        return RNotify.create.singleton(state.state, scroller).element;
+        return RNotify.create.instance(state.state, scroller);
       case "address":
-        return RAddress.create.singleton(state.state, scroller).element;
+        return RAddress.create.instance(state.state, scroller);
+      case "cues":
+        return RCues.create.instance(state.state, scroller);
       case "card":
         return HudCard.singleton(state.state, scroller);
-      case "cues":
-        return HudCues.singleton(state.state, scroller);
       case "tags":
         return HudTags.singleton(state.state, scroller);
       default:

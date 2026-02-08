@@ -1,5 +1,6 @@
 import { assertNotExists, assertNotUndefined } from "_error/assertions.mjs";
 import type { Wc } from "./wc.mts";
+import type { WcWidthProps } from "./css.mts";
 
 interface WcAnimationConfig {
   keyframes: Keyframe[];
@@ -16,7 +17,7 @@ type AnimationCall = (payload: EventPayload) => WcAnimationConfig | void;
 const ANIMATION_PREFIX = "r-animation";
 
 interface EventPayload {
-  keyframe: Keyframe;
+  keyframe: Keyframe | WcWidthProps;
   target: Wc<any>;
 }
 
@@ -112,7 +113,7 @@ export class WcAnimation extends EventTarget {
 
   async triggerEvent(
     name: string,
-    cb: () => Keyframe | undefined,
+    cb: () => Keyframe | undefined | WcWidthProps,
     frames: number = 2,
   ) {
     this.raf(frames, () => {
@@ -122,11 +123,7 @@ export class WcAnimation extends EventTarget {
     });
   }
 
-  private dispatchAnimation(
-    type: string,
-    payload: EventPayload,
-    // dependency: Wc<any>,
-  ) {
+  private dispatchAnimation(type: string, payload: EventPayload) {
     this.self.dispatchEvent(
       new CustomEvent(ANIMATION_PREFIX, {
         detail: { type, payload },

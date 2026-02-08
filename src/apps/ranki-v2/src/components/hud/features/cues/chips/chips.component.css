@@ -57,25 +57,23 @@
   /* backdrop-filter: var(--c-backdrop-filter); */
 }
 
-hud-chips-chip {
+r-cue-chip {
   opacity: 1;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
 
-  &.cue {
-    box-sizing: border-box;
-    display: flex;
-    gap: 0.3em;
-    align-items: center;
-    line-height: 1em;
-    height: 100%;
-    background: var(--cu-background);
-    padding: var(--cu-padding);
-    color: var(--cu-color);
-    border-radius: var(--cu-border-radius);
-    border: var(--cu-border);
-    white-space: nowrap;
-  }
+  box-sizing: border-box;
+  display: flex;
+  gap: 0.3em;
+  align-items: center;
+  line-height: 1em;
+  height: 100%;
+  background: var(--cu-background);
+  padding: var(--cu-padding);
+  color: var(--cu-color);
+  border-radius: var(--cu-border-radius);
+  border: var(--cu-border);
+  white-space: nowrap;
 
   & > .cue-message,
   & > .cue-icon {
