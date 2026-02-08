@@ -25,56 +25,6 @@ export async function main() {
   }
 }
 
-function test() {
-  // if (document.querySelector("div.container")) return;
-  // const div = document.createElement("div");
-  // div.classList.add("container");
-  // div.style.position = "fixed";
-  // div.style.top = "0";
-  // div.style.left = "0";
-  // div.style.display = "flex";
-  // div.style.gap = "1em";
-  // document.body.appendChild(div);
-
-  // Text.create.instance(
-  //   {
-  //     text:
-  //       "-" +
-  //       String.fromCharCode(65 + Math.floor(Math.random() * (97 - 65))).repeat(
-  //         Math.floor(Math.random() * 10),
-  //       ) +
-  //       "-",
-  //   },
-  //   // { text: "fdfd" },
-  //   div,
-  // );
-  RAddressSegment.create.singleton(
-    {
-      type: "segment",
-      shown: [
-        "-",
-        String.fromCharCode(65 + Math.floor(Math.random() * (97 - 65))).repeat(
-          Math.floor(Math.random() * 10),
-        ),
-        "-",
-      ],
-    },
-    document.body,
-  );
-  // RText.create.singleton(
-  //   {
-  //     text:
-  //       "-" +
-  //       String.fromCharCode(65 + Math.floor(Math.random() * (97 - 65))).repeat(
-  //         Math.floor(Math.random() * 10),
-  //       ) +
-  //       "-",
-  //   },
-  //   // { text: "fdfd" },
-  //   document.body,
-  // );
-}
-
 function render(state: RankiState) {
   createDevTools(state.dev);
   RankiHud.singleton(state.hud, document.body);
