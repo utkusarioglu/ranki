@@ -11,6 +11,7 @@ import type { RankiState } from "_config/config.types.mts";
 import { RankiBigError } from "_components/big-error/big-error.mjs";
 import { RText } from "_components/text/text.mjs";
 import { RAddressSegment } from "_components/hud/features/address/segment.mjs";
+import { RHud } from "_components/hud/hud.2.mjs";
 
 export async function main() {
   try {
@@ -27,7 +28,8 @@ export async function main() {
 
 function render(state: RankiState) {
   createDevTools(state.dev);
-  RankiHud.singleton(state.hud, document.body);
+  RHud.create.singleton(state.hud, document.body);
+  // RankiHud.singleton(state.hud, document.body);
   createDesign(state.design);
   // RankiIndicator.singleton(state.indicator, document.body);
   // RankiChallenge.singleton(state.challenge, document.body);

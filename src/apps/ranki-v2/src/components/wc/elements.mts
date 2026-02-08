@@ -10,7 +10,7 @@ export class WcElements {
     this.self = self;
   }
 
-  create(
+  create<T extends HTMLElement = HTMLElement>(
     name: string,
     attributes: {
       tag: string;
@@ -18,9 +18,11 @@ export class WcElements {
       style?: PropertiesHyphen;
     },
     attach?: HTMLElement | ShadowRoot,
-  ) {
-    if (this.elements[name]) return;
-    const el = document.createElement(attributes.tag);
+  ): T {
+    if (this.elements[name]) {
+      return this.elements[name] as T;
+    }
+    const el = document.createElement(attributes.tag) as T;
     el.classList.add(...(attributes.classes || []));
     if (attributes.style) {
       Object.entries(attributes.style).forEach(([n, v]) => {
@@ -38,6 +40,7 @@ export class WcElements {
     } else {
       attach.appendChild(el);
     }
+    return el;
   }
 
   get<T extends HTMLElement>(name: string): T | undefined {
