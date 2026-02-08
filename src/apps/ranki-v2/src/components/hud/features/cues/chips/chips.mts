@@ -20,14 +20,15 @@ export class RCueChips extends WcHudContainer<T, T, RCueChip, ProcessedCue> {
   }
 
   canReconcile(s: WrappedState<T>): ReconciliationAction {
-    console.log(s);
-    return s.type === "chips" && !!this.subtree.getAll().length
-      ? "mutate"
-      : "remove";
+    const r = s.type === "chips" ? "mutate" : "remove";
+    console.log("r", r);
+    return r;
   }
 
   protected onStateChange(curr: T): void {
-    this.subtree.reconcile(curr.map((state) => ({ type: "label", state })));
+    const state = curr.map((state) => ({ type: "chip", state }));
+    console.log(curr, state);
+    this.subtree.reconcile(state);
   }
 
   protected createSubtreeChild(s: WrappedState<ProcessedCue>) {

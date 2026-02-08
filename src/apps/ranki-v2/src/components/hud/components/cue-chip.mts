@@ -18,7 +18,6 @@ type ChildrenProps = RankiTextState | RankiIconState;
 const DUR = 4e2;
 
 export class WcCueChip extends WcChip<T> {
-  // static readonly tag = "r-cue-label";
   protected subtree = new WcSub<ChildrenTypes, ChildrenProps>({
     create: this.createSubtreeChild.bind(this),
     remove: this.removeSubtreeChild.bind(this),
@@ -80,10 +79,11 @@ export class WcCueChip extends WcChip<T> {
       });
     this.css.set({
       "box-sizing": "content-box",
-      display: "grid",
-      "grid-template-columns": "max-content max-content",
+      display: "flex",
+      // "grid-template-columns": "max-content max-content",
       width: 0,
       overflow: "hidden",
+      height: "100%",
     });
   }
 
@@ -145,10 +145,6 @@ export class WcCueChip extends WcChip<T> {
   }
 
   protected onStateChange(curr: T): void {
-    const state: WrappedState<ChildrenProps>[] = [];
-
-    console.log(curr);
-
     if (curr.background) {
       this.css.set({
         background: `rgb(var(--scheme-${curr.background.color}))`,
@@ -157,6 +153,7 @@ export class WcCueChip extends WcChip<T> {
       this.css.remove(["background"]);
     }
 
+    const state: WrappedState<ChildrenProps>[] = [];
     if (curr.icon) {
       state.push({
         type: "icon",

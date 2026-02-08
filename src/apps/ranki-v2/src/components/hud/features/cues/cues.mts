@@ -9,7 +9,7 @@ import { RCueLabels } from "./labels/labels.mts";
 import type { WrappedState } from "_components/subtree/subtree.mjs";
 import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 import { RCueChips } from "./chips/chips.mts";
-import { RCueBadges } from "./badges/labels.mts";
+import { RCueBadges } from "./badges/badges.mts";
 
 type T = ProcessedCueMapHud;
 
@@ -39,11 +39,11 @@ export class RCues extends WcHudContainer<
     assertNotNull(container, { why: "No container to place children in" });
     switch (state.type) {
       case "badges":
-        return RCueBadges.create.singleton(state.state, container).element;
+        return RCueBadges.create.instance(state.state, container);
       case "chips":
-        return RCueLabels.create.singleton(state.state, container).element;
+        return RCueChips.create.instance(state.state, container);
       case "labels":
-        return RCueChips.create.singleton(state.state, container).element;
+        return RCueLabels.create.instance(state.state, container);
       default:
         assertNever({
           why: "Unrecognized cue type",
@@ -65,11 +65,10 @@ export class RCues extends WcHudContainer<
   }
 
   protected onStateChange(curr: ProcessedCueMapHud): void {
-    this.subtree.reconcile(
-      Object.entries(curr.subtree).map(([type, state]) => ({
-        type: type as ChildTypes,
-        state,
-      })),
-    );
+    const state = Object.entries(curr.subtree).map(([type, state]) => ({
+      type: type as ChildTypes,
+      state,
+    }));
+    this.subtree.reconcile(state);
   }
 }

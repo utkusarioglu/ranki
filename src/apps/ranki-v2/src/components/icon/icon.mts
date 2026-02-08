@@ -33,9 +33,10 @@ export class RIcon extends Wc<T> {
   initialize(): void {
     this.state.setTrigger((p, c) => p?.icon !== c.icon);
     this.css.set({
-      overflow: "hidden",
-      display: "inline-grid",
-      "white-space": "nowrap",
+      display: "block",
+      // overflow: "hidden",
+      // display: "inline-grid",
+      // "white-space": "nowrap",
       height: "100%",
     });
     this.animation

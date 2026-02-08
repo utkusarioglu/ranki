@@ -20,9 +20,7 @@ export class RCueLabels extends WcHudContainer<T, T, RCueLabel, ProcessedCue> {
   }
 
   canReconcile(s: WrappedState<T>): ReconciliationAction {
-    return s.type === "labels" && !!this.subtree.getAll().length
-      ? "mutate"
-      : "remove";
+    return s.type === "labels" ? "mutate" : "remove";
   }
 
   protected onStateChange(curr: T): void {
