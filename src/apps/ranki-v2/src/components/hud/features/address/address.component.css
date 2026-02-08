@@ -45,7 +45,7 @@
   }
 }
 
-r-address-chip {
+r-address-segment {
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
   user-select: none;

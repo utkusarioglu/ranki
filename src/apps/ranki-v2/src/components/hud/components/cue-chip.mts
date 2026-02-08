@@ -2,18 +2,16 @@ import "@phosphor-icons/webcomponents";
 import { WcChip } from "_components/hud/components/chip.mjs";
 import { RIcon, type RankiIconState } from "_components/icon/icon.mjs";
 import { WcSub, type ElemMin, type WrappedState } from "_components/wc/sub.mjs";
-import { RText, type RankiTextState } from "_components/text/text.mjs";
+import { RText, type RTextProps } from "_components/text/text.mjs";
 import type { ProcessedCue } from "_config/config.types.mjs";
 import { assertNever } from "_error/assertions.mjs";
 
 type T = ProcessedCue;
 
 type ChildrenTypes = ElemMin<ChildrenProps>;
-type ChildrenProps = RankiTextState | RankiIconState;
+type ChildrenProps = RTextProps | RankiIconState;
 
-const DUR = 4e2;
-
-export class WcCueChip extends WcChip<T> {
+export class WcCueChip extends WcChip<T, T, ChildrenTypes, ChildrenProps> {
   protected subtree = new WcSub<ChildrenTypes, ChildrenProps>({
     create: this.createSubtreeChild.bind(this),
     remove: this.removeSubtreeChild.bind(this),
@@ -44,45 +42,7 @@ export class WcCueChip extends WcChip<T> {
     }
   }
 
-  protected removeSubtreeChild(e: ChildrenTypes) {
-    e.remove();
-  }
-
-  protected setWidthListener() {
-    let items: number[];
-    let count = 0;
-    this.animation.registerEventCallback("width", ({ keyframe }) => {
-      if (!count) {
-        count = this.subtree.getAll().length;
-        items = [];
-      }
-      items.push(this.css.computeTotalWidth(keyframe));
-      if (items.length === count) {
-        const endWidth = Array.from(items.values()).reduce((a, c) => a + c, 0);
-        const c = getComputedStyle(this);
-        const currWidth = parseFloat(c.width!.toString());
-        if (Math.abs(endWidth - currWidth) > 1) {
-          this.animation.animate("width", {
-            keyframes: [
-              {
-                width: currWidth + "px",
-              },
-              {
-                width: endWidth + "px",
-              },
-            ],
-            options: {
-              duration: DUR,
-              fill: "both",
-            },
-          });
-        }
-        count = 0;
-      }
-    });
-  }
-
-  private mutateBackground(curr: T) {
+  protected mutateBackground(curr: T) {
     if (curr.background) {
       this.css.set({
         background: `rgb(var(--scheme-${curr.background.color}))`,
@@ -92,7 +52,7 @@ export class WcCueChip extends WcChip<T> {
     }
   }
 
-  private reconcileChildren(curr: T) {
+  protected reconcileChildren(curr: T) {
     const state: WrappedState<ChildrenProps>[] = [];
     if (curr.icon) {
       state.push({
@@ -110,11 +70,5 @@ export class WcCueChip extends WcChip<T> {
     });
 
     this.subtree.reconcile(state);
-  }
-
-  protected onStateChange(curr: T): void {
-    this.className = curr.type;
-    this.mutateBackground(curr);
-    this.reconcileChildren(curr);
   }
 }

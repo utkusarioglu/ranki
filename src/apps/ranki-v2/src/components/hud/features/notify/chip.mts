@@ -1,5 +1,5 @@
 import { WcChip } from "_components/hud/components/chip.mjs";
-import { RText } from "_components/text/text.mjs";
+import { RText, type RTextProps } from "_components/text/text.mjs";
 import { assertNever } from "_error/assertions.mjs";
 
 export type RNotifyChipProps = {
@@ -7,7 +7,12 @@ export type RNotifyChipProps = {
   text: string;
 };
 
-export class RNotifyChip extends WcChip<RNotifyChipProps> {
+export class RNotifyChip extends WcChip<
+  RNotifyChipProps,
+  RNotifyChipProps,
+  RText,
+  RTextProps
+> {
   static readonly tag = "r-notify-chip" as const;
 
   protected computePadding(curr: RNotifyChipProps) {
@@ -28,9 +33,18 @@ export class RNotifyChip extends WcChip<RNotifyChipProps> {
     return { paddingLeft: left, paddingRight: right };
   }
 
-  protected onStateChange(curr: RNotifyChipProps): void {
-    const text = this.elements.get<RText>("text")!;
-    text.state.set({ text: curr.text });
-    this.className = curr.type;
+  protected reconcileChildren(curr: RNotifyChipProps) {
+    const state = [
+      {
+        type: "text",
+        state: { text: curr.text },
+      },
+    ];
+    this.subtree.reconcile(state);
   }
+
+  // protected onStateChange(curr: RNotifyChipProps): void {
+  //   this.className = curr.type;
+  //   this.reconcileChildren(curr);
+  // }
 }

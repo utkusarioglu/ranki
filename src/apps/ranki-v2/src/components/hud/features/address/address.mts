@@ -5,7 +5,7 @@ import type {
 } from "_components/hud/hud.types.mjs";
 import type { WrappedState } from "_components/subtree/subtree.mjs";
 import { type ReconciliationAction } from "_components/wc/wc.mjs";
-import { RAddressCrumb } from "./chip.mts";
+import { RAddressSegment } from "./segment.mts";
 import { WcHudContainer } from "_components/hud/components/container.mjs";
 
 type T = HudAddressProps;
@@ -13,7 +13,7 @@ type T = HudAddressProps;
 export class RAddress extends WcHudContainer<
   T,
   T,
-  RAddressCrumb,
+  RAddressSegment,
   HudAddressSegment
 > {
   public static readonly tag = "r-address" as const;
@@ -31,17 +31,16 @@ export class RAddress extends WcHudContainer<
 
   protected createSubtreeChild(s: WrappedState<HudAddressSegment>) {
     const container = this.elements.get("container");
-    const ch = RAddressCrumb.create.instance(s.state, container);
+    const ch = RAddressSegment.create.instance(s.state, container);
     this.animation.pushDependency("width", ch);
     return ch;
   }
 
   protected onStateChange(curr: T): void {
-    this.subtree.reconcile(
-      curr.segments.map((state) => ({
-        type: state.type,
-        state,
-      })),
-    );
+    const state = curr.segments.map((state) => ({
+      type: state.type,
+      state,
+    }));
+    this.subtree.reconcile(state);
   }
 }

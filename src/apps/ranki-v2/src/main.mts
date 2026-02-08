@@ -10,7 +10,7 @@ import { RankiIndicator } from "_components/indicator/indicator.mts";
 import type { RankiState } from "_config/config.types.mts";
 import { RankiBigError } from "_components/big-error/big-error.mjs";
 import { RText } from "_components/text/text.mjs";
-import { RAddressCrumb } from "_components/hud/features/address/chip.mjs";
+import { RAddressSegment } from "_components/hud/features/address/segment.mjs";
 
 export async function main() {
   try {
@@ -48,7 +48,7 @@ function test() {
   //   // { text: "fdfd" },
   //   div,
   // );
-  RAddressCrumb.create.singleton(
+  RAddressSegment.create.singleton(
     {
       type: "segment",
       shown: [

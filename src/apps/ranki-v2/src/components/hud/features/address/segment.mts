@@ -1,11 +1,11 @@
 import { WcChip } from "_components/hud/components/chip.mjs";
 import type { HudAddressSegment } from "_components/hud/hud.types.mjs";
-import { RText } from "_components/text/text.mjs";
+import { RText, type RTextProps } from "_components/text/text.mjs";
 
 type T = HudAddressSegment;
 
-export class RAddressCrumb extends WcChip<T> {
-  static readonly tag = "r-address-chip";
+export class RAddressSegment extends WcChip<T, T, RText, RTextProps> {
+  static readonly tag = "r-address-segment";
 
   protected computePadding(curr: T) {
     let left = "0px";
@@ -44,9 +44,18 @@ export class RAddressCrumb extends WcChip<T> {
     });
   }
 
-  protected onStateChange(curr: HudAddressSegment): void {
-    const text = this.elements.get<RText>("text")!;
-    text.state.set({ text: curr.shown.join("") });
-    this.className = curr.type;
+  protected reconcileChildren(curr: HudAddressSegment) {
+    const state = [
+      {
+        type: "text",
+        state: { text: curr.shown.join("") },
+      },
+    ];
+    this.subtree.reconcile(state);
   }
+
+  // protected onStateChange(curr: HudAddressSegment): void {
+  //   this.className = curr.type;
+  //   this.reconcileChildren(curr);
+  // }
 }

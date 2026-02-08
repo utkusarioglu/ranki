@@ -1,17 +1,13 @@
-import type {
-  WrappedState,
-  ReconciliationInfo,
-} from "_components/subtree/subtree.mjs";
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 
-export interface RankiTextState {
+export interface RTextProps {
   text: string;
   color?: string;
 }
 
 const DUR = 4e2;
 
-export class RText extends Wc<RankiTextState> {
+export class RText extends Wc<RTextProps> {
   public static tag = "r-text";
 
   isActive(): boolean {
@@ -21,6 +17,10 @@ export class RText extends Wc<RankiTextState> {
 
   canReconcile(): ReconciliationAction {
     return "mutate";
+  }
+
+  setProps(c: RTextProps) {
+    this.state.set(c);
   }
 
   initialize(): void {
@@ -79,7 +79,7 @@ export class RText extends Wc<RankiTextState> {
   //   });
   // }
 
-  async onStateChange(curr: RankiTextState) {
+  async onStateChange(curr: RTextProps) {
     this.elements.move("curr", "prev");
     const newText = RTextSpan.create.instance(curr, this);
     this.elements.push("curr", newText);
@@ -97,7 +97,7 @@ export class RText extends Wc<RankiTextState> {
   }
 }
 
-export class RTextSpan extends Wc<RankiTextState> {
+export class RTextSpan extends Wc<RTextProps> {
   public static tag = "r-text-span";
 
   initialize() {
@@ -136,7 +136,7 @@ export class RTextSpan extends Wc<RankiTextState> {
       }));
   }
 
-  onStateChange(curr: RankiTextState) {
+  onStateChange(curr: RTextProps) {
     this.innerText = curr.text;
     if (curr.color) {
       this.css.set({ color: `rgb(var(--scheme-${curr.color}))` });
