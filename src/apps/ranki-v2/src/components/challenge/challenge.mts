@@ -13,6 +13,7 @@ export class RankiChallenge extends RankiFacesWc<RankiChallengeState> {
     this.pushStyles(styles, ruleStyles);
   }
   private subtree = new Subtree<
+    // @ts-expect-error
     RankiWc<RankiChallengeState>,
     RankiChallengeState
   >({

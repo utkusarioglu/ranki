@@ -27,7 +27,6 @@ export class RTemplate extends WcHudContainer<T, T, RCardInfo, RCardInfoProps> {
   }
 
   protected onStateChange(curr: T): void {
-    console.log("s", curr);
     this.subtree.reconcile([
       {
         type: "type",

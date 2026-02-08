@@ -33,26 +33,5 @@ export class RTags extends WcHudContainer<T, T, RTag, HudTagListItem> {
     this.subtree.reconcile(
       curr.list.map(({ type, text }) => ({ type, state: { type, text } })),
     );
-    //   this.subtree.reconcile([
-    //     {
-    //       type: "chip",
-    //       state: {
-    //         type: "version",
-    //         text: curr.parseMode,
-    //       },
-    //     },
-    //     ...(curr.hasReplacements
-    //       ? [
-    //           {
-    //             type: "chip",
-    //             state: {
-    //               type: "delta" as "delta",
-    //               text: "Δ",
-    //             },
-    //           },
-    //         ]
-    //       : []),
-    //   ]);
-    // }
   }
 }

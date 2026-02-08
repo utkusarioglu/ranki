@@ -1,7 +1,4 @@
-import { horizontalScrollUtil } from "_components/scroller/horizontal.mts";
 import { assertNever, assertNotNull } from "_error/assertions.mts";
-import { HudTags } from "./features/tags/tags_OLD.mts";
-import { RankiHudWc, type SingletonContainer } from "./hud-wc/hud-wc.mts";
 import styles from "./hud.component.css?inline";
 import type {
   HudAddressProps,
@@ -11,19 +8,20 @@ import type {
   HudTagsProps,
   RankiHudState,
 } from "./hud.types.mjs";
-import type { RankiWc } from "_components/ranki-wc/ranki-wc.mjs";
-import { Subtree } from "_components/subtree/subtree.mjs";
 import type { ProcessedCueMapHud } from "_config/config.types.mjs";
 import { RAddress } from "./features/address/address.mts";
 import { RNotify } from "./features/notify/notify.mts";
 import { RCues } from "./features/cues/cues.mts";
 import { RTemplate } from "./features/template/template.mts";
 import { RTags } from "./features/tags/tags.mts";
+import { WcHudContainer } from "./components/container.mts";
 
 interface Wrapped {
   type: HudComponentNames;
   state: ChildState;
 }
+
+type ChildrenTypes = RAddress | RNotify | RCues | RTemplate | RTags;
 
 type ChildState =
   | HudAppProps
@@ -32,48 +30,46 @@ type ChildState =
   | ProcessedCueMapHud
   | HudTemplateProps;
 
-export class RankiHud extends RankiHudWc<RankiHudState> {
-  protected static name = "ranki-hud" as const;
-  private subtree = new Subtree<RankiWc<ChildState>, ChildState>({
-    create: this.createSubtreeChild.bind(this),
-    remove: this.removeSubtreeChild.bind(this),
-  });
+export class RHud extends WcHudContainer<
+  RankiHudState,
+  RankiHudState,
+  // @ts-expect-error
+  ChildrenTypes,
+  ChildState
+> {
+  public static readonly tag = "r-hud" as const;
 
   constructor() {
     super(true);
-    this.pushStyles(styles);
+    this.css.pushStyles(styles);
   }
 
-  private getScroller() {
-    return this.getContainer()!.querySelector(
-      ".scroll-scroller",
-    ) as HTMLElement;
+  initialize(): void {
+    const container = this.elements.create("container", {
+      tag: "div",
+      classes: ["container"],
+    });
+
+    const center = this.elements.create(
+      "center",
+      {
+        tag: "div",
+        classes: ["center", "scroll-container"],
+      },
+      container,
+    );
+    this.elements.create(
+      "scroller",
+      {
+        tag: "div",
+        classes: ["scroller", "content"],
+      },
+      center,
+    );
   }
 
-  protected createSingletonContainer(
-    classes: string[] = [],
-  ): SingletonContainer {
-    let container = this.shadowRoot!.querySelector(
-      "div.container",
-    ) as HTMLDivElement;
-    if (container) {
-      return [container, true];
-    }
-    container = document.createElement("div");
-    container.classList.add("container", ...classes);
-    const center = document.createElement("div");
-    center.classList.add("center");
-    container.append(center);
-    const scroller = horizontalScrollUtil();
-    scroller.tail.classList.add("content");
-    center.appendChild(scroller.head);
-    this.shadowRoot!.adoptedStyleSheets.push(scroller.sheet);
-    this.shadowRoot!.replaceChildren(container);
-    return [container, false];
-  }
-
-  private createSubtreeChild(state: Wrapped) {
-    const scroller = this.getScroller();
+  protected createSubtreeChild(state: Wrapped) {
+    const scroller = this.elements.get("scroller");
     assertNotNull(scroller, { why: "No container" });
     switch (state.type) {
       case "notify":
@@ -86,7 +82,6 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
         return RTemplate.create.instance(state.state, scroller);
       case "tags":
         return RTags.create.instance(state.state, scroller);
-      // return HudTags.singleton(state.state, scroller);
       default:
         assertNever({
           why: "Given property is not a valid hud component",
@@ -95,17 +90,7 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
     }
   }
 
-  private removeSubtreeChild(e: RankiWc<ChildState>) {
-    e.remove();
-  }
-
-  private build() {
-    this.createSingletonContainer();
-  }
-
-  render() {
-    this.build();
-    const curr = this.getCurr();
+  protected onStateChange(curr: RankiHudState): void {
     const subtreeState = curr.order.map((type) => {
       return {
         type,
@@ -113,6 +98,5 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
       };
     });
     this.subtree.reconcile(subtreeState);
-    return this;
   }
 }

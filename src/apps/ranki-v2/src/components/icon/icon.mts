@@ -1,9 +1,5 @@
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 import "@phosphor-icons/webcomponents";
-import type {
-  WrappedState,
-  ReconciliationInfo,
-} from "_components/subtree/subtree.mjs";
 
 export interface RankiIconState {
   icon: string;

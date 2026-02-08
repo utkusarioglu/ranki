@@ -19,7 +19,7 @@ export class RCueBadge extends WcCueChip {
     });
   }
 
-  protected computePadding(curr: ProcessedCue): {
+  protected computePadding(_curr: ProcessedCue): {
     paddingLeft: string;
     paddingRight: string;
   } {
