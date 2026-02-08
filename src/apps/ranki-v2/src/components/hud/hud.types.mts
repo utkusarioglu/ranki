@@ -10,7 +10,12 @@ import type {
   RankiAddressTokens,
 } from "_config/config.types.mts";
 
-export type HudComponentNames = "notify" | "address" | "tags" | "cues" | "card";
+export type HudComponentNames =
+  | "notify"
+  | "address"
+  | "tags"
+  | "cues"
+  | "template";
 
 export type HudVisibility = "visible" | "pull" | "pullWhenShort";
 
@@ -62,7 +67,7 @@ export interface HudAddressProps extends HudElementCommon {
   segments: HudAddressSegment[];
 }
 
-export interface HudCardProps extends HudElementCommon {
+export interface HudTemplateProps extends HudElementCommon {
   type: AnkiCardType;
   face: AnkiCardFace;
   card: AnkiCard;
@@ -98,6 +103,6 @@ export interface RankiHudState {
     address: HudAddressProps;
     tags: HudTagsProps;
     cues: ProcessedCueMapHud;
-    card: HudCardProps;
+    template: HudTemplateProps;
   };
 }

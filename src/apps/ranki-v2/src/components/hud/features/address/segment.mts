@@ -53,9 +53,4 @@ export class RAddressSegment extends WcChip<T, T, RText, RTextProps> {
     ];
     this.subtree.reconcile(state);
   }
-
-  // protected onStateChange(curr: HudAddressSegment): void {
-  //   this.className = curr.type;
-  //   this.reconcileChildren(curr);
-  // }
 }

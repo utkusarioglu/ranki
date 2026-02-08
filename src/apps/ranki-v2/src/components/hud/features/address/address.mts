@@ -24,9 +24,7 @@ export class RAddress extends WcHudContainer<
   }
 
   canReconcile(s: WrappedState<T>): ReconciliationAction {
-    return s.type === "address" && !!this.subtree.getAll().length
-      ? "mutate"
-      : "remove";
+    return s.type === "address" ? "mutate" : "remove";
   }
 
   protected createSubtreeChild(s: WrappedState<HudAddressSegment>) {

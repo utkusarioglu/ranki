@@ -1,12 +1,11 @@
 import { horizontalScrollUtil } from "_components/scroller/horizontal.mts";
 import { assertNever, assertNotNull } from "_error/assertions.mts";
-import { HudCard } from "./features/card/card.mts";
 import { HudTags } from "./features/tags/tags.mts";
 import { RankiHudWc, type SingletonContainer } from "./hud-wc/hud-wc.mts";
 import styles from "./hud.component.css?inline";
 import type {
   HudAddressProps,
-  HudCardProps,
+  HudTemplateProps,
   HudComponentNames,
   HudAppProps,
   HudTagsProps,
@@ -18,6 +17,7 @@ import type { ProcessedCueMapHud } from "_config/config.types.mjs";
 import { RAddress } from "./features/address/address.mts";
 import { RNotify } from "./features/notify/notify.mts";
 import { RCues } from "./features/cues/cues.mts";
+import { RTemplate } from "./features/template/template.mts";
 
 interface Wrapped {
   type: HudComponentNames;
@@ -29,7 +29,7 @@ type ChildState =
   | HudAddressProps
   | HudTagsProps
   | ProcessedCueMapHud
-  | HudCardProps;
+  | HudTemplateProps;
 
 export class RankiHud extends RankiHudWc<RankiHudState> {
   protected static name = "ranki-hud" as const;
@@ -81,8 +81,8 @@ export class RankiHud extends RankiHudWc<RankiHudState> {
         return RAddress.create.instance(state.state, scroller);
       case "cues":
         return RCues.create.instance(state.state, scroller);
-      case "card":
-        return HudCard.singleton(state.state, scroller);
+      case "template":
+        return RTemplate.create.instance(state.state, scroller);
       case "tags":
         return HudTags.singleton(state.state, scroller);
       default:

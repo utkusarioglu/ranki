@@ -206,7 +206,7 @@ function buildHudConfig(
       },
       tags,
       cues,
-      card: {
+      template: {
         count: 3,
         type: collected.fields.type,
         card: collected.fields.card,
