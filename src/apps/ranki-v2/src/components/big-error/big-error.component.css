@@ -9,7 +9,7 @@
 
 :host > h1,
 :host > p {
-  padding-inline: 1em;
+  padding-inline: 1rem;
   color: #770000;
 }
 
