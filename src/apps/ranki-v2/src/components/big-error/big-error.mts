@@ -1,57 +1,51 @@
 import { RankiAppError } from "_error/ranki-app-error.mts";
 import yaml from "yaml";
-import { RankiWc } from "_components/ranki-wc/ranki-wc.mjs";
 import style from "./big-error.component.css?inline";
+import { Wc } from "_components/wc/wc.mjs";
 
-export class RankiBigError extends RankiWc<Error> {
-  public static name = "ranki-big-error" as const;
+export class RBigError extends Wc<Error> {
+  public static readonly tag = "r-big-error" as const;
 
   constructor() {
     super(true);
-    this.pushStyles(style);
+    this.css.pushStyles(style);
   }
 
-  render(): this {
-    const error = this.getCurr();
-
-    const h1 = document.createElement("h1");
+  initialize() {
+    const h1 = this.elements.create("heading", { tag: "h1" });
     h1.innerText = "Error";
+    this.elements.create("description", { tag: "p" });
+    this.elements.create("output", { tag: "pre" });
+  }
+
+  protected onStateChange(curr: Error): void {
+    const description = this.elements.get("description")!;
+    const output = this.elements.get("output")!;
 
     let errObject: RankiAppError;
-    if (typeof (error as any).toExtendedJSON === "function") {
-      errObject = error as any;
+    if (typeof (curr as any).toExtendedJSON === "function") {
+      errObject = curr as any;
     } else {
       errObject = new RankiAppError({
         code: "UNEXPECTED_ERROR",
         why: "Unforeseen failure mode",
-        cause: error,
+        cause: curr,
       });
     }
-
-    const p = document.createElement("p");
-
-    p.innerText = errObject.hasOwnProperty("why")
+    description.innerText = errObject.hasOwnProperty("why")
       ? errObject.why
       : "Something went wrong";
-    const pre = document.createElement("pre");
+
     const obj = errObject.toExtendedJSON();
-
-    [h1, p, pre].forEach((e) => {
-      this.shadowRoot!.appendChild(e);
-    });
-
     try {
-      pre.innerHTML = yaml.stringify(obj);
+      output.innerHTML = yaml.stringify(obj);
     } catch (e) {
-      pre.innerHTML = JSON.stringify(obj, null, 2);
+      output.innerHTML = JSON.stringify(obj, null, 2);
     }
-    return this;
   }
 
-  static clear() {
-    const err = document.querySelector(RankiBigError.name);
-    if (err) {
-      err.parentElement?.removeChild(err);
-    }
+  static remove() {
+    const err = document.querySelector(RBigError.tag);
+    if (err) err.parentElement?.removeChild(err);
   }
 }
