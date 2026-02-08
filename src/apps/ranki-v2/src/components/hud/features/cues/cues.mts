@@ -8,7 +8,7 @@ import { assertNever, assertNotNull } from "_error/assertions.mjs";
 import { RCueLabels } from "./labels/labels.mts";
 import type { WrappedState } from "_components/subtree/subtree.mjs";
 import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
-import { RCueChips } from "./chips/labels.mts";
+import { RCueChips } from "./chips/chips.mts";
 import { RCueBadges } from "./badges/labels.mts";
 
 type T = ProcessedCueMapHud;
@@ -39,11 +39,11 @@ export class RCues extends WcHudContainer<
     assertNotNull(container, { why: "No container to place children in" });
     switch (state.type) {
       case "badges":
-        return RCueBadges.create.instance(state.state, container);
+        return RCueBadges.create.singleton(state.state, container).element;
       case "chips":
-        return RCueLabels.create.instance(state.state, container);
+        return RCueLabels.create.singleton(state.state, container).element;
       case "labels":
-        return RCueChips.create.instance(state.state, container);
+        return RCueChips.create.singleton(state.state, container).element;
       default:
         assertNever({
           why: "Unrecognized cue type",

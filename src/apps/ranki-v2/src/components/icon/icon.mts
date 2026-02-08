@@ -1,5 +1,9 @@
-import { Wc } from "_components/wc/wc.mjs";
+import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 import "@phosphor-icons/webcomponents";
+import type {
+  WrappedState,
+  ReconciliationInfo,
+} from "_components/subtree/subtree.mjs";
 
 export interface RankiIconState {
   icon: string;
@@ -18,8 +22,12 @@ export class RIcon extends Wc<T> {
     return !!icon && (icon.length > 0 || icon !== "none");
   }
 
+  canReconcile(): ReconciliationAction {
+    return "mutate";
+  }
+
   hasNext(b: boolean) {
-    this.css.set({ "margin-right": b ? "0.3em" : "0" });
+    this.css.set({ "margin-right": b ? "5px" : "0" });
   }
 
   initialize(): void {
@@ -73,6 +81,10 @@ export class RIcon extends Wc<T> {
       }));
   }
 
+  /**
+   * This is done because hasNext value is not available here unless it's saved in a class variable.
+   * the state given to the component from the start should include these details
+   */
   async onStateChange(curr: T) {
     this.elements.move("curr", "prev");
     const newIcon = RIconBox.create.instance(curr, this);
@@ -85,7 +97,7 @@ export class RIcon extends Wc<T> {
       paddingLeft: "0px",
       paddingRight: "0px",
       marginLeft: "0px",
-      marginRight: "0px",
+      marginRight: "5px", // #1
       borderLeftWidth: "0px",
       borderRightWidth: "0px",
     }));

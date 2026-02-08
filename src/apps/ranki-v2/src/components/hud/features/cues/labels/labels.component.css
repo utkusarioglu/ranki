@@ -60,23 +60,15 @@ r-cue-label {
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
 
-  /* &.cue { */
   box-sizing: border-box;
   display: flex;
   align-items: center;
   line-height: 1em;
   height: 100%;
+  white-space: nowrap;
+
   background: var(--cu-background);
-  padding: var(--cu-padding);
   color: var(--cu-color);
   border-radius: var(--cu-border-radius);
   border: var(--cu-border);
-  white-space: nowrap;
-  /* } */
-
-  & > .cue-message
-  /* & > .cue-icon  */ {
-    transition-property: color;
-    transition-duration: var(--transition-duration);
-  }
 }

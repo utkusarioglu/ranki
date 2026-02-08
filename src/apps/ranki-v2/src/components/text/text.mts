@@ -1,4 +1,8 @@
-import { Wc } from "_components/wc/wc.mjs";
+import type {
+  WrappedState,
+  ReconciliationInfo,
+} from "_components/subtree/subtree.mjs";
+import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 
 export interface RankiTextState {
   text: string;
@@ -13,6 +17,10 @@ export class RText extends Wc<RankiTextState> {
   isActive(): boolean {
     const text = this.state.curr()?.text;
     return !!text && (text.length > 0 || text !== "none");
+  }
+
+  canReconcile(): ReconciliationAction {
+    return "mutate";
   }
 
   initialize(): void {
