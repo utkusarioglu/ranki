@@ -16,11 +16,10 @@ export class RCueLabels extends WcHudContainer<T, T, RCueLabel, ProcessedCue> {
   }
 
   hasNext(n: boolean) {
-    // this.css.set({ "margin-right": n ? "0.5em" : 0 });
+    this.css.set({ "margin-right": n ? "0.5em" : 0 });
   }
 
   canReconcile(s: WrappedState<T>): ReconciliationAction {
-    console.log(s);
     return s.type === "labels" && !!this.subtree.getAll().length
       ? "mutate"
       : "remove";

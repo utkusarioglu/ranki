@@ -1,101 +1,163 @@
 import "@phosphor-icons/webcomponents";
 import { WcChip } from "_components/hud/components/chip.mjs";
-import { RIcon } from "_components/icon/icon.mjs";
-import { RText } from "_components/text/text.mjs";
-import type { CueRecord, ProcessedCue } from "_config/config.types.mjs";
+import { RIcon, type RankiIconState } from "_components/icon/icon.mjs";
+import {
+  WcSub,
+  type ElemMin,
+  type WrappedState,
+} from "_components/sub/sub.mjs";
+import { RText, type RankiTextState } from "_components/text/text.mjs";
+import type { ProcessedCue } from "_config/config.types.mjs";
+import { assertNever } from "_error/assertions.mjs";
 
 type T = ProcessedCue;
 
+type ChildrenTypes = ElemMin<ChildrenProps>;
+type ChildrenProps = RankiTextState | RankiIconState;
+
+const DUR = 4e2;
+
 export class RCueLabel extends WcChip<T> {
   static readonly tag = "r-cue-label";
+  protected subtree = new WcSub<ChildrenTypes, ChildrenProps>({
+    create: this.createSubtreeChild.bind(this),
+    remove: this.removeSubtreeChild.bind(this),
+  });
 
   initialize(): void {
-    const icon = RIcon.create.instance(null, this);
-    this.elements.push("icon", icon);
-    this.animation.pushDependency("width", icon);
-
-    // this.elements.create("icon", {
-    //   tag: "div",
-    //   classes: ["icon"],
-    // });
-    super.initialize();
+    this.setWidthListener();
+    this.animation
+      .pushPreset("enter", () => ({
+        keyframes: [
+          {
+            opacity: 0,
+          },
+          {
+            opacity: 1,
+          },
+        ],
+        options: {
+          duration: DUR,
+          fill: "both",
+        },
+      }))
+      .pushPreset("exit", () => {
+        const c = getComputedStyle(this);
+        return {
+          keyframes: [
+            {
+              opacity: 1,
+              width: c.width,
+              paddingLeft: c.paddingLeft,
+              paddingRight: c.paddingRight,
+              borderLeftWidth: c.borderLeftWidth,
+              borderRightWidth: c.borderRightWidth,
+              marginLeft: c.marginLeft,
+              marginRight: c.marginRight,
+            },
+            {
+              opacity: 0,
+              width: 0,
+              paddingLeft: 0,
+              paddingRight: 0,
+              borderLeftWidth: 0,
+              borderRightWidth: 0,
+              marginLeft: 0,
+              marginRight: 0,
+            },
+          ],
+          options: {
+            duration: DUR,
+            fill: "both",
+          },
+        };
+      });
+    this.css.set({
+      "box-sizing": "content-box",
+      display: "grid",
+      "grid-template-columns": "max-content max-content",
+      width: 0,
+      overflow: "hidden",
+    });
   }
 
-  private mutateMessage(message: CueRecord["message"]) {
-    const text = this.elements.get<RText>("text")!;
-    if (message) {
-      text.state.set(message);
-    } else {
-      // text.remove();
+  hasNext(b: boolean) {
+    this.css.set({ "margin-right": b ? "0.3em" : "0" });
+  }
+
+  protected createSubtreeChild(s: WrappedState<ChildrenProps>) {
+    switch (s.type) {
+      case "text":
+        const te = RText.create.instance(s.state, this);
+        this.animation.pushDependency("width", te);
+        return te;
+      case "icon":
+        const ie = RIcon.create.instance(s.state, this);
+        this.animation.pushDependency("width", ie);
+        return ie;
+      default:
+        assertNever({ why: "Unrecognized child type for label" });
     }
-    // if (message && message.text) {
-    //   if (message.color && message.color !== "none") {
-    //     this.css.set({
-    //       color: `rgb(var(--scheme-${message.color}))`,
-    //     });
-    //   } else {
-    //     this.css.remove(["color"]);
-    //   }
-    //   text.state.set({ text: message.text });
-    // } else {
-    //   text.state.set({ text: "" });
-    // }
   }
 
-  private mutateBackground(background: CueRecord["background"]) {
-    if (background) {
-      if (background.color && background.color !== "none") {
-        this.style.background = `rgb(var(--scheme-${background.color}))`;
-      } else {
-        this.style.removeProperty("background");
+  protected removeSubtreeChild(e: ChildrenTypes) {
+    e.remove();
+  }
+
+  protected setWidthListener() {
+    let items: number[];
+    let count = 0;
+    this.animation.registerEventCallback("width", ({ keyframe }) => {
+      if (!count) {
+        count = this.subtree.getAll().length;
+        console.log("c", count);
+        items = [];
       }
-    } else {
-      this.style.removeProperty("background");
-    }
-  }
-
-  private mutateIcon(recordIcon: CueRecord["icon"]) {
-    const icon = this.elements.get<RIcon>("icon")!;
-    console.log("r", recordIcon, icon);
-    if (recordIcon) {
-      console.log("set", recordIcon.id);
-      icon.state.set({ icon: recordIcon.id });
-    } else {
-      console.log("else");
-      // icon.remove();
-    }
-    // if (recordIcon) {
-    //   let icon = this.querySelector(`ph-${recordIcon.id}`);
-    //   if (!icon) {
-    //     const oldIcon = this.querySelector(".cue-icon");
-    //     if (oldIcon) {
-    //       oldIcon.parentElement!.removeChild(oldIcon);
-    //     }
-
-    //     icon = document.createElement(`ph-${recordIcon.id}`);
-    //     icon.className = "cue-icon";
-    //     icon.setAttribute("weight", "fill");
-    //     const i = this.elements.get("icon")!;
-    //     i.prepend(icon);
-    //   }
-    //   if (recordIcon.color && recordIcon.color !== "none") {
-    //     icon.setAttribute("color", `rgb(var(--scheme-${recordIcon.color}))`);
-    //   } else {
-    //     icon.removeAttribute("color");
-    //   }
-    // } else {
-    //   const iconElem = this.querySelector(".cue-icon");
-    //   if (iconElem) {
-    //     iconElem.parentElement!.removeChild(iconElem);
-    //   }
-    // }
+      items.push(this.css.computeTotalWidth(keyframe));
+      if (items.length === count) {
+        const endWidth = Array.from(items.values()).reduce((a, c) => a + c, 0);
+        const c = getComputedStyle(this);
+        const currWidth = parseFloat(c.width!.toString());
+        if (Math.abs(endWidth - currWidth) > 1) {
+          this.animation.animate("width", {
+            keyframes: [
+              {
+                width: currWidth + "px",
+              },
+              {
+                width: endWidth + "px",
+              },
+            ],
+            options: {
+              duration: DUR,
+              fill: "both",
+            },
+          });
+        }
+        count = 0;
+      }
+    });
   }
 
   protected onStateChange(curr: T): void {
-    console.log("s", curr);
-    this.mutateMessage(curr.message);
-    this.mutateBackground(curr.background);
-    this.mutateIcon(curr.icon);
+    const state: WrappedState<ChildrenProps>[] = [];
+
+    if (curr.icon) {
+      state.push({
+        type: "icon",
+        state: {
+          icon: curr.icon.id,
+          color: curr.icon.color,
+        },
+      });
+    }
+
+    state.push({
+      type: "text",
+      state: curr.message ? curr.message : { text: "" },
+    });
+
     this.className = curr.type;
+    this.subtree.reconcile(state);
   }
 }

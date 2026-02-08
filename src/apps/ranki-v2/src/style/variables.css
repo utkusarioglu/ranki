@@ -131,7 +131,7 @@
   --rhu-l-c-backdrop-filter: var(--backdrop);
   --rhu-l-c-border: none;
   --rhu-l-c-border-radius: 0.5em;
-  --rhu-l-c-gap: 0.5em;
+  /* --rhu-l-c-gap: 0.5em; */
   --rhu-l-c-padding: 0;
 
   --rhu-l-cu-background: rgba(var(--scheme-surface-2), var(--chip));
