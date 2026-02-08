@@ -2,7 +2,7 @@ import type { HudAppProps } from "_components/hud/hud.types.mjs";
 import { type ReconciliationAction } from "_components/wc/wc.mjs";
 import styles from "./notify.component.css?inline";
 import { RNotifyChip, type RNotifyChipProps } from "./chip.mts";
-import { type WrappedState } from "_components/sub/sub.mjs";
+import { type WrappedState } from "_components/wc/sub.mjs";
 import { WcHudContainer } from "_components/hud/components/container.mjs";
 
 type T = HudAppProps;

@@ -72,9 +72,11 @@ export class WcChip<T extends MinChipProp, G = T> extends Wc<T, G> {
   }
 
   initialize(): void {
+    this.pushAnimationPresets();
+    this.initCss();
+
     const text = RText.create.instance(null, this);
     this.elements.push("text", text);
-    this.pushAnimationPresets();
     this.animation
       .pushDependency("width", text)
       .registerEventCallback("width", ({ keyframe }) => {
@@ -107,12 +109,16 @@ export class WcChip<T extends MinChipProp, G = T> extends Wc<T, G> {
           },
         };
       });
+  }
+
+  protected initCss() {
     this.css.set({
       "box-sizing": "content-box",
-      display: "grid",
-      "grid-template-columns": "max-content max-content",
+      display: "flex",
       width: 0,
       overflow: "hidden",
+      height: "100%",
+      "align-items": "center",
     });
   }
 

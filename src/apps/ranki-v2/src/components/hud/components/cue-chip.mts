@@ -1,11 +1,7 @@
 import "@phosphor-icons/webcomponents";
 import { WcChip } from "_components/hud/components/chip.mjs";
 import { RIcon, type RankiIconState } from "_components/icon/icon.mjs";
-import {
-  WcSub,
-  type ElemMin,
-  type WrappedState,
-} from "_components/sub/sub.mjs";
+import { WcSub, type ElemMin, type WrappedState } from "_components/wc/sub.mjs";
 import { RText, type RankiTextState } from "_components/text/text.mjs";
 import type { ProcessedCue } from "_config/config.types.mjs";
 import { assertNever } from "_error/assertions.mjs";
@@ -26,13 +22,7 @@ export class WcCueChip extends WcChip<T> {
   initialize(): void {
     this.setWidthListener();
     this.pushAnimationPresets();
-    this.css.set({
-      "box-sizing": "content-box",
-      display: "flex",
-      width: 0,
-      overflow: "hidden",
-      height: "100%",
-    });
+    this.initCss();
   }
 
   hasNext(b: boolean) {
@@ -92,7 +82,7 @@ export class WcCueChip extends WcChip<T> {
     });
   }
 
-  protected onStateChange(curr: T): void {
+  private mutateBackground(curr: T) {
     if (curr.background) {
       this.css.set({
         background: `rgb(var(--scheme-${curr.background.color}))`,
@@ -100,7 +90,9 @@ export class WcCueChip extends WcChip<T> {
     } else {
       this.css.remove(["background"]);
     }
+  }
 
+  private reconcileChildren(curr: T) {
     const state: WrappedState<ChildrenProps>[] = [];
     if (curr.icon) {
       state.push({
@@ -117,7 +109,12 @@ export class WcCueChip extends WcChip<T> {
       state: curr.message ? curr.message : { text: "" },
     });
 
-    this.className = curr.type;
     this.subtree.reconcile(state);
+  }
+
+  protected onStateChange(curr: T): void {
+    this.className = curr.type;
+    this.mutateBackground(curr);
+    this.reconcileChildren(curr);
   }
 }

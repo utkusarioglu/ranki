@@ -1,8 +1,4 @@
-import {
-  WcSub,
-  type ElemMin,
-  type WrappedState,
-} from "_components/sub/sub.mjs";
+import { WcSub, type ElemMin, type WrappedState } from "_components/wc/sub.mjs";
 import { Wc } from "_components/wc/wc.mjs";
 import { assertNever } from "_error/assertions.mjs";
 
