@@ -7,7 +7,7 @@
   --c-background: var(--rhu-c-background, transparent);
   --c-backdrop-filter: var(--rhu-c-backdrop-filter, transparent);
   --c-border: var(--rhu-c-border, 1px solid red);
-  --c-gap: var(--rhu-c-gap, 1em);
+  /* --c-gap: var(--rhu-c-gap, 1em); */
   --c-border-radius: var(--rhu-c-border-radius, none);
   /* --c-padding: var(--rhu-c-padding, none); */
 

@@ -1,10 +1,12 @@
 :host {
   --transition-duration: var(--rha-transition-duration, 0);
+  --transition-property:
+    background, color, padding, border, opacity, scale, transform, width,
+    margin-right;
 
   --c-background: var(--rha-c-background, transparent);
   --c-backdrop-filter: var(--rha-c-backdrop-filter, none);
   --c-border: var(--rha-c-border, 1px solid red);
-  --c-gap: var(--rha-c-gap, 1em);
   --c-border-radius: var(--rha-c-border-radius, none);
 
   --s-background: var(--rha-s-background, transparent);

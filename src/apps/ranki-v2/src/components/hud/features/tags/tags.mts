@@ -19,7 +19,7 @@ export class RTags extends WcHudContainer<T, T, RTag, HudTagListItem> {
   }
 
   canReconcile(s: WrappedState<T>): ReconciliationAction {
-    return s.type === "notify" ? "mutate" : "remove";
+    return s.type === "tags" ? "mutate" : "remove";
   }
 
   protected createSubtreeChild(s: WrappedState<HudTagListItem>) {

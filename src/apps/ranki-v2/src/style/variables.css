@@ -42,7 +42,7 @@
   --rha-c-backdrop-filter: var(--backdrop);
   --rha-c-border: none;
   --rha-c-border-radius: 0.5em;
-  --rha-c-gap: 0.2em;
+  /* --rha-c-gap: 0.2em; */
   --rha-s-background: rgba(var(--scheme-surface-2), var(--chip));
   --rha-s-color: rgb(var(--scheme-text-0));
   --rha-s-border-radius: 0.5em;
@@ -58,23 +58,23 @@
   --rhc-c-backdrop-filter: var(--backdrop);
   --rhc-c-border: none;
   --rhc-c-border-radius: 0.5em;
-  --rhc-c-gap: 0.2em;
-  --rhc-c-padding: 0;
+  /* --rhc-c-gap: 0.2em; */
+  /* --rhc-c-padding: 0; */
   --rhc-t-background: rgba(var(--scheme-surface-2), var(--chip));
   --rhc-t-color: rgb(var(--scheme-text-0));
   --rhc-t-border-radius: 0.5em;
   --rhc-t-border: none;
-  --rhc-t-padding: 0 1em;
+  /* --rhc-t-padding: 0 1em; */
   --rhc-ca-background: transparent;
   --rhc-ca-color: rgb(var(--scheme-text-0));
   --rhc-ca-border-radius: none;
   --rhc-ca-border: none;
-  --rhc-ca-padding: 0 0.3em;
+  /* --rhc-ca-padding: 0 0.3em; */
   --rhc-f-background: rgba(var(--scheme-surface-2), var(--chip));
   --rhc-f-color: rgb(var(--scheme-text-0));
   --rhc-f-border-radius: 0.5em;
   --rhc-f-border: none;
-  --rhc-f-padding: 0 1em;
+  /* --rhc-f-padding: 0 1em; */
 
   /* HUD PARSER */
   --rhn-transition-duration: var(--ranki-animation-fade-duration);
@@ -97,17 +97,17 @@
   --rht-c-backdrop-filter: var(--backdrop);
   --rht-c-border: none;
   --rht-c-border-radius: 0.5em;
-  --rht-c-gap: 0.5em;
-  --rht-c-padding: 0;
+  /* --rht-c-gap: 0.5em; */
+  /* --rht-c-padding: 0; */
   --rht-n-background: rgba(var(--scheme-surface-2), var(--chip));
   --rht-n-border: none;
   --rht-n-border-radius: 0.5em;
-  --rht-n-padding: 0 1em;
+  /* --rht-n-padding: 0 1em; */
   --rht-n-color: rgb(var(--scheme-text-0));
   --rht-r-background: transparent;
   --rht-r-border: none;
   --rht-r-border-radius: 0.5em;
-  --rht-r-padding: 0 1em 0 0;
+  /* --rht-r-padding: 0 1em 0 0; */
   --rht-r-color: rgb(var(--scheme-text-0));
 
   /* HUD CUE BADGES */
@@ -116,14 +116,14 @@
   --rhu-b-c-backdrop-filter: var(--backdrop);
   --rhu-b-c-border: none;
   --rhu-b-c-border-radius: 0.5em;
-  --rhu-b-c-gap: 0.5em;
-  --rhu-b-c-padding: 0;
+  /* --rhu-b-c-gap: 0.5em; */
+  /* --rhu-b-c-padding: 0; */
 
   /* --rhu-b-cu-background: rgba(var(--scheme-surface-2), var(--chip)); */
   --rhu-b-cu-border: none;
   --rhu-b-cu-color: rgb(var(--scheme-text-0));
   --rhu-b-cu-border-radius: 0.5em;
-  --rhu-b-cu-padding: 0 1em;
+  /* --rhu-b-cu-padding: 0 1em; */
 
   /* HUD CUE LABELS */
   --rhu-l-transition-duration: var(--ranki-animation-fade-duration);
@@ -132,13 +132,13 @@
   --rhu-l-c-border: none;
   --rhu-l-c-border-radius: 0.5em;
   /* --rhu-l-c-gap: 0.5em; */
-  --rhu-l-c-padding: 0;
+  /* --rhu-l-c-padding: 0; */
 
   --rhu-l-cu-background: rgba(var(--scheme-surface-2), var(--chip));
   --rhu-l-cu-border: none;
   --rhu-l-cu-color: rgb(var(--scheme-text-0));
   --rhu-l-cu-border-radius: 0.5em;
-  --rhu-l-cu-padding: 0 1em;
+  /* --rhu-l-cu-padding: 0 1em; */
 
   /* HUD CUES */
   --rhu-transition-duration: var(--ranki-animation-fade-duration);
@@ -146,14 +146,14 @@
   --rhu-c-backdrop-filter: var(--backdrop);
   --rhu-c-border: none;
   --rhu-c-border-radius: 0.5em;
-  --rhu-c-gap: 0.5em;
-  --rhu-c-padding: 0;
+  /* --rhu-c-gap: 0.5em; */
+  /* --rhu-c-padding: 0; */
 
   --rhu-cu-background: rgba(var(--scheme-surface-2), var(--chip));
   --rhu-cu-border: none;
   --rhu-cu-color: rgb(var(--scheme-text-0));
   --rhu-cu-border-radius: 0.5em;
-  --rhu-cu-padding: 0 1em;
+  /* --rhu-cu-padding: 0 1em; */
 
   /*FACES */
   --face-rule-background-color: rgba(var(--scheme-surface-2), 0.5);

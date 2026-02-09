@@ -1,3 +1,4 @@
+import type { WrappedState } from "_components/subtree/subtree.mjs";
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 
 export interface RTextProps {
@@ -12,11 +13,17 @@ export class RText extends Wc<RTextProps> {
 
   isActive(): boolean {
     const text = this.state.curr()?.text;
-    return !!text && (text.length > 0 || text !== "none");
+    return !!text && text.length > 0 && text !== "none";
   }
 
-  canReconcile(): ReconciliationAction {
-    return "mutate";
+  canReconcile(s: WrappedState<RTextProps>): ReconciliationAction {
+    if (s.type !== "text") {
+      return "remove";
+    } else if (!s.state.text || s.state.text === "none") {
+      return "mutate";
+    } else {
+      return "mutate";
+    }
   }
 
   setProps(c: RTextProps) {
@@ -72,12 +79,6 @@ export class RText extends Wc<RTextProps> {
         },
       }));
   }
-
-  // protected onStateSame(): void {
-  //   this.animation.triggerEvent("width", () => {
-  //     return this.css.selectWidthProperties(getComputedStyle(this));
-  //   });
-  // }
 
   async onStateChange(curr: RTextProps) {
     this.elements.move("curr", "prev");

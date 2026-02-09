@@ -7,7 +7,7 @@
   --c-background: var(--rhc-c-background, transparent);
   --c-backdrop-filter: var(--rhc-c-backdrop-filter, transparent);
   --c-border: var(--rhc-c-border, 1px solid red);
-  --c-gap: var(--rhc-c-gap, 1em);
+  /* --c-gap: var(--rhc-c-gap, 1em); */
   --c-border-radius: var(--rhc-c-border-radius, none);
   --c-padding: var(--rhc-c-padding, none);
 
@@ -15,19 +15,19 @@
   --t-color: var(--rhc-t-color, white);
   --t-border: var(--rhc-t-border, 1px solid red);
   --t-border-radius: var(--rhc-t-border-radius, none);
-  --t-padding: var(--rhc-t-padding, none);
+  /* --t-padding: var(--rhc-t-padding, none); */
 
   --ca-color: var(--rhc-ca-color, white);
   --ca-border-radius: var(--rhc-ca-border-radius, none);
   --ca-border: var(--rhc-ca-border, 1px solid red);
   --ca-background: var(--rhc-ca-background, transparent);
-  --ca-padding: var(--rhc-ca-padding, none);
+  /* --ca-padding: var(--rhc-ca-padding, none); */
 
   --f-color: var(--rhc-f-color, white);
   --f-border-radius: var(--rhc-f-border-radius, none);
   --f-border: var(--rhc-f-border, 1px solid red);
   --f-background: var(--rhc-f-background, transparent);
-  --f-padding: var(--rhc-f-padding, none);
+  /* --f-padding: var(--rhc-f-padding, none); */
 }
 
 :host {
@@ -45,26 +45,26 @@
   /* margin-right: 1em; */
 }
 
-*,
+/* *,
 *::before,
 *::after {
   box-sizing: inherit;
   user-select: none;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
-}
+} */
 
 .container {
   box-sizing: border-box;
   display: flex;
   align-items: center;
   overflow: hidden;
-  padding: var(--c-padding);
+  /* padding: var(--c-padding); */
   background: var(--c-background);
   border-radius: var(--c-border-radius);
   border: var(--c-border);
   height: 100%;
-  gap: var(--c-gap);
+  /* gap: var(--c-gap); */
   backdrop-filter: var(--c-backdrop-filter);
 }
 
@@ -75,7 +75,7 @@
   line-height: 1em;
   height: 100%;
   background: var(--t-background);
-  padding: var(--t-padding);
+  /* padding: var(--t-padding); */
   color: var(--t-color);
   border-radius: var(--t-border-radius);
   border: var(--t-border);
@@ -91,7 +91,7 @@
   vertical-align: middle;
   border-radius: var(--ca-border-radius);
   color: var(--ca-color);
-  padding: var(--ca-padding);
+  /* padding: var(--ca-padding); */
   background: var(--ca-background);
   border: var(--ca-border);
   white-space: nowrap;
@@ -103,10 +103,10 @@
   align-items: center;
   line-height: 1em;
   height: 100%;
-  padding-inline: 1em;
+  /* padding-inline: 1em; */
   background: var(--f-background);
   color: var(--f-color);
-  padding: var(--f-padding);
+  /* padding: var(--f-padding); */
   border-radius: var(--f-border-radius);
   border: var(--f-border);
 }

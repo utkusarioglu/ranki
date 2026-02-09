@@ -7,15 +7,12 @@
   --c-background: var(--rhu-c-background, transparent);
   --c-backdrop-filter: var(--rhu-c-backdrop-filter, transparent);
   --c-border: var(--rhu-c-border, 1px solid red);
-  /* --c-gap: var(--rhu-c-gap, 1em); */
   --c-border-radius: var(--rhu-c-border-radius, none);
-  --c-padding: var(--rhu-c-padding, none);
 
   --cu-background: var(--rhu-cu-background, transparent);
   --cu-color: var(--rhu-cu-color, white);
   --cu-border: var(--rhu-cu-border, 1px solid red);
   --cu-border-radius: var(--rhu-cu-border-radius, none);
-  /* --cu-padding: var(--rhu-cu-padding, none); */
 }
 
 :host {
@@ -34,14 +31,14 @@
   height: 100%;
 }
 
-*,
+/* *,
 *::before,
 *::after {
   box-sizing: inherit;
   user-select: none;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
-}
+} */
 
 :host > .container {
   box-sizing: border-box;

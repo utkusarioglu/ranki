@@ -8,13 +8,13 @@
   --c-backdrop-filter: var(--rhu-l-c-backdrop-filter, transparent);
   --c-border: var(--rhu-l-c-border, 1px solid red);
   --c-border-radius: var(--rhu-l-c-border-radius, none);
-  --c-padding: var(--rhu-l-c-padding, none);
+  /* --c-padding: var(--rhu-l-c-padding, none); */
 
   --cu-background: var(--rhu-l-cu-background, transparent);
   --cu-color: var(--rhu-l-cu-color, white);
   --cu-border: var(--rhu-l-cu-border, 1px solid red);
   --cu-border-radius: var(--rhu-l-cu-border-radius, none);
-  --cu-padding: var(--rhu-l-cu-padding, none);
+  /* --cu-padding: var(--rhu-l-cu-padding, none); */
 }
 
 :host {
@@ -33,14 +33,14 @@
   height: 100%;
 }
 
-*,
+/* *,
 *::before,
 *::after {
   box-sizing: inherit;
   user-select: none;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
-}
+} */
 
 .container {
   box-sizing: border-box;
@@ -48,7 +48,7 @@
   align-items: center;
   overflow: hidden;
   height: 100%;
-  padding: var(--c-padding);
+  /* padding: var(--c-padding); */
   /* background: var(--c-background); */
   border-radius: var(--c-border-radius);
   border: var(--c-border);

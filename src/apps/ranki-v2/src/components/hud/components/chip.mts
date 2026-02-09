@@ -1,4 +1,5 @@
 import { RIcon } from "_components/icon/icon.mjs";
+import type { ReconciliationInfo } from "_components/subtree/subtree.mjs";
 import { RText } from "_components/text/text.mjs";
 import { WcSub, type ElemMin, type WrappedState } from "_components/wc/sub.mjs";
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
@@ -44,7 +45,12 @@ export class WcChip<
     return true;
   }
 
-  canReconcile(): ReconciliationAction {
+  canReconcile(
+    // @ts-expect-error
+    s: WrappedState<T>,
+    // @ts-expect-error
+    info: ReconciliationInfo<T>,
+  ): ReconciliationAction {
     return "mutate";
   }
 
@@ -122,9 +128,19 @@ export class WcChip<
             keyframes: [
               {
                 width: currWidth + "px",
+                paddingLeft: c.paddingLeft,
+                paddingRight: c.paddingRight,
+                // marginLeft: c.marginLeft,
+                // marginRight: c.marginRight,
+                borderLeftWidth: c.borderLeftWidth,
+                borderRightWidth: c.borderRightWidth,
               },
               {
                 width: endWidth + "px",
+                // marginLeft: c.marginLeft,
+                // marginRight: c.marginRight,
+                borderLeftWidth: c.borderLeftWidth,
+                borderRightWidth: c.borderRightWidth,
                 ...this.computePadding(
                   // @ts-expect-error
                   curr,

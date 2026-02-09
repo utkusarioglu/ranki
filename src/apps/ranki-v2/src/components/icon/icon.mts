@@ -1,5 +1,6 @@
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 import "@phosphor-icons/webcomponents";
+import type { WrappedState } from "_components/subtree/subtree.mjs";
 
 export interface RankiIconState {
   icon: string;
@@ -12,18 +13,35 @@ const DUR = 4e2;
 
 export class RIcon extends Wc<T> {
   public static tag = "r-icon";
+  private marginRight = "0px";
 
   isActive(): boolean {
     const icon = this.state.curr()?.icon;
     return !!icon && (icon.length > 0 || icon !== "none");
   }
 
-  canReconcile(): ReconciliationAction {
-    return "mutate";
+  canReconcile(n: WrappedState<RankiIconState>): ReconciliationAction {
+    if (n.type !== "icon") {
+      return "remove";
+    } else if (!n.state.icon || n.state.icon === "none") {
+      return "mutate";
+      // const c = this.state.curr();
+      // if (c.icon && c.icon !== "none") {
+      //   return "remove";
+      // } else {
+      //   return "advance";
+      // }
+      // console.log("remove", n);
+      // return "remove";
+    } else {
+      return "mutate";
+    }
   }
 
   hasNext(b: boolean) {
-    this.css.set({ "margin-right": b ? "5px" : "0" });
+    const s = this.state.curr();
+    this.marginRight = b && s.icon && s.icon !== "none" ? "5px" : "0px";
+    this.css.set({ "margin-right": this.marginRight });
   }
 
   initialize(): void {
@@ -94,7 +112,7 @@ export class RIcon extends Wc<T> {
       paddingLeft: "0px",
       paddingRight: "0px",
       marginLeft: "0px",
-      marginRight: "5px", // #1
+      marginRight: this.marginRight, // #1
       borderLeftWidth: "0px",
       borderRightWidth: "0px",
     }));

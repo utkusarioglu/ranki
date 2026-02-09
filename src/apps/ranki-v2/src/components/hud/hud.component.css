@@ -30,7 +30,7 @@
 }
 
 .scroll-container {
-  width: 100%;
+  width: max-content;
   height: 100%;
   overflow-x: overlay;
   overflow-y: hidden;

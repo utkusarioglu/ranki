@@ -10,7 +10,10 @@ export interface ReconciliationInfo<State> {
 }
 
 export interface ElemMin<State> extends Wc<State> {
-  canReconcile(s: WrappedState<State>): ReconciliationAction;
+  canReconcile(
+    s?: WrappedState<State>,
+    info?: ReconciliationInfo<State>,
+  ): ReconciliationAction;
   remove(): Promise<void>;
   setProps(p: State): void;
   hasNext?: (b: boolean) => void;
@@ -52,6 +55,7 @@ export class WcSub<ElemType extends ElemMin<State>, State> {
   getLast(): ElemType | undefined {
     return this.subtree.at(-1)?.element;
   }
+
   getFirst(): ElemType | undefined {
     return this.subtree[0]?.element;
   }
