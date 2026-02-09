@@ -38,20 +38,23 @@ export class RText extends Wc<RTextProps> {
       "white-space": "nowrap",
     });
     this.animation
-      .registerEventCallback("width", ({ keyframe }) => ({
-        keyframes: [
-          {
-            width: this.getBoundingClientRect().width + "px",
-          },
-          {
-            width: keyframe.width,
-          },
-        ],
-        options: {
-          duration: DUR,
-          fill: "both",
-        },
-      }))
+      // .registerEventCallback("width", ({ keyframe }) => {
+      //   console.log("kf", keyframe);
+      //   return {
+      //     keyframes: [
+      //       {
+      //         width: this.getBoundingClientRect().width + "px",
+      //       },
+      //       {
+      //         width: keyframe.width,
+      //       },
+      //     ],
+      //     options: {
+      //       duration: DUR,
+      //       fill: "both",
+      //     },
+      //   };
+      // })
       .pushPreset("enter", () => ({
         keyframes: [
           {
@@ -80,21 +83,25 @@ export class RText extends Wc<RTextProps> {
       }));
   }
 
+  private reportWidth() {
+    const elem = this.elements.get<RTextSpan>("curr")!;
+    this.animation.triggerEvent("width", () => ({
+      ...this.css.zeroWidthProperties(),
+      width: elem.css.getWidth() + "px",
+    }));
+  }
+
+  protected async onStateSame(curr: RTextProps): Promise<void> {
+    this.reportWidth();
+  }
+
   async onStateChange(curr: RTextProps) {
     this.elements.move("curr", "prev");
     const newText = RTextSpan.create.instance(curr, this);
     this.elements.push("curr", newText);
     this.animation.pushDependency("width", newText);
     this.elements.remove("prev");
-    this.animation.triggerEvent("width", () => ({
-      width: newText.css.getWidth() + "px",
-      paddingLeft: "0px",
-      paddingRight: "0px",
-      marginLeft: "0px",
-      marginRight: "0px",
-      borderLeftWidth: "0px",
-      borderRightWidth: "0px",
-    }));
+    this.reportWidth();
   }
 }
 

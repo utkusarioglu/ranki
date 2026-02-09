@@ -54,20 +54,20 @@ export class RIcon extends Wc<T> {
       height: "100%",
     });
     this.animation
-      .registerEventCallback("width", ({ keyframe }) => ({
-        keyframes: [
-          {
-            width: this.getBoundingClientRect().width + "px",
-          },
-          {
-            width: keyframe.width,
-          },
-        ],
-        options: {
-          duration: DUR,
-          fill: "both",
-        },
-      }))
+      // .registerEventCallback("width", ({ keyframe }) => ({
+      //   keyframes: [
+      //     {
+      //       width: this.getBoundingClientRect().width + "px",
+      //     },
+      //     {
+      //       width: keyframe.width,
+      //     },
+      //   ],
+      //   options: {
+      //     duration: DUR,
+      //     fill: "both",
+      //   },
+      // }))
       .pushPreset("enter", () => ({
         keyframes: [
           {
@@ -96,6 +96,19 @@ export class RIcon extends Wc<T> {
       }));
   }
 
+  private reportWidth() {
+    const elem = this.elements.get<RIconBox>("curr")!;
+    this.animation.triggerEvent("width", () => ({
+      ...this.css.zeroWidthProperties(),
+      width: elem.css.getWidth() + "px",
+      marginRight: this.marginRight, // #1
+    }));
+  }
+
+  protected onStateSame(curr: RankiIconState): void {
+    this.reportWidth();
+  }
+
   /**
    * This is done because hasNext value is not available here unless it's saved in a class variable.
    * the state given to the component from the start should include these details
@@ -107,15 +120,12 @@ export class RIcon extends Wc<T> {
     this.animation.pushDependency("width", newIcon);
     this.elements.remove("prev");
 
-    this.animation.triggerEvent("width", () => ({
-      width: newIcon.css.getWidth() + "px",
-      paddingLeft: "0px",
-      paddingRight: "0px",
-      marginLeft: "0px",
-      marginRight: this.marginRight, // #1
-      borderLeftWidth: "0px",
-      borderRightWidth: "0px",
-    }));
+    this.reportWidth();
+    // this.animation.triggerEvent("width", () => ({
+    //   ...this.css.zeroWidthProperties(),
+    //   width: newIcon.css.getWidth() + "px",
+    //   marginRight: this.marginRight, // #1
+    // }));
   }
 }
 
