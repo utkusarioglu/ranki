@@ -6,7 +6,7 @@ interface WcAnimationConfig {
   keyframes: Keyframe[];
   options: KeyframeAnimationOptions;
 }
-type WcAnimationEventNames = "enter" | "exit" | "reveal" | "collapse";
+type WcAnimationEventNames = "enter" | "exit" | "hide" | "show";
 type WcAnimationEventRecord = Record<
   WcAnimationEventNames,
   () => WcAnimationConfig

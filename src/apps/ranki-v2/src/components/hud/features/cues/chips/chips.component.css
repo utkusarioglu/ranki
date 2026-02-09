@@ -31,14 +31,13 @@
   height: 100%;
 }
 
-/* *,
+*,
 *::before,
 *::after {
-  box-sizing: inherit;
-  user-select: none;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
-} */
+  user-select: none;
+}
 
 :host > .container {
   box-sizing: border-box;
@@ -46,12 +45,9 @@
   align-items: center;
   overflow: hidden;
   height: 100%;
-  /* padding: var(--c-padding); */
   background: var(--c-background);
   border-radius: var(--c-border-radius);
   border: var(--c-border);
-  /* gap: var(--c-gap); */
-  /* backdrop-filter: var(--c-backdrop-filter); */
 }
 
 r-cue-chip {

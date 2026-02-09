@@ -31,13 +31,11 @@
 
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
-  opacity: 1;
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: inherit;
   user-select: none;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
@@ -49,11 +47,9 @@
   align-items: center;
   overflow: hidden;
   height: 100%;
-  /* padding: var(--c-padding); */
   background: var(--c-background);
   border-radius: var(--c-border-radius);
   border: var(--c-border);
-  /* gap: var(--c-gap); */
   backdrop-filter: var(--c-backdrop-filter);
 }
 
@@ -64,7 +60,6 @@
   line-height: 1em;
   height: 100%;
   background: var(--v-background);
-  /* padding: var(--v-padding); */
   color: var(--v-color);
   border-radius: var(--v-border-radius);
   border: var(--v-border);
@@ -77,7 +72,6 @@
   line-height: 1em;
   display: inline-block;
   vertical-align: middle;
-  /* padding: var(--r-padding); */
   border-radius: var(--r-border-radius);
   color: var(--r-color);
   background: var(--r-background);

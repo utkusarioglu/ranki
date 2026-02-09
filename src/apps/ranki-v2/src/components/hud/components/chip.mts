@@ -109,66 +109,55 @@ export class WcChip<
       });
   }
 
+  // protected setWidthListener() {
+  //   let items: number[];
+  //   let count = 0;
+  //   this.animation.registerEventCallback("width", ({ keyframe }) => {
+  //     if (!count) {
+  //       count = this.subtree.getAll().length;
+  //       items = [];
+  //     }
+  //     const curr = this.state.curr();
+  //     items.push(this.css.computeTotalWidth(keyframe));
+  //     if (items.length === count) {
+  //       const endWidth = Array.from(items.values()).reduce((a, c) => a + c, 0);
+  //       const c = getComputedStyle(this);
+
+  //       // const currWidth = parseFloat(c.width!.toString());
+  //       this.animation.animate("width", {
+  //         keyframes: [
+  //           {
+  //             width: c.width,
+  //             paddingLeft: c.paddingLeft,
+  //             paddingRight: c.paddingRight,
+  //             // marginLeft: c.marginLeft,
+  //             // marginRight: c.marginRight,
+  //             borderLeftWidth: c.borderLeftWidth,
+  //             borderRightWidth: c.borderRightWidth,
+  //           },
+  //           {
+  //             width: endWidth + "px",
+  //             // marginLeft: c.marginLeft,
+  //             // marginRight: c.marginRight,
+  //             borderLeftWidth: c.borderLeftWidth,
+  //             borderRightWidth: c.borderRightWidth,
+  //             ...this.computePadding(
+  //               // @ts-expect-error
+  //               curr,
+  //             ),
+  //           },
+  //         ],
+  //         options: {
+  //           duration: DUR,
+  //           fill: "both",
+  //         },
+  //       });
+  //       count = 0;
+  //     }
+  //   });
+  // }
+
   protected setWidthListener() {
-    let items: number[];
-    let count = 0;
-    this.animation.registerEventCallback("width", ({ keyframe }) => {
-      if (!count) {
-        count = this.subtree.getAll().length;
-        items = [];
-      }
-      const curr = this.state.curr();
-      items.push(this.css.computeTotalWidth(keyframe));
-      if (this.tagName === "R-CUE-LABEL") {
-        console.log(count, items.length);
-      }
-      if (items.length === count) {
-        const endWidth = Array.from(items.values()).reduce((a, c) => a + c, 0);
-        const c = getComputedStyle(this);
-        if (this.tagName === "R-CUE-LABEL") {
-          console.log(
-            "trigger e:",
-            endWidth,
-            this.css.selectWidthProperties(c),
-            items,
-          );
-        }
-
-        // const currWidth = parseFloat(c.width!.toString());
-        this.animation.animate("width", {
-          keyframes: [
-            {
-              width: c.width,
-              paddingLeft: c.paddingLeft,
-              paddingRight: c.paddingRight,
-              // marginLeft: c.marginLeft,
-              // marginRight: c.marginRight,
-              borderLeftWidth: c.borderLeftWidth,
-              borderRightWidth: c.borderRightWidth,
-            },
-            {
-              width: endWidth + "px",
-              // marginLeft: c.marginLeft,
-              // marginRight: c.marginRight,
-              borderLeftWidth: c.borderLeftWidth,
-              borderRightWidth: c.borderRightWidth,
-              ...this.computePadding(
-                // @ts-expect-error
-                curr,
-              ),
-            },
-          ],
-          options: {
-            duration: DUR,
-            fill: "both",
-          },
-        });
-        count = 0;
-      }
-    });
-  }
-
-  protected setWidthListener_OLD() {
     let items: number[];
     let count = 0;
     this.animation.registerEventCallback("width", ({ keyframe }) => {

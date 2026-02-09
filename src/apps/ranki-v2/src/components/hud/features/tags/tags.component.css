@@ -20,6 +20,15 @@
   --r-background: var(--rht-r-background, transparent);
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  user-select: none;
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+}
+
 :host {
   display: block;
   overflow: hidden;

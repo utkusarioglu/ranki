@@ -25,14 +25,6 @@ export class RIcon extends Wc<T> {
       return "remove";
     } else if (!n.state.icon || n.state.icon === "none") {
       return "mutate";
-      // const c = this.state.curr();
-      // if (c.icon && c.icon !== "none") {
-      //   return "remove";
-      // } else {
-      //   return "advance";
-      // }
-      // console.log("remove", n);
-      // return "remove";
     } else {
       return "mutate";
     }
@@ -48,26 +40,9 @@ export class RIcon extends Wc<T> {
     this.state.setTrigger((p, c) => p?.icon !== c.icon);
     this.css.set({
       display: "block",
-      // overflow: "hidden",
-      // display: "inline-grid",
-      // "white-space": "nowrap",
       height: "100%",
     });
     this.animation
-      // .registerEventCallback("width", ({ keyframe }) => ({
-      //   keyframes: [
-      //     {
-      //       width: this.getBoundingClientRect().width + "px",
-      //     },
-      //     {
-      //       width: keyframe.width,
-      //     },
-      //   ],
-      //   options: {
-      //     duration: DUR,
-      //     fill: "both",
-      //   },
-      // }))
       .pushPreset("enter", () => ({
         keyframes: [
           {
@@ -105,7 +80,7 @@ export class RIcon extends Wc<T> {
     }));
   }
 
-  protected onStateSame(curr: RankiIconState): void {
+  protected onStateSame(): void {
     this.reportWidth();
   }
 
@@ -121,11 +96,6 @@ export class RIcon extends Wc<T> {
     this.elements.remove("prev");
 
     this.reportWidth();
-    // this.animation.triggerEvent("width", () => ({
-    //   ...this.css.zeroWidthProperties(),
-    //   width: newIcon.css.getWidth() + "px",
-    //   marginRight: this.marginRight, // #1
-    // }));
   }
 }
 

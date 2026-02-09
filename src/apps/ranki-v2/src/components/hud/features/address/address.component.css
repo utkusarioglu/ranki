@@ -29,11 +29,6 @@
     BlinkMacSystemFont,
     sans-serif;
 
-  transition-property: var(--transition-property);
-  transition-duration: var(--transition-duration);
-  opacity: 1;
-  user-select: none;
-
   & > .container {
     box-sizing: border-box;
     display: flex;
@@ -45,6 +40,14 @@
     border: var(--c-border);
     backdrop-filter: var(--c-backdrop-filter);
   }
+}
+
+*,
+*::before,
+*::after {
+  transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration);
+  user-select: none;
 }
 
 r-address-segment {

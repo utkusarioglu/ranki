@@ -27,18 +27,16 @@
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
   border-radius: var(--c-border-radius);
-  opacity: 1;
   height: 100%;
 }
 
-/* *,
+*,
 *::before,
 *::after {
-  box-sizing: inherit;
-  user-select: none;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
-} */
+  user-select: none;
+}
 
 :host > .container {
   box-sizing: border-box;

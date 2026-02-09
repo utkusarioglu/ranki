@@ -23,7 +23,6 @@ interface Wrapped {
 export class RCues extends WcHudContainer<
   T,
   T,
-  // @ts-expect-error
   WcHudContainer<any, any, any, any>,
   ProcessedCue[]
 > {
