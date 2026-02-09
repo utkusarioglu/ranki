@@ -228,8 +228,8 @@ export class WcChip<
 
   // @ts-expect-error
   protected onStateChange(curr: T): void {
-    this.className = curr.type;
     this.mutateBackground(curr);
     this.reconcileChildren(curr);
+    this.className = curr.type;
   }
 }

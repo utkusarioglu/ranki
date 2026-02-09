@@ -6,8 +6,9 @@ export interface RTextProps {
   color?: string;
 }
 
-const DUR = 2e2;
+const DUR = 4e2;
 const LEN = 2;
+
 export class RText extends Wc<RTextProps> {
   public static tag = "r-text";
   private activeIndex = 0;
@@ -88,8 +89,8 @@ export class RTextSpan extends Wc<RTextProps> {
     this.css.set({
       "grid-area": "1/1",
       width: "max-content",
-      "transition-property": "color",
-      "transition-duration": DUR + "ms",
+      // "transition-property": "color, opacity",
+      // "transition-duration": DUR + "ms",
     });
     this.animation
       .pushPreset("enter", () => ({
@@ -118,10 +119,12 @@ export class RTextSpan extends Wc<RTextProps> {
   onStateChange(curr: RTextProps) {
     this.innerText = curr.text;
 
-    if (curr.color) {
-      this.css.set({ color: `rgb(var(--scheme-${curr.color}))` });
-    } else {
-      this.css.remove(["color"]);
-    }
+    this.animation.raf(2, () => {
+      if (curr.color) {
+        this.css.set({ color: `rgb(var(--scheme-${curr.color}))` });
+      } else {
+        this.css.remove(["color"]);
+      }
+    });
   }
 }
