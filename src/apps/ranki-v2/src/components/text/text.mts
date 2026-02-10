@@ -63,10 +63,31 @@ export class RText extends Wc<RTextProps> {
 
   private reportWidth() {
     const elem = this.elements.get<RTextSpan>(this.activeIndex.toString())!;
-    this.animation.triggerEvent("width", () => ({
-      ...this.css.zeroWidthProperties(),
-      width: elem.css.getWidth() + "px",
-    }));
+    this.animation.triggerEvent("width", () => {
+      const currWidth = getComputedStyle(this).width;
+      const elemWidth = elem.css.getWidth() + "px";
+
+      this.animation.animate("own-width", {
+        keyframes: [
+          {
+            width: currWidth,
+          },
+          {
+            width: elemWidth,
+          },
+        ],
+        options: {
+          duration: DUR,
+          fill: "both",
+        },
+      });
+
+      return {
+        ...this.css.zeroWidthProperties(),
+        width: elemWidth,
+        // marginRight: this.marginRight, // #1
+      };
+    });
   }
 
   protected async onStateSame(): Promise<void> {
@@ -91,8 +112,6 @@ export class RTextSpan extends Wc<RTextProps> {
     this.css.set({
       "grid-area": "1/1",
       width: "max-content",
-      // "transition-property": "color, opacity",
-      // "transition-duration": DUR + "ms",
     });
     this.animation
       .pushPreset("enter", () => ({

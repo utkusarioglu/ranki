@@ -63,11 +63,31 @@ export class RIcon extends Wc<T> {
 
   private reportWidth() {
     const elem = this.elements.get<RIconBox>("curr")!;
-    this.animation.triggerEvent("width", () => ({
-      ...this.css.zeroWidthProperties(),
-      width: elem.css.getWidth() + "px",
-      marginRight: this.marginRight, // #1
-    }));
+    this.animation.triggerEvent("width", () => {
+      const currWidth = getComputedStyle(this).width;
+      const elemWidth = elem.css.getWidth() + "px";
+
+      this.animation.animate("own-width", {
+        keyframes: [
+          {
+            width: currWidth,
+          },
+          {
+            width: elemWidth,
+          },
+        ],
+        options: {
+          duration: DUR,
+          fill: "both",
+        },
+      });
+
+      return {
+        ...this.css.zeroWidthProperties(),
+        width: elemWidth,
+        marginRight: this.marginRight, // #1
+      };
+    });
   }
 
   protected onStateSame(): void {
@@ -103,28 +123,14 @@ export class RIconBox extends Wc<T> {
     });
     this.animation
       .pushPreset("enter", () => ({
-        keyframes: [
-          {
-            opacity: 0,
-          },
-          {
-            opacity: 1,
-          },
-        ],
+        keyframes: [{ opacity: 0 }, { opacity: 1 }],
         options: {
           duration: DUR,
           fill: "both",
         },
       }))
       .pushPreset("exit", () => ({
-        keyframes: [
-          {
-            opacity: 1,
-          },
-          {
-            opacity: 0,
-          },
-        ],
+        keyframes: [{ opacity: 1 }, { opacity: 0 }],
         options: {
           duration: DUR,
           fill: "both",
