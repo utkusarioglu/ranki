@@ -1,6 +1,7 @@
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 import "@phosphor-icons/webcomponents";
 import type { WrappedState } from "_components/subtree/subtree.mjs";
+import { Timing } from "_utils/timing.mjs";
 
 export interface RankiIconState {
   icon: string;
@@ -131,14 +132,16 @@ export class RIconBox extends Wc<T> {
       }));
   }
 
-  onStateChange(curr: T) {
+  async onStateChange(curr: T) {
     const icon = document.createElement(`ph-${curr.icon}`);
     icon.setAttribute("weight", "fill");
+    this.appendChild(icon);
+
+    await Timing.waitLayout();
     if (curr.color) {
       icon.setAttribute("color", `rgb(var(--scheme-${curr.color}))`);
     } else {
       icon.removeAttribute("color");
     }
-    this.appendChild(icon);
   }
 }

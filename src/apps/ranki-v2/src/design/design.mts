@@ -9,6 +9,7 @@ import {
   GENERATED_PREFIX,
   PALETTE_PREFIX,
 } from "./design.constants.mts";
+import { Timing } from "_utils/timing.mjs";
 
 export function createDesign(config: RankiDesignState) {
   const root = document.documentElement;
@@ -31,25 +32,9 @@ export function createDesign(config: RankiDesignState) {
     document.body.classList.toggle("width-wide", e.matches);
   });
 
-  const hasTheme = root.classList.contains(SCHEME_PREFIX);
-
-  console.log("t", hasTheme);
+  attachClasses(root, config);
 
   const n = config.palette;
-  // TODO this is ugly and error prone and it's just a heuristic.
-  // This prevents new components from starting with the target color scheme already applied.
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      root.className = [
-        ...root.className
-          .split(" ")
-          .filter((n) => !REMOVED.some((r) => n.startsWith(r))),
-        `${SCHEME_PREFIX}-${config.scheme}`,
-        `${THEME_PREFIX}-${config.theme}`,
-      ].join(" ");
-    });
-  });
-
   if (n.startsWith(GENERATED_PREFIX)) {
     if (attach.querySelector("#" + n)) {
       return;
@@ -72,4 +57,21 @@ export function createDesign(config: RankiDesignState) {
     }
     generatePaletteStyle(attach, palette);
   }
+}
+
+/**
+ * @dev
+ * #1 TODO this is ugly and error prone and it's just a heuristic. This
+ * prevents new components from starting with the target color scheme already
+ * applied.
+ */
+async function attachClasses(root: HTMLElement, config: RankiDesignState) {
+  await Timing.waitLayout(); // #1
+  root.className = [
+    ...root.className
+      .split(" ")
+      .filter((n) => !REMOVED.some((r) => n.startsWith(r))),
+    `${SCHEME_PREFIX}-${config.scheme}`,
+    `${THEME_PREFIX}-${config.theme}`,
+  ].join(" ");
 }

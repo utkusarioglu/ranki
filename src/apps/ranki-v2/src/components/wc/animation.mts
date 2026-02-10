@@ -1,6 +1,7 @@
 import { assertNotExists, assertNotUndefined } from "_error/assertions.mjs";
 import type { Wc } from "./wc.mts";
 import type { WcWidthProps } from "./css.mts";
+import { Timing } from "_utils/timing.mjs";
 
 interface WcAnimationConfig {
   keyframes: Keyframe[];
@@ -85,7 +86,7 @@ export class WcAnimation extends EventTarget {
     this.setActive(name, animation);
     animation.finished.then(() => this.removeActive(name));
     emit &&
-      this.waitLayout().then(() =>
+      Timing.waitLayout().then(() =>
         this.dispatchAnimation(name, {
           keyframe: config.keyframes.at(-1)!,
           target: this.self,
@@ -116,7 +117,7 @@ export class WcAnimation extends EventTarget {
     cb: () => Keyframe | undefined | WcWidthProps,
     frames: number = 2,
   ) {
-    this.raf(frames, () => {
+    Timing.raf(frames, () => {
       const config = cb();
       config &&
         this.dispatchAnimation(name, { keyframe: config, target: this.self });
@@ -129,25 +130,5 @@ export class WcAnimation extends EventTarget {
         detail: { type, payload },
       }),
     );
-  }
-
-  /**
-   * Waits for layout to be available. as a heuristic, 2 frames work reliably.
-   * This doesn't mean it cannot break.
-   */
-  async waitLayout() {
-    await this.raf(2, () => {});
-  }
-
-  raf(frames: number = 2, cb: () => void): Promise<void> {
-    function step(resolve: () => void, cb: () => void) {
-      if (--frames <= 0) {
-        cb();
-        resolve();
-      } else {
-        requestAnimationFrame(() => step(resolve, cb));
-      }
-    }
-    return new Promise<void>((r) => step(r, cb));
   }
 }

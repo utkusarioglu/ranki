@@ -5,6 +5,7 @@ import { WcSub, type ElemMin, type WrappedState } from "_components/wc/sub.mjs";
 import { RText, type RTextProps } from "_components/text/text.mjs";
 import type { ProcessedCue } from "_config/config.types.mjs";
 import { assertNever } from "_error/assertions.mjs";
+import { Timing } from "_utils/timing.mjs";
 
 type T = ProcessedCue;
 
@@ -42,7 +43,8 @@ export class WcCueChip extends WcChip<T, T, ChildrenTypes, ChildrenProps> {
     }
   }
 
-  protected mutateBackground(curr: T) {
+  protected async mutateBackground(curr: T) {
+    await Timing.waitLayout();
     if (curr.background) {
       this.css.set({
         background: `rgb(var(--scheme-${curr.background.color}))`,

@@ -1,5 +1,6 @@
 import type { WrappedState } from "_components/subtree/subtree.mjs";
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
+import { Timing } from "_utils/timing.mjs";
 
 export interface RTextProps {
   text: string;
@@ -117,15 +118,14 @@ export class RTextSpan extends Wc<RTextProps> {
       }));
   }
 
-  onStateChange(curr: RTextProps) {
+  async onStateChange(curr: RTextProps) {
     this.innerText = curr.text;
 
-    this.animation.raf(2, () => {
-      if (curr.color) {
-        this.css.set({ color: `rgb(var(--scheme-${curr.color}))` });
-      } else {
-        this.css.remove(["color"]);
-      }
-    });
+    await Timing.waitLayout();
+    if (curr.color) {
+      this.css.set({ color: `rgb(var(--scheme-${curr.color}))` });
+    } else {
+      this.css.remove(["color"]);
+    }
   }
 }
