@@ -6,7 +6,7 @@ import {
 import { RankiFacesFace } from "_components/challenge/pair/face/face.mts";
 import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
 import {
-  RankiRule,
+  RRule,
   type RankiRuleVariants,
 } from "_components/challenge/pair/rule/rule.mts";
 import type { RankiChallengeState } from "_config/config.types.mjs";
@@ -14,7 +14,7 @@ import { assertNotUndefined } from "_error/assertions.mjs";
 import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 import { Subtree, type WrappedState } from "_components/subtree/subtree.mjs";
 
-export type PairChildren = RankiFacesFace | RankiRule;
+export type PairChildren = RankiFacesFace | RRule;
 type RenderedFaces = Record<string, RankiFacesFace>;
 
 interface InternalState extends RankiChallengeState {
@@ -172,10 +172,8 @@ export class RankiFacesPair extends RankiFacesWc<
     let elem: PairChildren;
     switch (s.type) {
       case "ranki:rule":
-        elem = RankiRule.create<RankiRuleVariants, RankiRule>(
-          s.state as RankiRuleVariants,
-        );
-        container.appendChild(elem);
+        elem = RRule.create.instance(s.state as RankiRuleVariants, container);
+        // container.appendChild(elem);
         return elem;
       default:
         const face = s.state as RankiFacesFace;

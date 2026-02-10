@@ -7,7 +7,7 @@
   /* --transition-property: background, color, padding, border, opacity, height, width; */
 }
 
-ranki-rule.container {
+r-rule.container {
   display: block;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
