@@ -226,6 +226,7 @@ export class RankiAnimation_OLD {
       initialCb: additional?.initialCb,
       endRemove: additional?.endRemove,
       setup: {
+        opacity: 1,
         // opacity: 0,
         transform: "translateY(0)",
         ...(additional && additional.setup),

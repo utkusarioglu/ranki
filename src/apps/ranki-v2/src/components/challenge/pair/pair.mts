@@ -3,10 +3,10 @@ import {
   RankiAnimation_OLD,
   type AnimationTypes,
 } from "_components/animation/animation.mts";
-import { RankiFacesFace } from "_components/challenge/pair/face/face.mts";
+import { RPairDqm } from "_components/challenge/pair/face/face.mts";
 import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
 import {
-  RRule,
+  RPairRule,
   type RankiRuleVariants,
 } from "_components/challenge/pair/rule/rule.mts";
 import type { RankiChallengeState } from "_config/config.types.mjs";
@@ -14,14 +14,14 @@ import { assertNotUndefined } from "_error/assertions.mjs";
 import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 import { Subtree, type WrappedState } from "_components/subtree/subtree.mjs";
 
-export type PairChildren = RankiFacesFace | RRule;
-type RenderedFaces = Record<string, RankiFacesFace>;
+export type PairChildren = RPairDqm | RPairRule;
+type RenderedFaces = Record<string, RPairDqm>;
 
 interface InternalState extends RankiChallengeState {
   rendered: RenderedFaces;
 }
 
-type ChildState = RankiFacesFace | RankiRuleVariants;
+type ChildState = RPairDqm | RankiRuleVariants;
 
 export class RankiFacesPair extends RankiFacesWc<
   RankiChallengeState,
@@ -149,12 +149,12 @@ export class RankiFacesPair extends RankiFacesWc<
   }
 
   private renderFaces(rawCurr: RankiChallengeState): RenderedFaces {
-    const faces: [string, RankiFacesFace][] = [];
+    const faces: [string, RPairDqm][] = [];
     const theaters: [string, () => HTMLDivElement][] = [];
     rawCurr.dqm.inputs.forEach((n) => {
-      const face = RankiFacesFace.create<{}, RankiFacesFace>({});
+      const face = RPairDqm.create.instance(null);
       face.setKey(n.dqm);
-      faces.push([n.theater, face as RankiFacesFace]);
+      faces.push([n.theater, face as RPairDqm]);
       theaters.push([n.theater, () => face as unknown as HTMLDivElement]);
     });
     renderDqm(rawCurr.dqm, {
@@ -172,18 +172,20 @@ export class RankiFacesPair extends RankiFacesWc<
     let elem: PairChildren;
     switch (s.type) {
       case "ranki:rule":
-        elem = RRule.create.instance(s.state as RankiRuleVariants, container);
-        // container.appendChild(elem);
-        return elem;
+        elem = RPairRule.create.instance(
+          s.state as RankiRuleVariants,
+          container,
+        );
+        break;
       default:
-        const face = s.state as RankiFacesFace;
-        assertNotUndefined(face, {
+        elem = s.state as RPairDqm;
+        assertNotUndefined(elem, {
           why: "Undefined face is required",
           details: { face: s.state },
         });
-        container.appendChild(face as RankiFacesFace);
-
-        return face;
+        container.appendChild(elem as RPairDqm);
     }
+    elem.animation.runPreset("show");
+    return elem;
   }
 }

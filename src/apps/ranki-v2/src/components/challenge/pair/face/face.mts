@@ -1,22 +1,7 @@
-import {
-  RankiAnimation_OLD,
-  type AnimationTypes,
-} from "_components/animation/animation.mts";
-import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
-import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
-import type { WrappedState } from "_components/subtree/subtree.mjs";
-import { assertNotUndefined } from "_error/assertions.mjs";
+import { RPairItem } from "_components/challenge/components/face.mjs";
 
-export class RankiFacesFace extends RankiFacesWc<any> {
-  public static name = "ranki-faces-face";
-  protected animations: AnimationTypes = {
-    enter: RankiAnimation_OLD.expandYFadeIn(this),
-    exit: RankiAnimation_OLD.collapseYFadeOut(this),
-  };
-
-  isActive(): boolean {
-    return true;
-  }
+export class RPairDqm extends RPairItem<any> {
+  public static readonly tag = "r-pair-dqm";
 
   getKey() {
     return this.getAttribute("dqm-source");
@@ -26,19 +11,5 @@ export class RankiFacesFace extends RankiFacesWc<any> {
     this.setAttribute("dqm-source", key);
   }
 
-  canReconcile(s: WrappedState<RankiFacesFace>): ReconciliationAction {
-    assertNotUndefined(s, {
-      why: "Undefined face is required",
-    });
-    return this.getKey() === s.state.getKey() ? "advance" : "remove";
-  }
-
-  canReconcile_old(s: WrappedState<RankiFacesFace>): ReconciliationAction {
-    assertNotUndefined(s, {
-      why: "Undefined face is required",
-    });
-    return this.getKey() === s.state.getKey() ? "advance" : "remove";
-  }
-
-  protected render() {}
+  protected onStateChange(): void {}
 }

@@ -3,40 +3,42 @@
   --height-hr: var(--face-rule-height);
   --backdrop-filter: var(--face-rule-backdrop-filter);
   --wrapper-height-hr: 70px;
-  /* --transition-duration: var(--face-hr-transition-duration, 10000); */
-  /* --transition-property: background, color, padding, border, opacity, height, width; */
+  --transition-duration: var(--face-hr-transition-duration, 10000);
+  --transition-property:
+    background, color, padding, border, opacity, height, width;
 }
 
-r-rule.container {
+r-pair-rule {
   display: block;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
   display: grid;
   box-sizing: border-box;
   width: 100%;
-  max-height: var(--wrapper-height-hr);
+  /* max-height: var(--wrapper-height-hr); */
   height: var(--wrapper-height-hr);
   align-items: center;
   padding-inline: 4em;
-}
 
-div.horizontal {
-  height: var(--height-hr);
-  transition-property: var(--transition-property);
-  transition-duration: var(--transition-duration);
-  display: block;
-  background-color: var(--color-hr);
-  border-radius: calc(var(--height-hr) / 2);
-  backdrop-filter: var(--backdrop-filter);
+  & > .horizontal {
+    height: var(--height-hr);
+    transition-property: var(--transition-property);
+    transition-duration: var(--transition-duration);
+    display: block;
+    background-color: var(--color-hr);
+    border-radius: calc(var(--height-hr) / 2);
+    backdrop-filter: var(--backdrop-filter);
+  }
+
+  & > .vertical {
+    transition-property: var(--transition-property);
+    transition-duration: var(--transition-duration);
+    display: block;
+    background-color: var(--color-vr);
+    height: 100%;
+    border-radius: calc(var(--vr-width) / 2);
+    backdrop-filter: var(--backdrop-filter);
+  }
 }
 
 /* TODO this is faulty along with the container type. */
-div.vertical {
-  transition-property: var(--transition-property);
-  transition-duration: var(--transition-duration);
-  display: block;
-  background-color: var(--color-vr);
-  height: 100%;
-  border-radius: calc(var(--vr-width) / 2);
-  backdrop-filter: var(--backdrop-filter);
-}

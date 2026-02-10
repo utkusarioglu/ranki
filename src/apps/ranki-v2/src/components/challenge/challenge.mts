@@ -26,6 +26,7 @@ export class RankiChallenge extends RankiFacesWc<RankiChallengeState> {
   }
 
   private removePair(e: RankiFacesPair) {
+    console.log("should remove", e);
     e.remove();
   }
 
