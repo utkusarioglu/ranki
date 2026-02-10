@@ -1,10 +1,18 @@
 import { RPairItem } from "_components/challenge/components/face.mjs";
+import type { WrappedState } from "_components/wc/sub.mjs";
+import type { ReconciliationAction } from "_components/wc/wc.mjs";
 
-export class RPairDqm extends RPairItem<any> {
+type T = any;
+
+export class RPairDqm extends RPairItem<T> {
   public static readonly tag = "r-pair-dqm";
 
   getKey() {
     return this.getAttribute("dqm-source");
+  }
+
+  canReconcile(s: WrappedState<T>): ReconciliationAction {
+    return this.getKey() === s.state.getKey() ? "advance" : "remove";
   }
 
   setKey(key: string) {

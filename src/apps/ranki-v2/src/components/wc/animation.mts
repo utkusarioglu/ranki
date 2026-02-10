@@ -10,7 +10,7 @@ interface WcAnimationConfig {
 type WcAnimationEventNames = "enter" | "exit" | "hide" | "show";
 type WcAnimationEventRecord = Record<
   WcAnimationEventNames,
-  () => WcAnimationConfig
+  () => Promise<WcAnimationConfig> | WcAnimationConfig
 >;
 
 type AnimationCall = (payload: EventPayload) => WcAnimationConfig | void;
@@ -95,7 +95,10 @@ export class WcAnimation extends EventTarget {
     return animation;
   }
 
-  pushPreset(name: WcAnimationEventNames, config: () => WcAnimationConfig) {
+  pushPreset(
+    name: WcAnimationEventNames,
+    config: () => Promise<WcAnimationConfig> | WcAnimationConfig,
+  ) {
     assertNotExists(this.presets[name], {
       why: "Preset already defined",
       details: { name },
@@ -107,7 +110,8 @@ export class WcAnimation extends EventTarget {
   async runPreset(event: WcAnimationEventNames) {
     const animation = this.presets[event];
     if (animation) {
-      return this.animate(event, animation()).finished;
+      const a = await animation();
+      return this.animate(event, a).finished;
     }
     return Promise.resolve();
   }

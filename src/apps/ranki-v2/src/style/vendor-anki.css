@@ -12,6 +12,19 @@ html {
   }
 }
 
+.scroll-hidden {
+  overflow: hidden !important;
+  &::-webkit-scrollbar {
+    width: 0 !important;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: transparent !important;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent !important;
+  }
+}
+
 body,
 #qa {
   opacity: 1 !important;

@@ -1,6 +1,6 @@
-import type { WrappedState } from "_components/subtree/subtree.mjs";
-import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
+import { Wc } from "_components/wc/wc.mjs";
 import { assertNever } from "_error/assertions.mjs";
+import { Timing } from "_utils/timing.mjs";
 
 const DUR = 4e2;
 
@@ -11,13 +11,6 @@ export class RPairItem<T> extends Wc<T> {
 
   getKey() {
     assertNever({ why: "This method needs to be overridden" });
-  }
-
-  canReconcile(s: WrappedState<T>): ReconciliationAction {
-    // assertNotUndefined(s, {
-    //   why: "face is required",
-    // });
-    return this.getKey() === s.state.getKey() ? "advance" : "remove";
   }
 
   setProps(s: T) {
@@ -33,11 +26,12 @@ export class RPairItem<T> extends Wc<T> {
 
   initialize(): void {
     this.animation
-      .pushPreset("show", () => {
+      .pushPreset("show", async () => {
+        await Timing.waitLayout();
         // TODO this should be a property callback
-        setTimeout(() => {
-          this.css.remove(["max-height"]);
-        }, DUR);
+        // setTimeout(() => {
+        //   this.css.remove(["maxHeight"]);
+        // }, DUR);
         return {
           keyframes: [
             {
@@ -51,7 +45,7 @@ export class RPairItem<T> extends Wc<T> {
           ],
           options: {
             duration: DUR,
-            fill: "both",
+            fill: "backwards",
           },
         };
       })
@@ -69,7 +63,7 @@ export class RPairItem<T> extends Wc<T> {
           ],
           options: {
             duration: DUR,
-            fill: "both",
+            fill: "backwards",
           },
         };
       });

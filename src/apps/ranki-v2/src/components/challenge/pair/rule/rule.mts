@@ -1,12 +1,7 @@
-// import {
-//   RankiAnimation_OLD,
-//   type AnimationTypes,
-// } from "_components/animation/animation.mts";
-// import { RankiFacesWc } from "_components/challenge/faces-wc/faces-wc.mts";
 import { RPairItem } from "_components/challenge/components/face.mjs";
 import styles from "./rule.css?inline";
-import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
-import type { WrappedState } from "_components/subtree/subtree.mjs";
+import type { WrappedState } from "_components/wc/sub.mjs";
+import type { ReconciliationAction } from "_components/wc/wc.mjs";
 
 export const ruleStyles = styles;
 
@@ -16,10 +11,9 @@ export class RPairRule extends RPairItem<RankiRuleVariants> {
   public static readonly tag = "r-pair-rule" as const;
 
   // DECIDE a surface area without this should be possible.
-  getKey() {
-    const index = this.state.curr();
-    return `ranki:rule:${index}`;
-  }
+  // getKey() {
+  //   return `ranki:rule`;
+  // }
 
   canReconcile(s: WrappedState<RankiRuleVariants>): ReconciliationAction {
     const type = s.type === "ranki:rule";

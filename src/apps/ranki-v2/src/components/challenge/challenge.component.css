@@ -8,7 +8,6 @@
 }
 
 :host {
-  display: grid;
   box-sizing: border-box;
   font-family:
     system-ui,
@@ -21,6 +20,7 @@
   width: var(--min-width);
   margin-inline: auto;
   height: 100%;
+  /* overflow: hidden; */
   position: relative;
 }
 
@@ -29,12 +29,12 @@ r-pair-dqm {
   overflow: visible;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
-  opacity: 1;
+  /* opacity: 1; */
   width: var(--min-width);
 }
 
 r-pair {
-  grid-area: 1 /1;
+  position: absolute;
   display: grid;
   overflow: visible;
   transition-property: var(--transition-property);
@@ -66,5 +66,15 @@ r-pair {
       /* display: flex;
     align-items: end; */
     }
+  }
+}
+
+.scroll-hidden {
+  overflow: hidden !important;
+
+  &::-webkit-scrollbar {
+    display: none !important;
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE 10+ / old Edge */
   }
 }
