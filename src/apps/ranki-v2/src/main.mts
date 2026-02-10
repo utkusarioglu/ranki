@@ -4,7 +4,7 @@ import { collectConfig, createState } from "_/config/config.mts";
 import { createDesign } from "_/design/design.mts";
 import { createDevTools } from "_/dev/dev.mts";
 import { setStyles } from "_/style/style.mts";
-import { RankiChallenge } from "_components/challenge/challenge.mts";
+import { RChallenge } from "_components/challenge/challenge.mts";
 import { IRankiIndicator } from "_components/indicator/indicator.mts";
 import type { RankiState } from "_config/config.types.mts";
 import { RBigError } from "_components/big-error/big-error.mjs";
@@ -28,7 +28,7 @@ function render(state: RankiState) {
   RHud.create.singleton(state.hud, document.body);
   createDesign(state.design);
   IRankiIndicator.create.singleton(state.indicator, document.body);
-  RankiChallenge.singleton(state.challenge, document.body);
+  RChallenge.create.singleton(state.challenge, document.body);
 }
 
 onReady(main);

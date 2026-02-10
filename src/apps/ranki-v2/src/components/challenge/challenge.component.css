@@ -8,7 +8,7 @@
 }
 
 :host {
-  display: block;
+  display: grid;
   box-sizing: border-box;
   font-family:
     system-ui,
@@ -18,12 +18,10 @@
 
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
-  opacity: 1;
   width: var(--min-width);
   margin-inline: auto;
   height: 100%;
   position: relative;
-  /* overflow: hidden; */
 }
 
 r-pair-dqm {
@@ -35,39 +33,38 @@ r-pair-dqm {
   width: var(--min-width);
 }
 
-ranki-faces-pair {
-  position: absolute;
+r-pair {
+  grid-area: 1 /1;
   display: grid;
   overflow: visible;
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
   height: 100%;
-  opacity: 1;
   width: var(--min-width);
-}
 
-ranki-faces-pair > .container {
-  display: grid;
-  overflow: visible;
-  padding-block: 2em;
-  grid-template-columns: 1fr;
-  align-content: center;
+  & > .container {
+    display: grid;
+    overflow: visible;
+    padding-block: 2em;
+    grid-template-columns: 1fr;
+    align-content: center;
 
-  /* ANKI selects the child only if it's the only child */
-  & > ranki-faces-face:first-child:last-child {
-    /* REMOVE */
-    /* text-align: center; */
-  }
+    /* ANKI selects the child only if it's the only child */
+    & > ranki-faces-face:first-child:last-child {
+      /* REMOVE */
+      /* text-align: center; */
+    }
 
-  & > ranki-faces-face:first-child:not(:last-child) {
-    /* margin-top: var(--face-clearance);
+    & > ranki-faces-face:first-child:not(:last-child) {
+      /* margin-top: var(--face-clearance);
     display: flex;
     align-items: end; */
-  }
+    }
 
-  & > ranki-faces-face:last-child:not(:first-child) {
-    /* margin-bottom: var(--face-clearance); */
-    /* display: flex;
+    & > ranki-faces-face:last-child:not(:first-child) {
+      /* margin-bottom: var(--face-clearance); */
+      /* display: flex;
     align-items: end; */
+    }
   }
 }

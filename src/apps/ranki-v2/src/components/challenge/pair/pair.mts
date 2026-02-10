@@ -13,6 +13,8 @@ import type { RankiChallengeState } from "_config/config.types.mjs";
 import { assertNotUndefined } from "_error/assertions.mjs";
 import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 import { Subtree, type WrappedState } from "_components/subtree/subtree.mjs";
+import { Wc } from "_components/wc/wc.mjs";
+import { WcSub } from "_components/wc/sub.mjs";
 
 export type PairChildren = RPairDqm | RPairRule;
 type RenderedFaces = Record<string, RPairDqm>;
@@ -23,20 +25,22 @@ interface InternalState extends RankiChallengeState {
 
 type ChildState = RPairDqm | RankiRuleVariants;
 
-export class RankiFacesPair extends RankiFacesWc<
-  RankiChallengeState,
-  InternalState
-> {
-  public static name = "ranki-faces-pair" as const;
-  protected animations: AnimationTypes = {
-    enter: RankiAnimation_OLD.slideUpFadeIn(this),
-    exit: RankiAnimation_OLD.slideUpFadeOut(this),
-  };
-  private subtree = new Subtree<PairChildren, ChildState>({
+export class RPair extends Wc<RankiChallengeState, InternalState> {
+  public static readonly tag = "r-pair" as const;
+  // protected animations: AnimationTypes = {
+  //   enter: RankiAnimation_OLD.slideUpFadeIn(this),
+  //   exit: RankiAnimation_OLD.slideUpFadeOut(this),
+  // };
+  // @ts-expect-error
+  private subtree = new WcSub<PairChildren, ChildState>({
     create: this.createSubtreeChild.bind(this),
     remove: this.removeSubtreeChild.bind(this),
   });
   private timeout: number | undefined;
+
+  setProps(s: RankiChallengeState) {
+    this.state.set(s);
+  }
 
   canReconcile({
     state,
@@ -48,46 +52,85 @@ export class RankiFacesPair extends RankiFacesWc<
     if (!face) {
       return "remove";
     }
-
     // TODO this is temporary. it assumes the key is the source
     if (this.subtree.getFirst()!.getKey() === face.dqm) {
       return "mutate";
-    } else {
-      return "remove";
     }
+    return "remove";
   }
 
-  protected override buildInternalState(
-    props: RankiChallengeState,
-  ): InternalState {
-    const rendered = this.renderFaces(props);
-    return { ...props, rendered };
+  initialize(): void {
+    this.state.setTransformer((props) => {
+      const rendered = this.renderFaces(props);
+      return { ...props, rendered };
+    });
+
+    this.elements.create("container", {
+      tag: "div",
+      classes: ["container"],
+    });
+
+    this.animation
+      .pushPreset("enter", () => ({
+        keyframes: [
+          {
+            opacity: 0,
+            transform: "translateY(50px)",
+          },
+          {
+            opacity: 1,
+            transform: "translateY(0)",
+          },
+        ],
+        options: {
+          duration: 4e2,
+          fill: "both",
+        },
+      }))
+      .pushPreset("exit", () => ({
+        keyframes: [
+          {
+            opacity: 1,
+            transform: "translateY(0)",
+          },
+          {
+            opacity: 0,
+            transform: "translateY(-50px)",
+          },
+        ],
+        options: {
+          duration: 4e2,
+          fill: "both",
+        },
+      }));
   }
 
-  getContainer(): HTMLDivElement {
-    return this.querySelector("ranki-faces-pair > .container")!;
-  }
+  // protected override buildInternalState(
+  //   props: RankiChallengeState,
+  // ): InternalState {
+  // }
+
+  // getContainer(): HTMLDivElement {
+  //   return this.querySelector("ranki-faces-pair > .container")!;
+  // }
 
   isActive(): boolean {
     return !!this.subtree.getSize();
   }
 
-  build() {
-    let div = this.querySelector(
-      "ranki-faces-pair > .container",
-    ) as HTMLDivElement;
-    if (div) {
-      return div;
-    }
-    div = document.createElement("div") as HTMLDivElement;
-    div.classList.add("container");
-    this.appendChild(div);
-  }
+  // build() {
+  //   let div = this.querySelector(
+  //     "ranki-faces-pair > .container",
+  //   ) as HTMLDivElement;
+  //   if (div) {
+  //     return div;
+  //   }
+  //   div = document.createElement("div") as HTMLDivElement;
+  //   div.classList.add("container");
+  //   this.appendChild(div);
+  // }
 
-  render() {
-    this.build();
-
-    const curr = this.getCurr();
+  protected onStateChange(curr: InternalState): void {
     const l: any[] = [];
     curr.order.forEach((type) => {
       switch (type) {
@@ -101,8 +144,27 @@ export class RankiFacesPair extends RankiFacesWc<
 
     const firstNew = this.subtree.reconcile(l);
     this.delayedScroll(firstNew, "smooth");
-    return this;
   }
+
+  // render() {
+  //   this.build();
+
+  //   const curr = this.getCurr();
+  //   const l: any[] = [];
+  //   curr.order.forEach((type) => {
+  //     switch (type) {
+  //       case "ranki:rule":
+  //         l.push({ type, state: "horizontal" });
+  //         break;
+  //       default:
+  //         l.push({ type, state: curr.rendered[type] });
+  //     }
+  //   });
+
+  //   const firstNew = this.subtree.reconcile(l);
+  //   this.delayedScroll(firstNew, "smooth");
+  //   return this;
+  // }
 
   private delayedScroll(
     firstNew: PairChildren | undefined,
@@ -168,7 +230,7 @@ export class RankiFacesPair extends RankiFacesWc<
   }
 
   private createSubtreeChild(s: WrappedState<ChildState>) {
-    const container = this.getContainer();
+    const container = this.elements.get<HTMLDivElement>("container")!;
     let elem: PairChildren;
     switch (s.type) {
       case "ranki:rule":
