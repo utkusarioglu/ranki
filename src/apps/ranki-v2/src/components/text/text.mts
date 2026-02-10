@@ -37,10 +37,11 @@ export class RText extends Wc<RTextProps> {
       const el = RTextSpan.create.instance(null, this);
       this.elements.push(i.toString(), el);
     }
-    this.state.setTrigger((p, c) => p?.text !== c.text);
+    this.state.setTrigger((p, c) => p?.text !== c.text || p?.color !== c.color);
     this.css.set({
       display: "inline-grid",
       "white-space": "nowrap",
+      width: 0,
     });
     this.animation
       .pushPreset("enter", () => ({

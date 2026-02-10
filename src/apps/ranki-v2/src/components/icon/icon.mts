@@ -37,36 +37,25 @@ export class RIcon extends Wc<T> {
   }
 
   initialize(): void {
-    this.state.setTrigger((p, c) => p?.icon !== c.icon);
+    this.state.setTrigger((p, c) => p?.icon !== c.icon || p.color !== c.color);
     this.css.set({
       display: "block",
+      width: 0,
       height: "100%",
     });
     this.animation
       .pushPreset("enter", () => ({
-        keyframes: [
-          {
-            opacity: 0,
-          },
-          {
-            opacity: 1,
-          },
-        ],
+        keyframes: [{ opacity: 0 }, { opacity: 1 }],
         options: {
           duration: DUR,
+          fill: "both",
         },
       }))
       .pushPreset("exit", () => ({
-        keyframes: [
-          {
-            opacity: 1,
-          },
-          {
-            opacity: 0,
-          },
-        ],
+        keyframes: [{ opacity: 1 }, { opacity: 0 }],
         options: {
           duration: DUR,
+          fill: "both",
         },
       }));
   }
