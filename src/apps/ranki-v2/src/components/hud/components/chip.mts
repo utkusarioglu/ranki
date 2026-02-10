@@ -70,6 +70,7 @@ export class WcChip<
       .pushPreset("enter", () => {
         const curr = this.state.curr();
         return {
+          raf: 2,
           keyframes: [
             {
               opacity: 0,

@@ -44,7 +44,6 @@ export class Wc<Props, InternalState = Props> extends HTMLElement {
     this.animation.runPreset("enter");
   }
 
-  // TODO
   isActive(): boolean {
     assertNever({ why: "This method should be overridden" });
   }

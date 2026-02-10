@@ -31,14 +31,24 @@ export function createDesign(config: RankiDesignState) {
     document.body.classList.toggle("width-wide", e.matches);
   });
 
+  const hasTheme = root.classList.contains(SCHEME_PREFIX);
+
+  console.log("t", hasTheme);
+
   const n = config.palette;
-  root.className = [
-    ...root.className
-      .split(" ")
-      .filter((n) => !REMOVED.some((r) => n.startsWith(r))),
-    `${SCHEME_PREFIX}-${config.scheme}`,
-    `${THEME_PREFIX}-${config.theme}`,
-  ].join(" ");
+  // TODO this is ugly and error prone and it's just a heuristic.
+  // This prevents new components from starting with the target color scheme already applied.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      root.className = [
+        ...root.className
+          .split(" ")
+          .filter((n) => !REMOVED.some((r) => n.startsWith(r))),
+        `${SCHEME_PREFIX}-${config.scheme}`,
+        `${THEME_PREFIX}-${config.theme}`,
+      ].join(" ");
+    });
+  });
 
   if (n.startsWith(GENERATED_PREFIX)) {
     if (attach.querySelector("#" + n)) {
