@@ -1,9 +1,9 @@
 :host {
-  --color-hr: var(--face-rule-background-color);
+  --color-rule: var(--face-rule-background-color);
   --height-hr: var(--face-rule-height);
   --backdrop-filter: var(--face-rule-backdrop-filter);
-  --wrapper-height-hr: 70px;
   --transition-duration: var(--face-rule-transition-duration, 0);
+  --wrapper-height-hr: 70px;
   --transition-property:
     background, color, padding, border, opacity, height, width;
 }
@@ -13,31 +13,32 @@ r-pair-rule {
   transition-property: var(--transition-property);
   transition-duration: var(--transition-duration);
   display: grid;
-  box-sizing: border-box;
-  width: 100%;
-  height: var(--wrapper-height-hr);
   align-items: center;
-  padding-inline: 4em;
 
-  & > .horizontal {
-    height: var(--height-hr);
+  & > * {
+    display: block;
     transition-property: var(--transition-property);
     transition-duration: var(--transition-duration);
-    display: block;
-    background-color: var(--color-hr);
+    background-color: var(--color-rule);
     border-radius: calc(var(--height-hr) / 2);
     backdrop-filter: var(--backdrop-filter);
   }
 
-  & > .vertical {
-    transition-property: var(--transition-property);
-    transition-duration: var(--transition-duration);
-    display: block;
-    background-color: var(--color-vr);
-    height: 100%;
-    border-radius: calc(var(--vr-width) / 2);
-    backdrop-filter: var(--backdrop-filter);
+  &.horizontal {
+    box-sizing: border-box;
+    height: var(--wrapper-height-hr);
+    padding-inline: 4em;
+    width: 100%;
+    & > div {
+      height: var(--height-hr);
+    }
+  }
+
+  &.vertical {
+    box-sizing: border-box;
+
+    & > div {
+      height: 100%;
+    }
   }
 }
-
-/* TODO this is faulty along with the container type. */

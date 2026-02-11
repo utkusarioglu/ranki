@@ -24,7 +24,6 @@ export class RPairRule extends RPairItem<RankiRuleVariants> {
   }
 
   protected onStateChange(curr: RankiRuleVariants): void {
-    const hr = this.elements.get<HTMLDivElement>("hr")!;
-    hr.className = curr;
+    this.className = curr;
   }
 }
