@@ -1,6 +1,5 @@
 import type { WrappedState } from "_components/wc/sub.mjs";
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
-import { Timing } from "_utils/timing.mjs";
 
 export interface RTextProps {
   text: string;
