@@ -1,5 +1,4 @@
 import { RIcon } from "_components/icon/icon.mjs";
-import type { ReconciliationInfo } from "_components/subtree/subtree.mjs";
 import { RText } from "_components/text/text.mjs";
 import { WcSub, type ElemMin, type WrappedState } from "_components/wc/sub.mjs";
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
@@ -60,7 +59,7 @@ export class WcChip<
 
   protected computePadding(
     // @ts-expect-error
-    curr: T,
+    curr: G,
   ) {
     return { paddingLeft: "16px", paddingRight: "16px" };
   }
@@ -78,10 +77,7 @@ export class WcChip<
             },
             {
               opacity: 1,
-              ...this.computePadding(
-                // @ts-expect-error
-                curr,
-              ),
+              ...this.computePadding(curr),
             },
           ],
           options: {
@@ -109,54 +105,6 @@ export class WcChip<
         };
       });
   }
-
-  // protected setWidthListener() {
-  //   let items: number[];
-  //   let count = 0;
-  //   this.animation.registerEventCallback("width", ({ keyframe }) => {
-  //     if (!count) {
-  //       count = this.subtree.getAll().length;
-  //       items = [];
-  //     }
-  //     const curr = this.state.curr();
-  //     items.push(this.css.computeTotalWidth(keyframe));
-  //     if (items.length === count) {
-  //       const endWidth = Array.from(items.values()).reduce((a, c) => a + c, 0);
-  //       const c = getComputedStyle(this);
-
-  //       // const currWidth = parseFloat(c.width!.toString());
-  //       this.animation.animate("width", {
-  //         keyframes: [
-  //           {
-  //             width: c.width,
-  //             paddingLeft: c.paddingLeft,
-  //             paddingRight: c.paddingRight,
-  //             // marginLeft: c.marginLeft,
-  //             // marginRight: c.marginRight,
-  //             borderLeftWidth: c.borderLeftWidth,
-  //             borderRightWidth: c.borderRightWidth,
-  //           },
-  //           {
-  //             width: endWidth + "px",
-  //             // marginLeft: c.marginLeft,
-  //             // marginRight: c.marginRight,
-  //             borderLeftWidth: c.borderLeftWidth,
-  //             borderRightWidth: c.borderRightWidth,
-  //             ...this.computePadding(
-  //               // @ts-expect-error
-  //               curr,
-  //             ),
-  //           },
-  //         ],
-  //         options: {
-  //           duration: DUR,
-  //           fill: "both",
-  //         },
-  //       });
-  //       count = 0;
-  //     }
-  //   });
-  // }
 
   protected setWidthListener() {
     let items: number[];
@@ -190,10 +138,7 @@ export class WcChip<
                 // marginRight: c.marginRight,
                 borderLeftWidth: c.borderLeftWidth,
                 borderRightWidth: c.borderRightWidth,
-                ...this.computePadding(
-                  // @ts-expect-error
-                  curr,
-                ),
+                ...this.computePadding(curr),
               },
             ],
             options: {

@@ -44,7 +44,7 @@ export class WcCueChip extends WcChip<T, T, ChildrenTypes, ChildrenProps> {
   }
 
   protected async mutateBackground(curr: T) {
-    await Timing.waitLayout();
+    // await Timing.waitLayout();
     if (curr.background) {
       this.css.set({
         background: `rgb(var(--scheme-${curr.background.color}))`,

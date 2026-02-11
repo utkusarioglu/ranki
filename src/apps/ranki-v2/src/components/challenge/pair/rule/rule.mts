@@ -10,11 +10,6 @@ export type RankiRuleVariants = "horizontal" | "vertical";
 export class RPairRule extends RPairItem<RankiRuleVariants> {
   public static readonly tag = "r-pair-rule" as const;
 
-  // DECIDE a surface area without this should be possible.
-  // getKey() {
-  //   return `ranki:rule`;
-  // }
-
   canReconcile(s: WrappedState<RankiRuleVariants>): ReconciliationAction {
     const type = s.type === "ranki:rule";
     const variant = this.state.curr() === s.state;

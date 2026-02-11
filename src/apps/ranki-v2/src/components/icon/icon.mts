@@ -1,7 +1,7 @@
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 import "@phosphor-icons/webcomponents";
-import type { WrappedState } from "_components/subtree/subtree.mjs";
 import { Timing } from "_utils/timing.mjs";
+import type { WrappedState } from "_components/wc/sub.mjs";
 
 export interface RankiIconState {
   icon: string;
@@ -24,8 +24,6 @@ export class RIcon extends Wc<T> {
   canReconcile(n: WrappedState<RankiIconState>): ReconciliationAction {
     if (n.type !== "icon") {
       return "remove";
-    } else if (!n.state.icon || n.state.icon === "none") {
-      return "mutate";
     } else {
       return "mutate";
     }
@@ -38,7 +36,7 @@ export class RIcon extends Wc<T> {
   }
 
   initialize(): void {
-    this.state.setTrigger((p, c) => p?.icon !== c.icon || p.color !== c.color);
+    this.state.setTrigger((p, c) => p?.icon !== c.icon || p?.color !== c.color);
     this.css.set({
       display: "block",
       width: 0,
@@ -143,7 +141,7 @@ export class RIconBox extends Wc<T> {
     icon.setAttribute("weight", "fill");
     this.appendChild(icon);
 
-    await Timing.waitLayout();
+    // await Timing.waitLayout();
     if (curr.color) {
       icon.setAttribute("color", `rgb(var(--scheme-${curr.color}))`);
     } else {

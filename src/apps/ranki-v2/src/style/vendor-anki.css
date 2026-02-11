@@ -13,7 +13,6 @@ html {
 }
 
 .scroll-hidden {
-  overflow: hidden !important;
   &::-webkit-scrollbar {
     width: 0 !important;
   }
@@ -51,7 +50,7 @@ body {
   transition-duration: var(--body-transition-duration, 0) !important;
   transition-property: background, color !important;
 
-  /* Allows centering questions */
+  /* Allows vertically centering questions */
   min-height: 100% !important;
   height: max-content !important;
 
@@ -62,13 +61,3 @@ body {
   flex-direction: column;
   justify-content: center;
 }
-
-/* 
-REMOVE
-This takes the first position in the grid and messes up the order.
-It is present in the old ankidroid view and houses #qa.
-*/
-/* #content { */
-/* display: none !important; */
-/* position: absolute !important; */
-/* } */

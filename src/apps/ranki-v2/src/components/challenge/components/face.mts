@@ -28,10 +28,6 @@ export class RPairItem<T> extends Wc<T> {
     this.animation
       .pushPreset("show", async () => {
         await Timing.waitLayout();
-        // TODO this should be a property callback
-        // setTimeout(() => {
-        //   this.css.remove(["maxHeight"]);
-        // }, DUR);
         return {
           keyframes: [
             {

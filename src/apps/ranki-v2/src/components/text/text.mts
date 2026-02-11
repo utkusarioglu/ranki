@@ -1,4 +1,4 @@
-import type { WrappedState } from "_components/subtree/subtree.mjs";
+import type { WrappedState } from "_components/wc/sub.mjs";
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 import { Timing } from "_utils/timing.mjs";
 
@@ -22,8 +22,6 @@ export class RText extends Wc<RTextProps> {
   canReconcile(s: WrappedState<RTextProps>): ReconciliationAction {
     if (s.type !== "text") {
       return "remove";
-    } else if (!s.state.text || s.state.text === "none") {
-      return "mutate";
     } else {
       return "mutate";
     }
@@ -140,7 +138,7 @@ export class RTextSpan extends Wc<RTextProps> {
   async onStateChange(curr: RTextProps) {
     this.innerText = curr.text;
 
-    await Timing.waitLayout();
+    // await Timing.waitLayout();
     if (curr.color) {
       this.css.set({ color: `rgb(var(--scheme-${curr.color}))` });
     } else {

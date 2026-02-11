@@ -15,7 +15,6 @@ r-pair-rule {
   display: grid;
   box-sizing: border-box;
   width: 100%;
-  /* max-height: var(--wrapper-height-hr); */
   height: var(--wrapper-height-hr);
   align-items: center;
   padding-inline: 4em;

@@ -9,6 +9,7 @@ import { assertNotUndefined } from "_error/assertions.mjs";
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 import { WcSub, type WrappedState } from "_components/wc/sub.mjs";
 import { Scroll } from "_utils/scroll.mjs";
+import { Timing } from "_utils/timing.mjs";
 
 export type PairChildren = RPairDqm | RPairRule;
 type RenderedFaces = Record<string, RPairDqm>;
@@ -62,13 +63,9 @@ export class RPair extends Wc<RankiChallengeState, InternalState> {
     });
 
     this.animation
-      .pushPreset("enter", () => {
-        const SCROLL_HIDDEN = "scroll-hidden";
-        const els = [document.body, document.querySelector("html")!];
-        els.forEach((e) => e.classList.add(SCROLL_HIDDEN));
-        setTimeout(() => {
-          els.forEach((e) => e.classList.remove(SCROLL_HIDDEN));
-        }, DUR + 0.1);
+      .pushPreset("enter", async () => {
+        Scroll.temporaryHide(DUR + 1e2);
+        await Timing.waitLayout();
         return {
           keyframes: [
             {

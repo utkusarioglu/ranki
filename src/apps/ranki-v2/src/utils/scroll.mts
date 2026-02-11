@@ -1,6 +1,18 @@
 export class Scroll {
   private static timeout: number;
 
+  static async temporaryHide(duration: number) {
+    return new Promise<void>((resolve) => {
+      const SCROLL_HIDDEN = "scroll-hidden";
+      const els = [document.body, document.querySelector("html")!];
+      els.forEach((e) => e.classList.add(SCROLL_HIDDEN));
+      setTimeout(() => {
+        els.forEach((e) => e.classList.remove(SCROLL_HIDDEN));
+        resolve();
+      }, duration);
+    });
+  }
+
   static delayed(
     element: HTMLElement | undefined,
     behavior: ScrollBehavior,
