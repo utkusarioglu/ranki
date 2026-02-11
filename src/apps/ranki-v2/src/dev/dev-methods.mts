@@ -95,15 +95,15 @@ export class RankiDevMethods {
 
   static play(
     p: RankiPlayFields,
-    opts?: { limit?: number; duration?: number; delay?: number },
+    opts?: { count?: number; duration?: number; delay?: number },
   ) {
     window.addEventListener("ranki-fault", (e) => {
       faultFound = true;
       console.log(e);
     });
     let faultFound = false;
-    let count = 0;
-    const limit = opts?.limit || 4;
+    let index = 0;
+    const count = opts?.count || 4;
     const duration = opts?.duration || 2e3;
     const delay = opts?.delay || 0;
     let interval: number;
@@ -119,13 +119,13 @@ export class RankiDevMethods {
         return;
       }
       try {
-        console.log("alternate:", count);
+        console.log("index:", index);
         const props = Object.fromEntries(
-          Object.entries(p).map(([k, v]) => [k, v[count % v.length]]),
+          Object.entries(p).map(([k, v]) => [k, v[index % v.length]]),
         ) as RankiSetFunc;
         this.set(props);
-        count++;
-        if (count > limit) {
+        index++;
+        if (index > count) {
           clearInterval(interval);
           console.log("alternate: done");
         }

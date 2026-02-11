@@ -13,7 +13,9 @@ export class RPairRule extends RPairItem<RankiRuleVariants> {
   canReconcile(s: WrappedState<RankiRuleVariants>): ReconciliationAction {
     const type = s.type === "ranki:rule";
     const variant = this.state.curr() === s.state;
-    return type && variant ? "advance" : "remove";
+    const can = type && variant ? "advance" : "remove";
+    console.log("can", can);
+    return can;
   }
 
   initialize(): void {

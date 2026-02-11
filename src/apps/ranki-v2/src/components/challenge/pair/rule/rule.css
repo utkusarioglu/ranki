@@ -3,7 +3,7 @@
   --height-hr: var(--face-rule-height);
   --backdrop-filter: var(--face-rule-backdrop-filter);
   --wrapper-height-hr: 70px;
-  --transition-duration: var(--face-hr-transition-duration, 0);
+  --transition-duration: var(--face-rule-transition-duration, 0);
   --transition-property:
     background, color, padding, border, opacity, height, width;
 }

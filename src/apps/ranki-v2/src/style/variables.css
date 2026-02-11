@@ -10,8 +10,9 @@
 
   --content-width: min(var(--face-width-min), 100vw);
   --hud-height: 40px;
-  /* --color-divider-bg: var(--color-surface-1-hex); */
+  /* TODO not in effect */
   --ranki-animation-fade-duration: 0s;
+  /* TODO not in effect */
   --ranki-animation-indicator-duration: 2s;
 
   /* INDICATORS */
@@ -22,6 +23,7 @@
   --body-color: rgb(var(--scheme-text-0));
   --body-transition-duration: var(--ranki-animation-fade-duration);
   --face-transition-duration: var(--ranki-animation-fade-duration);
+  --face-rule-transition-duration: var(-ranki-animation-fade-duration);
 
   /* DQM */
   --dqm-isolated-block-border-radius: 0;

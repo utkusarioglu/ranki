@@ -5,8 +5,8 @@ export function onReady(fn: any) {
   } else {
     fn();
 
-    const mut = new MutationObserver(fn);
-    mut.observe(document.querySelector("#qa")!, {
+    const observer = new MutationObserver(fn);
+    observer.observe(document.querySelector("#qa")!, {
       childList: true,
       subtree: true,
       attributes: true,
@@ -16,12 +16,10 @@ export function onReady(fn: any) {
 
 export function shouldRender() {
   const qa = document.querySelector("#qa")!;
-  let r = qa.querySelector("div.rendered");
-  if (r) {
-    return false;
-  }
-  r = document.createElement("div");
-  r.className = "rendered";
-  qa.appendChild(r);
+  let rendered = qa.querySelector("div.rendered");
+  if (rendered) return false;
+  rendered = document.createElement("div");
+  rendered.className = "rendered";
+  qa.appendChild(rendered);
   return true;
 }

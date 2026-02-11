@@ -13,10 +13,6 @@ const LIST = [
     id: "schemes",
     css: schemes,
   },
-  // {
-  //   id: "palettes",
-  //   css: palettes,
-  // },
   {
     id: "variables",
     css: variables,
