@@ -165,6 +165,7 @@ export class Cps extends CommonTransports implements ICps {
       "baseV2RootBlock",
       prepareContext(this.getCpx().getRootAst()),
     );
+    console.log("--", this.isOnFailMode(), prefixed, parser, parsed);
     return parsed.root;
   }
 

@@ -41,8 +41,8 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
             config: {
               "grammar:FrameV2": {
                 tokens: {
-                  opener: "[[",
-                  closer: "]]",
+                  opener: ":[",
+                  closer: "]:",
                 },
               },
             },

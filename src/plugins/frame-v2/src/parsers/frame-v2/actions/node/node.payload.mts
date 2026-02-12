@@ -24,10 +24,19 @@ export const nodePayload: IAstNodeActionDict = {
       );
   },
 
+  // TODO this is where parsing should happen
   frameV2PayloadSection(frameV2PayloadSectionItem) {
-    return grabAst(this)
-      .newAst(this)
-      .pushNodes(["node", frameV2PayloadSectionItem]);
+    return (
+      grabAst(this)
+        .newAst(this)
+        .setTransformClass("FRAME_V2_PAYLOAD_PLAIN")
+        .pushIgnoredNodes(frameV2PayloadSectionItem)
+
+        // FIX it's retrieving the source from here while it needs to retrieve
+        // the source of the entire frame enclosure
+        .parse(frameV2PayloadSectionItem.sourceString)
+    );
+    // .pushNodes(["node", frameV2PayloadSectionItem]);
   },
 
   frameV2PayloadSectionItem(frameV2OrFrameV2PayloadPlain, sBaseV2Whitespace) {
@@ -38,11 +47,16 @@ export const nodePayload: IAstNodeActionDict = {
   },
 
   frameV2PayloadPlain(all) {
-    return grabAst(this)
-      .newAst(this)
-      .setTransformClass("FRAME_V2_PAYLOAD_PLAIN")
-      .pushIgnoredNodes(all)
-      .parse(all.sourceString);
+    return (
+      grabAst(this)
+        .newAst(this)
+        // .setTransformClass("FRAME_V2_PAYLOAD_PLAIN")
+        .pushIgnoredNodes(all)
+
+      // FIX it's retrieving the source from here while it needs to retrieve
+      // the source of the entire frame enclosure
+      // .parse(all.sourceString)
+    );
     // return node;
   },
 

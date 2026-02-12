@@ -139,12 +139,16 @@ export class ParamsLib extends CommonTransports implements IParams {
 
     const entries =
       this.getChannel(configChannelToken).getMutationEntries(false);
-    entries.forEach(({ type, chainString, value }) => {
-      const key = `Config:${type}:${chainString}`;
+    entries.forEach(({ type, chainString, value }, i) => {
+      const key = `Config:${type}:${chainString}:${i}`;
       config.pushConfig(key, value);
     });
 
-    return config.mergeTo(dqmTarget).getConfig(dqmTarget);
+    const merged = config.mergeTo(dqmTarget).getConfig<DqmConfig>(dqmTarget);
+    if (config.getOrder().length > 2) {
+      console.log("dqm", config.getOrder(), config, merged);
+    }
+    return merged;
   }
 
   // getInitialDqmConfig(): DqmConfig {
@@ -167,9 +171,10 @@ export class ParamsLib extends CommonTransports implements IParams {
         this.componentConfig.pushConfig(key, value);
       });
     }
-    return this.componentConfig
+    const merged = this.componentConfig
       .mergeTo(componentTarget)
-      .getConfig(componentTarget);
+      .getConfig<T>(componentTarget);
+    return merged;
   }
 
   private getConfigChannelToken(): string {

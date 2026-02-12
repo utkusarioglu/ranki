@@ -30,6 +30,7 @@ export class ParserLib implements ILibParser {
   }
 
   get({ internalConfig }: ILibGrammarCriteria): IParser {
+    console.log("get", internalConfig);
     const hash = Hash.internalConfig(internalConfig);
     const cached = this.parsers.get(hash);
     if (cached) {
