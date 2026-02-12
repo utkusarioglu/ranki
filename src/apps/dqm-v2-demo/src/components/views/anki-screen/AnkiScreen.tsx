@@ -1,4 +1,4 @@
-import { type FC, type ReactNode } from "react";
+import { useEffect, type FC, type ReactNode } from "react";
 import style from "./AnkiIFrame.module.css";
 import { getSizing, useRankiFiles } from "./utils";
 import { AnkiIFrame, type AnkiDesktopIFrameProps } from "./anki-iframe";
@@ -67,6 +67,8 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
     );
   }
 
+  // useEffect(() => {}, []);
+
   const sizing = getSizing(PADDING, aspect, scale, reservedWidth, 0);
 
   return (
@@ -82,6 +84,7 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
       >
         {Top}
         <AnkiIFrame
+          // alterFn={() => {}}
           src={src}
           files={files}
           pref={pref}

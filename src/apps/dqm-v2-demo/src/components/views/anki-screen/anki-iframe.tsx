@@ -102,7 +102,37 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
         if (base) {
           base.href = window.location.origin;
         }
-        doc.body.appendChild(replaced.fragment);
+        const qa = doc.body.querySelector("#qa");
+        assertExists(qa, { why: "#qa required for anki webview" });
+        qa.replaceChildren(replaced.fragment);
+
+        const mapping: Record<string, string | number> = {
+          a: "script.r2-input.a",
+          b: "script.r2-input.b",
+          face: "script.r2-data.face",
+          deck: "script.r2-data.deck",
+          tags: "script.r2-data.tags",
+          type: "script.r2-data.type",
+          flag: "script.r2-data.flag",
+          card: "script.r2-data.card",
+        };
+        window.addEventListener("ranki-command", (e) => {
+          const setField = (name: string, value: string | number) => {
+            const selector = mapping[name];
+            assertExists(selector, { why: "t" });
+            const f = qa.querySelector<HTMLScriptElement>(selector)!;
+            assertExists(f, { why: "Cannot find element" });
+            f.innerText = value.toString();
+          };
+
+          const fields = (e as CustomEvent).detail;
+          Object.entries(fields).forEach(([n, v]) => setField(n, v as string));
+          console.log("e", fields);
+
+          const ren = qa.querySelector("div.rendered");
+          assertExists(ren, { why: "Cannot find element" });
+          ren.parentElement!.removeChild(ren);
+        });
 
         replaced.css.forEach((css) => {
           doc.body.appendChild(css);

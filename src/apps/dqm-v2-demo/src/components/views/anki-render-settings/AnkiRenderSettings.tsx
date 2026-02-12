@@ -5,7 +5,7 @@ import type {
   RankiFlag,
 } from "_stores/anki-dist/anki.store.types.mjs";
 import { Button, Input, Typography } from "antd";
-import type { FC } from "react";
+import { useState, type FC } from "react";
 import { getAspect, getAspectText } from "./utils.mts";
 import style from "./AnkiRenderSettings.module.css";
 import { CheckOutlined } from "@ant-design/icons";
@@ -61,12 +61,33 @@ const FLAGS: Flag[] = [
 
 const FACES: RankiFace[] = ["Q", "N"];
 
+const emit = (event: string, value: string) =>
+  window.dispatchEvent(
+    new CustomEvent("ranki-command", { detail: { [event]: value } }),
+  );
+
+const INITIAL = {
+  face: FACES[0],
+  flag: FLAGS[0].flag,
+  type: "+r:AB:BA",
+  card: "AB",
+  deck: "Cat::Dog::Bunny::Bird::Tiger::Goat",
+  tags: "caution",
+};
+
 export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
   aspectRatios,
   scales,
   colorSchemes,
   store,
 }) => {
+  const [fields, setField] = useState(INITIAL);
+
+  const doChange = (name: keyof typeof INITIAL, value: string) => {
+    setField((s) => ({ ...s, [name]: value }));
+    emit(name, value);
+  };
+
   return (
     <div className={style.container}>
       <Typography>Orientation & Aspect</Typography>
@@ -107,8 +128,8 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
       {FACES.map((face) => (
         <Button
           key={face}
-          onClick={() => store.setFace(face)}
-          type={face === store.face ? "primary" : "default"}
+          onClick={() => doChange("face", face)}
+          type={face === fields.face ? "primary" : "default"}
         >
           {face}
         </Button>
@@ -116,10 +137,11 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
       <Typography>Flag</Typography>
       {FLAGS.map((flag) => (
         <Button
-          onClick={() => store.setFlag(flag.flag)}
+          // onClick={() => store.setFlag(flag.flag)}
+          onClick={() => doChange("flag", flag.flag)}
           style={{
             backgroundColor: flag.color,
-            color: flag.flag === store.flag ? "#FFF" : "transparent",
+            color: flag.flag === fields.flag ? "#FFF" : "transparent",
           }}
         >
           <CheckOutlined />
@@ -127,31 +149,35 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
       ))}
       <Typography>Type</Typography>
       <Input
-        value={store.cardType}
-        onChange={(e) => store.setCardType(e.target.value)}
+        value={fields.type}
+        // onChange={(e) => store.setCardType(e.target.value)}
+        onChange={(e) => doChange("type", e.target.value)}
       />
       <Typography>Card</Typography>
       <Input
-        value={store.card}
-        onChange={(e) => store.setCard(e.target.value)}
+        value={fields.card}
+        // onChange={(e) => store.setCard(e.target.value)}
+        onChange={(e) => doChange("card", e.target.value)}
       />
       <Typography>Deck</Typography>
       <Input
-        value={store.deck}
-        onChange={(e) => store.setDeck(e.target.value)}
+        value={fields.deck}
+        // onChange={(e) => store.setDeck(e.target.value)}
+        onChange={(e) => doChange("deck", e.target.value)}
       />
       <Typography>Tags</Typography>
       <Input
-        value={store.tags}
-        onChange={(e) => store.setTags(e.target.value)}
+        value={fields.tags}
+        onChange={(e) => doChange("tags", e.target.value)}
+        // onChange={(e) => store.setTags(e.target.value)}
       />
-      <Typography>Template Config</Typography>
+      {/* <Typography>Template Config</Typography>
       <Input.TextArea
         className={style.textarea}
         autoSize
         onChange={(e) => store.setTemplateConfig(e.target.value)}
         value={store.templateConfig}
-      />
+      /> */}
       <Typography>Card Config</Typography>
       <Input.TextArea
         className={style.textarea}
