@@ -2,7 +2,7 @@
   & .left {
     color: gray;
     font-family: monospace;
-    font-size: 13px;
+    font-size: var(--smaller-font-size);
   }
 
   & code {

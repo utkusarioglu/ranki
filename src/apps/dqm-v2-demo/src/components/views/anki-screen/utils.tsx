@@ -27,6 +27,7 @@ export function dqmOnLoad(
   assertExists(a, {
     why: "body element has to be available for dqm to render",
   });
+  // @ts-expect-error
   dqm.render(inputs, { [inputs[0].theater]: a }, pref);
 }
 

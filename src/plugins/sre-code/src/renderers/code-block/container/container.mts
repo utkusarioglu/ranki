@@ -6,21 +6,31 @@ import { NO_LANGUAGE, TAGS } from "../constants.mjs";
 export const container: R = {
   chain: [...TAGS, "container", "block"],
   kind: "parent",
-  sync: ({ ser, pref }) => {
-    const langName = ser.props.component?.default?.language.name || NO_LANGUAGE;
+  sync: ({ ser }) => {
+    const def = ser.props.component?.default;
+    const rawName = def.language.name;
+    const displayNames = def.language.displayNames;
+    let displayName = NO_LANGUAGE;
+    if (rawName) {
+      displayName = rawName;
+    }
+    if (displayNames[rawName]) {
+      displayName = displayNames[rawName];
+    }
+
     const block = AnkiUi.titledBlock([
       {
         type: "programming-language",
-        text: langName,
+        text: displayName,
       },
-      {
-        type: "file-path",
-        text: "c:/cat/dog.file",
-      },
-      {
-        type: "ha",
-        text: pref.scheme,
-      },
+      // {
+      //   type: "file-path",
+      //   text: "c:/cat/dog.file",
+      // },
+      // {
+      //   type: "ha",
+      //   text: pref.scheme,
+      // },
     ]);
 
     return {

@@ -1,4 +1,4 @@
-import { useEffect, type FC, type ReactNode } from "react";
+import { type FC, type ReactNode } from "react";
 import style from "./AnkiIFrame.module.css";
 import { getSizing, useRankiFiles } from "./utils";
 import { AnkiIFrame, type AnkiDesktopIFrameProps } from "./anki-iframe";

@@ -6,6 +6,7 @@
     --dqm-isolated-block-transition-duration
   );
   --orange: var(--dqm-orange);
+  --smaller-font-size: var(--dqm-smaller-font-size);
 }
 
 :host {

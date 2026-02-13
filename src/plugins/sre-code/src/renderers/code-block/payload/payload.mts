@@ -2,12 +2,8 @@ import type { IDqmRenderPluginRenderer as R } from "@dqm/package-dqm-api-v2";
 import { AnkiUi } from "@ranki/package-anki-ui";
 import { NO_LANGUAGE, TAGS } from "../constants.mjs";
 import css from "./payload.css?raw";
-import Prism from "prismjs";
+import Prism from "./prism/prism.mjs";
 import prismCss from "./prism/prism-atom-dark.css?raw";
-import "prismjs/components/prism-python.js";
-import "prismjs/components/prism-javascript.js";
-import "prismjs/components/prism-typescript.js";
-import "prismjs/components/prism-bash.js";
 
 export const payload: R = {
   chain: [...TAGS, "payload", "block"],
@@ -25,7 +21,8 @@ export const payload: R = {
     code.appendChild(span);
     const left = h.subtree!.left();
 
-    const language = ser.props.component?.default?.language.name || NO_LANGUAGE;
+    const def = ser.props.component?.default;
+    const rawName = def.language.name;
     const raw = ser.source.replace(/^[\r\n]+|[\r\n]+$/g, "");
 
     left.innerHTML = Array(raw.split("\n").length)
@@ -34,9 +31,9 @@ export const payload: R = {
       .join("<br>");
 
     const highlighted =
-      language === NO_LANGUAGE
+      rawName === NO_LANGUAGE
         ? raw
-        : Prism.highlight(raw, Prism.languages[language], language);
+        : Prism.highlight(raw, Prism.languages[rawName], rawName);
     span.innerHTML = highlighted;
     return {
       element,

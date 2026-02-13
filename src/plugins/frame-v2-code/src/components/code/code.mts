@@ -9,6 +9,7 @@ interface ComponentType extends IComponentCustomizationConfig {
   default: {
     language: {
       name: string;
+      displayNames: Record<string, string>;
     };
     prettier: {
       auto_format: boolean;
@@ -58,6 +59,10 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
         default: {
           language: {
             name: "</>",
+            displayNames: {
+              yaml: "Yaml",
+              yml: "Yaml",
+            },
           },
           prettier: {
             auto_format: true,

@@ -4,6 +4,8 @@
     "outDir": "lib",
     "rootDir": "src",
     "declarationDir": "types",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "paths": {
       "@dqm/package-dqm-api-v2": ["../../packages/dqm-api-v2/*"],
       "@dqm/package-plugin-utils": ["../../packages/plugin-utils/*"],
