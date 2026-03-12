@@ -44,7 +44,6 @@ export function parseDqm(
 ): ParseResult {
   try {
     const dqm = new Dqm(config, plugins);
-    console.log("plugin examples", dqm.getPluginExamples());
     const data = dqm.parse(input);
 
     return {

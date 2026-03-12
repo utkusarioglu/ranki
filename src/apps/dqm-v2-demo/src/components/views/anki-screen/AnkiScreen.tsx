@@ -10,6 +10,13 @@ export type CardElements = {
   css: HTMLStyleElement[];
 };
 
+export type RankiElements = {
+  fragment: DocumentFragment;
+  html: string;
+  jss: HTMLScriptElement[];
+  css: HTMLStyleElement[];
+};
+
 export type RankiFiles = {
   epoch: number;
   html: Record<string, string>;
@@ -30,6 +37,7 @@ interface AnkiScreenProps extends Omit<AnkiDesktopIFrameProps, "files"> {
 const PADDING = 16;
 
 export const AnkiScreen: FC<AnkiScreenProps> = ({
+  ref,
   Top,
   Bottom,
   deviceClassName,
@@ -37,28 +45,29 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   aspect,
   scale,
   reservedWidth,
-  inputs,
-  pref,
-  templateConfig,
-  cardConfig,
-  tags,
-  deck,
-  flag,
-  face,
-  cardType,
-  card,
+  // inputs,
+  // pref,
+  // templateConfig,
+  // cardConfig,
+  // tags,
+  // deck,
+  // flag,
+  // face,
+  // cardType,
+  // card,
 }) => {
-  const key = [
-    templateConfig,
-    cardConfig,
-    tags,
-    deck,
-    cardType,
-    flag,
-    face,
-    card,
-  ];
-  const files = useRankiFiles(key);
+  // const key = [
+  //   templateConfig,
+  //   cardConfig,
+  //   tags,
+  //   deck,
+  //   cardType,
+  //   flag,
+  //   face,
+  //   card,
+  // ];
+  // const files = useRankiFiles(key);
+  const files = useRankiFiles();
   if (files.epoch === 0) {
     return (
       <div className={style.loading}>
@@ -84,19 +93,20 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
       >
         {Top}
         <AnkiIFrame
+          ref={ref}
           // alterFn={() => {}}
           src={src}
           files={files}
-          pref={pref}
-          inputs={inputs}
-          templateConfig={templateConfig}
-          cardConfig={cardConfig}
-          tags={tags}
-          deck={deck}
-          flag={flag}
-          face={face}
-          cardType={cardType}
-          card={card}
+          // pref={pref}
+          // inputs={inputs}
+          // templateConfig={templateConfig}
+          // cardConfig={cardConfig}
+          // tags={tags}
+          // deck={deck}
+          // flag={flag}
+          // face={face}
+          // cardType={cardType}
+          // card={card}
         />
         {Bottom}
       </div>

@@ -8,7 +8,7 @@ import type { PluginStoreWrapper } from "_stores/dqm/dqm.store.types.mjs";
 import { buildPluginSelectionConfig } from "_stores/dqm/dqm.utils.mjs";
 import { Dqm } from "@dqm/package-dqm-v2";
 import { DqmDemoError } from "_error";
-import type { RankiFiles, CardElements } from "./AnkiScreen";
+import type { RankiFiles, CardElements, RankiElements } from "./AnkiScreen";
 import { useEffect, useState } from "react";
 import { INPUT_TYPE_CLASS_SELECTOR } from "@ranki/app-ranki-v2/constants";
 
@@ -31,6 +31,76 @@ export function dqmOnLoad(
   dqm.render(inputs, { [inputs[0].theater]: a }, pref);
 }
 
+export function createRankiElements(
+  // inputs: DqmParseInputStructured,
+  parts: RankiFiles,
+  re: Record<string, string>,
+): RankiElements {
+  const htmlTemplates = Object.values(parts.html);
+  if (htmlTemplates.length > 1) {
+    throw new DqmDemoError({
+      code: "TOO_MANY_TEMPLATES",
+      why: "Only a single template is expected",
+      cause: null,
+    });
+  }
+  let html = htmlTemplates[0];
+  Object.entries(re).forEach(([s, r]) => {
+    html = html.replace(s, r);
+  });
+
+  const tpl = document.createElement("template");
+  const replaced = html.replace(
+    "{{STORAGE_CONFIG}}",
+    "/ranki-v2/_ranki2_user_config.yml",
+  );
+  // console.log("replaced", replaced);
+  tpl.innerHTML = replaced;
+  const fragment = tpl.content;
+
+  const js = Object.entries(parts.js).map(([name, j]) => {
+    const jsScript = document.createElement("script");
+    jsScript.type = "module";
+    jsScript.id = name.replace(".", "-");
+    jsScript.innerHTML = j;
+    return jsScript;
+  });
+
+  const css = Object.entries(parts.css).map(([name, j]) => {
+    const style = document.createElement("style");
+    style.id = name.replace(".", "-");
+    style.innerHTML = j;
+    return style;
+  });
+
+  const inputElems = fragment.querySelectorAll("*");
+  inputElems.forEach((e) => {
+    e.innerHTML = "";
+    // fragment.removeChild(e);
+  });
+
+  // const inputElems = fragment.querySelectorAll(INPUT_TYPE_CLASS_SELECTOR);
+  // inputElems.forEach((e) => {
+  //   console.log("e", e);
+  //   fragment.removeChild(e);
+  // });
+
+  // const inputClass = INPUT_TYPE_CLASS_SELECTOR.split(".").slice(1).join(".");
+  // inputs.forEach((i) => {
+  //   const e = document.createElement("script");
+  //   e.className = [inputClass, i.theater].join(" ");
+  //   e.type = "text/dqm";
+  //   e.innerHTML = i.dqm;
+  //   fragment.appendChild(e);
+  // });
+
+  return {
+    fragment,
+    html,
+    jss: js,
+    css,
+  };
+}
 export function createCardElements(
   inputs: DqmParseInputStructured,
   parts: RankiFiles,
@@ -131,7 +201,7 @@ const FILES = {
 const URL_TEMPLATE = "/ranki-v2/%";
 // const URL_TEMPLATE = "http://localhost:3000/%";
 
-export function useRankiFiles(triggers: any[]): RankiFiles {
+export function useRankiFiles(): RankiFiles {
   const [files, setFiles] = useState<RankiFiles>({
     epoch: 0,
     html: {},
@@ -167,6 +237,6 @@ export function useRankiFiles(triggers: any[]): RankiFiles {
         ),
       )
       .then((v) => setFiles(v));
-  }, triggers);
+  }, []);
   return files;
 }
