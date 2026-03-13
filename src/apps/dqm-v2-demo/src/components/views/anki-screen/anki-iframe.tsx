@@ -1,21 +1,8 @@
 import { type FC, type RefObject } from "react";
 import { assertExists } from "_assertions";
-import type {
-  DqmParseInputStructured,
-  IDqmRendererClientPreferences,
-} from "@dqm/package-dqm-api-v2";
 import style from "./AnkiIFrame.module.css";
-import { createCardElements, createRankiElements } from "./utils";
+import { createRankiElements } from "./utils";
 import type { RankiFiles } from "./AnkiScreen";
-import type {
-  RankiCard,
-  RankiCardType,
-  RankiConfigString,
-  RankiDeckString,
-  RankiFace,
-  RankiFlag,
-  RankiTagString,
-} from "_stores/anki-dist/anki.store.types.mjs";
 
 export interface AnkiDesktopIFrameProps {
   onLoad: () => void;
@@ -88,13 +75,10 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
   return (
     <iframe
       // #1
-      key={""}
-      // ref={ref}
       className={style.container}
       src={src}
       onLoad={(e) => {
-        // @ts-expect-error
-        ref.current = e.target;
+        ref.current = e.target as HTMLIFrameElement;
         const doc = ref.current?.contentDocument!;
         assertExists(doc, { why: "doc is needed" });
         const base = doc.querySelector("base") as HTMLBaseElement;
@@ -121,7 +105,6 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
             if (me.data.type !== "ranki-update") {
               return;
             }
-            console.log("data", me);
             const setField = (name: string, value: string | number) => {
               const selector = mapping[name];
               assertExists(selector, { why: "t" });
@@ -135,17 +118,22 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
             });
 
             const html = ref.current?.contentDocument!.querySelector("html")!;
-            // html.setAttribute("data-bs-theme", "light");
-            // html.classList.add("scheme-light");
-            // const body = ref.current?.contentDocument!.querySelector("body")!;
-            // body.setAttribute("data-bs-theme", "light");
-            // body.classList.add("light_mode");
-            // console.log("c", body.className);
+            const body = ref.current?.contentDocument!.querySelector("body")!;
 
-            // const fields = (e as CustomEvent).detail;
-            // Object.entries(fields).forEach(([n, v]) =>
-            //   setField(n, v as string),
-            // );
+            const isDark = me.data.ranki.pref.scheme === "dark";
+            if (!isDark) {
+              body.classList.remove("night_mode", "nightMode");
+              body.classList.add("light_mode", "lightMode");
+              html.classList.remove("night-mode");
+              html.classList.add("light-mode");
+              html.setAttribute("data-bs-theme", "light");
+            } else {
+              body.classList.add("night_mode", "nightMode");
+              body.classList.remove("light_mode", "lightMode");
+              html.classList.add("night-mode");
+              html.classList.remove("light-mode");
+              html.setAttribute("data-bs-theme", "dark");
+            }
 
             const ren = qa.querySelector("div.rendered");
             assertExists(ren, { why: "Cannot find element" });
