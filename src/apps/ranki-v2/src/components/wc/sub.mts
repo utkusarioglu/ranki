@@ -1,6 +1,5 @@
 import { assertNever, assertNotNull } from "_error/assertions.mjs";
-import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
-import type { Wc } from "_components/wc/wc.mjs";
+import type { ReconciliationAction, Wc } from "_components/wc/wc.mjs";
 
 export type WrappedState<State> = { type: string; state: State };
 

@@ -2,19 +2,23 @@ import style from "./AnkiAndroid.module.css";
 import ankiAndroidSrc from "./anki-android.html?url";
 import { AnkiScreen } from "../../views/anki-screen/AnkiScreen";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
-import type { IDqmRendererClientPreferences } from "@dqm/package-dqm-api-v2";
 import { useUiStore } from "_stores/ui/ui.store.mjs";
 import { useAnkiAndroidStore } from "_stores/anki-dist/anki-android.store.mjs";
+import { sendChanges } from "_views/anki-screen/sendChanges";
+import { useRef } from "react";
 
 export const AnkiAndroid = () => {
+  const ref = useRef<HTMLIFrameElement>(null);
   const dqm = useDqmStore();
   const android = useAnkiAndroidStore();
   const ui = useUiStore();
 
-  const pref: IDqmRendererClientPreferences = { scheme: android.colorScheme };
+  sendChanges(android, dqm, ref);
 
   return (
     <AnkiScreen
+      ref={ref}
+      onLoad={() => sendChanges(android, dqm, ref)}
       Top={
         <div>
           <div className={style.osTop}>
@@ -46,16 +50,16 @@ export const AnkiAndroid = () => {
       aspect={android.previewAspect}
       scale={android.previewScale}
       reservedWidth={ui.menuWidth}
-      inputs={dqm.inputs}
-      templateConfig={android.templateConfig}
-      cardConfig={android.cardConfig}
-      pref={pref}
-      deck={android.deck}
-      tags={android.tags}
-      flag={android.flag}
-      face={android.face}
-      cardType={android.cardType}
-      card={android.card}
+      // inputs={dqm.inputs}
+      // templateConfig={android.templateConfig}
+      // cardConfig={android.cardConfig}
+      // pref={pref}
+      // deck={android.deck}
+      // tags={android.tags}
+      // flag={android.flag}
+      // face={android.face}
+      // cardType={android.cardType}
+      // card={android.card}
     />
   );
 };

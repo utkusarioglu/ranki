@@ -60,4 +60,9 @@ body {
   grid-template-rows: var(--hud-height) 1fr !important;
   flex-direction: column;
   justify-content: center;
+
+  & > div,
+  & > svg {
+    display: none !important;
+  }
 }
