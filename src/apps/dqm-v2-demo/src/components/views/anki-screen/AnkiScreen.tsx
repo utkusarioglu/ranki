@@ -32,6 +32,7 @@ interface AnkiScreenProps extends Omit<AnkiDesktopIFrameProps, "files"> {
   aspect: number;
   scale: number;
   reservedWidth: number;
+  onLoad: () => void;
 }
 
 const PADDING = 16;
@@ -45,6 +46,7 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   aspect,
   scale,
   reservedWidth,
+  onLoad,
   // inputs,
   // pref,
   // templateConfig,
@@ -97,6 +99,7 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
           // alterFn={() => {}}
           src={src}
           files={files}
+          onLoad={onLoad}
           // pref={pref}
           // inputs={inputs}
           // templateConfig={templateConfig}

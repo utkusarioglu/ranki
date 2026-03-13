@@ -5,7 +5,9 @@ import type { IDqmRendererClientPreferences } from "@dqm/package-dqm-api-v2";
 import { AnkiScreen } from "_views/anki-screen/AnkiScreen";
 import { useAnkiWinStore } from "_stores/anki-dist/anki-win.store.mjs";
 import { useUiStore } from "_stores/ui/ui.store.mjs";
-import { useEffect, useRef } from "react";
+import { useRef, type RefObject } from "react";
+import type { AnkiDistStore } from "_stores/anki-dist/anki.store.types.mjs";
+import type { DqmStore } from "_stores/dqm/dqm.store.types.mjs";
 
 export const AnkiWindows = () => {
   const ref = useRef<HTMLIFrameElement>(null);
@@ -15,37 +17,16 @@ export const AnkiWindows = () => {
 
   console.log("w", win);
   // useEffect(() => {
-  if (ref.current) {
-    const ranki = {
-      fields: {
-        a: dqm.inputs[0].dqm,
-        b: dqm.inputs[1].dqm,
-        deck: win.deck,
-        tags: win.tags,
-        flag: win.flag,
-        face: win.face,
-        type: win.cardType,
-        card: win.card,
-      },
-      colorScheme: win.colorScheme,
-    };
-    ref.current.contentWindow!.postMessage({
-      type: "ranki-update",
-      ranki,
-      // {
-
-      // templateConfig={win.templateConfig}
-      // cardConfig={win.cardConfig}
-      // pref={pref}
-      // },
-    });
-  }
+  sendChanges(win, dqm, ref);
+  // }
   // }, [win.face, dqm, ref.current]);
-
-  const pref: IDqmRendererClientPreferences = { scheme: win.colorScheme };
 
   return (
     <AnkiScreen
+      onLoad={() => {
+        console.log("onload", JSON.stringify(dqm.inputs));
+        sendChanges(win, dqm, ref);
+      }}
       ref={ref}
       Top={
         <div>
@@ -84,3 +65,30 @@ export const AnkiWindows = () => {
     />
   );
 };
+
+function sendChanges(
+  win: AnkiDistStore,
+  dqm: DqmStore,
+  ref: RefObject<HTMLIFrameElement | null>,
+) {
+  if (ref.current) {
+    const pref: IDqmRendererClientPreferences = { scheme: win.colorScheme };
+    const ranki = {
+      fields: {
+        a: dqm.inputs[0].dqm,
+        b: dqm.inputs[1].dqm,
+        deck: win.deck,
+        tags: win.tags,
+        flag: win.flag,
+        face: win.face,
+        type: win.cardType,
+        card: win.card,
+      },
+      pref,
+    };
+    ref.current.contentWindow!.postMessage({
+      type: "ranki-update",
+      ranki,
+    });
+  }
+}

@@ -18,6 +18,7 @@ import type {
 } from "_stores/anki-dist/anki.store.types.mjs";
 
 export interface AnkiDesktopIFrameProps {
+  onLoad: () => void;
   // inputs: DqmParseInputStructured;
   // pref: IDqmRendererClientPreferences;
   files: RankiFiles;
@@ -44,6 +45,7 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
   // pref,
   files,
   src,
+  onLoad,
   // cardConfig,
   // templateConfig,
   // tags,
@@ -115,7 +117,11 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
         };
         (e.target as HTMLIFrameElement).contentWindow!.addEventListener(
           "message",
-          (e) => {
+          (me) => {
+            if (me.data.type !== "ranki-update") {
+              return;
+            }
+            console.log("data", me);
             const setField = (name: string, value: string | number) => {
               const selector = mapping[name];
               assertExists(selector, { why: "t" });
@@ -124,14 +130,13 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
               f.innerText = value.toString();
             };
 
-            console.log("data", e.data);
-            Object.entries(e.data.ranki.fields).forEach(([n, v]) => {
+            Object.entries(me.data.ranki.fields).forEach(([n, v]) => {
               setField(n, v as string);
             });
 
             const html = ref.current?.contentDocument!.querySelector("html")!;
-            html.setAttribute("data-bs-theme", "light");
-            html.classList.add("scheme-light");
+            // html.setAttribute("data-bs-theme", "light");
+            // html.classList.add("scheme-light");
             // const body = ref.current?.contentDocument!.querySelector("body")!;
             // body.setAttribute("data-bs-theme", "light");
             // body.classList.add("light_mode");
@@ -154,6 +159,8 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
         replaced.jss.forEach((js) => {
           doc.body.appendChild(js);
         });
+
+        onLoad();
       }}
     />
   );
