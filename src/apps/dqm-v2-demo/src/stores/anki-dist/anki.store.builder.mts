@@ -8,6 +8,7 @@ export const createAnkiStore = (defaults: AnkiDistStoreStates) =>
   create<AnkiDistStore>((set) => ({
     ...defaults,
 
+    setContentType: (contentType) => set(() => ({ contentType })),
     setColorScheme: (colorScheme) => set(() => ({ colorScheme })),
     setPreviewAspect: (previewAspect) => set(() => ({ previewAspect })),
     setPreviewScale: (previewScale) => set(() => ({ previewScale })),

@@ -1,7 +1,3 @@
-import type {
-  ReconciliationInfo,
-  WrappedState,
-} from "_components/subtree/subtree.mjs";
 import { assertNever } from "_error/assertions.mjs";
 import { WcAnimation } from "./animation.mts";
 import { WcCss } from "./css.mts";
@@ -38,6 +34,13 @@ export class Wc<Props, InternalState = Props> extends HTMLElement {
 
   static get create() {
     return WcCreate(this as any, this.tag);
+  }
+
+  static removeAll() {
+    const els = document.querySelectorAll(this.tag);
+    for (const e of els) {
+      e.parentElement?.removeChild(e);
+    }
   }
 
   connectedCallback() {

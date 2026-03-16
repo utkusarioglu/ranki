@@ -1,6 +1,7 @@
 import type {
   AnkiDistStore,
   ColorSchemes,
+  RankiContentType,
   RankiFace,
   RankiFlag,
 } from "_stores/anki-dist/anki.store.types.mjs";
@@ -20,14 +21,12 @@ type AnkiRenderSettingsProps = {
 interface Flag {
   color: `#${string}` | "none";
   flag: RankiFlag;
-  // name?: string;
 }
 
 const FLAGS: Flag[] = [
   {
     color: "none",
     flag: "flag0",
-    // name: "None",
   },
   {
     color: "#FF0000",
@@ -69,6 +68,24 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
 }) => {
   return (
     <div className={style.container}>
+      <Typography>Content</Typography>
+      {[
+        {
+          title: "Dqm",
+          contentType: "r2" as RankiContentType,
+        },
+        {
+          title: "Foreign",
+          contentType: "foreign" as RankiContentType,
+        },
+      ].map(({ title, contentType }) => (
+        <Button
+          onClick={() => store.setContentType(contentType)}
+          type={store.contentType === contentType ? "primary" : "default"}
+        >
+          {title}
+        </Button>
+      ))}
       <Typography>Orientation & Aspect</Typography>
       {aspectRatios
         .map((a) => ({
@@ -107,7 +124,6 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
       {FACES.map((face) => (
         <Button
           key={face}
-          // onClick={() => doChange("face", face)}
           onClick={() => store.setFace(face)}
           type={face === store.face ? "primary" : "default"}
         >
@@ -118,7 +134,6 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
       {FLAGS.map((flag) => (
         <Button
           onClick={() => store.setFlag(flag.flag)}
-          // onClick={() => doChange("flag", flag.flag)}
           style={{
             backgroundColor: flag.color,
             color: flag.flag === store.flag ? "#FFF" : "transparent",
@@ -131,25 +146,21 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
       <Input
         value={store.cardType}
         onChange={(e) => store.setCardType(e.target.value)}
-        // onChange={(e) => doChange("type", e.target.value)}
       />
       <Typography>Card</Typography>
       <Input
         value={store.card}
         onChange={(e) => store.setCard(e.target.value)}
-        // onChange={(e) => doChange("card", e.target.value)}
       />
       <Typography>Deck</Typography>
       <Input
         value={store.deck}
         onChange={(e) => store.setDeck(e.target.value)}
-        // onChange={(e) => doChange("deck", e.target.value)}
       />
       <Typography>Tags</Typography>
       <Input
         value={store.tags}
         onChange={(e) => store.setTags(e.target.value)}
-        // onChange={(e) => doChange("tags", e.target.value)}
       />
       <Typography>Card Config</Typography>
       <Input.TextArea

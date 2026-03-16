@@ -12,7 +12,7 @@ export type CardElements = {
 
 export type RankiElements = {
   fragment: DocumentFragment;
-  html: string;
+  // html: string;
   jss: HTMLScriptElement[];
   css: HTMLStyleElement[];
 };
@@ -47,28 +47,7 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   scale,
   reservedWidth,
   onLoad,
-  // inputs,
-  // pref,
-  // templateConfig,
-  // cardConfig,
-  // tags,
-  // deck,
-  // flag,
-  // face,
-  // cardType,
-  // card,
 }) => {
-  // const key = [
-  //   templateConfig,
-  //   cardConfig,
-  //   tags,
-  //   deck,
-  //   cardType,
-  //   flag,
-  //   face,
-  //   card,
-  // ];
-  // const files = useRankiFiles(key);
   const files = useRankiFiles();
   if (files.epoch === 0) {
     return (
@@ -77,8 +56,6 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
       </div>
     );
   }
-
-  // useEffect(() => {}, []);
 
   const sizing = getSizing(PADDING, aspect, scale, reservedWidth, 0);
 
@@ -94,23 +71,7 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
         }}
       >
         {Top}
-        <AnkiIFrame
-          ref={ref}
-          // alterFn={() => {}}
-          src={src}
-          files={files}
-          onLoad={onLoad}
-          // pref={pref}
-          // inputs={inputs}
-          // templateConfig={templateConfig}
-          // cardConfig={cardConfig}
-          // tags={tags}
-          // deck={deck}
-          // flag={flag}
-          // face={face}
-          // cardType={cardType}
-          // card={card}
-        />
+        <AnkiIFrame ref={ref} src={src} files={files} onLoad={onLoad} />
         {Bottom}
       </div>
     </div>

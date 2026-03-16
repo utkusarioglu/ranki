@@ -6,10 +6,9 @@ import { assertNotUndefined } from "_error/assertions.mts";
 import style from "./indicator.component.css?inline";
 import { RIndicatorPattern } from "./pattern.mts";
 import { Wc } from "_components/wc/wc.mjs";
-import { WcSub } from "_components/wc/sub.mjs";
-import type { WrappedState } from "_components/subtree/subtree.mjs";
+import { WcSub, type WrappedState } from "_components/wc/sub.mjs";
 
-export class IRankiIndicator extends Wc<RankiIndicatorState> {
+export class RIndicator extends Wc<RankiIndicatorState> {
   public static readonly tag = "r-indicator" as const;
   private subtree = new WcSub<RIndicatorPattern, string>({
     create: this.createSubtreeChild.bind(this),

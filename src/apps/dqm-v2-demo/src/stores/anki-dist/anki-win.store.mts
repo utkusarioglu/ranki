@@ -2,6 +2,7 @@ import { createAnkiStore } from "./anki.store.builder.mts";
 import { CARD_CONFIG, DECK, TEMPLATE_CONFIG } from "./constants.common.mts";
 
 export const useAnkiWinStore = createAnkiStore({
+  contentType: "r2",
   previewScale: 1.25,
   previewAspect: 16 / 9,
   colorScheme: "dark",

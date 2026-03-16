@@ -44,8 +44,8 @@ export class RBigError extends Wc<Error> {
     }
   }
 
-  static remove() {
-    const err = document.querySelector(RBigError.tag);
-    if (err) err.parentElement?.removeChild(err);
-  }
+  // static remove() {
+  //   const err = document.querySelector(RBigError.tag);
+  //   if (err) err.parentElement?.removeChild(err);
+  // }
 }

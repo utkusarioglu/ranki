@@ -32,8 +32,8 @@ body,
 /* Removes element from `body` grid flow */
 #_mark,
 #_flag,
-#content,
-#qa {
+#content
+/* #qa  */ {
   position: absolute !important;
   display: none !important;
 }
@@ -57,12 +57,12 @@ body {
   /* makes the body available for molding by config*/
   display: grid !important;
   /* old android view messes with this if vertically_centered is selected*/
-  grid-template-rows: var(--hud-height) 1fr !important;
+  grid-template-rows: 0 var(--hud-height) 1fr !important;
   flex-direction: column;
   justify-content: center;
 
-  & > div,
+  /* & > div,
   & > svg {
     display: none !important;
-  }
+  } */
 }

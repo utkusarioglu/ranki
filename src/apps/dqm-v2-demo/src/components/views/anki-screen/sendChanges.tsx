@@ -11,6 +11,7 @@ export function sendChanges(
   if (ref.current) {
     const pref: IDqmRendererClientPreferences = { scheme: win.colorScheme };
     const ranki = {
+      contentType: win.contentType,
       fields: {
         a: dqm.inputs[0].dqm,
         b: dqm.inputs[1].dqm,

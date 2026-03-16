@@ -31,11 +31,7 @@ export function dqmOnLoad(
   dqm.render(inputs, { [inputs[0].theater]: a }, pref);
 }
 
-export function createRankiElements(
-  // inputs: DqmParseInputStructured,
-  parts: RankiFiles,
-  re: Record<string, string>,
-): RankiElements {
+export function createFragment(parts: RankiFiles) {
   const htmlTemplates = Object.values(parts.html);
   if (htmlTemplates.length > 1) {
     throw new DqmDemoError({
@@ -45,18 +41,23 @@ export function createRankiElements(
     });
   }
   let html = htmlTemplates[0];
-  Object.entries(re).forEach(([s, r]) => {
-    html = html.replace(s, r);
-  });
-
   const tpl = document.createElement("template");
   const replaced = html.replace(
     "{{STORAGE_CONFIG}}",
     "/ranki-v2/_ranki2_user_config.yml",
   );
-  // console.log("replaced", replaced);
   tpl.innerHTML = replaced;
   const fragment = tpl.content;
+
+  const inputElems = fragment.querySelectorAll("*");
+  inputElems.forEach((e) => {
+    e.innerHTML = "";
+  });
+  return fragment;
+}
+
+export function createRankiElements(parts: RankiFiles): RankiElements {
+  const fragment = createFragment(parts);
 
   const js = Object.entries(parts.js).map(([name, j]) => {
     const jsScript = document.createElement("script");
@@ -73,30 +74,8 @@ export function createRankiElements(
     return style;
   });
 
-  const inputElems = fragment.querySelectorAll("*");
-  inputElems.forEach((e) => {
-    e.innerHTML = "";
-    // fragment.removeChild(e);
-  });
-
-  // const inputElems = fragment.querySelectorAll(INPUT_TYPE_CLASS_SELECTOR);
-  // inputElems.forEach((e) => {
-  //   console.log("e", e);
-  //   fragment.removeChild(e);
-  // });
-
-  // const inputClass = INPUT_TYPE_CLASS_SELECTOR.split(".").slice(1).join(".");
-  // inputs.forEach((i) => {
-  //   const e = document.createElement("script");
-  //   e.className = [inputClass, i.theater].join(" ");
-  //   e.type = "text/dqm";
-  //   e.innerHTML = i.dqm;
-  //   fragment.appendChild(e);
-  // });
-
   return {
     fragment,
-    html,
     jss: js,
     css,
   };

@@ -1,23 +1,14 @@
 import { type FC, type RefObject } from "react";
 import { assertExists } from "_assertions";
 import style from "./AnkiIFrame.module.css";
-import { createRankiElements } from "./utils";
+import { createFragment, createRankiElements } from "./utils";
 import type { RankiFiles } from "./AnkiScreen";
+import { RENDERED_CLASS_SELECTOR } from "@ranki/app-ranki-v2/constants";
 
 export interface AnkiDesktopIFrameProps {
   onLoad: () => void;
-  // inputs: DqmParseInputStructured;
-  // pref: IDqmRendererClientPreferences;
   files: RankiFiles;
-  // templateConfig: RankiConfigString;
-  // cardConfig: RankiConfigString;
-  // tags: RankiTagString;
-  // deck: RankiDeckString;
-  // flag: RankiFlag;
   src: string;
-  // face: RankiFace;
-  // cardType: RankiCardType;
-  // card: RankiCard;
   ref: RefObject<HTMLIFrameElement | null>;
 }
 
@@ -28,49 +19,11 @@ export interface AnkiDesktopIFrameProps {
  */
 export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
   ref,
-  // inputs,
-  // pref,
   files,
   src,
   onLoad,
-  // cardConfig,
-  // templateConfig,
-  // tags,
-  // deck,
-  // flag,
-  // face,
-  // cardType,
-  // card,
 }) => {
-  const replaced = createRankiElements(files, {
-    // These need to be replaced in the demo app
-    // "{{FACE}}": face,
-    // "{{TEMPLATE_CONFIG}}": templateConfig,
-    // "{{STORAGE_CONFIG}}": "/ranki-v2/_ranki2_user_config.yml",
-    // These come from anki
-    // "{{CardConfig}}": cardConfig,
-    // These are created by `inputs`
-    // "{{A}}": inputs[0].dqm,
-    // "{{B}}": inputs[1].dqm,
-    // "{{Card}}": card,
-    // "{{Type}}": cardType,
-    // "{{Tags}}": tags,
-    // "{{Deck}}": deck,
-    // "{{Subdeck}}": deck.split("::").at(-1)!,
-    // "{{CardFlag}}": flag,
-  });
-
-  // const key = [
-  //   templateConfig,
-  //   cardConfig,
-  //   tags,
-  //   deck,
-  //   cardType,
-  //   flag,
-  //   face,
-  //   card,
-  //   pref.scheme,
-  // ].join(" ");
+  const replaced = createRankiElements(files);
 
   return (
     <iframe
@@ -89,7 +42,7 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
         assertExists(qa, { why: "#qa required for anki webview" });
         qa.replaceChildren(replaced.fragment);
 
-        const mapping: Record<string, string | number> = {
+        const mapping: Record<string, string> = {
           a: "script.r2-input.A",
           b: "script.r2-input.B",
           face: "script.r2-data.face",
@@ -105,10 +58,25 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
             if (me.data.type !== "ranki-update") {
               return;
             }
-            const setField = (name: string, value: string | number) => {
+            if (me.data.ranki.contentType === "foreign") {
+              if (qa) {
+                qa.innerHTML = "Foreign Content";
+                return;
+              }
+            } else {
+              const fragment = createFragment(files);
+              qa.replaceChildren(fragment);
+              // qa.innerHTML = "";
+            }
+            const setField = (name: string, value: string) => {
               const selector = mapping[name];
-              assertExists(selector, { why: "t" });
-              const f = qa.querySelector<HTMLScriptElement>(selector)!;
+              // assertExists(selector, { why: "t" });
+              let f = qa.querySelector<HTMLScriptElement>(selector)!;
+              if (!f) {
+                const tag = selector.split(".")[0];
+                f = document.createElement(tag) as HTMLScriptElement;
+                f.className = selector.split(".")[1];
+              }
               assertExists(f, { why: "Cannot find element" });
               f.innerText = value.toString();
             };
@@ -135,9 +103,11 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
               html.setAttribute("data-bs-theme", "dark");
             }
 
-            const ren = qa.querySelector("div.rendered");
-            assertExists(ren, { why: "Cannot find element" });
-            ren.parentElement!.removeChild(ren);
+            const ren = qa.querySelector(RENDERED_CLASS_SELECTOR);
+            if (ren) {
+              ren.parentElement!.removeChild(ren);
+            }
+            // assertExists(ren, { why: "Cannot find element" });
           },
         );
 

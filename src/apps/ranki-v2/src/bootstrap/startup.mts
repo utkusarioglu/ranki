@@ -1,3 +1,5 @@
+import { RENDERED_CLASS_SELECTOR } from "_/selector.constants.mjs";
+
 // ANKI
 export function onReady(fn: any) {
   if (document.readyState === "loading") {
@@ -14,12 +16,15 @@ export function onReady(fn: any) {
   }
 }
 
-export function shouldRender() {
+export function shouldRender(): "render" | "remove" | "stop" {
   const qa = document.querySelector("#qa")!;
-  let rendered = qa.querySelector("div.rendered");
-  if (rendered) return false;
+  let rendered = qa.querySelector(RENDERED_CLASS_SELECTOR);
+  if (rendered) return "stop";
+  const r2Elems = qa.querySelectorAll('[class^="r2-"]');
+  const r2Eligible = r2Elems.length > 0;
+  if (!r2Eligible) return "remove";
   rendered = document.createElement("div");
-  rendered.className = "rendered";
+  rendered.className = RENDERED_CLASS_SELECTOR.split(".")[1];
   qa.appendChild(rendered);
-  return true;
+  return "render";
 }
