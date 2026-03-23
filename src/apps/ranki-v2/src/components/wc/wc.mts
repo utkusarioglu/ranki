@@ -39,7 +39,7 @@ export class Wc<Props, InternalState = Props> extends HTMLElement {
   static removeAll() {
     const els = document.querySelectorAll(this.tag);
     for (const e of els) {
-      e.parentElement?.removeChild(e);
+      e.remove();
     }
   }
 
@@ -52,8 +52,11 @@ export class Wc<Props, InternalState = Props> extends HTMLElement {
   }
 
   async remove(): Promise<void> {
-    await this.animation.runPreset("exit");
-    super.remove();
+    try {
+      await this.animation.runPreset("exit");
+    } finally {
+      super.remove();
+    }
   }
 
   canReconcile(

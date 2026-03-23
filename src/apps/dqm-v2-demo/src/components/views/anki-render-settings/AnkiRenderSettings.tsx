@@ -80,6 +80,7 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
         },
       ].map(({ title, contentType }) => (
         <Button
+          key={title}
           onClick={() => store.setContentType(contentType)}
           type={store.contentType === contentType ? "primary" : "default"}
         >

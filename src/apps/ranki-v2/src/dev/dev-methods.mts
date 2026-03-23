@@ -20,6 +20,33 @@ export class RankiDevMethods {
     return;
   }
 
+  static foreign(isForeign: boolean = true) {
+    const qa = document.querySelector("#qa") as HTMLDivElement;
+    assertNotUndefined(qa, { why: "needed" });
+    if (isForeign === true) {
+      qa.innerText = "Foreign Content";
+    } else {
+      qa.innerHTML = `
+      <script class="r2-data face" type="text/plain">Q</script>
+      <script class="r2-data deck" type="text/plain">Native</script>
+      <script class="r2-data tags" type="text/plain">+r::dev::methods +r::dev::persist</script>
+      <script class="r2-data type" type="text/plain">+r:AB:BA</script>
+      <script class="r2-data flag" type="text/plain">flag0</script>
+      <script class="r2-data card" type="text/plain">AB</script>
+
+      <script class="r2-input A" type="text/dqm">
+        a
+        
+        [code, "yml"
+        hello:
+          world: true
+        ]
+      </script>
+      <script class="r2-input B" type="text/dqm">[frame.v2.debug.dom_info|hi]</script>
+      `;
+    }
+  }
+
   static trigger() {
     const qa = document.querySelector("#qa") as HTMLDivElement;
     assertNotUndefined(qa, { why: "needed" });

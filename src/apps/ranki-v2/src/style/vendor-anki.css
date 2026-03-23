@@ -43,26 +43,29 @@ body {
   margin: 0 !important;
   scroll-behavior: smooth !important;
 
-  /* Relevant for theming */
-  background: var(--body-background) !important;
-  color: var(--body-color) !important;
-
   transition-duration: var(--body-transition-duration, 0) !important;
   transition-property: background, color !important;
 
-  /* Allows vertically centering questions */
-  min-height: 100% !important;
-  height: max-content !important;
+  /* & > div,
+  & > svg {
+    display: none !important;
+  } */
+
+  /* Relevant for theming */
+  background: var(--body-background) !important;
+  color: var(--body-color) !important;
 
   /* makes the body available for molding by config*/
   display: grid !important;
   /* old android view messes with this if vertically_centered is selected*/
   grid-template-rows: 0 var(--hud-height) 1fr !important;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
 
-  /* & > div,
-  & > svg {
-    display: none !important;
-  } */
+  /* Allows vertically centering questions */
+  min-height: 100% !important;
+  height: max-content !important;
+}
+
+body.r2-active {
 }

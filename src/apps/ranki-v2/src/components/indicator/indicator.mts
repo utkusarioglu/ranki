@@ -28,7 +28,15 @@ export class RIndicator extends Wc<RankiIndicatorState> {
     return RIndicatorPattern.create.instance(state.state, this.shadowRoot!);
   }
 
-  initialize(): void {}
+  initialize(): void {
+    this.animation.pushPreset("exit", () => ({
+      keyframes: [{ opacity: 1 }, { opacity: 0 }],
+      options: {
+        duration: 200,
+        fill: "both",
+      },
+    }));
+  }
 
   protected onStateChange(curr: RankiIndicatorState): void {
     const config = curr;

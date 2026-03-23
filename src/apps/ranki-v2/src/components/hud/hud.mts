@@ -66,6 +66,22 @@ export class RHud extends WcHudContainer<
       },
       center,
     );
+    this.animation.pushPreset("exit", () => ({
+      keyframes: [
+        {
+          opacity: 1,
+          // ...this.css.selectWidthProperties(getComputedStyle(this)),
+        },
+        {
+          opacity: 0,
+          // ...this.css.zeroWidthProperties(),
+        },
+      ],
+      options: {
+        duration: 200,
+        fill: "both",
+      },
+    }));
   }
 
   protected createSubtreeChild(state: Wrapped) {

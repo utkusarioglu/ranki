@@ -13,7 +13,15 @@ export class RChallenge extends Wc<RankiChallengeState> {
     this.css.pushStyles(styles, ruleStyles);
   }
 
-  initialize(): void {}
+  initialize(): void {
+    this.animation.pushPreset("exit", () => ({
+      keyframes: [{ opacity: 1 }, { opacity: 0 }],
+      options: {
+        duration: 200,
+        fill: "both",
+      },
+    }));
+  }
 
   private subtree = new WcSub<
     // @ts-expect-error
