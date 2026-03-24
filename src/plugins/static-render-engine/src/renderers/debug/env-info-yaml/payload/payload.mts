@@ -16,9 +16,11 @@ export const payload: R = {
   chain: [...TAGS, "payload", "block"],
   kind: "leaf",
   sync: ({ ser, pref }) => {
+    const fontSize = ser.props.component.default.font.size;
+    const lineHeight = ser.props.component.default.font.line_height;
     const noEmptyLines = ser.props.component.default.content.no_empty_lines;
     const { left, content, element, afterMount, beforeUnmount, css } =
-      createCodePayloadScaffolding(prismCss);
+      createCodePayloadScaffolding(prismCss, fontSize, lineHeight);
     content.innerText = "(collecting info)";
 
     return {
@@ -28,14 +30,10 @@ export const payload: R = {
         ...afterMount,
         async () => {
           const envInfo = await collectEnvironmentInfo();
-          const obj = {
-            pref,
-            envInfo,
-          };
+          const obj = { pref, envInfo };
           const source = yaml.stringify(obj);
           const raw = getProcessedSource(source, noEmptyLines);
           const lineNums = getLineNumbersHtml(raw);
-          console.log("raw", raw.split("\n").length, "\n", raw, "\n", lineNums);
           left.innerHTML = lineNums;
           content.innerHTML = getHighlightedCodeHtml(Prism, "yaml", raw, "</>");
         },

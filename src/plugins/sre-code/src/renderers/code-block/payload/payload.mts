@@ -14,11 +14,13 @@ export const payload: R = {
   kind: "leaf",
   sync: ({ ser }) => {
     const noEmptyLines = ser.props.component.default.content.no_empty_lines;
+    const fontSize = ser.props.component.default.font.size;
+    const lineHeight = ser.props.component.default.font.line_height;
     const rawName = ser.props.component.default.language.name;
     const source = ser.source;
 
     const { left, content, element, css, afterMount, beforeUnmount } =
-      createCodePayloadScaffolding(prismCss);
+      createCodePayloadScaffolding(prismCss, fontSize, lineHeight);
     const raw = getProcessedSource(source, noEmptyLines);
     left.innerHTML = getLineNumbersHtml(raw);
     content.innerHTML = getHighlightedCodeHtml(

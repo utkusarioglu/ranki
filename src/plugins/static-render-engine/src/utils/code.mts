@@ -3,11 +3,17 @@ import type Prism from "prismjs";
 import codeBlockCss from "./code-block.css?raw";
 
 export function getLineNumbersHtml(source: string) {
-  return Array(source.split("\n").length)
-    .fill(null)
-    .map((_, i) => (i + 1).toString().padStart(3, " "))
-    .map((v) => `<span>${v}</span>`)
-    .join("<br>");
+  const count = Array(source.split("\n").length);
+  const digits = count.toString().length;
+
+  return (
+    count
+      .fill(null)
+      .map((_, i) => (i + 1).toString().padStart(digits, " "))
+      // .map((v) => `<span>${v}</span>`)
+      // .map((v) => `${v}</span>`)
+      .join("<br>")
+  );
 }
 
 export function getHighlightedCodeHtml(
@@ -37,7 +43,11 @@ async function copyContent(elem: HTMLElement) {
   }
 }
 
-export function createCodePayloadScaffolding(prismCss: string) {
+export function createCodePayloadScaffolding(
+  prismCss: string,
+  fontSize: string,
+  lineHeight: string,
+) {
   const element = document.createElement("div");
   element.classList.add("code-block");
   const scroller = AnkiUi.horizontalScroller();
@@ -46,9 +56,14 @@ export function createCodePayloadScaffolding(prismCss: string) {
   const code = document.createElement("code");
   pre.appendChild(code);
   scroller.getMount!().appendChild(pre);
-  // const content = document.createElement("span");
-  // code.appendChild(content);
   const left = scroller.subtree!.left();
+
+  if (fontSize !== "") {
+    element.style.setProperty("--smaller-font-size", fontSize);
+  }
+  if (lineHeight !== "") {
+    element.style.setProperty("--smaller-line-height", lineHeight);
+  }
 
   const onClick = () => copyContent(code);
   const css = [

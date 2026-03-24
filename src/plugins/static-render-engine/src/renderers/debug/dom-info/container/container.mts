@@ -23,7 +23,7 @@ export const container: IDqmRenderPluginRenderer = {
       },
       {
         type: "programming-language",
-        text: "html",
+        text: "Html",
       },
     ]);
     // block.getMount!().innerText = navigator.userAgent;

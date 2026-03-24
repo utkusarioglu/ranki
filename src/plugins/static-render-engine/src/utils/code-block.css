@@ -1,12 +1,14 @@
 .code-block {
   --font-size: var(--smaller-font-size);
+  --line-height: var(--smaller-line-height);
 
   font-family: monospace;
   font-size: var(--font-size);
-  line-height: 1.15em;
+  line-height: var(--line-height, 1.15em);
 
   & .left {
     color: gray;
+    text-align: end;
   }
 
   & code {

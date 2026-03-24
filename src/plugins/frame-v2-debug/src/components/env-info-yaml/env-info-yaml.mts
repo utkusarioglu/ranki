@@ -7,17 +7,12 @@ import { examples } from "./examples/examples.mjs";
 
 interface ComponentType extends IComponentCustomizationConfig {
   default: {
-    // language: {
-    //   name: string;
-    // };
-    // prettier: {
-    //   auto_format: boolean;
-    // };
-    // path: {
-    //   cat: [number, string, boolean];
-    // };
     content: {
       no_empty_lines: boolean;
+    };
+    font: {
+      size: string; // CSS length unit
+      line_height: string; // CSS length unit
     };
   };
 }
@@ -54,66 +49,33 @@ export const environmentInfoYaml: IDqmComponent<ComponentType> = {
           content: {
             no_empty_lines: true,
           },
-          // language: {
-          //   name: "</>",
-          // },
-          // prettier: {
-          //   auto_format: true,
-          // },
-          // path: {
-          //   cat: [1, "def", false],
-          // },
+          font: {
+            size: "", // "" means css takes charge
+            line_height: "", // "" means css takes charge
+          },
         },
       },
     },
     params: {
       $: {
         positionals: [],
-        params: [
-          // {
-          //   id: {
-          //     chain: ["content", "prefix"],
-          //     aliases: ["p"],
-          //   },
-          // },
-          // {
-          //   id: {
-          //     chain: [...PLUGIN_PATH, "tokens", "opener"],
-          //     aliases: ["o"],
-          //   },
-          // },
-          // {
-          //   id: {
-          //     chain: [...PLUGIN_PATH, "tokens", "closer"],
-          //     aliases: ["c"],
-          //   },
-          // },
-        ],
+        params: [],
       },
       default: {
-        positionals: [
-          // ["language", "name"],
-          // ["prettier", "auto_format"],
-        ],
+        positionals: [],
         params: [
-          // {
-          //   id: {
-          //     chain: ["language", "name"],
-          //     aliases: ["l"],
-          //   },
-          // },
-          // {
-          //   id: {
-          //     chain: ["prettier", "auto_format"],
-          //     aliases: ["p"],
-          //   },
-          // },
-          // {
-          //   id: {
-          //     chain: ["path", "cat"],
-          //     aliases: ["h"],
-          //   },
-          // },
+          {
+            id: {
+              chain: ["font", "size"],
+              aliases: [],
+            },
+          },
+          {
+            id: {
+              chain: ["font", "line_height"],
+              aliases: [],
+            },
+          },
         ],
       },
     },

@@ -19,6 +19,7 @@ interface ComponentType extends IComponentCustomizationConfig {
     };
     font: {
       size: string; // CSS length unit
+      line_height: string;
     };
     content: {
       no_empty_lines: boolean;
@@ -77,7 +78,8 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
             cat: [1, "def", false],
           },
           font: {
-            size: "", // null means css takes charge
+            size: "", // "" means css takes charge
+            line_height: "", // "" means css takes charge
           },
           content: {
             no_empty_lines: true,
@@ -136,6 +138,12 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
           {
             id: {
               chain: ["font", "size"],
+              aliases: [],
+            },
+          },
+          {
+            id: {
+              chain: ["font", "line_height"],
               aliases: [],
             },
           },
