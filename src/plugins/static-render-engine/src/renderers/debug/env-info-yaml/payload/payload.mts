@@ -34,7 +34,9 @@ export const payload: R = {
           };
           const source = yaml.stringify(obj);
           const raw = getProcessedSource(source, noEmptyLines);
-          left.innerHTML = getLineNumbersHtml(raw);
+          const lineNums = getLineNumbersHtml(raw);
+          console.log("raw", raw.split("\n").length, "\n", raw, "\n", lineNums);
+          left.innerHTML = lineNums;
           content.innerHTML = getHighlightedCodeHtml(Prism, "yaml", raw, "</>");
         },
       ],

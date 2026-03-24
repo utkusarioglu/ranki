@@ -6,6 +6,7 @@ export function getLineNumbersHtml(source: string) {
   return Array(source.split("\n").length)
     .fill(null)
     .map((_, i) => (i + 1).toString().padStart(3, " "))
+    .map((v) => `<span>${v}</span>`)
     .join("<br>");
 }
 
@@ -45,11 +46,11 @@ export function createCodePayloadScaffolding(prismCss: string) {
   const code = document.createElement("code");
   pre.appendChild(code);
   scroller.getMount!().appendChild(pre);
-  const content = document.createElement("span");
-  code.appendChild(content);
+  // const content = document.createElement("span");
+  // code.appendChild(content);
   const left = scroller.subtree!.left();
 
-  const onClick = () => copyContent(content);
+  const onClick = () => copyContent(code);
   const css = [
     ...scroller.css!,
     {
@@ -74,5 +75,13 @@ export function createCodePayloadScaffolding(prismCss: string) {
     },
   ];
 
-  return { left, content, element, scroller, css, afterMount, beforeUnmount };
+  return {
+    left,
+    content: code,
+    element,
+    scroller,
+    css,
+    afterMount,
+    beforeUnmount,
+  };
 }
