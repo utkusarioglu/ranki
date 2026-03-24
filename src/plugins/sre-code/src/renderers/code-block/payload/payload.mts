@@ -1,6 +1,5 @@
 import type { IDqmRenderPluginRenderer as R } from "@dqm/package-dqm-api-v2";
 import { NO_LANGUAGE, TAGS } from "../constants.mjs";
-import css from "./payload.css?raw";
 import Prism from "./prism/prism.mjs";
 import prismCss from "./prism/prism-atom-dark.css?raw";
 import {
@@ -8,8 +7,7 @@ import {
   getProcessedSource,
   getLineNumbersHtml,
   getHighlightedCodeHtml,
-  copyContent,
-} from "./code.mjs";
+} from "@dqm/plugin-static-render-engine";
 
 export const payload: R = {
   chain: [...TAGS, "payload", "block"],
@@ -19,7 +17,8 @@ export const payload: R = {
     const rawName = ser.props.component.default.language.name;
     const source = ser.source;
 
-    const { left, content, element, scroller } = createCodePayloadScaffolding();
+    const { left, content, element, css, afterMount, beforeUnmount } =
+      createCodePayloadScaffolding(prismCss);
     const raw = getProcessedSource(source, noEmptyLines);
     left.innerHTML = getLineNumbersHtml(raw);
     content.innerHTML = getHighlightedCodeHtml(
@@ -29,33 +28,11 @@ export const payload: R = {
       NO_LANGUAGE,
     );
 
-    const onClick = () => copyContent(content);
-
     return {
       element,
-      css: [
-        ...scroller.css!,
-        {
-          id: "prism-atom-dark",
-          css: prismCss,
-        },
-        {
-          id: "code-block-section",
-          css,
-        },
-      ],
-      afterMount: [
-        ...(scroller.afterMount || []),
-        () => {
-          element.addEventListener("click", onClick);
-        },
-      ],
-      beforeUnmount: [
-        ...(scroller.beforeUnmount || []),
-        () => {
-          element.removeEventListener("click", onClick);
-        },
-      ],
+      css,
+      afterMount: [...afterMount],
+      beforeUnmount: [...beforeUnmount],
     };
   },
 };

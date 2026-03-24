@@ -5,3 +5,10 @@ import { debugRenderer } from "./renderers/debug/debug.ren.mjs";
 const pluginPackage: IDqmPlugin = [staticRenderer, debugRenderer];
 
 export default pluginPackage;
+
+export {
+  createCodePayloadScaffolding,
+  getProcessedSource,
+  getLineNumbersHtml,
+  getHighlightedCodeHtml,
+} from "./utils/export.mjs";

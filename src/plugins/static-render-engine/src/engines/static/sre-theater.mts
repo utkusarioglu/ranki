@@ -26,5 +26,7 @@ export class DqmSreTheater extends HTMLElement {
 }
 
 export const defineSreTheater = () => {
-  customElements.define("dqm-sre-theater", DqmSreTheater);
+  if (!customElements.get("dqm-sre-theater")) {
+    customElements.define("dqm-sre-theater", DqmSreTheater);
+  }
 };

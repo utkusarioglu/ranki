@@ -28,10 +28,6 @@
     ".": {
       "types": "./types/export.d.mts",
       "default": "./lib/export.js"
-    },
-    "./utils": {
-      "types": "./types/utils/export.d.mts",
-      "default": "./lib/utils/export.js"
     }
   }
 }

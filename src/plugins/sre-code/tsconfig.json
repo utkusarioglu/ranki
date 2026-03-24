@@ -9,7 +9,8 @@
     "paths": {
       "@dqm/package-dqm-api-v2": ["../../packages/dqm-api-v2/*"],
       "@dqm/package-plugin-utils": ["../../packages/plugin-utils/*"],
-      "@dqm/plugin-params-v2": ["../params-v2/*"]
+      "@dqm/plugin-params-v2": ["../params-v2/*"],
+      "@dqm/plugin-static-render-engine": ["../static-render-engine/*"]
     }
   },
   "include": ["src/**/*"],
@@ -19,6 +20,9 @@
     },
     {
       "path": "../../packages/plugin-utils"
+    },
+    {
+      "path": "../static-render-engine"
     }
   ]
 }

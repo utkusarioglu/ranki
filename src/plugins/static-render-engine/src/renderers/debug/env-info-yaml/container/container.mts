@@ -23,7 +23,7 @@ export const container: IDqmRenderPluginRenderer = {
       },
       {
         type: "programming-language",
-        text: "yaml",
+        text: "Yaml",
       },
     ]);
     // block.getMount!().innerText = navigator.userAgent;

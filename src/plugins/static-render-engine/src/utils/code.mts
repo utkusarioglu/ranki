@@ -1,5 +1,6 @@
 import { AnkiUi } from "@ranki/package-anki-ui";
 import type Prism from "prismjs";
+import codeBlockCss from "./code-block.css?raw";
 
 export function getLineNumbersHtml(source: string) {
   return Array(source.split("\n").length)
@@ -26,7 +27,7 @@ export function getProcessedSource(source: string, noEmptyLines: boolean) {
   return raw;
 }
 
-export async function copyContent(elem: HTMLElement) {
+async function copyContent(elem: HTMLElement) {
   try {
     await navigator.clipboard.writeText(elem.innerText);
     console.log("Copied to clipboard:\n", elem.innerText);
@@ -35,7 +36,7 @@ export async function copyContent(elem: HTMLElement) {
   }
 }
 
-export function createCodePayloadScaffolding() {
+export function createCodePayloadScaffolding(prismCss: string) {
   const element = document.createElement("div");
   element.classList.add("code-block");
   const scroller = AnkiUi.horizontalScroller();
@@ -47,5 +48,31 @@ export function createCodePayloadScaffolding() {
   const content = document.createElement("span");
   code.appendChild(content);
   const left = scroller.subtree!.left();
-  return { left, content, element, scroller };
+
+  const onClick = () => copyContent(content);
+  const css = [
+    ...scroller.css!,
+    {
+      id: "prism-atom-dark",
+      css: prismCss,
+    },
+    {
+      id: "code-block-section",
+      css: codeBlockCss,
+    },
+  ];
+  const afterMount = [
+    ...(scroller.afterMount || []),
+    () => {
+      element.addEventListener("click", onClick);
+    },
+  ];
+  const beforeUnmount = [
+    ...(scroller.beforeUnmount || []),
+    () => {
+      element.removeEventListener("click", onClick);
+    },
+  ];
+
+  return { left, content, element, scroller, css, afterMount, beforeUnmount };
 }
