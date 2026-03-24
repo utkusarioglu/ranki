@@ -1039,6 +1039,7 @@ __metadata:
     "@dqm/package-dqm-api-v2": "workspace:^"
     "@dqm/package-plugin-utils": "workspace:^"
     "@dqm/plugin-frame-v2": "workspace:^"
+    "@dqm/plugin-static-render-engine": "workspace:^"
     "@ranki/config-typescript": "workspace:^"
     "@ranki/package-anki-ui": "workspace:^"
     "@types/prismjs": "npm:^1"

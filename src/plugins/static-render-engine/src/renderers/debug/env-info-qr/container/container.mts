@@ -4,13 +4,12 @@ import type { IDqmRenderPluginRenderer } from "@dqm/package-dqm-api-v2";
 import { AnkiUi } from "@ranki/package-anki-ui";
 import { TAGS } from "../constants.mjs";
 
-// @ts-expect-error
-function getElement<Elem extends HTMLElement = HTMLDivElement>(html: string) {
-  const container = document.createElement("div");
-  container.innerHTML = html;
-  const element = container.firstChild as Elem;
-  return element;
-}
+// function getElement<Elem extends HTMLElement = HTMLDivElement>(html: string) {
+//   const container = document.createElement("div");
+//   container.innerHTML = html;
+//   const element = container.firstChild as Elem;
+//   return element;
+// }
 
 export const container: IDqmRenderPluginRenderer = {
   chain: [...TAGS, "container", "block"],

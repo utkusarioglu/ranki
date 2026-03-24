@@ -84,5 +84,5 @@ export interface RenderNodeCssSpec {
   css: string;
 }
 
-export type RenderNodeOnMountCallback = () => Promise<void>;
-export type RenderNodeOnUnmountCallback = () => Promise<void>;
+export type RenderNodeOnMountCallback = () => Promise<void> | void;
+export type RenderNodeOnUnmountCallback = () => Promise<void> | void;

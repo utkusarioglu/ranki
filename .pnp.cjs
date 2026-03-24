@@ -2145,6 +2145,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/package-plugin-utils", "workspace:src/packages/plugin-utils"],\
           ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
           ["@dqm/plugin-sre-code", "workspace:src/plugins/sre-code"],\
+          ["@dqm/plugin-static-render-engine", "workspace:src/plugins/static-render-engine"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
           ["@types/prismjs", "npm:1.26.5"],\

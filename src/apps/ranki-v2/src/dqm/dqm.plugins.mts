@@ -17,14 +17,15 @@ const pluginsAsObject = {
   baseV2,
   frameV2,
   paramsV2,
-  frameV2Debug,
   frameV2Code,
+  sreCode,
+
+  frameV2Debug,
   frameV2Audio,
   frameV2Html,
   frameV2Mermaid,
   sreMusic,
   sreOsmd,
-  sreCode,
   sreMermaid,
 };
 

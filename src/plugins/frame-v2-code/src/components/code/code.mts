@@ -17,6 +17,12 @@ interface ComponentType extends IComponentCustomizationConfig {
     path: {
       cat: [number, string, boolean];
     };
+    font: {
+      size: string; // CSS length unit
+    };
+    content: {
+      no_empty_lines: boolean;
+    };
   };
 }
 
@@ -70,6 +76,12 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
           path: {
             cat: [1, "def", false],
           },
+          font: {
+            size: "", // null means css takes charge
+          },
+          content: {
+            no_empty_lines: true,
+          },
         },
       },
     },
@@ -119,6 +131,18 @@ export const frameV2CodeBlockComponent: IDqmComponent<ComponentType> = {
             id: {
               chain: ["path", "cat"],
               aliases: ["h"],
+            },
+          },
+          {
+            id: {
+              chain: ["font", "size"],
+              aliases: [],
+            },
+          },
+          {
+            id: {
+              chain: ["content", "no_empty_lines"],
+              aliases: [],
             },
           },
         ],

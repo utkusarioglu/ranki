@@ -16,6 +16,9 @@ interface ComponentType extends IComponentCustomizationConfig {
     // path: {
     //   cat: [number, string, boolean];
     // };
+    content: {
+      no_empty_lines: boolean;
+    };
   };
 }
 
@@ -48,6 +51,9 @@ export const environmentInfoYaml: IDqmComponent<ComponentType> = {
       ],
       component: {
         default: {
+          content: {
+            no_empty_lines: true,
+          },
           // language: {
           //   name: "</>",
           // },

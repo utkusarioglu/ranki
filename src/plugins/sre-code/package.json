@@ -11,6 +11,7 @@
     "@dqm/package-plugin-utils": "workspace:^",
     "@dqm/plugin-frame-v2": "workspace:^",
     "@ranki/package-anki-ui": "workspace:^",
+    "@dqm/plugin-static-render-engine": "workspace:^",
     "prismjs": "^1.30.0"
   },
   "devDependencies": {
