@@ -12,12 +12,13 @@ import type {
   DqmConfigPackPartial,
   DqmParseInput,
   DqmParseInputStructured,
-  DqmParseOutput,
-  DqmSerializeOutput,
-  DqmTransformOutput,
+  // DqmAstOutput,
+  // DqmSerializeOutput,
+  // DqmTransformOutput,
   GroupedPluginExamples,
   IDqmPlugin,
   IPlugins,
+  DqmParseOutput,
 } from "@dqm/package-dqm-api-v2";
 import { DqmAppError } from "./errors/dqm-app-error/dqm-app-error.mjs";
 import { Unique } from "./unique/unique.mjs";
@@ -31,9 +32,7 @@ import { Cpx } from "./nodes/cp/cpx/cpx.mjs";
 export class Dqm {
   private plugins: IPlugins = new Libs();
   private config = new Config();
-  private parsed!: DqmParseOutput;
-  private transformed!: DqmTransformOutput;
-  private serialized!: DqmSerializeOutput;
+  private parsed = {} as DqmParseOutput;
 
   constructor(configPacks: DqmConfigPackPartial, plugins: IDqmPlugin[]) {
     Unique.reset();
@@ -88,7 +87,7 @@ export class Dqm {
   ): Promise<RenderReport> {
     try {
       this.parse(rawInputs);
-      return this.plugins.render(this.serialized, roots, pref);
+      return this.plugins.render(this.parsed.ser, roots, pref);
     } catch (e) {
       throw new DqmAppError({
         code: "RENDER_FAIL",
@@ -108,13 +107,13 @@ export class Dqm {
     };
   }
 
-  private ast(rawInputs: DqmParseInput): DqmParseOutput {
+  private ast(rawInputs: DqmParseInput): void {
     try {
       const initial = this.config.getConfig<DqmConfig>(INITIAL_CONFIG_NAME);
       const inputs = this.processInput(rawInputs);
       const { chain } = initial.plugins.default;
       const transports = this.getTransports();
-      this.parsed = inputs.map((input) => {
+      this.parsed.ast = inputs.map((input) => {
         const cpx = new Cpx(transports).setAstParams([]).setIdList([chain]);
         const ast = new AstNode(transports);
         cpx.setRootAst(ast);
@@ -129,7 +128,7 @@ export class Dqm {
           ast: parsedAst,
         };
       });
-      return this.parsed;
+      // return this.parsed;
     } catch (e) {
       throw new DqmAppError({
         code: "PARSE_FAIL",
@@ -143,7 +142,7 @@ export class Dqm {
   }
 
   private validate() {
-    this.parsed.forEach((v) => {
+    this.parsed.ast.forEach((v) => {
       const cpx = v.ast.getCpx();
       assertExists(cpx, {
         why: "Parsed asts are expected to have an attached Cpx",
@@ -153,14 +152,14 @@ export class Dqm {
   }
 
   private transform() {
-    this.transformed = new DqmTransformer(this.getTransports()).transform(
-      this.parsed,
+    this.parsed.trn = new DqmTransformer(this.getTransports()).transform(
+      this.parsed.ast,
     );
     // this.transformed = transform(this.parsed, this.getTransports());
   }
 
   private serialize() {
-    this.serialized = this.transformed.map(({ theater, tCpx }) => ({
+    this.parsed.ser = this.parsed.trn.map(({ theater, tCpx }) => ({
       theater,
       serialized: tCpx.serialize({
         props: ["component", "dqm", "astRootCreator"],

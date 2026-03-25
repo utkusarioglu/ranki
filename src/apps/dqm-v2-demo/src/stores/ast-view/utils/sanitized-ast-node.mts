@@ -1,4 +1,4 @@
-import type { DqmParseOutput } from "@dqm/package-dqm-api-v2";
+import type { DqmAstOutput } from "@dqm/package-dqm-api-v2";
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
 import type { SanitizedNodeView } from "../ast-view.store.types.mts";
 import type { ParseResult } from "../../dqm/dqm.utils.types.mts";
@@ -222,7 +222,7 @@ class AstSanitizedNarrowed {
 }
 
 function sanitizeAst(
-  parsed: DqmParseOutput,
+  parsed: DqmAstOutput,
   features: SanitizedNodeViewPreferences,
 ): SanitizedAstNew[] {
   return parsed.map((p) => {
@@ -246,7 +246,7 @@ export function createSanitized(
       };
     }
     const filteredIds = filterIds(visible);
-    const sanitized = sanitizeAst(parsed.data, filteredIds);
+    const sanitized = sanitizeAst(parsed.data.ast, filteredIds);
     return {
       state: "success",
       data: {

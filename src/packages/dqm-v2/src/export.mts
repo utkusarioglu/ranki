@@ -2,7 +2,7 @@ export type {
   DqmParseInput,
   DqmParseInputString,
   DqmParseInputStructured,
-  DqmParseOutput,
+  DqmAstOutput,
   DqmParseRole,
   DqmParseTheater,
   RenderRoots,

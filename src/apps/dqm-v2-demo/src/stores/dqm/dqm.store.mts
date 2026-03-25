@@ -43,7 +43,7 @@ const dqmStoreInitial: DqmStoreState = {
   ...createDqmParsedProp({
     inputs: INPUTS,
     autoUpdate: AUTO_UPDATE,
-    parsed: { state: "success", data: [] },
+    parsed: { state: "success", data: { ast: [], trn: [], ser: [] } },
     configPack: [],
     pluginSelection: pluginSelectionInit,
     parseEpoch: 0,

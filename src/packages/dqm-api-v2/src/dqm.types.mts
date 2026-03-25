@@ -12,11 +12,11 @@ export type DqmParseTheater = string & { type?: "DqmParseTheater" };
 
 export type DqmParseRole = string & { type?: "DqmParseRole" };
 
-export interface DqmParseOutputTheater {
+export interface DqmAstOutputTheater {
   theater: DqmParseTheater;
   ast: IAstNode;
 }
-export type DqmParseOutput = DqmParseOutputTheater[];
+export type DqmAstOutput = DqmAstOutputTheater[];
 
 export type DqmRecord = Record<DqmParseTheater, DqmParseInputString>;
 
@@ -38,3 +38,9 @@ export interface DqmSerializeOutputTheater {
 }
 
 export type DqmSerializeOutput = DqmSerializeOutputTheater[];
+
+export interface DqmParseOutput {
+  ast: DqmAstOutput;
+  trn: DqmTransformOutput;
+  ser: DqmSerializeOutput;
+}

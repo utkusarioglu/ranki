@@ -1,7 +1,7 @@
 import type {
   ChildrenNodes,
-  DqmParseOutput,
-  DqmParseOutputTheater,
+  DqmAstOutput,
+  DqmAstOutputTheater,
   DqmTransformOutput,
   DqmTransformOutputTheater,
   IAstNode,
@@ -31,13 +31,13 @@ export type TCpxRegistry = WeakMap<ICpx, ITCpxNode>;
 export class DqmTransformer extends CommonTransports {
   private tCpxRegistry: TCpxRegistry = new WeakMap();
 
-  transform(parsed: DqmParseOutput): DqmTransformOutput {
+  transform(parsed: DqmAstOutput): DqmTransformOutput {
     const graph = parsed.map((t) => this.buildGraph(t));
     graph.forEach((g) => g.tCpx.transform());
     return graph;
   }
 
-  private buildGraph(t: DqmParseOutputTheater): DqmTransformOutputTheater {
+  private buildGraph(t: DqmAstOutputTheater): DqmTransformOutputTheater {
     const cpx = t.ast.getCpx();
     assertExists(cpx, {
       why: "Parsed asts are expected to have an attached Cpx",

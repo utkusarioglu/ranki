@@ -35,12 +35,15 @@ export const AstGraph = () => {
     return null;
   }
 
-  if (dqm.parsed.data.length < 1) {
+  if (dqm.parsed.data.ast.length < 1) {
     return <div>No theaters</div>;
   }
 
   const data = dqm.parsed.data;
-  const elements = useMemo(() => buildElements(data[0].ast), [data[0].ast]);
+  const elements = useMemo(
+    () => buildElements(data.ast[0].ast),
+    [data.ast[0].ast],
+  );
 
   if (elements === null) {
     // TODO
