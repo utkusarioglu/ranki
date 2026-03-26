@@ -13,7 +13,7 @@ import sreCode from "@dqm/plugin-sre-code";
 import sreMermaid from "@dqm/plugin-sre-mermaid";
 
 const pluginsAsObject = {
-  staticRenderEngine,
+  // staticRenderEngine,
   baseV2,
   frameV2,
   paramsV2,
@@ -22,10 +22,10 @@ const pluginsAsObject = {
   frameV2Audio,
   frameV2Html,
   frameV2Mermaid,
-  sreMusic,
-  sreOsmd,
-  sreCode,
-  sreMermaid,
+  // sreMusic,
+  // sreOsmd,
+  // sreCode,
+  // sreMermaid,
 };
 
 export const pluginsAsArray = Object.values(pluginsAsObject);

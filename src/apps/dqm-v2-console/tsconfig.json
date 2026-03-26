@@ -7,13 +7,17 @@
     "useDefineForClassFields": true,
     "experimentalDecorators": true,
     "paths": {
-      "@dqm/package-dqm-v2": ["../../packages/dqm-v2/*"]
+      "@dqm/package-dqm-v2": ["../../packages/dqm-v2/*"],
+      "@dqm/package-dqm-v2-debug": ["../../packages/dqm-v2-debug/*"]
     }
   },
   "include": ["src/**/*"],
   "references": [
     {
       "path": "../../packages/dqm-v2"
+    },
+    {
+      "path": "../../packages/dqm-v2-debug"
     }
   ]
 }

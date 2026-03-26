@@ -65,9 +65,18 @@ export class Libs implements IPlugins {
           });
           break;
         case "renderer":
-          assertExists(this.renderEngine, {
-            why: "Cannot accept renderer plugins before instantiating a rendering engine",
-          });
+          // DECIDE render plugins can be added before a render engine in some circumstances
+          if (!this.renderEngine) {
+            console.log(
+              "Ignoring render plugin",
+              entry.meta.name,
+              "because it's added before a render engine",
+            );
+            break;
+          }
+          // assertExists(this.renderEngine, {
+          //   why: "Cannot accept renderer plugins before instantiating a rendering engine",
+          // });
           this.renderEngine.addPlugin(entry);
           break;
         case "component-set":

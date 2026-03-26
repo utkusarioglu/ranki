@@ -10,7 +10,9 @@
     }
   },
   "scripts": {
+    "preview-console": "yarn build-console && yarn run-console",
     "build-console": "yarn rollup -c",
+    "run-console": "node dist/console.js",
     "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig.tsbuildinfo"
   },
   "devDependencies": {
@@ -33,6 +35,7 @@
   },
   "dependencies": {
     "@dqm/package-dqm-v2": "workspace:^",
+    "@dqm/package-dqm-v2-debug": "workspace:^",
     "@dqm/plugin-base-v2": "workspace:^",
     "@dqm/plugin-frame-v2": "workspace:^",
     "@dqm/plugin-frame-v2-audio": "workspace:^",

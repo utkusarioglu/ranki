@@ -1,7 +1,7 @@
 import type { DqmAstOutput } from "@dqm/package-dqm-api-v2";
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
 import type { SanitizedNodeView } from "../ast-view.store.types.mts";
-import type { SanitizedParseResult } from "../../dqm/dqm.utils.types.mts";
+import type { ParseResult } from "../../dqm/dqm.utils.types.mts";
 import type {
   SanitizedNodeViewPreferences,
   SanitizedNodePartialNew,
@@ -235,7 +235,7 @@ function sanitizeAst(
 }
 
 export function createSanitized(
-  parsed: SanitizedParseResult,
+  parsed: ParseResult,
   visible: SanitizedNodeView,
 ): SanitizeResultNew {
   try {

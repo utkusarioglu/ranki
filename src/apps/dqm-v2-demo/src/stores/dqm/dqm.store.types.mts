@@ -9,7 +9,7 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import type { ArrangementTemplateGroup } from "../../components/menus/menu-drawer/templates/arrangement-template/ArrangementTemplate.types.mts";
 import type { SingleTemplateGroup } from "../../components/menus/menu-drawer/templates/single-template/SingleTemplate.types.mts";
-import type { ParseResult } from "./dqm.utils.types.mts";
+import type { SanitizedParseResult } from "./dqm.utils.types.mts";
 
 export type DqmStore = DqmStoreState & DqmStoreActions;
 
@@ -45,7 +45,7 @@ export interface DqmStoreState {
   configPack: ConfigInput[];
 
   parseEpoch: number;
-  parsed: ParseResult;
+  parsed: SanitizedParseResult;
   autoUpdate: boolean;
   inputs: DqmParseInputStructured;
 }

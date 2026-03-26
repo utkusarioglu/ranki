@@ -11,7 +11,7 @@ import type {
   DqmStore,
   PluginStoreWrapper,
 } from "./dqm.store.types.mts";
-import type { ParseResult } from "./dqm.utils.types.mts";
+import type { SanitizedParseResult } from "./dqm.utils.types.mts";
 import yaml from "yaml";
 
 // export function renderDqm(
@@ -41,7 +41,7 @@ export function parseDqm(
   input: DqmParseInputStructured,
   config: DqmConfigPack,
   plugins: IDqmPlugin[],
-): ParseResult {
+): SanitizedParseResult {
   try {
     const dqm = new Dqm(config, plugins);
     const data = dqm.parse(input);

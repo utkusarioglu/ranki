@@ -10,4 +10,4 @@ interface ParseResultFail {
   error: string;
 }
 
-export type ParseResult = SanitizeResultSuccess | ParseResultFail;
+export type SanitizedParseResult = SanitizeResultSuccess | ParseResultFail;

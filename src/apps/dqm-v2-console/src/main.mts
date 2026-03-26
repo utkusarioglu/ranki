@@ -6,12 +6,15 @@ import yaml from "yaml";
 import { sanitizeSingle } from "./sanitize.mjs";
 import type { IDqmError } from "@dqm/package-dqm-api-v2";
 import { pluginsAsArray } from "./dqm.plugins.mjs";
+import { TEST } from "@dqm/package-dqm-v2-debug";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.join(dirname, "..");
 const filePath = path.join(repoRoot, "assets/example.dqm");
 
 const file = fs.readFileSync(filePath).toString();
+
+console.log("T", TEST);
 
 export function main(raw: string) {
   const FEATURES = ["idList", "creator", "source", "subtree", "children"];
@@ -35,7 +38,7 @@ export function main(raw: string) {
   );
   try {
     const res = dqm.parse(raw);
-    const sanitized = res.map((n) => ({
+    const sanitized = res.ast.map((n) => ({
       theater: n.theater,
       sanitized: sanitizeSingle(n.ast, FEATURES),
     }));
