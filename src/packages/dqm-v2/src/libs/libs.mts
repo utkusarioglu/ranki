@@ -20,6 +20,7 @@ import type {
   TransformClass,
   DqmGrammarPluginsAggregatedConfig,
   ITrnNodeConstructor,
+  DqmConfigPackEntryPartial,
 } from "@dqm/package-dqm-api-v2";
 import { ComponentLib } from "./component/component-lib.mjs";
 import { Cpx } from "../nodes/cp/cpx/cpx.mjs";
@@ -44,16 +45,23 @@ export class Libs implements IPlugins {
   private readonly transformers = new TransformLib();
   private renderEngine: IDqmRenderEngine | null = null;
 
-  addPlugins(plugins: IDqmPlugin[]): void {
+  addPlugins(
+    plugins: IDqmPlugin[],
+    options: DqmConfigPackEntryPartial | undefined,
+  ): void {
     plugins.forEach((plugin) => {
-      this.addPlugin(plugin);
+      this.addPlugin(plugin, options);
     });
   }
 
-  addPlugin(plugin: IDqmPlugin): IPlugins {
+  addPlugin(
+    plugin: IDqmPlugin,
+    config: DqmConfigPackEntryPartial | undefined,
+  ): IPlugins {
     plugin.forEach((entry) => {
       switch (entry.type) {
         case "render-engine":
+          if (config?.config.plugins?.ignoreRenderPlugins) break;
           assertNull(this.renderEngine, {
             why: "Current only one render engine can be installed",
           });
@@ -65,18 +73,10 @@ export class Libs implements IPlugins {
           });
           break;
         case "renderer":
-          // DECIDE render plugins can be added before a render engine in some circumstances
-          if (!this.renderEngine) {
-            console.log(
-              "Ignoring render plugin",
-              entry.meta.name,
-              "because it's added before a render engine",
-            );
-            break;
-          }
-          // assertExists(this.renderEngine, {
-          //   why: "Cannot accept renderer plugins before instantiating a rendering engine",
-          // });
+          if (config?.config.plugins?.ignoreRenderPlugins) break;
+          assertExists(this.renderEngine, {
+            why: "Cannot accept renderer plugins before instantiating a rendering engine",
+          });
           this.renderEngine.addPlugin(entry);
           break;
         case "component-set":

@@ -11,6 +11,7 @@ export const DEFAULT_CONFIG: DqmConfig = {
     suffix: "",
   },
   plugins: {
+    ignoreRenderPlugins: false,
     onAbsentComponent: "useDefaultComponent",
     onOrphanParam: "ignore",
     onOrphanChannel: "ignore",

@@ -894,6 +894,7 @@ __metadata:
   resolution: "@dqm/package-dqm-v2-debug@workspace:src/packages/dqm-v2-debug"
   dependencies:
     "@dqm/package-dqm-api-v2": "workspace:^"
+    "@dqm/package-dqm-utils": "workspace:^"
     "@ranki/config-typescript": "workspace:^"
     typescript: "npm:^6.0.2"
   languageName: unknown

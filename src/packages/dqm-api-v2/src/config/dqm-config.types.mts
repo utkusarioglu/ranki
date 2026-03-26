@@ -51,6 +51,7 @@ export type DqmConfigOnAbsentComponent = "fail" | "useDefaultComponent";
 export interface DqmConfig {
   stage: DqmStages;
   plugins: {
+    ignoreRenderPlugins: boolean;
     onAbsentComponent: DqmConfigOnAbsentComponent;
     onOrphanChannel: DqmConfigOnOrphanChannel;
     onOrphanParam: DqmConfigOnOrphanParam;

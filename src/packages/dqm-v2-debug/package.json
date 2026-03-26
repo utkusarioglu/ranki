@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@dqm/package-dqm-api-v2": "workspace:^",
+    "@dqm/package-dqm-utils": "workspace:^",
     "@ranki/config-typescript": "workspace:^",
     "typescript": "^6.0.2"
   },

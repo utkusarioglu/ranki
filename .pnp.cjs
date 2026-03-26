@@ -2000,6 +2000,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./src/packages/dqm-v2-debug/",\
         "packageDependencies": [\
           ["@dqm/package-dqm-api-v2", "workspace:src/packages/dqm-api-v2"],\
+          ["@dqm/package-dqm-utils", "workspace:src/packages/dqm-utils"],\
           ["@dqm/package-dqm-v2-debug", "workspace:src/packages/dqm-v2-debug"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["typescript", "patch:typescript@npm%3A6.0.2#optional!builtin<compat/typescript>::version=6.0.2&hash=5786d5"]\

@@ -1,1 +1,1 @@
-export const TEST = 10;
+export { createSanitizedAst } from "./sanitize/ast/ast.mjs";

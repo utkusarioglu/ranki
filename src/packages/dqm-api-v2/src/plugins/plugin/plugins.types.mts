@@ -3,6 +3,7 @@ import type {
   DqmInternalConfig,
   DqmGrammarPluginsAggregatedConfig,
   DqmPluginsTokens,
+  DqmConfigPackEntryPartial,
 } from "../../config/dqm-config.types.mjs";
 import type { IAstNodeConstructor } from "../../nodes/ast/base/i-ast-node.types.mjs";
 import type { ICpxConstructor } from "../../nodes/cp/export.types.mjs";
@@ -40,6 +41,10 @@ export interface IPluginLib<
   add(plugin: In): this;
 }
 
+export interface IPluginOptions {
+  ignoreRenderPlugins: boolean;
+}
+
 export interface IPlugins {
   getComponentById(id: Chain | Alias): IDqmComponent;
   getParser(config: DqmInternalConfig): IParser;
@@ -47,7 +52,10 @@ export interface IPlugins {
     defaultConfig: DqmConfig,
   ): DqmGrammarPluginsAggregatedConfig;
   getTokens(config: DqmConfig): DqmPluginsTokens;
-  addPlugins(plugins: IDqmPlugin[]): void;
+  addPlugins(
+    plugins: IDqmPlugin[],
+    options: DqmConfigPackEntryPartial | undefined,
+  ): void;
 
   getTransformer(
     chain: Chain,

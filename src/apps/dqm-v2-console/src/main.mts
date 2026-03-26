@@ -3,10 +3,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { Dqm } from "@dqm/package-dqm-v2";
 import yaml from "yaml";
-import { sanitizeSingle } from "./sanitize.mjs";
+// import { sanitizeSingle } from "./sanitize.mjs";
 import type { IDqmError } from "@dqm/package-dqm-api-v2";
 import { pluginsAsArray } from "./dqm.plugins.mjs";
-import { TEST } from "@dqm/package-dqm-v2-debug";
+import { createSanitizedAst } from "@dqm/package-dqm-v2-debug";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.join(dirname, "..");
@@ -14,10 +14,11 @@ const filePath = path.join(repoRoot, "assets/example.dqm");
 
 const file = fs.readFileSync(filePath).toString();
 
-console.log("T", TEST);
+const props = ["idList", "creator", "cpxUnique"];
+const children = ["subtreeNodes", "childrenNodes", "tokenNodes", "spaceNodes"];
+const stable = ["sourceString"];
 
 export function main(raw: string) {
-  const FEATURES = ["idList", "creator", "source", "subtree", "children"];
   const dqm = new Dqm(
     [
       {
@@ -25,6 +26,7 @@ export function main(raw: string) {
         config: {
           // @ts-ignore it expects the entire object
           plugins: {
+            ignoreRenderPlugins: true,
             requested: [
               "grammar:ParamsV2",
               "grammar:FrameV2",
@@ -37,11 +39,31 @@ export function main(raw: string) {
     pluginsAsArray,
   );
   try {
-    const res = dqm.parse(raw);
-    const sanitized = res.ast.map((n) => ({
-      theater: n.theater,
-      sanitized: sanitizeSingle(n.ast, FEATURES),
-    }));
+    const parsed = dqm.parse(raw);
+
+    const sanitized = createSanitizedAst(
+      { state: "success", data: parsed },
+      {
+        props: props.map((f) => ({ id: f, visible: true })),
+        // hidden: [],
+        children: children.map((f) => ({ id: f, visible: true })),
+        stable: stable.map((f) => ({ id: f, visible: true })),
+      },
+    );
+
+    // const sanitized = parsed.ast.map((n) => ({
+    //   theater: n.theater,
+    //   sanitized: createSanitizedAst(
+    //     { state: "success", data: { ast: [n] } },
+    //     {
+    //       props: props.map((f) => ({ id: f, visible: true })),
+    //       // hidden: [],
+    //       children: children.map((f) => ({ id: f, visible: true })),
+    //       stable: stable.map((f) => ({ id: f, visible: true })),
+    //     },
+    //   ),
+    //   // sanitized: sanitizeSingle(n.ast, FEATURES),
+    // }));
     if (process.argv.includes("print")) {
       console.log(yaml.stringify(sanitized));
     }

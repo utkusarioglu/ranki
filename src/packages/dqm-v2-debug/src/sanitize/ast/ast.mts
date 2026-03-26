@@ -1,7 +1,7 @@
 import type { DqmAstOutput } from "@dqm/package-dqm-api-v2";
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
-import type { SanitizedNodeView } from "../ast-view.store.types.mts";
-import type { ParseResult } from "../../dqm/dqm.utils.types.mts";
+import type { SanitizedNodeView } from "./ast-view.store.types.mts";
+import type { SanitizedParseResult } from "./dqm.utils.types.mts";
 import type {
   SanitizedNodeViewPreferences,
   SanitizedNodePartialNew,
@@ -9,16 +9,16 @@ import type {
   SanitizeResultNew,
 } from "./sanitized-ast-node.types.mts";
 // import { assertExists } from "_assertions";
-import {
-  createSanitizedView,
-  type ClassSanitizer,
-} from "../../../utils/sanitizer.mts";
+import { createSanitizedView, type ClassSanitizer } from "./sanitizer.mjs";
 import {
   tryCatch,
   tryCatchLeap,
   type TryCatch,
-} from "../../../utils/utils.mts";
-import { assertExists, assertTryCatchSuccess } from "_assertions";
+} from "../../utils/try-catch.mjs";
+import {
+  assertExists,
+  assertTryCatchSuccess,
+} from "../../errors/assertions.mjs";
 
 class AstSanitizedNarrowed {
   private node: ClassSanitizer<IAstNode>;
@@ -234,8 +234,8 @@ function sanitizeAst(
   });
 }
 
-export function createSanitized(
-  parsed: ParseResult,
+export function createSanitizedAst(
+  parsed: SanitizedParseResult,
   visible: SanitizedNodeView,
 ): SanitizeResultNew {
   try {
