@@ -1,4 +1,4 @@
-import type { TryCatch } from "_utils/utils.mjs";
+import type { TryCatch } from "@dqm/package-dqm-v2-debug";
 import type { E, Flattened, N, TraversalNode } from "./build.types.mts";
 import type { UniqueValue } from "@dqm/package-dqm-api-v2";
 

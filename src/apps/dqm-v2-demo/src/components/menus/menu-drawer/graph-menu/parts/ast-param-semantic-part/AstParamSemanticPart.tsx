@@ -3,7 +3,7 @@ import type { FC } from "react";
 import { PropertyTable } from "../../tables/PropertyTable";
 import { SectionTitle } from "../../section-title/SectionTitle";
 import type { PropertyTableRows } from "../../tables/PropertyTable";
-import type { ClassSanitizer } from "_utils/sanitizer.mjs";
+import type { ClassSanitizer } from "@dqm/package-dqm-v2-debug";
 
 interface GraphMenuAstParamSemanticPartProps {
   param: ClassSanitizer<IAstParamNode>;

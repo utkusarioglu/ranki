@@ -34,7 +34,16 @@ export class Dqm {
   private config = new Config();
   private parsed = {} as DqmParseOutput;
 
-  constructor(configPacks: DqmConfigPackPartial, plugins: IDqmPlugin[]) {
+  /**
+   * @dev
+   * #1 The first config pack of the array has a special purpose. It can tell
+   * the plugin library how to work. For example, it can tell the plugin
+   * library to ignore render related plugins
+   */
+  constructor(
+    configPacks: DqmConfigPackPartial, // #1
+    plugins: IDqmPlugin[],
+  ) {
     Unique.reset();
     this.plugins.addPlugins(plugins, configPacks[0]);
     this.buildInitialConfig(configPacks);

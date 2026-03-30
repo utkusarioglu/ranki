@@ -1,12 +1,12 @@
 import { type FC } from "react";
 import { SectionTitle } from "../../section-title/SectionTitle";
 import type { ICps } from "@dqm/package-dqm-api-v2";
-import type { ClassSanitizer } from "_utils/sanitizer.mjs";
+import type { ClassSanitizer } from "@dqm/package-dqm-v2-debug";
 import { Typography } from "antd";
 import style from "./CpsParamChannelsPart.module.css";
 import { ExceptionCard } from "_views/exception-card/ExceptionCard";
 import { TryCatchSourceCard } from "_views/try-catch-source-card/TryCatchSourceCard";
-import { tryCatch } from "_utils/utils.mjs";
+import { tryCatch } from "@dqm/package-dqm-v2-debug";
 
 interface CpsParamChannelsPartProps {
   cps: ClassSanitizer<ICps>;

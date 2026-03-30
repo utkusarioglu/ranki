@@ -1,7 +1,7 @@
 import { type FC, type ReactNode } from "react";
 import { SectionTitle } from "../../section-title/SectionTitle";
 import type { ICpsParam } from "@dqm/package-dqm-api-v2";
-import type { ClassSanitizer } from "_utils/sanitizer.mjs";
+import type { ClassSanitizer } from "@dqm/package-dqm-v2-debug";
 import { TryCatchSourceCard } from "_views/try-catch-source-card/TryCatchSourceCard";
 import { Typography } from "antd";
 import { ExceptionCard } from "_views/exception-card/ExceptionCard";

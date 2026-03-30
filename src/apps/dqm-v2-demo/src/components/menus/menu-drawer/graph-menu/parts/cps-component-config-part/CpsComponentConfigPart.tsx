@@ -1,7 +1,7 @@
 import { type FC } from "react";
 import { SectionTitle } from "../../section-title/SectionTitle";
 import type { ICps } from "@dqm/package-dqm-api-v2";
-import type { ClassSanitizer } from "_utils/sanitizer.mjs";
+import type { ClassSanitizer } from "@dqm/package-dqm-v2-debug";
 import { Typography } from "antd";
 import { TryCatchSourceCard } from "_views/try-catch-source-card/TryCatchSourceCard";
 

@@ -3,7 +3,7 @@ import type {
   TryCatch,
   TryCatchFail,
   TryCatchSuccess,
-} from "../../../utils/utils.mts";
+} from "@dqm/package-dqm-v2-debug";
 import { Typography } from "antd";
 
 interface TryCatchProps<T> {

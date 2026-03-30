@@ -2,7 +2,7 @@ import { type FC, type ReactNode } from "react";
 import { TryCatchView } from "_views/try-catch/try-catch";
 import { YamlDisplay } from "_views/yaml-display/YamlDisplay";
 import style from "./TryCatchSourceCard.module.css";
-import type { TryCatch } from "_utils/utils.mjs";
+import type { TryCatch } from "@dqm/package-dqm-v2-debug";
 
 interface TryCatchSourceCardProps {
   topDescription?: ReactNode;

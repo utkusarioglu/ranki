@@ -173,7 +173,9 @@ function sanitizeAst(parsed, features) {
         };
     });
 }
-export function createSanitizedAst(parsed, visible) {
+export function createSanitizedAst(parsed, 
+// visible: SanitizedNodeView,
+visible) {
     try {
         if (parsed.state !== "success") {
             return {
@@ -181,8 +183,8 @@ export function createSanitizedAst(parsed, visible) {
                 error: parsed.error,
             };
         }
-        const filteredIds = filterIds(visible);
-        const sanitized = sanitizeAst(parsed.data.ast, filteredIds);
+        // const filteredIds = filterIds(visible);
+        const sanitized = sanitizeAst(parsed.data.ast, visible);
         return {
             state: "success",
             data: {
@@ -199,11 +201,13 @@ export function createSanitizedAst(parsed, visible) {
         };
     }
 }
-function filterIds(all) {
-    // @ts-expect-error
-    return Object.fromEntries(Object.entries(all).map(([k, v]) => {
-        // @ts-expect-error
-        const b = v.filter((l) => l.visible).map((v) => v.id);
-        return [k, b];
-    }));
-}
+// function filterIds(all: SanitizedNodeView): SanitizedNodeViewPreferences {
+//   // @ts-expect-error
+//   return Object.fromEntries(
+//     Object.entries(all).map(([k, v]) => {
+//       // @ts-expect-error
+//       const b = v.filter((l) => l.visible).map((v) => v.id);
+//       return [k, b];
+//     }),
+//   );
+// }

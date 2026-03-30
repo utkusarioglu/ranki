@@ -1,4 +1,4 @@
-import type { TryCatch, TryCatchSuccess } from "../utils/utils.mts";
+import type { TryCatch, TryCatchSuccess } from "@dqm/package-dqm-v2-debug";
 import {
   DqmDemoError,
   type DqmPluginErrorConstructorParams,

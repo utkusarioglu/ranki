@@ -1,7 +1,7 @@
 import type { ICps } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
 import { cls, uniqueLabel } from "./utils.mts";
-import { createSanitizedView } from "../../../../utils/sanitizer.mts";
+import { createSanitizedView } from "@dqm/package-dqm-v2-debug";
 import { assertTryCatchSuccess } from "_assertions";
 
 export function traverseCps(raw: ICps | null, cpsDepth: number): void {

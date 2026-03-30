@@ -6,7 +6,7 @@ import { GraphMenuCpsParamCountsPart } from "../../parts/cps-param-counts-part/C
 import { GraphMenuCpsAstParamsPart } from "../../parts/cps-ast-params-part/CpsAstParamsPart";
 import { GraphMenuAstParamSemanticPart } from "../../parts/ast-param-semantic-part/AstParamSemanticPart";
 import type { IAstParamNode } from "@dqm/package-dqm-api-v2";
-import type { ClassSanitizer } from "_utils/sanitizer.mjs";
+import type { ClassSanitizer } from "@dqm/package-dqm-v2-debug";
 import { CpsParamMutationEntriesPart } from "../../parts/cps-param-mutation-entries-part/CpsParamMutationEntriesPart";
 
 interface GraphMenuCpsParamProps {

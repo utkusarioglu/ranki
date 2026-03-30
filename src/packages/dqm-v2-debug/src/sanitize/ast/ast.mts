@@ -1,6 +1,6 @@
 import type { DqmAstOutput } from "@dqm/package-dqm-api-v2";
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
-import type { SanitizedNodeView } from "./ast-view.store.types.mts";
+// import type { SanitizedNodeView } from "./ast-view.store.types.mts";
 import type { SanitizedParseResult } from "./dqm.utils.types.mts";
 import type {
   SanitizedNodeViewPreferences,
@@ -236,7 +236,8 @@ function sanitizeAst(
 
 export function createSanitizedAst(
   parsed: SanitizedParseResult,
-  visible: SanitizedNodeView,
+  // visible: SanitizedNodeView,
+  visible: SanitizedNodeViewPreferences,
 ): SanitizeResultNew {
   try {
     if (parsed.state !== "success") {
@@ -245,8 +246,8 @@ export function createSanitizedAst(
         error: parsed.error,
       };
     }
-    const filteredIds = filterIds(visible);
-    const sanitized = sanitizeAst(parsed.data.ast, filteredIds);
+    // const filteredIds = filterIds(visible);
+    const sanitized = sanitizeAst(parsed.data.ast, visible);
     return {
       state: "success",
       data: {
@@ -263,14 +264,14 @@ export function createSanitizedAst(
   }
 }
 
-function filterIds(all: SanitizedNodeView): SanitizedNodeViewPreferences {
-  // @ts-expect-error
-  return Object.fromEntries(
-    Object.entries(all).map(([k, v]) => {
-      // @ts-expect-error
-      const b = v.filter((l) => l.visible).map((v) => v.id);
+// function filterIds(all: SanitizedNodeView): SanitizedNodeViewPreferences {
+//   // @ts-expect-error
+//   return Object.fromEntries(
+//     Object.entries(all).map(([k, v]) => {
+//       // @ts-expect-error
+//       const b = v.filter((l) => l.visible).map((v) => v.id);
 
-      return [k, b];
-    }),
-  );
-}
+//       return [k, b];
+//     }),
+//   );
+// }

@@ -76,8 +76,8 @@ export interface SanitizedNodeStable {
   sourceString: AstSourceString;
 }
 export interface SanitizedNodeViewPreferences {
-  hidden: (keyof SanitizedNodeHidden)[];
   props: (keyof SanitizedNodeProps)[];
+  hidden: (keyof SanitizedNodeHidden)[];
   children: (keyof SanitizedNodeChildren)[];
   stable: (keyof SanitizedNodeStable)[];
 }

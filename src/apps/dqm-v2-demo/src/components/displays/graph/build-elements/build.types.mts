@@ -1,6 +1,6 @@
 import type { ICpx, IAstNode, ICps } from "@dqm/package-dqm-api-v2";
 import type { DqmNodeTypes } from "_types/vendor/dqm.types.mjs";
-import type { ClassSanitizerUnion } from "_utils/sanitizer.mjs";
+import type { ClassSanitizerUnion } from "@dqm/package-dqm-v2-debug";
 
 /**
  * Cytoscape Edge

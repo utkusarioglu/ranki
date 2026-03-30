@@ -1,6 +1,6 @@
 import { useMemo, type FC } from "react";
 import { Table, Typography } from "antd";
-import type { TryCatch } from "_utils/utils.mjs";
+import type { TryCatch } from "@dqm/package-dqm-v2-debug";
 import { TryCatchView } from "_views/try-catch/try-catch";
 
 type PropertyTableValueTuple = [string, TryCatch<any>];

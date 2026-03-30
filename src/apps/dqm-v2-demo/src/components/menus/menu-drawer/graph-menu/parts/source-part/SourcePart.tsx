@@ -4,9 +4,9 @@ import type { FC } from "react";
 import { PropertyTable } from "../../tables/PropertyTable";
 import { SectionTitle } from "../../section-title/SectionTitle";
 import { type PropertyTableRows } from "../../tables/PropertyTable";
-import type { ClassSanitizer } from "_utils/sanitizer.mts";
+import type { ClassSanitizer } from "@dqm/package-dqm-v2-debug";
 import { TryCatchView } from "_views/try-catch/try-catch";
-import { tryCatchLeap } from "_utils/utils.mjs";
+import { tryCatchLeap } from "@dqm/package-dqm-v2-debug";
 import { ExceptionCard } from "_views/exception-card/ExceptionCard";
 
 interface GraphMenuSourcePartProps {

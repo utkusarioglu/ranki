@@ -1,7 +1,7 @@
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
 import { Registry } from "./registry.mts";
 import { cls, uniqueLabel } from "./utils.mts";
-import { createSanitizedView } from "_utils/sanitizer.mts";
+import { createSanitizedView } from "@dqm/package-dqm-v2-debug";
 import { assertTryCatchSuccess } from "_assertions";
 
 /**

@@ -1,11 +1,15 @@
 import { create } from "zustand";
-import type { AstViewStore } from "./ast-view.store.types.mts";
+import type {
+  AstViewStore,
+  SanitizedNodeView,
+  SanitizedNodeViewPreferences,
+} from "./ast-view.store.types.mts";
 import type {
   SanitizedNodeChildren,
   SanitizedNodeHidden,
   SanitizedNodeProps,
   SanitizedNodeStable,
-} from "./utils/sanitized-ast-node.types.mts";
+} from "@dqm/package-dqm-v2-debug";
 
 export const useAstViewStore = create<AstViewStore>((set) => ({
   props: wrapVisible<SanitizedNodeProps>(
@@ -46,4 +50,18 @@ export function wrapVisible<T>(visible: (keyof T)[], hidden: (keyof T)[]) {
     ...visible.map((id) => ({ visible: true, id })),
     ...hidden.map((id) => ({ visible: false, id })),
   ];
+}
+
+export function filterIds(
+  all: SanitizedNodeView,
+): SanitizedNodeViewPreferences {
+  // @ts-expect-error
+  return Object.fromEntries(
+    Object.entries(all).map(([k, v]) => {
+      // @ts-expect-error
+      const b = v.filter((l) => l.visible).map((v) => v.id);
+
+      return [k, b];
+    }),
+  );
 }

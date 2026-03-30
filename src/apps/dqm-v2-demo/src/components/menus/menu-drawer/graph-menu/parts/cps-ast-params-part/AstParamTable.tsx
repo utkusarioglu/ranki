@@ -4,8 +4,8 @@ import {
   ParameterTable,
   type ParameterTableValueTuple,
 } from "../../tables/ParameterTable";
-import type { ClassSanitizer } from "_utils/sanitizer.mjs";
-import { tryCatch } from "_utils/utils.mjs";
+import type { ClassSanitizer } from "@dqm/package-dqm-v2-debug";
+import { tryCatch } from "@dqm/package-dqm-v2-debug";
 import { Typography } from "antd";
 import { ExceptionCard } from "_views/exception-card/ExceptionCard";
 

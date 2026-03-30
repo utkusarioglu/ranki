@@ -818,6 +818,7 @@ __metadata:
     "@dqm/package-dqm-api-v2": "workspace:^"
     "@dqm/package-dqm-utils": "workspace:^"
     "@dqm/package-dqm-v2": "workspace:^"
+    "@dqm/package-dqm-v2-debug": "workspace:^"
     "@dqm/plugin-base-v2": "workspace:^"
     "@dqm/plugin-frame-v2": "workspace:^"
     "@dqm/plugin-frame-v2-audio": "workspace:^"

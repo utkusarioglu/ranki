@@ -1,10 +1,16 @@
 // MOVED
+// import type {
+//   SanitizedNodeChildren,
+//   SanitizedNodeHidden,
+//   SanitizedNodeProps,
+//   SanitizedNodeStable,
+// } from "./utils/sanitized-ast-node.types.mts";
 import type {
   SanitizedNodeChildren,
   SanitizedNodeHidden,
   SanitizedNodeProps,
   SanitizedNodeStable,
-} from "./utils/sanitized-ast-node.types.mts";
+} from "@dqm/package-dqm-v2-debug";
 
 export interface AstViewStore extends AstViewStoreState, AstViewStoreActions {}
 
@@ -38,4 +44,12 @@ export interface SanitizedNodeView {
   props: SanitizedNodePropsView;
   children: SanitizedNodeChildrenView;
   stable: SanitizedNodeStableView;
+}
+
+// MOVED
+export interface SanitizedNodeViewPreferences {
+  hidden: (keyof SanitizedNodeHidden)[];
+  props: (keyof SanitizedNodeProps)[];
+  children: (keyof SanitizedNodeChildren)[];
+  stable: (keyof SanitizedNodeStable)[];
 }

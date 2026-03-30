@@ -1,11 +1,15 @@
-import { useAstViewStore } from "_stores/ast-view/ast-view.store.mts";
-import { createSanitized } from "_stores/ast-view/utils/sanitized-ast-node.mts";
+import {
+  filterIds,
+  useAstViewStore,
+} from "_stores/ast-view/ast-view.store.mts";
+// import { createSanitized } from "_stores/ast-view/utils/sanitized-ast-node.mts";
 import { useDqmStore } from "_stores/dqm/dqm.store.mts";
 import { Typography } from "antd";
 import { useErrorBoundary } from "react-error-boundary";
 import { AstNodeDisplay } from "./ast-node-display/NodeDisplay";
 import { Scroller } from "_views/scroller/Scroller";
 import style from "./SanitizedAstNodeListDisplay.module.css";
+import { createSanitizedAst } from "@dqm/package-dqm-v2-debug";
 
 function useSanitizedAst() {
   const parsed = useDqmStore((s) => s.parsed);
@@ -13,7 +17,9 @@ function useSanitizedAst() {
   const children = useAstViewStore((s) => s.children);
   const stable = useAstViewStore((s) => s.stable);
   const hidden = useAstViewStore((s) => s.hidden);
-  return createSanitized(parsed, { props, children, stable, hidden });
+  const filtered = filterIds({ props, children, stable, hidden });
+  return createSanitizedAst(parsed, filtered);
+  // return createSanitized(parsed, { props, children, stable, hidden });
 }
 
 export const SanitizedNodeList = () => {

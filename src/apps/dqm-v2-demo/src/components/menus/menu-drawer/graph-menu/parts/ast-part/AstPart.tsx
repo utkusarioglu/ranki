@@ -3,9 +3,8 @@ import { type PropertyTableRows } from "../../tables/PropertyTable";
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
 import { SectionTitle } from "../../section-title/SectionTitle";
 import { PropertyTable } from "../../tables/PropertyTable";
-import type { ClassSanitizer } from "_utils/sanitizer.mts";
-import { tryCatchLeap } from "_utils/utils.mjs";
-
+import type { ClassSanitizer } from "@dqm/package-dqm-v2-debug";
+import { tryCatchLeap } from "@dqm/package-dqm-v2-debug";
 interface GraphMenuAstPartProps {
   ast: ClassSanitizer<IAstNode>;
 }
