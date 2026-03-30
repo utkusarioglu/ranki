@@ -17,8 +17,18 @@ function useSanitizedAst() {
   const children = useAstViewStore((s) => s.children);
   const stable = useAstViewStore((s) => s.stable);
   const hidden = useAstViewStore((s) => s.hidden);
-  const filtered = filterIds({ props, children, stable, hidden });
-  return createSanitizedAst(parsed, filtered);
+  const filtered = filterIds({
+    props,
+    children,
+    stable,
+    // @ts-expect-error
+    hidden,
+  });
+  return createSanitizedAst(
+    parsed,
+    // @ts-expect-error
+    filtered,
+  );
   // return createSanitized(parsed, { props, children, stable, hidden });
 }
 

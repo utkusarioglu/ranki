@@ -99,28 +99,30 @@ export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
         </div>
       </div>
 
-      {childrenRenderList.map(([childType, nodes]) => (
-        <div
-          key={childType + newPath}
-          style={{ marginLeft: DEPTH_STEP }}
-          className={style[childType]}
-        >
-          {nodes.state === "success" ? (
-            nodes.value.map((n, i) => (
-              <AstNodeDisplay
-                parentUnique={cpxUnique}
-                key={key + n.key + i}
-                node={n}
-                path={newPath}
-                index={i}
-                depth={newDepth}
-              />
-            ))
-          ) : (
-            <p>fail</p>
-          )}
-        </div>
-      ))}
+      {childrenRenderList
+        .filter(([_, nodes]) => nodes.value.length)
+        .map(([childType, nodes]) => (
+          <div
+            key={childType + newPath}
+            style={{ marginLeft: DEPTH_STEP }}
+            className={style[childType]}
+          >
+            {nodes.state === "success" ? (
+              nodes.value.map((n, i) => (
+                <AstNodeDisplay
+                  parentUnique={cpxUnique}
+                  key={key + n.key + i}
+                  node={n}
+                  path={newPath}
+                  index={i}
+                  depth={newDepth}
+                />
+              ))
+            ) : (
+              <p>fail</p>
+            )}
+          </div>
+        ))}
     </div>
   );
 };

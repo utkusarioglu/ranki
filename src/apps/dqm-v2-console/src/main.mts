@@ -8,7 +8,7 @@ import type { IDqmError } from "@dqm/package-dqm-api-v2";
 import { pluginsAsArray } from "./dqm.plugins.mjs";
 import {
   createSanitizedAst,
-  type SanitizedNodeViewPreferences,
+  type SanitizedNodeViewMap,
 } from "@dqm/package-dqm-v2-debug";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -17,7 +17,7 @@ const filePath = path.join(repoRoot, "assets/example.dqm");
 
 const file = fs.readFileSync(filePath).toString();
 
-const preferences: SanitizedNodeViewPreferences = {
+const preferences: SanitizedNodeViewMap = {
   hidden: [],
   props: ["idListString", "creator", "cpxUnique"],
   children: ["subtreeNodes", "childrenNodes", "tokenNodes", "spaceNodes"],

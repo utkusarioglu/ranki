@@ -47,6 +47,19 @@ export interface SanitizedNodeHidden {
   cpxUnique: UniqueValue;
 }
 
+type CallMaker<T extends object> = {
+  [K in keyof T]: () => TryCatch<T[K]>;
+};
+
+export type AstCalls = CallMaker<AstPrefs>;
+
+export type PrefKey = keyof AstPrefs;
+
+type AstPrefs = SanitizedNodeProps &
+  SanitizedNodeChildren &
+  SanitizedNodeStable &
+  SanitizedNodeHidden;
+
 export interface SanitizedNodeProps {
   astUnique: UniqueValue;
   creator: CreatorName;
@@ -75,9 +88,11 @@ export interface SanitizedNodeChildren {
 export interface SanitizedNodeStable {
   sourceString: AstSourceString;
 }
-export interface SanitizedNodeViewPreferences {
-  props: (keyof SanitizedNodeProps)[];
-  hidden: (keyof SanitizedNodeHidden)[];
-  children: (keyof SanitizedNodeChildren)[];
-  stable: (keyof SanitizedNodeStable)[];
-}
+// export interface SanitizedNodeViewPreferences {
+//   props: (keyof SanitizedNodeProps)[];
+//   hidden: (keyof SanitizedNodeHidden)[];
+//   children: (keyof SanitizedNodeChildren)[];
+//   stable: (keyof SanitizedNodeStable)[];
+// }
+
+export type SanitizedNodeViewMap = Record<string, PrefKey[]>;

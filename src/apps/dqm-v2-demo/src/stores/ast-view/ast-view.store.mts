@@ -7,12 +7,12 @@ import type {
 import type {
   SanitizedNodeChildren,
   SanitizedNodeHidden,
-  SanitizedNodeProps,
+  AstCalls,
   SanitizedNodeStable,
 } from "@dqm/package-dqm-v2-debug";
 
 export const useAstViewStore = create<AstViewStore>((set) => ({
-  props: wrapVisible<SanitizedNodeProps>(
+  props: wrapVisible<AstCalls>(
     ["creator", "idListString", "kind", "constructorName", "astUnique"],
     [
       "cpxUnique",

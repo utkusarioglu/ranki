@@ -1,14 +1,8 @@
 // MOVED
-// import type {
-//   SanitizedNodeChildren,
-//   SanitizedNodeHidden,
-//   SanitizedNodeProps,
-//   SanitizedNodeStable,
-// } from "./utils/sanitized-ast-node.types.mts";
 import type {
   SanitizedNodeChildren,
   SanitizedNodeHidden,
-  SanitizedNodeProps,
+  AstCalls,
   SanitizedNodeStable,
 } from "@dqm/package-dqm-v2-debug";
 
@@ -27,7 +21,7 @@ export interface AstViewStoreActions {
   setStable: (c: SanitizedNodeStableView) => void;
 }
 
-type SanitizedNodePropsView = VisibleBoolean<SanitizedNodeProps>[];
+type SanitizedNodePropsView = VisibleBoolean<AstCalls>[];
 type SanitizedNodeHiddenView = VisibleBoolean<SanitizedNodeHidden>[];
 type SanitizedNodeChildrenView = VisibleBoolean<SanitizedNodeChildren>[];
 type SanitizedNodeStableView = VisibleBoolean<SanitizedNodeStable>[];
@@ -49,7 +43,7 @@ export interface SanitizedNodeView {
 // MOVED
 export interface SanitizedNodeViewPreferences {
   hidden: (keyof SanitizedNodeHidden)[];
-  props: (keyof SanitizedNodeProps)[];
+  props: (keyof AstCalls)[];
   children: (keyof SanitizedNodeChildren)[];
   stable: (keyof SanitizedNodeStable)[];
 }

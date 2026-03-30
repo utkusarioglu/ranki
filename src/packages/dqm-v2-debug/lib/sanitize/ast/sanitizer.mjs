@@ -1,4 +1,3 @@
-// MOVED
 import { tryCatch } from "../../utils/try-catch.mjs";
 // ANKI
 function getAllMethodKeys(obj) {
