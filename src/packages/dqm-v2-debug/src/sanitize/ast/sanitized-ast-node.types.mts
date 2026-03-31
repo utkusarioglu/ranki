@@ -36,22 +36,22 @@ export type SanitizedNodePartialNew = {
 
 export type SanitizedNodePartialFields = Record<
   string,
-  Partial<PropSanitizer<SanitizedNodeProps>>
+  Partial<PropSanitizer<SanitizedAstNodeProps>>
 >;
 
 type PropSanitizer<T extends object> = {
   [K in keyof T]: T[K] extends any ? TryCatch<T[K]> : never;
 };
 
-type CallMaker<T extends object> = {
+type TryCatchCall<T extends object> = {
   [K in keyof T]: () => TryCatch<T[K]>;
 };
 
-export type SanitizedNodeCalls = CallMaker<SanitizedNodeProps>;
+export type SanitizedAstNodeCalls = TryCatchCall<SanitizedAstNodeProps>;
 
-export type SanitizedNodePropKeys = keyof SanitizedNodeProps;
+export type SanitizedAstNodePropKeys = keyof SanitizedAstNodeProps;
 
-export interface SanitizedNodeProps {
+export interface SanitizedAstNodeProps {
   astUnique: UniqueValue;
   creator: CreatorName;
   idListString: IdListString;
@@ -74,4 +74,7 @@ export interface SanitizedNodeProps {
   sourceString: AstSourceString;
 }
 
-export type SanitizedNodeViewMap = Record<string, SanitizedNodePropKeys[]>;
+export type SanitizedAstNodeViewMap = Record<
+  string,
+  SanitizedAstNodePropKeys[]
+>;

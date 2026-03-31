@@ -5,11 +5,15 @@ import type {
   SanitizedNodePartialNew,
   SanitizedAstNew,
   SanitizeResultNew,
-  SanitizedNodeCalls,
-  SanitizedNodePropKeys,
-  SanitizedNodeViewMap,
+  SanitizedAstNodeCalls,
+  SanitizedAstNodePropKeys,
+  SanitizedAstNodeViewMap,
+  SanitizedNodePartialFields,
 } from "./sanitized-ast-node.types.mts";
-import { createSanitizedView, type ClassSanitizer } from "./sanitizer.mjs";
+import {
+  createSanitizedView,
+  type ClassSanitizer,
+} from "../class-sanitizer/sanitizer.mjs";
 import {
   tryCatch,
   tryCatchLeap,
@@ -22,42 +26,8 @@ import {
 
 class AstSanitizedNarrowed {
   private node: ClassSanitizer<IAstNode>;
-  private preferences: SanitizedNodeViewMap;
-
-  constructor(
-    sanitized: ClassSanitizer<IAstNode>,
-    preferences: SanitizedNodeViewMap,
-  ) {
-    this.node = sanitized;
-    this.preferences = preferences;
-  }
-
-  build(): SanitizedNodePartialNew {
-    const fields = Object.fromEntries(
-      Object.entries(this.preferences).map(([field, prefs]) => [
-        field,
-        this.getCalls(prefs),
-      ]),
-    ) as any; // TODO ANY;
-    return {
-      key: Date.now().toString(),
-      fields,
-    };
-  }
-
-  private cpx(node: ClassSanitizer<IAstNode>) {
-    const cpx = node.getCpx();
-    assertTryCatchSuccess(cpx, {
-      why: "Cpx is needed for many operations",
-    });
-    const value = cpx.value;
-    assertExists(value, {
-      why: "Cpx cannot be null for this request",
-    });
-    return value;
-  }
-
-  private calls: SanitizedNodeCalls = {
+  private preferences: SanitizedAstNodeViewMap;
+  private calls: SanitizedAstNodeCalls = {
     sourceString: () => this.node.getSourceString(),
     cpxUnique: () => {
       const cpxUnique = tryCatch("getUnique", () =>
@@ -93,7 +63,40 @@ class AstSanitizedNarrowed {
     spaceNodes: () => this.recurse(this.node.getSpaceNodes()),
   };
 
-  private getCalls(props: SanitizedNodePropKeys[]) {
+  constructor(
+    sanitized: ClassSanitizer<IAstNode>,
+    preferences: SanitizedAstNodeViewMap,
+  ) {
+    this.node = sanitized;
+    this.preferences = preferences;
+  }
+
+  build(): SanitizedNodePartialNew {
+    const fields = Object.fromEntries(
+      Object.entries(this.preferences).map(([field, prefs]) => [
+        field,
+        this.getCalls(prefs),
+      ]),
+    ) as SanitizedNodePartialFields;
+    return {
+      key: Date.now().toString(),
+      fields,
+    };
+  }
+
+  private cpx(node: ClassSanitizer<IAstNode>) {
+    const cpx = node.getCpx();
+    assertTryCatchSuccess(cpx, {
+      why: "Cpx is needed for many operations",
+    });
+    const value = cpx.value;
+    assertExists(value, {
+      why: "Cpx cannot be null for this request",
+    });
+    return value;
+  }
+
+  private getCalls(props: SanitizedAstNodePropKeys[]) {
     return Object.fromEntries(props.map((p) => [p, this.calls[p]!()]));
   }
 
@@ -113,7 +116,7 @@ class AstSanitizedNarrowed {
 
 function sanitizeAst(
   parsed: DqmAstOutput,
-  features: SanitizedNodeViewMap,
+  features: SanitizedAstNodeViewMap,
 ): SanitizedAstNew[] {
   return parsed.map((p) => {
     const sanitized = createSanitizedView<IAstNode>(p.ast);
@@ -126,7 +129,7 @@ function sanitizeAst(
 
 export function createSanitizedAst(
   parsed: SanitizedParseResult,
-  preferences: SanitizedNodeViewMap,
+  preferences: SanitizedAstNodeViewMap,
 ): SanitizeResultNew {
   try {
     if (parsed.state !== "success") {
