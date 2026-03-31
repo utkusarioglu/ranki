@@ -31,34 +31,25 @@ export type SanitizedAstNew = {
 
 export type SanitizedNodePartialNew = {
   key: string;
-  fields: {
-    hidden: PropSanitizer<SanitizedNodeHidden>;
-    props: Partial<PropSanitizer<SanitizedNodeProps>>;
-    children: Partial<PropSanitizer<SanitizedNodeChildren>>;
-    stable: Partial<PropSanitizer<SanitizedNodeStable>>;
-  };
+  fields: SanitizedNodePartialFields;
 };
+
+export type SanitizedNodePartialFields = Record<
+  string,
+  Partial<PropSanitizer<SanitizedNodeProps>>
+>;
 
 type PropSanitizer<T extends object> = {
   [K in keyof T]: T[K] extends any ? TryCatch<T[K]> : never;
 };
 
-export interface SanitizedNodeHidden {
-  cpxUnique: UniqueValue;
-}
-
 type CallMaker<T extends object> = {
   [K in keyof T]: () => TryCatch<T[K]>;
 };
 
-export type AstCalls = CallMaker<AstPrefs>;
+export type SanitizedNodeCalls = CallMaker<SanitizedNodeProps>;
 
-export type PrefKey = keyof AstPrefs;
-
-type AstPrefs = SanitizedNodeProps &
-  SanitizedNodeChildren &
-  SanitizedNodeStable &
-  SanitizedNodeHidden;
+export type SanitizedNodePropKeys = keyof SanitizedNodeProps;
 
 export interface SanitizedNodeProps {
   astUnique: UniqueValue;
@@ -76,23 +67,11 @@ export interface SanitizedNodeProps {
   subtreeCount: number;
   meaning: string | undefined;
   creationMethod: CreationMethod;
-}
-
-export interface SanitizedNodeChildren {
   subtreeNodes: SanitizedNodePartialNew[];
   childrenNodes: SanitizedNodePartialNew[];
   tokenNodes: SanitizedNodePartialNew[];
   spaceNodes: SanitizedNodePartialNew[];
-}
-
-export interface SanitizedNodeStable {
   sourceString: AstSourceString;
 }
-// export interface SanitizedNodeViewPreferences {
-//   props: (keyof SanitizedNodeProps)[];
-//   hidden: (keyof SanitizedNodeHidden)[];
-//   children: (keyof SanitizedNodeChildren)[];
-//   stable: (keyof SanitizedNodeStable)[];
-// }
 
-export type SanitizedNodeViewMap = Record<string, PrefKey[]>;
+export type SanitizedNodeViewMap = Record<string, SanitizedNodePropKeys[]>;

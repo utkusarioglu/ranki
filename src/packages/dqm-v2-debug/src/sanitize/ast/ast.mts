@@ -5,8 +5,8 @@ import type {
   SanitizedNodePartialNew,
   SanitizedAstNew,
   SanitizeResultNew,
-  AstCalls,
-  PrefKey,
+  SanitizedNodeCalls,
+  SanitizedNodePropKeys,
   SanitizedNodeViewMap,
 } from "./sanitized-ast-node.types.mts";
 import { createSanitizedView, type ClassSanitizer } from "./sanitizer.mjs";
@@ -57,7 +57,7 @@ class AstSanitizedNarrowed {
     return value;
   }
 
-  private calls: AstCalls = {
+  private calls: SanitizedNodeCalls = {
     sourceString: () => this.node.getSourceString(),
     cpxUnique: () => {
       const cpxUnique = tryCatch("getUnique", () =>
@@ -93,7 +93,7 @@ class AstSanitizedNarrowed {
     spaceNodes: () => this.recurse(this.node.getSpaceNodes()),
   };
 
-  private getCalls(props: PrefKey[]) {
+  private getCalls(props: SanitizedNodePropKeys[]) {
     return Object.fromEntries(props.map((p) => [p, this.calls[p]!()]));
   }
 

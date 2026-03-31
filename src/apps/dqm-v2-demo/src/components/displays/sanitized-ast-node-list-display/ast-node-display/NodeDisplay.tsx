@@ -38,7 +38,7 @@ export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
   const newPath = path + "/" + newDepth + "-" + index;
   const cpxUniqueDefined = hidden.cpxUnique !== undefined;
   const parentUniqueDefined = parentUnique !== undefined;
-  const cpxUnique = hidden.cpxUnique.value || -1000;
+  const cpxUnique = hidden.cpxUnique?.value || -1000;
   const isNewCpx =
     cpxUniqueDefined && parentUniqueDefined
       ? cpxUnique !== parentUnique
@@ -100,7 +100,7 @@ export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
       </div>
 
       {childrenRenderList
-        .filter(([_, nodes]) => nodes.value.length)
+        .filter(([_, nodes]) => (nodes.value as Array<any>).length)
         .map(([childType, nodes]) => (
           <div
             key={childType + newPath}
@@ -108,7 +108,7 @@ export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
             className={style[childType]}
           >
             {nodes.state === "success" ? (
-              nodes.value.map((n, i) => (
+              (nodes.value as Array<any>).map((n, i) => (
                 <AstNodeDisplay
                   parentUnique={cpxUnique}
                   key={key + n.key + i}

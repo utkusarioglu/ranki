@@ -2,7 +2,6 @@ import {
   filterIds,
   useAstViewStore,
 } from "_stores/ast-view/ast-view.store.mts";
-// import { createSanitized } from "_stores/ast-view/utils/sanitized-ast-node.mts";
 import { useDqmStore } from "_stores/dqm/dqm.store.mts";
 import { Typography } from "antd";
 import { useErrorBoundary } from "react-error-boundary";
@@ -21,7 +20,6 @@ function useSanitizedAst() {
     props,
     children,
     stable,
-    // @ts-expect-error
     hidden,
   });
   return createSanitizedAst(
