@@ -1,15 +1,15 @@
 import type { DqmAstOutput } from "@dqm/package-dqm-api-v2";
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
-import type { SanitizedParseResult } from "./dqm.utils.types.mts";
+import type { SanitizedParseResult } from "../../general.types.mjs";
 import type {
-  SanitizedNodePartialNew,
-  SanitizedAstNew,
-  SanitizeResultNew,
-  SanitizedAstNodeCalls,
-  SanitizedAstNodePropKeys,
-  SanitizedAstNodeViewMap,
-  SanitizedNodePartialFields,
-} from "./sanitized-ast-node.types.mts";
+  AstNodePartialSanitized,
+  AstNodeSanitized,
+  AstNodeSanitize,
+  AstNodeSanitizedCallRecord,
+  AstNodeFilterKeys,
+  AstNodeSanitizedFiltersRecord,
+  AstNodeSanitizedPartialFields,
+} from "./ast.types.mjs";
 import {
   createSanitizedView,
   type ClassSanitizer,
@@ -26,8 +26,8 @@ import {
 
 class AstSanitizedNarrowed {
   private node: ClassSanitizer<IAstNode>;
-  private preferences: SanitizedAstNodeViewMap;
-  private calls: SanitizedAstNodeCalls = {
+  private preferences: AstNodeSanitizedFiltersRecord;
+  private calls: AstNodeSanitizedCallRecord = {
     sourceString: () => this.node.getSourceString(),
     cpxUnique: () => {
       const cpxUnique = tryCatch("getUnique", () =>
@@ -65,19 +65,19 @@ class AstSanitizedNarrowed {
 
   constructor(
     sanitized: ClassSanitizer<IAstNode>,
-    preferences: SanitizedAstNodeViewMap,
+    preferences: AstNodeSanitizedFiltersRecord,
   ) {
     this.node = sanitized;
     this.preferences = preferences;
   }
 
-  build(): SanitizedNodePartialNew {
+  build(): AstNodePartialSanitized {
     const fields = Object.fromEntries(
       Object.entries(this.preferences).map(([field, prefs]) => [
         field,
         this.getCalls(prefs),
       ]),
-    ) as SanitizedNodePartialFields;
+    ) as AstNodeSanitizedPartialFields;
     return {
       key: Date.now().toString(),
       fields,
@@ -96,7 +96,7 @@ class AstSanitizedNarrowed {
     return value;
   }
 
-  private getCalls(props: SanitizedAstNodePropKeys[]) {
+  private getCalls(props: AstNodeFilterKeys[]) {
     return Object.fromEntries(props.map((p) => [p, this.calls[p]!()]));
   }
 
@@ -116,8 +116,8 @@ class AstSanitizedNarrowed {
 
 function sanitizeAst(
   parsed: DqmAstOutput,
-  features: SanitizedAstNodeViewMap,
-): SanitizedAstNew[] {
+  features: AstNodeSanitizedFiltersRecord,
+): AstNodeSanitized[] {
   return parsed.map((p) => {
     const sanitized = createSanitizedView<IAstNode>(p.ast);
     return {
@@ -129,8 +129,8 @@ function sanitizeAst(
 
 export function createSanitizedAst(
   parsed: SanitizedParseResult,
-  preferences: SanitizedAstNodeViewMap,
-): SanitizeResultNew {
+  preferences: AstNodeSanitizedFiltersRecord,
+): AstNodeSanitize {
   try {
     if (parsed.state !== "success") {
       return {

@@ -4,13 +4,13 @@ import style from "./NodeDisplay.module.css";
 import { PreCode } from "_views/pre-code/PreCode";
 import { BlockySwitch } from "_views/blocky-switch/BlockySwitch";
 import { Flex, Typography } from "antd";
-// import type { SanitizedNodePartialNew } from "_stores/ast-view/utils/sanitized-ast-node.types.mts";
-import type { SanitizedNodePartialNew } from "@dqm/package-dqm-v2-debug";
+// import type { AstNodePartialSanitized } from "_stores/ast-view/utils/sanitized-ast-node.types.mts";
+import type { AstNodePartialSanitized } from "@dqm/package-dqm-v2-debug";
 import type { UniqueValue } from "@dqm/package-dqm-api-v2";
 import { TryCatchView } from "_views/try-catch/try-catch";
 
 interface AstNodeDisplayProps {
-  node: SanitizedNodePartialNew;
+  node: AstNodePartialSanitized;
   path: string;
   depth: number;
   index: number;

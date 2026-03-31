@@ -1,7 +1,7 @@
 // MOVED
 import type {
-  SanitizedAstNodePropKeys,
-  SanitizedAstNodeProps,
+  AstNodeFilterKeys,
+  AstNodeSanitizedTypesRecord,
 } from "@dqm/package-dqm-v2-debug";
 
 export interface AstViewStore extends AstViewStoreState, AstViewStoreActions {}
@@ -19,7 +19,7 @@ export interface AstViewStoreActions {
   setStable: (c: SanitizedNodePropsView) => void;
 }
 
-type SanitizedNodePropsView = VisibleBoolean<SanitizedAstNodeProps>[];
+type SanitizedNodePropsView = VisibleBoolean<AstNodeSanitizedTypesRecord>[];
 
 type VisibleBoolean<T> = { id: keyof T; visible: boolean };
 
@@ -36,8 +36,8 @@ export interface SanitizedNodeView {
 }
 
 export interface SanitizedNodeViewPreferences {
-  hidden: SanitizedAstNodePropKeys[];
-  props: SanitizedAstNodePropKeys[];
-  children: SanitizedAstNodePropKeys[];
-  stable: SanitizedAstNodePropKeys[];
+  hidden: AstNodeFilterKeys[];
+  props: AstNodeFilterKeys[];
+  children: AstNodeFilterKeys[];
+  stable: AstNodeFilterKeys[];
 }

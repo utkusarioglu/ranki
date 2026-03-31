@@ -4,10 +4,10 @@ import type {
   SanitizedNodeView,
   SanitizedNodeViewPreferences,
 } from "./ast-view.store.types.mts";
-import type { SanitizedAstNodeProps } from "@dqm/package-dqm-v2-debug";
+import type { AstNodeSanitizedTypesRecord } from "@dqm/package-dqm-v2-debug";
 
 export const useAstViewStore = create<AstViewStore>((set) => ({
-  props: wrapVisible<SanitizedAstNodeProps>(
+  props: wrapVisible<AstNodeSanitizedTypesRecord>(
     ["creator", "idListString", "kind", "constructorName", "astUnique"],
     [
       "cpxUnique",
@@ -22,12 +22,12 @@ export const useAstViewStore = create<AstViewStore>((set) => ({
       "meaning",
     ],
   ),
-  hidden: wrapVisible<SanitizedAstNodeProps>(["cpxUnique"], []),
-  children: wrapVisible<SanitizedAstNodeProps>(
+  hidden: wrapVisible<AstNodeSanitizedTypesRecord>(["cpxUnique"], []),
+  children: wrapVisible<AstNodeSanitizedTypesRecord>(
     ["childrenNodes", "subtreeNodes"],
     ["tokenNodes", "spaceNodes"],
   ),
-  stable: wrapVisible<SanitizedAstNodeProps>(["sourceString"], []),
+  stable: wrapVisible<AstNodeSanitizedTypesRecord>(["sourceString"], []),
 
   sanitized: null,
   parsed: {

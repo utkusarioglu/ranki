@@ -46,3 +46,9 @@ export function tryCatchLeap<T>(o: TryCatch<T>, cb: (n: any) => any) {
     return tryCatch("1", () => cb(o.value));
   }
 }
+export type TryCatchRecord<T extends object> = {
+  [K in keyof T]: T[K] extends any ? TryCatch<T[K]> : never;
+};
+export type TryCatchCall<T extends object> = {
+  [K in keyof T]: () => TryCatch<T[K]>;
+};
