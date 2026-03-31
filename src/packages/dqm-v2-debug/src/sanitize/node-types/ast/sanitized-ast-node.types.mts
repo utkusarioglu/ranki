@@ -8,7 +8,7 @@ import type {
   UniqueValue,
   IdListString,
 } from "@dqm/package-dqm-api-v2";
-import type { TryCatch } from "../../utils/try-catch.mjs";
+import type { TryCatch } from "../../../utils/try-catch.mjs";
 
 export interface SuccessfulSanitizeNew {
   sanitized: SanitizedAstNew[];

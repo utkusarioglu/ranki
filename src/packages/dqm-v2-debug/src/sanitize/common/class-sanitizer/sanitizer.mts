@@ -1,4 +1,4 @@
-import { tryCatch, type TryCatch } from "../../utils/try-catch.mjs";
+import { tryCatch, type TryCatch } from "../../../utils/try-catch.mjs";
 
 // ANKI
 export type ClassSanitizerUnion<T> = T extends any ? ClassSanitizer<T> : never;

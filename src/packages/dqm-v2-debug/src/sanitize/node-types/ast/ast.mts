@@ -13,16 +13,16 @@ import type {
 import {
   createSanitizedView,
   type ClassSanitizer,
-} from "../class-sanitizer/sanitizer.mjs";
+} from "../../common/class-sanitizer/sanitizer.mjs";
 import {
   tryCatch,
   tryCatchLeap,
   type TryCatch,
-} from "../../utils/try-catch.mjs";
+} from "../../../utils/try-catch.mjs";
 import {
   assertExists,
   assertTryCatchSuccess,
-} from "../../errors/assertions.mjs";
+} from "../../../errors/assertions.mjs";
 
 class AstSanitizedNarrowed {
   private node: ClassSanitizer<IAstNode>;
