@@ -34,24 +34,16 @@ class AstSanitizedNarrowed {
 
   build(): SanitizedNodePartialNew {
     const fields = Object.fromEntries(
-      Object.entries(this.preferences).map(([k, p]) => [k, this.getThings(p)]),
+      Object.entries(this.preferences).map(([field, prefs]) => [
+        field,
+        this.getCalls(prefs),
+      ]),
     ) as any; // TODO ANY;
     return {
       key: Date.now().toString(),
       fields,
     };
   }
-
-  // DONE
-  // private getHidden() {
-  //   const cpxUnique = tryCatch("getUnique", () =>
-  //     this.cpx(this.node).getUnique(),
-  //   );
-  //   const hidden: SanitizedNodePartialNew["fields"]["hidden"] = {
-  //     cpxUnique,
-  //   };
-  //   return hidden;
-  // }
 
   private cpx(node: ClassSanitizer<IAstNode>) {
     const cpx = node.getCpx();
@@ -64,130 +56,6 @@ class AstSanitizedNarrowed {
     });
     return value;
   }
-
-  // private getProps() {
-  //   const props: SanitizedNodePartialNew["fields"]["props"] = {};
-  //   this.preferences.props.forEach((id) => {
-  //     switch (id) {
-  //       // DONE
-  //       case "astUnique":
-  //         // !FIX doesn't work because your class sanitizer needs reflect api
-  //         props[id] = this.node.getUnique();
-  //         break;
-  //       // DONE
-  //       case "inlineDepth":
-  //         props[id] = this.node.getInlineDepth();
-  //         break;
-  //       // DONE
-  //       case "blockDepth":
-  //         props[id] = this.node.getBlockDepth();
-  //         break;
-  //       // DONE
-  //       case "childIndex":
-  //         props[id] = this.node.getChildIndex();
-  //         break;
-  //       // DONE
-  //       case "meaning":
-  //         props[id] = this.node.getMeaning();
-  //         break;
-  //       // DONE
-  //       case "constructorName":
-  //         props[id] = tryCatch(
-  //           "constructorName",
-  //           () => this.node.constructor.name,
-  //         );
-  //         break;
-  //       // DONE
-  //       case "creationMethod":
-  //         props[id] = this.node.getCreationMethod();
-  //         break;
-  //       // DONE
-  //       case "ignoredCount":
-  //         props[id] = tryCatchLeap(
-  //           this.node.getIgnoredNodes(),
-  //           (o) => o.length,
-  //         );
-  //         break;
-  //       // DONE
-  //       case "kind":
-  //         props[id] = this.node.getKind();
-  //         break;
-  //       // DONE
-  //       case "subtreeCount":
-  //         props[id] = tryCatchLeap(
-  //           this.node.getSubtreeNodes(),
-  //           (o) => o.length,
-  //         );
-  //         break;
-  //       // DONE
-  //       case "childCount":
-  //         props[id] = tryCatchLeap(
-  //           this.node.getChildrenNodes(),
-  //           (o) => o.length,
-  //         );
-  //         break;
-  //       // DONE
-  //       case "cpxUnique": {
-  //         props[id] = tryCatch("getUnique", () =>
-  //           this.cpx(this.node).getUnique(),
-  //         );
-  //         break;
-  //       }
-  //       // DONE
-  //       case "creator":
-  //         props[id] = this.node.getCreator();
-  //         break;
-  //       // DONE
-  //       case "idListString": {
-  //         props[id] = tryCatch("getUnique", () =>
-  //           this.cpx(this.node).getIdListString(),
-  //         );
-  //         break;
-  //       }
-  //       // DONE
-  //       case "chainListString": {
-  //         props[id] = tryCatch("chainListString", () =>
-  //           this.cpx(this.node).getChainListString(),
-  //         );
-  //         break;
-  //       }
-  //     }
-  //   });
-  //   return props;
-  // }
-
-  // private getChildren() {
-  //   const children: SanitizedNodePartialNew["fields"]["children"] = {};
-  //   this.preferences.children.forEach((id) => {
-  //     switch (id) {
-  //       // DONE
-  //       case "childrenNodes": {
-  //         const val = this.recurse(this.node.getChildrenNodes());
-  //         if (val) children[id] = val;
-  //         break;
-  //       }
-  //       // DONE
-  //       case "subtreeNodes": {
-  //         const val = this.recurse(this.node.getSubtreeNodes());
-  //         if (val) children[id] = val;
-  //         break;
-  //       }
-  //       // DONE
-  //       case "tokenNodes": {
-  //         const val = this.recurse(this.node.getTokenNodes());
-  //         if (val) children[id] = val;
-  //         break;
-  //       }
-  //       // DONE
-  //       case "spaceNodes": {
-  //         const val = this.recurse(this.node.getSpaceNodes());
-  //         if (val) children[id] = val;
-  //         break;
-  //       }
-  //     }
-  //   });
-  //   return children;
-  // }
 
   private calls: AstCalls = {
     sourceString: () => this.node.getSourceString(),
@@ -224,22 +92,8 @@ class AstSanitizedNarrowed {
     tokenNodes: () => this.recurse(this.node.getTokenNodes()),
     spaceNodes: () => this.recurse(this.node.getSpaceNodes()),
   };
-  // private getStable() {
-  //   const stable: SanitizedNodePartialNew["fields"]["stable"] = {};
 
-  //   this.preferences.stable.forEach((id) => {
-  //     switch (id) {
-  //       case "sourceString":
-  //         stable[id] = this.node.getSourceString();
-  //         break;
-  //       default:
-  //         throw new Error(`Unrecognized sanitize feature: ${id}`);
-  //     }
-  //   });
-  //   return stable;
-  // }
-
-  private getThings(props: PrefKey[]) {
+  private getCalls(props: PrefKey[]) {
     return Object.fromEntries(props.map((p) => [p, this.calls[p]!()]));
   }
 
@@ -254,10 +108,6 @@ class AstSanitizedNarrowed {
     });
 
     return tryCatch("narrowed", () => narrowed);
-    // FIX
-    // if (narrowed.length) {
-    //   return tryCatch("narrowed", () => narrowed);
-    // }
   }
 }
 
@@ -288,10 +138,7 @@ export function createSanitizedAst(
     const sanitized = sanitizeAst(parsed.data.ast, preferences);
     return {
       state: "success",
-      data: {
-        // parsed: parsed.data,
-        sanitized,
-      },
+      data: { sanitized },
     };
   } catch (e) {
     console.log(e);
