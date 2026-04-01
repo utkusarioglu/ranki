@@ -11,12 +11,12 @@ import { assertExists } from "@dqm/package-dqm-utils";
 import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
 import { Serialize } from "../../../utils/serialize.mjs";
 
-export interface GrammarSpecs {
+interface GrammarSpecs {
   parentGrammar: string;
   dependencies: Record<string, ohm.Grammar>;
 }
 
-export interface OhmGrammarAdjusted {
+interface OhmGrammarAdjusted {
   altered: string;
   grammar: ohm.Grammar;
 }

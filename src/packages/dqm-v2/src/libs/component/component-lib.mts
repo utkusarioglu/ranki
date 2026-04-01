@@ -14,10 +14,8 @@ type Criteria = {
   id: Alias | Chain;
 };
 
-export type In = IDqmPluginComponentSet;
-
-export type Out = IDqmComponent;
-
+type In = IDqmPluginComponentSet;
+type Out = IDqmComponent;
 type ILibComponent = IPluginLib<In, Out, Criteria>;
 
 export class ComponentLib implements ILibComponent {
