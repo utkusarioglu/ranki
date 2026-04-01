@@ -107,7 +107,7 @@ export class RIcon extends Wc<T> {
   }
 }
 
-export class RIconBox extends Wc<T> {
+class RIconBox extends Wc<T> {
   public static tag = "r-icon-box";
 
   initialize() {

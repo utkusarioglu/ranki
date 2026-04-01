@@ -14,7 +14,7 @@ export const SYSTEM_CONTROLLED_SCHEME_TOKEN = "system";
 
 export const RANKI_INTERNAL_FACE_PREFIX = "ranki";
 
-export const NO_FLAG_COLOR_TOKEN = "none";
+const NONE_TOKEN = "none";
 
 export const GLOB_SINGLE = "_";
 export const GLOB_MULTI = "__";
@@ -132,120 +132,120 @@ repeating-linear-gradient(
         background: {
           color: "blue-2",
         },
-        indicator: "none" as RankiIndicatorName,
+        indicator: NONE_TOKEN as RankiIndicatorName,
       },
     },
     flags: {
       none: {
-        indicator: "none" as RankiIndicatorName,
+        indicator: NONE_TOKEN as RankiIndicatorName,
         background: {
-          color: "none",
+          color: NONE_TOKEN,
         },
         icon: {
-          id: "none",
-          color: "none",
+          id: NONE_TOKEN,
+          color: NONE_TOKEN,
         },
         message: {
           text: "",
-          color: "none",
+          color: NONE_TOKEN,
         },
       },
       red: {
-        indicator: "none" as RankiIndicatorName,
+        indicator: NONE_TOKEN as RankiIndicatorName,
         background: {
-          color: "none",
+          color: NONE_TOKEN,
         },
         icon: {
-          id: "none",
-          color: "none",
+          id: NONE_TOKEN,
+          color: NONE_TOKEN,
         },
         message: {
           text: "",
-          color: "none",
+          color: NONE_TOKEN,
         },
       },
       orange: {
-        indicator: "none" as RankiIndicatorName,
+        indicator: NONE_TOKEN as RankiIndicatorName,
         background: {
-          color: "none",
+          color: NONE_TOKEN,
         },
         icon: {
-          id: "none",
-          color: "none",
+          id: NONE_TOKEN,
+          color: NONE_TOKEN,
         },
         message: {
           text: "",
-          color: "none",
+          color: NONE_TOKEN,
         },
       },
       green: {
-        indicator: "none" as RankiIndicatorName,
+        indicator: NONE_TOKEN as RankiIndicatorName,
         background: {
-          color: "none",
+          color: NONE_TOKEN,
         },
         icon: {
-          id: "none",
-          color: "none",
+          id: NONE_TOKEN,
+          color: NONE_TOKEN,
         },
         message: {
           text: "",
-          color: "none",
+          color: NONE_TOKEN,
         },
       },
       blue: {
-        indicator: "none" as RankiIndicatorName,
+        indicator: NONE_TOKEN as RankiIndicatorName,
         background: {
-          color: "none",
+          color: NONE_TOKEN,
         },
         icon: {
-          id: "none",
-          color: "none",
+          id: NONE_TOKEN,
+          color: NONE_TOKEN,
         },
         message: {
           text: "",
-          color: "none",
+          color: NONE_TOKEN,
         },
       },
       pink: {
-        indicator: "none" as RankiIndicatorName,
+        indicator: NONE_TOKEN as RankiIndicatorName,
         background: {
-          color: "none",
+          color: NONE_TOKEN,
         },
         icon: {
-          id: "none",
-          color: "none",
+          id: NONE_TOKEN,
+          color: NONE_TOKEN,
         },
         message: {
           text: "",
-          color: "none",
+          color: NONE_TOKEN,
         },
       },
       turquoise: {
-        indicator: "none" as RankiIndicatorName,
+        indicator: NONE_TOKEN as RankiIndicatorName,
         background: {
-          color: "none",
+          color: NONE_TOKEN,
         },
         icon: {
-          id: "none",
-          color: "none",
+          id: NONE_TOKEN,
+          color: NONE_TOKEN,
         },
         message: {
           text: "",
-          color: "none",
+          color: NONE_TOKEN,
         },
       },
       purple: {
-        indicator: "none" as RankiIndicatorName,
+        indicator: NONE_TOKEN as RankiIndicatorName,
         background: {
-          color: "none",
+          color: NONE_TOKEN,
         },
         icon: {
-          id: "none",
-          color: "none",
+          id: NONE_TOKEN,
+          color: NONE_TOKEN,
         },
         message: {
           text: "",
-          color: "none",
+          color: NONE_TOKEN,
         },
       },
     },
@@ -346,26 +346,26 @@ repeating-linear-gradient(
     none: {
       cue: {
         background: {
-          color: "none",
+          color: NONE_TOKEN,
         },
         icon: {
-          id: "none",
-          color: "none",
+          id: NONE_TOKEN,
+          color: NONE_TOKEN,
         },
         message: {
           text: "",
-          color: "none",
+          color: NONE_TOKEN,
         },
-        indicator: "none" as RankiIndicatorName,
+        indicator: NONE_TOKEN as RankiIndicatorName,
       },
       config: {},
     },
     ...Object.fromEntries(
-      FLAG_COLOR_ORDER.filter((v) => v !== "none").map((color) => [
+      FLAG_COLOR_ORDER.filter((v) => v !== NONE_TOKEN).map((color) => [
         color,
         {
           cue: {
-            indicator: "none" as RankiIndicatorName,
+            indicator: NONE_TOKEN as RankiIndicatorName,
             background: {
               color: `${color === "pink" ? "magenta" : color}-2`,
             },
@@ -374,8 +374,8 @@ repeating-linear-gradient(
               color: "tone-0",
             },
             icon: {
-              id: "none",
-              color: "none",
+              id: NONE_TOKEN,
+              color: NONE_TOKEN,
             },
           },
         },

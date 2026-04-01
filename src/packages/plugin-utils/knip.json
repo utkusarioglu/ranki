@@ -1,0 +1,6 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "extends": "../../../knip.json",
+  "entry": ["src/export.mts", "src/bundler.mts"],
+  "project": ["src/*.{mts}"]
+}

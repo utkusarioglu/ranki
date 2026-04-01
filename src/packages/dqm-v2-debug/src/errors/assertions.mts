@@ -42,23 +42,6 @@ export function assertExists(
 }
 
 /**
- * Throws a NEVER_EVENT error.
- * This function is used for code paths that should never be reached.
- *
- * @param extra - Additional context for the error.
- * @throws {DqmDebugError} Always throws this error.
- *
- * @aidoc
- */
-export function assertNever(extra: AssertionExtra): never {
-  throw new DqmDebugError({
-    code: "NEVER_EVENT",
-    cause: null,
-    ...extra,
-  });
-}
-
-/**
  * Asserts that a TryCatch result is successful.
  * Throws a TRY_CATCH_FAIL error if the result indicates failure.
  *

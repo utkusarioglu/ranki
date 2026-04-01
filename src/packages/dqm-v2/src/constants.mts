@@ -38,3 +38,7 @@ export const DEFAULT_CONFIG_NAME = "default";
  * Configuration created for the dqm instance creation.
  */
 export const INITIAL_CONFIG_NAME = "initial";
+
+export const CHAIN_STRING_SEPARATOR = "/";
+export const ID_STRING_SEPARATOR = "#";
+export const ALIAS_STRING_SEPARATOR = "|";

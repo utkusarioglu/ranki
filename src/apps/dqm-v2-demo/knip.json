@@ -1,5 +1,5 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "tags": ["-lintignore"],
-  "entry": ["src/*.{mts,ts,tsx}"]
+  "entry": ["./src/components/main/main.tsx"],
+  "project": ["./src/**/*.{tsx,mts,ts}"]
 }

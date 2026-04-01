@@ -28,3 +28,5 @@ export type IDqmErrorCause = IDqmError | null | unknown;
 export type WithCause = {
   cause: IDqmErrorCause;
 };
+
+export type ErrorCodes = Record<string, string>;

@@ -1,4 +1,6 @@
-export const DQM_PLUGIN_ERROR_CODES = {
+import type { ErrorCodes } from "../errors/i-dqm-error.types.mjs";
+
+export const DQM_PLUGIN_ERROR_CODES: ErrorCodes = {
   ASSERT_EXISTS: "Required value undefined",
   NEVER_EVENT: "NEVER_EVENT",
 

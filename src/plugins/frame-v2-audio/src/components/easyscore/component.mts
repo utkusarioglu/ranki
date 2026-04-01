@@ -3,6 +3,7 @@ import type {
   IDqmComponent,
 } from "@dqm/package-dqm-api-v2";
 import { transformers } from "./transformers.mjs";
+import { examples } from "./examples/examples.mjs";
 
 interface ComponentType extends IComponentCustomizationConfig {
   default: {
@@ -26,6 +27,7 @@ export const easyScore: IDqmComponent<ComponentType> = {
     },
     description: "Creates synth tones based on simple input",
     version: "0.0.0",
+    examples,
   },
   customizations: {
     // TODO you need a settings object here to tell how component wants to handle missing params etc

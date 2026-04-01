@@ -1,0 +1,20 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "tags": ["-lintignore"],
+  "ignore": ["src/legacy/**/*", ".pnp.cjs", ".pnp.loader.mjs"],
+  "workspaces": {
+    "src/apps/*": {
+      "entry": ["src/main.{tsx,mts}"],
+      "project": ["src/**/*.{mts,ts,tsx}"]
+    },
+    "src/packages/*": {
+      "entry": ["src/export.{mts,ts}"],
+      "project": ["src/**/*.{mts,ts,tsx}"]
+    },
+    "src/plugins/*": {
+      "entry": ["src/export.{mts,ts}"],
+      "project": ["src/**/*.{mts,ts,tsx}"],
+      "vite": { "config": [] }
+    }
+  }
+}

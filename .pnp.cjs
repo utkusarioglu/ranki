@@ -150,9 +150,11 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/root", "workspace:."],\
+          ["@types/node", "npm:25.5.0"],\
+          ["knip", "npm:6.1.1"],\
           ["tsx", "npm:4.20.3"],\
           ["turbo", "npm:2.5.5"],\
-          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
+          ["typescript", "patch:typescript@npm%3A6.0.2#optional!builtin<compat/typescript>::version=6.0.2&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -4364,9 +4366,11 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/root", "workspace:."],\
+          ["@types/node", "npm:25.5.0"],\
+          ["knip", "npm:6.1.1"],\
           ["tsx", "npm:4.20.3"],\
           ["turbo", "npm:2.5.5"],\
-          ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"]\
+          ["typescript", "patch:typescript@npm%3A6.0.2#optional!builtin<compat/typescript>::version=6.0.2&hash=5786d5"]\
         ],\
         "linkType": "SOFT"\
       }]\

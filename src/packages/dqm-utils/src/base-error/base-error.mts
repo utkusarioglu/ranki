@@ -22,7 +22,7 @@ export abstract class DqmBaseError extends Error implements IDqmError {
     super(p.code, { cause: p.cause });
     this.cause = p.cause;
     this.why = p.why;
-    (this.text = this.getErrorText(p.code)), (this.details = p.details || {});
+    ((this.text = this.getErrorText(p.code)), (this.details = p.details || {}));
   }
 
   abstract getErrorText(code: string): string;
@@ -121,41 +121,4 @@ export abstract class DqmBaseError extends Error implements IDqmError {
       cause: this.getCause(),
     };
   }
-
-  // constructor(code: string, objects: Objects) {
-  //   super(ERROR_CODES[code] || `${code} (unregistered)`);
-  //   this.code = code;
-  //   this.objects = objects;
-  // }
-
-  // private stringifyObjects() {
-  //   try {
-  //     return JSON.stringify(this.objects, null, 2);
-  //   } catch (e) {
-  //     return "(Stringification failed)";
-  //   }
-  // }
-
-  // toString() {
-  //   return [
-  //     "DQM ERROR:",
-  //     this.message,
-  //     "",
-  //     "CODE:",
-  //     this.code,
-  //     "",
-  //     "OBJECTS:",
-  //     this.stringifyObjects(),
-  //     "",
-  //     "STACK:",
-  //     this.stack,
-  //   ].join("\n");
-  // }
-
-  // [Symbol.toPrimitive](hint: string) {
-  //   if (hint === "string") {
-  //     return this.toString();
-  //   }
-  //   return this.message;
-  // }
 }

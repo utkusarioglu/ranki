@@ -102,7 +102,7 @@ export class RText extends Wc<RTextProps> {
   }
 }
 
-export class RTextSpan extends Wc<RTextProps> {
+class RTextSpan extends Wc<RTextProps> {
   public static tag = "r-text-span";
 
   initialize() {

@@ -1,11 +1,8 @@
 import type {
   IDqmConfigError,
-  // IDqmErrorCause,
-  // IDqmErrorDetails,
   IDqmErrorBaseRequiredParams,
   WithCause,
 } from "@dqm/package-dqm-api-v2";
-// import { DQM_CONFIG_ERROR_CODES } from "./error.constants.mjs";
 import { DqmBaseError } from "../base-error/base-error.mjs";
 
 const DQM_UTIL_ERROR_CODES = {

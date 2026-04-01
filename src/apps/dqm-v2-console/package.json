@@ -2,13 +2,6 @@
   "private": true,
   "name": "@ranki/app-dqm-v2-console",
   "type": "module",
-  "exports": {
-    ".": {
-      "import": "./lib/main.mjs",
-      "types": "./lib/main.d.ts",
-      "default": "./lib/main.mjs"
-    }
-  },
   "scripts": {
     "preview-console": "yarn build-console && yarn run-console",
     "build-console": "yarn rollup -c",

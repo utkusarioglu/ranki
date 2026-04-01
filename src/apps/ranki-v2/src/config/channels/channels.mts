@@ -39,7 +39,7 @@ export function buildChannelsConfig(collected: RawFields): RankiChannelsConfig {
   return gConfig.mergeTo("merged").getConfig<RankiChannelsConfig>("merged");
 }
 
-export function parseConfig(
+function parseConfig(
   name: string,
   configStr: string,
 ): RankiConfigChannelsPartial {

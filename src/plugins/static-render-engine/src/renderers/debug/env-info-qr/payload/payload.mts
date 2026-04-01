@@ -1,7 +1,6 @@
 import type { IDqmRenderPluginRenderer as R } from "@dqm/package-dqm-api-v2";
 import { TAGS } from "../constants.mjs";
 import "prismjs/components/prism-yaml.js";
-// import type { QRCode } from "qrcode";
 import QRCode from "qrcode";
 import { collectEnvironmentInfo } from "../../env-info-yaml/payload/collect.mjs";
 

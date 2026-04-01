@@ -13,10 +13,10 @@ import { Cps } from "../cps/cps.mjs";
 import { DqmAppError } from "../../../errors/dqm-app-error/dqm-app-error.mjs";
 import type { CommonTransports } from "../../common-transports.mjs";
 import { assertArrayNotEmpty } from "@dqm/package-dqm-utils";
-
-export const CHAIN_STRING_SEPARATOR = "/";
-export const ID_STRING_SEPARATOR = "#";
-export const ALIAS_STRING_SEPARATOR = "|";
+import {
+  CHAIN_STRING_SEPARATOR,
+  ID_STRING_SEPARATOR,
+} from "../../../constants.mjs";
 
 /**
  * @dev

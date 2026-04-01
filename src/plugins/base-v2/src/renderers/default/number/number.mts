@@ -1,6 +1,6 @@
 import type { IDqmRenderPluginRenderer as R } from "@dqm/package-dqm-api-v2";
 
-export const word: R = {
+export const number: R = {
   chain: ["base", "v2", "number"],
   kind: "leaf",
   sync: ({ ser }) => {

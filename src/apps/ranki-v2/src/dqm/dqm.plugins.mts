@@ -30,13 +30,3 @@ const pluginsAsObject = {
 };
 
 export const pluginsAsArray = Object.values(pluginsAsObject);
-
-export const devPluginSelection = Object.entries(pluginsAsObject).map(
-  ([k, v]) => ({
-    name: k,
-    plugin: v,
-    standard: true,
-    requested: true,
-    installed: true,
-  }),
-);

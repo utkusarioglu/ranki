@@ -7,6 +7,7 @@ import { lexeme } from "./lexeme/lexeme.mjs";
 import { decorated } from "./decorated/decorated.mjs";
 import { word } from "./word/word.mjs";
 import { whitespace } from "./whitespace/whitespace.mjs";
+import { number } from "./number/number.mjs";
 
 export const baseV2Renderer: IDqmPluginRenderer = {
   type: "renderer",
@@ -25,94 +26,6 @@ export const baseV2Renderer: IDqmPluginRenderer = {
     decorated,
     word,
     whitespace,
-
-    // {
-    //   chain: ["base", "v2", "line"],
-    //   kind: "parent",
-    //   sync: () => {
-    //     const element = document.createElement("div");
-    //     element.className = "line";
-    //     // pref.scheme === "dark" ? "#000" : "#FFF";
-    //     // element.style.color = pref.scheme === "dark" ? "#FFF" : "#000";
-    //     return {
-    //       element,
-    //       getMount: () => element,
-    //     };
-    //   },
-    // },
-    // {
-    //   chain: ["base", "v2", "lexeme"],
-    //   kind: "parent",
-    //   sync: () => {
-    //     const element = document.createElement("span");
-    //     element.className = "lexeme";
-    //     // pref.scheme === "dark" ? "#000" : "#FFF";
-    //     // element.style.color = pref.scheme === "dark" ? "#FFF" : "#000";
-    //     return {
-    //       element,
-    //       getMount: () => element,
-    //     };
-    //   },
-    // },
-    // {
-    //   chain: ["base", "v2", "decorated"],
-    //   kind: "parent",
-    //   sync: () => {
-    //     const element = document.createElement("span");
-    //     element.className = "decorated";
-    //     // pref.scheme === "dark" ? "#000" : "#FFF";
-    //     // element.style.color = pref.scheme === "dark" ? "#FFF" : "#000";
-    //     return {
-    //       element,
-    //       getMount: () => element,
-    //     };
-    //   },
-    // },
-
-    // {
-    //   chain: ["base", "v2", "word"],
-    //   kind: "leaf",
-    //   sync: ({ ser }) => {
-    //     const element = document.createElement("span");
-    //     element.className = "word";
-    //     // pref.scheme === "dark" ? "#000" : "#FFF";
-    //     // element.style.color = pref.scheme === "dark" ? "#FFF" : "#000";
-    //     element.innerText = ser.source;
-    //     return {
-    //       element,
-    //       getMount: () => element,
-    //     };
-    //   },
-    // },
-    // {
-    //   chain: ["base", "v2", "number"],
-    //   kind: "leaf",
-    //   sync: ({ ser }) => {
-    //     const element = document.createElement("span");
-    //     element.className = "number";
-    //     // pref.scheme === "dark" ? "#000" : "#FFF";
-    //     // element.style.color = pref.scheme === "dark" ? "#F00" : "#00F";
-    //     element.innerText = ser.source;
-    //     return {
-    //       element,
-    //       // getMount: () => element,
-    //     };
-    //   },
-    // },
-    // {
-    //   chain: ["base", "v2", "whitespace"],
-    //   kind: "leaf",
-    //   sync: ({ ser }) => {
-    //     const element = document.createElement("span");
-    //     element.className = "whitespace";
-    //     // pref.scheme === "dark" ? "#000" : "#FFF";
-    //     // element.style.color = pref.scheme === "dark" ? "#F00" : "#00F";
-    //     element.innerText = ser.source;
-    //     return {
-    //       element,
-    //       getMount: () => element,
-    //     };
-    //   },
-    // },
+    number,
   ],
 };

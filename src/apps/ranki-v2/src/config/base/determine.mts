@@ -66,9 +66,7 @@ export function checkIfMatch(
   return undefined;
 }
 
-export function getMatchType<T extends DeckSettings>(
-  a: T,
-): MatchTypes | "multi" {
+function getMatchType<T extends DeckSettings>(a: T): MatchTypes | "multi" {
   const isExact = (a as DeckExactSettings).exact !== undefined;
   const isRegex = (a as DeckRegexSettings).regex !== undefined;
   const isGlob = (a as DeckGlobSettings).glob !== undefined;
