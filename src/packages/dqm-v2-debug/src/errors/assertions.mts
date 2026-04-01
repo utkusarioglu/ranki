@@ -1,11 +1,29 @@
+/**
+ * Assertion utilities for runtime checks.
+ *
+ * This module provides assertion functions that throw specific debug errors
+ * when certain conditions are not met, helping with debugging and error handling.
+ */
+
 import type { TryCatch, TryCatchSuccess } from "../utils/try-catch.mjs";
 import {
   DqmDebugError,
   type DqmPluginErrorConstructorParams,
 } from "./dqm-debug-error.mjs";
 
+/**
+ * Extra parameters for assertion functions, including error context.
+ */
 type AssertionExtra = Pick<DqmPluginErrorConstructorParams, "why" | "details">;
 
+/**
+ * Asserts that a value is not undefined.
+ * Throws a VALUE_UNDEFINED error if the value is undefined.
+ *
+ * @param v - The value to check.
+ * @param extra - Additional context for the error.
+ * @throws {DqmDebugError} If the value is undefined.
+ */
 export function assertExists(
   v: any,
   extra: AssertionExtra,
@@ -19,6 +37,13 @@ export function assertExists(
   }
 }
 
+/**
+ * Throws a NEVER_EVENT error.
+ * This function is used for code paths that should never be reached.
+ *
+ * @param extra - Additional context for the error.
+ * @throws {DqmDebugError} Always throws this error.
+ */
 export function assertNever(extra: AssertionExtra): never {
   throw new DqmDebugError({
     code: "NEVER_EVENT",
@@ -27,6 +52,15 @@ export function assertNever(extra: AssertionExtra): never {
   });
 }
 
+/**
+ * Asserts that a TryCatch result is successful.
+ * Throws a TRY_CATCH_FAIL error if the result indicates failure.
+ *
+ * @template T - The type of the successful value.
+ * @param v - The TryCatch result to check.
+ * @param extra - Additional context for the error.
+ * @throws {DqmDebugError} If the TryCatch result is a failure.
+ */
 export function assertTryCatchSuccess<T>(
   v: TryCatch<T>,
   extra: AssertionExtra,

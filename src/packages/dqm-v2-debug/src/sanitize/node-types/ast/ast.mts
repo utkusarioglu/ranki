@@ -1,3 +1,11 @@
+/**
+ * AST sanitizer module for creating debug-friendly views of AST nodes.
+ *
+ * This module provides functionality to sanitize AST nodes by wrapping
+ * their properties and methods in try-catch blocks, and filtering the
+ * results based on user preferences.
+ */
+
 import type { DqmAstOutput } from "@dqm/package-dqm-api-v2";
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
 import type { SanitizedParseResult } from "../../general.types.mjs";
@@ -24,9 +32,16 @@ import {
   assertTryCatchSuccess,
 } from "../../../errors/assertions.mjs";
 
+/**
+ * Internal class for creating narrowed, sanitized views of AST nodes.
+ * This class handles the filtering and data extraction based on user preferences.
+ */
 class AstSanitizedNarrowed {
+  /** The sanitized AST node instance. */
   private node: ClassSanitizer<IAstNode>;
-  private preferences: AstNodeSanitizedFiltersRecord;
+  /** The filter preferences specifying which fields to include. */
+  private filters: AstNodeSanitizedFiltersRecord;
+  /** Cached record of method calls for each filterable field. */
   private calls: AstNodeSanitizedCallRecord = {
     sourceString: () => this.node.getSourceString(),
     cpxUnique: () => {
@@ -63,17 +78,26 @@ class AstSanitizedNarrowed {
     spaceNodes: () => this.recurse(this.node.getSpaceNodes()),
   };
 
+  /**
+   * Creates a new AstSanitizedNarrowed instance.
+   * @param sanitized - The sanitized AST node to work with.
+   * @param preferences - The filter preferences for field selection.
+   */
   constructor(
     sanitized: ClassSanitizer<IAstNode>,
     preferences: AstNodeSanitizedFiltersRecord,
   ) {
     this.node = sanitized;
-    this.preferences = preferences;
+    this.filters = preferences;
   }
 
+  /**
+   * Builds the final sanitized AST node object based on the filter preferences.
+   * @returns A partial sanitized AST node with only the requested fields.
+   */
   build(): AstNodePartialSanitized {
     const fields = Object.fromEntries(
-      Object.entries(this.preferences).map(([field, prefs]) => [
+      Object.entries(this.filters).map(([field, prefs]) => [
         field,
         this.getCalls(prefs),
       ]),
@@ -84,6 +108,13 @@ class AstSanitizedNarrowed {
     };
   }
 
+  /**
+   * Safely accesses the CPX (Complex) property of the AST node.
+   * Throws an assertion error if CPX is not available or null.
+   * @param node - The sanitized AST node.
+   * @returns The CPX instance.
+   * @private
+   */
   private cpx(node: ClassSanitizer<IAstNode>) {
     const cpx = node.getCpx();
     assertTryCatchSuccess(cpx, {
@@ -96,10 +127,22 @@ class AstSanitizedNarrowed {
     return value;
   }
 
+  /**
+   * Gets the try-catch results for the specified filter keys.
+   * @param props - Array of filter keys to retrieve.
+   * @returns An object mapping each key to its try-catch result.
+   * @private
+   */
   private getCalls(props: AstNodeFilterKeys[]) {
     return Object.fromEntries(props.map((p) => [p, this.calls[p]!()]));
   }
 
+  /**
+   * Recursively processes a list of AST nodes, creating sanitized views for each.
+   * @param list - The try-catch wrapped list of AST nodes.
+   * @returns A try-catch wrapped array of sanitized AST node partials.
+   * @private
+   */
   private recurse(list: TryCatch<IAstNode[]>) {
     if (list.state === "fail") {
       return list;
@@ -107,13 +150,19 @@ class AstSanitizedNarrowed {
 
     const narrowed = list.value.map((n) => {
       const sanitized = createSanitizedView<IAstNode>(n);
-      return new AstSanitizedNarrowed(sanitized, this.preferences).build();
+      return new AstSanitizedNarrowed(sanitized, this.filters).build();
     });
 
     return tryCatch("narrowed", () => narrowed);
   }
 }
 
+/**
+ * Sanitizes an array of AST outputs based on the provided filter preferences.
+ * @param parsed - The raw AST output from parsing.
+ * @param features - The filter preferences for each field.
+ * @returns An array of sanitized AST nodes.
+ */
 function sanitizeAst(
   parsed: DqmAstOutput,
   features: AstNodeSanitizedFiltersRecord,
@@ -127,6 +176,16 @@ function sanitizeAst(
   });
 }
 
+/**
+ * Creates a sanitized AST from a parse result.
+ *
+ * This is the main entry point for AST sanitization. It takes a parse result
+ * and filter preferences, and returns a sanitized view suitable for debugging.
+ *
+ * @param parsed - The result of parsing, which may have succeeded or failed.
+ * @param preferences - Filter preferences specifying which AST node fields to include.
+ * @returns A sanitized AST result, either successful with data or failed with an error.
+ */
 export function createSanitizedAst(
   parsed: SanitizedParseResult,
   preferences: AstNodeSanitizedFiltersRecord,
