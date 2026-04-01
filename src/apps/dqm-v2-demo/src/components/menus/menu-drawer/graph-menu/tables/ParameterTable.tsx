@@ -7,7 +7,7 @@ import { DqmDemoError } from "_error";
 
 export type ParameterTableValueTuple = [string, TryCatch<any>];
 
-export type ParameterTableRows = ParameterTableValueTuple[];
+type ParameterTableRows = ParameterTableValueTuple[];
 
 const buildDataSource = (rows: ParameterTableRows) => {
   try {

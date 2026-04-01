@@ -22,11 +22,6 @@ function traverseAstParam(raw: IAstParamNode | null): void {
   }
   const node = Registry.getNode(raw);
   const root = createSanitizedView(raw);
-  // Registry.registerSanitized(node.data.id, root);
-  // const idStringPre = root.getIdString();
-  // assertTryCatchSuccess(idStringPre, { why: "id is required" });
-  // const idString = idStringPre.value;
-  // node.data.label = "AstParam:" + idString;
   node.data.label = uniqueLabel(
     "AstParam",
     root.getIdString(),

@@ -7,7 +7,8 @@
     "dev": "vite",
     "bundle": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "knip": "knip"
   },
   "dependencies": {
     "@ant-design/icons": "6.x",
@@ -55,14 +56,15 @@
     "@tanstack/router-plugin": "^1.140.0",
     "@types/babel__core": "^7",
     "@types/cytoscape-fcose": "^2",
-    "@types/node": "^24.10.1",
+    "@types/node": "^25.5.0",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
-    "typescript": "~5.9.3",
+    "knip": "^6.1.1",
+    "typescript": "^6.0.2",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4"
   }

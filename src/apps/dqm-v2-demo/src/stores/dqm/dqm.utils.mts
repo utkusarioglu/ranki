@@ -37,7 +37,7 @@ import yaml from "yaml";
 //   }
 // }
 
-export function parseDqm(
+function parseDqm(
   input: DqmParseInputStructured,
   config: DqmConfigPack,
   plugins: IDqmPlugin[],

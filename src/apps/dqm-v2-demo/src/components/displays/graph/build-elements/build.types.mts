@@ -37,7 +37,7 @@ export type SanitizedMap = Map<IdValue, SanitizedDqmNodeTypes>;
 
 export type SanitizedDqmNodeTypes = ClassSanitizerUnion<DqmNodeTypes>;
 
-export type Traversal = TraversalNode | null | undefined;
+// type Traversal = TraversalNode | null | undefined;
 
 export interface TraversalNode {
   raw: any;

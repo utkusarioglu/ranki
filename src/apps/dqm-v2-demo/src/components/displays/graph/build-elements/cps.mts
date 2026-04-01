@@ -12,13 +12,10 @@ export function traverseCps(raw: ICps | null, cpsDepth: number): void {
   const id = Registry.getNew(raw);
   Registry.registerSanitized(id, root);
   const cpsIdStringPre = root.getIdString();
-  // assertTryCatchSuccess(cpsIdStringPre, { why: "Cps Id is required" });
-  // const cpsIdString = cpsIdStringPre.value;
   const node = {
     data: {
       id,
       label: uniqueLabel("Cps", cpsIdStringPre, raw.getUnique()),
-      // label: ["Cps:", cpsIdString, " (", root.getUnique().value, ")"].join(""),
     },
     classes: cls("cps", cpsDepth === 0 && "root", `depth-${cpsDepth}`),
   };

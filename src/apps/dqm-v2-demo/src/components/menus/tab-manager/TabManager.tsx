@@ -169,7 +169,7 @@ const Activator: FC<PropsWithChildren<ActivatorProps>> = ({
   return <>{children}</>;
 };
 
-export const TabLevel: FC<TabManagerProps> = ({ levels, current }) => {
+const TabLevel: FC<TabManagerProps> = ({ levels, current }) => {
   let defaultKey = "1";
   const currSlice = useLocation().pathname.split("/").slice(1);
   const curr = currSlice[current];

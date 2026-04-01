@@ -40,7 +40,7 @@ export const useAstViewStore = create<AstViewStore>((set) => ({
   setStable: (stable) => set(() => ({ stable })),
 }));
 
-export function wrapVisible<T>(visible: (keyof T)[], hidden: (keyof T)[]) {
+function wrapVisible<T>(visible: (keyof T)[], hidden: (keyof T)[]) {
   return [
     ...visible.map((id) => ({ visible: true, id })),
     ...hidden.map((id) => ({ visible: false, id })),

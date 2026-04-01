@@ -1,5 +1,5 @@
 import type { TryCatch } from "@dqm/package-dqm-v2-debug";
-import type { E, Flattened, N, TraversalNode } from "./build.types.mts";
+// import type { E, Flattened, N, TraversalNode } from "./build.types.mts";
 import type { UniqueValue } from "@dqm/package-dqm-api-v2";
 
 export const cls = (...cls: any[]) => cls.filter((v) => !!v).join(" ");
@@ -21,21 +21,6 @@ export function getRoot<T>(n: T, method: string): GetRootReturn<T> {
     curr = curr[method]();
   }
   return [prev, climbs];
-}
-
-export function flatten(a: TraversalNode[]): Flattened {
-  const nodes: (N | E)[] = [];
-
-  a.forEach((t) => {
-    Object.values(t.relations)
-      .map((n) => flatten(n))
-      .forEach((n) => nodes.push(...n));
-
-    if (t.node) nodes.push(t.node);
-    Object.values(t.edges).forEach((e) => nodes.push(...e));
-  });
-
-  return nodes;
 }
 
 export function uniqueLabel(

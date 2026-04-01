@@ -3,12 +3,12 @@ import style from "./AnkiIFrame.module.css";
 import { getSizing, useRankiFiles } from "./utils";
 import { AnkiIFrame, type AnkiDesktopIFrameProps } from "./anki-iframe";
 
-export type CardElements = {
-  fragment: DocumentFragment;
-  html: string;
-  jss: HTMLScriptElement[];
-  css: HTMLStyleElement[];
-};
+// type CardElements = {
+//   fragment: DocumentFragment;
+//   html: string;
+//   jss: HTMLScriptElement[];
+//   css: HTMLStyleElement[];
+// };
 
 export type RankiElements = {
   fragment: DocumentFragment;

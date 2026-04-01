@@ -79,7 +79,7 @@ function useCyStateBind(
   }, [enabled]);
 }
 
-export const AstGraphSuccess: FC<AstGraphSuccessProps> = ({ elements }) => {
+const AstGraphSuccess: FC<AstGraphSuccessProps> = ({ elements }) => {
   const fontSize = 8;
   const animationDuration = 600;
   const cyRef = useRef<Core | null>(null);

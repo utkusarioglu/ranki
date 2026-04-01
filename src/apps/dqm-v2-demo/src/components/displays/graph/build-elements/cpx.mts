@@ -15,13 +15,6 @@ export function traverseCpx(raw: ICpx | null, cpxDepth: number): void {
     data: {
       id,
       label: uniqueLabel("Cpx", root.getChainListString(), raw.getUnique()),
-      // label: [
-      //   "Cpx:",
-      //   root.getChainListString().value,
-      //   " (",
-      //   root.getUnique().value,
-      //   ")",
-      // ].join(""),
     },
     classes: cls("cpx", cpxDepth === 0 && "root"),
   };

@@ -11,7 +11,7 @@ import { createDqmParsedProp } from "./dqm.utils.mts";
 import { deferredParseDqmInput } from "./dqm.subscriptions.mts";
 import { devPluginSelection } from "./dqm.plugins.mts";
 
-export const pluginSelectionInit: PluginStoreWrapper[] = devPluginSelection.map(
+const pluginSelectionInit: PluginStoreWrapper[] = devPluginSelection.map(
   ({ name, plugin, standard, requested, installed }, packageIndex) => ({
     name: name,
     enabled: true,

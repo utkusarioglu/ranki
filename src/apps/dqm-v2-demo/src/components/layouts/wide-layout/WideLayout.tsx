@@ -36,7 +36,7 @@ export const WideLayout = () => {
   );
 };
 
-export const WideMenu = () => {
+const WideMenu = () => {
   return (
     <Scroller direction="vertical">
       <ErrorBoundary FallbackComponent={ErrorFallback}>

@@ -35,7 +35,7 @@ type DqmInputCardBuilderFunc = (
   p: DqmInputCardBuilderFuncProps,
 ) => AstPropRowComponent;
 
-export type AstPropRowComponent = FC<DqmInputPropsItem>;
+type AstPropRowComponent = FC<DqmInputPropsItem>;
 
 export const dqmInputCardBuilder: DqmInputCardBuilderFunc =
   (s) =>

@@ -11,7 +11,7 @@ import type {
   WM,
 } from "./build.types.mts";
 
-export const INIT_ID = 1e6;
+const INIT_ID = 1e6;
 
 export class Registry {
   private static id: IdValue = INIT_ID;
