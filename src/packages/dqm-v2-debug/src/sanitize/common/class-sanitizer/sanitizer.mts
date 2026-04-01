@@ -3,6 +3,8 @@
  *
  * This module provides utilities to wrap class instances in a sanitized view
  * that catches exceptions when accessing properties or calling methods.
+ *
+ * @aidoc
  */
 
 import { tryCatch, type TryCatch } from "../../../utils/try-catch.mjs";
@@ -21,14 +23,18 @@ export type ClassSanitizerUnion<T> = T extends any ? ClassSanitizer<T> : never;
  * Properties return TryCatch-wrapped values, and methods return functions
  * that return TryCatch-wrapped results.
  * @template T - The original class type being sanitized.
+ *
+ * @dev
+ * #1 Reference to the original unsanitized instance.
+ *
+ * @aidoc
  */
 export type ClassSanitizer<T> = {
   [K in keyof T]: T[K] extends (...args: infer A) => infer R
     ? (...args: A) => TryCatch<R>
     : TryCatch<T[K]>;
 } & {
-  /** Reference to the original unsanitized instance. */
-  original: T;
+  original: T; // #1
 };
 
 /**
@@ -37,6 +43,8 @@ export type ClassSanitizer<T> = {
  *
  * @param obj - The object to extract keys from.
  * @returns An array of property keys.
+ *
+ * @aidoc
  */
 function getAllMethodKeys(obj: object): PropertyKey[] {
   const keys = new Set<PropertyKey>();
@@ -59,6 +67,8 @@ function getAllMethodKeys(obj: object): PropertyKey[] {
  * @param instance - The original instance to wrap.
  * @param consume - A function that wraps property access or method calls with try-catch.
  * @returns A sanitized view of the instance.
+ *
+ * @aidoc
  */
 function wrapWithTryCatch<T extends object>(
   instance: T,
@@ -97,6 +107,8 @@ function wrapWithTryCatch<T extends object>(
  * @template C - The type of the class instance.
  * @param source - The original class instance to sanitize.
  * @returns A sanitized view of the instance with an 'original' property.
+ *
+ * @aidoc
  */
 export function createSanitizedView<C extends object>(
   source: C,

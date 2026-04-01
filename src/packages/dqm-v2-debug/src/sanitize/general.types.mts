@@ -3,28 +3,38 @@
  *
  * This module defines common types used across the sanitization modules,
  * particularly for handling parse results that may succeed or fail.
+ *
+ * @aidoc
  */
 
 import type { DqmParseOutput } from "@dqm/package-dqm-api-v2";
 
 /**
  * Represents a successful parse result containing the parsed data.
+ *
+ * @dev
+ * #1 Indicates the parsing was successful.
+ * #2 The successfully parsed data.
+ *
+ * @aidoc
  */
 interface SanitizeResultSuccess {
-  /** Indicates the parsing was successful. */
-  state: "success";
-  /** The successfully parsed data. */
-  data: DqmParseOutput;
+  state: "success"; // #1
+  data: DqmParseOutput; // #2
 }
 
 /**
  * Represents a failed parse result with an error message.
+ *
+ * @dev
+ * #1 Indicates the parsing failed.
+ * #2 The error message describing what went wrong.
+ *
+ * @aidoc
  */
 interface ParseResultFail {
-  /** Indicates the parsing failed. */
-  state: "fail";
-  /** The error message describing what went wrong. */
-  error: string;
+  state: "fail"; // #1
+  error: string; // #2
 }
 
 /**

@@ -3,6 +3,8 @@
  *
  * This module provides assertion functions that throw specific debug errors
  * when certain conditions are not met, helping with debugging and error handling.
+ *
+ * @aidoc
  */
 
 import type { TryCatch, TryCatchSuccess } from "../utils/try-catch.mjs";
@@ -23,6 +25,8 @@ type AssertionExtra = Pick<DqmPluginErrorConstructorParams, "why" | "details">;
  * @param v - The value to check.
  * @param extra - Additional context for the error.
  * @throws {DqmDebugError} If the value is undefined.
+ *
+ * @aidoc
  */
 export function assertExists(
   v: any,
@@ -43,6 +47,8 @@ export function assertExists(
  *
  * @param extra - Additional context for the error.
  * @throws {DqmDebugError} Always throws this error.
+ *
+ * @aidoc
  */
 export function assertNever(extra: AssertionExtra): never {
   throw new DqmDebugError({
@@ -60,6 +66,8 @@ export function assertNever(extra: AssertionExtra): never {
  * @param v - The TryCatch result to check.
  * @param extra - Additional context for the error.
  * @throws {DqmDebugError} If the TryCatch result is a failure.
+ *
+ * @aidoc
  */
 export function assertTryCatchSuccess<T>(
   v: TryCatch<T>,

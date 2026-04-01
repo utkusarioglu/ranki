@@ -3,11 +3,15 @@
  *
  * This module defines string constants for all possible error codes
  * that can be thrown by the DQM debug system.
+ *
+ * @aidoc
  */
 
 /**
  * Constants for DQM debug error codes.
  * These are used as keys in error code mappings and validation.
+ *
+ * @aidoc
  */
 export const DQM_DEBUG_ERROR_CONSTANTS = {
   /** Error code for when a value is unexpectedly undefined. */

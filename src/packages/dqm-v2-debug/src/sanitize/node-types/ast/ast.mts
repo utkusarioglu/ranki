@@ -4,6 +4,8 @@
  * This module provides functionality to sanitize AST nodes by wrapping
  * their properties and methods in try-catch blocks, and filtering the
  * results based on user preferences.
+ *
+ * @aidoc
  */
 
 import type { DqmAstOutput } from "@dqm/package-dqm-api-v2";
@@ -35,6 +37,8 @@ import {
 /**
  * Internal class for creating narrowed, sanitized views of AST nodes.
  * This class handles the filtering and data extraction based on user preferences.
+ *
+ * @aidoc
  */
 class AstSanitizedNarrowed {
   /** The sanitized AST node instance. */
@@ -80,8 +84,11 @@ class AstSanitizedNarrowed {
 
   /**
    * Creates a new AstSanitizedNarrowed instance.
+   *
    * @param sanitized - The sanitized AST node to work with.
    * @param preferences - The filter preferences for field selection.
+   *
+   * @aidoc
    */
   constructor(
     sanitized: ClassSanitizer<IAstNode>,
@@ -94,6 +101,8 @@ class AstSanitizedNarrowed {
   /**
    * Builds the final sanitized AST node object based on the filter preferences.
    * @returns A partial sanitized AST node with only the requested fields.
+   *
+   * @aidoc
    */
   build(): AstNodePartialSanitized {
     const fields = Object.fromEntries(
@@ -114,6 +123,8 @@ class AstSanitizedNarrowed {
    * @param node - The sanitized AST node.
    * @returns The CPX instance.
    * @private
+   *
+   * @aidoc
    */
   private cpx(node: ClassSanitizer<IAstNode>) {
     const cpx = node.getCpx();
@@ -142,6 +153,8 @@ class AstSanitizedNarrowed {
    * @param list - The try-catch wrapped list of AST nodes.
    * @returns A try-catch wrapped array of sanitized AST node partials.
    * @private
+   *
+   * @aidoc
    */
   private recurse(list: TryCatch<IAstNode[]>) {
     if (list.state === "fail") {
@@ -162,6 +175,8 @@ class AstSanitizedNarrowed {
  * @param parsed - The raw AST output from parsing.
  * @param features - The filter preferences for each field.
  * @returns An array of sanitized AST nodes.
+ *
+ * @aidoc
  */
 function sanitizeAst(
   parsed: DqmAstOutput,
@@ -185,6 +200,8 @@ function sanitizeAst(
  * @param parsed - The result of parsing, which may have succeeded or failed.
  * @param preferences - Filter preferences specifying which AST node fields to include.
  * @returns A sanitized AST result, either successful with data or failed with an error.
+ *
+ * @aidoc
  */
 export function createSanitizedAst(
   parsed: SanitizedParseResult,

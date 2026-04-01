@@ -3,6 +3,8 @@
  *
  * This module defines the DqmDebugError class, which extends the base DQM error
  * system to provide specific error handling for debug operations.
+ *
+ * @aidoc
  */
 
 import type {
@@ -23,6 +25,8 @@ export type DqmPluginErrorConstructorParams = WithCause &
 /**
  * Error class for DQM debug operations.
  * Extends the base DQM error system with debug-specific error codes and handling.
+ *
+ * @aidoc
  */
 export class DqmDebugError extends DqmBaseError implements IDqmAppError {
   /** The error type identifier for this error class. */
@@ -32,6 +36,8 @@ export class DqmDebugError extends DqmBaseError implements IDqmAppError {
    * Gets the human-readable error text for a given error code.
    * @param code - The error code to get text for.
    * @returns The error message text.
+   *
+   * @aidoc
    */
   override getErrorText(code: keyof typeof DQM_DEBUG_ERROR_CONSTANTS): string {
     return DQM_DEBUG_ERROR_CONSTANTS[code] || super.getDefaultErrorText(code);
@@ -40,6 +46,8 @@ export class DqmDebugError extends DqmBaseError implements IDqmAppError {
   /**
    * Gets additional extended details for error reporting.
    * @returns An object with extended error details.
+   *
+   * @aidoc
    */
   override getAdditionalExtendedDetails(): Record<string, any> {
     return {
@@ -50,6 +58,8 @@ export class DqmDebugError extends DqmBaseError implements IDqmAppError {
   /**
    * Gets additional details for error reporting.
    * @returns An object with error details.
+   *
+   * @aidoc
    */
   override getAdditionalDetails(): Record<string, any> {
     return {};

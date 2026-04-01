@@ -3,33 +3,43 @@
  *
  * This module provides types and functions to wrap potentially failing operations
  * in a safe container that captures both success and failure states.
+ *
+ * @aidoc
  */
 
 /**
  * Represents a successful try-catch operation result.
  * @template T - The type of the successful result value.
+ *
+ * @dev
+ * #1 Indicates the operation was successful.
+ * #2 A key identifier for the operation, used for error tracking.
+ * #3 The successful result value.
+ *
+ * @aidoc
  */
 export type TryCatchSuccess<T> = {
-  /** Indicates the operation was successful. */
-  state: "success";
-  /** A key identifier for the operation, used for error tracking. */
-  key: Key;
-  /** The successful result value. */
-  value: T;
+  state: "success"; // #1
+  key: Key; // #2
+  value: T; // #3
 };
 
 /**
  * Represents a failed try-catch operation result.
+ *
+ * @dev
+ * #1 Indicates the operation failed.
+ * #2 A key identifier for the operation, used for error tracking.
+ * #3 A placeholder value indicating failure.
+ * #4 The error that was caught during the operation.
+ *
+ * @aidoc
  */
 export type TryCatchFail = {
-  /** Indicates the operation failed. */
-  state: "fail";
-  /** A key identifier for the operation, used for error tracking. */
-  key: Key;
-  /** A placeholder value indicating failure. */
-  value: "(failed)";
-  /** The error that was caught during the operation. */
-  error: unknown;
+  state: "fail"; // #1
+  key: Key; // #2
+  value: "(failed)"; // #3
+  error: unknown; // #4
 };
 
 /**
@@ -51,6 +61,8 @@ export type TryCatch<T> = TryCatchSuccess<T> | TryCatchFail;
  * @param key - This is meant as an error id. can be removed if it doesn't deliver the expected use.
  * @param callback - The function to execute safely.
  * @returns A TryCatch result containing either the successful value or the caught error.
+ *
+ * @aidoc
  */
 export function tryCatch<T>(key: Key, callback: () => T): TryCatch<T> {
   try {
@@ -78,6 +90,8 @@ export function tryCatch<T>(key: Key, callback: () => T): TryCatch<T> {
  * @param o - The previous try-catch result to chain from.
  * @param cb - The callback to apply to the successful value.
  * @returns A new try-catch result from applying the callback, or the original failure.
+ *
+ * @aidoc
  */
 export function tryCatchLeap<T>(o: TryCatch<T>, cb: (n: any) => any) {
   if (o.state === "fail") {
