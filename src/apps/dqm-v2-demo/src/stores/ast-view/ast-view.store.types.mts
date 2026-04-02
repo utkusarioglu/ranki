@@ -1,8 +1,4 @@
-// MOVED
-import type {
-  AstNodeFilterKeys,
-  AstNodeSanitizedTypesRecord,
-} from "@dqm/package-dqm-v2-debug";
+import type { AstNodeSanitizedTypesRecord } from "@dqm/package-dqm-v2-debug";
 
 export interface AstViewStore extends AstViewStoreState, AstViewStoreActions {}
 
@@ -35,9 +31,9 @@ export interface SanitizedNodeView {
   stable: SanitizedNodePropsView;
 }
 
-export interface SanitizedNodeViewPreferences {
-  hidden: AstNodeFilterKeys[];
-  props: AstNodeFilterKeys[];
-  children: AstNodeFilterKeys[];
-  stable: AstNodeFilterKeys[];
-}
+// export interface SanitizedNodeViewPreferences {
+//   hidden: AstNodeFilterKeys[];
+//   props: AstNodeFilterKeys[];
+//   children: AstNodeFilterKeys[];
+//   stable: AstNodeFilterKeys[];
+// }

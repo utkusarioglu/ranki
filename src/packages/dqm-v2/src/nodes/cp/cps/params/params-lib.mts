@@ -145,9 +145,6 @@ export class ParamsLib extends CommonTransports implements IParams {
     });
 
     const merged = config.mergeTo(dqmTarget).getConfig<DqmConfig>(dqmTarget);
-    if (config.getOrder().length > 2) {
-      console.log("dqm", config.getOrder(), config, merged);
-    }
     return merged;
   }
 

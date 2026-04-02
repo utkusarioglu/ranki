@@ -23,52 +23,6 @@ import type {
 } from "../../../utils/try-catch.mjs";
 
 /**
- * Interface for the sanitized data structure containing an array of sanitized AST nodes.
- * Note: This interface may be redundant and the `sanitized` property could become the object itself.
- *
- * @dev
- * #1 Array of sanitized AST nodes.
- *
- * @aidoc
- */
-export interface AstNodeSanitizeSanitized {
-  sanitized: AstNodeSanitized[]; // #1
-}
-
-/**
- * Represents a successful AST sanitization result.
- *
- * @dev
- * #1 Indicates the sanitization was successful.
- * #2 The sanitized AST data.
- *
- * @aidoc
- */
-interface AstNodeSanitizeSuccess {
-  state: "success"; // #1
-  data: AstNodeSanitizeSanitized; // #2
-}
-
-/**
- * Represents a failed AST sanitization result.
- *
- * @dev
- * #1 Indicates the sanitization failed.
- * #2 The error message describing the failure.
- *
- * @aidoc
- */
-interface AstNodeSanitizeFail {
-  state: "fail"; // #1
-  error: string; // #2
-}
-
-/**
- * Union type representing either a successful or failed AST sanitization result.
- */
-export type AstNodeSanitize = AstNodeSanitizeSuccess | AstNodeSanitizeFail;
-
-/**
  * A sanitized AST node with theater information.
  *
  * @dev
@@ -77,9 +31,9 @@ export type AstNodeSanitize = AstNodeSanitizeSuccess | AstNodeSanitizeFail;
  *
  * @aidoc
  */
-export type AstNodeSanitized = {
+export type AstNodeSanitizedFiltered = {
   theater: DqmParseTheater; // #1
-  sanitized: AstNodePartialSanitized; // #2
+  sanitized: AstNodeSanitizedFilteredSanitizedKey; // #2
 };
 
 /**
@@ -91,15 +45,15 @@ export type AstNodeSanitized = {
  *
  * @aidoc
  */
-export type AstNodePartialSanitized = {
+export type AstNodeSanitizedFilteredSanitizedKey = {
   key: string; // #1
-  fields: AstNodeSanitizedPartialFields; // #2
+  fields: AstNodeSanitizedFilteredFields; // #2
 };
 
 /**
  * The structure of partially sanitized fields, mapping field names to try-catch wrapped records.
  */
-export type AstNodeSanitizedPartialFields = Record<
+export type AstNodeSanitizedFilteredFields = Record<
   string,
   Partial<TryCatchRecord<AstNodeSanitizedTypesRecord>>
 >;
@@ -107,7 +61,7 @@ export type AstNodeSanitizedPartialFields = Record<
 /**
  * A record of function calls that return try-catch wrapped values for each AST node field.
  */
-export type AstNodeSanitizedCallRecord =
+export type AstNodeSanitizedFilterCallRecord =
   TryCatchCall<AstNodeSanitizedTypesRecord>;
 
 /**
@@ -159,10 +113,10 @@ export interface AstNodeSanitizedTypesRecord {
   subtreeCount: number; // #13
   meaning: string | undefined; // #14
   creationMethod: CreationMethod; // #15
-  subtreeNodes: AstNodePartialSanitized[]; // #16
-  childrenNodes: AstNodePartialSanitized[]; // #17
-  tokenNodes: AstNodePartialSanitized[]; // #18
-  spaceNodes: AstNodePartialSanitized[]; // #19
+  subtreeNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #16
+  childrenNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #17
+  tokenNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #18
+  spaceNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #19
   sourceString: AstSourceString; // #20
 }
 

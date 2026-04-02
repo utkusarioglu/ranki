@@ -13,7 +13,7 @@
  *
  * @aidoc
  */
-export { createSanitizedAst } from "./sanitize/node-types/ast/ast.mjs";
+export { createSanitizedAst } from "./sanitize/node-types/ast/ast.sanitize.mjs";
 
 /**
  * Re-exports all types from the AST types module.
@@ -21,7 +21,7 @@ export { createSanitizedAst } from "./sanitize/node-types/ast/ast.mjs";
  *
  * @aidoc
  */
-export type * from "./sanitize/node-types/ast/ast.types.mjs";
+export type * from "./sanitize/node-types/ast/ast.filter.types.mjs";
 
 /**
  * Re-exports all exports from the try-catch utility module.
@@ -38,3 +38,4 @@ export * from "./utils/try-catch.mjs";
  * @aidoc
  */
 export * from "./sanitize/common/class-sanitizer/sanitizer.mjs";
+export type * from "./sanitize/common/class-sanitizer/sanitizer.types.mjs";

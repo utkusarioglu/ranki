@@ -7,35 +7,8 @@
  * @aidoc
  */
 
-import { tryCatch, type TryCatch } from "../../../utils/try-catch.mjs";
-
-/**
- * Union type for class sanitizers. This is a utility type for handling
- * discriminated unions of class sanitizer types.
- * @template T - The type being sanitized.
- */
-export type ClassSanitizerUnion<T> = T extends any ? ClassSanitizer<T> : never;
-
-/**
- * A sanitized view of a class instance where all properties and methods
- * are wrapped to catch exceptions.
- *
- * Properties return TryCatch-wrapped values, and methods return functions
- * that return TryCatch-wrapped results.
- * @template T - The original class type being sanitized.
- *
- * @dev
- * #1 Reference to the original unsanitized instance.
- *
- * @aidoc
- */
-export type ClassSanitizer<T> = {
-  [K in keyof T]: T[K] extends (...args: infer A) => infer R
-    ? (...args: A) => TryCatch<R>
-    : TryCatch<T[K]>;
-} & {
-  original: T; // #1
-};
+import { tryCatch } from "../../../utils/try-catch.mjs";
+import type { ClassSanitizer } from "./sanitizer.types.mjs";
 
 /**
  * Gets all method and property keys from an object, including inherited ones.

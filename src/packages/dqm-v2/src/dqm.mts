@@ -93,6 +93,7 @@ export class Dqm {
   ): Promise<RenderReport> {
     try {
       this.parse(rawInputs);
+      console.log("parsed", this.parsed);
       return this.plugins.render(this.parsed.ser, roots, pref);
     } catch (e) {
       throw new DqmAppError({

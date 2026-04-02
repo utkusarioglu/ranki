@@ -8,22 +8,16 @@
  * @aidoc
  */
 
-import type { DqmAstOutput } from "@dqm/package-dqm-api-v2";
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
-import type { SanitizedParseResult } from "../../general.types.mjs";
 import type {
-  AstNodePartialSanitized,
-  AstNodeSanitized,
-  AstNodeSanitize,
-  AstNodeSanitizedCallRecord,
+  AstNodeSanitizedFilteredSanitizedKey,
+  AstNodeSanitizedFilterCallRecord,
   AstNodeFilterKeys,
   AstNodeSanitizedFiltersRecord,
-  AstNodeSanitizedPartialFields,
-} from "./ast.types.mjs";
-import {
-  createSanitizedView,
-  type ClassSanitizer,
-} from "../../common/class-sanitizer/sanitizer.mjs";
+  AstNodeSanitizedFilteredFields,
+} from "./ast.filter.types.mjs";
+import { createSanitizedView } from "../../common/class-sanitizer/sanitizer.mjs";
+import { type ClassSanitizer } from "../../common/class-sanitizer/sanitizer.types.mjs";
 import {
   tryCatch,
   tryCatchLeap,
@@ -40,13 +34,13 @@ import {
  *
  * @aidoc
  */
-class AstSanitizedNarrowed {
+export class AstSanitizedNarrowed {
   /** The sanitized AST node instance. */
   private node: ClassSanitizer<IAstNode>;
   /** The filter preferences specifying which fields to include. */
   private filters: AstNodeSanitizedFiltersRecord;
   /** Cached record of method calls for each filterable field. */
-  private calls: AstNodeSanitizedCallRecord = {
+  private calls: AstNodeSanitizedFilterCallRecord = {
     sourceString: () => this.node.getSourceString(),
     cpxUnique: () => {
       const cpxUnique = tryCatch("getUnique", () =>
@@ -104,13 +98,13 @@ class AstSanitizedNarrowed {
    *
    * @aidoc
    */
-  build(): AstNodePartialSanitized {
+  build(): AstNodeSanitizedFilteredSanitizedKey {
     const fields = Object.fromEntries(
       Object.entries(this.filters).map(([field, prefs]) => [
         field,
         this.getCalls(prefs),
       ]),
-    ) as AstNodeSanitizedPartialFields;
+    ) as AstNodeSanitizedFilteredFields;
     return {
       key: Date.now().toString(),
       fields,
@@ -167,63 +161,5 @@ class AstSanitizedNarrowed {
     });
 
     return tryCatch("narrowed", () => narrowed);
-  }
-}
-
-/**
- * Sanitizes an array of AST outputs based on the provided filter preferences.
- * @param parsed - The raw AST output from parsing.
- * @param features - The filter preferences for each field.
- * @returns An array of sanitized AST nodes.
- *
- * @aidoc
- */
-function sanitizeAst(
-  parsed: DqmAstOutput,
-  features: AstNodeSanitizedFiltersRecord,
-): AstNodeSanitized[] {
-  return parsed.map((p) => {
-    const sanitized = createSanitizedView<IAstNode>(p.ast);
-    return {
-      theater: p.theater,
-      sanitized: new AstSanitizedNarrowed(sanitized, features).build(),
-    };
-  });
-}
-
-/**
- * Creates a sanitized AST from a parse result.
- *
- * This is the main entry point for AST sanitization. It takes a parse result
- * and filter preferences, and returns a sanitized view suitable for debugging.
- *
- * @param parsed - The result of parsing, which may have succeeded or failed.
- * @param preferences - Filter preferences specifying which AST node fields to include.
- * @returns A sanitized AST result, either successful with data or failed with an error.
- *
- * @aidoc
- */
-export function createSanitizedAst(
-  parsed: SanitizedParseResult,
-  preferences: AstNodeSanitizedFiltersRecord,
-): AstNodeSanitize {
-  try {
-    if (parsed.state !== "success") {
-      return {
-        state: "fail",
-        error: parsed.error,
-      };
-    }
-    const sanitized = sanitizeAst(parsed.data.ast, preferences);
-    return {
-      state: "success",
-      data: { sanitized },
-    };
-  } catch (e) {
-    console.log(e);
-    return {
-      state: "fail",
-      error: e as any,
-    };
   }
 }

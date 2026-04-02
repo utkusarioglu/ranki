@@ -29,14 +29,14 @@ export const nodePayload: IAstNodeActionDict = {
     return (
       grabAst(this)
         .newAst(this)
-        .setTransformClass("FRAME_V2_PAYLOAD_PLAIN")
+        // DISABLED
+        // .setTransformClass("FRAME_V2_PAYLOAD_PLAIN")
         .pushIgnoredNodes(frameV2PayloadSectionItem)
-
         // FIX it's retrieving the source from here while it needs to retrieve
         // the source of the entire frame enclosure
-        .parse(frameV2PayloadSectionItem.sourceString)
+        // .parse(frameV2PayloadSectionItem.sourceString)
+        .pushNodes(["node", frameV2PayloadSectionItem])
     );
-    // .pushNodes(["node", frameV2PayloadSectionItem]);
   },
 
   frameV2PayloadSectionItem(frameV2OrFrameV2PayloadPlain, sBaseV2Whitespace) {
@@ -50,12 +50,12 @@ export const nodePayload: IAstNodeActionDict = {
     return (
       grabAst(this)
         .newAst(this)
-        // .setTransformClass("FRAME_V2_PAYLOAD_PLAIN")
+        .setTransformClass("FRAME_V2_PAYLOAD_PLAIN")
         .pushIgnoredNodes(all)
 
-      // FIX it's retrieving the source from here while it needs to retrieve
-      // the source of the entire frame enclosure
-      // .parse(all.sourceString)
+        // FIX it's retrieving the source from here while it needs to retrieve
+        // the source of the entire frame enclosure
+        .parse(all.sourceString)
     );
     // return node;
   },

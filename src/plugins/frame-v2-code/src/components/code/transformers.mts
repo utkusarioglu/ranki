@@ -9,11 +9,14 @@ const FRAME_V2: TF = (trn) => {
 
 const FRAME_V2_PAYLOAD_PLAIN: TF = (trn) => {
   const direction = trn.getAst().getDirection();
+  const ast = trn.getAst().getChildrenNodes();
+  const src = ast[0].getSourceString();
   trn
     .setChain([...TAGS, "payload", direction])
     // .setSource(trn.getAst().getSourceString());
     // DECIDE read mermaid comment for the same position
-    .setSource(trn.getAst().getChildrenNodes()[0].getSourceString());
+    .setSource(src);
+  console.log("ast", ast, "src", src);
 };
 
 // // @ts-expect-error

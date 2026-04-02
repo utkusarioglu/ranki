@@ -22,12 +22,7 @@ function useSanitizedAst() {
     stable,
     hidden,
   });
-  return createSanitizedAst(
-    parsed,
-    // @ts-expect-error
-    filtered,
-  );
-  // return createSanitized(parsed, { props, children, stable, hidden });
+  return createSanitizedAst(parsed, filtered);
 }
 
 export const SanitizedNodeList = () => {
@@ -39,7 +34,7 @@ export const SanitizedNodeList = () => {
     return null;
   }
 
-  const nodes = sanitized.data.sanitized;
+  const nodes = sanitized.data;
 
   if (!nodes.length) {
     return (
