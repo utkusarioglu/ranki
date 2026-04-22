@@ -8,7 +8,7 @@ import { useErrorBoundary } from "react-error-boundary";
 import { AstNodeDisplay } from "./ast-node-display/NodeDisplay";
 import { Scroller } from "_views/scroller/Scroller";
 import style from "./SanitizedAstNodeListDisplay.module.css";
-import { createSanitizedAst } from "@dqm/package-dqm-v2-debug";
+import { createFilteredAst } from "@dqm/package-dqm-v2-debug";
 
 function useSanitizedAst() {
   const parsed = useDqmStore((s) => s.parsed);
@@ -22,7 +22,7 @@ function useSanitizedAst() {
     stable,
     hidden,
   });
-  return createSanitizedAst(parsed, filtered);
+  return createFilteredAst(parsed, filtered);
 }
 
 export const SanitizedNodeList = () => {

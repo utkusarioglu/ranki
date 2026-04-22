@@ -13,16 +13,6 @@ export type IAstNodeContext = {
   ast: IAstNode;
 };
 
-// export interface IAstSpaceNode {
-//   type: "block" | "clearance" | "nl" | "whitespace";
-//   raw: string;
-// }
-
-// export interface IAstTokenNode {
-//   type: string;
-//   raw: string;
-// }
-
 export type IAstNodeConstructor = new (
   c: CommonTransportsConstructorParams,
 ) => IAstNode;

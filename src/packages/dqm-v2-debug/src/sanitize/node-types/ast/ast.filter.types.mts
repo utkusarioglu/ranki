@@ -7,16 +7,7 @@
  * @aidoc
  */
 
-import type {
-  DqmParseTheater,
-  CreatorName,
-  IAstNodeKind,
-  CounterStat,
-  CreationMethod,
-  AstSourceString,
-  UniqueValue,
-  IdListString,
-} from "@dqm/package-dqm-api-v2";
+import type { DqmParseTheater, IAstNode, ICpx } from "@dqm/package-dqm-api-v2";
 import type {
   TryCatchCall,
   TryCatchRecord,
@@ -97,27 +88,38 @@ export type AstNodeFilterKeys = keyof AstNodeSanitizedTypesRecord;
  *
  * @aidoc
  */
-export interface AstNodeSanitizedTypesRecord {
-  astUnique: UniqueValue; // #1
-  creator: CreatorName; // #2
-  idListString: IdListString; // #3
-  kind: IAstNodeKind; // #4
-  constructorName: string; // #5
-  cpxUnique: UniqueValue; // #6
-  childIndex: CounterStat; // #7
-  blockDepth: CounterStat; // #8
-  inlineDepth: CounterStat; // #9
-  chainListString: string; // #10
+export type AstNodeSanitizedTypesRecord = AstNodePrimitiveView &
+  AstNodeICpxView &
+  AstNodeIAstNodeView;
+
+interface AstNodePrimitiveView {
   childCount: number; // #11
+  constructorName: string; // #5
   ignoredCount: number; // #12
   subtreeCount: number; // #13
-  meaning: string | undefined; // #14
-  creationMethod: CreationMethod; // #15
-  subtreeNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #16
+
   childrenNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #17
-  tokenNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #18
   spaceNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #19
-  sourceString: AstSourceString; // #20
+  subtreeNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #16
+  tokenNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #18
+}
+
+interface AstNodeICpxView {
+  chainListString: ReturnType<ICpx["getChainListString"]>; // #10
+  cpxUnique: ReturnType<ICpx["getUnique"]>; // #6
+  idListString: ReturnType<ICpx["getIdListString"]>; // #3
+}
+
+interface AstNodeIAstNodeView {
+  astUnique: ReturnType<IAstNode["getUnique"]>; // #1
+  blockDepth: ReturnType<IAstNode["getBlockDepth"]>; // #8
+  childIndex: ReturnType<IAstNode["getChildIndex"]>; // #7
+  creationMethod: ReturnType<IAstNode["getCreationMethod"]>; // #15
+  creator: ReturnType<IAstNode["getCreator"]>; // #2
+  inlineDepth: ReturnType<IAstNode["getInlineDepth"]>; // #9
+  kind: ReturnType<IAstNode["getKind"]>; // #4
+  meaning: ReturnType<IAstNode["getMeaning"]>; // #14
+  sourceString: ReturnType<IAstNode["getSourceString"]>; // #20
 }
 
 /**
@@ -126,4 +128,4 @@ export interface AstNodeSanitizedTypesRecord {
  *
  * @aidoc
  */
-export type AstNodeSanitizedFiltersRecord = Record<string, AstNodeFilterKeys[]>;
+export type AstNodeFiltersRecord = Record<string, AstNodeFilterKeys[]>;

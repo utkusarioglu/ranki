@@ -13,7 +13,7 @@ import type {
   AstNodeSanitizedFilteredSanitizedKey,
   AstNodeSanitizedFilterCallRecord,
   AstNodeFilterKeys,
-  AstNodeSanitizedFiltersRecord,
+  AstNodeFiltersRecord,
   AstNodeSanitizedFilteredFields,
 } from "./ast.filter.types.mjs";
 import { createSanitizedView } from "../../common/class-sanitizer/sanitizer.mjs";
@@ -34,11 +34,11 @@ import {
  *
  * @aidoc
  */
-export class AstSanitizedNarrowed {
+export class AstSanitizedFiltered {
   /** The sanitized AST node instance. */
   private node: ClassSanitizer<IAstNode>;
   /** The filter preferences specifying which fields to include. */
-  private filters: AstNodeSanitizedFiltersRecord;
+  private filters: AstNodeFiltersRecord;
   /** Cached record of method calls for each filterable field. */
   private calls: AstNodeSanitizedFilterCallRecord = {
     sourceString: () => this.node.getSourceString(),
@@ -77,18 +77,15 @@ export class AstSanitizedNarrowed {
   };
 
   /**
-   * Creates a new AstSanitizedNarrowed instance.
+   * Creates a new AstSanitizedFiltered instance.
    *
    * @param sanitized - The sanitized AST node to work with.
    * @param preferences - The filter preferences for field selection.
    *
    * @aidoc
    */
-  constructor(
-    sanitized: ClassSanitizer<IAstNode>,
-    preferences: AstNodeSanitizedFiltersRecord,
-  ) {
-    this.node = sanitized;
+  constructor(astNode: IAstNode, preferences: AstNodeFiltersRecord) {
+    this.node = createSanitizedView<IAstNode>(astNode);
     this.filters = preferences;
   }
 
@@ -156,8 +153,7 @@ export class AstSanitizedNarrowed {
     }
 
     const narrowed = list.value.map((n) => {
-      const sanitized = createSanitizedView<IAstNode>(n);
-      return new AstSanitizedNarrowed(sanitized, this.filters).build();
+      return new AstSanitizedFiltered(n, this.filters).build();
     });
 
     return tryCatch("narrowed", () => narrowed);

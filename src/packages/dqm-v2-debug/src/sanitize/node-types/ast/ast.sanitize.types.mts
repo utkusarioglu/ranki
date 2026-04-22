@@ -1,9 +1,4 @@
-import type { IAstNode } from "@dqm/package-dqm-api-v2";
-import type {
-  SanitizeSuccess,
-  SanitizeFail,
-  ClassSanitizer,
-} from "../../../export.mjs";
+import type { SanitizeSuccess, SanitizeFail } from "../../../export.mjs";
 import type { AstNodeSanitizedFiltered } from "./ast.filter.types.mjs";
 
 /**
@@ -13,5 +8,3 @@ import type { AstNodeSanitizedFiltered } from "./ast.filter.types.mjs";
 export type AstNodeSanitizedTry =
   | SanitizeSuccess<AstNodeSanitizedFiltered[]>
   | SanitizeFail;
-
-export type AstNodeSanitized = ClassSanitizer<IAstNode>;

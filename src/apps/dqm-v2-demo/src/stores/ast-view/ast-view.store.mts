@@ -4,7 +4,7 @@ import type {
   SanitizedNodeView,
 } from "./ast-view.store.types.mts";
 import type {
-  AstNodeSanitizedFiltersRecord,
+  AstNodeFiltersRecord,
   AstNodeSanitizedTypesRecord,
 } from "@dqm/package-dqm-v2-debug";
 
@@ -49,9 +49,7 @@ function wrapVisible<T>(visible: (keyof T)[], hidden: (keyof T)[]) {
   ];
 }
 
-export function filterIds(
-  all: SanitizedNodeView,
-): AstNodeSanitizedFiltersRecord {
+export function filterIds(all: SanitizedNodeView): AstNodeFiltersRecord {
   return Object.fromEntries(
     Object.entries(all).map(([k, v]) => {
       // @ts-expect-error
@@ -59,5 +57,5 @@ export function filterIds(
 
       return [k, b];
     }),
-  ) as AstNodeSanitizedFiltersRecord;
+  ) as AstNodeFiltersRecord;
 }

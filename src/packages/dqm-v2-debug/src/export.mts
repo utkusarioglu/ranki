@@ -8,12 +8,12 @@
  */
 
 /**
- * Re-exports the createSanitizedAst function from the AST sanitizer module.
+ * Re-exports the createFilteredAst function from the AST sanitizer module.
  * This function creates a sanitized view of AST nodes for debugging purposes.
  *
  * @aidoc
  */
-export { createSanitizedAst } from "./sanitize/node-types/ast/ast.sanitize.mjs";
+export { createFilteredAst } from "./sanitize/node-types/ast/ast.sanitize.mjs";
 
 /**
  * Re-exports all types from the AST types module.

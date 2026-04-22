@@ -7,7 +7,7 @@ import yaml from "yaml";
 import type { IDqmError } from "@dqm/package-dqm-api-v2";
 import { pluginsAsArray } from "./dqm.plugins.mjs";
 import {
-  createSanitizedAst,
+  createFilteredAst,
   type SanitizedNodeViewMap,
 } from "@dqm/package-dqm-v2-debug";
 
@@ -47,7 +47,7 @@ export function main(raw: string) {
   try {
     const parsed = dqm.parse(raw);
 
-    const sanitized = createSanitizedAst(
+    const sanitized = createFilteredAst(
       { state: "success", data: parsed },
       preferences,
       // {
@@ -63,7 +63,7 @@ export function main(raw: string) {
 
     // const sanitized = parsed.ast.map((n) => ({
     //   theater: n.theater,
-    //   sanitized: createSanitizedAst(
+    //   sanitized: createFilteredAst(
     //     { state: "success", data: { ast: [n] } },
     //     {
     //       props: props.map((f) => ({ id: f, visible: true })),
