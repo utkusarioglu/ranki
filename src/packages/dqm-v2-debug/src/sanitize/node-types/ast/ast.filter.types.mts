@@ -62,29 +62,7 @@ export type AstNodeFilterKeys = keyof AstNodeSanitizedTypesRecord;
 
 /**
  * Record defining all the possible fields that can be extracted from an AST node.
- * Each field corresponds to a property or computed value from the AST node.
- *
- * @dev
- * #1 Unique identifier for the AST node.
- * #2 Name of the creator that generated this AST node.
- * #3 String representation of the node's ID list.
- * #4 The kind/type of the AST node.
- * #5 The constructor name of the AST node class.
- * #6 Unique identifier from the CPX (Complex) component.
- * #7 The index of this node among its siblings.
- * #8 Depth in the inline hierarchy.
- * #9 Depth in the block hierarchy.
- * #10 String representation of the node's chain list.
- * #11 Number of child nodes.
- * #12 Number of ignored nodes.
- * #13 Number of nodes in the subtree.
- * #14 Optional meaning or semantic information about the node.
- * #15 The method used to create this AST node.
- * #16 Array of sanitized child nodes.
- * #17 Array of sanitized direct children.
- * #18 Array of sanitized token nodes.
- * #19 Array of sanitized space nodes.
- * #20 The source string representation of the AST node.
+ * Combines primitive properties with ICpx and IAstNode interface properties.
  *
  * @aidoc
  */
@@ -92,34 +70,75 @@ export type AstNodeSanitizedTypesRecord = AstNodePrimitiveView &
   AstNodeICpxView &
   AstNodeIAstNodeView;
 
+/**
+ * Primitive view of an AST node, containing basic properties and child node arrays.
+ *
+ * @dev
+ * #1 The constructor name of the AST node class.
+ * #2 Number of child nodes.
+ * #3 Number of ignored nodes.
+ * #4 Number of nodes in the subtree.
+ * #5 Array of sanitized child nodes.
+ * #6 Array of sanitized direct children.
+ * #7 Array of sanitized token nodes.
+ * #8 Array of sanitized space nodes.
+ *
+ * @aidoc
+ */
 interface AstNodePrimitiveView {
-  childCount: number; // #11
-  constructorName: string; // #5
-  ignoredCount: number; // #12
-  subtreeCount: number; // #13
+  constructorName: string; // #1
+  childCount: number; // #2
+  ignoredCount: number; // #3
+  subtreeCount: number; // #4
 
-  childrenNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #17
-  spaceNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #19
-  subtreeNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #16
-  tokenNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #18
+  subtreeNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #5
+  childrenNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #6
+  tokenNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #7
+  spaceNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #8
 }
 
+/**
+ * View of an AST node's CPX (Complex) component properties.
+ *
+ * @dev
+ * #1 String representation of the node's ID list.
+ * #2 Unique identifier from the CPX (Complex) component.
+ * #3 String representation of the node's chain list.
+ *
+ * @aidoc
+ */
 interface AstNodeICpxView {
-  chainListString: ReturnType<ICpx["getChainListString"]>; // #10
-  cpxUnique: ReturnType<ICpx["getUnique"]>; // #6
-  idListString: ReturnType<ICpx["getIdListString"]>; // #3
+  idListString: ReturnType<ICpx["getIdListString"]>; // #1
+  cpxUnique: ReturnType<ICpx["getUnique"]>; // #2
+  chainListString: ReturnType<ICpx["getChainListString"]>; // #3
 }
 
+/**
+ * View of an AST node's IAstNode interface properties.
+ *
+ * @dev
+ * #1 Unique identifier for the AST node.
+ * #2 Name of the creator that generated this AST node.
+ * #3 The index of this node among its siblings.
+ * #4 Depth in the inline hierarchy.
+ * #5 Depth in the block hierarchy.
+ * #6 The kind/type of the AST node.
+ * #7 The method used to create this AST node.
+ * #8 Optional meaning or semantic information about the node.
+ * #9 The source string representation of the AST node.
+ *
+ * @aidoc
+ */
 interface AstNodeIAstNodeView {
   astUnique: ReturnType<IAstNode["getUnique"]>; // #1
-  blockDepth: ReturnType<IAstNode["getBlockDepth"]>; // #8
-  childIndex: ReturnType<IAstNode["getChildIndex"]>; // #7
-  creationMethod: ReturnType<IAstNode["getCreationMethod"]>; // #15
   creator: ReturnType<IAstNode["getCreator"]>; // #2
-  inlineDepth: ReturnType<IAstNode["getInlineDepth"]>; // #9
-  kind: ReturnType<IAstNode["getKind"]>; // #4
-  meaning: ReturnType<IAstNode["getMeaning"]>; // #14
-  sourceString: ReturnType<IAstNode["getSourceString"]>; // #20
+  childIndex: ReturnType<IAstNode["getChildIndex"]>; // #3
+  inlineDepth: ReturnType<IAstNode["getInlineDepth"]>; // #4
+  blockDepth: ReturnType<IAstNode["getBlockDepth"]>; // #5
+  kind: ReturnType<IAstNode["getKind"]>; // #6
+  creationMethod: ReturnType<IAstNode["getCreationMethod"]>; // #7
+  meaning: ReturnType<IAstNode["getMeaning"]>; // #8
+  sourceString: ReturnType<IAstNode["getSourceString"]>; // #9
 }
 
 /**
