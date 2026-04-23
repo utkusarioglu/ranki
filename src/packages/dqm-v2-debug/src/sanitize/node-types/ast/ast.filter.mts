@@ -9,24 +9,14 @@
  */
 
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
-import type {
-  AstNodeSanitizedFilteredSanitizedKey,
-  AstNodeSanitizedFilterCallRecord,
-  AstNodeFilterKeys,
-  AstNodeFiltersRecord,
-  AstNodeSanitizedFilteredFields,
-} from "./ast.filter.types.mjs";
-import { createSanitizedView } from "../../common/class-sanitizer/sanitizer.mjs";
+import type { AstNodeSanitizedTypesRecord } from "./ast.filter.types.mjs";
 import { type ClassSanitizer } from "../../common/class-sanitizer/sanitizer.types.mjs";
-import {
-  tryCatch,
-  tryCatchLeap,
-  type TryCatch,
-} from "../../../utils/try-catch.mjs";
+import { tryCatch, tryCatchLeap } from "../../../utils/try-catch.mjs";
 import {
   assertExists,
   assertTryCatchSuccess,
 } from "../../../errors/assertions.mjs";
+import { Filtered } from "../../common/class-sanitizer/filtered.mjs";
 
 /**
  * Internal class for creating narrowed, sanitized views of AST nodes.
@@ -34,13 +24,11 @@ import {
  *
  * @aidoc
  */
-export class AstSanitizedFiltered {
-  /** The sanitized AST node instance. */
-  private node: ClassSanitizer<IAstNode>;
-  /** The filter preferences specifying which fields to include. */
-  private filters: AstNodeFiltersRecord;
-  /** Cached record of method calls for each filterable field. */
-  private calls: AstNodeSanitizedFilterCallRecord = {
+export class AstSanitizedFiltered extends Filtered<
+  IAstNode,
+  AstNodeSanitizedTypesRecord
+> {
+  protected calls = {
     sourceString: () => this.node.getSourceString(),
     cpxUnique: () => {
       const cpxUnique = tryCatch("getUnique", () =>
@@ -77,38 +65,6 @@ export class AstSanitizedFiltered {
   };
 
   /**
-   * Creates a new AstSanitizedFiltered instance.
-   *
-   * @param sanitized - The sanitized AST node to work with.
-   * @param preferences - The filter preferences for field selection.
-   *
-   * @aidoc
-   */
-  constructor(astNode: IAstNode, preferences: AstNodeFiltersRecord) {
-    this.node = createSanitizedView<IAstNode>(astNode);
-    this.filters = preferences;
-  }
-
-  /**
-   * Builds the final sanitized AST node object based on the filter preferences.
-   * @returns A partial sanitized AST node with only the requested fields.
-   *
-   * @aidoc
-   */
-  build(): AstNodeSanitizedFilteredSanitizedKey {
-    const fields = Object.fromEntries(
-      Object.entries(this.filters).map(([field, prefs]) => [
-        field,
-        this.getCalls(prefs),
-      ]),
-    ) as AstNodeSanitizedFilteredFields;
-    return {
-      key: Date.now().toString(),
-      fields,
-    };
-  }
-
-  /**
    * Safely accesses the CPX (Complex) property of the AST node.
    * Throws an assertion error if CPX is not available or null.
    * @param node - The sanitized AST node.
@@ -127,35 +83,5 @@ export class AstSanitizedFiltered {
       why: "Cpx cannot be null for this request",
     });
     return value;
-  }
-
-  /**
-   * Gets the try-catch results for the specified filter keys.
-   * @param props - Array of filter keys to retrieve.
-   * @returns An object mapping each key to its try-catch result.
-   * @private
-   */
-  private getCalls(props: AstNodeFilterKeys[]) {
-    return Object.fromEntries(props.map((p) => [p, this.calls[p]!()]));
-  }
-
-  /**
-   * Recursively processes a list of AST nodes, creating sanitized views for each.
-   * @param list - The try-catch wrapped list of AST nodes.
-   * @returns A try-catch wrapped array of sanitized AST node partials.
-   * @private
-   *
-   * @aidoc
-   */
-  private recurse(list: TryCatch<IAstNode[]>) {
-    if (list.state === "fail") {
-      return list;
-    }
-
-    const narrowed = list.value.map((n) => {
-      return new AstSanitizedFiltered(n, this.filters).build();
-    });
-
-    return tryCatch("narrowed", () => narrowed);
   }
 }

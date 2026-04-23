@@ -22,9 +22,9 @@ import type {
  *
  * @aidoc
  */
-export type AstNodeSanitizedFiltered = {
+export type AstNodeFiltered = {
   theater: DqmParseTheater; // #1
-  sanitized: AstNodeSanitizedFilteredSanitizedKey; // #2
+  sanitized: AstNodeFilteredSanitizedKey; // #2
 };
 
 /**
@@ -36,15 +36,15 @@ export type AstNodeSanitizedFiltered = {
  *
  * @aidoc
  */
-export type AstNodeSanitizedFilteredSanitizedKey = {
+export type AstNodeFilteredSanitizedKey = {
   key: string; // #1
-  fields: AstNodeSanitizedFilteredFields; // #2
+  fields: AstNodeFilteredFields; // #2
 };
 
 /**
  * The structure of partially sanitized fields, mapping field names to try-catch wrapped records.
  */
-export type AstNodeSanitizedFilteredFields = Record<
+export type AstNodeFilteredFields = Record<
   string,
   Partial<TryCatchRecord<AstNodeSanitizedTypesRecord>>
 >;
@@ -91,10 +91,10 @@ interface AstNodePrimitiveView {
   ignoredCount: number; // #3
   subtreeCount: number; // #4
 
-  subtreeNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #5
-  childrenNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #6
-  tokenNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #7
-  spaceNodes: AstNodeSanitizedFilteredSanitizedKey[]; // #8
+  subtreeNodes: AstNodeFilteredSanitizedKey[]; // #5
+  childrenNodes: AstNodeFilteredSanitizedKey[]; // #6
+  tokenNodes: AstNodeFilteredSanitizedKey[]; // #7
+  spaceNodes: AstNodeFilteredSanitizedKey[]; // #8
 }
 
 /**

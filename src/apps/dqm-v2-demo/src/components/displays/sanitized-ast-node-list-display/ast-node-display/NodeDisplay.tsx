@@ -5,12 +5,12 @@ import { PreCode } from "_views/pre-code/PreCode";
 import { BlockySwitch } from "_views/blocky-switch/BlockySwitch";
 import { Flex, Typography } from "antd";
 // import type { AstNodePartialSanitized } from "_stores/ast-view/utils/sanitized-ast-node.types.mts";
-import type { AstNodeSanitizedFilteredSanitizedKey } from "@dqm/package-dqm-v2-debug";
+import type { AstNodeFilteredSanitizedKey } from "@dqm/package-dqm-v2-debug";
 import type { UniqueValue } from "@dqm/package-dqm-api-v2";
 import { TryCatchView } from "_views/try-catch/try-catch";
 
 interface AstNodeDisplayProps {
-  node: AstNodeSanitizedFilteredSanitizedKey;
+  node: AstNodeFilteredSanitizedKey;
   path: string;
   depth: number;
   index: number;
