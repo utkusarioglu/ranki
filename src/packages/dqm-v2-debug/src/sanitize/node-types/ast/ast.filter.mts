@@ -16,7 +16,7 @@ import {
   assertExists,
   assertTryCatchSuccess,
 } from "../../../errors/assertions.mjs";
-import { Filtered } from "../../common/class-sanitizer/filtered.mjs";
+import { NodeFilter } from "../../common/node-filter/filter.mjs";
 
 /**
  * Internal class for creating narrowed, sanitized views of AST nodes.
@@ -24,7 +24,7 @@ import { Filtered } from "../../common/class-sanitizer/filtered.mjs";
  *
  * @aidoc
  */
-export class AstSanitizedFiltered extends Filtered<
+export class AstSanitizedFiltered extends NodeFilter<
   IAstNode,
   AstNodeSanitizedTypesRecord
 > {

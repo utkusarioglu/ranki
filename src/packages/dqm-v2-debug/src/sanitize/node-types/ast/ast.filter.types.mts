@@ -7,58 +7,8 @@
  * @aidoc
  */
 
-import type { DqmParseTheater, IAstNode, ICpx } from "@dqm/package-dqm-api-v2";
-import type {
-  TryCatchCall,
-  TryCatchRecord,
-} from "../../../utils/try-catch.mjs";
-
-/**
- * A sanitized AST node with theater information.
- *
- * @dev
- * #1 The parse theater this AST node belongs to.
- * #2 The partially sanitized AST node data.
- *
- * @aidoc
- */
-export type AstNodeFiltered = {
-  theater: DqmParseTheater; // #1
-  sanitized: AstNodeFilteredSanitizedKey; // #2
-};
-
-/**
- * A partially sanitized AST node with a key and filtered fields.
- *
- * @dev
- * #1 A unique key for this sanitized node (currently uses timestamp).
- * #2 The filtered fields based on user preferences.
- *
- * @aidoc
- */
-export type AstNodeFilteredSanitizedKey = {
-  key: string; // #1
-  fields: AstNodeFilteredFields; // #2
-};
-
-/**
- * The structure of partially sanitized fields, mapping field names to try-catch wrapped records.
- */
-export type AstNodeFilteredFields = Record<
-  string,
-  Partial<TryCatchRecord<AstNodeSanitizedTypesRecord>>
->;
-
-/**
- * A record of function calls that return try-catch wrapped values for each AST node field.
- */
-export type AstNodeSanitizedFilterCallRecord =
-  TryCatchCall<AstNodeSanitizedTypesRecord>;
-
-/**
- * Union type of all possible filter keys that can be used to select AST node fields.
- */
-export type AstNodeFilterKeys = keyof AstNodeSanitizedTypesRecord;
+import type { IAstNode, ICpx } from "@dqm/package-dqm-api-v2";
+import type { Filters, Keyed } from "../../common/node-filter/filter.types.mjs";
 
 /**
  * Record defining all the possible fields that can be extracted from an AST node.
@@ -91,10 +41,10 @@ interface AstNodePrimitiveView {
   ignoredCount: number; // #3
   subtreeCount: number; // #4
 
-  subtreeNodes: AstNodeFilteredSanitizedKey[]; // #5
-  childrenNodes: AstNodeFilteredSanitizedKey[]; // #6
-  tokenNodes: AstNodeFilteredSanitizedKey[]; // #7
-  spaceNodes: AstNodeFilteredSanitizedKey[]; // #8
+  subtreeNodes: Keyed<AstNodeSanitizedTypesRecord>[]; // #5
+  childrenNodes: Keyed<AstNodeSanitizedTypesRecord>[]; // #6
+  tokenNodes: Keyed<AstNodeSanitizedTypesRecord>[]; // #7
+  spaceNodes: Keyed<AstNodeSanitizedTypesRecord>[]; // #8
 }
 
 /**
@@ -147,4 +97,13 @@ interface AstNodeIAstNodeView {
  *
  * @aidoc
  */
-export type AstNodeFiltersRecord = Record<string, AstNodeFilterKeys[]>;
+export type AstNodeFiltersRecord = Filters<AstNodeSanitizedTypesRecord>;
+
+/**
+ * A partially sanitized AST node with a key and filtered fields.
+ *
+ * @dev
+ * This is a convenience type. It exists because it avoids the demo app from
+ * having to build a generic type from `AstNodeSanitizedTypesRecord`
+ */
+export type AstNodeFilteredSanitizedKey = Keyed<AstNodeSanitizedTypesRecord>;

@@ -1,28 +1,15 @@
-import {
-  tryCatch,
-  type TryCatch,
-  type TryCatchCall,
-  type TryCatchRecord,
-} from "../../../export.mjs";
-import { createSanitizedView } from "./sanitizer.mjs";
-import type { ClassSanitizer } from "./sanitizer.types.mjs";
+import { tryCatch, type TryCatch } from "../../../export.mjs";
+import { createSanitizedView } from "../class-sanitizer/sanitizer.mjs";
+import type { ClassSanitizer } from "../class-sanitizer/sanitizer.types.mjs";
+import type {
+  Filters,
+  Calls,
+  FilterKeys,
+  Keyed,
+  Fields,
+} from "./filter.types.mjs";
 
-type Filters<TypesRecord extends object> = Record<
-  string,
-  (keyof TypesRecord)[]
->;
-type FilterKeys<TypesRecord> = keyof TypesRecord;
-type Keyed<TypesRecord extends object> = {
-  key: string;
-  fields: Fields<TypesRecord>;
-};
-export type Fields<TypesRecord extends object> = Record<
-  string,
-  Partial<TryCatchRecord<TypesRecord>>
->;
-type Calls<TypesRecord extends object> = TryCatchCall<TypesRecord>;
-
-export class Filtered<Base extends object, TypesRecord extends object> {
+export class NodeFilter<Base extends object, TypesRecord extends object> {
   protected node: ClassSanitizer<Base>;
   protected filters: Filters<TypesRecord>;
   protected calls!: Calls<TypesRecord>;
@@ -46,7 +33,7 @@ export class Filtered<Base extends object, TypesRecord extends object> {
    * @returns An object mapping each key to its try-catch result.
    * @private
    */
-  protected getCalls(props: FilterKeys<TypesRecord>[]) {
+  private getCalls(props: FilterKeys<TypesRecord>[]) {
     return Object.fromEntries(props.map((p) => [p, this.calls[p]!()]));
   }
 
@@ -78,7 +65,6 @@ export class Filtered<Base extends object, TypesRecord extends object> {
    *
    * @aidoc
    */
-  // build(): AstNodeFilteredSanitizedKey {
   build(): Keyed<TypesRecord> {
     const fields = Object.fromEntries(
       Object.entries(this.filters).map(([field, prefs]) => [
