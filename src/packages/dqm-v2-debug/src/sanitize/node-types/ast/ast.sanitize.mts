@@ -1,10 +1,10 @@
-import type {
-  Filters,
-  Theatered,
-} from "../../common/node-filter/filter.types.mjs";
+import type { Theatered } from "../../common/node-filter/filter.types.mjs";
 import type { SanitizedParseResult } from "../../general.types.mjs";
 import { AstSanitizedFiltered } from "./ast.filter.mjs";
-import type { AstNodeSanitizedTypesRecord } from "./ast.filter.types.mjs";
+import type {
+  AstNodeFiltersRecord,
+  AstNodeSanitizedTypesRecord,
+} from "./ast.filter.types.mjs";
 import type { SanitizeModes } from "./ast.sanitize.types.mjs";
 
 /**
@@ -21,7 +21,8 @@ import type { SanitizeModes } from "./ast.sanitize.types.mjs";
  */
 export function createFilteredAst(
   parsed: SanitizedParseResult,
-  filters: Filters<AstNodeSanitizedTypesRecord>,
+  // filters: Filters<AstNodeSanitizedTypesRecord>,
+  filters: AstNodeFiltersRecord,
 ): SanitizeModes<Theatered<AstNodeSanitizedTypesRecord>[]> {
   try {
     if (parsed.state !== "success") {

@@ -16,7 +16,7 @@
     "@dqm/package-dqm-api-v2": "workspace:^",
     "@ranki/config-typescript": "workspace:^",
     "@rollup/plugin-babel": "^6.1.0",
-    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-commonjs": "^29.0.2",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-typescript": "^12.3.0",
     "@swc/core": "^1.15.3",
@@ -43,6 +43,7 @@
     "@dqm/plugin-sre-mermaid": "workspace:^",
     "@dqm/plugin-sre-music": "workspace:^",
     "@dqm/plugin-sre-osmd": "workspace:^",
-    "@dqm/plugin-static-render-engine": "workspace:^"
+    "@dqm/plugin-static-render-engine": "workspace:^",
+    "commander": "^14.0.3"
   }
 }

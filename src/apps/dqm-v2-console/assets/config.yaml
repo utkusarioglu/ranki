@@ -1,0 +1,15 @@
+modes:
+  ast: 
+    fields:
+      default: 
+        - idListString
+        - creator
+        - cpxUnique
+        - sourceString
+        - subtreeNodes
+        - childrenNodes
+        - tokenNodes
+        - spaceNodes
+      source:
+        - sourceString
+        - subtreeNodes

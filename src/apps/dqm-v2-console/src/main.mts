@@ -1,91 +1,39 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import { Dqm } from "@dqm/package-dqm-v2";
 import yaml from "yaml";
-// import { sanitizeSingle } from "./sanitize.mjs";
-import type { IDqmError } from "@dqm/package-dqm-api-v2";
-import { pluginsAsArray } from "./dqm.plugins.mjs";
-import {
-  createFilteredAst,
-  type SanitizedNodeViewMap,
-} from "@dqm/package-dqm-v2-debug";
+import { Command } from "commander";
+import { ast } from "./dqm.mjs";
+import { readFiles } from "./read-files.mjs";
+import { DEFAULT_RAW, DEFAULT_CONFIG } from "./constants.mjs";
 
-const dirname = path.dirname(fileURLToPath(import.meta.url));
-const repoRoot = path.join(dirname, "..");
-const filePath = path.join(repoRoot, "assets/example.dqm");
+function main() {
+  const program = new Command();
 
-const file = fs.readFileSync(filePath).toString();
+  program.name("dqm-v2-console").description("DqmV2 console tool");
 
-const preferences: SanitizedNodeViewMap = {
-  hidden: [],
-  props: ["idListString", "creator", "cpxUnique"],
-  children: ["subtreeNodes", "childrenNodes", "tokenNodes", "spaceNodes"],
-  stable: ["sourceString"],
-};
-
-export function main(raw: string) {
-  const dqm = new Dqm(
-    [
-      {
-        id: "console",
-        config: {
-          // @ts-ignore it expects the entire object
-          plugins: {
-            ignoreRenderPlugins: true,
-            requested: [
-              "grammar:ParamsV2",
-              "grammar:FrameV2",
-              "component-set:BaseV2",
-            ],
-          },
-        },
-      },
-    ],
-    pluginsAsArray,
-  );
-  try {
-    const parsed = dqm.parse(raw);
-
-    const sanitized = createFilteredAst(
-      { state: "success", data: parsed },
-      preferences,
-      // {
-      //   props,
-      //   children,
-      //   stable,
-      //   // props: props.map((f) => ({ id: f, visible: true })),
-      //   // hidden: [],
-      //   // children: children.map((f) => ({ id: f, visible: true })),
-      //   // stable: stable.map((f) => ({ id: f, visible: true })),
-      // },
-    );
-
-    // const sanitized = parsed.ast.map((n) => ({
-    //   theater: n.theater,
-    //   sanitized: createFilteredAst(
-    //     { state: "success", data: { ast: [n] } },
-    //     {
-    //       props: props.map((f) => ({ id: f, visible: true })),
-    //       // hidden: [],
-    //       children: children.map((f) => ({ id: f, visible: true })),
-    //       stable: stable.map((f) => ({ id: f, visible: true })),
-    //     },
-    //   ),
-    //   // sanitized: sanitizeSingle(n.ast, FEATURES),
-    // }));
-    if (process.argv.includes("print")) {
+  program
+    .command("ast")
+    .description("Work with AST data")
+    .option("--print", "Print AST to console")
+    .option("--raw <path>", "Raw dqm file to process", DEFAULT_RAW)
+    .option("--config <path>", "Custom config file path", DEFAULT_CONFIG)
+    .option(
+      "--fields <value>",
+      "Pick fields to display. Fields are defined in the config file",
+      "default",
+    )
+    .action((options) => {
+      const files = readFiles(options.raw, options.config);
+      const fields = files.config.modes.ast.fields;
+      const filter = Object.fromEntries(
+        (options.fields.split(",") as string[]).map((f) => [f, fields[f]]),
+      );
+      const sanitized = ast(files.raw, filter);
+      if (!options.print) {
+        return console.log("`ast` ran with no errors");
+      }
       console.log(yaml.stringify(sanitized));
-    }
-  } catch (e) {
-    try {
-      // @ts-ignore
-      console.log(yaml.stringify((e as IDqmError).toExtendedJSON()));
-    } catch {
-      // @ts-ignore
-      console.log(e.toString());
-    }
-  }
+    });
+
+  program.parse(process.argv);
 }
 
-main(file);
+main();

@@ -4255,12 +4255,13 @@ const RAW_RUNTIME_STATE =
           ["@ranki/app-dqm-v2-console", "workspace:src/apps/dqm-v2-console"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@rollup/plugin-babel", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:6.1.0"],\
-          ["@rollup/plugin-commonjs", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:29.0.0"],\
+          ["@rollup/plugin-commonjs", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:29.0.2"],\
           ["@rollup/plugin-node-resolve", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:16.0.3"],\
           ["@rollup/plugin-typescript", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:12.3.0"],\
           ["@swc/core", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:1.15.3"],\
           ["@types/babel__core", "npm:7.20.5"],\
           ["@types/node", "npm:25.5.0"],\
+          ["commander", "npm:14.0.3"],\
           ["knip", "npm:6.1.1"],\
           ["rollup", "npm:4.53.3"],\
           ["rollup-plugin-swc", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:0.2.1"],\
@@ -5651,17 +5652,17 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@rollup/plugin-commonjs", [\
-      ["npm:29.0.0", {\
-        "packageLocation": "../home/dev/.yarn/berry/cache/@rollup-plugin-commonjs-npm-29.0.0-e48a9d6732-10c0.zip/node_modules/@rollup/plugin-commonjs/",\
+      ["npm:29.0.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@rollup-plugin-commonjs-npm-29.0.2-18c3a497d8-10c0.zip/node_modules/@rollup/plugin-commonjs/",\
         "packageDependencies": [\
-          ["@rollup/plugin-commonjs", "npm:29.0.0"]\
+          ["@rollup/plugin-commonjs", "npm:29.0.2"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:29.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/@rollup-plugin-commonjs-virtual-bcc47d3c26/2/home/dev/.yarn/berry/cache/@rollup-plugin-commonjs-npm-29.0.0-e48a9d6732-10c0.zip/node_modules/@rollup/plugin-commonjs/",\
+      ["virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:29.0.2", {\
+        "packageLocation": "./.yarn/__virtual__/@rollup-plugin-commonjs-virtual-f5cb8bdc0e/2/home/dev/.yarn/berry/cache/@rollup-plugin-commonjs-npm-29.0.2-18c3a497d8-10c0.zip/node_modules/@rollup/plugin-commonjs/",\
         "packageDependencies": [\
-          ["@rollup/plugin-commonjs", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:29.0.0"],\
+          ["@rollup/plugin-commonjs", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:29.0.2"],\
           ["@rollup/pluginutils", "virtual:c2845cce24153eb69298d30ebde1b24a42a7a2c8f2c49420a743eb2119773b71857d7ec7809216a553ec4ec56525b8a6c6c7c58cb843a13a8439c656ffaf74ec#npm:5.3.0"],\
           ["@types/rollup", null],\
           ["commondir", "npm:1.0.1"],\
@@ -8797,6 +8798,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/dev/.yarn/berry/cache/commander-npm-13.1.0-bdbbfaaf9d-10c0.zip/node_modules/commander/",\
         "packageDependencies": [\
           ["commander", "npm:13.1.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:14.0.3", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/commander-npm-14.0.3-93ab31471d-10c0.zip/node_modules/commander/",\
+        "packageDependencies": [\
+          ["commander", "npm:14.0.3"]\
         ],\
         "linkType": "HARD"\
       }],\

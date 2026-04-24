@@ -1,5 +1,6 @@
 import resolve from "@rollup/plugin-node-resolve";
 import babel from "@rollup/plugin-babel";
+import commonjs from "@rollup/plugin-commonjs";
 
 export default {
   input: "src/main.mts",
@@ -8,6 +9,7 @@ export default {
     format: "esm",
   },
   plugins: [
+    commonjs(),
     resolve({ extensions: [".mts", ".ts", ".js", ".mjs"] }),
     babel({
       babelHelpers: "bundled",
