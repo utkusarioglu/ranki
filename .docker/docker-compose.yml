@@ -21,3 +21,6 @@ services:
       - type: bind
         source: /mnt/c/Users/utkus/AppData/Roaming/Anki2/User 1/collection.media
         target: /target
+      - type: bind
+        source: /home/utkusarioglu/.config/gh
+        target: /home/dev/.config/gh
