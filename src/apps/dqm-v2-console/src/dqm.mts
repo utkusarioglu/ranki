@@ -8,6 +8,10 @@ import {
 } from "@dqm/package-dqm-v2-debug";
 import type yaml from "yaml";
 import { pluginsAsArray } from "./dqm.plugins.mjs";
+import {
+  type CpsNodeFiltersRecord,
+  createFilteredCps,
+} from "@dqm/package-dqm-v2-debug";
 
 function dqm(raw: string) {
   try {
@@ -71,6 +75,19 @@ export function cpx(raw: string, filters: CpxNodeFiltersRecord) {
   try {
     const parsed = dqm(raw);
     const sanitized = createFilteredCpx(
+      { state: "success", data: parsed },
+      filters,
+    );
+    return sanitized;
+  } catch (e) {
+    handleError(e);
+  }
+}
+
+export function cps(raw: string, filters: CpsNodeFiltersRecord) {
+  try {
+    const parsed = dqm(raw);
+    const sanitized = createFilteredCps(
       { state: "success", data: parsed },
       filters,
     );

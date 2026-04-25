@@ -9,7 +9,7 @@ import type {
 } from "./cpx.filter.types.mjs";
 import { filterCommon } from "../../common/node-filter/filter.mjs";
 
-function getCpxRoot(p: DqmAstOutputTheater): ICpx {
+export function getCpxRoot(p: DqmAstOutputTheater): ICpx {
   let cpx = p.ast.getCpx()!;
   let parent = cpx.getCpxParent();
   while (parent !== null) {

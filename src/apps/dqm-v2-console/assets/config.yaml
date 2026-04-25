@@ -27,3 +27,5 @@ modes:
     fields:
       default: 
         - unique
+        - settledId
+        - cpsEdges

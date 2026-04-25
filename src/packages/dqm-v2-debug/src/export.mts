@@ -25,6 +25,8 @@ export type * from "./sanitize/node-types/ast/ast.filter.types.mjs";
 // NEW
 export { createFilteredCpx } from "./sanitize/node-types/cpx/cpx.mjs";
 export type * from "./sanitize/node-types/cpx/cpx.filter.types.mjs";
+export { createFilteredCps } from "./sanitize/node-types/cps/cps.mjs";
+export type * from "./sanitize/node-types/cps/cps.filter.types.mjs";
 
 /**
  * Re-exports all exports from the try-catch utility module.
