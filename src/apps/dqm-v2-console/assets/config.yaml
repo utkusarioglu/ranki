@@ -13,3 +13,17 @@ modes:
       source:
         - sourceString
         - subtreeNodes
+
+  cpx: 
+    fields:
+      default: 
+        - unique
+        - chainListString
+        - cpsCount
+        - rootAstSourceString
+        - cpxEdges
+  
+  cps:
+    fields:
+      default: 
+        - unique

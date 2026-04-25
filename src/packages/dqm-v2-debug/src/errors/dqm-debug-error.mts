@@ -30,7 +30,7 @@ export type DqmPluginErrorConstructorParams = WithCause &
  */
 export class DqmDebugError extends DqmBaseError implements IDqmAppError {
   /** The error type identifier for this error class. */
-  public errorType: string = "DQM_APP";
+  public errorType: string = "DQM_DEBUG";
 
   /**
    * Gets the human-readable error text for a given error code.

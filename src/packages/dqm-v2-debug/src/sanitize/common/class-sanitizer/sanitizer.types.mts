@@ -55,3 +55,5 @@ export interface SanitizeSuccess<T> {
   state: "success"; // #1
   data: T; // #2
 }
+
+export type SanitizeModes<T extends object> = SanitizeSuccess<T> | SanitizeFail;

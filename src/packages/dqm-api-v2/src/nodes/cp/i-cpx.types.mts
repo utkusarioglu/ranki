@@ -35,9 +35,9 @@ type ICpxEdges = IEdgeCapability<
 >;
 
 export interface ICpx
-  extends ICommonTransports,
+  extends
+    ICommonTransports,
     ICpxUniqueCapability,
-    // IVerticesCapability<ICpx>,
     ICpxEdges,
     RawParamsCapability,
     CpsCollectionCapability,

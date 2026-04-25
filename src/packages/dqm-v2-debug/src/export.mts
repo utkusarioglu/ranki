@@ -13,7 +13,7 @@
  *
  * @aidoc
  */
-export { createFilteredAst } from "./sanitize/node-types/ast/ast.sanitize.mjs";
+export { createFilteredAst } from "./sanitize/node-types/ast/ast.mjs";
 
 /**
  * Re-exports all types from the AST types module.
@@ -22,6 +22,9 @@ export { createFilteredAst } from "./sanitize/node-types/ast/ast.sanitize.mjs";
  * @aidoc
  */
 export type * from "./sanitize/node-types/ast/ast.filter.types.mjs";
+// NEW
+export { createFilteredCpx } from "./sanitize/node-types/cpx/cpx.mjs";
+export type * from "./sanitize/node-types/cpx/cpx.filter.types.mjs";
 
 /**
  * Re-exports all exports from the try-catch utility module.

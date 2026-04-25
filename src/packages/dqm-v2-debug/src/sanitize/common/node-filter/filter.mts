@@ -1,12 +1,19 @@
+import type { DqmParseOutput } from "@dqm/package-dqm-api-v2";
+import { assertExists } from "../../../errors/assertions.mjs";
 import { tryCatch, type TryCatch } from "../../../export.mjs";
+import type { SanitizedParseResult } from "../../general.types.mjs";
 import { createSanitizedView } from "../class-sanitizer/sanitizer.mjs";
-import type { ClassSanitizer } from "../class-sanitizer/sanitizer.types.mjs";
+import type {
+  ClassSanitizer,
+  SanitizeModes,
+} from "../class-sanitizer/sanitizer.types.mjs";
 import type {
   Filters,
   Calls,
   FilterKeys,
   Keyed,
   Fields,
+  Theatered,
 } from "./filter.types.mjs";
 
 export class NodeFilter<Base extends object, TypesRecord extends object> {
@@ -34,7 +41,16 @@ export class NodeFilter<Base extends object, TypesRecord extends object> {
    * @private
    */
   private getCalls(props: FilterKeys<TypesRecord>[]) {
-    return Object.fromEntries(props.map((p) => [p, this.calls[p]!()]));
+    return Object.fromEntries(
+      props.map((p) => {
+        const call = this.calls[p];
+        assertExists(call, {
+          why: "Non-existent call property requested",
+          details: { request: p },
+        });
+        return [p, call()];
+      }),
+    );
   }
 
   /**
@@ -75,6 +91,32 @@ export class NodeFilter<Base extends object, TypesRecord extends object> {
     return {
       key: Date.now().toString(),
       fields,
+    };
+  }
+}
+
+export function filterCommon<T extends object>(
+  parsed: SanitizedParseResult,
+  callback: (success: DqmParseOutput) => Theatered<T>[],
+): SanitizeModes<Theatered<T>[]> {
+  try {
+    if (parsed.state !== "success") {
+      return {
+        state: "fail",
+        error: parsed.error,
+      };
+    }
+
+    const sanitized = callback(parsed.data);
+    return {
+      state: "success",
+      data: sanitized,
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      state: "fail",
+      error: e as any,
     };
   }
 }

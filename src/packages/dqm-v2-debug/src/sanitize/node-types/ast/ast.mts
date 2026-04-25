@@ -1,3 +1,5 @@
+import type { SanitizeModes } from "../../../export.mjs";
+import { filterCommon } from "../../common/node-filter/filter.mjs";
 import type { Theatered } from "../../common/node-filter/filter.types.mjs";
 import type { SanitizedParseResult } from "../../general.types.mjs";
 import { AstSanitizedFiltered } from "./ast.filter.mjs";
@@ -5,7 +7,6 @@ import type {
   AstNodeFiltersRecord,
   AstNodeSanitizedTypesRecord,
 } from "./ast.filter.types.mjs";
-import type { SanitizeModes } from "./ast.sanitize.types.mjs";
 
 /**
  * Creates a sanitized AST from a parse result.
@@ -21,31 +22,14 @@ import type { SanitizeModes } from "./ast.sanitize.types.mjs";
  */
 export function createFilteredAst(
   parsed: SanitizedParseResult,
-  // filters: Filters<AstNodeSanitizedTypesRecord>,
   filters: AstNodeFiltersRecord,
 ): SanitizeModes<Theatered<AstNodeSanitizedTypesRecord>[]> {
-  try {
-    if (parsed.state !== "success") {
-      return {
-        state: "fail",
-        error: parsed.error,
-      };
-    }
-    const sanitized = parsed.data.ast.map((p) => {
+  return filterCommon<AstNodeSanitizedTypesRecord>(parsed, (success) => {
+    return success.ast.map((p) => {
       return {
         theater: p.theater,
         sanitized: new AstSanitizedFiltered(p.ast, filters).build(),
       };
     });
-    return {
-      state: "success",
-      data: sanitized,
-    };
-  } catch (e) {
-    console.log(e);
-    return {
-      state: "fail",
-      error: e as any,
-    };
-  }
+  });
 }
