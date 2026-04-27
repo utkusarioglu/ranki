@@ -11,6 +11,8 @@ import {
   createFilteredTrn,
   createFilteredTcps,
   type TCpsNodeFiltersRecord,
+  type SerNodeFiltersRecord,
+  createFilteredSer,
 } from "@dqm/package-dqm-v2-debug";
 import type yaml from "yaml";
 import { pluginsAsArray } from "./dqm.plugins.mjs";
@@ -62,80 +64,95 @@ function handleError(e: unknown) {
   }
 }
 
-export function ast(raw: string, filters: AstNodeFiltersRecord) {
-  try {
-    const parsed = dqm(raw);
-    const sanitized = createFilteredAst(
-      { state: "success", data: parsed },
-      filters,
-    );
-    return sanitized;
-  } catch (e) {
-    handleError(e);
-  }
-}
+export const debugCall = {
+  ast(raw: string, filters: AstNodeFiltersRecord) {
+    try {
+      const parsed = dqm(raw);
+      const sanitized = createFilteredAst(
+        { state: "success", data: parsed },
+        filters,
+      );
+      return sanitized;
+    } catch (e) {
+      handleError(e);
+    }
+  },
 
-export function cpx(raw: string, filters: CpxNodeFiltersRecord) {
-  try {
-    const parsed = dqm(raw);
-    const sanitized = createFilteredCpx(
-      { state: "success", data: parsed },
-      filters,
-    );
-    return sanitized;
-  } catch (e) {
-    handleError(e);
-  }
-}
+  cpx(raw: string, filters: CpxNodeFiltersRecord) {
+    try {
+      const parsed = dqm(raw);
+      const sanitized = createFilteredCpx(
+        { state: "success", data: parsed },
+        filters,
+      );
+      return sanitized;
+    } catch (e) {
+      handleError(e);
+    }
+  },
 
-export function cps(raw: string, filters: CpsNodeFiltersRecord) {
-  try {
-    const parsed = dqm(raw);
-    const sanitized = createFilteredCps(
-      { state: "success", data: parsed },
-      filters,
-    );
-    return sanitized;
-  } catch (e) {
-    handleError(e);
-  }
-}
+  cps(raw: string, filters: CpsNodeFiltersRecord) {
+    try {
+      const parsed = dqm(raw);
+      const sanitized = createFilteredCps(
+        { state: "success", data: parsed },
+        filters,
+      );
+      return sanitized;
+    } catch (e) {
+      handleError(e);
+    }
+  },
 
-export function trn(raw: string, filters: ITrnNodeFiltersRecord) {
-  try {
-    const parsed = dqm(raw);
-    const sanitized = createFilteredTrn(
-      { state: "success", data: parsed },
-      filters,
-    );
-    return sanitized;
-  } catch (e) {
-    handleError(e);
-  }
-}
+  trn(raw: string, filters: ITrnNodeFiltersRecord) {
+    try {
+      const parsed = dqm(raw);
+      const sanitized = createFilteredTrn(
+        { state: "success", data: parsed },
+        filters,
+      );
+      return sanitized;
+    } catch (e) {
+      handleError(e);
+    }
+  },
 
-export function tcpx(raw: string, filters: TCpxNodeFiltersRecord) {
-  try {
-    const parsed = dqm(raw);
-    const sanitized = createFilteredTcpx(
-      { state: "success", data: parsed },
-      filters,
-    );
-    return sanitized;
-  } catch (e) {
-    handleError(e);
-  }
-}
+  tcpx(raw: string, filters: TCpxNodeFiltersRecord) {
+    try {
+      const parsed = dqm(raw);
+      const sanitized = createFilteredTcpx(
+        { state: "success", data: parsed },
+        filters,
+      );
+      return sanitized;
+    } catch (e) {
+      handleError(e);
+    }
+  },
 
-export function tcps(raw: string, filters: TCpsNodeFiltersRecord) {
-  try {
-    const parsed = dqm(raw);
-    const sanitized = createFilteredTcps(
-      { state: "success", data: parsed },
-      filters,
-    );
-    return sanitized;
-  } catch (e) {
-    handleError(e);
-  }
-}
+  tcps(raw: string, filters: TCpsNodeFiltersRecord) {
+    try {
+      const parsed = dqm(raw);
+      const sanitized = createFilteredTcps(
+        { state: "success", data: parsed },
+        filters,
+      );
+      return sanitized;
+    } catch (e) {
+      handleError(e);
+    }
+  },
+
+  ser(raw: string, filters: SerNodeFiltersRecord) {
+    try {
+      const parsed = dqm(raw);
+      const sanitized = createFilteredSer(
+        { state: "success", data: parsed },
+        filters,
+      );
+      return sanitized;
+    } catch (e) {
+      handleError(e);
+    }
+  },
+};

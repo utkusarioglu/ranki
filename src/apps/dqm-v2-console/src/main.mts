@@ -1,6 +1,6 @@
 import yaml from "yaml";
 import { Command, Option } from "commander";
-import { ast, cps, cpx, tcpx, trn, tcps } from "./dqm.mjs";
+import { debugCall } from "./dqm.mjs";
 import { readFiles } from "./read-files.mjs";
 import { DEFAULT_RAW, DEFAULT_CONFIG } from "./constants.mjs";
 
@@ -12,11 +12,22 @@ function getFilters(sectionConfig: any, fieldsOption: any) {
   return filter;
 }
 
-function handlePrint(value: any, isPrint: boolean) {
-  if (!isPrint) {
-    return console.log("`ast` ran with no errors");
+function handlePrint(
+  value: any,
+  isJson: boolean,
+  isYaml: boolean,
+  isYamlExtended: boolean,
+) {
+  if (isYamlExtended) {
+    return console.log(yaml.stringify(JSON.parse(JSON.stringify(value))));
   }
-  console.log(yaml.stringify(value));
+  if (isYaml) {
+    return console.log(yaml.stringify(value));
+  }
+  if (isJson) {
+    return console.log(JSON.stringify(value, null, 2));
+  }
+  return console.log("Run completed");
 }
 
 function main() {
@@ -24,7 +35,12 @@ function main() {
 
   program.name("dqm-v2-console").description("DqmV2 console tool");
 
-  const printOption = new Option("--print", "Print AST to console");
+  const yamlOption = new Option("--yaml", "Print yaml to console");
+  const yamlExtendedOption = new Option(
+    "--yaml-extended",
+    "Print yaml to console",
+  );
+  const jsonOption = new Option("--json", "Print json to console");
   const rawOption = new Option(
     "--raw <path>",
     "Raw dqm file to process",
@@ -38,89 +54,29 @@ function main() {
     "Pick fields to display. Fields are defined in the config file",
   ).default("default");
 
-  program
-    .command("ast")
-    .description("Work with AST data")
-    .addOption(printOption)
-    .addOption(rawOption)
-    .addOption(configOption)
-    .addOption(fieldsOption)
-    .action((options) => {
-      const files = readFiles(options.raw, options.config);
-      const filter = getFilters(files.config.modes.ast, options.fields);
-      const sanitized = ast(files.raw, filter);
-      handlePrint(sanitized, options.print);
-    });
-
-  program
-    .command("cpx")
-    .description("Work with CPX data")
-    .addOption(printOption)
-    .addOption(rawOption)
-    .addOption(configOption)
-    .addOption(fieldsOption)
-    .action((options) => {
-      const files = readFiles(options.raw, options.config);
-      const filter = getFilters(files.config.modes.cpx, options.fields);
-      const sanitized = cpx(files.raw, filter);
-      handlePrint(sanitized, options.print);
-    });
-
-  program
-    .command("cps")
-    .description("Work with CPS data")
-    .addOption(printOption)
-    .addOption(rawOption)
-    .addOption(configOption)
-    .addOption(fieldsOption)
-    .action((options) => {
-      const files = readFiles(options.raw, options.config);
-      const filter = getFilters(files.config.modes.cps, options.fields);
-      const sanitized = cps(files.raw, filter);
-      handlePrint(sanitized, options.print);
-    });
-
-  program
-    .command("trn")
-    .description("Work with TRN data")
-    .addOption(printOption)
-    .addOption(rawOption)
-    .addOption(configOption)
-    .addOption(fieldsOption)
-    .action((options) => {
-      const files = readFiles(options.raw, options.config);
-      const filter = getFilters(files.config.modes.trn, options.fields);
-      const sanitized = trn(files.raw, filter);
-      handlePrint(sanitized, options.print);
-    });
-
-  program
-    .command("tcpx")
-    .description("Work with TCpx data")
-    .addOption(printOption)
-    .addOption(rawOption)
-    .addOption(configOption)
-    .addOption(fieldsOption)
-    .action((options) => {
-      const files = readFiles(options.raw, options.config);
-      const filter = getFilters(files.config.modes.tcpx, options.fields);
-      const sanitized = tcpx(files.raw, filter);
-      handlePrint(sanitized, options.print);
-    });
-
-  program
-    .command("tcps")
-    .description("Work with TCps data")
-    .addOption(printOption)
-    .addOption(rawOption)
-    .addOption(configOption)
-    .addOption(fieldsOption)
-    .action((options) => {
-      const files = readFiles(options.raw, options.config);
-      const filter = getFilters(files.config.modes.tcps, options.fields);
-      const sanitized = tcps(files.raw, filter);
-      handlePrint(sanitized, options.print);
-    });
+  ["ast", "cpx", "cps", "tcpx", "tcps", "trn", "ser"].forEach((t) => {
+    program
+      .command(t)
+      .description(`Work with ${t.toUpperCase()} data`)
+      .addOption(yamlOption)
+      .addOption(yamlExtendedOption)
+      .addOption(jsonOption)
+      .addOption(rawOption)
+      .addOption(configOption)
+      .addOption(fieldsOption)
+      .action((options) => {
+        const files = readFiles(options.raw, options.config);
+        const filter = getFilters(files.config.modes[t], options.fields);
+        const tt = t as keyof typeof debugCall;
+        const sanitized = debugCall[tt](files.raw, filter);
+        handlePrint(
+          sanitized,
+          options.json,
+          options.yaml,
+          options.yamlExtended,
+        );
+      });
+  });
 
   program.parse(process.argv);
 }

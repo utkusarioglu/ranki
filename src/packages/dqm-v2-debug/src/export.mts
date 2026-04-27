@@ -33,6 +33,8 @@ export { createFilteredTcpx } from "./sanitize/node-types/tcpx/tcpx.mjs";
 export type * from "./sanitize/node-types/tcpx/tcpx.filter.types.mjs";
 export { createFilteredTcps } from "./sanitize/node-types/tcps/tcps.mjs";
 export type * from "./sanitize/node-types/tcps/tcps.filter.types.mjs";
+export { createFilteredSer } from "./sanitize/node-types/ser/ser.mjs";
+export type * from "./sanitize/node-types/ser/ser.filter.types.mjs";
 
 /**
  * Re-exports all exports from the try-catch utility module.
