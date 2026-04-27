@@ -9,9 +9,13 @@ import {
   createFilteredCps,
   type ITrnNodeFiltersRecord,
   createFilteredTrn,
+  createFilteredTcps,
+  type TCpsNodeFiltersRecord,
 } from "@dqm/package-dqm-v2-debug";
 import type yaml from "yaml";
 import { pluginsAsArray } from "./dqm.plugins.mjs";
+import type { TCpxNodeFiltersRecord } from "@dqm/package-dqm-v2-debug";
+import { createFilteredTcpx } from "@dqm/package-dqm-v2-debug";
 
 function dqm(raw: string) {
   try {
@@ -101,6 +105,32 @@ export function trn(raw: string, filters: ITrnNodeFiltersRecord) {
   try {
     const parsed = dqm(raw);
     const sanitized = createFilteredTrn(
+      { state: "success", data: parsed },
+      filters,
+    );
+    return sanitized;
+  } catch (e) {
+    handleError(e);
+  }
+}
+
+export function tcpx(raw: string, filters: TCpxNodeFiltersRecord) {
+  try {
+    const parsed = dqm(raw);
+    const sanitized = createFilteredTcpx(
+      { state: "success", data: parsed },
+      filters,
+    );
+    return sanitized;
+  } catch (e) {
+    handleError(e);
+  }
+}
+
+export function tcps(raw: string, filters: TCpsNodeFiltersRecord) {
+  try {
+    const parsed = dqm(raw);
+    const sanitized = createFilteredTcps(
       { state: "success", data: parsed },
       filters,
     );

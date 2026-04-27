@@ -2,11 +2,11 @@ import type { SanitizeModes } from "../../../export.mjs";
 import { filterCommon } from "../../common/node-filter/filter.mjs";
 import type { Theatered } from "../../common/node-filter/filter.types.mjs";
 import type { SanitizedParseResult } from "../../general.types.mjs";
-import { TrnSanitizedFiltered } from "./trn.filter.mjs";
+import { TCpsSanitizedFiltered } from "./tcps.filter.mjs";
 import type {
-  ITrnNodeFiltersRecord,
-  ITrnNodeSanitizedTypesRecord,
-} from "./trn.filter.types.mjs";
+  TCpsNodeFiltersRecord,
+  TCpsNodeSanitizedTypesRecord,
+} from "./tcps.filter.types.mjs";
 
 /**
  * Creates a sanitized AST from a parse result.
@@ -20,21 +20,20 @@ import type {
  *
  * @aidoc
  */
-export function createFilteredTrn(
+export function createFilteredTcps(
   parsed: SanitizedParseResult,
-  filters: ITrnNodeFiltersRecord,
-): SanitizeModes<Theatered<ITrnNodeSanitizedTypesRecord[]>[]> {
-  return filterCommon<ITrnNodeSanitizedTypesRecord[]>(
+  filters: TCpsNodeFiltersRecord,
+): SanitizeModes<Theatered<TCpsNodeSanitizedTypesRecord[]>[]> {
+  return filterCommon<TCpsNodeSanitizedTypesRecord[]>(
     parsed,
     // FIX
     //  @ts-expect-error doesn't account for returning an array
     (success) => {
       return success.trn.map((p) => {
-        const trn = p.tCpx.getTrn();
         return {
           theater: p.theater,
-          sanitized: trn.map((t) =>
-            new TrnSanitizedFiltered(t, filters).build(),
+          sanitized: p.tCpx.tCps.map((t) =>
+            new TCpsSanitizedFiltered(t, filters).build(),
           ),
         };
       });

@@ -1,6 +1,6 @@
 import yaml from "yaml";
-import { Command } from "commander";
-import { ast, cps, cpx, trn } from "./dqm.mjs";
+import { Command, Option } from "commander";
+import { ast, cps, cpx, tcpx, trn, tcps } from "./dqm.mjs";
 import { readFiles } from "./read-files.mjs";
 import { DEFAULT_RAW, DEFAULT_CONFIG } from "./constants.mjs";
 
@@ -24,17 +24,27 @@ function main() {
 
   program.name("dqm-v2-console").description("DqmV2 console tool");
 
+  const printOption = new Option("--print", "Print AST to console");
+  const rawOption = new Option(
+    "--raw <path>",
+    "Raw dqm file to process",
+  ).default(DEFAULT_RAW);
+  const configOption = new Option(
+    "--config <path>",
+    "Custom config file path",
+  ).default(DEFAULT_CONFIG);
+  const fieldsOption = new Option(
+    "--fields <value>",
+    "Pick fields to display. Fields are defined in the config file",
+  ).default("default");
+
   program
     .command("ast")
     .description("Work with AST data")
-    .option("--print", "Print AST to console")
-    .option("--raw <path>", "Raw dqm file to process", DEFAULT_RAW)
-    .option("--config <path>", "Custom config file path", DEFAULT_CONFIG)
-    .option(
-      "--fields <value>",
-      "Pick fields to display. Fields are defined in the config file",
-      "default",
-    )
+    .addOption(printOption)
+    .addOption(rawOption)
+    .addOption(configOption)
+    .addOption(fieldsOption)
     .action((options) => {
       const files = readFiles(options.raw, options.config);
       const filter = getFilters(files.config.modes.ast, options.fields);
@@ -45,14 +55,10 @@ function main() {
   program
     .command("cpx")
     .description("Work with CPX data")
-    .option("--print", "Print CPX to console")
-    .option("--raw <path>", "Raw dqm file to process", DEFAULT_RAW)
-    .option("--config <path>", "Custom config file path", DEFAULT_CONFIG)
-    .option(
-      "--fields <value>",
-      "Pick fields to display. Fields are defined in the config file",
-      "default",
-    )
+    .addOption(printOption)
+    .addOption(rawOption)
+    .addOption(configOption)
+    .addOption(fieldsOption)
     .action((options) => {
       const files = readFiles(options.raw, options.config);
       const filter = getFilters(files.config.modes.cpx, options.fields);
@@ -63,14 +69,10 @@ function main() {
   program
     .command("cps")
     .description("Work with CPS data")
-    .option("--print", "Print CPS to console")
-    .option("--raw <path>", "Raw dqm file to process", DEFAULT_RAW)
-    .option("--config <path>", "Custom config file path", DEFAULT_CONFIG)
-    .option(
-      "--fields <value>",
-      "Pick fields to display. Fields are defined in the config file",
-      "default",
-    )
+    .addOption(printOption)
+    .addOption(rawOption)
+    .addOption(configOption)
+    .addOption(fieldsOption)
     .action((options) => {
       const files = readFiles(options.raw, options.config);
       const filter = getFilters(files.config.modes.cps, options.fields);
@@ -81,18 +83,42 @@ function main() {
   program
     .command("trn")
     .description("Work with TRN data")
-    .option("--print", "Print CPS to console")
-    .option("--raw <path>", "Raw dqm file to process", DEFAULT_RAW)
-    .option("--config <path>", "Custom config file path", DEFAULT_CONFIG)
-    .option(
-      "--fields <value>",
-      "Pick fields to display. Fields are defined in the config file",
-      "default",
-    )
+    .addOption(printOption)
+    .addOption(rawOption)
+    .addOption(configOption)
+    .addOption(fieldsOption)
     .action((options) => {
       const files = readFiles(options.raw, options.config);
       const filter = getFilters(files.config.modes.trn, options.fields);
       const sanitized = trn(files.raw, filter);
+      handlePrint(sanitized, options.print);
+    });
+
+  program
+    .command("tcpx")
+    .description("Work with TCpx data")
+    .addOption(printOption)
+    .addOption(rawOption)
+    .addOption(configOption)
+    .addOption(fieldsOption)
+    .action((options) => {
+      const files = readFiles(options.raw, options.config);
+      const filter = getFilters(files.config.modes.tcpx, options.fields);
+      const sanitized = tcpx(files.raw, filter);
+      handlePrint(sanitized, options.print);
+    });
+
+  program
+    .command("tcps")
+    .description("Work with TCps data")
+    .addOption(printOption)
+    .addOption(rawOption)
+    .addOption(configOption)
+    .addOption(fieldsOption)
+    .action((options) => {
+      const files = readFiles(options.raw, options.config);
+      const filter = getFilters(files.config.modes.tcps, options.fields);
+      const sanitized = tcps(files.raw, filter);
       handlePrint(sanitized, options.print);
     });
 

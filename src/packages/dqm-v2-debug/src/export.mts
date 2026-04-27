@@ -29,6 +29,10 @@ export { createFilteredCps } from "./sanitize/node-types/cps/cps.mjs";
 export type * from "./sanitize/node-types/cps/cps.filter.types.mjs";
 export { createFilteredTrn } from "./sanitize/node-types/trn/trn.mjs";
 export type * from "./sanitize/node-types/trn/trn.filter.types.mjs";
+export { createFilteredTcpx } from "./sanitize/node-types/tcpx/tcpx.mjs";
+export type * from "./sanitize/node-types/tcpx/tcpx.filter.types.mjs";
+export { createFilteredTcps } from "./sanitize/node-types/tcps/tcps.mjs";
+export type * from "./sanitize/node-types/tcps/tcps.filter.types.mjs";
 
 /**
  * Re-exports all exports from the try-catch utility module.

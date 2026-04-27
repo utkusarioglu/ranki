@@ -40,3 +40,14 @@ modes:
         - source
         - localTrnEdges
         - foreignTrnEdges
+
+  tcpx:
+    fields:
+      default:
+        - tCpsCount
+        - tCpxEdges
+
+  tcps:
+    fields:
+      default:
+        - tCpsEdges
