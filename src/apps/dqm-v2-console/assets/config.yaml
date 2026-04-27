@@ -29,3 +29,14 @@ modes:
         - unique
         - settledId
         - cpsEdges
+
+  trn:
+    fields:
+      default: 
+        - kind
+        - transformClass
+        - isMount
+        - chainString
+        - source
+        - localTrnEdges
+        - foreignTrnEdges

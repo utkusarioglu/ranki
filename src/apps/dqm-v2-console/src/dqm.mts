@@ -5,13 +5,13 @@ import {
   createFilteredCpx,
   type AstNodeFiltersRecord,
   type CpxNodeFiltersRecord,
+  type CpsNodeFiltersRecord,
+  createFilteredCps,
+  type ITrnNodeFiltersRecord,
+  createFilteredTrn,
 } from "@dqm/package-dqm-v2-debug";
 import type yaml from "yaml";
 import { pluginsAsArray } from "./dqm.plugins.mjs";
-import {
-  type CpsNodeFiltersRecord,
-  createFilteredCps,
-} from "@dqm/package-dqm-v2-debug";
 
 function dqm(raw: string) {
   try {
@@ -88,6 +88,19 @@ export function cps(raw: string, filters: CpsNodeFiltersRecord) {
   try {
     const parsed = dqm(raw);
     const sanitized = createFilteredCps(
+      { state: "success", data: parsed },
+      filters,
+    );
+    return sanitized;
+  } catch (e) {
+    handleError(e);
+  }
+}
+
+export function trn(raw: string, filters: ITrnNodeFiltersRecord) {
+  try {
+    const parsed = dqm(raw);
+    const sanitized = createFilteredTrn(
       { state: "success", data: parsed },
       filters,
     );

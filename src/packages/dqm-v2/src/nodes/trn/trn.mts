@@ -12,6 +12,7 @@ import type {
   ISerializedParent,
   SerializeMethodParams,
   SerializationPropertiesUnion,
+  ChainString,
 } from "@dqm/package-dqm-api-v2";
 import { edgeCapability } from "../capabilities/edge.capability.mjs";
 import { CommonTransports } from "../common-transports.mjs";
@@ -19,6 +20,7 @@ import { assertExists, assertParent } from "@dqm/package-dqm-utils";
 import { assertNever } from "../../errors/dqm-app-error/assertions.mjs";
 import { DqmAppError } from "../../errors/dqm-app-error/dqm-app-error.mjs";
 import { Hash } from "../../utils/hash.mjs";
+import { CHAIN_STRING_SEPARATOR } from "../../constants.mjs";
 
 export class TrnNode extends CommonTransports implements ITrnNode {
   public readonly ast: IAstNode;
@@ -50,6 +52,10 @@ export class TrnNode extends CommonTransports implements ITrnNode {
 
   setAsMount() {
     this.isMount = true;
+  }
+
+  getIsMount(): boolean {
+    return this.isMount;
   }
 
   private produceProps(p: SerializeMethodParams) {
@@ -86,7 +92,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
         this.serialized = this.serializeParent(chain, props, p);
         break;
       case "leaf":
-        const source = this.source;
+        const source = this.getSource();
         assertExists(source, {
           why: "leaves need to have their source set",
         });
@@ -133,7 +139,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     };
 
     const mounts = [
-      this.isMount
+      this.getIsMount()
         ? (v: ISerializedNode[]) => {
             v.forEach((a) => pre.children.push(a));
           }
@@ -232,6 +238,10 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     return this;
   }
 
+  getChainString(): ChainString {
+    return this.chain.join(CHAIN_STRING_SEPARATOR);
+  }
+
   getKind() {
     return this.kind;
   }
@@ -262,6 +272,10 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     this.switchToLeaf();
     this.source = s;
     return this;
+  }
+
+  getSource(): AstSourceString {
+    return this.source;
   }
 
   // TC

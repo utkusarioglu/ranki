@@ -1,6 +1,6 @@
 import yaml from "yaml";
 import { Command } from "commander";
-import { ast, cps, cpx } from "./dqm.mjs";
+import { ast, cps, cpx, trn } from "./dqm.mjs";
 import { readFiles } from "./read-files.mjs";
 import { DEFAULT_RAW, DEFAULT_CONFIG } from "./constants.mjs";
 
@@ -75,6 +75,24 @@ function main() {
       const files = readFiles(options.raw, options.config);
       const filter = getFilters(files.config.modes.cps, options.fields);
       const sanitized = cps(files.raw, filter);
+      handlePrint(sanitized, options.print);
+    });
+
+  program
+    .command("trn")
+    .description("Work with TRN data")
+    .option("--print", "Print CPS to console")
+    .option("--raw <path>", "Raw dqm file to process", DEFAULT_RAW)
+    .option("--config <path>", "Custom config file path", DEFAULT_CONFIG)
+    .option(
+      "--fields <value>",
+      "Pick fields to display. Fields are defined in the config file",
+      "default",
+    )
+    .action((options) => {
+      const files = readFiles(options.raw, options.config);
+      const filter = getFilters(files.config.modes.trn, options.fields);
+      const sanitized = trn(files.raw, filter);
       handlePrint(sanitized, options.print);
     });
 

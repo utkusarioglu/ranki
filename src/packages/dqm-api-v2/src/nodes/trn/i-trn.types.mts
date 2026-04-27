@@ -1,4 +1,4 @@
-import type { Chain } from "../../export.types.mjs";
+import type { Chain, ChainString } from "../../export.types.mjs";
 import type {
   AstSourceString,
   CommonTransportsConstructorParams,
@@ -27,7 +27,8 @@ type LocalTrnEdges = IEdgeCapability<
 >;
 
 export interface ITrnNode
-  extends ITrnNodeUnique,
+  extends
+    ITrnNodeUnique,
     ForeignTrnEdges,
     LocalTrnEdges,
     Pick<IAstNodeTransformCapability, "getTransformClass"> {}
@@ -40,13 +41,20 @@ interface ITrnNodeUnique {
   transform(): this;
 
   serialize(p: SerializeMethodParams): SerializedPackage;
-  setSource(s: AstSourceString): this;
   newChild(): ITrnNode;
   getAst(): IAstNode;
-  setChain(c: Chain): this;
   getKind(): IAstNodeKind;
 
+  setChain(c: Chain): this;
+  // DECIDE this is only created for debugging purposes
+  getChainString(): ChainString;
+
   setAsMount(): void;
+  getIsMount(): boolean;
+
+  setSource(s: AstSourceString): this;
+  // DECIDE this is only created for debugging purposes
+  getSource(): AstSourceString;
 }
 
 export type ITrnNodeConstructor = new (
