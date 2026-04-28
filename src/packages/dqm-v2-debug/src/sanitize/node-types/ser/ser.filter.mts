@@ -9,6 +9,10 @@ export class SerSanitizedFiltered extends NodeFilter<
   protected calls = {
     key: () => this.node.key,
     chain: () => this.node.chain,
+    chainString: () =>
+      this.node.chain
+        // @ts-expect-error
+        .join("."),
     props: () => this.node.props,
     kind: () => this.node.kind,
     // @ts-expect-error

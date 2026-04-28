@@ -1,0 +1,4 @@
+[code, "py"
+def func():
+  return "hi"
+]

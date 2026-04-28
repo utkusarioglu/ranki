@@ -1,0 +1,5 @@
+[code, "py"
+def func():
+  [a|mew]
+  return "hi"
+]

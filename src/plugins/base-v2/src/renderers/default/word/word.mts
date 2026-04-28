@@ -7,7 +7,7 @@ export const word: R = {
     const element = document.createElement("span");
     // element.className = "base-v2-paragraph";
     // element.classList.add("scheme-" + pref.scheme);
-    element.innerText = ser.source;
+    element.innerHTML = ser.source;
     return {
       element,
       getMount: () => element,

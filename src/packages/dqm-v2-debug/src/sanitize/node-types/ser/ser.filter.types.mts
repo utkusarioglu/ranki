@@ -1,4 +1,5 @@
 import type {
+  ChainString,
   ISerializedLeaf,
   ISerializedNode,
   ISerializedParent,
@@ -8,6 +9,7 @@ import type { Filters } from "../../common/node-filter/filter.types.mjs";
 export interface SerNodeSanitizedTypesRecord {
   key: ISerializedNode["key"];
   chain: ISerializedNode["chain"];
+  chainString: ChainString;
   props: ISerializedNode["props"];
   kind: ISerializedNode["kind"];
   source: ISerializedLeaf["source"];

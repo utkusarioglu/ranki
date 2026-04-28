@@ -56,7 +56,14 @@ modes:
     fields:
       default:
         - key
+        - chainString
+        - kind
+        - source
+        - children
+      all:
+        - key
         - chain
+        - chainString
         - props
         - kind
         - source

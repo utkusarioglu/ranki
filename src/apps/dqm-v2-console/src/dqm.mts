@@ -3,16 +3,18 @@ import { Dqm } from "@dqm/package-dqm-v2";
 import {
   createFilteredAst,
   createFilteredCpx,
-  type AstNodeFiltersRecord,
-  type CpxNodeFiltersRecord,
-  type CpsNodeFiltersRecord,
   createFilteredCps,
-  type ITrnNodeFiltersRecord,
   createFilteredTrn,
   createFilteredTcps,
-  type TCpsNodeFiltersRecord,
-  type SerNodeFiltersRecord,
   createFilteredSer,
+} from "@dqm/package-dqm-v2-debug";
+import type {
+  AstNodeFiltersRecord,
+  CpxNodeFiltersRecord,
+  CpsNodeFiltersRecord,
+  ITrnNodeFiltersRecord,
+  TCpsNodeFiltersRecord,
+  SerNodeFiltersRecord,
 } from "@dqm/package-dqm-v2-debug";
 import type yaml from "yaml";
 import { pluginsAsArray } from "./dqm.plugins.mjs";
