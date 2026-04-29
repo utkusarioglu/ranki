@@ -7,7 +7,8 @@ const pluginPackage: IDqmPlugin = [staticRenderer, debugRenderer];
 export default pluginPackage;
 
 export {
-  createCodePayloadScaffolding,
+  createCodePayloadBlockScaffolding,
+  createCodePayloadInlineScaffolding,
   getProcessedSource,
   getLineNumbersHtml,
   getHighlightedCodeHtml,

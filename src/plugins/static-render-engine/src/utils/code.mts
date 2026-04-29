@@ -43,7 +43,7 @@ async function copyContent(elem: HTMLElement) {
   }
 }
 
-export function createCodePayloadScaffolding(
+export function createCodePayloadBlockScaffolding(
   prismCss: string,
   fontSize: string,
   lineHeight: string,
@@ -95,6 +95,65 @@ export function createCodePayloadScaffolding(
     content: code,
     element,
     scroller,
+    css,
+    afterMount,
+    beforeUnmount,
+  };
+}
+
+export function createCodePayloadInlineScaffolding(
+  prismCss: string,
+  fontSize: string,
+  lineHeight: string,
+) {
+  const element = document.createElement("div");
+  element.classList.add("code-block");
+  // const scroller = AnkiUi.horizontalScroller();
+  // element.appendChild(scroller.element);
+  const pre = document.createElement("pre");
+  const code = document.createElement("code");
+  pre.appendChild(code);
+  // scroller.getMount!().appendChild(pre);
+  element.appendChild(pre);
+  // const left = scroller.subtree!.left();
+
+  if (fontSize !== "") {
+    element.style.setProperty("--smaller-font-size", fontSize);
+  }
+  if (lineHeight !== "") {
+    element.style.setProperty("--smaller-line-height", lineHeight);
+  }
+
+  const onClick = () => copyContent(code);
+  const css = [
+    // ...scroller.css!,
+    {
+      id: "prism-atom-dark",
+      css: prismCss,
+    },
+    {
+      id: "code-block-section",
+      css: codeBlockCss,
+    },
+  ];
+  const afterMount = [
+    // ...(scroller.afterMount || []),
+    () => {
+      element.addEventListener("click", onClick);
+    },
+  ];
+  const beforeUnmount = [
+    // ...(scroller.beforeUnmount || []),
+    () => {
+      element.removeEventListener("click", onClick);
+    },
+  ];
+
+  return {
+    // left,
+    content: code,
+    element,
+    // scroller,
     css,
     afterMount,
     beforeUnmount,

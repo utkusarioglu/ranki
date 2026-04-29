@@ -3,14 +3,14 @@ import { NO_LANGUAGE, TAGS } from "../constants.mjs";
 import Prism from "./prism/prism.mjs";
 import prismCss from "./prism/prism-atom-dark.css?raw";
 import {
-  createCodePayloadBlockScaffolding,
+  createCodePayloadInlineScaffolding,
   getProcessedSource,
-  getLineNumbersHtml,
+  // getLineNumbersHtml,
   getHighlightedCodeHtml,
 } from "@dqm/plugin-static-render-engine";
 
 export const payload: R = {
-  chain: [...TAGS, "payload", "block"],
+  chain: [...TAGS, "payload", "inline"],
   kind: "leaf",
   sync: ({ ser }) => {
     const noEmptyLines = ser.props.component.default.content.no_empty_lines;
@@ -19,10 +19,10 @@ export const payload: R = {
     const rawName = ser.props.component.default.language.name;
     const source = ser.source;
 
-    const { left, content, element, css, afterMount, beforeUnmount } =
-      createCodePayloadBlockScaffolding(prismCss, fontSize, lineHeight);
+    const { content, element, css, afterMount, beforeUnmount } =
+      createCodePayloadInlineScaffolding(prismCss, fontSize, lineHeight);
     const raw = getProcessedSource(source, noEmptyLines);
-    left.innerHTML = getLineNumbersHtml(raw);
+    // left.innerHTML = getLineNumbersHtml(raw);
     content.innerHTML = getHighlightedCodeHtml(
       Prism,
       rawName,

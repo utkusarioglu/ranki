@@ -1,5 +1,6 @@
 import type { IDqmPluginRenderer } from "@dqm/package-dqm-api-v2";
 import { codeBlock } from "./code-block/code-block.mjs";
+import { codeInline } from "./code-inline/code-inline.mjs";
 
 export const renderer: IDqmPluginRenderer = {
   type: "renderer",
@@ -9,5 +10,5 @@ export const renderer: IDqmPluginRenderer = {
     description: "Block and inline code",
     version: "0.0.0",
   },
-  list: [...codeBlock],
+  list: [...codeBlock, ...codeInline],
 };

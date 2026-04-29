@@ -4,7 +4,7 @@ import Prism from "prismjs";
 import "prismjs/components/prism-markup.js";
 import prismCss from "./prism/prism-atom-dark.css?raw";
 import {
-  createCodePayloadScaffolding,
+  createCodePayloadBlockScaffolding,
   getProcessedSource,
   getLineNumbersHtml,
   getHighlightedCodeHtml,
@@ -18,7 +18,7 @@ export const payload: R = {
     const lineHeight = ser.props.component.default.font.line_height;
     const noEmptyLines = ser.props.component.default.content.no_empty_lines;
     const { left, content, element, afterMount, beforeUnmount, css } =
-      createCodePayloadScaffolding(prismCss, fontSize, lineHeight);
+      createCodePayloadBlockScaffolding(prismCss, fontSize, lineHeight);
     content.innerText = "(collecting info)";
 
     return {

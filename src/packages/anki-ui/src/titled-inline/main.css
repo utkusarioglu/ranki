@@ -1,0 +1,44 @@
+titled-inline {
+  transition-property: color, background, border-radius;
+  transition-duration: var(--isolated-block-transition-duration);
+
+  &.container {
+    border-radius: var(--isolated-block-border-radius);
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    /* width: 100%; */
+    margin: 0;
+    padding-inline: 0.5em;
+    /* padding-block-end: 0.5em; */
+    background: var(--isolated-block-base-background);
+    backdrop-filter: var(--dqm-isolated-block-base-backdrop-filter);
+  }
+
+  &.hud {
+    overflow: hidden;
+    font-size: 0.6em;
+    padding-inline: 1em;
+    padding-block-end: 0.2em;
+    display: flex;
+    display: none;
+    gap: 1em;
+  }
+
+  &.hud-item {
+    box-sizing: border-box;
+    padding: 0.5em 1em;
+    width: max-content;
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
+
+    &.title,
+    &.programming-language {
+      background: var(--black);
+    }
+
+    &.file-path {
+      background: var(--orange);
+    }
+  }
+}

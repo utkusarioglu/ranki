@@ -1,6 +1,9 @@
-export {
-  getLineNumbersHtml,
-  getHighlightedCodeHtml,
-  getProcessedSource,
-  createCodePayloadScaffolding,
-} from "./code.mjs";
+// export {
+//   getLineNumbersHtml,
+//   getHighlightedCodeHtml,
+//   getProcessedSource,
+//   createCodePayloadBlockScaffolding,
+//   createCodePayloadInlineScaffolding,
+// } from "./code.mjs";
+
+export * from "./code.mjs";
