@@ -5,11 +5,11 @@ html {
   width: 100% !important;
   scroll-behavior: smooth !important;
 
-  &::-webkit-scrollbar {
-    display: none !important;
-    scrollbar-width: none !important; /* Firefox */
-    -ms-overflow-style: none !important; /* IE 10+ / old Edge */
-  }
+  /* &::-webkit-scrollbar { */
+  /* display: none !important; */
+  /* scrollbar-width: none !important; Firefox */
+  /* -ms-overflow-style: none !important; IE 10+ / old Edge */
+  /* } */
 }
 
 .scroll-hidden {
@@ -38,34 +38,34 @@ body,
   display: none !important;
 }
 
-body {
-  padding: 0 !important;
-  margin: 0 !important;
-  scroll-behavior: smooth !important;
+/* body { */
+/* padding: 0 !important;
+  margin: 0 !important; */
+/* scroll-behavior: smooth !important; */
 
-  transition-duration: var(--body-transition-duration, 0) !important;
-  transition-property: background, color !important;
+/* transition-duration: var(--body-transition-duration, 0) !important;
+  transition-property: background, color !important; */
 
-  /* & > div,
+/* & > div,
   & > svg {
     display: none !important;
   } */
 
-  /* Relevant for theming */
-  background: var(--body-background) !important;
-  color: var(--body-color) !important;
+/* Relevant for theming */
+/* background: var(--body-background) !important;
+  color: var(--body-color) !important; */
 
-  /* makes the body available for molding by config*/
-  display: grid !important;
-  /* old android view messes with this if vertically_centered is selected*/
-  grid-template-rows: 0 var(--hud-height) 1fr !important;
-  flex-direction: column;
-  /* justify-content: center; */
+/* makes the body available for molding by config*/
+/* display: grid !important; */
+/* old android view messes with this if vertically_centered is selected*/
+/* grid-template-rows: 0 var(--hud-height) 1fr !important;
+  flex-direction: column; */
+/* justify-content: center; */
 
-  /* Allows vertically centering questions */
-  min-height: 100% !important;
-  height: max-content !important;
-}
+/* Allows vertically centering questions */
+/* min-height: 100% !important;
+  height: max-content !important; */
+/* } */
 
-body.r2-active {
-}
+/* body.r2-active {
+} */

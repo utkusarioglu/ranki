@@ -9,6 +9,7 @@ import {
   CONFIG_TYPE_CLASS_SELECTOR,
   DATA_TYPE_CLASS_SELECTOR,
   INPUT_TYPE_CLASS_SELECTOR,
+  RENDERED_CLASS_SELECTOR,
 } from "../selector.constants.mts";
 import { main } from "_/main.mjs";
 
@@ -34,7 +35,7 @@ export class RankiDevMethods {
   static trigger() {
     const qa = document.querySelector("#qa") as HTMLDivElement;
     assertNotUndefined(qa, { why: "needed" });
-    const ren = qa.querySelector("div.rendered");
+    const ren = qa.querySelector(RENDERED_CLASS_SELECTOR);
     if (ren) {
       qa.removeChild(ren);
     }

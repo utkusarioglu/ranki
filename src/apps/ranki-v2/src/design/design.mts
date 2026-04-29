@@ -11,9 +11,13 @@ import {
 } from "./design.constants.mts";
 import { Timing } from "_utils/timing.mjs";
 
-export function createDesign(config: RankiDesignState) {
-  const root = document.documentElement;
-  const attach = document.body;
+export function createDesign(
+  config: RankiDesignState,
+  root: HTMLElement,
+  attach: HTMLElement,
+) {
+  // const root = document.documentElement;
+  // const attach = document.body;
   root.style.setProperty(CSS_FADE_ANIMATION_DURATION, config.animation.fade);
 
   document.body.style.setProperty(

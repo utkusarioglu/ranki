@@ -1,0 +1,29 @@
+:host {
+  display: block;
+  position: fixed;
+  inset: 0;
+
+  scroll-behavior: smooth !important;
+  transition-duration: var(--body-transition-duration, 0) !important;
+  transition-property: background, color !important;
+
+  background: var(--body-background) !important;
+  color: var(--body-color) !important;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    display: none !important;
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE 10+ / old Edge */
+  }
+}
+
+:host > .container {
+  display: grid;
+  grid-template-rows: var(--hud-height) 1fr !important;
+  /* flex-direction: column; */
+  min-height: 100%;
+  height: max-content;
+}
