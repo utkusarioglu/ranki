@@ -1,4 +1,4 @@
-import type { WrappedState } from "_components/subtree/subtree.mjs";
+import type { WrappedState } from "_components/wc/sub.mjs";
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 
 const DUR = 2e3;

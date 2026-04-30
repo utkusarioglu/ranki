@@ -2,6 +2,7 @@ import { RPair } from "_components/challenge/pair/pair.mts";
 import { ruleStyles } from "_components/challenge/pair/rule/rule.mts";
 import type { RankiChallengeState } from "_config/config.types.mts";
 import styles from "./challenge.component.css?inline";
+import primitives from "./primitives.component.css?inline";
 import { Wc } from "_components/wc/wc.mjs";
 import { WcSub, type WrappedState } from "_components/wc/sub.mjs";
 
@@ -10,7 +11,7 @@ export class RChallenge extends Wc<RankiChallengeState> {
 
   constructor() {
     super(true);
-    this.css.pushStyles(styles, ruleStyles);
+    this.css.pushStyles(styles, ruleStyles, primitives);
   }
 
   initialize(): void {

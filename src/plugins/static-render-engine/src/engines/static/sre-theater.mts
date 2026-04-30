@@ -1,14 +1,18 @@
 import type { RenderNodeCssSpec } from "@dqm/package-dqm-api-v2";
 import style from "./theater.component.css?inline";
+import htmlPrimitives from "./html-primitives.component.css?inline";
 
 const sheet = new CSSStyleSheet();
 sheet.replaceSync(style);
+
+const html = new CSSStyleSheet();
+html.replaceSync(htmlPrimitives);
 
 export class DqmSreTheater extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this.shadowRoot!.adoptedStyleSheets = [sheet];
+    this.shadowRoot!.adoptedStyleSheets = [sheet, html];
   }
 
   setTheater(t: HTMLElement) {

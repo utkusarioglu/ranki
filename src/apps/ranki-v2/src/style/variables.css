@@ -35,6 +35,10 @@
   );
   --dqm-orange: rgb(var(--scheme-orange-1));
   --dqm-smaller-font-size: 11px;
+  /* kbd uses this for now */
+  --dqm-inline-surface-background-1: rgb(var(--scheme-surface-1));
+  --dqm-inline-surface-background-2: rgb(var(--scheme-surface-2));
+  --dqm-inline-surface-background-3: rgb(var(--scheme-surface-3));
 
   --base: 0.5;
   --chip: 0.5;
