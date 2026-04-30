@@ -5,6 +5,7 @@ import type {
   BuildRankiBaseConfigReturn,
   CueKind,
   CueRecord,
+  DeckAlwaysSettings,
   DeckSettings,
   RankiBaseConfig,
   RankiChannelsConfig,
@@ -19,7 +20,9 @@ import { checkIfMatch } from "./determine.mts";
 import { FLAG_COLOR_ORDER } from "_config/anki.constants.mts";
 import { assertNever } from "_error/assertions.mts";
 
+// TODO maybe os, scheme, dir, env types could be considered here as well.
 const PRECEDENCE_ORDER: CueKind[] = [
+  "webview",
   "deck",
   "card",
   "type",
@@ -28,6 +31,7 @@ const PRECEDENCE_ORDER: CueKind[] = [
   "tag:neutral",
   "tag:ranki",
   "tag:marked",
+  "always",
 ];
 
 export function buildBaseConfig(
@@ -41,6 +45,20 @@ export function buildBaseConfig(
 
   PRECEDENCE_ORDER.forEach((kind) => {
     switch (kind) {
+      case "always":
+        channels.always.forEach((always) => {
+          pushAlways(baseC, cueRecord, kind, always);
+        });
+        break;
+      case "webview":
+        pushMatch(
+          baseC,
+          cueRecord,
+          kind,
+          raw.htmlAttr.webview,
+          channels.webview,
+        );
+        break;
       case "card":
         pushMatch(baseC, cueRecord, kind, raw.fields.card, channels.cards);
         break;
@@ -137,6 +155,17 @@ function pushMatch(
 ) {
   const matched = checkIfMatch(issuer, matchers);
   if (!matched) return;
+  matched.config && baseC.pushConfig(kind, matched.config);
+  matched.cue && cueRecord.push({ type: kind, issuer, ...matched.cue });
+}
+
+function pushAlways(
+  baseC: Config,
+  cueRecord: CueRecord[],
+  kind: CueKind,
+  matched: DeckAlwaysSettings,
+) {
+  const issuer = "always";
   matched.config && baseC.pushConfig(kind, matched.config);
   matched.cue && cueRecord.push({ type: kind, issuer, ...matched.cue });
 }

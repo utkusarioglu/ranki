@@ -138,10 +138,10 @@ function collectHtmlTagAttributes(): CollectedHtmlTagAttributes {
   let webview: CollectedWebviewType;
   switch (raw.title) {
     case "AnkiDroid Flashcard":
-      webview = "android-old";
+      webview = "android::old";
       break;
     case "AnkiDroid":
-      webview = "android-new";
+      webview = "android::new";
       break;
     case "previewer":
     case "main webview":

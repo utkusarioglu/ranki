@@ -146,3 +146,19 @@ decks:
           - start: 7
             end: -1
             mode: hide
+
+webview:
+  - exact: android::new
+    cue: 
+      icon:
+        id: prohibit-inset
+        color: red-2
+    config:
+      design:
+        animation:
+          fade: "0"
+
+always:
+  - cue: 
+      message:
+        text: always!

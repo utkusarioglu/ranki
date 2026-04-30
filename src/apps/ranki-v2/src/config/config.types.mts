@@ -38,6 +38,8 @@ export type DeckRegexSettings = DeckCommonSettings & {
   regex: string;
 };
 
+export type DeckAlwaysSettings = Partial<DeckCommonSettings>;
+
 interface DeckCommonSettings {
   cue?: CueConfig;
   config: RankiBaseConfigPartial;
@@ -70,6 +72,7 @@ export interface CueConfig {
 }
 
 export type CueKind =
+  | "webview"
   | "card"
   | "deck"
   | "type"
@@ -77,7 +80,8 @@ export type CueKind =
   | "tag:neutral"
   | "tag:marked"
   | "tag:ranki"
-  | "flag";
+  | "flag"
+  | "always";
 
 export interface ProcessedCueMapHud extends HudElementCommon {
   subtree: {
@@ -212,12 +216,14 @@ export type RankiConfigChannelsPartial =
 // tags the highest priority
 export interface RankiChannelsConfig {
   base: RankiBaseConfig;
+  webview: DeckSettings[];
   decks: DeckSettings[];
   cards: DeckSettings[];
   types: DeckSettings[];
   faces: DeckSettings[];
   flags: Record<AnkiFlagColors, DeckCommonSettings>;
   tags: DeckSettings[];
+  always: DeckAlwaysSettings[];
 }
 
 export type RankiAppDeterminedScheme = "light" | "dark";

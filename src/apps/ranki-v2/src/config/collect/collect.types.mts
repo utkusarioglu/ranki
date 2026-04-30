@@ -54,8 +54,8 @@ export type CollectedConfig = CollectedConfigEntry[];
 
 export type CollectedWebviewType =
   | "windows"
-  | "android-old"
-  | "android-new"
+  | "android::old"
+  | "android::new"
   | "unknown";
 
 export type CollectedHtmlTagAttributes = {

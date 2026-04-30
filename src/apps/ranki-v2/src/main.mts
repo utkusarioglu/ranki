@@ -22,6 +22,7 @@ export async function main() {
         RBigError.removeAll();
         setStyles();
         const config = await collectConfig();
+        console.log({ config });
         const state = createState(config);
         render(state);
         break;

@@ -279,6 +279,7 @@ repeating-linear-gradient(
   ],
   types: [],
   faces: [],
+  webview: [],
   tags: [
     {
       exact: "+r::dqm::ignore",
@@ -341,6 +342,7 @@ repeating-linear-gradient(
       },
     },
   ],
+  always: [],
   // @ts-expect-error
   flags: {
     none: {
