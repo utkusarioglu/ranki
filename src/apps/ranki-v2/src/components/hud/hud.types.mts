@@ -8,6 +8,7 @@ import type {
 import type {
   ProcessedCueMapHud,
   RankiAddressTokens,
+  RankiAnimation,
 } from "_config/config.types.mts";
 
 export type HudComponentNames =
@@ -19,14 +20,6 @@ export type HudComponentNames =
 
 export type HudVisibility = "visible" | "pull" | "pullWhenShort";
 
-/**
- * @dev
- * #1 This cannot be AnkiDeck as now it also includes separator, trim and hide tokens
- */
-// export type HudAddressSegment_OLD =
-//   | HudAddressSegmentBare
-//   | HudAddressSegmentWithParts;
-
 export interface HudAddressSegment {
   type: "divider" | "segment";
   position: {
@@ -37,30 +30,6 @@ export interface HudAddressSegment {
   shown: string[];
   masked: string[];
 }
-
-// export interface HudAddressSegmentPart {
-//   mode: "hide" | "trim";
-//   shown: string; // #1
-//   masked: string;
-// }
-// export interface HudAddressSegmentBare {
-//   type: "divider" | "segment";
-//   mode: "show" | "separator";
-//   shown: string[];
-// }
-/**
- * @dev
- * #1 Stores parts that are hidden by trim and hide modes.
- * When the user expands the list, hide modes can expand to show what they have
- * been hiding because of this shape. shown[] element indices should correspond
- * to the parts given.
- */
-// export interface HudAddressSegmentWithParts {
-//   type: "divider" | "segment";
-//   mode: "hide" | "trim";
-//   shown: string[];
-//   // parts: HudAddressSegmentPart[]; // #1
-// }
 
 export interface HudAddressProps extends HudElementCommon {
   tokens: RankiAddressTokens;
@@ -105,4 +74,7 @@ export interface RankiHudState {
     cues: ProcessedCueMapHud;
     template: HudTemplateProps;
   };
+  animation: RankiHudStateAnimation;
 }
+
+export type RankiHudStateAnimation = RankiAnimation["hud"];

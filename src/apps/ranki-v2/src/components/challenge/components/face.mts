@@ -4,7 +4,11 @@ import { Timing } from "_utils/timing.mjs";
 
 const DUR = 4e2;
 
-export class RPairItem<T> extends Wc<T> {
+interface RPairItemBasis {
+  animation: { enabled: boolean };
+}
+
+export class RPairItem<T extends RPairItemBasis> extends Wc<T> {
   isActive(): boolean {
     return true;
   }
@@ -27,6 +31,7 @@ export class RPairItem<T> extends Wc<T> {
   initialize(): void {
     this.animation
       .pushPreset("show", async () => {
+        const curr = this.state.curr();
         await Timing.waitLayout();
         return {
           keyframes: [
@@ -40,12 +45,13 @@ export class RPairItem<T> extends Wc<T> {
             },
           ],
           options: {
-            duration: DUR,
+            duration: curr.animation.enabled ? DUR : 0,
             fill: "backwards",
           },
         };
       })
       .pushPreset("exit", () => {
+        const curr = this.state.curr();
         return {
           keyframes: [
             {
@@ -58,7 +64,7 @@ export class RPairItem<T> extends Wc<T> {
             },
           ],
           options: {
-            duration: DUR,
+            duration: curr.animation.enabled ? DUR : 0,
             fill: "backwards",
           },
         };

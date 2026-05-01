@@ -26,8 +26,10 @@ import type {
   RankiAppDeterminedScheme,
   RankiBaseAddressMutationMode,
   RankiBaseConfig,
+  RankiChallengeState,
   RankiCollectedConfig,
   RankiDqmConfig,
+  RankiIndicatorState,
   RankiState,
 } from "_config/config.types.mts";
 import { RankiAppError } from "_error/ranki-app-error.mts";
@@ -74,14 +76,12 @@ function buildRankiConfig(
   const cues = buildCues(base.cueRecord);
   const hud = buildHudConfig(base, raw, tags, cues.hud);
   const dqm = buildDqmConfig(raw, order, base.config, scheme);
+  const indicator = buildIndicatorConfig(cues, base);
 
   return {
     hud,
     dev: base.config.dev,
-    indicator: {
-      cues: cues.indicators,
-      indicatorCollection: base.config.indicators,
-    },
+    indicator,
     design: {
       scheme,
       animation: base.config.design.animation,
@@ -90,11 +90,38 @@ function buildRankiConfig(
       layout: base.config.design.layout,
       paletteCollection: base.config.palettes,
     },
-    challenge: {
-      face: raw.fields.face,
-      order,
-      dqm,
-    },
+    challenge: buildChallengeConfig(base, raw, order, dqm),
+  };
+}
+
+function buildChallengeConfig(
+  base: BuildRankiBaseConfigReturn,
+  raw: RawFields,
+  order: CardFaceArray,
+  dqm: RankiDqmConfig,
+): RankiChallengeState {
+  const enabled = base.config.design.animation.enabled;
+  const animation = base.config.design.animation.challenge;
+  animation.enabled = animation.enabled && enabled;
+  return {
+    animation,
+    face: raw.fields.face,
+    order,
+    dqm,
+  };
+}
+
+function buildIndicatorConfig(
+  cues: ProcessedCueMap,
+  base: BuildRankiBaseConfigReturn,
+): RankiIndicatorState {
+  const enabled = base.config.design.animation.enabled;
+  const animation = base.config.design.animation.indicator;
+  animation.enabled = animation.enabled && enabled;
+  return {
+    animation,
+    cues: cues.indicators,
+    indicatorCollection: base.config.indicators,
   };
 }
 
@@ -182,6 +209,9 @@ function buildHudConfig(
   filteredTags: FilteredTags,
   cues: ProcessedCueMapHud,
 ): RankiHudState {
+  const enabled = base.config.design.animation.enabled;
+  const animation = base.config.design.animation.hud;
+  animation.enabled = animation.enabled && enabled;
   const segments = buildAddressSegments(
     base.config.address.tokens,
     base.config.address.segments,
@@ -189,6 +219,7 @@ function buildHudConfig(
   ); // #1
   const tags = buildTags(base, filteredTags);
   return {
+    animation,
     order: base.config.hud.order,
     visibility: base.config.hud.visibility,
     subtree: {

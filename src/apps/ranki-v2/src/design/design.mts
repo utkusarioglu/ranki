@@ -18,6 +18,8 @@ export function createDesign(
 ) {
   // const root = document.documentElement;
   // const attach = document.body;
+  // root.style.setProperty(CSS_FADE_ANIMATION_DURATION, config.animation.fade);
+  // FIX this fade duration relates to so many things in hud. but it should be getting its state from hud animation
   root.style.setProperty(CSS_FADE_ANIMATION_DURATION, config.animation.fade);
 
   document.body.style.setProperty(

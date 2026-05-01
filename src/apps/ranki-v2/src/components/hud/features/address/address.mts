@@ -3,10 +3,10 @@ import type {
   HudAddressSegment,
   HudAddressProps,
 } from "_components/hud/hud.types.mjs";
-import type { WrappedState } from "_components/subtree/subtree.mjs";
 import { type ReconciliationAction } from "_components/wc/wc.mjs";
 import { RAddressSegment } from "./segment.mts";
 import { WcHudContainer } from "_components/hud/components/container.mjs";
+import type { WrappedState } from "_components/wc/sub.mjs";
 
 type T = HudAddressProps;
 

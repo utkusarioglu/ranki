@@ -40,7 +40,17 @@ export const RANKI_INITIAL_CONFIG: RankiChannelsConfig = {
     },
     design: {
       animation: {
-        fade: "0.4s",
+        enabled: true,
+        fade: "2s",
+        hud: {
+          enabled: true,
+        },
+        challenge: {
+          enabled: true,
+        },
+        indicator: {
+          enabled: true,
+        },
       },
       scheme: "system",
       palette: "generated-default" as RankiPalette,

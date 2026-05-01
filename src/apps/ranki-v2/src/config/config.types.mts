@@ -149,7 +149,18 @@ export type RankiBaseScheme = "dark" | "light" | "system";
 export type RankiPalette = string & { type: "RankiPalette" };
 
 export type RankiAnimation = {
+  enabled: boolean;
+  // FIX this needs to go
   fade: `${string}s`;
+  hud: {
+    enabled: boolean;
+  };
+  challenge: {
+    enabled: boolean;
+  };
+  indicator: {
+    enabled: boolean;
+  };
 };
 
 export interface RankiBaseDesign {
@@ -166,6 +177,7 @@ export interface RankiIndicatorDefinition {
 }
 
 export type RankiBaseAddressMutationMode = "hide" | "trim" | "show";
+
 export interface RankiBaseAddressMutation {
   start: string | number;
   end: string | number;
@@ -245,13 +257,17 @@ export interface RankiDevState {
   methods: boolean;
 }
 
+export type RankiChallengeStateAnimation = RankiAnimation["challenge"];
+
 export interface RankiChallengeState {
+  animation: RankiChallengeStateAnimation;
   face: AnkiCardFace;
   order: CardFaceArray;
   dqm: RankiDqmConfig;
 }
 
 export interface RankiIndicatorState {
+  animation: RankiIndicatorStateAnimation;
   indicatorCollection: RankiIndicatorDefinition[];
   cues: ProcessedCue[];
 }
@@ -299,3 +315,5 @@ export interface RankiCollectedConfig {
   raw: RawFields;
   tags: FilteredTags;
 }
+
+export type RankiIndicatorStateAnimation = RankiAnimation["indicator"];

@@ -32,10 +32,15 @@ export class WcAnimation extends EventTarget {
   public presets: Partial<WcAnimationEventRecord> = {};
   private eventsCbs: Record<string, AnimationCall> = {};
   private active: Record<string, Animation> = {};
+  private isEnabled: boolean = true;
 
   constructor(self: Wc<any>) {
     super();
     this.self = self;
+  }
+
+  public setEnabled(enabled: boolean) {
+    this.isEnabled = enabled;
   }
 
   private setActive(name: string, animation: Animation) {
@@ -82,6 +87,9 @@ export class WcAnimation extends EventTarget {
   }
 
   animate(name: string, config: WcAnimationConfig, emit: boolean = false) {
+    if (!this.isEnabled) {
+      config.options.duration = 0;
+    }
     const animation = this.self.animate(config.keyframes, config.options);
     this.setActive(name, animation);
     animation.finished.then(() => this.removeActive(name));

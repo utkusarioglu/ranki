@@ -64,6 +64,7 @@ export class RPair extends Wc<RankiChallengeState, InternalState> {
 
     this.animation
       .pushPreset("enter", async () => {
+        const curr = this.state.curr();
         Scroll.temporaryHide(DUR + 1e2);
         await Timing.waitLayout();
         return {
@@ -78,27 +79,30 @@ export class RPair extends Wc<RankiChallengeState, InternalState> {
             },
           ],
           options: {
-            duration: DUR,
+            duration: curr.animation.enabled ? DUR : 0,
             fill: "both",
           },
         };
       })
-      .pushPreset("exit", () => ({
-        keyframes: [
-          {
-            opacity: 1,
-            transform: "translateY(0)",
+      .pushPreset("exit", () => {
+        const curr = this.state.curr();
+        return {
+          keyframes: [
+            {
+              opacity: 1,
+              transform: "translateY(0)",
+            },
+            {
+              opacity: 0,
+              transform: "translateY(-50px)",
+            },
+          ],
+          options: {
+            duration: curr.animation.enabled ? DUR : 0,
+            fill: "both",
           },
-          {
-            opacity: 0,
-            transform: "translateY(-50px)",
-          },
-        ],
-        options: {
-          duration: DUR,
-          fill: "both",
-        },
-      }));
+        };
+      });
   }
 
   isActive(): boolean {
@@ -110,10 +114,22 @@ export class RPair extends Wc<RankiChallengeState, InternalState> {
     curr.order.forEach((type) => {
       switch (type) {
         case "ranki:rule":
-          l.push({ type, state: "horizontal" });
+          l.push({
+            type,
+            state: {
+              animation: curr.animation,
+              variant: "horizontal",
+            },
+          });
           break;
         default:
-          l.push({ type, state: curr.rendered[type] });
+          l.push({
+            type,
+            state: {
+              animation: curr.animation,
+              data: curr.rendered[type],
+            },
+          });
       }
     });
 
@@ -122,10 +138,11 @@ export class RPair extends Wc<RankiChallengeState, InternalState> {
   }
 
   private renderFaces(rawCurr: RankiChallengeState): RenderedFaces {
+    console.log("rawcurr", rawCurr);
     const faces: [string, RPairDqm][] = [];
     const theaters: [string, () => HTMLDivElement][] = [];
     rawCurr.dqm.inputs.forEach((n) => {
-      const face = RPairDqm.create.instance(null);
+      const face = RPairDqm.create.instance({ animation: rawCurr.animation });
       face.setKey(n.dqm);
       faces.push([n.theater, face as RPairDqm]);
       theaters.push([n.theater, () => face as unknown as HTMLDivElement]);
@@ -141,17 +158,23 @@ export class RPair extends Wc<RankiChallengeState, InternalState> {
   }
 
   private createSubtreeChild(s: WrappedState<ChildState>) {
+    // const curr = this.state.curr();
     const container = this.elements.get<HTMLDivElement>("container")!;
     let elem: PairChildren;
     switch (s.type) {
       case "ranki:rule":
         elem = RPairRule.create.instance(
-          s.state as RankiRuleVariants,
+          s.state,
+          // {
+          //   animation: curr.animation,
+          //   variant: s.state,
+          // },
           container,
         );
         break;
       default:
-        elem = s.state as RPairDqm;
+        // @ts-expect-error
+        elem = s.state.data as RPairDqm;
         assertNotUndefined(elem, {
           why: "Undefined face is required",
           details: { face: s.state },
