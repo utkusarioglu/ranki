@@ -1,11 +1,11 @@
 :host {
   --isolated-block-border-radius: var(--dqm-isolated-block-border-radius);
   --isolated-block-base-background: var(--dqm-isolated-block-base-background);
-  /* --black: var(--dqm-black); */
+  --black: var(--dqm-black);
   --isolated-block-transition-duration: var(
     --dqm-isolated-block-transition-duration
   );
-  /* --orange: var(--dqm-orange); */
+  --orange: var(--dqm-orange);
   --smaller-font-size: var(--dqm-smaller-font-size);
 }
 

@@ -148,7 +148,7 @@ decks:
             mode: hide
 
 webview:
-  - exact: android::new
+  - exact: android::old
     cue: 
       icon:
         id: prohibit-inset
@@ -158,7 +158,8 @@ webview:
         animation:
           fade: "0"
 
-always:
-  - cue: 
-      message:
-        text: always!
+# always:
+#   - cue: 
+#       message:
+#         text: always!
+#       indicator: caution

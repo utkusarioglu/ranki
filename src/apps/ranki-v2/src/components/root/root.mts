@@ -24,7 +24,7 @@ export class RRoot extends Wc<RankiState> {
 
   onStateChange(curr: RankiState): void {
     const container = this.elements.get<HTMLDivElement>("container")!;
-    RIndicator.create.singleton(curr.indicator, this);
+    RIndicator.create.singleton(curr.indicator, this.shadowRoot!);
     createDesign(curr.design, document.documentElement, this);
     RHud.create.singleton(curr.hud, container);
     RChallenge.create.singleton(curr.challenge, container);
