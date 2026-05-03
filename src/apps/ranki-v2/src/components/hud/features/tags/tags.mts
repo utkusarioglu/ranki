@@ -31,7 +31,14 @@ export class RTags extends WcHudContainer<T, T, RTag, HudTagListItem> {
 
   protected onStateChange(curr: T): void {
     this.subtree.reconcile(
-      curr.list.map(({ type, text }) => ({ type, state: { type, text } })),
+      curr.list.map(({ type, text }) => ({
+        type,
+        state: {
+          animation: curr.animation,
+          type,
+          text,
+        },
+      })),
     );
   }
 }

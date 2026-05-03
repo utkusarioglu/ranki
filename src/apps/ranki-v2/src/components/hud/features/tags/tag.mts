@@ -22,7 +22,10 @@ export class RTag extends WcChip<
     const state = [
       {
         type: "text",
-        state: { text: curr.text },
+        state: {
+          animation: curr.animation,
+          text: curr.text,
+        },
       },
     ];
     this.subtree.reconcile(state);

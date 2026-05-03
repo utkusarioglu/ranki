@@ -3,7 +3,7 @@
   position: fixed;
   inset: 0;
   z-index: -1;
-  --transition-duration: var(--ranki-animation-indicator-duration, 2s);
+  --transition-duration: var(--ranki-animation-indicator-duration, 2ms);
   --opacity: var(--indicator-opacity, 1);
   opacity: var(--opacity);
 }

@@ -6,10 +6,10 @@ import type {
 } from "_config/config.types.mjs";
 import { assertNever, assertNotNull } from "_error/assertions.mjs";
 import { RCueLabels } from "./labels/labels.mts";
-import type { WrappedState } from "_components/subtree/subtree.mjs";
-import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
 import { RCueChips } from "./chips/chips.mts";
 import { RCueBadges } from "./badges/badges.mts";
+import type { WrappedState } from "_components/wc/sub.mjs";
+import type { ReconciliationAction } from "_components/wc/wc.mjs";
 
 type T = ProcessedCueMapHud;
 
@@ -62,7 +62,7 @@ export class RCues extends WcHudContainer<
   protected onStateChange(curr: ProcessedCueMapHud): void {
     const state = Object.entries(curr.subtree).map(([type, state]) => ({
       type: type as ChildTypes,
-      state,
+      state: state.map((s) => ({ ...s, animation: curr.animation })),
     }));
     this.subtree.reconcile(state);
   }

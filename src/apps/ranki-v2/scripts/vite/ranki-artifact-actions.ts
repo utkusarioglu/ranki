@@ -141,7 +141,7 @@ export function rankiArtifactActions(tasks: (() => Promise<void>)[]) {
 
   return {
     name: "ranki-artifact-actions",
-    apply: "build",
+    apply: "build" as "build",
     buildEnd() {
       setTimeout(() => chainTasks(), 5e3);
     },

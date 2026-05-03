@@ -37,7 +37,10 @@ export class RAddress extends WcHudContainer<
   protected onStateChange(curr: T): void {
     const state = curr.segments.map((state) => ({
       type: state.type,
-      state,
+      state: {
+        ...state,
+        animation: curr.animation,
+      },
     }));
     this.subtree.reconcile(state);
   }

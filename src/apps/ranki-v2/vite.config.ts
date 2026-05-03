@@ -56,7 +56,7 @@ export default defineConfig(() => ({
           if (assetInfo.name!.endsWith("html")) {
             return "_ranki2.html";
           }
-          return assetInfo.name!;
+          return "_ranki2_" + assetInfo.name!;
         },
       },
     },

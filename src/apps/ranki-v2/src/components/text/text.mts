@@ -2,6 +2,9 @@ import type { WrappedState } from "_components/wc/sub.mjs";
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 
 export interface RTextProps {
+  animation: {
+    enabled: boolean;
+  };
   text: string;
   color?: string;
 }
@@ -32,7 +35,10 @@ export class RText extends Wc<RTextProps> {
 
   initialize(): void {
     for (let i = 0; i < LEN; i++) {
-      const el = RTextSpan.create.instance(null, this);
+      const el = RTextSpan.create.instance(
+        { animation: { enabled: false }, text: "" },
+        this,
+      );
       this.elements.push(i.toString(), el);
     }
     this.state.setTrigger((p, c) => p?.text !== c.text || p?.color !== c.color);
@@ -42,20 +48,26 @@ export class RText extends Wc<RTextProps> {
       width: 0,
     });
     this.animation
-      .pushPreset("enter", () => ({
-        keyframes: [{ opacity: 0 }, { opacity: 1 }],
-        options: {
-          duration: DUR,
-          fill: "both",
-        },
-      }))
-      .pushPreset("exit", () => ({
-        keyframes: [{ opacity: 1 }, { opacity: 0 }],
-        options: {
-          duration: DUR,
-          fill: "both",
-        },
-      }));
+      .pushPreset("enter", () => {
+        const curr = this.state.curr();
+        return {
+          keyframes: [{ opacity: 0 }, { opacity: 1 }],
+          options: {
+            duration: curr.animation.enabled ? DUR : 0,
+            fill: "both",
+          },
+        };
+      })
+      .pushPreset("exit", () => {
+        const curr = this.state.curr();
+        return {
+          keyframes: [{ opacity: 1 }, { opacity: 0 }],
+          options: {
+            duration: curr.animation.enabled ? DUR : 0,
+            fill: "both",
+          },
+        };
+      });
   }
 
   private reportWidth() {
@@ -63,6 +75,7 @@ export class RText extends Wc<RTextProps> {
     this.animation.triggerEvent("width", () => {
       const currWidth = getComputedStyle(this).width;
       const elemWidth = elem.css.getWidth() + "px";
+      const curr = this.state.curr();
 
       this.animation.animate("own-width", {
         keyframes: [
@@ -74,7 +87,7 @@ export class RText extends Wc<RTextProps> {
           },
         ],
         options: {
-          duration: DUR,
+          duration: curr.animation.enabled ? DUR : 0,
           fill: "both",
         },
       });
@@ -111,32 +124,40 @@ class RTextSpan extends Wc<RTextProps> {
       width: "max-content",
     });
     this.animation
-      .pushPreset("enter", () => ({
-        keyframes: [{ opacity: 0 }, { opacity: 1 }],
-        options: {
-          duration: DUR,
-          fill: "both",
-        },
-      }))
-      .pushPreset("show", () => ({
-        keyframes: [{ opacity: 0 }, { opacity: 1 }],
-        options: {
-          duration: DUR,
-          fill: "both",
-        },
-      }))
-      .pushPreset("hide", () => ({
-        keyframes: [{ opacity: 1 }, { opacity: 0 }],
-        options: {
-          duration: DUR,
-          fill: "both",
-        },
-      }));
+      .pushPreset("enter", () => {
+        const curr = this.state.curr();
+        return {
+          keyframes: [{ opacity: 0 }, { opacity: 1 }],
+          options: {
+            duration: curr.animation.enabled ? DUR : 0,
+            fill: "both",
+          },
+        };
+      })
+      .pushPreset("show", () => {
+        const curr = this.state.curr();
+        return {
+          keyframes: [{ opacity: 0 }, { opacity: 1 }],
+          options: {
+            duration: curr.animation.enabled ? DUR : 0,
+            fill: "both",
+          },
+        };
+      })
+      .pushPreset("hide", () => {
+        const curr = this.state.curr();
+        return {
+          keyframes: [{ opacity: 1 }, { opacity: 0 }],
+          options: {
+            duration: curr.animation.enabled ? DUR : 0,
+            fill: "both",
+          },
+        };
+      });
   }
 
   async onStateChange(curr: RTextProps) {
     this.innerText = curr.text;
-
     // await Timing.waitLayout();
     if (curr.color) {
       this.css.set({ color: `rgb(var(--scheme-${curr.color}))` });

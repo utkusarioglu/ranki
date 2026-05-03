@@ -48,6 +48,7 @@ export class WcHudContainer<T, G, C extends ElemMin<K>, K> extends Wc<T, G> {
         const c = getComputedStyle(this);
         const currWidth = parseFloat(c.width!.toString());
         if (Math.abs(endWidth - currWidth) > 1) {
+          const curr = this.state.curr();
           this.animation.animate("width", {
             keyframes: [
               {
@@ -58,7 +59,8 @@ export class WcHudContainer<T, G, C extends ElemMin<K>, K> extends Wc<T, G> {
               },
             ],
             options: {
-              duration: DUR,
+              // @ts-expect-error
+              duration: curr.animation.enabled ? DUR : 0,
               fill: "both",
             },
           });

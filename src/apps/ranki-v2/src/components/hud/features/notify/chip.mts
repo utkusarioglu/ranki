@@ -1,8 +1,10 @@
 import { WcChip } from "_components/hud/components/chip.mjs";
+import type { RankiHudStateAnimation } from "_components/hud/hud.types.mjs";
 import { RText, type RTextProps } from "_components/text/text.mjs";
 import { assertNever } from "_error/assertions.mjs";
 
 export type RNotifyChipProps = {
+  animation: RankiHudStateAnimation;
   type: "version" | "delta";
   text: string;
 };
@@ -37,7 +39,10 @@ export class RNotifyChip extends WcChip<
     const state = [
       {
         type: "text",
-        state: { text: curr.text },
+        state: {
+          animation: curr.animation,
+          text: curr.text,
+        },
       },
     ];
     this.subtree.reconcile(state);

@@ -66,22 +66,25 @@ export class RHud extends WcHudContainer<
       },
       center,
     );
-    this.animation.pushPreset("exit", () => ({
-      keyframes: [
-        {
-          opacity: 1,
-          // ...this.css.selectWidthProperties(getComputedStyle(this)),
+    this.animation.pushPreset("exit", () => {
+      const curr = this.state.curr();
+      return {
+        keyframes: [
+          {
+            opacity: 1,
+            // ...this.css.selectWidthProperties(getComputedStyle(this)),
+          },
+          {
+            opacity: 0,
+            // ...this.css.zeroWidthProperties(),
+          },
+        ],
+        options: {
+          duration: curr.animation.enabled ? 200 : 0,
+          fill: "both",
         },
-        {
-          opacity: 0,
-          // ...this.css.zeroWidthProperties(),
-        },
-      ],
-      options: {
-        duration: 200,
-        fill: "both",
-      },
-    }));
+      };
+    });
   }
 
   protected createSubtreeChild(state: Wrapped) {

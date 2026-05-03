@@ -21,6 +21,9 @@ export type HudComponentNames =
 export type HudVisibility = "visible" | "pull" | "pullWhenShort";
 
 export interface HudAddressSegment {
+  animation: {
+    enabled: boolean;
+  };
   type: "divider" | "segment";
   position: {
     left: "first" | "local-first" | "middle";
@@ -32,11 +35,13 @@ export interface HudAddressSegment {
 }
 
 export interface HudAddressProps extends HudElementCommon {
+  animation: RankiHudStateAnimation;
   tokens: RankiAddressTokens;
   segments: HudAddressSegment[];
 }
 
 export interface HudTemplateProps extends HudElementCommon {
+  animation: RankiHudStateAnimation;
   type: AnkiCardType;
   face: AnkiCardFace;
   card: AnkiCard;
@@ -47,17 +52,22 @@ export interface HudElementCommon {
 }
 
 export interface HudAppProps extends HudElementCommon {
+  animation: RankiHudStateAnimation;
   hasReplacements: boolean;
   parseMode: "v1" | "v2" | "ignored";
   errorLevel: "none" | "warning" | "error";
 }
 
 export interface HudTagListItem {
+  animation: {
+    enabled: boolean;
+  };
   type: "ranki" | "anki";
   text: AnkiRawTag | RankiTag;
 }
 
 export interface HudTagsProps extends HudElementCommon {
+  animation: RankiHudStateAnimation;
   list: HudTagListItem[];
   neutral: AnkiRawTag[];
   ranki: RankiTag[];

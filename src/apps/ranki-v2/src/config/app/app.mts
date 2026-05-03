@@ -7,6 +7,7 @@ import { INPUT_TYPE_CLASS_SELECTOR } from "_/selector.constants.mts";
 import type {
   HudTagListItem,
   RankiHudState,
+  RankiHudStateAnimation,
 } from "_components/hud/hud.types.mts";
 import type {
   CardFaceArray,
@@ -73,8 +74,12 @@ function buildRankiConfig(
   order: CardFaceArray,
   scheme: RankiAppDeterminedScheme,
 ): RankiState {
-  const cues = buildCues(base.cueRecord);
-  const hud = buildHudConfig(base, raw, tags, cues.hud);
+  const enabled = base.config.design.animation.enabled;
+  const animation = base.config.design.animation.hud;
+  animation.enabled = animation.enabled && enabled;
+
+  const cues = buildCues(base.cueRecord, animation);
+  const hud = buildHudConfig(base, raw, tags, cues.hud, animation);
   const dqm = buildDqmConfig(raw, order, base.config, scheme);
   const indicator = buildIndicatorConfig(cues, base);
 
@@ -155,7 +160,10 @@ function buildDqmConfig(
  * #2 Becomes a text (and icon) based chip on the right side of the cue hud
  * #3 Becomes an indicator in the background
  */
-function buildCues(cueRecord: CueRecord[]): ProcessedCueMap {
+function buildCues(
+  cueRecord: CueRecord[],
+  animation: RankiHudStateAnimation,
+): ProcessedCueMap {
   const badges: ProcessedCue[] = [];
   const chips: ProcessedCue[] = [];
   const labels: ProcessedCue[] = [];
@@ -171,21 +179,22 @@ function buildCues(cueRecord: CueRecord[]): ProcessedCueMap {
     const chip = icon && message; // #2
     const label = message && !icon;
     if (badge) {
-      badges.push(c);
+      badges.push({ animation, ...c });
     }
     if (indicator) {
-      indicators.push(c);
+      indicators.push({ animation, ...c });
     }
     if (chip) {
-      chips.push(c);
+      chips.push({ animation, ...c });
     }
     if (label) {
-      labels.push(c);
+      labels.push({ animation, ...c });
     }
   });
 
   return {
     hud: {
+      animation,
       count: badges.length + chips.length + labels.length,
       subtree: {
         badges,
@@ -208,16 +217,14 @@ function buildHudConfig(
   collected: RawFields,
   filteredTags: FilteredTags,
   cues: ProcessedCueMapHud,
+  animation: RankiHudStateAnimation,
 ): RankiHudState {
-  const enabled = base.config.design.animation.enabled;
-  const animation = base.config.design.animation.hud;
-  animation.enabled = animation.enabled && enabled;
   const segments = buildAddressSegments(
     base.config.address.tokens,
     base.config.address.segments,
     collected.fields.deck,
   ); // #1
-  const tags = buildTags(base, filteredTags);
+  const tags = buildTags(base, filteredTags, animation);
   return {
     animation,
     order: base.config.hud.order,
@@ -225,12 +232,14 @@ function buildHudConfig(
     subtree: {
       // TODO
       notify: {
+        animation,
         count: 3,
         hasReplacements: true,
         parseMode: "v2",
         errorLevel: "none",
       },
       address: {
+        animation,
         count: segments.length,
         tokens: base.config.address.tokens,
         segments,
@@ -238,6 +247,7 @@ function buildHudConfig(
       tags,
       cues,
       template: {
+        animation,
         count: 3,
         type: collected.fields.type,
         card: collected.fields.card,
@@ -247,16 +257,29 @@ function buildHudConfig(
   };
 }
 
-function buildTags(base: BuildRankiBaseConfigReturn, tags: FilteredTags) {
+function buildTags(
+  base: BuildRankiBaseConfigReturn,
+  tags: FilteredTags,
+  animation: RankiHudStateAnimation,
+) {
   const hide = base.config.tags.ranki.hide;
-  const neut = tags.neutral.map((t) => ({ type: "anki" as "anki", text: t }));
+  const neut = tags.neutral.map((t) => ({
+    type: "anki" as "anki",
+    text: t,
+    animation,
+  }));
   const list: HudTagListItem[] = hide
     ? neut
     : [
         ...neut,
-        ...tags.ranki.map((t) => ({ type: "ranki" as "ranki", text: t })),
+        ...tags.ranki.map((t) => ({
+          type: "ranki" as "ranki",
+          text: t,
+          animation,
+        })),
       ];
   return {
+    animation,
     list,
     count: list.length,
     neutral: tags.neutral,

@@ -2,8 +2,8 @@ import { WcHudContainer } from "_components/hud/components/container.mjs";
 import type { ProcessedCue } from "_config/config.types.mjs";
 import { RCueChip } from "./chip.mts";
 import styles from "./chips.component.css?inline";
-import type { WrappedState } from "_components/subtree/subtree.mjs";
-import type { ReconciliationAction } from "_components/ranki-wc/ranki-wc.mjs";
+import type { WrappedState } from "_components/wc/sub.mjs";
+import type { ReconciliationAction } from "_components/wc/wc.mjs";
 
 type T = ProcessedCue[];
 

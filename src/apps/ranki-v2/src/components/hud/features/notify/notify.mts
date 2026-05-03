@@ -36,6 +36,7 @@ export class RNotify extends WcHudContainer<
       {
         type: "chip",
         state: {
+          animation: curr.animation,
           type: "version",
           text: curr.parseMode,
         },
@@ -45,6 +46,7 @@ export class RNotify extends WcHudContainer<
             {
               type: "chip",
               state: {
+                animation: curr.animation,
                 type: "delta" as "delta",
                 text: "Δ",
               },

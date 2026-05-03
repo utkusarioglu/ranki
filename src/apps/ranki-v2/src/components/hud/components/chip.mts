@@ -7,12 +7,15 @@ import { assertNever } from "_error/assertions.mjs";
 const DUR = 4e2;
 
 export interface MinChipProp {
+  animation: {
+    enabled: boolean;
+  };
   type: string;
 }
 
 export class WcChip<
   T extends MinChipProp,
-  G,
+  G extends MinChipProp,
   C extends ElemMin<P>,
   P,
 > extends Wc<T, G> {
@@ -81,12 +84,13 @@ export class WcChip<
             },
           ],
           options: {
-            duration: DUR,
+            duration: curr.animation.enabled ? DUR : 0,
             fill: "both",
           },
         };
       })
       .pushPreset("exit", () => {
+        const curr = this.state.curr();
         return {
           keyframes: [
             {
@@ -99,7 +103,7 @@ export class WcChip<
             },
           ],
           options: {
-            duration: DUR,
+            duration: curr.animation.enabled ? DUR : 0,
             fill: "both",
           },
         };
@@ -142,7 +146,7 @@ export class WcChip<
               },
             ],
             options: {
-              duration: DUR,
+              duration: curr.animation.enabled ? DUR : 0,
               fill: "both",
             },
           });

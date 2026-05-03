@@ -8,6 +8,7 @@ import type {
   HudElementCommon,
   HudVisibility,
   RankiHudState,
+  RankiHudStateAnimation,
 } from "_components/hud/hud.types.mjs";
 import type { DeepPartialSerializable } from "../types/util.types.mjs";
 import type {
@@ -84,6 +85,7 @@ export type CueKind =
   | "always";
 
 export interface ProcessedCueMapHud extends HudElementCommon {
+  animation: RankiHudStateAnimation;
   subtree: {
     badges: CueRecord[];
     chips: CueRecord[];
@@ -97,6 +99,9 @@ export type ProcessedCueMap = {
 };
 
 export interface ProcessedCue extends CueRecord {
+  animation: {
+    enabled: boolean;
+  };
   // target: {
   //   indicator: boolean;
   //   hud: boolean;

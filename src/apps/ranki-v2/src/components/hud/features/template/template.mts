@@ -1,9 +1,9 @@
 import styles from "./template.component.css?inline";
 import type { HudTemplateProps } from "_components/hud/hud.types.mjs";
-import type { WrappedState } from "_components/subtree/subtree.mjs";
 import { type ReconciliationAction } from "_components/wc/wc.mjs";
 import { RCardInfo, type RCardInfoProps } from "./info.mts";
 import { WcHudContainer } from "_components/hud/components/container.mjs";
+import type { WrappedState } from "_components/wc/sub.mjs";
 
 type T = HudTemplateProps;
 
@@ -31,6 +31,7 @@ export class RTemplate extends WcHudContainer<T, T, RCardInfo, RCardInfoProps> {
       {
         type: "type",
         state: {
+          animation: curr.animation,
           type: "type",
           text: curr.type,
         },
@@ -38,6 +39,7 @@ export class RTemplate extends WcHudContainer<T, T, RCardInfo, RCardInfoProps> {
       {
         type: "card",
         state: {
+          animation: curr.animation,
           type: "card",
           text: curr.card,
         },
@@ -45,6 +47,7 @@ export class RTemplate extends WcHudContainer<T, T, RCardInfo, RCardInfoProps> {
       {
         type: "face",
         state: {
+          animation: curr.animation,
           type: "face",
           text: curr.face,
         },

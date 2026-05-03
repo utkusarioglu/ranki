@@ -138,7 +138,6 @@ export class RPair extends Wc<RankiChallengeState, InternalState> {
   }
 
   private renderFaces(rawCurr: RankiChallengeState): RenderedFaces {
-    console.log("rawcurr", rawCurr);
     const faces: [string, RPairDqm][] = [];
     const theaters: [string, () => HTMLDivElement][] = [];
     rawCurr.dqm.inputs.forEach((n) => {

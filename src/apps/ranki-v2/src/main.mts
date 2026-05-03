@@ -23,7 +23,6 @@ export async function main() {
         setStyles();
         const config = await collectConfig();
         const state = createState(config);
-        console.log("state", state);
         render(state);
         break;
       default:

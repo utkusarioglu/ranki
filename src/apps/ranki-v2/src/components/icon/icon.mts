@@ -1,9 +1,11 @@
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 import "@phosphor-icons/webcomponents";
-import { Timing } from "_utils/timing.mjs";
 import type { WrappedState } from "_components/wc/sub.mjs";
 
 export interface RankiIconState {
+  animation: {
+    enabled: boolean;
+  };
   icon: string;
   color?: string;
 }
@@ -43,20 +45,26 @@ export class RIcon extends Wc<T> {
       height: "100%",
     });
     this.animation
-      .pushPreset("enter", () => ({
-        keyframes: [{ opacity: 0 }, { opacity: 1 }],
-        options: {
-          duration: DUR,
-          fill: "both",
-        },
-      }))
-      .pushPreset("exit", () => ({
-        keyframes: [{ opacity: 1 }, { opacity: 0 }],
-        options: {
-          duration: DUR,
-          fill: "both",
-        },
-      }));
+      .pushPreset("enter", () => {
+        const curr = this.state.curr();
+        return {
+          keyframes: [{ opacity: 0 }, { opacity: 1 }],
+          options: {
+            duration: curr.animation.enabled ? DUR : 0,
+            fill: "both",
+          },
+        };
+      })
+      .pushPreset("exit", () => {
+        const curr = this.state.curr();
+        return {
+          keyframes: [{ opacity: 1 }, { opacity: 0 }],
+          options: {
+            duration: curr.animation.enabled ? DUR : 0,
+            fill: "both",
+          },
+        };
+      });
   }
 
   private reportWidth() {
@@ -64,6 +72,7 @@ export class RIcon extends Wc<T> {
     this.animation.triggerEvent("width", () => {
       const currWidth = getComputedStyle(this).width;
       const elemWidth = elem.css.getWidth() + "px";
+      const curr = this.state.curr();
 
       this.animation.animate("own-width", {
         keyframes: [
@@ -75,7 +84,7 @@ export class RIcon extends Wc<T> {
           },
         ],
         options: {
-          duration: DUR,
+          duration: curr.animation.enabled ? DUR : 0,
           fill: "both",
         },
       });
@@ -120,20 +129,26 @@ class RIconBox extends Wc<T> {
       "align-items": "center",
     });
     this.animation
-      .pushPreset("enter", () => ({
-        keyframes: [{ opacity: 0 }, { opacity: 1 }],
-        options: {
-          duration: DUR,
-          fill: "both",
-        },
-      }))
-      .pushPreset("exit", () => ({
-        keyframes: [{ opacity: 1 }, { opacity: 0 }],
-        options: {
-          duration: DUR,
-          fill: "both",
-        },
-      }));
+      .pushPreset("enter", () => {
+        const curr = this.state.curr();
+        return {
+          keyframes: [{ opacity: 0 }, { opacity: 1 }],
+          options: {
+            duration: curr.animation.enabled ? DUR : 0,
+            fill: "both",
+          },
+        };
+      })
+      .pushPreset("exit", () => {
+        const curr = this.state.curr();
+        return {
+          keyframes: [{ opacity: 1 }, { opacity: 0 }],
+          options: {
+            duration: curr.animation.enabled ? DUR : 0,
+            fill: "both",
+          },
+        };
+      });
   }
 
   async onStateChange(curr: T) {

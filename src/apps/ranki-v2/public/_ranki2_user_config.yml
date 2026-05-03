@@ -158,13 +158,13 @@ webview:
         animation:
           fade: "0"
 
-always:
-  - cue: 
-      message:
-        text: always!
-      # indicator: caution
-    config:
-      design:
-        animation:
-          enabled: true
+# always:
+#   - cue: 
+#       message:
+#         text: always!
+#       indicator: caution
+#     config:
+#       design:
+#         animation:
+#           enabled: false
       

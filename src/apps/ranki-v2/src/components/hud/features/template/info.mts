@@ -3,6 +3,9 @@ import type { RTextProps } from "_components/text/text.mjs";
 import type { ElemMin } from "_components/wc/sub.mjs";
 
 export interface RCardInfoProps {
+  animation: {
+    enabled: boolean;
+  };
   type: "card" | "type" | "face";
   text: string;
 }
@@ -34,7 +37,10 @@ export class RCardInfo extends WcChip<
     const state = [
       {
         type: "text",
-        state: { text: curr.text },
+        state: {
+          animation: curr.animation,
+          text: curr.text,
+        },
       },
     ];
     this.subtree.reconcile(state);

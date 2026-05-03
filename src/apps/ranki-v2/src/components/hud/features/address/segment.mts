@@ -48,7 +48,10 @@ export class RAddressSegment extends WcChip<T, T, RText, RTextProps> {
     const state = [
       {
         type: "text",
-        state: { text: curr.shown.join("") },
+        state: {
+          animation: curr.animation,
+          text: curr.shown.join(""),
+        },
       },
     ];
     this.subtree.reconcile(state);

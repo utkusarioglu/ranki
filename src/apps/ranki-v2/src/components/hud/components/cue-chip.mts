@@ -5,7 +5,6 @@ import { WcSub, type ElemMin, type WrappedState } from "_components/wc/sub.mjs";
 import { RText, type RTextProps } from "_components/text/text.mjs";
 import type { ProcessedCue } from "_config/config.types.mjs";
 import { assertNever } from "_error/assertions.mjs";
-import { Timing } from "_utils/timing.mjs";
 
 type T = ProcessedCue;
 
@@ -60,6 +59,7 @@ export class WcCueChip extends WcChip<T, T, ChildrenTypes, ChildrenProps> {
       state.push({
         type: "icon",
         state: {
+          animation: curr.animation,
           icon: curr.icon.id,
           color: curr.icon.color,
         },
@@ -68,7 +68,15 @@ export class WcCueChip extends WcChip<T, T, ChildrenTypes, ChildrenProps> {
 
     state.push({
       type: "text",
-      state: curr.message ? curr.message : { text: "" },
+      state: curr.message
+        ? {
+            animation: curr.animation,
+            ...curr.message,
+          }
+        : {
+            animation: curr.animation,
+            text: "",
+          },
     });
 
     this.subtree.reconcile(state);
