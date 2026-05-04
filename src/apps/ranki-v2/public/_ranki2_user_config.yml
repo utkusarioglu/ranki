@@ -107,12 +107,16 @@ tags:
           fade: 0.1s
   - exact: +r::animation::disabled
     cue:
-      message: 
-        text: AnimDisabled
+      # message: 
+      #   text: AnimDisabled
+      icon:
+        id: prohibit-inset
+        color: blue-2
     config:
       design:
         animation:
-          fade: "0"
+          enabled: false
+          # fade: "0"
   - exact: +r::palette::saturated
     cue:
       icon: 
@@ -156,7 +160,8 @@ webview:
     config:
       design:
         animation:
-          fade: "0"
+          enabled: false
+          # fade: "0"
 
 # always:
 #   - cue: 

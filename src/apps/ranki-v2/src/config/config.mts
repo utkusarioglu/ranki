@@ -19,7 +19,9 @@ import { collectRaw } from "./collect/collect.mts";
 
 export async function collectConfig(): Promise<RankiCollectedConfig> {
   const raw = await collectRaw();
+  console.log("raw", raw);
   const channels = buildChannelsConfig(raw);
+  console.log("ch", channels);
   const tags = groupTags(raw, channels.base.tags.ranki.prefix);
   const base = buildBaseConfig(channels, tags, raw);
   return { base, raw, tags };

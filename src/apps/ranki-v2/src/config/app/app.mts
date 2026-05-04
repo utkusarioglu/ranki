@@ -24,6 +24,7 @@ import type {
   ProcessedCue,
   ProcessedCueMap,
   ProcessedCueMapHud,
+  RankiAnimation,
   RankiAppDeterminedScheme,
   RankiBaseAddressMutationMode,
   RankiBaseConfig,
@@ -74,12 +75,18 @@ function buildRankiConfig(
   order: CardFaceArray,
   scheme: RankiAppDeterminedScheme,
 ): RankiState {
-  const enabled = base.config.design.animation.enabled;
-  const animation = base.config.design.animation.hud;
-  animation.enabled = animation.enabled && enabled;
+  // const baseAnimation = base.config.design.animation.enabled === true;
+  // const baseHudAnimation = base.config.design.animation.hud;
+  // // baseHudAnimation.enabled =
+  // const hudAnimation = {
+  //   ...baseHudAnimation,
+  //   enabled: baseHudAnimation.enabled === true && baseAnimation,
+  // };
 
-  const cues = buildCues(base.cueRecord, animation);
-  const hud = buildHudConfig(base, raw, tags, cues.hud, animation);
+  const hudAnimation = getAnimation(base, "hud");
+
+  const cues = buildCues(base.cueRecord, hudAnimation);
+  const hud = buildHudConfig(base, raw, tags, cues.hud, hudAnimation);
   const dqm = buildDqmConfig(raw, order, base.config, scheme);
   const indicator = buildIndicatorConfig(cues, base);
 
@@ -99,15 +106,29 @@ function buildRankiConfig(
   };
 }
 
+function getAnimation(
+  base: BuildRankiBaseConfigReturn,
+  type: keyof Omit<RankiAnimation, "enabled" | "fade">,
+): RankiHudStateAnimation {
+  const baseAnimation = base.config.design.animation.enabled === true;
+  const typeAnimation = base.config.design.animation[type];
+  // baseHudAnimation.enabled =
+  return {
+    ...typeAnimation,
+    enabled: typeAnimation.enabled === true && baseAnimation,
+  };
+}
+
 function buildChallengeConfig(
   base: BuildRankiBaseConfigReturn,
   raw: RawFields,
   order: CardFaceArray,
   dqm: RankiDqmConfig,
 ): RankiChallengeState {
-  const enabled = base.config.design.animation.enabled;
-  const animation = base.config.design.animation.challenge;
-  animation.enabled = animation.enabled && enabled;
+  // const enabled = base.config.design.animation.enabled;
+  // const animation = base.config.design.animation.challenge;
+  // animation.enabled = animation.enabled && enabled;
+  const animation = getAnimation(base, "challenge");
   return {
     animation,
     face: raw.fields.face,
@@ -120,9 +141,10 @@ function buildIndicatorConfig(
   cues: ProcessedCueMap,
   base: BuildRankiBaseConfigReturn,
 ): RankiIndicatorState {
-  const enabled = base.config.design.animation.enabled;
-  const animation = base.config.design.animation.indicator;
-  animation.enabled = animation.enabled && enabled;
+  // const enabled = base.config.design.animation.enabled;
+  // const animation = base.config.design.animation.indicator;
+  // animation.enabled = animation.enabled && enabled;
+  const animation = getAnimation(base, "indicator");
   return {
     animation,
     cues: cues.indicators,
