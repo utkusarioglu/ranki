@@ -3,15 +3,15 @@
   position: fixed;
   inset: 0;
   z-index: -1;
-  --transition-duration: var(--ranki-animation-indicator-duration, 2ms);
-  --opacity: var(--indicator-opacity, 1);
+  /* --transition-duration: var(--ranki-animation-indicator-duration, 20ms);
+  --opacity: var(--indicator-opacity, 1); */
   opacity: var(--opacity);
 }
 
 r-indicator-pattern {
   position: absolute;
   inset: 0;
-  transition-property: opacity, background;
-  transition-duration: var(--transition-duration);
+  /* transition-property: opacity, background;
+  transition-duration: var(--transition-duration); */
   display: block;
 }

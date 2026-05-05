@@ -11,6 +11,8 @@ type T = ProcessedCue;
 type ChildrenTypes = ElemMin<ChildrenProps>;
 type ChildrenProps = RTextProps | RankiIconState;
 
+const DUR = 4e2;
+
 export class WcCueChip extends WcChip<T, T, ChildrenTypes, ChildrenProps> {
   protected subtree = new WcSub<ChildrenTypes, ChildrenProps>({
     create: this.createSubtreeChild.bind(this),
@@ -23,8 +25,23 @@ export class WcCueChip extends WcChip<T, T, ChildrenTypes, ChildrenProps> {
     this.initCss();
   }
 
-  hasNext(b: boolean) {
-    this.css.set({ "margin-right": b ? "5px" : "0" });
+  hasNext(n: boolean) {
+    const curr = this.state.curr();
+    const m = this.css.getMarginRight();
+    this.animation.animate("margin-right", {
+      keyframes: [
+        {
+          marginRight: m,
+        },
+        {
+          marginRight: n ? "5px" : 0,
+        },
+      ],
+      options: {
+        duration: curr.animation.enabled ? DUR : 0,
+        fill: "both",
+      },
+    });
   }
 
   protected createSubtreeChild(s: WrappedState<ChildrenProps>) {

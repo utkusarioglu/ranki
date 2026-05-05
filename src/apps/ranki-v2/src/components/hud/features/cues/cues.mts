@@ -3,6 +3,7 @@ import { WcHudContainer } from "_components/hud/components/container.mjs";
 import type {
   ProcessedCue,
   ProcessedCueMapHud,
+  RankiPropAnimationBlock,
 } from "_config/config.types.mjs";
 import { assertNever, assertNotNull } from "_error/assertions.mjs";
 import { RCueLabels } from "./labels/labels.mts";
@@ -15,16 +16,21 @@ type T = ProcessedCueMapHud;
 
 type ChildTypes = "badges" | "chips" | "labels";
 
-interface Wrapped {
-  type: ChildTypes;
-  state: ProcessedCue[];
-}
+// interface Wrapped {
+//   type: ChildTypes;
+//   state: ProcessedCue[];
+// }
+
+export type CueComponentCommon = {
+  animation: RankiPropAnimationBlock;
+  list: ProcessedCue[];
+};
 
 export class RCues extends WcHudContainer<
   T,
   T,
   WcHudContainer<any, any, any, any>,
-  ProcessedCue[]
+  CueComponentCommon
 > {
   public static readonly tag = "r-cues" as const;
 
@@ -33,7 +39,7 @@ export class RCues extends WcHudContainer<
     this.css.pushStyles(styles);
   }
 
-  protected createSubtreeChild(state: Wrapped) {
+  protected createSubtreeChild(state: WrappedState<CueComponentCommon>) {
     const container = this.elements.get("container");
     assertNotNull(container, { why: "No container to place children in" });
     switch (state.type) {
@@ -62,7 +68,10 @@ export class RCues extends WcHudContainer<
   protected onStateChange(curr: ProcessedCueMapHud): void {
     const state = Object.entries(curr.subtree).map(([type, state]) => ({
       type: type as ChildTypes,
-      state: state.map((s) => ({ ...s, animation: curr.animation })),
+      state: {
+        animation: curr.animation,
+        list: state.map((s) => ({ ...s, animation: curr.animation })),
+      },
     }));
     this.subtree.reconcile(state);
   }

@@ -1,10 +1,18 @@
 import { WcSub, type ElemMin, type WrappedState } from "_components/wc/sub.mjs";
 import { Wc } from "_components/wc/wc.mjs";
+import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 import { assertNever } from "_error/assertions.mjs";
 
 const DUR = 4e2;
 
-export class WcHudContainer<T, G, C extends ElemMin<K>, K> extends Wc<T, G> {
+type ContainerMin = { animation: RankiPropAnimationBlock };
+
+export class WcHudContainer<
+  T extends ContainerMin,
+  G extends ContainerMin,
+  C extends ElemMin<K>,
+  K,
+> extends Wc<T, G> {
   protected subtree = new WcSub<C, K>({
     // @ts-expect-error
     create: this.createSubtreeChild.bind(this),
@@ -27,7 +35,22 @@ export class WcHudContainer<T, G, C extends ElemMin<K>, K> extends Wc<T, G> {
   }
 
   hasNext(n: boolean) {
-    this.css.set({ "margin-right": n ? "1em" : 0 });
+    const curr = this.state.curr();
+    const m = this.css.getMarginRight();
+    this.animation.animate("margin-right", {
+      keyframes: [
+        {
+          marginRight: m,
+        },
+        {
+          marginRight: n ? "16px" : 0,
+        },
+      ],
+      options: {
+        duration: curr.animation.enabled ? DUR : 0,
+        fill: "both",
+      },
+    });
   }
 
   setProps(e: T) {
@@ -59,7 +82,6 @@ export class WcHudContainer<T, G, C extends ElemMin<K>, K> extends Wc<T, G> {
               },
             ],
             options: {
-              // @ts-expect-error
               duration: curr.animation.enabled ? DUR : 0,
               fill: "both",
             },

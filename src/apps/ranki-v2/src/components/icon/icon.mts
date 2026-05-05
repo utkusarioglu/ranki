@@ -31,10 +31,23 @@ export class RIcon extends Wc<T> {
     }
   }
 
-  hasNext(b: boolean) {
-    const s = this.state.curr();
-    this.marginRight = b && s.icon && s.icon !== "none" ? "5px" : "0px";
-    this.css.set({ "margin-right": this.marginRight });
+  hasNext(n: boolean) {
+    const curr = this.state.curr();
+    const m = this.css.getMarginRight();
+    this.animation.animate("margin-right", {
+      keyframes: [
+        {
+          marginRight: m,
+        },
+        {
+          marginRight: n ? "5px" : 0,
+        },
+      ],
+      options: {
+        duration: curr.animation.enabled ? DUR : 0,
+        fill: "both",
+      },
+    });
   }
 
   initialize(): void {

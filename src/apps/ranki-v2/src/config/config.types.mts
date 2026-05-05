@@ -98,10 +98,12 @@ export type ProcessedCueMap = {
   indicators: CueRecord[];
 };
 
+export interface RankiPropAnimationBlock {
+  enabled: boolean;
+}
+
 export interface ProcessedCue extends CueRecord {
-  animation: {
-    enabled: boolean;
-  };
+  animation: RankiPropAnimationBlock;
   // target: {
   //   indicator: boolean;
   //   hud: boolean;

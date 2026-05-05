@@ -2,14 +2,13 @@ import { RIcon } from "_components/icon/icon.mjs";
 import { RText } from "_components/text/text.mjs";
 import { WcSub, type ElemMin, type WrappedState } from "_components/wc/sub.mjs";
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
+import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 import { assertNever } from "_error/assertions.mjs";
 
 const DUR = 4e2;
 
 export interface MinChipProp {
-  animation: {
-    enabled: boolean;
-  };
+  animation: RankiPropAnimationBlock;
   type: string;
 }
 

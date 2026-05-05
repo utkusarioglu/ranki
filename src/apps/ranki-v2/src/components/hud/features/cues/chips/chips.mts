@@ -4,10 +4,16 @@ import { RCueChip } from "./chip.mts";
 import styles from "./chips.component.css?inline";
 import type { WrappedState } from "_components/wc/sub.mjs";
 import type { ReconciliationAction } from "_components/wc/wc.mjs";
+import type { CueComponentCommon } from "../cues.mts";
 
-type T = ProcessedCue[];
+const DUR = 4e2;
 
-export class RCueChips extends WcHudContainer<T, T, RCueChip, ProcessedCue> {
+export class RCueChips extends WcHudContainer<
+  CueComponentCommon,
+  CueComponentCommon,
+  RCueChip,
+  ProcessedCue
+> {
   static readonly tag = "r-cue-chips";
 
   constructor() {
@@ -16,15 +22,30 @@ export class RCueChips extends WcHudContainer<T, T, RCueChip, ProcessedCue> {
   }
 
   hasNext(n: boolean) {
-    this.css.set({ "margin-right": n ? "0.5em" : 0 });
+    const curr = this.state.curr();
+    const m = this.css.getMarginRight();
+    this.animation.animate("margin-right", {
+      keyframes: [
+        {
+          marginRight: m,
+        },
+        {
+          marginRight: n ? "8px" : 0,
+        },
+      ],
+      options: {
+        duration: curr.animation.enabled ? DUR : 0,
+        fill: "both",
+      },
+    });
   }
 
-  canReconcile(s: WrappedState<T>): ReconciliationAction {
+  canReconcile(s: WrappedState<CueComponentCommon>): ReconciliationAction {
     return s.type === "chips" ? "mutate" : "remove";
   }
 
-  protected onStateChange(curr: T): void {
-    const state = curr.map((state) => ({ type: "chip", state }));
+  protected onStateChange(curr: CueComponentCommon): void {
+    const state = curr.list.map((state) => ({ type: "chip", state }));
     this.subtree.reconcile(state);
   }
 

@@ -1,8 +1,8 @@
 :host {
   --transition-duration: var(--rhn-transition-duration, 0);
   --transition-property:
-    background, color, padding, border, opacity, scale, transform, width,
-    margin-right;
+    background, color, padding, border, opacity, scale, transform, width;
+  /* margin-right; */
 
   --c-background: var(--rhn-c-background, transparent);
   --c-backdrop-filter: var(--rhn-c-backdrop-filter, transparent);

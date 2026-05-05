@@ -6,6 +6,8 @@ import type { ElemMin } from "_components/wc/sub.mjs";
 type ChildrenTypes = ElemMin<ChildrenProps>;
 type ChildrenProps = RTextProps;
 
+const DUR = 4e2;
+
 export class RTag extends WcChip<
   HudTagListItem,
   HudTagListItem,
@@ -15,7 +17,22 @@ export class RTag extends WcChip<
   public static readonly tag = "r-tag" as const;
 
   hasNext(n: boolean) {
-    this.css.set({ "margin-right": n ? "5px" : 0 });
+    const curr = this.state.curr();
+    const m = this.css.getMarginRight();
+    this.animation.animate("margin-right", {
+      keyframes: [
+        {
+          marginRight: m,
+        },
+        {
+          marginRight: n ? "5px" : 0,
+        },
+      ],
+      options: {
+        duration: curr.animation.enabled ? DUR : 0,
+        fill: "both",
+      },
+    });
   }
 
   protected reconcileChildren(curr: HudTagListItem) {

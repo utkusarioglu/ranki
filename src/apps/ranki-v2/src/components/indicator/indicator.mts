@@ -4,13 +4,13 @@ import type {
 } from "_config/config.types.mts";
 import { assertNotUndefined } from "_error/assertions.mts";
 import style from "./indicator.component.css?inline";
-import { RIndicatorPattern } from "./pattern.mts";
+import { RIndicatorPattern, type RIndicatorPatternProps } from "./pattern.mts";
 import { Wc } from "_components/wc/wc.mjs";
 import { WcSub, type WrappedState } from "_components/wc/sub.mjs";
 
 export class RIndicator extends Wc<RankiIndicatorState> {
   public static readonly tag = "r-indicator" as const;
-  private subtree = new WcSub<RIndicatorPattern, string>({
+  private subtree = new WcSub<RIndicatorPattern, RIndicatorPatternProps>({
     create: this.createSubtreeChild.bind(this),
     remove: this.removeSubtreeChild.bind(this),
   });
@@ -24,7 +24,7 @@ export class RIndicator extends Wc<RankiIndicatorState> {
     e.remove();
   }
 
-  private createSubtreeChild(state: WrappedState<string>) {
+  private createSubtreeChild(state: WrappedState<RIndicatorPatternProps>) {
     return RIndicatorPattern.create.instance(state.state, this.shadowRoot!);
   }
 
@@ -59,7 +59,10 @@ export class RIndicator extends Wc<RankiIndicatorState> {
     this.subtree.reconcile([
       {
         type: "indicator",
-        state: newString,
+        state: {
+          animation: curr.animation,
+          pattern: newString,
+        },
       },
     ]);
   }

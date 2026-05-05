@@ -70,6 +70,12 @@ export class WcCss {
     return this.self.getBoundingClientRect().height;
   }
 
+  getMarginRight(): string {
+    return getComputedStyle(this.self).marginRight;
+    // return this.self.getComputedStyles()
+    // return this.self.style.marginRight;
+  }
+
   public set(c: PropertiesHyphen) {
     Object.entries(c).forEach(([p, v]) => {
       this.self.style.setProperty(p, v.toString());
