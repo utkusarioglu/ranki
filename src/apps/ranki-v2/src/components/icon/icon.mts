@@ -20,7 +20,11 @@ export class RIcon extends Wc<T> {
 
   isActive(): boolean {
     const icon = this.state.curr()?.icon;
-    return !!icon && (icon.length > 0 || icon !== "none");
+    return this.isValidIcon(icon);
+  }
+
+  private isValidIcon(icon: string) {
+    return !!icon && icon.length > 0 && icon !== "none";
   }
 
   canReconcile(n: WrappedState<RankiIconState>): ReconciliationAction {
@@ -33,6 +37,7 @@ export class RIcon extends Wc<T> {
 
   hasNext(n: boolean) {
     const curr = this.state.curr();
+    const isIcon = this.isValidIcon(curr.icon);
     const m = this.css.getMarginRight();
     this.animation.animate("margin-right", {
       keyframes: [
@@ -40,7 +45,7 @@ export class RIcon extends Wc<T> {
           marginRight: m,
         },
         {
-          marginRight: n ? "5px" : 0,
+          marginRight: n && isIcon ? "5px" : 0,
         },
       ],
       options: {

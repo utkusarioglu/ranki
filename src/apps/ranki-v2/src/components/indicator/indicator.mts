@@ -8,6 +8,8 @@ import { RIndicatorPattern, type RIndicatorPatternProps } from "./pattern.mts";
 import { Wc } from "_components/wc/wc.mjs";
 import { WcSub, type WrappedState } from "_components/wc/sub.mjs";
 
+const DUR = 4e2;
+
 export class RIndicator extends Wc<RankiIndicatorState> {
   public static readonly tag = "r-indicator" as const;
   private subtree = new WcSub<RIndicatorPattern, RIndicatorPatternProps>({
@@ -29,13 +31,16 @@ export class RIndicator extends Wc<RankiIndicatorState> {
   }
 
   initialize(): void {
-    this.animation.pushPreset("exit", () => ({
-      keyframes: [{ opacity: 1 }, { opacity: 0 }],
-      options: {
-        duration: 200,
-        fill: "both",
-      },
-    }));
+    this.animation.pushPreset("exit", () => {
+      const curr = this.state.curr();
+      return {
+        keyframes: [{ opacity: 1 }, { opacity: 0 }],
+        options: {
+          duration: curr.animation.enabled ? DUR : 0,
+          fill: "both",
+        },
+      };
+    });
   }
 
   protected onStateChange(curr: RankiIndicatorState): void {

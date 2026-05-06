@@ -208,7 +208,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
    * @dev
    * #1 TODO you need to select a different cps depending on the hoist setting here
    */
-  transform(): this {
+  async transform(): Promise<this> {
     if (!this.isLocalEdge) {
       this.getForeignTrnEdges().forEach((v) => v.transform());
     }
@@ -219,7 +219,7 @@ export class TrnNode extends CommonTransports implements ITrnNode {
     });
     const componentChain = this.tCps.cps.getChain();
     const transformer = this.getPlugins().getTransformer(componentChain, tc);
-    transformer(this);
+    await transformer(this);
     this.transformLocal();
     return this;
   }

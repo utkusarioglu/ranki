@@ -122,6 +122,7 @@ class RTextSpan extends Wc<RTextProps> {
     this.css.set({
       "grid-area": "1/1",
       width: "max-content",
+      "transition-duration": "0s",
     });
     this.animation
       .pushPreset("enter", () => {
@@ -158,7 +159,6 @@ class RTextSpan extends Wc<RTextProps> {
 
   async onStateChange(curr: RTextProps) {
     this.innerText = curr.text;
-    // await Timing.waitLayout();
     if (curr.color) {
       this.css.set({ color: `rgb(var(--scheme-${curr.color}))` });
     } else {

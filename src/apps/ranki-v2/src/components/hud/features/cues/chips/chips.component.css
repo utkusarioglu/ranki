@@ -2,7 +2,6 @@
   --transition-duration: var(--rhu-transition-duration, 0);
   --transition-property:
     background, color, padding, border, opacity, scale, transform, width;
-  /* margin-right, margin-left; */
 
   --c-background: var(--rhu-c-background, transparent);
   --c-backdrop-filter: var(--rhu-c-backdrop-filter, transparent);

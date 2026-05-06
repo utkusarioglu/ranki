@@ -10,31 +10,31 @@ const PARENT = ["debug", "block", "container"];
 // @ts-ignore
 const LEAF = ["debug", "leaf", "container"];
 
-const ignored: TF = (trn) => {
+const ignored: TF = async (trn) => {
   const ast = trn.getAst().getSubtreeNodes()[0];
   trn.setChain(["base", "v2", "ignored"]).setSource(ast.getSourceString());
 };
 
-const empty: TF = (trn) => {
+const empty: TF = async (trn) => {
   trn.setChain(["base", "v2", "ignored"]).setSource("");
 };
 
-const section: TF = (trn) => {
+const section: TF = async (trn) => {
   trn.setChain(["base", "v2", "section"]).setAsMount();
 };
 
-const paragraph: TF = (trn) => {
+const paragraph: TF = async (trn) => {
   trn.setChain(["base", "v2", "paragraph"]).setAsMount();
 };
 
-const line: TF = (trn) => {
+const line: TF = async (trn) => {
   trn.setChain(["base", "v2", "line"]).setAsMount();
 };
-const lexeme: TF = (trn) => {
+const lexeme: TF = async (trn) => {
   trn.setChain(["base", "v2", "lexeme"]).setAsMount();
 };
 
-const decorated: TF = (trn) => {
+const decorated: TF = async (trn) => {
   const ast = trn.getAst();
   trn.setChain(["base", "v2", "decorated"]);
   trn.newChild().setChain(["base", "v2", "decorated"]).setAsMount();
@@ -44,13 +44,13 @@ const decorated: TF = (trn) => {
     .setSource(trailingSpace(ast));
 };
 
-const word: TF = (trn) => {
+const word: TF = async (trn) => {
   trn
     .setChain(["base", "v2", "word"])
     .setSource(trn.getAst().getSourceString());
 };
 
-const number: TF = (trn) => {
+const number: TF = async (trn) => {
   trn
     .setChain(["base", "v2", "number"])
     .setSource(trn.getAst().getSourceString());

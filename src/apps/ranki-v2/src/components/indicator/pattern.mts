@@ -3,6 +3,7 @@ import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 
 const DUR = 2e3;
+// const DUR = 4e2;
 
 export interface RIndicatorPatternProps {
   animation: RankiPropAnimationBlock;

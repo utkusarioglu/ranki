@@ -66,6 +66,7 @@ export class WcHudContainer<
         items = [];
       }
       items.push(this.css.computeTotalWidth(keyframe));
+      console.log("----", this, items);
       if (items.length === count) {
         const endWidth = Array.from(items.values()).reduce((a, c) => a + c, 0);
         const c = getComputedStyle(this);

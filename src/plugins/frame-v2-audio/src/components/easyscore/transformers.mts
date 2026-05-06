@@ -2,12 +2,12 @@ import type { IDqmComponentTransformFunction as TF } from "@dqm/package-dqm-api-
 
 const common = ["music", "score", "vexflow", "easyscore"];
 
-const FRAME_V2: TF = (trn) => {
+const FRAME_V2: TF = async (trn) => {
   const direction = trn.getAst().getDirection();
   trn.setChain([...common, "container", direction]).setAsMount();
 };
 
-const FRAME_V2_PAYLOAD_PLAIN: TF = (trn) => {
+const FRAME_V2_PAYLOAD_PLAIN: TF = async (trn) => {
   const direction = trn.getAst().getDirection();
   trn
     .setChain([...common, "payload", direction])

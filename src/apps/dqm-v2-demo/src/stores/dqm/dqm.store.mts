@@ -40,18 +40,18 @@ const dqmStoreInitial: DqmStoreState = {
   autoUpdate: AUTO_UPDATE,
   configPack: [],
   pluginSelection: pluginSelectionInit,
-  ...createDqmParsedProp({
+  ...(await createDqmParsedProp({
     inputs: INPUTS,
     autoUpdate: AUTO_UPDATE,
     parsed: { state: "success", data: { ast: [], trn: [], ser: [] } },
     configPack: [],
     pluginSelection: pluginSelectionInit,
     parseEpoch: 0,
-  }),
+  })),
 };
 
 export const useDqmStore = create(
-  subscribeWithSelector<DqmStore>((set) => ({
+  subscribeWithSelector<DqmStore>((set, get) => ({
     ...dqmStoreInitial,
 
     setAllConfig: (configPack) => set(() => ({ configPack })),
@@ -209,10 +209,11 @@ export const useDqmStore = create(
         };
       }),
 
-    parseInput: () =>
-      set((state) => {
-        return createDqmParsedProp({ ...state, autoUpdate: true });
-      }),
+    parseInput: async () => {
+      const state = get();
+      const parsed = await createDqmParsedProp({ ...state, autoUpdate: true });
+      set(parsed);
+    },
 
     setDeferParsing: (deferParsing) => set(() => ({ deferParsing })),
   })),

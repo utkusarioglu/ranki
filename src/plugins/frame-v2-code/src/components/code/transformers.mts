@@ -2,12 +2,12 @@ import type { IDqmComponentTransformFunction as TF } from "@dqm/package-dqm-api-
 
 const TAGS = ["computer_science", "code"];
 
-const FRAME_V2: TF = (trn) => {
+const FRAME_V2: TF = async (trn) => {
   const direction = trn.getAst().getDirection();
   trn.setChain([...TAGS, "container", direction]).setAsMount();
 };
 
-const FRAME_V2_PAYLOAD_PLAIN: TF = (trn) => {
+const FRAME_V2_PAYLOAD_PLAIN: TF = async (trn) => {
   const direction = trn.getAst().getDirection();
   const ast = trn.getAst().getChildrenNodes();
   const src = ast[0].getSourceString();
@@ -16,7 +16,7 @@ const FRAME_V2_PAYLOAD_PLAIN: TF = (trn) => {
     // .setSource(trn.getAst().getSourceString());
     // DECIDE read mermaid comment for the same position
     .setSource(src);
-  console.log("ast", ast, "src", src);
+  // console.log("ast", ast, "src", src);
 };
 
 // // @ts-expect-error

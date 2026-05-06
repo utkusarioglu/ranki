@@ -6,6 +6,8 @@ import primitives from "./primitives.component.css?inline";
 import { Wc } from "_components/wc/wc.mjs";
 import { WcSub, type WrappedState } from "_components/wc/sub.mjs";
 
+const DUR = 200;
+
 export class RChallenge extends Wc<RankiChallengeState> {
   public static readonly tag = "r-challenge" as const;
 
@@ -15,13 +17,16 @@ export class RChallenge extends Wc<RankiChallengeState> {
   }
 
   initialize(): void {
-    this.animation.pushPreset("exit", () => ({
-      keyframes: [{ opacity: 1 }, { opacity: 0 }],
-      options: {
-        duration: 200,
-        fill: "both",
-      },
-    }));
+    this.animation.pushPreset("exit", () => {
+      const curr = this.state.curr();
+      return {
+        keyframes: [{ opacity: 1 }, { opacity: 0 }],
+        options: {
+          duration: curr.animation.enabled ? DUR : 0,
+          fill: "both",
+        },
+      };
+    });
   }
 
   private subtree = new WcSub<

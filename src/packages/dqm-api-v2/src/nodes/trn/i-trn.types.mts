@@ -38,7 +38,7 @@ interface ITrnNodeUnique {
   readonly tCpx: ITCpxNode;
   readonly tCpsList: ITCpsNode[];
 
-  transform(): this;
+  transform(): Promise<this>;
 
   serialize(p: SerializeMethodParams): SerializedPackage;
   newChild(): ITrnNode;

@@ -42,8 +42,7 @@ function dqm(raw: string) {
       ],
       pluginsAsArray,
     );
-    const parsed = dqm.parse(raw);
-    return parsed;
+    return dqm.parse(raw);
   } catch (e) {
     try {
       // @ts-ignore
@@ -67,9 +66,9 @@ function handleError(e: unknown) {
 }
 
 export const debugCall = {
-  ast(raw: string, filters: AstNodeFiltersRecord) {
+  async ast(raw: string, filters: AstNodeFiltersRecord) {
     try {
-      const parsed = dqm(raw);
+      const parsed = await dqm(raw);
       const sanitized = createFilteredAst(
         { state: "success", data: parsed },
         filters,
@@ -80,9 +79,9 @@ export const debugCall = {
     }
   },
 
-  cpx(raw: string, filters: CpxNodeFiltersRecord) {
+  async cpx(raw: string, filters: CpxNodeFiltersRecord) {
     try {
-      const parsed = dqm(raw);
+      const parsed = await dqm(raw);
       const sanitized = createFilteredCpx(
         { state: "success", data: parsed },
         filters,
@@ -93,9 +92,9 @@ export const debugCall = {
     }
   },
 
-  cps(raw: string, filters: CpsNodeFiltersRecord) {
+  async cps(raw: string, filters: CpsNodeFiltersRecord) {
     try {
-      const parsed = dqm(raw);
+      const parsed = await dqm(raw);
       const sanitized = createFilteredCps(
         { state: "success", data: parsed },
         filters,
@@ -106,9 +105,9 @@ export const debugCall = {
     }
   },
 
-  trn(raw: string, filters: ITrnNodeFiltersRecord) {
+  async trn(raw: string, filters: ITrnNodeFiltersRecord) {
     try {
-      const parsed = dqm(raw);
+      const parsed = await dqm(raw);
       const sanitized = createFilteredTrn(
         { state: "success", data: parsed },
         filters,
@@ -119,9 +118,9 @@ export const debugCall = {
     }
   },
 
-  tcpx(raw: string, filters: TCpxNodeFiltersRecord) {
+  async tcpx(raw: string, filters: TCpxNodeFiltersRecord) {
     try {
-      const parsed = dqm(raw);
+      const parsed = await dqm(raw);
       const sanitized = createFilteredTcpx(
         { state: "success", data: parsed },
         filters,
@@ -132,9 +131,9 @@ export const debugCall = {
     }
   },
 
-  tcps(raw: string, filters: TCpsNodeFiltersRecord) {
+  async tcps(raw: string, filters: TCpsNodeFiltersRecord) {
     try {
-      const parsed = dqm(raw);
+      const parsed = await dqm(raw);
       const sanitized = createFilteredTcps(
         { state: "success", data: parsed },
         filters,
@@ -145,9 +144,9 @@ export const debugCall = {
     }
   },
 
-  ser(raw: string, filters: SerNodeFiltersRecord) {
+  async ser(raw: string, filters: SerNodeFiltersRecord) {
     try {
-      const parsed = dqm(raw);
+      const parsed = await dqm(raw);
       const sanitized = createFilteredSer(
         { state: "success", data: parsed },
         filters,

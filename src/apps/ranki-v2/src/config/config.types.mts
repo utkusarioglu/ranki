@@ -95,11 +95,13 @@ export interface ProcessedCueMapHud extends HudElementCommon {
 
 export type ProcessedCueMap = {
   hud: ProcessedCueMapHud;
-  indicators: CueRecord[];
+  indicators: ProcessedCue[];
 };
 
 export interface RankiPropAnimationBlock {
   enabled: boolean;
+  preset: string;
+  duration: number;
 }
 
 export interface ProcessedCue extends CueRecord {
@@ -159,15 +161,18 @@ export type RankiAnimation = {
   enabled: boolean;
   // FIX this needs to go
   fade: `${string}s`;
-  hud: {
-    enabled: boolean;
-  };
-  challenge: {
-    enabled: boolean;
-  };
-  indicator: {
-    enabled: boolean;
-  };
+  hud: RankiPropAnimationBlock;
+  // {
+  //   enabled: boolean;
+  // };
+  challenge: RankiPropAnimationBlock;
+  // {
+  //   enabled: boolean;
+  // };
+  indicator: RankiPropAnimationBlock;
+  // {
+  //   enabled: boolean;
+  // };
 };
 
 export interface RankiBaseDesign {

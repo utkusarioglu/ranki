@@ -1,13 +1,13 @@
 import type { IDqmComponentTransformFunction as TF } from "@dqm/package-dqm-api-v2";
 
-const FRAME_V2: TF = (trn) => {
+const FRAME_V2: TF = async (trn) => {
   const direction = trn.getAst().getDirection();
   trn
     .setChain(["audio", "audio-context", "tone-js", "container", direction])
     .setAsMount();
 };
 
-const FRAME_V2_PAYLOAD_PLAIN: TF = (trn) => {
+const FRAME_V2_PAYLOAD_PLAIN: TF = async (trn) => {
   const direction = trn.getAst().getDirection();
   trn
     .setChain(["audio", "audio-context", "tone-js", "payload", direction])

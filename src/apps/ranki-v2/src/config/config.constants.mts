@@ -41,15 +41,25 @@ export const RANKI_INITIAL_CONFIG: RankiChannelsConfig = {
     design: {
       animation: {
         enabled: true,
+        // preset: "default",
+        // duration: 4e2,
+
+        // TODO this needs to go. it's used in indicator (at least)
         fade: "2s",
         hud: {
           enabled: true,
+          preset: "default",
+          duration: 4e2,
         },
         challenge: {
           enabled: true,
+          preset: "default",
+          duration: 4e2,
         },
         indicator: {
           enabled: true,
+          preset: "default",
+          duration: 4e2,
         },
       },
       scheme: "system",

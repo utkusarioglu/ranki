@@ -62,7 +62,7 @@ export interface DqmStoreActions {
 
   setSingleTemplates: (lists: SingleTemplateGroup[]) => void;
   setArrangementTemplates: (list: ArrangementTemplateGroup[]) => void;
-  parseInput: () => void;
+  parseInput: () => Promise<void>;
   setDeferParsing: (defer: boolean) => void;
 
   setPluginPackageAsEnabled(pluginIndex: number, enabled: boolean): void;

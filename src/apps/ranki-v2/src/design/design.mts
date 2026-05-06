@@ -16,11 +16,11 @@ export function createDesign(
   root: HTMLElement,
   attach: HTMLElement,
 ) {
-  // const root = document.documentElement;
-  // const attach = document.body;
-  // root.style.setProperty(CSS_FADE_ANIMATION_DURATION, config.animation.fade);
   // FIX this fade duration relates to so many things in hud. but it should be getting its state from hud animation
-  root.style.setProperty(CSS_FADE_ANIMATION_DURATION, config.animation.fade);
+  root.style.setProperty(
+    CSS_FADE_ANIMATION_DURATION,
+    config.animation.enabled ? config.animation.fade : "0",
+  );
 
   document.body.style.setProperty(
     "transition-duration",

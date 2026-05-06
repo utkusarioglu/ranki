@@ -1,10 +1,10 @@
 import type { IDqmComponentTransformFunction as TF } from "@dqm/package-dqm-api-v2";
 
-const FRAME_V2: TF = (trn) => {
+const FRAME_V2: TF = async (trn) => {
   trn.setChain(["html", "primitive", "anchor", "container"]).setAsMount();
 };
 
-const FRAME_V2_PAYLOAD_PLAIN: TF = (trn) => {
+const FRAME_V2_PAYLOAD_PLAIN: TF = async (trn) => {
   trn
     .setChain(["html", "primitive", "anchor", "payload"])
     .setSource(trn.getAst().getSourceString());

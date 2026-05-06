@@ -31,9 +31,9 @@ export type TCpxRegistry = WeakMap<ICpx, ITCpxNode>;
 export class DqmTransformer extends CommonTransports {
   private tCpxRegistry: TCpxRegistry = new WeakMap();
 
-  transform(parsed: DqmAstOutput): DqmTransformOutput {
+  async transform(parsed: DqmAstOutput): Promise<DqmTransformOutput> {
     const graph = parsed.map((t) => this.buildGraph(t));
-    graph.forEach((g) => g.tCpx.transform());
+    await Promise.all(graph.map((g) => g.tCpx.transform()));
     return graph;
   }
 

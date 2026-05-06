@@ -74,10 +74,10 @@ export class Dqm {
         ];
   }
 
-  parse(rawInputs: DqmParseInput): DqmParseOutput {
+  async parse(rawInputs: DqmParseInput): Promise<DqmParseOutput> {
     this.ast(rawInputs);
     this.validate();
-    this.transform();
+    await this.transform();
     this.serialize();
     return this.parsed;
   }
@@ -92,8 +92,7 @@ export class Dqm {
     pref: IDqmRendererClientPreferences,
   ): Promise<RenderReport> {
     try {
-      this.parse(rawInputs);
-      console.log("parsed", this.parsed);
+      await this.parse(rawInputs);
       return this.plugins.render(this.parsed.ser, roots, pref);
     } catch (e) {
       throw new DqmAppError({
@@ -158,10 +157,9 @@ export class Dqm {
     });
   }
 
-  private transform() {
-    this.parsed.trn = new DqmTransformer(this.getTransports()).transform(
-      this.parsed.ast,
-    );
+  private async transform() {
+    const t = new DqmTransformer(this.getTransports());
+    this.parsed.trn = await t.transform(this.parsed.ast);
     // this.transformed = transform(this.parsed, this.getTransports());
   }
 

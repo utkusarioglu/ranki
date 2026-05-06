@@ -24,8 +24,8 @@
     BlinkMacSystemFont,
     sans-serif;
 
-  transition-property: var(--transition-property);
-  transition-duration: var(--transition-duration);
+  /* transition-property: var(--transition-property);
+  transition-duration: var(--transition-duration); */
   border-radius: var(--c-border-radius);
   height: 100%;
 }

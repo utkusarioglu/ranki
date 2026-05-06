@@ -31,11 +31,11 @@ function main() {
       .addOption(configOption)
       .addOption(fieldsOption)
       .addOption(outOption)
-      .action((options) => {
+      .action(async (options) => {
         const files = readFiles(options);
         const filter = getFilters(files.config.modes[t], options.fields);
         const callKey = t as keyof typeof debugCall;
-        const sanitized = debugCall[callKey](files.raw, filter);
+        const sanitized = await debugCall[callKey](files.raw, filter);
         const formatted = handleFormat(sanitized, options);
         handleLog(formatted, options);
         handleOut(formatted, options);

@@ -49,7 +49,6 @@ export class RCueBadges extends WcHudContainer<
   }
 
   protected onStateChange(curr: CueComponentCommon): void {
-    console.log("c", curr);
     this.subtree.reconcile(
       curr.list.map((state) => ({ type: "badge", state })),
     );

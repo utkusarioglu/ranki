@@ -37,14 +37,14 @@ import yaml from "yaml";
 //   }
 // }
 
-function parseDqm(
+async function parseDqm(
   input: DqmParseInputStructured,
   config: DqmConfigPack,
   plugins: IDqmPlugin[],
-): SanitizedParseResult {
+): Promise<SanitizedParseResult> {
   try {
     const dqm = new Dqm(config, plugins);
-    const data = dqm.parse(input);
+    const data = await dqm.parse(input);
 
     return {
       state: "success",
@@ -59,10 +59,10 @@ function parseDqm(
   }
 }
 
-export function createDqmParsedProp(
+export async function createDqmParsedProp(
   state: Pick<DqmStore, CreateDqmParseNeeded> &
     Partial<Omit<DqmStore, CreateDqmParseNeeded>>,
-): Pick<DqmStore, "parsed" | "parseEpoch"> {
+): Promise<Pick<DqmStore, "parsed" | "parseEpoch">> {
   if (!state.autoUpdate) {
     return {
       parsed: state.parsed,
@@ -88,8 +88,9 @@ export function createDqmParsedProp(
         })),
       buildPluginSelectionConfig(state.pluginSelection),
     ];
+    const parsed = await parseDqm(state.inputs, config, plugins);
     return {
-      parsed: parseDqm(state.inputs, config, plugins),
+      parsed,
       parseEpoch: Date.now(),
     };
   } catch (e) {

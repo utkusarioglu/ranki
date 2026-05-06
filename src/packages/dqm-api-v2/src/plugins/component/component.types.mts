@@ -25,7 +25,7 @@ export interface IDqmComponent<
   transformers: Record<TransformClass, IDqmComponentTransformFunction>;
 }
 
-export type IDqmComponentTransformFunction = (trn: ITrnNode) => void;
+export type IDqmComponentTransformFunction = (trn: ITrnNode) => Promise<void>;
 
 export type IDqmValidationFunction = (cps: ICps) => void;
 
