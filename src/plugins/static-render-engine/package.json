@@ -27,7 +27,7 @@
   "exports": {
     ".": {
       "types": "./types/export.d.mts",
-      "default": "./lib/export.js"
+      "default": "./lib/_ranki2_plugin_sre.js"
     }
   }
 }

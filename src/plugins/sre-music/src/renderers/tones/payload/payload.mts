@@ -1,53 +1,6 @@
 import type { IDqmRenderPluginRenderer as R } from "@dqm/package-dqm-api-v2";
-import * as Tone from "tone";
+// import * as Tone from "tone";
 import css from "./payload.css?raw";
-
-function killTone() {
-  const ctx = Tone.getContext();
-
-  // Stop the transport for this context
-  ctx.transport.stop();
-  ctx.transport.cancel(); // clear scheduled events
-
-  // Dispose nodes if you have references
-  // Example: synth.dispose(), player.dispose(), etc.
-
-  // Close the underlying AudioContext
-  if (ctx.rawContext.state !== "closed") {
-    // @ts-expect-error
-    ctx.rawContext.close();
-  }
-
-  // Reset Tone's context so new sounds can be played later
-  Tone.setContext(new Tone.Context());
-}
-
-interface NotePack {
-  element: HTMLSpanElement;
-  note: string;
-}
-
-function createTone(tones: NotePack[]) {
-  Tone.getTransport().stop();
-  const synth = new Tone.PolySynth(Tone.Synth).toDestination();
-  const now = Tone.now();
-  const ctx = Tone.getContext();
-  tones.forEach((note, i) => {
-    if (note.note.length !== 2) {
-      return;
-    }
-    const time = now + i * 0.25;
-    synth.triggerAttackRelease(note.note, "8n", time);
-
-    ctx.setTimeout(() => {
-      note.element.classList.add("played");
-    }, time - ctx.now());
-  });
-  synth.triggerRelease(
-    tones.map(({ note }) => note),
-    now + tones.length,
-  );
-}
 
 export const payload: R = {
   chain: ["audio", "audio-context", "tone-js", "payload", "block"],
@@ -56,7 +9,7 @@ export const payload: R = {
     const element = document.createElement("div");
     element.classList.add("audio-block");
 
-    killTone();
+    // killTone();
 
     const noteTexts: string[] = ser.source
       .split("\n")
@@ -86,17 +39,23 @@ export const payload: R = {
       afterMount: [
         async () => {
           console.log("calling after mount");
+
+          const tone = await import("./tone.mjs");
+          tone.killTone();
+          // import { killTone, createTone } from "./tone.mjs";
           try {
-            createTone(notes);
+            tone.createTone(notes);
           } catch {
-            Tone.getTransport().stop();
+            tone.stopTone();
           }
         },
       ],
       beforeUnmount: [
         async () => {
           console.log("stopping during unmount");
-          Tone.getTransport().stop();
+          const tone = await import("./tone.mjs");
+          tone.stopTone();
+
           console.log("stopping during unmount2");
         },
       ],

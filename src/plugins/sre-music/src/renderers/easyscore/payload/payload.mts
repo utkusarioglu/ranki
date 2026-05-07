@@ -1,6 +1,6 @@
 import type { IDqmRenderPluginRenderer as R } from "@dqm/package-dqm-api-v2";
 import { AnkiUi } from "@ranki/package-anki-ui";
-import { Factory } from "vexflow";
+// import { Factory } from "vexflow";
 import cssTemplate from "./payload.css?raw";
 import fontTextBase64 from "./leland.txt?raw";
 import { TAGS } from "../constants.mjs";
@@ -73,7 +73,7 @@ export const payload: R = {
       };
     });
 
-    let attached = false;
+    const p = { attached: false };
 
     const font = prepareFont(cssTemplate, fontName, fontTextBase64);
 
@@ -86,54 +86,62 @@ export const payload: R = {
         },
         ...hs.css!,
       ],
-      afterMount: [
-        async () => {
-          if (attached) {
-            return;
-          }
-          attached = true;
-
-          if (!div) throw new Error("Div #output not found");
-          try {
-            await font.fontFace.load(); // will reject on parse error
-            document.fonts.add(font.fontFace);
-
-            // Wait until the font is actually usable by layout/rendering
-            await document.fonts.ready;
-
-            const vf = new Factory({
-              renderer: {
-                // @ts-ignore wrong type def by vexflow
-                elementId: div,
-                width: 200,
-                height: 150,
-              },
-            });
-            const score = vf.EasyScore();
-            const system = vf.System({
-              x: 0,
-              y: 0,
-            });
-
-            // Create a 4/4 treble stave and add two parallel voices.
-            system
-              .addStave({
-                voices: voices.map(({ notes, stem, time }) =>
-                  score.voice(score.notes(notes, { stem }), { time }),
-                ),
-              })
-              .addClef("treble")
-              .addTimeSignature("4/4");
-
-            // Draw it!
-            vf.draw();
-          } catch (e) {
-            children.innerText =
-              (e as Error).stack ||
-              "Error cannot be displayed. but there is an error";
-          }
-        },
-      ],
+      afterMount: [() => runVexFlow(p, div, font, voices, children)],
     };
   },
 };
+
+// TODO any
+async function runVexFlow(
+  p: { attached: boolean },
+  div: HTMLDivElement,
+  font: any,
+  voices: any,
+  children: HTMLElement,
+) {
+  if (p.attached) {
+    return;
+  }
+  p.attached = true;
+
+  if (!div) throw new Error("Div #output not found");
+  try {
+    const vexflow = await import("vexflow");
+    await font.fontFace.load(); // will reject on parse error
+    document.fonts.add(font.fontFace);
+
+    // Wait until the font is actually usable by layout/rendering
+    await document.fonts.ready;
+
+    const vf = new vexflow.Factory({
+      renderer: {
+        // @ts-ignore wrong type def by vexflow
+        elementId: div,
+        width: 200,
+        height: 150,
+      },
+    });
+    const score = vf.EasyScore();
+    const system = vf.System({
+      x: 0,
+      y: 0,
+    });
+
+    // Create a 4/4 treble stave and add two parallel voices.
+    system
+      .addStave({
+        // @ts-expect-error
+        voices: voices.map(({ notes, stem, time }) =>
+          score.voice(score.notes(notes, { stem }), { time }),
+        ),
+      })
+      .addClef("treble")
+      .addTimeSignature("4/4");
+
+    // Draw it!
+    vf.draw();
+  } catch (e) {
+    children.innerText =
+      (e as Error).stack || "Error cannot be displayed. but there is an error";
+  }
+}

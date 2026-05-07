@@ -4315,19 +4315,6 @@ const RAW_RUNTIME_STATE =
           ["@babel/preset-typescript", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:7.28.5"],\
           ["@dqm/package-dqm-utils", "workspace:src/packages/dqm-utils"],\
           ["@dqm/package-dqm-v2", "workspace:src/packages/dqm-v2"],\
-          ["@dqm/plugin-base-v2", "workspace:src/plugins/base-v2"],\
-          ["@dqm/plugin-frame-v2", "workspace:src/plugins/frame-v2"],\
-          ["@dqm/plugin-frame-v2-audio", "workspace:src/plugins/frame-v2-audio"],\
-          ["@dqm/plugin-frame-v2-code", "workspace:src/plugins/frame-v2-code"],\
-          ["@dqm/plugin-frame-v2-debug", "workspace:src/plugins/frame-v2-debug"],\
-          ["@dqm/plugin-frame-v2-html", "workspace:src/plugins/frame-v2-html"],\
-          ["@dqm/plugin-frame-v2-mermaid", "workspace:src/plugins/frame-v2-mermaid"],\
-          ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
-          ["@dqm/plugin-sre-code", "workspace:src/plugins/sre-code"],\
-          ["@dqm/plugin-sre-mermaid", "workspace:src/plugins/sre-mermaid"],\
-          ["@dqm/plugin-sre-music", "workspace:src/plugins/sre-music"],\
-          ["@dqm/plugin-sre-osmd", "workspace:src/plugins/sre-osmd"],\
-          ["@dqm/plugin-static-render-engine", "workspace:src/plugins/static-render-engine"],\
           ["@phosphor-icons/webcomponents", "npm:2.1.5"],\
           ["@ranki/app-ranki-v2", "workspace:src/apps/ranki-v2"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\

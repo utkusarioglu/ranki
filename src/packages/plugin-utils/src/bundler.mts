@@ -1,6 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
+const isScreamingSnake = (s: string) => /^[A-Z_0-9]+$/.test(s);
+
 /**
  * Standardizes vite's bundling of the given ohm grammar and its versioning
  *
@@ -15,6 +17,12 @@ export function bundleOhm(
   placeholderUp: string,
   rootPath: string,
 ) {
+  const t = isScreamingSnake(placeholderUp);
+  if (!t) {
+    throw new Error(
+      `bundleOhm.placeholder arg needs to be screaming snake case. Your arg was: ${placeholderUp}`,
+    );
+  }
   const sourcePath = path.join(rootPath, [version, "ohm"].join("."));
 
   return {

@@ -43,7 +43,7 @@ export const payload: R = {
       afterMount: [
         async () => {
           try {
-            const mermaid = await (await import("mermaid")).default;
+            const mermaid = (await import("mermaid")).default;
             // await new Promise<void>((r) => setTimeout(r, 2000));
             // mermaid.initialize({
             //   startOnLoad: false,
