@@ -16,7 +16,9 @@
     "console--v2": "cd src/apps/dqm-v2-console && yarn console",
     "lint": "turbo run lint",
     "clean-all": "rm -rf .turbo && yarn turbo run clean-all",
-    "knip": "knip"
+    "knip": "knip",
+    "clean-anki": "scripts/anki/clean-anki.sh",
+    "copy-to-anki": "scripts/anki/copy-to-anki.js"
   },
   "devDependencies": {
     "@ranki/config-typescript": "workspace:^",

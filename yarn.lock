@@ -860,6 +860,7 @@ __metadata:
     react-dnd-html5-backend: "npm:^16.0.1"
     react-dom: "npm:^19.2.0"
     react-error-boundary: "npm:^6.0.0"
+    sirv: "npm:^3.0.2"
     typescript: "npm:^6.0.2"
     typescript-eslint: "npm:^8.46.4"
     vite: "npm:^7.2.4"
@@ -2830,6 +2831,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@phosphor-icons/core@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "@phosphor-icons/core@npm:2.1.1"
+  checksum: 10c0/0a92d8f1811c450b8ce12becbb520522784ffeb781a2cd33771d716901909fb4dfeb6d88243cbf3712c404f11479764c1dcd443a141d5dad416b41f7251e44d7
+  languageName: node
+  linkType: hard
+
 "@phosphor-icons/webcomponents@npm:^2.1.5":
   version: 2.1.5
   resolution: "@phosphor-icons/webcomponents@npm:2.1.5"
@@ -2878,11 +2886,6 @@ __metadata:
     "@dqm/plugin-frame-v2-html": "workspace:^"
     "@dqm/plugin-frame-v2-mermaid": "workspace:^"
     "@dqm/plugin-params-v2": "workspace:^"
-    "@dqm/plugin-sre-code": "workspace:^"
-    "@dqm/plugin-sre-mermaid": "workspace:^"
-    "@dqm/plugin-sre-music": "workspace:^"
-    "@dqm/plugin-sre-osmd": "workspace:^"
-    "@dqm/plugin-static-render-engine": "workspace:^"
     "@ranki/config-typescript": "workspace:^"
     "@rollup/plugin-babel": "npm:^6.1.0"
     "@rollup/plugin-commonjs": "npm:^29.0.2"
@@ -2933,6 +2936,7 @@ __metadata:
     "@babel/preset-typescript": "npm:^7.28.5"
     "@dqm/package-dqm-utils": "workspace:^"
     "@dqm/package-dqm-v2": "workspace:^"
+    "@phosphor-icons/core": "npm:^2.1.1"
     "@phosphor-icons/webcomponents": "npm:^2.1.5"
     "@ranki/config-typescript": "workspace:^"
     "@ranki/package-anki-ui": "workspace:^"

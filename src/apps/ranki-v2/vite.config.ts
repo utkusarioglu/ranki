@@ -41,17 +41,21 @@ export default defineConfig(() => ({
       presets: [["@babel/preset-typescript", { allowDeclareFields: true }]],
       plugins: [["@babel/plugin-proposal-decorators", { version: "2023-05" }]],
     }),
-    rankiArtifactActions([cleanRankiTargets, copyArtifacts, displayTemplate]),
+    rankiArtifactActions([
+      // cleanRankiTargets,
+      // copyArtifacts,
+      displayTemplate,
+    ]),
     {
       name: "extra-public-dirs",
 
       configureServer(server) {
         const pluginNames = fs.readdirSync(PLUGINS_ROOT_PATH);
-        const pluginPaths = pluginNames.map(
+        const publicPaths = pluginNames.map(
           (n) => `${PLUGINS_ROOT_PATH}/${n}/lib`,
         );
-        console.log("pluginPaths", pluginPaths);
-        for (const p of pluginPaths) {
+        console.log("Public Paths:\n", "  " + publicPaths.join("\n"));
+        for (const p of publicPaths) {
           server.middlewares.use(
             "/",
             sirv(p, {
@@ -71,10 +75,14 @@ export default defineConfig(() => ({
         main: path.resolve(packagePath, TEMPLATE_FILE),
       },
       output: {
-        inlineDynamicImports: true,
         entryFileNames: "_ranki2.js",
         chunkFileNames: "_ranki2_[name].js",
         format: "es",
+        manualChunks(id) {
+          if (id.includes("@phosphor-icons")) {
+            return "icons";
+          }
+        },
         assetFileNames: (assetInfo) => {
           if (assetInfo.name!.endsWith("css")) {
             return "_ranki2.css";

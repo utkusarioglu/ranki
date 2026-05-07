@@ -41,6 +41,7 @@
   "dependencies": {
     "@dqm/package-dqm-utils": "workspace:^",
     "@dqm/package-dqm-v2": "workspace:^",
+    "@phosphor-icons/core": "^2.1.1",
     "@phosphor-icons/webcomponents": "^2.1.5",
     "@ranki/package-anki-ui": "workspace:^",
     "@rollup/plugin-babel": "^6.1.0",

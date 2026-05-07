@@ -14,9 +14,30 @@ const PLUGIN_PATHS = [
   "/_ranki2_plugin_basev2.js",
 ];
 
-const pluginUrls = PLUGIN_PATHS.map(
-  (n) => `${window.location.href}${n.startsWith("/") ? n.slice(1) : n}`,
+export const pluginsAsObject = await Promise.all(
+  PLUGIN_PATHS.map(async (path) => {
+    const url = [
+      window.location.protocol,
+      "/",
+      window.location.host,
+      path.startsWith("/") ? path.slice(1) : path,
+    ].join("/");
+    const plugin = (await import(/* @vite-ignore */ url)).default;
+    return {
+      name: url
+        .split("/")
+        .at(-1)!
+        .split(".")
+        .slice(0, -1)
+        .join(".")
+        .replace("_ranki2_plugin_", ""),
+      url,
+      path,
+      plugin,
+    };
+  }),
 );
-export const pluginsAsArray = (
-  await Promise.all(pluginUrls.map((url) => import(/* @vite-ignore */ url)))
-).map((v) => v.default);
+
+export const pluginsAsArray = Object.values(pluginsAsObject).map(
+  (v) => v.plugin,
+);

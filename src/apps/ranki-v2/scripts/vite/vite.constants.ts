@@ -10,8 +10,8 @@ export const DEMO_APP_DIST_COPY_PATH =
 
 export const TARGET_DIRS = [
   DOCKER_TARGET_PATH,
-  DEMO_APP_DEV_COPY_PATH,
-  DEMO_APP_DIST_COPY_PATH,
+  // DEMO_APP_DEV_COPY_PATH,
+  // DEMO_APP_DIST_COPY_PATH,
 ];
 
 export const TEMPLATE_FILE = "template.html";

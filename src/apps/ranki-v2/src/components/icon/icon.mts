@@ -1,6 +1,41 @@
 import { Wc, type ReconciliationAction } from "_components/wc/wc.mjs";
-import "@phosphor-icons/webcomponents";
+// import ghostDuotone from "@phosphor-icons/core/duotone/ghost-duotone.svg?raw";
+// console.log(ghostDuotone);
+
+await import("@phosphor-icons/webcomponents");
+// import "@phosphor-icons/webcomponents/icons/PhAcorn.mjs";
+// import f from "@phosphor-icons/core";
+
+// import { icons } from "@phosphor-icons/core";
+// console.log(
+//   icons
+//     .map((a) => a.name)
+//     .map(
+//       (a) =>
+//         `"phosphor:fill:${a}": () => import("@phosphor-icons/core/icons/fill/${a}.svg"),`,
+//     )
+//     .join("\n"),
+// );
+
 import type { WrappedState } from "_components/wc/sub.mjs";
+// console.log("f", f);
+// import type { WrappedState } from "_components/wc/sub.mjs";
+// const icons = import.meta.glob(
+//   /* @vite-ignore */ "@phosphor-icons/core/assets/fill/*.svg",
+//   {
+//     query: "?raw",
+//     import: "default",
+//   },
+// );
+
+// async function getIcon(name: string): Promise<string> {
+//   const path = `@phosphor-icons/core/assets/${name}.svg`;
+
+//   const loader = icons[path];
+//   if (!loader) return "";
+
+//   return (await loader()) as Promise<string>;
+// }
 
 export interface RankiIconState {
   animation: {
@@ -170,9 +205,16 @@ class RIconBox extends Wc<T> {
   }
 
   async onStateChange(curr: T) {
+    // const icon = document.createElement("span");
+    // const catalog = (await import("./ph.mjs")).default;
+    // await catalog[`phosphor:fill:acorn`]();
+    // const icon = document.createElement(`ph-${curr.icon}`);
     const icon = document.createElement(`ph-${curr.icon}`);
+    // catalog[`phosphor:fill:${curr.icon}`]().then(
+    // getIcon(curr.icon).then((i) => (icon.innerHTML = i));
     icon.setAttribute("weight", "fill");
     this.appendChild(icon);
+    icon.style.setProperty("aspect-ratio", "1/1");
 
     // await Timing.waitLayout();
     if (curr.color) {

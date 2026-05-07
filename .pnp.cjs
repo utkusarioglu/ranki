@@ -1947,6 +1947,7 @@ const RAW_RUNTIME_STATE =
           ["react-dnd-html5-backend", "npm:16.0.1"],\
           ["react-dom", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:19.2.1"],\
           ["react-error-boundary", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:6.0.0"],\
+          ["sirv", "npm:3.0.2"],\
           ["typescript", "patch:typescript@npm%3A6.0.2#optional!builtin<compat/typescript>::version=6.0.2&hash=5786d5"],\
           ["typescript-eslint", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:8.48.1"],\
           ["vite", "virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:7.2.6"],\
@@ -4201,6 +4202,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@phosphor-icons/core", [\
+      ["npm:2.1.1", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@phosphor-icons-core-npm-2.1.1-65db2000e7-10c0.zip/node_modules/@phosphor-icons/core/",\
+        "packageDependencies": [\
+          ["@phosphor-icons/core", "npm:2.1.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@phosphor-icons/webcomponents", [\
       ["npm:2.1.5", {\
         "packageLocation": "../home/dev/.yarn/berry/cache/@phosphor-icons-webcomponents-npm-2.1.5-0d09b51318-10c0.zip/node_modules/@phosphor-icons/webcomponents/",\
@@ -4256,11 +4266,6 @@ const RAW_RUNTIME_STATE =
           ["@dqm/plugin-frame-v2-html", "workspace:src/plugins/frame-v2-html"],\
           ["@dqm/plugin-frame-v2-mermaid", "workspace:src/plugins/frame-v2-mermaid"],\
           ["@dqm/plugin-params-v2", "workspace:src/plugins/params-v2"],\
-          ["@dqm/plugin-sre-code", "workspace:src/plugins/sre-code"],\
-          ["@dqm/plugin-sre-mermaid", "workspace:src/plugins/sre-mermaid"],\
-          ["@dqm/plugin-sre-music", "workspace:src/plugins/sre-music"],\
-          ["@dqm/plugin-sre-osmd", "workspace:src/plugins/sre-osmd"],\
-          ["@dqm/plugin-static-render-engine", "workspace:src/plugins/static-render-engine"],\
           ["@ranki/app-dqm-v2-console", "workspace:src/apps/dqm-v2-console"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@rollup/plugin-babel", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:6.1.0"],\
@@ -4315,6 +4320,7 @@ const RAW_RUNTIME_STATE =
           ["@babel/preset-typescript", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:7.28.5"],\
           ["@dqm/package-dqm-utils", "workspace:src/packages/dqm-utils"],\
           ["@dqm/package-dqm-v2", "workspace:src/packages/dqm-v2"],\
+          ["@phosphor-icons/core", "npm:2.1.1"],\
           ["@phosphor-icons/webcomponents", "npm:2.1.5"],\
           ["@ranki/app-ranki-v2", "workspace:src/apps/ranki-v2"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\

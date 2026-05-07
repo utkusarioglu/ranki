@@ -31,6 +31,8 @@ import { useEffect, useState } from "react";
 //   dqm.render(inputs, { [inputs[0].theater]: a }, pref);
 // }
 
+const URL_TEMPLATE = "/%";
+
 export function createFragment(parts: RankiFiles) {
   const htmlTemplates = Object.values(parts.html);
   if (htmlTemplates.length > 1) {
@@ -44,7 +46,7 @@ export function createFragment(parts: RankiFiles) {
   const tpl = document.createElement("template");
   const replaced = html.replace(
     "{{STORAGE_CONFIG}}",
-    "/ranki-v2/_ranki2_user_config.yml",
+    URL_TEMPLATE.replace("%", "_ranki2_user_config.yml"),
   );
   tpl.innerHTML = replaced;
   const fragment = tpl.content;
@@ -177,7 +179,15 @@ const FILES = {
   js: ["_ranki2.js"],
 };
 
-const URL_TEMPLATE = "/ranki-v2/%";
+// const URL_TEMPLATE = "/ranki-v2/%";
+// const URL_TEMPLATE = [];
+
+// const URL_TEMPLATE = [
+//   // window.location.protocol,
+//   // "/",
+//   // window.location.host,
+//   "%",
+// ].join("/");
 // const URL_TEMPLATE = "http://localhost:3000/%";
 
 export function useRankiFiles(): RankiFiles {
