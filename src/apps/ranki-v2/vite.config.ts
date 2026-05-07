@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import fs from "node:fs";
 import url from "node:url";
 import path from "node:path";
 import babel from "@rollup/plugin-babel";
@@ -10,9 +11,15 @@ import {
   rankiArtifactActions,
 } from "./scripts/vite/ranki-artifact-actions";
 import tsConfigPaths from "vite-tsconfig-paths";
+import sirv from "sirv";
 
 const viteConfigPath = url.fileURLToPath(import.meta.url);
 const packagePath = path.dirname(viteConfigPath);
+
+const PLUGINS_ROOT_PATH = path.resolve("../../plugins");
+// console.log("p", pluginsRootAbsPath);
+
+// const mermaidLib = path.resolve("../../plugins/sre-mermaid/lib");
 
 export default defineConfig(() => ({
   server: {
@@ -35,6 +42,25 @@ export default defineConfig(() => ({
       plugins: [["@babel/plugin-proposal-decorators", { version: "2023-05" }]],
     }),
     rankiArtifactActions([cleanRankiTargets, copyArtifacts, displayTemplate]),
+    {
+      name: "extra-public-dirs",
+
+      configureServer(server) {
+        const pluginNames = fs.readdirSync(PLUGINS_ROOT_PATH);
+        const pluginPaths = pluginNames.map(
+          (n) => `${PLUGINS_ROOT_PATH}/${n}/lib`,
+        );
+        console.log("pluginPaths", pluginPaths);
+        for (const p of pluginPaths) {
+          server.middlewares.use(
+            "/",
+            sirv(p, {
+              dev: true,
+            }),
+          );
+        }
+      },
+    },
   ],
   build: {
     minify: true,
@@ -61,11 +87,4 @@ export default defineConfig(() => ({
       },
     },
   },
-  // optimizeDeps: {
-  //   include: [
-  //     "mathjax-full/js/mathjax.js",
-  //     "mathjax-full/js/input/tex.js",
-  //     "mathjax-full/js/output/svg.js",
-  //   ],
-  // },
 }));

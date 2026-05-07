@@ -2,7 +2,7 @@ import type { IDqmRenderPluginRenderer as R } from "@dqm/package-dqm-api-v2";
 import { AnkiUi } from "@ranki/package-anki-ui";
 import { TAGS } from "../constants.mjs";
 import css from "./payload.css?raw";
-import { renderOsmd } from "../../common/osmd/render.mjs";
+// import { renderOsmd } from "../../common/osmd/render.mjs";
 
 export const payload: R = {
   chain: [...TAGS, "payload", "block"],
@@ -12,8 +12,7 @@ export const payload: R = {
     const div = document.createElement("div");
     div.style.width = "100%";
     hs.getMount!().appendChild(div);
-
-    const xml = ser.source.trim();
+    div.innerText = "(loading)";
 
     return {
       element: hs.element,
@@ -27,7 +26,9 @@ export const payload: R = {
       afterMount: [
         ...(hs.afterMount || []),
         async () => {
-          renderOsmd(div, xml);
+          const osmd = await import("../../common/osmd/render.mjs");
+          const xml = ser.source.trim();
+          osmd.renderOsmd(div, xml);
         },
       ],
       beforeUnmount: [...(hs.beforeUnmount || [])],

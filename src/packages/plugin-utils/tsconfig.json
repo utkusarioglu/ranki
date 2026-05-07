@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": "src",
+    "types": ["node"],
     "declarationDir": "types",
     "paths": {
       "@dqm/package-dqm-api-v2": ["../dqm-api-v2/*"]

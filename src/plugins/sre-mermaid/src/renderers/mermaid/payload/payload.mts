@@ -1,6 +1,6 @@
 import type { IDqmRenderPluginRenderer as R } from "@dqm/package-dqm-api-v2";
 import { TAGS } from "../constants.mjs";
-import mermaid, { type MermaidConfig } from "mermaid";
+import { type MermaidConfig } from "mermaid";
 import css from "./payload.css?raw";
 
 const mermaidConfig: MermaidConfig = {
@@ -43,6 +43,7 @@ export const payload: R = {
       afterMount: [
         async () => {
           try {
+            const mermaid = await (await import("mermaid")).default;
             // await new Promise<void>((r) => setTimeout(r, 2000));
             // mermaid.initialize({
             //   startOnLoad: false,
