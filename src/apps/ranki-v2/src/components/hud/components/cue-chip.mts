@@ -1,4 +1,3 @@
-import "@phosphor-icons/webcomponents";
 import { WcChip } from "_components/hud/components/chip.mjs";
 import { RIcon, type RankiIconState } from "_components/icon/icon.mjs";
 import { WcSub, type ElemMin, type WrappedState } from "_components/wc/sub.mjs";

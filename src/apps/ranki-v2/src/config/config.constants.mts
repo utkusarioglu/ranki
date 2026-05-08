@@ -305,7 +305,7 @@ repeating-linear-gradient(
       exact: "+r::dqm::ignore",
       cue: {
         icon: {
-          id: "blueprint",
+          id: "ph:blueprint-fill",
           color: "red-2",
         },
       },
@@ -326,7 +326,7 @@ repeating-linear-gradient(
       exact: "+r::dev::methods",
       cue: {
         icon: {
-          id: "codesandbox-logo",
+          id: "ph:codesandbox-logo-fill",
           color: "red-2",
         },
       },
@@ -343,7 +343,7 @@ repeating-linear-gradient(
           text: "",
         },
         icon: {
-          id: "diamonds-four",
+          id: "ph:diamonds-four-fill",
           color: "red-2",
         },
       },

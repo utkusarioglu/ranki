@@ -41,11 +41,10 @@
   "dependencies": {
     "@dqm/package-dqm-utils": "workspace:^",
     "@dqm/package-dqm-v2": "workspace:^",
-    "@phosphor-icons/core": "^2.1.1",
-    "@phosphor-icons/webcomponents": "^2.1.5",
     "@ranki/package-anki-ui": "workspace:^",
     "@rollup/plugin-babel": "^6.1.0",
     "core-js": "^3.47.0",
+    "iconify-icon": "^3.0.2",
     "yaml": "^2.8.2"
   }
 }

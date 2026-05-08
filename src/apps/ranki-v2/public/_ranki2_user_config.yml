@@ -46,7 +46,7 @@ tags:
   - exact: marked
     cue: 
       icon:
-        id: book-open
+        id: ph:book-open-fill
         color: tone-2
       message: 
         text: Study
@@ -110,7 +110,7 @@ tags:
       # message: 
       #   text: AnimDisabled
       icon:
-        id: prohibit-inset
+        id: ph:prohibit-inset
         color: blue-2
     config:
       design:
@@ -120,7 +120,7 @@ tags:
   - exact: +r::palette::saturated
     cue:
       icon: 
-        id: disco-ball
+        id: ph:disco-ball-fill
         color: blue-2
     config:
       design:
@@ -133,7 +133,7 @@ decks:
         text: Addr
         color: red-2
       icon:
-        id: scissors
+        id: ph:scissors-fill
         color: red-2
     config:
       address:
@@ -155,7 +155,7 @@ webview:
   - exact: android::old
     cue: 
       icon:
-        id: prohibit-inset
+        id: ph:prohibit-inset
         color: red-2
     config:
       design:
