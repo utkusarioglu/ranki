@@ -1,5 +1,4 @@
 import yaml from "yaml";
-import type { RawFields } from "_config/collect/collect.types.mts";
 import { RANKI_INITIAL_CONFIG } from "_config/config.constants.mts";
 import type {
   RankiChannelsConfig,
@@ -8,6 +7,7 @@ import type {
 import { Config } from "@dqm/package-dqm-utils";
 // import { assertExists } from "@dqm/package-dqm-utils";
 import { RankiAppError } from "_error/ranki-app-error.mts";
+import type { RawFields } from "_collect/collect.types.mjs";
 
 export function buildChannelsConfig(collected: RawFields): RankiChannelsConfig {
   const gConfig = new Config().pushConfig("default", RANKI_INITIAL_CONFIG);

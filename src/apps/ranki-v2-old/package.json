@@ -1,0 +1,50 @@
+{
+  "name": "@ranki/app-ranki-v2-old",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "exports": {
+    "./constants": {
+      "import": "./lib/export.constants.mjs",
+      "types": "./types/export.constants.d.mts",
+      "default": "./lib/export.constants.mjs"
+    },
+    "./types": {
+      "types": "./types/export.types.d.mts"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "lib": "tsc -p tsconfig.lib.json",
+    "build": "yarn lib && vite build",
+    "preview": "vite preview",
+    "clean-targets": "yarn tsx scripts/clean-targets.ts && scripts/clean-anki.sh",
+    "clean-anki": "scripts/clean-anki.sh",
+    "copy-to-targets": "yarn tsx scripts/copy-to-targets.ts",
+    "clean-all": "rm -rf .turbo lib dist types node_modules tsconfig*.tsbuildinfo && rm -rf vite*timestamp-* || true"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/plugin-proposal-decorators": "^7.28.0",
+    "@babel/preset-typescript": "^7.28.5",
+    "@ranki/config-typescript": "workspace:^",
+    "@types/node": "^25.0.6",
+    "chalk": "^5.6.2",
+    "csstype": "^3.2.3",
+    "sirv": "^3.0.2",
+    "tsx": "^4.21.0",
+    "typescript": "~5.9.3",
+    "vite": "^7.2.4",
+    "vite-tsconfig-paths": "^6.0.5",
+    "vitest": "^4.0.17"
+  },
+  "dependencies": {
+    "@dqm/package-dqm-utils": "workspace:^",
+    "@dqm/package-dqm-v2": "workspace:^",
+    "@ranki/package-anki-ui": "workspace:^",
+    "@rollup/plugin-babel": "^6.1.0",
+    "core-js": "^3.47.0",
+    "iconify-icon": "^3.0.2",
+    "yaml": "^2.8.2"
+  }
+}

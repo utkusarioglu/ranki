@@ -2,7 +2,8 @@
   "extends": "@ranki/config-typescript/tsconfig.app.json",
   "compilerOptions": {
     "target": "ES2022",
-    "useDefineForClassFields": true,
+    "useDefineForClassFields": false,
+    "experimentalDecorators": true,
     "module": "ESNext",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["vite/client"],
@@ -29,6 +30,8 @@
       "_config/*": ["./src/config/*"],
       "_error/*": ["./src/error/*"],
       "_utils/*": ["./src/utils/*"],
+      "_store/*": ["./src/store/*"],
+      "_collect/*": ["./src/collect/*"],
       "_/*": ["./src/*"],
       "@dqm/package-utils": ["../../packages/dqm-utils"],
       "@dqm/package-dqm-v2": ["../../packages/dqm-v2"]

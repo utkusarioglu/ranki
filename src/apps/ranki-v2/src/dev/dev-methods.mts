@@ -11,16 +11,16 @@ import {
   INPUT_TYPE_CLASS_SELECTOR,
   RENDERED_CLASS_SELECTOR,
 } from "../selector.constants.mts";
-import { main } from "_/main.mjs";
+// import { main } from "_/main.mjs";
 
 export class RankiDevMethods {
   static isPersisted = false;
 
-  static async main() {
-    this.tags("");
-    await main();
-    return;
-  }
+  // static async main() {
+  //   this.tags("");
+  //   // await main();
+  //   return;
+  // }
 
   static foreign(isForeign: boolean = true) {
     const qa = document.querySelector("#qa") as HTMLDivElement;

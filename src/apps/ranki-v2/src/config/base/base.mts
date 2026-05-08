@@ -15,7 +15,7 @@ import type {
   FilteredTags,
   AnkiNeutralTags,
   RankiTags,
-} from "_config/collect/collect.types.mts";
+} from "_collect/collect.types.mts";
 import { checkIfMatch } from "./determine.mts";
 import { FLAG_COLOR_ORDER } from "_config/anki.constants.mts";
 import { assertNever } from "_error/assertions.mts";

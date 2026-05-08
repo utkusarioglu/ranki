@@ -1,33 +1,37 @@
+// import type {
+//   AnkiMarked,
+//   AnkiNeutralTags,
+//   AnkiRawTag,
+//   RawFields,
+//   FilteredTags,
+//   RankiTag,
+//   RankiTags,
+// } from "./collect/collect.types.mjs";
+import type { RankiCollectedConfig, RankiTagPrefix } from "./config.types.mts";
+import { buildChannelsConfig } from "./channels/channels.mts";
+import { buildBaseConfig } from "./base/base.mts";
+// import { createAppConfig } from "./app/app.mts";
 import type {
   AnkiMarked,
   AnkiNeutralTags,
   AnkiRawTag,
-  RawFields,
   FilteredTags,
   RankiTag,
   RankiTags,
-} from "./collect/collect.types.mjs";
-import type {
-  RankiState,
-  RankiCollectedConfig,
-  RankiTagPrefix,
-} from "./config.types.mts";
-import { buildChannelsConfig } from "./channels/channels.mts";
-import { buildBaseConfig } from "./base/base.mts";
-import { createAppConfig } from "./app/app.mts";
-import { collectRaw } from "./collect/collect.mts";
+  RawFields,
+} from "_/collect/collect.types.mjs";
+// import { collectRaw } from "./collect/collect.mts";
 
-export async function collectConfig(): Promise<RankiCollectedConfig> {
-  const raw = await collectRaw();
+export function collectConfig(raw: RawFields): RankiCollectedConfig {
   const channels = buildChannelsConfig(raw);
   const tags = groupTags(raw, channels.base.tags.ranki.prefix);
   const base = buildBaseConfig(channels, tags, raw);
-  return { base, raw, tags };
+  return { base, tags };
 }
 
-export function createState(collected: RankiCollectedConfig): RankiState {
-  return createAppConfig(collected);
-}
+// export function createState(collected: RankiCollectedConfig): RankiState {
+//   return createAppConfig(collected);
+// }
 
 function groupTags(
   collected: RawFields,

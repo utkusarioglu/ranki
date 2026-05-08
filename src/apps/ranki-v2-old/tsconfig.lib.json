@@ -1,0 +1,36 @@
+{
+  "extends": "@ranki/config-typescript/tsconfig.app.json",
+  "compilerOptions": {
+    "outDir": "lib",
+    "rootDir": "src",
+    "declarationDir": "types",
+    "useDefineForClassFields": true,
+    "experimentalDecorators": true,
+    "paths": {
+      "_components/*": ["./src/components/*"],
+      "_config/*": ["./src/config/*"],
+      "_error/*": ["./src/error/*"],
+      "_utils/*": ["./src/utils/*"],
+      "_/*": ["./src/*"],
+      "@dqm/package-utils": ["../../packages/dqm-utils"],
+      "@dqm/package-dqm-v2": ["../../packages/dqm-v2"]
+    }
+  },
+  "include": [
+    "src/export.constants.mts",
+    "src/selector.constants.mts",
+    "src/export.types.mts",
+    "src/types/util.types.mts",
+    "src/components/hud/hud.types.mts",
+    "src/config/config.types.mts",
+    "src/config/collect/collect.types.mts"
+  ],
+  "references": [
+    {
+      "path": "../../packages/dqm-utils"
+    },
+    {
+      "path": "../../packages/dqm-v2"
+    }
+  ]
+}

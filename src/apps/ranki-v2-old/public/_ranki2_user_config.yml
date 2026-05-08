@@ -1,0 +1,175 @@
+base: 
+  palettes:
+    - name: generated-saturated
+      hues: 
+        red: 0
+        orange: 30
+        yellow: 55
+        green: 130
+        turquoise: 170
+        blue: 210
+        purple: 270
+        magenta: 320
+      lightness: [15, 20, 30, 60, 70, 80, 90, 100]
+      saturation: [100, 100, 100, 100, 100, 100, 100, 100]
+flags:
+  red:
+    cue:
+      indicator: red-arch
+      message: 
+        text: Questionable information
+  orange:
+    cue:
+      message: 
+        text: Derive more cards
+  green: 
+    cue:
+      message: 
+        text: Needs elaboration
+  blue:
+    cue:
+      message: 
+        text: Possibly outdated
+  pink: 
+    cue:
+      message: 
+        text: Rendering issues
+  turquoise:
+    cue:
+      message: 
+        text: Too extensive
+  purple:
+    cue:
+      message: 
+        text: Poor wording or formatting
+tags:
+  - exact: marked
+    cue: 
+      icon:
+        id: ph:book-open-fill
+        color: tone-2
+      message: 
+        text: Study
+        color: tone-2
+      background: 
+        color: blue-1
+      indicator: colorful
+  - exact: leech
+    cue: 
+      message: 
+        text: Leech
+        color: tone-0
+      background:
+        color: red-2
+      indicator: checkered
+  - exact: clown-college
+    cue:
+      indicator: clown-college
+  - exact: caution
+    cue:
+      indicator: caution
+  - exact: +r::scheme::light
+    cue:
+      message: 
+        text: Light scheme
+    config:
+      design:
+        scheme: light
+  - exact: +r::scheme::dark
+    cue: 
+      message: 
+        text: Dark scheme
+    config:
+      design:
+        scheme: dark
+  - exact: +r::theme::print
+    cue:
+      message: 
+        text: Print theme
+    config:
+      design:
+        theme: print
+  - exact: +r::animation::slow
+    cue:
+      message: 
+        text: AnimSlow
+    config:
+      design:
+        animation:
+          fade: 3s
+  - exact: +r::animation::fast
+    cue:
+      message: 
+        text: AnimFast
+    config:
+      design:
+        animation:
+          fade: 0.1s
+  - exact: +r::animation::disabled
+    cue:
+      # message: 
+      #   text: AnimDisabled
+      icon:
+        id: ph:prohibit-inset
+        color: blue-2
+    config:
+      design:
+        animation:
+          enabled: false
+          # fade: "0"
+  - exact: +r::palette::saturated
+    cue:
+      icon: 
+        id: ph:disco-ball-fill
+        color: blue-2
+    config:
+      design:
+        palette: generated-saturated
+
+decks:
+  - glob: _::One::__
+    cue:
+      message: 
+        text: Addr
+        color: red-2
+      icon:
+        id: ph:scissors-fill
+        color: red-2
+    config:
+      address:
+        segments:
+          - start: 0
+            end: 1
+            mode: drop
+          - start: 1
+            end: 3
+            mode: hide
+          - start: 3
+            end: 4
+            mode: trim
+          - start: 7
+            end: -1
+            mode: hide
+
+webview:
+  - exact: android::old
+    cue: 
+      icon:
+        id: ph:prohibit-inset
+        color: red-2
+    config:
+      design:
+        animation:
+          enabled: false
+          # fade: "0"
+
+# always:
+#   - cue: 
+#       message:
+#         text: always!
+#       indicator: caution
+#     config:
+#       design:
+#         animation:
+#           enabled: false
+      

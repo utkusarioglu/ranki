@@ -12,7 +12,7 @@ import type {
   AnkiCardType,
   AnkiDeck,
   AnkiRawTag,
-} from "_config/collect/collect.types.mjs";
+} from "_collect/collect.types.mjs";
 import type { DeckSettings } from "_config/config.types.mts";
 import { assertNever } from "_error/assertions.mts";
 import { isGlobMatch } from "./glob-match.mts";

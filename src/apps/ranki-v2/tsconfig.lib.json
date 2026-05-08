@@ -4,13 +4,15 @@
     "outDir": "lib",
     "rootDir": "src",
     "declarationDir": "types",
-    "useDefineForClassFields": true,
+    "useDefineForClassFields": false,
     "experimentalDecorators": true,
     "paths": {
       "_components/*": ["./src/components/*"],
       "_config/*": ["./src/config/*"],
       "_error/*": ["./src/error/*"],
       "_utils/*": ["./src/utils/*"],
+      "_store/*": ["./src/store/*"],
+      "_collect/*": ["./src/collect/*"],
       "_/*": ["./src/*"],
       "@dqm/package-utils": ["../../packages/dqm-utils"],
       "@dqm/package-dqm-v2": ["../../packages/dqm-v2"]

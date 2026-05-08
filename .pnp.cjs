@@ -27,6 +27,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:src/apps/ranki-v2"\
     },\
     {\
+      "name": "@ranki/app-ranki-v2-old",\
+      "reference": "workspace:src/apps/ranki-v2-old"\
+    },\
+    {\
       "name": "@ranki/config-typescript",\
       "reference": "workspace:src/config/typescript"\
     },\
@@ -137,6 +141,7 @@ const RAW_RUNTIME_STATE =
     ["@ranki/app-dqm-v2-console", ["workspace:src/apps/dqm-v2-console"]],\
     ["@ranki/app-ranki-v1", ["workspace:src/legacy/ranki-v1"]],\
     ["@ranki/app-ranki-v2", ["workspace:src/apps/ranki-v2"]],\
+    ["@ranki/app-ranki-v2-old", ["workspace:src/apps/ranki-v2-old"]],\
     ["@ranki/config-typescript", ["workspace:src/config/typescript"]],\
     ["@ranki/package-anki-ui", ["workspace:src/packages/anki-ui"]],\
     ["@ranki/root", ["workspace:."]]\
@@ -3538,6 +3543,25 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@lit-labs/ssr-dom-shim", [\
+      ["npm:1.5.1", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@lit-labs-ssr-dom-shim-npm-1.5.1-3b3c832bd1-10c0.zip/node_modules/@lit-labs/ssr-dom-shim/",\
+        "packageDependencies": [\
+          ["@lit-labs/ssr-dom-shim", "npm:1.5.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@lit/reactive-element", [\
+      ["npm:2.1.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@lit-reactive-element-npm-2.1.2-2c713bebce-10c0.zip/node_modules/@lit/reactive-element/",\
+        "packageDependencies": [\
+          ["@lit-labs/ssr-dom-shim", "npm:1.5.1"],\
+          ["@lit/reactive-element", "npm:2.1.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@mermaid-js/parser", [\
       ["npm:0.6.2", {\
         "packageLocation": "../home/dev/.yarn/berry/cache/@mermaid-js-parser-npm-0.6.2-d446a4cc4e-10c0.zip/node_modules/@mermaid-js/parser/",\
@@ -4283,6 +4307,37 @@ const RAW_RUNTIME_STATE =
           ["@dqm/package-dqm-utils", "workspace:src/packages/dqm-utils"],\
           ["@dqm/package-dqm-v2", "workspace:src/packages/dqm-v2"],\
           ["@ranki/app-ranki-v2", "workspace:src/apps/ranki-v2"],\
+          ["@ranki/config-typescript", "workspace:src/config/typescript"],\
+          ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
+          ["@rollup/plugin-babel", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:6.1.0"],\
+          ["@types/node", "npm:25.0.6"],\
+          ["chalk", "npm:5.6.2"],\
+          ["core-js", "npm:3.47.0"],\
+          ["csstype", "npm:3.2.3"],\
+          ["iconify-icon", "npm:3.0.2"],\
+          ["lit", "npm:3.3.2"],\
+          ["sirv", "npm:3.0.2"],\
+          ["tsx", "npm:4.21.0"],\
+          ["typescript", "patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"],\
+          ["vite", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:7.2.6"],\
+          ["vite-tsconfig-paths", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:6.0.5"],\
+          ["vitest", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:4.0.17"],\
+          ["yaml", "npm:2.8.2"],\
+          ["zustand", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:5.0.13"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@ranki/app-ranki-v2-old", [\
+      ["workspace:src/apps/ranki-v2-old", {\
+        "packageLocation": "./src/apps/ranki-v2-old/",\
+        "packageDependencies": [\
+          ["@babel/core", "npm:7.28.5"],\
+          ["@babel/plugin-proposal-decorators", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:7.28.0"],\
+          ["@babel/preset-typescript", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:7.28.5"],\
+          ["@dqm/package-dqm-utils", "workspace:src/packages/dqm-utils"],\
+          ["@dqm/package-dqm-v2", "workspace:src/packages/dqm-v2"],\
+          ["@ranki/app-ranki-v2-old", "workspace:src/apps/ranki-v2-old"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
           ["@rollup/plugin-babel", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:6.1.0"],\
@@ -6169,14 +6224,14 @@ const RAW_RUNTIME_STATE =
     ]],\
     ["@swc/core", [\
       ["npm:1.15.3", {\
-        "packageLocation": "./.yarn/unplugged/@swc-core-virtual-78710e1002/node_modules/@swc/core/",\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@swc-core-npm-1.15.3-b0dbac067d-10c0.zip/node_modules/@swc/core/",\
         "packageDependencies": [\
           ["@swc/core", "npm:1.15.3"]\
         ],\
         "linkType": "SOFT"\
       }],\
       ["virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:1.15.3", {\
-        "packageLocation": "./.yarn/unplugged/@swc-core-virtual-78710e1002/node_modules/@swc/core/",\
+        "packageLocation": "./.yarn/__virtual__/@swc-core-virtual-78710e1002/2/home/dev/.yarn/berry/cache/@swc-core-npm-1.15.3-b0dbac067d-10c0.zip/node_modules/@swc/core/",\
         "packageDependencies": [\
           ["@swc/core", "virtual:62a87418e08917a3d94eaf84b49ec78390785c2e665e08d3f9467e0993c9461f35cf131d5ff68eb1e377b1e7b2a5c631d03d9d1e15c2e8cf82372e06a8c6155a#npm:1.15.3"],\
           ["@swc/core-darwin-arm64", "npm:1.15.3"],\
@@ -8873,7 +8928,7 @@ const RAW_RUNTIME_STATE =
     ]],\
     ["core-js", [\
       ["npm:3.47.0", {\
-        "packageLocation": "./.yarn/unplugged/core-js-npm-3.47.0-cf3c257d1a/node_modules/core-js/",\
+        "packageLocation": "../home/dev/.yarn/berry/cache/core-js-npm-3.47.0-cf3c257d1a-10c0.zip/node_modules/core-js/",\
         "packageDependencies": [\
           ["core-js", "npm:3.47.0"]\
         ],\
@@ -9744,7 +9799,7 @@ const RAW_RUNTIME_STATE =
     ]],\
     ["esbuild", [\
       ["npm:0.25.8", {\
-        "packageLocation": "./.yarn/unplugged/esbuild-npm-0.25.8-ae949d754b/node_modules/esbuild/",\
+        "packageLocation": "../home/dev/.yarn/berry/cache/esbuild-npm-0.25.8-ae949d754b-10c0.zip/node_modules/esbuild/",\
         "packageDependencies": [\
           ["@esbuild/aix-ppc64", "npm:0.25.8"],\
           ["@esbuild/android-arm", "npm:0.25.8"],\
@@ -9777,7 +9832,7 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }],\
       ["npm:0.27.1", {\
-        "packageLocation": "./.yarn/unplugged/esbuild-npm-0.27.1-1f2d625e1a/node_modules/esbuild/",\
+        "packageLocation": "../home/dev/.yarn/berry/cache/esbuild-npm-0.27.1-1f2d625e1a-10c0.zip/node_modules/esbuild/",\
         "packageDependencies": [\
           ["@esbuild/aix-ppc64", "npm:0.27.1"],\
           ["@esbuild/android-arm", "npm:0.27.1"],\
@@ -9810,7 +9865,7 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }],\
       ["npm:0.27.2", {\
-        "packageLocation": "./.yarn/unplugged/esbuild-npm-0.27.2-7789e62c6d/node_modules/esbuild/",\
+        "packageLocation": "../home/dev/.yarn/berry/cache/esbuild-npm-0.27.2-7789e62c6d-10c0.zip/node_modules/esbuild/",\
         "packageDependencies": [\
           ["@esbuild/aix-ppc64", "npm:0.27.2"],\
           ["@esbuild/android-arm", "npm:0.27.2"],\
@@ -12068,6 +12123,40 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/dev/.yarn/berry/cache/lines-and-columns-npm-1.2.4-d6c7cc5799-10c0.zip/node_modules/lines-and-columns/",\
         "packageDependencies": [\
           ["lines-and-columns", "npm:1.2.4"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["lit", [\
+      ["npm:3.3.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/lit-npm-3.3.2-7dea58471e-10c0.zip/node_modules/lit/",\
+        "packageDependencies": [\
+          ["@lit/reactive-element", "npm:2.1.2"],\
+          ["lit", "npm:3.3.2"],\
+          ["lit-element", "npm:4.2.2"],\
+          ["lit-html", "npm:3.3.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["lit-element", [\
+      ["npm:4.2.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/lit-element-npm-4.2.2-70d4af2233-10c0.zip/node_modules/lit-element/",\
+        "packageDependencies": [\
+          ["@lit-labs/ssr-dom-shim", "npm:1.5.1"],\
+          ["@lit/reactive-element", "npm:2.1.2"],\
+          ["lit-element", "npm:4.2.2"],\
+          ["lit-html", "npm:3.3.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["lit-html", [\
+      ["npm:3.3.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/lit-html-npm-3.3.2-4a3e00215f-10c0.zip/node_modules/lit-html/",\
+        "packageDependencies": [\
+          ["@types/trusted-types", "npm:2.0.7"],\
+          ["lit-html", "npm:3.3.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -15287,7 +15376,7 @@ const RAW_RUNTIME_STATE =
     ]],\
     ["unrs-resolver", [\
       ["npm:1.11.1", {\
-        "packageLocation": "./.yarn/unplugged/unrs-resolver-npm-1.11.1-9828edd1f1/node_modules/unrs-resolver/",\
+        "packageLocation": "../home/dev/.yarn/berry/cache/unrs-resolver-npm-1.11.1-9828edd1f1-10c0.zip/node_modules/unrs-resolver/",\
         "packageDependencies": [\
           ["@unrs/resolver-binding-android-arm-eabi", "npm:1.11.1"],\
           ["@unrs/resolver-binding-android-arm64", "npm:1.11.1"],\
@@ -16466,12 +16555,40 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["zustand", [\
+      ["npm:5.0.13", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/zustand-npm-5.0.13-33f7bd7285-10c0.zip/node_modules/zustand/",\
+        "packageDependencies": [\
+          ["zustand", "npm:5.0.13"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
       ["npm:5.0.9", {\
         "packageLocation": "../home/dev/.yarn/berry/cache/zustand-npm-5.0.9-1d6cab4a48-10c0.zip/node_modules/zustand/",\
         "packageDependencies": [\
           ["zustand", "npm:5.0.9"]\
         ],\
         "linkType": "SOFT"\
+      }],\
+      ["virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:5.0.13", {\
+        "packageLocation": "./.yarn/__virtual__/zustand-virtual-5849e59125/2/home/dev/.yarn/berry/cache/zustand-npm-5.0.13-33f7bd7285-10c0.zip/node_modules/zustand/",\
+        "packageDependencies": [\
+          ["@types/immer", null],\
+          ["@types/react", null],\
+          ["@types/use-sync-external-store", null],\
+          ["immer", null],\
+          ["react", null],\
+          ["use-sync-external-store", null],\
+          ["zustand", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:5.0.13"]\
+        ],\
+        "packagePeers": [\
+          "@types/immer",\
+          "@types/react",\
+          "@types/use-sync-external-store",\
+          "immer",\
+          "react",\
+          "use-sync-external-store"\
+        ],\
+        "linkType": "HARD"\
       }],\
       ["virtual:bbb5563f25c61c66c79b10059bc632c51aa719a4ada84708dda1e40bcd395b034b49ebda1eadd94866984bdebe3a9691a4e36a0f24fd85ec16d34042fa84158a#npm:5.0.9", {\
         "packageLocation": "./.yarn/__virtual__/zustand-virtual-72fd84410e/2/home/dev/.yarn/berry/cache/zustand-npm-5.0.9-1d6cab4a48-10c0.zip/node_modules/zustand/",\
@@ -16703,16 +16820,16 @@ function convertToBigIntStats(stats) {
     if (Object.hasOwn(stats, key)) {
       const element = stats[key];
       if (typeof element === `number`) {
-        bigintStats[key] = BigInt(element);
+        bigintStats[key] = BigInt(Math.floor(element));
       } else if (nodeUtils__namespace.types.isDate(element)) {
         bigintStats[key] = new Date(element);
       }
     }
   }
-  bigintStats.atimeNs = bigintStats.atimeMs * BigInt(1e6);
-  bigintStats.mtimeNs = bigintStats.mtimeMs * BigInt(1e6);
-  bigintStats.ctimeNs = bigintStats.ctimeMs * BigInt(1e6);
-  bigintStats.birthtimeNs = bigintStats.birthtimeMs * BigInt(1e6);
+  bigintStats.atimeNs = bigintStats.atimeMs * BigInt(1e6) + BigInt(Math.floor(stats.atimeMs % 1 * 1e3)) * BigInt(1e3);
+  bigintStats.mtimeNs = bigintStats.mtimeMs * BigInt(1e6) + BigInt(Math.floor(stats.mtimeMs % 1 * 1e3)) * BigInt(1e3);
+  bigintStats.ctimeNs = bigintStats.ctimeMs * BigInt(1e6) + BigInt(Math.floor(stats.ctimeMs % 1 * 1e3)) * BigInt(1e3);
+  bigintStats.birthtimeNs = bigintStats.birthtimeMs * BigInt(1e6) + BigInt(Math.floor(stats.birthtimeMs % 1 * 1e3)) * BigInt(1e3);
   return bigintStats;
 }
 function areStatsEqual(a, b) {
@@ -19390,28 +19507,40 @@ class FileHandle {
   sync() {
     throw new Error(`Method not implemented.`);
   }
-  async read(bufferOrOptions, offset, length, position) {
+  async read(bufferOrOptions, offsetOrOptions, length, position) {
     try {
       this[kRef](this.read);
       let buffer;
-      if (!Buffer.isBuffer(bufferOrOptions)) {
-        bufferOrOptions ??= {};
-        buffer = bufferOrOptions.buffer ?? Buffer.alloc(16384);
-        offset = bufferOrOptions.offset || 0;
-        length = bufferOrOptions.length ?? buffer.byteLength;
-        position = bufferOrOptions.position ?? null;
+      let offset;
+      if (!ArrayBuffer.isView(bufferOrOptions)) {
+        buffer = bufferOrOptions?.buffer ?? Buffer.alloc(16384);
+        offset = bufferOrOptions?.offset ?? 0;
+        length = bufferOrOptions?.length ?? buffer.byteLength - offset;
+        position = bufferOrOptions?.position ?? null;
+      } else if (typeof offsetOrOptions === `object` && offsetOrOptions !== null) {
+        buffer = bufferOrOptions;
+        offset = offsetOrOptions?.offset ?? 0;
+        length = offsetOrOptions?.length ?? buffer.byteLength - offset;
+        position = offsetOrOptions?.position ?? null;
       } else {
         buffer = bufferOrOptions;
+        offset = offsetOrOptions ?? 0;
+        length ??= 0;
       }
-      offset ??= 0;
-      length ??= 0;
       if (length === 0) {
         return {
           bytesRead: length,
           buffer
         };
       }
-      const bytesRead = await this[kBaseFs].readPromise(this.fd, buffer, offset, length, position);
+      const bytesRead = await this[kBaseFs].readPromise(
+        this.fd,
+        // FIXME: FakeFS should support ArrayBufferViews directly
+        Buffer.isBuffer(buffer) ? buffer : Buffer.from(buffer.buffer, buffer.byteOffset, buffer.byteLength),
+        offset,
+        length,
+        position
+      );
       return {
         bytesRead,
         buffer
@@ -22223,9 +22352,9 @@ Instead change the require of ${basename} in ${parentPath} to a dynamic import()
   err.code = `ERR_REQUIRE_ESM`;
   return err;
 }
-function reportRequiredFilesToWatchMode(files) {
+function reportRequiredFilesToWatchMode(paths) {
   if (process.env.WATCH_REPORT_DEPENDENCIES && process.send) {
-    files = files.map((filename) => npath.fromPortablePath(VirtualFS.resolveVirtual(npath.toPortablePath(filename))));
+    const files = paths.map((filename) => npath.fromPortablePath(VirtualFS.resolveVirtual(filename)));
     if (WATCH_MODE_MESSAGE_USES_ARRAYS) {
       process.send({ "watch:require": files });
     } else {
@@ -22316,6 +22445,7 @@ function applyPatch(pnpapi, opts) {
       const optionNames = new Set(Object.keys(options));
       optionNames.delete(`paths`);
       optionNames.delete(`plugnplay`);
+      optionNames.delete(`conditions`);
       if (optionNames.size > 0) {
         throw makeError(
           ErrorCode.UNSUPPORTED,
@@ -22344,11 +22474,15 @@ function applyPatch(pnpapi, opts) {
       const issuerApi = apiPath !== null ? opts.manager.getApiEntry(apiPath, true).instance : null;
       try {
         if (issuerApi !== null) {
-          resolution = issuerApi.resolveRequest(request, path !== null ? `${path}/` : null);
+          resolution = issuerApi.resolveRequest(request, path !== null ? `${path}/` : null, {
+            conditions: options?.conditions
+          });
         } else {
           if (path === null)
             throw new Error(`Assertion failed: Expected the path to be set`);
-          resolution = originalModuleResolveFilename.call(require$$0.Module, request, module || makeFakeParent(path), isMain);
+          resolution = originalModuleResolveFilename.call(require$$0.Module, request, module || makeFakeParent(path), isMain, {
+            conditions: options?.conditions
+          });
         }
       } catch (error) {
         firstError = firstError || error;
@@ -23863,9 +23997,10 @@ Required by: ${issuerLocator.name}@${issuerLocator.reference} (via ${issuerForDi
     const candidates = [];
     const qualifiedPath = applyNodeExtensionResolution(unqualifiedPath, candidates, { extensions });
     if (qualifiedPath) {
+      reportRequiredFilesToWatchMode([qualifiedPath]);
       return ppath.normalize(qualifiedPath);
     } else {
-      reportRequiredFilesToWatchMode(candidates.map((candidate) => npath.fromPortablePath(candidate)));
+      reportRequiredFilesToWatchMode(candidates);
       const unqualifiedPathForDisplay = getPathForDisplay(unqualifiedPath);
       const containingPackage = findPackageLocator(unqualifiedPath);
       if (containingPackage) {

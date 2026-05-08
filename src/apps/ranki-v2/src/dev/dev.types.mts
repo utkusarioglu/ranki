@@ -28,8 +28,6 @@ export interface IRankiDevMethods {
   persist(on: boolean): void;
   set(p: RankiSetFunc): void;
   play(p: RankiPlayFields): void;
-
-  main(): Promise<void>;
 }
 
 declare global {

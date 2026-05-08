@@ -22,6 +22,9 @@ const PLUGINS_ROOT_PATH = path.resolve("../../plugins");
 // const mermaidLib = path.resolve("../../plugins/sre-mermaid/lib");
 
 export default defineConfig(() => ({
+  esbuild: {
+    keepNames: true,
+  },
   server: {
     host: true,
     port: 3000,
@@ -40,7 +43,15 @@ export default defineConfig(() => ({
       extensions: [".mts", ".ts", ".js", ".mjs"],
       presets: [["@babel/preset-typescript", { allowDeclareFields: true }]],
       plugins: [["@babel/plugin-proposal-decorators", { version: "2023-05" }]],
+      // include: ["../../plugins/**", "../../packages/**"],
     }),
+    // babel({
+    //   babelHelpers: "bundled",
+    //   extensions: [".mts", ".ts", ".js", ".mjs"],
+    //   presets: [["@babel/preset-typescript", { allowDeclareFields: true }]],
+    //   plugins: [["@babel/plugin-proposal-decorators", { version: "2023-05" }]],
+    //   include: ["./src/**"],
+    // }),
     rankiArtifactActions([
       // cleanRankiTargets,
       // copyArtifacts,

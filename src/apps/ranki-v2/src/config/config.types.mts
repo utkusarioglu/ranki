@@ -15,8 +15,7 @@ import type {
   AnkiCardFace,
   CardFaceArray,
   FilteredTags,
-  RawFields,
-} from "./collect/collect.types.mts";
+} from "_collect/collect.types.mts";
 
 export type Deck = string;
 
@@ -324,7 +323,7 @@ export interface BuildRankiBaseConfigReturn {
 
 export interface RankiCollectedConfig {
   base: BuildRankiBaseConfigReturn;
-  raw: RawFields;
+  // raw: RawFields;
   tags: FilteredTags;
 }
 

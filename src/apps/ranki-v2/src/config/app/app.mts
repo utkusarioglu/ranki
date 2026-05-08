@@ -13,7 +13,7 @@ import type {
   CardFaceArray,
   FilteredTags,
   RawFields,
-} from "_config/collect/collect.types.mts";
+} from "_collect/collect.types.mts";
 import {
   RANKI_INTERNAL_FACE_PREFIX,
   SYSTEM_CONTROLLED_SCHEME_TOKEN,
@@ -43,7 +43,10 @@ export const MUTATION_MODE_PRECEDENCE: RankiBaseAddressMutationMode[] = [
   "show",
 ];
 
-export function createAppConfig({ base, raw, tags }: RankiCollectedConfig) {
+export function createAppConfig(
+  { base, tags }: RankiCollectedConfig,
+  raw: RawFields,
+): RankiState {
   const order = getFaceOrder(base.config, raw);
   const scheme = getScheme(base, raw);
   const ranki = buildRankiConfig(base, raw, tags, order, scheme);

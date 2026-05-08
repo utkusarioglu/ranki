@@ -1,0 +1,46 @@
+{
+  "extends": "@ranki/config-typescript/tsconfig.app.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "declarationDir": "types",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "paths": {
+      "_components/*": ["./src/components/*"],
+      "_config/*": ["./src/config/*"],
+      "_error/*": ["./src/error/*"],
+      "_utils/*": ["./src/utils/*"],
+      "_/*": ["./src/*"],
+      "@dqm/package-utils": ["../../packages/dqm-utils"],
+      "@dqm/package-dqm-v2": ["../../packages/dqm-v2"]
+    }
+  },
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../../packages/dqm-utils"
+    },
+    {
+      "path": "../../packages/dqm-v2"
+    }
+  ]
+}
