@@ -12,7 +12,7 @@ export class R2HudBg extends LitElement {
       z-index: var(--z-index);
       width: 0;
       height: 0;
-      border-radius: 1em;
+      border-radius: var(--border-radius, 0);
     }
   `;
 

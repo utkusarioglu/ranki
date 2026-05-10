@@ -15,10 +15,6 @@ export class R2CueList extends R2C {
   @query("r2-badge-list")
   private badgeList!: R2C;
 
-  // connectedCallback(): void {
-  //   super.connectedCallback();
-  // }
-
   protected firstUpdated(_changedProperties: PropertyValues): void {
     this.waitChildrenDims([this.badgeList], (dims) => {
       console.log("then", this, dims);

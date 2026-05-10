@@ -1,8 +1,6 @@
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
-import type { R2Icon } from "_components/icon/icon.mjs";
-import { R2C, type Dims, type Pos } from "_components/r2c/r2c.mjs";
-import type { R2Text } from "_components/text/text.mjs";
+import { R2C, type Pos } from "_components/r2c/r2c.mjs";
 import { css, html, type PropertyValues } from "lit";
 import { customElement, query } from "lit/decorators.js";
 
@@ -24,11 +22,6 @@ export class R2Chip extends R2C {
   private text!: R2C;
   @query("r2-hud-bg")
   private bg!: R2HudBg;
-  // private items = new WeakMap<R2C, Dims>();
-
-  // connectedCallback(): void {
-  //   super.connectedCallback();
-  // }
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
     this.waitChildrenDims([this.icon, this.text], (dims) => {
@@ -44,11 +37,6 @@ export class R2Chip extends R2C {
       }, PROPAGATE_DELAY);
     });
   }
-
-  // setPosition(n: number) {
-  //   super.setPosition(n);
-  //   this.bg.setPosition(n);
-  // }
 
   public setPosition(pos: Pos): void {
     super.setPosition(pos);

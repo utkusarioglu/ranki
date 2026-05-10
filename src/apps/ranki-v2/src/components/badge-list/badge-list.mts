@@ -15,10 +15,6 @@ export class R2BadgeList extends R2C {
   @queryAll("r2-chip")
   private chips!: NodeListOf<R2C>;
 
-  // connectedCallback(): void {
-  //   super.connectedCallback();
-  // }
-
   protected firstUpdated(_changedProperties: PropertyValues): void {
     this.waitChildrenDims(Array.from(this.chips), (dims) => {
       console.log("then", this, dims);

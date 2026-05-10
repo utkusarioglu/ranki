@@ -41,7 +41,6 @@ export class R2App extends R2C {
 
       setTimeout(() => {
         console.log("timeout");
-        // this.emitChildLoad({});
         this.setPosition({ left: 20, top: 0 });
         this.setChildrenPosition([this.hud], { left: 40, top: 0 });
       }, PROPAGATE_DELAY);

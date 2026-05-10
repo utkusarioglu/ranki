@@ -9,17 +9,11 @@ export type Dims = { width: number; height: number };
 export type Pos = { top: number; left: number };
 
 export class R2C extends LitElement {
-  // protected ch: R2C[] = [];
   protected dims: Dims[] = [];
 
-  protected emitChildLoad(rect: Dims, detail: CustomEvent["detail"]) {
-    // const rect = this.getBoundingClientRect();
+  protected emitChildLoad(rect: Dims, extra: CustomEvent["detail"]) {
     const evt = new CustomEvent("child-load", {
-      detail: {
-        rect,
-        extra: detail,
-      },
-      // detail,
+      detail: { rect, extra },
       bubbles: true,
       composed: true,
     });
@@ -33,9 +27,6 @@ export class R2C extends LitElement {
       const first = e.composedPath()[0] as R2C;
       if (first === this) return;
       e.stopPropagation();
-      // if (!this.ch.includes(first)) {
-      //   this.ch.push(first);
-      // }
       const index = children.indexOf(first);
       if (index === -1) return;
       this.dims.splice(index, 1, (e as ListenChildrenEvent).detail.rect);
@@ -45,10 +36,6 @@ export class R2C extends LitElement {
 
       then([...this.dims]);
       this.dims = newNulls();
-      // if (children.includes(first)) {
-      //   this.ch.push(first);
-      // }
-      // then(e as ListenChildrenEvent);
     });
   }
 

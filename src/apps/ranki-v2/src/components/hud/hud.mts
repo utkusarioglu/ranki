@@ -16,10 +16,6 @@ export class R2Hud extends R2C {
   @query("r2-cue-list")
   private cueList!: R2C;
 
-  // connectedCallback(): void {
-  //   super.connectedCallback();
-  // }
-
   protected firstUpdated(_changedProperties: PropertyValues): void {
     this.waitChildrenDims([this.cueList], (dims) => {
       console.log("then", this, dims);

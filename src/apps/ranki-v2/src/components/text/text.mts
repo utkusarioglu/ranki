@@ -44,9 +44,5 @@ export class R2Text extends R2C {
     });
 
     return span;
-    // return until(
-    //   icon.then((i) => unsafeHTML(iconToHTML(i.body, { height: "20px" }))),
-    //   html`L`,
-    // );
   }
 }
