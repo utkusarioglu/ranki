@@ -25,8 +25,10 @@ export class R2Text extends R2C {
     }).then(() => {
       const rect = span.getBoundingClientRect();
       const dims: Dims = { width: rect.width, height: rect.height };
-      this.setStyle({ height: dims.height });
-      this.animateStyle({ width: dims.width }, { duration: 1000 });
+      this.setStyle({ height: dims.height }).animateStyle(
+        { width: dims.width },
+        { duration: 1000 },
+      );
       this.emitChildLoad(dims, {});
     });
 

@@ -14,7 +14,6 @@ export class R2BadgeList extends R2C {
   static styles = css`
     :host {
       position: absolute;
-      top: 1em;
       white-space: nowrap;
     }
   `;
@@ -45,8 +44,8 @@ export class R2BadgeList extends R2C {
     });
   }
 
-  public animateStyle(pos: AnimateableStyles): this {
-    super.animateStyle(pos, { duration: 1000 });
+  public informStyle(pos: AnimateableStyles): this {
+    this.animateStyle(pos, { duration: 1000 });
     return this;
   }
 

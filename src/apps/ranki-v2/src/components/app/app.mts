@@ -10,6 +10,7 @@ export class R2App extends R2C {
   static styles = css`
     :host {
       color: gray;
+      overflow: hidden;
     }
   `;
   @property()
