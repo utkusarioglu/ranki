@@ -3,7 +3,7 @@ import { customElement } from "lit/decorators.js";
 import { until } from "lit/directives/until.js";
 import { iconToHTML, loadIcon } from "iconify-icon";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { R2C, type Dims, type Pos } from "_components/r2c/r2c.mjs";
+import { R2C, type Dims } from "_components/r2c/r2c.mjs";
 
 @customElement("r2-icon")
 export class R2Icon extends R2C {
@@ -17,28 +17,14 @@ export class R2Icon extends R2C {
     }
   `;
 
-  public setPosition(pos: Pos): void {}
-
-  private setDims(dims: Dims) {
-    this.animate(
-      {
-        width: dims.width + "px",
-        height: dims.height + "px",
-      },
-      {
-        duration: 4e2,
-        fill: "both",
-      },
-    );
-  }
-
   render() {
     const height = 24;
     const icon = loadIcon("mdi:home");
     icon.then(() => {
       const dims: Dims = { width: height, height };
+      this.setStyle({ height });
+      this.animateStyle({ width: dims.width }, { duration: 1000 });
       this.emitChildLoad(dims, {});
-      this.setDims(dims);
     });
 
     return until(

@@ -1,5 +1,9 @@
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
-import { R2C, type Pos } from "_components/r2c/r2c.mjs";
+import {
+  R2C,
+  SizingUtils,
+  type AnimateableStyles,
+} from "_components/r2c/r2c.mjs";
 import { css, html, type PropertyValues } from "lit";
 import { customElement, queryAll } from "lit/decorators.js";
 
@@ -16,30 +20,27 @@ export class R2BadgeList extends R2C {
   private chips!: NodeListOf<R2C>;
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
-    this.waitChildrenDims(Array.from(this.chips), (dims) => {
-      console.log("then", this, dims);
-      const width = dims.reduce((a, c) => Math.max(a, c.width), 0);
-      const height = dims.reduce((a, c) => a + c.height, 0);
+    this.waitForDimensions(this.chips, (dims) => {
+      const { width, height } = SizingUtils.column(dims);
       setTimeout(() => {
         this.emitChildLoad({ width, height }, {});
       }, PROPAGATE_DELAY);
     });
   }
 
-  public setPosition(pos: Pos): void {
-    super.setPosition(pos);
-    this.setChildrenPosition(Array.from(this.chips), {
-      top: 0,
-      left: pos.left + 20,
-    });
+  public animateStyle(pos: AnimateableStyles): void {
+    super.animateStyle(pos, { duration: 1000 });
+    this.chips.forEach((e) => e.informStyle(pos));
   }
 
   render() {
     return html`
       <div>
         badge-list
-        <r2-chip style="--bg: red;"></r2-chip>
-        <r2-chip style="--bg: blue; --top: 3em"></r2-chip>
+        <r2-chip style="--border: red solid 1px; --bg: #333;"></r2-chip>
+        <r2-chip
+          style="--border: blue solid 1px; --bg: #333; --top: 3em"
+        ></r2-chip>
       </div>
     `;
   }

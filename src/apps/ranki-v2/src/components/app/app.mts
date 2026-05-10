@@ -2,7 +2,7 @@ import { css, html, type PropertyValues } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { appStore } from "_store/app.mjs";
 import type { RankiState } from "_config/config.types.mjs";
-import { R2C } from "_components/r2c/r2c.mjs";
+import { R2C, SizingUtils } from "_components/r2c/r2c.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 
 @customElement("r2-app")
@@ -32,17 +32,15 @@ export class R2App extends R2C {
   }
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
-    this.waitChildrenDims([this.hud], (dims) => {
-      console.log("then", this, dims);
-      const width = dims.reduce((a, c) => Math.max(a, c.width), 0);
-      const height = dims.reduce((a, c) => a + c.height, 0);
+    this.waitForDimensions([this.hud], (dims) => {
+      const { width, height } = SizingUtils.column(dims);
 
-      console.log("final", { width, height });
+      console.log("final", this, dims, { width, height });
 
       setTimeout(() => {
         console.log("timeout");
-        this.setPosition({ left: 20, top: 0 });
-        this.setChildrenPosition([this.hud], { left: 40, top: 0 });
+        this.animateStyle({ left: 20 }, { duration: 1000 });
+        [this.hud].forEach((e) => e.informStyle({ left: 40 }));
       }, PROPAGATE_DELAY);
     });
   }

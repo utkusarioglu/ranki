@@ -1,4 +1,4 @@
-import { css, type PropertyValues } from "lit";
+import { css } from "lit";
 import { customElement } from "lit/decorators.js";
 import { R2C, type Dims } from "_components/r2c/r2c.mjs";
 
@@ -13,21 +13,6 @@ export class R2Text extends R2C {
     }
   `;
 
-  private setDims(dims: Dims) {
-    this.animate(
-      {
-        width: dims.width + "px",
-        height: dims.height + "px",
-      },
-      {
-        duration: 4e2,
-        fill: "both",
-      },
-    );
-  }
-
-  protected firstUpdated(_changedProperties: PropertyValues): void {}
-
   render() {
     const span = document.createElement("span");
     span.innerText = "a".repeat(Math.floor(Math.random() * 10) + 2);
@@ -39,7 +24,8 @@ export class R2Text extends R2C {
     }).then(() => {
       const rect = span.getBoundingClientRect();
       const dims: Dims = { width: rect.width, height: rect.height };
-      this.setDims(dims);
+      this.setStyle({ height: dims.height });
+      this.animateStyle({ width: dims.width }, { duration: 1000 });
       this.emitChildLoad(dims, {});
     });
 

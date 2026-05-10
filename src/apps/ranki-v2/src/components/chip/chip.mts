@@ -1,6 +1,10 @@
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
-import { R2C, type Pos } from "_components/r2c/r2c.mjs";
+import {
+  R2C,
+  SizingUtils,
+  type AnimateableStyles,
+} from "_components/r2c/r2c.mjs";
 import { css, html, type PropertyValues } from "lit";
 import { customElement, query } from "lit/decorators.js";
 
@@ -24,27 +28,26 @@ export class R2Chip extends R2C {
   private bg!: R2HudBg;
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
-    this.waitChildrenDims([this.icon, this.text], (dims) => {
-      console.log("dims", dims);
+    this.waitForDimensions([this.icon, this.text], (dims) => {
+      const { width, height } = SizingUtils.row(dims);
+      const containerHeight = height + 10;
 
-      const width = dims.reduce((a, c) => c.width + a, 0);
-      const height = dims.reduce((a, c) => Math.max(a, c.height), 0);
-
-      this.bg.setDims({ width: width + 20, height });
+      this.setStyle({ height: containerHeight });
+      this.bg.setStyle({ height: containerHeight });
+      this.bg.animateStyle(
+        { width: width + 20, height: containerHeight },
+        { duration: 1e3 },
+      );
 
       setTimeout(() => {
-        this.emitChildLoad({ width, height }, {});
+        this.emitChildLoad({ width, height: containerHeight }, {});
       }, PROPAGATE_DELAY);
     });
   }
 
-  public setPosition(pos: Pos): void {
-    super.setPosition(pos);
-    // @ts-expect-error
-    this.setChildrenPosition([this.bg], {
-      top: 0,
-      left: -10,
-    });
+  public animateStyle(pos: AnimateableStyles): void {
+    super.animateStyle(pos, { duration: 1000 });
+    this.bg.informStyle({ left: -10 });
   }
 
   render() {

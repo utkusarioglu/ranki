@@ -1,5 +1,9 @@
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
-import { R2C, type Pos } from "_components/r2c/r2c.mjs";
+import {
+  R2C,
+  SizingUtils,
+  type AnimateableStyles,
+} from "_components/r2c/r2c.mjs";
 import { css, html, type PropertyValues } from "lit";
 import { customElement, query } from "lit/decorators.js";
 
@@ -17,10 +21,8 @@ export class R2Hud extends R2C {
   private cueList!: R2C;
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
-    this.waitChildrenDims([this.cueList], (dims) => {
-      console.log("then", this, dims);
-      const width = dims.reduce((a, c) => Math.max(a, c.width), 0);
-      const height = dims.reduce((a, c) => a + c.height, 0);
+    this.waitForDimensions([this.cueList], (dims) => {
+      const { width, height } = SizingUtils.column(dims);
 
       setTimeout(() => {
         this.emitChildLoad({ width, height }, {});
@@ -28,9 +30,13 @@ export class R2Hud extends R2C {
     });
   }
 
-  public setPosition(pos: Pos): void {
-    super.setPosition(pos);
-    this.setChildrenPosition([this.cueList], { top: 0, left: pos.left + 20 });
+  public animateStyle(pos: AnimateableStyles): void {
+    super.animateStyle(pos, { duration: 1000 });
+    [this.cueList].forEach((e) =>
+      e.informStyle({
+        left: pos.left! + 20,
+      }),
+    );
   }
 
   render() {
