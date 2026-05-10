@@ -4,6 +4,7 @@ import {
   R2C,
   SizingUtils,
   type AnimateableStyles,
+  type Dims,
 } from "_components/r2c/r2c.mjs";
 import { css, html, type PropertyValues } from "lit";
 import { customElement, query } from "lit/decorators.js";
@@ -13,7 +14,6 @@ export class R2Chip extends R2C {
   static styles = css`
     :host {
       position: absolute;
-      top: var(--top, 1em);
       white-space: nowrap;
       width: max-content;
       display: flex;
@@ -29,32 +29,45 @@ export class R2Chip extends R2C {
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
     this.waitForDimensions([this.icon, this.text], (dims) => {
-      const { width, height } = SizingUtils.row(dims);
-      const containerHeight = height + 10;
+      const { width, height, lefts, tops } = SizingUtils.row(dims, {
+        main: {
+          start: 10,
+          inBetween: 5,
+          end: 10,
+        },
+        cross: {
+          start: 5,
+          end: 5,
+        },
+      });
+      const container: Dims = {
+        height,
+        width,
+      };
 
-      this.setStyle({ height: containerHeight });
-      this.bg.setStyle({ height: containerHeight });
-      this.bg.animateStyle(
-        { width: width + 20, height: containerHeight },
-        { duration: 1e3 },
+      this.setStyle({ height: container.height });
+      [this.icon, this.text].forEach((e, i) =>
+        e.animateStyle({ left: lefts[i], top: tops[i] }, { duration: 1000 }),
       );
+      this.bg
+        .setStyle({ height: container.height })
+        .animateStyle({ width }, { duration: 1e3 });
 
       setTimeout(() => {
-        this.emitChildLoad({ width, height: containerHeight }, {});
+        this.emitChildLoad(container, {});
       }, PROPAGATE_DELAY);
     });
   }
 
-  public animateStyle(pos: AnimateableStyles): void {
-    super.animateStyle(pos, { duration: 1000 });
-    this.bg.informStyle({ left: -10 });
+  public informStyle(pos: AnimateableStyles): void {
+    this.animateStyle(pos, { duration: 1e3 });
   }
 
   render() {
     return html`
       <r2-hud-bg style="--z-index: -1;"></r2-hud-bg>
-      <r2-icon></r2-icon>
-      <r2-text></r2-text>
+      <r2-icon style="--position: absolute;"></r2-icon>
+      <r2-text style="--position: absolute;"></r2-text>
     `;
   }
 }

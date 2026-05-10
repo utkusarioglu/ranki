@@ -4,7 +4,15 @@ export type ListenChildrenEventFunc = (e: ListenChildrenEvent) => void;
 
 export type ListenChildrenEvent = CustomEvent<{ rect: Dims; detail: any }>;
 
-export type Dims = { width: number; height: number };
+export type Dims = {
+  width: number;
+  height: number;
+};
+
+export type Sizing = Dims & {
+  lefts: number[];
+  tops: number[];
+};
 
 type Pos = { top: number; left: number };
 
@@ -16,22 +24,97 @@ export type AnimationOptions = Required<
   Partial<Pick<KeyframeAnimationOptions, "easing">>;
 
 export interface R2Animate extends LitElement {
-  setStyle(pos: AnimateableStyles): void;
-  animateStyle(pos: AnimateableStyles, options: AnimationOptions): void;
+  setStyle(pos: AnimateableStyles): this;
+  animateStyle(pos: AnimateableStyles, options: AnimationOptions): this;
   informStyle(pos: AnimateableStyles): void;
 }
 
+export interface SizingGaps {
+  start: number;
+  inBetween: number;
+  end: number;
+}
+
+type GapsArg = {
+  main?: Partial<SizingGaps>;
+  cross?: Partial<Pick<SizingGaps, "start" | "end">>;
+};
+
 export class SizingUtils {
-  public static row(dims: Dims[]): Dims {
-    const width = dims.reduce((a, c) => c.width + a, 0);
-    const height = dims.reduce((a, c) => Math.max(a, c.height), 0);
-    return { width, height };
+  public static row(dims: Dims[], gaps: GapsArg = {}): Sizing {
+    // const width = dims.reduce((a, c) => c.width + a, 0);
+    // const height = dims.reduce((a, c) => Math.max(a, c.height), 0);
+    // return { width, height, lefts: [], tops: [] };
+
+    const s = SizingUtils.linear(
+      dims,
+      gaps,
+      (v) => v.width,
+      (v) => v.height,
+    );
+
+    return {
+      width: s.sizeMain,
+      height: s.sizeCross,
+      lefts: s.offsetMain,
+      tops: s.offsetCross,
+    };
   }
 
-  public static column(dims: Dims[]): Dims {
-    const width = dims.reduce((a, c) => Math.max(a, c.width), 0);
-    const height = dims.reduce((a, c) => a + c.height, 0);
-    return { width, height };
+  private static normalizeGaps(gaps: Partial<SizingGaps> | undefined) {
+    return {
+      start: 0,
+      end: 0,
+      inBetween: 0,
+      ...gaps,
+    };
+  }
+
+  private static linear(
+    dims: Dims[],
+    gaps: GapsArg = {},
+    getMain: (v: Dims) => number,
+    getCross: (v: Dims) => number,
+  ) {
+    const main = SizingUtils.normalizeGaps(gaps.main);
+    const cross = SizingUtils.normalizeGaps(gaps.cross);
+    const spacingMain =
+      main.inBetween * (dims.length - 1) + main.start + main.end;
+    const spacingCross = cross.start + cross.end;
+    const sizeCross =
+      dims.reduce((a, c) => Math.max(a, getCross(c)), 0) + spacingCross;
+    const sizeMain = dims.reduce((a, c) => a + getMain(c), 0) + spacingMain;
+
+    const offsetMain = Array(dims.length).fill(0);
+    offsetMain[0] = main.start;
+    for (let i = 0; i < dims.length; i++) {
+      if (i === 0) continue;
+      offsetMain[i] = offsetMain[i - 1] + getMain(dims[i - 1]) + main.inBetween;
+    }
+
+    const offsetCross = Array(dims.length).fill(0);
+    return {
+      sizeCross,
+      sizeMain,
+      offsetCross,
+      offsetMain,
+    };
+  }
+
+  public static column(dims: Dims[], gaps: GapsArg = {}): Sizing {
+    const s = SizingUtils.linear(
+      dims,
+      gaps,
+      (v) => v.height,
+      (v) => v.width,
+    );
+
+    return {
+      height: s.sizeMain,
+      width: s.sizeCross,
+      tops: s.offsetMain,
+      lefts: s.offsetCross,
+    };
   }
 }
 
@@ -91,18 +174,9 @@ export class R2C extends LitElement implements R2Animate {
     });
   }
 
-  // public animateListStyle<T extends R2Animate>(
-  //   list: T[] | NodeListOf<T>,
-  //   pos: AnimateableStyles,
-  //   options: AnimationOptions,
-  // ) {
-  //   list.forEach((f) => {
-  //     f.animateStyle(pos, options);
-  //   });
-  // }
-
   public informStyle(pos: AnimateableStyles): void {
-    this.setStyle(pos);
+    console.log("styleinform", this, pos);
+    // this.setStyle(pos);
   }
 
   public animateStyle(pos: AnimateableStyles, options: AnimationOptions) {
@@ -129,14 +203,17 @@ export class R2C extends LitElement implements R2Animate {
       {
         // easing: "ease-in-out",
         // easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-        easing: "cubic-bezier(0.68, -1.55, 0.165, 3.55)",
+        easing: "cubic-bezier(0.68, 1.55, 0.165, 3.55)",
+        // easing: "linear",
         fill: "both",
         ...options,
       },
     );
+    return this;
   }
 
   setStyle(pos: AnimateableStyles) {
     this.animateStyle(pos, { duration: 0 });
+    return this;
   }
 }

@@ -6,6 +6,7 @@ import { R2C, type Dims } from "_components/r2c/r2c.mjs";
 export class R2Text extends R2C {
   static styles = css`
     :host {
+      position: var(--position);
       display: inline-block;
       white-space: nowrap;
       width: 0;

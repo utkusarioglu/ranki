@@ -28,14 +28,14 @@ export class R2CueList extends R2C {
     });
   }
 
-  public animateStyle(pos: AnimateableStyles): void {
-    super.animateStyle(pos, { duration: 1000 });
-    [this.badgeList].forEach((e) =>
-      e.informStyle({
-        left: pos.left! + 20,
-      }),
-    );
-  }
+  // public animateStyle(pos: AnimateableStyles): void {
+  //   super.animateStyle(pos, { duration: 1000 });
+  //   [this.badgeList].forEach((e) =>
+  //     e.informStyle({
+  //       left: pos.left! + 20,
+  //     }),
+  //   );
+  // }
 
   render() {
     return html`
