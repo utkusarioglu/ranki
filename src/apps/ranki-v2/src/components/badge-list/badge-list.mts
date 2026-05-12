@@ -26,26 +26,29 @@ export class R2BadgeList extends R2C {
     (s) => s.state?.hud.subtree.tags.list,
   );
 
-  protected updated(_changedProperties: PropertyValues): void {
-    this.waitForDimensions(this.chips, (dims) => {
-      const { width, height, tops, lefts } = SizingUtils.row(dims, {
-        main: {
-          start: 10,
-          inBetween: 10,
-          end: 10,
-        },
-      });
-      const container = { width, height };
-      this.bg
-        .setStyle({ height: container.height })
-        .animateStyle({ width: container.width }, { duration: 1000 });
-      this.chips.forEach((e, i) =>
-        e.informStyle({ top: tops[i], left: lefts[i] }),
-      );
-      setTimeout(() => {
-        this.emitChildLoad(container, {});
-      }, PROPAGATE_DELAY);
-    });
+  protected firstUpdated(_changedProperties: PropertyValues): void {
+    this.watchDims(
+      () => this.chips,
+      () => {
+        const { width, height, tops, lefts } = SizingUtils.row(this, {
+          main: {
+            start: 10,
+            inBetween: 10,
+            end: 10,
+          },
+        });
+        const container = { width, height };
+        this.bg
+          .setStyle({ height: container.height })
+          .animateStyle({ width: container.width }, { duration: 1000 });
+        this.chips.forEach((e, i) =>
+          e.informStyle({ top: tops[i], left: lefts[i] }),
+        );
+        setTimeout(() => {
+          this.emitChildLoad(container, {});
+        }, PROPAGATE_DELAY);
+      },
+    );
   }
 
   public informStyle(pos: AnimateableStyles): this {

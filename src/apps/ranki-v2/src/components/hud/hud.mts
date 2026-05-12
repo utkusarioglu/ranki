@@ -20,26 +20,29 @@ export class R2Hud extends R2C {
   @query("r2-hud-bg")
   private bg!: R2HudBg;
 
-  protected updated(_changedProperties: PropertyValues): void {
-    this.waitForDimensions([this.cueList], (dims) => {
-      const { width, height, tops, lefts } = SizingUtils.row(dims, {
-        main: {
-          start: 10,
-          inBetween: 10,
-          end: 10,
-        },
-      });
-      const container = { width, height };
-      this.bg
-        .setStyle({ height: container.height })
-        .animateStyle({ width: container.width }, { duration: 1000 });
-      [this.cueList].forEach((e, i) =>
-        e.informStyle({ top: tops[i], left: lefts[i] }),
-      );
-      setTimeout(() => {
-        this.emitChildLoad({ width, height }, {});
-      }, PROPAGATE_DELAY);
-    });
+  protected firstUpdated(_changedProperties: PropertyValues): void {
+    this.watchDims(
+      () => [this.cueList],
+      () => {
+        const { width, height, tops, lefts } = SizingUtils.row(this, {
+          main: {
+            start: 10,
+            inBetween: 10,
+            end: 10,
+          },
+        });
+        const container = { width, height };
+        this.bg
+          .setStyle({ height: container.height })
+          .animateStyle({ width: container.width }, { duration: 1000 });
+        this.getDimWatched().forEach((e, i) =>
+          e.informStyle({ top: tops[i], left: lefts[i] }),
+        );
+        setTimeout(() => {
+          this.emitChildLoad({ width, height }, {});
+        }, PROPAGATE_DELAY);
+      },
+    );
   }
 
   public informStyle(pos: AnimateableStyles): void {

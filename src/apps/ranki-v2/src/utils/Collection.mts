@@ -15,8 +15,4 @@ export class CollectionUtils {
     }
     return index;
   }
-
-  static nullArray<T extends Node>(list: T[] | NodeListOf<T>) {
-    return Array(list.length).fill(null);
-  }
 }

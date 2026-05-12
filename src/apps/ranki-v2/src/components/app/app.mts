@@ -38,16 +38,19 @@ export class R2App extends R2C {
 
   private paletteName: string = "(none)";
 
-  protected updated(_changedProperties: PropertyValues): void {
-    this.waitForDimensions([this.hud], (dims) => {
-      const { width } = SizingUtils.column(dims);
+  protected firstUpdated(_changedProperties: PropertyValues): void {
+    this.watchDims(
+      () => [this.hud],
+      () => {
+        const { width } = SizingUtils.column(this);
 
-      setTimeout(() => {
-        [this.hud].forEach((e) =>
-          e.informStyle({ top: 10, left: window.innerWidth / 2 - width / 2 }),
-        );
-      }, PROPAGATE_DELAY);
-    });
+        setTimeout(() => {
+          this.getDimWatched().forEach((e) =>
+            e.informStyle({ top: 10, left: window.innerWidth / 2 - width / 2 }),
+          );
+        }, PROPAGATE_DELAY);
+      },
+    );
   }
 
   private updatePalette(design: RankiDesignState) {

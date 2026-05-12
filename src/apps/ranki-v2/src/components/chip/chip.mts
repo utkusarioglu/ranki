@@ -26,47 +26,52 @@ export class R2Chip extends R2C {
   private text!: R2C;
   @query("r2-hud-bg")
   private bg!: R2HudBg;
-  private chdim!: Dims[];
+  // private chdim!: Dims[];
 
   @property()
   private t: string = "";
 
-  protected updated(_changedProperties: PropertyValues): void {
-    this.waitForDimensions([this.icon, this.text], (dims) => {
-      this.chdim = dims;
-      const { width, height, lefts, tops } = SizingUtils.row(dims, {
-        main: {
-          start: 10,
-          inBetween: 5,
-          end: 10,
-        },
-        cross: {
-          start: 5,
-          end: 5,
-        },
-      });
-      const container: Dims = {
-        height,
-        width,
-      };
+  protected firstUpdated(_changedProperties: PropertyValues): void {
+    this.registerSizeWatch();
+  }
 
-      this.setStyle({ height: container.height });
-      [this.icon, this.text].forEach((e, i) =>
-        e.animateStyle({ left: lefts[i], top: tops[i] }, { duration: 1000 }),
-      );
-      this.bg
-        .setStyle({ height: container.height })
-        .animateStyle({ width }, { duration: 1e3 });
+  private registerSizeWatch() {
+    this.watchDims(
+      () => [this.icon, this.text],
+      () => {
+        const { width, height, lefts, tops } = SizingUtils.row(this, {
+          main: {
+            start: 10,
+            inBetween: 5,
+            end: 10,
+          },
+          cross: {
+            start: 5,
+            end: 5,
+          },
+        });
+        const container: Dims = { height, width };
 
-      setTimeout(() => {
-        this.emitChildLoad(container, {});
-      }, PROPAGATE_DELAY);
-    });
+        this.setStyle({ height: container.height });
+        this.getDimWatched().forEach((e, i) =>
+          e.animateStyle({ left: lefts[i], top: tops[i] }, { duration: 1000 }),
+        );
+        this.bg
+          .setStyle({ height: container.height })
+          .animateStyle({ width }, { duration: 1e3 });
+
+        setTimeout(() => {
+          this.emitChildLoad(container, {});
+        }, PROPAGATE_DELAY);
+      },
+    );
   }
 
   public informStyle(pos: AnimateableStyles): void {
     this.animateStyle(pos, { duration: 1e3 });
-    [this.icon, this.text].forEach((e, i) => e.informStyle(this.chdim[i]));
+    const dims = this.getDims();
+    const watched = this.getDimWatched();
+    watched.forEach((e, i) => e.informStyle(dims[i]));
   }
 
   render() {

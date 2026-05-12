@@ -1,5 +1,8 @@
 import { LitElement } from "lit";
 import { CollectionUtils } from "../../utils/Collection.mts";
+import { TimingUtils } from "_utils/timing.mjs";
+import type { Size } from "_utils/Sizing.mjs";
+import { assertNotUndefined } from "_error/assertions.mjs";
 
 export type ListenChildrenEventFunc = (e: ListenChildrenEvent) => void;
 
@@ -31,6 +34,31 @@ export interface R2Animate extends LitElement {
 
 export class R2C extends LitElement implements R2Animate {
   protected dims: Dims[] = [];
+  protected dimsUpdated = false;
+  private dimsWatchList: R2C[] | NodeListOf<R2C> | undefined;
+  private dimsSizing!: Size;
+
+  public setSizing(sizing: Size) {
+    this.dimsSizing = sizing;
+  }
+
+  public getSizing() {
+    assertNotUndefined(this.dimsSizing, {
+      why: "Sizing hasn't been populated. Have you not called SizingUtils?",
+    });
+    return this.dimsSizing;
+  }
+
+  public getDims(): Dims[] {
+    return this.dims;
+  }
+
+  public getDimWatched() {
+    assertNotUndefined(this.dimsWatchList, {
+      why: "Watch list hasn't been set. Are you sure you're watching any nodes",
+    });
+    return this.dimsWatchList;
+  }
 
   protected emitChildLoad(rect: Dims, extra: CustomEvent["detail"]) {
     const evt = new CustomEvent("child-load", {
@@ -41,30 +69,36 @@ export class R2C extends LitElement implements R2Animate {
     this.dispatchEvent(evt);
   }
 
-  protected waitForDimensions<T extends R2C>(
-    watchList: T[] | NodeListOf<T>,
+  protected watchDims<T extends R2C>(
+    getWatchList: () => T[] | NodeListOf<T>,
     then: (d: Dims[]) => void,
   ) {
-    this.dims = CollectionUtils.nullArray(watchList);
     this.addEventListener("child-load", (e) => {
+      if (this.dimsWatchList === undefined) {
+        this.dimsWatchList = getWatchList();
+        this.dims = Array(this.dimsWatchList.length)
+          .fill(null)
+          .map(() => ({
+            width: 0,
+            height: 0,
+          }));
+      }
       const first = e.composedPath()[0] as R2C;
       if (first === this) return;
       e.stopPropagation();
-      const index = CollectionUtils.indexOf(watchList, first);
+      const index = CollectionUtils.indexOf(this.dimsWatchList, first);
       if (index === -1) return;
+      this.dimsUpdated = true;
       this.dims.splice(index, 1, (e as ListenChildrenEvent).detail.rect);
-
-      const isIncomplete = this.dims.some((v) => v === null);
-      if (isIncomplete) return;
-
-      then([...this.dims]);
-      this.dims = CollectionUtils.nullArray(watchList);
+      TimingUtils.raf(1, () => {
+        this.dimsUpdated = false;
+        then([...this.dims]);
+      });
     });
   }
 
   public informStyle(pos: AnimateableStyles): void {
     console.log("styleinform", this, pos);
-    // this.setStyle(pos);
   }
 
   public animateStyle(pos: AnimateableStyles, options: AnimationOptions) {

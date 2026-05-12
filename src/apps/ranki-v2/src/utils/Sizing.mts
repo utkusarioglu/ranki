@@ -1,4 +1,4 @@
-import type { Dims } from "../components/r2c/r2c.mts";
+import type { Dims, R2C } from "../components/r2c/r2c.mts";
 
 export type Size = Dims & {
   lefts: number[];
@@ -17,7 +17,8 @@ export type GapsArg = {
 };
 
 export class SizingUtils {
-  public static row(dims: Dims[], gaps: GapsArg = {}): Size {
+  public static row(self: R2C, gaps: GapsArg = {}): Size {
+    const dims = self.getDims();
     const s = SizingUtils.linear(
       dims,
       gaps,
@@ -25,12 +26,16 @@ export class SizingUtils {
       (v) => v.height,
     );
 
-    return {
+    const sizing = {
       width: s.sizeMain,
       height: s.sizeCross,
       lefts: s.offsetMain,
       tops: s.offsetCross,
     };
+
+    self.setSizing(sizing);
+
+    return sizing;
   }
 
   private static normalizeGaps(gaps: Partial<SizingGaps> | undefined) {
@@ -73,7 +78,8 @@ export class SizingUtils {
     };
   }
 
-  public static column(dims: Dims[], gaps: GapsArg = {}): Size {
+  public static column(self: R2C, gaps: GapsArg = {}): Size {
+    const dims = self.getDims();
     const s = SizingUtils.linear(
       dims,
       gaps,

@@ -34,7 +34,6 @@ export class R2Text extends R2C {
   private ref = createRef<HTMLSpanElement>();
 
   public informStyle(pos: AnimateableStyles): void {
-    console.log("inform", pos);
     this.setStyle({ height: pos.height }).animateStyle(
       { width: pos.width },
       { duration: 1000 },
@@ -45,7 +44,6 @@ export class R2Text extends R2C {
     await new Promise(requestAnimationFrame);
     await new Promise(requestAnimationFrame);
     const rect = this.ref.value!.getBoundingClientRect();
-    console.log("r", rect);
     const dims: Dims = { width: rect.width, height: rect.height };
     this.emitChildLoad(dims, {});
   }
@@ -61,7 +59,6 @@ export class R2Text extends R2C {
       i < a.length - 2 && (s.remove = true);
     });
 
-    console.log(this.spans);
     return html`${this.spans.map(
       ({ text }, i, a) =>
         html`<span ${i === a.length - 1 ? ref(this.ref) : ""}>${text}</span>`,
