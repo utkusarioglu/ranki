@@ -41,7 +41,7 @@ export class R2Icon extends R2C {
           iconToHTML(i.body, { height: height + "px", width: height + "px" }),
         ),
       ),
-      html`L`,
+      html``,
     );
   }
 }

@@ -66,12 +66,15 @@ export class R2BadgeList extends R2C {
         })}"
       ></r2-hud-bg>
       ${repeat(
-        list,
-        (i) => i.text,
-        (t) => {
+        Array(list.length)
+          .fill(null)
+          .map((_, i) => i),
+        (i) => i,
+        (i) => {
           return html`
             <r2-chip
-              .t=${t.text}
+              .index=${i}
+              .list=${this.state.value}
               style="--border: red solid 1px; --bg: #333;"
             ></r2-chip>
           `;

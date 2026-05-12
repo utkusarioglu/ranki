@@ -1,5 +1,6 @@
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
+import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import {
   R2C,
   type AnimateableStyles,
@@ -29,7 +30,9 @@ export class R2Chip extends R2C {
   // private chdim!: Dims[];
 
   @property()
-  private t: string = "";
+  private index!: number;
+  @property()
+  private list!: HudTagListItem[];
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
     this.registerSizeWatch();
@@ -78,7 +81,16 @@ export class R2Chip extends R2C {
     return html`
       <r2-hud-bg style="--z-index: -1;"></r2-hud-bg>
       <r2-icon style="--position: absolute;"></r2-icon>
-      <r2-text .t=${this.t} style="--position: absolute;"></r2-text>
+      <r2-text
+        .props=${{
+          text: this.list[this.index].text,
+          animation: {
+            enabled: true,
+            duration: 2000,
+          },
+        }}
+        style="--position: absolute;"
+      ></r2-text>
     `;
   }
 }

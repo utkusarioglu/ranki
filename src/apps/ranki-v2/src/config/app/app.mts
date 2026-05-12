@@ -8,7 +8,7 @@ import type {
   HudTagListItem,
   RankiHudState,
   RankiHudStateAnimation,
-} from "_components/hud/hud.types.mts";
+} from "_components/hud/hud.types.mjs";
 import type {
   CardFaceArray,
   FilteredTags,
@@ -78,14 +78,6 @@ function buildRankiConfig(
   order: CardFaceArray,
   scheme: RankiAppDeterminedScheme,
 ): RankiState {
-  // const baseAnimation = base.config.design.animation.enabled === true;
-  // const baseHudAnimation = base.config.design.animation.hud;
-  // // baseHudAnimation.enabled =
-  // const hudAnimation = {
-  //   ...baseHudAnimation,
-  //   enabled: baseHudAnimation.enabled === true && baseAnimation,
-  // };
-
   const hudAnimation = getAnimation(base, "hud");
 
   const cues = buildCues(base.cueRecord, hudAnimation);

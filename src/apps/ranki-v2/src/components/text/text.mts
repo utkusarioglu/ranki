@@ -1,37 +1,40 @@
 import { css, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, queryAll } from "lit/decorators.js";
 import {
   R2C,
   type AnimateableStyles,
   type Dims,
 } from "_components/r2c/r2c.mjs";
-import { createRef, ref } from "lit/directives/ref.js";
+import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
+import { TimingUtils } from "_utils/timing.mjs";
 
-interface TextInternalProps {
+export interface R2TextProps {
+  animation: RankiPropAnimationBlock;
   text: string;
-  color?: string;
-  remove: boolean;
+  color: string;
 }
+
+type R2TextInternalProps = R2TextProps & {
+  runningAnimation?: Animation;
+};
 
 @customElement("r2-text")
 export class R2Text extends R2C {
   static styles = css`
     :host {
       position: var(--position);
-      display: inline-block;
       white-space: nowrap;
       width: 0;
       overflow: hidden;
     }
-
-    :host > span {
-      grid-area: 1/1;
-    }
   `;
   @property()
-  private t: string = "-";
-  private spans: TextInternalProps[] = [];
-  private ref = createRef<HTMLSpanElement>();
+  private props!: R2TextProps;
+
+  @queryAll("span")
+  private spans!: NodeListOf<HTMLSpanElement>;
+
+  private internal: R2TextInternalProps[] = [];
 
   public informStyle(pos: AnimateableStyles): void {
     this.setStyle({ height: pos.height }).animateStyle(
@@ -41,27 +44,67 @@ export class R2Text extends R2C {
   }
 
   async updated() {
-    await new Promise(requestAnimationFrame);
-    await new Promise(requestAnimationFrame);
-    const rect = this.ref.value!.getBoundingClientRect();
+    await TimingUtils.waitLayout();
+    const span = this.spans[this.spans.length - 1];
+    if (!span) return;
+    const rect = span.getBoundingClientRect();
     const dims: Dims = { width: rect.width, height: rect.height };
     this.emitChildLoad(dims, {});
+
+    for (let i = 0; i < this.spans.length; i++) {
+      const p = this.internal[i];
+      const s = this.spans[i];
+      if (!p.runningAnimation?.finished) {
+        p.runningAnimation?.cancel();
+      }
+      if (i === this.spans.length - 1) {
+        p.runningAnimation = s.animate(
+          {
+            opacity: 1,
+          },
+          {
+            duration: p.animation.duration,
+            easing: "linear",
+            fill: "both",
+          },
+        );
+      } else {
+        p.runningAnimation = s.animate(
+          {
+            opacity: 0,
+          },
+          {
+            duration: p.animation.duration,
+            easing: "linear",
+            fill: "both",
+          },
+        );
+        p.runningAnimation.finished.then(() => s.remove());
+      }
+    }
+  }
+
+  private updateInternal() {
+    const curr = this.internal.at(-1);
+    if (!curr || this.props.text !== curr.text) {
+      this.internal.push({
+        text: this.props.text,
+        color: this.props.color,
+        animation: {
+          preset: "default",
+          enabled: true,
+          duration: 1000,
+        },
+      });
+    }
   }
 
   render() {
-    if (!this.spans.length || this.t !== this.spans.at(-1)!.text) {
-      this.spans.push({
-        text: this.t,
-        remove: false,
-      });
-    }
-    this.spans.forEach((s, i, a) => {
-      i < a.length - 2 && (s.remove = true);
-    });
+    this.updateInternal();
 
-    return html`${this.spans.map(
-      ({ text }, i, a) =>
-        html`<span ${i === a.length - 1 ? ref(this.ref) : ""}>${text}</span>`,
+    return html`${this.internal.map(
+      ({ text }) =>
+        html`<span style="opacity: 0; position: absolute;">${text}</span>`,
     )}`;
   }
 }
