@@ -1,57 +1,73 @@
-import { css, html, type PropertyValues } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
-import { appStore } from "_store/app.mjs";
-import type { RankiState } from "_config/config.types.mjs";
+import { css, html, unsafeCSS, type PropertyValues } from "lit";
+import { customElement, query } from "lit/decorators.js";
 import { R2C, SizingUtils } from "_components/r2c/r2c.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
+import { StoreController } from "_/controllers/store.mjs";
+import { generatePaletteCss } from "_/design/color.mjs";
+import theme from "./theme.css?inline";
+import scheme from "./schemes.css?inline";
+import type { RankiDesignState } from "_config/config.types.mjs";
 
 @customElement("r2-app")
 export class R2App extends R2C {
-  static styles = css`
-    :host {
-      color: gray;
-      overflow: hidden;
-    }
-  `;
-  @property()
-  config: RankiState | null = null;
+  static paletteSheet = new CSSStyleSheet();
+  static styles = [
+    css`
+      :host {
+        position: fixed;
+        inset: 0;
+        color: rgb(var(--scheme-blue-2));
+        transition-property: color;
+        transition-duration: 1s;
+        overflow: hidden;
+      }
+    `,
+    R2App.paletteSheet,
+    css`
+      ${unsafeCSS(theme)}
+    `,
+    css`
+      ${unsafeCSS(scheme)}
+    `,
+  ];
+  private state = new StoreController(this, (s) => s.state);
 
   @query("r2-hud")
   private hud!: R2C;
 
-  private unsubscribe?: () => void;
+  private paletteName: string = "(none)";
 
-  connectedCallback() {
-    super.connectedCallback();
-
-    this.unsubscribe = appStore.subscribe(
-      (s) => s.state,
-      (config) => {
-        this.config = config;
-      },
-    );
-  }
-
-  protected firstUpdated(_changedProperties: PropertyValues): void {
+  protected updated(_changedProperties: PropertyValues): void {
     this.waitForDimensions([this.hud], (dims) => {
-      const { width, height } = SizingUtils.column(dims);
-
-      console.log("final", this, dims, { width, height });
+      const { width } = SizingUtils.column(dims);
 
       setTimeout(() => {
-        console.log("timeout");
-        this.animateStyle({ left: 20 }, { duration: 1000 });
-        [this.hud].forEach((e) => e.informStyle({ left: 40 }));
+        [this.hud].forEach((e) =>
+          e.informStyle({ top: 10, left: window.innerWidth / 2 - width / 2 }),
+        );
       }, PROPAGATE_DELAY);
     });
   }
 
-  disconnectedCallback() {
-    this.unsubscribe?.();
-    super.disconnectedCallback();
+  private updatePalette(design: RankiDesignState) {
+    const paletteName = design.palette;
+    if (paletteName === this.paletteName) return;
+    this.paletteName = paletteName;
+    const collection = design.paletteCollection;
+    const palette = collection.find((v) => v.name === paletteName)!;
+    const paletteCss = generatePaletteCss(palette);
+    R2App.paletteSheet.replaceSync(paletteCss);
   }
 
   render() {
-    return html`<r2-hud></r2-hud>`;
+    const val = this.state.value;
+    if (val) {
+      this.updatePalette(val.design);
+    }
+    return html`
+      <r2-indicator></r2-indicator>
+      <r2-hud></r2-hud>
+      <r2-challenge></r2-challenge>
+    `;
   }
 }

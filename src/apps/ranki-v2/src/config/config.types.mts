@@ -9,8 +9,7 @@ import type {
   HudVisibility,
   RankiHudState,
   RankiHudStateAnimation,
-  // @ts-expect-error
-} from "_components/hud/hud.types.mjs";
+} from "_config/hud.types.mjs";
 import type { DeepPartialSerializable } from "../types/util.types.mjs";
 import type {
   AnkiCardFace,

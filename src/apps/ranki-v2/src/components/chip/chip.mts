@@ -7,7 +7,7 @@ import {
   type Dims,
 } from "_components/r2c/r2c.mjs";
 import { css, html, type PropertyValues } from "lit";
-import { customElement, query } from "lit/decorators.js";
+import { customElement, property, query } from "lit/decorators.js";
 
 @customElement("r2-chip")
 export class R2Chip extends R2C {
@@ -26,9 +26,14 @@ export class R2Chip extends R2C {
   private text!: R2C;
   @query("r2-hud-bg")
   private bg!: R2HudBg;
+  private chdim!: Dims[];
 
-  protected firstUpdated(_changedProperties: PropertyValues): void {
+  @property()
+  private t: string = "";
+
+  protected updated(_changedProperties: PropertyValues): void {
     this.waitForDimensions([this.icon, this.text], (dims) => {
+      this.chdim = dims;
       const { width, height, lefts, tops } = SizingUtils.row(dims, {
         main: {
           start: 10,
@@ -61,13 +66,14 @@ export class R2Chip extends R2C {
 
   public informStyle(pos: AnimateableStyles): void {
     this.animateStyle(pos, { duration: 1e3 });
+    [this.icon, this.text].forEach((e, i) => e.informStyle(this.chdim[i]));
   }
 
   render() {
     return html`
       <r2-hud-bg style="--z-index: -1;"></r2-hud-bg>
       <r2-icon style="--position: absolute;"></r2-icon>
-      <r2-text style="--position: absolute;"></r2-text>
+      <r2-text .t=${this.t} style="--position: absolute;"></r2-text>
     `;
   }
 }

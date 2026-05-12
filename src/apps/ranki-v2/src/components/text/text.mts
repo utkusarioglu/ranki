@@ -1,6 +1,17 @@
-import { css } from "lit";
-import { customElement } from "lit/decorators.js";
-import { R2C, type Dims } from "_components/r2c/r2c.mjs";
+import { css, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import {
+  R2C,
+  type AnimateableStyles,
+  type Dims,
+} from "_components/r2c/r2c.mjs";
+import { createRef, ref } from "lit/directives/ref.js";
+
+interface TextInternalProps {
+  text: string;
+  color?: string;
+  remove: boolean;
+}
 
 @customElement("r2-text")
 export class R2Text extends R2C {
@@ -12,26 +23,48 @@ export class R2Text extends R2C {
       width: 0;
       overflow: hidden;
     }
+
+    :host > span {
+      grid-area: 1/1;
+    }
   `;
+  @property()
+  private t: string = "-";
+  private spans: TextInternalProps[] = [];
+  private ref = createRef<HTMLSpanElement>();
+
+  public informStyle(pos: AnimateableStyles): void {
+    console.log("inform", pos);
+    this.setStyle({ height: pos.height }).animateStyle(
+      { width: pos.width },
+      { duration: 1000 },
+    );
+  }
+
+  async updated() {
+    await new Promise(requestAnimationFrame);
+    await new Promise(requestAnimationFrame);
+    const rect = this.ref.value!.getBoundingClientRect();
+    console.log("r", rect);
+    const dims: Dims = { width: rect.width, height: rect.height };
+    this.emitChildLoad(dims, {});
+  }
 
   render() {
-    const span = document.createElement("span");
-    span.innerText = "a".repeat(Math.floor(Math.random() * 10) + 2);
-
-    new Promise<void>(async (r) => {
-      await new Promise(requestAnimationFrame);
-      await new Promise(requestAnimationFrame);
-      r();
-    }).then(() => {
-      const rect = span.getBoundingClientRect();
-      const dims: Dims = { width: rect.width, height: rect.height };
-      this.setStyle({ height: dims.height }).animateStyle(
-        { width: dims.width },
-        { duration: 1000 },
-      );
-      this.emitChildLoad(dims, {});
+    if (!this.spans.length || this.t !== this.spans.at(-1)!.text) {
+      this.spans.push({
+        text: this.t,
+        remove: false,
+      });
+    }
+    this.spans.forEach((s, i, a) => {
+      i < a.length - 2 && (s.remove = true);
     });
 
-    return span;
+    console.log(this.spans);
+    return html`${this.spans.map(
+      ({ text }, i, a) =>
+        html`<span ${i === a.length - 1 ? ref(this.ref) : ""}>${text}</span>`,
+    )}`;
   }
 }

@@ -1,3 +1,4 @@
+import { StoreController } from "_/controllers/store.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import {
@@ -7,6 +8,7 @@ import {
 } from "_components/r2c/r2c.mjs";
 import { css, html, type PropertyValues } from "lit";
 import { customElement, query, queryAll } from "lit/decorators.js";
+import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
 
 @customElement("r2-badge-list")
@@ -22,7 +24,12 @@ export class R2BadgeList extends R2C {
   @query("r2-hud-bg")
   private bg!: R2HudBg;
 
-  protected firstUpdated(_changedProperties: PropertyValues): void {
+  private state = new StoreController(
+    this,
+    (s) => s.state?.hud.subtree.tags.list,
+  );
+
+  protected updated(_changedProperties: PropertyValues): void {
     this.waitForDimensions(this.chips, (dims) => {
       const { width, height, tops, lefts } = SizingUtils.row(dims, {
         main: {
@@ -50,6 +57,7 @@ export class R2BadgeList extends R2C {
   }
 
   render() {
+    const list = this.state.value || [];
     return html`
       <r2-hud-bg
         style="${styleMap({
@@ -57,10 +65,23 @@ export class R2BadgeList extends R2C {
           "--border": "purple solid 1px",
         })}"
       ></r2-hud-bg>
-      <r2-chip style="--border: red solid 1px; --bg: #333;"></r2-chip>
-      <r2-chip
-        style="--border: blue solid 1px; --bg: #333; --top: 3em"
-      ></r2-chip>
+      ${repeat(
+        list,
+        (i) => i.text,
+        (t) => {
+          return html`
+            <r2-chip
+              .t=${t.text}
+              style="--border: red solid 1px; --bg: #333;"
+            ></r2-chip>
+          `;
+        },
+      )}
     `;
   }
 }
+
+// <r2-chip style="--border: red solid 1px; --bg: #333;"></r2-chip>
+// <r2-chip
+//   style="--border: blue solid 1px; --bg: #333; --top: 3em"
+// ></r2-chip>

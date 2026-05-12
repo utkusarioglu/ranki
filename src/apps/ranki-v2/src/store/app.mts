@@ -25,7 +25,7 @@ interface AppMethods {
   setRaw: (c: NonNullable<AppState["raw"]>) => void;
 }
 
-type AnkiStore = AppState & AppMethods;
+export type AnkiStore = AppState & AppMethods;
 
 export const appStore = createStore(
   subscribeWithSelector<AnkiStore>((set) => ({
@@ -76,7 +76,6 @@ appStore.subscribe(
 );
 
 onReady(() => {
-  console.log("ready");
   const should = shouldRender();
   appStore.setState({
     epoch: Date.now(),

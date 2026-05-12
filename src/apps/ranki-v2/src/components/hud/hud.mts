@@ -23,7 +23,7 @@ export class R2Hud extends R2C {
   @query("r2-hud-bg")
   private bg!: R2HudBg;
 
-  protected firstUpdated(_changedProperties: PropertyValues): void {
+  protected updated(_changedProperties: PropertyValues): void {
     this.waitForDimensions([this.cueList], (dims) => {
       const { width, height, tops, lefts } = SizingUtils.row(dims, {
         main: {

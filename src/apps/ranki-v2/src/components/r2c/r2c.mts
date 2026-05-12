@@ -203,8 +203,8 @@ export class R2C extends LitElement implements R2Animate {
       {
         // easing: "ease-in-out",
         // easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-        easing: "cubic-bezier(0.68, 1.55, 0.165, 3.55)",
-        // easing: "linear",
+        // easing: "cubic-bezier(0.68, 1.55, 0.165, 3.55)",
+        easing: "linear",
         fill: "both",
         ...options,
       },
