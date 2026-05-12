@@ -1,4 +1,4 @@
-export class Scroll {
+export class ScrollUtils {
   private static timeout: number;
 
   static async temporaryHide(duration: number) {

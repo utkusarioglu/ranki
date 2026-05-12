@@ -1,6 +1,7 @@
 import { css, html, unsafeCSS, type PropertyValues } from "lit";
 import { customElement, query } from "lit/decorators.js";
-import { R2C, SizingUtils } from "_components/r2c/r2c.mjs";
+import { R2C } from "_components/r2c/r2c.mjs";
+import { SizingUtils } from "_utils/Sizing.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import { StoreController } from "_/controllers/store.mjs";
 import { generatePaletteCss } from "_/design/color.mjs";

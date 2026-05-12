@@ -1,11 +1,8 @@
 import { StoreController } from "_/controllers/store.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
-import {
-  R2C,
-  SizingUtils,
-  type AnimateableStyles,
-} from "_components/r2c/r2c.mjs";
+import { R2C, type AnimateableStyles } from "_components/r2c/r2c.mjs";
+import { SizingUtils } from "_utils/Sizing.mjs";
 import { css, html, type PropertyValues } from "lit";
 import { customElement, query, queryAll } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";

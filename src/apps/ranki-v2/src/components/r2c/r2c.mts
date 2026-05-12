@@ -1,4 +1,5 @@
 import { LitElement } from "lit";
+import { CollectionUtils } from "../../utils/Collection.mts";
 
 export type ListenChildrenEventFunc = (e: ListenChildrenEvent) => void;
 
@@ -9,14 +10,13 @@ export type Dims = {
   height: number;
 };
 
-export type Sizing = Dims & {
-  lefts: number[];
-  tops: number[];
-};
-
 type Pos = { top: number; left: number };
 
-export type AnimateableStyles = Partial<Dims> & Partial<Pos>;
+type Anim = {
+  easing: string;
+};
+
+export type AnimateableStyles = Partial<Dims> & Partial<Pos> & Partial<Anim>;
 
 export type AnimationOptions = Required<
   Pick<KeyframeAnimationOptions, "duration">
@@ -27,118 +27,6 @@ export interface R2Animate extends LitElement {
   setStyle(pos: AnimateableStyles): this;
   animateStyle(pos: AnimateableStyles, options: AnimationOptions): this;
   informStyle(pos: AnimateableStyles): void;
-}
-
-export interface SizingGaps {
-  start: number;
-  inBetween: number;
-  end: number;
-}
-
-type GapsArg = {
-  main?: Partial<SizingGaps>;
-  cross?: Partial<Pick<SizingGaps, "start" | "end">>;
-};
-
-export class SizingUtils {
-  public static row(dims: Dims[], gaps: GapsArg = {}): Sizing {
-    // const width = dims.reduce((a, c) => c.width + a, 0);
-    // const height = dims.reduce((a, c) => Math.max(a, c.height), 0);
-    // return { width, height, lefts: [], tops: [] };
-
-    const s = SizingUtils.linear(
-      dims,
-      gaps,
-      (v) => v.width,
-      (v) => v.height,
-    );
-
-    return {
-      width: s.sizeMain,
-      height: s.sizeCross,
-      lefts: s.offsetMain,
-      tops: s.offsetCross,
-    };
-  }
-
-  private static normalizeGaps(gaps: Partial<SizingGaps> | undefined) {
-    return {
-      start: 0,
-      end: 0,
-      inBetween: 0,
-      ...gaps,
-    };
-  }
-
-  private static linear(
-    dims: Dims[],
-    gaps: GapsArg = {},
-    getMain: (v: Dims) => number,
-    getCross: (v: Dims) => number,
-  ) {
-    const main = SizingUtils.normalizeGaps(gaps.main);
-    const cross = SizingUtils.normalizeGaps(gaps.cross);
-    const spacingMain =
-      main.inBetween * (dims.length - 1) + main.start + main.end;
-    const spacingCross = cross.start + cross.end;
-    const sizeCross =
-      dims.reduce((a, c) => Math.max(a, getCross(c)), 0) + spacingCross;
-    const sizeMain = dims.reduce((a, c) => a + getMain(c), 0) + spacingMain;
-
-    const offsetMain = Array(dims.length).fill(0);
-    offsetMain[0] = main.start;
-    for (let i = 0; i < dims.length; i++) {
-      if (i === 0) continue;
-      offsetMain[i] = offsetMain[i - 1] + getMain(dims[i - 1]) + main.inBetween;
-    }
-
-    const offsetCross = Array(dims.length).fill(0);
-    return {
-      sizeCross,
-      sizeMain,
-      offsetCross,
-      offsetMain,
-    };
-  }
-
-  public static column(dims: Dims[], gaps: GapsArg = {}): Sizing {
-    const s = SizingUtils.linear(
-      dims,
-      gaps,
-      (v) => v.height,
-      (v) => v.width,
-    );
-
-    return {
-      height: s.sizeMain,
-      width: s.sizeCross,
-      tops: s.offsetMain,
-      lefts: s.offsetCross,
-    };
-  }
-}
-
-export class CollectionUtils {
-  /**
-   * This method is created because `NodeListOf` type doesn't support `indexOf` array method;
-   */
-  static indexOf<T extends R2C>(
-    list: T[] | NodeListOf<T>,
-    searched: T,
-  ): number {
-    let index = -1;
-    for (let i = 0; i < list.length; i++) {
-      if (list[i] === searched) {
-        index = i;
-        break;
-      }
-    }
-    return index;
-  }
-
-  static nullArray<T extends R2C>(list: T[] | NodeListOf<T>) {
-    return Array(list.length).fill(null);
-  }
 }
 
 export class R2C extends LitElement implements R2Animate {

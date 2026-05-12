@@ -1,10 +1,10 @@
-export class Timing {
+export class TimingUtils {
   /**
    * Waits for layout to be available. as a heuristic, 2 frames work reliably.
    * This doesn't mean it cannot break.
    */
   static async waitLayout() {
-    await Timing.raf(2, () => {});
+    await TimingUtils.raf(2, () => {});
   }
 
   static raf(frames: number = 2, cb: () => void): Promise<void> {
