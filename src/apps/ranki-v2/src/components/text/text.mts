@@ -1,12 +1,10 @@
-import { css, html } from "lit";
-import { customElement, property, queryAll } from "lit/decorators.js";
-import {
-  R2C,
-  type AnimateableStyles,
-  type Dims,
-} from "_components/r2c/r2c.mjs";
+import { css, html, type PropertyValues } from "lit";
+import { customElement, property, queryAll, state } from "lit/decorators.js";
+import { R2C, type AnimateableStyles } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
-import { TimingUtils } from "_utils/timing.mjs";
+import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
+import type { R2TextSpan } from "./text-span.mts";
+import { repeat } from "lit/directives/repeat.js";
 
 export interface R2TextProps {
   animation: RankiPropAnimationBlock;
@@ -14,97 +12,97 @@ export interface R2TextProps {
   color: string;
 }
 
-type R2TextInternalProps = R2TextProps & {
-  runningAnimation?: Animation;
+export type Parts = {
+  id: number;
+  props: R2TextProps;
+  leave: boolean;
 };
 
 @customElement("r2-text")
 export class R2Text extends R2C {
   static styles = css`
     :host {
-      position: var(--position);
       white-space: nowrap;
       width: 0;
-      overflow: hidden;
+      height: 0;
     }
   `;
-  @property()
+  @property({
+    hasChanged: (n: R2TextProps, o: R2TextProps | undefined) => {
+      return n.text !== o?.text;
+    },
+  })
   private props!: R2TextProps;
 
-  @queryAll("span")
-  private spans!: NodeListOf<HTMLSpanElement>;
+  @queryAll("r2-text-span")
+  private subtree!: NodeListOf<R2TextSpan>;
 
-  private internal: R2TextInternalProps[] = [];
+  @state()
+  private parts: Parts[] = [];
+
+  private idCounter = 0;
 
   public informStyle(pos: AnimateableStyles): void {
-    this.setStyle({ height: pos.height }).animateStyle(
-      { width: pos.width },
-      { duration: 1000 },
+    // this.setStyle({ height: pos.height }).animateStyle(
+    //   { width: pos.width },
+    //   { duration: 1000 },
+    // );
+  }
+
+  protected firstUpdated(_changedProperties: PropertyValues): void {
+    this.registerSizeWatch();
+  }
+
+  private registerSizeWatch() {
+    this.watchDims(
+      () => this.subtree,
+      (dims) => {
+        console.log("f", dims);
+        const last = dims.at(-1);
+        if (!last) return;
+        this.setStyle(last);
+        // this.setStyle({ height: last.height }).animateStyle(
+        //   { width: last.width },
+        //   { duration: this.props.animation.duration },
+        // );
+
+        setTimeout(() => {
+          this.emitChildLoad(last, {});
+        }, PROPAGATE_DELAY);
+      },
     );
   }
 
-  async updated() {
-    await TimingUtils.waitLayout();
-    const span = this.spans[this.spans.length - 1];
-    if (!span) return;
-    const rect = span.getBoundingClientRect();
-    const dims: Dims = { width: rect.width, height: rect.height };
-    this.emitChildLoad(dims, {});
-
-    for (let i = 0; i < this.spans.length; i++) {
-      const p = this.internal[i];
-      const s = this.spans[i];
-      if (!p.runningAnimation?.finished) {
-        p.runningAnimation?.cancel();
-      }
-      if (i === this.spans.length - 1) {
-        p.runningAnimation = s.animate(
-          {
-            opacity: 1,
-          },
-          {
-            duration: p.animation.duration,
-            easing: "linear",
-            fill: "both",
-          },
-        );
-      } else {
-        p.runningAnimation = s.animate(
-          {
-            opacity: 0,
-          },
-          {
-            duration: p.animation.duration,
-            easing: "linear",
-            fill: "both",
-          },
-        );
-        p.runningAnimation.finished.then(() => s.remove());
-      }
-    }
+  protected willUpdate(changed: PropertyValues): void {
+    if (!changed.has("props")) return;
+    const curr = this.parts.at(-1);
+    if (curr && curr.props.text === this.props.text) return;
+    const updated = this.parts.map((p) => ({ ...p, leave: true }));
+    this.parts = [
+      ...updated,
+      {
+        id: this.idCounter++,
+        props: { ...this.props },
+        leave: false,
+      },
+    ];
   }
 
-  private updateInternal() {
-    const curr = this.internal.at(-1);
-    if (!curr || this.props.text !== curr.text) {
-      this.internal.push({
-        text: this.props.text,
-        color: this.props.color,
-        animation: {
-          preset: "default",
-          enabled: true,
-          duration: 1000,
-        },
-      });
-    }
+  private partLeft(id: number) {
+    this.parts = this.parts.filter((v) => v.id !== id);
   }
 
   render() {
-    this.updateInternal();
-
-    return html`${this.internal.map(
-      ({ text }) =>
-        html`<span style="opacity: 0; position: absolute;">${text}</span>`,
+    console.log("r");
+    return html`${repeat(
+      this.parts,
+      (v) => v.id,
+      (p) =>
+        html`<r2-text-span 
+          .props=${p.props} 
+          ?leave=${p.leave} 
+          @r2-text-span-left=${() => this.partLeft(p.id)}
+        ></r2-text-span`,
     )}`;
   }
 }

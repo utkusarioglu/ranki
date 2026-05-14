@@ -1,1 +1,1 @@
-export const PROPAGATE_DELAY = 0;
+export const PROPAGATE_DELAY = 1000;

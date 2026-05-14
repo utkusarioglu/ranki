@@ -27,7 +27,6 @@ export class R2Chip extends R2C {
   private text!: R2C;
   @query("r2-hud-bg")
   private bg!: R2HudBg;
-  // private chdim!: Dims[];
 
   @property()
   private index!: number;
@@ -78,18 +77,29 @@ export class R2Chip extends R2C {
   }
 
   render() {
+    console.log("c", this.list, this.index);
     return html`
       <r2-hud-bg style="--z-index: -1;"></r2-hud-bg>
-      <r2-icon style="--position: absolute;"></r2-icon>
+      <r2-icon
+        .props=${{
+          icon: "mdi:home",
+          color: "rgb(var(--scheme-red-1))",
+          width: 24,
+          height: 24,
+          animation: {
+            enabled: true,
+            duration: 1000,
+          },
+        }}
+        style="position: absolute;"
+      ></r2-icon>
       <r2-text
         .props=${{
           text: this.list[this.index].text,
-          animation: {
-            enabled: true,
-            duration: 2000,
-          },
+          color: "rgb(var(--scheme-blue-2))",
+          animation: this.list[this.index].animation,
         }}
-        style="--position: absolute;"
+        style="position: absolute;"
       ></r2-text>
     `;
   }

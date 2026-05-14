@@ -19,7 +19,14 @@ type Anim = {
   easing: string;
 };
 
-export type AnimateableStyles = Partial<Dims> & Partial<Pos> & Partial<Anim>;
+type Other = {
+  opacity: number;
+};
+
+export type AnimateableStyles = Partial<Dims> &
+  Partial<Pos> &
+  Partial<Anim> &
+  Partial<Other>;
 
 export type AnimationOptions = Required<
   Pick<KeyframeAnimationOptions, "duration">
@@ -101,7 +108,12 @@ export class R2C extends LitElement implements R2Animate {
     console.log("styleinform", this, pos);
   }
 
-  public animateStyle(pos: AnimateableStyles, options: AnimationOptions) {
+  public animateStyle(
+    pos: AnimateableStyles,
+    options: AnimationOptions,
+    whenDone?: () => void,
+    assign?: Animation,
+  ) {
     let transform = {};
     const hasLeft = pos.left !== undefined;
     const hasTop = pos.top !== undefined;
@@ -116,21 +128,23 @@ export class R2C extends LitElement implements R2Animate {
         transform = { transform: maybe };
       }
     }
-    this.animate(
+    const anim = this.animate(
       {
         ...transform,
-        ...(pos.width ? { width: pos.width + "px" } : {}),
-        ...(pos.height ? { height: pos.height + "px" } : {}),
+        ...(pos.width !== undefined ? { width: pos.width + "px" } : {}),
+        ...(pos.height !== undefined ? { height: pos.height + "px" } : {}),
+        ...(pos.opacity !== undefined ? { opacity: pos.opacity } : {}),
       },
       {
-        // easing: "ease-in-out",
-        // easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-        // easing: "cubic-bezier(0.68, 1.55, 0.165, 3.55)",
         easing: "linear",
         fill: "both",
         ...options,
       },
     );
+    if (assign) assign = anim;
+    anim.finished.then(() => {
+      whenDone && whenDone();
+    });
     return this;
   }
 

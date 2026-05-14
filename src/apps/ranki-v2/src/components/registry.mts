@@ -6,6 +6,7 @@ import "./cue-list/cue-list.mjs";
 import "./icon/icon.mjs";
 import "./hud-bg/hud-bg.mjs";
 import "./text/text.mjs";
+import "./text/text-span.mjs";
 import "./challenge/challenge.mjs";
 import "./indicator/indicator.mjs";
 import "./indicator/indicator-pattern.mjs";
