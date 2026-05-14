@@ -1,7 +1,13 @@
 import { StoreController } from "_/controllers/store.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
-import { R2C, type AnimateableStyles } from "_components/r2c/r2c.mjs";
+import {
+  R2C,
+  R2CNew,
+  type AnimateableStyles,
+  type ComponentDims,
+  type Dims,
+} from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { css, html, type PropertyValues } from "lit";
 import { customElement, query, queryAll } from "lit/decorators.js";
@@ -26,34 +32,64 @@ export class R2BadgeList extends R2C {
     (s) => s.state?.hud.subtree.tags.list,
   );
 
-  protected firstUpdated(_changedProperties: PropertyValues): void {
-    this.watchDims(
-      () => this.chips,
-      () => {
-        const { width, height, tops, lefts } = SizingUtils.row(this, {
-          main: {
-            start: 10,
-            inBetween: 10,
-            end: 10,
-          },
-        });
-        const container = { width, height };
-        this.bg
-          .setStyle({ height: container.height })
-          .animateStyle({ width: container.width }, { duration: 1000 });
-        this.chips.forEach((e, i) =>
-          e.informStyle({ top: tops[i], left: lefts[i] }),
-        );
-        setTimeout(() => {
-          this.emitChildLoad(container, {});
-        }, PROPAGATE_DELAY);
-      },
-    );
+  // protected firstUpdated(_changedProperties: PropertyValues): void {
+  //   this.watchDims(
+  //     () => this.chips,
+  //     () => {
+  //       const { width, height, tops, lefts } = SizingUtils.rowOld(this, {
+  //         main: {
+  //           start: 10,
+  //           inBetween: 10,
+  //           end: 10,
+  //         },
+  //       });
+  //       const container = { width, height };
+  //       this.bg
+  //         .setStyle({ height: container.height })
+  //         .animateStyle({ width: container.width }, { duration: 1000 });
+  //       this.chips.forEach((e, i) =>
+  //         e.informStyle({ top: tops[i], left: lefts[i] }),
+  //       );
+  //       setTimeout(() => {
+  //         this.emitChildLoad(container, {});
+  //       }, PROPAGATE_DELAY);
+  //     },
+  //   );
+  // }
+
+  protected getSizeList(): R2CNew[] {
+    return Array.from(this.chips);
   }
 
-  public informStyle(pos: AnimateableStyles): this {
-    this.animateStyle(pos, { duration: 1000 });
-    return this;
+  updateGeometry(dims: ComponentDims[]): Dims | null {
+    const { width, height, tops, lefts } = SizingUtils.row(
+      dims.map((v) => v.dims),
+      {
+        main: {
+          start: 10,
+          inBetween: 10,
+          end: 10,
+        },
+      },
+    );
+    const container = { width, height };
+    this.bg
+      .setStyle({ height: container.height })
+      .animateStyle({ width: container.width }, { duration: 1000 });
+    this.getSizeList().forEach((e, i) =>
+      e.informStyle({ top: tops[i], left: lefts[i] }),
+    );
+    // setTimeout(() => {
+    //   this.emitChildLoad(container, {});
+    // }, PROPAGATE_DELAY);
+    return container;
+  }
+
+  public informStyle(pos: AnimateableStyles): void {
+    this.animateStyle(pos, { duration: 1e3 });
+    const dims = this.getDims();
+    const watched = this.getSizeList();
+    watched.forEach((e, i) => e.informStyle(dims[i]));
   }
 
   render() {
@@ -76,6 +112,7 @@ export class R2BadgeList extends R2C {
               .index=${i}
               .list=${this.state.value}
               style="--border: red solid 1px; --bg: #333;"
+              @r2-child-size=${this.onChildSize}
             ></r2-chip>
           `;
         },
@@ -83,8 +120,3 @@ export class R2BadgeList extends R2C {
     `;
   }
 }
-
-// <r2-chip style="--border: red solid 1px; --bg: #333;"></r2-chip>
-// <r2-chip
-//   style="--border: blue solid 1px; --bg: #333; --top: 3em"
-// ></r2-chip>

@@ -1,6 +1,11 @@
 import { css, html, unsafeCSS, type PropertyValues } from "lit";
 import { customElement, query } from "lit/decorators.js";
-import { R2C } from "_components/r2c/r2c.mjs";
+import {
+  R2C,
+  R2CNew,
+  type ComponentDims,
+  type Dims,
+} from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import { StoreController } from "_/controllers/store.mjs";
@@ -34,23 +39,37 @@ export class R2App extends R2C {
   private state = new StoreController(this, (s) => s.state);
 
   @query("r2-hud")
-  private hud!: R2C;
+  private hud!: R2CNew;
 
   private paletteName: string = "(none)";
+  updateGeometry(dims: ComponentDims[]): Dims | null {
+    const { width } = SizingUtils.columnOld(this);
 
-  protected firstUpdated(_changedProperties: PropertyValues): void {
-    this.watchDims(
-      () => [this.hud],
-      () => {
-        const { width } = SizingUtils.column(this);
+    setTimeout(() => {
+      this.getSizeList().forEach((e) =>
+        e.informStyle({ top: 10, left: window.innerWidth / 2 - width / 2 }),
+      );
+    }, PROPAGATE_DELAY);
+    return null;
+  }
 
-        setTimeout(() => {
-          this.getDimWatched().forEach((e) =>
-            e.informStyle({ top: 10, left: window.innerWidth / 2 - width / 2 }),
-          );
-        }, PROPAGATE_DELAY);
-      },
-    );
+  // protected firstUpdated(_changedProperties: PropertyValues): void {
+  //   this.watchDims(
+  //     () => [this.hud],
+  //     () => {
+  //       const { width } = SizingUtils.columnOld(this);
+
+  //       setTimeout(() => {
+  //         this.getDimWatched().forEach((e) =>
+  //           e.informStyle({ top: 10, left: window.innerWidth / 2 - width / 2 }),
+  //         );
+  //       }, PROPAGATE_DELAY);
+  //     },
+  //   );
+  // }
+
+  protected getSizeList(): R2CNew[] {
+    return [this.hud];
   }
 
   private updatePalette(design: RankiDesignState) {

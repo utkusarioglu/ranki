@@ -1,12 +1,23 @@
 import { R2C, type Dims } from "_components/r2c/r2c.mjs";
-import { TimingUtils } from "_utils/timing.mjs";
 import { css, type PropertyValues, html } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
-import type { R2TextProps } from "./text.mts";
+import { customElement, property, query, state } from "lit/decorators.js";
+import type { R2IconProps } from "./icon.mts";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { loadIcon } from "iconify-icon";
+import { TimingUtils } from "_utils/timing.mjs";
 
-@customElement("r2-text-span")
-export class R2TextSpan extends R2C {
+const SVG_PLACEHOLDER = `
+  <circle
+    cx="12"
+    cy="12"
+    r="12"
+    fill=rgb(var(--scheme-surface-3))
+  />
+`.trim();
+
+@customElement("r2-icon-span")
+export class R2IconSpan extends R2C {
   static styles = css`
     :host {
       position: absolute;
@@ -15,16 +26,12 @@ export class R2TextSpan extends R2C {
       width: 0;
       height: 0;
     }
-
-    :host > span {
-      white-space: nowrap;
-    }
   `;
   @property()
-  public props!: R2TextProps;
+  public props!: R2IconProps;
 
-  @query("span")
-  private span!: HTMLSpanElement;
+  @state()
+  private svg: string = SVG_PLACEHOLDER;
 
   @property({ type: Boolean, reflect: true })
   leave = false;
@@ -61,9 +68,13 @@ export class R2TextSpan extends R2C {
 
   async firstUpdated(changed: PropertyValues) {
     super.firstUpdated(changed);
-    await TimingUtils.waitLayout();
-    const { width, height } = this.span.getBoundingClientRect();
+    const { width, height } = this.props;
     const dims: Dims = { width, height };
+    await TimingUtils.waitLayout();
+    this.emitSize(dims);
+
+    const icon = await loadIcon(this.props.icon);
+    this.svg = icon.body;
     this.setStyle({ height }).animateStyle(
       {
         width,
@@ -71,7 +82,6 @@ export class R2TextSpan extends R2C {
       },
       {
         duration: this.props.animation.duration,
-        delay: 500,
       },
     );
     setTimeout(() => {
@@ -80,8 +90,11 @@ export class R2TextSpan extends R2C {
   }
 
   render() {
-    return html`<span style="color: ${this.props.color}"
-      >${this.props.text}</span
-    >`;
+    const { width, height, color } = this.props;
+    return html`
+      ${unsafeHTML(
+        `<svg width="${width}" height="${height}" color="${color}">${this.svg}</svg> `,
+      )}
+    `;
   }
 }

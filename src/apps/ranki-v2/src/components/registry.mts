@@ -4,6 +4,7 @@ import "./badge-list/badge-list.mjs";
 import "./chip/chip.mjs";
 import "./cue-list/cue-list.mjs";
 import "./icon/icon.mjs";
+import "./icon/icon-span.mjs";
 import "./hud-bg/hud-bg.mjs";
 import "./text/text.mjs";
 import "./text/text-span.mjs";
