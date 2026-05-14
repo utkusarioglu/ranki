@@ -2,7 +2,11 @@ import { LitElement } from "lit";
 import { CollectionUtils } from "../../utils/Collection.mts";
 import { TimingUtils } from "_utils/timing.mjs";
 import type { Size } from "_utils/Sizing.mjs";
-import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
+import {
+  assertNever,
+  assertNotNull,
+  assertNotUndefined,
+} from "_error/assertions.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 
@@ -65,12 +69,29 @@ export interface ComponentDims {
   dims: Dims;
 }
 
+export type R2Geometry = {
+  // container: Dims;
+  sizing: Dims & { lefts: number[]; tops: number[] };
+  elements?: Record<string, AnimateableStyles>;
+};
+
 export class R2CNew extends LitElement {
   private registered = new WeakMap<R2CNew, Dims>();
+  private geometry: R2Geometry | null = null;
   // private registered: ComponentRegistration[] = [];
 
-  protected getSizeList() {
-    return Array.from(this.shadowRoot!.children) as R2CNew[];
+  protected getGeometry(): R2Geometry {
+    assertNotNull(this.geometry, {
+      why: "getGeometry called when no geometry was registered",
+    });
+    return this.geometry;
+  }
+
+  protected getSizeList(): R2CNew[] {
+    console.log(this, "did not define `getSizeList`");
+    return [];
+    // assertNever({ why: "This method needs to be defined by the leaf" });
+    // return Array.from(this.shadowRoot!.children) as R2CNew[];
   }
 
   protected emitSize({ width, height }: Dims | DOMRect) {
@@ -141,10 +162,10 @@ export class R2CNew extends LitElement {
     switch (detail.type) {
       case "disconnected":
       case "update":
-        const geometry = this.updateGeometry(this.orderTrackedNodes());
-        if (geometry)
+        this.geometry = this.updateGeometry(this.orderTrackedNodes());
+        if (this.geometry)
           setTimeout(() => {
-            this.emitSize(geometry);
+            this.emitSize(this.geometry!.sizing);
           }, PROPAGATE_DELAY);
     }
   }
@@ -155,6 +176,7 @@ export class R2CNew extends LitElement {
     for (let component of serial) {
       const dims = this.registered.get(component);
       if (!dims) {
+        console.log(component);
         // FIX you may need to replace this with a boundingClientRect call
         assertNever({ why: "The element should exist in weakmap" });
       }
@@ -163,7 +185,7 @@ export class R2CNew extends LitElement {
     return ordered;
   }
 
-  updateGeometry(dims: ComponentDims[]): Dims | null {
+  updateGeometry(dims: ComponentDims[]): R2Geometry | null {
     assertNever({ why: "This method needs to be overwritten by the leaf" });
   }
 
@@ -218,70 +240,63 @@ export class R2CNew extends LitElement {
 }
 
 export class R2C extends R2CNew implements R2Animate {
-  protected dims: Dims[] = [];
-  protected dimsUpdated = false;
-  private dimsWatchList: R2C[] | NodeListOf<R2C> | undefined;
-  private dimsSizing!: Size;
-
-  public setSizing(sizing: Size) {
-    this.dimsSizing = sizing;
-  }
-
-  public getSizing() {
-    assertNotUndefined(this.dimsSizing, {
-      why: "Sizing hasn't been populated. Have you not called SizingUtils?",
-    });
-    return this.dimsSizing;
-  }
-
-  public getDims(): Dims[] {
-    return this.dims;
-  }
-
-  public getDimWatched() {
-    assertNotUndefined(this.dimsWatchList, {
-      why: "Watch list hasn't been set. Are you sure you're watching any nodes",
-    });
-    return this.dimsWatchList;
-  }
-
-  protected emitChildLoad(rect: Dims, extra: CustomEvent["detail"]) {
-    const evt = new CustomEvent("child-load", {
-      detail: { rect, extra },
-      bubbles: true,
-      composed: true,
-    });
-    this.dispatchEvent(evt);
-  }
-
-  protected watchDims<T extends R2C>(
-    getWatchList: () => T[] | NodeListOf<T>,
-    then: (d: Dims[]) => void,
-  ) {
-    this.addEventListener("child-load", (e) => {
-      if (this.dimsWatchList === undefined) {
-        this.dimsWatchList = getWatchList();
-        this.dims = Array(this.dimsWatchList.length)
-          .fill(null)
-          .map(() => ({
-            width: 0,
-            height: 0,
-          }));
-      }
-      const first = e.composedPath()[0] as R2C;
-      if (first === this) return;
-      e.stopPropagation();
-      const index = CollectionUtils.indexOf(this.dimsWatchList, first);
-      if (index === -1) return;
-      this.dimsUpdated = true;
-      this.dims.splice(index, 1, (e as ListenChildrenEvent).detail.rect);
-      TimingUtils.raf(1, () => {
-        this.dimsUpdated = false;
-        then([...this.dims]);
-      });
-    });
-  }
-
+  // protected dims: Dims[] = [];
+  // protected dimsUpdated = false;
+  // private dimsWatchList: R2C[] | NodeListOf<R2C> | undefined;
+  // private dimsSizing!: Size;
+  // public setSizing(sizing: Size) {
+  //   this.dimsSizing = sizing;
+  // }
+  // public getSizing() {
+  //   assertNotUndefined(this.dimsSizing, {
+  //     why: "Sizing hasn't been populated. Have you not called SizingUtils?",
+  //   });
+  //   return this.dimsSizing;
+  // }
+  // public getDims(): Dims[] {
+  //   return this.dims;
+  // }
+  // public getDimWatched() {
+  //   assertNotUndefined(this.dimsWatchList, {
+  //     why: "Watch list hasn't been set. Are you sure you're watching any nodes",
+  //   });
+  //   return this.dimsWatchList;
+  // }
+  // protected emitChildLoad(rect: Dims, extra: CustomEvent["detail"]) {
+  //   const evt = new CustomEvent("child-load", {
+  //     detail: { rect, extra },
+  //     bubbles: true,
+  //     composed: true,
+  //   });
+  //   this.dispatchEvent(evt);
+  // }
+  // protected watchDims<T extends R2C>(
+  //   getWatchList: () => T[] | NodeListOf<T>,
+  //   then: (d: Dims[]) => void,
+  // ) {
+  //   this.addEventListener("child-load", (e) => {
+  //     if (this.dimsWatchList === undefined) {
+  //       this.dimsWatchList = getWatchList();
+  //       this.dims = Array(this.dimsWatchList.length)
+  //         .fill(null)
+  //         .map(() => ({
+  //           width: 0,
+  //           height: 0,
+  //         }));
+  //     }
+  //     const first = e.composedPath()[0] as R2C;
+  //     if (first === this) return;
+  //     e.stopPropagation();
+  //     const index = CollectionUtils.indexOf(this.dimsWatchList, first);
+  //     if (index === -1) return;
+  //     this.dimsUpdated = true;
+  //     this.dims.splice(index, 1, (e as ListenChildrenEvent).detail.rect);
+  //     TimingUtils.raf(1, () => {
+  //       this.dimsUpdated = false;
+  //       then([...this.dims]);
+  //     });
+  //   });
+  // }
   // public informStyle(pos: AnimateableStyles): void {
   //   console.log("styleinform", this, pos);
   // }

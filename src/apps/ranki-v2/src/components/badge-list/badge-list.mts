@@ -7,6 +7,7 @@ import {
   type AnimateableStyles,
   type ComponentDims,
   type Dims,
+  type R2Geometry,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { css, html, type PropertyValues } from "lit";
@@ -61,8 +62,8 @@ export class R2BadgeList extends R2C {
     return Array.from(this.chips);
   }
 
-  updateGeometry(dims: ComponentDims[]): Dims | null {
-    const { width, height, tops, lefts } = SizingUtils.row(
+  updateGeometry(dims: ComponentDims[]): R2Geometry | null {
+    const sizing = SizingUtils.row(
       dims.map((v) => v.dims),
       {
         main: {
@@ -72,24 +73,29 @@ export class R2BadgeList extends R2C {
         },
       },
     );
-    const container = { width, height };
-    this.bg
-      .setStyle({ height: container.height })
-      .animateStyle({ width: container.width }, { duration: 1000 });
-    this.getSizeList().forEach((e, i) =>
-      e.informStyle({ top: tops[i], left: lefts[i] }),
-    );
+    // const { width, height, tops, lefts } = sizing;
+    // const container = { width, height };
+    // this.getSizeList().forEach((e, i) =>
+    //   e.informStyle({ top: tops[i], left: lefts[i] }),
+    // );
     // setTimeout(() => {
     //   this.emitChildLoad(container, {});
     // }, PROPAGATE_DELAY);
-    return container;
+    return { sizing };
   }
 
   public informStyle(pos: AnimateableStyles): void {
+    const { sizing } = this.getGeometry();
     this.animateStyle(pos, { duration: 1e3 });
-    const dims = this.getDims();
-    const watched = this.getSizeList();
-    watched.forEach((e, i) => e.informStyle(dims[i]));
+    this.bg
+      .setStyle({ height: sizing.height })
+      .animateStyle({ width: sizing.width }, { duration: 1000 });
+    this.getSizeList().forEach((e, i) =>
+      e.informStyle({
+        left: sizing.lefts[i],
+        top: sizing.tops[i],
+      }),
+    );
   }
 
   render() {

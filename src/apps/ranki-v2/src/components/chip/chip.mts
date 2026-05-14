@@ -5,7 +5,7 @@ import {
   R2CNew,
   type AnimateableStyles,
   type ComponentDims,
-  type Dims,
+  type R2Geometry,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { css, html } from "lit";
@@ -17,9 +17,6 @@ export class R2Chip extends R2C {
     :host {
       position: absolute;
       white-space: nowrap;
-      width: max-content;
-      display: flex;
-      align-items: center;
     }
   `;
   @query("r2-icon")
@@ -38,7 +35,7 @@ export class R2Chip extends R2C {
     return [this.icon, this.text];
   }
 
-  updateGeometry(dims: ComponentDims[]): Dims | null {
+  updateGeometry(dims: ComponentDims[]): R2Geometry | null {
     const sizing = SizingUtils.row(
       dims.map((v) => v.dims),
       {
@@ -53,25 +50,22 @@ export class R2Chip extends R2C {
         },
       },
     );
-    const { width, height, lefts, tops } = sizing;
-    const container: Dims = { height, width };
-
-    this.setStyle({ height: container.height });
-    this.getSizeList().forEach((e, i) =>
-      e.animateStyle({ left: lefts[i], top: tops[i] }, { duration: 1000 }),
-    );
-    this.bg
-      .setStyle({ height: container.height })
-      .animateStyle({ width }, { duration: 1e3 });
-    this.setSizing(sizing);
-    return container;
+    return { sizing };
   }
 
   public informStyle(pos: AnimateableStyles): void {
-    this.animateStyle(pos, { duration: 1e3 });
-    const dims = this.getDims();
-    const watched = this.getSizeList();
-    watched.forEach((e, i) => e.informStyle(dims[i]));
+    const { sizing } = this.getGeometry();
+    // this.animateStyle(pos, { duration: 1e3 });
+    this.setStyle(pos);
+    this.bg
+      .setStyle({ height: sizing.height })
+      .animateStyle({ width: sizing.width }, { duration: 1e3 });
+    this.getSizeList().forEach((e, i) =>
+      e.informStyle({
+        left: sizing.lefts[i],
+        top: sizing.tops[i],
+      }),
+    );
   }
 
   render() {

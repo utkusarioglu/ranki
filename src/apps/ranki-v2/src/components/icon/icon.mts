@@ -5,9 +5,11 @@ import { customElement, property, queryAll } from "lit/decorators.js";
 import {
   R2C,
   R2CNew,
+  type AnimateableStyles,
   // type AnimateableStyles,
   type ComponentDims,
   type Dims,
+  type R2Geometry,
 } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 // import { TimingUtils } from "_utils/timing.mjs";
@@ -173,11 +175,26 @@ export class R2Icon extends R2C {
     this.parts = this.parts.filter((v) => v.id !== id);
   }
 
-  updateGeometry(dims: ComponentDims[]): Dims | null {
+  updateGeometry(dims: ComponentDims[]): R2Geometry | null {
     const last = dims.at(-1);
     if (!last) return null;
-    this.setStyle(last.dims);
-    return last.dims;
+    return { sizing: { ...last.dims, lefts: [0], tops: [0] } };
+  }
+
+  public informStyle(pos: AnimateableStyles): void {
+    const geometry = this.getGeometry();
+    this.setStyle({
+      height: geometry.sizing.height,
+      left: pos.left,
+      top: pos.top,
+    }).animateStyle(
+      {
+        width: geometry.sizing.width,
+      },
+      {
+        duration: this.props.animation.duration,
+      },
+    );
   }
 
   render() {

@@ -17,26 +17,26 @@ export type GapsArg = {
 };
 
 export class SizingUtils {
-  public static rowOld(self: R2C, gaps: GapsArg = {}): Size {
-    const dims = self.getDims();
-    const s = SizingUtils.linear(
-      dims,
-      gaps,
-      (v) => v.width,
-      (v) => v.height,
-    );
+  // public static rowOld(self: R2C, gaps: GapsArg = {}): Size {
+  //   const dims = self.getDims();
+  //   const s = SizingUtils.linear(
+  //     dims,
+  //     gaps,
+  //     (v) => v.width,
+  //     (v) => v.height,
+  //   );
 
-    const sizing = {
-      width: s.sizeMain,
-      height: s.sizeCross,
-      lefts: s.offsetMain,
-      tops: s.offsetCross,
-    };
+  //   const sizing = {
+  //     width: s.sizeMain,
+  //     height: s.sizeCross,
+  //     lefts: s.offsetMain,
+  //     tops: s.offsetCross,
+  //   };
 
-    self.setSizing(sizing);
+  //   // self.setSizing(sizing);
 
-    return sizing;
-  }
+  //   return sizing;
+  // }
 
   public static row(dims: Dims[], gaps: GapsArg = {}): Size {
     // const dims = self.getDims();
@@ -90,7 +90,9 @@ export class SizingUtils {
       offsetMain[i] = offsetMain[i - 1] + getMain(dims[i - 1]) + main.inBetween;
     }
 
-    const offsetCross = Array(dims.length).fill(0);
+    const offsetCross = Array(dims.length)
+      .fill(0)
+      .map((_, i) => (sizeCross - getCross(dims[i])) / 2);
     return {
       sizeCross,
       sizeMain,
@@ -99,20 +101,20 @@ export class SizingUtils {
     };
   }
 
-  public static columnOld(self: R2C, gaps: GapsArg = {}): Size {
-    const dims = self.getDims();
-    const s = SizingUtils.linear(
-      dims,
-      gaps,
-      (v) => v.height,
-      (v) => v.width,
-    );
+  // public static columnOld(self: R2C, gaps: GapsArg = {}): Size {
+  //   const dims = self.getDims();
+  //   const s = SizingUtils.linear(
+  //     dims,
+  //     gaps,
+  //     (v) => v.height,
+  //     (v) => v.width,
+  //   );
 
-    return {
-      height: s.sizeMain,
-      width: s.sizeCross,
-      tops: s.offsetMain,
-      lefts: s.offsetCross,
-    };
-  }
+  //   return {
+  //     height: s.sizeMain,
+  //     width: s.sizeCross,
+  //     tops: s.offsetMain,
+  //     lefts: s.offsetCross,
+  //   };
+  // }
 }

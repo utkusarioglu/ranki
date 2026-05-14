@@ -64,14 +64,14 @@ export class R2TextSpan extends R2C {
     await TimingUtils.waitLayout();
     const { width, height } = this.span.getBoundingClientRect();
     const dims: Dims = { width, height };
-    this.setStyle({ height }).animateStyle(
+    this.setStyle({ height, width }).animateStyle(
       {
-        width,
+        // width,
         opacity: 1,
       },
       {
         duration: this.props.animation.duration,
-        delay: 500,
+        // delay: 500,
       },
     );
     setTimeout(() => {

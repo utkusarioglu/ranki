@@ -6,6 +6,7 @@ import {
   type AnimateableStyles,
   type ComponentDims,
   type Dims,
+  type R2Geometry,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { css, html, type PropertyValues } from "lit";
@@ -30,8 +31,8 @@ export class R2Hud extends R2C {
     return [this.cueList];
   }
 
-  updateGeometry(dims: ComponentDims[]): Dims | null {
-    const { width, height, tops, lefts } = SizingUtils.row(
+  updateGeometry(dims: ComponentDims[]): R2Geometry | null {
+    const sizing = SizingUtils.row(
       dims.map((v) => v.dims),
       {
         main: {
@@ -41,17 +42,17 @@ export class R2Hud extends R2C {
         },
       },
     );
-    const container = { width, height };
-    this.bg
-      .setStyle({ height: container.height })
-      .animateStyle({ width: container.width }, { duration: 1000 });
-    this.getSizeList().forEach((e, i) =>
-      e.informStyle({ top: tops[i], left: lefts[i] }),
-    );
+    // const container = { width, height };
+    // this.bg
+    //   .setStyle({ height: container.height })
+    //   .animateStyle({ width: container.width }, { duration: 1000 });
+    // this.getSizeList().forEach((e, i) =>
+    //   e.informStyle({ top: tops[i], left: lefts[i] }),
+    // );
     // setTimeout(() => {
     //   this.emitChildLoad(container, {});
     // }, PROPAGATE_DELAY);
-    return container;
+    return { sizing };
   }
 
   // protected firstUpdated(_changedProperties: PropertyValues): void {
@@ -79,9 +80,18 @@ export class R2Hud extends R2C {
   //   );
   // }
 
-  public informStyle(pos: AnimateableStyles): void {
-    console.log("from ap", pos);
-    this.animateStyle(pos, { duration: 1000 });
+  public informStyle(pos: AnimateableStyles) {
+    const { sizing } = this.getGeometry();
+    this.animateStyle(pos, { duration: 1e3 });
+    this.bg
+      .setStyle({ height: sizing.height })
+      .animateStyle({ width: sizing.width }, { duration: 1000 });
+    this.getSizeList().forEach((e, i) =>
+      e.informStyle({
+        left: sizing.lefts[i],
+        top: sizing.tops[i],
+      }),
+    );
   }
 
   render() {

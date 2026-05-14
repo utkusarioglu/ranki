@@ -5,6 +5,7 @@ import {
   R2CNew,
   type ComponentDims,
   type Dims,
+  type R2Geometry,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
@@ -42,15 +43,18 @@ export class R2App extends R2C {
   private hud!: R2CNew;
 
   private paletteName: string = "(none)";
-  updateGeometry(dims: ComponentDims[]): Dims | null {
-    const { width } = SizingUtils.columnOld(this);
 
+  updateGeometry(dims: ComponentDims[]): R2Geometry {
+    const sizing = SizingUtils.row(dims.map((d) => d.dims));
     setTimeout(() => {
       this.getSizeList().forEach((e) =>
-        e.informStyle({ top: 10, left: window.innerWidth / 2 - width / 2 }),
+        e.informStyle({
+          top: 10,
+          left: window.innerWidth / 2 - sizing.width / 2,
+        }),
       );
     }, PROPAGATE_DELAY);
-    return null;
+    return { sizing };
   }
 
   // protected firstUpdated(_changedProperties: PropertyValues): void {
@@ -89,7 +93,7 @@ export class R2App extends R2C {
     }
     return html`
       <r2-indicator></r2-indicator>
-      <r2-hud></r2-hud>
+      <r2-hud @r2-child-size=${this.onChildSize}></r2-hud>
       <r2-challenge></r2-challenge>
     `;
   }

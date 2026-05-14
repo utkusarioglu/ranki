@@ -3,8 +3,10 @@ import { customElement, property, queryAll, state } from "lit/decorators.js";
 import {
   R2C,
   R2CNew,
+  type AnimateableStyles,
   type ComponentDims,
   type Dims,
+  type R2Geometry,
 } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 import type { R2TextSpan } from "./text-span.mts";
@@ -76,11 +78,34 @@ export class R2Text extends R2C {
     return Array.from(this.subtree);
   }
 
-  updateGeometry(dims: ComponentDims[]): Dims | null {
+  updateGeometry(dims: ComponentDims[]): R2Geometry | null {
     const last = dims.at(-1);
     if (!last) return null;
-    this.setStyle(last.dims);
-    return last.dims;
+    return { sizing: { ...last.dims, lefts: [0], tops: [0] } };
+  }
+
+  public informStyle(pos: AnimateableStyles): void {
+    const { sizing } = this.getGeometry();
+    this.setStyle({
+      height: sizing.height,
+      top: pos.top,
+      left: pos.left,
+    })
+      .animateStyle(
+        {
+          width: sizing.width,
+        },
+        {
+          duration: 1000,
+        },
+      )
+      .animateStyle(
+        {},
+        {
+          duration: 1000,
+          delay: 500,
+        },
+      );
   }
 
   render() {
