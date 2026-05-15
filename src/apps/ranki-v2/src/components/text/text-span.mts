@@ -10,10 +10,7 @@ export class R2TextSpan extends R2C {
   static styles = css`
     :host {
       position: absolute;
-      overflow: hidden;
       opacity: 0;
-      width: 0;
-      height: 0;
     }
 
     :host > span {
@@ -41,6 +38,7 @@ export class R2TextSpan extends R2C {
 
   async animateLeave() {
     this.animateStyle(
+      "opacity",
       {
         opacity: 0,
       },
@@ -55,7 +53,6 @@ export class R2TextSpan extends R2C {
           }),
         );
       },
-      this.animation,
     );
   }
 
@@ -63,8 +60,9 @@ export class R2TextSpan extends R2C {
     super.firstUpdated(changed);
     await TimingUtils.waitLayout();
     const { width, height } = this.span.getBoundingClientRect();
-    const dims: Dims = { width, height };
-    this.setStyle({ height, width }).animateStyle(
+    const dims: Dims = { width: width + 1, height: height + 1 };
+    this.setStyle(dims).animateStyle(
+      "opacity",
       {
         // width,
         opacity: 1,

@@ -1,10 +1,8 @@
-import { css, html, unsafeCSS, type PropertyValues } from "lit";
+import { css, html, unsafeCSS } from "lit";
 import { customElement, query } from "lit/decorators.js";
 import {
   R2C,
-  R2CNew,
   type ComponentDims,
-  type Dims,
   type R2Geometry,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
@@ -40,7 +38,7 @@ export class R2App extends R2C {
   private state = new StoreController(this, (s) => s.state);
 
   @query("r2-hud")
-  private hud!: R2CNew;
+  private hud!: R2C;
 
   private paletteName: string = "(none)";
 
@@ -57,22 +55,7 @@ export class R2App extends R2C {
     return { sizing };
   }
 
-  // protected firstUpdated(_changedProperties: PropertyValues): void {
-  //   this.watchDims(
-  //     () => [this.hud],
-  //     () => {
-  //       const { width } = SizingUtils.columnOld(this);
-
-  //       setTimeout(() => {
-  //         this.getDimWatched().forEach((e) =>
-  //           e.informStyle({ top: 10, left: window.innerWidth / 2 - width / 2 }),
-  //         );
-  //       }, PROPAGATE_DELAY);
-  //     },
-  //   );
-  // }
-
-  protected getSizeList(): R2CNew[] {
+  protected getSizeList(): R2C[] {
     return [this.hud];
   }
 
@@ -87,7 +70,7 @@ export class R2App extends R2C {
   }
 
   render() {
-    const val = this.state.value;
+    const val = this.state.curr;
     if (val) {
       this.updatePalette(val.design);
     }

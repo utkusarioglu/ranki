@@ -48,6 +48,7 @@ export class R2IconSpan extends R2C {
 
   async animateLeave() {
     this.animateStyle(
+      "opacity",
       {
         opacity: 0,
       },
@@ -62,7 +63,6 @@ export class R2IconSpan extends R2C {
           }),
         );
       },
-      this.animation,
     );
   }
 
@@ -76,6 +76,7 @@ export class R2IconSpan extends R2C {
     const icon = await loadIcon(this.props.icon);
     this.svg = icon.body;
     this.setStyle({ height }).animateStyle(
+      "width",
       {
         width,
         opacity: 1,

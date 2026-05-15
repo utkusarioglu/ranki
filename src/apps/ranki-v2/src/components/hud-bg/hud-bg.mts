@@ -1,4 +1,4 @@
-import { R2C } from "_components/r2c/r2c.mjs";
+import { R2C, type AnimateableStyles } from "_components/r2c/r2c.mjs";
 import { css, type PropertyValues } from "lit";
 import { customElement } from "lit/decorators.js";
 
@@ -14,16 +14,17 @@ export class R2HudBg extends R2C {
       width: 0;
       height: 0;
       opacity: 0;
-      border-radius: var(--border-radius, 0);
+      border-radius: 0.5em;
       box-sizing: border-box;
     }
   `;
 
-  protected firstUpdated(changed: PropertyValues): void {
-    super.firstUpdated(changed);
-    this.animateStyle(
+  public informStyle(pos: AnimateableStyles): void {
+    this.setStyle({ height: pos.height }).animateStyle(
+      "opacity",
       {
         opacity: 1,
+        width: pos.width,
       },
       {
         duration: 1000,

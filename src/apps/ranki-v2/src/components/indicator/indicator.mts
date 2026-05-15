@@ -17,13 +17,13 @@ export class R2Indicator extends LitElement {
   private state = new StoreController(this, (s) => s.state?.indicator);
 
   render() {
-    if (!this.state.value) return;
-    const animation = this.state.value.animation;
-    const active = this.state.value.cues
+    if (!this.state.curr) return;
+    const animation = this.state.curr.animation;
+    const active = this.state.curr.cues
       .map((v) => v.indicator)
       .filter((v) => v);
     if (!(active && active.length)) return;
-    const library = this.state.value.indicatorCollection;
+    const library = this.state.curr.indicatorCollection;
 
     return html`${repeat(
       active,

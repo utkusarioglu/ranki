@@ -2,10 +2,8 @@ import { css, html, type PropertyValues } from "lit";
 import { customElement, property, queryAll, state } from "lit/decorators.js";
 import {
   R2C,
-  R2CNew,
   type AnimateableStyles,
   type ComponentDims,
-  type Dims,
   type R2Geometry,
 } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
@@ -26,13 +24,19 @@ export type Parts = {
 
 @customElement("r2-text")
 export class R2Text extends R2C {
-  // static styles = css`
-  //   :host {
-  //     white-space: nowrap;
-  //     width: 0;
-  //     height: 0;
-  //   }
-  // `;
+  static styles = css`
+    :host {
+      position: absolute;
+      overflow: hidden;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    :host > span {
+      white-space: nowrap;
+    }
+  `;
   @property({
     hasChanged: (n: R2TextProps, o: R2TextProps | undefined) => {
       return n.text !== o?.text;
@@ -74,7 +78,7 @@ export class R2Text extends R2C {
     this.parts = this.parts.filter((v) => v.id !== id);
   }
 
-  protected getSizeList(): R2CNew[] {
+  protected getSizeList(): R2C[] {
     return Array.from(this.subtree);
   }
 
@@ -90,22 +94,17 @@ export class R2Text extends R2C {
       height: sizing.height,
       top: pos.top,
       left: pos.left,
-    })
-      .animateStyle(
-        {
-          width: sizing.width,
-        },
-        {
-          duration: 1000,
-        },
-      )
-      .animateStyle(
-        {},
-        {
-          duration: 1000,
-          delay: 500,
-        },
-      );
+    }).animateStyle(
+      "width",
+      {
+        opacity: 1,
+        width: sizing.width,
+      },
+      {
+        duration: 1000,
+        delay: 500,
+      },
+    );
   }
 
   render() {

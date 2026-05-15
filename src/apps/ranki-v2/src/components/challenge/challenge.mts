@@ -24,7 +24,7 @@ export class R2Challenge extends LitElement {
   render() {
     return html`<div class="scroller">
       <pre><code>${yaml.stringify(
-        JSON.parse(JSON.stringify(this.state.value || [])),
+        JSON.parse(JSON.stringify(this.state.curr || [])),
       )}</code></pre>
     </div>`;
   }

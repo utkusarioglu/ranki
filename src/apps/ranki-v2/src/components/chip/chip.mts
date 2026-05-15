@@ -2,13 +2,12 @@ import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import {
   R2C,
-  R2CNew,
   type AnimateableStyles,
   type ComponentDims,
   type R2Geometry,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
-import { css, html } from "lit";
+import { css, html, type PropertyValues } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 
 @customElement("r2-chip")
@@ -19,6 +18,8 @@ export class R2Chip extends R2C {
       white-space: nowrap;
     }
   `;
+  @property({ type: Boolean, reflect: true })
+  leave = false;
   @query("r2-icon")
   private icon!: R2C;
   @query("r2-text")
@@ -31,7 +32,7 @@ export class R2Chip extends R2C {
   @property()
   private list!: HudTagListItem[];
 
-  protected getSizeList(): R2CNew[] {
+  protected getSizeList(): R2C[] {
     return [this.icon, this.text];
   }
 
@@ -55,16 +56,43 @@ export class R2Chip extends R2C {
 
   public informStyle(pos: AnimateableStyles): void {
     const { sizing } = this.getGeometry();
-    // this.animateStyle(pos, { duration: 1e3 });
     this.setStyle(pos);
-    this.bg
-      .setStyle({ height: sizing.height })
-      .animateStyle({ width: sizing.width }, { duration: 1e3 });
+    this.bg.informStyle({ ...pos, width: sizing.width, height: sizing.height });
     this.getSizeList().forEach((e, i) =>
       e.informStyle({
         left: sizing.lefts[i],
         top: sizing.tops[i],
       }),
+    );
+  }
+
+  updated(changed: PropertyValues) {
+    if (!changed.has("leave")) return;
+    if (this.leave) {
+      this.animateLeave();
+    }
+  }
+
+  async animateLeave() {
+    this.emitSize({ height: this.getGeometry().sizing.height, width: 0 });
+    this.animateStyle(
+      "opacity",
+      {
+        opacity: 0,
+      },
+      {
+        // TODO
+        duration: 1000,
+        // duration: this.list[this.index].animation.duration,
+      },
+      () => {
+        this.dispatchEvent(
+          new CustomEvent("r2-child-leave", {
+            bubbles: true,
+            composed: true,
+          }),
+        );
+      },
     );
   }
 
