@@ -1,5 +1,6 @@
 import "./app/app.mjs";
 import "./hud/hud.mjs";
+import "./hud/hud-scroller.mjs";
 import "./badge-list/badge-list.mjs";
 import "./chip/chip.mjs";
 import "./cue-list/cue-list.mjs";

@@ -41,30 +41,43 @@ export class R2BadgeList extends R2C {
     super.willUpdate(changed);
     const curr = this.state.curr || [];
     const prev = this.parts;
-    const updated: R2BadgeListState[] = [];
-    let ci = 0;
-    let pi = 0;
-    while (pi < prev.length) {
-      const p = prev[pi];
-      const c = curr[ci];
-      if (!c || p.text !== c.text) {
-        p.leave = true;
-        updated.push(p);
-      } else if (p.text === c.text) {
-        updated.push(p);
-        ci++;
+    const updated: R2BadgeListState[] = curr.map((v) => ({
+      ...v,
+      id: this.idCounter++,
+      leave: false,
+    }));
+
+    if (prev.length > updated.length) {
+      for (let i = updated.length; i < prev.length; i++) {
+        updated.push({
+          ...prev[i],
+          leave: true,
+        });
       }
-      pi++;
     }
-    while (ci < curr.length) {
-      updated.push({
-        ...curr[ci],
-        id: this.idCounter++,
-        leave: false,
-      });
-      ci++;
-    }
-    console.log("u", updated);
+    // let ci = 0;
+    // let pi = 0;
+    // while (pi < prev.length) {
+    //   const p = prev[pi];
+    //   const c = curr[ci];
+    //   if (!c || p.text !== c.text) {
+    //     p.leave = true;
+    //     updated.push(p);
+    //   } else if (p.text === c.text) {
+    //     updated.push(p);
+    //     ci++;
+    //   }
+    //   pi++;
+    // }
+    // while (ci < curr.length) {
+    //   updated.push({
+    //     ...curr[ci],
+    //     id: this.idCounter++,
+    //     leave: false,
+    //   });
+    //   ci++;
+    // }
+    // console.log("u", updated);
     this.parts = updated;
   }
 
@@ -87,24 +100,27 @@ export class R2BadgeList extends R2C {
   }
 
   public informStyle(pos: AnimateableStyles): void {
-    const { sizing } = this.getGeometry();
+    const {
+      sizing: { width, height, lefts, tops },
+    } = this.getGeometry();
     this.animateStyle("position", pos, { duration: 1e3 });
-    this.bg.informStyle({ ...pos, width: sizing.width, height: sizing.height });
+    this.bg.informStyle({ ...pos, width, height });
     this.getSizeList().forEach((e, i) =>
       e.informStyle({
-        left: sizing.lefts[i],
-        top: sizing.tops[i],
+        left: lefts[i],
+        top: tops[i],
       }),
     );
   }
 
   private onChildLeave(id: number) {
-    this.parts = this.parts.filter((v) => v.id !== id);
+    this.parts.splice(id, 1);
+    this.parts = [...this.parts];
+    // this.parts = this.parts.filter((v) => v.id !== id);
   }
 
   render() {
-    const list = this.parts;
-    console.log("l", list);
+    console.log("p", this.parts);
     return html`
       <r2-hud-bg
         style="${styleMap({
@@ -113,14 +129,14 @@ export class R2BadgeList extends R2C {
         })}"
       ></r2-hud-bg>
       ${repeat(
-        Array.from({ length: list.length }, (_, i) => i),
+        Array.from({ length: this.parts.length }, (_, i) => i),
         (i) => i,
         (i) => {
           return html`
             <r2-chip
               .index=${i}
-              .list=${this.state.curr}
-              ?leave=${list[i].leave}
+              .list=${this.parts}
+              ?leave=${this.parts[i].leave}
               style="--border: red solid 1px; --bg: #333;"
               @r2-child-leave=${() => this.onChildLeave(i)}
               @r2-child-size=${this.onChildSize}

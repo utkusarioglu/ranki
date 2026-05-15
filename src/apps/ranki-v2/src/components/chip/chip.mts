@@ -56,7 +56,11 @@ export class R2Chip extends R2C {
 
   public informStyle(pos: AnimateableStyles): void {
     const { sizing } = this.getGeometry();
-    this.setStyle(pos);
+    // this.setStyle(pos);
+    this.animateStyle("position", pos, {
+      // TODO
+      duration: 1000,
+    });
     this.bg.informStyle({ ...pos, width: sizing.width, height: sizing.height });
     this.getSizeList().forEach((e, i) =>
       e.informStyle({

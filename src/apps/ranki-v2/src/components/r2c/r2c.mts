@@ -146,9 +146,9 @@ export class R2C extends LitElement implements R2Animate {
         this.registered.delete(target);
         break;
       case "update":
-        const curr = detail.rect;
-        const prev = this.registered.get(target)!;
-        if (prev.width === curr.width && prev.height === curr.height) break;
+        // const curr = detail.rect;
+        // const prev = this.registered.get(target)!;
+        // if (prev.width === curr.width && prev.height === curr.height) break;
         this.registered.set(target, detail.rect);
         break;
     }
@@ -156,12 +156,12 @@ export class R2C extends LitElement implements R2Animate {
       case "disconnected":
       case "update":
         this.geometry = this.updateGeometry(this.orderTrackedNodes());
-        if (this.geometry && !this.requested) {
+        if (!this.requested) {
           this.requested = true;
           TimingUtils.raf().then(() => {
             setTimeout(() => {
               this.requested = false;
-              this.emitSize(this.geometry!.sizing);
+              if (this.geometry) this.emitSize(this.geometry.sizing);
             }, PROPAGATE_DELAY);
           });
         }
@@ -174,7 +174,7 @@ export class R2C extends LitElement implements R2Animate {
     for (let component of serial) {
       const dims = this.registered.get(component);
       if (!dims) {
-        console.log("cannot find", component);
+        // console.log("cannot find", component);
         continue;
         // FIX you may need to replace this with a boundingClientRect call
         // assertNever({ why: "The element should exist in weakmap" });

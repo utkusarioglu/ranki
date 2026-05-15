@@ -37,27 +37,10 @@ export class R2App extends R2C {
   ];
   private state = new StoreController(this, (s) => s.state);
 
-  @query("r2-hud")
-  private hud!: R2C;
+  // @query("r2-hud")
+  // private hud!: R2C;
 
   private paletteName: string = "(none)";
-
-  updateGeometry(dims: ComponentDims[]): R2Geometry {
-    const sizing = SizingUtils.row(dims.map((d) => d.dims));
-    setTimeout(() => {
-      this.getSizeList().forEach((e) =>
-        e.informStyle({
-          top: 10,
-          left: window.innerWidth / 2 - sizing.width / 2,
-        }),
-      );
-    }, PROPAGATE_DELAY);
-    return { sizing };
-  }
-
-  protected getSizeList(): R2C[] {
-    return [this.hud];
-  }
 
   private updatePalette(design: RankiDesignState) {
     const paletteName = design.palette;
@@ -76,8 +59,8 @@ export class R2App extends R2C {
     }
     return html`
       <r2-indicator></r2-indicator>
-      <r2-hud @r2-child-size=${this.onChildSize}></r2-hud>
       <r2-challenge></r2-challenge>
+      <r2-hud></r2-hud>
     `;
   }
 }

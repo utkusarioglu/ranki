@@ -1,3 +1,4 @@
+import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import {
   R2C,
@@ -14,57 +15,91 @@ import { styleMap } from "lit/directives/style-map.js";
 export class R2Hud extends R2C {
   static styles = css`
     :host {
+      display: block;
       position: absolute;
-      white-space: nowrap;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    :host .rotate:hover {
+      &::-webkit-scrollbar-thumb {
+        background: orange;
+      }
+    }
+
+    :host .rotate {
+      //  transform: rotate(180deg);
+      position: relative;
+      overflow-y: hidden;
+      overflow-x: scroll;
+
+      &::-webkit-scrollbar {
+        appearance: none;
+        height: 5px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: transparent;
+        border-radius: 5px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+    }
+
+    :host .content {
+      //  transform: rotate(180deg);
+      padding-top: 10px;
+      padding-bottom: 5px;
+      margin-inline: auto;
+      padding-inline: 16px;
+      overflow: hidden;
+      width: max-content;
     }
   `;
 
-  @query("r2-cue-list")
-  private cueList!: R2C;
-  @query("r2-hud-bg")
-  private bg!: R2HudBg;
+  @query("r2-hud-scroller")
+  private scroller!: R2C;
 
-  protected getSizeList(): R2C[] {
-    return [this.cueList];
-  }
-
-  updateGeometry(dims: ComponentDims[]): R2Geometry | null {
-    const sizing = SizingUtils.row(
-      dims.map((v) => v.dims),
-      {
-        main: {
-          start: 10,
-          inBetween: 10,
-          end: 10,
-        },
-      },
-    );
+  updateGeometry(dims: ComponentDims[]): R2Geometry {
+    const sizing = SizingUtils.row(dims.map((d) => d.dims));
+    setTimeout(() => {
+      this.informStyle(sizing);
+    }, PROPAGATE_DELAY);
     return { sizing };
   }
 
-  public informStyle(pos: AnimateableStyles) {
-    const { sizing } = this.getGeometry();
-    // this.animateStyle("position", pos, { duration: 1e3 });
-    this.setStyle(pos);
-    this.animateStyle("position", pos, { duration: 1e3 });
-    this.bg.informStyle({ ...pos, width: sizing.width, height: sizing.height });
-    this.getSizeList().forEach((e, i) =>
+  public informStyle(pos: AnimateableStyles): void {
+    const {
+      sizing: { width, height },
+    } = this.getGeometry();
+    // 5 for scrollbar thickness, 10 for top padding, 5 for bottom padding
+    this.setStyle({ height: height! + 5 + 10 + 5 });
+    // const left = -sizing.width / 2;
+    // this.container.style.setProperty("width", sizing.width + "px");
+    this.getSizeList().forEach((e) =>
       e.informStyle({
-        left: sizing.lefts[i],
-        top: sizing.tops[i],
+        // top: 10,
+        // left,
       }),
     );
   }
 
+  protected getSizeList(): R2C[] {
+    return [this.scroller];
+  }
+
   render() {
-    return html`<div>
-      <r2-hud-bg
-        style="${styleMap({
-          "--z-index": -4,
-          "--border": "green solid 1px",
-        })}"
-      ></r2-hud-bg>
-      <r2-cue-list @r2-child-size=${this.onChildSize}></r2-cue-list>
-    </div>`;
+    return html`
+      <div class="rotate">
+        <div class="content">
+          <r2-hud-scroller @r2-child-size=${this.onChildSize}></r2-hud-scroller>
+        </div>
+      </div>
+    `;
   }
 }
