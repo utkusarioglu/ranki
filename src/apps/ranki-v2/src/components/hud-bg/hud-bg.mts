@@ -1,5 +1,5 @@
-import { R2C, type AnimateableStyles } from "_components/r2c/r2c.mjs";
-import { css, type PropertyValues } from "lit";
+import { R2C, type InformStyle } from "_components/r2c/r2c.mjs";
+import { css } from "lit";
 import { customElement } from "lit/decorators.js";
 
 @customElement("r2-hud-bg")
@@ -19,7 +19,7 @@ export class R2HudBg extends R2C {
     }
   `;
 
-  public informStyle(pos: AnimateableStyles): void {
+  public informStyle(pos: InformStyle): void {
     this.setStyle({ height: pos.height }).animateStyle(
       "opacity",
       {

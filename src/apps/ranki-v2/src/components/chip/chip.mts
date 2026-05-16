@@ -4,9 +4,11 @@ import {
   R2C,
   type AnimateableStyles,
   type ComponentDims,
+  type InformStyle,
   type R2Geometry,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
+import { TimingUtils } from "_utils/timing.mjs";
 import { css, html, type PropertyValues } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 
@@ -54,18 +56,31 @@ export class R2Chip extends R2C {
     return { sizing };
   }
 
-  public informStyle(pos: AnimateableStyles): void {
-    const { sizing } = this.getGeometry();
-    // this.setStyle(pos);
-    this.animateStyle("position", pos, {
-      // TODO
-      duration: 1000,
+  public async informStyle({
+    top,
+    left,
+    index,
+    length,
+  }: InformStyle): Promise<void> {
+    const {
+      sizing: { width, height, lefts, tops },
+    } = this.getGeometry();
+    await TimingUtils.delay(400 * index + 400);
+    this.setStyle({ top, left, width, height, zIndex: length - index });
+    this.bg.informStyle({
+      width,
+      height,
+      top: 0,
+      left: 0,
+      index: -1,
+      length: 0,
     });
-    this.bg.informStyle({ ...pos, width: sizing.width, height: sizing.height });
-    this.getSizeList().forEach((e, i) =>
+    this.getSizeList().forEach((e, i, a) =>
       e.informStyle({
-        left: sizing.lefts[i],
-        top: sizing.tops[i],
+        index: i,
+        length: a.length,
+        left: lefts[i],
+        top: tops[i],
       }),
     );
   }

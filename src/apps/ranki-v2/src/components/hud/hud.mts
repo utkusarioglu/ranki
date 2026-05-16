@@ -4,6 +4,7 @@ import {
   R2C,
   type AnimateableStyles,
   type ComponentDims,
+  type InformStyle,
   type R2Geometry,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
@@ -68,24 +69,19 @@ export class R2Hud extends R2C {
   updateGeometry(dims: ComponentDims[]): R2Geometry {
     const sizing = SizingUtils.row(dims.map((d) => d.dims));
     setTimeout(() => {
-      this.informStyle(sizing);
+      this.informStyle({ ...sizing, index: 0, length: 0 });
     }, PROPAGATE_DELAY);
     return { sizing };
   }
 
-  public informStyle(pos: AnimateableStyles): void {
-    const {
-      sizing: { width, height },
-    } = this.getGeometry();
+  public informStyle(pos: InformStyle): void {
+    const { height } = pos;
     // 5 for scrollbar thickness, 10 for top padding, 5 for bottom padding
     this.setStyle({ height: height! + 5 + 10 + 5 });
     // const left = -sizing.width / 2;
     // this.container.style.setProperty("width", sizing.width + "px");
-    this.getSizeList().forEach((e) =>
-      e.informStyle({
-        // top: 10,
-        // left,
-      }),
+    this.getSizeList().forEach((e, index, arr) =>
+      e.informStyle({ index, length: arr.length }),
     );
   }
 

@@ -4,6 +4,7 @@ import {
   R2C,
   type AnimateableStyles,
   type ComponentDims,
+  type InformStyle,
   type R2Geometry,
 } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
@@ -88,7 +89,7 @@ export class R2Text extends R2C {
     return { sizing: { ...last.dims, lefts: [0], tops: [0] } };
   }
 
-  public informStyle(pos: AnimateableStyles): void {
+  public informStyle(pos: InformStyle): void {
     const { sizing } = this.getGeometry();
     this.setStyle({
       height: sizing.height,

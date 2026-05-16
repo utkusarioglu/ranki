@@ -20,6 +20,8 @@ type Other = {
   opacity: number;
 };
 
+export type ImmediateStyles = { zIndex?: number } & AnimateableStyles;
+
 export type AnimateableStyles = Partial<Dims> &
   Partial<Pos> &
   Partial<Anim> &
@@ -56,6 +58,9 @@ type R2CNewChildSizeEvent =
   | R2CNewChildSizeUpdate
   | R2CNewChildSizeDisconnected
   | R2CNewChildSizeConnected;
+
+export type InformStyle = { index: number; length: number } & Pos &
+  Partial<Dims>;
 
 export interface ComponentDims {
   component: R2C;
@@ -236,12 +241,23 @@ export class R2C extends LitElement implements R2Animate {
     return this.runningAnimations.get(name);
   }
 
-  setStyle(pos: AnimateableStyles) {
-    this.animateStyle("set-style", pos, { duration: 0 });
+  setStyle({ width, height, opacity, left, top, zIndex }: ImmediateStyles) {
+    this.style.setProperty("z-index", "" + zIndex);
+    this.animateStyle(
+      "set-style",
+      {
+        width,
+        height,
+        opacity,
+        left,
+        top,
+      },
+      { duration: 0 },
+    );
     return this;
   }
 
-  public informStyle(pos: AnimateableStyles): void {
+  public informStyle(pos: InformStyle): void {
     console.log("styleinform", this, pos);
   }
 }

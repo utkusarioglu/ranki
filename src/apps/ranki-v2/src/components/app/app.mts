@@ -1,12 +1,6 @@
 import { css, html, unsafeCSS } from "lit";
-import { customElement, query } from "lit/decorators.js";
-import {
-  R2C,
-  type ComponentDims,
-  type R2Geometry,
-} from "_components/r2c/r2c.mjs";
-import { SizingUtils } from "_utils/Sizing.mjs";
-import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
+import { customElement } from "lit/decorators.js";
+import { R2C } from "_components/r2c/r2c.mjs";
 import { StoreController } from "_/controllers/store.mjs";
 import { generatePaletteCss } from "_/design/color.mjs";
 import theme from "./theme.css?inline";

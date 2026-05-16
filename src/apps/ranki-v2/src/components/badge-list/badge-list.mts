@@ -3,8 +3,8 @@ import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import {
   R2C,
-  type AnimateableStyles,
   type ComponentDims,
+  type InformStyle,
   type R2Geometry,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
@@ -55,29 +55,6 @@ export class R2BadgeList extends R2C {
         });
       }
     }
-    // let ci = 0;
-    // let pi = 0;
-    // while (pi < prev.length) {
-    //   const p = prev[pi];
-    //   const c = curr[ci];
-    //   if (!c || p.text !== c.text) {
-    //     p.leave = true;
-    //     updated.push(p);
-    //   } else if (p.text === c.text) {
-    //     updated.push(p);
-    //     ci++;
-    //   }
-    //   pi++;
-    // }
-    // while (ci < curr.length) {
-    //   updated.push({
-    //     ...curr[ci],
-    //     id: this.idCounter++,
-    //     leave: false,
-    //   });
-    //   ci++;
-    // }
-    // console.log("u", updated);
     this.parts = updated;
   }
 
@@ -99,14 +76,23 @@ export class R2BadgeList extends R2C {
     return { sizing };
   }
 
-  public informStyle(pos: AnimateableStyles): void {
+  public informStyle({ top, left, index, length }: InformStyle): void {
     const {
       sizing: { width, height, lefts, tops },
     } = this.getGeometry();
-    this.animateStyle("position", pos, { duration: 1e3 });
-    this.bg.informStyle({ ...pos, width, height });
-    this.getSizeList().forEach((e, i) =>
+    this.animateStyle("position", { top, left }, { duration: 1e3 });
+    this.bg.informStyle({
+      width,
+      height,
+      top: 0,
+      left: 0,
+      index: -1,
+      length: 0,
+    });
+    this.getSizeList().forEach((e, i, a) =>
       e.informStyle({
+        index: i,
+        length: a.length,
         left: lefts[i],
         top: tops[i],
       }),
@@ -116,11 +102,9 @@ export class R2BadgeList extends R2C {
   private onChildLeave(id: number) {
     this.parts.splice(id, 1);
     this.parts = [...this.parts];
-    // this.parts = this.parts.filter((v) => v.id !== id);
   }
 
   render() {
-    console.log("p", this.parts);
     return html`
       <r2-hud-bg
         style="${styleMap({

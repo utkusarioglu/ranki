@@ -9,6 +9,14 @@ export class TimingUtils {
     await TimingUtils.raf(2);
   }
 
+  static async delay(msec: number) {
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, msec);
+    });
+  }
+
   static raf(frames: number = 2, cb?: RafCallback): Promise<void> {
     function step(resolve: () => void, cb?: RafCallback) {
       if (--frames <= 0) {

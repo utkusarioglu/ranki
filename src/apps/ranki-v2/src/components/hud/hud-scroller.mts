@@ -3,6 +3,7 @@ import {
   R2C,
   type AnimateableStyles,
   type ComponentDims,
+  type InformStyle,
   type R2Geometry,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
@@ -44,11 +45,11 @@ export class R2HudScroller extends R2C {
     return { sizing };
   }
 
-  public informStyle(pos: AnimateableStyles) {
+  public informStyle({ length, index }: InformStyle) {
     const {
       sizing: { width, height, tops, lefts },
     } = this.getGeometry();
-    this.setStyle({ height }).animateStyle(
+    this.setStyle({ height, zIndex: length - index }).animateStyle(
       "size",
       {
         width,
@@ -62,9 +63,18 @@ export class R2HudScroller extends R2C {
     // });
     // this.setStyle(pos);
     // this.animateStyle("position", pos, { duration: 1e3 });
-    this.bg.informStyle({ ...pos, width, height });
-    this.getSizeList().forEach((e, i) =>
+    this.bg.informStyle({
+      left: 0,
+      top: 0,
+      index: -1,
+      length: 0,
+      width,
+      height,
+    });
+    this.getSizeList().forEach((e, i, a) =>
       e.informStyle({
+        length: a.length,
+        index: i,
         left: lefts[i],
         top: tops[i],
       }),

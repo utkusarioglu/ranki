@@ -3,6 +3,7 @@ import {
   R2C,
   type AnimateableStyles,
   type ComponentDims,
+  type InformStyle,
   type R2Geometry,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
@@ -41,15 +42,23 @@ export class R2CueList extends R2C {
     return { sizing };
   }
 
-  public informStyle(pos: AnimateableStyles) {
-    const { sizing } = this.getGeometry();
-    this.animateStyle("position", pos, { duration: 1e3 });
+  public informStyle({ index, length, top, left }: InformStyle) {
+    const {
+      sizing: { width, height, lefts, tops },
+    } = this.getGeometry();
+    this.setStyle({ zIndex: length - index }).animateStyle(
+      "position",
+      { top, left },
+      { duration: 1e3 },
+    );
 
-    this.bg.informStyle({ ...pos, width: sizing.width, height: sizing.height });
-    this.getSizeList().forEach((e, i) =>
+    this.bg.informStyle({ top, left, width, height, index: -1, length: 0 });
+    this.getSizeList().forEach((e, i, a) =>
       e.informStyle({
-        left: sizing.lefts[i],
-        top: sizing.tops[i],
+        index: i,
+        length: a.length,
+        left: lefts[i],
+        top: tops[i],
       }),
     );
   }
