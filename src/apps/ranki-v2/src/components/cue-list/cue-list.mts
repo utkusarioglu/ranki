@@ -2,7 +2,7 @@ import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import {
   R2C,
   type ComponentDims,
-  type R2Geometry,
+  type R2Sizing,
   type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
@@ -12,7 +12,7 @@ import { styleMap } from "lit/directives/style-map.js";
 
 @customElement("r2-cue-list")
 export class R2CueList extends R2C {
-  static styles = css`
+  static override styles = css`
     :host {
       position: absolute;
       white-space: nowrap;
@@ -23,11 +23,11 @@ export class R2CueList extends R2C {
   @query("r2-hud-bg")
   private bg!: R2HudBg;
 
-  protected getSizeList(): R2C[] {
+  protected override getSubtreeList(): R2C[] {
     return [this.badgeList];
   }
 
-  updateGeometry(dims: ComponentDims[]): R2Geometry | null {
+  protected override updateSizing(dims: ComponentDims[]): R2Sizing | null {
     const sizing = SizingUtils.row(
       dims.map((v) => v.dims),
       {
@@ -41,8 +41,16 @@ export class R2CueList extends R2C {
     return sizing;
   }
 
-  protected async updateStyle(
-    { index, length, top, left, width, height, lefts, tops }: UpdateStyle,
+  protected override async updateStyle(
+    {
+      subtree: { index, length },
+      top,
+      left,
+      width,
+      height,
+      lefts,
+      tops,
+    }: UpdateStyle,
     prev: UpdateStyle | null,
   ): Promise<void> {
     this.setStyle({ zIndex: length - index }).animateStyle(
@@ -51,18 +59,17 @@ export class R2CueList extends R2C {
       { duration: 1e3 },
     );
 
-    this.bg.informStyle({ top, left, width, height, index: -1, length: 0 });
-    this.getSizeList().forEach((e, i, a) =>
-      e.informStyle({
-        index: i,
-        length: a.length,
-        left: lefts[i],
-        top: tops[i],
-      }),
-    );
+    this.bg.informStyle({
+      top,
+      left,
+      width,
+      height,
+      subtree: { index: -1, length: 0, changeIndex: -1 },
+    });
+    this.informSubtreeStyles({ tops, lefts });
   }
 
-  render() {
+  override render() {
     return html`
       <r2-hud-bg
         style="${styleMap({

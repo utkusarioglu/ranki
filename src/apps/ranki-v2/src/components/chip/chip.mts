@@ -3,7 +3,7 @@ import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import {
   R2C,
   type ComponentDims,
-  type R2Geometry,
+  type R2Sizing,
   type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
@@ -13,7 +13,7 @@ import { customElement, property, query } from "lit/decorators.js";
 
 @customElement("r2-chip")
 export class R2Chip extends R2C {
-  static styles = css`
+  static override styles = css`
     :host {
       position: absolute;
       white-space: nowrap;
@@ -33,11 +33,11 @@ export class R2Chip extends R2C {
   @property()
   private list!: HudTagListItem[];
 
-  protected getSizeList(): R2C[] {
+  protected override getSubtreeList(): R2C[] {
     return [this.icon, this.text];
   }
 
-  updateGeometry(dims: ComponentDims[]): R2Geometry | null {
+  override updateSizing(dims: ComponentDims[]): R2Sizing | null {
     const sizing = SizingUtils.row(
       dims.map((v) => v.dims),
       {
@@ -55,10 +55,19 @@ export class R2Chip extends R2C {
     return sizing;
   }
 
-  public async updateStyle(
-    { top, left, index, length, width, height, lefts, tops }: UpdateStyle,
+  public override async updateStyle(
+    {
+      top,
+      left,
+      width,
+      height,
+      lefts,
+      tops,
+      subtree: { index, length, changeIndex },
+    }: UpdateStyle,
     prev: UpdateStyle | null,
   ): Promise<void> {
+    console.log(changeIndex);
     await TimingUtils.delay(400 * index + 400);
     this.setStyle({ top, left, width, height, zIndex: length - index });
     this.bg.informStyle({
@@ -66,20 +75,24 @@ export class R2Chip extends R2C {
       height,
       top: 0,
       left: 0,
-      index: -1,
-      length: 0,
+      subtree: {
+        index: -1,
+        changeIndex: -1,
+        length: 0,
+      },
     });
-    this.getSizeList().forEach((e, i, a) =>
-      e.informStyle({
-        index: i,
-        length: a.length,
-        left: lefts[i],
-        top: tops[i],
-      }),
-    );
+    this.informSubtreeStyles({ tops, lefts });
+    // this.getSubtreeList().forEach((e, i, a) =>
+    //   e.informStyle({
+    //     index: i,
+    //     length: a.length,
+    //     left: lefts[i],
+    //     top: tops[i],
+    //   }),
+    // );
   }
 
-  updated(changed: PropertyValues) {
+  override updated(changed: PropertyValues) {
     if (!changed.has("leave")) return;
     if (this.leave) {
       this.animateLeave();
@@ -87,7 +100,7 @@ export class R2Chip extends R2C {
   }
 
   async animateLeave() {
-    this.emitSize({ height: this.getGeometry().height, width: 0 });
+    this.emitSize({ height: this.getSizing().height, width: 0 });
     this.animateStyle(
       "opacity",
       {
@@ -109,7 +122,7 @@ export class R2Chip extends R2C {
     );
   }
 
-  render() {
+  override render() {
     const item = this.list[this.index];
 
     return html`

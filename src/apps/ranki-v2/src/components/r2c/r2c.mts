@@ -39,8 +39,7 @@ export interface R2Animate extends LitElement {
     pos: AnimateableStyles,
     options: AnimationOptions,
   ): this;
-  // informStyle(pos: AnimateableStyles): void;
-  // protected updateStyle(curr: InformStyle, prev: InformStyle): Promise<void>;
+  informStyle(pos: AnimateableStyles): void;
 }
 
 interface R2CNewChildSizeConnected {
@@ -60,9 +59,16 @@ type R2CNewChildSizeEvent =
   | R2CNewChildSizeDisconnected
   | R2CNewChildSizeConnected;
 
-type InformStyle = { index: number; length: number } & Pos & Partial<Dims>;
+type InformStyle = {
+  subtree: {
+    index: number;
+    length: number;
+    changeIndex: number;
+  };
+} & Pos &
+  Partial<Dims>;
 
-export type UpdateStyle = InformStyle & R2Geometry;
+export type UpdateStyle = InformStyle & R2Sizing;
 
 export interface ComponentDims {
   component: R2C;
@@ -70,42 +76,28 @@ export interface ComponentDims {
 }
 type LeftsTops = { lefts: number[]; tops: number[] };
 
-export type R2Geometry = Dims & LeftsTops;
-//   {
-//   sizing:
-//   // elements?: Record<string, AnimateableStyles>;
-// };
+export type R2Sizing = Dims & LeftsTops;
 
-// export type R2Geometry = {
-//   sizing: Dims & LeftsTops;
-//   // elements?: Record<string, AnimateableStyles>;
-// };
-
-// export type R2Geometry = {
-//   sizing: Dims & LeftsTops;
-//   elements?: Record<string, AnimateableStyles>;
-// };
+type InformSubtreeStyles = LeftsTops;
 
 export class R2C extends LitElement implements R2Animate {
   private registered = new WeakMap<R2C, Dims>();
-  private geometry: R2Geometry | null = null;
+  private geometry: R2Sizing | null = null;
 
   private runningAnimations = new Map<string, Animation>();
   private requested = false;
   private currStyle: UpdateStyle | null = null;
 
-  protected getGeometry(): R2Geometry {
+  protected getSizing(): R2Sizing {
     assertNotNull(this.geometry, {
       why: "getGeometry called when no geometry was registered",
     });
     return this.geometry;
   }
 
-  protected getSizeList(): R2C[] {
+  protected getSubtreeList(): R2C[] {
     console.log(this, "did not define `getSizeList`");
     return [];
-    // assertNever({ why: "This method needs to be defined by the leaf" });
-    // return Array.from(this.shadowRoot!.children) as R2CNew[];
   }
 
   protected emitSize({ width, height }: Dims | DOMRect) {
@@ -121,7 +113,7 @@ export class R2C extends LitElement implements R2Animate {
     );
   }
 
-  connectedCallback(): void {
+  override connectedCallback(): void {
     this.dispatchEvent(
       new CustomEvent("r2-child-size", {
         detail: {
@@ -134,7 +126,7 @@ export class R2C extends LitElement implements R2Animate {
     super.connectedCallback();
   }
 
-  disconnectedCallback(): void {
+  override disconnectedCallback(): void {
     this.dispatchEvent(
       new CustomEvent("r2-child-size", {
         detail: {
@@ -166,16 +158,13 @@ export class R2C extends LitElement implements R2Animate {
         this.registered.delete(target);
         break;
       case "update":
-        // const curr = detail.rect;
-        // const prev = this.registered.get(target)!;
-        // if (prev.width === curr.width && prev.height === curr.height) break;
         this.registered.set(target, detail.rect);
         break;
     }
     switch (detail.type) {
       case "disconnected":
       case "update":
-        this.geometry = this.updateGeometry(this.orderTrackedNodes());
+        this.geometry = this.updateSizing(this.orderTrackedNodes());
         if (!this.requested) {
           this.requested = true;
           TimingUtils.raf().then(() => {
@@ -189,7 +178,7 @@ export class R2C extends LitElement implements R2Animate {
   }
 
   private orderTrackedNodes() {
-    const serial = this.getSizeList();
+    const serial = this.getSubtreeList();
     const ordered: ComponentDims[] = [];
     for (let component of serial) {
       const dims = this.registered.get(component);
@@ -204,7 +193,7 @@ export class R2C extends LitElement implements R2Animate {
     return ordered;
   }
 
-  updateGeometry(dims: ComponentDims[]): R2Geometry | null {
+  protected updateSizing(dims: ComponentDims[]): R2Sizing | null {
     assertNever({ why: "This method needs to be overwritten by the leaf" });
   }
 
@@ -236,7 +225,8 @@ export class R2C extends LitElement implements R2Animate {
         ...(pos.opacity !== undefined ? { opacity: pos.opacity } : {}),
       },
       {
-        easing: "linear",
+        // easing: "linear",
+        easing: "ease-in-out",
         // easing: "cubic-bezier(0.7, -1, 0.2, 2.4)",
         fill: "both",
         ...options,
@@ -279,10 +269,53 @@ export class R2C extends LitElement implements R2Animate {
     console.log("styleinform", this, curr, prev);
   }
 
-  public informStyle(pos: InformStyle): void {
+  private detectDimChangeIndex(curr: number[], prev: number[]): number {
+    const end = Math.max(curr.length, prev.length);
+    for (let i = 0; i < end; i++) {
+      if (curr[i] !== prev[i]) {
+        return i;
+      }
+    }
+    return end;
+  }
+
+  private detectChangeIndex(
+    curr: Omit<InformSubtreeStyles, "changeIndex">,
+    prev: InformSubtreeStyles | null,
+  ) {
+    if (prev === null) {
+      return 0;
+    }
+    const lefts = this.detectDimChangeIndex(curr.lefts, prev.lefts);
+    const tops = this.detectDimChangeIndex(curr.tops, prev.tops);
+    return Math.min(lefts, tops);
+  }
+
+  public informStyle(informed: InformStyle): void {
     const prev = this.currStyle;
-    const geo = this.getGeometry();
-    this.currStyle = { ...pos, ...geo };
+    let sizing = {} as R2Sizing;
+    try {
+      sizing = this.getSizing();
+    } catch (e) {}
+
+    const curr = { ...informed, ...sizing };
+    this.currStyle = curr;
     this.updateStyle(this.currStyle, prev);
+  }
+
+  public informSubtreeStyles(curr: InformSubtreeStyles) {
+    const prev = this.currStyle;
+    const changeIndex = this.detectChangeIndex(curr, prev);
+    this.getSubtreeList().forEach((e, i, a) =>
+      e.informStyle({
+        subtree: {
+          changeIndex: changeIndex,
+          index: i,
+          length: a.length,
+        },
+        left: curr.lefts[i],
+        top: curr.tops[i],
+      }),
+    );
   }
 }

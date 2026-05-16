@@ -4,9 +4,10 @@ import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import {
   R2C,
   type ComponentDims,
-  type R2Geometry,
+  type R2Sizing,
   type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
+import { ReconciliationUtils } from "_utils/reconcilliation.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { css, html, type PropertyValues } from "lit";
 import { customElement, query, queryAll, state } from "lit/decorators.js";
@@ -17,7 +18,7 @@ type R2BadgeListState = HudTagListItem & { leave: boolean; id: number };
 
 @customElement("r2-badge-list")
 export class R2BadgeList extends R2C {
-  static styles = css`
+  static override styles = css`
     :host {
       position: absolute;
       white-space: nowrap;
@@ -37,33 +38,23 @@ export class R2BadgeList extends R2C {
     (s) => s.state?.hud.subtree.tags.list || [],
   );
 
-  protected willUpdate(changed: PropertyValues): void {
+  protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
     const curr = this.state.curr || [];
     const prev = this.parts;
-    const updated: R2BadgeListState[] = curr.map((v) => ({
-      ...v,
-      id: this.idCounter++,
-      leave: false,
-    }));
-
-    if (prev.length > updated.length) {
-      for (let i = updated.length; i < prev.length; i++) {
-        updated.push({
-          ...prev[i],
-          leave: true,
-        });
-      }
-    }
-    this.parts = updated;
+    this.parts = ReconciliationUtils.flat<R2BadgeListState, HudTagListItem>(
+      curr,
+      prev,
+      () => this.idCounter++,
+    );
   }
 
-  protected getSizeList(): R2C[] {
+  protected override getSubtreeList(): R2C[] {
     return Array.from(this.chips);
   }
 
-  updateGeometry(dims: ComponentDims[]): R2Geometry | null {
-    const sizing = SizingUtils.row(
+  override updateSizing(dims: ComponentDims[]): R2Sizing | null {
+    return SizingUtils.row(
       dims.map((v) => v.dims),
       {
         main: {
@@ -73,11 +64,10 @@ export class R2BadgeList extends R2C {
         },
       },
     );
-    return sizing;
   }
 
-  protected async updateStyle(
-    { index, length, top, left, width, height, lefts, tops }: UpdateStyle,
+  protected override async updateStyle(
+    { top, left, width, height, lefts, tops }: UpdateStyle,
     prev: UpdateStyle | null,
   ): Promise<void> {
     this.animateStyle("position", { top, left }, { duration: 1e3 });
@@ -86,17 +76,13 @@ export class R2BadgeList extends R2C {
       height,
       top: 0,
       left: 0,
-      index: -1,
-      length: 0,
+      subtree: {
+        index: -1,
+        changeIndex: -1,
+        length: 0,
+      },
     });
-    this.getSizeList().forEach((e, i, a) =>
-      e.informStyle({
-        index: i,
-        length: a.length,
-        left: lefts[i],
-        top: tops[i],
-      }),
-    );
+    this.informSubtreeStyles({ tops, lefts });
   }
 
   private onChildLeave(id: number) {
@@ -104,7 +90,7 @@ export class R2BadgeList extends R2C {
     this.parts = [...this.parts];
   }
 
-  render() {
+  override render() {
     return html`
       <r2-hud-bg
         style="${styleMap({

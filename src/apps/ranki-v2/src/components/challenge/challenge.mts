@@ -5,7 +5,7 @@ import yaml from "yaml";
 
 @customElement("r2-challenge")
 export class R2Challenge extends LitElement {
-  static styles = css`
+  static override styles = css`
     :host {
       overflow-x: hidden;
       overflow-y: scroll;
@@ -21,7 +21,7 @@ export class R2Challenge extends LitElement {
     }
   `;
   private state = new StoreController(this, (s) => s.state);
-  render() {
+  override render() {
     return html`<div class="scroller">
       <pre><code>${yaml.stringify(
         JSON.parse(JSON.stringify(this.state.curr || [])),

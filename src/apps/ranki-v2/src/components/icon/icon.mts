@@ -3,12 +3,13 @@ import { customElement, property, queryAll } from "lit/decorators.js";
 import {
   R2C,
   type ComponentDims,
-  type R2Geometry,
+  type R2Sizing,
   type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 import type { R2IconSpan } from "./icon-span.mts";
 import { repeat } from "lit/directives/repeat.js";
+import { SizingUtils } from "_utils/Sizing.mjs";
 
 export interface R2IconProps {
   animation: RankiPropAnimationBlock;
@@ -26,7 +27,7 @@ export type Parts = {
 
 @customElement("r2-icon")
 export class R2Icon extends R2C {
-  static styles = css`
+  static override styles = css`
     :host {
       display: block;
       position: absolute;
@@ -47,7 +48,7 @@ export class R2Icon extends R2C {
 
   private idCounter = 0;
 
-  protected willUpdate(changed: PropertyValues): void {
+  protected override willUpdate(changed: PropertyValues): void {
     if (!changed.has("props")) return;
     const curr = this.parts.at(-1);
     if (curr && curr.props.icon === this.props.icon) return;
@@ -62,7 +63,7 @@ export class R2Icon extends R2C {
     ];
   }
 
-  protected getSizeList(): R2C[] {
+  protected override getSubtreeList(): R2C[] {
     return Array.from(this.subtree);
   }
 
@@ -70,14 +71,17 @@ export class R2Icon extends R2C {
     this.parts = this.parts.filter((v) => v.id !== id);
   }
 
-  updateGeometry(dims: ComponentDims[]): R2Geometry | null {
-    const last = dims.at(-1);
-    if (!last) return null;
-    return { ...last.dims, lefts: [0], tops: [0] };
+  protected override updateSizing(dims: ComponentDims[]): R2Sizing | null {
+    return SizingUtils.last(dims, {
+      main: {
+        start: 0,
+        end: 0,
+      },
+    });
   }
 
-  protected async updateStyle(
-    { index, length, top, left, height, width, lefts, tops }: UpdateStyle,
+  protected override async updateStyle(
+    { top, left, height, width }: UpdateStyle,
     prev: UpdateStyle | null,
   ): Promise<void> {
     this.setStyle({
@@ -97,7 +101,7 @@ export class R2Icon extends R2C {
     );
   }
 
-  render() {
+  override render() {
     return html`${repeat(
       this.parts,
       (v) => v.id,

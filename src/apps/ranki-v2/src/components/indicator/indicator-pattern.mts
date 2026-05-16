@@ -4,7 +4,7 @@ import { customElement, property } from "lit/decorators.js";
 
 @customElement("r2-indicator-pattern")
 export class R2IndicatorPattern extends LitElement {
-  static styles = css`
+  static override styles = css`
     :host {
       display: block;
       position: absolute;
@@ -21,7 +21,7 @@ export class R2IndicatorPattern extends LitElement {
   @property({ hasChanged: () => false })
   private animation!: RankiPropAnimationBlock;
 
-  protected firstUpdated(): void {
+  protected override firstUpdated(): void {
     this.animate(
       {
         opacity: 1,
@@ -33,7 +33,7 @@ export class R2IndicatorPattern extends LitElement {
     );
   }
 
-  remove(): void {
+  override remove(): void {
     this.animate(
       {
         opacity: 0,
@@ -42,7 +42,7 @@ export class R2IndicatorPattern extends LitElement {
     ).finished.then(() => super.remove());
   }
 
-  render() {
+  override render() {
     console.log("re", this.pattern);
     this.style.setProperty("--pattern", this.pattern);
   }

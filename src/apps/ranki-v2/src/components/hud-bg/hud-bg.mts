@@ -1,10 +1,10 @@
-import { R2C, type InformStyle } from "_components/r2c/r2c.mjs";
+import { R2C, type R2Sizing, type UpdateStyle } from "_components/r2c/r2c.mjs";
 import { css } from "lit";
 import { customElement } from "lit/decorators.js";
 
 @customElement("r2-hud-bg")
 export class R2HudBg extends R2C {
-  static styles = css`
+  static override styles = css`
     :host {
       position: absolute;
       display: block;
@@ -19,12 +19,20 @@ export class R2HudBg extends R2C {
     }
   `;
 
-  public informStyle(pos: InformStyle): void {
-    this.setStyle({ height: pos.height }).animateStyle(
+  protected override getSizing(): R2Sizing {
+    // @ts-expect-error
+    return {};
+  }
+
+  protected override async updateStyle({
+    width,
+    height,
+  }: UpdateStyle): Promise<void> {
+    this.setStyle({ height }).animateStyle(
       "opacity",
       {
         opacity: 1,
-        width: pos.width,
+        width,
       },
       {
         duration: 1000,
@@ -32,7 +40,7 @@ export class R2HudBg extends R2C {
     );
   }
 
-  render() {
+  override render() {
     return;
   }
 }

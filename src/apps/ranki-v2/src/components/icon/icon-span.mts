@@ -18,7 +18,7 @@ const SVG_PLACEHOLDER = `
 
 @customElement("r2-icon-span")
 export class R2IconSpan extends R2C {
-  static styles = css`
+  static override styles = css`
     :host {
       position: absolute;
       overflow: hidden;
@@ -38,7 +38,7 @@ export class R2IconSpan extends R2C {
 
   private animation!: Animation;
 
-  updated(changed: PropertyValues) {
+  override updated(changed: PropertyValues) {
     if (!changed.has("leave")) return;
     if (this.leave) {
       this.animation?.cancel();
@@ -66,7 +66,7 @@ export class R2IconSpan extends R2C {
     );
   }
 
-  async firstUpdated(changed: PropertyValues) {
+  override async firstUpdated(changed: PropertyValues) {
     super.firstUpdated(changed);
     const { width, height } = this.props;
     const dims: Dims = { width, height };
@@ -90,7 +90,7 @@ export class R2IconSpan extends R2C {
     }, PROPAGATE_DELAY);
   }
 
-  render() {
+  override render() {
     const { width, height, color } = this.props;
     return html`
       ${unsafeHTML(

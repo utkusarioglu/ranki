@@ -7,7 +7,7 @@ import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 
 @customElement("r2-text-span")
 export class R2TextSpan extends R2C {
-  static styles = css`
+  static override styles = css`
     :host {
       position: absolute;
       opacity: 0;
@@ -28,7 +28,7 @@ export class R2TextSpan extends R2C {
 
   private animation!: Animation;
 
-  updated(changed: PropertyValues) {
+  override updated(changed: PropertyValues) {
     if (!changed.has("leave")) return;
     if (this.leave) {
       this.animation?.cancel();
@@ -56,7 +56,7 @@ export class R2TextSpan extends R2C {
     );
   }
 
-  async firstUpdated(changed: PropertyValues) {
+  override async firstUpdated(changed: PropertyValues) {
     super.firstUpdated(changed);
     await TimingUtils.waitLayout();
     const { width, height } = this.span.getBoundingClientRect();
@@ -77,7 +77,7 @@ export class R2TextSpan extends R2C {
     }, PROPAGATE_DELAY);
   }
 
-  render() {
+  override render() {
     return html`<span style="color: ${this.props.color}"
       >${this.props.text}</span
     >`;

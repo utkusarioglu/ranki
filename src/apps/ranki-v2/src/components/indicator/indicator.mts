@@ -5,7 +5,7 @@ import { repeat } from "lit/directives/repeat.js";
 
 @customElement("r2-indicator")
 export class R2Indicator extends LitElement {
-  static styles = css`
+  static override styles = css`
     :host {
       display: block;
       position: fixed;
@@ -16,7 +16,7 @@ export class R2Indicator extends LitElement {
 
   private state = new StoreController(this, (s) => s.state?.indicator);
 
-  render() {
+  override render() {
     if (!this.state.curr) return;
     const animation = this.state.curr.animation;
     const active = this.state.curr.cues

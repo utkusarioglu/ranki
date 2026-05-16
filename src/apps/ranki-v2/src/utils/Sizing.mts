@@ -17,29 +17,7 @@ export type GapsArg = {
 };
 
 export class SizingUtils {
-  // public static rowOld(self: R2C, gaps: GapsArg = {}): Size {
-  //   const dims = self.getDims();
-  //   const s = SizingUtils.linear(
-  //     dims,
-  //     gaps,
-  //     (v) => v.width,
-  //     (v) => v.height,
-  //   );
-
-  //   const sizing = {
-  //     width: s.sizeMain,
-  //     height: s.sizeCross,
-  //     lefts: s.offsetMain,
-  //     tops: s.offsetCross,
-  //   };
-
-  //   // self.setSizing(sizing);
-
-  //   return sizing;
-  // }
-
   public static row(dims: Dims[], gaps: GapsArg = {}): Size {
-    // const dims = self.getDims();
     const s = SizingUtils.linear(
       dims,
       gaps,
@@ -53,8 +31,6 @@ export class SizingUtils {
       lefts: s.offsetMain,
       tops: s.offsetCross,
     };
-
-    // self.setSizing(sizing);
 
     return sizing;
   }
@@ -101,20 +77,25 @@ export class SizingUtils {
     };
   }
 
-  // public static columnOld(self: R2C, gaps: GapsArg = {}): Size {
-  //   const dims = self.getDims();
-  //   const s = SizingUtils.linear(
-  //     dims,
-  //     gaps,
-  //     (v) => v.height,
-  //     (v) => v.width,
-  //   );
+  /**
+   * main axis is inline, cross axis is block
+   */
+  public static last(dims: ComponentDims[], gaps: GapsArg = {}): Size | null {
+    const last = dims.at(-1);
+    if (!last) return null;
 
-  //   return {
-  //     height: s.sizeMain,
-  //     width: s.sizeCross,
-  //     tops: s.offsetMain,
-  //     lefts: s.offsetCross,
-  //   };
-  // }
+    const width =
+      last.dims.width + (gaps.main?.start || 0) + (gaps.main?.end || 0);
+    const height =
+      last.dims.height + (gaps.cross?.start || 0) + (gaps.cross?.end || 0);
+    const lefts = [gaps.main?.start || 0];
+    const tops = [gaps.cross?.start || 0];
+
+    return {
+      width,
+      height,
+      lefts,
+      tops,
+    };
+  }
 }

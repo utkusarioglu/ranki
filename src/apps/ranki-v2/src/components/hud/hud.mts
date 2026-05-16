@@ -2,7 +2,7 @@ import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import {
   R2C,
   type ComponentDims,
-  type R2Geometry,
+  type R2Sizing,
   type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
@@ -11,7 +11,7 @@ import { customElement, query } from "lit/decorators.js";
 
 @customElement("r2-hud")
 export class R2Hud extends R2C {
-  static styles = css`
+  static override styles = css`
     :host {
       display: block;
       position: absolute;
@@ -63,32 +63,36 @@ export class R2Hud extends R2C {
   @query("r2-hud-scroller")
   private scroller!: R2C;
 
-  updateGeometry(dims: ComponentDims[]): R2Geometry {
+  protected override updateSizing(dims: ComponentDims[]): R2Sizing {
     const sizing = SizingUtils.row(dims.map((d) => d.dims));
     setTimeout(() => {
-      this.informStyle({ ...sizing, index: 0, length: 0, top: 0, left: 0 });
+      this.informStyle({
+        ...sizing,
+        top: 0,
+        left: 0,
+        subtree: { index: 0, length: 0, changeIndex: 0 },
+      });
     }, PROPAGATE_DELAY);
     return sizing;
   }
 
-  protected async updateStyle(
-    { height }: UpdateStyle,
+  /**
+   * @dev
+   * #1 5 for scrollbar thickness, 10 for top padding, 5 for bottom padding
+   */
+  protected override async updateStyle(
+    { height, tops, lefts }: UpdateStyle,
     prev: UpdateStyle | null,
   ): Promise<void> {
-    // 5 for scrollbar thickness, 10 for top padding, 5 for bottom padding
-    this.setStyle({ height: height! + 5 + 10 + 5 });
-    // const left = -sizing.width / 2;
-    // this.container.style.setProperty("width", sizing.width + "px");
-    this.getSizeList().forEach((e, index, arr) =>
-      e.informStyle({ index, length: arr.length, top: 0, left: 0 }),
-    );
+    this.setStyle({ height: height! + 5 + 10 + 5 }); // #1
+    this.informSubtreeStyles({ tops, lefts });
   }
 
-  protected getSizeList(): R2C[] {
+  protected override getSubtreeList(): R2C[] {
     return [this.scroller];
   }
 
-  render() {
+  override render() {
     return html`
       <div class="rotate">
         <div class="content">
