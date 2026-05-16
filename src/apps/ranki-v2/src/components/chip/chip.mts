@@ -2,10 +2,9 @@ import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import {
   R2C,
-  type AnimateableStyles,
   type ComponentDims,
-  type InformStyle,
   type R2Geometry,
+  type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { TimingUtils } from "_utils/timing.mjs";
@@ -53,18 +52,13 @@ export class R2Chip extends R2C {
         },
       },
     );
-    return { sizing };
+    return sizing;
   }
 
-  public async informStyle({
-    top,
-    left,
-    index,
-    length,
-  }: InformStyle): Promise<void> {
-    const {
-      sizing: { width, height, lefts, tops },
-    } = this.getGeometry();
+  public async updateStyle(
+    { top, left, index, length, width, height, lefts, tops }: UpdateStyle,
+    prev: UpdateStyle | null,
+  ): Promise<void> {
     await TimingUtils.delay(400 * index + 400);
     this.setStyle({ top, left, width, height, zIndex: length - index });
     this.bg.informStyle({
@@ -93,7 +87,7 @@ export class R2Chip extends R2C {
   }
 
   async animateLeave() {
-    this.emitSize({ height: this.getGeometry().sizing.height, width: 0 });
+    this.emitSize({ height: this.getGeometry().height, width: 0 });
     this.animateStyle(
       "opacity",
       {

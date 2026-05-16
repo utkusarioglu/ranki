@@ -1,10 +1,9 @@
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import {
   R2C,
-  type AnimateableStyles,
   type ComponentDims,
-  type InformStyle,
   type R2Geometry,
+  type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { css, html } from "lit";
@@ -39,13 +38,13 @@ export class R2CueList extends R2C {
         },
       },
     );
-    return { sizing };
+    return sizing;
   }
 
-  public informStyle({ index, length, top, left }: InformStyle) {
-    const {
-      sizing: { width, height, lefts, tops },
-    } = this.getGeometry();
+  protected async updateStyle(
+    { index, length, top, left, width, height, lefts, tops }: UpdateStyle,
+    prev: UpdateStyle | null,
+  ): Promise<void> {
     this.setStyle({ zIndex: length - index }).animateStyle(
       "position",
       { top, left },

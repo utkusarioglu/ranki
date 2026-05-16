@@ -4,8 +4,8 @@ import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import {
   R2C,
   type ComponentDims,
-  type InformStyle,
   type R2Geometry,
+  type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { css, html, type PropertyValues } from "lit";
@@ -73,13 +73,13 @@ export class R2BadgeList extends R2C {
         },
       },
     );
-    return { sizing };
+    return sizing;
   }
 
-  public informStyle({ top, left, index, length }: InformStyle): void {
-    const {
-      sizing: { width, height, lefts, tops },
-    } = this.getGeometry();
+  protected async updateStyle(
+    { index, length, top, left, width, height, lefts, tops }: UpdateStyle,
+    prev: UpdateStyle | null,
+  ): Promise<void> {
     this.animateStyle("position", { top, left }, { duration: 1e3 });
     this.bg.informStyle({
       width,

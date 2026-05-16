@@ -1,6 +1,6 @@
 import { R2C, type Dims } from "_components/r2c/r2c.mjs";
 import { css, type PropertyValues, html } from "lit";
-import { customElement, property, query, state } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 import type { R2IconProps } from "./icon.mts";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";

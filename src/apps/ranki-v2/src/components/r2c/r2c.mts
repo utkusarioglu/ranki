@@ -39,7 +39,8 @@ export interface R2Animate extends LitElement {
     pos: AnimateableStyles,
     options: AnimationOptions,
   ): this;
-  informStyle(pos: AnimateableStyles): void;
+  // informStyle(pos: AnimateableStyles): void;
+  // protected updateStyle(curr: InformStyle, prev: InformStyle): Promise<void>;
 }
 
 interface R2CNewChildSizeConnected {
@@ -59,18 +60,31 @@ type R2CNewChildSizeEvent =
   | R2CNewChildSizeDisconnected
   | R2CNewChildSizeConnected;
 
-export type InformStyle = { index: number; length: number } & Pos &
-  Partial<Dims>;
+type InformStyle = { index: number; length: number } & Pos & Partial<Dims>;
+
+export type UpdateStyle = InformStyle & R2Geometry;
 
 export interface ComponentDims {
   component: R2C;
   dims: Dims;
 }
+type LeftsTops = { lefts: number[]; tops: number[] };
 
-export type R2Geometry = {
-  sizing: Dims & { lefts: number[]; tops: number[] };
-  elements?: Record<string, AnimateableStyles>;
-};
+export type R2Geometry = Dims & LeftsTops;
+//   {
+//   sizing:
+//   // elements?: Record<string, AnimateableStyles>;
+// };
+
+// export type R2Geometry = {
+//   sizing: Dims & LeftsTops;
+//   // elements?: Record<string, AnimateableStyles>;
+// };
+
+// export type R2Geometry = {
+//   sizing: Dims & LeftsTops;
+//   elements?: Record<string, AnimateableStyles>;
+// };
 
 export class R2C extends LitElement implements R2Animate {
   private registered = new WeakMap<R2C, Dims>();
@@ -78,6 +92,7 @@ export class R2C extends LitElement implements R2Animate {
 
   private runningAnimations = new Map<string, Animation>();
   private requested = false;
+  private currStyle: UpdateStyle | null = null;
 
   protected getGeometry(): R2Geometry {
     assertNotNull(this.geometry, {
@@ -166,7 +181,7 @@ export class R2C extends LitElement implements R2Animate {
           TimingUtils.raf().then(() => {
             setTimeout(() => {
               this.requested = false;
-              if (this.geometry) this.emitSize(this.geometry.sizing);
+              if (this.geometry) this.emitSize(this.geometry);
             }, PROPAGATE_DELAY);
           });
         }
@@ -257,7 +272,17 @@ export class R2C extends LitElement implements R2Animate {
     return this;
   }
 
+  protected async updateStyle(
+    curr: InformStyle,
+    prev: InformStyle | null,
+  ): Promise<void> {
+    console.log("styleinform", this, curr, prev);
+  }
+
   public informStyle(pos: InformStyle): void {
-    console.log("styleinform", this, pos);
+    const prev = this.currStyle;
+    const geo = this.getGeometry();
+    this.currStyle = { ...pos, ...geo };
+    this.updateStyle(this.currStyle, prev);
   }
 }

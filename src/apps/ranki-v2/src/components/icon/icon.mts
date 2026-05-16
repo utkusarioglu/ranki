@@ -2,10 +2,9 @@ import { css, html, type PropertyValues } from "lit";
 import { customElement, property, queryAll } from "lit/decorators.js";
 import {
   R2C,
-  type AnimateableStyles,
   type ComponentDims,
-  type InformStyle,
   type R2Geometry,
+  type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 import type { R2IconSpan } from "./icon-span.mts";
@@ -74,20 +73,22 @@ export class R2Icon extends R2C {
   updateGeometry(dims: ComponentDims[]): R2Geometry | null {
     const last = dims.at(-1);
     if (!last) return null;
-    return { sizing: { ...last.dims, lefts: [0], tops: [0] } };
+    return { ...last.dims, lefts: [0], tops: [0] };
   }
 
-  public informStyle(pos: InformStyle): void {
-    const geometry = this.getGeometry();
+  protected async updateStyle(
+    { index, length, top, left, height, width, lefts, tops }: UpdateStyle,
+    prev: UpdateStyle | null,
+  ): Promise<void> {
     this.setStyle({
-      height: geometry.sizing.height,
-      left: pos.left,
-      top: pos.top,
+      height: height,
+      left: left,
+      top: top,
     }).animateStyle(
       "width",
       {
         opacity: 1,
-        width: geometry.sizing.width,
+        width: width,
       },
       {
         duration: this.props.animation.duration,

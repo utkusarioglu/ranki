@@ -2,10 +2,9 @@ import { css, html, type PropertyValues } from "lit";
 import { customElement, property, queryAll, state } from "lit/decorators.js";
 import {
   R2C,
-  type AnimateableStyles,
   type ComponentDims,
-  type InformStyle,
   type R2Geometry,
+  type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 import type { R2TextSpan } from "./text-span.mts";
@@ -53,13 +52,6 @@ export class R2Text extends R2C {
 
   private idCounter = 0;
 
-  // public informStyle(pos: AnimateableStyles): void {
-  //   this.setStyle({ height: pos.height }).animateStyle(
-  //     { width: pos.width },
-  //     { duration: 1000 },
-  //   );
-  // }
-
   protected willUpdate(changed: PropertyValues): void {
     if (!changed.has("props")) return;
     const curr = this.parts.at(-1);
@@ -86,20 +78,22 @@ export class R2Text extends R2C {
   updateGeometry(dims: ComponentDims[]): R2Geometry | null {
     const last = dims.at(-1);
     if (!last) return null;
-    return { sizing: { ...last.dims, lefts: [0], tops: [0] } };
+    return { ...last.dims, lefts: [0], tops: [0] };
   }
 
-  public informStyle(pos: InformStyle): void {
-    const { sizing } = this.getGeometry();
+  protected async updateStyle(
+    { index, length, top, left, height, width }: UpdateStyle,
+    prev: UpdateStyle | null,
+  ): Promise<void> {
     this.setStyle({
-      height: sizing.height,
-      top: pos.top,
-      left: pos.left,
+      height,
+      top,
+      left,
     }).animateStyle(
       "width",
       {
         opacity: 1,
-        width: sizing.width,
+        width,
       },
       {
         duration: 1000,

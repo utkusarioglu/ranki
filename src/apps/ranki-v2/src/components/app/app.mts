@@ -30,10 +30,6 @@ export class R2App extends R2C {
     `,
   ];
   private state = new StoreController(this, (s) => s.state);
-
-  // @query("r2-hud")
-  // private hud!: R2C;
-
   private paletteName: string = "(none)";
 
   private updatePalette(design: RankiDesignState) {

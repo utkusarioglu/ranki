@@ -1,16 +1,13 @@
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
-import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import {
   R2C,
-  type AnimateableStyles,
   type ComponentDims,
-  type InformStyle,
   type R2Geometry,
+  type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { css, html } from "lit";
 import { customElement, query } from "lit/decorators.js";
-import { styleMap } from "lit/directives/style-map.js";
 
 @customElement("r2-hud")
 export class R2Hud extends R2C {
@@ -69,19 +66,21 @@ export class R2Hud extends R2C {
   updateGeometry(dims: ComponentDims[]): R2Geometry {
     const sizing = SizingUtils.row(dims.map((d) => d.dims));
     setTimeout(() => {
-      this.informStyle({ ...sizing, index: 0, length: 0 });
+      this.informStyle({ ...sizing, index: 0, length: 0, top: 0, left: 0 });
     }, PROPAGATE_DELAY);
-    return { sizing };
+    return sizing;
   }
 
-  public informStyle(pos: InformStyle): void {
-    const { height } = pos;
+  protected async updateStyle(
+    { height }: UpdateStyle,
+    prev: UpdateStyle | null,
+  ): Promise<void> {
     // 5 for scrollbar thickness, 10 for top padding, 5 for bottom padding
     this.setStyle({ height: height! + 5 + 10 + 5 });
     // const left = -sizing.width / 2;
     // this.container.style.setProperty("width", sizing.width + "px");
     this.getSizeList().forEach((e, index, arr) =>
-      e.informStyle({ index, length: arr.length }),
+      e.informStyle({ index, length: arr.length, top: 0, left: 0 }),
     );
   }
 

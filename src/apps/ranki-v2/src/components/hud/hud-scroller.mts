@@ -1,10 +1,9 @@
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import {
   R2C,
-  type AnimateableStyles,
   type ComponentDims,
-  type InformStyle,
   type R2Geometry,
+  type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { css, html } from "lit";
@@ -42,13 +41,13 @@ export class R2HudScroller extends R2C {
         },
       },
     );
-    return { sizing };
+    return sizing;
   }
 
-  public informStyle({ length, index }: InformStyle) {
-    const {
-      sizing: { width, height, tops, lefts },
-    } = this.getGeometry();
+  protected async updateStyle(
+    { length, index, width, height, tops, lefts }: UpdateStyle,
+    prev: UpdateStyle | null,
+  ): Promise<void> {
     this.setStyle({ height, zIndex: length - index }).animateStyle(
       "size",
       {
