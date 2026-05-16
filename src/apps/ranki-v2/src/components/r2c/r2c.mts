@@ -60,7 +60,7 @@ type R2CNewChildSizeEvent =
   | R2CNewChildSizeConnected;
 
 type InformStyle = {
-  subtree: {
+  ordinal: {
     index: number;
     length: number;
     changeIndex: number;
@@ -308,7 +308,7 @@ export class R2C extends LitElement implements R2Animate {
     const changeIndex = this.detectChangeIndex(curr, prev);
     this.getSubtreeList().forEach((e, i, a) =>
       e.informStyle({
-        subtree: {
+        ordinal: {
           changeIndex: changeIndex,
           index: i,
           length: a.length,

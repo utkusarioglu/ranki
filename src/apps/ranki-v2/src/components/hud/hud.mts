@@ -70,7 +70,7 @@ export class R2Hud extends R2C {
         ...sizing,
         top: 0,
         left: 0,
-        subtree: { index: 0, length: 0, changeIndex: 0 },
+        ordinal: { index: 0, length: 0, changeIndex: 0 },
       });
     }, PROPAGATE_DELAY);
     return sizing;

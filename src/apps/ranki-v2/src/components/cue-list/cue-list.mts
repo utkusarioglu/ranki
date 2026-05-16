@@ -43,7 +43,7 @@ export class R2CueList extends R2C {
 
   protected override async updateStyle(
     {
-      subtree: { index, length },
+      ordinal: { index, length },
       top,
       left,
       width,
@@ -64,7 +64,7 @@ export class R2CueList extends R2C {
       left,
       width,
       height,
-      subtree: { index: -1, length: 0, changeIndex: -1 },
+      ordinal: { index: -1, length: 0, changeIndex: -1 },
     });
     this.informSubtreeStyles({ tops, lefts });
   }

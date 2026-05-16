@@ -76,7 +76,7 @@ export class R2BadgeList extends R2C {
       height,
       top: 0,
       left: 0,
-      subtree: {
+      ordinal: {
         index: -1,
         changeIndex: -1,
         length: 0,

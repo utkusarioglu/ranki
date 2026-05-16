@@ -45,7 +45,7 @@ export class R2HudScroller extends R2C {
   }
 
   protected override async updateStyle(
-    { width, height, tops, lefts, subtree: { index, length } }: UpdateStyle,
+    { width, height, tops, lefts, ordinal: { index, length } }: UpdateStyle,
     prev: UpdateStyle | null,
   ): Promise<void> {
     this.setStyle({ height, zIndex: length - index }).animateStyle(
@@ -60,7 +60,7 @@ export class R2HudScroller extends R2C {
     this.bg.informStyle({
       left: 0,
       top: 0,
-      subtree: { index: -1, length: 0, changeIndex: -1 },
+      ordinal: { index: -1, length: 0, changeIndex: -1 },
       width,
       height,
     });

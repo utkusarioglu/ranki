@@ -63,7 +63,7 @@ export class R2Chip extends R2C {
       height,
       lefts,
       tops,
-      subtree: { index, length, changeIndex },
+      ordinal: { index, length, changeIndex },
     }: UpdateStyle,
     prev: UpdateStyle | null,
   ): Promise<void> {
@@ -75,7 +75,7 @@ export class R2Chip extends R2C {
       height,
       top: 0,
       left: 0,
-      subtree: {
+      ordinal: {
         index: -1,
         changeIndex: -1,
         length: 0,
