@@ -3,6 +3,7 @@ import { TimingUtils } from "_utils/timing.mjs";
 import { assertNever, assertNotNull } from "_error/assertions.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
+import type { ReconciliationChanges } from "_utils/reconcilliation.mjs";
 
 export type ListenChildrenEventFunc = (e: ListenChildrenEvent) => void;
 
@@ -60,10 +61,10 @@ type R2CNewChildSizeEvent =
   | R2CNewChildSizeConnected;
 
 type InformStyle = {
-  ordinal: {
+  context: {
     index: number;
     length: number;
-    changeIndex: number;
+    changes: ReconciliationChanges;
   };
 } & Pos &
   Partial<Dims>;
@@ -225,9 +226,9 @@ export class R2C extends LitElement implements R2Animate {
         ...(pos.opacity !== undefined ? { opacity: pos.opacity } : {}),
       },
       {
-        // easing: "linear",
-        easing: "ease-in-out",
-        // easing: "cubic-bezier(0.7, -1, 0.2, 2.4)",
+        easing: "linear",
+        // easing: "ease-in-out",
+        // easing: "cubic-bezier(0.6, -1, 0.2, 2.4)",
         fill: "both",
         ...options,
       },
@@ -269,28 +270,6 @@ export class R2C extends LitElement implements R2Animate {
     console.log("styleinform", this, curr, prev);
   }
 
-  private detectDimChangeIndex(curr: number[], prev: number[]): number {
-    const end = Math.max(curr.length, prev.length);
-    for (let i = 0; i < end; i++) {
-      if (curr[i] !== prev[i]) {
-        return i;
-      }
-    }
-    return end;
-  }
-
-  private detectChangeIndex(
-    curr: Omit<InformSubtreeStyles, "changeIndex">,
-    prev: InformSubtreeStyles | null,
-  ) {
-    if (prev === null) {
-      return 0;
-    }
-    const lefts = this.detectDimChangeIndex(curr.lefts, prev.lefts);
-    const tops = this.detectDimChangeIndex(curr.tops, prev.tops);
-    return Math.min(lefts, tops);
-  }
-
   public informStyle(informed: InformStyle): void {
     const prev = this.currStyle;
     let sizing = {} as R2Sizing;
@@ -303,15 +282,16 @@ export class R2C extends LitElement implements R2Animate {
     this.updateStyle(this.currStyle, prev);
   }
 
-  public informSubtreeStyles(curr: InformSubtreeStyles) {
-    const prev = this.currStyle;
-    const changeIndex = this.detectChangeIndex(curr, prev);
+  public informSubtreeStyles(
+    curr: InformSubtreeStyles,
+    changes: ReconciliationChanges,
+  ) {
     this.getSubtreeList().forEach((e, i, a) =>
       e.informStyle({
-        ordinal: {
-          changeIndex: changeIndex,
+        context: {
           index: i,
           length: a.length,
+          changes,
         },
         left: curr.lefts[i],
         top: curr.tops[i],

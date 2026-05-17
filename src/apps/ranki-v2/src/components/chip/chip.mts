@@ -63,33 +63,30 @@ export class R2Chip extends R2C {
       height,
       lefts,
       tops,
-      ordinal: { index, length, changeIndex },
+      context: {
+        index,
+        length,
+        changes: { mutateIndex },
+      },
     }: UpdateStyle,
     prev: UpdateStyle | null,
   ): Promise<void> {
-    console.log(changeIndex);
-    await TimingUtils.delay(400 * index + 400);
+    console.log();
+    const delayIndex = mutateIndex > index ? 0 : index - mutateIndex;
+    await TimingUtils.delay(200 * delayIndex + 200);
     this.setStyle({ top, left, width, height, zIndex: length - index });
     this.bg.informStyle({
       width,
       height,
       top: 0,
       left: 0,
-      ordinal: {
+      context: {
         index: -1,
         changeIndex: -1,
         length: 0,
       },
     });
     this.informSubtreeStyles({ tops, lefts });
-    // this.getSubtreeList().forEach((e, i, a) =>
-    //   e.informStyle({
-    //     index: i,
-    //     length: a.length,
-    //     left: lefts[i],
-    //     top: tops[i],
-    //   }),
-    // );
   }
 
   override updated(changed: PropertyValues) {
@@ -100,11 +97,14 @@ export class R2Chip extends R2C {
   }
 
   async animateLeave() {
-    this.emitSize({ height: this.getSizing().height, width: 0 });
+    const height = this.getSizing().height;
+    this.emitSize({ height, width: 0 });
+    this.bg.informStyle({ width: 0, height, top: 0, left: 0 });
     this.animateStyle(
       "opacity",
       {
         opacity: 0,
+        width: 0,
       },
       {
         // TODO
@@ -112,6 +112,7 @@ export class R2Chip extends R2C {
         // duration: this.list[this.index].animation.duration,
       },
       () => {
+        console.log("dispatching");
         this.dispatchEvent(
           new CustomEvent("r2-child-leave", {
             bubbles: true,
@@ -130,7 +131,7 @@ export class R2Chip extends R2C {
       <r2-icon
         .props=${{
           icon: "mdi:home",
-          color: "rgb(var(--scheme-red-1))",
+          color: "rgb(var(--scheme-orange-2))",
           width: 24,
           height: 24,
           animation: {

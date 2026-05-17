@@ -6,6 +6,7 @@ import {
   type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
+import { TimingUtils } from "_utils/timing.mjs";
 import { css, html } from "lit";
 import { customElement, query } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
@@ -43,7 +44,7 @@ export class R2CueList extends R2C {
 
   protected override async updateStyle(
     {
-      ordinal: { index, length },
+      context: { index, length },
       top,
       left,
       width,
@@ -53,6 +54,7 @@ export class R2CueList extends R2C {
     }: UpdateStyle,
     prev: UpdateStyle | null,
   ): Promise<void> {
+    await TimingUtils.delay(500);
     this.setStyle({ zIndex: length - index }).animateStyle(
       "position",
       { top, left },
@@ -64,7 +66,7 @@ export class R2CueList extends R2C {
       left,
       width,
       height,
-      ordinal: { index: -1, length: 0, changeIndex: -1 },
+      context: { index: -1, length: 0, changeIndex: -1 },
     });
     this.informSubtreeStyles({ tops, lefts });
   }
@@ -74,7 +76,7 @@ export class R2CueList extends R2C {
       <r2-hud-bg
         style="${styleMap({
           "--z-index": -3,
-          "--border": "pink solid 1px",
+          "--bg": "rgb(var(--scheme-blue-2))",
         })}"
       ></r2-hud-bg>
       <r2-badge-list @r2-child-size=${this.onChildSize}></r2-badge-list>

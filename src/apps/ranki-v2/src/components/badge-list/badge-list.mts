@@ -7,14 +7,19 @@ import {
   type R2Sizing,
   type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
-import { ReconciliationUtils } from "_utils/reconcilliation.mjs";
+import { assertNever } from "_error/assertions.mjs";
+import {
+  ReconciliationUtils,
+  type ReconciliationActions,
+} from "_utils/reconcilliation.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
+import { TimingUtils } from "_utils/timing.mjs";
 import { css, html, type PropertyValues } from "lit";
 import { customElement, query, queryAll, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
 
-type R2BadgeListState = HudTagListItem & { leave: boolean; id: number };
+type R2BadgeListState = HudTagListItem;
 
 @customElement("r2-badge-list")
 export class R2BadgeList extends R2C {
@@ -30,7 +35,7 @@ export class R2BadgeList extends R2C {
   private bg!: R2HudBg;
 
   @state()
-  private parts: R2BadgeListState[] = [];
+  private subtree = ReconciliationUtils.empty<R2BadgeListState>();
 
   private idCounter = 0;
   private state = new StoreController<HudTagListItem[]>(
@@ -41,11 +46,38 @@ export class R2BadgeList extends R2C {
   protected override willUpdate(changed: PropertyValues): void {
     super.willUpdate(changed);
     const curr = this.state.curr || [];
-    const prev = this.parts;
-    this.parts = ReconciliationUtils.flat<R2BadgeListState, HudTagListItem>(
-      curr,
+    const prev = this.subtree;
+    this.subtree = ReconciliationUtils.flat(
       prev,
+      curr,
       () => this.idCounter++,
+      (curr, prev) => {
+        const isCurr = curr !== undefined;
+        const isPrev = prev !== undefined;
+        let action: ReconciliationActions;
+        if (isCurr && isPrev) {
+          if (curr.text === prev.text) {
+            action = "retain";
+          } else {
+            action = "update";
+          }
+        } else if (isCurr && !isPrev) {
+          action = "add";
+        } else if (!isCurr && isPrev) {
+          action = "remove";
+        } else {
+          assertNever({
+            why: "Impossible reconciliation state",
+            details: {
+              curr,
+              prev,
+              isCurr,
+              isPrev,
+            },
+          });
+        }
+        return action;
+      },
     );
   }
 
@@ -70,24 +102,24 @@ export class R2BadgeList extends R2C {
     { top, left, width, height, lefts, tops }: UpdateStyle,
     prev: UpdateStyle | null,
   ): Promise<void> {
+    await TimingUtils.delay(500);
     this.animateStyle("position", { top, left }, { duration: 1e3 });
     this.bg.informStyle({
       width,
       height,
       top: 0,
       left: 0,
-      ordinal: {
+      context: {
         index: -1,
-        changeIndex: -1,
         length: 0,
       },
     });
-    this.informSubtreeStyles({ tops, lefts });
+    console.log("change", this.subtree.changes);
+    this.informSubtreeStyles({ tops, lefts }, this.subtree.changes);
   }
 
   private onChildLeave(id: number) {
-    this.parts.splice(id, 1);
-    this.parts = [...this.parts];
+    this.subtree = ReconciliationUtils.leave(this.subtree, id);
   }
 
   override render() {
@@ -95,19 +127,19 @@ export class R2BadgeList extends R2C {
       <r2-hud-bg
         style="${styleMap({
           "--z-index": -2,
-          "--border": "purple solid 1px",
+          "--bg": "rgb(var(--scheme-turquoise-1))",
         })}"
       ></r2-hud-bg>
       ${repeat(
-        Array.from({ length: this.parts.length }, (_, i) => i),
+        Array.from({ length: this.subtree.list.length }, (_, i) => i),
         (i) => i,
         (i) => {
           return html`
             <r2-chip
               .index=${i}
-              .list=${this.parts}
-              ?leave=${this.parts[i].leave}
-              style="--border: red solid 1px; --bg: #333;"
+              .list=${this.subtree.list.map((v) => v.props)}
+              ?leave=${this.subtree.list[i].leave}
+              style="--bg: rgb(var(--scheme-surface-2))"
               @r2-child-leave=${() => this.onChildLeave(i)}
               @r2-child-size=${this.onChildSize}
             ></r2-chip>

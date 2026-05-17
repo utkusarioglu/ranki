@@ -16,6 +16,8 @@ export class R2HudBg extends R2C {
       opacity: 0;
       border-radius: 0.5em;
       box-sizing: border-box;
+      transition-property: background, border;
+      transition-duration: 1s;
     }
   `;
 

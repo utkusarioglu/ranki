@@ -7,7 +7,7 @@ import {
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { css, html } from "lit";
-import { customElement, query } from "lit/decorators.js";
+import { customElement, query, queryAll } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
 
 @customElement("r2-hud-scroller")
@@ -21,13 +21,13 @@ export class R2HudScroller extends R2C {
     }
   `;
 
-  @query("r2-cue-list")
-  private cueList!: R2C;
+  @queryAll("r2-cue-list")
+  private cueList!: NodeListOf<R2C>;
   @query("r2-hud-bg")
   private bg!: R2HudBg;
 
   protected override getSubtreeList(): R2C[] {
-    return [this.cueList];
+    return Array.from(this.cueList);
   }
 
   override updateSizing(dims: ComponentDims[]): R2Sizing | null {
@@ -45,7 +45,7 @@ export class R2HudScroller extends R2C {
   }
 
   protected override async updateStyle(
-    { width, height, tops, lefts, ordinal: { index, length } }: UpdateStyle,
+    { width, height, tops, lefts, context: { index, length } }: UpdateStyle,
     prev: UpdateStyle | null,
   ): Promise<void> {
     this.setStyle({ height, zIndex: length - index }).animateStyle(
@@ -60,7 +60,7 @@ export class R2HudScroller extends R2C {
     this.bg.informStyle({
       left: 0,
       top: 0,
-      ordinal: { index: -1, length: 0, changeIndex: -1 },
+      context: { index: -1, length: 0 },
       width,
       height,
     });
@@ -72,7 +72,7 @@ export class R2HudScroller extends R2C {
       <r2-hud-bg
         style="${styleMap({
           "--z-index": -4,
-          "--border": "green solid 1px",
+          "--bg": "rgb(var(--scheme-yellow-2))",
         })}"
       ></r2-hud-bg>
       <r2-cue-list @r2-child-size=${this.onChildSize}></r2-cue-list>

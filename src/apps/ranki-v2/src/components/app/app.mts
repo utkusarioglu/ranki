@@ -10,15 +10,18 @@ import type { RankiDesignState } from "_config/config.types.mjs";
 @customElement("r2-app")
 export class R2App extends R2C {
   static paletteSheet = new CSSStyleSheet();
-  static styles = [
+  static override styles = [
     css`
       :host {
         position: fixed;
         inset: 0;
-        color: rgb(var(--scheme-blue-2));
-        transition-property: color;
-        transition-duration: 1s;
+        color: rgb(var(--scheme-text-1));
         overflow: hidden;
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
       }
     `,
     R2App.paletteSheet,
@@ -42,7 +45,7 @@ export class R2App extends R2C {
     R2App.paletteSheet.replaceSync(paletteCss);
   }
 
-  render() {
+  override render() {
     const val = this.state.curr;
     if (val) {
       this.updatePalette(val.design);
