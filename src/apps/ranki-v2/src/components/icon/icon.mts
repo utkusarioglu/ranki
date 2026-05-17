@@ -84,21 +84,24 @@ export class R2Icon extends R2C {
     { top, left, height, width }: UpdateStyle,
     prev: UpdateStyle | null,
   ): Promise<void> {
-    this.setStyle({
-      height: height,
-      left: left,
-      top: top,
-    }).animateStyle(
-      "width",
-      {
-        opacity: 1,
-        width: width,
-      },
-      {
-        duration: this.props.animation.duration,
-        delay: 500,
-      },
-    );
+    return new Promise<void>((resolve) => {
+      this.setStyle({
+        height: height,
+        left: left,
+        top: top,
+      }).animateStyle(
+        "width",
+        {
+          opacity: 1,
+          width: width,
+        },
+        {
+          duration: this.props.animation.duration,
+          delay: 500,
+        },
+        resolve,
+      );
+    });
   }
 
   override render() {

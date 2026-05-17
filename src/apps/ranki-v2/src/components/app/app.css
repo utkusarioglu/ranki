@@ -1,0 +1,11 @@
+:host {
+  position: fixed;
+  inset: 0;
+  color: rgb(var(--scheme-text-1));
+  overflow: hidden;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+}

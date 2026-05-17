@@ -1,0 +1,47 @@
+:host {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+:host .rotate:hover {
+  &::-webkit-scrollbar-thumb {
+    background: orange;
+  }
+}
+
+:host .rotate {
+  /* transform: rotate(180deg); */
+  position: relative;
+  overflow-y: hidden;
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    appearance: none;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+:host .content {
+  box-sizing: border-box;
+  /* transform: rotate(180deg); */
+  padding-top: 10px;
+  padding-bottom: 5px;
+  margin-inline: auto;
+  padding-inline: 16px;
+  overflow: hidden;
+  width: max-content;
+}

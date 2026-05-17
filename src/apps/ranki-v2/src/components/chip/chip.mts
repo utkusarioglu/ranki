@@ -3,6 +3,7 @@ import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import {
   R2C,
   type ComponentDims,
+  type InformContext,
   type R2Sizing,
   type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
@@ -55,38 +56,25 @@ export class R2Chip extends R2C {
     return sizing;
   }
 
-  public override async updateStyle(
-    {
-      top,
-      left,
-      width,
-      height,
-      lefts,
-      tops,
-      context: {
-        index,
-        length,
-        changes: { mutateIndex },
-      },
-    }: UpdateStyle,
+  protected override async updateStyle(
+    { top, left, width, height, lefts, tops }: UpdateStyle,
     prev: UpdateStyle | null,
+    { index, length, changes: { mutateIndex, mutateOrder } }: InformContext,
   ): Promise<void> {
-    console.log();
-    const delayIndex = mutateIndex > index ? 0 : index - mutateIndex;
-    await TimingUtils.delay(200 * delayIndex + 200);
-    this.setStyle({ top, left, width, height, zIndex: length - index });
-    this.bg.informStyle({
-      width,
-      height,
-      top: 0,
-      left: 0,
-      context: {
-        index: -1,
-        changeIndex: -1,
-        length: 0,
-      },
-    });
-    this.informSubtreeStyles({ tops, lefts });
+    // const delayIndex = mutateIndex > index ? 0 : index - mutateIndex;
+    const delayIndex = mutateOrder[index];
+    const bodyDelay = 1000 * delayIndex;
+    const subtreeDelay = bodyDelay;
+    await Promise.all([
+      TimingUtils.delay(bodyDelay).then(() => {
+        this.setStyle({ top, left, width, height, zIndex: length - index });
+        this.bg.informStyle({ width, height, top: 0, left: 0 });
+      }),
+
+      TimingUtils.delay(subtreeDelay).then(() =>
+        this.informSubtreeStyles({ tops, lefts }),
+      ),
+    ]);
   }
 
   override updated(changed: PropertyValues) {
@@ -112,7 +100,6 @@ export class R2Chip extends R2C {
         // duration: this.list[this.index].animation.duration,
       },
       () => {
-        console.log("dispatching");
         this.dispatchEvent(
           new CustomEvent("r2-child-leave", {
             bubbles: true,

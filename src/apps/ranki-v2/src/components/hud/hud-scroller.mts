@@ -2,10 +2,12 @@ import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import {
   R2C,
   type ComponentDims,
+  type InformContext,
   type R2Sizing,
   type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
+import { TimingUtils } from "_utils/timing.mjs";
 import { css, html } from "lit";
 import { customElement, query, queryAll } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
@@ -31,7 +33,7 @@ export class R2HudScroller extends R2C {
   }
 
   override updateSizing(dims: ComponentDims[]): R2Sizing | null {
-    const sizing = SizingUtils.row(
+    return SizingUtils.row(
       dims.map((v) => v.dims),
       {
         main: {
@@ -39,32 +41,39 @@ export class R2HudScroller extends R2C {
           inBetween: 10,
           end: 10,
         },
+        cross: {
+          start: 2,
+          end: 2,
+        },
       },
     );
-    return sizing;
   }
 
   protected override async updateStyle(
-    { width, height, tops, lefts, context: { index, length } }: UpdateStyle,
+    { top, width, height, tops, lefts }: UpdateStyle,
     prev: UpdateStyle | null,
+    { index, length }: InformContext,
   ): Promise<void> {
-    this.setStyle({ height, zIndex: length - index }).animateStyle(
-      "size",
-      {
-        width,
-      },
-      {
-        duration: 1e3,
-      },
-    );
-    this.bg.informStyle({
-      left: 0,
-      top: 0,
-      context: { index: -1, length: 0 },
-      width,
-      height,
+    const prevWidth = prev?.width || 0;
+    const DELAY = 1000;
+    const bodyDelay = width < prevWidth ? DELAY : 0;
+    const subtreeDelay = width > prevWidth ? DELAY : 0;
+    TimingUtils.delay(bodyDelay).then(() => {
+      this.setStyle({ height, zIndex: length - index, top }).animateStyle(
+        "size",
+        {
+          width,
+        },
+        {
+          duration: 1e3,
+        },
+      );
+      this.bg.informStyle({ left: 0, top: 0, width, height });
     });
-    this.informSubtreeStyles({ tops, lefts });
+
+    TimingUtils.delay(subtreeDelay).then(() => {
+      this.informSubtreeStyles({ tops, lefts });
+    });
   }
 
   override render() {

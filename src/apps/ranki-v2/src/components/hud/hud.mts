@@ -6,59 +6,13 @@ import {
   type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
-import { css, html } from "lit";
+import { html, unsafeCSS } from "lit";
 import { customElement, query } from "lit/decorators.js";
+import styles from "./hud.css?inline";
 
 @customElement("r2-hud")
 export class R2Hud extends R2C {
-  static override styles = css`
-    :host {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 0;
-      overflow: hidden;
-    }
-
-    :host .rotate:hover {
-      &::-webkit-scrollbar-thumb {
-        background: orange;
-      }
-    }
-
-    :host .rotate {
-      //  transform: rotate(180deg);
-      position: relative;
-      overflow-y: hidden;
-      overflow-x: scroll;
-
-      &::-webkit-scrollbar {
-        appearance: none;
-        height: 5px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: transparent;
-        border-radius: 5px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: transparent;
-      }
-    }
-
-    :host .content {
-      //  transform: rotate(180deg);
-      padding-top: 10px;
-      padding-bottom: 5px;
-      margin-inline: auto;
-      padding-inline: 16px;
-      overflow: hidden;
-      width: max-content;
-    }
-  `;
+  static override styles = unsafeCSS(styles);
 
   @query("r2-hud-scroller")
   private scroller!: R2C;
@@ -70,17 +24,6 @@ export class R2Hud extends R2C {
         ...sizing,
         top: 0,
         left: 0,
-        context: {
-          index: 0,
-          length: 0,
-          changes: {
-            add: [],
-            update: [],
-            remove: [],
-            mutateIndex: 0,
-            retain: [0],
-          },
-        },
       });
     }, PROPAGATE_DELAY);
     return sizing;

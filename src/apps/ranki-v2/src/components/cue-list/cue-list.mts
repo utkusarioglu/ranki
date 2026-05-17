@@ -2,6 +2,7 @@ import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import {
   R2C,
   type ComponentDims,
+  type InformContext,
   type R2Sizing,
   type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
@@ -37,38 +38,44 @@ export class R2CueList extends R2C {
           inBetween: 10,
           end: 10,
         },
+        cross: {
+          start: 2,
+          end: 2,
+        },
       },
     );
     return sizing;
   }
 
   protected override async updateStyle(
-    {
-      context: { index, length },
-      top,
-      left,
-      width,
-      height,
-      lefts,
-      tops,
-    }: UpdateStyle,
+    { top, left, width, height, lefts, tops, main }: UpdateStyle,
     prev: UpdateStyle | null,
+    { index, length }: InformContext,
   ): Promise<void> {
-    await TimingUtils.delay(500);
-    this.setStyle({ zIndex: length - index }).animateStyle(
-      "position",
-      { top, left },
-      { duration: 1e3 },
-    );
-
-    this.bg.informStyle({
-      top,
-      left,
-      width,
-      height,
-      context: { index: -1, length: 0, changeIndex: -1 },
+    const DELAY = 1000;
+    const bodyDelay = main.isContracting ? DELAY : 0;
+    const subtreeDelay = main.isExpanding ? DELAY : 0;
+    TimingUtils.delay(bodyDelay).then(() => {
+      this.setStyle({ zIndex: length - index }).animateStyle(
+        "position",
+        { top, left },
+        { duration: 1e3 },
+      );
+      this.bg.informStyle({ top, left, width, height });
     });
-    this.informSubtreeStyles({ tops, lefts });
+    TimingUtils.delay(subtreeDelay).then(() => {
+      this.informSubtreeStyles(
+        { tops, lefts },
+        {
+          add: [],
+          remove: [],
+          retain: [Number.NaN],
+          update: [],
+          mutateOrder: [],
+          mutateIndex: Number.NaN,
+        },
+      );
+    });
   }
 
   override render() {

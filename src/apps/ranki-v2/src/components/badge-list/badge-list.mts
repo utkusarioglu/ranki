@@ -11,7 +11,7 @@ import { assertNever } from "_error/assertions.mjs";
 import {
   ReconciliationUtils,
   type ReconciliationActions,
-} from "_utils/reconcilliation.mjs";
+} from "_utils/reconciliation.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { TimingUtils } from "_utils/timing.mjs";
 import { css, html, type PropertyValues } from "lit";
@@ -91,8 +91,12 @@ export class R2BadgeList extends R2C {
       {
         main: {
           start: 10,
-          inBetween: 10,
+          inBetween: 5,
           end: 10,
+        },
+        cross: {
+          start: 2,
+          end: 2,
         },
       },
     );
@@ -102,24 +106,27 @@ export class R2BadgeList extends R2C {
     { top, left, width, height, lefts, tops }: UpdateStyle,
     prev: UpdateStyle | null,
   ): Promise<void> {
-    await TimingUtils.delay(500);
-    this.animateStyle("position", { top, left }, { duration: 1e3 });
-    this.bg.informStyle({
-      width,
-      height,
-      top: 0,
-      left: 0,
-      context: {
-        index: -1,
-        length: 0,
-      },
+    const prevWidth = prev?.width || 0;
+    const DELAY = 1000;
+    const bodyDelay = width < prevWidth ? DELAY : 0;
+    const subtreeDelay = width > prevWidth ? DELAY : 0;
+    TimingUtils.delay(bodyDelay).then(() => {
+      this.animateStyle("position", { top, left }, { duration: 1e3 });
+      this.bg.informStyle({ width, height, top: 0, left: 0 });
     });
-    console.log("change", this.subtree.changes);
-    this.informSubtreeStyles({ tops, lefts }, this.subtree.changes);
+    TimingUtils.delay(subtreeDelay)
+      .then(() =>
+        this.informSubtreeStyles({ tops, lefts }, this.subtree.changes),
+      )
+      .then(() => {
+        console.log("children done");
+      });
   }
 
   private onChildLeave(id: number) {
-    this.subtree = ReconciliationUtils.leave(this.subtree, id);
+    ReconciliationUtils.leave(this.subtree, id, (s) => {
+      this.subtree = s;
+    });
   }
 
   override render() {
@@ -136,11 +143,12 @@ export class R2BadgeList extends R2C {
         (i) => {
           return html`
             <r2-chip
+              style="--bg: rgb(var(--scheme-surface-2))"
               .index=${i}
               .list=${this.subtree.list.map((v) => v.props)}
               ?leave=${this.subtree.list[i].leave}
-              style="--bg: rgb(var(--scheme-surface-2))"
-              @r2-child-leave=${() => this.onChildLeave(i)}
+              @r2-child-leave=${() =>
+                this.onChildLeave(this.subtree.list[i].id)}
               @r2-child-size=${this.onChildSize}
             ></r2-chip>
           `;

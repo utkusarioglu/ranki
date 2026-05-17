@@ -1,9 +1,13 @@
 import { LitElement } from "lit";
 import { TimingUtils } from "_utils/timing.mjs";
-import { assertNever, assertNotNull } from "_error/assertions.mjs";
+import {
+  assertNever,
+  assertNotNull,
+  assertOverride,
+} from "_error/assertions.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
-import type { ReconciliationChanges } from "_utils/reconcilliation.mjs";
+import type { ReconciliationChanges } from "_utils/reconciliation.mjs";
 
 export type ListenChildrenEventFunc = (e: ListenChildrenEvent) => void;
 
@@ -40,7 +44,7 @@ export interface R2Animate extends LitElement {
     pos: AnimateableStyles,
     options: AnimationOptions,
   ): this;
-  informStyle(pos: AnimateableStyles): void;
+  informStyle(pos: AnimateableStyles, context: InformContext): void;
 }
 
 interface R2CNewChildSizeConnected {
@@ -60,16 +64,26 @@ type R2CNewChildSizeEvent =
   | R2CNewChildSizeDisconnected
   | R2CNewChildSizeConnected;
 
-type InformStyle = {
-  context: {
-    index: number;
-    length: number;
-    changes: ReconciliationChanges;
-  };
-} & Pos &
-  Partial<Dims>;
+export type InformContext = {
+  index: number;
+  length: number;
+  changes: ReconciliationChanges;
+};
 
-export type UpdateStyle = InformStyle & R2Sizing;
+type InformStyle = Pos & Partial<Dims>;
+
+export type UpdateStyle = InformStyle & R2Sizing & UpdateEvaluations;
+
+type UpdateEvaluations = {
+  main: {
+    isExpanding: boolean;
+    isContracting: boolean;
+  };
+  cross: {
+    isExpanding: boolean;
+    isContracting: boolean;
+  };
+};
 
 export interface ComponentDims {
   component: R2C;
@@ -194,7 +208,14 @@ export class R2C extends LitElement implements R2Animate {
     return ordered;
   }
 
-  protected updateSizing(dims: ComponentDims[]): R2Sizing | null {
+  /**
+   * @dev
+   * #1 Left in for autocomplete reference
+   */
+  protected updateSizing(
+    // @ts-expect-error #1
+    dims: ComponentDims[],
+  ): R2Sizing | null {
     assertNever({ why: "This method needs to be overwritten by the leaf" });
   }
 
@@ -263,39 +284,65 @@ export class R2C extends LitElement implements R2Animate {
     return this;
   }
 
+  /**
+   * @dev
+   * #1 Left in for autocomplete reference
+   */
   protected async updateStyle(
+    // @ts-expect-error #1
     curr: InformStyle,
+    // @ts-expect-error #1
     prev: InformStyle | null,
+    // @ts-expect-error #1
+    context?: InformContext,
   ): Promise<void> {
-    console.log("styleinform", this, curr, prev);
+    assertOverride({ why: "update style needs to be defined for each leaf" });
   }
 
-  public informStyle(informed: InformStyle): void {
+  public async informStyle(
+    informed: InformStyle,
+    context?: InformContext,
+  ): Promise<void> {
     const prev = this.currStyle;
     let sizing = {} as R2Sizing;
     try {
       sizing = this.getSizing();
     } catch (e) {}
 
-    const curr = { ...informed, ...sizing };
+    const evaluations = {
+      main: {
+        isExpanding: sizing.width > (prev?.width || 0),
+        isContracting: sizing.width < (prev?.width || 0),
+      },
+      cross: {
+        isExpanding: sizing.height > (prev?.height || 0),
+        isContracting: sizing.height < (prev?.height || 0),
+      },
+    };
+    const curr = { ...informed, ...sizing, ...evaluations };
+
     this.currStyle = curr;
-    this.updateStyle(this.currStyle, prev);
+    return this.updateStyle(this.currStyle, prev, context);
   }
 
-  public informSubtreeStyles(
+  public async informSubtreeStyles(
     curr: InformSubtreeStyles,
     changes: ReconciliationChanges,
-  ) {
-    this.getSubtreeList().forEach((e, i, a) =>
-      e.informStyle({
-        context: {
-          index: i,
-          length: a.length,
-          changes,
-        },
-        left: curr.lefts[i],
-        top: curr.tops[i],
-      }),
+  ): Promise<void> {
+    await Promise.all(
+      this.getSubtreeList().map((e, i, a) =>
+        e.informStyle(
+          {
+            left: curr.lefts[i],
+            top: curr.tops[i],
+          },
+          {
+            index: i,
+            length: a.length,
+            changes,
+          },
+        ),
+      ),
     );
   }
 }

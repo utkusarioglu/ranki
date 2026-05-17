@@ -6,6 +6,14 @@ import {
 type AssertionExtra = Pick<RankiAppErrorConstructorParams, "why" | "details"> &
   Partial<Pick<RankiAppErrorConstructorParams, "cause">>;
 
+export function assertOverride(extra: AssertionExtra): never {
+  throw new RankiAppError({
+    code: "OVERRIDE_REQUIRED",
+    cause: extra.cause || null,
+    ...extra,
+  });
+}
+
 export function assertNever(extra: AssertionExtra): never {
   throw new RankiAppError({
     code: "NEVER_EVENT",

@@ -1,36 +1,21 @@
-import { css, html, unsafeCSS } from "lit";
+import { html, unsafeCSS } from "lit";
 import { customElement } from "lit/decorators.js";
 import { R2C } from "_components/r2c/r2c.mjs";
 import { StoreController } from "_/controllers/store.mjs";
 import { generatePaletteCss } from "_/design/color.mjs";
 import theme from "./theme.css?inline";
 import scheme from "./schemes.css?inline";
+import appStyle from "./app.css?inline";
 import type { RankiDesignState } from "_config/config.types.mjs";
 
 @customElement("r2-app")
 export class R2App extends R2C {
   static paletteSheet = new CSSStyleSheet();
   static override styles = [
-    css`
-      :host {
-        position: fixed;
-        inset: 0;
-        color: rgb(var(--scheme-text-1));
-        overflow: hidden;
-        font-family:
-          system-ui,
-          -apple-system,
-          BlinkMacSystemFont,
-          sans-serif;
-      }
-    `,
+    unsafeCSS(appStyle),
     R2App.paletteSheet,
-    css`
-      ${unsafeCSS(theme)}
-    `,
-    css`
-      ${unsafeCSS(scheme)}
-    `,
+    unsafeCSS(theme),
+    unsafeCSS(scheme),
   ];
   private state = new StoreController(this, (s) => s.state);
   private paletteName: string = "(none)";

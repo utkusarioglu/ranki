@@ -90,21 +90,24 @@ export class R2Text extends R2C {
     { top, left, height, width }: UpdateStyle,
     prev: UpdateStyle | null,
   ): Promise<void> {
-    this.setStyle({
-      height,
-      top,
-      left,
-    }).animateStyle(
-      "width",
-      {
-        opacity: 1,
-        width,
-      },
-      {
-        duration: 1000,
-        delay: 500,
-      },
-    );
+    return new Promise<void>((resolve) => {
+      this.setStyle({
+        height,
+        top,
+        left,
+      }).animateStyle(
+        "width",
+        {
+          opacity: 1,
+          width,
+        },
+        {
+          duration: 1000,
+          delay: 500,
+        },
+        resolve,
+      );
+    });
   }
 
   override render() {

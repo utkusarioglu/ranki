@@ -1,4 +1,5 @@
 import { assertNever } from "_error/assertions.mjs";
+import { TimingUtils } from "./timing.mts";
 
 export type ReconciliationActions = "retain" | "update" | "remove" | "add";
 
@@ -7,6 +8,7 @@ export type ReconciliationChanges = {
   remove: number[];
   update: number[];
   retain: number[];
+  mutateOrder: number[];
   mutateIndex: number;
 };
 
@@ -27,6 +29,9 @@ export interface ReconciliationContainer<T extends any> {
 }
 
 export class ReconciliationUtils {
+  private static leaving: number[] = [];
+  private static willLeave = false;
+
   public static empty<G>(): ReconcileableSubtree<G> {
     return {
       list: [],
@@ -37,6 +42,7 @@ export class ReconciliationUtils {
         retain: [],
         update: [],
         mutateIndex: 0,
+        mutateOrder: [],
       },
     };
   }
@@ -56,12 +62,14 @@ export class ReconciliationUtils {
     getId: () => number,
     hasChanged: (curr: G, prev: G | undefined) => ReconciliationActions,
   ): ReconcileableSubtree<G> {
+    const curLen = curr.length;
+    const prevLen = prev.list.length;
     const update: number[] = [];
     const remove: number[] = [];
     const add: number[] = [];
     const retain: number[] = [];
     const list: ReconciliationContainer<G>[] = [];
-    const end = Math.max(curr.length, prev.list.length);
+    const end = Math.max(curLen, prevLen);
 
     for (let i = 0; i < end; i++) {
       const change = hasChanged(
@@ -109,6 +117,24 @@ export class ReconciliationUtils {
       : mutateIndices;
     const mutateIndex = Math.min(...mutateIndices);
 
+    let mutateOrder = Array.from(
+      { length: Math.max(curLen, prevLen) },
+      () => Number.NaN,
+    );
+    if (curLen > prevLen) {
+      for (let i = mutateIndex; i < curLen; i++) {
+        mutateOrder[i] = i - mutateIndex;
+      }
+    } else if (curLen < prevLen) {
+      for (let i = prevLen - 1; i >= mutateIndex; i--) {
+        mutateOrder[i] = prevLen - i - 1;
+      }
+    } else {
+      mutateOrder = prev.changes.mutateOrder;
+    }
+
+    console.log("o", mutateOrder, mutateIndex);
+
     return {
       list,
       epoch: Date.now(),
@@ -118,28 +144,44 @@ export class ReconciliationUtils {
         retain,
         update,
         mutateIndex,
+        mutateOrder,
       },
     };
   }
 
-  public static leave<G>(
+  public static async leave<G>(
     subtree: ReconcileableSubtree<G>,
-    index: number,
-  ): ReconcileableSubtree<G> {
-    const list = [...subtree.list];
-    list.splice(index, 1);
-    return {
-      list,
-      changes: {
-        add: [],
-        remove: [index],
-        retain: Array.from({ length: subtree.list.length }, (_, i) => i).filter(
-          (i) => i !== index,
-        ),
-        update: [],
-        mutateIndex: index,
-      },
-      epoch: Date.now(),
-    };
+    id: number,
+    updateCb: (subtree: ReconcileableSubtree<G>) => void,
+  ): Promise<void> {
+    this.leaving.push(id);
+    if (!this.willLeave) {
+      this.willLeave = true;
+      await TimingUtils.waitLayout();
+      if (!this.leaving.length) {
+        return;
+      }
+      const remove = [...this.leaving];
+      const list = subtree.list.filter((i) => !remove.includes(i.id));
+      this.leaving = [];
+      this.willLeave = false;
+      const retain = Array.from(
+        { length: subtree.list.length - remove.length },
+        (_, i) => i,
+      );
+
+      updateCb({
+        list,
+        changes: {
+          add: [],
+          remove,
+          retain,
+          update: [],
+          mutateIndex: id,
+          mutateOrder: subtree.changes.mutateOrder,
+        },
+        epoch: Date.now(),
+      });
+    }
   }
 }
