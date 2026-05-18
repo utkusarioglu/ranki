@@ -17,15 +17,15 @@ type SubtreeParams<S> = {
   getSource: GetSourceCallback<S>;
 };
 
-export class ReconciliationController<S> implements ReactiveController {
-  private host: any;
+export class SubtreeController<S> implements ReactiveController {
+  private host: ReactiveControllerHost;
   private reconcilerName!: "flat";
   private itemReconcile!: ReconcileSingle<S>;
-  private unsubscribe: () => void = () => {};
 
   private getSource!: GetSourceCallback<S>;
   public prev: ReconcileableSubtree<S> | undefined;
   public curr: ReconcileableSubtree<S> = ReconciliationUtils.empty<S>();
+  public epoch: number = 0;
 
   constructor(host: ReactiveControllerHost, params: SubtreeParams<S>) {
     host.addController(this);
@@ -33,7 +33,6 @@ export class ReconciliationController<S> implements ReactiveController {
     this.reconcilerName = params.type;
     this.itemReconcile = params.reconcile;
     this.getSource = params.getSource;
-    this.unsubscribe = () => {};
   }
 
   hostUpdate(): void {
@@ -43,27 +42,30 @@ export class ReconciliationController<S> implements ReactiveController {
       this.getSource(this.host),
       this.itemReconcile,
     );
-
-    console.log(this.curr);
+    this.epoch = Date.now();
+    this.host.requestUpdate();
   }
 
-  hostDisconnected() {
-    this.unsubscribe();
+  private setCurr(value: ReconcileableSubtree<S>) {
+    this.curr = value;
+    this.host.requestUpdate();
   }
 
   onLeave(id: number) {
-    return () => {
-      ReconciliationUtils.leave(this.curr, id, (s) => (this.curr = s));
+    return (e: CustomEvent) => {
+      e.stopPropagation();
+      this.prev = this.curr;
+      ReconciliationUtils.leave(this.prev, id, this.setCurr.bind(this));
     };
   }
 }
 
-export function reconciler<S>(params: SubtreeParams<S>) {
+export function subtree<S>(params: SubtreeParams<S>) {
   return (proto: ReactiveElement, key: string) => {
     const ctor = proto.constructor as typeof ReactiveElement;
 
     ctor.addInitializer((instance: ReactiveElement) => {
-      (instance as any)[key] = new ReconciliationController(instance, params);
+      (instance as any)[key] = new SubtreeController(instance, params);
     });
   };
 }

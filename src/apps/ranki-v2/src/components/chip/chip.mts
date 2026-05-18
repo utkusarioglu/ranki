@@ -67,7 +67,6 @@ export class R2Chip extends R2C {
       contract: this.animateContraction.bind(this),
       none: () => Promise.resolve(),
     };
-    console.log(curr.main.action);
     return animationPack[curr.main.action](curr, prev, context);
   }
 
@@ -95,13 +94,10 @@ export class R2Chip extends R2C {
     { index, length, changes: { mutateOrder } }: InformContext,
   ): Promise<void> {
     const delayIndex = mutateOrder[index];
-    console.log(index, delayIndex);
     const bodyDelay = 1000 * delayIndex;
     await TimingUtils.delay(bodyDelay);
-    console.log("sub");
     await this.informSubtreeStyles({ tops, lefts });
     await TimingUtils.delay(1000);
-    console.log("bod");
     this.setStyle({ top, left, width, height, zIndex: length - index });
     await this.bg.informStyle({ width, height, top: 0, left: 0 });
   }

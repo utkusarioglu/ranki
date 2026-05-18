@@ -1,8 +1,5 @@
 import { store, StoreController } from "_/controllers/store.mjs";
-import {
-  reconciler,
-  ReconciliationController,
-} from "_/controllers/subtree.mjs";
+import { subtree, SubtreeController } from "_/controllers/subtree.mjs";
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import {
@@ -13,11 +10,11 @@ import {
   type R2Sizing,
   type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
-import { ReconciliationUtils } from "_utils/reconciliation.mjs";
+// import { ReconciliationUtils } from "_utils/reconciliation.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { TimingUtils } from "_utils/timing.mjs";
 import { css, html } from "lit";
-import { customElement, query, queryAll, state } from "lit/decorators.js";
+import { customElement, query, queryAll } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
 
@@ -37,25 +34,14 @@ export class R2BadgeList extends R2C {
   private bg!: R2HudBg;
 
   @store((s) => s.state?.hud.subtree.tags.list || [])
-  private state!: StoreController<HudTagListItem[]>;
+  private store!: StoreController<HudTagListItem[]>;
 
-  @reconciler<R2BadgeListState>({
+  @subtree<R2BadgeListState>({
     type: "flat",
     reconcile: (c, p) => (c.text === p.text ? "retain" : "update"),
-    getSource: (s) => s.state.curr || [],
+    getSource: (s) => s.store.curr || [],
   })
-  private subtree2!: ReconciliationController<R2BadgeListState>;
-
-  @state()
-  private subtree = ReconciliationUtils.empty<R2BadgeListState>();
-
-  protected override willUpdate(): void {
-    const curr = this.state.curr || [];
-    const prev = this.subtree;
-    this.subtree = ReconciliationUtils.flat(prev, curr, (curr, prev) => {
-      return curr.text === prev.text ? "retain" : "update";
-    });
-  }
+  private subtree!: SubtreeController<R2BadgeListState>;
 
   protected override getSubtreeList(): R2C[] {
     return Array.from(this.chips);
@@ -97,7 +83,7 @@ export class R2BadgeList extends R2C {
   ): Promise<void> {
     await TimingUtils.delay(0)
       .then(() =>
-        this.informSubtreeStyles({ tops, lefts }, this.subtree.changes),
+        this.informSubtreeStyles({ tops, lefts }, this.subtree.curr.changes),
       )
       .then(() =>
         TimingUtils.delay(0).then(() => {
@@ -121,18 +107,13 @@ export class R2BadgeList extends R2C {
         await this.bg.informStyle({ width, height, top: 0, left: 0 });
       }),
       TimingUtils.delay(1000).then(() =>
-        this.informSubtreeStyles({ tops, lefts }, this.subtree.changes),
+        this.informSubtreeStyles({ tops, lefts }, this.subtree.curr.changes),
       ),
     ]);
   }
 
-  private onChildLeave(id: number) {
-    ReconciliationUtils.leave(this.subtree, id, (s) => {
-      this.subtree = s;
-    });
-  }
-
   override render() {
+    const base = this.subtree.curr.list;
     return html`
       <r2-hud-bg
         style="${styleMap({
@@ -141,18 +122,20 @@ export class R2BadgeList extends R2C {
         })}"
       ></r2-hud-bg>
       ${repeat(
-        Array.from({ length: this.subtree.list.length }, (_, i) => i),
+        Array.from({ length: base.length }, (_, i) => i),
         (i) => i,
         (i) => {
+          const list = base.map((v) => v.props);
+          const leave = base[i].leave;
+          const id = base[i].id;
           return html`
             <r2-chip
               style="--bg: rgb(var(--scheme-surface-2))"
               .index=${i}
-              .list=${this.subtree.list.map((v) => v.props)}
+              .list=${list}
               @r2-child-size=${this.onChildSize}
-              ?leave=${this.subtree.list[i].leave}
-              @r2-child-leave=${() =>
-                this.onChildLeave(this.subtree.list[i].id)}
+              ?leave=${leave}
+              @r2-child-leave=${this.subtree.onLeave(id)}
             ></r2-chip>
           `;
         },
