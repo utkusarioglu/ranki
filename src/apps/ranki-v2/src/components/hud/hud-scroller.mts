@@ -109,6 +109,15 @@ export class R2HudScroller extends R2C {
       .then(() =>
         TimingUtils.delay(1000).then(async () => {
           this.animateStyle("position", { top, left }, { duration: 1e3 });
+          this.animateStyle(
+            "size",
+            {
+              width,
+            },
+            {
+              duration: 1e3,
+            },
+          );
           await this.bg.informStyle({ width, height, top: 0, left: 0 });
         }),
       );

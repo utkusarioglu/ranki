@@ -133,8 +133,6 @@ export class ReconciliationUtils {
       mutateOrder = prev.changes.mutateOrder;
     }
 
-    console.log("o", mutateOrder, mutateIndex);
-
     return {
       list,
       epoch: Date.now(),

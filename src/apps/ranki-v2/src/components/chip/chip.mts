@@ -62,10 +62,12 @@ export class R2Chip extends R2C {
     context: InformContext,
   ): Promise<void> {
     const animationPack: AnimationPack = {
+      // FIX realize that enter and leave are not here
       expand: this.animateExpansion.bind(this),
       contract: this.animateContraction.bind(this),
       none: () => Promise.resolve(),
     };
+    console.log(curr.main.action);
     return animationPack[curr.main.action](curr, prev, context);
   }
 
@@ -93,11 +95,39 @@ export class R2Chip extends R2C {
     { index, length, changes: { mutateIndex, mutateOrder } }: InformContext,
   ): Promise<void> {
     const delayIndex = mutateOrder[index];
+    console.log(index, delayIndex);
     const bodyDelay = 1000 * delayIndex;
     await TimingUtils.delay(bodyDelay);
+    console.log("sub");
     await this.informSubtreeStyles({ tops, lefts });
+    await TimingUtils.delay(1000);
+    console.log("bod");
     this.setStyle({ top, left, width, height, zIndex: length - index });
     await this.bg.informStyle({ width, height, top: 0, left: 0 });
+  }
+
+  private async animateLeave() {
+    const height = this.getSizing().height;
+    this.emitSize({ height, width: 0 });
+    this.bg.informStyle({ width: 0, height, top: 0, left: 0 });
+    new Promise<void>((resolve) => {
+      this.animateStyle(
+        "opacity",
+        {
+          opacity: 0,
+          width: 0,
+        },
+        {
+          // TODO
+          duration: 1000,
+          // duration: this.list[this.index].animation.duration,
+        },
+        () => {
+          this.emitLeave();
+          resolve();
+        },
+      );
+    });
   }
 
   override updated(changed: PropertyValues) {
@@ -105,32 +135,6 @@ export class R2Chip extends R2C {
     if (this.leave) {
       this.animateLeave();
     }
-  }
-
-  async animateLeave() {
-    const height = this.getSizing().height;
-    this.emitSize({ height, width: 0 });
-    this.bg.informStyle({ width: 0, height, top: 0, left: 0 });
-    this.animateStyle(
-      "opacity",
-      {
-        opacity: 0,
-        width: 0,
-      },
-      {
-        // TODO
-        duration: 1000,
-        // duration: this.list[this.index].animation.duration,
-      },
-      () => {
-        this.dispatchEvent(
-          new CustomEvent("r2-child-leave", {
-            bubbles: true,
-            composed: true,
-          }),
-        );
-      },
-    );
   }
 
   override render() {

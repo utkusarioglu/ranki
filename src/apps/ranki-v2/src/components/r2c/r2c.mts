@@ -123,8 +123,9 @@ export class R2C extends LitElement implements R2Animate {
   }
 
   protected getSubtreeList(): R2C[] {
-    console.log(this, "did not define `getSizeList`");
-    return [];
+    assertOverride({
+      why: "getSizeList needs to be defined for all subtree consuming classes",
+    });
   }
 
   protected emitSize({ width, height }: Dims | DOMRect) {
@@ -134,6 +135,15 @@ export class R2C extends LitElement implements R2Animate {
           type: "update",
           rect: { width, height },
         },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
+  protected emitLeave() {
+    this.dispatchEvent(
+      new CustomEvent("r2-child-leave", {
         bubbles: true,
         composed: true,
       }),
@@ -259,8 +269,8 @@ export class R2C extends LitElement implements R2Animate {
         ...(pos.opacity !== undefined ? { opacity: pos.opacity } : {}),
       },
       {
-        easing: "linear",
-        // easing: "ease-in-out",
+        // easing: "linear",
+        easing: "ease-in-out",
         // easing: "cubic-bezier(0.6, -1, 0.2, 2.4)",
         fill: "both",
         ...options,
