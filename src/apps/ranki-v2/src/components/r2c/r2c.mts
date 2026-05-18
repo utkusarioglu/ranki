@@ -7,7 +7,10 @@ import {
 } from "_error/assertions.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
-import type { ReconciliationChanges } from "_utils/reconciliation.mjs";
+import {
+  ReconciliationUtils,
+  type ReconciliationChanges,
+} from "_utils/reconciliation.mjs";
 
 export type AnimationCallback = (
   curr: UpdateStyle,
@@ -142,12 +145,7 @@ export class R2C extends LitElement implements R2Animate {
   }
 
   protected emitLeave() {
-    this.dispatchEvent(
-      new CustomEvent("r2-child-leave", {
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    this.dispatchEvent(ReconciliationUtils.leaveEvent());
   }
 
   override connectedCallback(): void {

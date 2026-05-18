@@ -1,4 +1,8 @@
-import { StoreController } from "_/controllers/store.mjs";
+import { store, StoreController } from "_/controllers/store.mjs";
+import {
+  reconciler,
+  ReconciliationController,
+} from "_/controllers/subtree.mjs";
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import {
@@ -32,13 +36,18 @@ export class R2BadgeList extends R2C {
   @query("r2-hud-bg")
   private bg!: R2HudBg;
 
+  @store((s) => s.state?.hud.subtree.tags.list || [])
+  private state!: StoreController<HudTagListItem[]>;
+
+  @reconciler<R2BadgeListState>({
+    type: "flat",
+    reconcile: (c, p) => (c.text === p.text ? "retain" : "update"),
+    getSource: (s) => s.state.curr || [],
+  })
+  private subtree2!: ReconciliationController<R2BadgeListState>;
+
   @state()
   private subtree = ReconciliationUtils.empty<R2BadgeListState>();
-
-  private state = new StoreController<HudTagListItem[]>(
-    this,
-    (s) => s.state?.hud.subtree.tags.list || [],
-  );
 
   protected override willUpdate(): void {
     const curr = this.state.curr || [];
@@ -140,10 +149,10 @@ export class R2BadgeList extends R2C {
               style="--bg: rgb(var(--scheme-surface-2))"
               .index=${i}
               .list=${this.subtree.list.map((v) => v.props)}
+              @r2-child-size=${this.onChildSize}
               ?leave=${this.subtree.list[i].leave}
               @r2-child-leave=${() =>
                 this.onChildLeave(this.subtree.list[i].id)}
-              @r2-child-size=${this.onChildSize}
             ></r2-chip>
           `;
         },

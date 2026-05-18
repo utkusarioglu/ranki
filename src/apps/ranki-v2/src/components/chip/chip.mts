@@ -109,7 +109,7 @@ export class R2Chip extends R2C {
   private async animateLeave() {
     const height = this.getSizing().height;
     this.bg.informStyle({ width: 0, height, top: 0, left: 0 });
-    new Promise<void>((resolve) => {
+    return new Promise<void>((resolve) => {
       this.animateStyle(
         "opacity",
         {
@@ -121,10 +121,7 @@ export class R2Chip extends R2C {
           duration: 1000,
           // duration: this.list[this.index].animation.duration,
         },
-        () => {
-          this.emitLeave();
-          resolve();
-        },
+        resolve,
       );
     });
   }
@@ -132,7 +129,9 @@ export class R2Chip extends R2C {
   override updated(changed: PropertyValues) {
     if (!changed.has("leave")) return;
     if (this.leave) {
-      this.animateLeave();
+      this.animateLeave().then(() => {
+        this.emitLeave();
+      });
     }
   }
 

@@ -12,6 +12,8 @@ export type ReconciliationChanges = {
   mutateIndex: number;
 };
 
+export type ReconcileSingle<G> = (curr: G, prev: G) => ReconciliationActions;
+
 export interface ReconcileableSubtree<T> {
   list: ReconciliationContainer<T>[];
   changes: ReconciliationChanges;
@@ -60,7 +62,7 @@ export class ReconciliationUtils {
   public static flat<G>(
     prev: ReconcileableSubtree<G>,
     curr: G[],
-    hasChanged: (curr: G, prev: G) => ReconciliationActions,
+    hasChanged: ReconcileSingle<G>,
   ): ReconcileableSubtree<G> {
     const curLen = curr.length;
     const prevLen = prev.list.length;
@@ -165,6 +167,15 @@ export class ReconciliationUtils {
 
   private static getId() {
     return this.idCounter++;
+  }
+
+  static leaveEventName = "r2-child-leave";
+
+  static leaveEvent() {
+    return new CustomEvent(this.leaveEventName, {
+      bubbles: true,
+      composed: true,
+    });
   }
 
   public static async leave<G>(
