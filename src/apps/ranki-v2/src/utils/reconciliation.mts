@@ -60,8 +60,7 @@ export class ReconciliationUtils {
   public static flat<G>(
     prev: ReconcileableSubtree<G>,
     curr: G[],
-    // getId: () => number,
-    hasChanged: (curr: G, prev: G | undefined) => ReconciliationActions,
+    hasChanged: (curr: G, prev: G) => ReconciliationActions,
   ): ReconcileableSubtree<G> {
     const curLen = curr.length;
     const prevLen = prev.list.length;
@@ -73,16 +72,32 @@ export class ReconciliationUtils {
     const end = Math.max(curLen, prevLen);
 
     for (let i = 0; i < end; i++) {
-      const change = hasChanged(
-        curr[i],
-        prev.list[i] ? prev.list[i].props : undefined,
-      );
-      switch (change) {
+      const isCurr = curr[i] !== undefined;
+      const isPrev = prev.list[i] !== undefined;
+      let action: ReconciliationActions;
+      if (isCurr && isPrev) {
+        action = hasChanged(curr[i], prev.list[i].props);
+      } else if (isCurr && !isPrev) {
+        action = "add";
+      } else if (!isCurr && isPrev) {
+        action = "remove";
+      } else {
+        assertNever({
+          why: "Impossible reconciliation state",
+          details: {
+            curr,
+            prev,
+            isCurr,
+            isPrev,
+          },
+        });
+      }
+
+      switch (action) {
         case "add":
           add.push(i);
           list.push({
             props: curr[i],
-            // ...curr[i],
             id: this.getId(),
             leave: false,
           });
@@ -106,7 +121,7 @@ export class ReconciliationUtils {
         default:
           assertNever({
             why: "unrecognized change option",
-            details: { change },
+            details: { action },
           });
       }
     }

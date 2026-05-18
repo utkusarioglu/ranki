@@ -9,14 +9,10 @@ import {
   type R2Sizing,
   type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
-import { assertNever } from "_error/assertions.mjs";
-import {
-  ReconciliationUtils,
-  type ReconciliationActions,
-} from "_utils/reconciliation.mjs";
+import { ReconciliationUtils } from "_utils/reconciliation.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { TimingUtils } from "_utils/timing.mjs";
-import { css, html, type PropertyValues } from "lit";
+import { css, html } from "lit";
 import { customElement, query, queryAll, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
@@ -44,36 +40,11 @@ export class R2BadgeList extends R2C {
     (s) => s.state?.hud.subtree.tags.list || [],
   );
 
-  protected override willUpdate(changed: PropertyValues): void {
-    super.willUpdate(changed);
+  protected override willUpdate(): void {
     const curr = this.state.curr || [];
     const prev = this.subtree;
     this.subtree = ReconciliationUtils.flat(prev, curr, (curr, prev) => {
-      const isCurr = curr !== undefined;
-      const isPrev = prev !== undefined;
-      let action: ReconciliationActions;
-      if (isCurr && isPrev) {
-        if (curr.text === prev.text) {
-          action = "retain";
-        } else {
-          action = "update";
-        }
-      } else if (isCurr && !isPrev) {
-        action = "add";
-      } else if (!isCurr && isPrev) {
-        action = "remove";
-      } else {
-        assertNever({
-          why: "Impossible reconciliation state",
-          details: {
-            curr,
-            prev,
-            isCurr,
-            isPrev,
-          },
-        });
-      }
-      return action;
+      return curr.text === prev.text ? "retain" : "update";
     });
   }
 
@@ -113,7 +84,7 @@ export class R2BadgeList extends R2C {
 
   private async animateContraction(
     { top, left, width, height, lefts, tops }: UpdateStyle,
-    prev: UpdateStyle | null,
+    _prev: UpdateStyle | null,
   ): Promise<void> {
     await TimingUtils.delay(0)
       .then(() =>
