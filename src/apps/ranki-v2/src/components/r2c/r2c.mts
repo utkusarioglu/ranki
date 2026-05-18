@@ -9,6 +9,16 @@ import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import type { ReconciliationChanges } from "_utils/reconciliation.mjs";
 
+export type AnimationCallback = (
+  curr: UpdateStyle,
+  prev: UpdateStyle | null,
+  context: InformContext,
+) => Promise<void>;
+export type AnimationPack = Record<
+  "expand" | "contract" | "none",
+  AnimationCallback
+>;
+
 export type ListenChildrenEventFunc = (e: ListenChildrenEvent) => void;
 
 export type ListenChildrenEvent = CustomEvent<{ rect: Dims; detail: any }>;
@@ -74,15 +84,17 @@ type InformStyle = Pos & Partial<Dims>;
 
 export type UpdateStyle = InformStyle & R2Sizing & UpdateEvaluations;
 
+type LocalAction = "expand" | "contract" | "none";
+
+type DirectionalEvaluation = {
+  isExpanding: boolean;
+  isContracting: boolean;
+  action: LocalAction;
+};
+
 type UpdateEvaluations = {
-  main: {
-    isExpanding: boolean;
-    isContracting: boolean;
-  };
-  cross: {
-    isExpanding: boolean;
-    isContracting: boolean;
-  };
+  main: DirectionalEvaluation;
+  cross: DirectionalEvaluation;
 };
 
 export interface ComponentDims {
@@ -254,7 +266,8 @@ export class R2C extends LitElement implements R2Animate {
         ...options,
       },
     );
-    // this.runningAnimations.get(name)?.cancel();
+    this.runningAnimations.get(name)?.commitStyles();
+    this.runningAnimations.get(name)?.cancel();
     this.runningAnimations.set(name, anim);
     anim.finished
       .then(() => {
@@ -310,19 +323,28 @@ export class R2C extends LitElement implements R2Animate {
     } catch (e) {}
 
     const evaluations = {
-      main: {
-        isExpanding: sizing.width > (prev?.width || 0),
-        isContracting: sizing.width < (prev?.width || 0),
-      },
-      cross: {
-        isExpanding: sizing.height > (prev?.height || 0),
-        isContracting: sizing.height < (prev?.height || 0),
-      },
+      main: this.evaluateChange(sizing, prev, "width"),
+      cross: this.evaluateChange(sizing, prev, "height"),
     };
     const curr = { ...informed, ...sizing, ...evaluations };
 
     this.currStyle = curr;
     return this.updateStyle(this.currStyle, prev, context);
+  }
+
+  private evaluateChange(
+    curr: R2Sizing,
+    prev: UpdateStyle | null,
+    prop: "width" | "height",
+  ): DirectionalEvaluation {
+    const isExpanding = curr[prop] > (prev ? prev[prop] : 0);
+    const isContracting = curr.width < (prev ? prev[prop] : 0);
+    const action = isExpanding ? "expand" : isContracting ? "contract" : "none";
+    return {
+      action,
+      isExpanding,
+      isContracting,
+    };
   }
 
   public async informSubtreeStyles(

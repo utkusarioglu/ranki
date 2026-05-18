@@ -1,6 +1,7 @@
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import {
   R2C,
+  type AnimationPack,
   type ComponentDims,
   type InformContext,
   type R2Sizing,
@@ -48,34 +49,72 @@ export class R2CueList extends R2C {
   }
 
   protected override async updateStyle(
-    { top, left, width, height, lefts, tops, main }: UpdateStyle,
+    curr: UpdateStyle,
+    prev: UpdateStyle | null,
+    context: InformContext,
+  ): Promise<void> {
+    const animationPack: AnimationPack = {
+      expand: this.animateExpansion.bind(this),
+      contract: this.animateContraction.bind(this),
+      none: () => Promise.resolve(),
+    };
+    return animationPack[curr.main.action](curr, prev, context);
+  }
+
+  protected async animateExpansion(
+    { top, left, width, height, lefts, tops }: UpdateStyle,
     prev: UpdateStyle | null,
     { index, length }: InformContext,
   ): Promise<void> {
-    const DELAY = 1000;
-    const bodyDelay = main.isContracting ? DELAY : 0;
-    const subtreeDelay = main.isExpanding ? DELAY : 0;
-    TimingUtils.delay(bodyDelay).then(() => {
-      this.setStyle({ zIndex: length - index }).animateStyle(
-        "position",
-        { top, left },
-        { duration: 1e3 },
+    await Promise.all([
+      TimingUtils.delay(0).then(() => {
+        this.setStyle({ zIndex: length - index }).animateStyle(
+          "position",
+          { top, left },
+          { duration: 1e3 },
+        );
+        this.bg.informStyle({ top, left, width, height });
+      }),
+      TimingUtils.delay(1000).then(() =>
+        this.informSubtreeStyles(
+          { tops, lefts },
+          {
+            add: [],
+            remove: [],
+            retain: [Number.NaN],
+            update: [],
+            mutateOrder: [],
+            mutateIndex: Number.NaN,
+          },
+        ),
+      ),
+    ]);
+  }
+
+  private async animateContraction(
+    { top, left, width, height, lefts, tops }: UpdateStyle,
+    prev: UpdateStyle | null,
+  ): Promise<void> {
+    await TimingUtils.delay(0)
+      .then(() =>
+        this.informSubtreeStyles(
+          { tops, lefts },
+          {
+            add: [],
+            remove: [],
+            retain: [Number.NaN],
+            update: [],
+            mutateOrder: [],
+            mutateIndex: Number.NaN,
+          },
+        ),
+      )
+      .then(() =>
+        TimingUtils.delay(1000).then(async () => {
+          this.animateStyle("position", { top, left }, { duration: 1e3 });
+          await this.bg.informStyle({ width, height, top: 0, left: 0 });
+        }),
       );
-      this.bg.informStyle({ top, left, width, height });
-    });
-    TimingUtils.delay(subtreeDelay).then(() => {
-      this.informSubtreeStyles(
-        { tops, lefts },
-        {
-          add: [],
-          remove: [],
-          retain: [Number.NaN],
-          update: [],
-          mutateOrder: [],
-          mutateIndex: Number.NaN,
-        },
-      );
-    });
   }
 
   override render() {

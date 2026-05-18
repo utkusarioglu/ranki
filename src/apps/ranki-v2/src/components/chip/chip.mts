@@ -2,6 +2,7 @@ import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import {
   R2C,
+  type AnimationPack,
   type ComponentDims,
   type InformContext,
   type R2Sizing,
@@ -39,7 +40,7 @@ export class R2Chip extends R2C {
   }
 
   override updateSizing(dims: ComponentDims[]): R2Sizing | null {
-    const sizing = SizingUtils.row(
+    return SizingUtils.row(
       dims.map((v) => v.dims),
       {
         main: {
@@ -53,28 +54,50 @@ export class R2Chip extends R2C {
         },
       },
     );
-    return sizing;
   }
 
   protected override async updateStyle(
+    curr: UpdateStyle,
+    prev: UpdateStyle | null,
+    context: InformContext,
+  ): Promise<void> {
+    const animationPack: AnimationPack = {
+      expand: this.animateExpansion.bind(this),
+      contract: this.animateContraction.bind(this),
+      none: () => Promise.resolve(),
+    };
+    return animationPack[curr.main.action](curr, prev, context);
+  }
+
+  protected async animateExpansion(
     { top, left, width, height, lefts, tops }: UpdateStyle,
     prev: UpdateStyle | null,
     { index, length, changes: { mutateIndex, mutateOrder } }: InformContext,
   ): Promise<void> {
-    // const delayIndex = mutateIndex > index ? 0 : index - mutateIndex;
     const delayIndex = mutateOrder[index];
     const bodyDelay = 1000 * delayIndex;
-    const subtreeDelay = bodyDelay;
     await Promise.all([
       TimingUtils.delay(bodyDelay).then(() => {
         this.setStyle({ top, left, width, height, zIndex: length - index });
         this.bg.informStyle({ width, height, top: 0, left: 0 });
       }),
 
-      TimingUtils.delay(subtreeDelay).then(() =>
+      TimingUtils.delay(bodyDelay + 1000).then(() =>
         this.informSubtreeStyles({ tops, lefts }),
       ),
     ]);
+  }
+  protected async animateContraction(
+    { top, left, width, height, lefts, tops }: UpdateStyle,
+    prev: UpdateStyle | null,
+    { index, length, changes: { mutateIndex, mutateOrder } }: InformContext,
+  ): Promise<void> {
+    const delayIndex = mutateOrder[index];
+    const bodyDelay = 1000 * delayIndex;
+    await TimingUtils.delay(bodyDelay);
+    await this.informSubtreeStyles({ tops, lefts });
+    this.setStyle({ top, left, width, height, zIndex: length - index });
+    await this.bg.informStyle({ width, height, top: 0, left: 0 });
   }
 
   override updated(changed: PropertyValues) {

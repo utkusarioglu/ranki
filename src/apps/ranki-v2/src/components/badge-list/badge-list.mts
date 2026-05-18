@@ -3,7 +3,9 @@ import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import {
   R2C,
+  type AnimationPack,
   type ComponentDims,
+  type InformContext,
   type R2Sizing,
   type UpdateStyle,
 } from "_components/r2c/r2c.mjs";
@@ -103,24 +105,51 @@ export class R2BadgeList extends R2C {
   }
 
   protected override async updateStyle(
+    curr: UpdateStyle,
+    prev: UpdateStyle | null,
+    context: InformContext,
+  ): Promise<void> {
+    const animationPack: AnimationPack = {
+      expand: this.animateExpansion.bind(this),
+      contract: this.animateContraction.bind(this),
+      none: () => Promise.resolve(),
+    };
+    return animationPack[curr.main.action](curr, prev, context);
+  }
+
+  private async animateContraction(
     { top, left, width, height, lefts, tops }: UpdateStyle,
     prev: UpdateStyle | null,
   ): Promise<void> {
-    const prevWidth = prev?.width || 0;
-    const DELAY = 1000;
-    const bodyDelay = width < prevWidth ? DELAY : 0;
-    const subtreeDelay = width > prevWidth ? DELAY : 0;
-    TimingUtils.delay(bodyDelay).then(() => {
-      this.animateStyle("position", { top, left }, { duration: 1e3 });
-      this.bg.informStyle({ width, height, top: 0, left: 0 });
-    });
-    TimingUtils.delay(subtreeDelay)
+    await TimingUtils.delay(0)
       .then(() =>
         this.informSubtreeStyles({ tops, lefts }, this.subtree.changes),
       )
-      .then(() => {
-        console.log("children done");
-      });
+      .then(() =>
+        TimingUtils.delay(1000).then(async () => {
+          this.animateStyle("position", { top, left }, { duration: 1e3 });
+          await this.bg.informStyle({ width, height, top: 0, left: 0 });
+        }),
+      );
+  }
+
+  private async animateExpansion({
+    top,
+    left,
+    width,
+    height,
+    lefts,
+    tops,
+  }: UpdateStyle): Promise<void> {
+    await Promise.all([
+      TimingUtils.delay(0).then(async () => {
+        this.animateStyle("position", { top, left }, { duration: 1e3 });
+        await this.bg.informStyle({ width, height, top: 0, left: 0 });
+      }),
+      TimingUtils.delay(1000).then(() =>
+        this.informSubtreeStyles({ tops, lefts }, this.subtree.changes),
+      ),
+    ]);
   }
 
   private onChildLeave(id: number) {
