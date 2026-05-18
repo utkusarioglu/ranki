@@ -74,7 +74,7 @@ export class R2Chip extends R2C {
   protected async animateExpansion(
     { top, left, width, height, lefts, tops }: UpdateStyle,
     prev: UpdateStyle | null,
-    { index, length, changes: { mutateIndex, mutateOrder } }: InformContext,
+    { index, length, changes: { mutateOrder } }: InformContext,
   ): Promise<void> {
     const delayIndex = mutateOrder[index];
     const bodyDelay = 1000 * delayIndex;
@@ -92,7 +92,7 @@ export class R2Chip extends R2C {
   protected async animateContraction(
     { top, left, width, height, lefts, tops }: UpdateStyle,
     prev: UpdateStyle | null,
-    { index, length, changes: { mutateIndex, mutateOrder } }: InformContext,
+    { index, length, changes: { mutateOrder } }: InformContext,
   ): Promise<void> {
     const delayIndex = mutateOrder[index];
     console.log(index, delayIndex);
@@ -108,7 +108,6 @@ export class R2Chip extends R2C {
 
   private async animateLeave() {
     const height = this.getSizing().height;
-    this.emitSize({ height, width: 0 });
     this.bg.informStyle({ width: 0, height, top: 0, left: 0 });
     new Promise<void>((resolve) => {
       this.animateStyle(

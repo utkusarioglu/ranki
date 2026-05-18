@@ -39,7 +39,6 @@ export class R2BadgeList extends R2C {
   @state()
   private subtree = ReconciliationUtils.empty<R2BadgeListState>();
 
-  private idCounter = 0;
   private state = new StoreController<HudTagListItem[]>(
     this,
     (s) => s.state?.hud.subtree.tags.list || [],
@@ -49,38 +48,33 @@ export class R2BadgeList extends R2C {
     super.willUpdate(changed);
     const curr = this.state.curr || [];
     const prev = this.subtree;
-    this.subtree = ReconciliationUtils.flat(
-      prev,
-      curr,
-      () => this.idCounter++,
-      (curr, prev) => {
-        const isCurr = curr !== undefined;
-        const isPrev = prev !== undefined;
-        let action: ReconciliationActions;
-        if (isCurr && isPrev) {
-          if (curr.text === prev.text) {
-            action = "retain";
-          } else {
-            action = "update";
-          }
-        } else if (isCurr && !isPrev) {
-          action = "add";
-        } else if (!isCurr && isPrev) {
-          action = "remove";
+    this.subtree = ReconciliationUtils.flat(prev, curr, (curr, prev) => {
+      const isCurr = curr !== undefined;
+      const isPrev = prev !== undefined;
+      let action: ReconciliationActions;
+      if (isCurr && isPrev) {
+        if (curr.text === prev.text) {
+          action = "retain";
         } else {
-          assertNever({
-            why: "Impossible reconciliation state",
-            details: {
-              curr,
-              prev,
-              isCurr,
-              isPrev,
-            },
-          });
+          action = "update";
         }
-        return action;
-      },
-    );
+      } else if (isCurr && !isPrev) {
+        action = "add";
+      } else if (!isCurr && isPrev) {
+        action = "remove";
+      } else {
+        assertNever({
+          why: "Impossible reconciliation state",
+          details: {
+            curr,
+            prev,
+            isCurr,
+            isPrev,
+          },
+        });
+      }
+      return action;
+    });
   }
 
   protected override getSubtreeList(): R2C[] {
@@ -93,7 +87,7 @@ export class R2BadgeList extends R2C {
       {
         main: {
           start: 10,
-          inBetween: 5,
+          inBetween: 4,
           end: 10,
         },
         cross: {
@@ -126,9 +120,9 @@ export class R2BadgeList extends R2C {
         this.informSubtreeStyles({ tops, lefts }, this.subtree.changes),
       )
       .then(() =>
-        TimingUtils.delay(1000).then(async () => {
+        TimingUtils.delay(0).then(() => {
           this.animateStyle("position", { top, left }, { duration: 1e3 });
-          await this.bg.informStyle({ width, height, top: 0, left: 0 });
+          return this.bg.informStyle({ width, height, top: 0, left: 0 });
         }),
       );
   }

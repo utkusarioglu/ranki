@@ -29,6 +29,7 @@ export interface ReconciliationContainer<T extends any> {
 }
 
 export class ReconciliationUtils {
+  private static idCounter = 0;
   private static leaving: number[] = [];
   private static willLeave = false;
 
@@ -59,7 +60,7 @@ export class ReconciliationUtils {
   public static flat<G>(
     prev: ReconcileableSubtree<G>,
     curr: G[],
-    getId: () => number,
+    // getId: () => number,
     hasChanged: (curr: G, prev: G | undefined) => ReconciliationActions,
   ): ReconcileableSubtree<G> {
     const curLen = curr.length;
@@ -82,7 +83,7 @@ export class ReconciliationUtils {
           list.push({
             props: curr[i],
             // ...curr[i],
-            id: getId(),
+            id: this.getId(),
             leave: false,
           });
           break;
@@ -98,7 +99,7 @@ export class ReconciliationUtils {
           update.push(i);
           list.push({
             props: curr[i],
-            id: getId(),
+            id: this.getId(),
             leave: false,
           });
           break;
@@ -145,6 +146,10 @@ export class ReconciliationUtils {
         mutateOrder,
       },
     };
+  }
+
+  private static getId() {
+    return this.idCounter++;
   }
 
   public static async leave<G>(
