@@ -1,4 +1,4 @@
-import type { LitElement, ReactiveElement } from "lit";
+import type { ReactiveElement } from "lit";
 import type {
   AnimationRole,
   InformContext,
@@ -27,10 +27,6 @@ export class Animator {
     this.host = host;
     this.role = role;
     this.informTarget = informTarget;
-  }
-
-  private getRunningAnimation(name: string): Animation | undefined {
-    return this.runningAnimations.get(name);
   }
 
   setStyle({ width, height, opacity, left, top, zIndex }: ImmediateStyles) {
@@ -84,8 +80,9 @@ export class Animator {
         ...options,
       },
     );
-    this.runningAnimations.get(name)?.commitStyles();
-    this.runningAnimations.get(name)?.cancel();
+    const r = this.runningAnimations.get(name);
+    r?.commitStyles();
+    r?.cancel();
     this.runningAnimations.set(name, anim);
     anim.finished
       .then(() => {
@@ -100,6 +97,7 @@ export class Animator {
     prev: UpdateStyle | null,
     context: InformContext,
   ): Promise<void> {
+    console.log("update style", curr);
     const animationPack: AnimationPack = {
       expand: this.animateExpansion.bind(this),
       contract: this.animateContraction.bind(this),
@@ -122,15 +120,11 @@ export class Animator {
         // await this.bg.informStyle({ width, height, top: 0, left: 0 });
         await this.informTarget({
           target: "bg",
-          curr: { tops, lefts },
+          curr: { tops, lefts, widths: [width], heights: [height] },
         });
       }),
       TimingUtils.delay(1000).then(
-        () =>
-          this.informTarget({
-            target: "subtree",
-            curr: { tops, lefts },
-          }),
+        () => this.informTarget({ target: "subtree", curr: { tops, lefts } }),
         // this.informSubtreeStyles({ tops, lefts }, this.subtree.curr.changes),
       ),
     ]);
@@ -142,11 +136,7 @@ export class Animator {
   ): Promise<void> {
     await TimingUtils.delay(0)
       .then(
-        () =>
-          this.informTarget({
-            target: "subtree",
-            curr: { tops, lefts },
-          }),
+        () => this.informTarget({ target: "subtree", curr: { tops, lefts } }),
         // this.informSubtreeStyles({ tops, lefts }, this.subtree.curr.changes),
       )
       .then(() =>

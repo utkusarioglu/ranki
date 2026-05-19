@@ -45,7 +45,11 @@ export class GeometryController implements ReactiveController {
     this.selector = params.selector;
     this.host = host;
     this.changes = params.changes;
-    this.animator = new Animator(this.host, params.role, this.informTarget);
+    this.animator = new Animator(
+      this.host,
+      params.role,
+      this.informTarget.bind(this),
+    );
   }
 
   private getTarget(id: string) {
@@ -87,7 +91,7 @@ export class GeometryController implements ReactiveController {
     return this.animator.updateStyle(this.currStyle, prev, context);
   }
 
-  onChildSize() {
+  onChildSize(id: string) {
     return (e: CustomEvent<R2CNewChildSizeEvent>) => {
       e.stopPropagation();
       const detail = e.detail;
@@ -113,7 +117,7 @@ export class GeometryController implements ReactiveController {
       switch (detail.type) {
         case "disconnected":
         case "update":
-          this.geometry = this.updateSizing(this.orderTrackedNodes());
+          this.geometry = this.updateSizing(this.orderTrackedNodes(id));
           if (!this.requested) {
             this.requested = true;
             TimingUtils.raf().then(() => {
@@ -133,8 +137,9 @@ export class GeometryController implements ReactiveController {
     };
   }
 
-  private orderTrackedNodes() {
-    const serial = this.getSubtreeList();
+  private orderTrackedNodes(target: string) {
+    const serial = this.getTarget(target);
+    // const serial = this.getSubtreeList();
     const ordered: ComponentDims[] = [];
     for (let component of serial) {
       const dims = this.registered.get(component);
@@ -149,16 +154,27 @@ export class GeometryController implements ReactiveController {
     return ordered;
   }
 
+  private getChanges(target: string): ReconciliationChanges {
+    const t = this.changes[target];
+    if (!t) {
+      console.log("change detection not registered for target:", target);
+      return ReconciliationUtils.noChanges();
+    }
+    return t(this.host);
+  }
+
   private async informTarget(
     { target, curr }: InformTargetParams,
     // target: string,
     // curr: InformTargetStyles,
     // changes: ReconciliationChanges,
   ): Promise<void> {
+    console.log(this);
     // DECIDE this will result in running animation ignoring changes
     const changes = this.getChanges(target);
     await Promise.all(
       this.getTarget(target).map((e, i, a) =>
+        // TODO this isn't referencing `geometry`
         e.informStyle(
           {
             height: curr.heights ? curr.heights[i] : undefined,
@@ -174,15 +190,6 @@ export class GeometryController implements ReactiveController {
         ),
       ),
     );
-  }
-
-  private getChanges(target: string): ReconciliationChanges {
-    const t = this.changes[target];
-    if (!t) {
-      console.log("change detection not registered for target:", target);
-      return ReconciliationUtils.noChanges();
-    }
-    return t();
   }
 
   // public async informSubtreeStyles(

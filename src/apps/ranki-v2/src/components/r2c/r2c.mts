@@ -59,6 +59,7 @@ export class R2C extends LitElement implements R2Animate {
     this.dispatchEvent(ReconciliationUtils.leaveEvent());
   }
 
+  // OBSOLETE
   /**
    * @dev
    * #1 Left in for autocomplete reference

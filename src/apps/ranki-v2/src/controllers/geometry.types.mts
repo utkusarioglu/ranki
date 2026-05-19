@@ -1,15 +1,15 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationChanges } from "_utils/reconciliation.mjs";
-import type { InformTargetCb } from "./geometry.animator.types.mts";
-import type { LitElement } from "lit";
+import type { R2CWithGeometry } from "./geometry.animator.types.mts";
 
+type LitInstance = any;
 export type ListenChildrenEventFunc = (e: ListenChildrenEvent) => void;
 
 export type ListenChildrenEvent = CustomEvent<{ rect: Dims; detail: any }>;
 
 export type Dims = Pick<DOMRect, "width" | "height">;
 
-export type SizingSelector = Record<string, (s: LitElement) => R2C[]>;
+export type SizingSelector = Record<string, (s: LitInstance) => R2C[]>;
 
 /**
  * Lets the host set the start, end margins and the padding between its children
@@ -20,13 +20,12 @@ export type AnimationRole = string;
 
 export type ReconcilerChangesMapCb = Record<
   string,
-  () => ReconciliationChanges
+  (s: LitInstance) => ReconciliationChanges
 >;
 
 export interface GeometryParams {
   selector: SizingSelector;
   sizing: SizingCallback;
-  getTarget: InformTargetCb;
   changes: ReconcilerChangesMapCb;
   role: AnimationRole;
 }
