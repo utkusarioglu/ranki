@@ -1,12 +1,10 @@
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
-import {
-  R2C,
-  type AnimationPack,
-  type ComponentDims,
-  type InformContext,
-  type R2Sizing,
-  type UpdateStyle,
-} from "_components/r2c/r2c.mjs";
+import { R2C } from "_components/r2c/r2c.mjs";
+import { type AnimationPack } from "_/controllers/geometry.animator.types.mjs";
+import { type InformContext } from "_/controllers/geometry.types.mjs";
+import { type UpdateStyle } from "_/controllers/geometry.types.mjs";
+import { type R2Sizing } from "_/controllers/geometry.types.mjs";
+import { type ComponentDims } from "_/controllers/geometry.types.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { TimingUtils } from "_utils/timing.mjs";
 import { css, html } from "lit";

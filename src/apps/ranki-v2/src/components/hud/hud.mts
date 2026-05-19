@@ -1,10 +1,8 @@
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
-import {
-  R2C,
-  type ComponentDims,
-  type R2Sizing,
-  type UpdateStyle,
-} from "_components/r2c/r2c.mjs";
+import { R2C } from "_components/r2c/r2c.mjs";
+import { type UpdateStyle } from "_/controllers/geometry.types.mjs";
+import { type R2Sizing } from "_/controllers/geometry.types.mjs";
+import { type ComponentDims } from "_/controllers/geometry.types.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, query } from "lit/decorators.js";

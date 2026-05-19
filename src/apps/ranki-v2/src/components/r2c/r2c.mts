@@ -11,44 +11,27 @@ import {
   ReconciliationUtils,
   type ReconciliationChanges,
 } from "_utils/reconciliation.mjs";
+import type {
+  ComponentDims,
+  Dims,
+  DirectionalEvaluation,
+  InformContext,
+  InformStyle,
+  InformSubtreeStyles,
+  R2CNewChildSizeEvent,
+  R2Sizing,
+  UpdateStyle,
+} from "_/controllers/geometry.types.mjs";
+import { GeometryUtils } from "_/controllers/geometry.utils.mjs";
+import type {
+  AnimateableStyles,
+  AnimationOptions,
+  ImmediateStyles,
+} from "_/controllers/geometry.animator.types.mjs";
 
-export type AnimationCallback = (
-  curr: UpdateStyle,
-  prev: UpdateStyle | null,
-  context: InformContext,
-) => Promise<void>;
-export type AnimationPack = Record<
-  "expand" | "contract" | "none",
-  AnimationCallback
->;
-
-export type ListenChildrenEventFunc = (e: ListenChildrenEvent) => void;
-
-export type ListenChildrenEvent = CustomEvent<{ rect: Dims; detail: any }>;
-
-export type Dims = Pick<DOMRect, "width" | "height">;
-
-type Pos = { top: number; left: number };
-
-type Anim = {
-  easing: string;
-};
-
-type Other = {
+export type Other = {
   opacity: number;
 };
-
-export type ImmediateStyles = { zIndex?: number } & AnimateableStyles;
-
-export type AnimateableStyles = Partial<Dims> &
-  Partial<Pos> &
-  Partial<Anim> &
-  Partial<Other>;
-
-export type AnimationOptions = Required<
-  Pick<KeyframeAnimationOptions, "duration">
-> &
-  Partial<Pick<KeyframeAnimationOptions, "easing" | "delay">>;
 
 export interface R2Animate extends LitElement {
   setStyle(pos: AnimateableStyles): this;
@@ -60,64 +43,38 @@ export interface R2Animate extends LitElement {
   informStyle(pos: AnimateableStyles, context: InformContext): void;
 }
 
-interface R2CNewChildSizeConnected {
-  type: "connected";
-}
-interface R2CNewChildSizeDisconnected {
-  type: "disconnected";
-}
-
-interface R2CNewChildSizeUpdate {
-  type: "update";
-  rect: DOMRect;
-}
-
-type R2CNewChildSizeEvent =
-  | R2CNewChildSizeUpdate
-  | R2CNewChildSizeDisconnected
-  | R2CNewChildSizeConnected;
-
-export type InformContext = {
-  index: number;
-  length: number;
-  changes: ReconciliationChanges;
-};
-
-type InformStyle = Pos & Partial<Dims>;
-
-export type UpdateStyle = InformStyle & R2Sizing & UpdateEvaluations;
-
-type LocalAction = "expand" | "contract" | "none";
-
-type DirectionalEvaluation = {
-  isExpanding: boolean;
-  isContracting: boolean;
-  action: LocalAction;
-};
-
-type UpdateEvaluations = {
-  main: DirectionalEvaluation;
-  cross: DirectionalEvaluation;
-};
-
-export interface ComponentDims {
-  component: R2C;
-  dims: Dims;
-}
-type LeftsTops = { lefts: number[]; tops: number[] };
-
-export type R2Sizing = Dims & LeftsTops;
-
-type InformSubtreeStyles = LeftsTops;
-
 export class R2C extends LitElement implements R2Animate {
+  // OBSOLETE
   private registered = new WeakMap<R2C, Dims>();
+  // OBSOLETE
   private geometry: R2Sizing | null = null;
-
+  // OBSOLETE
   private runningAnimations = new Map<string, Animation>();
+  // OBSOLETE
   private requested = false;
+  // OBSOLETE
   private currStyle: UpdateStyle | null = null;
 
+  protected emitLeave() {
+    this.dispatchEvent(ReconciliationUtils.leaveEvent());
+  }
+
+  /**
+   * @dev
+   * #1 Left in for autocomplete reference
+   */
+  protected async updateStyle(
+    // @ts-expect-error #1
+    curr: InformStyle,
+    // @ts-expect-error #1
+    prev: InformStyle | null,
+    // @ts-expect-error #1
+    context?: InformContext,
+  ): Promise<void> {
+    assertOverride({ why: "update style needs to be defined for each leaf" });
+  }
+
+  // OBSOLETE
   protected getSizing(): R2Sizing {
     assertNotNull(this.geometry, {
       why: "getGeometry called when no geometry was registered",
@@ -125,55 +82,59 @@ export class R2C extends LitElement implements R2Animate {
     return this.geometry;
   }
 
+  // OBSOLETE
   protected getSubtreeList(): R2C[] {
     assertOverride({
       why: "getSizeList needs to be defined for all subtree consuming classes",
     });
   }
 
-  protected emitSize({ width, height }: Dims | DOMRect) {
-    this.dispatchEvent(
-      new CustomEvent("r2-child-size", {
-        detail: {
-          type: "update",
-          rect: { width, height },
-        },
-        bubbles: true,
-        composed: true,
-      }),
-    );
+  // OBSOLETE
+  protected emitSize(dims: Dims | DOMRect) {
+    GeometryUtils.emitSize(this, dims);
+    // this.dispatchEvent(
+    //   new CustomEvent("r2-child-size", {
+    //     detail: {
+    //       type: "update",
+    //       rect: { width, height },
+    //     },
+    //     bubbles: true,
+    //     composed: true,
+    //   }),
+    // );
   }
 
-  protected emitLeave() {
-    this.dispatchEvent(ReconciliationUtils.leaveEvent());
-  }
-
+  // OBSOLETE
   override connectedCallback(): void {
-    this.dispatchEvent(
-      new CustomEvent("r2-child-size", {
-        detail: {
-          type: "connected",
-        },
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    GeometryUtils.emitConnected(this);
+    // this.dispatchEvent(
+    //   new CustomEvent("r2-child-size", {
+    //     detail: {
+    //       type: "connected",
+    //     },
+    //     bubbles: true,
+    //     composed: true,
+    //   }),
+    // );
     super.connectedCallback();
   }
 
+  // OBSOLETE
   override disconnectedCallback(): void {
-    this.dispatchEvent(
-      new CustomEvent("r2-child-size", {
-        detail: {
-          type: "disconnected",
-        },
-        bubbles: true,
-        composed: true,
-      }),
-    );
+    GeometryUtils.emitDisconnected(this);
+    // this.dispatchEvent(
+    //   new CustomEvent("r2-child-size", {
+    //     detail: {
+    //       type: "disconnected",
+    //     },
+    //     bubbles: true,
+    //     composed: true,
+    //   }),
+    // );
     super.disconnectedCallback();
   }
 
+  // OBSOLETE
   protected onChildSize(e: CustomEvent<R2CNewChildSizeEvent>) {
     e.stopPropagation();
     const detail = e.detail;
@@ -212,6 +173,7 @@ export class R2C extends LitElement implements R2Animate {
     }
   }
 
+  // OBSOLETE
   private orderTrackedNodes() {
     const serial = this.getSubtreeList();
     const ordered: ComponentDims[] = [];
@@ -228,6 +190,7 @@ export class R2C extends LitElement implements R2Animate {
     return ordered;
   }
 
+  // OBSOLETE
   /**
    * @dev
    * #1 Left in for autocomplete reference
@@ -239,6 +202,7 @@ export class R2C extends LitElement implements R2Animate {
     assertNever({ why: "This method needs to be overwritten by the leaf" });
   }
 
+  // OBSOLETE
   public animateStyle(
     name: string,
     pos: AnimateableStyles,
@@ -285,10 +249,12 @@ export class R2C extends LitElement implements R2Animate {
     return this;
   }
 
+  // OBSOLETE
   getRunningAnimation(name: string): Animation | undefined {
     return this.runningAnimations.get(name);
   }
 
+  // OBSOLETE
   setStyle({ width, height, opacity, left, top, zIndex }: ImmediateStyles) {
     this.style.setProperty("z-index", "" + zIndex);
     this.animateStyle(
@@ -305,21 +271,7 @@ export class R2C extends LitElement implements R2Animate {
     return this;
   }
 
-  /**
-   * @dev
-   * #1 Left in for autocomplete reference
-   */
-  protected async updateStyle(
-    // @ts-expect-error #1
-    curr: InformStyle,
-    // @ts-expect-error #1
-    prev: InformStyle | null,
-    // @ts-expect-error #1
-    context?: InformContext,
-  ): Promise<void> {
-    assertOverride({ why: "update style needs to be defined for each leaf" });
-  }
-
+  // OBSOLETE
   public async informStyle(
     informed: InformStyle,
     context?: InformContext,
@@ -340,6 +292,7 @@ export class R2C extends LitElement implements R2Animate {
     return this.updateStyle(this.currStyle, prev, context);
   }
 
+  // OBSOLETE
   private evaluateChange(
     curr: R2Sizing,
     prev: UpdateStyle | null,
@@ -355,6 +308,7 @@ export class R2C extends LitElement implements R2Animate {
     };
   }
 
+  // OBSOLETE
   public async informSubtreeStyles(
     curr: InformSubtreeStyles,
     changes: ReconciliationChanges,

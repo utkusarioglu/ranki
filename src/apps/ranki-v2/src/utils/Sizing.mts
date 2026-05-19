@@ -1,4 +1,6 @@
-import type { ComponentDims, Dims, R2C } from "../components/r2c/r2c.mts";
+import type { R2C } from "../components/r2c/r2c.mts";
+import type { ComponentDims } from "_/controllers/geometry.types.mjs";
+import type { Dims } from "_/controllers/geometry.types.mjs";
 
 export type Size = Dims & {
   lefts: number[];

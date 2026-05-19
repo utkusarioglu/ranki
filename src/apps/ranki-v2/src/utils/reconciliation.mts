@@ -39,14 +39,26 @@ export class ReconciliationUtils {
     return {
       list: [],
       epoch: 0,
-      changes: {
-        add: [],
-        remove: [],
-        retain: [],
-        update: [],
-        mutateIndex: 0,
-        mutateOrder: [],
-      },
+      changes: ReconciliationUtils.noChanges(),
+      // changes: {
+      //   add: [],
+      //   remove: [],
+      //   retain: [],
+      //   update: [],
+      //   mutateIndex: 0,
+      //   mutateOrder: [],
+      // },
+    };
+  }
+
+  public static noChanges(): ReconciliationChanges {
+    return {
+      add: [],
+      remove: [],
+      retain: [],
+      update: [],
+      mutateIndex: 0,
+      mutateOrder: [],
     };
   }
 

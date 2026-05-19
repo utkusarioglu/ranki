@@ -1,11 +1,9 @@
 import { css, html, type PropertyValues } from "lit";
 import { customElement, property, queryAll, state } from "lit/decorators.js";
-import {
-  R2C,
-  type ComponentDims,
-  type R2Sizing,
-  type UpdateStyle,
-} from "_components/r2c/r2c.mjs";
+import { R2C } from "_components/r2c/r2c.mjs";
+import { type UpdateStyle } from "_/controllers/geometry.types.mjs";
+import { type R2Sizing } from "_/controllers/geometry.types.mjs";
+import { type ComponentDims } from "_/controllers/geometry.types.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 import type { R2TextSpan } from "./text-span.mts";
 import { repeat } from "lit/directives/repeat.js";

@@ -1,4 +1,5 @@
-import { R2C, type Dims } from "_components/r2c/r2c.mjs";
+import { R2C } from "_components/r2c/r2c.mjs";
+import { type Dims } from "_/controllers/geometry.types.mjs";
 import { TimingUtils } from "_utils/timing.mjs";
 import { css, type PropertyValues, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";

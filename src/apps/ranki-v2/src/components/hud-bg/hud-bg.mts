@@ -1,4 +1,6 @@
-import { R2C, type R2Sizing, type UpdateStyle } from "_components/r2c/r2c.mjs";
+import { R2C } from "_components/r2c/r2c.mjs";
+import { type UpdateStyle } from "_/controllers/geometry.types.mjs";
+import { type R2Sizing } from "_/controllers/geometry.types.mjs";
 import { css } from "lit";
 import { customElement } from "lit/decorators.js";
 

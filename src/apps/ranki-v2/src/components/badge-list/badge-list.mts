@@ -2,15 +2,12 @@ import { store, StoreController } from "_/controllers/store.mjs";
 import { subtree, SubtreeController } from "_/controllers/subtree.mjs";
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
-import {
-  R2C,
-  type AnimationPack,
-  type ComponentDims,
-  type InformContext,
-  type R2Sizing,
-  type UpdateStyle,
-} from "_components/r2c/r2c.mjs";
-// import { ReconciliationUtils } from "_utils/reconciliation.mjs";
+import { R2C } from "_components/r2c/r2c.mjs";
+import { type AnimationPack } from "_/controllers/geometry.animator.types.mjs";
+import { type InformContext } from "_/controllers/geometry.types.mjs";
+import { type UpdateStyle } from "_/controllers/geometry.types.mjs";
+import { type R2Sizing } from "_/controllers/geometry.types.mjs";
+import { type ComponentDims } from "_/controllers/geometry.types.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { TimingUtils } from "_utils/timing.mjs";
 import { css, html } from "lit";
@@ -34,14 +31,14 @@ export class R2BadgeList extends R2C {
   private bg!: R2HudBg;
 
   @store((s) => s.state?.hud.subtree.tags.list || [])
-  private store!: StoreController<HudTagListItem[]>;
+  private readonly store!: StoreController<HudTagListItem[]>;
 
   @subtree<R2BadgeListState>({
     type: "flat",
     reconcile: (c, p) => (c.text === p.text ? "retain" : "update"),
     getSource: (s) => s.store.curr || [],
   })
-  private subtree!: SubtreeController<R2BadgeListState>;
+  private readonly subtree!: SubtreeController<R2BadgeListState>;
 
   protected override getSubtreeList(): R2C[] {
     return Array.from(this.chips);
@@ -64,6 +61,7 @@ export class R2BadgeList extends R2C {
     );
   }
 
+  // OBSOLETE
   protected override async updateStyle(
     curr: UpdateStyle,
     prev: UpdateStyle | null,
@@ -77,6 +75,7 @@ export class R2BadgeList extends R2C {
     return animationPack[curr.main.action](curr, prev, context);
   }
 
+  // OBSOLETE
   private async animateContraction(
     { top, left, width, height, lefts, tops }: UpdateStyle,
     _prev: UpdateStyle | null,
@@ -93,6 +92,7 @@ export class R2BadgeList extends R2C {
       );
   }
 
+  // OBSOLETE
   private async animateExpansion({
     top,
     left,
