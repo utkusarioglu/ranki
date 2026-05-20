@@ -1,7 +1,7 @@
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import { R2C } from "_components/r2c/r2c.mjs";
-import { type AnimationPack } from "_/controllers/geometry.animator.types.mjs";
+import { type AnimationPack } from "_/controllers/TEMP_ANIMATION_DICT.mjs";
 import { type InformContext } from "_/controllers/geometry.types.mjs";
 import { type UpdateStyle } from "_/controllers/geometry.types.mjs";
 import { type R2Sizing } from "_/controllers/geometry.types.mjs";
@@ -38,20 +38,17 @@ export class R2Chip extends R2C {
   }
 
   override updateSizing(dims: ComponentDims[]): R2Sizing | null {
-    return SizingUtils.row(
-      dims.map((v) => v.dims),
-      {
-        main: {
-          start: 10,
-          inBetween: 5,
-          end: 10,
-        },
-        cross: {
-          start: 5,
-          end: 5,
-        },
+    return SizingUtils.row({
+      main: {
+        start: 10,
+        gap: 5,
+        end: 10,
       },
-    );
+      cross: {
+        start: 5,
+        end: 5,
+      },
+    })(dims);
   }
 
   protected override async updateStyle(
@@ -71,7 +68,7 @@ export class R2Chip extends R2C {
   protected async animateExpansion(
     { top, left, width, height, lefts, tops }: UpdateStyle,
     prev: UpdateStyle | null,
-    { index, length, changes: { mutateOrder } }: InformContext,
+    { index, length, diff: { mutateOrder } }: InformContext,
   ): Promise<void> {
     const delayIndex = mutateOrder[index];
     const bodyDelay = 1000 * delayIndex;
@@ -89,7 +86,7 @@ export class R2Chip extends R2C {
   protected async animateContraction(
     { top, left, width, height, lefts, tops }: UpdateStyle,
     prev: UpdateStyle | null,
-    { index, length, changes: { mutateOrder } }: InformContext,
+    { index, length, diff: { mutateOrder } }: InformContext,
   ): Promise<void> {
     const delayIndex = mutateOrder[index];
     const bodyDelay = 1000 * delayIndex;

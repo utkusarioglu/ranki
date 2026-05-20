@@ -14,10 +14,10 @@ type GetSourceCallback<S> = (instance: any) => S[];
 type SubtreeParams<S> = {
   type: "flat";
   reconcile: ReconcileSingle<S>;
-  getSource: GetSourceCallback<S>;
+  source: GetSourceCallback<S>;
 };
 
-export class SubtreeController<S> implements ReactiveController {
+export class ReconciliationController<S> implements ReactiveController {
   private host: ReactiveControllerHost;
   private reconcilerName!: "flat";
   private itemReconcile!: ReconcileSingle<S>;
@@ -32,7 +32,7 @@ export class SubtreeController<S> implements ReactiveController {
     this.host = host;
     this.reconcilerName = params.type;
     this.itemReconcile = params.reconcile;
-    this.getSource = params.getSource;
+    this.getSource = params.source;
   }
 
   hostUpdate(): void {
@@ -60,12 +60,12 @@ export class SubtreeController<S> implements ReactiveController {
   }
 }
 
-export function subtree<S>(params: SubtreeParams<S>) {
+export function reconciler<S>(params: SubtreeParams<S>) {
   return (proto: ReactiveElement, key: string) => {
     const ctor = proto.constructor as typeof ReactiveElement;
 
     ctor.addInitializer((instance: ReactiveElement) => {
-      (instance as any)[key] = new SubtreeController(instance, params);
+      (instance as any)[key] = new ReconciliationController(instance, params);
     });
   };
 }

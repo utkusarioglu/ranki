@@ -3,7 +3,7 @@ import { TimingUtils } from "./timing.mts";
 
 export type ReconciliationActions = "retain" | "update" | "remove" | "add";
 
-export type ReconciliationChanges = {
+export type ReconciliationDiff = {
   add: number[];
   remove: number[];
   update: number[];
@@ -16,7 +16,7 @@ export type ReconcileSingle<G> = (curr: G, prev: G) => ReconciliationActions;
 
 export interface ReconcileableSubtree<T> {
   list: ReconciliationContainer<T>[];
-  changes: ReconciliationChanges;
+  diff: ReconciliationDiff;
   epoch: number;
 }
 
@@ -39,7 +39,7 @@ export class ReconciliationUtils {
     return {
       list: [],
       epoch: 0,
-      changes: ReconciliationUtils.noChanges(),
+      diff: ReconciliationUtils.noChanges(),
       // changes: {
       //   add: [],
       //   remove: [],
@@ -51,7 +51,7 @@ export class ReconciliationUtils {
     };
   }
 
-  public static noChanges(): ReconciliationChanges {
+  public static noChanges(): ReconciliationDiff {
     return {
       add: [],
       remove: [],
@@ -143,7 +143,7 @@ export class ReconciliationUtils {
     // #1
     let mutateIndices = [remove[0], add[0]].filter((v) => v !== undefined);
     mutateIndices = !mutateIndices.length
-      ? [prev.changes.mutateIndex]
+      ? [prev.diff.mutateIndex]
       : mutateIndices;
     const mutateIndex = Math.min(...mutateIndices);
 
@@ -160,13 +160,13 @@ export class ReconciliationUtils {
         mutateOrder[i] = prevLen - i - 1;
       }
     } else {
-      mutateOrder = prev.changes.mutateOrder;
+      mutateOrder = prev.diff.mutateOrder;
     }
 
     return {
       list,
       epoch: Date.now(),
-      changes: {
+      diff: {
         add,
         remove,
         retain,
@@ -213,13 +213,13 @@ export class ReconciliationUtils {
 
       updateCb({
         list,
-        changes: {
+        diff: {
           add: [],
           remove,
           retain,
           update: [],
           mutateIndex: id,
-          mutateOrder: subtree.changes.mutateOrder,
+          mutateOrder: subtree.diff.mutateOrder,
         },
         epoch: Date.now(),
       });

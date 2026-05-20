@@ -1,8 +1,6 @@
 import type { LitElement, ReactiveController, ReactiveElement } from "lit";
 import type {
   GeometryParams,
-  SizingCallback,
-  SizingSelector,
   ComponentDims,
   Dims,
   R2CNewChildSizeEvent,
@@ -10,41 +8,39 @@ import type {
   InformStyle,
   InformContext,
   UpdateStyle,
-  ReconcilerChangesMapCb,
+  SizingCb,
+  TargetRec,
+  TargetProps,
 } from "./geometry.types.mts";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { TimingUtils } from "_utils/timing.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import { GeometryUtils } from "./geometry.utils.mts";
-import { assertNotNull } from "_error/assertions.mjs";
-import { Animator } from "./geometry.animator.mts";
+import { assertNotNull, assertNotUndefined } from "_error/assertions.mjs";
+import { Animator, evalKeyframe } from "./geometry.animator.mts";
 import { assertExists } from "../../../../packages/dqm-utils/src/assertions.mts";
 import type { InformTargetParams } from "./geometry.animator.types.mts";
 import {
   ReconciliationUtils,
-  type ReconciliationChanges,
+  type ReconciliationDiff,
 } from "_utils/reconciliation.mjs";
 
 type HostType = LitElement;
 
 export class GeometryController implements ReactiveController {
   private readonly host: HostType;
-  private readonly updateSizing: SizingCallback;
-  private readonly selector: SizingSelector;
   private readonly registered = new WeakMap<R2C, Dims>();
+  private readonly targets: TargetRec;
   private readonly animator: Animator;
-  private readonly changes: ReconcilerChangesMapCb;
   private geometry: R2Sizing | null = null;
   private requested = false;
   private currStyle: UpdateStyle | null = null;
 
   constructor(host: HostType, params: GeometryParams) {
     host.addController(this);
-    this.updateSizing = params.sizing;
-    this.selector = params.selector;
     this.host = host;
-    this.changes = params.changes;
+    this.targets = params.targets;
     this.animator = new Animator(
       this.host,
       params.role,
@@ -52,16 +48,13 @@ export class GeometryController implements ReactiveController {
     );
   }
 
-  private getTarget(id: string) {
-    const s = this.selector[id]!;
-    assertExists(s, { why: "Subtree selector hasn't been registered" });
-    return s(this.host);
-  }
-
-  private getSubtreeList() {
-    const s = this.selector["subtree"]!;
-    assertExists(s, { why: "Subtree selector hasn't been registered" });
-    return s(this.host);
+  private getTarget(id: string): TargetProps {
+    const s = this.targets[id]!;
+    assertExists(s, {
+      why: "Subtree selector hasn't been registered",
+      details: { id },
+    });
+    return s;
   }
 
   private getSizing(): R2Sizing {
@@ -117,13 +110,13 @@ export class GeometryController implements ReactiveController {
       switch (detail.type) {
         case "disconnected":
         case "update":
-          this.geometry = this.updateSizing(this.orderTrackedNodes(id));
+          const sz = this.getSizingCallback(id);
+          this.geometry = sz(this.orderTrackedNodes(id));
           if (!this.requested) {
             this.requested = true;
             TimingUtils.raf().then(() => {
               setTimeout(() => {
                 this.requested = false;
-                // if (this.geometry) this.emitSize(this.geometry);
                 if (this.geometry)
                   // FIX typing
                   GeometryUtils.emitSize(
@@ -137,9 +130,16 @@ export class GeometryController implements ReactiveController {
     };
   }
 
+  private getSizingCallback(id: string): SizingCb {
+    const target = this.getTarget(id);
+    const s = target.sizing;
+    assertNotUndefined(s, { why: "No sizing registered", details: { id } });
+    return s;
+  }
+
   private orderTrackedNodes(target: string) {
-    const serial = this.getTarget(target);
-    // const serial = this.getSubtreeList();
+    const t = this.getTarget(target);
+    const serial = t.selector(this.host);
     const ordered: ComponentDims[] = [];
     for (let component of serial) {
       const dims = this.registered.get(component);
@@ -154,64 +154,51 @@ export class GeometryController implements ReactiveController {
     return ordered;
   }
 
-  private getChanges(target: string): ReconciliationChanges {
-    const t = this.changes[target];
-    if (!t) {
-      console.log("change detection not registered for target:", target);
+  private getDiff(id: string): ReconciliationDiff {
+    const t = this.getTarget(id);
+    // const t = this.changes[target];
+    const diff = t.diff;
+    if (!diff) {
+      console.log("change detection not registered for target:", id);
       return ReconciliationUtils.noChanges();
     }
-    return t(this.host);
+    return diff(this.host);
   }
 
-  private async informTarget(
-    { target, curr }: InformTargetParams,
-    // target: string,
-    // curr: InformTargetStyles,
-    // changes: ReconciliationChanges,
-  ): Promise<void> {
-    console.log(this);
+  private async informTarget({
+    target,
+    curr,
+    prev,
+    inform,
+  }: InformTargetParams): Promise<void> {
     // DECIDE this will result in running animation ignoring changes
-    const changes = this.getChanges(target);
+    const diff = this.getDiff(target);
     await Promise.all(
-      this.getTarget(target).map((e, i, a) =>
-        // TODO this isn't referencing `geometry`
-        e.informStyle(
-          {
-            height: curr.heights ? curr.heights[i] : undefined,
-            width: curr.widths ? curr.widths[i] : undefined,
-            left: curr.lefts[i],
-            top: curr.tops[i],
-          },
-          {
+      this.getTarget(target)
+        .selector(this.host)
+        .map((e, i, a) => {
+          const context: InformContext = {
             index: i,
             length: a.length,
-            changes,
-          },
-        ),
-      ),
+            diff,
+          };
+          // TODO this isn't referencing `geometry`
+          return e.informStyle(
+            // evalKeyframe(curr, null, context, curr),
+            // curr,
+            evalKeyframe(curr, prev, context, inform),
+            // {
+            //   // FIX this uses container width and height if there is no dedicated width setting. this is hacky
+            //   height: curr.heights ? curr.heights[i] : curr.height,
+            //   width: curr.widths ? curr.widths[i] : curr.width,
+            //   left: curr.lefts[i],
+            //   top: curr.tops[i],
+            // },
+            context,
+          );
+        }),
     );
   }
-
-  // public async informSubtreeStyles(
-  //   curr: InformSubtreeStyles,
-  //   changes: ReconciliationChanges,
-  // ): Promise<void> {
-  //   await Promise.all(
-  //     this.getSubtreeList().map((e, i, a) =>
-  //       e.informStyle(
-  //         {
-  //           left: curr.lefts[i],
-  //           top: curr.tops[i],
-  //         },
-  //         {
-  //           index: i,
-  //           length: a.length,
-  //           changes,
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
 
   hostConnected(): void {}
 }

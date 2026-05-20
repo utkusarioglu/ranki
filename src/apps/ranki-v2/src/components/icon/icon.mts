@@ -70,12 +70,12 @@ export class R2Icon extends R2C {
   }
 
   protected override updateSizing(dims: ComponentDims[]): R2Sizing | null {
-    return SizingUtils.last(dims, {
+    return SizingUtils.last({
       main: {
         start: 0,
         end: 0,
       },
-    });
+    })(dims);
   }
 
   protected override async updateStyle(

@@ -16,7 +16,7 @@ export class R2Hud extends R2C {
   private scroller!: R2C;
 
   protected override updateSizing(dims: ComponentDims[]): R2Sizing {
-    const sizing = SizingUtils.row(dims.map((d) => d.dims));
+    const sizing = SizingUtils.row()(dims);
     setTimeout(() => {
       this.informStyle({
         ...sizing,

@@ -1,15 +1,10 @@
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import { R2C } from "_components/r2c/r2c.mjs";
-import { type AnimationPack } from "_/controllers/geometry.animator.types.mjs";
-import { type InformContext } from "_/controllers/geometry.types.mjs";
-import { type UpdateStyle } from "_/controllers/geometry.types.mjs";
-import { type R2Sizing } from "_/controllers/geometry.types.mjs";
-import { type ComponentDims } from "_/controllers/geometry.types.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
-import { TimingUtils } from "_utils/timing.mjs";
 import { css, html } from "lit";
 import { customElement, query } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
+import { geometry, GeometryController } from "_/controllers/geometry.mjs";
 
 @customElement("r2-cue-list")
 export class R2CueList extends R2C {
@@ -24,96 +19,118 @@ export class R2CueList extends R2C {
   @query("r2-hud-bg")
   private bg!: R2HudBg;
 
-  protected override getSubtreeList(): R2C[] {
-    return [this.badgeList];
-  }
-
-  protected override updateSizing(dims: ComponentDims[]): R2Sizing | null {
-    const sizing = SizingUtils.row(
-      dims.map((v) => v.dims),
-      {
-        main: {
-          start: 10,
-          inBetween: 10,
-          end: 10,
-        },
-        cross: {
-          start: 2,
-          end: 2,
-        },
+  @geometry({
+    role: "cue-list",
+    targets: {
+      bg: {
+        selector: (s) => [s.bg],
       },
-    );
-    return sizing;
-  }
-
-  protected override async updateStyle(
-    curr: UpdateStyle,
-    prev: UpdateStyle | null,
-    context: InformContext,
-  ): Promise<void> {
-    const animationPack: AnimationPack = {
-      expand: this.animateExpansion.bind(this),
-      contract: this.animateContraction.bind(this),
-      none: () => Promise.resolve(),
-    };
-    return animationPack[curr.main.action](curr, prev, context);
-  }
-
-  protected async animateExpansion(
-    { top, left, width, height, lefts, tops }: UpdateStyle,
-    prev: UpdateStyle | null,
-    { index, length }: InformContext,
-  ): Promise<void> {
-    await Promise.all([
-      TimingUtils.delay(0).then(() => {
-        this.setStyle({ zIndex: length - index }).animateStyle(
-          "position",
-          { top, left },
-          { duration: 1e3 },
-        );
-        this.bg.informStyle({ top, left, width, height });
-      }),
-      TimingUtils.delay(1000).then(() =>
-        this.informSubtreeStyles(
-          { tops, lefts },
-          {
-            add: [],
-            remove: [],
-            retain: [Number.NaN],
-            update: [],
-            mutateOrder: [],
-            mutateIndex: Number.NaN,
+      lists: {
+        selector: (s) => [s.badgeList],
+        sizing: SizingUtils.row({
+          main: {
+            start: 10,
+            gap: 10,
+            end: 10,
           },
-        ),
-      ),
-    ]);
-  }
-
-  private async animateContraction(
-    { top, left, width, height, lefts, tops }: UpdateStyle,
-    prev: UpdateStyle | null,
-  ): Promise<void> {
-    await TimingUtils.delay(0)
-      .then(() =>
-        this.informSubtreeStyles(
-          { tops, lefts },
-          {
-            add: [],
-            remove: [],
-            retain: [Number.NaN],
-            update: [],
-            mutateOrder: [],
-            mutateIndex: Number.NaN,
+          cross: {
+            start: 2,
+            end: 2,
           },
-        ),
-      )
-      .then(() =>
-        TimingUtils.delay(1000).then(async () => {
-          this.animateStyle("position", { top, left }, { duration: 1e3 });
-          await this.bg.informStyle({ width, height, top: 0, left: 0 });
         }),
-      );
-  }
+      },
+    },
+  })
+  public readonly geo!: GeometryController;
+
+  override informStyle = this.geo.informStyle.bind(this.geo);
+
+  // protected override getSubtreeList(): R2C[] {
+  //   return [this.badgeList];
+  // }
+
+  // protected override updateSizing(dims: ComponentDims[]): R2Sizing | null {
+  //   return SizingUtils.row({
+  //     main: {
+  //       start: 10,
+  //       gap: 10,
+  //       end: 10,
+  //     },
+  //     cross: {
+  //       start: 2,
+  //       end: 2,
+  //     },
+  //   })(dims);
+  // }
+
+  // protected override async updateStyle(
+  //   curr: UpdateStyle,
+  //   prev: UpdateStyle | null,
+  //   context: InformContext,
+  // ): Promise<void> {
+  //   const animationPack: AnimationPack = {
+  //     expand: this.animateExpansion.bind(this),
+  //     contract: this.animateContraction.bind(this),
+  //     none: () => Promise.resolve(),
+  //   };
+  //   return animationPack[curr.main.action](curr, prev, context);
+  // }
+
+  // protected async animateExpansion(
+  //   { top, left, width, height, lefts, tops }: UpdateStyle,
+  //   prev: UpdateStyle | null,
+  //   { index, length }: InformContext,
+  // ): Promise<void> {
+  //   await Promise.all([
+  //     TimingUtils.delay(0).then(() => {
+  //       this.setStyle({ zIndex: length - index }).animateStyle(
+  //         "position",
+  //         { top, left },
+  //         { duration: 1e3 },
+  //       );
+  //       this.bg.informStyle({ top, left, width, height });
+  //     }),
+  //     TimingUtils.delay(1000).then(() =>
+  //       this.informSubtreeStyles(
+  //         { tops, lefts },
+  //         {
+  //           add: [],
+  //           remove: [],
+  //           retain: [Number.NaN],
+  //           update: [],
+  //           mutateOrder: [],
+  //           mutateIndex: Number.NaN,
+  //         },
+  //       ),
+  //     ),
+  //   ]);
+  // }
+
+  // private async animateContraction(
+  //   { top, left, width, height, lefts, tops }: UpdateStyle,
+  //   prev: UpdateStyle | null,
+  // ): Promise<void> {
+  //   await TimingUtils.delay(0)
+  //     .then(() =>
+  //       this.informSubtreeStyles(
+  //         { tops, lefts },
+  //         {
+  //           add: [],
+  //           remove: [],
+  //           retain: [Number.NaN],
+  //           update: [],
+  //           mutateOrder: [],
+  //           mutateIndex: Number.NaN,
+  //         },
+  //       ),
+  //     )
+  //     .then(() =>
+  //       TimingUtils.delay(1000).then(async () => {
+  //         this.animateStyle("position", { top, left }, { duration: 1e3 });
+  //         await this.bg.informStyle({ width, height, top: 0, left: 0 });
+  //       }),
+  //     );
+  // }
 
   override render() {
     return html`
@@ -123,7 +140,9 @@ export class R2CueList extends R2C {
           "--bg": "rgb(var(--scheme-blue-2))",
         })}"
       ></r2-hud-bg>
-      <r2-badge-list @r2-child-size=${this.onChildSize}></r2-badge-list>
+      <r2-badge-list
+        @r2-child-size=${this.geo.onChildSize("lists")}
+      ></r2-badge-list>
     `;
   }
 }

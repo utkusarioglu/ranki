@@ -9,7 +9,7 @@ import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import {
   ReconciliationUtils,
-  type ReconciliationChanges,
+  type ReconciliationDiff,
 } from "_utils/reconciliation.mjs";
 import type {
   ComponentDims,
@@ -312,7 +312,7 @@ export class R2C extends LitElement implements R2Animate {
   // OBSOLETE
   public async informSubtreeStyles(
     curr: InformSubtreeStyles,
-    changes: ReconciliationChanges,
+    diff: ReconciliationDiff,
   ): Promise<void> {
     await Promise.all(
       this.getSubtreeList().map((e, i, a) =>
@@ -324,7 +324,7 @@ export class R2C extends LitElement implements R2Animate {
           {
             index: i,
             length: a.length,
-            changes,
+            diff,
           },
         ),
       ),

@@ -4314,6 +4314,7 @@ const RAW_RUNTIME_STATE =
           ["chalk", "npm:5.6.2"],\
           ["core-js", "npm:3.47.0"],\
           ["csstype", "npm:3.2.3"],\
+          ["expr-eval", "npm:2.0.2"],\
           ["iconify-icon", "npm:3.0.2"],\
           ["lit", "npm:3.3.2"],\
           ["sirv", "npm:3.0.2"],\
@@ -10212,6 +10213,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../home/dev/.yarn/berry/cache/exponential-backoff-npm-3.1.2-e030c582de-10c0.zip/node_modules/exponential-backoff/",\
         "packageDependencies": [\
           ["exponential-backoff", "npm:3.1.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["expr-eval", [\
+      ["npm:2.0.2", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/expr-eval-npm-2.0.2-20b6d1f745-10c0.zip/node_modules/expr-eval/",\
+        "packageDependencies": [\
+          ["expr-eval", "npm:2.0.2"]\
         ],\
         "linkType": "HARD"\
       }]\

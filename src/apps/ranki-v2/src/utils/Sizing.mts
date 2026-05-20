@@ -1,4 +1,3 @@
-import type { R2C } from "../components/r2c/r2c.mts";
 import type { ComponentDims } from "_/controllers/geometry.types.mjs";
 import type { Dims } from "_/controllers/geometry.types.mjs";
 
@@ -9,7 +8,7 @@ export type Size = Dims & {
 
 export interface SizingGaps {
   start: number;
-  inBetween: number;
+  gap: number;
   end: number;
 }
 
@@ -19,29 +18,31 @@ export type GapsArg = {
 };
 
 export class SizingUtils {
-  public static row(dims: Dims[], gaps: GapsArg = {}): Size {
-    const s = SizingUtils.linear(
-      dims,
-      gaps,
-      (v) => v.width,
-      (v) => v.height,
-    );
+  public static row(gaps: GapsArg = {}): (d: ComponentDims[]) => Size {
+    return (dims: ComponentDims[]) => {
+      const s = SizingUtils.linear(
+        dims.map((d) => d.dims),
+        gaps,
+        (v) => v.width,
+        (v) => v.height,
+      );
 
-    const sizing = {
-      width: s.sizeMain,
-      height: s.sizeCross,
-      lefts: s.offsetMain,
-      tops: s.offsetCross,
+      const sizing = {
+        width: s.sizeMain,
+        height: s.sizeCross,
+        lefts: s.offsetMain,
+        tops: s.offsetCross,
+      };
+
+      return sizing;
     };
-
-    return sizing;
   }
 
   private static normalizeGaps(gaps: Partial<SizingGaps> | undefined) {
     return {
       start: 0,
       end: 0,
-      inBetween: 0,
+      gap: 0,
       ...gaps,
     };
   }
@@ -54,8 +55,7 @@ export class SizingUtils {
   ) {
     const main = SizingUtils.normalizeGaps(gaps.main);
     const cross = SizingUtils.normalizeGaps(gaps.cross);
-    const spacingMain =
-      main.inBetween * (dims.length - 1) + main.start + main.end;
+    const spacingMain = main.gap * (dims.length - 1) + main.start + main.end;
     const spacingCross = cross.start + cross.end;
     const sizeCross =
       dims.reduce((a, c) => Math.max(a, getCross(c)), 0) + spacingCross;
@@ -65,7 +65,7 @@ export class SizingUtils {
     offsetMain[0] = main.start;
     for (let i = 0; i < dims.length; i++) {
       if (i === 0) continue;
-      offsetMain[i] = offsetMain[i - 1] + getMain(dims[i - 1]) + main.inBetween;
+      offsetMain[i] = offsetMain[i - 1] + getMain(dims[i - 1]) + main.gap;
     }
 
     const offsetCross = Array(dims.length)
@@ -82,22 +82,26 @@ export class SizingUtils {
   /**
    * main axis is inline, cross axis is block
    */
-  public static last(dims: ComponentDims[], gaps: GapsArg = {}): Size | null {
-    const last = dims.at(-1);
-    if (!last) return null;
+  public static last(
+    gaps: GapsArg = {},
+  ): (dims: ComponentDims[]) => Size | null {
+    return (dims: ComponentDims[]) => {
+      const last = dims.at(-1);
+      if (!last) return null;
 
-    const width =
-      last.dims.width + (gaps.main?.start || 0) + (gaps.main?.end || 0);
-    const height =
-      last.dims.height + (gaps.cross?.start || 0) + (gaps.cross?.end || 0);
-    const lefts = [gaps.main?.start || 0];
-    const tops = [gaps.cross?.start || 0];
+      const width =
+        last.dims.width + (gaps.main?.start || 0) + (gaps.main?.end || 0);
+      const height =
+        last.dims.height + (gaps.cross?.start || 0) + (gaps.cross?.end || 0);
+      const lefts = [gaps.main?.start || 0];
+      const tops = [gaps.cross?.start || 0];
 
-    return {
-      width,
-      height,
-      lefts,
-      tops,
+      return {
+        width,
+        height,
+        lefts,
+        tops,
+      };
     };
   }
 }

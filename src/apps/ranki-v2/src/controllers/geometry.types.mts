@@ -1,6 +1,5 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
-import type { ReconciliationChanges } from "_utils/reconciliation.mjs";
-import type { R2CWithGeometry } from "./geometry.animator.types.mts";
+import type { ReconciliationDiff } from "_utils/reconciliation.mjs";
 
 type LitInstance = any;
 export type ListenChildrenEventFunc = (e: ListenChildrenEvent) => void;
@@ -9,25 +8,33 @@ export type ListenChildrenEvent = CustomEvent<{ rect: Dims; detail: any }>;
 
 export type Dims = Pick<DOMRect, "width" | "height">;
 
-export type SizingSelector = Record<string, (s: LitInstance) => R2C[]>;
+export type TargetSelectorCb = (s: LitInstance) => R2C[];
+// export type SizingSelector = Record<string, >;
+
+export interface TargetProps {
+  selector: TargetSelectorCb;
+  sizing?: SizingCb;
+  diff?: ReconcilerChangesCb;
+}
+
+export type TargetRec = Record<string, TargetProps>;
 
 /**
  * Lets the host set the start, end margins and the padding between its children
  */
-export type SizingCallback = (dims: ComponentDims[]) => R2Sizing | null;
+export type SizingCallbackRecord = Record<string, SizingCb>;
+
+export type SizingCb = (dims: ComponentDims[]) => R2Sizing | null;
 
 export type AnimationRole = string;
 
-export type ReconcilerChangesMapCb = Record<
-  string,
-  (s: LitInstance) => ReconciliationChanges
->;
+export type ReconcilerChangesCb = (s: LitInstance) => ReconciliationDiff;
+
+export type ReconcilerChangesMapCb = Record<string, ReconcilerChangesCb>;
 
 export interface GeometryParams {
-  selector: SizingSelector;
-  sizing: SizingCallback;
-  changes: ReconcilerChangesMapCb;
   role: AnimationRole;
+  targets: TargetRec;
 }
 
 // TODO put into use
@@ -59,7 +66,7 @@ export type LeftsTops = { lefts: number[]; tops: number[] };
 export type WidthsHeights = { widths: number[]; heights: number[] };
 
 export type R2Sizing = Dims & LeftsTops;
-type LocalAction = "expand" | "contract" | "none";
+export type LocalAction = "expand" | "contract" | "none" | "enter" | "exit";
 export type DirectionalEvaluation = {
   isExpanding: boolean;
   isContracting: boolean;
@@ -75,11 +82,11 @@ type UpdateEvaluations = {
 export type InformContext = {
   index: number;
   length: number;
-  changes: ReconciliationChanges;
+  diff: ReconciliationDiff;
 };
 export type Pos = { top: number; left: number };
 
 // OBSOLETE
 export type InformSubtreeStyles = LeftsTops;
 
-export type InformTargetStyles = LeftsTops & Partial<WidthsHeights>;
+export type InformTargetStyles = LeftsTops & Partial<WidthsHeights> & Dims;
