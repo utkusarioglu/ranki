@@ -104,7 +104,7 @@ export class R2Chip extends R2C {
       this.animateStyle(
         {
           name: "opacity",
-          pos: {
+          keyframes: {
             opacity: 0,
             width: 0,
           },

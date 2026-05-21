@@ -1,6 +1,7 @@
 import { Parser } from "expr-eval";
 import type {
   AnimateableStylesConfigKeyframes,
+  AnimationOptions,
   AnimationRoot,
   DecodeParams,
 } from "./geometry.animator.types.mts";
@@ -16,15 +17,23 @@ export class AnimationUtils {
     context: InformContext,
     b: AnimateableStylesConfigKeyframes,
   ) {
-    return Object.fromEntries(
-      Object.entries(b).map(([k, v]) => [
-        k,
-        AnimationUtils.evalConfigValue(curr, prev, context, v),
-      ]),
-    );
+    const entries = Object.entries(b).map(([k, v]) => [
+      k,
+      AnimationUtils.evalConfigValue(curr, prev, context, v),
+    ]);
+    return Object.fromEntries(entries);
   }
 
-  static evalConfigValue(
+  private static try(b: any, f: (b: any) => number | undefined) {
+    try {
+      const v = f(b);
+      return v !== undefined ? v : 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  private static evalConfigValue(
     curr: UpdateStyle,
     prev: UpdateStyle | null,
     context: InformContext,
@@ -35,27 +44,53 @@ export class AnimationUtils {
     } else {
       const exp = parser.parse(v);
       const varSet = {
-        CONTAINER_HEIGHT: curr.height,
-        CONTAINER_TOP: curr.top,
-        CONTAINER_WIDTH: curr.width,
-        CONTAINER_LEFT: curr.left,
-        LEFT: curr.lefts !== undefined ? curr.lefts[context.index] : 0,
-        TOP: curr.tops !== undefined ? curr.tops[context.index] : 0,
-        HEIGHT: curr.heights !== undefined ? curr.heights[context.index] : 0,
-        WIDTH: curr.widths !== undefined ? curr.widths[context.index] : 0,
-        CONTAINER_PREV_HEIGHT: prev?.height || 0,
-        CONTAINER_PREV_WIDTH: prev?.width || 0,
+        CONTAINER_HEIGHT: AnimationUtils.try(curr, (c) => c.height),
+        CONTAINER_WIDTH: AnimationUtils.try(curr, (c) => c.width),
+        CONTAINER_TOP: AnimationUtils.try(curr, (c) => c.top),
+        CONTAINER_LEFT: AnimationUtils.try(curr, (c) => c.left),
+
+        CONTAINER_PREV_HEIGHT: AnimationUtils.try(prev, (p) => p.height),
+        CONTAINER_PREV_WIDTH: AnimationUtils.try(prev, (p) => p.width),
+        CONTAINER_PREV_TOP: AnimationUtils.try(prev, (p) => p.top),
+        CONTAINER_PREV_LEFT: AnimationUtils.try(prev, (p) => p.left),
+
+        LEFT: AnimationUtils.try(curr, (c) => c.lefts[context.index]),
+        TOP: AnimationUtils.try(curr, (c) => c.tops[context.index]),
+        WIDTH: AnimationUtils.try(curr, (c) => c.widths[context.index]),
+        HEIGHT: AnimationUtils.try(curr, (c) => c.heights[context.index]),
       };
       return exp.evaluate(varSet);
     }
   }
 
-  static evalOptions(r: AnimationRoot) {
-    return {
-      delay: r.delay,
-      duration: r.duration,
-      easing: r.easing,
-    };
+  static evalOptionValue(
+    context: InformContext,
+    v: string | number | undefined,
+  ) {
+    if (typeof v === "number" || typeof v === "undefined") {
+      return v;
+    } else {
+      const exp = parser.parse(v);
+      const varSet = {
+        INDEX: context.index,
+        LENGTH: context.length,
+        MUTATE_INDEX: context.diff.mutateIndex,
+      };
+      return exp.evaluate(varSet);
+    }
+  }
+
+  static evalOptions(
+    r: AnimationRoot,
+    context: InformContext,
+  ): Partial<AnimationOptions> {
+    const entries = ["delay", "duration", "easing"]
+      .map((k) => [
+        k,
+        AnimationUtils.evalOptionValue(context, r[k as keyof AnimationOptions]),
+      ])
+      .filter((v) => v[1] !== undefined) as [string, number][];
+    return Object.fromEntries<number>(entries) as Partial<AnimationOptions>;
   }
 
   static async decode(p: DecodeParams): Promise<void> {
@@ -91,13 +126,10 @@ export class AnimationUtils {
       p.block.root.map(async (b) => {
         await p.apply({
           name: b.name,
-          pos: AnimationUtils.evalKeyframe(
-            p.curr,
-            p.prev,
-            p.context,
-            b.keyframes[0],
+          keyframes: b.keyframes.map((k) =>
+            AnimationUtils.evalKeyframe(p.curr, p.prev, p.context, k),
           ),
-          options: AnimationUtils.evalOptions(b),
+          options: AnimationUtils.evalOptions(b, p.context),
         });
         if (!b.then) return;
         await AnimationUtils.decode({ ...p, block: b.then });

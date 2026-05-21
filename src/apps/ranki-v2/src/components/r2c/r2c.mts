@@ -206,7 +206,7 @@ export class R2C extends LitElement implements R2Animate {
 
   // OBSOLETE
   public animateStyle(
-    { name, pos, options }: ApplyParams,
+    { name, keyframes: pos, options }: ApplyParams,
     whenDone?: () => void,
   ) {
     let transform = {};
@@ -259,7 +259,7 @@ export class R2C extends LitElement implements R2Animate {
     this.style.setProperty("z-index", "" + zIndex);
     this.animateStyle({
       name: "set-style",
-      pos: {
+      keyframes: {
         width,
         height,
         opacity,

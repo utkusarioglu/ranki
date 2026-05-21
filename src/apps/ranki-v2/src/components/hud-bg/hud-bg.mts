@@ -34,7 +34,7 @@ export class R2HudBg extends R2C {
   }: UpdateStyle): Promise<void> {
     this.setStyle({ height }).animateStyle({
       name: "opacity",
-      pos: {
+      keyframes: {
         opacity: 1,
         width,
       },

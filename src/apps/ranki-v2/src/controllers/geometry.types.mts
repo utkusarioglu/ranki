@@ -12,6 +12,7 @@ export type TargetSelectorCb = (s: LitInstance) => R2C[];
 // export type SizingSelector = Record<string, >;
 
 export interface TargetProps {
+  isRoot?: boolean;
   selector: TargetSelectorCb;
   sizing?: SizingCb;
   diff?: ReconcilerChangesCb;

@@ -41,7 +41,7 @@ export class R2TextSpan extends R2C {
     this.animateStyle(
       {
         name: "opacity",
-        pos: {
+        keyframes: {
           opacity: 0,
         },
         options: {
@@ -66,7 +66,7 @@ export class R2TextSpan extends R2C {
     const dims: Dims = { width: width + 1, height: height + 1 };
     this.setStyle(dims).animateStyle({
       name: "opacity",
-      pos: {
+      keyframes: {
         // width,
         opacity: 1,
       },

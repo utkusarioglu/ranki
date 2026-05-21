@@ -118,16 +118,32 @@ export class GeometryController implements ReactiveController {
               setTimeout(() => {
                 this.requested = false;
                 if (this.geometry)
-                  // FIX typing
-                  GeometryUtils.emitSize(
-                    this.host as LitElement,
-                    this.geometry,
-                  );
+                  if (this.getIsRoot(id)) {
+                    this.informAsRoot(this.geometry);
+                  } else {
+                    GeometryUtils.emitSize(
+                      this.host as LitElement,
+                      this.geometry,
+                    );
+                  }
               }, PROPAGATE_DELAY);
             });
           }
       }
     };
+  }
+
+  private informAsRoot(geo: R2Sizing) {
+    this.informStyle(geo, {
+      index: 0,
+      length: 1,
+      diff: ReconciliationUtils.noChanges(),
+    });
+  }
+
+  private getIsRoot(id: string): boolean {
+    const target = this.getTarget(id);
+    return !!target.isRoot;
   }
 
   private getSizingCallback(id: string): SizingCb {

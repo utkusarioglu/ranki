@@ -51,7 +51,7 @@ export class R2IconSpan extends R2C {
     this.animateStyle(
       {
         name: "opacity",
-        pos: {
+        keyframes: {
           opacity: 0,
         },
         options: {
@@ -75,22 +75,26 @@ export class R2IconSpan extends R2C {
     const dims: Dims = { width, height };
     await TimingUtils.waitLayout();
     this.emitSize(dims);
-
-    const icon = await loadIcon(this.props.icon);
-    this.svg = icon.body;
-    this.setStyle({ height }).animateStyle({
-      name: "width",
-      pos: {
-        width,
-        opacity: 1,
-      },
-      options: {
-        duration: this.props.animation.duration,
-      },
-    });
-    setTimeout(() => {
-      this.emitSize(dims);
-    }, PROPAGATE_DELAY);
+    try {
+      const icon = await loadIcon(this.props.icon);
+      this.svg = icon.body;
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.setStyle({ height }).animateStyle({
+        name: "width",
+        keyframes: {
+          width,
+          opacity: 1,
+        },
+        options: {
+          duration: this.props.animation.duration,
+        },
+      });
+      setTimeout(() => {
+        this.emitSize(dims);
+      }, PROPAGATE_DELAY);
+    }
   }
 
   override render() {

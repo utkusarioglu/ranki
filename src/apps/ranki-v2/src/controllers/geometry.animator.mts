@@ -8,6 +8,7 @@ import type {
 import {
   type InformTargetCb,
   type ApplyParams,
+  type AnimateableStyles,
 } from "./geometry.animator.types.mts";
 import { TEMP_ANIMATION_DICT } from "./TEMP_ANIMATION_DICT.mts";
 import { assertNotUndefined } from "_error/assertions.mjs";
@@ -16,7 +17,7 @@ import { AnimationUtils } from "./animator.utils.mts";
 export class Animator {
   private readonly host: ReactiveElement;
   private readonly role: AnimationRole;
-  private readonly preset: string = "default";
+  private readonly preset: string = "debug";
   private readonly informTarget: InformTargetCb;
   private runningAnimations = new Map<string, Animation>();
 
@@ -30,42 +31,63 @@ export class Animator {
     this.informTarget = informTarget;
   }
 
-  private async apply({ name, pos, options }: ApplyParams): Promise<void> {
-    let transform = {};
-    const hasLeft = pos.left !== undefined;
-    const hasTop = pos.top !== undefined;
-    if (hasLeft || hasTop) {
-      const maybe = [
-        hasLeft ? "translateX(" + pos.left + "px)" : undefined,
-        hasTop ? "translateY(" + pos.top + "px)" : undefined,
-      ]
-        .filter((v) => !!v)
-        .join(" ");
-      if (maybe.length) {
-        transform = { transform: maybe };
-      }
-    }
-    const anim = this.host.animate(
-      {
-        ...transform,
-        ...(pos.width !== undefined ? { width: pos.width + "px" } : {}),
-        ...(pos.height !== undefined ? { height: pos.height + "px" } : {}),
-        ...(pos.opacity !== undefined ? { opacity: pos.opacity } : {}),
-      },
-      {
-        // easing: "linear",
-        // easing: "ease-in-out",
-        easing: "cubic-bezier(0.6, -1, 0.2, 2.4)",
-        fill: "both",
-        ...options,
-      },
-    );
+  private async apply({
+    name,
+    keyframes,
+    options,
+  }: ApplyParams): Promise<void> {
+    const finalOptions: KeyframeAnimationOptions = {
+      // easing: "linear",
+      easing: "ease-in-out",
+      // easing: "cubic-bezier(0.6, -1, 0.2, 2.4)",
+      fill: "both",
+      ...options,
+    };
+    const finalKeyframes = keyframes.map((k) => this.produceKeyframe(k));
+    if (this.host.tagName === "R2-HUD") console.log("k", finalKeyframes);
+    const anim = this.host.animate(finalKeyframes, finalOptions);
     const r = this.runningAnimations.get(name);
-    r?.commitStyles();
-    r?.cancel();
+    if (r) {
+      r.commitStyles();
+      r.cancel();
+    }
     this.runningAnimations.set(name, anim);
     await anim.finished;
-    return;
+  }
+
+  private produceKeyframe({
+    left,
+    top,
+    width,
+    height,
+    opacity,
+    rotate,
+    scale,
+    offset,
+    skewX,
+    skewY,
+    // rotate3d,
+  }: AnimateableStyles): Keyframe {
+    const k: Keyframe = {};
+    const transform = [
+      [left, `translateX(${left}px)`],
+      [top, `translateY(${top}px)`],
+      [skewX, `skewX(${skewX}deg)`],
+      [skewY, `skewY(${skewY}deg)`],
+      // [rotate3d, `rotate3d${(rotate3d || "").split(" ").join(", ")}deg`],
+    ]
+      .filter((v) => !!v[0])
+      .map((v) => v[1]);
+
+    if (transform.length) k.transform = transform.join(" ");
+    if (width !== undefined) k.width = width + "px";
+    if (height !== undefined) k.height = height + "px";
+    if (rotate !== undefined) k.rotate = rotate + "deg";
+    if (scale !== undefined) k.scale = scale;
+    if (opacity !== undefined) k.opacity = opacity;
+    if (offset !== undefined) k.offset = offset;
+
+    return k;
   }
 
   public async updateStyle(
@@ -86,10 +108,15 @@ export class Animator {
 
   private getRecipe(action: LocalAction) {
     if (action === "none") return {};
-    const roleDict = TEMP_ANIMATION_DICT["default"][this.role];
+    const preset = TEMP_ANIMATION_DICT[this.preset];
+    assertNotUndefined(preset, {
+      why: "No such preset exists",
+      details: { preset: this.preset },
+    });
+    const roleDict = preset[this.role];
     assertNotUndefined(roleDict, {
       why: "No animation for this role exists",
-      details: { role: this.role },
+      details: { role: this.role, preset: this.preset },
     });
     const recipe = roleDict[action];
     assertNotUndefined(recipe, {

@@ -13,12 +13,18 @@ export type AnimateableStyles = Partial<Dims> &
   Partial<Pos> &
   Partial<Anim> &
   Partial<Other> &
-  Partial<{ offset: number }>;
+  Partial<{
+    offset: number;
+    rotate: number;
+    scale: number;
+    skewX: number;
+    skewY: number;
+    // rotate3d: string;
+  }>;
 
-export type AnimationOptions = Required<
-  Pick<KeyframeAnimationOptions, "duration">
-> &
-  Partial<Pick<KeyframeAnimationOptions, "easing" | "delay">>;
+export type AnimationOptions = Partial<
+  Pick<KeyframeAnimationOptions, "easing" | "delay" | "duration">
+>;
 export type AnimationCallback = (
   curr: UpdateStyle,
   prev: UpdateStyle | null,
@@ -92,6 +98,6 @@ export interface DecodeParams {
 
 export interface ApplyParams {
   name: string;
-  pos: AnimateableStyles;
+  keyframes: AnimateableStyles[];
   options: AnimationOptions;
 }

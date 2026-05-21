@@ -1,7 +1,7 @@
 import type { AnimationDict } from "./geometry.animator.types.mts";
 
 export const TEMP_ANIMATION_DICT: AnimationDict = {
-  default: {
+  debug: {
     "badge-list": {
       expand: {
         root: [
@@ -141,7 +141,9 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
             keyframes: [
               {
                 height: "CONTAINER_HEIGHT",
+                // left: "CONTAINER_WIDTH / 2",
                 // top: "-CONTAINER_HEIGHT",
+                top: "CONTAINER_TOP",
               },
             ],
             then: {
@@ -151,7 +153,7 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
                   duration: 1000,
                   keyframes: [
                     {
-                      top: "CONTAINER_TOP",
+                      // left: 0,
                       width: "CONTAINER_WIDTH",
                     },
                   ],
@@ -205,6 +207,54 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
                   },
                 },
               },
+            },
+          },
+        },
+      },
+    },
+    hud: {
+      expand: {
+        root: [
+          {
+            name: "size",
+            duration: 0,
+            keyframes: [
+              {
+                height: "CONTAINER_HEIGHT",
+                // top: "-CONTAINER_HEIGHT",
+                // rotate: 0,
+              },
+            ],
+          },
+          // {
+          //   name: "rot",
+          //   duration: 1000,
+          //   keyframes: [
+          //     {
+          //       // skewY: -30,
+          //       // rotate3d: "1 2 3 50",
+          //       // rotate: 360,
+          //       // scale: 1.5,
+          //       // top: 0,
+          //     },
+          //   ],
+          // },
+        ],
+        targets: {
+          scroller: {
+            inform: {
+              top: 0,
+              left: 0,
+            },
+          },
+        },
+      },
+      contract: {
+        targets: {
+          scroller: {
+            inform: {
+              top: 0,
+              left: 0,
             },
           },
         },

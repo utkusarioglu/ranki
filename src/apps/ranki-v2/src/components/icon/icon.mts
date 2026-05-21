@@ -90,7 +90,7 @@ export class R2Icon extends R2C {
       }).animateStyle(
         {
           name: "width",
-          pos: {
+          keyframes: {
             opacity: 1,
             width: width,
           },
