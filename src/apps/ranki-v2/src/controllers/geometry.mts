@@ -18,7 +18,8 @@ import { TimingUtils } from "_utils/timing.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import { GeometryUtils } from "./geometry.utils.mts";
 import { assertNotNull, assertNotUndefined } from "_error/assertions.mjs";
-import { Animator, evalKeyframe } from "./geometry.animator.mts";
+import { Animator } from "./geometry.animator.mts";
+import { AnimationUtils } from "./animator.utils.mts";
 import { assertExists } from "../../../../packages/dqm-utils/src/assertions.mts";
 import type { InformTargetParams } from "./geometry.animator.types.mts";
 import {
@@ -78,7 +79,7 @@ export class GeometryController implements ReactiveController {
       main: GeometryUtils.evaluateChange(sizing, prev, "width"),
       cross: GeometryUtils.evaluateChange(sizing, prev, "height"),
     };
-    const curr = { ...informed, ...sizing, ...evaluations };
+    const curr: UpdateStyle = { ...informed, ...sizing, ...evaluations };
 
     this.currStyle = curr;
     return this.animator.updateStyle(this.currStyle, prev, context);
@@ -88,7 +89,6 @@ export class GeometryController implements ReactiveController {
     return (e: CustomEvent<R2CNewChildSizeEvent>) => {
       e.stopPropagation();
       const detail = e.detail;
-
       const target = e.composedPath()[0] as R2C;
       if (!target)
         throw new RankiAppError({
@@ -166,15 +166,15 @@ export class GeometryController implements ReactiveController {
   }
 
   private async informTarget({
-    target,
+    id,
     curr,
     prev,
     inform,
   }: InformTargetParams): Promise<void> {
     // DECIDE this will result in running animation ignoring changes
-    const diff = this.getDiff(target);
+    const diff = this.getDiff(id);
     await Promise.all(
-      this.getTarget(target)
+      this.getTarget(id)
         .selector(this.host)
         .map((e, i, a) => {
           const context: InformContext = {
@@ -182,20 +182,13 @@ export class GeometryController implements ReactiveController {
             length: a.length,
             diff,
           };
-          // TODO this isn't referencing `geometry`
-          return e.informStyle(
-            // evalKeyframe(curr, null, context, curr),
-            // curr,
-            evalKeyframe(curr, prev, context, inform),
-            // {
-            //   // FIX this uses container width and height if there is no dedicated width setting. this is hacky
-            //   height: curr.heights ? curr.heights[i] : curr.height,
-            //   width: curr.widths ? curr.widths[i] : curr.width,
-            //   left: curr.lefts[i],
-            //   top: curr.tops[i],
-            // },
+          const informVals = AnimationUtils.evalKeyframe(
+            curr,
+            prev,
             context,
+            inform,
           );
+          return e.informStyle(informVals, context);
         }),
     );
   }

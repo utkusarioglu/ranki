@@ -39,12 +39,14 @@ export class R2TextSpan extends R2C {
 
   async animateLeave() {
     this.animateStyle(
-      "opacity",
       {
-        opacity: 0,
-      },
-      {
-        duration: this.props.animation.duration,
+        name: "opacity",
+        pos: {
+          opacity: 0,
+        },
+        options: {
+          duration: this.props.animation.duration,
+        },
       },
       () => {
         this.dispatchEvent(
@@ -62,17 +64,17 @@ export class R2TextSpan extends R2C {
     await TimingUtils.waitLayout();
     const { width, height } = this.span.getBoundingClientRect();
     const dims: Dims = { width: width + 1, height: height + 1 };
-    this.setStyle(dims).animateStyle(
-      "opacity",
-      {
+    this.setStyle(dims).animateStyle({
+      name: "opacity",
+      pos: {
         // width,
         opacity: 1,
       },
-      {
+      options: {
         duration: this.props.animation.duration,
         // delay: 500,
       },
-    );
+    });
     setTimeout(() => {
       this.emitSize(dims);
     }, PROPAGATE_DELAY);

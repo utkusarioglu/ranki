@@ -32,16 +32,16 @@ export class R2HudBg extends R2C {
     width,
     height,
   }: UpdateStyle): Promise<void> {
-    this.setStyle({ height }).animateStyle(
-      "opacity",
-      {
+    this.setStyle({ height }).animateStyle({
+      name: "opacity",
+      pos: {
         opacity: 1,
         width,
       },
-      {
+      options: {
         duration: 1000,
       },
-    );
+    });
   }
 
   override render() {

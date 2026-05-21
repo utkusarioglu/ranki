@@ -1,64 +1,66 @@
 import type { AnimationDict } from "./geometry.animator.types.mts";
 
 export const TEMP_ANIMATION_DICT: AnimationDict = {
-  "badge-list": {
-    expand: {
-      root: [
-        {
-          name: "position",
-          keyframes: [
-            {
+  default: {
+    "badge-list": {
+      expand: {
+        root: [
+          {
+            name: "position",
+            keyframes: [
+              {
+                top: "TOP",
+                left: "LEFT",
+              },
+            ],
+            delay: 0,
+            duration: 1000,
+          },
+        ],
+        targets: {
+          bg: {
+            wait: 0,
+            inform: {
+              width: "CONTAINER_WIDTH",
+              height: "CONTAINER_HEIGHT",
+            },
+          },
+          chips: {
+            wait: 1000,
+            inform: {
               top: "TOP",
               left: "LEFT",
             },
-          ],
-          delay: 0,
-          duration: 1000,
-        },
-      ],
-      targets: {
-        bg: {
-          wait: 0,
-          inform: {
-            width: "CONTAINER_WIDTH",
-            height: "CONTAINER_HEIGHT",
-          },
-        },
-        chips: {
-          wait: 1000,
-          inform: {
-            top: "TOP",
-            left: "LEFT",
           },
         },
       },
-    },
-    contract: {
-      targets: {
-        chips: {
-          inform: {
-            top: "TOP",
-            left: "LEFT",
-          },
-          then: {
-            root: [
-              {
-                name: "position",
-                keyframes: [
-                  {
-                    top: "CONTAINER_TOP",
-                    left: "CONTAINER_LEFT",
+      contract: {
+        targets: {
+          chips: {
+            inform: {
+              top: "TOP",
+              left: "LEFT",
+            },
+            then: {
+              root: [
+                {
+                  name: "position",
+                  keyframes: [
+                    {
+                      top: "CONTAINER_TOP",
+                      left: "CONTAINER_LEFT",
+                    },
+                  ],
+                  duration: 1000,
+                },
+              ],
+              targets: {
+                bg: {
+                  wait: 0,
+                  inform: {
+                    width: "CONTAINER_WIDTH",
+                    height: "CONTAINER_HEIGHT",
                   },
-                ],
-                duration: 1000,
-              },
-            ],
-            targets: {
-              bg: {
-                wait: 0,
-                inform: {
-                  width: "CONTAINER_WIDTH",
-                  height: "CONTAINER_HEIGHT",
                 },
               },
             },
@@ -66,142 +68,141 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
         },
       },
     },
-  },
-  "cue-list": {
-    expand: {
-      root: [
-        {
-          name: "position",
-          keyframes: [
-            {
-              top: "CONTAINER_TOP",
-              left: "CONTAINER_LEFT",
-            },
-          ],
-          duration: 1000,
-        },
-      ],
-      targets: {
-        bg: {
-          inform: {
-            width: "CONTAINER_WIDTH",
-            height: "CONTAINER_HEIGHT",
-          },
-        },
-        lists: {
-          wait: 1000,
-          inform: {
-            top: "TOP",
-            left: "LEFT",
-          },
-        },
-      },
-    },
-    contract: {
-      targets: {
-        lists: {
-          inform: {
-            top: "TOP",
-            left: "LEFT",
-          },
-          then: {
-            root: [
+    "cue-list": {
+      expand: {
+        root: [
+          {
+            name: "position",
+            keyframes: [
               {
-                name: "position",
-                duration: 1000,
-                keyframes: [
-                  {
-                    top: "CONTAINER_TOP",
-                    left: "CONTAINER_LEFT",
-                  },
-                ],
+                top: "CONTAINER_TOP",
+                left: "CONTAINER_LEFT",
               },
             ],
-            targets: {
-              bg: {
-                wait: 1000,
-                inform: {
-                  width: "CONTAINER_WIDTH",
-                  height: "CONTAINER_HEIGHT",
-                },
-              },
-            },
+            duration: 1000,
           },
-        },
-      },
-    },
-  },
-  "hud-scroller": {
-    expand: {
-      root: [
-        {
-          name: "init",
-          duration: 0,
-          keyframes: [
-            {
-              height: "CONTAINER_HEIGHT",
-              top: "-CONTAINER_HEIGHT",
+        ],
+        targets: {
+          bg: {
+            inform: {
               width: "CONTAINER_WIDTH",
+              height: "CONTAINER_HEIGHT",
             },
-          ],
-          then: {
-            root: [
-              {
-                name: "size",
-                duration: 1000,
-                easing: "linear",
-                keyframes: [
-                  {
-                    top: "CONTAINER_TOP",
-                  },
-                ],
-              },
-            ],
-            targets: {
-              bg: {
-                inform: {
-                  width: "CONTAINER_WIDTH",
-                  height: "CONTAINER_HEIGHT",
+          },
+          lists: {
+            wait: 1000,
+            inform: {
+              top: "TOP",
+              left: "LEFT",
+            },
+          },
+        },
+      },
+      contract: {
+        targets: {
+          lists: {
+            inform: {
+              top: "TOP",
+              left: "LEFT",
+            },
+            then: {
+              root: [
+                {
+                  name: "position",
+                  duration: 1000,
+                  keyframes: [
+                    {
+                      top: "CONTAINER_TOP",
+                      left: "CONTAINER_LEFT",
+                    },
+                  ],
                 },
-              },
-              sections: {
-                wait: 1000,
-                inform: {
-                  top: "TOP",
-                  left: "LEFT",
+              ],
+              targets: {
+                bg: {
+                  // wait: 1000,
+                  inform: {
+                    width: "CONTAINER_WIDTH",
+                    height: "CONTAINER_HEIGHT",
+                  },
                 },
               },
             },
           },
         },
-      ],
+      },
     },
-    contract: {
-      targets: {
-        // TODO list items need to get their z-index set
-        sections: {
-          inform: {
-            top: "TOP",
-            left: "LEFT",
-          },
-          then: {
-            root: [
+    "hud-scroller": {
+      expand: {
+        root: [
+          {
+            name: "init",
+            duration: 0,
+            keyframes: [
               {
-                name: "position",
-                duration: 1000,
-                keyframes: [
-                  {
-                    width: 0,
-                  },
-                ],
+                height: "CONTAINER_HEIGHT",
+                // top: "-CONTAINER_HEIGHT",
               },
             ],
-            targets: {
-              bg: {
-                wait: 1000,
-                inform: {
-                  width: "CONTAINER_WIDTH",
-                  height: "CONTAINER_HEIGHT",
+            then: {
+              root: [
+                {
+                  name: "size",
+                  duration: 1000,
+                  keyframes: [
+                    {
+                      top: "CONTAINER_TOP",
+                      width: "CONTAINER_WIDTH",
+                    },
+                  ],
+                },
+              ],
+              targets: {
+                bg: {
+                  inform: {
+                    width: "CONTAINER_WIDTH",
+                    height: "CONTAINER_HEIGHT",
+                  },
+                },
+                sections: {
+                  wait: 1000,
+                  inform: {
+                    top: "TOP",
+                    left: "LEFT",
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
+      contract: {
+        targets: {
+          // TODO list items need to get their z-index set
+          sections: {
+            inform: {
+              top: "TOP",
+              left: "LEFT",
+            },
+            then: {
+              root: [
+                {
+                  name: "position",
+                  duration: 1000,
+                  keyframes: [
+                    {
+                      width: "CONTAINER_WIDTH",
+                    },
+                  ],
+                },
+              ],
+              targets: {
+                bg: {
+                  // wait: 1000,
+                  inform: {
+                    width: "CONTAINER_WIDTH",
+                    height: "CONTAINER_HEIGHT",
+                  },
                 },
               },
             },

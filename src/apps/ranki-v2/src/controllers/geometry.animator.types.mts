@@ -2,12 +2,10 @@ import type { Other } from "_components/r2c/r2c.mjs";
 import type {
   Dims,
   InformContext,
-  InformTargetStyles,
   Pos,
   UpdateStyle,
 } from "./geometry.types.mts";
 import type { GeometryController } from "./geometry.mts";
-import type { Expression } from "expr-eval";
 
 export type ImmediateStyles = { zIndex?: number } & AnimateableStyles;
 
@@ -38,27 +36,23 @@ export interface R2CWithGeometry {
 export type InformTargetCb = (params: InformTargetParams) => Promise<void>;
 
 export type InformTargetParams = {
-  target: string;
-  // curr: InformTargetStyles;
+  id: string;
   curr: UpdateStyle;
   prev: UpdateStyle | null;
   inform: AnimateableStylesConfigKeyframes;
-  // changes: ReconciliationChanges;
 };
 
 export type AnimateableStylesConfigKeyframes = Partial<
   Record<keyof AnimateableStyles, string | number>
 >;
 
-interface AnimationRoot extends AnimationOptions {
+export interface AnimationRoot extends AnimationOptions {
   name: string;
   keyframes: AnimateableStylesConfigKeyframes[];
-  // options: {
   delay?: number;
   duration: number;
   easing?: string;
   then?: AnimationBlock;
-  // };
 }
 
 export interface AnimationBlock {
@@ -73,4 +67,31 @@ export interface AnimationTarget {
   then?: AnimationBlock;
 }
 
-export type AnimationDict = Record<string, Record<string, AnimationBlock>>;
+export type AnimationDict = Record<
+  // Preset name
+  string,
+  Record<
+    // component role
+    string,
+    Record<
+      // action
+      string,
+      AnimationBlock
+    >
+  >
+>;
+
+export interface DecodeParams {
+  curr: UpdateStyle;
+  prev: UpdateStyle | null;
+  context: InformContext;
+  block: AnimationBlock;
+  apply(p: ApplyParams): Promise<void>;
+  informTarget: InformTargetCb;
+}
+
+export interface ApplyParams {
+  name: string;
+  pos: AnimateableStyles;
+  options: AnimationOptions;
+}

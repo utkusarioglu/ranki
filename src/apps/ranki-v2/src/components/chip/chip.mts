@@ -102,15 +102,17 @@ export class R2Chip extends R2C {
     this.bg.informStyle({ width: 0, height, top: 0, left: 0 });
     return new Promise<void>((resolve) => {
       this.animateStyle(
-        "opacity",
         {
-          opacity: 0,
-          width: 0,
-        },
-        {
-          // TODO
-          duration: 1000,
-          // duration: this.list[this.index].animation.duration,
+          name: "opacity",
+          pos: {
+            opacity: 0,
+            width: 0,
+          },
+          options: {
+            // TODO
+            duration: 1000,
+            // duration: this.list[this.index].animation.duration,
+          },
         },
         resolve,
       );

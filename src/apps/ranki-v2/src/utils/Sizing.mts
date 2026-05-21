@@ -1,10 +1,11 @@
-import type { ComponentDims } from "_/controllers/geometry.types.mjs";
+import type {
+  ComponentDims,
+  LeftsTops,
+  WidthsHeights,
+} from "_/controllers/geometry.types.mjs";
 import type { Dims } from "_/controllers/geometry.types.mjs";
 
-export type Size = Dims & {
-  lefts: number[];
-  tops: number[];
-};
+export type Size = Dims & LeftsTops & WidthsHeights;
 
 export interface SizingGaps {
   start: number;
@@ -27,11 +28,13 @@ export class SizingUtils {
         (v) => v.height,
       );
 
-      const sizing = {
+      const sizing: Size = {
         width: s.sizeMain,
         height: s.sizeCross,
-        lefts: s.offsetMain,
-        tops: s.offsetCross,
+        lefts: s.offsetsMain,
+        tops: s.offsetsCross,
+        widths: s.sizesMain,
+        heights: s.sizesCross,
       };
 
       return sizing;
@@ -61,21 +64,25 @@ export class SizingUtils {
       dims.reduce((a, c) => Math.max(a, getCross(c)), 0) + spacingCross;
     const sizeMain = dims.reduce((a, c) => a + getMain(c), 0) + spacingMain;
 
-    const offsetMain = Array(dims.length).fill(0);
-    offsetMain[0] = main.start;
+    const offsetsMain = Array(dims.length).fill(0);
+    offsetsMain[0] = main.start;
     for (let i = 0; i < dims.length; i++) {
       if (i === 0) continue;
-      offsetMain[i] = offsetMain[i - 1] + getMain(dims[i - 1]) + main.gap;
+      offsetsMain[i] = offsetsMain[i - 1] + getMain(dims[i - 1]) + main.gap;
     }
 
-    const offsetCross = Array(dims.length)
+    const offsetsCross = Array(dims.length)
       .fill(0)
       .map((_, i) => (sizeCross - getCross(dims[i])) / 2);
+    const sizesMain = dims.map((d) => getMain(d));
+    const sizesCross = dims.map((d) => getCross(d));
     return {
       sizeCross,
       sizeMain,
-      offsetCross,
-      offsetMain,
+      offsetsCross,
+      offsetsMain,
+      sizesMain,
+      sizesCross,
     };
   }
 
@@ -101,6 +108,8 @@ export class SizingUtils {
         height,
         lefts,
         tops,
+        heights: [last.dims.height],
+        widths: [last.dims.width],
       };
     };
   }

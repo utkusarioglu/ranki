@@ -25,7 +25,7 @@ import type {
 import { GeometryUtils } from "_/controllers/geometry.utils.mjs";
 import type {
   AnimateableStyles,
-  AnimationOptions,
+  ApplyParams,
   ImmediateStyles,
 } from "_/controllers/geometry.animator.types.mjs";
 
@@ -36,9 +36,10 @@ export type Other = {
 export interface R2Animate extends LitElement {
   setStyle(pos: AnimateableStyles): this;
   animateStyle(
-    name: string,
-    pos: AnimateableStyles,
-    options: AnimationOptions,
+    p: ApplyParams,
+    // name: string,
+    // pos: AnimateableStyles,
+    // options: AnimationOptions,
   ): this;
   informStyle(pos: AnimateableStyles, context: InformContext): void;
 }
@@ -205,9 +206,7 @@ export class R2C extends LitElement implements R2Animate {
 
   // OBSOLETE
   public animateStyle(
-    name: string,
-    pos: AnimateableStyles,
-    options: AnimationOptions,
+    { name, pos, options }: ApplyParams,
     whenDone?: () => void,
   ) {
     let transform = {};
@@ -258,17 +257,17 @@ export class R2C extends LitElement implements R2Animate {
   // OBSOLETE
   setStyle({ width, height, opacity, left, top, zIndex }: ImmediateStyles) {
     this.style.setProperty("z-index", "" + zIndex);
-    this.animateStyle(
-      "set-style",
-      {
+    this.animateStyle({
+      name: "set-style",
+      pos: {
         width,
         height,
         opacity,
         left,
         top,
       },
-      { duration: 0 },
-    );
+      options: { duration: 0 },
+    });
     return this;
   }
 

@@ -65,16 +65,20 @@ export interface ComponentDims {
 export type LeftsTops = { lefts: number[]; tops: number[] };
 export type WidthsHeights = { widths: number[]; heights: number[] };
 
-export type R2Sizing = Dims & LeftsTops;
+export type R2Sizing = Dims & LeftsTops & WidthsHeights;
 export type LocalAction = "expand" | "contract" | "none" | "enter" | "exit";
 export type DirectionalEvaluation = {
   isExpanding: boolean;
   isContracting: boolean;
   action: LocalAction;
 };
-export type InformStyle = Pos & Partial<Dims>;
+export type InformStyle = Partial<Pos> & Partial<Dims>;
 
-export type UpdateStyle = InformStyle & R2Sizing & UpdateEvaluations;
+export type UpdateStyle = InformStyle &
+  R2Sizing &
+  UpdateEvaluations &
+  WidthsHeights;
+
 type UpdateEvaluations = {
   main: DirectionalEvaluation;
   cross: DirectionalEvaluation;

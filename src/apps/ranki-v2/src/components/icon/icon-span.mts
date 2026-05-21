@@ -49,12 +49,14 @@ export class R2IconSpan extends R2C {
 
   async animateLeave() {
     this.animateStyle(
-      "opacity",
       {
-        opacity: 0,
-      },
-      {
-        duration: this.props.animation.duration,
+        name: "opacity",
+        pos: {
+          opacity: 0,
+        },
+        options: {
+          duration: this.props.animation.duration,
+        },
       },
       () => {
         this.dispatchEvent(
@@ -76,16 +78,16 @@ export class R2IconSpan extends R2C {
 
     const icon = await loadIcon(this.props.icon);
     this.svg = icon.body;
-    this.setStyle({ height }).animateStyle(
-      "width",
-      {
+    this.setStyle({ height }).animateStyle({
+      name: "width",
+      pos: {
         width,
         opacity: 1,
       },
-      {
+      options: {
         duration: this.props.animation.duration,
       },
-    );
+    });
     setTimeout(() => {
       this.emitSize(dims);
     }, PROPAGATE_DELAY);

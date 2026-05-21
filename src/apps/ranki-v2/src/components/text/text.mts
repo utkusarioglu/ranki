@@ -94,14 +94,16 @@ export class R2Text extends R2C {
         top,
         left,
       }).animateStyle(
-        "width",
         {
-          opacity: 1,
-          width,
-        },
-        {
-          duration: 1000,
-          delay: 500,
+          name: "width",
+          pos: {
+            opacity: 1,
+            width,
+          },
+          options: {
+            duration: 1000,
+            delay: 500,
+          },
         },
         resolve,
       );

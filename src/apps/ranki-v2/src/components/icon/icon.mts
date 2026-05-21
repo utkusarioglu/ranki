@@ -88,14 +88,16 @@ export class R2Icon extends R2C {
         left: left,
         top: top,
       }).animateStyle(
-        "width",
         {
-          opacity: 1,
-          width: width,
-        },
-        {
-          duration: this.props.animation.duration,
-          delay: 500,
+          name: "width",
+          pos: {
+            opacity: 1,
+            width: width,
+          },
+          options: {
+            duration: this.props.animation.duration,
+            delay: 500,
+          },
         },
         resolve,
       );
