@@ -15,7 +15,7 @@ export class GeometryUtils {
     prop: "width" | "height",
   ): DirectionalEvaluation {
     const isExpanding = curr[prop] > (prev ? prev[prop] : 0);
-    const isContracting = curr.width < (prev ? prev[prop] : 0);
+    const isContracting = curr[prop] < (prev ? prev[prop] : 0);
     const action = isExpanding ? "expand" : isContracting ? "contract" : "none";
     return {
       action,

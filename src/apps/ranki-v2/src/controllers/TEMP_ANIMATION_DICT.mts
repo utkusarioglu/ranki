@@ -2,6 +2,32 @@ import type { AnimationDict } from "./geometry.animator.types.mts";
 
 export const TEMP_ANIMATION_DICT: AnimationDict = {
   debug: {
+    "hud-bg": {
+      expand: {
+        root: [
+          {
+            name: "height",
+            duration: 0,
+            keyframes: [
+              {
+                height: "CONTAINER_HEIGHT",
+              },
+            ],
+          },
+          {
+            name: "opacity",
+            duration: 1000,
+            keyframes: [
+              {
+                width: "CONTAINER_WIDTH",
+                opacity: 1,
+              },
+            ],
+          },
+        ],
+      },
+      none: {},
+    },
     "badge-list": {
       expand: {
         root: [
@@ -67,6 +93,16 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
           },
         },
       },
+      none: {
+        // targets: {
+        //   bg: {
+        //     inform: {
+        //       width: "CONTAINER_WIDTH",
+        //       height: "CONTAINER_HEIGHT",
+        //     },
+        //   },
+        // },
+      },
     },
     "cue-list": {
       expand: {
@@ -130,6 +166,16 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
             },
           },
         },
+      },
+      none: {
+        // targets: {
+        //   bg: {
+        //     inform: {
+        //       width: "CONTAINER_WIDTH",
+        //       height: "CONTAINER_HEIGHT",
+        //     },
+        //   },
+        // },
       },
     },
     "hud-scroller": {
@@ -211,6 +257,16 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
           },
         },
       },
+      none: {
+        // targets: {
+        //   bg: {
+        //     inform: {
+        //       width: "CONTAINER_WIDTH",
+        //       height: "CONTAINER_HEIGHT",
+        //     },
+        //   },
+        // },
+      },
     },
     hud: {
       expand: {
@@ -258,6 +314,16 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
             },
           },
         },
+      },
+      none: {
+        // targets: {
+        //   bg: {
+        //     inform: {
+        //       width: "CONTAINER_WIDTH",
+        //       height: "CONTAINER_HEIGHT",
+        //     },
+        //   },
+        // },
       },
     },
   },

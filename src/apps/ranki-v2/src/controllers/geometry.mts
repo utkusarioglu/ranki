@@ -34,7 +34,7 @@ export class GeometryController implements ReactiveController {
   private readonly registered = new WeakMap<R2C, Dims>();
   private readonly targets: TargetRec;
   private readonly animator: Animator;
-  private geometry: R2Sizing | null = null;
+  private sizing: R2Sizing | null = null;
   private requested = false;
   private currStyle: UpdateStyle | null = null;
 
@@ -59,10 +59,10 @@ export class GeometryController implements ReactiveController {
   }
 
   private getSizing(): R2Sizing {
-    assertNotNull(this.geometry, {
-      why: "getGeometry called when no geometry was registered",
+    assertNotNull(this.sizing, {
+      why: "getSizing called when no geometry was registered",
     });
-    return this.geometry;
+    return this.sizing;
   }
 
   public async informStyle(
@@ -75,11 +75,13 @@ export class GeometryController implements ReactiveController {
       sizing = this.getSizing();
     } catch (e) {}
 
+    const sizeMerged: R2Sizing = { ...informed, ...sizing };
+
     const evaluations = {
-      main: GeometryUtils.evaluateChange(sizing, prev, "width"),
-      cross: GeometryUtils.evaluateChange(sizing, prev, "height"),
+      main: GeometryUtils.evaluateChange(sizeMerged, prev, "width"),
+      cross: GeometryUtils.evaluateChange(sizeMerged, prev, "height"),
     };
-    const curr: UpdateStyle = { ...informed, ...sizing, ...evaluations };
+    const curr: UpdateStyle = { ...sizeMerged, ...evaluations };
 
     this.currStyle = curr;
     return this.animator.updateStyle(this.currStyle, prev, context);
@@ -111,19 +113,19 @@ export class GeometryController implements ReactiveController {
         case "disconnected":
         case "update":
           const sz = this.getSizingCallback(id);
-          this.geometry = sz(this.orderTrackedNodes(id));
+          this.sizing = sz(this.orderTrackedNodes(id));
           if (!this.requested) {
             this.requested = true;
             TimingUtils.raf().then(() => {
               setTimeout(() => {
                 this.requested = false;
-                if (this.geometry)
+                if (this.sizing)
                   if (this.getIsRoot(id)) {
-                    this.informAsRoot(this.geometry);
+                    this.informAsRoot(this.sizing);
                   } else {
                     GeometryUtils.emitSize(
                       this.host as LitElement,
-                      this.geometry,
+                      this.sizing,
                     );
                   }
               }, PROPAGATE_DELAY);
@@ -175,7 +177,7 @@ export class GeometryController implements ReactiveController {
     // const t = this.changes[target];
     const diff = t.diff;
     if (!diff) {
-      console.log("change detection not registered for target:", id);
+      console.log("diff detection not registered for target:", id);
       return ReconciliationUtils.noChanges();
     }
     return diff(this.host);
@@ -193,6 +195,8 @@ export class GeometryController implements ReactiveController {
       this.getTarget(id)
         .selector(this.host)
         .map((e, i, a) => {
+          if (id === "bg") {
+          }
           const context: InformContext = {
             index: i,
             length: a.length,

@@ -44,7 +44,6 @@ export class Animator {
       ...options,
     };
     const finalKeyframes = keyframes.map((k) => this.produceKeyframe(k));
-    if (this.host.tagName === "R2-HUD") console.log("k", finalKeyframes);
     const anim = this.host.animate(finalKeyframes, finalOptions);
     const r = this.runningAnimations.get(name);
     if (r) {
@@ -107,7 +106,6 @@ export class Animator {
   }
 
   private getRecipe(action: LocalAction) {
-    if (action === "none") return {};
     const preset = TEMP_ANIMATION_DICT[this.preset];
     assertNotUndefined(preset, {
       why: "No such preset exists",

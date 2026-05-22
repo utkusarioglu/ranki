@@ -1,0 +1,14 @@
+:host {
+  position: absolute;
+  display: block;
+  background: var(--bg, gray);
+  border: var(--border, 0);
+  z-index: var(--z-index);
+  width: 0;
+  height: 0;
+  opacity: 0;
+  border-radius: 0.5em;
+  box-sizing: border-box;
+  transition-property: background, border;
+  transition-duration: 1s;
+}

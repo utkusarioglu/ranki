@@ -109,7 +109,7 @@ export class AnimationUtils {
     await Promise.all(
       Object.entries(p.block.targets).map(
         async ([id, { wait, inform, then }]) => {
-          await TimingUtils.delay(wait || 0);
+          if (wait) await TimingUtils.delay(wait);
           await p.informTarget({ id, curr: p.curr, prev: p.prev, inform });
           if (!then) return;
           await AnimationUtils.decode({ ...p, block: then });
