@@ -1,15 +1,10 @@
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import { R2C } from "_components/r2c/r2c.mjs";
-import { type AnimationPack } from "_/controllers/TEMP_ANIMATION_DICT.mjs";
-import { type InformContext } from "_/controllers/geometry.types.mjs";
-import { type UpdateStyle } from "_/controllers/geometry.types.mjs";
-import { type R2Sizing } from "_/controllers/geometry.types.mjs";
-import { type ComponentDims } from "_/controllers/geometry.types.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
-import { TimingUtils } from "_utils/timing.mjs";
 import { css, html, type PropertyValues } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
+import { geometry, GeometryController } from "_/controllers/geometry.mjs";
 
 @customElement("r2-chip")
 export class R2Chip extends R2C {
@@ -33,96 +28,40 @@ export class R2Chip extends R2C {
   @property()
   private list!: HudTagListItem[];
 
-  protected override getSubtreeList(): R2C[] {
-    return [this.icon, this.text];
-  }
-
-  override updateSizing(dims: ComponentDims[]): R2Sizing | null {
-    return SizingUtils.row({
-      main: {
-        start: 10,
-        gap: 5,
-        end: 10,
-      },
-      cross: {
-        start: 5,
-        end: 5,
-      },
-    })(dims);
-  }
-
-  protected override async updateStyle(
-    curr: UpdateStyle,
-    prev: UpdateStyle | null,
-    context: InformContext,
-  ): Promise<void> {
-    const animationPack: AnimationPack = {
-      // FIX realize that enter and leave are not here
-      expand: this.animateExpansion.bind(this),
-      contract: this.animateContraction.bind(this),
-      none: () => Promise.resolve(),
-    };
-    return animationPack[curr.main.action](curr, prev, context);
-  }
-
-  protected async animateExpansion(
-    { top, left, width, height, lefts, tops }: UpdateStyle,
-    prev: UpdateStyle | null,
-    { index, length, diff: { mutateOrder } }: InformContext,
-  ): Promise<void> {
-    const delayIndex = mutateOrder[index];
-    const bodyDelay = 1000 * delayIndex;
-    await Promise.all([
-      TimingUtils.delay(bodyDelay).then(() => {
-        this.setStyle({ top, left, width, height, zIndex: length - index });
-        this.bg.informStyle({ width, height, top: 0, left: 0 });
-      }),
-
-      TimingUtils.delay(bodyDelay + 1000).then(() =>
-        this.informSubtreeStyles({ tops, lefts }),
-      ),
-    ]);
-  }
-  protected async animateContraction(
-    { top, left, width, height, lefts, tops }: UpdateStyle,
-    prev: UpdateStyle | null,
-    { index, length, diff: { mutateOrder } }: InformContext,
-  ): Promise<void> {
-    const delayIndex = mutateOrder[index];
-    const bodyDelay = 1000 * delayIndex;
-    await TimingUtils.delay(bodyDelay);
-    await this.informSubtreeStyles({ tops, lefts });
-    await TimingUtils.delay(1000);
-    this.setStyle({ top, left, width, height, zIndex: length - index });
-    await this.bg.informStyle({ width, height, top: 0, left: 0 });
-  }
-
-  private async animateLeave() {
-    const height = this.getSizing().height;
-    this.bg.informStyle({ width: 0, height, top: 0, left: 0 });
-    return new Promise<void>((resolve) => {
-      this.animateStyle(
-        {
-          name: "opacity",
-          keyframes: {
-            opacity: 0,
-            width: 0,
+  @geometry({
+    role: "chip",
+    targets: {
+      content: {
+        selector: (s) => [s.icon, s.text],
+        sizing: SizingUtils.row({
+          main: {
+            start: 10,
+            gap: 5,
+            end: 10,
           },
-          options: {
-            // TODO
-            duration: 1000,
-            // duration: this.list[this.index].animation.duration,
+          cross: {
+            start: 5,
+            end: 5,
           },
-        },
-        resolve,
-      );
-    });
+        }),
+      },
+      bg: {
+        selector: (s) => [s.bg],
+      },
+    },
+  })
+  public readonly geo!: GeometryController;
+
+  override informStyle = this.geo.informStyle.bind(this.geo);
+
+  private async animateLeave(index: number) {
+    return this.geo.triggerAction({ width: 0, opacity: 0 }, "exit", index);
   }
 
   override updated(changed: PropertyValues) {
     if (!changed.has("leave")) return;
     if (this.leave) {
-      this.animateLeave().then(() => {
+      this.animateLeave(this.index).then(() => {
         this.emitLeave();
       });
     }
@@ -145,12 +84,12 @@ export class R2Chip extends R2C {
           },
         }}
         style="position: absolute;"
-        @r2-child-size=${this.onChildSize}
+        @r2-child-size=${this.geo.onChildSize("content")}
       ></r2-icon>
       <r2-text
         .props=${item}
         style="position: absolute;"
-        @r2-child-size=${this.onChildSize}
+        @r2-child-size=${this.geo.onChildSize("content")}
       ></r2-text>
     `;
   }

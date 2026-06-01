@@ -11,13 +11,18 @@ import type {
   SizingCb,
   TargetRec,
   TargetProps,
+  LocalAction,
 } from "./geometry.types.mts";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { TimingUtils } from "_utils/timing.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import { GeometryUtils } from "./geometry.utils.mts";
-import { assertNotNull, assertNotUndefined } from "_error/assertions.mjs";
+import {
+  assertNever,
+  assertNotNull,
+  assertNotUndefined,
+} from "_error/assertions.mjs";
 import { Animator } from "./geometry.animator.mts";
 import { AnimationUtils } from "./animator.utils.mts";
 import { assertExists } from "../../../../packages/dqm-utils/src/assertions.mts";
@@ -76,6 +81,7 @@ export class GeometryController implements ReactiveController {
     } catch (e) {}
 
     const sizeMerged: R2Sizing = { ...informed, ...sizing };
+    console.log("sm", sizeMerged, sizing);
 
     const evaluations = {
       main: GeometryUtils.evaluateChange(sizeMerged, prev, "width"),
@@ -85,6 +91,52 @@ export class GeometryController implements ReactiveController {
 
     this.currStyle = curr;
     return this.animator.updateStyle(this.currStyle, prev, context);
+  }
+
+  public async triggerAction(
+    style: InformStyle,
+    action: LocalAction,
+    index: number,
+  ): Promise<void> {
+    console.log("trigger", action, index);
+    if (action !== "exit") {
+      assertNever({ why: "Not yet implemented", details: { action } });
+    }
+    // const index;
+    const length = 1;
+    const prev = this.currStyle;
+    const curr: UpdateStyle = {
+      ...this.currStyle,
+      ...style,
+      main: { action },
+      cross: { action },
+    };
+    const context: InformContext = {
+      index,
+      length,
+      diff: {
+        add: [],
+        remove: [index],
+        update: [],
+        retain: [],
+        stagger: {
+          first: index,
+          indices: [index],
+        },
+      },
+    };
+
+    this.currStyle = curr;
+    console.log("a", action, this.currStyle);
+    return this.animator.updateStyle(this.currStyle, prev, context);
+  }
+
+  private informAsRoot(geo: R2Sizing) {
+    this.informStyle(geo, {
+      index: 0,
+      length: 1,
+      diff: ReconciliationUtils.noChanges(),
+    });
   }
 
   onChildSize(id: string) {
@@ -133,14 +185,6 @@ export class GeometryController implements ReactiveController {
           }
       }
     };
-  }
-
-  private informAsRoot(geo: R2Sizing) {
-    this.informStyle(geo, {
-      index: 0,
-      length: 1,
-      diff: ReconciliationUtils.noChanges(),
-    });
   }
 
   private getIsRoot(id: string): boolean {

@@ -8,8 +8,12 @@ export type ReconciliationDiff = {
   remove: number[];
   update: number[];
   retain: number[];
-  mutateOrder: number[];
-  mutateIndex: number;
+  stagger: {
+    first: number;
+    indices: number[];
+  };
+  // mutateOrder: number[];
+  // mutateIndex: number;
 };
 
 export type ReconcileSingle<G> = (curr: G, prev: G) => ReconciliationActions;
@@ -57,8 +61,12 @@ export class ReconciliationUtils {
       remove: [],
       retain: [],
       update: [],
-      mutateIndex: 0,
-      mutateOrder: [],
+      stagger: {
+        first: 0,
+        indices: [0],
+      },
+      // mutateIndex: 0,
+      // mutateOrder: [],
     };
   }
 
@@ -143,7 +151,7 @@ export class ReconciliationUtils {
     // #1
     let mutateIndices = [remove[0], add[0]].filter((v) => v !== undefined);
     mutateIndices = !mutateIndices.length
-      ? [prev.diff.mutateIndex]
+      ? [prev.diff.stagger.first]
       : mutateIndices;
     const mutateIndex = Math.min(...mutateIndices);
 
@@ -160,7 +168,7 @@ export class ReconciliationUtils {
         mutateOrder[i] = prevLen - i - 1;
       }
     } else {
-      mutateOrder = prev.diff.mutateOrder;
+      mutateOrder = prev.diff.stagger.indices;
     }
 
     return {
@@ -171,8 +179,10 @@ export class ReconciliationUtils {
         remove,
         retain,
         update,
-        mutateIndex,
-        mutateOrder,
+        stagger: {
+          first: mutateIndex,
+          indices: mutateOrder,
+        },
       },
     };
   }
@@ -218,8 +228,12 @@ export class ReconciliationUtils {
           remove,
           retain,
           update: [],
-          mutateIndex: id,
-          mutateOrder: subtree.diff.mutateOrder,
+          stagger: {
+            first: id,
+            indices: subtree.diff.stagger.indices,
+          },
+          // mutateIndex: id,
+          // mutateOrder: subtree.diff.mutateOrder,
         },
         epoch: Date.now(),
       });

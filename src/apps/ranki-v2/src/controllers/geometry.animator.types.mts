@@ -52,11 +52,11 @@ export type AnimateableStylesConfigKeyframes = Partial<
   Record<keyof AnimateableStyles, string | number>
 >;
 
-export interface AnimationRoot extends AnimationOptions {
+export interface AnimationRoot {
   name: string;
   keyframes: AnimateableStylesConfigKeyframes[];
-  delay?: number;
-  duration: number;
+  delay?: number | string;
+  duration: number | string;
   easing?: string;
   then?: AnimationBlock;
 }
@@ -68,7 +68,7 @@ export interface AnimationBlock {
 }
 
 export interface AnimationTarget {
-  wait?: number;
+  wait?: number | string;
   inform: AnimateableStylesConfigKeyframes;
   then?: AnimationBlock;
 }

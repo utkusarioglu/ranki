@@ -74,7 +74,8 @@ export class AnimationUtils {
       const varSet = {
         INDEX: context.index,
         LENGTH: context.length,
-        MUTATE_INDEX: context.diff.mutateIndex,
+        STAGGER_FIRST: context.diff.stagger.first,
+        STAGGER_INDEX: context.diff.stagger.indices[context.index],
       };
       return exp.evaluate(varSet);
     }
@@ -109,7 +110,10 @@ export class AnimationUtils {
     await Promise.all(
       Object.entries(p.block.targets).map(
         async ([id, { wait, inform, then }]) => {
-          if (wait) await TimingUtils.delay(wait);
+          if (wait) {
+            const ev = AnimationUtils.evalOptionValue(p.context, wait);
+            await TimingUtils.delay(ev);
+          }
           await p.informTarget({ id, curr: p.curr, prev: p.prev, inform });
           if (!then) return;
           await AnimationUtils.decode({ ...p, block: then });

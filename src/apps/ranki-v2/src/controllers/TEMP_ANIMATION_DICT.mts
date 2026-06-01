@@ -2,6 +2,98 @@ import type { AnimationDict } from "./geometry.animator.types.mts";
 
 export const TEMP_ANIMATION_DICT: AnimationDict = {
   debug: {
+    chip: {
+      expand: {
+        root: [
+          {
+            name: "init",
+            duration: 0,
+            keyframes: [
+              {
+                top: "CONTAINER_TOP",
+                left: "CONTAINER_LEFT",
+              },
+            ],
+          },
+        ],
+        targets: {
+          bg: {
+            wait: "STAGGER_INDEX * 1000",
+            inform: {
+              width: "CONTAINER_WIDTH",
+              height: "CONTAINER_HEIGHT",
+            },
+          },
+          content: {
+            wait: "STAGGER_INDEX * 1000 + 1000",
+            inform: {
+              left: "LEFT",
+              top: "TOP",
+            },
+          },
+        },
+      },
+      contract: {
+        root: [
+          {
+            name: "reposition",
+            duration: 1000,
+            keyframes: [
+              {
+                top: "CONTAINER_TOP",
+                left: "CONTAINER_LEFT",
+              },
+            ],
+          },
+        ],
+        targets: {
+          bg: {
+            wait: "STAGGER_INDEX * 1000",
+            inform: {
+              width: "CONTAINER_WIDTH",
+              height: "CONTAINER_HEIGHT",
+            },
+          },
+          content: {
+            wait: "STAGGER_INDEX * 1000 + 1000",
+            inform: {
+              left: "LEFT",
+              top: "TOP",
+            },
+          },
+        },
+      },
+      exit: {
+        root: [
+          {
+            name: "reposition",
+            duration: 1000,
+            keyframes: [
+              {
+                top: "CONTAINER_TOP",
+                left: "CONTAINER_LEFT",
+              },
+            ],
+          },
+        ],
+        targets: {
+          bg: {
+            wait: "STAGGER_INDEX * 1000",
+            inform: {
+              width: "CONTAINER_WIDTH",
+              height: "CONTAINER_HEIGHT",
+            },
+          },
+          content: {
+            wait: "STAGGER_INDEX * 1000 + 1000",
+            inform: {
+              left: "LEFT",
+              top: "TOP",
+            },
+          },
+        },
+      },
+    },
     "hud-bg": {
       expand: {
         root: [
@@ -26,7 +118,20 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
           },
         ],
       },
-      none: {},
+      contract: {
+        root: [
+          {
+            name: "opacity",
+            duration: 1000,
+            keyframes: [
+              {
+                width: "CONTAINER_WIDTH",
+                opacity: 1,
+              },
+            ],
+          },
+        ],
+      },
     },
     "badge-list": {
       expand: {
@@ -93,16 +198,6 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
           },
         },
       },
-      none: {
-        // targets: {
-        //   bg: {
-        //     inform: {
-        //       width: "CONTAINER_WIDTH",
-        //       height: "CONTAINER_HEIGHT",
-        //     },
-        //   },
-        // },
-      },
     },
     "cue-list": {
       expand: {
@@ -166,16 +261,6 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
             },
           },
         },
-      },
-      none: {
-        // targets: {
-        //   bg: {
-        //     inform: {
-        //       width: "CONTAINER_WIDTH",
-        //       height: "CONTAINER_HEIGHT",
-        //     },
-        //   },
-        // },
       },
     },
     "hud-scroller": {
@@ -257,16 +342,6 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
           },
         },
       },
-      none: {
-        // targets: {
-        //   bg: {
-        //     inform: {
-        //       width: "CONTAINER_WIDTH",
-        //       height: "CONTAINER_HEIGHT",
-        //     },
-        //   },
-        // },
-      },
     },
     hud: {
       expand: {
@@ -314,16 +389,6 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
             },
           },
         },
-      },
-      none: {
-        // targets: {
-        //   bg: {
-        //     inform: {
-        //       width: "CONTAINER_WIDTH",
-        //       height: "CONTAINER_HEIGHT",
-        //     },
-        //   },
-        // },
       },
     },
   },

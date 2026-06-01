@@ -9,6 +9,7 @@ import {
   type InformTargetCb,
   type ApplyParams,
   type AnimateableStyles,
+  type AnimationBlock,
 } from "./geometry.animator.types.mts";
 import { TEMP_ANIMATION_DICT } from "./TEMP_ANIMATION_DICT.mts";
 import { assertNotUndefined } from "_error/assertions.mjs";
@@ -105,7 +106,9 @@ export class Animator {
     });
   }
 
-  private getRecipe(action: LocalAction) {
+  private getRecipe(action: LocalAction): AnimationBlock {
+    console.log(this.preset, this.role, action);
+    if (action === "none") return {};
     const preset = TEMP_ANIMATION_DICT[this.preset];
     assertNotUndefined(preset, {
       why: "No such preset exists",
