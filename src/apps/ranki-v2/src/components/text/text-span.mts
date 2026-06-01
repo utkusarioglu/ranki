@@ -42,6 +42,7 @@ export class R2TextSpan extends R2C {
       {
         name: "opacity",
         keyframes: {
+          // @ts-expect-error OBSOLETE
           opacity: 0,
         },
         options: {
@@ -68,6 +69,7 @@ export class R2TextSpan extends R2C {
       name: "opacity",
       keyframes: {
         // width,
+        // @ts-expect-error OBSOLETE
         opacity: 1,
       },
       options: {

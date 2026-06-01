@@ -81,13 +81,8 @@ export class GeometryController implements ReactiveController {
     } catch (e) {}
 
     const sizeMerged: R2Sizing = { ...informed, ...sizing };
-    console.log("sm", sizeMerged, sizing);
-
-    const evaluations = {
-      main: GeometryUtils.evaluateChange(sizeMerged, prev, "width"),
-      cross: GeometryUtils.evaluateChange(sizeMerged, prev, "height"),
-    };
-    const curr: UpdateStyle = { ...sizeMerged, ...evaluations };
+    const action = GeometryUtils.evaluateAction(sizeMerged, prev);
+    const curr: UpdateStyle = { ...sizeMerged, action };
 
     this.currStyle = curr;
     return this.animator.updateStyle(this.currStyle, prev, context);
@@ -98,44 +93,32 @@ export class GeometryController implements ReactiveController {
     action: LocalAction,
     index: number,
   ): Promise<void> {
-    console.log("trigger", action, index);
     if (action !== "exit") {
       assertNever({ why: "Not yet implemented", details: { action } });
     }
-    // const index;
-    const length = 1;
+    const length = index + 1;
     const prev = this.currStyle;
     const curr: UpdateStyle = {
       ...this.currStyle,
       ...style,
-      main: { action },
-      cross: { action },
+      action,
     };
     const context: InformContext = {
       index,
       length,
-      diff: {
-        add: [],
-        remove: [index],
-        update: [],
-        retain: [],
-        stagger: {
-          first: index,
-          indices: [index],
-        },
-      },
+      stagger: [index],
     };
+    console.log("c", curr, context);
 
     this.currStyle = curr;
-    console.log("a", action, this.currStyle);
-    return this.animator.updateStyle(this.currStyle, prev, context);
+    return this.animator.updateStyle(curr, prev, context);
   }
 
   private informAsRoot(geo: R2Sizing) {
     this.informStyle(geo, {
       index: 0,
       length: 1,
-      diff: ReconciliationUtils.noChanges(),
+      stagger: [0],
     });
   }
 
@@ -239,12 +222,10 @@ export class GeometryController implements ReactiveController {
       this.getTarget(id)
         .selector(this.host)
         .map((e, i, a) => {
-          if (id === "bg") {
-          }
           const context: InformContext = {
             index: i,
             length: a.length,
-            diff,
+            stagger: diff.stagger.indices,
           };
           const informVals = AnimationUtils.evalKeyframe(
             curr,

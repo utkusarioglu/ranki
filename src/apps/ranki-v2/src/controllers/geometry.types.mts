@@ -1,5 +1,6 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.mjs";
+import type { AnimateableStyles } from "./geometry.animator.types.mts";
 
 type LitInstance = any;
 export type ListenChildrenEventFunc = (e: ListenChildrenEvent) => void;
@@ -68,12 +69,14 @@ export type WidthsHeights = { widths: number[]; heights: number[] };
 
 export type R2Sizing = Dims & LeftsTops & WidthsHeights;
 export type LocalAction = "expand" | "contract" | "none" | "enter" | "exit";
-export type DirectionalEvaluation = {
-  isExpanding: boolean;
-  isContracting: boolean;
-  action: LocalAction;
-};
-export type InformStyle = Partial<Pos> & Partial<Dims>;
+// OBSOLETE
+// export type DirectionalEvaluation = {
+//   isExpanding: boolean;
+//   isContracting: boolean;
+//   action: LocalAction;
+// };
+// export type InformStyle = Partial<Pos> & Partial<Dims>;
+export type InformStyle = AnimateableStyles;
 
 export type UpdateStyle = InformStyle &
   R2Sizing &
@@ -81,14 +84,24 @@ export type UpdateStyle = InformStyle &
   WidthsHeights;
 
 type UpdateEvaluations = {
-  main: DirectionalEvaluation;
-  cross: DirectionalEvaluation;
+  action: LocalAction;
 };
+// type UpdateEvaluations = {
+//   main: DirectionalEvaluation;
+//   cross: DirectionalEvaluation;
+// };
 export type InformContext = {
   index: number;
   length: number;
-  diff: ReconciliationDiff;
+  stagger: number[];
 };
+
+export interface GeometryDiff {
+  stagger: {
+    first: number;
+    indices: number[];
+  };
+}
 export type Pos = { top: number; left: number };
 
 // OBSOLETE

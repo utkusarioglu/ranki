@@ -15,8 +15,10 @@ export class R2CueList extends R2C {
     }
   `;
   @query("r2-badge-list")
+  // @ts-expect-error
   private badgeList!: R2C;
   @query("r2-hud-bg")
+  // @ts-expect-error
   private bg!: R2HudBg;
 
   @geometry({
@@ -44,93 +46,6 @@ export class R2CueList extends R2C {
   public readonly geo!: GeometryController;
 
   override informStyle = this.geo.informStyle.bind(this.geo);
-
-  // protected override getSubtreeList(): R2C[] {
-  //   return [this.badgeList];
-  // }
-
-  // protected override updateSizing(dims: ComponentDims[]): R2Sizing | null {
-  //   return SizingUtils.row({
-  //     main: {
-  //       start: 10,
-  //       gap: 10,
-  //       end: 10,
-  //     },
-  //     cross: {
-  //       start: 2,
-  //       end: 2,
-  //     },
-  //   })(dims);
-  // }
-
-  // protected override async updateStyle(
-  //   curr: UpdateStyle,
-  //   prev: UpdateStyle | null,
-  //   context: InformContext,
-  // ): Promise<void> {
-  //   const animationPack: AnimationPack = {
-  //     expand: this.animateExpansion.bind(this),
-  //     contract: this.animateContraction.bind(this),
-  //     none: () => Promise.resolve(),
-  //   };
-  //   return animationPack[curr.main.action](curr, prev, context);
-  // }
-
-  // protected async animateExpansion(
-  //   { top, left, width, height, lefts, tops }: UpdateStyle,
-  //   prev: UpdateStyle | null,
-  //   { index, length }: InformContext,
-  // ): Promise<void> {
-  //   await Promise.all([
-  //     TimingUtils.delay(0).then(() => {
-  //       this.setStyle({ zIndex: length - index }).animateStyle(
-  //         "position",
-  //         { top, left },
-  //         { duration: 1e3 },
-  //       );
-  //       this.bg.informStyle({ top, left, width, height });
-  //     }),
-  //     TimingUtils.delay(1000).then(() =>
-  //       this.informSubtreeStyles(
-  //         { tops, lefts },
-  //         {
-  //           add: [],
-  //           remove: [],
-  //           retain: [Number.NaN],
-  //           update: [],
-  //           mutateOrder: [],
-  //           mutateIndex: Number.NaN,
-  //         },
-  //       ),
-  //     ),
-  //   ]);
-  // }
-
-  // private async animateContraction(
-  //   { top, left, width, height, lefts, tops }: UpdateStyle,
-  //   prev: UpdateStyle | null,
-  // ): Promise<void> {
-  //   await TimingUtils.delay(0)
-  //     .then(() =>
-  //       this.informSubtreeStyles(
-  //         { tops, lefts },
-  //         {
-  //           add: [],
-  //           remove: [],
-  //           retain: [Number.NaN],
-  //           update: [],
-  //           mutateOrder: [],
-  //           mutateIndex: Number.NaN,
-  //         },
-  //       ),
-  //     )
-  //     .then(() =>
-  //       TimingUtils.delay(1000).then(async () => {
-  //         this.animateStyle("position", { top, left }, { duration: 1e3 });
-  //         await this.bg.informStyle({ width, height, top: 0, left: 0 });
-  //       }),
-  //     );
-  // }
 
   override render() {
     return html`

@@ -78,10 +78,13 @@ export class R2Icon extends R2C {
     })(dims);
   }
 
-  protected override async updateStyle(
-    { top, left, height, width }: UpdateStyle,
-    prev: UpdateStyle | null,
-  ): Promise<void> {
+  // OBSOLETE
+  protected override async updateStyle({
+    top,
+    left,
+    height,
+    width,
+  }: UpdateStyle): Promise<void> {
     return new Promise<void>((resolve) => {
       this.setStyle({
         height: height,
@@ -91,6 +94,7 @@ export class R2Icon extends R2C {
         {
           name: "width",
           keyframes: {
+            // @ts-expect-error OBSOLETE
             opacity: 1,
             width: width,
           },

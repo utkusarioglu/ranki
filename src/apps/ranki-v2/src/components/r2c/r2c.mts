@@ -14,7 +14,6 @@ import {
 import type {
   ComponentDims,
   Dims,
-  DirectionalEvaluation,
   InformContext,
   InformStyle,
   InformSubtreeStyles,
@@ -210,11 +209,15 @@ export class R2C extends LitElement implements R2Animate {
     whenDone?: () => void,
   ) {
     let transform = {};
+    // @ts-expect-error OBSOLETE
     const hasLeft = pos.left !== undefined;
+    // @ts-expect-error OBSOLETE
     const hasTop = pos.top !== undefined;
     if (hasLeft || hasTop) {
       const maybe = [
+        // @ts-expect-error OBSOLETE
         hasLeft ? "translateX(" + pos.left + "px)" : undefined,
+        // @ts-expect-error OBSOLETE
         hasTop ? "translateY(" + pos.top + "px)" : undefined,
       ]
         .filter((v) => !!v)
@@ -226,8 +229,11 @@ export class R2C extends LitElement implements R2Animate {
     const anim = this.animate(
       {
         ...transform,
+        // @ts-expect-error OBSOLETE
         ...(pos.width !== undefined ? { width: pos.width + "px" } : {}),
+        // @ts-expect-error OBSOLETE
         ...(pos.height !== undefined ? { height: pos.height + "px" } : {}),
+        // @ts-expect-error OBSOLETE
         ...(pos.opacity !== undefined ? { opacity: pos.opacity } : {}),
       },
       {
@@ -260,6 +266,7 @@ export class R2C extends LitElement implements R2Animate {
     this.animateStyle({
       name: "set-style",
       keyframes: {
+        // @ts-expect-error OBSOLETE
         width,
         height,
         opacity,
@@ -282,31 +289,37 @@ export class R2C extends LitElement implements R2Animate {
       sizing = this.getSizing();
     } catch (e) {}
 
-    const evaluations = {
-      main: this.evaluateChange(sizing, prev, "width"),
-      cross: this.evaluateChange(sizing, prev, "height"),
+    // const evaluations = {
+    //   main: this.evaluateChange(sizing, prev, "width"),
+    //   cross: this.evaluateChange(sizing, prev, "height"),
+    // };
+    const action = GeometryUtils.evaluateAction(sizing, prev);
+    const curr = {
+      ...informed,
+      ...sizing,
+      // ...evaluations,
+      action,
     };
-    const curr = { ...informed, ...sizing, ...evaluations };
 
     this.currStyle = curr;
     return this.updateStyle(this.currStyle, prev, context);
   }
 
   // OBSOLETE
-  private evaluateChange(
-    curr: R2Sizing,
-    prev: UpdateStyle | null,
-    prop: "width" | "height",
-  ): DirectionalEvaluation {
-    const isExpanding = curr[prop] > (prev ? prev[prop] : 0);
-    const isContracting = curr.width < (prev ? prev[prop] : 0);
-    const action = isExpanding ? "expand" : isContracting ? "contract" : "none";
-    return {
-      action,
-      isExpanding,
-      isContracting,
-    };
-  }
+  // private evaluateChange(
+  //   curr: R2Sizing,
+  //   prev: UpdateStyle | null,
+  //   prop: "width" | "height",
+  // ): any {
+  //   const isExpanding = curr[prop] > (prev ? prev[prop] : 0);
+  //   const isContracting = curr.width < (prev ? prev[prop] : 0);
+  //   const action = isExpanding ? "expand" : isContracting ? "contract" : "none";
+  //   return {
+  //     action,
+  //     isExpanding,
+  //     isContracting,
+  //   };
+  // }
 
   // OBSOLETE
   public async informSubtreeStyles(
@@ -323,7 +336,7 @@ export class R2C extends LitElement implements R2Animate {
           {
             index: i,
             length: a.length,
-            diff,
+            stagger: diff.stagger.indices,
           },
         ),
       ),

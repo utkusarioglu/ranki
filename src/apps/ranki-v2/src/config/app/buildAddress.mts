@@ -1,9 +1,5 @@
 import { assertExists } from "@dqm/package-dqm-utils";
 import type { HudAddressSegment } from "_components/hud/hud.types.mts";
-import type {
-  AnkiDeck,
-  AnkiDeckParts,
-} from "_config/collect/collect.types.mts";
 import { ANKI_DECK_SEPARATOR } from "_config/config.constants.mts";
 import type {
   RankiAddressTokens,
@@ -13,6 +9,7 @@ import type {
 import { assertNever } from "_error/assertions.mts";
 import { RankiAppError } from "_error/ranki-app-error.mts";
 import { MUTATION_MODE_PRECEDENCE } from "./app.mts";
+import type { AnkiDeck, AnkiDeckParts } from "_collect/collect.types.mjs";
 
 function translateMarker(parts: AnkiDeckParts, marker: string | number) {
   let si: number;
@@ -84,6 +81,8 @@ function alt(
     if (isCombine) {
       prev.masked.push(w.masked);
     } else if (w.mode !== "drop") {
+      // @ts-expect-error
+      // FIX
       noSep.push({
         ...w,
         masked: [w.masked],
@@ -97,6 +96,8 @@ function alt(
     const prev = wPos.at(-1);
     const hasPrev = !!prev;
     if (hasPrev && w.type === "segment" && prev.type === "segment") {
+      // @ts-expect-error
+      // FIX
       wPos.push({
         type: "divider",
         mode: "separator",

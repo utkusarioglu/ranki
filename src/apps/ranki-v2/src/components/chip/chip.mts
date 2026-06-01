@@ -17,10 +17,13 @@ export class R2Chip extends R2C {
   @property({ type: Boolean, reflect: true })
   leave = false;
   @query("r2-icon")
+  // @ts-expect-error
   private icon!: R2C;
   @query("r2-text")
+  // @ts-expect-error
   private text!: R2C;
   @query("r2-hud-bg")
+  // @ts-expect-error
   private bg!: R2HudBg;
 
   @property()

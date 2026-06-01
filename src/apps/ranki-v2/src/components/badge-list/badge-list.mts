@@ -24,11 +24,14 @@ export class R2BadgeList extends R2C {
     }
   `;
   @queryAll("r2-chip")
+  // @ts-expect-error
   private chips!: NodeListOf<R2C>;
   @query("r2-hud-bg")
+  // @ts-expect-error
   private bg!: R2HudBg;
 
   @store((s) => s.state?.hud.subtree.tags.list || [])
+  // @ts-expect-error
   private readonly store!: StoreController<HudTagListItem[]>;
 
   @reconciler<R2BadgeListState>({

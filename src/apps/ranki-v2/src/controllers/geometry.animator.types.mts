@@ -14,6 +14,7 @@ export type AnimateableStyles = Partial<Dims> &
   Partial<Anim> &
   Partial<Other> &
   Partial<{
+    opacity: number;
     offset: number;
     rotate: number;
     scale: number;

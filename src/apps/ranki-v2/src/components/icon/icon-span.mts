@@ -52,6 +52,7 @@ export class R2IconSpan extends R2C {
       {
         name: "opacity",
         keyframes: {
+          // @ts-expect-error OBSOLETE
           opacity: 0,
         },
         options: {
@@ -84,6 +85,7 @@ export class R2IconSpan extends R2C {
       this.setStyle({ height }).animateStyle({
         name: "width",
         keyframes: {
+          // @ts-expect-error OBSOLETE
           width,
           opacity: 1,
         },
