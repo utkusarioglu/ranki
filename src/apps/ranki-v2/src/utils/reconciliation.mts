@@ -232,8 +232,6 @@ export class ReconciliationUtils {
             first: id,
             indices: subtree.diff.stagger.indices,
           },
-          // mutateIndex: id,
-          // mutateOrder: subtree.diff.mutateOrder,
         },
         epoch: Date.now(),
       });

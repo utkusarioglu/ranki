@@ -132,6 +132,20 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
           },
         ],
       },
+      exit: {
+        root: [
+          {
+            name: "opacity",
+            duration: 1000,
+            keyframes: [
+              {
+                width: 0,
+                opacity: 0,
+              },
+            ],
+          },
+        ],
+      },
     },
     "badge-list": {
       expand: {

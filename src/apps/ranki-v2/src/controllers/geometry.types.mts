@@ -12,6 +12,8 @@ export type Dims = Pick<DOMRect, "width" | "height">;
 export type TargetSelectorCb = (s: LitInstance) => R2C[];
 // export type SizingSelector = Record<string, >;
 
+export type TargetEventCb = (s: LitInstance, action: LocalAction) => void;
+
 export interface TargetProps {
   isRoot?: boolean;
   selector: TargetSelectorCb;
@@ -36,6 +38,7 @@ export type ReconcilerChangesMapCb = Record<string, ReconcilerChangesCb>;
 
 export interface GeometryParams {
   role: AnimationRole;
+  on?: TargetEventCb;
   targets: TargetRec;
 }
 

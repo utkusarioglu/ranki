@@ -33,6 +33,10 @@ export class R2Chip extends R2C {
 
   @geometry({
     role: "chip",
+    on: (s, action) => {
+      console.log("on", action);
+      // if (action === "exit") s.emitLeave();
+    },
     targets: {
       content: {
         selector: (s) => [s.icon, s.text],
@@ -58,13 +62,24 @@ export class R2Chip extends R2C {
   override informStyle = this.geo.informStyle.bind(this.geo);
 
   private async animateLeave(index: number) {
-    return this.geo.triggerAction({ width: 0, opacity: 0 }, "exit", index);
+    return this.geo.informStyle(
+      { width: 0, opacity: 0 },
+      { index: 0, length: 1, stagger: [0] },
+    );
+    // return this.geo.triggerAction({ width: 0, opacity: 0 }, "exit", index);
   }
 
   override updated(changed: PropertyValues) {
     if (!changed.has("leave")) return;
     if (this.leave) {
+      // this.informStyle(
+      //   { width: 0, height: 0 },
+      //   { index: 0, length: 1, stagger: [0] },
+      // ).then(() => this.emitSize({ width: 0, height: 0 }));
+      // this.emitSize({ width: 0, height: 0 });
+      console.log("leave!!");
       this.animateLeave(this.index).then(() => {
+        console.log("leave");
         this.emitLeave();
       });
     }

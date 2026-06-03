@@ -73,6 +73,7 @@ export class Animator {
   }
 
   private getRecipe(action: LocalAction): AnimationBlock {
+    console.log("r", action, this.preset, this.role);
     if (action === "none") return {};
     const preset = TEMP_ANIMATION_DICT[this.preset];
     assertNotUndefined(preset, {

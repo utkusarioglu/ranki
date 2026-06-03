@@ -11,18 +11,14 @@ import type {
   SizingCb,
   TargetRec,
   TargetProps,
-  LocalAction,
+  TargetEventCb,
 } from "./geometry.types.mts";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { TimingUtils } from "_utils/timing.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import { GeometryUtils } from "./geometry.utils.mts";
-import {
-  assertNever,
-  assertNotNull,
-  assertNotUndefined,
-} from "_error/assertions.mjs";
+import { assertNotNull, assertNotUndefined } from "_error/assertions.mjs";
 import { Animator } from "./geometry.animator.mts";
 import { AnimationUtils } from "./animator.utils.mts";
 import { assertExists } from "../../../../packages/dqm-utils/src/assertions.mts";
@@ -39,6 +35,7 @@ export class GeometryController implements ReactiveController {
   private readonly registered = new WeakMap<R2C, Dims>();
   private readonly targets: TargetRec;
   private readonly animator: Animator;
+  private readonly on: TargetEventCb | null = null;
   private sizing: R2Sizing | null = null;
   private requested = false;
   private currStyle: UpdateStyle | null = null;
@@ -47,6 +44,7 @@ export class GeometryController implements ReactiveController {
     host.addController(this);
     this.host = host;
     this.targets = params.targets;
+    this.on = params.on ? params.on : null;
     this.animator = new Animator(
       this.host,
       params.role,
@@ -80,38 +78,15 @@ export class GeometryController implements ReactiveController {
       sizing = this.getSizing();
     } catch (e) {}
 
-    const sizeMerged: R2Sizing = { ...informed, ...sizing };
+    // const sizeMerged: R2Sizing = { ...informed, ...sizing };
+    const sizeMerged: R2Sizing = { ...sizing, ...informed };
+    console.log({ informed, sizing, sizeMerged });
     const action = GeometryUtils.evaluateAction(sizeMerged, prev);
     const curr: UpdateStyle = { ...sizeMerged, action };
 
     this.currStyle = curr;
-    return this.animator.updateStyle(this.currStyle, prev, context);
-  }
-
-  public async triggerAction(
-    style: InformStyle,
-    action: LocalAction,
-    index: number,
-  ): Promise<void> {
-    if (action !== "exit") {
-      assertNever({ why: "Not yet implemented", details: { action } });
-    }
-    const length = index + 1;
-    const prev = this.currStyle;
-    const curr: UpdateStyle = {
-      ...this.currStyle,
-      ...style,
-      action,
-    };
-    const context: InformContext = {
-      index,
-      length,
-      stagger: [index],
-    };
-    console.log("c", curr, context);
-
-    this.currStyle = curr;
-    return this.animator.updateStyle(curr, prev, context);
+    await this.animator.updateStyle(this.currStyle, prev, context);
+    this.on && this.on(this.host, action);
   }
 
   private informAsRoot(geo: R2Sizing) {
