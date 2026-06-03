@@ -3,12 +3,12 @@ import type {
   AnimationRole,
   InformContext,
   UpdateStyle,
-} from "./geometry.types.mts";
+} from "./geometry.types.mjs";
 import {
   type InformTargetCb,
   type ApplyParams,
-} from "./geometry.animator.types.mts";
-import { AnimatorUtils } from "../../utils/animator.utils.mts";
+} from "./geometry.animator.types.mjs";
+import { AnimatorUtils } from "../../utils/animator.utils.mjs";
 import { getAnimationRecipe } from "_store/app.getters.mjs";
 
 export class Animator {

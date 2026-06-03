@@ -1,4 +1,4 @@
-import { FLAG_COLOR_ORDER } from "./anki.constants.mts";
+import { FLAG_COLOR_ORDER } from "./anki.constants.mjs";
 import type {
   RankiAppTheme,
   RankiChannelsConfig,
@@ -6,7 +6,7 @@ import type {
   RankiPalette,
   RankiTagPrefix,
 } from "./config.types.mjs";
-import { DQM_BASE_CONFIG } from "./dqm.constants.mts";
+import { DQM_BASE_CONFIG } from "./dqm.constants.mjs";
 
 export const ANKI_DECK_SEPARATOR = "::";
 

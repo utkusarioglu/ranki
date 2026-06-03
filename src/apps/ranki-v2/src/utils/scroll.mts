@@ -1,5 +1,5 @@
 export class ScrollUtils {
-  private static timeout: number;
+  private static timeout: ReturnType<typeof setTimeout>;
 
   static async temporaryHide(duration: number) {
     return new Promise<void>((resolve) => {

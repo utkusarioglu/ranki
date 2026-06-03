@@ -1,5 +1,5 @@
-import type { RankiDevState } from "_config/config.types.mts";
-import { RankiDevMethods } from "./dev-methods.mts";
+import type { RankiDevState } from "_config/config.types.mjs";
+import { RankiDevMethods } from "./dev-methods.mjs";
 
 export function createDevTools(conf: RankiDevState) {
   if (conf.persist) {

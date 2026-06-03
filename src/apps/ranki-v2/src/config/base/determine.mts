@@ -1,10 +1,10 @@
-import { RankiAppError } from "_/error/ranki-app-error.mts";
+import { RankiAppError } from "_/error/ranki-app-error.mjs";
 import type {
   DeckExactSettings,
   DeckGlobSettings,
   DeckRegexSettings,
   MatchTypes,
-} from "_config/config.types.mts";
+} from "_config/config.types.mjs";
 
 import type {
   AnkiCard,
@@ -13,10 +13,10 @@ import type {
   AnkiDeck,
   AnkiRawTag,
 } from "_collect/collect.types.mjs";
-import type { DeckSettings } from "_config/config.types.mts";
-import { assertNever } from "_error/assertions.mts";
-import { isGlobMatch } from "./glob-match.mts";
-import { ANKI_DECK_SEPARATOR } from "_config/config.constants.mts";
+import type { DeckSettings } from "_config/config.types.mjs";
+import { assertNever } from "_error/assertions.mjs";
+import { isGlobMatch } from "./glob-match.mjs";
+import { ANKI_DECK_SEPARATOR } from "_config/config.constants.mjs";
 
 export function checkIfMatch(
   currentDeck: AnkiDeck | AnkiCard | AnkiCardType | AnkiCardFace | AnkiRawTag,

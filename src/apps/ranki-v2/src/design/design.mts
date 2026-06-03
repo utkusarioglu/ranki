@@ -1,6 +1,6 @@
-import type { RankiDesignState } from "_config/config.types.mts";
-// import { assertNotUndefined } from "_error/assertions.mts";
-// import { generatePaletteStyle } from "./color.mts";
+import type { RankiDesignState } from "_config/config.types.mjs";
+// import { assertNotUndefined } from "_error/assertions.mjs";
+// import { generatePaletteStyle } from "./color.mjs";
 import {
   CSS_FADE_ANIMATION_DURATION,
   // REMOVED,
@@ -8,7 +8,7 @@ import {
   // THEME_PREFIX,
   // GENERATED_PREFIX,
   // PALETTE_PREFIX,
-} from "./design.constants.mts";
+} from "./design.constants.mjs";
 // import { Timing } from "_utils/timing.mjs";
 
 export function createDesign(

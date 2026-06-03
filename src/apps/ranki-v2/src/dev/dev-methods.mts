@@ -1,16 +1,16 @@
 import nativeHtml from "./native.html?raw";
-import { assertNotUndefined, assertNotNull } from "_error/assertions.mts";
+import { assertNotUndefined, assertNotNull } from "_error/assertions.mjs";
 import type {
   RankiPlayFields,
   RankiSetFunc,
   RankiSetValues,
-} from "./dev.types.mts";
+} from "./dev.types.mjs";
 import {
   CONFIG_TYPE_CLASS_SELECTOR,
   DATA_TYPE_CLASS_SELECTOR,
   INPUT_TYPE_CLASS_SELECTOR,
   RENDERED_CLASS_SELECTOR,
-} from "../selector.constants.mts";
+} from "../selector.constants.mjs";
 // import { main } from "_/main.mjs";
 
 export class RankiDevMethods {
@@ -118,7 +118,7 @@ export class RankiDevMethods {
     const count = opts?.count || 4;
     const duration = opts?.duration || 2e3;
     const delay = opts?.delay || 0;
-    let interval: number;
+    let interval: ReturnType<typeof setInterval>;
 
     if (delay > 0) {
       console.log(`alternate: starting in ${delay}msec`);

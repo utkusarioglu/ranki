@@ -2,7 +2,7 @@ import { html, unsafeCSS, type PropertyValues } from "lit";
 import { customElement, property, queryAll } from "lit/decorators.js";
 import { R2C } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
-import type { R2IconSpan } from "./icon-span.mts";
+import type { R2IconSpan } from "./icon-span.mjs";
 import { repeat } from "lit/directives/repeat.js";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import {

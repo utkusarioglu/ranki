@@ -3,7 +3,7 @@ import type {
   ColorLevel,
   Palette,
   PaletteSpecs,
-} from "_config/config.types.mts";
+} from "_config/config.types.mjs";
 
 type Rgb = [number, number, number];
 

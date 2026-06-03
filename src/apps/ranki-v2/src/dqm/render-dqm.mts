@@ -2,7 +2,7 @@ import { Dqm } from "@dqm/package-dqm-v2";
 import type { RenderReport, RenderRoots } from "@dqm/package-dqm-v2";
 import { pluginsAsArray } from "./dqm.plugins.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
-import type { RankiDqmConfig } from "_config/config.types.mts";
+import type { RankiDqmConfig } from "_config/config.types.mjs";
 
 export async function renderDqm(
   collected: RankiDqmConfig,

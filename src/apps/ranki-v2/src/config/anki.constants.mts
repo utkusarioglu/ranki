@@ -1,4 +1,4 @@
-import type { AnkiFlagColors } from "./config.types.mts";
+import type { AnkiFlagColors } from "./config.types.mjs";
 
 export const FLAG_COLOR_ORDER: AnkiFlagColors[] = [
   "none",

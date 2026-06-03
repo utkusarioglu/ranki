@@ -3,7 +3,7 @@ import type {
   Dims,
   LocalAction,
   UpdateStyle,
-} from "../controllers/geometry/geometry.types.mts";
+} from "../controllers/geometry/geometry.types.mjs";
 
 export class GeometryUtils {
   public static readonly childSizeEventName = "r2-child-size";

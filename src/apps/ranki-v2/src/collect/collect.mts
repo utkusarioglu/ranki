@@ -17,7 +17,7 @@ import {
   INPUT_TYPE_CLASS_SELECTOR,
 } from "_/selector.constants.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
-import { hasher } from "./hasher.mts";
+import { hasher } from "./hasher.mjs";
 import { assertNever } from "_error/assertions.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 

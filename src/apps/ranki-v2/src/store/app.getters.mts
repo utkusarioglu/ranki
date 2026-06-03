@@ -1,6 +1,6 @@
 import type { LocalAction } from "_/controllers/geometry/geometry.types.mjs";
 import { assertNotUndefined } from "_error/assertions.mjs";
-import { appStore } from "./app.mts";
+import { appStore } from "./app.mjs";
 
 export function getAnimationRecipe(
   action: LocalAction,

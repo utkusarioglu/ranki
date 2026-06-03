@@ -1,14 +1,14 @@
 import { assertExists } from "@dqm/package-dqm-utils";
-import type { HudAddressSegment } from "_components/hud/hud.types.mts";
-import { ANKI_DECK_SEPARATOR } from "_config/config.constants.mts";
+import type { HudAddressSegment } from "_components/hud/hud.types.mjs";
+import { ANKI_DECK_SEPARATOR } from "_config/config.constants.mjs";
 import type {
   RankiAddressTokens,
   RankiBaseAddressMutation,
   RankiBaseAddressMutationMode,
-} from "_config/config.types.mts";
-import { assertNever } from "_error/assertions.mts";
-import { RankiAppError } from "_error/ranki-app-error.mts";
-import { MUTATION_MODE_PRECEDENCE } from "./app.mts";
+} from "_config/config.types.mjs";
+import { assertNever } from "_error/assertions.mjs";
+import { RankiAppError } from "_error/ranki-app-error.mjs";
+import { MUTATION_MODE_PRECEDENCE } from "./app.mjs";
 import type { AnkiDeck, AnkiDeckParts } from "_collect/collect.types.mjs";
 
 function translateMarker(parts: AnkiDeckParts, marker: string | number) {

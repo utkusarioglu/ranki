@@ -15,7 +15,7 @@ import type {
   AnkiCardFace,
   CardFaceArray,
   FilteredTags,
-} from "_collect/collect.types.mts";
+} from "_collect/collect.types.mjs";
 import type { AnimationDict } from "_/controllers/geometry/geometry.animator.types.mjs";
 
 export type Deck = string;

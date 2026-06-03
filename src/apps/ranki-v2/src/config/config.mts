@@ -7,10 +7,10 @@
 //   RankiTag,
 //   RankiTags,
 // } from "./collect/collect.types.mjs";
-import type { RankiCollectedConfig, RankiTagPrefix } from "./config.types.mts";
-import { buildChannelsConfig } from "./channels/channels.mts";
-import { buildBaseConfig } from "./base/base.mts";
-// import { createAppConfig } from "./app/app.mts";
+import type { RankiCollectedConfig, RankiTagPrefix } from "./config.types.mjs";
+import { buildChannelsConfig } from "./channels/channels.mjs";
+import { buildBaseConfig } from "./base/base.mjs";
+// import { createAppConfig } from "./app/app.mjs";
 import type {
   AnkiMarked,
   AnkiNeutralTags,
@@ -20,7 +20,7 @@ import type {
   RankiTags,
   RawFields,
 } from "_/collect/collect.types.mjs";
-// import { collectRaw } from "./collect/collect.mts";
+// import { collectRaw } from "./collect/collect.mjs";
 
 export function collectConfig(raw: RawFields): RankiCollectedConfig {
   const channels = buildChannelsConfig(raw);

@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": "src",
+    "skipLibCheck": true,
     "declarationDir": "types",
     "useDefineForClassFields": false,
     "experimentalDecorators": true,
@@ -18,15 +19,7 @@
       "@dqm/package-dqm-v2": ["../../packages/dqm-v2"]
     }
   },
-  "include": [
-    "src/export.constants.mts",
-    "src/selector.constants.mts",
-    "src/export.types.mts",
-    "src/types/util.types.mts",
-    "src/components/hud/hud.types.mts",
-    "src/config/config.types.mts",
-    "src/collect/collect.types.mts"
-  ],
+  "include": ["src/types/global.d.ts", "src/**/*.mts"],
   "references": [
     {
       "path": "../../packages/dqm-utils"

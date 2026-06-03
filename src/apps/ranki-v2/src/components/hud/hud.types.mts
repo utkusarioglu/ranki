@@ -4,12 +4,12 @@ import type {
   AnkiCardType,
   AnkiRawTag,
   RankiTag,
-} from "_collect/collect.types.mts";
+} from "_collect/collect.types.mjs";
 import type {
   ProcessedCueMapHud,
   RankiAddressTokens,
   RankiAnimation,
-} from "_config/config.types.mts";
+} from "_config/config.types.mjs";
 
 export type HudComponentNames =
   | "notify"

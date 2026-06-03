@@ -3,7 +3,7 @@ import { type Dims } from "_/controllers/geometry/geometry.types.mjs";
 import { TimingUtils } from "_utils/timing.mjs";
 import { type PropertyValues, html, unsafeCSS } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import type { R2TextProps } from "./text.mts";
+import type { R2TextProps } from "./text.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import {
   geometry,

@@ -5,11 +5,11 @@ import type {
   AnimationOptions,
   AnimationRoot,
   DecodeParams,
-} from "../controllers/geometry/geometry.animator.types.mts";
+} from "../controllers/geometry/geometry.animator.types.mjs";
 import type {
   UpdateStyle,
   InformContext,
-} from "../controllers/geometry/geometry.types.mts";
+} from "../controllers/geometry/geometry.types.mjs";
 import { TimingUtils } from "_utils/timing.mjs";
 
 const parser = new Parser();

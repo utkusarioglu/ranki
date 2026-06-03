@@ -9,16 +9,16 @@ import type {
   DeckSettings,
   RankiBaseConfig,
   RankiChannelsConfig,
-} from "_config/config.types.mts";
+} from "_config/config.types.mjs";
 import type {
   RawFields,
   FilteredTags,
   AnkiNeutralTags,
   RankiTags,
-} from "_collect/collect.types.mts";
-import { checkIfMatch } from "./determine.mts";
-import { FLAG_COLOR_ORDER } from "_config/anki.constants.mts";
-import { assertNever } from "_error/assertions.mts";
+} from "_collect/collect.types.mjs";
+import { checkIfMatch } from "./determine.mjs";
+import { FLAG_COLOR_ORDER } from "_config/anki.constants.mjs";
+import { assertNever } from "_error/assertions.mjs";
 
 // TODO maybe os, scheme, dir, env types could be considered here as well.
 const PRECEDENCE_ORDER: CueKind[] = [

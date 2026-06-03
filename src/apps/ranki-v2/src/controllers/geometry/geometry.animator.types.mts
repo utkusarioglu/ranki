@@ -4,8 +4,8 @@ import type {
   InformContext,
   Pos,
   UpdateStyle,
-} from "./geometry.types.mts";
-import type { GeometryController } from "./geometry.mts";
+} from "./geometry.types.mjs";
+import type { GeometryController } from "./geometry.mjs";
 
 export type ImmediateStyles = { zIndex?: number } & AnimateableStyles;
 

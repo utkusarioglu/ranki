@@ -12,17 +12,17 @@ import type {
   TargetRec,
   TargetProps,
   TargetEventCb,
-} from "./geometry.types.mts";
+} from "./geometry.types.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { TimingUtils } from "_utils/timing.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
-import { GeometryUtils } from "../../utils/geometry.utils.mts";
+import { GeometryUtils } from "../../utils/geometry.utils.mjs";
 import { assertNotNull, assertNotUndefined } from "_error/assertions.mjs";
-import { Animator } from "./geometry.animator.mts";
-import { AnimatorUtils } from "../../utils/animator.utils.mts";
-import { assertExists } from "../../../../../packages/dqm-utils/src/assertions.mts";
-import type { InformTargetParams } from "./geometry.animator.types.mts";
+import { Animator } from "./geometry.animator.mjs";
+import { AnimatorUtils } from "../../utils/animator.utils.mjs";
+import { assertExists } from "../../../../../packages/dqm-utils/src/assertions.mjs";
+import type { InformTargetParams } from "./geometry.animator.types.mjs";
 import {
   ReconciliationUtils,
   type ReconciliationDiff,

@@ -1,6 +1,6 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.mjs";
-import type { AnimateableStyles } from "./geometry.animator.types.mts";
+import type { AnimateableStyles } from "./geometry.animator.types.mjs";
 
 type LitInstance = any;
 export type ListenChildrenEventFunc = (e: ListenChildrenEvent) => void;

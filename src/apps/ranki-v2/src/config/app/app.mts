@@ -3,7 +3,7 @@ import type {
   DqmParseInputStructured,
   DqmParseTheater,
 } from "@dqm/package-dqm-v2";
-import { INPUT_TYPE_CLASS_SELECTOR } from "_/selector.constants.mts";
+import { INPUT_TYPE_CLASS_SELECTOR } from "_/selector.constants.mjs";
 import type {
   HudTagListItem,
   RankiHudState,
@@ -13,11 +13,11 @@ import type {
   CardFaceArray,
   FilteredTags,
   RawFields,
-} from "_collect/collect.types.mts";
+} from "_collect/collect.types.mjs";
 import {
   RANKI_INTERNAL_FACE_PREFIX,
   SYSTEM_CONTROLLED_SCHEME_TOKEN,
-} from "_config/config.constants.mts";
+} from "_config/config.constants.mjs";
 import type {
   BuildRankiBaseConfigReturn,
   CueRecord,
@@ -33,9 +33,9 @@ import type {
   RankiDqmConfig,
   RankiIndicatorState,
   RankiState,
-} from "_config/config.types.mts";
-import { RankiAppError } from "_error/ranki-app-error.mts";
-import { buildAddressSegments } from "./buildAddress.mts";
+} from "_config/config.types.mjs";
+import { RankiAppError } from "_error/ranki-app-error.mjs";
+import { buildAddressSegments } from "./buildAddress.mjs";
 import { TEMP_ANIMATION_DICT } from "_config/TEMP_ANIMATION_DICT.mjs";
 
 export const MUTATION_MODE_PRECEDENCE: RankiBaseAddressMutationMode[] = [
