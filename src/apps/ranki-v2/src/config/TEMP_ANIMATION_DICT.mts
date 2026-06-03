@@ -62,6 +62,20 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
           },
         },
       },
+      exit: {
+        root: [
+          {
+            name: "exit",
+            duration: 1000,
+            keyframes: [
+              {
+                opacity: 0,
+                width: 0,
+              },
+            ],
+          },
+        ],
+      },
     },
     "text-span": {
       expand: {
@@ -122,6 +136,20 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
             },
           },
         },
+      },
+      exit: {
+        root: [
+          {
+            name: "exit",
+            duration: 1000,
+            keyframes: [
+              {
+                opacity: 0,
+                width: 0,
+              },
+            ],
+          },
+        ],
       },
     },
     chip: {
@@ -186,31 +214,35 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
         },
       },
       exit: {
-        root: [
-          {
-            name: "reposition",
-            duration: 1000,
-            keyframes: [
-              {
-                top: "CONTAINER_TOP",
-                left: "CONTAINER_LEFT",
-              },
-            ],
-          },
-        ],
+        // root: [
+        //   {
+        //     name: "reposition",
+        //     duration: 1000,
+        //     keyframes: [
+        //       {
+        //         top: "CONTAINER_TOP",
+        //         left: "CONTAINER_LEFT",
+        //       },
+        //     ],
+        //   },
+        // ],
         targets: {
-          bg: {
+          content: {
             wait: "STAGGER_INDEX * 1000",
             inform: {
-              width: "CONTAINER_WIDTH",
-              height: "CONTAINER_HEIGHT",
+              width: 0,
             },
-          },
-          content: {
-            wait: "STAGGER_INDEX * 1000 + 1000",
-            inform: {
-              left: "LEFT",
-              top: "TOP",
+            then: {
+              targets: {
+                bg: {
+                  // wait: "STAGGER_INDEX * 1000",
+                  inform: {
+                    width: 0,
+                    // width: "CONTAINER_WIDTH",
+                    // height: "CONTAINER_HEIGHT",
+                  },
+                },
+              },
             },
           },
         },

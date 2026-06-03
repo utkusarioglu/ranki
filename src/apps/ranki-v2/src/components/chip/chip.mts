@@ -2,7 +2,7 @@ import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import { R2C } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
-import { html, unsafeCSS, type PropertyValues } from "lit";
+import { html, unsafeCSS } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import {
   geometry,
@@ -14,8 +14,8 @@ import style from "./chip.css?inline";
 export class R2Chip extends R2C {
   static override styles = unsafeCSS(style);
 
-  @property({ type: Boolean, reflect: true })
-  leave = false;
+  // @property({ type: Boolean, reflect: true })
+  // leave = false;
 
   @query("r2-icon")
   // @ts-expect-error
@@ -37,9 +37,11 @@ export class R2Chip extends R2C {
 
   @geometry({
     role: "chip",
-    on: (_s, action) => {
-      console.log("on", action);
-      // if (action === "exit") s.emitLeave();
+    on: (s, action) => {
+      if (action === "exit-end") {
+        s.geo.emitSize({ width: 0, height: 0 });
+        s.emitLeave();
+      }
     },
     targets: {
       content: {
@@ -65,20 +67,8 @@ export class R2Chip extends R2C {
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 
-  private async animateLeave(_index: number) {
-    return this.geo.informStyle(
-      { width: 0, opacity: 0 },
-      { index: 0, length: 1, stagger: [0] },
-    );
-  }
-
-  override updated(changed: PropertyValues) {
-    if (!changed.has("leave")) return;
-    if (this.leave) {
-      this.animateLeave(this.index).then(() => {
-        this.emitLeave();
-      });
-    }
+  public override async leave(st: number) {
+    this.geo.informStyle({ width: 0 }, { index: 0, length: 1, stagger: [st] });
   }
 
   override render() {

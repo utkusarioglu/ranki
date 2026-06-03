@@ -1,5 +1,6 @@
 import { assertNever } from "_error/assertions.mjs";
 import { TimingUtils } from "./timing.mjs";
+import type { BeforeLeaveCb } from "_/controllers/reconciler/reconciler.mjs";
 
 export type ReconciliationActions = "retain" | "update" | "remove" | "add";
 
@@ -145,21 +146,29 @@ export class ReconciliationUtils {
       : mutateIndices;
     const mutateIndex = Math.min(...mutateIndices);
 
-    let mutateOrder = Array.from(
+    let indices = Array.from(
       { length: Math.max(curLen, prevLen) },
       () => Number.NaN,
     );
     if (curLen > prevLen) {
       for (let i = mutateIndex; i < curLen; i++) {
-        mutateOrder[i] = i - mutateIndex;
+        indices[i] = i - mutateIndex;
       }
     } else if (curLen < prevLen) {
       for (let i = prevLen - 1; i >= mutateIndex; i--) {
-        mutateOrder[i] = prevLen - i - 1;
+        indices[i] = prevLen - i - 1;
       }
     } else {
-      mutateOrder = prev.diff.stagger.indices;
+      indices = prev.diff.stagger.indices;
     }
+
+    // if (beforeLeave) {
+    //   indices
+    //     .filter((v) => v > 0)
+    //     .forEach((i) => {
+    //       beforeLeave(i);
+    //     });
+    // }
 
     return {
       list,
@@ -171,7 +180,7 @@ export class ReconciliationUtils {
         update,
         stagger: {
           first: mutateIndex,
-          indices: mutateOrder,
+          indices,
         },
       },
     };
@@ -280,6 +289,16 @@ export class ReconciliationUtils {
     //     leave: false,
     //   },
     // ];
+
+    const indices = Array.from({ length: list.length }, (_) => 1);
+    // if (beforeLeave) {
+    //   indices.forEach((st, i) => {
+    //     if (st > 0) {
+    //       beforeLeave(st, i);
+    //     }
+    //   });
+    // }
+
     return {
       list,
       epoch: Date.now(),
@@ -290,7 +309,7 @@ export class ReconciliationUtils {
         update,
         stagger: {
           first: 0,
-          indices: Array.from({ length: list.length }, (_) => 1),
+          indices,
         },
       },
     };

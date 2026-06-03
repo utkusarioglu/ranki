@@ -12,6 +12,7 @@ import type {
   TargetRec,
   TargetProps,
   TargetEventCb,
+  TargetEventCbEvents,
 } from "./geometry.types.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
@@ -82,15 +83,14 @@ export class GeometryController implements ReactiveController {
       sizing = this.getSizing();
     } catch (e) {}
 
-    // const sizeMerged: R2Sizing = { ...informed, ...sizing };
     const sizeMerged: R2Sizing = { ...sizing, ...informed };
-    console.log({ informed, sizing, sizeMerged });
     const action = GeometryUtils.evaluateAction(sizeMerged, prev);
     const curr: UpdateStyle = { ...sizeMerged, action };
 
     this.currStyle = curr;
+    this.on && this.on(this.host, `${action}-start` as TargetEventCbEvents);
     await this.animator.updateStyle(this.currStyle, prev, context);
-    this.on && this.on(this.host, action);
+    this.on && this.on(this.host, `${action}-end` as TargetEventCbEvents);
   }
 
   private informAsRoot(geo: R2Sizing) {
@@ -184,7 +184,7 @@ export class GeometryController implements ReactiveController {
     // const t = this.changes[target];
     const diff = t.diff;
     if (!diff) {
-      console.log("diff detection not registered for target:", id);
+      // console.log("diff detection not registered for target:", id);
       return ReconciliationUtils.noChanges();
     }
     return diff(this.host);

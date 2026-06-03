@@ -4,6 +4,7 @@ import {
   type ReconcileSingle,
 } from "_utils/reconciliation.mjs";
 import type {
+  LitElement,
   ReactiveController,
   ReactiveControllerHost,
   ReactiveElement,
@@ -13,9 +14,16 @@ type GetSourceCallback<S> = (instance: any) => S[];
 
 type ReconcilerTypes = "flat" | "single";
 
+export type BeforeLeaveCb = (
+  host: LitElement,
+  stagger: number,
+  index: number,
+) => void;
+
 type SubtreeParams<S> = {
   type: ReconcilerTypes;
   reconcile: ReconcileSingle<S>;
+  beforeLeave?: BeforeLeaveCb;
   source: GetSourceCallback<S>;
 };
 
@@ -23,6 +31,7 @@ export class ReconciliationController<S> implements ReactiveController {
   private host: ReactiveControllerHost;
   private reconcilerName!: ReconcilerTypes;
   private itemReconcile!: ReconcileSingle<S>;
+  private beforeLeave: BeforeLeaveCb | undefined;
 
   private getSource!: GetSourceCallback<S>;
   public prev: ReconcileableSubtree<S> | undefined;
@@ -35,6 +44,7 @@ export class ReconciliationController<S> implements ReactiveController {
     this.reconcilerName = params.type;
     this.itemReconcile = params.reconcile;
     this.getSource = params.source;
+    this.beforeLeave = params.beforeLeave;
   }
 
   hostUpdate(): void {
@@ -45,6 +55,16 @@ export class ReconciliationController<S> implements ReactiveController {
       this.itemReconcile,
     );
     this.epoch = Date.now();
+
+    const bl = this.beforeLeave;
+    if (bl) {
+      this.curr.list.forEach((p, i) => {
+        if (p.leave) {
+          const st = this.curr.diff.stagger.indices[i];
+          bl(this.host as LitElement, st, i);
+        }
+      });
+    }
     this.host.requestUpdate();
   }
 

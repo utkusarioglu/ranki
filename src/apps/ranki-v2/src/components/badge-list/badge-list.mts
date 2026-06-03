@@ -24,10 +24,8 @@ export class R2BadgeList extends R2C {
   static override styles = unsafeCSS(style);
 
   @queryAll("r2-chip")
-  // @ts-expect-error
   private chips!: NodeListOf<R2C>;
   @query("r2-hud-bg")
-  // @ts-expect-error
   private bg!: R2HudBg;
 
   @store((s) => s.state?.hud.subtree.tags.list || [])
@@ -38,6 +36,9 @@ export class R2BadgeList extends R2C {
     type: "flat",
     reconcile: (c, p) => (c.text === p.text ? "retain" : "update"),
     source: (s) => s.store.curr || [],
+    beforeLeave: (c, st, i) => {
+      (c as R2BadgeList).chips[i]?.leave(st);
+    },
   })
   private readonly subtree!: ReconciliationController<R2BadgeListState>;
 
@@ -45,7 +46,7 @@ export class R2BadgeList extends R2C {
     role: "badge-list",
     targets: {
       bg: {
-        selector: (r) => [r.bg],
+        selector: (r: R2BadgeList) => [r.bg],
       },
       chips: {
         selector: (r) => Array.from(r.chips),
@@ -92,8 +93,8 @@ export class R2BadgeList extends R2C {
               })}
               .index=${i}
               .list=${list}
-              @r2-child-size=${this.geo.onChildSize("chips")}
               ?leave=${leave}
+              @r2-child-size=${this.geo.onChildSize("chips")}
               @r2-child-leave=${this.subtree.onLeave(id)}
             ></r2-chip>
           `;

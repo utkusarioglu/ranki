@@ -12,7 +12,12 @@ export type Dims = Pick<DOMRect, "width" | "height">;
 export type TargetSelectorCb = (s: LitInstance) => R2C[];
 // export type SizingSelector = Record<string, >;
 
-export type TargetEventCb = (s: LitInstance, action: LocalAction) => void;
+export type TargetEventCbEvents = `${LocalAction}-start` & `${LocalAction}-end`;
+
+export type TargetEventCb = (
+  s: LitInstance,
+  event: TargetEventCbEvents,
+) => void;
 
 export interface TargetProps {
   isRoot?: boolean;
