@@ -1,13 +1,16 @@
-import { css, html, type PropertyValues } from "lit";
-import { customElement, property, queryAll, state } from "lit/decorators.js";
+import { html, unsafeCSS } from "lit";
+import { customElement, property, queryAll } from "lit/decorators.js";
 import { R2C } from "_components/r2c/r2c.mjs";
-import { type UpdateStyle } from "_/controllers/geometry.types.mjs";
-import { type R2Sizing } from "_/controllers/geometry.types.mjs";
-import { type ComponentDims } from "_/controllers/geometry.types.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 import type { R2TextSpan } from "./text-span.mts";
 import { repeat } from "lit/directives/repeat.js";
 import { SizingUtils } from "_utils/Sizing.mjs";
+import { geometry, type GeometryController } from "_/controllers/geometry.mjs";
+import {
+  reconciler,
+  ReconciliationController,
+} from "_/controllers/subtree.mjs";
+import style from "./text.css?inline";
 
 export interface R2TextProps {
   animation: RankiPropAnimationBlock;
@@ -23,107 +26,45 @@ export type Parts = {
 
 @customElement("r2-text")
 export class R2Text extends R2C {
-  static override styles = css`
-    :host {
-      position: absolute;
-      overflow: hidden;
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    :host > span {
-      white-space: nowrap;
-    }
-  `;
-  @property({
-    hasChanged: (n: R2TextProps, o: R2TextProps | undefined) => {
-      return n.text !== o?.text;
-    },
-  })
+  static override styles = unsafeCSS(style);
+  @property()
+  // @ts-expect-error
   private props!: R2TextProps;
 
   @queryAll("r2-text-span")
-  private subtree!: NodeListOf<R2TextSpan>;
+  // @ts-expect-error
+  private spans!: NodeListOf<R2TextSpan>;
 
-  @state()
-  private parts: Parts[] = [];
-
-  private idCounter = 0;
-
-  protected override willUpdate(changed: PropertyValues): void {
-    super.willUpdate(changed);
-    if (!changed.has("props")) return;
-    const curr = this.parts.at(-1);
-    if (curr && curr.props.text === this.props.text) return;
-    const updated = this.parts.map((p) => ({ ...p, leave: true }));
-    this.parts = [
-      ...updated,
-      {
-        id: this.idCounter++,
-        props: { ...this.props },
-        leave: false,
+  @geometry({
+    role: "text",
+    targets: {
+      "text-span": {
+        selector: (s) => Array.from(s.spans),
+        sizing: SizingUtils.last(),
       },
-    ];
-  }
+    },
+  })
+  public readonly geo!: GeometryController;
 
-  private onChildLeave(id: number) {
-    this.parts = this.parts.filter((v) => v.id !== id);
-  }
+  @reconciler<R2TextProps>({
+    type: "single",
+    reconcile: (c, p) => (c.text === p.text ? "retain" : "add"),
+    source: (s) => [s.props],
+  })
+  private readonly subtree!: ReconciliationController<R2TextProps>;
 
-  protected override getSubtreeList(): R2C[] {
-    return Array.from(this.subtree);
-  }
-
-  protected override updateSizing(dims: ComponentDims[]): R2Sizing | null {
-    return SizingUtils.last({
-      main: {
-        start: 0,
-        end: 0,
-      },
-    })(dims);
-  }
-
-  // OBSOLETE
-  protected override async updateStyle({
-    top,
-    left,
-    height,
-    width,
-  }: UpdateStyle): Promise<void> {
-    return new Promise<void>((resolve) => {
-      this.setStyle({
-        height,
-        top,
-        left,
-      }).animateStyle(
-        {
-          name: "width",
-          keyframes: {
-            // @ts-expect-error OBSOLETE
-            opacity: 1,
-            width,
-          },
-          options: {
-            duration: 1000,
-            delay: 500,
-          },
-        },
-        resolve,
-      );
-    });
-  }
+  override informStyle = this.geo.informStyle.bind(this.geo);
 
   override render() {
     return html`${repeat(
-      this.parts,
+      this.subtree.curr.list,
       (v) => v.id,
       (p) =>
         html`<r2-text-span 
           .props=${p.props} 
           ?leave=${p.leave} 
-          @r2-child-leave=${() => this.onChildLeave(p.id)}
-          @r2-child-size=${this.onChildSize}
+          @r2-child-leave=${this.subtree.onLeave(p.id)}
+          @r2-child-size=${this.geo.onChildSize("text-span")}
         ></r2-text-span`,
     )}`;
   }

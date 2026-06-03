@@ -44,14 +44,6 @@ export class ReconciliationUtils {
       list: [],
       epoch: 0,
       diff: ReconciliationUtils.noChanges(),
-      // changes: {
-      //   add: [],
-      //   remove: [],
-      //   retain: [],
-      //   update: [],
-      //   mutateIndex: 0,
-      //   mutateOrder: [],
-      // },
     };
   }
 
@@ -65,8 +57,6 @@ export class ReconciliationUtils {
         first: 0,
         indices: [0],
       },
-      // mutateIndex: 0,
-      // mutateOrder: [],
     };
   }
 
@@ -182,6 +172,125 @@ export class ReconciliationUtils {
         stagger: {
           first: mutateIndex,
           indices: mutateOrder,
+        },
+      },
+    };
+  }
+
+  public static single<G>(
+    prev: ReconcileableSubtree<G>,
+    curr: G[],
+    hasChanged: ReconcileSingle<G>,
+  ): ReconcileableSubtree<G> {
+    if (curr.length > 1) {
+      assertNever({ why: "`single` reconciler expects a single update" });
+    }
+    const curLen = curr.length;
+    const prevLen = prev.list.length;
+    const list: ReconciliationContainer<G>[] = [];
+    const end = Math.max(curLen, prevLen);
+
+    const update: number[] = [];
+    const remove: number[] = [];
+    const add: number[] = [];
+    const retain: number[] = [];
+    for (let i = 0; i < end; i++) {
+      const isCurr = curr[i] !== undefined;
+      const isPrev = prev.list[i] !== undefined;
+      let action: ReconciliationActions;
+      if (i === 0) {
+        if (isCurr && isPrev) {
+          action = hasChanged(curr[i], prev.list[i].props);
+        } else if (isCurr && !isPrev) {
+          action = "add";
+        } else if (!isCurr && isPrev) {
+          action = "remove";
+        } else {
+          assertNever({
+            why: "Impossible reconciliation state",
+            details: {
+              curr,
+              prev,
+              isCurr,
+              isPrev,
+            },
+          });
+        }
+      } else {
+        action = "remove";
+      }
+      // if (isCurr && isPrev) {
+      //   action = hasChanged(curr[i], prev.list[i].props);
+      // } else if (isCurr && !isPrev) {
+      //   action = "add";
+      // } else if (!isCurr && isPrev) {
+      //   action = "remove";
+      // } else {
+      //   assertNever({
+      //     why: "Impossible reconciliation state",
+      //     details: {
+      //       curr,
+      //       prev,
+      //       isCurr,
+      //       isPrev,
+      //     },
+      //   });
+      // }
+
+      switch (action) {
+        case "add":
+          add.push(i);
+          list.push({
+            props: curr[i],
+            id: this.getId(),
+            leave: false,
+          });
+          break;
+        case "remove":
+          remove.push(i);
+          list.push({ ...prev.list[i], leave: true });
+          break;
+        case "retain":
+          retain.push(i);
+          list.push({ ...prev.list[i], leave: true });
+          break;
+        // case "update":
+        //   update.push(i);
+        //   list.push({
+        //     props: curr[i],
+        //     id: this.getId(),
+        //     leave: false,
+        //   });
+        //   break;
+        default:
+          assertNever({
+            why: "unrecognized change option",
+            details: { action },
+          });
+      }
+    }
+
+    // if (last && last.text === this.text) return;
+    // const updated = prev.list.map((p) => ({ ...p, leave: true }));
+    // const lis2 = [
+    //   ...updated,
+    //   {
+    //     id: this.idCounter++,
+    //     props: { ...curr },
+    //     leave: false,
+    //   },
+    // ];
+    return {
+      list,
+      epoch: Date.now(),
+      diff: {
+        add,
+        remove,
+        retain,
+        update,
+        stagger: {
+          first: 0,
+          indices: Array.from({ length: list.length }, (_) => 1),
         },
       },
     };

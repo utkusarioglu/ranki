@@ -20,6 +20,7 @@ export class R2HudScroller extends R2C {
   @queryAll("r2-cue-list")
   // @ts-expect-error
   private cueList!: NodeListOf<R2C>;
+
   @query("r2-hud-bg")
   // @ts-expect-error
   private bg!: R2HudBg;

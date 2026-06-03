@@ -33,7 +33,7 @@ type HostType = LitElement;
 export class GeometryController implements ReactiveController {
   private readonly host: HostType;
   private readonly registered = new WeakMap<R2C, Dims>();
-  private readonly targets: TargetRec;
+  private readonly targets: TargetRec | undefined;
   private readonly animator: Animator;
   private readonly on: TargetEventCb | null = null;
   private sizing: R2Sizing | null = null;
@@ -52,8 +52,12 @@ export class GeometryController implements ReactiveController {
     );
   }
 
+  public emitSize(dims: Dims) {
+    GeometryUtils.emitSize(this.host, dims);
+  }
+
   private getTarget(id: string): TargetProps {
-    const s = this.targets[id]!;
+    const s = this.targets && this.targets[id]!;
     assertExists(s, {
       why: "Subtree selector hasn't been registered",
       details: { id },
@@ -133,10 +137,11 @@ export class GeometryController implements ReactiveController {
                   if (this.getIsRoot(id)) {
                     this.informAsRoot(this.sizing);
                   } else {
-                    GeometryUtils.emitSize(
-                      this.host as LitElement,
-                      this.sizing,
-                    );
+                    this.emitSize(this.sizing);
+                    // GeometryUtils.emitSize(
+                    //   this.host as LitElement,
+                    //   this.sizing,
+                    // );
                   }
               }, PROPAGATE_DELAY);
             });

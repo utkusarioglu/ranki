@@ -2,32 +2,33 @@ import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import { R2C } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
-import { css, html, type PropertyValues } from "lit";
+import { html, unsafeCSS, type PropertyValues } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { geometry, GeometryController } from "_/controllers/geometry.mjs";
+import style from "./chip.css?inline";
 
 @customElement("r2-chip")
 export class R2Chip extends R2C {
-  static override styles = css`
-    :host {
-      position: absolute;
-      white-space: nowrap;
-    }
-  `;
+  static override styles = unsafeCSS(style);
+
   @property({ type: Boolean, reflect: true })
   leave = false;
+
   @query("r2-icon")
   // @ts-expect-error
   private icon!: R2C;
+
   @query("r2-text")
   // @ts-expect-error
   private text!: R2C;
+
   @query("r2-hud-bg")
   // @ts-expect-error
   private bg!: R2HudBg;
 
   @property()
   private index!: number;
+
   @property()
   private list!: HudTagListItem[];
 
@@ -66,20 +67,12 @@ export class R2Chip extends R2C {
       { width: 0, opacity: 0 },
       { index: 0, length: 1, stagger: [0] },
     );
-    // return this.geo.triggerAction({ width: 0, opacity: 0 }, "exit", index);
   }
 
   override updated(changed: PropertyValues) {
     if (!changed.has("leave")) return;
     if (this.leave) {
-      // this.informStyle(
-      //   { width: 0, height: 0 },
-      //   { index: 0, length: 1, stagger: [0] },
-      // ).then(() => this.emitSize({ width: 0, height: 0 }));
-      // this.emitSize({ width: 0, height: 0 });
-      console.log("leave!!");
       this.animateLeave(this.index).then(() => {
-        console.log("leave");
         this.emitLeave();
       });
     }

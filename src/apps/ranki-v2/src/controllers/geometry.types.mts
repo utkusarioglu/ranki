@@ -39,7 +39,7 @@ export type ReconcilerChangesMapCb = Record<string, ReconcilerChangesCb>;
 export interface GeometryParams {
   role: AnimationRole;
   on?: TargetEventCb;
-  targets: TargetRec;
+  targets?: TargetRec;
 }
 
 // TODO put into use

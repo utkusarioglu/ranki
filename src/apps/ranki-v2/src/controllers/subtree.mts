@@ -11,15 +11,17 @@ import type {
 
 type GetSourceCallback<S> = (instance: any) => S[];
 
+type ReconcilerTypes = "flat" | "single";
+
 type SubtreeParams<S> = {
-  type: "flat";
+  type: ReconcilerTypes;
   reconcile: ReconcileSingle<S>;
   source: GetSourceCallback<S>;
 };
 
 export class ReconciliationController<S> implements ReactiveController {
   private host: ReactiveControllerHost;
-  private reconcilerName!: "flat";
+  private reconcilerName!: ReconcilerTypes;
   private itemReconcile!: ReconcileSingle<S>;
 
   private getSource!: GetSourceCallback<S>;

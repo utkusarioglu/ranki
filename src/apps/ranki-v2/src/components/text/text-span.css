@@ -1,0 +1,8 @@
+:host {
+  position: absolute;
+  opacity: 0;
+}
+
+:host > span {
+  white-space: nowrap;
+}

@@ -7,22 +7,19 @@ import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import { R2C } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
-import { css, html } from "lit";
+import { html, unsafeCSS } from "lit";
 import { customElement, query, queryAll } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
 import { geometry, GeometryController } from "_/controllers/geometry.mjs";
+import style from "./badge-list.css?inline";
 
 type R2BadgeListState = HudTagListItem;
 
 @customElement("r2-badge-list")
 export class R2BadgeList extends R2C {
-  static override styles = css`
-    :host {
-      position: absolute;
-      white-space: nowrap;
-    }
-  `;
+  static override styles = unsafeCSS(style);
+
   @queryAll("r2-chip")
   // @ts-expect-error
   private chips!: NodeListOf<R2C>;
