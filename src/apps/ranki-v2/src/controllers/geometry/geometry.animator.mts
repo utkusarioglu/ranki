@@ -2,17 +2,14 @@ import type { ReactiveElement } from "lit";
 import type {
   AnimationRole,
   InformContext,
-  LocalAction,
   UpdateStyle,
 } from "./geometry.types.mts";
 import {
   type InformTargetCb,
   type ApplyParams,
-  type AnimationBlock,
 } from "./geometry.animator.types.mts";
-import { TEMP_ANIMATION_DICT } from "./TEMP_ANIMATION_DICT.mts";
-import { assertNotUndefined } from "_error/assertions.mjs";
-import { AnimationUtils } from "./animator.utils.mts";
+import { AnimatorUtils } from "../../utils/animator.utils.mts";
+import { getAnimationRecipe } from "_store/app.getters.mjs";
 
 export class Animator {
   private readonly host: ReactiveElement;
@@ -44,7 +41,7 @@ export class Animator {
       ...options,
     };
     const finalKeyframes = keyframes.map((k) =>
-      AnimationUtils.produceKeyframe(k),
+      AnimatorUtils.produceKeyframe(k),
     );
     const anim = this.host.animate(finalKeyframes, finalOptions);
     const r = this.runningAnimations.get(name);
@@ -61,8 +58,8 @@ export class Animator {
     prev: UpdateStyle | null,
     context: InformContext,
   ): Promise<void> {
-    const recipe = this.getRecipe(curr.action);
-    return AnimationUtils.decode({
+    const recipe = getAnimationRecipe(curr.action, this.preset, this.role);
+    return AnimatorUtils.decode({
       curr,
       prev,
       context,
@@ -70,26 +67,5 @@ export class Animator {
       apply: this.apply.bind(this),
       informTarget: this.informTarget.bind(this),
     });
-  }
-
-  private getRecipe(action: LocalAction): AnimationBlock {
-    console.log("r", action, this.preset, this.role);
-    if (action === "none") return {};
-    const preset = TEMP_ANIMATION_DICT[this.preset];
-    assertNotUndefined(preset, {
-      why: "No such preset exists",
-      details: { preset: this.preset },
-    });
-    const roleDict = preset[this.role];
-    assertNotUndefined(roleDict, {
-      why: "No animation for this role exists",
-      details: { role: this.role, preset: this.preset },
-    });
-    const recipe = roleDict[action];
-    assertNotUndefined(recipe, {
-      why: "No recipe for this role exists",
-      details: { role: this.role, action },
-    });
-    return recipe;
   }
 }

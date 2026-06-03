@@ -4,7 +4,10 @@ import { SizingUtils } from "_utils/Sizing.mjs";
 import { css, html } from "lit";
 import { customElement, query, queryAll } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
-import { geometry, GeometryController } from "_/controllers/geometry.mjs";
+import {
+  geometry,
+  GeometryController,
+} from "_/controllers/geometry/geometry.mjs";
 
 @customElement("r2-hud-scroller")
 export class R2HudScroller extends R2C {

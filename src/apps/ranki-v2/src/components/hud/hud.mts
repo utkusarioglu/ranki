@@ -3,7 +3,10 @@ import { SizingUtils } from "_utils/Sizing.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, query } from "lit/decorators.js";
 import styles from "./hud.css?inline";
-import { geometry, type GeometryController } from "_/controllers/geometry.mjs";
+import {
+  geometry,
+  type GeometryController,
+} from "_/controllers/geometry/geometry.mjs";
 
 @customElement("r2-hud")
 export class R2Hud extends R2C {

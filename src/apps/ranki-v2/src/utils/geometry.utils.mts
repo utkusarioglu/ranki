@@ -1,5 +1,9 @@
 import type { LitElement } from "lit";
-import type { Dims, LocalAction, UpdateStyle } from "./geometry.types.mts";
+import type {
+  Dims,
+  LocalAction,
+  UpdateStyle,
+} from "../controllers/geometry/geometry.types.mts";
 
 export class GeometryUtils {
   public static readonly childSizeEventName = "r2-child-size";

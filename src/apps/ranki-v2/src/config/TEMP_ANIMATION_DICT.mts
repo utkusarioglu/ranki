@@ -1,4 +1,4 @@
-import type { AnimationDict } from "./geometry.animator.types.mts";
+import type { AnimationDict } from "../controllers/geometry/geometry.animator.types.mts";
 
 export const TEMP_ANIMATION_DICT: AnimationDict = {
   debug: {

@@ -17,11 +17,11 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { TimingUtils } from "_utils/timing.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
-import { GeometryUtils } from "./geometry.utils.mts";
+import { GeometryUtils } from "../../utils/geometry.utils.mts";
 import { assertNotNull, assertNotUndefined } from "_error/assertions.mjs";
 import { Animator } from "./geometry.animator.mts";
-import { AnimationUtils } from "./animator.utils.mts";
-import { assertExists } from "../../../../packages/dqm-utils/src/assertions.mts";
+import { AnimatorUtils } from "../../utils/animator.utils.mts";
+import { assertExists } from "../../../../../packages/dqm-utils/src/assertions.mts";
 import type { InformTargetParams } from "./geometry.animator.types.mts";
 import {
   ReconciliationUtils,
@@ -207,7 +207,7 @@ export class GeometryController implements ReactiveController {
             length: a.length,
             stagger: diff.stagger.indices,
           };
-          const informVals = AnimationUtils.evalKeyframe(
+          const informVals = AnimatorUtils.evalKeyframe(
             curr,
             prev,
             context,

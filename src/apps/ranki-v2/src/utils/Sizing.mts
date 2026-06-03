@@ -2,8 +2,8 @@ import type {
   ComponentDims,
   LeftsTops,
   WidthsHeights,
-} from "_/controllers/geometry.types.mjs";
-import type { Dims } from "_/controllers/geometry.types.mjs";
+} from "_/controllers/geometry/geometry.types.mjs";
+import type { Dims } from "_/controllers/geometry/geometry.types.mjs";
 
 export type Size = Dims & LeftsTops & WidthsHeights;
 

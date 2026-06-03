@@ -36,6 +36,7 @@ import type {
 } from "_config/config.types.mts";
 import { RankiAppError } from "_error/ranki-app-error.mts";
 import { buildAddressSegments } from "./buildAddress.mts";
+import { TEMP_ANIMATION_DICT } from "_config/TEMP_ANIMATION_DICT.mjs";
 
 export const MUTATION_MODE_PRECEDENCE: RankiBaseAddressMutationMode[] = [
   "trim",
@@ -96,6 +97,7 @@ function buildRankiConfig(
       theme: base.config.design.theme,
       layout: base.config.design.layout,
       paletteCollection: base.config.palettes,
+      animationCollection: TEMP_ANIMATION_DICT,
     },
     challenge: buildChallengeConfig(base, raw, order, dqm),
   };

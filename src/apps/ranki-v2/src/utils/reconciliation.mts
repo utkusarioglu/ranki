@@ -1,5 +1,5 @@
 import { assertNever } from "_error/assertions.mjs";
-import { TimingUtils } from "./timing.mts";
+import { TimingUtils } from "./timing.mjs";
 
 export type ReconciliationActions = "retain" | "update" | "remove" | "add";
 

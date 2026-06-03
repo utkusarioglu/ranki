@@ -4,7 +4,10 @@ import { SizingUtils } from "_utils/Sizing.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, query } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
-import { geometry, GeometryController } from "_/controllers/geometry.mjs";
+import {
+  geometry,
+  GeometryController,
+} from "_/controllers/geometry/geometry.mjs";
 import style from "./cue-list.css?inline";
 
 @customElement("r2-cue-list")

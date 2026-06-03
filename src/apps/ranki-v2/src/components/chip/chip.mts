@@ -4,7 +4,10 @@ import { R2C } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/Sizing.mjs";
 import { html, unsafeCSS, type PropertyValues } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { geometry, GeometryController } from "_/controllers/geometry.mjs";
+import {
+  geometry,
+  GeometryController,
+} from "_/controllers/geometry/geometry.mjs";
 import style from "./chip.css?inline";
 
 @customElement("r2-chip")
@@ -34,7 +37,7 @@ export class R2Chip extends R2C {
 
   @geometry({
     role: "chip",
-    on: (s, action) => {
+    on: (_s, action) => {
       console.log("on", action);
       // if (action === "exit") s.emitLeave();
     },
@@ -62,7 +65,7 @@ export class R2Chip extends R2C {
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 
-  private async animateLeave(index: number) {
+  private async animateLeave(_index: number) {
     return this.geo.informStyle(
       { width: 0, opacity: 0 },
       { index: 0, length: 1, stagger: [0] },

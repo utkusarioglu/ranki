@@ -16,6 +16,7 @@ import type {
   CardFaceArray,
   FilteredTags,
 } from "_collect/collect.types.mts";
+import type { AnimationDict } from "_/controllers/geometry/geometry.animator.types.mjs";
 
 export type Deck = string;
 
@@ -260,6 +261,7 @@ export interface RankiDesignState {
   theme: RankiAppTheme;
   layout: RankiLayout;
   paletteCollection: PaletteSpecs[];
+  animationCollection: AnimationDict;
 }
 
 export interface RankiDevState {

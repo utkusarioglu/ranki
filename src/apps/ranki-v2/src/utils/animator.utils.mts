@@ -5,13 +5,16 @@ import type {
   AnimationOptions,
   AnimationRoot,
   DecodeParams,
-} from "./geometry.animator.types.mts";
-import type { UpdateStyle, InformContext } from "./geometry.types.mts";
+} from "../controllers/geometry/geometry.animator.types.mts";
+import type {
+  UpdateStyle,
+  InformContext,
+} from "../controllers/geometry/geometry.types.mts";
 import { TimingUtils } from "_utils/timing.mjs";
 
 const parser = new Parser();
 
-export class AnimationUtils {
+export class AnimatorUtils {
   static evalKeyframe(
     curr: UpdateStyle,
     prev: UpdateStyle | null,
@@ -20,7 +23,7 @@ export class AnimationUtils {
   ) {
     const entries = Object.entries(b).map(([k, v]) => [
       k,
-      AnimationUtils.evalConfigValue(curr, prev, context, v),
+      AnimatorUtils.evalConfigValue(curr, prev, context, v),
     ]);
     return Object.fromEntries(entries);
   }
@@ -45,20 +48,20 @@ export class AnimationUtils {
     } else {
       const exp = parser.parse(v);
       const varSet = {
-        CONTAINER_HEIGHT: AnimationUtils.try(curr, (c) => c.height),
-        CONTAINER_WIDTH: AnimationUtils.try(curr, (c) => c.width),
-        CONTAINER_TOP: AnimationUtils.try(curr, (c) => c.top),
-        CONTAINER_LEFT: AnimationUtils.try(curr, (c) => c.left),
+        CONTAINER_HEIGHT: AnimatorUtils.try(curr, (c) => c.height),
+        CONTAINER_WIDTH: AnimatorUtils.try(curr, (c) => c.width),
+        CONTAINER_TOP: AnimatorUtils.try(curr, (c) => c.top),
+        CONTAINER_LEFT: AnimatorUtils.try(curr, (c) => c.left),
 
-        CONTAINER_PREV_HEIGHT: AnimationUtils.try(prev, (p) => p.height),
-        CONTAINER_PREV_WIDTH: AnimationUtils.try(prev, (p) => p.width),
-        CONTAINER_PREV_TOP: AnimationUtils.try(prev, (p) => p.top),
-        CONTAINER_PREV_LEFT: AnimationUtils.try(prev, (p) => p.left),
+        CONTAINER_PREV_HEIGHT: AnimatorUtils.try(prev, (p) => p.height),
+        CONTAINER_PREV_WIDTH: AnimatorUtils.try(prev, (p) => p.width),
+        CONTAINER_PREV_TOP: AnimatorUtils.try(prev, (p) => p.top),
+        CONTAINER_PREV_LEFT: AnimatorUtils.try(prev, (p) => p.left),
 
-        LEFT: AnimationUtils.try(curr, (c) => c.lefts[context.index]),
-        TOP: AnimationUtils.try(curr, (c) => c.tops[context.index]),
-        WIDTH: AnimationUtils.try(curr, (c) => c.widths[context.index]),
-        HEIGHT: AnimationUtils.try(curr, (c) => c.heights[context.index]),
+        LEFT: AnimatorUtils.try(curr, (c) => c.lefts[context.index]),
+        TOP: AnimatorUtils.try(curr, (c) => c.tops[context.index]),
+        WIDTH: AnimatorUtils.try(curr, (c) => c.widths[context.index]),
+        HEIGHT: AnimatorUtils.try(curr, (c) => c.heights[context.index]),
       };
       return exp.evaluate(varSet);
     }
@@ -89,7 +92,7 @@ export class AnimationUtils {
     const entries = ["delay", "duration", "easing"]
       .map((k) => [
         k,
-        AnimationUtils.evalOptionValue(context, r[k as keyof AnimationOptions]),
+        AnimatorUtils.evalOptionValue(context, r[k as keyof AnimationOptions]),
       ])
       .filter((v) => v[1] !== undefined) as [string, number][];
     return Object.fromEntries<number>(entries) as Partial<AnimationOptions>;
@@ -97,11 +100,11 @@ export class AnimationUtils {
 
   static async decode(p: DecodeParams): Promise<void> {
     await Promise.all([
-      AnimationUtils.decodeRoot(p),
-      AnimationUtils.decodeTargets(p),
+      AnimatorUtils.decodeRoot(p),
+      AnimatorUtils.decodeTargets(p),
     ]);
     if (!p.block.then) return;
-    await AnimationUtils.decode({ ...p, block: p.block.then });
+    await AnimatorUtils.decode({ ...p, block: p.block.then });
   }
 
   private static async decodeTargets(p: DecodeParams): Promise<void> {
@@ -112,12 +115,12 @@ export class AnimationUtils {
       Object.entries(p.block.targets).map(
         async ([id, { wait, inform, then }]) => {
           if (wait) {
-            const ev = AnimationUtils.evalOptionValue(p.context, wait);
+            const ev = AnimatorUtils.evalOptionValue(p.context, wait);
             await TimingUtils.delay(ev);
           }
           await p.informTarget({ id, curr: p.curr, prev: p.prev, inform });
           if (!then) return;
-          await AnimationUtils.decode({ ...p, block: then });
+          await AnimatorUtils.decode({ ...p, block: then });
         },
       ),
     );
@@ -132,12 +135,12 @@ export class AnimationUtils {
         await p.apply({
           name: b.name,
           keyframes: b.keyframes.map((k) =>
-            AnimationUtils.evalKeyframe(p.curr, p.prev, p.context, k),
+            AnimatorUtils.evalKeyframe(p.curr, p.prev, p.context, k),
           ),
-          options: AnimationUtils.evalOptions(b, p.context),
+          options: AnimatorUtils.evalOptions(b, p.context),
         });
         if (!b.then) return;
-        await AnimationUtils.decode({ ...p, block: b.then });
+        await AnimatorUtils.decode({ ...p, block: b.then });
       }),
     );
   }

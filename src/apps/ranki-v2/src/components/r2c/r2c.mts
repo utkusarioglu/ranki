@@ -1,8 +1,8 @@
 import { LitElement } from "lit";
 import { assertNever } from "_error/assertions.mjs";
 import { ReconciliationUtils } from "_utils/reconciliation.mjs";
-import type { InformContext } from "_/controllers/geometry.types.mjs";
-import type { AnimateableStyles } from "_/controllers/geometry.animator.types.mjs";
+import type { InformContext } from "_/controllers/geometry/geometry.types.mjs";
+import type { AnimateableStyles } from "_/controllers/geometry/geometry.animator.types.mjs";
 
 export type Other = {
   opacity: number;
@@ -18,7 +18,9 @@ export class R2C extends LitElement implements R2Animate {
   }
 
   public async informStyle(
+    // @ts-expect-error
     pos: AnimateableStyles,
+    // @ts-expect-error
     context: InformContext,
   ): Promise<void> {
     assertNever({

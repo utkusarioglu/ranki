@@ -1,5 +1,5 @@
 import { R2C } from "_components/r2c/r2c.mjs";
-import { type Dims } from "_/controllers/geometry.types.mjs";
+import { type Dims } from "_/controllers/geometry/geometry.types.mjs";
 import { type PropertyValues, html, unsafeCSS } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { R2IconProps } from "./icon.mts";
@@ -7,7 +7,10 @@ import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { loadIcon } from "iconify-icon";
 import { TimingUtils } from "_utils/timing.mjs";
-import { geometry, GeometryController } from "_/controllers/geometry.mjs";
+import {
+  geometry,
+  GeometryController,
+} from "_/controllers/geometry/geometry.mjs";
 import style from "./icon-span.css?inline";
 import { SVG_PLACEHOLDER } from "./SVG_PLACEHOLDER.mts";
 
