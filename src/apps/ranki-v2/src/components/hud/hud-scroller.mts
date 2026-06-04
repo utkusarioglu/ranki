@@ -1,6 +1,6 @@
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import { R2C } from "_components/r2c/r2c.mjs";
-import { SizingUtils } from "_utils/Sizing.mjs";
+import { SizingUtils } from "_utils/sizing.utils.mjs";
 import { css, html } from "lit";
 import { customElement, query, queryAll } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";

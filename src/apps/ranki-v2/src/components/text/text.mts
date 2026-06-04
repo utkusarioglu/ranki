@@ -4,7 +4,7 @@ import { R2C } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 import type { R2TextSpan } from "./text-span.mjs";
 import { repeat } from "lit/directives/repeat.js";
-import { SizingUtils } from "_utils/Sizing.mjs";
+import { SizingUtils } from "_utils/sizing.utils.mjs";
 import {
   geometry,
   type GeometryController,

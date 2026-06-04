@@ -16,7 +16,7 @@ import type {
 } from "./geometry.types.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
-import { TimingUtils } from "_utils/timing.mjs";
+import { TimingUtils } from "_utils/timing,utils.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import { GeometryUtils } from "../../utils/geometry.utils.mjs";
 import { assertNotNull, assertNotUndefined } from "_error/assertions.mjs";
@@ -27,7 +27,7 @@ import type { InformTargetParams } from "./geometry.animator.types.mjs";
 import {
   ReconciliationUtils,
   type ReconciliationDiff,
-} from "_utils/reconciliation.mjs";
+} from "_utils/reconciliation.utils.mjs";
 
 type HostType = LitElement;
 

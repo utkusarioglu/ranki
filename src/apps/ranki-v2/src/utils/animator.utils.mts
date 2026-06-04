@@ -10,7 +10,7 @@ import type {
   UpdateStyle,
   InformContext,
 } from "../controllers/geometry/geometry.types.mjs";
-import { TimingUtils } from "_utils/timing.mjs";
+import { TimingUtils } from "_utils/timing,utils.mjs";
 
 const parser = new Parser();
 

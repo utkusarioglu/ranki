@@ -2,7 +2,7 @@ import {
   ReconciliationUtils,
   type ReconcileableSubtree,
   type ReconcileSingle,
-} from "_utils/reconciliation.mjs";
+} from "_utils/reconciliation.utils.mjs";
 import type {
   LitElement,
   ReactiveController,

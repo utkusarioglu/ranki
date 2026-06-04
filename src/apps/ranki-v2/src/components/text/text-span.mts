@@ -1,6 +1,6 @@
 import { R2C } from "_components/r2c/r2c.mjs";
 import { type Dims } from "_/controllers/geometry/geometry.types.mjs";
-import { TimingUtils } from "_utils/timing.mjs";
+import { TimingUtils } from "_utils/timing,utils.mjs";
 import { type PropertyValues, html, unsafeCSS } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import type { R2TextProps } from "./text.mjs";

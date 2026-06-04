@@ -1,5 +1,5 @@
 import { R2C } from "_components/r2c/r2c.mjs";
-import { SizingUtils } from "_utils/Sizing.mjs";
+import { SizingUtils } from "_utils/sizing.utils.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, query } from "lit/decorators.js";
 import styles from "./hud.css?inline";
