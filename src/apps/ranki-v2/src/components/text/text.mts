@@ -35,7 +35,6 @@ export class R2Text extends R2C {
   private props!: R2TextProps;
 
   @queryAll("r2-text-span")
-  // @ts-expect-error
   private spans!: NodeListOf<R2TextSpan>;
 
   @geometry({
@@ -53,6 +52,9 @@ export class R2Text extends R2C {
     type: "single",
     reconcile: (c, p) => (c.text === p.text ? "retain" : "add"),
     source: (s) => [s.props],
+    beforeLeave: (c, st, i) => {
+      (c as R2Text).spans[i]?.leave(st);
+    },
   })
   private readonly subtree!: ReconciliationController<R2TextProps>;
 
@@ -65,9 +67,8 @@ export class R2Text extends R2C {
       (p) =>
         html`<r2-text-span 
           .props=${p.props} 
-          ?leave=${p.leave} 
           @r2-child-leave=${this.subtree.onLeave(p.id)}
-          @r2-child-size=${this.geo.onChildSize("text-span")}
+          @r2-geometry=${this.geo.onEmit("text-span")}
         ></r2-text-span`,
     )}`;
   }

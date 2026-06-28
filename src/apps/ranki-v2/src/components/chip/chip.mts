@@ -39,7 +39,6 @@ export class R2Chip extends R2C {
     role: "chip",
     on: (s, action) => {
       if (action === "exit-end") {
-        s.geo.emitSize({ width: 0, height: 0 });
         s.emitLeave();
       }
     },
@@ -67,8 +66,8 @@ export class R2Chip extends R2C {
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 
-  public override async leave(st: number) {
-    this.geo.informStyle({ width: 0 }, { index: 0, length: 1, stagger: [st] });
+  public override async leave(_st: number) {
+    this.geo.emit("leave");
   }
 
   override render() {
@@ -88,12 +87,12 @@ export class R2Chip extends R2C {
           },
         }}
         style="position: absolute;"
-        @r2-child-size=${this.geo.onChildSize("content")}
+        @r2-geometry=${this.geo.onEmit("content")}
       ></r2-icon>
       <r2-text
         .props=${item}
         style="position: absolute;"
-        @r2-child-size=${this.geo.onChildSize("content")}
+        @r2-geometry=${this.geo.onEmit("content")}
       ></r2-text>
     `;
   }

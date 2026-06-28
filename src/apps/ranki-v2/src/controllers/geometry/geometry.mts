@@ -19,7 +19,11 @@ import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { TimingUtils } from "_utils/timing,utils.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import { GeometryUtils } from "../../utils/geometry.utils.mjs";
-import { assertNotNull, assertNotUndefined } from "_error/assertions.mjs";
+import {
+  assertNever,
+  assertNotNull,
+  assertNotUndefined,
+} from "_error/assertions.mjs";
 import { Animator } from "./geometry.animator.mjs";
 import { AnimatorUtils } from "../../utils/animator.utils.mjs";
 import { assertExists } from "../../../../../packages/dqm-utils/src/assertions.mjs";
@@ -53,8 +57,20 @@ export class GeometryController implements ReactiveController {
     );
   }
 
-  public emitSize(dims: Dims) {
-    GeometryUtils.emitSize(this.host, dims);
+  public emit(type: "size" | "leave", dims?: Dims) {
+    switch (type) {
+      case "size":
+        assertNotUndefined(dims, {
+          why: "Dims are required for emitting size",
+        });
+        GeometryUtils.emitSize(this.host, dims);
+        break;
+      case "leave":
+        GeometryUtils.emitLeave(this.host);
+        break;
+      default:
+        assertNever({ why: "Unrecognized emit type", details: { type, dims } });
+    }
   }
 
   private getTarget(id: string): TargetProps {
@@ -87,6 +103,19 @@ export class GeometryController implements ReactiveController {
     const action = GeometryUtils.evaluateAction(sizeMerged, prev);
     const curr: UpdateStyle = { ...sizeMerged, action };
 
+    if (["R2-CHIP", "R2-BADGE-LIST"].includes(this.host.tagName)) {
+      if (this.host.tagName !== "R2-CHIP" || context.index !== 2) {
+        console.log("informStyle", this.host.tagName, {
+          h: this.host,
+          sizeMerged,
+          informed,
+          context,
+          curr,
+          sizing,
+          registered: this.registered,
+        });
+      }
+    }
     this.currStyle = curr;
     this.on && this.on(this.host, `${action}-start` as TargetEventCbEvents);
     await this.animator.updateStyle(this.currStyle, prev, context);
@@ -101,7 +130,7 @@ export class GeometryController implements ReactiveController {
     });
   }
 
-  onChildSize(id: string) {
+  onEmit(id: string) {
     return (e: CustomEvent<R2CNewChildSizeEvent>) => {
       e.stopPropagation();
       const detail = e.detail;
@@ -113,6 +142,7 @@ export class GeometryController implements ReactiveController {
           cause: {},
         });
       switch (detail.type) {
+        case "leave":
         case "connected":
           this.registered.set(target, { width: 0, height: 0 });
           break;
@@ -124,10 +154,15 @@ export class GeometryController implements ReactiveController {
           break;
       }
       switch (detail.type) {
+        case "leave":
         case "disconnected":
         case "update":
           const sz = this.getSizingCallback(id);
-          this.sizing = sz(this.orderTrackedNodes(id));
+          const ordered = this.orderTrackedNodes(id);
+          if (this.host.tagName === "R2-BADGE-LIST") {
+            console.log("o", { ordered });
+          }
+          this.sizing = sz(ordered);
           if (!this.requested) {
             this.requested = true;
             TimingUtils.raf().then(() => {
@@ -137,11 +172,7 @@ export class GeometryController implements ReactiveController {
                   if (this.getIsRoot(id)) {
                     this.informAsRoot(this.sizing);
                   } else {
-                    this.emitSize(this.sizing);
-                    // GeometryUtils.emitSize(
-                    //   this.host as LitElement,
-                    //   this.sizing,
-                    // );
+                    this.emit("size", this.sizing);
                   }
               }, PROPAGATE_DELAY);
             });
@@ -213,6 +244,20 @@ export class GeometryController implements ReactiveController {
             context,
             inform,
           );
+          if (["R2-CHIP"].includes(e.tagName)) {
+            if (context.index === 2) {
+              console.log("informTarget", {
+                id,
+                curr,
+                prev,
+                inform,
+                diff,
+                si: this.sizing,
+                informVals,
+                context,
+              });
+            }
+          }
           return e.informStyle(informVals, context);
         }),
     );

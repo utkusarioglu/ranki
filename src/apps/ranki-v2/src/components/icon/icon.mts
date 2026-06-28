@@ -81,7 +81,7 @@ export class R2Icon extends R2C {
           .props=${p.props} 
           ?leave=${p.leave} 
           @r2-child-leave=${() => this.onChildLeave(p.id)}
-          @r2-child-size=${this.geo.onChildSize("icon-span")}
+          @r2-geometry=${this.geo.onEmit("icon-span")}
         ></r2-icon-span`,
     )}`;
   }

@@ -102,6 +102,19 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
           },
         ],
       },
+      leave: {
+        root: [
+          {
+            name: "opacity",
+            duration: 1000,
+            keyframes: [
+              {
+                opacity: 0,
+              },
+            ],
+          },
+        ],
+      },
     },
     text: {
       expand: {
@@ -117,6 +130,39 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
               },
             ],
           },
+          {
+            name: "width",
+            duration: 1000,
+            keyframes: [
+              {
+                opacity: 1,
+                width: "CONTAINER_WIDTH",
+              },
+            ],
+          },
+        ],
+        targets: {
+          "text-span": {
+            inform: {
+              width: "CONTAINER_WIDTH",
+              height: "CONTAINER_HEIGHT",
+            },
+          },
+        },
+      },
+      contract: {
+        root: [
+          // {
+          //   name: "position",
+          //   duration: 0,
+          //   keyframes: [
+          //     {
+          //       height: "CONTAINER_HEIGHT",
+          //       top: "CONTAINER_TOP",
+          //       left: "CONTAINER_LEFT",
+          //     },
+          //   ],
+          // },
           {
             name: "width",
             duration: 1000,
@@ -329,6 +375,7 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
             inform: {
               top: "TOP",
               left: "LEFT",
+              width: "WIDTH",
             },
           },
         },
@@ -339,6 +386,7 @@ export const TEMP_ANIMATION_DICT: AnimationDict = {
             inform: {
               top: "TOP",
               left: "LEFT",
+              width: "WIDTH",
             },
             then: {
               root: [

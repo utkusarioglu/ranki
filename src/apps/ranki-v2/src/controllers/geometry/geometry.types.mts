@@ -54,6 +54,9 @@ export interface GeometryParams {
 //   context: InformContext;
 // }
 
+interface R2CNewChildLeave {
+  type: "leave";
+}
 interface R2CNewChildSizeConnected {
   type: "connected";
 }
@@ -67,7 +70,8 @@ interface R2CNewChildSizeUpdate {
 export type R2CNewChildSizeEvent =
   | R2CNewChildSizeUpdate
   | R2CNewChildSizeDisconnected
-  | R2CNewChildSizeConnected;
+  | R2CNewChildSizeConnected
+  | R2CNewChildLeave;
 export interface ComponentDims {
   component: R2C;
   dims: Dims;

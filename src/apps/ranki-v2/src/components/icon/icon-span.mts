@@ -64,7 +64,7 @@ export class R2IconSpan extends R2C {
     const { width, height } = this.props;
     const dims: Dims = { width, height };
     await TimingUtils.waitLayout();
-    this.geo.emitSize(dims);
+    this.geo.emit("size", dims);
     try {
       const icon = await loadIcon(this.props.icon);
       this.svg = icon.body;
@@ -72,7 +72,7 @@ export class R2IconSpan extends R2C {
       console.log(e);
     } finally {
       setTimeout(() => {
-        this.geo.emitSize(dims);
+        this.geo.emit("size", dims);
       }, PROPAGATE_DELAY);
     }
   }

@@ -56,9 +56,7 @@ export class R2CueList extends R2C {
           "--bg": "rgb(var(--scheme-blue-2))",
         })}"
       ></r2-hud-bg>
-      <r2-badge-list
-        @r2-child-size=${this.geo.onChildSize("lists")}
-      ></r2-badge-list>
+      <r2-badge-list @r2-geometry=${this.geo.onEmit("lists")}></r2-badge-list>
     `;
   }
 }

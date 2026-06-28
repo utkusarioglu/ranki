@@ -6,7 +6,7 @@ import type {
 } from "../controllers/geometry/geometry.types.mjs";
 
 export class GeometryUtils {
-  public static readonly childSizeEventName = "r2-child-size";
+  public static readonly geometryEventName = "r2-geometry";
 
   public static evaluateAction(
     curr: Omit<UpdateStyle, "action">,
@@ -65,6 +65,8 @@ export class GeometryUtils {
     const isContract =
       is.width.contract || is.height.contract || is.opacity.contract;
 
+    // console.log({ is, has, val, isEnter, isExit, isExpand, isContract });
+
     if (isEnter) return "expand";
     if (isExit) return "exit";
     if (isExpand) return "expand";
@@ -74,7 +76,7 @@ export class GeometryUtils {
 
   public static emitConnected(host: LitElement) {
     host.dispatchEvent(
-      new CustomEvent(GeometryUtils.childSizeEventName, {
+      new CustomEvent(GeometryUtils.geometryEventName, {
         detail: {
           type: "connected",
         },
@@ -86,7 +88,7 @@ export class GeometryUtils {
 
   public static emitDisconnected(host: LitElement) {
     host.dispatchEvent(
-      new CustomEvent(GeometryUtils.childSizeEventName, {
+      new CustomEvent(GeometryUtils.geometryEventName, {
         detail: {
           type: "disconnected",
         },
@@ -96,9 +98,21 @@ export class GeometryUtils {
     );
   }
 
+  public static emitLeave(host: LitElement) {
+    host.dispatchEvent(
+      new CustomEvent(GeometryUtils.geometryEventName, {
+        detail: {
+          type: "leave",
+        },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
   public static emitSize(host: LitElement, { width, height }: Dims | DOMRect) {
     host.dispatchEvent(
-      new CustomEvent(GeometryUtils.childSizeEventName, {
+      new CustomEvent(GeometryUtils.geometryEventName, {
         detail: {
           type: "update",
           rect: { width, height },

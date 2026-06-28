@@ -40,7 +40,7 @@ export class R2Hud extends R2C {
       <div class="rotate">
         <div class="content">
           <r2-hud-scroller
-            @r2-child-size=${this.geo.onChildSize("scroller")}
+            @r2-geometry=${this.geo.onEmit("scroller")}
           ></r2-hud-scroller>
         </div>
       </div>
