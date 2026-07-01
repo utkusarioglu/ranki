@@ -103,19 +103,19 @@ export class GeometryController implements ReactiveController {
     const action = GeometryUtils.evaluateAction(sizeMerged, prev);
     const curr: UpdateStyle = { ...sizeMerged, action };
 
-    if (["R2-CHIP", "R2-BADGE-LIST"].includes(this.host.tagName)) {
-      if (this.host.tagName !== "R2-CHIP" || context.index !== 2) {
-        console.log("informStyle", this.host.tagName, {
-          h: this.host,
-          sizeMerged,
-          informed,
-          context,
-          curr,
-          sizing,
-          registered: this.registered,
-        });
-      }
-    }
+    // if (["R2-CHIP", "R2-BADGE-LIST"].includes(this.host.tagName)) {
+    //   if (this.host.tagName !== "R2-CHIP" || context.index !== 2) {
+    //     console.log("informStyle", this.host.tagName, {
+    //       h: this.host,
+    //       sizeMerged,
+    //       informed,
+    //       context,
+    //       curr,
+    //       sizing,
+    //       registered: this.registered,
+    //     });
+    //   }
+    // }
     this.currStyle = curr;
     this.on && this.on(this.host, `${action}-start` as TargetEventCbEvents);
     await this.animator.updateStyle(this.currStyle, prev, context);
@@ -241,20 +241,20 @@ export class GeometryController implements ReactiveController {
             context,
             inform,
           );
-          if (["R2-CHIP"].includes(e.tagName)) {
-            if (context.index === 2) {
-              console.log("informTarget", {
-                id,
-                curr,
-                prev,
-                inform,
-                diff,
-                si: this.sizing,
-                informVals,
-                context,
-              });
-            }
-          }
+          // if (["R2-CHIP"].includes(e.tagName)) {
+          //   if (context.index === 2) {
+          //     console.log("informTarget", {
+          //       id,
+          //       curr,
+          //       prev,
+          //       inform,
+          //       diff,
+          //       si: this.sizing,
+          //       informVals,
+          //       context,
+          //     });
+          //   }
+          // }
           return e.informStyle(informVals, context);
         }),
     );

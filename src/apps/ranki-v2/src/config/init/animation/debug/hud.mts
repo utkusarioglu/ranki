@@ -15,7 +15,8 @@ export const HUD: TargetAnimationSpec = {
         },
         {
           name: "opacity",
-          duration: 1000,
+          // duration: 1000,
+          duration: 0,
           keyframes: [
             {
               width: "CONTAINER_WIDTH",
@@ -29,7 +30,8 @@ export const HUD: TargetAnimationSpec = {
       root: [
         {
           name: "opacity",
-          duration: 1000,
+          // duration: 1000,
+          duration: 0,
           keyframes: [
             {
               width: "CONTAINER_WIDTH",
@@ -43,7 +45,8 @@ export const HUD: TargetAnimationSpec = {
       root: [
         {
           name: "opacity",
-          duration: 1000,
+          // duration: 1000,
+          duration: 0,
           keyframes: [
             {
               width: 0,
@@ -73,7 +76,8 @@ export const HUD: TargetAnimationSpec = {
             root: [
               {
                 name: "size",
-                duration: 1000,
+                // duration: 1000,
+                duration: 0,
                 keyframes: [
                   {
                     // left: 0,
@@ -90,7 +94,8 @@ export const HUD: TargetAnimationSpec = {
                 },
               },
               sections: {
-                wait: 1000,
+                // wait: 1000,
+                wait: 0,
                 inform: {
                   top: "TOP",
                   left: "LEFT",
@@ -113,7 +118,8 @@ export const HUD: TargetAnimationSpec = {
             root: [
               {
                 name: "position",
-                duration: 1000,
+                // duration: 1000,
+                duration: 0,
                 keyframes: [
                   {
                     width: "CONTAINER_WIDTH",

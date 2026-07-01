@@ -17,7 +17,8 @@ export const ICON: TargetAnimationSpec = {
         },
         {
           name: "opacity",
-          duration: 2000,
+          // duration: 2000,
+          duration: 0,
           keyframes: [
             {
               opacity: 1,
@@ -43,7 +44,8 @@ export const ICON: TargetAnimationSpec = {
         },
         {
           name: "width",
-          duration: 1000,
+          // duration: 1000,
+          duration: 0,
           keyframes: [
             {
               opacity: 1,
@@ -65,7 +67,8 @@ export const ICON: TargetAnimationSpec = {
       root: [
         {
           name: "exit",
-          duration: 1000,
+          // duration: 1000,
+          duration: 0,
           keyframes: [
             {
               opacity: 0,

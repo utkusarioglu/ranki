@@ -12,7 +12,8 @@ export const CUE_LIST: TargetAnimationSpec = {
               left: "CONTAINER_LEFT",
             },
           ],
-          duration: 1000,
+          // duration: 1000,
+          duration: 0,
         },
       ],
       targets: {
@@ -23,7 +24,8 @@ export const CUE_LIST: TargetAnimationSpec = {
           },
         },
         lists: {
-          wait: 1000,
+          // wait: 1000,
+          wait: 0,
           inform: {
             top: "TOP",
             left: "LEFT",
@@ -42,7 +44,8 @@ export const CUE_LIST: TargetAnimationSpec = {
             root: [
               {
                 name: "position",
-                duration: 1000,
+                // duration: 1000,
+                duration: 0,
                 keyframes: [
                   {
                     top: "CONTAINER_TOP",

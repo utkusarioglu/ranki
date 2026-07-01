@@ -13,7 +13,8 @@ export const BADGE_LIST: TargetAnimationSpec = {
             },
           ],
           delay: 0,
-          duration: 1000,
+          // duration: 1000,
+          duration: 0,
         },
       ],
       targets: {
@@ -25,7 +26,8 @@ export const BADGE_LIST: TargetAnimationSpec = {
           },
         },
         chips: {
-          wait: 1000,
+          // wait: 1000,
+          wait: 0,
           inform: {
             top: "TOP",
             left: "LEFT",
@@ -52,7 +54,8 @@ export const BADGE_LIST: TargetAnimationSpec = {
                     left: "CONTAINER_LEFT",
                   },
                 ],
-                duration: 1000,
+                // duration: 1000,
+                duration: 0,
               },
             ],
             targets: {

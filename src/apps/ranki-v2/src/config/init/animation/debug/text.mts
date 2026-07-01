@@ -17,7 +17,8 @@ export const TEXT: TargetAnimationSpec = {
         },
         {
           name: "opacity",
-          duration: 2000,
+          // duration: 2000,
+          duration: 0,
           keyframes: [
             {
               opacity: 1,
@@ -30,7 +31,8 @@ export const TEXT: TargetAnimationSpec = {
       root: [
         {
           name: "opacity",
-          duration: 1000,
+          // duration: 1000,
+          duration: 0,
           keyframes: [
             {
               opacity: 0,
@@ -56,7 +58,8 @@ export const TEXT: TargetAnimationSpec = {
         },
         {
           name: "width",
-          duration: 1000,
+          // duration: 1000,
+          duration: 0,
           keyframes: [
             {
               opacity: 1,
@@ -89,7 +92,8 @@ export const TEXT: TargetAnimationSpec = {
         // },
         {
           name: "width",
-          duration: 1000,
+          // duration: 1000,
+          duration: 0,
           keyframes: [
             {
               opacity: 1,
@@ -111,7 +115,8 @@ export const TEXT: TargetAnimationSpec = {
       root: [
         {
           name: "exit",
-          duration: 1000,
+          // duration: 1000,
+          duration: 0,
           keyframes: [
             {
               opacity: 0,

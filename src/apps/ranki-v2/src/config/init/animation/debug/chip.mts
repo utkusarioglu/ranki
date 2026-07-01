@@ -1,6 +1,4 @@
-import type { TargetAnimationSpec } from "_/controllers/geometry/geometry.animator.types.mjs";
-
-export const CHIP: TargetAnimationSpec = {
+export const CHIP = {
   chip: {
     expand: {
       root: [
@@ -17,14 +15,16 @@ export const CHIP: TargetAnimationSpec = {
       ],
       targets: {
         bg: {
-          wait: "STAGGER_INDEX * 1000",
+          // wait: "STAGGER_INDEX * 1000",
+          wait: 0,
           inform: {
             width: "CONTAINER_WIDTH",
             height: "CONTAINER_HEIGHT",
           },
         },
         content: {
-          wait: "STAGGER_INDEX * 1000 + 1000",
+          // wait: "STAGGER_INDEX * 1000 + 1000",
+          wait: 0,
           inform: {
             left: "LEFT",
             top: "TOP",
@@ -36,7 +36,8 @@ export const CHIP: TargetAnimationSpec = {
       root: [
         {
           name: "reposition",
-          duration: 1000,
+          // duration: 1000,
+          duration: 0,
           keyframes: [
             {
               top: "CONTAINER_TOP",
@@ -47,14 +48,16 @@ export const CHIP: TargetAnimationSpec = {
       ],
       targets: {
         bg: {
-          wait: "STAGGER_INDEX * 1000",
+          // wait: "STAGGER_INDEX * 1000",
+          wait: 0,
           inform: {
             width: "CONTAINER_WIDTH",
             height: "CONTAINER_HEIGHT",
           },
         },
         content: {
-          wait: "STAGGER_INDEX * 1000 + 1000",
+          // wait: "STAGGER_INDEX * 1000 + 1000",
+          wait: 0,
           inform: {
             left: "LEFT",
             top: "TOP",
@@ -77,7 +80,8 @@ export const CHIP: TargetAnimationSpec = {
       // ],
       targets: {
         content: {
-          wait: "STAGGER_INDEX * 1000",
+          // wait: "STAGGER_INDEX * 1000",
+          wait: 0,
           inform: {
             width: 0,
           },
