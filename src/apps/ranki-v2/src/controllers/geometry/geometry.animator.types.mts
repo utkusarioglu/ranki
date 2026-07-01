@@ -74,18 +74,20 @@ export interface AnimationTarget {
   then?: AnimationBlock;
 }
 
+export type TargetAnimationSpec = Record<
+  // component role
+  string,
+  Record<
+    // action
+    string,
+    AnimationBlock
+  >
+>;
+
 export type AnimationDict = Record<
   // Preset name
   string,
-  Record<
-    // component role
-    string,
-    Record<
-      // action
-      string,
-      AnimationBlock
-    >
-  >
+  TargetAnimationSpec
 >;
 
 export interface DecodeParams {
