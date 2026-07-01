@@ -159,9 +159,6 @@ export class GeometryController implements ReactiveController {
         case "update":
           const sz = this.getSizingCallback(id);
           const ordered = this.orderTrackedNodes(id);
-          if (this.host.tagName === "R2-BADGE-LIST") {
-            console.log("o", { ordered });
-          }
           this.sizing = sz(ordered);
           if (!this.requested) {
             this.requested = true;

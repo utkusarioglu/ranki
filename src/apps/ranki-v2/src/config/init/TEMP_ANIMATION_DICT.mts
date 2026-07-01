@@ -1,4 +1,4 @@
-import type { AnimationDict } from "../controllers/geometry/geometry.animator.types.mjs";
+import type { AnimationDict } from "../../controllers/geometry/geometry.animator.types.mjs";
 
 export const TEMP_ANIMATION_DICT: AnimationDict = {
   debug: {

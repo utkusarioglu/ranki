@@ -1,5 +1,5 @@
 import yaml from "yaml";
-import { RANKI_INITIAL_CONFIG } from "_config/config.constants.mjs";
+import { RANKI_INITIAL_CONFIG } from "_config/init/config.constants.mjs";
 import type {
   RankiChannelsConfig,
   RankiConfigChannelsPartial,

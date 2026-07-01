@@ -5,7 +5,7 @@ import type {
   RankiIndicatorName,
   RankiPalette,
   RankiTagPrefix,
-} from "./config.types.mjs";
+} from "../config.types.mjs";
 import { DQM_BASE_CONFIG } from "./dqm.constants.mjs";
 
 export const ANKI_DECK_SEPARATOR = "::";

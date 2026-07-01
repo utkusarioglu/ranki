@@ -17,7 +17,7 @@ import type {
 import {
   RANKI_INTERNAL_FACE_PREFIX,
   SYSTEM_CONTROLLED_SCHEME_TOKEN,
-} from "_config/config.constants.mjs";
+} from "_config/init/config.constants.mjs";
 import type {
   BuildRankiBaseConfigReturn,
   CueRecord,
@@ -36,7 +36,7 @@ import type {
 } from "_config/config.types.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { buildAddressSegments } from "./buildAddress.mjs";
-import { TEMP_ANIMATION_DICT } from "_config/TEMP_ANIMATION_DICT.mjs";
+import { TEMP_ANIMATION_DICT } from "_config/init/TEMP_ANIMATION_DICT.mjs";
 
 export const MUTATION_MODE_PRECEDENCE: RankiBaseAddressMutationMode[] = [
   "trim",

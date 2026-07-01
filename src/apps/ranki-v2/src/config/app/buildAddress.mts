@@ -1,6 +1,6 @@
 import { assertExists } from "@dqm/package-dqm-utils";
 import type { HudAddressSegment } from "_components/hud/hud.types.mjs";
-import { ANKI_DECK_SEPARATOR } from "_config/config.constants.mjs";
+import { ANKI_DECK_SEPARATOR } from "_config/init/config.constants.mjs";
 import type {
   RankiAddressTokens,
   RankiBaseAddressMutation,

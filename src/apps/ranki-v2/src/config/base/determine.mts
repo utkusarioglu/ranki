@@ -16,7 +16,7 @@ import type {
 import type { DeckSettings } from "_config/config.types.mjs";
 import { assertNever } from "_error/assertions.mjs";
 import { isGlobMatch } from "./glob-match.mjs";
-import { ANKI_DECK_SEPARATOR } from "_config/config.constants.mjs";
+import { ANKI_DECK_SEPARATOR } from "_config/init/config.constants.mjs";
 
 export function checkIfMatch(
   currentDeck: AnkiDeck | AnkiCard | AnkiCardType | AnkiCardFace | AnkiRawTag,
