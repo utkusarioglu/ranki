@@ -241,20 +241,20 @@ export class GeometryController implements ReactiveController {
             context,
             inform,
           );
-          // if (["R2-CHIP"].includes(e.tagName)) {
-          //   if (context.index === 2) {
-          //     console.log("informTarget", {
-          //       id,
-          //       curr,
-          //       prev,
-          //       inform,
-          //       diff,
-          //       si: this.sizing,
-          //       informVals,
-          //       context,
-          //     });
-          //   }
-          // }
+          if (["R2-CHIP"].includes(e.tagName)) {
+            if (context.index === 2) {
+              console.log("informTarget", {
+                id,
+                curr,
+                prev,
+                inform,
+                diff,
+                si: this.sizing,
+                informVals,
+                context,
+              });
+            }
+          }
           return e.informStyle(informVals, context);
         }),
     );

@@ -1,5 +1,19 @@
 export const CHIP = {
   chip: {
+    move: {
+      root: [
+        {
+          name: "move",
+          duration: 0,
+          keyframes: [
+            {
+              top: "CONTAINER_TOP",
+              left: "CONTAINER_LEFT",
+            },
+          ],
+        },
+      ],
+    },
     expand: {
       root: [
         {

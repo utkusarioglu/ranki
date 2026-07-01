@@ -17,11 +17,15 @@ export class GeometryUtils {
         width: prev?.width || 0,
         height: prev?.height || 0,
         opacity: prev?.opacity || 0,
+        top: prev?.top || 0,
+        left: prev?.left || 0,
       },
       curr: {
         width: curr.width || 0,
         height: curr.height || 0,
         opacity: curr.opacity || 0,
+        top: curr.top || 0,
+        left: curr.left || 0,
       },
     };
 
@@ -57,6 +61,8 @@ export class GeometryUtils {
         contract: val.prev.opacity > val.curr.opacity,
         exit: has.prev.opacity && !has.curr.opacity,
       },
+      top: val.prev.top !== val.curr.top,
+      left: val.prev.left !== val.curr.left,
     };
 
     const isEnter = is.width.enter || is.height.enter || is.opacity.enter;
@@ -64,6 +70,7 @@ export class GeometryUtils {
     const isExpand = is.width.expand || is.height.expand || is.opacity.expand;
     const isContract =
       is.width.contract || is.height.contract || is.opacity.contract;
+    const isMove = is.top || is.left;
 
     // console.log({ is, has, val, isEnter, isExit, isExpand, isContract });
 
@@ -71,6 +78,7 @@ export class GeometryUtils {
     if (isExit) return "exit";
     if (isExpand) return "expand";
     if (isContract) return "contract";
+    if (isMove) return "move";
     return "none";
   }
 

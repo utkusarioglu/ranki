@@ -80,7 +80,13 @@ export type LeftsTops = { lefts: number[]; tops: number[] };
 export type WidthsHeights = { widths: number[]; heights: number[] };
 
 export type R2Sizing = Dims & LeftsTops & WidthsHeights;
-export type LocalAction = "expand" | "contract" | "none" | "enter" | "exit";
+export type LocalAction =
+  | "expand"
+  | "contract"
+  | "none"
+  | "enter"
+  | "exit"
+  | "move";
 // OBSOLETE
 // export type DirectionalEvaluation = {
 //   isExpanding: boolean;
