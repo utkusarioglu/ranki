@@ -1,4 +1,4 @@
-import type { LocalAction } from "_/controllers/geometry/geometry.types.mjs";
+import type { LocalAction } from "_controllers/geometry/geometry.types.mjs";
 import { assertNotUndefined } from "_error/assertions.mjs";
 import { appStore } from "./app.mjs";
 

@@ -5,7 +5,7 @@ import style from "./hud-bg.css?inline";
 import {
   geometry,
   GeometryController,
-} from "_/controllers/geometry/geometry.mjs";
+} from "_controllers/geometry/geometry.mjs";
 @customElement("r2-hud-bg")
 export class R2HudBg extends R2C {
   static override styles = unsafeCSS(style);

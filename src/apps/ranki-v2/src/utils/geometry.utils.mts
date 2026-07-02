@@ -3,15 +3,15 @@ import type {
   Dims,
   LocalAction,
   UpdateStyle,
-} from "../controllers/geometry/geometry.types.mjs";
+} from "_controllers/geometry/geometry.types.mjs";
 
 export class GeometryUtils {
   public static readonly geometryEventName = "r2-geometry";
 
-  public static evaluateAction(
+  public static evaluateActions(
     curr: Omit<UpdateStyle, "action">,
     prev: UpdateStyle | null,
-  ): LocalAction {
+  ): LocalAction[] {
     const val = {
       prev: {
         width: prev?.width || 0,
@@ -73,13 +73,15 @@ export class GeometryUtils {
     const isMove = is.top || is.left;
 
     // console.log({ is, has, val, isEnter, isExit, isExpand, isContract });
+    const actions = new Set<LocalAction>();
 
-    if (isEnter) return "expand";
-    if (isExit) return "exit";
-    if (isExpand) return "expand";
-    if (isContract) return "contract";
-    if (isMove) return "move";
-    return "none";
+    if (isEnter) actions.add("expand");
+    if (isExit) actions.add("exit");
+    if (isExpand) actions.add("expand");
+    if (isContract) actions.add("contract");
+    if (isMove) actions.add("move");
+    return Array.from(actions);
+    // return "none";
   }
 
   public static emitConnected(host: LitElement) {

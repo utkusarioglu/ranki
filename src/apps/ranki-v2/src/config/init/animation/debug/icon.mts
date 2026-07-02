@@ -1,4 +1,4 @@
-import type { TargetAnimationSpec } from "_/controllers/geometry/geometry.animator.types.mjs";
+import type { TargetAnimationSpec } from "_controllers/geometry/geometry.animator.types.mjs";
 
 export const ICON: TargetAnimationSpec = {
   "icon-span": {
@@ -29,16 +29,41 @@ export const ICON: TargetAnimationSpec = {
     },
   },
   icon: {
-    expand: {
+    move: {
       root: [
         {
           name: "position",
           duration: 0,
           keyframes: [
             {
-              height: "CONTAINER_HEIGHT",
               top: "CONTAINER_TOP",
               left: "CONTAINER_LEFT",
+            },
+          ],
+        },
+        // {
+        //   name: "width",
+        //   // duration: 1000,
+        //   duration: 0,
+        //   keyframes: [
+        //     {
+        //       opacity: 1,
+        //       width: "CONTAINER_WIDTH",
+        //     },
+        //   ],
+        // },
+      ],
+    },
+    expand: {
+      root: [
+        {
+          name: "height",
+          duration: 0,
+          keyframes: [
+            {
+              height: "CONTAINER_HEIGHT",
+              // top: "CONTAINER_TOP",
+              // left: "CONTAINER_LEFT",
             },
           ],
         },

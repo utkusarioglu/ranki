@@ -8,7 +8,7 @@ import { SizingUtils } from "_utils/sizing.utils.mjs";
 import {
   geometry,
   GeometryController,
-} from "_/controllers/geometry/geometry.mjs";
+} from "_controllers/geometry/geometry.mjs";
 import style from "./icon.css?inline";
 
 export interface R2IconProps {

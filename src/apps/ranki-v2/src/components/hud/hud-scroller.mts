@@ -7,7 +7,7 @@ import { styleMap } from "lit/directives/style-map.js";
 import {
   geometry,
   GeometryController,
-} from "_/controllers/geometry/geometry.mjs";
+} from "_controllers/geometry/geometry.mjs";
 
 @customElement("r2-hud-scroller")
 export class R2HudScroller extends R2C {

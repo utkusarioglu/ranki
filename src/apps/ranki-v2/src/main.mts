@@ -1,13 +1,22 @@
 import "_components/registry.mjs";
+import type { RankiAppError } from "_error/ranki-app-error.mjs";
 
 window.addEventListener("error", (e) => {
   e.preventDefault();
-  console.error(e);
+  try {
+    console.error((e as unknown as RankiAppError).toExtendedJSON());
+  } catch (_e: unknown) {
+    console.error(e);
+  }
 });
 
 window.addEventListener("unhandledrejection", (e) => {
   e.preventDefault();
-  console.error(e.reason.toExtendedJSON());
+  try {
+    console.error(e.reason.toExtendedJSON());
+  } catch (_e: unknown) {
+    console.error(e);
+  }
 });
 
 if (!document.querySelector("r2-app")) {

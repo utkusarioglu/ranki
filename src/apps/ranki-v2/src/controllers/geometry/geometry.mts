@@ -99,9 +99,9 @@ export class GeometryController implements ReactiveController {
       sizing = this.getSizing();
     } catch (e) {}
 
-    const sizeMerged: R2Sizing = { ...sizing, ...informed };
-    const action = GeometryUtils.evaluateAction(sizeMerged, prev);
-    const curr: UpdateStyle = { ...sizeMerged, action };
+    const curr: R2Sizing = { ...sizing, ...informed };
+    const actions = GeometryUtils.evaluateActions(curr, prev);
+    // const curr: UpdateStyle = { ...curr };
 
     // if (["R2-CHIP", "R2-BADGE-LIST"].includes(this.host.tagName)) {
     //   if (this.host.tagName !== "R2-CHIP" || context.index !== 2) {
@@ -117,9 +117,13 @@ export class GeometryController implements ReactiveController {
     //   }
     // }
     this.currStyle = curr;
-    this.on && this.on(this.host, `${action}-start` as TargetEventCbEvents);
-    await this.animator.updateStyle(this.currStyle, prev, context);
-    this.on && this.on(this.host, `${action}-end` as TargetEventCbEvents);
+    actions.forEach((action) => {
+      this.on && this.on(this.host, `${action}-start` as TargetEventCbEvents);
+    });
+    await this.animator.updateStyle(actions, this.currStyle, prev, context);
+    actions.forEach((action) => {
+      this.on && this.on(this.host, `${action}-end` as TargetEventCbEvents);
+    });
   }
 
   private informAsRoot(geo: R2Sizing) {

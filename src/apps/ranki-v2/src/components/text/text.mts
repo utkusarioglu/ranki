@@ -8,11 +8,11 @@ import { SizingUtils } from "_utils/sizing.utils.mjs";
 import {
   geometry,
   type GeometryController,
-} from "_/controllers/geometry/geometry.mjs";
+} from "_controllers/geometry/geometry.mjs";
 import {
   reconciler,
   ReconciliationController,
-} from "_/controllers/reconciler/reconciler.mjs";
+} from "_controllers/reconciler/reconciler.mjs";
 import style from "./text.css?inline";
 
 export interface R2TextProps {

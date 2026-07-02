@@ -7,7 +7,7 @@ import { customElement, property, query } from "lit/decorators.js";
 import {
   geometry,
   GeometryController,
-} from "_/controllers/geometry/geometry.mjs";
+} from "_controllers/geometry/geometry.mjs";
 import style from "./chip.css?inline";
 
 @customElement("r2-chip")

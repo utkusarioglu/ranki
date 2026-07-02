@@ -1,8 +1,8 @@
-import type { TargetAnimationSpec } from "_/controllers/geometry/geometry.animator.types.mjs";
+import type { TargetAnimationSpec } from "_controllers/geometry/geometry.animator.types.mjs";
 
 export const CUE_LIST: TargetAnimationSpec = {
   "cue-list": {
-    expand: {
+    move: {
       root: [
         {
           name: "position",
@@ -16,6 +16,21 @@ export const CUE_LIST: TargetAnimationSpec = {
           duration: 0,
         },
       ],
+    },
+    expand: {
+      // root: [
+      //   {
+      //     name: "position",
+      //     keyframes: [
+      //       {
+      //         top: "CONTAINER_TOP",
+      //         left: "CONTAINER_LEFT",
+      //       },
+      //     ],
+      //     // duration: 1000,
+      //     duration: 0,
+      //   },
+      // ],
       targets: {
         bg: {
           inform: {

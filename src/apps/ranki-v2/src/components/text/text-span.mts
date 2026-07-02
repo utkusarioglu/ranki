@@ -1,5 +1,5 @@
 import { R2C } from "_components/r2c/r2c.mjs";
-import { type Dims } from "_/controllers/geometry/geometry.types.mjs";
+import { type Dims } from "_controllers/geometry/geometry.types.mjs";
 import { TimingUtils } from "_utils/timing,utils.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
@@ -8,7 +8,7 @@ import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import {
   geometry,
   GeometryController,
-} from "_/controllers/geometry/geometry.mjs";
+} from "_controllers/geometry/geometry.mjs";
 import style from "./text-span.css?inline";
 
 @customElement("r2-text-span")

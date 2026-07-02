@@ -2,6 +2,7 @@ import type { ReactiveElement } from "lit";
 import type {
   AnimationRole,
   InformContext,
+  LocalAction,
   UpdateStyle,
 } from "./geometry.types.mjs";
 import {
@@ -54,18 +55,24 @@ export class Animator {
   }
 
   public async updateStyle(
+    actions: LocalAction[],
     curr: UpdateStyle,
     prev: UpdateStyle | null,
     context: InformContext,
   ): Promise<void> {
-    const recipe = getAnimationRecipe(curr.action, this.preset, this.role);
-    return AnimatorUtils.decode({
-      curr,
-      prev,
-      context,
-      block: recipe,
-      apply: this.apply.bind(this),
-      informTarget: this.informTarget.bind(this),
-    });
+    console.log("a", actions);
+    await Promise.all(
+      actions.map((action) => {
+        const recipe = getAnimationRecipe(action, this.preset, this.role);
+        return AnimatorUtils.decode({
+          curr,
+          prev,
+          context,
+          block: recipe,
+          apply: this.apply.bind(this),
+          informTarget: this.informTarget.bind(this),
+        });
+      }),
+    );
   }
 }

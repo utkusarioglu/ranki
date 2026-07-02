@@ -1,8 +1,8 @@
 import { LitElement } from "lit";
 import { assertNever } from "_error/assertions.mjs";
 import { ReconciliationUtils } from "_utils/reconciliation.utils.mjs";
-import type { InformContext } from "_/controllers/geometry/geometry.types.mjs";
-import type { AnimateableStyles } from "_/controllers/geometry/geometry.animator.types.mjs";
+import type { InformContext } from "_controllers/geometry/geometry.types.mjs";
+import type { AnimateableStyles } from "_controllers/geometry/geometry.animator.types.mjs";
 
 export type Other = {
   opacity: number;

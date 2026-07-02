@@ -1,8 +1,8 @@
-import { store, StoreController } from "_/controllers/store/store.mjs";
+import { store, StoreController } from "_controllers/store/store.mjs";
 import {
   reconciler,
   ReconciliationController,
-} from "_/controllers/reconciler/reconciler.mjs";
+} from "_controllers/reconciler/reconciler.mjs";
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import { R2C } from "_components/r2c/r2c.mjs";
@@ -14,7 +14,7 @@ import { styleMap } from "lit/directives/style-map.js";
 import {
   geometry,
   GeometryController,
-} from "_/controllers/geometry/geometry.mjs";
+} from "_controllers/geometry/geometry.mjs";
 import style from "./badge-list.css?inline";
 
 type R2BadgeListState = HudTagListItem;

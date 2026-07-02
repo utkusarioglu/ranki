@@ -102,7 +102,7 @@ export type UpdateStyle = InformStyle &
   WidthsHeights;
 
 type UpdateEvaluations = {
-  action: LocalAction;
+  // action: LocalAction;
 };
 // type UpdateEvaluations = {
 //   main: DirectionalEvaluation;

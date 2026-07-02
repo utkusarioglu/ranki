@@ -6,7 +6,7 @@ import styles from "./hud.css?inline";
 import {
   geometry,
   type GeometryController,
-} from "_/controllers/geometry/geometry.mjs";
+} from "_controllers/geometry/geometry.mjs";
 
 @customElement("r2-hud")
 export class R2Hud extends R2C {
