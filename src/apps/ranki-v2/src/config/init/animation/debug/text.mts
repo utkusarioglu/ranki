@@ -2,7 +2,7 @@ import type { TargetAnimationSpec } from "_controllers/geometry/geometry.animato
 
 export const TEXT: TargetAnimationSpec = {
   "text-span": {
-    expand: {
+    init: {
       root: [
         {
           name: "init",
@@ -15,6 +15,10 @@ export const TEXT: TargetAnimationSpec = {
             },
           ],
         },
+      ],
+    },
+    expand: {
+      root: [
         {
           name: "opacity",
           // duration: 2000,
@@ -43,6 +47,21 @@ export const TEXT: TargetAnimationSpec = {
     },
   },
   text: {
+    init: {
+      root: [
+        {
+          name: "init",
+          duration: 0,
+          keyframes: [
+            {
+              height: "CONTAINER_HEIGHT",
+              top: "CONTAINER_TOP",
+              left: "CONTAINER_LEFT",
+            },
+          ],
+        },
+      ],
+    },
     move: {
       root: [
         {

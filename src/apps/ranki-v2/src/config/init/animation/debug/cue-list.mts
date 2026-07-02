@@ -2,6 +2,21 @@ import type { TargetAnimationSpec } from "_controllers/geometry/geometry.animato
 
 export const CUE_LIST: TargetAnimationSpec = {
   "cue-list": {
+    init: {
+      root: [
+        {
+          name: "init",
+          keyframes: [
+            {
+              top: "CONTAINER_TOP",
+              left: "CONTAINER_LEFT",
+            },
+          ],
+          // duration: 1000,
+          duration: 0,
+        },
+      ],
+    },
     move: {
       root: [
         {

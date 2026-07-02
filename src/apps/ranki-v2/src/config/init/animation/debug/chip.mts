@@ -1,5 +1,19 @@
 export const CHIP = {
   chip: {
+    init: {
+      root: [
+        {
+          name: "init",
+          duration: 0,
+          keyframes: [
+            {
+              top: "CONTAINER_TOP",
+              left: "CONTAINER_LEFT",
+            },
+          ],
+        },
+      ],
+    },
     move: {
       root: [
         {
@@ -15,18 +29,18 @@ export const CHIP = {
       ],
     },
     expand: {
-      root: [
-        {
-          name: "init",
-          duration: 0,
-          keyframes: [
-            {
-              top: "CONTAINER_TOP",
-              left: "CONTAINER_LEFT",
-            },
-          ],
-        },
-      ],
+      // root: [
+      //   {
+      //     name: "init",
+      //     duration: 0,
+      //     keyframes: [
+      //       {
+      //         top: "CONTAINER_TOP",
+      //         left: "CONTAINER_LEFT",
+      //       },
+      //     ],
+      //   },
+      // ],
       targets: {
         bg: {
           // wait: "STAGGER_INDEX * 1000",

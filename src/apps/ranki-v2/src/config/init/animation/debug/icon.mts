@@ -2,7 +2,7 @@ import type { TargetAnimationSpec } from "_controllers/geometry/geometry.animato
 
 export const ICON: TargetAnimationSpec = {
   "icon-span": {
-    expand: {
+    init: {
       root: [
         {
           name: "init",
@@ -15,6 +15,10 @@ export const ICON: TargetAnimationSpec = {
             },
           ],
         },
+      ],
+    },
+    expand: {
+      root: [
         {
           name: "opacity",
           // duration: 2000,
@@ -28,7 +32,22 @@ export const ICON: TargetAnimationSpec = {
       ],
     },
   },
+
   icon: {
+    init: {
+      root: [
+        {
+          name: "init",
+          duration: 0,
+          keyframes: [
+            {
+              top: "CONTAINER_TOP",
+              left: "CONTAINER_LEFT",
+            },
+          ],
+        },
+      ],
+    },
     move: {
       root: [
         {
@@ -36,6 +55,7 @@ export const ICON: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
+              height: "CONTAINER_HEIGHT",
               top: "CONTAINER_TOP",
               left: "CONTAINER_LEFT",
             },
@@ -56,17 +76,17 @@ export const ICON: TargetAnimationSpec = {
     },
     expand: {
       root: [
-        {
-          name: "height",
-          duration: 0,
-          keyframes: [
-            {
-              height: "CONTAINER_HEIGHT",
-              // top: "CONTAINER_TOP",
-              // left: "CONTAINER_LEFT",
-            },
-          ],
-        },
+        // {
+        //   name: "height",
+        //   duration: 0,
+        //   keyframes: [
+        //     {
+        //       height: "CONTAINER_HEIGHT",
+        //       // top: "CONTAINER_TOP",
+        //       // left: "CONTAINER_LEFT",
+        //     },
+        //   ],
+        // },
         {
           name: "width",
           // duration: 1000,

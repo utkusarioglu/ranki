@@ -65,6 +65,7 @@ export class GeometryUtils {
       left: val.prev.left !== val.curr.left,
     };
 
+    const isInit = !prev && curr;
     const isEnter = is.width.enter || is.height.enter || is.opacity.enter;
     const isExit = is.width.exit || is.height.exit || is.opacity.exit;
     const isExpand = is.width.expand || is.height.expand || is.opacity.expand;
@@ -72,9 +73,9 @@ export class GeometryUtils {
       is.width.contract || is.height.contract || is.opacity.contract;
     const isMove = is.top || is.left;
 
-    // console.log({ is, has, val, isEnter, isExit, isExpand, isContract });
     const actions = new Set<LocalAction>();
 
+    if (isInit) actions.add("init");
     if (isEnter) actions.add("expand");
     if (isExit) actions.add("exit");
     if (isExpand) actions.add("expand");

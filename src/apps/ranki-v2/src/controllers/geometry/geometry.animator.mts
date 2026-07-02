@@ -49,6 +49,7 @@ export class Animator {
     if (r) {
       r.commitStyles();
       r.cancel();
+      console.log("cancelling: ", name, this.host.tagName);
     }
     this.runningAnimations.set(name, anim);
     await anim.finished;

@@ -81,6 +81,7 @@ export type WidthsHeights = { widths: number[]; heights: number[] };
 
 export type R2Sizing = Dims & LeftsTops & WidthsHeights;
 export type LocalAction =
+  | "init"
   | "expand"
   | "contract"
   | "none"

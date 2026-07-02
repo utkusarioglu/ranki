@@ -2,6 +2,22 @@ import type { TargetAnimationSpec } from "_controllers/geometry/geometry.animato
 
 export const BADGE_LIST: TargetAnimationSpec = {
   "badge-list": {
+    init: {
+      root: [
+        {
+          name: "init",
+          keyframes: [
+            {
+              top: "TOP",
+              left: "LEFT",
+            },
+          ],
+          delay: 0,
+          // duration: 1000,
+          duration: 0,
+        },
+      ],
+    },
     move: {
       root: [
         {

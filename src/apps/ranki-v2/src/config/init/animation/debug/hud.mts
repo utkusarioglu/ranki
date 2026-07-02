@@ -2,6 +2,7 @@ import type { TargetAnimationSpec } from "_controllers/geometry/geometry.animato
 
 export const HUD: TargetAnimationSpec = {
   "hud-bg": {
+    init: {},
     expand: {
       root: [
         {
@@ -59,6 +60,7 @@ export const HUD: TargetAnimationSpec = {
   },
 
   "hud-scroller": {
+    init: {},
     expand: {
       root: [
         {
@@ -142,7 +144,7 @@ export const HUD: TargetAnimationSpec = {
     },
   },
   hud: {
-    expand: {
+    init: {
       root: [
         {
           name: "size",
@@ -150,25 +152,27 @@ export const HUD: TargetAnimationSpec = {
           keyframes: [
             {
               height: "CONTAINER_HEIGHT",
-              // top: "-CONTAINER_HEIGHT",
-              // rotate: 0,
             },
           ],
         },
-        // {
-        //   name: "rot",
-        //   duration: 1000,
-        //   keyframes: [
-        //     {
-        //       // skewY: -30,
-        //       // rotate3d: "1 2 3 50",
-        //       // rotate: 360,
-        //       // scale: 1.5,
-        //       // top: 0,
-        //     },
-        //   ],
-        // },
       ],
+    },
+    expand: {
+      // root: [
+      // {
+      //   name: "rot",
+      //   duration: 1000,
+      //   keyframes: [
+      //     {
+      //       // skewY: -30,
+      //       // rotate3d: "1 2 3 50",
+      //       // rotate: 360,
+      //       // scale: 1.5,
+      //       // top: 0,
+      //     },
+      //   ],
+      // },
+      // ],
       targets: {
         scroller: {
           inform: {
