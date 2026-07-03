@@ -49,11 +49,12 @@ export class R2Text extends R2C {
   public readonly geo!: GeometryController;
 
   @reconciler<R2TextProps>({
-    type: "single",
+    type: "last",
     reconcile: (c, p) => (c.text === p.text ? "retain" : "add"),
     source: (s) => [s.props],
-    beforeLeave: (c, st, i) => {
-      (c as R2Text).spans[i]?.leave(st);
+    beforeLeave: (s, st, i) => {
+      console.log("reconciler leave", s, st, i);
+      (s as R2Text).spans[i]?.leave(st);
     },
   })
   private readonly subtree!: ReconciliationController<R2TextProps>;

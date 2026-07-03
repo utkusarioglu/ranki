@@ -81,34 +81,17 @@ export type WidthsHeights = { widths: number[]; heights: number[] };
 
 export type R2Sizing = Dims & LeftsTops & WidthsHeights;
 export type LocalAction =
-  | "init"
   | "expand"
   | "contract"
   | "none"
   | "enter"
-  | "exit"
+  | "leave"
   | "move";
-// OBSOLETE
-// export type DirectionalEvaluation = {
-//   isExpanding: boolean;
-//   isContracting: boolean;
-//   action: LocalAction;
-// };
-// export type InformStyle = Partial<Pos> & Partial<Dims>;
+
 export type InformStyle = AnimateableStyles;
 
-export type UpdateStyle = InformStyle &
-  R2Sizing &
-  UpdateEvaluations &
-  WidthsHeights;
+export type UpdateStyle = InformStyle & R2Sizing;
 
-type UpdateEvaluations = {
-  // action: LocalAction;
-};
-// type UpdateEvaluations = {
-//   main: DirectionalEvaluation;
-//   cross: DirectionalEvaluation;
-// };
 export type InformContext = {
   index: number;
   length: number;

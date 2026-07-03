@@ -2,8 +2,21 @@ import type { TargetAnimationSpec } from "_controllers/geometry/geometry.animato
 
 export const HUD: TargetAnimationSpec = {
   "hud-bg": {
-    init: {},
     expand: {
+      root: [
+        {
+          name: "width",
+          // duration: 1000,
+          duration: 0,
+          keyframes: [
+            {
+              width: "CONTAINER_WIDTH",
+            },
+          ],
+        },
+      ],
+    },
+    enter: {
       root: [
         {
           name: "height",
@@ -42,7 +55,7 @@ export const HUD: TargetAnimationSpec = {
         },
       ],
     },
-    exit: {
+    leave: {
       root: [
         {
           name: "opacity",
@@ -60,8 +73,38 @@ export const HUD: TargetAnimationSpec = {
   },
 
   "hud-scroller": {
-    init: {},
     expand: {
+      root: [
+        {
+          name: "size",
+          // duration: 1000,
+          duration: 0,
+          keyframes: [
+            {
+              // left: 0,
+              width: "CONTAINER_WIDTH",
+            },
+          ],
+        },
+      ],
+      targets: {
+        bg: {
+          inform: {
+            width: "CONTAINER_WIDTH",
+            height: "CONTAINER_HEIGHT",
+          },
+        },
+        sections: {
+          // wait: 1000,
+          wait: 0,
+          inform: {
+            top: "TOP",
+            left: "LEFT",
+          },
+        },
+      },
+    },
+    enter: {
       root: [
         {
           name: "init",
@@ -144,7 +187,7 @@ export const HUD: TargetAnimationSpec = {
     },
   },
   hud: {
-    init: {
+    enter: {
       root: [
         {
           name: "size",
@@ -156,6 +199,14 @@ export const HUD: TargetAnimationSpec = {
           ],
         },
       ],
+      targets: {
+        scroller: {
+          inform: {
+            top: 0,
+            left: 0,
+          },
+        },
+      },
     },
     expand: {
       // root: [

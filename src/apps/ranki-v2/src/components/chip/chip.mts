@@ -38,7 +38,7 @@ export class R2Chip extends R2C {
   @geometry({
     role: "chip",
     on: (s, action) => {
-      if (action === "exit-end") {
+      if (action === "leave-end") {
         s.emitLeave();
       }
     },

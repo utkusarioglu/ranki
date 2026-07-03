@@ -2,7 +2,7 @@ import type { TargetAnimationSpec } from "_controllers/geometry/geometry.animato
 
 export const CUE_LIST: TargetAnimationSpec = {
   "cue-list": {
-    init: {
+    enter: {
       root: [
         {
           name: "init",
@@ -16,6 +16,22 @@ export const CUE_LIST: TargetAnimationSpec = {
           duration: 0,
         },
       ],
+      targets: {
+        bg: {
+          inform: {
+            width: "CONTAINER_WIDTH",
+            height: "CONTAINER_HEIGHT",
+          },
+        },
+        lists: {
+          // wait: 1000,
+          wait: 0,
+          inform: {
+            top: "TOP",
+            left: "LEFT",
+          },
+        },
+      },
     },
     move: {
       root: [

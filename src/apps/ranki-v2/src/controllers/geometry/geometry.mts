@@ -101,29 +101,20 @@ export class GeometryController implements ReactiveController {
 
     const curr: R2Sizing = { ...sizing, ...informed };
     const actions = GeometryUtils.evaluateActions(curr, prev);
-    // const curr: UpdateStyle = { ...curr };
-
-    // if (["R2-CHIP", "R2-BADGE-LIST"].includes(this.host.tagName)) {
-    //   if (this.host.tagName !== "R2-CHIP" || context.index !== 2) {
-    //     console.log("informStyle", this.host.tagName, {
-    //       h: this.host,
-    //       sizeMerged,
-    //       informed,
-    //       context,
-    //       curr,
-    //       sizing,
-    //       registered: this.registered,
-    //     });
-    //   }
-    // }
+    console.log("eval", actions, this.host.tagName);
     this.currStyle = curr;
-    actions.forEach((action) => {
-      this.on && this.on(this.host, `${action}-start` as TargetEventCbEvents);
-    });
+    const onEvent = this.on;
+    if (onEvent) {
+      actions.forEach((action) => {
+        onEvent(this.host, `${action}-start` as TargetEventCbEvents);
+      });
+    }
     await this.animator.updateStyle(actions, this.currStyle, prev, context);
-    actions.forEach((action) => {
-      this.on && this.on(this.host, `${action}-end` as TargetEventCbEvents);
-    });
+    if (onEvent) {
+      actions.forEach((action) => {
+        onEvent(this.host, `${action}-end` as TargetEventCbEvents);
+      });
+    }
   }
 
   private informAsRoot(geo: R2Sizing) {

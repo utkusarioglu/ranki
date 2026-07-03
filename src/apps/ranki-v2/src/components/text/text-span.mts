@@ -20,7 +20,14 @@ export class R2TextSpan extends R2C {
   @query("span")
   private span!: HTMLSpanElement;
 
-  @geometry({ role: "text-span" })
+  @geometry({
+    role: "text-span",
+    on: (s, action) => {
+      if (action === "leave-end") {
+        s.emitLeave();
+      }
+    },
+  })
   public readonly geo!: GeometryController;
 
   // @property({ type: Boolean, reflect: true })
@@ -35,9 +42,9 @@ export class R2TextSpan extends R2C {
   //   // }
   // }
 
-  public override leave(_stagger: number): Promise<void> {
+  public override async leave(_stagger: number) {
+    console.log("text-span leave");
     this.geo.emit("leave");
-    return Promise.resolve();
   }
 
   // async animateLeave() {

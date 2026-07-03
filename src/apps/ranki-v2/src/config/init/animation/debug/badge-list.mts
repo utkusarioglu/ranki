@@ -2,7 +2,7 @@ import type { TargetAnimationSpec } from "_controllers/geometry/geometry.animato
 
 export const BADGE_LIST: TargetAnimationSpec = {
   "badge-list": {
-    init: {
+    enter: {
       root: [
         {
           name: "init",
@@ -12,11 +12,29 @@ export const BADGE_LIST: TargetAnimationSpec = {
               left: "LEFT",
             },
           ],
-          delay: 0,
+          // delay: 0,
           // duration: 1000,
           duration: 0,
         },
       ],
+      targets: {
+        bg: {
+          // wait: 0,
+          inform: {
+            width: "CONTAINER_WIDTH",
+            height: "CONTAINER_HEIGHT",
+          },
+        },
+        chips: {
+          // wait: 1000,
+          // wait: 0,
+          inform: {
+            top: "TOP",
+            left: "LEFT",
+            width: "WIDTH",
+          },
+        },
+      },
     },
     move: {
       root: [

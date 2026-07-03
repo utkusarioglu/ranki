@@ -1,6 +1,6 @@
 export const CHIP = {
   chip: {
-    init: {
+    enter: {
       root: [
         {
           name: "init",
@@ -13,6 +13,24 @@ export const CHIP = {
           ],
         },
       ],
+      targets: {
+        bg: {
+          // wait: "STAGGER_INDEX * 1000",
+          wait: 0,
+          inform: {
+            width: "CONTAINER_WIDTH",
+            height: "CONTAINER_HEIGHT",
+          },
+        },
+        content: {
+          // wait: "STAGGER_INDEX * 1000 + 1000",
+          wait: 0,
+          inform: {
+            left: "LEFT",
+            top: "TOP",
+          },
+        },
+      },
     },
     move: {
       root: [

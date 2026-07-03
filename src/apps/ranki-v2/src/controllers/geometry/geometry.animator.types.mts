@@ -2,6 +2,7 @@ import type { Other } from "_components/r2c/r2c.mjs";
 import type {
   Dims,
   InformContext,
+  LocalAction,
   Pos,
   UpdateStyle,
 } from "./geometry.types.mjs";
@@ -77,11 +78,7 @@ export interface AnimationTarget {
 export type TargetAnimationSpec = Record<
   // component role
   string,
-  Record<
-    // action
-    string,
-    AnimationBlock
-  >
+  Partial<Record<LocalAction, AnimationBlock>>
 >;
 
 export type AnimationDict = Record<

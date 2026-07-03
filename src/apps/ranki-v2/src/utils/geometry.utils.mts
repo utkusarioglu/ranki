@@ -9,7 +9,8 @@ export class GeometryUtils {
   public static readonly geometryEventName = "r2-geometry";
 
   public static evaluateActions(
-    curr: Omit<UpdateStyle, "action">,
+    // curr: Omit<UpdateStyle, "action">,
+    curr: UpdateStyle,
     prev: UpdateStyle | null,
   ): LocalAction[] {
     const val = {
@@ -47,42 +48,42 @@ export class GeometryUtils {
         enter: !has.prev.width && has.curr.width,
         expand: val.prev.width < val.curr.width,
         contract: val.prev.width > val.curr.width,
-        exit: has.prev.width && !has.curr.width,
+        leave: has.prev.width && !has.curr.width,
       },
       height: {
         enter: !has.prev.height && has.curr.height,
         expand: val.prev.height < val.curr.height,
         contract: val.prev.height > val.curr.height,
-        exit: has.prev.height && !has.curr.height,
+        leave: has.prev.height && !has.curr.height,
       },
       opacity: {
         enter: !has.prev.opacity && has.curr.opacity,
         expand: val.prev.opacity < val.curr.opacity,
         contract: val.prev.opacity > val.curr.opacity,
-        exit: has.prev.opacity && !has.curr.opacity,
+        leave: has.prev.opacity && !has.curr.opacity,
       },
       top: val.prev.top !== val.curr.top,
       left: val.prev.left !== val.curr.left,
     };
 
-    const isInit = !prev && curr;
+    // const isInit = !prev && curr;
     const isEnter = is.width.enter || is.height.enter || is.opacity.enter;
-    const isExit = is.width.exit || is.height.exit || is.opacity.exit;
-    const isExpand = is.width.expand || is.height.expand || is.opacity.expand;
+    const isLeave = is.width.leave || is.height.leave || is.opacity.leave;
+    const isExpand =
+      (is.width.expand || is.height.expand || is.opacity.expand) && !isEnter;
     const isContract =
-      is.width.contract || is.height.contract || is.opacity.contract;
+      (is.width.contract || is.height.contract || is.opacity.contract) &&
+      !isLeave;
     const isMove = is.top || is.left;
 
     const actions = new Set<LocalAction>();
 
-    if (isInit) actions.add("init");
-    if (isEnter) actions.add("expand");
-    if (isExit) actions.add("exit");
+    if (isEnter) actions.add("enter");
+    if (isLeave) actions.add("leave");
     if (isExpand) actions.add("expand");
     if (isContract) actions.add("contract");
     if (isMove) actions.add("move");
     return Array.from(actions);
-    // return "none";
   }
 
   public static emitConnected(host: LitElement) {

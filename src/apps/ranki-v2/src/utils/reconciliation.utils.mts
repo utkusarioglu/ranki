@@ -185,118 +185,68 @@ export class ReconciliationUtils {
     };
   }
 
-  public static single<G>(
+  public static last<G>(
     prev: ReconcileableSubtree<G>,
     curr: G[],
     hasChanged: ReconcileSingle<G>,
   ): ReconcileableSubtree<G> {
-    if (curr.length > 1) {
-      assertNever({ why: "`single` reconciler expects a single update" });
-    }
-    const curLen = curr.length;
-    const prevLen = prev.list.length;
-    const list: ReconciliationContainer<G>[] = [];
-    const end = Math.max(curLen, prevLen);
+    const list: ReconciliationContainer<G>[] = [...prev.list];
 
-    const update: number[] = [];
     const remove: number[] = [];
     const add: number[] = [];
     const retain: number[] = [];
-    for (let i = 0; i < end; i++) {
-      const isCurr = curr[i] !== undefined;
-      const isPrev = prev.list[i] !== undefined;
-      let action: ReconciliationActions;
-      if (i === 0) {
-        if (isCurr && isPrev) {
-          action = hasChanged(curr[i], prev.list[i].props);
-        } else if (isCurr && !isPrev) {
-          action = "add";
-        } else if (!isCurr && isPrev) {
-          action = "remove";
-        } else {
-          assertNever({
-            why: "Impossible reconciliation state",
-            details: {
-              curr,
-              prev,
-              isCurr,
-              isPrev,
-            },
-          });
-        }
-      } else {
-        action = "remove";
-      }
-      // if (isCurr && isPrev) {
-      //   action = hasChanged(curr[i], prev.list[i].props);
-      // } else if (isCurr && !isPrev) {
-      //   action = "add";
-      // } else if (!isCurr && isPrev) {
-      //   action = "remove";
-      // } else {
-      //   assertNever({
-      //     why: "Impossible reconciliation state",
-      //     details: {
-      //       curr,
-      //       prev,
-      //       isCurr,
-      //       isPrev,
-      //     },
-      //   });
-      // }
 
-      switch (action) {
-        case "add":
-          add.push(i);
-          list.push({
-            props: curr[i],
-            id: this.getId(),
-            leave: false,
-          });
-          break;
-        case "remove":
-          remove.push(i);
-          list.push({ ...prev.list[i], leave: true });
-          break;
-        case "retain":
-          retain.push(i);
-          list.push({ ...prev.list[i], leave: true });
-          break;
-        // case "update":
-        //   update.push(i);
-        //   list.push({
-        //     props: curr[i],
-        //     id: this.getId(),
-        //     leave: false,
-        //   });
-        //   break;
-        default:
-          assertNever({
-            why: "unrecognized change option",
-            details: { action },
-          });
+    const currLast = curr.at(-1);
+    const prevLast = list.at(-1)?.props;
+    const isCurr = currLast !== undefined;
+    const isPrev = prevLast !== undefined;
+
+    let action: ReconciliationActions;
+    if (isCurr && isPrev) {
+      action = hasChanged(currLast, prevLast);
+    } else if (isCurr && !isPrev) {
+      action = "add";
+    } else if (!isCurr && isPrev) {
+      action = "remove";
+    } else {
+      assertNever({
+        why: "Impossible reconciliation state",
+        details: {
+          curr,
+          prev,
+          isCurr,
+          isPrev,
+        },
+      });
+    }
+
+    const i = list.length;
+    switch (action) {
+      case "add":
+        add.push(i);
+        list.push({
+          props: currLast!,
+          id: this.getId(),
+          leave: false,
+        });
+        break;
+      case "retain":
+        retain.push(i);
+        break;
+      default:
+        assertNever({
+          why: "unrecognized change option",
+          details: { action },
+        });
+    }
+
+    if (list.length > 1) {
+      for (let i = 0; i < list.length - 1; i++) {
+        list[i].leave = true;
       }
     }
 
-    // if (last && last.text === this.text) return;
-    // const updated = prev.list.map((p) => ({ ...p, leave: true }));
-    // const lis2 = [
-    //   ...updated,
-    //   {
-    //     id: this.idCounter++,
-    //     props: { ...curr },
-    //     leave: false,
-    //   },
-    // ];
-
-    const indices = Array.from({ length: list.length }, (_) => 1);
-    // if (beforeLeave) {
-    //   indices.forEach((st, i) => {
-    //     if (st > 0) {
-    //       beforeLeave(st, i);
-    //     }
-    //   });
-    // }
+    const indices = Array.from({ length: list.length }, (_) => 0);
 
     return {
       list,
@@ -305,7 +255,7 @@ export class ReconciliationUtils {
         add,
         remove,
         retain,
-        update,
+        update: [],
         stagger: {
           first: 0,
           indices,

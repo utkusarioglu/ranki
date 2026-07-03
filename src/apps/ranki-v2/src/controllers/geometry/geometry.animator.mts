@@ -47,9 +47,11 @@ export class Animator {
     const anim = this.host.animate(finalKeyframes, finalOptions);
     const r = this.runningAnimations.get(name);
     if (r) {
+      r.oncancel = (ev) => {
+        console.log("cancel", name, this.host.tagName);
+      };
       r.commitStyles();
       r.cancel();
-      console.log("cancelling: ", name, this.host.tagName);
     }
     this.runningAnimations.set(name, anim);
     await anim.finished;
@@ -61,7 +63,6 @@ export class Animator {
     prev: UpdateStyle | null,
     context: InformContext,
   ): Promise<void> {
-    console.log("a", actions);
     await Promise.all(
       actions.map((action) => {
         const recipe = getAnimationRecipe(action, this.preset, this.role);
