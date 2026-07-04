@@ -96,20 +96,23 @@ export class SizingUtils {
       const last = dims.at(-1);
       if (!last) return null;
 
+      const zeros = Array.from({ length: dims.length - 1 }, () => 0);
       const width =
         last.dims.width + (gaps.main?.start || 0) + (gaps.main?.end || 0);
       const height =
         last.dims.height + (gaps.cross?.start || 0) + (gaps.cross?.end || 0);
-      const lefts = [gaps.main?.start || 0];
-      const tops = [gaps.cross?.start || 0];
+      const lefts = [...zeros, gaps.main?.start || 0];
+      const tops = [...zeros, gaps.cross?.start || 0];
+      const heights = [...zeros, last.dims.height];
+      const widths = [...zeros, last.dims.width];
 
       return {
         width,
         height,
         lefts,
         tops,
-        heights: [last.dims.height],
-        widths: [last.dims.width],
+        heights,
+        widths,
       };
     };
   }

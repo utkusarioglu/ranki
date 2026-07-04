@@ -58,9 +58,7 @@ export class ReconciliationController<S> implements ReactiveController {
 
     const bl = this.beforeLeave;
     if (bl) {
-      console.log("hasbl", this.curr);
       this.curr.list.forEach((p, i) => {
-        console.log(p, p.leave);
         if (p.leave) {
           const st = this.curr.diff.stagger.indices[i];
           bl(this.host as LitElement, st, i);

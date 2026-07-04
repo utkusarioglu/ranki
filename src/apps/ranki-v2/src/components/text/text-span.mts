@@ -30,44 +30,11 @@ export class R2TextSpan extends R2C {
   })
   public readonly geo!: GeometryController;
 
-  // @property({ type: Boolean, reflect: true })
-  // leave = false;
-
   override informStyle = this.geo.informStyle.bind(this.geo);
 
-  // override updated(changed: PropertyValues) {
-  //   if (!changed.has("leave")) return;
-  //   // if (this.leave) {
-  //   //   this.animateLeave();
-  //   // }
-  // }
-
   public override async leave(_stagger: number) {
-    console.log("text-span leave");
     this.geo.emit("leave");
   }
-
-  // async animateLeave() {
-  //   this.animateStyle(
-  //     {
-  //       name: "opacity",
-  //       keyframes: {
-  //         opacity: 0,
-  //       },
-  //       options: {
-  //         duration: this.props.animation.duration,
-  //       },
-  //     },
-  //     () => {
-  //       this.dispatchEvent(
-  //         new CustomEvent("r2-child-leave", {
-  //           bubbles: true,
-  //           composed: true,
-  //         }),
-  //       );
-  //     },
-  //   );
-  // }
 
   override async firstUpdated() {
     await TimingUtils.waitLayout();

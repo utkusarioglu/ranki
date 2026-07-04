@@ -282,6 +282,7 @@ export class ReconciliationUtils {
     id: number,
     updateCb: (subtree: ReconcileableSubtree<G>) => void,
   ): Promise<void> {
+    console.log("leave", id, subtree);
     this.leaving.push(id);
     if (!this.willLeave) {
       this.willLeave = true;

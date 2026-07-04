@@ -16,25 +16,7 @@
     "**/.classpath": true,
     "**/.project": true,
     "**/.settings": true,
-    "**/.factorypath": true,
-    "[!s]*/**": true,
-    "s[!r]*/**": true,
-    "sr[!c]*/**": true,
-    "src/[!a]*/**": true,
-    "src/a[!p]*/**": true,
-    "src/ap[!p]*/**": true,
-    "src/app[!s]*/**": true,
-    "src/apps/[!r]*/**": true,
-    "src/apps/r[!a]*/**": true,
-    "src/apps/ra[!n]*/**": true,
-    "src/apps/ran[!k]*/**": true,
-    "src/apps/rank[!i]*/**": true,
-    "src/apps/ranki[!-]*/**": true,
-    "src/apps/ranki-[!v]*/**": true,
-    "src/apps/ranki-v[!2]*/**": true,
-    "src/apps/ranki-v2/[!s]*/**": true,
-    "src/apps/ranki-v2/s[!r]*/**": true,
-    "src/apps/ranki-v2/sr[!c]*/**": true
+    "**/.factorypath": true
   },
   "[html]": {
     "editor.defaultFormatter": null

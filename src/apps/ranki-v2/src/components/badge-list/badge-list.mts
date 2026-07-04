@@ -37,7 +37,9 @@ export class R2BadgeList extends R2C {
     reconcile: (c, p) => (c.text === p.text ? "retain" : "update"),
     source: (s) => s.store.curr || [],
     beforeLeave: (c, st, i) => {
-      (c as R2BadgeList).chips[i]?.leave(st);
+      const chip = (c as R2BadgeList).chips[i];
+      console.log("chip leave", i, chip);
+      chip?.leave(st);
     },
   })
   private readonly subtree!: ReconciliationController<R2BadgeListState>;

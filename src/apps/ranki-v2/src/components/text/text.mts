@@ -43,6 +43,7 @@ export class R2Text extends R2C {
       "text-span": {
         selector: (s) => Array.from(s.spans),
         sizing: SizingUtils.last(),
+        diff: (s) => s.subtree.curr.diff,
       },
     },
   })
@@ -53,8 +54,9 @@ export class R2Text extends R2C {
     reconcile: (c, p) => (c.text === p.text ? "retain" : "add"),
     source: (s) => [s.props],
     beforeLeave: (s, st, i) => {
-      console.log("reconciler leave", s, st, i);
-      (s as R2Text).spans[i]?.leave(st);
+      const span = (s as R2Text).spans[i];
+      console.log("reconciler leave", span, i);
+      span?.leave(st);
     },
   })
   private readonly subtree!: ReconciliationController<R2TextProps>;

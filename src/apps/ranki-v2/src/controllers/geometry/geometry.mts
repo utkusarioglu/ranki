@@ -101,7 +101,7 @@ export class GeometryController implements ReactiveController {
 
     const curr: R2Sizing = { ...sizing, ...informed };
     const actions = GeometryUtils.evaluateActions(curr, prev);
-    console.log("eval", actions, this.host.tagName);
+
     this.currStyle = curr;
     const onEvent = this.on;
     if (onEvent) {
@@ -236,20 +236,6 @@ export class GeometryController implements ReactiveController {
             context,
             inform,
           );
-          if (["R2-CHIP"].includes(e.tagName)) {
-            if (context.index === 2) {
-              console.log("informTarget", {
-                id,
-                curr,
-                prev,
-                inform,
-                diff,
-                si: this.sizing,
-                informVals,
-                context,
-              });
-            }
-          }
           return e.informStyle(informVals, context);
         }),
     );

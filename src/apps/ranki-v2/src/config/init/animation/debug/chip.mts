@@ -111,7 +111,7 @@ export const CHIP = {
         },
       },
     },
-    exit: {
+    leave: {
       // root: [
       //   {
       //     name: "reposition",
