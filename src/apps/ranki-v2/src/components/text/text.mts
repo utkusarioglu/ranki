@@ -54,9 +54,10 @@ export class R2Text extends R2C {
     type: "last",
     reconcile: (c, p) => (c.text === p.text ? "retain" : "add"),
     source: (s) => [s.props],
-    beforeLeave: (s, _, i) => {
-      const span = (s as R2Text).spans[i];
-      span?.leave();
+    on: (s, type, { index }) => {
+      if (type === "leave") {
+        (s as R2Text).spans[index]!.leave();
+      }
     },
   })
   private readonly subtree!: ReconciliationController<R2TextProps>;

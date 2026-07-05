@@ -24,8 +24,8 @@ export class R2TextSpan extends R2C {
 
   @geometry({
     role: "text-span",
-    on: (s, action) => {
-      if (action === "leave-end") {
+    on: (s, type) => {
+      if (type === "leave-end") {
         ReconciliationUtils.emitLeave(s);
       }
     },

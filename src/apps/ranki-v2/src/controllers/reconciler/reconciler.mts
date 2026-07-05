@@ -14,16 +14,19 @@ type GetSourceCallback<S> = (instance: any) => S[];
 
 type ReconcilerTypes = "flat" | "last";
 
-export type BeforeLeaveCb = (
+export type ReconcilerEventsCb = (
   host: HostType,
-  stagger: number,
-  index: number,
+  event: "leave",
+  detail: {
+    index: number;
+    stagger: number;
+  },
 ) => void;
 
 type SubtreeParams<S> = {
   type: ReconcilerTypes;
   reconcile: ReconcileSingle<S>;
-  beforeLeave?: BeforeLeaveCb;
+  on?: ReconcilerEventsCb;
   source: GetSourceCallback<S>;
 };
 
@@ -31,7 +34,7 @@ export class ReconciliationController<S> implements ReactiveController {
   private host: HostType;
   private reconcilerName!: ReconcilerTypes;
   private itemReconcile!: ReconcileSingle<S>;
-  private beforeLeave: BeforeLeaveCb | undefined;
+  private beforeLeave: ReconcilerEventsCb | undefined;
 
   private getSource!: GetSourceCallback<S>;
   public prev: ReconcileableSubtree<S> | undefined;
@@ -47,7 +50,7 @@ export class ReconciliationController<S> implements ReactiveController {
     this.reconcilerName = params.type;
     this.itemReconcile = params.reconcile;
     this.getSource = params.source;
-    this.beforeLeave = params.beforeLeave;
+    this.beforeLeave = params.on;
   }
 
   emit(type: "leave") {
@@ -71,10 +74,10 @@ export class ReconciliationController<S> implements ReactiveController {
 
     const bl = this.beforeLeave;
     if (bl) {
-      this.curr.list.forEach((p, i) => {
+      this.curr.list.forEach((p, index) => {
         if (p.leave) {
-          const st = this.curr.diff.stagger.indices[i];
-          bl(this.host as HostType, st, i);
+          const stagger = this.curr.diff.stagger.indices[index];
+          bl(this.host as HostType, "leave", { index, stagger: stagger });
         }
       });
     }

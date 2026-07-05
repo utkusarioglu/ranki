@@ -56,9 +56,10 @@ export class R2Icon extends R2C {
     type: "last",
     reconcile: (c, p) => (c.icon === p.icon ? "retain" : "add"),
     source: (s) => [s.props],
-    beforeLeave: (s, _, i) => {
-      const span = (s as R2Icon).spans[i];
-      span?.leave();
+    on: (s, type, { index }) => {
+      if (type === "leave") {
+        (s as R2Icon).spans[index]!.leave();
+      }
     },
   })
   private readonly subtree!: ReconciliationController<R2IconProps>;
