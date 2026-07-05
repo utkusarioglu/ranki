@@ -1,22 +1,20 @@
+import { assertNever } from "_error/assertions.mjs";
 import {
   ReconciliationUtils,
   type ReconcileableSubtree,
   type ReconcileSingle,
 } from "_utils/reconciliation.utils.mjs";
 import { TimingUtils } from "_utils/timing,utils.mjs";
-import type {
-  LitElement,
-  ReactiveController,
-  ReactiveControllerHost,
-  ReactiveElement,
-} from "lit";
+import type { LitElement, ReactiveController, ReactiveElement } from "lit";
+
+type HostType = LitElement;
 
 type GetSourceCallback<S> = (instance: any) => S[];
 
 type ReconcilerTypes = "flat" | "last";
 
 export type BeforeLeaveCb = (
-  host: LitElement,
+  host: HostType,
   stagger: number,
   index: number,
 ) => void;
@@ -29,7 +27,7 @@ type SubtreeParams<S> = {
 };
 
 export class ReconciliationController<S> implements ReactiveController {
-  private host: ReactiveControllerHost;
+  private host: HostType;
   private reconcilerName!: ReconcilerTypes;
   private itemReconcile!: ReconcileSingle<S>;
   private beforeLeave: BeforeLeaveCb | undefined;
@@ -42,13 +40,23 @@ export class ReconciliationController<S> implements ReactiveController {
   private leaving: number[] = [];
   private willLeave = false;
 
-  constructor(host: ReactiveControllerHost, params: SubtreeParams<S>) {
+  constructor(host: HostType, params: SubtreeParams<S>) {
     host.addController(this);
     this.host = host;
     this.reconcilerName = params.type;
     this.itemReconcile = params.reconcile;
     this.getSource = params.source;
     this.beforeLeave = params.beforeLeave;
+  }
+
+  emit(type: "leave") {
+    switch (type) {
+      case "leave":
+        ReconciliationUtils.emitLeave(this.host);
+        break;
+      default:
+        assertNever({ why: "Unrecognized emit type", details: { type } });
+    }
   }
 
   hostUpdate(): void {
@@ -65,7 +73,7 @@ export class ReconciliationController<S> implements ReactiveController {
       this.curr.list.forEach((p, i) => {
         if (p.leave) {
           const st = this.curr.diff.stagger.indices[i];
-          bl(this.host as LitElement, st, i);
+          bl(this.host as HostType, st, i);
         }
       });
     }
@@ -81,15 +89,14 @@ export class ReconciliationController<S> implements ReactiveController {
     return (e: CustomEvent) => {
       e.stopPropagation();
       this.prev = this.curr;
-      this.leave(this.prev, id, this.setCurr.bind(this));
+      this.leave(this.prev, id);
       // ReconciliationUtils.leave(this.prev, id, this.setCurr.bind(this));
     };
   }
 
-  private async leave<G>(
-    subtree: ReconcileableSubtree<G>,
+  private async leave(
+    subtree: ReconcileableSubtree<S>,
     id: number,
-    updateCb: (subtree: ReconcileableSubtree<G>) => void,
   ): Promise<void> {
     this.leaving.push(id);
     if (!this.willLeave) {
@@ -108,7 +115,7 @@ export class ReconciliationController<S> implements ReactiveController {
         (_, i) => i,
       );
 
-      updateCb({
+      this.setCurr({
         list,
         diff: {
           add: [],
@@ -130,8 +137,11 @@ export function reconciler<S>(params: SubtreeParams<S>) {
   return (proto: ReactiveElement, key: string) => {
     const ctor = proto.constructor as typeof ReactiveElement;
 
-    ctor.addInitializer((instance: ReactiveElement) => {
-      (instance as any)[key] = new ReconciliationController(instance, params);
+    ctor.addInitializer((instance) => {
+      (instance as any)[key] = new ReconciliationController(
+        instance as HostType,
+        params,
+      );
     });
   };
 }

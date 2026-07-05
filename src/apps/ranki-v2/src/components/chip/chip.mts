@@ -9,13 +9,11 @@ import {
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
 import style from "./chip.css?inline";
+import { ReconciliationUtils } from "_utils/reconciliation.utils.mjs";
 
 @customElement("r2-chip")
 export class R2Chip extends R2C {
   static override styles = unsafeCSS(style);
-
-  // @property({ type: Boolean, reflect: true })
-  // leave = false;
 
   @query("r2-icon")
   // @ts-expect-error
@@ -39,7 +37,7 @@ export class R2Chip extends R2C {
     role: "chip",
     on: (s, action) => {
       if (action === "leave-end") {
-        s.emitLeave();
+        ReconciliationUtils.emitLeave(s);
       }
     },
     targets: {

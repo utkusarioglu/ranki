@@ -1,6 +1,5 @@
 import { LitElement } from "lit";
 import { assertNever } from "_error/assertions.mjs";
-import { ReconciliationUtils } from "_utils/reconciliation.utils.mjs";
 import type { InformContext } from "_controllers/geometry/geometry.types.mjs";
 import type { AnimateableStyles } from "_controllers/geometry/geometry.animator.types.mjs";
 
@@ -8,15 +7,7 @@ export type Other = {
   opacity: number;
 };
 
-export interface R2Animate extends LitElement {
-  informStyle(pos: AnimateableStyles, context: InformContext): void;
-}
-
-export class R2C extends LitElement implements R2Animate {
-  protected emitLeave() {
-    this.dispatchEvent(ReconciliationUtils.leaveEvent());
-  }
-
+export class R2C extends LitElement {
   public leave() {
     assertNever({
       why: "`animateLeave` method needs an override to be consumed",

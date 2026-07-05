@@ -1,4 +1,5 @@
 import { assertNever } from "_error/assertions.mjs";
+import type { LitElement } from "lit";
 
 export type ReconciliationActions = "retain" | "update" | "remove" | "add";
 
@@ -35,7 +36,11 @@ export class ReconciliationUtils {
   private static idCounter = 0;
   static leaveEventName = "r2-reconciliation";
 
-  static leaveEvent() {
+  public static emitLeave(el: LitElement) {
+    el.dispatchEvent(ReconciliationUtils.leaveEvent());
+  }
+
+  private static leaveEvent() {
     return new CustomEvent(this.leaveEventName, {
       bubbles: true,
       composed: true,

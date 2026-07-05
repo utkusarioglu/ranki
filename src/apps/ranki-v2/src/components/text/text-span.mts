@@ -10,6 +10,7 @@ import {
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
 import style from "./text-span.css?inline";
+import { ReconciliationUtils } from "_utils/reconciliation.utils.mjs";
 
 @customElement("r2-text-span")
 export class R2TextSpan extends R2C {
@@ -25,7 +26,8 @@ export class R2TextSpan extends R2C {
     role: "text-span",
     on: (s, action) => {
       if (action === "leave-end") {
-        s.emitLeave();
+        ReconciliationUtils.emitLeave(s);
+        // s.emitLeave();
       }
     },
   })

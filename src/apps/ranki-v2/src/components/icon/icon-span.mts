@@ -13,6 +13,7 @@ import {
 } from "_controllers/geometry/geometry.mjs";
 import style from "./icon-span.css?inline";
 import { SVG_PLACEHOLDER } from "./SVG_PLACEHOLDER.mjs";
+import { ReconciliationUtils } from "_utils/reconciliation.utils.mjs";
 
 @customElement("r2-icon-span")
 export class R2IconSpan extends R2C {
@@ -28,7 +29,8 @@ export class R2IconSpan extends R2C {
     role: "icon-span",
     on: (s, action) => {
       if (action === "leave-end") {
-        s.emitLeave();
+        ReconciliationUtils.emitLeave(s);
+        // s.emitLeave();
       }
     },
   })
