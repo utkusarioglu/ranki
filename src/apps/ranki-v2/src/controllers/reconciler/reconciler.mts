@@ -1,6 +1,7 @@
 import { assertNever } from "_error/assertions.mjs";
 import {
   ReconciliationUtils,
+  type R2ReconcilerEmit,
   type ReconcileableSubtree,
   type ReconcileSingle,
 } from "_utils/reconciliation.utils.mjs";
@@ -85,11 +86,21 @@ export class ReconciliationController<S> implements ReactiveController {
     this.host.requestUpdate();
   }
 
-  onLeave(id: number) {
-    return (e: CustomEvent) => {
+  onEmit(id: number) {
+    return (e: CustomEvent<R2ReconcilerEmit>) => {
       e.stopPropagation();
-      this.prev = this.curr;
-      this.leave(this.prev, id);
+      const detail = e.detail;
+      switch (detail.type) {
+        case "leave":
+          this.prev = this.curr;
+          this.leave(this.prev, id);
+          break;
+        default:
+          assertNever({
+            why: "Unrecognized Reconciler emit type",
+            details: { type: detail.type },
+          });
+      }
       // ReconciliationUtils.leave(this.prev, id, this.setCurr.bind(this));
     };
   }

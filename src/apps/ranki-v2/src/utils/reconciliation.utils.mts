@@ -32,18 +32,26 @@ export interface ReconciliationContainer<T extends any> {
   leave: boolean;
 }
 
+export type R2ReconcilerEmit = {
+  type: "leave";
+};
+
 export class ReconciliationUtils {
   private static idCounter = 0;
-  static leaveEventName = "r2-reconciliation";
+  static leaveEventName = "r2-reconciler";
 
   public static emitLeave(el: LitElement) {
     el.dispatchEvent(ReconciliationUtils.leaveEvent());
   }
 
   private static leaveEvent() {
-    return new CustomEvent(this.leaveEventName, {
+    const detail = {
+      type: "leave" as "leave",
+    };
+    return new CustomEvent<R2ReconcilerEmit>(this.leaveEventName, {
       bubbles: true,
       composed: true,
+      detail,
     });
   }
 
