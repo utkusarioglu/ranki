@@ -3,6 +3,7 @@ import {
   type ReconcileableSubtree,
   type ReconcileSingle,
 } from "_utils/reconciliation.utils.mjs";
+import { TimingUtils } from "_utils/timing,utils.mjs";
 import type {
   LitElement,
   ReactiveController,
@@ -38,6 +39,9 @@ export class ReconciliationController<S> implements ReactiveController {
   public curr: ReconcileableSubtree<S> = ReconciliationUtils.empty<S>();
   public epoch: number = 0;
 
+  private leaving: number[] = [];
+  private willLeave = false;
+
   constructor(host: ReactiveControllerHost, params: SubtreeParams<S>) {
     host.addController(this);
     this.host = host;
@@ -70,6 +74,7 @@ export class ReconciliationController<S> implements ReactiveController {
 
   private setCurr(value: ReconcileableSubtree<S>) {
     this.curr = value;
+    console.log("new curr", this.curr);
     this.host.requestUpdate();
   }
 
@@ -77,8 +82,52 @@ export class ReconciliationController<S> implements ReactiveController {
     return (e: CustomEvent) => {
       e.stopPropagation();
       this.prev = this.curr;
-      ReconciliationUtils.leave(this.prev, id, this.setCurr.bind(this));
+      this.leave(this.prev, id, this.setCurr.bind(this));
+      // ReconciliationUtils.leave(this.prev, id, this.setCurr.bind(this));
     };
+  }
+
+  // !FIX: this needs to be an instance method
+  private async leave<G>(
+    subtree: ReconcileableSubtree<G>,
+    id: number,
+    updateCb: (subtree: ReconcileableSubtree<G>) => void,
+  ): Promise<void> {
+    console.log("leave", id, subtree);
+    this.leaving.push(id);
+    if (!this.willLeave) {
+      this.willLeave = true;
+      await TimingUtils.waitLayout();
+      if (!this.leaving.length) {
+        return;
+      }
+      const remove = [...this.leaving];
+      const list = subtree.list.filter((i) => !remove.includes(i.id));
+      this.leaving = [];
+      this.willLeave = false;
+      // !FIX: this should be gone. `retain` can be created from the `subtree.list.filter` call. the call below is buggy
+      const retain = Array.from(
+        { length: subtree.list.length - remove.length },
+        (_, i) => i,
+      );
+
+      console.log("new list", list);
+
+      updateCb({
+        list,
+        diff: {
+          add: [],
+          remove,
+          retain,
+          update: [],
+          stagger: {
+            first: id,
+            indices: subtree.diff.stagger.indices,
+          },
+        },
+        epoch: Date.now(),
+      });
+    }
   }
 }
 

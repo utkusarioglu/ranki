@@ -66,7 +66,7 @@ export class R2Chip extends R2C {
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 
-  public override async leave(_st: number) {
+  public override leave() {
     this.geo.emit("leave");
   }
 

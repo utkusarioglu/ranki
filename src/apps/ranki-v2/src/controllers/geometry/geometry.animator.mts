@@ -48,7 +48,7 @@ export class Animator {
     const r = this.runningAnimations.get(name);
     if (r) {
       r.oncancel = (ev) => {
-        console.log("cancel", name, this.host.tagName);
+        // console.log("cancel", name, this.host.tagName);
       };
       r.commitStyles();
       r.cancel();

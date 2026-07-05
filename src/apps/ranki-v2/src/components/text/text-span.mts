@@ -32,7 +32,7 @@ export class R2TextSpan extends R2C {
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 
-  public override async leave(_stagger: number) {
+  public override leave() {
     this.geo.emit("leave");
   }
 

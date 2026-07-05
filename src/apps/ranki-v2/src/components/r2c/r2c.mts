@@ -17,10 +17,7 @@ export class R2C extends LitElement implements R2Animate {
     this.dispatchEvent(ReconciliationUtils.leaveEvent());
   }
 
-  public async leave(
-    // @ts-expect-error
-    stagger: number,
-  ): Promise<void> {
+  public leave() {
     assertNever({
       why: "`animateLeave` method needs an override to be consumed",
     });
