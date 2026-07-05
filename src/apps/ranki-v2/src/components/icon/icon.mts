@@ -40,7 +40,7 @@ export class R2Icon extends R2C {
   @queryAll("r2-icon-span")
   private spans!: NodeListOf<R2IconSpan>;
 
-  @geometry({
+  @geometry<R2Icon>({
     role: "icon",
     targets: {
       "icon-span": {
@@ -50,7 +50,7 @@ export class R2Icon extends R2C {
       },
     },
   })
-  private readonly geo!: GeometryController;
+  private readonly geo!: GeometryController<R2Icon>;
 
   @reconciler<R2IconProps>({
     type: "last",

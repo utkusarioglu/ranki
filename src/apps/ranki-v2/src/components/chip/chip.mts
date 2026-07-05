@@ -16,15 +16,12 @@ export class R2Chip extends R2C {
   static override styles = unsafeCSS(style);
 
   @query("r2-icon")
-  // @ts-expect-error
   private icon!: R2C;
 
   @query("r2-text")
-  // @ts-expect-error
   private text!: R2C;
 
   @query("r2-hud-bg")
-  // @ts-expect-error
   private bg!: R2HudBg;
 
   @property()
@@ -33,7 +30,7 @@ export class R2Chip extends R2C {
   @property()
   private list!: HudTagListItem[];
 
-  @geometry({
+  @geometry<R2Chip>({
     role: "chip",
     on: (s, action) => {
       if (action === "leave-end") {
@@ -61,7 +58,7 @@ export class R2Chip extends R2C {
       },
     },
   })
-  private readonly geo!: GeometryController;
+  private readonly geo!: GeometryController<R2Chip>;
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 

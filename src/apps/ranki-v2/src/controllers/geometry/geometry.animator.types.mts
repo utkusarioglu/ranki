@@ -6,7 +6,6 @@ import type {
   Pos,
   UpdateStyle,
 } from "./geometry.types.mjs";
-import type { GeometryController } from "./geometry.mjs";
 
 export type ImmediateStyles = { zIndex?: number } & AnimateableStyles;
 
@@ -37,9 +36,9 @@ export type Anim = {
   easing: string;
 };
 
-export interface R2CWithGeometry {
-  readonly geometry: GeometryController;
-}
+// export interface R2CWithGeometry {
+//   readonly geometry: GeometryController;
+// }
 
 export type InformTargetCb = (params: InformTargetParams) => Promise<void>;
 

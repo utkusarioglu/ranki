@@ -35,17 +35,19 @@ import {
 
 type HostType = LitElement;
 
-export class GeometryController implements ReactiveController {
-  private readonly host: HostType;
+export class GeometryController<
+  Instance extends LitElement,
+> implements ReactiveController {
+  private readonly host: Instance;
   private readonly registered = new WeakMap<R2C, Dims>();
-  private readonly targets: TargetRec | undefined;
+  private readonly targets: TargetRec<Instance> | undefined;
   private readonly animator: Animator;
-  private readonly on: TargetEventCb | null = null;
+  private readonly on: TargetEventCb<Instance> | null = null;
   private sizing: R2Sizing | null = null;
   private requested = false;
   private currStyle: UpdateStyle | null = null;
 
-  constructor(host: HostType, params: GeometryParams) {
+  constructor(host: Instance, params: GeometryParams<Instance>) {
     host.addController(this);
     this.host = host;
     this.targets = params.targets;
@@ -73,7 +75,7 @@ export class GeometryController implements ReactiveController {
     }
   }
 
-  private getTarget(id: string): TargetProps {
+  private getTarget(id: string): TargetProps<Instance> {
     const s = this.targets && this.targets[id]!;
     assertExists(s, {
       why: "Subtree selector hasn't been registered",
@@ -244,13 +246,15 @@ export class GeometryController implements ReactiveController {
   hostConnected(): void {}
 }
 
-export function geometry(params: GeometryParams) {
+export function geometry<Instance extends HostType>(
+  params: GeometryParams<Instance>,
+) {
   return (proto: HostType, key: string) => {
     const ctor = proto.constructor as typeof ReactiveElement;
 
     ctor.addInitializer((instance) => {
-      (instance as any)[key] = new GeometryController(
-        instance as HostType,
+      (instance as any)[key] = new GeometryController<Instance>(
+        instance as Instance,
         params,
       );
     });

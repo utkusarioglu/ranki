@@ -44,11 +44,11 @@ export class R2BadgeList extends R2C {
   })
   private readonly subtree!: ReconciliationController<R2BadgeListState>;
 
-  @geometry({
+  @geometry<R2BadgeList>({
     role: "badge-list",
     targets: {
       bg: {
-        selector: (r: R2BadgeList) => [r.bg],
+        selector: (r) => [r.bg],
       },
       chips: {
         selector: (r) => Array.from(r.chips),
@@ -68,7 +68,7 @@ export class R2BadgeList extends R2C {
       },
     },
   })
-  private readonly geo!: GeometryController;
+  private readonly geo!: GeometryController<R2BadgeList>;
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 

@@ -38,7 +38,7 @@ export class R2Text extends R2C {
   @queryAll("r2-text-span")
   private spans!: NodeListOf<R2TextSpan>;
 
-  @geometry({
+  @geometry<R2Text>({
     role: "text",
     targets: {
       "text-span": {
@@ -48,7 +48,7 @@ export class R2Text extends R2C {
       },
     },
   })
-  private readonly geo!: GeometryController;
+  private readonly geo!: GeometryController<R2Text>;
 
   @reconciler<R2TextProps>({
     type: "last",

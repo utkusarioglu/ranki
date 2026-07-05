@@ -25,7 +25,7 @@ export class R2IconSpan extends R2C {
   @state()
   private svg: string = SVG_PLACEHOLDER;
 
-  @geometry({
+  @geometry<R2IconSpan>({
     role: "icon-span",
     on: (s, type) => {
       if (type === "leave-end") {
@@ -33,7 +33,7 @@ export class R2IconSpan extends R2C {
       }
     },
   })
-  private readonly geo!: GeometryController;
+  private readonly geo!: GeometryController<R2IconSpan>;
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 

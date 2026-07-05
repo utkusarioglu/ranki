@@ -10,8 +10,8 @@ import {
 export class R2HudBg extends R2C {
   static override styles = unsafeCSS(style);
 
-  @geometry({ role: "hud-bg" })
-  private readonly geo!: GeometryController;
+  @geometry<R2HudBg>({ role: "hud-bg" })
+  private readonly geo!: GeometryController<R2HudBg>;
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 

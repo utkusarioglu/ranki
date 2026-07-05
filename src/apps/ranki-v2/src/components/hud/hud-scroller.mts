@@ -21,14 +21,12 @@ export class R2HudScroller extends R2C {
   `;
 
   @queryAll("r2-cue-list")
-  // @ts-expect-error
   private cueList!: NodeListOf<R2C>;
 
   @query("r2-hud-bg")
-  // @ts-expect-error
   private bg!: R2HudBg;
 
-  @geometry({
+  @geometry<R2HudScroller>({
     role: "hud-scroller",
     targets: {
       bg: {
@@ -51,7 +49,7 @@ export class R2HudScroller extends R2C {
       },
     },
   })
-  private readonly geo!: GeometryController;
+  private readonly geo!: GeometryController<R2HudScroller>;
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 

@@ -13,10 +13,9 @@ export class R2Hud extends R2C {
   static override styles = unsafeCSS(styles);
 
   @query("r2-hud-scroller")
-  // @ts-expect-error
   private scroller!: R2C;
 
-  @geometry({
+  @geometry<R2Hud>({
     role: "hud",
     targets: {
       scroller: {
@@ -32,7 +31,7 @@ export class R2Hud extends R2C {
       },
     },
   })
-  private readonly geo!: GeometryController;
+  private readonly geo!: GeometryController<R2Hud>;
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 

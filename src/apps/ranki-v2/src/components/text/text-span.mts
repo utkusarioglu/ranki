@@ -22,7 +22,7 @@ export class R2TextSpan extends R2C {
   @query("span")
   private span!: HTMLSpanElement;
 
-  @geometry({
+  @geometry<R2TextSpan>({
     role: "text-span",
     on: (s, type) => {
       if (type === "leave-end") {
@@ -30,7 +30,7 @@ export class R2TextSpan extends R2C {
       }
     },
   })
-  private readonly geo!: GeometryController;
+  private readonly geo!: GeometryController<R2TextSpan>;
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 

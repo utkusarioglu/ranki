@@ -9,24 +9,26 @@ export type ListenChildrenEvent = CustomEvent<{ rect: Dims; detail: any }>;
 
 export type Dims = Pick<DOMRect, "width" | "height">;
 
-export type TargetSelectorCb = (s: LitInstance) => R2C[];
+export type TargetSelectorCb<Instance extends LitInstance> = (
+  s: Instance,
+) => R2C[];
 // export type SizingSelector = Record<string, >;
 
 export type TargetEventCbEvents = `${LocalAction}-start` & `${LocalAction}-end`;
 
-export type TargetEventCb = (
-  s: LitInstance,
+export type TargetEventCb<Instance> = (
+  s: Instance,
   event: TargetEventCbEvents,
 ) => void;
 
-export interface TargetProps {
+export interface TargetProps<Instance> {
   isRoot?: boolean;
-  selector: TargetSelectorCb;
+  selector: TargetSelectorCb<Instance>;
   sizing?: SizingCb;
   diff?: ReconcilerChangesCb;
 }
 
-export type TargetRec = Record<string, TargetProps>;
+export type TargetRec<Instance> = Record<string, TargetProps<Instance>>;
 
 /**
  * Lets the host set the start, end margins and the padding between its children
@@ -43,10 +45,10 @@ export type ReconcilerChangesCb = (s: LitInstance) => ReconciliationDiff;
 
 export type ReconcilerChangesMapCb = Record<string, ReconcilerChangesCb>;
 
-export interface GeometryParams {
+export interface GeometryParams<Instance> {
   role: AnimationRole;
-  on?: TargetEventCb;
-  targets?: TargetRec;
+  on?: TargetEventCb<Instance>;
+  targets?: TargetRec<Instance>;
 }
 
 // TODO put into use

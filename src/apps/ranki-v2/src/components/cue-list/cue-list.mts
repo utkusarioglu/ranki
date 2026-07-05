@@ -15,14 +15,12 @@ export class R2CueList extends R2C {
   static override styles = unsafeCSS(style);
 
   @query("r2-badge-list")
-  // @ts-expect-error
   private badgeList!: R2C;
 
   @query("r2-hud-bg")
-  // @ts-expect-error
   private bg!: R2HudBg;
 
-  @geometry({
+  @geometry<R2CueList>({
     role: "cue-list",
     targets: {
       bg: {
@@ -45,7 +43,7 @@ export class R2CueList extends R2C {
       },
     },
   })
-  private readonly geo!: GeometryController;
+  private readonly geo!: GeometryController<R2CueList>;
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 
