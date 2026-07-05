@@ -276,47 +276,4 @@ export class ReconciliationUtils {
       composed: true,
     });
   }
-
-  // // !FIX: this needs to be an instance method
-  // public static async leave<G>(
-  //   subtree: ReconcileableSubtree<G>,
-  //   id: number,
-  //   updateCb: (subtree: ReconcileableSubtree<G>) => void,
-  // ): Promise<void> {
-  //   console.log("leave", id, subtree);
-  //   this.leaving.push(id);
-  //   if (!this.willLeave) {
-  //     this.willLeave = true;
-  //     await TimingUtils.waitLayout();
-  //     if (!this.leaving.length) {
-  //       return;
-  //     }
-  //     const remove = [...this.leaving];
-  //     const list = subtree.list.filter((i) => !remove.includes(i.id));
-  //     this.leaving = [];
-  //     this.willLeave = false;
-  //     // !FIX: this should be gone. `retain` can be created from the `subtree.list.filter` call. the call below is buggy
-  //     const retain = Array.from(
-  //       { length: subtree.list.length - remove.length },
-  //       (_, i) => i,
-  //     );
-
-  //     console.log("new list", list);
-
-  //     updateCb({
-  //       list,
-  //       diff: {
-  //         add: [],
-  //         remove,
-  //         retain,
-  //         update: [],
-  //         stagger: {
-  //           first: id,
-  //           indices: subtree.diff.stagger.indices,
-  //         },
-  //       },
-  //       epoch: Date.now(),
-  //     });
-  //   }
-  // }
 }

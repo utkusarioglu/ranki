@@ -38,7 +38,6 @@ export class R2BadgeList extends R2C {
     source: (s) => s.store.curr || [],
     beforeLeave: (c, _, i) => {
       const chip = (c as R2BadgeList).chips[i];
-      console.log("chip leave", i, chip);
       chip?.leave();
     },
   })

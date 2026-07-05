@@ -74,7 +74,6 @@ export class ReconciliationController<S> implements ReactiveController {
 
   private setCurr(value: ReconcileableSubtree<S>) {
     this.curr = value;
-    console.log("new curr", this.curr);
     this.host.requestUpdate();
   }
 
@@ -87,13 +86,11 @@ export class ReconciliationController<S> implements ReactiveController {
     };
   }
 
-  // !FIX: this needs to be an instance method
   private async leave<G>(
     subtree: ReconcileableSubtree<G>,
     id: number,
     updateCb: (subtree: ReconcileableSubtree<G>) => void,
   ): Promise<void> {
-    console.log("leave", id, subtree);
     this.leaving.push(id);
     if (!this.willLeave) {
       this.willLeave = true;
@@ -110,8 +107,6 @@ export class ReconciliationController<S> implements ReactiveController {
         { length: subtree.list.length - remove.length },
         (_, i) => i,
       );
-
-      console.log("new list", list);
 
       updateCb({
         list,
