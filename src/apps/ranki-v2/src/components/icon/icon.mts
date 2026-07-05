@@ -34,7 +34,6 @@ export class R2Icon extends R2C {
   static override styles = unsafeCSS(style);
 
   @property()
-  // @ts-expect-error
   private props!: R2IconProps;
 
   @queryAll("r2-icon-span")
@@ -52,7 +51,7 @@ export class R2Icon extends R2C {
   })
   private readonly geo!: GeometryController<R2Icon>;
 
-  @reconciler<R2IconProps>({
+  @reconciler<R2Icon, R2IconProps>({
     type: "last",
     reconcile: (c, p) => (c.icon === p.icon ? "retain" : "add"),
     source: (s) => [s.props],
@@ -62,7 +61,7 @@ export class R2Icon extends R2C {
       }
     },
   })
-  private readonly subtree!: ReconciliationController<R2IconProps>;
+  private readonly subtree!: ReconciliationController<R2Icon, R2IconProps>;
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 

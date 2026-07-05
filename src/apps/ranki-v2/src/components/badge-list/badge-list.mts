@@ -25,14 +25,14 @@ export class R2BadgeList extends R2C {
 
   @queryAll("r2-chip")
   private chips!: NodeListOf<R2C>;
+
   @query("r2-hud-bg")
   private bg!: R2HudBg;
 
   @store((s) => s.state?.hud.subtree.tags.list || [])
-  // @ts-expect-error
   private readonly store!: StoreController<HudTagListItem[]>;
 
-  @reconciler<R2BadgeListState>({
+  @reconciler<R2BadgeList, R2BadgeListState>({
     type: "flat",
     reconcile: (c, p) => (c.text === p.text ? "retain" : "update"),
     source: (s) => s.store.curr || [],
@@ -42,7 +42,10 @@ export class R2BadgeList extends R2C {
       }
     },
   })
-  private readonly subtree!: ReconciliationController<R2BadgeListState>;
+  private readonly subtree!: ReconciliationController<
+    R2BadgeList,
+    R2BadgeListState
+  >;
 
   @geometry<R2BadgeList>({
     role: "badge-list",

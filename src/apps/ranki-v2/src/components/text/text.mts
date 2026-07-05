@@ -32,7 +32,6 @@ export class R2Text extends R2C {
   static override styles = unsafeCSS(style);
 
   @property()
-  // @ts-expect-error
   private props!: R2TextProps;
 
   @queryAll("r2-text-span")
@@ -50,7 +49,7 @@ export class R2Text extends R2C {
   })
   private readonly geo!: GeometryController<R2Text>;
 
-  @reconciler<R2TextProps>({
+  @reconciler<R2Text, R2TextProps>({
     type: "last",
     reconcile: (c, p) => (c.text === p.text ? "retain" : "add"),
     source: (s) => [s.props],
@@ -60,7 +59,7 @@ export class R2Text extends R2C {
       }
     },
   })
-  private readonly subtree!: ReconciliationController<R2TextProps>;
+  private readonly subtree!: ReconciliationController<R2Text, R2TextProps>;
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 
