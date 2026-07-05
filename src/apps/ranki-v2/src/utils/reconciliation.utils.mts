@@ -1,5 +1,4 @@
 import { assertNever } from "_error/assertions.mjs";
-// import { TimingUtils } from "./timing,utils.mjs";
 
 export type ReconciliationActions = "retain" | "update" | "remove" | "add";
 
@@ -12,8 +11,6 @@ export type ReconciliationDiff = {
     first: number;
     indices: number[];
   };
-  // mutateOrder: number[];
-  // mutateIndex: number;
 };
 
 export type ReconcileSingle<G> = (curr: G, prev: G) => ReconciliationActions;
@@ -36,8 +33,14 @@ export interface ReconciliationContainer<T extends any> {
 
 export class ReconciliationUtils {
   private static idCounter = 0;
-  // private static leaving: number[] = [];
-  // private static willLeave = false;
+  static leaveEventName = "r2-reconciliation";
+
+  static leaveEvent() {
+    return new CustomEvent(this.leaveEventName, {
+      bubbles: true,
+      composed: true,
+    });
+  }
 
   public static empty<G>(): ReconcileableSubtree<G> {
     return {
@@ -161,14 +164,6 @@ export class ReconciliationUtils {
       indices = prev.diff.stagger.indices;
     }
 
-    // if (beforeLeave) {
-    //   indices
-    //     .filter((v) => v > 0)
-    //     .forEach((i) => {
-    //       beforeLeave(i);
-    //     });
-    // }
-
     return {
       list,
       epoch: Date.now(),
@@ -266,14 +261,5 @@ export class ReconciliationUtils {
 
   private static getId() {
     return this.idCounter++;
-  }
-
-  static leaveEventName = "r2-child-leave";
-
-  static leaveEvent() {
-    return new CustomEvent(this.leaveEventName, {
-      bubbles: true,
-      composed: true,
-    });
   }
 }

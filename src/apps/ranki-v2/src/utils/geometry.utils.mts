@@ -9,7 +9,6 @@ export class GeometryUtils {
   public static readonly geometryEventName = "r2-geometry";
 
   public static evaluateActions(
-    // curr: Omit<UpdateStyle, "action">,
     curr: UpdateStyle,
     prev: UpdateStyle | null,
   ): LocalAction[] {
@@ -75,26 +74,13 @@ export class GeometryUtils {
       !isLeave;
     const isMove = is.top || is.left;
 
-    // console.log({
-    //   isEnter,
-    //   isLeave,
-    //   isExpand,
-    //   isContract,
-    //   isMove,
-    //   is,
-    //   has,
-    //   val,
-    //   curr,
-    //   prev,
-    // });
-
     const actions = new Set<LocalAction>();
-
     if (isEnter) actions.add("enter");
     if (isLeave) actions.add("leave");
     if (isExpand) actions.add("expand");
     if (isContract) actions.add("contract");
     if (isMove) actions.add("move");
+
     return Array.from(actions);
   }
 

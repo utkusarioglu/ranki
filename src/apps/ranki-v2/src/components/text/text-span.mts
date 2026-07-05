@@ -14,6 +14,7 @@ import style from "./text-span.css?inline";
 @customElement("r2-text-span")
 export class R2TextSpan extends R2C {
   static override styles = unsafeCSS(style);
+
   @property()
   public props!: R2TextProps;
 

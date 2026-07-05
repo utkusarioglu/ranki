@@ -17,68 +17,34 @@ import { SVG_PLACEHOLDER } from "./SVG_PLACEHOLDER.mjs";
 @customElement("r2-icon-span")
 export class R2IconSpan extends R2C {
   static override styles = unsafeCSS(style);
+
   @property()
   public props!: R2IconProps;
 
   @state()
   private svg: string = SVG_PLACEHOLDER;
 
-  // @property({ type: Boolean, reflect: true })
-  // leave = false;
-
   @geometry({ role: "icon-span" })
   public readonly geo!: GeometryController;
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 
-  // override updated(changed: PropertyValues) {
-  //   if (!changed.has("leave")) return;
-  //   if (this.leave) {
-  //     this.animateLeave();
-  //   }
-  // }
-
-  public override leave(_stagger: number): Promise<void> {
+  public override leave() {
     this.geo.emit("leave");
-    return Promise.resolve();
   }
-
-  // async animateLeave() {
-  //   this.animateStyle(
-  //     {
-  //       name: "opacity",
-  //       keyframes: {
-  //         opacity: 0,
-  //       },
-  //       options: {
-  //         duration: this.props.animation.duration,
-  //       },
-  //     },
-  //     () => {
-  //       this.dispatchEvent(
-  //         new CustomEvent("r2-child-leave", {
-  //           bubbles: true,
-  //           composed: true,
-  //         }),
-  //       );
-  //     },
-  //   );
-  // }
 
   override async firstUpdated() {
     const { width, height } = this.props;
     const dims: Dims = { width, height };
     await TimingUtils.waitLayout();
-    this.geo.emit("size", dims);
+    setTimeout(() => {
+      this.geo.emit("size", dims);
+    }, PROPAGATE_DELAY);
     try {
       const icon = await loadIcon(this.props.icon);
       this.svg = icon.body;
     } catch (e) {
       console.log(e);
-    } finally {
-      setTimeout(() => {
-        this.geo.emit("size", dims);
-      }, PROPAGATE_DELAY);
     }
   }
 

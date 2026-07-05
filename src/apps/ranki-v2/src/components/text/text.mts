@@ -69,7 +69,7 @@ export class R2Text extends R2C {
       (p) =>
         html`<r2-text-span 
           .props=${p.props} 
-          @r2-child-leave=${this.subtree.onLeave(p.id)}
+          @r2-reconciliation=${this.subtree.onLeave(p.id)}
           @r2-geometry=${this.geo.onEmit("text-span")}
         ></r2-text-span`,
     )}`;
