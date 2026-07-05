@@ -43,17 +43,18 @@ export class R2Chip extends R2C {
     targets: {
       content: {
         selector: (s) => [s.icon, s.text],
-        sizing: SizingUtils.row({
-          main: {
-            start: 10,
-            gap: 5,
-            end: 10,
-          },
-          cross: {
-            start: 5,
-            end: 5,
-          },
-        }),
+        sizing: () =>
+          SizingUtils.row({
+            main: {
+              start: 10,
+              gap: 5,
+              end: 10,
+            },
+            cross: {
+              start: 5,
+              end: 5,
+            },
+          }),
       },
       bg: {
         selector: (s) => [s.bg],

@@ -45,7 +45,7 @@ export class R2Icon extends R2C {
     targets: {
       "icon-span": {
         selector: (s) => Array.from(s.spans),
-        sizing: SizingUtils.last(),
+        sizing: () => SizingUtils.last(),
         diff: (s) => s.subtree.curr.diff,
       },
     },

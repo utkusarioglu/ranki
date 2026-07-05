@@ -154,7 +154,7 @@ export class GeometryController implements ReactiveController {
         case "update":
           const sz = this.getSizingCallback(id);
           const ordered = this.orderTrackedNodes(id);
-          this.sizing = sz(ordered);
+          this.sizing = sz(this.host)(ordered);
           if (!this.requested) {
             this.requested = true;
             TimingUtils.raf().then(() => {

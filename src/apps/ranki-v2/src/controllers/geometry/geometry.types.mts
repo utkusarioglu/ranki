@@ -33,7 +33,9 @@ export type TargetRec = Record<string, TargetProps>;
  */
 export type SizingCallbackRecord = Record<string, SizingCb>;
 
-export type SizingCb = (dims: ComponentDims[]) => R2Sizing | null;
+export type SizingCb = (
+  s: LitInstance,
+) => (dims: ComponentDims[]) => R2Sizing | null;
 
 export type AnimationRole = string;
 

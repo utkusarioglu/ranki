@@ -27,7 +27,6 @@ export class R2TextSpan extends R2C {
     on: (s, action) => {
       if (action === "leave-end") {
         ReconciliationUtils.emitLeave(s);
-        // s.emitLeave();
       }
     },
   })

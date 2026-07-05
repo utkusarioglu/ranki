@@ -30,17 +30,18 @@ export class R2CueList extends R2C {
       },
       lists: {
         selector: (s) => [s.badgeList],
-        sizing: SizingUtils.row({
-          main: {
-            start: 10,
-            gap: 10,
-            end: 10,
-          },
-          cross: {
-            start: 2,
-            end: 2,
-          },
-        }),
+        sizing: () =>
+          SizingUtils.row({
+            main: {
+              start: 10,
+              gap: 10,
+              end: 10,
+            },
+            cross: {
+              start: 2,
+              end: 2,
+            },
+          }),
       },
     },
   })

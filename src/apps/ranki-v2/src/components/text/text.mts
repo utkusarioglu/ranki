@@ -43,7 +43,7 @@ export class R2Text extends R2C {
     targets: {
       "text-span": {
         selector: (s) => Array.from(s.spans),
-        sizing: SizingUtils.last(),
+        sizing: () => SizingUtils.last(),
         diff: (s) => s.subtree.curr.diff,
       },
     },

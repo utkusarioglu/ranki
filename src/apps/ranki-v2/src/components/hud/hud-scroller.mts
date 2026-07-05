@@ -36,17 +36,18 @@ export class R2HudScroller extends R2C {
       },
       sections: {
         selector: (s) => Array.from(s.cueList),
-        sizing: SizingUtils.row({
-          main: {
-            start: 10,
-            gap: 10,
-            end: 10,
-          },
-          cross: {
-            start: 2,
-            end: 2,
-          },
-        }),
+        sizing: () =>
+          SizingUtils.row({
+            main: {
+              start: 10,
+              gap: 10,
+              end: 10,
+            },
+            cross: {
+              start: 2,
+              end: 2,
+            },
+          }),
       },
     },
   })

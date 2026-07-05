@@ -30,7 +30,6 @@ export class R2IconSpan extends R2C {
     on: (s, action) => {
       if (action === "leave-end") {
         ReconciliationUtils.emitLeave(s);
-        // s.emitLeave();
       }
     },
   })

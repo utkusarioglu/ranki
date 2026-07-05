@@ -22,12 +22,13 @@ export class R2Hud extends R2C {
       scroller: {
         isRoot: true,
         selector: (s) => [s.scroller],
-        sizing: SizingUtils.row({
-          cross: {
-            start: 10,
-            end: 5,
-          },
-        }),
+        sizing: () =>
+          SizingUtils.row({
+            cross: {
+              start: 10,
+              end: 5,
+            },
+          }),
       },
     },
   })

@@ -51,17 +51,18 @@ export class R2BadgeList extends R2C {
       },
       chips: {
         selector: (r) => Array.from(r.chips),
-        sizing: SizingUtils.row({
-          main: {
-            start: 10,
-            gap: 4,
-            end: 10,
-          },
-          cross: {
-            start: 2,
-            end: 2,
-          },
-        }),
+        sizing: () =>
+          SizingUtils.row({
+            main: {
+              start: 10,
+              gap: 4,
+              end: 10,
+            },
+            cross: {
+              start: 2,
+              end: 2,
+            },
+          }),
         diff: (r) => r.subtree.curr.diff,
       },
     },
