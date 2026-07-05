@@ -19,13 +19,20 @@ export class R2IconSpan extends R2C {
   static override styles = unsafeCSS(style);
 
   @property()
-  public props!: R2IconProps;
+  private props!: R2IconProps;
 
   @state()
   private svg: string = SVG_PLACEHOLDER;
 
-  @geometry({ role: "icon-span" })
-  public readonly geo!: GeometryController;
+  @geometry({
+    role: "icon-span",
+    on: (s, action) => {
+      if (action === "leave-end") {
+        s.emitLeave();
+      }
+    },
+  })
+  private readonly geo!: GeometryController;
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 

@@ -30,6 +30,7 @@ export type Parts = {
 @customElement("r2-text")
 export class R2Text extends R2C {
   static override styles = unsafeCSS(style);
+
   @property()
   // @ts-expect-error
   private props!: R2TextProps;
@@ -47,7 +48,7 @@ export class R2Text extends R2C {
       },
     },
   })
-  public readonly geo!: GeometryController;
+  private readonly geo!: GeometryController;
 
   @reconciler<R2TextProps>({
     type: "last",

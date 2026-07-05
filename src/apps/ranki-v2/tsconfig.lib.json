@@ -14,6 +14,7 @@
       "_utils/*": ["./src/utils/*"],
       "_store/*": ["./src/store/*"],
       "_collect/*": ["./src/collect/*"],
+      "_controllers/*": ["./src/controllers/*"],
       "_/*": ["./src/*"],
       "@dqm/package-utils": ["../../packages/dqm-utils"],
       "@dqm/package-dqm-v2": ["../../packages/dqm-v2"]

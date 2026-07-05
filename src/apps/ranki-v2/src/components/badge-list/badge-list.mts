@@ -66,7 +66,7 @@ export class R2BadgeList extends R2C {
       },
     },
   })
-  public readonly geo!: GeometryController;
+  private readonly geo!: GeometryController;
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 

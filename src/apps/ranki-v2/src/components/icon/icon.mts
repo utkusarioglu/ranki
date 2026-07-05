@@ -1,4 +1,4 @@
-import { html, unsafeCSS, type PropertyValues } from "lit";
+import { html, unsafeCSS } from "lit";
 import { customElement, property, queryAll } from "lit/decorators.js";
 import { R2C } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
@@ -10,6 +10,10 @@ import {
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
 import style from "./icon.css?inline";
+import {
+  reconciler,
+  ReconciliationController,
+} from "_controllers/reconciler/reconciler.mjs";
 
 export interface R2IconProps {
   animation: RankiPropAnimationBlock;
@@ -30,57 +34,45 @@ export class R2Icon extends R2C {
   static override styles = unsafeCSS(style);
 
   @property()
+  // @ts-expect-error
   private props!: R2IconProps;
+
+  @queryAll("r2-icon-span")
+  private spans!: NodeListOf<R2IconSpan>;
 
   @geometry({
     role: "icon",
     targets: {
       "icon-span": {
-        selector: (s) => Array.from(s.subtree),
+        selector: (s) => Array.from(s.spans),
         sizing: SizingUtils.last(),
+        diff: (s) => s.subtree.curr.diff,
       },
     },
   })
-  public readonly geo!: GeometryController;
+  private readonly geo!: GeometryController;
 
-  @queryAll("r2-icon-span")
-  // @ts-expect-error
-  private subtree!: NodeListOf<R2IconSpan>;
-
-  private parts: Parts[] = [];
-
-  private idCounter = 0;
-
-  protected override willUpdate(changed: PropertyValues): void {
-    if (!changed.has("props")) return;
-    const curr = this.parts.at(-1);
-    if (curr && curr.props.icon === this.props.icon) return;
-    const updated = this.parts.map((p) => ({ ...p, leave: true }));
-    this.parts = [
-      ...updated,
-      {
-        id: this.idCounter++,
-        props: { ...this.props },
-        leave: false,
-      },
-    ];
-  }
+  @reconciler<R2IconProps>({
+    type: "last",
+    reconcile: (c, p) => (c.icon === p.icon ? "retain" : "add"),
+    source: (s) => [s.props],
+    beforeLeave: (s, _, i) => {
+      const span = (s as R2Icon).spans[i];
+      span?.leave();
+    },
+  })
+  private readonly subtree!: ReconciliationController<R2IconProps>;
 
   override informStyle = this.geo.informStyle.bind(this.geo);
 
-  private onChildLeave(id: number) {
-    this.parts = this.parts.filter((v) => v.id !== id);
-  }
-
   override render() {
     return html`${repeat(
-      this.parts,
+      this.subtree.curr.list,
       (v) => v.id,
       (p) =>
-        html`<r2-icon-span 
-          .props=${p.props} 
-          ?leave=${p.leave} 
-          @r2-child-leave=${() => this.onChildLeave(p.id)}
+        html`<r2-icon-span
+          .props=${p.props}
+          @r2-reconciliation=${this.subtree.onLeave(p.id)}
           @r2-geometry=${this.geo.onEmit("icon-span")}
         ></r2-icon-span`,
     )}`;

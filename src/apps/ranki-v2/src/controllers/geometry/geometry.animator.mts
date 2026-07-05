@@ -47,8 +47,16 @@ export class Animator {
     const anim = this.host.animate(finalKeyframes, finalOptions);
     const r = this.runningAnimations.get(name);
     if (r) {
-      r.oncancel = (ev) => {
-        // console.log("cancel", name, this.host.tagName);
+      r.oncancel = (_ev) => {
+        if (r.playState === "running") {
+          console.warn(
+            "Animation cancelled while running.",
+            "Name: ",
+            name,
+            "tag: ",
+            this.host.tagName,
+          );
+        }
       };
       r.commitStyles();
       r.cancel();
