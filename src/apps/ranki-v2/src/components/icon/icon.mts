@@ -57,7 +57,7 @@ export class R2Icon extends R2C {
     source: (s) => [s.props],
     on: (s, type, { index }) => {
       if (type === "leave") {
-        (s as R2Icon).spans[index]!.leave();
+        s.spans[index]!.leave();
       }
     },
   })

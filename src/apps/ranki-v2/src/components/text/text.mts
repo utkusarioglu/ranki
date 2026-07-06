@@ -55,7 +55,7 @@ export class R2Text extends R2C {
     source: (s) => [s.props],
     on: (s, type, { index }) => {
       if (type === "leave") {
-        (s as R2Text).spans[index]!.leave();
+        s.spans[index]!.leave();
       }
     },
   })
