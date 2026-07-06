@@ -57,6 +57,14 @@ export class GeometryController<
       params.role,
       this.informTarget.bind(this),
     );
+    this.bindInformStyle(params.customInformant);
+  }
+
+  private bindInformStyle(customInformant: boolean | undefined) {
+    if (customInformant !== true) {
+      // @ts-expect-error
+      this.host.informStyle = this.informStyle.bind(this);
+    }
   }
 
   public emit(type: "size" | "leave", dims?: Dims) {

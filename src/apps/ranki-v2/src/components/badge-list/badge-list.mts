@@ -73,8 +73,6 @@ export class R2BadgeList extends R2C {
   })
   private readonly geo!: GeometryController<R2BadgeList>;
 
-  override informStyle = this.geo.informStyle.bind(this.geo);
-
   override render() {
     const base = this.subtree.curr.list;
     return html`

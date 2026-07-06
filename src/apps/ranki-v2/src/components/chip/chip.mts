@@ -60,8 +60,6 @@ export class R2Chip extends R2C {
   })
   private readonly geo!: GeometryController<R2Chip>;
 
-  override informStyle = this.geo.informStyle.bind(this.geo);
-
   public override leave() {
     this.geo.emit("leave");
   }

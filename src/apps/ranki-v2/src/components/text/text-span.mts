@@ -32,8 +32,6 @@ export class R2TextSpan extends R2C {
   })
   private readonly geo!: GeometryController<R2TextSpan>;
 
-  override informStyle = this.geo.informStyle.bind(this.geo);
-
   public override leave() {
     this.geo.emit("leave");
   }

@@ -47,6 +47,7 @@ export type ReconcilerChangesMapCb = Record<string, ReconcilerChangesCb>;
 
 export interface GeometryParams<Instance> {
   role: AnimationRole;
+  customInformant?: boolean;
   on?: TargetEventCb<Instance>;
   targets?: TargetRec<Instance>;
 }

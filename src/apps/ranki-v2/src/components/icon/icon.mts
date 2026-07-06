@@ -63,8 +63,6 @@ export class R2Icon extends R2C {
   })
   private readonly subtree!: ReconciliationController<R2Icon, R2IconProps>;
 
-  override informStyle = this.geo.informStyle.bind(this.geo);
-
   override render() {
     return html`${repeat(
       this.subtree.curr.list,

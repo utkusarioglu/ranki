@@ -35,8 +35,6 @@ export class R2IconSpan extends R2C {
   })
   private readonly geo!: GeometryController<R2IconSpan>;
 
-  override informStyle = this.geo.informStyle.bind(this.geo);
-
   public override leave() {
     this.geo.emit("leave");
   }

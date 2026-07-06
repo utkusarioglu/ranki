@@ -61,8 +61,6 @@ export class R2Text extends R2C {
   })
   private readonly subtree!: ReconciliationController<R2Text, R2TextProps>;
 
-  override informStyle = this.geo.informStyle.bind(this.geo);
-
   override render() {
     return html`${repeat(
       this.subtree.curr.list,

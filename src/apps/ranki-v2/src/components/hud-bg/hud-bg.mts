@@ -11,9 +11,8 @@ export class R2HudBg extends R2C {
   static override styles = unsafeCSS(style);
 
   @geometry<R2HudBg>({ role: "hud-bg" })
+  // @ts-expect-error
   private readonly geo!: GeometryController<R2HudBg>;
-
-  override informStyle = this.geo.informStyle.bind(this.geo);
 
   override render() {
     return;

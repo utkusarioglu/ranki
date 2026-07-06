@@ -33,8 +33,6 @@ export class R2Hud extends R2C {
   })
   private readonly geo!: GeometryController<R2Hud>;
 
-  override informStyle = this.geo.informStyle.bind(this.geo);
-
   override render() {
     return html`
       <div class="rotate">

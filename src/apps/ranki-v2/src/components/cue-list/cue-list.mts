@@ -45,8 +45,6 @@ export class R2CueList extends R2C {
   })
   private readonly geo!: GeometryController<R2CueList>;
 
-  override informStyle = this.geo.informStyle.bind(this.geo);
-
   override render() {
     return html`
       <r2-hud-bg

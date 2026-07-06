@@ -51,8 +51,6 @@ export class R2HudScroller extends R2C {
   })
   private readonly geo!: GeometryController<R2HudScroller>;
 
-  override informStyle = this.geo.informStyle.bind(this.geo);
-
   override render() {
     return html`
       <r2-hud-bg
