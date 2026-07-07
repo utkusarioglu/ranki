@@ -2,6 +2,7 @@ import type { ReactiveElement } from "lit";
 import type {
   AnimationRole,
   InformContext,
+  InformedChildStyle,
   LocalAction,
   UpdateStyle,
 } from "./geometry.types.mjs";
@@ -67,8 +68,8 @@ export class Animator {
 
   public async updateStyle(
     actions: LocalAction[],
-    curr: UpdateStyle,
-    prev: UpdateStyle | null,
+    curr: InformedChildStyle,
+    prev: InformedChildStyle | null,
     context: InformContext,
   ): Promise<void> {
     await Promise.all(

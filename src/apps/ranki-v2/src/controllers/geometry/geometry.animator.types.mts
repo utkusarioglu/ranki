@@ -2,6 +2,7 @@ import type { Other } from "_components/r2c/r2c.mjs";
 import type {
   Dims,
   InformContext,
+  InformedChildStyle,
   LocalAction,
   Pos,
   UpdateStyle,
@@ -44,8 +45,8 @@ export type InformTargetCb = (params: InformTargetParams) => Promise<void>;
 
 export type InformTargetParams = {
   id: string;
-  curr: UpdateStyle;
-  prev: UpdateStyle | null;
+  curr: InformedChildStyle;
+  prev: InformedChildStyle | null;
   inform: AnimateableStylesConfigKeyframes;
 };
 
@@ -87,8 +88,8 @@ export type AnimationDict = Record<
 >;
 
 export interface DecodeParams {
-  curr: UpdateStyle;
-  prev: UpdateStyle | null;
+  curr: InformedChildStyle;
+  prev: InformedChildStyle | null;
   context: InformContext;
   block: AnimationBlock;
   apply(p: ApplyParams): Promise<void>;

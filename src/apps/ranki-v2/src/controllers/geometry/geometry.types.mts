@@ -1,7 +1,16 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
 import type { AnimateableStyles } from "./geometry.animator.types.mjs";
+import type { Size } from "_utils/sizing.utils.mjs";
 
+export type EmitType = "update" | "leave" | "enter";
+
+export type WithEmitType = { type: EmitType };
+export type WithEmitTypes = { types: EmitType[] };
+
+export type TypedDims = Dims & WithEmitType;
+
+// !FIX
 type LitInstance = any;
 export type ListenChildrenEventFunc = (e: ListenChildrenEvent) => void;
 
@@ -37,7 +46,7 @@ export type SizingCallbackRecord = Record<string, SizingCb>;
 
 export type SizingCb = (
   s: LitInstance,
-) => (dims: ComponentDims[]) => R2Sizing | null;
+) => (dims: ComponentDims[]) => Size | null;
 
 export type AnimationRole = string;
 
@@ -78,7 +87,7 @@ export type R2CNewChildSizeEvent =
   | R2CNewChildLeave;
 export interface ComponentDims {
   component: R2C;
-  dims: Dims;
+  dims: TypedDims;
 }
 export type LeftsTops = { lefts: number[]; tops: number[] };
 export type WidthsHeights = { widths: number[]; heights: number[] };
@@ -92,9 +101,11 @@ export type LocalAction =
   | "leave"
   | "move";
 
-export type InformStyle = AnimateableStyles;
+export type InformedChildStyle = AnimateableStyles &
+  WithEmitType &
+  WithEmitTypes;
 
-export type UpdateStyle = InformStyle & R2Sizing;
+export type UpdateStyle = AnimateableStyles & WithEmitTypes;
 
 export type InformContext = {
   index: number;

@@ -1,7 +1,9 @@
 import { LitElement } from "lit";
 import { assertNever } from "_error/assertions.mjs";
-import type { InformContext } from "_controllers/geometry/geometry.types.mjs";
-import type { AnimateableStyles } from "_controllers/geometry/geometry.animator.types.mjs";
+import type {
+  InformContext,
+  InformedChildStyle,
+} from "_controllers/geometry/geometry.types.mjs";
 
 export type Other = {
   opacity: number;
@@ -16,7 +18,7 @@ export class R2C extends LitElement {
 
   public async informStyle(
     // @ts-expect-error
-    pos: AnimateableStyles,
+    pos: InformedChildStyle,
     // @ts-expect-error
     context: InformContext,
   ): Promise<void> {

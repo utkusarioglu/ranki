@@ -4,15 +4,15 @@ import type {
   ComponentDims,
   Dims,
   R2CNewChildSizeEvent,
-  R2Sizing,
-  InformStyle,
+  InformedChildStyle,
   InformContext,
-  UpdateStyle,
   SizingCb,
   TargetRec,
   TargetProps,
   TargetEventCb,
   TargetEventCbEvents,
+  EmitType,
+  TypedDims,
 } from "./geometry.types.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
@@ -32,6 +32,7 @@ import {
   ReconciliationUtils,
   type ReconciliationDiff,
 } from "_utils/reconciliation.utils.mjs";
+import type { Size } from "_utils/sizing.utils.mjs";
 
 type HostType = LitElement;
 
@@ -39,13 +40,13 @@ export class GeometryController<
   Instance extends LitElement,
 > implements ReactiveController {
   private readonly host: Instance;
-  private readonly registered = new WeakMap<R2C, Dims>();
+  private readonly registered = new WeakMap<R2C, TypedDims>();
   private readonly targets: TargetRec<Instance> | undefined;
   private readonly animator: Animator;
   private readonly on: TargetEventCb<Instance> | null = null;
-  private sizing: R2Sizing | null = null;
+  private sizing: Size | null = null;
   private requested = false;
-  private currStyle: UpdateStyle | null = null;
+  private currStyle: InformedChildStyle | null = null;
 
   constructor(host: Instance, params: GeometryParams<Instance>) {
     host.addController(this);
@@ -69,9 +70,9 @@ export class GeometryController<
     this.host.informStyle = this.informStyle.bind(this);
   }
 
-  public emit(type: "size" | "leave", dims?: Dims) {
+  public emit(type: EmitType, dims?: Dims) {
     switch (type) {
-      case "size":
+      case "update":
         assertNotUndefined(dims, {
           why: "Dims are required for emitting size",
         });
@@ -94,7 +95,7 @@ export class GeometryController<
     return s;
   }
 
-  private getSizing(): R2Sizing {
+  private getSizing(): Size {
     assertNotNull(this.sizing, {
       why: "getSizing called when no geometry was registered",
     });
@@ -102,16 +103,17 @@ export class GeometryController<
   }
 
   public async informStyle(
-    informed: InformStyle,
+    informed: InformedChildStyle,
     context: InformContext,
   ): Promise<void> {
     const prev = this.currStyle;
-    let sizing = {} as R2Sizing;
+    let sizing = {} as Size;
     try {
       sizing = this.getSizing();
     } catch (e) {}
 
-    const curr: R2Sizing = { ...sizing, ...informed };
+    const curr: InformedChildStyle = { ...sizing, ...informed };
+
     const actions = GeometryUtils.evaluateActions(curr, prev);
 
     this.currStyle = curr;
@@ -129,7 +131,7 @@ export class GeometryController<
     }
   }
 
-  private informAsRoot(geo: R2Sizing) {
+  private informAsRoot(geo: InformedChildStyle) {
     this.informStyle(geo, {
       index: 0,
       length: 1,
@@ -150,19 +152,26 @@ export class GeometryController<
         });
       switch (detail.type) {
         case "leave":
-        case "connected":
-          this.registered.set(target, { width: 0, height: 0 });
+          this.registered.set(target, {
+            type: detail.type,
+            // !TODO remove these
+            width: 0,
+            height: 0,
+          });
           break;
         case "disconnected":
           this.registered.delete(target);
           break;
         case "update":
-          this.registered.set(target, detail.rect);
+          if (this.registered.has(target)) {
+            this.registered.set(target, { type: detail.type, ...detail.rect });
+          } else {
+            this.registered.set(target, { type: "enter", ...detail.rect });
+          }
           break;
       }
       switch (detail.type) {
         case "leave":
-        case "disconnected":
         case "update":
           const sz = this.getSizingCallback(id);
           const ordered = this.orderTrackedNodes(id);
@@ -174,9 +183,13 @@ export class GeometryController<
                 this.requested = false;
                 if (this.sizing)
                   if (this.getIsRoot(id)) {
-                    this.informAsRoot(this.sizing);
+                    const inform = {
+                      type: this.sizing.types[0],
+                      ...this.sizing,
+                    };
+                    this.informAsRoot(inform);
                   } else {
-                    this.emit("size", this.sizing);
+                    this.emit("update", this.sizing);
                   }
               }, PROPAGATE_DELAY);
             });
@@ -248,7 +261,11 @@ export class GeometryController<
             context,
             inform,
           );
-          return e.informStyle(informVals, context);
+          const informed = {
+            ...informVals,
+            type: curr.types[context.index],
+          };
+          return e.informStyle(informed, context);
         }),
     );
   }

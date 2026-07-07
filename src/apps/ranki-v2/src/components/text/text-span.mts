@@ -41,7 +41,7 @@ export class R2TextSpan extends R2C {
     const { width, height } = this.span.getBoundingClientRect();
     const dims: Dims = { width: width + 1, height: height + 1 };
     setTimeout(() => {
-      this.geo.emit("size", dims);
+      this.geo.emit("update", dims);
     }, PROPAGATE_DELAY);
   }
 

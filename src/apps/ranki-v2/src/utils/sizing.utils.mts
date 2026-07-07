@@ -2,10 +2,11 @@ import type {
   ComponentDims,
   LeftsTops,
   WidthsHeights,
+  WithEmitTypes,
 } from "_controllers/geometry/geometry.types.mjs";
 import type { Dims } from "_controllers/geometry/geometry.types.mjs";
 
-export type Size = Dims & LeftsTops & WidthsHeights;
+export type Size = Dims & LeftsTops & WidthsHeights & WithEmitTypes;
 
 export interface SizingGaps {
   start: number;
@@ -29,6 +30,7 @@ export class SizingUtils {
       );
 
       const sizing: Size = {
+        types: dims.map((v) => v.dims.type),
         width: s.sizeMain,
         height: s.sizeCross,
         lefts: s.offsetsMain,
@@ -107,6 +109,7 @@ export class SizingUtils {
       const widths = [...zeros, last.dims.width];
 
       return {
+        types: dims.map((d) => d.dims.type),
         width,
         height,
         lefts,

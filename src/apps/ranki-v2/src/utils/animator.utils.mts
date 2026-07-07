@@ -9,6 +9,7 @@ import type {
 import type {
   UpdateStyle,
   InformContext,
+  InformedChildStyle,
 } from "../controllers/geometry/geometry.types.mjs";
 import { TimingUtils } from "_utils/timing,utils.mjs";
 
@@ -16,11 +17,11 @@ const parser = new Parser();
 
 export class AnimatorUtils {
   static evalKeyframe(
-    curr: UpdateStyle,
-    prev: UpdateStyle | null,
+    curr: InformedChildStyle,
+    prev: InformedChildStyle | null,
     context: InformContext,
     b: AnimateableStylesConfigKeyframes,
-  ) {
+  ): Omit<UpdateStyle, "type"> {
     const entries = Object.entries(b).map(([k, v]) => [
       k,
       AnimatorUtils.evalConfigValue(curr, prev, context, v),
@@ -38,8 +39,8 @@ export class AnimatorUtils {
   }
 
   private static evalConfigValue(
-    curr: UpdateStyle,
-    prev: UpdateStyle | null,
+    curr: InformedChildStyle,
+    prev: InformedChildStyle | null,
     context: InformContext,
     v: string | number | undefined,
   ) {

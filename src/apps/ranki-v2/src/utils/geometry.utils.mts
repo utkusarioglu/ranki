@@ -1,17 +1,18 @@
 import type { LitElement } from "lit";
 import type {
   Dims,
+  InformedChildStyle,
   LocalAction,
-  UpdateStyle,
 } from "_controllers/geometry/geometry.types.mjs";
 
 export class GeometryUtils {
   public static readonly geometryEventName = "r2-geometry";
 
   public static evaluateActions(
-    curr: UpdateStyle,
-    prev: UpdateStyle | null,
+    curr: InformedChildStyle,
+    prev: InformedChildStyle | null,
   ): LocalAction[] {
+    console.log("ccc", curr.type);
     const val = {
       prev: {
         width: prev?.width || 0,
@@ -96,17 +97,17 @@ export class GeometryUtils {
     );
   }
 
-  public static emitDisconnected(host: LitElement) {
-    host.dispatchEvent(
-      new CustomEvent(GeometryUtils.geometryEventName, {
-        detail: {
-          type: "disconnected",
-        },
-        bubbles: true,
-        composed: true,
-      }),
-    );
-  }
+  // public static emitDisconnected(host: LitElement) {
+  //   host.dispatchEvent(
+  //     new CustomEvent(GeometryUtils.geometryEventName, {
+  //       detail: {
+  //         type: "disconnected",
+  //       },
+  //       bubbles: true,
+  //       composed: true,
+  //     }),
+  //   );
+  // }
 
   public static emitLeave(host: LitElement) {
     host.dispatchEvent(
@@ -120,7 +121,7 @@ export class GeometryUtils {
     );
   }
 
-  public static emitSize(host: LitElement, { width, height }: Dims | DOMRect) {
+  public static emitSize(host: LitElement, { width, height }: Dims) {
     host.dispatchEvent(
       new CustomEvent(GeometryUtils.geometryEventName, {
         detail: {
