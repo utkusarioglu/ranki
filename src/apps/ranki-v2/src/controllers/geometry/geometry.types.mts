@@ -3,12 +3,12 @@ import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
 import type { AnimateableStyles } from "./geometry.animator.types.mjs";
 import type { Size } from "_utils/sizing.utils.mjs";
 
-export type EmitType = "update" | "leave" | "enter";
+export type EmitIntent = "update" | "leave" | "enter";
 
-export type WithEmitType = { type: EmitType };
-export type WithEmitTypes = { types: EmitType[] };
+export type WithEmitIntent = { intent: EmitIntent };
+export type WithEmitIntents = { intents: EmitIntent[] };
 
-export type TypedDims = Dims & WithEmitType;
+export type TypedDims = Dims & WithEmitIntent;
 
 // !FIX
 type LitInstance = any;
@@ -60,24 +60,17 @@ export interface GeometryParams<Instance> {
   targets?: TargetRec<Instance>;
 }
 
-// TODO put into use
-// export interface UpdateStyleParams {
-//   curr: UpdateStyle;
-//   prev: UpdateStyle | null;
-//   context: InformContext;
-// }
-
 interface R2CNewChildLeave {
-  type: "leave";
+  intent: "leave";
 }
 interface R2CNewChildSizeConnected {
-  type: "connected";
+  intent: "connected";
 }
 interface R2CNewChildSizeDisconnected {
-  type: "disconnected";
+  intent: "disconnected";
 }
 interface R2CNewChildSizeUpdate {
-  type: "update";
+  intent: "update";
   rect: DOMRect;
 }
 export type R2CNewChildSizeEvent =
@@ -102,10 +95,10 @@ export type LocalAction =
   | "move";
 
 export type InformedChildStyle = AnimateableStyles &
-  WithEmitType &
-  WithEmitTypes;
+  WithEmitIntent &
+  WithEmitIntents;
 
-export type UpdateStyle = AnimateableStyles & WithEmitTypes;
+export type UpdateStyle = AnimateableStyles & WithEmitIntents;
 
 export type InformContext = {
   index: number;

@@ -11,7 +11,7 @@ import type {
   TargetProps,
   TargetEventCb,
   TargetEventCbEvents,
-  EmitType,
+  EmitIntent,
   TypedDims,
 } from "./geometry.types.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
@@ -70,8 +70,8 @@ export class GeometryController<
     this.host.informStyle = this.informStyle.bind(this);
   }
 
-  public emit(type: EmitType, dims?: Dims) {
-    switch (type) {
+  public emit(intent: EmitIntent, dims?: Dims) {
+    switch (intent) {
       case "update":
         assertNotUndefined(dims, {
           why: "Dims are required for emitting size",
@@ -82,7 +82,10 @@ export class GeometryController<
         GeometryUtils.emitLeave(this.host);
         break;
       default:
-        assertNever({ why: "Unrecognized emit type", details: { type, dims } });
+        assertNever({
+          why: "Unrecognized emit intent",
+          details: { intent, dims },
+        });
     }
   }
 
@@ -150,10 +153,10 @@ export class GeometryController<
           why: "No valid target given",
           cause: {},
         });
-      switch (detail.type) {
+      switch (detail.intent) {
         case "leave":
           this.registered.set(target, {
-            type: detail.type,
+            intent: detail.intent,
             // !TODO remove these
             width: 0,
             height: 0,
@@ -164,13 +167,16 @@ export class GeometryController<
           break;
         case "update":
           if (this.registered.has(target)) {
-            this.registered.set(target, { type: detail.type, ...detail.rect });
+            this.registered.set(target, {
+              intent: detail.intent,
+              ...detail.rect,
+            });
           } else {
-            this.registered.set(target, { type: "enter", ...detail.rect });
+            this.registered.set(target, { intent: "enter", ...detail.rect });
           }
           break;
       }
-      switch (detail.type) {
+      switch (detail.intent) {
         case "leave":
         case "update":
           const sz = this.getSizingCallback(id);
@@ -184,7 +190,7 @@ export class GeometryController<
                 if (this.sizing)
                   if (this.getIsRoot(id)) {
                     const inform = {
-                      type: this.sizing.types[0],
+                      intent: this.sizing.intents[0],
                       ...this.sizing,
                     };
                     this.informAsRoot(inform);
@@ -263,7 +269,7 @@ export class GeometryController<
           );
           const informed = {
             ...informVals,
-            type: curr.types[context.index],
+            intent: curr.intents[context.index],
           };
           return e.informStyle(informed, context);
         }),

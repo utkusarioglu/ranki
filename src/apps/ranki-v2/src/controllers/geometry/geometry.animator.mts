@@ -4,7 +4,6 @@ import type {
   InformContext,
   InformedChildStyle,
   LocalAction,
-  UpdateStyle,
 } from "./geometry.types.mjs";
 import {
   type InformTargetCb,

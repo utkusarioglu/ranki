@@ -12,7 +12,6 @@ export class GeometryUtils {
     curr: InformedChildStyle,
     prev: InformedChildStyle | null,
   ): LocalAction[] {
-    console.log("ccc", curr.type);
     const val = {
       prev: {
         width: prev?.width || 0,
@@ -89,7 +88,7 @@ export class GeometryUtils {
     host.dispatchEvent(
       new CustomEvent(GeometryUtils.geometryEventName, {
         detail: {
-          type: "connected",
+          intent: "connected",
         },
         bubbles: true,
         composed: true,
@@ -97,23 +96,11 @@ export class GeometryUtils {
     );
   }
 
-  // public static emitDisconnected(host: LitElement) {
-  //   host.dispatchEvent(
-  //     new CustomEvent(GeometryUtils.geometryEventName, {
-  //       detail: {
-  //         type: "disconnected",
-  //       },
-  //       bubbles: true,
-  //       composed: true,
-  //     }),
-  //   );
-  // }
-
   public static emitLeave(host: LitElement) {
     host.dispatchEvent(
       new CustomEvent(GeometryUtils.geometryEventName, {
         detail: {
-          type: "leave",
+          intent: "leave",
         },
         bubbles: true,
         composed: true,
@@ -125,7 +112,7 @@ export class GeometryUtils {
     host.dispatchEvent(
       new CustomEvent(GeometryUtils.geometryEventName, {
         detail: {
-          type: "update",
+          intent: "update",
           rect: { width, height },
         },
         bubbles: true,
