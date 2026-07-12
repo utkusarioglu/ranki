@@ -1,4 +1,4 @@
-import { StoreController } from "_controllers/store/store.mjs";
+import { StoreController } from "_controllers/store/store.controller.mjs";
 import { css, html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";

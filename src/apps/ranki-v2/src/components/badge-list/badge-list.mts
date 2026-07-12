@@ -1,4 +1,5 @@
-import { store, StoreController } from "_controllers/store/store.mjs";
+import { StoreController } from "_controllers/store/store.controller.mjs";
+import { store } from "_controllers/store/store.decorator.mjs";
 import { ReconciliationController } from "_controllers/reconciler/reconciler.controller.mjs";
 import { reconciler } from "_controllers/reconciler/reconciler.decorator.mjs";
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
@@ -34,7 +35,7 @@ export class R2BadgeList extends R2C {
     source: (s) => s.store.curr || [],
     on: (s, type, { index }) => {
       if (type === "leave") {
-        (s as R2BadgeList).chips[index]!.leave();
+        s.chips[index]!.leave();
       }
     },
   })

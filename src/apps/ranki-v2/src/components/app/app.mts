@@ -1,7 +1,7 @@
 import { html, unsafeCSS } from "lit";
 import { customElement } from "lit/decorators.js";
 import { R2C } from "_components/r2c/r2c.mjs";
-import { StoreController } from "_controllers/store/store.mjs";
+import { StoreController } from "_controllers/store/store.controller.mjs";
 import { generatePaletteCss } from "_/design/color.mjs";
 import theme from "./theme.css?inline";
 import scheme from "./schemes.css?inline";
