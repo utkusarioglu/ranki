@@ -5,7 +5,7 @@ import { html, unsafeCSS } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import type { R2TextProps } from "./text.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
-import { GeometryController } from "_controllers/geometry/geometry.mjs";
+import { GeometryController } from "_controllers/geometry/geometry.controller.mjs";
 import { geometry } from "_controllers/geometry/geometry.decorator.mjs";
 import style from "./text-span.css?inline";
 import { ReconciliationUtils } from "_utils/reconciliation.utils.mjs";

@@ -1,8 +1,6 @@
 import { store, StoreController } from "_controllers/store/store.mjs";
-import {
-  reconciler,
-  ReconciliationController,
-} from "_controllers/reconciler/reconciler.mjs";
+import { ReconciliationController } from "_controllers/reconciler/reconciler.controller.mjs";
+import { reconciler } from "_controllers/reconciler/reconciler.decorator.mjs";
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import { R2C } from "_components/r2c/r2c.mjs";
@@ -11,7 +9,7 @@ import { html, unsafeCSS } from "lit";
 import { customElement, query, queryAll } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
-import { GeometryController } from "_controllers/geometry/geometry.mjs";
+import { GeometryController } from "_controllers/geometry/geometry.controller.mjs";
 import { geometry } from "_controllers/geometry/geometry.decorator.mjs";
 import style from "./badge-list.css?inline";
 

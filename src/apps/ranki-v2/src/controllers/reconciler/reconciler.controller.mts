@@ -6,7 +6,7 @@ import {
   type ReconcileSingle,
 } from "_utils/reconciliation.utils.mjs";
 import { TimingUtils } from "_utils/timing,utils.mjs";
-import type { LitElement, ReactiveController, ReactiveElement } from "lit";
+import type { LitElement, ReactiveController } from "lit";
 
 type GetSourceCallback<Instance, S> = (instance: Instance) => S[];
 
@@ -21,7 +21,7 @@ export type ReconcilerEventsCb<Instance> = (
   },
 ) => void;
 
-type SubtreeParams<Instance, S> = {
+export type SubtreeParams<Instance, S> = {
   type: ReconcilerTypes;
   reconcile: ReconcileSingle<S>;
   on?: ReconcilerEventsCb<Instance>;
@@ -146,19 +146,4 @@ export class ReconciliationController<
       });
     }
   }
-}
-
-export function reconciler<Instance extends LitElement, S>(
-  params: SubtreeParams<Instance, S>,
-) {
-  return (proto: ReactiveElement, key: string) => {
-    const ctor = proto.constructor as typeof ReactiveElement;
-
-    ctor.addInitializer((instance) => {
-      (instance as any)[key] = new ReconciliationController<Instance, S>(
-        instance as Instance,
-        params,
-      );
-    });
-  };
 }

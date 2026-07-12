@@ -4,7 +4,7 @@ import { SizingUtils } from "_utils/sizing.utils.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, query } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
-import { GeometryController } from "_controllers/geometry/geometry.mjs";
+import { GeometryController } from "_controllers/geometry/geometry.controller.mjs";
 import { geometry } from "_controllers/geometry/geometry.decorator.mjs";
 import style from "./cue-list.css?inline";
 

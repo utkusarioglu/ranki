@@ -162,32 +162,48 @@ export class GeometryController<
         });
       switch (detail.intent) {
         case "leave":
-          this.registered.set(target, {
-            intent: detail.intent,
-            // !TODO remove these
-            width: 0,
-            height: 0,
-          });
+          this.registered.set(
+            target,
+            // @ts-expect-error
+            {
+              intent: detail.intent,
+              // !TODO remove these
+              width: 0,
+              height: 0,
+            },
+          );
           break;
         case "disconnected":
           this.registered.delete(target);
           break;
         case "update":
           if (this.registered.has(target)) {
-            this.registered.set(target, {
-              intent: detail.intent,
-              ...detail.rect,
-            });
+            this.registered.set(
+              target,
+              // @ts-expect-error
+              {
+                intent: detail.intent,
+                ...detail.rect,
+              },
+            );
           } else {
-            this.registered.set(target, { intent: "enter", ...detail.rect });
+            this.registered.set(
+              target,
+              // @ts-expect-error
+              { intent: "enter", ...detail.rect },
+            );
           }
           break;
         case "mode":
-          this.registered.set(target, {
-            ...this.registered.get(target),
-            intent: "enter",
-            mode: detail.mode,
-          });
+          this.registered.set(
+            target,
+            // @ts-expect-error
+            {
+              ...this.registered.get(target),
+              intent: "enter",
+              mode: detail.mode,
+            },
+          );
           console.log(this.registered.get(target));
         // console.log("mode", e);
       }
