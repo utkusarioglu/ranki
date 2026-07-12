@@ -2,13 +2,16 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
 import type { AnimateableStyles } from "./geometry.animator.types.mjs";
 import type { Size } from "_utils/sizing.utils.mjs";
+import type { EmitModes } from "_utils/geometry.utils.mjs";
 
-export type EmitIntent = "update" | "leave" | "enter";
+export type EmitIntent = "update" | "leave" | "enter" | "mode";
 
 export type WithEmitIntent = { intent: EmitIntent };
 export type WithEmitIntents = { intents: EmitIntent[] };
 
-export type TypedDims = Dims & WithEmitIntent;
+export type WithMode = { mode: EmitModes | undefined };
+
+export type TypedDims = Dims & WithEmitIntent & WithMode;
 
 // !FIX
 type LitInstance = any;
@@ -56,6 +59,7 @@ export type ReconcilerChangesMapCb = Record<string, ReconcilerChangesCb>;
 
 export interface GeometryParams<Instance> {
   role: AnimationRole;
+  events?: { hover?: boolean };
   on?: TargetEventCb<Instance>;
   targets?: TargetRec<Instance>;
 }
@@ -63,6 +67,12 @@ export interface GeometryParams<Instance> {
 interface R2CNewChildLeave {
   intent: "leave";
 }
+
+interface R2CNewChildMode {
+  intent: "mode";
+  mode: EmitModes;
+}
+
 interface R2CNewChildSizeConnected {
   intent: "connected";
 }
@@ -77,7 +87,8 @@ export type R2CNewChildSizeEvent =
   | R2CNewChildSizeUpdate
   | R2CNewChildSizeDisconnected
   | R2CNewChildSizeConnected
-  | R2CNewChildLeave;
+  | R2CNewChildLeave
+  | R2CNewChildMode;
 export interface ComponentDims {
   component: R2C;
   dims: TypedDims;
@@ -87,16 +98,17 @@ export type WidthsHeights = { widths: number[]; heights: number[] };
 
 export type R2Sizing = Dims & LeftsTops & WidthsHeights;
 export type LocalAction =
-  | "expand"
-  | "contract"
+  | "resize"
   | "none"
   | "enter"
   | "leave"
-  | "move";
+  | "move"
+  | EmitModes;
 
 export type InformedChildStyle = AnimateableStyles &
   WithEmitIntent &
-  WithEmitIntents;
+  WithEmitIntents &
+  Partial<WithMode>;
 
 export type UpdateStyle = AnimateableStyles & WithEmitIntents;
 

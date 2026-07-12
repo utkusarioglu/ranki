@@ -18,7 +18,7 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { TimingUtils } from "_utils/timing,utils.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
-import { GeometryUtils } from "../../utils/geometry.utils.mjs";
+import { GeometryUtils, type EmitModes } from "../../utils/geometry.utils.mjs";
 import {
   assertNever,
   assertNotNull,
@@ -26,6 +26,7 @@ import {
 } from "_error/assertions.mjs";
 import { Animator } from "./geometry.animator.mjs";
 import { AnimatorUtils } from "../../utils/animator.utils.mjs";
+// !FIX
 import { assertExists } from "../../../../../packages/dqm-utils/src/assertions.mjs";
 import type { InformTargetParams } from "./geometry.animator.types.mjs";
 import {
@@ -47,6 +48,7 @@ export class GeometryController<
   private sizing: Size | null = null;
   private requested = false;
   private currStyle: InformedChildStyle | null = null;
+  private events: { hover: boolean };
 
   constructor(host: Instance, params: GeometryParams<Instance>) {
     host.addController(this);
@@ -58,6 +60,7 @@ export class GeometryController<
       params.role,
       this.informTarget.bind(this),
     );
+    this.events = { hover: false, ...params.events };
     this.bindInformStyle();
   }
 
@@ -70,16 +73,22 @@ export class GeometryController<
     this.host.informStyle = this.informStyle.bind(this);
   }
 
-  public emit(intent: EmitIntent, dims?: Dims) {
+  public emit(intent: EmitIntent, dims?: Dims | EmitModes) {
     switch (intent) {
       case "update":
         assertNotUndefined(dims, {
           why: "Dims are required for emitting size",
         });
-        GeometryUtils.emitSize(this.host, dims);
+        GeometryUtils.emitUpdate(this.host, dims);
         break;
       case "leave":
         GeometryUtils.emitLeave(this.host);
+        break;
+      case "mode":
+        assertNotUndefined(dims, {
+          why: "Dims are required for emitting size",
+        });
+        GeometryUtils.emitMode(this.host, dims as unknown as EmitModes);
         break;
       default:
         assertNever({
@@ -175,6 +184,14 @@ export class GeometryController<
             this.registered.set(target, { intent: "enter", ...detail.rect });
           }
           break;
+        case "mode":
+          this.registered.set(target, {
+            ...this.registered.get(target),
+            intent: "enter",
+            mode: detail.mode,
+          });
+          console.log(this.registered.get(target));
+        // console.log("mode", e);
       }
       switch (detail.intent) {
         case "leave":
@@ -276,7 +293,29 @@ export class GeometryController<
     );
   }
 
-  hostConnected(): void {}
+  hostConnected(): void {
+    if (this.events.hover) {
+      this.host.addEventListener("pointerenter", this.onPointerEnter);
+      this.host.addEventListener("pointerleave", this.onPointerLeave);
+    }
+  }
+
+  hostDisconnected(): void {
+    if (this.events.hover) {
+      this.host.removeEventListener("pointerenter", this.onPointerEnter);
+      this.host.removeEventListener("pointerleave", this.onPointerLeave);
+    }
+  }
+
+  private onPointerEnter = (e: PointerEvent) => {
+    e.stopPropagation();
+    this.emit("mode", "hover-start");
+  };
+
+  private onPointerLeave = (e: PointerEvent) => {
+    e.stopPropagation();
+    this.emit("mode", "hover-end");
+  };
 }
 
 export function geometry<Instance extends HostType>(

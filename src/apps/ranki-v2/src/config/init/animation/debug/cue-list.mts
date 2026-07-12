@@ -48,7 +48,7 @@ export const CUE_LIST: TargetAnimationSpec = {
         },
       ],
     },
-    expand: {
+    resize: {
       // root: [
       //   {
       //     name: "position",
@@ -79,39 +79,39 @@ export const CUE_LIST: TargetAnimationSpec = {
         },
       },
     },
-    contract: {
-      targets: {
-        lists: {
-          inform: {
-            top: "TOP",
-            left: "LEFT",
-          },
-          then: {
-            root: [
-              {
-                name: "position",
-                // duration: 1000,
-                duration: 0,
-                keyframes: [
-                  {
-                    top: "CONTAINER_TOP",
-                    left: "CONTAINER_LEFT",
-                  },
-                ],
-              },
-            ],
-            targets: {
-              bg: {
-                // wait: 1000,
-                inform: {
-                  width: "CONTAINER_WIDTH",
-                  height: "CONTAINER_HEIGHT",
-                },
-              },
-            },
-          },
-        },
-      },
-    },
+    // contract: {
+    //   targets: {
+    //     lists: {
+    //       inform: {
+    //         top: "TOP",
+    //         left: "LEFT",
+    //       },
+    //       then: {
+    //         root: [
+    //           {
+    //             name: "position",
+    //             // duration: 1000,
+    //             duration: 0,
+    //             keyframes: [
+    //               {
+    //                 top: "CONTAINER_TOP",
+    //                 left: "CONTAINER_LEFT",
+    //               },
+    //             ],
+    //           },
+    //         ],
+    //         targets: {
+    //           bg: {
+    //             // wait: 1000,
+    //             inform: {
+    //               width: "CONTAINER_WIDTH",
+    //               height: "CONTAINER_HEIGHT",
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
   },
 };

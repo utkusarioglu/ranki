@@ -92,7 +92,7 @@ export const ICON: TargetAnimationSpec = {
         // },
       ],
     },
-    expand: {
+    resize: {
       root: [
         // {
         //   name: "height",

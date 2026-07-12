@@ -52,7 +52,7 @@ export const BADGE_LIST: TargetAnimationSpec = {
         },
       ],
     },
-    expand: {
+    resize: {
       // root: [
       //   {
       //     name: "position",
@@ -86,40 +86,40 @@ export const BADGE_LIST: TargetAnimationSpec = {
         },
       },
     },
-    contract: {
-      targets: {
-        chips: {
-          inform: {
-            top: "TOP",
-            left: "LEFT",
-            width: "WIDTH",
-          },
-          then: {
-            root: [
-              {
-                name: "position",
-                keyframes: [
-                  {
-                    top: "CONTAINER_TOP",
-                    left: "CONTAINER_LEFT",
-                  },
-                ],
-                // duration: 1000,
-                duration: 0,
-              },
-            ],
-            targets: {
-              bg: {
-                wait: 0,
-                inform: {
-                  width: "CONTAINER_WIDTH",
-                  height: "CONTAINER_HEIGHT",
-                },
-              },
-            },
-          },
-        },
-      },
-    },
+    // contract: {
+    //   targets: {
+    //     chips: {
+    //       inform: {
+    //         top: "TOP",
+    //         left: "LEFT",
+    //         width: "WIDTH",
+    //       },
+    //       then: {
+    //         root: [
+    //           {
+    //             name: "position",
+    //             keyframes: [
+    //               {
+    //                 top: "CONTAINER_TOP",
+    //                 left: "CONTAINER_LEFT",
+    //               },
+    //             ],
+    //             // duration: 1000,
+    //             duration: 0,
+    //           },
+    //         ],
+    //         targets: {
+    //           bg: {
+    //             wait: 0,
+    //             inform: {
+    //               width: "CONTAINER_WIDTH",
+    //               height: "CONTAINER_HEIGHT",
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
   },
 };

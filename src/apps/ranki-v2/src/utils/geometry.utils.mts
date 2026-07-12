@@ -5,6 +5,8 @@ import type {
   LocalAction,
 } from "_controllers/geometry/geometry.types.mjs";
 
+export type EmitModes = "hover-start" | "hover-end";
+
 export class GeometryUtils {
   public static readonly geometryEventName = "r2-geometry";
 
@@ -16,14 +18,12 @@ export class GeometryUtils {
       prev: {
         width: prev?.width || 0,
         height: prev?.height || 0,
-        opacity: prev?.opacity || 0,
         top: prev?.top || 0,
         left: prev?.left || 0,
       },
       curr: {
         width: curr.width || 0,
         height: curr.height || 0,
-        opacity: curr.opacity || 0,
         top: curr.top || 0,
         left: curr.left || 0,
       },
@@ -33,68 +33,56 @@ export class GeometryUtils {
       prev: {
         width: val.prev.width > 0,
         height: val.prev.height > 0,
-        opacity: val.prev.opacity > 0,
       },
       curr: {
         width: val.curr.width > 0,
         height: val.curr.height > 0,
-        opacity: val.curr.opacity > 0,
       },
     };
 
     const is = {
       width: {
         enter: !has.prev.width && has.curr.width,
-        expand: val.prev.width < val.curr.width,
-        contract: val.prev.width > val.curr.width,
+        resize: val.prev.width !== val.curr.width,
         leave: has.prev.width && !has.curr.width,
       },
       height: {
         enter: !has.prev.height && has.curr.height,
-        expand: val.prev.height < val.curr.height,
-        contract: val.prev.height > val.curr.height,
+        resize: val.prev.height !== val.curr.height,
         leave: has.prev.height && !has.curr.height,
-      },
-      opacity: {
-        enter: !has.prev.opacity && has.curr.opacity,
-        expand: val.prev.opacity < val.curr.opacity,
-        contract: val.prev.opacity > val.curr.opacity,
-        leave: has.prev.opacity && !has.curr.opacity,
       },
       top: val.prev.top !== val.curr.top,
       left: val.prev.left !== val.curr.left,
     };
 
-    const isEnter = is.width.enter || is.height.enter || is.opacity.enter;
-    const isLeave = is.width.leave || is.height.leave || is.opacity.leave;
-    const isExpand =
-      (is.width.expand || is.height.expand || is.opacity.expand) && !isEnter;
-    const isContract =
-      (is.width.contract || is.height.contract || is.opacity.contract) &&
-      !isLeave;
+    const isEnter = curr.intent === "enter";
+    const isLeave = curr.intent === "leave";
+    const isUpdate = curr.intent === "update";
+    const isResize = (is.width.resize || is.height.resize) && isUpdate;
     const isMove = is.top || is.left;
 
     const actions = new Set<LocalAction>();
     if (isEnter) actions.add("enter");
     if (isLeave) actions.add("leave");
-    if (isExpand) actions.add("expand");
-    if (isContract) actions.add("contract");
+    if (isResize) actions.add("resize");
     if (isMove) actions.add("move");
+
+    if (curr.mode) actions.add(curr.mode);
 
     return Array.from(actions);
   }
 
-  public static emitConnected(host: LitElement) {
-    host.dispatchEvent(
-      new CustomEvent(GeometryUtils.geometryEventName, {
-        detail: {
-          intent: "connected",
-        },
-        bubbles: true,
-        composed: true,
-      }),
-    );
-  }
+  // public static emitConnected(host: LitElement) {
+  //   host.dispatchEvent(
+  //     new CustomEvent(GeometryUtils.geometryEventName, {
+  //       detail: {
+  //         intent: "connected",
+  //       },
+  //       bubbles: true,
+  //       composed: true,
+  //     }),
+  //   );
+  // }
 
   public static emitLeave(host: LitElement) {
     host.dispatchEvent(
@@ -108,7 +96,20 @@ export class GeometryUtils {
     );
   }
 
-  public static emitSize(host: LitElement, { width, height }: Dims) {
+  public static emitMode(host: LitElement, mode: EmitModes) {
+    host.dispatchEvent(
+      new CustomEvent(GeometryUtils.geometryEventName, {
+        detail: {
+          intent: "mode",
+          mode,
+        },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
+  public static emitUpdate(host: LitElement, { width, height }: Dims) {
     host.dispatchEvent(
       new CustomEvent(GeometryUtils.geometryEventName, {
         detail: {

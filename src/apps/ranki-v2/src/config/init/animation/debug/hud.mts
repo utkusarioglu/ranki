@@ -2,7 +2,7 @@ import type { TargetAnimationSpec } from "_controllers/geometry/geometry.animato
 
 export const HUD: TargetAnimationSpec = {
   "hud-bg": {
-    expand: {
+    resize: {
       root: [
         {
           name: "width",
@@ -16,6 +16,21 @@ export const HUD: TargetAnimationSpec = {
         },
       ],
     },
+    // contract: {
+    //   root: [
+    //     {
+    //       name: "opacity",
+    //       // duration: 1000,
+    //       duration: 0,
+    //       keyframes: [
+    //         {
+    //           width: "CONTAINER_WIDTH",
+    //           opacity: 1,
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
     enter: {
       root: [
         {
@@ -27,21 +42,6 @@ export const HUD: TargetAnimationSpec = {
             },
           ],
         },
-        {
-          name: "opacity",
-          // duration: 1000,
-          duration: 0,
-          keyframes: [
-            {
-              width: "CONTAINER_WIDTH",
-              opacity: 1,
-            },
-          ],
-        },
-      ],
-    },
-    contract: {
-      root: [
         {
           name: "opacity",
           // duration: 1000,
@@ -73,7 +73,7 @@ export const HUD: TargetAnimationSpec = {
   },
 
   "hud-scroller": {
-    expand: {
+    resize: {
       root: [
         {
           name: "size",
@@ -104,6 +104,40 @@ export const HUD: TargetAnimationSpec = {
         },
       },
     },
+    // contract: {
+    //   targets: {
+    //     // TODO list items need to get their z-index set
+    //     sections: {
+    //       inform: {
+    //         top: "TOP",
+    //         left: "LEFT",
+    //       },
+    //       then: {
+    //         root: [
+    //           {
+    //             name: "position",
+    //             // duration: 1000,
+    //             duration: 0,
+    //             keyframes: [
+    //               {
+    //                 width: "CONTAINER_WIDTH",
+    //               },
+    //             ],
+    //           },
+    //         ],
+    //         targets: {
+    //           bg: {
+    //             // wait: 1000,
+    //             inform: {
+    //               width: "CONTAINER_WIDTH",
+    //               height: "CONTAINER_HEIGHT",
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
     enter: {
       root: [
         {
@@ -151,40 +185,6 @@ export const HUD: TargetAnimationSpec = {
         },
       ],
     },
-    contract: {
-      targets: {
-        // TODO list items need to get their z-index set
-        sections: {
-          inform: {
-            top: "TOP",
-            left: "LEFT",
-          },
-          then: {
-            root: [
-              {
-                name: "position",
-                // duration: 1000,
-                duration: 0,
-                keyframes: [
-                  {
-                    width: "CONTAINER_WIDTH",
-                  },
-                ],
-              },
-            ],
-            targets: {
-              bg: {
-                // wait: 1000,
-                inform: {
-                  width: "CONTAINER_WIDTH",
-                  height: "CONTAINER_HEIGHT",
-                },
-              },
-            },
-          },
-        },
-      },
-    },
   },
   hud: {
     enter: {
@@ -208,7 +208,7 @@ export const HUD: TargetAnimationSpec = {
         },
       },
     },
-    expand: {
+    resize: {
       // root: [
       // {
       //   name: "rot",
@@ -233,15 +233,15 @@ export const HUD: TargetAnimationSpec = {
         },
       },
     },
-    contract: {
-      targets: {
-        scroller: {
-          inform: {
-            top: 0,
-            left: 0,
-          },
-        },
-      },
-    },
+    // contract: {
+    //   targets: {
+    //     scroller: {
+    //       inform: {
+    //         top: 0,
+    //         left: 0,
+    //       },
+    //     },
+    //   },
+    // },
   },
 };

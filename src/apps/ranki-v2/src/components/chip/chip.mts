@@ -32,6 +32,9 @@ export class R2Chip extends R2C {
 
   @geometry<R2Chip>({
     role: "chip",
+    events: {
+      hover: true,
+    },
     on: (s, action) => {
       if (action === "leave-end") {
         ReconciliationUtils.emitLeave(s);
@@ -62,6 +65,10 @@ export class R2Chip extends R2C {
 
   public override leave() {
     this.geo.emit("leave");
+  }
+
+  override connectedCallback(): void {
+    super.connectedCallback();
   }
 
   override render() {
