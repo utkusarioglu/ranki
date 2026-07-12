@@ -5,10 +5,8 @@ import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 import type { R2TextSpan } from "./text-span.mjs";
 import { repeat } from "lit/directives/repeat.js";
 import { SizingUtils } from "_utils/sizing.utils.mjs";
-import {
-  geometry,
-  type GeometryController,
-} from "_controllers/geometry/geometry.mjs";
+import { type GeometryController } from "_controllers/geometry/geometry.mjs";
+import { geometry } from "_controllers/geometry/geometry.decorator.mjs";
 import {
   reconciler,
   ReconciliationController,

@@ -1,4 +1,4 @@
-import type { LitElement, ReactiveController, ReactiveElement } from "lit";
+import type { LitElement, ReactiveController } from "lit";
 import type {
   GeometryParams,
   ComponentDims,
@@ -34,8 +34,6 @@ import {
   type ReconciliationDiff,
 } from "_utils/reconciliation.utils.mjs";
 import type { Size } from "_utils/sizing.utils.mjs";
-
-type HostType = LitElement;
 
 export class GeometryController<
   Instance extends LitElement,
@@ -315,20 +313,5 @@ export class GeometryController<
   private onPointerLeave = (e: PointerEvent) => {
     e.stopPropagation();
     this.emit("mode", "hover-end");
-  };
-}
-
-export function geometry<Instance extends HostType>(
-  params: GeometryParams<Instance>,
-) {
-  return (proto: HostType, key: string) => {
-    const ctor = proto.constructor as typeof ReactiveElement;
-
-    ctor.addInitializer((instance) => {
-      (instance as any)[key] = new GeometryController<Instance>(
-        instance as Instance,
-        params,
-      );
-    });
   };
 }

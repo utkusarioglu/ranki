@@ -5,10 +5,8 @@ import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 import type { R2IconSpan } from "./icon-span.mjs";
 import { repeat } from "lit/directives/repeat.js";
 import { SizingUtils } from "_utils/sizing.utils.mjs";
-import {
-  geometry,
-  GeometryController,
-} from "_controllers/geometry/geometry.mjs";
+import { GeometryController } from "_controllers/geometry/geometry.mjs";
+import { geometry } from "_controllers/geometry/geometry.decorator.mjs";
 import style from "./icon.css?inline";
 import {
   reconciler,

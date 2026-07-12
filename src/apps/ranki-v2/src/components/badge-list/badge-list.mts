@@ -11,10 +11,8 @@ import { html, unsafeCSS } from "lit";
 import { customElement, query, queryAll } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
-import {
-  geometry,
-  GeometryController,
-} from "_controllers/geometry/geometry.mjs";
+import { GeometryController } from "_controllers/geometry/geometry.mjs";
+import { geometry } from "_controllers/geometry/geometry.decorator.mjs";
 import style from "./badge-list.css?inline";
 
 type R2BadgeListState = HudTagListItem;

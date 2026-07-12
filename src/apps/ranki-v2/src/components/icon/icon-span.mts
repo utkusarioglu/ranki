@@ -7,10 +7,8 @@ import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { loadIcon } from "iconify-icon";
 import { TimingUtils } from "_utils/timing,utils.mjs";
-import {
-  geometry,
-  GeometryController,
-} from "_controllers/geometry/geometry.mjs";
+import { GeometryController } from "_controllers/geometry/geometry.mjs";
+import { geometry } from "_controllers/geometry/geometry.decorator.mjs";
 import style from "./icon-span.css?inline";
 import { SVG_PLACEHOLDER } from "./SVG_PLACEHOLDER.mjs";
 import { ReconciliationUtils } from "_utils/reconciliation.utils.mjs";

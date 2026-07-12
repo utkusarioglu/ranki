@@ -3,6 +3,9 @@ import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
 import type { AnimateableStyles } from "./geometry.animator.types.mjs";
 import type { Size } from "_utils/sizing.utils.mjs";
 import type { EmitModes } from "_utils/geometry.utils.mjs";
+import type { LitElement } from "lit";
+
+export type HostType = LitElement;
 
 export type EmitIntent = "update" | "leave" | "enter" | "mode";
 
