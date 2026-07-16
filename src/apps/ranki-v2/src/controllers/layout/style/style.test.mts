@@ -11,7 +11,7 @@ interface CaseGroup<T> {
 }
 type SingleGroup = Record<string, string | number>;
 
-type CompositeGroup = { prop: string; includes: string };
+type CompositeGroup = Record<string, string | number>;
 
 const SINGLE_CASES: CaseGroup<SingleGroup>[] = [
   {
@@ -110,9 +110,63 @@ const COMPOSITE_CASES: CaseGroup<CompositeGroup>[] = [
     groupName: "Composite: transform",
     cases: [
       {
-        caseName: "left",
-        arg: { left: 2, top: 3 },
-        expected: { prop: "transform", includes: `transformX(2px)` },
+        caseName: "combines translation and dimensions",
+        arg: { left: 2, top: 3, width: 120, height: 80 },
+        expected: {
+          transform: "translateX(2px) translateY(3px)",
+          width: "120px",
+          height: "80px",
+        },
+      },
+      {
+        caseName: "combines skew and rotation",
+        arg: { skewX: 10, skewY: 20, rotate: 45 },
+        expected: {
+          transform: "skewX(10deg) skewY(20deg)",
+          rotate: "45deg",
+        },
+      },
+      {
+        caseName: "combines animation values",
+        arg: { left: 4, opacity: 0.5, scale: 2, offset: 0.25 },
+        expected: {
+          transform: "translateX(4px)",
+          opacity: "0.5",
+          scale: "2",
+          offset: 0.25,
+        },
+      },
+      {
+        caseName: "joins all transform functions in order",
+        arg: { left: 10, top: 20, skewX: 30, skewY: 40 },
+        expected: {
+          transform:
+            "translateX(10px) translateY(20px) skewX(30deg) skewY(40deg)",
+        },
+      },
+      {
+        caseName: "keeps skew values when no translation is present",
+        arg: { skewX: 5, skewY: -10 },
+        expected: {
+          transform: "skewX(5deg) skewY(-10deg)",
+        },
+      },
+      {
+        caseName: "includes zero-valued transform properties",
+        arg: { left: 0, top: 0, skewX: 0, skewY: 0 },
+        expected: {
+          transform: "translateX(0px) translateY(0px) skewX(0deg) skewY(0deg)",
+        },
+      },
+      {
+        caseName: "combines transform with sizing and rotation",
+        arg: { left: 6, top: 7, width: 100, height: 50, rotate: 90 },
+        expected: {
+          transform: "translateX(6px) translateY(7px)",
+          width: "100px",
+          height: "50px",
+          rotate: "90deg",
+        },
       },
     ],
   },
@@ -123,7 +177,7 @@ COMPOSITE_CASES.forEach(({ groupName, cases }) => {
     cases.forEach(({ caseName, arg, expected }) => {
       test(caseName, () => {
         const response = Style.produceKeyframe(arg);
-        expect(Object.keys(response)[0]).toContain(expected.prop);
+        expect(response).toEqual(expected);
       });
     });
   });
