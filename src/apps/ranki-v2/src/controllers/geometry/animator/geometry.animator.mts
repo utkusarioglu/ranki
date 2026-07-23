@@ -4,12 +4,12 @@ import type {
   InformContext,
   InformedChildStyle,
   LocalAction,
-} from "./geometry.types.mjs";
+} from "../geometry.types.mjs";
 import {
   type InformTargetCb,
   type ApplyParams,
 } from "./geometry.animator.types.mjs";
-import { AnimatorUtils } from "../../utils/animator.utils.mjs";
+import { AnimatorUtils } from "../../../utils/animator.utils.mjs";
 import { getAnimationRecipe } from "_store/app.getters.mjs";
 
 export class Animator {

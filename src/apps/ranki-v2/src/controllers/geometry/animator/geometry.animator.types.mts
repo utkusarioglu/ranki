@@ -6,7 +6,7 @@ import type {
   LocalAction,
   Pos,
   UpdateStyle,
-} from "./geometry.types.mjs";
+} from "../geometry.types.mjs";
 
 export type ImmediateStyles = { zIndex?: number } & AnimateableStyles;
 

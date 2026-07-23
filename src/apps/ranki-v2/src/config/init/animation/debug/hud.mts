@@ -1,4 +1,4 @@
-import type { TargetAnimationSpec } from "_controllers/geometry/geometry.animator.types.mjs";
+import type { TargetAnimationSpec } from "_controllers/geometry/animator/geometry.animator.types.mjs";
 
 export const HUD: TargetAnimationSpec = {
   "hud-bg": {

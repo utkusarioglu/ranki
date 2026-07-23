@@ -5,7 +5,7 @@ import type {
   AnimationOptions,
   AnimationRoot,
   DecodeParams,
-} from "../controllers/geometry/geometry.animator.types.mjs";
+} from "../controllers/geometry/animator/geometry.animator.types.mjs";
 import type {
   UpdateStyle,
   InformContext,
