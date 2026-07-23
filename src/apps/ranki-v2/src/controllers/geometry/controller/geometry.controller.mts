@@ -13,22 +13,25 @@ import type {
   TargetEventCbEvents,
   EmitIntent,
   TypedDims,
-} from "./geometry.types.mjs";
+} from "../geometry.types.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { TimingUtils } from "_utils/timing,utils.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
-import { GeometryUtils, type EmitModes } from "../../utils/geometry.utils.mjs";
+import {
+  GeometryUtils,
+  type EmitModes,
+} from "../../../utils/geometry.utils.mjs";
 import {
   assertNever,
   assertNotNull,
   assertNotUndefined,
 } from "_error/assertions.mjs";
-import { Animator } from "./geometry.animator.mjs";
-import { AnimatorUtils } from "../../utils/animator.utils.mjs";
+import { Animator } from "../geometry.animator.mjs";
+import { AnimatorUtils } from "../../../utils/animator.utils.mjs";
 // !FIX
-import { assertExists } from "../../../../../packages/dqm-utils/src/assertions.mjs";
-import type { InformTargetParams } from "./geometry.animator.types.mjs";
+import { assertExists } from "../../../../../../packages/dqm-utils/src/assertions.mjs";
+import type { InformTargetParams } from "../geometry.animator.types.mjs";
 import {
   ReconciliationUtils,
   type ReconciliationDiff,

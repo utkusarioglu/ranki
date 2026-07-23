@@ -4,8 +4,8 @@ import { R2C } from "_components/r2c/r2c.mjs";
 import { SizingUtils } from "_utils/sizing.utils.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { GeometryController } from "_controllers/geometry/geometry.controller.mjs";
-import { geometry } from "_controllers/geometry/geometry.decorator.mjs";
+import { GeometryController } from "_controllers/geometry/controller/geometry.controller.mjs";
+import { geometry } from "_controllers/geometry/decorator/geometry.decorator.mjs";
 import style from "./chip.css?inline";
 import { ReconciliationUtils } from "_utils/reconciliation.utils.mjs";
 

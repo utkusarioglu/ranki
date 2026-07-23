@@ -1,6 +1,6 @@
 import type { ReactiveElement } from "lit";
-import { GeometryController } from "./geometry.controller.mjs";
-import type { GeometryParams, HostType } from "./geometry.types.mjs";
+import { GeometryController } from "../controller/geometry.controller.mjs";
+import type { GeometryParams, HostType } from "../geometry.types.mjs";
 
 export function geometry<Instance extends HostType>(
   params: GeometryParams<Instance>,

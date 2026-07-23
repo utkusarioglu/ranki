@@ -17,14 +17,13 @@ export type WithMode = { mode: EmitModes | undefined };
 export type TypedDims = Dims & WithEmitIntent & WithMode;
 
 // !FIX
-type LitInstance = any;
 export type ListenChildrenEventFunc = (e: ListenChildrenEvent) => void;
 
 export type ListenChildrenEvent = CustomEvent<{ rect: Dims; detail: any }>;
 
 export type Dims = Pick<DOMRect, "width" | "height">;
 
-export type TargetSelectorCb<Instance extends LitInstance> = (
+export type TargetSelectorCb<Instance extends HostType> = (
   s: Instance,
 ) => R2C[];
 // export type SizingSelector = Record<string, >;
@@ -36,31 +35,32 @@ export type TargetEventCb<Instance> = (
   event: TargetEventCbEvents,
 ) => void;
 
-export interface TargetProps<Instance> {
+export interface TargetProps<Instance extends HostType> {
   isRoot?: boolean;
   selector: TargetSelectorCb<Instance>;
   sizing?: SizingCb;
   diff?: ReconcilerChangesCb;
 }
 
-export type TargetRec<Instance> = Record<string, TargetProps<Instance>>;
+export type TargetRec<Instance extends HostType> = Record<
+  string,
+  TargetProps<Instance>
+>;
 
 /**
  * Lets the host set the start, end margins and the padding between its children
  */
 export type SizingCallbackRecord = Record<string, SizingCb>;
 
-export type SizingCb = (
-  s: LitInstance,
-) => (dims: ComponentDims[]) => Size | null;
+export type SizingCb = (s: HostType) => (dims: ComponentDims[]) => Size | null;
 
 export type AnimationRole = string;
 
-export type ReconcilerChangesCb = (s: LitInstance) => ReconciliationDiff;
+export type ReconcilerChangesCb = (s: HostType) => ReconciliationDiff;
 
 export type ReconcilerChangesMapCb = Record<string, ReconcilerChangesCb>;
 
-export interface GeometryParams<Instance> {
+export interface GeometryParams<Instance extends HostType> {
   role: AnimationRole;
   events?: { hover?: boolean };
   on?: TargetEventCb<Instance>;
