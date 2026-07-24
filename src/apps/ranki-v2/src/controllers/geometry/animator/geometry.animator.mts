@@ -12,6 +12,7 @@ import {
 import { AnimatorUtils } from "../../../utils/animator.utils.mjs";
 import { KeyframeUtils } from "_controllers/geometry/KeyframeUtils.mjs";
 import { getAnimationRecipe } from "_store/app.getters.mjs";
+import { LayoutParser } from "../parser/layout-parser.mts";
 
 export class Animator {
   private readonly host: ReactiveElement;
@@ -74,15 +75,13 @@ export class Animator {
   ): Promise<void> {
     await Promise.all(
       actions.map((action) => {
-        const recipe = getAnimationRecipe(action, this.preset, this.role);
-        return AnimatorUtils.decode({
-          curr,
-          prev,
-          context,
-          block: recipe,
-          apply: this.apply.bind(this),
-          informTarget: this.informTarget.bind(this),
-        });
+        const block = getAnimationRecipe(action, this.preset, this.role);
+        const parse = LayoutParser.parse({ block, curr, prev, context });
+        return AnimatorUtils.animate(
+          parse,
+          this.apply.bind(this),
+          this.informTarget.bind(this),
+        );
       }),
     );
   }
