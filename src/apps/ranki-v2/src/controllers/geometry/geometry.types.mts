@@ -1,6 +1,6 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
-import type { AnimateableStyles } from "./animator/geometry.animator.types.mjs";
+import type { AnimateableStyles } from "./animator/animator.types.mjs";
 import type { Size } from "_utils/sizing.utils.mjs";
 import type { EmitModes } from "_utils/geometry.utils.mjs";
 import type { LitElement } from "lit";

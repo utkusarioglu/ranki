@@ -43,6 +43,13 @@ export type Anim = {
 
 export type InformTargetCb = (params: InformTargetParams) => Promise<void>;
 
+export type ApplyCb = (params: ApplyParams) => Promise<void>;
+
+export interface AnimationChainMakerCallbacks {
+  apply: ApplyCb;
+  informTarget: InformTargetCb;
+}
+
 export type InformTargetParams = {
   id: string;
   curr: InformedChildStyle;

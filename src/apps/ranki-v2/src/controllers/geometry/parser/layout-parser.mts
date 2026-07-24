@@ -9,7 +9,7 @@ import type {
   LayoutParsedTargets,
   LayoutTargetsInform,
   ParseRootParams,
-} from "_controllers/geometry/animator/geometry.animator.types.mjs";
+} from "_controllers/geometry/animator/animator.types.mjs";
 import type {
   InformContext,
   InformedChildStyle,

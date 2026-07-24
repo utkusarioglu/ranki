@@ -5,14 +5,11 @@ import type {
   InformedChildStyle,
   LocalAction,
 } from "../geometry.types.mjs";
-import {
-  type InformTargetCb,
-  type ApplyParams,
-} from "./geometry.animator.types.mjs";
-import { AnimatorUtils } from "../../../utils/animator.utils.mjs";
+import { type InformTargetCb, type ApplyParams } from "./animator.types.mjs";
+import { AnimationSequencer } from "./animatior.sequencer.mjs";
 import { KeyframeUtils } from "_controllers/geometry/KeyframeUtils.mjs";
 import { getAnimationRecipe } from "_store/app.getters.mjs";
-import { LayoutParser } from "../parser/layout-parser.mts";
+import { LayoutParser } from "../parser/layout-parser.mjs";
 
 export class Animator {
   private readonly host: ReactiveElement;
@@ -20,6 +17,7 @@ export class Animator {
   private readonly preset: string = "debug";
   private readonly informTarget: InformTargetCb;
   private runningAnimations = new Map<string, Animation>();
+  private readonly sequencer: AnimationSequencer;
 
   constructor(
     host: ReactiveElement,
@@ -29,6 +27,10 @@ export class Animator {
     this.host = host;
     this.role = role;
     this.informTarget = informTarget;
+    this.sequencer = new AnimationSequencer({
+      informTarget: this.informTarget.bind(this),
+      apply: this.apply.bind(this),
+    });
   }
 
   private async apply({
@@ -77,11 +79,7 @@ export class Animator {
       actions.map((action) => {
         const block = getAnimationRecipe(action, this.preset, this.role);
         const parse = LayoutParser.parse({ block, curr, prev, context });
-        return AnimatorUtils.animate(
-          parse,
-          this.apply.bind(this),
-          this.informTarget.bind(this),
-        );
+        return this.sequencer.build(parse);
       }),
     );
   }

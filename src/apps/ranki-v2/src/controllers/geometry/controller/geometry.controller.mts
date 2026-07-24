@@ -27,10 +27,10 @@ import {
   assertNotNull,
   assertNotUndefined,
 } from "_error/assertions.mjs";
-import { Animator } from "../animator/geometry.animator.mjs";
+import { Animator } from "../animator/animator.mjs";
 // !FIX
 import { assertExists } from "../../../../../../packages/dqm-utils/src/assertions.mjs";
-import type { InformTargetParams } from "../animator/geometry.animator.types.mjs";
+import type { InformTargetParams } from "../animator/animator.types.mjs";
 import {
   ReconciliationUtils,
   type ReconciliationDiff,

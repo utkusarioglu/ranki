@@ -1,4 +1,4 @@
-import type { TargetAnimationSpec } from "_controllers/geometry/animator/geometry.animator.types.mjs";
+import type { TargetAnimationSpec } from "_controllers/geometry/animator/animator.types.mjs";
 
 export const CUE_LIST: TargetAnimationSpec = {
   "cue-list": {

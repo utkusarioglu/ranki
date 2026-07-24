@@ -1,4 +1,4 @@
-import type { AnimateableStyles } from "_controllers/geometry/animator/geometry.animator.types.mjs";
+import type { AnimateableStyles } from "_controllers/geometry/animator/animator.types.mjs";
 
 export class KeyframeUtils {
   public static produceKeyframe({

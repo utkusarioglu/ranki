@@ -16,7 +16,7 @@ import type {
   CardFaceArray,
   FilteredTags,
 } from "_collect/collect.types.mjs";
-import type { AnimationDict } from "_controllers/geometry/animator/geometry.animator.types.mjs";
+import type { AnimationDict } from "_controllers/geometry/animator/animator.types.mjs";
 
 export type Deck = string;
 
