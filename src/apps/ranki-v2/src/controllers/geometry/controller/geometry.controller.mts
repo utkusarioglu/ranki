@@ -18,10 +18,7 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { TimingUtils } from "_utils/timing,utils.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
-import {
-  GeometryUtils,
-  type EmitModes,
-} from "../../../utils/geometry.utils.mjs";
+import { GeometryUtils } from "../../../utils/geometry.utils.mjs";
 import {
   assertNever,
   assertNotNull,
@@ -37,6 +34,7 @@ import {
 } from "_utils/reconciliation.utils.mjs";
 import type { Size } from "_utils/sizing.utils.mjs";
 import { LayoutParser } from "_controllers/geometry/parser/layout-parser.mjs";
+import { GeometryEvents, type EmitModes } from "../geometry.events.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -80,16 +78,16 @@ export class GeometryController<
         assertNotUndefined(dims, {
           why: "Dims are required for emitting size",
         });
-        GeometryUtils.emitUpdate(this.host, dims);
+        GeometryEvents.emitUpdate(this.host, dims);
         break;
       case "leave":
-        GeometryUtils.emitLeave(this.host);
+        GeometryEvents.emitLeave(this.host);
         break;
       case "mode":
         assertNotUndefined(dims, {
           why: "Dims are required for emitting size",
         });
-        GeometryUtils.emitMode(this.host, dims as unknown as EmitModes);
+        GeometryEvents.emitMode(this.host, dims as unknown as EmitModes);
         break;
       default:
         assertNever({
