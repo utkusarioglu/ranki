@@ -63,9 +63,11 @@ export interface AnimationRoot {
   then?: AnimationBlock;
 }
 
+export type AnimationBlockTargets = Record<string, AnimationTarget>;
+
 export interface AnimationBlock {
   root?: AnimationRoot[];
-  targets?: Record<string, AnimationTarget>;
+  targets?: AnimationBlockTargets;
   then?: AnimationBlock;
 }
 
@@ -87,6 +89,7 @@ export type AnimationDict = Record<
   TargetAnimationSpec
 >;
 
+// OBSOLETE in favor of ParseRootParams
 export interface DecodeParams {
   curr: InformedChildStyle;
   prev: InformedChildStyle | null;
@@ -100,4 +103,33 @@ export interface ApplyParams {
   name: string;
   keyframes: AnimateableStyles[];
   options: AnimationOptions;
+}
+
+export interface ApplyRootParams {
+  apply: ApplyParams;
+  // TODO needs to change
+  then?: LayoutParsed;
+}
+
+export type LayoutTargetsInform = {
+  wait?: number;
+  target: InformTargetParams;
+  then?: LayoutParsed;
+};
+
+export type LayoutParsedTargets = Record<string, LayoutTargetsInform>;
+
+export interface LayoutParsed {
+  root?: ApplyRootParams[];
+  targets?: LayoutParsedTargets;
+  then?: LayoutParsed;
+}
+
+export interface ParseRootParams {
+  curr: InformedChildStyle;
+  prev: InformedChildStyle | null;
+  context: InformContext;
+  block: AnimationBlock;
+  // apply(p: ApplyParams): Promise<void>;
+  // informTarget: InformTargetCb;
 }

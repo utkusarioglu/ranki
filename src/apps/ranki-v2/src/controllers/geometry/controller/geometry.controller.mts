@@ -28,7 +28,6 @@ import {
   assertNotUndefined,
 } from "_error/assertions.mjs";
 import { Animator } from "../animator/geometry.animator.mjs";
-import { AnimatorUtils } from "../../../utils/animator.utils.mjs";
 // !FIX
 import { assertExists } from "../../../../../../packages/dqm-utils/src/assertions.mjs";
 import type { InformTargetParams } from "../animator/geometry.animator.types.mjs";
@@ -37,6 +36,7 @@ import {
   type ReconciliationDiff,
 } from "_utils/reconciliation.utils.mjs";
 import type { Size } from "_utils/sizing.utils.mjs";
+import { LayoutParser } from "_controllers/geometry/parser/layout-parser.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -295,7 +295,7 @@ export class GeometryController<
             length: a.length,
             stagger: diff.stagger.indices,
           };
-          const informVals = AnimatorUtils.evalKeyframe(
+          const informVals = LayoutParser.evalKeyframe(
             curr,
             prev,
             context,

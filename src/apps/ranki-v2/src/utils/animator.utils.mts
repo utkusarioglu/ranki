@@ -1,183 +1,142 @@
-import { Parser } from "expr-eval";
 import type {
-  AnimateableStyles,
-  AnimateableStylesConfigKeyframes,
-  AnimationOptions,
-  AnimationRoot,
+  ApplyRootParams,
   DecodeParams,
+  LayoutParsed,
+  LayoutParsedTargets,
 } from "../controllers/geometry/animator/geometry.animator.types.mjs";
-import type {
-  UpdateStyle,
-  InformContext,
-  InformedChildStyle,
-} from "../controllers/geometry/geometry.types.mjs";
 import { TimingUtils } from "_utils/timing,utils.mjs";
-
-const parser = new Parser();
+import { LayoutParser } from "../controllers/geometry/parser/layout-parser.mts";
 
 export class AnimatorUtils {
-  static evalKeyframe(
-    curr: InformedChildStyle,
-    prev: InformedChildStyle | null,
-    context: InformContext,
-    b: AnimateableStylesConfigKeyframes,
-  ): Omit<UpdateStyle, "type"> {
-    const entries = Object.entries(b).map(([k, v]) => [
-      k,
-      AnimatorUtils.evalConfigValue(curr, prev, context, v),
-    ]);
-    return Object.fromEntries(entries);
-  }
+  // static async decode(p: DecodeParams): Promise<void> {
+  //   const parsed = LayoutParser.parse(p);
+  //   console.log("p", parsed);
 
-  private static try(b: any, f: (b: any) => number | undefined) {
-    try {
-      const v = f(b);
-      return v !== undefined ? v : 0;
-    } catch (e) {
-      return 0;
-    }
-  }
+  //   await Promise.all([
+  //     AnimatorUtils.decodeRoot(p),
+  //     AnimatorUtils.decodeTargets(p),
+  //   ]);
+  //   if (!p.block.then) return;
+  //   await AnimatorUtils.decode({ ...p, block: p.block.then });
+  // }
 
-  private static evalConfigValue(
-    curr: InformedChildStyle,
-    prev: InformedChildStyle | null,
-    context: InformContext,
-    v: string | number | undefined,
-  ) {
-    if (typeof v === "number" || typeof v === "undefined") {
-      return v;
-    } else {
-      const exp = parser.parse(v);
-      const varSet = {
-        CONTAINER_HEIGHT: AnimatorUtils.try(curr, (c) => c.height),
-        CONTAINER_WIDTH: AnimatorUtils.try(curr, (c) => c.width),
-        CONTAINER_TOP: AnimatorUtils.try(curr, (c) => c.top),
-        CONTAINER_LEFT: AnimatorUtils.try(curr, (c) => c.left),
+  // private static async decodeTargets(p: DecodeParams): Promise<void> {
+  //   if (!p.block.targets) {
+  //     return Promise.resolve();
+  //   }
+  //   const targetsParsed = LayoutParser.parseTargets(
+  //     p.block.targets,
+  //     p.curr,
+  //     p.prev,
+  //     p.context,
+  //   );
 
-        CONTAINER_PREV_HEIGHT: AnimatorUtils.try(prev, (p) => p.height),
-        CONTAINER_PREV_WIDTH: AnimatorUtils.try(prev, (p) => p.width),
-        CONTAINER_PREV_TOP: AnimatorUtils.try(prev, (p) => p.top),
-        CONTAINER_PREV_LEFT: AnimatorUtils.try(prev, (p) => p.left),
+  //   if (!targetsParsed) return;
+  //   await Promise.all(
+  //     Object.values(targetsParsed).map(async ({ wait, target, then }) => {
+  //       if (wait) await TimingUtils.delay(wait);
+  //       await p.informTarget(target);
+  //       if (then) console.log("then");
+  //     }),
+  //   );
+  //   // await Promise.all(
+  //   //   Object.entries(p.block.targets).map(
+  //   //     async ([id, { wait, inform, then }]) => {
+  //   //       if (wait) {
+  //   //         const ev = LayoutParser.evalOptionValue(p.context, wait);
+  //   //         await TimingUtils.delay(ev);
+  //   //       }
+  //   //       const informTargetParams = { id, curr: p.curr, prev: p.prev, inform };
+  //   //       await p.informTarget(informTargetParams);
+  //   //       if (!then) return;
+  //   //       await AnimatorUtils.decode({ ...p, block: then });
+  //   //     },
+  //   //   ),
+  //   // );
+  // }
 
-        LEFT: AnimatorUtils.try(curr, (c) => c.lefts[context.index]),
-        TOP: AnimatorUtils.try(curr, (c) => c.tops[context.index]),
-        WIDTH: AnimatorUtils.try(curr, (c) => c.widths[context.index]),
-        HEIGHT: AnimatorUtils.try(curr, (c) => c.heights[context.index]),
-      };
-      return exp.evaluate(varSet);
-    }
-  }
-
-  static evalOptionValue(
-    context: InformContext,
-    v: string | number | undefined,
-  ) {
-    if (typeof v === "number" || typeof v === "undefined") {
-      return v;
-    } else {
-      const exp = parser.parse(v);
-      const varSet = {
-        INDEX: context.index,
-        LENGTH: context.length,
-        // STAGGER_FIRST: context.stagger.first,
-        STAGGER_INDEX: context.stagger[context.index],
-      };
-      return exp.evaluate(varSet);
-    }
-  }
-
-  static evalOptions(
-    r: AnimationRoot,
-    context: InformContext,
-  ): Partial<AnimationOptions> {
-    const entries = ["delay", "duration", "easing"]
-      .map((k) => [
-        k,
-        AnimatorUtils.evalOptionValue(context, r[k as keyof AnimationOptions]),
-      ])
-      .filter((v) => v[1] !== undefined) as [string, number][];
-    return Object.fromEntries<number>(entries) as Partial<AnimationOptions>;
-  }
-
-  static async decode(p: DecodeParams): Promise<void> {
-    await Promise.all([
-      AnimatorUtils.decodeRoot(p),
-      AnimatorUtils.decodeTargets(p),
-    ]);
-    if (!p.block.then) return;
-    await AnimatorUtils.decode({ ...p, block: p.block.then });
-  }
-
-  private static async decodeTargets(p: DecodeParams): Promise<void> {
-    if (!p.block.targets) {
-      return Promise.resolve();
-    }
+  private static async applyTargets(
+    l: LayoutParsedTargets | undefined,
+    apply: DecodeParams["apply"],
+    informTarget: DecodeParams["informTarget"],
+  ): Promise<void> {
+    if (!l) return Promise.resolve();
     await Promise.all(
-      Object.entries(p.block.targets).map(
-        async ([id, { wait, inform, then }]) => {
-          if (wait) {
-            const ev = AnimatorUtils.evalOptionValue(p.context, wait);
-            await TimingUtils.delay(ev);
-          }
-          await p.informTarget({ id, curr: p.curr, prev: p.prev, inform });
-          if (!then) return;
-          await AnimatorUtils.decode({ ...p, block: then });
-        },
-      ),
-    );
-  }
-
-  private static async decodeRoot(p: DecodeParams): Promise<void> {
-    if (!p.block.root || !p.block.root.length) {
-      return Promise.resolve();
-    }
-    await Promise.all(
-      p.block.root.map(async (b) => {
-        await p.apply({
-          name: b.name,
-          keyframes: b.keyframes.map((k) =>
-            AnimatorUtils.evalKeyframe(p.curr, p.prev, p.context, k),
-          ),
-          options: AnimatorUtils.evalOptions(b, p.context),
-        });
-        if (!b.then) return;
-        await AnimatorUtils.decode({ ...p, block: b.then });
+      Object.values(l).map(async ({ wait, target, then }) => {
+        if (wait) await TimingUtils.delay(wait);
+        await informTarget(target);
+        if (then) await this.applyLayoutParsed(then, apply, informTarget);
+        // if (then) console.log("then");
       }),
     );
   }
 
-  public static produceKeyframe({
-    left,
-    top,
-    width,
-    height,
-    opacity,
-    rotate,
-    scale,
-    offset,
-    skewX,
-    skewY,
-    // rotate3d,
-  }: AnimateableStyles): Keyframe {
-    const k: Keyframe = {};
-    const transform = [
-      [left, `translateX(${left}px)`],
-      [top, `translateY(${top}px)`],
-      [skewX, `skewX(${skewX}deg)`],
-      [skewY, `skewY(${skewY}deg)`],
-      // [rotate3d, `rotate3d${(rotate3d || "").split(" ").join(", ")}deg`],
-    ]
-      .filter((v) => !!v[0])
-      .map((v) => v[1]);
+  // private static async decodeRoot(p: DecodeParams): Promise<void> {
+  //   if (!p.block.root || !p.block.root.length) {
+  //     return Promise.resolve();
+  //   }
+  //   await Promise.all(
+  //     p.block.root.map(async (b) => {
+  //       const applyParams = LayoutParser.parseRoot(
+  //         b,
+  //         p.curr,
+  //         p.prev,
+  //         p.context,
+  //       );
+  //       await p.apply(applyParams.apply);
+  //       if (!b.then) return;
+  //       await AnimatorUtils.decode({ ...p, block: b.then });
+  //     }),
+  //   );
+  // }
 
-    if (transform.length) k.transform = transform.join(" ");
-    if (width !== undefined) k.width = width + "px";
-    if (height !== undefined) k.height = height + "px";
-    if (rotate !== undefined) k.rotate = rotate + "deg";
-    if (scale !== undefined) k.scale = scale;
-    if (opacity !== undefined) k.opacity = opacity;
-    if (offset !== undefined) k.offset = offset;
+  private static async applyRoots(
+    roots: ApplyRootParams[] | undefined,
+    apply: DecodeParams["apply"],
+    informTarget: DecodeParams["informTarget"],
+  ): Promise<void> {
+    if (!roots) return Promise.resolve();
+    await Promise.all(
+      roots.map(async (p) => {
+        await apply(p.apply);
+        await this.applyLayoutParsed(p.then, apply, informTarget);
+        // console.log("th", p.then);
+        // if (p.then) await this.decode(p.then);
+      }),
+    );
+  }
 
-    return k;
+  static async applyNow(
+    a: LayoutParsed | undefined,
+    apply: DecodeParams["apply"],
+    informTarget: DecodeParams["informTarget"],
+  ): Promise<void> {
+    await Promise.all([
+      a && (await this.applyRoots(a.root, apply, informTarget)),
+      a && (await this.applyTargets(a.targets, apply, informTarget)),
+    ]);
+  }
+
+  private static async applyLayoutParsed(
+    a: LayoutParsed | undefined,
+    apply: DecodeParams["apply"],
+    informTarget: DecodeParams["informTarget"],
+  ): Promise<void> {
+    if (!a) return Promise.resolve();
+    await this.applyNow(a, apply, informTarget);
+    await this.applyLayoutParsed(a.then, apply, informTarget);
+    // apply(a.then);
+  }
+
+  static async decode(p: DecodeParams): Promise<void> {
+    const parsed = LayoutParser.parse(p);
+    await this.applyLayoutParsed(parsed, p.apply, p.informTarget);
+    // await Promise.all([
+    //   // this.applyRoots(parsed.root, p.apply),
+    //   AnimatorUtils.decodeRoot(p),
+    //   AnimatorUtils.decodeTargets(p),
+    // ]);
+    // if (!p.block.then) return;
+    // await AnimatorUtils.decode({ ...p, block: p.block.then });
   }
 }

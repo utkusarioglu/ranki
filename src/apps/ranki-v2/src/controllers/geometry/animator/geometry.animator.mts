@@ -10,6 +10,7 @@ import {
   type ApplyParams,
 } from "./geometry.animator.types.mjs";
 import { AnimatorUtils } from "../../../utils/animator.utils.mjs";
+import { KeyframeUtils } from "_controllers/geometry/KeyframeUtils.mjs";
 import { getAnimationRecipe } from "_store/app.getters.mjs";
 
 export class Animator {
@@ -42,7 +43,7 @@ export class Animator {
       ...options,
     };
     const finalKeyframes = keyframes.map((k) =>
-      AnimatorUtils.produceKeyframe(k),
+      KeyframeUtils.produceKeyframe(k),
     );
     const anim = this.host.animate(finalKeyframes, finalOptions);
     const r = this.runningAnimations.get(name);
