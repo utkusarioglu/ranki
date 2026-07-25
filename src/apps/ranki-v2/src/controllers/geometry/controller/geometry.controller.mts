@@ -35,7 +35,10 @@ import {
 import type { Size } from "_controllers/geometry/layout/layout-utils.mjs";
 import { LayoutParser } from "_controllers/geometry/parser/layout-parser.mjs";
 import { GeometryEvents, type EmitModes } from "../geometry.events.mjs";
-import type { OnEmitParams } from "./geometry.controller.types.mts";
+import type {
+  GeometrySetName,
+  OnEmitParams,
+} from "./geometry.controller.types.mts";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -96,11 +99,11 @@ export class GeometryController<
     }
   }
 
-  private getTarget(id: string): TargetProps<Instance> {
-    const s = this.targets && this.targets[id]!;
+  private getSet(set: GeometrySetName): TargetProps<Instance> {
+    const s = this.targets && this.targets[set]!;
     assertExists(s, {
       why: "Subtree selector hasn't been registered",
-      details: { id },
+      details: { id: set },
     });
     return s;
   }
@@ -235,21 +238,24 @@ export class GeometryController<
     };
   }
 
-  private getIsRoot(id: string): boolean {
-    const target = this.getTarget(id);
-    return !!target.isRoot;
+  private getIsRoot(setName: GeometrySetName): boolean {
+    const set = this.getSet(setName);
+    return !!set.isRoot;
   }
 
-  private getSizingCallback(id: string): LayoutCb {
-    const target = this.getTarget(id);
-    const s = target.layout;
-    assertNotUndefined(s, { why: "No sizing registered", details: { id } });
-    return s;
+  private getSizingCallback(setName: GeometrySetName): LayoutCb {
+    const set = this.getSet(setName);
+    const layout = set.layout;
+    assertNotUndefined(layout, {
+      why: "No sizing registered",
+      details: { setName },
+    });
+    return layout;
   }
 
-  private orderTrackedNodes(target: string) {
-    const t = this.getTarget(target);
-    const serial = t.selector(this.host);
+  private orderTrackedNodes(setName: GeometrySetName) {
+    const set = this.getSet(setName);
+    const serial = set.selector(this.host);
     const ordered: ComponentDims[] = [];
     for (let component of serial) {
       const dims = this.registered.get(component);
@@ -264,10 +270,10 @@ export class GeometryController<
     return ordered;
   }
 
-  private getDiff(id: string): ReconciliationDiff {
-    const t = this.getTarget(id);
+  private getDiff(setName: GeometrySetName): ReconciliationDiff {
+    const set = this.getSet(setName);
     // const t = this.changes[target];
-    const diff = t.diff;
+    const diff = set.diff;
     if (!diff) {
       // console.log("diff detection not registered for target:", id);
       return ReconciliationUtils.noChanges();
@@ -276,15 +282,15 @@ export class GeometryController<
   }
 
   private async informTarget({
-    id,
+    set,
     curr,
     prev,
     inform,
   }: InformTargetParams): Promise<void> {
     // DECIDE this will result in running animation ignoring changes
-    const diff = this.getDiff(id);
+    const diff = this.getDiff(set);
     await Promise.all(
-      this.getTarget(id)
+      this.getSet(set)
         .selector(this.host)
         .map((e, i, a) => {
           const context: InformContext = {

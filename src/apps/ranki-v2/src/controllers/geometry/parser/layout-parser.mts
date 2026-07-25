@@ -33,7 +33,7 @@ export class LayoutParser {
     return {
       wait: this.evalOptionValue(context, t.wait),
       target: {
-        id,
+        set: id,
         curr,
         prev,
         inform: t.inform,

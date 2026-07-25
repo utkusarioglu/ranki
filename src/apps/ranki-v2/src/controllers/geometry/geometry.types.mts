@@ -84,27 +84,34 @@ interface R2CNewChildMode {
 interface R2CNewChildSizeConnected {
   intent: "connected";
 }
+
 interface R2CNewChildSizeDisconnected {
   intent: "disconnected";
 }
+
 interface R2CNewChildSizeUpdate {
   intent: "update";
   rect: DOMRect;
 }
+
 export type R2CNewChildSizeEvent =
   | R2CNewChildSizeUpdate
   | R2CNewChildSizeDisconnected
   | R2CNewChildSizeConnected
   | R2CNewChildLeave
   | R2CNewChildMode;
+
 export interface ComponentDims {
   component: R2C;
   dims: TypedDims;
 }
+
 export type LeftsTops = { lefts: number[]; tops: number[] };
+
 export type WidthsHeights = { widths: number[]; heights: number[] };
 
 export type R2Sizing = Dims & LeftsTops & WidthsHeights;
+
 export type LocalAction =
   | "resize"
   | "none"
@@ -132,9 +139,10 @@ export interface GeometryDiff {
     indices: number[];
   };
 }
+
 export type Pos = { top: number; left: number };
 
 // OBSOLETE
-export type InformSubtreeStyles = LeftsTops;
+// export type InformSubtreeStyles = LeftsTops;
 
 export type InformTargetStyles = LeftsTops & Partial<WidthsHeights> & Dims;

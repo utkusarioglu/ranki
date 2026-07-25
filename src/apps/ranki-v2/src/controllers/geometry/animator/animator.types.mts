@@ -7,6 +7,7 @@ import type {
   Pos,
   UpdateStyle,
 } from "../geometry.types.mjs";
+import type { GeometrySetName } from "../controller/geometry.controller.types.mts";
 
 export type ImmediateStyles = { zIndex?: number } & AnimateableStyles;
 
@@ -55,7 +56,7 @@ export interface AnimationSequencerCallbacks {
 }
 
 export type InformTargetParams = {
-  id: string;
+  set: GeometrySetName;
   curr: InformedChildStyle;
   prev: InformedChildStyle | null;
   inform: AnimateableStylesConfigKeyframes;

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { KeyframeUtils } from "./keyframe-utils.mts";
-import type { Cases } from "./keyframe-utils.test.types.mts";
+import { KeyframeUtils } from "./keyframe-utils.mjs";
+import type { Cases } from "./keyframe-utils.test.types.mjs";
 
 const SEQ = [
   Number.MIN_SAFE_INTEGER,

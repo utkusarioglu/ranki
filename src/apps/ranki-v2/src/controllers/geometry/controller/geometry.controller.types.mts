@@ -1,5 +1,5 @@
-export type GeometrySet = string & { type?: "GeometrySet" };
+export type GeometrySetName = string & { type?: "GeometrySet" };
 
 export interface OnEmitParams {
-  set: GeometrySet;
+  set: GeometrySetName;
 }

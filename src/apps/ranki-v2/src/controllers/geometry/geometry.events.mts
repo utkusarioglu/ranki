@@ -6,17 +6,6 @@ export type EmitModes = "hover-start" | "hover-end";
 export class GeometryEvents {
   public static readonly geometryEventName = "r2-geometry";
 
-  // public static emitConnected(host: LitElement) {
-  //   host.dispatchEvent(
-  //     new CustomEvent(GeometryUtils.geometryEventName, {
-  //       detail: {
-  //         intent: "connected",
-  //       },
-  //       bubbles: true,
-  //       composed: true,
-  //     }),
-  //   );
-  // }
   public static emitLeave(host: LitElement) {
     host.dispatchEvent(
       new CustomEvent(this.geometryEventName, {
