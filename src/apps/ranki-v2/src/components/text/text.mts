@@ -35,7 +35,7 @@ export class R2Text extends R2C {
 
   @geometry<R2Text>({
     role: "text",
-    targets: {
+    sets: {
       "text-span": {
         selector: (s) => Array.from(s.spans),
         layout: () => LayoutUtils.last(),
@@ -65,7 +65,7 @@ export class R2Text extends R2C {
         html`<r2-text-span 
           .props=${p.props} 
           @r2-reconciler=${this.subtree.onEmit(p.id)}
-          @r2-geometry=${this.geo.onEmit("text-span")}
+          @r2-geometry=${this.geo.onEmit({ set: "text-span" })}
         ></r2-text-span`,
     )}`;
   }

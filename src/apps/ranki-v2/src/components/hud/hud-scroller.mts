@@ -26,7 +26,7 @@ export class R2HudScroller extends R2C {
 
   @geometry<R2HudScroller>({
     role: "hud-scroller",
-    targets: {
+    sets: {
       bg: {
         selector: (s) => [s.bg],
       },
@@ -57,7 +57,9 @@ export class R2HudScroller extends R2C {
           "--bg": "rgb(var(--scheme-yellow-2))",
         })}"
       ></r2-hud-bg>
-      <r2-cue-list @r2-geometry=${this.geo.onEmit("sections")}></r2-cue-list>
+      <r2-cue-list
+        @r2-geometry=${this.geo.onEmit({ set: "sections" })}
+      ></r2-cue-list>
     `;
   }
 }

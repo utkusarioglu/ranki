@@ -20,7 +20,7 @@ export class R2CueList extends R2C {
 
   @geometry<R2CueList>({
     role: "cue-list",
-    targets: {
+    sets: {
       bg: {
         selector: (s) => [s.bg],
       },
@@ -51,7 +51,9 @@ export class R2CueList extends R2C {
           "--bg": "rgb(var(--scheme-blue-2))",
         })}"
       ></r2-hud-bg>
-      <r2-badge-list @r2-geometry=${this.geo.onEmit("lists")}></r2-badge-list>
+      <r2-badge-list
+        @r2-geometry=${this.geo.onEmit({ set: "lists" })}
+      ></r2-badge-list>
     `;
   }
 }

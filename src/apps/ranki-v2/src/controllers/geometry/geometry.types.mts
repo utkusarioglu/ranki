@@ -69,7 +69,7 @@ export interface GeometryParams<Instance extends HostType> {
   role: AnimationRole;
   events?: { hover?: boolean };
   on?: TargetEventCb<Instance>;
-  targets?: TargetRec<Instance>;
+  sets?: TargetRec<Instance>;
 }
 
 interface R2CNewChildLeave {

@@ -15,7 +15,7 @@ export class R2Hud extends R2C {
 
   @geometry<R2Hud>({
     role: "hud",
-    targets: {
+    sets: {
       scroller: {
         isRoot: true,
         selector: (s) => [s.scroller],
@@ -36,7 +36,7 @@ export class R2Hud extends R2C {
       <div class="rotate">
         <div class="content">
           <r2-hud-scroller
-            @r2-geometry=${this.geo.onEmit("scroller")}
+            @r2-geometry=${this.geo.onEmit({ set: "scroller" })}
           ></r2-hud-scroller>
         </div>
       </div>

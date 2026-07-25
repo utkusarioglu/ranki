@@ -38,7 +38,7 @@ export class R2Chip extends R2C {
         ReconciliationUtils.emitLeave(s);
       }
     },
-    targets: {
+    sets: {
       content: {
         selector: (s) => [s.icon, s.text],
         layout: () =>
@@ -86,12 +86,12 @@ export class R2Chip extends R2C {
           },
         }}
         style="position: absolute;"
-        @r2-geometry=${this.geo.onEmit("content")}
+        @r2-geometry=${this.geo.onEmit({ set: "content" })}
       ></r2-icon>
       <r2-text
         .props=${item}
         style="position: absolute;"
-        @r2-geometry=${this.geo.onEmit("content")}
+        @r2-geometry=${this.geo.onEmit({ set: "content" })}
       ></r2-text>
     `;
   }

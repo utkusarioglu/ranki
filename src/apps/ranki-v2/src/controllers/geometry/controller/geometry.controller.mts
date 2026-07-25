@@ -35,6 +35,7 @@ import {
 import type { Size } from "_controllers/geometry/layout/layout-utils.mjs";
 import { LayoutParser } from "_controllers/geometry/parser/layout-parser.mjs";
 import { GeometryEvents, type EmitModes } from "../geometry.events.mjs";
+import type { OnEmitParams } from "./geometry.controller.types.mts";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -52,7 +53,7 @@ export class GeometryController<
   constructor(host: Instance, params: GeometryParams<Instance>) {
     host.addController(this);
     this.host = host;
-    this.targets = params.targets;
+    this.targets = params.sets;
     this.on = params.on ? params.on : null;
     this.animator = new Animator(this.host, params.role, {
       informTarget: this.informTarget.bind(this),
@@ -148,7 +149,7 @@ export class GeometryController<
     });
   }
 
-  onEmit(id: string) {
+  onEmit({ set }: OnEmitParams) {
     return (e: CustomEvent<R2CNewChildSizeEvent>) => {
       e.stopPropagation();
       const detail = e.detail;
@@ -209,8 +210,8 @@ export class GeometryController<
       switch (detail.intent) {
         case "leave":
         case "update":
-          const sz = this.getSizingCallback(id);
-          const ordered = this.orderTrackedNodes(id);
+          const sz = this.getSizingCallback(set);
+          const ordered = this.orderTrackedNodes(set);
           this.sizing = sz(this.host)(ordered);
           if (!this.requested) {
             this.requested = true;
@@ -218,7 +219,7 @@ export class GeometryController<
               setTimeout(() => {
                 this.requested = false;
                 if (this.sizing)
-                  if (this.getIsRoot(id)) {
+                  if (this.getIsRoot(set)) {
                     const inform = {
                       intent: this.sizing.intents[0],
                       ...this.sizing,
