@@ -1,7 +1,5 @@
-import type {
-  ComponentDims,
-  WithEmitIntents,
-} from "_controllers/geometry/geometry.types.mjs";
+import type { ComponentDims } from "_controllers/geometry/geometry.types.mjs";
+import type { WithEmitIntents } from "../geometry-intent.types.mts";
 import type { TopsLefts, WidthsHeights } from "../geometry-style.types.mts";
 import type { WidthHeight } from "../geometry-style.types.mts";
 

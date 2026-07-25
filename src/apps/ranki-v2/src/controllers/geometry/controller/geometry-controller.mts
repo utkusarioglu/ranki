@@ -14,11 +14,11 @@ import { Animator } from "../animator/animator.mjs";
 import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mts";
 import type {
   ComponentDims,
-  EmitIntent,
   InformContext,
   InformedChildStyle,
   TypedDims,
 } from "../geometry.types.mjs";
+import type { EmitIntent } from "../geometry-intent.types.mts";
 import type { WidthHeight } from "../geometry-style.types.mts";
 import type {
   GeometryControllerConstructorParams,

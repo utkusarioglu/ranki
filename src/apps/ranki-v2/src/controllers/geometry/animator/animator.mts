@@ -1,9 +1,6 @@
 import type { ReactiveElement } from "lit";
-import type {
-  InformContext,
-  InformedChildStyle,
-  LocalAction,
-} from "../geometry.types.mjs";
+import type { InformContext, InformedChildStyle } from "../geometry.types.mjs";
+import type { LocalAction } from "../geometry-intent.types.mts";
 import type { GeometryRole } from "../controller/geometry-decorator.constructor.types.mts";
 import { type AnimatorPlayParams } from "./animator.types.mjs";
 import { type AnimatorCallbacks } from "./animator.constructor.types.mjs";

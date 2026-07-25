@@ -1,7 +1,5 @@
-import type {
-  InformedChildStyle,
-  LocalAction,
-} from "_controllers/geometry/geometry.types.mjs";
+import type { InformedChildStyle } from "_controllers/geometry/geometry.types.mjs";
+import type { LocalAction } from "./geometry-intent.types.mts";
 
 export class GeometryEval {
   public static evaluateActions(

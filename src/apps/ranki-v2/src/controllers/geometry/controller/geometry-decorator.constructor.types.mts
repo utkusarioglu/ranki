@@ -1,10 +1,7 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
-import type {
-  HostType,
-  LocalAction,
-  ComponentDims,
-} from "../geometry.types.mts";
+import type { HostType, ComponentDims } from "../geometry.types.mts";
+import type { LocalAction } from "../geometry-intent.types.mts";
 import type { Size } from "../layout/layout-utils.mts";
 
 export interface GeometryControllerConstructorParams<
