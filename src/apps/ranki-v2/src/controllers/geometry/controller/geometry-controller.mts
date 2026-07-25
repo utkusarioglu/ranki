@@ -15,8 +15,8 @@ import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mts";
 import type {
   InformContext,
   InformedChildStyle,
-  ComponentDims,
-} from "../geometry.types.mjs";
+} from "./geometry-controller.types.mts";
+import type { ComponentDims } from "./geometry-controller.types.mts";
 import type { EmitIntent } from "../geometry-intent.types.mts";
 import type { WidthHeight } from "../geometry-style.types.mts";
 import type {

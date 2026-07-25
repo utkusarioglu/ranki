@@ -2,7 +2,7 @@ import type {
   InformContext,
   InformedChildStyle,
   UpdateStyle,
-} from "../geometry.types.mjs";
+} from "../controller/geometry-controller.types.mts";
 import type { LocalAction } from "../geometry-intent.types.mts";
 import type { WidthHeight, TopLeft } from "../geometry-style.types.mjs";
 import type { GeometrySetName } from "../controller/geometry-controller.types.mts";

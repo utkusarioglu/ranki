@@ -1,4 +1,4 @@
-import type { ComponentDims } from "_controllers/geometry/geometry.types.mjs";
+import type { ComponentDims } from "../controller/geometry-controller.types.mts";
 import type { WidthHeight } from "../geometry-style.types.mts";
 import type {
   LayoutGapsParams,

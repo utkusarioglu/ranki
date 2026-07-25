@@ -3,7 +3,7 @@ import { assertNever } from "_error/assertions.mjs";
 import type {
   InformContext,
   InformedChildStyle,
-} from "_controllers/geometry/geometry.types.mjs";
+} from "_controllers/geometry/controller/geometry-controller.types.mjs";
 
 export class R2C extends LitElement {
   public leave() {

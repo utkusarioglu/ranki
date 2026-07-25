@@ -14,7 +14,7 @@ import type {
   InformContext,
   InformedChildStyle,
   UpdateStyle,
-} from "_controllers/geometry/geometry.types.mjs";
+} from "../controller/geometry-controller.types.mts";
 import { Parser } from "expr-eval";
 
 const parser = new Parser();
