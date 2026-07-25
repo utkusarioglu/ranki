@@ -1,4 +1,4 @@
-import type { AnimateableStyles } from "_controllers/geometry/animator/animator.types.mjs";
+import type { AnimationKeyframeStyles } from "_controllers/geometry/animator/animator.types.mjs";
 
 export class KeyframeUtils {
   public static produceKeyframe({
@@ -13,7 +13,7 @@ export class KeyframeUtils {
     skewX,
     skewY,
     // rotate3d,
-  }: AnimateableStyles): Keyframe {
+  }: AnimationKeyframeStyles): Keyframe {
     const k: Keyframe = {};
     const transform = [
       [left, `translateX(${left}px)`],

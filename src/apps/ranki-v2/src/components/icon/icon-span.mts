@@ -1,5 +1,5 @@
 import { R2C } from "_components/r2c/r2c.mjs";
-import { type Dims } from "_controllers/geometry/geometry.types.mjs";
+import { type WidthHeight } from "_controllers/geometry/geometry-style.types.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { R2IconProps } from "./icon.mjs";
@@ -39,7 +39,7 @@ export class R2IconSpan extends R2C {
 
   override async firstUpdated() {
     const { width, height } = this.props;
-    const dims: Dims = { width, height };
+    const dims: WidthHeight = { width, height };
     await TimingUtils.waitLayout();
     setTimeout(() => {
       this.geo.emit("update", dims);

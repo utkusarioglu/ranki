@@ -1,11 +1,16 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
-import type { AnimateableStyles } from "./animator/animator.types.mjs";
+import type { AnimationKeyframeStyles } from "./animator/animator.types.mjs";
 import type { LitElement } from "lit";
 import type { EmitModes } from "./events/geometry-events.types.mts";
 import type {
   GeometrySetLayoutCb,
   GeometrySetDiffCb,
 } from "./controller/geometry-decorator.constructor.types.mts";
+import type {
+  WidthHeight,
+  TopsLefts,
+  WidthsHeights,
+} from "./geometry-style.types.mts";
 
 export type HostType = LitElement;
 
@@ -16,14 +21,15 @@ export type WithEmitIntents = { intents: EmitIntent[] };
 
 export type WithMode = { mode: EmitModes | undefined };
 
-export type TypedDims = Dims & WithEmitIntent & WithMode;
+export type TypedDims = WidthHeight & WithEmitIntent & WithMode;
 
 // !FIX
 export type ListenChildrenEventFunc = (e: ListenChildrenEvent) => void;
 
-export type ListenChildrenEvent = CustomEvent<{ rect: Dims; detail: any }>;
-
-export type Dims = Pick<DOMRect, "width" | "height">;
+export type ListenChildrenEvent = CustomEvent<{
+  rect: WidthHeight;
+  detail: any;
+}>;
 
 // export type SizingSelector = Record<string, >;
 
@@ -31,8 +37,6 @@ export type Dims = Pick<DOMRect, "width" | "height">;
  * Lets the host set the start, end margins and the padding between its children
  */
 export type SizingCallbackRecord = Record<string, GeometrySetLayoutCb>;
-
-export type AnimationRole = string;
 
 export type ReconcilerChangesMapCb<Instance extends HostType> = Record<
   string,
@@ -44,11 +48,7 @@ export interface ComponentDims {
   dims: TypedDims;
 }
 
-export type LeftsTops = { lefts: number[]; tops: number[] };
-
-export type WidthsHeights = { widths: number[]; heights: number[] };
-
-export type R2Sizing = Dims & LeftsTops & WidthsHeights;
+export type R2Sizing = WidthHeight & TopsLefts & WidthsHeights;
 
 export type LocalAction =
   | "resize"
@@ -58,12 +58,12 @@ export type LocalAction =
   | "move"
   | EmitModes;
 
-export type InformedChildStyle = AnimateableStyles &
+export type InformedChildStyle = AnimationKeyframeStyles &
   WithEmitIntent &
   WithEmitIntents &
   Partial<WithMode>;
 
-export type UpdateStyle = AnimateableStyles & WithEmitIntents;
+export type UpdateStyle = AnimationKeyframeStyles & WithEmitIntents;
 
 export type InformContext = {
   index: number;
@@ -78,9 +78,6 @@ export interface GeometryDiff {
   };
 }
 
-export type Pos = { top: number; left: number };
-
-// OBSOLETE
-// export type InformSubtreeStyles = LeftsTops;
-
-export type InformTargetStyles = LeftsTops & Partial<WidthsHeights> & Dims;
+export type InformTargetStyles = TopsLefts &
+  Partial<WidthsHeights> &
+  WidthHeight;

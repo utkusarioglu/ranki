@@ -1,20 +1,17 @@
-import type { Other } from "_components/r2c/r2c.mjs";
 import type {
-  Dims,
   InformContext,
   InformedChildStyle,
   LocalAction,
-  Pos,
   UpdateStyle,
 } from "../geometry.types.mjs";
+import type { WidthHeight, TopLeft } from "../geometry-style.types.mjs";
 import type { GeometrySetName } from "../controller/geometry-controller.types.mts";
 
-export type ImmediateStyles = { zIndex?: number } & AnimateableStyles;
+export type ImmediateStyles = { zIndex?: number } & AnimationKeyframeStyles;
 
-export type AnimateableStyles = Partial<Dims> &
-  Partial<Pos> &
-  Partial<Anim> &
-  Partial<Other> &
+export type AnimationKeyframeStyles = Partial<WidthHeight> &
+  Partial<TopLeft> &
+  Partial<AnimationKeyframeOptions> &
   Partial<{
     opacity: number;
     offset: number;
@@ -28,32 +25,16 @@ export type AnimateableStyles = Partial<Dims> &
 export type AnimationOptions = Partial<
   Pick<KeyframeAnimationOptions, "easing" | "delay" | "duration">
 >;
+
 export type AnimationCallback = (
   curr: UpdateStyle,
   prev: UpdateStyle | null,
   context: InformContext,
 ) => Promise<void>;
 
-export type Anim = {
+export type AnimationKeyframeOptions = {
   easing: string;
 };
-
-export interface AnimatorCallbacks {
-  informTarget: InformTargetCb;
-}
-
-// export interface R2CWithGeometry {
-//   readonly geometry: GeometryController;
-// }
-
-export type InformTargetCb = (params: InformTargetParams) => Promise<void>;
-
-export type ApplyCb = (params: ApplyParams) => Promise<void>;
-
-export interface AnimationSequencerCallbacks {
-  animate: ApplyCb;
-  informTarget: InformTargetCb;
-}
 
 export type InformTargetParams = {
   set: GeometrySetName;
@@ -63,7 +44,7 @@ export type InformTargetParams = {
 };
 
 export type AnimateableStylesConfigKeyframes = Partial<
-  Record<keyof AnimateableStyles, string | number>
+  Record<keyof AnimationKeyframeStyles, string | number>
 >;
 
 export interface AnimationRoot {
@@ -101,25 +82,14 @@ export type AnimationDict = Record<
   TargetAnimationSpec
 >;
 
-// OBSOLETE in favor of ParseRootParams
-export interface DecodeParams {
-  curr: InformedChildStyle;
-  prev: InformedChildStyle | null;
-  context: InformContext;
-  block: AnimationBlock;
-  apply(p: ApplyParams): Promise<void>;
-  informTarget: InformTargetCb;
-}
-
-export interface ApplyParams {
+export interface AnimatorPlayParams {
   name: string;
-  keyframes: AnimateableStyles[];
+  keyframes: AnimationKeyframeStyles[];
   options: AnimationOptions;
 }
 
 export interface ApplyRootParams {
-  apply: ApplyParams;
-  // TODO needs to change
+  apply: AnimatorPlayParams;
   then?: LayoutParsed;
 }
 
@@ -142,6 +112,5 @@ export interface ParseRootParams {
   prev: InformedChildStyle | null;
   context: InformContext;
   block: AnimationBlock;
-  // apply(p: ApplyParams): Promise<void>;
-  // informTarget: InformTargetCb;
 }
+export type AnimatorPlayCb = (params: AnimatorPlayParams) => Promise<void>;

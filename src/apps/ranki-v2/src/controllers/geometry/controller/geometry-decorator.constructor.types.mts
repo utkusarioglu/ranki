@@ -2,7 +2,6 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
 import type {
   HostType,
-  AnimationRole as GeometryRole,
   LocalAction,
   ComponentDims,
 } from "../geometry.types.mts";
@@ -48,3 +47,5 @@ export type GeometrySetLayoutCb = (
 export type GeometrySetDiffCb<Instance extends HostType> = (
   s: Instance,
 ) => ReconciliationDiff;
+
+export type GeometryRole = string & { type?: "GeometryRole" };

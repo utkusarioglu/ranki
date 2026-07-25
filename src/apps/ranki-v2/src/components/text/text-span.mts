@@ -1,5 +1,5 @@
 import { R2C } from "_components/r2c/r2c.mjs";
-import { type Dims } from "_controllers/geometry/geometry.types.mjs";
+import { type WidthHeight } from "_controllers/geometry/geometry-style.types.mjs";
 import { TimingUtils } from "_utils/timing,utils.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
@@ -37,7 +37,7 @@ export class R2TextSpan extends R2C {
   override async firstUpdated() {
     await TimingUtils.waitLayout();
     const { width, height } = this.span.getBoundingClientRect();
-    const dims: Dims = { width: width + 1, height: height + 1 };
+    const dims: WidthHeight = { width: width + 1, height: height + 1 };
     setTimeout(() => {
       this.geo.emit("update", dims);
     }, PROPAGATE_DELAY);

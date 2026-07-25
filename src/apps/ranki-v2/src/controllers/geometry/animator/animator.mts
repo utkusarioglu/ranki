@@ -1,19 +1,20 @@
 import type { ReactiveElement } from "lit";
 import type {
-  AnimationRole,
   InformContext,
   InformedChildStyle,
   LocalAction,
 } from "../geometry.types.mjs";
-import { type ApplyParams, type AnimatorCallbacks } from "./animator.types.mjs";
-import { AnimationSequencer } from "./animation-sequencer.mjs";
+import type { GeometryRole } from "../controller/geometry-decorator.constructor.types.mts";
+import { type AnimatorPlayParams } from "./animator.types.mjs";
+import { type AnimatorCallbacks } from "./animator.constructor.types.mjs";
+import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
 import { KeyframeUtils } from "_controllers/geometry/animator/keyframe/keyframe-utils.mjs";
 import { getAnimationRecipe } from "_store/app.getters.mjs";
 import { LayoutParser } from "../parser/layout-parser.mjs";
 
 export class Animator {
   private readonly host: ReactiveElement;
-  private readonly role: AnimationRole;
+  private readonly role: GeometryRole;
   private readonly sequencer: AnimationSequencer;
   private readonly callbacks: AnimatorCallbacks;
   private readonly preset: string = "debug";
@@ -21,7 +22,7 @@ export class Animator {
 
   constructor(
     host: ReactiveElement,
-    role: AnimationRole,
+    role: GeometryRole,
     callbacks: AnimatorCallbacks,
   ) {
     this.host = host;
@@ -29,15 +30,15 @@ export class Animator {
     this.callbacks = callbacks;
     this.sequencer = new AnimationSequencer({
       informTarget: this.callbacks.informTarget.bind(this),
-      animate: this.animate.bind(this),
+      play: this.play.bind(this),
     });
   }
 
-  private async animate({
+  private async play({
     name,
     keyframes,
     options,
-  }: ApplyParams): Promise<void> {
+  }: AnimatorPlayParams): Promise<void> {
     const finalOptions: KeyframeAnimationOptions = {
       // easing: "linear",
       easing: "ease-in-out",

@@ -14,12 +14,12 @@ import { Animator } from "../animator/animator.mjs";
 import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mts";
 import type {
   ComponentDims,
-  Dims,
   EmitIntent,
   InformContext,
   InformedChildStyle,
   TypedDims,
 } from "../geometry.types.mjs";
+import type { WidthHeight } from "../geometry-style.types.mts";
 import type {
   GeometryControllerConstructorParams,
   GeometrySetLayoutCb,
@@ -79,7 +79,7 @@ export class GeometryController<
     this.host.informStyle = this.informStyle.bind(this);
   }
 
-  public emit(intent: EmitIntent, dims?: Dims | EmitModes) {
+  public emit(intent: EmitIntent, dims?: WidthHeight | EmitModes) {
     switch (intent) {
       case "update":
         assertNotUndefined(dims, {

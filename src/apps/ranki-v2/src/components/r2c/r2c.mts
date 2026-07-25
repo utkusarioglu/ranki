@@ -5,10 +5,6 @@ import type {
   InformedChildStyle,
 } from "_controllers/geometry/geometry.types.mjs";
 
-export type Other = {
-  opacity: number;
-};
-
 export class R2C extends LitElement {
   public leave() {
     assertNever({

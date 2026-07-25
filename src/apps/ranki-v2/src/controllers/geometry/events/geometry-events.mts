@@ -1,4 +1,4 @@
-import type { Dims } from "_controllers/geometry/geometry.types.mjs";
+import type { WidthHeight } from "../geometry-style.types.mts";
 import type { LitElement } from "lit";
 import type { EmitModes } from "./geometry-events.types.mts";
 
@@ -30,7 +30,7 @@ export class GeometryEvents {
     );
   }
 
-  public static emitUpdate(host: LitElement, { width, height }: Dims) {
+  public static emitUpdate(host: LitElement, { width, height }: WidthHeight) {
     host.dispatchEvent(
       new CustomEvent(this.geometryEventName, {
         detail: {

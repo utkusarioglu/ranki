@@ -1,9 +1,9 @@
 import type {
-  AnimationSequencerCallbacks,
   ApplyRootParams,
   LayoutParsed,
   LayoutParsedTargets,
-} from "./animator.types.mjs";
+} from "../animator.types.mjs";
+import type { AnimationSequencerCallbacks } from "./animation-sequencer.types.mjs";
 import { TimingUtils } from "_utils/timing,utils.mjs";
 
 export class AnimationSequencer {
@@ -32,7 +32,7 @@ export class AnimationSequencer {
     if (!roots) return Promise.resolve();
     await Promise.all(
       roots.map(async (p) => {
-        await this.callbacks.animate(p.apply);
+        await this.callbacks.play(p.apply);
         await this.sequenceThen(p.then);
       }),
     );

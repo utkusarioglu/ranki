@@ -1,12 +1,11 @@
 import type {
   ComponentDims,
-  LeftsTops,
-  WidthsHeights,
   WithEmitIntents,
 } from "_controllers/geometry/geometry.types.mjs";
-import type { Dims } from "_controllers/geometry/geometry.types.mjs";
+import type { TopsLefts, WidthsHeights } from "../geometry-style.types.mts";
+import type { WidthHeight } from "../geometry-style.types.mts";
 
-export type Size = Dims & LeftsTops & WidthsHeights & WithEmitIntents;
+export type Size = WidthHeight & TopsLefts & WidthsHeights & WithEmitIntents;
 
 export interface SizingGaps {
   start: number;
@@ -53,10 +52,10 @@ export class LayoutUtils {
   }
 
   private static linear(
-    dims: Dims[],
+    dims: WidthHeight[],
     gaps: GapsArg = {},
-    getMain: (v: Dims) => number,
-    getCross: (v: Dims) => number,
+    getMain: (v: WidthHeight) => number,
+    getCross: (v: WidthHeight) => number,
   ) {
     const main = LayoutUtils.normalizeGaps(gaps.main);
     const cross = LayoutUtils.normalizeGaps(gaps.cross);

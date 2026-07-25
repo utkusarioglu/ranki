@@ -1,8 +1,8 @@
-import type { AnimateableStyles } from "../animator.types.mts";
+import type { AnimationKeyframeStyles } from "../animator.types.mts";
 
 export interface Case {
   name: string;
-  input: AnimateableStyles;
+  input: AnimationKeyframeStyles;
   expected: Partial<Keyframe>;
 }
 
