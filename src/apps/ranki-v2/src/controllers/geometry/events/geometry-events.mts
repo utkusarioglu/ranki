@@ -1,7 +1,6 @@
 import type { Dims } from "_controllers/geometry/geometry.types.mjs";
 import type { LitElement } from "lit";
-
-export type EmitModes = "hover-start" | "hover-end";
+import type { EmitModes } from "./geometry-events.types.mts";
 
 export class GeometryEvents {
   public static readonly geometryEventName = "r2-geometry";

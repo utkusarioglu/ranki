@@ -7,7 +7,7 @@ import type {
   Pos,
   UpdateStyle,
 } from "../geometry.types.mjs";
-import type { GeometrySetName } from "../controller/geometry.controller.types.mts";
+import type { GeometrySetName } from "../controller/geometry-controller.types.mts";
 
 export type ImmediateStyles = { zIndex?: number } & AnimateableStyles;
 

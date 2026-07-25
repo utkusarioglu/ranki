@@ -1,9 +1,11 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
-import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
 import type { AnimateableStyles } from "./animator/animator.types.mjs";
-import type { Size } from "_controllers/geometry/layout/layout-utils.mjs";
 import type { LitElement } from "lit";
-import type { EmitModes } from "./geometry.events.mts";
+import type { EmitModes } from "./events/geometry-events.types.mts";
+import type {
+  GeometrySetLayoutCb,
+  GeometrySetDiffCb,
+} from "./controller/geometry-decorator.constructor.types.mts";
 
 export type HostType = LitElement;
 
@@ -23,83 +25,19 @@ export type ListenChildrenEvent = CustomEvent<{ rect: Dims; detail: any }>;
 
 export type Dims = Pick<DOMRect, "width" | "height">;
 
-export type TargetSelectorCb<Instance extends HostType> = (
-  s: Instance,
-) => R2C[];
 // export type SizingSelector = Record<string, >;
-
-export type TargetEventCbEvents = `${LocalAction}-start` & `${LocalAction}-end`;
-
-export type TargetEventCb<Instance> = (
-  s: Instance,
-  event: TargetEventCbEvents,
-) => void;
-
-export interface TargetProps<Instance extends HostType> {
-  isRoot?: boolean;
-  selector: TargetSelectorCb<Instance>;
-  layout?: LayoutCb;
-  diff?: ReconcilerChangesCb<Instance>;
-}
-
-export type TargetRec<Instance extends HostType> = Record<
-  string,
-  TargetProps<Instance>
->;
 
 /**
  * Lets the host set the start, end margins and the padding between its children
  */
-export type SizingCallbackRecord = Record<string, LayoutCb>;
-
-export type LayoutCb = (s: HostType) => (dims: ComponentDims[]) => Size | null;
+export type SizingCallbackRecord = Record<string, GeometrySetLayoutCb>;
 
 export type AnimationRole = string;
 
-export type ReconcilerChangesCb<Instance extends HostType> = (
-  s: Instance,
-) => ReconciliationDiff;
-
 export type ReconcilerChangesMapCb<Instance extends HostType> = Record<
   string,
-  ReconcilerChangesCb<Instance>
+  GeometrySetDiffCb<Instance>
 >;
-
-export interface GeometryParams<Instance extends HostType> {
-  role: AnimationRole;
-  events?: { hover?: boolean };
-  on?: TargetEventCb<Instance>;
-  sets?: TargetRec<Instance>;
-}
-
-interface R2CNewChildLeave {
-  intent: "leave";
-}
-
-interface R2CNewChildMode {
-  intent: "mode";
-  mode: EmitModes;
-}
-
-interface R2CNewChildSizeConnected {
-  intent: "connected";
-}
-
-interface R2CNewChildSizeDisconnected {
-  intent: "disconnected";
-}
-
-interface R2CNewChildSizeUpdate {
-  intent: "update";
-  rect: DOMRect;
-}
-
-export type R2CNewChildSizeEvent =
-  | R2CNewChildSizeUpdate
-  | R2CNewChildSizeDisconnected
-  | R2CNewChildSizeConnected
-  | R2CNewChildLeave
-  | R2CNewChildMode;
 
 export interface ComponentDims {
   component: R2C;

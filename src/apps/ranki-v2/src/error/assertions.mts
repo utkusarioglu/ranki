@@ -14,6 +14,19 @@ export function assertOverride(extra: AssertionExtra): never {
   });
 }
 
+export function assertExists(
+  v: any,
+  extra: AssertionExtra,
+): asserts v is object {
+  if (v === undefined || v === null) {
+    throw new RankiAppError({
+      code: "VALUE_UNDEFINED",
+      cause: null,
+      ...extra,
+    });
+  }
+}
+
 export function assertNever(extra: AssertionExtra): never {
   throw new RankiAppError({
     code: "NEVER_EVENT",

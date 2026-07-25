@@ -4,8 +4,8 @@ import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, query } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
-import { GeometryController } from "_controllers/geometry/controller/geometry.controller.mjs";
-import { geometry } from "_controllers/geometry/decorator/geometry.decorator.mjs";
+import { GeometryController } from "_controllers/geometry/controller/geometry-controller.mjs";
+import { geometry } from "_controllers/geometry/decorator/geometry-decorator.mjs";
 import style from "./cue-list.css?inline";
 
 @customElement("r2-cue-list")

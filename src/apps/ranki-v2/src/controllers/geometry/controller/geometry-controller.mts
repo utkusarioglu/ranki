@@ -1,59 +1,64 @@
-import type { LitElement, ReactiveController } from "lit";
-import type {
-  GeometryParams,
-  ComponentDims,
-  Dims,
-  R2CNewChildSizeEvent,
-  InformedChildStyle,
-  InformContext,
-  LayoutCb,
-  TargetRec,
-  TargetProps,
-  TargetEventCb,
-  TargetEventCbEvents,
-  EmitIntent,
-  TypedDims,
-} from "../geometry.types.mjs";
-import type { R2C } from "_components/r2c/r2c.mjs";
-import { RankiAppError } from "_error/ranki-app-error.mjs";
-import { TimingUtils } from "_utils/timing,utils.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
+import type { R2C } from "_components/r2c/r2c.mjs";
 import { GeometryEval } from "_controllers/geometry/geometry-eval.mjs";
 import {
+  assertExists,
   assertNever,
   assertNotNull,
   assertNotUndefined,
 } from "_error/assertions.mjs";
+import { RankiAppError } from "_error/ranki-app-error.mjs";
+import { TimingUtils } from "_utils/timing,utils.mjs";
+import type { LitElement, ReactiveController } from "lit";
 import { Animator } from "../animator/animator.mjs";
-// !FIX
-import { assertExists } from "../../../../../../packages/dqm-utils/src/assertions.mjs";
-import type { InformTargetParams } from "../animator/animator.types.mjs";
+import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mts";
+import type {
+  ComponentDims,
+  Dims,
+  EmitIntent,
+  InformContext,
+  InformedChildStyle,
+  TypedDims,
+} from "../geometry.types.mjs";
+import type {
+  GeometryControllerConstructorParams,
+  GeometrySetLayoutCb,
+  GeometryEventCb,
+  GeometryEventName,
+  GeometrySetProps,
+  GeometrySetRecord,
+} from "./geometry-decorator.constructor.types.mts";
+import type { Size } from "_controllers/geometry/layout/layout-utils.mjs";
+import { LayoutParser } from "_controllers/geometry/parser/layout-parser.mjs";
 import {
   ReconciliationUtils,
   type ReconciliationDiff,
 } from "_utils/reconciliation.utils.mjs";
-import type { Size } from "_controllers/geometry/layout/layout-utils.mjs";
-import { LayoutParser } from "_controllers/geometry/parser/layout-parser.mjs";
-import { GeometryEvents, type EmitModes } from "../geometry.events.mjs";
+import type { InformTargetParams } from "../animator/animator.types.mjs";
+import { GeometryEvents } from "../events/geometry-events.mjs";
+import { type EmitModes } from "../events/geometry-events.types.mjs";
 import type {
   GeometrySetName,
   OnEmitParams,
-} from "./geometry.controller.types.mts";
+} from "./geometry-controller.types.mts";
 
 export class GeometryController<
   Instance extends LitElement,
 > implements ReactiveController {
   private readonly host: Instance;
   private readonly registered = new WeakMap<R2C, TypedDims>();
-  private readonly targets: TargetRec<Instance> | undefined;
+  private readonly targets: GeometrySetRecord<Instance> | undefined;
   private readonly animator: Animator;
-  private readonly on: TargetEventCb<Instance> | null = null;
+  private readonly on: GeometryEventCb<Instance> | null = null;
   private sizing: Size | null = null;
   private requested = false;
   private currStyle: InformedChildStyle | null = null;
   private events: { hover: boolean };
 
-  constructor(host: Instance, params: GeometryParams<Instance>) {
+  constructor(
+    host: Instance,
+    params: GeometryControllerConstructorParams<Instance>,
+  ) {
     host.addController(this);
     this.host = host;
     this.targets = params.sets;
@@ -99,7 +104,7 @@ export class GeometryController<
     }
   }
 
-  private getSet(set: GeometrySetName): TargetProps<Instance> {
+  private getSet(set: GeometrySetName): GeometrySetProps<Instance> {
     const s = this.targets && this.targets[set]!;
     assertExists(s, {
       why: "Subtree selector hasn't been registered",
@@ -133,13 +138,13 @@ export class GeometryController<
     const onEvent = this.on;
     if (onEvent) {
       actions.forEach((action) => {
-        onEvent(this.host, `${action}-start` as TargetEventCbEvents);
+        onEvent(this.host, `${action}-start` as GeometryEventName);
       });
     }
     await this.animator.updateStyle(actions, this.currStyle, prev, context);
     if (onEvent) {
       actions.forEach((action) => {
-        onEvent(this.host, `${action}-end` as TargetEventCbEvents);
+        onEvent(this.host, `${action}-end` as GeometryEventName);
       });
     }
   }
@@ -243,7 +248,7 @@ export class GeometryController<
     return !!set.isRoot;
   }
 
-  private getSizingCallback(setName: GeometrySetName): LayoutCb {
+  private getSizingCallback(setName: GeometrySetName): GeometrySetLayoutCb {
     const set = this.getSet(setName);
     const layout = set.layout;
     assertNotUndefined(layout, {
