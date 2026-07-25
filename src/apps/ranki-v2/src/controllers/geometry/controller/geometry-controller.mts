@@ -13,10 +13,9 @@ import type { LitElement, ReactiveController } from "lit";
 import { Animator } from "../animator/animator.mjs";
 import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mts";
 import type {
-  ComponentDims,
   InformContext,
   InformedChildStyle,
-  TypedDims,
+  ComponentDims,
 } from "../geometry.types.mjs";
 import type { EmitIntent } from "../geometry-intent.types.mts";
 import type { WidthHeight } from "../geometry-style.types.mts";
@@ -28,7 +27,7 @@ import type {
   GeometrySetProps,
   GeometrySetRecord,
 } from "./geometry-decorator.constructor.types.mts";
-import type { Size } from "_controllers/geometry/layout/layout-utils.mjs";
+import type { LayoutSizing } from "../layout/layout-utils.types.mts";
 import { LayoutParser } from "_controllers/geometry/parser/layout-parser.mjs";
 import {
   ReconciliationUtils,
@@ -46,11 +45,11 @@ export class GeometryController<
   Instance extends LitElement,
 > implements ReactiveController {
   private readonly host: Instance;
-  private readonly registered = new WeakMap<R2C, TypedDims>();
+  private readonly registered = new WeakMap<R2C, ComponentDims>();
   private readonly targets: GeometrySetRecord<Instance> | undefined;
   private readonly animator: Animator;
   private readonly on: GeometryEventCb<Instance> | null = null;
-  private sizing: Size | null = null;
+  private sizing: LayoutSizing | null = null;
   private requested = false;
   private currStyle: InformedChildStyle | null = null;
   private events: { hover: boolean };
@@ -113,7 +112,7 @@ export class GeometryController<
     return s;
   }
 
-  private getSizing(): Size {
+  private getSizing(): LayoutSizing {
     assertNotNull(this.sizing, {
       why: "getSizing called when no geometry was registered",
     });
@@ -125,7 +124,7 @@ export class GeometryController<
     context: InformContext,
   ): Promise<void> {
     const prev = this.currStyle;
-    let sizing = {} as Size;
+    let sizing = {} as LayoutSizing;
     try {
       sizing = this.getSizing();
     } catch (e) {}
@@ -270,7 +269,7 @@ export class GeometryController<
         // FIX you may need to replace this with a boundingClientRect call
         // assertNever({ why: "The element should exist in weakmap" });
       }
-      ordered.push({ component, dims });
+      ordered.push(dims);
     }
     return ordered;
   }

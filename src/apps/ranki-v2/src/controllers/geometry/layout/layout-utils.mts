@@ -1,33 +1,25 @@
 import type { ComponentDims } from "_controllers/geometry/geometry.types.mjs";
-import type { WithEmitIntents } from "../geometry-intent.types.mts";
-import type { TopsLefts, WidthsHeights } from "../geometry-style.types.mts";
 import type { WidthHeight } from "../geometry-style.types.mts";
-
-export type Size = WidthHeight & TopsLefts & WidthsHeights & WithEmitIntents;
-
-export interface SizingGaps {
-  start: number;
-  gap: number;
-  end: number;
-}
-
-export type GapsArg = {
-  main?: Partial<SizingGaps>;
-  cross?: Partial<Pick<SizingGaps, "start" | "end">>;
-};
+import type {
+  LayoutGapsParams,
+  LayoutSizing,
+  LayoutGaps,
+} from "./layout-utils.types.mts";
 
 export class LayoutUtils {
-  public static row(gaps: GapsArg = {}): (d: ComponentDims[]) => Size {
+  public static row(
+    gaps: LayoutGapsParams = {},
+  ): (d: ComponentDims[]) => LayoutSizing {
     return (dims: ComponentDims[]) => {
       const s = LayoutUtils.linear(
-        dims.map((d) => d.dims),
+        dims,
         gaps,
         (v) => v.width,
         (v) => v.height,
       );
 
-      const sizing: Size = {
-        intents: dims.map((v) => v.dims.intent),
+      const sizing: LayoutSizing = {
+        intents: dims.map((v) => v.intent),
         width: s.sizeMain,
         height: s.sizeCross,
         lefts: s.offsetsMain,
@@ -40,7 +32,7 @@ export class LayoutUtils {
     };
   }
 
-  private static normalizeGaps(gaps: Partial<SizingGaps> | undefined) {
+  private static normalizeGaps(gaps: Partial<LayoutGaps> | undefined) {
     return {
       start: 0,
       end: 0,
@@ -51,7 +43,7 @@ export class LayoutUtils {
 
   private static linear(
     dims: WidthHeight[],
-    gaps: GapsArg = {},
+    gaps: LayoutGapsParams = {},
     getMain: (v: WidthHeight) => number,
     getCross: (v: WidthHeight) => number,
   ) {
@@ -89,24 +81,24 @@ export class LayoutUtils {
    * main axis is inline, cross axis is block
    */
   public static last(
-    gaps: GapsArg = {},
-  ): (dims: ComponentDims[]) => Size | null {
+    gaps: LayoutGapsParams = {},
+  ): (dims: ComponentDims[]) => LayoutSizing | null {
     return (dims: ComponentDims[]) => {
       const last = dims.at(-1);
       if (!last) return null;
 
       const zeros = Array.from({ length: dims.length - 1 }, () => 0);
       const width =
-        last.dims.width + (gaps.main?.start || 0) + (gaps.main?.end || 0);
+        last.width + (gaps.main?.start || 0) + (gaps.main?.end || 0);
       const height =
-        last.dims.height + (gaps.cross?.start || 0) + (gaps.cross?.end || 0);
+        last.height + (gaps.cross?.start || 0) + (gaps.cross?.end || 0);
       const lefts = [...zeros, gaps.main?.start || 0];
       const tops = [...zeros, gaps.cross?.start || 0];
-      const heights = [...zeros, last.dims.height];
-      const widths = [...zeros, last.dims.width];
+      const heights = [...zeros, last.height];
+      const widths = [...zeros, last.width];
 
       return {
-        intents: dims.map((d) => d.dims.intent),
+        intents: dims.map((d) => d.intent),
         width,
         height,
         lefts,

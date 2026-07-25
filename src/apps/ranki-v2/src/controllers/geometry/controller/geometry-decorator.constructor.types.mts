@@ -1,11 +1,12 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
-import type { HostType, ComponentDims } from "../geometry.types.mts";
+import type { ComponentDims } from "../geometry.types.mts";
 import type { LocalAction } from "../geometry-intent.types.mts";
-import type { Size } from "../layout/layout-utils.mts";
+import type { LayoutSizing } from "../layout/layout-utils.types.mts";
+import type { LitElement } from "lit";
 
 export interface GeometryControllerConstructorParams<
-  Instance extends HostType,
+  Instance extends LitElement,
 > {
   role: GeometryRole;
   events?: { hover?: boolean };
@@ -18,14 +19,14 @@ export type GeometryEventCb<Instance> = (
   event: GeometryEventName,
 ) => void;
 
-export type GeometrySetRecord<Instance extends HostType> = Record<
+export type GeometrySetRecord<Instance extends LitElement> = Record<
   string,
   GeometrySetProps<Instance>
 >;
 
 export type GeometryEventName = `${LocalAction}-start` & `${LocalAction}-end`;
 
-export interface GeometrySetProps<Instance extends HostType> {
+export interface GeometrySetProps<Instance extends LitElement> {
   isRoot?: boolean;
   selector: GeometrySetSelectorCb<Instance>;
   layout?: GeometrySetLayoutCb;
@@ -33,15 +34,15 @@ export interface GeometrySetProps<Instance extends HostType> {
   diff?: GeometrySetDiffCb<Instance>;
 }
 
-export type GeometrySetSelectorCb<Instance extends HostType> = (
+export type GeometrySetSelectorCb<Instance extends LitElement> = (
   s: Instance,
 ) => R2C[];
 
 export type GeometrySetLayoutCb = (
-  s: HostType,
-) => (dims: ComponentDims[]) => Size | null;
+  s: LitElement,
+) => (dims: ComponentDims[]) => LayoutSizing | null;
 
-export type GeometrySetDiffCb<Instance extends HostType> = (
+export type GeometrySetDiffCb<Instance extends LitElement> = (
   s: Instance,
 ) => ReconciliationDiff;
 
