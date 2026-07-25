@@ -1,7 +1,7 @@
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import { R2C } from "_components/r2c/r2c.mjs";
-import { SizingUtils } from "_utils/sizing.utils.mjs";
+import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { GeometryController } from "_controllers/geometry/controller/geometry.controller.mjs";
@@ -41,8 +41,8 @@ export class R2Chip extends R2C {
     targets: {
       content: {
         selector: (s) => [s.icon, s.text],
-        sizing: () =>
-          SizingUtils.row({
+        layout: () =>
+          LayoutUtils.row({
             main: {
               start: 10,
               gap: 5,

@@ -3,7 +3,7 @@ import type {
   LocalAction,
 } from "_controllers/geometry/geometry.types.mjs";
 
-export class GeometryUtils {
+export class GeometryEval {
   public static evaluateActions(
     curr: InformedChildStyle,
     prev: InformedChildStyle | null,

@@ -4,7 +4,7 @@ import { R2C } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 import type { R2IconSpan } from "./icon-span.mjs";
 import { repeat } from "lit/directives/repeat.js";
-import { SizingUtils } from "_utils/sizing.utils.mjs";
+import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
 import { GeometryController } from "_controllers/geometry/controller/geometry.controller.mjs";
 import { geometry } from "_controllers/geometry/decorator/geometry.decorator.mjs";
 import style from "./icon.css?inline";
@@ -40,7 +40,7 @@ export class R2Icon extends R2C {
     targets: {
       "icon-span": {
         selector: (s) => Array.from(s.spans),
-        sizing: () => SizingUtils.last(),
+        layout: () => LayoutUtils.last(),
         diff: (s) => s.subtree.curr.diff,
       },
     },

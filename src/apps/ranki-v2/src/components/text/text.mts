@@ -4,7 +4,7 @@ import { R2C } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 import type { R2TextSpan } from "./text-span.mjs";
 import { repeat } from "lit/directives/repeat.js";
-import { SizingUtils } from "_utils/sizing.utils.mjs";
+import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
 import { type GeometryController } from "_controllers/geometry/controller/geometry.controller.mjs";
 import { geometry } from "_controllers/geometry/decorator/geometry.decorator.mjs";
 import { ReconciliationController } from "_controllers/reconciler/reconciler.controller.mjs";
@@ -38,7 +38,7 @@ export class R2Text extends R2C {
     targets: {
       "text-span": {
         selector: (s) => Array.from(s.spans),
-        sizing: () => SizingUtils.last(),
+        layout: () => LayoutUtils.last(),
         diff: (s) => s.subtree.curr.diff,
       },
     },

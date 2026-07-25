@@ -1,5 +1,5 @@
 import { R2C } from "_components/r2c/r2c.mjs";
-import { SizingUtils } from "_utils/sizing.utils.mjs";
+import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, query } from "lit/decorators.js";
 import styles from "./hud.css?inline";
@@ -19,8 +19,8 @@ export class R2Hud extends R2C {
       scroller: {
         isRoot: true,
         selector: (s) => [s.scroller],
-        sizing: () =>
-          SizingUtils.row({
+        layout: () =>
+          LayoutUtils.row({
             cross: {
               start: 10,
               end: 5,

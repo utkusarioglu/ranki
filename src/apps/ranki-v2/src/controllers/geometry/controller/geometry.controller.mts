@@ -6,7 +6,7 @@ import type {
   R2CNewChildSizeEvent,
   InformedChildStyle,
   InformContext,
-  SizingCb,
+  LayoutCb,
   TargetRec,
   TargetProps,
   TargetEventCb,
@@ -18,7 +18,7 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { TimingUtils } from "_utils/timing,utils.mjs";
 import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
-import { GeometryUtils } from "../../../utils/geometry.utils.mjs";
+import { GeometryEval } from "_controllers/geometry/geometry-eval.mjs";
 import {
   assertNever,
   assertNotNull,
@@ -32,7 +32,7 @@ import {
   ReconciliationUtils,
   type ReconciliationDiff,
 } from "_utils/reconciliation.utils.mjs";
-import type { Size } from "_utils/sizing.utils.mjs";
+import type { Size } from "_controllers/geometry/layout/layout-utils.mjs";
 import { LayoutParser } from "_controllers/geometry/parser/layout-parser.mjs";
 import { GeometryEvents, type EmitModes } from "../geometry.events.mjs";
 
@@ -54,11 +54,9 @@ export class GeometryController<
     this.host = host;
     this.targets = params.targets;
     this.on = params.on ? params.on : null;
-    this.animator = new Animator(
-      this.host,
-      params.role,
-      this.informTarget.bind(this),
-    );
+    this.animator = new Animator(this.host, params.role, {
+      informTarget: this.informTarget.bind(this),
+    });
     this.events = { hover: false, ...params.events };
     this.bindInformStyle();
   }
@@ -125,7 +123,7 @@ export class GeometryController<
 
     const curr: InformedChildStyle = { ...sizing, ...informed };
 
-    const actions = GeometryUtils.evaluateActions(curr, prev);
+    const actions = GeometryEval.evaluateActions(curr, prev);
 
     this.currStyle = curr;
     const onEvent = this.on;
@@ -241,9 +239,9 @@ export class GeometryController<
     return !!target.isRoot;
   }
 
-  private getSizingCallback(id: string): SizingCb {
+  private getSizingCallback(id: string): LayoutCb {
     const target = this.getTarget(id);
-    const s = target.sizing;
+    const s = target.layout;
     assertNotUndefined(s, { why: "No sizing registered", details: { id } });
     return s;
   }

@@ -1,20 +1,16 @@
 import type {
-  AnimationChainMakerCallbacks,
-  ApplyCb,
+  AnimationSequencerCallbacks,
   ApplyRootParams,
-  InformTargetCb,
   LayoutParsed,
   LayoutParsedTargets,
 } from "./animator.types.mjs";
 import { TimingUtils } from "_utils/timing,utils.mjs";
 
 export class AnimationSequencer {
-  private readonly informTargetCb: InformTargetCb;
-  private readonly applyCb: ApplyCb;
+  private readonly callbacks: AnimationSequencerCallbacks;
 
-  constructor(callbacks: AnimationChainMakerCallbacks) {
-    this.informTargetCb = callbacks.informTarget;
-    this.applyCb = callbacks.apply;
+  constructor(callbacks: AnimationSequencerCallbacks) {
+    this.callbacks = callbacks;
   }
 
   private async sequenceTargets(
@@ -24,7 +20,7 @@ export class AnimationSequencer {
     await Promise.all(
       Object.values(l).map(async ({ wait, target, then }) => {
         if (wait) await TimingUtils.delay(wait);
-        await this.informTargetCb(target);
+        await this.callbacks.informTarget(target);
         if (then) await this.sequenceThen(then);
       }),
     );
@@ -36,7 +32,7 @@ export class AnimationSequencer {
     if (!roots) return Promise.resolve();
     await Promise.all(
       roots.map(async (p) => {
-        await this.applyCb(p.apply);
+        await this.callbacks.animate(p.apply);
         await this.sequenceThen(p.then);
       }),
     );

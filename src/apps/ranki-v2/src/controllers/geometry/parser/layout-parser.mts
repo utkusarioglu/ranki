@@ -42,7 +42,7 @@ export class LayoutParser {
     };
   }
 
-  static parseTargets(
+  private static parseTargets(
     targets: AnimationBlockTargets,
     curr: InformedChildStyle,
     prev: InformedChildStyle | null,
@@ -76,7 +76,7 @@ export class LayoutParser {
     };
   }
 
-  static evalOptionValue(
+  private static evalOptionValue(
     context: InformContext,
     v: string | number | undefined,
   ) {
@@ -87,14 +87,13 @@ export class LayoutParser {
       const varSet = {
         INDEX: context.index,
         LENGTH: context.length,
-        // STAGGER_FIRST: context.stagger.first,
         STAGGER_INDEX: context.stagger[context.index],
       };
       return exp.evaluate(varSet);
     }
   }
 
-  static evalOptions(
+  private static evalOptions(
     r: AnimationRoot,
     context: InformContext,
   ): Partial<AnimationOptions> {
@@ -107,7 +106,7 @@ export class LayoutParser {
     return Object.fromEntries<number>(entries) as Partial<AnimationOptions>;
   }
 
-  static parseRoot(
+  private static parseRoot(
     b: AnimationRoot,
     curr: InformedChildStyle,
     prev: InformedChildStyle | null,
@@ -152,29 +151,28 @@ export class LayoutParser {
     curr: InformedChildStyle,
     prev: InformedChildStyle | null,
     context: InformContext,
-    v: string | number | undefined,
+    value: string | number | undefined,
   ) {
-    if (typeof v === "number" || typeof v === "undefined") {
-      return v;
-    } else {
-      const exp = parser.parse(v);
-      const varSet = {
-        CONTAINER_HEIGHT: this.try(curr, (c) => c.height),
-        CONTAINER_WIDTH: this.try(curr, (c) => c.width),
-        CONTAINER_TOP: this.try(curr, (c) => c.top),
-        CONTAINER_LEFT: this.try(curr, (c) => c.left),
-
-        CONTAINER_PREV_HEIGHT: this.try(prev, (p) => p.height),
-        CONTAINER_PREV_WIDTH: this.try(prev, (p) => p.width),
-        CONTAINER_PREV_TOP: this.try(prev, (p) => p.top),
-        CONTAINER_PREV_LEFT: this.try(prev, (p) => p.left),
-
-        LEFT: this.try(curr, (c) => c.lefts[context.index]),
-        TOP: this.try(curr, (c) => c.tops[context.index]),
-        WIDTH: this.try(curr, (c) => c.widths[context.index]),
-        HEIGHT: this.try(curr, (c) => c.heights[context.index]),
-      };
-      return exp.evaluate(varSet);
+    if (typeof value === "number" || typeof value === "undefined") {
+      return value;
     }
+    const exp = parser.parse(value);
+    const varSet = {
+      CONTAINER_HEIGHT: this.try(curr, (c) => c.height),
+      CONTAINER_WIDTH: this.try(curr, (c) => c.width),
+      CONTAINER_TOP: this.try(curr, (c) => c.top),
+      CONTAINER_LEFT: this.try(curr, (c) => c.left),
+
+      CONTAINER_PREV_HEIGHT: this.try(prev, (p) => p.height),
+      CONTAINER_PREV_WIDTH: this.try(prev, (p) => p.width),
+      CONTAINER_PREV_TOP: this.try(prev, (p) => p.top),
+      CONTAINER_PREV_LEFT: this.try(prev, (p) => p.left),
+
+      LEFT: this.try(curr, (c) => c.lefts[context.index]),
+      TOP: this.try(curr, (c) => c.tops[context.index]),
+      WIDTH: this.try(curr, (c) => c.widths[context.index]),
+      HEIGHT: this.try(curr, (c) => c.heights[context.index]),
+    };
+    return exp.evaluate(varSet);
   }
 }

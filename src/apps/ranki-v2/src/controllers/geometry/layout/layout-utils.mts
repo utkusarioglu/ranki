@@ -19,10 +19,10 @@ export type GapsArg = {
   cross?: Partial<Pick<SizingGaps, "start" | "end">>;
 };
 
-export class SizingUtils {
+export class LayoutUtils {
   public static row(gaps: GapsArg = {}): (d: ComponentDims[]) => Size {
     return (dims: ComponentDims[]) => {
-      const s = SizingUtils.linear(
+      const s = LayoutUtils.linear(
         dims.map((d) => d.dims),
         gaps,
         (v) => v.width,
@@ -58,8 +58,8 @@ export class SizingUtils {
     getMain: (v: Dims) => number,
     getCross: (v: Dims) => number,
   ) {
-    const main = SizingUtils.normalizeGaps(gaps.main);
-    const cross = SizingUtils.normalizeGaps(gaps.cross);
+    const main = LayoutUtils.normalizeGaps(gaps.main);
+    const cross = LayoutUtils.normalizeGaps(gaps.cross);
     const spacingMain = main.gap * (dims.length - 1) + main.start + main.end;
     const spacingCross = cross.start + cross.end;
     const sizeCross =

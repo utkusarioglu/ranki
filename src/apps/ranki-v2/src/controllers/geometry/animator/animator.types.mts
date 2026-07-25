@@ -37,6 +37,10 @@ export type Anim = {
   easing: string;
 };
 
+export interface AnimatorCallbacks {
+  informTarget: InformTargetCb;
+}
+
 // export interface R2CWithGeometry {
 //   readonly geometry: GeometryController;
 // }
@@ -45,8 +49,8 @@ export type InformTargetCb = (params: InformTargetParams) => Promise<void>;
 
 export type ApplyCb = (params: ApplyParams) => Promise<void>;
 
-export interface AnimationChainMakerCallbacks {
-  apply: ApplyCb;
+export interface AnimationSequencerCallbacks {
+  animate: ApplyCb;
   informTarget: InformTargetCb;
 }
 

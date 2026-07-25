@@ -1,7 +1,7 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
 import type { AnimateableStyles } from "./animator/animator.types.mjs";
-import type { Size } from "_utils/sizing.utils.mjs";
+import type { Size } from "_controllers/geometry/layout/layout-utils.mjs";
 import type { LitElement } from "lit";
 import type { EmitModes } from "./geometry.events.mts";
 
@@ -38,7 +38,7 @@ export type TargetEventCb<Instance> = (
 export interface TargetProps<Instance extends HostType> {
   isRoot?: boolean;
   selector: TargetSelectorCb<Instance>;
-  sizing?: SizingCb;
+  layout?: LayoutCb;
   diff?: ReconcilerChangesCb<Instance>;
 }
 
@@ -50,9 +50,9 @@ export type TargetRec<Instance extends HostType> = Record<
 /**
  * Lets the host set the start, end margins and the padding between its children
  */
-export type SizingCallbackRecord = Record<string, SizingCb>;
+export type SizingCallbackRecord = Record<string, LayoutCb>;
 
-export type SizingCb = (s: HostType) => (dims: ComponentDims[]) => Size | null;
+export type LayoutCb = (s: HostType) => (dims: ComponentDims[]) => Size | null;
 
 export type AnimationRole = string;
 

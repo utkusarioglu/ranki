@@ -1,6 +1,6 @@
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import { R2C } from "_components/r2c/r2c.mjs";
-import { SizingUtils } from "_utils/sizing.utils.mjs";
+import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
 import { css, html } from "lit";
 import { customElement, query, queryAll } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
@@ -32,8 +32,8 @@ export class R2HudScroller extends R2C {
       },
       sections: {
         selector: (s) => Array.from(s.cueList),
-        sizing: () =>
-          SizingUtils.row({
+        layout: () =>
+          LayoutUtils.row({
             main: {
               start: 10,
               gap: 10,

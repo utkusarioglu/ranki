@@ -5,35 +5,35 @@ import type {
   InformedChildStyle,
   LocalAction,
 } from "../geometry.types.mjs";
-import { type InformTargetCb, type ApplyParams } from "./animator.types.mjs";
-import { AnimationSequencer } from "./animatior.sequencer.mjs";
-import { KeyframeUtils } from "_controllers/geometry/KeyframeUtils.mjs";
+import { type ApplyParams, type AnimatorCallbacks } from "./animator.types.mjs";
+import { AnimationSequencer } from "./animation-sequencer.mjs";
+import { KeyframeUtils } from "_controllers/geometry/animator/keyframe/keyframe-utils.mjs";
 import { getAnimationRecipe } from "_store/app.getters.mjs";
 import { LayoutParser } from "../parser/layout-parser.mjs";
 
 export class Animator {
   private readonly host: ReactiveElement;
   private readonly role: AnimationRole;
-  private readonly preset: string = "debug";
-  private readonly informTarget: InformTargetCb;
-  private runningAnimations = new Map<string, Animation>();
   private readonly sequencer: AnimationSequencer;
+  private readonly callbacks: AnimatorCallbacks;
+  private readonly preset: string = "debug";
+  private running = new Map<string, Animation>();
 
   constructor(
     host: ReactiveElement,
     role: AnimationRole,
-    informTarget: InformTargetCb,
+    callbacks: AnimatorCallbacks,
   ) {
     this.host = host;
     this.role = role;
-    this.informTarget = informTarget;
+    this.callbacks = callbacks;
     this.sequencer = new AnimationSequencer({
-      informTarget: this.informTarget.bind(this),
-      apply: this.apply.bind(this),
+      informTarget: this.callbacks.informTarget.bind(this),
+      animate: this.animate.bind(this),
     });
   }
 
-  private async apply({
+  private async animate({
     name,
     keyframes,
     options,
@@ -49,7 +49,7 @@ export class Animator {
       KeyframeUtils.produceKeyframe(k),
     );
     const anim = this.host.animate(finalKeyframes, finalOptions);
-    const r = this.runningAnimations.get(name);
+    const r = this.running.get(name);
     if (r) {
       r.oncancel = (_ev) => {
         if (r.playState === "running") {
@@ -65,7 +65,7 @@ export class Animator {
       r.commitStyles();
       r.cancel();
     }
-    this.runningAnimations.set(name, anim);
+    this.running.set(name, anim);
     await anim.finished;
   }
 
