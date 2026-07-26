@@ -1,5 +1,5 @@
 import type {
-  AnimateableStylesConfigKeyframes,
+  AnimatableStylesConfigKeyframes,
   AnimationBlockTargets,
   AnimationOptions,
   AnimationRoot,
@@ -129,7 +129,7 @@ export class LayoutParser {
     curr: InformedChildStyle,
     prev: InformedChildStyle | null,
     context: InformContext,
-    b: AnimateableStylesConfigKeyframes,
+    b: AnimatableStylesConfigKeyframes,
   ): Omit<UpdateStyle, "type"> {
     const entries = Object.entries(b).map(([k, v]) => [
       k,

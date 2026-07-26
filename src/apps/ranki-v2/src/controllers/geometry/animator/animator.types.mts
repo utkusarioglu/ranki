@@ -7,8 +7,6 @@ import type { LocalAction } from "../geometry-intent.types.mts";
 import type { WidthHeight, TopLeft } from "../geometry-style.types.mjs";
 import type { GeometrySetName } from "../controller/geometry-controller.types.mts";
 
-export type ImmediateStyles = { zIndex?: number } & AnimationKeyframeStyles;
-
 export type AnimationKeyframeStyles = Partial<WidthHeight> &
   Partial<TopLeft> &
   Partial<AnimationKeyframeOptions> &
@@ -40,16 +38,16 @@ export type InformTargetParams = {
   set: GeometrySetName;
   curr: InformedChildStyle;
   prev: InformedChildStyle | null;
-  inform: AnimateableStylesConfigKeyframes;
+  inform: AnimatableStylesConfigKeyframes;
 };
 
-export type AnimateableStylesConfigKeyframes = Partial<
+export type AnimatableStylesConfigKeyframes = Partial<
   Record<keyof AnimationKeyframeStyles, string | number>
 >;
 
 export interface AnimationRoot {
   name: string;
-  keyframes: AnimateableStylesConfigKeyframes[];
+  keyframes: AnimatableStylesConfigKeyframes[];
   delay?: number | string;
   duration: number | string;
   easing?: string;
@@ -58,15 +56,9 @@ export interface AnimationRoot {
 
 export type AnimationBlockTargets = Record<string, AnimationTarget>;
 
-export interface AnimationBlock {
-  root?: AnimationRoot[];
-  targets?: AnimationBlockTargets;
-  then?: AnimationBlock;
-}
-
 export interface AnimationTarget {
   wait?: number | string;
-  inform: AnimateableStylesConfigKeyframes;
+  inform: AnimatableStylesConfigKeyframes;
   then?: AnimationBlock;
 }
 
@@ -107,10 +99,16 @@ export interface LayoutParsed {
   then?: LayoutParsed;
 }
 
+export type AnimatorPlayCb = (params: AnimatorPlayParams) => Promise<void>;
+
+export interface AnimationBlock {
+  root?: AnimationRoot[];
+  targets?: AnimationBlockTargets;
+  then?: AnimationBlock;
+}
 export interface ParseRootParams {
   curr: InformedChildStyle;
   prev: InformedChildStyle | null;
   context: InformContext;
   block: AnimationBlock;
 }
-export type AnimatorPlayCb = (params: AnimatorPlayParams) => Promise<void>;
