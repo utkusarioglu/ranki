@@ -1,4 +1,4 @@
-import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
+import { DEBUG_TAG, PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import { GeometryEval } from "_controllers/geometry/geometry-eval.mjs";
 import {
@@ -18,7 +18,6 @@ import type {
 } from "./geometry-controller.types.mts";
 import type { ComponentDims } from "./geometry-controller.types.mts";
 import type { EmitIntent } from "../geometry-intent.types.mts";
-import type { WidthHeight } from "../geometry-style.types.mts";
 import type {
   GeometryControllerConstructorParams,
   GeometrySetLayoutCb,
@@ -40,6 +39,7 @@ import type {
   GeometrySetName,
   OnEmitParams,
 } from "./geometry-controller.types.mts";
+import type { WidthHeight } from "../geometry-style.types.mts";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -63,7 +63,7 @@ export class GeometryController<
     this.targets = params.sets;
     this.on = params.on ? params.on : null;
     this.animator = new Animator(this.host, params.role, {
-      informTarget: this.informTarget.bind(this),
+      informSet: this.informSet.bind(this),
     });
     this.events = { hover: false, ...params.events };
     this.bindInformStyle();
@@ -119,19 +119,36 @@ export class GeometryController<
     return this.sizing;
   }
 
-  public async informStyle(
-    informed: InformedChildStyle,
-    context: InformContext,
-  ): Promise<void> {
+  public async informStyle(informed: InformedChildStyle): Promise<void> {
     const prev = this.currStyle;
-    let sizing = {} as LayoutSizing;
+    let sizing: LayoutSizing | null = null;
     try {
       sizing = this.getSizing();
     } catch (e) {}
 
-    const curr: InformedChildStyle = { ...sizing, ...informed };
+    const item = sizing ? sizing.set[informed.context.index] : null;
+    const curr: InformedChildStyle = {
+      context: informed.context,
+      container: {
+        intent: informed.container.intent,
+        style: {
+          ...(sizing ? sizing.container : {}),
+          ...informed.container.style,
+        },
+      },
+      item: {
+        intent: informed.item.intent,
+        style: {
+          ...(item ? item.style : {}),
+          ...informed.item.style,
+        },
+      },
+    };
 
     const actions = GeometryEval.evaluateActions(curr, prev);
+    if (this.host.tagName === DEBUG_TAG) {
+      console.log("informStyle", { tag: this.host.tagName, actions, curr });
+    }
 
     this.currStyle = curr;
     const onEvent = this.on;
@@ -140,7 +157,7 @@ export class GeometryController<
         onEvent(this.host, `${action}-start` as GeometryEventName);
       });
     }
-    await this.animator.updateStyle(actions, this.currStyle, prev, context);
+    await this.animator.updateStyle(actions, this.currStyle, prev);
     if (onEvent) {
       actions.forEach((action) => {
         onEvent(this.host, `${action}-end` as GeometryEventName);
@@ -148,12 +165,24 @@ export class GeometryController<
     }
   }
 
-  private informAsRoot(geo: InformedChildStyle) {
-    this.informStyle(geo, {
-      index: 0,
-      length: 1,
-      stagger: [0],
-    });
+  private informAsRoot(geo: LayoutSizing) {
+    const inform: InformedChildStyle = {
+      context: {
+        index: 0,
+        length: 1,
+        stagger: 0,
+      },
+      container: {
+        intent: "enter",
+        style: geo.container,
+      },
+      item: geo.set[0],
+      // {
+      //   intent: "enter",
+      //   style: geo.set[0].style,
+      // },
+    };
+    this.informStyle(inform);
   }
 
   onEmit({ set }: OnEmitParams) {
@@ -169,36 +198,29 @@ export class GeometryController<
         });
       switch (detail.intent) {
         case "leave":
-          this.registered.set(
-            target,
-            // @ts-expect-error
-            {
-              intent: detail.intent,
-              // !TODO remove these
+          this.registered.set(target, {
+            intent: detail.intent,
+            style: {
               width: 0,
               height: 0,
             },
-          );
+          });
           break;
         case "disconnected":
           this.registered.delete(target);
           break;
         case "update":
           if (this.registered.has(target)) {
-            this.registered.set(
-              target,
-              // @ts-expect-error
-              {
-                intent: detail.intent,
-                ...detail.rect,
-              },
-            );
+            this.registered.set(target, {
+              intent: detail.intent,
+              style: detail.style,
+              // ...detail.rect,
+            });
           } else {
-            this.registered.set(
-              target,
-              // @ts-expect-error
-              { intent: "enter", ...detail.rect },
-            );
+            this.registered.set(target, {
+              intent: "enter",
+              style: detail.style,
+            });
           }
           break;
         case "mode":
@@ -227,13 +249,9 @@ export class GeometryController<
                 this.requested = false;
                 if (this.sizing)
                   if (this.getIsRoot(set)) {
-                    const inform = {
-                      intent: this.sizing.intents[0],
-                      ...this.sizing,
-                    };
-                    this.informAsRoot(inform);
+                    this.informAsRoot(this.sizing);
                   } else {
-                    this.emit("update", this.sizing);
+                    this.emit("update", this.sizing.container);
                   }
               }, PROPAGATE_DELAY);
             });
@@ -285,34 +303,45 @@ export class GeometryController<
     return diff(this.host);
   }
 
-  private async informTarget({
-    set,
+  private async informSet({
+    setName,
     curr,
     prev,
     inform,
   }: InformTargetParams): Promise<void> {
     // DECIDE this will result in running animation ignoring changes
-    const diff = this.getDiff(set);
+    const diff = this.getDiff(setName);
     await Promise.all(
-      this.getSet(set)
+      this.getSet(setName)
         .selector(this.host)
         .map((e, i, a) => {
           const context: InformContext = {
             index: i,
             length: a.length,
-            stagger: diff.stagger.indices,
+            stagger: diff.stagger.indices[i],
           };
-          const informVals = LayoutParser.evalKeyframe(
-            curr,
-            prev,
-            context,
-            inform,
-          );
-          const informed = {
-            ...informVals,
-            intent: curr.intents[context.index],
+          const intent = this.getSizing().set[i].intent;
+          const itemKeyframe = LayoutParser.evalKeyframe(curr, prev, inform);
+          const item: InformedChildStyle["item"] = {
+            intent,
+            style: itemKeyframe,
           };
-          return e.informStyle(informed, context);
+          const container: InformedChildStyle["container"] = curr.item;
+          const informed = { context, container, item };
+
+          // const informed = curr.set[context.index]
+          if (e.tagName === DEBUG_TAG) {
+            console.log("informSet", {
+              tag: this.host.tagName,
+              e,
+              curr,
+              prev,
+              item,
+              informed,
+              inform,
+            });
+          }
+          return e.informStyle(informed);
         }),
     );
   }

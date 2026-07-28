@@ -1,6 +1,6 @@
-import type { WidthHeight } from "../geometry-style.types.mts";
 import type { LitElement } from "lit";
 import type { EmitModes } from "./geometry-events.types.mts";
+import type { WidthHeight } from "../geometry-style.types.mts";
 
 export class GeometryEvents {
   public static readonly geometryEventName = "r2-geometry";
@@ -30,12 +30,15 @@ export class GeometryEvents {
     );
   }
 
-  public static emitUpdate(host: LitElement, { width, height }: WidthHeight) {
+  public static emitUpdate(host: LitElement, sizing: WidthHeight) {
     host.dispatchEvent(
       new CustomEvent(this.geometryEventName, {
         detail: {
           intent: "update",
-          rect: { width, height },
+          style: sizing,
+
+          // rect: sizing,
+          // rect: { width, height },
         },
         bubbles: true,
         composed: true,

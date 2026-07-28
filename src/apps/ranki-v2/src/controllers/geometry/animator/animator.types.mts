@@ -35,7 +35,7 @@ export type AnimationKeyframeOptions = {
 };
 
 export type InformTargetParams = {
-  set: GeometrySetName;
+  setName: GeometrySetName;
   curr: InformedChildStyle;
   prev: InformedChildStyle | null;
   inform: AnimatableStylesConfigKeyframes;
@@ -109,6 +109,5 @@ export interface AnimationBlock {
 export interface ParseRootParams {
   curr: InformedChildStyle;
   prev: InformedChildStyle | null;
-  context: InformContext;
   block: AnimationBlock;
 }

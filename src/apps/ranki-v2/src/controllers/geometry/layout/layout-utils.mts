@@ -1,5 +1,4 @@
 import type { ComponentDims } from "../controller/geometry-controller.types.mts";
-import type { WidthHeight } from "../geometry-style.types.mts";
 import type {
   LayoutGapsParams,
   LayoutSizing,
@@ -19,13 +18,25 @@ export class LayoutUtils {
       );
 
       const sizing: LayoutSizing = {
-        intents: dims.map((v) => v.intent),
-        width: s.sizeMain,
-        height: s.sizeCross,
-        lefts: s.offsetsMain,
-        tops: s.offsetsCross,
-        widths: s.sizesMain,
-        heights: s.sizesCross,
+        container: {
+          width: s.container.sizeMain,
+          height: s.container.sizeCross,
+        },
+
+        set: s.set.map((s) => ({
+          intent: s.intent,
+          style: {
+            left: s.style.offsetMain,
+            top: s.style.offsetCross,
+            width: s.style.sizeMain,
+            height: s.style.sizeCross,
+          },
+        })),
+        // intents: s.intents,
+        // lefts: s.offsetsMain,
+        // tops: s.offsetsCross,
+        // widths: s.sizesMain,
+        // heights: s.sizesCross,
       };
 
       return sizing;
@@ -42,38 +53,57 @@ export class LayoutUtils {
   }
 
   private static linear(
-    dims: WidthHeight[],
+    dims: ComponentDims[],
     gaps: LayoutGapsParams = {},
-    getMain: (v: WidthHeight) => number,
-    getCross: (v: WidthHeight) => number,
+    getMain: (v: ComponentDims["style"]) => number,
+    getCross: (v: ComponentDims["style"]) => number,
   ) {
     const main = LayoutUtils.normalizeGaps(gaps.main);
     const cross = LayoutUtils.normalizeGaps(gaps.cross);
     const spacingMain = main.gap * (dims.length - 1) + main.start + main.end;
     const spacingCross = cross.start + cross.end;
     const sizeCross =
-      dims.reduce((a, c) => Math.max(a, getCross(c)), 0) + spacingCross;
-    const sizeMain = dims.reduce((a, c) => a + getMain(c), 0) + spacingMain;
+      dims.reduce((a, c) => Math.max(a, getCross(c.style)), 0) + spacingCross;
+    const sizeMain =
+      dims.reduce((a, c) => a + getMain(c.style), 0) + spacingMain;
 
     const offsetsMain = Array(dims.length).fill(0);
     offsetsMain[0] = main.start;
     for (let i = 0; i < dims.length; i++) {
       if (i === 0) continue;
-      offsetsMain[i] = offsetsMain[i - 1] + getMain(dims[i - 1]) + main.gap;
+      offsetsMain[i] =
+        offsetsMain[i - 1] + getMain(dims[i - 1].style) + main.gap;
     }
 
     const offsetsCross = Array(dims.length)
       .fill(0)
-      .map((_, i) => (sizeCross - getCross(dims[i])) / 2);
-    const sizesMain = dims.map((d) => getMain(d));
-    const sizesCross = dims.map((d) => getCross(d));
+      .map((_, i) => (sizeCross - getCross(dims[i].style)) / 2);
+    const sizesMain = dims.map((d) => getMain(d.style));
+    const sizesCross = dims.map((d) => getCross(d.style));
+
+    const intents = dims.map((v) => v.intent);
+
+    const set = Array.from({ length: dims.length }, (_, i) => i).map((i) => ({
+      intent: intents[i],
+      style: {
+        offsetCross: offsetsCross[i],
+        offsetMain: offsetsMain[i],
+        sizeCross: sizesCross[i],
+        sizeMain: sizesMain[i],
+      },
+    }));
+
     return {
-      sizeCross,
-      sizeMain,
-      offsetsCross,
-      offsetsMain,
-      sizesMain,
-      sizesCross,
+      container: {
+        sizeCross,
+        sizeMain,
+      },
+      set,
+      // intents,
+      // offsetsCross,
+      // offsetsMain,
+      // sizesMain,
+      // sizesCross,
     };
   }
 
@@ -89,22 +119,36 @@ export class LayoutUtils {
 
       const zeros = Array.from({ length: dims.length - 1 }, () => 0);
       const width =
-        last.width + (gaps.main?.start || 0) + (gaps.main?.end || 0);
+        last.style.width + (gaps.main?.start || 0) + (gaps.main?.end || 0);
       const height =
-        last.height + (gaps.cross?.start || 0) + (gaps.cross?.end || 0);
+        last.style.height + (gaps.cross?.start || 0) + (gaps.cross?.end || 0);
       const lefts = [...zeros, gaps.main?.start || 0];
       const tops = [...zeros, gaps.cross?.start || 0];
-      const heights = [...zeros, last.height];
-      const widths = [...zeros, last.width];
+      const heights = [...zeros, last.style.height];
+      const widths = [...zeros, last.style.width];
+      const intents = dims.map((d) => d.intent);
+
+      const set = Array.from({ length: dims.length }, (_, i) => i).map((i) => ({
+        intent: intents[i],
+        style: {
+          left: lefts[i],
+          top: tops[i],
+          height: heights[i],
+          width: widths[i],
+        },
+      }));
 
       return {
-        intents: dims.map((d) => d.intent),
-        width,
-        height,
-        lefts,
-        tops,
-        heights,
-        widths,
+        container: {
+          width,
+          height,
+        },
+        set,
+        // intents: dims.map((d) => d.intent),
+        // lefts,
+        // tops,
+        // heights,
+        // widths,
       };
     };
   }

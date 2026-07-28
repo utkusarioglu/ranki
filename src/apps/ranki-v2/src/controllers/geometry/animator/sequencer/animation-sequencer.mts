@@ -32,7 +32,7 @@ export class AnimationSequencer {
     if (!roots) return Promise.resolve();
     await Promise.all(
       roots.map(async (p) => {
-        await this.callbacks.play(p.apply);
+        await this.callbacks.playName(p.apply);
         await this.sequenceThen(p.then);
       }),
     );

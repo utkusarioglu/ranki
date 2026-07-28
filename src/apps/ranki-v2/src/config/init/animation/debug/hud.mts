@@ -2,6 +2,32 @@ import type { TargetAnimationSpec } from "_controllers/geometry/animator/animato
 
 export const HUD: TargetAnimationSpec = {
   "hud-bg": {
+    enter: {
+      root: [
+        {
+          name: "height",
+          duration: 0,
+          keyframes: [
+            {
+              // height: "CONTAINER_HEIGHT",
+              height: "HEIGHT",
+            },
+          ],
+        },
+        {
+          name: "opacity",
+          // duration: 1000,
+          duration: 0,
+          keyframes: [
+            {
+              // width: "CONTAINER_WIDTH",
+              width: "WIDTH",
+              opacity: 1,
+            },
+          ],
+        },
+      ],
+    },
     resize: {
       root: [
         {
@@ -10,7 +36,8 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              width: "CONTAINER_WIDTH",
+              // width: "CONTAINER_WIDTH",
+              width: "WIDTH",
             },
           ],
         },
@@ -31,30 +58,6 @@ export const HUD: TargetAnimationSpec = {
     //     },
     //   ],
     // },
-    enter: {
-      root: [
-        {
-          name: "height",
-          duration: 0,
-          keyframes: [
-            {
-              height: "CONTAINER_HEIGHT",
-            },
-          ],
-        },
-        {
-          name: "opacity",
-          // duration: 1000,
-          duration: 0,
-          keyframes: [
-            {
-              width: "CONTAINER_WIDTH",
-              opacity: 1,
-            },
-          ],
-        },
-      ],
-    },
     leave: {
       root: [
         {
@@ -100,6 +103,8 @@ export const HUD: TargetAnimationSpec = {
           inform: {
             top: "TOP",
             left: "LEFT",
+            width: "WIDTH",
+            height: "HEIGHT",
           },
         },
       },
@@ -145,10 +150,11 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              height: "CONTAINER_HEIGHT",
+              // height: "CONTAINER_HEIGHT",
+              height: "HEIGHT",
               // left: "CONTAINER_WIDTH / 2",
               // top: "-CONTAINER_HEIGHT",
-              top: "CONTAINER_TOP",
+              top: "TOP",
             },
           ],
           then: {
@@ -160,7 +166,8 @@ export const HUD: TargetAnimationSpec = {
                 keyframes: [
                   {
                     // left: 0,
-                    width: "CONTAINER_WIDTH",
+                    // width: "CONTAINER_WIDTH",
+                    width: "WIDTH",
                   },
                 ],
               },
@@ -168,8 +175,10 @@ export const HUD: TargetAnimationSpec = {
             targets: {
               bg: {
                 inform: {
-                  width: "CONTAINER_WIDTH",
-                  height: "CONTAINER_HEIGHT",
+                  // width: "CONTAINER_WIDTH",
+                  // height: "CONTAINER_HEIGHT",
+                  width: "WIDTH",
+                  height: "HEIGHT",
                 },
               },
               sections: {
@@ -194,7 +203,8 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              height: "CONTAINER_HEIGHT",
+              // height: "CONTAINER_HEIGHT",
+              height: "HEIGHT",
             },
           ],
         },
@@ -204,6 +214,8 @@ export const HUD: TargetAnimationSpec = {
           inform: {
             top: 0,
             left: 0,
+            width: "WIDTH",
+            height: "HEIGHT",
           },
         },
       },

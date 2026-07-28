@@ -1,3 +1,5 @@
+import type { WidthHeight } from "../geometry-style.types.mts";
+
 interface R2CNewChildLeave {
   intent: "leave";
 }
@@ -17,7 +19,7 @@ interface R2CNewChildSizeDisconnected {
 
 interface R2CNewChildSizeUpdate {
   intent: "update";
-  rect: DOMRect;
+  style: WidthHeight;
 }
 
 export type R2CNewChildSizeEvent =

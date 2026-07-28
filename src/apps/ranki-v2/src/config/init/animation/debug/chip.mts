@@ -22,8 +22,10 @@ export const CHIP: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              top: "CONTAINER_TOP",
-              left: "CONTAINER_LEFT",
+              // top: "CONTAINER_TOP",
+              // left: "CONTAINER_LEFT",
+              top: "TOP",
+              left: "LEFT",
             },
           ],
         },
@@ -33,8 +35,10 @@ export const CHIP: TargetAnimationSpec = {
           // wait: "STAGGER_INDEX * 1000",
           wait: 0,
           inform: {
-            width: "CONTAINER_WIDTH",
-            height: "CONTAINER_HEIGHT",
+            // width: "CONTAINER_WIDTH",
+            // height: "CONTAINER_HEIGHT",
+            width: "WIDTH",
+            height: "HEIGHT",
           },
         },
         content: {
@@ -43,6 +47,8 @@ export const CHIP: TargetAnimationSpec = {
           inform: {
             left: "LEFT",
             top: "TOP",
+            width: "WIDTH",
+            height: "HEIGHT",
           },
         },
       },

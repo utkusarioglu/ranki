@@ -25,15 +25,14 @@ export class LayoutParser {
     t: AnimationTarget,
     curr: InformedChildStyle,
     prev: InformedChildStyle | null,
-    context: InformContext,
   ): LayoutTargetsInform {
     const then: LayoutParsed | undefined = t.then
-      ? this.parse({ block: t.then, curr, prev, context })
+      ? this.parse({ block: t.then, curr, prev })
       : undefined;
     return {
-      wait: this.evalOptionValue(context, t.wait),
+      wait: this.evalOptionValue(curr.context, t.wait),
       target: {
-        set: id,
+        setName: id,
         curr,
         prev,
         inform: t.inform,
@@ -46,31 +45,28 @@ export class LayoutParser {
     targets: AnimationBlockTargets,
     curr: InformedChildStyle,
     prev: InformedChildStyle | null,
-    context: InformContext,
   ): LayoutParsedTargets {
     const ent = Object.entries(targets).map(([id, v]) => [
       id,
-      this.parseTarget(id, v, curr, prev, context),
+      this.parseTarget(id, v, curr, prev),
     ]);
     return Object.fromEntries(ent);
   }
 
   static parse(p: ParseRootParams): LayoutParsed {
     const targets = p.block.targets
-      ? this.parseTargets(p.block.targets, p.curr, p.prev, p.context)
+      ? this.parseTargets(p.block.targets, p.curr, p.prev)
       : undefined;
     const then = p.block.then
       ? this.parse({
           block: p.block.then,
           curr: p.curr,
           prev: p.prev,
-          context: p.context,
+          // context: p.context,
         })
       : undefined;
     return {
-      root: p.block.root?.map((r) =>
-        this.parseRoot(r, p.curr, p.prev, p.context),
-      ),
+      root: p.block.root?.map((r) => this.parseRoot(r, p.curr, p.prev)),
       targets,
       then,
     };
@@ -87,7 +83,7 @@ export class LayoutParser {
       const varSet = {
         INDEX: context.index,
         LENGTH: context.length,
-        STAGGER_INDEX: context.stagger[context.index],
+        STAGGER_INDEX: context.stagger,
       };
       return exp.evaluate(varSet);
     }
@@ -110,17 +106,14 @@ export class LayoutParser {
     b: AnimationRoot,
     curr: InformedChildStyle,
     prev: InformedChildStyle | null,
-    context: InformContext,
   ): ApplyRootParams {
     return {
       apply: {
         name: b.name,
-        keyframes: b.keyframes.map((k) =>
-          this.evalKeyframe(curr, prev, context, k),
-        ),
-        options: this.evalOptions(b, context),
+        keyframes: b.keyframes.map((k) => this.evalKeyframe(curr, prev, k)),
+        options: this.evalOptions(b, curr.context),
       },
-      then: b.then && this.parse({ curr, prev, context, block: b.then }),
+      then: b.then && this.parse({ curr, prev, block: b.then }),
     };
   }
 
@@ -128,19 +121,18 @@ export class LayoutParser {
   static evalKeyframe(
     curr: InformedChildStyle,
     prev: InformedChildStyle | null,
-    context: InformContext,
     b: AnimatableStylesConfigKeyframes,
   ): Omit<UpdateStyle, "type"> {
     const entries = Object.entries(b).map(([k, v]) => [
       k,
-      this.evalConfigValue(curr, prev, context, v),
+      this.evalConfigValue(curr, prev, v),
     ]);
     return Object.fromEntries(entries);
   }
 
-  private static try(b: any, f: (b: any) => number | undefined) {
+  private static try<T>(b: T, f: (b: NonNullable<T>) => number | undefined) {
     try {
-      const v = f(b);
+      const v = f(b as NonNullable<T>);
       return v !== undefined ? v : 0;
     } catch (e) {
       return 0;
@@ -150,7 +142,6 @@ export class LayoutParser {
   private static evalConfigValue(
     curr: InformedChildStyle,
     prev: InformedChildStyle | null,
-    context: InformContext,
     value: string | number | undefined,
   ) {
     if (typeof value === "number" || typeof value === "undefined") {
@@ -158,20 +149,24 @@ export class LayoutParser {
     }
     const exp = parser.parse(value);
     const varSet = {
-      CONTAINER_HEIGHT: this.try(curr, (c) => c.height),
-      CONTAINER_WIDTH: this.try(curr, (c) => c.width),
-      CONTAINER_TOP: this.try(curr, (c) => c.top),
-      CONTAINER_LEFT: this.try(curr, (c) => c.left),
+      CONTAINER_HEIGHT: this.try(curr, (c) => c.container.style.height),
+      CONTAINER_WIDTH: this.try(curr, (c) => c.container.style.width),
+      CONTAINER_TOP: this.try(curr, (c) => c.container.style.top),
+      CONTAINER_LEFT: this.try(curr, (c) => c.container.style.left),
 
-      CONTAINER_PREV_HEIGHT: this.try(prev, (p) => p.height),
-      CONTAINER_PREV_WIDTH: this.try(prev, (p) => p.width),
-      CONTAINER_PREV_TOP: this.try(prev, (p) => p.top),
-      CONTAINER_PREV_LEFT: this.try(prev, (p) => p.left),
+      CONTAINER_PREV_HEIGHT: this.try(prev, (p) => p.container.style.height),
+      CONTAINER_PREV_WIDTH: this.try(prev, (p) => p.container.style.width),
+      CONTAINER_PREV_TOP: this.try(prev, (p) => p.container.style.top),
+      CONTAINER_PREV_LEFT: this.try(prev, (p) => p.container.style.left),
 
-      LEFT: this.try(curr, (c) => c.lefts[context.index]),
-      TOP: this.try(curr, (c) => c.tops[context.index]),
-      WIDTH: this.try(curr, (c) => c.widths[context.index]),
-      HEIGHT: this.try(curr, (c) => c.heights[context.index]),
+      LEFT: this.try(curr, (c) => c.item.style.left),
+      TOP: this.try(curr, (c) => c.item.style.top),
+      WIDTH: this.try(curr, (c) => c.item.style.width),
+      HEIGHT: this.try(curr, (c) => c.item.style.height),
+      // LEFT: this.try(curr, (c) => c.lefts[context.index]),
+      // TOP: this.try(curr, (c) => c.tops[context.index]),
+      // WIDTH: this.try(curr, (c) => c.widths[context.index]),
+      // HEIGHT: this.try(curr, (c) => c.heights[context.index]),
     };
     return exp.evaluate(varSet);
   }

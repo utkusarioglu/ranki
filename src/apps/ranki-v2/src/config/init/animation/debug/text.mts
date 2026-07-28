@@ -54,7 +54,8 @@ export const TEXT: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              height: "CONTAINER_HEIGHT",
+              // height: "CONTAINER_HEIGHT",
+              height: "HEIGHT",
               // top: "CONTAINER_TOP",
               // left: "CONTAINER_LEFT",
             },
@@ -67,7 +68,8 @@ export const TEXT: TargetAnimationSpec = {
           keyframes: [
             {
               opacity: 1,
-              width: "CONTAINER_WIDTH",
+              // width: "CONTAINER_WIDTH",
+              width: "WIDTH",
             },
           ],
         },

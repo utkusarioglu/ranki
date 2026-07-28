@@ -8,16 +8,16 @@ export class GeometryEval {
   ): LocalAction[] {
     const val = {
       prev: {
-        width: prev?.width || 0,
-        height: prev?.height || 0,
-        top: prev?.top || 0,
-        left: prev?.left || 0,
+        width: prev?.item.style.width || 0,
+        height: prev?.item.style.height || 0,
+        top: prev?.item.style.top || 0,
+        left: prev?.item.style.left || 0,
       },
       curr: {
-        width: curr.width || 0,
-        height: curr.height || 0,
-        top: curr.top || 0,
-        left: curr.left || 0,
+        width: curr.item.style.width || 0,
+        height: curr.item.style.height || 0,
+        top: curr.item.style.top || 0,
+        left: curr.item.style.left || 0,
       },
     };
 
@@ -47,9 +47,9 @@ export class GeometryEval {
       left: val.prev.left !== val.curr.left,
     };
 
-    const isEnter = curr.intent === "enter";
-    const isLeave = curr.intent === "leave";
-    const isUpdate = curr.intent === "update";
+    const isEnter = curr.item.intent === "enter";
+    const isLeave = curr.item.intent === "leave";
+    const isUpdate = curr.item.intent === "update";
     const isResize = (is.width.resize || is.height.resize) && isUpdate;
     const isMove = is.top || is.left;
 
@@ -59,7 +59,7 @@ export class GeometryEval {
     if (isResize) actions.add("resize");
     if (isMove) actions.add("move");
 
-    if (curr.mode) actions.add(curr.mode);
+    if (curr.item.mode) actions.add(curr.item.mode);
 
     return Array.from(actions);
   }

@@ -21,8 +21,10 @@ export const BADGE_LIST: TargetAnimationSpec = {
         bg: {
           // wait: 0,
           inform: {
-            width: "CONTAINER_WIDTH",
-            height: "CONTAINER_HEIGHT",
+            // width: "CONTAINER_WIDTH",
+            // height: "CONTAINER_HEIGHT",
+            width: "WIDTH",
+            height: "HEIGHT",
           },
         },
         chips: {

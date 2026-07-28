@@ -1,8 +1,5 @@
 import type { ReactiveElement } from "lit";
-import type {
-  InformContext,
-  InformedChildStyle,
-} from "../controller/geometry-controller.types.mts";
+import type { InformedChildStyle } from "../controller/geometry-controller.types.mts";
 import type { LocalAction } from "../geometry-intent.types.mts";
 import type { GeometryRole } from "../controller/geometry-decorator.constructor.types.mts";
 import { type AnimatorPlayParams } from "./animator.types.mjs";
@@ -11,6 +8,7 @@ import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
 import { KeyframeUtils } from "_controllers/geometry/animator/keyframe/keyframe-utils.mjs";
 import { getAnimationRecipe } from "_store/app.getters.mjs";
 import { LayoutParser } from "../parser/layout-parser.mjs";
+import { DEBUG_TAG } from "_/debug.constants.mjs";
 
 export class Animator {
   private readonly host: ReactiveElement;
@@ -29,12 +27,12 @@ export class Animator {
     this.role = role;
     this.callbacks = callbacks;
     this.sequencer = new AnimationSequencer({
-      informTarget: this.callbacks.informTarget.bind(this),
-      play: this.play.bind(this),
+      informTarget: this.callbacks.informSet.bind(this),
+      playName: this.playName.bind(this),
     });
   }
 
-  private async play({
+  private async playName({
     name,
     keyframes,
     options,
@@ -74,12 +72,16 @@ export class Animator {
     actions: LocalAction[],
     curr: InformedChildStyle,
     prev: InformedChildStyle | null,
-    context: InformContext,
   ): Promise<void> {
+    if (this.host.tagName === DEBUG_TAG)
+      console.log("animator.updateStyle", { actions, curr, prev });
+
     await Promise.all(
       actions.map((action) => {
         const block = getAnimationRecipe(action, this.preset, this.role);
-        const parse = LayoutParser.parse({ block, curr, prev, context });
+        const parse = LayoutParser.parse({ block, curr, prev });
+        if (this.host.tagName === DEBUG_TAG)
+          console.log("animator.updateStyle.loop", { block, parse });
         return this.sequencer.build(parse);
       }),
     );

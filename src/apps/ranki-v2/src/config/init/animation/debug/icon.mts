@@ -11,7 +11,8 @@ export const ICON: TargetAnimationSpec = {
           keyframes: [
             {
               width: 0,
-              height: "CONTAINER_HEIGHT",
+              // height: "CONTAINER_HEIGHT",
+              height: "HEIGHT",
               opacity: 0,
             },
           ],
@@ -22,7 +23,8 @@ export const ICON: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              width: "CONTAINER_WIDTH",
+              // width: "CONTAINER_WIDTH",
+              width: "WIDTH",
               opacity: 1,
             },
           ],
@@ -39,7 +41,8 @@ export const ICON: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              height: "CONTAINER_HEIGHT",
+              // height: "CONTAINER_HEIGHT",
+              height: "HEIGHT",
               // top: "CONTAINER_TOP",
               // left: "CONTAINER_LEFT",
             },
@@ -52,7 +55,8 @@ export const ICON: TargetAnimationSpec = {
           keyframes: [
             {
               opacity: 1,
-              width: "CONTAINER_WIDTH",
+              // width: "CONTAINER_WIDTH",
+              width: "WIDTH",
             },
           ],
         },
@@ -60,8 +64,10 @@ export const ICON: TargetAnimationSpec = {
       targets: {
         "icon-span": {
           inform: {
-            width: "CONTAINER_WIDTH",
-            height: "CONTAINER_HEIGHT",
+            // width: "CONTAINER_WIDTH",
+            width: "WIDTH",
+            // height: "CONTAINER_HEIGHT",
+            height: "HEIGHT",
           },
         },
       },
