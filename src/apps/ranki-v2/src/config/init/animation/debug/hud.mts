@@ -1,6 +1,92 @@
 import type { TargetAnimationSpec } from "_controllers/geometry/animator/animator.types.mjs";
 
 export const HUD: TargetAnimationSpec = {
+  hud: {
+    enter: {
+      root: [
+        {
+          name: "size",
+          duration: 0,
+          keyframes: [
+            {
+              // height: "CONTAINER_HEIGHT",
+              height: "HEIGHT",
+            },
+          ],
+        },
+      ],
+      sets: {
+        scroller: {
+          inform: {
+            top: 0,
+            left: 0,
+            width: "WIDTH",
+            height: "HEIGHT",
+          },
+        },
+      },
+    },
+    move: {
+      root: [
+        {
+          name: "position",
+          duration: 0,
+          keyframes: [
+            {
+              // height: "CONTAINER_HEIGHT",
+              left: "LEFT",
+              top: "TOP",
+            },
+          ],
+        },
+      ],
+      // targets: {
+      //   scroller: {
+      //     inform: {
+      //       top: 0,
+      //       left: 0,
+      //       width: "WIDTH",
+      //       height: "HEIGHT",
+      //     },
+      //   },
+      // },
+    },
+    resize: {
+      // root: [
+      // {
+      //   name: "rot",
+      //   duration: 1000,
+      //   keyframes: [
+      //     {
+      //       // skewY: -30,
+      //       // rotate3d: "1 2 3 50",
+      //       // rotate: 360,
+      //       // scale: 1.5,
+      //       // top: 0,
+      //     },
+      //   ],
+      // },
+      // ],
+      sets: {
+        scroller: {
+          inform: {
+            top: 0,
+            left: 0,
+          },
+        },
+      },
+    },
+    // contract: {
+    //   targets: {
+    //     scroller: {
+    //       inform: {
+    //         top: 0,
+    //         left: 0,
+    //       },
+    //     },
+    //   },
+    // },
+  },
   "hud-bg": {
     enter: {
       root: [
@@ -28,6 +114,20 @@ export const HUD: TargetAnimationSpec = {
         },
       ],
     },
+    // move: {
+    //   root: [
+    //     {
+    //       name: "position",
+    //       duration: 0,
+    //       keyframes: [
+    //         {
+    //           left: "LEFT",
+    //           top: "TOP",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
     resize: {
       root: [
         {
@@ -77,20 +177,20 @@ export const HUD: TargetAnimationSpec = {
 
   "hud-scroller": {
     resize: {
-      root: [
-        {
-          name: "size",
-          // duration: 1000,
-          duration: 0,
-          keyframes: [
-            {
-              // left: 0,
-              width: "CONTAINER_WIDTH",
-            },
-          ],
-        },
-      ],
-      targets: {
+      // root: [
+      //   {
+      //     name: "size",
+      //     // duration: 1000,
+      //     duration: 0,
+      //     keyframes: [
+      //       {
+      //         // left: 0,
+      //         width: "CONTAINER_WIDTH",
+      //       },
+      //     ],
+      //   },
+      // ],
+      sets: {
         bg: {
           inform: {
             width: "CONTAINER_WIDTH",
@@ -172,7 +272,7 @@ export const HUD: TargetAnimationSpec = {
                 ],
               },
             ],
-            targets: {
+            sets: {
               bg: {
                 inform: {
                   // width: "CONTAINER_WIDTH",
@@ -194,66 +294,5 @@ export const HUD: TargetAnimationSpec = {
         },
       ],
     },
-  },
-  hud: {
-    enter: {
-      root: [
-        {
-          name: "size",
-          duration: 0,
-          keyframes: [
-            {
-              // height: "CONTAINER_HEIGHT",
-              height: "HEIGHT",
-            },
-          ],
-        },
-      ],
-      targets: {
-        scroller: {
-          inform: {
-            top: 0,
-            left: 0,
-            width: "WIDTH",
-            height: "HEIGHT",
-          },
-        },
-      },
-    },
-    resize: {
-      // root: [
-      // {
-      //   name: "rot",
-      //   duration: 1000,
-      //   keyframes: [
-      //     {
-      //       // skewY: -30,
-      //       // rotate3d: "1 2 3 50",
-      //       // rotate: 360,
-      //       // scale: 1.5,
-      //       // top: 0,
-      //     },
-      //   ],
-      // },
-      // ],
-      targets: {
-        scroller: {
-          inform: {
-            top: 0,
-            left: 0,
-          },
-        },
-      },
-    },
-    // contract: {
-    //   targets: {
-    //     scroller: {
-    //       inform: {
-    //         top: 0,
-    //         left: 0,
-    //       },
-    //     },
-    //   },
-    // },
   },
 };

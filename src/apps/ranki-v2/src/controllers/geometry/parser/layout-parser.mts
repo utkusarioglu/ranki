@@ -1,16 +1,17 @@
 import type {
   AnimatableStylesConfigKeyframes,
-  AnimationBlockTargets,
+  AnimationBlockSets,
   AnimationOptions,
   AnimationRoot,
   AnimationTarget,
   ApplyRootParams,
   LayoutParsed,
-  LayoutParsedTargets,
-  LayoutTargetsInform,
+  LayoutParsedSets,
+  LayoutSetsInform,
   ParseRootParams,
 } from "_controllers/geometry/animator/animator.types.mjs";
 import type {
+  GeometrySetName,
   InformContext,
   InformedChildStyle,
   UpdateStyle,
@@ -20,56 +21,64 @@ import { Parser } from "expr-eval";
 const parser = new Parser();
 
 export class LayoutParser {
-  private static parseTarget(
-    id: string,
-    t: AnimationTarget,
-    curr: InformedChildStyle,
-    prev: InformedChildStyle | null,
-  ): LayoutTargetsInform {
-    const then: LayoutParsed | undefined = t.then
-      ? this.parse({ block: t.then, curr, prev })
-      : undefined;
-    return {
-      wait: this.evalOptionValue(curr.context, t.wait),
-      target: {
-        setName: id,
-        curr,
-        prev,
-        inform: t.inform,
-      },
-      then,
-    };
-  }
-
-  private static parseTargets(
-    targets: AnimationBlockTargets,
-    curr: InformedChildStyle,
-    prev: InformedChildStyle | null,
-  ): LayoutParsedTargets {
-    const ent = Object.entries(targets).map(([id, v]) => [
-      id,
-      this.parseTarget(id, v, curr, prev),
-    ]);
-    return Object.fromEntries(ent);
-  }
-
   static parse(p: ParseRootParams): LayoutParsed {
-    const targets = p.block.targets
-      ? this.parseTargets(p.block.targets, p.curr, p.prev)
+    const targets = p.block.sets
+      ? this.parseSets(p.block.sets, p.curr, p.prev)
       : undefined;
     const then = p.block.then
       ? this.parse({
           block: p.block.then,
           curr: p.curr,
           prev: p.prev,
-          // context: p.context,
         })
       : undefined;
     return {
       root: p.block.root?.map((r) => this.parseRoot(r, p.curr, p.prev)),
-      targets,
+      sets: targets,
       then,
     };
+  }
+
+  private static parseSet(
+    setName: GeometrySetName,
+    t: AnimationTarget,
+    curr: InformedChildStyle,
+    prev: InformedChildStyle | null,
+  ): LayoutSetsInform {
+    const then: LayoutParsed | undefined = t.then
+      ? this.parse({
+          block: t.then,
+          curr,
+          prev,
+        })
+      : undefined;
+    return {
+      wait: this.evalOptionValue(curr.context, t.wait),
+      props: {
+        setName,
+        container: {
+          style: this.evalKeyframe(curr, prev, t.inform),
+        },
+        // curr: {
+        //   container: curr.item,
+        // },
+        // prev: prev ? { container: prev.item } : undefined,
+        // inform: t.inform,
+      },
+      then,
+    };
+  }
+
+  private static parseSets(
+    targets: AnimationBlockSets,
+    curr: InformedChildStyle,
+    prev: InformedChildStyle | null,
+  ): LayoutParsedSets {
+    const ent = Object.entries(targets).map(([id, v]) => [
+      id,
+      this.parseSet(id, v, curr, prev),
+    ]);
+    return Object.fromEntries(ent);
   }
 
   private static evalOptionValue(
@@ -163,10 +172,6 @@ export class LayoutParser {
       TOP: this.try(curr, (c) => c.item.style.top),
       WIDTH: this.try(curr, (c) => c.item.style.width),
       HEIGHT: this.try(curr, (c) => c.item.style.height),
-      // LEFT: this.try(curr, (c) => c.lefts[context.index]),
-      // TOP: this.try(curr, (c) => c.tops[context.index]),
-      // WIDTH: this.try(curr, (c) => c.widths[context.index]),
-      // HEIGHT: this.try(curr, (c) => c.heights[context.index]),
     };
     return exp.evaluate(varSet);
   }

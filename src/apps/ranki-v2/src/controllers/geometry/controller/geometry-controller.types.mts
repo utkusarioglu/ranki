@@ -1,6 +1,6 @@
 import type {
   AnimationKeyframeStyles,
-  InformTargetParams,
+  InformSetProps,
 } from "../animator/animator.types.mts";
 import type { EmitModes } from "../events/geometry-events.types.mts";
 import type { EmitIntent, WithEmitIntents } from "../geometry-intent.types.mts";
@@ -13,7 +13,7 @@ export interface OnEmitParams {
 }
 
 export type GeometryControllerInformTargetCb = (
-  params: InformTargetParams,
+  params: InformSetProps,
 ) => Promise<void>;
 
 export interface ComponentDims {
@@ -27,8 +27,13 @@ type InformedChildStyleNode = Pick<ComponentDims, "intent" | "mode"> & {
   style: AnimationKeyframeStyles;
 };
 
+export type InformedChildStyleContainer = {
+  // intent: EmitIntent;
+  style: AnimationKeyframeStyles;
+};
+
 export type InformedChildStyle = {
-  container: InformedChildStyleNode;
+  container: InformedChildStyleContainer;
   item: InformedChildStyleNode;
   context: InformContext;
 };

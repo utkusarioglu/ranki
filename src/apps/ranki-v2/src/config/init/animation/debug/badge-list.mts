@@ -17,7 +17,7 @@ export const BADGE_LIST: TargetAnimationSpec = {
           duration: 0,
         },
       ],
-      targets: {
+      sets: {
         bg: {
           // wait: 0,
           inform: {
@@ -69,7 +69,7 @@ export const BADGE_LIST: TargetAnimationSpec = {
       //     duration: 0,
       //   },
       // ],
-      targets: {
+      sets: {
         bg: {
           wait: 0,
           inform: {

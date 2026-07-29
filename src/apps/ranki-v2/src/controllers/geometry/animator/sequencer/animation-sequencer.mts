@@ -1,7 +1,7 @@
 import type {
   ApplyRootParams,
   LayoutParsed,
-  LayoutParsedTargets,
+  LayoutParsedSets,
 } from "../animator.types.mjs";
 import type { AnimationSequencerCallbacks } from "./animation-sequencer.types.mjs";
 import { TimingUtils } from "_utils/timing,utils.mjs";
@@ -14,11 +14,11 @@ export class AnimationSequencer {
   }
 
   private async sequenceTargets(
-    l: LayoutParsedTargets | undefined,
+    l: LayoutParsedSets | undefined,
   ): Promise<void> {
     if (!l) return Promise.resolve();
     await Promise.all(
-      Object.values(l).map(async ({ wait, target, then }) => {
+      Object.values(l).map(async ({ wait, props: target, then }) => {
         if (wait) await TimingUtils.delay(wait);
         await this.callbacks.informTarget(target);
         if (then) await this.sequenceThen(then);
@@ -42,7 +42,7 @@ export class AnimationSequencer {
     if (!a) return Promise.resolve();
     await Promise.all([
       a && (await this.sequenceRoots(a.root)),
-      a && (await this.sequenceTargets(a.targets)),
+      a && (await this.sequenceTargets(a.sets)),
     ]);
   }
 

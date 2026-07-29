@@ -32,7 +32,7 @@ import {
   ReconciliationUtils,
   type ReconciliationDiff,
 } from "_utils/reconciliation.utils.mjs";
-import type { InformTargetParams } from "../animator/animator.types.mjs";
+import type { InformSetProps } from "../animator/animator.types.mjs";
 import { GeometryEvents } from "../events/geometry-events.mjs";
 import { type EmitModes } from "../events/geometry-events.types.mjs";
 import type {
@@ -119,52 +119,6 @@ export class GeometryController<
     return this.sizing;
   }
 
-  public async informStyle(informed: InformedChildStyle): Promise<void> {
-    const prev = this.currStyle;
-    let sizing: LayoutSizing | null = null;
-    try {
-      sizing = this.getSizing();
-    } catch (e) {}
-
-    const item = sizing ? sizing.set[informed.context.index] : null;
-    const curr: InformedChildStyle = {
-      context: informed.context,
-      container: {
-        intent: informed.container.intent,
-        style: {
-          ...(sizing ? sizing.container : {}),
-          ...informed.container.style,
-        },
-      },
-      item: {
-        intent: informed.item.intent,
-        style: {
-          ...(item ? item.style : {}),
-          ...informed.item.style,
-        },
-      },
-    };
-
-    const actions = GeometryEval.evaluateActions(curr, prev);
-    if (this.host.tagName === DEBUG_TAG) {
-      console.log("informStyle", { tag: this.host.tagName, actions, curr });
-    }
-
-    this.currStyle = curr;
-    const onEvent = this.on;
-    if (onEvent) {
-      actions.forEach((action) => {
-        onEvent(this.host, `${action}-start` as GeometryEventName);
-      });
-    }
-    await this.animator.updateStyle(actions, this.currStyle, prev);
-    if (onEvent) {
-      actions.forEach((action) => {
-        onEvent(this.host, `${action}-end` as GeometryEventName);
-      });
-    }
-  }
-
   private informAsRoot(geo: LayoutSizing) {
     const inform: InformedChildStyle = {
       context: {
@@ -173,16 +127,55 @@ export class GeometryController<
         stagger: 0,
       },
       container: {
-        intent: "enter",
+        // intent: geo.set[0].intent,
         style: geo.container,
       },
       item: geo.set[0],
-      // {
-      //   intent: "enter",
-      //   style: geo.set[0].style,
-      // },
     };
     this.informStyle(inform);
+  }
+
+  private getIsRoot(setName: GeometrySetName): boolean {
+    const set = this.getSet(setName);
+    return !!set.isRoot;
+  }
+
+  private getSizingCallback(setName: GeometrySetName): GeometrySetLayoutCb {
+    const set = this.getSet(setName);
+    const layout = set.layout;
+    assertNotUndefined(layout, {
+      why: "No sizing registered",
+      details: { setName },
+    });
+    return layout;
+  }
+
+  private orderTrackedNodes(setName: GeometrySetName) {
+    const set = this.getSet(setName);
+    const serial = set.selector(this.host);
+    const ordered: ComponentDims[] = [];
+    for (let component of serial) {
+      const dims = this.registered.get(component);
+      if (!dims) {
+        // console.log("cannot find", component);
+        continue;
+        // FIX you may need to replace this with a boundingClientRect call
+        // assertNever({ why: "The element should exist in weakmap" });
+      }
+      ordered.push(dims);
+    }
+    return ordered;
+  }
+
+  private getDiff(setName: GeometrySetName): ReconciliationDiff {
+    const set = this.getSet(setName);
+    // const t = this.changes[target];
+    const diff = set.diff;
+    if (!diff) {
+      // console.log("diff detection not registered for target:", id);
+      return ReconciliationUtils.noChanges();
+    }
+    return diff(this.host);
   }
 
   onEmit({ set }: OnEmitParams) {
@@ -260,55 +253,14 @@ export class GeometryController<
     };
   }
 
-  private getIsRoot(setName: GeometrySetName): boolean {
-    const set = this.getSet(setName);
-    return !!set.isRoot;
-  }
-
-  private getSizingCallback(setName: GeometrySetName): GeometrySetLayoutCb {
-    const set = this.getSet(setName);
-    const layout = set.layout;
-    assertNotUndefined(layout, {
-      why: "No sizing registered",
-      details: { setName },
-    });
-    return layout;
-  }
-
-  private orderTrackedNodes(setName: GeometrySetName) {
-    const set = this.getSet(setName);
-    const serial = set.selector(this.host);
-    const ordered: ComponentDims[] = [];
-    for (let component of serial) {
-      const dims = this.registered.get(component);
-      if (!dims) {
-        // console.log("cannot find", component);
-        continue;
-        // FIX you may need to replace this with a boundingClientRect call
-        // assertNever({ why: "The element should exist in weakmap" });
-      }
-      ordered.push(dims);
-    }
-    return ordered;
-  }
-
-  private getDiff(setName: GeometrySetName): ReconciliationDiff {
-    const set = this.getSet(setName);
-    // const t = this.changes[target];
-    const diff = set.diff;
-    if (!diff) {
-      // console.log("diff detection not registered for target:", id);
-      return ReconciliationUtils.noChanges();
-    }
-    return diff(this.host);
-  }
-
   private async informSet({
     setName,
-    curr,
-    prev,
-    inform,
-  }: InformTargetParams): Promise<void> {
+    container,
+    // curr,
+    // prev,
+    // inform,
+  }: InformSetProps): Promise<void> {
+    // console.log({ setName, curr, prev, inform });
     // DECIDE this will result in running animation ignoring changes
     const diff = this.getDiff(setName);
     await Promise.all(
@@ -320,13 +272,21 @@ export class GeometryController<
             length: a.length,
             stagger: diff.stagger.indices[i],
           };
-          const intent = this.getSizing().set[i].intent;
-          const itemKeyframe = LayoutParser.evalKeyframe(curr, prev, inform);
+          const sizing = this.getSizing();
+          // const itemKeyframe = LayoutParser.evalKeyframe(curr, prev, inform);
           const item: InformedChildStyle["item"] = {
-            intent,
-            style: itemKeyframe,
+            intent: sizing.set[i].intent,
+            style: {
+              ...sizing.set[i].style,
+              // ...container.style
+              // ...itemKeyframe,
+            },
           };
-          const container: InformedChildStyle["container"] = curr.item;
+          const container: InformedChildStyle["container"] = {
+            style: sizing.container,
+            // ...sizing.container,
+            // ...curr.item,
+          };
           const informed = { context, container, item };
 
           // const informed = curr.set[context.index]
@@ -334,16 +294,71 @@ export class GeometryController<
             console.log("informSet", {
               tag: this.host.tagName,
               e,
-              curr,
-              prev,
+              container,
+              // itemKeyframe,
+              sizing,
+              // curr,
+              // prev,
               item,
               informed,
-              inform,
+              // inform,
             });
           }
           return e.informStyle(informed);
         }),
     );
+  }
+
+  public async informStyle(informed: InformedChildStyle): Promise<void> {
+    const prev = this.currStyle;
+    let sizing: LayoutSizing | null = null;
+    try {
+      sizing = this.getSizing();
+    } catch (e) {}
+
+    const item = sizing ? sizing.set[informed.context.index] : null;
+    const curr: InformedChildStyle = {
+      context: informed.context,
+      container: {
+        // intent: informed.container.intent,
+        style: {
+          ...(sizing ? sizing.container : {}),
+          ...informed.container.style,
+        },
+      },
+      item: {
+        intent: informed.item.intent,
+        style: {
+          ...(item ? item.style : {}),
+          ...informed.item.style,
+        },
+      },
+    };
+
+    const actions = GeometryEval.evaluateActions(curr, prev);
+    if (this.host.tagName === DEBUG_TAG) {
+      console.log("informStyle", {
+        tag: this.host.tagName,
+        actions,
+        curr,
+        item,
+        sizing,
+      });
+    }
+
+    this.currStyle = curr;
+    const onEvent = this.on;
+    if (onEvent) {
+      actions.forEach((action) => {
+        onEvent(this.host, `${action}-start` as GeometryEventName);
+      });
+    }
+    await this.animator.updateStyle(actions, this.currStyle, prev);
+    if (onEvent) {
+      actions.forEach((action) => {
+        onEvent(this.host, `${action}-end` as GeometryEventName);
+      });
+    }
   }
 
   hostConnected(): void {

@@ -1,6 +1,7 @@
 import type {
   InformContext,
   InformedChildStyle,
+  InformedChildStyleContainer,
   UpdateStyle,
 } from "../controller/geometry-controller.types.mts";
 import type { LocalAction } from "../geometry-intent.types.mts";
@@ -34,13 +35,6 @@ export type AnimationKeyframeOptions = {
   easing: string;
 };
 
-export type InformTargetParams = {
-  setName: GeometrySetName;
-  curr: InformedChildStyle;
-  prev: InformedChildStyle | null;
-  inform: AnimatableStylesConfigKeyframes;
-};
-
 export type AnimatableStylesConfigKeyframes = Partial<
   Record<keyof AnimationKeyframeStyles, string | number>
 >;
@@ -54,7 +48,7 @@ export interface AnimationRoot {
   then?: AnimationBlock;
 }
 
-export type AnimationBlockTargets = Record<string, AnimationTarget>;
+export type AnimationBlockSets = Record<GeometrySetName, AnimationTarget>;
 
 export interface AnimationTarget {
   wait?: number | string;
@@ -85,17 +79,41 @@ export interface ApplyRootParams {
   then?: LayoutParsed;
 }
 
-export type LayoutTargetsInform = {
+// interface LayoutSetPropsContainer {
+//   container: {
+//     style: AnimatableStylesConfigKeyframes;
+//   };
+// }
+
+export interface InformSetProps {
+  setName: GeometrySetName;
+  container: InformedChildStyleContainer;
+  // style: Inform
+  // curr: LayoutSetPropsContainer;
+  // prev?: LayoutSetPropsContainer;
+  // inform: AnimatableStylesConfigKeyframes;
+}
+
+// TODO may be obsolete
+// export type InformSetProps = {
+//   setName: GeometrySetName;
+//   curr: InformedChildStyle;
+//   prev: InformedChildStyle | null;
+//   inform: AnimatableStylesConfigKeyframes;
+// };
+
+export type LayoutSetsInform = {
   wait?: number;
-  target: InformTargetParams;
+  // props: InformSetProps;
+  props: InformSetProps;
   then?: LayoutParsed;
 };
 
-export type LayoutParsedTargets = Record<string, LayoutTargetsInform>;
+export type LayoutParsedSets = Record<string, LayoutSetsInform>;
 
 export interface LayoutParsed {
   root?: ApplyRootParams[];
-  targets?: LayoutParsedTargets;
+  sets?: LayoutParsedSets;
   then?: LayoutParsed;
 }
 
@@ -103,9 +121,10 @@ export type AnimatorPlayCb = (params: AnimatorPlayParams) => Promise<void>;
 
 export interface AnimationBlock {
   root?: AnimationRoot[];
-  targets?: AnimationBlockTargets;
+  sets?: AnimationBlockSets;
   then?: AnimationBlock;
 }
+
 export interface ParseRootParams {
   curr: InformedChildStyle;
   prev: InformedChildStyle | null;

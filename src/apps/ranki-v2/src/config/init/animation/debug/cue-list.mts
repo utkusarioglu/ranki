@@ -6,6 +6,8 @@ export const CUE_LIST: TargetAnimationSpec = {
       root: [
         {
           name: "init",
+          // duration: 1000,
+          duration: 0,
           keyframes: [
             {
               // top: "CONTAINER_TOP",
@@ -14,11 +16,9 @@ export const CUE_LIST: TargetAnimationSpec = {
               left: "LEFT",
             },
           ],
-          // duration: 1000,
-          duration: 0,
         },
       ],
-      targets: {
+      sets: {
         bg: {
           inform: {
             // width: "CONTAINER_WIDTH",
@@ -66,7 +66,7 @@ export const CUE_LIST: TargetAnimationSpec = {
       //     duration: 0,
       //   },
       // ],
-      targets: {
+      sets: {
         bg: {
           inform: {
             width: "CONTAINER_WIDTH",

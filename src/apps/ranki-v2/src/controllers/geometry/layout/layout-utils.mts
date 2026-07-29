@@ -32,11 +32,6 @@ export class LayoutUtils {
             height: s.style.sizeCross,
           },
         })),
-        // intents: s.intents,
-        // lefts: s.offsetsMain,
-        // tops: s.offsetsCross,
-        // widths: s.sizesMain,
-        // heights: s.sizesCross,
       };
 
       return sizing;
@@ -99,11 +94,6 @@ export class LayoutUtils {
         sizeMain,
       },
       set,
-      // intents,
-      // offsetsCross,
-      // offsetsMain,
-      // sizesMain,
-      // sizesCross,
     };
   }
 
@@ -144,11 +134,6 @@ export class LayoutUtils {
           height,
         },
         set,
-        // intents: dims.map((d) => d.intent),
-        // lefts,
-        // tops,
-        // heights,
-        // widths,
       };
     };
   }

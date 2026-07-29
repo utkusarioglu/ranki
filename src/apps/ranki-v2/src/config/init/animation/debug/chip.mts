@@ -30,7 +30,7 @@ export const CHIP: TargetAnimationSpec = {
           ],
         },
       ],
-      targets: {
+      sets: {
         bg: {
           // wait: "STAGGER_INDEX * 1000",
           wait: 0,
@@ -80,7 +80,7 @@ export const CHIP: TargetAnimationSpec = {
       //     ],
       //   },
       // ],
-      targets: {
+      sets: {
         bg: {
           // wait: "STAGGER_INDEX * 1000",
           wait: 0,
@@ -145,7 +145,7 @@ export const CHIP: TargetAnimationSpec = {
       //     ],
       //   },
       // ],
-      targets: {
+      sets: {
         content: {
           // wait: "STAGGER_INDEX * 1000",
           wait: 0,
@@ -153,7 +153,7 @@ export const CHIP: TargetAnimationSpec = {
             width: 0,
           },
           then: {
-            targets: {
+            sets: {
               bg: {
                 // wait: "STAGGER_INDEX * 1000",
                 inform: {

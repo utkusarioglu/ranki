@@ -74,7 +74,7 @@ export const TEXT: TargetAnimationSpec = {
           ],
         },
       ],
-      targets: {
+      sets: {
         "text-span": {
           inform: {
             width: "WIDTH",
@@ -134,7 +134,7 @@ export const TEXT: TargetAnimationSpec = {
           ],
         },
       ],
-      targets: {
+      sets: {
         "text-span": {
           inform: {
             width: "WIDTH",
