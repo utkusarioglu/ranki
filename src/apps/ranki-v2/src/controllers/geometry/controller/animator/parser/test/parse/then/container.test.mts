@@ -1,9 +1,9 @@
 import { expect, test } from "vitest";
-import { LayoutParser } from "../../../layout-parser.mts";
+import { LayoutParser } from "../../../layout-parser.mjs";
 import type {
   AnimationBlock,
   LayoutParsed,
-} from "_controllers/geometry/animator/animator.types.mjs";
+} from "_controllers/geometry/controller/animator/animator.types.mjs";
 
 interface Case {
   name: string;
@@ -12,37 +12,46 @@ interface Case {
 }
 
 const CASES: Case[] = [
-  ...Array.from({ length: 10 }, (_, i) => i * 10).map((dur) => ({
-    name: `root duration: ${dur}`,
+  ...(
+    [
+      ["CONTAINER_HEIGHT", 11],
+      ["HEIGHT", 21],
+    ] as [string, number][]
+  ).map(([input, expected]) => ({
+    name: `root container: ${input}`,
     block: {
-      root: [
-        {
-          name: "h",
-          duration: dur,
-          keyframes: [
-            {
-              height: 1,
-            },
-          ],
-        },
-      ],
-    },
-    expected: {
-      root: [
-        {
-          apply: {
+      then: {
+        root: [
+          {
             name: "h",
+            duration: 0,
             keyframes: [
               {
-                height: 1,
+                height: input,
               },
             ],
-            options: {
-              duration: dur,
+          },
+        ],
+      },
+    },
+    expected: {
+      then: {
+        root: [
+          {
+            apply: {
+              name: "h",
+              keyframes: [
+                {
+                  height: expected,
+                },
+              ],
+              options: {
+                duration: 0,
+              },
             },
           },
-        },
-      ],
+        ],
+      },
     },
   })),
 ];
@@ -57,7 +66,6 @@ CASES.forEach(({ block, expected, name }) => {
           stagger: 0,
         },
         container: {
-          intent: "enter",
           style: {
             height: 11,
           },

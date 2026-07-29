@@ -3,10 +3,10 @@ import type {
   InformedChildStyle,
   InformedChildStyleContainer,
   UpdateStyle,
-} from "../controller/geometry-controller.types.mts";
-import type { LocalAction } from "../geometry-intent.types.mts";
-import type { WidthHeight, TopLeft } from "../geometry-style.types.mjs";
-import type { GeometrySetName } from "../controller/geometry-controller.types.mts";
+} from "../../controller/geometry-controller.types.mjs";
+import type { LocalAction } from "../../geometry-intent.types.mjs";
+import type { WidthHeight, TopLeft } from "../../geometry-style.types.mjs";
+import type { GeometrySetName } from "../../controller/geometry-controller.types.mjs";
 
 export type AnimationKeyframeStyles = Partial<WidthHeight> &
   Partial<TopLeft> &

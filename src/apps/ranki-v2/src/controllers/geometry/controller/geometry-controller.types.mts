@@ -1,9 +1,13 @@
 import type {
   AnimationKeyframeStyles,
   InformSetProps,
-} from "../animator/animator.types.mts";
+} from "./animator/animator.types.mts";
 import type { EmitModes } from "../events/geometry-events.types.mts";
-import type { EmitIntent, WithEmitIntents } from "../geometry-intent.types.mts";
+import type {
+  EmitIntent,
+  LocalAction,
+  WithEmitIntents,
+} from "../geometry-intent.types.mts";
 import type { WidthHeight } from "../geometry-style.types.mts";
 
 export type GeometrySetName = string & { type?: "GeometrySet" };
@@ -36,6 +40,10 @@ export type InformedChildStyle = {
   container: InformedChildStyleContainer;
   item: InformedChildStyleNode;
   context: InformContext;
+};
+
+export type CurrentAppliedStyle = InformedChildStyle & {
+  actions: LocalAction[];
 };
 
 export type UpdateStyle = AnimationKeyframeStyles & WithEmitIntents;

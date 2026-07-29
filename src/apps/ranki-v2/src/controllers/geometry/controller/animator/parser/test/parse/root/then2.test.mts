@@ -1,9 +1,9 @@
 import { expect, test } from "vitest";
-import { LayoutParser } from "../../../../layout-parser.mts";
+import { LayoutParser } from "../../../layout-parser.mjs";
 import type {
   AnimationBlock,
   LayoutParsed,
-} from "_controllers/geometry/animator/animator.types.mjs";
+} from "_controllers/geometry/controller/animator/animator.types.mjs";
 
 interface Case {
   name: string;
@@ -12,22 +12,16 @@ interface Case {
 }
 
 const CASES: Case[] = [
-  ...(
-    [
-      ["CONTAINER_HEIGHT", 11],
-      ["HEIGHT", 21],
-    ] as [string, number][]
-  ).map(([input, expected]) => ({
-    name: `root container: ${input}`,
+  ...Array.from({ length: 10 }, (_, i) => i * 10).map((w) => ({
+    name: `root then: ${w}`,
     block: {
       root: [
         {
           name: "h",
-          duration: 7,
+          duration: 0,
           keyframes: [
             {
-              height: 4,
-              opacity: 1.1,
+              height: 1,
             },
           ],
           then: {
@@ -37,7 +31,7 @@ const CASES: Case[] = [
                 duration: 2,
                 keyframes: [
                   {
-                    width: input,
+                    width: "WIDTH",
                   },
                 ],
               },
@@ -53,12 +47,11 @@ const CASES: Case[] = [
             name: "h",
             keyframes: [
               {
-                height: 4,
-                opacity: 1.1,
+                height: 1,
               },
             ],
             options: {
-              duration: 7,
+              duration: 0,
             },
           },
           then: {
@@ -68,7 +61,7 @@ const CASES: Case[] = [
                   name: "w",
                   keyframes: [
                     {
-                      width: expected,
+                      width: 21,
                     },
                   ],
                   options: {
@@ -94,15 +87,14 @@ CASES.forEach(({ block, expected, name }) => {
           stagger: 0,
         },
         container: {
-          intent: "enter",
           style: {
-            height: 11,
+            width: 11,
           },
         },
         item: {
           intent: "enter",
           style: {
-            height: 21,
+            width: 21,
           },
         },
       },

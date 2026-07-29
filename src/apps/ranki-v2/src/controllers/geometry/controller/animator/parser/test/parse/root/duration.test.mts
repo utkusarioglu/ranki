@@ -1,9 +1,9 @@
 import { expect, test } from "vitest";
-import { LayoutParser } from "../../../layout-parser.mts";
+import { LayoutParser } from "../../../layout-parser.mjs";
 import type {
   AnimationBlock,
   LayoutParsed,
-} from "_controllers/geometry/animator/animator.types.mjs";
+} from "_controllers/geometry/controller/animator/animator.types.mjs";
 
 interface Case {
   name: string;
@@ -12,31 +12,18 @@ interface Case {
 }
 
 const CASES: Case[] = [
-  ...Array.from({ length: 10 }, (_, i) => i * 10).map((w) => ({
-    name: `root then: ${w}`,
+  ...Array.from({ length: 10 }, (_, i) => i * 10).map((dur) => ({
+    name: `root duration: ${dur}`,
     block: {
       root: [
         {
           name: "h",
-          duration: 0,
+          duration: dur,
           keyframes: [
             {
               height: 1,
             },
           ],
-          then: {
-            root: [
-              {
-                name: "w",
-                duration: 2,
-                keyframes: [
-                  {
-                    width: "WIDTH",
-                  },
-                ],
-              },
-            ],
-          },
         },
       ],
     },
@@ -51,25 +38,8 @@ const CASES: Case[] = [
               },
             ],
             options: {
-              duration: 0,
+              duration: dur,
             },
-          },
-          then: {
-            root: [
-              {
-                apply: {
-                  name: "w",
-                  keyframes: [
-                    {
-                      width: 21,
-                    },
-                  ],
-                  options: {
-                    duration: 2,
-                  },
-                },
-              },
-            ],
           },
         },
       ],
@@ -87,15 +57,14 @@ CASES.forEach(({ block, expected, name }) => {
           stagger: 0,
         },
         container: {
-          intent: "enter",
           style: {
-            width: 11,
+            height: 11,
           },
         },
         item: {
           intent: "enter",
           style: {
-            width: 21,
+            height: 21,
           },
         },
       },

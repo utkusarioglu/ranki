@@ -24,7 +24,7 @@ export type GeometrySetRecord<Instance extends LitElement> = Record<
   GeometrySetProps<Instance>
 >;
 
-export type GeometryEventName = `${LocalAction}-start` & `${LocalAction}-end`;
+export type GeometryEventName = `${LocalAction}-start` | `${LocalAction}-end`;
 
 export interface GeometrySetProps<Instance extends LitElement> {
   isRoot?: boolean;

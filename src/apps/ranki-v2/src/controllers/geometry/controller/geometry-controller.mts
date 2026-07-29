@@ -1,6 +1,5 @@
-import { DEBUG_TAG, PROPAGATE_DELAY } from "_/debug.constants.mjs";
+import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
-import { GeometryEval } from "_controllers/geometry/geometry-eval.mjs";
 import {
   assertExists,
   assertNever,
@@ -8,38 +7,37 @@ import {
   assertNotUndefined,
 } from "_error/assertions.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
-import { TimingUtils } from "_utils/timing,utils.mjs";
-import type { LitElement, ReactiveController } from "lit";
-import { Animator } from "../animator/animator.mjs";
-import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mts";
-import type {
-  InformContext,
-  InformedChildStyle,
-} from "./geometry-controller.types.mts";
-import type { ComponentDims } from "./geometry-controller.types.mts";
-import type { EmitIntent } from "../geometry-intent.types.mts";
-import type {
-  GeometryControllerConstructorParams,
-  GeometrySetLayoutCb,
-  GeometryEventCb,
-  GeometryEventName,
-  GeometrySetProps,
-  GeometrySetRecord,
-} from "./geometry-decorator.constructor.types.mts";
-import type { LayoutSizing } from "../layout/layout-utils.types.mts";
-import { LayoutParser } from "_controllers/geometry/parser/layout-parser.mjs";
 import {
   ReconciliationUtils,
   type ReconciliationDiff,
 } from "_utils/reconciliation.utils.mjs";
-import type { InformSetProps } from "../animator/animator.types.mjs";
+import { TimingUtils } from "_utils/timing,utils.mjs";
+import type { LitElement, ReactiveController } from "lit";
+import { Animator } from "./animator/animator.mjs";
+import type { InformSetProps } from "./animator/animator.types.mjs";
+import { GeometryMerger } from "./merger/geometry-merger.mjs";
 import { GeometryEvents } from "../events/geometry-events.mjs";
 import { type EmitModes } from "../events/geometry-events.types.mjs";
+import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mts";
+import type { EmitIntent, LocalAction } from "../geometry-intent.types.mts";
+import type { WidthHeight } from "../geometry-style.types.mts";
+import type { LayoutSizing } from "../layout/layout-utils.types.mts";
 import type {
+  ComponentDims,
+  CurrentAppliedStyle,
   GeometrySetName,
+  InformedChildStyle,
   OnEmitParams,
 } from "./geometry-controller.types.mts";
-import type { WidthHeight } from "../geometry-style.types.mts";
+import type {
+  GeometryControllerConstructorParams,
+  GeometryEventCb,
+  GeometryEventName,
+  GeometrySetLayoutCb,
+  GeometrySetProps,
+  GeometrySetRecord,
+} from "./geometry-decorator.constructor.types.mts";
+import { DebugUtils } from "_/debug/debug-utils.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -51,7 +49,7 @@ export class GeometryController<
   private readonly on: GeometryEventCb<Instance> | null = null;
   private sizing: LayoutSizing | null = null;
   private requested = false;
-  private currStyle: InformedChildStyle | null = null;
+  private currStyle: CurrentAppliedStyle | null = null;
   private events: { hover: boolean };
 
   constructor(
@@ -253,107 +251,55 @@ export class GeometryController<
     };
   }
 
-  private async informSet({
-    setName,
-    container,
-    // curr,
-    // prev,
-    // inform,
-  }: InformSetProps): Promise<void> {
-    // console.log({ setName, curr, prev, inform });
-    // DECIDE this will result in running animation ignoring changes
-    const diff = this.getDiff(setName);
+  private async informSet(props: InformSetProps): Promise<void> {
+    const diff = this.getDiff(props.setName);
+    const sizing = this.getSizing();
     await Promise.all(
-      this.getSet(setName)
+      this.getSet(props.setName)
         .selector(this.host)
         .map((e, i, a) => {
-          const context: InformContext = {
-            index: i,
-            length: a.length,
-            stagger: diff.stagger.indices[i],
-          };
-          const sizing = this.getSizing();
-          // const itemKeyframe = LayoutParser.evalKeyframe(curr, prev, inform);
-          const item: InformedChildStyle["item"] = {
-            intent: sizing.set[i].intent,
-            style: {
-              ...sizing.set[i].style,
-              // ...container.style
-              // ...itemKeyframe,
-            },
-          };
-          const container: InformedChildStyle["container"] = {
-            style: sizing.container,
-            // ...sizing.container,
-            // ...curr.item,
-          };
-          const informed = { context, container, item };
+          const informed = GeometryMerger.createSetItemInformer(
+            i,
+            a,
+            props,
+            sizing,
+            diff,
+          );
 
-          // const informed = curr.set[context.index]
-          if (e.tagName === DEBUG_TAG) {
-            console.log("informSet", {
-              tag: this.host.tagName,
-              e,
-              container,
-              // itemKeyframe,
-              sizing,
-              // curr,
-              // prev,
-              item,
-              informed,
-              // inform,
-            });
-          }
+          DebugUtils.informSet({ e, host: this.host, informed, props });
           return e.informStyle(informed);
         }),
     );
   }
 
   public async informStyle(informed: InformedChildStyle): Promise<void> {
+    const sizing = this.getSizing();
     const prev = this.currStyle;
-    let sizing: LayoutSizing | null = null;
-    try {
-      sizing = this.getSizing();
-    } catch (e) {}
+    this.currStyle = GeometryMerger.createCurrStyle(sizing, informed, prev);
 
-    const item = sizing ? sizing.set[informed.context.index] : null;
-    const curr: InformedChildStyle = {
-      context: informed.context,
-      container: {
-        // intent: informed.container.intent,
-        style: {
-          ...(sizing ? sizing.container : {}),
-          ...informed.container.style,
-        },
-      },
-      item: {
-        intent: informed.item.intent,
-        style: {
-          ...(item ? item.style : {}),
-          ...informed.item.style,
-        },
-      },
-    };
+    DebugUtils.informStyle({
+      host: this.host,
+      curr: this.currStyle,
+      prev,
+      sizing,
+    });
 
-    const actions = GeometryEval.evaluateActions(curr, prev);
-    if (this.host.tagName === DEBUG_TAG) {
-      console.log("informStyle", {
-        tag: this.host.tagName,
-        actions,
-        curr,
-        item,
-        sizing,
-      });
-    }
+    this.onActionsStart(this.currStyle.actions);
+    await this.animator.updateStyle(this.currStyle, prev);
+    this.onActionsEnd(this.currStyle.actions);
+  }
 
-    this.currStyle = curr;
+  private onActionsStart(actions: LocalAction[]) {
     const onEvent = this.on;
     if (onEvent) {
       actions.forEach((action) => {
         onEvent(this.host, `${action}-start` as GeometryEventName);
       });
     }
-    await this.animator.updateStyle(actions, this.currStyle, prev);
+  }
+
+  private onActionsEnd(actions: LocalAction[]) {
+    const onEvent = this.on;
     if (onEvent) {
       actions.forEach((action) => {
         onEvent(this.host, `${action}-end` as GeometryEventName);

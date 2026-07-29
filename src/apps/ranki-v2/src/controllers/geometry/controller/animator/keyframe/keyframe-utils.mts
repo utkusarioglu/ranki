@@ -1,4 +1,4 @@
-import type { AnimationKeyframeStyles } from "_controllers/geometry/animator/animator.types.mjs";
+import type { AnimationKeyframeStyles } from "../animator.types.mts";
 
 export class KeyframeUtils {
   public static produceKeyframe({

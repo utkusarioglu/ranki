@@ -1,9 +1,9 @@
 import { expect, test } from "vitest";
-import { LayoutParser } from "../../../../layout-parser.mts";
+import { LayoutParser } from "../../../../layout-parser.mjs";
 import type {
   AnimationBlock,
   LayoutParsed,
-} from "_controllers/geometry/animator/animator.types.mjs";
+} from "_controllers/geometry/controller/animator/animator.types.mjs";
 
 interface Case {
   name: string;
@@ -24,7 +24,7 @@ const CASES: Case[] = [
         one: {
           wait: 1,
           inform: {
-            height: "HEIGHT",
+            height: input,
           },
         },
       },
@@ -52,7 +52,7 @@ const CASES: Case[] = [
             setName: "one",
             container: {
               style: {
-                height: 21,
+                height: expected,
               },
             },
           },

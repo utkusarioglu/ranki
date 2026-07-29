@@ -1,14 +1,13 @@
 import type { ReactiveElement } from "lit";
-import type { InformedChildStyle } from "../controller/geometry-controller.types.mts";
-import type { LocalAction } from "../geometry-intent.types.mts";
-import type { GeometryRole } from "../controller/geometry-decorator.constructor.types.mts";
 import { type AnimatorPlayParams } from "./animator.types.mjs";
 import { type AnimatorCallbacks } from "./animator.constructor.types.mjs";
 import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
-import { KeyframeUtils } from "_controllers/geometry/animator/keyframe/keyframe-utils.mjs";
 import { getAnimationRecipe } from "_store/app.getters.mjs";
-import { LayoutParser } from "../parser/layout-parser.mjs";
+import { LayoutParser } from "./parser/layout-parser.mjs";
 import { DEBUG_TAG } from "_/debug.constants.mjs";
+import type { GeometryRole } from "../geometry-decorator.constructor.types.mjs";
+import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
+import type { CurrentAppliedStyle } from "../geometry-controller.types.mjs";
 
 export class Animator {
   private readonly host: ReactiveElement;
@@ -69,15 +68,15 @@ export class Animator {
   }
 
   public async updateStyle(
-    actions: LocalAction[],
-    curr: InformedChildStyle,
-    prev: InformedChildStyle | null,
+    // actions: LocalAction[],
+    curr: CurrentAppliedStyle,
+    prev: CurrentAppliedStyle | null,
   ): Promise<void> {
     if (this.host.tagName === DEBUG_TAG)
-      console.log("animator.updateStyle", { actions, curr, prev });
+      console.log("animator.updateStyle", { curr, prev });
 
     await Promise.all(
-      actions.map((action) => {
+      curr.actions.map((action) => {
         const block = getAnimationRecipe(action, this.preset, this.role);
         const parse = LayoutParser.parse({ block, curr, prev });
         if (this.host.tagName === DEBUG_TAG)

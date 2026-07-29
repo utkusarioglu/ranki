@@ -1,4 +1,4 @@
-import type { TargetAnimationSpec } from "_controllers/geometry/animator/animator.types.mjs";
+import type { TargetAnimationSpec } from "_controllers/geometry/controller/animator/animator.types.mjs";
 
 export const HUD: TargetAnimationSpec = {
   hud: {
@@ -18,8 +18,8 @@ export const HUD: TargetAnimationSpec = {
       sets: {
         scroller: {
           inform: {
-            top: 0,
-            left: 0,
+            // top: 0,
+            // left: 0,
             width: "WIDTH",
             height: "HEIGHT",
           },
@@ -87,6 +87,128 @@ export const HUD: TargetAnimationSpec = {
     //   },
     // },
   },
+
+  "hud-scroller": {
+    enter: {
+      root: [
+        {
+          name: "init",
+          duration: 0,
+          keyframes: [
+            {
+              // height: "CONTAINER_HEIGHT",
+              height: "HEIGHT",
+              // left: "CONTAINER_WIDTH / 2",
+              // top: "-CONTAINER_HEIGHT",
+              top: "TOP",
+            },
+          ],
+          then: {
+            root: [
+              {
+                name: "size",
+                // duration: 1000,
+                duration: 0,
+                keyframes: [
+                  {
+                    // left: 0,
+                    // width: "CONTAINER_WIDTH",
+                    width: "WIDTH",
+                  },
+                ],
+              },
+            ],
+            sets: {
+              bg: {
+                inform: {
+                  // width: "CONTAINER_WIDTH",
+                  // height: "CONTAINER_HEIGHT",
+                  width: "WIDTH",
+                  height: "HEIGHT",
+                },
+              },
+              sections: {
+                // wait: 1000,
+                wait: 0,
+                inform: {
+                  // top: "TOP",
+                  // left: "LEFT",
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+    resize: {
+      // root: [
+      //   {
+      //     name: "size",
+      //     // duration: 1000,
+      //     duration: 0,
+      //     keyframes: [
+      //       {
+      //         // left: 0,
+      //         width: "CONTAINER_WIDTH",
+      //       },
+      //     ],
+      //   },
+      // ],
+      sets: {
+        bg: {
+          inform: {
+            width: "CONTAINER_WIDTH",
+            height: "CONTAINER_HEIGHT",
+          },
+        },
+        sections: {
+          // wait: 1000,
+          wait: 0,
+          inform: {
+            top: "TOP",
+            left: "LEFT",
+            width: "WIDTH",
+            height: "HEIGHT",
+          },
+        },
+      },
+    },
+    // contract: {
+    //   targets: {
+    //     // TODO list items need to get their z-index set
+    //     sections: {
+    //       inform: {
+    //         top: "TOP",
+    //         left: "LEFT",
+    //       },
+    //       then: {
+    //         root: [
+    //           {
+    //             name: "position",
+    //             // duration: 1000,
+    //             duration: 0,
+    //             keyframes: [
+    //               {
+    //                 width: "CONTAINER_WIDTH",
+    //               },
+    //             ],
+    //           },
+    //         ],
+    //         targets: {
+    //           bg: {
+    //             // wait: 1000,
+    //             inform: {
+    //               width: "CONTAINER_WIDTH",
+    //               height: "CONTAINER_HEIGHT",
+    //             },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
+  },
+
   "hud-bg": {
     enter: {
       root: [
@@ -170,127 +292,6 @@ export const HUD: TargetAnimationSpec = {
               opacity: 0,
             },
           ],
-        },
-      ],
-    },
-  },
-
-  "hud-scroller": {
-    resize: {
-      // root: [
-      //   {
-      //     name: "size",
-      //     // duration: 1000,
-      //     duration: 0,
-      //     keyframes: [
-      //       {
-      //         // left: 0,
-      //         width: "CONTAINER_WIDTH",
-      //       },
-      //     ],
-      //   },
-      // ],
-      sets: {
-        bg: {
-          inform: {
-            width: "CONTAINER_WIDTH",
-            height: "CONTAINER_HEIGHT",
-          },
-        },
-        sections: {
-          // wait: 1000,
-          wait: 0,
-          inform: {
-            top: "TOP",
-            left: "LEFT",
-            width: "WIDTH",
-            height: "HEIGHT",
-          },
-        },
-      },
-    },
-    // contract: {
-    //   targets: {
-    //     // TODO list items need to get their z-index set
-    //     sections: {
-    //       inform: {
-    //         top: "TOP",
-    //         left: "LEFT",
-    //       },
-    //       then: {
-    //         root: [
-    //           {
-    //             name: "position",
-    //             // duration: 1000,
-    //             duration: 0,
-    //             keyframes: [
-    //               {
-    //                 width: "CONTAINER_WIDTH",
-    //               },
-    //             ],
-    //           },
-    //         ],
-    //         targets: {
-    //           bg: {
-    //             // wait: 1000,
-    //             inform: {
-    //               width: "CONTAINER_WIDTH",
-    //               height: "CONTAINER_HEIGHT",
-    //             },
-    //           },
-    //         },
-    //       },
-    //     },
-    //   },
-    // },
-    enter: {
-      root: [
-        {
-          name: "init",
-          duration: 0,
-          keyframes: [
-            {
-              // height: "CONTAINER_HEIGHT",
-              height: "HEIGHT",
-              // left: "CONTAINER_WIDTH / 2",
-              // top: "-CONTAINER_HEIGHT",
-              top: "TOP",
-            },
-          ],
-          then: {
-            root: [
-              {
-                name: "size",
-                // duration: 1000,
-                duration: 0,
-                keyframes: [
-                  {
-                    // left: 0,
-                    // width: "CONTAINER_WIDTH",
-                    width: "WIDTH",
-                  },
-                ],
-              },
-            ],
-            sets: {
-              bg: {
-                inform: {
-                  // width: "CONTAINER_WIDTH",
-                  // height: "CONTAINER_HEIGHT",
-                  width: "WIDTH",
-                  height: "HEIGHT",
-                },
-              },
-              sections: {
-                // wait: 1000,
-                wait: 0,
-                inform: {
-                  top: "TOP",
-                  left: "LEFT",
-                },
-              },
-            },
-          },
         },
       ],
     },

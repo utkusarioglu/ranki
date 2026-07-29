@@ -1,4 +1,4 @@
-import type { TargetAnimationSpec } from "_controllers/geometry/animator/animator.types.mjs";
+import type { TargetAnimationSpec } from "_controllers/geometry/controller/animator/animator.types.mjs";
 
 export const TEXT: TargetAnimationSpec = {
   "text-span": {

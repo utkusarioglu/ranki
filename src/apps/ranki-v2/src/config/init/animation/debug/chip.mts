@@ -1,20 +1,7 @@
-import type { TargetAnimationSpec } from "_controllers/geometry/animator/animator.types.mjs";
+import type { TargetAnimationSpec } from "_controllers/geometry/controller/animator/animator.types.mjs";
 
 export const CHIP: TargetAnimationSpec = {
   chip: {
-    "hover-start": {
-      root: [
-        {
-          name: "hover",
-          duration: 100,
-          keyframes: [
-            {
-              scale: 2,
-            },
-          ],
-        },
-      ],
-    },
     enter: {
       root: [
         {
@@ -52,6 +39,19 @@ export const CHIP: TargetAnimationSpec = {
           },
         },
       },
+    },
+    "hover-start": {
+      root: [
+        {
+          name: "hover",
+          duration: 100,
+          keyframes: [
+            {
+              scale: 2,
+            },
+          ],
+        },
+      ],
     },
     move: {
       root: [

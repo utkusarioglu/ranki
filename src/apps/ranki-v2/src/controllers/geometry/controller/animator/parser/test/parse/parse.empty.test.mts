@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { LayoutParser } from "../../layout-parser.mts";
+import { LayoutParser } from "../../layout-parser.mjs";
 
 test("empty", () => {
   const response = LayoutParser.parse({
@@ -10,7 +10,6 @@ test("empty", () => {
         stagger: 0,
       },
       container: {
-        intent: "enter",
         style: {
           height: 11,
         },

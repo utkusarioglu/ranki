@@ -1,4 +1,4 @@
-import type { AnimationDict } from "../../controllers/geometry/animator/animator.types.mjs";
+import type { AnimationDict } from "_controllers/geometry/controller/animator/animator.types.mjs";
 import { BADGE_LIST } from "./animation/debug/badge-list.mjs";
 import { CHIP } from "./animation/debug/chip.mjs";
 import { CUE_LIST } from "./animation/debug/cue-list.mjs";
