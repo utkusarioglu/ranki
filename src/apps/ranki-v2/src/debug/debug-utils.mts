@@ -22,6 +22,12 @@ interface InformSet {
   props: InformSetProps;
 }
 
+interface AnimatorUpdate {
+  host: LitElement;
+  curr: CurrentAppliedStyle;
+  prev: CurrentAppliedStyle | null;
+}
+
 export class DebugUtils {
   public static informStyle(props: InformStyleDebug) {
     if (props.host.tagName === DEBUG_TAG) {
@@ -43,5 +49,13 @@ export class DebugUtils {
         props: props.props,
       });
     }
+  }
+
+  public static animatorUpdate(props: AnimatorUpdate) {
+    if (props.host.tagName === DEBUG_TAG)
+      console.log("animator.updateStyle", {
+        curr: props.curr,
+        prev: props.prev,
+      });
   }
 }

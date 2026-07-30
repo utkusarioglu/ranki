@@ -1,10 +1,13 @@
-import type { InformedChildStyle } from "./controller/geometry-controller.types.mts";
+import type {
+  CurrentAppliedStyle,
+  CurrentAppliedStyleWithoutActions,
+} from "./controller/geometry-controller.types.mts";
 import type { LocalAction } from "./geometry-intent.types.mts";
 
 export class GeometryEval {
   public static evaluateActions(
-    curr: InformedChildStyle,
-    prev: InformedChildStyle | null,
+    curr: CurrentAppliedStyleWithoutActions,
+    prev: CurrentAppliedStyle | null,
   ): LocalAction[] {
     const val = {
       prev: {

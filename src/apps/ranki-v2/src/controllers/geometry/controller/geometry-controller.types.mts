@@ -38,12 +38,16 @@ export type InformedChildStyleContainer = {
 
 export type InformedChildStyle = {
   container: InformedChildStyleContainer;
-  item: InformedChildStyleNode;
+  // item: InformedChildStyleNode;
   context: InformContext;
 };
-
+export type CurrentAppliedStyleWithoutActions = Omit<
+  CurrentAppliedStyle,
+  "actions"
+>;
 export type CurrentAppliedStyle = InformedChildStyle & {
   actions: LocalAction[];
+  item: InformedChildStyleNode;
 };
 
 export type UpdateStyle = AnimationKeyframeStyles & WithEmitIntents;

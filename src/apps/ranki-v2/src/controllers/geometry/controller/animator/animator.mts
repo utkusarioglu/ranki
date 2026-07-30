@@ -1,4 +1,4 @@
-import type { ReactiveElement } from "lit";
+import type { LitElement } from "lit";
 import { type AnimatorPlayParams } from "./animator.types.mjs";
 import { type AnimatorCallbacks } from "./animator.constructor.types.mjs";
 import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
@@ -8,9 +8,10 @@ import { DEBUG_TAG } from "_/debug.constants.mjs";
 import type { GeometryRole } from "../geometry-decorator.constructor.types.mjs";
 import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
 import type { CurrentAppliedStyle } from "../geometry-controller.types.mjs";
+import { DebugUtils } from "_/debug/debug-utils.mjs";
 
 export class Animator {
-  private readonly host: ReactiveElement;
+  private readonly host: LitElement;
   private readonly role: GeometryRole;
   private readonly sequencer: AnimationSequencer;
   private readonly callbacks: AnimatorCallbacks;
@@ -18,7 +19,7 @@ export class Animator {
   private running = new Map<string, Animation>();
 
   constructor(
-    host: ReactiveElement,
+    host: LitElement,
     role: GeometryRole,
     callbacks: AnimatorCallbacks,
   ) {
@@ -67,14 +68,11 @@ export class Animator {
     await anim.finished;
   }
 
-  public async updateStyle(
-    // actions: LocalAction[],
+  public async update(
     curr: CurrentAppliedStyle,
     prev: CurrentAppliedStyle | null,
   ): Promise<void> {
-    if (this.host.tagName === DEBUG_TAG)
-      console.log("animator.updateStyle", { curr, prev });
-
+    DebugUtils.animatorUpdate({ host: this.host, curr, prev });
     await Promise.all(
       curr.actions.map((action) => {
         const block = getAnimationRecipe(action, this.preset, this.role);

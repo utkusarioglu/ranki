@@ -9,10 +9,7 @@ import type {
   ParseRootParams,
 } from "../../animator/animator.types.mjs";
 import { Parser } from "expr-eval";
-import type {
-  GeometrySetName,
-  InformedChildStyle,
-} from "../../geometry-controller.types.mts";
+import type { GeometrySetName } from "../../geometry-controller.types.mts";
 import { KeyframeParser } from "./keyframe/keyframe-parser.mjs";
 
 export const parser = new Parser();
@@ -39,8 +36,8 @@ export class LayoutParser {
   private static parseSet(
     setName: GeometrySetName,
     t: AnimationTarget,
-    curr: InformedChildStyle,
-    prev: InformedChildStyle | null,
+    curr: ParseRootParams["curr"],
+    prev: ParseRootParams["prev"] | null,
   ): LayoutSetsInform {
     const then: LayoutParsed | undefined = t.then
       ? this.parse({
@@ -63,8 +60,8 @@ export class LayoutParser {
 
   private static parseSets(
     targets: AnimationBlockSets,
-    curr: InformedChildStyle,
-    prev: InformedChildStyle | null,
+    curr: ParseRootParams["curr"],
+    prev: ParseRootParams["prev"] | null,
   ): LayoutParsedSets {
     const ent = Object.entries(targets).map(([id, v]) => [
       id,
@@ -75,8 +72,8 @@ export class LayoutParser {
 
   private static parseRoot(
     b: AnimationRoot,
-    curr: InformedChildStyle,
-    prev: InformedChildStyle | null,
+    curr: ParseRootParams["curr"],
+    prev: ParseRootParams["prev"] | null,
   ): ApplyRootParams {
     return {
       apply: {

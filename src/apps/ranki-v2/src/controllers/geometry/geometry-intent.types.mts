@@ -1,6 +1,6 @@
 import type { EmitModes } from "./events/geometry-events.types.mts";
 
-export type EmitIntent = "update" | "leave" | "enter" | "mode";
+export type EmitIntent = "update" | "leave" | "enter" | "mode" | "none";
 
 export type WithEmitIntent = { intent: EmitIntent };
 

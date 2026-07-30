@@ -3,7 +3,6 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import {
   assertExists,
   assertNever,
-  assertNotNull,
   assertNotUndefined,
 } from "_error/assertions.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
@@ -49,7 +48,8 @@ export class GeometryController<
   private readonly on: GeometryEventCb<Instance> | null = null;
   private sizing: LayoutSizing | null = null;
   private requested = false;
-  private currStyle: CurrentAppliedStyle | null = null;
+  private curr: CurrentAppliedStyle | null = null;
+  private prev: CurrentAppliedStyle | null = null;
   private events: { hover: boolean };
 
   constructor(
@@ -110,10 +110,7 @@ export class GeometryController<
     return s;
   }
 
-  private getSizing(): LayoutSizing {
-    assertNotNull(this.sizing, {
-      why: "getSizing called when no geometry was registered",
-    });
+  private getSizing(): LayoutSizing | null {
     return this.sizing;
   }
 
@@ -128,7 +125,7 @@ export class GeometryController<
         // intent: geo.set[0].intent,
         style: geo.container,
       },
-      item: geo.set[0],
+      // item: geo.set[0],
     };
     this.informStyle(inform);
   }
@@ -224,8 +221,6 @@ export class GeometryController<
               mode: detail.mode,
             },
           );
-          console.log(this.registered.get(target));
-        // console.log("mode", e);
       }
       switch (detail.intent) {
         case "leave":
@@ -274,19 +269,19 @@ export class GeometryController<
 
   public async informStyle(informed: InformedChildStyle): Promise<void> {
     const sizing = this.getSizing();
-    const prev = this.currStyle;
-    this.currStyle = GeometryMerger.createCurrStyle(sizing, informed, prev);
+    this.prev = this.curr;
+    this.curr = GeometryMerger.createCurrStyle(informed, sizing, this.prev);
 
     DebugUtils.informStyle({
       host: this.host,
-      curr: this.currStyle,
-      prev,
+      curr: this.curr,
+      prev: this.prev,
       sizing,
     });
 
-    this.onActionsStart(this.currStyle.actions);
-    await this.animator.updateStyle(this.currStyle, prev);
-    this.onActionsEnd(this.currStyle.actions);
+    this.onActionsStart(this.curr.actions);
+    await this.animator.update(this.curr, this.prev);
+    this.onActionsEnd(this.curr.actions);
   }
 
   private onActionsStart(actions: LocalAction[]) {
@@ -308,13 +303,21 @@ export class GeometryController<
   }
 
   hostConnected(): void {
+    this.registerListeners();
+  }
+
+  hostDisconnected(): void {
+    this.deregisterListeners();
+  }
+
+  private registerListeners() {
     if (this.events.hover) {
       this.host.addEventListener("pointerenter", this.onPointerEnter);
       this.host.addEventListener("pointerleave", this.onPointerLeave);
     }
   }
 
-  hostDisconnected(): void {
+  private deregisterListeners() {
     if (this.events.hover) {
       this.host.removeEventListener("pointerenter", this.onPointerEnter);
       this.host.removeEventListener("pointerleave", this.onPointerLeave);

@@ -89,6 +89,7 @@ export const HUD: TargetAnimationSpec = {
   },
 
   "hud-scroller": {
+    move: {},
     enter: {
       root: [
         {

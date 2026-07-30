@@ -1,4 +1,5 @@
 import type {
+  CurrentAppliedStyle,
   InformContext,
   InformedChildStyle,
   InformedChildStyleContainer,
@@ -126,7 +127,7 @@ export interface AnimationBlock {
 }
 
 export interface ParseRootParams {
-  curr: InformedChildStyle;
-  prev: InformedChildStyle | null;
+  curr: CurrentAppliedStyle;
+  prev: CurrentAppliedStyle | null;
   block: AnimationBlock;
 }

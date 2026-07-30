@@ -3,6 +3,7 @@ import type { InformSetProps } from "../animator/animator.types.mjs";
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 import type {
   CurrentAppliedStyle,
+  CurrentAppliedStyleWithoutActions,
   InformContext,
   InformedChildStyle,
 } from "_controllers/geometry/controller/geometry-controller.types.mjs";
@@ -14,7 +15,7 @@ export class GeometryMerger {
     i: number,
     a: R2C[],
     props: InformSetProps,
-    sizing: LayoutSizing,
+    sizing: LayoutSizing | null,
     diff: ReconciliationDiff,
   ): InformedChildStyle {
     const context: InformContext = {
@@ -22,25 +23,25 @@ export class GeometryMerger {
       length: a.length,
       stagger: diff.stagger.indices[i],
     };
-    const item = sizing.set[i];
-    const containerS: InformedChildStyle["container"] = {
+    // const item = sizing ? sizing.set[i] : {style: {}};
+    const container: InformedChildStyle["container"] = {
       style: {
         // ...item.style
-        ...sizing.container,
+        ...(sizing ? sizing.container : {}),
         ...props.container.style,
       },
     };
-    const informed = { context, container: containerS, item };
-    return informed;
+    return { context, container };
   }
 
   public static createCurrStyle(
-    sizing: LayoutSizing,
     informed: InformedChildStyle,
-    prev: InformedChildStyle | null,
+    sizing: LayoutSizing | null,
+    prev: CurrentAppliedStyle | null,
   ): CurrentAppliedStyle {
-    const item = sizing ? sizing.set[informed.context.index] : null;
-    const curr: InformedChildStyle = {
+    // const item = sizing.set[informed.context.index];
+    const item = this.getItem(sizing, informed.context.index);
+    const curr: CurrentAppliedStyleWithoutActions = {
       context: informed.context,
       container: {
         // intent: informed.container.intent,
@@ -50,10 +51,11 @@ export class GeometryMerger {
         },
       },
       item: {
-        intent: informed.item.intent,
+        intent: item.intent,
         style: {
-          ...(item ? item.style : {}),
-          ...informed.item.style,
+          ...item.style,
+          // ...(item ? item.style : {}),
+          // ...informed.item.style,
         },
       },
     };
@@ -61,5 +63,24 @@ export class GeometryMerger {
     const actions = GeometryEval.evaluateActions(curr, prev);
     return { ...curr, actions };
     // return { actions, curr };
+  }
+
+  private static getItem(
+    sizing: LayoutSizing | null,
+    index: number,
+  ): CurrentAppliedStyle["item"] {
+    try {
+      const item = sizing!.set[index];
+      return {
+        intent: item.intent,
+        style: item.style,
+      };
+    } catch (_) {
+      console.log("s", sizing, index);
+      return {
+        intent: "none" as "none",
+        style: {},
+      };
+    }
   }
 }
