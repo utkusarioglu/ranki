@@ -1,8 +1,8 @@
 import type {
+  CurrentAppliedStyle,
   InformContext,
-  InformedChildStyle,
   UpdateStyle,
-} from "../../../geometry-controller.types.mts";
+} from "../../../types/geometry-controller.types.mts";
 import type {
   AnimationRoot,
   AnimationOptions,
@@ -52,8 +52,8 @@ export class KeyframeParser {
 
   // TODO why is this accessed from geometry controller?
   static evalKeyframe(
-    curr: InformedChildStyle,
-    prev: InformedChildStyle | null,
+    curr: CurrentAppliedStyle,
+    prev: CurrentAppliedStyle | null,
     b: AnimatableStylesConfigKeyframes,
   ): Omit<UpdateStyle, "type"> {
     const entries = Object.entries(b).map(([k, v]) => [
@@ -64,8 +64,8 @@ export class KeyframeParser {
   }
 
   private static evalConfigValue(
-    curr: InformedChildStyle,
-    prev: InformedChildStyle | null,
+    curr: CurrentAppliedStyle,
+    prev: CurrentAppliedStyle | null,
     value: string | number | undefined,
   ) {
     if (typeof value === "number" || typeof value === "undefined") {

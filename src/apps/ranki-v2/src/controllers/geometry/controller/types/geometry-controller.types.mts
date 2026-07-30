@@ -1,14 +1,14 @@
 import type {
   AnimationKeyframeStyles,
   InformSetProps,
-} from "./animator/animator.types.mts";
-import type { EmitModes } from "../events/geometry-events.types.mts";
+} from "../animator/animator.types.mts";
+import type { EmitModes } from "../../events/geometry-events.types.mts";
 import type {
   EmitIntent,
   LocalAction,
   WithEmitIntents,
-} from "../geometry-intent.types.mts";
-import type { WidthHeight } from "../geometry-style.types.mts";
+} from "../../geometry-intent.types.mts";
+import type { WidthHeight } from "../../geometry-style.types.mts";
 
 export type GeometrySetName = string & { type?: "GeometrySet" };
 

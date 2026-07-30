@@ -6,7 +6,7 @@ import type {
   CurrentAppliedStyleWithoutActions,
   InformContext,
   InformedChildStyle,
-} from "_controllers/geometry/controller/geometry-controller.types.mjs";
+} from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
 import { GeometryEval } from "_controllers/geometry/geometry-eval.mjs";
 

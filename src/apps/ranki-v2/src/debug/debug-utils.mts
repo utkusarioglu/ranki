@@ -1,10 +1,10 @@
-import { DEBUG_TAG } from "_/debug.constants.mjs";
+import { DEBUG_TAG } from "_/debug/debug.constants.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { InformSetProps } from "_controllers/geometry/controller/animator/animator.types.mjs";
 import type {
   CurrentAppliedStyle,
   InformedChildStyle,
-} from "_controllers/geometry/controller/geometry-controller.types.mjs";
+} from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 import type { LitElement } from "lit";
 

@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import type { AnimatableStylesConfigKeyframes } from "../../../animator.types.mjs";
-import type { InformedChildStyle } from "_controllers/geometry/controller/geometry-controller.types.mjs";
+import type { CurrentAppliedStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
 import { KeyframeParser } from "../keyframe-parser.mjs";
 
 type K = keyof AnimatableStylesConfigKeyframes;
@@ -44,7 +44,8 @@ for (let v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
   const { prop, item, container, block } = v;
 
   test(`${prop}: ${block}`, () => {
-    const curr: InformedChildStyle = {
+    const curr: CurrentAppliedStyle = {
+      actions: ["enter"],
       container: {
         style: {
           [prop]: container,
@@ -62,7 +63,7 @@ for (let v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
         stagger: 0,
       },
     };
-    const prev: InformedChildStyle | null = null;
+    const prev: CurrentAppliedStyle | null = null;
     const blockObj: AnimatableStylesConfigKeyframes = {
       [prop]: block,
     };

@@ -1,7 +1,7 @@
 import type {
   CurrentAppliedStyle,
   CurrentAppliedStyleWithoutActions,
-} from "./controller/geometry-controller.types.mts";
+} from "./controller/types/geometry-controller.types.mts";
 import type { LocalAction } from "./geometry-intent.types.mts";
 
 export class GeometryEval {

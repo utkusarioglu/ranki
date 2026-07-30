@@ -1,4 +1,4 @@
-import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
+import { PROPAGATE_DELAY } from "_/debug/debug.constants.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import {
   assertExists,
@@ -27,7 +27,7 @@ import type {
   GeometrySetName,
   InformedChildStyle,
   OnEmitParams,
-} from "./geometry-controller.types.mts";
+} from "./types/geometry-controller.types.mts";
 import type {
   GeometryControllerConstructorParams,
   GeometryEventCb,
@@ -35,7 +35,7 @@ import type {
   GeometrySetLayoutCb,
   GeometrySetProps,
   GeometrySetRecord,
-} from "./geometry-decorator.constructor.types.mts";
+} from "./types/geometry-controller.constructor.types.mts";
 import { DebugUtils } from "_/debug/debug-utils.mjs";
 
 export class GeometryController<

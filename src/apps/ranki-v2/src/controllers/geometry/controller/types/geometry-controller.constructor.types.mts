@@ -1,9 +1,9 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
-import type { ComponentDims } from "./geometry-controller.types.mts";
-import type { LocalAction } from "../geometry-intent.types.mts";
-import type { LayoutSizing } from "../layout/layout-utils.types.mts";
+import type { LocalAction } from "../../geometry-intent.types.mts";
+import type { LayoutSizing } from "../../layout/layout-utils.types.mts";
 import type { LitElement } from "lit";
+import type { ComponentDims } from "./geometry-controller.types.mts";
 
 export interface GeometryControllerConstructorParams<
   Instance extends LitElement,

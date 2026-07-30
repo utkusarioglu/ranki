@@ -4,6 +4,7 @@ import { LayoutParser } from "../../layout-parser.mjs";
 test("empty", () => {
   const response = LayoutParser.parse({
     curr: {
+      actions: ["enter"],
       context: {
         index: 0,
         length: 1,

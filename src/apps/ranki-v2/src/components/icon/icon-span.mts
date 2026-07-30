@@ -3,7 +3,7 @@ import { type WidthHeight } from "_controllers/geometry/geometry-style.types.mjs
 import { html, unsafeCSS } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { R2IconProps } from "./icon.mjs";
-import { PROPAGATE_DELAY } from "_/debug.constants.mjs";
+import { PROPAGATE_DELAY } from "_/debug/debug.constants.mjs";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { loadIcon } from "iconify-icon";
 import { TimingUtils } from "_utils/timing,utils.mjs";

@@ -1,4 +1,4 @@
-import type { ComponentDims } from "../controller/geometry-controller.types.mts";
+import type { ComponentDims } from "../controller/types/geometry-controller.types.mts";
 import type { WidthHeight } from "../geometry-style.types.mts";
 
 export type LayoutSizing = {

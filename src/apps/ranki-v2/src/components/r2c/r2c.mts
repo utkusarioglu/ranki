@@ -1,6 +1,6 @@
 import { LitElement } from "lit";
 import { assertNever } from "_error/assertions.mjs";
-import type { InformedChildStyle } from "_controllers/geometry/controller/geometry-controller.types.mjs";
+import type { InformedChildStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
 
 export class R2C extends LitElement {
   public leave() {

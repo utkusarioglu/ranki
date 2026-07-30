@@ -4,10 +4,10 @@ import { type AnimatorCallbacks } from "./animator.constructor.types.mjs";
 import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
 import { getAnimationRecipe } from "_store/app.getters.mjs";
 import { LayoutParser } from "./parser/layout-parser.mjs";
-import { DEBUG_TAG } from "_/debug.constants.mjs";
-import type { GeometryRole } from "../geometry-decorator.constructor.types.mjs";
+import { DEBUG_TAG } from "_/debug/debug.constants.mjs";
+import type { GeometryRole } from "../types/geometry-controller.constructor.types.mjs";
 import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
-import type { CurrentAppliedStyle } from "../geometry-controller.types.mjs";
+import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs";
 import { DebugUtils } from "_/debug/debug-utils.mjs";
 
 export class Animator {
