@@ -2,13 +2,12 @@ import type { LitElement } from "lit";
 import { type AnimatorPlayParams } from "./animator.types.mjs";
 import { type AnimatorCallbacks } from "./animator.constructor.types.mjs";
 import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
-import { getAnimationRecipe } from "_store/app.getters.mjs";
-import { LayoutParser } from "./parser/layout-parser.mjs";
 import { DEBUG_TAG } from "_/debug/debug.constants.mjs";
 import type { GeometryRole } from "../types/geometry-controller.constructor.types.mjs";
 import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
 import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs";
 import { DebugUtils } from "_/debug/debug-utils.mjs";
+import { AnimationComposer } from "./composer/animation-composer.mts";
 
 export class Animator {
   private readonly host: LitElement;
@@ -75,11 +74,14 @@ export class Animator {
     DebugUtils.animatorUpdate({ host: this.host, curr, prev });
     await Promise.all(
       curr.actions.map((action) => {
-        const block = getAnimationRecipe(action, this.preset, this.role);
-        const parse = LayoutParser.parse({ block, curr, prev });
-        if (this.host.tagName === DEBUG_TAG)
-          console.log("animator.updateStyle.loop", { block, parse });
-        return this.sequencer.build(parse);
+        const composed = AnimationComposer.compose({
+          preset: this.preset,
+          role: this.role,
+          action,
+          curr,
+          prev,
+        });
+        return this.sequencer.build(composed);
       }),
     );
   }

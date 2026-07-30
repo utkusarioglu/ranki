@@ -25,6 +25,7 @@ import type {
   ComponentDims,
   CurrentAppliedStyle,
   GeometrySetName,
+  InformContext,
   InformedChildStyle,
   OnEmitParams,
 } from "./types/geometry-controller.types.mts";
@@ -253,13 +254,16 @@ export class GeometryController<
       this.getSet(props.setName)
         .selector(this.host)
         .map((e, i, a) => {
-          const informed = GeometryMerger.createSetItemInformer(
-            i,
-            a,
+          const context: InformContext = {
+            index: i,
+            length: a.length,
+            stagger: diff.stagger.indices[i],
+          };
+          const informed = GeometryMerger.createSetItemInformer({
+            context,
             props,
             sizing,
-            diff,
-          );
+          });
 
           DebugUtils.informSet({ e, host: this.host, informed, props });
           return e.informStyle(informed);
