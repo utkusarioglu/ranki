@@ -14,8 +14,8 @@ interface Case {
 const CASES: Case[] = [
   ...(
     [
-      ["CONTAINER_HEIGHT", 11],
-      ["HEIGHT", 21],
+      ["to.container.height", 11],
+      ["to.self.height", 21],
     ] as [string, number][]
   ).map(([input, expected]) => ({
     name: `root container: ${input}`,
@@ -99,7 +99,7 @@ CASES.forEach(({ block, expected, name }) => {
             height: 11,
           },
         },
-        item: {
+        self: {
           intent: "enter",
           style: {
             height: 21,

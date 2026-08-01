@@ -40,7 +40,8 @@ const prev = null;
 test("empty informed", () => {
   const informed: InformedChildStyle = {
     context,
-    container: { style: {} },
+    containerExposed: { style: {} },
+    selfOverrides: { style: {} },
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
   const expected = {
@@ -52,7 +53,7 @@ test("empty informed", () => {
       },
     },
     context,
-    item: {
+    self: {
       intent: "enter",
       style: {
         width: 23,
@@ -66,11 +67,12 @@ test("empty informed", () => {
 test("informed container width", () => {
   const informed: InformedChildStyle = {
     context,
-    container: {
+    containerExposed: {
       style: {
         width: 7,
       },
     },
+    selfOverrides: { style: {} },
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
   const expected = {
@@ -82,7 +84,7 @@ test("informed container width", () => {
       },
     },
     context,
-    item: {
+    self: {
       intent: "enter",
       style: {
         width: 23,
@@ -101,11 +103,12 @@ test("informed container width 2", () => {
   };
   const informed: InformedChildStyle = {
     context,
-    container: {
+    containerExposed: {
       style: {
         width: 7,
       },
     },
+    selfOverrides: { style: {} },
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
   const expected = {
@@ -117,7 +120,7 @@ test("informed container width 2", () => {
       },
     },
     context,
-    item: {
+    self: {
       intent: "leave",
       style: {
         width: 43,

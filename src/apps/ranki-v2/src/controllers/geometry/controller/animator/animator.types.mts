@@ -2,6 +2,7 @@ import type {
   CurrentAppliedStyle,
   InformContext,
   InformedChildStyleContainer,
+  InformedChildStyleSelf,
   UpdateStyle,
 } from "../types/geometry-controller.types.mjs";
 import type { LocalAction } from "../../geometry-intent.types.mjs";
@@ -50,9 +51,12 @@ export interface AnimationRoot {
 
 export type AnimationBlockSets = Record<GeometrySetName, AnimationTarget>;
 
+// TODO
 export interface AnimationTarget {
   wait?: number | string;
-  inform: AnimatableStylesConfigKeyframes;
+  expose?: AnimatableStylesConfigKeyframes;
+  override?: AnimatableStylesConfigKeyframes;
+  // inform: AnimatableStylesConfigKeyframes;
   then?: AnimationBlock;
 }
 
@@ -79,32 +83,14 @@ export interface ApplyRootParams {
   then?: LayoutParsed;
 }
 
-// interface LayoutSetPropsContainer {
-//   container: {
-//     style: AnimatableStylesConfigKeyframes;
-//   };
-// }
-
 export interface InformSetProps {
   setName: GeometrySetName;
-  container: InformedChildStyleContainer;
-  // style: Inform
-  // curr: LayoutSetPropsContainer;
-  // prev?: LayoutSetPropsContainer;
-  // inform: AnimatableStylesConfigKeyframes;
+  containerExposed: InformedChildStyleContainer;
+  selfOverrides: InformedChildStyleSelf;
 }
-
-// TODO may be obsolete
-// export type InformSetProps = {
-//   setName: GeometrySetName;
-//   curr: InformedChildStyle;
-//   prev: InformedChildStyle | null;
-//   inform: AnimatableStylesConfigKeyframes;
-// };
 
 export type LayoutSetsInform = {
   wait?: number;
-  // props: InformSetProps;
   props: InformSetProps;
   then?: LayoutParsed;
 };

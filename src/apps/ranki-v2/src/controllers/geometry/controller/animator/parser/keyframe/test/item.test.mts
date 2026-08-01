@@ -35,7 +35,7 @@ for (let v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
           [prop]: container,
         },
       },
-      item: {
+      self: {
         intent: "enter",
         style: {
           [prop]: item,
@@ -49,7 +49,7 @@ for (let v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
     };
     const prev: CurrentAppliedStyle | null = null;
     const blockObj: AnimatableStylesConfigKeyframes = {
-      [prop]: prop.toUpperCase(),
+      [prop]: `to.self.${prop}`,
     };
     const response = KeyframeParser.evalKeyframe(curr, prev, blockObj);
     const expectedObj = {

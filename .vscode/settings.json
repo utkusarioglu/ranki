@@ -20,5 +20,6 @@
   },
   "[html]": {
     "editor.defaultFormatter": null
-  }
+  },
+  "workbench.experimental.modernUI": false
 }

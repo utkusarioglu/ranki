@@ -11,16 +11,16 @@ export class GeometryEval {
   ): LocalAction[] {
     const val = {
       prev: {
-        width: prev?.item.style.width || 0,
-        height: prev?.item.style.height || 0,
-        top: prev?.item.style.top || 0,
-        left: prev?.item.style.left || 0,
+        width: prev?.self.style.width || 0,
+        height: prev?.self.style.height || 0,
+        top: prev?.self.style.top || 0,
+        left: prev?.self.style.left || 0,
       },
       curr: {
-        width: curr.item.style.width || 0,
-        height: curr.item.style.height || 0,
-        top: curr.item.style.top || 0,
-        left: curr.item.style.left || 0,
+        width: curr.self.style.width || 0,
+        height: curr.self.style.height || 0,
+        top: curr.self.style.top || 0,
+        left: curr.self.style.left || 0,
       },
     };
 
@@ -50,9 +50,9 @@ export class GeometryEval {
       left: val.prev.left !== val.curr.left,
     };
 
-    const isEnter = curr.item.intent === "enter";
-    const isLeave = curr.item.intent === "leave";
-    const isUpdate = curr.item.intent === "update";
+    const isEnter = curr.self.intent === "enter";
+    const isLeave = curr.self.intent === "leave";
+    const isUpdate = curr.self.intent === "update";
     const isResize = (is.width.resize || is.height.resize) && isUpdate;
     const isMove = is.top || is.left;
 
@@ -62,7 +62,7 @@ export class GeometryEval {
     if (isResize) actions.add("resize");
     if (isMove) actions.add("move");
 
-    if (curr.item.mode) actions.add(curr.item.mode);
+    if (curr.self.mode) actions.add(curr.self.mode);
 
     return Array.from(actions);
   }

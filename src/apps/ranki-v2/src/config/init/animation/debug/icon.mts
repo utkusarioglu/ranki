@@ -63,7 +63,7 @@ export const ICON: TargetAnimationSpec = {
       ],
       sets: {
         "icon-span": {
-          inform: {
+          expose: {
             // width: "CONTAINER_WIDTH",
             width: "WIDTH",
             // height: "CONTAINER_HEIGHT",
@@ -125,7 +125,7 @@ export const ICON: TargetAnimationSpec = {
       ],
       sets: {
         "icon-span": {
-          inform: {
+          expose: {
             width: "CONTAINER_WIDTH",
             height: "CONTAINER_HEIGHT",
           },

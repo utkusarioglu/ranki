@@ -31,7 +31,7 @@ const CASES: Case[] = [
                 duration: 2,
                 keyframes: [
                   {
-                    width: "WIDTH",
+                    width: "to.self.width",
                   },
                 ],
               },
@@ -92,7 +92,7 @@ CASES.forEach(({ block, expected, name }) => {
             width: 11,
           },
         },
-        item: {
+        self: {
           intent: "enter",
           style: {
             width: 21,

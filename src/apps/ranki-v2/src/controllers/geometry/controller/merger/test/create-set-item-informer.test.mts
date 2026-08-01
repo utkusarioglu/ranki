@@ -15,7 +15,7 @@ test("", () => {
   };
   const props: InformSetProps = {
     setName: "f",
-    container: {
+    containerExposed: {
       style: {
         height: 11,
       },
@@ -50,7 +50,7 @@ test("", () => {
   });
   const expected: InformedChildStyle = {
     context,
-    container: {
+    containerExposed: {
       style: {
         height: 11,
         width: 31,

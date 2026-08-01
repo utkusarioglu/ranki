@@ -20,7 +20,7 @@ export const BADGE_LIST: TargetAnimationSpec = {
       sets: {
         bg: {
           // wait: 0,
-          inform: {
+          expose: {
             // width: "CONTAINER_WIDTH",
             // height: "CONTAINER_HEIGHT",
             width: "WIDTH",
@@ -30,7 +30,7 @@ export const BADGE_LIST: TargetAnimationSpec = {
         chips: {
           // wait: 1000,
           // wait: 0,
-          inform: {
+          expose: {
             top: "TOP",
             left: "LEFT",
             width: "WIDTH",
@@ -72,7 +72,7 @@ export const BADGE_LIST: TargetAnimationSpec = {
       sets: {
         bg: {
           wait: 0,
-          inform: {
+          expose: {
             width: "CONTAINER_WIDTH",
             height: "CONTAINER_HEIGHT",
           },
@@ -80,7 +80,7 @@ export const BADGE_LIST: TargetAnimationSpec = {
         chips: {
           // wait: 1000,
           wait: 0,
-          inform: {
+          expose: {
             top: "TOP",
             left: "LEFT",
             width: "WIDTH",

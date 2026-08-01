@@ -17,7 +17,7 @@ export const HUD: TargetAnimationSpec = {
       ],
       sets: {
         scroller: {
-          inform: {
+          expose: {
             // top: 0,
             // left: 0,
             width: "WIDTH",
@@ -69,7 +69,7 @@ export const HUD: TargetAnimationSpec = {
       // ],
       sets: {
         scroller: {
-          inform: {
+          expose: {
             top: 0,
             left: 0,
           },
@@ -121,7 +121,7 @@ export const HUD: TargetAnimationSpec = {
             ],
             sets: {
               bg: {
-                inform: {
+                expose: {
                   // width: "CONTAINER_WIDTH",
                   // height: "CONTAINER_HEIGHT",
                   width: "WIDTH",
@@ -131,7 +131,7 @@ export const HUD: TargetAnimationSpec = {
               sections: {
                 // wait: 1000,
                 wait: 0,
-                inform: {
+                expose: {
                   // top: "TOP",
                   // left: "LEFT",
                 },
@@ -157,7 +157,7 @@ export const HUD: TargetAnimationSpec = {
       // ],
       sets: {
         bg: {
-          inform: {
+          expose: {
             width: "CONTAINER_WIDTH",
             height: "CONTAINER_HEIGHT",
           },
@@ -165,7 +165,7 @@ export const HUD: TargetAnimationSpec = {
         sections: {
           // wait: 1000,
           wait: 0,
-          inform: {
+          expose: {
             top: "TOP",
             left: "LEFT",
             width: "WIDTH",

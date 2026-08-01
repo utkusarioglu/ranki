@@ -10,12 +10,12 @@ test("empty", () => {
         length: 1,
         stagger: 0,
       },
-      container: {
+      containerExposed: {
         style: {
           height: 11,
         },
       },
-      item: {
+      selfOverrides: {
         intent: "enter",
         style: {
           height: 21,

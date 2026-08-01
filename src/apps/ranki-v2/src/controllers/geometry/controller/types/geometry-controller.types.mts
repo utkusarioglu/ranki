@@ -36,8 +36,17 @@ export type InformedChildStyleContainer = {
   style: AnimationKeyframeStyles;
 };
 
-export type InformedChildStyle = {
-  container: InformedChildStyleContainer;
+export type InformedChildStyleSelf = {
+  // intent: EmitIntent;
+  style: AnimationKeyframeStyles;
+};
+
+export type InformedChildStyle = Pick<
+  InformSetProps,
+  "containerExposed" | "selfOverrides"
+> & {
+  // containerExposed: InformedChildStyleContainer;
+  // selfOverrides: InformedChildStyleSelf;
   // item: InformedChildStyleNode;
   context: InformContext;
 };
@@ -45,9 +54,13 @@ export type CurrentAppliedStyleWithoutActions = Omit<
   CurrentAppliedStyle,
   "actions"
 >;
-export type CurrentAppliedStyle = InformedChildStyle & {
+export type CurrentAppliedStyle = Omit<
+  InformedChildStyle,
+  "selfOverrides" | "containerExposed"
+> & {
   actions: LocalAction[];
-  item: InformedChildStyleNode;
+  self: InformedChildStyleNode;
+  container: InformedChildStyle["containerExposed"];
 };
 
 export type UpdateStyle = AnimationKeyframeStyles & WithEmitIntents;

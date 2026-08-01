@@ -26,7 +26,7 @@ function* testProduct(props: K[], values1: number[], values2: number[]) {
   for (let prop of props) {
     for (let item of values1) {
       for (let container of values2) {
-        const blocks = [prop.toUpperCase(), `CONTAINER_${prop.toUpperCase()}`];
+        const blocks = [`to.self.${prop}`, `to.container.${prop}`];
         for (let block of blocks) {
           yield {
             prop,
@@ -51,7 +51,7 @@ for (let v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
           [prop]: container,
         },
       },
-      item: {
+      self: {
         intent: "enter",
         style: {
           [prop]: item,
@@ -69,7 +69,7 @@ for (let v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
     };
     const response = KeyframeParser.evalKeyframe(curr, prev, blockObj);
     const expectedObj = {
-      [prop]: block.startsWith("CONTAINER_") ? container : item,
+      [prop]: block.startsWith("to.container.") ? container : item,
     };
 
     expect(response).toEqual(expectedObj);

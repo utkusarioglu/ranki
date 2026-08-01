@@ -20,7 +20,7 @@ export const CUE_LIST: TargetAnimationSpec = {
       ],
       sets: {
         bg: {
-          inform: {
+          expose: {
             // width: "CONTAINER_WIDTH",
             // height: "CONTAINER_HEIGHT",
             width: "WIDTH",
@@ -30,7 +30,7 @@ export const CUE_LIST: TargetAnimationSpec = {
         lists: {
           // wait: 1000,
           wait: 0,
-          inform: {
+          expose: {
             top: "TOP",
             left: "LEFT",
           },
@@ -68,7 +68,7 @@ export const CUE_LIST: TargetAnimationSpec = {
       // ],
       sets: {
         bg: {
-          inform: {
+          expose: {
             width: "CONTAINER_WIDTH",
             height: "CONTAINER_HEIGHT",
           },
@@ -76,7 +76,7 @@ export const CUE_LIST: TargetAnimationSpec = {
         lists: {
           // wait: 1000,
           wait: 0,
-          inform: {
+          expose: {
             top: "TOP",
             left: "LEFT",
           },

@@ -73,46 +73,35 @@ export class KeyframeParser {
     }
     const exp = parser.parse(value);
     const varSet = {
-      TO: {
-        CONTAINER: {
-          HEIGHT: this.try(curr, (c) => c.container.style.height),
-          WIDTH: this.try(curr, (c) => c.container.style.width),
-          TOP: this.try(curr, (c) => c.container.style.top),
-          LEFT: this.try(curr, (c) => c.container.style.left),
+      to: {
+        container: {
+          height: this.try(curr, (c) => c.container.style.height),
+          width: this.try(curr, (c) => c.container.style.width),
+          top: this.try(curr, (c) => c.container.style.top),
+          left: this.try(curr, (c) => c.container.style.left),
         },
-        SELF: {
-          LEFT: this.try(curr, (c) => c.item.style.left),
-          TOP: this.try(curr, (c) => c.item.style.top),
-          WIDTH: this.try(curr, (c) => c.item.style.width),
-          HEIGHT: this.try(curr, (c) => c.item.style.height),
+        self: {
+          left: this.try(curr, (c) => c.self.style.left),
+          top: this.try(curr, (c) => c.self.style.top),
+          width: this.try(curr, (c) => c.self.style.width),
+          height: this.try(curr, (c) => c.self.style.height),
         },
       },
 
-      FROM: {
-        CONTAINER: {
-          HEIGHT: this.try(prev, (p) => p.container.style.height),
-          WIDTH: this.try(prev, (p) => p.container.style.width),
-          TOP: this.try(prev, (p) => p.container.style.top),
-          LEFT: this.try(prev, (p) => p.container.style.left),
+      from: {
+        container: {
+          height: this.try(prev, (p) => p.container.style.height),
+          width: this.try(prev, (p) => p.container.style.width),
+          top: this.try(prev, (p) => p.container.style.top),
+          left: this.try(prev, (p) => p.container.style.left),
         },
-        SELF: {
-          LEFT: this.try(prev, (c) => c.item.style.left),
-          TOP: this.try(prev, (c) => c.item.style.top),
-          WIDTH: this.try(prev, (c) => c.item.style.width),
-          HEIGHT: this.try(prev, (c) => c.item.style.height),
+        self: {
+          left: this.try(prev, (c) => c.self.style.left),
+          top: this.try(prev, (c) => c.self.style.top),
+          width: this.try(prev, (c) => c.self.style.width),
+          height: this.try(prev, (c) => c.self.style.height),
         },
       },
-      // CONTAINER_HEIGHT: this.try(curr, (c) => c.container.style.height),
-      // CONTAINER_WIDTH: this.try(curr, (c) => c.container.style.width),
-      // CONTAINER_TOP: this.try(curr, (c) => c.container.style.top),
-      // CONTAINER_LEFT: this.try(curr, (c) => c.container.style.left),
-
-      // CONTAINER_PREV_HEIGHT: this.try(prev, (p) => p.container.style.height),
-      // CONTAINER_PREV_WIDTH: this.try(prev, (p) => p.container.style.width),
-      // CONTAINER_PREV_TOP: this.try(prev, (p) => p.container.style.top),
-      // CONTAINER_PREV_LEFT: this.try(prev, (p) => p.container.style.left),
-      // TO: {
-      // },
     };
     return exp.evaluate(varSet);
   }

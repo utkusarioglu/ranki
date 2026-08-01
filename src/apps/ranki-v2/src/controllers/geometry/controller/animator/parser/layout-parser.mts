@@ -50,8 +50,15 @@ export class LayoutParser {
       wait: KeyframeParser.evalOptionValue(curr.context, t.wait),
       props: {
         setName,
-        container: {
-          style: KeyframeParser.evalKeyframe(curr, prev, t.inform),
+        containerExposed: {
+          style: t.expose
+            ? KeyframeParser.evalKeyframe(curr, prev, t.expose)
+            : {},
+        },
+        selfOverrides: {
+          style: t.override
+            ? KeyframeParser.evalKeyframe(curr, prev, t.override)
+            : {},
         },
       },
       then,

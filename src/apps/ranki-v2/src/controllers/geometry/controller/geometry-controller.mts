@@ -122,9 +122,12 @@ export class GeometryController<
         length: 1,
         stagger: 0,
       },
-      container: {
+      containerExposed: {
         // intent: geo.set[0].intent,
         style: geo.container,
+      },
+      selfOverrides: {
+        style: {},
       },
       // item: geo.set[0],
     };

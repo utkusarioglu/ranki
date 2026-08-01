@@ -15,21 +15,28 @@ interface CreateSetItemInformerProps {
 }
 
 export class GeometryMerger {
-  public static createSetItemInformer(
-    { context, props, sizing }: CreateSetItemInformerProps,
-    // i: number,
-    // a: R2C[],
-    // diff: ReconciliationDiff,
-  ): InformedChildStyle {
-    // const item = sizing ? sizing.set[i] : {style: {}};
-    const container: InformedChildStyle["container"] = {
+  public static createSetItemInformer({
+    context,
+    props,
+    sizing,
+  }: CreateSetItemInformerProps): InformedChildStyle {
+    const container: InformedChildStyle["containerExposed"] = {
       style: {
-        // ...item.style
         ...(sizing ? sizing.container : {}),
-        ...props.container.style,
+        ...props.containerExposed.style,
       },
     };
-    return { context, container };
+    // const self: InformedChildStyle["selfOverrides"] = {
+    //   style: {
+    //     ...props.selfOverrides.style,
+    //     // ...(sizing ? sizing.set[context.index].style : {}),
+    //   },
+    // };
+    return {
+      context,
+      containerExposed: container,
+      selfOverrides: props.selfOverrides,
+    };
   }
 
   public static createCurrStyle(
@@ -43,13 +50,14 @@ export class GeometryMerger {
       container: {
         style: {
           ...(sizing ? sizing.container : {}),
-          ...informed.container.style,
+          ...informed.containerExposed.style,
         },
       },
-      item: {
+      self: {
         intent: item.intent,
         style: {
           ...item.style,
+          ...informed.selfOverrides.style,
         },
       },
     };
@@ -62,7 +70,7 @@ export class GeometryMerger {
   private static getItem(
     sizing: LayoutSizing | null,
     index: number,
-  ): CurrentAppliedStyle["item"] {
+  ): CurrentAppliedStyle["self"] {
     try {
       const item = sizing!.set[index];
       return {
@@ -70,7 +78,6 @@ export class GeometryMerger {
         style: item.style,
       };
     } catch (_) {
-      console.log("s", sizing, index);
       return {
         intent: "none" as "none",
         style: {},

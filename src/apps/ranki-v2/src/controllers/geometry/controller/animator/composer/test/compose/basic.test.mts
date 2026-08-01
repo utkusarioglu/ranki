@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import type { CurrentAppliedStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
-import type { AnimationBlock, LayoutParsed } from "../../animator.types.mts";
+import type { AnimationBlock, LayoutParsed } from "../../../animator.types.mts";
 import { vi } from "vitest";
 
 // ANKI
@@ -12,17 +12,17 @@ const { getAnimationRecipeMock } = vi.hoisted(() => ({
 vi.mock("_store/app.getters.mjs", () => ({
   getAnimationRecipe: getAnimationRecipeMock,
 }));
-import { AnimationComposer } from "../animation-composer.mts";
+import { AnimationComposer } from "../../animation-composer.mts";
 
 [
   {
     name: "height",
-    input: "TO.SELF.HEIGHT",
+    input: "to.self.height",
     output: 21,
   },
   {
     name: "container height",
-    input: "TO.CONTAINER.HEIGHT",
+    input: "to.container.height",
     output: 33,
   },
 ].forEach(({ name, input, output }) => {
@@ -54,7 +54,7 @@ import { AnimationComposer } from "../animation-composer.mts";
         length: 1,
         stagger: 0,
       },
-      item: {
+      self: {
         intent: "enter",
         style: {
           height: 21,

@@ -76,7 +76,7 @@ export const TEXT: TargetAnimationSpec = {
       ],
       sets: {
         "text-span": {
-          inform: {
+          expose: {
             width: "WIDTH",
             height: "HEIGHT",
           },
@@ -136,7 +136,7 @@ export const TEXT: TargetAnimationSpec = {
       ],
       sets: {
         "text-span": {
-          inform: {
+          expose: {
             width: "WIDTH",
             height: "HEIGHT",
           },

@@ -21,7 +21,7 @@ export const CHIP: TargetAnimationSpec = {
         bg: {
           // wait: "STAGGER_INDEX * 1000",
           wait: 0,
-          inform: {
+          expose: {
             // width: "CONTAINER_WIDTH",
             // height: "CONTAINER_HEIGHT",
             width: "WIDTH",
@@ -31,7 +31,7 @@ export const CHIP: TargetAnimationSpec = {
         content: {
           // wait: "STAGGER_INDEX * 1000 + 1000",
           wait: 0,
-          inform: {
+          expose: {
             left: "LEFT",
             top: "TOP",
             width: "WIDTH",
@@ -84,7 +84,7 @@ export const CHIP: TargetAnimationSpec = {
         bg: {
           // wait: "STAGGER_INDEX * 1000",
           wait: 0,
-          inform: {
+          expose: {
             width: "CONTAINER_WIDTH",
             height: "CONTAINER_HEIGHT",
           },
@@ -92,7 +92,7 @@ export const CHIP: TargetAnimationSpec = {
         content: {
           // wait: "STAGGER_INDEX * 1000 + 1000",
           wait: 0,
-          inform: {
+          expose: {
             left: "LEFT",
             top: "TOP",
           },
@@ -149,14 +149,14 @@ export const CHIP: TargetAnimationSpec = {
         content: {
           // wait: "STAGGER_INDEX * 1000",
           wait: 0,
-          inform: {
+          expose: {
             width: 0,
           },
           then: {
             sets: {
               bg: {
                 // wait: "STAGGER_INDEX * 1000",
-                inform: {
+                expose: {
                   width: 0,
                   // width: "CONTAINER_WIDTH",
                   // height: "CONTAINER_HEIGHT",
