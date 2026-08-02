@@ -36,15 +36,14 @@ export class Animator {
     options,
   }: AnimatorPlayParams): Promise<void> {
     const finalOptions: KeyframeAnimationOptions = {
+      ...KeyframeUtils.optionsDefaults,
       // easing: "linear",
-      easing: "ease-in-out",
+      // easing: "ease-in-out",
       // easing: "cubic-bezier(0.6, -1, 0.2, 2.4)",
-      fill: "both",
+      // fill: "both",
       ...options,
     };
-    const finalKeyframes = keyframes.map((k) =>
-      KeyframeUtils.produceKeyframe(k),
-    );
+    const finalKeyframes = KeyframeUtils.produceKeyframes(keyframes);
     const anim = this.host.animate(finalKeyframes, finalOptions);
     const r = this.running.get(name);
     if (r) {

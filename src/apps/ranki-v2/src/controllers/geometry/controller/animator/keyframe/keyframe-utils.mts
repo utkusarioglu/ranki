@@ -1,6 +1,17 @@
 import type { AnimationKeyframeStyles } from "../animator.types.mts";
 
 export class KeyframeUtils {
+  public static optionsDefaults: KeyframeAnimationOptions = {
+    // easing: "linear",
+    easing: "ease-in-out",
+    // easing: "cubic-bezier(0.6, -1, 0.2, 2.4)",
+    fill: "both",
+  };
+
+  public static produceKeyframes(keyframes: AnimationKeyframeStyles[]) {
+    return keyframes.map((k) => this.produceKeyframe(k));
+  }
+
   public static produceKeyframe({
     left,
     top,
