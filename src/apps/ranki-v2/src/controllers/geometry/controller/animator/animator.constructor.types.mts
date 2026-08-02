@@ -1,5 +1,5 @@
-import type { GeometryControllerInformTargetCb } from "../types/geometry-controller.types.mts";
+import type { GeometryControllerInformSetCb } from "../types/geometry-controller.types.mts";
 
 export interface AnimatorCallbacks {
-  informSet: GeometryControllerInformTargetCb;
+  informSet: GeometryControllerInformSetCb;
 }

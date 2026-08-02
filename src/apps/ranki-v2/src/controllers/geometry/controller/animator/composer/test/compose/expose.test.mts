@@ -14,19 +14,7 @@ vi.mock("_store/app.getters.mjs", () => ({
 }));
 import { AnimationComposer } from "../../animation-composer.mts";
 
-// [
-//   {
-//     name: "height",
-//     input: "TO.SELF.HEIGHT",
-//     output: 21,
-//   },
-//   {
-//     name: "container height",
-//     input: "TO.CONTAINER.HEIGHT",
-//     output: 33,
-//   },
-// ].forEach(({ name, input, output }) => {
-test("basic", () => {
+test("expose single", () => {
   const RECIPE: AnimationBlock = {
     root: [
       {
@@ -115,4 +103,3 @@ test("basic", () => {
   };
   expect(response).toEqual(expected);
 });
-// });

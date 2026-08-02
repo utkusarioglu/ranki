@@ -1,9 +1,9 @@
 import { expect, test } from "vitest";
-import { GeometryMerger } from "../geometry-merger.mts";
+import { GeometryMerger } from "../../geometry-merger.mts";
 import type {
   InformContext,
   InformedChildStyle,
-} from "../../types/geometry-controller.types.mts";
+} from "../../../types/geometry-controller.types.mts";
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 
 const context: InformContext = {
@@ -37,11 +37,19 @@ const sizing: LayoutSizing = {
 
 const prev = null;
 
-test("empty informed", () => {
+test("overridden self style", () => {
   const informed: InformedChildStyle = {
     context,
-    containerExposed: { style: {} },
-    selfOverrides: { style: {} },
+    containerExposed: {
+      style: {
+        // width: 7,
+      },
+    },
+    selfOverrides: {
+      style: {
+        height: 3,
+      },
+    },
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
   const expected = {
@@ -57,38 +65,7 @@ test("empty informed", () => {
       intent: "enter",
       style: {
         width: 23,
-        height: 19,
-      },
-    },
-  };
-  expect(response).toEqual(expected);
-});
-
-test("informed container width", () => {
-  const informed: InformedChildStyle = {
-    context,
-    containerExposed: {
-      style: {
-        width: 7,
-      },
-    },
-    selfOverrides: { style: {} },
-  };
-  const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
-  const expected = {
-    actions: ["enter"],
-    container: {
-      style: {
-        width: 7,
-        height: 13,
-      },
-    },
-    context,
-    self: {
-      intent: "enter",
-      style: {
-        width: 23,
-        height: 19,
+        height: 3,
       },
     },
   };
@@ -105,17 +82,21 @@ test("informed container width 2", () => {
     context,
     containerExposed: {
       style: {
-        width: 7,
+        // width: 7,
       },
     },
-    selfOverrides: { style: {} },
+    selfOverrides: {
+      style: {
+        height: 7,
+      },
+    },
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
   const expected = {
     actions: ["leave"],
     container: {
       style: {
-        width: 7,
+        width: 11,
         height: 13,
       },
     },
@@ -124,7 +105,7 @@ test("informed container width 2", () => {
       intent: "leave",
       style: {
         width: 43,
-        height: 57,
+        height: 7,
       },
     },
   };

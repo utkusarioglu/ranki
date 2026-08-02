@@ -16,7 +16,7 @@ export interface OnEmitParams {
   set: GeometrySetName;
 }
 
-export type GeometryControllerInformTargetCb = (
+export type GeometryControllerInformSetCb = (
   params: InformSetProps,
 ) => Promise<void>;
 

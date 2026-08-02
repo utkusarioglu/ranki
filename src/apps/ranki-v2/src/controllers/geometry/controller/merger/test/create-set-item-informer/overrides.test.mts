@@ -1,10 +1,10 @@
 import { expect, test } from "vitest";
-import { GeometryMerger } from "../geometry-merger.mts";
+import { GeometryMerger } from "../../geometry-merger.mts";
 import type {
   InformContext,
   InformedChildStyle,
-} from "../../types/geometry-controller.types.mts";
-import type { InformSetProps } from "../../animator/animator.types.mts";
+} from "../../../types/geometry-controller.types.mts";
+import type { InformSetProps } from "../../../animator/animator.types.mts";
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 
 test("", () => {
@@ -18,6 +18,11 @@ test("", () => {
     containerExposed: {
       style: {
         height: 11,
+      },
+    },
+    selfOverrides: {
+      style: {
+        opacity: 0.44,
       },
     },
   };
@@ -54,6 +59,11 @@ test("", () => {
       style: {
         height: 11,
         width: 31,
+      },
+    },
+    selfOverrides: {
+      style: {
+        opacity: 0.44,
       },
     },
   };

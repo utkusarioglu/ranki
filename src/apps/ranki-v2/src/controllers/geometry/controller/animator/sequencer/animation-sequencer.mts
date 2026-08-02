@@ -20,7 +20,7 @@ export class AnimationSequencer {
     await Promise.all(
       Object.values(l).map(async ({ wait, props: target, then }) => {
         if (wait) await TimingUtils.delay(wait);
-        await this.callbacks.informTarget(target);
+        await this.callbacks.informSet(target);
         if (then) await this.sequenceThen(then);
       }),
     );
@@ -38,7 +38,7 @@ export class AnimationSequencer {
     );
   }
 
-  private async sequenceNow(a: LayoutParsed | undefined): Promise<void> {
+  private async sequenceCurrent(a: LayoutParsed | undefined): Promise<void> {
     if (!a) return Promise.resolve();
     await Promise.all([
       a && (await this.sequenceRoots(a.root)),
@@ -48,7 +48,7 @@ export class AnimationSequencer {
 
   private async sequenceThen(a: LayoutParsed | undefined): Promise<void> {
     if (!a) return Promise.resolve();
-    await this.sequenceNow(a);
+    await this.sequenceCurrent(a);
     await this.sequenceThen(a.then);
   }
 
