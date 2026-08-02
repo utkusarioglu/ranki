@@ -6,7 +6,7 @@ import type { R2IconProps } from "./icon.mjs";
 import { PROPAGATE_DELAY } from "_/debug/debug.constants.mjs";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { loadIcon } from "iconify-icon";
-import { TimingUtils } from "_utils/timing,utils.mjs";
+import { TimingUtils } from "_utils/timing.utils.mjs";
 import { GeometryController } from "_controllers/geometry/controller/geometry-controller.mjs";
 import { geometry } from "_controllers/geometry/decorator/geometry-decorator.mjs";
 import style from "./icon-span.css?inline";

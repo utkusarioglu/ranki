@@ -5,7 +5,7 @@ import {
   type ReconcileableSubtree,
   type ReconcileSingle,
 } from "_utils/reconciliation.utils.mjs";
-import { TimingUtils } from "_utils/timing,utils.mjs";
+import { TimingUtils } from "_utils/timing.utils.mjs";
 import type { LitElement, ReactiveController } from "lit";
 
 type GetSourceCallback<Instance, S> = (instance: Instance) => S[];

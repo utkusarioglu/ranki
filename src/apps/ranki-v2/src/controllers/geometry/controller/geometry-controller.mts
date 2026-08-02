@@ -10,7 +10,7 @@ import {
   ReconciliationUtils,
   type ReconciliationDiff,
 } from "_utils/reconciliation.utils.mjs";
-import { TimingUtils } from "_utils/timing,utils.mjs";
+import { TimingUtils } from "_utils/timing.utils.mjs";
 import type { LitElement, ReactiveController } from "lit";
 import { Animator } from "./animator/animator.mjs";
 import type { InformSetProps } from "./animator/animator.types.mjs";
