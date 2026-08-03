@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, expect, test, vi, type Mock } from "vitest";
-import { GeometryEvents } from "../../geometry-events.mts";
+import { GeometryEvents } from "../../geometry-events.mjs";
 import type { LitElement } from "lit";
 import type { WidthHeight } from "_controllers/geometry/geometry-style.types.mjs";
-import type { EmitModes } from "../../geometry-events.types.mts";
+import type { EmitModes } from "../../geometry-events.types.mjs";
 
 const { emitUpdate, emitLeave, emitMode } = vi.hoisted(() => ({
   emitUpdate: vi.fn(),
@@ -10,7 +10,7 @@ const { emitUpdate, emitLeave, emitMode } = vi.hoisted(() => ({
   emitMode: vi.fn(),
 }));
 
-vi.mock("../../utils/geometry-event-utils.mts", () => ({
+vi.mock("../../utils/geometry-event-utils.mjs", () => ({
   GeometryEventUtils: class {
     static emitUpdate = emitUpdate;
     static emitLeave = emitLeave;

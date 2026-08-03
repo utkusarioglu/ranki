@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import type { CurrentAppliedStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
-import type { AnimationBlock, LayoutParsed } from "../../../animator.types.mts";
+import type { AnimationBlock, LayoutParsed } from "../../../animator.types.mjs";
 import { vi } from "vitest";
 
 // ANKI
@@ -12,7 +12,7 @@ const { getAnimationRecipeMock } = vi.hoisted(() => ({
 vi.mock("_store/app.getters.mjs", () => ({
   getAnimationRecipe: getAnimationRecipeMock,
 }));
-import { AnimationComposer } from "../../animation-composer.mts";
+import { AnimationComposer } from "../../animation-composer.mjs";
 
 [
   {

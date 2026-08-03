@@ -1,12 +1,12 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
-import type { LayoutSizing } from "../../layout/layout-utils.types.mts";
+import type { LayoutSizing } from "../../layout/layout-utils.types.mjs";
 import type { LitElement } from "lit";
-import type { ComponentDims } from "./geometry-controller.types.mts";
+import type { ComponentDims } from "./geometry-controller.types.mjs";
 import type {
   GeometryEventCb,
   GeometryEventTypes,
-} from "_controllers/geometry/events/geometry-events.types.mjs";
+} from "_controllers/geometry/controller/events/geometry-events.types.mjs";
 
 export interface GeometryControllerConstructorParams<
   Instance extends LitElement,

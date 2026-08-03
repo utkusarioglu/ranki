@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
-import { GeometryEventUtils } from "./geometry-event-utils.mts";
+import { GeometryEventUtils } from "./geometry-event-utils.mjs";
 import type { LitElement } from "lit";
-import type { EmitModes } from "../geometry-events.types.mts";
+import type { EmitModes } from "../geometry-events.types.mjs";
 import type { WidthHeight } from "_controllers/geometry/geometry-style.types.mjs";
 
 const { dispatchEvent } = vi.hoisted(() => ({

@@ -1,5 +1,5 @@
-import type { ComponentDims } from "../controller/types/geometry-controller.types.mts";
-import type { WidthHeight } from "../geometry-style.types.mts";
+import type { ComponentDims } from "../controller/types/geometry-controller.types.mjs";
+import type { WidthHeight } from "../geometry-style.types.mjs";
 
 export type LayoutSizing = {
   container: WidthHeight;

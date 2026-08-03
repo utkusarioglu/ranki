@@ -6,7 +6,7 @@ import type { GeometryRole } from "../types/geometry-controller.constructor.type
 import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
 import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs";
 import { DebugUtils } from "_/debug/debug-utils.mjs";
-import { AnimationComposer } from "./composer/animation-composer.mts";
+import { AnimationComposer } from "./composer/animation-composer.mjs";
 
 export class Animator {
   private readonly host: LitElement;

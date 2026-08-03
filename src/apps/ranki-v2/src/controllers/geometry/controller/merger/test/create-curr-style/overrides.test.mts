@@ -1,9 +1,9 @@
 import { expect, test } from "vitest";
-import { GeometryMerger } from "../../geometry-merger.mts";
+import { GeometryMerger } from "../../geometry-merger.mjs";
 import type {
   InformContext,
   InformedChildStyle,
-} from "../../../types/geometry-controller.types.mts";
+} from "../../../types/geometry-controller.types.mjs";
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 
 const context: InformContext = {

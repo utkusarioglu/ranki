@@ -1,6 +1,6 @@
 import type { LitElement, ReactiveElement } from "lit";
 import { GeometryController } from "../controller/geometry-controller.mjs";
-import type { GeometryDecoratorParams } from "./geometry-decorator.types.mts";
+import type { GeometryDecoratorParams } from "./geometry-decorator.types.mjs";
 
 export function geometry<Instance extends LitElement>(
   params: GeometryDecoratorParams<Instance>,

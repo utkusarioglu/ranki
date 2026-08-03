@@ -1,9 +1,9 @@
-import type { ComponentDims } from "../controller/types/geometry-controller.types.mts";
+import type { ComponentDims } from "../controller/types/geometry-controller.types.mjs";
 import type {
   LayoutGapsParams,
   LayoutSizing,
   LayoutGaps,
-} from "./layout-utils.types.mts";
+} from "./layout-utils.types.mjs";
 
 export class LayoutUtils {
   public static row(

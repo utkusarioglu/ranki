@@ -1,7 +1,7 @@
 import type { LocalAction } from "_controllers/geometry/geometry-intent.types.mjs";
 import { getAnimationRecipe } from "_store/app.getters.mjs";
-import type { CurrentAppliedStyle } from "../../types/geometry-controller.types.mts";
-import { LayoutParser } from "../parser/layout-parser.mts";
+import type { CurrentAppliedStyle } from "../../types/geometry-controller.types.mjs";
+import { LayoutParser } from "../parser/layout-parser.mjs";
 
 interface AnimationCompose {
   preset: string;

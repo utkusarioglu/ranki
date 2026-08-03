@@ -1,6 +1,6 @@
 import type { LitElement } from "lit";
-import type { LocalAction } from "../geometry-intent.types.mts";
-import type { WidthHeight } from "../geometry-style.types.mts";
+import type { LocalAction } from "../../geometry-intent.types.mjs";
+import type { WidthHeight } from "../../geometry-style.types.mjs";
 
 interface R2CNewChildLeave {
   intent: "leave";

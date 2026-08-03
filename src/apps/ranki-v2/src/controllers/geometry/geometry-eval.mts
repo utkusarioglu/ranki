@@ -1,8 +1,8 @@
 import type {
   CurrentAppliedStyle,
   CurrentAppliedStyleWithoutActions,
-} from "./controller/types/geometry-controller.types.mts";
-import type { LocalAction } from "./geometry-intent.types.mts";
+} from "./controller/types/geometry-controller.types.mjs";
+import type { LocalAction } from "./geometry-intent.types.mjs";
 
 export class GeometryEval {
   public static evaluateActions(

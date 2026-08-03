@@ -1,4 +1,4 @@
-import type { EmitModes } from "./events/geometry-events.types.mts";
+import type { EmitModes } from "./controller/events/geometry-events.types.mjs";
 
 export type EmitIntent = "update" | "leave" | "enter" | "mode" | "none";
 

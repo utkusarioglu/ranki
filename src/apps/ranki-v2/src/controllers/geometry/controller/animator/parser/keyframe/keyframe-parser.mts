@@ -2,12 +2,12 @@ import type {
   CurrentAppliedStyle,
   InformContext,
   UpdateStyle,
-} from "../../../types/geometry-controller.types.mts";
+} from "../../../types/geometry-controller.types.mjs";
 import type {
   AnimationRoot,
   AnimationOptions,
   AnimatableStylesConfigKeyframes,
-} from "../../animator.types.mts";
+} from "../../animator.types.mjs";
 import { parser } from "../layout-parser.mjs";
 
 export class KeyframeParser {

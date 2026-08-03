@@ -1,3 +1,4 @@
+import { DebugUtils } from "_/debug/debug-utils.mjs";
 import { PROPAGATE_DELAY } from "_/debug/debug.constants.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import { assertExists, assertNotUndefined } from "_error/assertions.mjs";
@@ -8,11 +9,18 @@ import {
 } from "_utils/reconciliation.utils.mjs";
 import { TimingUtils } from "_utils/timing.utils.mjs";
 import type { LitElement, ReactiveController } from "lit";
+import type { LayoutSizing } from "../layout/layout-utils.types.mjs";
 import { Animator } from "./animator/animator.mjs";
 import type { InformSetProps } from "./animator/animator.types.mjs";
+import { GeometryEvents } from "./events/geometry-events.mjs";
+import type { R2CNewChildSizeEvent } from "./events/geometry-events.types.mjs";
 import { GeometryMerger } from "./merger/geometry-merger.mjs";
-import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mts";
-import type { LayoutSizing } from "../layout/layout-utils.types.mts";
+import type {
+  GeometryControllerConstructorParams,
+  GeometrySetLayoutCb,
+  GeometrySetProps,
+  GeometrySetRecord,
+} from "./types/geometry-controller.constructor.types.mjs";
 import type {
   ComponentDims,
   CurrentAppliedStyle,
@@ -20,15 +28,7 @@ import type {
   InformContext,
   InformedChildStyle,
   OnEmitParams,
-} from "./types/geometry-controller.types.mts";
-import type {
-  GeometryControllerConstructorParams,
-  GeometrySetLayoutCb,
-  GeometrySetProps,
-  GeometrySetRecord,
-} from "./types/geometry-controller.constructor.types.mts";
-import { DebugUtils } from "_/debug/debug-utils.mjs";
-import { GeometryEvents } from "../events/geometry-events.mts";
+} from "./types/geometry-controller.types.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -37,11 +37,11 @@ export class GeometryController<
   private readonly registered = new WeakMap<R2C, ComponentDims>();
   private readonly targets: GeometrySetRecord<Instance> | undefined;
   private readonly animator: Animator;
+  public readonly events: GeometryEvents<Instance>;
   private sizing: LayoutSizing | null = null;
   private requested = false;
   private curr: CurrentAppliedStyle | null = null;
   private prev: CurrentAppliedStyle | null = null;
-  private events: GeometryEvents<Instance>;
 
   constructor(
     host: Instance,

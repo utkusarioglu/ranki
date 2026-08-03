@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
-import { Animator } from "../../animator.mts";
+import { Animator } from "../../animator.mjs";
 import type { LitElement } from "lit";
 import type { CurrentAppliedStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
-import type { AnimationBlock } from "../../animator.types.mts";
-import { KeyframeUtils } from "../../keyframe/keyframe-utils.mts";
+import type { AnimationBlock } from "../../animator.types.mjs";
+import { KeyframeUtils } from "../../keyframe/keyframe-utils.mjs";
 
 // ANKI
 const { getAnimationRecipeMock } = vi.hoisted(() => ({

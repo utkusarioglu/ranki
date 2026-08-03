@@ -62,7 +62,7 @@ export class R2Chip extends R2C {
   private readonly geo!: GeometryController<R2Chip>;
 
   public override leave() {
-    this.geo.emit("leave");
+    this.geo.events.emit("leave");
   }
 
   override connectedCallback(): void {

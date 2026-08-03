@@ -1,10 +1,10 @@
 import { expect, test } from "vitest";
-import { GeometryMerger } from "../../geometry-merger.mts";
+import { GeometryMerger } from "../../geometry-merger.mjs";
 import type {
   InformContext,
   InformedChildStyle,
-} from "../../../types/geometry-controller.types.mts";
-import type { InformSetProps } from "../../../animator/animator.types.mts";
+} from "../../../types/geometry-controller.types.mjs";
+import type { InformSetProps } from "../../../animator/animator.types.mjs";
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 
 test("", () => {

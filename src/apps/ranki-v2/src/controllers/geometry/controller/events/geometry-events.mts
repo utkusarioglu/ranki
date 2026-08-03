@@ -1,15 +1,15 @@
 import type { LitElement } from "lit";
-import type { EmitIntent, LocalAction } from "../geometry-intent.types.mts";
-import type { WidthHeight } from "../geometry-style.types.mts";
+import type { EmitIntent, LocalAction } from "../../geometry-intent.types.mjs";
+import type { WidthHeight } from "../../geometry-style.types.mjs";
 import type {
   EmitModes,
   GeometryEventCb,
   GeometryEventName,
   GeometryEventsConstructorParams,
   GeometryEventTypes,
-} from "./geometry-events.types.mts";
+} from "./geometry-events.types.mjs";
 import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
-import { GeometryEventUtils } from "./utils/geometry-event-utils.mts";
+import { GeometryEventUtils } from "./utils/geometry-event-utils.mjs";
 
 const DEFAULT_EVENT_SETTINGS: GeometryEventTypes = {
   hover: false,

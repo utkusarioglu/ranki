@@ -34,7 +34,7 @@ export class R2IconSpan extends R2C {
   private readonly geo!: GeometryController<R2IconSpan>;
 
   public override leave() {
-    this.geo.emit("leave");
+    this.geo.events.emit("leave");
   }
 
   override async firstUpdated() {
@@ -42,7 +42,7 @@ export class R2IconSpan extends R2C {
     const dims: WidthHeight = { width, height };
     await TimingUtils.waitLayout();
     setTimeout(() => {
-      this.geo.emit("update", dims);
+      this.geo.events.emit("update", dims);
     }, PROPAGATE_DELAY);
     try {
       const icon = await loadIcon(this.props.icon);

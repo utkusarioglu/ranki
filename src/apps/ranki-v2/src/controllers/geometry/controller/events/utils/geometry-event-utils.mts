@@ -1,6 +1,6 @@
 import type { LitElement } from "lit";
-import type { EmitModes } from "../geometry-events.types.mts";
-import type { WidthHeight } from "../../geometry-style.types.mts";
+import type { EmitModes } from "../geometry-events.types.mjs";
+import type { WidthHeight } from "../../../geometry-style.types.mjs";
 
 export class GeometryEventUtils {
   public static readonly geometryEventName = "r2-geometry";

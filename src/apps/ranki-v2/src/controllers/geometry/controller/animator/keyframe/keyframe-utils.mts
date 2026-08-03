@@ -1,4 +1,4 @@
-import type { AnimationKeyframeStyles } from "../animator.types.mts";
+import type { AnimationKeyframeStyles } from "../animator.types.mjs";
 
 export class KeyframeUtils {
   public static optionsDefaults: KeyframeAnimationOptions = {
