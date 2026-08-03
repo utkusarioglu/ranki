@@ -1,30 +1,26 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
-import type { LocalAction } from "../../geometry-intent.types.mts";
 import type { LayoutSizing } from "../../layout/layout-utils.types.mts";
 import type { LitElement } from "lit";
 import type { ComponentDims } from "./geometry-controller.types.mts";
+import type {
+  GeometryEventCb,
+  GeometryEventTypes,
+} from "_controllers/geometry/events/geometry-events.mjs";
 
 export interface GeometryControllerConstructorParams<
   Instance extends LitElement,
 > {
   role: GeometryRole;
-  events?: { hover?: boolean };
+  events?: GeometryEventTypes;
   on?: GeometryEventCb<Instance>;
   sets?: GeometrySetRecord<Instance>;
 }
-
-export type GeometryEventCb<Instance> = (
-  s: Instance,
-  event: GeometryEventName,
-) => void;
 
 export type GeometrySetRecord<Instance extends LitElement> = Record<
   string,
   GeometrySetProps<Instance>
 >;
-
-export type GeometryEventName = `${LocalAction}-start` | `${LocalAction}-end`;
 
 export interface GeometrySetProps<Instance extends LitElement> {
   isRoot?: boolean;

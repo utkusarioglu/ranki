@@ -1,10 +1,6 @@
 import { PROPAGATE_DELAY } from "_/debug/debug.constants.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
-import {
-  assertExists,
-  assertNever,
-  assertNotUndefined,
-} from "_error/assertions.mjs";
+import { assertExists, assertNotUndefined } from "_error/assertions.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import {
   ReconciliationUtils,
@@ -15,11 +11,7 @@ import type { LitElement, ReactiveController } from "lit";
 import { Animator } from "./animator/animator.mjs";
 import type { InformSetProps } from "./animator/animator.types.mjs";
 import { GeometryMerger } from "./merger/geometry-merger.mjs";
-import { GeometryEvents } from "../events/geometry-events.mjs";
-import { type EmitModes } from "../events/geometry-events.types.mjs";
 import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mts";
-import type { EmitIntent, LocalAction } from "../geometry-intent.types.mts";
-import type { WidthHeight } from "../geometry-style.types.mts";
 import type { LayoutSizing } from "../layout/layout-utils.types.mts";
 import type {
   ComponentDims,
@@ -31,13 +23,12 @@ import type {
 } from "./types/geometry-controller.types.mts";
 import type {
   GeometryControllerConstructorParams,
-  GeometryEventCb,
-  GeometryEventName,
   GeometrySetLayoutCb,
   GeometrySetProps,
   GeometrySetRecord,
 } from "./types/geometry-controller.constructor.types.mts";
 import { DebugUtils } from "_/debug/debug-utils.mjs";
+import { GeometryEvents } from "../events/geometry-events.mts";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -46,12 +37,11 @@ export class GeometryController<
   private readonly registered = new WeakMap<R2C, ComponentDims>();
   private readonly targets: GeometrySetRecord<Instance> | undefined;
   private readonly animator: Animator;
-  private readonly on: GeometryEventCb<Instance> | null = null;
   private sizing: LayoutSizing | null = null;
   private requested = false;
   private curr: CurrentAppliedStyle | null = null;
   private prev: CurrentAppliedStyle | null = null;
-  private events: { hover: boolean };
+  private events: GeometryEvents<Instance>;
 
   constructor(
     host: Instance,
@@ -60,11 +50,14 @@ export class GeometryController<
     host.addController(this);
     this.host = host;
     this.targets = params.sets;
-    this.on = params.on ? params.on : null;
     this.animator = new Animator(this.host, params.role, {
       informSet: this.informSet.bind(this),
     });
-    this.events = { hover: false, ...params.events };
+    this.events = new GeometryEvents({
+      host: this.host,
+      events: params.events,
+      on: params.on,
+    });
     this.bindInformStyle();
   }
 
@@ -75,31 +68,6 @@ export class GeometryController<
   private bindInformStyle() {
     // @ts-expect-error
     this.host.informStyle = this.informStyle.bind(this);
-  }
-
-  public emit(intent: EmitIntent, dims?: WidthHeight | EmitModes) {
-    switch (intent) {
-      case "update":
-        assertNotUndefined(dims, {
-          why: "Dims are required for emitting size",
-        });
-        GeometryEvents.emitUpdate(this.host, dims);
-        break;
-      case "leave":
-        GeometryEvents.emitLeave(this.host);
-        break;
-      case "mode":
-        assertNotUndefined(dims, {
-          why: "Dims are required for emitting size",
-        });
-        GeometryEvents.emitMode(this.host, dims as unknown as EmitModes);
-        break;
-      default:
-        assertNever({
-          why: "Unrecognized emit intent",
-          details: { intent, dims },
-        });
-    }
   }
 
   private getSet(set: GeometrySetName): GeometrySetProps<Instance> {
@@ -123,13 +91,11 @@ export class GeometryController<
         stagger: 0,
       },
       containerExposed: {
-        // intent: geo.set[0].intent,
         style: geo.container,
       },
       selfOverrides: {
         style: {},
       },
-      // item: geo.set[0],
     };
     this.informStyle(inform);
   }
@@ -241,7 +207,7 @@ export class GeometryController<
                   if (this.getIsRoot(set)) {
                     this.informAsRoot(this.sizing);
                   } else {
-                    this.emit("update", this.sizing.container);
+                    this.events.emit("update", this.sizing.container);
                   }
               }, PROPAGATE_DELAY);
             });
@@ -286,58 +252,16 @@ export class GeometryController<
       sizing,
     });
 
-    this.onActionsStart(this.curr.actions);
+    this.events.onActionsStart(this.curr.actions);
     await this.animator.update(this.curr, this.prev);
-    this.onActionsEnd(this.curr.actions);
-  }
-
-  private onActionsStart(actions: LocalAction[]) {
-    const onEvent = this.on;
-    if (onEvent) {
-      actions.forEach((action) => {
-        onEvent(this.host, `${action}-start` as GeometryEventName);
-      });
-    }
-  }
-
-  private onActionsEnd(actions: LocalAction[]) {
-    const onEvent = this.on;
-    if (onEvent) {
-      actions.forEach((action) => {
-        onEvent(this.host, `${action}-end` as GeometryEventName);
-      });
-    }
+    this.events.onActionsEnd(this.curr.actions);
   }
 
   hostConnected(): void {
-    this.registerListeners();
+    this.events.registerListeners();
   }
 
   hostDisconnected(): void {
-    this.deregisterListeners();
+    this.events.deregisterListeners();
   }
-
-  private registerListeners() {
-    if (this.events.hover) {
-      this.host.addEventListener("pointerenter", this.onPointerEnter);
-      this.host.addEventListener("pointerleave", this.onPointerLeave);
-    }
-  }
-
-  private deregisterListeners() {
-    if (this.events.hover) {
-      this.host.removeEventListener("pointerenter", this.onPointerEnter);
-      this.host.removeEventListener("pointerleave", this.onPointerLeave);
-    }
-  }
-
-  private onPointerEnter = (e: PointerEvent) => {
-    e.stopPropagation();
-    this.emit("mode", "hover-start");
-  };
-
-  private onPointerLeave = (e: PointerEvent) => {
-    e.stopPropagation();
-    this.emit("mode", "hover-end");
-  };
 }
