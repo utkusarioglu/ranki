@@ -1,6 +1,6 @@
 import type { LitElement } from "lit";
-import type { EmitModes } from "./geometry-events.types.mts";
-import type { WidthHeight } from "../geometry-style.types.mts";
+import type { EmitModes } from "../geometry-events.types.mts";
+import type { WidthHeight } from "../../geometry-style.types.mts";
 
 export class GeometryEventUtils {
   public static readonly geometryEventName = "r2-geometry";
@@ -36,9 +36,6 @@ export class GeometryEventUtils {
         detail: {
           intent: "update",
           style: sizing,
-
-          // rect: sizing,
-          // rect: { width, height },
         },
         bubbles: true,
         composed: true,

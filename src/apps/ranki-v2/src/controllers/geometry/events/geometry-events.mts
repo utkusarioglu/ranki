@@ -1,26 +1,19 @@
 import type { LitElement } from "lit";
 import type { EmitIntent, LocalAction } from "../geometry-intent.types.mts";
 import type { WidthHeight } from "../geometry-style.types.mts";
-import type { EmitModes } from "./geometry-events.types.mts";
+import type {
+  EmitModes,
+  GeometryEventCb,
+  GeometryEventName,
+  GeometryEventsConstructorParams,
+  GeometryEventTypes,
+} from "./geometry-events.types.mts";
 import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
-import { GeometryEventUtils } from "./geometry-event-utils.mts";
+import { GeometryEventUtils } from "./utils/geometry-event-utils.mts";
 
-export type GeometryEventName = `${LocalAction}-start` | `${LocalAction}-end`;
-
-export type GeometryEventCb<Instance> = (
-  s: Instance,
-  event: GeometryEventName,
-) => void;
-
-export interface GeometryEventTypes {
-  hover: boolean;
-}
-
-interface GeometryEventsConstructorParams<Instance extends LitElement> {
-  host: Instance;
-  events?: GeometryEventTypes;
-  on?: GeometryEventCb<Instance>;
-}
+const DEFAULT_EVENT_SETTINGS: GeometryEventTypes = {
+  hover: false,
+};
 
 export class GeometryEvents<Instance extends LitElement> {
   private readonly host: Instance;
@@ -30,7 +23,7 @@ export class GeometryEvents<Instance extends LitElement> {
   constructor(params: GeometryEventsConstructorParams<Instance>) {
     this.host = params.host;
     this.events = {
-      hover: false,
+      ...DEFAULT_EVENT_SETTINGS,
       ...params.events,
     };
     this.on = params.on;

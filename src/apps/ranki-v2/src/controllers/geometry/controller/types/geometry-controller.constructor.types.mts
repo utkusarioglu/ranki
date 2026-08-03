@@ -6,7 +6,7 @@ import type { ComponentDims } from "./geometry-controller.types.mts";
 import type {
   GeometryEventCb,
   GeometryEventTypes,
-} from "_controllers/geometry/events/geometry-events.mjs";
+} from "_controllers/geometry/events/geometry-events.types.mjs";
 
 export interface GeometryControllerConstructorParams<
   Instance extends LitElement,

@@ -1,3 +1,5 @@
+import type { LitElement } from "lit";
+import type { LocalAction } from "../geometry-intent.types.mts";
 import type { WidthHeight } from "../geometry-style.types.mts";
 
 interface R2CNewChildLeave {
@@ -30,3 +32,19 @@ export type R2CNewChildSizeEvent =
   | R2CNewChildMode;
 
 export type EmitModes = "hover-start" | "hover-end";
+
+export type GeometryEventName = `${LocalAction}-start` | `${LocalAction}-end`;
+
+export type GeometryEventCb<Instance> = (
+  s: Instance,
+  event: GeometryEventName,
+) => void;
+
+export interface GeometryEventTypes {
+  hover: boolean;
+}
+export interface GeometryEventsConstructorParams<Instance extends LitElement> {
+  host: Instance;
+  events?: GeometryEventTypes;
+  on?: GeometryEventCb<Instance>;
+}
