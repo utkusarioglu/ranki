@@ -1,4 +1,17 @@
+import { DebugUtils } from "_/debug/debug-utils.mjs";
+import { PROPAGATE_DELAY } from "_/debug/debug.constants.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
+import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
+import { assertExists, assertNotUndefined } from "_error/assertions.mjs";
+import {
+  ReconciliationUtils,
+  type ReconciliationDiff,
+} from "_utils/reconciliation.utils.mjs";
+import { TimingUtils } from "_utils/timing.utils.mjs";
+import type { LitElement } from "lit";
+import type { InformSetProps } from "../animator/animator.types.mjs";
+import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mjs";
+import { GeometryControllerUtils } from "../geometry-controller-utils.mjs";
 import type {
   GeometryChildrenRecord,
   GeometrySetLayoutCb,
@@ -8,22 +21,9 @@ import type {
   ComponentDims,
   GeometrySetName,
 } from "../types/geometry-controller.types.mjs";
-import type { LitElement } from "lit";
-import { assertExists, assertNotUndefined } from "_error/assertions.mjs";
-import {
-  ReconciliationUtils,
-  type ReconciliationDiff,
-} from "_utils/reconciliation.utils.mjs";
-import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mjs";
-import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
-import { TimingUtils } from "_utils/timing.utils.mjs";
-import { PROPAGATE_DELAY } from "_/debug/debug.constants.mjs";
-import { GeometryControllerUtils } from "../geometry-controller-utils.mjs";
-import type { InformSetProps } from "../animator/animator.types.mjs";
-import { DebugUtils } from "_/debug/debug-utils.mjs";
 import type {
-  ChildrenUpdateSizingReturn,
   ChildrenSizing,
+  ChildrenUpdateSizingReturn,
 } from "./children.types.mjs";
 
 export class GeometryChildren<Instance extends LitElement> {
@@ -32,11 +32,7 @@ export class GeometryChildren<Instance extends LitElement> {
   private readonly targets: GeometryChildrenRecord<Instance>;
   private requested = false;
 
-  constructor(
-    host: Instance,
-    sets: GeometryChildrenRecord<Instance>,
-    // params: GeometryChildrenConstructorParams<Instance>,
-  ) {
+  constructor(host: Instance, sets: GeometryChildrenRecord<Instance>) {
     this.host = host;
     this.targets = sets;
   }
@@ -104,7 +100,6 @@ export class GeometryChildren<Instance extends LitElement> {
         const ordered = this.orderTrackedNodes(set);
         const sizing = sz(this.host)(ordered);
         if (this.requested) return null;
-        // if (!this.requested) {
         this.requested = true;
         return new Promise<ChildrenSizing>((resolve) => {
           TimingUtils.raf().then(() => {
@@ -128,7 +123,6 @@ export class GeometryChildren<Instance extends LitElement> {
         });
       default:
         return null;
-      // }
     }
   }
 
@@ -178,7 +172,6 @@ export class GeometryChildren<Instance extends LitElement> {
     sizing: LayoutSizing | null,
   ): Promise<void> {
     const diff = this.getDiff(props.setName);
-    // const sizing = this.getSizing();
     await Promise.all(
       this.getSet(props.setName)
         .selector(this.host)
@@ -195,8 +188,4 @@ export class GeometryChildren<Instance extends LitElement> {
         }),
     );
   }
-
-  // private getSizing(): LayoutSizing | null {
-  //   return this.sizing;
-  // }
 }

@@ -1,12 +1,12 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
-import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
-import type { LayoutSizing } from "../../layout/layout-utils.types.mjs";
-import type { LitElement } from "lit";
-import type { ComponentDims } from "./geometry-controller.types.mjs";
 import type {
   GeometryEventCb,
   GeometryEventTypes,
 } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
+import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
+import type { LitElement } from "lit";
+import type { LayoutSizing } from "../../layout/layout-utils.types.mjs";
+import type { ComponentDims } from "./geometry-controller.types.mjs";
 
 export interface GeometryControllerConstructorParams<
   Instance extends LitElement,
@@ -23,8 +23,8 @@ export type GeometryChildrenRecord<Instance extends LitElement> = Record<
 >;
 
 export interface GeometrySetProps<Instance extends LitElement> {
-  isRoot?: boolean;
   selector: GeometrySetSelectorCb<Instance>;
+  isRoot?: boolean;
   layout?: GeometrySetLayoutCb;
   // !TODO implement geometry diffing and remove this
   diff?: GeometrySetDiffCb<Instance>;

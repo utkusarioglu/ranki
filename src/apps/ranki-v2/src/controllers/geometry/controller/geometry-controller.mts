@@ -34,7 +34,6 @@ export class GeometryController<
   ) {
     host.addController(this);
     this.host = host;
-    // this.targets = params.sets;
     this.animator = new Animator(this.host, params.role, {
       informSet: this.informSet.bind(this),
     });
@@ -43,8 +42,22 @@ export class GeometryController<
       events: params.events,
       on: params.on,
     });
-    if (params.sets)
+    if (params.sets) {
+      const childrenSets = Object.entries(params.sets).filter(
+        ([_, v]) => v.layout || v.isRoot,
+      );
+      if (childrenSets.length > 1) {
+        throw new RankiAppError({
+          code: "MULTIPLE_CHILDREN_GROUPS",
+          cause: null,
+          why: "Cannot have multiple sets that act as children",
+          details: { childrenSets },
+        });
+      }
+
+      console.log(childrenSets);
       this.children = new GeometryChildren(this.host, params.sets);
+    }
     this.bindInformStyle();
   }
 
