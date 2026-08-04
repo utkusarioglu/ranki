@@ -14,10 +14,10 @@ export interface GeometryControllerConstructorParams<
   role: GeometryRole;
   events?: GeometryEventTypes;
   on?: GeometryEventCb<Instance>;
-  sets?: GeometrySetRecord<Instance>;
+  sets?: GeometryChildrenRecord<Instance>;
 }
 
-export type GeometrySetRecord<Instance extends LitElement> = Record<
+export type GeometryChildrenRecord<Instance extends LitElement> = Record<
   string,
   GeometrySetProps<Instance>
 >;
