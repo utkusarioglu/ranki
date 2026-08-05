@@ -25,7 +25,7 @@ export class Animator {
     this.role = role;
     this.callbacks = callbacks;
     this.sequencer = new AnimationSequencer({
-      informSet: this.callbacks.informSet.bind(this),
+      informSet: this.callbacks.informSets.bind(this),
       playName: this.playName.bind(this),
     });
   }

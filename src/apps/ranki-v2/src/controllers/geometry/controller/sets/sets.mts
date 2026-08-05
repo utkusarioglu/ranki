@@ -21,7 +21,7 @@ export class GeometrySets<Instance extends LitElement> {
     }
   }
 
-  public async informSet(
+  public async inform(
     props: InformSetProps,
     sizing: LayoutSizing | null,
   ): Promise<void> {
@@ -29,8 +29,8 @@ export class GeometrySets<Instance extends LitElement> {
       why: "Informing children when none has been defined",
     });
     await Promise.all([
-      this.children.informSet(props, sizing),
-      this.watchers?.informSet(props, sizing),
+      this.children.inform(props, sizing),
+      this.watchers?.inform(props, sizing),
     ]);
   }
 
@@ -38,7 +38,6 @@ export class GeometrySets<Instance extends LitElement> {
     assertNotUndefined(this.children, {
       why: "Received emit when no children has been defined",
     });
-    this.children.registerEmit(detail, target);
-    return this.children.updateSizing(detail);
+    return this.children.onEmit(target, detail);
   }
 }

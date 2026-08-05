@@ -51,7 +51,7 @@ export class GeometryWatchers<Instance extends LitElement> {
     return ReconciliationUtils.noChanges();
   }
 
-  public async informSet(
+  public async inform(
     props: InformSetProps,
     sizing: LayoutSizing | null,
   ): Promise<void> {

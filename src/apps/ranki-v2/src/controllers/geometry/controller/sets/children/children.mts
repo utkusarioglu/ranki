@@ -33,6 +33,11 @@ export class GeometryChildren<Instance extends LitElement> {
     return this.props.selector(this.host);
   }
 
+  public async onEmit(target: R2C, detail: R2CNewChildSizeEvent) {
+    this.registerEmit(detail, target);
+    return this.updateSizing(detail);
+  }
+
   private orderChildren() {
     const serial = this.getElements();
     const ordered: ComponentDims[] = [];
@@ -58,7 +63,7 @@ export class GeometryChildren<Instance extends LitElement> {
     return diff(this.host);
   }
 
-  public async updateSizing(
+  private async updateSizing(
     detail: R2CNewChildSizeEvent,
   ): ChildrenUpdateSizingReturn {
     switch (detail.intent) {
@@ -94,7 +99,7 @@ export class GeometryChildren<Instance extends LitElement> {
     }
   }
 
-  registerEmit(detail: R2CNewChildSizeEvent, target: R2C) {
+  private registerEmit(detail: R2CNewChildSizeEvent, target: R2C) {
     switch (detail.intent) {
       case "leave":
         this.dims.set(target, {
@@ -135,7 +140,7 @@ export class GeometryChildren<Instance extends LitElement> {
     }
   }
 
-  public async informSet(
+  public async inform(
     props: InformSetProps,
     sizing: LayoutSizing | null,
   ): Promise<void> {

@@ -34,7 +34,7 @@ export class GeometryController<
     host.addController(this);
     this.host = host;
     this.animator = new Animator(this.host, params.role, {
-      informSet: this.informSet.bind(this),
+      informSets: this.informSets.bind(this),
     });
     this.events = new GeometryEvents({
       host: this.host,
@@ -48,8 +48,8 @@ export class GeometryController<
     this.bindInformStyle();
   }
 
-  private async informSet(props: InformSetProps): Promise<void> {
-    return this.sets.informSet(props, this.sizing);
+  private async informSets(props: InformSetProps): Promise<void> {
+    return this.sets.inform(props, this.sizing);
   }
 
   /**
