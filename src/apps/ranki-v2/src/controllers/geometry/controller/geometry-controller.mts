@@ -11,12 +11,10 @@ import type { GeometryControllerConstructorParams } from "./types/geometry-contr
 import type {
   CurrentAppliedStyle,
   InformedChildStyle,
-  OnEmitParams,
 } from "./types/geometry-controller.types.mjs";
-import { GeometryChildren } from "./children/children.mjs";
-import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
+import { assertNever } from "_error/assertions.mjs";
 import type { InformSetProps } from "./animator/animator.types.mjs";
-import { GeometryWatchers } from "./watcher/watcher.mjs";
+import { GeometrySets } from "./sets/sets.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -27,8 +25,9 @@ export class GeometryController<
   private sizing: LayoutSizing | null = null;
   private curr: CurrentAppliedStyle | null = null;
   private prev: CurrentAppliedStyle | null = null;
-  private readonly children: GeometryChildren<Instance> | undefined;
-  private readonly watchers: GeometryWatchers<Instance> | undefined;
+  // private readonly children: GeometryChildren<Instance> | undefined;
+  // private readonly watchers: GeometryWatchers<Instance> | undefined;
+  private readonly sets: GeometrySets<Instance>;
 
   constructor(
     host: Instance,
@@ -44,20 +43,24 @@ export class GeometryController<
       events: params.events,
       on: params.on,
     });
-    if (params.children) {
-      this.children = new GeometryChildren(this.host, params.children);
-    }
-    if (params.watchers) {
-      this.watchers = new GeometryWatchers(this.host, params.watchers);
-    }
+    this.sets = new GeometrySets(this.host, {
+      children: params.children,
+      watchers: params.watchers,
+    });
+    // if (params.children) {
+    //   this.children = new GeometryChildren(this.host, params.children);
+    // }
+    // if (params.watchers) {
+    //   this.watchers = new GeometryWatchers(this.host, params.watchers);
+    // }
     this.bindInformStyle();
   }
 
   private async informSet(props: InformSetProps): Promise<void> {
-    assertNotUndefined(this.children, {
-      why: "Informing children when none has been defined",
-    });
-    return this.children.informSet(props, this.sizing);
+    // assertNotUndefined(this.children, {
+    //   why: "Informing children when none has been defined",
+    // });
+    return this.sets.informSet(props, this.sizing);
   }
 
   /**
@@ -69,12 +72,12 @@ export class GeometryController<
     this.host.informStyle = this.informStyle.bind(this);
   }
 
-  onEmit({ set }: OnEmitParams) {
+  onEmit() {
     return async (e: CustomEvent<R2CNewChildSizeEvent>) => {
       e.stopPropagation();
-      assertNotUndefined(this.children, {
-        why: "Received emit when no children has been defined",
-      });
+      // assertNotUndefined(this.children, {
+      //   why: "Received emit when no children has been defined",
+      // });
       const detail = e.detail;
       const target = e.composedPath()[0] as R2C;
       if (!target)
@@ -83,8 +86,9 @@ export class GeometryController<
           why: "No valid target given",
           cause: {},
         });
-      this.children.registerEmit(detail, target);
-      const update = await this.children.updateSizing(detail, set);
+      const update = await this.sets.onEmit(target, detail);
+      // this.children.registerEmit(detail, target);
+      // const update = await this.children.updateSizing(detail, set);
       if (!update) return;
       this.sizing = update.sizing;
       switch (update.type) {
@@ -110,8 +114,6 @@ export class GeometryController<
       this.sizing,
       this.prev,
     );
-
-    console.log(this.watchers);
 
     DebugUtils.informStyle({
       host: this.host,

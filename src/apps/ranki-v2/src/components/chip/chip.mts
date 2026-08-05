@@ -86,12 +86,12 @@ export class R2Chip extends R2C {
           },
         }}
         style="position: absolute;"
-        @r2-geometry=${this.geo.onEmit({ set: "content" })}
+        @r2-geometry=${this.geo.onEmit()}
       ></r2-icon>
       <r2-text
         .props=${item}
         style="position: absolute;"
-        @r2-geometry=${this.geo.onEmit({ set: "content" })}
+        @r2-geometry=${this.geo.onEmit()}
       ></r2-text>
     `;
   }

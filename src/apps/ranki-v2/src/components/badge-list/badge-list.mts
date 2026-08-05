@@ -95,7 +95,7 @@ export class R2BadgeList extends R2C {
               .index=${i}
               .list=${list}
               ?leave=${leave}
-              @r2-geometry=${this.geo.onEmit({ set: "chips" })}
+              @r2-geometry=${this.geo.onEmit()}
               @r2-reconciler=${this.subtree.onEmit(id)}
             ></r2-chip>
           `;

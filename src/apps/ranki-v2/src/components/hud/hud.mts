@@ -33,9 +33,7 @@ export class R2Hud extends R2C {
     return html`
       <div class="rotate">
         <div class="content">
-          <r2-hud-scroller
-            @r2-geometry=${this.geo.onEmit({ set: "scroller" })}
-          ></r2-hud-scroller>
+          <r2-hud-scroller @r2-geometry=${this.geo.onEmit()}></r2-hud-scroller>
         </div>
       </div>
     `;

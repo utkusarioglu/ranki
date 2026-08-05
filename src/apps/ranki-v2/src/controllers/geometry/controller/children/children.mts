@@ -12,10 +12,7 @@ import type { LitElement } from "lit";
 import type { InformSetProps } from "../animator/animator.types.mjs";
 import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mjs";
 import { GeometryControllerUtils } from "../geometry-controller-utils.mjs";
-import type {
-  ComponentDims,
-  GeometrySetName,
-} from "../types/geometry-controller.types.mjs";
+import type { ComponentDims } from "../types/geometry-controller.types.mjs";
 import type {
   ChildrenSizing,
   ChildrenUpdateSizingReturn,
@@ -34,32 +31,30 @@ export class GeometryChildren<Instance extends LitElement> {
     this.props = props;
   }
 
-  private getSet(set: GeometrySetName): GeometryChildrenProps<Instance> {
+  private getSet(): GeometryChildrenProps<Instance> {
     const s = this.props && this.props;
     assertExists(s, {
       why: "Subtree selector hasn't been registered",
-      details: { id: set },
     });
     return s;
   }
 
-  private getIsRoot(setName: GeometrySetName): boolean {
-    const set = this.getSet(setName);
+  private getIsRoot(): boolean {
+    const set = this.getSet();
     return !!set.isRoot;
   }
 
-  private getSizingCallback(setName: GeometrySetName): GeometrySetLayoutCb {
-    const set = this.getSet(setName);
+  private getSizingCallback(): GeometrySetLayoutCb {
+    const set = this.getSet();
     const layout = set.layout;
     assertNotUndefined(layout, {
       why: "No sizing registered",
-      details: { setName },
     });
     return layout;
   }
 
-  private orderTrackedNodes(setName: GeometrySetName) {
-    const set = this.getSet(setName);
+  private orderTrackedNodes() {
+    const set = this.getSet();
     const serial = set.selector(this.host);
     const ordered: ComponentDims[] = [];
     for (let component of serial) {
@@ -75,8 +70,8 @@ export class GeometryChildren<Instance extends LitElement> {
     return ordered;
   }
 
-  private getDiff(setName: GeometrySetName): ReconciliationDiff {
-    const set = this.getSet(setName);
+  private getDiff(): ReconciliationDiff {
+    const set = this.getSet();
     // const t = this.changes[target];
     const diff = set.diff;
     if (!diff) {
@@ -88,13 +83,13 @@ export class GeometryChildren<Instance extends LitElement> {
 
   public async updateSizing(
     detail: R2CNewChildSizeEvent,
-    set: GeometrySetName,
+    // set: GeometrySetName,
   ): ChildrenUpdateSizingReturn {
     switch (detail.intent) {
       case "leave":
       case "update":
-        const sz = this.getSizingCallback(set);
-        const ordered = this.orderTrackedNodes(set);
+        const sz = this.getSizingCallback();
+        const ordered = this.orderTrackedNodes();
         const sizing = sz(this.host)(ordered);
         if (this.requested) return null;
         this.requested = true;
@@ -103,7 +98,7 @@ export class GeometryChildren<Instance extends LitElement> {
             setTimeout(() => {
               this.requested = false;
               if (sizing)
-                if (this.getIsRoot(set)) {
+                if (this.getIsRoot()) {
                   resolve({
                     type: "root",
                     sizing,
@@ -168,9 +163,9 @@ export class GeometryChildren<Instance extends LitElement> {
     props: InformSetProps,
     sizing: LayoutSizing | null,
   ): Promise<void> {
-    const diff = this.getDiff(props.setName);
+    const diff = this.getDiff();
     await Promise.all(
-      this.getSet(props.setName)
+      this.getSet()
         .selector(this.host)
         .map((e, i, a) => {
           const informed = GeometryControllerUtils.prepareSetElementStyle(

@@ -1,0 +1,42 @@
+import type { LitElement } from "lit";
+import { GeometryChildren } from "../children/children.mjs";
+import { GeometryWatchers } from "../watcher/watcher.mjs";
+import type { GeometrySetsConstructorParams } from "./sets.types.mjs";
+import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mjs";
+import { assertNotUndefined } from "_error/assertions.mjs";
+import type { InformSetProps } from "../animator/animator.types.mjs";
+import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
+import type { R2C } from "_components/r2c/r2c.mjs";
+
+export class GeometrySets<Instance extends LitElement> {
+  private readonly children: GeometryChildren<Instance> | undefined;
+  private readonly watchers: GeometryWatchers<Instance> | undefined;
+
+  constructor(host: Instance, props: GeometrySetsConstructorParams<Instance>) {
+    if (props.children) {
+      this.children = new GeometryChildren(host, props.children);
+    }
+    if (props.watchers) {
+      this.watchers = new GeometryWatchers(host, props.watchers);
+    }
+  }
+
+  public async informSet(
+    props: InformSetProps,
+    sizing: LayoutSizing | null,
+  ): Promise<void> {
+    assertNotUndefined(this.children, {
+      why: "Informing children when none has been defined",
+    });
+    console.log("involve", this.watchers, "here");
+    return this.children.informSet(props, sizing);
+  }
+
+  public async onEmit(target: R2C, detail: R2CNewChildSizeEvent) {
+    assertNotUndefined(this.children, {
+      why: "Received emit when no children has been defined",
+    });
+    this.children.registerEmit(detail, target);
+    return this.children.updateSizing(detail);
+  }
+}

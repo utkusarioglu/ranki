@@ -4,17 +4,14 @@ import type {
   GeometryEventTypes,
 } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
 import type { LitElement } from "lit";
-import type { GeometryChildrenProps } from "../children/children.types.mjs";
-import type { GeometryWatcherRecord } from "../watcher/watcher.types.mjs";
+import type { GeometrySetsConstructorParams } from "../sets/sets.types.mjs";
 
 export interface GeometryControllerConstructorParams<
   Instance extends LitElement,
-> {
+> extends GeometrySetsConstructorParams<Instance> {
   role: GeometryRole;
   events?: GeometryEventTypes;
   on?: GeometryEventCb<Instance>;
-  watchers?: GeometryWatcherRecord<Instance>;
-  children?: GeometryChildrenProps<Instance>;
 }
 
 export type GeometrySetSelectorCb<Instance extends LitElement> = (
