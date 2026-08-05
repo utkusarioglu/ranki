@@ -63,7 +63,7 @@ export class ReconciliationUtils {
     };
   }
 
-  public static noChanges(): ReconciliationDiff {
+  public static noChanges(length: number = 0): ReconciliationDiff {
     return {
       add: [],
       remove: [],
@@ -71,7 +71,7 @@ export class ReconciliationUtils {
       update: [],
       stagger: {
         first: 0,
-        indices: [0],
+        indices: Array.from({ length }, (_) => 0),
       },
     };
   }

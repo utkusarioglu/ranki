@@ -9,6 +9,7 @@ import {
 } from "_utils/reconciliation.utils.mjs";
 import { DebugUtils } from "_/debug/debug-utils.mjs";
 import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
+import { assertNotUndefined } from "_error/assertions.mjs";
 
 export class GeometryWatchers<Instance extends LitElement> {
   private readonly host: Instance;
@@ -20,9 +21,18 @@ export class GeometryWatchers<Instance extends LitElement> {
   }
 
   private getElements(setName: GeometrySetName) {
-    const selector = this.props[setName].selector;
+    const set = this.getSet(setName);
+    const selector = set.selector;
     const selected = selector(this.host);
     return selected;
+  }
+
+  private getSet(setName: GeometrySetName) {
+    const set = this.props[setName];
+    assertNotUndefined(set, {
+      why: "Watcher attempting to call undefined set",
+    });
+    return set;
   }
 
   private async informSingle(
@@ -30,9 +40,9 @@ export class GeometryWatchers<Instance extends LitElement> {
     props: InformSetProps,
     sizing: LayoutSizing | null,
   ) {
-    const diff = this.getDiff();
     await Promise.all(
       this.getElements(setName).map((e, i, a) => {
+        const diff = this.getDiff(a.length);
         const informed = GeometrySetsUtils.prepareSetElementStyle(
           i,
           a,
@@ -47,8 +57,8 @@ export class GeometryWatchers<Instance extends LitElement> {
   }
 
   // FIX this will break the layout it assumes a single child
-  private getDiff(): ReconciliationDiff {
-    return ReconciliationUtils.noChanges();
+  private getDiff(length: number): ReconciliationDiff {
+    return ReconciliationUtils.noChanges(length);
   }
 
   public async inform(
