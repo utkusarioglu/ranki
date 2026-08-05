@@ -28,8 +28,10 @@ export class GeometrySets<Instance extends LitElement> {
     assertNotUndefined(this.children, {
       why: "Informing children when none has been defined",
     });
-    console.log("involve", this.watchers, "here");
-    return this.children.informSet(props, sizing);
+    await Promise.all([
+      this.children.informSet(props, sizing),
+      this.watchers?.informSet(props, sizing),
+    ]);
   }
 
   public async onEmit(target: R2C, detail: R2CNewChildSizeEvent) {
