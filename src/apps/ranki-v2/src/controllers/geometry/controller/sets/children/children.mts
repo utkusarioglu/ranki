@@ -17,6 +17,7 @@ import type {
   ChildrenUpdateSizingReturn,
   GeometryChildrenProps,
 } from "./children.types.mjs";
+import { assertNotUndefined } from "_error/assertions.mjs";
 
 export class GeometryChildren<Instance extends LitElement> {
   private readonly host: Instance;
@@ -43,12 +44,15 @@ export class GeometryChildren<Instance extends LitElement> {
     const ordered: ComponentDims[] = [];
     for (let component of serial) {
       const dims = this.dims.get(component);
-      if (!dims) {
-        // console.log("cannot find", component);
-        continue;
-        // FIX you may need to replace this with a boundingClientRect call
-        // assertNever({ why: "The element should exist in weakmap" });
-      }
+      assertNotUndefined(dims, {
+        why: "Element has no registered component dims",
+      });
+      // if (!dims) {
+      //   // console.log("cannot find", component);
+      //   continue;
+      //   // FIX you may need to replace this with a boundingClientRect call
+      //   // assertNever({ why: "The element should exist in weakmap" });
+      // }
       ordered.push(dims);
     }
     return ordered;

@@ -2,22 +2,15 @@ import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import type { LitElement } from "lit";
 import type { InformSetProps } from "_controllers/geometry/controller/animator/animator.types.mjs";
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
-import { WatcherSet } from "../../../single/single.mjs";
-
-const inform = vi.spyOn(WatcherSet.prototype, "inform");
-import { GeometryWatchers } from "../../watcher.mjs";
-
-const getSet = vi.spyOn(GeometryWatchers.prototype as any, "getSet");
+import { WatcherSet } from "../single.mjs";
 
 const Host = vi.fn(class {});
-let watchers: GeometryWatchers<any>;
+let watchers: WatcherSet<any>;
 
 beforeEach(() => {
   const host = new Host() as unknown as LitElement;
-  watchers = new GeometryWatchers(host, {
-    one: {
-      selector: () => [],
-    },
+  watchers = new WatcherSet(host, {
+    selector: () => [],
   });
 });
 
@@ -25,7 +18,7 @@ afterEach(() => {
   Host.mockClear();
 });
 
-test("Single set no elems", async () => {
+test("empty props", async () => {
   const props: InformSetProps = {
     setName: "f",
     containerExposed: { style: {} },
@@ -38,8 +31,6 @@ test("Single set no elems", async () => {
     },
     set: [],
   };
-  await watchers.inform(props, sizing);
-  expect(inform).toHaveBeenCalledTimes(1);
-  expect(getSet).toHaveBeenNthCalledWith(1, "one");
-  expect(inform).toHaveBeenNthCalledWith(1, props, sizing);
+  const response = await watchers.inform(props, sizing);
+  expect(response).toEqual(undefined);
 });
