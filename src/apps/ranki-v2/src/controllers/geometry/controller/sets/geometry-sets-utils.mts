@@ -1,14 +1,14 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
-import type { LayoutSizing } from "../layout/layout-utils.types.mjs";
-import type { InformSetProps } from "./animator/animator.types.mjs";
-import { GeometryMerger } from "./merger/geometry-merger.mjs";
+import type { LayoutSizing } from "../../layout/layout-utils.types.mjs";
+import type { InformSetProps } from "../animator/animator.types.mjs";
+import { GeometryMerger } from "../merger/geometry-merger.mjs";
 import type {
   InformedChildStyle,
   InformContext,
-} from "./types/geometry-controller.types.mjs";
+} from "../types/geometry-controller.types.mjs";
 
-export class GeometryControllerUtils {
+export class GeometrySetsUtils {
   public static prepareRootStyle(geo: LayoutSizing): InformedChildStyle {
     const inform: InformedChildStyle = {
       context: {

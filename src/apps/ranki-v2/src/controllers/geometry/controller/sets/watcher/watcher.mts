@@ -8,7 +8,7 @@ import {
   type ReconciliationDiff,
 } from "_utils/reconciliation.utils.mjs";
 import { DebugUtils } from "_/debug/debug-utils.mjs";
-import { GeometryControllerUtils } from "../../geometry-controller-utils.mjs";
+import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
 
 export class GeometryWatchers<Instance extends LitElement> {
   private readonly host: Instance;
@@ -33,7 +33,7 @@ export class GeometryWatchers<Instance extends LitElement> {
     const diff = this.getDiff();
     await Promise.all(
       this.getElements(setName).map((e, i, a) => {
-        const informed = GeometryControllerUtils.prepareSetElementStyle(
+        const informed = GeometrySetsUtils.prepareSetElementStyle(
           i,
           a,
           diff,

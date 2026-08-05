@@ -10,7 +10,7 @@ import { TimingUtils } from "_utils/timing.utils.mjs";
 import type { LitElement } from "lit";
 import type { InformSetProps } from "../../animator/animator.types.mjs";
 import type { R2CNewChildSizeEvent } from "../../events/geometry-events.types.mjs";
-import { GeometryControllerUtils } from "../../geometry-controller-utils.mjs";
+import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
 import type { ComponentDims } from "../../types/geometry-controller.types.mjs";
 import type {
   ChildrenSizing,
@@ -91,7 +91,7 @@ export class GeometryChildren<Instance extends LitElement> {
             resolve({
               type: "root",
               sizing,
-              inform: GeometryControllerUtils.prepareRootStyle(sizing),
+              inform: GeometrySetsUtils.prepareRootStyle(sizing),
             });
           } else {
             resolve({
@@ -151,7 +151,7 @@ export class GeometryChildren<Instance extends LitElement> {
     const diff = this.getDiff();
     await Promise.all(
       this.getElements().map((e, i, a) => {
-        const informed = GeometryControllerUtils.prepareSetElementStyle(
+        const informed = GeometrySetsUtils.prepareSetElementStyle(
           i,
           a,
           diff,
