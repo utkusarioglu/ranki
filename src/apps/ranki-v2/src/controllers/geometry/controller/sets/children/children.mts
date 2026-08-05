@@ -1,37 +1,33 @@
-import { DebugUtils } from "_/debug/debug-utils.mjs";
 import { PROPAGATE_DELAY } from "_/debug/debug.constants.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
-import {
-  ReconciliationUtils,
-  type ReconciliationDiff,
-} from "_utils/reconciliation.utils.mjs";
+import { assertNotUndefined } from "_error/assertions.mjs";
 import { TimingUtils } from "_utils/timing.utils.mjs";
 import type { LitElement } from "lit";
-import type { InformSetProps } from "../../animator/animator.types.mjs";
 import type { R2CNewChildSizeEvent } from "../../events/geometry-events.types.mjs";
-import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
 import type { ComponentDims } from "../../types/geometry-controller.types.mjs";
+import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
+import { WatcherSet } from "../single/single.mjs";
 import type {
   ChildrenSizing,
   ChildrenUpdateSizingReturn,
   GeometryChildrenProps,
+  GeometrySetLayoutCb,
 } from "./children.types.mjs";
-import { assertNotUndefined } from "_error/assertions.mjs";
 
-export class GeometryChildren<Instance extends LitElement> {
-  private readonly host: Instance;
+export class GeometryChildren<
+  Instance extends LitElement,
+> extends WatcherSet<Instance> {
+  private readonly layout: GeometrySetLayoutCb;
+  private readonly isRoot: boolean;
   private readonly dims = new WeakMap<R2C, ComponentDims>();
-  private readonly props: GeometryChildrenProps<Instance>;
   private requested = false;
 
   constructor(host: Instance, props: GeometryChildrenProps<Instance>) {
-    this.host = host;
-    this.props = props;
-  }
-
-  private getElements() {
-    return this.props.selector(this.host);
+    super(host, props);
+    this.layout = props.layout;
+    this.isRoot = props.isRoot || false;
+    this.diff = props.diff;
   }
 
   public async onEmit(target: R2C, detail: R2CNewChildSizeEvent) {
@@ -47,23 +43,9 @@ export class GeometryChildren<Instance extends LitElement> {
       assertNotUndefined(dims, {
         why: "Element has no registered component dims",
       });
-      // if (!dims) {
-      //   // console.log("cannot find", component);
-      //   continue;
-      //   // FIX you may need to replace this with a boundingClientRect call
-      //   // assertNever({ why: "The element should exist in weakmap" });
-      // }
       ordered.push(dims);
     }
     return ordered;
-  }
-
-  private getDiff(): ReconciliationDiff {
-    const diff = this.props.diff;
-    if (!diff) {
-      return ReconciliationUtils.noChanges();
-    }
-    return diff(this.host);
   }
 
   private async updateSizing(
@@ -72,9 +54,8 @@ export class GeometryChildren<Instance extends LitElement> {
     switch (detail.intent) {
       case "leave":
       case "update":
-        const layout = this.props.layout;
         const ordered = this.orderChildren();
-        const sizing = layout(this.host)(ordered);
+        const sizing = this.layout(this.host)(ordered);
         if (this.requested) return null;
         this.requested = true;
         return this.composeResolution(sizing);
@@ -91,7 +72,7 @@ export class GeometryChildren<Instance extends LitElement> {
       setTimeout(() => {
         this.requested = false;
         if (sizing)
-          if (this.props.isRoot === true) {
+          if (this.isRoot === true) {
             resolve({
               type: "root",
               sizing,
@@ -146,25 +127,5 @@ export class GeometryChildren<Instance extends LitElement> {
           },
         );
     }
-  }
-
-  public async inform(
-    props: InformSetProps,
-    sizing: LayoutSizing | null,
-  ): Promise<void> {
-    const diff = this.getDiff();
-    await Promise.all(
-      this.getElements().map((e, i, a) => {
-        const informed = GeometrySetsUtils.prepareSetElementStyle(
-          i,
-          a,
-          diff,
-          props,
-          sizing,
-        );
-        DebugUtils.informSet({ e, host: this.host, informed, props });
-        return e.informStyle(informed);
-      }),
-    );
   }
 }
