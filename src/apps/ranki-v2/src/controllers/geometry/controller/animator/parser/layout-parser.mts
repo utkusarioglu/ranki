@@ -9,7 +9,7 @@ import type {
   ParseRootParams,
 } from "../../animator/animator.types.mjs";
 import { Parser } from "expr-eval";
-import type { GeometrySetName } from "../../types/geometry-controller.types.mjs";
+import type { GeometrySetName } from "../../sets/sets.types.mjs";
 import { KeyframeParser } from "./keyframe/keyframe-parser.mjs";
 
 export const parser = new Parser();

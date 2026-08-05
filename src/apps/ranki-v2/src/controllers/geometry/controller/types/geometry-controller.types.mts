@@ -3,18 +3,8 @@ import type {
   InformSetProps,
 } from "../animator/animator.types.mjs";
 import type { EmitModes } from "../events/geometry-events.types.mjs";
-import type {
-  EmitIntent,
-  LocalAction,
-  WithEmitIntents,
-} from "../../geometry-intent.types.mjs";
+import type { EmitIntent, LocalAction } from "../../geometry-intent.types.mjs";
 import type { WidthHeight } from "../../geometry-style.types.mjs";
-
-export type GeometrySetName = string & { type?: "GeometrySet" };
-
-export interface OnEmitParams {
-  set: GeometrySetName;
-}
 
 export type GeometryControllerInformSetCb = (
   params: InformSetProps,
@@ -44,10 +34,14 @@ export type InformedChildStyle = Pick<
 > & {
   context: InformContext;
 };
-export type CurrentAppliedStyleWithoutActions = Omit<
-  CurrentAppliedStyle,
-  "actions"
->;
+
+export type InformContext = {
+  index: number;
+  length: number;
+  stagger: number;
+};
+
+//
 export type CurrentAppliedStyle = Omit<
   InformedChildStyle,
   "selfOverrides" | "containerExposed"
@@ -57,10 +51,7 @@ export type CurrentAppliedStyle = Omit<
   container: InformedChildStyle["containerExposed"];
 };
 
-export type UpdateStyle = AnimationKeyframeStyles & WithEmitIntents;
-
-export type InformContext = {
-  index: number;
-  length: number;
-  stagger: number;
-};
+export type CurrentAppliedStyleWithoutActions = Omit<
+  CurrentAppliedStyle,
+  "actions"
+>;

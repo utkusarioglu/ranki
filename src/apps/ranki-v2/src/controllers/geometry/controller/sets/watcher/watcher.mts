@@ -2,7 +2,7 @@ import type { LitElement } from "lit";
 import type { GeometryWatcherRecord } from "./watcher.types.mjs";
 import type { InformSetProps } from "../../animator/animator.types.mjs";
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
-import type { GeometrySetName } from "../../types/geometry-controller.types.mjs";
+import type { GeometrySetName } from "../sets.types.mjs";
 import {
   ReconciliationUtils,
   type ReconciliationDiff,

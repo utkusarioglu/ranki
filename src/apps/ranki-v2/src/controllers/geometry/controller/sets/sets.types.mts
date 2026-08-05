@@ -11,3 +11,4 @@ export interface GeometrySetsConstructorParams<Instance extends LitElement> {
 export type GeometrySetSelectorCb<Instance extends LitElement> = (
   s: Instance,
 ) => R2C[];
+export type GeometrySetName = string & { type?: "GeometrySet" };

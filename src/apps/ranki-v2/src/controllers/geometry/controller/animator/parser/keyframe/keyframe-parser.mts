@@ -1,8 +1,8 @@
 import type {
   CurrentAppliedStyle,
   InformContext,
-  UpdateStyle,
 } from "../../../types/geometry-controller.types.mjs";
+import type { UpdateStyle } from "../../animator.types.mjs";
 import type {
   AnimationRoot,
   AnimationOptions,

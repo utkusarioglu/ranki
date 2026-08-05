@@ -3,11 +3,13 @@ import type {
   InformContext,
   InformedChildStyleContainer,
   InformedChildStyleSelf,
-  UpdateStyle,
 } from "../types/geometry-controller.types.mjs";
-import type { LocalAction } from "../../geometry-intent.types.mjs";
+import type {
+  LocalAction,
+  WithEmitIntents,
+} from "../../geometry-intent.types.mjs";
 import type { WidthHeight, TopLeft } from "../../geometry-style.types.mjs";
-import type { GeometrySetName } from "../types/geometry-controller.types.mjs";
+import type { GeometrySetName } from "../sets/sets.types.mjs";
 
 export type AnimationKeyframeStyles = Partial<WidthHeight> &
   Partial<TopLeft> &
@@ -56,7 +58,6 @@ export interface AnimationTarget {
   wait?: number | string;
   expose?: AnimatableStylesConfigKeyframes;
   override?: AnimatableStylesConfigKeyframes;
-  // inform: AnimatableStylesConfigKeyframes;
   then?: AnimationBlock;
 }
 
@@ -116,3 +117,4 @@ export interface ParseRootParams {
   prev: CurrentAppliedStyle | null;
   block: AnimationBlock;
 }
+export type UpdateStyle = AnimationKeyframeStyles & WithEmitIntents;
