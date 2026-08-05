@@ -1,4 +1,3 @@
-import type { R2C } from "_components/r2c/r2c.mjs";
 import type {
   GeometryEventCb,
   GeometryEventTypes,
@@ -13,9 +12,5 @@ export interface GeometryControllerConstructorParams<
   events?: GeometryEventTypes;
   on?: GeometryEventCb<Instance>;
 }
-
-export type GeometrySetSelectorCb<Instance extends LitElement> = (
-  s: Instance,
-) => R2C[];
 
 export type GeometryRole = string & { type?: "GeometryRole" };

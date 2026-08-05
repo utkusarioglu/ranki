@@ -1,6 +1,6 @@
 import type { LitElement } from "lit";
-import { GeometryChildren } from "../children/children.mjs";
-import { GeometryWatchers } from "../watcher/watcher.mjs";
+import { GeometryChildren } from "./children/children.mjs";
+import { GeometryWatchers } from "./watcher/watcher.mjs";
 import type { GeometrySetsConstructorParams } from "./sets.types.mjs";
 import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mjs";
 import { assertNotUndefined } from "_error/assertions.mjs";

@@ -25,8 +25,6 @@ export class GeometryController<
   private sizing: LayoutSizing | null = null;
   private curr: CurrentAppliedStyle | null = null;
   private prev: CurrentAppliedStyle | null = null;
-  // private readonly children: GeometryChildren<Instance> | undefined;
-  // private readonly watchers: GeometryWatchers<Instance> | undefined;
   private readonly sets: GeometrySets<Instance>;
 
   constructor(
@@ -47,19 +45,10 @@ export class GeometryController<
       children: params.children,
       watchers: params.watchers,
     });
-    // if (params.children) {
-    //   this.children = new GeometryChildren(this.host, params.children);
-    // }
-    // if (params.watchers) {
-    //   this.watchers = new GeometryWatchers(this.host, params.watchers);
-    // }
     this.bindInformStyle();
   }
 
   private async informSet(props: InformSetProps): Promise<void> {
-    // assertNotUndefined(this.children, {
-    //   why: "Informing children when none has been defined",
-    // });
     return this.sets.informSet(props, this.sizing);
   }
 
@@ -68,16 +57,12 @@ export class GeometryController<
    * supposed to animate towards
    */
   private bindInformStyle() {
-    // @ts-expect-error
-    this.host.informStyle = this.informStyle.bind(this);
+    (this.host as unknown as R2C).informStyle = this.informStyle.bind(this);
   }
 
   onEmit() {
     return async (e: CustomEvent<R2CNewChildSizeEvent>) => {
       e.stopPropagation();
-      // assertNotUndefined(this.children, {
-      //   why: "Received emit when no children has been defined",
-      // });
       const detail = e.detail;
       const target = e.composedPath()[0] as R2C;
       if (!target)
@@ -87,8 +72,6 @@ export class GeometryController<
           cause: {},
         });
       const update = await this.sets.onEmit(target, detail);
-      // this.children.registerEmit(detail, target);
-      // const update = await this.children.updateSizing(detail, set);
       if (!update) return;
       this.sizing = update.sizing;
       switch (update.type) {

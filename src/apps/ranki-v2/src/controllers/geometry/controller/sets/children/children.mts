@@ -9,10 +9,10 @@ import {
 } from "_utils/reconciliation.utils.mjs";
 import { TimingUtils } from "_utils/timing.utils.mjs";
 import type { LitElement } from "lit";
-import type { InformSetProps } from "../animator/animator.types.mjs";
-import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mjs";
-import { GeometryControllerUtils } from "../geometry-controller-utils.mjs";
-import type { ComponentDims } from "../types/geometry-controller.types.mjs";
+import type { InformSetProps } from "../../animator/animator.types.mjs";
+import type { R2CNewChildSizeEvent } from "../../events/geometry-events.types.mjs";
+import { GeometryControllerUtils } from "../../geometry-controller-utils.mjs";
+import type { ComponentDims } from "../../types/geometry-controller.types.mjs";
 import type {
   ChildrenSizing,
   ChildrenUpdateSizingReturn,
@@ -83,7 +83,6 @@ export class GeometryChildren<Instance extends LitElement> {
 
   public async updateSizing(
     detail: R2CNewChildSizeEvent,
-    // set: GeometrySetName,
   ): ChildrenUpdateSizingReturn {
     switch (detail.intent) {
       case "leave":

@@ -1,5 +1,5 @@
 import type { LitElement } from "lit";
-import type { GeometrySetSelectorCb } from "../types/geometry-controller.constructor.types.mjs";
+import type { GeometrySetSelectorCb } from "../sets.types.mjs";
 
 export type GeometryWatcherRecord<Instance extends LitElement> = Record<
   string,

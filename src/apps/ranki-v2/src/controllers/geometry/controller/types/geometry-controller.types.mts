@@ -27,17 +27,14 @@ export interface ComponentDims {
 }
 
 type InformedChildStyleNode = Pick<ComponentDims, "intent" | "mode"> & {
-  // intent: EmitIntent;
   style: AnimationKeyframeStyles;
 };
 
 export type InformedChildStyleContainer = {
-  // intent: EmitIntent;
   style: AnimationKeyframeStyles;
 };
 
 export type InformedChildStyleSelf = {
-  // intent: EmitIntent;
   style: AnimationKeyframeStyles;
 };
 
@@ -45,9 +42,6 @@ export type InformedChildStyle = Pick<
   InformSetProps,
   "containerExposed" | "selfOverrides"
 > & {
-  // containerExposed: InformedChildStyleContainer;
-  // selfOverrides: InformedChildStyleSelf;
-  // item: InformedChildStyleNode;
   context: InformContext;
 };
 export type CurrentAppliedStyleWithoutActions = Omit<

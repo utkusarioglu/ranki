@@ -2,10 +2,10 @@ import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.typ
 import type {
   ComponentDims,
   InformedChildStyle,
-} from "../types/geometry-controller.types.mjs";
-import type { GeometrySetSelectorCb } from "../types/geometry-controller.constructor.types.mjs";
+} from "../../types/geometry-controller.types.mjs";
 import type { LitElement } from "lit";
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
+import type { GeometrySetSelectorCb } from "../sets.types.mjs";
 
 export type ChildrenUpdateSizingReturn = Promise<ChildrenSizing | null>;
 
