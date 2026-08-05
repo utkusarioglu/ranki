@@ -24,8 +24,8 @@ export interface ChildrenSizingUpdate {
 
 export interface GeometryChildrenProps<Instance extends LitElement> {
   selector: GeometrySetSelectorCb<Instance>;
+  layout: GeometrySetLayoutCb;
   isRoot?: boolean;
-  layout?: GeometrySetLayoutCb;
   // !TODO implement geometry diffing and remove this
   diff?: GeometrySetDiffCb<Instance>;
 }
