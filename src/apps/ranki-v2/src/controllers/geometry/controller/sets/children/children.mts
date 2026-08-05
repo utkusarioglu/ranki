@@ -57,7 +57,6 @@ export class GeometryChildren<Instance extends LitElement> {
   private getDiff(): ReconciliationDiff {
     const diff = this.props.diff;
     if (!diff) {
-      // console.log("diff detection not registered for target:", id);
       return ReconciliationUtils.noChanges();
     }
     return diff(this.host);
@@ -74,29 +73,34 @@ export class GeometryChildren<Instance extends LitElement> {
         const sizing = layout(this.host)(ordered);
         if (this.requested) return null;
         this.requested = true;
-        return new Promise<ChildrenSizing>((resolve) => {
-          TimingUtils.raf().then(() => {
-            setTimeout(() => {
-              this.requested = false;
-              if (sizing)
-                if (this.props.isRoot === true) {
-                  resolve({
-                    type: "root",
-                    sizing,
-                    inform: GeometryControllerUtils.prepareRootStyle(sizing),
-                  });
-                } else {
-                  resolve({
-                    type: "update",
-                    sizing,
-                  });
-                }
-            }, PROPAGATE_DELAY);
-          });
-        });
+        return this.composeResolution(sizing);
       default:
         return null;
     }
+  }
+
+  private async composeResolution(
+    sizing: LayoutSizing | null,
+  ): Promise<ChildrenSizing> {
+    await TimingUtils.raf();
+    return new Promise<ChildrenSizing>((resolve) => {
+      setTimeout(() => {
+        this.requested = false;
+        if (sizing)
+          if (this.props.isRoot === true) {
+            resolve({
+              type: "root",
+              sizing,
+              inform: GeometryControllerUtils.prepareRootStyle(sizing),
+            });
+          } else {
+            resolve({
+              type: "update",
+              sizing,
+            });
+          }
+      }, PROPAGATE_DELAY);
+    });
   }
 
   private registerEmit(detail: R2CNewChildSizeEvent, target: R2C) {

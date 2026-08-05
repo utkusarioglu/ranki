@@ -25,11 +25,8 @@ export class GeometrySets<Instance extends LitElement> {
     props: InformSetProps,
     sizing: LayoutSizing | null,
   ): Promise<void> {
-    assertNotUndefined(this.children, {
-      why: "Informing children when none has been defined",
-    });
     await Promise.all([
-      this.children.inform(props, sizing),
+      this.children?.inform(props, sizing),
       this.watchers?.inform(props, sizing),
     ]);
   }

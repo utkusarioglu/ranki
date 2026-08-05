@@ -90,7 +90,7 @@ export class GeometryController<
     };
   }
 
-  public async informStyle(informed: InformedChildStyle): Promise<void> {
+  private async informStyle(informed: InformedChildStyle): Promise<void> {
     this.prev = this.curr;
     this.curr = GeometryMerger.createCurrStyle(
       informed,
