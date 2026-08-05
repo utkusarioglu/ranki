@@ -20,24 +20,24 @@ export class R2CueList extends R2C {
 
   @geometry<R2CueList>({
     role: "cue-list",
-    sets: {
+    children: {
+      selector: (s) => [s.badgeList],
+      layout: () =>
+        LayoutUtils.row({
+          main: {
+            start: 10,
+            gap: 10,
+            end: 10,
+          },
+          cross: {
+            start: 2,
+            end: 2,
+          },
+        }),
+    },
+    watchers: {
       bg: {
         selector: (s) => [s.bg],
-      },
-      lists: {
-        selector: (s) => [s.badgeList],
-        layout: () =>
-          LayoutUtils.row({
-            main: {
-              start: 10,
-              gap: 10,
-              end: 10,
-            },
-            cross: {
-              start: 2,
-              end: 2,
-            },
-          }),
       },
     },
   })

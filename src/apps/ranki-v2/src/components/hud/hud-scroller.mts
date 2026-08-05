@@ -26,24 +26,24 @@ export class R2HudScroller extends R2C {
 
   @geometry<R2HudScroller>({
     role: "hud-scroller",
-    sets: {
+    children: {
+      selector: (s) => Array.from(s.cueList),
+      layout: () =>
+        LayoutUtils.row({
+          main: {
+            start: 10,
+            gap: 10,
+            end: 10,
+          },
+          cross: {
+            start: 2,
+            end: 2,
+          },
+        }),
+    },
+    watchers: {
       bg: {
         selector: (s) => [s.bg],
-      },
-      sections: {
-        selector: (s) => Array.from(s.cueList),
-        layout: () =>
-          LayoutUtils.row({
-            main: {
-              start: 10,
-              gap: 10,
-              end: 10,
-            },
-            cross: {
-              start: 2,
-              end: 2,
-            },
-          }),
       },
     },
   })

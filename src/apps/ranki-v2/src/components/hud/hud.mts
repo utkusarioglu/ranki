@@ -15,18 +15,16 @@ export class R2Hud extends R2C {
 
   @geometry<R2Hud>({
     role: "hud",
-    sets: {
-      scroller: {
-        isRoot: true,
-        selector: (s) => [s.scroller],
-        layout: () =>
-          LayoutUtils.row({
-            cross: {
-              start: 10,
-              end: 5,
-            },
-          }),
-      },
+    children: {
+      isRoot: true,
+      selector: (s) => [s.scroller],
+      layout: () =>
+        LayoutUtils.row({
+          cross: {
+            start: 10,
+            end: 5,
+          },
+        }),
     },
   })
   private readonly geo!: GeometryController<R2Hud>;

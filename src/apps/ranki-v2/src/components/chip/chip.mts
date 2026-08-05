@@ -38,22 +38,22 @@ export class R2Chip extends R2C {
         ReconciliationUtils.emitLeave(s);
       }
     },
-    sets: {
-      content: {
-        selector: (s) => [s.icon, s.text],
-        layout: () =>
-          LayoutUtils.row({
-            main: {
-              start: 10,
-              gap: 5,
-              end: 10,
-            },
-            cross: {
-              start: 5,
-              end: 5,
-            },
-          }),
-      },
+    children: {
+      selector: (s) => [s.icon, s.text],
+      layout: () =>
+        LayoutUtils.row({
+          main: {
+            start: 10,
+            gap: 5,
+            end: 10,
+          },
+          cross: {
+            start: 5,
+            end: 5,
+          },
+        }),
+    },
+    watchers: {
       bg: {
         selector: (s) => [s.bg],
       },

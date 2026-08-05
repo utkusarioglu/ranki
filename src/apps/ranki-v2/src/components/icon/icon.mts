@@ -37,12 +37,10 @@ export class R2Icon extends R2C {
 
   @geometry<R2Icon>({
     role: "icon",
-    sets: {
-      "icon-span": {
-        selector: (s) => Array.from(s.spans),
-        layout: () => LayoutUtils.last(),
-        diff: (s) => s.subtree.curr.diff,
-      },
+    children: {
+      selector: (s) => Array.from(s.spans),
+      layout: () => LayoutUtils.last(),
+      diff: (s) => s.subtree.curr.diff,
     },
   })
   private readonly geo!: GeometryController<R2Icon>;

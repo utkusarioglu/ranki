@@ -46,25 +46,25 @@ export class R2BadgeList extends R2C {
 
   @geometry<R2BadgeList>({
     role: "badge-list",
-    sets: {
+    children: {
+      selector: (r) => Array.from(r.chips),
+      layout: () =>
+        LayoutUtils.row({
+          main: {
+            start: 10,
+            gap: 4,
+            end: 10,
+          },
+          cross: {
+            start: 2,
+            end: 2,
+          },
+        }),
+      diff: (r) => r.subtree.curr.diff,
+    },
+    watchers: {
       bg: {
         selector: (r) => [r.bg],
-      },
-      chips: {
-        selector: (r) => Array.from(r.chips),
-        layout: () =>
-          LayoutUtils.row({
-            main: {
-              start: 10,
-              gap: 4,
-              end: 10,
-            },
-            cross: {
-              start: 2,
-              end: 2,
-            },
-          }),
-        diff: (r) => r.subtree.curr.diff,
       },
     },
   })

@@ -13,32 +13,29 @@ import type { InformSetProps } from "../animator/animator.types.mjs";
 import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mjs";
 import { GeometryControllerUtils } from "../geometry-controller-utils.mjs";
 import type {
-  GeometryChildrenRecord,
-  GeometrySetLayoutCb,
-  GeometrySetProps,
-} from "../types/geometry-controller.constructor.types.mjs";
-import type {
   ComponentDims,
   GeometrySetName,
 } from "../types/geometry-controller.types.mjs";
 import type {
   ChildrenSizing,
   ChildrenUpdateSizingReturn,
+  GeometryChildrenProps,
+  GeometrySetLayoutCb,
 } from "./children.types.mjs";
 
 export class GeometryChildren<Instance extends LitElement> {
   private readonly host: Instance;
   private readonly registered = new WeakMap<R2C, ComponentDims>();
-  private readonly targets: GeometryChildrenRecord<Instance>;
+  private readonly props: GeometryChildrenProps<Instance>;
   private requested = false;
 
-  constructor(host: Instance, sets: GeometryChildrenRecord<Instance>) {
+  constructor(host: Instance, props: GeometryChildrenProps<Instance>) {
     this.host = host;
-    this.targets = sets;
+    this.props = props;
   }
 
-  private getSet(set: GeometrySetName): GeometrySetProps<Instance> {
-    const s = this.targets && this.targets[set]!;
+  private getSet(set: GeometrySetName): GeometryChildrenProps<Instance> {
+    const s = this.props && this.props;
     assertExists(s, {
       why: "Subtree selector hasn't been registered",
       details: { id: set },

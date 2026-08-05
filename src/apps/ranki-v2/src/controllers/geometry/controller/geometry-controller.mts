@@ -16,6 +16,7 @@ import type {
 import { GeometryChildren } from "./children/children.mjs";
 import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
 import type { InformSetProps } from "./animator/animator.types.mjs";
+import { GeometryWatchers } from "./watcher/watcher.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -27,6 +28,7 @@ export class GeometryController<
   private curr: CurrentAppliedStyle | null = null;
   private prev: CurrentAppliedStyle | null = null;
   private readonly children: GeometryChildren<Instance> | undefined;
+  private readonly watchers: GeometryWatchers<Instance> | undefined;
 
   constructor(
     host: Instance,
@@ -42,21 +44,11 @@ export class GeometryController<
       events: params.events,
       on: params.on,
     });
-    if (params.sets) {
-      const childrenSets = Object.entries(params.sets).filter(
-        ([_, v]) => v.layout || v.isRoot,
-      );
-      if (childrenSets.length > 1) {
-        throw new RankiAppError({
-          code: "MULTIPLE_CHILDREN_GROUPS",
-          cause: null,
-          why: "Cannot have multiple sets that act as children",
-          details: { childrenSets },
-        });
-      }
-
-      console.log(childrenSets);
-      this.children = new GeometryChildren(this.host, params.sets);
+    if (params.children) {
+      this.children = new GeometryChildren(this.host, params.children);
+    }
+    if (params.watchers) {
+      this.watchers = new GeometryWatchers(this.host, params.watchers);
     }
     this.bindInformStyle();
   }
@@ -118,6 +110,8 @@ export class GeometryController<
       this.sizing,
       this.prev,
     );
+
+    console.log(this.watchers);
 
     DebugUtils.informStyle({
       host: this.host,

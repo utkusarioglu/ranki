@@ -35,12 +35,10 @@ export class R2Text extends R2C {
 
   @geometry<R2Text>({
     role: "text",
-    sets: {
-      "text-span": {
-        selector: (s) => Array.from(s.spans),
-        layout: () => LayoutUtils.last(),
-        diff: (s) => s.subtree.curr.diff,
-      },
+    children: {
+      selector: (s) => Array.from(s.spans),
+      layout: () => LayoutUtils.last(),
+      diff: (s) => s.subtree.curr.diff,
     },
   })
   private readonly geo!: GeometryController<R2Text>;
