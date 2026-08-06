@@ -4,7 +4,7 @@ import type { InformSetProps } from "../../animator/animator.types.mjs";
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 import type { GeometrySetName } from "../sets.types.mjs";
 import { assertNotUndefined } from "_error/assertions.mjs";
-import { WatcherSet } from "../single/single.mjs";
+import { WatcherSet } from "../watcher-set/watcher-set.mjs";
 
 export class GeometryWatchers<Instance extends LitElement> {
   private readonly host: Instance;

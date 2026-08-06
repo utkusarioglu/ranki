@@ -2,10 +2,10 @@ import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import type { LitElement } from "lit";
 import type { InformSetProps } from "_controllers/geometry/controller/animator/animator.types.mjs";
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
-import { WatcherSet } from "../../../single/single.mjs";
 
 const inform = vi.spyOn(WatcherSet.prototype, "inform");
 import { GeometryWatchers } from "../../watcher.mjs";
+import { WatcherSet } from "../../../watcher-set/watcher-set.mjs";
 
 const getSet = vi.spyOn(GeometryWatchers.prototype as any, "getSet");
 

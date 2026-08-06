@@ -4,7 +4,7 @@ import type { InformSetProps } from "_controllers/geometry/controller/animator/a
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { InformedChildStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
-import { WatcherSet } from "../single.mjs";
+import { WatcherSet } from "../watcher-set.mjs";
 import type { GeometryWatcherProps } from "../../watcher/watcher.types.mjs";
 
 const Host = vi.fn(class {});

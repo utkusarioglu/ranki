@@ -7,7 +7,7 @@ import type { LitElement } from "lit";
 import type { R2CNewChildSizeEvent } from "../../events/geometry-events.types.mjs";
 import type { ComponentDims } from "../../types/geometry-controller.types.mjs";
 import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
-import { WatcherSet } from "../single/single.mjs";
+import { WatcherSet } from "../watcher-set/watcher-set.mjs";
 import type {
   ChildrenSizing,
   ChildrenUpdateSizingReturn,
