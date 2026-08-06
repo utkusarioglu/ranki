@@ -38,7 +38,7 @@ export class GeometryChildren<
   private orderChildren() {
     const serial = this.getElements();
     const ordered: ComponentDims[] = [];
-    for (let component of serial) {
+    for (const component of serial) {
       const dims = this.dims.get(component);
       assertNotUndefined(dims, {
         why: "Element has no registered component dims",
@@ -53,12 +53,13 @@ export class GeometryChildren<
   ): ChildrenUpdateSizingReturn {
     switch (detail.intent) {
       case "leave":
-      case "update":
+      case "update": {
         const ordered = this.orderChildren();
         const sizing = this.layout(this.host)(ordered);
         if (this.requested) return null;
         this.requested = true;
         return this.composeResolution(sizing);
+      }
       default:
         return null;
     }
@@ -88,6 +89,10 @@ export class GeometryChildren<
     });
   }
 
+  /**
+   * @dev
+   * #1 This crates uncertainty about what properties exist in the object retrieved from the map
+   */
   private registerEmit(detail: R2CNewChildSizeEvent, target: R2C) {
     switch (detail.intent) {
       case "leave":
@@ -119,7 +124,7 @@ export class GeometryChildren<
       case "mode":
         this.dims.set(
           target,
-          // @ts-expect-error
+          // @ts-expect-error #1
           {
             ...this.dims.get(target),
             intent: "enter",

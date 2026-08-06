@@ -5,6 +5,7 @@ import type { LocalAction } from "_controllers/geometry/geometry-intent.types.mj
 
 const on = vi.fn();
 const Host = vi.fn(class {});
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let events: GeometryEvents<any>;
 let host: LitElement;
 

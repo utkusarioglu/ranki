@@ -5,6 +5,8 @@ import type { InformSetProps } from "_controllers/geometry/controller/animator/a
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 
 const Host = vi.fn(class {});
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let watchers: GeometryWatchers<any>;
 
 beforeEach(() => {

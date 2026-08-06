@@ -9,6 +9,7 @@ export function geometry<Instance extends LitElement>(
     const ctor = proto.constructor as typeof ReactiveElement;
 
     ctor.addInitializer((instance) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (instance as any)[key] = new GeometryController<Instance>(
         instance as Instance,
         params,

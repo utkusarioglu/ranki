@@ -5,6 +5,7 @@ import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.typ
 import { WatcherSet } from "../watcher-set.mjs";
 
 const Host = vi.fn(class {});
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let watchers: WatcherSet<any>;
 
 beforeEach(() => {

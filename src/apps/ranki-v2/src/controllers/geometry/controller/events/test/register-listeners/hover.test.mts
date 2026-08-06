@@ -32,6 +32,7 @@ beforeEach(() => {
 
 afterEach(() => {
   [emitMode, addEventListener, removeEventListener, Host].forEach((f) =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (f as Mock<any>).mockClear(),
   );
 });

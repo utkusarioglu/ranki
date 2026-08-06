@@ -45,7 +45,7 @@ export class KeyframeParser {
     try {
       const v = f(b as NonNullable<T>);
       return v !== undefined ? v : 0;
-    } catch (e) {
+    } catch (_) {
       return 0;
     }
   }

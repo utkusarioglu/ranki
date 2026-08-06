@@ -7,9 +7,14 @@ const inform = vi.spyOn(WatcherSet.prototype, "inform");
 import { GeometryWatchers } from "../../watcher.mjs";
 import { WatcherSet } from "../../../watcher-set/watcher-set.mjs";
 
-const getSet = vi.spyOn(GeometryWatchers.prototype as any, "getSet");
+const getSet = vi.spyOn(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  GeometryWatchers.prototype as any,
+  "getSet",
+);
 
 const Host = vi.fn(class {});
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let watchers: GeometryWatchers<any>;
 
 beforeEach(() => {

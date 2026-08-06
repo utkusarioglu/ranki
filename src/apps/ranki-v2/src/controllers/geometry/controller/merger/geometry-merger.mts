@@ -26,12 +26,6 @@ export class GeometryMerger {
         ...props.containerExposed.style,
       },
     };
-    // const self: InformedChildStyle["selfOverrides"] = {
-    //   style: {
-    //     ...props.selfOverrides.style,
-    //     // ...(sizing ? sizing.set[context.index].style : {}),
-    //   },
-    // };
     return {
       context,
       containerExposed: container,
@@ -79,7 +73,7 @@ export class GeometryMerger {
       };
     } catch (_) {
       return {
-        intent: "none" as "none",
+        intent: "none" as const,
         style: {},
       };
     }

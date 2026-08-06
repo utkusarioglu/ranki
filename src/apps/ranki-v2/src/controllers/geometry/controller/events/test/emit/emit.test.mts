@@ -18,6 +18,7 @@ vi.mock("../../utils/geometry-event-utils.mjs", () => ({
   },
 }));
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let events: GeometryEvents<any>;
 const host = vi.fn() as unknown as LitElement;
 
@@ -27,6 +28,7 @@ beforeEach(() => {
 
 afterEach(() => {
   [emitUpdate, emitLeave, emitMode, host].forEach((f) =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (f as Mock<any>).mockClear(),
   );
 });
@@ -68,9 +70,15 @@ test("mode no params", () => {
   expect(() => events.emit("mode")).toThrow();
 });
 
+/**
+ * @dev
+ * #1 Deliberately wrong data type
+ */
 test("bad intent", () => {
-  expect(
-    // @ts-expect-error
-    () => events.emit("bad"),
+  expect(() =>
+    events.emit(
+      // @ts-expect-error #1
+      "bad",
+    ),
   ).toThrow();
 });

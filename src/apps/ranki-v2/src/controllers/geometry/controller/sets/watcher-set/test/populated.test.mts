@@ -33,6 +33,7 @@ beforeEach(() => {
 });
 
 test("Single set 1 elem", async () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const props: GeometryWatcherProps<any> = {
     selector: () => [elem as unknown as R2C],
   };
@@ -55,6 +56,7 @@ test("Single set 1 elem", async () => {
 });
 
 test("Single set 2 elems", async () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const props: GeometryWatcherProps<any> = {
     selector: () => [elem as unknown as R2C, elem as unknown as R2C],
   };
