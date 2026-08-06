@@ -4,7 +4,6 @@ import { TimingUtils } from "_utils/timing.utils.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import type { R2TextProps } from "./text.mjs";
-import { PROPAGATE_DELAY } from "_/debug/debug.constants.mjs";
 import { GeometryController } from "_controllers/geometry/controller/geometry-controller.mjs";
 import { geometry } from "_controllers/geometry/decorator/geometry-decorator.mjs";
 import style from "./text-span.css?inline";
@@ -38,9 +37,7 @@ export class R2TextSpan extends R2C {
     await TimingUtils.waitLayout();
     const { width, height } = this.span.getBoundingClientRect();
     const dims: WidthHeight = { width: width + 1, height: height + 1 };
-    setTimeout(() => {
-      this.geo.events.emit("update", dims);
-    }, PROPAGATE_DELAY);
+    this.geo.events.emit("update", dims);
   }
 
   override render() {

@@ -3,7 +3,6 @@ import { type WidthHeight } from "_controllers/geometry/geometry-style.types.mjs
 import { html, unsafeCSS } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { R2IconProps } from "./icon.mjs";
-import { PROPAGATE_DELAY } from "_/debug/debug.constants.mjs";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { loadIcon } from "iconify-icon";
 import { TimingUtils } from "_utils/timing.utils.mjs";
@@ -41,9 +40,7 @@ export class R2IconSpan extends R2C {
     const { width, height } = this.props;
     const dims: WidthHeight = { width, height };
     await TimingUtils.waitLayout();
-    setTimeout(() => {
-      this.geo.events.emit("update", dims);
-    }, PROPAGATE_DELAY);
+    this.geo.events.emit("update", dims);
     try {
       const icon = await loadIcon(this.props.icon);
       this.svg = icon.body;

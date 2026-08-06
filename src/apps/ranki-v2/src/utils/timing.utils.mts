@@ -1,3 +1,5 @@
+import { PROPAGATE_DELAY } from "_/debug/debug.constants.mjs";
+
 type RafCallback = () => void;
 
 export class TimingUtils {
@@ -17,7 +19,19 @@ export class TimingUtils {
     });
   }
 
-  static raf(frames: number = 2, cb?: RafCallback): Promise<void> {
+  private static async propagateDelay(callback: Function = () => {}) {
+    if (PROPAGATE_DELAY === 0) {
+      return Promise.resolve();
+    }
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        callback();
+        resolve();
+      }, PROPAGATE_DELAY);
+    });
+  }
+
+  static async raf(frames: number = 2, cb?: RafCallback): Promise<void> {
     function step(resolve: () => void, cb?: RafCallback) {
       if (--frames <= 0) {
         cb && cb();
@@ -26,6 +40,7 @@ export class TimingUtils {
         requestAnimationFrame(() => step(resolve, cb));
       }
     }
+    await this.propagateDelay();
     return new Promise<void>((r) => step(r, cb));
   }
 }
