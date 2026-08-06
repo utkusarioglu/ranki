@@ -1,11 +1,52 @@
 import type { ComponentDims } from "../controller/types/geometry-controller.types.mjs";
 import type {
+  LayoutGaps,
   LayoutGapsParams,
   LayoutSizing,
-  LayoutGaps,
 } from "./layout-utils.types.mjs";
 
 export class LayoutUtils {
+  /**
+   * main axis is inline, cross axis is block
+   */
+  public static last(
+    gaps: LayoutGapsParams = {},
+  ): (dims: ComponentDims[]) => LayoutSizing | null {
+    return (dims: ComponentDims[]) => {
+      const last = dims.at(-1);
+      if (!last) return null;
+
+      const zeros = Array.from({ length: dims.length - 1 }, () => 0);
+      const width =
+        last.style.width + (gaps.main?.start || 0) + (gaps.main?.end || 0);
+      const height =
+        last.style.height + (gaps.cross?.start || 0) + (gaps.cross?.end || 0);
+      const lefts = [...zeros, gaps.main?.start || 0];
+      const tops = [...zeros, gaps.cross?.start || 0];
+      const heights = [...zeros, last.style.height];
+      const widths = [...zeros, last.style.width];
+      const intents = dims.map((d) => d.intent);
+
+      const set = Array.from({ length: dims.length }, (_, i) => i).map((i) => ({
+        intent: intents[i],
+        style: {
+          height: heights[i],
+          left: lefts[i],
+          top: tops[i],
+          width: widths[i],
+        },
+      }));
+
+      return {
+        container: {
+          height,
+          width,
+        },
+        set,
+      };
+    };
+  }
+
   public static row(
     gaps: LayoutGapsParams = {},
   ): (d: ComponentDims[]) => LayoutSizing {
@@ -19,31 +60,22 @@ export class LayoutUtils {
 
       const sizing: LayoutSizing = {
         container: {
-          width: s.container.sizeMain,
           height: s.container.sizeCross,
+          width: s.container.sizeMain,
         },
 
         set: s.set.map((s) => ({
           intent: s.intent,
           style: {
+            height: s.style.sizeCross,
             left: s.style.offsetMain,
             top: s.style.offsetCross,
             width: s.style.sizeMain,
-            height: s.style.sizeCross,
           },
         })),
       };
 
       return sizing;
-    };
-  }
-
-  private static normalizeGaps(gaps: Partial<LayoutGaps> | undefined) {
-    return {
-      start: 0,
-      end: 0,
-      gap: 0,
-      ...gaps,
     };
   }
 
@@ -97,44 +129,12 @@ export class LayoutUtils {
     };
   }
 
-  /**
-   * main axis is inline, cross axis is block
-   */
-  public static last(
-    gaps: LayoutGapsParams = {},
-  ): (dims: ComponentDims[]) => LayoutSizing | null {
-    return (dims: ComponentDims[]) => {
-      const last = dims.at(-1);
-      if (!last) return null;
-
-      const zeros = Array.from({ length: dims.length - 1 }, () => 0);
-      const width =
-        last.style.width + (gaps.main?.start || 0) + (gaps.main?.end || 0);
-      const height =
-        last.style.height + (gaps.cross?.start || 0) + (gaps.cross?.end || 0);
-      const lefts = [...zeros, gaps.main?.start || 0];
-      const tops = [...zeros, gaps.cross?.start || 0];
-      const heights = [...zeros, last.style.height];
-      const widths = [...zeros, last.style.width];
-      const intents = dims.map((d) => d.intent);
-
-      const set = Array.from({ length: dims.length }, (_, i) => i).map((i) => ({
-        intent: intents[i],
-        style: {
-          left: lefts[i],
-          top: tops[i],
-          height: heights[i],
-          width: widths[i],
-        },
-      }));
-
-      return {
-        container: {
-          width,
-          height,
-        },
-        set,
-      };
+  private static normalizeGaps(gaps: Partial<LayoutGaps> | undefined) {
+    return {
+      end: 0,
+      gap: 0,
+      start: 0,
+      ...gaps,
     };
   }
 }

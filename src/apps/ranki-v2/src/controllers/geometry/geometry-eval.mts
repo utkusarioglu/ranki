@@ -10,44 +10,44 @@ export class GeometryEval {
     prev: CurrentAppliedStyle | null,
   ): LocalAction[] {
     const val = {
-      prev: {
-        width: prev?.self.style.width || 0,
-        height: prev?.self.style.height || 0,
-        top: prev?.self.style.top || 0,
-        left: prev?.self.style.left || 0,
-      },
       curr: {
-        width: curr.self.style.width || 0,
         height: curr.self.style.height || 0,
-        top: curr.self.style.top || 0,
         left: curr.self.style.left || 0,
+        top: curr.self.style.top || 0,
+        width: curr.self.style.width || 0,
+      },
+      prev: {
+        height: prev?.self.style.height || 0,
+        left: prev?.self.style.left || 0,
+        top: prev?.self.style.top || 0,
+        width: prev?.self.style.width || 0,
       },
     };
 
     const has = {
-      prev: {
-        width: val.prev.width > 0,
-        height: val.prev.height > 0,
-      },
       curr: {
-        width: val.curr.width > 0,
         height: val.curr.height > 0,
+        width: val.curr.width > 0,
+      },
+      prev: {
+        height: val.prev.height > 0,
+        width: val.prev.width > 0,
       },
     };
 
     const is = {
-      width: {
-        enter: !has.prev.width && has.curr.width,
-        resize: val.prev.width !== val.curr.width,
-        leave: has.prev.width && !has.curr.width,
-      },
       height: {
         enter: !has.prev.height && has.curr.height,
-        resize: val.prev.height !== val.curr.height,
         leave: has.prev.height && !has.curr.height,
+        resize: val.prev.height !== val.curr.height,
       },
-      top: val.prev.top !== val.curr.top,
       left: val.prev.left !== val.curr.left,
+      top: val.prev.top !== val.curr.top,
+      width: {
+        enter: !has.prev.width && has.curr.width,
+        leave: has.prev.width && !has.curr.width,
+        resize: val.prev.width !== val.curr.width,
+      },
     };
 
     const isEnter = curr.self.intent === "enter";

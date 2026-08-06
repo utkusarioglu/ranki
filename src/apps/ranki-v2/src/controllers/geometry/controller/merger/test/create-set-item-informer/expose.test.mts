@@ -1,11 +1,14 @@
+import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
+
 import { expect, test } from "vitest";
-import { GeometryMerger } from "../../geometry-merger.mjs";
+
+import type { InformSetProps } from "../../../animator/animator.types.mjs";
 import type {
   InformContext,
   InformedChildStyle,
 } from "../../../types/geometry-controller.types.mjs";
-import type { InformSetProps } from "../../../animator/animator.types.mjs";
-import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
+
+import { GeometryMerger } from "../../geometry-merger.mjs";
 
 test("", () => {
   const context: InformContext = {
@@ -14,7 +17,6 @@ test("", () => {
     stagger: 0,
   };
   const props: InformSetProps = {
-    setName: "f",
     containerExposed: {
       style: {
         height: 11,
@@ -23,6 +25,7 @@ test("", () => {
     selfOverrides: {
       style: {},
     },
+    setName: "f",
   };
   const sizing: LayoutSizing = {
     container: {
@@ -33,15 +36,15 @@ test("", () => {
       {
         intent: "enter",
         style: {
-          width: 41,
           height: 51,
+          width: 41,
         },
       },
       {
         intent: "leave",
         style: {
-          width: 71,
           height: 91,
+          width: 71,
         },
       },
     ],
@@ -52,13 +55,13 @@ test("", () => {
     sizing,
   });
   const expected: InformedChildStyle = {
-    context,
     containerExposed: {
       style: {
         height: 11,
         width: 31,
       },
     },
+    context,
     selfOverrides: {
       style: {},
     },

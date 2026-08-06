@@ -1,6 +1,9 @@
-import { expect, test } from "vitest";
 import type { CurrentAppliedStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
+
+import { expect, test } from "vitest";
+
 import type { AnimatableStylesConfigKeyframes } from "../../../animator.types.mjs";
+
 import { KeyframeParser } from "../keyframe-parser.mjs";
 
 type K = keyof AnimatableStylesConfigKeyframes;
@@ -15,9 +18,9 @@ function* testProduct(props: K[], values1: number[], values2: number[]) {
     for (const item of values1) {
       for (const container of values2) {
         yield {
-          prop,
-          item,
           container,
+          item,
+          prop,
         } as const;
       }
     }
@@ -25,7 +28,7 @@ function* testProduct(props: K[], values1: number[], values2: number[]) {
 }
 
 for (const v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
-  const { prop, item, container } = v;
+  const { container, item, prop } = v;
 
   test(`${prop}`, () => {
     const curr: CurrentAppliedStyle = {
@@ -35,16 +38,16 @@ for (const v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
           [prop]: container,
         },
       },
+      context: {
+        index: 0,
+        length: 1,
+        stagger: 0,
+      },
       self: {
         intent: "enter",
         style: {
           [prop]: item,
         },
-      },
-      context: {
-        length: 1,
-        index: 0,
-        stagger: 0,
       },
     };
     const prev: CurrentAppliedStyle | null = null;

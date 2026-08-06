@@ -1,8 +1,11 @@
-import { afterEach, beforeEach, expect, test, vi } from "vitest";
-import { Animator } from "../../animator.mjs";
-import type { LitElement } from "lit";
 import type { CurrentAppliedStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
+import type { LitElement } from "lit";
+
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
+
 import type { AnimationBlock } from "../../animator.types.mjs";
+
+import { Animator } from "../../animator.mjs";
 import { KeyframeUtils } from "../../keyframe/keyframe-utils.mjs";
 
 // ANKI
@@ -44,10 +47,6 @@ afterEach(() => {
 test("single keyframe", async () => {
   const curr: CurrentAppliedStyle = {
     actions: ["enter"],
-    self: {
-      intent: "enter",
-      style: {},
-    },
     container: {
       style: {},
     },
@@ -56,19 +55,23 @@ test("single keyframe", async () => {
       length: 1,
       stagger: 0,
     },
+    self: {
+      intent: "enter",
+      style: {},
+    },
   };
   const prev = null;
 
   const RECIPE: AnimationBlock = {
     root: [
       {
-        name: "hi",
         duration: 1000,
         keyframes: [
           {
             height: 5,
           },
         ],
+        name: "hi",
       },
     ],
   };
@@ -91,10 +94,6 @@ test("single keyframe", async () => {
 test("two keyframes", async () => {
   const curr: CurrentAppliedStyle = {
     actions: ["enter"],
-    self: {
-      intent: "enter",
-      style: {},
-    },
     container: {
       style: {},
     },
@@ -103,13 +102,16 @@ test("two keyframes", async () => {
       length: 1,
       stagger: 0,
     },
+    self: {
+      intent: "enter",
+      style: {},
+    },
   };
   const prev = null;
 
   const RECIPE: AnimationBlock = {
     root: [
       {
-        name: "hi",
         duration: 2000,
         keyframes: [
           {
@@ -119,6 +121,7 @@ test("two keyframes", async () => {
             height: 15,
           },
         ],
+        name: "hi",
       },
     ],
   };

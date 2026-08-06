@@ -1,29 +1,32 @@
+import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
+
 import { expect, test } from "vitest";
-import { GeometryMerger } from "../../geometry-merger.mjs";
+
 import type {
   InformContext,
   InformedChildStyle,
 } from "../../../types/geometry-controller.types.mjs";
-import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
+
+import { GeometryMerger } from "../../geometry-merger.mjs";
 
 const sizing: LayoutSizing = {
   container: {
-    width: 11,
     height: 13,
+    width: 11,
   },
   set: [
     {
       intent: "enter",
       style: {
-        width: 23,
         height: 19,
+        width: 23,
       },
     },
     {
       intent: "leave",
       style: {
-        width: 43,
         height: 57,
+        width: 43,
       },
     },
   ],
@@ -38,12 +41,12 @@ test("exposed container width", () => {
     stagger: 0,
   };
   const informed: InformedChildStyle = {
-    context,
     containerExposed: {
       style: {
         width: 7,
       },
     },
+    context,
     selfOverrides: { style: {} },
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
@@ -51,16 +54,16 @@ test("exposed container width", () => {
     actions: ["enter"],
     container: {
       style: {
-        width: 7,
         height: 13,
+        width: 7,
       },
     },
     context,
     self: {
       intent: "enter",
       style: {
-        width: 23,
         height: 19,
+        width: 23,
       },
     },
   };
@@ -74,12 +77,12 @@ test("exposed container width 2", () => {
     stagger: 1,
   };
   const informed: InformedChildStyle = {
-    context,
     containerExposed: {
       style: {
         width: 7,
       },
     },
+    context,
     selfOverrides: { style: {} },
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
@@ -87,16 +90,16 @@ test("exposed container width 2", () => {
     actions: ["leave"],
     container: {
       style: {
-        width: 7,
         height: 13,
+        width: 7,
       },
     },
     context,
     self: {
       intent: "leave",
       style: {
-        width: 43,
         height: 57,
+        width: 43,
       },
     },
   };

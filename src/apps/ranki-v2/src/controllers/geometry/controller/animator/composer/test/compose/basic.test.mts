@@ -1,7 +1,9 @@
-import { expect, test } from "vitest";
 import type { CurrentAppliedStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
-import type { AnimationBlock, LayoutParsed } from "../../../animator.types.mjs";
+
+import { expect, test } from "vitest";
 import { vi } from "vitest";
+
+import type { AnimationBlock, LayoutParsed } from "../../../animator.types.mjs";
 
 // ANKI
 const { getAnimationRecipeMock } = vi.hoisted(() => ({
@@ -16,27 +18,27 @@ import { AnimationComposer } from "../../animation-composer.mjs";
 
 [
   {
-    name: "height",
     input: "to.self.height",
+    name: "height",
     output: 21,
   },
   {
-    name: "container height",
     input: "to.container.height",
+    name: "container height",
     output: 33,
   },
-].forEach(({ name, input, output }) => {
+].forEach(({ input, name, output }) => {
   test(name, () => {
     const RECIPE: AnimationBlock = {
       root: [
         {
-          name: "hi",
           duration: 0,
           keyframes: [
             {
               height: input,
             },
           ],
+          name: "hi",
         },
       ],
     };
@@ -45,8 +47,8 @@ import { AnimationComposer } from "../../animation-composer.mjs";
       actions: [],
       container: {
         style: {
-          width: 11,
           height: 33,
+          width: 11,
         },
       },
       context: {
@@ -63,25 +65,25 @@ import { AnimationComposer } from "../../animation-composer.mjs";
     };
     const prev = null;
     const response = AnimationComposer.compose({
-      preset: "debug",
-      role: "hud",
       action: "enter",
       curr,
+      preset: "debug",
       prev,
+      role: "hud",
     });
     const expected: LayoutParsed = {
       root: [
         {
           apply: {
-            name: "hi",
-            options: {
-              duration: 0,
-            },
             keyframes: [
               {
                 height: output,
               },
             ],
+            name: "hi",
+            options: {
+              duration: 0,
+            },
           },
         },
       ],

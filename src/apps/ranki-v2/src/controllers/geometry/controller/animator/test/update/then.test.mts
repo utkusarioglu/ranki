@@ -1,8 +1,11 @@
-import { afterEach, beforeEach, expect, test, vi } from "vitest";
-import { Animator } from "../../animator.mjs";
-import type { LitElement } from "lit";
 import type { CurrentAppliedStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
+import type { LitElement } from "lit";
+
+import { afterEach, beforeEach, expect, test, vi } from "vitest";
+
 import type { AnimationBlock } from "../../animator.types.mjs";
+
+import { Animator } from "../../animator.mjs";
 import { KeyframeUtils } from "../../keyframe/keyframe-utils.mjs";
 
 // ANKI
@@ -44,10 +47,6 @@ afterEach(() => {
 test("depth 2", async () => {
   const curr: CurrentAppliedStyle = {
     actions: ["enter"],
-    self: {
-      intent: "enter",
-      style: {},
-    },
     container: {
       style: {},
     },
@@ -56,31 +55,35 @@ test("depth 2", async () => {
       length: 1,
       stagger: 0,
     },
+    self: {
+      intent: "enter",
+      style: {},
+    },
   };
   const prev = null;
 
   const RECIPE: AnimationBlock = {
     root: [
       {
-        name: "hi",
         duration: 2000,
         keyframes: [
           {
             height: 5,
           },
         ],
+        name: "hi",
       },
     ],
     then: {
       root: [
         {
-          name: "two",
           duration: 3000,
           keyframes: [
             {
               height: 17,
             },
           ],
+          name: "two",
         },
       ],
     },
@@ -117,10 +120,6 @@ test("depth 2", async () => {
 test("depth 2 call 3", async () => {
   const curr: CurrentAppliedStyle = {
     actions: ["enter"],
-    self: {
-      intent: "enter",
-      style: {},
-    },
     container: {
       style: {},
     },
@@ -129,29 +128,33 @@ test("depth 2 call 3", async () => {
       length: 1,
       stagger: 0,
     },
+    self: {
+      intent: "enter",
+      style: {},
+    },
   };
   const prev = null;
 
   const RECIPE: AnimationBlock = {
     root: [
       {
-        name: "hi",
         duration: 2000,
         keyframes: [
           {
             height: 5,
           },
         ],
+        name: "hi",
         then: {
           root: [
             {
-              name: "two",
               duration: 5000,
               keyframes: [
                 {
                   height: 44,
                 },
               ],
+              name: "two",
             },
           ],
         },
@@ -160,13 +163,13 @@ test("depth 2 call 3", async () => {
     then: {
       root: [
         {
-          name: "three",
           duration: 3000,
           keyframes: [
             {
               height: 17,
             },
           ],
+          name: "three",
         },
       ],
     },

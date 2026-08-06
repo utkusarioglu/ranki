@@ -1,7 +1,9 @@
-import { beforeEach, expect, test, vi } from "vitest";
-import { GeometryEvents } from "../../geometry-events.mjs";
-import type { LitElement } from "lit";
 import type { LocalAction } from "_controllers/geometry/geometry-intent.types.mjs";
+import type { LitElement } from "lit";
+
+import { beforeEach, expect, test, vi } from "vitest";
+
+import { GeometryEvents } from "../../geometry-events.mjs";
 
 const on = vi.fn();
 const Host = vi.fn(class {});

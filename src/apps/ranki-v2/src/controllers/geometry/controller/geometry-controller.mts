@@ -1,31 +1,34 @@
-import { DebugUtils } from "_/debug/debug-utils.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
-import { RankiAppError } from "_error/ranki-app-error.mjs";
 import type { LitElement, ReactiveController } from "lit";
+
+import { DebugUtils } from "_/debug/debug-utils.mjs";
+import { assertNever } from "_error/assertions.mjs";
+import { RankiAppError } from "_error/ranki-app-error.mjs";
+
 import type { LayoutSizing } from "../layout/layout-utils.types.mjs";
-import { Animator } from "./animator/animator.mjs";
-import { GeometryEvents } from "./events/geometry-events.mjs";
+import type { InformSetProps } from "./animator/animator.types.mjs";
 import type { R2CNewChildSizeEvent } from "./events/geometry-events.types.mjs";
-import { GeometryMerger } from "./merger/geometry-merger.mjs";
 import type { GeometryControllerConstructorParams } from "./types/geometry-controller.constructor.types.mjs";
 import type {
   CurrentAppliedStyle,
   InformedChildStyle,
 } from "./types/geometry-controller.types.mjs";
-import { assertNever } from "_error/assertions.mjs";
-import type { InformSetProps } from "./animator/animator.types.mjs";
+
+import { Animator } from "./animator/animator.mjs";
+import { GeometryEvents } from "./events/geometry-events.mjs";
+import { GeometryMerger } from "./merger/geometry-merger.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
 > implements ReactiveController {
-  private readonly host: Instance;
-  private readonly animator: Animator;
   public readonly events: GeometryEvents<Instance>;
-  private sizing: LayoutSizing | null = null;
+  private readonly animator: Animator;
   private curr: CurrentAppliedStyle | null = null;
+  private readonly host: Instance;
   private prev: CurrentAppliedStyle | null = null;
   private readonly sets: GeometrySets<Instance>;
+  private sizing: LayoutSizing | null = null;
 
   constructor(
     host: Instance,
@@ -37,8 +40,8 @@ export class GeometryController<
       informSets: this.informSets.bind(this),
     });
     this.events = new GeometryEvents({
-      host: this.host,
       events: params.events,
+      host: this.host,
       on: params.on,
     });
     this.sets = new GeometrySets(this.host, {
@@ -48,16 +51,12 @@ export class GeometryController<
     this.bindInformStyle();
   }
 
-  private async informSets(props: InformSetProps): Promise<void> {
-    return this.sets.inform(props, this.sizing);
+  hostConnected(): void {
+    this.events.registerListeners();
   }
 
-  /**
-   * This is the method parent uses to tell its child what style it's
-   * supposed to animate towards
-   */
-  private bindInformStyle() {
-    (this.host as unknown as R2C).informStyle = this.informStyle.bind(this);
+  hostDisconnected(): void {
+    this.events.deregisterListeners();
   }
 
   onEmit() {
@@ -67,9 +66,9 @@ export class GeometryController<
       const target = e.composedPath()[0] as R2C;
       if (!target)
         throw new RankiAppError({
+          cause: {},
           code: "NO_TARGET",
           why: "No valid target given",
-          cause: {},
         });
       const update = await this.sets.onEmit(target, detail);
       if (!update) return;
@@ -83,11 +82,23 @@ export class GeometryController<
           break;
         default:
           assertNever({
-            why: "Unrecognized children update type",
             details: { update },
+            why: "Unrecognized children update type",
           });
       }
     };
+  }
+
+  /**
+   * This is the method parent uses to tell its child what style it's
+   * supposed to animate towards
+   */
+  private bindInformStyle() {
+    (this.host as unknown as R2C).informStyle = this.informStyle.bind(this);
+  }
+
+  private async informSets(props: InformSetProps): Promise<void> {
+    return this.sets.inform(props, this.sizing);
   }
 
   private async informStyle(informed: InformedChildStyle): Promise<void> {
@@ -99,8 +110,8 @@ export class GeometryController<
     );
 
     DebugUtils.informStyle({
-      host: this.host,
       curr: this.curr,
+      host: this.host,
       prev: this.prev,
       sizing: this.sizing,
     });
@@ -108,13 +119,5 @@ export class GeometryController<
     this.events.onActionsStart(this.curr.actions);
     await this.animator.update(this.curr, this.prev);
     this.events.onActionsEnd(this.curr.actions);
-  }
-
-  hostConnected(): void {
-    this.events.registerListeners();
-  }
-
-  hostDisconnected(): void {
-    this.events.deregisterListeners();
   }
 }

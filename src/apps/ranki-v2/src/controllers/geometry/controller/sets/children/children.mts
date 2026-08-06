@@ -1,13 +1,13 @@
-import { PROPAGATE_DELAY } from "_/debug/debug.constants.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
+import type { LitElement } from "lit";
+
+import { PROPAGATE_DELAY } from "_/debug/debug.constants.mjs";
 import { assertNotUndefined } from "_error/assertions.mjs";
 import { TimingUtils } from "_utils/timing.utils.mjs";
-import type { LitElement } from "lit";
+
 import type { R2CNewChildSizeEvent } from "../../events/geometry-events.types.mjs";
 import type { ComponentDims } from "../../types/geometry-controller.types.mjs";
-import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
-import { WatcherSet } from "../watcher-set/watcher-set.mjs";
 import type {
   ChildrenSizing,
   ChildrenUpdateSizingReturn,
@@ -15,12 +15,15 @@ import type {
   GeometrySetLayoutCb,
 } from "./children.types.mjs";
 
+import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
+import { WatcherSet } from "../watcher-set/watcher-set.mjs";
+
 export class GeometryChildren<
   Instance extends LitElement,
 > extends WatcherSet<Instance> {
-  private readonly layout: GeometrySetLayoutCb;
-  private readonly isRoot: boolean;
   private readonly dims = new WeakMap<R2C, ComponentDims>();
+  private readonly isRoot: boolean;
+  private readonly layout: GeometrySetLayoutCb;
   private requested = false;
 
   constructor(host: Instance, props: GeometryChildrenProps<Instance>) {
@@ -33,6 +36,30 @@ export class GeometryChildren<
   public async onEmit(target: R2C, detail: R2CNewChildSizeEvent) {
     this.registerEmit(detail, target);
     return this.updateSizing(detail);
+  }
+
+  private async composeResolution(
+    sizing: LayoutSizing | null,
+  ): Promise<ChildrenSizing> {
+    await TimingUtils.raf();
+    return new Promise<ChildrenSizing>((resolve) => {
+      setTimeout(() => {
+        this.requested = false;
+        if (sizing)
+          if (this.isRoot === true) {
+            resolve({
+              inform: GeometrySetsUtils.prepareRootStyle(sizing),
+              sizing,
+              type: "root",
+            });
+          } else {
+            resolve({
+              sizing,
+              type: "update",
+            });
+          }
+      }, PROPAGATE_DELAY);
+    });
   }
 
   private orderChildren() {
@@ -48,64 +75,23 @@ export class GeometryChildren<
     return ordered;
   }
 
-  private async updateSizing(
-    detail: R2CNewChildSizeEvent,
-  ): ChildrenUpdateSizingReturn {
-    switch (detail.intent) {
-      case "leave":
-      case "update": {
-        const ordered = this.orderChildren();
-        const sizing = this.layout(this.host)(ordered);
-        if (this.requested) return null;
-        this.requested = true;
-        return this.composeResolution(sizing);
-      }
-      default:
-        return null;
-    }
-  }
-
-  private async composeResolution(
-    sizing: LayoutSizing | null,
-  ): Promise<ChildrenSizing> {
-    await TimingUtils.raf();
-    return new Promise<ChildrenSizing>((resolve) => {
-      setTimeout(() => {
-        this.requested = false;
-        if (sizing)
-          if (this.isRoot === true) {
-            resolve({
-              type: "root",
-              sizing,
-              inform: GeometrySetsUtils.prepareRootStyle(sizing),
-            });
-          } else {
-            resolve({
-              type: "update",
-              sizing,
-            });
-          }
-      }, PROPAGATE_DELAY);
-    });
-  }
-
   /**
    * @dev
    * #1 This crates uncertainty about what properties exist in the object retrieved from the map
    */
   private registerEmit(detail: R2CNewChildSizeEvent, target: R2C) {
     switch (detail.intent) {
+      case "disconnected":
+        this.dims.delete(target);
+        break;
       case "leave":
         this.dims.set(target, {
           intent: detail.intent,
           style: {
-            width: 0,
             height: 0,
+            width: 0,
           },
         });
-        break;
-      case "disconnected":
-        this.dims.delete(target);
         break;
       case "update":
         if (this.dims.has(target)) {
@@ -131,6 +117,23 @@ export class GeometryChildren<
             mode: detail.mode,
           },
         );
+    }
+  }
+
+  private async updateSizing(
+    detail: R2CNewChildSizeEvent,
+  ): ChildrenUpdateSizingReturn {
+    switch (detail.intent) {
+      case "leave":
+      case "update": {
+        const ordered = this.orderChildren();
+        const sizing = this.layout(this.host)(ordered);
+        if (this.requested) return null;
+        this.requested = true;
+        return this.composeResolution(sizing);
+      }
+      default:
+        return null;
     }
   }
 }

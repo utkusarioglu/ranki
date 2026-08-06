@@ -1,9 +1,12 @@
-import type { LitElement } from "lit";
-import type { GeometryWatcherRecord } from "./watcher.types.mjs";
-import type { InformSetProps } from "../../animator/animator.types.mjs";
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
-import type { GeometrySetName } from "../sets.types.mjs";
+import type { LitElement } from "lit";
+
 import { assertNotUndefined } from "_error/assertions.mjs";
+
+import type { InformSetProps } from "../../animator/animator.types.mjs";
+import type { GeometrySetName } from "../sets.types.mjs";
+import type { GeometryWatcherRecord } from "./watcher.types.mjs";
+
 import { WatcherSet } from "../watcher-set/watcher-set.mjs";
 
 export class GeometryWatchers<Instance extends LitElement> {
@@ -22,14 +25,6 @@ export class GeometryWatchers<Instance extends LitElement> {
     );
   }
 
-  private getSet(setName: GeometrySetName) {
-    const set = this.sets[setName];
-    assertNotUndefined(set, {
-      why: "Watcher attempting to call undefined set",
-    });
-    return set;
-  }
-
   public async inform(
     props: InformSetProps,
     sizing: LayoutSizing | null,
@@ -39,5 +34,13 @@ export class GeometryWatchers<Instance extends LitElement> {
         this.getSet(setName).inform(props, sizing),
       ),
     );
+  }
+
+  private getSet(setName: GeometrySetName) {
+    const set = this.sets[setName];
+    assertNotUndefined(set, {
+      why: "Watcher attempting to call undefined set",
+    });
+    return set;
   }
 }

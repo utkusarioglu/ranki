@@ -1,3 +1,5 @@
+import { Parser } from "expr-eval";
+
 import type {
   AnimationBlockSets,
   AnimationRoot,
@@ -8,8 +10,8 @@ import type {
   LayoutSetsInform,
   ParseRootParams,
 } from "../../animator/animator.types.mjs";
-import { Parser } from "expr-eval";
 import type { GeometrySetName } from "../../sets/sets.types.mjs";
+
 import { KeyframeParser } from "./keyframe/keyframe-parser.mjs";
 
 export const parser = new Parser();
@@ -33,11 +35,28 @@ export class LayoutParser {
     };
   }
 
+  private static parseRoot(
+    b: AnimationRoot,
+    curr: ParseRootParams["curr"],
+    prev: null | ParseRootParams["prev"],
+  ): ApplyRootParams {
+    return {
+      apply: {
+        keyframes: b.keyframes.map((k) =>
+          KeyframeParser.evalKeyframe(curr, prev, k),
+        ),
+        name: b.name,
+        options: KeyframeParser.evalOptions(b, curr.context),
+      },
+      then: b.then && this.parse({ block: b.then, curr, prev }),
+    };
+  }
+
   private static parseSet(
     setName: GeometrySetName,
     t: AnimationTarget,
     curr: ParseRootParams["curr"],
-    prev: ParseRootParams["prev"] | null,
+    prev: null | ParseRootParams["prev"],
   ): LayoutSetsInform {
     const then: LayoutParsed | undefined = t.then
       ? this.parse({
@@ -47,9 +66,7 @@ export class LayoutParser {
         })
       : undefined;
     return {
-      wait: KeyframeParser.evalOptionValue(curr.context, t.wait),
       props: {
-        setName,
         containerExposed: {
           style: t.expose
             ? KeyframeParser.evalKeyframe(curr, prev, t.expose)
@@ -60,37 +77,22 @@ export class LayoutParser {
             ? KeyframeParser.evalKeyframe(curr, prev, t.override)
             : {},
         },
+        setName,
       },
       then,
+      wait: KeyframeParser.evalOptionValue(curr.context, t.wait),
     };
   }
 
   private static parseSets(
     targets: AnimationBlockSets,
     curr: ParseRootParams["curr"],
-    prev: ParseRootParams["prev"] | null,
+    prev: null | ParseRootParams["prev"],
   ): LayoutParsedSets {
     const ent = Object.entries(targets).map(([id, v]) => [
       id,
       this.parseSet(id, v, curr, prev),
     ]);
     return Object.fromEntries(ent);
-  }
-
-  private static parseRoot(
-    b: AnimationRoot,
-    curr: ParseRootParams["curr"],
-    prev: ParseRootParams["prev"] | null,
-  ): ApplyRootParams {
-    return {
-      apply: {
-        name: b.name,
-        keyframes: b.keyframes.map((k) =>
-          KeyframeParser.evalKeyframe(curr, prev, k),
-        ),
-        options: KeyframeParser.evalOptions(b, curr.context),
-      },
-      then: b.then && this.parse({ curr, prev, block: b.then }),
-    };
   }
 }

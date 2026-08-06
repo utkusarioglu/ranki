@@ -1,11 +1,14 @@
-import { beforeEach, expect, test, vi } from "vitest";
-import type { LitElement } from "lit";
-import type { InformSetProps } from "_controllers/geometry/controller/animator/animator.types.mjs";
-import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
+import type { InformSetProps } from "_controllers/geometry/controller/animator/animator.types.mjs";
 import type { InformedChildStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
-import { WatcherSet } from "../watcher-set.mjs";
+import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
+import type { LitElement } from "lit";
+
+import { beforeEach, expect, test, vi } from "vitest";
+
 import type { GeometryWatcherProps } from "../../watcher/watcher.types.mjs";
+
+import { WatcherSet } from "../watcher-set.mjs";
 
 const Host = vi.fn(class {});
 const host = new Host() as unknown as LitElement;
@@ -13,15 +16,15 @@ const host = new Host() as unknown as LitElement;
 const singleElem = () => ({ informStyle: vi.fn() });
 
 const informProps: InformSetProps = {
-  setName: "f",
   containerExposed: { style: {} },
   selfOverrides: { style: {} },
+  setName: "f",
 };
 
 const sizing: LayoutSizing = {
   container: {
-    width: 1,
     height: 3,
+    width: 1,
   },
   set: [],
 };
@@ -62,24 +65,24 @@ test("Single set 2 elems", async () => {
   };
   const expected: InformedChildStyle[] = [
     {
+      containerExposed: {
+        style: sizing.container,
+      },
       context: {
         index: 0,
         length: 2,
         stagger: 0,
       },
-      containerExposed: {
-        style: sizing.container,
-      },
       selfOverrides: { style: {} },
     },
     {
+      containerExposed: {
+        style: sizing.container,
+      },
       context: {
         index: 1,
         length: 2,
         stagger: 0,
-      },
-      containerExposed: {
-        style: sizing.container,
       },
       selfOverrides: { style: {} },
     },

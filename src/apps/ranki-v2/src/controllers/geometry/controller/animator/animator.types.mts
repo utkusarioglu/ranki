@@ -1,71 +1,33 @@
 import type {
+  LocalAction,
+  WithEmitIntents,
+} from "../../geometry-intent.types.mjs";
+import type { TopLeft, WidthHeight } from "../../geometry-style.types.mjs";
+import type { GeometrySetName } from "../sets/sets.types.mjs";
+import type {
   CurrentAppliedStyle,
   InformContext,
   InformedChildStyleContainer,
   InformedChildStyleSelf,
 } from "../types/geometry-controller.types.mjs";
-import type {
-  LocalAction,
-  WithEmitIntents,
-} from "../../geometry-intent.types.mjs";
-import type { WidthHeight, TopLeft } from "../../geometry-style.types.mjs";
-import type { GeometrySetName } from "../sets/sets.types.mjs";
-
-export type AnimationKeyframeStyles = Partial<WidthHeight> &
-  Partial<TopLeft> &
-  Partial<AnimationKeyframeOptions> &
-  Partial<{
-    opacity: number;
-    offset: number;
-    rotate: number;
-    scale: number;
-    skewX: number;
-    skewY: number;
-    // rotate3d: string;
-  }>;
-
-export type AnimationOptions = Partial<
-  Pick<KeyframeAnimationOptions, "easing" | "delay" | "duration">
->;
-
-export type AnimationCallback = (
-  curr: UpdateStyle,
-  prev: UpdateStyle | null,
-  context: InformContext,
-) => Promise<void>;
-
-export type AnimationKeyframeOptions = {
-  easing: string;
-};
 
 export type AnimatableStylesConfigKeyframes = Partial<
-  Record<keyof AnimationKeyframeStyles, string | number>
+  Record<keyof AnimationKeyframeStyles, number | string>
 >;
 
-export interface AnimationRoot {
-  name: string;
-  keyframes: AnimatableStylesConfigKeyframes[];
-  delay?: number | string;
-  duration: number | string;
-  easing?: string;
+export interface AnimationBlock {
+  root?: AnimationRoot[];
+  sets?: AnimationBlockSets;
   then?: AnimationBlock;
 }
 
 export type AnimationBlockSets = Record<GeometrySetName, AnimationTarget>;
 
-// TODO
-export interface AnimationTarget {
-  wait?: number | string;
-  expose?: AnimatableStylesConfigKeyframes;
-  override?: AnimatableStylesConfigKeyframes;
-  then?: AnimationBlock;
-}
-
-export type TargetAnimationSpec = Record<
-  // component role
-  string,
-  Partial<Record<LocalAction, AnimationBlock>>
->;
+export type AnimationCallback = (
+  curr: UpdateStyle,
+  prev: null | UpdateStyle,
+  context: InformContext,
+) => Promise<void>;
 
 export type AnimationDict = Record<
   // Preset name
@@ -73,9 +35,49 @@ export type AnimationDict = Record<
   TargetAnimationSpec
 >;
 
-export interface AnimatorPlayParams {
+export type AnimationKeyframeOptions = {
+  easing: string;
+};
+
+export type AnimationKeyframeStyles = Partial<{
+    offset: number;
+    opacity: number;
+    rotate: number;
+    scale: number;
+    skewX: number;
+    skewY: number;
+    // rotate3d: string;
+  }> &
+  Partial<AnimationKeyframeOptions> &
+  Partial<TopLeft> &
+  Partial<WidthHeight>;
+
+export type AnimationOptions = Partial<
+  Pick<KeyframeAnimationOptions, "delay" | "duration" | "easing">
+>;
+
+export interface AnimationRoot {
+  delay?: number | string;
+  duration: number | string;
+  easing?: string;
+  keyframes: AnimatableStylesConfigKeyframes[];
   name: string;
+  then?: AnimationBlock;
+}
+
+// TODO
+export interface AnimationTarget {
+  expose?: AnimatableStylesConfigKeyframes;
+  override?: AnimatableStylesConfigKeyframes;
+  then?: AnimationBlock;
+  wait?: number | string;
+}
+
+export type AnimatorPlayCb = (params: AnimatorPlayParams) => Promise<void>;
+
+export interface AnimatorPlayParams {
   keyframes: AnimationKeyframeStyles[];
+  name: string;
   options: AnimationOptions;
 }
 
@@ -85,18 +87,10 @@ export interface ApplyRootParams {
 }
 
 export interface InformSetProps {
-  setName: GeometrySetName;
   containerExposed: InformedChildStyleContainer;
   selfOverrides: InformedChildStyleSelf;
+  setName: GeometrySetName;
 }
-
-export type LayoutSetsInform = {
-  wait?: number;
-  props: InformSetProps;
-  then?: LayoutParsed;
-};
-
-export type LayoutParsedSets = Record<string, LayoutSetsInform>;
 
 export interface LayoutParsed {
   root?: ApplyRootParams[];
@@ -104,17 +98,23 @@ export interface LayoutParsed {
   then?: LayoutParsed;
 }
 
-export type AnimatorPlayCb = (params: AnimatorPlayParams) => Promise<void>;
+export type LayoutParsedSets = Record<string, LayoutSetsInform>;
 
-export interface AnimationBlock {
-  root?: AnimationRoot[];
-  sets?: AnimationBlockSets;
-  then?: AnimationBlock;
-}
+export type LayoutSetsInform = {
+  props: InformSetProps;
+  then?: LayoutParsed;
+  wait?: number;
+};
 
 export interface ParseRootParams {
+  block: AnimationBlock;
   curr: CurrentAppliedStyle;
   prev: CurrentAppliedStyle | null;
-  block: AnimationBlock;
 }
+
+export type TargetAnimationSpec = Record<
+  // component role
+  string,
+  Partial<Record<LocalAction, AnimationBlock>>
+>;
 export type UpdateStyle = AnimationKeyframeStyles & WithEmitIntents;

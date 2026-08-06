@@ -1,14 +1,16 @@
-import { expect, test } from "vitest";
-import { LayoutParser } from "../../../../layout-parser.mjs";
 import type {
   AnimationBlock,
   LayoutParsed,
 } from "_controllers/geometry/controller/animator/animator.types.mjs";
 
+import { expect, test } from "vitest";
+
+import { LayoutParser } from "../../../../layout-parser.mjs";
+
 interface Case {
-  name: string;
   block: AnimationBlock;
   expected: LayoutParsed;
+  name: string;
 }
 
 const CASES: Case[] = [
@@ -18,11 +20,9 @@ const CASES: Case[] = [
       ["to.self.height", 21],
     ] as [string, number][]
   ).map(([input, expected]) => ({
-    name: `root container: ${input}`,
     block: {
       root: [
         {
-          name: "h",
           duration: 7,
           keyframes: [
             {
@@ -30,16 +30,17 @@ const CASES: Case[] = [
               opacity: 1.1,
             },
           ],
+          name: "h",
           then: {
             root: [
               {
-                name: "w",
                 duration: 2,
                 keyframes: [
                   {
                     width: input,
                   },
                 ],
+                name: "w",
               },
             ],
           },
@@ -50,13 +51,13 @@ const CASES: Case[] = [
       root: [
         {
           apply: {
-            name: "h",
             keyframes: [
               {
                 height: 4,
                 opacity: 1.1,
               },
             ],
+            name: "h",
             options: {
               duration: 7,
             },
@@ -65,12 +66,12 @@ const CASES: Case[] = [
             root: [
               {
                 apply: {
-                  name: "w",
                   keyframes: [
                     {
                       width: expected,
                     },
                   ],
+                  name: "w",
                   options: {
                     duration: 2,
                   },
@@ -81,23 +82,25 @@ const CASES: Case[] = [
         },
       ],
     },
+    name: `root container: ${input}`,
   })),
 ];
 
 CASES.forEach(({ block, expected, name }) => {
   test(name, () => {
     const response = LayoutParser.parse({
+      block,
       curr: {
         actions: ["enter"],
-        context: {
-          index: 0,
-          length: 1,
-          stagger: 0,
-        },
         container: {
           style: {
             height: 11,
           },
+        },
+        context: {
+          index: 0,
+          length: 1,
+          stagger: 0,
         },
         self: {
           intent: "enter",
@@ -107,7 +110,6 @@ CASES.forEach(({ block, expected, name }) => {
         },
       },
       prev: null,
-      block,
     });
     expect(response).toEqual(expected);
   });

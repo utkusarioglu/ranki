@@ -9,11 +9,12 @@ export default defineConfig([
     files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
     plugins: {
       js,
-      perfectionist,
+      // perfectionist,
     },
     extends: ["js/recommended"],
     languageOptions: { globals: globals.browser },
     rules: {
+      // "perfectionist/sort-imports": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -34,4 +35,5 @@ export default defineConfig([
     },
   },
   tseslint.configs.recommended,
+  perfectionist.configs["recommended-alphabetical"],
 ]);

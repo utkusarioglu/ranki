@@ -1,29 +1,30 @@
-import { expect, test } from "vitest";
-import { LayoutParser } from "../../../layout-parser.mjs";
 import type {
   AnimationBlock,
   LayoutParsed,
 } from "_controllers/geometry/controller/animator/animator.types.mjs";
 
+import { expect, test } from "vitest";
+
+import { LayoutParser } from "../../../layout-parser.mjs";
+
 interface Case {
-  name: string;
   block: AnimationBlock;
   expected: LayoutParsed;
+  name: string;
 }
 
 const CASES: Case[] = [
   ...Array.from({ length: 10 }, (_, i) => i * 10).map((dur) => ({
-    name: `root duration: ${dur}`,
     block: {
       root: [
         {
-          name: "h",
           duration: dur,
           keyframes: [
             {
               height: 1,
             },
           ],
+          name: "h",
         },
       ],
     },
@@ -31,12 +32,12 @@ const CASES: Case[] = [
       root: [
         {
           apply: {
-            name: "h",
             keyframes: [
               {
                 height: 1,
               },
             ],
+            name: "h",
             options: {
               duration: dur,
             },
@@ -44,23 +45,25 @@ const CASES: Case[] = [
         },
       ],
     },
+    name: `root duration: ${dur}`,
   })),
 ];
 
 CASES.forEach(({ block, expected, name }) => {
   test(name, () => {
     const response = LayoutParser.parse({
+      block,
       curr: {
         actions: ["enter"],
-        context: {
-          index: 0,
-          length: 1,
-          stagger: 0,
-        },
         container: {
           style: {
             height: 11,
           },
+        },
+        context: {
+          index: 0,
+          length: 1,
+          stagger: 0,
         },
         self: {
           intent: "enter",
@@ -70,7 +73,6 @@ CASES.forEach(({ block, expected, name }) => {
         },
       },
       prev: null,
-      block,
     });
     expect(response).toEqual(expected);
   });

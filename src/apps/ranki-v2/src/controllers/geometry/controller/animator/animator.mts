@@ -1,20 +1,23 @@
 import type { LitElement } from "lit";
-import { type AnimatorPlayParams } from "./animator.types.mjs";
-import { type AnimatorCallbacks } from "./animator.constructor.types.mjs";
-import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
-import type { GeometryRole } from "../types/geometry-controller.constructor.types.mjs";
-import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
-import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs";
+
 import { DebugUtils } from "_/debug/debug-utils.mjs";
+
+import type { GeometryRole } from "../types/geometry-controller.constructor.types.mjs";
+import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs";
+
+import { type AnimatorCallbacks } from "./animator.constructor.types.mjs";
+import { type AnimatorPlayParams } from "./animator.types.mjs";
 import { AnimationComposer } from "./composer/animation-composer.mjs";
+import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
+import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
 
 export class Animator {
-  private readonly host: LitElement;
-  private readonly role: GeometryRole;
-  private readonly sequencer: AnimationSequencer;
   private readonly callbacks: AnimatorCallbacks;
+  private readonly host: LitElement;
   private readonly preset: string = "debug";
+  private readonly role: GeometryRole;
   private running = new Map<string, Animation>();
+  private readonly sequencer: AnimationSequencer;
 
   constructor(
     host: LitElement,
@@ -30,9 +33,28 @@ export class Animator {
     });
   }
 
+  public async update(
+    curr: CurrentAppliedStyle,
+    prev: CurrentAppliedStyle | null,
+  ): Promise<void> {
+    DebugUtils.animatorUpdate({ curr, host: this.host, prev });
+    await Promise.all(
+      curr.actions.map((action) => {
+        const composed = AnimationComposer.compose({
+          action,
+          curr,
+          preset: this.preset,
+          prev,
+          role: this.role,
+        });
+        return this.sequencer.build(composed);
+      }),
+    );
+  }
+
   private async playName({
-    name,
     keyframes,
+    name,
     options,
   }: AnimatorPlayParams): Promise<void> {
     const finalOptions: KeyframeAnimationOptions = {
@@ -63,24 +85,5 @@ export class Animator {
     }
     this.running.set(name, anim);
     await anim.finished;
-  }
-
-  public async update(
-    curr: CurrentAppliedStyle,
-    prev: CurrentAppliedStyle | null,
-  ): Promise<void> {
-    DebugUtils.animatorUpdate({ host: this.host, curr, prev });
-    await Promise.all(
-      curr.actions.map((action) => {
-        const composed = AnimationComposer.compose({
-          preset: this.preset,
-          role: this.role,
-          action,
-          curr,
-          prev,
-        });
-        return this.sequencer.build(composed);
-      }),
-    );
   }
 }

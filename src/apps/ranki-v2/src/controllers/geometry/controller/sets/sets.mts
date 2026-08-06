@@ -1,12 +1,15 @@
+import type { R2C } from "_components/r2c/r2c.mjs";
+import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 import type { LitElement } from "lit";
+
+import { assertNotUndefined } from "_error/assertions.mjs";
+
+import type { InformSetProps } from "../animator/animator.types.mjs";
+import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mjs";
+import type { GeometrySetsConstructorParams } from "./sets.types.mjs";
+
 import { GeometryChildren } from "./children/children.mjs";
 import { GeometryWatchers } from "./watcher/watcher.mjs";
-import type { GeometrySetsConstructorParams } from "./sets.types.mjs";
-import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mjs";
-import { assertNotUndefined } from "_error/assertions.mjs";
-import type { InformSetProps } from "../animator/animator.types.mjs";
-import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
-import type { R2C } from "_components/r2c/r2c.mjs";
 
 export class GeometrySets<Instance extends LitElement> {
   private readonly children: GeometryChildren<Instance> | undefined;

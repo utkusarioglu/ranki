@@ -1,10 +1,11 @@
+import { TimingUtils } from "_utils/timing.utils.mjs";
+
 import type {
   ApplyRootParams,
   LayoutParsed,
   LayoutParsedSets,
 } from "../animator.types.mjs";
 import type { AnimationSequencerCallbacks } from "./animation-sequencer.types.mjs";
-import { TimingUtils } from "_utils/timing.utils.mjs";
 
 export class AnimationSequencer {
   private readonly callbacks: AnimationSequencerCallbacks;
@@ -13,15 +14,16 @@ export class AnimationSequencer {
     this.callbacks = callbacks;
   }
 
-  private async sequenceSets(l: LayoutParsedSets | undefined): Promise<void> {
-    if (!l) return Promise.resolve();
-    await Promise.all(
-      Object.values(l).map(async ({ wait, props: target, then }) => {
-        if (wait) await TimingUtils.delay(wait);
-        await this.callbacks.informSet(target);
-        if (then) await this.sequenceThen(then);
-      }),
-    );
+  public async build(a: LayoutParsed): Promise<void> {
+    await this.sequenceThen(a);
+  }
+
+  private async sequenceCurrent(a: LayoutParsed | undefined): Promise<void> {
+    if (!a) return Promise.resolve();
+    await Promise.all([
+      a && (await this.sequenceRoots(a.root)),
+      a && (await this.sequenceSets(a.sets)),
+    ]);
   }
 
   private async sequenceRoots(
@@ -36,21 +38,20 @@ export class AnimationSequencer {
     );
   }
 
-  private async sequenceCurrent(a: LayoutParsed | undefined): Promise<void> {
-    if (!a) return Promise.resolve();
-    await Promise.all([
-      a && (await this.sequenceRoots(a.root)),
-      a && (await this.sequenceSets(a.sets)),
-    ]);
+  private async sequenceSets(l: LayoutParsedSets | undefined): Promise<void> {
+    if (!l) return Promise.resolve();
+    await Promise.all(
+      Object.values(l).map(async ({ props: target, then, wait }) => {
+        if (wait) await TimingUtils.delay(wait);
+        await this.callbacks.informSet(target);
+        if (then) await this.sequenceThen(then);
+      }),
+    );
   }
 
   private async sequenceThen(a: LayoutParsed | undefined): Promise<void> {
     if (!a) return Promise.resolve();
     await this.sequenceCurrent(a);
     await this.sequenceThen(a.then);
-  }
-
-  public async build(a: LayoutParsed): Promise<void> {
-    await this.sequenceThen(a);
   }
 }

@@ -1,19 +1,21 @@
 import { expect, test } from "vitest";
+
 import { LayoutParser } from "../../layout-parser.mjs";
 
 test("empty", () => {
   const response = LayoutParser.parse({
+    block: {},
     curr: {
       actions: ["enter"],
-      context: {
-        index: 0,
-        length: 1,
-        stagger: 0,
-      },
       container: {
         style: {
           height: 11,
         },
+      },
+      context: {
+        index: 0,
+        length: 1,
+        stagger: 0,
       },
       self: {
         intent: "enter",
@@ -23,7 +25,6 @@ test("empty", () => {
       },
     },
     prev: null,
-    block: {},
   });
   const expected = {
     root: undefined,

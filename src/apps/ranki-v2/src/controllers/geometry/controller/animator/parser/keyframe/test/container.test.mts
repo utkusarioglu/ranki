@@ -1,6 +1,9 @@
-import { expect, test } from "vitest";
-import type { AnimatableStylesConfigKeyframes } from "../../../animator.types.mjs";
 import type { CurrentAppliedStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
+
+import { expect, test } from "vitest";
+
+import type { AnimatableStylesConfigKeyframes } from "../../../animator.types.mjs";
+
 import { KeyframeParser } from "../keyframe-parser.mjs";
 
 type K = keyof AnimatableStylesConfigKeyframes;
@@ -29,10 +32,10 @@ function* testProduct(props: K[], values1: number[], values2: number[]) {
         const blocks = [`to.self.${prop}`, `to.container.${prop}`];
         for (const block of blocks) {
           yield {
-            prop,
-            item,
-            container,
             block,
+            container,
+            item,
+            prop,
           } as const;
         }
       }
@@ -41,7 +44,7 @@ function* testProduct(props: K[], values1: number[], values2: number[]) {
 }
 
 for (const v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
-  const { prop, item, container, block } = v;
+  const { block, container, item, prop } = v;
 
   test(`${prop}: ${block}`, () => {
     const curr: CurrentAppliedStyle = {
@@ -51,16 +54,16 @@ for (const v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
           [prop]: container,
         },
       },
+      context: {
+        index: 0,
+        length: 1,
+        stagger: 0,
+      },
       self: {
         intent: "enter",
         style: {
           [prop]: item,
         },
-      },
-      context: {
-        length: 1,
-        index: 0,
-        stagger: 0,
       },
     };
     const prev: CurrentAppliedStyle | null = null;

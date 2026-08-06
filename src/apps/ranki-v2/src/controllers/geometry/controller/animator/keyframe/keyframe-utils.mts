@@ -8,21 +8,17 @@ export class KeyframeUtils {
     fill: "both",
   };
 
-  public static produceKeyframes(keyframes: AnimationKeyframeStyles[]) {
-    return keyframes.map((k) => this.produceKeyframe(k));
-  }
-
   public static produceKeyframe({
-    left,
-    top,
-    width,
     height,
+    left,
+    offset,
     opacity,
     rotate,
     scale,
-    offset,
     skewX,
     skewY,
+    top,
+    width,
     // rotate3d,
   }: AnimationKeyframeStyles): Keyframe {
     const k: Keyframe = {};
@@ -45,5 +41,9 @@ export class KeyframeUtils {
     if (offset !== undefined) k.offset = offset;
 
     return k;
+  }
+
+  public static produceKeyframes(keyframes: AnimationKeyframeStyles[]) {
+    return keyframes.map((k) => this.produceKeyframe(k));
   }
 }

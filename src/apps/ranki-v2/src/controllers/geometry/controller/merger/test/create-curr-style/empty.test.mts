@@ -1,10 +1,13 @@
+import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
+
 import { expect, test } from "vitest";
-import { GeometryMerger } from "../../geometry-merger.mjs";
+
 import type {
   InformContext,
   InformedChildStyle,
 } from "../../../types/geometry-controller.types.mjs";
-import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
+
+import { GeometryMerger } from "../../geometry-merger.mjs";
 
 const context: InformContext = {
   index: 0,
@@ -14,22 +17,22 @@ const context: InformContext = {
 
 const sizing: LayoutSizing = {
   container: {
-    width: 11,
     height: 13,
+    width: 11,
   },
   set: [
     {
       intent: "enter",
       style: {
-        width: 23,
         height: 19,
+        width: 23,
       },
     },
     {
       intent: "leave",
       style: {
-        width: 43,
         height: 57,
+        width: 43,
       },
     },
   ],
@@ -39,8 +42,8 @@ const prev = null;
 
 test("empty informed", () => {
   const informed: InformedChildStyle = {
-    context,
     containerExposed: { style: {} },
+    context,
     selfOverrides: { style: {} },
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
@@ -48,16 +51,16 @@ test("empty informed", () => {
     actions: ["enter"],
     container: {
       style: {
-        width: 11,
         height: 13,
+        width: 11,
       },
     },
     context,
     self: {
       intent: "enter",
       style: {
-        width: 23,
         height: 19,
+        width: 23,
       },
     },
   };

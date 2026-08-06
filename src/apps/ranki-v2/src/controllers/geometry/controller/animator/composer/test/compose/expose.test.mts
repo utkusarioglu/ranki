@@ -1,7 +1,9 @@
-import { expect, test } from "vitest";
 import type { CurrentAppliedStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
-import type { AnimationBlock, LayoutParsed } from "../../../animator.types.mjs";
+
+import { expect, test } from "vitest";
 import { vi } from "vitest";
+
+import type { AnimationBlock, LayoutParsed } from "../../../animator.types.mjs";
 
 // ANKI
 const { getAnimationRecipeMock } = vi.hoisted(() => ({
@@ -18,7 +20,6 @@ test("expose single", () => {
   const RECIPE: AnimationBlock = {
     root: [
       {
-        name: "hi",
         duration: 0,
         keyframes: [
           {
@@ -26,6 +27,7 @@ test("expose single", () => {
             width: "to.self.width",
           },
         ],
+        name: "hi",
       },
     ],
     sets: {
@@ -42,8 +44,8 @@ test("expose single", () => {
     actions: [],
     container: {
       style: {
-        width: 11,
         height: 33,
+        width: 11,
       },
     },
     context: {
@@ -61,33 +63,32 @@ test("expose single", () => {
   };
   const prev = null;
   const response = AnimationComposer.compose({
-    preset: "debug",
-    role: "hud",
     action: "enter",
     curr,
+    preset: "debug",
     prev,
+    role: "hud",
   });
   const expected: LayoutParsed = {
     root: [
       {
         apply: {
-          name: "hi",
-          options: {
-            duration: 0,
-          },
           keyframes: [
             {
               height: 33,
               width: 17,
             },
           ],
+          name: "hi",
+          options: {
+            duration: 0,
+          },
         },
       },
     ],
     sets: {
       a: {
         props: {
-          setName: "a",
           containerExposed: {
             style: {
               width: 17,
@@ -96,6 +97,7 @@ test("expose single", () => {
           selfOverrides: {
             style: {},
           },
+          setName: "a",
         },
       },
     },

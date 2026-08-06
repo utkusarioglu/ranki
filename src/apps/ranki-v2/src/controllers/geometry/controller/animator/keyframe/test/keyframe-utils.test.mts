@@ -1,6 +1,8 @@
 import { describe, expect, test } from "vitest";
-import { KeyframeUtils } from "../keyframe-utils.mjs";
+
 import type { Cases } from "./keyframe-utils.test.types.mjs";
+
+import { KeyframeUtils } from "../keyframe-utils.mjs";
 
 const SEQ = [
   Number.MIN_SAFE_INTEGER,
@@ -34,196 +36,196 @@ const OPACITY_SEQ = [0, 0.1, 0.25, 0.5, 0.75, 1];
 
 const CASES: Cases = [
   {
-    group: "left",
     cases: [
       ...SEQ.map((i) => ({
-        name: `Happy ${i}`,
-        input: { left: i },
         expected: { transform: `translateX(${i}px)` },
+        input: { left: i },
+        name: `Happy ${i}`,
       })),
       {
-        name: "Edge: 0",
-        input: { left: 0 },
         expected: {},
+        input: { left: 0 },
+        name: "Edge: 0",
       },
     ],
+    group: "left",
   },
   {
-    group: "top",
     cases: [
       ...SEQ.map((i) => ({
-        name: `Happy ${i}`,
-        input: { top: i },
         expected: { transform: `translateY(${i}px)` },
+        input: { top: i },
+        name: `Happy ${i}`,
       })),
       {
-        name: "Edge: 0",
-        input: { top: 0 },
         expected: {},
+        input: { top: 0 },
+        name: "Edge: 0",
       },
     ],
+    group: "top",
   },
   {
-    group: "left + top",
     cases: [
       ...SEQ2.map(([i, j]) => ({
-        name: `Happy ${i} ${j}`,
-        input: { left: i, top: j },
         expected: { transform: `translateX(${i}px) translateY(${j}px)` },
+        input: { left: i, top: j },
+        name: `Happy ${i} ${j}`,
       })),
     ],
+    group: "left + top",
   },
   {
-    group: "empty + undefined",
     cases: [
       {
-        name: "Empty input",
-        input: {},
         expected: {},
+        input: {},
+        name: "Empty input",
       },
       {
-        name: "Undefined values",
+        expected: {},
         input: {
-          left: undefined,
-          top: undefined,
-          width: undefined,
           height: undefined,
+          left: undefined,
+          offset: undefined,
           opacity: undefined,
           rotate: undefined,
           scale: undefined,
-          offset: undefined,
           skewX: undefined,
           skewY: undefined,
+          top: undefined,
+          width: undefined,
         },
-        expected: {},
+        name: "Undefined values",
       },
     ],
+    group: "empty + undefined",
   },
   {
-    group: "width",
     cases: [
       ...SEQ.map((i) => ({
-        name: `Happy ${i}`,
-        input: { width: i },
         expected: { width: `${i}px` },
+        input: { width: i },
+        name: `Happy ${i}`,
       })),
       {
-        name: "Edge: 0",
-        input: { width: 0 },
         expected: { width: "0px" },
+        input: { width: 0 },
+        name: "Edge: 0",
       },
     ],
+    group: "width",
   },
   {
-    group: "height",
     cases: [
       ...SEQ.map((i) => ({
-        name: `Happy ${i}`,
-        input: { height: i },
         expected: { height: `${i}px` },
+        input: { height: i },
+        name: `Happy ${i}`,
       })),
       {
-        name: "Edge: 0",
-        input: { height: 0 },
         expected: { height: "0px" },
+        input: { height: 0 },
+        name: "Edge: 0",
       },
     ],
+    group: "height",
   },
   {
-    group: "opacity",
     cases: [
       ...OPACITY_SEQ.map((i) => ({
-        name: `Happy ${i}`,
-        input: { opacity: i },
         expected: { opacity: i },
+        input: { opacity: i },
+        name: `Happy ${i}`,
       })),
       {
-        name: "Edge: 0",
-        input: { opacity: 0 },
         expected: { opacity: 0 },
+        input: { opacity: 0 },
+        name: "Edge: 0",
       },
     ],
+    group: "opacity",
   },
   {
-    group: "rotate",
     cases: [
       ...SEQ.map((i) => ({
-        name: `Happy ${i}`,
-        input: { rotate: i },
         expected: { rotate: `${i}deg` },
+        input: { rotate: i },
+        name: `Happy ${i}`,
       })),
       {
-        name: "Edge: 0",
-        input: { rotate: 0 },
         expected: { rotate: "0deg" },
+        input: { rotate: 0 },
+        name: "Edge: 0",
       },
     ],
+    group: "rotate",
   },
   {
-    group: "scale",
     cases: [
       ...SEQ.map((i) => ({
-        name: `Happy ${i}`,
-        input: { scale: i },
         expected: { scale: i },
+        input: { scale: i },
+        name: `Happy ${i}`,
       })),
       {
-        name: "Edge: 0",
-        input: { scale: 0 },
         expected: { scale: 0 },
+        input: { scale: 0 },
+        name: "Edge: 0",
       },
     ],
+    group: "scale",
   },
   {
-    group: "skewX",
     cases: [
       ...SEQ.map((i) => ({
-        name: `Happy ${i}`,
-        input: { skewX: i },
         expected: { transform: `skewX(${i}deg)` },
+        input: { skewX: i },
+        name: `Happy ${i}`,
       })),
       {
-        name: "Edge: 0",
+        expected: {},
         input: { skewX: 0 },
-        expected: {},
+        name: "Edge: 0",
       },
     ],
+    group: "skewX",
   },
   {
-    group: "skewY",
     cases: [
       ...SEQ.map((i) => ({
-        name: `Happy ${i}`,
-        input: { skewY: i },
         expected: { transform: `skewY(${i}deg)` },
+        input: { skewY: i },
+        name: `Happy ${i}`,
       })),
       {
-        name: "Edge: 0",
-        input: { skewY: 0 },
         expected: {},
+        input: { skewY: 0 },
+        name: "Edge: 0",
       },
     ],
+    group: "skewY",
   },
   {
-    group: "offset",
     cases: [
       ...SEQ.map((i) => ({
-        name: `Happy ${i}`,
-        input: { offset: i },
         expected: { offset: i },
+        input: { offset: i },
+        name: `Happy ${i}`,
       })),
       {
-        name: "Edge: 0",
-        input: { offset: 0 },
         expected: { offset: 0 },
+        input: { offset: 0 },
+        name: "Edge: 0",
       },
     ],
+    group: "offset",
   },
 ];
 
 CASES.forEach(({ cases, group }) => {
   describe(group, () => {
-    cases.forEach(({ input, expected, name }) => {
+    cases.forEach(({ expected, input, name }) => {
       test(name, () => {
         const response = KeyframeUtils.produceKeyframe(input);
         expect(response).toEqual(expected);

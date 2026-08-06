@@ -1,6 +1,7 @@
 import type { LitElement } from "lit";
-import type { EmitModes } from "../geometry-events.types.mjs";
+
 import type { WidthHeight } from "../../../geometry-style.types.mjs";
+import type { EmitModes } from "../geometry-events.types.mjs";
 
 export class GeometryEventUtils {
   public static readonly geometryEventName = "r2-geometry";
@@ -8,11 +9,11 @@ export class GeometryEventUtils {
   public static emitLeave(host: LitElement) {
     host.dispatchEvent(
       new CustomEvent(this.geometryEventName, {
+        bubbles: true,
+        composed: true,
         detail: {
           intent: "leave",
         },
-        bubbles: true,
-        composed: true,
       }),
     );
   }
@@ -20,12 +21,12 @@ export class GeometryEventUtils {
   public static emitMode(host: LitElement, mode: EmitModes) {
     host.dispatchEvent(
       new CustomEvent(this.geometryEventName, {
+        bubbles: true,
+        composed: true,
         detail: {
           intent: "mode",
           mode,
         },
-        bubbles: true,
-        composed: true,
       }),
     );
   }
@@ -33,12 +34,12 @@ export class GeometryEventUtils {
   public static emitUpdate(host: LitElement, sizing: WidthHeight) {
     host.dispatchEvent(
       new CustomEvent(this.geometryEventName, {
+        bubbles: true,
+        composed: true,
         detail: {
           intent: "update",
           style: sizing,
         },
-        bubbles: true,
-        composed: true,
       }),
     );
   }

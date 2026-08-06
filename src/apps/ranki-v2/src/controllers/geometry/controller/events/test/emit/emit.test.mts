@@ -1,20 +1,23 @@
-import { afterEach, beforeEach, expect, test, vi, type Mock } from "vitest";
-import { GeometryEvents } from "../../geometry-events.mjs";
-import type { LitElement } from "lit";
 import type { WidthHeight } from "_controllers/geometry/geometry-style.types.mjs";
+import type { LitElement } from "lit";
+
+import { afterEach, beforeEach, expect, type Mock, test, vi } from "vitest";
+
 import type { EmitModes } from "../../geometry-events.types.mjs";
 
-const { emitUpdate, emitLeave, emitMode } = vi.hoisted(() => ({
-  emitUpdate: vi.fn(),
+import { GeometryEvents } from "../../geometry-events.mjs";
+
+const { emitLeave, emitMode, emitUpdate } = vi.hoisted(() => ({
   emitLeave: vi.fn(),
   emitMode: vi.fn(),
+  emitUpdate: vi.fn(),
 }));
 
 vi.mock("../../utils/geometry-event-utils.mjs", () => ({
   GeometryEventUtils: class {
-    static emitUpdate = emitUpdate;
     static emitLeave = emitLeave;
     static emitMode = emitMode;
+    static emitUpdate = emitUpdate;
   },
 }));
 
@@ -35,8 +38,8 @@ afterEach(() => {
 
 test("update", () => {
   const dims: WidthHeight = {
-    width: 7,
     height: 11,
+    width: 7,
   };
   events.emit("update", dims);
   expect(emitUpdate).toHaveBeenCalledTimes(1);

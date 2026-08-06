@@ -1,9 +1,10 @@
-import { afterEach, beforeEach, expect, test, vi, type Mock } from "vitest";
 import type { LitElement } from "lit";
 
-const { emitMode, addEventListener, removeEventListener } = vi.hoisted(() => ({
-  emitMode: vi.fn(),
+import { afterEach, beforeEach, expect, type Mock, test, vi } from "vitest";
+
+const { addEventListener, emitMode, removeEventListener } = vi.hoisted(() => ({
   addEventListener: vi.fn(),
+  emitMode: vi.fn(),
   removeEventListener: vi.fn(),
 }));
 
@@ -43,12 +44,12 @@ test("no events", () => {
 });
 
 test("hover event register", () => {
-  new GeometryEvents({ host, events: { hover: true } }).registerListeners();
+  new GeometryEvents({ events: { hover: true }, host }).registerListeners();
   expect(addEventListener).toHaveBeenCalledTimes(2);
 });
 
 test("hover event remove", () => {
-  const events = new GeometryEvents({ host, events: { hover: true } });
+  const events = new GeometryEvents({ events: { hover: true }, host });
   events.registerListeners();
   events.deregisterListeners();
   expect(addEventListener).toHaveBeenCalledTimes(2);

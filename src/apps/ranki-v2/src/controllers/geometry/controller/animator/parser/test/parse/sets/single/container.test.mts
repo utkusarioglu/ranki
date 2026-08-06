@@ -1,14 +1,16 @@
-import { expect, test } from "vitest";
-import { LayoutParser } from "../../../../layout-parser.mjs";
 import type {
   AnimationBlock,
   LayoutParsed,
 } from "_controllers/geometry/controller/animator/animator.types.mjs";
 
+import { expect, test } from "vitest";
+
+import { LayoutParser } from "../../../../layout-parser.mjs";
+
 interface Case {
-  name: string;
   block: AnimationBlock;
   expected: LayoutParsed;
+  name: string;
 }
 
 const CASES: Case[] = [
@@ -18,14 +20,13 @@ const CASES: Case[] = [
       ["to.self.height", 21],
     ] as [string, number][]
   ).map(([input, expected]) => ({
-    name: `root container: ${input}`,
     block: {
       sets: {
         one: {
-          wait: 1,
           expose: {
             height: input,
           },
+          wait: 1,
         },
       },
       // then: {
@@ -44,12 +45,9 @@ const CASES: Case[] = [
     },
     expected: {
       root: undefined,
-      then: undefined,
       sets: {
         one: {
-          wait: 1,
           props: {
-            setName: "one",
             containerExposed: {
               style: {
                 height: expected,
@@ -58,7 +56,9 @@ const CASES: Case[] = [
             selfOverrides: {
               style: {},
             },
+            setName: "one",
           },
+          wait: 1,
           // target: {
           //   props: {
           //     curr: {
@@ -80,6 +80,7 @@ const CASES: Case[] = [
           // },
         },
       },
+      then: undefined,
       // then: {
       //   root: [
       //     {
@@ -98,24 +99,26 @@ const CASES: Case[] = [
       //   ],
       // },
     },
+    name: `root container: ${input}`,
   })),
 ];
 
 CASES.forEach(({ block, expected, name }) => {
   test(name, () => {
     const response = LayoutParser.parse({
+      block,
       curr: {
         actions: ["enter"],
-        context: {
-          index: 0,
-          length: 1,
-          stagger: 0,
-        },
         container: {
           // intent: "enter",
           style: {
             height: 11,
           },
+        },
+        context: {
+          index: 0,
+          length: 1,
+          stagger: 0,
         },
         self: {
           intent: "enter",
@@ -125,7 +128,6 @@ CASES.forEach(({ block, expected, name }) => {
         },
       },
       prev: null,
-      block,
     });
     expect(response).toEqual(expected);
   });

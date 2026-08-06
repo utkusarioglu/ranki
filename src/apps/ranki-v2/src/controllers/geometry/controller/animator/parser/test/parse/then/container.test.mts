@@ -1,14 +1,16 @@
-import { expect, test } from "vitest";
-import { LayoutParser } from "../../../layout-parser.mjs";
 import type {
   AnimationBlock,
   LayoutParsed,
 } from "_controllers/geometry/controller/animator/animator.types.mjs";
 
+import { expect, test } from "vitest";
+
+import { LayoutParser } from "../../../layout-parser.mjs";
+
 interface Case {
-  name: string;
   block: AnimationBlock;
   expected: LayoutParsed;
+  name: string;
 }
 
 const CASES: Case[] = [
@@ -18,18 +20,17 @@ const CASES: Case[] = [
       ["to.self.height", 21],
     ] as [string, number][]
   ).map(([input, expected]) => ({
-    name: `root container: ${input}`,
     block: {
       then: {
         root: [
           {
-            name: "h",
             duration: 0,
             keyframes: [
               {
                 height: input,
               },
             ],
+            name: "h",
           },
         ],
       },
@@ -39,12 +40,12 @@ const CASES: Case[] = [
         root: [
           {
             apply: {
-              name: "h",
               keyframes: [
                 {
                   height: expected,
                 },
               ],
+              name: "h",
               options: {
                 duration: 0,
               },
@@ -53,23 +54,25 @@ const CASES: Case[] = [
         ],
       },
     },
+    name: `root container: ${input}`,
   })),
 ];
 
 CASES.forEach(({ block, expected, name }) => {
   test(name, () => {
     const response = LayoutParser.parse({
+      block,
       curr: {
         actions: ["enter"],
-        context: {
-          index: 0,
-          length: 1,
-          stagger: 0,
-        },
         container: {
           style: {
             height: 11,
           },
+        },
+        context: {
+          index: 0,
+          length: 1,
+          stagger: 0,
         },
         self: {
           intent: "enter",
@@ -79,7 +82,6 @@ CASES.forEach(({ block, expected, name }) => {
         },
       },
       prev: null,
-      block,
     });
     expect(response).toEqual(expected);
   });
