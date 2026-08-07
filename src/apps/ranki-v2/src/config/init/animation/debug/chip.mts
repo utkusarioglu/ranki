@@ -9,10 +9,12 @@ export const CHIP: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              // top: "CONTAINER_TOP",
-              // left: "CONTAINER_LEFT",
-              top: "TOP",
-              left: "LEFT",
+              // top: "to.container.top",
+              // left: "to.container.left",
+              top: "to.self.top",
+              left: "to.self.left",
+              width: "to.self.width",
+              height: "to.self.height",
             },
           ],
         },
@@ -22,20 +24,20 @@ export const CHIP: TargetAnimationSpec = {
           // wait: "STAGGER_INDEX * 1000",
           wait: 0,
           expose: {
-            // width: "CONTAINER_WIDTH",
-            // height: "CONTAINER_HEIGHT",
-            width: "WIDTH",
-            height: "HEIGHT",
+            width: "to.container.width",
+            height: "to.container.height",
+            // width: "to.self.width",
+            // height: "to.self.height",
           },
         },
-        content: {
+        children: {
           // wait: "STAGGER_INDEX * 1000 + 1000",
           wait: 0,
           expose: {
-            left: "LEFT",
-            top: "TOP",
-            width: "WIDTH",
-            height: "HEIGHT",
+            left: "to.self.left",
+            top: "to.self.top",
+            width: "to.self.width",
+            height: "to.self.height",
           },
         },
       },
@@ -60,8 +62,8 @@ export const CHIP: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              top: "CONTAINER_TOP",
-              left: "CONTAINER_LEFT",
+              top: "to.container.top",
+              left: "to.container.left",
             },
           ],
         },
@@ -74,8 +76,8 @@ export const CHIP: TargetAnimationSpec = {
       //     duration: 0,
       //     keyframes: [
       //       {
-      //         top: "CONTAINER_TOP",
-      //         left: "CONTAINER_LEFT",
+      //         top: "to.container.top",
+      //         left: "to.container.left",
       //       },
       //     ],
       //   },
@@ -85,16 +87,16 @@ export const CHIP: TargetAnimationSpec = {
           // wait: "STAGGER_INDEX * 1000",
           wait: 0,
           expose: {
-            width: "CONTAINER_WIDTH",
-            height: "CONTAINER_HEIGHT",
+            width: "to.container.width",
+            height: "to.container.height",
           },
         },
-        content: {
+        children: {
           // wait: "STAGGER_INDEX * 1000 + 1000",
           wait: 0,
           expose: {
-            left: "LEFT",
-            top: "TOP",
+            left: "to.self.left",
+            top: "to.self.top",
           },
         },
       },
@@ -107,8 +109,8 @@ export const CHIP: TargetAnimationSpec = {
     //       duration: 0,
     //       keyframes: [
     //         {
-    //           top: "CONTAINER_TOP",
-    //           left: "CONTAINER_LEFT",
+    //           top: "to.container.top",
+    //           left: "to.container.left",
     //         },
     //       ],
     //     },
@@ -118,16 +120,16 @@ export const CHIP: TargetAnimationSpec = {
     //       // wait: "STAGGER_INDEX * 1000",
     //       wait: 0,
     //       inform: {
-    //         width: "CONTAINER_WIDTH",
-    //         height: "CONTAINER_HEIGHT",
+    //         width: "to.container.width",
+    //         height: "to.container.height",
     //       },
     //     },
     //     content: {
     //       // wait: "STAGGER_INDEX * 1000 + 1000",
     //       wait: 0,
     //       inform: {
-    //         left: "LEFT",
-    //         top: "TOP",
+    //         left: "to.self.left",
+    //         top: "to.self.top",
     //       },
     //     },
     //   },
@@ -139,14 +141,14 @@ export const CHIP: TargetAnimationSpec = {
       //     duration: 1000,
       //     keyframes: [
       //       {
-      //         top: "CONTAINER_TOP",
-      //         left: "CONTAINER_LEFT",
+      //         top: "to.container.top",
+      //         left: "to.container.left",
       //       },
       //     ],
       //   },
       // ],
       sets: {
-        content: {
+        children: {
           // wait: "STAGGER_INDEX * 1000",
           wait: 0,
           expose: {
@@ -158,8 +160,8 @@ export const CHIP: TargetAnimationSpec = {
                 // wait: "STAGGER_INDEX * 1000",
                 expose: {
                   width: 0,
-                  // width: "CONTAINER_WIDTH",
-                  // height: "CONTAINER_HEIGHT",
+                  // width: "to.container.width",
+                  // height: "to.container.height",
                 },
               },
             },

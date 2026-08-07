@@ -9,19 +9,16 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              // height: "CONTAINER_HEIGHT",
-              height: "HEIGHT",
+              height: "to.self.height",
             },
           ],
         },
       ],
       sets: {
-        scroller: {
+        children: {
           expose: {
-            // top: 0,
-            // left: 0,
-            width: "WIDTH",
-            height: "HEIGHT",
+            width: "to.self.width",
+            height: "to.self.height",
           },
         },
       },
@@ -33,42 +30,16 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              // height: "CONTAINER_HEIGHT",
-              left: "LEFT",
-              top: "TOP",
+              left: "to.self.left",
+              top: "to.self.top",
             },
           ],
         },
       ],
-      // targets: {
-      //   scroller: {
-      //     inform: {
-      //       top: 0,
-      //       left: 0,
-      //       width: "WIDTH",
-      //       height: "HEIGHT",
-      //     },
-      //   },
-      // },
     },
     resize: {
-      // root: [
-      // {
-      //   name: "rot",
-      //   duration: 1000,
-      //   keyframes: [
-      //     {
-      //       // skewY: -30,
-      //       // rotate3d: "1 2 3 50",
-      //       // rotate: 360,
-      //       // scale: 1.5,
-      //       // top: 0,
-      //     },
-      //   ],
-      // },
-      // ],
       sets: {
-        scroller: {
+        children: {
           expose: {
             top: 0,
             left: 0,
@@ -76,16 +47,6 @@ export const HUD: TargetAnimationSpec = {
         },
       },
     },
-    // contract: {
-    //   targets: {
-    //     scroller: {
-    //       inform: {
-    //         top: 0,
-    //         left: 0,
-    //       },
-    //     },
-    //   },
-    // },
   },
 
   "hud-scroller": {
@@ -97,11 +58,11 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              // height: "CONTAINER_HEIGHT",
-              height: "HEIGHT",
+              // height: "to.container.height",
+              height: "to.self.height",
               // left: "CONTAINER_WIDTH / 2",
               // top: "-CONTAINER_HEIGHT",
-              top: "TOP",
+              top: "to.self.top",
             },
           ],
           then: {
@@ -113,8 +74,8 @@ export const HUD: TargetAnimationSpec = {
                 keyframes: [
                   {
                     // left: 0,
-                    // width: "CONTAINER_WIDTH",
-                    width: "WIDTH",
+                    // width: "to.container.width",
+                    width: "to.self.width",
                   },
                 ],
               },
@@ -122,18 +83,18 @@ export const HUD: TargetAnimationSpec = {
             sets: {
               bg: {
                 expose: {
-                  // width: "CONTAINER_WIDTH",
-                  // height: "CONTAINER_HEIGHT",
-                  width: "WIDTH",
-                  height: "HEIGHT",
+                  // width: "to.container.width",
+                  // height: "to.container.height",
+                  width: "to.self.width",
+                  height: "to.self.height",
                 },
               },
-              sections: {
+              children: {
                 // wait: 1000,
                 wait: 0,
                 expose: {
-                  // top: "TOP",
-                  // left: "LEFT",
+                  top: "to.self.top",
+                  left: "to.self.left",
                 },
               },
             },
@@ -142,150 +103,67 @@ export const HUD: TargetAnimationSpec = {
       ],
     },
     resize: {
-      // root: [
-      //   {
-      //     name: "size",
-      //     // duration: 1000,
-      //     duration: 0,
-      //     keyframes: [
-      //       {
-      //         // left: 0,
-      //         width: "CONTAINER_WIDTH",
-      //       },
-      //     ],
-      //   },
-      // ],
       sets: {
         bg: {
           expose: {
-            width: "CONTAINER_WIDTH",
-            height: "CONTAINER_HEIGHT",
+            width: "to.container.width",
+            height: "to.container.height",
           },
         },
-        sections: {
-          // wait: 1000,
+        children: {
           wait: 0,
           expose: {
-            top: "TOP",
-            left: "LEFT",
-            width: "WIDTH",
-            height: "HEIGHT",
+            top: "to.self.top",
+            left: "to.self.left",
+            width: "to.self.width",
+            height: "to.self.height",
           },
         },
       },
     },
-    // contract: {
-    //   targets: {
-    //     // TODO list items need to get their z-index set
-    //     sections: {
-    //       inform: {
-    //         top: "TOP",
-    //         left: "LEFT",
-    //       },
-    //       then: {
-    //         root: [
-    //           {
-    //             name: "position",
-    //             // duration: 1000,
-    //             duration: 0,
-    //             keyframes: [
-    //               {
-    //                 width: "CONTAINER_WIDTH",
-    //               },
-    //             ],
-    //           },
-    //         ],
-    //         targets: {
-    //           bg: {
-    //             // wait: 1000,
-    //             inform: {
-    //               width: "CONTAINER_WIDTH",
-    //               height: "CONTAINER_HEIGHT",
-    //             },
-    //           },
-    //         },
-    //       },
-    //     },
-    //   },
-    // },
   },
 
   "hud-bg": {
     enter: {
       root: [
         {
-          name: "height",
+          name: "init",
           duration: 0,
           keyframes: [
             {
-              // height: "CONTAINER_HEIGHT",
-              height: "HEIGHT",
+              height: "to.container.height",
             },
           ],
         },
         {
           name: "opacity",
-          // duration: 1000,
           duration: 0,
           keyframes: [
             {
-              // width: "CONTAINER_WIDTH",
-              width: "WIDTH",
+              width: "to.container.width",
               opacity: 1,
             },
           ],
         },
       ],
     },
-    // move: {
-    //   root: [
-    //     {
-    //       name: "position",
-    //       duration: 0,
-    //       keyframes: [
-    //         {
-    //           left: "LEFT",
-    //           top: "TOP",
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
     resize: {
       root: [
         {
           name: "width",
-          // duration: 1000,
           duration: 0,
           keyframes: [
             {
-              // width: "CONTAINER_WIDTH",
-              width: "WIDTH",
+              width: "to.container.width",
             },
           ],
         },
       ],
     },
-    // contract: {
-    //   root: [
-    //     {
-    //       name: "opacity",
-    //       // duration: 1000,
-    //       duration: 0,
-    //       keyframes: [
-    //         {
-    //           width: "CONTAINER_WIDTH",
-    //           opacity: 1,
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
     leave: {
       root: [
         {
           name: "opacity",
-          // duration: 1000,
           duration: 0,
           keyframes: [
             {

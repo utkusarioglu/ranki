@@ -35,7 +35,7 @@ export class GeometryEval {
       },
     };
 
-    const is = {
+    const changed = {
       height: {
         enter: !has.prev.height && has.curr.height,
         leave: has.prev.height && !has.curr.height,
@@ -53,8 +53,9 @@ export class GeometryEval {
     const isEnter = curr.self.intent === "enter";
     const isLeave = curr.self.intent === "leave";
     const isUpdate = curr.self.intent === "update";
-    const isResize = (is.width.resize || is.height.resize) && isUpdate;
-    const isMove = is.top || is.left;
+    const isResize =
+      (changed.width.resize || changed.height.resize) && isUpdate;
+    const isMove = changed.top || changed.left;
 
     const actions = new Set<LocalAction>();
     if (isEnter) actions.add("enter");

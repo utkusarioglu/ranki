@@ -1,6 +1,9 @@
 import { DEBUG_TAG } from "_/debug/debug.constants.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
-import type { InformSetProps } from "_controllers/geometry/controller/animator/animator.types.mjs";
+import type {
+  InformSetProps,
+  LayoutParsed,
+} from "_controllers/geometry/controller/animator/animator.types.mjs";
 import type { LayoutSizing } from "_controllers/geometry/controller/sets/children/layout/layout-utils.types.mjs";
 import type {
   CurrentAppliedStyle,
@@ -8,6 +11,16 @@ import type {
 } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
 import type { LitElement } from "lit";
 
+interface AnimatorUpdateComposedProps {
+  host: LitElement;
+  composed: LayoutParsed;
+}
+
+interface AnimatorPlayNameProps {
+  host: LitElement;
+  finalOptions: KeyframeAnimationOptions;
+  finalKeyframes: Keyframe[];
+}
 interface InformStyleDebug {
   host: LitElement;
   curr: CurrentAppliedStyle;
@@ -53,9 +66,31 @@ export class DebugUtils {
 
   public static animatorUpdate(props: AnimatorUpdate) {
     if (props.host.tagName === DEBUG_TAG)
-      console.log("animator.updateStyle", {
+      console.log("animator.update", {
         curr: props.curr,
         prev: props.prev,
+      });
+  }
+
+  public static animatorUpdateComposed({
+    host,
+    composed,
+  }: AnimatorUpdateComposedProps) {
+    if (host.tagName === DEBUG_TAG)
+      console.log("animator.update.composed", {
+        composed,
+      });
+  }
+
+  public static animatorPlayName({
+    host,
+    finalKeyframes,
+    finalOptions,
+  }: AnimatorPlayNameProps) {
+    if (host.tagName === DEBUG_TAG)
+      console.log("animator.playName", {
+        finalKeyframes,
+        finalOptions,
       });
   }
 }

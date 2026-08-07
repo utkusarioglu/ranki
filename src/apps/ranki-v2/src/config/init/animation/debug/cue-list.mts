@@ -10,10 +10,10 @@ export const CUE_LIST: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              // top: "CONTAINER_TOP",
-              // left: "CONTAINER_LEFT",
-              top: "TOP",
-              left: "LEFT",
+              // top: "to.container.top",
+              // left: "to.container.left",
+              top: "to.self.top",
+              left: "to.self.left",
             },
           ],
         },
@@ -21,18 +21,18 @@ export const CUE_LIST: TargetAnimationSpec = {
       sets: {
         bg: {
           expose: {
-            // width: "CONTAINER_WIDTH",
-            // height: "CONTAINER_HEIGHT",
-            width: "WIDTH",
-            height: "HEIGHT",
+            // width: "to.container.width",
+            // height: "to.container.height",
+            width: "to.self.width",
+            height: "to.self.height",
           },
         },
-        lists: {
+        children: {
           // wait: 1000,
           wait: 0,
           expose: {
-            top: "TOP",
-            left: "LEFT",
+            top: "to.self.top",
+            left: "to.self.left",
           },
         },
       },
@@ -43,8 +43,8 @@ export const CUE_LIST: TargetAnimationSpec = {
           name: "position",
           keyframes: [
             {
-              top: "CONTAINER_TOP",
-              left: "CONTAINER_LEFT",
+              top: "to.container.top",
+              left: "to.container.left",
             },
           ],
           // duration: 1000,
@@ -58,8 +58,8 @@ export const CUE_LIST: TargetAnimationSpec = {
       //     name: "position",
       //     keyframes: [
       //       {
-      //         top: "CONTAINER_TOP",
-      //         left: "CONTAINER_LEFT",
+      //         top: "to.container.top",
+      //         left: "to.container.left",
       //       },
       //     ],
       //     // duration: 1000,
@@ -69,16 +69,16 @@ export const CUE_LIST: TargetAnimationSpec = {
       sets: {
         bg: {
           expose: {
-            width: "CONTAINER_WIDTH",
-            height: "CONTAINER_HEIGHT",
+            width: "to.container.width",
+            height: "to.container.height",
           },
         },
-        lists: {
+        children: {
           // wait: 1000,
           wait: 0,
           expose: {
-            top: "TOP",
-            left: "LEFT",
+            top: "to.self.top",
+            left: "to.self.left",
           },
         },
       },
@@ -87,8 +87,8 @@ export const CUE_LIST: TargetAnimationSpec = {
     //   targets: {
     //     lists: {
     //       inform: {
-    //         top: "TOP",
-    //         left: "LEFT",
+    //         top: "to.self.top",
+    //         left: "to.self.left",
     //       },
     //       then: {
     //         root: [
@@ -98,8 +98,8 @@ export const CUE_LIST: TargetAnimationSpec = {
     //             duration: 0,
     //             keyframes: [
     //               {
-    //                 top: "CONTAINER_TOP",
-    //                 left: "CONTAINER_LEFT",
+    //                 top: "to.container.top",
+    //                 left: "to.container.left",
     //               },
     //             ],
     //           },
@@ -108,8 +108,8 @@ export const CUE_LIST: TargetAnimationSpec = {
     //           bg: {
     //             // wait: 1000,
     //             inform: {
-    //               width: "CONTAINER_WIDTH",
-    //               height: "CONTAINER_HEIGHT",
+    //               width: "to.container.width",
+    //               height: "to.container.height",
     //             },
     //           },
     //         },

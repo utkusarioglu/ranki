@@ -28,7 +28,7 @@ export class Animator {
     this.role = role;
     this.callbacks = callbacks;
     this.sequencer = new AnimationSequencer({
-      informSet: this.callbacks.informSets.bind(this),
+      informSets: this.callbacks.informSets,
       playName: this.playName.bind(this),
     });
   }
@@ -47,6 +47,7 @@ export class Animator {
           prev,
           role: this.role,
         });
+        DebugUtils.animatorUpdateComposed({ host: this.host, composed });
         return this.sequencer.build(composed);
       }),
     );
@@ -58,7 +59,7 @@ export class Animator {
     options,
   }: AnimatorPlayParams): Promise<void> {
     const finalOptions: KeyframeAnimationOptions = {
-      ...KeyframeUtils.optionsDefaults,
+      ...KeyframeUtils.OPTIONS_DEFAULTS,
       // easing: "linear",
       // easing: "ease-in-out",
       // easing: "cubic-bezier(0.6, -1, 0.2, 2.4)",
@@ -66,23 +67,33 @@ export class Animator {
       ...options,
     };
     const finalKeyframes = KeyframeUtils.produceKeyframes(keyframes);
+    DebugUtils.animatorPlayName({
+      host: this.host,
+      finalOptions,
+      finalKeyframes,
+    });
     const anim = this.host.animate(finalKeyframes, finalOptions);
-    const r = this.running.get(name);
-    if (r) {
-      r.oncancel = (_ev) => {
-        if (r.playState === "running") {
-          console.warn(
-            "Animation cancelled while running.",
-            "Name: ",
-            name,
-            "tag: ",
-            this.host.tagName,
-          );
-        }
-      };
-      r.commitStyles();
-      r.cancel();
-    }
+    // const r = this.running.get(name);
+    // if (r) {
+    //   const names: string[] = [];
+    //   for (const [n, _] of this.running) {
+    //     names.push(n);
+    //   }
+    //   console.log("rr", name, this.host.tagName, names, r);
+    //   r.oncancel = (_ev) => {
+    //     if (r.playState === "running") {
+    //       console.warn(
+    //         "Animation cancelled while running.",
+    //         "Name: ",
+    //         name,
+    //         "tag: ",
+    //         this.host.tagName,
+    //       );
+    //     }
+    //   };
+    //   r.commitStyles();
+    //   r.cancel();
+    // }
     this.running.set(name, anim);
     await anim.finished;
   }

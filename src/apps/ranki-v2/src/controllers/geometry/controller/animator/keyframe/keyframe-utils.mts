@@ -1,7 +1,7 @@
 import type { AnimationKeyframeStyles } from "../animator.types.mjs";
 
 export class KeyframeUtils {
-  public static optionsDefaults: KeyframeAnimationOptions = {
+  public static OPTIONS_DEFAULTS: KeyframeAnimationOptions = {
     // easing: "linear",
     easing: "ease-in-out",
     // easing: "cubic-bezier(0.6, -1, 0.2, 2.4)",

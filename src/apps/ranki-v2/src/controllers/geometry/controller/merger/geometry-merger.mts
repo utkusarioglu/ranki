@@ -43,7 +43,6 @@ export class GeometryMerger {
 
     const actions = GeometryEval.evaluateActions(curr, prev);
     return { ...curr, actions };
-    // return { actions, curr };
   }
 
   public static createSetItemInformer({
@@ -68,13 +67,21 @@ export class GeometryMerger {
     sizing: LayoutSizing | null,
     index: number,
   ): CurrentAppliedStyle["self"] {
-    assertNotNull(sizing, {
-      why: "Cannot create merged style without valid sizing",
-    });
+    const empty = {
+      intent: "none" as const,
+      style: { width: 0, height: 0, top: 0, left: 0 },
+    };
+    if (!sizing) return empty;
     const item = sizing.set[index];
-    assertNotUndefined(item, {
-      why: "Cannot create merged style if item size is undefined",
-    });
+    if (!item) return empty;
+
+    // assertNotNull(sizing, {
+    //   why: "Cannot create merged style without valid sizing",
+    // });
+    // const item = sizing.set[index];
+    // assertNotUndefined(item, {
+    //   why: "Cannot create merged style if item size is undefined",
+    // });
     return {
       intent: item.intent,
       style: item.style,

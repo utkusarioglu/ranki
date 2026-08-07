@@ -8,8 +8,8 @@ export const BADGE_LIST: TargetAnimationSpec = {
           name: "init",
           keyframes: [
             {
-              top: "TOP",
-              left: "LEFT",
+              top: "to.self.top",
+              left: "to.self.left",
             },
           ],
           // delay: 0,
@@ -21,19 +21,19 @@ export const BADGE_LIST: TargetAnimationSpec = {
         bg: {
           // wait: 0,
           expose: {
-            // width: "CONTAINER_WIDTH",
-            // height: "CONTAINER_HEIGHT",
-            width: "WIDTH",
-            height: "HEIGHT",
+            // width: "to.container.width",
+            // height: "to.container.height",
+            width: "to.self.width",
+            height: "to.self.height",
           },
         },
-        chips: {
+        children: {
           // wait: 1000,
           // wait: 0,
           expose: {
-            top: "TOP",
-            left: "LEFT",
-            width: "WIDTH",
+            top: "to.self.top",
+            left: "to.self.left",
+            width: "to.self.width",
           },
         },
       },
@@ -44,8 +44,8 @@ export const BADGE_LIST: TargetAnimationSpec = {
           name: "position",
           keyframes: [
             {
-              top: "TOP",
-              left: "LEFT",
+              top: "to.self.top",
+              left: "to.self.left",
             },
           ],
           delay: 0,
@@ -60,8 +60,8 @@ export const BADGE_LIST: TargetAnimationSpec = {
       //     name: "position",
       //     keyframes: [
       //       {
-      //         top: "TOP",
-      //         left: "LEFT",
+      //         top: "to.self.top",
+      //         left: "to.self.left",
       //       },
       //     ],
       //     delay: 0,
@@ -73,55 +73,20 @@ export const BADGE_LIST: TargetAnimationSpec = {
         bg: {
           wait: 0,
           expose: {
-            width: "CONTAINER_WIDTH",
-            height: "CONTAINER_HEIGHT",
+            width: "to.container.width",
+            height: "to.container.height",
           },
         },
-        chips: {
+        children: {
           // wait: 1000,
           wait: 0,
           expose: {
-            top: "TOP",
-            left: "LEFT",
-            width: "WIDTH",
+            top: "to.self.top",
+            left: "to.self.left",
+            width: "to.self.width",
           },
         },
       },
     },
-    // contract: {
-    //   targets: {
-    //     chips: {
-    //       inform: {
-    //         top: "TOP",
-    //         left: "LEFT",
-    //         width: "WIDTH",
-    //       },
-    //       then: {
-    //         root: [
-    //           {
-    //             name: "position",
-    //             keyframes: [
-    //               {
-    //                 top: "CONTAINER_TOP",
-    //                 left: "CONTAINER_LEFT",
-    //               },
-    //             ],
-    //             // duration: 1000,
-    //             duration: 0,
-    //           },
-    //         ],
-    //         targets: {
-    //           bg: {
-    //             wait: 0,
-    //             inform: {
-    //               width: "CONTAINER_WIDTH",
-    //               height: "CONTAINER_HEIGHT",
-    //             },
-    //           },
-    //         },
-    //       },
-    //     },
-    //   },
-    // },
   },
 };

@@ -50,14 +50,14 @@ export const TEXT: TargetAnimationSpec = {
     enter: {
       root: [
         {
-          name: "height",
+          name: "to.self.height",
           duration: 0,
           keyframes: [
             {
-              // height: "CONTAINER_HEIGHT",
-              height: "HEIGHT",
-              // top: "CONTAINER_TOP",
-              // left: "CONTAINER_LEFT",
+              // height: "to.container.height",
+              height: "to.self.height",
+              // top: "to.container.top",
+              // left: "to.container.left",
             },
           ],
         },
@@ -68,17 +68,17 @@ export const TEXT: TargetAnimationSpec = {
           keyframes: [
             {
               opacity: 1,
-              // width: "CONTAINER_WIDTH",
-              width: "WIDTH",
+              // width: "to.container.width",
+              width: "to.self.width",
             },
           ],
         },
       ],
       sets: {
-        "text-span": {
+        children: {
           expose: {
-            width: "WIDTH",
-            height: "HEIGHT",
+            width: "to.self.width",
+            height: "to.self.height",
           },
         },
       },
@@ -90,9 +90,9 @@ export const TEXT: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              // height: "CONTAINER_HEIGHT",
-              top: "CONTAINER_TOP",
-              left: "CONTAINER_LEFT",
+              // height: "to.container.height",
+              top: "to.container.top",
+              left: "to.container.left",
             },
           ],
         },
@@ -103,7 +103,7 @@ export const TEXT: TargetAnimationSpec = {
         //   keyframes: [
         //     {
         //       opacity: 1,
-        //       width: "CONTAINER_WIDTH",
+        //       width: "to.container.width",
         //     },
         //   ],
         // },
@@ -112,13 +112,13 @@ export const TEXT: TargetAnimationSpec = {
     resize: {
       root: [
         // {
-        //   name: "height",
+        //   name: "to.self.height",
         //   duration: 0,
         //   keyframes: [
         //     {
-        //       height: "CONTAINER_HEIGHT",
-        //       // top: "CONTAINER_TOP",
-        //       // left: "CONTAINER_LEFT",
+        //       height: "to.container.height",
+        //       // top: "to.container.top",
+        //       // left: "to.container.left",
         //     },
         //   ],
         // },
@@ -129,16 +129,16 @@ export const TEXT: TargetAnimationSpec = {
           keyframes: [
             {
               opacity: 1,
-              width: "CONTAINER_WIDTH",
+              width: "to.container.width",
             },
           ],
         },
       ],
       sets: {
-        "text-span": {
+        children: {
           expose: {
-            width: "WIDTH",
-            height: "HEIGHT",
+            width: "to.self.width",
+            height: "to.self.height",
           },
         },
       },
@@ -150,9 +150,9 @@ export const TEXT: TargetAnimationSpec = {
     //     //   duration: 0,
     //     //   keyframes: [
     //     //     {
-    //     //       height: "CONTAINER_HEIGHT",
-    //     //       top: "CONTAINER_TOP",
-    //     //       left: "CONTAINER_LEFT",
+    //     //       height: "to.container.height",
+    //     //       top: "to.container.top",
+    //     //       left: "to.container.left",
     //     //     },
     //     //   ],
     //     // },
@@ -163,7 +163,7 @@ export const TEXT: TargetAnimationSpec = {
     //       keyframes: [
     //         {
     //           opacity: 1,
-    //           width: "CONTAINER_WIDTH",
+    //           width: "to.container.width",
     //         },
     //       ],
     //     },
@@ -171,10 +171,10 @@ export const TEXT: TargetAnimationSpec = {
     //   targets: {
     //     "text-span": {
     //       inform: {
-    //         // width: "CONTAINER_WIDTH",
-    //         // height: "CONTAINER_HEIGHT",
-    //         width: "WIDTH",
-    //         height: "HEIGHT",
+    //         // width: "to.container.width",
+    //         // height: "to.container.height",
+    //         width: "to.self.width",
+    //         height: "to.self.height",
     //       },
     //     },
     //   },

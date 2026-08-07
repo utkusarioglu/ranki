@@ -41,10 +41,14 @@ export class AnimationSequencer {
   private async sequenceSets(l: LayoutParsedSets | undefined): Promise<void> {
     if (!l) return Promise.resolve();
     await Promise.all(
-      Object.values(l).map(async ({ props: target, then, wait }) => {
-        if (wait) await TimingUtils.delay(wait);
-        await this.callbacks.informSet(target);
-        if (then) await this.sequenceThen(then);
+      Object.values(l).map(async ({ props, then, wait }) => {
+        try {
+          if (wait) await TimingUtils.delay(wait);
+          await this.callbacks.informSets(props);
+          if (then) await this.sequenceThen(then);
+        } catch (e) {
+          console.log("sequenceSets", e);
+        }
       }),
     );
   }

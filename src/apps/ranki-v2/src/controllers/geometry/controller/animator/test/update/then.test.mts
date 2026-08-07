@@ -104,7 +104,7 @@ test("depth 2", async () => {
       },
     ],
     {
-      ...KeyframeUtils.optionsDefaults,
+      ...KeyframeUtils.OPTIONS_DEFAULTS,
       duration: 2000,
     },
   );
@@ -116,7 +116,7 @@ test("depth 2", async () => {
       },
     ],
     {
-      ...KeyframeUtils.optionsDefaults,
+      ...KeyframeUtils.OPTIONS_DEFAULTS,
       duration: 3000,
     },
   );
@@ -195,7 +195,7 @@ test("depth 2 call 3", async () => {
       },
     ],
     {
-      ...KeyframeUtils.optionsDefaults,
+      ...KeyframeUtils.OPTIONS_DEFAULTS,
       duration: 2000,
     },
   );
@@ -207,7 +207,7 @@ test("depth 2 call 3", async () => {
       },
     ],
     {
-      ...KeyframeUtils.optionsDefaults,
+      ...KeyframeUtils.OPTIONS_DEFAULTS,
       duration: 5000,
     },
   );
@@ -219,7 +219,7 @@ test("depth 2 call 3", async () => {
       },
     ],
     {
-      ...KeyframeUtils.optionsDefaults,
+      ...KeyframeUtils.OPTIONS_DEFAULTS,
       duration: 3000,
     },
   );

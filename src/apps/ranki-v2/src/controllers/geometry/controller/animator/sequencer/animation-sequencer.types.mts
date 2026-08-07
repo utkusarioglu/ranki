@@ -3,6 +3,6 @@ import type { GeometryControllerInformSetCb } from "_controllers/geometry/contro
 import type { AnimatorPlayCb } from "../animator.types.mjs";
 
 export interface AnimationSequencerCallbacks {
-  informSet: GeometryControllerInformSetCb;
+  informSets: GeometryControllerInformSetCb;
   playName: AnimatorPlayCb;
 }

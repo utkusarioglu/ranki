@@ -90,7 +90,7 @@ test("single keyframe", async () => {
       },
     ],
     {
-      ...KeyframeUtils.optionsDefaults,
+      ...KeyframeUtils.OPTIONS_DEFAULTS,
       duration: 1000,
     },
   );
@@ -148,7 +148,7 @@ test("two keyframes", async () => {
       },
     ],
     {
-      ...KeyframeUtils.optionsDefaults,
+      ...KeyframeUtils.OPTIONS_DEFAULTS,
       duration: 2000,
     },
   );
