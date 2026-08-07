@@ -3,7 +3,7 @@ import type { LitElement } from "lit";
 import type { LocalAction } from "../../geometry-intent.types.mjs";
 import type { WidthHeight } from "../../geometry-style.types.mjs";
 
-export type EmitModes = "hover-end" | "hover-start";
+export type EmitModes = "hover-end" | "hover-start" | "idle";
 
 export type GeometryEventCb<Instance> = (
   s: Instance,
@@ -31,6 +31,7 @@ export type R2CNewChildSizeEvent =
 
 interface R2CNewChildLeave {
   intent: "leave";
+  mode?: EmitModes;
 }
 
 interface R2CNewChildMode {
@@ -40,12 +41,15 @@ interface R2CNewChildMode {
 
 interface R2CNewChildSizeConnected {
   intent: "connected";
+  mode?: EmitModes;
 }
 
 interface R2CNewChildSizeDisconnected {
   intent: "disconnected";
+  mode?: EmitModes;
 }
 interface R2CNewChildSizeUpdate {
   intent: "update";
+  mode?: EmitModes;
   style: WidthHeight;
 }

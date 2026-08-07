@@ -5,7 +5,6 @@ import { TimingUtils } from "_utils/timing.utils.mjs";
 
 import type { R2CNewChildSizeEvent } from "../../events/geometry-events.types.mjs";
 import type {
-  ChildrenSizing,
   ChildrenUpdateSizingReturn,
   GeometryChildrenProps,
   GeometrySetLayoutCb,
@@ -14,6 +13,7 @@ import type {
 import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
 import { WatcherSet } from "../watcher-set/watcher-set.mjs";
 import { ChildrenRegistry } from "./registry/children-registry.mjs";
+import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
 
 export class GeometryChildren<
   Instance extends LitElement,
@@ -25,17 +25,20 @@ export class GeometryChildren<
 
   constructor(host: Instance, props: GeometryChildrenProps<Instance>) {
     super(host, props);
-    this.layout = props.layout;
+    this.layout = props.layout || (() => LayoutUtils.row({}));
     this.isRoot = props.isRoot || false;
     this.diff = props.diff;
   }
 
-  public async onEmit(target: R2C, detail: R2CNewChildSizeEvent) {
+  public async onEmit(
+    target: R2C,
+    detail: R2CNewChildSizeEvent,
+  ): ChildrenUpdateSizingReturn {
     this.registry.update(target, detail);
     return this.updateSizing(detail);
   }
 
-  private async composeResolution(): Promise<ChildrenSizing | null> {
+  private async composeResolution(): ChildrenUpdateSizingReturn {
     if (this.requested) return null;
     this.requested = true;
 
@@ -47,7 +50,6 @@ export class GeometryChildren<
     const sizing = layoutCallback(ordered);
 
     this.requested = false;
-    if (!sizing) return null;
 
     if (this.isRoot === true)
       return {

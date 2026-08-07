@@ -1,31 +1,39 @@
-import type { ComponentDims } from "../controller/types/geometry-controller.types.mjs";
+import type { EmittedComponentState } from "../controller/sets/children/registry/children-registr.types.mjs";
 import type {
+  LayoutSizingCallback,
   LayoutGaps,
   LayoutGapsParams,
   LayoutSizing,
 } from "./layout-utils.types.mjs";
 
 export class LayoutUtils {
+  public static EMPTY_SIZING: LayoutSizing = {
+    container: {
+      width: 0,
+      height: 0,
+    },
+    set: [],
+  };
   /**
    * main axis is inline, cross axis is block
    */
-  public static last(
-    gaps: LayoutGapsParams = {},
-  ): (dims: ComponentDims[]) => LayoutSizing | null {
-    return (dims: ComponentDims[]) => {
+  public static last(gaps: LayoutGapsParams = {}): LayoutSizingCallback {
+    // (dims: ComponentDims[]) => LayoutSizing | null {
+    return (dims: EmittedComponentState[]) => {
       const last = dims.at(-1);
-      if (!last) return null;
+      if (!last) return this.EMPTY_SIZING;
 
+      const lastWidth = last.style?.width || 0;
+      const lastHeight = last.style?.height || 0;
       const zeros = Array.from({ length: dims.length - 1 }, () => 0);
-      const width =
-        last.style.width + (gaps.main?.start || 0) + (gaps.main?.end || 0);
+      const width = lastWidth + (gaps.main?.start || 0) + (gaps.main?.end || 0);
       const height =
-        last.style.height + (gaps.cross?.start || 0) + (gaps.cross?.end || 0);
+        lastHeight + (gaps.cross?.start || 0) + (gaps.cross?.end || 0);
 
       const lefts = [...zeros, gaps.main?.start || 0];
       const tops = [...zeros, gaps.cross?.start || 0];
-      const heights = [...zeros, last.style.height];
-      const widths = [...zeros, last.style.width];
+      const heights = [...zeros, lastHeight];
+      const widths = [...zeros, lastWidth];
       const intents = dims.map((d) => d.intent);
 
       const set = Array.from({ length: dims.length }, (_, i) => i).map((i) => ({
@@ -48,15 +56,13 @@ export class LayoutUtils {
     };
   }
 
-  public static row(
-    gaps: LayoutGapsParams = {},
-  ): (d: ComponentDims[]) => LayoutSizing {
-    return (dims: ComponentDims[]) => {
+  public static row(gaps: LayoutGapsParams = {}): LayoutSizingCallback {
+    return (dims: EmittedComponentState[]) => {
       const s = LayoutUtils.linear(
         dims,
         gaps,
-        (v) => v.width,
-        (v) => v.height,
+        (v) => (v ? v.width : 0),
+        (v) => (v ? v.height : 0),
       );
 
       const sizing: LayoutSizing = {
@@ -81,10 +87,10 @@ export class LayoutUtils {
   }
 
   private static linear(
-    dims: ComponentDims[],
+    dims: EmittedComponentState[],
     gaps: LayoutGapsParams = {},
-    getMain: (v: ComponentDims["style"]) => number,
-    getCross: (v: ComponentDims["style"]) => number,
+    getMain: (v: EmittedComponentState["style"]) => number,
+    getCross: (v: EmittedComponentState["style"]) => number,
   ) {
     const main = LayoutUtils.normalizeGaps(gaps.main);
     const cross = LayoutUtils.normalizeGaps(gaps.cross);

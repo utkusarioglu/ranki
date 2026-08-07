@@ -4,13 +4,14 @@ import type {
   LayoutGapsParams,
   LayoutSizing,
 } from "../../layout-utils.types.mjs";
-import type { ComponentDims } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
+import type { EmittedComponentState } from "_controllers/geometry/controller/sets/children/registry/children-registr.types.mjs";
 
 test("only last has size", () => {
   const gaps: LayoutGapsParams = { main: {}, cross: {} };
-  const dims: ComponentDims[] = [
+  const dims: EmittedComponentState[] = [
     {
       intent: "update",
+      mode: "idle",
       style: {
         width: 0,
         height: 0,
@@ -18,6 +19,7 @@ test("only last has size", () => {
     },
     {
       intent: "enter",
+      mode: "idle",
       style: {
         width: 17,
         height: 23,
@@ -56,9 +58,10 @@ test("only last has size", () => {
 
 test("last doesn't have size", () => {
   const gaps: LayoutGapsParams = { main: {}, cross: {} };
-  const dims: ComponentDims[] = [
+  const dims: EmittedComponentState[] = [
     {
       intent: "enter",
+      mode: "idle",
       style: {
         width: 17,
         height: 23,
@@ -66,6 +69,7 @@ test("last doesn't have size", () => {
     },
     {
       intent: "update",
+      mode: "idle",
       style: {
         width: 0,
         height: 0,

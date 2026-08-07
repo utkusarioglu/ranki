@@ -10,6 +10,7 @@ import type { GeometrySetsConstructorParams } from "./sets.types.mjs";
 
 import { GeometryChildren } from "./children/children.mjs";
 import { GeometryWatchers } from "./watcher/watcher.mjs";
+import type { ChildrenUpdateSizingReturn } from "./children/children.types.mjs";
 
 export class GeometrySets<Instance extends LitElement> {
   private readonly children: GeometryChildren<Instance> | undefined;
@@ -34,7 +35,10 @@ export class GeometrySets<Instance extends LitElement> {
     ]);
   }
 
-  public async onEmit(target: R2C, detail: R2CNewChildSizeEvent) {
+  public async onEmit(
+    target: R2C,
+    detail: R2CNewChildSizeEvent,
+  ): ChildrenUpdateSizingReturn {
     assertNotUndefined(this.children, {
       why: "Received emit when no children has been defined",
     });

@@ -1,10 +1,10 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import { assertNotUndefined } from "_error/assertions.mjs";
 import type { R2CNewChildSizeEvent } from "../../../events/geometry-events.types.mjs";
-import type { ComponentDims } from "../../../types/geometry-controller.types.mjs";
+import type { EmittedComponentState } from "./children-registr.types.mjs";
 
 export class ChildrenRegistry {
-  private readonly dims = new WeakMap<R2C, ComponentDims>();
+  private readonly dims = new WeakMap<R2C, EmittedComponentState>();
 
   /**
    * @dev
@@ -17,41 +17,39 @@ export class ChildrenRegistry {
         break;
       case "leave":
         this.dims.set(target, {
+          mode: "idle",
+          ...this.dims.get(target),
           intent: detail.intent,
-          style: {
-            height: 0,
-            width: 0,
-          },
         });
         break;
       case "update":
         if (this.dims.has(target)) {
           this.dims.set(target, {
+            ...this.dims.get(target),
             intent: detail.intent,
+            mode: detail.mode || "idle",
             style: detail.style,
             // ...detail.rect,
           });
         } else {
           this.dims.set(target, {
             intent: "enter",
+            mode: "idle",
             style: detail.style,
           });
         }
         break;
       case "mode":
-        this.dims.set(
-          target,
-          // @ts-expect-error #1
-          {
-            ...this.dims.get(target),
-            mode: detail.mode,
-          },
-        );
+        this.dims.set(target, {
+          intent: "enter",
+          ...this.dims.get(target),
+          mode: detail.mode,
+        });
     }
   }
 
   public getOrdered(serial: R2C[]) {
-    const ordered: ComponentDims[] = [];
+    const ordered: EmittedComponentState[] = [];
     for (const component of serial) {
       const dims = this.dims.get(component);
       assertNotUndefined(dims, {

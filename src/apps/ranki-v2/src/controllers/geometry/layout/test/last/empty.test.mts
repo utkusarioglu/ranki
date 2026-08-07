@@ -1,13 +1,13 @@
 import { expect, test } from "vitest";
 import { LayoutUtils } from "../../layout-utils.mjs";
 import type { LayoutGapsParams } from "../../layout-utils.types.mjs";
-import type { ComponentDims } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
+import type { EmittedComponentState } from "_controllers/geometry/controller/sets/children/registry/children-registr.types.mjs";
 
 test("empty gapless", () => {
   const gaps: LayoutGapsParams = { main: {}, cross: {} };
-  const dims: ComponentDims[] = [];
+  const dims: EmittedComponentState[] = [];
   const response = LayoutUtils.last(gaps)(dims);
-  const expected = null;
+  const expected = LayoutUtils.EMPTY_SIZING;
   expect(response).toEqual(expected);
 });
 
@@ -18,9 +18,9 @@ test("empty main start gap", () => {
     },
     cross: {},
   };
-  const dims: ComponentDims[] = [];
+  const dims: EmittedComponentState[] = [];
   const response = LayoutUtils.last(gaps)(dims);
-  const expected = null;
+  const expected = LayoutUtils.EMPTY_SIZING;
   expect(response).toEqual(expected);
 });
 
@@ -31,9 +31,9 @@ test("empty main end gap", () => {
     },
     cross: {},
   };
-  const dims: ComponentDims[] = [];
+  const dims: EmittedComponentState[] = [];
   const response = LayoutUtils.last(gaps)(dims);
-  const expected = null;
+  const expected = LayoutUtils.EMPTY_SIZING;
   expect(response).toEqual(expected);
 });
 
@@ -44,9 +44,9 @@ test("empty main mid gap", () => {
     },
     cross: {},
   };
-  const dims: ComponentDims[] = [];
+  const dims: EmittedComponentState[] = [];
   const response = LayoutUtils.last(gaps)(dims);
-  const expected = null;
+  const expected = LayoutUtils.EMPTY_SIZING;
   expect(response).toEqual(expected);
 });
 
@@ -57,9 +57,9 @@ test("empty cross start gap", () => {
     },
     main: {},
   };
-  const dims: ComponentDims[] = [];
+  const dims: EmittedComponentState[] = [];
   const response = LayoutUtils.last(gaps)(dims);
-  const expected = null;
+  const expected = LayoutUtils.EMPTY_SIZING;
   expect(response).toEqual(expected);
 });
 
@@ -70,8 +70,8 @@ test("empty cross end gap", () => {
     },
     main: {},
   };
-  const dims: ComponentDims[] = [];
+  const dims: EmittedComponentState[] = [];
   const response = LayoutUtils.last(gaps)(dims);
-  const expected = null;
+  const expected = LayoutUtils.EMPTY_SIZING;
   expect(response).toEqual(expected);
 });

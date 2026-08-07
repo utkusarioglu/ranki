@@ -2,8 +2,8 @@
 import { afterEach, beforeEach, expect, test, vi, type Mock } from "vitest";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { R2CNewChildSizeEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
-import type { ComponentDims } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
 import { ChildrenRegistry } from "../children-registry.mjs";
+import type { EmittedComponentState } from "../children-registr.types.mjs";
 
 const target = vi.fn() as unknown as R2C;
 
@@ -58,12 +58,9 @@ test("leave", () => {
   const detail: R2CNewChildSizeEvent = {
     intent: "leave",
   };
-  const expected: ComponentDims = {
+  const expected: EmittedComponentState = {
     intent: "leave",
-    style: {
-      width: 0,
-      height: 0,
-    },
+    mode: "idle",
   };
   registry.update(target, detail);
   expect(set).toHaveBeenCalledTimes(1);
@@ -78,10 +75,14 @@ test("update", () => {
       height: 7,
     },
   };
-  const expected: ComponentDims = detail;
-  // @ts-expect-error illegal access
+  const expected: EmittedComponentState = {
+    ...detail,
+    mode: "idle",
+  };
+  // @ts-expect-error
   registry.dims.set(target, {
     intent: "enter",
+    mode: "idle",
     style: { width: 1, height: 2 },
   });
   set.mockClear();
@@ -99,8 +100,9 @@ test("update intent registered as enter", () => {
       height: 7,
     },
   };
-  const expected: ComponentDims = {
+  const expected: EmittedComponentState = {
     intent: "enter",
+    mode: "idle",
     style: detail.style,
   };
   registry.update(target, detail);
@@ -113,10 +115,9 @@ test("mode", () => {
     intent: "mode",
     mode: "hover-start",
   };
-  // FIX: this isn't right. what's registered needs much more attention before modes are introduced properly
-  // @ts-expect-error
-  const expected: ComponentDims = {
+  const expected: EmittedComponentState = {
     mode: detail.mode,
+    intent: "enter",
   };
   registry.update(target, detail);
   expect(set).toHaveBeenCalledTimes(1);

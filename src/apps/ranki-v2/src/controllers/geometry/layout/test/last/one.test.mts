@@ -4,13 +4,14 @@ import type {
   LayoutGapsParams,
   LayoutSizing,
 } from "../../layout-utils.types.mjs";
-import type { ComponentDims } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
+import type { EmittedComponentState } from "_controllers/geometry/controller/sets/children/registry/children-registr.types.mjs";
 
 test("zero size", () => {
   const gaps: LayoutGapsParams = { main: {}, cross: {} };
-  const dims: ComponentDims[] = [
+  const dims: EmittedComponentState[] = [
     {
       intent: "enter",
+      mode: "idle",
       style: {
         width: 0,
         height: 0,
@@ -40,9 +41,10 @@ test("zero size", () => {
 
 test("zero width", () => {
   const gaps: LayoutGapsParams = { main: {}, cross: {} };
-  const dims: ComponentDims[] = [
+  const dims: EmittedComponentState[] = [
     {
       intent: "enter",
+      mode: "idle",
       style: {
         width: 0,
         height: 3,
@@ -72,9 +74,10 @@ test("zero width", () => {
 
 test("zero height", () => {
   const gaps: LayoutGapsParams = { main: {}, cross: {} };
-  const dims: ComponentDims[] = [
+  const dims: EmittedComponentState[] = [
     {
       intent: "enter",
+      mode: "idle",
       style: {
         width: 3,
         height: 0,
@@ -104,9 +107,10 @@ test("zero height", () => {
 
 test("rectangle", () => {
   const gaps: LayoutGapsParams = { main: {}, cross: {} };
-  const dims: ComponentDims[] = [
+  const dims: EmittedComponentState[] = [
     {
       intent: "enter",
+      mode: "idle",
       style: {
         width: 3,
         height: 7,
