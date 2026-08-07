@@ -1,15 +1,18 @@
-// @vitest-environment jsdom
-import { expect, test, vi } from "vitest";
-import { GeometryChildren } from "../../children.mjs";
-import type { LitElement } from "lit";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { R2CNewChildSizeEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
+import type { LitElement } from "lit";
+
+import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
 import { TimingUtils } from "_utils/timing.utils.mjs";
+// @vitest-environment jsdom
+import { expect, test, vi } from "vitest";
+
 import type {
   ChildrenSizing,
   GeometryChildrenProps,
 } from "../../children.types.mjs";
-import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
+
+import { GeometryChildren } from "../../children.mjs";
 
 const host = vi.fn() as unknown as LitElement;
 const target = vi.fn() as unknown as R2C;
@@ -23,12 +26,11 @@ test("single session single elem", async () => {
   const detail: R2CNewChildSizeEvent = {
     intent: "update",
     style: {
-      width: 7,
       height: 11,
+      width: 7,
     },
   };
   const expected: ChildrenSizing = {
-    type: "update",
     sizing: {
       container: {
         ...detail.style,
@@ -38,12 +40,13 @@ test("single session single elem", async () => {
           intent: detail.intent,
           style: {
             ...detail.style,
-            top: 0,
             left: 0,
+            top: 0,
           },
         },
       ],
     },
+    type: "update",
   };
   const call = () => children.onEmit(target, detail);
   const response = [call(), call(), call()];
@@ -58,19 +61,18 @@ test("two sessions single elem", async () => {
   const detail1: R2CNewChildSizeEvent = {
     intent: "update",
     style: {
-      width: 7,
       height: 11,
+      width: 7,
     },
   };
   const detail2: R2CNewChildSizeEvent = {
     intent: "update",
     style: {
-      width: 13,
       height: 17,
+      width: 13,
     },
   };
   const expected1: ChildrenSizing = {
-    type: "update",
     sizing: {
       container: {
         ...detail1.style,
@@ -80,15 +82,15 @@ test("two sessions single elem", async () => {
           intent: detail1.intent,
           style: {
             ...detail1.style,
-            top: 0,
             left: 0,
+            top: 0,
           },
         },
       ],
     },
+    type: "update",
   };
   const expected2: ChildrenSizing = {
-    type: "update",
     sizing: {
       container: {
         ...detail2.style,
@@ -98,12 +100,13 @@ test("two sessions single elem", async () => {
           intent: detail2.intent,
           style: {
             ...detail2.style,
-            top: 0,
             left: 0,
+            top: 0,
           },
         },
       ],
     },
+    type: "update",
   };
   const call1 = () => children.onEmit(target, detail1);
   const call2 = () => children.onEmit(target, detail2);

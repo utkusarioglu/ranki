@@ -26,18 +26,18 @@ const sizing: LayoutSizing = {
       intent: "enter",
       style: {
         height: 19,
-        width: 23,
-        top: 0,
         left: 0,
+        top: 0,
+        width: 23,
       },
     },
     {
       intent: "leave",
       style: {
         height: 57,
-        width: 43,
-        top: 0,
         left: 0,
+        top: 0,
+        width: 43,
       },
     },
   ],
@@ -65,9 +65,9 @@ test("empty informed", () => {
       intent: "enter",
       style: {
         height: 19,
-        width: 23,
-        top: 0,
         left: 0,
+        top: 0,
+        width: 23,
       },
     },
   };

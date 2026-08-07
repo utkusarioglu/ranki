@@ -57,9 +57,9 @@ test("expose single", () => {
       intent: "enter",
       style: {
         height: 21,
-        width: 17,
-        top: 0,
         left: 0,
+        top: 0,
+        width: 17,
       },
     },
   };

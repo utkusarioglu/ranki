@@ -6,11 +6,11 @@ import { assertNotUndefined } from "_error/assertions.mjs";
 
 import type { InformSetProps } from "../animator/animator.types.mjs";
 import type { R2CNewChildSizeEvent } from "../events/geometry-events.types.mjs";
+import type { ChildrenUpdateSizingReturn } from "./children/children.types.mjs";
 import type { GeometrySetsConstructorParams } from "./sets.types.mjs";
 
 import { GeometryChildren } from "./children/children.mjs";
 import { GeometryWatchers } from "./watcher/watcher.mjs";
-import type { ChildrenUpdateSizingReturn } from "./children/children.types.mjs";
 
 export class GeometrySets<Instance extends LitElement> {
   private readonly children: GeometryChildren<Instance> | undefined;

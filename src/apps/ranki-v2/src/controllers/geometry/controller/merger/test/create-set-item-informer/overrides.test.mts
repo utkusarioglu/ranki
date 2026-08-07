@@ -39,18 +39,18 @@ test("", () => {
         intent: "enter",
         style: {
           height: 51,
-          width: 41,
-          top: 0,
           left: 0,
+          top: 0,
+          width: 41,
         },
       },
       {
         intent: "leave",
         style: {
           height: 91,
-          width: 71,
-          top: 0,
           left: 0,
+          top: 0,
+          width: 71,
         },
       },
     ],

@@ -47,5 +47,5 @@ export type InformedChildStyleSelf = {
 };
 
 type InformedChildStyleNode = {
-  style: AnimationKeyframeStyles & WidthHeight & TopLeft;
+  style: AnimationKeyframeStyles & TopLeft & WidthHeight;
 } & Pick<ComponentDims, "intent" | "mode">;

@@ -58,10 +58,10 @@ test("depth 2", async () => {
     self: {
       intent: "enter",
       style: {
-        width: 0,
         height: 0,
-        top: 0,
         left: 0,
+        top: 0,
+        width: 0,
       },
     },
   };
@@ -136,10 +136,10 @@ test("depth 2 call 3", async () => {
     self: {
       intent: "enter",
       style: {
-        width: 0,
         height: 0,
-        top: 0,
         left: 0,
+        top: 0,
+        width: 0,
       },
     },
   };

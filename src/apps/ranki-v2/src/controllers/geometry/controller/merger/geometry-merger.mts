@@ -7,9 +7,9 @@ import type {
 import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 
 import { GeometryEval } from "_controllers/geometry/geometry-eval.mjs";
+import { assertNotNull, assertNotUndefined } from "_error/assertions.mjs";
 
 import type { InformSetProps } from "../animator/animator.types.mjs";
-import { assertNotNull, assertNotUndefined } from "_error/assertions.mjs";
 
 interface CreateSetItemInformerProps {
   context: InformContext;

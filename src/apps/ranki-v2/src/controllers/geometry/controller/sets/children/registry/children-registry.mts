@@ -1,10 +1,24 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
+
 import { assertNotUndefined } from "_error/assertions.mjs";
+
 import type { R2CNewChildSizeEvent } from "../../../events/geometry-events.types.mjs";
-import type { EmittedComponentState } from "./children-registr.types.mjs";
+import type { EmittedComponentState } from "./children-registry.types.mjs";
 
 export class ChildrenRegistry {
   private readonly dims = new WeakMap<R2C, EmittedComponentState>();
+
+  public getOrdered(serial: R2C[]) {
+    const ordered: EmittedComponentState[] = [];
+    for (const component of serial) {
+      const dims = this.dims.get(component);
+      assertNotUndefined(dims, {
+        why: "Element has no registered component dims",
+      });
+      ordered.push(dims);
+    }
+    return ordered;
+  }
 
   /**
    * @dev
@@ -46,17 +60,5 @@ export class ChildrenRegistry {
           mode: detail.mode,
         });
     }
-  }
-
-  public getOrdered(serial: R2C[]) {
-    const ordered: EmittedComponentState[] = [];
-    for (const component of serial) {
-      const dims = this.dims.get(component);
-      assertNotUndefined(dims, {
-        why: "Element has no registered component dims",
-      });
-      ordered.push(dims);
-    }
-    return ordered;
   }
 }

@@ -98,10 +98,10 @@ CASES.forEach(({ block, expected, name }) => {
         self: {
           intent: "enter",
           style: {
-            width: 21,
             height: 0,
-            top: 0,
             left: 0,
+            top: 0,
+            width: 21,
           },
         },
       },

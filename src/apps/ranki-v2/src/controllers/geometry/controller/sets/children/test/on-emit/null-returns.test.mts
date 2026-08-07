@@ -1,13 +1,16 @@
-// @vitest-environment jsdom
-import { expect, test, vi } from "vitest";
-import { GeometryChildren } from "../../children.mjs";
-import type { LitElement } from "lit";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { R2CNewChildSizeEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
+import type { LitElement } from "lit";
+
+// @vitest-environment jsdom
+import { expect, test, vi } from "vitest";
+
 import type {
   ChildrenUpdateSizingReturn,
   GeometryChildrenProps,
 } from "../../children.types.mjs";
+
+import { GeometryChildren } from "../../children.mjs";
 
 const host = vi.fn() as unknown as LitElement;
 const target = vi.fn() as unknown as R2C;

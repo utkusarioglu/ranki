@@ -1,9 +1,12 @@
-// @vitest-environment jsdom
-import { afterEach, beforeEach, expect, test, vi, type Mock } from "vitest";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { R2CNewChildSizeEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
+
+// @vitest-environment jsdom
+import { afterEach, beforeEach, expect, type Mock, test, vi } from "vitest";
+
+import type { EmittedComponentState } from "../children-registry.types.mjs";
+
 import { ChildrenRegistry } from "../children-registry.mjs";
-import type { EmittedComponentState } from "../children-registr.types.mjs";
 
 const target = vi.fn() as unknown as R2C;
 
@@ -14,28 +17,32 @@ let get: Mock<InstanceType<typeof WeakMap>["get"]>;
 let has: Mock<InstanceType<typeof WeakMap>["has"]>;
 let del: Mock<InstanceType<typeof WeakMap>["delete"]>;
 
+/**
+ * @dev
+ * #1 This access is normally private, so ts throws for these
+ */
 beforeEach(() => {
   registry = new ChildrenRegistry();
   set = vi.spyOn(
-    // @ts-expect-error
+    // @ts-expect-error #1
     registry.dims,
     "set",
   ) as typeof set;
 
   get = vi.spyOn(
-    // @ts-expect-error
+    // @ts-expect-error #1
     registry.dims,
     "get",
   ) as typeof get;
 
   has = vi.spyOn(
-    // @ts-expect-error
+    // @ts-expect-error #1
     registry.dims,
     "has",
   ) as typeof has;
 
   del = vi.spyOn(
-    // @ts-expect-error
+    // @ts-expect-error #1
     registry.dims,
     "delete",
   ) as typeof del;
@@ -67,23 +74,27 @@ test("leave", () => {
   expect(set).toHaveBeenNthCalledWith(1, target, expected);
 });
 
+/**
+ * @dev
+ * #1 This access is normally private, so ts throws for these
+ */
 test("update", () => {
   const detail: R2CNewChildSizeEvent = {
     intent: "update",
     style: {
-      width: 5,
       height: 7,
+      width: 5,
     },
   };
   const expected: EmittedComponentState = {
     ...detail,
     mode: "idle",
   };
-  // @ts-expect-error
+  // @ts-expect-error #1
   registry.dims.set(target, {
     intent: "enter",
     mode: "idle",
-    style: { width: 1, height: 2 },
+    style: { height: 2, width: 1 },
   });
   set.mockClear();
   registry.update(target, detail);
@@ -96,8 +107,8 @@ test("update intent registered as enter", () => {
   const detail: R2CNewChildSizeEvent = {
     intent: "update",
     style: {
-      width: 5,
       height: 7,
+      width: 5,
     },
   };
   const expected: EmittedComponentState = {
@@ -116,8 +127,8 @@ test("mode", () => {
     mode: "hover-start",
   };
   const expected: EmittedComponentState = {
-    mode: detail.mode,
     intent: "enter",
+    mode: detail.mode,
   };
   registry.update(target, detail);
   expect(set).toHaveBeenCalledTimes(1);

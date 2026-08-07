@@ -1,6 +1,10 @@
-import type { EmittedComponentState } from "../controller/sets/children/registry/children-registr.types.mjs";
+import type { EmittedComponentState } from "../controller/sets/children/registry/children-registry.types.mjs";
 import type { ComponentDims } from "../controller/types/geometry-controller.types.mjs";
 import type { TopLeft, WidthHeight } from "../geometry-style.types.mjs";
+
+export interface ComponentDimsPositioned extends ComponentDims {
+  style: ComponentDims["style"] & TopLeft;
+}
 
 export interface LayoutGaps {
   end: number;
@@ -17,10 +21,6 @@ export type LayoutSizing = {
   container: WidthHeight;
   set: ComponentDimsPositioned[];
 };
-
-export interface ComponentDimsPositioned extends ComponentDims {
-  style: ComponentDims["style"] & TopLeft;
-}
 
 export type LayoutSizingCallback = (
   dims: EmittedComponentState[],

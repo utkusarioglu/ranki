@@ -1,16 +1,16 @@
-import type { EmittedComponentState } from "../controller/sets/children/registry/children-registr.types.mjs";
+import type { EmittedComponentState } from "../controller/sets/children/registry/children-registry.types.mjs";
 import type {
-  LayoutSizingCallback,
   LayoutGaps,
   LayoutGapsParams,
   LayoutSizing,
+  LayoutSizingCallback,
 } from "./layout-utils.types.mjs";
 
 export class LayoutUtils {
   public static EMPTY_SIZING: LayoutSizing = {
     container: {
-      width: 0,
       height: 0,
+      width: 0,
     },
     set: [],
   };

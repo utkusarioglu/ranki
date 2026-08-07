@@ -1,54 +1,57 @@
+import type { EmittedComponentState } from "_controllers/geometry/controller/sets/children/registry/children-registry.types.mjs";
+
 import { expect, test } from "vitest";
-import { LayoutUtils } from "../../layout-utils.mjs";
+
 import type {
   LayoutGapsParams,
   LayoutSizing,
 } from "../../layout-utils.types.mjs";
-import type { EmittedComponentState } from "_controllers/geometry/controller/sets/children/registry/children-registr.types.mjs";
+
+import { LayoutUtils } from "../../layout-utils.mjs";
 
 test("only last has size", () => {
-  const gaps: LayoutGapsParams = { main: {}, cross: {} };
+  const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
       intent: "update",
       mode: "idle",
       style: {
-        width: 0,
         height: 0,
+        width: 0,
       },
     },
     {
       intent: "enter",
       mode: "idle",
       style: {
-        width: 17,
         height: 23,
+        width: 17,
       },
     },
   ];
   const response = LayoutUtils.last(gaps)(dims);
   const expected: LayoutSizing = {
     container: {
-      width: 17,
       height: 23,
+      width: 17,
     },
     set: [
       {
         intent: "update",
         style: {
-          width: 0,
           height: 0,
-          top: 0,
           left: 0,
+          top: 0,
+          width: 0,
         },
       },
       {
         intent: "enter",
         style: {
-          width: 17,
           height: 23,
-          top: 0,
           left: 0,
+          top: 0,
+          width: 17,
         },
       },
     ],
@@ -57,48 +60,48 @@ test("only last has size", () => {
 });
 
 test("last doesn't have size", () => {
-  const gaps: LayoutGapsParams = { main: {}, cross: {} };
+  const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
       intent: "enter",
       mode: "idle",
       style: {
-        width: 17,
         height: 23,
+        width: 17,
       },
     },
     {
       intent: "update",
       mode: "idle",
       style: {
-        width: 0,
         height: 0,
+        width: 0,
       },
     },
   ];
   const response = LayoutUtils.last(gaps)(dims);
   const expected: LayoutSizing = {
     container: {
-      width: 0,
       height: 0,
+      width: 0,
     },
     set: [
       {
         intent: "enter",
         style: {
-          width: 0,
           height: 0,
-          top: 0,
           left: 0,
+          top: 0,
+          width: 0,
         },
       },
       {
         intent: "update",
         style: {
-          width: 0,
           height: 0,
-          top: 0,
           left: 0,
+          top: 0,
+          width: 0,
         },
       },
     ],
