@@ -1,4 +1,4 @@
-import type { EmittedComponentState } from "../controller/sets/children/registry/children-registry.types.mjs";
+import type { EmittedComponentState } from "../registry/children-registry.types.mjs";
 import type {
   LayoutGaps,
   LayoutGapsParams,

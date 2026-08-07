@@ -6,11 +6,13 @@ import type { R2IconProps } from "./icon.mjs";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { loadIcon } from "iconify-icon";
 import { TimingUtils } from "_utils/timing.utils.mjs";
-import { GeometryController } from "_controllers/geometry/controller/geometry-controller.mjs";
-import { geometry } from "_controllers/geometry/decorator/geometry-decorator.mjs";
 import style from "./icon-span.css?inline";
 import { SVG_PLACEHOLDER } from "./SVG_PLACEHOLDER.mjs";
 import { ReconciliationUtils } from "_utils/reconciliation.utils.mjs";
+import {
+  geometry,
+  GeometryController,
+} from "_controllers/geometry/geometry.mjs";
 
 @customElement("r2-icon-span")
 export class R2IconSpan extends R2C {

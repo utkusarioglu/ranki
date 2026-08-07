@@ -1,25 +1,25 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement } from "lit";
 
-import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
 import { TimingUtils } from "_utils/timing.utils.mjs";
 
 import type { R2CNewChildSizeEvent } from "../../events/geometry-events.types.mjs";
 import type {
   ChildrenUpdateSizingReturn,
+  GeometryChildrenLayoutCallback,
   GeometryChildrenProps,
-  GeometrySetLayoutCb,
 } from "./children.types.mjs";
 
 import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
 import { WatcherSet } from "../watcher-set/watcher-set.mjs";
+import { LayoutUtils } from "./layout/layout-utils.mjs";
 import { ChildrenRegistry } from "./registry/children-registry.mjs";
 
 export class GeometryChildren<
   Instance extends LitElement,
 > extends WatcherSet<Instance> {
   private readonly isRoot: boolean;
-  private readonly layout: GeometrySetLayoutCb;
+  private readonly layout: GeometryChildrenLayoutCallback;
   private readonly registry = new ChildrenRegistry();
   private requested = false;
 

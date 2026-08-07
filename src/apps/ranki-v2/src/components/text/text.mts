@@ -4,12 +4,14 @@ import { R2C } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 import type { R2TextSpan } from "./text-span.mjs";
 import { repeat } from "lit/directives/repeat.js";
-import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
-import { type GeometryController } from "_controllers/geometry/controller/geometry-controller.mjs";
-import { geometry } from "_controllers/geometry/decorator/geometry-decorator.mjs";
 import { ReconciliationController } from "_controllers/reconciler/reconciler.controller.mjs";
 import { reconciler } from "_controllers/reconciler/reconciler.decorator.mjs";
 import style from "./text.css?inline";
+import {
+  LayoutUtils,
+  geometry,
+  GeometryController,
+} from "_controllers/geometry/geometry.mjs";
 
 export interface R2TextProps {
   animation: RankiPropAnimationBlock;

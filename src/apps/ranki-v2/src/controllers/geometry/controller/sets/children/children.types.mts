@@ -1,12 +1,12 @@
-import type {
-  LayoutSizing,
-  LayoutSizingCallback,
-} from "_controllers/geometry/layout/layout-utils.types.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
 import type { LitElement } from "lit";
 
 import type { InformedChildStyle } from "../../types/geometry-controller.types.mjs";
 import type { GeometrySetSelectorCb } from "../sets.types.mjs";
+import type {
+  LayoutSizing,
+  LayoutSizingCallback,
+} from "./layout/layout-utils.types.mjs";
 
 export type ChildrenSizing = ChildrenSizingRoot | ChildrenSizingUpdate;
 
@@ -23,6 +23,10 @@ export interface ChildrenSizingUpdate {
 
 export type ChildrenUpdateSizingReturn = Promise<ChildrenSizing | null>;
 
+export type GeometryChildrenLayoutCallback = (
+  s: LitElement,
+) => LayoutSizingCallback;
+
 export interface GeometryChildrenProps<Instance extends LitElement> {
   // !TODO implement geometry diffing and remove this
   diff?: GeometrySetDiffCb<Instance>;
@@ -33,12 +37,10 @@ export interface GeometryChildrenProps<Instance extends LitElement> {
   /**
    * @default LayoutUtils.row
    */
-  layout?: GeometrySetLayoutCb;
+  layout?: GeometryChildrenLayoutCallback;
   selector: GeometrySetSelectorCb<Instance>;
 }
 
 export type GeometrySetDiffCb<Instance extends LitElement> = (
   s: Instance,
 ) => ReconciliationDiff;
-
-export type GeometrySetLayoutCb = (s: LitElement) => LayoutSizingCallback;

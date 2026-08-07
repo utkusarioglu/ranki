@@ -1,10 +1,12 @@
 import { R2C } from "_components/r2c/r2c.mjs";
-import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, query } from "lit/decorators.js";
 import styles from "./hud.css?inline";
-import { type GeometryController } from "_controllers/geometry/controller/geometry-controller.mjs";
-import { geometry } from "_controllers/geometry/decorator/geometry-decorator.mjs";
+import {
+  LayoutUtils,
+  geometry,
+  GeometryController,
+} from "_controllers/geometry/geometry.mjs";
 
 @customElement("r2-hud")
 export class R2Hud extends R2C {

@@ -4,12 +4,14 @@ import { R2C } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
 import type { R2IconSpan } from "./icon-span.mjs";
 import { repeat } from "lit/directives/repeat.js";
-import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
-import { GeometryController } from "_controllers/geometry/controller/geometry-controller.mjs";
-import { geometry } from "_controllers/geometry/decorator/geometry-decorator.mjs";
 import style from "./icon.css?inline";
 import { ReconciliationController } from "_controllers/reconciler/reconciler.controller.mjs";
 import { reconciler } from "_controllers/reconciler/reconciler.decorator.mjs";
+import {
+  LayoutUtils,
+  geometry,
+  GeometryController,
+} from "_controllers/geometry/geometry.mjs";
 
 export interface R2IconProps {
   animation: RankiPropAnimationBlock;

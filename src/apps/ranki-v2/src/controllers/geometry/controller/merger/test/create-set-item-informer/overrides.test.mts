@@ -1,4 +1,4 @@
-import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
+import type { LayoutSizing } from "_controllers/geometry/controller/sets/children/layout/layout-utils.types.mjs";
 
 import { expect, test } from "vitest";
 

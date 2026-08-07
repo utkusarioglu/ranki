@@ -4,10 +4,12 @@ import { TimingUtils } from "_utils/timing.utils.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import type { R2TextProps } from "./text.mjs";
-import { GeometryController } from "_controllers/geometry/controller/geometry-controller.mjs";
-import { geometry } from "_controllers/geometry/decorator/geometry-decorator.mjs";
 import style from "./text-span.css?inline";
 import { ReconciliationUtils } from "_utils/reconciliation.utils.mjs";
+import {
+  geometry,
+  GeometryController,
+} from "_controllers/geometry/geometry.mjs";
 
 @customElement("r2-text-span")
 export class R2TextSpan extends R2C {

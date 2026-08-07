@@ -1,9 +1,9 @@
-import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 import type { LitElement } from "lit";
 
 import { assertNotUndefined } from "_error/assertions.mjs";
 
 import type { InformSetProps } from "../../animator/animator.types.mjs";
+import type { LayoutSizing } from "../children/layout/layout-utils.types.mjs";
 import type { GeometrySetName } from "../sets.types.mjs";
 import type { GeometryWatcherRecord } from "./watcher.types.mjs";
 

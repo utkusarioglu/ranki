@@ -1,6 +1,10 @@
-import type { EmittedComponentState } from "../controller/sets/children/registry/children-registry.types.mjs";
-import type { ComponentDims } from "../controller/types/geometry-controller.types.mjs";
-import type { TopLeft, WidthHeight } from "../geometry-style.types.mjs";
+import type { ComponentDims } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
+import type {
+  TopLeft,
+  WidthHeight,
+} from "_controllers/geometry/geometry-style.types.mjs";
+
+import type { EmittedComponentState } from "../registry/children-registry.types.mjs";
 
 export interface ComponentDimsPositioned extends ComponentDims {
   style: ComponentDims["style"] & TopLeft;

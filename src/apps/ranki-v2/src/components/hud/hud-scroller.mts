@@ -1,11 +1,13 @@
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import { R2C } from "_components/r2c/r2c.mjs";
-import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
 import { css, html } from "lit";
 import { customElement, query, queryAll } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
-import { GeometryController } from "_controllers/geometry/controller/geometry-controller.mjs";
-import { geometry } from "_controllers/geometry/decorator/geometry-decorator.mjs";
+import {
+  LayoutUtils,
+  geometry,
+  GeometryController,
+} from "_controllers/geometry/geometry.mjs";
 
 @customElement("r2-hud-scroller")
 export class R2HudScroller extends R2C {

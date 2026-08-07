@@ -1,11 +1,11 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { InformSetProps } from "_controllers/geometry/controller/animator/animator.types.mjs";
 import type { InformedChildStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
-import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 import type { LitElement } from "lit";
 
 import { beforeEach, expect, test, vi } from "vitest";
 
+import type { LayoutSizing } from "../../children/layout/layout-utils.types.mjs";
 import type { GeometryWatcherProps } from "../../watcher/watcher.types.mjs";
 
 import { WatcherSet } from "../watcher-set.mjs";

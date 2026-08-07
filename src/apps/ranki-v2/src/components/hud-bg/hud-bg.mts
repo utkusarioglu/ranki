@@ -2,8 +2,10 @@ import { R2C } from "_components/r2c/r2c.mjs";
 import { unsafeCSS } from "lit";
 import { customElement } from "lit/decorators.js";
 import style from "./hud-bg.css?inline";
-import { GeometryController } from "_controllers/geometry/controller/geometry-controller.mjs";
-import { geometry } from "_controllers/geometry/decorator/geometry-decorator.mjs";
+import {
+  geometry,
+  GeometryController,
+} from "_controllers/geometry/geometry.mjs";
 @customElement("r2-hud-bg")
 export class R2HudBg extends R2C {
   static override styles = unsafeCSS(style);

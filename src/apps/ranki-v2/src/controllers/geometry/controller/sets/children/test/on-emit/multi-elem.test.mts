@@ -2,7 +2,6 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { R2CNewChildSizeEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
 import type { LitElement } from "lit";
 
-import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
 import { TimingUtils } from "_utils/timing.utils.mjs";
 // @vitest-environment jsdom
 import { expect, test, vi } from "vitest";
@@ -20,7 +19,6 @@ test("single session two elems", async () => {
   const target1 = vi.fn() as unknown as R2C;
   const target2 = vi.fn() as unknown as R2C;
   const props: GeometryChildrenProps<LitElement> = {
-    layout: () => LayoutUtils.row({}),
     selector: () => [target1, target2],
   };
   const children = new GeometryChildren(host, props);
@@ -78,7 +76,6 @@ test("two sessions two elems", async () => {
   const target1 = vi.fn() as unknown as R2C;
   const target2 = vi.fn() as unknown as R2C;
   const props: GeometryChildrenProps<LitElement> = {
-    layout: () => LayoutUtils.row({}),
     selector: () => [target1, target2],
   };
   const children = new GeometryChildren(host, props);

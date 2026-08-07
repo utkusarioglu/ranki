@@ -1,4 +1,3 @@
-import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 import type { LitElement } from "lit";
 
 import { DebugUtils } from "_/debug/debug-utils.mjs";
@@ -9,6 +8,7 @@ import {
 
 import type { InformSetProps } from "../../animator/animator.types.mjs";
 import type { GeometrySetDiffCb } from "../children/children.types.mjs";
+import type { LayoutSizing } from "../children/layout/layout-utils.types.mjs";
 import type { GeometrySetSelectorCb } from "../sets.types.mjs";
 import type { GeometryWatcherProps } from "../watcher/watcher.types.mjs";
 

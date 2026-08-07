@@ -1,12 +1,12 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
 
-import type { LayoutSizing } from "../../layout/layout-utils.types.mjs";
 import type { InformSetProps } from "../animator/animator.types.mjs";
 import type {
   InformContext,
   InformedChildStyle,
 } from "../types/geometry-controller.types.mjs";
+import type { LayoutSizing } from "./children/layout/layout-utils.types.mjs";
 
 import { GeometryMerger } from "../merger/geometry-merger.mjs";
 

@@ -5,9 +5,9 @@ import { DebugUtils } from "_/debug/debug-utils.mjs";
 import { assertNever } from "_error/assertions.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 
-import type { LayoutSizing } from "../layout/layout-utils.types.mjs";
 import type { InformSetProps } from "./animator/animator.types.mjs";
 import type { R2CNewChildSizeEvent } from "./events/geometry-events.types.mjs";
+import type { LayoutSizing } from "./sets/children/layout/layout-utils.types.mjs";
 import type { GeometryControllerConstructorParams } from "./types/geometry-controller.constructor.types.mjs";
 import type {
   CurrentAppliedStyle,

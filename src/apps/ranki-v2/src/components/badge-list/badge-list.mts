@@ -5,13 +5,15 @@ import { reconciler } from "_controllers/reconciler/reconciler.decorator.mjs";
 import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 import { R2C } from "_components/r2c/r2c.mjs";
-import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
+import {
+  LayoutUtils,
+  geometry,
+  GeometryController,
+} from "_controllers/geometry/geometry.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, query, queryAll } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
-import { GeometryController } from "_controllers/geometry/controller/geometry-controller.mjs";
-import { geometry } from "_controllers/geometry/decorator/geometry-decorator.mjs";
 import style from "./badge-list.css?inline";
 
 type R2BadgeListState = HudTagListItem;

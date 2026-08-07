@@ -4,12 +4,12 @@ import type {
   InformContext,
   InformedChildStyle,
 } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
-import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.types.mjs";
 
 import { GeometryEval } from "_controllers/geometry/geometry-eval.mjs";
 import { assertNotNull, assertNotUndefined } from "_error/assertions.mjs";
 
 import type { InformSetProps } from "../animator/animator.types.mjs";
+import type { LayoutSizing } from "../sets/children/layout/layout-utils.types.mjs";
 
 interface CreateSetItemInformerProps {
   context: InformContext;

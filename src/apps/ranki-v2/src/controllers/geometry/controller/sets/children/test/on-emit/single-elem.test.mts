@@ -2,7 +2,6 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { R2CNewChildSizeEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
 import type { LitElement } from "lit";
 
-import { LayoutUtils } from "_controllers/geometry/layout/layout-utils.mjs";
 import { TimingUtils } from "_utils/timing.utils.mjs";
 // @vitest-environment jsdom
 import { expect, test, vi } from "vitest";
@@ -17,7 +16,6 @@ import { GeometryChildren } from "../../children.mjs";
 const host = vi.fn() as unknown as LitElement;
 const target = vi.fn() as unknown as R2C;
 const props: GeometryChildrenProps<LitElement> = {
-  layout: () => LayoutUtils.row({}),
   selector: () => [target],
 };
 
