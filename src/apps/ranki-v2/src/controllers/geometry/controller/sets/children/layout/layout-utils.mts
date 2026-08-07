@@ -18,7 +18,6 @@ export class LayoutUtils {
    * main axis is inline, cross axis is block
    */
   public static last(gaps: LayoutGapsParams = {}): LayoutSizingCallback {
-    // (dims: ComponentDims[]) => LayoutSizing | null {
     return (dims: EmittedComponentState[]) => {
       const last = dims.at(-1);
       if (!last) return this.EMPTY_SIZING;

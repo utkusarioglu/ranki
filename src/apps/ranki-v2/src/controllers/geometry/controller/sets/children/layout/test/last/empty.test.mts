@@ -6,7 +6,7 @@ import type { LayoutGapsParams } from "../../layout-utils.types.mjs";
 
 import { LayoutUtils } from "../../layout-utils.mjs";
 
-test("empty gapless", () => {
+test("empty no gaps", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [];
   const response = LayoutUtils.last(gaps)(dims);

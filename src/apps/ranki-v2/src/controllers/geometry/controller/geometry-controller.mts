@@ -2,7 +2,7 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement, ReactiveController } from "lit";
 
 import { DebugUtils } from "_/debug/debug-utils.mjs";
-import { assertNever } from "_error/assertions.mjs";
+import { assertExists, assertNever } from "_error/assertions.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 
 import type { InformSetProps } from "./animator/animator.types.mjs";
@@ -62,16 +62,12 @@ export class GeometryController<
   onEmit() {
     return async (e: CustomEvent<R2CNewChildSizeEvent>) => {
       e.stopPropagation();
-      const detail = e.detail;
-      const target = e.composedPath()[0] as R2C;
-      if (!target)
-        throw new RankiAppError({
-          cause: {},
-          code: "NO_TARGET",
-          why: "No valid target given",
-        });
-      const update = await this.sets.onEmit(target, detail);
+      const target = e.composedPath()[0] as R2C | null;
+      assertExists(target, { why: "No valid target given" });
+
+      const update = await this.sets.onEmit(target, e.detail);
       if (!update) return;
+
       this.sizing = update.sizing;
       switch (update.type) {
         case "root":
