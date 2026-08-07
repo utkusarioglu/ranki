@@ -14,6 +14,9 @@ export class ChildrenRegistry {
       const dims = this.dims.get(component);
       assertNotUndefined(dims, {
         why: "Element has no registered component dims",
+        details: {
+          tagName: component.tagName,
+        },
       });
       ordered.push(dims);
     }

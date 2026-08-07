@@ -2,6 +2,7 @@ import type { TargetAnimationSpec } from "_controllers/geometry/controller/anima
 
 export const TEXT: TargetAnimationSpec = {
   "text-span": {
+    always: {},
     // !FIX: THIS SHOULDN'T BE NEEDED
     resize: {},
     enter: {
@@ -11,8 +12,6 @@ export const TEXT: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              // height: "CONTAINER_HEIGHT + 1",
-              // width: "CONTAINER_WIDTH + 1",
               height: "HEIGHT + 1",
               width: "WIDTH + 1",
               opacity: 0,
@@ -21,7 +20,6 @@ export const TEXT: TargetAnimationSpec = {
         },
         {
           name: "opacity",
-          // duration: 2000,
           duration: 0,
           keyframes: [
             {
@@ -35,7 +33,6 @@ export const TEXT: TargetAnimationSpec = {
       root: [
         {
           name: "opacity",
-          // duration: 1000,
           duration: 0,
           keyframes: [
             {
@@ -54,21 +51,16 @@ export const TEXT: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              // height: "to.container.height",
               height: "to.self.height",
-              // top: "to.container.top",
-              // left: "to.container.left",
             },
           ],
         },
         {
           name: "width",
-          // duration: 1000,
           duration: 0,
           keyframes: [
             {
               opacity: 1,
-              // width: "to.container.width",
               width: "to.self.width",
             },
           ],
@@ -90,41 +82,17 @@ export const TEXT: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              // height: "to.container.height",
               top: "to.container.top",
               left: "to.container.left",
             },
           ],
         },
-        // {
-        //   name: "width",
-        //   // duration: 1000,
-        //   duration: 0,
-        //   keyframes: [
-        //     {
-        //       opacity: 1,
-        //       width: "to.container.width",
-        //     },
-        //   ],
-        // },
       ],
     },
     resize: {
       root: [
-        // {
-        //   name: "to.self.height",
-        //   duration: 0,
-        //   keyframes: [
-        //     {
-        //       height: "to.container.height",
-        //       // top: "to.container.top",
-        //       // left: "to.container.left",
-        //     },
-        //   ],
-        // },
         {
           name: "width",
-          // duration: 1000,
           duration: 0,
           keyframes: [
             {
@@ -143,47 +111,10 @@ export const TEXT: TargetAnimationSpec = {
         },
       },
     },
-    // contract: {
-    //   root: [
-    //     // {
-    //     //   name: "position",
-    //     //   duration: 0,
-    //     //   keyframes: [
-    //     //     {
-    //     //       height: "to.container.height",
-    //     //       top: "to.container.top",
-    //     //       left: "to.container.left",
-    //     //     },
-    //     //   ],
-    //     // },
-    //     {
-    //       name: "width",
-    //       // duration: 1000,
-    //       duration: 0,
-    //       keyframes: [
-    //         {
-    //           opacity: 1,
-    //           width: "to.container.width",
-    //         },
-    //       ],
-    //     },
-    //   ],
-    //   targets: {
-    //     "text-span": {
-    //       inform: {
-    //         // width: "to.container.width",
-    //         // height: "to.container.height",
-    //         width: "to.self.width",
-    //         height: "to.self.height",
-    //       },
-    //     },
-    //   },
-    // },
     leave: {
       root: [
         {
           name: "exit",
-          // duration: 1000,
           duration: 0,
           keyframes: [
             {
@@ -194,5 +125,6 @@ export const TEXT: TargetAnimationSpec = {
         },
       ],
     },
+    always: {},
   },
 };

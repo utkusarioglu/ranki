@@ -5,8 +5,7 @@ import type {
   InformedChildStyle,
 } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
 
-import { GeometryEval } from "_controllers/geometry/geometry-eval.mjs";
-import { assertNotNull, assertNotUndefined } from "_error/assertions.mjs";
+import { GeometryEval } from "_controllers/geometry/controller/merger/geometry-eval.mjs";
 
 import type { InformSetProps } from "../animator/animator.types.mjs";
 import type { LayoutSizing } from "../sets/children/layout/layout-utils.types.mjs";

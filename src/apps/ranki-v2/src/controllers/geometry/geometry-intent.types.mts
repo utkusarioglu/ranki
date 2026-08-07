@@ -8,6 +8,7 @@ export type LocalAction =
   | "move"
   | "none"
   | "resize"
+  | "always"
   | EmitModes;
 
 export type WithEmitIntent = { intent: EmitIntent };

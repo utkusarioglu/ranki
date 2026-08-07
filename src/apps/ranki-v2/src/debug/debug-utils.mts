@@ -44,7 +44,7 @@ interface AnimatorUpdate {
 export class DebugUtils {
   public static informStyle(props: InformStyleDebug) {
     if (props.host.tagName === DEBUG_TAG) {
-      console.log("informStyle", {
+      console.log("controller.informStyle", {
         tag: props.host.tagName,
         curr: props.curr,
         prev: props.prev,

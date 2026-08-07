@@ -1,8 +1,8 @@
 import type {
   CurrentAppliedStyle,
   CurrentAppliedStyleWithoutActions,
-} from "./controller/types/geometry-controller.types.mjs";
-import type { LocalAction } from "./geometry-intent.types.mjs";
+} from "../types/geometry-controller.types.mjs";
+import type { LocalAction } from "../../geometry-intent.types.mjs";
 
 export class GeometryEval {
   public static evaluateActions(
@@ -58,6 +58,7 @@ export class GeometryEval {
     const isMove = changed.top || changed.left;
 
     const actions = new Set<LocalAction>();
+    actions.add("always");
     if (isEnter) actions.add("enter");
     if (isLeave) actions.add("leave");
     if (isResize) actions.add("resize");

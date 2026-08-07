@@ -2,6 +2,7 @@ import type { TargetAnimationSpec } from "_controllers/geometry/controller/anima
 
 export const HUD: TargetAnimationSpec = {
   hud: {
+    always: {},
     enter: {
       root: [
         {
@@ -50,6 +51,7 @@ export const HUD: TargetAnimationSpec = {
   },
 
   "hud-scroller": {
+    always: {},
     move: {},
     enter: {
       root: [
@@ -58,10 +60,7 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              // height: "to.container.height",
               height: "to.self.height",
-              // left: "CONTAINER_WIDTH / 2",
-              // top: "-CONTAINER_HEIGHT",
               top: "to.self.top",
             },
           ],
@@ -69,12 +68,9 @@ export const HUD: TargetAnimationSpec = {
             root: [
               {
                 name: "size",
-                // duration: 1000,
                 duration: 0,
                 keyframes: [
                   {
-                    // left: 0,
-                    // width: "to.container.width",
                     width: "to.self.width",
                   },
                 ],
@@ -83,14 +79,11 @@ export const HUD: TargetAnimationSpec = {
             sets: {
               bg: {
                 expose: {
-                  // width: "to.container.width",
-                  // height: "to.container.height",
                   width: "to.self.width",
                   height: "to.self.height",
                 },
               },
               children: {
-                // wait: 1000,
                 wait: 0,
                 expose: {
                   top: "to.self.top",
@@ -124,7 +117,7 @@ export const HUD: TargetAnimationSpec = {
   },
 
   "hud-bg": {
-    enter: {
+    always: {
       root: [
         {
           name: "init",
