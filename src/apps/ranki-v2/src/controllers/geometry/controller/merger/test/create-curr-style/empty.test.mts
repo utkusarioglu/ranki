@@ -3,6 +3,7 @@ import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.typ
 import { expect, test } from "vitest";
 
 import type {
+  CurrentAppliedStyle,
   InformContext,
   InformedChildStyle,
 } from "../../../types/geometry-controller.types.mjs";
@@ -26,6 +27,8 @@ const sizing: LayoutSizing = {
       style: {
         height: 19,
         width: 23,
+        top: 0,
+        left: 0,
       },
     },
     {
@@ -33,6 +36,8 @@ const sizing: LayoutSizing = {
       style: {
         height: 57,
         width: 43,
+        top: 0,
+        left: 0,
       },
     },
   ],
@@ -47,7 +52,7 @@ test("empty informed", () => {
     selfOverrides: { style: {} },
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
-  const expected = {
+  const expected: CurrentAppliedStyle = {
     actions: ["enter"],
     container: {
       style: {
@@ -61,6 +66,8 @@ test("empty informed", () => {
       style: {
         height: 19,
         width: 23,
+        top: 0,
+        left: 0,
       },
     },
   };

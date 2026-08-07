@@ -1,5 +1,5 @@
 import type { ComponentDims } from "../controller/types/geometry-controller.types.mjs";
-import type { WidthHeight } from "../geometry-style.types.mjs";
+import type { TopLeft, WidthHeight } from "../geometry-style.types.mjs";
 
 export interface LayoutGaps {
   end: number;
@@ -14,5 +14,9 @@ export interface LayoutGapsParams {
 
 export type LayoutSizing = {
   container: WidthHeight;
-  set: ComponentDims[];
+  set: ComponentDimsPositioned[];
 };
+
+export interface ComponentDimsPositioned extends ComponentDims {
+  style: ComponentDims["style"] & TopLeft;
+}

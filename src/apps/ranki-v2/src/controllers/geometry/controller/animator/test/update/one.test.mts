@@ -57,7 +57,12 @@ test("single keyframe", async () => {
     },
     self: {
       intent: "enter",
-      style: {},
+      style: {
+        width: 0,
+        height: 0,
+        top: 0,
+        left: 0,
+      },
     },
   };
   const prev = null;
@@ -104,7 +109,12 @@ test("two keyframes", async () => {
     },
     self: {
       intent: "enter",
-      style: {},
+      style: {
+        width: 0,
+        height: 0,
+        top: 0,
+        left: 0,
+      },
     },
   };
   const prev = null;

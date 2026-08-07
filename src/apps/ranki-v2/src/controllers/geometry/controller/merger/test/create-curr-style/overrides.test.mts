@@ -26,6 +26,8 @@ const sizing: LayoutSizing = {
       style: {
         height: 19,
         width: 23,
+        top: 0,
+        left: 0,
       },
     },
     {
@@ -33,6 +35,8 @@ const sizing: LayoutSizing = {
       style: {
         height: 57,
         width: 43,
+        top: 0,
+        left: 0,
       },
     },
   ],
@@ -69,6 +73,8 @@ test("overridden self style", () => {
       style: {
         height: 3,
         width: 23,
+        top: 0,
+        left: 0,
       },
     },
   };
@@ -109,6 +115,8 @@ test("informed container width 2", () => {
       style: {
         height: 7,
         width: 43,
+        top: 0,
+        left: 0,
       },
     },
   };

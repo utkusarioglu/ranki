@@ -57,7 +57,12 @@ test("depth 2", async () => {
     },
     self: {
       intent: "enter",
-      style: {},
+      style: {
+        width: 0,
+        height: 0,
+        top: 0,
+        left: 0,
+      },
     },
   };
   const prev = null;
@@ -130,7 +135,12 @@ test("depth 2 call 3", async () => {
     },
     self: {
       intent: "enter",
-      style: {},
+      style: {
+        width: 0,
+        height: 0,
+        top: 0,
+        left: 0,
+      },
     },
   };
   const prev = null;

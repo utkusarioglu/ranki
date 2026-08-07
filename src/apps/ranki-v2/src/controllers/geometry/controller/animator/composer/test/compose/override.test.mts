@@ -60,6 +60,8 @@ test("override single", () => {
       style: {
         height: 21,
         width: 77,
+        top: 0,
+        left: 0,
       },
     },
   };

@@ -9,6 +9,7 @@ import type { LayoutSizing } from "_controllers/geometry/layout/layout-utils.typ
 import { GeometryEval } from "_controllers/geometry/geometry-eval.mjs";
 
 import type { InformSetProps } from "../animator/animator.types.mjs";
+import { assertNotNull, assertNotUndefined } from "_error/assertions.mjs";
 
 interface CreateSetItemInformerProps {
   context: InformContext;
@@ -67,17 +68,16 @@ export class GeometryMerger {
     sizing: LayoutSizing | null,
     index: number,
   ): CurrentAppliedStyle["self"] {
-    try {
-      const item = sizing!.set[index];
-      return {
-        intent: item.intent,
-        style: item.style,
-      };
-    } catch (_) {
-      return {
-        intent: "none" as const,
-        style: {},
-      };
-    }
+    assertNotNull(sizing, {
+      why: "Cannot create merged style without valid sizing",
+    });
+    const item = sizing.set[index];
+    assertNotUndefined(item, {
+      why: "Cannot create merged style if item size is undefined",
+    });
+    return {
+      intent: item.intent,
+      style: item.style,
+    };
   }
 }

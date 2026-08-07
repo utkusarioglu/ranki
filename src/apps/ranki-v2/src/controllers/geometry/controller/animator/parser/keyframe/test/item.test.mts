@@ -45,6 +45,7 @@ for (const v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
       },
       self: {
         intent: "enter",
+        // @ts-expect-error simplified for testing
         style: {
           [prop]: item,
         },

@@ -124,6 +124,9 @@ CASES.forEach(({ block, expected, name }) => {
           intent: "enter",
           style: {
             height: 21,
+            width: 0,
+            top: 0,
+            left: 0,
           },
         },
       },

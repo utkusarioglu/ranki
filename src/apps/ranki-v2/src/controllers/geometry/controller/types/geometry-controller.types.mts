@@ -1,5 +1,5 @@
 import type { EmitIntent, LocalAction } from "../../geometry-intent.types.mjs";
-import type { WidthHeight } from "../../geometry-style.types.mjs";
+import type { TopLeft, WidthHeight } from "../../geometry-style.types.mjs";
 import type {
   AnimationKeyframeStyles,
   InformSetProps,
@@ -17,10 +17,7 @@ export type CurrentAppliedStyle = {
   actions: LocalAction[];
   container: InformedChildStyle["containerExposed"];
   self: InformedChildStyleNode;
-} & Omit<
-  InformedChildStyle,
-  "containerExposed" | "selfOverrides"
->;
+} & Omit<InformedChildStyle, "containerExposed" | "selfOverrides">;
 
 export type CurrentAppliedStyleWithoutActions = Omit<
   CurrentAppliedStyle,
@@ -39,10 +36,7 @@ export type InformContext = {
 
 export type InformedChildStyle = {
   context: InformContext;
-} & Pick<
-  InformSetProps,
-  "containerExposed" | "selfOverrides"
->;
+} & Pick<InformSetProps, "containerExposed" | "selfOverrides">;
 
 export type InformedChildStyleContainer = {
   style: AnimationKeyframeStyles;
@@ -53,5 +47,5 @@ export type InformedChildStyleSelf = {
 };
 
 type InformedChildStyleNode = {
-  style: AnimationKeyframeStyles;
+  style: AnimationKeyframeStyles & WidthHeight & TopLeft;
 } & Pick<ComponentDims, "intent" | "mode">;

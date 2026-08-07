@@ -114,6 +114,7 @@ test("mode", () => {
     mode: "hover-start",
   };
   // FIX: this isn't right. what's registered needs much more attention before modes are introduced properly
+  // @ts-expect-error
   const expected: ComponentDims = {
     mode: detail.mode,
   };

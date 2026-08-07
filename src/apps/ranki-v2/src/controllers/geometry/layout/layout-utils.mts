@@ -21,6 +21,7 @@ export class LayoutUtils {
         last.style.width + (gaps.main?.start || 0) + (gaps.main?.end || 0);
       const height =
         last.style.height + (gaps.cross?.start || 0) + (gaps.cross?.end || 0);
+
       const lefts = [...zeros, gaps.main?.start || 0];
       const tops = [...zeros, gaps.cross?.start || 0];
       const heights = [...zeros, last.style.height];

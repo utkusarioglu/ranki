@@ -38,6 +38,8 @@ test("", () => {
         style: {
           height: 51,
           width: 41,
+          top: 0,
+          left: 0,
         },
       },
       {
@@ -45,6 +47,8 @@ test("", () => {
         style: {
           height: 91,
           width: 71,
+          top: 0,
+          left: 0,
         },
       },
     ],
