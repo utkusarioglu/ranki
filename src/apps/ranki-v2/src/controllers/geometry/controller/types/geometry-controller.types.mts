@@ -43,9 +43,10 @@ export type InformedChildStyleContainer = {
 };
 
 export type InformedChildStyleSelf = {
+  intent: EmitIntent;
   style: AnimationKeyframeStyles;
 };
 
 type InformedChildStyleNode = {
-  style: AnimationKeyframeStyles & TopLeft & WidthHeight;
+  style: AnimationKeyframeStyles;
 } & Pick<ComponentDims, "intent" | "mode">;

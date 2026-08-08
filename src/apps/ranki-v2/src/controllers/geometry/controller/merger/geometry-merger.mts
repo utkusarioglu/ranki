@@ -14,6 +14,7 @@ interface CreateSetItemInformerProps {
   context: InformContext;
   props: InformSetProps;
   sizing: LayoutSizing | null;
+  index: number;
 }
 
 export class GeometryMerger {
@@ -22,19 +23,21 @@ export class GeometryMerger {
     sizing: LayoutSizing | null,
     prev: CurrentAppliedStyle | null,
   ): CurrentAppliedStyle {
-    const item = this.getItem(sizing, informed.context.index);
+    // const item = this.getItem(sizing, informed.context.index);
     const curr: CurrentAppliedStyleWithoutActions = {
       container: {
         style: {
-          ...(sizing ? sizing.container : {}),
           ...informed.containerExposed.style,
         },
       },
       context: informed.context,
       self: {
-        intent: item.intent,
+        intent: informed.selfOverrides.intent,
+        // intent: item.intent,
+        // intent: "enter",
         style: {
-          ...item.style,
+          ...(sizing ? sizing.container : {}),
+          // ...item.style,
           ...informed.selfOverrides.style,
         },
       },
@@ -48,6 +51,7 @@ export class GeometryMerger {
     context,
     props,
     sizing,
+    index,
   }: CreateSetItemInformerProps): InformedChildStyle {
     const container: InformedChildStyle["containerExposed"] = {
       style: {
@@ -55,35 +59,47 @@ export class GeometryMerger {
         ...props.containerExposed.style,
       },
     };
+    const item = sizing
+      ? sizing.set[index]
+      : {
+          intent: "none" as const,
+          style: {},
+        };
     return {
       containerExposed: container,
       context,
-      selfOverrides: props.selfOverrides,
+      selfOverrides: {
+        intent: item.intent,
+        style: {
+          ...item.style,
+          ...props.selfOverrides.style,
+        },
+      },
     };
   }
 
-  private static getItem(
-    sizing: LayoutSizing | null,
-    index: number,
-  ): CurrentAppliedStyle["self"] {
-    const empty = {
-      intent: "none" as const,
-      style: { width: 0, height: 0, top: 0, left: 0 },
-    };
-    if (!sizing) return empty;
-    const item = sizing.set[index];
-    if (!item) return empty;
+  // private static getItem(
+  //   sizing: LayoutSizing | null,
+  //   index: number,
+  // ): CurrentAppliedStyle["self"] {
+  //   const empty = {
+  //     intent: "none" as const,
+  //     style: { width: 0, height: 0, top: 0, left: 0 },
+  //   };
+  //   if (!sizing) return empty;
+  //   const item = sizing.set[index];
+  //   if (!item) return empty;
 
-    // assertNotNull(sizing, {
-    //   why: "Cannot create merged style without valid sizing",
-    // });
-    // const item = sizing.set[index];
-    // assertNotUndefined(item, {
-    //   why: "Cannot create merged style if item size is undefined",
-    // });
-    return {
-      intent: item.intent,
-      style: item.style,
-    };
-  }
+  //   // assertNotNull(sizing, {
+  //   //   why: "Cannot create merged style without valid sizing",
+  //   // });
+  //   // const item = sizing.set[index];
+  //   // assertNotUndefined(item, {
+  //   //   why: "Cannot create merged style if item size is undefined",
+  //   // });
+  //   return {
+  //     intent: item.intent,
+  //     style: item.style,
+  //   };
+  // }
 }

@@ -5,10 +5,10 @@ export type EmitIntent = "enter" | "leave" | "mode" | "none" | "update";
 export type LocalAction =
   | "enter"
   | "leave"
-  | "move"
+  // | "move"
   | "none"
-  | "resize"
-  | "always"
+  | "update"
+  // | "always"
   | EmitModes;
 
 export type WithEmitIntent = { intent: EmitIntent };

@@ -6,6 +6,7 @@ import type {
   LayoutParsedSets,
 } from "../animator.types.mjs";
 import type { AnimationSequencerCallbacks } from "./animation-sequencer.types.mjs";
+import { RankiAppError } from "_error/ranki-app-error.mjs";
 
 export class AnimationSequencer {
   private readonly callbacks: AnimationSequencerCallbacks;
@@ -42,13 +43,9 @@ export class AnimationSequencer {
     if (!l) return Promise.resolve();
     await Promise.all(
       Object.values(l).map(async ({ props, then, wait }) => {
-        try {
-          if (wait) await TimingUtils.delay(wait);
-          await this.callbacks.informSet(props);
-          if (then) await this.sequenceThen(then);
-        } catch (e) {
-          console.log("sequenceSets", e);
-        }
+        if (wait) await TimingUtils.delay(wait);
+        await this.callbacks.informSet(props);
+        if (then) await this.sequenceThen(then);
       }),
     );
   }

@@ -2,7 +2,6 @@ import type { TargetAnimationSpec } from "_controllers/geometry/controller/anima
 
 export const BADGE_LIST: TargetAnimationSpec = {
   "badge-list": {
-    always: {},
     enter: {
       root: [
         {
@@ -32,14 +31,16 @@ export const BADGE_LIST: TargetAnimationSpec = {
         },
       },
     },
-    move: {
+    update: {
       root: [
         {
           name: "position",
           keyframes: [
             {
-              top: "to.self.top",
               left: "to.self.left",
+              top: "to.self.top",
+              width: "to.self.width",
+              height: "to.self.height",
             },
           ],
           delay: 0,

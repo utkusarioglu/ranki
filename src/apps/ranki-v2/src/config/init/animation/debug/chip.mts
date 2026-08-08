@@ -2,7 +2,6 @@ import type { TargetAnimationSpec } from "_controllers/geometry/controller/anima
 
 export const CHIP: TargetAnimationSpec = {
   chip: {
-    always: {},
     enter: {
       root: [
         {
@@ -50,56 +49,41 @@ export const CHIP: TargetAnimationSpec = {
     //     },
     //   ],
     // },
-    move: {
-      // root: [
-      //   {
-      //     name: "move",
-      //     duration: 0,
-      //     keyframes: [
-      //       {
-      // top: "to.self.top",
-      // left: "to.self.left",
-      //       },
-      //     ],
-      //   },
-      // ],
+    update: {
+      root: [
+        {
+          name: "position",
+          keyframes: [
+            {
+              left: "to.self.left",
+              top: "to.self.top",
+              width: "to.self.width",
+              height: "to.self.height",
+            },
+          ],
+          delay: 0,
+          // duration: 1000,
+          duration: 0,
+        },
+      ],
     },
-    // resize: {
-    //   sets: {
-    //     bg: {
-    //       wait: 0,
-    //       expose: {
-    //         width: "to.container.width",
-    //         height: "to.container.height",
-    //       },
-    //     },
-    //     children: {
-    //       wait: 0,
-    //       expose: {
-    //         left: "to.self.left",
-    //         top: "to.self.top",
-    //       },
-    //     },
-    //   },
-    // },
-    // leave: {
-    //   sets: {
-    //     children: {
-    //       wait: 0,
-    //       expose: {
-    //         width: 0,
-    //       },
-    //       then: {
-    //         sets: {
-    //           bg: {
-    //             expose: {
-    //               width: 0,
-    //             },
-    //           },
-    //         },
-    //       },
-    //     },
-    //   },
-    // },
+    leave: {
+      root: [
+        {
+          name: "position",
+          keyframes: [
+            {
+              // left: "to.self.left",
+              // top: "to.self.top",
+              width: 0,
+              // height: "to.self.height",
+            },
+          ],
+          delay: 0,
+          // duration: 1000,
+          duration: 0,
+        },
+      ],
+    },
   },
 };

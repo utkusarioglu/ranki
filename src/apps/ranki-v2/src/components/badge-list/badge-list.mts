@@ -49,7 +49,7 @@ export class R2BadgeList extends R2C {
   @geometry<R2BadgeList>({
     role: "badge-list",
     children: {
-      selector: (r) => Array.from(r.chips),
+      selector: (h) => Array.from(h.chips),
       layout: () =>
         LayoutUtils.row({
           main: {

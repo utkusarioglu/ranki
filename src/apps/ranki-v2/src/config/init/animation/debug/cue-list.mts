@@ -2,7 +2,6 @@ import type { TargetAnimationSpec } from "_controllers/geometry/controller/anima
 
 export const CUE_LIST: TargetAnimationSpec = {
   "cue-list": {
-    always: {},
     enter: {
       root: [
         {
@@ -32,36 +31,23 @@ export const CUE_LIST: TargetAnimationSpec = {
         },
       },
     },
-    move: {
+    update: {
       root: [
         {
           name: "position",
           keyframes: [
             {
-              top: "to.self.top",
               left: "to.self.left",
+              top: "to.self.top",
+              width: "to.self.width",
+              height: "to.self.height",
             },
           ],
+          delay: 0,
+          // duration: 1000,
           duration: 0,
         },
       ],
     },
-    //   resize: {
-    //     sets: {
-    //       bg: {
-    //         expose: {
-    //           width: "to.container.width",
-    //           height: "to.container.height",
-    //         },
-    //       },
-    //       children: {
-    //         wait: 0,
-    //         expose: {
-    //           top: "to.self.top",
-    //           left: "to.self.left",
-    //         },
-    //       },
-    //     },
-    //   },
   },
 };

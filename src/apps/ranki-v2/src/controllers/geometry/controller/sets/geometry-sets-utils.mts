@@ -22,6 +22,7 @@ export class GeometrySetsUtils {
         stagger: 0,
       },
       selfOverrides: {
+        intent: "none",
         style: {},
       },
     };
@@ -44,6 +45,7 @@ export class GeometrySetsUtils {
       context,
       props,
       sizing,
+      index: i,
     });
     return informed;
   }

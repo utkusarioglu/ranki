@@ -2,7 +2,6 @@ import type { TargetAnimationSpec } from "_controllers/geometry/controller/anima
 
 export const ICON: TargetAnimationSpec = {
   "icon-span": {
-    always: {},
     enter: {
       root: [
         {
@@ -62,42 +61,22 @@ export const ICON: TargetAnimationSpec = {
         },
       },
     },
-    move: {
+    update: {
       root: [
         {
           name: "position",
           duration: 0,
           keyframes: [
             {
-              top: "to.self.top",
               left: "to.self.left",
+              top: "to.self.top",
+              width: "to.self.width",
+              height: "to.self.height",
             },
           ],
         },
       ],
     },
-    // resize: {
-    //   root: [
-    //     {
-    //       name: "width",
-    //       duration: 0,
-    //       keyframes: [
-    //         {
-    //           opacity: 1,
-    //           width: "to.container.width",
-    //         },
-    //       ],
-    //     },
-    //   ],
-    //   sets: {
-    //     children: {
-    //       expose: {
-    //         width: "to.container.width",
-    //         height: "to.container.height",
-    //       },
-    //     },
-    //   },
-    // },
     // leave: {
     //   root: [
     //     {

@@ -33,15 +33,17 @@ export const TEXT: TargetAnimationSpec = {
         },
       },
     },
-    move: {
+    update: {
       root: [
         {
           name: "position",
           duration: 0,
           keyframes: [
             {
-              top: "to.self.top",
               left: "to.self.left",
+              top: "to.self.top",
+              width: "to.self.width",
+              height: "to.self.height",
             },
           ],
         },
@@ -114,18 +116,18 @@ export const TEXT: TargetAnimationSpec = {
         },
       ],
     },
-    // leave: {
-    //   root: [
-    //     {
-    //       name: "opacity",
-    //       duration: 0,
-    //       keyframes: [
-    //         {
-    //           opacity: 0,
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
+    leave: {
+      root: [
+        {
+          name: "opacity",
+          duration: 0,
+          keyframes: [
+            {
+              opacity: 0,
+            },
+          ],
+        },
+      ],
+    },
   },
 };

@@ -2,7 +2,6 @@ import type { TargetAnimationSpec } from "_controllers/geometry/controller/anima
 
 export const HUD: TargetAnimationSpec = {
   hud: {
-    always: {},
     enter: {
       root: [
         {
@@ -21,10 +20,13 @@ export const HUD: TargetAnimationSpec = {
             width: "to.self.width",
             height: "to.self.height",
           },
+          // override: {
+          //   top: "to.self.",
+          // },
         },
       },
     },
-    move: {
+    update: {
       root: [
         {
           name: "position",
@@ -33,26 +35,26 @@ export const HUD: TargetAnimationSpec = {
             {
               left: "to.self.left",
               top: "to.self.top",
+              width: "to.self.width",
+              height: "to.self.height",
             },
           ],
         },
       ],
     },
-    resize: {
-      sets: {
-        children: {
-          expose: {
-            top: 0,
-            left: 0,
-          },
-        },
-      },
-    },
+    // resize: {
+    //   sets: {
+    //     children: {
+    //       expose: {
+    //         top: 0,
+    //         left: 0,
+    //       },
+    //     },
+    //   },
+    // },
   },
 
   "hud-scroller": {
-    always: {},
-    move: {},
     enter: {
       root: [
         {
@@ -95,7 +97,7 @@ export const HUD: TargetAnimationSpec = {
         },
       ],
     },
-    resize: {
+    update: {
       sets: {
         bg: {
           expose: {
@@ -140,6 +142,23 @@ export const HUD: TargetAnimationSpec = {
         },
       ],
     },
+    update: {
+      root: [
+        {
+          name: "position",
+          duration: 0,
+          keyframes: [
+            {
+              // left: "to.self.left",
+              // top: "to.self.top",
+              width: "to.self.width",
+              height: "to.self.height",
+            },
+          ],
+        },
+      ],
+    },
+
     // resize: {
     //   root: [
     //     {

@@ -61,9 +61,12 @@ export class GeometryEval {
     actions.add("enter");
     if (isEnter) actions.add("enter");
     if (isLeave) actions.add("leave");
-    if (isResize) actions.add("resize");
-    if (isMove) actions.add("move");
+    if (isResize) actions.add("update");
+    if (isMove) actions.add("update");
 
+    if (["enter", "update", "leave"].includes(curr.self.intent)) {
+      actions.add(curr.self.intent);
+    }
     if (curr.self.mode) actions.add(curr.self.mode);
 
     return Array.from(actions);
