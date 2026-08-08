@@ -29,11 +29,15 @@ export class GeometryWatchers<Instance extends LitElement> {
     props: InformSetProps,
     sizing: LayoutSizing | null,
   ): Promise<void> {
-    await Promise.all(
-      Object.keys(this.props).map((setName) =>
-        this.getSet(setName).inform(props, sizing),
-      ),
-    );
+    const set = this.getSet(props.setName);
+    // if (!set) return;
+    // console.log("watcher sets", this.props, props);
+    set.inform(props, sizing);
+    // await Promise.all(
+    //   Object.keys(this.props).map((setName) =>
+    //     this.getSet(setName).inform(props, sizing),
+    //   ),
+    // );
   }
 
   private getSet(setName: GeometrySetName) {

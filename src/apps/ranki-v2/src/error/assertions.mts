@@ -54,7 +54,7 @@ export function assertNotUndefined(
 ): asserts value is object {
   if (value === undefined) {
     throw new RankiAppError({
-      code: "VALUE_DEFINED",
+      code: "VALUE_UNDEFINED",
       cause: extra.cause || null,
       ...extra,
     });

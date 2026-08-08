@@ -1,7 +1,5 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 
-import { assertNotUndefined } from "_error/assertions.mjs";
-
 import type { R2CNewChildSizeEvent } from "../../../events/geometry-events.types.mjs";
 import type { EmittedComponentState } from "./children-registry.types.mjs";
 
@@ -12,13 +10,14 @@ export class ChildrenRegistry {
     const ordered: EmittedComponentState[] = [];
     for (const component of serial) {
       const dims = this.dims.get(component);
-      assertNotUndefined(dims, {
-        why: "Element has no registered component dims",
-        details: {
-          tagName: component.tagName,
-        },
-      });
-      ordered.push(dims);
+      if (!dims) {
+        ordered.push({
+          intent: "none",
+          mode: "idle",
+        });
+      } else {
+        ordered.push(dims);
+      }
     }
     return ordered;
   }

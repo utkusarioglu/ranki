@@ -1,53 +1,11 @@
 import type { TargetAnimationSpec } from "_controllers/geometry/controller/animator/animator.types.mjs";
 
 export const TEXT: TargetAnimationSpec = {
-  "text-span": {
-    always: {},
-    // !FIX: THIS SHOULDN'T BE NEEDED
-    resize: {},
-    enter: {
-      root: [
-        {
-          name: "init",
-          duration: 0,
-          keyframes: [
-            {
-              height: "HEIGHT + 1",
-              width: "WIDTH + 1",
-              opacity: 0,
-            },
-          ],
-        },
-        {
-          name: "opacity",
-          duration: 0,
-          keyframes: [
-            {
-              opacity: 1,
-            },
-          ],
-        },
-      ],
-    },
-    leave: {
-      root: [
-        {
-          name: "opacity",
-          duration: 0,
-          keyframes: [
-            {
-              opacity: 0,
-            },
-          ],
-        },
-      ],
-    },
-  },
   text: {
     enter: {
       root: [
         {
-          name: "to.self.height",
+          name: "height",
           duration: 0,
           keyframes: [
             {
@@ -68,7 +26,7 @@ export const TEXT: TargetAnimationSpec = {
       ],
       sets: {
         children: {
-          expose: {
+          override: {
             width: "to.self.width",
             height: "to.self.height",
           },
@@ -82,49 +40,92 @@ export const TEXT: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              top: "to.container.top",
-              left: "to.container.left",
+              top: "to.self.top",
+              left: "to.self.left",
             },
           ],
         },
       ],
     },
-    resize: {
+    // resize: {
+    //   root: [
+    //     {
+    //       name: "width",
+    //       duration: 0,
+    //       keyframes: [
+    //         {
+    //           opacity: 1,
+    //           width: "to.container.width",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    //   sets: {
+    //     children: {
+    //       expose: {
+    //         width: "to.self.width",
+    //         height: "to.self.height",
+    //       },
+    //     },
+    //   },
+    // },
+    // leave: {
+    //   root: [
+    //     {
+    //       name: "exit",
+    //       duration: 0,
+    //       keyframes: [
+    //         {
+    //           opacity: 0,
+    //           width: 0,
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
+    // always: {},
+  },
+
+  "text-span": {
+    // always: {},
+    // !FIX: THIS SHOULDN'T BE NEEDED
+    // resize: {},
+    enter: {
       root: [
         {
-          name: "width",
+          name: "init",
           duration: 0,
           keyframes: [
             {
-              opacity: 1,
-              width: "to.container.width",
-            },
-          ],
-        },
-      ],
-      sets: {
-        children: {
-          expose: {
-            width: "to.self.width",
-            height: "to.self.height",
-          },
-        },
-      },
-    },
-    leave: {
-      root: [
-        {
-          name: "exit",
-          duration: 0,
-          keyframes: [
-            {
+              height: "to.self.height + 1",
               opacity: 0,
-              width: 0,
+            },
+          ],
+        },
+        {
+          name: "opacity",
+          duration: 0,
+          keyframes: [
+            {
+              width: "to.self.width + 1",
+              opacity: 1,
             },
           ],
         },
       ],
     },
-    always: {},
+    // leave: {
+    //   root: [
+    //     {
+    //       name: "opacity",
+    //       duration: 0,
+    //       keyframes: [
+    //         {
+    //           opacity: 0,
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
   },
 };

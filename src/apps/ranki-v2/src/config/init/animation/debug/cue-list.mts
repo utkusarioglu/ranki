@@ -18,7 +18,7 @@ export const CUE_LIST: TargetAnimationSpec = {
       ],
       sets: {
         bg: {
-          expose: {
+          override: {
             width: "to.self.width",
             height: "to.self.height",
           },
@@ -38,30 +38,30 @@ export const CUE_LIST: TargetAnimationSpec = {
           name: "position",
           keyframes: [
             {
-              top: "to.container.top",
-              left: "to.container.left",
+              top: "to.self.top",
+              left: "to.self.left",
             },
           ],
           duration: 0,
         },
       ],
     },
-    resize: {
-      sets: {
-        bg: {
-          expose: {
-            width: "to.container.width",
-            height: "to.container.height",
-          },
-        },
-        children: {
-          wait: 0,
-          expose: {
-            top: "to.self.top",
-            left: "to.self.left",
-          },
-        },
-      },
-    },
+    //   resize: {
+    //     sets: {
+    //       bg: {
+    //         expose: {
+    //           width: "to.container.width",
+    //           height: "to.container.height",
+    //         },
+    //       },
+    //       children: {
+    //         wait: 0,
+    //         expose: {
+    //           top: "to.self.top",
+    //           left: "to.self.left",
+    //         },
+    //       },
+    //     },
+    //   },
   },
 };

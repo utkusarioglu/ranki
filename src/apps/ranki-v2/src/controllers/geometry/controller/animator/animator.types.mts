@@ -40,14 +40,14 @@ export type AnimationKeyframeOptions = {
 };
 
 export type AnimationKeyframeStyles = Partial<{
-    offset: number;
-    opacity: number;
-    rotate: number;
-    scale: number;
-    skewX: number;
-    skewY: number;
-    // rotate3d: string;
-  }> &
+  offset: number;
+  opacity: number;
+  rotate: number;
+  scale: number;
+  skewX: number;
+  skewY: number;
+  // rotate3d: string;
+}> &
   Partial<AnimationKeyframeOptions> &
   Partial<TopLeft> &
   Partial<WidthHeight>;
@@ -87,9 +87,9 @@ export interface ApplyRootParams {
 }
 
 export interface InformSetProps {
+  setName: GeometrySetName;
   containerExposed: InformedChildStyleContainer;
   selfOverrides: InformedChildStyleSelf;
-  setName: GeometrySetName;
 }
 
 export interface LayoutParsed {

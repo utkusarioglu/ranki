@@ -36,7 +36,7 @@ export class GeometryController<
     host.addController(this);
     this.host = host;
     this.animator = new Animator(this.host, params.role, {
-      informSets: this.informSets.bind(this),
+      informSet: this.informSet.bind(this),
     });
     this.events = new GeometryEvents({
       events: params.events,
@@ -66,6 +66,7 @@ export class GeometryController<
 
       const update = await this.sets.onEmit(target, e.detail);
       if (!update) return;
+      DebugUtils.geometryControllerOnEmit({ host: this.host, update });
 
       this.sizing = update.sizing;
       switch (update.type) {
@@ -92,7 +93,7 @@ export class GeometryController<
     (this.host as unknown as R2C).informStyle = this.informStyle.bind(this);
   }
 
-  private async informSets(props: InformSetProps): Promise<void> {
+  private async informSet(props: InformSetProps): Promise<void> {
     return this.sets.inform(props, this.sizing);
   }
 
@@ -109,6 +110,7 @@ export class GeometryController<
       host: this.host,
       prev: this.prev,
       sizing: this.sizing,
+      informed: informed,
     });
 
     this.events.onActionsStart(this.curr.actions);

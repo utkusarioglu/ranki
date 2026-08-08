@@ -58,7 +58,7 @@ export class GeometryEval {
     const isMove = changed.top || changed.left;
 
     const actions = new Set<LocalAction>();
-    actions.add("always");
+    actions.add("enter");
     if (isEnter) actions.add("enter");
     if (isLeave) actions.add("leave");
     if (isResize) actions.add("resize");

@@ -34,7 +34,7 @@ export const ICON: TargetAnimationSpec = {
     enter: {
       root: [
         {
-          name: "to.self.height",
+          name: "height",
           duration: 0,
           keyframes: [
             {
@@ -54,8 +54,8 @@ export const ICON: TargetAnimationSpec = {
         },
       ],
       sets: {
-        "icon-span": {
-          expose: {
+        children: {
+          override: {
             width: "to.self.width",
             height: "to.self.height",
           },
@@ -69,50 +69,49 @@ export const ICON: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              height: "to.container.height",
-              top: "to.container.top",
-              left: "to.container.left",
+              top: "to.self.top",
+              left: "to.self.left",
             },
           ],
         },
       ],
     },
-    resize: {
-      root: [
-        {
-          name: "width",
-          duration: 0,
-          keyframes: [
-            {
-              opacity: 1,
-              width: "to.container.width",
-            },
-          ],
-        },
-      ],
-      sets: {
-        children: {
-          expose: {
-            width: "to.container.width",
-            height: "to.container.height",
-          },
-        },
-      },
-    },
-    leave: {
-      root: [
-        {
-          name: "exit",
-          duration: 0,
-          keyframes: [
-            {
-              opacity: 0,
-              width: 0,
-            },
-          ],
-        },
-      ],
-    },
-    always: {},
+    // resize: {
+    //   root: [
+    //     {
+    //       name: "width",
+    //       duration: 0,
+    //       keyframes: [
+    //         {
+    //           opacity: 1,
+    //           width: "to.container.width",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    //   sets: {
+    //     children: {
+    //       expose: {
+    //         width: "to.container.width",
+    //         height: "to.container.height",
+    //       },
+    //     },
+    //   },
+    // },
+    // leave: {
+    //   root: [
+    //     {
+    //       name: "exit",
+    //       duration: 0,
+    //       keyframes: [
+    //         {
+    //           opacity: 0,
+    //           width: 0,
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
+    // always: {},
   },
 };

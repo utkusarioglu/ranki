@@ -4,6 +4,7 @@ import type {
   InformSetProps,
   LayoutParsed,
 } from "_controllers/geometry/controller/animator/animator.types.mjs";
+import type { ChildrenSizing } from "_controllers/geometry/controller/sets/children/children.types.mjs";
 import type { LayoutSizing } from "_controllers/geometry/controller/sets/children/layout/layout-utils.types.mjs";
 import type {
   CurrentAppliedStyle,
@@ -26,6 +27,7 @@ interface InformStyleDebug {
   curr: CurrentAppliedStyle;
   prev: CurrentAppliedStyle | null;
   sizing: LayoutSizing | null;
+  informed: InformedChildStyle;
 }
 
 interface InformSet {
@@ -40,8 +42,23 @@ interface AnimatorUpdate {
   curr: CurrentAppliedStyle;
   prev: CurrentAppliedStyle | null;
 }
-
+interface GeometryControllerOnEmitProps {
+  host: LitElement;
+  update: ChildrenSizing | null;
+}
 export class DebugUtils {
+  public static geometryControllerOnEmit({
+    host,
+    update,
+  }: GeometryControllerOnEmitProps) {
+    if (host.tagName === DEBUG_TAG) {
+      console.log("controller.onEmit", {
+        tagName: host.tagName,
+        update,
+      });
+    }
+  }
+
   public static informStyle(props: InformStyleDebug) {
     if (props.host.tagName === DEBUG_TAG) {
       console.log("controller.informStyle", {
@@ -49,6 +66,7 @@ export class DebugUtils {
         curr: props.curr,
         prev: props.prev,
         sizing: props.sizing,
+        informed: props.informed,
       });
     }
   }
@@ -67,6 +85,7 @@ export class DebugUtils {
   public static animatorUpdate(props: AnimatorUpdate) {
     if (props.host.tagName === DEBUG_TAG)
       console.log("animator.update", {
+        host: props.host,
         curr: props.curr,
         prev: props.prev,
       });

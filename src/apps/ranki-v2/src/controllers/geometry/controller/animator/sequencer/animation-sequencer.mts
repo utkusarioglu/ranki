@@ -44,7 +44,7 @@ export class AnimationSequencer {
       Object.values(l).map(async ({ props, then, wait }) => {
         try {
           if (wait) await TimingUtils.delay(wait);
-          await this.callbacks.informSets(props);
+          await this.callbacks.informSet(props);
           if (then) await this.sequenceThen(then);
         } catch (e) {
           console.log("sequenceSets", e);

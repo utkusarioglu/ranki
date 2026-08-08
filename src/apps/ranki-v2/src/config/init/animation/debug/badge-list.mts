@@ -18,16 +18,16 @@ export const BADGE_LIST: TargetAnimationSpec = {
       ],
       sets: {
         bg: {
-          expose: {
+          override: {
             width: "to.self.width",
             height: "to.self.height",
           },
         },
         children: {
           expose: {
-            top: "to.self.top",
-            left: "to.self.left",
-            width: "to.self.width",
+            // top: "to.self.top",
+            // left: "to.self.left",
+            // width: "to.self.width",
           },
         },
       },
@@ -48,24 +48,24 @@ export const BADGE_LIST: TargetAnimationSpec = {
         },
       ],
     },
-    resize: {
-      sets: {
-        bg: {
-          wait: 0,
-          expose: {
-            width: "to.container.width",
-            height: "to.container.height",
-          },
-        },
-        children: {
-          wait: 0,
-          expose: {
-            top: "to.self.top",
-            left: "to.self.left",
-            width: "to.self.width",
-          },
-        },
-      },
-    },
+    // resize: {
+    //   sets: {
+    //     bg: {
+    //       wait: 0,
+    //       expose: {
+    //         width: "to.container.width",
+    //         height: "to.container.height",
+    //       },
+    //     },
+    //     children: {
+    //       wait: 0,
+    //       expose: {
+    //         top: "to.self.top",
+    //         left: "to.self.left",
+    //         width: "to.self.width",
+    //       },
+    //     },
+    //   },
+    // },
   },
 };

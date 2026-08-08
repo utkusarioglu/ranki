@@ -61,7 +61,7 @@ export const HUD: TargetAnimationSpec = {
           keyframes: [
             {
               height: "to.self.height",
-              top: "to.self.top",
+              // top: "to.self.top",
             },
           ],
           then: {
@@ -78,7 +78,7 @@ export const HUD: TargetAnimationSpec = {
             ],
             sets: {
               bg: {
-                expose: {
+                override: {
                   width: "to.self.width",
                   height: "to.self.height",
                 },
@@ -117,14 +117,14 @@ export const HUD: TargetAnimationSpec = {
   },
 
   "hud-bg": {
-    always: {
+    enter: {
       root: [
         {
           name: "init",
           duration: 0,
           keyframes: [
             {
-              height: "to.container.height",
+              height: "to.self.height",
             },
           ],
         },
@@ -133,39 +133,39 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              width: "to.container.width",
+              width: "to.self.width",
               opacity: 1,
             },
           ],
         },
       ],
     },
-    resize: {
-      root: [
-        {
-          name: "width",
-          duration: 0,
-          keyframes: [
-            {
-              width: "to.container.width",
-            },
-          ],
-        },
-      ],
-    },
-    leave: {
-      root: [
-        {
-          name: "opacity",
-          duration: 0,
-          keyframes: [
-            {
-              width: 0,
-              opacity: 0,
-            },
-          ],
-        },
-      ],
-    },
+    // resize: {
+    //   root: [
+    //     {
+    //       name: "width",
+    //       duration: 0,
+    //       keyframes: [
+    //         {
+    //           width: "to.container.width",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
+    // leave: {
+    //   root: [
+    //     {
+    //       name: "opacity",
+    //       duration: 0,
+    //       keyframes: [
+    //         {
+    //           width: 0,
+    //           opacity: 0,
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
   },
 };

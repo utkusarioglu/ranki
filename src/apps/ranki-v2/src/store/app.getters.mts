@@ -7,6 +7,7 @@ export function getAnimationRecipe(
   presetName: string,
   roleName: string,
 ) {
+  // console.log(action, presetName, roleName);
   const collection = appStore.getState().state?.design.animationCollection;
   assertNotUndefined(collection, {
     why: "Animation collection does not exist",

@@ -29,10 +29,14 @@ export class GeometrySets<Instance extends LitElement> {
     props: InformSetProps,
     sizing: LayoutSizing | null,
   ): Promise<void> {
-    await Promise.all([
-      this.children?.inform(props, sizing),
-      this.watchers?.inform(props, sizing),
-    ]);
+    switch (props.setName) {
+      case "children":
+        return this.children?.inform(props, sizing);
+      default:
+        return this.watchers?.inform(props, sizing);
+    }
+    // await Promise.all([ this.children?.inform(props, sizing),
+    // ]);
   }
 
   public async onEmit(

@@ -35,7 +35,7 @@ let animator: Animator;
 beforeEach(() => {
   const host = new Host();
   animator = new Animator(host as unknown as LitElement, "test", {
-    informSets: informSet,
+    informSet: informSet,
   });
 });
 
