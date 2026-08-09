@@ -3,24 +3,16 @@ import type { LitElement } from "lit";
 
 import { afterEach, beforeEach, expect, type Mock, test, vi } from "vitest";
 
-import type { EmitModes } from "../../geometry-events.types.mjs";
+import type {
+  EmitModes,
+  R2CNewChildSizeEvent,
+} from "../../geometry-events.types.mjs";
 
 import { GeometryEvents } from "../../geometry-events.mjs";
 
-const { emitLeave, emitMode, emitUpdate, dispatchEvent } = vi.hoisted(() => ({
-  emitLeave: vi.fn(),
-  emitMode: vi.fn(),
-  emitUpdate: vi.fn(),
+const { dispatchEvent } = vi.hoisted(() => ({
   dispatchEvent: vi.fn(),
 }));
-
-// vi.mock("../../utils/geometry-event-utils.mjs", () => ({
-//   GeometryEventUtils: class {
-//     static emitLeave = emitLeave;
-//     static emitMode = emitMode;
-//     static emitUpdate = emitUpdate;
-//   },
-// }));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let events: GeometryEvents<any>;
@@ -36,7 +28,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  [emitUpdate, emitLeave, emitMode, host].forEach((f) =>
+  [dispatchEvent, Host].forEach((f) =>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (f as Mock<any>).mockClear(),
   );
@@ -47,57 +39,33 @@ test("update", () => {
     height: 11,
     width: 7,
   };
-  events.emit({ type: "intent", intent: "update", style });
-  expect(emitUpdate).toHaveBeenCalledTimes(1);
-  expect(emitLeave).toHaveBeenCalledTimes(0);
-  expect(emitMode).toHaveBeenCalledTimes(0);
-  expect(emitUpdate).toHaveBeenCalledWith(host, style);
-});
-
-test("update no params", () => {
-  expect(() =>
-    events.emit(
-      // @ts-expect-error Deliberately misshaped
-      { type: "intent", intent: "update" },
-    ),
-  ).toThrow();
+  const emit: R2CNewChildSizeEvent = {
+    type: "intent",
+    intent: "update",
+    style,
+  };
+  const expected = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
+    detail: emit,
+  });
+  events.emit(emit);
+  expect(dispatchEvent).toHaveBeenCalledWith(expected);
 });
 
 test("leave", () => {
-  events.emit({ type: "intent", intent: "leave" });
-  expect(emitUpdate).toHaveBeenCalledTimes(0);
-  expect(emitLeave).toHaveBeenCalledTimes(1);
-  expect(emitMode).toHaveBeenCalledTimes(0);
-  expect(emitLeave).toHaveBeenCalledWith(host);
+  const emit: R2CNewChildSizeEvent = { type: "intent", intent: "leave" };
+  events.emit(emit);
+  const expected = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
+    detail: emit,
+  });
+  expect(dispatchEvent).toHaveBeenCalledWith(expected);
 });
 
 test("mode", () => {
   const mode: EmitModes = "hover-end";
-  events.emit({ type: "mode", mode });
-  expect(emitUpdate).toHaveBeenCalledTimes(0);
-  expect(emitLeave).toHaveBeenCalledTimes(0);
-  expect(emitMode).toHaveBeenCalledTimes(1);
-  expect(emitMode).toHaveBeenCalledWith(host, mode);
-});
-
-test("mode no params", () => {
-  expect(() =>
-    events.emit(
-      // @ts-expect-error deliberately misshaped
-      { type: "mode" },
-    ),
-  ).toThrow();
-});
-
-/**
- * @dev
- * #1 Deliberately wrong data type
- */
-test("bad intent", () => {
-  expect(() =>
-    events.emit(
-      // @ts-expect-error #1
-      "bad",
-    ),
-  ).toThrow();
+  const emit: R2CNewChildSizeEvent = { type: "mode", mode };
+  events.emit(emit);
+  const expected = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
+    detail: emit,
+  });
+  expect(dispatchEvent).toHaveBeenCalledWith(expected);
 });

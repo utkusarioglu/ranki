@@ -68,14 +68,13 @@ export class GeometryChildren<
     detail: R2CNewChildSizeEvent,
   ): ChildrenUpdateSizingReturn {
     if (detail.type !== "intent") return null;
-    return this.composeResolution();
-    // switch (detail.intent) {
-    //   case "leave":
-    //   case "update": {
-    //     return this.composeResolution();
-    //   }
-    //   default:
-    //     return null;
-    // }
+    switch (detail.intent) {
+      case "leave":
+      case "update": {
+        return this.composeResolution();
+      }
+      default:
+        return null;
+    }
   }
 }

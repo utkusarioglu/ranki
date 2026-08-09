@@ -90,15 +90,18 @@ test("update", () => {
     },
   };
   const expected: EmittedComponentState = {
-    ...detail,
+    intent: detail.intent,
     mode: "idle",
+    style: detail.style,
   };
   // @ts-expect-error #1
-  registry.dims.set(target, {
-    intent: "enter",
-    mode: "idle",
-    style: { height: 2, width: 1 },
-  });
+  registry.dims
+    //
+    .set(target, {
+      intent: "enter",
+      mode: "idle",
+      style: { height: 2, width: 1 },
+    });
   set.mockClear();
   registry.update(target, detail);
   expect(has).toHaveBeenCalledTimes(1);
@@ -131,7 +134,7 @@ test("mode", () => {
     mode: "hover-start",
   };
   const expected: EmittedComponentState = {
-    intent: "none",
+    intent: "enter",
     mode: detail.mode,
   };
   registry.update(target, detail);

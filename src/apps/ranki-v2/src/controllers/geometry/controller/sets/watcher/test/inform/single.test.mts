@@ -21,15 +21,7 @@ const informProps: InformSetProps = {
     mode: "idle",
     style: {},
   },
-  setName: "f",
-};
-
-const sizing: LayoutSizing = {
-  container: {
-    height: 3,
-    width: 1,
-  },
-  set: [],
+  setName: "one",
 };
 
 let elem: R2C;
@@ -39,6 +31,24 @@ beforeEach(() => {
 });
 
 test("Single set 1 elem", async () => {
+  const sizing: LayoutSizing = {
+    container: {
+      height: 3,
+      width: 1,
+    },
+    set: [
+      {
+        intent: "enter",
+        mode: "idle",
+        style: {
+          top: 2,
+          left: 5,
+          height: 30,
+          width: 10,
+        },
+      },
+    ],
+  };
   const props = {
     one: {
       selector: () => [elem as unknown as R2C],
@@ -56,7 +66,7 @@ test("Single set 1 elem", async () => {
     selfOverrides: {
       intent: "enter",
       mode: "idle",
-      style: {},
+      style: sizing.set[0].style,
     },
   };
   await new GeometryWatchers(host, props).inform(informProps, sizing);
@@ -65,6 +75,34 @@ test("Single set 1 elem", async () => {
 });
 
 test("Single set 2 elems", async () => {
+  const sizing: LayoutSizing = {
+    container: {
+      height: 3,
+      width: 1,
+    },
+    set: [
+      {
+        intent: "enter",
+        mode: "idle",
+        style: {
+          top: 2,
+          left: 5,
+          height: 30,
+          width: 10,
+        },
+      },
+      {
+        intent: "update",
+        mode: "hover-end",
+        style: {
+          top: 20,
+          left: 50,
+          height: 300,
+          width: 100,
+        },
+      },
+    ],
+  };
   const props = {
     one: {
       selector: () => [elem as unknown as R2C, elem as unknown as R2C],
@@ -83,7 +121,7 @@ test("Single set 2 elems", async () => {
       selfOverrides: {
         intent: "enter",
         mode: "idle",
-        style: {},
+        style: sizing.set[0].style,
       },
     },
     {
@@ -96,9 +134,9 @@ test("Single set 2 elems", async () => {
         stagger: 0,
       },
       selfOverrides: {
-        intent: "enter",
-        mode: "idle",
-        style: {},
+        intent: "update",
+        mode: "hover-end",
+        style: sizing.set[1].style,
       },
     },
   ];

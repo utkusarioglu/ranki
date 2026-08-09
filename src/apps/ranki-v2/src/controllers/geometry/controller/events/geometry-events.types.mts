@@ -3,6 +3,8 @@ import type { LitElement } from "lit";
 import type { LocalAction } from "../../geometry-intent.types.mjs";
 import type { WidthHeight } from "../../geometry-style.types.mjs";
 
+export type EmitType = "intent" | "mode";
+
 export type EmitModes = "hover-end" | "hover-start" | "idle";
 
 export type GeometryEventCb<Instance> = (

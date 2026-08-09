@@ -57,9 +57,10 @@ export class ChildrenRegistry {
         break;
       case "leave":
         this.dims.set(target, {
-          mode: "idle",
+          // mode: "idle",
           ...this.dims.get(target),
-          ...detail,
+          mode: detail.mode || "idle",
+          intent: detail.intent,
         });
         break;
       case "update":
