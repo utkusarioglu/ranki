@@ -16,7 +16,11 @@ const singleElem = () => ({ informStyle: vi.fn() });
 
 const informProps: InformSetProps = {
   containerExposed: { style: {} },
-  selfOverrides: { style: {} },
+  selfOverrides: {
+    intent: "enter",
+    mode: "idle",
+    style: {},
+  },
   setName: "f",
 };
 
@@ -50,6 +54,8 @@ test("Single set 1 elem", async () => {
       stagger: 0,
     },
     selfOverrides: {
+      intent: "enter",
+      mode: "idle",
       style: {},
     },
   };
@@ -74,7 +80,11 @@ test("Single set 2 elems", async () => {
         length: 2,
         stagger: 0,
       },
-      selfOverrides: { style: {} },
+      selfOverrides: {
+        intent: "enter",
+        mode: "idle",
+        style: {},
+      },
     },
     {
       containerExposed: {
@@ -85,7 +95,11 @@ test("Single set 2 elems", async () => {
         length: 2,
         stagger: 0,
       },
-      selfOverrides: { style: {} },
+      selfOverrides: {
+        intent: "enter",
+        mode: "idle",
+        style: {},
+      },
     },
   ];
   await new GeometryWatchers(host, props).inform(informProps, sizing);

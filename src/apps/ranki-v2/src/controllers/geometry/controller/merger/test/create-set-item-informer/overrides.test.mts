@@ -23,6 +23,8 @@ test("", () => {
       },
     },
     selfOverrides: {
+      intent: "enter",
+      mode: "idle",
       style: {
         opacity: 0.44,
       },
@@ -37,6 +39,7 @@ test("", () => {
     set: [
       {
         intent: "enter",
+        mode: "idle",
         style: {
           height: 51,
           left: 0,
@@ -46,6 +49,7 @@ test("", () => {
       },
       {
         intent: "leave",
+        mode: "idle",
         style: {
           height: 91,
           left: 0,
@@ -59,6 +63,7 @@ test("", () => {
     context,
     props,
     sizing,
+    index: 0,
   });
   const expected: InformedChildStyle = {
     containerExposed: {
@@ -69,6 +74,8 @@ test("", () => {
     },
     context,
     selfOverrides: {
+      intent: "enter",
+      mode: "idle",
       style: {
         opacity: 0.44,
       },

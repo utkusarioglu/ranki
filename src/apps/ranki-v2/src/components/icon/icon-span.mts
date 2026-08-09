@@ -35,14 +35,14 @@ export class R2IconSpan extends R2C {
   private readonly geo!: GeometryController<R2IconSpan>;
 
   public override leave() {
-    this.geo.events.emit("leave");
+    this.geo.events.emit({ type: "intent", intent: "leave" });
   }
 
   override async firstUpdated() {
     const { width, height } = this.props;
-    const dims: WidthHeight = { width, height };
+    const style: WidthHeight = { width, height };
     await TimingUtils.waitLayout();
-    this.geo.events.emit("update", dims);
+    this.geo.events.emit({ type: "intent", intent: "update", style });
     try {
       const icon = await loadIcon(this.props.icon);
       this.svg = icon.body;

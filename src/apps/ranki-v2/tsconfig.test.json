@@ -1,0 +1,34 @@
+{
+  "extends": "./tsconfig.lib.json",
+  "compilerOptions": {
+    "noEmit": true
+    // "outDir": "lib",
+    // "rootDir": "src",
+    // "skipLibCheck": true,
+    // "declarationDir": "types",
+    // "useDefineForClassFields": false,
+    // "experimentalDecorators": true,
+    // "paths": {
+    //   "_components/*": ["./src/components/*"],
+    //   "_config/*": ["./src/config/*"],
+    //   "_error/*": ["./src/error/*"],
+    //   "_utils/*": ["./src/utils/*"],
+    //   "_store/*": ["./src/store/*"],
+    //   "_collect/*": ["./src/collect/*"],
+    //   "_controllers/*": ["./src/controllers/*"],
+    //   "_/*": ["./src/*"],
+    //   "@dqm/package-utils": ["../../packages/dqm-utils"],
+    //   "@dqm/package-dqm-v2": ["../../packages/dqm-v2"]
+    // }
+  },
+  // "include": ["src/types/global.d.ts", "src/**/*.mts"],
+  "exclude": []
+  // "references": [
+  //   {
+  //     "path": "../../packages/dqm-utils"
+  //   },
+  //   {
+  //     "path": "../../packages/dqm-v2"
+  //   }
+  // ]
+}

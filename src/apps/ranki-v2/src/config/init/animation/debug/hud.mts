@@ -20,9 +20,6 @@ export const HUD: TargetAnimationSpec = {
             width: "to.self.width",
             height: "to.self.height",
           },
-          // override: {
-          //   top: "to.self.",
-          // },
         },
       },
     },
@@ -42,16 +39,6 @@ export const HUD: TargetAnimationSpec = {
         },
       ],
     },
-    // resize: {
-    //   sets: {
-    //     children: {
-    //       expose: {
-    //         top: 0,
-    //         left: 0,
-    //       },
-    //     },
-    //   },
-    // },
   },
 
   "hud-scroller": {
@@ -158,33 +145,19 @@ export const HUD: TargetAnimationSpec = {
         },
       ],
     },
-
-    // resize: {
-    //   root: [
-    //     {
-    //       name: "width",
-    //       duration: 0,
-    //       keyframes: [
-    //         {
-    //           width: "to.container.width",
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
-    // leave: {
-    //   root: [
-    //     {
-    //       name: "opacity",
-    //       duration: 0,
-    //       keyframes: [
-    //         {
-    //           width: 0,
-    //           opacity: 0,
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
+    leave: {
+      root: [
+        {
+          name: "opacity",
+          duration: 0,
+          keyframes: [
+            {
+              width: 0,
+              opacity: 0,
+            },
+          ],
+        },
+      ],
+    },
   },
 };

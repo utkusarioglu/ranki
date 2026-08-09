@@ -35,7 +35,11 @@ afterEach(() => {
 test("Single set no elems", async () => {
   const props: InformSetProps = {
     containerExposed: { style: {} },
-    selfOverrides: { style: {} },
+    selfOverrides: {
+      intent: "enter",
+      mode: "idle",
+      style: {},
+    },
     setName: "f",
   };
   const sizing: LayoutSizing = {

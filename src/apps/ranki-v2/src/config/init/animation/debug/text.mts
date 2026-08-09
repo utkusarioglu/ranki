@@ -49,49 +49,23 @@ export const TEXT: TargetAnimationSpec = {
         },
       ],
     },
-    // resize: {
-    //   root: [
-    //     {
-    //       name: "width",
-    //       duration: 0,
-    //       keyframes: [
-    //         {
-    //           opacity: 1,
-    //           width: "to.container.width",
-    //         },
-    //       ],
-    //     },
-    //   ],
-    //   sets: {
-    //     children: {
-    //       expose: {
-    //         width: "to.self.width",
-    //         height: "to.self.height",
-    //       },
-    //     },
-    //   },
-    // },
-    // leave: {
-    //   root: [
-    //     {
-    //       name: "exit",
-    //       duration: 0,
-    //       keyframes: [
-    //         {
-    //           opacity: 0,
-    //           width: 0,
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
-    // always: {},
+    leave: {
+      root: [
+        {
+          name: "exit",
+          duration: 0,
+          keyframes: [
+            {
+              opacity: 0,
+              width: 0,
+            },
+          ],
+        },
+      ],
+    },
   },
 
   "text-span": {
-    // always: {},
-    // !FIX: THIS SHOULDN'T BE NEEDED
-    // resize: {},
     enter: {
       root: [
         {

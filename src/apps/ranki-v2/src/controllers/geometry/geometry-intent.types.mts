@@ -3,13 +3,13 @@ import type { EmitModes } from "./controller/events/geometry-events.types.mjs";
 export type EmitIntent = "enter" | "leave" | "mode" | "none" | "update";
 
 export type LocalAction =
-  | "enter"
-  | "leave"
+  // | "enter"
+  // | "leave"
   // | "move"
-  | "none"
-  | "update"
+  // | "none"
+  // | "update"
   // | "always"
-  | EmitModes;
+  EmitIntent | EmitModes;
 
 export type WithEmitIntent = { intent: EmitIntent };
 

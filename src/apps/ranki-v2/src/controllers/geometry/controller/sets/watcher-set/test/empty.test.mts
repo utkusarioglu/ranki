@@ -25,7 +25,11 @@ afterEach(() => {
 test("empty props", async () => {
   const props: InformSetProps = {
     containerExposed: { style: {} },
-    selfOverrides: { style: {} },
+    selfOverrides: {
+      intent: "enter",
+      mode: "idle",
+      style: {},
+    },
     setName: "f",
   };
   const sizing: LayoutSizing = {

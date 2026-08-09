@@ -22,7 +22,9 @@ const props: GeometryChildrenProps<LitElement> = {
 test("single session single elem", async () => {
   const children = new GeometryChildren(host, props);
   const detail: R2CNewChildSizeEvent = {
+    type: "intent",
     intent: "update",
+    mode: "idle",
     style: {
       height: 11,
       width: 7,
@@ -36,6 +38,7 @@ test("single session single elem", async () => {
       set: [
         {
           intent: detail.intent,
+          mode: detail.mode!,
           style: {
             ...detail.style,
             left: 0,
@@ -57,14 +60,18 @@ test("single session single elem", async () => {
 test("two sessions single elem", async () => {
   const children = new GeometryChildren(host, props);
   const detail1: R2CNewChildSizeEvent = {
+    type: "intent",
     intent: "update",
+    mode: "idle",
     style: {
       height: 11,
       width: 7,
     },
   };
   const detail2: R2CNewChildSizeEvent = {
+    type: "intent",
     intent: "update",
+    mode: "idle",
     style: {
       height: 17,
       width: 13,
@@ -78,6 +85,7 @@ test("two sessions single elem", async () => {
       set: [
         {
           intent: detail1.intent,
+          mode: detail1.mode!,
           style: {
             ...detail1.style,
             left: 0,
@@ -96,6 +104,7 @@ test("two sessions single elem", async () => {
       set: [
         {
           intent: detail2.intent,
+          mode: detail2.mode!,
           style: {
             ...detail2.style,
             left: 0,

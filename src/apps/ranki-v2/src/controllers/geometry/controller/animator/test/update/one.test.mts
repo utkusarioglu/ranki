@@ -57,6 +57,7 @@ test("single keyframe", async () => {
     },
     self: {
       intent: "enter",
+      mode: "idle",
       style: {
         height: 0,
         left: 0,
@@ -109,6 +110,7 @@ test("two keyframes", async () => {
     },
     self: {
       intent: "enter",
+      mode: "idle",
       style: {
         height: 0,
         left: 0,

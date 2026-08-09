@@ -23,14 +23,18 @@ test("single session two elems", async () => {
   };
   const children = new GeometryChildren(host, props);
   const detail1: R2CNewChildSizeEvent = {
+    type: "intent",
     intent: "update",
+    mode: "idle",
     style: {
       height: 11,
       width: 7,
     },
   };
   const detail2: R2CNewChildSizeEvent = {
+    type: "intent",
     intent: "update",
+    mode: "idle",
     style: {
       height: 11,
       width: 13,
@@ -45,6 +49,7 @@ test("single session two elems", async () => {
       set: [
         {
           intent: detail1.intent,
+          mode: detail1.mode!,
           style: {
             ...detail1.style,
             left: 0,
@@ -53,6 +58,7 @@ test("single session two elems", async () => {
         },
         {
           intent: detail2.intent,
+          mode: detail2.mode!,
           style: {
             ...detail2.style,
             left: detail1.style.width,
@@ -80,28 +86,36 @@ test("two sessions two elems", async () => {
   };
   const children = new GeometryChildren(host, props);
   const detail1_1: R2CNewChildSizeEvent = {
+    type: "intent",
     intent: "update",
+    mode: "idle",
     style: {
       height: 11,
       width: 7,
     },
   };
   const detail1_2: R2CNewChildSizeEvent = {
+    type: "intent",
     intent: "update",
+    mode: "idle",
     style: {
       height: 11,
       width: 19,
     },
   };
   const detail2_1: R2CNewChildSizeEvent = {
+    type: "intent",
     intent: "update",
+    mode: "idle",
     style: {
       height: 11,
       width: 13,
     },
   };
   const detail2_2: R2CNewChildSizeEvent = {
+    type: "intent",
     intent: "update",
+    mode: "idle",
     style: {
       height: 11,
       width: 23,
@@ -116,6 +130,7 @@ test("two sessions two elems", async () => {
       set: [
         {
           intent: detail1_1.intent,
+          mode: detail1_1.mode!,
           style: {
             ...detail1_1.style,
             left: 0,
@@ -124,6 +139,7 @@ test("two sessions two elems", async () => {
         },
         {
           intent: detail1_2.intent,
+          mode: detail1_2.mode!,
           style: {
             ...detail1_2.style,
             left: detail1_1.style.width,
@@ -143,6 +159,7 @@ test("two sessions two elems", async () => {
       set: [
         {
           intent: detail2_1.intent,
+          mode: detail2_1.mode!,
           style: {
             ...detail2_1.style,
             left: 0,
@@ -151,6 +168,7 @@ test("two sessions two elems", async () => {
         },
         {
           intent: detail2_2.intent,
+          mode: detail2_2.mode!,
           style: {
             ...detail2_2.style,
             left: detail2_1.style.width,

@@ -54,6 +54,7 @@ afterEach(() => {
 
 test("disconnected", () => {
   const detail: R2CNewChildSizeEvent = {
+    type: "intent",
     intent: "disconnected",
   };
   registry.update(target, detail);
@@ -63,6 +64,7 @@ test("disconnected", () => {
 
 test("leave", () => {
   const detail: R2CNewChildSizeEvent = {
+    type: "intent",
     intent: "leave",
   };
   const expected: EmittedComponentState = {
@@ -80,6 +82,7 @@ test("leave", () => {
  */
 test("update", () => {
   const detail: R2CNewChildSizeEvent = {
+    type: "intent",
     intent: "update",
     style: {
       height: 7,
@@ -105,6 +108,7 @@ test("update", () => {
 
 test("update intent registered as enter", () => {
   const detail: R2CNewChildSizeEvent = {
+    type: "intent",
     intent: "update",
     style: {
       height: 7,
@@ -123,11 +127,11 @@ test("update intent registered as enter", () => {
 
 test("mode", () => {
   const detail: R2CNewChildSizeEvent = {
-    intent: "mode",
+    type: "mode",
     mode: "hover-start",
   };
   const expected: EmittedComponentState = {
-    intent: "enter",
+    intent: "none",
     mode: detail.mode,
   };
   registry.update(target, detail);

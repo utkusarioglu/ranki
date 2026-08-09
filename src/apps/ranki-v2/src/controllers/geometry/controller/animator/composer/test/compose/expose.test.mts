@@ -55,6 +55,7 @@ test("expose single", () => {
     },
     self: {
       intent: "enter",
+      mode: "idle",
       style: {
         height: 21,
         left: 0,
@@ -97,6 +98,8 @@ test("expose single", () => {
             },
           },
           selfOverrides: {
+            intent: "enter",
+            mode: "idle",
             style: {},
           },
           setName: "a",

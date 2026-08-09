@@ -1,5 +1,5 @@
 import type { EmitIntent, LocalAction } from "../../geometry-intent.types.mjs";
-import type { TopLeft, WidthHeight } from "../../geometry-style.types.mjs";
+import type { WidthHeight } from "../../geometry-style.types.mjs";
 import type {
   AnimationKeyframeStyles,
   InformSetProps,
@@ -8,7 +8,7 @@ import type { EmitModes } from "../events/geometry-events.types.mjs";
 
 export interface ComponentDims {
   intent: EmitIntent;
-  mode?: EmitModes;
+  mode: EmitModes;
   style: WidthHeight;
 }
 
@@ -44,6 +44,7 @@ export type InformedChildStyleContainer = {
 
 export type InformedChildStyleSelf = {
   intent: EmitIntent;
+  mode: EmitModes;
   style: AnimationKeyframeStyles;
 };
 

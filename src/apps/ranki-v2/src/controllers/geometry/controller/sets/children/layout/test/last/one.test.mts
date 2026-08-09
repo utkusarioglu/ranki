@@ -30,6 +30,7 @@ test("zero size", () => {
     set: [
       {
         intent: "enter",
+        mode: "idle",
         style: {
           height: 0,
           left: 0,
@@ -63,6 +64,7 @@ test("zero width", () => {
     set: [
       {
         intent: "enter",
+        mode: "idle",
         style: {
           height: 3,
           left: 0,
@@ -96,6 +98,7 @@ test("zero height", () => {
     set: [
       {
         intent: "enter",
+        mode: "idle",
         style: {
           height: 0,
           left: 0,
@@ -129,6 +132,7 @@ test("rectangle", () => {
     set: [
       {
         intent: "enter",
+        mode: "idle",
         style: {
           height: 7,
           left: 0,

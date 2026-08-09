@@ -67,13 +67,15 @@ export class GeometryChildren<
   private async updateSizing(
     detail: R2CNewChildSizeEvent,
   ): ChildrenUpdateSizingReturn {
-    switch (detail.intent) {
-      case "leave":
-      case "update": {
-        return this.composeResolution();
-      }
-      default:
-        return null;
-    }
+    if (detail.type !== "intent") return null;
+    return this.composeResolution();
+    // switch (detail.intent) {
+    //   case "leave":
+    //   case "update": {
+    //     return this.composeResolution();
+    //   }
+    //   default:
+    //     return null;
+    // }
   }
 }

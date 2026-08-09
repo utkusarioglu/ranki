@@ -58,6 +58,7 @@ import { AnimationComposer } from "../../animation-composer.mjs";
       },
       self: {
         intent: "enter",
+        mode: "idle",
         style: {
           height: 21,
           left: 0,

@@ -6,7 +6,7 @@ import type {
 
 import type { EmittedComponentState } from "../registry/children-registry.types.mjs";
 
-export interface ComponentDimsPositioned extends ComponentDims {
+export interface ComponentDimsPositioned extends Omit<ComponentDims, "style"> {
   style: ComponentDims["style"] & TopLeft;
 }
 

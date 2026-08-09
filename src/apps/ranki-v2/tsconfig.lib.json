@@ -21,6 +21,7 @@
     }
   },
   "include": ["src/types/global.d.ts", "src/**/*.mts"],
+  "exclude": ["src/**/*.test.mts"],
   "references": [
     {
       "path": "../../packages/dqm-utils"

@@ -23,6 +23,7 @@ const sizing: LayoutSizing = {
   set: [
     {
       intent: "enter",
+      mode: "idle",
       style: {
         height: 19,
         left: 0,
@@ -32,6 +33,7 @@ const sizing: LayoutSizing = {
     },
     {
       intent: "leave",
+      mode: "idle",
       style: {
         height: 57,
         left: 0,
@@ -53,6 +55,8 @@ test("overridden self style", () => {
     },
     context,
     selfOverrides: {
+      intent: "enter",
+      mode: "idle",
       style: {
         height: 3,
       },
@@ -95,6 +99,8 @@ test("informed container width 2", () => {
     },
     context,
     selfOverrides: {
+      intent: "enter",
+      mode: "idle",
       style: {
         height: 7,
       },

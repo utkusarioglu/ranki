@@ -18,6 +18,7 @@ const sizing: LayoutSizing = {
   set: [
     {
       intent: "enter",
+      mode: "idle",
       style: {
         height: 19,
         left: 0,
@@ -27,6 +28,7 @@ const sizing: LayoutSizing = {
     },
     {
       intent: "leave",
+      mode: "idle",
       style: {
         height: 57,
         left: 0,
@@ -52,7 +54,11 @@ test("exposed container width", () => {
       },
     },
     context,
-    selfOverrides: { style: {} },
+    selfOverrides: {
+      intent: "enter",
+      mode: "idle",
+      style: {},
+    },
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
   const expected: CurrentAppliedStyle = {
@@ -66,6 +72,7 @@ test("exposed container width", () => {
     context,
     self: {
       intent: "enter",
+      mode: "idle",
       style: {
         height: 19,
         left: 0,
@@ -90,7 +97,11 @@ test("exposed container width 2", () => {
       },
     },
     context,
-    selfOverrides: { style: {} },
+    selfOverrides: {
+      intent: "enter",
+      mode: "idle",
+      style: {},
+    },
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
   const expected: CurrentAppliedStyle = {
@@ -104,6 +115,7 @@ test("exposed container width 2", () => {
     context,
     self: {
       intent: "leave",
+      mode: "idle",
       style: {
         height: 57,
         left: 0,

@@ -16,7 +16,11 @@ const singleElem = () => ({ informStyle: vi.fn() });
 
 const informProps: InformSetProps = {
   containerExposed: { style: {} },
-  selfOverrides: { style: {} },
+  selfOverrides: {
+    intent: "enter",
+    mode: "idle",
+    style: {},
+  },
   setName: "f",
 };
 
@@ -55,6 +59,8 @@ test("2 set 1 elem each", async () => {
       stagger: 0,
     },
     selfOverrides: {
+      intent: "enter",
+      mode: "idle",
       style: {},
     },
   };
@@ -84,7 +90,11 @@ test("2 set 2 elems each", async () => {
         length: 2,
         stagger: 0,
       },
-      selfOverrides: { style: {} },
+      selfOverrides: {
+        intent: "enter",
+        mode: "idle",
+        style: {},
+      },
     },
     {
       containerExposed: {
@@ -95,7 +105,11 @@ test("2 set 2 elems each", async () => {
         length: 2,
         stagger: 0,
       },
-      selfOverrides: { style: {} },
+      selfOverrides: {
+        intent: "enter",
+        mode: "idle",
+        style: {},
+      },
     },
   ];
   await new GeometryWatchers(host, props).inform(informProps, sizing);
@@ -130,7 +144,11 @@ test("2 set varied elem count", async () => {
         length: 1,
         stagger: 0,
       },
-      selfOverrides: { style: {} },
+      selfOverrides: {
+        intent: "enter",
+        mode: "idle",
+        style: {},
+      },
     },
   ];
   const expectedTwo: InformedChildStyle[] = [
@@ -143,7 +161,11 @@ test("2 set varied elem count", async () => {
         length: 3,
         stagger: 0,
       },
-      selfOverrides: { style: {} },
+      selfOverrides: {
+        intent: "enter",
+        mode: "idle",
+        style: {},
+      },
     },
     {
       containerExposed: {
@@ -154,7 +176,11 @@ test("2 set varied elem count", async () => {
         length: 3,
         stagger: 0,
       },
-      selfOverrides: { style: {} },
+      selfOverrides: {
+        intent: "enter",
+        mode: "idle",
+        style: {},
+      },
     },
     {
       containerExposed: {
@@ -165,7 +191,11 @@ test("2 set varied elem count", async () => {
         length: 3,
         stagger: 0,
       },
-      selfOverrides: { style: {} },
+      selfOverrides: {
+        intent: "enter",
+        mode: "idle",
+        style: {},
+      },
     },
   ];
   await new GeometryWatchers(host, props).inform(informProps, sizing);

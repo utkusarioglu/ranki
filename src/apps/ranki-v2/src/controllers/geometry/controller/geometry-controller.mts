@@ -74,7 +74,11 @@ export class GeometryController<
           this.informStyle(update.inform);
           break;
         case "update":
-          this.events.emit("update", update.sizing.container);
+          this.events.emit({
+            type: "intent",
+            intent: "update",
+            style: update.sizing.container,
+          });
           break;
         default:
           assertNever({

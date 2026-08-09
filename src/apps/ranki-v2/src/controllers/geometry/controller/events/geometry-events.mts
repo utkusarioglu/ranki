@@ -1,24 +1,20 @@
 import type { LitElement } from "lit";
 
-import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
-
-import type { EmitIntent, LocalAction } from "../../geometry-intent.types.mjs";
-import type { WidthHeight } from "../../geometry-style.types.mjs";
+import type { LocalAction } from "../../geometry-intent.types.mjs";
 import type {
-  EmitModes,
   GeometryEventCb,
   GeometryEventName,
   GeometryEventsConstructorParams,
   GeometryEventTypes,
+  R2CNewChildSizeEvent,
 } from "./geometry-events.types.mjs";
-
-import { GeometryEventUtils } from "./utils/geometry-event-utils.mjs";
 
 const DEFAULT_EVENT_SETTINGS: GeometryEventTypes = {
   hover: false,
 };
 
 export class GeometryEvents<Instance extends LitElement> {
+  public static readonly GEOMETRY_EVENT_NAME = "r2-geometry";
   private readonly events: GeometryEventTypes;
   private readonly host: Instance;
   private readonly on: GeometryEventCb<Instance> | undefined;
@@ -39,29 +35,14 @@ export class GeometryEvents<Instance extends LitElement> {
     }
   }
 
-  public emit(intent: EmitIntent, dims?: EmitModes | WidthHeight) {
-    switch (intent) {
-      case "leave":
-        GeometryEventUtils.emitLeave(this.host);
-        break;
-      case "mode":
-        assertNotUndefined(dims, {
-          why: "Dims are required for emitting size",
-        });
-        GeometryEventUtils.emitMode(this.host, dims as unknown as EmitModes);
-        break;
-      case "update":
-        assertNotUndefined(dims, {
-          why: "Dims are required for emitting size",
-        });
-        GeometryEventUtils.emitUpdate(this.host, dims);
-        break;
-      default:
-        assertNever({
-          details: { dims, intent },
-          why: "Unrecognized emit intent",
-        });
-    }
+  public emit(event: R2CNewChildSizeEvent) {
+    this.host.dispatchEvent(
+      new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
+        bubbles: true,
+        composed: true,
+        detail: event,
+      }),
+    );
   }
 
   onActionsEnd(actions: LocalAction[]) {
@@ -91,11 +72,14 @@ export class GeometryEvents<Instance extends LitElement> {
 
   private onPointerEnter = (e: PointerEvent) => {
     e.stopPropagation();
-    this.emit("mode", "hover-start");
+    this.emit({
+      type: "mode",
+      mode: "hover-start",
+    });
   };
 
   private onPointerLeave = (e: PointerEvent) => {
     e.stopPropagation();
-    this.emit("mode", "hover-end");
+    this.emit({ type: "mode", mode: "hover-end" });
   };
 }

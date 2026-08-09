@@ -33,6 +33,7 @@ export class GeometryMerger {
       context: informed.context,
       self: {
         intent: informed.selfOverrides.intent,
+        mode: informed.selfOverrides.mode,
         // intent: item.intent,
         // intent: "enter",
         style: {
@@ -61,8 +62,10 @@ export class GeometryMerger {
     };
     const item = sizing
       ? sizing.set[index]
-      : {
+      : // FIX I do not like this being here. sizing should be definitely available when the execution reaches here
+        {
           intent: "none" as const,
+          mode: "idle" as const,
           style: {},
         };
     return {
@@ -70,6 +73,7 @@ export class GeometryMerger {
       context,
       selfOverrides: {
         intent: item.intent,
+        mode: item.mode,
         style: {
           ...item.style,
           ...props.selfOverrides.style,

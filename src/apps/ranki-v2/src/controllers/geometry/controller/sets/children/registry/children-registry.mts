@@ -1,7 +1,11 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 
-import type { R2CNewChildSizeEvent } from "../../../events/geometry-events.types.mjs";
+import type {
+  R2CNewChildSizeEvent,
+  R2CNewChildSizeEventIntent,
+} from "../../../events/geometry-events.types.mjs";
 import type { EmittedComponentState } from "./children-registry.types.mjs";
+import { assertNever } from "_error/assertions.mjs";
 
 export class ChildrenRegistry {
   private readonly dims = new WeakMap<R2C, EmittedComponentState>();
@@ -27,6 +31,26 @@ export class ChildrenRegistry {
    * #1 This crates uncertainty about what properties exist in the object retrieved from the map
    */
   public update(target: R2C, detail: R2CNewChildSizeEvent) {
+    switch (detail.type) {
+      case "intent":
+        return this.updateIntent(target, detail);
+      case "mode":
+        this.dims.set(target, {
+          intent: "enter",
+          ...this.dims.get(target),
+          mode: detail.mode,
+        });
+        break;
+
+      default:
+        assertNever({
+          why: "Unknown update type",
+          details: { detail, tagName: target.tagName },
+        });
+    }
+  }
+
+  private updateIntent(target: R2C, detail: R2CNewChildSizeEventIntent) {
     switch (detail.intent) {
       case "disconnected":
         this.dims.delete(target);
@@ -35,17 +59,15 @@ export class ChildrenRegistry {
         this.dims.set(target, {
           mode: "idle",
           ...this.dims.get(target),
-          intent: detail.intent,
+          ...detail,
         });
         break;
       case "update":
         if (this.dims.has(target)) {
           this.dims.set(target, {
-            ...this.dims.get(target),
             intent: detail.intent,
             mode: detail.mode || "idle",
             style: detail.style,
-            // ...detail.rect,
           });
         } else {
           this.dims.set(target, {
@@ -55,12 +77,6 @@ export class ChildrenRegistry {
           });
         }
         break;
-      case "mode":
-        this.dims.set(target, {
-          intent: "enter",
-          ...this.dims.get(target),
-          mode: detail.mode,
-        });
     }
   }
 }

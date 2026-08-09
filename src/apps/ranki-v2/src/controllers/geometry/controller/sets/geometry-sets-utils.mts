@@ -21,10 +21,7 @@ export class GeometrySetsUtils {
         length: 1,
         stagger: 0,
       },
-      selfOverrides: {
-        intent: "none",
-        style: {},
-      },
+      selfOverrides: geo.set[0],
     };
     return inform;
   }

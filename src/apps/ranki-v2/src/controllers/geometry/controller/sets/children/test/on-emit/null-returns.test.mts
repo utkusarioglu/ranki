@@ -22,11 +22,11 @@ const props: GeometryChildrenProps<LitElement> = {
  * @dev
  * #1 This ignores additional properties some of these `intents` require
  */
-["disconnected", "connected"].forEach((intent) => {
+["disconnected" as const, "connected" as const].forEach((intent) => {
   test("returns null for certain emits", async () => {
     const children = new GeometryChildren<LitElement>(host, props);
     const detail: R2CNewChildSizeEvent = {
-      // @ts-expect-error #1
+      type: "intent",
       intent,
       mode: "idle",
     };

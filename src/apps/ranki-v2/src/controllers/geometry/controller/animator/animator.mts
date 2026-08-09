@@ -73,28 +73,36 @@ export class Animator {
       finalKeyframes,
     });
     const anim = this.host.animate(finalKeyframes, finalOptions);
-    // const r = this.running.get(name);
-    // if (r) {
-    //   const names: string[] = [];
-    //   for (const [n, _] of this.running) {
-    //     names.push(n);
-    //   }
-    //   console.log("rr", name, this.host.tagName, names, r);
-    //   r.oncancel = (_ev) => {
-    //     if (r.playState === "running") {
-    //       console.warn(
-    //         "Animation cancelled while running.",
-    //         "Name: ",
-    //         name,
-    //         "tag: ",
-    //         this.host.tagName,
-    //       );
-    //     }
-    //   };
-    //   r.commitStyles();
-    //   r.cancel();
-    // }
+    const r = this.running.get(name);
+    if (r) {
+      r.oncancel = (_ev) => {
+        if (r.playState === "running") {
+          console.warn(
+            "Animation cancelled while running.",
+            "Name: ",
+            name,
+            "tag: ",
+            this.host.tagName,
+          );
+        }
+      };
+      r.commitStyles();
+      r.cancel();
+    }
     this.running.set(name, anim);
-    await anim.finished;
+    await anim.finished
+      .then(() => this.running.delete(name))
+      .catch((e) =>
+        console.log("ABORT", {
+          host: this.host,
+          running: this.running,
+          e,
+          new: {
+            name,
+            keyframes,
+            options,
+          },
+        }),
+      );
   }
 }

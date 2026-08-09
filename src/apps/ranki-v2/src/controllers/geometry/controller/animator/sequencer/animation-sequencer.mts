@@ -6,7 +6,6 @@ import type {
   LayoutParsedSets,
 } from "../animator.types.mjs";
 import type { AnimationSequencerCallbacks } from "./animation-sequencer.types.mjs";
-import { RankiAppError } from "_error/ranki-app-error.mjs";
 
 export class AnimationSequencer {
   private readonly callbacks: AnimationSequencerCallbacks;

@@ -38,6 +38,7 @@ test("only last has size", () => {
     set: [
       {
         intent: "update",
+        mode: "idle",
         style: {
           height: 0,
           left: 0,
@@ -47,6 +48,7 @@ test("only last has size", () => {
       },
       {
         intent: "enter",
+        mode: "idle",
         style: {
           height: 23,
           left: 0,
@@ -88,6 +90,7 @@ test("last doesn't have size", () => {
     set: [
       {
         intent: "enter",
+        mode: "idle",
         style: {
           height: 0,
           left: 0,
@@ -97,6 +100,7 @@ test("last doesn't have size", () => {
       },
       {
         intent: "update",
+        mode: "idle",
         style: {
           height: 0,
           left: 0,

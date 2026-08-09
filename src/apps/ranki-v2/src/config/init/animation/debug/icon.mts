@@ -53,12 +53,7 @@ export const ICON: TargetAnimationSpec = {
         },
       ],
       sets: {
-        children: {
-          override: {
-            width: "to.self.width",
-            height: "to.self.height",
-          },
-        },
+        children: {},
       },
     },
     update: {
@@ -77,20 +72,19 @@ export const ICON: TargetAnimationSpec = {
         },
       ],
     },
-    // leave: {
-    //   root: [
-    //     {
-    //       name: "exit",
-    //       duration: 0,
-    //       keyframes: [
-    //         {
-    //           opacity: 0,
-    //           width: 0,
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // },
-    // always: {},
+    leave: {
+      root: [
+        {
+          name: "exit",
+          duration: 0,
+          keyframes: [
+            {
+              opacity: 0,
+              width: 0,
+            },
+          ],
+        },
+      ],
+    },
   },
 };

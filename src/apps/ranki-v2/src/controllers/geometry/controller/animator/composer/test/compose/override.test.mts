@@ -57,6 +57,7 @@ test("override single", () => {
     },
     self: {
       intent: "enter",
+      mode: "idle",
       style: {
         height: 21,
         left: 0,
@@ -99,6 +100,8 @@ test("override single", () => {
             },
           },
           selfOverrides: {
+            intent: "enter",
+            mode: "idle",
             style: {
               width: 90,
             },

@@ -73,6 +73,8 @@ export class LayoutParser {
             : {},
         },
         selfOverrides: {
+          intent: curr.self.intent,
+          mode: curr.self.mode,
           style: t.override
             ? KeyframeParser.evalKeyframe(curr, prev, t.override)
             : {},
