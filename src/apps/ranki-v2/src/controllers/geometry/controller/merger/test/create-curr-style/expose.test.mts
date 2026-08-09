@@ -39,8 +39,6 @@ const sizing: LayoutSizing = {
   ],
 };
 
-const prev = null;
-
 test("exposed container width", () => {
   const context: InformContext = {
     index: 0,
@@ -60,12 +58,12 @@ test("exposed container width", () => {
       style: {},
     },
   };
-  const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
+  const response = GeometryMerger.createCurrStyle(informed, sizing);
   const expected: CurrentAppliedStyle = {
-    actions: ["enter"],
+    actions: ["enter", "idle"],
     container: {
       style: {
-        height: 13,
+        // height: 13,
         width: 7,
       },
     },
@@ -74,10 +72,12 @@ test("exposed container width", () => {
       intent: "enter",
       mode: "idle",
       style: {
-        height: 19,
-        left: 0,
-        top: 0,
-        width: 23,
+        width: 11,
+        height: 13,
+        // height: 19,
+        // left: 0,
+        // top: 0,
+        // width: 23,
       },
     },
   };
@@ -98,17 +98,17 @@ test("exposed container width 2", () => {
     },
     context,
     selfOverrides: {
-      intent: "enter",
+      intent: "leave",
       mode: "idle",
       style: {},
     },
   };
-  const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
+  const response = GeometryMerger.createCurrStyle(informed, sizing);
   const expected: CurrentAppliedStyle = {
-    actions: ["leave"],
+    actions: ["leave", "idle"],
     container: {
       style: {
-        height: 13,
+        // height: 13,
         width: 7,
       },
     },
@@ -117,10 +117,12 @@ test("exposed container width 2", () => {
       intent: "leave",
       mode: "idle",
       style: {
-        height: 57,
-        left: 0,
-        top: 0,
-        width: 43,
+        height: 13,
+        width: 11,
+        // height: 57,
+        // left: 0,
+        // top: 0,
+        // width: 43,
       },
     },
   };

@@ -44,13 +44,11 @@ const sizing: LayoutSizing = {
   ],
 };
 
-const prev = null;
-
 test("overridden self style", () => {
   const informed: InformedChildStyle = {
     containerExposed: {
       style: {
-        // width: 7,
+        width: 7,
       },
     },
     context,
@@ -62,23 +60,27 @@ test("overridden self style", () => {
       },
     },
   };
-  const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
+  const response = GeometryMerger.createCurrStyle(informed, sizing);
   const expected = {
-    actions: ["enter"],
+    actions: ["enter", "idle"],
     container: {
       style: {
-        height: 13,
-        width: 11,
+        width: 7,
+        // height: 13,
+        // width: 11,
       },
     },
     context,
     self: {
       intent: "enter",
+      mode: "idle",
       style: {
         height: 3,
-        left: 0,
-        top: 0,
-        width: 23,
+        width: 119,
+        // height: 3,
+        // left: 0,
+        // top: 0,
+        // width: 23,
       },
     },
   };
@@ -94,7 +96,7 @@ test("informed container width 2", () => {
   const informed: InformedChildStyle = {
     containerExposed: {
       style: {
-        // width: 7,
+        width: 17,
       },
     },
     context,
@@ -106,11 +108,12 @@ test("informed container width 2", () => {
       },
     },
   };
-  const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
+  const response = GeometryMerger.createCurrStyle(informed, sizing);
   const expected = {
-    actions: ["leave"],
+    actions: ["enter", "idle"],
     container: {
       style: {
+        width: 17,
         // height: 13,
         // width: 11,
       },
@@ -123,6 +126,7 @@ test("informed container width 2", () => {
       style: {
         // ...sizing.set[0].style,
         height: 7,
+        width: 119,
         // left: 0,
         // top: 0,
         // width: 43,

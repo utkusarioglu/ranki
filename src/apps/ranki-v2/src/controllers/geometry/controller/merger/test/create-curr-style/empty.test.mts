@@ -18,8 +18,8 @@ const context: InformContext = {
 
 const sizing: LayoutSizing = {
   container: {
-    height: 13,
-    width: 11,
+    height: 130,
+    width: 110,
   },
   set: [
     {
@@ -37,15 +37,13 @@ const sizing: LayoutSizing = {
       mode: "idle",
       style: {
         height: 57,
-        left: 0,
-        top: 0,
+        left: 121,
+        top: 71,
         width: 43,
       },
     },
   ],
 };
-
-const prev = null;
 
 test("empty informed", () => {
   const informed: InformedChildStyle = {
@@ -57,13 +55,45 @@ test("empty informed", () => {
       style: {},
     },
   };
-  const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
+  const response = GeometryMerger.createCurrStyle(informed, sizing);
   const expected: CurrentAppliedStyle = {
-    actions: ["enter"],
+    actions: ["enter", "idle"],
+    container: {
+      style: {},
+    },
+    context,
+    self: {
+      intent: "enter",
+      mode: "idle",
+      style: {
+        height: 130,
+        width: 110,
+      },
+    },
+  };
+  expect(response).toEqual(expected);
+});
+
+test("informed container width", () => {
+  const informed: InformedChildStyle = {
+    context,
+    containerExposed: {
+      style: {
+        width: 7,
+      },
+    },
+    selfOverrides: {
+      intent: "enter",
+      mode: "idle",
+      style: {},
+    },
+  };
+  const response = GeometryMerger.createCurrStyle(informed, sizing);
+  const expected = {
+    actions: ["enter", "idle"],
     container: {
       style: {
-        height: 13,
-        width: 11,
+        width: 7,
       },
     },
     context,
@@ -71,79 +101,51 @@ test("empty informed", () => {
       intent: "enter",
       mode: "idle",
       style: {
-        height: 19,
-        left: 0,
-        top: 0,
-        width: 23,
+        width: 110,
+        height: 130,
       },
     },
   };
   expect(response).toEqual(expected);
 });
 
-// test("informed container width", () => {
-//   const informed: InformedChildStyle = {
-//     context,
-//     containerExposed: {
-//       style: {
-//         width: 7,
-//       },
-//     },
-//     selfOverrides: { style: {} },
-//   };
-//   const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
-//   const expected = {
-//     actions: ["enter"],
-//     container: {
-//       style: {
-//         width: 7,
-//         height: 13,
-//       },
-//     },
-//     context,
-//     self: {
-//       intent: "enter",
-//       style: {
-//         width: 23,
-//         height: 19,
-//       },
-//     },
-//   };
-//   expect(response).toEqual(expected);
-// });
-
-// test("informed container width 2", () => {
-//   const context: InformContext = {
-//     index: 1,
-//     length: 2,
-//     stagger: 1,
-//   };
-//   const informed: InformedChildStyle = {
-//     context,
-//     containerExposed: {
-//       style: {
-//         width: 7,
-//       },
-//     },
-//     selfOverrides: { style: {} },
-//   };
-//   const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
-//   const expected = {
-//     actions: ["leave"],
-//     container: {
-//       style: {
-//         width: 7,
-//         height: 13,
-//       },
-//     },
-//     context,
-//     self: {
-//       intent: "leave",
-//       style: {
-//         width: 43,
-//         height: 57,
-//       },
-//     },
-//   };
-//   expect(response).toEqual(expected);
-// });
+test("informed container width 2", () => {
+  const context: InformContext = {
+    index: 1,
+    length: 2,
+    stagger: 1,
+  };
+  const informed: InformedChildStyle = {
+    context,
+    containerExposed: {
+      style: {
+        width: 7,
+      },
+    },
+    selfOverrides: {
+      intent: "update",
+      mode: "hover-end",
+      style: {},
+    },
+  };
+  const response = GeometryMerger.createCurrStyle(informed, sizing);
+  const expected = {
+    actions: ["update", "hover-end"],
+    container: {
+      style: {
+        width: 7,
+        // height: 13,
+      },
+    },
+    context,
+    self: {
+      intent: "update",
+      mode: "hover-end",
+      style: {
+        width: 110,
+        height: 130,
+      },
+    },
+  };
+  expect(response).toEqual(expected);
+});

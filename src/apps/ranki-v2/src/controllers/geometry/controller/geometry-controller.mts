@@ -103,11 +103,7 @@ export class GeometryController<
 
   private async informStyle(informed: InformedChildStyle): Promise<void> {
     this.prev = this.curr;
-    this.curr = GeometryMerger.createCurrStyle(
-      informed,
-      this.sizing,
-      this.prev,
-    );
+    this.curr = GeometryMerger.createCurrStyle(informed, this.sizing);
 
     DebugUtils.informStyle({
       curr: this.curr,

@@ -160,11 +160,6 @@ test("2 set 2 elems each", async () => {
         stagger: 0,
       },
       selfOverrides: sizing.set[0],
-      // {
-      //   intent: "enter",
-      //   mode: "idle",
-      //   style: {},
-      // },
     },
     {
       containerExposed: {
@@ -176,11 +171,6 @@ test("2 set 2 elems each", async () => {
         stagger: 0,
       },
       selfOverrides: sizing.set[1],
-      // {
-      //   intent: "enter",
-      //   mode: "idle",
-      //   style: {},
-      // },
     },
   ];
   await new GeometryWatchers(host, props).inform(informProps, sizing);
@@ -190,7 +180,7 @@ test("2 set 2 elems each", async () => {
   expect(elemTwo.informStyle).toHaveBeenCalledTimes(0);
 });
 
-test.only("2 set varied elem count 1", async () => {
+test("2 set varied elem count 1", async () => {
   const informPropsOne: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {
