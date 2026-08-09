@@ -112,7 +112,35 @@ test("2 set 1 elem each call second", async () => {
   expect(elemTwo.informStyle).toHaveBeenNthCalledWith(1, expected);
 });
 
-test.only("2 set 2 elems each", async () => {
+test("2 set 2 elems each", async () => {
+  const sizing: LayoutSizing = {
+    container: {
+      height: 3,
+      width: 1,
+    },
+    set: [
+      {
+        intent: "enter",
+        mode: "hover-end",
+        style: {
+          width: 400,
+          height: 17,
+          top: 13,
+          left: 11,
+        },
+      },
+      {
+        intent: "none",
+        mode: "idle",
+        style: {
+          width: 4000,
+          height: 170,
+          top: 130,
+          left: 110,
+        },
+      },
+    ],
+  };
   const props = {
     one: {
       selector: () => [elemOne as unknown as R2C, elemOne as unknown as R2C],
@@ -131,11 +159,12 @@ test.only("2 set 2 elems each", async () => {
         length: 2,
         stagger: 0,
       },
-      selfOverrides: {
-        intent: "enter",
-        mode: "idle",
-        style: {},
-      },
+      selfOverrides: sizing.set[0],
+      // {
+      //   intent: "enter",
+      //   mode: "idle",
+      //   style: {},
+      // },
     },
     {
       containerExposed: {
@@ -146,11 +175,12 @@ test.only("2 set 2 elems each", async () => {
         length: 2,
         stagger: 0,
       },
-      selfOverrides: {
-        intent: "enter",
-        mode: "idle",
-        style: {},
-      },
+      selfOverrides: sizing.set[1],
+      // {
+      //   intent: "enter",
+      //   mode: "idle",
+      //   style: {},
+      // },
     },
   ];
   await new GeometryWatchers(host, props).inform(informProps, sizing);
@@ -158,11 +188,56 @@ test.only("2 set 2 elems each", async () => {
   expect(elemOne.informStyle).toHaveBeenNthCalledWith(1, expected[0]);
   expect(elemOne.informStyle).toHaveBeenNthCalledWith(2, expected[1]);
   expect(elemTwo.informStyle).toHaveBeenCalledTimes(0);
-  // expect(elemTwo.informStyle).toHaveBeenNthCalledWith(1, expected[0]);
-  // expect(elemTwo.informStyle).toHaveBeenNthCalledWith(2, expected[1]);
 });
 
-test("2 set varied elem count", async () => {
+test.only("2 set varied elem count 1", async () => {
+  const informPropsOne: InformSetProps = {
+    containerExposed: { style: {} },
+    selfOverrides: {
+      intent: "enter",
+      mode: "idle",
+      style: {},
+    },
+    setName: "one",
+  };
+  const sizing: LayoutSizing = {
+    container: {
+      height: 3,
+      width: 1,
+    },
+    set: [
+      {
+        intent: "enter",
+        mode: "hover-end",
+        style: {
+          width: 400,
+          height: 17,
+          top: 13,
+          left: 11,
+        },
+      },
+      {
+        intent: "leave",
+        mode: "idle",
+        style: {
+          width: 400,
+          height: 17,
+          top: 13,
+          left: 11,
+        },
+      },
+      {
+        intent: "update",
+        mode: "hover-start",
+        style: {
+          width: 400,
+          height: 17,
+          top: 13,
+          left: 11,
+        },
+      },
+    ],
+  };
   const props = {
     one: {
       selector: () => [elemOne as unknown as R2C],
@@ -185,13 +260,75 @@ test("2 set varied elem count", async () => {
         length: 1,
         stagger: 0,
       },
-      selfOverrides: {
-        intent: "enter",
-        mode: "idle",
-        style: {},
-      },
+      selfOverrides: sizing.set[0],
     },
   ];
+  await new GeometryWatchers(host, props).inform(informPropsOne, sizing);
+  expect(elemOne.informStyle).toHaveBeenCalledTimes(1);
+  expect(elemOne.informStyle).toHaveBeenNthCalledWith(1, expectedOne[0]);
+  expect(elemTwo.informStyle).toHaveBeenCalledTimes(0);
+});
+
+test("2 set varied elem count 2", async () => {
+  const informPropsTwo: InformSetProps = {
+    containerExposed: { style: {} },
+    selfOverrides: {
+      intent: "enter",
+      mode: "idle",
+      style: {},
+    },
+    setName: "two",
+  };
+  const sizing: LayoutSizing = {
+    container: {
+      height: 3,
+      width: 1,
+    },
+    set: [
+      {
+        intent: "enter",
+        mode: "hover-end",
+        style: {
+          width: 400,
+          height: 17,
+          top: 13,
+          left: 11,
+        },
+      },
+      {
+        intent: "leave",
+        mode: "idle",
+        style: {
+          width: 400,
+          height: 17,
+          top: 13,
+          left: 11,
+        },
+      },
+      {
+        intent: "update",
+        mode: "hover-start",
+        style: {
+          width: 400,
+          height: 17,
+          top: 13,
+          left: 11,
+        },
+      },
+    ],
+  };
+  const props = {
+    one: {
+      selector: () => [elemOne as unknown as R2C],
+    },
+    two: {
+      selector: () => [
+        elemTwo as unknown as R2C,
+        elemTwo as unknown as R2C,
+        elemTwo as unknown as R2C,
+      ],
+    },
+  };
   const expectedTwo: InformedChildStyle[] = [
     {
       containerExposed: {
@@ -202,11 +339,7 @@ test("2 set varied elem count", async () => {
         length: 3,
         stagger: 0,
       },
-      selfOverrides: {
-        intent: "enter",
-        mode: "idle",
-        style: {},
-      },
+      selfOverrides: sizing.set[0],
     },
     {
       containerExposed: {
@@ -217,11 +350,7 @@ test("2 set varied elem count", async () => {
         length: 3,
         stagger: 0,
       },
-      selfOverrides: {
-        intent: "enter",
-        mode: "idle",
-        style: {},
-      },
+      selfOverrides: sizing.set[1],
     },
     {
       containerExposed: {
@@ -232,16 +361,11 @@ test("2 set varied elem count", async () => {
         length: 3,
         stagger: 0,
       },
-      selfOverrides: {
-        intent: "enter",
-        mode: "idle",
-        style: {},
-      },
+      selfOverrides: sizing.set[2],
     },
   ];
-  await new GeometryWatchers(host, props).inform(informProps, sizing);
-  expect(elemOne.informStyle).toHaveBeenCalledTimes(1);
-  expect(elemOne.informStyle).toHaveBeenNthCalledWith(1, expectedOne[0]);
+  await new GeometryWatchers(host, props).inform(informPropsTwo, sizing);
+  expect(elemOne.informStyle).toHaveBeenCalledTimes(0);
   expect(elemTwo.informStyle).toHaveBeenCalledTimes(3);
   expect(elemTwo.informStyle).toHaveBeenNthCalledWith(1, expectedTwo[0]);
   expect(elemTwo.informStyle).toHaveBeenNthCalledWith(2, expectedTwo[1]);

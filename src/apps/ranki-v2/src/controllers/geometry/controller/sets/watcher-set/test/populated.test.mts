@@ -22,7 +22,7 @@ const informProps: InformSetProps = {
     mode: "idle",
     style: {},
   },
-  setName: "f",
+  setName: "one",
 };
 
 const sizing: LayoutSizing = {
@@ -30,7 +30,28 @@ const sizing: LayoutSizing = {
     height: 3,
     width: 1,
   },
-  set: [],
+  set: [
+    {
+      intent: "enter",
+      mode: "idle",
+      style: {
+        width: 7,
+        height: 11,
+        top: 2,
+        left: 5,
+      },
+    },
+    {
+      intent: "none",
+      mode: "hover-end",
+      style: {
+        width: 77,
+        height: 111,
+        top: 21,
+        left: 51,
+      },
+    },
+  ],
 };
 
 let elem: R2C;
@@ -53,11 +74,7 @@ test("Single set 1 elem", async () => {
       length: 1,
       stagger: 0,
     },
-    selfOverrides: {
-      intent: "enter",
-      mode: "idle",
-      style: {},
-    },
+    selfOverrides: sizing.set[0],
   };
   await new WatcherSet(host, props).inform(informProps, sizing);
   expect(elem.informStyle).toHaveBeenCalledTimes(1);
@@ -79,11 +96,7 @@ test("Single set 2 elems", async () => {
         length: 2,
         stagger: 0,
       },
-      selfOverrides: {
-        intent: "enter",
-        mode: "idle",
-        style: {},
-      },
+      selfOverrides: sizing.set[0],
     },
     {
       containerExposed: {
@@ -94,11 +107,7 @@ test("Single set 2 elems", async () => {
         length: 2,
         stagger: 0,
       },
-      selfOverrides: {
-        intent: "enter",
-        mode: "idle",
-        style: {},
-      },
+      selfOverrides: sizing.set[1],
     },
   ];
   await new WatcherSet(host, props).inform(informProps, sizing);

@@ -29,7 +29,7 @@ test("", () => {
         opacity: 0.44,
       },
     },
-    setName: "f",
+    setName: "one",
   };
   const sizing: LayoutSizing = {
     container: {
@@ -77,6 +77,7 @@ test("", () => {
       intent: "enter",
       mode: "idle",
       style: {
+        ...sizing.set[0].style,
         opacity: 0.44,
       },
     },

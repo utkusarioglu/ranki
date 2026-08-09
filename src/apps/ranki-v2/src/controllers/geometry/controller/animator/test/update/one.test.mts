@@ -19,7 +19,7 @@ vi.mock("_store/app.getters.mjs", () => ({
 }));
 
 const { animate } = vi.hoisted(() => ({
-  animate: vi.fn().mockReturnValue(Promise.resolve()),
+  animate: vi.fn().mockReturnValue({ finished: Promise.resolve() }),
 }));
 
 const Host = vi.fn(

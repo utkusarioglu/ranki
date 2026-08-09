@@ -27,7 +27,7 @@ test("", () => {
       mode: "idle",
       style: {},
     },
-    setName: "f",
+    setName: "one",
   };
   const sizing: LayoutSizing = {
     container: {
@@ -71,11 +71,7 @@ test("", () => {
       },
     },
     context,
-    selfOverrides: {
-      intent: "enter",
-      mode: "idle",
-      style: {},
-    },
+    selfOverrides: sizing.set[0],
   };
   expect(response).toEqual(expected);
 });

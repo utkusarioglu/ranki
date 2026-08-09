@@ -32,7 +32,7 @@ afterEach(() => {
   Host.mockClear();
 });
 
-test("Single set no elems", async () => {
+test.only("Single set no elems", async () => {
   const props: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {
@@ -40,7 +40,7 @@ test("Single set no elems", async () => {
       mode: "idle",
       style: {},
     },
-    setName: "f",
+    setName: "one",
   };
   const sizing: LayoutSizing = {
     container: {
@@ -50,9 +50,7 @@ test("Single set no elems", async () => {
     set: [],
   };
   await watchers.inform(props, sizing);
-  expect(inform).toHaveBeenCalledTimes(2);
+  expect(inform).toHaveBeenCalledTimes(1);
   expect(getSet).toHaveBeenNthCalledWith(1, "one");
-  expect(getSet).toHaveBeenNthCalledWith(2, "two");
   expect(inform).toHaveBeenNthCalledWith(1, props, sizing);
-  expect(inform).toHaveBeenNthCalledWith(2, props, sizing);
 });

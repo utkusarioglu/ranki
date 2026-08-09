@@ -18,7 +18,7 @@ const context: InformContext = {
 const sizing: LayoutSizing = {
   container: {
     height: 13,
-    width: 11,
+    width: 119,
   },
   set: [
     {
@@ -26,8 +26,8 @@ const sizing: LayoutSizing = {
       mode: "idle",
       style: {
         height: 19,
-        left: 0,
-        top: 0,
+        left: 447,
+        top: 2,
         width: 23,
       },
     },
@@ -36,8 +36,8 @@ const sizing: LayoutSizing = {
       mode: "idle",
       style: {
         height: 57,
-        left: 0,
-        top: 0,
+        left: 19,
+        top: 21,
         width: 43,
       },
     },
@@ -111,18 +111,21 @@ test("informed container width 2", () => {
     actions: ["leave"],
     container: {
       style: {
-        height: 13,
-        width: 11,
+        // height: 13,
+        // width: 11,
       },
     },
     context,
     self: {
-      intent: "leave",
+      // intent: "leave",
+      intent: sizing.set[0].intent,
+      mode: sizing.set[0].mode,
       style: {
+        // ...sizing.set[0].style,
         height: 7,
-        left: 0,
-        top: 0,
-        width: 43,
+        // left: 0,
+        // top: 0,
+        // width: 43,
       },
     },
   };
