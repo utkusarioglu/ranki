@@ -14,7 +14,12 @@ test("only last has size", () => {
   const dims: EmittedComponentState[] = [
     {
       lifecycle: "update",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 0,
         width: 0,
@@ -22,7 +27,12 @@ test("only last has size", () => {
     },
     {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 23,
         width: 17,
@@ -38,7 +48,12 @@ test("only last has size", () => {
     set: [
       {
         lifecycle: "update",
-        interaction: "idle",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           height: 0,
           left: 0,
@@ -48,7 +63,12 @@ test("only last has size", () => {
       },
       {
         lifecycle: "enter",
-        interaction: "idle",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           height: 23,
           left: 0,
@@ -66,7 +86,12 @@ test("last doesn't have size", () => {
   const dims: EmittedComponentState[] = [
     {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 23,
         width: 17,
@@ -74,7 +99,12 @@ test("last doesn't have size", () => {
     },
     {
       lifecycle: "update",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 0,
         width: 0,
@@ -90,7 +120,12 @@ test("last doesn't have size", () => {
     set: [
       {
         lifecycle: "enter",
-        interaction: "idle",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           height: 0,
           left: 0,
@@ -100,7 +135,12 @@ test("last doesn't have size", () => {
       },
       {
         lifecycle: "update",
-        interaction: "idle",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           height: 0,
           left: 0,

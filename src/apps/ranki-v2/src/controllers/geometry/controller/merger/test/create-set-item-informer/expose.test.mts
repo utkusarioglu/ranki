@@ -24,7 +24,12 @@ test("", () => {
     },
     selfOverrides: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {},
     },
     setName: "one",
@@ -37,7 +42,12 @@ test("", () => {
     set: [
       {
         lifecycle: "enter",
-        interaction: "idle",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           height: 51,
           left: 0,
@@ -47,7 +57,12 @@ test("", () => {
       },
       {
         lifecycle: "leave",
-        interaction: "idle",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           height: 91,
           left: 0,

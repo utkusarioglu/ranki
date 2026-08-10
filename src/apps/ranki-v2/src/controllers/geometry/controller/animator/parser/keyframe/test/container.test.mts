@@ -61,7 +61,12 @@ for (const v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
       },
       self: {
         lifecycle: "enter",
-        interaction: "idle",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           [prop]: item,
         },

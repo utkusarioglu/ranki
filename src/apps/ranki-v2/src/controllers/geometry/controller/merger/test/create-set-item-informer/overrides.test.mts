@@ -24,7 +24,12 @@ test("", () => {
     },
     selfOverrides: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         opacity: 0.44,
       },
@@ -39,7 +44,12 @@ test("", () => {
     set: [
       {
         lifecycle: "enter",
-        interaction: "idle",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           height: 51,
           left: 0,
@@ -49,7 +59,12 @@ test("", () => {
       },
       {
         lifecycle: "leave",
-        interaction: "idle",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           height: 91,
           left: 0,
@@ -75,7 +90,12 @@ test("", () => {
     context,
     selfOverrides: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         ...sizing.set[0].style,
         opacity: 0.44,

@@ -25,7 +25,6 @@ test("single session two elems", async () => {
   const detail1: GeometryEvent = {
     type: "lifecycle",
     lifecycle: "update",
-    interaction: "idle",
     style: {
       height: 11,
       width: 7,
@@ -34,7 +33,6 @@ test("single session two elems", async () => {
   const detail2: GeometryEvent = {
     type: "lifecycle",
     lifecycle: "update",
-    interaction: "idle",
     style: {
       height: 11,
       width: 13,
@@ -49,7 +47,12 @@ test("single session two elems", async () => {
       set: [
         {
           lifecycle: detail1.lifecycle,
-          interaction: detail1.interaction!,
+          interaction: {
+            hover: "none",
+            focus: "none",
+            press: "none",
+            drag: "none",
+          },
           style: {
             ...detail1.style,
             left: 0,
@@ -58,7 +61,12 @@ test("single session two elems", async () => {
         },
         {
           lifecycle: detail2.lifecycle,
-          interaction: detail2.interaction!,
+          interaction: {
+            hover: "none",
+            focus: "none",
+            press: "none",
+            drag: "none",
+          },
           style: {
             ...detail2.style,
             left: detail1.style.width,
@@ -88,7 +96,6 @@ test("two sessions two elems", async () => {
   const detail1_1: GeometryEvent = {
     type: "lifecycle",
     lifecycle: "update",
-    interaction: "idle",
     style: {
       height: 11,
       width: 7,
@@ -97,7 +104,6 @@ test("two sessions two elems", async () => {
   const detail1_2: GeometryEvent = {
     type: "lifecycle",
     lifecycle: "update",
-    interaction: "idle",
     style: {
       height: 11,
       width: 19,
@@ -106,7 +112,6 @@ test("two sessions two elems", async () => {
   const detail2_1: GeometryEvent = {
     type: "lifecycle",
     lifecycle: "update",
-    interaction: "idle",
     style: {
       height: 11,
       width: 13,
@@ -115,7 +120,6 @@ test("two sessions two elems", async () => {
   const detail2_2: GeometryEvent = {
     type: "lifecycle",
     lifecycle: "update",
-    interaction: "idle",
     style: {
       height: 11,
       width: 23,
@@ -130,7 +134,12 @@ test("two sessions two elems", async () => {
       set: [
         {
           lifecycle: detail1_1.lifecycle,
-          interaction: detail1_1.interaction!,
+          interaction: {
+            hover: "none",
+            focus: "none",
+            press: "none",
+            drag: "none",
+          },
           style: {
             ...detail1_1.style,
             left: 0,
@@ -139,7 +148,12 @@ test("two sessions two elems", async () => {
         },
         {
           lifecycle: detail1_2.lifecycle,
-          interaction: detail1_2.interaction!,
+          interaction: {
+            hover: "none",
+            focus: "none",
+            press: "none",
+            drag: "none",
+          },
           style: {
             ...detail1_2.style,
             left: detail1_1.style.width,
@@ -159,7 +173,12 @@ test("two sessions two elems", async () => {
       set: [
         {
           lifecycle: detail2_1.lifecycle,
-          interaction: detail2_1.interaction!,
+          interaction: {
+            hover: "none",
+            focus: "none",
+            press: "none",
+            drag: "none",
+          },
           style: {
             ...detail2_1.style,
             left: 0,
@@ -168,7 +187,12 @@ test("two sessions two elems", async () => {
         },
         {
           lifecycle: detail2_2.lifecycle,
-          interaction: detail2_2.interaction!,
+          interaction: {
+            hover: "none",
+            focus: "none",
+            press: "none",
+            drag: "none",
+          },
           style: {
             ...detail2_2.style,
             left: detail2_1.style.width,

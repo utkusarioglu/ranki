@@ -18,7 +18,12 @@ const informProps: InformSetProps = {
   containerExposed: { style: {} },
   selfOverrides: {
     lifecycle: "enter",
-    interaction: "idle",
+    interaction: {
+      hover: "none",
+      focus: "none",
+      press: "none",
+      drag: "none",
+    },
     style: {},
   },
   setName: "one",
@@ -39,7 +44,12 @@ test("Single set 1 elem", async () => {
     set: [
       {
         lifecycle: "enter",
-        interaction: "idle",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           top: 2,
           left: 5,
@@ -65,7 +75,12 @@ test("Single set 1 elem", async () => {
     },
     selfOverrides: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: sizing.set[0].style,
     },
   };
@@ -83,7 +98,12 @@ test("Single set 2 elems", async () => {
     set: [
       {
         lifecycle: "enter",
-        interaction: "idle",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           top: 2,
           left: 5,
@@ -93,7 +113,12 @@ test("Single set 2 elems", async () => {
       },
       {
         lifecycle: "update",
-        interaction: "hover-end",
+        interaction: {
+          hover: "end",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           top: 20,
           left: 50,
@@ -120,7 +145,12 @@ test("Single set 2 elems", async () => {
       },
       selfOverrides: {
         lifecycle: "enter",
-        interaction: "idle",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: sizing.set[0].style,
       },
     },
@@ -135,7 +165,12 @@ test("Single set 2 elems", async () => {
       },
       selfOverrides: {
         lifecycle: "update",
-        interaction: "hover-end",
+        interaction: {
+          hover: "end",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: sizing.set[1].style,
       },
     },

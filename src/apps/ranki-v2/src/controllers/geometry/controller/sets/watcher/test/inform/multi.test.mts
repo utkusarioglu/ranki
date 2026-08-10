@@ -18,7 +18,12 @@ const informProps: InformSetProps = {
   containerExposed: { style: {} },
   selfOverrides: {
     lifecycle: "enter",
-    interaction: "idle",
+    interaction: {
+      hover: "none",
+      focus: "none",
+      press: "none",
+      drag: "none",
+    },
     style: {},
   },
   setName: "one",
@@ -32,7 +37,12 @@ const sizing: LayoutSizing = {
   set: [
     {
       lifecycle: "enter",
-      interaction: "hover-end",
+      interaction: {
+        hover: "end",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         width: 400,
         height: 17,
@@ -82,7 +92,12 @@ test("2 set 1 elem each call second", async () => {
     containerExposed: { style: {} },
     selfOverrides: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {},
     },
     setName: "two",
@@ -121,7 +136,12 @@ test("2 set 2 elems each", async () => {
     set: [
       {
         lifecycle: "enter",
-        interaction: "hover-end",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           width: 400,
           height: 17,
@@ -131,7 +151,12 @@ test("2 set 2 elems each", async () => {
       },
       {
         lifecycle: "none",
-        interaction: "idle",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           width: 4000,
           height: 170,
@@ -185,7 +210,12 @@ test("2 set varied elem count 1", async () => {
     containerExposed: { style: {} },
     selfOverrides: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {},
     },
     setName: "one",
@@ -198,7 +228,12 @@ test("2 set varied elem count 1", async () => {
     set: [
       {
         lifecycle: "enter",
-        interaction: "hover-end",
+        interaction: {
+          hover: "end",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           width: 400,
           height: 17,
@@ -208,7 +243,12 @@ test("2 set varied elem count 1", async () => {
       },
       {
         lifecycle: "leave",
-        interaction: "idle",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           width: 400,
           height: 17,
@@ -218,7 +258,12 @@ test("2 set varied elem count 1", async () => {
       },
       {
         lifecycle: "update",
-        interaction: "hover-start",
+        interaction: {
+          hover: "start",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           width: 400,
           height: 17,
@@ -264,7 +309,12 @@ test("2 set varied elem count 2", async () => {
     containerExposed: { style: {} },
     selfOverrides: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {},
     },
     setName: "two",
@@ -277,7 +327,12 @@ test("2 set varied elem count 2", async () => {
     set: [
       {
         lifecycle: "enter",
-        interaction: "hover-end",
+        interaction: {
+          hover: "end",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           width: 400,
           height: 17,
@@ -287,7 +342,12 @@ test("2 set varied elem count 2", async () => {
       },
       {
         lifecycle: "leave",
-        interaction: "idle",
+        interaction: {
+          hover: "none",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           width: 400,
           height: 17,
@@ -297,7 +357,12 @@ test("2 set varied elem count 2", async () => {
       },
       {
         lifecycle: "update",
-        interaction: "hover-start",
+        interaction: {
+          hover: "start",
+          focus: "none",
+          press: "none",
+          drag: "none",
+        },
         style: {
           width: 400,
           height: 17,

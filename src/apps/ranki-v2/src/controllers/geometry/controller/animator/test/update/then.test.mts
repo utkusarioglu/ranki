@@ -59,7 +59,12 @@ test("depth 2", async () => {
     },
     self: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 0,
         left: 0,
@@ -138,7 +143,12 @@ test("depth 2 call 3", async () => {
     },
     self: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 0,
         left: 0,

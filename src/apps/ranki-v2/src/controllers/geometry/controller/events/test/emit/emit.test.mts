@@ -4,7 +4,7 @@ import type { LitElement } from "lit";
 import { afterEach, beforeEach, expect, type Mock, test, vi } from "vitest";
 
 import type {
-  GeometryInteractions,
+  GeometryInteractionEmit,
   GeometryEvent,
 } from "../../geometry-events.types.mjs";
 
@@ -61,7 +61,7 @@ test("leave", () => {
 });
 
 test("interaction", () => {
-  const interaction: GeometryInteractions = "hover-end";
+  const interaction: GeometryInteractionEmit = "hover-end";
   const emit: GeometryEvent = { type: "interaction", interaction };
   events.emit(emit);
   const expected = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {

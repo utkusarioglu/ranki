@@ -24,7 +24,12 @@ const sizing: LayoutSizing = {
   set: [
     {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 19,
         left: 0,
@@ -34,7 +39,12 @@ const sizing: LayoutSizing = {
     },
     {
       lifecycle: "leave",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 57,
         left: 121,
@@ -51,7 +61,12 @@ test("empty informed", () => {
     context,
     selfOverrides: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {},
     },
   };
@@ -64,7 +79,12 @@ test("empty informed", () => {
     context,
     self: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 130,
         width: 110,
@@ -84,12 +104,17 @@ test("informed container width", () => {
     },
     selfOverrides: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {},
     },
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing);
-  const expected = {
+  const expected: CurrentAppliedStyle = {
     actions: ["enter"],
     container: {
       style: {
@@ -98,8 +123,13 @@ test("informed container width", () => {
     },
     context,
     self: {
-      intent: "enter",
-      interaction: "idle",
+      lifecycle: "enter",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         width: 110,
         height: 130,
@@ -124,12 +154,17 @@ test("informed container width 2", () => {
     },
     selfOverrides: {
       lifecycle: "update",
-      interaction: "hover-end",
+      interaction: {
+        hover: "end",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {},
     },
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing);
-  const expected = {
+  const expected: CurrentAppliedStyle = {
     actions: ["update", "hover-end"],
     container: {
       style: {
@@ -139,8 +174,13 @@ test("informed container width 2", () => {
     },
     context,
     self: {
-      intent: "update",
-      interaction: "hover-end",
+      lifecycle: "update",
+      interaction: {
+        hover: "end",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         width: 110,
         height: 130,

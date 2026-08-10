@@ -18,7 +18,12 @@ const sizing: LayoutSizing = {
   set: [
     {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 19,
         left: 0,
@@ -28,7 +33,12 @@ const sizing: LayoutSizing = {
     },
     {
       lifecycle: "leave",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 57,
         left: 0,
@@ -54,7 +64,12 @@ test("exposed container width", () => {
     context,
     selfOverrides: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {},
     },
   };
@@ -70,7 +85,12 @@ test("exposed container width", () => {
     context,
     self: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         width: 11,
         height: 13,
@@ -99,7 +119,12 @@ test("exposed container width 2", () => {
     context,
     selfOverrides: {
       lifecycle: "leave",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {},
     },
   };
@@ -115,7 +140,12 @@ test("exposed container width 2", () => {
     context,
     self: {
       lifecycle: "leave",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 13,
         width: 11,

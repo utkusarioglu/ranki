@@ -27,7 +27,12 @@ test("empty props", async () => {
     containerExposed: { style: {} },
     selfOverrides: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {},
     },
     setName: "f",

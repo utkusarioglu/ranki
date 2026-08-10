@@ -59,7 +59,12 @@ test("single keyframe", async () => {
     },
     self: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 0,
         left: 0,
@@ -112,7 +117,12 @@ test("two keyframes", async () => {
     },
     self: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 0,
         left: 0,

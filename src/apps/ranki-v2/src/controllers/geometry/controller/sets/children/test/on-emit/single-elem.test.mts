@@ -24,7 +24,6 @@ test("single session single elem", async () => {
   const detail: GeometryEvent = {
     type: "lifecycle",
     lifecycle: "update",
-    interaction: "idle",
     style: {
       height: 11,
       width: 7,
@@ -38,7 +37,12 @@ test("single session single elem", async () => {
       set: [
         {
           lifecycle: detail.lifecycle,
-          interaction: detail.interaction!,
+          interaction: {
+            hover: "none",
+            focus: "none",
+            press: "none",
+            drag: "none",
+          },
           style: {
             ...detail.style,
             left: 0,
@@ -62,7 +66,6 @@ test("two sessions single elem", async () => {
   const detail1: GeometryEvent = {
     type: "lifecycle",
     lifecycle: "update",
-    interaction: "idle",
     style: {
       height: 11,
       width: 7,
@@ -71,7 +74,6 @@ test("two sessions single elem", async () => {
   const detail2: GeometryEvent = {
     type: "lifecycle",
     lifecycle: "update",
-    interaction: "idle",
     style: {
       height: 17,
       width: 13,
@@ -85,7 +87,12 @@ test("two sessions single elem", async () => {
       set: [
         {
           lifecycle: detail1.lifecycle,
-          interaction: detail1.interaction!,
+          interaction: {
+            hover: "none",
+            focus: "none",
+            press: "none",
+            drag: "none",
+          },
           style: {
             ...detail1.style,
             left: 0,
@@ -104,7 +111,12 @@ test("two sessions single elem", async () => {
       set: [
         {
           lifecycle: detail2.lifecycle,
-          interaction: detail2.interaction!,
+          interaction: {
+            hover: "none",
+            focus: "none",
+            press: "none",
+            drag: "none",
+          },
           style: {
             ...detail2.style,
             left: 0,

@@ -60,7 +60,12 @@ export class GeometryMerger {
       : // FIX I do not like this being here. sizing should be definitely available when the execution reaches here
         {
           lifecycle: "none" as const,
-          interaction: "idle" as const,
+          interaction: {
+            hover: "none" as const,
+            drag: "none" as const,
+            press: "none" as const,
+            focus: "none" as const,
+          },
           style: {},
         };
     return {

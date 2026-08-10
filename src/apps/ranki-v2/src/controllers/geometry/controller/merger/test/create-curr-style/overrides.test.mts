@@ -23,7 +23,12 @@ const sizing: LayoutSizing = {
   set: [
     {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 19,
         left: 447,
@@ -33,7 +38,12 @@ const sizing: LayoutSizing = {
     },
     {
       lifecycle: "leave",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 57,
         left: 19,
@@ -54,7 +64,12 @@ test("overridden self style", () => {
     context,
     selfOverrides: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 3,
       },
@@ -72,8 +87,13 @@ test("overridden self style", () => {
     },
     context,
     self: {
-      intent: "enter",
-      interaction: "idle",
+      lifecycle: "enter",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 3,
         width: 119,
@@ -102,7 +122,12 @@ test("informed container width 2", () => {
     context,
     selfOverrides: {
       lifecycle: "enter",
-      interaction: "idle",
+      interaction: {
+        hover: "none",
+        focus: "none",
+        press: "none",
+        drag: "none",
+      },
       style: {
         height: 7,
       },
@@ -121,7 +146,7 @@ test("informed container width 2", () => {
     context,
     self: {
       // intent: "leave",
-      intent: sizing.set[0].lifecycle,
+      lifecycle: sizing.set[0].lifecycle,
       interaction: sizing.set[0].interaction,
       style: {
         // ...sizing.set[0].style,
