@@ -31,7 +31,8 @@ const Host = vi.fn(
 const informSet = vi.fn().mockReturnValue(Promise.resolve());
 const getRecipe = vi.fn();
 
-let animator: Animator;
+// eslint-disable-next-line no-explicit-any
+let animator: Animator<any>;
 
 beforeEach(() => {
   const host = new Host();

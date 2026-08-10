@@ -18,7 +18,7 @@ export class R2Hud extends R2C {
 
   @geometry<R2Hud>({
     role: "hud",
-    getRecipe: getAnimationRecipe,
+    recipe: getAnimationRecipe,
     children: {
       isRoot: true,
       selector: (s) => [s.scroller],

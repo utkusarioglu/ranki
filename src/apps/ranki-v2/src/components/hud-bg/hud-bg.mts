@@ -13,7 +13,7 @@ export class R2HudBg extends R2C {
 
   @geometry<R2HudBg>({
     role: "hud-bg",
-    getRecipe: getAnimationRecipe,
+    recipe: getAnimationRecipe,
   })
   // @ts-expect-error
   private readonly geo!: GeometryController<R2HudBg>;

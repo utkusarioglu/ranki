@@ -22,7 +22,7 @@ export class GeometryController<
   Instance extends LitElement,
 > implements ReactiveController {
   public readonly events: GeometryEvents<Instance>;
-  private readonly animator: Animator;
+  private readonly animator: Animator<Instance>;
   private curr: CurrentAppliedStyle | null = null;
   private readonly host: Instance;
   private prev: CurrentAppliedStyle | null = null;
@@ -37,7 +37,7 @@ export class GeometryController<
     this.host = host;
     this.animator = new Animator(this.host, params.role, {
       informSet: this.informSet.bind(this),
-      getRecipe: params.getRecipe,
+      getRecipe: params.recipe,
     });
     this.events = new GeometryEvents({
       events: params.events,

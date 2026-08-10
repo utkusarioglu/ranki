@@ -5,7 +5,7 @@ import type {
 import type { LitElement } from "lit";
 
 import type { GeometrySetsConstructorParams } from "../sets/sets.types.mjs";
-import type { GetRecipeCallback } from "../animator/animator.types.mjs";
+import type { GetRecipeConstructorParam } from "../animator/animator.constructor.types.mjs";
 
 export interface GeometryControllerConstructorParams<
   Instance extends LitElement,
@@ -13,7 +13,7 @@ export interface GeometryControllerConstructorParams<
   events?: GeometryEventTypes;
   on?: GeometryEventCb<Instance>;
   role: GeometryRole;
-  getRecipe: GetRecipeCallback;
+  recipe: GetRecipeConstructorParam<Instance>;
 }
 
 export type GeometryRole = { type?: "GeometryRole" } & string;

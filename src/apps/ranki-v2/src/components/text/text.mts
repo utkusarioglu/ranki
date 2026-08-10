@@ -38,7 +38,7 @@ export class R2Text extends R2C {
 
   @geometry<R2Text>({
     role: "text",
-    getRecipe: getAnimationRecipe,
+    recipe: getAnimationRecipe,
     children: {
       selector: (s) => Array.from(s.spans),
       layout: () => LayoutUtils.last(),

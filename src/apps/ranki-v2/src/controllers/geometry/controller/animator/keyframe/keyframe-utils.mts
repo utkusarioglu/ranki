@@ -6,6 +6,10 @@ export class KeyframeUtils {
     easing: "ease-in-out",
     // easing: "cubic-bezier(0.6, -1, 0.2, 2.4)",
     fill: "both",
+    // easing: "linear",
+    // easing: "ease-in-out",
+    // easing: "cubic-bezier(0.6, -1, 0.2, 2.4)",
+    // fill: "both",
   };
 
   public static produceKeyframe({

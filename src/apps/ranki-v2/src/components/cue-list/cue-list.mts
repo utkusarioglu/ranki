@@ -23,7 +23,7 @@ export class R2CueList extends R2C {
 
   @geometry<R2CueList>({
     role: "cue-list",
-    getRecipe: getAnimationRecipe,
+    recipe: getAnimationRecipe,
     children: {
       selector: (s) => [s.badgeList],
       layout: () =>

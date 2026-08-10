@@ -29,7 +29,7 @@ export class R2HudScroller extends R2C {
 
   @geometry<R2HudScroller>({
     role: "hud-scroller",
-    getRecipe: getAnimationRecipe,
+    recipe: getAnimationRecipe,
     children: {
       selector: (s) => Array.from(s.cueList),
       layout: () =>

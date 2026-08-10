@@ -5,24 +5,33 @@ import { DebugUtils } from "_/debug/debug-utils.mjs";
 import type { GeometryRole } from "../types/geometry-controller.constructor.types.mjs";
 import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs";
 
-import { type AnimatorCallbacks } from "./animator.constructor.types.mjs";
-import { type AnimatorPlayParams } from "./animator.types.mjs";
+import {
+  type AnimatorCallbacks,
+  type GetRecipeConstructorParam,
+} from "./animator.constructor.types.mjs";
+import {
+  type AnimatorPlayParams,
+  type GetAnimationRecipeProps,
+  type GetRecipeCallback,
+} from "./animator.types.mjs";
 import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
 import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
 import { LayoutParser } from "./parser/layout-parser.mjs";
+import { RecipeUtils } from "./recipe/recipe-utils.mjs";
 
-export class Animator {
-  private readonly callbacks: AnimatorCallbacks;
-  private readonly host: LitElement;
+export class Animator<Instance extends LitElement> {
+  private readonly callbacks: AnimatorCallbacks<Instance>;
+  private readonly host: Instance;
   private readonly preset: string = "debug";
   private readonly role: GeometryRole;
   private running = new Map<string, Animation>();
   private readonly sequencer: AnimationSequencer;
+  private readonly getRecipe: GetRecipeCallback;
 
   constructor(
-    host: LitElement,
+    host: Instance,
     role: GeometryRole,
-    callbacks: AnimatorCallbacks,
+    callbacks: AnimatorCallbacks<Instance>,
   ) {
     this.host = host;
     this.role = role;
@@ -31,6 +40,16 @@ export class Animator {
       informSet: this.callbacks.informSet,
       playName: this.playName.bind(this),
     });
+    this.getRecipe = this.prepareGetRecipeCallback(this.callbacks.getRecipe);
+  }
+
+  private prepareGetRecipeCallback(
+    recipeVal: GetRecipeConstructorParam<Instance>,
+  ): GetRecipeCallback {
+    return typeof recipeVal === "function"
+      ? (p: GetAnimationRecipeProps) => recipeVal(this.host, p)
+      : (p: GetAnimationRecipeProps) =>
+          RecipeUtils.getRecipeFromCollection(recipeVal, p);
   }
 
   public async update(
@@ -40,7 +59,7 @@ export class Animator {
     DebugUtils.animatorUpdate({ curr, host: this.host, prev });
     await Promise.all(
       curr.actions.map((action) => {
-        const recipe = this.callbacks.getRecipe({
+        const recipe = this.getRecipe({
           mode: "default",
           action,
           preset: this.preset,
@@ -67,10 +86,6 @@ export class Animator {
   }: AnimatorPlayParams): Promise<void> {
     const finalOptions: KeyframeAnimationOptions = {
       ...KeyframeUtils.OPTIONS_DEFAULTS,
-      // easing: "linear",
-      // easing: "ease-in-out",
-      // easing: "cubic-bezier(0.6, -1, 0.2, 2.4)",
-      // fill: "both",
       ...options,
     };
     const finalKeyframes = KeyframeUtils.produceKeyframes(keyframes);
@@ -98,7 +113,7 @@ export class Animator {
     }
     this.running.set(name, anim);
     await anim.finished
-      // .then(() => this.running.delete(name))
+      .then(() => this.running.delete(name))
       .catch((e) =>
         console.log("ABORT", {
           host: this.host,

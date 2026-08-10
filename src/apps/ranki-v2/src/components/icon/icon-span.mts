@@ -27,7 +27,7 @@ export class R2IconSpan extends R2C {
 
   @geometry<R2IconSpan>({
     role: "icon-span",
-    getRecipe: getAnimationRecipe,
+    recipe: getAnimationRecipe,
     on: (s, type) => {
       if (type === "leave-end") {
         ReconciliationUtils.emitLeave(s);

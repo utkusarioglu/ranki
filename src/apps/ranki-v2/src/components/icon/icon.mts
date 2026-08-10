@@ -40,7 +40,7 @@ export class R2Icon extends R2C {
 
   @geometry<R2Icon>({
     role: "icon",
-    getRecipe: getAnimationRecipe,
+    recipe: getAnimationRecipe,
     children: {
       selector: (s) => Array.from(s.spans),
       layout: () => LayoutUtils.last(),

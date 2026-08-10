@@ -33,7 +33,7 @@ export class R2Chip extends R2C {
 
   @geometry<R2Chip>({
     role: "chip",
-    getRecipe: getAnimationRecipe,
+    recipe: getAnimationRecipe,
     events: {
       hover: true,
     },
