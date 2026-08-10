@@ -67,8 +67,8 @@ export class GeometryEval {
     if (["enter", "update", "leave"].includes(curr.self.lifecycle)) {
       actions.add(curr.self.lifecycle);
     }
-    if (curr.self.mode !== "idle") {
-      actions.add(curr.self.mode);
+    if (curr.self.interaction !== "idle") {
+      actions.add(curr.self.interaction);
     }
 
     return Array.from(actions);
@@ -136,7 +136,7 @@ export class GeometryEval {
     if (["enter", "update", "leave"].includes(curr.self.lifecycle)) {
       actions.add(curr.self.lifecycle);
     }
-    if (curr.self.mode) actions.add(curr.self.mode);
+    if (curr.self.interaction) actions.add(curr.self.interaction);
 
     return Array.from(actions);
   }

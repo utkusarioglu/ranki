@@ -25,7 +25,7 @@ test("single session two elems", async () => {
   const detail1: GeometryEvent = {
     type: "lifecycle",
     lifecycle: "update",
-    mode: "idle",
+    interaction: "idle",
     style: {
       height: 11,
       width: 7,
@@ -34,7 +34,7 @@ test("single session two elems", async () => {
   const detail2: GeometryEvent = {
     type: "lifecycle",
     lifecycle: "update",
-    mode: "idle",
+    interaction: "idle",
     style: {
       height: 11,
       width: 13,
@@ -49,7 +49,7 @@ test("single session two elems", async () => {
       set: [
         {
           lifecycle: detail1.lifecycle,
-          mode: detail1.mode!,
+          interaction: detail1.interaction!,
           style: {
             ...detail1.style,
             left: 0,
@@ -58,7 +58,7 @@ test("single session two elems", async () => {
         },
         {
           lifecycle: detail2.lifecycle,
-          mode: detail2.mode!,
+          interaction: detail2.interaction!,
           style: {
             ...detail2.style,
             left: detail1.style.width,
@@ -88,7 +88,7 @@ test("two sessions two elems", async () => {
   const detail1_1: GeometryEvent = {
     type: "lifecycle",
     lifecycle: "update",
-    mode: "idle",
+    interaction: "idle",
     style: {
       height: 11,
       width: 7,
@@ -97,7 +97,7 @@ test("two sessions two elems", async () => {
   const detail1_2: GeometryEvent = {
     type: "lifecycle",
     lifecycle: "update",
-    mode: "idle",
+    interaction: "idle",
     style: {
       height: 11,
       width: 19,
@@ -106,7 +106,7 @@ test("two sessions two elems", async () => {
   const detail2_1: GeometryEvent = {
     type: "lifecycle",
     lifecycle: "update",
-    mode: "idle",
+    interaction: "idle",
     style: {
       height: 11,
       width: 13,
@@ -115,7 +115,7 @@ test("two sessions two elems", async () => {
   const detail2_2: GeometryEvent = {
     type: "lifecycle",
     lifecycle: "update",
-    mode: "idle",
+    interaction: "idle",
     style: {
       height: 11,
       width: 23,
@@ -130,7 +130,7 @@ test("two sessions two elems", async () => {
       set: [
         {
           lifecycle: detail1_1.lifecycle,
-          mode: detail1_1.mode!,
+          interaction: detail1_1.interaction!,
           style: {
             ...detail1_1.style,
             left: 0,
@@ -139,7 +139,7 @@ test("two sessions two elems", async () => {
         },
         {
           lifecycle: detail1_2.lifecycle,
-          mode: detail1_2.mode!,
+          interaction: detail1_2.interaction!,
           style: {
             ...detail1_2.style,
             left: detail1_1.style.width,
@@ -159,7 +159,7 @@ test("two sessions two elems", async () => {
       set: [
         {
           lifecycle: detail2_1.lifecycle,
-          mode: detail2_1.mode!,
+          interaction: detail2_1.interaction!,
           style: {
             ...detail2_1.style,
             left: 0,
@@ -168,7 +168,7 @@ test("two sessions two elems", async () => {
         },
         {
           lifecycle: detail2_2.lifecycle,
-          mode: detail2_2.mode!,
+          interaction: detail2_2.interaction!,
           style: {
             ...detail2_2.style,
             left: detail2_1.style.width,

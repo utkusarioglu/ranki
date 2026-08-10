@@ -19,7 +19,7 @@ const informProps: InformSetProps = {
   containerExposed: { style: {} },
   selfOverrides: {
     lifecycle: "enter",
-    mode: "idle",
+    interaction: "idle",
     style: {},
   },
   setName: "one",
@@ -33,7 +33,7 @@ const sizing: LayoutSizing = {
   set: [
     {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {
         width: 7,
         height: 11,
@@ -43,7 +43,7 @@ const sizing: LayoutSizing = {
     },
     {
       lifecycle: "none",
-      mode: "hover-end",
+      interaction: "hover-end",
       style: {
         width: 77,
         height: 111,

@@ -28,7 +28,7 @@ const props: GeometryChildrenProps<LitElement> = {
     const detail: GeometryEvent = {
       type: "lifecycle",
       lifecycle: intent,
-      mode: "idle",
+      interaction: "idle",
     };
     const response = await children.onEmit(target, detail);
     const expected: Awaited<ChildrenUpdateSizingReturn> = null;

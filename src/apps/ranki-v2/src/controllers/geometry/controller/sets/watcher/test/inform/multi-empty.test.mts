@@ -37,7 +37,7 @@ test("Single set no elems", async () => {
     containerExposed: { style: {} },
     selfOverrides: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {},
     },
     setName: "one",

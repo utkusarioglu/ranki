@@ -97,7 +97,7 @@ CASES.forEach(({ block, expected, name }) => {
         },
         self: {
           lifecycle: "enter",
-          mode: "idle",
+          interaction: "idle",
           style: {
             height: 0,
             left: 0,

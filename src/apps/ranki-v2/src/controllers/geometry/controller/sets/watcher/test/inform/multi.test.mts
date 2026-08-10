@@ -18,7 +18,7 @@ const informProps: InformSetProps = {
   containerExposed: { style: {} },
   selfOverrides: {
     lifecycle: "enter",
-    mode: "idle",
+    interaction: "idle",
     style: {},
   },
   setName: "one",
@@ -32,7 +32,7 @@ const sizing: LayoutSizing = {
   set: [
     {
       lifecycle: "enter",
-      mode: "hover-end",
+      interaction: "hover-end",
       style: {
         width: 400,
         height: 17,
@@ -82,7 +82,7 @@ test("2 set 1 elem each call second", async () => {
     containerExposed: { style: {} },
     selfOverrides: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {},
     },
     setName: "two",
@@ -121,7 +121,7 @@ test("2 set 2 elems each", async () => {
     set: [
       {
         lifecycle: "enter",
-        mode: "hover-end",
+        interaction: "hover-end",
         style: {
           width: 400,
           height: 17,
@@ -131,7 +131,7 @@ test("2 set 2 elems each", async () => {
       },
       {
         lifecycle: "none",
-        mode: "idle",
+        interaction: "idle",
         style: {
           width: 4000,
           height: 170,
@@ -185,7 +185,7 @@ test("2 set varied elem count 1", async () => {
     containerExposed: { style: {} },
     selfOverrides: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {},
     },
     setName: "one",
@@ -198,7 +198,7 @@ test("2 set varied elem count 1", async () => {
     set: [
       {
         lifecycle: "enter",
-        mode: "hover-end",
+        interaction: "hover-end",
         style: {
           width: 400,
           height: 17,
@@ -208,7 +208,7 @@ test("2 set varied elem count 1", async () => {
       },
       {
         lifecycle: "leave",
-        mode: "idle",
+        interaction: "idle",
         style: {
           width: 400,
           height: 17,
@@ -218,7 +218,7 @@ test("2 set varied elem count 1", async () => {
       },
       {
         lifecycle: "update",
-        mode: "hover-start",
+        interaction: "hover-start",
         style: {
           width: 400,
           height: 17,
@@ -264,7 +264,7 @@ test("2 set varied elem count 2", async () => {
     containerExposed: { style: {} },
     selfOverrides: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {},
     },
     setName: "two",
@@ -277,7 +277,7 @@ test("2 set varied elem count 2", async () => {
     set: [
       {
         lifecycle: "enter",
-        mode: "hover-end",
+        interaction: "hover-end",
         style: {
           width: 400,
           height: 17,
@@ -287,7 +287,7 @@ test("2 set varied elem count 2", async () => {
       },
       {
         lifecycle: "leave",
-        mode: "idle",
+        interaction: "idle",
         style: {
           width: 400,
           height: 17,
@@ -297,7 +297,7 @@ test("2 set varied elem count 2", async () => {
       },
       {
         lifecycle: "update",
-        mode: "hover-start",
+        interaction: "hover-start",
         style: {
           width: 400,
           height: 17,

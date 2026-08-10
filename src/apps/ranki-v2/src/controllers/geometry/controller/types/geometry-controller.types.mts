@@ -7,11 +7,11 @@ import type {
   AnimationKeyframeStyles,
   InformSetProps,
 } from "../animator/animator.types.mjs";
-import type { EmitModes } from "../events/geometry-events.types.mjs";
+import type { GeometryInteractions } from "../events/geometry-events.types.mjs";
 
 export interface ComponentDims {
   lifecycle: EmitLifecycle;
-  mode: EmitModes;
+  interaction: GeometryInteractions;
   style: WidthHeight;
 }
 
@@ -47,10 +47,10 @@ export type InformedChildStyleContainer = {
 
 export type InformedChildStyleSelf = {
   lifecycle: EmitLifecycle;
-  mode: EmitModes;
+  interaction: GeometryInteractions;
   style: AnimationKeyframeStyles;
 };
 
 type InformedChildStyleNode = {
   style: AnimationKeyframeStyles;
-} & Pick<ComponentDims, "lifecycle" | "mode">;
+} & Pick<ComponentDims, "lifecycle" | "interaction">;

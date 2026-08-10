@@ -17,7 +17,7 @@ export class ChildrenRegistry {
       if (!dims) {
         ordered.push({
           lifecycle: "none",
-          mode: "idle",
+          interaction: "idle",
         });
       } else {
         ordered.push(dims);
@@ -34,11 +34,11 @@ export class ChildrenRegistry {
     switch (detail.type) {
       case "lifecycle":
         return this.updateIntent(target, detail);
-      case "mode":
+      case "interaction":
         this.dims.set(target, {
           lifecycle: "enter",
           ...this.dims.get(target),
-          mode: detail.mode,
+          interaction: detail.interaction,
         });
         break;
 
@@ -57,9 +57,9 @@ export class ChildrenRegistry {
         break;
       case "leave":
         this.dims.set(target, {
-          // mode: "idle",
+          // interaction: "idle",
           ...this.dims.get(target),
-          mode: detail.mode || "idle",
+          interaction: detail.interaction || "idle",
           lifecycle: detail.lifecycle,
         });
         break;
@@ -67,13 +67,13 @@ export class ChildrenRegistry {
         if (this.dims.has(target)) {
           this.dims.set(target, {
             lifecycle: detail.lifecycle,
-            mode: detail.mode || "idle",
+            interaction: detail.interaction || "idle",
             style: detail.style,
           });
         } else {
           this.dims.set(target, {
             lifecycle: "enter",
-            mode: "idle",
+            interaction: "idle",
             style: detail.style,
           });
         }

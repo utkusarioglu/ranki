@@ -74,7 +74,7 @@ export class LayoutParser {
         },
         selfOverrides: {
           lifecycle: curr.self.lifecycle,
-          mode: curr.self.mode,
+          interaction: curr.self.interaction,
           style: t.override
             ? KeyframeParser.evalKeyframe(curr, prev, t.override)
             : {},

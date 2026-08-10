@@ -18,7 +18,7 @@ const informProps: InformSetProps = {
   containerExposed: { style: {} },
   selfOverrides: {
     lifecycle: "enter",
-    mode: "idle",
+    interaction: "idle",
     style: {},
   },
   setName: "one",
@@ -39,7 +39,7 @@ test("Single set 1 elem", async () => {
     set: [
       {
         lifecycle: "enter",
-        mode: "idle",
+        interaction: "idle",
         style: {
           top: 2,
           left: 5,
@@ -65,7 +65,7 @@ test("Single set 1 elem", async () => {
     },
     selfOverrides: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: sizing.set[0].style,
     },
   };
@@ -83,7 +83,7 @@ test("Single set 2 elems", async () => {
     set: [
       {
         lifecycle: "enter",
-        mode: "idle",
+        interaction: "idle",
         style: {
           top: 2,
           left: 5,
@@ -93,7 +93,7 @@ test("Single set 2 elems", async () => {
       },
       {
         lifecycle: "update",
-        mode: "hover-end",
+        interaction: "hover-end",
         style: {
           top: 20,
           left: 50,
@@ -120,7 +120,7 @@ test("Single set 2 elems", async () => {
       },
       selfOverrides: {
         lifecycle: "enter",
-        mode: "idle",
+        interaction: "idle",
         style: sizing.set[0].style,
       },
     },
@@ -135,7 +135,7 @@ test("Single set 2 elems", async () => {
       },
       selfOverrides: {
         lifecycle: "update",
-        mode: "hover-end",
+        interaction: "hover-end",
         style: sizing.set[1].style,
       },
     },

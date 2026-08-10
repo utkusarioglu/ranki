@@ -31,7 +31,7 @@ export class GeometryMerger {
       context: informed.context,
       self: {
         lifecycle: informed.selfOverrides.lifecycle,
-        mode: informed.selfOverrides.mode,
+        interaction: informed.selfOverrides.interaction,
         style: {
           ...(sizing ? sizing.container : {}),
           ...informed.selfOverrides.style,
@@ -60,7 +60,7 @@ export class GeometryMerger {
       : // FIX I do not like this being here. sizing should be definitely available when the execution reaches here
         {
           lifecycle: "none" as const,
-          mode: "idle" as const,
+          interaction: "idle" as const,
           style: {},
         };
     return {
@@ -68,7 +68,7 @@ export class GeometryMerger {
       context,
       selfOverrides: {
         lifecycle: item.lifecycle,
-        mode: item.mode,
+        interaction: item.interaction,
         style: {
           ...item.style,
           ...props.selfOverrides.style,

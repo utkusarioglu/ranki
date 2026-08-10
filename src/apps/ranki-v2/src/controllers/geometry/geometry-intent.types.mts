@@ -1,6 +1,11 @@
-import type { EmitModes } from "./controller/events/geometry-events.types.mjs";
+import type { GeometryInteractions } from "./controller/events/geometry-events.types.mjs";
 
-export type EmitLifecycle = "enter" | "leave" | "mode" | "none" | "update";
+export type EmitLifecycle =
+  | "enter"
+  | "leave"
+  | "interaction"
+  | "none"
+  | "update";
 
 export type LocalAction =
   // | "enter"
@@ -9,10 +14,10 @@ export type LocalAction =
   // | "none"
   // | "update"
   // | "always"
-  EmitLifecycle | EmitModes;
+  EmitLifecycle | GeometryInteractions;
 
 export type WithEmitIntent = { intent: EmitLifecycle };
 
 export type WithEmitIntents = { intents: EmitLifecycle[] };
 
-export type WithMode = { mode: EmitModes | undefined };
+export type WithMode = { interaction: GeometryInteractions | undefined };

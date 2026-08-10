@@ -1,8 +1,8 @@
 import type { WidthHeight } from "../../geometry-style.types.mjs";
 
-export type EmitType = "lifecycle" | "mode";
+export type EmitType = "lifecycle" | "interaction";
 
-export type EmitModes = "hover-end" | "hover-start" | "idle";
+export type GeometryInteractions = "hover-end" | "hover-start" | "idle";
 
 export interface GeometryEventTypes {
   hover: boolean;
@@ -19,28 +19,28 @@ export type GeometryEventLifecycle =
 interface GeometryEventLifecycleLeave {
   type: "lifecycle";
   lifecycle: "leave";
-  mode?: EmitModes;
+  interaction?: GeometryInteractions;
 }
 
 interface GeometryEventMode {
-  type: "mode";
-  mode: EmitModes;
+  type: "interaction";
+  interaction: GeometryInteractions;
 }
 
 interface GeometryEventLifecycleConnected {
   type: "lifecycle";
   lifecycle: "connected";
-  mode?: EmitModes;
+  interaction?: GeometryInteractions;
 }
 
 interface GeometryEventLifecycleDisconnected {
   type: "lifecycle";
   lifecycle: "disconnected";
-  mode?: EmitModes;
+  interaction?: GeometryInteractions;
 }
 interface GeometryEventLifecycleUpdate {
   type: "lifecycle";
   lifecycle: "update";
-  mode?: EmitModes;
+  interaction?: GeometryInteractions;
   style: WidthHeight;
 }

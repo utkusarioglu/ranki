@@ -59,7 +59,7 @@ test("depth 2", async () => {
     },
     self: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {
         height: 0,
         left: 0,
@@ -138,7 +138,7 @@ test("depth 2 call 3", async () => {
     },
     self: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {
         height: 0,
         left: 0,

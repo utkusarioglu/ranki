@@ -3,7 +3,10 @@ import type { LitElement } from "lit";
 
 import { afterEach, beforeEach, expect, type Mock, test, vi } from "vitest";
 
-import type { EmitModes, GeometryEvent } from "../../geometry-events.types.mjs";
+import type {
+  GeometryInteractions,
+  GeometryEvent,
+} from "../../geometry-events.types.mjs";
 
 import { GeometryEvents } from "../../geometry-events.mjs";
 
@@ -57,9 +60,9 @@ test("leave", () => {
   expect(dispatchEvent).toHaveBeenCalledWith(expected);
 });
 
-test("mode", () => {
-  const mode: EmitModes = "hover-end";
-  const emit: GeometryEvent = { type: "mode", mode };
+test("interaction", () => {
+  const interaction: GeometryInteractions = "hover-end";
+  const emit: GeometryEvent = { type: "interaction", interaction };
   events.emit(emit);
   const expected = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
     detail: emit,

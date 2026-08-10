@@ -69,7 +69,7 @@ test("leave", () => {
   };
   const expected: EmittedComponentState = {
     lifecycle: "leave",
-    mode: "idle",
+    interaction: "idle",
   };
   registry.update(target, detail);
   expect(set).toHaveBeenCalledTimes(1);
@@ -91,7 +91,7 @@ test("update", () => {
   };
   const expected: EmittedComponentState = {
     lifecycle: detail.lifecycle,
-    mode: "idle",
+    interaction: "idle",
     style: detail.style,
   };
   // @ts-expect-error #1
@@ -99,7 +99,7 @@ test("update", () => {
     //
     .set(target, {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: { height: 2, width: 1 },
     });
   set.mockClear();
@@ -120,7 +120,7 @@ test("update lifecycle registered as enter", () => {
   };
   const expected: EmittedComponentState = {
     lifecycle: "enter",
-    mode: "idle",
+    interaction: "idle",
     style: detail.style,
   };
   registry.update(target, detail);
@@ -128,14 +128,14 @@ test("update lifecycle registered as enter", () => {
   expect(set).toHaveBeenNthCalledWith(1, target, expected);
 });
 
-test("mode", () => {
+test("interaction", () => {
   const detail: GeometryEvent = {
-    type: "mode",
-    mode: "hover-start",
+    type: "interaction",
+    interaction: "hover-start",
   };
   const expected: EmittedComponentState = {
     lifecycle: "enter",
-    mode: detail.mode,
+    interaction: detail.interaction,
   };
   registry.update(target, detail);
   expect(set).toHaveBeenCalledTimes(1);

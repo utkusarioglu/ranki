@@ -55,7 +55,7 @@ const CASES: Case[] = [
             },
             selfOverrides: {
               lifecycle: "enter" as const,
-              mode: "idle" as const,
+              interaction: "idle" as const,
               style: {},
             },
             setName: "one",
@@ -106,7 +106,7 @@ CASES.forEach(({ block, expected, name }) => {
         },
         self: {
           lifecycle: "enter",
-          mode: "idle",
+          interaction: "idle",
           style: {
             height: 21,
             left: 0,

@@ -9,7 +9,7 @@ export class RecipeUtils {
       action,
       preset: presetName,
       role: roleName,
-      // mode,
+      // interaction,
     }: GetAnimationRecipeProps,
   ) {
     if (action === "none") return {};

@@ -14,7 +14,7 @@ test("zero size", () => {
   const dims: EmittedComponentState[] = [
     {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {
         height: 0,
         width: 0,
@@ -30,7 +30,7 @@ test("zero size", () => {
     set: [
       {
         lifecycle: "enter",
-        mode: "idle",
+        interaction: "idle",
         style: {
           height: 0,
           left: 0,
@@ -48,7 +48,7 @@ test("zero width", () => {
   const dims: EmittedComponentState[] = [
     {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {
         height: 3,
         width: 0,
@@ -64,7 +64,7 @@ test("zero width", () => {
     set: [
       {
         lifecycle: "enter",
-        mode: "idle",
+        interaction: "idle",
         style: {
           height: 3,
           left: 0,
@@ -82,7 +82,7 @@ test("zero height", () => {
   const dims: EmittedComponentState[] = [
     {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {
         height: 0,
         width: 3,
@@ -98,7 +98,7 @@ test("zero height", () => {
     set: [
       {
         lifecycle: "enter",
-        mode: "idle",
+        interaction: "idle",
         style: {
           height: 0,
           left: 0,
@@ -116,7 +116,7 @@ test("rectangle", () => {
   const dims: EmittedComponentState[] = [
     {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {
         height: 7,
         width: 3,
@@ -132,7 +132,7 @@ test("rectangle", () => {
     set: [
       {
         lifecycle: "enter",
-        mode: "idle",
+        interaction: "idle",
         style: {
           height: 7,
           left: 0,

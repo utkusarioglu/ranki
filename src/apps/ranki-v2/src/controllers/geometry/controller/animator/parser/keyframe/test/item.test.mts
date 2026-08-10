@@ -45,7 +45,7 @@ for (const v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
       },
       self: {
         lifecycle: "enter",
-        mode: "idle",
+        interaction: "idle",
         style: {
           [prop]: item,
         },

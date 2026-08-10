@@ -27,7 +27,7 @@ test("empty props", async () => {
     containerExposed: { style: {} },
     selfOverrides: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {},
     },
     setName: "f",

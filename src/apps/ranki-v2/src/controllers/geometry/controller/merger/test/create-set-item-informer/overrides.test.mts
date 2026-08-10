@@ -24,7 +24,7 @@ test("", () => {
     },
     selfOverrides: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {
         opacity: 0.44,
       },
@@ -39,7 +39,7 @@ test("", () => {
     set: [
       {
         lifecycle: "enter",
-        mode: "idle",
+        interaction: "idle",
         style: {
           height: 51,
           left: 0,
@@ -49,7 +49,7 @@ test("", () => {
       },
       {
         lifecycle: "leave",
-        mode: "idle",
+        interaction: "idle",
         style: {
           height: 91,
           left: 0,
@@ -75,7 +75,7 @@ test("", () => {
     context,
     selfOverrides: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {
         ...sizing.set[0].style,
         opacity: 0.44,

@@ -24,7 +24,7 @@ const sizing: LayoutSizing = {
   set: [
     {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {
         height: 19,
         left: 0,
@@ -34,7 +34,7 @@ const sizing: LayoutSizing = {
     },
     {
       lifecycle: "leave",
-      mode: "idle",
+      interaction: "idle",
       style: {
         height: 57,
         left: 121,
@@ -51,7 +51,7 @@ test("empty informed", () => {
     context,
     selfOverrides: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {},
     },
   };
@@ -64,7 +64,7 @@ test("empty informed", () => {
     context,
     self: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {
         height: 130,
         width: 110,
@@ -84,7 +84,7 @@ test("informed container width", () => {
     },
     selfOverrides: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {},
     },
   };
@@ -99,7 +99,7 @@ test("informed container width", () => {
     context,
     self: {
       intent: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {
         width: 110,
         height: 130,
@@ -124,7 +124,7 @@ test("informed container width 2", () => {
     },
     selfOverrides: {
       lifecycle: "update",
-      mode: "hover-end",
+      interaction: "hover-end",
       style: {},
     },
   };
@@ -140,7 +140,7 @@ test("informed container width 2", () => {
     context,
     self: {
       intent: "update",
-      mode: "hover-end",
+      interaction: "hover-end",
       style: {
         width: 110,
         height: 130,

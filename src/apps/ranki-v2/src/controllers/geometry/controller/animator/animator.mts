@@ -63,7 +63,7 @@ export class Animator<Instance extends LitElement> {
     await Promise.all(
       curr.actions.map((action) => {
         const recipe = this.getRecipe({
-          mode: "default",
+          interaction: "default",
           action,
           preset: this.preset,
           role: this.role,

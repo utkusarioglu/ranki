@@ -24,7 +24,7 @@ test("", () => {
     },
     selfOverrides: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {},
     },
     setName: "one",
@@ -37,7 +37,7 @@ test("", () => {
     set: [
       {
         lifecycle: "enter",
-        mode: "idle",
+        interaction: "idle",
         style: {
           height: 51,
           left: 0,
@@ -47,7 +47,7 @@ test("", () => {
       },
       {
         lifecycle: "leave",
-        mode: "idle",
+        interaction: "idle",
         style: {
           height: 91,
           left: 0,

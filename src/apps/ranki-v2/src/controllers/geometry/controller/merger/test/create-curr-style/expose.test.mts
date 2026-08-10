@@ -18,7 +18,7 @@ const sizing: LayoutSizing = {
   set: [
     {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {
         height: 19,
         left: 0,
@@ -28,7 +28,7 @@ const sizing: LayoutSizing = {
     },
     {
       lifecycle: "leave",
-      mode: "idle",
+      interaction: "idle",
       style: {
         height: 57,
         left: 0,
@@ -54,7 +54,7 @@ test("exposed container width", () => {
     context,
     selfOverrides: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {},
     },
   };
@@ -70,7 +70,7 @@ test("exposed container width", () => {
     context,
     self: {
       lifecycle: "enter",
-      mode: "idle",
+      interaction: "idle",
       style: {
         width: 11,
         height: 13,
@@ -99,7 +99,7 @@ test("exposed container width 2", () => {
     context,
     selfOverrides: {
       lifecycle: "leave",
-      mode: "idle",
+      interaction: "idle",
       style: {},
     },
   };
@@ -115,7 +115,7 @@ test("exposed container width 2", () => {
     context,
     self: {
       lifecycle: "leave",
-      mode: "idle",
+      interaction: "idle",
       style: {
         height: 13,
         width: 11,
