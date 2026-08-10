@@ -1,7 +1,5 @@
-import type {
-  GeometryEventCb,
-  GeometryEventTypes,
-} from "_controllers/geometry/controller/events/geometry-events.types.mjs";
+import type { GeometryEventTypes } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
+import type { GeometryEventCb } from "../events/geometry-events.constructor.types.mjs";
 import type { LitElement } from "lit";
 
 import type { GeometrySetsConstructorParams } from "../sets/sets.types.mjs";
