@@ -1,8 +1,8 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 
 import type {
-  R2CNewChildSizeEvent,
-  R2CNewChildSizeEventIntent,
+  GeometryEvent,
+  GeometryEventLifecycle,
 } from "../../../events/geometry-events.types.mjs";
 import type { EmittedComponentState } from "./children-registry.types.mjs";
 import { assertNever } from "_error/assertions.mjs";
@@ -16,7 +16,7 @@ export class ChildrenRegistry {
       const dims = this.dims.get(component);
       if (!dims) {
         ordered.push({
-          intent: "none",
+          lifecycle: "none",
           mode: "idle",
         });
       } else {
@@ -30,13 +30,13 @@ export class ChildrenRegistry {
    * @dev
    * #1 This crates uncertainty about what properties exist in the object retrieved from the map
    */
-  public update(target: R2C, detail: R2CNewChildSizeEvent) {
+  public update(target: R2C, detail: GeometryEvent) {
     switch (detail.type) {
-      case "intent":
+      case "lifecycle":
         return this.updateIntent(target, detail);
       case "mode":
         this.dims.set(target, {
-          intent: "enter",
+          lifecycle: "enter",
           ...this.dims.get(target),
           mode: detail.mode,
         });
@@ -50,8 +50,8 @@ export class ChildrenRegistry {
     }
   }
 
-  private updateIntent(target: R2C, detail: R2CNewChildSizeEventIntent) {
-    switch (detail.intent) {
+  private updateIntent(target: R2C, detail: GeometryEventLifecycle) {
+    switch (detail.lifecycle) {
       case "disconnected":
         this.dims.delete(target);
         break;
@@ -60,19 +60,19 @@ export class ChildrenRegistry {
           // mode: "idle",
           ...this.dims.get(target),
           mode: detail.mode || "idle",
-          intent: detail.intent,
+          lifecycle: detail.lifecycle,
         });
         break;
       case "update":
         if (this.dims.has(target)) {
           this.dims.set(target, {
-            intent: detail.intent,
+            lifecycle: detail.lifecycle,
             mode: detail.mode || "idle",
             style: detail.style,
           });
         } else {
           this.dims.set(target, {
-            intent: "enter",
+            lifecycle: "enter",
             mode: "idle",
             style: detail.style,
           });

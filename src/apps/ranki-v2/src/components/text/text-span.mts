@@ -34,14 +34,14 @@ export class R2TextSpan extends R2C {
   private readonly geo!: GeometryController<R2TextSpan>;
 
   public override leave() {
-    this.geo.events.emit({ type: "intent", intent: "leave" });
+    this.geo.events.emit({ type: "lifecycle", lifecycle: "leave" });
   }
 
   override async firstUpdated() {
     await TimingUtils.waitLayout();
     const { width, height } = this.span.getBoundingClientRect();
     const style: WidthHeight = { width: width + 1, height: height + 1 };
-    this.geo.events.emit({ type: "intent", intent: "update", style });
+    this.geo.events.emit({ type: "lifecycle", lifecycle: "update", style });
   }
 
   override render() {

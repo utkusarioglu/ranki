@@ -5,7 +5,7 @@ import { DebugUtils } from "_/debug/debug-utils.mjs";
 import { assertExists, assertNever } from "_error/assertions.mjs";
 
 import type { InformSetProps } from "./animator/animator.types.mjs";
-import type { R2CNewChildSizeEvent } from "./events/geometry-events.types.mjs";
+import type { GeometryEvent } from "./events/geometry-events.types.mjs";
 import type { LayoutSizing } from "./sets/children/layout/layout-utils.types.mjs";
 import type { GeometryControllerConstructorParams } from "./types/geometry-controller.constructor.types.mjs";
 import type {
@@ -60,7 +60,7 @@ export class GeometryController<
   }
 
   onEmit() {
-    return async (e: CustomEvent<R2CNewChildSizeEvent>) => {
+    return async (e: CustomEvent<GeometryEvent>) => {
       e.stopPropagation();
       const target = e.composedPath()[0] as null | R2C;
       assertExists(target, { why: "No valid target given" });
@@ -76,8 +76,8 @@ export class GeometryController<
           break;
         case "update":
           this.events.emit({
-            type: "intent",
-            intent: "update",
+            type: "lifecycle",
+            lifecycle: "update",
             style: update.sizing.container,
           });
           break;

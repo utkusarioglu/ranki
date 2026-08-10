@@ -23,7 +23,7 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         height: 19,
@@ -33,7 +33,7 @@ const sizing: LayoutSizing = {
       },
     },
     {
-      intent: "leave",
+      lifecycle: "leave",
       mode: "idle",
       style: {
         height: 57,
@@ -50,7 +50,7 @@ test("empty informed", () => {
     containerExposed: { style: {} },
     context,
     selfOverrides: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {},
     },
@@ -63,7 +63,7 @@ test("empty informed", () => {
     },
     context,
     self: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         height: 130,
@@ -83,7 +83,7 @@ test("informed container width", () => {
       },
     },
     selfOverrides: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {},
     },
@@ -123,7 +123,7 @@ test("informed container width 2", () => {
       },
     },
     selfOverrides: {
-      intent: "update",
+      lifecycle: "update",
       mode: "hover-end",
       style: {},
     },

@@ -1,4 +1,7 @@
-import type { EmitIntent, LocalAction } from "../../geometry-intent.types.mjs";
+import type {
+  EmitLifecycle,
+  LocalAction,
+} from "../../geometry-intent.types.mjs";
 import type { WidthHeight } from "../../geometry-style.types.mjs";
 import type {
   AnimationKeyframeStyles,
@@ -7,7 +10,7 @@ import type {
 import type { EmitModes } from "../events/geometry-events.types.mjs";
 
 export interface ComponentDims {
-  intent: EmitIntent;
+  lifecycle: EmitLifecycle;
   mode: EmitModes;
   style: WidthHeight;
 }
@@ -43,11 +46,11 @@ export type InformedChildStyleContainer = {
 };
 
 export type InformedChildStyleSelf = {
-  intent: EmitIntent;
+  lifecycle: EmitLifecycle;
   mode: EmitModes;
   style: AnimationKeyframeStyles;
 };
 
 type InformedChildStyleNode = {
   style: AnimationKeyframeStyles;
-} & Pick<ComponentDims, "intent" | "mode">;
+} & Pick<ComponentDims, "lifecycle" | "mode">;

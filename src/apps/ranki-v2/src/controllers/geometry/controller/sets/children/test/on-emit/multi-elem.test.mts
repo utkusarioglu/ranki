@@ -1,5 +1,5 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
-import type { R2CNewChildSizeEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
+import type { GeometryEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
 import type { LitElement } from "lit";
 
 import { TimingUtils } from "_utils/timing.utils.mjs";
@@ -22,18 +22,18 @@ test("single session two elems", async () => {
     selector: () => [target1, target2],
   };
   const children = new GeometryChildren(host, props);
-  const detail1: R2CNewChildSizeEvent = {
-    type: "intent",
-    intent: "update",
+  const detail1: GeometryEvent = {
+    type: "lifecycle",
+    lifecycle: "update",
     mode: "idle",
     style: {
       height: 11,
       width: 7,
     },
   };
-  const detail2: R2CNewChildSizeEvent = {
-    type: "intent",
-    intent: "update",
+  const detail2: GeometryEvent = {
+    type: "lifecycle",
+    lifecycle: "update",
     mode: "idle",
     style: {
       height: 11,
@@ -48,7 +48,7 @@ test("single session two elems", async () => {
       },
       set: [
         {
-          intent: detail1.intent,
+          lifecycle: detail1.lifecycle,
           mode: detail1.mode!,
           style: {
             ...detail1.style,
@@ -57,7 +57,7 @@ test("single session two elems", async () => {
           },
         },
         {
-          intent: detail2.intent,
+          lifecycle: detail2.lifecycle,
           mode: detail2.mode!,
           style: {
             ...detail2.style,
@@ -85,36 +85,36 @@ test("two sessions two elems", async () => {
     selector: () => [target1, target2],
   };
   const children = new GeometryChildren(host, props);
-  const detail1_1: R2CNewChildSizeEvent = {
-    type: "intent",
-    intent: "update",
+  const detail1_1: GeometryEvent = {
+    type: "lifecycle",
+    lifecycle: "update",
     mode: "idle",
     style: {
       height: 11,
       width: 7,
     },
   };
-  const detail1_2: R2CNewChildSizeEvent = {
-    type: "intent",
-    intent: "update",
+  const detail1_2: GeometryEvent = {
+    type: "lifecycle",
+    lifecycle: "update",
     mode: "idle",
     style: {
       height: 11,
       width: 19,
     },
   };
-  const detail2_1: R2CNewChildSizeEvent = {
-    type: "intent",
-    intent: "update",
+  const detail2_1: GeometryEvent = {
+    type: "lifecycle",
+    lifecycle: "update",
     mode: "idle",
     style: {
       height: 11,
       width: 13,
     },
   };
-  const detail2_2: R2CNewChildSizeEvent = {
-    type: "intent",
-    intent: "update",
+  const detail2_2: GeometryEvent = {
+    type: "lifecycle",
+    lifecycle: "update",
     mode: "idle",
     style: {
       height: 11,
@@ -129,7 +129,7 @@ test("two sessions two elems", async () => {
       },
       set: [
         {
-          intent: detail1_1.intent,
+          lifecycle: detail1_1.lifecycle,
           mode: detail1_1.mode!,
           style: {
             ...detail1_1.style,
@@ -138,7 +138,7 @@ test("two sessions two elems", async () => {
           },
         },
         {
-          intent: detail1_2.intent,
+          lifecycle: detail1_2.lifecycle,
           mode: detail1_2.mode!,
           style: {
             ...detail1_2.style,
@@ -158,7 +158,7 @@ test("two sessions two elems", async () => {
       },
       set: [
         {
-          intent: detail2_1.intent,
+          lifecycle: detail2_1.lifecycle,
           mode: detail2_1.mode!,
           style: {
             ...detail2_1.style,
@@ -167,7 +167,7 @@ test("two sessions two elems", async () => {
           },
         },
         {
-          intent: detail2_2.intent,
+          lifecycle: detail2_2.lifecycle,
           mode: detail2_2.mode!,
           style: {
             ...detail2_2.style,

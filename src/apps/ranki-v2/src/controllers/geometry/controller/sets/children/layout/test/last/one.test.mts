@@ -13,7 +13,7 @@ test("zero size", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         height: 0,
@@ -29,7 +29,7 @@ test("zero size", () => {
     },
     set: [
       {
-        intent: "enter",
+        lifecycle: "enter",
         mode: "idle",
         style: {
           height: 0,
@@ -47,7 +47,7 @@ test("zero width", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         height: 3,
@@ -63,7 +63,7 @@ test("zero width", () => {
     },
     set: [
       {
-        intent: "enter",
+        lifecycle: "enter",
         mode: "idle",
         style: {
           height: 3,
@@ -81,7 +81,7 @@ test("zero height", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         height: 0,
@@ -97,7 +97,7 @@ test("zero height", () => {
     },
     set: [
       {
-        intent: "enter",
+        lifecycle: "enter",
         mode: "idle",
         style: {
           height: 0,
@@ -115,7 +115,7 @@ test("rectangle", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         height: 7,
@@ -131,7 +131,7 @@ test("rectangle", () => {
     },
     set: [
       {
-        intent: "enter",
+        lifecycle: "enter",
         mode: "idle",
         style: {
           height: 7,

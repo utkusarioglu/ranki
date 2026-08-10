@@ -13,7 +13,7 @@ test("only last has size", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
-      intent: "update",
+      lifecycle: "update",
       mode: "idle",
       style: {
         height: 0,
@@ -21,7 +21,7 @@ test("only last has size", () => {
       },
     },
     {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         height: 23,
@@ -37,7 +37,7 @@ test("only last has size", () => {
     },
     set: [
       {
-        intent: "update",
+        lifecycle: "update",
         mode: "idle",
         style: {
           height: 0,
@@ -47,7 +47,7 @@ test("only last has size", () => {
         },
       },
       {
-        intent: "enter",
+        lifecycle: "enter",
         mode: "idle",
         style: {
           height: 23,
@@ -65,7 +65,7 @@ test("last doesn't have size", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         height: 23,
@@ -73,7 +73,7 @@ test("last doesn't have size", () => {
       },
     },
     {
-      intent: "update",
+      lifecycle: "update",
       mode: "idle",
       style: {
         height: 0,
@@ -89,7 +89,7 @@ test("last doesn't have size", () => {
     },
     set: [
       {
-        intent: "enter",
+        lifecycle: "enter",
         mode: "idle",
         style: {
           height: 0,
@@ -99,7 +99,7 @@ test("last doesn't have size", () => {
         },
       },
       {
-        intent: "update",
+        lifecycle: "update",
         mode: "idle",
         style: {
           height: 0,

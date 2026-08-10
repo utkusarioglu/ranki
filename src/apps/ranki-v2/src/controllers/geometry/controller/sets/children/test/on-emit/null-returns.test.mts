@@ -1,5 +1,5 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
-import type { R2CNewChildSizeEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
+import type { GeometryEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
 import type { LitElement } from "lit";
 
 // @vitest-environment jsdom
@@ -25,9 +25,9 @@ const props: GeometryChildrenProps<LitElement> = {
 ["disconnected" as const, "connected" as const].forEach((intent) => {
   test("returns null for certain emits", async () => {
     const children = new GeometryChildren<LitElement>(host, props);
-    const detail: R2CNewChildSizeEvent = {
-      type: "intent",
-      intent,
+    const detail: GeometryEvent = {
+      type: "lifecycle",
+      lifecycle: intent,
       mode: "idle",
     };
     const response = await children.onEmit(target, detail);

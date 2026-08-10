@@ -23,7 +23,7 @@ test("", () => {
       },
     },
     selfOverrides: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {},
     },
@@ -36,7 +36,7 @@ test("", () => {
     },
     set: [
       {
-        intent: "enter",
+        lifecycle: "enter",
         mode: "idle",
         style: {
           height: 51,
@@ -46,7 +46,7 @@ test("", () => {
         },
       },
       {
-        intent: "leave",
+        lifecycle: "leave",
         mode: "idle",
         style: {
           height: 91,

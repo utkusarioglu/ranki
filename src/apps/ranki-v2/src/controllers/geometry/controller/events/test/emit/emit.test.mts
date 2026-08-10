@@ -3,10 +3,7 @@ import type { LitElement } from "lit";
 
 import { afterEach, beforeEach, expect, type Mock, test, vi } from "vitest";
 
-import type {
-  EmitModes,
-  R2CNewChildSizeEvent,
-} from "../../geometry-events.types.mjs";
+import type { EmitModes, GeometryEvent } from "../../geometry-events.types.mjs";
 
 import { GeometryEvents } from "../../geometry-events.mjs";
 
@@ -39,9 +36,9 @@ test("update", () => {
     height: 11,
     width: 7,
   };
-  const emit: R2CNewChildSizeEvent = {
-    type: "intent",
-    intent: "update",
+  const emit: GeometryEvent = {
+    type: "lifecycle",
+    lifecycle: "update",
     style,
   };
   const expected = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
@@ -52,7 +49,7 @@ test("update", () => {
 });
 
 test("leave", () => {
-  const emit: R2CNewChildSizeEvent = { type: "intent", intent: "leave" };
+  const emit: GeometryEvent = { type: "lifecycle", lifecycle: "leave" };
   events.emit(emit);
   const expected = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
     detail: emit,
@@ -62,7 +59,7 @@ test("leave", () => {
 
 test("mode", () => {
   const mode: EmitModes = "hover-end";
-  const emit: R2CNewChildSizeEvent = { type: "mode", mode };
+  const emit: GeometryEvent = { type: "mode", mode };
   events.emit(emit);
   const expected = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
     detail: emit,

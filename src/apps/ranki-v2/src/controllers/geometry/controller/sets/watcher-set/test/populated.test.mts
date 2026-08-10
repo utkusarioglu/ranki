@@ -18,7 +18,7 @@ const singleElem = () => ({ informStyle: vi.fn() });
 const informProps: InformSetProps = {
   containerExposed: { style: {} },
   selfOverrides: {
-    intent: "enter",
+    lifecycle: "enter",
     mode: "idle",
     style: {},
   },
@@ -32,7 +32,7 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         width: 7,
@@ -42,7 +42,7 @@ const sizing: LayoutSizing = {
       },
     },
     {
-      intent: "none",
+      lifecycle: "none",
       mode: "hover-end",
       style: {
         width: 77,

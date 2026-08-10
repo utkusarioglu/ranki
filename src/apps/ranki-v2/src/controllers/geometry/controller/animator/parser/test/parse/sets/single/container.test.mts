@@ -54,7 +54,7 @@ const CASES: Case[] = [
               },
             },
             selfOverrides: {
-              intent: "enter" as const,
+              lifecycle: "enter" as const,
               mode: "idle" as const,
               style: {},
             },
@@ -71,7 +71,7 @@ const CASES: Case[] = [
           //        * It also cannot produce context as the context is known by the child. the container's context is projected down. which is wrong
           //        */
           //       container: {
-          //         intent: "enter",
+          //         lifecycle: "enter",
           //         style: {
           //           height: 21,
           //         },
@@ -83,23 +83,6 @@ const CASES: Case[] = [
         },
       },
       then: undefined,
-      // then: {
-      //   root: [
-      //     {
-      //       apply: {
-      //         name: "h",
-      //         keyframes: [
-      //           {
-      //             height: expected,
-      //           },
-      //         ],
-      //         options: {
-      //           duration: 0,
-      //         },
-      //       },
-      //     },
-      //   ],
-      // },
     },
     name: `root container: ${input}`,
   })),
@@ -112,7 +95,6 @@ CASES.forEach(({ block, expected, name }) => {
       curr: {
         actions: ["enter"],
         container: {
-          // intent: "enter",
           style: {
             height: 11,
           },
@@ -123,7 +105,7 @@ CASES.forEach(({ block, expected, name }) => {
           stagger: 0,
         },
         self: {
-          intent: "enter",
+          lifecycle: "enter",
           mode: "idle",
           style: {
             height: 21,

@@ -58,7 +58,7 @@ test("single keyframe", async () => {
       stagger: 0,
     },
     self: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         height: 0,
@@ -111,7 +111,7 @@ test("two keyframes", async () => {
       stagger: 0,
     },
     self: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         height: 0,

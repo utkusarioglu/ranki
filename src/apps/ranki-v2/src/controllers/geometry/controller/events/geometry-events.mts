@@ -6,7 +6,7 @@ import type {
   GeometryEventName,
   GeometryEventsConstructorParams,
   GeometryEventTypes,
-  R2CNewChildSizeEvent,
+  GeometryEvent,
 } from "./geometry-events.types.mjs";
 
 const DEFAULT_EVENT_SETTINGS: GeometryEventTypes = {
@@ -35,7 +35,7 @@ export class GeometryEvents<Instance extends LitElement> {
     }
   }
 
-  public emit(event: R2CNewChildSizeEvent) {
+  public emit(event: GeometryEvent) {
     this.host.dispatchEvent(
       new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
         bubbles: true,

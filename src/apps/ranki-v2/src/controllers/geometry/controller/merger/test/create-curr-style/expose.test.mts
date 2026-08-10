@@ -17,7 +17,7 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         height: 19,
@@ -27,7 +27,7 @@ const sizing: LayoutSizing = {
       },
     },
     {
-      intent: "leave",
+      lifecycle: "leave",
       mode: "idle",
       style: {
         height: 57,
@@ -53,7 +53,7 @@ test("exposed container width", () => {
     },
     context,
     selfOverrides: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {},
     },
@@ -69,7 +69,7 @@ test("exposed container width", () => {
     },
     context,
     self: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         width: 11,
@@ -98,7 +98,7 @@ test("exposed container width 2", () => {
     },
     context,
     selfOverrides: {
-      intent: "leave",
+      lifecycle: "leave",
       mode: "idle",
       style: {},
     },
@@ -114,7 +114,7 @@ test("exposed container width 2", () => {
     },
     context,
     self: {
-      intent: "leave",
+      lifecycle: "leave",
       mode: "idle",
       style: {
         height: 13,

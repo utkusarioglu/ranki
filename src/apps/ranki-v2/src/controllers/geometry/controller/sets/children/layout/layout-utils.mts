@@ -33,11 +33,11 @@ export class LayoutUtils {
       const tops = [...zeros, gaps.cross?.start || 0];
       const heights = [...zeros, lastHeight];
       const widths = [...zeros, lastWidth];
-      const intents = dims.map((d) => d.intent);
+      const lifeCycles = dims.map((d) => d.lifecycle);
       const modes = dims.map((d) => d.mode);
 
       const set = Array.from({ length: dims.length }, (_, i) => i).map((i) => ({
-        intent: intents[i],
+        lifecycle: lifeCycles[i],
         mode: modes[i],
         style: {
           height: heights[i],
@@ -73,7 +73,7 @@ export class LayoutUtils {
         },
 
         set: s.set.map((s) => ({
-          intent: s.intent,
+          lifecycle: s.lifecycle,
           mode: s.mode,
           style: {
             height: s.style.sizeCross,
@@ -117,11 +117,11 @@ export class LayoutUtils {
     const sizesMain = dims.map((d) => getMain(d.style));
     const sizesCross = dims.map((d) => getCross(d.style));
 
-    const intents = dims.map((v) => v.intent);
+    const intents = dims.map((v) => v.lifecycle);
     const modes = dims.map((v) => v.mode);
 
     const set = Array.from({ length: dims.length }, (_, i) => i).map((i) => ({
-      intent: intents[i],
+      lifecycle: intents[i],
       mode: modes[i],
       style: {
         offsetCross: offsetsCross[i],

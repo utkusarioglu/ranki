@@ -96,7 +96,7 @@ CASES.forEach(({ block, expected, name }) => {
           stagger: 0,
         },
         self: {
-          intent: "enter",
+          lifecycle: "enter",
           mode: "idle",
           style: {
             height: 0,

@@ -64,8 +64,8 @@ export class GeometryEval {
     // if (isResize) actions.add("update");
     // if (isMove) actions.add("update");
 
-    if (["enter", "update", "leave"].includes(curr.self.intent)) {
-      actions.add(curr.self.intent);
+    if (["enter", "update", "leave"].includes(curr.self.lifecycle)) {
+      actions.add(curr.self.lifecycle);
     }
     if (curr.self.mode !== "idle") {
       actions.add(curr.self.mode);
@@ -119,9 +119,9 @@ export class GeometryEval {
       },
     };
 
-    const isEnter = curr.self.intent === "enter";
-    const isLeave = curr.self.intent === "leave";
-    const isUpdate = curr.self.intent === "update";
+    const isEnter = curr.self.lifecycle === "enter";
+    const isLeave = curr.self.lifecycle === "leave";
+    const isUpdate = curr.self.lifecycle === "update";
     const isResize =
       (changed.width.resize || changed.height.resize) && isUpdate;
     const isMove = changed.top || changed.left;
@@ -133,8 +133,8 @@ export class GeometryEval {
     if (isResize) actions.add("update");
     if (isMove) actions.add("update");
 
-    if (["enter", "update", "leave"].includes(curr.self.intent)) {
-      actions.add(curr.self.intent);
+    if (["enter", "update", "leave"].includes(curr.self.lifecycle)) {
+      actions.add(curr.self.lifecycle);
     }
     if (curr.self.mode) actions.add(curr.self.mode);
 

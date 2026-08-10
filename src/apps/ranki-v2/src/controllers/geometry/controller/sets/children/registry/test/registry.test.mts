@@ -1,5 +1,5 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
-import type { R2CNewChildSizeEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
+import type { GeometryEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
 
 // @vitest-environment jsdom
 import { afterEach, beforeEach, expect, type Mock, test, vi } from "vitest";
@@ -53,9 +53,9 @@ afterEach(() => {
 });
 
 test("disconnected", () => {
-  const detail: R2CNewChildSizeEvent = {
-    type: "intent",
-    intent: "disconnected",
+  const detail: GeometryEvent = {
+    type: "lifecycle",
+    lifecycle: "disconnected",
   };
   registry.update(target, detail);
   expect(del).toHaveBeenCalledTimes(1);
@@ -63,12 +63,12 @@ test("disconnected", () => {
 });
 
 test("leave", () => {
-  const detail: R2CNewChildSizeEvent = {
-    type: "intent",
-    intent: "leave",
+  const detail: GeometryEvent = {
+    type: "lifecycle",
+    lifecycle: "leave",
   };
   const expected: EmittedComponentState = {
-    intent: "leave",
+    lifecycle: "leave",
     mode: "idle",
   };
   registry.update(target, detail);
@@ -81,16 +81,16 @@ test("leave", () => {
  * #1 This access is normally private, so ts throws for these
  */
 test("update", () => {
-  const detail: R2CNewChildSizeEvent = {
-    type: "intent",
-    intent: "update",
+  const detail: GeometryEvent = {
+    type: "lifecycle",
+    lifecycle: "update",
     style: {
       height: 7,
       width: 5,
     },
   };
   const expected: EmittedComponentState = {
-    intent: detail.intent,
+    lifecycle: detail.lifecycle,
     mode: "idle",
     style: detail.style,
   };
@@ -98,7 +98,7 @@ test("update", () => {
   registry.dims
     //
     .set(target, {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: { height: 2, width: 1 },
     });
@@ -109,17 +109,17 @@ test("update", () => {
   expect(set).toHaveBeenNthCalledWith(1, target, expected);
 });
 
-test("update intent registered as enter", () => {
-  const detail: R2CNewChildSizeEvent = {
-    type: "intent",
-    intent: "update",
+test("update lifecycle registered as enter", () => {
+  const detail: GeometryEvent = {
+    type: "lifecycle",
+    lifecycle: "update",
     style: {
       height: 7,
       width: 5,
     },
   };
   const expected: EmittedComponentState = {
-    intent: "enter",
+    lifecycle: "enter",
     mode: "idle",
     style: detail.style,
   };
@@ -129,12 +129,12 @@ test("update intent registered as enter", () => {
 });
 
 test("mode", () => {
-  const detail: R2CNewChildSizeEvent = {
+  const detail: GeometryEvent = {
     type: "mode",
     mode: "hover-start",
   };
   const expected: EmittedComponentState = {
-    intent: "enter",
+    lifecycle: "enter",
     mode: detail.mode,
   };
   registry.update(target, detail);

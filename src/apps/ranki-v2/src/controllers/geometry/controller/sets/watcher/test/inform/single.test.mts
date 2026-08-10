@@ -17,7 +17,7 @@ const singleElem = () => ({ informStyle: vi.fn() });
 const informProps: InformSetProps = {
   containerExposed: { style: {} },
   selfOverrides: {
-    intent: "enter",
+    lifecycle: "enter",
     mode: "idle",
     style: {},
   },
@@ -38,7 +38,7 @@ test("Single set 1 elem", async () => {
     },
     set: [
       {
-        intent: "enter",
+        lifecycle: "enter",
         mode: "idle",
         style: {
           top: 2,
@@ -64,7 +64,7 @@ test("Single set 1 elem", async () => {
       stagger: 0,
     },
     selfOverrides: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: sizing.set[0].style,
     },
@@ -82,7 +82,7 @@ test("Single set 2 elems", async () => {
     },
     set: [
       {
-        intent: "enter",
+        lifecycle: "enter",
         mode: "idle",
         style: {
           top: 2,
@@ -92,7 +92,7 @@ test("Single set 2 elems", async () => {
         },
       },
       {
-        intent: "update",
+        lifecycle: "update",
         mode: "hover-end",
         style: {
           top: 20,
@@ -119,7 +119,7 @@ test("Single set 2 elems", async () => {
         stagger: 0,
       },
       selfOverrides: {
-        intent: "enter",
+        lifecycle: "enter",
         mode: "idle",
         style: sizing.set[0].style,
       },
@@ -134,7 +134,7 @@ test("Single set 2 elems", async () => {
         stagger: 0,
       },
       selfOverrides: {
-        intent: "update",
+        lifecycle: "update",
         mode: "hover-end",
         style: sizing.set[1].style,
       },

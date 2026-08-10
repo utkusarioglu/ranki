@@ -3,7 +3,7 @@ import type { LitElement } from "lit";
 
 import { TimingUtils } from "_utils/timing.utils.mjs";
 
-import type { R2CNewChildSizeEvent } from "../../events/geometry-events.types.mjs";
+import type { GeometryEvent } from "../../events/geometry-events.types.mjs";
 import type {
   ChildrenUpdateSizingReturn,
   GeometryChildrenLayoutCallback,
@@ -32,7 +32,7 @@ export class GeometryChildren<
 
   public async onEmit(
     target: R2C,
-    detail: R2CNewChildSizeEvent,
+    detail: GeometryEvent,
   ): ChildrenUpdateSizingReturn {
     this.registry.update(target, detail);
     return this.updateSizing(detail);
@@ -65,10 +65,10 @@ export class GeometryChildren<
   }
 
   private async updateSizing(
-    detail: R2CNewChildSizeEvent,
+    detail: GeometryEvent,
   ): ChildrenUpdateSizingReturn {
-    if (detail.type !== "intent") return null;
-    switch (detail.intent) {
+    if (detail.type !== "lifecycle") return null;
+    switch (detail.lifecycle) {
       case "leave":
       case "update": {
         return this.composeResolution();

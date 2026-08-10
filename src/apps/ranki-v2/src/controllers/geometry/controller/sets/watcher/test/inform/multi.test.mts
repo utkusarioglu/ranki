@@ -17,7 +17,7 @@ const singleElem = () => ({ informStyle: vi.fn() });
 const informProps: InformSetProps = {
   containerExposed: { style: {} },
   selfOverrides: {
-    intent: "enter",
+    lifecycle: "enter",
     mode: "idle",
     style: {},
   },
@@ -31,7 +31,7 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "hover-end",
       style: {
         width: 400,
@@ -81,7 +81,7 @@ test("2 set 1 elem each call second", async () => {
   const informProps: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {},
     },
@@ -120,7 +120,7 @@ test("2 set 2 elems each", async () => {
     },
     set: [
       {
-        intent: "enter",
+        lifecycle: "enter",
         mode: "hover-end",
         style: {
           width: 400,
@@ -130,7 +130,7 @@ test("2 set 2 elems each", async () => {
         },
       },
       {
-        intent: "none",
+        lifecycle: "none",
         mode: "idle",
         style: {
           width: 4000,
@@ -184,7 +184,7 @@ test("2 set varied elem count 1", async () => {
   const informPropsOne: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {},
     },
@@ -197,7 +197,7 @@ test("2 set varied elem count 1", async () => {
     },
     set: [
       {
-        intent: "enter",
+        lifecycle: "enter",
         mode: "hover-end",
         style: {
           width: 400,
@@ -207,7 +207,7 @@ test("2 set varied elem count 1", async () => {
         },
       },
       {
-        intent: "leave",
+        lifecycle: "leave",
         mode: "idle",
         style: {
           width: 400,
@@ -217,7 +217,7 @@ test("2 set varied elem count 1", async () => {
         },
       },
       {
-        intent: "update",
+        lifecycle: "update",
         mode: "hover-start",
         style: {
           width: 400,
@@ -263,7 +263,7 @@ test("2 set varied elem count 2", async () => {
   const informPropsTwo: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {},
     },
@@ -276,7 +276,7 @@ test("2 set varied elem count 2", async () => {
     },
     set: [
       {
-        intent: "enter",
+        lifecycle: "enter",
         mode: "hover-end",
         style: {
           width: 400,
@@ -286,7 +286,7 @@ test("2 set varied elem count 2", async () => {
         },
       },
       {
-        intent: "leave",
+        lifecycle: "leave",
         mode: "idle",
         style: {
           width: 400,
@@ -296,7 +296,7 @@ test("2 set varied elem count 2", async () => {
         },
       },
       {
-        intent: "update",
+        lifecycle: "update",
         mode: "hover-start",
         style: {
           width: 400,

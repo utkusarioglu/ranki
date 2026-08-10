@@ -24,39 +24,39 @@ export interface GeometryEventTypes {
   hover: boolean;
 }
 
-export type R2CNewChildSizeEvent = R2CNewChildMode | R2CNewChildSizeEventIntent;
+export type GeometryEvent = GeometryEventMode | GeometryEventLifecycle;
 
-export type R2CNewChildSizeEventIntent =
-  | R2CNewChildLeave
-  | R2CNewChildSizeConnected
-  | R2CNewChildSizeDisconnected
-  | R2CNewChildSizeUpdate;
+export type GeometryEventLifecycle =
+  | GeometryEventLifecycleLeave
+  | GeometryEventLifecycleConnected
+  | GeometryEventLifecycleDisconnected
+  | GeometryEventLifecycleUpdate;
 
-interface R2CNewChildLeave {
-  type: "intent";
-  intent: "leave";
+interface GeometryEventLifecycleLeave {
+  type: "lifecycle";
+  lifecycle: "leave";
   mode?: EmitModes;
 }
 
-interface R2CNewChildMode {
+interface GeometryEventMode {
   type: "mode";
   mode: EmitModes;
 }
 
-interface R2CNewChildSizeConnected {
-  type: "intent";
-  intent: "connected";
+interface GeometryEventLifecycleConnected {
+  type: "lifecycle";
+  lifecycle: "connected";
   mode?: EmitModes;
 }
 
-interface R2CNewChildSizeDisconnected {
-  type: "intent";
-  intent: "disconnected";
+interface GeometryEventLifecycleDisconnected {
+  type: "lifecycle";
+  lifecycle: "disconnected";
   mode?: EmitModes;
 }
-interface R2CNewChildSizeUpdate {
-  type: "intent";
-  intent: "update";
+interface GeometryEventLifecycleUpdate {
+  type: "lifecycle";
+  lifecycle: "update";
   mode?: EmitModes;
   style: WidthHeight;
 }

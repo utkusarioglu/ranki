@@ -67,8 +67,8 @@ export class R2Chip extends R2C {
 
   public override leave() {
     this.geo.events.emit({
-      type: "intent",
-      intent: "leave",
+      type: "lifecycle",
+      lifecycle: "leave",
     });
   }
 

@@ -1,5 +1,5 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
-import type { R2CNewChildSizeEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
+import type { GeometryEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
 import type { LitElement } from "lit";
 
 import { TimingUtils } from "_utils/timing.utils.mjs";
@@ -21,9 +21,9 @@ const props: GeometryChildrenProps<LitElement> = {
 
 test("single session single elem", async () => {
   const children = new GeometryChildren(host, props);
-  const detail: R2CNewChildSizeEvent = {
-    type: "intent",
-    intent: "update",
+  const detail: GeometryEvent = {
+    type: "lifecycle",
+    lifecycle: "update",
     mode: "idle",
     style: {
       height: 11,
@@ -37,7 +37,7 @@ test("single session single elem", async () => {
       },
       set: [
         {
-          intent: detail.intent,
+          lifecycle: detail.lifecycle,
           mode: detail.mode!,
           style: {
             ...detail.style,
@@ -59,18 +59,18 @@ test("single session single elem", async () => {
 
 test("two sessions single elem", async () => {
   const children = new GeometryChildren(host, props);
-  const detail1: R2CNewChildSizeEvent = {
-    type: "intent",
-    intent: "update",
+  const detail1: GeometryEvent = {
+    type: "lifecycle",
+    lifecycle: "update",
     mode: "idle",
     style: {
       height: 11,
       width: 7,
     },
   };
-  const detail2: R2CNewChildSizeEvent = {
-    type: "intent",
-    intent: "update",
+  const detail2: GeometryEvent = {
+    type: "lifecycle",
+    lifecycle: "update",
     mode: "idle",
     style: {
       height: 17,
@@ -84,7 +84,7 @@ test("two sessions single elem", async () => {
       },
       set: [
         {
-          intent: detail1.intent,
+          lifecycle: detail1.lifecycle,
           mode: detail1.mode!,
           style: {
             ...detail1.style,
@@ -103,7 +103,7 @@ test("two sessions single elem", async () => {
       },
       set: [
         {
-          intent: detail2.intent,
+          lifecycle: detail2.lifecycle,
           mode: detail2.mode!,
           style: {
             ...detail2.style,

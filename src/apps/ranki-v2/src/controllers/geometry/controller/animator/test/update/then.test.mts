@@ -58,7 +58,7 @@ test("depth 2", async () => {
       stagger: 0,
     },
     self: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         height: 0,
@@ -137,7 +137,7 @@ test("depth 2 call 3", async () => {
       stagger: 0,
     },
     self: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         height: 0,

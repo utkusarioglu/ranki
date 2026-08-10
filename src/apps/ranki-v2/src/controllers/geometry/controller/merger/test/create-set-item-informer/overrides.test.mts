@@ -23,7 +23,7 @@ test("", () => {
       },
     },
     selfOverrides: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         opacity: 0.44,
@@ -38,7 +38,7 @@ test("", () => {
     },
     set: [
       {
-        intent: "enter",
+        lifecycle: "enter",
         mode: "idle",
         style: {
           height: 51,
@@ -48,7 +48,7 @@ test("", () => {
         },
       },
       {
-        intent: "leave",
+        lifecycle: "leave",
         mode: "idle",
         style: {
           height: 91,
@@ -74,7 +74,7 @@ test("", () => {
     },
     context,
     selfOverrides: {
-      intent: "enter",
+      lifecycle: "enter",
       mode: "idle",
       style: {
         ...sizing.set[0].style,
