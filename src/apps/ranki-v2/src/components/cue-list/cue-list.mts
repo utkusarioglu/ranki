@@ -9,6 +9,7 @@ import {
   geometry,
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
+import { getAnimationRecipe } from "_store/app.getters.mjs";
 
 @customElement("r2-cue-list")
 export class R2CueList extends R2C {
@@ -22,6 +23,7 @@ export class R2CueList extends R2C {
 
   @geometry<R2CueList>({
     role: "cue-list",
+    getRecipe: getAnimationRecipe,
     children: {
       selector: (s) => [s.badgeList],
       layout: () =>

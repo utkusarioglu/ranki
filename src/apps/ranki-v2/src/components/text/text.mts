@@ -12,6 +12,7 @@ import {
   geometry,
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
+import { getAnimationRecipe } from "_store/app.getters.mjs";
 
 export interface R2TextProps {
   animation: RankiPropAnimationBlock;
@@ -37,6 +38,7 @@ export class R2Text extends R2C {
 
   @geometry<R2Text>({
     role: "text",
+    getRecipe: getAnimationRecipe,
     children: {
       selector: (s) => Array.from(s.spans),
       layout: () => LayoutUtils.last(),

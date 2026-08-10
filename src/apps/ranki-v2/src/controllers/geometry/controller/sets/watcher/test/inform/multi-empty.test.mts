@@ -32,7 +32,7 @@ afterEach(() => {
   Host.mockClear();
 });
 
-test.only("Single set no elems", async () => {
+test("Single set no elems", async () => {
   const props: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {

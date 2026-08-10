@@ -13,14 +13,15 @@
       "settings": {
         "workbench.colorCustomizations": {
           "activityBar.background": "#550033",
-          "activityBar.foreground": "#FFFFFF",
+          "activityBar.foreground": "#FFFFFF"
         }
       },
       "extensions": [
         "esbenp.prettier-vscode",
         "ms-azuretools.vscode-docker",
         "arcanis.vscode-zipfs",
-        "fantasy.vscode-ohm"
+        "fantasy.vscode-ohm",
+        "vitest.explorer"
       ]
     }
   }

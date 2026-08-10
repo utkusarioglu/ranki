@@ -18,18 +18,18 @@ export const parser = new Parser();
 
 export class LayoutParser {
   static parse(p: ParseRootParams): LayoutParsed {
-    const targets = p.block.sets
-      ? this.parseSets(p.block.sets, p.curr, p.prev)
+    const targets = p.recipe.sets
+      ? this.parseSets(p.recipe.sets, p.curr, p.prev)
       : undefined;
-    const then = p.block.then
+    const then = p.recipe.then
       ? this.parse({
-          block: p.block.then,
+          recipe: p.recipe.then,
           curr: p.curr,
           prev: p.prev,
         })
       : undefined;
     return {
-      root: p.block.root?.map((r) => this.parseRoot(r, p.curr, p.prev)),
+      root: p.recipe.root?.map((r) => this.parseRoot(r, p.curr, p.prev)),
       sets: targets,
       then,
     };
@@ -48,7 +48,7 @@ export class LayoutParser {
         name: b.name,
         options: KeyframeParser.evalOptions(b, curr.context),
       },
-      then: b.then && this.parse({ block: b.then, curr, prev }),
+      then: b.then && this.parse({ recipe: b.then, curr, prev }),
     };
   }
 
@@ -60,7 +60,7 @@ export class LayoutParser {
   ): LayoutSetsInform {
     const then: LayoutParsed | undefined = t.then
       ? this.parse({
-          block: t.then,
+          recipe: t.then,
           curr,
           prev,
         })

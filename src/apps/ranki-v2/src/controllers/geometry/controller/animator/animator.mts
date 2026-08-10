@@ -7,9 +7,9 @@ import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs
 
 import { type AnimatorCallbacks } from "./animator.constructor.types.mjs";
 import { type AnimatorPlayParams } from "./animator.types.mjs";
-import { AnimationComposer } from "./composer/animation-composer.mjs";
 import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
 import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
+import { LayoutParser } from "./parser/layout-parser.mjs";
 
 export class Animator {
   private readonly callbacks: AnimatorCallbacks;
@@ -40,15 +40,22 @@ export class Animator {
     DebugUtils.animatorUpdate({ curr, host: this.host, prev });
     await Promise.all(
       curr.actions.map((action) => {
-        const composed = AnimationComposer.compose({
+        const recipe = this.callbacks.getRecipe({
+          mode: "default",
           action,
-          curr,
           preset: this.preset,
-          prev,
           role: this.role,
         });
-        DebugUtils.animatorUpdateComposed({ host: this.host, composed });
-        return this.sequencer.build(composed);
+
+        const parsed = LayoutParser.parse({ recipe: recipe, curr, prev });
+        DebugUtils.animatorUpdateComposed({
+          host: this.host,
+          parsed,
+          recipe,
+          curr,
+          prev,
+        });
+        return this.sequencer.build(parsed);
       }),
     );
   }

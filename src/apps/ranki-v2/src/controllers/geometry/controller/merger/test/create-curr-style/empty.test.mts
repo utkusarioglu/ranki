@@ -57,7 +57,7 @@ test("empty informed", () => {
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing);
   const expected: CurrentAppliedStyle = {
-    actions: ["enter", "idle"],
+    actions: ["enter"],
     container: {
       style: {},
     },
@@ -90,7 +90,7 @@ test("informed container width", () => {
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing);
   const expected = {
-    actions: ["enter", "idle"],
+    actions: ["enter"],
     container: {
       style: {
         width: 7,

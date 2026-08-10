@@ -15,6 +15,7 @@ import { customElement, query, queryAll } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
 import style from "./badge-list.css?inline";
+import { getAnimationRecipe } from "_store/app.getters.mjs";
 
 type R2BadgeListState = HudTagListItem;
 
@@ -48,6 +49,7 @@ export class R2BadgeList extends R2C {
 
   @geometry<R2BadgeList>({
     role: "badge-list",
+    getRecipe: getAnimationRecipe,
     children: {
       selector: (h) => Array.from(h.chips),
       layout: () =>

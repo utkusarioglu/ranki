@@ -61,7 +61,7 @@ const CASES: Case[] = [
 CASES.forEach(({ block, expected, name }) => {
   test(name, () => {
     const response = LayoutParser.parse({
-      block,
+      recipe: block,
       curr: {
         actions: ["enter"],
         container: {

@@ -107,7 +107,7 @@ export type LayoutSetsInform = {
 };
 
 export interface ParseRootParams {
-  block: AnimationBlock;
+  recipe: AnimationBlock;
   curr: CurrentAppliedStyle;
   prev: CurrentAppliedStyle | null;
 }
@@ -118,3 +118,11 @@ export type TargetAnimationSpec = Record<
   Partial<Record<LocalAction, AnimationBlock>>
 >;
 export type UpdateStyle = AnimationKeyframeStyles & WithEmitIntents;
+export interface GetAnimationRecipeProps {
+  mode: string;
+  action: LocalAction;
+  preset: string;
+  role: string;
+}
+
+export type GetRecipeCallback = (p: GetAnimationRecipeProps) => AnimationBlock;

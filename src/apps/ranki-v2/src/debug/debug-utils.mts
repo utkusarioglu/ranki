@@ -1,6 +1,7 @@
 import { DEBUG_TAG } from "_/debug/debug.constants.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type {
+  AnimationBlock,
   InformSetProps,
   LayoutParsed,
 } from "_controllers/geometry/controller/animator/animator.types.mjs";
@@ -14,7 +15,10 @@ import type { LitElement } from "lit";
 
 interface AnimatorUpdateComposedProps {
   host: LitElement;
-  composed: LayoutParsed;
+  parsed: LayoutParsed;
+  recipe: AnimationBlock;
+  curr: CurrentAppliedStyle;
+  prev: CurrentAppliedStyle | null;
 }
 
 interface AnimatorPlayNameProps {
@@ -93,11 +97,11 @@ export class DebugUtils {
 
   public static animatorUpdateComposed({
     host,
-    composed,
+    parsed,
   }: AnimatorUpdateComposedProps) {
     if (host.tagName === DEBUG_TAG)
       console.log("animator.update.composed", {
-        composed,
+        parsed,
       });
   }
 

@@ -4,7 +4,7 @@ import { LayoutParser } from "../../layout-parser.mjs";
 
 test("empty", () => {
   const response = LayoutParser.parse({
-    block: {},
+    recipe: {},
     curr: {
       actions: ["enter"],
       container: {
