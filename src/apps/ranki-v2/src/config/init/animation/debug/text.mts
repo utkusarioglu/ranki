@@ -23,6 +23,16 @@ export const TEXT: TargetAnimationSpec = {
             },
           ],
         },
+        {
+          name: "position",
+          duration: 0,
+          keyframes: [
+            {
+              left: "to.self.left",
+              top: "to.self.top",
+            },
+          ],
+        },
       ],
       sets: {
         children: {

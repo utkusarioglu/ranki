@@ -1,34 +1,6 @@
 import type { TargetAnimationSpec } from "_controllers/geometry/controller/animator/animator.types.mjs";
 
 export const ICON: TargetAnimationSpec = {
-  "icon-span": {
-    enter: {
-      root: [
-        {
-          name: "init",
-          duration: 0,
-          keyframes: [
-            {
-              width: 0,
-              height: "to.self.height",
-              opacity: 0,
-            },
-          ],
-        },
-        {
-          name: "width",
-          duration: 0,
-          keyframes: [
-            {
-              width: "to.self.width",
-              opacity: 1,
-            },
-          ],
-        },
-      ],
-    },
-  },
-
   icon: {
     enter: {
       root: [
@@ -48,6 +20,16 @@ export const ICON: TargetAnimationSpec = {
             {
               opacity: 1,
               width: "to.self.width",
+            },
+          ],
+        },
+        {
+          name: "position",
+          duration: 0,
+          keyframes: [
+            {
+              left: "to.self.left",
+              top: "to.self.top",
             },
           ],
         },
@@ -81,6 +63,33 @@ export const ICON: TargetAnimationSpec = {
             {
               opacity: 0,
               width: 0,
+            },
+          ],
+        },
+      ],
+    },
+  },
+  "icon-span": {
+    enter: {
+      root: [
+        {
+          name: "init",
+          duration: 0,
+          keyframes: [
+            {
+              width: 0,
+              height: "to.self.height",
+              opacity: 0,
+            },
+          ],
+        },
+        {
+          name: "width",
+          duration: 0,
+          keyframes: [
+            {
+              width: "to.self.width",
+              opacity: 1,
             },
           ],
         },

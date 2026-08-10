@@ -21,8 +21,8 @@ export class AnimationSequencer {
   private async sequenceCurrent(a: LayoutParsed | undefined): Promise<void> {
     if (!a) return Promise.resolve();
     await Promise.all([
-      a && (await this.sequenceRoots(a.root)),
-      a && (await this.sequenceSets(a.sets)),
+      a && this.sequenceRoots(a.root),
+      a && this.sequenceSets(a.sets),
     ]);
   }
 

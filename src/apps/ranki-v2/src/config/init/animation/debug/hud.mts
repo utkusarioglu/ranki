@@ -13,6 +13,18 @@ export const HUD: TargetAnimationSpec = {
             },
           ],
         },
+        {
+          name: "position",
+          duration: 0,
+          keyframes: [
+            // {
+            //   top: "to.self.height * -1",
+            // },
+            {
+              top: 10,
+            },
+          ],
+        },
       ],
       sets: {
         children: {

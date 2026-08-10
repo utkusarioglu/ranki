@@ -91,7 +91,7 @@ export class Animator {
     }
     this.running.set(name, anim);
     await anim.finished
-      .then(() => this.running.delete(name))
+      // .then(() => this.running.delete(name))
       .catch((e) =>
         console.log("ABORT", {
           host: this.host,

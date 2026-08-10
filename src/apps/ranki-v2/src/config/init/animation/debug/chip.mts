@@ -27,6 +27,10 @@ export const CHIP: TargetAnimationSpec = {
         },
         children: {
           wait: 0,
+          // override: {
+          //   left: "to.self.left",
+          //   top: "to.self.top",
+          // },
           // expose: {
           // left: "to.self.left",
           // top: "to.self.top",

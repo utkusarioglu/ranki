@@ -67,7 +67,9 @@ export class GeometryEval {
     if (["enter", "update", "leave"].includes(curr.self.intent)) {
       actions.add(curr.self.intent);
     }
-    if (curr.self.mode) actions.add(curr.self.mode);
+    if (curr.self.mode !== "idle") {
+      actions.add(curr.self.mode);
+    }
 
     return Array.from(actions);
   }
