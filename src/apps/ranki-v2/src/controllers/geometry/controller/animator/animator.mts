@@ -7,13 +7,13 @@ import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs
 
 import {
   type AnimatorCallbacks,
-  type GetRecipeConstructorParam,
+  type GetCollectionConstructorParam,
 } from "./animator.constructor.types.mjs";
 import {
   type AnimatorPlayParams,
-  type GetAnimationRecipeProps,
   type GetRecipeCallback,
 } from "./animator.types.mjs";
+import { type GetAnimationRecipeProps } from "./recipe/recipe.types.mjs";
 import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
 import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
 import { LayoutParser } from "./parser/layout-parser.mjs";
@@ -40,16 +40,19 @@ export class Animator<Instance extends LitElement> {
       informSet: this.callbacks.informSet,
       playName: this.playName.bind(this),
     });
-    this.getRecipe = this.prepareGetRecipeCallback(this.callbacks.getRecipe);
+    this.getRecipe = this.prepareGetRecipeCallback(
+      this.callbacks.getCollection,
+    );
   }
 
   private prepareGetRecipeCallback(
-    recipeVal: GetRecipeConstructorParam<Instance>,
+    collectionVal: GetCollectionConstructorParam<Instance>,
   ): GetRecipeCallback {
-    return typeof recipeVal === "function"
-      ? (p: GetAnimationRecipeProps) => recipeVal(this.host, p)
+    return typeof collectionVal === "function"
+      ? (p: GetAnimationRecipeProps) =>
+          RecipeUtils.getRecipeFromCollection(collectionVal(this.host), p)
       : (p: GetAnimationRecipeProps) =>
-          RecipeUtils.getRecipeFromCollection(recipeVal, p);
+          RecipeUtils.getRecipeFromCollection(collectionVal, p);
   }
 
   public async update(

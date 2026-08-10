@@ -9,17 +9,16 @@ import { Animator } from "../../animator.mjs";
 import { KeyframeUtils } from "../../keyframe/keyframe-utils.mjs";
 
 // ANKI
-// const { getAnimationRecipeMock } = vi.hoisted(() => ({
-//   getAnimationRecipeMock: vi.fn(),
-// }));
+const { animate, getRecipeFromCollection } = vi.hoisted(() => ({
+  animate: vi.fn().mockReturnValue({ finished: Promise.resolve() }),
+  getRecipeFromCollection: vi.fn(),
+}));
 
 // ANKI
-// vi.mock("_store/app.getters.mjs", () => ({
-//   getAnimationRecipe: getAnimationRecipeMock,
-// }));
-
-const { animate } = vi.hoisted(() => ({
-  animate: vi.fn().mockReturnValue({ finished: Promise.resolve() }),
+vi.mock("../../recipe/recipe-utils.mts", () => ({
+  RecipeUtils: class {
+    static getRecipeFromCollection = getRecipeFromCollection;
+  },
 }));
 
 const Host = vi.fn(
@@ -38,7 +37,7 @@ beforeEach(() => {
   const host = new Host();
   animator = new Animator(host as unknown as LitElement, "test", {
     informSet: informSet,
-    getRecipe: getRecipe,
+    getCollection: getRecipe,
   });
 });
 
@@ -84,7 +83,7 @@ test("single keyframe", async () => {
       },
     ],
   };
-  getRecipe.mockReturnValueOnce(RECIPE);
+  getRecipeFromCollection.mockReturnValueOnce(RECIPE);
   await animator.update(curr, prev);
   expect(animate).toHaveBeenCalledOnce();
   expect(animate).toHaveBeenCalledWith(
@@ -140,7 +139,7 @@ test("two keyframes", async () => {
       },
     ],
   };
-  getRecipe.mockReturnValueOnce(RECIPE);
+  getRecipeFromCollection.mockReturnValueOnce(RECIPE);
   await animator.update(curr, prev);
   expect(animate).toHaveBeenCalledOnce();
   expect(animate).toHaveBeenCalledWith(

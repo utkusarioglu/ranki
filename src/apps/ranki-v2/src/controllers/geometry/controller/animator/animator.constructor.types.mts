@@ -1,16 +1,12 @@
 import type { LitElement } from "lit";
 import type { GeometryControllerInformSetCb } from "../types/geometry-controller.types.mjs";
-import type {
-  AnimationBlock,
-  AnimationDict,
-  GetAnimationRecipeProps,
-} from "./animator.types.mjs";
+import type { AnimationDict } from "./animator.types.mjs";
 
 export interface AnimatorCallbacks<Instance extends LitElement> {
   informSet: GeometryControllerInformSetCb;
-  getRecipe: GetRecipeConstructorParam<Instance>;
+  getCollection: GetCollectionConstructorParam<Instance>;
 }
 
-export type GetRecipeConstructorParam<Instance extends LitElement> =
-  | ((s: Instance, p: GetAnimationRecipeProps) => AnimationBlock)
+export type GetCollectionConstructorParam<Instance extends LitElement> =
+  | ((s: Instance) => AnimationDict)
   | AnimationDict;

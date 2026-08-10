@@ -7,7 +7,7 @@ import {
   geometry,
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
-import { getAnimationRecipe } from "_store/app.getters.mjs";
+import { getAnimationCollection } from "_store/app.getters.mjs";
 
 @customElement("r2-hud")
 export class R2Hud extends R2C {
@@ -18,7 +18,7 @@ export class R2Hud extends R2C {
 
   @geometry<R2Hud>({
     role: "hud",
-    recipe: getAnimationRecipe,
+    collection: getAnimationCollection,
     children: {
       isRoot: true,
       selector: (s) => [s.scroller],

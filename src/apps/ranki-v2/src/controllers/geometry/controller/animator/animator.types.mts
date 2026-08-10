@@ -10,6 +10,7 @@ import type {
   InformedChildStyleContainer,
   InformedChildStyleSelf,
 } from "../types/geometry-controller.types.mjs";
+import type { GetAnimationRecipeProps } from "./recipe/recipe.types.mjs";
 
 export type AnimatableStylesConfigKeyframes = Partial<
   Record<keyof AnimationKeyframeStyles, number | string>
@@ -118,11 +119,5 @@ export type TargetAnimationSpec = Record<
   Partial<Record<LocalAction, AnimationBlock>>
 >;
 export type UpdateStyle = AnimationKeyframeStyles & WithEmitIntents;
-export interface GetAnimationRecipeProps {
-  mode: string;
-  action: LocalAction;
-  preset: string;
-  role: string;
-}
 
 export type GetRecipeCallback = (p: GetAnimationRecipeProps) => AnimationBlock;

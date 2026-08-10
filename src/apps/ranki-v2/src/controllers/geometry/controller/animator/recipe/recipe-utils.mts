@@ -1,8 +1,6 @@
 import { assertNotUndefined } from "_error/assertions.mjs";
-import type {
-  AnimationDict,
-  GetAnimationRecipeProps,
-} from "../animator.types.mjs";
+import type { AnimationDict } from "../animator.types.mjs";
+import type { GetAnimationRecipeProps } from "./recipe.types.mjs";
 
 export class RecipeUtils {
   static getRecipeFromCollection(

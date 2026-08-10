@@ -37,7 +37,7 @@ export class GeometryController<
     this.host = host;
     this.animator = new Animator(this.host, params.role, {
       informSet: this.informSet.bind(this),
-      getRecipe: params.recipe,
+      getCollection: params.collection,
     });
     this.events = new GeometryEvents({
       events: params.events,

@@ -12,7 +12,7 @@ import {
   geometry,
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
-import { getAnimationRecipe } from "_store/app.getters.mjs";
+import { getAnimationCollection } from "_store/app.getters.mjs";
 
 export interface R2IconProps {
   animation: RankiPropAnimationBlock;
@@ -40,7 +40,7 @@ export class R2Icon extends R2C {
 
   @geometry<R2Icon>({
     role: "icon",
-    recipe: getAnimationRecipe,
+    collection: getAnimationCollection,
     children: {
       selector: (s) => Array.from(s.spans),
       layout: () => LayoutUtils.last(),

@@ -13,7 +13,7 @@ import {
   geometry,
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
-import { getAnimationRecipe } from "_store/app.getters.mjs";
+import { getAnimationCollection } from "_store/app.getters.mjs";
 
 @customElement("r2-icon-span")
 export class R2IconSpan extends R2C {
@@ -27,7 +27,7 @@ export class R2IconSpan extends R2C {
 
   @geometry<R2IconSpan>({
     role: "icon-span",
-    recipe: getAnimationRecipe,
+    collection: getAnimationCollection,
     on: (s, type) => {
       if (type === "leave-end") {
         ReconciliationUtils.emitLeave(s);

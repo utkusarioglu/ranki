@@ -6,14 +6,14 @@ import {
   geometry,
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
-import { getAnimationRecipe } from "_store/app.getters.mjs";
+import { getAnimationCollection } from "_store/app.getters.mjs";
 @customElement("r2-hud-bg")
 export class R2HudBg extends R2C {
   static override styles = unsafeCSS(style);
 
   @geometry<R2HudBg>({
     role: "hud-bg",
-    recipe: getAnimationRecipe,
+    collection: getAnimationCollection,
   })
   // @ts-expect-error
   private readonly geo!: GeometryController<R2HudBg>;

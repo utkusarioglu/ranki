@@ -9,17 +9,16 @@ import { Animator } from "../../animator.mjs";
 import { KeyframeUtils } from "../../keyframe/keyframe-utils.mjs";
 
 // ANKI
-// const { getAnimationRecipeMock } = vi.hoisted(() => ({
-//   getAnimationRecipeMock: vi.fn(),
-// }));
+const { animate, getRecipeFromCollection } = vi.hoisted(() => ({
+  animate: vi.fn().mockReturnValue({ finished: Promise.resolve() }),
+  getRecipeFromCollection: vi.fn(),
+}));
 
 // ANKI
-// vi.mock("_store/app.getters.mjs", () => ({
-//   getAnimationRecipe: getAnimationRecipeMock,
-// }));
-
-const { animate } = vi.hoisted(() => ({
-  animate: vi.fn().mockReturnValue({ finished: Promise.resolve() }),
+vi.mock("../../recipe/recipe-utils.mts", () => ({
+  RecipeUtils: class {
+    static getRecipeFromCollection = getRecipeFromCollection;
+  },
 }));
 
 const Host = vi.fn(
@@ -29,7 +28,7 @@ const Host = vi.fn(
 );
 
 const informSet = vi.fn().mockReturnValue(Promise.resolve());
-const getRecipe = vi.fn();
+const getCollection = vi.fn();
 
 // eslint-disable-next-line no-explicit-any
 let animator: Animator<any>;
@@ -38,7 +37,7 @@ beforeEach(() => {
   const host = new Host();
   animator = new Animator(host as unknown as LitElement, "test", {
     informSet,
-    getRecipe,
+    getCollection,
   });
 });
 
@@ -97,7 +96,7 @@ test("depth 2", async () => {
       ],
     },
   };
-  getRecipe.mockReturnValueOnce(RECIPE);
+  getRecipeFromCollection.mockReturnValueOnce(RECIPE);
   await animator.update(curr, prev);
   expect(animate).toHaveBeenCalledTimes(2);
   expect(animate).toHaveBeenNthCalledWith(
@@ -189,7 +188,7 @@ test("depth 2 call 3", async () => {
       ],
     },
   };
-  getRecipe.mockReturnValueOnce(RECIPE);
+  getRecipeFromCollection.mockReturnValueOnce(RECIPE);
   await animator.update(curr, prev);
   expect(animate).toHaveBeenCalledTimes(3);
   expect(animate).toHaveBeenNthCalledWith(
