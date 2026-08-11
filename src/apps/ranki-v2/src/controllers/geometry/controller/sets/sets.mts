@@ -35,8 +35,6 @@ export class GeometrySets<Instance extends LitElement> {
       default:
         return this.watchers?.inform(props, sizing);
     }
-    // await Promise.all([ this.children?.inform(props, sizing),
-    // ]);
   }
 
   public async onEmit(

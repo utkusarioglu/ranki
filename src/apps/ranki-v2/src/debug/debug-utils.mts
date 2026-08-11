@@ -13,6 +13,11 @@ import type {
 } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
 import type { LitElement } from "lit";
 
+interface ControllerInformSet {
+  host: LitElement;
+  props: InformSetProps;
+}
+
 interface AnimatorUpdateComposedProps {
   host: LitElement;
   parsed: LayoutParsed;
@@ -63,6 +68,15 @@ export class DebugUtils {
     }
   }
 
+  public static controllerInformSet(props: ControllerInformSet) {
+    if (props.host.tagName === DEBUG_TAG) {
+      console.log("controller.informSet", {
+        tag: props.host.tagName,
+        props: props.props,
+      });
+    }
+  }
+
   public static informStyle(props: InformStyleDebug) {
     if (props.host.tagName === DEBUG_TAG) {
       console.log("controller.informStyle", {
@@ -77,7 +91,7 @@ export class DebugUtils {
 
   public static informSet(props: InformSet) {
     if (props.e.tagName === DEBUG_TAG) {
-      console.log("informSet", {
+      console.log("watcherset.informSet", {
         tag: props.host.tagName,
         e: props.e,
         informed: props.informed,

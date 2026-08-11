@@ -39,8 +39,8 @@ export const CUE_LIST: TargetAnimationSpec = {
             {
               left: "to.self.left",
               top: "to.self.top",
-              width: "to.self.width",
-              height: "to.self.height",
+              // width: "to.self.width",
+              // height: "to.self.height",
             },
           ],
           delay: 0,
@@ -48,6 +48,21 @@ export const CUE_LIST: TargetAnimationSpec = {
           duration: 0,
         },
       ],
+      sets: {
+        bg: {
+          override: {
+            width: "to.self.width",
+            height: "to.self.height",
+          },
+        },
+        children: {
+          wait: 0,
+          expose: {
+            top: "to.self.top",
+            left: "to.self.left",
+          },
+        },
+      },
     },
   },
 };

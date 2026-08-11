@@ -99,6 +99,7 @@ export class GeometryController<
   }
 
   private async informSet(props: InformSetProps): Promise<void> {
+    DebugUtils.controllerInformSet({ host: this.host, props });
     return this.sets.inform(props, this.sizing);
   }
 

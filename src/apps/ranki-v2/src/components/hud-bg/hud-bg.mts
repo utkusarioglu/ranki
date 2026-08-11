@@ -14,6 +14,9 @@ export class R2HudBg extends R2C {
   @geometry<R2HudBg>({
     role: "hud-bg",
     collection: getAnimationCollection,
+    events: {
+      hover: false,
+    },
   })
   // @ts-expect-error
   private readonly geo!: GeometryController<R2HudBg>;

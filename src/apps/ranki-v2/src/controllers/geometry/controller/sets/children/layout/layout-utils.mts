@@ -96,6 +96,9 @@ export class LayoutUtils {
   ) {
     const main = LayoutUtils.normalizeGaps(gaps.main);
     const cross = LayoutUtils.normalizeGaps(gaps.cross);
+    // const dims = rawDims.filter(
+    //   (d) => d.lifecycle !== "leave" && d.lifecycle !== "none",
+    // );
     const spacingMain = main.gap * (dims.length - 1) + main.start + main.end;
     const spacingCross = cross.start + cross.end;
     const sizeCross =

@@ -58,6 +58,14 @@ export const TEXT: TargetAnimationSpec = {
           ],
         },
       ],
+      sets: {
+        children: {
+          // override: {
+          //   width: "to.self.width",
+          //   height: "to.self.height",
+          // },
+        },
+      },
     },
     leave: {
       root: [

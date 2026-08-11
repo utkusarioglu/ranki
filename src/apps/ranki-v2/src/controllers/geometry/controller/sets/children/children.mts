@@ -35,10 +35,10 @@ export class GeometryChildren<
     detail: GeometryEvent,
   ): ChildrenUpdateSizingReturn {
     this.registry.update(target, detail);
-    return this.updateSizing(detail);
+    return this.updateSizing();
   }
 
-  private async composeResolution(): ChildrenUpdateSizingReturn {
+  private async updateSizing(): ChildrenUpdateSizingReturn {
     if (this.requested) return null;
     this.requested = true;
 
@@ -48,33 +48,20 @@ export class GeometryChildren<
     const ordered = this.registry.getOrdered(serial);
     const layoutCallback = this.layout(this.host);
     const sizing = layoutCallback(ordered);
+    console.log("after raf", { serial, ordered, sizing });
 
     this.requested = false;
 
     if (this.isRoot === true)
       return {
+        type: "root",
         inform: GeometrySetsUtils.prepareRootStyle(sizing),
         sizing,
-        type: "root",
       };
 
     return {
-      sizing,
       type: "update",
+      sizing,
     };
-  }
-
-  private async updateSizing(
-    detail: GeometryEvent,
-  ): ChildrenUpdateSizingReturn {
-    if (detail.type !== "lifecycle") return null;
-    switch (detail.lifecycle) {
-      case "leave":
-      case "update": {
-        return this.composeResolution();
-      }
-      default:
-        return null;
-    }
   }
 }

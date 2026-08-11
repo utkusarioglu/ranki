@@ -72,10 +72,6 @@ export class R2Chip extends R2C {
     });
   }
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-  }
-
   override render() {
     const item = this.list[this.index];
 
