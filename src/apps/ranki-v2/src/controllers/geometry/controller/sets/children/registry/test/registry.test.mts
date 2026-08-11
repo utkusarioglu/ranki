@@ -14,7 +14,6 @@ let registry: ChildrenRegistry;
 
 let set: Mock<InstanceType<typeof WeakMap>["set"]>;
 let get: Mock<InstanceType<typeof WeakMap>["get"]>;
-let has: Mock<InstanceType<typeof WeakMap>["has"]>;
 let del: Mock<InstanceType<typeof WeakMap>["delete"]>;
 
 /**
@@ -35,12 +34,6 @@ beforeEach(() => {
     "get",
   ) as typeof get;
 
-  has = vi.spyOn(
-    // @ts-expect-error #1
-    registry.dims,
-    "has",
-  ) as typeof has;
-
   del = vi.spyOn(
     // @ts-expect-error #1
     registry.dims,
@@ -49,7 +42,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  [get, set, del, has].forEach((v) => v.mockClear());
+  [get, set, del].forEach((v) => v.mockClear());
 });
 
 test("disconnected", () => {
