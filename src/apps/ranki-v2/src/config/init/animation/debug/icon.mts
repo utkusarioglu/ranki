@@ -1,6 +1,6 @@
-import type { TargetAnimationSpec } from "_controllers/geometry/controller/animator/animator.types.mjs";
+import type { GeometryAnimationPreset } from "_controllers/geometry/controller/animator/library.types.mjs";
 
-export const ICON: TargetAnimationSpec = {
+export const ICON: GeometryAnimationPreset = {
   icon: {
     enter: {
       root: [

@@ -1,11 +1,11 @@
 import { assertNotUndefined } from "_error/assertions.mjs";
 
-import type { AnimationDict } from "../animator.types.mjs";
+import type { GeometryAnimationPresetDict } from "../library.types.mjs";
 import type { GetAnimationRecipeProps } from "./recipe.types.mjs";
 
 export class RecipeUtils {
   static getRecipeFromCollection(
-    collection: AnimationDict,
+    collection: GeometryAnimationPresetDict,
     {
       action,
       preset: presetName,

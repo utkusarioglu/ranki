@@ -1,4 +1,3 @@
-import type { LocalAction } from "../events/types/geometry-events.types.mjs";
 import type { GeometrySetName } from "../sets/sets.types.mjs";
 import type {
   CurrentAppliedStyle,
@@ -26,12 +25,6 @@ export type AnimationCallback = (
   prev: AnimationKeyframeStyles | null,
   context: InformContext,
 ) => Promise<void>;
-
-export type AnimationDict = Record<
-  // Preset name
-  string,
-  TargetAnimationSpec
->;
 
 export type AnimationKeyframeOptions = {
   easing: string;
@@ -111,8 +104,3 @@ export interface ParseRootParams {
   prev: CurrentAppliedStyle | null;
   recipe: AnimationBlock;
 }
-export type TargetAnimationSpec = Record<
-  // component role
-  string,
-  Partial<Record<LocalAction, AnimationBlock>>
->;
