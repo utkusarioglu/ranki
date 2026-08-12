@@ -29,7 +29,7 @@ function* testProduct(props: K[], values1: number[], values2: number[]) {
   for (const prop of props) {
     for (const item of values1) {
       for (const container of values2) {
-        const blocks = [`to.self.${prop}`, `to.container.${prop}`];
+        const blocks = [` = to.self.${prop}`, `= to.container.${prop}`];
         for (const block of blocks) {
           yield {
             block,
@@ -78,7 +78,7 @@ for (const v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
     };
     const response = KeyframeParser.evalKeyframe(curr, prev, blockObj);
     const expectedObj = {
-      [prop]: block.startsWith("to.container.") ? container : item,
+      [prop]: block.includes("to.container.") ? container : item,
     };
 
     expect(response).toEqual(expectedObj);

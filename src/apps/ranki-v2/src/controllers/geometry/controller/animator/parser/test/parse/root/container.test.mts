@@ -16,8 +16,8 @@ interface Case {
 const CASES: Case[] = [
   ...(
     [
-      ["to.container.height", 11],
-      ["to.self.height", 21],
+      [" =to.container.height", 11],
+      ["=to.self.height", 21],
     ] as [string, number][]
   ).map(([input, expected]) => ({
     block: {

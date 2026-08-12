@@ -8,8 +8,9 @@ import type {
   AnimationOptions,
   AnimationRoot,
 } from "../../animator.types.mjs";
+import { Parser } from "expr-eval";
 
-import { parser } from "../layout-parser.mjs";
+export const parser = new Parser();
 
 export class KeyframeParser {
   // TODO why is this accessed from geometry controller?
@@ -40,19 +41,37 @@ export class KeyframeParser {
 
   static evalOptionValue(
     context: InformContext,
-    v: number | string | undefined,
+    value: number | string | undefined,
   ) {
-    if (typeof v === "number" || typeof v === "undefined") {
-      return v;
-    } else {
-      const exp = parser.parse(v);
-      const varSet = {
-        INDEX: context.index,
-        LENGTH: context.length,
-        STAGGER_INDEX: context.stagger,
-      };
-      return exp.evaluate(varSet);
-    }
+    const varSet = {
+      to: {
+        self: {
+          index: context.index,
+          length: context.length,
+          stagger: context.stagger,
+        },
+      },
+    };
+    return this.evalValue(value, varSet);
+  }
+
+  /**
+   * @dev
+   * #1 This works because EXPR_CHAR has to be the first character after trim
+   */
+  private static evalValue(value: number | string | undefined, varSet: any) {
+    const EXPR_CHAR = "=";
+    const isNumber = typeof value === "number";
+    const isUndefined = typeof value === "undefined";
+    const isString = typeof value === "string";
+    const isExpr = isString && value.trim().startsWith(EXPR_CHAR);
+    if (isNumber || isUndefined || !isExpr) return value;
+
+    const trimmed = value.trim();
+    const exprStr = trimmed.slice(1); // #1
+
+    const exp = parser.parse(exprStr);
+    return exp.evaluate(varSet);
   }
 
   private static evalConfigValue(
@@ -60,10 +79,6 @@ export class KeyframeParser {
     prev: CurrentAppliedStyle | null,
     value: number | string | undefined,
   ) {
-    if (typeof value === "number" || typeof value === "undefined") {
-      return value;
-    }
-    const exp = parser.parse(value);
     const varSet = {
       from: {
         container: {
@@ -95,7 +110,8 @@ export class KeyframeParser {
         },
       },
     };
-    return exp.evaluate(varSet);
+
+    return this.evalValue(value, varSet);
   }
 
   private static try<T>(b: T, f: (b: NonNullable<T>) => number | undefined) {

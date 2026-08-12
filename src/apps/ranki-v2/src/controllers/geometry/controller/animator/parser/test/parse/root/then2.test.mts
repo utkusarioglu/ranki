@@ -31,7 +31,7 @@ const CASES: Case[] = [
                 duration: 2,
                 keyframes: [
                   {
-                    width: "to.self.width",
+                    width: "= to.self.width",
                   },
                 ],
                 name: "w",
@@ -80,7 +80,7 @@ const CASES: Case[] = [
 ];
 
 CASES.forEach(({ block, expected, name }) => {
-  test(name, () => {
+  test.only(name, () => {
     const response = LayoutParser.parse({
       curr: {
         actions: ["enter"],

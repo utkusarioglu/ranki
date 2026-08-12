@@ -1,5 +1,3 @@
-import { Parser } from "expr-eval";
-
 import type {
   AnimationBlockSets,
   AnimationRoot,
@@ -13,8 +11,6 @@ import type {
 import type { GeometrySetName } from "../../sets/sets.types.mjs";
 
 import { KeyframeParser } from "./keyframe/keyframe-parser.mjs";
-
-export const parser = new Parser();
 
 export class LayoutParser {
   static parse(p: ParseRootParams): LayoutParsed {
