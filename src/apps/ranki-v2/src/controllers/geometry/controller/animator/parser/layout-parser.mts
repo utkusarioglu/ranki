@@ -23,9 +23,9 @@ export class LayoutParser {
       : undefined;
     const then = p.recipe.then
       ? this.parse({
-          recipe: p.recipe.then,
           curr: p.curr,
           prev: p.prev,
+          recipe: p.recipe.then,
         })
       : undefined;
     return {
@@ -48,7 +48,7 @@ export class LayoutParser {
         name: b.name,
         options: KeyframeParser.evalOptions(b, curr.context),
       },
-      then: b.then && this.parse({ recipe: b.then, curr, prev }),
+      then: b.then && this.parse({ curr, prev, recipe: b.then }),
     };
   }
 
@@ -60,9 +60,9 @@ export class LayoutParser {
   ): LayoutSetsInform {
     const then: LayoutParsed | undefined = t.then
       ? this.parse({
-          recipe: t.then,
           curr,
           prev,
+          recipe: t.then,
         })
       : undefined;
     return {
@@ -73,8 +73,8 @@ export class LayoutParser {
             : {},
         },
         selfOverrides: {
-          lifecycle: curr.self.lifecycle,
           interaction: curr.self.interaction,
+          lifecycle: curr.self.lifecycle,
           style: t.override
             ? KeyframeParser.evalKeyframe(curr, prev, t.override)
             : {},

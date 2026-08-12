@@ -57,7 +57,6 @@ const CASES: Case[] = [
 CASES.forEach(({ block, expected, name }) => {
   test(name, () => {
     const response = LayoutParser.parse({
-      recipe: block,
       curr: {
         actions: ["enter"],
         container: {
@@ -71,13 +70,13 @@ CASES.forEach(({ block, expected, name }) => {
           stagger: 0,
         },
         self: {
-          lifecycle: "enter",
           interaction: {
-            hover: "none",
-            focus: "none",
-            press: "none",
             drag: "none",
+            focus: "none",
+            hover: "none",
+            press: "none",
           },
+          lifecycle: "enter",
           style: {
             height: 21,
             left: 0,
@@ -87,6 +86,7 @@ CASES.forEach(({ block, expected, name }) => {
         },
       },
       prev: null,
+      recipe: block,
     });
     expect(response).toEqual(expected);
   });

@@ -1,6 +1,7 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement, ReactiveController } from "lit";
 
+import { O11y } from "_/o11y/o11y.mjs";
 import { assertExists, assertNever } from "_error/assertions.mjs";
 
 import type { InformSetProps } from "./animator/animator.types.mjs";
@@ -16,7 +17,6 @@ import { Animator } from "./animator/animator.mjs";
 import { GeometryEvents } from "./events/geometry-events.mjs";
 import { GeometryMerger } from "./merger/geometry-merger.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
-import { O11y } from "_/o11y/o11y.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -36,8 +36,8 @@ export class GeometryController<
     host.addController(this);
     this.host = host;
     this.animator = new Animator(this.host, params.role, {
-      informSet: this.informSet.bind(this),
       getCollection: params.collection,
+      informSet: this.informSet.bind(this),
     });
     this.events = new GeometryEvents({
       events: params.events,
@@ -76,9 +76,9 @@ export class GeometryController<
           break;
         case "update":
           this.events.emit({
-            type: "lifecycle",
             lifecycle: "update",
             style: update.sizing.container,
+            type: "lifecycle",
           });
           break;
         default:
@@ -110,9 +110,9 @@ export class GeometryController<
     O11y.informStyle({
       curr: this.curr,
       host: this.host,
+      informed: informed,
       prev: this.prev,
       sizing: this.sizing,
-      informed: informed,
     });
 
     this.events.onActionsStart(this.curr.actions);

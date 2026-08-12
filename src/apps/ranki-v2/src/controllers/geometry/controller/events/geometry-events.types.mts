@@ -4,48 +4,48 @@ import type {
   GeometryInteractionState,
 } from "../sets/children/registry/children-registry.types.mjs";
 
-export type EmitType = "lifecycle" | "interaction";
+export type EmitType = "interaction" | "lifecycle";
 
-export type GeometryInteractionEmit =
-  `${keyof GeometryInteraction}-${GeometryInteractionState}`;
+export type GeometryEvent = GeometryEventInteraction | GeometryEventLifecycle;
+
+export interface GeometryEventInteraction {
+  interaction: GeometryInteractionEmit;
+  type: "interaction";
+}
+
+export type GeometryEventLifecycle =
+  | GeometryEventLifecycleConnected
+  | GeometryEventLifecycleDisconnected
+  | GeometryEventLifecycleLeave
+  | GeometryEventLifecycleUpdate;
 
 export interface GeometryEventTypes {
   hover: boolean;
 }
 
-export type GeometryEvent = GeometryEventInteraction | GeometryEventLifecycle;
-
-export type GeometryEventLifecycle =
-  | GeometryEventLifecycleLeave
-  | GeometryEventLifecycleConnected
-  | GeometryEventLifecycleDisconnected
-  | GeometryEventLifecycleUpdate;
-
-interface GeometryEventLifecycleLeave {
-  type: "lifecycle";
-  lifecycle: "leave";
-  // interaction?: GeometryInteractionEmit;
-}
-
-export interface GeometryEventInteraction {
-  type: "interaction";
-  interaction: GeometryInteractionEmit;
-}
+export type GeometryInteractionEmit =
+  `${keyof GeometryInteraction}-${GeometryInteractionState}`;
 
 interface GeometryEventLifecycleConnected {
-  type: "lifecycle";
   lifecycle: "connected";
+  type: "lifecycle";
   // interaction?: GeometryInteractionEmit;
 }
 
 interface GeometryEventLifecycleDisconnected {
-  type: "lifecycle";
   lifecycle: "disconnected";
+  type: "lifecycle";
+  // interaction?: GeometryInteractionEmit;
+}
+
+interface GeometryEventLifecycleLeave {
+  lifecycle: "leave";
+  type: "lifecycle";
   // interaction?: GeometryInteractionEmit;
 }
 interface GeometryEventLifecycleUpdate {
-  type: "lifecycle";
   lifecycle: "update";
   // interaction?: GeometryInteractionEmit;
   style: WidthHeight;
+  type: "lifecycle";
 }

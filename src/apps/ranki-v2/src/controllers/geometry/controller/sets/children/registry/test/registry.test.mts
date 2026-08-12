@@ -47,8 +47,8 @@ afterEach(() => {
 
 test("disconnected", () => {
   const detail: GeometryEvent = {
-    type: "lifecycle",
     lifecycle: "disconnected",
+    type: "lifecycle",
   };
   registry.update(target, detail);
   expect(del).toHaveBeenCalledTimes(1);
@@ -57,17 +57,17 @@ test("disconnected", () => {
 
 test("leave", () => {
   const detail: GeometryEvent = {
-    type: "lifecycle",
     lifecycle: "leave",
+    type: "lifecycle",
   };
   const expected: EmittedComponentState = {
-    lifecycle: "leave",
     interaction: {
-      hover: "none",
-      focus: "none",
-      press: "none",
       drag: "none",
+      focus: "none",
+      hover: "none",
+      press: "none",
     },
+    lifecycle: "leave",
   };
   registry.update(target, detail);
   expect(set).toHaveBeenCalledTimes(1);
@@ -80,34 +80,34 @@ test("leave", () => {
  */
 test("update", () => {
   const detail: GeometryEvent = {
-    type: "lifecycle",
     lifecycle: "update",
     style: {
       height: 7,
       width: 5,
     },
+    type: "lifecycle",
   };
   const expected: EmittedComponentState = {
-    lifecycle: detail.lifecycle,
     interaction: {
-      hover: "none",
-      focus: "none",
-      press: "none",
       drag: "none",
+      focus: "none",
+      hover: "none",
+      press: "none",
     },
+    lifecycle: detail.lifecycle,
     style: detail.style,
   };
   // @ts-expect-error #1
   registry.dims
     //
     .set(target, {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: { height: 2, width: 1 },
     });
   set.mockClear();
@@ -118,21 +118,21 @@ test("update", () => {
 
 test("update lifecycle registered as enter", () => {
   const detail: GeometryEvent = {
-    type: "lifecycle",
     lifecycle: "update",
     style: {
       height: 7,
       width: 5,
     },
+    type: "lifecycle",
   };
   const expected: EmittedComponentState = {
-    lifecycle: "enter",
     interaction: {
-      hover: "none",
-      focus: "none",
-      press: "none",
       drag: "none",
+      focus: "none",
+      hover: "none",
+      press: "none",
     },
+    lifecycle: "enter",
     style: detail.style,
   };
   registry.update(target, detail);
@@ -142,17 +142,17 @@ test("update lifecycle registered as enter", () => {
 
 test("interaction", () => {
   const detail: GeometryEvent = {
-    type: "interaction",
     interaction: "hover-start",
+    type: "interaction",
   };
   const expected: EmittedComponentState = {
-    lifecycle: "enter",
     interaction: {
-      hover: "start",
-      focus: "none",
-      press: "none",
       drag: "none",
+      focus: "none",
+      hover: "start",
+      press: "none",
     },
+    lifecycle: "enter",
   };
   registry.update(target, detail);
   expect(set).toHaveBeenCalledTimes(1);

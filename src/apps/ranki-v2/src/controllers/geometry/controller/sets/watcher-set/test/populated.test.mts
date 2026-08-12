@@ -18,13 +18,13 @@ const singleElem = () => ({ informStyle: vi.fn() });
 const informProps: InformSetProps = {
   containerExposed: { style: {} },
   selfOverrides: {
-    lifecycle: "enter",
     interaction: {
-      hover: "none",
-      focus: "none",
-      press: "none",
       drag: "none",
+      focus: "none",
+      hover: "none",
+      press: "none",
     },
+    lifecycle: "enter",
     style: {},
   },
   setName: "one",
@@ -37,33 +37,33 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {
-        width: 7,
         height: 11,
-        top: 2,
         left: 5,
+        top: 2,
+        width: 7,
       },
     },
     {
-      lifecycle: "none",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "none",
       style: {
-        width: 77,
         height: 111,
-        top: 21,
         left: 51,
+        top: 21,
+        width: 77,
       },
     },
   ],

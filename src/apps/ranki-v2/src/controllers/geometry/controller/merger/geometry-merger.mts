@@ -12,9 +12,9 @@ import type { LayoutSizing } from "../sets/children/layout/layout-utils.types.mj
 
 interface CreateSetItemInformerProps {
   context: InformContext;
+  index: number;
   props: InformSetProps;
   sizing: LayoutSizing | null;
-  index: number;
 }
 
 export class GeometryMerger {
@@ -30,8 +30,8 @@ export class GeometryMerger {
       },
       context: informed.context,
       self: {
-        lifecycle: informed.selfOverrides.lifecycle,
         interaction: informed.selfOverrides.interaction,
+        lifecycle: informed.selfOverrides.lifecycle,
         style: {
           ...(sizing ? sizing.container : {}),
           ...informed.selfOverrides.style,
@@ -45,9 +45,9 @@ export class GeometryMerger {
 
   public static createSetItemInformer({
     context,
+    index,
     props,
     sizing,
-    index,
   }: CreateSetItemInformerProps): InformedChildStyle {
     const container: InformedChildStyle["containerExposed"] = {
       style: {
@@ -59,21 +59,21 @@ export class GeometryMerger {
       ? sizing.set[index]
       : // FIX I do not like this being here. sizing should be definitely available when the execution reaches here
         {
-          lifecycle: "none" as const,
           interaction: {
-            hover: "none" as const,
             drag: "none" as const,
-            press: "none" as const,
             focus: "none" as const,
+            hover: "none" as const,
+            press: "none" as const,
           },
+          lifecycle: "none" as const,
           style: {},
         };
     return {
       containerExposed: container,
       context,
       selfOverrides: {
-        lifecycle: item.lifecycle,
         interaction: item.interaction,
+        lifecycle: item.lifecycle,
         style: {
           ...item.style,
           ...props.selfOverrides.style,

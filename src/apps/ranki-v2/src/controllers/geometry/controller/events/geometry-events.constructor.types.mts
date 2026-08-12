@@ -1,5 +1,6 @@
 import type { LocalAction } from "_controllers/geometry/geometry-intent.types.mjs";
 import type { LitElement } from "lit";
+
 import type { GeometryEventTypes } from "./geometry-events.types.mjs";
 
 export type GeometryEventCb<Instance> = (

@@ -23,13 +23,13 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {
         height: 19,
         left: 0,
@@ -38,13 +38,13 @@ const sizing: LayoutSizing = {
       },
     },
     {
-      lifecycle: "leave",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "leave",
       style: {
         height: 57,
         left: 121,
@@ -60,13 +60,13 @@ test("empty informed", () => {
     containerExposed: { style: {} },
     context,
     selfOverrides: {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {},
     },
   };
@@ -78,13 +78,13 @@ test("empty informed", () => {
     },
     context,
     self: {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {
         height: 130,
         width: 110,
@@ -96,20 +96,20 @@ test("empty informed", () => {
 
 test("informed container width", () => {
   const informed: InformedChildStyle = {
-    context,
     containerExposed: {
       style: {
         width: 7,
       },
     },
+    context,
     selfOverrides: {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {},
     },
   };
@@ -123,16 +123,16 @@ test("informed container width", () => {
     },
     context,
     self: {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {
-        width: 110,
         height: 130,
+        width: 110,
       },
     },
   };
@@ -146,20 +146,20 @@ test("informed container width 2", () => {
     stagger: 1,
   };
   const informed: InformedChildStyle = {
-    context,
     containerExposed: {
       style: {
         width: 7,
       },
     },
+    context,
     selfOverrides: {
-      lifecycle: "update",
       interaction: {
-        hover: "end",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "end",
+        press: "none",
       },
+      lifecycle: "update",
       style: {},
     },
   };
@@ -174,16 +174,16 @@ test("informed container width 2", () => {
     },
     context,
     self: {
-      lifecycle: "update",
       interaction: {
-        hover: "end",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "end",
+        press: "none",
       },
+      lifecycle: "update",
       style: {
-        width: 110,
         height: 130,
+        width: 110,
       },
     },
   };

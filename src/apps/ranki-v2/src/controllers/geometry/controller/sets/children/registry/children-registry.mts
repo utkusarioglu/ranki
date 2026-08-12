@@ -1,5 +1,7 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 
+import { assertNever } from "_error/assertions.mjs";
+
 import type {
   GeometryEvent,
   GeometryEventInteraction,
@@ -9,13 +11,12 @@ import type {
   EmittedComponentState,
   GeometryInteraction,
 } from "./children-registry.types.mjs";
-import { assertNever } from "_error/assertions.mjs";
 
 export class ChildrenRegistry {
   private static DEFAULT_INTERACTION: GeometryInteraction = {
-    hover: "none",
     drag: "none",
     focus: "none",
+    hover: "none",
     press: "none",
   };
   private readonly dims = new WeakMap<R2C, EmittedComponentState>();
@@ -26,13 +27,13 @@ export class ChildrenRegistry {
       const dims = this.dims.get(component);
       if (!dims) {
         ordered.push({
-          lifecycle: "none",
           interaction: {
-            hover: "none",
             drag: "none",
-            press: "none",
             focus: "none",
+            hover: "none",
+            press: "none",
           },
+          lifecycle: "none",
         });
       } else {
         ordered.push(dims);
@@ -47,17 +48,17 @@ export class ChildrenRegistry {
    */
   public update(target: R2C, detail: GeometryEvent) {
     switch (detail.type) {
-      case "lifecycle":
-        this.updateLifecycle(target, detail);
-        break;
       case "interaction":
         this.updateInteraction(target, detail);
+        break;
+      case "lifecycle":
+        this.updateLifecycle(target, detail);
         break;
 
       default:
         assertNever({
-          why: "Unknown update type",
           details: { detail, tagName: target.tagName },
+          why: "Unknown update type",
         });
     }
   }
@@ -98,17 +99,16 @@ export class ChildrenRegistry {
       case "update":
         if (curr) {
           this.dims.set(target, {
-            lifecycle: detail.lifecycle,
             interaction: {
               // ...ChildrenRegistry.DEFAULT_INTERACTION,
               ...curr?.interaction,
             },
+            lifecycle: detail.lifecycle,
             // interaction: detail.interaction || "idle",
             style: detail.style,
           });
         } else {
           this.dims.set(target, {
-            lifecycle: "enter",
             interaction: {
               ...ChildrenRegistry.DEFAULT_INTERACTION,
               // hover: "none",
@@ -116,6 +116,7 @@ export class ChildrenRegistry {
               // press: "none",
               // focus: "none",
             },
+            lifecycle: "enter",
             style: detail.style,
           });
         }

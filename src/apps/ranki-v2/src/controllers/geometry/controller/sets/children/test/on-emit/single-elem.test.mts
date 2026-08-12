@@ -2,6 +2,7 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { GeometryEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
 import type { LitElement } from "lit";
 
+import { TimingUtils } from "_controllers/geometry/geometry.mjs";
 // @vitest-environment jsdom
 import { expect, test, vi } from "vitest";
 
@@ -11,7 +12,6 @@ import type {
 } from "../../children.types.mjs";
 
 import { GeometryChildren } from "../../children.mjs";
-import { TimingUtils } from "_controllers/geometry/geometry.mjs";
 
 const host = vi.fn() as unknown as LitElement;
 const target = vi.fn() as unknown as R2C;
@@ -22,12 +22,12 @@ const props: GeometryChildrenProps<LitElement> = {
 test("single session single elem", async () => {
   const children = new GeometryChildren(host, props);
   const detail: GeometryEvent = {
-    type: "lifecycle",
     lifecycle: "update",
     style: {
       height: 11,
       width: 7,
     },
+    type: "lifecycle",
   };
   const expected: ChildrenSizing = {
     sizing: {
@@ -36,13 +36,13 @@ test("single session single elem", async () => {
       },
       set: [
         {
-          lifecycle: detail.lifecycle,
           interaction: {
-            hover: "none",
-            focus: "none",
-            press: "none",
             drag: "none",
+            focus: "none",
+            hover: "none",
+            press: "none",
           },
+          lifecycle: detail.lifecycle,
           style: {
             ...detail.style,
             left: 0,
@@ -64,20 +64,20 @@ test("single session single elem", async () => {
 test("two sessions single elem", async () => {
   const children = new GeometryChildren(host, props);
   const detail1: GeometryEvent = {
-    type: "lifecycle",
     lifecycle: "update",
     style: {
       height: 11,
       width: 7,
     },
+    type: "lifecycle",
   };
   const detail2: GeometryEvent = {
-    type: "lifecycle",
     lifecycle: "update",
     style: {
       height: 17,
       width: 13,
     },
+    type: "lifecycle",
   };
   const expected1: ChildrenSizing = {
     sizing: {
@@ -86,13 +86,13 @@ test("two sessions single elem", async () => {
       },
       set: [
         {
-          lifecycle: detail1.lifecycle,
           interaction: {
-            hover: "none",
-            focus: "none",
-            press: "none",
             drag: "none",
+            focus: "none",
+            hover: "none",
+            press: "none",
           },
+          lifecycle: detail1.lifecycle,
           style: {
             ...detail1.style,
             left: 0,
@@ -110,13 +110,13 @@ test("two sessions single elem", async () => {
       },
       set: [
         {
-          lifecycle: detail2.lifecycle,
           interaction: {
-            hover: "none",
-            focus: "none",
-            press: "none",
             drag: "none",
+            focus: "none",
+            hover: "none",
+            press: "none",
           },
+          lifecycle: detail2.lifecycle,
           style: {
             ...detail2.style,
             left: 0,

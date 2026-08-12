@@ -23,13 +23,13 @@ test("", () => {
       },
     },
     selfOverrides: {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {},
     },
     setName: "one",
@@ -41,13 +41,13 @@ test("", () => {
     },
     set: [
       {
-        lifecycle: "enter",
         interaction: {
-          hover: "none",
-          focus: "none",
-          press: "none",
           drag: "none",
+          focus: "none",
+          hover: "none",
+          press: "none",
         },
+        lifecycle: "enter",
         style: {
           height: 51,
           left: 0,
@@ -56,13 +56,13 @@ test("", () => {
         },
       },
       {
-        lifecycle: "leave",
         interaction: {
-          hover: "none",
-          focus: "none",
-          press: "none",
           drag: "none",
+          focus: "none",
+          hover: "none",
+          press: "none",
         },
+        lifecycle: "leave",
         style: {
           height: 91,
           left: 0,
@@ -74,9 +74,9 @@ test("", () => {
   };
   const response = GeometryMerger.createSetItemInformer({
     context,
+    index: 0,
     props,
     sizing,
-    index: 0,
   });
   const expected: InformedChildStyle = {
     containerExposed: {

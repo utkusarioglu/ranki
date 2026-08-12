@@ -2,14 +2,14 @@ import type { LitElement } from "lit";
 
 import type { LocalAction } from "../../geometry-intent.types.mjs";
 import type {
-  GeometryEventTypes,
-  GeometryEvent,
-} from "./geometry-events.types.mjs";
-import type {
   GeometryEventCb,
   GeometryEventName,
   GeometryEventsConstructorParams,
 } from "./geometry-events.constructor.types.mjs";
+import type {
+  GeometryEvent,
+  GeometryEventTypes,
+} from "./geometry-events.types.mjs";
 
 const DEFAULT_EVENT_SETTINGS: GeometryEventTypes = {
   hover: false,
@@ -75,13 +75,13 @@ export class GeometryEvents<Instance extends LitElement> {
   private onPointerEnter = (e: PointerEvent) => {
     e.stopPropagation();
     this.emit({
-      type: "interaction",
       interaction: "hover-start",
+      type: "interaction",
     });
   };
 
   private onPointerLeave = (e: PointerEvent) => {
     e.stopPropagation();
-    this.emit({ type: "interaction", interaction: "hover-end" });
+    this.emit({ interaction: "hover-end", type: "interaction" });
   };
 }

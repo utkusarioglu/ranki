@@ -4,7 +4,6 @@ import { LayoutParser } from "../../layout-parser.mjs";
 
 test("empty", () => {
   const response = LayoutParser.parse({
-    recipe: {},
     curr: {
       actions: ["enter"],
       container: {
@@ -18,13 +17,13 @@ test("empty", () => {
         stagger: 0,
       },
       self: {
-        lifecycle: "enter",
         interaction: {
-          hover: "none",
-          focus: "none",
-          press: "none",
           drag: "none",
+          focus: "none",
+          hover: "none",
+          press: "none",
         },
+        lifecycle: "enter",
         style: {
           height: 21,
           left: 0,
@@ -34,6 +33,7 @@ test("empty", () => {
       },
     },
     prev: null,
+    recipe: {},
   });
   const expected = {
     root: undefined,

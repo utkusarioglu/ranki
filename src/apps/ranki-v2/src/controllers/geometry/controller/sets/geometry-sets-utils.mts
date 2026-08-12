@@ -40,9 +40,9 @@ export class GeometrySetsUtils {
     };
     const informed = GeometryMerger.createSetItemInformer({
       context,
+      index: i,
       props,
       sizing,
-      index: i,
     });
     return informed;
   }

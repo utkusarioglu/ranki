@@ -10,8 +10,8 @@ import type {
 import type { GeometryInteraction } from "../sets/children/registry/children-registry.types.mjs";
 
 export interface ComponentDims {
-  lifecycle: EmitLifecycle;
   interaction: GeometryInteraction;
+  lifecycle: EmitLifecycle;
   style: WidthHeight;
 }
 
@@ -46,11 +46,11 @@ export type InformedChildStyleContainer = {
 };
 
 export type InformedChildStyleSelf = {
-  lifecycle: EmitLifecycle;
   interaction: GeometryInteraction;
+  lifecycle: EmitLifecycle;
   style: AnimationKeyframeStyles;
 };
 
 type InformedChildStyleNode = {
   style: AnimationKeyframeStyles;
-} & Pick<ComponentDims, "lifecycle" | "interaction">;
+} & Pick<ComponentDims, "interaction" | "lifecycle">;

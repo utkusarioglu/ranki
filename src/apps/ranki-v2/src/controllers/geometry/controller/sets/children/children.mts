@@ -53,14 +53,14 @@ export class GeometryChildren<
 
     if (this.isRoot === true)
       return {
-        type: "root",
         inform: GeometrySetsUtils.prepareRootStyle(sizing),
         sizing,
+        type: "root",
       };
 
     return {
-      type: "update",
       sizing,
+      type: "update",
     };
   }
 }

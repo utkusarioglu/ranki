@@ -2,8 +2,8 @@ import type { GeometryInteractionEmit } from "./controller/events/geometry-event
 
 export type EmitLifecycle =
   | "enter"
-  | "leave"
   | "interaction"
+  | "leave"
   | "none"
   | "update";
 

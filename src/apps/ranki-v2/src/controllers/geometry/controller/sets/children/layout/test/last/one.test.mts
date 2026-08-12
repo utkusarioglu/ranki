@@ -13,13 +13,13 @@ test("zero size", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {
         height: 0,
         width: 0,
@@ -34,13 +34,13 @@ test("zero size", () => {
     },
     set: [
       {
-        lifecycle: "enter",
         interaction: {
-          hover: "none",
-          focus: "none",
-          press: "none",
           drag: "none",
+          focus: "none",
+          hover: "none",
+          press: "none",
         },
+        lifecycle: "enter",
         style: {
           height: 0,
           left: 0,
@@ -57,13 +57,13 @@ test("zero width", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {
         height: 3,
         width: 0,
@@ -78,13 +78,13 @@ test("zero width", () => {
     },
     set: [
       {
-        lifecycle: "enter",
         interaction: {
-          hover: "none",
-          focus: "none",
-          press: "none",
           drag: "none",
+          focus: "none",
+          hover: "none",
+          press: "none",
         },
+        lifecycle: "enter",
         style: {
           height: 3,
           left: 0,
@@ -101,13 +101,13 @@ test("zero height", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {
         height: 0,
         width: 3,
@@ -122,13 +122,13 @@ test("zero height", () => {
     },
     set: [
       {
-        lifecycle: "enter",
         interaction: {
-          hover: "none",
-          focus: "none",
-          press: "none",
           drag: "none",
+          focus: "none",
+          hover: "none",
+          press: "none",
         },
+        lifecycle: "enter",
         style: {
           height: 0,
           left: 0,
@@ -145,13 +145,13 @@ test("rectangle", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {
         height: 7,
         width: 3,
@@ -166,13 +166,13 @@ test("rectangle", () => {
     },
     set: [
       {
-        lifecycle: "enter",
         interaction: {
-          hover: "none",
-          focus: "none",
-          press: "none",
           drag: "none",
+          focus: "none",
+          hover: "none",
+          press: "none",
         },
+        lifecycle: "enter",
         style: {
           height: 7,
           left: 0,

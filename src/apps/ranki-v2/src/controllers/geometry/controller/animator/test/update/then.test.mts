@@ -30,14 +30,14 @@ const Host = vi.fn(
 const informSet = vi.fn().mockReturnValue(Promise.resolve());
 const getCollection = vi.fn();
 
-// eslint-disable-next-line no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let animator: Animator<any>;
 
 beforeEach(() => {
   const host = new Host();
   animator = new Animator(host as unknown as LitElement, "test", {
-    informSet,
     getCollection,
+    informSet,
   });
 });
 
@@ -58,13 +58,13 @@ test("depth 2", async () => {
       stagger: 0,
     },
     self: {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {
         height: 0,
         left: 0,
@@ -142,13 +142,13 @@ test("depth 2 call 3", async () => {
       stagger: 0,
     },
     self: {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {
         height: 0,
         left: 0,

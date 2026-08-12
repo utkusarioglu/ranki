@@ -87,10 +87,12 @@ export interface ApplyRootParams {
   then?: LayoutParsed;
 }
 
+export type GetRecipeCallback = (p: GetAnimationRecipeProps) => AnimationBlock;
+
 export interface InformSetProps {
-  setName: GeometrySetName;
   containerExposed: InformedChildStyleContainer;
   selfOverrides: InformedChildStyleSelf;
+  setName: GeometrySetName;
 }
 
 export interface LayoutParsed {
@@ -108,16 +110,14 @@ export type LayoutSetsInform = {
 };
 
 export interface ParseRootParams {
-  recipe: AnimationBlock;
   curr: CurrentAppliedStyle;
   prev: CurrentAppliedStyle | null;
+  recipe: AnimationBlock;
 }
-
 export type TargetAnimationSpec = Record<
   // component role
   string,
   Partial<Record<LocalAction, AnimationBlock>>
 >;
-export type UpdateStyle = AnimationKeyframeStyles & WithEmitIntents;
 
-export type GetRecipeCallback = (p: GetAnimationRecipeProps) => AnimationBlock;
+export type UpdateStyle = AnimationKeyframeStyles & WithEmitIntents;

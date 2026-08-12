@@ -37,8 +37,8 @@ export class LayoutUtils {
       const modes = dims.map((d) => d.interaction);
 
       const set = Array.from({ length: dims.length }, (_, i) => i).map((i) => ({
-        lifecycle: lifeCycles[i],
         interaction: modes[i],
+        lifecycle: lifeCycles[i],
         style: {
           height: heights[i],
           left: lefts[i],
@@ -73,8 +73,8 @@ export class LayoutUtils {
         },
 
         set: s.set.map((s) => ({
-          lifecycle: s.lifecycle,
           interaction: s.interaction,
+          lifecycle: s.lifecycle,
           style: {
             height: s.style.sizeCross,
             left: s.style.offsetMain,
@@ -128,8 +128,8 @@ export class LayoutUtils {
 
     const set = Array.from({ length: allDims.length }, (_, i) => i).map(
       (i) => ({
-        lifecycle: intents[i],
         interaction: modes[i],
+        lifecycle: intents[i],
         style: {
           offsetCross: offsetsCross[i],
           offsetMain: offsetsMain[i],

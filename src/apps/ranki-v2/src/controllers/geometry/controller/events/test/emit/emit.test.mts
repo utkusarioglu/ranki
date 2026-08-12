@@ -4,8 +4,8 @@ import type { LitElement } from "lit";
 import { afterEach, beforeEach, expect, type Mock, test, vi } from "vitest";
 
 import type {
-  GeometryInteractionEmit,
   GeometryEvent,
+  GeometryInteractionEmit,
 } from "../../geometry-events.types.mjs";
 
 import { GeometryEvents } from "../../geometry-events.mjs";
@@ -40,9 +40,9 @@ test("update", () => {
     width: 7,
   };
   const emit: GeometryEvent = {
-    type: "lifecycle",
     lifecycle: "update",
     style,
+    type: "lifecycle",
   };
   const expected = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
     detail: emit,
@@ -52,7 +52,7 @@ test("update", () => {
 });
 
 test("leave", () => {
-  const emit: GeometryEvent = { type: "lifecycle", lifecycle: "leave" };
+  const emit: GeometryEvent = { lifecycle: "leave", type: "lifecycle" };
   events.emit(emit);
   const expected = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
     detail: emit,
@@ -62,7 +62,7 @@ test("leave", () => {
 
 test("interaction", () => {
   const interaction: GeometryInteractionEmit = "hover-end";
-  const emit: GeometryEvent = { type: "interaction", interaction };
+  const emit: GeometryEvent = { interaction, type: "interaction" };
   events.emit(emit);
   const expected = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
     detail: emit,

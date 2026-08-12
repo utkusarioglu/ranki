@@ -1,3 +1,4 @@
+import { O11y } from "_/o11y/o11y.mjs";
 import { TimingUtils } from "_controllers/geometry/geometry.mjs";
 
 import type {
@@ -6,7 +7,6 @@ import type {
   LayoutParsedSets,
 } from "../animator.types.mjs";
 import type { AnimationSequencerCallbacks } from "./animation-sequencer.types.mjs";
-import { O11y } from "_/o11y/o11y.mjs";
 
 export class AnimationSequencer {
   private readonly callbacks: AnimationSequencerCallbacks;

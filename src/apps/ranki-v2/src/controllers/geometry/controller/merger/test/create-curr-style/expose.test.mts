@@ -17,13 +17,13 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {
         height: 19,
         left: 0,
@@ -32,13 +32,13 @@ const sizing: LayoutSizing = {
       },
     },
     {
-      lifecycle: "leave",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "leave",
       style: {
         height: 57,
         left: 0,
@@ -63,13 +63,13 @@ test("exposed container width", () => {
     },
     context,
     selfOverrides: {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {},
     },
   };
@@ -84,16 +84,16 @@ test("exposed container width", () => {
     },
     context,
     self: {
-      lifecycle: "enter",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "enter",
       style: {
-        width: 11,
         height: 13,
+        width: 11,
         // height: 19,
         // left: 0,
         // top: 0,
@@ -118,13 +118,13 @@ test("exposed container width 2", () => {
     },
     context,
     selfOverrides: {
-      lifecycle: "leave",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "leave",
       style: {},
     },
   };
@@ -139,13 +139,13 @@ test("exposed container width 2", () => {
     },
     context,
     self: {
-      lifecycle: "leave",
       interaction: {
-        hover: "none",
-        focus: "none",
-        press: "none",
         drag: "none",
+        focus: "none",
+        hover: "none",
+        press: "none",
       },
+      lifecycle: "leave",
       style: {
         height: 13,
         width: 11,

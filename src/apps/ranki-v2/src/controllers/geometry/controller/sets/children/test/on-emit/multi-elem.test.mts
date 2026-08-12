@@ -23,20 +23,20 @@ test("single session two elems", async () => {
   };
   const children = new GeometryChildren(host, props);
   const detail1: GeometryEvent = {
-    type: "lifecycle",
     lifecycle: "update",
     style: {
       height: 11,
       width: 7,
     },
+    type: "lifecycle",
   };
   const detail2: GeometryEvent = {
-    type: "lifecycle",
     lifecycle: "update",
     style: {
       height: 11,
       width: 13,
     },
+    type: "lifecycle",
   };
   const expected: ChildrenSizing = {
     sizing: {
@@ -46,13 +46,13 @@ test("single session two elems", async () => {
       },
       set: [
         {
-          lifecycle: detail1.lifecycle,
           interaction: {
-            hover: "none",
-            focus: "none",
-            press: "none",
             drag: "none",
+            focus: "none",
+            hover: "none",
+            press: "none",
           },
+          lifecycle: detail1.lifecycle,
           style: {
             ...detail1.style,
             left: 0,
@@ -60,13 +60,13 @@ test("single session two elems", async () => {
           },
         },
         {
-          lifecycle: detail2.lifecycle,
           interaction: {
-            hover: "none",
-            focus: "none",
-            press: "none",
             drag: "none",
+            focus: "none",
+            hover: "none",
+            press: "none",
           },
+          lifecycle: detail2.lifecycle,
           style: {
             ...detail2.style,
             left: detail1.style.width,
@@ -94,36 +94,36 @@ test("two sessions two elems", async () => {
   };
   const children = new GeometryChildren(host, props);
   const detail1_1: GeometryEvent = {
-    type: "lifecycle",
     lifecycle: "update",
     style: {
       height: 11,
       width: 7,
     },
+    type: "lifecycle",
   };
   const detail1_2: GeometryEvent = {
-    type: "lifecycle",
     lifecycle: "update",
     style: {
       height: 11,
       width: 19,
     },
+    type: "lifecycle",
   };
   const detail2_1: GeometryEvent = {
-    type: "lifecycle",
     lifecycle: "update",
     style: {
       height: 11,
       width: 13,
     },
+    type: "lifecycle",
   };
   const detail2_2: GeometryEvent = {
-    type: "lifecycle",
     lifecycle: "update",
     style: {
       height: 11,
       width: 23,
     },
+    type: "lifecycle",
   };
   const expected1: ChildrenSizing = {
     sizing: {
@@ -133,13 +133,13 @@ test("two sessions two elems", async () => {
       },
       set: [
         {
-          lifecycle: detail1_1.lifecycle,
           interaction: {
-            hover: "none",
-            focus: "none",
-            press: "none",
             drag: "none",
+            focus: "none",
+            hover: "none",
+            press: "none",
           },
+          lifecycle: detail1_1.lifecycle,
           style: {
             ...detail1_1.style,
             left: 0,
@@ -147,13 +147,13 @@ test("two sessions two elems", async () => {
           },
         },
         {
-          lifecycle: detail1_2.lifecycle,
           interaction: {
-            hover: "none",
-            focus: "none",
-            press: "none",
             drag: "none",
+            focus: "none",
+            hover: "none",
+            press: "none",
           },
+          lifecycle: detail1_2.lifecycle,
           style: {
             ...detail1_2.style,
             left: detail1_1.style.width,
@@ -172,13 +172,13 @@ test("two sessions two elems", async () => {
       },
       set: [
         {
-          lifecycle: detail2_1.lifecycle,
           interaction: {
-            hover: "none",
-            focus: "none",
-            press: "none",
             drag: "none",
+            focus: "none",
+            hover: "none",
+            press: "none",
           },
+          lifecycle: detail2_1.lifecycle,
           style: {
             ...detail2_1.style,
             left: 0,
@@ -186,13 +186,13 @@ test("two sessions two elems", async () => {
           },
         },
         {
-          lifecycle: detail2_2.lifecycle,
           interaction: {
-            hover: "none",
-            focus: "none",
-            press: "none",
             drag: "none",
+            focus: "none",
+            hover: "none",
+            press: "none",
           },
+          lifecycle: detail2_2.lifecycle,
           style: {
             ...detail2_2.style,
             left: detail2_1.style.width,

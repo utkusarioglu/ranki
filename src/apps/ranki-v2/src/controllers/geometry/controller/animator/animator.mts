@@ -1,5 +1,7 @@
 import type { LitElement } from "lit";
 
+import { O11y } from "_/o11y/o11y.mjs";
+
 import type { GeometryRole } from "../types/geometry-controller.constructor.types.mjs";
 import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs";
 
@@ -11,21 +13,20 @@ import {
   type AnimatorPlayParams,
   type GetRecipeCallback,
 } from "./animator.types.mjs";
-import { type GetAnimationRecipeProps } from "./recipe/recipe.types.mjs";
 import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
-import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
 import { LayoutParser } from "./parser/layout-parser.mjs";
 import { RecipeUtils } from "./recipe/recipe-utils.mjs";
-import { O11y } from "_/o11y/o11y.mjs";
+import { type GetAnimationRecipeProps } from "./recipe/recipe.types.mjs";
+import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
 
 export class Animator<Instance extends LitElement> {
   private readonly callbacks: AnimatorCallbacks<Instance>;
+  private readonly getRecipe: GetRecipeCallback;
   private readonly host: Instance;
   private readonly preset: string = "debug";
   private readonly role: GeometryRole;
   private running = new Map<string, Animation>();
   private readonly sequencer: AnimationSequencer;
-  private readonly getRecipe: GetRecipeCallback;
 
   constructor(
     host: Instance,
@@ -44,16 +45,6 @@ export class Animator<Instance extends LitElement> {
     );
   }
 
-  private prepareGetRecipeCallback(
-    collectionVal: GetCollectionConstructorParam<Instance>,
-  ): GetRecipeCallback {
-    return typeof collectionVal === "function"
-      ? (p: GetAnimationRecipeProps) =>
-          RecipeUtils.getRecipeFromCollection(collectionVal(this.host), p)
-      : (p: GetAnimationRecipeProps) =>
-          RecipeUtils.getRecipeFromCollection(collectionVal, p);
-  }
-
   public async update(
     curr: CurrentAppliedStyle,
     prev: CurrentAppliedStyle | null,
@@ -62,19 +53,19 @@ export class Animator<Instance extends LitElement> {
     await Promise.all(
       curr.actions.map((action) => {
         const recipe = this.getRecipe({
-          interaction: "default",
           action,
+          interaction: "default",
           preset: this.preset,
           role: this.role,
         });
 
-        const parsed = LayoutParser.parse({ recipe: recipe, curr, prev });
+        const parsed = LayoutParser.parse({ curr, prev, recipe: recipe });
         O11y.animatorUpdateComposed({
+          curr,
           host: this.host,
           parsed,
-          recipe,
-          curr,
           prev,
+          recipe,
         });
         return this.sequencer.build(parsed);
       }),
@@ -92,9 +83,9 @@ export class Animator<Instance extends LitElement> {
     };
     const finalKeyframes = KeyframeUtils.produceKeyframes(keyframes);
     O11y.animatorPlayName({
-      host: this.host,
-      finalOptions,
       finalKeyframes,
+      finalOptions,
+      host: this.host,
     });
     const anim = this.host.animate(finalKeyframes, finalOptions);
     const r = this.running.get(name);
@@ -118,15 +109,25 @@ export class Animator<Instance extends LitElement> {
       .then(() => this.running.delete(name))
       .catch((e) =>
         console.log("ABORT", {
-          host: this.host,
-          running: this.running,
           e,
+          host: this.host,
           new: {
-            name,
             keyframes,
+            name,
             options,
           },
+          running: this.running,
         }),
       );
+  }
+
+  private prepareGetRecipeCallback(
+    collectionVal: GetCollectionConstructorParam<Instance>,
+  ): GetRecipeCallback {
+    return typeof collectionVal === "function"
+      ? (p: GetAnimationRecipeProps) =>
+          RecipeUtils.getRecipeFromCollection(collectionVal(this.host), p)
+      : (p: GetAnimationRecipeProps) =>
+          RecipeUtils.getRecipeFromCollection(collectionVal, p);
   }
 }
