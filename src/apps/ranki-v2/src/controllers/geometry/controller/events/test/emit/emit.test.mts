@@ -3,8 +3,8 @@ import type { LitElement } from "lit";
 
 import { afterEach, beforeEach, expect, type Mock, test, vi } from "vitest";
 
-import type { GeometryEvent } from "../../geometry-events.types.mjs";
-import type { GeometryInteractionEmit } from "../../interaction.types.mjs";
+import type { GeometryEvent } from "../../types/geometry-events.types.mjs";
+import type { GeometryInteractionEmit } from "../../types/interaction.types.mjs";
 
 import { GeometryEvents } from "../../geometry-events.mjs";
 

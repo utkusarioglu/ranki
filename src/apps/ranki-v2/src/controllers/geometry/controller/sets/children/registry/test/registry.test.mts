@@ -1,5 +1,5 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
-import type { GeometryEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
+import type { GeometryEvent } from "_controllers/geometry/controller/events/types/geometry-events.types.mjs";
 
 // @vitest-environment jsdom
 import { afterEach, beforeEach, expect, type Mock, test, vi } from "vitest";

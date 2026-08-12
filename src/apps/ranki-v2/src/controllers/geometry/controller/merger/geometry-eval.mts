@@ -1,5 +1,5 @@
-import type { LocalAction } from "../events/geometry-events.types.mjs";
-import type { GeometryInteractionEmit } from "../events/interaction.types.mjs";
+import type { LocalAction } from "../events/types/geometry-events.types.mjs";
+import type { GeometryInteractionEmit } from "../events/types/interaction.types.mjs";
 import type { CurrentAppliedStyleWithoutActions } from "../types/geometry-controller.types.mjs";
 
 export class GeometryEval {

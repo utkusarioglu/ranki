@@ -1,7 +1,7 @@
 import type {
   GeometryInteraction,
   GeometryInteractionState,
-} from "../sets/children/registry/children-registry.types.mjs";
+} from "../../sets/children/registry/children-registry.types.mjs";
 
 export interface GeometryEventInteraction {
   interaction: GeometryInteractionEmit;

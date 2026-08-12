@@ -1,4 +1,4 @@
-import type { LocalAction } from "../events/geometry-events.types.mjs";
+import type { LocalAction } from "../events/types/geometry-events.types.mjs";
 import type { GeometrySetName } from "../sets/sets.types.mjs";
 import type {
   CurrentAppliedStyle,

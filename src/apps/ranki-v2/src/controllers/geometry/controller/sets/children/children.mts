@@ -3,7 +3,7 @@ import type { LitElement } from "lit";
 
 import { TimingUtils } from "_controllers/geometry/geometry.mjs";
 
-import type { GeometryEvent } from "../../events/geometry-events.types.mjs";
+import type { GeometryEvent } from "../../events/types/geometry-events.types.mjs";
 import type {
   ChildrenUpdateSizingReturn,
   GeometryChildrenLayoutCallback,

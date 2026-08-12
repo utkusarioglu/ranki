@@ -1,4 +1,4 @@
-import type { WidthHeight } from "../types/geometry-style.types.mjs";
+import type { WidthHeight } from "../../types/geometry-style.types.mjs";
 
 /**
  * Value "enter" is used when an "update" is made on an object that doesn't yet exist.

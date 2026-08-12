@@ -4,10 +4,10 @@ import type {
   GeometryEventCb,
   GeometryEventName,
   GeometryEventsConstructorParams,
-} from "./geometry-events.constructor.types.mjs";
-import type { LocalAction } from "./geometry-events.types.mjs";
-import type { GeometryEvent } from "./geometry-events.types.mjs";
-import type { GeometryEventTypes } from "./geometry-events.constructor.types.mjs";
+} from "./types/geometry-events.constructor.types.mjs";
+import type { LocalAction } from "./types/geometry-events.types.mjs";
+import type { GeometryEvent } from "./types/geometry-events.types.mjs";
+import type { GeometryEventTypes } from "./types/geometry-events.constructor.types.mjs";
 
 const DEFAULT_EVENT_SETTINGS: GeometryEventTypes = {
   hover: false,
