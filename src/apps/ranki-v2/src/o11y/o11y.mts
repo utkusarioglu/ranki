@@ -1,68 +1,18 @@
-import { DEBUG_TAG } from "_/debug/debug.constants.mjs";
-import type { R2C } from "_components/r2c/r2c.mjs";
+import { DEBUG_TAG } from "./o11.constants.mjs";
 import type {
-  AnimationBlock,
-  InformSetProps,
-  LayoutParsed,
-} from "_controllers/geometry/controller/animator/animator.types.mjs";
-import type { ChildrenSizing } from "_controllers/geometry/controller/sets/children/children.types.mjs";
-import type { LayoutSizing } from "_controllers/geometry/controller/sets/children/layout/layout-utils.types.mjs";
-import type {
-  CurrentAppliedStyle,
-  InformedChildStyle,
-} from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
-import type { LitElement } from "lit";
+  DebugPause,
+  GeometryControllerOnEmitProps,
+  ControllerInformSet,
+  InformStyleDebug,
+  InformSet,
+  AnimatorUpdate,
+  AnimatorUpdateComposedProps,
+  AnimatorPlayNameProps,
+} from "./o11y.types.mjs";
 
 const DEBUG_DELAY = 0;
 
-interface ControllerInformSet {
-  host: LitElement;
-  props: InformSetProps;
-}
-
-interface AnimatorUpdateComposedProps {
-  host: LitElement;
-  parsed: LayoutParsed;
-  recipe: AnimationBlock;
-  curr: CurrentAppliedStyle;
-  prev: CurrentAppliedStyle | null;
-}
-
-interface AnimatorPlayNameProps {
-  host: LitElement;
-  finalOptions: KeyframeAnimationOptions;
-  finalKeyframes: Keyframe[];
-}
-interface InformStyleDebug {
-  host: LitElement;
-  curr: CurrentAppliedStyle;
-  prev: CurrentAppliedStyle | null;
-  sizing: LayoutSizing | null;
-  informed: InformedChildStyle;
-}
-
-interface InformSet {
-  e: R2C;
-  host: LitElement;
-  informed: InformedChildStyle;
-  props: InformSetProps;
-}
-
-interface AnimatorUpdate {
-  host: LitElement;
-  curr: CurrentAppliedStyle;
-  prev: CurrentAppliedStyle | null;
-}
-interface GeometryControllerOnEmitProps {
-  host: LitElement;
-  update: ChildrenSizing | null;
-}
-
-interface DebugPause {
-  duration: number;
-  props: any;
-}
-export class DebugUtils {
+export class O11y {
   public static async pause(props?: DebugPause) {
     const duration = props?.duration || DEBUG_DELAY;
     const details = props?.props || null;

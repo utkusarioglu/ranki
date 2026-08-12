@@ -1,7 +1,5 @@
 import type { LitElement } from "lit";
 
-import { DebugUtils } from "_/debug/debug-utils.mjs";
-
 import type { GeometryRole } from "../types/geometry-controller.constructor.types.mjs";
 import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs";
 
@@ -18,6 +16,7 @@ import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
 import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
 import { LayoutParser } from "./parser/layout-parser.mjs";
 import { RecipeUtils } from "./recipe/recipe-utils.mjs";
+import { O11y } from "_/o11y/o11y.mjs";
 
 export class Animator<Instance extends LitElement> {
   private readonly callbacks: AnimatorCallbacks<Instance>;
@@ -59,7 +58,7 @@ export class Animator<Instance extends LitElement> {
     curr: CurrentAppliedStyle,
     prev: CurrentAppliedStyle | null,
   ): Promise<void> {
-    DebugUtils.animatorUpdate({ curr, host: this.host, prev });
+    O11y.animatorUpdate({ curr, host: this.host, prev });
     await Promise.all(
       curr.actions.map((action) => {
         const recipe = this.getRecipe({
@@ -70,7 +69,7 @@ export class Animator<Instance extends LitElement> {
         });
 
         const parsed = LayoutParser.parse({ recipe: recipe, curr, prev });
-        DebugUtils.animatorUpdateComposed({
+        O11y.animatorUpdateComposed({
           host: this.host,
           parsed,
           recipe,
@@ -92,7 +91,7 @@ export class Animator<Instance extends LitElement> {
       ...options,
     };
     const finalKeyframes = KeyframeUtils.produceKeyframes(keyframes);
-    DebugUtils.animatorPlayName({
+    O11y.animatorPlayName({
       host: this.host,
       finalOptions,
       finalKeyframes,

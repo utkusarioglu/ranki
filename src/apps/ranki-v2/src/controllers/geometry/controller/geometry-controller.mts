@@ -1,7 +1,6 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement, ReactiveController } from "lit";
 
-import { DebugUtils } from "_/debug/debug-utils.mjs";
 import { assertExists, assertNever } from "_error/assertions.mjs";
 
 import type { InformSetProps } from "./animator/animator.types.mjs";
@@ -17,6 +16,7 @@ import { Animator } from "./animator/animator.mjs";
 import { GeometryEvents } from "./events/geometry-events.mjs";
 import { GeometryMerger } from "./merger/geometry-merger.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
+import { O11y } from "_/o11y/o11y.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -67,7 +67,7 @@ export class GeometryController<
 
       const update = await this.sets.onEmit(target, e.detail);
       if (!update) return;
-      DebugUtils.geometryControllerOnEmit({ host: this.host, update });
+      O11y.geometryControllerOnEmit({ host: this.host, update });
 
       this.sizing = update.sizing;
       switch (update.type) {
@@ -99,7 +99,7 @@ export class GeometryController<
   }
 
   private async informSet(props: InformSetProps): Promise<void> {
-    DebugUtils.controllerInformSet({ host: this.host, props });
+    O11y.controllerInformSet({ host: this.host, props });
     return this.sets.inform(props, this.sizing);
   }
 
@@ -107,7 +107,7 @@ export class GeometryController<
     this.prev = this.curr;
     this.curr = GeometryMerger.createCurrStyle(informed, this.sizing);
 
-    DebugUtils.informStyle({
+    O11y.informStyle({
       curr: this.curr,
       host: this.host,
       prev: this.prev,
