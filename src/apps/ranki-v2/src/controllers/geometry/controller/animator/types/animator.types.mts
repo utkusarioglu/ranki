@@ -1,12 +1,15 @@
-import type { GeometrySetName } from "../sets/sets.types.mjs";
+import type { GeometrySetName } from "../../sets/sets.types.mjs";
 import type {
   CurrentAppliedStyle,
   InformContext,
   InformedChildStyleContainer,
   InformedChildStyleSelf,
-} from "../types/geometry-controller.types.mjs";
-import type { TopLeft, WidthHeight } from "../types/geometry-style.types.mjs";
-import type { GetAnimationRecipeProps } from "./recipe/recipe.types.mjs";
+} from "../../types/geometry-controller.types.mjs";
+import type {
+  TopLeft,
+  WidthHeight,
+} from "../../types/geometry-style.types.mjs";
+import type { GetAnimationRecipeProps } from "../recipe/recipe.types.mjs";
 
 export type AnimatableStylesConfigKeyframes = Partial<
   Record<keyof AnimationKeyframeStyles, number | string>

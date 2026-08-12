@@ -2,7 +2,7 @@ import type { LayoutSizing } from "_controllers/geometry/controller/sets/childre
 
 import { expect, test } from "vitest";
 
-import type { InformSetProps } from "../../../animator/animator.types.mjs";
+import type { InformSetProps } from "../../../animator/types/animator.types.mjs";
 import type {
   InformContext,
   InformedChildStyle,

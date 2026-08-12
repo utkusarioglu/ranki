@@ -7,7 +7,7 @@ import type {
 
 import { GeometryEval } from "_controllers/geometry/controller/merger/geometry-eval.mjs";
 
-import type { InformSetProps } from "../animator/animator.types.mjs";
+import type { InformSetProps } from "../animator/types/animator.types.mjs";
 import type { LayoutSizing } from "../sets/children/layout/layout-utils.types.mjs";
 
 interface CreateSetItemInformerProps {

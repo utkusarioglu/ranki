@@ -3,7 +3,7 @@ import type {
   InformSetProps,
   LayoutParsed,
   AnimationBlock,
-} from "_controllers/geometry/controller/animator/animator.types.mjs";
+} from "_controllers/geometry/controller/animator/types/animator.types.mjs";
 import type { ChildrenSizing } from "_controllers/geometry/controller/sets/children/children.types.mjs";
 import type { LayoutSizing } from "_controllers/geometry/controller/sets/children/layout/layout-utils.types.mjs";
 import type {

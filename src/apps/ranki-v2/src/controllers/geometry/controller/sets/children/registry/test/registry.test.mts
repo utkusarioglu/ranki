@@ -149,7 +149,7 @@ test("interaction", () => {
     interaction: {
       drag: "none",
       focus: "none",
-      hover: "start",
+      hover: "enter",
       press: "none",
     },
     lifecycle: "enter",

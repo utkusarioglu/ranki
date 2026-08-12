@@ -1,4 +1,4 @@
-import type { GeometryAnimationPreset } from "_controllers/geometry/controller/animator/library.types.mjs";
+import type { GeometryAnimationPreset } from "_controllers/geometry/controller/animator/types/library.types.mjs";
 
 export const CHIP: GeometryAnimationPreset = {
   chip: {

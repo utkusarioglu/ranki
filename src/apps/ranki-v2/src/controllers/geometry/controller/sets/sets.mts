@@ -3,7 +3,7 @@ import type { LitElement } from "lit";
 
 import { assertNotUndefined } from "_error/assertions.mjs";
 
-import type { InformSetProps } from "../animator/animator.types.mjs";
+import type { InformSetProps } from "../animator/types/animator.types.mjs";
 import type { GeometryEvent } from "../events/types/geometry-events.types.mjs";
 import type { ChildrenUpdateSizingReturn } from "./children/children.types.mjs";
 import type { LayoutSizing } from "./children/layout/layout-utils.types.mjs";

@@ -3,7 +3,7 @@ import type { LitElement } from "lit";
 
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
-import type { AnimationBlock } from "../../animator.types.mjs";
+import type { AnimationBlock } from "../../types/animator.types.mjs";
 
 import { Animator } from "../../animator.mjs";
 import { KeyframeUtils } from "../../keyframe/keyframe-utils.mjs";

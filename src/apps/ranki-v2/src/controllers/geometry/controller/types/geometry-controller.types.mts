@@ -1,7 +1,7 @@
 import type {
   AnimationKeyframeStyles,
   InformSetProps,
-} from "../animator/animator.types.mjs";
+} from "../animator/types/animator.types.mjs";
 import type { LocalAction } from "../events/types/geometry-events.types.mjs";
 import type { EmitLifecycleKey } from "../events/types/lifecycle.types.mjs";
 import type { GeometryInteraction } from "../sets/children/registry/children-registry.types.mjs";

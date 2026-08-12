@@ -5,7 +5,7 @@ import type {
   ApplyRootParams,
   LayoutParsed,
   LayoutParsedSets,
-} from "../animator.types.mjs";
+} from "../types/animator.types.mjs";
 import type { AnimationSequencerCallbacks } from "./animation-sequencer.types.mjs";
 
 export class AnimationSequencer {

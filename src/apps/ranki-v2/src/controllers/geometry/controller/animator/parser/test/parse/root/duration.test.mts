@@ -1,7 +1,7 @@
 import type {
   AnimationBlock,
   LayoutParsed,
-} from "_controllers/geometry/controller/animator/animator.types.mjs";
+} from "_controllers/geometry/controller/animator/types/animator.types.mjs";
 
 import { expect, test } from "vitest";
 

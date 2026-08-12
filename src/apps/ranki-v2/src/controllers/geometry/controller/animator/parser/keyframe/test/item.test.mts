@@ -2,7 +2,7 @@ import type { CurrentAppliedStyle } from "_controllers/geometry/controller/types
 
 import { expect, test } from "vitest";
 
-import type { AnimatableStylesConfigKeyframes } from "../../../animator.types.mjs";
+import type { AnimatableStylesConfigKeyframes } from "../../../types/animator.types.mjs";
 
 import { KeyframeParser } from "../keyframe-parser.mjs";
 

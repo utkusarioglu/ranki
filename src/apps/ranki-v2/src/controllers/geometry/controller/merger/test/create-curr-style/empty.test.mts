@@ -156,7 +156,7 @@ test("informed container width 2", () => {
       interaction: {
         drag: "none",
         focus: "none",
-        hover: "end",
+        hover: "leave",
         press: "none",
       },
       lifecycle: "update",
@@ -177,7 +177,7 @@ test("informed container width 2", () => {
       interaction: {
         drag: "none",
         focus: "none",
-        hover: "end",
+        hover: "leave",
         press: "none",
       },
       lifecycle: "update",

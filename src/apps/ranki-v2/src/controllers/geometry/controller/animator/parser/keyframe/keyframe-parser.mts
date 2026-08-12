@@ -4,12 +4,12 @@ import type {
   CurrentAppliedStyle,
   InformContext,
 } from "../../../types/geometry-controller.types.mjs";
-import type { AnimationKeyframeStyles } from "../../animator.types.mjs";
+import type { AnimationKeyframeStyles } from "../../types/animator.types.mjs";
 import type {
   AnimatableStylesConfigKeyframes,
   AnimationOptions,
   AnimationRoot,
-} from "../../animator.types.mjs";
+} from "../../types/animator.types.mjs";
 import type { UnitConversionsRecord } from "./keyframe-parser.types.mjs";
 
 export const parser = new Parser();

@@ -1,4 +1,4 @@
-import type { GeometryAnimationPresetDict } from "_controllers/geometry/controller/animator/library.types.mjs";
+import type { GeometryAnimationPresetDict } from "_controllers/geometry/controller/animator/types/library.types.mjs";
 import { BADGE_LIST } from "./animation/debug/badge-list.mjs";
 import { CHIP } from "./animation/debug/chip.mjs";
 import { CUE_LIST } from "./animation/debug/cue-list.mjs";

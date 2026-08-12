@@ -4,7 +4,7 @@ import type { LitElement, ReactiveController } from "lit";
 import { O11y } from "_/o11y/o11y.mjs";
 import { assertExists, assertNever } from "_error/assertions.mjs";
 
-import type { InformSetProps } from "./animator/animator.types.mjs";
+import type { InformSetProps } from "./animator/types/animator.types.mjs";
 import type { GeometryEvent } from "./events/types/geometry-events.types.mjs";
 import type { LayoutSizing } from "./sets/children/layout/layout-utils.types.mjs";
 import type { GeometryControllerConstructorParams } from "./types/geometry-controller.constructor.types.mjs";

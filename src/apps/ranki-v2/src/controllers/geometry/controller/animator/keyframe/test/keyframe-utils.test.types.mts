@@ -1,4 +1,4 @@
-import type { AnimationKeyframeStyles } from "../../animator.types.mjs";
+import type { AnimationKeyframeStyles } from "../../types/animator.types.mjs";
 
 export interface Case {
   expected: Partial<Keyframe>;

@@ -1,5 +1,5 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
-import type { InformSetProps } from "_controllers/geometry/controller/animator/animator.types.mjs";
+import type { InformSetProps } from "_controllers/geometry/controller/animator/types/animator.types.mjs";
 import type { InformedChildStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
 import type { LitElement } from "lit";
 
@@ -115,7 +115,7 @@ test("Single set 2 elems", async () => {
         interaction: {
           drag: "none",
           focus: "none",
-          hover: "end",
+          hover: "leave",
           press: "none",
         },
         lifecycle: "update",
@@ -167,7 +167,7 @@ test("Single set 2 elems", async () => {
         interaction: {
           drag: "none",
           focus: "none",
-          hover: "end",
+          hover: "leave",
           press: "none",
         },
         lifecycle: "update",

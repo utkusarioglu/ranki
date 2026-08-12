@@ -1,4 +1,4 @@
-import type { InformSetProps } from "_controllers/geometry/controller/animator/animator.types.mjs";
+import type { InformSetProps } from "_controllers/geometry/controller/animator/types/animator.types.mjs";
 import type { LitElement } from "lit";
 
 import { afterEach, beforeEach, expect, test, vi } from "vitest";

@@ -6,7 +6,7 @@ import {
   ReconciliationUtils,
 } from "_utils/reconciliation.utils.mjs";
 
-import type { InformSetProps } from "../../animator/animator.types.mjs";
+import type { InformSetProps } from "../../animator/types/animator.types.mjs";
 import type { GeometrySetDiffCb } from "../children/children.types.mjs";
 import type { LayoutSizing } from "../children/layout/layout-utils.types.mjs";
 import type { GeometrySetSelectorCb } from "../sets.types.mjs";

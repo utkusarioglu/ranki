@@ -1,5 +1,5 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
-import type { InformSetProps } from "_controllers/geometry/controller/animator/animator.types.mjs";
+import type { InformSetProps } from "_controllers/geometry/controller/animator/types/animator.types.mjs";
 import type { InformedChildStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
 import type { LitElement } from "lit";
 
@@ -39,7 +39,7 @@ const sizing: LayoutSizing = {
       interaction: {
         drag: "none",
         focus: "none",
-        hover: "end",
+        hover: "leave",
         press: "none",
       },
       lifecycle: "enter",
@@ -230,7 +230,7 @@ test("2 set varied elem count 1", async () => {
         interaction: {
           drag: "none",
           focus: "none",
-          hover: "end",
+          hover: "leave",
           press: "none",
         },
         lifecycle: "enter",
@@ -260,7 +260,7 @@ test("2 set varied elem count 1", async () => {
         interaction: {
           drag: "none",
           focus: "none",
-          hover: "start",
+          hover: "enter",
           press: "none",
         },
         lifecycle: "update",
@@ -329,7 +329,7 @@ test("2 set varied elem count 2", async () => {
         interaction: {
           drag: "none",
           focus: "none",
-          hover: "end",
+          hover: "leave",
           press: "none",
         },
         lifecycle: "enter",
@@ -359,7 +359,7 @@ test("2 set varied elem count 2", async () => {
         interaction: {
           drag: "none",
           focus: "none",
-          hover: "start",
+          hover: "enter",
           press: "none",
         },
         lifecycle: "update",

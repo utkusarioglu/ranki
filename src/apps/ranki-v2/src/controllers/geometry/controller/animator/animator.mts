@@ -8,11 +8,11 @@ import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs
 import {
   type AnimatorCallbacks,
   type GetCollectionConstructorParam,
-} from "./animator.constructor.types.mjs";
+} from "./types/animator.constructor.types.mjs";
 import {
   type AnimatorPlayParams,
   type GetRecipeCallback,
-} from "./animator.types.mjs";
+} from "./types/animator.types.mjs";
 import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
 import { LayoutParser } from "./parser/layout-parser.mjs";
 import { RecipeUtils } from "./recipe/recipe-utils.mjs";

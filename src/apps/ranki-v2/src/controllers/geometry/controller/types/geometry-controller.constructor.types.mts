@@ -1,7 +1,7 @@
 import type { GeometryEventTypes } from "../events/types/geometry-events.constructor.types.mjs";
 import type { LitElement } from "lit";
 
-import type { GetCollectionConstructorParam } from "../animator/animator.constructor.types.mjs";
+import type { GetCollectionConstructorParam } from "../animator/types/animator.constructor.types.mjs";
 import type { GeometryEventCb } from "../events/types/geometry-events.constructor.types.mjs";
 import type { GeometrySetsConstructorParams } from "../sets/sets.types.mjs";
 

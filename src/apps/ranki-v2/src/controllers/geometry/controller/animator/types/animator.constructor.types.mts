@@ -1,6 +1,6 @@
 import type { LitElement } from "lit";
 
-import type { GeometryControllerInformSetCb } from "../types/geometry-controller.types.mjs";
+import type { GeometryControllerInformSetCb } from "../../types/geometry-controller.types.mjs";
 import type { GeometryAnimationPresetDict } from "./library.types.mjs";
 
 export interface AnimatorCallbacks<Instance extends LitElement> {
