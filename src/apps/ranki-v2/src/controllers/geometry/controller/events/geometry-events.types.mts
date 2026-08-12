@@ -49,3 +49,20 @@ interface GeometryEventLifecycleUpdate {
   style: WidthHeight;
   type: "lifecycle";
 }
+
+/**
+ * Value "enter" is used when an "update" is made on an object that doesn't yet exist.
+ * !FIX "none" is now an escape hatch for situations where a child cannot be found but a placeholder is needed. I believe this is a conceptual flaw.
+ */
+export type EmitLifecycleInterpreted = "enter" | "none";
+
+export type EmitLifecycle =
+  | GeometryEventLifecycle["lifecycle"]
+  | EmitLifecycleInterpreted;
+// | "enter"
+// | "interaction"
+// | "leave"
+// | "none"
+// | "update";
+
+export type LocalAction = EmitLifecycle | GeometryInteractionEmit;

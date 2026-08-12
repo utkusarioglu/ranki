@@ -1,7 +1,7 @@
 import type {
   EmitLifecycle,
   LocalAction,
-} from "../../geometry-intent.types.mjs";
+} from "../events/geometry-events.types.mjs";
 import type { WidthHeight } from "../../geometry-style.types.mjs";
 import type {
   AnimationKeyframeStyles,

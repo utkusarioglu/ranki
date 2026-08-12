@@ -2,7 +2,7 @@ import type {
   CurrentAppliedStyle,
   InformContext,
 } from "../../../types/geometry-controller.types.mjs";
-import type { UpdateStyle } from "../../animator.types.mjs";
+import type { AnimationKeyframeStyles } from "../../animator.types.mjs";
 import type {
   AnimatableStylesConfigKeyframes,
   AnimationOptions,
@@ -54,7 +54,7 @@ export class KeyframeParser {
     curr: CurrentAppliedStyle,
     prev: CurrentAppliedStyle | null,
     b: AnimatableStylesConfigKeyframes,
-  ): Omit<UpdateStyle, "type"> {
+  ): Omit<AnimationKeyframeStyles, "type"> {
     const entries = Object.entries(b).map(([k, v]) => [
       k,
       this.evalKeyframeValue(curr, prev, v),

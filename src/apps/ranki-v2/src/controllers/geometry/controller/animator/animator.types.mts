@@ -1,7 +1,4 @@
-import type {
-  LocalAction,
-  WithEmitIntents,
-} from "../../geometry-intent.types.mjs";
+import type { LocalAction } from "../events/geometry-events.types.mjs";
 import type { TopLeft, WidthHeight } from "../../geometry-style.types.mjs";
 import type { GeometrySetName } from "../sets/sets.types.mjs";
 import type {
@@ -25,8 +22,8 @@ export interface AnimationBlock {
 export type AnimationBlockSets = Record<GeometrySetName, AnimationTarget>;
 
 export type AnimationCallback = (
-  curr: UpdateStyle,
-  prev: null | UpdateStyle,
+  curr: AnimationKeyframeStyles,
+  prev: null | AnimationKeyframeStyles,
   context: InformContext,
 ) => Promise<void>;
 
@@ -119,5 +116,3 @@ export type TargetAnimationSpec = Record<
   string,
   Partial<Record<LocalAction, AnimationBlock>>
 >;
-
-export type UpdateStyle = AnimationKeyframeStyles & WithEmitIntents;

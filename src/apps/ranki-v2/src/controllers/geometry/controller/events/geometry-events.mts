@@ -1,6 +1,6 @@
 import type { LitElement } from "lit";
 
-import type { LocalAction } from "../../geometry-intent.types.mjs";
+import type { LocalAction } from "./geometry-events.types.mjs";
 import type {
   GeometryEventCb,
   GeometryEventName,

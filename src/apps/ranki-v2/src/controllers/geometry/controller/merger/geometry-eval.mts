@@ -1,4 +1,4 @@
-import type { LocalAction } from "../../geometry-intent.types.mjs";
+import type { LocalAction } from "../events/geometry-events.types.mjs";
 import type { GeometryInteractionEmit } from "../events/geometry-events.types.mjs";
 import type { CurrentAppliedStyleWithoutActions } from "../types/geometry-controller.types.mjs";
 
