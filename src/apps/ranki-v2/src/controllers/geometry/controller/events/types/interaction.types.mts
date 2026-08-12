@@ -1,3 +1,4 @@
+import type { INTERACTION_SEPARATOR } from "../../sets/children/registry/children-registry.constants.mjs";
 import type {
   GeometryInteraction,
   GeometryInteractionState,
@@ -9,4 +10,4 @@ export interface GeometryEventInteraction {
 }
 
 export type GeometryInteractionEmit =
-  `${keyof GeometryInteraction}-${GeometryInteractionState}`;
+  `${keyof GeometryInteraction}${typeof INTERACTION_SEPARATOR}${GeometryInteractionState}`;

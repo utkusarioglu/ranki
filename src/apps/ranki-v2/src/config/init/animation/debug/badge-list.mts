@@ -2,86 +2,69 @@ import type { GeometryAnimationPreset } from "_controllers/geometry/controller/a
 
 export const BADGE_LIST: GeometryAnimationPreset = {
   "badge-list": {
-    enter: {
-      root: [
-        {
-          name: "init",
-          keyframes: [
-            {
-              top: "= to.self.top",
-              left: "= to.self.left",
-            },
-          ],
-          duration: 0,
-        },
-      ],
-      sets: {
-        bg: {
-          override: {
-            width: "= to.self.width",
-            height: "= to.self.height",
+    lifecycle: {
+      enter: {
+        root: [
+          {
+            name: "init",
+            keyframes: [
+              {
+                top: "= to.self.top",
+                left: "= to.self.left",
+              },
+            ],
+            duration: 0,
           },
-        },
-        children: {
-          expose: {
-            // top: "= to.self.top",
-            // left: "= to.self.left",
-            // width: "= to.self.width",
-          },
-        },
-      },
-    },
-    update: {
-      root: [
-        {
-          name: "position",
-          keyframes: [
-            {
-              left: "= to.self.left",
-              top: "= to.self.top",
+        ],
+        sets: {
+          bg: {
+            override: {
               width: "= to.self.width",
               height: "= to.self.height",
             },
-          ],
-          delay: 0,
-          // duration: 1000,
-          duration: 0,
-        },
-      ],
-      sets: {
-        bg: {
-          override: {
-            width: "= to.self.width",
-            height: "= to.self.height",
+          },
+          children: {
+            expose: {
+              // top: "= to.self.top",
+              // left: "= to.self.left",
+              // width: "= to.self.width",
+            },
           },
         },
-        children: {
-          wait: 0,
-          expose: {
-            top: "= to.self.top",
-            left: "= to.self.left",
+      },
+      update: {
+        root: [
+          {
+            name: "position",
+            keyframes: [
+              {
+                left: "= to.self.left",
+                top: "= to.self.top",
+                width: "= to.self.width",
+                height: "= to.self.height",
+              },
+            ],
+            delay: 0,
+            // duration: 1000,
+            duration: 0,
+          },
+        ],
+        sets: {
+          bg: {
+            override: {
+              width: "= to.self.width",
+              height: "= to.self.height",
+            },
+          },
+          children: {
+            wait: 0,
+            expose: {
+              top: "= to.self.top",
+              left: "= to.self.left",
+            },
           },
         },
       },
     },
-    // resize: {
-    //   sets: {
-    //     bg: {
-    //       wait: 0,
-    //       expose: {
-    //         width: "= to.container.width",
-    //         height: "= to.container.height",
-    //       },
-    //     },
-    //     children: {
-    //       wait: 0,
-    //       expose: {
-    //         top: "= to.self.top",
-    //         left: "= to.self.left",
-    //         width: "= to.self.width",
-    //       },
-    //     },
-    //   },
-    // },
   },
 };

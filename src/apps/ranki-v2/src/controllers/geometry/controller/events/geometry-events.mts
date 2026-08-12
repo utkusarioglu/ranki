@@ -73,13 +73,13 @@ export class GeometryEvents<Instance extends LitElement> {
   private onPointerEnter = (e: PointerEvent) => {
     e.stopPropagation();
     this.emit({
-      interaction: "hover-start",
+      interaction: "hover.enter",
       type: "interaction",
     });
   };
 
   private onPointerLeave = (e: PointerEvent) => {
     e.stopPropagation();
-    this.emit({ interaction: "hover-end", type: "interaction" });
+    this.emit({ interaction: "hover.leave", type: "interaction" });
   };
 }

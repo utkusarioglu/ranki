@@ -9,6 +9,7 @@ import type {
   EmittedComponentState,
   GeometryInteraction,
 } from "./children-registry.types.mjs";
+import { INTERACTION_SEPARATOR } from "./children-registry.constants.mjs";
 
 export class ChildrenRegistry {
   private static DEFAULT_INTERACTION: GeometryInteraction = {
@@ -70,7 +71,9 @@ export class ChildrenRegistry {
       interaction: {
         ...ChildrenRegistry.DEFAULT_INTERACTION,
         ...curr?.interaction,
-        ...Object.fromEntries([detail.interaction.split("-")]),
+        ...Object.fromEntries([
+          detail.interaction.split(INTERACTION_SEPARATOR),
+        ]),
       },
     });
   }
@@ -83,13 +86,10 @@ export class ChildrenRegistry {
         break;
       case "leave":
         this.dims.set(target, {
-          // interaction: "idle",
           ...curr,
-          // ...this.dims.get(target),
           interaction: {
             ...ChildrenRegistry.DEFAULT_INTERACTION,
             ...curr?.interaction,
-            // ...detail.interaction
           },
           lifecycle: detail.lifecycle,
         });
@@ -98,21 +98,15 @@ export class ChildrenRegistry {
         if (curr) {
           this.dims.set(target, {
             interaction: {
-              // ...ChildrenRegistry.DEFAULT_INTERACTION,
               ...curr?.interaction,
             },
             lifecycle: detail.lifecycle,
-            // interaction: detail.interaction || "idle",
             style: detail.style,
           });
         } else {
           this.dims.set(target, {
             interaction: {
               ...ChildrenRegistry.DEFAULT_INTERACTION,
-              // hover: "none",
-              // drag: "none",
-              // press: "none",
-              // focus: "none",
             },
             lifecycle: "enter",
             style: detail.style,

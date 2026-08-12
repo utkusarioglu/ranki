@@ -1,4 +1,3 @@
-import type { LocalAction } from "../../events/types/geometry-events.types.mjs";
 import type {
   GeometryInteractionKey,
   GeometryInteractionLibraryState,
@@ -21,8 +20,6 @@ export type GeometryAnimationPreset = Record<
   RoleAnimationDict
 >;
 
-type RoleAnimationDict = Partial<Record<LocalAction, AnimationBlock>>;
-
 export type ModeLibraryKey = string & { type?: "ModeLibraryKey" };
 
 type RoleInteractionDict = Record<
@@ -31,10 +28,11 @@ type RoleInteractionDict = Record<
 >;
 
 type RoleInteractionsDict = Record<GeometryInteractionKey, RoleInteractionDict>;
+type RoleInteractionsDictPartial = Partial<RoleInteractionsDict>;
 
 interface RoleLifecycleDict {
   enter: AnimationBlock;
-  update: AnimationBlock;
+  update?: AnimationBlock;
   leave: AnimationBlock;
 }
 
@@ -43,8 +41,8 @@ interface ModeLifecycleDict {
   leave: AnimationBlock;
 }
 
-interface RoleAnimationDict_NEW {
+interface RoleAnimationDict {
   lifecycle: RoleLifecycleDict;
-  interaction: RoleInteractionsDict;
-  mode: Record<ModeLibraryKey, ModeLifecycleDict>;
+  interaction?: RoleInteractionsDictPartial;
+  mode?: Record<ModeLibraryKey, ModeLifecycleDict>;
 }
