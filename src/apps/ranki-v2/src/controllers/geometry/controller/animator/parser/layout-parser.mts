@@ -38,9 +38,7 @@ export class LayoutParser {
   ): ApplyRootParams {
     return {
       apply: {
-        keyframes: b.keyframes.map((k) =>
-          KeyframeParser.evalKeyframe(curr, prev, k),
-        ),
+        keyframes: KeyframeParser.evalKeyframes(curr, prev, b.keyframes),
         name: b.name,
         options: KeyframeParser.evalOptions(b, curr.context),
       },

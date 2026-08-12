@@ -9,11 +9,47 @@ import type {
   AnimationRoot,
 } from "../../animator.types.mjs";
 import { Parser } from "expr-eval";
+import type { UnitConversions } from "./keyframe-parser.types.mjs";
 
 export const parser = new Parser();
 
 export class KeyframeParser {
+  static UNIT_CONVERSIONS = {
+    rem: 11,
+    vmin: 10,
+    vmax: 19,
+    // root line height
+    rlh: 20,
+    wv: 13,
+    wh: 17,
+
+    // bind these later
+    // swh: 1,
+    // svw: 1,
+    // lvw: 1,
+    // lvh: 1,
+    // dvh: 1,
+    // dvw: 1,
+  };
+
+  static readonly unitConversions: UnitConversions = {
+    rem: (v: number) => v * this.UNIT_CONVERSIONS.rem,
+    rlh: (v: number) => v * this.UNIT_CONVERSIONS.rlh,
+    vmin: (v: number) => v * this.UNIT_CONVERSIONS.vmin,
+    vmax: (v: number) => v * this.UNIT_CONVERSIONS.vmax,
+    wv: (v: number) => v * this.UNIT_CONVERSIONS.wv,
+    wh: (v: number) => v * this.UNIT_CONVERSIONS.wh,
+  };
+
   // TODO why is this accessed from geometry controller?
+  static evalKeyframes(
+    curr: CurrentAppliedStyle,
+    prev: CurrentAppliedStyle | null,
+    b: AnimatableStylesConfigKeyframes[],
+  ) {
+    return b.map((k) => KeyframeParser.evalKeyframe(curr, prev, k));
+  }
+
   static evalKeyframe(
     curr: CurrentAppliedStyle,
     prev: CurrentAppliedStyle | null,
@@ -21,7 +57,7 @@ export class KeyframeParser {
   ): Omit<UpdateStyle, "type"> {
     const entries = Object.entries(b).map(([k, v]) => [
       k,
-      this.evalConfigValue(curr, prev, v),
+      this.evalKeyframeValue(curr, prev, v),
     ]);
     return Object.fromEntries(entries);
   }
@@ -74,7 +110,11 @@ export class KeyframeParser {
     return exp.evaluate(varSet);
   }
 
-  private static evalConfigValue(
+  /**
+   * @dev
+   * do not access this for anything other than testing
+   */
+  static evalKeyframeValue(
     curr: CurrentAppliedStyle,
     prev: CurrentAppliedStyle | null,
     value: number | string | undefined,
@@ -109,6 +149,13 @@ export class KeyframeParser {
           width: this.try(curr, (c) => c.self.style.width),
         },
       },
+      ...this.unitConversions,
+      // rem: (v: number) => v * this.GLOBAL_UNITS.REM_TO_PX,
+      // rlh: (v: number) => v * this.GLOBAL_UNITS.RLH_TO_PX,
+      // vmin: (v: number) => v * this.GLOBAL_UNITS.VMIN_TO_PX,
+      // vmax: (v: number) => v * this.GLOBAL_UNITS.VMAX_TO_PX,
+      // wv: (v: number) => v * this.GLOBAL_UNITS.WV_TO_PX,
+      // wh: (v: number) => v * this.GLOBAL_UNITS.WH_TO_PX,
     };
 
     return this.evalValue(value, varSet);
