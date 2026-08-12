@@ -9,8 +9,8 @@ export const CUE_LIST: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              top: "to.self.top",
-              left: "to.self.left",
+              top: "= to.self.top",
+              left: "= to.self.left",
             },
           ],
         },
@@ -18,15 +18,15 @@ export const CUE_LIST: TargetAnimationSpec = {
       sets: {
         bg: {
           override: {
-            width: "to.self.width",
-            height: "to.self.height",
+            width: "= to.self.width",
+            height: "= to.self.height",
           },
         },
         children: {
           wait: 0,
           expose: {
-            top: "to.self.top",
-            left: "to.self.left",
+            top: "= to.self.top",
+            left: "= to.self.left",
           },
         },
       },
@@ -37,10 +37,10 @@ export const CUE_LIST: TargetAnimationSpec = {
           name: "position",
           keyframes: [
             {
-              left: "to.self.left",
-              top: "to.self.top",
-              // width: "to.self.width",
-              // height: "to.self.height",
+              left: "= to.self.left",
+              top: "= to.self.top",
+              // width: "= to.self.width",
+              // height: "= to.self.height",
             },
           ],
           delay: 0,
@@ -51,15 +51,15 @@ export const CUE_LIST: TargetAnimationSpec = {
       sets: {
         bg: {
           override: {
-            width: "to.self.width",
-            height: "to.self.height",
+            width: "= to.self.width",
+            height: "= to.self.height",
           },
         },
         children: {
           wait: 0,
           expose: {
-            top: "to.self.top",
-            left: "to.self.left",
+            top: "= to.self.top",
+            left: "= to.self.left",
           },
         },
       },

@@ -8,8 +8,8 @@ export const BADGE_LIST: TargetAnimationSpec = {
           name: "init",
           keyframes: [
             {
-              top: "to.self.top",
-              left: "to.self.left",
+              top: "= to.self.top",
+              left: "= to.self.left",
             },
           ],
           duration: 0,
@@ -18,15 +18,15 @@ export const BADGE_LIST: TargetAnimationSpec = {
       sets: {
         bg: {
           override: {
-            width: "to.self.width",
-            height: "to.self.height",
+            width: "= to.self.width",
+            height: "= to.self.height",
           },
         },
         children: {
           expose: {
-            // top: "to.self.top",
-            // left: "to.self.left",
-            // width: "to.self.width",
+            // top: "= to.self.top",
+            // left: "= to.self.left",
+            // width: "= to.self.width",
           },
         },
       },
@@ -37,10 +37,10 @@ export const BADGE_LIST: TargetAnimationSpec = {
           name: "position",
           keyframes: [
             {
-              left: "to.self.left",
-              top: "to.self.top",
-              width: "to.self.width",
-              height: "to.self.height",
+              left: "= to.self.left",
+              top: "= to.self.top",
+              width: "= to.self.width",
+              height: "= to.self.height",
             },
           ],
           delay: 0,
@@ -51,15 +51,15 @@ export const BADGE_LIST: TargetAnimationSpec = {
       sets: {
         bg: {
           override: {
-            width: "to.self.width",
-            height: "to.self.height",
+            width: "= to.self.width",
+            height: "= to.self.height",
           },
         },
         children: {
           wait: 0,
           expose: {
-            top: "to.self.top",
-            left: "to.self.left",
+            top: "= to.self.top",
+            left: "= to.self.left",
           },
         },
       },
@@ -69,16 +69,16 @@ export const BADGE_LIST: TargetAnimationSpec = {
     //     bg: {
     //       wait: 0,
     //       expose: {
-    //         width: "to.container.width",
-    //         height: "to.container.height",
+    //         width: "= to.container.width",
+    //         height: "= to.container.height",
     //       },
     //     },
     //     children: {
     //       wait: 0,
     //       expose: {
-    //         top: "to.self.top",
-    //         left: "to.self.left",
-    //         width: "to.self.width",
+    //         top: "= to.self.top",
+    //         left: "= to.self.left",
+    //         width: "= to.self.width",
     //       },
     //     },
     //   },

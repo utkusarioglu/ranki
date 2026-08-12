@@ -9,7 +9,7 @@ export const TEXT: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              height: "to.self.height",
+              height: "= to.self.height",
             },
           ],
         },
@@ -19,7 +19,7 @@ export const TEXT: TargetAnimationSpec = {
           keyframes: [
             {
               opacity: 1,
-              width: "to.self.width",
+              width: "= to.self.width",
             },
           ],
         },
@@ -28,8 +28,8 @@ export const TEXT: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              left: "to.self.left",
-              top: "to.self.top",
+              left: "= to.self.left",
+              top: "= to.self.top",
             },
           ],
         },
@@ -37,8 +37,8 @@ export const TEXT: TargetAnimationSpec = {
       sets: {
         children: {
           override: {
-            width: "to.self.width",
-            height: "to.self.height",
+            width: "= to.self.width",
+            height: "= to.self.height",
           },
         },
       },
@@ -50,10 +50,10 @@ export const TEXT: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              left: "to.self.left",
-              top: "to.self.top",
-              width: "to.self.width",
-              height: "to.self.height",
+              left: "= to.self.left",
+              top: "= to.self.top",
+              width: "= to.self.width",
+              height: "= to.self.height",
             },
           ],
         },
@@ -61,8 +61,8 @@ export const TEXT: TargetAnimationSpec = {
       sets: {
         children: {
           // override: {
-          //   width: "to.self.width",
-          //   height: "to.self.height",
+          //   width: "= to.self.width",
+          //   height: "= to.self.height",
           // },
         },
       },
@@ -91,7 +91,7 @@ export const TEXT: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              height: "to.self.height + 1",
+              height: "= to.self.height + 1",
               opacity: 0,
             },
           ],
@@ -101,7 +101,7 @@ export const TEXT: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              width: "to.self.width + 1",
+              width: "= to.self.width + 1",
               opacity: 1,
             },
           ],

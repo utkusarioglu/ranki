@@ -9,7 +9,7 @@ export const ICON: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              height: "to.self.height",
+              height: "= to.self.height",
             },
           ],
         },
@@ -19,7 +19,7 @@ export const ICON: TargetAnimationSpec = {
           keyframes: [
             {
               opacity: 1,
-              width: "to.self.width",
+              width: "= to.self.width",
             },
           ],
         },
@@ -28,8 +28,8 @@ export const ICON: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              left: "to.self.left",
-              top: "to.self.top",
+              left: "= to.self.left",
+              top: "= to.self.top",
             },
           ],
         },
@@ -45,10 +45,10 @@ export const ICON: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              left: "to.self.left",
-              top: "to.self.top",
-              width: "to.self.width",
-              height: "to.self.height",
+              left: "= to.self.left",
+              top: "= to.self.top",
+              width: "= to.self.width",
+              height: "= to.self.height",
             },
           ],
         },
@@ -78,7 +78,7 @@ export const ICON: TargetAnimationSpec = {
           keyframes: [
             {
               width: 0,
-              height: "to.self.height",
+              height: "= to.self.height",
               opacity: 0,
             },
           ],
@@ -88,7 +88,7 @@ export const ICON: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              width: "to.self.width",
+              width: "= to.self.width",
               opacity: 1,
             },
           ],

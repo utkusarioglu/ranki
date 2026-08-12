@@ -9,7 +9,7 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              height: "to.self.height",
+              height: "= to.self.height",
             },
           ],
         },
@@ -18,7 +18,7 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             // {
-            //   top: "to.self.height * -1",
+            //   top: "= to.self.height * -1",
             // },
             {
               top: 10,
@@ -29,8 +29,8 @@ export const HUD: TargetAnimationSpec = {
       sets: {
         children: {
           expose: {
-            width: "to.self.width",
-            height: "to.self.height",
+            width: "= to.self.width",
+            height: "= to.self.height",
           },
         },
       },
@@ -42,10 +42,10 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              // left: "to.self.left",
-              // top: "to.self.top",
-              // width: "to.self.width",
-              // height: "to.self.height",
+              // left: "= to.self.left",
+              // top: "= to.self.top",
+              // width: "= to.self.width",
+              // height: "= to.self.height",
             },
           ],
         },
@@ -53,8 +53,8 @@ export const HUD: TargetAnimationSpec = {
       sets: {
         children: {
           expose: {
-            width: "to.self.width",
-            height: "to.self.height",
+            width: "= to.self.width",
+            height: "= to.self.height",
           },
         },
       },
@@ -69,8 +69,8 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              height: "to.self.height",
-              // top: "to.self.top",
+              height: "= to.self.height",
+              // top: "= to.self.top",
             },
           ],
           then: {
@@ -80,7 +80,7 @@ export const HUD: TargetAnimationSpec = {
                 duration: 0,
                 keyframes: [
                   {
-                    width: "to.self.width",
+                    width: "= to.self.width",
                   },
                 ],
               },
@@ -88,15 +88,15 @@ export const HUD: TargetAnimationSpec = {
             sets: {
               bg: {
                 override: {
-                  width: "to.self.width",
-                  height: "to.self.height",
+                  width: "= to.self.width",
+                  height: "= to.self.height",
                 },
               },
               children: {
                 wait: 0,
                 expose: {
-                  top: "to.self.top",
-                  left: "to.self.left",
+                  top: "= to.self.top",
+                  left: "= to.self.left",
                 },
               },
             },
@@ -111,7 +111,7 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              width: "to.self.width",
+              width: "= to.self.width",
             },
           ],
         },
@@ -119,23 +119,23 @@ export const HUD: TargetAnimationSpec = {
       sets: {
         bg: {
           override: {
-            width: "to.self.width",
-            height: "to.self.height",
+            width: "= to.self.width",
+            height: "= to.self.height",
           },
         },
         children: {
           wait: 0,
           expose: {
-            top: "to.self.top",
-            left: "to.self.left",
+            top: "= to.self.top",
+            left: "= to.self.left",
           },
         },
       },
       // sets: {
       //   children: {
       //     expose: {
-      //       width: "to.self.width",
-      //       height: "to.self.height",
+      //       width: "= to.self.width",
+      //       height: "= to.self.height",
       //     },
       //   },
       // },
@@ -150,7 +150,7 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              height: "to.self.height",
+              height: "= to.self.height",
             },
           ],
         },
@@ -159,7 +159,7 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              width: "to.self.width",
+              width: "= to.self.width",
               opacity: 1,
             },
           ],
@@ -173,10 +173,10 @@ export const HUD: TargetAnimationSpec = {
           duration: 0,
           keyframes: [
             {
-              // left: "to.self.left",
-              // top: "to.self.top",
-              width: "to.self.width",
-              // height: "to.self.height",
+              // left: "= to.self.left",
+              // top: "= to.self.top",
+              width: "= to.self.width",
+              // height: "= to.self.height",
             },
           ],
         },
