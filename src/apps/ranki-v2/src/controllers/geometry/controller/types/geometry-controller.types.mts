@@ -2,7 +2,7 @@ import type {
   EmitLifecycle,
   LocalAction,
 } from "../events/geometry-events.types.mjs";
-import type { WidthHeight } from "../../geometry-style.types.mjs";
+import type { WidthHeight } from "./geometry-style.types.mjs";
 import type {
   AnimationKeyframeStyles,
   InformSetProps,

@@ -2,7 +2,7 @@ import type { ComponentDims } from "_controllers/geometry/controller/types/geome
 import type {
   TopLeft,
   WidthHeight,
-} from "_controllers/geometry/geometry-style.types.mjs";
+} from "_controllers/geometry/controller/types/geometry-style.types.mjs";
 
 import type { EmittedComponentState } from "../registry/children-registry.types.mjs";
 

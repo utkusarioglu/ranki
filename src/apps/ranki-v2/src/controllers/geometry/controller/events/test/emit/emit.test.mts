@@ -1,4 +1,4 @@
-import type { WidthHeight } from "_controllers/geometry/geometry-style.types.mjs";
+import type { WidthHeight } from "_controllers/geometry/controller/types/geometry-style.types.mjs";
 import type { LitElement } from "lit";
 
 import { afterEach, beforeEach, expect, type Mock, test, vi } from "vitest";

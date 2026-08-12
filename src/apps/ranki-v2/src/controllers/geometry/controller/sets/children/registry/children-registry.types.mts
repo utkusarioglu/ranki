@@ -1,5 +1,5 @@
 import type { EmitLifecycle as EmitLifecycle } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
-import type { WidthHeight } from "_controllers/geometry/geometry-style.types.mjs";
+import type { WidthHeight } from "_controllers/geometry/controller/types/geometry-style.types.mjs";
 
 export interface EmittedComponentState {
   interaction: GeometryInteraction;

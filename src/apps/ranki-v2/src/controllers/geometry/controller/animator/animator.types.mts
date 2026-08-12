@@ -1,5 +1,5 @@
 import type { LocalAction } from "../events/geometry-events.types.mjs";
-import type { TopLeft, WidthHeight } from "../../geometry-style.types.mjs";
+import type { TopLeft, WidthHeight } from "../types/geometry-style.types.mjs";
 import type { GeometrySetName } from "../sets/sets.types.mjs";
 import type {
   CurrentAppliedStyle,

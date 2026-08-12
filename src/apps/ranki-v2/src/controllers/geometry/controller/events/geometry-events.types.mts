@@ -1,4 +1,4 @@
-import type { WidthHeight } from "../../geometry-style.types.mjs";
+import type { WidthHeight } from "../types/geometry-style.types.mjs";
 import type {
   GeometryInteraction,
   GeometryInteractionState,

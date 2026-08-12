@@ -1,5 +1,5 @@
 import { R2C } from "_components/r2c/r2c.mjs";
-import { type WidthHeight } from "_controllers/geometry/geometry-style.types.mjs";
+import { type WidthHeight } from "_controllers/geometry/controller/types/geometry-style.types.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { R2IconProps } from "./icon.mjs";
