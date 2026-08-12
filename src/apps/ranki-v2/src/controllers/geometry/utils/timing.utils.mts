@@ -1,5 +1,3 @@
-import { PROPAGATE_DELAY } from "_/debug/debug.constants.mjs";
-
 type RafCallback = () => void;
 
 export class TimingUtils {
@@ -17,18 +15,6 @@ export class TimingUtils {
       setTimeout(() => {
         resolve();
       }, msec);
-    });
-  }
-
-  private static async propagateDelay(callback: Function = () => {}) {
-    if (PROPAGATE_DELAY === 0) {
-      return Promise.resolve();
-    }
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        callback();
-        resolve();
-      }, PROPAGATE_DELAY);
     });
   }
 

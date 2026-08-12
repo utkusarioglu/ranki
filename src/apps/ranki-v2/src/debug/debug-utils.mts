@@ -13,6 +13,8 @@ import type {
 } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
 import type { LitElement } from "lit";
 
+const DEBUG_DELAY = 0;
+
 interface ControllerInformSet {
   host: LitElement;
   props: InformSetProps;
@@ -55,7 +57,24 @@ interface GeometryControllerOnEmitProps {
   host: LitElement;
   update: ChildrenSizing | null;
 }
+
+interface DebugPause {
+  duration: number;
+  props: any;
+}
 export class DebugUtils {
+  public static async pause(props?: DebugPause) {
+    const duration = props?.duration || DEBUG_DELAY;
+    const details = props?.props || null;
+    if (duration === 0) return Promise.resolve();
+    if (details) console.log("DEBUG PAUSE: ", details);
+    await new Promise<void>((r) =>
+      setTimeout(() => {
+        r();
+      }, duration),
+    );
+  }
+
   public static geometryControllerOnEmit({
     host,
     update,

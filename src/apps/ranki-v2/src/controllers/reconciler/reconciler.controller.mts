@@ -5,7 +5,6 @@ import {
   type ReconcileableSubtree,
   type ReconcileSingle,
 } from "_utils/reconciliation.utils.mjs";
-import { TimingUtils } from "_utils/timing.utils.mjs";
 import type { LitElement, ReactiveController } from "lit";
 
 type GetSourceCallback<Instance, S> = (instance: Instance) => S[];
@@ -116,7 +115,8 @@ export class ReconciliationController<
     this.leaving.push(id);
     if (!this.willLeave) {
       this.willLeave = true;
-      await TimingUtils.waitLayout();
+      await new Promise<void>((r) => requestAnimationFrame(() => r()));
+      await new Promise<void>((r) => requestAnimationFrame(() => r()));
       if (!this.leaving.length) {
         return;
       }

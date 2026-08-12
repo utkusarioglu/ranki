@@ -2,7 +2,7 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { GeometryEvent } from "_controllers/geometry/controller/events/geometry-events.types.mjs";
 import type { LitElement } from "lit";
 
-import { TimingUtils } from "_utils/timing.utils.mjs";
+import { TimingUtils } from "_controllers/geometry/geometry.mjs";
 // @vitest-environment jsdom
 import { expect, test, vi } from "vitest";
 

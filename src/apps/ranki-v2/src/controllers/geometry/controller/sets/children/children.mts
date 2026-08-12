@@ -1,7 +1,7 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement } from "lit";
 
-import { TimingUtils } from "_utils/timing.utils.mjs";
+import { TimingUtils } from "_controllers/geometry/geometry.mjs";
 
 import type { GeometryEvent } from "../../events/geometry-events.types.mjs";
 import type {

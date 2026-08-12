@@ -5,13 +5,13 @@ import { customElement, property, state } from "lit/decorators.js";
 import type { R2IconProps } from "./icon.mjs";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { loadIcon } from "iconify-icon";
-import { TimingUtils } from "_utils/timing.utils.mjs";
 import style from "./icon-span.css?inline";
 import { SVG_PLACEHOLDER } from "./SVG_PLACEHOLDER.mjs";
 import { ReconciliationUtils } from "_utils/reconciliation.utils.mjs";
 import {
   geometry,
   GeometryController,
+  TimingUtils,
 } from "_controllers/geometry/geometry.mjs";
 import { getAnimationCollection } from "_store/app.getters.mjs";
 
