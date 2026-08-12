@@ -1,12 +1,10 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
+import type { GeometryEventInteraction } from "_controllers/geometry/controller/events/interaction.types.mjs";
+import type { GeometryEventLifecycle } from "_controllers/geometry/controller/events/lifecycle.types.mjs";
 
 import { assertNever } from "_error/assertions.mjs";
 
-import type {
-  GeometryEvent,
-  GeometryEventInteraction,
-  GeometryEventLifecycle,
-} from "../../../events/geometry-events.types.mjs";
+import type { GeometryEvent } from "../../../events/geometry-events.types.mjs";
 import type {
   EmittedComponentState,
   GeometryInteraction,

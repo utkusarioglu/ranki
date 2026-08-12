@@ -1,4 +1,5 @@
 import { expect, test } from "vitest";
+
 import { KeyframeParser } from "../keyframe-parser.mjs";
 
 const FIXED_CSS_VALUES = [

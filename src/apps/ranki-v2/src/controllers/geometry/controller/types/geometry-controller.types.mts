@@ -1,17 +1,15 @@
 import type {
-  EmitLifecycle,
-  LocalAction,
-} from "../events/geometry-events.types.mjs";
-import type { WidthHeight } from "./geometry-style.types.mjs";
-import type {
   AnimationKeyframeStyles,
   InformSetProps,
 } from "../animator/animator.types.mjs";
+import type { LocalAction } from "../events/geometry-events.types.mjs";
+import type { EmitLifecycleKey } from "../events/lifecycle.types.mjs";
 import type { GeometryInteraction } from "../sets/children/registry/children-registry.types.mjs";
+import type { WidthHeight } from "./geometry-style.types.mjs";
 
 export interface ComponentDims {
   interaction: GeometryInteraction;
-  lifecycle: EmitLifecycle;
+  lifecycle: EmitLifecycleKey;
   style: WidthHeight;
 }
 
@@ -47,7 +45,7 @@ export type InformedChildStyleContainer = {
 
 export type InformedChildStyleSelf = {
   interaction: GeometryInteraction;
-  lifecycle: EmitLifecycle;
+  lifecycle: EmitLifecycleKey;
   style: AnimationKeyframeStyles;
 };
 

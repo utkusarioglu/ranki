@@ -1,6 +1,8 @@
 import { expect, test } from "vitest";
-import { KeyframeParser } from "../keyframe-parser.mjs";
+
 import type { LegalUnitName } from "../keyframe-parser.types.mjs";
+
+import { KeyframeParser } from "../keyframe-parser.mjs";
 
 const UNIT_VALS = [0, 1, 0.5, 1.5, 3, 7, 11, 37, 100];
 const INPUT_VALS = [0, 1, -1, 0.5, 1.5, 3, 7, 11, 37, 100];
@@ -23,11 +25,11 @@ function* parametrize() {
         const expression = `= ${unitName}(${inputVal})`;
         const name = `${expression} = ${expected} [${unitVal}]`;
         yield {
-          unitName,
-          unitVal,
-          name,
           expected,
           expression,
+          name,
+          unitName,
+          unitVal,
         };
       }
     }
@@ -38,7 +40,7 @@ function* parametrize() {
  * @dev
  * #1 This data is not used. for clarity, it's proper setup is skipped.
  */
-for (const { name, expression, expected, unitName, unitVal } of parametrize()) {
+for (const { expected, expression, name, unitName, unitVal } of parametrize()) {
   test(name, () => {
     KeyframeParser.UNIT_CONVERSIONS[unitName] = unitVal;
     const response = KeyframeParser.evalKeyframeValue(

@@ -1,7 +1,8 @@
-import type { LocalAction } from "../../geometry-events.types.mjs";
 import type { LitElement } from "lit";
 
 import { beforeEach, expect, test, vi } from "vitest";
+
+import type { LocalAction } from "../../geometry-events.types.mjs";
 
 import { GeometryEvents } from "../../geometry-events.mjs";
 

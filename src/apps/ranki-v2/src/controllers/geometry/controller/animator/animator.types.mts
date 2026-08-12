@@ -1,5 +1,4 @@
 import type { LocalAction } from "../events/geometry-events.types.mjs";
-import type { TopLeft, WidthHeight } from "../types/geometry-style.types.mjs";
 import type { GeometrySetName } from "../sets/sets.types.mjs";
 import type {
   CurrentAppliedStyle,
@@ -7,6 +6,7 @@ import type {
   InformedChildStyleContainer,
   InformedChildStyleSelf,
 } from "../types/geometry-controller.types.mjs";
+import type { TopLeft, WidthHeight } from "../types/geometry-style.types.mjs";
 import type { GetAnimationRecipeProps } from "./recipe/recipe.types.mjs";
 
 export type AnimatableStylesConfigKeyframes = Partial<
@@ -23,7 +23,7 @@ export type AnimationBlockSets = Record<GeometrySetName, AnimationTarget>;
 
 export type AnimationCallback = (
   curr: AnimationKeyframeStyles,
-  prev: null | AnimationKeyframeStyles,
+  prev: AnimationKeyframeStyles | null,
   context: InformContext,
 ) => Promise<void>;
 

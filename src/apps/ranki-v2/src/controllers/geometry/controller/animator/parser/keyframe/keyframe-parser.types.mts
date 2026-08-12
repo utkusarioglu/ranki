@@ -1,7 +1,10 @@
+import type { Value } from "expr-eval";
+
 import type { KeyframeParser } from "./keyframe-parser.mjs";
 
 export type LegalUnitName = keyof typeof KeyframeParser.unitConversions;
-export type UnitConversions = Record<
+
+export type UnitConversionsRecord = Record<
   keyof typeof KeyframeParser.UNIT_CONVERSIONS,
-  (v: number) => number
+  (v: Value) => Value
 >;

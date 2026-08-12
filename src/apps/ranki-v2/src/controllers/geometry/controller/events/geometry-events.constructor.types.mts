@@ -1,7 +1,6 @@
-import type { LocalAction } from "./geometry-events.types.mjs";
 import type { LitElement } from "lit";
 
-import type { GeometryEventTypes } from "./geometry-events.types.mjs";
+import type { LocalAction } from "./geometry-events.types.mjs";
 
 export type GeometryEventCb<Instance> = (
   s: Instance,
@@ -14,4 +13,8 @@ export interface GeometryEventsConstructorParams<Instance extends LitElement> {
   events?: GeometryEventTypes;
   host: Instance;
   on?: GeometryEventCb<Instance>;
+}
+
+export interface GeometryEventTypes {
+  hover: boolean;
 }

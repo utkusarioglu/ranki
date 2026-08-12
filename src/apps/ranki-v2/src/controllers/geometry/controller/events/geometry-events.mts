@@ -1,15 +1,13 @@
 import type { LitElement } from "lit";
 
-import type { LocalAction } from "./geometry-events.types.mjs";
 import type {
   GeometryEventCb,
   GeometryEventName,
   GeometryEventsConstructorParams,
 } from "./geometry-events.constructor.types.mjs";
-import type {
-  GeometryEvent,
-  GeometryEventTypes,
-} from "./geometry-events.types.mjs";
+import type { LocalAction } from "./geometry-events.types.mjs";
+import type { GeometryEvent } from "./geometry-events.types.mjs";
+import type { GeometryEventTypes } from "./geometry-events.constructor.types.mjs";
 
 const DEFAULT_EVENT_SETTINGS: GeometryEventTypes = {
   hover: false,
