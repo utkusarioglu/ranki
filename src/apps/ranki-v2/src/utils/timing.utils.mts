@@ -12,6 +12,7 @@ export class TimingUtils {
   }
 
   static async delay(msec: number) {
+    if (msec === 0) return Promise.resolve();
     return new Promise<void>((resolve) => {
       setTimeout(() => {
         resolve();
@@ -40,7 +41,7 @@ export class TimingUtils {
         requestAnimationFrame(() => step(resolve, cb));
       }
     }
-    await this.propagateDelay();
+    // await this.propagateDelay();
     return new Promise<void>((r) => step(r, cb));
   }
 }

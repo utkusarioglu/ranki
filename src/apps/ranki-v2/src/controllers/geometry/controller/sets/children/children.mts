@@ -48,7 +48,6 @@ export class GeometryChildren<
     const ordered = this.registry.getOrdered(serial);
     const layoutCallback = this.layout(this.host);
     const sizing = layoutCallback(ordered);
-    console.log("after raf", { serial, ordered, sizing });
 
     this.requested = false;
 

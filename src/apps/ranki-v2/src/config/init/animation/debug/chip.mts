@@ -145,7 +145,7 @@ export const CHIP: TargetAnimationSpec = {
           ],
           delay: 0,
           // duration: 1000,
-          duration: 1000,
+          duration: 0,
         },
       ],
     },

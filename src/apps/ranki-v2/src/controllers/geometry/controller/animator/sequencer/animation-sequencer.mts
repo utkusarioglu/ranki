@@ -7,6 +7,8 @@ import type {
 } from "../animator.types.mjs";
 import type { AnimationSequencerCallbacks } from "./animation-sequencer.types.mjs";
 
+const DEBUG_DELAY = 0;
+
 export class AnimationSequencer {
   private readonly callbacks: AnimationSequencerCallbacks;
 
@@ -21,6 +23,7 @@ export class AnimationSequencer {
   private async sequenceCurrent(a: LayoutParsed | undefined): Promise<void> {
     if (!a) return Promise.resolve();
     await Promise.all([
+      TimingUtils.delay(DEBUG_DELAY),
       a && this.sequenceRoots(a.root),
       a && this.sequenceSets(a.sets),
     ]);
@@ -33,6 +36,7 @@ export class AnimationSequencer {
     await Promise.all(
       roots.map(async (p) => {
         await this.callbacks.playName(p.apply);
+        await TimingUtils.delay(DEBUG_DELAY);
         await this.sequenceThen(p.then);
       }),
     );
@@ -43,7 +47,9 @@ export class AnimationSequencer {
     await Promise.all(
       Object.values(l).map(async ({ props, then, wait }) => {
         if (wait) await TimingUtils.delay(wait);
+        await TimingUtils.delay(DEBUG_DELAY);
         await this.callbacks.informSet(props);
+        await TimingUtils.delay(DEBUG_DELAY);
         if (then) await this.sequenceThen(then);
       }),
     );
@@ -52,6 +58,7 @@ export class AnimationSequencer {
   private async sequenceThen(a: LayoutParsed | undefined): Promise<void> {
     if (!a) return Promise.resolve();
     await this.sequenceCurrent(a);
+    await TimingUtils.delay(DEBUG_DELAY);
     await this.sequenceThen(a.then);
   }
 }

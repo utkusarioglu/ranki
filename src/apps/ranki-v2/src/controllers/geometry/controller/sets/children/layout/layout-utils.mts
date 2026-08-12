@@ -89,50 +89,55 @@ export class LayoutUtils {
   }
 
   private static linear(
-    dims: EmittedComponentState[],
+    allDims: EmittedComponentState[],
     gaps: LayoutGapsParams = {},
     getMain: (v: EmittedComponentState["style"]) => number,
     getCross: (v: EmittedComponentState["style"]) => number,
   ) {
     const main = LayoutUtils.normalizeGaps(gaps.main);
     const cross = LayoutUtils.normalizeGaps(gaps.cross);
-    // const dims = rawDims.filter(
-    //   (d) => d.lifecycle !== "leave" && d.lifecycle !== "none",
-    // );
-    const spacingMain = main.gap * (dims.length - 1) + main.start + main.end;
+    const filteredDims = allDims.filter(
+      (d) => d.lifecycle !== "leave" && d.lifecycle !== "none",
+    );
+    // container
+    const spacingMain =
+      main.gap * (filteredDims.length - 1) + main.start + main.end;
     const spacingCross = cross.start + cross.end;
     const sizeCross =
-      dims.reduce((a, c) => Math.max(a, getCross(c.style)), 0) + spacingCross;
+      filteredDims.reduce((a, c) => Math.max(a, getCross(c.style)), 0) +
+      spacingCross;
     const sizeMain =
-      dims.reduce((a, c) => a + getMain(c.style), 0) + spacingMain;
+      filteredDims.reduce((a, c) => a + getMain(c.style), 0) + spacingMain;
 
-    const offsetsMain = Array(dims.length).fill(0);
+    // sets
+    const offsetsMain = Array(allDims.length).fill(0);
     offsetsMain[0] = main.start;
-    for (let i = 0; i < dims.length; i++) {
+    for (let i = 0; i < allDims.length; i++) {
       if (i === 0) continue;
       offsetsMain[i] =
-        offsetsMain[i - 1] + getMain(dims[i - 1].style) + main.gap;
+        offsetsMain[i - 1] + getMain(allDims[i - 1].style) + main.gap;
     }
-
-    const offsetsCross = Array(dims.length)
+    const offsetsCross = Array(allDims.length)
       .fill(0)
-      .map((_, i) => (sizeCross - getCross(dims[i].style)) / 2);
-    const sizesMain = dims.map((d) => getMain(d.style));
-    const sizesCross = dims.map((d) => getCross(d.style));
+      .map((_, i) => (sizeCross - getCross(allDims[i].style)) / 2);
+    const sizesMain = allDims.map((d) => getMain(d.style));
+    const sizesCross = allDims.map((d) => getCross(d.style));
 
-    const intents = dims.map((v) => v.lifecycle);
-    const modes = dims.map((v) => v.interaction);
+    const intents = allDims.map((v) => v.lifecycle);
+    const modes = allDims.map((v) => v.interaction);
 
-    const set = Array.from({ length: dims.length }, (_, i) => i).map((i) => ({
-      lifecycle: intents[i],
-      interaction: modes[i],
-      style: {
-        offsetCross: offsetsCross[i],
-        offsetMain: offsetsMain[i],
-        sizeCross: sizesCross[i],
-        sizeMain: sizesMain[i],
-      },
-    }));
+    const set = Array.from({ length: allDims.length }, (_, i) => i).map(
+      (i) => ({
+        lifecycle: intents[i],
+        interaction: modes[i],
+        style: {
+          offsetCross: offsetsCross[i],
+          offsetMain: offsetsMain[i],
+          sizeCross: sizesCross[i],
+          sizeMain: sizesMain[i],
+        },
+      }),
+    );
 
     return {
       container: {
