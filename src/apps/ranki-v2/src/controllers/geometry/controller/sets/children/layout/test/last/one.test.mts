@@ -13,6 +13,7 @@ test("zero size", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -34,6 +35,7 @@ test("zero size", () => {
     },
     set: [
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -57,6 +59,7 @@ test("zero width", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -78,6 +81,7 @@ test("zero width", () => {
     },
     set: [
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -101,6 +105,7 @@ test("zero height", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -122,6 +127,7 @@ test("zero height", () => {
     },
     set: [
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -145,6 +151,7 @@ test("rectangle", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -166,6 +173,7 @@ test("rectangle", () => {
     },
     set: [
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",

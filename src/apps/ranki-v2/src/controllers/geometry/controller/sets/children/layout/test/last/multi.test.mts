@@ -13,6 +13,7 @@ test("only last has size", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -26,6 +27,7 @@ test("only last has size", () => {
       },
     },
     {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -47,6 +49,7 @@ test("only last has size", () => {
     },
     set: [
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -62,6 +65,7 @@ test("only last has size", () => {
         },
       },
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -85,6 +89,7 @@ test("last doesn't have size", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -98,6 +103,7 @@ test("last doesn't have size", () => {
       },
     },
     {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -119,6 +125,7 @@ test("last doesn't have size", () => {
     },
     set: [
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -134,6 +141,7 @@ test("last doesn't have size", () => {
         },
       },
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",

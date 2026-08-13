@@ -33,6 +33,7 @@ export class ChildrenRegistry {
             press: "none",
           },
           lifecycle: "none",
+          mode: "default",
         });
       } else {
         ordered.push(dims);
@@ -67,6 +68,7 @@ export class ChildrenRegistry {
 
     this.dims.set(target, {
       lifecycle: "enter",
+      mode: "default",
       ...curr,
       interaction: {
         ...ChildrenRegistry.DEFAULT_INTERACTION,
@@ -86,6 +88,7 @@ export class ChildrenRegistry {
         break;
       case "leave":
         this.dims.set(target, {
+          mode: "default",
           ...curr,
           interaction: {
             ...ChildrenRegistry.DEFAULT_INTERACTION,
@@ -97,6 +100,7 @@ export class ChildrenRegistry {
       case "update":
         if (curr) {
           this.dims.set(target, {
+            mode: "default",
             interaction: {
               ...curr?.interaction,
             },
@@ -105,6 +109,7 @@ export class ChildrenRegistry {
           });
         } else {
           this.dims.set(target, {
+            mode: "default",
             interaction: {
               ...ChildrenRegistry.DEFAULT_INTERACTION,
             },

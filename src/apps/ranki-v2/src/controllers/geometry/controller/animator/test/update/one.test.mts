@@ -58,6 +58,7 @@ test("single keyframe", async () => {
       stagger: 0,
     },
     self: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -116,6 +117,7 @@ test("two keyframes", async () => {
       stagger: 0,
     },
     self: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",

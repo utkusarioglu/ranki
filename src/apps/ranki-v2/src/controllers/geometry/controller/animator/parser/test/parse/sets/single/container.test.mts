@@ -54,6 +54,7 @@ const CASES: Case[] = [
               },
             },
             selfOverrides: {
+              mode: "default",
               interaction: {
                 drag: "none" as const,
                 focus: "none" as const,
@@ -109,6 +110,7 @@ CASES.forEach(({ block, expected, name }) => {
           stagger: 0,
         },
         self: {
+          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",

@@ -98,6 +98,19 @@ export const ICON: GeometryAnimationPreset = {
           },
         ],
       },
+      leave: {
+        root: [
+          {
+            name: "leave",
+            duration: 0,
+            keyframes: [
+              {
+                opacity: 0,
+              },
+            ],
+          },
+        ],
+      },
     },
   },
 };

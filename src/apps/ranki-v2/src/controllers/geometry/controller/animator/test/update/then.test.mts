@@ -58,6 +58,7 @@ test("depth 2", async () => {
       stagger: 0,
     },
     self: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -142,6 +143,7 @@ test("depth 2 call 3", async () => {
       stagger: 0,
     },
     self: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",

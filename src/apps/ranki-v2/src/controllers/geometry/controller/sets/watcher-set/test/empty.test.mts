@@ -26,6 +26,7 @@ test("empty props", async () => {
   const props: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",

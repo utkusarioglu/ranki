@@ -18,6 +18,7 @@ const singleElem = () => ({ informStyle: vi.fn() });
 const informProps: InformSetProps = {
   containerExposed: { style: {} },
   selfOverrides: {
+    mode: "default",
     interaction: {
       drag: "none",
       focus: "none",
@@ -37,6 +38,7 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -52,6 +54,7 @@ const sizing: LayoutSizing = {
       },
     },
     {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",

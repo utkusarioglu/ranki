@@ -46,6 +46,7 @@ test("single session two elems", async () => {
       },
       set: [
         {
+          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -60,6 +61,7 @@ test("single session two elems", async () => {
           },
         },
         {
+          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -133,6 +135,7 @@ test("two sessions two elems", async () => {
       },
       set: [
         {
+          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -147,6 +150,7 @@ test("two sessions two elems", async () => {
           },
         },
         {
+          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -172,6 +176,7 @@ test("two sessions two elems", async () => {
       },
       set: [
         {
+          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -186,6 +191,7 @@ test("two sessions two elems", async () => {
           },
         },
         {
+          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",

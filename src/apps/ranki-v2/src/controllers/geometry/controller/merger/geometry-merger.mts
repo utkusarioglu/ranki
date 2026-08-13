@@ -30,8 +30,7 @@ export class GeometryMerger {
       },
       context: informed.context,
       self: {
-        interaction: informed.selfOverrides.interaction,
-        lifecycle: informed.selfOverrides.lifecycle,
+        ...informed.selfOverrides,
         style: {
           ...(sizing ? sizing.container : {}),
           ...informed.selfOverrides.style,
@@ -55,10 +54,11 @@ export class GeometryMerger {
         ...props.containerExposed.style,
       },
     };
-    const item = sizing
+    const item: InformedChildStyle["selfOverrides"] = sizing
       ? sizing.set[index]
       : // FIX I do not like this being here. sizing should be definitely available when the execution reaches here
         {
+          mode: "default",
           interaction: {
             drag: "none" as const,
             focus: "none" as const,
@@ -72,8 +72,7 @@ export class GeometryMerger {
       containerExposed: container,
       context,
       selfOverrides: {
-        interaction: item.interaction,
-        lifecycle: item.lifecycle,
+        ...item,
         style: {
           ...item.style,
           ...props.selfOverrides.style,

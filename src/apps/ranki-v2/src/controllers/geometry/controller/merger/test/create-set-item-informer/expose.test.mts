@@ -23,6 +23,7 @@ test("", () => {
       },
     },
     selfOverrides: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -41,6 +42,7 @@ test("", () => {
     },
     set: [
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -56,6 +58,7 @@ test("", () => {
         },
       },
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",

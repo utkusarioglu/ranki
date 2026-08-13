@@ -17,6 +17,7 @@ const singleElem = () => ({ informStyle: vi.fn() });
 const informProps: InformSetProps = {
   containerExposed: { style: {} },
   selfOverrides: {
+    mode: "default",
     interaction: {
       drag: "none",
       focus: "none",
@@ -36,6 +37,7 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -91,6 +93,7 @@ test("2 set 1 elem each call second", async () => {
   const informProps: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -135,6 +138,7 @@ test("2 set 2 elems each", async () => {
     },
     set: [
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -150,6 +154,7 @@ test("2 set 2 elems each", async () => {
         },
       },
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -209,6 +214,7 @@ test("2 set varied elem count 1", async () => {
   const informPropsOne: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -227,6 +233,7 @@ test("2 set varied elem count 1", async () => {
     },
     set: [
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -242,6 +249,7 @@ test("2 set varied elem count 1", async () => {
         },
       },
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -257,6 +265,7 @@ test("2 set varied elem count 1", async () => {
         },
       },
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -308,6 +317,7 @@ test("2 set varied elem count 2", async () => {
   const informPropsTwo: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -326,6 +336,7 @@ test("2 set varied elem count 2", async () => {
     },
     set: [
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -341,6 +352,7 @@ test("2 set varied elem count 2", async () => {
         },
       },
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -356,6 +368,7 @@ test("2 set varied elem count 2", async () => {
         },
       },
       {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",

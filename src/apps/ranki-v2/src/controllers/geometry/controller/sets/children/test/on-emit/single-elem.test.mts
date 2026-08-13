@@ -36,6 +36,7 @@ test("single session single elem", async () => {
       },
       set: [
         {
+          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -86,6 +87,7 @@ test("two sessions single elem", async () => {
       },
       set: [
         {
+          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -110,6 +112,7 @@ test("two sessions single elem", async () => {
       },
       set: [
         {
+          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",

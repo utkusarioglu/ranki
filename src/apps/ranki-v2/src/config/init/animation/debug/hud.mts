@@ -60,6 +60,19 @@ export const HUD: GeometryAnimationPreset = {
           },
         },
       },
+      leave: {
+        root: [
+          {
+            name: "leave",
+            duration: 0,
+            keyframes: [
+              {
+                opacity: 0,
+              },
+            ],
+          },
+        ],
+      },
     },
   },
 
@@ -142,6 +155,19 @@ export const HUD: GeometryAnimationPreset = {
         //     },
         //   },
         // },
+      },
+      leave: {
+        root: [
+          {
+            name: "leave",
+            duration: 0,
+            keyframes: [
+              {
+                opacity: 0,
+              },
+            ],
+          },
+        ],
       },
     },
   },

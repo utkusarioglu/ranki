@@ -1,3 +1,4 @@
+import type { ModeAnimationTypes } from "../../events/types/mode.types.mjs";
 import type {
   GeometryInteractionKey,
   GeometryInteractionLibraryState,
@@ -36,10 +37,7 @@ interface RoleLifecycleDict {
   leave: AnimationBlock;
 }
 
-interface ModeLifecycleDict {
-  enter: AnimationBlock;
-  leave: AnimationBlock;
-}
+type ModeLifecycleDict = Record<ModeAnimationTypes, AnimationBlock>;
 
 interface RoleAnimationDict {
   lifecycle: RoleLifecycleDict;

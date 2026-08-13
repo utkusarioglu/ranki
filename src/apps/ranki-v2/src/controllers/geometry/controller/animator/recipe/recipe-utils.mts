@@ -24,6 +24,7 @@ export class RecipeUtils {
       details: { preset: presetName, role: roleName },
       why: "No animation for this role exists",
     });
+    // @ts-expect-error TODO
     const recipe = roleDict[action];
     assertNotUndefined(recipe, {
       details: { action, role: roleName },

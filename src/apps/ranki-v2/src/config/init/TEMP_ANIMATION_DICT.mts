@@ -16,6 +16,3 @@ export const TEMP_ANIMATION_DICT: GeometryAnimationPresetDict = {
     ...CUE_LIST,
   },
 };
-// REMOVE
-
-export type AnimationPack = any;

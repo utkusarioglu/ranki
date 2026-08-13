@@ -2,22 +2,21 @@ import type {
   AnimationKeyframeStyles,
   InformSetProps,
 } from "../animator/types/animator.types.mjs";
+// import type { ModeLibraryKey } from "../animator/types/library.types.mjs";
 import type { LocalAction } from "../events/types/geometry-events.types.mjs";
-import type { EmitLifecycleKey } from "../events/types/lifecycle.types.mjs";
-import type { GeometryInteraction } from "../sets/children/registry/children-registry.types.mjs";
-import type { WidthHeight } from "./geometry-style.types.mjs";
+// import type { EmitLifecycleKey } from "../events/types/lifecycle.types.mjs";
+import type {
+  EmittedComponentState,
+  // GeometryInteraction,
+} from "../sets/children/registry/children-registry.types.mjs";
 
-export interface ComponentDims {
-  interaction: GeometryInteraction;
-  lifecycle: EmitLifecycleKey;
-  style: WidthHeight;
-}
+export type ComponentDims = Required<EmittedComponentState>;
 
 //
 export type CurrentAppliedStyle = {
   actions: LocalAction[];
   container: InformedChildStyle["containerExposed"];
-  self: InformedChildStyleNode;
+  self: InformedChildStyleSelf;
 } & Omit<InformedChildStyle, "containerExposed" | "selfOverrides">;
 
 export type CurrentAppliedStyleWithoutActions = Omit<
@@ -43,12 +42,17 @@ export type InformedChildStyleContainer = {
   style: AnimationKeyframeStyles;
 };
 
-export type InformedChildStyleSelf = {
-  interaction: GeometryInteraction;
-  lifecycle: EmitLifecycleKey;
+// export type InformedChildStyleSelf = {
+//   interaction: GeometryInteraction;
+//   lifecycle: EmitLifecycleKey;
+//   mode: ModeLibraryKey;
+//   style: AnimationKeyframeStyles;
+// };
+
+export type InformedChildStyleSelf = Omit<ComponentDims, "style"> & {
   style: AnimationKeyframeStyles;
 };
 
-type InformedChildStyleNode = {
-  style: AnimationKeyframeStyles;
-} & Pick<ComponentDims, "interaction" | "lifecycle">;
+// type InformedChildStyleSelf = {
+//   style: AnimationKeyframeStyles;
+// } & Omit<ComponentDims, "style">;

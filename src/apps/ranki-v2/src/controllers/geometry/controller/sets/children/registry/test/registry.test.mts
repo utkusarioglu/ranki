@@ -61,6 +61,7 @@ test("leave", () => {
     type: "lifecycle",
   };
   const expected: EmittedComponentState = {
+    mode: "default",
     interaction: {
       drag: "none",
       focus: "none",
@@ -88,6 +89,7 @@ test("update", () => {
     type: "lifecycle",
   };
   const expected: EmittedComponentState = {
+    mode: "default",
     interaction: {
       drag: "none",
       focus: "none",
@@ -101,6 +103,7 @@ test("update", () => {
   registry.dims
     //
     .set(target, {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -126,6 +129,7 @@ test("update lifecycle registered as enter", () => {
     type: "lifecycle",
   };
   const expected: EmittedComponentState = {
+    mode: "default",
     interaction: {
       drag: "none",
       focus: "none",
@@ -142,10 +146,11 @@ test("update lifecycle registered as enter", () => {
 
 test("interaction", () => {
   const detail: GeometryEvent = {
-    interaction: "hover-start",
+    interaction: "hover.enter",
     type: "interaction",
   };
   const expected: EmittedComponentState = {
+    mode: "default",
     interaction: {
       drag: "none",
       focus: "none",

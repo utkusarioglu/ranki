@@ -59,7 +59,7 @@ test("leave", () => {
 });
 
 test("interaction", () => {
-  const interaction: GeometryInteractionEmit = "hover-end";
+  const interaction: GeometryInteractionEmit = "hover.leave";
   const emit: GeometryEvent = { interaction, type: "interaction" };
   events.emit(emit);
   const expected = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {

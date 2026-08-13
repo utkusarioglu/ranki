@@ -17,6 +17,7 @@ test("empty", () => {
         stagger: 0,
       },
       self: {
+        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",

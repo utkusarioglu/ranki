@@ -22,6 +22,7 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -37,6 +38,7 @@ const sizing: LayoutSizing = {
       },
     },
     {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -63,6 +65,7 @@ test("overridden self style", () => {
     },
     context,
     selfOverrides: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -76,7 +79,7 @@ test("overridden self style", () => {
     },
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing);
-  const expected = {
+  const expected: typeof response = {
     actions: ["enter"],
     container: {
       style: {
@@ -87,6 +90,7 @@ test("overridden self style", () => {
     },
     context,
     self: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -121,6 +125,7 @@ test("informed container width 2", () => {
     },
     context,
     selfOverrides: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -134,7 +139,7 @@ test("informed container width 2", () => {
     },
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing);
-  const expected = {
+  const expected: typeof response = {
     actions: ["enter"],
     container: {
       style: {
@@ -145,6 +150,7 @@ test("informed container width 2", () => {
     },
     context,
     self: {
+      mode: sizing.set[0].mode,
       interaction: sizing.set[0].interaction,
       // intent: "leave",
       lifecycle: sizing.set[0].lifecycle,

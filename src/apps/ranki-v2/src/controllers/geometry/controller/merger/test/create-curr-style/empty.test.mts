@@ -23,6 +23,7 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -38,6 +39,7 @@ const sizing: LayoutSizing = {
       },
     },
     {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -60,6 +62,7 @@ test("empty informed", () => {
     containerExposed: { style: {} },
     context,
     selfOverrides: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -78,6 +81,7 @@ test("empty informed", () => {
     },
     context,
     self: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -103,6 +107,7 @@ test("informed container width", () => {
     },
     context,
     selfOverrides: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -123,6 +128,7 @@ test("informed container width", () => {
     },
     context,
     self: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -153,6 +159,7 @@ test("informed container width 2", () => {
     },
     context,
     selfOverrides: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -165,7 +172,7 @@ test("informed container width 2", () => {
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing);
   const expected: CurrentAppliedStyle = {
-    actions: ["update", "hover-end"],
+    actions: ["update", "hover.leave"],
     container: {
       style: {
         width: 7,
@@ -174,6 +181,7 @@ test("informed container width 2", () => {
     },
     context,
     self: {
+      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
