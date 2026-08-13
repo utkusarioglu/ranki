@@ -22,19 +22,19 @@ beforeEach(() => {
 });
 
 test("actionStart", () => {
-  const actions: LocalAction[] = ["enter", "leave"];
+  const actions: LocalAction[] = ["lifecycle.enter", "lifecycle.leave"];
   events.onActionsStart(actions);
   expect(on).toHaveBeenCalledTimes(2);
-  expect(on).toHaveBeenNthCalledWith(1, host, "enter-start");
-  expect(on).toHaveBeenNthCalledWith(2, host, "leave-start");
+  expect(on).toHaveBeenNthCalledWith(1, host, "lifecycle.enter/start");
+  expect(on).toHaveBeenNthCalledWith(2, host, "lifecycle.leave/start");
   expect(true).toBe(true);
 });
 
 test("actionEnd", () => {
-  const actions: LocalAction[] = ["enter", "leave"];
+  const actions: LocalAction[] = ["lifecycle.enter", "lifecycle.leave"];
   events.onActionsEnd(actions);
   expect(on).toHaveBeenCalledTimes(2);
-  expect(on).toHaveBeenNthCalledWith(1, host, "enter-end");
-  expect(on).toHaveBeenNthCalledWith(2, host, "leave-end");
+  expect(on).toHaveBeenNthCalledWith(1, host, "lifecycle.enter/end");
+  expect(on).toHaveBeenNthCalledWith(2, host, "lifecycle.leave/end");
   expect(true).toBe(true);
 });

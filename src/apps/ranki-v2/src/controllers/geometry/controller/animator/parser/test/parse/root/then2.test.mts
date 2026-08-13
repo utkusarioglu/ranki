@@ -83,7 +83,7 @@ CASES.forEach(({ block, expected, name }) => {
   test.only(name, () => {
     const response = LayoutParser.parse({
       curr: {
-        actions: ["enter"],
+        actions: ["lifecycle.enter"],
         container: {
           style: {
             width: 11,

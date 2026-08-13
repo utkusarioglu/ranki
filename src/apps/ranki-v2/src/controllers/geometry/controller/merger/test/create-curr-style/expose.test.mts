@@ -78,7 +78,7 @@ test("exposed container width", () => {
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing);
   const expected: CurrentAppliedStyle = {
-    actions: ["enter"],
+    actions: ["lifecycle.enter"],
     container: {
       style: {
         // height: 13,
@@ -135,7 +135,7 @@ test("exposed container width 2", () => {
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing);
   const expected: CurrentAppliedStyle = {
-    actions: ["leave"],
+    actions: ["lifecycle.leave"],
     container: {
       style: {
         // height: 13,

@@ -48,7 +48,7 @@ for (const v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
 
   test(`${prop}: ${block}`, () => {
     const curr: CurrentAppliedStyle = {
-      actions: ["enter"],
+      actions: ["lifecycle.enter"],
       container: {
         style: {
           [prop]: container,

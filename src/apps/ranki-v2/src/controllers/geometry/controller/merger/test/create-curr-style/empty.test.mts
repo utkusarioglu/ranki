@@ -75,7 +75,7 @@ test("empty informed", () => {
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing);
   const expected: CurrentAppliedStyle = {
-    actions: ["enter"],
+    actions: ["lifecycle.enter"],
     container: {
       style: {},
     },
@@ -120,7 +120,7 @@ test("informed container width", () => {
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing);
   const expected: CurrentAppliedStyle = {
-    actions: ["enter"],
+    actions: ["lifecycle.enter"],
     container: {
       style: {
         width: 7,
@@ -172,7 +172,7 @@ test("informed container width 2", () => {
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing);
   const expected: CurrentAppliedStyle = {
-    actions: ["update", "hover.leave"],
+    actions: ["lifecycle.update", "interaction.hover.leave"],
     container: {
       style: {
         width: 7,

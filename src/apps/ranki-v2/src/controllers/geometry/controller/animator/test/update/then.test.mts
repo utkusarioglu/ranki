@@ -48,7 +48,7 @@ afterEach(() => {
 
 test("depth 2", async () => {
   const curr: CurrentAppliedStyle = {
-    actions: ["enter"],
+    actions: ["lifecycle.enter"],
     container: {
       style: {},
     },
@@ -133,7 +133,7 @@ test("depth 2", async () => {
 
 test("depth 2 call 3", async () => {
   const curr: CurrentAppliedStyle = {
-    actions: ["enter"],
+    actions: ["lifecycle.enter"],
     container: {
       style: {},
     },

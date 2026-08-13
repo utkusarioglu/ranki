@@ -5,7 +5,7 @@ import { LayoutParser } from "../../layout-parser.mjs";
 test("empty", () => {
   const response = LayoutParser.parse({
     curr: {
-      actions: ["enter"],
+      actions: ["lifecycle.enter"],
       container: {
         style: {
           height: 11,

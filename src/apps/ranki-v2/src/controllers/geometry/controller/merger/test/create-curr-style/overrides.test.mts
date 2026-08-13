@@ -80,7 +80,7 @@ test("overridden self style", () => {
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing);
   const expected: typeof response = {
-    actions: ["enter"],
+    actions: ["lifecycle.enter"],
     container: {
       style: {
         width: 7,
@@ -140,7 +140,7 @@ test("informed container width 2", () => {
   };
   const response = GeometryMerger.createCurrStyle(informed, sizing);
   const expected: typeof response = {
-    actions: ["enter"],
+    actions: ["lifecycle.enter"],
     container: {
       style: {
         width: 17,

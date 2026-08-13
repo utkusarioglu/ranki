@@ -48,7 +48,7 @@ afterEach(() => {
 
 test("single keyframe", async () => {
   const curr: CurrentAppliedStyle = {
-    actions: ["enter"],
+    actions: ["lifecycle.enter"],
     container: {
       style: {},
     },
@@ -107,7 +107,7 @@ test("single keyframe", async () => {
 
 test("two keyframes", async () => {
   const curr: CurrentAppliedStyle = {
-    actions: ["enter"],
+    actions: ["lifecycle.enter"],
     container: {
       style: {},
     },
