@@ -1,5 +1,4 @@
 import { R2C } from "_components/r2c/r2c.mjs";
-import { type WidthHeight } from "_controllers/geometry/controller/types/geometry-style.types.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { R2IconProps } from "./icon.mjs";
@@ -11,7 +10,6 @@ import { ReconciliationUtils } from "_utils/reconciliation.utils.mjs";
 import {
   geometry,
   GeometryController,
-  TimingUtils,
 } from "_controllers/geometry/geometry.mjs";
 import { getAnimationCollection } from "_store/app.getters.mjs";
 
@@ -41,10 +39,15 @@ export class R2IconSpan extends R2C {
   }
 
   override async firstUpdated() {
-    const { width, height } = this.props;
-    const style: WidthHeight = { width, height };
-    await TimingUtils.waitLayout();
-    this.geo.events.emit({ type: "lifecycle", lifecycle: "update", style });
+    await this.geo.wait.layout();
+    this.geo.events.emit({
+      type: "lifecycle",
+      lifecycle: "update",
+      style: {
+        width: this.props.width,
+        height: this.props.height,
+      },
+    });
     try {
       const icon = await loadIcon(this.props.icon);
       this.svg = icon.body;

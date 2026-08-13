@@ -22,7 +22,6 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -30,6 +29,7 @@ const sizing: LayoutSizing = {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         height: 19,
         left: 447,
@@ -38,7 +38,6 @@ const sizing: LayoutSizing = {
       },
     },
     {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -46,6 +45,7 @@ const sizing: LayoutSizing = {
         press: "none",
       },
       lifecycle: "leave",
+      mode: "default",
       style: {
         height: 57,
         left: 19,
@@ -65,7 +65,6 @@ test("overridden self style", () => {
     },
     context,
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -73,6 +72,7 @@ test("overridden self style", () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         height: 3,
       },
@@ -90,7 +90,6 @@ test("overridden self style", () => {
     },
     context,
     self: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -98,6 +97,7 @@ test("overridden self style", () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         height: 3,
         width: 119,
@@ -125,7 +125,6 @@ test("informed container width 2", () => {
     },
     context,
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -133,6 +132,7 @@ test("informed container width 2", () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         height: 7,
       },
@@ -150,10 +150,10 @@ test("informed container width 2", () => {
     },
     context,
     self: {
-      mode: sizing.set[0].mode,
       interaction: sizing.set[0].interaction,
       // intent: "leave",
       lifecycle: sizing.set[0].lifecycle,
+      mode: sizing.set[0].mode,
       style: {
         // ...sizing.set[0].style,
         height: 7,

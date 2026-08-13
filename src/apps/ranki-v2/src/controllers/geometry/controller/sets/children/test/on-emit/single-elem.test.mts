@@ -2,7 +2,6 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { GeometryEvent } from "_controllers/geometry/controller/events/types/geometry-events.types.mjs";
 import type { LitElement } from "lit";
 
-import { TimingUtils } from "_controllers/geometry/geometry.mjs";
 // @vitest-environment jsdom
 import { expect, test, vi } from "vitest";
 
@@ -12,6 +11,7 @@ import type {
 } from "../../children.types.mjs";
 
 import { GeometryChildren } from "../../children.mjs";
+import { TimingUtils } from "_controllers/geometry/controller/utils/timing.utils.mjs";
 
 const host = vi.fn() as unknown as LitElement;
 const target = vi.fn() as unknown as R2C;
@@ -36,7 +36,6 @@ test("single session single elem", async () => {
       },
       set: [
         {
-          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -44,6 +43,7 @@ test("single session single elem", async () => {
             press: "none",
           },
           lifecycle: detail.lifecycle,
+          mode: "default",
           style: {
             ...detail.style,
             left: 0,
@@ -87,7 +87,6 @@ test("two sessions single elem", async () => {
       },
       set: [
         {
-          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -95,6 +94,7 @@ test("two sessions single elem", async () => {
             press: "none",
           },
           lifecycle: detail1.lifecycle,
+          mode: "default",
           style: {
             ...detail1.style,
             left: 0,
@@ -112,7 +112,6 @@ test("two sessions single elem", async () => {
       },
       set: [
         {
-          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -120,6 +119,7 @@ test("two sessions single elem", async () => {
             press: "none",
           },
           lifecycle: detail2.lifecycle,
+          mode: "default",
           style: {
             ...detail2.style,
             left: 0,

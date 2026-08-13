@@ -49,9 +49,9 @@ export type InformedChildStyleContainer = {
 //   style: AnimationKeyframeStyles;
 // };
 
-export type InformedChildStyleSelf = Omit<ComponentDims, "style"> & {
+export type InformedChildStyleSelf = {
   style: AnimationKeyframeStyles;
-};
+} & Omit<ComponentDims, "style">;
 
 // type InformedChildStyleSelf = {
 //   style: AnimationKeyframeStyles;

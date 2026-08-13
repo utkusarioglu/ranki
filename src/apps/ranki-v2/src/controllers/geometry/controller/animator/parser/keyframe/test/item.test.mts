@@ -44,7 +44,6 @@ for (const v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
         stagger: 0,
       },
       self: {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -52,6 +51,7 @@ for (const v of testProduct(CONTAINER_PROPS, ITEM_VALUES, CONTAINER_VALUES)) {
           press: "none",
         },
         lifecycle: "enter",
+        mode: "default",
         style: {
           [prop]: item,
         },

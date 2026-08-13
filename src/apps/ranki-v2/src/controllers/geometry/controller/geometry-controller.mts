@@ -17,16 +17,23 @@ import { Animator } from "./animator/animator.mjs";
 import { GeometryEvents } from "./events/geometry-events.mjs";
 import { GeometryMerger } from "./merger/geometry-merger.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
+import { TimingUtils } from "./utils/timing.utils.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
 > implements ReactiveController {
   public readonly events: GeometryEvents<Instance>;
+  public readonly wait = {
+    delay: TimingUtils.delay,
+    layout: () => TimingUtils.raf(2),
+    raf: TimingUtils.raf,
+  };
   private readonly animator: Animator<Instance>;
   private curr: CurrentAppliedStyle | null = null;
   private readonly host: Instance;
   private prev: CurrentAppliedStyle | null = null;
   private readonly sets: GeometrySets<Instance>;
+
   private sizing: LayoutSizing | null = null;
 
   constructor(

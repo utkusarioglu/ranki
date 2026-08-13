@@ -29,7 +29,6 @@ test("empty props", async () => {
   const props: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -37,6 +36,7 @@ test("empty props", async () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {},
     },
     setName: "f",

@@ -18,6 +18,6 @@ export interface GeometryInteraction {
 
 export type GeometryInteractionKey = keyof GeometryInteraction;
 
-export type GeometryInteractionState = GeometryInteractionLibraryState | "none";
+export type GeometryInteractionLibraryState = "enter" | "leave";
 
-export type GeometryInteractionLibraryState = "leave" | "enter";
+export type GeometryInteractionState = "none" | GeometryInteractionLibraryState;

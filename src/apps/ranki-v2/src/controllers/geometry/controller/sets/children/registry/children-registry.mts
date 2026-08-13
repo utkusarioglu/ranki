@@ -9,6 +9,7 @@ import type {
   EmittedComponentState,
   GeometryInteraction,
 } from "./children-registry.types.mjs";
+
 import { INTERACTION_SEPARATOR } from "./children-registry.constants.mjs";
 
 export class ChildrenRegistry {
@@ -100,20 +101,20 @@ export class ChildrenRegistry {
       case "update":
         if (curr) {
           this.dims.set(target, {
-            mode: "default",
             interaction: {
               ...curr?.interaction,
             },
             lifecycle: detail.lifecycle,
+            mode: "default",
             style: detail.style,
           });
         } else {
           this.dims.set(target, {
-            mode: "default",
             interaction: {
               ...ChildrenRegistry.DEFAULT_INTERACTION,
             },
             lifecycle: "enter",
+            mode: "default",
             style: detail.style,
           });
         }

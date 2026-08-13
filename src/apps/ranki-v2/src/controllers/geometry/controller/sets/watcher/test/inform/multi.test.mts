@@ -17,7 +17,6 @@ const singleElem = () => ({ informStyle: vi.fn() });
 const informProps: InformSetProps = {
   containerExposed: { style: {} },
   selfOverrides: {
-    mode: "default",
     interaction: {
       drag: "none",
       focus: "none",
@@ -25,6 +24,7 @@ const informProps: InformSetProps = {
       press: "none",
     },
     lifecycle: "enter",
+    mode: "default",
     style: {},
   },
   setName: "one",
@@ -37,7 +37,6 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -45,6 +44,7 @@ const sizing: LayoutSizing = {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         height: 17,
         left: 11,
@@ -93,7 +93,6 @@ test("2 set 1 elem each call second", async () => {
   const informProps: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -101,6 +100,7 @@ test("2 set 1 elem each call second", async () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {},
     },
     setName: "two",
@@ -138,7 +138,6 @@ test("2 set 2 elems each", async () => {
     },
     set: [
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -146,6 +145,7 @@ test("2 set 2 elems each", async () => {
           press: "none",
         },
         lifecycle: "enter",
+        mode: "default",
         style: {
           height: 17,
           left: 11,
@@ -154,7 +154,6 @@ test("2 set 2 elems each", async () => {
         },
       },
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -162,6 +161,7 @@ test("2 set 2 elems each", async () => {
           press: "none",
         },
         lifecycle: "none",
+        mode: "default",
         style: {
           height: 170,
           left: 110,
@@ -214,7 +214,6 @@ test("2 set varied elem count 1", async () => {
   const informPropsOne: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -222,6 +221,7 @@ test("2 set varied elem count 1", async () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {},
     },
     setName: "one",
@@ -233,7 +233,6 @@ test("2 set varied elem count 1", async () => {
     },
     set: [
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -241,6 +240,7 @@ test("2 set varied elem count 1", async () => {
           press: "none",
         },
         lifecycle: "enter",
+        mode: "default",
         style: {
           height: 17,
           left: 11,
@@ -249,7 +249,6 @@ test("2 set varied elem count 1", async () => {
         },
       },
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -257,6 +256,7 @@ test("2 set varied elem count 1", async () => {
           press: "none",
         },
         lifecycle: "leave",
+        mode: "default",
         style: {
           height: 17,
           left: 11,
@@ -265,7 +265,6 @@ test("2 set varied elem count 1", async () => {
         },
       },
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -273,6 +272,7 @@ test("2 set varied elem count 1", async () => {
           press: "none",
         },
         lifecycle: "update",
+        mode: "default",
         style: {
           height: 17,
           left: 11,
@@ -317,7 +317,6 @@ test("2 set varied elem count 2", async () => {
   const informPropsTwo: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -325,6 +324,7 @@ test("2 set varied elem count 2", async () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {},
     },
     setName: "two",
@@ -336,7 +336,6 @@ test("2 set varied elem count 2", async () => {
     },
     set: [
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -344,6 +343,7 @@ test("2 set varied elem count 2", async () => {
           press: "none",
         },
         lifecycle: "enter",
+        mode: "default",
         style: {
           height: 17,
           left: 11,
@@ -352,7 +352,6 @@ test("2 set varied elem count 2", async () => {
         },
       },
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -360,6 +359,7 @@ test("2 set varied elem count 2", async () => {
           press: "none",
         },
         lifecycle: "leave",
+        mode: "default",
         style: {
           height: 17,
           left: 11,
@@ -368,7 +368,6 @@ test("2 set varied elem count 2", async () => {
         },
       },
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -376,6 +375,7 @@ test("2 set varied elem count 2", async () => {
           press: "none",
         },
         lifecycle: "update",
+        mode: "default",
         style: {
           height: 17,
           left: 11,

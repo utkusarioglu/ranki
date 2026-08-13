@@ -36,7 +36,6 @@ test("Single set no elems", async () => {
   const props: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -44,6 +43,7 @@ test("Single set no elems", async () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {},
     },
     setName: "one",

@@ -18,7 +18,6 @@ const singleElem = () => ({ informStyle: vi.fn() });
 const informProps: InformSetProps = {
   containerExposed: { style: {} },
   selfOverrides: {
-    mode: "default",
     interaction: {
       drag: "none",
       focus: "none",
@@ -26,6 +25,7 @@ const informProps: InformSetProps = {
       press: "none",
     },
     lifecycle: "enter",
+    mode: "default",
     style: {},
   },
   setName: "one",
@@ -38,7 +38,6 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -46,6 +45,7 @@ const sizing: LayoutSizing = {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         height: 11,
         left: 5,
@@ -54,7 +54,6 @@ const sizing: LayoutSizing = {
       },
     },
     {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -62,6 +61,7 @@ const sizing: LayoutSizing = {
         press: "none",
       },
       lifecycle: "none",
+      mode: "default",
       style: {
         height: 111,
         left: 51,

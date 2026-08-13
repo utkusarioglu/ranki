@@ -17,7 +17,6 @@ test("empty", () => {
         stagger: 0,
       },
       self: {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -25,6 +24,7 @@ test("empty", () => {
           press: "none",
         },
         lifecycle: "enter",
+        mode: "default",
         style: {
           height: 21,
           left: 0,

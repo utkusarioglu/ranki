@@ -1,7 +1,8 @@
 import type { LocalAction } from "../events/types/geometry-events.types.mjs";
 import type { GeometryInteractionEmit } from "../events/types/interaction.types.mjs";
-import { INTERACTION_SEPARATOR } from "../sets/children/registry/children-registry.constants.mjs";
 import type { CurrentAppliedStyleWithoutActions } from "../types/geometry-controller.types.mjs";
+
+import { INTERACTION_SEPARATOR } from "../sets/children/registry/children-registry.constants.mjs";
 
 export class GeometryEval {
   public static evaluateActions(

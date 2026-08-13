@@ -17,7 +17,6 @@ const singleElem = () => ({ informStyle: vi.fn() });
 const informProps: InformSetProps = {
   containerExposed: { style: {} },
   selfOverrides: {
-    mode: "default",
     interaction: {
       drag: "none",
       focus: "none",
@@ -25,6 +24,7 @@ const informProps: InformSetProps = {
       press: "none",
     },
     lifecycle: "enter",
+    mode: "default",
     style: {},
   },
   setName: "one",
@@ -44,7 +44,6 @@ test("Single set 1 elem", async () => {
     },
     set: [
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -52,6 +51,7 @@ test("Single set 1 elem", async () => {
           press: "none",
         },
         lifecycle: "enter",
+        mode: "default",
         style: {
           height: 30,
           left: 5,
@@ -76,7 +76,6 @@ test("Single set 1 elem", async () => {
       stagger: 0,
     },
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -84,6 +83,7 @@ test("Single set 1 elem", async () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: sizing.set[0].style,
     },
   };
@@ -100,7 +100,6 @@ test("Single set 2 elems", async () => {
     },
     set: [
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -108,6 +107,7 @@ test("Single set 2 elems", async () => {
           press: "none",
         },
         lifecycle: "enter",
+        mode: "default",
         style: {
           height: 30,
           left: 5,
@@ -116,7 +116,6 @@ test("Single set 2 elems", async () => {
         },
       },
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -124,6 +123,7 @@ test("Single set 2 elems", async () => {
           press: "none",
         },
         lifecycle: "update",
+        mode: "default",
         style: {
           height: 300,
           left: 50,
@@ -149,7 +149,6 @@ test("Single set 2 elems", async () => {
         stagger: 0,
       },
       selfOverrides: {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -157,6 +156,7 @@ test("Single set 2 elems", async () => {
           press: "none",
         },
         lifecycle: "enter",
+        mode: "default",
         style: sizing.set[0].style,
       },
     },
@@ -170,7 +170,6 @@ test("Single set 2 elems", async () => {
         stagger: 0,
       },
       selfOverrides: {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -178,6 +177,7 @@ test("Single set 2 elems", async () => {
           press: "none",
         },
         lifecycle: "update",
+        mode: "default",
         style: sizing.set[1].style,
       },
     },

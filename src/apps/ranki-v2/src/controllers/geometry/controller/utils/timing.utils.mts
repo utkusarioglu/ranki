@@ -22,12 +22,4 @@ export class TimingUtils {
     // await this.propagateDelay();
     return new Promise<void>((r) => step(r, cb));
   }
-
-  /**
-   * Waits for layout to be available. as a heuristic, 2 frames work reliably.
-   * This doesn't mean it cannot break.
-   */
-  static async waitLayout() {
-    await TimingUtils.raf(2);
-  }
 }

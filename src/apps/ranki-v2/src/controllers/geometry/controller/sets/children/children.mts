@@ -1,8 +1,6 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement } from "lit";
 
-import { TimingUtils } from "_controllers/geometry/geometry.mjs";
-
 import type { GeometryEvent } from "../../events/types/geometry-events.types.mjs";
 import type {
   ChildrenUpdateSizingReturn,
@@ -10,6 +8,7 @@ import type {
   GeometryChildrenProps,
 } from "./children.types.mjs";
 
+import { TimingUtils } from "../../utils/timing.utils.mjs";
 import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
 import { WatcherSet } from "../watcher-set/watcher-set.mjs";
 import { LayoutUtils } from "./layout/layout-utils.mjs";

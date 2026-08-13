@@ -5,12 +5,13 @@ import type {
   GeometryEventName,
   GeometryEventsConstructorParams,
 } from "./types/geometry-events.constructor.types.mjs";
+import type { GeometryEventTypes } from "./types/geometry-events.constructor.types.mjs";
 import type { LocalAction } from "./types/geometry-events.types.mjs";
 import type { GeometryEvent } from "./types/geometry-events.types.mjs";
-import type { GeometryEventTypes } from "./types/geometry-events.constructor.types.mjs";
+
 import {
-  DEFAULT_EVENT_SETTINGS,
   ACTION_TIME_SEPARATOR,
+  DEFAULT_EVENT_SETTINGS,
 } from "./geometry-events.constants.mjs";
 
 export class GeometryEvents<Instance extends LitElement> {

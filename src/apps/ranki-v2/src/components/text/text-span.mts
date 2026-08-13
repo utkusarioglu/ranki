@@ -8,7 +8,6 @@ import { ReconciliationUtils } from "_utils/reconciliation.utils.mjs";
 import {
   geometry,
   GeometryController,
-  TimingUtils,
 } from "_controllers/geometry/geometry.mjs";
 import { getAnimationCollection } from "_store/app.getters.mjs";
 
@@ -38,7 +37,7 @@ export class R2TextSpan extends R2C {
   }
 
   override async firstUpdated() {
-    await TimingUtils.waitLayout();
+    await this.geo.wait.layout();
     const { width, height } = this.span.getBoundingClientRect();
     const style: WidthHeight = { width: width + 1, height: height + 1 };
     this.geo.events.emit({ type: "lifecycle", lifecycle: "update", style });

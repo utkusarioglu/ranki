@@ -58,7 +58,6 @@ test("single keyframe", async () => {
       stagger: 0,
     },
     self: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -66,6 +65,7 @@ test("single keyframe", async () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         height: 0,
         left: 0,
@@ -117,7 +117,6 @@ test("two keyframes", async () => {
       stagger: 0,
     },
     self: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -125,6 +124,7 @@ test("two keyframes", async () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         height: 0,
         left: 0,

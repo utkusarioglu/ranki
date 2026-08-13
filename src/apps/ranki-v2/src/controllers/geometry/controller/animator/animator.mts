@@ -5,6 +5,11 @@ import { O11y } from "_/o11y/o11y.mjs";
 import type { GeometryRole } from "../types/geometry-controller.constructor.types.mjs";
 import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs";
 
+import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
+import { LayoutParser } from "./parser/layout-parser.mjs";
+import { RecipeUtils } from "./recipe/recipe-utils.mjs";
+import { type GetAnimationRecipeProps } from "./recipe/recipe.types.mjs";
+import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
 import {
   type AnimatorCallbacks,
   type GetCollectionConstructorParam,
@@ -13,11 +18,6 @@ import {
   type AnimatorPlayParams,
   type GetRecipeCallback,
 } from "./types/animator.types.mjs";
-import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
-import { LayoutParser } from "./parser/layout-parser.mjs";
-import { RecipeUtils } from "./recipe/recipe-utils.mjs";
-import { type GetAnimationRecipeProps } from "./recipe/recipe.types.mjs";
-import { AnimationSequencer } from "./sequencer/animation-sequencer.mjs";
 
 export class Animator<Instance extends LitElement> {
   private readonly callbacks: AnimatorCallbacks<Instance>;

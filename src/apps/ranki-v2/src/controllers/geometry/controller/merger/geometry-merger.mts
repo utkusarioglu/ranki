@@ -58,7 +58,6 @@ export class GeometryMerger {
       ? sizing.set[index]
       : // FIX I do not like this being here. sizing should be definitely available when the execution reaches here
         {
-          mode: "default",
           interaction: {
             drag: "none" as const,
             focus: "none" as const,
@@ -66,6 +65,7 @@ export class GeometryMerger {
             press: "none" as const,
           },
           lifecycle: "none" as const,
+          mode: "default",
           style: {},
         };
     return {

@@ -1,3 +1,4 @@
+import type { GeometrySetName } from "../../sets/sets.types.mjs";
 import type {
   AnimationBlockSets,
   AnimationRoot,
@@ -8,7 +9,6 @@ import type {
   LayoutSetsInform,
   ParseRootParams,
 } from "../types/animator.types.mjs";
-import type { GeometrySetName } from "../../sets/sets.types.mjs";
 
 import { KeyframeParser } from "./keyframe/keyframe-parser.mjs";
 

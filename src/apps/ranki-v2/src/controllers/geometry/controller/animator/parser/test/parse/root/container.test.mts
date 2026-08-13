@@ -70,7 +70,6 @@ CASES.forEach(({ block, expected, name }) => {
           stagger: 0,
         },
         self: {
-          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -78,6 +77,7 @@ CASES.forEach(({ block, expected, name }) => {
             press: "none",
           },
           lifecycle: "enter",
+          mode: "default",
           style: {
             height: 21,
             left: 0,

@@ -13,7 +13,6 @@ test("only last has size", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -21,13 +20,13 @@ test("only last has size", () => {
         press: "none",
       },
       lifecycle: "update",
+      mode: "default",
       style: {
         height: 0,
         width: 0,
       },
     },
     {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -35,6 +34,7 @@ test("only last has size", () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         height: 23,
         width: 17,
@@ -49,7 +49,6 @@ test("only last has size", () => {
     },
     set: [
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -57,6 +56,7 @@ test("only last has size", () => {
           press: "none",
         },
         lifecycle: "update",
+        mode: "default",
         style: {
           height: 0,
           left: 0,
@@ -65,7 +65,6 @@ test("only last has size", () => {
         },
       },
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -73,6 +72,7 @@ test("only last has size", () => {
           press: "none",
         },
         lifecycle: "enter",
+        mode: "default",
         style: {
           height: 23,
           left: 0,
@@ -89,7 +89,6 @@ test("last doesn't have size", () => {
   const gaps: LayoutGapsParams = { cross: {}, main: {} };
   const dims: EmittedComponentState[] = [
     {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -97,13 +96,13 @@ test("last doesn't have size", () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         height: 23,
         width: 17,
       },
     },
     {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -111,6 +110,7 @@ test("last doesn't have size", () => {
         press: "none",
       },
       lifecycle: "update",
+      mode: "default",
       style: {
         height: 0,
         width: 0,
@@ -125,7 +125,6 @@ test("last doesn't have size", () => {
     },
     set: [
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -133,6 +132,7 @@ test("last doesn't have size", () => {
           press: "none",
         },
         lifecycle: "enter",
+        mode: "default",
         style: {
           height: 0,
           left: 0,
@@ -141,7 +141,6 @@ test("last doesn't have size", () => {
         },
       },
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -149,6 +148,7 @@ test("last doesn't have size", () => {
           press: "none",
         },
         lifecycle: "update",
+        mode: "default",
         style: {
           height: 0,
           left: 0,

@@ -23,7 +23,6 @@ test("", () => {
       },
     },
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -31,6 +30,7 @@ test("", () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         opacity: 0.44,
       },
@@ -44,7 +44,6 @@ test("", () => {
     },
     set: [
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -52,6 +51,7 @@ test("", () => {
           press: "none",
         },
         lifecycle: "enter",
+        mode: "default",
         style: {
           height: 51,
           left: 0,
@@ -60,7 +60,6 @@ test("", () => {
         },
       },
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -68,6 +67,7 @@ test("", () => {
           press: "none",
         },
         lifecycle: "leave",
+        mode: "default",
         style: {
           height: 91,
           left: 0,
@@ -92,7 +92,6 @@ test("", () => {
     },
     context,
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -100,6 +99,7 @@ test("", () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         ...sizing.set[0].style,
         opacity: 0.44,

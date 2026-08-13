@@ -2,7 +2,6 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { GeometryEvent } from "_controllers/geometry/controller/events/types/geometry-events.types.mjs";
 import type { LitElement } from "lit";
 
-import { TimingUtils } from "_controllers/geometry/geometry.mjs";
 // @vitest-environment jsdom
 import { expect, test, vi } from "vitest";
 
@@ -12,6 +11,7 @@ import type {
 } from "../../children.types.mjs";
 
 import { GeometryChildren } from "../../children.mjs";
+import { TimingUtils } from "_controllers/geometry/controller/utils/timing.utils.mjs";
 
 const host = vi.fn() as unknown as LitElement;
 
@@ -46,7 +46,6 @@ test("single session two elems", async () => {
       },
       set: [
         {
-          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -54,6 +53,7 @@ test("single session two elems", async () => {
             press: "none",
           },
           lifecycle: detail1.lifecycle,
+          mode: "default",
           style: {
             ...detail1.style,
             left: 0,
@@ -61,7 +61,6 @@ test("single session two elems", async () => {
           },
         },
         {
-          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -69,6 +68,7 @@ test("single session two elems", async () => {
             press: "none",
           },
           lifecycle: detail2.lifecycle,
+          mode: "default",
           style: {
             ...detail2.style,
             left: detail1.style.width,
@@ -135,7 +135,6 @@ test("two sessions two elems", async () => {
       },
       set: [
         {
-          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -143,6 +142,7 @@ test("two sessions two elems", async () => {
             press: "none",
           },
           lifecycle: detail1_1.lifecycle,
+          mode: "default",
           style: {
             ...detail1_1.style,
             left: 0,
@@ -150,7 +150,6 @@ test("two sessions two elems", async () => {
           },
         },
         {
-          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -158,6 +157,7 @@ test("two sessions two elems", async () => {
             press: "none",
           },
           lifecycle: detail1_2.lifecycle,
+          mode: "default",
           style: {
             ...detail1_2.style,
             left: detail1_1.style.width,
@@ -176,7 +176,6 @@ test("two sessions two elems", async () => {
       },
       set: [
         {
-          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -184,6 +183,7 @@ test("two sessions two elems", async () => {
             press: "none",
           },
           lifecycle: detail2_1.lifecycle,
+          mode: "default",
           style: {
             ...detail2_1.style,
             left: 0,
@@ -191,7 +191,6 @@ test("two sessions two elems", async () => {
           },
         },
         {
-          mode: "default",
           interaction: {
             drag: "none",
             focus: "none",
@@ -199,6 +198,7 @@ test("two sessions two elems", async () => {
             press: "none",
           },
           lifecycle: detail2_2.lifecycle,
+          mode: "default",
           style: {
             ...detail2_2.style,
             left: detail2_1.style.width,

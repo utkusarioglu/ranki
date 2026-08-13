@@ -17,7 +17,6 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -25,6 +24,7 @@ const sizing: LayoutSizing = {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         height: 19,
         left: 0,
@@ -33,7 +33,6 @@ const sizing: LayoutSizing = {
       },
     },
     {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -41,6 +40,7 @@ const sizing: LayoutSizing = {
         press: "none",
       },
       lifecycle: "leave",
+      mode: "default",
       style: {
         height: 57,
         left: 0,
@@ -65,7 +65,6 @@ test("exposed container width", () => {
     },
     context,
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -73,6 +72,7 @@ test("exposed container width", () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {},
     },
   };
@@ -87,7 +87,6 @@ test("exposed container width", () => {
     },
     context,
     self: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -95,6 +94,7 @@ test("exposed container width", () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         height: 13,
         width: 11,
@@ -122,7 +122,6 @@ test("exposed container width 2", () => {
     },
     context,
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -130,6 +129,7 @@ test("exposed container width 2", () => {
         press: "none",
       },
       lifecycle: "leave",
+      mode: "default",
       style: {},
     },
   };
@@ -144,7 +144,6 @@ test("exposed container width 2", () => {
     },
     context,
     self: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -152,6 +151,7 @@ test("exposed container width 2", () => {
         press: "none",
       },
       lifecycle: "leave",
+      mode: "default",
       style: {
         height: 13,
         width: 11,

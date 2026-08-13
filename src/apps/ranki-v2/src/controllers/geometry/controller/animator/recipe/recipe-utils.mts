@@ -1,9 +1,10 @@
 import { assertNotUndefined } from "_error/assertions.mjs";
 
+import type { AnimationBlock } from "../types/animator.types.mjs";
 import type { GeometryAnimationPresetDict } from "../types/library.types.mjs";
 import type { GetAnimationRecipeProps } from "./recipe.types.mjs";
+
 import { INTERACTION_SEPARATOR } from "../../sets/children/registry/children-registry.constants.mjs";
-import type { AnimationBlock } from "../types/animator.types.mjs";
 
 export class RecipeUtils {
   static getRecipeFromCollection(
@@ -17,16 +18,16 @@ export class RecipeUtils {
     segments.forEach((segment) => {
       curr = curr[segment];
       assertNotUndefined(curr, {
-        why: "Given action path does not lead to an animation recipe",
         details: {
-          curr,
-          segments,
           action,
+          collection,
+          curr,
           presetName: preset,
           roleName: role,
-          collection,
           segment,
+          segments,
         },
+        why: "Given action path does not lead to an animation recipe",
       });
     });
 

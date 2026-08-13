@@ -23,7 +23,6 @@ test("", () => {
       },
     },
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -31,6 +30,7 @@ test("", () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {},
     },
     setName: "one",
@@ -42,7 +42,6 @@ test("", () => {
     },
     set: [
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -50,6 +49,7 @@ test("", () => {
           press: "none",
         },
         lifecycle: "enter",
+        mode: "default",
         style: {
           height: 51,
           left: 0,
@@ -58,7 +58,6 @@ test("", () => {
         },
       },
       {
-        mode: "default",
         interaction: {
           drag: "none",
           focus: "none",
@@ -66,6 +65,7 @@ test("", () => {
           press: "none",
         },
         lifecycle: "leave",
+        mode: "default",
         style: {
           height: 91,
           left: 0,

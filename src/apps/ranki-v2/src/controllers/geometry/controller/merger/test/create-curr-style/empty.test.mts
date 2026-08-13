@@ -23,7 +23,6 @@ const sizing: LayoutSizing = {
   },
   set: [
     {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -31,6 +30,7 @@ const sizing: LayoutSizing = {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         height: 19,
         left: 0,
@@ -39,7 +39,6 @@ const sizing: LayoutSizing = {
       },
     },
     {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -47,6 +46,7 @@ const sizing: LayoutSizing = {
         press: "none",
       },
       lifecycle: "leave",
+      mode: "default",
       style: {
         height: 57,
         left: 121,
@@ -62,7 +62,6 @@ test("empty informed", () => {
     containerExposed: { style: {} },
     context,
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -70,6 +69,7 @@ test("empty informed", () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {},
     },
   };
@@ -81,7 +81,6 @@ test("empty informed", () => {
     },
     context,
     self: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -89,6 +88,7 @@ test("empty informed", () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         height: 130,
         width: 110,
@@ -107,7 +107,6 @@ test("informed container width", () => {
     },
     context,
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -115,6 +114,7 @@ test("informed container width", () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {},
     },
   };
@@ -128,7 +128,6 @@ test("informed container width", () => {
     },
     context,
     self: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -136,6 +135,7 @@ test("informed container width", () => {
         press: "none",
       },
       lifecycle: "enter",
+      mode: "default",
       style: {
         height: 130,
         width: 110,
@@ -159,7 +159,6 @@ test("informed container width 2", () => {
     },
     context,
     selfOverrides: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -167,6 +166,7 @@ test("informed container width 2", () => {
         press: "none",
       },
       lifecycle: "update",
+      mode: "default",
       style: {},
     },
   };
@@ -181,7 +181,6 @@ test("informed container width 2", () => {
     },
     context,
     self: {
-      mode: "default",
       interaction: {
         drag: "none",
         focus: "none",
@@ -189,6 +188,7 @@ test("informed container width 2", () => {
         press: "none",
       },
       lifecycle: "update",
+      mode: "default",
       style: {
         height: 130,
         width: 110,
