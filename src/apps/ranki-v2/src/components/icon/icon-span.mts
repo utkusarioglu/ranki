@@ -29,7 +29,7 @@ export class R2IconSpan extends R2C {
     role: "icon-span",
     collection: getAnimationCollection,
     on: (s, type) => {
-      if (type === "leave-end") {
+      if (type === "lifecycle.leave/end") {
         ReconciliationUtils.emitLeave(s);
       }
     },

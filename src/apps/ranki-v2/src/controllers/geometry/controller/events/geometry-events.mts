@@ -8,10 +8,10 @@ import type {
 import type { LocalAction } from "./types/geometry-events.types.mjs";
 import type { GeometryEvent } from "./types/geometry-events.types.mjs";
 import type { GeometryEventTypes } from "./types/geometry-events.constructor.types.mjs";
-
-const DEFAULT_EVENT_SETTINGS: GeometryEventTypes = {
-  hover: false,
-};
+import {
+  DEFAULT_EVENT_SETTINGS,
+  ACTION_TIME_SEPARATOR,
+} from "./geometry-events.constants.mjs";
 
 export class GeometryEvents<Instance extends LitElement> {
   public static readonly GEOMETRY_EVENT_NAME = "r2-geometry";
@@ -49,7 +49,10 @@ export class GeometryEvents<Instance extends LitElement> {
     const onEvent = this.on;
     if (onEvent) {
       actions.forEach((action) => {
-        onEvent(this.host, `${action}-end` as GeometryEventName);
+        onEvent(
+          this.host,
+          `${action}${ACTION_TIME_SEPARATOR}end` as GeometryEventName,
+        );
       });
     }
   }
@@ -58,7 +61,10 @@ export class GeometryEvents<Instance extends LitElement> {
     const onEvent = this.on;
     if (onEvent) {
       actions.forEach((action) => {
-        onEvent(this.host, `${action}-start` as GeometryEventName);
+        onEvent(
+          this.host,
+          `${action}${ACTION_TIME_SEPARATOR}start` as GeometryEventName,
+        );
       });
     }
   }

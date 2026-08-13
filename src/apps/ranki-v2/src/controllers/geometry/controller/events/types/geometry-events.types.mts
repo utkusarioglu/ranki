@@ -1,3 +1,4 @@
+import type { INTERACTION_SEPARATOR } from "../../sets/children/registry/children-registry.constants.mjs";
 import type {
   GeometryEventInteraction,
   GeometryInteractionEmit,
@@ -16,6 +17,6 @@ export type GeometryEvent =
   | GeometryEventMode;
 
 export type LocalAction =
-  | EmitLifecycleKey
-  | GeometryInteractionEmit
-  | GeometryEventModeKey;
+  | `lifecycle${typeof INTERACTION_SEPARATOR}${EmitLifecycleKey}`
+  | `interaction${typeof INTERACTION_SEPARATOR}${GeometryInteractionEmit}`
+  | `mode${typeof INTERACTION_SEPARATOR}${GeometryEventModeKey}`;

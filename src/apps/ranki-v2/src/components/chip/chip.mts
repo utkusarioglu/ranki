@@ -38,7 +38,7 @@ export class R2Chip extends R2C {
       hover: true,
     },
     on: (s, action) => {
-      if (action === "leave-end") {
+      if (action === "lifecycle.leave/end") {
         ReconciliationUtils.emitLeave(s);
       }
     },
