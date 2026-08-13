@@ -19,3 +19,5 @@ export function geometry<Instance extends LitElement>(
     });
   };
 }
+
+geometry.addLogDriver = GeometryController.addLogDriver;

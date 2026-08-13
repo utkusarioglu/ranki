@@ -3964,6 +3964,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@opentelemetry/api", [\
+      ["npm:1.9.1", {\
+        "packageLocation": "../home/dev/.yarn/berry/cache/@opentelemetry-api-npm-1.9.1-a6d8abf4cb-10c0.zip/node_modules/@opentelemetry/api/",\
+        "packageDependencies": [\
+          ["@opentelemetry/api", "npm:1.9.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@oxc-parser/binding-android-arm-eabi", [\
       ["npm:0.121.0", {\
         "packageLocation": "./.yarn/unplugged/@oxc-parser-binding-android-arm-eabi-npm-0.121.0-a7b2f4ac42/node_modules/@oxc-parser/binding-android-arm-eabi/",\
@@ -4579,6 +4588,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/package-dqm-utils", "workspace:src/packages/dqm-utils"],\
           ["@dqm/package-dqm-v2", "workspace:src/packages/dqm-v2"],\
           ["@eslint/js", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:10.0.1"],\
+          ["@opentelemetry/api", "npm:1.9.1"],\
           ["@ranki/app-ranki-v2", "workspace:src/apps/ranki-v2"],\
           ["@ranki/config-typescript", "workspace:src/config/typescript"],\
           ["@ranki/package-anki-ui", "workspace:src/packages/anki-ui"],\
@@ -17262,7 +17272,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/__virtual__/vitest-virtual-59b4ee429a/2/home/dev/.yarn/berry/cache/vitest-npm-4.0.17-5c1875fbc1-10c0.zip/node_modules/vitest/",\
         "packageDependencies": [\
           ["@edge-runtime/vm", null],\
-          ["@opentelemetry/api", null],\
+          ["@opentelemetry/api", "npm:1.9.1"],\
           ["@types/edge-runtime__vm", null],\
           ["@types/happy-dom", null],\
           ["@types/jsdom", null],\

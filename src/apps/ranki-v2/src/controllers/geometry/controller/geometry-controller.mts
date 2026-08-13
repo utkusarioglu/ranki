@@ -18,6 +18,9 @@ import { GeometryEvents } from "./events/geometry-events.mjs";
 import { GeometryMerger } from "./merger/geometry-merger.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
 import { TimingUtils } from "./utils/timing.utils.mjs";
+import { trace, type Tracer } from "@opentelemetry/api";
+import { Logger } from "./logger/logger.mjs";
+import { type LogDriver } from "./logger/logger.types.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -33,6 +36,8 @@ export class GeometryController<
   private readonly host: Instance;
   private prev: CurrentAppliedStyle | null = null;
   private readonly sets: GeometrySets<Instance>;
+  private readonly tracer: Tracer;
+  private readonly logger = new Logger({ class: "GeometryController" });
 
   private sizing: LayoutSizing | null = null;
 
@@ -55,7 +60,12 @@ export class GeometryController<
       children: params.children,
       watchers: params.watchers,
     });
+    this.tracer = trace.getTracer("geometry-controller");
     this.bindInformStyle();
+  }
+
+  static addLogDriver(d: LogDriver) {
+    Logger.addDriver(d);
   }
 
   hostConnected(): void {
@@ -111,19 +121,27 @@ export class GeometryController<
   }
 
   private async informStyle(informed: InformedChildStyle): Promise<void> {
-    this.prev = this.curr;
-    this.curr = GeometryMerger.createCurrStyle(informed, this.sizing);
+    return this.tracer.startActiveSpan("informStyle", async (span) => {
+      try {
+        this.prev = this.curr;
+        this.curr = GeometryMerger.createCurrStyle(informed, this.sizing);
 
-    O11y.informStyle({
-      curr: this.curr,
-      host: this.host,
-      informed: informed,
-      prev: this.prev,
-      sizing: this.sizing,
+        span.addEvent("style ready");
+
+        this.logger.info("informStyle", {
+          curr: this.curr,
+          host: this.host,
+          informed: informed,
+          prev: this.prev,
+          sizing: this.sizing,
+        });
+
+        this.events.onActionsStart(this.curr.actions);
+        await this.animator.update(this.curr, this.prev);
+        this.events.onActionsEnd(this.curr.actions);
+      } finally {
+        span.end();
+      }
     });
-
-    this.events.onActionsStart(this.curr.actions);
-    await this.animator.update(this.curr, this.prev);
-    this.events.onActionsEnd(this.curr.actions);
   }
 }

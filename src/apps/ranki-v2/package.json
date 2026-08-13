@@ -51,6 +51,7 @@
   "dependencies": {
     "@dqm/package-dqm-utils": "workspace:^",
     "@dqm/package-dqm-v2": "workspace:^",
+    "@opentelemetry/api": "^1.9.1",
     "@ranki/package-anki-ui": "workspace:^",
     "core-js": "^3.47.0",
     "expr-eval": "^2.0.2",

@@ -1,3 +1,4 @@
+import "./o11y/otel.mjs";
 import "_components/registry.mjs";
 import type { RankiAppError } from "_error/ranki-app-error.mjs";
 
