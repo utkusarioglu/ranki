@@ -1,5 +1,3 @@
-import { O11y } from "_/o11y/o11y.mjs";
-
 import type {
   ApplyRootParams,
   LayoutParsed,
@@ -7,6 +5,7 @@ import type {
 } from "../types/animator.types.mjs";
 import type { AnimationSequencerCallbacks } from "./animation-sequencer.types.mjs";
 
+import { Debug } from "../../debug/debug.mjs";
 import { TimingUtils } from "../../utils/timing.utils.mjs";
 
 export class AnimationSequencer {
@@ -23,8 +22,9 @@ export class AnimationSequencer {
   private async sequenceCurrent(a: LayoutParsed | undefined): Promise<void> {
     if (!a) return Promise.resolve();
     await Promise.all([
-      a && this.sequenceRoots(a.root),
-      a && this.sequenceSets(a.sets),
+      Debug.pause(),
+      this.sequenceRoots(a.root),
+      this.sequenceSets(a.sets),
     ]);
   }
 
@@ -35,7 +35,7 @@ export class AnimationSequencer {
     await Promise.all(
       roots.map(async (p) => {
         await this.callbacks.playName(p.apply);
-        await O11y.pause();
+        await Debug.pause();
         await this.sequenceThen(p.then);
       }),
     );
@@ -46,9 +46,9 @@ export class AnimationSequencer {
     await Promise.all(
       Object.values(l).map(async ({ props, then, wait }) => {
         if (wait) await TimingUtils.delay(wait);
-        await O11y.pause();
+        await Debug.pause();
         await this.callbacks.informSet(props);
-        await O11y.pause();
+        await Debug.pause();
         if (then) await this.sequenceThen(then);
       }),
     );
@@ -57,7 +57,7 @@ export class AnimationSequencer {
   private async sequenceThen(a: LayoutParsed | undefined): Promise<void> {
     if (!a) return Promise.resolve();
     await this.sequenceCurrent(a);
-    await O11y.pause();
+    await Debug.pause();
     await this.sequenceThen(a.then);
   }
 }
