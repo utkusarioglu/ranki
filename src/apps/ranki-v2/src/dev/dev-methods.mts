@@ -11,16 +11,12 @@ import {
   INPUT_TYPE_CLASS_SELECTOR,
   RENDERED_CLASS_SELECTOR,
 } from "../selector.constants.mjs";
-// import { main } from "_/main.mjs";
+import { batchLogger } from "_/o11y/log.mjs";
 
 export class RankiDevMethods {
   static isPersisted = false;
 
-  // static async main() {
-  //   this.tags("");
-  //   // await main();
-  //   return;
-  // }
+  static readonly logs = batchLogger;
 
   static foreign(isForeign: boolean = true) {
     const qa = document.querySelector("#qa") as HTMLDivElement;
