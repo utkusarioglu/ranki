@@ -1,8 +1,8 @@
-export type LogAttributes = Record<string, any>;
+export type InstanceEntries = Record<string, boolean | number | string>;
 
-export type LogValue = any;
+export type LogAttributes = Record<string, unknown>;
 
 export interface LogDriver {
   log(value: LogValue): void;
 }
-export type InstanceEntries = Record<string, string | number | boolean>;
+export type LogValue = unknown;

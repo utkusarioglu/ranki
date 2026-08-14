@@ -2,6 +2,7 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { GeometryEvent } from "_controllers/geometry/controller/events/types/geometry-events.types.mjs";
 import type { LitElement } from "lit";
 
+import { TimingUtils } from "_controllers/geometry/controller/utils/timing.utils.mjs";
 // @vitest-environment jsdom
 import { expect, test, vi } from "vitest";
 
@@ -11,7 +12,6 @@ import type {
 } from "../../children.types.mjs";
 
 import { GeometryChildren } from "../../children.mjs";
-import { TimingUtils } from "_controllers/geometry/controller/utils/timing.utils.mjs";
 
 const host = vi.fn() as unknown as LitElement;
 const target = vi.fn() as unknown as R2C;

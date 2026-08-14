@@ -1,5 +1,5 @@
 import { geometry } from "_controllers/geometry/geometry.mjs";
-import { BatchLogger } from "./batch-logger.mjs";
+import { BatchLogger } from "./loggers/batch-logger.mjs";
 
 const batchLogger = new BatchLogger();
 

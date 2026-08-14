@@ -3,6 +3,7 @@ import type { LitElement, ReactiveController } from "lit";
 
 import { O11y } from "_/o11y/o11y.mjs";
 import { assertExists, assertNever } from "_error/assertions.mjs";
+import { trace, type Tracer } from "@opentelemetry/api";
 
 import type { InformSetProps } from "./animator/types/animator.types.mjs";
 import type { GeometryEvent } from "./events/types/geometry-events.types.mjs";
@@ -15,12 +16,11 @@ import type {
 
 import { Animator } from "./animator/animator.mjs";
 import { GeometryEvents } from "./events/geometry-events.mjs";
+import { Logger } from "./logger/logger.mjs";
+import { type LogDriver } from "./logger/logger.types.mjs";
 import { GeometryMerger } from "./merger/geometry-merger.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
 import { TimingUtils } from "./utils/timing.utils.mjs";
-import { trace, type Tracer } from "@opentelemetry/api";
-import { Logger } from "./logger/logger.mjs";
-import { type LogDriver } from "./logger/logger.types.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -34,12 +34,12 @@ export class GeometryController<
   private readonly animator: Animator<Instance>;
   private curr: CurrentAppliedStyle | null = null;
   private readonly host: Instance;
+  private readonly logger = new Logger({ class: "GeometryController" });
   private prev: CurrentAppliedStyle | null = null;
   private readonly sets: GeometrySets<Instance>;
-  private readonly tracer: Tracer;
-  private readonly logger = new Logger({ class: "GeometryController" });
-
   private sizing: LayoutSizing | null = null;
+
+  private readonly tracer: Tracer;
 
   constructor(
     host: Instance,

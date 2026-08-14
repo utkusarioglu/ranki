@@ -1,7 +1,7 @@
 import type {
-  LogDriver,
   InstanceEntries,
   LogAttributes,
+  LogDriver,
 } from "./logger.types.mjs";
 
 export class Logger {
@@ -20,14 +20,14 @@ export class Logger {
     if (Logger.drivers.length === 0) return;
     Logger.drivers.forEach((driver) => {
       driver.log({
-        severity: "INFO",
-        epoch: Date.now(),
-        elapsed: performance.now(),
-        log,
         details: {
           ...this.instanceEntries,
           ...attributes,
         },
+        elapsed: performance.now(),
+        epoch: Date.now(),
+        log,
+        severity: "INFO",
       });
     });
   }
