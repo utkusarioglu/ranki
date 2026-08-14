@@ -1,9 +1,4 @@
-/* document-load.ts|js file - the code snippet is the same for both the languages */
-import {
-  // SimpleSpanProcessor,
-  // ConsoleSpanExporter,
-  BatchSpanProcessor,
-} from "@opentelemetry/sdk-trace-web";
+import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-web";
 import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
 import { DocumentLoadInstrumentation } from "@opentelemetry/instrumentation-document-load";
 import { ZoneContextManager } from "@opentelemetry/context-zone";
@@ -15,18 +10,13 @@ const exporter = new OTLPTraceExporter({
 });
 
 const provider = new WebTracerProvider({
-  spanProcessors: [
-    // new SimpleSpanProcessor(new ConsoleSpanExporter()),
-    new BatchSpanProcessor(exporter),
-  ],
+  spanProcessors: [new BatchSpanProcessor(exporter)],
 });
 
 provider.register({
-  // Changing default contextManager to use ZoneContextManager - supports asynchronous operations - optional
   contextManager: new ZoneContextManager(),
 });
 
-// Registering instrumentations
 registerInstrumentations({
   instrumentations: [new DocumentLoadInstrumentation()],
 });
