@@ -33,7 +33,7 @@ export class BatchLogger implements LogDriver {
   new() {
     const lastElapsed = this.elapsed;
     this.elapsed = performance.now();
-    console.log(this.query((v) => v.elapsed >= lastElapsed));
+    this.query((v) => v.elapsed >= lastElapsed);
   }
 
   query(cb: (entry: LogValue) => boolean) {
