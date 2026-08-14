@@ -1,4 +1,4 @@
-export type InstanceEntries = Record<string, boolean | number | string>;
+export type InstanceEntries = Record<string, unknown>;
 
 export type LogAttributes = Record<string, unknown>;
 

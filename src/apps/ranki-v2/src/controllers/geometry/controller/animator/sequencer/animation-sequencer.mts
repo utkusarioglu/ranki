@@ -23,7 +23,6 @@ export class AnimationSequencer {
   private async sequenceCurrent(a: LayoutParsed | undefined): Promise<void> {
     if (!a) return Promise.resolve();
     await Promise.all([
-      O11y.pause(),
       a && this.sequenceRoots(a.root),
       a && this.sequenceSets(a.sets),
     ]);

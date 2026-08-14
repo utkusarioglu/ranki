@@ -1,7 +1,6 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement, ReactiveController } from "lit";
 
-import { O11y } from "_/o11y/o11y.mjs";
 import { assertExists, assertNever } from "_error/assertions.mjs";
 import { trace, type Tracer } from "@opentelemetry/api";
 
@@ -34,7 +33,7 @@ export class GeometryController<
   private readonly animator: Animator<Instance>;
   private curr: CurrentAppliedStyle | null = null;
   private readonly host: Instance;
-  private readonly logger = new Logger({ class: "GeometryController" });
+  private readonly logger: Logger;
   private prev: CurrentAppliedStyle | null = null;
   private readonly sets: GeometrySets<Instance>;
   private sizing: LayoutSizing | null = null;
@@ -61,6 +60,10 @@ export class GeometryController<
       watchers: params.watchers,
     });
     this.tracer = trace.getTracer("geometry-controller");
+    this.logger = new Logger({
+      class: "GeometryController",
+      host: this.host,
+    });
     this.bindInformStyle();
   }
 
@@ -84,7 +87,7 @@ export class GeometryController<
 
       const update = await this.sets.onEmit(target, e.detail);
       if (!update) return;
-      O11y.geometryControllerOnEmit({ host: this.host, update });
+      this.logger.debug("onEmit.callback", { update });
 
       this.sizing = update.sizing;
       switch (update.type) {
@@ -116,7 +119,7 @@ export class GeometryController<
   }
 
   private async informSet(props: InformSetProps): Promise<void> {
-    O11y.controllerInformSet({ host: this.host, props });
+    this.logger.debug("informSet", { props });
     return this.sets.inform(props, this.sizing);
   }
 
@@ -130,8 +133,7 @@ export class GeometryController<
 
         this.logger.info("informStyle", {
           curr: this.curr,
-          host: this.host,
-          informed: informed,
+          informed,
           prev: this.prev,
           sizing: this.sizing,
         });

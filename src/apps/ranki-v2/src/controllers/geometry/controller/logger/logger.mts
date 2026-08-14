@@ -16,19 +16,36 @@ export class Logger {
     Logger.drivers.push(driver);
   }
 
-  info(log: string, attributes?: LogAttributes) {
+  static debug(log: string, attributes?: LogAttributes) {
+    Logger.log("DEBUG", log, attributes);
+  }
+
+  static info(log: string, attributes?: LogAttributes) {
+    Logger.log("INFO", log, attributes);
+  }
+
+  private static log(
+    severity: string,
+    log: string,
+    attributes?: LogAttributes,
+  ) {
     if (Logger.drivers.length === 0) return;
     Logger.drivers.forEach((driver) => {
       driver.log({
-        details: {
-          ...this.instanceEntries,
-          ...attributes,
-        },
+        details: attributes,
         elapsed: performance.now(),
         epoch: Date.now(),
         log,
-        severity: "INFO",
+        severity,
       });
     });
+  }
+
+  debug(log: string, attributes?: LogAttributes) {
+    Logger.debug(log, { ...this.instanceEntries, ...attributes });
+  }
+
+  info(log: string, attributes?: LogAttributes) {
+    Logger.info(log, { ...this.instanceEntries, ...attributes });
   }
 }

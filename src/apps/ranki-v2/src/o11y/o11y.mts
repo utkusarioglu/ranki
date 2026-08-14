@@ -1,14 +1,4 @@
-import { DEBUG_TAG } from "./o11.constants.mjs";
-import type {
-  DebugPause,
-  GeometryControllerOnEmitProps,
-  ControllerInformSet,
-  InformStyleDebug,
-  InformSet,
-  AnimatorUpdate,
-  AnimatorUpdateComposedProps,
-  AnimatorPlayNameProps,
-} from "./o11y.types.mjs";
+import type { DebugPause } from "./o11y.types.mjs";
 
 const DEBUG_DELAY = 0;
 
@@ -25,78 +15,78 @@ export class O11y {
     );
   }
 
-  public static geometryControllerOnEmit({
-    host,
-    update,
-  }: GeometryControllerOnEmitProps) {
-    if (host.tagName === DEBUG_TAG) {
-      console.log("controller.onEmit", {
-        tagName: host.tagName,
-        update,
-      });
-    }
-  }
+  // public static geometryControllerOnEmit({
+  //   host,
+  //   update,
+  // }: GeometryControllerOnEmitProps) {
+  //   if (host.tagName === DEBUG_TAG) {
+  //     console.log("controller.onEmit", {
+  //       tagName: host.tagName,
+  //       update,
+  //     });
+  //   }
+  // }
 
-  public static controllerInformSet(props: ControllerInformSet) {
-    if (props.host.tagName === DEBUG_TAG) {
-      console.log("controller.informSet", {
-        tag: props.host.tagName,
-        props: props.props,
-      });
-    }
-  }
+  // public static controllerInformSet(props: ControllerInformSet) {
+  //   if (props.host.tagName === DEBUG_TAG) {
+  //     console.log("controller.informSet", {
+  //       tag: props.host.tagName,
+  //       props: props.props,
+  //     });
+  //   }
+  // }
 
-  public static informStyle(props: InformStyleDebug) {
-    if (props.host.tagName === DEBUG_TAG) {
-      console.log("controller.informStyle", {
-        tag: props.host.tagName,
-        curr: props.curr,
-        prev: props.prev,
-        sizing: props.sizing,
-        informed: props.informed,
-      });
-    }
-  }
+  // public static informStyle(props: InformStyleDebug) {
+  //   if (props.host.tagName === DEBUG_TAG) {
+  //     console.log("controller.informStyle", {
+  //       tag: props.host.tagName,
+  //       curr: props.curr,
+  //       prev: props.prev,
+  //       sizing: props.sizing,
+  //       informed: props.informed,
+  //     });
+  //   }
+  // }
 
-  public static informSet(props: InformSet) {
-    if (props.e.tagName === DEBUG_TAG) {
-      console.log("watcherset.informSet", {
-        tag: props.host.tagName,
-        e: props.e,
-        informed: props.informed,
-        props: props.props,
-      });
-    }
-  }
+  // public static informSet(props: InformSet) {
+  //   if (props.e.tagName === DEBUG_TAG) {
+  //     console.log("watcherset.informSet", {
+  //       tag: props.host.tagName,
+  //       e: props.e,
+  //       informed: props.informed,
+  //       props: props.props,
+  //     });
+  //   }
+  // }
 
-  public static animatorUpdate(props: AnimatorUpdate) {
-    if (props.host.tagName === DEBUG_TAG)
-      console.log("animator.update", {
-        host: props.host,
-        curr: props.curr,
-        prev: props.prev,
-      });
-  }
+  // public static animatorUpdate(props: AnimatorUpdate) {
+  //   if (props.host.tagName === DEBUG_TAG)
+  //     console.log("animator.update", {
+  //       host: props.host,
+  //       curr: props.curr,
+  //       prev: props.prev,
+  //     });
+  // }
 
-  public static animatorUpdateComposed({
-    host,
-    parsed,
-  }: AnimatorUpdateComposedProps) {
-    if (host.tagName === DEBUG_TAG)
-      console.log("animator.update.composed", {
-        parsed,
-      });
-  }
+  // public static animatorUpdateComposed({
+  //   host,
+  //   parsed,
+  // }: AnimatorUpdateComposedProps) {
+  //   if (host.tagName === DEBUG_TAG)
+  //     console.log("animator.update.composed", {
+  //       parsed,
+  //     });
+  // }
 
-  public static animatorPlayName({
-    host,
-    finalKeyframes,
-    finalOptions,
-  }: AnimatorPlayNameProps) {
-    if (host.tagName === DEBUG_TAG)
-      console.log("animator.playName", {
-        finalKeyframes,
-        finalOptions,
-      });
-  }
+  // public static animatorPlayName({
+  //   host,
+  //   finalKeyframes,
+  //   finalOptions,
+  // }: AnimatorPlayNameProps) {
+  //   if (host.tagName === DEBUG_TAG)
+  //     console.log("animator.playName", {
+  //       finalKeyframes,
+  //       finalOptions,
+  //     });
+  // }
 }

@@ -1,10 +1,9 @@
 import type { LitElement } from "lit";
 
-import { O11y } from "_/o11y/o11y.mjs";
-
 import type { GeometryRole } from "../types/geometry-controller.constructor.types.mjs";
 import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs";
 
+import { Logger } from "../logger/logger.mjs";
 import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
 import { LayoutParser } from "./parser/layout-parser.mjs";
 import { RecipeUtils } from "./recipe/recipe-utils.mjs";
@@ -49,7 +48,7 @@ export class Animator<Instance extends LitElement> {
     curr: CurrentAppliedStyle,
     prev: CurrentAppliedStyle | null,
   ): Promise<void> {
-    O11y.animatorUpdate({ curr, host: this.host, prev });
+    Logger.debug("Animator.update", { curr, host: this.host, prev });
     await Promise.all(
       curr.actions.map((action) => {
         const recipe = this.getRecipe({
@@ -60,7 +59,7 @@ export class Animator<Instance extends LitElement> {
         });
 
         const parsed = LayoutParser.parse({ curr, prev, recipe: recipe });
-        O11y.animatorUpdateComposed({
+        Logger.debug("Animator.update.composed", {
           curr,
           host: this.host,
           parsed,
@@ -82,7 +81,7 @@ export class Animator<Instance extends LitElement> {
       ...options,
     };
     const finalKeyframes = KeyframeUtils.produceKeyframes(keyframes);
-    O11y.animatorPlayName({
+    Logger.debug("Animator.playName", {
       finalKeyframes,
       finalOptions,
       host: this.host,

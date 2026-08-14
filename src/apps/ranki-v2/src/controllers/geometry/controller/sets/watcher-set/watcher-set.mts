@@ -1,6 +1,5 @@
 import type { LitElement } from "lit";
 
-import { O11y } from "_/o11y/o11y.mjs";
 import {
   type ReconciliationDiff,
   ReconciliationUtils,
@@ -12,16 +11,19 @@ import type { LayoutSizing } from "../children/layout/layout-utils.types.mjs";
 import type { GeometrySetSelectorCb } from "../sets.types.mjs";
 import type { GeometryWatcherProps } from "../watcher/watcher.types.mjs";
 
+import { Logger } from "../../logger/logger.mjs";
 import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
 
 export class WatcherSet<Instance extends LitElement> {
   protected diff?: GeometrySetDiffCb<Instance>;
   protected readonly host: Instance;
+  protected readonly logger: Logger;
   protected readonly selector: GeometrySetSelectorCb<Instance>;
 
   constructor(host: Instance, props: GeometryWatcherProps<Instance>) {
     this.host = host;
     this.selector = props.selector;
+    this.logger = new Logger({ class: "WatcherSet", host: this.host });
   }
 
   public async inform(
@@ -38,7 +40,7 @@ export class WatcherSet<Instance extends LitElement> {
           props,
           sizing,
         );
-        O11y.informSet({ e, host: this.host, informed, props });
+        this.logger.debug("WatcherSet.informSet", { e, informed, props });
         return e.informStyle(informed);
       }),
     );
