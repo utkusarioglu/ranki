@@ -3,7 +3,7 @@ import type { DebugPause } from "./debug.types.mjs";
 import { Logger } from "../logger/logger.mjs";
 
 export class Debug {
-  public static DEBUG_DELAY = 1000;
+  public static DEBUG_DELAY = 0;
 
   public static async pause(props?: DebugPause) {
     const duration = props?.duration || this.DEBUG_DELAY;

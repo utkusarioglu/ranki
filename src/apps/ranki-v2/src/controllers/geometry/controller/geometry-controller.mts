@@ -8,15 +8,16 @@ import type { InformSetProps } from "./animator/types/animator.types.mjs";
 import type { GeometryEvent } from "./events/types/geometry-events.types.mjs";
 import type { LayoutSizing } from "./sets/children/layout/layout-utils.types.mjs";
 import type { GeometryControllerConstructorParams } from "./types/geometry-controller.constructor.types.mjs";
+import type { GeometryControllerStaticConfig } from "./types/geometry-controller.static.types.mjs";
 import type {
   CurrentAppliedStyle,
   InformedChildStyle,
 } from "./types/geometry-controller.types.mjs";
 
 import { Animator } from "./animator/animator.mjs";
+import { Debug } from "./debug/debug.mjs";
 import { GeometryEvents } from "./events/geometry-events.mjs";
 import { Logger } from "./logger/logger.mjs";
-import { type LogDriver } from "./logger/logger.types.mjs";
 import { GeometryMerger } from "./merger/geometry-merger.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
 import { TimingUtils } from "./utils/timing.utils.mjs";
@@ -67,8 +68,15 @@ export class GeometryController<
     this.bindInformStyle();
   }
 
-  static addLogDriver(d: LogDriver) {
-    Logger.addDriver(d);
+  static configure(conf: GeometryControllerStaticConfig) {
+    if (conf.log?.drivers) {
+      conf.log.drivers.forEach((dr) => {
+        Logger.addDriver(dr);
+      });
+    }
+    if (conf.debug?.sequencer?.stutter) {
+      Debug.DEBUG_DELAY = conf.debug.sequencer.stutter;
+    }
   }
 
   hostConnected(): void {

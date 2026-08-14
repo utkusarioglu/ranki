@@ -20,4 +20,4 @@ export function geometry<Instance extends LitElement>(
   };
 }
 
-geometry.addLogDriver = GeometryController.addLogDriver;
+geometry.configure = GeometryController.configure;
