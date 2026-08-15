@@ -5,4 +5,9 @@ geometry.configure({
   log: {
     drivers: [batchLogger],
   },
+  // debug: {
+  //   sequencer: {
+  //     stutter: 1000,
+  //   },
+  // },
 });

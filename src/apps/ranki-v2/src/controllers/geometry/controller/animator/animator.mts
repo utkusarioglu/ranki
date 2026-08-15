@@ -17,7 +17,7 @@ import {
   type AnimatorPlayParams,
   type GetRecipeCallback,
 } from "./types/animator.types.mjs";
-import { trace, type Tracer } from "@opentelemetry/api";
+import { context, trace, type Tracer } from "@opentelemetry/api";
 
 export class Animator<Instance extends LitElement> {
   private readonly callbacks: AnimatorCallbacks<Instance>;
@@ -37,14 +37,14 @@ export class Animator<Instance extends LitElement> {
     this.host = host;
     this.role = role;
     this.callbacks = callbacks;
-    this.sequencer = new AnimationSequencer({
+    this.sequencer = new AnimationSequencer(this.host.tagName, {
       informSet: this.callbacks.informSet,
       playName: this.playName.bind(this),
     });
     this.getRecipe = this.prepareGetRecipeCallback(
       this.callbacks.getCollection,
     );
-    this.tracer = trace.getTracer("animator");
+    this.tracer = trace.getTracer(this.constructor.name);
   }
 
   public async update(
@@ -52,36 +52,39 @@ export class Animator<Instance extends LitElement> {
     prev: CurrentAppliedStyle | null,
   ): Promise<void> {
     Logger.debug("Animator.update", { curr, host: this.host, prev });
-    return this.tracer.startActiveSpan("animator.update", async (span) => {
-      try {
-        await Promise.all(
-          curr.actions.map((action) => {
-            span.addEvent("animator.recipe.get");
-            const recipe = this.getRecipe({
-              action,
-              interaction: "default",
-              preset: this.preset,
-              role: this.role,
-            });
-            span.addEvent("animator.recipe.ready");
+    return this.tracer.startActiveSpan(
+      `${this.host.tagName}:update`,
+      async (span) => {
+        try {
+          await Promise.all(
+            curr.actions.map((action) => {
+              span.addEvent("animator.recipe.get");
+              const recipe = this.getRecipe({
+                action,
+                interaction: "default",
+                preset: this.preset,
+                role: this.role,
+              });
+              span.addEvent("animator.recipe.ready");
 
-            const parsed = LayoutParser.parse({ curr, prev, recipe: recipe });
-            span.addEvent("animator.layout.parsed");
+              const parsed = LayoutParser.parse({ curr, prev, recipe: recipe });
+              span.addEvent("animator.layout.parsed");
 
-            Logger.debug("Animator.update.composed", {
-              curr,
-              host: this.host,
-              parsed,
-              prev,
-              recipe,
-            });
-            return this.sequencer.build(parsed);
-          }),
-        );
-      } finally {
-        span.end();
-      }
-    });
+              Logger.debug("Animator.update.composed", {
+                curr,
+                host: this.host,
+                parsed,
+                prev,
+                recipe,
+              });
+              return this.sequencer.build(action, parsed);
+            }),
+          );
+        } finally {
+          span.end();
+        }
+      },
+    );
   }
 
   private async playName({
@@ -89,48 +92,62 @@ export class Animator<Instance extends LitElement> {
     name,
     options,
   }: AnimatorPlayParams): Promise<void> {
-    const finalOptions: KeyframeAnimationOptions = {
-      ...KeyframeUtils.OPTIONS_DEFAULTS,
-      ...options,
-    };
-    const finalKeyframes = KeyframeUtils.produceKeyframes(keyframes);
-    Logger.debug("Animator.playName", {
-      finalKeyframes,
-      finalOptions,
-      host: this.host,
-    });
-    const anim = this.host.animate(finalKeyframes, finalOptions);
-    const r = this.running.get(name);
-    if (r) {
-      r.oncancel = (_ev) => {
-        if (r.playState === "running") {
-          console.warn(
-            "Animation cancelled while running.",
-            "Name: ",
-            name,
-            "tag: ",
-            this.host.tagName,
-          );
+    return this.tracer.startActiveSpan(
+      `${this.host.tagName}:playName:${name}`,
+      async (span) => {
+        try {
+          const finalOptions: KeyframeAnimationOptions = {
+            ...KeyframeUtils.OPTIONS_DEFAULTS,
+            ...options,
+          };
+          const finalKeyframes = KeyframeUtils.produceKeyframes(keyframes);
+          span.addEvent("keyframes.produced");
+          Logger.debug("Animator.playName", {
+            finalKeyframes,
+            finalOptions,
+            host: this.host,
+          });
+          span.addEvent("host.animate.start");
+          const anim = this.host.animate(finalKeyframes, finalOptions);
+
+          span.addEvent("host.animate.end");
+          const r = this.running.get(name);
+          if (r) {
+            span.addEvent("animation.cancel");
+            r.oncancel = (_ev) => {
+              if (r.playState === "running") {
+                console.warn(
+                  "Animation cancelled while running.",
+                  "Name: ",
+                  name,
+                  "tag: ",
+                  this.host.tagName,
+                );
+              }
+            };
+            r.commitStyles();
+            r.cancel();
+          }
+          this.running.set(name, anim);
+          await anim.finished;
+          this.running.delete(name);
+          span.addEvent("animation.delete");
+        } catch (e) {
+          console.log("ABORT", {
+            e,
+            host: this.host,
+            new: {
+              keyframes,
+              name,
+              options,
+            },
+            running: this.running,
+          });
+        } finally {
+          span.end();
         }
-      };
-      r.commitStyles();
-      r.cancel();
-    }
-    this.running.set(name, anim);
-    await anim.finished
-      .then(() => this.running.delete(name))
-      .catch((e) =>
-        console.log("ABORT", {
-          e,
-          host: this.host,
-          new: {
-            keyframes,
-            name,
-            options,
-          },
-          running: this.running,
-        }),
-      );
+      },
+    );
   }
 
   private prepareGetRecipeCallback(

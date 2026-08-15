@@ -2,7 +2,7 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement, ReactiveController } from "lit";
 
 import { assertNever } from "_error/assertions.mjs";
-import { context, trace, type Tracer } from "@opentelemetry/api";
+import { trace, type Tracer } from "@opentelemetry/api";
 
 import type { InformSetProps } from "./animator/types/animator.types.mjs";
 import type { LayoutSizing } from "./sets/children/layout/layout-utils.types.mjs";
@@ -59,7 +59,7 @@ export class GeometryController<
       children: params.children,
       watchers: params.watchers,
     });
-    this.tracer = trace.getTracer("geometry-controller");
+    this.tracer = trace.getTracer(this.constructor.name);
     this.logger = new Logger({
       class: "GeometryController",
       host: this.host,
@@ -88,36 +88,43 @@ export class GeometryController<
 
   onEmit() {
     return this.events.onEmit(async (target, detail) => {
-      return this.tracer.startActiveSpan("controller.onEmit", async (span) => {
-        const update = await this.sets.onEmit(target, detail);
-        if (!update) {
-          span.addEvent("session.joined");
-          return;
-        }
-        span.addEvent("session.completed");
-        this.logger.debug("onEmit.callback.update", { update });
+      return this.tracer.startActiveSpan(
+        `${this.host.tagName}:onEmit`,
+        async (span) => {
+          try {
+            const update = await this.sets.onEmit(target, detail);
+            if (!update) {
+              span.addEvent("session.joined");
+              return;
+            }
+            span.addEvent("session.completed");
+            this.logger.debug("onEmit.callback.update", { update });
 
-        this.sizing = update.sizing;
-        switch (update.type) {
-          case "root":
-            span.addEvent("controller.propagate.down");
-            await this.informStyle(update.inform);
-            break;
-          case "update":
-            span.addEvent("controller.propagate.up");
-            this.events.emit({
-              lifecycle: "update",
-              style: update.sizing.container,
-              type: "lifecycle",
-            });
-            break;
-          default:
-            assertNever({
-              details: { update },
-              why: "Unrecognized children update type",
-            });
-        }
-      });
+            this.sizing = update.sizing;
+            switch (update.type) {
+              case "root":
+                span.addEvent("controller.propagate.down");
+                await this.informStyle(update.inform);
+                break;
+              case "update":
+                span.addEvent("controller.propagate.up");
+                this.events.emit({
+                  lifecycle: "update",
+                  style: update.sizing.container,
+                  type: "lifecycle",
+                });
+                break;
+              default:
+                assertNever({
+                  details: { update },
+                  why: "Unrecognized children update type",
+                });
+            }
+          } finally {
+            span.end();
+          }
+        },
+      );
     });
   }
 
@@ -131,18 +138,21 @@ export class GeometryController<
 
   private async informSet(props: InformSetProps): Promise<void> {
     this.logger.debug("informSet", { props });
-    return this.tracer.startActiveSpan("informSet", async (span) => {
-      try {
-        return this.sets.inform(props, this.sizing);
-      } finally {
-        span.end();
-      }
-    });
+    return this.tracer.startActiveSpan(
+      `${this.host.tagName}:informSet`,
+      async (span) => {
+        try {
+          return this.sets.inform(props, this.sizing);
+        } finally {
+          span.end();
+        }
+      },
+    );
   }
 
   private async informStyle(informed: InformedChildStyle): Promise<void> {
     return this.tracer.startActiveSpan(
-      "GeometryController.informStyle",
+      `${this.host.tagName}:informStyle`,
       async (span) => {
         try {
           this.prev = this.curr;
