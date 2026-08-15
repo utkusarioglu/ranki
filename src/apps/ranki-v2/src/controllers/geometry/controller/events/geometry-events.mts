@@ -13,6 +13,9 @@ import {
   ACTION_TIME_SEPARATOR,
   DEFAULT_EVENT_SETTINGS,
 } from "./geometry-events.constants.mjs";
+import { assertExists } from "_error/assertions.mjs";
+import type { R2C } from "_components/r2c/r2c.mjs";
+import { context, type Context } from "@opentelemetry/api";
 
 export class GeometryEvents<Instance extends LitElement> {
   public static readonly GEOMETRY_EVENT_NAME = "r2-geometry";
@@ -36,14 +39,28 @@ export class GeometryEvents<Instance extends LitElement> {
     }
   }
 
+  public onEmit(callback: (target: R2C, detail: GeometryEvent) => void) {
+    return async (
+      e: CustomEvent<{ event: GeometryEvent; context: Context }>,
+    ) => {
+      e.stopPropagation();
+      const target = e.composedPath()[0] as null | R2C;
+      assertExists(target, { why: "No valid target given" });
+      return context.with(e.detail.context, () =>
+        callback(target, e.detail.event),
+      );
+    };
+  }
+
   public emit(event: GeometryEvent) {
-    this.host.dispatchEvent(
-      new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
-        bubbles: true,
-        composed: true,
-        detail: event,
-      }),
-    );
+    const ctx = context.active();
+    const customEvent = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
+      bubbles: true,
+      composed: true,
+      detail: { ctx, event },
+    });
+
+    this.host.dispatchEvent(customEvent);
   }
 
   onActionsEnd(actions: LocalAction[]) {

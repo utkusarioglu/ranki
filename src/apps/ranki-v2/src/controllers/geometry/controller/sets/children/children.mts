@@ -23,7 +23,7 @@ export class GeometryChildren<
   private requested = false;
 
   constructor(host: Instance, props: GeometryChildrenProps<Instance>) {
-    super(host, props);
+    super(host, props, "geometry-children");
     this.layout = props.layout || (() => LayoutUtils.row({}));
     this.isRoot = props.isRoot || false;
     this.diff = props.diff;
@@ -39,27 +39,42 @@ export class GeometryChildren<
 
   private async updateSizing(): ChildrenUpdateSizingReturn {
     if (this.requested) return null;
-    this.requested = true;
+    return this.tracer.startActiveSpan(
+      "GeometryChildren.updateSizing",
+      async (span) => {
+        this.requested = true;
 
-    await TimingUtils.raf();
+        try {
+          span.addEvent("session.start");
+          await TimingUtils.raf();
+          span.addEvent("session.compute.start");
 
-    const serial = this.getElements();
-    const ordered = this.registry.getOrdered(serial);
-    const layoutCallback = this.layout(this.host);
-    const sizing = layoutCallback(ordered);
+          const serial = this.getElements();
+          const ordered = this.registry.getOrdered(serial);
+          const layoutCallback = this.layout(this.host);
+          const sizing = layoutCallback(ordered);
 
-    this.requested = false;
+          span.addEvent("session.compute.end");
 
-    if (this.isRoot === true)
-      return {
-        inform: GeometrySetsUtils.prepareRootStyle(sizing),
-        sizing,
-        type: "root",
-      };
-
-    return {
-      sizing,
-      type: "update",
-    };
+          if (this.isRoot === true) {
+            span.addEvent("session.root");
+            return {
+              inform: GeometrySetsUtils.prepareRootStyle(sizing),
+              sizing,
+              type: "root" as const,
+            };
+          } else {
+            span.addEvent("session.propagate");
+            return {
+              sizing,
+              type: "update" as const,
+            };
+          }
+        } finally {
+          this.requested = false;
+          span.end();
+        }
+      },
+    );
   }
 }

@@ -17,6 +17,7 @@ import {
   type AnimatorPlayParams,
   type GetRecipeCallback,
 } from "./types/animator.types.mjs";
+import { context, trace, type Tracer } from "@opentelemetry/api";
 
 export class Animator<Instance extends LitElement> {
   private readonly callbacks: AnimatorCallbacks<Instance>;
@@ -26,6 +27,7 @@ export class Animator<Instance extends LitElement> {
   private readonly role: GeometryRole;
   private running = new Map<string, Animation>();
   private readonly sequencer: AnimationSequencer;
+  private readonly tracer: Tracer;
 
   constructor(
     host: Instance,
@@ -42,6 +44,7 @@ export class Animator<Instance extends LitElement> {
     this.getRecipe = this.prepareGetRecipeCallback(
       this.callbacks.getCollection,
     );
+    this.tracer = trace.getTracer("animator");
   }
 
   public async update(
@@ -49,26 +52,33 @@ export class Animator<Instance extends LitElement> {
     prev: CurrentAppliedStyle | null,
   ): Promise<void> {
     Logger.debug("Animator.update", { curr, host: this.host, prev });
-    await Promise.all(
-      curr.actions.map((action) => {
-        const recipe = this.getRecipe({
-          action,
-          interaction: "default",
-          preset: this.preset,
-          role: this.role,
-        });
+    return this.tracer.startActiveSpan("animator.update", async (span) => {
+      const ctx = context.active();
+      await Promise.all(
+        curr.actions.map((action) => {
+          span.addEvent("animator.recipe.get");
+          const recipe = this.getRecipe({
+            action,
+            interaction: "default",
+            preset: this.preset,
+            role: this.role,
+          });
+          span.addEvent("animator.recipe.ready");
 
-        const parsed = LayoutParser.parse({ curr, prev, recipe: recipe });
-        Logger.debug("Animator.update.composed", {
-          curr,
-          host: this.host,
-          parsed,
-          prev,
-          recipe,
-        });
-        return this.sequencer.build(parsed);
-      }),
-    );
+          const parsed = LayoutParser.parse({ curr, prev, recipe: recipe });
+          span.addEvent("animator.layout.parsed");
+
+          Logger.debug("Animator.update.composed", {
+            curr,
+            host: this.host,
+            parsed,
+            prev,
+            recipe,
+          });
+          return context.with(ctx, () => this.sequencer.build(parsed));
+        }),
+      );
+    });
   }
 
   private async playName({

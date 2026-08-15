@@ -13,17 +13,24 @@ import type { GeometryWatcherProps } from "../watcher/watcher.types.mjs";
 
 import { Logger } from "../../logger/logger.mjs";
 import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
+import { context, trace, type Tracer } from "@opentelemetry/api";
 
 export class WatcherSet<Instance extends LitElement> {
   protected diff?: GeometrySetDiffCb<Instance>;
   protected readonly host: Instance;
   protected readonly logger: Logger;
   protected readonly selector: GeometrySetSelectorCb<Instance>;
+  protected readonly tracer: Tracer;
 
-  constructor(host: Instance, props: GeometryWatcherProps<Instance>) {
+  constructor(
+    host: Instance,
+    props: GeometryWatcherProps<Instance>,
+    tracerName: string = "WatcherSet",
+  ) {
     this.host = host;
     this.selector = props.selector;
     this.logger = new Logger({ class: "WatcherSet", host: this.host });
+    this.tracer = trace.getTracer(tracerName);
   }
 
   public async inform(
@@ -31,19 +38,28 @@ export class WatcherSet<Instance extends LitElement> {
     sizing: LayoutSizing | null,
   ): Promise<void> {
     const diff = this.getDiff();
-    await Promise.all(
-      this.getElements().map((e, i, a) => {
-        const informed = GeometrySetsUtils.prepareSetElementStyle(
-          i,
-          a,
-          diff,
-          props,
-          sizing,
+    return this.tracer.startActiveSpan("inform", async (span) => {
+      // const ctx = trace.setSpan(context.active(), span);
+      try {
+        await Promise.all(
+          this.getElements().map((e, i, a) => {
+            const informed = GeometrySetsUtils.prepareSetElementStyle(
+              i,
+              a,
+              diff,
+              props,
+              sizing,
+            );
+            this.logger.debug("WatcherSet.informSet", { e, informed, props });
+            span.addEvent("informStyle.before");
+            // return context.with(ctx, () => e.informStyle(informed));
+            return e.informStyle(informed);
+          }),
         );
-        this.logger.debug("WatcherSet.informSet", { e, informed, props });
-        return e.informStyle(informed);
-      }),
-    );
+      } finally {
+        span.end();
+      }
+    });
   }
 
   protected getElements() {
