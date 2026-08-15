@@ -17,7 +17,7 @@ import {
   type AnimatorPlayParams,
   type GetRecipeCallback,
 } from "./types/animator.types.mjs";
-import { context, trace, type Tracer } from "@opentelemetry/api";
+import { trace, type Tracer } from "@opentelemetry/api";
 
 export class Animator<Instance extends LitElement> {
   private readonly callbacks: AnimatorCallbacks<Instance>;
@@ -53,31 +53,34 @@ export class Animator<Instance extends LitElement> {
   ): Promise<void> {
     Logger.debug("Animator.update", { curr, host: this.host, prev });
     return this.tracer.startActiveSpan("animator.update", async (span) => {
-      const ctx = context.active();
-      await Promise.all(
-        curr.actions.map((action) => {
-          span.addEvent("animator.recipe.get");
-          const recipe = this.getRecipe({
-            action,
-            interaction: "default",
-            preset: this.preset,
-            role: this.role,
-          });
-          span.addEvent("animator.recipe.ready");
+      try {
+        await Promise.all(
+          curr.actions.map((action) => {
+            span.addEvent("animator.recipe.get");
+            const recipe = this.getRecipe({
+              action,
+              interaction: "default",
+              preset: this.preset,
+              role: this.role,
+            });
+            span.addEvent("animator.recipe.ready");
 
-          const parsed = LayoutParser.parse({ curr, prev, recipe: recipe });
-          span.addEvent("animator.layout.parsed");
+            const parsed = LayoutParser.parse({ curr, prev, recipe: recipe });
+            span.addEvent("animator.layout.parsed");
 
-          Logger.debug("Animator.update.composed", {
-            curr,
-            host: this.host,
-            parsed,
-            prev,
-            recipe,
-          });
-          return context.with(ctx, () => this.sequencer.build(parsed));
-        }),
-      );
+            Logger.debug("Animator.update.composed", {
+              curr,
+              host: this.host,
+              parsed,
+              prev,
+              recipe,
+            });
+            return this.sequencer.build(parsed);
+          }),
+        );
+      } finally {
+        span.end();
+      }
     });
   }
 

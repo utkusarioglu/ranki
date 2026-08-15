@@ -1,3 +1,4 @@
+import type { Context } from "@opentelemetry/api";
 import type { INTERACTION_SEPARATOR } from "../../sets/children/registry/children-registry.constants.mjs";
 import type {
   GeometryEventInteraction,
@@ -20,3 +21,7 @@ export type LocalAction =
   | `interaction${typeof INTERACTION_SEPARATOR}${GeometryInteractionEmit}`
   | `lifecycle${typeof INTERACTION_SEPARATOR}${EmitLifecycleKey}`
   | `mode${typeof INTERACTION_SEPARATOR}${GeometryEventModeKey}`;
+export interface EventWithContext<T> {
+  context: Context;
+  event: T;
+}

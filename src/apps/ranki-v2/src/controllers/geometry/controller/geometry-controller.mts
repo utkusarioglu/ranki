@@ -121,53 +121,6 @@ export class GeometryController<
     });
   }
 
-  // onEmit_old() {
-  //   return async (e: CustomEvent<GeometryEvent>) => {
-  //     return this.tracer.startActiveSpan(
-  //       "GeometryController.onEmit",
-  //       async (span) => {
-  //         e.stopPropagation();
-
-  //         try {
-  //           const target = e.composedPath()[0] as null | R2C;
-  //           assertExists(target, { why: "No valid target given" });
-
-  //           const update = await this.sets.onEmit(target, e.detail);
-  //           if (!update) {
-  //             span.addEvent("session.joined");
-  //             return;
-  //           }
-  //           span.addEvent("session.completed");
-  //           this.logger.debug("onEmit.callback.update", { update });
-
-  //           this.sizing = update.sizing;
-  //           switch (update.type) {
-  //             case "root":
-  //               span.addEvent("controller.propagate.down");
-  //               await this.informStyle(update.inform);
-  //               break;
-  //             case "update":
-  //               span.addEvent("controller.propagate.up");
-  //               this.events.emit({
-  //                 lifecycle: "update",
-  //                 style: update.sizing.container,
-  //                 type: "lifecycle",
-  //               });
-  //               break;
-  //             default:
-  //               assertNever({
-  //                 details: { update },
-  //                 why: "Unrecognized children update type",
-  //               });
-  //           }
-  //         } finally {
-  //           span.end();
-  //         }
-  //       },
-  //     );
-  //   };
-  // }
-
   /**
    * This is the method parent uses to tell its child what style it's
    * supposed to animate towards
@@ -191,7 +144,6 @@ export class GeometryController<
     return this.tracer.startActiveSpan(
       "GeometryController.informStyle",
       async (span) => {
-        const ctx = context.active();
         try {
           this.prev = this.curr;
           const curr = GeometryMerger.createCurrStyle(informed, this.sizing);
@@ -207,7 +159,7 @@ export class GeometryController<
           });
 
           this.events.onActionsStart(this.curr.actions);
-          await context.with(ctx, () => this.animator.update(curr, this.prev));
+          await this.animator.update(curr, this.prev);
           this.events.onActionsEnd(this.curr.actions);
         } finally {
           span.end();

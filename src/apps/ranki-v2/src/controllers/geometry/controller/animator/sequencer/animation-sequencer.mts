@@ -42,7 +42,6 @@ export class AnimationSequencer {
   ): Promise<void> {
     if (!roots) return Promise.resolve();
     return this.tracer.startActiveSpan("sequenceRoots", async (span) => {
-      const ctx = context.active();
       try {
         await Promise.all(
           roots.map(async (p) => {
@@ -51,7 +50,7 @@ export class AnimationSequencer {
             span.addEvent("playName.end & pause.start");
             await Debug.pause();
             span.addEvent("pause.end & sequenceThen.start");
-            await context.with(ctx, () => this.sequenceThen(p.then));
+            await this.sequenceThen(p.then);
             span.addEvent("sequenceThen.end");
           }),
         );
@@ -77,7 +76,7 @@ export class AnimationSequencer {
             span.addEvent("informSet.end");
             await Debug.pause();
             span.addEvent("pause.end & sequenceThen.start");
-            if (then) await context.with(ctx, () => this.sequenceThen(then));
+            if (then) this.sequenceThen(then);
             span.addEvent("sequenceThen.end");
           }),
         );
@@ -89,14 +88,13 @@ export class AnimationSequencer {
 
   private async sequenceThen(a: LayoutParsed | undefined): Promise<void> {
     if (!a) return Promise.resolve();
-    return this.tracer.startActiveSpan("sequencer.then", async (span) => {
-      const ctx = context.active();
+    return this.tracer.startActiveSpan("sequence.then", async (span) => {
       try {
         await this.sequenceCurrent(a);
         span.addEvent("sequence.current");
         await Debug.pause();
         span.addEvent("debug.pause");
-        await context.with(ctx, () => this.sequenceThen(a.then));
+        await this.sequenceThen(a.then);
         span.addEvent("sequence.then");
       } finally {
         span.end();
