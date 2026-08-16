@@ -14,6 +14,26 @@ export function assertOverride(extra: AssertionExtra): never {
   });
 }
 
+export function assertTrue(v: any, extra: AssertionExtra): asserts v is true {
+  if (v !== true) {
+    throw new RankiAppError({
+      code: "VALUE_NOT_TRUE",
+      cause: null,
+      ...extra,
+    });
+  }
+}
+
+export function assertFalse(v: any, extra: AssertionExtra): asserts v is false {
+  if (v !== false) {
+    throw new RankiAppError({
+      code: "VALUE_NOT_FALSE",
+      cause: null,
+      ...extra,
+    });
+  }
+}
+
 export function assertExists(
   v: any,
   extra: AssertionExtra,

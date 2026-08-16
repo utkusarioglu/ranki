@@ -8,20 +8,36 @@ import type {
   LayoutSizingCallback,
 } from "./layout/layout-utils.types.mjs";
 
-export type ChildrenSizing = ChildrenSizingRoot | ChildrenSizingUpdate;
+export type ChildrenSizing =
+  | ChildrenSizingRoot
+  | ChildrenSizingUpdate
+  | ChildrenSizingTerminate;
 
 export interface ChildrenSizingRoot {
   inform: InformedChildStyle;
+  session: GeometryUpdateSession;
   sizing: LayoutSizing;
   type: "root";
 }
 
 export interface ChildrenSizingUpdate {
   sizing: LayoutSizing;
+  session: GeometryUpdateSession;
   type: "update";
 }
 
-export type ChildrenUpdateSizingReturn = Promise<ChildrenSizing | null>;
+export interface ChildrenSizingTerminate {
+  type: "terminate";
+  session: GeometryUpdateSession;
+}
+
+export interface GeometryUpdateSession {
+  id: number;
+  start: number;
+  index: number;
+}
+
+export type ChildrenUpdateSizingReturn = Promise<ChildrenSizing>;
 
 export type GeometryChildrenLayoutCallback = (
   s: LitElement,

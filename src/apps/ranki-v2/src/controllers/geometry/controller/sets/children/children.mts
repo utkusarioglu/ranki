@@ -13,6 +13,7 @@ import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
 import { WatcherSet } from "../watcher-set/watcher-set.mjs";
 import { LayoutUtils } from "./layout/layout-utils.mjs";
 import { ChildrenRegistry } from "./registry/children-registry.mjs";
+import { UpdateSession } from "./session.mjs";
 
 export class GeometryChildren<
   Instance extends LitElement,
@@ -20,7 +21,7 @@ export class GeometryChildren<
   private readonly isRoot: boolean;
   private readonly layout: GeometryChildrenLayoutCallback;
   private readonly registry = new ChildrenRegistry();
-  private requested = false;
+  private readonly session = new UpdateSession();
 
   constructor(host: Instance, props: GeometryChildrenProps<Instance>) {
     super(host, props, "geometry-children");
@@ -38,15 +39,19 @@ export class GeometryChildren<
   }
 
   private async updateSizing(): ChildrenUpdateSizingReturn {
-    if (this.requested) return null;
+    if (this.session.isActive()) {
+      return {
+        type: "terminate",
+        session: this.session.join(),
+      };
+    }
     return this.tracer.startActiveSpan(
       "GeometryChildren.updateSizing",
       async (span) => {
-        this.requested = true;
-
         try {
+          const session = this.session.start();
           span.addEvent("session.start");
-          await TimingUtils.raf();
+          await TimingUtils.raf(2);
           span.addEvent("session.compute.start");
 
           const serial = this.getElements();
@@ -62,16 +67,19 @@ export class GeometryChildren<
               inform: GeometrySetsUtils.prepareRootStyle(sizing),
               sizing,
               type: "root" as const,
+              session,
             };
           } else {
             span.addEvent("session.propagate");
             return {
               sizing,
               type: "update" as const,
+              session,
             };
           }
         } finally {
-          this.requested = false;
+          this.session.end();
+          // this.inSession = false;
           span.end();
         }
       },

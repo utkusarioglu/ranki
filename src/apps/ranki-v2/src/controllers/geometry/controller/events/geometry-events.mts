@@ -15,7 +15,7 @@ import {
 } from "./geometry-events.constants.mjs";
 import { assertExists } from "_error/assertions.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
-import { context } from "@opentelemetry/api";
+import { context, trace, type Tracer } from "@opentelemetry/api";
 import type { EventWithContext } from "./types/geometry-events.types.mjs";
 
 export class GeometryEvents<Instance extends LitElement> {
@@ -23,6 +23,7 @@ export class GeometryEvents<Instance extends LitElement> {
   private readonly events: GeometryEventTypes;
   private readonly host: Instance;
   private readonly on: GeometryEventCb<Instance> | undefined;
+  private readonly tracer: Tracer;
 
   constructor(params: GeometryEventsConstructorParams<Instance>) {
     this.host = params.host;
@@ -31,6 +32,7 @@ export class GeometryEvents<Instance extends LitElement> {
       ...params.events,
     };
     this.on = params.on;
+    this.tracer = trace.getTracer(this.constructor.name);
   }
 
   deregisterListeners() {
@@ -52,18 +54,20 @@ export class GeometryEvents<Instance extends LitElement> {
   }
 
   public emit(event: GeometryEvent) {
-    const ctx = context.active();
-    const detail: EventWithContext<GeometryEvent> = {
-      context: ctx,
-      event,
-    };
-    const customEvent = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
-      bubbles: true,
-      composed: true,
-      detail,
+    this.tracer.startActiveSpan(`${this.host.tagName}:emit`, (span) => {
+      const ctx = context.active();
+      const detail: EventWithContext<GeometryEvent> = {
+        context: ctx,
+        event,
+      };
+      const customEvent = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
+        bubbles: true,
+        composed: true,
+        detail,
+      });
+      this.host.dispatchEvent(customEvent);
+      span.end();
     });
-
-    this.host.dispatchEvent(customEvent);
   }
 
   onActionsEnd(actions: LocalAction[]) {

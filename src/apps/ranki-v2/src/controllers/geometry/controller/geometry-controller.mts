@@ -2,7 +2,7 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement, ReactiveController } from "lit";
 
 import { assertNever } from "_error/assertions.mjs";
-import { trace, type Tracer } from "@opentelemetry/api";
+import { context, trace, type Tracer } from "@opentelemetry/api";
 
 import type { InformSetProps } from "./animator/types/animator.types.mjs";
 import type { LayoutSizing } from "./sets/children/layout/layout-utils.types.mjs";
@@ -91,35 +91,42 @@ export class GeometryController<
       return this.tracer.startActiveSpan(
         `${this.host.tagName}:onEmit`,
         async (span) => {
+          const ctx = context.active();
           try {
             const update = await this.sets.onEmit(target, detail);
-            if (!update) {
-              span.addEvent("session.joined");
-              return;
-            }
-            span.addEvent("session.completed");
-            this.logger.debug("onEmit.callback.update", { update });
+            span.setAttribute("geometry.session.id", update.session.id);
+            span.setAttribute("geometry.session.start", update.session.start);
+            span.setAttribute("geometry.session.index", update.session.index);
 
-            this.sizing = update.sizing;
-            switch (update.type) {
-              case "root":
-                span.addEvent("controller.propagate.down");
-                await this.informStyle(update.inform);
-                break;
-              case "update":
-                span.addEvent("controller.propagate.up");
-                this.events.emit({
-                  lifecycle: "update",
-                  style: update.sizing.container,
-                  type: "lifecycle",
-                });
-                break;
-              default:
-                assertNever({
-                  details: { update },
-                  why: "Unrecognized children update type",
-                });
-            }
+            await context.with(ctx, async () => {
+              if (update.type === "terminate") {
+                span.addEvent("session.joined");
+                return;
+              }
+              span.addEvent("session.completed");
+              this.logger.debug("onEmit.callback.update", { update });
+
+              this.sizing = update.sizing;
+              switch (update.type) {
+                case "root":
+                  span.addEvent("controller.propagate.down");
+                  await this.informStyle(update.inform);
+                  break;
+                case "update":
+                  span.addEvent("controller.propagate.up");
+                  this.events.emit({
+                    lifecycle: "update",
+                    style: update.sizing.container,
+                    type: "lifecycle",
+                  });
+                  break;
+                default:
+                  assertNever({
+                    details: { update },
+                    why: "Unrecognized children update type",
+                  });
+              }
+            });
           } finally {
             span.end();
           }
