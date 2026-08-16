@@ -10,7 +10,13 @@ import type {
   ChildrenSizing,
   GeometryChildrenProps,
 } from "../../children.types.mjs";
+import { UpdateSession } from "../../session.mjs";
 
+vi.spyOn(UpdateSession.prototype, "getValues").mockReturnValue({
+  id: 2,
+  index: 3,
+  start: 7,
+});
 import { GeometryChildren } from "../../children.mjs";
 
 const host = vi.fn() as unknown as LitElement;
@@ -38,7 +44,8 @@ test("single session two elems", async () => {
     },
     type: "lifecycle",
   };
-  const expected: ChildrenSizing = {
+  const expected0: ChildrenSizing = {
+    session: UpdateSession.prototype.getValues(),
     sizing: {
       container: {
         height: 11,
@@ -79,13 +86,18 @@ test("single session two elems", async () => {
     },
     type: "update",
   };
+
+  const expected1: ChildrenSizing = {
+    session: UpdateSession.prototype.getValues(),
+    type: "terminate",
+  };
   const call1 = () => children.onEmit(target1, detail1);
   const call2 = () => children.onEmit(target2, detail2);
   const response = [call1(), call1(), call2(), call1(), call2()];
   await TimingUtils.raf(2);
-  expect(await response[0]).toEqual(expected);
-  expect(await response[1]).toBeNull();
-  expect(await response[2]).toBeNull();
+  expect(await response[0]).toEqual(expected0);
+  expect(await response[1]).toEqual(expected1);
+  expect(await response[2]).toEqual(expected1);
 });
 
 test("two sessions two elems", async () => {
@@ -128,6 +140,7 @@ test("two sessions two elems", async () => {
     type: "lifecycle",
   };
   const expected1: ChildrenSizing = {
+    session: UpdateSession.prototype.getValues(),
     sizing: {
       container: {
         height: 11,
@@ -169,6 +182,7 @@ test("two sessions two elems", async () => {
     type: "update",
   };
   const expected2: ChildrenSizing = {
+    session: UpdateSession.prototype.getValues(),
     sizing: {
       container: {
         height: 11,
@@ -209,6 +223,10 @@ test("two sessions two elems", async () => {
     },
     type: "update",
   };
+  const expectedTerm: ChildrenSizing = {
+    session: UpdateSession.prototype.getValues(),
+    type: "terminate",
+  };
   const call1_1 = () => children.onEmit(target1, detail1_1);
   const call1_2 = () => children.onEmit(target2, detail1_2);
   const call2_1 = () => children.onEmit(target1, detail2_1);
@@ -217,9 +235,9 @@ test("two sessions two elems", async () => {
   await TimingUtils.raf(2);
   const response2 = [call2_1(), call2_1(), call2_2(), call2_1(), call2_2()];
   expect(await response1[0]).toEqual(expected1);
-  expect(await response1[1]).toBeNull();
-  expect(await response1[2]).toBeNull();
+  expect(await response1[1]).toEqual(expectedTerm);
+  expect(await response1[2]).toEqual(expectedTerm);
   expect(await response2[0]).toEqual(expected2);
-  expect(await response2[1]).toBeNull();
-  expect(await response2[2]).toBeNull();
+  expect(await response2[1]).toEqual(expectedTerm);
+  expect(await response2[2]).toEqual(expectedTerm);
 });

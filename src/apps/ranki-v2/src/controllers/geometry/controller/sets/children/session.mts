@@ -2,7 +2,7 @@ import { assertFalse, assertTrue } from "_error/assertions.mjs";
 import type { GeometryUpdateSession } from "./children.types.mjs";
 
 export class UpdateSession {
-  public values: GeometryUpdateSession = {
+  private values: GeometryUpdateSession = {
     id: 0,
     start: 0,
     index: -1,
@@ -12,6 +12,10 @@ export class UpdateSession {
 
   end() {
     this.active = false;
+  }
+
+  getValues() {
+    return this.values;
   }
 
   start() {
@@ -28,7 +32,7 @@ export class UpdateSession {
       start: Date.now(),
       index: 0,
     };
-    return this.values;
+    return this.getValues();
   }
 
   join() {
@@ -36,11 +40,11 @@ export class UpdateSession {
       why: "Cannot join if there is no active session",
       details: {
         active: this.active,
-        values: this.values,
+        values: this.getValues(),
       },
     });
     ++this.values.index;
-    return this.values;
+    return this.getValues();
   }
 
   isActive() {
