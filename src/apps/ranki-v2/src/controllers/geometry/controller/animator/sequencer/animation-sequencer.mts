@@ -9,7 +9,6 @@ import type {
   AnimationSequencerMetadata,
 } from "./animation-sequencer.types.mjs";
 
-import { Debug } from "../../debug/debug.mjs";
 import { TimingUtils } from "../../utils/timing.utils.mjs";
 import { context, trace, type Tracer } from "@opentelemetry/api";
 import { O11y } from "../../o11y/o11y.mjs";
@@ -39,7 +38,7 @@ export class AnimationSequencer {
       async (span) => {
         try {
           await Promise.all([
-            Debug.pause(),
+            O11y.debug.pause(),
             this.sequenceRoots(a.root),
             this.sequenceSets(a.sets),
           ]);

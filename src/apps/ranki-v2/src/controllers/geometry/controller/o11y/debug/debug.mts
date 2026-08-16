@@ -1,8 +1,8 @@
 import type { DebugPause } from "./debug.types.mjs";
 
-import { Logger } from "../logger/logger.mjs";
+import { O11yLogger } from "../logger/logger.mjs";
 
-export class Debug {
+export class O11yDebugger {
   public static DEBUG_DELAY = 0;
 
   public static async pause(props?: DebugPause) {
@@ -10,7 +10,7 @@ export class Debug {
     if (duration === 0) return Promise.resolve();
 
     const details = props?.props || {};
-    Logger.debug("Debug.pause", details);
+    O11yLogger.debug("Debug.pause", details);
     await new Promise<void>((r) =>
       setTimeout(() => {
         r();

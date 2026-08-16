@@ -4,7 +4,7 @@ import type {
   LogDriver,
 } from "./logger.types.mjs";
 
-export class Logger {
+export class O11yLogger {
   private static drivers: LogDriver[] = [];
   private instanceEntries: InstanceEntries;
 
@@ -13,15 +13,15 @@ export class Logger {
   }
 
   static addDriver(driver: LogDriver) {
-    Logger.drivers.push(driver);
+    O11yLogger.drivers.push(driver);
   }
 
   static debug(log: string, attributes?: LogAttributes) {
-    Logger.log("DEBUG", log, attributes);
+    O11yLogger.log("DEBUG", log, attributes);
   }
 
   static info(log: string, attributes?: LogAttributes) {
-    Logger.log("INFO", log, attributes);
+    O11yLogger.log("INFO", log, attributes);
   }
 
   private static log(
@@ -29,8 +29,8 @@ export class Logger {
     log: string,
     attributes?: LogAttributes,
   ) {
-    if (Logger.drivers.length === 0) return;
-    Logger.drivers.forEach((driver) => {
+    if (O11yLogger.drivers.length === 0) return;
+    O11yLogger.drivers.forEach((driver) => {
       driver.log({
         details: attributes,
         elapsed: performance.now(),
@@ -42,10 +42,10 @@ export class Logger {
   }
 
   debug(log: string, attributes?: LogAttributes) {
-    Logger.debug(log, { ...this.instanceEntries, ...attributes });
+    O11yLogger.debug(log, { ...this.instanceEntries, ...attributes });
   }
 
   info(log: string, attributes?: LogAttributes) {
-    Logger.info(log, { ...this.instanceEntries, ...attributes });
+    O11yLogger.info(log, { ...this.instanceEntries, ...attributes });
   }
 }

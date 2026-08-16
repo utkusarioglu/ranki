@@ -2,7 +2,6 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement, ReactiveController } from "lit";
 
 import { assertNever } from "_error/assertions.mjs";
-import { context, trace, type Tracer } from "@opentelemetry/api";
 
 import type { InformSetProps } from "./animator/types/animator.types.mjs";
 import type { LayoutSizing } from "./sets/children/layout/layout-utils.types.mjs";
@@ -15,7 +14,6 @@ import type {
 
 import { Animator } from "./animator/animator.mjs";
 import { GeometryEvents } from "./events/geometry-events.mjs";
-// import { Logger } from "./logger/logger.mjs";
 import { GeometryMerger } from "./merger/geometry-merger.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
 import { TimingUtils } from "./utils/timing.utils.mjs";
@@ -33,13 +31,11 @@ export class GeometryController<
   private readonly animator: Animator<Instance>;
   private curr: CurrentAppliedStyle | null = null;
   private readonly host: Instance;
-  // private readonly logger: Logger;
   private prev: CurrentAppliedStyle | null = null;
   private readonly sets: GeometrySets<Instance>;
   private sizing: LayoutSizing | null = null;
 
   private readonly o11y: O11y<this>;
-  private readonly tracer: Tracer;
 
   constructor(
     host: Instance,
@@ -60,13 +56,12 @@ export class GeometryController<
       children: params.children,
       watchers: params.watchers,
     });
-    this.tracer = trace.getTracer(this.constructor.name);
-    // this.logger = new Logger({
-    //   class: "GeometryController",
-    // });
     this.o11y = new O11y(this, {
       logger: {
         host: this.host,
+      },
+      tracer: {
+        nameFormat: ({ name }) => [this.host.tagName, name].join(":"),
       },
     });
     this.bindInformStyle();
@@ -86,50 +81,42 @@ export class GeometryController<
 
   onEmit() {
     return this.events.onEmit(async (target, detail) => {
-      return this.tracer.startActiveSpan(
-        `${this.host.tagName}:onEmit`,
-        async (span) => {
-          const ctx = context.active();
-          try {
-            const update = await this.sets.onEmit(target, detail);
-            span.setAttribute("geometry.session.id", update.session.id);
-            span.setAttribute("geometry.session.start", update.session.start);
-            span.setAttribute("geometry.session.index", update.session.index);
+      return this.o11y.trace.span("onEmit", async ({ span, withCtx }) => {
+        const update = await this.sets.onEmit(target, detail);
+        span.setAttribute("geometry.session.id", update.session.id);
+        span.setAttribute("geometry.session.start", update.session.start);
+        span.setAttribute("geometry.session.index", update.session.index);
 
-            await context.with(ctx, async () => {
-              if (update.type === "terminate") {
-                span.addEvent("session.joined");
-                return;
-              }
-              span.addEvent("session.completed");
-              this.o11y.log.debug("onEmit.callback.update", { update });
-
-              this.sizing = update.sizing;
-              switch (update.type) {
-                case "root":
-                  span.addEvent("controller.propagate.down");
-                  await this.informStyle(update.inform);
-                  break;
-                case "update":
-                  span.addEvent("controller.propagate.up");
-                  this.events.emit({
-                    lifecycle: "update",
-                    style: update.sizing.container,
-                    type: "lifecycle",
-                  });
-                  break;
-                default:
-                  assertNever({
-                    details: { update },
-                    why: "Unrecognized children update type",
-                  });
-              }
-            });
-          } finally {
-            span.end();
+        await withCtx(async () => {
+          if (update.type === "terminate") {
+            span.addEvent("session.joined");
+            return;
           }
-        },
-      );
+          span.addEvent("session.completed");
+          this.o11y.log.debug("onEmit.callback.update", { update });
+
+          this.sizing = update.sizing;
+          switch (update.type) {
+            case "root":
+              span.addEvent("controller.propagate.down");
+              await this.informStyle(update.inform);
+              break;
+            case "update":
+              span.addEvent("controller.propagate.up");
+              this.events.emit({
+                lifecycle: "update",
+                style: update.sizing.container,
+                type: "lifecycle",
+              });
+              break;
+            default:
+              assertNever({
+                details: { update },
+                why: "Unrecognized children update type",
+              });
+          }
+        });
+      });
     });
   }
 
@@ -143,43 +130,29 @@ export class GeometryController<
 
   private async informSet(props: InformSetProps): Promise<void> {
     this.o11y.log.debug("informSet", { props });
-    return this.tracer.startActiveSpan(
-      `${this.host.tagName}:informSet`,
-      async (span) => {
-        try {
-          return this.sets.inform(props, this.sizing);
-        } finally {
-          span.end();
-        }
-      },
-    );
+    return this.o11y.trace.span("informSet", () => {
+      return this.sets.inform(props, this.sizing);
+    });
   }
 
   private async informStyle(informed: InformedChildStyle): Promise<void> {
-    return this.tracer.startActiveSpan(
-      `${this.host.tagName}:informStyle`,
-      async (span) => {
-        try {
-          this.prev = this.curr;
-          const curr = GeometryMerger.createCurrStyle(informed, this.sizing);
-          this.curr = curr;
+    return this.o11y.trace.span("informStyle", async ({ span }) => {
+      this.prev = this.curr;
+      const curr = GeometryMerger.createCurrStyle(informed, this.sizing);
+      this.curr = curr;
 
-          span.addEvent("style.ready");
+      span.addEvent("style.ready");
 
-          this.o11y.log.info("informStyle", {
-            curr: this.curr,
-            informed,
-            prev: this.prev,
-            sizing: this.sizing,
-          });
+      this.o11y.log.info("informStyle", {
+        curr: this.curr,
+        informed,
+        prev: this.prev,
+        sizing: this.sizing,
+      });
 
-          this.events.onActionsStart(this.curr.actions);
-          await this.animator.update(curr, this.prev);
-          this.events.onActionsEnd(this.curr.actions);
-        } finally {
-          span.end();
-        }
-      },
-    );
+      this.events.onActionsStart(this.curr.actions);
+      await this.animator.update(curr, this.prev);
+      this.events.onActionsEnd(this.curr.actions);
+    });
   }
 }
