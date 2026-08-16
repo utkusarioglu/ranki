@@ -17,7 +17,7 @@ import {
   type AnimatorPlayParams,
   type GetRecipeCallback,
 } from "./types/animator.types.mjs";
-import { context, trace, type Tracer } from "@opentelemetry/api";
+import { trace, type Tracer } from "@opentelemetry/api";
 
 export class Animator<Instance extends LitElement> {
   private readonly callbacks: AnimatorCallbacks<Instance>;
@@ -37,7 +37,7 @@ export class Animator<Instance extends LitElement> {
     this.host = host;
     this.role = role;
     this.callbacks = callbacks;
-    this.sequencer = new AnimationSequencer(this.host.tagName, {
+    this.sequencer = new AnimationSequencer({
       informSet: this.callbacks.informSet,
       playName: this.playName.bind(this),
     });
@@ -77,7 +77,10 @@ export class Animator<Instance extends LitElement> {
                 prev,
                 recipe,
               });
-              return this.sequencer.build(action, parsed);
+              return this.sequencer.build(parsed, {
+                tag: this.host.tagName,
+                action,
+              });
             }),
           );
         } finally {

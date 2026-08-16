@@ -13,7 +13,7 @@ import type { GeometryWatcherProps } from "../watcher/watcher.types.mjs";
 
 import { Logger } from "../../logger/logger.mjs";
 import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
-import { context, trace, type Tracer } from "@opentelemetry/api";
+import { trace, type Tracer } from "@opentelemetry/api";
 
 export class WatcherSet<Instance extends LitElement> {
   protected diff?: GeometrySetDiffCb<Instance>;
@@ -38,28 +38,19 @@ export class WatcherSet<Instance extends LitElement> {
     sizing: LayoutSizing | null,
   ): Promise<void> {
     const diff = this.getDiff();
-    return this.tracer.startActiveSpan("inform", async (span) => {
-      // const ctx = trace.setSpan(context.active(), span);
-      try {
-        await Promise.all(
-          this.getElements().map((e, i, a) => {
-            const informed = GeometrySetsUtils.prepareSetElementStyle(
-              i,
-              a,
-              diff,
-              props,
-              sizing,
-            );
-            this.logger.debug("WatcherSet.informSet", { e, informed, props });
-            span.addEvent("informStyle.before");
-            // return context.with(ctx, () => e.informStyle(informed));
-            return e.informStyle(informed);
-          }),
+    await Promise.all(
+      this.getElements().map((e, i, a) => {
+        const informed = GeometrySetsUtils.prepareSetElementStyle(
+          i,
+          a,
+          diff,
+          props,
+          sizing,
         );
-      } finally {
-        span.end();
-      }
-    });
+        this.logger.debug("WatcherSet.informSet", { e, informed, props });
+        return e.informStyle(informed);
+      }),
+    );
   }
 
   protected getElements() {

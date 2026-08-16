@@ -6,3 +6,8 @@ export interface AnimationSequencerCallbacks {
   informSet: GeometryControllerInformSetCallback;
   playName: AnimatorPlayCb;
 }
+
+export interface AnimationSequencerMetadata {
+  tag: string;
+  action: string;
+}

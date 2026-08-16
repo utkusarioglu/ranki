@@ -4,7 +4,10 @@ import type {
   LayoutParsedSets,
   LayoutSetsInform,
 } from "../types/animator.types.mjs";
-import type { AnimationSequencerCallbacks } from "./animation-sequencer.types.mjs";
+import type {
+  AnimationSequencerCallbacks,
+  AnimationSequencerMetadata,
+} from "./animation-sequencer.types.mjs";
 
 import { Debug } from "../../debug/debug.mjs";
 import { TimingUtils } from "../../utils/timing.utils.mjs";
@@ -13,24 +16,25 @@ import { context, trace, type Tracer } from "@opentelemetry/api";
 export class AnimationSequencer {
   private readonly callbacks: AnimationSequencerCallbacks;
   private readonly tracer: Tracer;
-  private readonly tagName: string;
-  private actionName!: string;
+  private metadata!: AnimationSequencerMetadata;
 
-  constructor(tagName: string, callbacks: AnimationSequencerCallbacks) {
-    this.tagName = tagName;
+  constructor(callbacks: AnimationSequencerCallbacks) {
     this.callbacks = callbacks;
-    this.tracer = trace.getTracer("animation-sequencer");
+    this.tracer = trace.getTracer(this.constructor.name);
   }
 
-  public async build(action: string, a: LayoutParsed): Promise<void> {
-    this.actionName = action;
+  public async build(
+    a: LayoutParsed,
+    metadata: AnimationSequencerMetadata,
+  ): Promise<void> {
+    this.metadata = metadata;
     await this.sequenceThen(a);
   }
 
   private async sequenceCurrent(a: LayoutParsed | undefined): Promise<void> {
     if (!a) return Promise.resolve();
     return this.tracer.startActiveSpan(
-      `${this.tagName}:sequenceCurrent`,
+      `${this.metadata.tag}:${this.metadata.action}:sequenceCurrent`,
       async (span) => {
         try {
           await Promise.all([
@@ -54,7 +58,7 @@ export class AnimationSequencer {
    */
   private async sequenceRoot(p: ApplyRootParams) {
     return this.tracer.startActiveSpan(
-      `${this.tagName}:sequenceRoot`,
+      `${this.metadata.tag}:${this.metadata.action}:sequenceRoot`,
       async (span) => {
         try {
           span.addEvent("playName.start");
@@ -77,7 +81,7 @@ export class AnimationSequencer {
   ): Promise<void> {
     if (!roots) return Promise.resolve();
     return this.tracer.startActiveSpan(
-      `${this.tagName}:sequenceRoots`,
+      `${this.metadata.tag}:${this.metadata.action}:sequenceRoots`,
       async (span) => {
         try {
           await Promise.all(roots.map((p) => this.sequenceRoot(p)));
@@ -90,7 +94,7 @@ export class AnimationSequencer {
 
   private async sequenceSet({ props, then, wait }: LayoutSetsInform) {
     return this.tracer.startActiveSpan(
-      `${this.tagName}:sequenceSets`,
+      `${this.metadata.tag}:${this.metadata.action}:sequenceSets`,
       async (span) => {
         try {
           const ctx = context.active();
@@ -115,7 +119,7 @@ export class AnimationSequencer {
   private async sequenceSets(l: LayoutParsedSets | undefined): Promise<void> {
     if (!l) return Promise.resolve();
     return this.tracer.startActiveSpan(
-      `${this.tagName}:sequenceSets`,
+      `${this.metadata.tag}:${this.metadata.action}:sequenceSets`,
       async (span) => {
         try {
           await Promise.all(
@@ -131,7 +135,7 @@ export class AnimationSequencer {
   private async sequenceThen(a: LayoutParsed | undefined): Promise<void> {
     if (!a) return Promise.resolve();
     return this.tracer.startActiveSpan(
-      `${this.tagName}:${this.actionName}:sequenceThen`,
+      `${this.metadata.tag}:${this.metadata.action}:sequenceThen`,
       async (span) => {
         try {
           await this.sequenceCurrent(a);

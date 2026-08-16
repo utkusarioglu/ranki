@@ -42,28 +42,25 @@ test("update", () => {
     style,
     type: "lifecycle",
   };
-  const expected = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
-    detail: emit,
-  });
   events.emit(emit);
-  expect(dispatchEvent).toHaveBeenCalledWith(expected);
+  const firstCall = dispatchEvent.mock.calls[0][0];
+  expect(firstCall.type).toEqual(GeometryEvents.GEOMETRY_EVENT_NAME);
+  expect(firstCall.detail.event).toEqual(emit);
 });
 
 test("leave", () => {
   const emit: GeometryEvent = { lifecycle: "leave", type: "lifecycle" };
   events.emit(emit);
-  const expected = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
-    detail: emit,
-  });
-  expect(dispatchEvent).toHaveBeenCalledWith(expected);
+  const firstCall = dispatchEvent.mock.calls[0][0];
+  expect(firstCall.type).toEqual(GeometryEvents.GEOMETRY_EVENT_NAME);
+  expect(firstCall.detail.event).toEqual(emit);
 });
 
 test("interaction", () => {
   const interaction: GeometryInteractionEmit = "hover.leave";
   const emit: GeometryEvent = { interaction, type: "interaction" };
   events.emit(emit);
-  const expected = new CustomEvent(GeometryEvents.GEOMETRY_EVENT_NAME, {
-    detail: emit,
-  });
-  expect(dispatchEvent).toHaveBeenCalledWith(expected);
+  const firstCall = dispatchEvent.mock.calls[0][0];
+  expect(firstCall.type).toEqual(GeometryEvents.GEOMETRY_EVENT_NAME);
+  expect(firstCall.detail.event).toEqual(emit);
 });
