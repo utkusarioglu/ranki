@@ -24,7 +24,7 @@ export class GeometryChildren<
   private readonly session = new UpdateSession();
 
   constructor(host: Instance, props: GeometryChildrenProps<Instance>) {
-    super(host, props, "geometry-children");
+    super(host, props);
     this.layout = props.layout || (() => LayoutUtils.row({}));
     this.isRoot = props.isRoot || false;
     this.diff = props.diff;
@@ -45,7 +45,7 @@ export class GeometryChildren<
         session: this.session.join(),
       };
     }
-    return this.tracer.startActiveSpan(
+    return this.o11y.trace.tracer.startActiveSpan(
       "GeometryChildren.updateSizing",
       async (span) => {
         try {

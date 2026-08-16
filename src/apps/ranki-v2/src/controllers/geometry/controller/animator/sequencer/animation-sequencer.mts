@@ -12,6 +12,7 @@ import type {
 import { Debug } from "../../debug/debug.mjs";
 import { TimingUtils } from "../../utils/timing.utils.mjs";
 import { context, trace, type Tracer } from "@opentelemetry/api";
+import { O11y } from "../../o11y/o11y.mjs";
 
 export class AnimationSequencer {
   private readonly callbacks: AnimationSequencerCallbacks;
@@ -65,7 +66,7 @@ export class AnimationSequencer {
           const ctx = context.active();
           await this.callbacks.playName(p.apply);
           span.addEvent("playName.end & pause.start");
-          await Debug.pause();
+          await O11y.debug.pause();
           span.addEvent("pause.end & sequenceThen.start");
           await context.with(ctx, () => this.sequenceThen(p.then)); // #1
           span.addEvent("sequenceThen.end");
@@ -101,11 +102,11 @@ export class AnimationSequencer {
           span.addEvent("delay.start");
           if (wait) await TimingUtils.delay(wait);
           span.addEvent("delay.end & pause.start");
-          await Debug.pause();
+          await O11y.debug.pause();
           span.addEvent("pause.end & informSet.start");
           await context.with(ctx, () => this.callbacks.informSet(props));
           span.addEvent("informSet.end");
-          await Debug.pause();
+          await O11y.debug.pause();
           span.addEvent("pause.end & sequenceThen.start");
           await this.sequenceThen(then);
           span.addEvent("sequenceThen.end");
@@ -140,7 +141,7 @@ export class AnimationSequencer {
         try {
           await this.sequenceCurrent(a);
           span.addEvent("sequence.current");
-          await Debug.pause();
+          await O11y.debug.pause();
           span.addEvent("debug.pause");
           await this.sequenceThen(a.then);
           span.addEvent("sequence.then");

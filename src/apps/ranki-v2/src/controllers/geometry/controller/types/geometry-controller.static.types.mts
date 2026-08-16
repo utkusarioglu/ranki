@@ -1,12 +1,5 @@
-import type { LogDriver } from "../logger/logger.types.mjs";
+import type { GeometryO11yStaticConfig } from "../o11y/o11y.mjs";
 
 export interface GeometryControllerStaticConfig {
-  debug?: {
-    sequencer?: {
-      stutter?: number;
-    };
-  };
-  log?: {
-    drivers?: LogDriver[];
-  };
+  observability?: GeometryO11yStaticConfig;
 }

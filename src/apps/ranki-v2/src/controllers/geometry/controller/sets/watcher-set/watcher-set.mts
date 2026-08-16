@@ -11,26 +11,32 @@ import type { LayoutSizing } from "../children/layout/layout-utils.types.mjs";
 import type { GeometrySetSelectorCb } from "../sets.types.mjs";
 import type { GeometryWatcherProps } from "../watcher/watcher.types.mjs";
 
-import { Logger } from "../../logger/logger.mjs";
 import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
-import { trace, type Tracer } from "@opentelemetry/api";
+// import { trace, type Tracer } from "@opentelemetry/api";
+import { O11y } from "../../o11y/o11y.mjs";
 
 export class WatcherSet<Instance extends LitElement> {
   protected diff?: GeometrySetDiffCb<Instance>;
   protected readonly host: Instance;
-  protected readonly logger: Logger;
+  // protected readonly logger: Logger;
   protected readonly selector: GeometrySetSelectorCb<Instance>;
-  protected readonly tracer: Tracer;
+  // protected readonly tracer: Tracer;
+  protected readonly o11y: O11y<WatcherSet<Instance>>;
 
   constructor(
     host: Instance,
     props: GeometryWatcherProps<Instance>,
-    tracerName: string = "WatcherSet",
+    // tracerName: string = "WatcherSet",
   ) {
     this.host = host;
     this.selector = props.selector;
-    this.logger = new Logger({ class: "WatcherSet", host: this.host });
-    this.tracer = trace.getTracer(tracerName);
+    this.o11y = new O11y(this, {
+      logger: {
+        host: this.host,
+      },
+    });
+    // this.logger = new Logger({ class: "WatcherSet", host: this.host });
+    // this.tracer = trace.getTracer(tracerName);
   }
 
   public async inform(
@@ -47,7 +53,7 @@ export class WatcherSet<Instance extends LitElement> {
           props,
           sizing,
         );
-        this.logger.debug("WatcherSet.informSet", { e, informed, props });
+        this.o11y.log.debug("WatcherSet.informSet", { e, informed, props });
         return e.informStyle(informed);
       }),
     );

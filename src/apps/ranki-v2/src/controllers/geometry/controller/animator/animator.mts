@@ -3,7 +3,7 @@ import type { LitElement } from "lit";
 import type { GeometryRole } from "../types/geometry-controller.constructor.types.mjs";
 import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs";
 
-import { Logger } from "../logger/logger.mjs";
+// import { Logger } from "../logger/logger.mjs";
 import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
 import { LayoutParser } from "./parser/layout-parser.mjs";
 import { RecipeUtils } from "./recipe/recipe-utils.mjs";
@@ -18,6 +18,7 @@ import {
   type GetRecipeCallback,
 } from "./types/animator.types.mjs";
 import { trace, type Tracer } from "@opentelemetry/api";
+import { O11y } from "../o11y/o11y.mjs";
 
 export class Animator<Instance extends LitElement> {
   private readonly callbacks: AnimatorCallbacks<Instance>;
@@ -28,6 +29,7 @@ export class Animator<Instance extends LitElement> {
   private running = new Map<string, Animation>();
   private readonly sequencer: AnimationSequencer;
   private readonly tracer: Tracer;
+  private readonly o11y: O11y<this>;
 
   constructor(
     host: Instance,
@@ -45,13 +47,18 @@ export class Animator<Instance extends LitElement> {
       this.callbacks.getCollection,
     );
     this.tracer = trace.getTracer(this.constructor.name);
+    this.o11y = new O11y(this, {
+      logger: {
+        host: this.host,
+      },
+    });
   }
 
   public async update(
     curr: CurrentAppliedStyle,
     prev: CurrentAppliedStyle | null,
   ): Promise<void> {
-    Logger.debug("Animator.update", { curr, host: this.host, prev });
+    this.o11y.log.debug("Animator.update", { curr, host: this.host, prev });
     return this.tracer.startActiveSpan(
       `${this.host.tagName}:update`,
       async (span) => {
@@ -70,7 +77,7 @@ export class Animator<Instance extends LitElement> {
               const parsed = LayoutParser.parse({ curr, prev, recipe: recipe });
               span.addEvent("animator.layout.parsed");
 
-              Logger.debug("Animator.update.composed", {
+              this.o11y.log.debug("Animator.update.composed", {
                 curr,
                 host: this.host,
                 parsed,
@@ -105,7 +112,7 @@ export class Animator<Instance extends LitElement> {
           };
           const finalKeyframes = KeyframeUtils.produceKeyframes(keyframes);
           span.addEvent("keyframes.produced");
-          Logger.debug("Animator.playName", {
+          this.o11y.log.debug("Animator.playName", {
             finalKeyframes,
             finalOptions,
             host: this.host,

@@ -14,12 +14,12 @@ import type {
 } from "./types/geometry-controller.types.mjs";
 
 import { Animator } from "./animator/animator.mjs";
-import { Debug } from "./debug/debug.mjs";
 import { GeometryEvents } from "./events/geometry-events.mjs";
-import { Logger } from "./logger/logger.mjs";
+// import { Logger } from "./logger/logger.mjs";
 import { GeometryMerger } from "./merger/geometry-merger.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
 import { TimingUtils } from "./utils/timing.utils.mjs";
+import { O11y } from "./o11y/o11y.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -33,11 +33,12 @@ export class GeometryController<
   private readonly animator: Animator<Instance>;
   private curr: CurrentAppliedStyle | null = null;
   private readonly host: Instance;
-  private readonly logger: Logger;
+  // private readonly logger: Logger;
   private prev: CurrentAppliedStyle | null = null;
   private readonly sets: GeometrySets<Instance>;
   private sizing: LayoutSizing | null = null;
 
+  private readonly o11y: O11y<this>;
   private readonly tracer: Tracer;
 
   constructor(
@@ -60,22 +61,19 @@ export class GeometryController<
       watchers: params.watchers,
     });
     this.tracer = trace.getTracer(this.constructor.name);
-    this.logger = new Logger({
-      class: "GeometryController",
-      host: this.host,
+    // this.logger = new Logger({
+    //   class: "GeometryController",
+    // });
+    this.o11y = new O11y(this, {
+      logger: {
+        host: this.host,
+      },
     });
     this.bindInformStyle();
   }
 
   static configure(conf: GeometryControllerStaticConfig) {
-    if (conf.log?.drivers) {
-      conf.log.drivers.forEach((dr) => {
-        Logger.addDriver(dr);
-      });
-    }
-    if (conf.debug?.sequencer?.stutter) {
-      Debug.DEBUG_DELAY = conf.debug.sequencer.stutter;
-    }
+    if (conf.observability) O11y.configure(conf.observability);
   }
 
   hostConnected(): void {
@@ -104,7 +102,7 @@ export class GeometryController<
                 return;
               }
               span.addEvent("session.completed");
-              this.logger.debug("onEmit.callback.update", { update });
+              this.o11y.log.debug("onEmit.callback.update", { update });
 
               this.sizing = update.sizing;
               switch (update.type) {
@@ -144,7 +142,7 @@ export class GeometryController<
   }
 
   private async informSet(props: InformSetProps): Promise<void> {
-    this.logger.debug("informSet", { props });
+    this.o11y.log.debug("informSet", { props });
     return this.tracer.startActiveSpan(
       `${this.host.tagName}:informSet`,
       async (span) => {
@@ -168,7 +166,7 @@ export class GeometryController<
 
           span.addEvent("style.ready");
 
-          this.logger.info("informStyle", {
+          this.o11y.log.info("informStyle", {
             curr: this.curr,
             informed,
             prev: this.prev,

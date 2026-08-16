@@ -2,12 +2,14 @@ import { batchLogger } from "_/o11y/log.mjs";
 import { geometry } from "_controllers/geometry/geometry.mjs";
 
 geometry.configure({
-  log: {
-    drivers: [batchLogger],
+  observability: {
+    log: {
+      drivers: [batchLogger],
+    },
+    // debug: {
+    //   sequencer: {
+    //     stutter: 1000,
+    //   },
+    // },
   },
-  // debug: {
-  //   sequencer: {
-  //     stutter: 1000,
-  //   },
-  // },
 });
