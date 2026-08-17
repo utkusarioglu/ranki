@@ -15,7 +15,7 @@ import type {
 import { Animator } from "./animator/animator.mjs";
 import { GeometryEvents } from "./events/geometry-events.mjs";
 import { GeometryMerger } from "./merger/geometry-merger.mjs";
-import { O11y } from "./o11y/o11y.mjs";
+import { O11y } from "../o11y/o11y.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
 import { TimingUtils } from "./utils/timing.utils.mjs";
 

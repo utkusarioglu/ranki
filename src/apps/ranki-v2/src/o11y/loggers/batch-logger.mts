@@ -2,7 +2,7 @@ import { trace } from "@opentelemetry/api";
 import type {
   LogDriver,
   LogValue,
-} from "_controllers/geometry/controller/o11y/logger/logger.types.mjs";
+} from "_controllers/geometry/o11y/logger/logger.types.mjs";
 
 export class BatchLogger implements LogDriver {
   private elapsed = 0;

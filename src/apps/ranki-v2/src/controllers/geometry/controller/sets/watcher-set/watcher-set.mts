@@ -12,22 +12,16 @@ import type { GeometrySetSelectorCb } from "../sets.types.mjs";
 import type { GeometryWatcherProps } from "../watcher/watcher.types.mjs";
 
 // import { trace, type Tracer } from "@opentelemetry/api";
-import { O11y } from "../../o11y/o11y.mjs";
+import { O11y } from "../../../o11y/o11y.mjs";
 import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
 
 export class WatcherSet<Instance extends LitElement> {
   protected diff?: GeometrySetDiffCb<Instance>;
   protected readonly host: Instance;
-  // protected readonly tracer: Tracer;
   protected readonly o11y: O11y<WatcherSet<Instance>>;
-  // protected readonly logger: Logger;
   protected readonly selector: GeometrySetSelectorCb<Instance>;
 
-  constructor(
-    host: Instance,
-    props: GeometryWatcherProps<Instance>,
-    // tracerName: string = "WatcherSet",
-  ) {
+  constructor(host: Instance, props: GeometryWatcherProps<Instance>) {
     this.host = host;
     this.selector = props.selector;
     this.o11y = new O11y(this, {
@@ -35,8 +29,6 @@ export class WatcherSet<Instance extends LitElement> {
         host: this.host,
       },
     });
-    // this.logger = new Logger({ class: "WatcherSet", host: this.host });
-    // this.tracer = trace.getTracer(tracerName);
   }
 
   public async inform(

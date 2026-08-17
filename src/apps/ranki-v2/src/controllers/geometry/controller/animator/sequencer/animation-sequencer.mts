@@ -11,7 +11,7 @@ import type {
   AnimationSequencerMetadata,
 } from "./animation-sequencer.types.mjs";
 
-import { O11y } from "../../o11y/o11y.mjs";
+import { O11y } from "../../../o11y/o11y.mjs";
 import { TimingUtils } from "../../utils/timing.utils.mjs";
 
 export class AnimationSequencer {

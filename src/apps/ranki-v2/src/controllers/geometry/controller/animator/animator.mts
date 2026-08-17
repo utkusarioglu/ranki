@@ -5,8 +5,7 @@ import { trace, type Tracer } from "@opentelemetry/api";
 import type { GeometryRole } from "../types/geometry-controller.constructor.types.mjs";
 import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs";
 
-import { O11y } from "../o11y/o11y.mjs";
-// import { Logger } from "../logger/logger.mjs";
+import { O11y } from "../../o11y/o11y.mjs";
 import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
 import { LayoutParser } from "./parser/layout-parser.mjs";
 import { RecipeUtils } from "./recipe/recipe-utils.mjs";
