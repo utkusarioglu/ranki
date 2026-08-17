@@ -4,7 +4,7 @@ import type {
   LogValue,
 } from "_controllers/geometry/o11y/logger/logger.types.mjs";
 
-export class BatchLogger implements LogDriver {
+export class ConsoleBatchLogDriver implements LogDriver {
   private elapsed = 0;
   private logs: LogValue[] = [];
 

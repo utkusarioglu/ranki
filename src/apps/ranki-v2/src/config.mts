@@ -1,10 +1,10 @@
-import { batchLogger } from "_/o11y/log.mjs";
+import { consoleBatchLogDriver, lokiLogDriver } from "_/o11y/log.mjs";
 import { geometry } from "_controllers/geometry/geometry.mjs";
 
 geometry.configure({
   observability: {
     log: {
-      drivers: [batchLogger],
+      drivers: [consoleBatchLogDriver, lokiLogDriver],
     },
     // debug: {
     //   sequencer: {

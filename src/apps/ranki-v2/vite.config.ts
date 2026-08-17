@@ -31,6 +31,12 @@ export default defineConfig(() => ({
     watch: {
       usePolling: true,
     },
+    proxy: {
+      "/loki": {
+        target: "http://loki:3100",
+        changeOrigin: true,
+      },
+    },
   },
   preview: {
     host: true,

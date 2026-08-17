@@ -7,7 +7,7 @@ import type {
   LayoutSizing,
   LayoutSizingCallback,
 } from "./layout/layout-utils.types.mjs";
-import type { Context, SpanContext } from "@opentelemetry/api";
+import type { SpanContext } from "@opentelemetry/api";
 
 export type ChildrenSizing =
   | ChildrenSizingRoot

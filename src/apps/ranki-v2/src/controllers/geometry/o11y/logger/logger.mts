@@ -1,3 +1,4 @@
+import { trace } from "@opentelemetry/api";
 import type {
   InstanceEntries,
   LogAttributes,
@@ -24,6 +25,15 @@ export class O11yLogger {
     O11yLogger.log("INFO", log, attributes);
   }
 
+  private static prepareTrace() {
+    const spanContext = trace.getActiveSpan()?.spanContext();
+    return {
+      traceId: spanContext?.traceId,
+      spanId: spanContext?.spanId,
+      traceFlags: spanContext?.traceFlags,
+    };
+  }
+
   private static log(
     severity: string,
     log: string,
@@ -37,6 +47,7 @@ export class O11yLogger {
         epoch: Date.now(),
         log,
         severity,
+        ...O11yLogger.prepareTrace(),
       });
     });
   }

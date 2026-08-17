@@ -24,3 +24,10 @@ services:
       - type: bind
         source: /home/utkusarioglu/.config/gh
         target: /home/dev/.config/gh
+    networks:
+      - telemetry
+
+networks:
+  telemetry:
+    name: telemetry
+    driver: bridge
