@@ -7,6 +7,7 @@ import type {
   LayoutSizing,
   LayoutSizingCallback,
 } from "./layout/layout-utils.types.mjs";
+import type { Context, SpanContext } from "@opentelemetry/api";
 
 export type ChildrenSizing =
   | ChildrenSizingRoot
@@ -15,18 +16,18 @@ export type ChildrenSizing =
 
 export interface ChildrenSizingRoot {
   inform: InformedChildStyle;
-  session: GeometryUpdateSession;
+  session: GeometryUpdateSessionWithSpanContext;
   sizing: LayoutSizing;
   type: "root";
 }
 
 export interface ChildrenSizingTerminate {
-  session: GeometryUpdateSession;
+  session: GeometryUpdateSessionWithSpanContext;
   type: "terminate";
 }
 
 export interface ChildrenSizingUpdate {
-  session: GeometryUpdateSession;
+  session: GeometryUpdateSessionWithSpanContext;
   sizing: LayoutSizing;
   type: "update";
 }
@@ -59,4 +60,8 @@ export interface GeometryUpdateSession {
   id: number;
   index: number;
   start: number;
+}
+
+export interface GeometryUpdateSessionWithSpanContext extends GeometryUpdateSession {
+  context: SpanContext;
 }

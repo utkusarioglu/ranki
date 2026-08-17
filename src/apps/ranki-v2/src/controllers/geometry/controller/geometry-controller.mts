@@ -89,6 +89,7 @@ export class GeometryController<
 
         await withCtx(async () => {
           if (update.type === "terminate") {
+            span.addLink({ context: update.session.context });
             span.addEvent("session.joined");
             return;
           }

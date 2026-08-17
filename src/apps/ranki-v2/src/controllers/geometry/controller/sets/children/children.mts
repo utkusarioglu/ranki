@@ -45,9 +45,14 @@ export class GeometryChildren<
         type: "terminate",
       };
     }
-    return this.o11y.trace.span("updateSizing", async ({ span }) => {
+    return this.o11y.trace.span("updateSizing", async ({ span, withCtx }) => {
       try {
-        const session = this.session.start();
+        const session = withCtx(
+          {
+            "geometry.session.tag": this.host.tagName,
+          },
+          () => this.session.start(),
+        );
         span.addEvent("session.start");
         await TimingUtils.raf(2);
         span.addEvent("session.compute.start");

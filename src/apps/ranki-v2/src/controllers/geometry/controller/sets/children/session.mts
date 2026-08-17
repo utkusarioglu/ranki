@@ -1,6 +1,11 @@
 import { assertFalse, assertTrue } from "_error/assertions.mjs";
 
-import type { GeometryUpdateSession } from "./children.types.mjs";
+import type {
+  GeometryUpdateSession,
+  GeometryUpdateSessionWithSpanContext,
+} from "./children.types.mjs";
+import { O11y } from "_controllers/geometry/o11y/o11y.mjs";
+import { type Span } from "@opentelemetry/api";
 
 export class UpdateSession {
   private static counter = 0;
@@ -10,9 +15,22 @@ export class UpdateSession {
     index: -1,
     start: 0,
   };
+  private readonly o11y = new O11y(this, {
+    tracer: {
+      nameFormat: ({ name, getParentContextValue }) =>
+        [
+          getParentContextValue("geometry.session.tag"),
+          name,
+          UpdateSession.counter,
+        ].join(":"),
+    },
+  });
+  private span!: Span | undefined;
 
   end() {
     this.active = false;
+    this.span?.end();
+    this.span = undefined;
   }
 
   getValues() {
@@ -23,7 +41,7 @@ export class UpdateSession {
     return this.active;
   }
 
-  join() {
+  join(): GeometryUpdateSessionWithSpanContext {
     assertTrue(this.active, {
       details: {
         active: this.active,
@@ -32,10 +50,13 @@ export class UpdateSession {
       why: "Cannot join if there is no active session",
     });
     ++this.values.index;
-    return this.getValues();
+    return {
+      ...this.getValues(),
+      context: this.span!.spanContext(),
+    };
   }
 
-  start() {
+  start(): GeometryUpdateSessionWithSpanContext {
     assertFalse(this.active, {
       details: {
         active: this.active,
@@ -43,12 +64,18 @@ export class UpdateSession {
       },
       why: "There is already an active session",
     });
-    this.active = true;
-    this.values = {
-      id: UpdateSession.counter++,
-      index: 0,
-      start: Date.now(),
-    };
-    return this.getValues();
+    return this.o11y.trace.span("session", ({ span }) => {
+      this.span = span;
+      this.active = true;
+      this.values = {
+        id: UpdateSession.counter++,
+        index: 0,
+        start: Date.now(),
+      };
+      return {
+        ...this.getValues(),
+        context: span.spanContext(),
+      };
+    });
   }
 }

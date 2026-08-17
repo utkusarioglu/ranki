@@ -13,6 +13,7 @@ import type {
 } from "./tracer.types.mjs";
 
 import { ContextKeyRegistry } from "../key-registry/key-registry.mjs";
+import { isPromiseLike } from "../utils/type.utils.mjs";
 
 export class O11yTracer<T extends EmptyClass> {
   public readonly otelTracer: Tracer;
@@ -45,12 +46,13 @@ export class O11yTracer<T extends EmptyClass> {
     return { name, metadata, spanOptions };
   }
 
-  async span<T>(def: SpanDefinition, fn: SpanCallback<T>): Promise<T> {
-    const { name, metadata, spanOptions } = this.parseSpanDefinition(def);
+  async span<T>(def: SpanDefinition, fn: SpanCallback<Promise<T>>): Promise<T>;
+  span<T>(def: SpanDefinition, fn: SpanCallback<T>): T;
 
+  span<T>(def: SpanDefinition, fn: SpanCallback<T>): Promise<T> | T {
+    const { name, metadata, spanOptions } = this.parseSpanDefinition(def);
     const parentCtx = context.active();
     const enrichedParentCtx = this.enrichContext(parentCtx, metadata);
-
     const formattedName = this.nameFormatter({
       getParentContextValue: O11yTracer.getCtxValueFactory(enrichedParentCtx),
       name,
@@ -61,13 +63,20 @@ export class O11yTracer<T extends EmptyClass> {
       formattedName,
       spanOptions,
       enrichedParentCtx,
-      async (span) => {
+      (span) => {
         const currentCtx = context.active();
         const withCtx = this.childContextFactory(currentCtx);
         try {
-          return await fn({ span, ctx: currentCtx, withCtx });
-        } finally {
+          const exec = fn({ span, ctx: currentCtx, withCtx });
+          if (isPromiseLike(exec)) {
+            return Promise.resolve(exec).finally(() => span.end());
+          } else {
+            span.end();
+            return exec;
+          }
+        } catch (err) {
           span.end();
+          throw err;
         }
       },
     );
