@@ -15,9 +15,9 @@ import type {
 import { Animator } from "./animator/animator.mjs";
 import { GeometryEvents } from "./events/geometry-events.mjs";
 import { GeometryMerger } from "./merger/geometry-merger.mjs";
+import { O11y } from "./o11y/o11y.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
 import { TimingUtils } from "./utils/timing.utils.mjs";
-import { O11y } from "./o11y/o11y.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -31,11 +31,11 @@ export class GeometryController<
   private readonly animator: Animator<Instance>;
   private curr: CurrentAppliedStyle | null = null;
   private readonly host: Instance;
+  private readonly o11y: O11y<this>;
   private prev: CurrentAppliedStyle | null = null;
   private readonly sets: GeometrySets<Instance>;
-  private sizing: LayoutSizing | null = null;
 
-  private readonly o11y: O11y<this>;
+  private sizing: LayoutSizing | null = null;
 
   constructor(
     host: Instance,

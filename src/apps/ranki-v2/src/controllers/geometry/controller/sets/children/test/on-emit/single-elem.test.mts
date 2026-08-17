@@ -10,6 +10,7 @@ import type {
   ChildrenSizing,
   GeometryChildrenProps,
 } from "../../children.types.mjs";
+
 import { UpdateSession } from "../../session.mjs";
 
 vi.spyOn(UpdateSession.prototype, "getValues").mockReturnValue({

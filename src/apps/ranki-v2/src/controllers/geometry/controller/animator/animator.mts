@@ -1,8 +1,11 @@
 import type { LitElement } from "lit";
 
+import { trace, type Tracer } from "@opentelemetry/api";
+
 import type { GeometryRole } from "../types/geometry-controller.constructor.types.mjs";
 import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs";
 
+import { O11y } from "../o11y/o11y.mjs";
 // import { Logger } from "../logger/logger.mjs";
 import { KeyframeUtils } from "./keyframe/keyframe-utils.mjs";
 import { LayoutParser } from "./parser/layout-parser.mjs";
@@ -17,19 +20,17 @@ import {
   type AnimatorPlayParams,
   type GetRecipeCallback,
 } from "./types/animator.types.mjs";
-import { trace, type Tracer } from "@opentelemetry/api";
-import { O11y } from "../o11y/o11y.mjs";
 
 export class Animator<Instance extends LitElement> {
   private readonly callbacks: AnimatorCallbacks<Instance>;
   private readonly getRecipe: GetRecipeCallback;
   private readonly host: Instance;
+  private readonly o11y: O11y<this>;
   private readonly preset: string = "debug";
   private readonly role: GeometryRole;
   private running = new Map<string, Animation>();
   private readonly sequencer: AnimationSequencer;
   private readonly tracer: Tracer;
-  private readonly o11y: O11y<this>;
 
   constructor(
     host: Instance,
@@ -85,8 +86,8 @@ export class Animator<Instance extends LitElement> {
                 recipe,
               });
               return this.sequencer.build(parsed, {
-                tag: this.host.tagName,
                 action,
+                tag: this.host.tagName,
               });
             }),
           );

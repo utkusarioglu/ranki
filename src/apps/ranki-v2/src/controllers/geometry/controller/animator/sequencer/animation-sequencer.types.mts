@@ -8,6 +8,6 @@ export interface AnimationSequencerCallbacks {
 }
 
 export interface AnimationSequencerMetadata {
-  tag: string;
   action: string;
+  tag: string;
 }

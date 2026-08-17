@@ -41,11 +41,11 @@ export class GeometryChildren<
   private async updateSizing(): ChildrenUpdateSizingReturn {
     if (this.session.isActive()) {
       return {
-        type: "terminate",
         session: this.session.join(),
+        type: "terminate",
       };
     }
-    return this.o11y.trace.tracer.startActiveSpan(
+    return this.o11y.trace.otelTracer.startActiveSpan(
       "GeometryChildren.updateSizing",
       async (span) => {
         try {
@@ -65,16 +65,16 @@ export class GeometryChildren<
             span.addEvent("session.root");
             return {
               inform: GeometrySetsUtils.prepareRootStyle(sizing),
+              session,
               sizing,
               type: "root" as const,
-              session,
             };
           } else {
             span.addEvent("session.propagate");
             return {
+              session,
               sizing,
               type: "update" as const,
-              session,
             };
           }
         } finally {

@@ -10,8 +10,8 @@ import type {
 
 export type ChildrenSizing =
   | ChildrenSizingRoot
-  | ChildrenSizingUpdate
-  | ChildrenSizingTerminate;
+  | ChildrenSizingTerminate
+  | ChildrenSizingUpdate;
 
 export interface ChildrenSizingRoot {
   inform: InformedChildStyle;
@@ -20,21 +20,15 @@ export interface ChildrenSizingRoot {
   type: "root";
 }
 
-export interface ChildrenSizingUpdate {
-  sizing: LayoutSizing;
-  session: GeometryUpdateSession;
-  type: "update";
-}
-
 export interface ChildrenSizingTerminate {
-  type: "terminate";
   session: GeometryUpdateSession;
+  type: "terminate";
 }
 
-export interface GeometryUpdateSession {
-  id: number;
-  start: number;
-  index: number;
+export interface ChildrenSizingUpdate {
+  session: GeometryUpdateSession;
+  sizing: LayoutSizing;
+  type: "update";
 }
 
 export type ChildrenUpdateSizingReturn = Promise<ChildrenSizing>;
@@ -60,3 +54,9 @@ export interface GeometryChildrenProps<Instance extends LitElement> {
 export type GeometrySetDiffCb<Instance extends LitElement> = (
   s: Instance,
 ) => ReconciliationDiff;
+
+export interface GeometryUpdateSession {
+  id: number;
+  index: number;
+  start: number;
+}

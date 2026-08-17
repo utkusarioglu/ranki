@@ -11,17 +11,17 @@ import type { LayoutSizing } from "../children/layout/layout-utils.types.mjs";
 import type { GeometrySetSelectorCb } from "../sets.types.mjs";
 import type { GeometryWatcherProps } from "../watcher/watcher.types.mjs";
 
-import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
 // import { trace, type Tracer } from "@opentelemetry/api";
 import { O11y } from "../../o11y/o11y.mjs";
+import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
 
 export class WatcherSet<Instance extends LitElement> {
   protected diff?: GeometrySetDiffCb<Instance>;
   protected readonly host: Instance;
-  // protected readonly logger: Logger;
-  protected readonly selector: GeometrySetSelectorCb<Instance>;
   // protected readonly tracer: Tracer;
   protected readonly o11y: O11y<WatcherSet<Instance>>;
+  // protected readonly logger: Logger;
+  protected readonly selector: GeometrySetSelectorCb<Instance>;
 
   constructor(
     host: Instance,

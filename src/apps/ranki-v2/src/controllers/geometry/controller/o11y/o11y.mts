@@ -1,17 +1,18 @@
-import { O11yLogger } from "./logger/logger.mjs";
-import { O11yDebugger } from "./debug/debug.mjs";
-import { O11yTracer } from "./tracer/tracer.mjs";
 import type {
   EmptyClass,
-  O11yConstructorConfig,
   GeometryO11yStaticConfig,
+  O11yConstructorConfig,
 } from "./o11y.types.mjs";
 
+import { O11yDebugger } from "./debug/debug.mjs";
+import { O11yLogger } from "./logger/logger.mjs";
+import { O11yTracer } from "./tracer/tracer.mjs";
+
 export class O11y<T extends EmptyClass> {
-  public readonly trace: O11yTracer<T>;
-  public readonly log: O11yLogger;
-  public static readonly log = O11yLogger;
   public static readonly debug = O11yDebugger;
+  public static readonly log = O11yLogger;
+  public readonly log: O11yLogger;
+  public readonly trace: O11yTracer<T>;
 
   constructor(owner: T, extra?: O11yConstructorConfig) {
     this.trace = new O11yTracer(owner, extra?.tracer);

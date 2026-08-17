@@ -1,4 +1,8 @@
+import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement } from "lit";
+
+import { assertExists } from "_error/assertions.mjs";
+import { context, trace, type Tracer } from "@opentelemetry/api";
 
 import type {
   GeometryEventCb,
@@ -8,15 +12,12 @@ import type {
 import type { GeometryEventTypes } from "./types/geometry-events.constructor.types.mjs";
 import type { LocalAction } from "./types/geometry-events.types.mjs";
 import type { GeometryEvent } from "./types/geometry-events.types.mjs";
+import type { EventWithContext } from "./types/geometry-events.types.mjs";
 
 import {
   ACTION_TIME_SEPARATOR,
   DEFAULT_EVENT_SETTINGS,
 } from "./geometry-events.constants.mjs";
-import { assertExists } from "_error/assertions.mjs";
-import type { R2C } from "_components/r2c/r2c.mjs";
-import { context, trace, type Tracer } from "@opentelemetry/api";
-import type { EventWithContext } from "./types/geometry-events.types.mjs";
 
 export class GeometryEvents<Instance extends LitElement> {
   public static readonly GEOMETRY_EVENT_NAME = "r2-geometry";
@@ -40,17 +41,6 @@ export class GeometryEvents<Instance extends LitElement> {
       this.host.removeEventListener("pointerenter", this.onPointerEnter);
       this.host.removeEventListener("pointerleave", this.onPointerLeave);
     }
-  }
-
-  public onEmit(callback: (target: R2C, detail: GeometryEvent) => void) {
-    return async (e: CustomEvent<EventWithContext<GeometryEvent>>) => {
-      e.stopPropagation();
-      const target = e.composedPath()[0] as null | R2C;
-      assertExists(target, { why: "No valid target given" });
-      return context.with(e.detail.context, () =>
-        callback(target, e.detail.event),
-      );
-    };
   }
 
   public emit(event: GeometryEvent) {
@@ -92,6 +82,17 @@ export class GeometryEvents<Instance extends LitElement> {
         );
       });
     }
+  }
+
+  public onEmit(callback: (target: R2C, detail: GeometryEvent) => void) {
+    return async (e: CustomEvent<EventWithContext<GeometryEvent>>) => {
+      e.stopPropagation();
+      const target = e.composedPath()[0] as null | R2C;
+      assertExists(target, { why: "No valid target given" });
+      return context.with(e.detail.context, () =>
+        callback(target, e.detail.event),
+      );
+    };
   }
 
   registerListeners() {

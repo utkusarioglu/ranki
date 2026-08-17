@@ -1,14 +1,15 @@
 import { assertFalse, assertTrue } from "_error/assertions.mjs";
+
 import type { GeometryUpdateSession } from "./children.types.mjs";
 
 export class UpdateSession {
+  private static counter = 0;
+  private active = false;
   private values: GeometryUpdateSession = {
     id: 0,
-    start: 0,
     index: -1,
+    start: 0,
   };
-  private active = false;
-  private static counter = 0;
 
   end() {
     this.active = false;
@@ -18,36 +19,36 @@ export class UpdateSession {
     return this.values;
   }
 
-  start() {
-    assertFalse(this.active, {
-      why: "There is already an active session",
-      details: {
-        active: this.active,
-        values: this.values,
-      },
-    });
-    this.active = true;
-    this.values = {
-      id: UpdateSession.counter++,
-      start: Date.now(),
-      index: 0,
-    };
-    return this.getValues();
+  isActive() {
+    return this.active;
   }
 
   join() {
     assertTrue(this.active, {
-      why: "Cannot join if there is no active session",
       details: {
         active: this.active,
         values: this.getValues(),
       },
+      why: "Cannot join if there is no active session",
     });
     ++this.values.index;
     return this.getValues();
   }
 
-  isActive() {
-    return this.active;
+  start() {
+    assertFalse(this.active, {
+      details: {
+        active: this.active,
+        values: this.values,
+      },
+      why: "There is already an active session",
+    });
+    this.active = true;
+    this.values = {
+      id: UpdateSession.counter++,
+      index: 0,
+      start: Date.now(),
+    };
+    return this.getValues();
   }
 }

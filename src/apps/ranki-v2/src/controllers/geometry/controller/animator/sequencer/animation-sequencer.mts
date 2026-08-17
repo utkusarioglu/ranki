@@ -1,3 +1,5 @@
+import { context, trace, type Tracer } from "@opentelemetry/api";
+
 import type {
   ApplyRootParams,
   LayoutParsed,
@@ -9,14 +11,13 @@ import type {
   AnimationSequencerMetadata,
 } from "./animation-sequencer.types.mjs";
 
-import { TimingUtils } from "../../utils/timing.utils.mjs";
-import { context, trace, type Tracer } from "@opentelemetry/api";
 import { O11y } from "../../o11y/o11y.mjs";
+import { TimingUtils } from "../../utils/timing.utils.mjs";
 
 export class AnimationSequencer {
   private readonly callbacks: AnimationSequencerCallbacks;
-  private readonly tracer: Tracer;
   private metadata!: AnimationSequencerMetadata;
+  private readonly tracer: Tracer;
 
   constructor(callbacks: AnimationSequencerCallbacks) {
     this.callbacks = callbacks;
