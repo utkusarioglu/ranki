@@ -10,13 +10,13 @@ import type {
   WithContext,
 } from "./tracer.types.mjs";
 
-import { ContextKeyRegistry } from "../context-key-registry.mjs";
+import { ContextKeyRegistry } from "../key-registry/key-registry.mjs";
 
 export class O11yTracer<T extends EmptyClass> {
   public readonly otelTracer: Tracer;
   private readonly owner: T;
 
-  constructor(owner: T, params?: O11yTracerConstructorParams) {
+  constructor(owner: T, params?: O11yTracerConstructorParams<T>) {
     this.owner = owner;
     this.otelTracer = trace.getTracer(this.owner.constructor.name);
     if (params?.nameFormat) {
@@ -46,6 +46,7 @@ export class O11yTracer<T extends EmptyClass> {
     const formattedName = this.nameFormatter({
       getCtxValue: O11yTracer.getCtxValueFactory(ctx),
       name,
+      owner: this.owner,
     });
 
     return this.otelTracer.startActiveSpan(
@@ -75,5 +76,5 @@ export class O11yTracer<T extends EmptyClass> {
     return ctx;
   }
 
-  private readonly nameFormatter = (n: NameFormatterParams) => n.name;
+  private readonly nameFormatter = (n: NameFormatterParams<T>) => n.name;
 }
