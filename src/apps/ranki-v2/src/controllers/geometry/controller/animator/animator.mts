@@ -1,7 +1,5 @@
 import type { LitElement } from "lit";
 
-import { trace, type Tracer } from "@opentelemetry/api";
-
 import type { GeometryRole } from "../types/geometry-controller.constructor.types.mjs";
 import type { CurrentAppliedStyle } from "../types/geometry-controller.types.mjs";
 
@@ -29,7 +27,6 @@ export class Animator<Instance extends LitElement> {
   private readonly role: GeometryRole;
   private running = new Map<string, Animation>();
   private readonly sequencer: AnimationSequencer;
-  private readonly tracer: Tracer;
 
   constructor(
     host: Instance,
@@ -46,10 +43,12 @@ export class Animator<Instance extends LitElement> {
     this.getRecipe = this.prepareGetRecipeCallback(
       this.callbacks.getCollection,
     );
-    this.tracer = trace.getTracer(this.constructor.name);
     this.o11y = new O11y(this, {
       logger: {
         host: this.host,
+      },
+      tracer: {
+        nameFormat: ({ name }) => [this.host.tagName, name].join(":"),
       },
     });
   }
@@ -59,42 +58,38 @@ export class Animator<Instance extends LitElement> {
     prev: CurrentAppliedStyle | null,
   ): Promise<void> {
     this.o11y.log.debug("Animator.update", { curr, host: this.host, prev });
-    return this.tracer.startActiveSpan(
-      `${this.host.tagName}:update`,
-      async (span) => {
-        try {
-          await Promise.all(
-            curr.actions.map((action) => {
-              span.addEvent("animator.recipe.get");
-              const recipe = this.getRecipe({
-                action,
-                interaction: "default",
-                preset: this.preset,
-                role: this.role,
-              });
-              span.addEvent("animator.recipe.ready");
+    return this.o11y.trace.span("update", async ({ span, withCtx }) => {
+      await Promise.all(
+        curr.actions.map((action) => {
+          span.addEvent("animator.recipe.get");
+          const recipe = this.getRecipe({
+            action,
+            interaction: "default",
+            preset: this.preset,
+            role: this.role,
+          });
+          span.addEvent("animator.recipe.ready");
 
-              const parsed = LayoutParser.parse({ curr, prev, recipe: recipe });
-              span.addEvent("animator.layout.parsed");
+          const parsed = LayoutParser.parse({ curr, prev, recipe: recipe });
+          span.addEvent("animator.layout.parsed");
 
-              this.o11y.log.debug("Animator.update.composed", {
-                curr,
-                host: this.host,
-                parsed,
-                prev,
-                recipe,
-              });
-              return this.sequencer.build(parsed, {
-                action,
-                tag: this.host.tagName,
-              });
-            }),
+          this.o11y.log.debug("Animator.update.composed", {
+            curr,
+            host: this.host,
+            parsed,
+            prev,
+            recipe,
+          });
+          return withCtx(
+            {
+              "html.element.tag": this.host.tagName,
+              "geometry.action": action,
+            },
+            () => this.sequencer.build(parsed),
           );
-        } finally {
-          span.end();
-        }
-      },
-    );
+        }),
+      );
+    });
   }
 
   private async playName({
@@ -102,62 +97,57 @@ export class Animator<Instance extends LitElement> {
     name,
     options,
   }: AnimatorPlayParams): Promise<void> {
-    return this.tracer.startActiveSpan(
-      `${this.host.tagName}:playName:${name}`,
-      async (span) => {
-        try {
-          const finalOptions: KeyframeAnimationOptions = {
-            ...KeyframeUtils.OPTIONS_DEFAULTS,
-            ...options,
-          };
-          const finalKeyframes = KeyframeUtils.produceKeyframes(keyframes);
-          span.addEvent("keyframes.produced");
-          this.o11y.log.debug("Animator.playName", {
-            finalKeyframes,
-            finalOptions,
-            host: this.host,
-          });
-          span.addEvent("host.animate.start");
-          const anim = this.host.animate(finalKeyframes, finalOptions);
+    return this.o11y.trace.span(`playName:${name}`, async ({ span }) => {
+      try {
+        const finalOptions: KeyframeAnimationOptions = {
+          ...KeyframeUtils.OPTIONS_DEFAULTS,
+          ...options,
+        };
+        const finalKeyframes = KeyframeUtils.produceKeyframes(keyframes);
+        span.addEvent("keyframes.produced");
+        this.o11y.log.debug("Animator.playName", {
+          finalKeyframes,
+          finalOptions,
+          host: this.host,
+        });
+        span.addEvent("host.animate.start");
+        const anim = this.host.animate(finalKeyframes, finalOptions);
 
-          span.addEvent("host.animate.end");
-          const r = this.running.get(name);
-          if (r) {
-            span.addEvent("animation.cancel");
-            r.oncancel = (_ev) => {
-              if (r.playState === "running") {
-                console.warn(
-                  "Animation cancelled while running.",
-                  "Name: ",
-                  name,
-                  "tag: ",
-                  this.host.tagName,
-                );
-              }
-            };
-            r.commitStyles();
-            r.cancel();
-          }
-          this.running.set(name, anim);
-          await anim.finished;
-          this.running.delete(name);
-          span.addEvent("animation.delete");
-        } catch (e) {
-          console.log("ABORT", {
-            e,
-            host: this.host,
-            new: {
-              keyframes,
-              name,
-              options,
-            },
-            running: this.running,
-          });
-        } finally {
-          span.end();
+        span.addEvent("host.animate.end");
+        const r = this.running.get(name);
+        if (r) {
+          span.addEvent("animation.cancel");
+          r.oncancel = (_ev) => {
+            if (r.playState === "running") {
+              console.warn(
+                "Animation cancelled while running.",
+                "Name: ",
+                name,
+                "tag: ",
+                this.host.tagName,
+              );
+            }
+          };
+          r.commitStyles();
+          r.cancel();
         }
-      },
-    );
+        this.running.set(name, anim);
+        await anim.finished;
+        this.running.delete(name);
+        span.addEvent("animation.delete");
+      } catch (e) {
+        console.log("ABORT", {
+          e,
+          host: this.host,
+          new: {
+            keyframes,
+            name,
+            options,
+          },
+          running: this.running,
+        });
+      }
+    });
   }
 
   private prepareGetRecipeCallback(

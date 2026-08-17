@@ -45,44 +45,40 @@ export class GeometryChildren<
         type: "terminate",
       };
     }
-    return this.o11y.trace.otelTracer.startActiveSpan(
-      "GeometryChildren.updateSizing",
-      async (span) => {
-        try {
-          const session = this.session.start();
-          span.addEvent("session.start");
-          await TimingUtils.raf(2);
-          span.addEvent("session.compute.start");
+    return this.o11y.trace.span("updateSizing", async ({ span }) => {
+      try {
+        const session = this.session.start();
+        span.addEvent("session.start");
+        await TimingUtils.raf(2);
+        span.addEvent("session.compute.start");
 
-          const serial = this.getElements();
-          const ordered = this.registry.getOrdered(serial);
-          const layoutCallback = this.layout(this.host);
-          const sizing = layoutCallback(ordered);
+        const serial = this.getElements();
+        const ordered = this.registry.getOrdered(serial);
+        const layoutCallback = this.layout(this.host);
+        const sizing = layoutCallback(ordered);
 
-          span.addEvent("session.compute.end");
+        span.addEvent("session.compute.end");
 
-          if (this.isRoot === true) {
-            span.addEvent("session.root");
-            return {
-              inform: GeometrySetsUtils.prepareRootStyle(sizing),
-              session,
-              sizing,
-              type: "root" as const,
-            };
-          } else {
-            span.addEvent("session.propagate");
-            return {
-              session,
-              sizing,
-              type: "update" as const,
-            };
-          }
-        } finally {
-          this.session.end();
-          // this.inSession = false;
-          span.end();
+        if (this.isRoot === true) {
+          span.addEvent("session.root");
+          return {
+            inform: GeometrySetsUtils.prepareRootStyle(sizing),
+            session,
+            sizing,
+            type: "root" as const,
+          };
+        } else {
+          span.addEvent("session.propagate");
+          return {
+            session,
+            sizing,
+            type: "update" as const,
+          };
         }
-      },
-    );
+      } finally {
+        this.session.end();
+        // this.inSession = false;
+      }
+    });
   }
 }

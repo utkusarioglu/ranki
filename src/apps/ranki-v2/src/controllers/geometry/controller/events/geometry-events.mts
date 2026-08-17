@@ -2,7 +2,6 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement } from "lit";
 
 import { assertExists } from "_error/assertions.mjs";
-import { context, trace, type Tracer } from "@opentelemetry/api";
 
 import type {
   GeometryEventCb,
@@ -18,13 +17,15 @@ import {
   ACTION_TIME_SEPARATOR,
   DEFAULT_EVENT_SETTINGS,
 } from "./geometry-events.constants.mjs";
+import { O11y } from "_controllers/geometry/o11y/o11y.mjs";
+import { context } from "@opentelemetry/api";
 
 export class GeometryEvents<Instance extends LitElement> {
   public static readonly GEOMETRY_EVENT_NAME = "r2-geometry";
   private readonly events: GeometryEventTypes;
   private readonly host: Instance;
   private readonly on: GeometryEventCb<Instance> | undefined;
-  private readonly tracer: Tracer;
+  private readonly o11y: O11y<this>;
 
   constructor(params: GeometryEventsConstructorParams<Instance>) {
     this.host = params.host;
@@ -33,7 +34,11 @@ export class GeometryEvents<Instance extends LitElement> {
       ...params.events,
     };
     this.on = params.on;
-    this.tracer = trace.getTracer(this.constructor.name);
+    this.o11y = new O11y(this, {
+      tracer: {
+        nameFormat: ({ name }) => [this.host.tagName, name].join(":"),
+      },
+    });
   }
 
   deregisterListeners() {
@@ -44,8 +49,7 @@ export class GeometryEvents<Instance extends LitElement> {
   }
 
   public emit(event: GeometryEvent) {
-    this.tracer.startActiveSpan(`${this.host.tagName}:emit`, (span) => {
-      const ctx = context.active();
+    this.o11y.trace.span("emit", ({ ctx }) => {
       const detail: EventWithContext<GeometryEvent> = {
         context: ctx,
         event,
@@ -56,7 +60,6 @@ export class GeometryEvents<Instance extends LitElement> {
         detail,
       });
       this.host.dispatchEvent(customEvent);
-      span.end();
     });
   }
 

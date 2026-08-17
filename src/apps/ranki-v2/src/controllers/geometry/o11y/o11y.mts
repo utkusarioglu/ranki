@@ -14,7 +14,7 @@ export class O11y<T extends EmptyClass> {
   public readonly log: O11yLogger;
   public readonly trace: O11yTracer<T>;
 
-  constructor(owner: T, extra?: O11yConstructorConfig) {
+  constructor(owner: T, extra?: O11yConstructorConfig<T>) {
     this.trace = new O11yTracer(owner, extra?.tracer);
     this.log = new O11yLogger({
       class: owner.constructor.name,

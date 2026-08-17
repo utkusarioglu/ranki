@@ -2,7 +2,7 @@ import type { Context, Span, SpanOptions } from "@opentelemetry/api";
 
 export interface NameFormatterParams<T> {
   owner: T;
-  getCtxValue: (key: string) => unknown;
+  getParentContextValue: (key: string) => unknown;
   name: string;
 }
 
@@ -10,12 +10,26 @@ export interface O11yTracerConstructorParams<T> {
   nameFormat?: (p: NameFormatterParams<T>) => string;
 }
 
+export type WithContextFunc<F> = () => F;
+export type WithContextParamsRich<F> = [SpanMetadata, WithContextFunc<F>];
+export type WithContextParamsBare<F> = [WithContextFunc<F>];
+export type WithContextParams<F> =
+  | WithContextParamsRich<F>
+  | WithContextParamsBare<F>;
+
+export type CallWithContextMetadata = <F>(
+  a: SpanMetadata | WithContextFunc<F>,
+  b?: WithContextFunc<F> | undefined,
+) => F;
+
 export type SpanCallback<T> = (s: SpanFuncParams) => T;
 
 export type SpanDefinition = SpanDetailedDefinition | string;
 
+export type SpanMetadata = Record<string, unknown>;
+
 export interface SpanDetailedDefinition {
-  metadata?: Record<string, unknown>;
+  metadata?: SpanMetadata;
   name: string;
   spanOptions?: SpanOptions;
 }
@@ -23,7 +37,5 @@ export interface SpanDetailedDefinition {
 export interface SpanFuncParams {
   ctx: Context;
   span: Span;
-  withCtx: WithContext;
+  withCtx: CallWithContextMetadata;
 }
-
-export type WithContext = <T>(callback: () => T) => T;

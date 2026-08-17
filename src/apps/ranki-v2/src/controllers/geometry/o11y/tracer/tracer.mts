@@ -3,11 +3,13 @@ import { type Context, context, trace, type Tracer } from "@opentelemetry/api";
 
 import type { EmptyClass } from "../o11y.types.mjs";
 import type {
+  CallWithContextMetadata,
   NameFormatterParams,
   O11yTracerConstructorParams,
   SpanCallback,
   SpanDefinition,
-  WithContext,
+  SpanMetadata,
+  WithContextFunc,
 } from "./tracer.types.mjs";
 
 import { ContextKeyRegistry } from "../key-registry/key-registry.mjs";
@@ -35,16 +37,22 @@ export class O11yTracer<T extends EmptyClass> {
     };
   }
 
-  span<T>(definition: SpanDefinition, fn: SpanCallback<T>): T {
-    const isString = typeof definition === "string";
-    const name = isString ? definition : definition.name;
-    const metadata = isString ? {} : definition.metadata;
-    const spanOptions = isString ? {} : definition.spanOptions || {};
+  private parseSpanDefinition(def: SpanDefinition) {
+    const isString = typeof def === "string";
+    const name = isString ? def : def.name;
+    const metadata = isString ? {} : def.metadata;
+    const spanOptions = isString ? {} : def.spanOptions || {};
+    return { name, metadata, spanOptions };
+  }
 
-    const ctx = this.buildEnrichedContext(metadata);
-    const withCtx: WithContext = (cb) => context.with(ctx, cb);
+  async span<T>(def: SpanDefinition, fn: SpanCallback<T>): Promise<T> {
+    const { name, metadata, spanOptions } = this.parseSpanDefinition(def);
+
+    const parentCtx = context.active();
+    const enrichedParentCtx = this.enrichContext(parentCtx, metadata);
+
     const formattedName = this.nameFormatter({
-      getCtxValue: O11yTracer.getCtxValueFactory(ctx),
+      getParentContextValue: O11yTracer.getCtxValueFactory(enrichedParentCtx),
       name,
       owner: this.owner,
     });
@@ -52,10 +60,12 @@ export class O11yTracer<T extends EmptyClass> {
     return this.otelTracer.startActiveSpan(
       formattedName,
       spanOptions,
-      ctx,
-      (span) => {
+      enrichedParentCtx,
+      async (span) => {
+        const currentCtx = context.active();
+        const withCtx = this.childContextFactory(currentCtx);
         try {
-          return fn({ ctx, span, withCtx });
+          return await fn({ span, ctx: currentCtx, withCtx });
         } finally {
           span.end();
         }
@@ -63,8 +73,25 @@ export class O11yTracer<T extends EmptyClass> {
     );
   }
 
-  private buildEnrichedContext(metadata: Record<string, unknown> | undefined) {
-    let ctx = context.active();
+  private childContextFactory(ctx: Context) {
+    const withCtx: CallWithContextMetadata = <F,>(
+      a: SpanMetadata | WithContextFunc<F>,
+      b?: WithContextFunc<F>,
+    ) => {
+      const f = typeof b === "function" ? b : (a as WithContextFunc<F>);
+      const meta =
+        typeof b === "function" ? (a as unknown as SpanMetadata) : undefined;
+      const enriched = this.enrichContext(ctx, meta);
+      return context.with(enriched, f);
+    };
+    return withCtx;
+  }
+
+  private enrichContext(
+    rawContext: Context,
+    metadata: Record<string, unknown> | undefined,
+  ) {
+    let ctx = rawContext;
     if (metadata) {
       Object.entries(metadata).forEach(([k, v]) => {
         ctx = ctx.setValue(ContextKeyRegistry.registerKey(k), v);

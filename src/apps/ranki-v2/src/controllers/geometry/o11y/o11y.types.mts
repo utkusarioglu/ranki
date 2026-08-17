@@ -12,9 +12,9 @@ export interface GeometryO11yStaticConfig {
   };
 }
 
-export interface O11yConstructorConfig {
+export interface O11yConstructorConfig<T> {
   logger?: Record<string, unknown>;
-  tracer?: O11yTracerConstructorParams;
+  tracer?: O11yTracerConstructorParams<T>;
 }
 
 export class EmptyClass {}
