@@ -19,8 +19,14 @@ vi.spyOn(UpdateSession.prototype, "getValues").mockReturnValue({
   start: 7,
 });
 import { GeometryChildren } from "../../children.mjs";
+import type { SpanContext } from "@opentelemetry/api";
 
 const host = vi.fn() as unknown as LitElement;
+
+const session = {
+  ...UpdateSession.prototype.getValues(),
+  context: null as unknown as SpanContext,
+};
 
 test("single session two elems", async () => {
   const target1 = vi.fn() as unknown as R2C;
@@ -46,7 +52,7 @@ test("single session two elems", async () => {
     type: "lifecycle",
   };
   const expected0: ChildrenSizing = {
-    session: UpdateSession.prototype.getValues(),
+    session,
     sizing: {
       container: {
         height: 11,
@@ -89,7 +95,7 @@ test("single session two elems", async () => {
   };
 
   const expected1: ChildrenSizing = {
-    session: UpdateSession.prototype.getValues(),
+    session,
     type: "terminate",
   };
   const call1 = () => children.onEmit(target1, detail1);
@@ -141,7 +147,7 @@ test("two sessions two elems", async () => {
     type: "lifecycle",
   };
   const expected1: ChildrenSizing = {
-    session: UpdateSession.prototype.getValues(),
+    session,
     sizing: {
       container: {
         height: 11,
@@ -183,7 +189,7 @@ test("two sessions two elems", async () => {
     type: "update",
   };
   const expected2: ChildrenSizing = {
-    session: UpdateSession.prototype.getValues(),
+    session,
     sizing: {
       container: {
         height: 11,
@@ -225,7 +231,7 @@ test("two sessions two elems", async () => {
     type: "update",
   };
   const expectedTerm: ChildrenSizing = {
-    session: UpdateSession.prototype.getValues(),
+    session,
     type: "terminate",
   };
   const call1_1 = () => children.onEmit(target1, detail1_1);
