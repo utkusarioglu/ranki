@@ -1,13 +1,17 @@
 import type { Context, Span, SpanOptions } from "@opentelemetry/api";
 
-export interface NameFormatterParams<T> {
+export interface O11yTraceNameFormatterParams<T> {
   owner: T;
   getParentContextValue: (key: string) => unknown;
   name: string;
 }
 
+type O11yTraceNameFormatterCallback<T> = (
+  p: O11yTraceNameFormatterParams<T>,
+) => string;
+
 export interface O11yTracerConstructorParams<T> {
-  nameFormat?: (p: NameFormatterParams<T>) => string;
+  nameFormat?: O11yTraceNameFormatterCallback<T>;
 }
 
 export type WithContextFunc<F> = () => F;

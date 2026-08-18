@@ -4,12 +4,15 @@ import {
   PeriodicExportingMetricReader,
 } from "@opentelemetry/sdk-metrics";
 import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-http";
+import { resource } from "./resource.mjs";
 
 const exporter = new OTLPMetricExporter({
   url: "/api/v1/otlp/v1/metrics",
 });
 
 const provider = new MeterProvider({
+  sdkMetricsEnabled: true,
+  resource,
   readers: [
     new PeriodicExportingMetricReader({
       exporter,

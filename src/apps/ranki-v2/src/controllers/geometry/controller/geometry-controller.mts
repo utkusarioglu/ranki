@@ -63,6 +63,16 @@ export class GeometryController<
       tracer: {
         nameFormat: ({ name }) => [this.host.tagName, name].join(":"),
       },
+      meter: {
+        counters: {
+          onEmit: {
+            unit: "call",
+          },
+          informStyle: {
+            unit: "call",
+          },
+        },
+      },
     });
     this.bindInformStyle();
   }
@@ -82,7 +92,7 @@ export class GeometryController<
   onEmit() {
     return this.events.onEmit(async (target, detail) => {
       return this.o11y.trace.span("onEmit", async ({ span, withCtx }) => {
-        this.o11y.meter.up("on_emit", 1);
+        this.o11y.meter.count("onEmit");
         const update = await this.sets.onEmit(target, detail);
         span.setAttribute("geometry.session.id", update.session.id);
         span.setAttribute("geometry.session.start", update.session.start);
@@ -139,6 +149,7 @@ export class GeometryController<
 
   private async informStyle(informed: InformedChildStyle): Promise<void> {
     return this.o11y.trace.span("informStyle", async ({ span }) => {
+      this.o11y.meter.count("informStyle");
       this.prev = this.curr;
       const curr = GeometryMerger.createCurrStyle(informed, this.sizing);
       this.curr = curr;

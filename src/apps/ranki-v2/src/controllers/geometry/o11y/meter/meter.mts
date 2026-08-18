@@ -1,21 +1,19 @@
-import { metrics, type Counter, type Meter } from "@opentelemetry/api";
 import type { EmptyClass } from "../o11y.types.mjs";
+import type { O11yMeterConstructorParams } from "./meter.types.mjs";
+import { O11yMeterRegistry } from "./registry.mjs";
 
-export class O11yMetrics<T extends EmptyClass> {
-  private readonly otelMetrics: Meter;
-  private readonly keys = new Map<string, Counter>();
+export class O11yMeter<T extends EmptyClass> {
+  private readonly registry: O11yMeterRegistry<T>;
 
-  constructor(owner: T) {
-    this.otelMetrics = metrics.getMeter(owner.constructor.name);
+  constructor(owner: T, params?: O11yMeterConstructorParams<T>) {
+    this.registry = new O11yMeterRegistry(owner, params);
   }
 
-  up(name: string, value: number = 1) {
-    let curr = this.keys.get(name);
-    if (!curr) {
-      curr = this.otelMetrics.createCounter(name);
-      this.keys.set(name, curr);
-    }
-    curr.add(value);
-    console.log(name, this.keys);
+  count(name: string, value: number = 1) {
+    this.registry.getCounter(name).add(value);
+  }
+
+  record(name: string, value: number) {
+    this.registry.getHistogram(name).record(value);
   }
 }

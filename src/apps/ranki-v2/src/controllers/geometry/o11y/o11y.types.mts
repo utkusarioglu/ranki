@@ -1,4 +1,5 @@
 import type { LogDriver } from "./logger/logger.types.mjs";
+import type { O11yMeterConstructorParams } from "./meter/meter.types.mjs";
 import type { O11yTracerConstructorParams } from "./tracer/tracer.types.mjs";
 
 export interface GeometryO11yStaticConfig {
@@ -15,6 +16,7 @@ export interface GeometryO11yStaticConfig {
 export interface O11yConstructorConfig<T> {
   logger?: Record<string, unknown>;
   tracer?: O11yTracerConstructorParams<T>;
+  meter?: O11yMeterConstructorParams<T>;
 }
 
 export class EmptyClass {}

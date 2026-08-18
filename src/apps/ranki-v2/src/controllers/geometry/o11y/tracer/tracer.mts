@@ -4,7 +4,7 @@ import { type Context, context, trace, type Tracer } from "@opentelemetry/api";
 import type { EmptyClass } from "../o11y.types.mjs";
 import type {
   CallWithContextMetadata,
-  NameFormatterParams,
+  O11yTraceNameFormatterParams,
   O11yTracerConstructorParams,
   SpanCallback,
   SpanDefinition,
@@ -112,5 +112,6 @@ export class O11yTracer<T extends EmptyClass> {
     return ctx;
   }
 
-  private readonly nameFormatter = (n: NameFormatterParams<T>) => n.name;
+  private readonly nameFormatter = (n: O11yTraceNameFormatterParams<T>) =>
+    n.name;
 }

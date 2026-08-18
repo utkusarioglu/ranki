@@ -50,6 +50,14 @@ export class Animator<Instance extends LitElement> {
       tracer: {
         nameFormat: ({ name }) => [this.host.tagName, name].join(":"),
       },
+      meter: {
+        nameFormat: ({ name }) => `animator.${name}`,
+        histograms: {
+          "play.duration": {
+            unit: "ms",
+          },
+        },
+      },
     });
   }
 
@@ -104,6 +112,7 @@ export class Animator<Instance extends LitElement> {
           ...options,
         };
         const finalKeyframes = KeyframeUtils.produceKeyframes(keyframes);
+        this.o11y.meter.record("play.duration", +(finalOptions.duration || 0));
         span.addEvent("keyframes.produced");
         this.o11y.log.debug("Animator.playName", {
           finalKeyframes,
