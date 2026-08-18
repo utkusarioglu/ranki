@@ -36,6 +36,10 @@ export default defineConfig(() => ({
         target: "http://loki:3100",
         changeOrigin: true,
       },
+      "/api/v1/otlp": {
+        target: "http://prometheus:9090",
+        changeOrigin: true,
+      },
     },
   },
   preview: {

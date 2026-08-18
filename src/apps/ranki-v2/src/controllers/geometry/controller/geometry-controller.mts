@@ -82,6 +82,7 @@ export class GeometryController<
   onEmit() {
     return this.events.onEmit(async (target, detail) => {
       return this.o11y.trace.span("onEmit", async ({ span, withCtx }) => {
+        this.o11y.meter.up("on_emit", 1);
         const update = await this.sets.onEmit(target, detail);
         span.setAttribute("geometry.session.id", update.session.id);
         span.setAttribute("geometry.session.start", update.session.start);
