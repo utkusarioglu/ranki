@@ -16,4 +16,11 @@ export class O11yMeter<T extends EmptyClass> {
   record(name: string, value: number) {
     this.registry.getHistogram(name).record(value);
   }
+
+  // count()       → Counter
+  // up()           → UpDownCounter (+)
+  // down()         → UpDownCounter (-)
+  // record()       → Histogram
+  // set()          → Gauge
+  // observe()      → Observable instruments
 }

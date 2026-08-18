@@ -74,7 +74,7 @@ export class GeometryController<
         },
       },
     });
-    this.bindInformStyle();
+    this.bindHostMethods();
   }
 
   static configure(conf: GeometryControllerStaticConfig) {
@@ -94,9 +94,11 @@ export class GeometryController<
       return this.o11y.trace.span("onEmit", async ({ span, withCtx }) => {
         this.o11y.meter.count("onEmit");
         const update = await this.sets.onEmit(target, detail);
-        span.setAttribute("geometry.session.id", update.session.id);
-        span.setAttribute("geometry.session.start", update.session.start);
-        span.setAttribute("geometry.session.index", update.session.index);
+        span.addEvent("geometry.session.resolve", {
+          "session.id": update.session.id,
+          "session.start": update.session.start,
+          "session.index": update.session.index,
+        });
 
         await withCtx(async () => {
           if (update.type === "terminate") {
@@ -136,13 +138,13 @@ export class GeometryController<
    * This is the method parent uses to tell its child what style it's
    * supposed to animate towards
    */
-  private bindInformStyle() {
+  private bindHostMethods() {
     (this.host as unknown as R2C).informStyle = this.informStyle.bind(this);
   }
 
   private async informSet(props: InformSetProps): Promise<void> {
-    this.o11y.log.debug("informSet", { props });
     return this.o11y.trace.span("informSet", () => {
+      this.o11y.log.debug("informSet", { props, sizing: this.sizing });
       return this.sets.inform(props, this.sizing);
     });
   }
