@@ -10,3 +10,8 @@ export type LogValue = {
   elapsed: ReturnType<typeof performance.now>;
   epoch: ReturnType<typeof Date.now>;
 } & Record<string, unknown>;
+
+export interface O11yLoggerStaticConfig {
+  enabled: boolean;
+  drivers?: LogDriver[];
+}

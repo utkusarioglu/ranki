@@ -1,4 +1,7 @@
-function serialize(value: unknown, seen = new WeakSet<object>()): unknown {
+export function serialize(
+  value: unknown,
+  seen = new WeakSet<object>(),
+): unknown {
   if (value === null || typeof value !== "object") {
     if (typeof value === "bigint") return `${value}n`;
     if (typeof value === "undefined") return "[undefined]";

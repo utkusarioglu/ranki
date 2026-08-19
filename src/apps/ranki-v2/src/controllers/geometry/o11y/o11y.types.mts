@@ -1,16 +1,24 @@
-import type { LogDriver } from "./logger/logger.types.mjs";
+import type { O11yDebuggerStaticConfig } from "./debug/debug.types.mjs";
+import type { O11yLoggerStaticConfig } from "./logger/logger.types.mjs";
 import type { O11yMeterConstructorParams } from "./meter/meter.types.mjs";
 import type { O11yTracerConstructorParams } from "./tracer/tracer.types.mjs";
 
-export interface GeometryO11yStaticConfig {
-  debug?: {
-    sequencer?: {
-      stutter?: number;
-    };
-  };
-  log?: {
-    drivers?: LogDriver[];
-  };
+interface WithEnabled {
+  enabled: boolean;
+}
+
+export interface O11yStaticConfig {
+  debug?: O11yDebuggerStaticConfig;
+  log?: O11yLoggerStaticConfig;
+  trace?: WithEnabled;
+  metrics?: WithEnabled;
+}
+
+export interface O11yInternalStaticConfig {
+  debugEnabled: boolean;
+  logEnabled: boolean;
+  traceEnabled: boolean;
+  metricsEnabled: boolean;
 }
 
 export interface O11yConstructorConfig<T> {

@@ -3,10 +3,21 @@ import type {
   LogDriver,
   LogValue,
 } from "_controllers/geometry/o11y/logger/logger.types.mjs";
+import type {
+  ConsoleBatchLogDriverConstructorParams,
+  FormatterCallback,
+} from "./console-batch.types.mjs";
 
 export class ConsoleBatchLogDriver implements LogDriver {
-  private elapsed = 0;
+  private elapsed = Date.now() - 1000;
   private logs: LogValue[] = [];
+  private printer: FormatterCallback = (v) => console.log(v);
+
+  constructor(params?: ConsoleBatchLogDriverConstructorParams) {
+    if (params?.printer) {
+      this.printer = params.printer;
+    }
+  }
 
   private span() {
     const span = trace.getActiveSpan();
@@ -27,7 +38,7 @@ export class ConsoleBatchLogDriver implements LogDriver {
   }
 
   dump() {
-    console.log(this.logs);
+    this.printer(this.logs, this.elapsed);
   }
 
   new() {
@@ -37,6 +48,6 @@ export class ConsoleBatchLogDriver implements LogDriver {
   }
 
   query(cb: (entry: LogValue) => boolean) {
-    console.log(this.logs.filter(cb));
+    this.printer(this.logs.filter(cb), this.elapsed);
   }
 }

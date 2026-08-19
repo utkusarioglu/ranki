@@ -2,7 +2,7 @@ import type {
   LogDriver,
   LogValue,
 } from "_controllers/geometry/o11y/logger/logger.types.mjs";
-import { safeStringify } from "./stringify.mjs";
+import { safeStringify } from "../stringify.mjs";
 import type { LokiLogValue, LokiLogStream, LokiLog } from "./loki.types.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 

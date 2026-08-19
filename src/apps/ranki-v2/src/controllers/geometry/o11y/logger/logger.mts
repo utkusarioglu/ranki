@@ -4,6 +4,7 @@ import type {
   InstanceEntries,
   LogAttributes,
   LogDriver,
+  O11yLoggerStaticConfig,
 } from "./logger.types.mjs";
 
 export class O11yLogger {
@@ -24,6 +25,14 @@ export class O11yLogger {
 
   static info(log: string, attributes?: LogAttributes) {
     O11yLogger.log("INFO", log, attributes);
+  }
+
+  public static configure(conf: O11yLoggerStaticConfig) {
+    if (conf.drivers) {
+      conf.drivers.forEach((dr) => {
+        O11yLogger.addDriver(dr);
+      });
+    }
   }
 
   private static log(
