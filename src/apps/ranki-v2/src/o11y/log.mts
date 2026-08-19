@@ -10,4 +10,8 @@ export const lokiLogDriver = new LokiLogDriver({
   loki: {
     endpoint: "/loki/api/v1/push",
   },
+  scheduler: {
+    enabled: true,
+    interval: 5000,
+  },
 });

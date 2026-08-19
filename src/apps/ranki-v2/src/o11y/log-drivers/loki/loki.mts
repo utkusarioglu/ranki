@@ -4,72 +4,52 @@ import type {
 } from "_controllers/geometry/o11y/logger/logger.types.mjs";
 import { sanitize } from "../utils/sanitize.utils.mjs";
 import type { LokiLogValue, LokiLogStream, LokiLog } from "./loki.types.mjs";
-import { RankiAppError } from "_error/ranki-app-error.mjs";
 import type { LokiLogDriverConstructorParams } from "./loki.types.mjs";
-import {
-  DEFAULT_LOKI_ENDPOINT,
-  DEFAULT_SEND_INTERVAL,
-} from "./loki.constants.mjs";
+import { DEFAULT_LOKI_ENDPOINT } from "./loki.constants.mjs";
+import { Scheduler } from "../utils/scheduler.utils.mjs";
 
 export class LokiLogDriver implements LogDriver {
-  private logs: LogValue[] = [];
   private endpoint: string = DEFAULT_LOKI_ENDPOINT;
-  private interval: number = DEFAULT_SEND_INTERVAL;
+  private readonly scheduler: Scheduler<LokiLogValue>;
 
   constructor(params: LokiLogDriverConstructorParams) {
     if (params?.loki?.endpoint) this.endpoint = params.loki.endpoint;
-    this.initSender();
+    this.scheduler = new Scheduler(
+      (v) => this.sender(v),
+      params.scheduler?.interval,
+    );
+    if (params.scheduler?.enabled) this.scheduler.start();
+  }
+
+  private async sender(v: LokiLogValue[]) {
+    const processed = this.processLog(v);
+    await fetch(this.endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(processed),
+    });
   }
 
   private processLogValue(log: LogValue): LokiLogValue {
     return [String(log.epoch * 1e6), JSON.stringify(sanitize(log))];
   }
 
-  private processLogStream(logs: LogValue[]): LokiLogStream {
+  private processLogStream(values: LokiLogValue[]): LokiLogStream {
     return {
       stream: {
         service_name: "ranki",
       },
-      values: logs.map((log) => this.processLogValue(log)),
+      values,
     };
   }
 
-  private processLog(logs: LogValue[]): LokiLog {
+  private processLog(logs: LokiLogValue[]): LokiLog {
     return { streams: [this.processLogStream(logs)] };
   }
 
-  private sendBatch() {
-    if (!this.logs.length) return;
-    const logs = [...this.logs];
-    this.logs = [];
-    const processed = this.processLog(logs);
-    fetch(this.endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(processed),
-    }).catch((e) => {
-      this.logs = [...logs, ...this.logs];
-      throw new RankiAppError({
-        code: "LOG_TRANSPORT_FAIL",
-        why: "Log send operation to backend failed",
-        cause: e,
-        details: {
-          processed,
-          logs,
-        },
-      });
-    });
-  }
-
-  private initSender() {
-    setInterval(() => {
-      this.sendBatch();
-    }, this.interval);
-  }
-
   log(value: LogValue): void {
-    this.logs.push(value);
+    this.scheduler.enqueue(this.processLogValue(value));
   }
 }
