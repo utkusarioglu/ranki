@@ -27,7 +27,7 @@ export class O11yTracer<T extends EmptyClass> {
     }
   }
 
-  private static getCtxValueFactory(ctx: Context) {
+  public static getCtxValueFactory(ctx: Context) {
     return (key: string) => {
       const keySymbol = ContextKeyRegistry.getSymbol(key);
       const value = ctx.getValue(keySymbol);

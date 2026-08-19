@@ -24,6 +24,11 @@ export class AnimationSequencer {
             name,
           ].join(":"),
       },
+      // logger: {
+      //   attributes: ({ getParentContextValue }) => ({
+      //     action: getParentContextValue("geometry.action"),
+      //   }),
+      // },
     });
   }
 

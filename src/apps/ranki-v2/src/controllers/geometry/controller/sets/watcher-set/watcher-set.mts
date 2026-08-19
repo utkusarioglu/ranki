@@ -25,7 +25,9 @@ export class WatcherSet<Instance extends LitElement> {
     this.selector = props.selector;
     this.o11y = new O11y(this, {
       logger: {
-        host: this.host,
+        attributes: () => ({
+          host: this.host,
+        }),
       },
     });
   }

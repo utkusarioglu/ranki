@@ -1,18 +1,23 @@
-import { trace } from "@opentelemetry/api";
+import { context, trace } from "@opentelemetry/api";
 
 import type {
-  InstanceEntries,
+  O11yLoggerConstructorParams,
   LogAttributes,
   LogDriver,
   O11yLoggerStaticConfig,
+  O11yLoggerDynamicEntriesFunc,
 } from "./logger.types.mjs";
+import type { EmptyClass } from "../o11y.types.mjs";
+import { O11yTracer } from "../tracer/tracer.mjs";
 
-export class O11yLogger {
+export class O11yLogger<T extends EmptyClass> {
+  private owner: T;
   private static drivers: LogDriver[] = [];
-  private instanceEntries: InstanceEntries;
+  private commonAttributes: O11yLoggerDynamicEntriesFunc<T> | undefined;
 
-  constructor(ins: InstanceEntries) {
-    this.instanceEntries = ins;
+  constructor(owner: T, params?: O11yLoggerConstructorParams<T>) {
+    this.owner = owner;
+    this.commonAttributes = params?.attributes;
   }
 
   static addDriver(driver: LogDriver) {
@@ -62,11 +67,22 @@ export class O11yLogger {
     };
   }
 
+  private getEntries() {
+    const ctx = context.active();
+    const getParentContextValue = O11yTracer.getCtxValueFactory(ctx);
+    return this.commonAttributes
+      ? this.commonAttributes({
+          owner: this.owner,
+          getParentContextValue,
+        })
+      : {};
+  }
+
   debug(log: string, attributes?: LogAttributes) {
-    O11yLogger.debug(log, { ...this.instanceEntries, ...attributes });
+    O11yLogger.debug(log, { ...this.getEntries(), ...attributes });
   }
 
   info(log: string, attributes?: LogAttributes) {
-    O11yLogger.info(log, { ...this.instanceEntries, ...attributes });
+    O11yLogger.info(log, { ...this.getEntries(), ...attributes });
   }
 }

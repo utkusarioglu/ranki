@@ -16,7 +16,7 @@ import { O11yTracer as O11yTracerMock } from "./tracer/mock/tracer.mock.mjs";
 export class O11y<T extends EmptyClass> {
   public static readonly debug = O11yDebugger;
   public static readonly log = O11yLogger;
-  public readonly log: O11yLogger;
+  public readonly log: O11yLogger<T>;
   public readonly meter: O11yMeter<T>;
   public readonly trace: O11yTracer<T>;
   private static STATIC_CONFIG: O11yInternalStaticConfig = {
@@ -32,11 +32,8 @@ export class O11y<T extends EmptyClass> {
       : (new O11yTracerMock() as O11yTracer<T>);
 
     this.log = O11y.STATIC_CONFIG.logEnabled
-      ? (this.log = new O11yLogger({
-          class: owner.constructor.name,
-          ...extra?.logger,
-        }))
-      : (new O11yLoggerMock() as unknown as O11yLogger);
+      ? (this.log = new O11yLogger(owner, extra?.logger))
+      : (new O11yLoggerMock() as unknown as O11yLogger<T>);
 
     this.meter = O11y.STATIC_CONFIG.metricsEnabled
       ? new O11yMeter(owner, extra?.meter)

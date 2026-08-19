@@ -3,6 +3,7 @@ import type { LitElement, ReactiveElement } from "lit";
 import type { GeometryDecoratorParams } from "./geometry-decorator.types.mjs";
 
 import { GeometryController } from "../controller/geometry-controller.mjs";
+import { O11y } from "../o11y/o11y.mjs";
 
 export function geometry<Instance extends LitElement>(
   params: GeometryDecoratorParams<Instance>,
@@ -11,6 +12,11 @@ export function geometry<Instance extends LitElement>(
     const ctor = proto.constructor as typeof ReactiveElement;
 
     ctor.addInitializer((instance) => {
+      O11y.log.debug("Created geometry decorator", {
+        host: proto,
+        varName: key,
+        params,
+      });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (instance as any)[key] = new GeometryController<Instance>(
         instance as Instance,

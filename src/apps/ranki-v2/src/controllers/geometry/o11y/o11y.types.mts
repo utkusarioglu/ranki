@@ -1,5 +1,8 @@
 import type { O11yDebuggerStaticConfig } from "./debug/debug.types.mjs";
-import type { O11yLoggerStaticConfig } from "./logger/logger.types.mjs";
+import type {
+  O11yLoggerConstructorParams,
+  O11yLoggerStaticConfig,
+} from "./logger/logger.types.mjs";
 import type { O11yMeterConstructorParams } from "./meter/meter.types.mjs";
 import type { O11yTracerConstructorParams } from "./tracer/tracer.types.mjs";
 
@@ -22,7 +25,7 @@ export interface O11yInternalStaticConfig {
 }
 
 export interface O11yConstructorConfig<T> {
-  logger?: Record<string, unknown>;
+  logger?: O11yLoggerConstructorParams<T>;
   meter?: O11yMeterConstructorParams<T>;
   tracer?: O11yTracerConstructorParams<T>;
 }

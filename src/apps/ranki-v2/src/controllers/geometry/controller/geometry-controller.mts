@@ -58,7 +58,9 @@ export class GeometryController<
     });
     this.o11y = new O11y(this, {
       logger: {
-        host: this.host,
+        attributes: () => ({
+          host: this.host,
+        }),
       },
       meter: {
         counters: {
