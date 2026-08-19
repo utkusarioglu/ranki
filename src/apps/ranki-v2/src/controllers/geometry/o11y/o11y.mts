@@ -6,15 +6,15 @@ import type {
 
 import { O11yDebugger } from "./debug/debug.mjs";
 import { O11yLogger } from "./logger/logger.mjs";
-import { O11yTracer } from "./tracer/tracer.mjs";
 import { O11yMeter } from "./meter/meter.mjs";
+import { O11yTracer } from "./tracer/tracer.mjs";
 
 export class O11y<T extends EmptyClass> {
   public static readonly debug = O11yDebugger;
   public static readonly log = O11yLogger;
   public readonly log: O11yLogger;
-  public readonly trace: O11yTracer<T>;
   public readonly meter: O11yMeter<T>;
+  public readonly trace: O11yTracer<T>;
 
   constructor(owner: T, extra?: O11yConstructorConfig<T>) {
     this.trace = new O11yTracer(owner, extra?.tracer);

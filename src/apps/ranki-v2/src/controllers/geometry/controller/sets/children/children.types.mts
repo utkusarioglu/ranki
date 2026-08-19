@@ -1,4 +1,5 @@
 import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
+import type { SpanContext } from "@opentelemetry/api";
 import type { LitElement } from "lit";
 
 import type { InformedChildStyle } from "../../types/geometry-controller.types.mjs";
@@ -7,7 +8,6 @@ import type {
   LayoutSizing,
   LayoutSizingCallback,
 } from "./layout/layout-utils.types.mjs";
-import type { SpanContext } from "@opentelemetry/api";
 
 export type ChildrenSizing =
   | ChildrenSizingRoot

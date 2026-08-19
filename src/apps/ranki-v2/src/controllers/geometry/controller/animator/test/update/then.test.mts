@@ -1,3 +1,4 @@
+import "_controllers/geometry/o11y/mock/mock.mjs";
 import type { CurrentAppliedStyle } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
 import type { LitElement } from "lit";
 

@@ -1,7 +1,9 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement } from "lit";
 
+import { O11y } from "_controllers/geometry/o11y/o11y.mjs";
 import { assertExists } from "_error/assertions.mjs";
+import { context } from "@opentelemetry/api";
 
 import type {
   GeometryEventCb,
@@ -17,15 +19,13 @@ import {
   ACTION_TIME_SEPARATOR,
   DEFAULT_EVENT_SETTINGS,
 } from "./geometry-events.constants.mjs";
-import { O11y } from "_controllers/geometry/o11y/o11y.mjs";
-import { context } from "@opentelemetry/api";
 
 export class GeometryEvents<Instance extends LitElement> {
   public static readonly GEOMETRY_EVENT_NAME = "r2-geometry";
   private readonly events: GeometryEventTypes;
   private readonly host: Instance;
-  private readonly on: GeometryEventCb<Instance> | undefined;
   private readonly o11y: O11y<this>;
+  private readonly on: GeometryEventCb<Instance> | undefined;
 
   constructor(params: GeometryEventsConstructorParams<Instance>) {
     this.host = params.host;

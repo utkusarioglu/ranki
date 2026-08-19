@@ -1,23 +1,18 @@
+import { O11y } from "_controllers/geometry/o11y/o11y.mjs";
 import { assertFalse, assertTrue } from "_error/assertions.mjs";
+import { type Span } from "@opentelemetry/api";
 
 import type {
   GeometryUpdateSession,
   GeometryUpdateSessionWithSpanContext,
 } from "./children.types.mjs";
-import { O11y } from "_controllers/geometry/o11y/o11y.mjs";
-import { type Span } from "@opentelemetry/api";
 
 export class UpdateSession {
   private static counter = 0;
   private active = false;
-  private values: GeometryUpdateSession = {
-    id: 0,
-    index: -1,
-    start: 0,
-  };
   private readonly o11y = new O11y(this, {
     tracer: {
-      nameFormat: ({ name, getParentContextValue }) =>
+      nameFormat: ({ getParentContextValue, name }) =>
         [
           getParentContextValue("geometry.session.tag"),
           name,
@@ -26,6 +21,11 @@ export class UpdateSession {
     },
   });
   private span!: Span | undefined;
+  private values: GeometryUpdateSession = {
+    id: 0,
+    index: -1,
+    start: 0,
+  };
 
   end() {
     this.active = false;

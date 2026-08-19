@@ -1,5 +1,6 @@
 import type { EmptyClass } from "../o11y.types.mjs";
 import type { O11yMeterConstructorParams } from "./meter.types.mjs";
+
 import { O11yMeterRegistry } from "./registry.mjs";
 
 export class O11yMeter<T extends EmptyClass> {
@@ -10,11 +11,11 @@ export class O11yMeter<T extends EmptyClass> {
   }
 
   count(name: string, value: number = 1) {
-    this.registry.getCounter(name).add(value);
+    this.registry.getMeter("counter", name).add(value);
   }
 
   record(name: string, value: number) {
-    this.registry.getHistogram(name).record(value);
+    this.registry.getMeter("histogram", name).record(value);
   }
 
   // count()       → Counter

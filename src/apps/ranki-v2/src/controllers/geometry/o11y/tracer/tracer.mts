@@ -38,19 +38,10 @@ export class O11yTracer<T extends EmptyClass> {
     };
   }
 
-  private parseSpanDefinition(def: SpanDefinition) {
-    const isString = typeof def === "string";
-    const name = isString ? def : def.name;
-    const metadata = isString ? {} : def.metadata;
-    const spanOptions = isString ? {} : def.spanOptions || {};
-    return { name, metadata, spanOptions };
-  }
-
   async span<T>(def: SpanDefinition, fn: SpanCallback<Promise<T>>): Promise<T>;
   span<T>(def: SpanDefinition, fn: SpanCallback<T>): T;
-
   span<T>(def: SpanDefinition, fn: SpanCallback<T>): Promise<T> | T {
-    const { name, metadata, spanOptions } = this.parseSpanDefinition(def);
+    const { metadata, name, spanOptions } = this.parseSpanDefinition(def);
     const parentCtx = context.active();
     const enrichedParentCtx = this.enrichContext(parentCtx, metadata);
     const formattedName = this.nameFormatter({
@@ -67,7 +58,7 @@ export class O11yTracer<T extends EmptyClass> {
         const currentCtx = context.active();
         const withCtx = this.childContextFactory(currentCtx);
         try {
-          const exec = fn({ span, ctx: currentCtx, withCtx });
+          const exec = fn({ ctx: currentCtx, span, withCtx });
           if (isPromiseLike(exec)) {
             return Promise.resolve(exec).finally(() => span.end());
           } else {
@@ -114,4 +105,12 @@ export class O11yTracer<T extends EmptyClass> {
 
   private readonly nameFormatter = (n: O11yTraceNameFormatterParams<T>) =>
     n.name;
+
+  private parseSpanDefinition(def: SpanDefinition) {
+    const isString = typeof def === "string";
+    const name = isString ? def : def.name;
+    const metadata = isString ? {} : def.metadata;
+    const spanOptions = isString ? {} : def.spanOptions || {};
+    return { metadata, name, spanOptions };
+  }
 }

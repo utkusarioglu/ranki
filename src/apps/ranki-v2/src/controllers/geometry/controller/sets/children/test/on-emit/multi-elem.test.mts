@@ -1,3 +1,4 @@
+import "_controllers/geometry/o11y/mock/mock.mjs";
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { GeometryEvent } from "_controllers/geometry/controller/events/types/geometry-events.types.mjs";
 import type { LitElement } from "lit";
@@ -18,8 +19,9 @@ vi.spyOn(UpdateSession.prototype, "getValues").mockReturnValue({
   index: 3,
   start: 7,
 });
-import { GeometryChildren } from "../../children.mjs";
 import type { SpanContext } from "@opentelemetry/api";
+
+import { GeometryChildren } from "../../children.mjs";
 
 const host = vi.fn() as unknown as LitElement;
 

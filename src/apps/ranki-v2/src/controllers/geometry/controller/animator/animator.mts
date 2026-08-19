@@ -47,16 +47,16 @@ export class Animator<Instance extends LitElement> {
       logger: {
         host: this.host,
       },
-      tracer: {
-        nameFormat: ({ name }) => [this.host.tagName, name].join(":"),
-      },
       meter: {
-        nameFormat: ({ name }) => `animator.${name}`,
         histograms: {
           "play.duration": {
             unit: "ms",
           },
         },
+        nameFormat: ({ name }) => `animator.${name}`,
+      },
+      tracer: {
+        nameFormat: ({ name }) => [this.host.tagName, name].join(":"),
       },
     });
   }
@@ -90,8 +90,8 @@ export class Animator<Instance extends LitElement> {
           });
           return withCtx(
             {
-              "html.element.tag": this.host.tagName,
               "geometry.action": action,
+              "html.element.tag": this.host.tagName,
             },
             () => this.sequencer.build(parsed),
           );

@@ -15,8 +15,8 @@ export interface GeometryO11yStaticConfig {
 
 export interface O11yConstructorConfig<T> {
   logger?: Record<string, unknown>;
-  tracer?: O11yTracerConstructorParams<T>;
   meter?: O11yMeterConstructorParams<T>;
+  tracer?: O11yTracerConstructorParams<T>;
 }
 
 export class EmptyClass {}

@@ -1,5 +1,5 @@
 export function isPromiseLike<T>(
-  value: T | PromiseLike<T>,
+  value: PromiseLike<T> | T,
 ): value is PromiseLike<T> {
   return (
     value != null &&

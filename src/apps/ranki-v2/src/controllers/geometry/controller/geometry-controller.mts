@@ -12,10 +12,10 @@ import type {
   InformedChildStyle,
 } from "./types/geometry-controller.types.mjs";
 
+import { O11y } from "../o11y/o11y.mjs";
 import { Animator } from "./animator/animator.mjs";
 import { GeometryEvents } from "./events/geometry-events.mjs";
 import { GeometryMerger } from "./merger/geometry-merger.mjs";
-import { O11y } from "../o11y/o11y.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
 import { TimingUtils } from "./utils/timing.utils.mjs";
 
@@ -60,18 +60,18 @@ export class GeometryController<
       logger: {
         host: this.host,
       },
-      tracer: {
-        nameFormat: ({ name }) => [this.host.tagName, name].join(":"),
-      },
       meter: {
         counters: {
-          onEmit: {
-            unit: "call",
-          },
           informStyle: {
             unit: "call",
           },
+          onEmit: {
+            unit: "call",
+          },
         },
+      },
+      tracer: {
+        nameFormat: ({ name }) => [this.host.tagName, name].join(":"),
       },
     });
     this.bindHostMethods();
@@ -96,8 +96,8 @@ export class GeometryController<
         const update = await this.sets.onEmit(target, detail);
         span.addEvent("geometry.session.resolve", {
           "session.id": update.session.id,
-          "session.start": update.session.start,
           "session.index": update.session.index,
+          "session.start": update.session.start,
         });
 
         await withCtx(async () => {

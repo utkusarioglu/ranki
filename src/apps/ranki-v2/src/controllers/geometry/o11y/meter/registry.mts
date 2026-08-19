@@ -1,23 +1,25 @@
+import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
 import {
+  type Attributes,
   type Counter,
   type Histogram,
-  type Attributes,
   type Meter,
-  metrics,
   type MetricOptions,
+  metrics,
 } from "@opentelemetry/api";
-import { assertNotUndefined } from "_error/assertions.mjs";
+
 import type { EmptyClass } from "../o11y.types.mjs";
 import type {
   O11yMeterConstructorParams,
   O11yMeterNameFormatterCallback,
 } from "./meter.types.mjs";
+import type { FormattedName, MeterType, RawName } from "./registry.types.mjs";
 
 export class O11yMeterRegistry<T extends EmptyClass> {
   private readonly counters = new Map<string, Counter>();
   private readonly histograms = new Map<string, Histogram<Attributes>>();
-  private readonly owner: T;
   private readonly otel: Meter;
+  private readonly owner: T;
 
   constructor(owner: T, params?: O11yMeterConstructorParams<T>) {
     this.owner = owner;
@@ -27,52 +29,71 @@ export class O11yMeterRegistry<T extends EmptyClass> {
     }
     if (params?.histograms) {
       Object.entries(params.histograms).forEach(([key, opts]) => {
-        this.registerHistogram(key, opts);
+        this.registerMeter("histogram", key, opts);
       });
     }
     if (params?.counters) {
       Object.entries(params.counters).forEach(([key, opts]) => {
-        this.registerCounter(key, opts);
+        this.registerMeter("counter", key, opts);
       });
     }
   }
 
-  public getHistogram(name: string) {
-    const formattedName = this.getFormattedName(name);
-    const curr = this.histograms.get(formattedName);
+  getMeter(type: "histogram", rawName: RawName): Histogram;
+  getMeter(type: "counter", rawName: RawName): Counter;
+  public getMeter(type: MeterType, rawName: RawName) {
+    const name = this.getFormattedName(rawName);
+    let curr: Counter | Histogram;
+    switch (type) {
+      case "counter":
+        curr = this.counters.get(name) as Counter;
+        break;
+      case "histogram":
+        curr = this.histograms.get(name) as Histogram;
+        break;
+      default:
+        assertNever({
+          details: { name, rawName, type },
+          why: "Unrecognized meter type",
+        });
+    }
     assertNotUndefined(curr, {
+      details: { name, rawName },
       why: "Undefined histogram",
-      details: { name, formattedName },
     });
     return curr;
+  }
+  private getFormattedName(name: RawName): FormattedName {
+    return this.nameFormatter({ name, owner: this.owner });
   }
 
   private readonly nameFormatter: O11yMeterNameFormatterCallback<T> = (n) =>
     n.name;
 
-  private registerHistogram(rawName: string, options: MetricOptions) {
+  private registerMeter(
+    type: MeterType,
+    rawName: string,
+    options: MetricOptions,
+  ) {
     const name = this.getFormattedName(rawName);
-    const hist = this.otel.createHistogram(name, options);
-    this.histograms.set(name, hist);
-  }
-
-  private registerCounter(rawName: string, options: MetricOptions) {
-    const name = this.getFormattedName(rawName);
-    const counter = this.otel.createCounter(name, options);
-    this.counters.set(name, counter);
-  }
-
-  private getFormattedName(name: string): string {
-    return this.nameFormatter({ name, owner: this.owner });
-  }
-
-  public getCounter(rawName: string) {
-    const formattedName = this.getFormattedName(rawName);
-    const curr = this.counters.get(formattedName);
-    assertNotUndefined(curr, {
-      why: "Undefined counter",
-      details: { name, formattedName },
-    });
-    return curr;
+    switch (type) {
+      case "counter":
+        {
+          const counter = this.otel.createCounter(name, options);
+          this.counters.set(name, counter);
+        }
+        break;
+      case "histogram":
+        {
+          const hist = this.otel.createHistogram(name, options);
+          this.histograms.set(name, hist);
+        }
+        break;
+      default:
+        assertNever({
+          details: { name, options, rawName, type },
+          why: "Unrecognized meter type",
+        });
+    }
   }
 }

@@ -17,7 +17,7 @@ export class AnimationSequencer {
     this.callbacks = callbacks;
     this.o11y = new O11y(this, {
       tracer: {
-        nameFormat: ({ name, getParentContextValue }) =>
+        nameFormat: ({ getParentContextValue, name }) =>
           [
             getParentContextValue("html.element.tag"),
             getParentContextValue("geometry.action"),
