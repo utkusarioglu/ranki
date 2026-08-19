@@ -5,13 +5,13 @@ import type {
 } from "_controllers/geometry/o11y/logger/logger.types.mjs";
 import type {
   ConsoleBatchLogDriverConstructorParams,
-  FormatterCallback,
+  ConsoleBatchLoggerPrinterFunc,
 } from "./console-batch.types.mjs";
 
 export class ConsoleBatchLogDriver implements LogDriver {
   private elapsed = Date.now() - 1000;
   private logs: LogValue[] = [];
-  private printer: FormatterCallback = (v) => console.log(v);
+  private printer: ConsoleBatchLoggerPrinterFunc = (v) => console.log(v);
 
   constructor(params?: ConsoleBatchLogDriverConstructorParams) {
     if (params?.printer) {

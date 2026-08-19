@@ -10,3 +10,10 @@ export interface LokiLogStream {
 export interface LokiLog {
   streams: LokiLogStream[];
 }
+
+export interface LokiLogDriverConstructorParams {
+  loki?: {
+    endpoint?: string;
+  };
+  interval?: number;
+}
