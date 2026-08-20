@@ -11,7 +11,12 @@ import {
 } from "@ant-design/icons";
 import { DqmInputOptions } from "../dqm-input-options/DqmInputOptions";
 import { AstSanitizerOptions } from "../ast-sanitizer-options/AstSanitizerOptions";
-import { type FC, type PropsWithChildren, type ReactNode } from "react";
+import {
+  useEffect,
+  type FC,
+  type PropsWithChildren,
+  type ReactNode,
+} from "react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { DqmPluginsOptions } from "_menus/dqm-plugins-options/DqmPluginsOptions";
 import { DqmConfigOptions } from "_menus/dqm-config-options/DqmConfigOptions";
@@ -161,11 +166,12 @@ const Activator: FC<PropsWithChildren<ActivatorProps>> = ({
   children,
 }) => {
   const navigate = useNavigate();
-  // !FIX this renders the route twice on first run (understandably)
-  if (route) {
-    console.log("BROKEN ROUTING", route);
-    // navigate({ to: route });
-  }
+  useEffect(() => {
+    if (route) {
+      console.log("r", route);
+      navigate({ to: route });
+    }
+  }, []);
 
   return <>{children}</>;
 };
