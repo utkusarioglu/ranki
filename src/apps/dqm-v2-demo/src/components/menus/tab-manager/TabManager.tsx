@@ -163,7 +163,7 @@ const Activator: FC<PropsWithChildren<ActivatorProps>> = ({
   const navigate = useNavigate();
   // !FIX this renders the route twice on first run (understandably)
   if (route) {
-    console.log("r", route);
+    console.log("BROKEN ROUTING", route);
     // navigate({ to: route });
   }
 
