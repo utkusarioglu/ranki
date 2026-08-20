@@ -1,10 +1,10 @@
+import { sanitizedYamlPrinter } from "./log/log-drivers/console-batch/yaml-printer.mjs";
 import { RankiLogging } from "./log/log.mjs";
 import { type RankiLogRuntimeProps } from "./log/log.types.mjs";
-import { RankiTracing } from "./trace/trace.mjs";
-import { type RankiTracingRuntimeProps } from "./trace/trace.types.mjs";
 import { RankiMetrics } from "./meter/meter.mjs";
 import { type RankiMetricsRuntimeProps } from "./meter/meter.types.mjs";
-import { sanitizedYamlPrinter } from "./log/log-drivers/console-batch/yaml-printer.mjs";
+import { RankiTracing } from "./trace/trace.mjs";
+import { type RankiTracingRuntimeProps } from "./trace/trace.types.mjs";
 
 RankiTracing.configure();
 
@@ -20,14 +20,14 @@ RankiMetrics.configure();
 
 interface RankiO11yRuntimeProps {
   log: RankiLogRuntimeProps;
-  trace: RankiTracingRuntimeProps;
   meter: RankiMetricsRuntimeProps;
+  trace: RankiTracingRuntimeProps;
 }
 
 export class RankiO11y {
   public static readonly log = RankiLogging;
-  public static readonly trace = RankiTracing;
   public static readonly meter = RankiMetrics;
+  public static readonly trace = RankiTracing;
 
   public static enable(props: RankiO11yRuntimeProps) {
     this.log.enable(props.log);
@@ -52,10 +52,10 @@ RankiO11y.enable({
       },
     },
   },
-  trace: {
-    endpoint: "http://localhost:4318/v1/traces",
-  },
   meter: {
     endpoint: "/api/v1/otlp/v1/metrics",
+  },
+  trace: {
+    endpoint: "http://localhost:4318/v1/traces",
   },
 });

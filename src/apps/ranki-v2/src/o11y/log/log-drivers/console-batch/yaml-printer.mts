@@ -1,5 +1,7 @@
 import yaml from "yaml";
+
 import type { ConsoleBatchLoggerPrinterFunc } from "./console-batch.types.mjs";
+
 import { sanitize } from "../utils/sanitize.utils.mjs";
 
 export const sanitizedYamlPrinter: ConsoleBatchLoggerPrinterFunc = (v, e) => {

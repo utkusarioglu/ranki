@@ -1,7 +1,4 @@
-export function sanitize<T extends unknown>(
-  value: unknown,
-  seen = new WeakSet<object>(),
-): T {
+export function sanitize<T>(value: unknown, seen = new WeakSet<object>()): T {
   if (value === null || typeof value !== "object") {
     if (typeof value === "bigint") return `${value}n` as T;
     if (typeof value === "undefined") return "[undefined]" as T;
@@ -24,8 +21,8 @@ export function sanitize<T extends unknown>(
 
   if (value instanceof Error) {
     return {
-      name: value.name,
       message: value.message,
+      name: value.name,
       stack: value.stack,
     } as T;
   }
@@ -61,7 +58,3 @@ export function sanitize<T extends unknown>(
 
   return sorted as T;
 }
-
-// export function safeStringify(value: unknown): string {
-//   return JSON.stringify(serialize(value));
-// }

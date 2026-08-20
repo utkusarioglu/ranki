@@ -1,11 +1,13 @@
 import { metrics } from "@opentelemetry/api";
+import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-http";
 import {
   MeterProvider,
   PeriodicExportingMetricReader,
 } from "@opentelemetry/sdk-metrics";
-import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-http";
-import { resource } from "../resource.mjs";
+
 import type { RankiMetricsRuntimeProps } from "./meter.types.mjs";
+
+import { resource } from "../resource.mjs";
 
 export class RankiMetrics {
   public static configure() {}
@@ -16,14 +18,14 @@ export class RankiMetrics {
     });
 
     const provider = new MeterProvider({
-      sdkMetricsEnabled: true,
-      resource,
       readers: [
         new PeriodicExportingMetricReader({
           exporter,
           exportIntervalMillis: 5e3,
         }),
       ],
+      resource,
+      sdkMetricsEnabled: true,
     });
 
     metrics.setGlobalMeterProvider(provider);

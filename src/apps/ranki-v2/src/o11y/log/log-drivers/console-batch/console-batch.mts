@@ -1,24 +1,26 @@
-import { trace } from "@opentelemetry/api";
 import type {
   LogDriver,
   LogValue,
 } from "_controllers/geometry/o11y/logger/logger.types.mjs";
+
+import { assertNotUndefined } from "_error/assertions.mjs";
+import { trace } from "@opentelemetry/api";
+
 import type {
   ConsoleBatchLogDriverConfigureProps,
   ConsoleBatchLogDriverConstructorParams,
   ConsoleBatchLogDriverStaticConfig,
 } from "./console-batch.types.mjs";
-import { assertNotUndefined } from "_error/assertions.mjs";
 
 export class ConsoleBatchLogDriver implements LogDriver {
-  private elapsed = Date.now() - 1000;
-  private logs: LogValue[] = [];
-  private printerName: string = "default";
   private static config: ConsoleBatchLogDriverStaticConfig = {
     printers: {
       default: (v) => console.log(v),
     },
   };
+  private elapsed = Date.now() - 1000;
+  private logs: LogValue[] = [];
+  private printerName: string = "default";
 
   constructor(params?: ConsoleBatchLogDriverConstructorParams) {
     if (params?.printer) this.printerName = params.printer;
@@ -28,15 +30,8 @@ export class ConsoleBatchLogDriver implements LogDriver {
     this.config.printers = { ...this.config.printers, ...conf.printers };
   }
 
-  private span() {
-    const span = trace.getActiveSpan();
-    const context = span?.spanContext();
-
-    return {
-      traceId: context?.traceId,
-      spanId: context?.spanId,
-      traceFlags: context?.traceFlags,
-    };
+  dump() {
+    this.getPrinter()(this.logs, this.elapsed);
   }
 
   log(v: LogValue) {
@@ -44,6 +39,16 @@ export class ConsoleBatchLogDriver implements LogDriver {
       ...v,
       ...this.span(),
     });
+  }
+
+  new() {
+    const lastElapsed = this.elapsed;
+    this.elapsed = performance.now();
+    this.query((v) => v.elapsed >= lastElapsed);
+  }
+
+  query(cb: (entry: LogValue) => boolean) {
+    this.getPrinter()(this.logs.filter(cb), this.elapsed);
   }
 
   private getPrinter() {
@@ -55,26 +60,23 @@ export class ConsoleBatchLogDriver implements LogDriver {
       ConsoleBatchLogDriver.config.printers,
     );
     assertNotUndefined(printer, {
-      why: "undefined printer",
       details: {
         printerName: this.printerName,
         printers: ConsoleBatchLogDriver.config.printers,
       },
+      why: "undefined printer",
     });
     return printer;
   }
 
-  dump() {
-    this.getPrinter()(this.logs, this.elapsed);
-  }
+  private span() {
+    const span = trace.getActiveSpan();
+    const context = span?.spanContext();
 
-  new() {
-    const lastElapsed = this.elapsed;
-    this.elapsed = performance.now();
-    this.query((v) => v.elapsed >= lastElapsed);
-  }
-
-  query(cb: (entry: LogValue) => boolean) {
-    this.getPrinter()(this.logs.filter(cb), this.elapsed);
+    return {
+      spanId: context?.spanId,
+      traceFlags: context?.traceFlags,
+      traceId: context?.traceId,
+    };
   }
 }

@@ -6,19 +6,19 @@ import type {
 import type { LokiLogDriver } from "./log-drivers/loki/loki.mjs";
 import type { LokiLogDriverConstructorParams } from "./log-drivers/loki/loki.types.mjs";
 
+export interface RankiLogRuntimeProps {
+  drivers: {
+    consoleBatch: ConsoleBatchLogDriverConstructorParams;
+    loki: LokiLogDriverConstructorParams;
+  };
+}
+
 export interface RankiLogsDrivers {
   consoleBatchLogDriver: ConsoleBatchLogDriver | null;
   lokiLogDriver: LokiLogDriver | null;
 }
 
+export type RankiLogsStaticConfigProps = Partial<RankiLogsStaticConfig>;
 interface RankiLogsStaticConfig {
   consoleBatch: ConsoleBatchLogDriverConfigureProps;
 }
-
-export interface RankiLogRuntimeProps {
-  drivers: {
-    loki: LokiLogDriverConstructorParams;
-    consoleBatch: ConsoleBatchLogDriverConstructorParams;
-  };
-}
-export type RankiLogsStaticConfigProps = Partial<RankiLogsStaticConfig>;

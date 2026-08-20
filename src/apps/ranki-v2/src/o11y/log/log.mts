@@ -1,11 +1,13 @@
-import { ConsoleBatchLogDriver } from "./log-drivers/console-batch/console-batch.mjs";
-import { LokiLogDriver } from "./log-drivers/loki/loki.mjs";
 import { assertNotNull } from "_error/assertions.mjs";
+
 import type {
+  RankiLogRuntimeProps,
   RankiLogsDrivers,
   RankiLogsStaticConfigProps,
-  RankiLogRuntimeProps,
 } from "./log.types.mjs";
+
+import { ConsoleBatchLogDriver } from "./log-drivers/console-batch/console-batch.mjs";
+import { LokiLogDriver } from "./log-drivers/loki/loki.mjs";
 
 export class RankiLogging {
   private static drivers: RankiLogsDrivers = {
@@ -28,18 +30,6 @@ export class RankiLogging {
     };
   }
 
-  public static getDrivers() {
-    Object.entries(this.drivers).forEach(([name, driver]) => {
-      assertNotNull(driver, {
-        why: "log driver hasn't been initialized",
-        details: {
-          name,
-        },
-      });
-    });
-    return Object.values(this.drivers);
-  }
-
   public static getConsoleDriver() {
     if (!this.drivers.consoleBatchLogDriver) {
       return new Proxy(
@@ -54,5 +44,17 @@ export class RankiLogging {
       );
     }
     return this.drivers.consoleBatchLogDriver;
+  }
+
+  public static getDrivers() {
+    Object.entries(this.drivers).forEach(([name, driver]) => {
+      assertNotNull(driver, {
+        details: {
+          name,
+        },
+        why: "log driver hasn't been initialized",
+      });
+    });
+    return Object.values(this.drivers);
   }
 }

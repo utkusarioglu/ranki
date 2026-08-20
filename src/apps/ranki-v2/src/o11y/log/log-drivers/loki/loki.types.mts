@@ -1,4 +1,14 @@
-export type LokiLogValue = [string, string];
+export interface LokiLog {
+  streams: LokiLogStream[];
+}
+
+export interface LokiLogDriverConstructorParams {
+  endpoint?: string;
+  scheduler?: {
+    enabled?: boolean;
+    interval?: number;
+  };
+}
 
 export interface LokiLogStream {
   stream: {
@@ -7,14 +17,4 @@ export interface LokiLogStream {
   values: LokiLogValue[];
 }
 
-export interface LokiLog {
-  streams: LokiLogStream[];
-}
-
-export interface LokiLogDriverConstructorParams {
-  endpoint?: string;
-  scheduler?: {
-    interval?: number;
-    enabled?: boolean;
-  };
-}
+export type LokiLogValue = [string, string];

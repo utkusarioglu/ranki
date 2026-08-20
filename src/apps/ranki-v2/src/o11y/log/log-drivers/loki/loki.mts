@@ -2,11 +2,13 @@ import type {
   LogDriver,
   LogValue,
 } from "_controllers/geometry/o11y/logger/logger.types.mjs";
-import { sanitize } from "../utils/sanitize.utils.mjs";
-import type { LokiLogValue, LokiLogStream, LokiLog } from "./loki.types.mjs";
+
+import type { LokiLog, LokiLogStream, LokiLogValue } from "./loki.types.mjs";
 import type { LokiLogDriverConstructorParams } from "./loki.types.mjs";
-import { DEFAULT_LOKI_ENDPOINT } from "./loki.constants.mjs";
+
+import { sanitize } from "../utils/sanitize.utils.mjs";
 import { Scheduler } from "../utils/scheduler.utils.mjs";
+import { DEFAULT_LOKI_ENDPOINT } from "./loki.constants.mjs";
 
 export class LokiLogDriver implements LogDriver {
   private endpoint: string = DEFAULT_LOKI_ENDPOINT;
@@ -21,19 +23,16 @@ export class LokiLogDriver implements LogDriver {
     if (params.scheduler?.enabled) this.scheduler.start();
   }
 
-  private async sender(v: LokiLogValue[]) {
-    const processed = this.processLog(v);
-    await fetch(this.endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(processed),
-    });
+  public disable() {
+    this.scheduler.stop();
   }
 
-  private processLogValue(log: LogValue): LokiLogValue {
-    return [String(log.epoch * 1e6), JSON.stringify(sanitize(log))];
+  log(value: LogValue): void {
+    this.scheduler.enqueue(this.processLogValue(value));
+  }
+
+  private processLog(logs: LokiLogValue[]): LokiLog {
+    return { streams: [this.processLogStream(logs)] };
   }
 
   private processLogStream(values: LokiLogValue[]): LokiLogStream {
@@ -45,15 +44,18 @@ export class LokiLogDriver implements LogDriver {
     };
   }
 
-  public disable() {
-    this.scheduler.stop();
+  private processLogValue(log: LogValue): LokiLogValue {
+    return [String(log.epoch * 1e6), JSON.stringify(sanitize(log))];
   }
 
-  private processLog(logs: LokiLogValue[]): LokiLog {
-    return { streams: [this.processLogStream(logs)] };
-  }
-
-  log(value: LogValue): void {
-    this.scheduler.enqueue(this.processLogValue(value));
+  private async sender(v: LokiLogValue[]) {
+    const processed = this.processLog(v);
+    await fetch(this.endpoint, {
+      body: JSON.stringify(processed),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
   }
 }
