@@ -2,28 +2,10 @@ import { ConsoleBatchLogDriver } from "./log-drivers/console-batch/console-batch
 import { LokiLogDriver } from "./log-drivers/loki/loki.mjs";
 import { assertNotNull } from "_error/assertions.mjs";
 import type {
-  ConsoleBatchLogDriverConfigureProps,
-  ConsoleBatchLogDriverConstructorParams,
-} from "./log-drivers/console-batch/console-batch.types.mjs";
-import type { LokiLogDriverConstructorParams } from "./log-drivers/loki/loki.types.mjs";
-
-interface RankiLogsDrivers {
-  consoleBatchLogDriver: ConsoleBatchLogDriver | null;
-  lokiLogDriver: LokiLogDriver | null;
-}
-
-interface RankiLogsStaticConfig {
-  consoleBatch: ConsoleBatchLogDriverConfigureProps;
-}
-
-export interface RankiLogRuntimeProps {
-  drivers: {
-    loki: LokiLogDriverConstructorParams;
-    consoleBatch: ConsoleBatchLogDriverConstructorParams;
-  };
-}
-
-type RankiLogsStaticConfigProps = Partial<RankiLogsStaticConfig>;
+  RankiLogsDrivers,
+  RankiLogsStaticConfigProps,
+  RankiLogRuntimeProps,
+} from "./log.types.mjs";
 
 export class RankiLogging {
   private static drivers: RankiLogsDrivers = {

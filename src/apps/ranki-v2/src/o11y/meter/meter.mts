@@ -4,11 +4,8 @@ import {
   PeriodicExportingMetricReader,
 } from "@opentelemetry/sdk-metrics";
 import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-http";
-import { resource } from "./resource.mjs";
-
-export interface RankiMetricsRuntimeProps {
-  endpoint: string;
-}
+import { resource } from "../resource.mjs";
+import type { RankiMetricsRuntimeProps } from "./meter.types.mjs";
 
 export class RankiMetrics {
   public static configure() {}
