@@ -4,19 +4,28 @@ import type {
   LogValue,
 } from "_controllers/geometry/o11y/logger/logger.types.mjs";
 import type {
+  ConsoleBatchLogDriverConfigureProps,
   ConsoleBatchLogDriverConstructorParams,
-  ConsoleBatchLoggerPrinterFunc,
+  ConsoleBatchLogDriverStaticConfig,
 } from "./console-batch.types.mjs";
+import { assertNotUndefined } from "_error/assertions.mjs";
 
 export class ConsoleBatchLogDriver implements LogDriver {
   private elapsed = Date.now() - 1000;
   private logs: LogValue[] = [];
-  private printer: ConsoleBatchLoggerPrinterFunc = (v) => console.log(v);
+  private printerName: string = "default";
+  private static config: ConsoleBatchLogDriverStaticConfig = {
+    printers: {
+      default: (v) => console.log(v),
+    },
+  };
 
   constructor(params?: ConsoleBatchLogDriverConstructorParams) {
-    if (params?.printer) {
-      this.printer = params.printer;
-    }
+    if (params?.printer) this.printerName = params.printer;
+  }
+
+  public static configure(conf: ConsoleBatchLogDriverConfigureProps) {
+    this.config.printers = { ...this.config.printers, ...conf.printers };
   }
 
   private span() {
@@ -37,8 +46,26 @@ export class ConsoleBatchLogDriver implements LogDriver {
     });
   }
 
+  private getPrinter() {
+    const printer = ConsoleBatchLogDriver.config.printers[this.printerName];
+    console.log(
+      "p",
+      printer,
+      this.printerName,
+      ConsoleBatchLogDriver.config.printers,
+    );
+    assertNotUndefined(printer, {
+      why: "undefined printer",
+      details: {
+        printerName: this.printerName,
+        printers: ConsoleBatchLogDriver.config.printers,
+      },
+    });
+    return printer;
+  }
+
   dump() {
-    this.printer(this.logs, this.elapsed);
+    this.getPrinter()(this.logs, this.elapsed);
   }
 
   new() {
@@ -48,6 +75,6 @@ export class ConsoleBatchLogDriver implements LogDriver {
   }
 
   query(cb: (entry: LogValue) => boolean) {
-    this.printer(this.logs.filter(cb), this.elapsed);
+    this.getPrinter()(this.logs.filter(cb), this.elapsed);
   }
 }

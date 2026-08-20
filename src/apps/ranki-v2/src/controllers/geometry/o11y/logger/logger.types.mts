@@ -1,16 +1,3 @@
-export interface O11yLogDynamicEntriesParams<T> {
-  owner: T;
-  getParentContextValue: (key: string) => unknown;
-}
-
-export type O11yLoggerDynamicEntriesFunc<T> = (
-  p: O11yLogDynamicEntriesParams<T>,
-) => Record<string, unknown>;
-
-export type O11yLoggerConstructorParams<T> = {
-  attributes?: O11yLoggerDynamicEntriesFunc<T>;
-};
-
 export type LogAttributes = Record<string, unknown>;
 
 export interface LogDriver {
@@ -22,7 +9,20 @@ export type LogValue = {
   epoch: ReturnType<typeof Date.now>;
 } & Record<string, unknown>;
 
+export interface O11yLogDynamicEntriesParams<T> {
+  getParentContextValue: (key: string) => unknown;
+  owner: T;
+}
+
+export type O11yLoggerConstructorParams<T> = {
+  attributes?: O11yLoggerDynamicEntriesFunc<T>;
+};
+
+export type O11yLoggerDynamicEntriesFunc<T> = (
+  p: O11yLogDynamicEntriesParams<T>,
+) => Record<string, unknown>;
+
 export interface O11yLoggerStaticConfig {
-  enabled: boolean;
   drivers?: LogDriver[];
+  enabled: boolean;
 }

@@ -5,6 +5,20 @@ export type ConsoleBatchLoggerPrinterFunc = (
   elapsed: number,
 ) => any;
 
+export type LogPrinters = "default" | "sanitizedYamlPrinter";
+
+export type ConsoleBatchLoggerPrinterFuncRecord = Record<
+  string,
+  ConsoleBatchLoggerPrinterFunc
+>;
+
 export interface ConsoleBatchLogDriverConstructorParams {
-  printer?: ConsoleBatchLoggerPrinterFunc;
+  printer?: LogPrinters;
 }
+
+export interface ConsoleBatchLogDriverStaticConfig {
+  printers: ConsoleBatchLoggerPrinterFuncRecord;
+}
+
+export type ConsoleBatchLogDriverConfigureProps =
+  Partial<ConsoleBatchLogDriverStaticConfig>;

@@ -1,4 +1,4 @@
-import { consoleBatchLogDriver, lokiLogDriver } from "_/o11y/log.mjs";
+import { RankiLogging } from "_/o11y/log.mjs";
 import { geometry } from "_controllers/geometry/geometry.mjs";
 
 const enabled = true;
@@ -7,7 +7,7 @@ geometry.configure({
   observability: {
     log: {
       enabled,
-      drivers: [consoleBatchLogDriver, lokiLogDriver],
+      drivers: RankiLogging.getDrivers(),
     },
     trace: {
       enabled,

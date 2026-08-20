@@ -6,28 +6,28 @@ import type {
 import type { O11yMeterConstructorParams } from "./meter/meter.types.mjs";
 import type { O11yTracerConstructorParams } from "./tracer/tracer.types.mjs";
 
-interface WithEnabled {
-  enabled: boolean;
-}
-
-export interface O11yStaticConfig {
-  debug?: O11yDebuggerStaticConfig;
-  log?: O11yLoggerStaticConfig;
-  trace?: WithEnabled;
-  metrics?: WithEnabled;
+export interface O11yConstructorConfig<T> {
+  logger?: O11yLoggerConstructorParams<T>;
+  meter?: O11yMeterConstructorParams<T>;
+  tracer?: O11yTracerConstructorParams<T>;
 }
 
 export interface O11yInternalStaticConfig {
   debugEnabled: boolean;
   logEnabled: boolean;
-  traceEnabled: boolean;
   metricsEnabled: boolean;
+  traceEnabled: boolean;
 }
 
-export interface O11yConstructorConfig<T> {
-  logger?: O11yLoggerConstructorParams<T>;
-  meter?: O11yMeterConstructorParams<T>;
-  tracer?: O11yTracerConstructorParams<T>;
+export interface O11yStaticConfig {
+  debug?: O11yDebuggerStaticConfig;
+  log?: O11yLoggerStaticConfig;
+  metrics?: WithEnabled;
+  trace?: WithEnabled;
+}
+
+interface WithEnabled {
+  enabled: boolean;
 }
 
 export class EmptyClass {}

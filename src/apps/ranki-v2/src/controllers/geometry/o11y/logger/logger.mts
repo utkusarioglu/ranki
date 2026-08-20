@@ -1,19 +1,20 @@
 import { context, trace } from "@opentelemetry/api";
 
+import type { EmptyClass } from "../o11y.types.mjs";
 import type {
-  O11yLoggerConstructorParams,
   LogAttributes,
   LogDriver,
-  O11yLoggerStaticConfig,
+  O11yLoggerConstructorParams,
   O11yLoggerDynamicEntriesFunc,
+  O11yLoggerStaticConfig,
 } from "./logger.types.mjs";
-import type { EmptyClass } from "../o11y.types.mjs";
+
 import { O11yTracer } from "../tracer/tracer.mjs";
 
 export class O11yLogger<T extends EmptyClass> {
-  private owner: T;
   private static drivers: LogDriver[] = [];
   private commonAttributes: O11yLoggerDynamicEntriesFunc<T> | undefined;
+  private owner: T;
 
   constructor(owner: T, params?: O11yLoggerConstructorParams<T>) {
     this.owner = owner;
@@ -22,6 +23,14 @@ export class O11yLogger<T extends EmptyClass> {
 
   static addDriver(driver: LogDriver) {
     O11yLogger.drivers.push(driver);
+  }
+
+  public static configure(conf: O11yLoggerStaticConfig) {
+    if (conf.drivers) {
+      conf.drivers.forEach((dr) => {
+        O11yLogger.addDriver(dr);
+      });
+    }
   }
 
   // static debug(f: Function, context?: ClassMethodDecoratorContext): void;
@@ -53,14 +62,6 @@ export class O11yLogger<T extends EmptyClass> {
     O11yLogger.log("INFO", log, attributes);
   }
 
-  public static configure(conf: O11yLoggerStaticConfig) {
-    if (conf.drivers) {
-      conf.drivers.forEach((dr) => {
-        O11yLogger.addDriver(dr);
-      });
-    }
-  }
-
   private static log(
     severity: string,
     log: string,
@@ -88,22 +89,22 @@ export class O11yLogger<T extends EmptyClass> {
     };
   }
 
-  private getEntries() {
-    const ctx = context.active();
-    const getParentContextValue = O11yTracer.getCtxValueFactory(ctx);
-    return this.commonAttributes
-      ? this.commonAttributes({
-          owner: this.owner,
-          getParentContextValue,
-        })
-      : {};
-  }
-
   debug(log: string, attributes?: LogAttributes) {
     O11yLogger.debug(log, { ...this.getEntries(), ...attributes });
   }
 
   info(log: string, attributes?: LogAttributes) {
     O11yLogger.info(log, { ...this.getEntries(), ...attributes });
+  }
+
+  private getEntries() {
+    const ctx = context.active();
+    const getParentContextValue = O11yTracer.getCtxValueFactory(ctx);
+    return this.commonAttributes
+      ? this.commonAttributes({
+          getParentContextValue,
+          owner: this.owner,
+        })
+      : {};
   }
 }

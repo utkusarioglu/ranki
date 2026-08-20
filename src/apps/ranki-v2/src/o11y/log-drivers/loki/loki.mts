@@ -45,6 +45,10 @@ export class LokiLogDriver implements LogDriver {
     };
   }
 
+  public disable() {
+    this.scheduler.stop();
+  }
+
   private processLog(logs: LokiLogValue[]): LokiLog {
     return { streams: [this.processLogStream(logs)] };
   }
