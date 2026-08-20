@@ -29,6 +29,7 @@ export class Scheduler<T> {
     const curr = [...this.queue];
     this.queue = [];
     try {
+      if (!curr.length) return;
       await this.operation(curr);
     } catch (e) {
       console.log("failed operation. length: ", curr.length, e);

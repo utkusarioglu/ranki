@@ -44,7 +44,7 @@ RankiO11y.enable({
         printer: "sanitizedYamlPrinter",
       },
       loki: {
-        endpoint: "/loki/api/v1/push",
+        endpoint: "http://localhost:8080/loki/loki/api/v1/push",
         scheduler: {
           enabled: true,
           interval: 5000,
@@ -53,9 +53,9 @@ RankiO11y.enable({
     },
   },
   meter: {
-    endpoint: "/api/v1/otlp/v1/metrics",
+    endpoint: "http://localhost:8080/prometheus/api/v1/otlp/v1/metrics",
   },
   trace: {
-    endpoint: "http://localhost:4318/v1/traces",
+    endpoint: "http://localhost:8080/tempo/v1/traces",
   },
 });

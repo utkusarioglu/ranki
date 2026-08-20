@@ -32,14 +32,14 @@ export default defineConfig(() => ({
       usePolling: true,
     },
     proxy: {
-      "/loki": {
-        target: "http://loki:3100",
-        changeOrigin: true,
-      },
-      "/api/v1/otlp": {
-        target: "http://prometheus:9090",
-        changeOrigin: true,
-      },
+      // "/loki": {
+      //   target: "http://loki:3100",
+      //   changeOrigin: true,
+      // },
+      // "/api/v1/otlp": {
+      //   target: "http://prometheus:9090",
+      //   changeOrigin: true,
+      // },
     },
   },
   preview: {

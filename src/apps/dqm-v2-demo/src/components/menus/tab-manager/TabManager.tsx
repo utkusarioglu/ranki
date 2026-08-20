@@ -168,7 +168,6 @@ const Activator: FC<PropsWithChildren<ActivatorProps>> = ({
   const navigate = useNavigate();
   useEffect(() => {
     if (route) {
-      console.log("r", route);
       navigate({ to: route });
     }
   }, []);
