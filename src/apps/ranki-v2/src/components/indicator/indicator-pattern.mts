@@ -17,9 +17,9 @@ export class R2IndicatorPattern extends LitElement {
   `;
 
   @property()
-  private pattern!: string;
+  private accessor pattern!: string;
   @property({ hasChanged: () => false })
-  private animation!: RankiPropAnimationBlock;
+  private accessor animation!: RankiPropAnimationBlock;
 
   protected override firstUpdated(): void {
     this.animate(

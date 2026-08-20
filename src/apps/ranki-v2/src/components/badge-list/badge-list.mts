@@ -24,10 +24,10 @@ export class R2BadgeList extends R2C {
   static override styles = unsafeCSS(style);
 
   @queryAll("r2-chip")
-  private chips!: NodeListOf<R2C>;
+  private accessor chips!: NodeListOf<R2C>;
 
   @query("r2-hud-bg")
-  private bg!: R2HudBg;
+  private accessor bg!: R2HudBg;
 
   @store((s) => s.state?.hud.subtree.tags.list || [])
   private readonly store!: StoreController<HudTagListItem[]>;

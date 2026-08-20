@@ -5,8 +5,8 @@
     "rootDir": "src",
     "skipLibCheck": true,
     "declarationDir": "types",
-    "useDefineForClassFields": false,
-    "experimentalDecorators": true,
+    "useDefineForClassFields": true,
+    "experimentalDecorators": false,
     "paths": {
       "_components/*": ["./src/components/*"],
       "_config/*": ["./src/config/*"],

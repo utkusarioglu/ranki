@@ -16,10 +16,10 @@ export class R2CueList extends R2C {
   static override styles = unsafeCSS(style);
 
   @query("r2-badge-list")
-  private badgeList!: R2C;
+  private accessor badgeList!: R2C;
 
   @query("r2-hud-bg")
-  private bg!: R2HudBg;
+  private accessor bg!: R2HudBg;
 
   @geometry<R2CueList>({
     role: "cue-list",

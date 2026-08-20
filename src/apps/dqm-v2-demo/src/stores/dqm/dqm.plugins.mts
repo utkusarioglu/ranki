@@ -82,7 +82,6 @@ export const pluginsAsObject = await Promise.all(
     };
   }),
 );
-console.log("p", pluginsAsObject);
 
 export const pluginsAsArray = Object.values(pluginsAsObject).map(
   (v) => v.plugin,

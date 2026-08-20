@@ -24,8 +24,29 @@ export class O11yLogger<T extends EmptyClass> {
     O11yLogger.drivers.push(driver);
   }
 
-  static debug(log: string, attributes?: LogAttributes) {
-    O11yLogger.log("DEBUG", log, attributes);
+  // static debug(f: Function, context?: ClassMethodDecoratorContext): void;
+  // static debug(log: string, attributes?: LogAttributes): void;
+  static debug(
+    // first: string | Function,
+    // second?: LogAttributes | ClassMethodDecoratorContext,
+    first: string,
+    second?: LogAttributes,
+  ) {
+    // if (typeof second === "object" && second?.kind === "method") {
+    //   // decorator invocation
+    //   const method = first as Function;
+    //   const context = second;
+
+    //   return function (this: { o11y: O11y<any> }, ...args: unknown[]) {
+    //     this.o11y.log.debug(`method ${String(context.name)} called`, {
+    //       arguments: args,
+    //     });
+
+    //     return method.apply(this, args);
+    //   };
+    // }
+
+    O11yLogger.log("DEBUG", first as string, second as LogAttributes);
   }
 
   static info(log: string, attributes?: LogAttributes) {

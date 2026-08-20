@@ -16,7 +16,7 @@ const pluginSelectionInit: PluginStoreWrapper[] = devPluginSelection.map(
     name: name,
     enabled: true,
     packageIndex,
-    plugins: plugin.map((plugin, pluginIndex) => ({
+    plugins: plugin.map((plugin: any, pluginIndex: number) => ({
       packageIndex,
       pluginIndex,
 

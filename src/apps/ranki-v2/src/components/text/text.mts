@@ -31,10 +31,10 @@ export class R2Text extends R2C {
   static override styles = unsafeCSS(style);
 
   @property()
-  private props!: R2TextProps;
+  private accessor props!: R2TextProps;
 
   @queryAll("r2-text-span")
-  private spans!: NodeListOf<R2TextSpan>;
+  private accessor spans!: NodeListOf<R2TextSpan>;
 
   @geometry<R2Text>({
     role: "text",

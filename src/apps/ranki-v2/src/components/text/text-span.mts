@@ -16,10 +16,10 @@ export class R2TextSpan extends R2C {
   static override styles = unsafeCSS(style);
 
   @property()
-  public props!: R2TextProps;
+  public accessor props!: R2TextProps;
 
   @query("span")
-  private span!: HTMLSpanElement;
+  private accessor span!: HTMLSpanElement;
 
   @geometry<R2TextSpan>({
     role: "text-span",

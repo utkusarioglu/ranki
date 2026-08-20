@@ -22,10 +22,10 @@ export class R2HudScroller extends R2C {
   `;
 
   @queryAll("r2-cue-list")
-  private cueList!: NodeListOf<R2C>;
+  private accessor cueList!: NodeListOf<R2C>;
 
   @query("r2-hud-bg")
-  private bg!: R2HudBg;
+  private accessor bg!: R2HudBg;
 
   @geometry<R2HudScroller>({
     role: "hud-scroller",

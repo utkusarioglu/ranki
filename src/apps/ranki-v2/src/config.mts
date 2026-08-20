@@ -1,20 +1,22 @@
 import { consoleBatchLogDriver, lokiLogDriver } from "_/o11y/log.mjs";
 import { geometry } from "_controllers/geometry/geometry.mjs";
 
+const enabled = true;
+
 geometry.configure({
   observability: {
     log: {
-      enabled: true,
+      enabled,
       drivers: [consoleBatchLogDriver, lokiLogDriver],
     },
     trace: {
-      enabled: true,
+      enabled,
     },
     metrics: {
-      enabled: true,
+      enabled,
     },
     debug: {
-      enabled: true,
+      enabled,
       // sequencer: {
       //   stutter: 1000,
       // },

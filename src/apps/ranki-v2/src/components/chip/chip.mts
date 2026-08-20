@@ -17,19 +17,19 @@ export class R2Chip extends R2C {
   static override styles = unsafeCSS(style);
 
   @query("r2-icon")
-  private icon!: R2C;
+  private accessor icon!: R2C;
 
   @query("r2-text")
-  private text!: R2C;
+  private accessor text!: R2C;
 
   @query("r2-hud-bg")
-  private bg!: R2HudBg;
+  private accessor bg!: R2HudBg;
 
   @property()
-  private index!: number;
+  private accessor index!: number;
 
   @property()
-  private list!: HudTagListItem[];
+  private accessor list!: HudTagListItem[];
 
   @geometry<R2Chip>({
     role: "chip",

@@ -33,10 +33,10 @@ export class R2Icon extends R2C {
   static override styles = unsafeCSS(style);
 
   @property()
-  private props!: R2IconProps;
+  private accessor props!: R2IconProps;
 
   @queryAll("r2-icon-span")
-  private spans!: NodeListOf<R2IconSpan>;
+  private accessor spans!: NodeListOf<R2IconSpan>;
 
   @geometry<R2Icon>({
     role: "icon",

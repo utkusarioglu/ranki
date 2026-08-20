@@ -14,7 +14,7 @@ export class R2Hud extends R2C {
   static override styles = unsafeCSS(styles);
 
   @query("r2-hud-scroller")
-  private scroller!: R2C;
+  private accessor scroller!: R2C;
 
   @geometry<R2Hud>({
     role: "hud",

@@ -18,10 +18,10 @@ export class R2IconSpan extends R2C {
   static override styles = unsafeCSS(style);
 
   @property()
-  private props!: R2IconProps;
+  private accessor props!: R2IconProps;
 
   @state()
-  private svg: string = SVG_PLACEHOLDER;
+  private accessor svg: string = SVG_PLACEHOLDER;
 
   @geometry<R2IconSpan>({
     role: "icon-span",

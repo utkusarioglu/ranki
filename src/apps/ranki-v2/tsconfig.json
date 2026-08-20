@@ -2,8 +2,8 @@
   "extends": "@ranki/config-typescript/tsconfig.app.json",
   "compilerOptions": {
     "target": "ES2022",
-    "useDefineForClassFields": false,
-    "experimentalDecorators": true,
+    "useDefineForClassFields": true,
+    "experimentalDecorators": false,
     "module": "ESNext",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["vite/client"],
