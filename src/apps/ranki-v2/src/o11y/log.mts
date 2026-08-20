@@ -1,7 +1,11 @@
 import { ConsoleBatchLogDriver } from "./log-drivers/console-batch/console-batch.mjs";
 import { LokiLogDriver } from "./log-drivers/loki/loki.mjs";
 import { assertNotNull } from "_error/assertions.mjs";
-import type { ConsoleBatchLogDriverConfigureProps } from "./log-drivers/console-batch/console-batch.types.mjs";
+import type {
+  ConsoleBatchLogDriverConfigureProps,
+  ConsoleBatchLogDriverConstructorParams,
+} from "./log-drivers/console-batch/console-batch.types.mjs";
+import type { LokiLogDriverConstructorParams } from "./log-drivers/loki/loki.types.mjs";
 
 interface RankiLogsDrivers {
   consoleBatchLogDriver: ConsoleBatchLogDriver | null;
@@ -9,8 +13,14 @@ interface RankiLogsDrivers {
 }
 
 interface RankiLogsStaticConfig {
-  // loki: LokiLogDriverConstructorParams;
   consoleBatch: ConsoleBatchLogDriverConfigureProps;
+}
+
+export interface RankiLogRuntimeProps {
+  drivers: {
+    loki: LokiLogDriverConstructorParams;
+    consoleBatch: ConsoleBatchLogDriverConstructorParams;
+  };
 }
 
 type RankiLogsStaticConfigProps = Partial<RankiLogsStaticConfig>;
@@ -27,25 +37,14 @@ export class RankiLogging {
     }
   }
 
-  public static initialize() {
+  public static enable(props: RankiLogRuntimeProps) {
     this.drivers = {
-      consoleBatchLogDriver: new ConsoleBatchLogDriver({
-        printer: "sanitizedYamlPrinter",
-      }),
-      lokiLogDriver: new LokiLogDriver({
-        loki: {
-          endpoint: "/loki/api/v1/push",
-        },
-        scheduler: {
-          enabled: true,
-          interval: 5000,
-        },
-      }),
+      consoleBatchLogDriver: new ConsoleBatchLogDriver(
+        props.drivers.consoleBatch,
+      ),
+      lokiLogDriver: new LokiLogDriver(props.drivers.loki),
     };
   }
-
-  // if the need emerges...
-  // public static disable() {}
 
   public static getDrivers() {
     Object.entries(this.drivers).forEach(([name, driver]) => {

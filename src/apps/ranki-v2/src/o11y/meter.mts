@@ -6,22 +6,16 @@ import {
 import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-http";
 import { resource } from "./resource.mjs";
 
-interface RankiMetricsStaticConfig {
-  url: string;
+export interface RankiMetricsRuntimeProps {
+  endpoint: string;
 }
 
 export class RankiMetrics {
-  private static config: RankiMetricsStaticConfig = {
-    url: "/api/v1/otlp/v1/metrics",
-  };
+  public static configure() {}
 
-  public static configure(config: RankiMetricsStaticConfig) {
-    this.config = config;
-  }
-
-  public static initialize() {
+  public static enable(props: RankiMetricsRuntimeProps) {
     const exporter = new OTLPMetricExporter({
-      url: this.config.url,
+      url: props.endpoint,
     });
 
     const provider = new MeterProvider({

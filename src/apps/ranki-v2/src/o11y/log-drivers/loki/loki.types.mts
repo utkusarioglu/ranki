@@ -12,9 +12,7 @@ export interface LokiLog {
 }
 
 export interface LokiLogDriverConstructorParams {
-  loki?: {
-    endpoint?: string;
-  };
+  endpoint?: string;
   scheduler?: {
     interval?: number;
     enabled?: boolean;

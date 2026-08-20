@@ -6,19 +6,15 @@ import { registerInstrumentations } from "@opentelemetry/instrumentation";
 import { resource } from "./resource.mjs";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 
-interface RankiTracingStaticConfig {
-  url: string;
+export interface RankiTracingRuntimeProps {
+  endpoint: string;
 }
 
 export class RankiTracing {
-  private static config: RankiTracingStaticConfig;
+  public static configure() {}
 
-  public static configure(config: RankiTracingStaticConfig) {
-    this.config = config;
-  }
-
-  public static initialize() {
-    const exporter = new OTLPTraceExporter({ url: this.config.url });
+  public static enable(props: RankiTracingRuntimeProps) {
+    const exporter = new OTLPTraceExporter({ url: props.endpoint });
 
     const provider = new WebTracerProvider({
       resource,

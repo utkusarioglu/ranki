@@ -11,12 +11,12 @@ import {
   INPUT_TYPE_CLASS_SELECTOR,
   RENDERED_CLASS_SELECTOR,
 } from "../selector.constants.mjs";
-import { RankiLogging } from "_/o11y/log.mjs";
+import { RankiO11y } from "_/o11y/o11y.mjs";
 
 export class RankiDevMethods {
   static isPersisted = false;
 
-  static readonly logs = RankiLogging.getConsoleDriver();
+  static readonly logs = RankiO11y.log.getConsoleDriver();
 
   static foreign(isForeign: boolean = true) {
     const qa = document.querySelector("#qa") as HTMLDivElement;

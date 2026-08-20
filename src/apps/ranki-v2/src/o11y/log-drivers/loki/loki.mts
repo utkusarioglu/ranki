@@ -13,7 +13,7 @@ export class LokiLogDriver implements LogDriver {
   private readonly scheduler: Scheduler<LokiLogValue>;
 
   constructor(params: LokiLogDriverConstructorParams) {
-    if (params?.loki?.endpoint) this.endpoint = params.loki.endpoint;
+    if (params?.endpoint) this.endpoint = params.endpoint;
     this.scheduler = new Scheduler(
       (v) => this.sender(v),
       params.scheduler?.interval,
