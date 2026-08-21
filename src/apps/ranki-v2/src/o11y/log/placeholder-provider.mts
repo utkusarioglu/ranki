@@ -1,8 +1,8 @@
 import {
-  type AnyValueMap,
   type Logger,
   type LoggerOptions,
   type LoggerProvider,
+  type LogRecord,
 } from "@opentelemetry/api-logs";
 import { trace, type Attributes } from "@opentelemetry/api";
 import type { LogDriver } from "./ranki-logging.types.mjs";
@@ -12,7 +12,7 @@ interface MyLoggerProviderConstructorProps {
   drivers: LogDriver[];
 }
 
-export type LogToDriversFunc = (p: AnyValueMap) => void;
+export type LogToDriversFunc = (p: LogRecord) => void;
 
 export class PlaceholderOtelLoggerProvider implements LoggerProvider {
   private drivers: LogDriver[] = [];
@@ -30,14 +30,11 @@ export class PlaceholderOtelLoggerProvider implements LoggerProvider {
     };
   }
 
-  private logToDrivers(v: AnyValueMap) {
+  private logToDrivers(log: LogRecord) {
     this.drivers.forEach((driver) => {
       driver.log({
-        ...v,
+        ...log,
         ...PlaceholderOtelLoggerProvider.prepareTrace(),
-        // details: attributes,
-        elapsed: performance.now(),
-        epoch: Date.now(),
       });
     });
   }

@@ -9,3 +9,9 @@ export interface O11yDebuggerStaticConfig {
     stutter?: number;
   };
 }
+
+export type O11yDebugLogAttributes = Record<string, unknown>;
+
+export interface DebugLogDriver {
+  log(value: O11yDebugLogAttributes): void;
+}

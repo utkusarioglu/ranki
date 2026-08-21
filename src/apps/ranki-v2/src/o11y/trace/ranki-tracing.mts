@@ -10,8 +10,6 @@ import type { RankiTracingRuntimeProps } from "./ranki-tracing.types.mjs";
 import { resource } from "../resource.mjs";
 
 export class RankiTracing {
-  public static configure() {}
-
   public static enable(props: RankiTracingRuntimeProps) {
     const exporter = new OTLPTraceExporter({ url: props.endpoint });
 

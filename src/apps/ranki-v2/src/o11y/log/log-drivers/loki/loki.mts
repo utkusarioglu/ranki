@@ -3,7 +3,6 @@ import type { LogDriver, LogValue } from "../../ranki-logging.types.mjs";
 import type { LokiLog, LokiLogStream, LokiLogValue } from "./loki.types.mjs";
 import type { LokiLogDriverConstructorParams } from "./loki.types.mjs";
 
-import { sanitize } from "../utils/sanitize.utils.mjs";
 import { Scheduler } from "../utils/scheduler.utils.mjs";
 import { DEFAULT_LOKI_ENDPOINT } from "./loki.constants.mjs";
 
@@ -42,7 +41,7 @@ export class LokiLogDriver implements LogDriver {
   }
 
   private processLogValue(log: LogValue): LokiLogValue {
-    return [String(log.epoch * 1e6), JSON.stringify(sanitize(log))];
+    return [String(log.timestamp), JSON.stringify(log)];
   }
 
   private async sender(v: LokiLogValue[]) {

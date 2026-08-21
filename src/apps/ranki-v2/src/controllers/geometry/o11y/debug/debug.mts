@@ -1,4 +1,13 @@
-import type { DebugPause, O11yDebuggerStaticConfig } from "./debug.types.mjs";
+import type {
+  DebugLogDriver,
+  DebugPause,
+  O11yDebuggerStaticConfig,
+  O11yDebugLogAttributes,
+} from "./debug.types.mjs";
+
+declare global {
+  var o11yDebugger: DebugLogDriver;
+}
 
 export class O11yDebugger {
   public static DEBUG_DELAY = 0;
@@ -9,8 +18,10 @@ export class O11yDebugger {
     }
   }
 
-  public static log(log: string, attributes: Record<string, unknown>) {
-    console.log(log, attributes);
+  public static log(log: string, attributes: O11yDebugLogAttributes) {
+    const d = globalThis.o11yDebugger;
+    if (!d) return;
+    d.log({ log, attributes });
   }
 
   public static async pause(props?: DebugPause) {

@@ -11,6 +11,7 @@ import { logs, type Logger } from "@opentelemetry/api-logs";
 import { O11yTracer } from "../tracer/tracer.mjs";
 
 export class O11yLogger<T extends EmptyClass> {
+  private static readonly staticLogger = logs.getLogger("STATIC");
   private commonAttributes: O11yLoggerDynamicEntriesFunc<T> | undefined;
   private owner: T;
   private otel: Logger;
@@ -22,13 +23,21 @@ export class O11yLogger<T extends EmptyClass> {
   }
 
   static debug(log: string, attributes?: O11yLogAttributes) {
-    console.log("no static logger", log, attributes);
-    // O11yLogger.log("DEBUG", log, attributes);
+    O11yLogger.staticLogger.emit({
+      severityText: "DEBUG",
+      severityNumber: 0,
+      body: log,
+      attributes,
+    });
   }
 
   static info(log: string, attributes?: O11yLogAttributes) {
-    console.log("no static logger", log, attributes);
-    // O11yLogger.log("INFO", log, attributes);
+    O11yLogger.staticLogger.emit({
+      severityText: "INFO",
+      severityNumber: 1,
+      body: log,
+      attributes,
+    });
   }
 
   debug(log: string, attributes?: O11yLogAttributes) {

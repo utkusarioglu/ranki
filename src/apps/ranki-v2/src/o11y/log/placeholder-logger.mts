@@ -1,5 +1,5 @@
 import type { Attributes } from "@opentelemetry/api";
-import type { LoggerOptions, AnyValueMap } from "@opentelemetry/api-logs";
+import type { LoggerOptions, LogRecord } from "@opentelemetry/api-logs";
 import type { LogToDriversFunc } from "./placeholder-provider.mjs";
 
 interface PlaceholderOtelLoggerConstructorParams {
@@ -14,7 +14,6 @@ interface PlaceholderOtelLoggerConstructorParams {
 export class PlaceholderOtelLogger {
   private logToDrivers: LogToDriversFunc;
   private name: string;
-  // @ts-expect-error
   private attributes: Attributes;
   // @ts-expect-error
   private options: LoggerOptions;
@@ -26,10 +25,15 @@ export class PlaceholderOtelLogger {
     this.logToDrivers = p.callbacks.logToDrivers;
   }
 
-  public emit(v: AnyValueMap) {
+  public emit(log: LogRecord) {
     this.logToDrivers({
-      logger: this.name,
-      ...v,
+      timestamp: Date.now() * 1e6,
+      ...log,
+      attributes: {
+        logger: this.name,
+        ...this.attributes,
+        ...log.attributes,
+      },
     });
   }
 

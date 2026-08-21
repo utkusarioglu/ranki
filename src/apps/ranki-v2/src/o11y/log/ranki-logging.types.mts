@@ -5,6 +5,7 @@ import type {
 } from "./log-drivers/console-batch/console-batch.types.mjs";
 import type { LokiLogDriver } from "./log-drivers/loki/loki.mjs";
 import type { LokiLogDriverConstructorParams } from "./log-drivers/loki/loki.types.mjs";
+import type { LogRecord } from "@opentelemetry/api-logs";
 
 export interface RankiLogRuntimeProps {
   drivers: {
@@ -26,7 +27,4 @@ export interface LogDriver {
   log(value: LogValue): void;
 }
 
-export type LogValue = {
-  elapsed: ReturnType<typeof performance.now>;
-  epoch: ReturnType<typeof Date.now>;
-} & Record<string, unknown>;
+export type LogValue = LogRecord;

@@ -10,8 +10,6 @@ import type { RankiMeteringRuntimeProps } from "./ranki-metering.types.mjs";
 import { resource } from "../resource.mjs";
 
 export class RankiMetering {
-  public static configure() {}
-
   public static enable(props: RankiMeteringRuntimeProps) {
     const exporter = new OTLPMetricExporter({
       url: props.endpoint,

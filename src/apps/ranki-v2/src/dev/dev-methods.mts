@@ -16,7 +16,7 @@ import { RankiO11y } from "_/o11y/o11y.mjs";
 export class RankiDevMethods {
   static isPersisted = false;
 
-  static readonly logs = RankiO11y.log.getConsoleDriver();
+  static readonly o11y = RankiO11y.getConsoleAccess();
 
   static foreign(isForeign: boolean = true) {
     const qa = document.querySelector("#qa") as HTMLDivElement;

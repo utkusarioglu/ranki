@@ -1,7 +1,4 @@
-import type {
-  RankiLogRuntimeProps,
-  RankiLogsStaticConfigProps,
-} from "./ranki-logging.types.mjs";
+import type { RankiLogRuntimeProps } from "./ranki-logging.types.mjs";
 import { logs } from "@opentelemetry/api-logs";
 import { PlaceholderOtelLoggerProvider } from "./placeholder-provider.mjs";
 import { ConsoleBatchLogDriver } from "./log-drivers/console-batch/console-batch.mjs";
@@ -9,12 +6,6 @@ import { LokiLogDriver } from "./log-drivers/loki/loki.mjs";
 
 export class RankiLogging {
   private static console: ConsoleBatchLogDriver;
-
-  public static configure(config: RankiLogsStaticConfigProps) {
-    if (config.consoleBatch) {
-      ConsoleBatchLogDriver.configure(config.consoleBatch);
-    }
-  }
 
   public static enable(props: RankiLogRuntimeProps) {
     this.console = new ConsoleBatchLogDriver(props.drivers.consoleBatch);
@@ -26,7 +17,7 @@ export class RankiLogging {
     );
   }
 
-  public static getConsoleDriver() {
+  public static getConsoleAccess() {
     if (!this.console) {
       return new Proxy(
         {},

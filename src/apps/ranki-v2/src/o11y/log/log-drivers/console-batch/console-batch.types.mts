@@ -5,11 +5,16 @@ export type ConsoleBatchLogDriverConfigureProps =
 
 export interface ConsoleBatchLogDriverConstructorParams {
   printer?: LogPrinters;
+  sanitizer?: LogSanitizers;
 }
 
 export interface ConsoleBatchLogDriverStaticConfig {
   printers: ConsoleBatchLoggerPrinterFuncRecord;
+  sanitizers: ConsoleBatchLoggerSanitizerFuncRecord;
 }
+
+type ConsoleBatchLoggerSanitizerFuncRecord = Record<string, SanitizerFunc>;
+type SanitizerFunc = (v: unknown[], seen?: WeakSet<object>) => LogValue[];
 
 export type ConsoleBatchLoggerPrinterFunc = (
   values: LogValue[],
@@ -22,4 +27,5 @@ export type ConsoleBatchLoggerPrinterFuncRecord = Record<
   ConsoleBatchLoggerPrinterFunc
 >;
 
-export type LogPrinters = "default" | "sanitizedYamlPrinter";
+export type LogPrinters = "default" | "yamlRow" | "consoleLogRow";
+export type LogSanitizers = "none" | "sortedStringified";

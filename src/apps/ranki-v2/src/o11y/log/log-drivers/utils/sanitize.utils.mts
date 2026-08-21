@@ -1,4 +1,7 @@
-export function sanitize<T>(value: unknown, seen = new WeakSet<object>()): T {
+export function sortedStringified<T>(
+  value: unknown,
+  seen = new WeakSet<object>(),
+): T {
   if (value === null || typeof value !== "object") {
     if (typeof value === "bigint") return `${value}n` as T;
     if (typeof value === "undefined") return "[undefined]" as T;
@@ -16,7 +19,7 @@ export function sanitize<T>(value: unknown, seen = new WeakSet<object>()): T {
   seen.add(value);
 
   if (Array.isArray(value)) {
-    return value.map((item) => sanitize(item, seen)) as T;
+    return value.map((item) => sortedStringified(item, seen)) as T;
   }
 
   if (value instanceof Error) {
@@ -36,7 +39,7 @@ export function sanitize<T>(value: unknown, seen = new WeakSet<object>()): T {
   const result: Record<string, unknown> = {};
 
   for (const [key, child] of Object.entries(value)) {
-    result[key] = sanitize(child, seen);
+    result[key] = sortedStringified(child, seen);
   }
 
   const sorted = Object.fromEntries(
