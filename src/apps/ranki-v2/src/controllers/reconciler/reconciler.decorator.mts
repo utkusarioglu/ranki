@@ -10,9 +10,10 @@ export function reconciler<Instance extends LitElement, S>(
 ) {
   return (_value: undefined, context: ClassFieldDecoratorContext<Instance>) => {
     return function (this: Instance) {
-      O11y.log.debug("Created reconciler decorator", {
-        varName: context.name,
+      O11y.debug.log("Created reconciler decorator", {
+        self: this,
         params,
+        context,
       });
       return new ReconciliationController<Instance, S>(this, params);
     };

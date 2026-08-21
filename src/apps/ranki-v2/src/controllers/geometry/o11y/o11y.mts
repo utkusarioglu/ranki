@@ -15,7 +15,6 @@ import { O11yTracer } from "./tracer/tracer.mjs";
 
 export class O11y<T extends EmptyClass> {
   public static readonly debug = O11yDebugger;
-  public static readonly log = O11yLogger;
   private static STATIC_CONFIG: O11yInternalStaticConfig = {
     debugEnabled: false,
     logEnabled: false,
@@ -25,6 +24,7 @@ export class O11y<T extends EmptyClass> {
   public readonly log: O11yLogger<T>;
   public readonly meter: O11yMeter<T>;
   public readonly trace: O11yTracer<T>;
+  public readonly debug = O11yDebugger;
 
   constructor(owner: T, extra?: O11yConstructorConfig<T>) {
     this.trace = O11y.STATIC_CONFIG.traceEnabled
@@ -48,7 +48,7 @@ export class O11y<T extends EmptyClass> {
         conf.metrics?.enabled || O11y.STATIC_CONFIG.metricsEnabled,
       traceEnabled: conf.trace?.enabled || O11y.STATIC_CONFIG.traceEnabled,
     };
-    if (conf.log) O11yLogger.configure(conf.log);
+    // if (conf.log) O11yLogger.configure(conf.log);
     if (conf.debug) O11yDebugger.configure(conf.debug);
   }
 }

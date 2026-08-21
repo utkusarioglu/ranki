@@ -1,7 +1,4 @@
-import type {
-  LogDriver,
-  LogValue,
-} from "_controllers/geometry/o11y/logger/logger.types.mjs";
+import type { LogDriver, LogValue } from "../../ranki-logging.types.mjs";
 
 import { assertNotUndefined } from "_error/assertions.mjs";
 import { trace } from "@opentelemetry/api";

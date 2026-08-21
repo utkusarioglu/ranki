@@ -4222,6 +4222,7 @@ const RAW_RUNTIME_STATE =
           ["@dqm/package-dqm-v2", "workspace:src/packages/dqm-v2"],\
           ["@eslint/js", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:10.0.1"],\
           ["@opentelemetry/api", "npm:1.9.1"],\
+          ["@opentelemetry/api-logs", "npm:0.221.0"],\
           ["@opentelemetry/context-zone", "npm:2.10.0"],\
           ["@opentelemetry/exporter-metrics-otlp-http", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:0.221.0"],\
           ["@opentelemetry/exporter-trace-otlp-http", "virtual:4d6a45bd2a6c3d07c44ad6481cedeffb3fbd7fbde29546534a07f3e8c6d944185d2e049318b58501fdb64212b058d503da3122364735113a018c0c52de8ca727#npm:0.221.0"],\

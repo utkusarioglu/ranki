@@ -10,9 +10,10 @@ export function geometry<Instance extends LitElement>(
 ) {
   return (_value: undefined, context: ClassFieldDecoratorContext<Instance>) => {
     return function (this: Instance) {
-      O11y.log.debug("Created geometry decorator", {
+      O11y.debug.log("Created geometry decorator", {
         params,
-        varName: context.name,
+        self: this,
+        context,
       });
 
       return new GeometryController<Instance>(this, params);

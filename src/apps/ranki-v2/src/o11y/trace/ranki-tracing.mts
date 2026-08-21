@@ -5,7 +5,7 @@ import { DocumentLoadInstrumentation } from "@opentelemetry/instrumentation-docu
 import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-web";
 import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
 
-import type { RankiTracingRuntimeProps } from "./trace.types.mjs";
+import type { RankiTracingRuntimeProps } from "./ranki-tracing.types.mjs";
 
 import { resource } from "../resource.mjs";
 

@@ -5,14 +5,14 @@ import {
   PeriodicExportingMetricReader,
 } from "@opentelemetry/sdk-metrics";
 
-import type { RankiMetricsRuntimeProps } from "./meter.types.mjs";
+import type { RankiMeteringRuntimeProps } from "./ranki-metering.types.mjs";
 
 import { resource } from "../resource.mjs";
 
-export class RankiMetrics {
+export class RankiMetering {
   public static configure() {}
 
-  public static enable(props: RankiMetricsRuntimeProps) {
+  public static enable(props: RankiMeteringRuntimeProps) {
     const exporter = new OTLPMetricExporter({
       url: props.endpoint,
     });

@@ -1979,7 +1979,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/api-logs@npm:0.221.0":
+"@opentelemetry/api-logs@npm:0.221.0, @opentelemetry/api-logs@npm:^0.221.0":
   version: 0.221.0
   resolution: "@opentelemetry/api-logs@npm:0.221.0"
   dependencies:
@@ -2729,6 +2729,7 @@ __metadata:
     "@dqm/package-dqm-v2": "workspace:^"
     "@eslint/js": "npm:^10.0.1"
     "@opentelemetry/api": "npm:^1.9.1"
+    "@opentelemetry/api-logs": "npm:^0.221.0"
     "@opentelemetry/context-zone": "npm:^2.10.0"
     "@opentelemetry/exporter-metrics-otlp-http": "npm:^0.221.0"
     "@opentelemetry/exporter-trace-otlp-http": "npm:^0.221.0"

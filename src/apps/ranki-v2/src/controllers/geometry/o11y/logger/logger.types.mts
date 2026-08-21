@@ -1,13 +1,5 @@
-export type LogAttributes = Record<string, unknown>;
-
-export interface LogDriver {
-  log(value: LogValue): void;
-}
-
-export type LogValue = {
-  elapsed: ReturnType<typeof performance.now>;
-  epoch: ReturnType<typeof Date.now>;
-} & Record<string, unknown>;
+import type { AnyValueMap } from "@opentelemetry/api-logs";
+import type { LogDriver } from "_/o11y/log/ranki-logging.types.mjs";
 
 export interface O11yLogDynamicEntriesParams<T> {
   getParentContextValue: (key: string) => unknown;
@@ -20,9 +12,11 @@ export type O11yLoggerConstructorParams<T> = {
 
 export type O11yLoggerDynamicEntriesFunc<T> = (
   p: O11yLogDynamicEntriesParams<T>,
-) => Record<string, unknown>;
+) => O11yLogAttributes;
 
 export interface O11yLoggerStaticConfig {
   drivers?: LogDriver[];
   enabled: boolean;
 }
+
+export type O11yLogAttributes = AnyValueMap;

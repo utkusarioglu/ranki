@@ -24,11 +24,11 @@ export class WatcherSet<Instance extends LitElement> {
     this.host = host;
     this.selector = props.selector;
     this.o11y = new O11y(this, {
-      logger: {
-        attributes: () => ({
-          host: this.host,
-        }),
-      },
+      // logger: {
+      //   attributes: () => ({
+      //     host: this.host,
+      //   }),
+      // },
     });
   }
 
@@ -46,7 +46,7 @@ export class WatcherSet<Instance extends LitElement> {
           props,
           sizing,
         );
-        this.o11y.log.debug("WatcherSet.informSet", { e, informed, props });
+        O11y.debug.log("WatcherSet.informSet", { e, informed, props });
         return e.informStyle(informed);
       }),
     );

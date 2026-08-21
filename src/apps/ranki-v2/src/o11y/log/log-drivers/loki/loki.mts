@@ -1,7 +1,4 @@
-import type {
-  LogDriver,
-  LogValue,
-} from "_controllers/geometry/o11y/logger/logger.types.mjs";
+import type { LogDriver, LogValue } from "../../ranki-logging.types.mjs";
 
 import type { LokiLog, LokiLogStream, LokiLogValue } from "./loki.types.mjs";
 import type { LokiLogDriverConstructorParams } from "./loki.types.mjs";
@@ -14,13 +11,13 @@ export class LokiLogDriver implements LogDriver {
   private endpoint: string = DEFAULT_LOKI_ENDPOINT;
   private readonly scheduler: Scheduler<LokiLogValue>;
 
-  constructor(params: LokiLogDriverConstructorParams) {
+  constructor(params?: LokiLogDriverConstructorParams) {
     if (params?.endpoint) this.endpoint = params.endpoint;
     this.scheduler = new Scheduler(
       (v) => this.sender(v),
-      params.scheduler?.interval,
+      params?.scheduler?.interval,
     );
-    if (params.scheduler?.enabled) this.scheduler.start();
+    if (params?.scheduler?.enabled) this.scheduler.start();
   }
 
   public disable() {

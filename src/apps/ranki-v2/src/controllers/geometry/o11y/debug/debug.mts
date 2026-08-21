@@ -1,7 +1,5 @@
 import type { DebugPause, O11yDebuggerStaticConfig } from "./debug.types.mjs";
 
-import { O11yLogger } from "../logger/logger.mjs";
-
 export class O11yDebugger {
   public static DEBUG_DELAY = 0;
 
@@ -11,12 +9,16 @@ export class O11yDebugger {
     }
   }
 
+  public static log(log: string, attributes: Record<string, unknown>) {
+    console.log(log, attributes);
+  }
+
   public static async pause(props?: DebugPause) {
     const duration = props?.duration || this.DEBUG_DELAY;
     if (duration === 0) return Promise.resolve();
 
     const details = props?.props || {};
-    O11yLogger.debug("Debug.pause", details);
+    this.log("Debug.pause", details);
     await new Promise<void>((r) =>
       setTimeout(() => {
         r();

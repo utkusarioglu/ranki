@@ -44,11 +44,11 @@ export class Animator<Instance extends LitElement> {
       this.callbacks.getCollection,
     );
     this.o11y = new O11y(this, {
-      logger: {
-        attributes: () => ({
-          host: this.host,
-        }),
-      },
+      // logger: {
+      // attributes: () => ({
+      //   hostTag: this.host.tagName,
+      // }),
+      // },
       meter: {
         histograms: {
           "play.duration": {
@@ -67,7 +67,7 @@ export class Animator<Instance extends LitElement> {
     curr: CurrentAppliedStyle,
     prev: CurrentAppliedStyle | null,
   ): Promise<void> {
-    this.o11y.log.debug("Animator.update", { curr, host: this.host, prev });
+    this.o11y.debug.log("Animator.update", { curr, host: this.host, prev });
     return this.o11y.trace.span("update", async ({ span, withCtx }) => {
       await Promise.all(
         curr.actions.map((action) => {
@@ -83,7 +83,7 @@ export class Animator<Instance extends LitElement> {
           const parsed = LayoutParser.parse({ curr, prev, recipe: recipe });
           span.addEvent("animator.layout.parsed");
 
-          this.o11y.log.debug("Animator.update.composed", {
+          this.o11y.debug.log("Animator.update.composed", {
             curr,
             host: this.host,
             parsed,
@@ -116,7 +116,8 @@ export class Animator<Instance extends LitElement> {
         const finalKeyframes = KeyframeUtils.produceKeyframes(keyframes);
         this.o11y.meter.record("play.duration", +(finalOptions.duration || 0));
         span.addEvent("keyframes.produced");
-        this.o11y.log.debug("Animator.playName", {
+        this.o11y.log.debug("Animator.playName", { finalKeyframes });
+        this.o11y.debug.log("Animator.playName", {
           finalKeyframes,
           finalOptions,
           host: this.host,

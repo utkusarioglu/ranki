@@ -1,4 +1,4 @@
-import type { LogValue } from "_controllers/geometry/o11y/logger/logger.types.mjs";
+import type { LogValue } from "../../ranki-logging.types.mjs";
 
 export type ConsoleBatchLogDriverConfigureProps =
   Partial<ConsoleBatchLogDriverStaticConfig>;

@@ -9,4 +9,5 @@ export class O11y {
   public readonly log = new O11yLogger();
   public readonly meter = new O11yMeter();
   public readonly trace = new O11yTracer();
+  public readonly debug = O11yDebugger;
 }

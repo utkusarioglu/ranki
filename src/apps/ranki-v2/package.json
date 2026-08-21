@@ -52,6 +52,7 @@
     "@dqm/package-dqm-utils": "workspace:^",
     "@dqm/package-dqm-v2": "workspace:^",
     "@opentelemetry/api": "^1.9.1",
+    "@opentelemetry/api-logs": "^0.221.0",
     "@opentelemetry/context-zone": "^2.10.0",
     "@opentelemetry/exporter-metrics-otlp-http": "^0.221.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.221.0",

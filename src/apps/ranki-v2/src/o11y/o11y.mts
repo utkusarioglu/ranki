@@ -1,10 +1,10 @@
 import { sanitizedYamlPrinter } from "./log/log-drivers/console-batch/yaml-printer.mjs";
-import { RankiLogging } from "./log/log.mjs";
-import { type RankiLogRuntimeProps } from "./log/log.types.mjs";
-import { RankiMetrics } from "./meter/meter.mjs";
-import { type RankiMetricsRuntimeProps } from "./meter/meter.types.mjs";
-import { RankiTracing } from "./trace/trace.mjs";
-import { type RankiTracingRuntimeProps } from "./trace/trace.types.mjs";
+import { RankiLogging } from "./log/ranki-logging.mjs";
+import { type RankiLogRuntimeProps } from "./log/ranki-logging.types.mjs";
+import { RankiMetering } from "./meter/ranki-metering.mjs";
+import { type RankiMeteringRuntimeProps } from "./meter/ranki-metering.types.mjs";
+import { RankiTracing } from "./trace/ranki-tracing.mjs";
+import { type RankiTracingRuntimeProps } from "./trace/ranki-tracing.types.mjs";
 
 RankiTracing.configure();
 
@@ -16,17 +16,17 @@ RankiLogging.configure({
   },
 });
 
-RankiMetrics.configure();
+RankiMetering.configure();
 
 interface RankiO11yRuntimeProps {
   log: RankiLogRuntimeProps;
-  meter: RankiMetricsRuntimeProps;
+  meter: RankiMeteringRuntimeProps;
   trace: RankiTracingRuntimeProps;
 }
 
 export class RankiO11y {
   public static readonly log = RankiLogging;
-  public static readonly meter = RankiMetrics;
+  public static readonly meter = RankiMetering;
   public static readonly trace = RankiTracing;
 
   public static enable(props: RankiO11yRuntimeProps) {
