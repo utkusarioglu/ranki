@@ -1,5 +1,3 @@
-import type { LogDriver, LogValue } from "../../ranki-logging.types.mjs";
-
 import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
 import { trace, type TimeInput } from "@opentelemetry/api";
 
@@ -8,6 +6,7 @@ import type {
   ConsoleBatchLogDriverConstructorParams,
   ConsoleBatchLogDriverStaticConfig,
 } from "./console-batch.types.mjs";
+import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
 
 export class ConsoleBatchLogDriver implements LogDriver {
   private static config: ConsoleBatchLogDriverStaticConfig = {

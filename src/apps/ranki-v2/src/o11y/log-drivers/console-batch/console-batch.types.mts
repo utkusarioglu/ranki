@@ -1,4 +1,4 @@
-import type { LogValue } from "../../ranki-logging.types.mjs";
+import type { LogValue } from "_/o11y/log/ranki-logging.types.mjs";
 
 export type ConsoleBatchLogDriverConfigureProps =
   Partial<ConsoleBatchLogDriverStaticConfig>;

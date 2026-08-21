@@ -1,10 +1,9 @@
-import type { LogDriver, LogValue } from "../../ranki-logging.types.mjs";
-
 import type { LokiLog, LokiLogStream, LokiLogValue } from "./loki.types.mjs";
 import type { LokiLogDriverConstructorParams } from "./loki.types.mjs";
 
 import { Scheduler } from "../utils/scheduler.utils.mjs";
 import { DEFAULT_LOKI_ENDPOINT } from "./loki.constants.mjs";
+import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
 
 export class LokiLogDriver implements LogDriver {
   private endpoint: string = DEFAULT_LOKI_ENDPOINT;

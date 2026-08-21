@@ -1,10 +1,10 @@
 import { RankiDebugging } from "./debug/ranki-debugging.mjs";
-import { ConsoleBatchLogDriver } from "./log/log-drivers/console-batch/console-batch.mjs";
+import { ConsoleBatchLogDriver } from "./log-drivers/console-batch/console-batch.mjs";
 import {
   consoleLogRow,
   yamlRow,
-} from "./log/log-drivers/console-batch/yaml-printer.mjs";
-import { sortedStringified } from "./log/log-drivers/utils/sanitize.utils.mjs";
+} from "./log-drivers/console-batch/yaml-printer.mjs";
+import { sortedStringified } from "./log-drivers/utils/sanitize.utils.mjs";
 import { RankiLogging } from "./log/ranki-logging.mjs";
 import { RankiMetering } from "./meter/ranki-metering.mjs";
 import type { RankiO11yRuntimeProps } from "./o11y.types.mjs";

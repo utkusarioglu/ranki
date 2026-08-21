@@ -2,7 +2,7 @@ import type {
   DebugLogDriver,
   O11yDebugLogAttributes,
 } from "_controllers/geometry/o11y/debug/debug.types.mjs";
-import { ConsoleBatchLogDriver } from "../log/log-drivers/console-batch/console-batch.mjs";
+import { ConsoleBatchLogDriver } from "../log-drivers/console-batch/console-batch.mjs";
 import type { RankiDebuggingRuntimeProps } from "./ranki-debugging.types.mjs";
 
 declare global {

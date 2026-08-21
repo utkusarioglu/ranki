@@ -1,10 +1,10 @@
-import type { ConsoleBatchLogDriver } from "./log-drivers/console-batch/console-batch.mjs";
+import type { ConsoleBatchLogDriver } from "../log-drivers/console-batch/console-batch.mjs";
 import type {
   ConsoleBatchLogDriverConfigureProps,
   ConsoleBatchLogDriverConstructorParams,
-} from "./log-drivers/console-batch/console-batch.types.mjs";
-import type { LokiLogDriver } from "./log-drivers/loki/loki.mjs";
-import type { LokiLogDriverConstructorParams } from "./log-drivers/loki/loki.types.mjs";
+} from "../log-drivers/console-batch/console-batch.types.mjs";
+import type { LokiLogDriver } from "../log-drivers/loki/loki.mjs";
+import type { LokiLogDriverConstructorParams } from "../log-drivers/loki/loki.types.mjs";
 import type { LogRecord } from "@opentelemetry/api-logs";
 
 export interface RankiLogRuntimeProps {
