@@ -4,6 +4,7 @@ import type {
 } from "_controllers/geometry/o11y/debug/debug.types.mjs";
 import { ConsoleBatchLogDriver } from "../log-drivers/console-batch/console-batch.mjs";
 import type { RankiDebuggingRuntimeProps } from "./ranki-debugging.types.mjs";
+import { FileBatchLogDriver } from "../log-drivers/file-batch/file-batch.mjs";
 
 declare global {
   var o11yDebugger: DebugLogDriver;
@@ -18,6 +19,9 @@ export class RankiDebugging {
       props.drivers.consoleBatch,
     );
     RankiDebugging.logDrivers.push(RankiDebugging.console);
+    RankiDebugging.logDrivers.push(
+      new FileBatchLogDriver(props.drivers.fileBatch),
+    );
 
     globalThis.o11yDebugger = { log: RankiDebugging.logToDrivers };
   }

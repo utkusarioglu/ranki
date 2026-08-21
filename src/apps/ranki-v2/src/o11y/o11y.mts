@@ -1,20 +1,24 @@
 import { RankiDebugging } from "./debug/ranki-debugging.mjs";
 import { ConsoleBatchLogDriver } from "./log-drivers/console-batch/console-batch.mjs";
-import {
-  consoleLogRow,
-  yamlRow,
-} from "./log-drivers/console-batch/yaml-printer.mjs";
-import { sortedStringified } from "./log-drivers/utils/sanitize.utils.mjs";
+import { consoleLogRow, yamlRow } from "./printers/printers.mjs";
+import { sortedStringified } from "./sanitizers/sorted-stringified.mjs";
 import { RankiLogging } from "./log/ranki-logging.mjs";
 import { RankiMetering } from "./meter/ranki-metering.mjs";
 import type { RankiO11yRuntimeProps } from "./o11y.types.mjs";
 import { RankiTracing } from "./trace/ranki-tracing.mjs";
+import { FileBatchLogDriver } from "./log-drivers/file-batch/file-batch.mjs";
 
 ConsoleBatchLogDriver.configure({
   printers: {
     yamlRow,
     consoleLogRow,
   },
+  sanitizers: {
+    sortedStringified,
+  },
+});
+
+FileBatchLogDriver.configure({
   sanitizers: {
     sortedStringified,
   },
@@ -48,6 +52,14 @@ RankiO11y.enable({
       consoleBatch: {
         printer: "consoleLogRow",
         sanitizer: "none",
+      },
+      fileBatch: {
+        filePath: "debugger.log",
+        sanitizer: "sortedStringified",
+        scheduler: {
+          enabled: false,
+          interval: 5000,
+        },
       },
     },
   },

@@ -1,4 +1,5 @@
 import type { LogValue } from "_/o11y/log/ranki-logging.types.mjs";
+import type { SanitizerFunc } from "_/o11y/sanitizers/sanitizer.types.mjs";
 
 export type ConsoleBatchLogDriverConfigureProps =
   Partial<ConsoleBatchLogDriverStaticConfig>;
@@ -14,8 +15,6 @@ export interface ConsoleBatchLogDriverStaticConfig {
 }
 
 type ConsoleBatchLoggerSanitizerFuncRecord = Record<string, SanitizerFunc>;
-type SanitizerFunc = (v: unknown[], seen?: WeakSet<object>) => LogValue[];
-
 export type ConsoleBatchLoggerPrinterFunc = (
   values: LogValue[],
   elapsed: number,

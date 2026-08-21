@@ -77,8 +77,8 @@ export class ConsoleBatchLogDriver implements LogDriver {
     const printer = ConsoleBatchLogDriver.config.sanitizers[this.sanitizerName];
     assertNotUndefined(printer, {
       details: {
-        printerName: this.printerName,
-        printers: ConsoleBatchLogDriver.config.printers,
+        printerName: this.sanitizerName,
+        printers: ConsoleBatchLogDriver.config.sanitizers,
       },
       why: "undefined printer",
     });

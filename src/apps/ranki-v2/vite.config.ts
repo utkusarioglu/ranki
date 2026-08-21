@@ -12,6 +12,11 @@ import {
 } from "./scripts/vite/ranki-artifact-actions";
 import tsConfigPaths from "vite-tsconfig-paths";
 import sirv from "sirv";
+import {
+  FILE_BATCH_LOG_DRIVER_URL,
+  fileBatchLogDriverVitePlugin,
+  writeFileMiddleware,
+} from "./src/o11y/log-drivers/file-batch/vite-middleware.mjs";
 
 const viteConfigPath = url.fileURLToPath(import.meta.url);
 const packagePath = path.dirname(viteConfigPath);
@@ -67,6 +72,7 @@ export default defineConfig(() => ({
       // copyArtifacts,
       displayTemplate,
     ]),
+    fileBatchLogDriverVitePlugin("./.log"),
     {
       name: "extra-public-dirs",
 
