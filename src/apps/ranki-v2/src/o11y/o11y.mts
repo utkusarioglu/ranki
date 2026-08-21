@@ -1,7 +1,4 @@
-import {
-  RankiDebugging,
-  type RankiDebuggingRuntimeProps,
-} from "./debug/ranki-debugging.mjs";
+import { RankiDebugging } from "./debug/ranki-debugging.mjs";
 import { ConsoleBatchLogDriver } from "./log/log-drivers/console-batch/console-batch.mjs";
 import {
   consoleLogRow,
@@ -9,11 +6,9 @@ import {
 } from "./log/log-drivers/console-batch/yaml-printer.mjs";
 import { sortedStringified } from "./log/log-drivers/utils/sanitize.utils.mjs";
 import { RankiLogging } from "./log/ranki-logging.mjs";
-import { type RankiLogRuntimeProps } from "./log/ranki-logging.types.mjs";
 import { RankiMetering } from "./meter/ranki-metering.mjs";
-import { type RankiMeteringRuntimeProps } from "./meter/ranki-metering.types.mjs";
+import type { RankiO11yRuntimeProps } from "./o11y.types.mjs";
 import { RankiTracing } from "./trace/ranki-tracing.mjs";
-import { type RankiTracingRuntimeProps } from "./trace/ranki-tracing.types.mjs";
 
 ConsoleBatchLogDriver.configure({
   printers: {
@@ -24,13 +19,6 @@ ConsoleBatchLogDriver.configure({
     sortedStringified,
   },
 });
-
-interface RankiO11yRuntimeProps {
-  log: RankiLogRuntimeProps;
-  meter: RankiMeteringRuntimeProps;
-  trace: RankiTracingRuntimeProps;
-  debug: RankiDebuggingRuntimeProps;
-}
 
 export class RankiO11y {
   public static readonly log = RankiLogging;

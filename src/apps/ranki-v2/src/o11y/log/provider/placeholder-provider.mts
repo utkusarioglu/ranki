@@ -5,14 +5,9 @@ import {
   type LogRecord,
 } from "@opentelemetry/api-logs";
 import { trace, type Attributes } from "@opentelemetry/api";
-import type { LogDriver } from "./ranki-logging.types.mjs";
-import { PlaceholderOtelLogger } from "./placeholder-logger.mjs";
-
-interface MyLoggerProviderConstructorProps {
-  drivers: LogDriver[];
-}
-
-export type LogToDriversFunc = (p: LogRecord) => void;
+import type { LogDriver } from "../ranki-logging.types.mjs";
+import { PlaceholderOtelLogger } from "../logger/placeholder-logger.mjs";
+import type { MyLoggerProviderConstructorProps } from "./placeholder-provider.types.mjs";
 
 export class PlaceholderOtelLoggerProvider implements LoggerProvider {
   private drivers: LogDriver[] = [];

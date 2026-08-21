@@ -1,6 +1,6 @@
 import type { RankiLogRuntimeProps } from "./ranki-logging.types.mjs";
 import { logs } from "@opentelemetry/api-logs";
-import { PlaceholderOtelLoggerProvider } from "./placeholder-provider.mjs";
+import { PlaceholderOtelLoggerProvider } from "./provider/placeholder-provider.mjs";
 import { ConsoleBatchLogDriver } from "./log-drivers/console-batch/console-batch.mjs";
 import { LokiLogDriver } from "./log-drivers/loki/loki.mjs";
 

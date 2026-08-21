@@ -1,15 +1,7 @@
 import type { Attributes } from "@opentelemetry/api";
 import type { LoggerOptions, LogRecord } from "@opentelemetry/api-logs";
-import type { LogToDriversFunc } from "./placeholder-provider.mjs";
-
-interface PlaceholderOtelLoggerConstructorParams {
-  name: string;
-  options?: LoggerOptions;
-  attributes?: Attributes;
-  callbacks: {
-    logToDrivers: LogToDriversFunc;
-  };
-}
+import type { LogToDriversFunc } from "../provider/placeholder-provider.types.mjs";
+import type { PlaceholderOtelLoggerConstructorParams } from "./placeholder-logger.types.mjs";
 
 export class PlaceholderOtelLogger {
   private logToDrivers: LogToDriversFunc;
@@ -37,6 +29,7 @@ export class PlaceholderOtelLogger {
     });
   }
 
+  // TODO
   public enabled() {
     return true;
   }
