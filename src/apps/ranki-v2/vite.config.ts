@@ -1,5 +1,4 @@
 import { defineConfig } from "vite";
-import fs from "node:fs";
 import url from "node:url";
 import path from "node:path";
 import babel from "@rollup/plugin-babel";
@@ -11,22 +10,15 @@ import {
   rankiArtifactActions,
 } from "./scripts/vite/ranki-artifact-actions";
 import tsConfigPaths from "vite-tsconfig-paths";
-import sirv from "sirv";
-import {
-  FILE_BATCH_LOG_DRIVER_URL,
-  fileBatchLogDriverVitePlugin,
-  writeFileMiddleware,
-} from "./src/o11y/log-drivers/file-batch/vite-middleware.mjs";
+import { fileBatchLogDriverVitePlugin } from "./src/o11y/log-drivers/file-batch/vite/vite-plugin.mjs";
+import { extraPublicDirs } from "./scripts/vite/extra-public-dirs";
 
 const viteConfigPath = url.fileURLToPath(import.meta.url);
 const packagePath = path.dirname(viteConfigPath);
 
 const PLUGINS_ROOT_PATH = path.resolve("../../plugins");
-// console.log("p", pluginsRootAbsPath);
 
-// const mermaidLib = path.resolve("../../plugins/sre-mermaid/lib");
-
-export default defineConfig(() => ({
+export default defineConfig(({ mode }) => ({
   esbuild: {
     keepNames: true,
   },
@@ -36,16 +28,16 @@ export default defineConfig(() => ({
     watch: {
       usePolling: true,
     },
-    proxy: {
-      // "/loki": {
-      //   target: "http://loki:3100",
-      //   changeOrigin: true,
-      // },
-      // "/api/v1/otlp": {
-      //   target: "http://prometheus:9090",
-      //   changeOrigin: true,
-      // },
-    },
+    // proxy: {
+    // "/loki": {
+    //   target: "http://loki:3100",
+    //   changeOrigin: true,
+    // },
+    // "/api/v1/otlp": {
+    //   target: "http://prometheus:9090",
+    //   changeOrigin: true,
+    // },
+    // },
   },
   preview: {
     host: true,
@@ -58,40 +50,14 @@ export default defineConfig(() => ({
       extensions: [".mts", ".ts", ".js", ".mjs"],
       presets: [["@babel/preset-typescript", { allowDeclareFields: true }]],
       plugins: [["@babel/plugin-proposal-decorators", { version: "2023-05" }]],
-      // include: ["../../plugins/**", "../../packages/**"],
     }),
-    // babel({
-    //   babelHelpers: "bundled",
-    //   extensions: [".mts", ".ts", ".js", ".mjs"],
-    //   presets: [["@babel/preset-typescript", { allowDeclareFields: true }]],
-    //   plugins: [["@babel/plugin-proposal-decorators", { version: "2023-05" }]],
-    //   include: ["./src/**"],
-    // }),
     rankiArtifactActions([
       // cleanRankiTargets,
       // copyArtifacts,
       displayTemplate,
     ]),
     fileBatchLogDriverVitePlugin("./.log"),
-    {
-      name: "extra-public-dirs",
-
-      configureServer(server) {
-        const pluginNames = fs.readdirSync(PLUGINS_ROOT_PATH);
-        const publicPaths = pluginNames.map(
-          (n) => `${PLUGINS_ROOT_PATH}/${n}/lib`,
-        );
-        console.log("Public Paths:\n", "  " + publicPaths.join("\n"));
-        for (const p of publicPaths) {
-          server.middlewares.use(
-            "/",
-            sirv(p, {
-              dev: true,
-            }),
-          );
-        }
-      },
-    },
+    extraPublicDirs(PLUGINS_ROOT_PATH),
   ],
   build: {
     minify: true,
@@ -102,9 +68,14 @@ export default defineConfig(() => ({
         main: path.resolve(packagePath, TEMPLATE_FILE),
       },
       output: {
-        entryFileNames: "_ranki2.js",
-        chunkFileNames: "_ranki2_[name].js",
         format: "es",
+        entryFileNames: ["_ranki2", mode !== "production" && mode, "js"]
+          .filter((v) => !!v)
+          .join("."),
+        chunkFileNames: (chunkInfo) => {
+          const name = chunkInfo.name.replaceAll("-", "_");
+          return `_ranki2__${name}.js`;
+        },
         manualChunks(id) {
           if (id.includes("@phosphor-icons")) {
             return "icons";
@@ -117,7 +88,7 @@ export default defineConfig(() => ({
           if (assetInfo.name!.endsWith("html")) {
             return "_ranki2.html";
           }
-          return "_ranki2_" + assetInfo.name!;
+          return "_ranki2__" + assetInfo.name!;
         },
       },
     },

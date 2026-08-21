@@ -11,12 +11,29 @@ import {
   INPUT_TYPE_CLASS_SELECTOR,
   RENDERED_CLASS_SELECTOR,
 } from "../selector.constants.mjs";
-import { RankiO11y } from "_/o11y/o11y.mjs";
 
 export class RankiDevMethods {
   static isPersisted = false;
 
-  static readonly o11y = RankiO11y.getConsoleAccess();
+  static o11y = Object.fromEntries(
+    ["log", "debug"].map((name) => [
+      name,
+      new Proxy(
+        {},
+        {
+          get() {
+            return () => {
+              console.warn("Log console access hasn't been enabled");
+            };
+          },
+        },
+      ),
+    ]),
+  );
+
+  static setO11yConsoleAccess(o11y: any) {
+    RankiDevMethods.o11y = o11y;
+  }
 
   static foreign(isForeign: boolean = true) {
     const qa = document.querySelector("#qa") as HTMLDivElement;

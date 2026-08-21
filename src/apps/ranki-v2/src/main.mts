@@ -1,4 +1,6 @@
-import "./o11y/o11y.mjs";
+if (import.meta.env.MODE === "observable") {
+  await import("./o11y/o11y.mjs"); //here
+}
 import "./error/listeners.mjs";
 import "./config.mjs";
 import "_components/registry.mjs";

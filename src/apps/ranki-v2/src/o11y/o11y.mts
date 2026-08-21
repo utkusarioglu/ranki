@@ -7,6 +7,7 @@ import { RankiMetering } from "./meter/ranki-metering.mjs";
 import type { RankiO11yRuntimeProps } from "./o11y.types.mjs";
 import { RankiTracing } from "./trace/ranki-tracing.mjs";
 import { FileBatchLogDriver } from "./log-drivers/file-batch/file-batch.mjs";
+import { RankiDevMethods } from "_/dev/dev-methods.mjs";
 
 ConsoleBatchLogDriver.configure({
   printers: {
@@ -35,9 +36,11 @@ export class RankiO11y {
     this.log.enable(props.log);
     this.trace.enable(props.trace);
     this.meter.enable(props.meter);
+
+    RankiDevMethods.setO11yConsoleAccess(this.getConsoleAccess());
   }
 
-  public static getConsoleAccess() {
+  private static getConsoleAccess() {
     return {
       log: this.log.getConsoleAccess(),
       debug: this.debug.getConsoleAccess(),

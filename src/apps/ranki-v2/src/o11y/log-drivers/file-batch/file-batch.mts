@@ -1,30 +1,15 @@
 import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
-import type { SanitizerFunc } from "_/o11y/sanitizers/sanitizer.types.mjs";
 import { Scheduler } from "../utils/scheduler.utils.mjs";
 import type { LogSanitizers } from "../console-batch/console-batch.types.mjs";
 import { assertNotUndefined } from "_error/assertions.mjs";
 import type { PathLike } from "node:fs";
-import { FILE_BATCH_LOG_DRIVER_URL } from "./vite-middleware.mjs";
-
-type FileBatchLoggerSanitizerFuncRecord = Record<string, SanitizerFunc>;
-
-type FileBatchRawLogEntry = any;
-
-export type FileBatchLogDriverConfigureProps =
-  Partial<FileBatchLogDriverStaticConfig>;
-
-export interface FileBatchLogDriverStaticConfig {
-  sanitizers: FileBatchLoggerSanitizerFuncRecord;
-}
-
-export interface FileBatchLogDriverConstructorParams {
-  filePath: string;
-  sanitizer?: LogSanitizers;
-  scheduler?: {
-    enabled?: boolean;
-    interval?: number;
-  };
-}
+import { FILE_BATCH_LOG_DRIVER_URL } from "./file-batch.constants.mjs";
+import type {
+  FileBatchRawLogEntry,
+  FileBatchLogDriverStaticConfig,
+  FileBatchLogDriverConstructorParams,
+  FileBatchLogDriverConfigureProps,
+} from "./file-batch.types.mjs";
 
 export class FileBatchLogDriver implements LogDriver {
   private readonly scheduler: Scheduler<FileBatchRawLogEntry>;

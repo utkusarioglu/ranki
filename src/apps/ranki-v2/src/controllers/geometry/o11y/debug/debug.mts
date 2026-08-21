@@ -21,7 +21,6 @@ export class O11yDebugger {
   public static log(log: string, attributes: O11yDebugLogAttributes) {
     const d = globalThis.o11yDebugger;
     if (!d) {
-      console.log("no debug logger");
       return;
     }
     d.log({ log, attributes });

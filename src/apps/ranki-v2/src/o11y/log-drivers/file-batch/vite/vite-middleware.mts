@@ -31,14 +31,3 @@ export function writeFileMiddleware(root: string) {
     res.end();
   };
 }
-export const FILE_BATCH_LOG_DRIVER_URL = "/file-batch-log-driver";
-
-export const fileBatchLogDriverVitePlugin = (logRoot: string) => ({
-  name: "file-batch-log-driver",
-  configureServer(server: any) {
-    server.middlewares.use(
-      FILE_BATCH_LOG_DRIVER_URL,
-      writeFileMiddleware(logRoot),
-    );
-  },
-});

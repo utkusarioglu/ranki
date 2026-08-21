@@ -1,15 +1,8 @@
-import { assertExists } from "_error/assertions.mjs";
-
 export class ContextKeyRegistry {
   private static readonly registry = new Map<string, symbol>();
 
-  static getSymbol(key: string): symbol {
-    const curr = ContextKeyRegistry.registry.get(key);
-    assertExists(curr, {
-      details: { key, registry: ContextKeyRegistry.registry },
-      why: "Undefined key",
-    });
-    return curr;
+  static getSymbol(key: string): symbol | undefined {
+    return ContextKeyRegistry.registry.get(key);
   }
 
   static registerKey(key: string) {

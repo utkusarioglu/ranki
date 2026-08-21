@@ -1,4 +1,3 @@
-import { assertExists } from "_error/assertions.mjs";
 import { type Context, context, trace, type Tracer } from "@opentelemetry/api";
 
 import type { EmptyClass } from "../o11y.types.mjs";
@@ -30,10 +29,13 @@ export class O11yTracer<T extends EmptyClass> {
   public static getCtxValueFactory(ctx: Context) {
     return (key: string) => {
       const keySymbol = ContextKeyRegistry.getSymbol(key);
+      if (!keySymbol) {
+        return `[undefined-ctx-symbol:${key}]`;
+      }
       const value = ctx.getValue(keySymbol);
-      assertExists(value, {
-        why: "key does not correspond to a context value",
-      });
+      if (!value) {
+        return `[undefined-ctx-key:${key}]`;
+      }
       return value;
     };
   }
