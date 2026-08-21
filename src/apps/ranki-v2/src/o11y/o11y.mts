@@ -8,6 +8,7 @@ import type { RankiO11yRuntimeProps } from "./o11y.types.mjs";
 import { RankiTracing } from "./trace/ranki-tracing.mjs";
 import { FileBatchLogDriver } from "./log-drivers/file-batch/file-batch.mjs";
 import { RankiDevMethods } from "_/dev/dev-methods.mjs";
+import { HtmlLogDriver } from "./log-drivers/html/html.mjs";
 
 ConsoleBatchLogDriver.configure({
   printers: {
@@ -20,6 +21,12 @@ ConsoleBatchLogDriver.configure({
 });
 
 FileBatchLogDriver.configure({
+  sanitizers: {
+    sortedStringified,
+  },
+});
+
+HtmlLogDriver.configure({
   sanitizers: {
     sortedStringified,
   },
@@ -52,6 +59,9 @@ export class RankiO11y {
 RankiO11y.enable({
   debug: {
     drivers: {
+      html: {
+        sanitizer: "sortedStringified",
+      },
       consoleBatch: {
         printer: "consoleLogRow",
         sanitizer: "none",

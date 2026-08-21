@@ -1,5 +1,8 @@
-if (import.meta.env.MODE === "observable") {
-  await import("./o11y/o11y.mjs"); //here
+if (
+  import.meta.env.MODE === "observable" ||
+  import.meta.env.MODE === "development"
+) {
+  import("./o11y/o11y.mjs"); //here
 }
 import "./error/listeners.mjs";
 import "./config.mjs";
