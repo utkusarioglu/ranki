@@ -16,7 +16,7 @@ export class LokiLogDriver implements LogDriver {
   constructor(params?: LokiLogDriverConstructorParams) {
     this.pipe = new PipeProcessor({
       name: "loki",
-      sanitizer: "sortedStringified",
+      sanitizer: "basicRepresentation",
       formatter: (v) => LokiLogProcessor.processLogValue(v as LogRecord),
       callback: (v) => this.scheduler.enqueue(v),
     });

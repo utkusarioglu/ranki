@@ -124,7 +124,6 @@ export class PipeProcessor {
   }
 
   private getStringifier() {
-    console.log("ss", this.stringifierName);
     const stringifier = PipeProcessor.config.stringifiers[this.stringifierName];
     assertNotUndefined(stringifier, {
       details: {

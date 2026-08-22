@@ -33,18 +33,6 @@ export class RankiDebugging {
   }
 
   public static getConsoleAccess() {
-    if (!RankiDebugging.console) {
-      return new Proxy(
-        {},
-        {
-          get() {
-            return () => {
-              console.warn("console batch log driver hasn't been enabled");
-            };
-          },
-        },
-      );
-    }
     return RankiDebugging.console;
   }
 }

@@ -1,5 +1,5 @@
 import { RankiDebugging } from "./debug/ranki-debugging.mjs";
-import { sortedStringified } from "./sanitizers/sorted-stringified.mjs";
+import { basicRepresentation } from "./sanitizers/sorted-stringified.mjs";
 import { RankiLogging } from "./log/ranki-logging.mjs";
 import { RankiMetering } from "./meter/ranki-metering.mjs";
 import type { RankiO11yRuntimeProps } from "./o11y.types.mjs";
@@ -7,15 +7,28 @@ import { RankiTracing } from "./trace/ranki-tracing.mjs";
 import { RankiDevMethods } from "_/dev/dev-methods.mjs";
 import yaml from "yaml";
 import { PipeProcessor } from "./log-drivers/utils/pipe/pipe.mjs";
+import { objectSorter } from "./formatters/object-sorter.mjs";
+import { LogPrinter } from "./log-drivers/console-batch/LogPrinter.mjs";
+import { consoleLogRow, yamlRow } from "./printers/printers.mjs";
 
 PipeProcessor.configure({
   sanitizers: {
-    sortedStringified,
+    basicRepresentation,
+  },
+  formatters: {
+    objectSorter,
   },
   stringifiers: {
     jsonOneLine: (v) => JSON.stringify(v),
     jsonMultiLine: (v) => JSON.stringify(v, null, 2),
     yaml: (v) => yaml.stringify(v),
+  },
+});
+
+LogPrinter.configure({
+  printers: {
+    yamlRow,
+    consoleLogRow,
   },
 });
 
@@ -48,12 +61,13 @@ RankiO11y.enable({
     drivers: {
       consoleBatch: {
         printer: "consoleLogRow",
+        formatter: "objectSorter",
         sanitizer: "none",
       },
       fileBatch: {
         filePath: "debugger.log",
         stringifier: "jsonOneLine",
-        sanitizer: "sortedStringified",
+        sanitizer: "basicRepresentation",
         scheduler: {
           enabled: true,
           interval: 5000,
@@ -65,11 +79,11 @@ RankiO11y.enable({
     drivers: {
       consoleBatch: {
         printer: "yamlRow",
-        sanitizer: "sortedStringified",
+        formatter: "objectSorter",
       },
       loki: {
         endpoint: "http://localhost:8080/loki/loki/api/v1/push",
-        sanitizer: "sortedStringified",
+        sanitizer: "basicRepresentation",
         scheduler: {
           enabled: true,
           interval: 5000,

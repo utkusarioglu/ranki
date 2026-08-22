@@ -29,7 +29,7 @@ export interface CallbackLogDriverConstructorParams {
   callback: NewLogValueCallback;
 }
 
-export type LogSanitizers = "none" | "sortedStringified";
+export type LogSanitizers = "none" | "basicRepresentation";
 
 export type LogFormatters = "none" | "objectSorter";
 

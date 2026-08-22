@@ -1,11 +1,15 @@
 import type { LogValue } from "_/o11y/log/ranki-logging.types.mjs";
-import type { LogSanitizers } from "../utils/pipe/pipe.types.mjs";
+import type {
+  LogFormatters,
+  LogSanitizers,
+} from "../utils/pipe/pipe.types.mjs";
 
 export type ConsoleBatchLogDriverConfigureProps =
   Partial<ConsoleBatchLogDriverStaticConfig>;
 
 export interface ConsoleBatchLogDriverConstructorParams {
   printer?: LogPrinters;
+  formatter: LogFormatters;
   sanitizer?: LogSanitizers;
 }
 

@@ -1,23 +1,15 @@
-import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
+import { assertNever } from "_error/assertions.mjs";
 import { trace, type TimeInput } from "@opentelemetry/api";
 
-import type {
-  ConsoleBatchLogDriverConstructorParams,
-  ConsoleBatchLogDriverStaticConfig,
-} from "./console-batch.types.mjs";
+import type { ConsoleBatchLogDriverConstructorParams } from "./console-batch.types.mjs";
 import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
 import { PipeProcessor } from "../utils/pipe/pipe.mjs";
-
+import { LogPrinter } from "./LogPrinter.mjs";
 export class ConsoleBatchLogDriver implements LogDriver {
   private readonly pipe: PipeProcessor;
-  private static config: ConsoleBatchLogDriverStaticConfig = {
-    printers: {
-      default: (v) => console.log(v),
-    },
-  };
+  private readonly printer: LogPrinter;
   private timestamp: number = (Date.now() - 1) * 1e6;
   private logs: LogValue[] = [];
-  private printerName: string = "default";
 
   constructor(params?: ConsoleBatchLogDriverConstructorParams) {
     this.pipe = new PipeProcessor({
@@ -27,7 +19,7 @@ export class ConsoleBatchLogDriver implements LogDriver {
       sanitizer: params?.sanitizer || "none",
       callback: (v) => this.logs.push(v),
     });
-    if (params?.printer) this.printerName = params.printer;
+    this.printer = new LogPrinter({ printer: params?.printer });
   }
 
   log(v: LogValue) {
@@ -52,20 +44,7 @@ export class ConsoleBatchLogDriver implements LogDriver {
 
   query(cb?: (entry: LogValue) => boolean) {
     const filtered = cb ? this.logs.filter(cb) : this.logs;
-    const print = this.getPrinter();
-    print(filtered, this.timestamp);
-  }
-
-  private getPrinter() {
-    const printer = ConsoleBatchLogDriver.config.printers[this.printerName];
-    assertNotUndefined(printer, {
-      details: {
-        printerName: this.printerName,
-        printers: ConsoleBatchLogDriver.config.printers,
-      },
-      why: "undefined printer",
-    });
-    return printer;
+    this.printer.print(filtered, this.timestamp);
   }
 
   private getSpanContext() {

@@ -1,4 +1,4 @@
-export function sortedStringified<T>(
+export function basicRepresentation<T>(
   value: unknown,
   seen = new WeakSet<object>(),
 ): T {
@@ -19,7 +19,7 @@ export function sortedStringified<T>(
   seen.add(value);
 
   if (Array.isArray(value)) {
-    return value.map((item) => sortedStringified(item, seen)) as T;
+    return value.map((item) => basicRepresentation(item, seen)) as T;
   }
 
   if (value instanceof Error) {
@@ -39,25 +39,8 @@ export function sortedStringified<T>(
   const result: Record<string, unknown> = {};
 
   for (const [key, child] of Object.entries(value)) {
-    result[key] = sortedStringified(child, seen);
+    result[key] = basicRepresentation(child, seen);
   }
 
-  const sorted = Object.fromEntries(
-    Object.entries(result).sort(([k1, v1], [k2, v2]) => {
-      const isObj1 = typeof v1 === "object";
-      const isObj2 = typeof v2 === "object";
-
-      if (!isObj1 && !isObj2) {
-        return k1.localeCompare(k2);
-      } else if (isObj1 && !isObj2) {
-        return 1;
-      } else if (!isObj1 && isObj2) {
-        return -1;
-      } else {
-        return JSON.stringify(v1).localeCompare(JSON.stringify(v2));
-      }
-    }),
-  );
-
-  return sorted as T;
+  return result as T;
 }
