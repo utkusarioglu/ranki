@@ -50,6 +50,8 @@ export class FileBatchLogDriver implements LogDriver {
   private async fileSaver(v: FileBatchRawLogEntry[]) {
     const sanitizer = this.getSanitizer();
     const sanitized = v.map((a) => JSON.stringify(sanitizer(a))).join("\n");
+    console.log("savl");
+
     await fetch([FILE_BATCH_LOG_DRIVER_URL, this.fileRelPath].join("/"), {
       method: "POST",
       body: sanitized,

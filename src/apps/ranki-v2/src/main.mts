@@ -1,7 +1,4 @@
-if (
-  import.meta.env.MODE === "observable" ||
-  import.meta.env.MODE === "development"
-) {
+if (import.meta.env.MODE === "observable") {
   import("./o11y/o11y.mjs"); //here
 }
 import "./error/listeners.mjs";

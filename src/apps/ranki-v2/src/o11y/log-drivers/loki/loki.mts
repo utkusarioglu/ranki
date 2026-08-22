@@ -1,9 +1,10 @@
-import type { LokiLog, LokiLogStream, LokiLogValue } from "./loki.types.mjs";
+import type { LokiLogValue } from "./loki.types.mjs";
 import type { LokiLogDriverConstructorParams } from "./loki.types.mjs";
 
 import { Scheduler } from "../utils/scheduler.utils.mjs";
 import { DEFAULT_LOKI_ENDPOINT } from "./loki.constants.mjs";
 import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
+import { LokiLogProcessor } from "./processor.mjs";
 
 export class LokiLogDriver implements LogDriver {
   private endpoint: string = DEFAULT_LOKI_ENDPOINT;
@@ -23,28 +24,11 @@ export class LokiLogDriver implements LogDriver {
   }
 
   log(value: LogValue): void {
-    this.scheduler.enqueue(this.processLogValue(value));
-  }
-
-  private processLog(logs: LokiLogValue[]): LokiLog {
-    return { streams: [this.processLogStream(logs)] };
-  }
-
-  private processLogStream(values: LokiLogValue[]): LokiLogStream {
-    return {
-      stream: {
-        service_name: "ranki",
-      },
-      values,
-    };
-  }
-
-  private processLogValue(log: LogValue): LokiLogValue {
-    return [String(log.timestamp), JSON.stringify(log)];
+    this.scheduler.enqueue(LokiLogProcessor.processLogValue(value));
   }
 
   private async sender(v: LokiLogValue[]) {
-    const processed = this.processLog(v);
+    const processed = LokiLogProcessor.processLog(v);
     await fetch(this.endpoint, {
       body: JSON.stringify(processed),
       headers: {

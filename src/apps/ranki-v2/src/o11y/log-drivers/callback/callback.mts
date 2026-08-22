@@ -1,0 +1,66 @@
+import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
+import type {
+  CallbackLogDriverConfigureProps,
+  CallbackLogDriverConstructorParams,
+  CallbackLogDriverStaticConfig,
+  NewLogValueCallback,
+} from "./callback.types.mjs";
+import { assertNotUndefined } from "_error/assertions.mjs";
+
+export class CallbackLogDriver implements LogDriver {
+  private sanitizerName: string = "none";
+  private formatterName: string = "none";
+  private static config: CallbackLogDriverStaticConfig = {
+    sanitizers: {
+      none: (v) => v as LogValue[],
+    },
+    formatters: {
+      none: (v) => v,
+    },
+  };
+  private readonly callback: NewLogValueCallback;
+
+  public static configure(conf: CallbackLogDriverConfigureProps) {
+    this.config.sanitizers = { ...this.config.sanitizers, ...conf.sanitizers };
+    this.config.formatters = { ...this.config.formatters, ...conf.formatters };
+  }
+
+  constructor(params: CallbackLogDriverConstructorParams) {
+    this.callback = params.callback;
+    if (params?.sanitizer) this.sanitizerName = params.sanitizer;
+    if (params?.formatter) this.formatterName = params.formatter;
+  }
+
+  private getSanitizer() {
+    const sanitizer = CallbackLogDriver.config.sanitizers[this.sanitizerName];
+    assertNotUndefined(sanitizer, {
+      details: {
+        printerName: this.sanitizerName,
+        printers: CallbackLogDriver.config.sanitizers,
+      },
+      why: "undefined sanitizer",
+    });
+    return sanitizer;
+  }
+
+  private getFormatter() {
+    const formatter = CallbackLogDriver.config.formatters[this.formatterName];
+    assertNotUndefined(formatter, {
+      details: {
+        printerName: this.formatterName,
+        printers: CallbackLogDriver.config.formatters,
+      },
+      why: "undefined formatter",
+    });
+    return formatter;
+  }
+
+  log(v: LogValue) {
+    const sanitizer = this.getSanitizer();
+    const sanitized = sanitizer(v as LogValue[]);
+    const formatter = this.getFormatter();
+    const formatted = formatter(sanitized);
+
+    this.callback(formatted);
+  }
+}
