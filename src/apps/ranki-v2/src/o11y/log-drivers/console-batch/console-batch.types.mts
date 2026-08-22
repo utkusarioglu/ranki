@@ -29,4 +29,5 @@ export type ConsoleBatchLoggerPrinterFuncRecord = Record<
 export type LogPrinters = "default" | "yamlRow" | "consoleLogRow";
 
 export type LogSanitizers = "none" | "sortedStringified";
-export type LogFormatters = "none" | "jsonOneLine" | "jsonMultiLine" | "yaml";
+export type LogFormatters = "none" | "objectSorter";
+export type LogStringifiers = "none" | "jsonOneLine" | "jsonMultiLine" | "yaml";

@@ -7,8 +7,10 @@ import type {
   ConsoleBatchLogDriverStaticConfig,
 } from "./console-batch.types.mjs";
 import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
+import { CallbackLogDriver } from "../callback/callback.mjs";
 
 export class ConsoleBatchLogDriver implements LogDriver {
+  private readonly pipe: CallbackLogDriver;
   private static config: ConsoleBatchLogDriverStaticConfig = {
     printers: {
       default: (v) => console.log(v),
@@ -20,11 +22,15 @@ export class ConsoleBatchLogDriver implements LogDriver {
   private timestamp: number = (Date.now() - 1) * 1e6;
   private logs: LogValue[] = [];
   private printerName: string = "default";
-  private sanitizerName: string = "none";
 
   constructor(params?: ConsoleBatchLogDriverConstructorParams) {
+    this.pipe = new CallbackLogDriver({
+      stringifier: "none",
+      formatter: "none",
+      sanitizer: params?.sanitizer || "none",
+      callback: (v) => this.logs.push(v),
+    });
     if (params?.printer) this.printerName = params.printer;
-    if (params?.sanitizer) this.sanitizerName = params.sanitizer;
   }
 
   public static configure(conf: ConsoleBatchLogDriverConfigureProps) {
@@ -33,10 +39,7 @@ export class ConsoleBatchLogDriver implements LogDriver {
   }
 
   log(v: LogValue) {
-    this.logs.push({
-      ...v,
-      ...this.span(),
-    });
+    this.pipe.log({ ...v, ...this.getSpanContext() });
   }
 
   // TODO
@@ -57,8 +60,8 @@ export class ConsoleBatchLogDriver implements LogDriver {
 
   query(cb?: (entry: LogValue) => boolean) {
     const filtered = cb ? this.logs.filter(cb) : this.logs;
-    const sanitized = this.getSanitizer()(filtered);
-    this.getPrinter()(sanitized, this.timestamp);
+    const print = this.getPrinter();
+    print(filtered, this.timestamp);
   }
 
   private getPrinter() {
@@ -73,19 +76,7 @@ export class ConsoleBatchLogDriver implements LogDriver {
     return printer;
   }
 
-  private getSanitizer() {
-    const printer = ConsoleBatchLogDriver.config.sanitizers[this.sanitizerName];
-    assertNotUndefined(printer, {
-      details: {
-        printerName: this.sanitizerName,
-        printers: ConsoleBatchLogDriver.config.sanitizers,
-      },
-      why: "undefined printer",
-    });
-    return printer;
-  }
-
-  private span() {
+  private getSpanContext() {
     const span = trace.getActiveSpan();
     const context = span?.spanContext();
 

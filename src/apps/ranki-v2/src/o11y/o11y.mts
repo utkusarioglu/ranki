@@ -6,29 +6,26 @@ import { RankiLogging } from "./log/ranki-logging.mjs";
 import { RankiMetering } from "./meter/ranki-metering.mjs";
 import type { RankiO11yRuntimeProps } from "./o11y.types.mjs";
 import { RankiTracing } from "./trace/ranki-tracing.mjs";
-import { FileBatchLogDriver } from "./log-drivers/file-batch/file-batch.mjs";
+// import { FileBatchLogDriver } from "./log-drivers/file-batch/file-batch.mjs";
 import { RankiDevMethods } from "_/dev/dev-methods.mjs";
 import { CallbackLogDriver } from "./log-drivers/callback/callback.mjs";
+import yaml from "yaml";
+
+CallbackLogDriver.configure({
+  sanitizers: {
+    sortedStringified,
+  },
+  stringifiers: {
+    jsonOneLine: (v) => JSON.stringify(v),
+    jsonMultiLine: (v) => JSON.stringify(v, null, 2),
+    yaml: (v) => yaml.stringify(v),
+  },
+});
 
 ConsoleBatchLogDriver.configure({
   printers: {
     yamlRow,
     consoleLogRow,
-  },
-  sanitizers: {
-    sortedStringified,
-  },
-});
-
-FileBatchLogDriver.configure({
-  sanitizers: {
-    sortedStringified,
-  },
-});
-
-CallbackLogDriver.configure({
-  sanitizers: {
-    sortedStringified,
   },
 });
 
@@ -69,9 +66,10 @@ RankiO11y.enable({
       },
       fileBatch: {
         filePath: "debugger.log",
+        stringifier: "jsonOneLine",
         sanitizer: "sortedStringified",
         scheduler: {
-          enabled: false,
+          enabled: true,
           interval: 5000,
         },
       },
