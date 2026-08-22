@@ -1,17 +1,14 @@
 import { RankiDebugging } from "./debug/ranki-debugging.mjs";
-import { ConsoleBatchLogDriver } from "./log-drivers/console-batch/console-batch.mjs";
-import { consoleLogRow, yamlRow } from "./printers/printers.mjs";
 import { sortedStringified } from "./sanitizers/sorted-stringified.mjs";
 import { RankiLogging } from "./log/ranki-logging.mjs";
 import { RankiMetering } from "./meter/ranki-metering.mjs";
 import type { RankiO11yRuntimeProps } from "./o11y.types.mjs";
 import { RankiTracing } from "./trace/ranki-tracing.mjs";
-// import { FileBatchLogDriver } from "./log-drivers/file-batch/file-batch.mjs";
 import { RankiDevMethods } from "_/dev/dev-methods.mjs";
-import { CallbackLogDriver } from "./log-drivers/callback/callback.mjs";
 import yaml from "yaml";
+import { PipeProcessor } from "./log-drivers/utils/pipe/pipe.mjs";
 
-CallbackLogDriver.configure({
+PipeProcessor.configure({
   sanitizers: {
     sortedStringified,
   },
@@ -19,13 +16,6 @@ CallbackLogDriver.configure({
     jsonOneLine: (v) => JSON.stringify(v),
     jsonMultiLine: (v) => JSON.stringify(v, null, 2),
     yaml: (v) => yaml.stringify(v),
-  },
-});
-
-ConsoleBatchLogDriver.configure({
-  printers: {
-    yamlRow,
-    consoleLogRow,
   },
 });
 
@@ -56,10 +46,6 @@ export class RankiO11y {
 RankiO11y.enable({
   debug: {
     drivers: {
-      callback: {
-        sanitizer: "sortedStringified",
-        callback: (v) => console.log("v", v),
-      },
       consoleBatch: {
         printer: "consoleLogRow",
         sanitizer: "none",

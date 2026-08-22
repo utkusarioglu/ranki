@@ -6,15 +6,16 @@ import type {
   FileBatchRawLogEntry,
   FileBatchLogDriverConstructorParams,
 } from "./file-batch.types.mjs";
-import { CallbackLogDriver } from "../callback/callback.mjs";
+import { PipeProcessor } from "../utils/pipe/pipe.mjs";
 
 export class FileBatchLogDriver implements LogDriver {
-  private readonly pipe: CallbackLogDriver;
+  private readonly pipe: PipeProcessor;
   private readonly scheduler: Scheduler<FileBatchRawLogEntry>;
   private fileRelPath: PathLike;
 
   constructor(params?: FileBatchLogDriverConstructorParams) {
-    this.pipe = new CallbackLogDriver({
+    this.pipe = new PipeProcessor({
+      name: "fileBatch",
       sanitizer: params?.sanitizer,
       formatter: params?.formatter,
       stringifier: params?.stringifier,

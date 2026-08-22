@@ -5,7 +5,6 @@ import type {
 import { ConsoleBatchLogDriver } from "../log-drivers/console-batch/console-batch.mjs";
 import type { RankiDebuggingRuntimeProps } from "./ranki-debugging.types.mjs";
 import { FileBatchLogDriver } from "../log-drivers/file-batch/file-batch.mjs";
-import { CallbackLogDriver } from "../log-drivers/callback/callback.mjs";
 
 declare global {
   var o11yDebugger: DebugLogDriver;
@@ -22,9 +21,6 @@ export class RankiDebugging {
     RankiDebugging.logDrivers.push(RankiDebugging.console);
     RankiDebugging.logDrivers.push(
       new FileBatchLogDriver(props.drivers.fileBatch),
-    );
-    RankiDebugging.logDrivers.push(
-      new CallbackLogDriver(props.drivers.callback),
     );
 
     globalThis.o11yDebugger = { log: RankiDebugging.logToDrivers };

@@ -2,21 +2,17 @@ import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
 import { trace, type TimeInput } from "@opentelemetry/api";
 
 import type {
-  ConsoleBatchLogDriverConfigureProps,
   ConsoleBatchLogDriverConstructorParams,
   ConsoleBatchLogDriverStaticConfig,
 } from "./console-batch.types.mjs";
 import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
-import { CallbackLogDriver } from "../callback/callback.mjs";
+import { PipeProcessor } from "../utils/pipe/pipe.mjs";
 
 export class ConsoleBatchLogDriver implements LogDriver {
-  private readonly pipe: CallbackLogDriver;
+  private readonly pipe: PipeProcessor;
   private static config: ConsoleBatchLogDriverStaticConfig = {
     printers: {
       default: (v) => console.log(v),
-    },
-    sanitizers: {
-      none: (v) => v as LogValue[],
     },
   };
   private timestamp: number = (Date.now() - 1) * 1e6;
@@ -24,18 +20,14 @@ export class ConsoleBatchLogDriver implements LogDriver {
   private printerName: string = "default";
 
   constructor(params?: ConsoleBatchLogDriverConstructorParams) {
-    this.pipe = new CallbackLogDriver({
+    this.pipe = new PipeProcessor({
+      name: "console",
       stringifier: "none",
       formatter: "none",
       sanitizer: params?.sanitizer || "none",
       callback: (v) => this.logs.push(v),
     });
     if (params?.printer) this.printerName = params.printer;
-  }
-
-  public static configure(conf: ConsoleBatchLogDriverConfigureProps) {
-    this.config.printers = { ...this.config.printers, ...conf.printers };
-    this.config.sanitizers = { ...this.config.sanitizers, ...conf.sanitizers };
   }
 
   log(v: LogValue) {

@@ -1,13 +1,13 @@
-import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
+import type { LogValue } from "_/o11y/log/ranki-logging.types.mjs";
 import type {
   CallbackLogDriverConfigureProps,
   CallbackLogDriverConstructorParams,
   CallbackLogDriverStaticConfig,
   NewLogValueCallback,
-} from "./callback.types.mjs";
+} from "./pipe.types.mjs";
 import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
 
-export class CallbackLogDriver implements LogDriver {
+export class PipeProcessor {
   private readonly name: string;
   private sanitizerName: string = "none";
   private formatterName: string = "none";
@@ -36,8 +36,8 @@ export class CallbackLogDriver implements LogDriver {
         {
           const name = `${this.name}-provided`;
           this.sanitizerName = name;
-          CallbackLogDriver.config.sanitizers = {
-            ...CallbackLogDriver.config.sanitizers,
+          PipeProcessor.config.sanitizers = {
+            ...PipeProcessor.config.sanitizers,
             [name]: params.sanitizer,
           };
         }
@@ -58,8 +58,8 @@ export class CallbackLogDriver implements LogDriver {
         {
           const name = `${this.name}-provided`;
           this.formatterName = name;
-          CallbackLogDriver.config.formatters = {
-            ...CallbackLogDriver.config.formatters,
+          PipeProcessor.config.formatters = {
+            ...PipeProcessor.config.formatters,
             [name]: params.formatter,
           };
         }
@@ -80,8 +80,8 @@ export class CallbackLogDriver implements LogDriver {
         {
           const name = `${this.name}-provided`;
           this.stringifierName = name;
-          CallbackLogDriver.config.stringifiers = {
-            ...CallbackLogDriver.config.stringifiers,
+          PipeProcessor.config.stringifiers = {
+            ...PipeProcessor.config.stringifiers,
             [name]: params.stringifier,
           };
         }
@@ -100,11 +100,11 @@ export class CallbackLogDriver implements LogDriver {
   }
 
   private getSanitizer() {
-    const sanitizer = CallbackLogDriver.config.sanitizers[this.sanitizerName];
+    const sanitizer = PipeProcessor.config.sanitizers[this.sanitizerName];
     assertNotUndefined(sanitizer, {
       details: {
         printerName: this.sanitizerName,
-        printers: CallbackLogDriver.config.sanitizers,
+        printers: PipeProcessor.config.sanitizers,
       },
       why: "undefined sanitizer",
     });
@@ -112,11 +112,11 @@ export class CallbackLogDriver implements LogDriver {
   }
 
   private getFormatter() {
-    const formatter = CallbackLogDriver.config.formatters[this.formatterName];
+    const formatter = PipeProcessor.config.formatters[this.formatterName];
     assertNotUndefined(formatter, {
       details: {
         printerName: this.formatterName,
-        printers: CallbackLogDriver.config.formatters,
+        printers: PipeProcessor.config.formatters,
       },
       why: "undefined formatter",
     });
@@ -125,12 +125,11 @@ export class CallbackLogDriver implements LogDriver {
 
   private getStringifier() {
     console.log("ss", this.stringifierName);
-    const stringifier =
-      CallbackLogDriver.config.stringifiers[this.stringifierName];
+    const stringifier = PipeProcessor.config.stringifiers[this.stringifierName];
     assertNotUndefined(stringifier, {
       details: {
         printerName: this.stringifierName,
-        printers: CallbackLogDriver.config.stringifiers,
+        printers: PipeProcessor.config.stringifiers,
       },
       why: "undefined stringifier",
     });

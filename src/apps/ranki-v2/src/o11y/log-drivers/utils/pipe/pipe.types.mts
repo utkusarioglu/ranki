@@ -1,9 +1,4 @@
 import type { SanitizerFunc } from "_/o11y/sanitizers/sanitizer.types.mjs";
-import type {
-  LogFormatters,
-  LogSanitizers,
-  LogStringifiers,
-} from "../console-batch/console-batch.types.mjs";
 
 export interface CallbackLogDriverStaticConfig {
   sanitizers: CallbackLoggerSanitizerFuncRecord;
@@ -33,3 +28,9 @@ export interface CallbackLogDriverConstructorParams {
   stringifier?: LogStringifiers | StringifierFunc;
   callback: NewLogValueCallback;
 }
+
+export type LogSanitizers = "none" | "sortedStringified";
+
+export type LogFormatters = "none" | "objectSorter";
+
+export type LogStringifiers = "none" | "jsonOneLine" | "jsonMultiLine" | "yaml";

@@ -1,5 +1,5 @@
 import type { LogValue } from "_/o11y/log/ranki-logging.types.mjs";
-import type { SanitizerFunc } from "_/o11y/sanitizers/sanitizer.types.mjs";
+import type { LogSanitizers } from "../utils/pipe/pipe.types.mjs";
 
 export type ConsoleBatchLogDriverConfigureProps =
   Partial<ConsoleBatchLogDriverStaticConfig>;
@@ -11,10 +11,8 @@ export interface ConsoleBatchLogDriverConstructorParams {
 
 export interface ConsoleBatchLogDriverStaticConfig {
   printers: ConsoleBatchLoggerPrinterFuncRecord;
-  sanitizers: ConsoleBatchLoggerSanitizerFuncRecord;
 }
 
-type ConsoleBatchLoggerSanitizerFuncRecord = Record<string, SanitizerFunc>;
 export type ConsoleBatchLoggerPrinterFunc = (
   values: LogValue[],
   elapsed: number,
@@ -27,7 +25,3 @@ export type ConsoleBatchLoggerPrinterFuncRecord = Record<
 >;
 
 export type LogPrinters = "default" | "yamlRow" | "consoleLogRow";
-
-export type LogSanitizers = "none" | "sortedStringified";
-export type LogFormatters = "none" | "objectSorter";
-export type LogStringifiers = "none" | "jsonOneLine" | "jsonMultiLine" | "yaml";
