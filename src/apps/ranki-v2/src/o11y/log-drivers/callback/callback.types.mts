@@ -27,8 +27,9 @@ export type CallbackLogDriverConfigureProps =
 export type NewLogValueCallback = (value: any) => void;
 
 export interface CallbackLogDriverConstructorParams {
-  sanitizer?: LogSanitizers;
-  formatter?: LogFormatters;
-  stringifier?: LogStringifiers;
+  name: string;
+  sanitizer?: LogSanitizers | SanitizerFunc;
+  formatter?: LogFormatters | FormatterFunc;
+  stringifier?: LogStringifiers | StringifierFunc;
   callback: NewLogValueCallback;
 }

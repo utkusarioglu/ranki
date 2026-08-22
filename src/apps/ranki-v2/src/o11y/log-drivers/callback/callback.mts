@@ -5,9 +5,10 @@ import type {
   CallbackLogDriverStaticConfig,
   NewLogValueCallback,
 } from "./callback.types.mjs";
-import { assertNotUndefined } from "_error/assertions.mjs";
+import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
 
 export class CallbackLogDriver implements LogDriver {
+  private readonly name: string;
   private sanitizerName: string = "none";
   private formatterName: string = "none";
   private stringifierName: string = "none";
@@ -28,10 +29,74 @@ export class CallbackLogDriver implements LogDriver {
   }
 
   constructor(params: CallbackLogDriverConstructorParams) {
+    this.name = params.name;
     this.callback = params.callback;
-    if (params?.sanitizer) this.sanitizerName = params.sanitizer;
-    if (params?.formatter) this.formatterName = params.formatter;
-    if (params?.stringifier) this.stringifierName = params.stringifier;
+    switch (typeof params.sanitizer) {
+      case "function":
+        {
+          const name = `${this.name}-provided`;
+          this.sanitizerName = name;
+          CallbackLogDriver.config.sanitizers = {
+            ...CallbackLogDriver.config.sanitizers,
+            [name]: params.sanitizer,
+          };
+        }
+        break;
+      case "string":
+        this.sanitizerName = params.sanitizer;
+        break;
+      case "undefined":
+        break;
+      default:
+        assertNever({
+          why: "Unrecognized sanitizer type",
+          details: { params },
+        });
+    }
+    switch (typeof params.formatter) {
+      case "function":
+        {
+          const name = `${this.name}-provided`;
+          this.formatterName = name;
+          CallbackLogDriver.config.formatters = {
+            ...CallbackLogDriver.config.formatters,
+            [name]: params.formatter,
+          };
+        }
+        break;
+      case "string":
+        this.formatterName = params.formatter;
+        break;
+      case "undefined":
+        break;
+      default:
+        assertNever({
+          why: "Unrecognized formatter type",
+          details: { params },
+        });
+    }
+    switch (typeof params.stringifier) {
+      case "function":
+        {
+          const name = `${this.name}-provided`;
+          this.stringifierName = name;
+          CallbackLogDriver.config.stringifiers = {
+            ...CallbackLogDriver.config.stringifiers,
+            [name]: params.stringifier,
+          };
+        }
+        break;
+      case "string":
+        this.stringifierName = params.stringifier;
+        break;
+      case "undefined":
+        break;
+      default:
+        assertNever({
+          why: "Unrecognized stringifier type",
+          details: { params },
+        });
+    }
   }
 
   private getSanitizer() {

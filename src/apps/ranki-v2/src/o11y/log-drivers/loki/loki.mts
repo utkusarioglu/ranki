@@ -5,12 +5,20 @@ import { Scheduler } from "../utils/scheduler.utils.mjs";
 import { DEFAULT_LOKI_ENDPOINT } from "./loki.constants.mjs";
 import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
 import { LokiLogProcessor } from "./processor.mjs";
+import { CallbackLogDriver } from "../callback/callback.mjs";
 
 export class LokiLogDriver implements LogDriver {
   private endpoint: string = DEFAULT_LOKI_ENDPOINT;
   private readonly scheduler: Scheduler<LokiLogValue>;
+  private readonly pipe: CallbackLogDriver;
 
   constructor(params?: LokiLogDriverConstructorParams) {
+    this.pipe = new CallbackLogDriver({
+      name: "loki",
+      sanitizer: "sortedStringified",
+      formatter: (v) => LokiLogProcessor.processLogValue(v as LogValue),
+      callback: (v) => this.scheduler.enqueue(v),
+    });
     if (params?.endpoint) this.endpoint = params.endpoint;
     this.scheduler = new Scheduler(
       (v) => this.sender(v),
@@ -24,7 +32,7 @@ export class LokiLogDriver implements LogDriver {
   }
 
   log(value: LogValue): void {
-    this.scheduler.enqueue(LokiLogProcessor.processLogValue(value));
+    this.pipe.log(value);
   }
 
   private async sender(v: LokiLogValue[]) {
