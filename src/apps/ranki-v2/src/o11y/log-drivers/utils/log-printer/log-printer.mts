@@ -1,6 +1,6 @@
 import type { LogRecord } from "@opentelemetry/api-logs";
 import { assertNotUndefined } from "_error/assertions.mjs";
-import type { ConsoleBatchLogDriverStaticConfig } from "./console-batch.types.mjs";
+import type { ConsoleBatchLogDriverStaticConfig } from "../../console-batch/console-batch.types.mjs";
 
 interface LogPrinterConstructorParams {
   printer?: string;

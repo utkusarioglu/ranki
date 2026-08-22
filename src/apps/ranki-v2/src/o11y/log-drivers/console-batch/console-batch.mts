@@ -3,16 +3,16 @@ import { trace, type TimeInput } from "@opentelemetry/api";
 
 import type { ConsoleBatchLogDriverConstructorParams } from "./console-batch.types.mjs";
 import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
-import { PipeProcessor } from "../utils/pipe/pipe.mjs";
-import { LogPrinter } from "./LogPrinter.mjs";
+import { LogProcessor } from "../utils/log-processor/log-processor.mjs";
+import { LogPrinter } from "../utils/log-printer/log-printer.mjs";
 export class ConsoleBatchLogDriver implements LogDriver {
-  private readonly pipe: PipeProcessor;
+  private readonly pipe: LogProcessor;
   private readonly printer: LogPrinter;
   private timestamp: number = (Date.now() - 1) * 1e6;
   private logs: LogValue[] = [];
 
   constructor(params?: ConsoleBatchLogDriverConstructorParams) {
-    this.pipe = new PipeProcessor({
+    this.pipe = new LogProcessor({
       name: "console",
       stringifier: "none",
       formatter: "none",
@@ -27,7 +27,7 @@ export class ConsoleBatchLogDriver implements LogDriver {
   }
 
   // TODO
-  private timeInputToTime(input: TimeInput) {
+  private convertTime(input: TimeInput) {
     switch (typeof input) {
       case "number":
         return input;
@@ -39,7 +39,7 @@ export class ConsoleBatchLogDriver implements LogDriver {
   new() {
     const lastElapsed = this.timestamp || 0;
     this.timestamp = Date.now() * 1e6;
-    this.query((v) => this.timeInputToTime(v.timestamp || 0) >= lastElapsed);
+    this.query((v) => this.convertTime(v.timestamp || 0) >= lastElapsed);
   }
 
   query(cb?: (entry: LogValue) => boolean) {

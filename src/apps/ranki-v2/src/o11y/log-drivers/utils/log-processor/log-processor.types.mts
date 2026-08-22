@@ -1,27 +1,26 @@
 import type { SanitizerFunc } from "_/o11y/sanitizers/sanitizer.types.mjs";
 
-export interface CallbackLogDriverStaticConfig {
-  sanitizers: CallbackLoggerSanitizerFuncRecord;
-  formatters: CallbackLoggerFormatterFuncRecord;
-  stringifiers: CallbackLoggerStringifierFuncRecord;
+export interface LogProcessorStaticConfig {
+  sanitizers: LogProcessorSanitizerFuncRecord;
+  formatters: LogProcessorFormatterFuncRecord;
+  stringifiers: LogProcessorStringifierFuncRecord;
 }
 
 type FormatterFunc = (v: unknown) => unknown;
 
 type StringifierFunc = (v: unknown) => unknown;
 
-type CallbackLoggerFormatterFuncRecord = Record<string, FormatterFunc>;
+type LogProcessorFormatterFuncRecord = Record<string, FormatterFunc>;
 
-type CallbackLoggerStringifierFuncRecord = Record<string, StringifierFunc>;
+type LogProcessorStringifierFuncRecord = Record<string, StringifierFunc>;
 
-type CallbackLoggerSanitizerFuncRecord = Record<string, SanitizerFunc>;
+type LogProcessorSanitizerFuncRecord = Record<string, SanitizerFunc>;
 
-export type CallbackLogDriverConfigureProps =
-  Partial<CallbackLogDriverStaticConfig>;
+export type LogProcessorConfigureProps = Partial<LogProcessorStaticConfig>;
 
 export type NewLogValueCallback = (value: any) => void;
 
-export interface CallbackLogDriverConstructorParams {
+export interface LogProcessorConstructorParams {
   name: string;
   sanitizer?: LogSanitizers | SanitizerFunc;
   formatter?: LogFormatters | FormatterFunc;

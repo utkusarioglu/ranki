@@ -2,7 +2,7 @@ import type {
   LogFormatters,
   LogSanitizers,
   LogStringifiers,
-} from "../utils/pipe/pipe.types.mjs";
+} from "../utils/log-processor/log-processor.types.mjs";
 
 export type FileBatchRawLogEntry = any;
 

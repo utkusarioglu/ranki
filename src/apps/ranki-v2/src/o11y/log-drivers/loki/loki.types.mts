@@ -1,4 +1,4 @@
-import type { LogSanitizers } from "../utils/pipe/pipe.types.mjs";
+import type { LogSanitizers } from "../utils/log-processor/log-processor.types.mjs";
 
 export interface LokiLog {
   streams: LokiLogStream[];

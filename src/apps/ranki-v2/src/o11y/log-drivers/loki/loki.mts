@@ -1,20 +1,20 @@
 import type { LokiLogValue } from "./loki.types.mjs";
 import type { LokiLogDriverConstructorParams } from "./loki.types.mjs";
 
-import { Scheduler } from "../utils/scheduler.utils.mjs";
+import { Scheduler } from "../utils/scheduler/scheduler.mjs";
 import { DEFAULT_LOKI_ENDPOINT } from "./loki.constants.mjs";
 import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
 import { LokiLogProcessor } from "./processor.mjs";
-import { PipeProcessor } from "../utils/pipe/pipe.mjs";
+import { LogProcessor } from "../utils/log-processor/log-processor.mjs";
 import type { LogRecord } from "@opentelemetry/api-logs";
 
 export class LokiLogDriver implements LogDriver {
   private endpoint: string = DEFAULT_LOKI_ENDPOINT;
   private readonly scheduler: Scheduler<LokiLogValue>;
-  private readonly pipe: PipeProcessor;
+  private readonly pipe: LogProcessor;
 
   constructor(params?: LokiLogDriverConstructorParams) {
-    this.pipe = new PipeProcessor({
+    this.pipe = new LogProcessor({
       name: "loki",
       sanitizer: "basicRepresentation",
       formatter: (v) => LokiLogProcessor.processLogValue(v as LogRecord),

@@ -6,12 +6,12 @@ import type { RankiO11yRuntimeProps } from "./o11y.types.mjs";
 import { RankiTracing } from "./trace/ranki-tracing.mjs";
 import { RankiDevMethods } from "_/dev/dev-methods.mjs";
 import yaml from "yaml";
-import { PipeProcessor } from "./log-drivers/utils/pipe/pipe.mjs";
+import { LogProcessor } from "./log-drivers/utils/log-processor/log-processor.mjs";
 import { objectSorter } from "./formatters/object-sorter.mjs";
-import { LogPrinter } from "./log-drivers/console-batch/LogPrinter.mjs";
+import { LogPrinter } from "./log-drivers/utils/log-printer/log-printer.mjs";
 import { consoleLogRow, yamlRow } from "./printers/printers.mjs";
 
-PipeProcessor.configure({
+LogProcessor.configure({
   sanitizers: {
     basicRepresentation,
   },

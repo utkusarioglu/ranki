@@ -2,7 +2,7 @@ import type { LogValue } from "_/o11y/log/ranki-logging.types.mjs";
 import type {
   LogFormatters,
   LogSanitizers,
-} from "../utils/pipe/pipe.types.mjs";
+} from "../utils/log-processor/log-processor.types.mjs";
 
 export type ConsoleBatchLogDriverConfigureProps =
   Partial<ConsoleBatchLogDriverStaticConfig>;

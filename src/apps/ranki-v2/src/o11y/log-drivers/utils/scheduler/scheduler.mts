@@ -1,4 +1,4 @@
-import { DEFAULT_SEND_INTERVAL } from "../loki/loki.constants.mjs";
+import { DEFAULT_SEND_INTERVAL } from "../../loki/loki.constants.mjs";
 
 export class Scheduler<T> {
   private interval = DEFAULT_SEND_INTERVAL;

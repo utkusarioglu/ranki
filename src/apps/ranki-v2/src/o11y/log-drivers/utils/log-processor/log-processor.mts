@@ -1,25 +1,25 @@
 import type { LogValue } from "_/o11y/log/ranki-logging.types.mjs";
 import type {
-  CallbackLogDriverConfigureProps,
-  CallbackLogDriverConstructorParams,
-  CallbackLogDriverStaticConfig,
+  LogProcessorConfigureProps,
+  LogProcessorConstructorParams,
+  LogProcessorStaticConfig,
   NewLogValueCallback,
-} from "./pipe.types.mjs";
+} from "./log-processor.types.mjs";
 import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
 
-export class PipeProcessor {
+export class LogProcessor {
   private readonly name: string;
   private sanitizerName: string = "none";
   private formatterName: string = "none";
   private stringifierName: string = "none";
-  private static config: CallbackLogDriverStaticConfig = {
+  private static config: LogProcessorStaticConfig = {
     sanitizers: { none: (v) => v },
     formatters: { none: (v) => v },
     stringifiers: { none: (v) => v },
   };
   private readonly callback: NewLogValueCallback;
 
-  public static configure(conf: CallbackLogDriverConfigureProps) {
+  public static configure(conf: LogProcessorConfigureProps) {
     this.config.sanitizers = { ...this.config.sanitizers, ...conf.sanitizers };
     this.config.formatters = { ...this.config.formatters, ...conf.formatters };
     this.config.stringifiers = {
@@ -28,7 +28,7 @@ export class PipeProcessor {
     };
   }
 
-  constructor(params: CallbackLogDriverConstructorParams) {
+  constructor(params: LogProcessorConstructorParams) {
     this.name = params.name;
     this.callback = params.callback;
     switch (typeof params.sanitizer) {
@@ -36,8 +36,8 @@ export class PipeProcessor {
         {
           const name = `${this.name}-provided`;
           this.sanitizerName = name;
-          PipeProcessor.config.sanitizers = {
-            ...PipeProcessor.config.sanitizers,
+          LogProcessor.config.sanitizers = {
+            ...LogProcessor.config.sanitizers,
             [name]: params.sanitizer,
           };
         }
@@ -58,8 +58,8 @@ export class PipeProcessor {
         {
           const name = `${this.name}-provided`;
           this.formatterName = name;
-          PipeProcessor.config.formatters = {
-            ...PipeProcessor.config.formatters,
+          LogProcessor.config.formatters = {
+            ...LogProcessor.config.formatters,
             [name]: params.formatter,
           };
         }
@@ -80,8 +80,8 @@ export class PipeProcessor {
         {
           const name = `${this.name}-provided`;
           this.stringifierName = name;
-          PipeProcessor.config.stringifiers = {
-            ...PipeProcessor.config.stringifiers,
+          LogProcessor.config.stringifiers = {
+            ...LogProcessor.config.stringifiers,
             [name]: params.stringifier,
           };
         }
@@ -100,11 +100,11 @@ export class PipeProcessor {
   }
 
   private getSanitizer() {
-    const sanitizer = PipeProcessor.config.sanitizers[this.sanitizerName];
+    const sanitizer = LogProcessor.config.sanitizers[this.sanitizerName];
     assertNotUndefined(sanitizer, {
       details: {
         printerName: this.sanitizerName,
-        printers: PipeProcessor.config.sanitizers,
+        printers: LogProcessor.config.sanitizers,
       },
       why: "undefined sanitizer",
     });
@@ -112,11 +112,11 @@ export class PipeProcessor {
   }
 
   private getFormatter() {
-    const formatter = PipeProcessor.config.formatters[this.formatterName];
+    const formatter = LogProcessor.config.formatters[this.formatterName];
     assertNotUndefined(formatter, {
       details: {
         printerName: this.formatterName,
-        printers: PipeProcessor.config.formatters,
+        printers: LogProcessor.config.formatters,
       },
       why: "undefined formatter",
     });
@@ -124,11 +124,11 @@ export class PipeProcessor {
   }
 
   private getStringifier() {
-    const stringifier = PipeProcessor.config.stringifiers[this.stringifierName];
+    const stringifier = LogProcessor.config.stringifiers[this.stringifierName];
     assertNotUndefined(stringifier, {
       details: {
         printerName: this.stringifierName,
-        printers: PipeProcessor.config.stringifiers,
+        printers: LogProcessor.config.stringifiers,
       },
       why: "undefined stringifier",
     });

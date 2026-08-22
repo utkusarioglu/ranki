@@ -1,20 +1,20 @@
 import type { LogDriver } from "_/o11y/log/ranki-logging.types.mjs";
-import { Scheduler } from "../utils/scheduler.utils.mjs";
+import { Scheduler } from "../utils/scheduler/scheduler.mjs";
 import type { PathLike } from "node:fs";
 import { FILE_BATCH_LOG_DRIVER_URL } from "./file-batch.constants.mjs";
 import type {
   FileBatchRawLogEntry,
   FileBatchLogDriverConstructorParams,
 } from "./file-batch.types.mjs";
-import { PipeProcessor } from "../utils/pipe/pipe.mjs";
+import { LogProcessor } from "../utils/log-processor/log-processor.mjs";
 
 export class FileBatchLogDriver implements LogDriver {
-  private readonly pipe: PipeProcessor;
+  private readonly pipe: LogProcessor;
   private readonly scheduler: Scheduler<FileBatchRawLogEntry>;
   private fileRelPath: PathLike;
 
   constructor(params?: FileBatchLogDriverConstructorParams) {
-    this.pipe = new PipeProcessor({
+    this.pipe = new LogProcessor({
       name: "fileBatch",
       sanitizer: params?.sanitizer,
       formatter: params?.formatter,
