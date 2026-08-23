@@ -5,6 +5,7 @@ import type { ConsoleBatchLogDriverConstructorParams } from "./console-batch.typ
 import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
 import { LogProcessor } from "../utils/log-processor/log-processor.mjs";
 import { LogPrinter } from "../utils/log-printer/log-printer.mjs";
+
 export class ConsoleBatchLogDriver implements LogDriver {
   private readonly pipe: LogProcessor;
   private readonly printer: LogPrinter;
@@ -13,7 +14,6 @@ export class ConsoleBatchLogDriver implements LogDriver {
 
   constructor(params?: ConsoleBatchLogDriverConstructorParams) {
     this.pipe = new LogProcessor({
-      name: "console",
       stringifier: "none",
       formatter: "none",
       sanitizer: params?.sanitizer || "none",

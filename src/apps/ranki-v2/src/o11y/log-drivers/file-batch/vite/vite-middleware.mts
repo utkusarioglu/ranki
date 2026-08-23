@@ -3,7 +3,6 @@ import path from "node:path";
 
 export function writeFileMiddleware(root: string) {
   return async (req: any, res: any, next: any) => {
-    console.log("run");
     if (req.method !== "POST") {
       next();
       return;

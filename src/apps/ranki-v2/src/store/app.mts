@@ -40,14 +40,16 @@ export const appStore = createStore(
   })),
 );
 
-appStore.subscribe(
-  (s) => s.state,
-  (state) => {
-    if (state !== null) {
-      createDevTools(state.dev);
-    }
-  },
-);
+if (import.meta.env.MODE === "observable") {
+  appStore.subscribe(
+    (s) => s.state,
+    (state) => {
+      if (state !== null) {
+        createDevTools(state.dev);
+      }
+    },
+  );
+}
 
 appStore.subscribe(
   (s) => s.config,

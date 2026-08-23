@@ -1,26 +1,46 @@
 import { DEFAULT_SEND_INTERVAL } from "../../loki/loki.constants.mjs";
+import type {
+  SchedulerOperation,
+  SchedulerConstructorParams,
+  SchedulerState,
+} from "./scheduler.types.mjs";
 
 export class Scheduler<T> {
   private interval = DEFAULT_SEND_INTERVAL;
-  private operation: (b: T[]) => Promise<void>;
+  private enabled: boolean = false;
+  private operation: SchedulerOperation;
   private queue: T[] = [];
   private sendOp: NodeJS.Timeout | undefined;
 
-  constructor(operation: (b: T[]) => Promise<void>, interval?: number) {
+  constructor(
+    operation: SchedulerOperation,
+    params?: SchedulerConstructorParams,
+  ) {
     this.operation = operation;
-    if (interval) this.interval = interval;
+    if (params) this.setState(params);
   }
 
   enqueue(item: T) {
     this.queue.push(item);
   }
 
-  start() {
+  setState(params: SchedulerState) {
+    if (params.interval) this.interval = params.interval;
+    this.enabled = params.enabled ? params.enabled : false;
+
+    if (this.enabled) {
+      this.start();
+    } else {
+      this.stop();
+    }
+  }
+
+  private start() {
     if (this.sendOp) return;
     this.sendOp = setInterval(() => this.task(), this.interval);
   }
 
-  stop() {
+  private stop() {
     if (!this.sendOp) return;
     clearInterval(this.sendOp);
   }

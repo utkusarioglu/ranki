@@ -8,7 +8,7 @@ import type {
 import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
 
 export class LogProcessor {
-  private readonly name: string;
+  private readonly id: string;
   private sanitizerName: string = "none";
   private formatterName: string = "none";
   private stringifierName: string = "none";
@@ -29,12 +29,12 @@ export class LogProcessor {
   }
 
   constructor(params: LogProcessorConstructorParams) {
-    this.name = params.name;
+    this.id = Math.random().toString();
     this.callback = params.callback;
     switch (typeof params.sanitizer) {
       case "function":
         {
-          const name = `${this.name}-provided`;
+          const name = `${this.id}-provided`;
           this.sanitizerName = name;
           LogProcessor.config.sanitizers = {
             ...LogProcessor.config.sanitizers,
@@ -56,7 +56,7 @@ export class LogProcessor {
     switch (typeof params.formatter) {
       case "function":
         {
-          const name = `${this.name}-provided`;
+          const name = `${this.id}-provided`;
           this.formatterName = name;
           LogProcessor.config.formatters = {
             ...LogProcessor.config.formatters,
@@ -78,7 +78,7 @@ export class LogProcessor {
     switch (typeof params.stringifier) {
       case "function":
         {
-          const name = `${this.name}-provided`;
+          const name = `${this.id}-provided`;
           this.stringifierName = name;
           LogProcessor.config.stringifiers = {
             ...LogProcessor.config.stringifiers,

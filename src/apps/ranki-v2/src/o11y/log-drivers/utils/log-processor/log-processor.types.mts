@@ -21,10 +21,9 @@ export type LogProcessorConfigureProps = Partial<LogProcessorStaticConfig>;
 export type NewLogValueCallback = (value: any) => void;
 
 export interface LogProcessorConstructorParams {
-  name: string;
-  sanitizer?: LogSanitizers | SanitizerFunc;
-  formatter?: LogFormatters | FormatterFunc;
-  stringifier?: LogStringifiers | StringifierFunc;
+  sanitizer: LogSanitizers | SanitizerFunc;
+  formatter: LogFormatters | FormatterFunc;
+  stringifier: LogStringifiers | StringifierFunc;
   callback: NewLogValueCallback;
 }
 

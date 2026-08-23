@@ -1,39 +1,38 @@
 import type { LokiLogValue } from "./loki.types.mjs";
 import type { LokiLogDriverConstructorParams } from "./loki.types.mjs";
 
-import { Scheduler } from "../utils/scheduler/scheduler.mjs";
 import { DEFAULT_LOKI_ENDPOINT } from "./loki.constants.mjs";
 import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
 import { LokiLogProcessor } from "./processor.mjs";
-import { LogProcessor } from "../utils/log-processor/log-processor.mjs";
 import type { LogRecord } from "@opentelemetry/api-logs";
+import { CallbackBatchLogDriver } from "../callback-batch/callback-batch.mjs";
 
 export class LokiLogDriver implements LogDriver {
+  private readonly back: CallbackBatchLogDriver;
   private endpoint: string = DEFAULT_LOKI_ENDPOINT;
-  private readonly scheduler: Scheduler<LokiLogValue>;
-  private readonly pipe: LogProcessor;
 
   constructor(params?: LokiLogDriverConstructorParams) {
-    this.pipe = new LogProcessor({
-      name: "loki",
-      sanitizer: "basicRepresentation",
-      formatter: (v) => LokiLogProcessor.processLogValue(v as LogRecord),
-      callback: (v) => this.scheduler.enqueue(v),
+    this.back = new CallbackBatchLogDriver(this.sender.bind(this), {
+      processor: {
+        sanitizer: "basicRepresentation",
+        stringifier: "none",
+        formatter: (v) => LokiLogProcessor.processLogValue(v as LogRecord),
+      },
+      scheduler: {
+        enabled: true,
+        interval: 1e4,
+        ...params?.scheduler,
+      },
     });
     if (params?.endpoint) this.endpoint = params.endpoint;
-    this.scheduler = new Scheduler(
-      (v) => this.sender(v),
-      params?.scheduler?.interval,
-    );
-    if (params?.scheduler?.enabled) this.scheduler.start();
   }
 
   public disable() {
-    this.scheduler.stop();
+    this.back.setSchedulerState({ enabled: false });
   }
 
   log(value: LogValue): void {
-    this.pipe.log(value);
+    this.back.log(value);
   }
 
   private async sender(v: LokiLogValue[]) {

@@ -1,31 +1,29 @@
 import type { LogDriver } from "_/o11y/log/ranki-logging.types.mjs";
-import { Scheduler } from "../utils/scheduler/scheduler.mjs";
 import type { PathLike } from "node:fs";
 import { FILE_BATCH_LOG_DRIVER_URL } from "./file-batch.constants.mjs";
 import type {
   FileBatchRawLogEntry,
   FileBatchLogDriverConstructorParams,
 } from "./file-batch.types.mjs";
-import { LogProcessor } from "../utils/log-processor/log-processor.mjs";
+import { CallbackBatchLogDriver } from "../callback-batch/callback-batch.mjs";
 
 export class FileBatchLogDriver implements LogDriver {
-  private readonly pipe: LogProcessor;
-  private readonly scheduler: Scheduler<FileBatchRawLogEntry>;
+  private readonly back: CallbackBatchLogDriver;
   private fileRelPath: PathLike;
 
   constructor(params?: FileBatchLogDriverConstructorParams) {
-    this.pipe = new LogProcessor({
-      name: "fileBatch",
-      sanitizer: params?.sanitizer,
-      formatter: params?.formatter,
-      stringifier: params?.stringifier,
-      callback: (v) => this.scheduler.enqueue(v),
+    this.back = new CallbackBatchLogDriver(this.pushToServer.bind(this), {
+      processor: {
+        sanitizer: params?.sanitizer || "none",
+        formatter: params?.formatter || "none",
+        stringifier: params?.stringifier || "none",
+      },
+      scheduler: {
+        enabled: true,
+        interval: 1e4,
+        ...params?.scheduler,
+      },
     });
-    this.scheduler = new Scheduler(
-      (v) => this.pushToServer(v),
-      params?.scheduler?.interval,
-    );
-    if (params?.scheduler?.enabled) this.scheduler.start();
     this.fileRelPath = params?.filePath || "debug.log";
   }
 
@@ -37,6 +35,6 @@ export class FileBatchLogDriver implements LogDriver {
   }
 
   log(value: FileBatchRawLogEntry): void {
-    this.pipe.log(value);
+    this.back.log(value);
   }
 }
