@@ -10,6 +10,20 @@ import { LogProcessor } from "./log-drivers/utils/log-processor/log-processor.mj
 import { objectSorter } from "./formatters/object-sorter.mjs";
 import { LogPrinter } from "./log-drivers/utils/log-printer/log-printer.mjs";
 import { consoleLogRow, yamlRow } from "./printers/printers.mjs";
+import { ConsoleBatchLogDriver } from "./log-drivers/console-batch/console-batch.mjs";
+import { FileBatchLogDriver } from "./log-drivers/file-batch/file-batch.mjs";
+import { LokiLogDriver } from "./log-drivers/loki/loki.mjs";
+
+RankiDebugging.addDrivers({
+  consoleBatch: ConsoleBatchLogDriver,
+  fileBatch: FileBatchLogDriver,
+});
+
+RankiLogging.addDrivers({
+  consoleBatch: ConsoleBatchLogDriver,
+  // fileBatch: FileBatchLogDriver,
+  loki: LokiLogDriver,
+});
 
 LogProcessor.configure({
   sanitizers: {

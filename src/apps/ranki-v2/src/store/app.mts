@@ -40,7 +40,7 @@ export const appStore = createStore(
   })),
 );
 
-if (import.meta.env.MODE === "observable") {
+if (import.meta.env.MODE === "development") {
   appStore.subscribe(
     (s) => s.state,
     (state) => {
