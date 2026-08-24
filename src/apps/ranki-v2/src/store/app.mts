@@ -9,8 +9,6 @@ import type {
 } from "_config/config.types.mjs";
 import { collectConfig } from "_config/config.mjs";
 import { createAppConfig } from "_config/app/app.mjs";
-import { createDevTools } from "_/dev/dev.mjs";
-import { WITH_DEV_TOOLS } from "_/variant.constants.mjs";
 
 interface AppState {
   epoch: number;
@@ -41,17 +39,17 @@ export const appStore = createStore(
   })),
 );
 
-if (import.meta.env.MODE === WITH_DEV_TOOLS) {
-  appStore.subscribe(
-    (s) => s.state,
-    (state) => {
-      if (state !== null) {
-        console.log("variant: devtools");
-        createDevTools(state.dev);
-      }
-    },
-  );
-}
+// if (import.meta.env.MODE === WITH_DEV_TOOLS) {
+//   appStore.subscribe(
+//     (s) => s.state,
+//     (state) => {
+//       if (state !== null) {
+//         console.log("variant: devtools");
+//         createDevTools(state.dev);
+//       }
+//     },
+//   );
+// }
 
 appStore.subscribe(
   (s) => s.config,

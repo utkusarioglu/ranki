@@ -14,7 +14,11 @@ export const TARGET_DIRS = [
   // DEMO_APP_DIST_COPY_PATH,
 ];
 
-export const TEMPLATE_FILE = "template.html";
+export const TEMPLATE_FILES = {
+  core: "template-core.html",
+  observable: "template-observable.html",
+  devtools: "template-devtools.html",
+};
 
 export const INCLUDE_FILES = ["_ranki2_user_config.yml"];
 

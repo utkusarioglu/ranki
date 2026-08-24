@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import url from "node:url";
 import path from "node:path";
 import babel from "@rollup/plugin-babel";
-import { OUT_DIR, TEMPLATE_FILE } from "./scripts/vite/vite.constants";
+import { OUT_DIR, TEMPLATE_FILES } from "./scripts/vite/vite.constants";
 import {
   cleanRankiTargets,
   copyArtifacts,
@@ -17,6 +17,15 @@ const viteConfigPath = url.fileURLToPath(import.meta.url);
 const packagePath = path.dirname(viteConfigPath);
 
 const PLUGINS_ROOT_PATH = path.resolve("../../plugins");
+
+const ROLLUP_INPUT = Object.fromEntries(
+  Object.entries(TEMPLATE_FILES).map(([key, filename]) => [
+    key,
+    path.resolve(packagePath, filename),
+  ]),
+);
+
+console.log(ROLLUP_INPUT);
 
 export default defineConfig(({ mode }) => ({
   esbuild: {
@@ -65,23 +74,17 @@ export default defineConfig(({ mode }) => ({
     outDir: OUT_DIR,
     assetsDir: ".",
     rollupOptions: {
-      input: {
-        main: path.resolve(packagePath, TEMPLATE_FILE),
-      },
+      input: ROLLUP_INPUT,
       output: {
-        format: "es",
-        entryFileNames: ["_ranki2", mode !== "production" && mode, "js"]
-          .filter((v) => !!v)
-          .join("."),
+        entryFileNames: (entry) => {
+          return ["_ranki2", entry.name, "js"].filter((v) => !!v).join(".");
+        },
         chunkFileNames: (chunkInfo) => {
           const name = chunkInfo.name.replaceAll("-", "_");
-          if (chunkInfo.name.includes("index")) console.log(chunkInfo);
-          return `_ranki2__${name}.js`;
-        },
-        manualChunks(id) {
-          if (id.includes("@phosphor-icons")) {
-            return "icons";
+          if (chunkInfo.name.includes("index")) {
+            console.log("index chunk:", chunkInfo);
           }
+          return `_ranki2__${name}.js`;
         },
         assetFileNames: (assetInfo) => {
           if (assetInfo.name!.endsWith("css")) {
@@ -90,7 +93,7 @@ export default defineConfig(({ mode }) => ({
           if (assetInfo.name!.endsWith("html")) {
             return "_ranki2.html";
           }
-          return "_ranki2__" + assetInfo.name!;
+          return "_ranki2_" + assetInfo.name!;
         },
       },
     },

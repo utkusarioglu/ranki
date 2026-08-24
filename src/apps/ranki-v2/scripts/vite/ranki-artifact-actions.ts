@@ -11,7 +11,7 @@ import {
   OUT_DIR,
   PAD,
   TARGET_DIRS,
-  TEMPLATE_FILE,
+  TEMPLATE_FILES,
 } from "./vite.constants";
 
 function title(t: string) {
@@ -62,7 +62,8 @@ export function copyArtifacts() {
       if (
         !file.name.startsWith("_ranki2") &&
         !INCLUDE_FILES.includes(file.name) &&
-        file.name !== TEMPLATE_FILE
+        !Object.values(TEMPLATE_FILES).includes(file.name)
+        // file.name !== TEMPLATE_FILES
       ) {
         console.log(chalk.gray("Ignoring:".padEnd(PAD)), file.name);
         continue;
@@ -87,7 +88,7 @@ export function copyArtifacts() {
 
 export function displayTemplate() {
   return new Promise<void>((resolve, reject) => {
-    const templateHtml = path.join(OUT_DIR, TEMPLATE_FILE);
+    const templateHtml = path.join(OUT_DIR, TEMPLATE_FILES.core);
 
     title(" TEMPLATES ");
 
