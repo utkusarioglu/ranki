@@ -39,18 +39,6 @@ export const appStore = createStore(
   })),
 );
 
-// if (import.meta.env.MODE === WITH_DEV_TOOLS) {
-//   appStore.subscribe(
-//     (s) => s.state,
-//     (state) => {
-//       if (state !== null) {
-//         console.log("variant: devtools");
-//         createDevTools(state.dev);
-//       }
-//     },
-//   );
-// }
-
 appStore.subscribe(
   (s) => s.config,
   (config) => {

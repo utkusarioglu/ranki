@@ -6,7 +6,7 @@ import { OUT_DIR, TEMPLATE_FILES } from "./scripts/vite/vite.constants";
 import {
   cleanRankiTargets,
   copyArtifacts,
-  displayTemplate,
+  displayTemplates,
   rankiArtifactActions,
 } from "./scripts/vite/ranki-artifact-actions";
 import tsConfigPaths from "vite-tsconfig-paths";
@@ -51,7 +51,7 @@ export default defineConfig(({ mode }) => ({
     rankiArtifactActions([
       // cleanRankiTargets,
       // copyArtifacts,
-      displayTemplate,
+      displayTemplates,
     ]),
     fileBatchLogDriverVitePlugin("./.log"),
     extraPublicDirs(PLUGINS_ROOT_PATH),
@@ -69,8 +69,14 @@ export default defineConfig(({ mode }) => ({
         },
         chunkFileNames: (chunkInfo) => {
           const name = chunkInfo.name.replaceAll("-", "_");
-          if (chunkInfo.name.includes("index")) {
-            console.log("index chunk:", chunkInfo);
+          // if (chunkInfo.name.includes("index")) {
+          //   console.log("index chunk:", chunkInfo);
+          // }
+          if (chunkInfo.name === "core") {
+            return "_ranki2.js";
+          }
+          if (chunkInfo.name === "o11y.enable") {
+            return "_ranki2.o11y.js";
           }
           return `_ranki2__${name}.js`;
         },

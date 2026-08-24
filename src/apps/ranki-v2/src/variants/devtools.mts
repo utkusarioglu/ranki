@@ -1,2 +1,3 @@
 import "./observable.mjs";
-import "../dev/dev.mjs";
+import "../devtools/devtools.mjs";
+import "../devtools/subscribe.mjs";

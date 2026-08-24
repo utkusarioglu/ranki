@@ -14,15 +14,21 @@ import {
   TEMPLATE_FILES,
 } from "./vite.constants";
 
-function title(t: string) {
+function heading1(t: string) {
   console.log("");
   console.log(chalk.black.bgGreen.bold(t.toUpperCase()));
   console.log("");
 }
 
+function heading2(t: string) {
+  console.log("");
+  console.log(chalk.black.bgYellow.bold(t));
+  console.log("");
+}
+
 export function cleanRankiTargets() {
   return new Promise<void>((resolve, reject) => {
-    title(" CLEAN TARGETS ");
+    heading1(" CLEAN TARGETS ");
 
     const RM_DIRS = [DEMO_APP_DEV_COPY_PATH, DEMO_APP_DIST_COPY_PATH];
 
@@ -54,7 +60,7 @@ const targetPath =
 
 export function copyArtifacts() {
   return new Promise<void>((r) => {
-    title(" COPY TO TARGETS ");
+    heading1(" COPY TO TARGETS ");
     console.log([chalk.gray("Target Path:".padEnd(PAD)), targetPath].join(" "));
 
     const files = fs.readdirSync(OUT_DIR, { withFileTypes: true });
@@ -86,44 +92,79 @@ export function copyArtifacts() {
   });
 }
 
-export function displayTemplate() {
+function displayTemplate(name: string, templateHtml: string) {
+  // const templateHtml = path.join(OUT_DIR, TEMPLATE_FILES.devtools);
+  heading2(" " + name + " ");
+
+  try {
+    const templates = [
+      {
+        displayName: "FRONT",
+        fieldValue: "Q",
+      },
+      {
+        displayName: "BACK",
+        fieldValue: "N",
+      },
+    ]
+      .map((side) =>
+        [
+          chalk.gray(`<!-- ${side.displayName} TEMPLATE -->`),
+          fs
+            .readFileSync(templateHtml)
+            .toString()
+            .replace("{{FACE}}", side.fieldValue)
+            .replace("{{TEMPLATE_CONFIG}}", "# Place your template config here")
+            .replace("{{STORAGE_CONFIG}}", "/_ranki2_user_config.yml"),
+        ].join("\n"),
+      )
+      .join("\n");
+    console.log(templates);
+  } catch (e) {
+    // console.log(e);
+  }
+}
+
+export function displayTemplates() {
   return new Promise<void>((resolve, reject) => {
-    const templateHtml = path.join(OUT_DIR, TEMPLATE_FILES.devtools);
-
-    title(" TEMPLATES ");
-
-    try {
-      const templates = [
-        {
-          displayName: "FRONT",
-          fieldValue: "Q",
-        },
-        {
-          displayName: "BACK",
-          fieldValue: "N",
-        },
-      ]
-        .map((side) =>
-          [
-            chalk.gray(`<!-- ${side.displayName} TEMPLATE -->`),
-            fs
-              .readFileSync(templateHtml)
-              .toString()
-              .replace("{{FACE}}", side.fieldValue)
-              .replace(
-                "{{TEMPLATE_CONFIG}}",
-                "# Place your template config here",
-              )
-              .replace("{{STORAGE_CONFIG}}", "/_ranki2_user_config.yml"),
-          ].join("\n"),
-        )
-        .join("\n\n");
-      console.log(templates);
-      resolve();
-    } catch (e) {
-      // console.log(e);
-      reject(e);
-    }
+    heading1(" TEMPLATES ");
+    Object.entries(TEMPLATE_FILES).forEach(([name, templatePath]) => {
+      const templateHtml = path.join(OUT_DIR, templatePath);
+      displayTemplate(name, templateHtml);
+    });
+    resolve();
+    // try {
+    //   const templates = [
+    //     {
+    //       displayName: "FRONT",
+    //       fieldValue: "Q",
+    //     },
+    //     {
+    //       displayName: "BACK",
+    //       fieldValue: "N",
+    //     },
+    //   ]
+    //     .map((side) =>
+    //       [
+    //         chalk.gray(`<!-- ${side.displayName} TEMPLATE -->`),
+    //         fs
+    //           .readFileSync(templateHtml)
+    //           .toString()
+    //           .replace("{{FACE}}", side.fieldValue)
+    //           .replace(
+    //             "{{TEMPLATE_CONFIG}}",
+    //             "# Place your template config here",
+    //           )
+    //           .replace("{{STORAGE_CONFIG}}", "/_ranki2_user_config.yml"),
+    //       ].join("\n"),
+    //     )
+    //     .join("\n\n");
+    //   console.log(templates);
+    //   resolve();
+    // } catch (e) {
+    // console.log(e);
+    // reject(e);
+    // }
   });
 }
 
