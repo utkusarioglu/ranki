@@ -1,27 +1,13 @@
-async function main() {
-  await import("./error/listeners.mjs");
-  await import("./config.mjs");
-  await import("_components/registry.mjs");
-  if (!document.querySelector("r2-app")) {
-    document.body.appendChild(document.createElement("r2-app"));
-  }
-}
+import { WITH_DEV_TOOLS, WITH_O11Y } from "./variant.constants.mjs";
 
-if (import.meta.env.MODE === "development") {
+if (
+  import.meta.env.MODE === WITH_DEV_TOOLS ||
+  import.meta.env.MODE === WITH_O11Y
+) {
   await import("./o11y/o11y.mjs");
-  await main();
-} else {
-  main();
 }
 
-// if (import.meta.env.MODE === "development") {
-//   await import("./o11y/o11y.mjs");
-// }
-// import "./o11y/o11y.mjs";
-// import "./error/listeners.mjs";
-// import "./config.mjs";
-// import "_components/registry.mjs";
+await import("./core.mjs");
 
-// if (!document.querySelector("r2-app")) {
-//   document.body.appendChild(document.createElement("r2-app"));
-// }
+// import "./o11y/o11y.mjs";
+// import "./core.mjs";

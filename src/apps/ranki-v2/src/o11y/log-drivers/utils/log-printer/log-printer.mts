@@ -1,10 +1,12 @@
 import type { LogRecord } from "@opentelemetry/api-logs";
 import { assertNotUndefined } from "_error/assertions.mjs";
-import type { ConsoleBatchLogDriverStaticConfig } from "../../console-batch/console-batch.types.mjs";
+import type { ConsoleBatchLoggerPrinterFuncRecord } from "../../console-batch/console-batch.types.mjs";
 
 interface LogPrinterConstructorParams {
   printer?: string;
 }
+
+type LogPrinterStaticConfig = ConsoleBatchLoggerPrinterFuncRecord;
 
 export class LogPrinter {
   private printerName: string = "default";
@@ -13,14 +15,12 @@ export class LogPrinter {
     if (params?.printer) this.printerName = params.printer;
   }
 
-  private static config: ConsoleBatchLogDriverStaticConfig = {
-    printers: {
-      default: (v) => console.log(v),
-    },
+  private static printers: LogPrinterStaticConfig = {
+    default: (v) => console.log(v),
   };
 
-  static configure(conf: ConsoleBatchLogDriverStaticConfig) {
-    this.config.printers = { ...this.config.printers, ...conf.printers };
+  static configure(printers: ConsoleBatchLoggerPrinterFuncRecord) {
+    this.printers = { ...this.printers, ...printers };
   }
 
   print(values: LogRecord[], timestamp: number) {
@@ -29,11 +29,11 @@ export class LogPrinter {
   }
 
   private getPrinter() {
-    const printer = LogPrinter.config.printers[this.printerName];
+    const printer = LogPrinter.printers[this.printerName];
     assertNotUndefined(printer, {
       details: {
         printerName: this.printerName,
-        printers: LogPrinter.config.printers,
+        printers: LogPrinter.printers.printers,
       },
       why: "undefined printer",
     });

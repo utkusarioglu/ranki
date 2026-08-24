@@ -2,7 +2,10 @@ import { RankiDebugging } from "./debug/ranki-debugging.mjs";
 import { basicRepresentation } from "./sanitizers/sorted-stringified.mjs";
 import { RankiLogging } from "./log/ranki-logging.mjs";
 import { RankiMetering } from "./meter/ranki-metering.mjs";
-import type { RankiO11yRuntimeProps } from "./o11y.types.mjs";
+import type {
+  RankiO11yRuntimeProps,
+  RankiO11yStaticConfiguration,
+} from "./o11y.types.mjs";
 import { RankiTracing } from "./trace/ranki-tracing.mjs";
 import { RankiDevMethods } from "_/dev/dev-methods.mjs";
 import yaml from "yaml";
@@ -13,38 +16,6 @@ import { consoleLogRow, yamlRow } from "./printers/printers.mjs";
 import { ConsoleBatchLogDriver } from "./log-drivers/console-batch/console-batch.mjs";
 import { FileBatchLogDriver } from "./log-drivers/file-batch/file-batch.mjs";
 import { LokiLogDriver } from "./log-drivers/loki/loki.mjs";
-
-RankiDebugging.addDrivers({
-  consoleBatch: ConsoleBatchLogDriver,
-  fileBatch: FileBatchLogDriver,
-});
-
-RankiLogging.addDrivers({
-  consoleBatch: ConsoleBatchLogDriver,
-  // fileBatch: FileBatchLogDriver,
-  loki: LokiLogDriver,
-});
-
-LogProcessor.configure({
-  sanitizers: {
-    basicRepresentation,
-  },
-  formatters: {
-    objectSorter,
-  },
-  stringifiers: {
-    jsonOneLine: (v) => JSON.stringify(v),
-    jsonMultiLine: (v) => JSON.stringify(v, null, 2),
-    yaml: (v) => yaml.stringify(v),
-  },
-});
-
-LogPrinter.configure({
-  printers: {
-    yamlRow,
-    consoleLogRow,
-  },
-});
 
 export class RankiO11y {
   public static readonly log = RankiLogging;
@@ -67,7 +38,47 @@ export class RankiO11y {
       debug: this.debug.getConsoleAccess(),
     };
   }
+
+  public static configure(r: RankiO11yStaticConfiguration) {
+    RankiDebugging.configure(r.debug);
+    RankiLogging.configure(r.log);
+    LogProcessor.configure(r.processors);
+    LogPrinter.configure(r.printers);
+  }
 }
+
+RankiO11y.configure({
+  debug: {
+    drivers: {
+      consoleBatch: ConsoleBatchLogDriver,
+      fileBatch: FileBatchLogDriver,
+    },
+  },
+  log: {
+    drivers: {
+      consoleBatch: ConsoleBatchLogDriver,
+      fileBatch: FileBatchLogDriver,
+      loki: LokiLogDriver,
+    },
+  },
+  processors: {
+    sanitizers: {
+      basicRepresentation,
+    },
+    formatters: {
+      objectSorter,
+    },
+    stringifiers: {
+      jsonOneLine: (v) => JSON.stringify(v),
+      jsonMultiLine: (v) => JSON.stringify(v, null, 2),
+      yaml: (v) => yaml.stringify(v),
+    },
+  },
+  printers: {
+    yamlRow,
+    consoleLogRow,
+  },
+});
 
 // remember to turn off geometry observability if you turn this off. the logistics of getting state over there hasn't been implemented
 RankiO11y.enable({
@@ -95,6 +106,15 @@ RankiO11y.enable({
         printer: "yamlRow",
         formatter: "objectSorter",
       },
+      // fileBatch: {
+      //   filePath: "log.log",
+      //   stringifier: "jsonOneLine",
+      //   sanitizer: "basicRepresentation",
+      //   scheduler: {
+      //     enabled: true,
+      //     interval: 5000,
+      //   },
+      // },
       loki: {
         endpoint: "http://localhost:8080/loki/loki/api/v1/push",
         sanitizer: "basicRepresentation",

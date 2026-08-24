@@ -60,6 +60,7 @@ export default defineConfig(({ mode }) => ({
     extraPublicDirs(PLUGINS_ROOT_PATH),
   ],
   build: {
+    target: "esnext",
     minify: true,
     outDir: OUT_DIR,
     assetsDir: ".",
@@ -74,6 +75,7 @@ export default defineConfig(({ mode }) => ({
           .join("."),
         chunkFileNames: (chunkInfo) => {
           const name = chunkInfo.name.replaceAll("-", "_");
+          if (chunkInfo.name.includes("index")) console.log(chunkInfo);
           return `_ranki2__${name}.js`;
         },
         manualChunks(id) {

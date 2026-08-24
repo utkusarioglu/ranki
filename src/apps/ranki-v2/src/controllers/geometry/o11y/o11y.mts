@@ -48,7 +48,6 @@ export class O11y<T extends EmptyClass> {
         conf.metrics?.enabled || O11y.STATIC_CONFIG.metricsEnabled,
       traceEnabled: conf.trace?.enabled || O11y.STATIC_CONFIG.traceEnabled,
     };
-    // if (conf.log) O11yLogger.configure(conf.log);
     if (conf.debug) O11yDebugger.configure(conf.debug);
   }
 }
