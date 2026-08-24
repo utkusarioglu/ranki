@@ -1,4 +1,4 @@
-import { appStore } from "_store/app.mjs";
+import { appStore } from "_store/app/app.mjs";
 import { createDevTools } from "./devtools.mjs";
 
 const devState = appStore.getState().state?.dev;

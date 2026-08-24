@@ -1,4 +1,5 @@
-import { appStore, type AnkiStore } from "_store/app.mjs";
+import { appStore } from "_store/app/app.mjs";
+import { type AnkiStore } from "_store/app/app.types.mjs";
 import type { ReactiveController, ReactiveControllerHost } from "lit";
 
 export type StoreAdapter<S, T> = (curr: S, prev: T | undefined) => T;

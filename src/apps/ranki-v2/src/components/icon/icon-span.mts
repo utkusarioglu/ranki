@@ -11,7 +11,7 @@ import {
   geometry,
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
-import { getAnimationCollection } from "_store/app.getters.mjs";
+import { getAnimationCollection } from "_store/app/app.getters.mjs";
 
 @customElement("r2-icon-span")
 export class R2IconSpan extends R2C {

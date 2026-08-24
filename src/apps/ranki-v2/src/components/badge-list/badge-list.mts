@@ -15,7 +15,7 @@ import { customElement, query, queryAll } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
 import style from "./badge-list.css?inline";
-import { getAnimationCollection } from "_store/app.getters.mjs";
+import { getAnimationCollection } from "_store/app/app.getters.mjs";
 
 type R2BadgeListState = HudTagListItem;
 

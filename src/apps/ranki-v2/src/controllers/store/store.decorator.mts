@@ -1,4 +1,4 @@
-import type { AnkiStore } from "_store/app.mjs";
+import type { AnkiStore } from "_store/app/app.types.mjs";
 import type { ReactiveElement } from "lit";
 import { type StoreAdapter, StoreController } from "./store.controller.mjs";
 import { O11y } from "_controllers/geometry/o11y/o11y.mjs";

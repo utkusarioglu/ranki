@@ -9,7 +9,7 @@ import {
   geometry,
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
-import { getAnimationCollection } from "_store/app.getters.mjs";
+import { getAnimationCollection } from "_store/app/app.getters.mjs";
 
 @customElement("r2-text-span")
 export class R2TextSpan extends R2C {

@@ -12,7 +12,7 @@ import {
   geometry,
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
-import { getAnimationCollection } from "_store/app.getters.mjs";
+import { getAnimationCollection } from "_store/app/app.getters.mjs";
 
 export interface R2IconProps {
   animation: RankiPropAnimationBlock;
