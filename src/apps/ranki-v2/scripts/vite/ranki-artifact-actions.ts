@@ -88,7 +88,7 @@ export function copyArtifacts() {
 
 export function displayTemplate() {
   return new Promise<void>((resolve, reject) => {
-    const templateHtml = path.join(OUT_DIR, TEMPLATE_FILES.core);
+    const templateHtml = path.join(OUT_DIR, TEMPLATE_FILES.devtools);
 
     title(" TEMPLATES ");
 

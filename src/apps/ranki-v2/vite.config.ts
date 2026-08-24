@@ -25,8 +25,6 @@ const ROLLUP_INPUT = Object.fromEntries(
   ]),
 );
 
-console.log(ROLLUP_INPUT);
-
 export default defineConfig(({ mode }) => ({
   esbuild: {
     keepNames: true,
@@ -37,16 +35,6 @@ export default defineConfig(({ mode }) => ({
     watch: {
       usePolling: true,
     },
-    // proxy: {
-    // "/loki": {
-    //   target: "http://loki:3100",
-    //   changeOrigin: true,
-    // },
-    // "/api/v1/otlp": {
-    //   target: "http://prometheus:9090",
-    //   changeOrigin: true,
-    // },
-    // },
   },
   preview: {
     host: true,
