@@ -3,7 +3,6 @@ import { appStore } from "./app.mjs";
 import type { RawFields } from "_collect/collect.types.mjs";
 import { collectConfig } from "_config/config.mjs";
 import { collectRaw } from "_collect/collect.mjs";
-import { onReady, shouldRender } from "_/bootstrap/startup.mjs";
 
 appStore.subscribe(
   (s) => s.config,
@@ -30,11 +29,3 @@ appStore.subscribe(
     appStore.setState({ raw });
   },
 );
-
-onReady(() => {
-  const should = shouldRender();
-  appStore.setState({
-    epoch: Date.now(),
-    shouldRender: should,
-  });
-});

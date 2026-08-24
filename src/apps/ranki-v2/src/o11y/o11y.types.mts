@@ -1,3 +1,4 @@
+import type { DebugLogDriver } from "_controllers/geometry/o11y/debug/debug.types.mjs";
 import type {
   RankiDebuggingRuntimeProps,
   RankiDebuggingStaticConfiguration,
@@ -5,6 +6,7 @@ import type {
 import type { ConsoleBatchLoggerPrinterFuncRecord } from "./log-drivers/console-batch/console-batch.types.mjs";
 import type { LogProcessorConfigureProps } from "./log-drivers/utils/log-processor/log-processor.types.mjs";
 import type {
+  LogDriver,
   RankiLogRuntimeProps,
   RankiLoggingStaticConfiguration,
 } from "./log/ranki-logging.types.mjs";
@@ -23,4 +25,9 @@ export interface RankiO11yStaticConfiguration {
   log: RankiLoggingStaticConfiguration;
   processors: LogProcessorConfigureProps;
   printers: ConsoleBatchLoggerPrinterFuncRecord;
+}
+
+export interface RankiO11yConsoleAccess {
+  log: LogDriver | undefined;
+  debug: DebugLogDriver | undefined;
 }

@@ -2,6 +2,7 @@ import { RankiDebugging } from "./debug/ranki-debugging.mjs";
 import { RankiLogging } from "./log/ranki-logging.mjs";
 import { RankiMetering } from "./meter/ranki-metering.mjs";
 import type {
+  RankiO11yConsoleAccess,
   RankiO11yRuntimeProps,
   RankiO11yStaticConfiguration,
 } from "./o11y.types.mjs";
@@ -16,13 +17,14 @@ export class RankiO11y {
   public static readonly debug = RankiDebugging;
 
   public static enable(props: RankiO11yRuntimeProps) {
+    console.log("Ranki Observability enabled");
     this.debug.enable(props.debug);
     this.log.enable(props.log);
     this.trace.enable(props.trace);
     this.meter.enable(props.meter);
   }
 
-  public static getConsoleAccess() {
+  public static getConsoleAccess(): RankiO11yConsoleAccess {
     return {
       log: this.log.getConsoleAccess(),
       debug: this.debug.getConsoleAccess(),
