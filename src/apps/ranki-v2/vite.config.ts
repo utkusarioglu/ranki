@@ -57,6 +57,7 @@ export default defineConfig(({ mode }) => ({
     extraPublicDirs(PLUGINS_ROOT_PATH),
   ],
   build: {
+    modulePreload: false,
     target: "esnext",
     minify: true,
     outDir: OUT_DIR,
