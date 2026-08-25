@@ -1,6 +1,6 @@
 import type { DqmConfigPackEntryPartial } from "@dqm/package-dqm-v2";
 
-export const DQM_BASE_CONFIG: DqmConfigPackEntryPartial = {
+export const BASE_DQM_CONFIG: DqmConfigPackEntryPartial = {
   id: "pluginSelectionConfig",
   config: {
     plugins: {

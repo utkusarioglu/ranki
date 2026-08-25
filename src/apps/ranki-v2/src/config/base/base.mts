@@ -17,7 +17,7 @@ import type {
   RankiTags,
 } from "_collect/collect.types.mjs";
 import { checkIfMatch } from "./determine.mjs";
-import { FLAG_COLOR_ORDER } from "_config/init/anki.constants.mjs";
+import { FLAG_COLOR_ORDER } from "_/anki.constants.mjs";
 import { assertNever } from "_error/assertions.mjs";
 
 // TODO maybe os, scheme, dir, env types could be considered here as well.

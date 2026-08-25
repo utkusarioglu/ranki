@@ -208,6 +208,8 @@ export interface RankiDevToolsConfig {
   methods: boolean;
 }
 
+export type RankiBaseConfigFlags = Record<AnkiFlagColors, CueConfig>;
+
 export interface RankiBaseConfig {
   // TODO you need deck address stripping and hiding here
   faces: Record<AnkiCardFace, CardFaceArray>;
@@ -215,8 +217,9 @@ export interface RankiBaseConfig {
   dev: RankiDevToolsConfig;
 
   palettes: PaletteSpecs[];
+  animations: GeometryAnimationPresetDict;
   indicators: RankiIndicatorDefinition[];
-  flags: Record<AnkiFlagColors, CueConfig>;
+  flags: RankiBaseConfigFlags;
   tags: {
     ranki: {
       prefix: RankiTagPrefix;
@@ -245,10 +248,12 @@ export interface RankiChannelsConfig {
   cards: DeckSettings[];
   types: DeckSettings[];
   faces: DeckSettings[];
-  flags: Record<AnkiFlagColors, DeckCommonSettings>;
+  flags: RankiFlags;
   tags: DeckSettings[];
   always: DeckAlwaysSettings[];
 }
+
+export type RankiFlags = Record<AnkiFlagColors, DeckCommonSettings>;
 
 export type RankiAppDeterminedScheme = "light" | "dark";
 

@@ -16,7 +16,7 @@ import {
   INPUT_TYPE_CLASS_SELECTOR,
   RENDERED_CLASS_SELECTOR,
 } from "../selector.constants.mjs";
-import { FLAG_COLOR_ORDER } from "_config/init/anki.constants.mjs";
+import { FLAG_COLOR_ORDER } from "_/anki.constants.mjs";
 import type { AnkiFlagColors } from "_config/config.types.mjs";
 
 export class RankiDevAnkiMethods {

@@ -2,7 +2,7 @@ import {
   ANKI_DECK_SEPARATOR,
   GLOB_MULTI,
   GLOB_SINGLE,
-} from "_config/init/config.constants.mjs";
+} from "_config/config.constants.mjs";
 
 // ANKI
 /**
