@@ -1,95 +1,64 @@
 import type {
-  RankiBaseConfig,
-  RankiPalette,
   RankiAppTheme,
-  RankiTagPrefix,
+  RankiBaseConfig,
   RankiIndicatorName,
+  RankiPalette,
+  RankiTagPrefix,
 } from "_config/config.types.mjs";
-import { BASE_FLAGS } from "./BASE_FLAGS.mjs";
+
 import { NONE_TOKEN } from "../../config.constants.mjs";
-import { BASE_DQM_CONFIG } from "./BASE_DQM_CONFIG.mjs";
-import { BASE_INDICATORS } from "./BASE_INDICATORS.mjs";
 import { BASE_ANIMATIONS } from "./BASE_ANIMATIONS.mjs";
+import { BASE_DQM_CONFIG } from "./BASE_DQM_CONFIG.mjs";
+import { BASE_FLAGS } from "./BASE_FLAGS.mjs";
+import { BASE_INDICATORS } from "./BASE_INDICATORS.mjs";
 
 export const BASE: RankiBaseConfig = {
-  faces: {
-    Q: [],
-    N: [],
-  },
-  dev: {
-    throw: false,
-    persist: false,
-    methods: false,
-  },
   address: {
+    segments: [],
     tokens: {
-      separator: "::",
       hide: "•",
+      separator: "::",
       trim: "⨯",
     },
-    segments: [],
   },
+  animations: BASE_ANIMATIONS,
   design: {
     animation: {
+      challenge: {
+        duration: 4e2,
+        enabled: true,
+        preset: "default",
+      },
       enabled: true,
       // preset: "default",
       // duration: 4e2,
       // TODO this needs to go. it's used in indicator (at least)
       fade: "2s",
       hud: {
+        duration: 4e2,
         enabled: true,
         preset: "default",
-        duration: 4e2,
-      },
-      challenge: {
-        enabled: true,
-        preset: "default",
-        duration: 4e2,
       },
       indicator: {
+        duration: 4e2,
         enabled: true,
         preset: "default",
-        duration: 4e2,
       },
     },
-    scheme: "system",
-    palette: "generated-default" as RankiPalette,
-    theme: "utku" as RankiAppTheme,
     layout: "row",
+    palette: "generated-default" as RankiPalette,
+    scheme: "system",
+    theme: "utku" as RankiAppTheme,
   },
-  indicators: BASE_INDICATORS,
-  palettes: [
-    {
-      name: "generated-default",
-      hues: {
-        red: 0,
-        orange: 40,
-        yellow: 55,
-        green: 130,
-        turquoise: 170,
-        blue: 210,
-        purple: 270,
-        magenta: 320,
-      },
-      lightness: [15, 20, 30, 60, 70, 80],
-      saturation: [70, 70, 70, 70, 70, 70],
-    },
-  ],
-  animations: BASE_ANIMATIONS,
-  tags: {
-    ranki: {
-      prefix: "+r:" as RankiTagPrefix,
-      hide: true,
-    },
-    marked: {
-      message: {
-        text: "Study",
-      },
-      background: {
-        color: "blue-2",
-      },
-      indicator: NONE_TOKEN as RankiIndicatorName,
-    },
+  dev: {
+    methods: false,
+    persist: false,
+    throw: false,
+  },
+  dqm: [BASE_DQM_CONFIG],
+  faces: {
+    N: [],
+    Q: [],
   },
   flags: BASE_FLAGS,
   hud: {
@@ -97,5 +66,37 @@ export const BASE: RankiBaseConfig = {
     // order: ["notify", "cues", "address", "template"],
     visibility: "visible",
   },
-  dqm: [BASE_DQM_CONFIG],
+  indicators: BASE_INDICATORS,
+  palettes: [
+    {
+      hues: {
+        blue: 210,
+        green: 130,
+        magenta: 320,
+        orange: 40,
+        purple: 270,
+        red: 0,
+        turquoise: 170,
+        yellow: 55,
+      },
+      lightness: [15, 20, 30, 60, 70, 80],
+      name: "generated-default",
+      saturation: [70, 70, 70, 70, 70, 70],
+    },
+  ],
+  tags: {
+    marked: {
+      background: {
+        color: "blue-2",
+      },
+      indicator: NONE_TOKEN as RankiIndicatorName,
+      message: {
+        text: "Study",
+      },
+    },
+    ranki: {
+      hide: true,
+      prefix: "+r:" as RankiTagPrefix,
+    },
+  },
 };

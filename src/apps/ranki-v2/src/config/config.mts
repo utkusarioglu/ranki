@@ -1,6 +1,3 @@
-import type { RankiCollectedConfig, RankiTagPrefix } from "./config.types.mjs";
-import { buildChannelsConfig } from "./channels/channels.mjs";
-import { buildBaseConfig } from "./base/base.mjs";
 import type {
   AnkiMarked,
   AnkiNeutralTags,
@@ -10,6 +7,11 @@ import type {
   RankiTags,
   RawFields,
 } from "_/collect/collect.types.mjs";
+
+import type { RankiCollectedConfig, RankiTagPrefix } from "./config.types.mjs";
+
+import { buildBaseConfig } from "./base/base.mjs";
+import { buildChannelsConfig } from "./channels/channels.mjs";
 
 export function collectConfig(raw: RawFields): RankiCollectedConfig {
   const channels = buildChannelsConfig(raw);
@@ -38,5 +40,5 @@ function groupTags(
       neutral.push(t as AnkiRawTag);
     }
   });
-  return { neutral, ranki, marked };
+  return { marked, neutral, ranki };
 }

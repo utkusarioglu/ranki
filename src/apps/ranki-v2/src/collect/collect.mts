@@ -1,77 +1,102 @@
-import type {
-  AnkiTemplateFields,
-  CollectedConfig,
-  CollectedHtmlTagAttributes,
-  RawFields,
-  HtmlAttrDir,
-  HtmlAttrTheme,
-  RankiFaces,
-  HtmlTagOs,
-  HtmlTagEnv,
-  CollectedWebviewType,
-  CollectedConfigEntry,
-} from "./collect.types.mjs";
 import {
   ALL_CONFIG_TYPES_SELECTOR,
   DATA_TYPE_CLASS_SELECTOR,
   INPUT_TYPE_CLASS_SELECTOR,
 } from "_/selector.constants.mjs";
-import { assertExists } from "@dqm/package-dqm-utils";
-import { hasher } from "./hasher.mjs";
 import { assertNever } from "_error/assertions.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
+import { assertExists } from "@dqm/package-dqm-utils";
 
-function getClassType(e: Element) {
-  return e.className.split(" ").at(-1)!.trim(); // #1
+import type {
+  AnkiTemplateFields,
+  CollectedConfig,
+  CollectedConfigEntry,
+  CollectedHtmlTagAttributes,
+  CollectedWebviewType,
+  HtmlAttrDir,
+  HtmlAttrTheme,
+  HtmlTagEnv,
+  HtmlTagOs,
+  RankiFaces,
+  RawFields,
+} from "./collect.types.mjs";
+
+import { hasher } from "./hasher.mjs";
+
+/**
+ * @dev
+ * #1 Basically the theater needs to be the last class name
+ * #2 This is very fragile
+ */
+export async function collectRaw(): Promise<RawFields> {
+  const htmlAttr = collectHtmlTagAttributes();
+  const fields = collectAnkiFields();
+  const config = await collectConfigFields();
+  const faces = collectFaces();
+  const hash = hasher(htmlAttr, fields, config, faces);
+
+  return {
+    config,
+    faces,
+    fields,
+    hash,
+    htmlAttr,
+  };
 }
 
-function getResourceType(e: Element) {
-  return e.className.split(" ")[0].replace("r2-", "").trim(); // #1
+function collectAnkiFields(): AnkiTemplateFields {
+  const dataElems = document.querySelectorAll(DATA_TYPE_CLASS_SELECTOR);
+  const fields = Object.fromEntries(
+    Array.from(dataElems).map((data) => [getClassType(data), data.innerHTML]),
+  ) as unknown as AnkiTemplateFields;
+  return fields;
 }
 
 async function collectConfigFields(): Promise<CollectedConfig> {
-  let configPromises: Promise<CollectedConfigEntry>[] = [];
+  const configPromises: Promise<CollectedConfigEntry>[] = [];
 
   try {
     const configElems = document.querySelectorAll(ALL_CONFIG_TYPES_SELECTOR);
-    for (let e of configElems) {
+    for (const e of configElems) {
       const resourceType = getResourceType(e);
       switch (resourceType) {
         case "config":
           configPromises.push(
             Promise.resolve({
-              name: getClassType(e),
               config: e.innerHTML,
+              name: getClassType(e),
             }),
           );
           break;
         case "config-file":
-          const src = e.getAttribute("href");
-          try {
-            assertExists(src, {
-              why: "Src property is required for config file elements",
-            });
-            configPromises.push(
-              (async () => ({
-                name: getClassType(e),
-                config: await fetch(src).then((t) => t.text()),
-              }))(),
-            );
-          } catch (e) {
-            throw new RankiAppError({
-              code: "CONFIG_FILE_RETRIEVAL",
-              why: "Fetch of the template config files have failed",
-              cause: e,
-              details: {
-                src,
-              },
-            });
+          {
+            const src = e.getAttribute("href");
+            try {
+              assertExists(src, {
+                why: "Src property is required for config file elements",
+              });
+              configPromises.push(
+                (async () => ({
+                  config: await fetch(src).then((t) => t.text()),
+                  name: getClassType(e),
+                }))(),
+              );
+            } catch (e) {
+              throw new RankiAppError({
+                cause: e,
+                code: "CONFIG_FILE_RETRIEVAL",
+                details: {
+                  src,
+                },
+                why: "Fetch of the template config files have failed",
+              });
+            }
           }
           break;
         default:
           assertNever({
+            details: { html: e.innerHTML, name: resourceType },
             why: "Unrecognized resource type",
-            details: { name: resourceType, html: e.innerHTML },
           });
       }
     }
@@ -83,12 +108,13 @@ async function collectConfigFields(): Promise<CollectedConfig> {
   return config;
 }
 
-function collectAnkiFields(): AnkiTemplateFields {
-  const dataElems = document.querySelectorAll(DATA_TYPE_CLASS_SELECTOR);
-  const fields = Object.fromEntries(
-    Array.from(dataElems).map((data) => [getClassType(data), data.innerHTML]),
-  ) as unknown as AnkiTemplateFields;
-  return fields;
+function collectFaces(): RankiFaces {
+  const faces = Object.fromEntries(
+    Array.from(document.querySelectorAll(INPUT_TYPE_CLASS_SELECTOR)).map(
+      (e) => [getClassType(e), e],
+    ),
+  ) as RankiFaces;
+  return faces;
 }
 
 function collectHtmlTagAttributes(): CollectedHtmlTagAttributes {
@@ -106,19 +132,19 @@ function collectHtmlTagAttributes(): CollectedHtmlTagAttributes {
   const dataBsTheme = htmlElem.getAttribute("data-bs-theme") as HtmlAttrTheme;
 
   const raw = {
-    mobile: cls.has("mobile"),
-    linux: cls.has("linux"),
     android: cls.has("android"),
     chrome: cls.has("chrome"),
-    windows: cls.has("isWin"),
-    js: cls.has("js"),
-    fancy: cls.has("fancy"),
     dataBsTheme,
-    verticallyCentered: cls.has("vertically_centered"),
+    fancy: cls.has("fancy"),
+    js: cls.has("js"),
+    linux: cls.has("linux"),
+    mobile: cls.has("mobile"),
     night_mode: cls.has("night_mode"),
-    nightMode: cls.has("nightMode"),
     "night-mode": cls.has("night-mode"),
+    nightMode: cls.has("nightMode"),
     title: titleElem.innerText,
+    verticallyCentered: cls.has("vertically_centered"),
+    windows: cls.has("isWin"),
   };
 
   const OS: HtmlTagOs[] = ["android", "windows", "linux"];
@@ -137,14 +163,14 @@ function collectHtmlTagAttributes(): CollectedHtmlTagAttributes {
 
   let webview: CollectedWebviewType;
   switch (raw.title) {
-    case "AnkiDroid Flashcard":
-      webview = "android::old";
-      break;
     case "AnkiDroid":
       webview = "android::new";
       break;
-    case "previewer":
+    case "AnkiDroid Flashcard":
+      webview = "android::old";
+      break;
     case "main webview":
+    case "previewer":
       webview = "windows";
       break;
     default:
@@ -152,41 +178,19 @@ function collectHtmlTagAttributes(): CollectedHtmlTagAttributes {
   }
 
   return {
-    raw,
-    webview,
-    os,
-    env,
     dir,
+    env,
+    os,
+    raw,
     scheme,
+    webview,
   };
 }
 
-function collectFaces(): RankiFaces {
-  const faces = Object.fromEntries(
-    Array.from(document.querySelectorAll(INPUT_TYPE_CLASS_SELECTOR)).map(
-      (e) => [getClassType(e), e],
-    ),
-  ) as RankiFaces;
-  return faces;
+function getClassType(e: Element) {
+  return e.className.split(" ").at(-1)!.trim(); // #1
 }
 
-/**
- * @dev
- * #1 Basically the theater needs to be the last class name
- * #2 This is very fragile
- */
-export async function collectRaw(): Promise<RawFields> {
-  const htmlAttr = collectHtmlTagAttributes();
-  const fields = collectAnkiFields();
-  const config = await collectConfigFields();
-  const faces = collectFaces();
-  const hash = hasher(htmlAttr, fields, config, faces);
-
-  return {
-    hash,
-    htmlAttr,
-    fields,
-    faces,
-    config,
-  };
+function getResourceType(e: Element) {
+  return e.className.split(" ")[0].replace("r2-", "").trim(); // #1
 }

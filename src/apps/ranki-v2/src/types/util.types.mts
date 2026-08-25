@@ -1,5 +1,3 @@
-type Primitive = string | number | boolean | null | undefined;
-
 export type DeepPartialSerializable<T> = T extends Primitive
   ? T
   : T extends readonly (infer U)[]
@@ -9,3 +7,5 @@ export type DeepPartialSerializable<T> = T extends Primitive
       [K in keyof T]?: DeepPartialSerializable<T[K]>;
     }
   : never;
+
+type Primitive = boolean | null | number | string | undefined;

@@ -31,9 +31,9 @@ export const pluginsAsObject = await Promise.all(
         .slice(0, -1)
         .join(".")
         .replace("_ranki2_plugin_", ""),
-      url,
       path,
       plugin,
+      url,
     };
   }),
 );

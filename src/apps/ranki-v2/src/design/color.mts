@@ -5,57 +5,18 @@ import type {
   PaletteSpecs,
 } from "_config/config.types.mjs";
 
+type CssVars = [string, string][];
+
 type Rgb = [number, number, number];
 
-function hslToRgb(h: number, s: number, l: number): Rgb {
-  s /= 100;
-  l /= 100;
-
-  const k = (n: number) => (n + h / 30) % 12;
-  const a = s * Math.min(l, 1 - l);
-  const f = (n: number) =>
-    l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
-
-  const r = Math.round(255 * f(0));
-  const g = Math.round(255 * f(8));
-  const b = Math.round(255 * f(4));
-
-  return [r, g, b];
+export function generatePaletteCss(s: PaletteSpecs) {
+  const vars = generatePaletteVariables(s);
+  return wrapCssInHost(vars);
+  // const id = "palette-" + s.name;
+  // return [`:host.${id} {`, ...vars.map(([n, v]) => `  ${n}: ${v};`), "}"].join(
+  //   "\n",
+  // );
 }
-
-function rgbToRgbCsv(rgb: Rgb): string {
-  return rgb.join(" ");
-}
-
-function generatePalette({
-  saturation,
-  lightness,
-  hues,
-}: PaletteSpecs): Palette {
-  const palette: Palette = {};
-
-  for (const [name, hue] of Object.entries(hues)) {
-    palette[name] = {} as Record<ColorLevel, Record<ColorFormat, string>>;
-
-    for (const [level, l] of lightness.entries()) {
-      palette[name][level] = {} as Record<ColorFormat, string>;
-
-      const rgb = hslToRgb(hue, saturation[level], l);
-      palette[name][level]["rgb-csv"] = rgbToRgbCsv(rgb);
-    }
-  }
-
-  palette["tone"] = {} as Record<ColorLevel, Record<ColorFormat, string>>;
-  for (const [level, l] of Object.entries(lightness)) {
-    palette["tone"][level] = {} as Record<ColorFormat, string>;
-    const rgb = hslToRgb(0, 0, l);
-    palette["tone"][level as ColorLevel]["rgb-csv"] = rgbToRgbCsv(rgb);
-  }
-
-  return palette;
-}
-
-type CssVars = [string, string][];
 
 export function generatePaletteVariables(s: PaletteSpecs): CssVars {
   const p = generatePalette(s);
@@ -80,17 +41,56 @@ export function generatePaletteVariables(s: PaletteSpecs): CssVars {
   return vars as CssVars;
 }
 
-function wrapCssInHost(vars: CssVars) {
-  return [`:host {`, ...vars.map(([n, v]) => `  ${n}: ${v};`), "}"].join("\n");
+function generatePalette({
+  hues,
+  lightness,
+  saturation,
+}: PaletteSpecs): Palette {
+  const palette: Palette = {};
+
+  for (const [name, hue] of Object.entries(hues)) {
+    palette[name] = {} as Record<ColorLevel, Record<ColorFormat, string>>;
+
+    for (const [level, l] of lightness.entries()) {
+      palette[name][level] = {} as Record<ColorFormat, string>;
+
+      const rgb = hslToRgb(hue, saturation[level], l);
+      palette[name][level]["rgb-csv"] = rgbToRgbCsv(rgb);
+    }
+  }
+
+  palette["tone"] = {} as Record<ColorLevel, Record<ColorFormat, string>>;
+  for (const [level, l] of Object.entries(lightness)) {
+    palette["tone"][level] = {} as Record<ColorFormat, string>;
+    const rgb = hslToRgb(0, 0, l);
+    palette["tone"][level as ColorLevel]["rgb-csv"] = rgbToRgbCsv(rgb);
+  }
+
+  return palette;
 }
 
-export function generatePaletteCss(s: PaletteSpecs) {
-  const vars = generatePaletteVariables(s);
-  return wrapCssInHost(vars);
-  // const id = "palette-" + s.name;
-  // return [`:host.${id} {`, ...vars.map(([n, v]) => `  ${n}: ${v};`), "}"].join(
-  //   "\n",
-  // );
+function hslToRgb(h: number, s: number, l: number): Rgb {
+  s /= 100;
+  l /= 100;
+
+  const k = (n: number) => (n + h / 30) % 12;
+  const a = s * Math.min(l, 1 - l);
+  const f = (n: number) =>
+    l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+
+  const r = Math.round(255 * f(0));
+  const g = Math.round(255 * f(8));
+  const b = Math.round(255 * f(4));
+
+  return [r, g, b];
+}
+
+function rgbToRgbCsv(rgb: Rgb): string {
+  return rgb.join(" ");
+}
+
+function wrapCssInHost(vars: CssVars) {
+  return [`:host {`, ...vars.map(([n, v]) => `  ${n}: ${v};`), "}"].join("\n");
 }
 
 // export function generatePaletteStyle(attach: HTMLElement, s: PaletteSpecs) {

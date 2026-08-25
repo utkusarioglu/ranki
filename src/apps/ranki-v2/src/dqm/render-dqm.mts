@@ -1,8 +1,10 @@
-import { Dqm } from "@dqm/package-dqm-v2";
-import type { RenderReport, RenderRoots } from "@dqm/package-dqm-v2";
-import { pluginsAsArray } from "./dqm.plugins.mjs";
-import { RankiAppError } from "_error/ranki-app-error.mjs";
 import type { RankiDqmConfig } from "_config/config.types.mjs";
+import type { RenderReport, RenderRoots } from "@dqm/package-dqm-v2";
+
+import { RankiAppError } from "_error/ranki-app-error.mjs";
+import { Dqm } from "@dqm/package-dqm-v2";
+
+import { pluginsAsArray } from "./dqm.plugins.mjs";
 
 export async function renderDqm(
   collected: RankiDqmConfig,
@@ -16,12 +18,12 @@ export async function renderDqm(
     return dqm.render(inputs, roots, pref);
   } catch (e) {
     throw new RankiAppError({
-      code: "PARSE_FAIL",
-      why: "Dqm threw while parsing or rendering",
       cause: e,
+      code: "PARSE_FAIL",
       details: {
         config,
       },
+      why: "Dqm threw while parsing or rendering",
     });
   }
 }

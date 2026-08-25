@@ -19,7 +19,7 @@ export function isGlobMatch(
 ) {
   const curr = currStr.split(separator);
   let mp = 0;
-  let match: string[] = [];
+  const match: string[] = [];
   matchStr.split(separator).forEach((s) => {
     const prevIdx = match.length - 1;
     switch (s) {

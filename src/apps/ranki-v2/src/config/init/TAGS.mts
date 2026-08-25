@@ -2,63 +2,63 @@ import type { DeckSettings } from "_config/config.types.mjs";
 
 export const TAGS: DeckSettings[] = [
   {
-    exact: "+r::dqm::ignore",
-    cue: {
-      icon: {
-        id: "ph:blueprint-fill",
-        color: "red-2",
-      },
-    },
     config: {
       dqm: [
         {
-          id: "ranki-tag-dqm-ignore",
           config: {
             content: {
               prefix: "% ignore\n",
             },
           },
+          id: "ranki-tag-dqm-ignore",
         },
       ],
     },
-  },
-  {
-    exact: "+r::dev::methods",
     cue: {
       icon: {
-        id: "ph:codesandbox-logo-fill",
         color: "red-2",
+        id: "ph:blueprint-fill",
       },
     },
+    exact: "+r::dqm::ignore",
+  },
+  {
     config: {
       dev: {
         methods: true,
       },
     },
-  },
-  {
-    exact: "+r::dev::persist",
     cue: {
-      message: {
-        text: "",
-      },
       icon: {
-        id: "ph:diamonds-four-fill",
         color: "red-2",
+        id: "ph:codesandbox-logo-fill",
       },
     },
+    exact: "+r::dev::methods",
+  },
+  {
     config: {
       dev: {
         persist: true,
       },
     },
+    cue: {
+      icon: {
+        color: "red-2",
+        id: "ph:diamonds-four-fill",
+      },
+      message: {
+        text: "",
+      },
+    },
+    exact: "+r::dev::persist",
   },
   {
-    exact: "+r::dev::throw",
     config: {
       dev: {
         throw: true,
       },
     },
+    exact: "+r::dev::throw",
   },
 ];

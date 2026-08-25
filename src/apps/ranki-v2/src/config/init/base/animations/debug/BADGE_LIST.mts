@@ -6,21 +6,21 @@ export const BADGE_LIST: GeometryAnimationPreset = {
       enter: {
         root: [
           {
-            name: "init",
+            duration: 0,
             keyframes: [
               {
-                top: "= to.self.top",
                 left: "= to.self.left",
+                top: "= to.self.top",
               },
             ],
-            duration: 0,
+            name: "init",
           },
         ],
         sets: {
           bg: {
             override: {
-              width: "= to.self.width",
               height: "= to.self.height",
+              width: "= to.self.width",
             },
           },
           children: {
@@ -32,51 +32,51 @@ export const BADGE_LIST: GeometryAnimationPreset = {
           },
         },
       },
-      update: {
-        root: [
-          {
-            name: "position",
-            keyframes: [
-              {
-                left: "= to.self.left",
-                top: "= to.self.top",
-                width: "= to.self.width",
-                height: "= to.self.height",
-              },
-            ],
-            delay: 0,
-            // duration: 1000,
-            duration: 0,
-          },
-        ],
-        sets: {
-          bg: {
-            override: {
-              width: "= to.self.width",
-              height: "= to.self.height",
-            },
-          },
-          children: {
-            wait: 0,
-            expose: {
-              top: "= to.self.top",
-              left: "= to.self.left",
-            },
-          },
-        },
-      },
       leave: {
         root: [
           {
-            name: "leave",
             duration: 0,
             keyframes: [
               {
                 opacity: 0,
               },
             ],
+            name: "leave",
           },
         ],
+      },
+      update: {
+        root: [
+          {
+            delay: 0,
+            // duration: 1000,
+            duration: 0,
+            keyframes: [
+              {
+                height: "= to.self.height",
+                left: "= to.self.left",
+                top: "= to.self.top",
+                width: "= to.self.width",
+              },
+            ],
+            name: "position",
+          },
+        ],
+        sets: {
+          bg: {
+            override: {
+              height: "= to.self.height",
+              width: "= to.self.width",
+            },
+          },
+          children: {
+            expose: {
+              left: "= to.self.left",
+              top: "= to.self.top",
+            },
+            wait: 0,
+          },
+        },
       },
     },
   },

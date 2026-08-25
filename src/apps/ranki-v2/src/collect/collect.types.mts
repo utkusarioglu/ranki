@@ -1,99 +1,99 @@
-import type { DqmParseTheater } from "@dqm/package-dqm-v2";
 import type { RankiTagPrefix } from "_config/config.types.mjs";
+import type { DqmParseTheater } from "@dqm/package-dqm-v2";
 
+export type AnkiCard = { type: "AnkiCard" } & string;
+
+export type AnkiCardFace = { type?: "AnkiCardFace" } & string;
+export type AnkiCardType = { type: "AnkiCardType" } & string;
+
+export type AnkiDeck = { type: "AnkiDeck" } & string;
+export type AnkiDeckParts = { type: "AnkiDeckParts" } & AnkiDeck[];
 export type AnkiFlag = `flag${number}`;
+export type AnkiMarked = { type: "AnkiMarked" } & boolean;
 
-export type AnkiCardType = string & { type: "AnkiCardType" };
-export type AnkiCardFace = string & { type?: "AnkiCardFace" };
+export type AnkiNeutralTags = AnkiRawTag[];
 
-export type AnkiDeck = string & { type: "AnkiDeck" };
-export type AnkiCard = string & { type: "AnkiCard" };
-export type AnkiRawTags = string & { type: "AnkiRawTags" };
-export type AnkiRawTag = string & { type: "AnkiRawTag" };
+export type AnkiRawTag = { type: "AnkiRawTag" } & string;
 
-export type AnkiDeckParts = AnkiDeck[] & { type: "AnkiDeckParts" };
+export type AnkiRawTags = { type: "AnkiRawTags" } & string;
 
-export type RankiScreenElement = "ranki:rule";
+export interface AnkiTemplateFields {
+  card: AnkiCard;
+  deck: AnkiDeck;
+  face: AnkiCardFace;
+  flag: AnkiFlag;
+  tags: AnkiRawTags;
+  type: AnkiCardType;
+}
 
 export type CardFace = DqmParseTheater | RankiScreenElement;
 
 export type CardFaceArray = CardFace[];
 
-export type AnkiMarked = boolean & { type: "AnkiMarked" };
+export type CollectedConfig = CollectedConfigEntry[];
 
-export type AnkiNeutralTags = AnkiRawTag[];
-
-export type RankiTag = `${RankiTagPrefix}${string}`;
-
-export type RankiTags = RankiTag[];
-
-export type HtmlTagOs = "windows" | "android" | "linux";
-export type HtmlTagEnv = "chrome";
-export type HtmlAttrDir = "ltr" | "rtl";
-export type HtmlAttrTheme = "dark" | "light";
-
-export interface AnkiTemplateFields {
-  flag: AnkiFlag;
-  deck: AnkiDeck;
-  tags: AnkiRawTags;
-  type: AnkiCardType;
-  face: AnkiCardFace;
-  card: AnkiCard;
+export interface CollectedConfigEntry {
+  config: string;
+  name: string;
 }
+
+export type CollectedHtmlTagAttributes = {
+  dir: HtmlAttrDir;
+  env: HtmlTagEnv;
+  os: HtmlTagOs;
+  raw: {
+    android: boolean;
+    chrome: boolean;
+    dataBsTheme: HtmlAttrTheme;
+    fancy: boolean;
+    js: boolean;
+    linux: boolean;
+    mobile: boolean;
+
+    night_mode: boolean;
+    "night-mode": boolean;
+    nightMode: boolean;
+    title: string;
+    verticallyCentered: boolean;
+    windows: boolean;
+  };
+  scheme: HtmlAttrTheme;
+  webview: CollectedWebviewType;
+};
+export type CollectedWebviewType =
+  | "android::new"
+  | "android::old"
+  | "unknown"
+  | "windows";
+export interface FilteredTags {
+  marked: AnkiMarked;
+  neutral: AnkiNeutralTags;
+  ranki: RankiTags;
+}
+export type HtmlAttrDir = "ltr" | "rtl";
+
+export type HtmlAttrTheme = "dark" | "light";
 
 // export type ConfigLocations = "template" | "card" | "user";
 
 // export type CollectedConfig = Record<ConfigLocations, string>;
 
-export interface CollectedConfigEntry {
-  name: string;
-  config: string;
-}
+export type HtmlTagEnv = "chrome";
 
-export type CollectedConfig = CollectedConfigEntry[];
-
-export type CollectedWebviewType =
-  | "windows"
-  | "android::old"
-  | "android::new"
-  | "unknown";
-
-export type CollectedHtmlTagAttributes = {
-  raw: {
-    mobile: boolean;
-    linux: boolean;
-    android: boolean;
-    chrome: boolean;
-    windows: boolean;
-    js: boolean;
-    fancy: boolean;
-
-    verticallyCentered: boolean;
-    night_mode: boolean;
-    nightMode: boolean;
-    "night-mode": boolean;
-    dataBsTheme: HtmlAttrTheme;
-    title: string;
-  };
-  webview: CollectedWebviewType;
-  os: HtmlTagOs;
-  env: HtmlTagEnv;
-  dir: HtmlAttrDir;
-  scheme: HtmlAttrTheme;
-};
+export type HtmlTagOs = "android" | "linux" | "windows";
 
 export type RankiFaces = Record<string, HTMLDivElement>;
 
+export type RankiScreenElement = "ranki:rule";
+
+export type RankiTag = `${RankiTagPrefix}${string}`;
+
+export type RankiTags = RankiTag[];
+
 export interface RawFields {
+  config: CollectedConfig;
+  faces: RankiFaces;
+  fields: AnkiTemplateFields;
   hash: string;
   htmlAttr: CollectedHtmlTagAttributes;
-  fields: AnkiTemplateFields;
-  faces: RankiFaces;
-  config: CollectedConfig;
-}
-
-export interface FilteredTags {
-  neutral: AnkiNeutralTags;
-  ranki: RankiTags;
-  marked: AnkiMarked;
 }

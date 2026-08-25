@@ -1,8 +1,8 @@
 import type {
-  DqmConfigPackPartial,
-  DqmParseInputStructured,
-  IDqmRendererClientPreferences,
-} from "@dqm/package-dqm-v2";
+  AnkiCardFace,
+  CardFaceArray,
+  FilteredTags,
+} from "_collect/collect.types.mjs";
 import type {
   HudComponentNames,
   HudElementCommon,
@@ -10,98 +10,104 @@ import type {
   RankiHudState,
   RankiHudStateAnimation,
 } from "_components/hud/hud.types.mjs";
-import type { DeepPartialSerializable } from "../types/util.types.mjs";
-import type {
-  AnkiCardFace,
-  CardFaceArray,
-  FilteredTags,
-} from "_collect/collect.types.mjs";
 import type { GeometryAnimationPresetDict } from "_controllers/geometry/controller/animator/types/library.types.mjs";
+import type {
+  DqmConfigPackPartial,
+  DqmParseInputStructured,
+  IDqmRendererClientPreferences,
+} from "@dqm/package-dqm-v2";
+
+import type { DeepPartialSerializable } from "../types/util.types.mjs";
+
+export type AnkiFlagColorIndices = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+export type AnkiFlagColors =
+  | "blue"
+  | "green"
+  | "none"
+  | "orange"
+  | "pink"
+  | "purple"
+  | "red"
+  | "turquoise";
+
+export interface BuildRankiBaseConfigReturn {
+  config: RankiBaseConfig;
+  cueRecord: CueRecord[];
+}
+
+export type ColorFormat = "hex" | "rgb-csv";
+
+export type ColorLevel = string; // index of Lightness
+
+export interface CueConfig {
+  background?: {
+    color: "none" | `${DeckColorNames}-${DeckColorLevels}`;
+  };
+  icon?: {
+    color?: "none" | `${DeckColorNames}-${DeckColorLevels}`;
+    id: string;
+  };
+  indicator?: RankiIndicatorName;
+  message?: {
+    color?: "none" | `${DeckColorNames}-${DeckColorLevels}`;
+    text: string;
+  };
+}
+
+export type CueKind =
+  | "always"
+  | "card"
+  | "deck"
+  | "face"
+  | "flag"
+  | "tag:marked"
+  | "tag:neutral"
+  | "tag:ranki"
+  | "type"
+  | "webview";
+
+export interface CueRecord extends CueConfig {
+  issuer: string;
+  type: CueKind;
+}
 
 export type Deck = string;
+export type DeckAlwaysSettings = Partial<DeckCommonSettings>;
 
-export type MatchTypes = "exact" | "glob" | "regex";
+export type DeckExactSettings = {
+  exact: Deck;
+} & DeckCommonSettings;
+
+export type DeckGlobSettings = {
+  glob: string;
+} & DeckCommonSettings;
+
+export type DeckRegexSettings = {
+  regex: string;
+} & DeckCommonSettings;
 
 export type DeckSettings =
   | DeckExactSettings
   | DeckGlobSettings
   | DeckRegexSettings;
 
-export type DeckExactSettings = DeckCommonSettings & {
-  exact: Deck;
-};
+export type Hues = Record<string, number>;
 
-export type DeckGlobSettings = DeckCommonSettings & {
-  glob: string;
-};
+export type Lightness = [number, number, number, number, number, number];
 
-export type DeckRegexSettings = DeckCommonSettings & {
-  regex: string;
-};
+export type MatchTypes = "exact" | "glob" | "regex";
 
-export type DeckAlwaysSettings = Partial<DeckCommonSettings>;
+export type Palette = Record<
+  string,
+  Record<ColorLevel, Record<ColorFormat, string>>
+>;
 
-interface DeckCommonSettings {
-  cue?: CueConfig;
-  config: RankiBaseConfigPartial;
-}
-
-type DeckColorNames =
-  | "red"
-  | "orange"
-  | "yellow"
-  | "green"
-  | "blue"
-  | "purple"
-  | "magenta"
-  | "tone";
-type DeckColorLevels = 0 | 1 | 2;
-
-export interface CueConfig {
-  background?: {
-    color: `${DeckColorNames}-${DeckColorLevels}` | "none";
-  };
-  message?: {
-    text: string;
-    color?: `${DeckColorNames}-${DeckColorLevels}` | "none";
-  };
-  icon?: {
-    id: string;
-    color?: `${DeckColorNames}-${DeckColorLevels}` | "none";
-  };
-  indicator?: RankiIndicatorName;
-}
-
-export type CueKind =
-  | "webview"
-  | "card"
-  | "deck"
-  | "type"
-  | "face"
-  | "tag:neutral"
-  | "tag:marked"
-  | "tag:ranki"
-  | "flag"
-  | "always";
-
-export interface ProcessedCueMapHud extends HudElementCommon {
-  animation: RankiHudStateAnimation;
-  subtree: {
-    badges: CueRecord[];
-    chips: CueRecord[];
-    labels: CueRecord[];
-  };
-}
-
-export type ProcessedCueMap = {
-  hud: ProcessedCueMapHud;
-  indicators: ProcessedCue[];
-};
-
-export interface RankiPropAnimationBlock {
-  enabled: boolean;
-  preset: string;
-  duration: number;
+export interface PaletteSpecs {
+  hues: Hues;
+  lightness: Lightness;
+  name: string;
+  saturation: Saturation;
 }
 
 export interface ProcessedCue extends CueRecord {
@@ -123,49 +129,35 @@ export interface ProcessedCue extends CueRecord {
   // };
 }
 
-export interface CueRecord extends CueConfig {
-  type: CueKind;
-  issuer: string;
+export type ProcessedCueMap = {
+  hud: ProcessedCueMapHud;
+  indicators: ProcessedCue[];
+};
+
+export interface ProcessedCueMapHud extends HudElementCommon {
+  animation: RankiHudStateAnimation;
+  subtree: {
+    badges: CueRecord[];
+    chips: CueRecord[];
+    labels: CueRecord[];
+  };
 }
 
-interface HudConfig {
-  order: HudComponentNames[];
-  visibility: HudVisibility;
+export interface RankiAddressTokens {
+  hide: string;
+  separator: string;
+  trim: string;
 }
-
-export type AnkiFlagColors =
-  | "none"
-  | "red"
-  | "orange"
-  | "green"
-  | "blue"
-  | "pink"
-  | "turquoise"
-  | "purple";
-
-export type RankiIndicatorName = string & { type: "RankiIndicatorName" };
-
-export type AnkiFlagColorIndices = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-
-export type RankiBaseConfigPartial = DeepPartialSerializable<RankiBaseConfig>;
-
-export type RankiLayout = "row" | "column";
-
-export type RankiTagPrefix = string & { type: "RankiTagPrefix" };
-
-export type RankiBaseScheme = "dark" | "light" | "system";
-
-export type RankiPalette = string & { type: "RankiPalette" };
 
 export type RankiAnimation = {
-  enabled: boolean;
-  // FIX this needs to go
-  fade: `${string}s`;
-  hud: RankiPropAnimationBlock;
   // {
   //   enabled: boolean;
   // };
   challenge: RankiPropAnimationBlock;
+  enabled: boolean;
+  // FIX this needs to go
+  fade: `${string}s`;
+  hud: RankiPropAnimationBlock;
   // {
   //   enabled: boolean;
   // };
@@ -175,157 +167,79 @@ export type RankiAnimation = {
   // };
 };
 
-export interface RankiBaseDesign {
-  animation: RankiAnimation;
-  scheme: RankiBaseScheme;
-  palette: RankiPalette;
-  theme: RankiAppTheme;
-  layout: RankiLayout;
-}
+export type RankiAppDeterminedScheme = "dark" | "light";
 
-export interface RankiIndicatorDefinition {
-  name: RankiIndicatorName;
-  style: string;
-}
-
-export type RankiBaseAddressMutationMode = "hide" | "trim" | "show";
+export type RankiAppTheme = { type: "RankiAppTheme" } & string;
 
 export interface RankiBaseAddressMutation {
-  start: string | number;
-  end: string | number;
+  end: number | string;
   mode: RankiBaseAddressMutationMode;
+  start: number | string;
 }
 
-export interface RankiAddressTokens {
-  separator: string;
-  hide: string;
-  trim: string;
-}
+export type RankiBaseAddressMutationMode = "hide" | "show" | "trim";
 
-export interface RankiDevToolsConfig {
-  throw: boolean;
-  persist: boolean;
-  methods: boolean;
+export interface RankiBaseConfig {
+  address: {
+    segments: RankiBaseAddressMutation[];
+    tokens: RankiAddressTokens;
+  };
+  animations: GeometryAnimationPresetDict;
+  design: RankiBaseDesign;
+
+  dev: RankiDevToolsConfig;
+  dqm: DqmConfigPackPartial;
+  // TODO you need deck address stripping and hiding here
+  faces: Record<AnkiCardFace, CardFaceArray>;
+  flags: RankiBaseConfigFlags;
+  hud: HudConfig;
+  indicators: RankiIndicatorDefinition[];
+
+  palettes: PaletteSpecs[];
+  tags: {
+    marked: CueConfig;
+    ranki: {
+      hide: boolean;
+      prefix: RankiTagPrefix;
+    };
+  };
 }
 
 export type RankiBaseConfigFlags = Record<AnkiFlagColors, CueConfig>;
 
-export interface RankiBaseConfig {
-  // TODO you need deck address stripping and hiding here
-  faces: Record<AnkiCardFace, CardFaceArray>;
-  design: RankiBaseDesign;
-  dev: RankiDevToolsConfig;
+export type RankiBaseConfigPartial = DeepPartialSerializable<RankiBaseConfig>;
 
-  palettes: PaletteSpecs[];
-  animations: GeometryAnimationPresetDict;
-  indicators: RankiIndicatorDefinition[];
-  flags: RankiBaseConfigFlags;
-  tags: {
-    ranki: {
-      prefix: RankiTagPrefix;
-      hide: boolean;
-    };
-    marked: CueConfig;
-  };
-  address: {
-    tokens: RankiAddressTokens;
-    segments: RankiBaseAddressMutation[];
-  };
-
-  hud: HudConfig;
-  dqm: DqmConfigPackPartial;
-}
-
-export type RankiConfigChannelsPartial =
-  DeepPartialSerializable<RankiChannelsConfig>;
-
-// DECIDE this here is in the order that the config would ingest it, giving
-// tags the highest priority
-export interface RankiChannelsConfig {
-  base: RankiBaseConfig;
-  webview: DeckSettings[];
-  decks: DeckSettings[];
-  cards: DeckSettings[];
-  types: DeckSettings[];
-  faces: DeckSettings[];
-  flags: RankiFlags;
-  tags: DeckSettings[];
-  always: DeckAlwaysSettings[];
-}
-
-export type RankiFlags = Record<AnkiFlagColors, DeckCommonSettings>;
-
-export type RankiAppDeterminedScheme = "light" | "dark";
-
-export type RankiAppTheme = string & { type: "RankiAppTheme" };
-
-export interface RankiDesignState {
+export interface RankiBaseDesign {
   animation: RankiAnimation;
-  scheme: RankiAppDeterminedScheme;
-  palette: RankiPalette;
-  theme: RankiAppTheme;
   layout: RankiLayout;
-  paletteCollection: PaletteSpecs[];
-  animationCollection: GeometryAnimationPresetDict;
+  palette: RankiPalette;
+  scheme: RankiBaseScheme;
+  theme: RankiAppTheme;
 }
 
-export interface RankiDevState {
-  persist: boolean;
-  throw: boolean;
-  methods: boolean;
+export type RankiBaseScheme = "dark" | "light" | "system";
+
+export interface RankiChallengeState {
+  animation: RankiChallengeStateAnimation;
+  dqm: RankiDqmConfig;
+  face: AnkiCardFace;
+  order: CardFaceArray;
 }
 
 export type RankiChallengeStateAnimation = RankiAnimation["challenge"];
 
-export interface RankiChallengeState {
-  animation: RankiChallengeStateAnimation;
-  face: AnkiCardFace;
-  order: CardFaceArray;
-  dqm: RankiDqmConfig;
-}
-
-export interface RankiIndicatorState {
-  animation: RankiIndicatorStateAnimation;
-  indicatorCollection: RankiIndicatorDefinition[];
-  cues: ProcessedCue[];
-}
-
-export interface RankiState {
-  design: RankiDesignState;
-  indicator: RankiIndicatorState;
-  dev: RankiDevState;
-  hud: RankiHudState;
-  challenge: RankiChallengeState;
-}
-
-export interface RankiDqmConfig {
-  inputs: DqmParseInputStructured;
-  config: DqmConfigPackPartial;
-  pref: IDqmRendererClientPreferences;
-}
-
-export interface PaletteSpecs {
-  name: string;
-  hues: Hues;
-  lightness: Lightness;
-  saturation: Saturation;
-}
-
-export type Hues = Record<string, number>;
-export type Lightness = [number, number, number, number, number, number];
-export type Saturation = [number, number, number, number, number, number];
-
-export type ColorLevel = string; // index of Lightness
-
-export type ColorFormat = "hex" | "rgb-csv";
-export type Palette = Record<
-  string,
-  Record<ColorLevel, Record<ColorFormat, string>>
->;
-
-export interface BuildRankiBaseConfigReturn {
-  config: RankiBaseConfig;
-  cueRecord: CueRecord[];
+// DECIDE this here is in the order that the config would ingest it, giving
+// tags the highest priority
+export interface RankiChannelsConfig {
+  always: DeckAlwaysSettings[];
+  base: RankiBaseConfig;
+  cards: DeckSettings[];
+  decks: DeckSettings[];
+  faces: DeckSettings[];
+  flags: RankiFlags;
+  tags: DeckSettings[];
+  types: DeckSettings[];
+  webview: DeckSettings[];
 }
 
 export interface RankiCollectedConfig {
@@ -334,4 +248,91 @@ export interface RankiCollectedConfig {
   tags: FilteredTags;
 }
 
+export type RankiConfigChannelsPartial =
+  DeepPartialSerializable<RankiChannelsConfig>;
+
+export interface RankiDesignState {
+  animation: RankiAnimation;
+  animationCollection: GeometryAnimationPresetDict;
+  layout: RankiLayout;
+  palette: RankiPalette;
+  paletteCollection: PaletteSpecs[];
+  scheme: RankiAppDeterminedScheme;
+  theme: RankiAppTheme;
+}
+
+export interface RankiDevState {
+  methods: boolean;
+  persist: boolean;
+  throw: boolean;
+}
+
+export interface RankiDevToolsConfig {
+  methods: boolean;
+  persist: boolean;
+  throw: boolean;
+}
+
+export interface RankiDqmConfig {
+  config: DqmConfigPackPartial;
+  inputs: DqmParseInputStructured;
+  pref: IDqmRendererClientPreferences;
+}
+
+export type RankiFlags = Record<AnkiFlagColors, DeckCommonSettings>;
+
+export interface RankiIndicatorDefinition {
+  name: RankiIndicatorName;
+  style: string;
+}
+
+export type RankiIndicatorName = { type: "RankiIndicatorName" } & string;
+
+export interface RankiIndicatorState {
+  animation: RankiIndicatorStateAnimation;
+  cues: ProcessedCue[];
+  indicatorCollection: RankiIndicatorDefinition[];
+}
+
 export type RankiIndicatorStateAnimation = RankiAnimation["indicator"];
+
+export type RankiLayout = "column" | "row";
+
+export type RankiPalette = { type: "RankiPalette" } & string;
+export interface RankiPropAnimationBlock {
+  duration: number;
+  enabled: boolean;
+  preset: string;
+}
+export interface RankiState {
+  challenge: RankiChallengeState;
+  design: RankiDesignState;
+  dev: RankiDevState;
+  hud: RankiHudState;
+  indicator: RankiIndicatorState;
+}
+
+export type RankiTagPrefix = { type: "RankiTagPrefix" } & string;
+
+export type Saturation = [number, number, number, number, number, number];
+type DeckColorLevels = 0 | 1 | 2;
+
+type DeckColorNames =
+  | "blue"
+  | "green"
+  | "magenta"
+  | "orange"
+  | "purple"
+  | "red"
+  | "tone"
+  | "yellow";
+
+interface DeckCommonSettings {
+  config: RankiBaseConfigPartial;
+  cue?: CueConfig;
+}
+
+interface HudConfig {
+  order: HudComponentNames[];
+  visibility: HudVisibility;
+}

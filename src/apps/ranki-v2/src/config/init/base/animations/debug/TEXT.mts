@@ -6,16 +6,15 @@ export const TEXT: GeometryAnimationPreset = {
       enter: {
         root: [
           {
-            name: "height",
             duration: 0,
             keyframes: [
               {
                 height: "= to.self.height",
               },
             ],
+            name: "height",
           },
           {
-            name: "width",
             duration: 0,
             keyframes: [
               {
@@ -23,9 +22,9 @@ export const TEXT: GeometryAnimationPreset = {
                 width: "= to.self.width",
               },
             ],
+            name: "width",
           },
           {
-            name: "position",
             duration: 0,
             keyframes: [
               {
@@ -33,30 +32,45 @@ export const TEXT: GeometryAnimationPreset = {
                 top: "= to.self.top",
               },
             ],
+            name: "position",
           },
         ],
         sets: {
           children: {
             override: {
-              width: "= to.self.width",
               height: "= to.self.height",
+              width: "= to.self.width",
             },
           },
         },
       },
-      update: {
+      leave: {
         root: [
           {
-            name: "position",
             duration: 0,
             keyframes: [
               {
+                opacity: 0,
+                width: 0,
+              },
+            ],
+            name: "exit",
+          },
+        ],
+      },
+      update: {
+        root: [
+          {
+            duration: 0,
+            keyframes: [
+              {
+                height: "= to.self.height",
                 left: "= to.self.left",
                 top: "= to.self.top",
                 width: "= to.self.width",
-                height: "= to.self.height",
               },
             ],
+            name: "position",
           },
         ],
         sets: {
@@ -68,20 +82,6 @@ export const TEXT: GeometryAnimationPreset = {
           },
         },
       },
-      leave: {
-        root: [
-          {
-            name: "exit",
-            duration: 0,
-            keyframes: [
-              {
-                opacity: 0,
-                width: 0,
-              },
-            ],
-          },
-        ],
-      },
     },
   },
 
@@ -90,7 +90,6 @@ export const TEXT: GeometryAnimationPreset = {
       enter: {
         root: [
           {
-            name: "init",
             duration: 0,
             keyframes: [
               {
@@ -98,29 +97,30 @@ export const TEXT: GeometryAnimationPreset = {
                 opacity: 0,
               },
             ],
+            name: "init",
           },
           {
-            name: "opacity",
             duration: 0,
             keyframes: [
               {
-                width: "= to.self.width + 1",
                 opacity: 1,
+                width: "= to.self.width + 1",
               },
             ],
+            name: "opacity",
           },
         ],
       },
       leave: {
         root: [
           {
-            name: "opacity",
             duration: 0,
             keyframes: [
               {
                 opacity: 0,
               },
             ],
+            name: "opacity",
           },
         ],
       },

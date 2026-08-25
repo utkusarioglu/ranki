@@ -1,10 +1,9 @@
 import type { DqmConfigPackEntryPartial } from "@dqm/package-dqm-v2";
 
 export const BASE_DQM_CONFIG: DqmConfigPackEntryPartial = {
-  id: "pluginSelectionConfig",
   config: {
     plugins: {
-      standards: [
+      requested: [
         "render-engine:DqmStaticRenderer",
         "renderer:Debug",
         "grammar:ConstantsV2",
@@ -25,7 +24,7 @@ export const BASE_DQM_CONFIG: DqmConfigPackEntryPartial = {
         "renderer:Code",
         "renderer:Mermaid",
       ],
-      requested: [
+      standards: [
         "render-engine:DqmStaticRenderer",
         "renderer:Debug",
         "grammar:ConstantsV2",
@@ -48,4 +47,5 @@ export const BASE_DQM_CONFIG: DqmConfigPackEntryPartial = {
       ],
     },
   },
+  id: "pluginSelectionConfig",
 };

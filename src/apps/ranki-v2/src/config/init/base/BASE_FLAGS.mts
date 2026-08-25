@@ -2,119 +2,120 @@ import type {
   RankiBaseConfigFlags,
   RankiIndicatorName,
 } from "_config/config.types.mjs";
+
 import { NONE_TOKEN } from "../../config.constants.mjs";
 
 export const BASE_FLAGS: RankiBaseConfigFlags = {
-  none: {
-    indicator: NONE_TOKEN as RankiIndicatorName,
+  blue: {
     background: {
       color: NONE_TOKEN,
     },
     icon: {
+      color: NONE_TOKEN,
       id: NONE_TOKEN,
-      color: NONE_TOKEN,
     },
-    message: {
-      text: "",
-      color: NONE_TOKEN,
-    },
-  },
-  red: {
     indicator: NONE_TOKEN as RankiIndicatorName,
-    background: {
-      color: NONE_TOKEN,
-    },
-    icon: {
-      id: NONE_TOKEN,
-      color: NONE_TOKEN,
-    },
     message: {
+      color: NONE_TOKEN,
       text: "",
-      color: NONE_TOKEN,
-    },
-  },
-  orange: {
-    indicator: NONE_TOKEN as RankiIndicatorName,
-    background: {
-      color: NONE_TOKEN,
-    },
-    icon: {
-      id: NONE_TOKEN,
-      color: NONE_TOKEN,
-    },
-    message: {
-      text: "",
-      color: NONE_TOKEN,
     },
   },
   green: {
-    indicator: NONE_TOKEN as RankiIndicatorName,
     background: {
       color: NONE_TOKEN,
     },
     icon: {
+      color: NONE_TOKEN,
       id: NONE_TOKEN,
-      color: NONE_TOKEN,
     },
+    indicator: NONE_TOKEN as RankiIndicatorName,
     message: {
-      text: "",
       color: NONE_TOKEN,
+      text: "",
     },
   },
-  blue: {
-    indicator: NONE_TOKEN as RankiIndicatorName,
+  none: {
     background: {
       color: NONE_TOKEN,
     },
     icon: {
+      color: NONE_TOKEN,
       id: NONE_TOKEN,
+    },
+    indicator: NONE_TOKEN as RankiIndicatorName,
+    message: {
+      color: NONE_TOKEN,
+      text: "",
+    },
+  },
+  orange: {
+    background: {
       color: NONE_TOKEN,
     },
-    message: {
-      text: "",
+    icon: {
       color: NONE_TOKEN,
+      id: NONE_TOKEN,
+    },
+    indicator: NONE_TOKEN as RankiIndicatorName,
+    message: {
+      color: NONE_TOKEN,
+      text: "",
     },
   },
   pink: {
-    indicator: NONE_TOKEN as RankiIndicatorName,
     background: {
       color: NONE_TOKEN,
     },
     icon: {
+      color: NONE_TOKEN,
       id: NONE_TOKEN,
-      color: NONE_TOKEN,
     },
-    message: {
-      text: "",
-      color: NONE_TOKEN,
-    },
-  },
-  turquoise: {
     indicator: NONE_TOKEN as RankiIndicatorName,
-    background: {
-      color: NONE_TOKEN,
-    },
-    icon: {
-      id: NONE_TOKEN,
-      color: NONE_TOKEN,
-    },
     message: {
-      text: "",
       color: NONE_TOKEN,
+      text: "",
     },
   },
   purple: {
-    indicator: NONE_TOKEN as RankiIndicatorName,
     background: {
       color: NONE_TOKEN,
     },
     icon: {
+      color: NONE_TOKEN,
       id: NONE_TOKEN,
+    },
+    indicator: NONE_TOKEN as RankiIndicatorName,
+    message: {
+      color: NONE_TOKEN,
+      text: "",
+    },
+  },
+  red: {
+    background: {
       color: NONE_TOKEN,
     },
-    message: {
-      text: "",
+    icon: {
       color: NONE_TOKEN,
+      id: NONE_TOKEN,
+    },
+    indicator: NONE_TOKEN as RankiIndicatorName,
+    message: {
+      color: NONE_TOKEN,
+      text: "",
+    },
+  },
+  turquoise: {
+    background: {
+      color: NONE_TOKEN,
+    },
+    icon: {
+      color: NONE_TOKEN,
+      id: NONE_TOKEN,
+    },
+    indicator: NONE_TOKEN as RankiIndicatorName,
+    message: {
+      color: NONE_TOKEN,
+      text: "",
     },
   },
 };

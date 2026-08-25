@@ -4,20 +4,20 @@ const enabled = true;
 
 geometry.configure({
   observability: {
-    log: {
-      enabled,
-    },
-    trace: {
-      enabled,
-    },
-    metrics: {
-      enabled,
-    },
     debug: {
       enabled,
       // sequencer: {
       //   stutter: 1000,
       // },
+    },
+    log: {
+      enabled,
+    },
+    metrics: {
+      enabled,
+    },
+    trace: {
+      enabled,
     },
   },
 });

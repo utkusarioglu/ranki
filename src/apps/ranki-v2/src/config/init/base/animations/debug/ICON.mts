@@ -6,16 +6,15 @@ export const ICON: GeometryAnimationPreset = {
       enter: {
         root: [
           {
-            name: "height",
             duration: 0,
             keyframes: [
               {
                 height: "= to.self.height",
               },
             ],
+            name: "height",
           },
           {
-            name: "width",
             duration: 0,
             keyframes: [
               {
@@ -23,9 +22,9 @@ export const ICON: GeometryAnimationPreset = {
                 width: "= to.self.width",
               },
             ],
+            name: "width",
           },
           {
-            name: "position",
             duration: 0,
             keyframes: [
               {
@@ -33,32 +32,16 @@ export const ICON: GeometryAnimationPreset = {
                 top: "= to.self.top",
               },
             ],
+            name: "position",
           },
         ],
         sets: {
           children: {},
         },
       },
-      update: {
-        root: [
-          {
-            name: "position",
-            duration: 0,
-            keyframes: [
-              {
-                left: "= to.self.left",
-                top: "= to.self.top",
-                width: "= to.self.width",
-                height: "= to.self.height",
-              },
-            ],
-          },
-        ],
-      },
       leave: {
         root: [
           {
-            name: "exit",
             duration: 0,
             keyframes: [
               {
@@ -66,6 +49,23 @@ export const ICON: GeometryAnimationPreset = {
                 width: 0,
               },
             ],
+            name: "exit",
+          },
+        ],
+      },
+      update: {
+        root: [
+          {
+            duration: 0,
+            keyframes: [
+              {
+                height: "= to.self.height",
+                left: "= to.self.left",
+                top: "= to.self.top",
+                width: "= to.self.width",
+              },
+            ],
+            name: "position",
           },
         ],
       },
@@ -76,38 +76,38 @@ export const ICON: GeometryAnimationPreset = {
       enter: {
         root: [
           {
-            name: "init",
             duration: 0,
             keyframes: [
               {
-                width: 0,
                 height: "= to.self.height",
                 opacity: 0,
+                width: 0,
               },
             ],
+            name: "init",
           },
           {
-            name: "width",
             duration: 0,
             keyframes: [
               {
-                width: "= to.self.width",
                 opacity: 1,
+                width: "= to.self.width",
               },
             ],
+            name: "width",
           },
         ],
       },
       leave: {
         root: [
           {
-            name: "leave",
             duration: 0,
             keyframes: [
               {
                 opacity: 0,
               },
             ],
+            name: "leave",
           },
         ],
       },
