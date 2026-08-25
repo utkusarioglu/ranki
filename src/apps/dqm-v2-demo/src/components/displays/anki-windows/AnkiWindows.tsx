@@ -43,6 +43,7 @@ export const AnkiWindows = () => {
       aspect={win.previewAspect}
       scale={win.previewScale}
       reservedWidth={ui.menuWidth}
+      appVariant={win.appVariant}
     />
   );
 };

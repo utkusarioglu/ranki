@@ -9,9 +9,10 @@ export const useAnkiWinStore = createAnkiStore({
   cardConfig: CARD_CONFIG,
   templateConfig: TEMPLATE_CONFIG,
   deck: DECK,
-  tags: "",
+  tags: "win",
   face: "Q",
   flag: "flag0",
   cardType: "+r:AB:BA",
   card: "AB",
+  appVariant: "devtools",
 });

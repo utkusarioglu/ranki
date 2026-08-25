@@ -69,17 +69,24 @@ export default defineConfig(({ mode }) => ({
         },
         chunkFileNames: (chunkInfo) => {
           const name = chunkInfo.name.replaceAll("-", "_");
-          // if (chunkInfo.name.includes("index")) {
-          //   console.log("index chunk:", chunkInfo);
-          // }
-          if (chunkInfo.name === "core") {
+          // if (chunkInfo.isEntry) console.log("chung", chunkInfo, name);
+          //   // if (chunkInfo.name.includes("index")) {
+          //   //   console.log("index chunk:", chunkInfo);
+          //   // }
+          if (chunkInfo.name === "core.variant") {
             return "_ranki2.js";
           }
-          if (chunkInfo.name === "o11y.enable") {
+          if (chunkInfo.name === "observable.variant") {
             return "_ranki2.o11y.js";
           }
           return `_ranki2__${name}.js`;
         },
+        // manualChunks: (id) => {
+        //   if (id.includes("/o11y/")) return "observable";
+        //   if (id.includes("/devtools/")) return "devtools";
+
+        //   return "core";
+        // },
         assetFileNames: (assetInfo) => {
           if (assetInfo.name!.endsWith("css")) {
             return "_ranki2.css";

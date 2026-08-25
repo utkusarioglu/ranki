@@ -68,6 +68,29 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
 }) => {
   return (
     <div className={style.container}>
+      <Typography>App Variant</Typography>
+      {[
+        {
+          title: "Core",
+          variant: "core" as const,
+        },
+        {
+          title: "Observable",
+          variant: "o11y" as const,
+        },
+        {
+          title: "Devtools",
+          variant: "devtools" as const,
+        },
+      ].map(({ title, variant }) => (
+        <Button
+          key={title}
+          onClick={() => store.setAppVariant(variant)}
+          type={store.appVariant === variant ? "primary" : "default"}
+        >
+          {title}
+        </Button>
+      ))}
       <Typography>Content</Typography>
       {[
         {

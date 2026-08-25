@@ -50,16 +50,7 @@ export const AnkiAndroid = () => {
       aspect={android.previewAspect}
       scale={android.previewScale}
       reservedWidth={ui.menuWidth}
-      // inputs={dqm.inputs}
-      // templateConfig={android.templateConfig}
-      // cardConfig={android.cardConfig}
-      // pref={pref}
-      // deck={android.deck}
-      // tags={android.tags}
-      // flag={android.flag}
-      // face={android.face}
-      // cardType={android.cardType}
-      // card={android.card}
+      appVariant={android.appVariant}
     />
   );
 };

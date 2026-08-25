@@ -1,18 +1,11 @@
-import { type FC, type ReactNode } from "react";
+import { useEffect, type FC, type ReactNode } from "react";
 import style from "./AnkiIFrame.module.css";
 import { getSizing, useRankiFiles } from "./utils";
 import { AnkiIFrame, type AnkiDesktopIFrameProps } from "./anki-iframe";
-
-// type CardElements = {
-//   fragment: DocumentFragment;
-//   html: string;
-//   jss: HTMLScriptElement[];
-//   css: HTMLStyleElement[];
-// };
+import type { RankiAppVariant } from "_stores/anki-dist/anki.store.types.mjs";
 
 export type RankiElements = {
   fragment: DocumentFragment;
-  // html: string;
   jss: HTMLScriptElement[];
   css: HTMLStyleElement[];
 };
@@ -28,6 +21,7 @@ interface AnkiScreenProps extends Omit<AnkiDesktopIFrameProps, "files"> {
   Top: ReactNode;
   Bottom: ReactNode;
   deviceClassName: string;
+  appVariant: RankiAppVariant;
 
   aspect: number;
   scale: number;
@@ -46,9 +40,12 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   aspect,
   scale,
   reservedWidth,
+  appVariant,
   onLoad,
 }) => {
-  const files = useRankiFiles();
+  console.log(appVariant);
+  const files = useRankiFiles(appVariant);
+
   if (files.epoch === 0) {
     return (
       <div className={style.loading}>
@@ -71,7 +68,13 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
         }}
       >
         {Top}
-        <AnkiIFrame ref={ref} src={src} files={files} onLoad={onLoad} />
+        <AnkiIFrame
+          key={appVariant}
+          ref={ref}
+          src={src}
+          files={files}
+          onLoad={onLoad}
+        />
         {Bottom}
       </div>
     </div>

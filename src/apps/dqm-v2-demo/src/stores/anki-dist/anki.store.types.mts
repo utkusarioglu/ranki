@@ -10,6 +10,8 @@ export type RankiFace = "Q" | "N";
 export type RankiCardType = string;
 export type RankiCard = string;
 export type RankiContentType = "r2" | "foreign";
+export type RankiAppVariant = "core" | "o11y" | "devtools";
+
 export interface AnkiDistStoreStates {
   contentType: RankiContentType;
   previewAspect: number;
@@ -23,6 +25,7 @@ export interface AnkiDistStoreStates {
   face: RankiFace;
   cardType: RankiCardType;
   card: RankiCard;
+  appVariant: RankiAppVariant;
 }
 
 export interface AnkiDistStoreActions {
@@ -38,4 +41,5 @@ export interface AnkiDistStoreActions {
   setFace: (d: RankiFace) => void;
   setCardType: (c: RankiCardType) => void;
   setCard: (c: RankiCard) => void;
+  setAppVariant: (c: RankiAppVariant) => void;
 }

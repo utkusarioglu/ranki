@@ -20,4 +20,5 @@ export const createAnkiStore = (defaults: AnkiDistStoreStates) =>
     setFace: (face) => set(() => ({ face })),
     setCardType: (cardType) => set(() => ({ cardType })),
     setCard: (card) => set(() => ({ card })),
+    setAppVariant: (appVariant) => set(() => ({ appVariant })),
   }));

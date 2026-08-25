@@ -1,35 +1,7 @@
-// import type {
-//   DqmParseInputStructured,
-//   // IDqmRendererClientPreferences,
-// } from "@dqm/package-dqm-api-v2";
-// import { assertExists } from "_assertions";
-// import { pluginsAsArray } from "_stores/dqm/dqm.plugins.mjs";
-// import type { PluginStoreWrapper } from "_stores/dqm/dqm.store.types.mjs";
-// import { buildPluginSelectionConfig } from "_stores/dqm/dqm.utils.mjs";
-// import { Dqm } from "@dqm/package-dqm-v2";
 import { DqmDemoError } from "_error";
 import type { RankiFiles, RankiElements } from "./AnkiScreen";
 import { useEffect, useState } from "react";
-// import { INPUT_TYPE_CLASS_SELECTOR } from "@ranki/app-ranki-v2/constants";
-
-// export function dqmOnLoad(
-//   doc: Document,
-//   pluginSelection: PluginStoreWrapper[],
-//   inputs: DqmParseInputStructured,
-//   pref: IDqmRendererClientPreferences,
-// ) {
-//   const a = doc.querySelector<HTMLDivElement>("#A");
-//   if (!a) {
-//     return;
-//   }
-//   const fixedConfig = buildPluginSelectionConfig(pluginSelection);
-//   const dqm = new Dqm([fixedConfig], pluginsAsArray);
-//   assertExists(a, {
-//     why: "body element has to be available for dqm to render",
-//   });
-//   // @ts-expect-error
-//   dqm.render(inputs, { [inputs[0].theater]: a }, pref);
-// }
+import type { RankiAppVariant } from "_stores/anki-dist/anki.store.types.mjs";
 
 const URL_TEMPLATE = "/%";
 
@@ -82,59 +54,6 @@ export function createRankiElements(parts: RankiFiles): RankiElements {
     css,
   };
 }
-// function createCardElements(
-//   inputs: DqmParseInputStructured,
-//   parts: RankiFiles,
-//   re: Record<string, string>,
-// ): CardElements {
-//   const htmlTemplates = Object.values(parts.html);
-//   if (htmlTemplates.length > 1) {
-//     throw new DqmDemoError({
-//       code: "TOO_MANY_TEMPLATES",
-//       why: "Only a single template is expected",
-//       cause: null,
-//     });
-//   }
-//   let html = htmlTemplates[0];
-//   Object.entries(re).forEach(([s, r]) => {
-//     html = html.replace(s, r);
-//   });
-
-//   const tpl = document.createElement("template");
-//   tpl.innerHTML = html;
-//   const fragment = tpl.content;
-
-//   const js = Object.entries(parts.js).map(([name, j]) => {
-//     const jsScript = document.createElement("script");
-//     jsScript.type = "module";
-//     jsScript.id = name.replace(".", "-");
-//     jsScript.innerHTML = j;
-//     return jsScript;
-//   });
-
-//   const css = Object.entries(parts.css).map(([name, j]) => {
-//     const style = document.createElement("style");
-//     style.id = name.replace(".", "-");
-//     style.innerHTML = j;
-//     return style;
-//   });
-
-//   const inputElems = fragment.querySelectorAll(INPUT_TYPE_CLASS_SELECTOR);
-//   inputElems.forEach((e) => {
-//     fragment.removeChild(e);
-//   });
-
-//   const inputClass = INPUT_TYPE_CLASS_SELECTOR.split(".").slice(1).join(".");
-//   inputs.forEach((i) => {
-//     const e = document.createElement("script");
-//     e.className = [inputClass, i.theater].join(" ");
-//     e.type = "text/dqm";
-//     e.innerHTML = i.dqm;
-//     fragment.appendChild(e);
-//   });
-
-//   return { fragment, html, jss: js, css };
-// }
 
 export function getSizing(
   padding: number,
@@ -173,24 +92,30 @@ export function getSizing(
   return { top: dt, left: dl, width: dw, height: dh };
 }
 
-const FILES = {
-  html: ["template.html"],
-  css: ["_ranki2.css"],
-  js: ["_ranki2.js"],
+type RankiFilesRecord = Record<
+  RankiAppVariant,
+  Record<"html" | "css" | "js", string[]>
+>;
+
+const FILES: RankiFilesRecord = {
+  core: {
+    html: ["template-core.html"],
+    css: ["_ranki2.css"],
+    js: ["_ranki2.js"],
+  },
+  o11y: {
+    html: ["template-observable.html"],
+    css: ["_ranki2.css"],
+    js: ["_ranki2.o11y.js"],
+  },
+  devtools: {
+    html: ["template-devtools.html"],
+    css: ["_ranki2.css"],
+    js: ["_ranki2.devtools.js"],
+  },
 };
 
-// const URL_TEMPLATE = "/ranki-v2/%";
-// const URL_TEMPLATE = [];
-
-// const URL_TEMPLATE = [
-//   // window.location.protocol,
-//   // "/",
-//   // window.location.host,
-//   "%",
-// ].join("/");
-// const URL_TEMPLATE = "http://localhost:3000/%";
-
-export function useRankiFiles(): RankiFiles {
+export function useRankiFiles(appVariant: RankiAppVariant): RankiFiles {
   const [files, setFiles] = useState<RankiFiles>({
     epoch: 0,
     html: {},
@@ -200,7 +125,7 @@ export function useRankiFiles(): RankiFiles {
 
   useEffect(() => {
     Promise.all(
-      Object.entries(FILES).map(async ([k, v]) => {
+      Object.entries(FILES[appVariant]).map(async ([k, v]) => {
         const l = await Promise.all(
           Object.entries(v).map(async ([i, url]) => {
             const val = await fetch(URL_TEMPLATE.replace("%", url));
@@ -226,6 +151,6 @@ export function useRankiFiles(): RankiFiles {
         ),
       )
       .then((v) => setFiles(v));
-  }, []);
+  }, [appVariant]);
   return files;
 }
