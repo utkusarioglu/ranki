@@ -1,4 +1,5 @@
 import { context } from "@opentelemetry/api";
+import { type Logger, logs } from "@opentelemetry/api-logs";
 
 import type { EmptyClass } from "../o11y.types.mjs";
 import type {
@@ -6,15 +7,14 @@ import type {
   O11yLoggerDynamicEntriesFunc,
 } from "./logger.types.mjs";
 import type { O11yLogAttributes } from "./logger.types.mjs";
-import { logs, type Logger } from "@opentelemetry/api-logs";
 
 import { O11yTracer } from "../tracer/tracer.mjs";
 
 export class O11yLogger<T extends EmptyClass> {
   private static readonly staticLogger = logs.getLogger("STATIC");
   private commonAttributes: O11yLoggerDynamicEntriesFunc<T> | undefined;
-  private owner: T;
   private otel: Logger;
+  private owner: T;
 
   constructor(owner: T, params?: O11yLoggerConstructorParams<T>) {
     this.owner = owner;
@@ -24,19 +24,19 @@ export class O11yLogger<T extends EmptyClass> {
 
   static debug(log: string, attributes?: O11yLogAttributes) {
     O11yLogger.staticLogger.emit({
-      severityText: "DEBUG",
-      severityNumber: 0,
-      body: log,
       attributes,
+      body: log,
+      severityNumber: 0,
+      severityText: "DEBUG",
     });
   }
 
   static info(log: string, attributes?: O11yLogAttributes) {
     O11yLogger.staticLogger.emit({
-      severityText: "INFO",
-      severityNumber: 1,
-      body: log,
       attributes,
+      body: log,
+      severityNumber: 1,
+      severityText: "INFO",
     });
   }
 
@@ -46,10 +46,10 @@ export class O11yLogger<T extends EmptyClass> {
 
   info(log: string, attributes?: O11yLogAttributes) {
     this.otel.emit({
-      severityText: "INFO",
-      severityNumber: 1,
-      body: log,
       attributes: attributes,
+      body: log,
+      severityNumber: 1,
+      severityText: "INFO",
     });
     O11yLogger.info(log, { ...this.getEntries(), ...attributes });
   }

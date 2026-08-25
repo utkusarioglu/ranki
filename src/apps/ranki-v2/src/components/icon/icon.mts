@@ -1,36 +1,50 @@
-import { html, unsafeCSS } from "lit";
-import { customElement, property, queryAll } from "lit/decorators.js";
-import { R2C } from "_components/r2c/r2c.mjs";
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
-import type { R2IconSpan } from "./icon-span.mjs";
-import { repeat } from "lit/directives/repeat.js";
-import style from "./icon.css?inline";
-import { ReconciliationController } from "_controllers/reconciler/reconciler.controller.mjs";
-import { reconciler } from "_controllers/reconciler/reconciler.decorator.mjs";
+
+import { R2C } from "_components/r2c/r2c.mjs";
 import {
-  LayoutUtils,
   geometry,
   GeometryController,
+  LayoutUtils,
 } from "_controllers/geometry/geometry.mjs";
+import { ReconciliationController } from "_controllers/reconciler/reconciler.controller.mjs";
+import { reconciler } from "_controllers/reconciler/reconciler.decorator.mjs";
 import { getAnimationCollection } from "_store/app/app.getters.mjs";
+import { html, unsafeCSS } from "lit";
+import { customElement, property, queryAll } from "lit/decorators.js";
+import { repeat } from "lit/directives/repeat.js";
 
-export interface R2IconProps {
-  animation: RankiPropAnimationBlock;
-  icon: string;
-  color: string;
-  width: number;
-  height: number;
-}
+import type { R2IconSpan } from "./icon-span.mjs";
+
+import style from "./icon.css?inline";
 
 export type Parts = {
   id: number;
-  props: R2IconProps;
   leave: boolean;
+  props: R2IconProps;
 };
+
+export interface R2IconProps {
+  animation: RankiPropAnimationBlock;
+  color: string;
+  height: number;
+  icon: string;
+  width: number;
+}
 
 @customElement("r2-icon")
 export class R2Icon extends R2C {
   static override styles = unsafeCSS(style);
+
+  @geometry<R2Icon>({
+    children: {
+      diff: (s) => s.subtree.curr.diff,
+      layout: () => LayoutUtils.last(),
+      selector: (s) => Array.from(s.spans),
+    },
+    collection: getAnimationCollection,
+    role: "icon",
+  })
+  private readonly geo!: GeometryController<R2Icon>;
 
   @property()
   private accessor props!: R2IconProps;
@@ -38,26 +52,15 @@ export class R2Icon extends R2C {
   @queryAll("r2-icon-span")
   private accessor spans!: NodeListOf<R2IconSpan>;
 
-  @geometry<R2Icon>({
-    role: "icon",
-    collection: getAnimationCollection,
-    children: {
-      selector: (s) => Array.from(s.spans),
-      layout: () => LayoutUtils.last(),
-      diff: (s) => s.subtree.curr.diff,
-    },
-  })
-  private readonly geo!: GeometryController<R2Icon>;
-
   @reconciler<R2Icon, R2IconProps>({
-    type: "last",
-    reconcile: (c, p) => (c.icon === p.icon ? "retain" : "add"),
-    source: (s) => [s.props],
     on: (s, type, { index }) => {
       if (type === "leave") {
         s.spans[index]!.leave();
       }
     },
+    reconcile: (c, p) => (c.icon === p.icon ? "retain" : "add"),
+    source: (s) => [s.props],
+    type: "last",
   })
   private readonly subtree!: ReconciliationController<R2Icon, R2IconProps>;
 

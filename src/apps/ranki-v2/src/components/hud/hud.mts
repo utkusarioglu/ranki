@@ -1,37 +1,38 @@
 import { R2C } from "_components/r2c/r2c.mjs";
-import { html, unsafeCSS } from "lit";
-import { customElement, query } from "lit/decorators.js";
-import styles from "./hud.css?inline";
 import {
-  LayoutUtils,
   geometry,
   GeometryController,
+  LayoutUtils,
 } from "_controllers/geometry/geometry.mjs";
 import { getAnimationCollection } from "_store/app/app.getters.mjs";
+import { html, unsafeCSS } from "lit";
+import { customElement, query } from "lit/decorators.js";
+
+import styles from "./hud.css?inline";
 
 @customElement("r2-hud")
 export class R2Hud extends R2C {
   static override styles = unsafeCSS(styles);
 
-  @query("r2-hud-scroller")
-  private accessor scroller!: R2C;
-
   @geometry<R2Hud>({
-    role: "hud",
-    collection: getAnimationCollection,
     children: {
       isRoot: true,
-      selector: (s) => [s.scroller],
       layout: () =>
         LayoutUtils.row({
           cross: {
-            start: 10,
             end: 5,
+            start: 10,
           },
         }),
+      selector: (s) => [s.scroller],
     },
+    collection: getAnimationCollection,
+    role: "hud",
   })
   private readonly geo!: GeometryController<R2Hud>;
+
+  @query("r2-hud-scroller")
+  private accessor scroller!: R2C;
 
   override render() {
     return html`

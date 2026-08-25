@@ -1,14 +1,13 @@
+import type { ReactiveController, ReactiveControllerHost } from "lit";
+
 import { appStore } from "_store/app/app.mjs";
 import { type AnkiStore } from "_store/app/app.types.mjs";
-import type { ReactiveController, ReactiveControllerHost } from "lit";
 
 export type StoreAdapter<S, T> = (curr: S, prev: T | undefined) => T;
 
 export class StoreController<S, T = S> implements ReactiveController {
   curr!: T;
   prev: T | undefined;
-  private unsubscribe: () => void = () => {};
-
   constructor(
     host: ReactiveControllerHost,
     selector: (s: AnkiStore) => S,
@@ -26,4 +25,6 @@ export class StoreController<S, T = S> implements ReactiveController {
   hostDisconnected() {
     this.unsubscribe();
   }
+
+  private unsubscribe: () => void = () => {};
 }

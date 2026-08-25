@@ -1,15 +1,12 @@
+import type { LitElement, ReactiveController } from "lit";
+
 import { assertNever } from "_error/assertions.mjs";
 import {
-  ReconciliationUtils,
   type R2ReconcilerEmit,
   type ReconcileableSubtree,
   type ReconcileSingle,
+  ReconciliationUtils,
 } from "_utils/reconciliation.utils.mjs";
-import type { LitElement, ReactiveController } from "lit";
-
-type GetSourceCallback<Instance, S> = (instance: Instance) => S[];
-
-type ReconcilerTypes = "flat" | "last";
 
 export type ReconcilerEventsCb<Instance> = (
   host: Instance,
@@ -21,27 +18,31 @@ export type ReconcilerEventsCb<Instance> = (
 ) => void;
 
 export type SubtreeParams<Instance, S> = {
-  type: ReconcilerTypes;
-  reconcile: ReconcileSingle<S>;
   on?: ReconcilerEventsCb<Instance>;
+  reconcile: ReconcileSingle<S>;
   source: GetSourceCallback<Instance, S>;
+  type: ReconcilerTypes;
 };
+
+type GetSourceCallback<Instance, S> = (instance: Instance) => S[];
+
+type ReconcilerTypes = "flat" | "last";
 
 export class ReconciliationController<
   Instance extends LitElement,
   S,
 > implements ReactiveController {
-  private host: Instance;
-  private reconcilerName!: ReconcilerTypes;
-  private itemReconcile!: ReconcileSingle<S>;
+  public curr: ReconcileableSubtree<S> = ReconciliationUtils.empty<S>();
+  public epoch: number = 0;
+  public prev: ReconcileableSubtree<S> | undefined;
   private beforeLeave: ReconcilerEventsCb<Instance> | undefined;
 
   private getSource!: GetSourceCallback<Instance, S>;
-  public prev: ReconcileableSubtree<S> | undefined;
-  public curr: ReconcileableSubtree<S> = ReconciliationUtils.empty<S>();
-  public epoch: number = 0;
-
+  private host: Instance;
+  private itemReconcile!: ReconcileSingle<S>;
   private leaving: number[] = [];
+
+  private reconcilerName!: ReconcilerTypes;
   private willLeave = false;
 
   constructor(host: Instance, params: SubtreeParams<Instance, S>) {
@@ -59,7 +60,7 @@ export class ReconciliationController<
         ReconciliationUtils.emitLeave(this.host);
         break;
       default:
-        assertNever({ why: "Unrecognized emit type", details: { type } });
+        assertNever({ details: { type }, why: "Unrecognized emit type" });
     }
   }
 
@@ -84,11 +85,6 @@ export class ReconciliationController<
     this.host.requestUpdate();
   }
 
-  private setCurr(value: ReconcileableSubtree<S>) {
-    this.curr = value;
-    this.host.requestUpdate();
-  }
-
   onEmit(id: number) {
     return (e: CustomEvent<R2ReconcilerEmit>) => {
       e.stopPropagation();
@@ -100,8 +96,8 @@ export class ReconciliationController<
           break;
         default:
           assertNever({
-            why: "Unrecognized Reconciler emit type",
             details: { type: detail.type },
+            why: "Unrecognized Reconciler emit type",
           });
       }
       // ReconciliationUtils.leave(this.prev, id, this.setCurr.bind(this));
@@ -131,19 +127,24 @@ export class ReconciliationController<
       );
 
       this.setCurr({
-        list,
         diff: {
           add: [],
           remove,
           retain,
-          update: [],
           stagger: {
             first: id,
             indices: subtree.diff.stagger.indices,
           },
+          update: [],
         },
         epoch: Date.now(),
+        list,
       });
     }
+  }
+
+  private setCurr(value: ReconcileableSubtree<S>) {
+    this.curr = value;
+    this.host.requestUpdate();
   }
 }

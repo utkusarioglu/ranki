@@ -11,80 +11,80 @@ import type {
   RankiAnimation,
 } from "_config/config.types.mjs";
 
-export type HudComponentNames =
-  | "notify"
-  | "address"
-  | "tags"
-  | "cues"
-  | "template";
-
-export type HudVisibility = "visible" | "pull" | "pullWhenShort";
+export interface HudAddressProps extends HudElementCommon {
+  animation: RankiHudStateAnimation;
+  segments: HudAddressSegment[];
+  tokens: RankiAddressTokens;
+}
 
 export interface HudAddressSegment {
   animation: {
     enabled: boolean;
   };
-  type: "divider" | "segment";
+  masked: string[];
+  mode: "drop" | "hide" | "separator" | "show" | "trim";
   position: {
     left: "first" | "local-first" | "middle";
     right: "last" | "local-last" | "middle";
   };
-  mode: "show" | "separator" | "hide" | "trim" | "drop";
   shown: string[];
-  masked: string[];
-}
-
-export interface HudAddressProps extends HudElementCommon {
-  animation: RankiHudStateAnimation;
-  tokens: RankiAddressTokens;
-  segments: HudAddressSegment[];
-}
-
-export interface HudTemplateProps extends HudElementCommon {
-  animation: RankiHudStateAnimation;
-  type: AnkiCardType;
-  face: AnkiCardFace;
-  card: AnkiCard;
-}
-
-export interface HudElementCommon {
-  count: number;
+  type: "divider" | "segment";
 }
 
 export interface HudAppProps extends HudElementCommon {
   animation: RankiHudStateAnimation;
+  errorLevel: "error" | "none" | "warning";
   hasReplacements: boolean;
-  parseMode: "v1" | "v2" | "ignored";
-  errorLevel: "none" | "warning" | "error";
+  parseMode: "ignored" | "v1" | "v2";
+}
+
+export type HudComponentNames =
+  | "address"
+  | "cues"
+  | "notify"
+  | "tags"
+  | "template";
+
+export interface HudElementCommon {
+  count: number;
 }
 
 export interface HudTagListItem {
   animation: {
     enabled: boolean;
   };
-  type: "ranki" | "anki";
   text: AnkiRawTag | RankiTag;
+  type: "anki" | "ranki";
 }
 
 export interface HudTagsProps extends HudElementCommon {
   animation: RankiHudStateAnimation;
+  hideRanki: boolean;
   list: HudTagListItem[];
   neutral: AnkiRawTag[];
   ranki: RankiTag[];
-  hideRanki: boolean;
 }
 
+export interface HudTemplateProps extends HudElementCommon {
+  animation: RankiHudStateAnimation;
+  card: AnkiCard;
+  face: AnkiCardFace;
+  type: AnkiCardType;
+}
+
+export type HudVisibility = "pull" | "pullWhenShort" | "visible";
+
 export interface RankiHudState {
+  animation: RankiHudStateAnimation;
   order: HudComponentNames[];
-  visibility: HudVisibility;
   subtree: {
-    notify: HudAppProps;
     address: HudAddressProps;
-    tags: HudTagsProps;
     cues: ProcessedCueMapHud;
+    notify: HudAppProps;
+    tags: HudTagsProps;
     template: HudTemplateProps;
   };
-  animation: RankiHudStateAnimation;
+  visibility: HudVisibility;
 }
 
 export type RankiHudStateAnimation = RankiAnimation["hud"];

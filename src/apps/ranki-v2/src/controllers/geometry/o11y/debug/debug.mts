@@ -23,7 +23,7 @@ export class O11yDebugger {
     if (!d) {
       return;
     }
-    d.log({ log, attributes });
+    d.log({ attributes, log });
   }
 
   public static async pause(props?: DebugPause) {

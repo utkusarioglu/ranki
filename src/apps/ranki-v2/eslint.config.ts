@@ -11,23 +11,35 @@ export default defineConfig([
     plugins: {
       js,
       boundaries,
-      // perfectionist,
     },
     extends: ["js/recommended"],
-    languageOptions: { globals: globals.browser },
+    languageOptions: {
+      globals: globals.browser,
+    },
     settings: {
-      "boundaries/elements": [
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true,
+        },
+      },
+      "boundaries/files": [
         {
-          type: "geometry-controller.public",
+          category: "geometry-controller.public",
           pattern: "src/controllers/geometry/geometry.mts",
         },
-        // {
-        //   type: "geometry-controller.internal",
-        //   pattern: "src/controllers/geometry/**/*.mts",
-        // },
+        {
+          category: "component.r2c",
+          pattern: "src/components/r2c/r2c.mts",
+        },
+      ],
+      "boundaries/elements": [
+        {
+          type: "geometry-controller.internal",
+          pattern: "src/controllers/geometry/**/*",
+        },
         {
           type: "components",
-          pattern: "src/components/**/*.mts",
+          pattern: "src/components/**/*",
         },
       ],
     },
@@ -36,12 +48,44 @@ export default defineConfig([
         "error",
         {
           default: "disallow",
-          policies: {
-            from: { element: { type: "geometry-controller.public" } },
-            allow: {
-              to: { element: { type: "components" } },
+          policies: [
+            {
+              from: { element: { type: "components" } },
+              allow: {
+                to: { element: { type: "components" } },
+              },
             },
-          },
+            {
+              from: { element: { type: "components" } },
+              allow: {
+                to: { file: { categories: "geometry-controller.public" } },
+              },
+            },
+            {
+              from: { file: { categories: "!geometry-controller.public" } },
+              disallow: {
+                to: { element: { type: "geometry-controller.internal" } },
+              },
+            },
+            {
+              from: { file: { categories: "geometry-controller.public" } },
+              allow: {
+                to: { element: { type: "geometry-controller.internal" } },
+              },
+            },
+            {
+              from: { element: { type: "geometry-controller.internal" } },
+              allow: {
+                to: { element: { type: "geometry-controller.internal" } },
+              },
+            },
+            {
+              from: { element: { type: "geometry-controller.internal" } },
+              allow: {
+                to: { file: { categories: "component.r2c" } },
+              },
+            },
+          ],
         },
       ],
 

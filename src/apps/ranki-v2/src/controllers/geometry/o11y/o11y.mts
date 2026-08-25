@@ -21,10 +21,10 @@ export class O11y<T extends EmptyClass> {
     metricsEnabled: false,
     traceEnabled: false,
   };
+  public readonly debug = O11yDebugger;
   public readonly log: O11yLogger<T>;
   public readonly meter: O11yMeter<T>;
   public readonly trace: O11yTracer<T>;
-  public readonly debug = O11yDebugger;
 
   constructor(owner: T, extra?: O11yConstructorConfig<T>) {
     this.trace = O11y.STATIC_CONFIG.traceEnabled

@@ -1,3 +1,7 @@
+export interface DebugLogDriver {
+  log(value: O11yDebugLogAttributes): void;
+}
+
 export interface DebugPause {
   duration: number;
   props: Record<string, unknown>;
@@ -11,7 +15,3 @@ export interface O11yDebuggerStaticConfig {
 }
 
 export type O11yDebugLogAttributes = Record<string, unknown>;
-
-export interface DebugLogDriver {
-  log(value: O11yDebugLogAttributes): void;
-}

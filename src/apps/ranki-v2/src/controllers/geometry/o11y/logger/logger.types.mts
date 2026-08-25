@@ -1,5 +1,7 @@
-import type { AnyValueMap } from "@opentelemetry/api-logs";
 import type { LogDriver } from "_/o11y/log/ranki-logging.types.mjs";
+import type { AnyValueMap } from "@opentelemetry/api-logs";
+
+export type O11yLogAttributes = AnyValueMap;
 
 export interface O11yLogDynamicEntriesParams<T> {
   getParentContextValue: (key: string) => unknown;
@@ -18,5 +20,3 @@ export interface O11yLoggerStaticConfig {
   drivers?: LogDriver[];
   enabled: boolean;
 }
-
-export type O11yLogAttributes = AnyValueMap;

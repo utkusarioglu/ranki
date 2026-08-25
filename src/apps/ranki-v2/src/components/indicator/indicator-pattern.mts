@@ -1,5 +1,6 @@
 import type { RankiPropAnimationBlock } from "_config/config.types.mjs";
-import { LitElement, css } from "lit";
+
+import { css, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 @customElement("r2-indicator-pattern")
@@ -16,22 +17,10 @@ export class R2IndicatorPattern extends LitElement {
     }
   `;
 
-  @property()
-  private accessor pattern!: string;
   @property({ hasChanged: () => false })
   private accessor animation!: RankiPropAnimationBlock;
-
-  protected override firstUpdated(): void {
-    this.animate(
-      {
-        opacity: 1,
-      },
-      {
-        duration: this.animation.duration,
-        fill: "both",
-      },
-    );
-  }
+  @property()
+  private accessor pattern!: string;
 
   override remove(): void {
     this.animate(
@@ -45,5 +34,17 @@ export class R2IndicatorPattern extends LitElement {
   override render() {
     console.log("re", this.pattern);
     this.style.setProperty("--pattern", this.pattern);
+  }
+
+  protected override firstUpdated(): void {
+    this.animate(
+      {
+        opacity: 1,
+      },
+      {
+        duration: this.animation.duration,
+        fill: "both",
+      },
+    );
   }
 }
