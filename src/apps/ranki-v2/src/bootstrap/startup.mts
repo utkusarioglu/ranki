@@ -1,7 +1,7 @@
 import { RENDERED_CLASS_SELECTOR } from "_/selector.constants.mjs";
 
 // ANKI
-export function onReady(fn: any) {
+export function onReady(fn: () => void) {
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", fn, { once: true });
   } else {
@@ -9,14 +9,14 @@ export function onReady(fn: any) {
 
     const observer = new MutationObserver(fn);
     observer.observe(document.querySelector("#qa")!, {
+      attributes: true,
       childList: true,
       subtree: true,
-      attributes: true,
     });
   }
 }
 
-export function shouldRender(): "render" | "remove" | "stop" {
+export function shouldRender(): "remove" | "render" | "stop" {
   const qa = document.querySelector("#qa")!;
   let rendered = qa.querySelector(RENDERED_CLASS_SELECTOR);
   if (rendered) return "stop";

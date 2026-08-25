@@ -1,4 +1,5 @@
 import type { RankiO11yConsoleAccess } from "_/o11y/o11y.types.mjs";
+
 import type { IRankiDevAnkiMethods } from "./anki.types.mjs";
 
 declare global {

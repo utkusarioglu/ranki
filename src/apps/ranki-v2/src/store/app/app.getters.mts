@@ -1,4 +1,5 @@
 import { assertNotUndefined } from "_error/assertions.mjs";
+
 import { appStore } from "./app.mjs";
 
 export function getAnimationCollection() {

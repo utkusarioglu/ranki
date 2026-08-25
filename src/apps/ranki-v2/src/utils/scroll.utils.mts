@@ -1,18 +1,6 @@
 export class ScrollUtils {
   private static timeout: ReturnType<typeof setTimeout>;
 
-  static async temporaryHide(duration: number) {
-    return new Promise<void>((resolve) => {
-      const SCROLL_HIDDEN = "scroll-hidden";
-      const els = [document.body, document.querySelector("html")!];
-      els.forEach((e) => e.classList.add(SCROLL_HIDDEN));
-      setTimeout(() => {
-        els.forEach((e) => e.classList.remove(SCROLL_HIDDEN));
-        resolve();
-      }, duration);
-    });
-  }
-
   static delayed(
     element: HTMLElement | undefined,
     behavior: ScrollBehavior,
@@ -35,7 +23,7 @@ export class ScrollUtils {
           window.removeEventListener(e, cancel);
         });
         if (!element) {
-          window.scrollTo({ top: 0, left: 0, behavior });
+          window.scrollTo({ behavior, left: 0, top: 0 });
           return;
         }
         const observer = new IntersectionObserver(
@@ -54,6 +42,18 @@ export class ScrollUtils {
         observer.observe(element);
         resolve();
       }, latency);
+    });
+  }
+
+  static async temporaryHide(duration: number) {
+    return new Promise<void>((resolve) => {
+      const SCROLL_HIDDEN = "scroll-hidden";
+      const els = [document.body, document.querySelector("html")!];
+      els.forEach((e) => e.classList.add(SCROLL_HIDDEN));
+      setTimeout(() => {
+        els.forEach((e) => e.classList.remove(SCROLL_HIDDEN));
+        resolve();
+      }, duration);
     });
   }
 }

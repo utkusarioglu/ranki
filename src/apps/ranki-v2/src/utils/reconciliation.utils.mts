@@ -1,78 +1,55 @@
-import { assertNever } from "_error/assertions.mjs";
 import type { LitElement } from "lit";
 
-export type ReconciliationActions = "retain" | "update" | "remove" | "add";
+import { assertNever } from "_error/assertions.mjs";
 
-export type ReconciliationDiff = {
-  add: number[];
-  remove: number[];
-  update: number[];
-  retain: number[];
-  stagger: {
-    first: number;
-    indices: number[];
-  };
+export type R2ReconcilerEmit = {
+  type: "leave";
 };
 
-export type ReconcileSingle<G> = (curr: G, prev: G) => ReconciliationActions;
-
 export interface ReconcileableSubtree<T> {
-  list: ReconciliationContainer<T>[];
   diff: ReconciliationDiff;
   epoch: number;
+  list: ReconciliationContainer<T>[];
 }
 
 export interface ReconcileableType {
   leave: boolean;
 }
 
-export interface ReconciliationContainer<T extends any> {
-  props: T;
+export type ReconcileSingle<G> = (curr: G, prev: G) => ReconciliationActions;
+
+export type ReconciliationActions = "add" | "remove" | "retain" | "update";
+
+export interface ReconciliationContainer<T> {
   id: number;
   leave: boolean;
+  props: T;
 }
 
-export type R2ReconcilerEmit = {
-  type: "leave";
+export type ReconciliationDiff = {
+  add: number[];
+  remove: number[];
+  retain: number[];
+  stagger: {
+    first: number;
+    indices: number[];
+  };
+  update: number[];
 };
 
 export class ReconciliationUtils {
-  private static idCounter = 0;
   static leaveEventName = "r2-reconciler";
+  private static idCounter = 0;
 
   public static emitLeave(el: LitElement) {
     el.dispatchEvent(ReconciliationUtils.leaveEvent());
   }
 
-  private static leaveEvent() {
-    const detail = {
-      type: "leave" as "leave",
-    };
-    return new CustomEvent<R2ReconcilerEmit>(this.leaveEventName, {
-      bubbles: true,
-      composed: true,
-      detail,
-    });
-  }
-
   public static empty<G>(): ReconcileableSubtree<G> {
     return {
-      list: [],
-      epoch: 0,
       diff: ReconciliationUtils.noChanges(),
-    };
-  }
-
-  public static noChanges(length: number = 0): ReconciliationDiff {
-    return {
-      add: [],
-      remove: [],
-      retain: [],
-      update: [],
-      stagger: {
-        first: 0,
-        indices: Array.from({ length }, (_) => 0),
-      },
+      epoch: 0,
+      list: [],
     };
   }
 
@@ -111,13 +88,13 @@ export class ReconciliationUtils {
         action = "remove";
       } else {
         assertNever({
-          why: "Impossible reconciliation state",
           details: {
             curr,
-            prev,
             isCurr,
             isPrev,
+            prev,
           },
+          why: "Impossible reconciliation state",
         });
       }
 
@@ -125,9 +102,9 @@ export class ReconciliationUtils {
         case "add":
           add.push(i);
           list.push({
-            props: curr[i],
             id: this.getId(),
             leave: false,
+            props: curr[i],
           });
           break;
         case "remove":
@@ -141,15 +118,15 @@ export class ReconciliationUtils {
         case "update":
           update.push(i);
           list.push({
-            props: curr[i],
             id: this.getId(),
             leave: false,
+            props: curr[i],
           });
           break;
         default:
           assertNever({
-            why: "unrecognized change option",
             details: { action },
+            why: "unrecognized change option",
           });
       }
     }
@@ -178,18 +155,18 @@ export class ReconciliationUtils {
     }
 
     return {
-      list,
-      epoch: Date.now(),
       diff: {
         add,
         remove,
         retain,
-        update,
         stagger: {
           first: mutateIndex,
           indices,
         },
+        update,
       },
+      epoch: Date.now(),
+      list,
     };
   }
 
@@ -218,13 +195,13 @@ export class ReconciliationUtils {
       action = "remove";
     } else {
       assertNever({
-        why: "Impossible reconciliation state",
         details: {
           curr,
-          prev,
           isCurr,
           isPrev,
+          prev,
         },
+        why: "Impossible reconciliation state",
       });
     }
 
@@ -233,9 +210,9 @@ export class ReconciliationUtils {
       case "add":
         add.push(i);
         list.push({
-          props: currLast!,
           id: this.getId(),
           leave: false,
+          props: currLast!,
         });
         break;
       case "retain":
@@ -243,8 +220,8 @@ export class ReconciliationUtils {
         break;
       default:
         assertNever({
-          why: "unrecognized change option",
           details: { action },
+          why: "unrecognized change option",
         });
     }
 
@@ -257,22 +234,46 @@ export class ReconciliationUtils {
     const indices = Array.from({ length: list.length }, (_) => 0);
 
     return {
-      list,
-      epoch: Date.now(),
       diff: {
         add,
         remove,
         retain,
-        update: [],
         stagger: {
           first: 0,
           indices,
         },
+        update: [],
       },
+      epoch: Date.now(),
+      list,
+    };
+  }
+
+  public static noChanges(length: number = 0): ReconciliationDiff {
+    return {
+      add: [],
+      remove: [],
+      retain: [],
+      stagger: {
+        first: 0,
+        indices: Array.from({ length }, (_) => 0),
+      },
+      update: [],
     };
   }
 
   private static getId() {
     return this.idCounter++;
+  }
+
+  private static leaveEvent() {
+    const detail = {
+      type: "leave" as const,
+    };
+    return new CustomEvent<R2ReconcilerEmit>(this.leaveEventName, {
+      bubbles: true,
+      composed: true,
+      detail,
+    });
   }
 }

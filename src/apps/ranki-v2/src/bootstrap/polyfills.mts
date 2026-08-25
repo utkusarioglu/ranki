@@ -1,17 +1,20 @@
 /**
  * FIX if anki maps are broken, it's likely because this polyfill isn't working
  * as expected.Be aware that any change in this may break otel tracing
+ *
+ * @dev
+ * #1 used for convenience
  * */
 if (typeof Map !== "undefined") {
   const orig = Map.prototype.values;
 
   if (!orig) {
-    // @ts-expect-error
+    // @ts-expect-error #1
     Map.prototype.values = function () {
-      // @ts-expect-error
+      // @ts-expect-error #1
       const out = [];
       this.forEach((v) => out.push(v));
-      // @ts-expect-error
+      // @ts-expect-error #1
       return out;
     };
   }

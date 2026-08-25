@@ -1,5 +1,6 @@
 import "../bootstrap/polyfills.mjs";
 import "_error/listeners.mjs";
+
 import "../config.mjs";
 import "_components/registry.mjs";
 import { onReady, shouldRender } from "_/bootstrap/startup.mjs";

@@ -1,10 +1,21 @@
 import type { RankiDevState } from "_config/config.types.mjs";
-import { RankiDevAnkiMethods } from "./anki.mjs";
+
 import { RankiO11y } from "_/o11y/o11y.mjs";
+
+import { RankiDevAnkiMethods } from "./anki.mjs";
 import "./devtools.types.mjs";
 
 export class RankiDevtools {
   static isPersisted = false;
+
+  static persist(on: boolean = true) {
+    if (on) {
+      console.log("Ranki DevMethods will persist until reload");
+    } else {
+      console.log("Ranki DevMethods will not persist on state change");
+    }
+    this.isPersisted = on;
+  }
 
   public static update(conf?: RankiDevState) {
     if (conf?.persist) {
@@ -26,14 +37,5 @@ export class RankiDevtools {
         delete window.ranki;
       }
     }
-  }
-
-  static persist(on: boolean = true) {
-    if (on) {
-      console.log("Ranki DevMethods will persist until reload");
-    } else {
-      console.log("Ranki DevMethods will not persist on state change");
-    }
-    this.isPersisted = on;
   }
 }

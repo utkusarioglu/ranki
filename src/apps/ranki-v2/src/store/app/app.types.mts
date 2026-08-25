@@ -4,13 +4,7 @@ import type {
   RankiState,
 } from "_config/config.types.mjs";
 
-interface AppState {
-  epoch: number;
-  shouldRender: "render" | "remove" | "stop";
-  raw: null | RawFields;
-  config: null | RankiCollectedConfig;
-  state: null | RankiState;
-}
+export type AnkiStore = AppMethods & AppState;
 
 interface AppMethods {
   setEpoch: (e: AppState["epoch"]) => void;
@@ -18,4 +12,10 @@ interface AppMethods {
   setRaw: (c: NonNullable<AppState["raw"]>) => void;
 }
 
-export type AnkiStore = AppState & AppMethods;
+interface AppState {
+  config: null | RankiCollectedConfig;
+  epoch: number;
+  raw: null | RawFields;
+  shouldRender: "remove" | "render" | "stop";
+  state: null | RankiState;
+}

@@ -3,7 +3,7 @@ export class CollectionUtils {
    * This method is created because `NodeListOf` type doesn't support `indexOf` array method;
    */
   static indexOf<T extends Node>(
-    list: T[] | NodeListOf<T>,
+    list: NodeListOf<T> | T[],
     searched: T,
   ): number {
     let index = -1;

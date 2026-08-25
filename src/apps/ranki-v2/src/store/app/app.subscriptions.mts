@@ -1,8 +1,10 @@
-import { createAppConfig } from "_config/app/app.mjs";
-import { appStore } from "./app.mjs";
 import type { RawFields } from "_collect/collect.types.mjs";
-import { collectConfig } from "_config/config.mjs";
+
 import { collectRaw } from "_collect/collect.mjs";
+import { createAppConfig } from "_config/app/app.mjs";
+import { collectConfig } from "_config/config.mjs";
+
+import { appStore } from "./app.mjs";
 
 appStore.subscribe(
   (s) => s.config,
