@@ -1,7 +1,8 @@
+import type { LogValue } from "_/o11y/log/ranki-logging.types.mjs";
+
 import yaml from "yaml";
 
 import type { ConsoleBatchLoggerPrinterFunc } from "../log-drivers/console-batch/console-batch.types.mjs";
-import type { LogValue } from "_/o11y/log/ranki-logging.types.mjs";
 
 function summaryLine(values: LogValue[], elapsed: number) {
   return [

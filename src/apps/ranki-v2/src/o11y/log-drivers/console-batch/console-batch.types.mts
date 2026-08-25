@@ -1,4 +1,5 @@
 import type { LogValue } from "_/o11y/log/ranki-logging.types.mjs";
+
 import type {
   LogFormatters,
   LogSanitizers,
@@ -8,8 +9,8 @@ export type ConsoleBatchLogDriverConfigureProps =
   Partial<ConsoleBatchLogDriverStaticConfig>;
 
 export interface ConsoleBatchLogDriverConstructorParams {
-  printer?: LogPrinters;
   formatter: LogFormatters;
+  printer?: LogPrinters;
   sanitizer?: LogSanitizers;
 }
 
@@ -28,4 +29,4 @@ export type ConsoleBatchLoggerPrinterFuncRecord = Record<
   ConsoleBatchLoggerPrinterFunc
 >;
 
-export type LogPrinters = "default" | "yamlRow" | "consoleLogRow";
+export type LogPrinters = "consoleLogRow" | "default" | "yamlRow";

@@ -4,15 +4,16 @@ import type {
   LogStringifiers,
 } from "../utils/log-processor/log-processor.types.mjs";
 
-export type FileBatchRawLogEntry = any;
-
 export interface FileBatchLogDriverConstructorParams {
   filePath: string;
-  stringifier: LogStringifiers;
-  sanitizer?: LogSanitizers;
   formatter?: LogFormatters;
+  sanitizer?: LogSanitizers;
   scheduler?: {
     enabled?: boolean;
     interval?: number;
   };
+  stringifier: LogStringifiers;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type FileBatchRawLogEntry = any;

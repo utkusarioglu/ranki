@@ -1,8 +1,14 @@
+import type { IncomingMessage, ServerResponse } from "node:http";
+
 import fs from "node:fs/promises";
 import path from "node:path";
 
 export function writeFileMiddleware(root: string) {
-  return async (req: any, res: any, next: any) => {
+  return async (
+    req: IncomingMessage,
+    res: ServerResponse,
+    next: () => void,
+  ) => {
     if (req.method !== "POST") {
       next();
       return;

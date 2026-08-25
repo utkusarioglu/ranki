@@ -5,26 +5,26 @@ RankiO11y.enable({
   debug: {
     drivers: {
       consoleBatch: {
-        printer: "consoleLogRow",
         formatter: "objectSorter",
+        printer: "consoleLogRow",
         sanitizer: "none",
       },
       fileBatch: {
         filePath: "debugger.log",
-        stringifier: "jsonOneLine",
         sanitizer: "basicRepresentation",
         scheduler: {
           enabled: true,
           interval: 5000,
         },
+        stringifier: "jsonOneLine",
       },
     },
   },
   log: {
     drivers: {
       consoleBatch: {
-        printer: "yamlRow",
         formatter: "objectSorter",
+        printer: "yamlRow",
       },
       // fileBatch: {
       //   filePath: "log.log",

@@ -1,13 +1,15 @@
+import { type Attributes, trace } from "@opentelemetry/api";
 import {
   type Logger,
   type LoggerOptions,
   type LoggerProvider,
   type LogRecord,
 } from "@opentelemetry/api-logs";
-import { trace, type Attributes } from "@opentelemetry/api";
+
 import type { LogDriver } from "../ranki-logging.types.mjs";
-import { PlaceholderOtelLogger } from "../logger/placeholder-logger.mjs";
 import type { MyLoggerProviderConstructorProps } from "./placeholder-provider.types.mjs";
+
+import { PlaceholderOtelLogger } from "../logger/placeholder-logger.mjs";
 
 export class PlaceholderOtelLoggerProvider implements LoggerProvider {
   private drivers: LogDriver[] = [];
@@ -25,15 +27,6 @@ export class PlaceholderOtelLoggerProvider implements LoggerProvider {
     };
   }
 
-  private logToDrivers(log: LogRecord) {
-    this.drivers.forEach((driver) => {
-      driver.log({
-        ...log,
-        ...PlaceholderOtelLoggerProvider.prepareTrace(),
-      });
-    });
-  }
-
   getLogger(
     name: string,
     // @ts-expect-error yet unused
@@ -42,12 +35,21 @@ export class PlaceholderOtelLoggerProvider implements LoggerProvider {
     attributes?: Attributes,
   ): Logger {
     return new PlaceholderOtelLogger({
-      name,
-      options,
       attributes,
       callbacks: {
         logToDrivers: this.logToDrivers.bind(this),
       },
+      name,
+      options,
+    });
+  }
+
+  private logToDrivers(log: LogRecord) {
+    this.drivers.forEach((driver) => {
+      driver.log({
+        ...log,
+        ...PlaceholderOtelLoggerProvider.prepareTrace(),
+      });
     });
   }
 }

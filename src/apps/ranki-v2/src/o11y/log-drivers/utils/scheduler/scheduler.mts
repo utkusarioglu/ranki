@@ -1,13 +1,14 @@
-import { DEFAULT_SEND_INTERVAL } from "../../loki/loki.constants.mjs";
 import type {
-  SchedulerOperation,
   SchedulerConstructorParams,
+  SchedulerOperation,
   SchedulerState,
 } from "./scheduler.types.mjs";
 
+import { DEFAULT_SEND_INTERVAL } from "../../loki/loki.constants.mjs";
+
 export class Scheduler<T> {
-  private interval = DEFAULT_SEND_INTERVAL;
   private enabled: boolean = false;
+  private interval = DEFAULT_SEND_INTERVAL;
   private operation: SchedulerOperation;
   private queue: T[] = [];
   private sendOp: NodeJS.Timeout | undefined;

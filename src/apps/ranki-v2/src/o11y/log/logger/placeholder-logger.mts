@@ -1,13 +1,18 @@
 import type { Attributes } from "@opentelemetry/api";
 import type { LoggerOptions, LogRecord } from "@opentelemetry/api-logs";
+
 import type { LogToDriversFunc } from "../provider/placeholder-provider.types.mjs";
 import type { PlaceholderOtelLoggerConstructorParams } from "./placeholder-logger.types.mjs";
 
+/**
+ * @dev
+ * #1 This isn't being used yet
+ */
 export class PlaceholderOtelLogger {
+  private attributes: Attributes;
   private logToDrivers: LogToDriversFunc;
   private name: string;
-  private attributes: Attributes;
-  // @ts-expect-error
+  // @ts-expect-error #1
   private options: LoggerOptions;
 
   constructor(p: PlaceholderOtelLoggerConstructorParams) {

@@ -1,9 +1,14 @@
 import type { LogValue } from "_/o11y/log/ranki-logging.types.mjs";
-import type { LokiLogValue, LokiLog, LokiLogStream } from "./loki.types.mjs";
+
+import type { LokiLog, LokiLogStream, LokiLogValue } from "./loki.types.mjs";
 
 export class LokiLogProcessor {
   public static processLog(logs: LokiLogValue[]): LokiLog {
     return { streams: [this.processLogStream(logs)] };
+  }
+
+  public static processLogValue(log: LogValue): LokiLogValue {
+    return [String(log.timestamp), JSON.stringify(log)];
   }
 
   private static processLogStream(values: LokiLogValue[]): LokiLogStream {
@@ -13,9 +18,5 @@ export class LokiLogProcessor {
       },
       values,
     };
-  }
-
-  public static processLogValue(log: LogValue): LokiLogValue {
-    return [String(log.timestamp), JSON.stringify(log)];
   }
 }

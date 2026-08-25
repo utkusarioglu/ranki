@@ -1,5 +1,7 @@
 import type { LogRecord } from "@opentelemetry/api-logs";
+
 import { assertNotUndefined } from "_error/assertions.mjs";
+
 import type { ConsoleBatchLoggerPrinterFuncRecord } from "../../console-batch/console-batch.types.mjs";
 
 interface LogPrinterConstructorParams {
@@ -9,15 +11,15 @@ interface LogPrinterConstructorParams {
 type LogPrinterStaticConfig = ConsoleBatchLoggerPrinterFuncRecord;
 
 export class LogPrinter {
+  private static printers: LogPrinterStaticConfig = {
+    default: (v) => console.log(v),
+  };
+
   private printerName: string = "default";
 
   constructor(params?: LogPrinterConstructorParams) {
     if (params?.printer) this.printerName = params.printer;
   }
-
-  private static printers: LogPrinterStaticConfig = {
-    default: (v) => console.log(v),
-  };
 
   static configure(printers: ConsoleBatchLoggerPrinterFuncRecord) {
     this.printers = { ...this.printers, ...printers };

@@ -1,11 +1,12 @@
+import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
+import type { LogRecord } from "@opentelemetry/api-logs";
+
 import type { LokiLogValue } from "./loki.types.mjs";
 import type { LokiLogDriverConstructorParams } from "./loki.types.mjs";
 
-import { DEFAULT_LOKI_ENDPOINT } from "./loki.constants.mjs";
-import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
-import { LokiLogProcessor } from "./processor.mjs";
-import type { LogRecord } from "@opentelemetry/api-logs";
 import { CallbackBatchLogDriver } from "../callback-batch/callback-batch.mjs";
+import { DEFAULT_LOKI_ENDPOINT } from "./loki.constants.mjs";
+import { LokiLogProcessor } from "./processor.mjs";
 
 export class LokiLogDriver implements LogDriver {
   private readonly back: CallbackBatchLogDriver;
@@ -14,9 +15,9 @@ export class LokiLogDriver implements LogDriver {
   constructor(params?: LokiLogDriverConstructorParams) {
     this.back = new CallbackBatchLogDriver(this.sender.bind(this), {
       processor: {
+        formatter: (v) => LokiLogProcessor.processLogValue(v as LogRecord),
         sanitizer: "basicRepresentation",
         stringifier: "none",
-        formatter: (v) => LokiLogProcessor.processLogValue(v as LogRecord),
       },
       scheduler: {
         enabled: true,

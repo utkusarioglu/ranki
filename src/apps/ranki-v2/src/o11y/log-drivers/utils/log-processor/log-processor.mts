@@ -1,32 +1,25 @@
 import type { LogValue } from "_/o11y/log/ranki-logging.types.mjs";
+
+import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
+
 import type {
   LogProcessorConfigureProps,
   LogProcessorConstructorParams,
   LogProcessorStaticConfig,
   NewLogValueCallback,
 } from "./log-processor.types.mjs";
-import { assertNever, assertNotUndefined } from "_error/assertions.mjs";
 
 export class LogProcessor {
-  private readonly id: string;
-  private sanitizerName: string = "none";
-  private formatterName: string = "none";
-  private stringifierName: string = "none";
   private static config: LogProcessorStaticConfig = {
-    sanitizers: { none: (v) => v },
     formatters: { none: (v) => v },
+    sanitizers: { none: (v) => v },
     stringifiers: { none: (v) => v },
   };
   private readonly callback: NewLogValueCallback;
-
-  public static configure(conf: LogProcessorConfigureProps) {
-    this.config.sanitizers = { ...this.config.sanitizers, ...conf.sanitizers };
-    this.config.formatters = { ...this.config.formatters, ...conf.formatters };
-    this.config.stringifiers = {
-      ...this.config.stringifiers,
-      ...conf.stringifiers,
-    };
-  }
+  private formatterName: string = "none";
+  private readonly id: string;
+  private sanitizerName: string = "none";
+  private stringifierName: string = "none";
 
   constructor(params: LogProcessorConstructorParams) {
     this.id = Math.random().toString();
@@ -49,8 +42,8 @@ export class LogProcessor {
         break;
       default:
         assertNever({
-          why: "Unrecognized sanitizer type",
           details: { params },
+          why: "Unrecognized sanitizer type",
         });
     }
     switch (typeof params.formatter) {
@@ -71,8 +64,8 @@ export class LogProcessor {
         break;
       default:
         assertNever({
-          why: "Unrecognized formatter type",
           details: { params },
+          why: "Unrecognized formatter type",
         });
     }
     switch (typeof params.stringifier) {
@@ -93,22 +86,30 @@ export class LogProcessor {
         break;
       default:
         assertNever({
-          why: "Unrecognized stringifier type",
           details: { params },
+          why: "Unrecognized stringifier type",
         });
     }
   }
 
-  private getSanitizer() {
-    const sanitizer = LogProcessor.config.sanitizers[this.sanitizerName];
-    assertNotUndefined(sanitizer, {
-      details: {
-        printerName: this.sanitizerName,
-        printers: LogProcessor.config.sanitizers,
-      },
-      why: "undefined sanitizer",
-    });
-    return sanitizer;
+  public static configure(conf: LogProcessorConfigureProps) {
+    this.config.sanitizers = { ...this.config.sanitizers, ...conf.sanitizers };
+    this.config.formatters = { ...this.config.formatters, ...conf.formatters };
+    this.config.stringifiers = {
+      ...this.config.stringifiers,
+      ...conf.stringifiers,
+    };
+  }
+
+  log(v: LogValue) {
+    const sanitizer = this.getSanitizer();
+    const sanitized = sanitizer(v as LogValue[]);
+    const formatter = this.getFormatter();
+    const formatted = formatter(sanitized);
+    const stringifier = this.getStringifier();
+    const stringified = stringifier(formatted);
+
+    this.callback(stringified);
   }
 
   private getFormatter() {
@@ -123,6 +124,18 @@ export class LogProcessor {
     return formatter;
   }
 
+  private getSanitizer() {
+    const sanitizer = LogProcessor.config.sanitizers[this.sanitizerName];
+    assertNotUndefined(sanitizer, {
+      details: {
+        printerName: this.sanitizerName,
+        printers: LogProcessor.config.sanitizers,
+      },
+      why: "undefined sanitizer",
+    });
+    return sanitizer;
+  }
+
   private getStringifier() {
     const stringifier = LogProcessor.config.stringifiers[this.stringifierName];
     assertNotUndefined(stringifier, {
@@ -133,16 +146,5 @@ export class LogProcessor {
       why: "undefined stringifier",
     });
     return stringifier;
-  }
-
-  log(v: LogValue) {
-    const sanitizer = this.getSanitizer();
-    const sanitized = sanitizer(v as LogValue[]);
-    const formatter = this.getFormatter();
-    const formatted = formatter(sanitized);
-    const stringifier = this.getStringifier();
-    const stringified = stringifier(formatted);
-
-    this.callback(stringified);
   }
 }

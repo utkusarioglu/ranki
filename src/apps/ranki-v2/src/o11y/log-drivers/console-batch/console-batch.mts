@@ -1,39 +1,31 @@
+import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
+
 import { assertNever } from "_error/assertions.mjs";
-import { trace, type TimeInput } from "@opentelemetry/api";
+import { type TimeInput, trace } from "@opentelemetry/api";
 
 import type { ConsoleBatchLogDriverConstructorParams } from "./console-batch.types.mjs";
-import type { LogDriver, LogValue } from "_/o11y/log/ranki-logging.types.mjs";
-import { LogProcessor } from "../utils/log-processor/log-processor.mjs";
+
 import { LogPrinter } from "../utils/log-printer/log-printer.mjs";
+import { LogProcessor } from "../utils/log-processor/log-processor.mjs";
 
 export class ConsoleBatchLogDriver implements LogDriver {
+  private logs: LogValue[] = [];
   private readonly pipe: LogProcessor;
   private readonly printer: LogPrinter;
   private timestamp: number = (Date.now() - 1) * 1e6;
-  private logs: LogValue[] = [];
 
   constructor(params?: ConsoleBatchLogDriverConstructorParams) {
     this.pipe = new LogProcessor({
-      stringifier: "none",
+      callback: (v) => this.logs.push(v),
       formatter: "none",
       sanitizer: params?.sanitizer || "none",
-      callback: (v) => this.logs.push(v),
+      stringifier: "none",
     });
     this.printer = new LogPrinter({ printer: params?.printer });
   }
 
   log(v: LogValue) {
     this.pipe.log({ ...v, ...this.getSpanContext() });
-  }
-
-  // TODO
-  private convertTime(input: TimeInput) {
-    switch (typeof input) {
-      case "number":
-        return input;
-      default:
-        assertNever({ why: "unknown time input type", details: { input } });
-    }
   }
 
   new() {
@@ -45,6 +37,16 @@ export class ConsoleBatchLogDriver implements LogDriver {
   query(cb?: (entry: LogValue) => boolean) {
     const filtered = cb ? this.logs.filter(cb) : this.logs;
     this.printer.print(filtered, this.timestamp);
+  }
+
+  // TODO
+  private convertTime(input: TimeInput) {
+    switch (typeof input) {
+      case "number":
+        return input;
+      default:
+        assertNever({ details: { input }, why: "unknown time input type" });
+    }
   }
 
   private getSpanContext() {

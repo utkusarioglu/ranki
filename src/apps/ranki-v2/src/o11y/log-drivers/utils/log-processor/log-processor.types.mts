@@ -1,34 +1,37 @@
 import type { SanitizerFunc } from "_/o11y/sanitizers/sanitizer.types.mjs";
 
-export interface LogProcessorStaticConfig {
-  sanitizers: LogProcessorSanitizerFuncRecord;
-  formatters: LogProcessorFormatterFuncRecord;
-  stringifiers: LogProcessorStringifierFuncRecord;
-}
-
-type FormatterFunc = (v: unknown) => unknown;
-
-type StringifierFunc = (v: unknown) => unknown;
-
-type LogProcessorFormatterFuncRecord = Record<string, FormatterFunc>;
-
-type LogProcessorStringifierFuncRecord = Record<string, StringifierFunc>;
-
-type LogProcessorSanitizerFuncRecord = Record<string, SanitizerFunc>;
+export type LogFormatters = "none" | "objectSorter";
 
 export type LogProcessorConfigureProps = Partial<LogProcessorStaticConfig>;
 
-export type NewLogValueCallback = (value: any) => void;
-
 export interface LogProcessorConstructorParams {
-  sanitizer: LogSanitizers | SanitizerFunc;
-  formatter: LogFormatters | FormatterFunc;
-  stringifier: LogStringifiers | StringifierFunc;
   callback: NewLogValueCallback;
+  formatter: FormatterFunc | LogFormatters;
+  sanitizer: LogSanitizers | SanitizerFunc;
+  stringifier: LogStringifiers | StringifierFunc;
 }
 
-export type LogSanitizers = "none" | "basicRepresentation";
+export interface LogProcessorStaticConfig {
+  formatters: LogProcessorFormatterFuncRecord;
+  sanitizers: LogProcessorSanitizerFuncRecord;
+  stringifiers: LogProcessorStringifierFuncRecord;
+}
 
-export type LogFormatters = "none" | "objectSorter";
+export type LogSanitizers = "basicRepresentation" | "none";
 
-export type LogStringifiers = "none" | "jsonOneLine" | "jsonMultiLine" | "yaml";
+export type LogStringifiers = "jsonMultiLine" | "jsonOneLine" | "none" | "yaml";
+
+export type NewLogValueCallback = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value: any,
+) => void;
+
+type FormatterFunc = (v: unknown) => unknown;
+
+type LogProcessorFormatterFuncRecord = Record<string, FormatterFunc>;
+
+type LogProcessorSanitizerFuncRecord = Record<string, SanitizerFunc>;
+
+type LogProcessorStringifierFuncRecord = Record<string, StringifierFunc>;
+
+type StringifierFunc = (v: unknown) => unknown;

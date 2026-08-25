@@ -1,16 +1,22 @@
+import { logs } from "@opentelemetry/api-logs";
+
 import type {
   LogDriver,
-  RankiLogRuntimeProps,
   RankiLoggingStaticConfiguration,
+  RankiLogRuntimeProps,
 } from "./ranki-logging.types.mjs";
-import { logs } from "@opentelemetry/api-logs";
-import { PlaceholderOtelLoggerProvider } from "./provider/placeholder-provider.mjs";
+
 import { RankiLogDriverRegistry } from "../driver-registry/driver-registry.mjs";
+import { PlaceholderOtelLoggerProvider } from "./provider/placeholder-provider.mjs";
 
 export class RankiLogging {
   private static readonly active = new Map<string, LogDriver>();
+  private static logger: null | PlaceholderOtelLoggerProvider = null;
   private static readonly registry = RankiLogDriverRegistry;
-  private static logger: PlaceholderOtelLoggerProvider | null = null;
+
+  public static configure(conf: RankiLoggingStaticConfiguration) {
+    this.registry.addMany(conf.drivers);
+  }
 
   public static enable(props: RankiLogRuntimeProps) {
     Object.entries(props.drivers).forEach(([key, def]) => {
@@ -29,9 +35,5 @@ export class RankiLogging {
 
   public static getConsoleAccess() {
     return RankiLogging.active.get("consoleBatch");
-  }
-
-  public static configure(conf: RankiLoggingStaticConfiguration) {
-    this.registry.addMany(conf.drivers);
   }
 }

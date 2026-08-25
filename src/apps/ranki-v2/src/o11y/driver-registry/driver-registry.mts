@@ -1,4 +1,5 @@
 import { assertNotUndefined } from "_error/assertions.mjs";
+
 import type {
   LogDriverConstructor,
   RankiLogDriverRegistryAddManyProps,
@@ -14,8 +15,8 @@ export class RankiLogDriverRegistry {
   static get(name: string) {
     const driver = this.list.get(name);
     assertNotUndefined(driver, {
+      details: { drivers: this.list, name },
       why: "Unregistered driver",
-      details: { name, drivers: this.list },
     });
     return driver;
   }
