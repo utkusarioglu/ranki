@@ -23,7 +23,7 @@ export class R2CueList extends R2C {
   @query("r2-hud-bg")
   private accessor bg!: R2HudBg;
 
-  @geometry<R2CueList>({
+  @geometry({
     children: {
       layout: () =>
         LayoutUtils.row({

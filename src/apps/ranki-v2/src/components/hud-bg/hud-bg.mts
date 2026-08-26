@@ -17,7 +17,7 @@ import style from "./hud-bg.css?inline";
 export class R2HudBg extends R2C {
   static override styles = unsafeCSS(style);
 
-  @geometry<R2HudBg>({
+  @geometry({
     collection: getAnimationCollection,
     events: {
       hover: false,

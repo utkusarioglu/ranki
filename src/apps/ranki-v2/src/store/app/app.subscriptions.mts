@@ -1,9 +1,9 @@
 import { Collect } from "_collect/collect.mjs";
 import { AppConfig } from "_config/app/app.mjs";
 import { ConfigStream } from "_config/stream/config-stream.mjs";
+import { RankiAppError } from "_error/ranki-app-error.mjs";
 
 import { appStore } from "./app.mjs";
-import { RankiAppError } from "_error/ranki-app-error.mjs";
 
 appStore.subscribe(
   (s) => s.state?.dev.throw,

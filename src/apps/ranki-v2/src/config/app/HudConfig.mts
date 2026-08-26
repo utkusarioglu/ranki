@@ -9,8 +9,9 @@ import type {
   ProcessedCueMap,
 } from "_config/config.types.mjs";
 
-import { HudAddressSegmentConfig } from "./HudAddressSegment.mjs";
 import type { AppConfigBuildParams } from "./app.types.mjs";
+
+import { HudAddressSegmentConfig } from "./HudAddressSegment.mjs";
 
 export class HudConfig {
   /**

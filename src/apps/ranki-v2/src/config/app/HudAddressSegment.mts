@@ -10,15 +10,16 @@ import { assertNever } from "_error/assertions.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
 
-import { MUTATION_MODE_PRECEDENCE } from "./app.constants.mjs";
 import type { AppConfigBuildParams } from "./app.types.mjs";
+
+import { MUTATION_MODE_PRECEDENCE } from "./app.constants.mjs";
 
 export class HudAddressSegmentConfig {
   public static build({
     collected: {
       base: {
         config: {
-          address: { tokens, segments },
+          address: { segments, tokens },
         },
       },
     },

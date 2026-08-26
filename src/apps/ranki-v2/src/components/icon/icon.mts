@@ -35,7 +35,7 @@ export interface R2IconProps {
 export class R2Icon extends R2C {
   static override styles = unsafeCSS(style);
 
-  @geometry<R2Icon>({
+  @geometry({
     children: {
       diff: (s) => s.subtree.curr.diff,
       layout: () => LayoutUtils.last(),

@@ -21,7 +21,7 @@ export class R2Chip extends R2C {
   @query("r2-hud-bg")
   private accessor bg!: R2HudBg;
 
-  @geometry<R2Chip>({
+  @geometry({
     children: {
       layout: () =>
         LayoutUtils.row({

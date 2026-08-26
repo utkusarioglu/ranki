@@ -33,7 +33,7 @@ export interface R2TextProps {
 export class R2Text extends R2C {
   static override styles = unsafeCSS(style);
 
-  @geometry<R2Text>({
+  @geometry({
     children: {
       diff: (s) => s.subtree.curr.diff,
       layout: () => LayoutUtils.last(),

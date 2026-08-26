@@ -14,7 +14,7 @@ import styles from "./hud.css?inline";
 export class R2Hud extends R2C {
   static override styles = unsafeCSS(styles);
 
-  @geometry<R2Hud>({
+  @geometry({
     children: {
       isRoot: true,
       layout: () =>

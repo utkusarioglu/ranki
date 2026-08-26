@@ -28,7 +28,7 @@ export class R2HudScroller extends R2C {
   @queryAll("r2-cue-list")
   private accessor cueList!: NodeListOf<R2C>;
 
-  @geometry<R2HudScroller>({
+  @geometry({
     children: {
       layout: () =>
         LayoutUtils.row({

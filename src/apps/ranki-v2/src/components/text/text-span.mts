@@ -19,7 +19,7 @@ export class R2TextSpan extends R2C {
   @property()
   public accessor props!: R2TextProps;
 
-  @geometry<R2TextSpan>({
+  @geometry({
     collection: getAnimationCollection,
     on: (s, type) => {
       if (type === "lifecycle.leave/end") {

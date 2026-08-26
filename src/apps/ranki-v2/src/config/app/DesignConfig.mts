@@ -1,4 +1,5 @@
 import type { RankiAppDeterminedScheme } from "_config/config.types.mjs";
+
 import type { AppConfigBuildParams } from "./app.types.mjs";
 
 export class DesignConfig {

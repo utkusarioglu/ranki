@@ -19,7 +19,7 @@ import { SVG_PLACEHOLDER } from "./SVG_PLACEHOLDER.mjs";
 export class R2IconSpan extends R2C {
   static override styles = unsafeCSS(style);
 
-  @geometry<R2IconSpan>({
+  @geometry({
     collection: getAnimationCollection,
     on: (s, type) => {
       if (type === "lifecycle.leave/end") {

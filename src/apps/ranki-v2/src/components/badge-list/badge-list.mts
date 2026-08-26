@@ -31,7 +31,7 @@ export class R2BadgeList extends R2C {
   @queryAll("r2-chip")
   private accessor chips!: NodeListOf<R2C>;
 
-  @geometry<R2BadgeList>({
+  @geometry({
     children: {
       diff: (r) => r.subtree.curr.diff,
       layout: () =>

@@ -2,6 +2,7 @@ import type {
   ProcessedCueMap,
   RankiIndicatorState,
 } from "_config/config.types.mjs";
+
 import { getAnimation } from "./app.mjs";
 import { type AppConfigBuildParams } from "./app.types.mjs";
 

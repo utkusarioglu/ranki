@@ -1,3 +1,4 @@
+import type { RankiHudStateAnimation } from "_components/hud/hud.types.mjs";
 import type { ProcessedCue, ProcessedCueMap } from "_config/config.types.mjs";
 import type {
   BuildRankiBaseConfigReturn,
@@ -8,15 +9,15 @@ import type {
 import { SYSTEM_CONTROLLED_SCHEME_TOKEN } from "_config/config.constants.mjs";
 import { assertNotNull } from "_error/assertions.mjs";
 
-import { HudConfig } from "./HudConfig.mjs";
-import { IndicatorConfig } from "./IndicatorConfig.mjs";
+import type {
+  AppConfigBuildParams,
+  AppConfigCreateParams,
+} from "./app.types.mjs";
+
 import { ChallengeConfig } from "./ChallengeConfig.mjs";
 import { DesignConfig } from "./DesignConfig.mjs";
-import type { RankiHudStateAnimation } from "_components/hud/hud.types.mjs";
-import type {
-  AppConfigCreateParams,
-  AppConfigBuildParams,
-} from "./app.types.mjs";
+import { HudConfig } from "./HudConfig.mjs";
+import { IndicatorConfig } from "./IndicatorConfig.mjs";
 
 export class AppConfig {
   public static create({
@@ -46,12 +47,6 @@ export class AppConfig {
       hud,
       indicator,
     };
-  }
-
-  private static scheme({ collected: { base }, raw }: AppConfigBuildParams) {
-    return base.config.design.scheme === SYSTEM_CONTROLLED_SCHEME_TOKEN
-      ? raw.htmlAttr.scheme
-      : base.config.design.scheme;
   }
 
   /**
@@ -108,6 +103,12 @@ export class AppConfig {
       },
       indicators,
     };
+  }
+
+  private static scheme({ collected: { base }, raw }: AppConfigBuildParams) {
+    return base.config.design.scheme === SYSTEM_CONTROLLED_SCHEME_TOKEN
+      ? raw.htmlAttr.scheme
+      : base.config.design.scheme;
   }
 }
 

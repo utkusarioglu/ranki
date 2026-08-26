@@ -1,10 +1,3 @@
-import type {
-  DqmParseInputStructured,
-  DqmParseTheater,
-} from "@dqm/package-dqm-v2";
-
-import { assertArrayNotEmpty } from "_error/assertions.mjs";
-import { RankiAppError } from "_error/ranki-app-error.mjs";
 import type { CardFaceArray, RawFields } from "_collect/collect.types.mjs";
 import type {
   RankiAppDeterminedScheme,
@@ -12,11 +5,18 @@ import type {
   RankiChallengeState,
   RankiDqmConfig,
 } from "_config/config.types.mjs";
+import type {
+  DqmParseInputStructured,
+  DqmParseTheater,
+} from "@dqm/package-dqm-v2";
+
+import { RANKI_INTERNAL_FACE_PREFIX } from "_config/config.constants.mjs";
+import { assertArrayNotEmpty } from "_error/assertions.mjs";
+import { assertExists } from "_error/assertions.mjs";
+import { RankiAppError } from "_error/ranki-app-error.mjs";
 
 import { getAnimation } from "./app.mjs";
 import { type AppConfigBuildParams } from "./app.types.mjs";
-import { assertExists } from "_error/assertions.mjs";
-import { RANKI_INTERNAL_FACE_PREFIX } from "_config/config.constants.mjs";
 
 export class ChallengeConfig {
   public static build(
@@ -32,19 +32,6 @@ export class ChallengeConfig {
       face: raw.fields.face,
       order,
     };
-  }
-
-  private static faceOrder(
-    config: RankiBaseConfig,
-    collected: RawFields,
-  ): CardFaceArray {
-    const order: CardFaceArray | undefined =
-      config.faces[collected.fields.face];
-    assertExists(order, {
-      details: { face: collected.fields.face, faces: config.faces },
-      why: "Cannot process without a valid face assignment",
-    });
-    return order;
   }
 
   /**
@@ -69,6 +56,19 @@ export class ChallengeConfig {
       inputs,
       pref: { scheme },
     };
+  }
+
+  private static faceOrder(
+    config: RankiBaseConfig,
+    collected: RawFields,
+  ): CardFaceArray {
+    const order: CardFaceArray | undefined =
+      config.faces[collected.fields.face];
+    assertExists(order, {
+      details: { face: collected.fields.face, faces: config.faces },
+      why: "Cannot process without a valid face assignment",
+    });
+    return order;
   }
 
   private static getInputs(
