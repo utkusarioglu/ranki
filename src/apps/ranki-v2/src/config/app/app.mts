@@ -11,7 +11,7 @@ import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
 
 import { assertNotNull } from "_error/assertions.mjs";
-import { buildRankiConfig } from "./buildRankiConfig.mjs";
+import { RankiConfig } from "./ranki-config.mjs";
 
 export class AppConfig {
   private static getScheme(base: BuildRankiBaseConfigReturn, raw: RawFields) {
@@ -35,7 +35,7 @@ export class AppConfig {
   ): RankiState {
     const order = this.getFaceOrder(base.config, raw);
     const scheme = this.getScheme(base, raw);
-    const ranki = buildRankiConfig(base, raw, tags, order, scheme);
+    const ranki = RankiConfig.build(base, raw, tags, order, scheme);
     if (ranki.dev.throw) {
       throw new RankiAppError({
         cause: null,
