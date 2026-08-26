@@ -1,20 +1,19 @@
 import type {
-  BuildRankiBaseConfigReturn,
   ProcessedCueMap,
   RankiIndicatorState,
 } from "_config/config.types.mjs";
-
-import { getAnimation } from "./ranki-config.mjs";
+import { getAnimation } from "./app.mjs";
+import { type AppConfigBuildParams } from "./app.types.mjs";
 
 export class IndicatorConfig {
   public static build(
-    cues: ProcessedCueMap,
-    base: BuildRankiBaseConfigReturn,
+    { collected: { base } }: AppConfigBuildParams,
+    { indicators }: ProcessedCueMap,
   ): RankiIndicatorState {
     const animation = getAnimation(base, "indicator");
     return {
       animation,
-      cues: cues.indicators,
+      cues: indicators,
       indicatorCollection: base.config.indicators,
     };
   }

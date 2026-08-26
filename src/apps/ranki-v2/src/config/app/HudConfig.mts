@@ -1,4 +1,4 @@
-import type { FilteredTags, RawFields } from "_collect/collect.types.mjs";
+import type { FilteredTags } from "_collect/collect.types.mjs";
 import type {
   HudTagListItem,
   RankiHudState,
@@ -6,10 +6,11 @@ import type {
 } from "_components/hud/hud.types.mjs";
 import type {
   BuildRankiBaseConfigReturn,
-  ProcessedCueMapHud,
+  ProcessedCueMap,
 } from "_config/config.types.mjs";
 
-import { buildAddressSegments } from "./buildAddress.mjs";
+import { HudAddressSegmentConfig } from "./HudAddressSegment.mjs";
+import type { AppConfigBuildParams } from "./app.types.mjs";
 
 export class HudConfig {
   /**
@@ -19,17 +20,15 @@ export class HudConfig {
    * fine as long as the behavior is consistent. Right now, it isn't
    */
   public static build(
-    base: BuildRankiBaseConfigReturn,
-    collected: RawFields,
-    filteredTags: FilteredTags,
-    cues: ProcessedCueMapHud,
+    p: AppConfigBuildParams,
+    { hud }: ProcessedCueMap,
     animation: RankiHudStateAnimation,
   ): RankiHudState {
-    const segments = buildAddressSegments(
-      base.config.address.tokens,
-      base.config.address.segments,
-      collected.fields.deck,
-    ); // #1
+    const {
+      collected: { base, tags: filteredTags },
+      raw,
+    } = p;
+    const segments = HudAddressSegmentConfig.build(p); // #1
     const tags = this.buildTags(base, filteredTags, animation);
     return {
       animation,
@@ -41,7 +40,7 @@ export class HudConfig {
           segments,
           tokens: base.config.address.tokens,
         },
-        cues,
+        cues: hud,
         // TODO
         notify: {
           animation,
@@ -53,10 +52,10 @@ export class HudConfig {
         tags,
         template: {
           animation,
-          card: collected.fields.card,
+          card: raw.fields.card,
           count: 3,
-          face: collected.fields.face,
-          type: collected.fields.type,
+          face: raw.fields.face,
+          type: raw.fields.type,
         },
       },
       visibility: base.config.hud.visibility,
