@@ -38,6 +38,7 @@ import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { assertArrayNotEmpty, assertExists } from "@dqm/package-dqm-utils";
 
 import { buildAddressSegments } from "./buildAddress.mjs";
+import { assertNotNull } from "_error/assertions.mjs";
 
 export const MUTATION_MODE_PRECEDENCE: RankiBaseAddressMutationMode[] = [
   "trim",
@@ -48,8 +49,11 @@ export const MUTATION_MODE_PRECEDENCE: RankiBaseAddressMutationMode[] = [
 export class AppConfig {
   public static create(
     collected: RankiCollectedConfig | null,
-    raw: RawFields,
+    raw: RawFields | null,
   ): RankiState | null {
+    assertNotNull(raw, {
+      why: "Raw fields shouldn't be null at this stage of resolution",
+    });
     return collected === null ? null : createAppConfig(collected, raw);
   }
 }

@@ -21,20 +21,7 @@ import { assertNever } from "_error/assertions.mjs";
 import { Config } from "@dqm/package-dqm-utils";
 
 import { checkIfMatch } from "./determine.mjs";
-
-// TODO maybe os, scheme, dir, env types could be considered here as well.
-const PRECEDENCE_ORDER: CueKind[] = [
-  "webview",
-  "deck",
-  "card",
-  "type",
-  "face",
-  "flag",
-  "tag:neutral",
-  "tag:ranki",
-  "tag:marked",
-  "always",
-];
+import { PRECEDENCE_ORDER } from "./base.constants.mjs";
 
 export function buildBaseConfig(
   channels: RankiChannelsConfig,
