@@ -1,4 +1,4 @@
-import { useEffect, type FC, type ReactNode } from "react";
+import { type FC, type ReactNode } from "react";
 import style from "./AnkiIFrame.module.css";
 import { getSizing, useRankiFiles } from "./utils";
 import { AnkiIFrame, type AnkiDesktopIFrameProps } from "./anki-iframe";
@@ -43,7 +43,6 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   appVariant,
   onLoad,
 }) => {
-  console.log(appVariant);
   const files = useRankiFiles(appVariant);
 
   if (files.epoch === 0) {
