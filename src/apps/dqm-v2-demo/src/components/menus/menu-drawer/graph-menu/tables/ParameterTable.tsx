@@ -1,9 +1,10 @@
-import { useMemo, type FC } from "react";
-import { Table, Typography } from "antd";
-import { YamlDisplay } from "_views/yaml-display/YamlDisplay";
 import type { TryCatch } from "@dqm/package-dqm-v2-debug";
-import { TryCatchView } from "_views/try-catch/try-catch";
+
 import { DqmDemoError } from "_error";
+import { TryCatchView } from "_views/try-catch/try-catch";
+import { YamlDisplay } from "_views/yaml-display/YamlDisplay";
+import { Table, Typography } from "antd";
+import { type FC, useMemo } from "react";
 
 export type ParameterTableValueTuple = [string, TryCatch<any>];
 
@@ -18,12 +19,12 @@ const buildDataSource = (rows: ParameterTableRows) => {
     }));
   } catch (e) {
     throw new DqmDemoError({
-      code: "DATA_BUILD_FAIL",
-      why: "build data source method failed unexpectedly",
       cause: e,
+      code: "DATA_BUILD_FAIL",
       details: {
         rows,
       },
+      why: "build data source method failed unexpectedly",
     });
   }
 };
@@ -36,28 +37,24 @@ export const ParameterTable: FC<ParamTableProps> = ({ rows }) => {
   const dataSource = useMemo(() => buildDataSource(rows), [rows]);
   return (
     <Table dataSource={dataSource} pagination={false}>
-      <Table.Column title="Type" dataIndex="key" key="key" />
+      <Table.Column dataIndex="key" key="key" title="Type" />
       <Table.Column
-        title="Raw"
         dataIndex="value"
         key="raw"
         render={(val) => <Typography.Text code>{val.value}</Typography.Text>}
+        title="Raw"
       />
       <Table.Column
-        title="Value"
         dataIndex="value"
         key="value"
         render={(item) => (
           <TryCatchView
-            item={item}
-            Undefined={() => (
-              <Typography.Text type="secondary">(undefined)</Typography.Text>
-            )}
             Fail={({ item }) => (
               <Typography.Text type="secondary">
                 {String(item.value)}
               </Typography.Text>
             )}
+            item={item}
             Success={({ item }) => (
               <YamlDisplay
                 // @ts-ignore
@@ -65,8 +62,12 @@ export const ParameterTable: FC<ParamTableProps> = ({ rows }) => {
                 padded={false}
               />
             )}
+            Undefined={() => (
+              <Typography.Text type="secondary">(undefined)</Typography.Text>
+            )}
           />
         )}
+        title="Value"
       />
     </Table>
   );

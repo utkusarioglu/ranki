@@ -1,12 +1,14 @@
-import { type FC } from "react";
-import { SectionTitle } from "../../section-title/SectionTitle";
 import type { ICps } from "@dqm/package-dqm-api-v2";
 import type { ClassSanitizer } from "@dqm/package-dqm-v2-debug";
-import { Typography } from "antd";
-import style from "./CpsParamChannelsPart.module.css";
+
 import { ExceptionCard } from "_views/exception-card/ExceptionCard";
 import { TryCatchSourceCard } from "_views/try-catch-source-card/TryCatchSourceCard";
 import { tryCatch } from "@dqm/package-dqm-v2-debug";
+import { Typography } from "antd";
+import { type FC } from "react";
+
+import { SectionTitle } from "../../section-title/SectionTitle";
+import style from "./CpsParamChannelsPart.module.css";
 
 interface CpsParamChannelsPartProps {
   cps: ClassSanitizer<ICps>;
@@ -31,6 +33,9 @@ export const CpsParamChannelsPart: FC<CpsParamChannelsPartProps> = ({
       <div>
         {params.map((param) => (
           <TryCatchSourceCard
+            item={tryCatch("mutationEntries", () =>
+              param.getMutationEntries(true),
+            )}
             key={param.getIdString()}
             topDescription={
               <Typography.Text className={style.channelName}>
@@ -38,9 +43,6 @@ export const CpsParamChannelsPart: FC<CpsParamChannelsPartProps> = ({
                 {param.isCoupled() ? "is" : "is not"} coupled.
               </Typography.Text>
             }
-            item={tryCatch("mutationEntries", () =>
-              param.getMutationEntries(true),
-            )}
           />
         ))}
       </div>

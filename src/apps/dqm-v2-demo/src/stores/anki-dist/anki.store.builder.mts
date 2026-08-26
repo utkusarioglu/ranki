@@ -1,4 +1,5 @@
 import { create } from "zustand";
+
 import type {
   AnkiDistStore,
   AnkiDistStoreStates,
@@ -8,17 +9,17 @@ export const createAnkiStore = (defaults: AnkiDistStoreStates) =>
   create<AnkiDistStore>((set) => ({
     ...defaults,
 
-    setContentType: (contentType) => set(() => ({ contentType })),
+    setAppVariant: (appVariant) => set(() => ({ appVariant })),
+    setCard: (card) => set(() => ({ card })),
+    setCardConfig: (cardConfig) => set(() => ({ cardConfig })),
+    setCardType: (cardType) => set(() => ({ cardType })),
     setColorScheme: (colorScheme) => set(() => ({ colorScheme })),
+    setContentType: (contentType) => set(() => ({ contentType })),
+    setDeck: (deck) => set(() => ({ deck: deck.trim() })),
+    setFace: (face) => set(() => ({ face })),
+    setFlag: (flag) => set(() => ({ flag })),
     setPreviewAspect: (previewAspect) => set(() => ({ previewAspect })),
     setPreviewScale: (previewScale) => set(() => ({ previewScale })),
-    setCardConfig: (cardConfig) => set(() => ({ cardConfig })),
-    setTemplateConfig: (templateConfig) => set(() => ({ templateConfig })),
     setTags: (tags) => set(() => ({ tags })),
-    setDeck: (deck) => set(() => ({ deck: deck.trim() })),
-    setFlag: (flag) => set(() => ({ flag })),
-    setFace: (face) => set(() => ({ face })),
-    setCardType: (cardType) => set(() => ({ cardType })),
-    setCard: (card) => set(() => ({ card })),
-    setAppVariant: (appVariant) => set(() => ({ appVariant })),
+    setTemplateConfig: (templateConfig) => set(() => ({ templateConfig })),
   }));

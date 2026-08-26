@@ -1,17 +1,19 @@
-import { type FC, type ReactNode } from "react";
-import { TryCatchView } from "_views/try-catch/try-catch";
-import { YamlDisplay } from "_views/yaml-display/YamlDisplay";
-import style from "./TryCatchSourceCard.module.css";
 import type { TryCatch } from "@dqm/package-dqm-v2-debug";
 
+import { TryCatchView } from "_views/try-catch/try-catch";
+import { YamlDisplay } from "_views/yaml-display/YamlDisplay";
+import { type FC, type ReactNode } from "react";
+
+import style from "./TryCatchSourceCard.module.css";
+
 interface TryCatchSourceCardProps {
-  topDescription?: ReactNode;
   item: TryCatch<any>;
+  topDescription?: ReactNode;
 }
 
 export const TryCatchSourceCard: FC<TryCatchSourceCardProps> = ({
-  topDescription,
   item,
+  topDescription,
 }) => {
   return (
     <div className={style.channelCard}>

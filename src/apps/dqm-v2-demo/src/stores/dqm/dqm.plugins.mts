@@ -76,9 +76,9 @@ export const pluginsAsObject = await Promise.all(
         .slice(0, -1)
         .join(".")
         .replace("_ranki2_plugin_", ""),
-      url,
       path,
       plugin,
+      url,
     };
   }),
 );
@@ -88,9 +88,9 @@ export const pluginsAsArray = Object.values(pluginsAsObject).map(
 );
 
 export const devPluginSelection = Object.values(pluginsAsObject).map((o) => ({
+  installed: true,
   name: o.name,
   plugin: o.plugin,
-  standard: true,
   requested: true,
-  installed: true,
+  standard: true,
 }));

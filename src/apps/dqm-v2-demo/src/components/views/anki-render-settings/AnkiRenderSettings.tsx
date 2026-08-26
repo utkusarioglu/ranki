@@ -5,21 +5,23 @@ import type {
   RankiFace,
   RankiFlag,
 } from "_stores/anki-dist/anki.store.types.mjs";
+
+import { CheckOutlined } from "@ant-design/icons";
 import { Button, Input, Typography } from "antd";
 import { type FC } from "react";
-import { getAspect, getAspectText } from "./utils.mts";
+
 import style from "./AnkiRenderSettings.module.css";
-import { CheckOutlined } from "@ant-design/icons";
+import { getAspect, getAspectText } from "./utils.mts";
 
 type AnkiRenderSettingsProps = {
   aspectRatios: string[];
-  scales: string[];
   colorSchemes: ColorSchemes[];
+  scales: string[];
   store: AnkiDistStore;
 };
 
 interface Flag {
-  color: `#${string}` | "none";
+  color: "none" | `#${string}`;
   flag: RankiFlag;
 }
 
@@ -62,8 +64,8 @@ const FACES: RankiFace[] = ["Q", "N"];
 
 export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
   aspectRatios,
-  scales,
   colorSchemes,
+  scales,
   store,
 }) => {
   return (
@@ -94,14 +96,14 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
       <Typography>Content</Typography>
       {[
         {
-          title: "Dqm",
           contentType: "r2" as RankiContentType,
+          title: "Dqm",
         },
         {
-          title: "Foreign",
           contentType: "foreign" as RankiContentType,
+          title: "Foreign",
         },
-      ].map(({ title, contentType }) => (
+      ].map(({ contentType, title }) => (
         <Button
           key={title}
           onClick={() => store.setContentType(contentType)}
@@ -168,28 +170,28 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
       ))}
       <Typography>Type</Typography>
       <Input
-        value={store.cardType}
         onChange={(e) => store.setCardType(e.target.value)}
+        value={store.cardType}
       />
       <Typography>Card</Typography>
       <Input
-        value={store.card}
         onChange={(e) => store.setCard(e.target.value)}
+        value={store.card}
       />
       <Typography>Deck</Typography>
       <Input
-        value={store.deck}
         onChange={(e) => store.setDeck(e.target.value)}
+        value={store.deck}
       />
       <Typography>Tags</Typography>
       <Input
-        value={store.tags}
         onChange={(e) => store.setTags(e.target.value)}
+        value={store.tags}
       />
       <Typography>Card Config</Typography>
       <Input.TextArea
-        className={style.textarea}
         autoSize
+        className={style.textarea}
         onChange={(e) => store.setCardConfig(e.target.value)}
         value={store.cardConfig}
       />

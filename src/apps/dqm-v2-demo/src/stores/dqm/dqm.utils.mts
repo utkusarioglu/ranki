@@ -1,4 +1,3 @@
-import { Dqm } from "@dqm/package-dqm-v2";
 import type {
   DqmConfigPack,
   DqmConfigPackEntry,
@@ -6,13 +5,16 @@ import type {
   DqmPluginName,
   IDqmPlugin,
 } from "@dqm/package-dqm-api-v2";
+
+import { Dqm } from "@dqm/package-dqm-v2";
+import yaml from "yaml";
+
 import type {
   CreateDqmParseNeeded,
   DqmStore,
   PluginStoreWrapper,
 } from "./dqm.store.types.mts";
 import type { SanitizedParseResult } from "./dqm.utils.types.mts";
-import yaml from "yaml";
 
 // export function renderDqm(
 //   input: DqmParseInputStructured,
@@ -37,31 +39,40 @@ import yaml from "yaml";
 //   }
 // }
 
-async function parseDqm(
-  input: DqmParseInputStructured,
-  config: DqmConfigPack,
-  plugins: IDqmPlugin[],
-): Promise<SanitizedParseResult> {
-  try {
-    const dqm = new Dqm(config, plugins);
-    const data = await dqm.parse(input);
+export function buildPluginSelectionConfig(
+  pluginSelection: PluginStoreWrapper[],
+): DqmConfigPackEntry {
+  const standards: DqmPluginName[] = [];
+  pluginSelection.forEach((pac) =>
+    pac.plugins.forEach(
+      (plu) =>
+        plu.standard && standards.push([plu.pluginType, plu.name].join(":")),
+    ),
+  );
+  const requested: DqmPluginName[] = [];
+  pluginSelection.forEach((pac) =>
+    pac.plugins.forEach(
+      (plu) =>
+        plu.requested && requested.push([plu.pluginType, plu.name].join(":")),
+    ),
+  );
 
-    return {
-      state: "success",
-      data,
-    };
-  } catch (e) {
-    return {
-      state: "fail",
-      // TODO this isn't a string
-      error: e as string,
-    };
-  }
+  const pluginSelectionConfig: DqmConfigPackEntry = {
+    config: {
+      // @ts-expect-error
+      plugins: {
+        ...(standards.length && { standards }),
+        ...(requested.length && { requested }),
+      },
+    },
+    id: "pluginSelectionConfig",
+  };
+  return pluginSelectionConfig;
 }
 
 export async function createDqmParsedProp(
-  state: Pick<DqmStore, CreateDqmParseNeeded> &
-    Partial<Omit<DqmStore, CreateDqmParseNeeded>>,
+  state: Partial<Omit<DqmStore, CreateDqmParseNeeded>> &
+    Pick<DqmStore, CreateDqmParseNeeded>,
 ): Promise<Pick<DqmStore, "parsed" | "parseEpoch">> {
   if (!state.autoUpdate) {
     return {
@@ -83,8 +94,8 @@ export async function createDqmParsedProp(
       ...state.configPack
         .filter((c) => !!c.configString.length)
         .map((c) => ({
-          id: c.id,
           config: yaml.parse(c.configString),
+          id: c.id,
         })),
       buildPluginSelectionConfig(state.pluginSelection),
     ];
@@ -102,37 +113,6 @@ export async function createDqmParsedProp(
   }
 }
 
-export function buildPluginSelectionConfig(
-  pluginSelection: PluginStoreWrapper[],
-): DqmConfigPackEntry {
-  const standards: DqmPluginName[] = [];
-  pluginSelection.forEach((pac) =>
-    pac.plugins.forEach(
-      (plu) =>
-        plu.standard && standards.push([plu.pluginType, plu.name].join(":")),
-    ),
-  );
-  const requested: DqmPluginName[] = [];
-  pluginSelection.forEach((pac) =>
-    pac.plugins.forEach(
-      (plu) =>
-        plu.requested && requested.push([plu.pluginType, plu.name].join(":")),
-    ),
-  );
-
-  const pluginSelectionConfig: DqmConfigPackEntry = {
-    id: "pluginSelectionConfig",
-    config: {
-      // @ts-expect-error
-      plugins: {
-        ...(standards.length && { standards }),
-        ...(requested.length && { requested }),
-      },
-    },
-  };
-  return pluginSelectionConfig;
-}
-
 export function debounce<T extends (...args: any[]) => void>(
   fn: T,
   delay: number,
@@ -143,4 +123,26 @@ export function debounce<T extends (...args: any[]) => void>(
     if (timer) clearTimeout(timer);
     timer = setTimeout(() => fn(...args), delay);
   };
+}
+
+async function parseDqm(
+  input: DqmParseInputStructured,
+  config: DqmConfigPack,
+  plugins: IDqmPlugin[],
+): Promise<SanitizedParseResult> {
+  try {
+    const dqm = new Dqm(config, plugins);
+    const data = await dqm.parse(input);
+
+    return {
+      data,
+      state: "success",
+    };
+  } catch (e) {
+    return {
+      // TODO this isn't a string
+      error: e as string,
+      state: "fail",
+    };
+  }
 }

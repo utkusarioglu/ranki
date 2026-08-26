@@ -1,12 +1,13 @@
+import { UpdatesForm } from "_menus/dqm-input-options/updates-form/UpdatesForm";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
+import { buildPluginSelectionConfig } from "_stores/dqm/dqm.utils.mjs";
+import { ReorderList } from "_views/reorder-list/ReorderList";
 import { Button, Flex, Form } from "antd";
+import { useCallback } from "react";
+import yaml from "yaml";
+
 import { dqmConfigEntryFactory, DqmConfigEntryFixed } from "./DqmConfigEntry";
 import style from "./DqmConfigOptions.module.css";
-import { buildPluginSelectionConfig } from "_stores/dqm/dqm.utils.mjs";
-import yaml from "yaml";
-import { UpdatesForm } from "_menus/dqm-input-options/updates-form/UpdatesForm";
-import { ReorderList } from "_views/reorder-list/ReorderList";
-import { useCallback } from "react";
 
 export const DqmConfigOptions = () => {
   const dqm = useDqmStore();
@@ -25,9 +26,9 @@ export const DqmConfigOptions = () => {
 
   const component = useCallback(
     dqmConfigEntryFactory({
+      removeConfigByIndex: dqm.removeConfigByIndex,
       setConfigCodeByIndex: dqm.setConfigCodeByIndex,
       setConfigValueByIndex: dqm.setConfigValueByIndex,
-      removeConfigByIndex: dqm.removeConfigByIndex,
     }),
     [],
   );
@@ -40,25 +41,25 @@ export const DqmConfigOptions = () => {
       </Form>
       <div className={style.container}>
         <ReorderList
-          enableDrag
-          list={dqm.configPack}
-          id="configPack"
           component={component}
+          enableDrag
+          id="configPack"
+          list={dqm.configPack}
           onChange={dqm.setAllConfig}
         />
 
         <DqmConfigEntryFixed
           entry={{
-            id: fixedConfig.id,
             config: fixedConfig.config,
             configString: yaml.stringify(fixedConfig.config),
+            id: fixedConfig.id,
           }}
           message="This entry is controlled by the Plugins tab"
         />
       </div>
 
       <Flex className={style.band}>
-        <Button onClick={() => dqm.pushNewConfig()} block>
+        <Button block onClick={() => dqm.pushNewConfig()}>
           Add Config
         </Button>
       </Flex>

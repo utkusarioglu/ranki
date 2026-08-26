@@ -1,10 +1,12 @@
 import type { GraphDrawerAstParam } from "_stores/ui/ui.store.types.mjs";
-import { type FC } from "react";
+
 import { DrawerTitleRow } from "_views/drawer-title-row/DrawerTitleRow";
-import { GraphMenuAstPart } from "../../parts/ast-part/AstPart";
-import { GraphMenuSourcePart } from "../../parts/source-part/SourcePart";
+import { type FC } from "react";
+
 import { GraphMenuAstParamPart } from "../../parts/ast-param-part/AstParamPart";
 import { GraphMenuAstParamSemanticPart } from "../../parts/ast-param-semantic-part/AstParamSemanticPart";
+import { GraphMenuAstPart } from "../../parts/ast-part/AstPart";
+import { GraphMenuSourcePart } from "../../parts/source-part/SourcePart";
 
 interface GraphMenuAstParamProps {
   data: GraphDrawerAstParam;

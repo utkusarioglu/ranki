@@ -1,52 +1,54 @@
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
+
 import type {
   ConfigInput,
   DqmStore,
   DqmStoreState,
   PluginStoreWrapper,
 } from "./dqm.store.types.mts";
-import { INPUTS, AUTO_UPDATE } from "./dqm.initial.mts";
-import { createDqmParsedProp } from "./dqm.utils.mts";
-import { deferredParseDqmInput } from "./dqm.subscriptions.mts";
+
+import { AUTO_UPDATE, INPUTS } from "./dqm.initial.mts";
 import { devPluginSelection } from "./dqm.plugins.mts";
+import { deferredParseDqmInput } from "./dqm.subscriptions.mts";
+import { createDqmParsedProp } from "./dqm.utils.mts";
 
 const pluginSelectionInit: PluginStoreWrapper[] = devPluginSelection.map(
-  ({ name, plugin, standard, requested, installed }, packageIndex) => ({
-    name: name,
+  ({ installed, name, plugin, requested, standard }, packageIndex) => ({
     enabled: true,
+    name: name,
     packageIndex,
     plugins: plugin.map((plugin: any, pluginIndex: number) => ({
-      packageIndex,
-      pluginIndex,
+      description: plugin.meta.description,
+      installed,
 
       name: plugin.meta.name,
-      description: plugin.meta.description,
+      packageIndex,
       plugin,
-      pluginType: plugin.type,
+      pluginIndex,
 
-      installed,
-      standard,
+      pluginType: plugin.type,
       requested,
+      standard,
     })),
   }),
 );
 
 const dqmStoreInitial: DqmStoreState = {
-  deferParsing: false,
-  inputs: INPUTS,
-  singleTemplates: [],
   arrangementTemplates: [],
   autoUpdate: AUTO_UPDATE,
   configPack: [],
+  deferParsing: false,
+  inputs: INPUTS,
   pluginSelection: pluginSelectionInit,
+  singleTemplates: [],
   ...(await createDqmParsedProp({
-    inputs: INPUTS,
     autoUpdate: AUTO_UPDATE,
-    parsed: { state: "success", data: { ast: [], trn: [], ser: [] } },
     configPack: [],
-    pluginSelection: pluginSelectionInit,
+    inputs: INPUTS,
+    parsed: { data: { ast: [], ser: [], trn: [] }, state: "success" },
     parseEpoch: 0,
+    pluginSelection: pluginSelectionInit,
   })),
 };
 
@@ -54,7 +56,11 @@ export const useDqmStore = create(
   subscribeWithSelector<DqmStore>((set, get) => ({
     ...dqmStoreInitial,
 
-    setAllConfig: (configPack) => set(() => ({ configPack })),
+    parseInput: async () => {
+      const state = get();
+      const parsed = await createDqmParsedProp({ ...state, autoUpdate: true });
+      set(parsed);
+    },
 
     pushNewConfig: () =>
       set((state) => {
@@ -62,15 +68,51 @@ export const useDqmStore = create(
         const configPack: ConfigInput[] = [
           ...state.configPack,
           {
-            id: `config${index}`,
             config: {},
             configString: "",
+            id: `config${index}`,
           } as ConfigInput,
         ];
         return {
           configPack,
         };
       }),
+
+    pushNewTheater: () =>
+      set((state) => {
+        const inputs = [...state.inputs];
+        inputs.push({
+          dqm: "",
+          theater: "theater" + inputs.length,
+        });
+        return { inputs };
+      }),
+
+    removeConfigByIndex: (index) =>
+      set((state) => {
+        const configPack: ConfigInput[] = [...state.configPack];
+        configPack.splice(index, 1);
+        return { configPack };
+      }),
+
+    removeTheaterByIndex: (index) =>
+      set((state) => {
+        const inputs = [...state.inputs];
+        inputs.splice(index, 1);
+        return { inputs };
+      }),
+
+    setAllConfig: (configPack) => set(() => ({ configPack })),
+
+    setAllInputs: (inputs) =>
+      set(() => {
+        return { inputs };
+      }),
+
+    setArrangementTemplates: (arrangements) =>
+      set(() => ({ arrangementTemplates: arrangements })),
+
+    setAutoUpdate: (autoUpdate) => set(() => ({ autoUpdate })),
 
     setConfigCodeByIndex: (index, configCode) =>
       set((state) => {
@@ -83,37 +125,20 @@ export const useDqmStore = create(
           configPack,
         };
       }),
-
-    removeConfigByIndex: (index) =>
-      set((state) => {
-        const configPack: ConfigInput[] = [...state.configPack];
-        configPack.splice(index, 1);
-        return { configPack };
-      }),
-
     setConfigValueByIndex: (index, configString, config) =>
       set((state) => {
         const configPack = [...state.configPack];
         configPack[index] = {
           ...configPack[index],
-          configString,
           config,
+          configString,
         };
         return {
           configPack,
         };
       }),
 
-    setPluginPackageAsEnabled: (packageIndex, enabled) =>
-      set((state) => {
-        const pluginSelection = [...state.pluginSelection];
-        const alteredPackage = {
-          ...state.pluginSelection[packageIndex],
-          enabled,
-        };
-        pluginSelection[packageIndex] = alteredPackage;
-        return { pluginSelection };
-      }),
+    setDeferParsing: (deferParsing) => set(() => ({ deferParsing })),
 
     setPluginAsInstalled: (packageIndex, pluginIndex, installed) =>
       set((state) => {
@@ -163,40 +188,25 @@ export const useDqmStore = create(
         return { pluginSelection };
       }),
 
-    setAutoUpdate: (autoUpdate) => set(() => ({ autoUpdate })),
-    setArrangementTemplates: (arrangements) =>
-      set(() => ({ arrangementTemplates: arrangements })),
+    setPluginPackageAsEnabled: (packageIndex, enabled) =>
+      set((state) => {
+        const pluginSelection = [...state.pluginSelection];
+        const alteredPackage = {
+          ...state.pluginSelection[packageIndex],
+          enabled,
+        };
+        pluginSelection[packageIndex] = alteredPackage;
+        return { pluginSelection };
+      }),
 
     setSingleTemplates: (templates) =>
       set(() => ({ singleTemplates: templates })),
-
-    setAllInputs: (inputs) =>
-      set(() => {
-        return { inputs };
-      }),
 
     setTheaterDqmByIndex: (index, dqm) =>
       set((state) => {
         const inputs = [...state.inputs];
         inputs[index].dqm = dqm;
         localStorage.setItem("current", JSON.stringify(inputs));
-        return { inputs };
-      }),
-
-    pushNewTheater: () =>
-      set((state) => {
-        const inputs = [...state.inputs];
-        inputs.push({
-          theater: "theater" + inputs.length,
-          dqm: "",
-        });
-        return { inputs };
-      }),
-
-    removeTheaterByIndex: (index) =>
-      set((state) => {
-        const inputs = [...state.inputs];
-        inputs.splice(index, 1);
         return { inputs };
       }),
 
@@ -208,14 +218,6 @@ export const useDqmStore = create(
           inputs,
         };
       }),
-
-    parseInput: async () => {
-      const state = get();
-      const parsed = await createDqmParsedProp({ ...state, autoUpdate: true });
-      set(parsed);
-    },
-
-    setDeferParsing: (deferParsing) => set(() => ({ deferParsing })),
   })),
 );
 

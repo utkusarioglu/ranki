@@ -2,9 +2,11 @@ import type {
   GraphViewStore,
   GraphViewStoreStateKey,
 } from "_stores/graph-view/graph-view.store.types.mjs";
+import type { FC } from "react";
+
 import { BlockySwitch } from "_views/blocky-switch/BlockySwitch";
 import { Flex, Typography } from "antd";
-import type { FC } from "react";
+
 import style from "./GraphOptItem.module.css";
 
 interface GraphOptItemProps {
@@ -15,8 +17,8 @@ interface GraphOptItemProps {
 
 export const GraphOptItem: FC<GraphOptItemProps> = ({
   k,
-  value,
   setVisibility,
+  value,
 }) => {
   return (
     <Flex className={style.container} justify="space-between">

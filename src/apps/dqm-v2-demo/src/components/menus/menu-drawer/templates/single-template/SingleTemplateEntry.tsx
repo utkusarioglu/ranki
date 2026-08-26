@@ -1,20 +1,23 @@
-import { Button, Typography } from "antd";
-import type { WithIndexSingleTemplate } from "./SingleTemplate.types.mts";
 import type { FC } from "react";
-import style from "./SingleTemplateEntry.module.css";
-import { PreCode } from "_views/pre-code/PreCode";
-import type { SingleTemplate } from "./SingleTemplate.types.mts";
-import { SkinnyCard } from "_views/skinny-card/SkinnyCard";
 
-type SingleTemplateEntryProps = WithIndexSingleTemplate & {
+import { PreCode } from "_views/pre-code/PreCode";
+import { SkinnyCard } from "_views/skinny-card/SkinnyCard";
+import { Button, Typography } from "antd";
+
+import type { WithIndexSingleTemplate } from "./SingleTemplate.types.mts";
+import type { SingleTemplate } from "./SingleTemplate.types.mts";
+
+import style from "./SingleTemplateEntry.module.css";
+
+type SingleTemplateEntryProps = {
   entry: SingleTemplate;
-};
+} & WithIndexSingleTemplate;
 
 export const SingleTemplateEntry: FC<SingleTemplateEntryProps> = ({
-  entry,
-  useOnClick,
-  previewOnClick,
   active,
+  entry,
+  previewOnClick,
+  useOnClick,
 }) => {
   const isActive = entry.raw === active;
   return (

@@ -1,12 +1,14 @@
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
+
 import type { Flattened } from "./build.types.mts";
-import { Registry } from "./registry.mts";
-import { traverseCpx } from "./cpx.mts";
-import { traverseCps } from "./cps.mts";
-import { getRoot } from "./utils.mts";
-import { traverseAst } from "./ast.mts";
+
 import { traverseAstParams } from "./ast-param.mts";
+import { traverseAst } from "./ast.mts";
 import { traverseParams } from "./cps-params.mts";
+import { traverseCps } from "./cps.mts";
+import { traverseCpx } from "./cpx.mts";
+import { Registry } from "./registry.mts";
+import { getRoot } from "./utils.mts";
 
 export function buildElements(currAst: IAstNode): Flattened | null {
   Registry.reset();

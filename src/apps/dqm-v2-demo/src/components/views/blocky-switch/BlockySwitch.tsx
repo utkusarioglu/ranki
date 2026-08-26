@@ -1,10 +1,12 @@
-import { Switch, type SwitchProps } from "antd";
 import type { FC } from "react";
+
+import { Switch, type SwitchProps } from "antd";
+
 import style from "./BlockySwitch.module.css";
 
-type BlockySwitchProps = Omit<SwitchProps, "size"> & {
-  size?: SwitchProps["size"] | "large";
-};
+type BlockySwitchProps = {
+  size?: "large" | SwitchProps["size"];
+} & Omit<SwitchProps, "size">;
 
 export const BlockySwitch: FC<BlockySwitchProps> = ({
   className,

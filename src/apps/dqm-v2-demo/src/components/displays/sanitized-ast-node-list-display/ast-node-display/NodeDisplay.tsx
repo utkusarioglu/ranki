@@ -1,33 +1,35 @@
-import { useState, type FC } from "react";
-import { YamlDisplay } from "_views/yaml-display/YamlDisplay";
-import style from "./NodeDisplay.module.css";
-import { PreCode } from "_views/pre-code/PreCode";
-import { BlockySwitch } from "_views/blocky-switch/BlockySwitch";
-import { Flex, Typography } from "antd";
+import type { UniqueValue } from "@dqm/package-dqm-api-v2";
 // import type { AstNodePartialSanitized } from "_stores/ast-view/utils/sanitized-ast-node.types.mts";
 import type { AstNodeFilteredSanitizedKey } from "@dqm/package-dqm-v2-debug";
-import type { UniqueValue } from "@dqm/package-dqm-api-v2";
+
+import { BlockySwitch } from "_views/blocky-switch/BlockySwitch";
+import { PreCode } from "_views/pre-code/PreCode";
 import { TryCatchView } from "_views/try-catch/try-catch";
+import { YamlDisplay } from "_views/yaml-display/YamlDisplay";
+import { Flex, Typography } from "antd";
+import { type FC, useState } from "react";
+
+import style from "./NodeDisplay.module.css";
 
 interface AstNodeDisplayProps {
-  node: AstNodeFilteredSanitizedKey;
-  path: string;
   depth: number;
   index: number;
-  parentUnique?: UniqueValue | "(failed)";
+  node: AstNodeFilteredSanitizedKey;
+  parentUnique?: "(failed)" | UniqueValue;
+  path: string;
 }
 
 const DEPTH_STEP = 30;
 
 export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
-  node: {
-    key,
-    fields: { props, children, stable, hidden },
-  },
-  path,
   depth,
   index,
+  node: {
+    fields: { children, hidden, props, stable },
+    key,
+  },
   parentUnique,
+  path,
 }) => {
   const childrenKeys = Object.keys(children);
   const [childrenVisible, setChildrenVisible] = useState<
@@ -75,10 +77,8 @@ export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
             <Flex className={style.switches}>
               {Object.keys(childrenVisible).map((name) => (
                 <BlockySwitch
-                  key={name}
-                  size="small"
                   checkedChildren={name}
-                  value={childrenVisible[name]}
+                  key={name}
                   onChange={() =>
                     setChildrenVisible((l) => {
                       return {
@@ -87,14 +87,16 @@ export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
                       };
                     })
                   }
+                  size="small"
+                  value={childrenVisible[name]}
                 />
               ))}
             </Flex>
           </div>
           <TryCatchView<string>
             item={stable.sourceString}
-            Undefined={() => null}
             Success={({ item }) => <PreCode>{String(item.value)}</PreCode>}
+            Undefined={() => null}
           />
         </div>
       </div>
@@ -103,19 +105,19 @@ export const AstNodeDisplay: FC<AstNodeDisplayProps> = ({
         .filter(([_, nodes]) => (nodes.value as Array<any>).length)
         .map(([childType, nodes]) => (
           <div
+            className={style[childType]}
             key={childType + newPath}
             style={{ marginLeft: DEPTH_STEP }}
-            className={style[childType]}
           >
             {nodes.state === "success" ? (
               (nodes.value as Array<any>).map((n, i) => (
                 <AstNodeDisplay
-                  parentUnique={cpxUnique}
+                  depth={newDepth}
+                  index={i}
                   key={key + n.key + i}
                   node={n}
+                  parentUnique={cpxUnique}
                   path={newPath}
-                  index={i}
-                  depth={newDepth}
                 />
               ))
             ) : (

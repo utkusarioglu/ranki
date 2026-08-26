@@ -1,14 +1,15 @@
-import { Splitter } from "antd";
-import { useUiStore } from "_stores/ui/ui.store.mts";
-import style from "./WideLayout.module.css";
-import { Scroller } from "_views/scroller/Scroller";
-import { TitleBarWide } from "_layouts/title-bar/TitleBar";
 import { DisplayContainer } from "_layouts/display-container/ContentContainer";
+import { MenuDrawer } from "_layouts/menu-drawer/MenuDrawer";
+import { TitleBarWide } from "_layouts/title-bar/TitleBar";
 import { TabManager } from "_menus/tab-manager/TabManager";
 import { WIDE_LAYOUT_LEFT_MENU_WIDTH_MIN } from "_stores/ui/ui.store.constants.mts";
-import { MenuDrawer } from "_layouts/menu-drawer/MenuDrawer";
-import { ErrorBoundary } from "react-error-boundary";
+import { useUiStore } from "_stores/ui/ui.store.mts";
 import { ErrorFallback } from "_views/error-fallback/ErrorFallback";
+import { Scroller } from "_views/scroller/Scroller";
+import { Splitter } from "antd";
+import { ErrorBoundary } from "react-error-boundary";
+
+import style from "./WideLayout.module.css";
 
 export const WideLayout = () => {
   const ui = useUiStore();
@@ -22,8 +23,8 @@ export const WideLayout = () => {
         <Splitter.Panel
           className={style.panel}
           defaultSize={ui.menuWidth}
-          min={WIDE_LAYOUT_LEFT_MENU_WIDTH_MIN}
           max="50%"
+          min={WIDE_LAYOUT_LEFT_MENU_WIDTH_MIN}
         >
           <WideMenu />
         </Splitter.Panel>

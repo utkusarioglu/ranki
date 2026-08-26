@@ -1,20 +1,17 @@
 export const layout = {
-  name: "fcose",
-  // name: "concentric",
-  // name: "grid",
-  // name: "breadthfirst",
-  seed: 12345,
-  directed: true,
-  circle: false,
   animate: false,
-  randomize: true,
+  circle: false,
+  directed: true,
+  edgeElasticity: 0,
   gravity: 0.25,
   // gravity: 0,
   gravityRange: 3.8,
-  numIter: 1000,
-  initialEnergyOnIncremental: 0.3,
-
   idealEdgeLength: 100,
+  initialEnergyOnIncremental: 0.3,
+  name: "fcose",
+  nodeRepulsion: 10000,
+
+  numIter: 1000,
   // idealEdgeLength: (e: any) => {
   //   if (e.hasClass("relationship-external")) return 600;
   //   if (e.hasClass("sibling")) return 1;
@@ -33,7 +30,7 @@ export const layout = {
   //   return 100;
   // },
 
-  edgeElasticity: 0,
+  randomize: true,
   // edgeElasticity: (e: any) => {
   //   if (e.hasClass("relations-external")) return 1;
   //   if (e.hasClass("sibling")) return 0;
@@ -55,7 +52,10 @@ export const layout = {
   //   return 0.2;
   // },
 
-  nodeRepulsion: 10000,
+  // name: "concentric",
+  // name: "grid",
+  // name: "breadthfirst",
+  seed: 12345,
   // nodeRepulsion: (n: any) => {
   //   if (n.hasClass("cpx")) return 8000;
   //   if (n.hasClass("cps")) return 5000;

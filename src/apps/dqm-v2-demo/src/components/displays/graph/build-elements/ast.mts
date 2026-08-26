@@ -1,8 +1,10 @@
 import type { IAstNode } from "@dqm/package-dqm-api-v2";
+
+import { assertTryCatchSuccess } from "_assertions";
+import { createSanitizedView } from "@dqm/package-dqm-v2-debug";
+
 import { Registry } from "./registry.mts";
 import { cls, uniqueLabel } from "./utils.mts";
-import { createSanitizedView } from "@dqm/package-dqm-v2-debug";
-import { assertTryCatchSuccess } from "_assertions";
 
 /**
  * @dev
@@ -25,17 +27,17 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
   const isHeadAst = headAstId === id;
 
   const node = {
-    data: {
-      id,
-      label: uniqueLabel("Ast", root.getCreator(), raw.getUnique()),
-      // label: "Ast:" + creator,
-    },
     classes: cls(
       "ast",
       `relationship-${relationship}`,
       `total-depth-${totalAstDepth}`,
       isHeadAst ? "head" : "extension",
     ),
+    data: {
+      id,
+      label: uniqueLabel("Ast", root.getCreator(), raw.getUnique()),
+      // label: "Ast:" + creator,
+    },
   };
   Registry.registerNode(node);
 
@@ -56,17 +58,17 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
 
     creatorCpx.getCpsList().map((c) => {
       Registry.registerEdge({
-        data: {
-          source: Registry.getId(c),
-          target: id,
-          label: "composes",
-        },
         classes: cls(
           "source-cps",
           "target-ast",
           `total-depth-${totalAstDepth}`,
           isHeadAst ? "head" : "extension",
         ),
+        data: {
+          label: "composes",
+          source: Registry.getId(c),
+          target: id,
+        },
       });
     });
   }
@@ -82,11 +84,6 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
       Registry.getId(astParentCpx) !== Registry.getId(creatorCpx)
     ) {
       Registry.registerEdge({
-        data: {
-          source: Registry.getId(astParent),
-          target: id,
-          label: "foreignParentOf",
-        },
         classes: cls(
           "source-ast",
           "target-ast",
@@ -94,14 +91,14 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
           `total-depth-${totalAstDepth}`,
           isHeadAst ? "head" : "extension",
         ),
+        data: {
+          label: "foreignParentOf",
+          source: Registry.getId(astParent),
+          target: id,
+        },
       });
     } else {
       Registry.registerEdge({
-        data: {
-          source: Registry.getId(astParent),
-          target: id,
-          label: "parentOf",
-        },
         classes: cls(
           "source-ast",
           "target-ast",
@@ -109,6 +106,11 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
           `total-depth-${totalAstDepth}`,
           isHeadAst ? "head" : "extension",
         ),
+        data: {
+          label: "parentOf",
+          source: Registry.getId(astParent),
+          target: id,
+        },
       });
     }
   }
@@ -118,11 +120,6 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
   const prevCpx = prevCpxPre.value;
   if (prevCpx) {
     Registry.registerEdge({
-      data: {
-        source: Registry.getId(prevCpx),
-        target: id,
-        label: "precedes",
-      },
       classes: cls(
         "source-ast",
         "target-ast",
@@ -130,6 +127,11 @@ export function traverseAst(raw: IAstNode | null, totalAstDepth: number): void {
         `total-depth-${totalAstDepth}`,
         isHeadAst ? "head" : "extension",
       ),
+      data: {
+        label: "precedes",
+        source: Registry.getId(prevCpx),
+        target: id,
+      },
     });
   }
 

@@ -1,6 +1,7 @@
 import type { GlobalToken } from "antd";
-import { buildNodes } from "./nodes.mts";
+
 import { buildEdges } from "./edges.mts";
+import { buildNodes } from "./nodes.mts";
 
 export const buildStyleSheet = (token: GlobalToken, fontSize: number) => [
   ...buildNodes(token, fontSize),
@@ -8,9 +9,9 @@ export const buildStyleSheet = (token: GlobalToken, fontSize: number) => [
   {
     selector: ".dimmed",
     style: {
-      opacity: 0,
-      events: "no",
       display: "none",
+      events: "no",
+      opacity: 0,
     },
   },
 

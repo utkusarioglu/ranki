@@ -1,6 +1,6 @@
-import type { TryCatch } from "@dqm/package-dqm-v2-debug";
 // import type { E, Flattened, N, TraversalNode } from "./build.types.mts";
 import type { UniqueValue } from "@dqm/package-dqm-api-v2";
+import type { TryCatch } from "@dqm/package-dqm-v2-debug";
 
 export const cls = (...cls: any[]) => cls.filter((v) => !!v).join(" ");
 
@@ -8,11 +8,11 @@ export const cls = (...cls: any[]) => cls.filter((v) => !!v).join(" ");
 //   getParent(): T | null;
 // };
 
-type GetRootReturn<T> = [root: T | null, climbs: number];
+type GetRootReturn<T> = [root: null | T, climbs: number];
 
 export function getRoot<T>(n: T, method: string): GetRootReturn<T> {
-  let prev: T | null = n;
-  let curr: T | null = n;
+  let prev: null | T = n;
+  let curr: null | T = n;
   let climbs = 1;
   while (curr !== null) {
     climbs--;

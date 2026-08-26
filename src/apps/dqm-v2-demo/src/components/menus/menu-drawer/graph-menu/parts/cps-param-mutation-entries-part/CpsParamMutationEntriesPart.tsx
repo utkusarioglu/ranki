@@ -1,10 +1,12 @@
-import { type FC, type ReactNode } from "react";
-import { SectionTitle } from "../../section-title/SectionTitle";
 import type { ICpsParam } from "@dqm/package-dqm-api-v2";
 import type { ClassSanitizer } from "@dqm/package-dqm-v2-debug";
+
+import { ExceptionCard } from "_views/exception-card/ExceptionCard";
 import { TryCatchSourceCard } from "_views/try-catch-source-card/TryCatchSourceCard";
 import { Typography } from "antd";
-import { ExceptionCard } from "_views/exception-card/ExceptionCard";
+import { type FC, type ReactNode } from "react";
+
+import { SectionTitle } from "../../section-title/SectionTitle";
 
 interface CpsParamMutationEntriesPartProps {
   param: ClassSanitizer<ICpsParam>;
@@ -38,6 +40,7 @@ export const CpsParamMutationEntriesPart: FC<
   } else {
     content = (
       <TryCatchSourceCard
+        item={c.getMutationEntries(true)}
         topDescription={
           <>
             <p>
@@ -57,7 +60,6 @@ export const CpsParamMutationEntriesPart: FC<
             </p>
           </>
         }
-        item={c.getMutationEntries(true)}
       />
     );
   }

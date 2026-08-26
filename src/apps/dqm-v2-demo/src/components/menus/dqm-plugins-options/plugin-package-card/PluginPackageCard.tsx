@@ -1,38 +1,41 @@
 import type { PluginStoreWrapper } from "_stores/dqm/dqm.store.types.mjs";
-import { BlockySwitch } from "_views/blocky-switch/BlockySwitch";
-import { Flex, Typography } from "antd";
 import type { FC } from "react";
+
+import { BlockySwitch } from "_views/blocky-switch/BlockySwitch";
+import { SkinnyCard } from "_views/skinny-card/SkinnyCard";
+import { Flex, Typography } from "antd";
+
+import type {
+  WithPluginActions,
+  WithPluginPackageActions,
+} from "../DqmPluginsOptions";
+
 import { PluginMember } from "../plugin-card/PluginCard";
 import style from "./PluginPackageCard.module.css";
-import type {
-  WithPluginPackageActions,
-  WithPluginActions,
-} from "../DqmPluginsOptions";
-import { SkinnyCard } from "_views/skinny-card/SkinnyCard";
 
-type PluginCardProps = WithPluginActions &
-  WithPluginPackageActions & {
+type PluginCardProps = {
     pluginPackage: PluginStoreWrapper;
-  };
+  } &
+  WithPluginActions & WithPluginPackageActions;
 
 export const PluginCard: FC<PluginCardProps> = ({
-  pluginPackage: { name, packageIndex, enabled, plugins },
+  pluginPackage: { enabled, name, packageIndex, plugins },
   setPluginAsInstalled,
-  setPluginPackageAsEnabled,
   setPluginAsRequested,
   setPluginAsStandard,
+  setPluginPackageAsEnabled,
 }) => {
   return (
     <SkinnyCard>
-      <Flex justify="space-between" align="center" className={style.titleRow}>
+      <Flex align="center" className={style.titleRow} justify="space-between">
         <Typography.Title className={style.title} level={4}>
           {name}
         </Typography.Title>
         <Flex justify="end">
           <BlockySwitch
             checkedChildren={"Enabled"}
-            unCheckedChildren={"Disabled"}
             onChange={(e) => setPluginPackageAsEnabled(packageIndex, e)}
+            unCheckedChildren={"Disabled"}
             value={enabled}
           />
         </Flex>

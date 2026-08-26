@@ -1,16 +1,19 @@
 import type { IAstParamNode } from "@dqm/package-dqm-api-v2";
+import type { ClassSanitizer } from "@dqm/package-dqm-v2-debug";
 import type { FC } from "react";
-import { PropertyTable } from "../../tables/PropertyTable";
-import { SectionTitle } from "../../section-title/SectionTitle";
+
+import { ExceptionCard } from "_views/exception-card/ExceptionCard";
+import { tryCatch, tryCatchLeap } from "@dqm/package-dqm-v2-debug";
+import { Typography } from "antd";
+
 import type { PropertyTableRows } from "../../tables/PropertyTable";
+
+import { SectionTitle } from "../../section-title/SectionTitle";
 import {
   ParameterTable,
   type ParameterTableValueTuple,
 } from "../../tables/ParameterTable";
-import type { ClassSanitizer } from "@dqm/package-dqm-v2-debug";
-import { tryCatchLeap, tryCatch } from "@dqm/package-dqm-v2-debug";
-import { ExceptionCard } from "_views/exception-card/ExceptionCard";
-import { Typography } from "antd";
+import { PropertyTable } from "../../tables/PropertyTable";
 
 interface GraphMenuParamPartProps {
   param: ClassSanitizer<IAstParamNode>;

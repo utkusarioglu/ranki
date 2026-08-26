@@ -7,13 +7,13 @@ export const ArrangementForm = () => {
   return (
     <MenuFormItem label="Arrangement">
       <Button
-        size="small"
         onClick={() =>
           ui.setTemplateDrawerState({
-            type: "arrangement",
             index: 0,
+            type: "arrangement",
           })
         }
+        size="small"
       >
         Load
       </Button>

@@ -1,28 +1,28 @@
 import type { DqmParseInputStructured } from "@dqm/package-dqm-api-v2";
 
-export interface ArrangementTemplateSingleRef {
-  theater: string;
-  group: string;
-  singleId: string;
-}
-
 export interface ArrangementTemplate {
+  description: string;
   id: string;
   label: string;
-  description: string;
   singles: ArrangementTemplateSingleRef[];
 }
 
 export interface ArrangementTemplateGroup {
+  description: string;
   group: string;
   label: string;
-  description: string;
   list: ArrangementTemplate[];
 }
 
+export interface ArrangementTemplateSingleRef {
+  group: string;
+  singleId: string;
+  theater: string;
+}
+
 export interface WithIndexArrangementTemplates {
-  useOnClick: (inputs: DqmParseInputStructured) => void;
-  previewOnClick: (inputs: DqmParseInputStructured) => void;
-  index: number;
   active: string;
+  index: number;
+  previewOnClick: (inputs: DqmParseInputStructured) => void;
+  useOnClick: (inputs: DqmParseInputStructured) => void;
 }

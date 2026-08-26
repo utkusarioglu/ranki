@@ -1,6 +1,8 @@
+import type { ResourceProps } from "_views/iframe/IFrame";
+
 // @ts-expect-error
 import { AsyncIFrame } from "_views/iframe/IFrame";
-import type { ResourceProps } from "_views/iframe/IFrame";
+
 import style from "./DocumentRender.module.css";
 import { TrialRender } from "./Trial";
 
@@ -11,7 +13,6 @@ h1.innerHTML = ["hi", "hello", "meo"].join("<br>");
 
 const obj = [
   {
-    element: bod,
     afterMount: [
       async () => {
         await new Promise((r) => setTimeout(r, 1e3));
@@ -19,6 +20,7 @@ const obj = [
         bod.style.backgroundColor = "gray";
       },
     ],
+    element: bod,
   },
 ];
 // @ts-expect-error
@@ -27,7 +29,6 @@ const options = {
 };
 
 export const DocumentRender = () => {
-  // const [height, requestHeight] = useState<number>(ui.previewSize[1]);
   // @ts-expect-error
   const promise = new Promise<ResourceProps[]>((r) =>
     setTimeout(() => r(obj), 0),

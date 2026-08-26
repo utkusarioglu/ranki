@@ -1,9 +1,10 @@
+import { useUiStore } from "_stores/ui/ui.store.mts";
+import { TitleRow } from "_views/title-row/TitleRow";
 import { CloseOutlined } from "@ant-design/icons";
 import { Button, Typography } from "antd";
 import { type FC, type PropsWithChildren } from "react";
+
 import style from "./DrawerTitleRow.module.css";
-import { useUiStore } from "_stores/ui/ui.store.mts";
-import { TitleRow } from "_views/title-row/TitleRow";
 
 export const DrawerTitleRow: FC<PropsWithChildren> = ({ children }) => {
   const ui = useUiStore();
@@ -13,11 +14,11 @@ export const DrawerTitleRow: FC<PropsWithChildren> = ({ children }) => {
         {children}
       </Typography.Title>
       <Button
-        variant="link"
         onClick={() => {
           // code.setArrangementFromHistory(0);
           ui.setTemplateDrawerState(null);
         }}
+        variant="link"
       >
         <CloseOutlined />
       </Button>
@@ -26,7 +27,7 @@ export const DrawerTitleRow: FC<PropsWithChildren> = ({ children }) => {
 };
 
 export const DrawerTitleCode: FC<PropsWithChildren> = ({ children }) => (
-  <Typography.Title code className={style.code} level={3}>
+  <Typography.Title className={style.code} code level={3}>
     {children}
   </Typography.Title>
 );

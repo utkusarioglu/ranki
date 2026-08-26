@@ -1,19 +1,19 @@
-export interface SingleTemplateGroup {
-  label: string;
-  description: string;
-  group: string;
-  list: SingleTemplate[];
-}
-
 export interface SingleTemplate {
+  description: string;
   id: string;
   label: string;
-  description: string;
   raw: string;
 }
+
+export interface SingleTemplateGroup {
+  description: string;
+  group: string;
+  label: string;
+  list: SingleTemplate[];
+}
 export interface WithIndexSingleTemplate {
-  useOnClick: (raw: string) => void;
-  previewOnClick: (raw: string) => void;
-  index: number;
   active: string;
+  index: number;
+  previewOnClick: (raw: string) => void;
+  useOnClick: (raw: string) => void;
 }

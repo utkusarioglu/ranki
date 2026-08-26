@@ -1,74 +1,76 @@
+import type { GraphViewStoreStateKey } from "_stores/graph-view/graph-view.store.types.mjs";
+import type { FC } from "react";
+
 import {
   graphViewStoreInitialState,
   useGraphViewStore,
 } from "_stores/graph-view/graph-view.store.mjs";
-import type { GraphViewStoreStateKey } from "_stores/graph-view/graph-view.store.types.mjs";
 import { Typography } from "antd";
-import type { FC } from "react";
+
 import style from "./GraphOptions.module.css";
 import { GraphOptItem } from "./item/GraphOptItem";
 
 interface SectionProps {
-  title: string;
   filter: (g: GraphViewStoreStateKey) => boolean;
+  title: string;
 }
 
 const SECTIONS: SectionProps[] = [
   {
-    title: "Basic",
     filter: (v) =>
       [
-        "node",
+        "ast_extension",
+        "ast_head",
+        "astParam",
+        "cps",
+        "cpsParam",
+        "cpx",
         "edge",
         "label",
-        "ast_head",
-        "ast_extension",
-        "cpx",
-        "cps",
+        "node",
         "param",
-        "astParam",
-        "cpsParam",
       ].includes(v),
+    title: "Basic",
   },
   {
-    title: "Node",
     filter: (v) => v.split("_").includes("node"),
+    title: "Node",
   },
   {
-    title: "Edge",
     filter: (v) => v.split("_").includes("edge"),
+    title: "Edge",
   },
   {
-    title: "Label",
     filter: (v) => v.split("_").includes("label"),
+    title: "Label",
   },
   {
-    title: "Ast",
     filter: (v) => v.split("_").includes("ast"),
+    title: "Ast",
   },
   {
-    title: "Cpx",
     filter: (v) => v.split("_").includes("cpx"),
+    title: "Cpx",
   },
   {
-    title: "Cps",
     filter: (v) => v.split("_").includes("cps"),
+    title: "Cps",
   },
   {
-    title: "CpsParam",
     filter: (v) => v.split("_").includes("cpsParam"),
+    title: "CpsParam",
   },
   {
-    title: "RawParam",
     filter: (v) => v.split("_").includes("astParam"),
+    title: "RawParam",
   },
 ];
 
 export const GraphOptions = () => {
   return (
     <div className={style.container}>
-      {SECTIONS.map(({ title, filter }) => (
-        <GraphOptSection key={title} title={title} filter={filter} />
+      {SECTIONS.map(({ filter, title }) => (
+        <GraphOptSection filter={filter} key={title} title={title} />
       ))}
     </div>
   );
@@ -76,7 +78,7 @@ export const GraphOptions = () => {
 
 type GraphOptSectionProps = SectionProps;
 
-const GraphOptSection: FC<GraphOptSectionProps> = ({ title, filter }) => {
+const GraphOptSection: FC<GraphOptSectionProps> = ({ filter, title }) => {
   const graph = useGraphViewStore();
 
   const keys = (
@@ -89,9 +91,9 @@ const GraphOptSection: FC<GraphOptSectionProps> = ({ title, filter }) => {
       {keys.map((k) => (
         <GraphOptItem
           k={k}
-          value={graph[k]}
-          setVisibility={graph.setVisibility.bind(graph)}
           key={k}
+          setVisibility={graph.setVisibility.bind(graph)}
+          value={graph[k]}
         />
       ))}
     </div>

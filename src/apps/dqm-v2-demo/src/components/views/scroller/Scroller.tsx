@@ -1,18 +1,19 @@
 import type { FC, PropsWithChildren } from "react";
-import vertical from "./Scroller.vertical.module.css";
+
 import horizontal from "./Scroller.horizontal.module.css";
+import vertical from "./Scroller.vertical.module.css";
 
 interface ScrollerProps {
-  direction: "horizontal" | "vertical";
   className?: string;
+  direction: "horizontal" | "vertical";
 }
 
 // ANKI here the vertical scroller needs an intermediary called `viewport` to
 // deal with `min-height` breaking the 100% height detection
 export const Scroller: FC<PropsWithChildren<ScrollerProps>> = ({
   children,
-  direction,
   className,
+  direction,
 }) => {
   switch (direction) {
     case "horizontal":

@@ -1,8 +1,10 @@
-import type { ICpx, IAstParamNode } from "@dqm/package-dqm-api-v2";
+import type { IAstParamNode, ICpx } from "@dqm/package-dqm-api-v2";
+
+import { assertTryCatchSuccess } from "_assertions";
+import { createSanitizedView } from "@dqm/package-dqm-v2-debug";
+
 import { Registry } from "./registry.mts";
 import { cls, uniqueLabel } from "./utils.mts";
-import { createSanitizedView } from "@dqm/package-dqm-v2-debug";
-import { assertTryCatchSuccess } from "_assertions";
 
 export function traverseAstParams(root: ICpx): void {
   if (!root) {
@@ -39,17 +41,17 @@ function traverseAstParam(raw: IAstParamNode | null): void {
     // const source = Registry.getId(creatorCpx);
 
     Registry.registerEdge({
-      data: {
-        source: Registry.getId(creatorCpx),
-        target: id,
-        label: "aggregates",
-      },
       classes: cls(
         "source-cpx",
         "target-astParam",
         // `total-depth-${totalAstDepth}`,
         // isHeadAst ? "head" : "extension",
       ),
+      data: {
+        label: "aggregates",
+        source: Registry.getId(creatorCpx),
+        target: id,
+      },
     });
 
     // const e = Registry.getEdge(source, id);

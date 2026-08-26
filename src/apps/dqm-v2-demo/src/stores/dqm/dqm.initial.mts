@@ -4,12 +4,12 @@ export const INPUTS: DqmParseInputStructured = JSON.parse(
   localStorage.getItem("current")!,
 ) || [
   {
-    theater: "A",
     dqm: "hello dqm",
+    theater: "A",
   },
   {
-    theater: "B",
     dqm: "hello world!",
+    theater: "B",
   },
 ];
 

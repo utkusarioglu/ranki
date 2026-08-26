@@ -1,5 +1,7 @@
-import { Flex } from "antd";
 import type { FC, PropsWithChildren } from "react";
+
+import { Flex } from "antd";
+
 import style from "./TitleRow.module.css";
 
 interface TitleRowProps {
@@ -7,14 +9,14 @@ interface TitleRowProps {
 }
 
 export const TitleRow: FC<PropsWithChildren<TitleRowProps>> = ({
-  isAbsolute,
   children,
+  isAbsolute,
 }) => {
   return (
     <Flex
+      align="center"
       className={[style.container, isAbsolute && style.absolute].join(" ")}
       justify="space-between"
-      align="center"
     >
       {children}
     </Flex>

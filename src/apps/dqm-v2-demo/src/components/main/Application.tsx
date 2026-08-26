@@ -1,10 +1,11 @@
-import { useUiStore } from "_stores/ui/ui.store.mts";
-import { App, ConfigProvider, Layout, theme } from "antd";
-import style from "./Application.module.css";
-import { WideLayout } from "_layouts/wide-layout/WideLayout";
 import { NarrowLayout } from "_layouts/narrow-layout/NarrowLayout";
-import { ErrorBoundary } from "react-error-boundary";
+import { WideLayout } from "_layouts/wide-layout/WideLayout";
+import { useUiStore } from "_stores/ui/ui.store.mts";
 import { ErrorFallback } from "_views/error-fallback/ErrorFallback";
+import { App, ConfigProvider, Layout, theme } from "antd";
+import { ErrorBoundary } from "react-error-boundary";
+
+import style from "./Application.module.css";
 
 function Application() {
   return (
@@ -12,24 +13,24 @@ function Application() {
       <ConfigProvider
         theme={{
           algorithm: theme.darkAlgorithm,
-          token: {
-            colorBgBase: "#151515", // global background
-            colorBgContainer: "#202020", // card/component background
-            borderRadius: 0,
-            colorPrimary: "#E6AE07",
-            colorTextSecondary: "#404040",
-            colorBorder: "transparent",
-          },
           components: {
-            Input: {
-              colorBgContainer: "var(--color-bg-sample)", // card/component background
-              fontFamily: "monospace",
-            },
             Button: {
               // colorBorder: "var(--ant-color-bg-base)",
               colorBgContainer: "#252525",
               colorBorderDisabled: "transparent",
             },
+            Input: {
+              colorBgContainer: "var(--color-bg-sample)", // card/component background
+              fontFamily: "monospace",
+            },
+          },
+          token: {
+            borderRadius: 0,
+            colorBgBase: "#151515", // global background
+            colorBgContainer: "#202020", // card/component background
+            colorBorder: "transparent",
+            colorPrimary: "#E6AE07",
+            colorTextSecondary: "#404040",
           },
         }}
       >

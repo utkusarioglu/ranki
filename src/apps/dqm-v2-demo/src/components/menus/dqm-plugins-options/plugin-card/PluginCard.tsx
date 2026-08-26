@@ -1,33 +1,36 @@
 import type { PluginStoreType } from "_stores/dqm/dqm.store.types.mjs";
+import type { FC } from "react";
+
 import { BlockySwitch } from "_views/blocky-switch/BlockySwitch";
 import { Flex, Typography } from "antd";
-import type { FC } from "react";
-import style from "./PluginCard.module.css";
+
 import type { WithPluginActions } from "../DqmPluginsOptions";
 
-type PluginMemberProps = WithPluginActions & {
+import style from "./PluginCard.module.css";
+
+type PluginMemberProps = {
   plugin: PluginStoreType;
-};
+} & WithPluginActions;
 
 export const PluginMember: FC<PluginMemberProps> = ({
   plugin: {
-    name,
-    pluginType,
-    packageIndex,
-    pluginIndex,
     description,
     installed,
+    name,
+    packageIndex,
+    pluginIndex,
+    pluginType,
     requested,
     standard,
   },
-  setPluginAsStandard,
-  setPluginAsRequested,
   setPluginAsInstalled,
+  setPluginAsRequested,
+  setPluginAsStandard,
 }) => {
   return (
     <div className={style.container}>
       <div>
-        <Typography.Title code level={4} className={style.title}>
+        <Typography.Title className={style.title} code level={4}>
           {name}
         </Typography.Title>
         <Typography.Text code type="secondary">
@@ -37,28 +40,28 @@ export const PluginMember: FC<PluginMemberProps> = ({
 
       <Typography className={style.text}>{description}</Typography>
 
-      <Flex justify="space-between" className={style.controls}>
+      <Flex className={style.controls} justify="space-between">
         <Flex className={style.controls}>
           <BlockySwitch
             checkedChildren={"Std"}
-            unCheckedChildren={"!Std"}
-            size="small"
             onChange={(v) => setPluginAsStandard(packageIndex, pluginIndex, v)}
+            size="small"
+            unCheckedChildren={"!Std"}
             value={standard}
           />
           <BlockySwitch
             checkedChildren={"Req"}
-            unCheckedChildren={"!Req"}
-            size="small"
             onChange={(v) => setPluginAsRequested(packageIndex, pluginIndex, v)}
+            size="small"
+            unCheckedChildren={"!Req"}
             value={requested}
           />
         </Flex>
         <BlockySwitch
           checkedChildren={"Inst"}
-          unCheckedChildren={"!Inst"}
-          size="small"
           onChange={(v) => setPluginAsInstalled(packageIndex, pluginIndex, v)}
+          size="small"
+          unCheckedChildren={"!Inst"}
           value={installed}
         />
       </Flex>

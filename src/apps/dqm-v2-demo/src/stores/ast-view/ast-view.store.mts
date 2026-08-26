@@ -1,14 +1,25 @@
-import { create } from "zustand";
-import type {
-  AstViewStore,
-  SanitizedNodeView,
-} from "./ast-view.store.types.mts";
 import type {
   AstNodeFiltersRecord,
   AstNodeSanitizedTypesRecord,
 } from "@dqm/package-dqm-v2-debug";
 
+import { create } from "zustand";
+
+import type {
+  AstViewStore,
+  SanitizedNodeView,
+} from "./ast-view.store.types.mts";
+
 export const useAstViewStore = create<AstViewStore>((set) => ({
+  children: wrapVisible<AstNodeSanitizedTypesRecord>(
+    ["childrenNodes", "subtreeNodes"],
+    ["tokenNodes", "spaceNodes"],
+  ),
+  hidden: wrapVisible<AstNodeSanitizedTypesRecord>(["cpxUnique"], []),
+  parsed: {
+    data: [],
+    state: "success",
+  },
   props: wrapVisible<AstNodeSanitizedTypesRecord>(
     ["creator", "idListString", "kind", "constructorName", "astUnique"],
     [
@@ -24,30 +35,14 @@ export const useAstViewStore = create<AstViewStore>((set) => ({
       "meaning",
     ],
   ),
-  hidden: wrapVisible<AstNodeSanitizedTypesRecord>(["cpxUnique"], []),
-  children: wrapVisible<AstNodeSanitizedTypesRecord>(
-    ["childrenNodes", "subtreeNodes"],
-    ["tokenNodes", "spaceNodes"],
-  ),
-  stable: wrapVisible<AstNodeSanitizedTypesRecord>(["sourceString"], []),
 
   sanitized: null,
-  parsed: {
-    state: "success",
-    data: [],
-  },
+  setChildren: (children) => set(() => ({ children })),
 
   setProps: (props) => set(() => ({ props })),
-  setChildren: (children) => set(() => ({ children })),
   setStable: (stable) => set(() => ({ stable })),
+  stable: wrapVisible<AstNodeSanitizedTypesRecord>(["sourceString"], []),
 }));
-
-function wrapVisible<T>(visible: (keyof T)[], hidden: (keyof T)[]) {
-  return [
-    ...visible.map((id) => ({ visible: true, id })),
-    ...hidden.map((id) => ({ visible: false, id })),
-  ];
-}
 
 export function filterIds(all: SanitizedNodeView): AstNodeFiltersRecord {
   return Object.fromEntries(
@@ -58,4 +53,11 @@ export function filterIds(all: SanitizedNodeView): AstNodeFiltersRecord {
       return [k, b];
     }),
   ) as AstNodeFiltersRecord;
+}
+
+function wrapVisible<T>(visible: (keyof T)[], hidden: (keyof T)[]) {
+  return [
+    ...visible.map((id) => ({ id, visible: true })),
+    ...hidden.map((id) => ({ id, visible: false })),
+  ];
 }

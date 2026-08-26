@@ -1,19 +1,20 @@
-import { type FC, type PropsWithChildren } from "react";
-import { Typography } from "antd";
-import style from "./SectionTitle.module.css";
 import { assertNever } from "_assertions";
+import { Typography } from "antd";
+import { type FC, type PropsWithChildren } from "react";
 
-type Prefixes = "code:" | "";
+import style from "./SectionTitle.module.css";
 
 type Part = `${Prefixes}${string}`;
+
+type Prefixes = "" | "code:";
 
 interface SectionTitleProps {
   parts?: Part[];
 }
 
 export const SectionTitle: FC<PropsWithChildren<SectionTitleProps>> = ({
-  parts,
   children,
+  parts,
 }) => {
   if (children && parts) {
     assertNever({ why: "You cannot both define `parts` and `children`" });
@@ -27,11 +28,11 @@ export const SectionTitle: FC<PropsWithChildren<SectionTitleProps>> = ({
         parts &&
         parts.map((part) =>
           part.startsWith("code:") ? (
-            <Typography.Title level={4} code className={style.code} key={part}>
+            <Typography.Title className={style.code} code key={part} level={4}>
               {part.replace("code:", "")}
             </Typography.Title>
           ) : (
-            <Typography.Title level={4} className={style.part} key={part}>
+            <Typography.Title className={style.part} key={part} level={4}>
               {part}
             </Typography.Title>
           ),

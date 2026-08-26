@@ -1,4 +1,8 @@
-import { Tabs, theme } from "antd";
+import { AnkiAndroidRenderSettings } from "_menus/anki-android-render-settings/AnkiAndroidRenderSettings";
+import { AnkiWinRenderSettings } from "_menus/anki-win-render-settings/AnkiWinRenderSettings";
+import { DqmConfigOptions } from "_menus/dqm-config-options/DqmConfigOptions";
+import { DqmPluginsOptions } from "_menus/dqm-plugins-options/DqmPluginsOptions";
+import { GraphOptions } from "_menus/graph-options/GraphOptions";
 import {
   BookOutlined,
   BoxPlotOutlined,
@@ -9,27 +13,28 @@ import {
   SettingOutlined,
   ShareAltOutlined,
 } from "@ant-design/icons";
-import { DqmInputOptions } from "../dqm-input-options/DqmInputOptions";
-import { AstSanitizerOptions } from "../ast-sanitizer-options/AstSanitizerOptions";
+import { useLocation, useNavigate } from "@tanstack/react-router";
+import { Tabs, theme } from "antd";
 import {
-  useEffect,
   type FC,
   type PropsWithChildren,
   type ReactNode,
+  useEffect,
 } from "react";
-import { useLocation, useNavigate } from "@tanstack/react-router";
-import { DqmPluginsOptions } from "_menus/dqm-plugins-options/DqmPluginsOptions";
-import { DqmConfigOptions } from "_menus/dqm-config-options/DqmConfigOptions";
-import { GraphOptions } from "_menus/graph-options/GraphOptions";
-import { AnkiWinRenderSettings } from "_menus/anki-win-render-settings/AnkiWinRenderSettings";
-import { AnkiAndroidRenderSettings } from "_menus/anki-android-render-settings/AnkiAndroidRenderSettings";
+
+import { AstSanitizerOptions } from "../ast-sanitizer-options/AstSanitizerOptions";
+import { DqmInputOptions } from "../dqm-input-options/DqmInputOptions";
+
+interface ActivatorProps {
+  route?: string;
+}
 
 type Level = {
+  childLevels?: Level[];
+  icon?: ReactNode;
   key: string;
   label: string;
-  icon?: ReactNode;
   route?: string;
-  childLevels?: Level[];
   TabChild?: ReactNode;
 };
 
@@ -38,95 +43,85 @@ interface TabManagerProps {
   levels: Level[];
 }
 
-interface ActivatorProps {
-  route?: string;
-}
-
 const NotYet = () => {
   return <p>Not yet implemented</p>;
 };
 
 const levels: Level[] = [
   {
-    key: "dqm",
-    label: "Dqm",
-    icon: <FormOutlined />,
     childLevels: [
       {
+        icon: <FormOutlined />,
         key: "inputs",
         label: "Inputs",
         TabChild: <DqmInputOptions />,
-        icon: <FormOutlined />,
       },
       {
+        icon: <SettingOutlined />,
         key: "config",
         label: "Config",
         TabChild: <DqmConfigOptions />,
-        icon: <SettingOutlined />,
       },
       {
+        icon: <InboxOutlined />,
         key: "plugins",
         label: "Plugins",
         TabChild: <DqmPluginsOptions />,
-        icon: <InboxOutlined />,
       },
     ],
+    icon: <FormOutlined />,
+    key: "dqm",
+    label: "Dqm",
   },
   {
-    key: "view",
-    label: "View",
-    icon: <FileTextOutlined />,
     childLevels: [
       {
-        key: "render",
-        label: "Render",
-        // TabChild: <RenderSettings />,
-        // route: "/view/render/document",
-        icon: <FundProjectionScreenOutlined />,
         childLevels: [
           {
             key: "anki-win",
             label: "Anki Win",
-            TabChild: <AnkiWinRenderSettings />,
             route: "/view/render/anki/windows",
+            TabChild: <AnkiWinRenderSettings />,
           },
           {
             key: "anki-android",
             label: "Ankidroid",
-            TabChild: <AnkiAndroidRenderSettings />,
             route: "/view/render/anki/android",
+            TabChild: <AnkiAndroidRenderSettings />,
           },
           {
             key: "blog",
             label: "Blog",
-            TabChild: <NotYet />,
             route: "/view/render/blog",
+            TabChild: <NotYet />,
           },
         ],
+        // TabChild: <RenderSettings />,
+        // route: "/view/render/document",
+        icon: <FundProjectionScreenOutlined />,
+        key: "render",
+        label: "Render",
       },
       {
+        icon: <ShareAltOutlined />,
         key: "graph",
         label: "Graph",
-        TabChild: <GraphOptions />,
         route: "/view/graph",
-        icon: <ShareAltOutlined />,
+        TabChild: <GraphOptions />,
       },
       {
-        key: "nodes",
-        label: "Node",
-        icon: <BoxPlotOutlined />,
         childLevels: [
           {
             key: "ast",
             label: "Ast",
-            TabChild: <AstSanitizerOptions />,
             route: "/view/nodes/ast",
+            TabChild: <AstSanitizerOptions />,
           },
           {
             key: "cpx",
             label: "Cpx",
-            TabChild: <NotYet />,
             route: "/view/nodes/cpx",
+            TabChild: <NotYet />,
           },
           {
             key: "cps",
@@ -149,21 +144,27 @@ const levels: Level[] = [
             TabChild: <NotYet />,
           },
         ],
+        icon: <BoxPlotOutlined />,
+        key: "nodes",
+        label: "Node",
       },
     ],
+    icon: <FileTextOutlined />,
+    key: "view",
+    label: "View",
   },
 
   {
+    icon: <BookOutlined />,
     key: "registry",
     label: "Registry",
-    icon: <BookOutlined />,
     TabChild: <NotYet />,
   },
 ];
 
 const Activator: FC<PropsWithChildren<ActivatorProps>> = ({
-  route,
   children,
+  route,
 }) => {
   const navigate = useNavigate();
   useEffect(() => {
@@ -175,7 +176,7 @@ const Activator: FC<PropsWithChildren<ActivatorProps>> = ({
   return <>{children}</>;
 };
 
-const TabLevel: FC<TabManagerProps> = ({ levels, current }) => {
+const TabLevel: FC<TabManagerProps> = ({ current, levels }) => {
   let defaultKey = "1";
   const currSlice = useLocation().pathname.split("/").slice(1);
   const curr = currSlice[current];
@@ -185,27 +186,27 @@ const TabLevel: FC<TabManagerProps> = ({ levels, current }) => {
   const { token } = theme.useToken();
 
   const prepared = levels.map((l) => ({
-    key: l.key,
-    label: l.label,
-    icon: l.icon,
     children: l.childLevels ? (
-      <TabLevel levels={l.childLevels} current={current + 1} />
+      <TabLevel current={current + 1} levels={l.childLevels} />
     ) : (
       <Activator route={l.route}>{l.TabChild}</Activator>
     ),
+    icon: l.icon,
+    key: l.key,
+    label: l.label,
   }));
 
   return (
     <Tabs
-      tabBarStyle={{
-        paddingInline: token.padding,
-        marginBottom: 0,
-      }}
-      destroyOnHidden={true}
       defaultActiveKey={defaultKey}
+      destroyOnHidden={true}
       items={prepared}
+      tabBarStyle={{
+        marginBottom: 0,
+        paddingInline: token.padding,
+      }}
     />
   );
 };
 
-export const TabManager = () => <TabLevel levels={levels} current={0} />;
+export const TabManager = () => <TabLevel current={0} levels={levels} />;

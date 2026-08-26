@@ -3,17 +3,19 @@ import type {
   IDqmErrorBaseRequiredParams,
   WithCause,
 } from "@dqm/package-dqm-api-v2";
+
 import { DqmBaseError } from "@dqm/package-dqm-utils";
+
 import { DQM_DEMO_ERROR_CONSTANTS } from "./dqm-demo-error.constants.mts";
 
-export type DqmPluginErrorConstructorParams = WithCause &
-  IDqmErrorBaseRequiredParams<keyof typeof DQM_DEMO_ERROR_CONSTANTS>;
+export type DqmPluginErrorConstructorParams = IDqmErrorBaseRequiredParams<keyof typeof DQM_DEMO_ERROR_CONSTANTS> &
+  WithCause;
 
 export class DqmDemoError extends DqmBaseError implements IDqmAppError {
   public errorType: string = "DQM_APP";
 
-  override getErrorText(code: keyof typeof DQM_DEMO_ERROR_CONSTANTS): string {
-    return DQM_DEMO_ERROR_CONSTANTS[code] || super.getDefaultErrorText(code);
+  override getAdditionalDetails(): Record<string, any> {
+    return {};
   }
 
   override getAdditionalExtendedDetails(): Record<string, any> {
@@ -22,7 +24,7 @@ export class DqmDemoError extends DqmBaseError implements IDqmAppError {
     };
   }
 
-  override getAdditionalDetails(): Record<string, any> {
-    return {};
+  override getErrorText(code: keyof typeof DQM_DEMO_ERROR_CONSTANTS): string {
+    return DQM_DEMO_ERROR_CONSTANTS[code] || super.getDefaultErrorText(code);
   }
 }

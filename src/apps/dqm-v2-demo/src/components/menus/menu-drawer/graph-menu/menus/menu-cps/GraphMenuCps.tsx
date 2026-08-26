@@ -1,10 +1,12 @@
 import type { GraphDrawerCps } from "_stores/ui/ui.store.types.mjs";
-import { type FC } from "react";
+
 import { DrawerTitleRow } from "_views/drawer-title-row/DrawerTitleRow";
-import { GraphMenuCpsPart } from "../../parts/cps-part/CpsPart";
-import { CpsParamChannelsPart } from "../../parts/cps-param-channels-part/CpsParamChannelsPart";
-import { CpsDqmConfigPart } from "../../parts/cps-dqm-config-part/CpsDqmConfigPart";
+import { type FC } from "react";
+
 import { CpsComponentConfig } from "../../parts/cps-component-config-part/CpsComponentConfigPart";
+import { CpsDqmConfigPart } from "../../parts/cps-dqm-config-part/CpsDqmConfigPart";
+import { CpsParamChannelsPart } from "../../parts/cps-param-channels-part/CpsParamChannelsPart";
+import { GraphMenuCpsPart } from "../../parts/cps-part/CpsPart";
 
 interface GraphMenuCpsProps {
   data: GraphDrawerCps;

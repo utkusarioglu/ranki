@@ -1,24 +1,25 @@
-import type { FC, PropsWithChildren, ReactNode } from "react";
 import type {
   TryCatch,
   TryCatchFail,
   TryCatchSuccess,
 } from "@dqm/package-dqm-v2-debug";
+import type { FC, PropsWithChildren, ReactNode } from "react";
+
 import { Typography } from "antd";
 
 interface TryCatchProps<T> {
-  item: TryCatch<T> | undefined;
-  Undefined?: FC;
   Fail?: FC<TryCatchViewFailProps>;
+  item: TryCatch<T> | undefined;
   Success?: TryCatchViewSuccessComponent;
+  Undefined?: FC;
 }
 
 // ANKI
 type TryCatchViewComponent = <T>(props: TryCatchProps<T>) => ReactNode;
 
 export const TryCatchView: TryCatchViewComponent = ({
-  item,
   Fail = TryCatchViewFail,
+  item,
   Success = TryCatchViewSuccess,
   Undefined = TryCatchViewUnfavorable,
 }) => {
@@ -30,10 +31,10 @@ export const TryCatchView: TryCatchViewComponent = ({
       return <Fail item={item} />;
     case "success":
       switch (item.value) {
-        case undefined:
-          return <TryCatchViewUnfavorable>(undefined)</TryCatchViewUnfavorable>;
         case null:
           return <TryCatchViewUnfavorable>(null)</TryCatchViewUnfavorable>;
+        case undefined:
+          return <TryCatchViewUnfavorable>(undefined)</TryCatchViewUnfavorable>;
         default:
           return <Success item={item} />;
       }
@@ -53,13 +54,13 @@ const TryCatchViewUnfavorable: FC<PropsWithChildren> = ({ children }) => {
   return <Typography.Text type="secondary">{children}</Typography.Text>;
 };
 
-type TryCatchViewSuccessProps<T> = {
-  item: TryCatchSuccess<T>;
-};
-
 type TryCatchViewSuccessComponent = <T>(
   props: TryCatchViewSuccessProps<T>,
 ) => ReactNode;
+
+type TryCatchViewSuccessProps<T> = {
+  item: TryCatchSuccess<T>;
+};
 
 const TryCatchViewSuccess: TryCatchViewSuccessComponent = ({ item }) => {
   return <span>{String(item.value)}</span>;

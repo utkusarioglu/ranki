@@ -1,5 +1,7 @@
 import { create } from "zustand";
+
 import type { AppState, UiStore } from "./ui.store.types.mts";
+
 import {
   NARROW_LAYOUT_THRESHOLD,
   WIDE_LAYOUT_LEFT_MENU_WIDTH_MIN,
@@ -16,9 +18,8 @@ media.addEventListener("change", (e) => {
 
 export const useUiStore = create<UiStore>((set) => ({
   appState: "init",
-  templateDrawerState: null,
-  isNarrow: window.innerWidth < NARROW_LAYOUT_THRESHOLD,
   isMenuOpen: window.innerWidth > NARROW_LAYOUT_THRESHOLD,
+  isNarrow: window.innerWidth < NARROW_LAYOUT_THRESHOLD,
   menuWidth:
     window.innerWidth > NARROW_LAYOUT_THRESHOLD
       ? Math.max(
@@ -26,13 +27,14 @@ export const useUiStore = create<UiStore>((set) => ({
           WIDE_LAYOUT_LEFT_MENU_WIDTH_MIN,
         )
       : window.innerWidth,
+  setAppState: (state: AppState) => set(() => ({ appState: state })),
 
-  setMenuWidth: (menuWidth) => set(() => ({ menuWidth })),
   setMenuOpen: (open: boolean) =>
     set(() => ({
       isMenuOpen: open,
     })),
+  setMenuWidth: (menuWidth) => set(() => ({ menuWidth })),
   setTemplateDrawerState: (state) =>
     set(() => ({ templateDrawerState: state })),
-  setAppState: (state: AppState) => set(() => ({ appState: state })),
+  templateDrawerState: null,
 }));

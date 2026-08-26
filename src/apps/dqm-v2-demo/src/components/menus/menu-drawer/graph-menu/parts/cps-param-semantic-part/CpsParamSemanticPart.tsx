@@ -1,10 +1,13 @@
 import type { ICpsParam } from "@dqm/package-dqm-api-v2";
-import type { FC } from "react";
-import { PropertyTable } from "../../tables/PropertyTable";
-import { SectionTitle } from "../../section-title/SectionTitle";
-import type { PropertyTableRows } from "../../tables/PropertyTable";
 import type { ClassSanitizer } from "@dqm/package-dqm-v2-debug";
+import type { FC } from "react";
+
 import { tryCatchLeap } from "@dqm/package-dqm-v2-debug";
+
+import type { PropertyTableRows } from "../../tables/PropertyTable";
+
+import { SectionTitle } from "../../section-title/SectionTitle";
+import { PropertyTable } from "../../tables/PropertyTable";
 
 interface GraphMenuCpsParamSemanticPartProps {
   param: ClassSanitizer<ICpsParam>;

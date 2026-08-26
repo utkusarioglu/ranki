@@ -1,8 +1,8 @@
 import type {
   IAstNode,
+  IAstParamNode,
   ICps,
   ICpx,
-  IAstParamNode,
 } from "@dqm/package-dqm-api-v2";
 
-export type DqmNodeTypes = IAstParamNode | IAstNode | ICpx | ICps;
+export type DqmNodeTypes = IAstNode | IAstParamNode | ICps | ICpx;

@@ -1,12 +1,22 @@
-import style from "./IFrame.module.css";
+import { ErrorFallback } from "_views/error-fallback/ErrorFallback";
+import { type FC, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+
 import injected from "./IFrame.injected.css?raw";
 import injectedDark from "./IFrame.injected.dark.css?raw";
 import injectedLight from "./IFrame.injected.light.css?raw";
 import resizeObserverTpl from "./IFrame.injected.resize.js.tpl?raw";
-import { Suspense, useEffect, useMemo, useRef, useState, type FC } from "react";
-import { ErrorBoundary } from "react-error-boundary";
-import { ErrorFallback } from "_views/error-fallback/ErrorFallback";
+import style from "./IFrame.module.css";
 import { pushScript, pushStyle } from "./utils.mts";
+
+interface AsyncHTMLElementProps {
+  colorScheme: string;
+  height: number;
+  id: string;
+  promise: ReturnType<typeof wrapPromise>;
+  requestHeight: (n: number) => void;
+  width: number;
+}
 
 function wrapPromise(promise: Promise<any>) {
   let status = "pending";
@@ -30,23 +40,14 @@ function wrapPromise(promise: Promise<any>) {
   };
 }
 
-interface AsyncHTMLElementProps {
-  promise: ReturnType<typeof wrapPromise>;
-  height: number;
-  width: number;
-  requestHeight: (n: number) => void;
-  id: string;
-  colorScheme: string;
-}
-
 // ANKI
 const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
-  promise,
-  height,
-  width,
-  requestHeight: setHeight,
-  id,
   colorScheme,
+  height,
+  id,
+  promise,
+  requestHeight: setHeight,
+  width,
 }) => {
   const ref = useRef<HTMLIFrameElement>(null);
   const p = promise.read();
@@ -150,7 +151,7 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
     // @ts-expect-error
     p.map((f) => {
       // @ts-expect-error
-      f.css?.forEach(({ id, css }) => {
+      f.css?.forEach(({ css, id }) => {
         const htmlId = id + "-" + id;
         pushStyle(contentDocument, htmlId, injected);
         // if (!contentDocument.querySelector(`style#${htmlId}`)) {
@@ -175,9 +176,9 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
 
   return (
     <iframe
-      style={{ height, width }}
       className={[style.native, id].join(" ")}
       ref={ref}
+      style={{ height, width }}
     />
   );
 };
@@ -188,19 +189,19 @@ export interface ResourceProps {
 }
 
 interface AsyncRenderProps {
-  resource: Promise<ResourceProps[]>;
-  options: { scheme: string };
-  width: number;
   height: number;
+  options: { scheme: string };
   requestHeight: (height: number) => void;
+  resource: Promise<ResourceProps[]>;
+  width: number;
 }
 
 export const AsyncIFrame: FC<AsyncRenderProps> = ({
-  resource,
-  options,
-  width,
   height,
+  options,
   requestHeight,
+  resource,
+  width,
 }) => {
   const promise = useMemo(
     // () => wrapPromise(Render.render(items, options)),
@@ -220,20 +221,20 @@ export const AsyncIFrame: FC<AsyncRenderProps> = ({
       <Suspense
         fallback={
           <div
-            style={{ height, width }}
             className={[style.native, style.loading, "monospace"].join(" ")}
+            style={{ height, width }}
           >
             <pre>Loading…</pre>
           </div>
         }
       >
         <AsyncHTMLElement
-          promise={promise}
-          height={height}
-          width={width}
-          requestHeight={requestHeight}
-          id={id}
           colorScheme={options.scheme}
+          height={height}
+          id={id}
+          promise={promise}
+          requestHeight={requestHeight}
+          width={width}
         />
       </Suspense>
     </ErrorBoundary>

@@ -1,13 +1,15 @@
 import type { ICpsParam } from "@dqm/package-dqm-api-v2";
+import type { ClassSanitizer } from "@dqm/package-dqm-v2-debug";
 import type { FC } from "react";
+
+import { ExceptionCard } from "_views/exception-card/ExceptionCard";
+import { tryCatch } from "@dqm/package-dqm-v2-debug";
+import { Typography } from "antd";
+
 import {
   ParameterTable,
   type ParameterTableValueTuple,
 } from "../../tables/ParameterTable";
-import type { ClassSanitizer } from "@dqm/package-dqm-v2-debug";
-import { tryCatch } from "@dqm/package-dqm-v2-debug";
-import { Typography } from "antd";
-import { ExceptionCard } from "_views/exception-card/ExceptionCard";
 
 export type AstParamTableProps = {
   param: ClassSanitizer<ICpsParam>;

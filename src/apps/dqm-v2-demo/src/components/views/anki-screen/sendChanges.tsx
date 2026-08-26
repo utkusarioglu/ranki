@@ -1,6 +1,6 @@
-import type { IDqmRendererClientPreferences } from "@dqm/package-dqm-api-v2";
 import type { AnkiDistStore } from "_stores/anki-dist/anki.store.types.mjs";
 import type { DqmStore } from "_stores/dqm/dqm.store.types.mjs";
+import type { IDqmRendererClientPreferences } from "@dqm/package-dqm-api-v2";
 import type { RefObject } from "react";
 
 export function sendChanges(
@@ -15,18 +15,18 @@ export function sendChanges(
       fields: {
         a: dqm.inputs[0].dqm,
         b: dqm.inputs[1].dqm,
-        deck: win.deck,
-        tags: win.tags,
-        flag: win.flag,
-        face: win.face,
-        type: win.cardType,
         card: win.card,
+        deck: win.deck,
+        face: win.face,
+        flag: win.flag,
+        tags: win.tags,
+        type: win.cardType,
       },
       pref,
     };
     ref.current.contentWindow!.postMessage({
-      type: "ranki-update",
       ranki,
+      type: "ranki-update",
     });
   }
 }

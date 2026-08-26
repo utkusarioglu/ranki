@@ -1,14 +1,16 @@
-import { Button } from "antd";
+import type { FC } from "react";
+
+import { useUiStore } from "_stores/ui/ui.store.mts";
+import { AppTitle } from "_views/app-title/AppTitle";
 import {
   DoubleLeftOutlined,
   InfoCircleOutlined,
   MenuOutlined,
 } from "@ant-design/icons";
-import { useUiStore } from "_stores/ui/ui.store.mts";
-import { AppTitle } from "_views/app-title/AppTitle";
-import { TitleRow } from "../../views/title-row/TitleRow";
 import { useNavigate } from "@tanstack/react-router";
-import type { FC } from "react";
+import { Button } from "antd";
+
+import { TitleRow } from "../../views/title-row/TitleRow";
 
 export const TitleBarWide = () => {
   const ui = useUiStore();

@@ -3,12 +3,83 @@ import type {
   UiStore,
 } from "_stores/ui/ui.store.types.mjs";
 import type { Core, EventObject } from "cytoscape";
-import { Registry } from "./build-elements/registry.mts";
-import type { N } from "./build-elements/build.types.mts";
 import type cytoscape from "cytoscape";
+
+import type { N } from "./build-elements/build.types.mts";
+
+import { Registry } from "./build-elements/registry.mts";
 
 const CIRCLE_TILT = Math.PI / -12;
 const RADIUS_LOW_THRESHOLD = 120;
+
+/**
+ * @dev
+   #1 Crossing types they are all dependent on `type` and `Registry` to work correctly
+ */
+export function onTapNode(
+  e: EventObject,
+  ui: UiStore,
+  animationDuration: number,
+) {
+  const cy = e.cy;
+
+  const node = e.target;
+  const focus = node.closedNeighborhood().union(node.parents());
+  focus.removeClass("dimmed");
+
+  // Everything else
+  const others = cy.elements().difference(focus);
+  others.removeClass("focused");
+
+  cy.elements().removeClass("dimmed");
+  focus.addClass("focused");
+  others.addClass("dimmed");
+
+  storePositions(focus.not(node));
+
+  placeRadially(cy, node, focus.not(node), 30, animationDuration, 40);
+
+  // DRAWER
+  const cyNode: N = {
+    classes: e.target.classes(),
+    data: e.target.data(),
+  };
+  ui.setTemplateDrawerState({
+    // @ts-expect-error #1
+    data: {
+      cyNode,
+      sanitizedDqmNode: Registry.getSanitized(cyNode.data.id),
+      type: cyNode.data.label.split(":")[0] as GraphDrawerDataTypes,
+    },
+    type: "graph",
+  });
+}
+
+export function onTapNothing(
+  e: EventObject,
+  ui: UiStore,
+  animationDuration: number,
+) {
+  const cy = e.cy;
+  if (e.target === cy) {
+    restorePositions(cy, animationDuration);
+
+    const elems = cy.elements();
+    elems.removeClass("dimmed");
+    elems.removeClass("focused");
+    setTimeout(() => {
+      cy.animate({
+        duration: animationDuration,
+        easing: "ease-in-out",
+        fit: {
+          eles: elems,
+          padding: 50,
+        },
+      });
+    }, animationDuration / 2);
+    ui.setTemplateDrawerState(null);
+  }
+}
 
 /**
  * @dev
@@ -49,8 +120,8 @@ function placeRadially(
 
   const boundingBox = {
     x1: center.x - rect,
-    y1: center.y - rect,
     x2: center.x + rect,
+    y1: center.y - rect,
     y2: center.y + rect,
   };
 
@@ -72,11 +143,11 @@ function placeRadially(
 
     cy.animate(
       {
-        zoom,
         pan: {
           x: cw / 2 - zoom * centerX,
           y: ch / 2 - zoom * centerY,
         },
+        zoom,
       },
       {
         duration: animationDuration,
@@ -125,73 +196,4 @@ function storePositions(eles: cytoscape.NodeCollection) {
       ele.scratch("_origPos", { ...ele.position() });
     }
   });
-}
-
-/**
- * @dev
-   #1 Crossing types they are all dependent on `type` and `Registry` to work correctly
- */
-export function onTapNode(
-  e: EventObject,
-  ui: UiStore,
-  animationDuration: number,
-) {
-  const cy = e.cy;
-
-  const node = e.target;
-  const focus = node.closedNeighborhood().union(node.parents());
-  focus.removeClass("dimmed");
-
-  // Everything else
-  const others = cy.elements().difference(focus);
-  others.removeClass("focused");
-
-  cy.elements().removeClass("dimmed");
-  focus.addClass("focused");
-  others.addClass("dimmed");
-
-  storePositions(focus.not(node));
-
-  placeRadially(cy, node, focus.not(node), 30, animationDuration, 40);
-
-  // DRAWER
-  const cyNode: N = {
-    data: e.target.data(),
-    classes: e.target.classes(),
-  };
-  ui.setTemplateDrawerState({
-    type: "graph",
-    // @ts-expect-error #1
-    data: {
-      type: cyNode.data.label.split(":")[0] as GraphDrawerDataTypes,
-      sanitizedDqmNode: Registry.getSanitized(cyNode.data.id),
-      cyNode,
-    },
-  });
-}
-
-export function onTapNothing(
-  e: EventObject,
-  ui: UiStore,
-  animationDuration: number,
-) {
-  const cy = e.cy;
-  if (e.target === cy) {
-    restorePositions(cy, animationDuration);
-
-    const elems = cy.elements();
-    elems.removeClass("dimmed");
-    elems.removeClass("focused");
-    setTimeout(() => {
-      cy.animate({
-        fit: {
-          eles: elems,
-          padding: 50,
-        },
-        duration: animationDuration,
-        easing: "ease-in-out",
-      });
-    }, animationDuration / 2);
-    ui.setTemplateDrawerState(null);
-  }
 }

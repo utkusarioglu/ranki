@@ -1,20 +1,23 @@
 import type { FC } from "react";
-import type { WithIndexSingleTemplate } from "./SingleTemplate.types.mts";
+
 import { Typography } from "antd";
-import { SingleTemplateEntry } from "./SingleTemplateEntry";
-import style from "./SingleTemplateGroup.module.css";
+
+import type { WithIndexSingleTemplate } from "./SingleTemplate.types.mts";
 import type { SingleTemplateGroup as SingleTemplateGroupType } from "./SingleTemplate.types.mts";
 
-type SingleTemplateGroupProps = WithIndexSingleTemplate & {
+import { SingleTemplateEntry } from "./SingleTemplateEntry";
+import style from "./SingleTemplateGroup.module.css";
+
+type SingleTemplateGroupProps = {
   group: SingleTemplateGroupType;
-};
+} & WithIndexSingleTemplate;
 
 export const SingleTemplateGroup: FC<SingleTemplateGroupProps> = ({
+  active,
   group,
   index,
-  useOnClick,
   previewOnClick,
-  active,
+  useOnClick,
 }) => {
   return (
     <div className={style.container}>
@@ -28,11 +31,11 @@ export const SingleTemplateGroup: FC<SingleTemplateGroupProps> = ({
         {group.list.map((e) => (
           <SingleTemplateEntry
             active={active}
-            key={e.label}
             entry={e}
             index={index}
-            useOnClick={useOnClick}
+            key={e.label}
             previewOnClick={previewOnClick}
+            useOnClick={useOnClick}
           />
         ))}
       </div>

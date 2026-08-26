@@ -1,20 +1,27 @@
-import { DqmDemoError } from "_error";
-import type { RankiFiles, RankiElements } from "./AnkiScreen";
-import { useEffect, useState } from "react";
 import type { RankiAppVariant } from "_stores/anki-dist/anki.store.types.mjs";
 
+import { DqmDemoError } from "_error";
+import { useEffect, useState } from "react";
+
+import type { RankiElements, RankiFiles } from "./AnkiScreen";
+
 const URL_TEMPLATE = "/%";
+
+type RankiFilesRecord = Record<
+  RankiAppVariant,
+  Record<"css" | "html" | "js", string[]>
+>;
 
 export function createFragment(parts: RankiFiles) {
   const htmlTemplates = Object.values(parts.html);
   if (htmlTemplates.length > 1) {
     throw new DqmDemoError({
+      cause: null,
       code: "TOO_MANY_TEMPLATES",
       why: "Only a single template is expected",
-      cause: null,
     });
   }
-  let html = htmlTemplates[0];
+  const html = htmlTemplates[0];
   const tpl = document.createElement("template");
   const replaced = html.replace(
     "{{STORAGE_CONFIG}}",
@@ -49,9 +56,9 @@ export function createRankiElements(parts: RankiFiles): RankiElements {
   });
 
   return {
+    css,
     fragment,
     jss: js,
-    css,
   };
 }
 
@@ -89,37 +96,32 @@ export function getSizing(
   const dl = (cw - dw) / 2 + PAD;
   const dt = (ch - dh) / 2 + PAD;
 
-  return { top: dt, left: dl, width: dw, height: dh };
+  return { height: dh, left: dl, top: dt, width: dw };
 }
-
-type RankiFilesRecord = Record<
-  RankiAppVariant,
-  Record<"html" | "css" | "js", string[]>
->;
 
 const FILES: RankiFilesRecord = {
   core: {
-    html: ["template-core.html"],
     css: ["_ranki2.css"],
+    html: ["template-core.html"],
     js: ["_ranki2.js"],
   },
-  o11y: {
-    html: ["template-observable.html"],
-    css: ["_ranki2.css"],
-    js: ["_ranki2.o11y.js"],
-  },
   devtools: {
-    html: ["template-devtools.html"],
     css: ["_ranki2.css"],
+    html: ["template-devtools.html"],
     js: ["_ranki2.devtools.js"],
+  },
+  o11y: {
+    css: ["_ranki2.css"],
+    html: ["template-observable.html"],
+    js: ["_ranki2.o11y.js"],
   },
 };
 
 export function useRankiFiles(appVariant: RankiAppVariant): RankiFiles {
   const [files, setFiles] = useState<RankiFiles>({
+    css: {},
     epoch: 0,
     html: {},
-    css: {},
     js: {},
   });
 

@@ -4,43 +4,43 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
   {
     selector: "node",
     style: {
-      width: 20,
-      height: 20,
-      shape: "rectangle",
-      label: "data(label)",
-      "text-valign": "bottom",
-      "text-halign": "center",
-      "text-margin-y": 6,
       "font-size": fontSize,
+      height: 20,
+      label: "data(label)",
+      shape: "rectangle",
       "text-background-color": token.colorBgContainer,
       "text-background-opacity": 0.8,
-      "text-background-shape": "roundrectangle", // or rectangle
       "text-background-padding": "4px",
+      "text-background-shape": "roundrectangle", // or rectangle
+      "text-halign": "center",
+      "text-margin-y": 6,
+      "text-valign": "bottom",
+      width: 20,
     },
   },
 
   {
     selector: "node.cpx",
     style: {
-      shape: "rectangle",
-      color: token.colorPrimary,
       "background-color": token.colorPrimary,
+      color: token.colorPrimary,
+      shape: "rectangle",
     },
   },
   {
     selector: "node.cpx.root",
     style: {
-      width: 40,
       height: 40,
+      width: 40,
     },
   },
 
   {
     selector: "node.astParam",
     style: {
-      shape: "hexagon",
-      color: "#05F",
       "background-color": "#05F",
+      color: "#05F",
+      shape: "hexagon",
     },
   },
 
@@ -53,8 +53,8 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
   {
     selector: "node.cpsParam",
     style: {
-      color: "#0FF",
       "background-color": "#0FF",
+      color: "#0FF",
     },
   },
 
@@ -69,16 +69,16 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
   {
     selector: "node.cps",
     style: {
-      shape: "triangle",
-      color: "#CCC",
       "background-color": "#CCC",
+      color: "#CCC",
+      shape: "triangle",
     },
   },
   {
     selector: "node.cps.root",
     style: {
-      width: 40,
       height: 40,
+      width: 40,
     },
   },
 
@@ -91,29 +91,29 @@ export const buildNodes = (token: GlobalToken, fontSize: number) => [
   {
     selector: "node.ast.relationship-node",
     style: {
-      color: "#aaa",
       "background-color": "#aaa",
+      color: "#aaa",
     },
   },
   {
     selector: "node.ast.relationship-undefined",
     style: {
-      color: "#bbb",
       "background-color": "#bbb",
+      color: "#bbb",
     },
   },
   {
     selector: "node.ast.relationship-space",
     style: {
-      color: "#044",
       "background-color": "#044",
+      color: "#044",
     },
   },
   {
     selector: "node.ast.relationship-token",
     style: {
-      color: "#707",
       "background-color": "#404",
+      color: "#707",
     },
   },
 ];

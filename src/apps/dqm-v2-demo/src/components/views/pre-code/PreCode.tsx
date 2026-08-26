@@ -1,4 +1,5 @@
 import type { FC, PropsWithChildren } from "react";
+
 import style from "./PreCode.module.css";
 
 interface PreCodeProps {

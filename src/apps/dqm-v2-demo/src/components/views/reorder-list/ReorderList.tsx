@@ -1,16 +1,17 @@
-import { useRef, type FC } from "react";
-import { useDrag, useDrop, DndProvider } from "react-dnd";
+import { type FC, useRef } from "react";
+import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+
 import type {
   DraggableRowProps,
   EditableReorderListProps,
 } from "./ReorderList.types.mts";
 
 export const ReorderList: FC<EditableReorderListProps> = ({
+  component,
+  enableDrag,
   id,
   list,
-  enableDrag,
-  component,
   onChange,
 }) => {
   const move = (from: number, to: number) => {
@@ -24,16 +25,16 @@ export const ReorderList: FC<EditableReorderListProps> = ({
     <DndProvider backend={HTML5Backend}>
       {list.map((item, i) => (
         <DraggableRow
-          onChange={onChange}
-          list={list}
-          key={i}
-          type={id}
+          component={component}
           enableDrag={enableDrag}
           id={item.id}
           index={i}
           item={item}
+          key={i}
+          list={list}
           move={move}
-          component={component}
+          onChange={onChange}
+          type={id}
         />
       ))}
     </DndProvider>
@@ -41,25 +42,25 @@ export const ReorderList: FC<EditableReorderListProps> = ({
 };
 
 const DraggableRow: FC<DraggableRowProps> = ({
-  type,
+  component: Component,
+  enableDrag,
   id,
   index,
-  move,
   item,
   list,
-  enableDrag,
+  move,
   onChange,
-  component: Component,
+  type,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const [{ isDragging }, drag] = useDrag({
-    type,
-    item: () => ({ id, index }),
     canDrag: () => enableDrag,
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
+    item: () => ({ id, index }),
+    type,
   });
 
   const [, drop] = useDrop({
@@ -88,16 +89,16 @@ const DraggableRow: FC<DraggableRowProps> = ({
 
   return (
     <Component
-      ref={(node) => {
-        ref.current = node;
-        if (node) drag(drop(node));
-      }}
       enableDrag={enableDrag}
+      index={index}
       isDragging={isDragging}
       item={item}
       list={list}
       onChange={onChange}
-      index={index}
+      ref={(node) => {
+        ref.current = node;
+        if (node) drag(drop(node));
+      }}
     />
   );
 };

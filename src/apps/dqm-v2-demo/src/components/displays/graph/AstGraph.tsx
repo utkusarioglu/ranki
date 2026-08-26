@@ -1,28 +1,31 @@
+import type { GraphViewStoreStateKey } from "_stores/graph-view/graph-view.store.types.mjs";
+
+import { assertExists } from "_assertions";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
+import { useGraphViewStore } from "_stores/graph-view/graph-view.store.mjs";
+import { useUiStore } from "_stores/ui/ui.store.mjs";
+import { theme } from "antd";
 import Cytoscape, { type Core, type EventObject } from "cytoscape";
 import fcose from "cytoscape-fcose";
-// @ts-expect-error
-import CytoscapeComponent from "react-cytoscapejs";
-import { buildElements } from "./build-elements/build.mts";
-import { theme } from "antd";
-import { buildStyleSheet } from "./stylesheet/stylesheet.mts";
-import { layout } from "./layout.mts";
-import { useUiStore } from "_stores/ui/ui.store.mjs";
 import {
+  type FC,
+  type RefObject,
   useCallback,
   useEffect,
   useMemo,
   useRef,
-  type FC,
-  type RefObject,
 } from "react";
-import { onTapNode, onTapNothing } from "./events.mts";
+// @ts-expect-error
+import CytoscapeComponent from "react-cytoscapejs";
 import { useErrorBoundary } from "react-error-boundary";
-import { useGraphViewStore } from "_stores/graph-view/graph-view.store.mjs";
-import type { GraphViewStoreStateKey } from "_stores/graph-view/graph-view.store.types.mjs";
-import { LOOKUP } from "./LOOKUP";
+
 import type { Flattened } from "./build-elements/build.types.mts";
-import { assertExists } from "_assertions";
+
+import { buildElements } from "./build-elements/build.mts";
+import { onTapNode, onTapNothing } from "./events.mts";
+import { layout } from "./layout.mts";
+import { LOOKUP } from "./LOOKUP";
+import { buildStyleSheet } from "./stylesheet/stylesheet.mts";
 
 Cytoscape.use(fcose);
 
@@ -66,12 +69,12 @@ function useCyStateBind(
     cyRef.current.batch(() => {
       const c = LOOKUP[elemType].cy;
       assertExists(c, {
-        why: "You do not need this binding in the react component if lookup doesn't define cy",
         details: {
           elemType,
         },
+        why: "You do not need this binding in the react component if lookup doesn't define cy",
       });
-      c.forEach(({ selectors, dataKey }) => {
+      c.forEach(({ dataKey, selectors }) => {
         const elements = cyRef.current!.elements(selectors.join(","));
         enabled ? elements.removeData(dataKey) : elements.data(dataKey, true);
       });
@@ -127,16 +130,16 @@ const AstGraphSuccess: FC<AstGraphSuccessProps> = ({ elements }) => {
   return (
     <>
       <CytoscapeComponent
-        style={{ height: "100%" }}
-        layout={layout}
         cy={(cy: Core) => {
           if (cyRef.current === cy) return; // ← critical
           cyRef.current = cy;
           cy.on("tap", "node", cbOnTapNode);
           cy.on("tap", cbOnTapNothing);
         }}
-        stylesheet={buildStyleSheet(token, fontSize)}
         elements={elements}
+        layout={layout}
+        style={{ height: "100%" }}
+        stylesheet={buildStyleSheet(token, fontSize)}
       />
     </>
   );

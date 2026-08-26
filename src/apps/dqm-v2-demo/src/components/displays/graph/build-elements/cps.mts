@@ -1,8 +1,10 @@
 import type { ICps } from "@dqm/package-dqm-api-v2";
+
+import { assertTryCatchSuccess } from "_assertions";
+import { createSanitizedView } from "@dqm/package-dqm-v2-debug";
+
 import { Registry } from "./registry.mts";
 import { cls, uniqueLabel } from "./utils.mts";
-import { createSanitizedView } from "@dqm/package-dqm-v2-debug";
-import { assertTryCatchSuccess } from "_assertions";
 
 export function traverseCps(raw: ICps | null, cpsDepth: number): void {
   if (!raw) {
@@ -13,11 +15,11 @@ export function traverseCps(raw: ICps | null, cpsDepth: number): void {
   Registry.registerSanitized(id, root);
   const cpsIdStringPre = root.getIdString();
   const node = {
+    classes: cls("cps", cpsDepth === 0 && "root", `depth-${cpsDepth}`),
     data: {
       id,
       label: uniqueLabel("Cps", cpsIdStringPre, raw.getUnique()),
     },
-    classes: cls("cps", cpsDepth === 0 && "root", `depth-${cpsDepth}`),
   };
   Registry.registerNode(node);
 
@@ -25,12 +27,12 @@ export function traverseCps(raw: ICps | null, cpsDepth: number): void {
   assertTryCatchSuccess(creatorCpxPre, { why: "Creator Cpx required" });
   const creatorCpx = creatorCpxPre.value;
   Registry.registerEdge({
+    classes: cls("source-cpx", "target-cps"),
     data: {
+      label: "aggregates",
       source: Registry.getId(creatorCpx),
       target: id,
-      label: "aggregates",
     },
-    classes: cls("source-cpx", "target-cps"),
   });
 
   const parentCpsPre = root.getCpsParent();
@@ -38,12 +40,12 @@ export function traverseCps(raw: ICps | null, cpsDepth: number): void {
   const parentCps = parentCpsPre.value;
   if (parentCps) {
     Registry.registerEdge({
+      classes: cls("source-cps", "target-cps", "relationship-child"),
       data: {
+        label: "parentOf",
         source: Registry.getId(parentCps),
         target: id,
-        label: "parentOf",
       },
-      classes: cls("source-cps", "target-cps", "relationship-child"),
     });
   }
 
@@ -52,12 +54,12 @@ export function traverseCps(raw: ICps | null, cpsDepth: number): void {
   const prevCpx = prevCpxPre.value;
   if (prevCpx) {
     Registry.registerEdge({
+      classes: cls("source-cps", "target-cps", "relationship-sibling"),
       data: {
+        label: "sibling",
         source: Registry.getId(prevCpx),
         target: id,
-        label: "sibling",
       },
-      classes: cls("source-cps", "target-cps", "relationship-sibling"),
     });
   }
 

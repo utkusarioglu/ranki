@@ -1,10 +1,11 @@
 import type { TryCatch, TryCatchSuccess } from "@dqm/package-dqm-v2-debug";
+
 import {
   DqmDemoError,
   type DqmPluginErrorConstructorParams,
 } from "./dqm-demo-error.mts";
 
-type AssertionExtra = Pick<DqmPluginErrorConstructorParams, "why" | "details">;
+type AssertionExtra = Pick<DqmPluginErrorConstructorParams, "details" | "why">;
 
 export function assertExists(
   v: any,
@@ -12,8 +13,8 @@ export function assertExists(
 ): asserts v is object {
   if (v === undefined) {
     throw new DqmDemoError({
-      code: "VALUE_UNDEFINED",
       cause: null,
+      code: "VALUE_UNDEFINED",
       ...extra,
     });
   }
@@ -21,8 +22,8 @@ export function assertExists(
 
 export function assertNever(extra: AssertionExtra): never {
   throw new DqmDemoError({
-    code: "NEVER_EVENT",
     cause: null,
+    code: "NEVER_EVENT",
     ...extra,
   });
 }
@@ -33,8 +34,8 @@ export function assertTryCatchSuccess<T>(
 ): asserts v is TryCatchSuccess<T> {
   if (v.state === "fail") {
     throw new DqmDemoError({
-      code: "TRY_CATCH_FAIL",
       cause: v.error,
+      code: "TRY_CATCH_FAIL",
       ...extra,
     });
   }

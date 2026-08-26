@@ -2,17 +2,17 @@ import { createAnkiStore } from "./anki.store.builder.mts";
 import { CARD_CONFIG, DECK, TEMPLATE_CONFIG } from "./constants.common.mts";
 
 export const useAnkiWinStore = createAnkiStore({
-  contentType: "r2",
-  previewScale: 1.25,
-  previewAspect: 16 / 9,
-  colorScheme: "dark",
+  appVariant: "devtools",
+  card: "AB",
   cardConfig: CARD_CONFIG,
-  templateConfig: TEMPLATE_CONFIG,
+  cardType: "+r:AB:BA",
+  colorScheme: "dark",
+  contentType: "r2",
   deck: DECK,
-  tags: "win",
   face: "Q",
   flag: "flag0",
-  cardType: "+r:AB:BA",
-  card: "AB",
-  appVariant: "devtools",
+  previewAspect: 16 / 9,
+  previewScale: 1.25,
+  tags: "win",
+  templateConfig: TEMPLATE_CONFIG,
 });

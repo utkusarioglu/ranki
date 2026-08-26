@@ -1,14 +1,14 @@
 //MOVED
 import type { DqmParseOutput } from "@dqm/package-dqm-api-v2";
 
-interface SanitizeResultSuccess {
-  state: "success";
-  data: DqmParseOutput;
-}
+export type SanitizedParseResult = ParseResultFail | SanitizeResultSuccess;
 
 interface ParseResultFail {
-  state: "fail";
   error: string;
+  state: "fail";
 }
 
-export type SanitizedParseResult = SanitizeResultSuccess | ParseResultFail;
+interface SanitizeResultSuccess {
+  data: DqmParseOutput;
+  state: "success";
+}

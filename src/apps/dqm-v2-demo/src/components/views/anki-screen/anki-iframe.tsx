@@ -1,15 +1,17 @@
-import { type FC, type RefObject } from "react";
 import { assertExists } from "_assertions";
+import { RENDERED_CLASS_SELECTOR } from "@ranki/app-ranki-v2/constants";
+import { type FC, type RefObject } from "react";
+
+import type { RankiFiles } from "./AnkiScreen";
+
 import style from "./AnkiIFrame.module.css";
 import { createFragment, createRankiElements } from "./utils";
-import type { RankiFiles } from "./AnkiScreen";
-import { RENDERED_CLASS_SELECTOR } from "@ranki/app-ranki-v2/constants";
 
 export interface AnkiDesktopIFrameProps {
-  onLoad: () => void;
   files: RankiFiles;
-  src: string;
+  onLoad: () => void;
   ref: RefObject<HTMLIFrameElement | null>;
+  src: string;
 }
 
 /**
@@ -18,10 +20,10 @@ export interface AnkiDesktopIFrameProps {
  * don't demand a reload would be much more useful
  */
 export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
-  ref,
   files,
-  src,
   onLoad,
+  ref,
+  src,
 }) => {
   const replaced = createRankiElements(files);
 
@@ -29,7 +31,6 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
     <iframe
       // #1
       className={style.container}
-      src={src}
       onLoad={(e) => {
         ref.current = e.target as HTMLIFrameElement;
         const doc = ref.current?.contentDocument!;
@@ -45,12 +46,12 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
         const mapping: Record<string, string> = {
           a: "script.r2-input.A",
           b: "script.r2-input.B",
-          face: "script.r2-data.face",
+          card: "script.r2-data.card",
           deck: "script.r2-data.deck",
+          face: "script.r2-data.face",
+          flag: "script.r2-data.flag",
           tags: "script.r2-data.tags",
           type: "script.r2-data.type",
-          flag: "script.r2-data.flag",
-          card: "script.r2-data.card",
         };
         (e.target as HTMLIFrameElement).contentWindow!.addEventListener(
           "message",
@@ -120,6 +121,7 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
 
         onLoad();
       }}
+      src={src}
     />
   );
 };

@@ -1,12 +1,14 @@
-import { useMemo, useRef } from "react";
-import { Dqm } from "@dqm/package-dqm-v2";
-import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
-import { buildPluginSelectionConfig } from "_stores/dqm/dqm.utils.mjs";
-import { assertExists } from "_assertions";
-import iframeSrc from "./iframe.html?raw";
 import type { PluginStoreWrapper } from "_stores/dqm/dqm.store.types.mjs";
 import type { DqmParseInputStructured } from "@dqm/package-dqm-api-v2";
+
+import { assertExists } from "_assertions";
 import { pluginsAsArray } from "_stores/dqm/dqm.plugins.mjs";
+import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
+import { buildPluginSelectionConfig } from "_stores/dqm/dqm.utils.mjs";
+import { Dqm } from "@dqm/package-dqm-v2";
+import { useMemo, useRef } from "react";
+
+import iframeSrc from "./iframe.html?raw";
 
 function dqmOnLoad(
   doc: Document,
@@ -36,9 +38,6 @@ export const TrialRender = () => {
   const ifa = useMemo(
     () => (
       <iframe
-        ref={ref}
-        style={{ width: 250, height: 400, border: "none" }}
-        srcDoc={iframeSrc}
         // onLoad={() => {
         //   console.log("ready");
         //   if(!ref.current)
@@ -49,6 +48,9 @@ export const TrialRender = () => {
           assertExists(doc, { why: "doc is needed" });
           dqmOnLoad(doc, s.pluginSelection, s.inputs);
         }}
+        ref={ref}
+        srcDoc={iframeSrc}
+        style={{ border: "none", height: 400, width: 250 }}
       />
     ),
     [],

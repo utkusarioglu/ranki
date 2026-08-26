@@ -8,23 +8,23 @@ export const UpdatesForm = () => {
   return (
     <MenuFormItem label="Updates">
       <BlockySwitch
-        size="small"
         checkedChildren={"Auto"}
-        unCheckedChildren={"Manual"}
         onChange={(e) => dqm.setAutoUpdate(e)}
+        size="small"
+        unCheckedChildren={"Manual"}
         value={dqm.autoUpdate}
       />
 
       {dqm.autoUpdate ? (
         <BlockySwitch
-          size="small"
           checkedChildren={"Deferred"}
-          unCheckedChildren={"Synchronous"}
           onChange={() => dqm.setDeferParsing(!dqm.deferParsing)}
+          size="small"
+          unCheckedChildren={"Synchronous"}
           value={dqm.deferParsing}
         />
       ) : (
-        <Button size="small" onClick={() => dqm.parseInput()}>
+        <Button onClick={() => dqm.parseInput()} size="small">
           Update
         </Button>
       )}

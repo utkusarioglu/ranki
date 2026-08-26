@@ -1,9 +1,27 @@
 import type { ICps, ICpsParam } from "@dqm/package-dqm-api-v2";
+
+import { assertTryCatchSuccess } from "_assertions";
+import { createSanitizedView } from "@dqm/package-dqm-v2-debug";
+
+import type { IdValue, N } from "./build.types.mts";
+
 import { Registry } from "./registry.mts";
 import { cls } from "./utils.mts";
-import type { IdValue, N } from "./build.types.mts";
-import { createSanitizedView } from "@dqm/package-dqm-v2-debug";
-import { assertTryCatchSuccess } from "_assertions";
+
+export function traverseParams(raw: ICps) {
+  if (!raw) {
+    return;
+  }
+  const cpsId = Registry.getId(raw);
+  const root = createSanitizedView(raw);
+  const paramsPre = root.getParams();
+  assertTryCatchSuccess(paramsPre, { why: "cps params is required" });
+  paramsPre.value.map((p) => traverseCpsParam(cpsId, p));
+
+  const childrenPre = root.getCpsEdges();
+  assertTryCatchSuccess(childrenPre, { why: "Children is required" });
+  childrenPre.value.map((c) => traverseParams(c));
+}
 
 function traverseCpsParam(cpsId: IdValue, raw: ICpsParam) {
   const id = Registry.getNew(raw);
@@ -14,11 +32,11 @@ function traverseCpsParam(cpsId: IdValue, raw: ICpsParam) {
   const chainString = chainStringPre.value;
 
   const node: N = {
+    classes: cls("cpsParam"),
     data: {
       id,
       label: "CpsParam:" + chainString,
     },
-    classes: cls("cpsParam"),
   };
   Registry.registerNode(node);
 
@@ -27,26 +45,26 @@ function traverseCpsParam(cpsId: IdValue, raw: ICpsParam) {
   const astParam = astParamPre.value;
   if (astParam) {
     Registry.registerEdge({
+      classes: cls("source-cpsParam", "target-astParam"),
       data: {
+        label: "mutates",
         source: Registry.getId(astParam),
         target: id,
-        label: "mutates",
       },
-      classes: cls("source-cpsParam", "target-astParam"),
     });
   }
 
   Registry.registerEdge({
-    data: {
-      source: id,
-      target: cpsId,
-      label: "configures",
-    },
     classes: cls(
       "source-cps",
       "target-cpsParam",
       // `producer-${producer}`
     ),
+    data: {
+      label: "configures",
+      source: id,
+      target: cpsId,
+    },
   });
 
   // const prevPre = root.getPrev();
@@ -64,19 +82,4 @@ function traverseCpsParam(cpsId: IdValue, raw: ICpsParam) {
   //   };
   //   Registry.registerEdge(edge);
   // }
-}
-
-export function traverseParams(raw: ICps) {
-  if (!raw) {
-    return;
-  }
-  const cpsId = Registry.getId(raw);
-  const root = createSanitizedView(raw);
-  const paramsPre = root.getParams();
-  assertTryCatchSuccess(paramsPre, { why: "cps params is required" });
-  paramsPre.value.map((p) => traverseCpsParam(cpsId, p));
-
-  const childrenPre = root.getCpsEdges();
-  assertTryCatchSuccess(childrenPre, { why: "Children is required" });
-  childrenPre.value.map((c) => traverseParams(c));
 }

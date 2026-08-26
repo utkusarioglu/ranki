@@ -1,9 +1,11 @@
 import type { FC } from "react";
+
 import hljs from "highlight.js";
 import yamlLang from "highlight.js/lib/languages/yaml";
 import yaml from "yaml";
-import style from "./YamlDisplay.module.css";
+
 import { DqmDemoError } from "../../../errors/dqm-demo-error.mts";
+import style from "./YamlDisplay.module.css";
 
 hljs.registerLanguage("yaml", yamlLang);
 
@@ -19,9 +21,9 @@ export const YamlDisplay: FC<YamlDisplayProps> = ({ obj, padded = true }) => {
       code = yaml.stringify(obj);
     } catch (e) {
       throw new DqmDemoError({
+        cause: e,
         code: "PARSE_FAIL",
         why: "Yaml parse failed for a node",
-        cause: e,
         // details: {
         //   obj,
         // },

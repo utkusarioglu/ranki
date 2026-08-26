@@ -1,6 +1,3 @@
-import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
-import { PluginCard } from "./plugin-package-card/PluginPackageCard";
-import style from "./DqmPluginsOptions.module.css";
 import type {
   SetPluginAsInstalled,
   SetPluginAsRequested,
@@ -8,10 +5,15 @@ import type {
   SetPluginPackageAsEnabled,
 } from "_stores/dqm/dqm.store.types.mjs";
 
+import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
+
+import style from "./DqmPluginsOptions.module.css";
+import { PluginCard } from "./plugin-package-card/PluginPackageCard";
+
 export interface WithPluginActions {
   setPluginAsInstalled: SetPluginAsInstalled;
-  setPluginAsStandard: SetPluginAsStandard;
   setPluginAsRequested: SetPluginAsRequested;
+  setPluginAsStandard: SetPluginAsStandard;
 }
 
 export interface WithPluginPackageActions {

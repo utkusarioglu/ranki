@@ -3,12 +3,13 @@ import {
   useAstViewStore,
 } from "_stores/ast-view/ast-view.store.mts";
 import { useDqmStore } from "_stores/dqm/dqm.store.mts";
+import { Scroller } from "_views/scroller/Scroller";
+import { createFilteredAst } from "@dqm/package-dqm-v2-debug";
 import { Typography } from "antd";
 import { useErrorBoundary } from "react-error-boundary";
+
 import { AstNodeDisplay } from "./ast-node-display/NodeDisplay";
-import { Scroller } from "_views/scroller/Scroller";
 import style from "./SanitizedAstNodeListDisplay.module.css";
-import { createFilteredAst } from "@dqm/package-dqm-v2-debug";
 
 function useSanitizedAst() {
   const parsed = useDqmStore((s) => s.parsed);
@@ -17,10 +18,10 @@ function useSanitizedAst() {
   const stable = useAstViewStore((s) => s.stable);
   const hidden = useAstViewStore((s) => s.hidden);
   const filtered = filterIds({
-    props,
     children,
-    stable,
     hidden,
+    props,
+    stable,
   });
   return createFilteredAst(parsed, filtered);
 }
@@ -55,18 +56,18 @@ export const SanitizedNodeList = () => {
       <Typography.Title className={style.title} level={3}>
         Node / Ast
       </Typography.Title>
-      {nodes.map(({ theater, sanitized }) => (
+      {nodes.map(({ sanitized, theater }) => (
         <div key={theater}>
-          <Typography.Title code className={style.theaterTitle} level={3}>
+          <Typography.Title className={style.theaterTitle} code level={3}>
             {theater}
           </Typography.Title>
           <Scroller className="padding-inline" direction="horizontal">
             <AstNodeDisplay
-              parentUnique={undefined}
-              node={sanitized}
-              path=""
               depth={0}
               index={0}
+              node={sanitized}
+              parentUnique={undefined}
+              path=""
             />
           </Scroller>
         </div>

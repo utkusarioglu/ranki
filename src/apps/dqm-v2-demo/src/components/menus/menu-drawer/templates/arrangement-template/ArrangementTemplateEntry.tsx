@@ -1,18 +1,21 @@
-import { Button, Card, Typography } from "antd";
 import type { FC } from "react";
-import style from "./ArrangementTemplateEntry.module.css";
+
+import { Button, Card, Typography } from "antd";
+
+import type { SingleTemplateGroup } from "../single-template/SingleTemplate.types.mts";
 import type {
   ArrangementTemplate,
   ArrangementTemplateSingleRef,
   WithIndexArrangementTemplates,
 } from "./ArrangementTemplate.types.mts";
-import type { SingleTemplateGroup } from "../single-template/SingleTemplate.types.mts";
+
+import style from "./ArrangementTemplateEntry.module.css";
 import { ArrangementTemplateSinglePreview } from "./ArrangementTemplateSinglePreview";
 
-type ArrangementTemplateEntryProps = WithIndexArrangementTemplates & {
+type ArrangementTemplateEntryProps = {
   entry: ArrangementTemplate;
   singles: SingleTemplateGroup[];
-};
+} & WithIndexArrangementTemplates;
 
 function retrieveSingle(
   singles: SingleTemplateGroup[],
@@ -31,15 +34,15 @@ function retrieveSingle(
 
 export const ArrangementTemplateEntry: FC<ArrangementTemplateEntryProps> = ({
   entry,
+  previewOnClick,
   singles,
   useOnClick,
-  previewOnClick,
   // active,
 }) => {
   const entries = entry.singles.map((s) => retrieveSingle(singles, s));
   const inputs = entries.map((e) => ({
-    theater: e.singleRef.theater,
     dqm: e.entry.raw,
+    theater: e.singleRef.theater,
   }));
 
   // const isActive = entry.raw === active;
@@ -56,9 +59,9 @@ export const ArrangementTemplateEntry: FC<ArrangementTemplateEntryProps> = ({
       <Typography className={style.description}>{entry.description}</Typography>
       {entries.map(({ entry, singleRef }) => (
         <ArrangementTemplateSinglePreview
+          entry={entry}
           key={singleRef.singleId}
           singleRef={singleRef}
-          entry={entry}
         />
       ))}
       <div className={style.action}>

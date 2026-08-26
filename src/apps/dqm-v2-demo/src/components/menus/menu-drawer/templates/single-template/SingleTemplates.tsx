@@ -1,10 +1,13 @@
 import type { FC } from "react";
+
 import { useDqmStore } from "_stores/dqm/dqm.store.mts";
 import { useUiStore } from "_stores/ui/ui.store.mts";
 import { DrawerTitleRow } from "_views/drawer-title-row/DrawerTitleRow";
-import { SingleTemplateGroup } from "./SingleTemplateGroup";
-import { useSingleTemplateFetch } from "../hooks.mts";
+
 import type { MenuDrawerSwitchProps } from "../../MenuDrawerSwitch";
+
+import { useSingleTemplateFetch } from "../hooks.mts";
+import { SingleTemplateGroup } from "./SingleTemplateGroup";
 
 type SingleTemplatesProps = MenuDrawerSwitchProps;
 
@@ -22,16 +25,16 @@ export const SingleTemplates: FC<SingleTemplatesProps> = ({ mode }) => {
       <DrawerTitleRow>Load Template</DrawerTitleRow>
       {Array.from(dqm.singleTemplates.values()).map((g) => (
         <SingleTemplateGroup
-          key={g.label}
+          active={dqm.inputs[mode.index].dqm}
           group={g}
           index={mode.index}
-          active={dqm.inputs[mode.index].dqm}
+          key={g.label}
+          previewOnClick={(raw: string) => {
+            dqm.setTheaterDqmByIndex(mode.index, raw);
+          }}
           useOnClick={(raw: string) => {
             ui.setTemplateDrawerState(null);
             ui.isNarrow && ui.setMenuOpen(false);
-            dqm.setTheaterDqmByIndex(mode.index, raw);
-          }}
-          previewOnClick={(raw: string) => {
             dqm.setTheaterDqmByIndex(mode.index, raw);
           }}
         />

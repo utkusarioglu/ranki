@@ -1,35 +1,35 @@
 import type { AstNodeSanitizedTypesRecord } from "@dqm/package-dqm-v2-debug";
 
-export interface AstViewStore extends AstViewStoreState, AstViewStoreActions {}
-
-export interface AstViewStoreState {
-  hidden: SanitizedNodePropsView;
-  props: SanitizedNodePropsView;
-  children: SanitizedNodePropsView;
-  stable: SanitizedNodePropsView;
-}
+export interface AstViewStore extends AstViewStoreActions, AstViewStoreState {}
 
 export interface AstViewStoreActions {
-  setProps: (props: SanitizedNodePropsView) => void;
   setChildren: (c: SanitizedNodePropsView) => void;
+  setProps: (props: SanitizedNodePropsView) => void;
   setStable: (c: SanitizedNodePropsView) => void;
 }
 
-type SanitizedNodePropsView = VisibleBoolean<AstNodeSanitizedTypesRecord>[];
+export interface AstViewStoreState {
+  children: SanitizedNodePropsView;
+  hidden: SanitizedNodePropsView;
+  props: SanitizedNodePropsView;
+  stable: SanitizedNodePropsView;
+}
 
-type VisibleBoolean<T> = { id: keyof T; visible: boolean };
+export interface SanitizedNodeView {
+  children: SanitizedNodePropsView;
+  hidden: SanitizedNodePropsView;
+  props: SanitizedNodePropsView;
+  stable: SanitizedNodePropsView;
+}
 
 // !FIX I don't like this type
 // the fact that each sanitized node prop group has their own type is useful in
 // some places but this here makes things complicated.
 export type VisibleBooleanCommon = { id: string; visible: boolean };
 
-export interface SanitizedNodeView {
-  hidden: SanitizedNodePropsView;
-  props: SanitizedNodePropsView;
-  children: SanitizedNodePropsView;
-  stable: SanitizedNodePropsView;
-}
+type SanitizedNodePropsView = VisibleBoolean<AstNodeSanitizedTypesRecord>[];
+
+type VisibleBoolean<T> = { id: keyof T; visible: boolean };
 
 // export interface SanitizedNodeViewPreferences {
 //   hidden: AstNodeFilterKeys[];

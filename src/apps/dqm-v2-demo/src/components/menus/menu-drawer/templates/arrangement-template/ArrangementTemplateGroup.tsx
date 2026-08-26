@@ -1,25 +1,28 @@
 import type { FC } from "react";
+
 import { Typography } from "antd";
-import style from "./ArrangementTemplateGroup.module.css";
-import { ArrangementTemplateEntry } from "./ArrangementTemplateEntry";
+
+import type { SingleTemplateGroup } from "../single-template/SingleTemplate.types.mts";
 import type {
   ArrangementTemplateGroup as ArrangementTemplateGroupType,
   WithIndexArrangementTemplates,
 } from "./ArrangementTemplate.types.mts";
-import type { SingleTemplateGroup } from "../single-template/SingleTemplate.types.mts";
 
-type TemplateGroupProps = WithIndexArrangementTemplates & {
+import { ArrangementTemplateEntry } from "./ArrangementTemplateEntry";
+import style from "./ArrangementTemplateGroup.module.css";
+
+type TemplateGroupProps = {
   group: ArrangementTemplateGroupType;
   singles: SingleTemplateGroup[];
-};
+} & WithIndexArrangementTemplates;
 
 export const ArrangementTemplateGroup: FC<TemplateGroupProps> = ({
+  active,
   group,
   index,
-  useOnClick,
   previewOnClick,
-  active,
   singles,
+  useOnClick,
 }) => {
   return (
     <div className={style.container}>
@@ -32,13 +35,13 @@ export const ArrangementTemplateGroup: FC<TemplateGroupProps> = ({
       <div>
         {group.list.map((e) => (
           <ArrangementTemplateEntry
-            singles={singles}
             active={active}
-            key={e.label}
             entry={e}
             index={index}
-            useOnClick={useOnClick}
+            key={e.label}
             previewOnClick={previewOnClick}
+            singles={singles}
+            useOnClick={useOnClick}
           />
         ))}
       </div>

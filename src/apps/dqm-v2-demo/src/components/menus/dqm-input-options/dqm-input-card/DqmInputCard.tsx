@@ -1,3 +1,12 @@
+import type { DqmStoreActions } from "_stores/dqm/dqm.store.types.mjs";
+import type { UiStoreActions } from "_stores/ui/ui.store.types.mjs";
+import type {
+  CpxParseInput,
+  DqmParseInputStructured,
+} from "@dqm/package-dqm-api-v2";
+import type { FC, Ref } from "react";
+
+import { SkinnyCard } from "_views/skinny-card/SkinnyCard";
 import {
   CloseOutlined,
   DragOutlined,
@@ -5,47 +14,40 @@ import {
   SaveOutlined,
 } from "@ant-design/icons";
 import { Button, Flex, Input } from "antd";
+
 import style from "./DqmInputCard.module.css";
-import { SkinnyCard } from "_views/skinny-card/SkinnyCard";
-import type {
-  CpxParseInput,
-  DqmParseInputStructured,
-} from "@dqm/package-dqm-api-v2";
-import type { UiStoreActions } from "_stores/ui/ui.store.types.mjs";
-import type { DqmStoreActions } from "_stores/dqm/dqm.store.types.mjs";
-import type { FC, Ref } from "react";
 
-type DqmInputCardBuilderFuncProps = Pick<
-  UiStoreActions,
-  "setTemplateDrawerState"
-> &
-  Pick<
-    DqmStoreActions,
-    "setTheaterDqmByIndex" | "setTheaterNameByIndex" | "removeTheaterByIndex"
-  >;
-
-interface DqmInputPropsItem {
-  item: CpxParseInput;
-  index: number;
-  list: DqmParseInputStructured;
-  ref: Ref<HTMLDivElement>;
-}
+type AstPropRowComponent = FC<DqmInputPropsItem>;
 
 type DqmInputCardBuilderFunc = (
   p: DqmInputCardBuilderFuncProps,
 ) => AstPropRowComponent;
 
-type AstPropRowComponent = FC<DqmInputPropsItem>;
+type DqmInputCardBuilderFuncProps = Pick<
+    DqmStoreActions,
+    "removeTheaterByIndex" | "setTheaterDqmByIndex" | "setTheaterNameByIndex"
+  > &
+  Pick<
+  UiStoreActions,
+  "setTemplateDrawerState"
+>;
+
+interface DqmInputPropsItem {
+  index: number;
+  item: CpxParseInput;
+  list: DqmParseInputStructured;
+  ref: Ref<HTMLDivElement>;
+}
 
 export const dqmInputCardBuilder: DqmInputCardBuilderFunc =
   (s) =>
-  ({ index, item: { theater, dqm }, ref }) => {
+  ({ index, item: { dqm, theater }, ref }) => {
     return (
       <SkinnyCard className={style.card} ref={ref}>
         <Flex className={style.row}>
           <Input
-            value={theater}
             onChange={(e) => s.setTheaterNameByIndex(index, e.target.value)}
+            value={theater}
           />
           <Flex>
             <Button icon={<EyeFilled />} />
@@ -56,8 +58,8 @@ export const dqmInputCardBuilder: DqmInputCardBuilderFunc =
           </Flex>
         </Flex>
         <Input.TextArea
-          className={style.textarea}
           autoSize
+          className={style.textarea}
           onChange={(e) => s.setTheaterDqmByIndex(index, e.target.value)}
           value={dqm}
         />
@@ -70,8 +72,8 @@ export const dqmInputCardBuilder: DqmInputCardBuilderFunc =
             <Button
               onClick={() =>
                 s.setTemplateDrawerState({
-                  type: "single",
                   index,
+                  type: "single",
                 })
               }
             >
