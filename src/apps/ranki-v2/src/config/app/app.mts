@@ -45,7 +45,16 @@ export const MUTATION_MODE_PRECEDENCE: RankiBaseAddressMutationMode[] = [
   "show",
 ];
 
-export function createAppConfig(
+export class AppConfig {
+  public static create(
+    collected: RankiCollectedConfig | null,
+    raw: RawFields,
+  ): RankiState | null {
+    return collected === null ? null : createAppConfig(collected, raw);
+  }
+}
+
+function createAppConfig(
   { base, tags }: RankiCollectedConfig,
   raw: RawFields,
 ): RankiState {

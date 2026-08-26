@@ -32,6 +32,14 @@ export default defineConfig([
           category: "component.r2c",
           pattern: "src/components/r2c/r2c.mts",
         },
+        {
+          category: "collect.public",
+          pattern: "src/collect/collect.mts",
+        },
+        {
+          category: "state.app.subscriptions",
+          pattern: "src/store/app/app.subscriptions.mts",
+        },
       ],
       "boundaries/elements": [
         {
@@ -42,6 +50,10 @@ export default defineConfig([
           type: "components",
           pattern: "src/components/**/*",
         },
+        {
+          type: "collect.internal",
+          pattern: "src/collect/**/*",
+        },
       ],
     },
     rules: {
@@ -50,6 +62,18 @@ export default defineConfig([
         {
           default: "disallow",
           policies: [
+            {
+              from: { file: { categories: "collect.public" } },
+              allow: {
+                to: { element: { type: "collect.internal" } },
+              },
+            },
+            {
+              from: { file: { categories: "state.app.subscriptions" } },
+              allow: {
+                to: { file: { categories: "collect.public" } },
+              },
+            },
             {
               from: { element: { type: "components" } },
               allow: {

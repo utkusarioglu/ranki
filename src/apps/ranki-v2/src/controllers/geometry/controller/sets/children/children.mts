@@ -54,7 +54,7 @@ export class GeometryChildren<
           () => this.session.start(),
         );
         span.addEvent("session.start");
-        await TimingUtils.raf(2);
+        await TimingUtils.raf();
         span.addEvent("session.compute.start");
 
         const serial = this.getElements();

@@ -1,54 +1,14 @@
+import { Collect } from "_collect/collect.mjs";
+
+import { DEFAULT_O11Y } from "./config-default.mjs";
 import { RankiO11y } from "./o11y.mjs";
 
-// remember to turn off geometry observability if you turn this off. the logistics of getting state over there hasn't been implemented
-RankiO11y.enable({
-  debug: {
-    drivers: {
-      consoleBatch: {
-        formatter: "objectSorter",
-        printer: "consoleLogRow",
-        sanitizer: "none",
-      },
-      fileBatch: {
-        filePath: "debugger.log",
-        sanitizer: "basicRepresentation",
-        scheduler: {
-          enabled: true,
-          interval: 5000,
-        },
-        stringifier: "jsonOneLine",
-      },
-    },
-  },
-  log: {
-    drivers: {
-      consoleBatch: {
-        formatter: "objectSorter",
-        printer: "yamlRow",
-      },
-      // fileBatch: {
-      //   filePath: "log.log",
-      //   stringifier: "jsonOneLine",
-      //   sanitizer: "basicRepresentation",
-      //   scheduler: {
-      //     enabled: true,
-      //     interval: 5000,
-      //   },
-      // },
-      loki: {
-        endpoint: "http://localhost:8080/loki/loki/api/v1/push",
-        sanitizer: "basicRepresentation",
-        scheduler: {
-          enabled: true,
-          interval: 5000,
-        },
-      },
-    },
-  },
-  meter: {
-    endpoint: "http://localhost:8080/prometheus/api/v1/otlp/v1/metrics",
-  },
-  trace: {
-    endpoint: "http://localhost:8080/tempo/v1/traces",
-  },
-});
+const collected = Collect.o11y();
+switch (collected.type) {
+  case "custom":
+    RankiO11y.enable(collected.config);
+    break;
+  case "default":
+    RankiO11y.enable(DEFAULT_O11Y);
+    break;
+}

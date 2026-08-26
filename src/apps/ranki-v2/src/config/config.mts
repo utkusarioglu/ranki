@@ -13,7 +13,13 @@ import type { RankiCollectedConfig, RankiTagPrefix } from "./config.types.mjs";
 import { buildBaseConfig } from "./base/base.mjs";
 import { buildChannelsConfig } from "./channels/channels.mjs";
 
-export function collectConfig(raw: RawFields): RankiCollectedConfig {
+export class Config {
+  public static collect(raw: RawFields | null): RankiCollectedConfig | null {
+    return raw === null ? raw : collectConfig(raw);
+  }
+}
+
+function collectConfig(raw: RawFields): RankiCollectedConfig {
   const channels = buildChannelsConfig(raw);
   const tags = groupTags(raw, channels.base.tags.ranki.prefix);
   const base = buildBaseConfig(channels, tags, raw);

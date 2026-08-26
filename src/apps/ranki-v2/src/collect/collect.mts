@@ -1,12 +1,3 @@
-import {
-  ALL_CONFIG_TYPES_SELECTOR,
-  DATA_TYPE_CLASS_SELECTOR,
-  INPUT_TYPE_CLASS_SELECTOR,
-} from "_/selector.constants.mjs";
-import { assertNever } from "_error/assertions.mjs";
-import { RankiAppError } from "_error/ranki-app-error.mjs";
-import { assertExists } from "@dqm/package-dqm-utils";
-
 import type {
   AnkiTemplateFields,
   CollectedConfig,
@@ -22,26 +13,42 @@ import type {
 } from "./collect.types.mjs";
 
 import { hasher } from "./hasher.mjs";
+import {
+  ALL_CONFIG_TYPES_SELECTOR,
+  DATA_TYPE_CLASS_SELECTOR,
+  INPUT_TYPE_CLASS_SELECTOR,
+  O11Y_CLASS_SELECTOR,
+} from "_/selector.constants.mjs";
+import { assertNever } from "_error/assertions.mjs";
+import { RankiAppError } from "_error/ranki-app-error.mjs";
+import { assertExists } from "@dqm/package-dqm-utils";
 
-/**
- * @dev
- * #1 Basically the theater needs to be the last class name
- * #2 This is very fragile
- */
-export async function collectRaw(): Promise<RawFields> {
-  const htmlAttr = collectHtmlTagAttributes();
-  const fields = collectAnkiFields();
-  const config = await collectConfigFields();
-  const faces = collectFaces();
-  const hash = hasher(htmlAttr, fields, config, faces);
+export class Collect {
+  public static fields() {
+    return collectRaw();
+  }
 
-  return {
-    config,
-    faces,
-    fields,
-    hash,
-    htmlAttr,
-  };
+  public static o11y() {
+    const elem = document.querySelector(O11Y_CLASS_SELECTOR);
+    if (!elem) return { type: "disabled" };
+    const raw = elem.textContent;
+    if (typeof raw === "string" && raw.toUpperCase() === "DEFAULT")
+      return { type: "default" };
+    try {
+      const parsed = JSON.parse(raw);
+      return {
+        config: parsed,
+        type: "custom",
+      };
+    } catch (e) {
+      throw new RankiAppError({
+        cause: e,
+        code: "INVALID_TYPE",
+        details: { raw },
+        why: "observability input type needs to be valid json",
+      });
+    }
+  }
 }
 
 function collectAnkiFields(): AnkiTemplateFields {
@@ -184,6 +191,27 @@ function collectHtmlTagAttributes(): CollectedHtmlTagAttributes {
     raw,
     scheme,
     webview,
+  };
+}
+
+/**
+ * @dev
+ * #1 Basically the theater needs to be the last class name
+ * #2 This is very fragile
+ */
+async function collectRaw(): Promise<RawFields> {
+  const htmlAttr = collectHtmlTagAttributes();
+  const fields = collectAnkiFields();
+  const config = await collectConfigFields();
+  const faces = collectFaces();
+  const hash = hasher(htmlAttr, fields, config, faces);
+
+  return {
+    config,
+    faces,
+    fields,
+    hash,
+    htmlAttr,
   };
 }
 

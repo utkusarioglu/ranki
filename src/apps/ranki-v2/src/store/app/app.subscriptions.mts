@@ -1,8 +1,8 @@
 import type { RawFields } from "_collect/collect.types.mjs";
 
-import { collectRaw } from "_collect/collect.mjs";
-import { createAppConfig } from "_config/app/app.mjs";
-import { collectConfig } from "_config/config.mjs";
+import { Collect } from "_collect/collect.mjs";
+import { AppConfig } from "_config/app/app.mjs";
+import { Config } from "_config/config.mjs";
 
 import { appStore } from "./app.mjs";
 
@@ -11,23 +11,23 @@ appStore.subscribe(
   (config) => {
     const raw = appStore.getState().raw as RawFields;
     appStore.setState({
-      state: config === null ? null : createAppConfig(config, raw),
+      state: AppConfig.create(config, raw),
+      // state: config === null ? null : createAppConfig(config, raw),
     });
   },
 );
 
 appStore.subscribe(
   (s) => s.raw,
-  () => {
-    const raw = appStore.getState().raw;
-    appStore.setState({ config: raw === null ? null : collectConfig(raw) });
+  (raw) => {
+    appStore.setState({ config: Config.collect(raw) });
   },
 );
 
 appStore.subscribe(
   (s) => s.epoch,
   async () => {
-    const raw = await collectRaw();
+    const raw = await Collect.fields();
     appStore.setState({ raw });
   },
 );
