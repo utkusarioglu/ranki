@@ -1,8 +1,9 @@
 import type {
-  ProcessedCueMap,
   BuildRankiBaseConfigReturn,
+  ProcessedCueMap,
   RankiIndicatorState,
 } from "_config/config.types.mjs";
+
 import { getAnimation } from "./ranki-config.mjs";
 
 export class IndicatorConfig {

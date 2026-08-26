@@ -20,8 +20,8 @@ import { FLAG_COLOR_ORDER } from "_/anki.constants.mjs";
 import { assertNever } from "_error/assertions.mjs";
 import { Config } from "@dqm/package-dqm-utils";
 
-import { checkIfMatch } from "./determine.mjs";
 import { PRECEDENCE_ORDER } from "./base.constants.mjs";
+import { checkIfMatch } from "./determine.mjs";
 
 export function buildBaseConfig(
   channels: RankiChannelsConfig,

@@ -1,8 +1,8 @@
 import type { RankiHudStateAnimation } from "_components/hud/hud.types.mjs";
 import type {
   CueRecord,
-  ProcessedCueMap,
   ProcessedCue,
+  ProcessedCueMap,
 } from "_config/config.types.mjs";
 
 export class CuesConfig {

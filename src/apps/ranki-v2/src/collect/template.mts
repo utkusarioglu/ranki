@@ -3,22 +3,24 @@ import {
   DATA_TYPE_CLASS_SELECTOR,
   INPUT_TYPE_CLASS_SELECTOR,
 } from "_/selector.constants.mjs";
-import { assertExists } from "../../../../packages/dqm-utils/src/assertions.mjs";
+import { assertNever } from "_error/assertions.mjs";
+import { RankiAppError } from "_error/ranki-app-error.mjs";
+
 import type {
-  RankiFaces,
-  CollectedHtmlTagAttributes,
-  HtmlAttrDir,
-  HtmlAttrTheme,
-  CollectedWebviewType,
-  RawFields,
   AnkiTemplateFields,
   CollectedConfig,
   CollectedConfigEntry,
+  CollectedHtmlTagAttributes,
+  CollectedWebviewType,
+  HtmlAttrDir,
+  HtmlAttrTheme,
+  RankiFaces,
+  RawFields,
 } from "./collect.types.mjs";
+
+import { assertExists } from "../../../../packages/dqm-utils/src/assertions.mjs";
 import { hasher } from "./hasher.mjs";
-import { assertNever } from "_error/assertions.mjs";
-import { RankiAppError } from "_error/ranki-app-error.mjs";
-import { OS, ENV } from "./template.constants.mjs";
+import { ENV, OS } from "./template.constants.mjs";
 
 export class CollectTemplate {
   /**
@@ -42,6 +44,74 @@ export class CollectTemplate {
     };
   }
 
+  private static collectAnkiFields(): AnkiTemplateFields {
+    const dataElems = document.querySelectorAll(DATA_TYPE_CLASS_SELECTOR);
+    return Object.fromEntries(
+      Array.from(dataElems).map((data) => [
+        this.getClassType(data),
+        data.innerHTML,
+      ]),
+    ) as unknown as AnkiTemplateFields;
+  }
+
+  private static async collectConfigFields(): Promise<CollectedConfig> {
+    const configPromises: Promise<CollectedConfigEntry>[] = [];
+    try {
+      const configElems = document.querySelectorAll(ALL_CONFIG_TYPES_SELECTOR);
+      for (const e of configElems) {
+        configPromises.push(this.configField(e));
+      }
+      const config: CollectedConfig = await Promise.all(configPromises);
+      return config;
+    } catch (e) {
+      throw new RankiAppError({
+        cause: e,
+        code: "CONFIG_RETRIEVAL",
+        why: "Fetch of the template config files have failed",
+      });
+    }
+  }
+
+  private static configField(e: Element) {
+    const resourceType = this.getResourceType(e);
+    switch (resourceType) {
+      case "config":
+        return Promise.resolve({
+          config: e.innerHTML,
+          name: this.getClassType(e),
+        });
+      case "config-file":
+        return this.configFile(e);
+      default:
+        assertNever({
+          details: { html: e.innerHTML, name: resourceType },
+          why: "Unrecognized resource type",
+        });
+    }
+  }
+
+  private static async configFile(e: Element) {
+    const src = e.getAttribute("href");
+    try {
+      assertExists(src, {
+        why: "Src property is required for config file elements",
+      });
+      return (async () => ({
+        config: await fetch(src).then((t) => t.text()),
+        name: this.getClassType(e),
+      }))();
+    } catch (e) {
+      throw new RankiAppError({
+        cause: e,
+        code: "CONFIG_FILE_RETRIEVAL",
+        details: {
+          src,
+        },
+        why: "Fetch of the template config files have failed",
+      });
+    }
+  }
+
   private static faces(): RankiFaces {
     const faces = Object.fromEntries(
       Array.from(document.querySelectorAll(INPUT_TYPE_CLASS_SELECTOR)).map(
@@ -49,6 +119,34 @@ export class CollectTemplate {
       ),
     ) as RankiFaces;
     return faces;
+  }
+
+  private static getClassType(e: Element) {
+    return e.className.split(" ").at(-1)!.trim(); // #1
+  }
+
+  private static getResourceType(e: Element) {
+    return e.className.split(" ")[0].replace("r2-", "").trim(); // #1
+  }
+
+  private static htmlTagAttributes(): CollectedHtmlTagAttributes {
+    const htmlElem = document.querySelector("html");
+    assertExists(htmlElem, { why: "Cannot collect data without html element" });
+    const dir = htmlElem.getAttribute("dir") as HtmlAttrDir;
+    const raw = this.raw(htmlElem);
+    const os = OS[[raw.android, raw.windows, raw.linux].indexOf(true)];
+    const env = ENV[[raw.chrome].indexOf(true)];
+    const scheme = this.scheme(htmlElem, raw);
+    const webview = this.webview(raw);
+
+    return {
+      dir,
+      env,
+      os,
+      raw,
+      scheme,
+      webview,
+    };
   }
 
   private static raw(
@@ -110,101 +208,5 @@ export class CollectTemplate {
       default:
         return "unknown";
     }
-  }
-
-  private static htmlTagAttributes(): CollectedHtmlTagAttributes {
-    const htmlElem = document.querySelector("html");
-    assertExists(htmlElem, { why: "Cannot collect data without html element" });
-    const dir = htmlElem.getAttribute("dir") as HtmlAttrDir;
-    const raw = this.raw(htmlElem);
-    const os = OS[[raw.android, raw.windows, raw.linux].indexOf(true)];
-    const env = ENV[[raw.chrome].indexOf(true)];
-    const scheme = this.scheme(htmlElem, raw);
-    const webview = this.webview(raw);
-
-    return {
-      dir,
-      env,
-      os,
-      raw,
-      scheme,
-      webview,
-    };
-  }
-
-  private static async configFile(e: Element) {
-    const src = e.getAttribute("href");
-    try {
-      assertExists(src, {
-        why: "Src property is required for config file elements",
-      });
-      return (async () => ({
-        config: await fetch(src).then((t) => t.text()),
-        name: this.getClassType(e),
-      }))();
-    } catch (e) {
-      throw new RankiAppError({
-        cause: e,
-        code: "CONFIG_FILE_RETRIEVAL",
-        details: {
-          src,
-        },
-        why: "Fetch of the template config files have failed",
-      });
-    }
-  }
-
-  private static configField(e: Element) {
-    const resourceType = this.getResourceType(e);
-    switch (resourceType) {
-      case "config":
-        return Promise.resolve({
-          config: e.innerHTML,
-          name: this.getClassType(e),
-        });
-      case "config-file":
-        return this.configFile(e);
-      default:
-        assertNever({
-          details: { html: e.innerHTML, name: resourceType },
-          why: "Unrecognized resource type",
-        });
-    }
-  }
-
-  private static async collectConfigFields(): Promise<CollectedConfig> {
-    const configPromises: Promise<CollectedConfigEntry>[] = [];
-    try {
-      const configElems = document.querySelectorAll(ALL_CONFIG_TYPES_SELECTOR);
-      for (const e of configElems) {
-        configPromises.push(this.configField(e));
-      }
-      const config: CollectedConfig = await Promise.all(configPromises);
-      return config;
-    } catch (e) {
-      throw new RankiAppError({
-        cause: e,
-        code: "CONFIG_RETRIEVAL",
-        why: "Fetch of the template config files have failed",
-      });
-    }
-  }
-
-  private static collectAnkiFields(): AnkiTemplateFields {
-    const dataElems = document.querySelectorAll(DATA_TYPE_CLASS_SELECTOR);
-    return Object.fromEntries(
-      Array.from(dataElems).map((data) => [
-        this.getClassType(data),
-        data.innerHTML,
-      ]),
-    ) as unknown as AnkiTemplateFields;
-  }
-
-  private static getClassType(e: Element) {
-    return e.className.split(" ").at(-1)!.trim(); // #1
-  }
-
-  private static getResourceType(e: Element) {
-    return e.className.split(" ")[0].replace("r2-", "").trim(); // #1
   }
 }

@@ -7,34 +7,28 @@ import type {
 } from "_config/config.types.mjs";
 
 import { SYSTEM_CONTROLLED_SCHEME_TOKEN } from "_config/config.constants.mjs";
+import { assertNotNull } from "_error/assertions.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
 
-import { assertNotNull } from "_error/assertions.mjs";
 import { RankiConfig } from "./ranki-config.mjs";
 
 export class AppConfig {
-  private static getScheme(base: BuildRankiBaseConfigReturn, raw: RawFields) {
-    return base.config.design.scheme === SYSTEM_CONTROLLED_SCHEME_TOKEN
-      ? raw.htmlAttr.scheme
-      : base.config.design.scheme;
-  }
   public static create(
-    collected: RankiCollectedConfig | null,
-    raw: RawFields | null,
-  ): RankiState | null {
+    collected: null | RankiCollectedConfig,
+    raw: null | RawFields,
+  ): null | RankiState {
     assertNotNull(raw, {
       why: "Raw fields shouldn't be null at this stage of resolution",
     });
     return collected === null ? null : this.createAppConfig(collected, raw);
   }
-
   private static createAppConfig(
     { base, tags }: RankiCollectedConfig,
     raw: RawFields,
   ): RankiState {
-    const order = this.getFaceOrder(base.config, raw);
-    const scheme = this.getScheme(base, raw);
+    const order = this.faceOrder(base.config, raw);
+    const scheme = this.scheme(base, raw);
     const ranki = RankiConfig.build(base, raw, tags, order, scheme);
     if (ranki.dev.throw) {
       throw new RankiAppError({
@@ -51,7 +45,7 @@ export class AppConfig {
     return ranki;
   }
 
-  private static getFaceOrder(
+  private static faceOrder(
     config: RankiBaseConfig,
     collected: RawFields,
   ): CardFaceArray {
@@ -62,5 +56,11 @@ export class AppConfig {
       why: "Cannot process without a valid face assignment",
     });
     return order;
+  }
+
+  private static scheme(base: BuildRankiBaseConfigReturn, raw: RawFields) {
+    return base.config.design.scheme === SYSTEM_CONTROLLED_SCHEME_TOKEN
+      ? raw.htmlAttr.scheme
+      : base.config.design.scheme;
   }
 }

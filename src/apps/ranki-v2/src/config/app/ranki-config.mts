@@ -1,21 +1,22 @@
 import type {
-  RawFields,
-  FilteredTags,
   CardFaceArray,
+  FilteredTags,
+  RawFields,
 } from "_collect/collect.types.mjs";
 import type { RankiHudStateAnimation } from "_components/hud/hud.types.mjs";
 import type {
   BuildRankiBaseConfigReturn,
+  RankiAnimation,
   RankiAppDeterminedScheme,
   RankiState,
-  RankiAnimation,
 } from "_config/config.types.mjs";
+
 import { DqmConfig } from "./buildDqmConfig.mjs";
+import { ChallengeConfig } from "./ChallengeConfig.mjs";
 import { CuesConfig } from "./CuesConfig.mjs";
+import { DesignConfig } from "./DesignConfig.mjs";
 import { HudConfig } from "./HudConfig.mjs";
 import { IndicatorConfig } from "./IndicatorConfig.mjs";
-import { DesignConfig } from "./DesignConfig.mjs";
-import { ChallengeConfig } from "./ChallengeConfig.mjs";
 
 export class RankiConfig {
   public static build(

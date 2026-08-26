@@ -1,12 +1,9 @@
 import { O11Y_CLASS_SELECTOR } from "_/selector.constants.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
+
 import { CollectTemplate } from "./template.mjs";
 
 export class Collect {
-  public static template() {
-    return CollectTemplate.all();
-  }
-
   public static o11y() {
     const elem = document.querySelector(O11Y_CLASS_SELECTOR);
     if (!elem) return { type: "disabled" };
@@ -30,5 +27,9 @@ export class Collect {
         });
       }
     }
+  }
+
+  public static template() {
+    return CollectTemplate.all();
   }
 }

@@ -8,6 +8,9 @@ import type {
   RawFields,
 } from "_/collect/collect.types.mjs";
 
+import { RankiAppError } from "_error/ranki-app-error.mjs";
+import yaml from "yaml";
+
 import type {
   RankiChannelsConfig,
   RankiCollectedConfig,
@@ -15,15 +18,28 @@ import type {
   RankiTagPrefix,
 } from "../config.types.mjs";
 
-import { buildBaseConfig } from "./base/base.mjs";
-import { RankiAppError } from "_error/ranki-app-error.mjs";
-import yaml from "yaml";
 import { Config } from "../../../../../packages/dqm-utils/src/export.mjs";
+import { buildBaseConfig } from "./base/base.mjs";
 import { RANKI_INITIAL_CONFIG } from "./initial-config/RANKI_INITIAL_CONFIG.mjs";
 
 export class ConfigStream {
-  public static collect(raw: RawFields | null): RankiCollectedConfig | null {
+  public static collect(raw: null | RawFields): null | RankiCollectedConfig {
     return raw === null ? raw : this.collectConfig(raw);
+  }
+
+  private static buildChannelsConfig(
+    collected: RawFields,
+  ): RankiChannelsConfig {
+    const gConfig = new Config().pushConfig("default", RANKI_INITIAL_CONFIG);
+
+    collected.config.forEach(({ config, name }) => {
+      const parsed = this.parseConfig(name, config);
+      if (parsed !== null) {
+        gConfig.pushConfig(name, parsed);
+      }
+    });
+
+    return gConfig.mergeTo("merged").getConfig<RankiChannelsConfig>("merged");
   }
 
   private static collectConfig(raw: RawFields): RankiCollectedConfig {
@@ -54,21 +70,6 @@ export class ConfigStream {
       }
     });
     return { marked, neutral, ranki };
-  }
-
-  private static buildChannelsConfig(
-    collected: RawFields,
-  ): RankiChannelsConfig {
-    const gConfig = new Config().pushConfig("default", RANKI_INITIAL_CONFIG);
-
-    collected.config.forEach(({ config, name }) => {
-      const parsed = this.parseConfig(name, config);
-      if (parsed !== null) {
-        gConfig.pushConfig(name, parsed);
-      }
-    });
-
-    return gConfig.mergeTo("merged").getConfig<RankiChannelsConfig>("merged");
   }
 
   private static parseConfig(

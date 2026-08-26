@@ -1,9 +1,10 @@
-import type { RawFields, CardFaceArray } from "_collect/collect.types.mjs";
+import type { CardFaceArray, RawFields } from "_collect/collect.types.mjs";
 import type {
   BuildRankiBaseConfigReturn,
-  RankiDqmConfig,
   RankiChallengeState,
+  RankiDqmConfig,
 } from "_config/config.types.mjs";
+
 import { getAnimation } from "./ranki-config.mjs";
 
 export class ChallengeConfig {

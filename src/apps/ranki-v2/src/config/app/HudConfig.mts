@@ -1,13 +1,14 @@
-import type { RawFields, FilteredTags } from "_collect/collect.types.mjs";
+import type { FilteredTags, RawFields } from "_collect/collect.types.mjs";
 import type {
-  RankiHudStateAnimation,
-  RankiHudState,
   HudTagListItem,
+  RankiHudState,
+  RankiHudStateAnimation,
 } from "_components/hud/hud.types.mjs";
 import type {
   BuildRankiBaseConfigReturn,
   ProcessedCueMapHud,
 } from "_config/config.types.mjs";
+
 import { buildAddressSegments } from "./buildAddress.mjs";
 
 export class HudConfig {
