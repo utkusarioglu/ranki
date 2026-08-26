@@ -44,7 +44,7 @@ export type CollectedHtmlTagAttributes = {
   raw: {
     android: boolean;
     chrome: boolean;
-    dataBsTheme: HtmlAttrTheme;
+    // dataBsTheme: HtmlAttrTheme;
     fancy: boolean;
     js: boolean;
     linux: boolean;

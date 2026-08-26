@@ -25,7 +25,6 @@ export class RankiO11y {
   }
 
   public static enable(props: RankiO11yRuntimeProps) {
-    console.log("Ranki Observability enabled");
     this.debug.enable(props.debug);
     this.log.enable(props.log);
     this.trace.enable(props.trace);

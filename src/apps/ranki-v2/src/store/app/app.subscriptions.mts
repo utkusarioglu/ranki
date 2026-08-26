@@ -27,7 +27,7 @@ appStore.subscribe(
 appStore.subscribe(
   (s) => s.epoch,
   async () => {
-    const raw = await Collect.fields();
+    const raw = await Collect.template();
     appStore.setState({ raw });
   },
 );
