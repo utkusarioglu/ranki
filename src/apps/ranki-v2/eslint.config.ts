@@ -4,6 +4,7 @@ import tseslint from "typescript-eslint";
 import { defineConfig } from "eslint/config";
 import perfectionist from "eslint-plugin-perfectionist";
 import boundaries from "eslint-plugin-boundaries";
+import sonarJs from "eslint-plugin-sonarjs";
 
 export default defineConfig([
   {
@@ -111,4 +112,11 @@ export default defineConfig([
   },
   tseslint.configs.recommended,
   perfectionist.configs["recommended-alphabetical"],
+  // @ts-expect-error internal type error that doesn't concern this repo
+  sonarJs.configs.recommended,
+  {
+    rules: {
+      "sonarjs/todo-tag": "off",
+    },
+  },
 ]);

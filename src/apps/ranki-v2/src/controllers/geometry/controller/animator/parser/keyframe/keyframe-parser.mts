@@ -10,7 +10,10 @@ import type {
   AnimationOptions,
   AnimationRoot,
 } from "../../types/animator.types.mjs";
-import type { UnitConversionsRecord } from "./keyframe-parser.types.mjs";
+import type {
+  KeyframeValue,
+  UnitConversionsRecord,
+} from "./keyframe-parser.types.mjs";
 
 export const parser = new Parser();
 
@@ -70,7 +73,7 @@ export class KeyframeParser {
   static evalKeyframeValue(
     curr: CurrentAppliedStyle,
     prev: CurrentAppliedStyle | null,
-    value: number | string | undefined,
+    value: KeyframeValue,
   ) {
     const varSet = {
       from: {
@@ -160,7 +163,7 @@ export class KeyframeParser {
     try {
       const v = f(b as NonNullable<T>);
       return v !== undefined ? v : 0;
-    } catch (_) {
+    } catch {
       return 0;
     }
   }

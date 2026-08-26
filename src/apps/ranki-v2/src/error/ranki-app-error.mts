@@ -7,17 +7,27 @@ import { DqmBaseError } from "@dqm/package-dqm-utils";
 
 import { RANKI_APP_ERROR_CONSTANTS } from "./constants.mjs";
 
-export type RankiAppErrorConstructorParams = IDqmErrorBaseRequiredParams<keyof typeof RANKI_APP_ERROR_CONSTANTS> &
+export type RankiAppErrorConstructorParams = IDqmErrorBaseRequiredParams<
+  keyof typeof RANKI_APP_ERROR_CONSTANTS
+> &
   WithCause;
 
 export class RankiAppError extends DqmBaseError {
   public errorType: string = "RANKI_APP";
 
-  override getAdditionalDetails(): Record<string, any> {
+  override getAdditionalDetails(): Record<
+    string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+  > {
     return {};
   }
 
-  override getAdditionalExtendedDetails(): Record<string, any> {
+  override getAdditionalExtendedDetails(): Record<
+    string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any
+  > {
     return {
       is: "Ranki",
     };

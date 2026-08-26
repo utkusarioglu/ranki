@@ -27,7 +27,6 @@ test("actionStart", () => {
   expect(on).toHaveBeenCalledTimes(2);
   expect(on).toHaveBeenNthCalledWith(1, host, "lifecycle.enter/start");
   expect(on).toHaveBeenNthCalledWith(2, host, "lifecycle.leave/start");
-  expect(true).toBe(true);
 });
 
 test("actionEnd", () => {
@@ -36,5 +35,4 @@ test("actionEnd", () => {
   expect(on).toHaveBeenCalledTimes(2);
   expect(on).toHaveBeenNthCalledWith(1, host, "lifecycle.enter/end");
   expect(on).toHaveBeenNthCalledWith(2, host, "lifecycle.leave/end");
-  expect(true).toBe(true);
 });

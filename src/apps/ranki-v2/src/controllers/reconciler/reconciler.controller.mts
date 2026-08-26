@@ -55,13 +55,10 @@ export class ReconciliationController<
   }
 
   emit(type: "leave") {
-    switch (type) {
-      case "leave":
-        ReconciliationUtils.emitLeave(this.host);
-        break;
-      default:
-        assertNever({ details: { type }, why: "Unrecognized emit type" });
+    if (type !== "leave") {
+      assertNever({ details: { type }, why: "Unrecognized emit type" });
     }
+    ReconciliationUtils.emitLeave(this.host);
   }
 
   hostUpdate(): void {
@@ -89,6 +86,7 @@ export class ReconciliationController<
     return (e: CustomEvent<R2ReconcilerEmit>) => {
       e.stopPropagation();
       const detail = e.detail;
+      // eslint-disable-next-line sonarjs/no-small-switch
       switch (detail.type) {
         case "leave":
           this.prev = this.curr;
@@ -100,7 +98,6 @@ export class ReconciliationController<
             why: "Unrecognized Reconciler emit type",
           });
       }
-      // ReconciliationUtils.leave(this.prev, id, this.setCurr.bind(this));
     };
   }
 

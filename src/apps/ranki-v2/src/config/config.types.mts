@@ -38,7 +38,7 @@ export interface BuildRankiBaseConfigReturn {
 
 export type ColorFormat = "hex" | "rgb-csv";
 
-export type ColorLevel = string; // index of Lightness
+export type ColorLevel = { type?: "ColorLevel" } & string; // index of Lightness
 
 export interface CueConfig {
   background?: {
@@ -72,7 +72,7 @@ export interface CueRecord extends CueConfig {
   type: CueKind;
 }
 
-export type Deck = string;
+export type Deck = { type?: "Deck" } & string;
 export type DeckAlwaysSettings = Partial<DeckCommonSettings>;
 
 export type DeckExactSettings = {

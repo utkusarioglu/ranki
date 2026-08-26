@@ -12,4 +12,4 @@ export interface CallbackBatchLogDriverConstructorParams {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type CallbackBatchRawLogEntry = any;
+export type CallbackBatchRawLogEntry = { type?: "RawLogEntry" } & any;

@@ -10,7 +10,7 @@ import type {
 
 import { GeometryMerger } from "../../geometry-merger.mjs";
 
-test("", () => {
+test("expose", () => {
   const context: InformContext = {
     index: 0,
     length: 1,

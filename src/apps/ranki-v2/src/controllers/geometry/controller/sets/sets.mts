@@ -29,12 +29,10 @@ export class GeometrySets<Instance extends LitElement> {
     props: InformSetProps,
     sizing: LayoutSizing | null,
   ): Promise<void> {
-    switch (props.setName) {
-      case "children":
-        return this.children?.inform(props, sizing);
-      default:
-        return this.watchers?.inform(props, sizing);
+    if (props.setName === "children") {
+      return this.children?.inform(props, sizing);
     }
+    return this.watchers?.inform(props, sizing);
   }
 
   public async onEmit(

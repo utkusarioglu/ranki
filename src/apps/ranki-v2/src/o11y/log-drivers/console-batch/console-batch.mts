@@ -39,8 +39,9 @@ export class ConsoleBatchLogDriver implements LogDriver {
     this.printer.print(filtered, this.timestamp);
   }
 
-  // TODO
+  // TODO there are more time formats to consider in the otel `TimeInput` type
   private convertTime(input: TimeInput) {
+    // eslint-disable-next-line sonarjs/no-small-switch
     switch (typeof input) {
       case "number":
         return input;

@@ -37,7 +37,7 @@ export class RankiDebugging {
   }
 
   private static logToDrivers(log: O11yDebugLogAttributes) {
-    for (const [_, driver] of this.active) {
+    for (const [, driver] of this.active) {
       driver.log(log);
     }
   }

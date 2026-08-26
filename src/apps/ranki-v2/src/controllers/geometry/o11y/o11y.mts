@@ -32,7 +32,7 @@ export class O11y<T extends EmptyClass> {
       : (new O11yTracerMock() as O11yTracer<T>);
 
     this.log = O11y.STATIC_CONFIG.logEnabled
-      ? (this.log = new O11yLogger(owner, extra?.logger))
+      ? new O11yLogger(owner, extra?.logger)
       : (new O11yLoggerMock() as unknown as O11yLogger<T>);
 
     this.meter = O11y.STATIC_CONFIG.metricsEnabled

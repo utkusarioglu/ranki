@@ -15,6 +15,7 @@ export class LogProcessor {
     sanitizers: { none: (v) => v },
     stringifiers: { none: (v) => v },
   };
+  private static counter = 0;
   private readonly callback: NewLogValueCallback;
   private formatterName: string = "none";
   private readonly id: string;
@@ -22,7 +23,7 @@ export class LogProcessor {
   private stringifierName: string = "none";
 
   constructor(params: LogProcessorConstructorParams) {
-    this.id = Math.random().toString();
+    this.id = "" + ++LogProcessor.counter;
     this.callback = params.callback;
     switch (typeof params.sanitizer) {
       case "function":

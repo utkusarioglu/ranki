@@ -46,5 +46,5 @@ test("empty props", async () => {
     set: [],
   };
   const response = await watchers.inform(props, sizing);
-  expect(response).toEqual(undefined);
+  expect(response).toBeUndefined();
 });

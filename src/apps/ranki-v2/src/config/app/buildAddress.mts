@@ -75,7 +75,7 @@ function alt(
     if (isCombine) {
       prev.masked.push(w.masked);
     } else if (w.mode !== "drop") {
-      // @ts-expect-error
+      // @ts-expect-error type inconsistency
       // FIX
       noSep.push({
         ...w,
@@ -90,7 +90,7 @@ function alt(
     const prev = wPos.at(-1);
     const hasPrev = !!prev;
     if (hasPrev && w.type === "segment" && prev.type === "segment") {
-      // @ts-expect-error
+      // @ts-expect-error type inconsistency
       // FIX
       wPos.push({
         masked: [tokens.separator],

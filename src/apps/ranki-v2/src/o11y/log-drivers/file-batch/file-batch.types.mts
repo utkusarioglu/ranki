@@ -16,4 +16,4 @@ export interface FileBatchLogDriverConstructorParams {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type FileBatchRawLogEntry = any;
+export type FileBatchRawLogEntry = { type?: "RawLogEntry" } & any;

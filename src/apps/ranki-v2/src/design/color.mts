@@ -52,16 +52,16 @@ function generatePalette({
     palette[name] = {} as Record<ColorLevel, Record<ColorFormat, string>>;
 
     for (const [level, l] of lightness.entries()) {
-      palette[name][level] = {} as Record<ColorFormat, string>;
+      palette[name][level.toString()] = {} as Record<ColorFormat, string>;
 
       const rgb = hslToRgb(hue, saturation[level], l);
-      palette[name][level]["rgb-csv"] = rgbToRgbCsv(rgb);
+      palette[name][level.toString()]["rgb-csv"] = rgbToRgbCsv(rgb);
     }
   }
 
   palette["tone"] = {} as Record<ColorLevel, Record<ColorFormat, string>>;
   for (const [level, l] of Object.entries(lightness)) {
-    palette["tone"][level] = {} as Record<ColorFormat, string>;
+    palette["tone"][level as ColorLevel] = {} as Record<ColorFormat, string>;
     const rgb = hslToRgb(0, 0, l);
     palette["tone"][level as ColorLevel]["rgb-csv"] = rgbToRgbCsv(rgb);
   }

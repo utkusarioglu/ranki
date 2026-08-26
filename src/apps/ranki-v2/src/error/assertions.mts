@@ -6,13 +6,18 @@ import {
 type AssertionExtra = Partial<Pick<RankiAppErrorConstructorParams, "cause">> &
   Pick<RankiAppErrorConstructorParams, "details" | "why">;
 
-export function assertArrayNotEmpty(a: any[], extra: AssertionExtra) {
+export function assertArrayNotEmpty(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  a: any[],
+  extra: AssertionExtra,
+) {
   if (!a.length) {
     throw new RankiAppError({ cause: null, code: "ARRAY_EMPTY", ...extra });
   }
 }
 
 export function assertExists(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   v: any,
   extra: AssertionExtra,
 ): asserts v is object {
@@ -25,7 +30,12 @@ export function assertExists(
   }
 }
 
-export function assertFalse(v: any, extra: AssertionExtra): asserts v is false {
+export function assertFalse(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  v: any,
+  //
+  extra: AssertionExtra,
+): asserts v is false {
   if (v !== false) {
     throw new RankiAppError({
       cause: null,
@@ -44,6 +54,7 @@ export function assertNever(extra: AssertionExtra): never {
 }
 
 export function assertNotExists(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any,
   extra: AssertionExtra,
 ): asserts value is undefined {
@@ -57,7 +68,9 @@ export function assertNotExists(
 }
 
 export function assertNotNull(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any,
+  //
   extra: AssertionExtra,
 ): asserts value is object {
   if (value === null) {
@@ -70,7 +83,9 @@ export function assertNotNull(
 }
 
 export function assertNotUndefined(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any,
+  //
   extra: AssertionExtra,
 ): asserts value is object {
   if (value === undefined) {
@@ -90,7 +105,12 @@ export function assertOverride(extra: AssertionExtra): never {
   });
 }
 
-export function assertTrue(v: any, extra: AssertionExtra): asserts v is true {
+export function assertTrue(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  v: any,
+  //
+  extra: AssertionExtra,
+): asserts v is true {
   if (v !== true) {
     throw new RankiAppError({
       cause: null,
