@@ -1,7 +1,7 @@
 import type { RankiFlags, RankiIndicatorName } from "_config/config.types.mjs";
 
-import { FLAG_COLOR_ORDER } from "../../anki.constants.mjs";
-import { NONE_TOKEN } from "../config.constants.mjs";
+import { FLAG_COLOR_ORDER } from "../../../anki.constants.mjs";
+import { NONE_TOKEN } from "../../config.constants.mjs";
 
 export const FLAGS = {
   none: {

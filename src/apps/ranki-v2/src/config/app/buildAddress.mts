@@ -11,7 +11,7 @@ import { assertNever } from "_error/assertions.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
 
-import { MUTATION_MODE_PRECEDENCE } from "./app.mjs";
+import { MUTATION_MODE_PRECEDENCE } from "./app.constants.mjs";
 
 export function buildAddressSegments(
   tokens: RankiAddressTokens,

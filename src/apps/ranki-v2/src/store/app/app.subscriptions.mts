@@ -1,6 +1,6 @@
 import { Collect } from "_collect/collect.mjs";
 import { AppConfig } from "_config/app/app.mjs";
-import { ConfigStream } from "_config/config-stream.mjs";
+import { ConfigStream } from "_config/stream/config-stream.mjs";
 
 import { appStore } from "./app.mjs";
 

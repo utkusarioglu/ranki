@@ -6,7 +6,7 @@ import type {
   RankiTagPrefix,
 } from "_config/config.types.mjs";
 
-import { NONE_TOKEN } from "../../config.constants.mjs";
+import { NONE_TOKEN } from "../../../config.constants.mjs";
 import { BASE_ANIMATIONS } from "./BASE_ANIMATIONS.mjs";
 import { BASE_DQM_CONFIG } from "./BASE_DQM_CONFIG.mjs";
 import { BASE_FLAGS } from "./BASE_FLAGS.mjs";

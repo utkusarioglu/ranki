@@ -13,12 +13,12 @@ import type {
   RankiCollectedConfig,
   RankiConfigChannelsPartial,
   RankiTagPrefix,
-} from "./config.types.mjs";
+} from "../config.types.mjs";
 
 import { buildBaseConfig } from "./base/base.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
 import yaml from "yaml";
-import { Config } from "../../../../packages/dqm-utils/src/export.mjs";
+import { Config } from "../../../../../packages/dqm-utils/src/export.mjs";
 import { RANKI_INITIAL_CONFIG } from "./initial-config/RANKI_INITIAL_CONFIG.mjs";
 
 export class ConfigStream {

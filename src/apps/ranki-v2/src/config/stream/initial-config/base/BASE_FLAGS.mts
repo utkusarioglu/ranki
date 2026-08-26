@@ -3,7 +3,7 @@ import type {
   RankiIndicatorName,
 } from "_config/config.types.mjs";
 
-import { NONE_TOKEN } from "../../config.constants.mjs";
+import { NONE_TOKEN } from "../../../config.constants.mjs";
 
 export const BASE_FLAGS: RankiBaseConfigFlags = {
   blue: {
