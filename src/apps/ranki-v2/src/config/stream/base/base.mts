@@ -20,57 +20,63 @@ import { FLAG_COLOR_ORDER } from "_/anki.constants.mjs";
 import { assertNever } from "_error/assertions.mjs";
 import { Config } from "@dqm/package-dqm-utils";
 
-import { PRECEDENCE_ORDER } from "./base.constants.mjs";
+import { DEFAULT_PRECEDENCE_ORDER } from "./base.constants.mjs";
 import { checkIfMatch } from "./determine.mjs";
 
-export function buildBaseConfig(
-  channels: RankiChannelsConfig,
-  tags: FilteredTags,
-  raw: RawFields,
-): BuildRankiBaseConfigReturn {
-  const baseC = new Config("app");
-  const cueRecord: CueRecord[] = [];
-  baseC.pushConfig("default", channels.base);
+export class BaseConfig {
+  private baseC: Config;
+  private cueRecord: CueRecord[] = [];
+  private channels: RankiChannelsConfig;
+  private tags: FilteredTags;
+  private raw: RawFields;
+  private precedenceOrder: CueKind[];
 
-  PRECEDENCE_ORDER.forEach((kind) => {
+  constructor(
+    channels: RankiChannelsConfig,
+    tags: FilteredTags,
+    raw: RawFields,
+  ) {
+    this.precedenceOrder = DEFAULT_PRECEDENCE_ORDER;
+    this.channels = channels;
+    this.tags = tags;
+    this.raw = raw;
+    this.baseC = new Config("app");
+    this.cueRecord = [];
+  }
+
+  private processKind(kind: CueKind) {
     switch (kind) {
       case "always":
-        channels.always.forEach((always) => {
-          pushAlways(baseC, cueRecord, kind, always);
+        this.channels.always.forEach((always) => {
+          this.pushAlways(kind, always);
         });
         break;
       case "card":
-        pushMatch(baseC, cueRecord, kind, raw.fields.card, channels.cards);
+        this.pushMatch(kind, this.raw.fields.card, this.channels.cards);
         break;
       case "deck":
-        pushMatch(baseC, cueRecord, kind, raw.fields.deck, channels.decks);
+        this.pushMatch(kind, this.raw.fields.deck, this.channels.decks);
         break;
       case "face":
-        pushMatch(baseC, cueRecord, kind, raw.fields.face, channels.faces);
+        this.pushMatch(kind, this.raw.fields.face, this.channels.faces);
         break;
       case "flag":
-        pushFlag(baseC, cueRecord, channels, raw);
+        this.pushFlag(this.channels, this.raw);
         break;
       case "tag:marked":
-        pushMarked(baseC, cueRecord, kind, tags.marked, channels.tags);
+        this.pushMarked(kind, this.tags.marked, this.channels.tags);
         break;
       case "tag:neutral":
-        pushTag(baseC, cueRecord, kind, tags.neutral, channels.tags);
+        this.pushTag(kind, this.tags.neutral, this.channels.tags);
         break;
       case "tag:ranki":
-        pushTag(baseC, cueRecord, kind, tags.ranki, channels.tags);
+        this.pushTag(kind, this.tags.ranki, this.channels.tags);
         break;
       case "type":
-        pushMatch(baseC, cueRecord, kind, raw.fields.type, channels.types);
+        this.pushMatch(kind, this.raw.fields.type, this.channels.types);
         break;
       case "webview":
-        pushMatch(
-          baseC,
-          cueRecord,
-          kind,
-          raw.htmlAttr.webview,
-          channels.webview,
-        );
+        this.pushMatch(kind, this.raw.htmlAttr.webview, this.channels.webview);
         break;
       default:
         assertNever({
@@ -78,83 +84,88 @@ export function buildBaseConfig(
           why: "All possible cue kinds have been depleted",
         });
     }
-  });
-
-  const config = baseC.mergeTo("merged").getConfig<RankiBaseConfig>("merged");
-  return { config, cueRecord };
-}
-
-function pushAlways(
-  baseC: Config,
-  cueRecord: CueRecord[],
-  kind: CueKind,
-  matched: DeckAlwaysSettings,
-) {
-  const issuer = "always";
-  if (matched.config) baseC.pushConfig(kind, matched.config);
-  if (matched.cue) cueRecord.push({ issuer, type: kind, ...matched.cue });
-}
-
-function pushFlag(
-  baseC: Config,
-  cueRecord: CueRecord[],
-  channels: RankiChannelsConfig,
-  raw: RawFields,
-) {
-  const flagColorIndex = +raw.fields.flag.slice(-1) as AnkiFlagColorIndices;
-  const issuer = FLAG_COLOR_ORDER[flagColorIndex]! as AnkiFlagColors;
-  Object.entries(channels.flags).forEach(([color, common]) => {
-    if (issuer !== color) return;
-    const kind = "flag";
-    if (common.config) baseC.pushConfig(`${kind}:${color}`, common.config);
-    if (common.cue) cueRecord.push({ issuer, type: kind, ...common.cue });
-  });
-}
-
-function pushMarked(
-  baseC: Config,
-  cueRecord: CueRecord[],
-  kind: CueKind,
-  marked: boolean,
-  tags: DeckSettings[],
-) {
-  if (!marked) return;
-  const issuer = "marked";
-  const matched = tags.find(
-    (v) =>
-      //@ts-expect-error TODO maybe other modes should be supported too
-      v.exact === issuer,
-  );
-  if (matched) {
-    if (matched.config) baseC.pushConfig(kind, matched.config);
-    if (matched.cue) cueRecord.push({ issuer, type: kind, ...matched.cue });
   }
-}
 
-function pushMatch(
-  baseC: Config,
-  cueRecord: CueRecord[],
-  kind: CueKind,
-  issuer: string,
-  matchers: DeckSettings[],
-) {
-  const matched = checkIfMatch(issuer, matchers);
-  if (!matched) return;
-  if (matched.config) baseC.pushConfig(kind, matched.config);
-  if (matched.cue) cueRecord.push({ issuer, type: kind, ...matched.cue });
-}
+  public build(): BuildRankiBaseConfigReturn {
+    this.baseC.pushConfig("default", this.channels.base);
 
-function pushTag(
-  baseC: Config,
-  cueRecord: CueRecord[],
-  kind: CueKind,
-  source: AnkiNeutralTags | RankiTags,
-  tags: DeckSettings[],
-) {
-  source.forEach((issuer) => {
-    const matched = checkIfMatch(issuer, tags);
+    this.precedenceOrder.forEach((kind) => {
+      this.processKind(kind);
+    });
+
+    const config = this.baseC
+      .mergeTo("merged")
+      .getConfig<RankiBaseConfig>("merged");
+    return { config, cueRecord: this.cueRecord };
+  }
+
+  private pushAlways(kind: CueKind, matched: DeckAlwaysSettings) {
+    const ISSUER = "always";
+    if (matched.config) {
+      this.baseC.pushConfig(kind, matched.config);
+    }
+    if (matched.cue) {
+      this.cueRecord.push({ issuer: ISSUER, type: kind, ...matched.cue });
+    }
+  }
+
+  private pushFlag(channels: RankiChannelsConfig, raw: RawFields) {
+    const KIND = "flag";
+    const flagColorIndex = +raw.fields.flag.slice(-1) as AnkiFlagColorIndices;
+    const issuer = FLAG_COLOR_ORDER[flagColorIndex]! as AnkiFlagColors;
+    Object.entries(channels.flags).forEach(([color, common]) => {
+      if (issuer !== color) return;
+      if (common.config) {
+        this.baseC.pushConfig(`${KIND}:${color}`, common.config);
+      }
+      if (common.cue) {
+        this.cueRecord.push({ issuer, type: KIND, ...common.cue });
+      }
+    });
+  }
+
+  private pushMarked(kind: CueKind, marked: boolean, tags: DeckSettings[]) {
+    if (!marked) return;
+    const ISSUER = "marked";
+    const matched = tags.find(
+      (v) =>
+        //@ts-expect-error TODO maybe other modes should be supported too
+        v.exact === ISSUER,
+    );
     if (!matched) return;
-    if (matched.config) baseC.pushConfig(`${kind}:${issuer}`, matched.config);
-    if (matched.cue) cueRecord.push({ issuer, type: kind, ...matched.cue });
-  });
+    if (matched.config) {
+      this.baseC.pushConfig(kind, matched.config);
+    }
+    if (matched.cue) {
+      this.cueRecord.push({ issuer: ISSUER, type: kind, ...matched.cue });
+    }
+  }
+
+  private pushMatch(kind: CueKind, issuer: string, matchers: DeckSettings[]) {
+    const matched = checkIfMatch(issuer, matchers);
+    if (!matched) return;
+    if (matched.config) {
+      this.baseC.pushConfig(kind, matched.config);
+    }
+    if (matched.cue) {
+      this.cueRecord.push({ issuer, type: kind, ...matched.cue });
+    }
+  }
+
+  private pushTag(
+    kind: CueKind,
+    source: AnkiNeutralTags | RankiTags,
+    tags: DeckSettings[],
+  ) {
+    source.forEach((issuer) => {
+      const matched = checkIfMatch(issuer, tags);
+      if (!matched) return;
+      if (matched.config) {
+        this.baseC.pushConfig(`${kind}:${issuer}`, matched.config);
+      }
+      if (matched.cue) {
+        this.cueRecord.push({ issuer, type: kind, ...matched.cue });
+      }
+    });
+  }
 }

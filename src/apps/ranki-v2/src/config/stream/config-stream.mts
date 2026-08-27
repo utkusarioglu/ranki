@@ -19,7 +19,7 @@ import type {
 } from "../config.types.mjs";
 
 import { Config } from "../../../../../packages/dqm-utils/src/export.mjs";
-import { buildBaseConfig } from "./base/base.mjs";
+import { BaseConfig } from "./base/base.mjs";
 import { RANKI_INITIAL_CONFIG } from "./initial-config/RANKI_INITIAL_CONFIG.mjs";
 
 export class ConfigStream {
@@ -27,9 +27,7 @@ export class ConfigStream {
     return raw === null ? raw : this.collectConfig(raw);
   }
 
-  private static buildChannelsConfig(
-    collected: RawFields,
-  ): RankiChannelsConfig {
+  private static parseConfigs(collected: RawFields): RankiChannelsConfig {
     const gConfig = new Config().pushConfig("default", RANKI_INITIAL_CONFIG);
 
     collected.config.forEach(({ config, name }) => {
@@ -43,17 +41,17 @@ export class ConfigStream {
   }
 
   private static collectConfig(raw: RawFields): RankiCollectedConfig {
-    const channels = this.buildChannelsConfig(raw);
-    const tags = this.groupedTags(raw, channels.base.tags.ranki.prefix);
-    const base = buildBaseConfig(channels, tags, raw);
+    const channels = this.parseConfigs(raw);
+    const tags = this.groupTags(raw, channels.base.tags.ranki.prefix);
+    const base = new BaseConfig(channels, tags, raw).build();
     return { base, tags };
   }
 
-  private static groupedTags(
-    collected: RawFields,
+  private static groupTags(
+    raw: RawFields,
     rankiTagPrefix: RankiTagPrefix,
   ): FilteredTags {
-    const tagsArr = collected.fields.tags
+    const tagsArr = raw.fields.tags
       .trim()
       .split(" ")
       .filter((v) => v.length);
