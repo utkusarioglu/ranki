@@ -6,8 +6,10 @@ import {
   GeometryController,
   LayoutUtils,
 } from "_controllers/geometry/geometry.mjs";
-import { ReconciliationController } from "_controllers/reconciler/reconciler.controller.mjs";
-import { reconciler } from "_controllers/reconciler/reconciler.decorator.mjs";
+import {
+  reconciler,
+  ReconciliationController,
+} from "_controllers/reconciler/reconciler.mjs";
 import { getAnimationCollection } from "_store/app/app.getters.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, property, queryAll } from "lit/decorators.js";

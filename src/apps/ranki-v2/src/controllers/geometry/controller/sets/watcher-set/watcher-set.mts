@@ -1,7 +1,9 @@
 import type { LitElement } from "lit";
 
-import { ReconciliationUtils } from "_controllers/reconciler/utils.mjs";
-import { type ReconciliationDiff } from "_controllers/reconciler/utils.types.mjs";
+import {
+  type ReconciliationDiff,
+  ReconciliationUtils,
+} from "_controllers/reconciler/reconciler.mjs";
 
 import type { InformSetProps } from "../../animator/types/animator.types.mjs";
 import type { GeometrySetDiffCb } from "../children/children.types.mjs";

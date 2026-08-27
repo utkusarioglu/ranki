@@ -1,5 +1,5 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
-import type { ReconciliationDiff } from "_controllers/reconciler/utils.types.mjs";
+import type { ReconciliationDiff } from "_controllers/reconciler/reconciler.mjs";
 
 import type { InformSetProps } from "../animator/types/animator.types.mjs";
 import type {

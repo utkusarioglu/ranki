@@ -25,7 +25,11 @@ export default defineConfig([
       },
       "boundaries/files": [
         {
-          category: "geometry-controller.public",
+          category: "reconciler.public",
+          pattern: "src/controllers/reconciler/reconciler.mts",
+        },
+        {
+          category: "geometry.public",
           pattern: "src/controllers/geometry/geometry.mts",
         },
         {
@@ -36,23 +40,19 @@ export default defineConfig([
           category: "collect.public",
           pattern: "src/collect/collect.mts",
         },
-        {
-          category: "state.app.subscriptions",
-          pattern: "src/store/app/app.subscriptions.mts",
-        },
       ],
       "boundaries/elements": [
         {
-          type: "geometry-controller.internal",
-          pattern: "src/controllers/geometry/**/*",
+          type: "reconciler.internal",
+          pattern: "src/controllers/reconciler",
+        },
+        {
+          type: "geometry.internal",
+          pattern: "src/controllers/geometry",
         },
         {
           type: "components",
-          pattern: "src/components/**/*",
-        },
-        {
-          type: "collect.internal",
-          pattern: "src/collect/**/*",
+          pattern: "src/components",
         },
       ],
     },
@@ -63,52 +63,42 @@ export default defineConfig([
           default: "disallow",
           policies: [
             {
-              from: { file: { categories: "collect.public" } },
-              allow: {
-                to: { element: { type: "collect.internal" } },
-              },
+              from: { element: { type: "components" } },
+              allow: { to: { file: { categories: "reconciler.public" } } },
             },
             {
-              from: { file: { categories: "state.app.subscriptions" } },
-              allow: {
-                to: { file: { categories: "collect.public" } },
-              },
+              from: { file: { categories: "reconciler.public" } },
+              allow: { to: { element: { type: "reconciler.internal" } } },
+            },
+            {
+              from: { element: { type: "reconciler.internal" } },
+              allow: { to: { element: { type: "reconciler.internal" } } },
             },
             {
               from: { element: { type: "components" } },
-              allow: {
-                to: { element: { type: "components" } },
-              },
+              allow: { to: { element: { type: "components" } } },
             },
             {
               from: { element: { type: "components" } },
-              allow: {
-                to: { file: { categories: "geometry-controller.public" } },
-              },
+              allow: { to: { file: { categories: "geometry.public" } } },
+            },
+            // {
+            //   from: { file: { categories: "!geometry.public" } },
+            //   disallow: {
+            //     to: { element: { type: "geometry.internal" } },
+            //   },
+            // },
+            {
+              from: { file: { categories: "geometry.public" } },
+              allow: { to: { element: { type: "geometry.internal" } } },
             },
             {
-              from: { file: { categories: "!geometry-controller.public" } },
-              disallow: {
-                to: { element: { type: "geometry-controller.internal" } },
-              },
+              from: { element: { type: "geometry.internal" } },
+              allow: { to: { element: { type: "geometry.internal" } } },
             },
             {
-              from: { file: { categories: "geometry-controller.public" } },
-              allow: {
-                to: { element: { type: "geometry-controller.internal" } },
-              },
-            },
-            {
-              from: { element: { type: "geometry-controller.internal" } },
-              allow: {
-                to: { element: { type: "geometry-controller.internal" } },
-              },
-            },
-            {
-              from: { element: { type: "geometry-controller.internal" } },
-              allow: {
-                to: { file: { categories: "component.r2c" } },
-              },
+              from: { element: { type: "geometry.internal" } },
+              allow: { to: { file: { categories: "component.r2c" } } },
             },
           ],
         },

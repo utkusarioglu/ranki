@@ -3,7 +3,7 @@ import {
   geometry,
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
-import { ReconciliationUtils } from "_controllers/reconciler/utils.mjs";
+import { ReconciliationUtils } from "_controllers/reconciler/reconciler.mjs";
 import { getAnimationCollection } from "_store/app/app.getters.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
