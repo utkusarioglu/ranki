@@ -109,7 +109,7 @@ export class GeometryController<
             return;
           }
           span.addEvent("session.completed");
-          this.o11y.debug.log("onEmit.callback.update", { update });
+          this.o11y.devtools.log("onEmit.callback.update", { update });
 
           this.sizing = update.sizing;
           switch (update.type) {
@@ -146,7 +146,7 @@ export class GeometryController<
 
   private async informSet(props: InformSetProps): Promise<void> {
     return this.o11y.trace.span("informSet", () => {
-      this.o11y.debug.log("informSet", { props, sizing: this.sizing });
+      this.o11y.devtools.log("informSet", { props, sizing: this.sizing });
       return this.sets.inform(props, this.sizing);
     });
   }
@@ -160,7 +160,7 @@ export class GeometryController<
 
       span.addEvent("style.ready");
 
-      this.o11y.debug.log("informStyle", {
+      this.o11y.devtools.log("informStyle", {
         curr: this.curr,
         informed,
         prev: this.prev,

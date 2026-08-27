@@ -10,7 +10,7 @@ export function geometry<Instance extends LitElement>(
 ) {
   return (_value: undefined, context: ClassFieldDecoratorContext<Instance>) => {
     return function (this: Instance) {
-      O11y.debug.log("Created geometry decorator", {
+      O11y.devtools.log("Created geometry decorator", {
         context,
         params,
         self: this,

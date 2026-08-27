@@ -4,7 +4,7 @@ const enabled = true;
 
 geometry.configure({
   observability: {
-    debug: {
+    devtools: {
       enabled,
       // sequencer: {
       //   stutter: 1000,

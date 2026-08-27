@@ -1,4 +1,4 @@
-import type { O11yDebuggerStaticConfig } from "./debug/debug.types.mjs";
+import type { O11yDevtoolsStaticConfig } from "./devtools/devtools.types.mjs";
 import type {
   O11yLoggerConstructorParams,
   O11yLoggerStaticConfig,
@@ -13,14 +13,14 @@ export interface O11yConstructorConfig<T> {
 }
 
 export interface O11yInternalStaticConfig {
-  debugEnabled: boolean;
+  devtoolsEnabled: boolean;
   logEnabled: boolean;
   metricsEnabled: boolean;
   traceEnabled: boolean;
 }
 
 export interface O11yStaticConfig {
-  debug?: O11yDebuggerStaticConfig;
+  devtools?: O11yDevtoolsStaticConfig;
   log?: O11yLoggerStaticConfig;
   metrics?: WithEnabled;
   trace?: WithEnabled;

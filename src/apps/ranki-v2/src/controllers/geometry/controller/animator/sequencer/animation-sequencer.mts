@@ -40,7 +40,7 @@ export class AnimationSequencer {
     if (!a) return Promise.resolve();
     return this.o11y.trace.span("sequenceCurrent", async () => {
       await Promise.all([
-        O11y.debug.pause(),
+        O11y.devtools.pause(),
         this.sequenceRoots(a.root),
         this.sequenceSets(a.sets),
       ]);
@@ -59,7 +59,7 @@ export class AnimationSequencer {
       span.addEvent("playName.start");
       await this.callbacks.playName(p.apply);
       span.addEvent("playName.end & pause.start");
-      await O11y.debug.pause();
+      await O11y.devtools.pause();
       span.addEvent("pause.end & sequenceThen.start");
       await withCtx(() => this.sequenceThen(p.then)); // #1
       span.addEvent("sequenceThen.end");
@@ -80,11 +80,11 @@ export class AnimationSequencer {
       span.addEvent("delay.start");
       if (wait) await TimingUtils.delay(wait);
       span.addEvent("delay.end & pause.start");
-      await O11y.debug.pause();
+      await O11y.devtools.pause();
       span.addEvent("pause.end & informSet.start");
       await withCtx(() => this.callbacks.informSet(props));
       span.addEvent("informSet.end");
-      await O11y.debug.pause();
+      await O11y.devtools.pause();
       span.addEvent("pause.end & sequenceThen.start");
       await this.sequenceThen(then);
       span.addEvent("sequenceThen.end");
@@ -103,7 +103,7 @@ export class AnimationSequencer {
     return this.o11y.trace.span("sequenceThen", async ({ span }) => {
       await this.sequenceCurrent(a);
       span.addEvent("sequence.current");
-      await O11y.debug.pause();
+      await O11y.devtools.pause();
       span.addEvent("debug.pause");
       await this.sequenceThen(a.then);
       span.addEvent("sequence.then");

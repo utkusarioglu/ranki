@@ -12,7 +12,7 @@ export function reconciler<Instance extends LitElement, S>(
 ) {
   return (_value: undefined, context: ClassFieldDecoratorContext<Instance>) => {
     return function (this: Instance) {
-      O11y.debug.log("Created reconciler decorator", {
+      O11y.devtools.log("Created reconciler decorator", {
         context,
         params,
         self: this,

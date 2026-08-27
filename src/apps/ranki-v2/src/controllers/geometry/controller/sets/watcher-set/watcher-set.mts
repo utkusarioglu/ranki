@@ -46,7 +46,7 @@ export class WatcherSet<Instance extends LitElement> {
           props,
           sizing,
         );
-        O11y.debug.log("WatcherSet.informSet", { e, informed, props });
+        O11y.devtools.log("WatcherSet.informSet", { e, informed, props });
         return e.informStyle(informed);
       }),
     );

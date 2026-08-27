@@ -1,7 +1,7 @@
 import type { RankiO11yRuntimeProps } from "./o11y.types.mjs";
 
 export const DEFAULT_O11Y: RankiO11yRuntimeProps = {
-  debug: {
+  devtools: {
     drivers: {
       consoleBatch: {
         formatter: "objectSorter",

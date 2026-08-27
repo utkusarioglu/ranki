@@ -15,7 +15,11 @@ export function store<
 ) {
   return (_value: undefined, context: ClassFieldDecoratorContext<Instance>) => {
     return function (this: Instance) {
-      O11y.debug.log("Created store decorator", { adapter, context, selector });
+      O11y.devtools.log("Created store decorator", {
+        adapter,
+        context,
+        selector,
+      });
       return new StoreController(this, selector, adapter);
     };
   };

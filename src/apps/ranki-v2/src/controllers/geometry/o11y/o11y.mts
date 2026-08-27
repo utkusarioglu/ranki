@@ -5,23 +5,23 @@ import type {
   O11yStaticConfig,
 } from "./o11y.types.mjs";
 
-import { O11yDebugger } from "./debug/debug.mjs";
 import { O11yLogger } from "./logger/logger.mjs";
 import { O11yLogger as O11yLoggerMock } from "./logger/mock/logger.mock.mjs";
 import { O11yMeter } from "./meter/meter.mjs";
 import { O11yMeter as O11yMeterMock } from "./meter/mock/meter.mock.mjs";
 import { O11yTracer as O11yTracerMock } from "./tracer/mock/tracer.mock.mjs";
 import { O11yTracer } from "./tracer/tracer.mjs";
+import { O11yDevtools } from "./devtools/devtools.mjs";
 
 export class O11y<T extends EmptyClass> {
-  public static readonly debug = O11yDebugger;
+  public static readonly devtools = O11yDevtools;
   private static STATIC_CONFIG: O11yInternalStaticConfig = {
-    debugEnabled: false,
+    devtoolsEnabled: false,
     logEnabled: false,
     metricsEnabled: false,
     traceEnabled: false,
   };
-  public readonly debug = O11yDebugger;
+  public readonly devtools = O11yDevtools;
   public readonly log: O11yLogger<T>;
   public readonly meter: O11yMeter<T>;
   public readonly trace: O11yTracer<T>;
@@ -42,12 +42,13 @@ export class O11y<T extends EmptyClass> {
 
   public static configure(conf: O11yStaticConfig) {
     O11y.STATIC_CONFIG = {
-      debugEnabled: conf.debug?.enabled || O11y.STATIC_CONFIG.debugEnabled,
+      devtoolsEnabled:
+        conf.devtools?.enabled || O11y.STATIC_CONFIG.devtoolsEnabled,
       logEnabled: conf.log?.enabled || O11y.STATIC_CONFIG.logEnabled,
       metricsEnabled:
         conf.metrics?.enabled || O11y.STATIC_CONFIG.metricsEnabled,
       traceEnabled: conf.trace?.enabled || O11y.STATIC_CONFIG.traceEnabled,
     };
-    if (conf.debug) O11yDebugger.configure(conf.debug);
+    if (conf.devtools) O11yDevtools.configure(conf.devtools);
   }
 }

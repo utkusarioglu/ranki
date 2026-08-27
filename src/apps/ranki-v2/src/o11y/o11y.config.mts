@@ -9,7 +9,7 @@ import { consoleLogRow, yamlRow } from "./printers/printers.mjs";
 import { basicRepresentation } from "./sanitizers/sorted-stringified.mjs";
 
 RankiO11y.configure({
-  debug: {
+  devtools: {
     drivers: {
       consoleBatch: ConsoleBatchLogDriver,
       fileBatch: FileBatchLogDriver,
