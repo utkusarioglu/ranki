@@ -4,6 +4,7 @@ import { RankiO11y } from "_/o11y/o11y.mjs";
 
 import { RankiDevAnkiMethods } from "./anki.mjs";
 import "./devtools.types.mjs";
+import { appStore } from "_store/app/app.store.mjs";
 
 export class RankiDevtools {
   static isPersisted = false;
@@ -30,6 +31,9 @@ export class RankiDevtools {
       window.ranki = {
         anki: RankiDevAnkiMethods,
         o11y: RankiO11y.getConsoleAccess(),
+        store: {
+          app: appStore,
+        },
       };
     } else if (window.ranki) {
       if (!RankiDevtools.isPersisted) {
