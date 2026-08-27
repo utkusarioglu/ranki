@@ -2,40 +2,14 @@ import type { LitElement } from "lit";
 
 import { assertNever } from "_error/assertions.mjs";
 
-export type R2ReconcilerEmit = {
-  type: "leave";
-};
-
-export interface ReconcileableSubtree<T> {
-  diff: ReconciliationDiff;
-  epoch: number;
-  list: ReconciliationContainer<T>[];
-}
-
-export interface ReconcileableType {
-  leave: boolean;
-}
-
-export type ReconcileSingle<G> = (curr: G, prev: G) => ReconciliationActions;
-
-export type ReconciliationActions = "add" | "remove" | "retain" | "update";
-
-export interface ReconciliationContainer<T> {
-  id: number;
-  leave: boolean;
-  props: T;
-}
-
-export type ReconciliationDiff = {
-  add: number[];
-  remove: number[];
-  retain: number[];
-  stagger: {
-    first: number;
-    indices: number[];
-  };
-  update: number[];
-};
+import type {
+  R2ReconcilerEmit,
+  ReconcilableSubtree,
+  ReconcileSingle,
+  ReconciliationActions,
+  ReconciliationContainer,
+  ReconciliationDiff,
+} from "./utils.types.mjs";
 
 export class ReconciliationUtils {
   static leaveEventName = "r2-reconciler";
@@ -45,7 +19,7 @@ export class ReconciliationUtils {
     el.dispatchEvent(ReconciliationUtils.leaveEvent());
   }
 
-  public static empty<G>(): ReconcileableSubtree<G> {
+  public static empty<G>(): ReconcilableSubtree<G> {
     return {
       diff: ReconciliationUtils.noChanges(),
       epoch: 0,
@@ -63,10 +37,10 @@ export class ReconciliationUtils {
    * handled.
    */
   public static flat<G>(
-    prev: ReconcileableSubtree<G>,
+    prev: ReconcilableSubtree<G>,
     curr: G[],
     hasChanged: ReconcileSingle<G>,
-  ): ReconcileableSubtree<G> {
+  ): ReconcilableSubtree<G> {
     const curLen = curr.length;
     const prevLen = prev.list.length;
     const update: number[] = [];
@@ -171,10 +145,10 @@ export class ReconciliationUtils {
   }
 
   public static last<G>(
-    prev: ReconcileableSubtree<G>,
+    prev: ReconcilableSubtree<G>,
     curr: G[],
     hasChanged: ReconcileSingle<G>,
-  ): ReconcileableSubtree<G> {
+  ): ReconcilableSubtree<G> {
     const list: ReconciliationContainer<G>[] = [...prev.list];
 
     const remove: number[] = [];

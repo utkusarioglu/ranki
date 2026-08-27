@@ -1,4 +1,4 @@
-import type { ReconciliationDiff } from "_utils/reconciliation.utils.mjs";
+import type { ReconciliationDiff } from "_controllers/reconciler/utils.types.mjs";
 import type { SpanContext } from "@opentelemetry/api";
 import type { LitElement } from "lit";
 

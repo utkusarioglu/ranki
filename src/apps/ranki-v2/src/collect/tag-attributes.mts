@@ -1,11 +1,13 @@
 import { assertExists } from "_error/assertions.mjs";
+
 import type {
   CollectedHtmlTagAttributes,
+  CollectedWebviewType,
   HtmlAttrDir,
   HtmlAttrTheme,
-  CollectedWebviewType,
 } from "./collect.types.mjs";
-import { OS_VARIANTS, ENV_VARIANTS } from "./template.constants.mjs";
+
+import { ENV_VARIANTS, OS_VARIANTS } from "./template.constants.mjs";
 
 export class TagAttributes {
   public static collect(): CollectedHtmlTagAttributes {

@@ -1,13 +1,14 @@
 import type {
+  DevtoolsLogDriver,
+  O11yDevtoolsLogAttributes,
+} from "_controllers/geometry/o11y/devtools/devtools.types.mjs";
+
+import type {
   RankiO11yDevtoolsRuntimeProps,
   RankiO11yDevtoolsStaticConfiguration,
 } from "./ranki-devtools.types.mjs";
 
 import { RankiLogDriverRegistry } from "../driver-registry/driver-registry.mjs";
-import type {
-  DevtoolsLogDriver,
-  O11yDevtoolsLogAttributes,
-} from "_controllers/geometry/o11y/devtools/devtools.types.mjs";
 
 declare global {
   var o11yDevtools: DevtoolsLogDriver;

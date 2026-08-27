@@ -1,11 +1,13 @@
 import { ALL_CONFIG_TYPES_SELECTOR } from "_/selector.constants.mjs";
 import { assertExists, assertNever } from "_error/assertions.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
+
 import type {
   CollectedConfig,
   CollectedConfigEntry,
 } from "./collect.types.mjs";
-import { getResourceType, getClassType } from "./utils.mjs";
+
+import { getClassType, getResourceType } from "./utils.mjs";
 
 export class ConfigFields {
   public static async collect(): Promise<CollectedConfig> {

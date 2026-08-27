@@ -4,12 +4,12 @@ import type {
   RankiO11yStaticConfiguration,
 } from "./o11y.types.mjs";
 
+import { RankiO11yDevtools } from "./devtools/ranki-devtools.mjs";
 import { LogPrinter } from "./log-drivers/utils/log-printer/log-printer.mjs";
 import { LogProcessor } from "./log-drivers/utils/log-processor/log-processor.mjs";
 import { RankiLogging } from "./log/ranki-logging.mjs";
 import { RankiMetering } from "./meter/ranki-metering.mjs";
 import { RankiTracing } from "./trace/ranki-tracing.mjs";
-import { RankiO11yDevtools } from "./devtools/ranki-devtools.mjs";
 
 export class RankiO11y {
   public static readonly devtools = RankiO11yDevtools;

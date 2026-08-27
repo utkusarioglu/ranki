@@ -2,10 +2,8 @@ import type { LitElement } from "lit";
 
 import { O11y } from "_controllers/geometry/o11y/o11y.mjs";
 
-import {
-  ReconciliationController,
-  type SubtreeParams,
-} from "./reconciler.controller.mjs";
+import { ReconciliationController } from "./reconciler.controller.mjs";
+import { type SubtreeParams } from "./reconciler.types.mjs";
 
 export function reconciler<Instance extends LitElement, S>(
   params: SubtreeParams<Instance, S>,

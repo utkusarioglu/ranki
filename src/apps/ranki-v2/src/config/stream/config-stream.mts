@@ -27,19 +27,6 @@ export class ConfigStream {
     return raw === null ? raw : this.collectConfig(raw);
   }
 
-  private static parseConfigs(collected: RawFields): RankiChannelsConfig {
-    const gConfig = new Config().pushConfig("default", RANKI_INITIAL_CONFIG);
-
-    collected.config.forEach(({ config, name }) => {
-      const parsed = this.parseConfig(name, config);
-      if (parsed !== null) {
-        gConfig.pushConfig(name, parsed);
-      }
-    });
-
-    return gConfig.mergeTo("merged").getConfig<RankiChannelsConfig>("merged");
-  }
-
   private static collectConfig(raw: RawFields): RankiCollectedConfig {
     const channels = this.parseConfigs(raw);
     const tags = this.groupTags(raw, channels.base.tags.ranki.prefix);
@@ -84,5 +71,18 @@ export class ConfigStream {
         why: "Yaml parse operation of config failed",
       });
     }
+  }
+
+  private static parseConfigs(collected: RawFields): RankiChannelsConfig {
+    const gConfig = new Config().pushConfig("default", RANKI_INITIAL_CONFIG);
+
+    collected.config.forEach(({ config, name }) => {
+      const parsed = this.parseConfig(name, config);
+      if (parsed !== null) {
+        gConfig.pushConfig(name, parsed);
+      }
+    });
+
+    return gConfig.mergeTo("merged").getConfig<RankiChannelsConfig>("merged");
   }
 }

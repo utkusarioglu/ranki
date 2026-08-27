@@ -1,7 +1,7 @@
 import type { RankiO11yConsoleAccess } from "_/o11y/o11y.types.mjs";
+import type { appStore } from "_store/app/app.store.mjs";
 
 import type { IRankiDevAnkiMethods } from "./anki.types.mjs";
-import type { appStore } from "_store/app/app.store.mjs";
 
 declare global {
   interface Window {

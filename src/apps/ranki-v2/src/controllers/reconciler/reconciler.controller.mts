@@ -1,40 +1,28 @@
 import type { LitElement, ReactiveController } from "lit";
 
+import { ReconciliationUtils } from "_controllers/reconciler/utils.mjs";
 import { assertNever } from "_error/assertions.mjs";
+
+import type {
+  GetSourceCallback,
+  ReconcilerEventsCb,
+  ReconcilerTypes,
+  SubtreeParams,
+} from "./reconciler.types.mjs";
+
 import {
   type R2ReconcilerEmit,
-  type ReconcileableSubtree,
+  type ReconcilableSubtree,
   type ReconcileSingle,
-  ReconciliationUtils,
-} from "_utils/reconciliation.utils.mjs";
-
-export type ReconcilerEventsCb<Instance> = (
-  host: Instance,
-  event: "leave",
-  detail: {
-    index: number;
-    stagger: number;
-  },
-) => void;
-
-export type SubtreeParams<Instance, S> = {
-  on?: ReconcilerEventsCb<Instance>;
-  reconcile: ReconcileSingle<S>;
-  source: GetSourceCallback<Instance, S>;
-  type: ReconcilerTypes;
-};
-
-type GetSourceCallback<Instance, S> = (instance: Instance) => S[];
-
-type ReconcilerTypes = "flat" | "last";
+} from "./utils.types.mjs";
 
 export class ReconciliationController<
   Instance extends LitElement,
   S,
 > implements ReactiveController {
-  public curr: ReconcileableSubtree<S> = ReconciliationUtils.empty<S>();
+  public curr: ReconcilableSubtree<S> = ReconciliationUtils.empty<S>();
   public epoch: number = 0;
-  public prev: ReconcileableSubtree<S> | undefined;
+  public prev: ReconcilableSubtree<S> | undefined;
   private beforeLeave: ReconcilerEventsCb<Instance> | undefined;
 
   private getSource!: GetSourceCallback<Instance, S>;
@@ -102,7 +90,7 @@ export class ReconciliationController<
   }
 
   private async leave(
-    subtree: ReconcileableSubtree<S>,
+    subtree: ReconcilableSubtree<S>,
     id: number,
   ): Promise<void> {
     this.leaving.push(id);
@@ -140,7 +128,7 @@ export class ReconciliationController<
     }
   }
 
-  private setCurr(value: ReconcileableSubtree<S>) {
+  private setCurr(value: ReconcilableSubtree<S>) {
     this.curr = value;
     this.host.requestUpdate();
   }

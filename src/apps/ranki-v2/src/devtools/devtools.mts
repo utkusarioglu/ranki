@@ -1,10 +1,10 @@
 import type { RankiDevState } from "_config/config.types.mjs";
 
 import { RankiO11y } from "_/o11y/o11y.mjs";
-
-import { RankiDevAnkiMethods } from "./anki.mjs";
-import "./devtools.types.mjs";
 import { appStore } from "_store/app/app.store.mjs";
+
+import "./devtools.types.mjs";
+import { RankiDevAnkiMethods } from "./anki.mjs";
 
 export class RankiDevtools {
   static isPersisted = false;

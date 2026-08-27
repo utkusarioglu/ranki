@@ -7,11 +7,11 @@ export interface DevtoolsPause {
   props: Record<string, unknown>;
 }
 
+export type O11yDevtoolsLogAttributes = Record<string, unknown>;
+
 export interface O11yDevtoolsStaticConfig {
   enabled: boolean;
   sequencer?: {
     stutter?: number;
   };
 }
-
-export type O11yDevtoolsLogAttributes = Record<string, unknown>;

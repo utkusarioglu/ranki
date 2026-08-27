@@ -9,10 +9,10 @@ import type {
   RawFields,
 } from "./collect.types.mjs";
 
-import { hasher } from "./hasher.mjs";
-import { getClassType } from "./utils.mjs";
 import { ConfigFields } from "./config-fields.mjs";
+import { hasher } from "./hasher.mjs";
 import { TagAttributes } from "./tag-attributes.mjs";
+import { getClassType } from "./utils.mjs";
 
 export class CollectTemplate {
   /**

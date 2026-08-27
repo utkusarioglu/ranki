@@ -25,11 +25,11 @@ import { checkIfMatch } from "./determine.mjs";
 
 export class BaseConfig {
   private baseC: Config;
-  private cueRecord: CueRecord[] = [];
   private channels: RankiChannelsConfig;
-  private tags: FilteredTags;
-  private raw: RawFields;
+  private cueRecord: CueRecord[] = [];
   private precedenceOrder: CueKind[];
+  private raw: RawFields;
+  private tags: FilteredTags;
 
   constructor(
     channels: RankiChannelsConfig,
@@ -42,6 +42,19 @@ export class BaseConfig {
     this.raw = raw;
     this.baseC = new Config("app");
     this.cueRecord = [];
+  }
+
+  public build(): BuildRankiBaseConfigReturn {
+    this.baseC.pushConfig("default", this.channels.base);
+
+    this.precedenceOrder.forEach((kind) => {
+      this.processKind(kind);
+    });
+
+    const config = this.baseC
+      .mergeTo("merged")
+      .getConfig<RankiBaseConfig>("merged");
+    return { config, cueRecord: this.cueRecord };
   }
 
   private processKind(kind: CueKind) {
@@ -84,19 +97,6 @@ export class BaseConfig {
           why: "All possible cue kinds have been depleted",
         });
     }
-  }
-
-  public build(): BuildRankiBaseConfigReturn {
-    this.baseC.pushConfig("default", this.channels.base);
-
-    this.precedenceOrder.forEach((kind) => {
-      this.processKind(kind);
-    });
-
-    const config = this.baseC
-      .mergeTo("merged")
-      .getConfig<RankiBaseConfig>("merged");
-    return { config, cueRecord: this.cueRecord };
   }
 
   private pushAlways(kind: CueKind, matched: DeckAlwaysSettings) {

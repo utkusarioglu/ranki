@@ -5,13 +5,13 @@ import type {
   O11yStaticConfig,
 } from "./o11y.types.mjs";
 
+import { O11yDevtools } from "./devtools/devtools.mjs";
 import { O11yLogger } from "./logger/logger.mjs";
 import { O11yLogger as O11yLoggerMock } from "./logger/mock/logger.mock.mjs";
 import { O11yMeter } from "./meter/meter.mjs";
 import { O11yMeter as O11yMeterMock } from "./meter/mock/meter.mock.mjs";
 import { O11yTracer as O11yTracerMock } from "./tracer/mock/tracer.mock.mjs";
 import { O11yTracer } from "./tracer/tracer.mjs";
-import { O11yDevtools } from "./devtools/devtools.mjs";
 
 export class O11y<T extends EmptyClass> {
   public static readonly devtools = O11yDevtools;

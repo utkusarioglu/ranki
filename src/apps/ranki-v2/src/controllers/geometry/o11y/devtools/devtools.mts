@@ -1,8 +1,8 @@
 import type {
   DevtoolsLogDriver,
   DevtoolsPause,
-  O11yDevtoolsStaticConfig,
   O11yDevtoolsLogAttributes,
+  O11yDevtoolsStaticConfig,
 } from "./devtools.types.mjs";
 
 declare global {
