@@ -18,7 +18,7 @@ import type {
   RankiTagPrefix,
 } from "../config.types.mjs";
 
-import { Config } from "../../../../../packages/dqm-utils/src/export.mjs";
+import { Config } from "@dqm/package-dqm-config";
 import { BaseConfig } from "./base/base.mjs";
 import { RANKI_INITIAL_CONFIG } from "./initial-config/RANKI_INITIAL_CONFIG.mjs";
 

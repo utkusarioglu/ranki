@@ -18,7 +18,7 @@ import type {
 
 import { FLAG_COLOR_ORDER } from "_/anki.constants.mjs";
 import { assertNever } from "_error/assertions.mjs";
-import { Config } from "@dqm/package-dqm-utils";
+import { Config } from "@dqm/package-dqm-config";
 
 import { DEFAULT_PRECEDENCE_ORDER } from "./base.constants.mjs";
 import { checkIfMatch } from "./determine.mjs";

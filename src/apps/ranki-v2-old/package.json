@@ -16,7 +16,7 @@
   "scripts": {
     "dev": "vite",
     "lib": "tsc -p tsconfig.lib.json",
-    "build": "yarn lib && vite build",
+    "build-old": "yarn lib && vite build",
     "preview": "vite preview",
     "clean-targets": "yarn tsx scripts/clean-targets.ts && scripts/clean-anki.sh",
     "clean-anki": "scripts/clean-anki.sh",

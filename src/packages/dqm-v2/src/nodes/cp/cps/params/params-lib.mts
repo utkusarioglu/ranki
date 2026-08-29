@@ -9,12 +9,8 @@ import type {
   IConfig,
   DqmConfigOnOrphanChannel,
 } from "@dqm/package-dqm-api-v2";
-import {
-  assertExists,
-  Config,
-  dependsOn,
-  writeOnce,
-} from "@dqm/package-dqm-utils";
+import { Config } from "@dqm/package-dqm-config";
+import { assertExists, dependsOn, writeOnce } from "@dqm/package-dqm-utils";
 import { ParamsChannelLib } from "./params-channel-lib.mjs";
 import { CommonTransports } from "../../../common-transports.mjs";
 import { DqmAppError } from "../../../../errors/dqm-app-error/dqm-app-error.mjs";

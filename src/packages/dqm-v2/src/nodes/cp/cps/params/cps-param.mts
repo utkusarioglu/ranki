@@ -6,7 +6,7 @@ import type {
 } from "@dqm/package-dqm-api-v2";
 import { idCapability } from "../../../capabilities/id.cap.mjs";
 import { astParamCapability } from "../../../ast/param/capabilities/raw-param.cap.mjs";
-import { TypeEngine } from "@dqm/package-dqm-utils";
+import { TypeEngine } from "@dqm/package-dqm-config";
 import { assertNever } from "../../../../errors/dqm-app-error/assertions.mjs";
 import { assertExists } from "@dqm/package-dqm-utils";
 

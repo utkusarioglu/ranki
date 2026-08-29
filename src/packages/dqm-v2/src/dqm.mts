@@ -5,7 +5,7 @@ import {
   INITIAL_CONFIG_NAME,
 } from "./constants.mjs";
 import { AstNode } from "./nodes/ast/base/ast-node.mjs";
-import { Config } from "@dqm/package-dqm-utils";
+import { Config } from "@dqm/package-dqm-config";
 import type {
   CommonTransportsConstructorParams,
   DqmConfig,

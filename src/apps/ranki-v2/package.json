@@ -54,6 +54,7 @@
     "vitest": "^4.0.17"
   },
   "dependencies": {
+    "@dqm/package-dqm-config": "workspace:^",
     "@dqm/package-dqm-utils": "workspace:^",
     "@dqm/package-dqm-v2": "workspace:^",
     "@opentelemetry/api": "^1.9.1",

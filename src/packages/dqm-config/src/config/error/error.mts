@@ -6,7 +6,7 @@ import type {
   WithCause,
 } from "@dqm/package-dqm-api-v2";
 import { DQM_CONFIG_ERROR_CODES } from "./error.constants.mjs";
-import { DqmBaseError } from "../../base-error/base-error.mjs";
+import { DqmBaseError } from "@dqm/package-dqm-utils";
 
 export type DqmPluginErrorConstructorParams = WithCause &
   IDqmErrorBaseRequiredParams<keyof typeof DQM_CONFIG_ERROR_CODES>;
