@@ -1,22 +1,14 @@
 import type {
   CurrentAppliedStyle,
   CurrentAppliedStyleWithoutActions,
-  InformContext,
   InformedChildStyle,
 } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
 
 import { GeometryEval } from "_controllers/geometry/controller/merger/geometry-eval.mjs";
 
-import type { InformSetProps } from "../animator/types/animator.types.mjs";
 import type { LayoutSizing } from "../sets/children/layout/layout-utils.types.mjs";
 import { RankiAppError } from "_error/ranki-app-error.mjs";
-
-interface CreateSetItemInformerProps {
-  context: InformContext;
-  index: number;
-  props: InformSetProps;
-  sizing: LayoutSizing | null;
-}
+import type { CreateSetItemInformerProps } from "./geometry-merger.types.mjs";
 
 export class GeometryMerger {
   public static createCurrStyle(
@@ -85,7 +77,7 @@ export class GeometryMerger {
     } catch (e) {
       throw new RankiAppError({
         code: "UNDEFINED",
-        why: "a",
+        why: "item merge failed",
         details: {
           context,
           index,
