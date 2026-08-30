@@ -95,37 +95,40 @@ export class GeometryController<
     // this.events.emit({ type: "lifecycle", lifecycle: "disconnected" });
   }
 
-  private async sessionEnd() {
-    const inform = GeometrySetsUtils.prepareRootStyle(this.sizing!);
-    await this.informStyle(inform);
-  }
-
   onEmit() {
     return this.events.onEmit(async (e) => {
-      return this.o11y.trace.span("onEmit", async ({ span, session }) => {
-        this.o11y.meter.count("onEmit");
-        this.sizing = this.sets.onEmit(e);
-        if (!this.isRoot) {
-          span.addEvent("controller.propagate.up");
-          this.events.emit({
-            lifecycle: "update",
-            style: this.sizing.container,
-            type: "lifecycle",
-          });
-          return;
-        }
-        if (this.inSession) {
-          session.join(span);
-          return;
-        }
-        this.inSession = true;
-        session.start();
-        await TimingUtils.raf(1);
-        this.inSession = false;
-        session.end();
-        span.addEvent("controller.propagate.down");
-        return this.sessionEnd();
-      });
+      return this.o11y.trace.span(
+        "onEmit",
+        async ({ span, session, withLink }) => {
+          this.o11y.meter.count("onEmit");
+          this.sizing = this.sets.onEmit(e);
+          if (!this.isRoot) {
+            span.addEvent("controller.propagate.up");
+            this.events.emit({
+              lifecycle: "update",
+              style: this.sizing.container,
+              type: "lifecycle",
+            });
+            return;
+          }
+          if (this.inSession) {
+            session.join(span);
+            return;
+          }
+          this.inSession = true;
+          session.start();
+          this.o11y.devtools.log("session.start", {});
+          await this.wait.layout();
+          this.inSession = false;
+          const inform = GeometrySetsUtils.prepareRootStyle(this.sizing);
+          session.end();
+          this.o11y.devtools.log("session.end", {});
+          span.addEvent("controller.propagate.down");
+          await withLink(() => this.informStyle(inform));
+          span.addEvent("controller.animation.end");
+          this.o11y.devtools.log("root.animation.end", { inform });
+        },
+      );
     });
   }
 
@@ -193,12 +196,17 @@ export class GeometryController<
     return this.o11y.trace.span("informStyle", async ({ span }) => {
       this.o11y.meter.count("informStyle");
       this.prev = this.curr;
-      const curr = GeometryMerger.createCurrStyle(informed, this.sizing);
+      const curr = GeometryMerger.createCurrStyle(
+        informed,
+        this.sizing,
+        this.prev,
+      );
       this.curr = curr;
 
       span.addEvent("style.ready");
 
       this.o11y.devtools.log("informStyle", {
+        tag: this.host.tagName,
         curr: this.curr,
         informed,
         prev: this.prev,

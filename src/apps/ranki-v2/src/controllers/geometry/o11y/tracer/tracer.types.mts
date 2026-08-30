@@ -22,10 +22,13 @@ export interface SpanDetailedDefinition {
   name: string;
   spanOptions?: SpanOptions;
 }
+
+export type WithLinkFunc = <T>(cb: SpanCallback<T>) => T;
 export interface SpanFuncParams {
   ctx: Context;
   span: Span;
   withCtx: CallWithContextMetadata;
+  withLink: WithLinkFunc;
   session: {
     start: () => void;
     join: (span: Span) => void;

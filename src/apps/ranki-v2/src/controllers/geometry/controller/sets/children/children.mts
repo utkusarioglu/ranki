@@ -1,7 +1,5 @@
-import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement } from "lit";
 
-import type { GeometryEvent } from "../../events/types/geometry-events.types.mjs";
 import type {
   GeometryChildrenLayoutCallback,
   GeometryChildrenOnEmitProps,

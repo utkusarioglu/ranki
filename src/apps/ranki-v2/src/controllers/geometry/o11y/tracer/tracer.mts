@@ -1,4 +1,10 @@
-import { type Context, context, trace, type Tracer } from "@opentelemetry/api";
+import {
+  type Context,
+  context,
+  type Span,
+  trace,
+  type Tracer,
+} from "@opentelemetry/api";
 
 import type { EmptyClass } from "../o11y.types.mjs";
 import type {
@@ -9,18 +15,22 @@ import type {
   SpanDefinition,
   SpanMetadata,
   WithContextFunc,
+  WithLinkFunc,
 } from "./tracer.types.mjs";
 
 import { ContextKeyRegistry } from "../key-registry/key-registry.mjs";
 import { isPromiseLike } from "../utils/type.utils.mjs";
+import { TracerSession } from "./tracer-session.mjs";
 
 export class O11yTracer<T extends EmptyClass> {
   public readonly otelTracer: Tracer;
   private readonly owner: T;
+  private readonly session: TracerSession;
 
   constructor(owner: T, params?: O11yTracerConstructorParams<T>) {
     this.owner = owner;
     this.otelTracer = trace.getTracer(this.owner.constructor.name);
+    this.session = new TracerSession(this.otelTracer);
     if (params?.nameFormat) {
       this.nameFormatter = params.nameFormat;
     }
@@ -38,6 +48,17 @@ export class O11yTracer<T extends EmptyClass> {
       }
       return value;
     };
+  }
+
+  private withLinkFactory(formattedName: string, span: Span): WithLinkFunc {
+    const withLink: WithLinkFunc = (cb) => {
+      return this.span(`${formattedName}.linked`, (child) => {
+        child.span.addLink({ context: span.spanContext() });
+        span.addLink({ context: child.span.spanContext() });
+        return cb(child);
+      });
+    };
+    return withLink;
   }
 
   async span<T>(def: SpanDefinition, fn: SpanCallback<Promise<T>>): Promise<T>;
@@ -59,37 +80,15 @@ export class O11yTracer<T extends EmptyClass> {
       (span) => {
         const currentCtx = context.active();
         const withCtx = this.childContextFactory(currentCtx);
-        const startSession = () => {
-          console.log("session start");
-        };
-        const joinSession = () => {
-          console.log("join sesj");
-        };
-        const endSession = () => {
-          console.log("session end");
-        };
-        // const startSession = () => this.session.start();
-        // const joinSession = (span: Span) => {
-        //   const update = this.session.join();
-        //   span.addEvent("geometry.session.resolve", {
-        //     "session.id": update.id,
-        //     "session.index": update.index,
-        //     "session.start": update.start,
-        //   });
-        // };
-        // const endSession = () => {
-        //   this.session.end();
-        // };
+        const withLink = this.withLinkFactory(formattedName, span);
+        const session = this.session.getCallbacks(formattedName);
         try {
           const exec = fn({
             ctx: currentCtx,
             span,
             withCtx,
-            session: {
-              start: startSession,
-              join: joinSession,
-              end: endSession,
-            },
+            withLink,
+            session,
           });
           if (isPromiseLike(exec)) {
             return Promise.resolve(exec).finally(() => span.end());

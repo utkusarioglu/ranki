@@ -99,25 +99,35 @@ export class ChildrenRegistry {
         });
         break;
       case "update":
-        if (curr) {
-          this.dims.set(target, {
-            interaction: {
-              ...curr?.interaction,
-            },
-            lifecycle: detail.lifecycle,
-            mode: "default",
-            style: detail.style,
-          });
-        } else {
-          this.dims.set(target, {
-            interaction: {
-              ...ChildrenRegistry.DEFAULT_INTERACTION,
-            },
-            lifecycle: "enter",
-            mode: "default",
-            style: detail.style,
-          });
-        }
+        this.dims.set(target, {
+          mode: "default",
+          ...curr,
+          interaction: {
+            ...ChildrenRegistry.DEFAULT_INTERACTION,
+            ...curr?.interaction,
+          },
+          lifecycle: detail.lifecycle,
+          style: detail.style,
+        });
+        // if (curr) {
+        //   this.dims.set(target, {
+        //     interaction: {
+        //       ...curr?.interaction,
+        //     },
+        //     lifecycle: detail.lifecycle,
+        //     mode: "default",
+        //     style: detail.style,
+        //   });
+        // } else {
+        //   this.dims.set(target, {
+        //     interaction: {
+        //       ...ChildrenRegistry.DEFAULT_INTERACTION,
+        //     },
+        //     lifecycle: "enter",
+        //     mode: "default",
+        //     style: detail.style,
+        //   });
+        // }
         break;
     }
   }

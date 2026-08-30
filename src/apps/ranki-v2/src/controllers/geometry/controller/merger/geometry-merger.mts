@@ -22,6 +22,7 @@ export class GeometryMerger {
   public static createCurrStyle(
     informed: InformedChildStyle,
     sizing: LayoutSizing | null,
+    prev: CurrentAppliedStyle | null,
   ): CurrentAppliedStyle {
     const curr: CurrentAppliedStyleWithoutActions = {
       container: {
@@ -39,7 +40,7 @@ export class GeometryMerger {
       },
     };
 
-    const actions = GeometryEval.evaluateActions(curr);
+    const actions = GeometryEval.evaluateActions(curr, prev);
     return { ...curr, actions };
   }
 

@@ -10,7 +10,7 @@ export class TimingUtils {
     });
   }
 
-  static async raf(frames: number = 2, cb?: RafCallback): Promise<void> {
+  static async raf(frames: number = 1, cb?: RafCallback): Promise<void> {
     function step(resolve: () => void, cb?: RafCallback) {
       if (--frames <= 0) {
         if (cb) cb();

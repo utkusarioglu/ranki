@@ -1,19 +1,25 @@
 import type { LocalAction } from "../events/types/geometry-events.types.mjs";
 import type { GeometryInteractionEmit } from "../events/types/interaction.types.mjs";
-import type { CurrentAppliedStyleWithoutActions } from "../types/geometry-controller.types.mjs";
+import type {
+  CurrentAppliedStyle,
+  CurrentAppliedStyleWithoutActions,
+} from "../types/geometry-controller.types.mjs";
 
 import { INTERACTION_SEPARATOR } from "../sets/children/registry/children-registry.constants.mjs";
 
 export class GeometryEval {
   public static evaluateActions(
     curr: CurrentAppliedStyleWithoutActions,
-    // prev: CurrentAppliedStyle | null,
+    prev: CurrentAppliedStyle | null,
   ): LocalAction[] {
     const actions = new Set<LocalAction>();
 
-    if (["enter", "leave", "update"].includes(curr.self.lifecycle)) {
-      actions.add(`lifecycle.${curr.self.lifecycle}`);
+    let lifecycle = curr.self.lifecycle;
+    if (lifecycle === "update" && prev === null) {
+      lifecycle = "enter";
     }
+    actions.add(`lifecycle${INTERACTION_SEPARATOR}${lifecycle}`);
+
     Object.entries(curr.self.interaction)
       .filter((v) => v[1] !== "none")
       .map((v) => v.join(INTERACTION_SEPARATOR) as GeometryInteractionEmit)
