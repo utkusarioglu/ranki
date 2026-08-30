@@ -57,7 +57,7 @@ export class AnimationSequencer {
   private async sequenceRoot(p: ApplyRootParams) {
     return this.o11y.trace.span("sequenceRoot", async ({ span, withCtx }) => {
       span.addEvent("playName.start");
-      await this.callbacks.playName(p.apply);
+      await this.callbacks.playByName(p.apply);
       span.addEvent("playName.end & pause.start");
       await O11y.devtools.pause();
       span.addEvent("pause.end & sequenceThen.start");

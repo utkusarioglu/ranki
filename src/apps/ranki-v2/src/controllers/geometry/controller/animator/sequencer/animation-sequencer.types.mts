@@ -4,7 +4,7 @@ import type { AnimatorPlayCb } from "../types/animator.types.mjs";
 
 export interface AnimationSequencerCallbacks {
   informSet: GeometryControllerInformSetCallback;
-  playName: AnimatorPlayCb;
+  playByName: AnimatorPlayCb;
 }
 
 export interface AnimationSequencerMetadata {

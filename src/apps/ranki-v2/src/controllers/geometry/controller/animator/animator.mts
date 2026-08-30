@@ -38,7 +38,7 @@ export class Animator<Instance extends LitElement> {
     this.callbacks = callbacks;
     this.sequencer = new AnimationSequencer({
       informSet: this.callbacks.informSet,
-      playName: this.playName.bind(this),
+      playByName: this.playByName.bind(this),
     });
     this.getRecipe = this.prepareGetRecipeCallback(
       this.callbacks.getCollection,
@@ -80,7 +80,7 @@ export class Animator<Instance extends LitElement> {
           });
           span.addEvent("animator.recipe.ready");
 
-          const parsed = LayoutParser.parse({ curr, prev, recipe: recipe });
+          const parsed = LayoutParser.parse({ curr, prev, recipe });
           span.addEvent("animator.layout.parsed");
 
           this.o11y.devtools.log("Animator.update.composed", {
@@ -102,7 +102,58 @@ export class Animator<Instance extends LitElement> {
     });
   }
 
-  private async playName({
+  private async styleByName(name: string, finalKeyframes: Keyframe[]) {
+    return this.o11y.trace.span(`${name}.animate.style`, async () => {
+      this.o11y.devtools.log("animation.duration.0", {
+        name,
+        finalKeyframes,
+        host: this.host,
+      });
+      finalKeyframes.forEach((keyframe) => {
+        Object.entries(keyframe).forEach(([k, v]) => {
+          this.host.style.setProperty(k, v as string);
+        });
+      });
+    });
+  }
+
+  private async animateByName(
+    name: string,
+    finalKeyframes: Keyframe[],
+    finalOptions: KeyframeAnimationOptions,
+  ) {
+    return this.o11y.trace.span(`${name}.animate.animate`, async ({ span }) => {
+      span.addEvent("host.animate.start");
+      const anim = this.host.animate(finalKeyframes, finalOptions);
+      span.addEvent("host.animate.end");
+      const running = this.running.get(name);
+      if (running) {
+        span.addEvent("animation.cancel");
+        running.oncancel = (_ev) => {
+          if (running.playState === "running") {
+            this.o11y.log.info("Running animation prematurely cancelled", {
+              name,
+              tag: this.host.tagName,
+            });
+            this.o11y.devtools.log("animation.cancel", {
+              name,
+              tag: this.host.tagName,
+              finalKeyframes,
+              finalOptions,
+            });
+          }
+        };
+        running.commitStyles();
+        running.cancel();
+      }
+      this.running.set(name, anim);
+      await anim.finished;
+      this.running.delete(name);
+      span.addEvent("animation.delete");
+    });
+  }
+
+  private async playByName({
     keyframes,
     name,
     options,
@@ -122,31 +173,13 @@ export class Animator<Instance extends LitElement> {
           finalOptions,
           host: this.host,
         });
-        span.addEvent("host.animate.start");
-        const anim = this.host.animate(finalKeyframes, finalOptions);
 
-        span.addEvent("host.animate.end");
-        const r = this.running.get(name);
-        if (r) {
-          span.addEvent("animation.cancel");
-          r.oncancel = (_ev) => {
-            if (r.playState === "running") {
-              console.warn(
-                "Animation cancelled while running.",
-                "Name: ",
-                name,
-                "tag: ",
-                this.host.tagName,
-              );
-            }
-          };
-          r.commitStyles();
-          r.cancel();
+        if (finalOptions.duration === 0) {
+          this.styleByName(name, finalKeyframes);
+        } else {
+          await this.animateByName(name, finalKeyframes, finalOptions);
         }
-        this.running.set(name, anim);
-        await anim.finished;
-        this.running.delete(name);
-        span.addEvent("animation.delete");
+        //
       } catch (e) {
         console.log("ABORT", {
           e,
