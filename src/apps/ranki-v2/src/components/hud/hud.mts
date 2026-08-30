@@ -15,8 +15,8 @@ export class R2Hud extends R2C {
   static override styles = unsafeCSS(styles);
 
   @geometry({
+    isRoot: true,
     children: {
-      isRoot: true,
       layout: () =>
         LayoutUtils.row({
           cross: {

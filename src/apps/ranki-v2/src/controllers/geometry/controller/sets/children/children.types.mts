@@ -8,6 +8,8 @@ import type {
   LayoutSizing,
   LayoutSizingCallback,
 } from "./layout/layout-utils.types.mjs";
+import type { GeometryEvent } from "../../events/types/geometry-events.types.mjs";
+import type { R2C } from "_components/r2c/r2c.mjs";
 
 export type ChildrenSizing =
   | ChildrenSizingRoot
@@ -42,10 +44,6 @@ export interface GeometryChildrenProps<Instance extends LitElement> {
   // !TODO implement geometry diffing and remove this
   diff?: GeometrySetDiffCb<Instance>;
   /**
-   * @default false
-   */
-  isRoot?: boolean;
-  /**
    * @default LayoutUtils.row
    */
   layout?: GeometryChildrenLayoutCallback;
@@ -64,4 +62,9 @@ export interface GeometryUpdateSession {
 
 export interface GeometryUpdateSessionWithSpanContext extends GeometryUpdateSession {
   context: SpanContext;
+}
+
+export interface GeometryChildrenOnEmitProps {
+  target: R2C;
+  detail: GeometryEvent;
 }

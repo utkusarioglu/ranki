@@ -22,6 +22,7 @@ export type GeometryEvent =
   | GeometryEventInteraction
   | GeometryEventLifecycle
   | GeometryEventMode;
+
 export type LocalAction =
   | `interaction${typeof INTERACTION_SEPARATOR}${GeometryInteractionEmit}`
   | `lifecycle${typeof INTERACTION_SEPARATOR}${EmitLifecycleKey}`

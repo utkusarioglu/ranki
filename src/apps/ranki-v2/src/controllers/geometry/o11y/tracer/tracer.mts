@@ -59,8 +59,38 @@ export class O11yTracer<T extends EmptyClass> {
       (span) => {
         const currentCtx = context.active();
         const withCtx = this.childContextFactory(currentCtx);
+        const startSession = () => {
+          console.log("session start");
+        };
+        const joinSession = () => {
+          console.log("join sesj");
+        };
+        const endSession = () => {
+          console.log("session end");
+        };
+        // const startSession = () => this.session.start();
+        // const joinSession = (span: Span) => {
+        //   const update = this.session.join();
+        //   span.addEvent("geometry.session.resolve", {
+        //     "session.id": update.id,
+        //     "session.index": update.index,
+        //     "session.start": update.start,
+        //   });
+        // };
+        // const endSession = () => {
+        //   this.session.end();
+        // };
         try {
-          const exec = fn({ ctx: currentCtx, span, withCtx });
+          const exec = fn({
+            ctx: currentCtx,
+            span,
+            withCtx,
+            session: {
+              start: startSession,
+              join: joinSession,
+              end: endSession,
+            },
+          });
           if (isPromiseLike(exec)) {
             return Promise.resolve(exec).finally(() => span.end());
           } else {

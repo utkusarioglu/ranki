@@ -1,7 +1,10 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement } from "lit";
 
-import type { GeometryChildrenProps } from "./children/children.types.mjs";
+import type {
+  GeometryChildrenOnEmitProps,
+  GeometryChildrenProps,
+} from "./children/children.types.mjs";
 import type { GeometryWatcherRecord } from "./watcher/watcher.types.mjs";
 
 export type GeometrySetName = { type?: "GeometrySet" } & string;
@@ -13,3 +16,5 @@ export interface GeometrySetsConstructorParams<Instance extends LitElement> {
 export type GeometrySetSelectorCb<Instance extends LitElement> = (
   s: Instance,
 ) => R2C[];
+
+export type GeometrySetOnEmitProps = GeometryChildrenOnEmitProps;

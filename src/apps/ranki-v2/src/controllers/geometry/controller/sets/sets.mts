@@ -1,13 +1,13 @@
-import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement } from "lit";
 
 import { assertNotUndefined } from "_error/assertions.mjs";
 
 import type { InformSetProps } from "../animator/types/animator.types.mjs";
-import type { GeometryEvent } from "../events/types/geometry-events.types.mjs";
-import type { ChildrenUpdateSizingReturn } from "./children/children.types.mjs";
 import type { LayoutSizing } from "./children/layout/layout-utils.types.mjs";
-import type { GeometrySetsConstructorParams } from "./sets.types.mjs";
+import type {
+  GeometrySetOnEmitProps,
+  GeometrySetsConstructorParams,
+} from "./sets.types.mjs";
 
 import { GeometryChildren } from "./children/children.mjs";
 import { GeometryWatchers } from "./watcher/watcher.mjs";
@@ -35,13 +35,28 @@ export class GeometrySets<Instance extends LitElement> {
     return this.watchers?.inform(props, sizing);
   }
 
-  public async onEmit(
-    target: R2C,
-    detail: GeometryEvent,
-  ): ChildrenUpdateSizingReturn {
+  // /**
+  //  * @dev
+  //  * #1 In onEmit already checks whether the children object has been created
+  //  */
+  // public updateSizing() {
+  //   return this.children!.updateSizing(); //#1
+  // }
+
+  public onEmit(e: GeometrySetOnEmitProps) {
     assertNotUndefined(this.children, {
       why: "Received emit when no children has been defined",
     });
-    return this.children.onEmit(target, detail);
+    return this.children.onEmit(e);
   }
+
+  // public async onEmit_old(
+  //   target: R2C,
+  //   detail: GeometryEvent,
+  // ): ChildrenUpdateSizingReturn {
+  //   assertNotUndefined(this.children, {
+  //     why: "Received emit when no children has been defined",
+  //   });
+  //   return this.children.onEmit(target, detail);
+  // }
 }

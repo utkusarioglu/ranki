@@ -1,8 +1,6 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement, ReactiveController } from "lit";
 
-import { assertNever } from "_error/assertions.mjs";
-
 import type { InformSetProps } from "./animator/types/animator.types.mjs";
 import type { LayoutSizing } from "./sets/children/layout/layout-utils.types.mjs";
 import type { GeometryControllerConstructorParams } from "./types/geometry-controller.constructor.types.mjs";
@@ -18,6 +16,7 @@ import { GeometryEvents } from "./events/geometry-events.mjs";
 import { GeometryMerger } from "./merger/geometry-merger.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
 import { TimingUtils } from "./utils/timing.utils.mjs";
+import { GeometrySetsUtils } from "./sets/geometry-sets-utils.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -35,12 +34,15 @@ export class GeometryController<
   private prev: CurrentAppliedStyle | null = null;
   private readonly sets: GeometrySets<Instance>;
 
+  private readonly isRoot: boolean;
   private sizing: LayoutSizing | null = null;
+  private inSession: boolean = false;
 
   constructor(
     host: Instance,
     params: GeometryControllerConstructorParams<Instance>,
   ) {
+    this.isRoot = params.isRoot || false;
     host.addController(this);
     this.host = host;
     this.animator = new Animator(this.host, params.role, {
@@ -85,56 +87,92 @@ export class GeometryController<
 
   hostConnected(): void {
     this.events.registerListeners();
+    // this.events.emit({ type: "lifecycle", lifecycle: "connected" });
   }
 
   hostDisconnected(): void {
     this.events.deregisterListeners();
+    // this.events.emit({ type: "lifecycle", lifecycle: "disconnected" });
+  }
+
+  private async sessionEnd() {
+    const inform = GeometrySetsUtils.prepareRootStyle(this.sizing!);
+    await this.informStyle(inform);
   }
 
   onEmit() {
-    return this.events.onEmit(async (target, detail) => {
-      return this.o11y.trace.span("onEmit", async ({ span, withCtx }) => {
+    return this.events.onEmit(async (e) => {
+      return this.o11y.trace.span("onEmit", async ({ span, session }) => {
         this.o11y.meter.count("onEmit");
-        const update = await this.sets.onEmit(target, detail);
-        span.addEvent("geometry.session.resolve", {
-          "session.id": update.session.id,
-          "session.index": update.session.index,
-          "session.start": update.session.start,
-        });
-
-        await withCtx(async () => {
-          if (update.type === "terminate") {
-            span.addLink({ context: update.session.context });
-            span.addEvent("session.joined");
-            return;
-          }
-          span.addEvent("session.completed");
-          this.o11y.devtools.log("onEmit.callback.update", { update });
-
-          this.sizing = update.sizing;
-          switch (update.type) {
-            case "root":
-              span.addEvent("controller.propagate.down");
-              await this.informStyle(update.inform);
-              break;
-            case "update":
-              span.addEvent("controller.propagate.up");
-              this.events.emit({
-                lifecycle: "update",
-                style: update.sizing.container,
-                type: "lifecycle",
-              });
-              break;
-            default:
-              assertNever({
-                details: { update },
-                why: "Unrecognized children update type",
-              });
-          }
-        });
+        this.sizing = this.sets.onEmit(e);
+        if (!this.isRoot) {
+          span.addEvent("controller.propagate.up");
+          this.events.emit({
+            lifecycle: "update",
+            style: this.sizing.container,
+            type: "lifecycle",
+          });
+          return;
+        }
+        if (this.inSession) {
+          session.join(span);
+          return;
+        }
+        this.inSession = true;
+        session.start();
+        await TimingUtils.raf(1);
+        this.inSession = false;
+        session.end();
+        span.addEvent("controller.propagate.down");
+        return this.sessionEnd();
       });
     });
   }
+
+  // onEmit_old() {
+  //   return this.events.onEmit(async (target, detail) => {
+  //     return this.o11y.trace.span("onEmit", async ({ span, withCtx }) => {
+  //       this.o11y.meter.count("onEmit");
+  //       const update = await this.sets.onEmit(target, detail);
+  //       span.addEvent("geometry.session.resolve", {
+  //         "session.id": update.session.id,
+  //         "session.index": update.session.index,
+  //         "session.start": update.session.start,
+  //       });
+
+  //       await withCtx(async () => {
+  //         if (update.type === "terminate") {
+  //           span.addLink({ context: update.session.context });
+  //           span.addEvent("session.joined");
+  //           return;
+  //         }
+  //         span.addEvent("session.completed");
+  //         this.o11y.devtools.log("onEmit.callback.update", { update });
+
+  //         this.sizing = update.sizing;
+  //         switch (update.type) {
+  //           case "root":
+  //             span.addEvent("controller.propagate.down");
+  //             await this.informStyle(update.inform);
+  //             break;
+  //           case "update":
+  //             span.addEvent("controller.propagate.up");
+  //             this.events.emit({
+  //               lifecycle: "update",
+  //               style: update.sizing.container,
+  //               type: "lifecycle",
+  //             });
+  //             break;
+  //           default:
+  //             assertNever({
+  //               details: { update },
+  //               why: "Unrecognized children update type",
+  //             });
+  //         }
+  //       });
+  //     });
+  //   });
+  // }
 
   /**
    * This is the method parent uses to tell its child what style it's

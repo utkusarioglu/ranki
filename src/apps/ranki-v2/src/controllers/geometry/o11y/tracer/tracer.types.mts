@@ -26,6 +26,11 @@ export interface SpanFuncParams {
   ctx: Context;
   span: Span;
   withCtx: CallWithContextMetadata;
+  session: {
+    start: () => void;
+    join: (span: Span) => void;
+    end: () => void;
+  };
 }
 
 export type SpanMetadata = Record<string, unknown>;
