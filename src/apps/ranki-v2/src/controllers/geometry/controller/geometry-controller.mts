@@ -87,23 +87,27 @@ export class GeometryController<
 
   hostConnected(): void {
     this.events.registerListeners();
-    // this.events.emit({ type: "lifecycle", lifecycle: "connected" });
   }
 
   hostDisconnected(): void {
     this.events.deregisterListeners();
-    // this.events.emit({ type: "lifecycle", lifecycle: "disconnected" });
   }
 
   onEmit() {
-    return this.events.onEmit(async (e) => {
+    return this.events.onEmit(async (event) => {
       return this.o11y.trace.span(
         "onEmit",
         async ({ span, session, withLink }) => {
           this.o11y.meter.count("onEmit");
-          this.sizing = this.sets.onEmit(e);
+          this.sizing = this.sets.onEmit(event);
           if (!this.isRoot) {
             span.addEvent("controller.propagate.up");
+            this.o11y.devtools.log("emit.not-root", {
+              event,
+              sizing: this.sizing,
+              tag: this.host.tagName,
+              host: this.host,
+            });
             this.events.emit({
               lifecycle: "update",
               style: this.sizing.container,
@@ -117,65 +121,33 @@ export class GeometryController<
           }
           this.inSession = true;
           session.start();
-          this.o11y.devtools.log("session.start", {});
-          await this.wait.layout();
+          this.o11y.devtools.log("session.start", {
+            event,
+            sizing: this.sizing,
+            tag: this.host.tagName,
+            host: this.host,
+          });
+          await this.wait.raf(3);
           this.inSession = false;
           const inform = GeometrySetsUtils.prepareRootStyle(this.sizing);
           session.end();
-          this.o11y.devtools.log("session.end", {});
+          this.o11y.devtools.log("session.end", {
+            event,
+            sizing: this.sizing,
+            inform,
+          });
           span.addEvent("controller.propagate.down");
           await withLink(() => this.informStyle(inform));
           span.addEvent("controller.animation.end");
-          this.o11y.devtools.log("root.animation.end", { inform });
+          this.o11y.devtools.log("root.animation.end", {
+            event,
+            sizing: this.sizing,
+            inform,
+          });
         },
       );
     });
   }
-
-  // onEmit_old() {
-  //   return this.events.onEmit(async (target, detail) => {
-  //     return this.o11y.trace.span("onEmit", async ({ span, withCtx }) => {
-  //       this.o11y.meter.count("onEmit");
-  //       const update = await this.sets.onEmit(target, detail);
-  //       span.addEvent("geometry.session.resolve", {
-  //         "session.id": update.session.id,
-  //         "session.index": update.session.index,
-  //         "session.start": update.session.start,
-  //       });
-
-  //       await withCtx(async () => {
-  //         if (update.type === "terminate") {
-  //           span.addLink({ context: update.session.context });
-  //           span.addEvent("session.joined");
-  //           return;
-  //         }
-  //         span.addEvent("session.completed");
-  //         this.o11y.devtools.log("onEmit.callback.update", { update });
-
-  //         this.sizing = update.sizing;
-  //         switch (update.type) {
-  //           case "root":
-  //             span.addEvent("controller.propagate.down");
-  //             await this.informStyle(update.inform);
-  //             break;
-  //           case "update":
-  //             span.addEvent("controller.propagate.up");
-  //             this.events.emit({
-  //               lifecycle: "update",
-  //               style: update.sizing.container,
-  //               type: "lifecycle",
-  //             });
-  //             break;
-  //           default:
-  //             assertNever({
-  //               details: { update },
-  //               why: "Unrecognized children update type",
-  //             });
-  //         }
-  //       });
-  //     });
-  //   });
-  // }
 
   /**
    * This is the method parent uses to tell its child what style it's

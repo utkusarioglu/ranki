@@ -27,14 +27,6 @@ export class GeometryChildren<
     return this.updateSizing();
   }
 
-  // public async onEmit_old(
-  //   target: R2C,
-  //   detail: GeometryEvent,
-  // ): ChildrenUpdateSizingReturn {
-  //   this.registry.update(target, detail);
-  //   return this.updateSizing();
-  // }
-
   private updateSizing() {
     return this.o11y.trace.span("updateSizing", () => {
       const serial = this.getElements();
@@ -44,53 +36,4 @@ export class GeometryChildren<
       return sizing;
     });
   }
-
-  // private async updateSizing_old(): ChildrenUpdateSizingReturn {
-  //   if (this.session.isActive()) {
-  //     return {
-  //       session: this.session.join(),
-  //       type: "terminate",
-  //     };
-  //   }
-  //   return this.o11y.trace.span("updateSizing", async ({ span, withCtx }) => {
-  //     try {
-  //       const session = withCtx(
-  //         {
-  //           "geometry.session.tag": this.host.tagName,
-  //         },
-  //         () => this.session.start(),
-  //       );
-  //       span.addEvent("session.start");
-  //       await TimingUtils.raf();
-  //       span.addEvent("session.compute.start");
-
-  //       const serial = this.getElements();
-  //       const ordered = this.registry.getOrdered(serial);
-  //       const layoutCallback = this.layout(this.host);
-  //       const sizing = layoutCallback(ordered);
-
-  //       span.addEvent("session.compute.end");
-
-  //       if (this.isRoot === true) {
-  //         span.addEvent("session.root");
-  //         return {
-  //           inform: GeometrySetsUtils.prepareRootStyle(sizing),
-  //           session,
-  //           sizing,
-  //           type: "root" as const,
-  //         };
-  //       } else {
-  //         span.addEvent("session.propagate");
-  //         return {
-  //           session,
-  //           sizing,
-  //           type: "update" as const,
-  //         };
-  //       }
-  //     } finally {
-  //       this.session.end();
-  //       // this.inSession = false;
-  //     }
-  //   });
-  // }
 }

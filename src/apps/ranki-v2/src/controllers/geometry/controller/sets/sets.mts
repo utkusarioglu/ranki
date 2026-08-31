@@ -35,28 +35,10 @@ export class GeometrySets<Instance extends LitElement> {
     return this.watchers?.inform(props, sizing);
   }
 
-  // /**
-  //  * @dev
-  //  * #1 In onEmit already checks whether the children object has been created
-  //  */
-  // public updateSizing() {
-  //   return this.children!.updateSizing(); //#1
-  // }
-
   public onEmit(e: GeometrySetOnEmitProps) {
     assertNotUndefined(this.children, {
       why: "Received emit when no children has been defined",
     });
     return this.children.onEmit(e);
   }
-
-  // public async onEmit_old(
-  //   target: R2C,
-  //   detail: GeometryEvent,
-  // ): ChildrenUpdateSizingReturn {
-  //   assertNotUndefined(this.children, {
-  //     why: "Received emit when no children has been defined",
-  //   });
-  //   return this.children.onEmit(target, detail);
-  // }
 }

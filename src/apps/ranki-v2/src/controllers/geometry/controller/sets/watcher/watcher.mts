@@ -11,12 +11,10 @@ import { WatcherSet } from "../watcher-set/watcher-set.mjs";
 
 export class GeometryWatchers<Instance extends LitElement> {
   private readonly host: Instance;
-  // private readonly props: GeometryWatcherRecord<Instance>;
   private readonly sets: Record<GeometrySetName, WatcherSet<Instance>> = {};
 
   constructor(host: Instance, props: GeometryWatcherRecord<Instance>) {
     this.host = host;
-    // this.props = props;
     this.sets = Object.fromEntries(
       Object.entries(props).map(([setName, setProps]) => [
         setName,

@@ -87,6 +87,7 @@ export const TEXT: GeometryAnimationPreset = {
 
   "text-span": {
     lifecycle: {
+      update: {},
       enter: {
         root: [
           {

@@ -75,7 +75,7 @@ export class R2Icon extends R2C {
           .props=${p.props}
           @r2-reconciler=${this.subtree.onEmit(p.id)}
           @r2-geometry=${this.geo.onEmit()}
-        ></r2-icon-span`,
+        ></r2-icon-span>`,
     )}`;
   }
 }

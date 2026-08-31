@@ -49,7 +49,6 @@ export const CUE_LIST: GeometryAnimationPreset = {
         root: [
           {
             delay: 0,
-            // duration: 1000,
             duration: 0,
             keyframes: [
               {

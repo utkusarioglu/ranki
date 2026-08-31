@@ -50,20 +50,6 @@ export const HUD: GeometryAnimationPreset = {
         ],
       },
       update: {
-        // root: [
-        //   {
-        //     duration: 0,
-        //     keyframes: [
-        //       {
-        //         // left: "= to.self.left",
-        //         // top: "= to.self.top",
-        //         // width: "= to.self.width",
-        //         // height: "= to.self.height",
-        //       },
-        //     ],
-        //     name: "position",
-        //   },
-        // ],
         sets: {
           children: {
             expose: {

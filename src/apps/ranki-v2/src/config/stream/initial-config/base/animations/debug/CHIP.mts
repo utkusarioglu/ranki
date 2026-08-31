@@ -15,19 +15,6 @@ export const CHIP: GeometryAnimationPreset = {
               },
             },
           },
-          // root: [
-          //   {
-          //     name: "hover",
-          //     duration: 100,
-          //     keyframes: [
-          //       {
-          //         // scale: 2,
-          //         // left: "= to.self.left - 10",
-          //         // width: "= to.self.width + 20",
-          //       },
-          //     ],
-          //   },
-          // ],
         },
         leave: {
           sets: {
@@ -41,19 +28,6 @@ export const CHIP: GeometryAnimationPreset = {
               },
             },
           },
-          // root: [
-          //   {
-          //     name: "hover",
-          //     duration: 100,
-          //     keyframes: [
-          //       {
-          //         left: "= to.self.left",
-          //         width: "= to.self.width",
-          //         // scale: 1,
-          //       },
-          //     ],
-          //   },
-          // ],
         },
       },
     },
@@ -100,7 +74,6 @@ export const CHIP: GeometryAnimationPreset = {
         root: [
           {
             delay: 0,
-            // duration: 1000,
             duration: 0,
             keyframes: [
               {
@@ -118,7 +91,6 @@ export const CHIP: GeometryAnimationPreset = {
         root: [
           {
             delay: 0,
-            // duration: 1000,
             duration: 0,
             keyframes: [
               {
