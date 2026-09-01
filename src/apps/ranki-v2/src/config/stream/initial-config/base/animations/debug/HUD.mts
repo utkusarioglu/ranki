@@ -104,7 +104,7 @@ export const HUD: GeometryAnimationPreset = {
       update: {
         root: [
           {
-            duration: 0,
+            duration: 1000,
             keyframes: [
               {
                 // left: "= to.self.left",
@@ -180,7 +180,7 @@ export const HUD: GeometryAnimationPreset = {
       update: {
         root: [
           {
-            duration: 0,
+            duration: 1000,
             keyframes: [
               {
                 width: "= to.self.width",

@@ -22,37 +22,32 @@ export class LayoutUtils {
       const last = dims.at(-1);
       if (!last) return this.EMPTY_SIZING;
 
+      const lastLeft = gaps.main?.start || 0;
+      const lastTop = gaps.cross?.start || 0;
       const lastWidth = last.style?.width || 0;
       const lastHeight = last.style?.height || 0;
-      const zeros = Array.from({ length: dims.length - 1 }, () => 0);
-      const width = lastWidth + (gaps.main?.start || 0) + (gaps.main?.end || 0);
-      const height =
+
+      const containerWidth =
+        lastWidth + (gaps.main?.start || 0) + (gaps.main?.end || 0);
+      const containerHeight =
         lastHeight + (gaps.cross?.start || 0) + (gaps.cross?.end || 0);
 
-      const lefts = [...zeros, gaps.main?.start || 0];
-      const tops = [...zeros, gaps.cross?.start || 0];
-      const heights = [...zeros, lastHeight];
-      const widths = [...zeros, lastWidth];
-      const lifeCycles = dims.map((d) => d.lifecycle);
-      const interactions = dims.map((d) => d.interaction);
-      const modes = dims.map((d) => d.mode);
-
-      const set = Array.from({ length: dims.length }, (_, i) => i).map((i) => ({
-        interaction: interactions[i],
-        lifecycle: lifeCycles[i],
-        mode: modes[i],
+      const set = Array.from({ length: dims.length }, (_, i) => ({
+        interaction: dims[i].interaction,
+        lifecycle: dims[i].lifecycle,
+        mode: dims[i].mode,
         style: {
-          height: heights[i],
-          left: lefts[i],
-          top: tops[i],
-          width: widths[i],
+          height: lastHeight,
+          width: lastWidth,
+          top: lastTop,
+          left: lastLeft,
         },
       }));
 
       return {
         container: {
-          height,
-          width,
+          height: containerHeight,
+          width: containerWidth,
         },
         set,
       };

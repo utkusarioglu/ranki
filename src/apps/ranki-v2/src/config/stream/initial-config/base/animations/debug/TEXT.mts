@@ -61,7 +61,7 @@ export const TEXT: GeometryAnimationPreset = {
       update: {
         root: [
           {
-            duration: 0,
+            duration: 1000,
             keyframes: [
               {
                 height: "= to.self.height",
@@ -87,7 +87,6 @@ export const TEXT: GeometryAnimationPreset = {
 
   "text-span": {
     lifecycle: {
-      update: {},
       enter: {
         root: [
           {
@@ -101,7 +100,7 @@ export const TEXT: GeometryAnimationPreset = {
             name: "init",
           },
           {
-            duration: 0,
+            duration: 1000,
             keyframes: [
               {
                 opacity: 1,
@@ -115,7 +114,7 @@ export const TEXT: GeometryAnimationPreset = {
       leave: {
         root: [
           {
-            duration: 0,
+            duration: 1000,
             keyframes: [
               {
                 opacity: 0,

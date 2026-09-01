@@ -9,8 +9,10 @@ export const BADGE_LIST: GeometryAnimationPreset = {
             duration: 0,
             keyframes: [
               {
+                height: "= to.self.height",
                 left: "= to.self.left",
                 top: "= to.self.top",
+                width: "= to.self.width",
               },
             ],
             name: "init",
@@ -49,7 +51,7 @@ export const BADGE_LIST: GeometryAnimationPreset = {
         root: [
           {
             delay: 0,
-            duration: 0,
+            duration: 1000,
             keyframes: [
               {
                 height: "= to.self.height",
