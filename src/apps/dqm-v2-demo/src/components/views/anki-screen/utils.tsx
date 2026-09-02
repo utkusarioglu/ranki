@@ -34,6 +34,7 @@ export function createFragment(parts: RankiFiles) {
   inputElems.forEach((e) => {
     e.innerHTML = "";
   });
+
   return fragment;
 }
 

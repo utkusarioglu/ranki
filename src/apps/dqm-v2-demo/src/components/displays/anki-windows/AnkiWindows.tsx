@@ -36,6 +36,7 @@ export const AnkiWindows = () => {
         reservedWidth={ui.menuWidth}
         scale={win.previewScale}
         src={ankiWinSrc}
+        srcFilters={['[src*="_anki"]', '[href*="_anki"]']}
         onEvent={(e) => win.addEvent(e)}
         Top={
           <div>

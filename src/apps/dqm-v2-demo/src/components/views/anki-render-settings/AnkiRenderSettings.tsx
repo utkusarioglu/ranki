@@ -120,6 +120,7 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
         }))
         .map(({ a, f }) => (
           <Button
+            key={a}
             onClick={() => store.setPreviewAspect(f)}
             type={f === store.previewAspect ? "primary" : "default"}
           >
@@ -159,6 +160,7 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
       <Typography>Flag</Typography>
       {FLAGS.map((flag) => (
         <Button
+          key={flag.flag}
           onClick={() => store.setFlag(flag.flag)}
           style={{
             backgroundColor: flag.color,

@@ -11,9 +11,23 @@ export interface AnkiDesktopIFrameProps {
   files: RankiFiles;
   onLoad: () => void;
   ref: RefObject<HTMLIFrameElement | null>;
-  src: string;
+
+  /**
+   * This isn't an url. this is the root html document string that shall be put
+   * in the iframe element. Consumer needs to do its own fetch and prepare the
+   * document string.
+   */
+  srcDoc: string;
+
+  /**
+   * Allows interfering with `window.fetch` calls made by the iframe. it's
+   * useful for logging fetch calls, preventing them, or returning fake
+   * responses for them.
+   */
   onFetch?: (originalFetch: typeof window.fetch) => typeof window.fetch;
 }
+
+const FETCH_OVERRIDE = Symbol("fetcher");
 
 /**
  * @dev
@@ -24,7 +38,7 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
   files,
   onLoad,
   ref,
-  src,
+  srcDoc,
   onFetch,
 }) => {
   const replaced = createRankiElements(files);
@@ -37,10 +51,19 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
         ref.current = e.target as HTMLIFrameElement;
         const doc = ref.current?.contentDocument!;
         assertExists(doc, { why: "doc is needed" });
-        const base = doc.querySelector("base") as HTMLBaseElement;
-        if (base) {
-          base.href = window.location.origin;
+
+        let base = doc.querySelector("base") as HTMLBaseElement;
+        if (!base) {
+          let head = doc.querySelector("head");
+          if (!head) {
+            head = document.createElement("head");
+            doc.appendChild(head);
+          }
+          base = document.createElement("base");
+          head.appendChild(base);
         }
+        base.href = window.location.origin;
+
         const qa = doc.body.querySelector("#qa");
         assertExists(qa, { why: "#qa required for anki webview" });
         qa.replaceChildren(replaced.fragment);
@@ -69,11 +92,9 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
             } else {
               const fragment = createFragment(files);
               qa.replaceChildren(fragment);
-              // qa.innerHTML = "";
             }
             const setField = (name: string, value: string) => {
               const selector = mapping[name];
-              // assertExists(selector, { why: "t" });
               let f = qa.querySelector<HTMLScriptElement>(selector)!;
               if (!f) {
                 const tag = selector.split(".")[0];
@@ -110,7 +131,6 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
             if (ren) {
               ren.parentElement!.removeChild(ren);
             }
-            // assertExists(ren, { why: "Cannot find element" });
           },
         );
 
@@ -122,58 +142,19 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
         });
 
         if (onFetch) {
+          Object.defineProperty(onFetch, FETCH_OVERRIDE, { value: true });
           const frameWindow = ref.current.contentWindow;
-          if (frameWindow) {
+          if (
+            frameWindow &&
+            !Object.hasOwn(frameWindow.fetch, FETCH_OVERRIDE)
+          ) {
             frameWindow.fetch = onFetch(frameWindow.fetch);
-            // const frameFetch = frameWindow.fetch;
-            // if (frameFetch) {
-            //   frameWindow.fetch = (url: string, ...others) => {
-            //     // return frameFetch(...args);
-            //     // return Promise.reject(new TypeError("Failed to fetch"));
-            //     if (["8080", "file-batch"].some((v) => url.includes(v))) {
-            //       console.log("fetch override", url, others);
-            //       return Promise.resolve(
-            //         new Response(JSON.stringify({ hello: "world" }), {
-            //           status: 200,
-            //           headers: {
-            //             "Content-Type": "application/json",
-            //           },
-            //         }),
-            //       );
-            //     } else {
-            //       return frameFetch(url, ...others);
-            //     }
-            //   };
-            // }
           }
         }
-        // const frameWindow = ref.current.contentWindow;
-        // if (frameWindow) {
-        //   const frameFetch = frameWindow.fetch;
-        //   if (frameFetch) {
-        //     frameWindow.fetch = (url: string, ...others) => {
-        //       // return frameFetch(...args);
-        //       // return Promise.reject(new TypeError("Failed to fetch"));
-        //       if (["8080", "file-batch"].some((v) => url.includes(v))) {
-        //         console.log("fetch override", url, others);
-        //         return Promise.resolve(
-        //           new Response(JSON.stringify({ hello: "world" }), {
-        //             status: 200,
-        //             headers: {
-        //               "Content-Type": "application/json",
-        //             },
-        //           }),
-        //         );
-        //       } else {
-        //         return frameFetch(url, ...others);
-        //       }
-        //     };
-        //   }
-        // }
 
         onLoad();
       }}
-      src={src}
+      srcDoc={srcDoc}
     />
   );
 };

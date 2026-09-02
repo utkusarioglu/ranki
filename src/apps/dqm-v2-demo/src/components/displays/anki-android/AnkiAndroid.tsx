@@ -35,6 +35,7 @@ export const AnkiAndroid = () => {
         reservedWidth={ui.menuWidth}
         scale={android.previewScale}
         src={ankiAndroidSrc}
+        srcFilters={['[src*="file:"]', '[href*="file:"]']}
         onEvent={(e) => android.addEvent(e)}
         Top={
           <div>
@@ -49,8 +50,8 @@ export const AnkiAndroid = () => {
             <div className={style.ankiTop}>
               {Array(7)
                 .fill(null)
-                .map(() => (
-                  <div />
+                .map((_, i) => (
+                  <div key={i} />
                 ))}
             </div>
           </div>
