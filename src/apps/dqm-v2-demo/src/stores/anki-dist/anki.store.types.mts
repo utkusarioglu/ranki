@@ -1,5 +1,6 @@
 export type AnkiDistStore = AnkiDistStoreActions & AnkiDistStoreStates;
 export interface AnkiDistStoreActions {
+  addEvent: (e: RankiIframeEvent) => void;
   setAppVariant: (c: RankiAppVariant) => void;
   setCard: (c: RankiCard) => void;
   setCardConfig: (c: RankiConfigString) => void;
@@ -13,11 +14,6 @@ export interface AnkiDistStoreActions {
   setPreviewScale: (n: number) => void;
   setTags: (t: RankiTagString) => void;
   setTemplateConfig: (c: RankiConfigString) => void;
-  addEvent: (e: RankiIframeEvent) => void;
-}
-
-export interface RankiIframeEvent {
-  log: string;
 }
 
 export interface AnkiDistStoreStates {
@@ -28,25 +24,29 @@ export interface AnkiDistStoreStates {
   colorScheme: ColorSchemes;
   contentType: RankiContentType;
   deck: RankiDeckString;
+  events: RankiIframeEvent[];
   face: RankiFace;
   flag: RankiFlag;
   previewAspect: number;
   previewScale: number;
   tags: RankiTagString;
   templateConfig: RankiConfigString;
-  events: RankiIframeEvent[];
 }
 
 export type ColorSchemes = "dark" | "light";
+
 export type RankiAppVariant = "core" | "devtools" | "o11y";
 export type RankiCard = string;
-
 export type RankiCardType = string;
+
 export type RankiConfigString = string;
 export type RankiContentType = "foreign" | "r2";
 export type RankiDeckString = string;
 export type RankiFace = "N" | "Q";
-
 export type RankiFlag = `flag${number}`;
+
+export interface RankiIframeEvent {
+  log: string;
+}
 
 export type RankiTagString = string;

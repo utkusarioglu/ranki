@@ -9,11 +9,11 @@ export const useAnkiWinStore = createAnkiStore({
   colorScheme: "dark",
   contentType: "r2",
   deck: DECK,
+  events: [],
   face: "Q",
   flag: "flag0",
   previewAspect: 16 / 9,
   previewScale: 1.25,
   tags: "win",
   templateConfig: TEMPLATE_CONFIG,
-  events: [],
 });

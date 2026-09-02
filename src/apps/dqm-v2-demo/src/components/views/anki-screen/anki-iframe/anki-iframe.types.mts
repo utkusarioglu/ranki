@@ -1,9 +1,17 @@
 import type { RefObject } from "react";
+
 import type { RankiFiles } from "../AnkiScreen.types.mts";
 
 export interface AnkiDesktopIFrameProps {
   files: RankiFiles;
+  /**
+   * Allows interfering with `window.fetch` calls made by the iframe. it's
+   * useful for logging fetch calls, preventing them, or returning fake
+   * responses for them.
+   */
+  onFetch?: (originalFetch: typeof window.fetch) => typeof window.fetch;
   onLoad: () => void;
+
   ref: RefObject<HTMLIFrameElement | null>;
 
   /**
@@ -12,11 +20,4 @@ export interface AnkiDesktopIFrameProps {
    * document string.
    */
   srcDoc: string;
-
-  /**
-   * Allows interfering with `window.fetch` calls made by the iframe. it's
-   * useful for logging fetch calls, preventing them, or returning fake
-   * responses for them.
-   */
-  onFetch?: (originalFetch: typeof window.fetch) => typeof window.fetch;
 }

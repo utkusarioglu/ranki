@@ -30,7 +30,7 @@ export const DqmConfigOptions = () => {
       setConfigCodeByIndex: dqm.setConfigCodeByIndex,
       setConfigValueByIndex: dqm.setConfigValueByIndex,
     }),
-    [],
+    [dqm],
   );
   const fixedConfig = buildPluginSelectionConfig(dqm.pluginSelection);
 

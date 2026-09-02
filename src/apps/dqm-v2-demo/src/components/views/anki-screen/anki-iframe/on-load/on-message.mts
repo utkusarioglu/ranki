@@ -1,10 +1,13 @@
-import { RENDERED_CLASS_SELECTOR } from "@ranki/app-ranki-v2/constants";
+import type { RankiIframeMessage } from "_views/anki-screen/utils/send-changes.mjs";
+
 import { assertExists } from "_assertions";
+import { RENDERED_CLASS_SELECTOR } from "@ranki/app-ranki-v2/constants";
+
 import type { RankiFiles } from "../../AnkiScreen.types.mts";
+import type { OnMessageCallback } from "./on-message.types.mts";
+
 import { createFragment } from "../../utils/create-fragment.mts";
 import { MAPPING } from "../anki-iframe.constants.mts";
-import type { RankiIframeMessage } from "_views/anki-screen/utils/send-changes.mjs";
-import type { OnMessageCallback } from "./on-message.types.mts";
 
 export const onMessageCallback: OnMessageCallback =
   (doc, qa, files) =>
@@ -18,28 +21,6 @@ export const onMessageCallback: OnMessageCallback =
       ensureRerender(qa);
     }
   };
-
-function setFields(data: RankiIframeMessage, qa: Element) {
-  Object.entries(data.ranki.fields).forEach(([n, v]) => {
-    setField(qa, n, v as string);
-  });
-}
-
-function setTemplateHtml(
-  qa: Element,
-  data: RankiIframeMessage,
-  files: RankiFiles,
-) {
-  if (data.ranki.contentType === "foreign") {
-    if (qa) {
-      qa.innerHTML = "Foreign Content";
-      return;
-    }
-  } else {
-    const fragment = createFragment(files);
-    qa.replaceChildren(fragment);
-  }
-}
 
 function ensureRerender(qa: Element) {
   const ren = qa.querySelector(RENDERED_CLASS_SELECTOR);
@@ -65,6 +46,28 @@ function setColorScheme(doc: HTMLDocument, data: RankiIframeMessage) {
     html.classList.add("night-mode");
     html.classList.remove("light-mode");
     html.setAttribute("data-bs-theme", "dark");
+  }
+}
+
+function setFields(data: RankiIframeMessage, qa: Element) {
+  Object.entries(data.ranki.fields).forEach(([n, v]) => {
+    setField(qa, n, v as string);
+  });
+}
+
+function setTemplateHtml(
+  qa: Element,
+  data: RankiIframeMessage,
+  files: RankiFiles,
+) {
+  if (data.ranki.contentType === "foreign") {
+    if (qa) {
+      qa.innerHTML = "Foreign Content";
+      return;
+    }
+  } else {
+    const fragment = createFragment(files);
+    qa.replaceChildren(fragment);
   }
 }
 

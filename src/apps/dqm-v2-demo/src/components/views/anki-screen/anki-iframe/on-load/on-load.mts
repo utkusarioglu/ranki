@@ -1,12 +1,14 @@
 import { assertExists } from "_assertions";
-import { createRankiElements } from "../../utils/create-ranki-elements.mts";
-import { FETCH_OVERRIDE } from "../anki-iframe";
+
 import type { RankiFiles } from "../../AnkiScreen.types.mts";
 import type { IFrameOnLoadCb } from "./on-load.types.mts";
+
+import { createRankiElements } from "../../utils/create-ranki-elements.mts";
+import { FETCH_OVERRIDE } from "../anki-iframe";
 import { onMessageCallback } from "./on-message.mts";
 
 export const iFrameOnLoad: IFrameOnLoadCb =
-  ({ ref, files, onFetch, onLoad }) =>
+  ({ files, onFetch, onLoad, ref }) =>
   (e) => {
     ref.current = e.target as HTMLIFrameElement;
 
@@ -22,20 +24,6 @@ export const iFrameOnLoad: IFrameOnLoadCb =
     onLoad();
   };
 
-function overrideWindowFetchFunc(
-  win: Window,
-  onFetch:
-    | ((originalFetch: typeof window.fetch) => typeof window.fetch)
-    | undefined,
-) {
-  if (onFetch) {
-    Object.defineProperty(onFetch, FETCH_OVERRIDE, { value: true });
-    if (!Object.hasOwn(win.fetch, FETCH_OVERRIDE)) {
-      win.fetch = onFetch(win.fetch);
-    }
-  }
-}
-
 function attachFileSourcedTags(win: Window, doc: Document, files: RankiFiles) {
   const replaced = createRankiElements(files);
   const qa = doc.body.querySelector("#qa");
@@ -50,6 +38,20 @@ function attachFileSourcedTags(win: Window, doc: Document, files: RankiFiles) {
   replaced.jss.forEach((js) => {
     doc.body.appendChild(js);
   });
+}
+
+function overrideWindowFetchFunc(
+  win: Window,
+  onFetch:
+    | ((originalFetch: typeof window.fetch) => typeof window.fetch)
+    | undefined,
+) {
+  if (onFetch) {
+    Object.defineProperty(onFetch, FETCH_OVERRIDE, { value: true });
+    if (!Object.hasOwn(win.fetch, FETCH_OVERRIDE)) {
+      win.fetch = onFetch(win.fetch);
+    }
+  }
 }
 
 function setHtmlBaseTag(doc: Document) {

@@ -1,8 +1,5 @@
 import type { ResourceProps } from "_views/iframe/IFrame";
 
-// @ts-expect-error
-import { AsyncIFrame } from "_views/iframe/IFrame";
-
 import style from "./DocumentRender.module.css";
 import { TrialRender } from "./Trial";
 

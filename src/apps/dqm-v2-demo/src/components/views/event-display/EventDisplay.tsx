@@ -1,6 +1,7 @@
 import type { RankiIframeEvent } from "_stores/anki-dist/anki.store.types.mjs";
-import style from "./EventDisplay.module.css";
 import type { FC } from "react";
+
+import style from "./EventDisplay.module.css";
 
 interface EventsDisplayProps {
   events: RankiIframeEvent[];

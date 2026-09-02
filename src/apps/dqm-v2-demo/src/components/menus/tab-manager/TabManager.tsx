@@ -187,7 +187,7 @@ const TabLevel: FC<TabManagerProps> = ({ current, levels }) => {
 
   const prepared = levels.map((l) => ({
     children: l.childLevels ? (
-      <TabLevel key={l.key} current={current + 1} levels={l.childLevels} />
+      <TabLevel current={current + 1} key={l.key} levels={l.childLevels} />
     ) : (
       <Activator key={l.key} route={l.route}>
         {l.TabChild}

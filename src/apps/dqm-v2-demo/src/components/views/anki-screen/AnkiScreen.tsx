@@ -1,10 +1,11 @@
 import { type FC } from "react";
 
+import type { AnkiScreenProps } from "./AnkiScreen.types.mts";
+
 import { AnkiIFrame } from "./anki-iframe/anki-iframe";
 import style from "./AnkiScreen.module.css";
-import { getSizing } from "./utils/get-sizing.mts";
 import { useDocumentCleaner, useRankiFiles } from "./hooks/hooks.mts";
-import type { AnkiScreenProps } from "./AnkiScreen.types.mts";
+import { getSizing } from "./utils/get-sizing.mts";
 
 const PADDING = 16;
 
@@ -13,6 +14,7 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   aspect,
   Bottom,
   deviceClassName,
+  onEvent,
   onLoad,
   ref,
   reservedWidth,
@@ -20,7 +22,6 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   src,
   srcFilters,
   Top,
-  onEvent,
 }) => {
   const files = useRankiFiles(appVariant);
   const srcDoc = useDocumentCleaner(src, srcFilters);
@@ -50,25 +51,25 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
         <AnkiIFrame
           files={files}
           key={appVariant}
-          onLoad={onLoad}
-          ref={ref}
-          srcDoc={srcDoc}
           onFetch={(original) => (url) => {
             const urlString = url.toString();
             if (["8080", "file-batch"].some((v) => urlString.includes(v))) {
               onEvent({ log: `Fetch override: ${urlString}` });
               return Promise.resolve(
                 new Response(JSON.stringify({}), {
-                  status: 200,
                   headers: {
                     "Content-Type": "application/json",
                   },
+                  status: 200,
                 }),
               );
             } else {
               return original(url);
             }
           }}
+          onLoad={onLoad}
+          ref={ref}
+          srcDoc={srcDoc}
         />
         {Bottom}
       </div>

@@ -87,7 +87,7 @@ function useLocalState({
           message: null,
         });
         setConfigValueByIndex(index, value, parsed);
-      } catch (e) {
+      } catch {
         setLocal({
           configStr: value,
           message: ERROR_MESSAGE,

@@ -1,14 +1,14 @@
-import type { IDqmRendererClientPreferences } from "@dqm/package-dqm-api-v2";
-import { assertExists } from "_assertions";
 import type {
   AnkiDistStore,
   RankiContentType,
 } from "_stores/anki-dist/anki.store.types.mjs";
 import type { DqmStore } from "_stores/dqm/dqm.store.types.mjs";
+import type { IDqmRendererClientPreferences } from "@dqm/package-dqm-api-v2";
 import type { RefObject } from "react";
 
+import { assertExists } from "_assertions";
+
 export interface RankiIframeMessage {
-  type: "ranki-update";
   ranki: {
     contentType: RankiContentType;
     fields: {
@@ -23,6 +23,7 @@ export interface RankiIframeMessage {
     };
     pref: IDqmRendererClientPreferences;
   };
+  type: "ranki-update";
 }
 
 export function sendChanges(
@@ -36,7 +37,6 @@ export function sendChanges(
   assertExists(cWIn, { why: "Iframe content window is required" });
 
   const message: RankiIframeMessage = {
-    type: "ranki-update",
     ranki: {
       contentType: win.contentType,
       fields: {
@@ -53,6 +53,7 @@ export function sendChanges(
         scheme: win.colorScheme,
       },
     },
+    type: "ranki-update",
   };
 
   cWIn.postMessage(message);

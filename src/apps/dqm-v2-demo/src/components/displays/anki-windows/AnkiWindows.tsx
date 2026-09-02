@@ -3,11 +3,11 @@ import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
 import { useUiStore } from "_stores/ui/ui.store.mjs";
 import { AnkiScreen } from "_views/anki-screen/AnkiScreen";
 import { sendChanges } from "_views/anki-screen/utils/send-changes.mjs";
+import { EventsDisplay } from "_views/event-display/EventDisplay";
 import { useRef } from "react";
 
 import ankiWinSrc from "./anki-windows.html?url";
 import style from "./AnkiWindows.module.css";
-import { EventsDisplay } from "_views/event-display/EventDisplay";
 
 export const AnkiWindows = () => {
   const ref = useRef<HTMLIFrameElement>(null);
@@ -31,13 +31,13 @@ export const AnkiWindows = () => {
           </div>
         }
         deviceClassName={style.device}
+        onEvent={(e) => win.addEvent(e)}
         onLoad={() => sendChanges(win, dqm, ref)}
         ref={ref}
         reservedWidth={ui.menuWidth}
         scale={win.previewScale}
         src={ankiWinSrc}
         srcFilters={['[src*="_anki"]', '[href*="_anki"]']}
-        onEvent={(e) => win.addEvent(e)}
         Top={
           <div>
             <div className={style.osTop}>

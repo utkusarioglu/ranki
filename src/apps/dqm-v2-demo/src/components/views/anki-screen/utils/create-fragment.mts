@@ -1,4 +1,5 @@
 import { DqmDemoError } from "_error";
+
 import type { RankiFiles } from "../AnkiScreen.types.mts";
 
 export const URL_TEMPLATE = "/%";

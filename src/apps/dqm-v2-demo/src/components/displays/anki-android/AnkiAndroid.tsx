@@ -2,12 +2,12 @@ import { useAnkiAndroidStore } from "_stores/anki-dist/anki-android.store.mjs";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
 import { useUiStore } from "_stores/ui/ui.store.mjs";
 import { sendChanges } from "_views/anki-screen/utils/send-changes.mjs";
+import { EventsDisplay } from "_views/event-display/EventDisplay";
 import { useRef } from "react";
 
 import { AnkiScreen } from "../../views/anki-screen/AnkiScreen";
 import ankiAndroidSrc from "./anki-android.html?url";
 import style from "./AnkiAndroid.module.css";
-import { EventsDisplay } from "_views/event-display/EventDisplay";
 
 export const AnkiAndroid = () => {
   const ref = useRef<HTMLIFrameElement>(null);
@@ -30,13 +30,13 @@ export const AnkiAndroid = () => {
           </div>
         }
         deviceClassName={style.device}
+        onEvent={(e) => android.addEvent(e)}
         onLoad={() => sendChanges(android, dqm, ref)}
         ref={ref}
         reservedWidth={ui.menuWidth}
         scale={android.previewScale}
         src={ankiAndroidSrc}
         srcFilters={['[src*="file:"]', '[href*="file:"]']}
-        onEvent={(e) => android.addEvent(e)}
         Top={
           <div>
             <div className={style.osTop}>
