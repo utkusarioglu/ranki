@@ -107,6 +107,8 @@ export class GeometryController<
               sizing: this.sizing,
               tag: this.host.tagName,
               host: this.host,
+              curr: this.curr,
+              prev: this.prev,
             });
             this.events.emit({
               lifecycle: "update",
@@ -178,6 +180,7 @@ export class GeometryController<
       span.addEvent("style.ready");
 
       this.o11y.devtools.log("informStyle", {
+        host: this.host,
         tag: this.host.tagName,
         curr: this.curr,
         informed,

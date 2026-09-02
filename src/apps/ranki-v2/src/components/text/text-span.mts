@@ -16,7 +16,9 @@ import style from "./text-span.css?inline";
 export class R2TextSpan extends R2C {
   static override styles = unsafeCSS(style);
 
-  @property()
+  @property({
+    hasChanged: () => false,
+  })
   public accessor props!: R2TextProps;
 
   @geometry({

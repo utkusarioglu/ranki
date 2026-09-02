@@ -14,6 +14,7 @@ import {
   type R2ReconcilerEmit,
   type ReconcilableSubtree,
   type ReconcileSingle,
+  type ReconciliationContainer,
 } from "./utils.types.mjs";
 
 export class ReconciliationController<
@@ -63,7 +64,7 @@ export class ReconciliationController<
       this.curr.list.forEach((p, index) => {
         if (p.leave) {
           const stagger = this.curr.diff.stagger.indices[index];
-          bl(this.host, "leave", { index, stagger: stagger });
+          bl(this.host, "leave", { index, stagger });
         }
       });
     }
@@ -89,43 +90,49 @@ export class ReconciliationController<
     };
   }
 
+  private async waitLayout() {
+    await new Promise<void>((r) => requestAnimationFrame(() => r()));
+    await new Promise<void>((r) => requestAnimationFrame(() => r()));
+  }
+
   private async leave(
     subtree: ReconcilableSubtree<S>,
     id: number,
   ): Promise<void> {
     this.leaving.push(id);
-    if (!this.willLeave) {
-      this.willLeave = true;
-      await new Promise<void>((r) => requestAnimationFrame(() => r()));
-      await new Promise<void>((r) => requestAnimationFrame(() => r()));
-      if (!this.leaving.length) {
-        return;
-      }
-      const remove = [...this.leaving];
-      const list = subtree.list.filter((i) => !remove.includes(i.id));
-      this.leaving = [];
-      this.willLeave = false;
-      // !FIX: this should be gone. `retain` can be created from the `subtree.list.filter` call. the call below is buggy
-      const retain = Array.from(
-        { length: subtree.list.length - remove.length },
-        (_, i) => i,
-      );
+    if (this.willLeave) return;
 
-      this.setCurr({
-        diff: {
-          add: [],
-          remove,
-          retain,
-          stagger: {
-            first: id,
-            indices: subtree.diff.stagger.indices,
-          },
-          update: [],
+    this.willLeave = true;
+    await this.waitLayout();
+    if (!this.leaving.length) return;
+
+    const remove = [...this.leaving];
+    this.leaving = [];
+    const list: ReconciliationContainer<S>[] = [];
+    const retain: number[] = [];
+    subtree.list.forEach((e) => {
+      if (!remove.includes(e.id)) {
+        list.push(e);
+      } else {
+        retain.push(e.id);
+      }
+    });
+    this.willLeave = false;
+
+    this.setCurr({
+      diff: {
+        add: [],
+        remove,
+        retain,
+        stagger: {
+          first: id,
+          indices: subtree.diff.stagger.indices,
         },
-        epoch: Date.now(),
-        list,
-      });
-    }
+        update: [],
+      },
+      epoch: Date.now(),
+      list,
+    });
   }
 
   private setCurr(value: ReconcilableSubtree<S>) {

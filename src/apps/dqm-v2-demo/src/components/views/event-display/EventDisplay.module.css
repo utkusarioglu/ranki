@@ -1,0 +1,11 @@
+.eventsDisplay {
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+  height: 20px;
+  right: 0;
+  width: 200px;
+  color: red;
+  text-align: right;
+  padding-inline: 1em;
+}

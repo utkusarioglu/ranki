@@ -47,6 +47,9 @@ export class R2Text extends R2C {
   private readonly geo!: GeometryController<R2Text>;
 
   @property()
+  // {
+  // hasChanged: () => false,
+  // }
   private accessor props!: R2TextProps;
 
   @queryAll("r2-text-span")

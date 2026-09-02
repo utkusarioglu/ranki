@@ -1,4 +1,7 @@
-import type { RankiAppVariant } from "_stores/anki-dist/anki.store.types.mjs";
+import type {
+  RankiAppVariant,
+  RankiIframeEvent,
+} from "_stores/anki-dist/anki.store.types.mjs";
 
 import { type FC, type ReactNode } from "react";
 
@@ -19,7 +22,10 @@ export type RankiFiles = {
   js: Record<string, string>;
 };
 
-interface AnkiScreenProps extends Omit<AnkiDesktopIFrameProps, "files"> {
+interface AnkiScreenProps extends Omit<
+  AnkiDesktopIFrameProps,
+  "files" | "onFetch"
+> {
   appVariant: RankiAppVariant;
   aspect: number;
   Bottom: ReactNode;
@@ -29,6 +35,7 @@ interface AnkiScreenProps extends Omit<AnkiDesktopIFrameProps, "files"> {
   reservedWidth: number;
   scale: number;
   Top: ReactNode;
+  onEvent: (event: RankiIframeEvent) => void;
 }
 
 const PADDING = 16;
@@ -44,6 +51,7 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   scale,
   src,
   Top,
+  onEvent,
 }) => {
   const files = useRankiFiles(appVariant);
 
@@ -75,6 +83,22 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
           onLoad={onLoad}
           ref={ref}
           src={src}
+          onFetch={(original) => (url) => {
+            const urlString = url.toString();
+            if (["8080", "file-batch"].some((v) => urlString.includes(v))) {
+              onEvent({ log: `Fetch override: ${urlString}` });
+              return Promise.resolve(
+                new Response(JSON.stringify({ hello: "world" }), {
+                  status: 200,
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }),
+              );
+            } else {
+              return original(url);
+            }
+          }}
         />
         {Bottom}
       </div>

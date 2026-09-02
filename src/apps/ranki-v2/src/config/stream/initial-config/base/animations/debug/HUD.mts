@@ -63,6 +63,12 @@ export const HUD: GeometryAnimationPreset = {
   },
 
   "hud-bg": {
+    interaction: {
+      hover: {
+        enter: {},
+        leave: {},
+      },
+    },
     lifecycle: {
       enter: {
         root: [

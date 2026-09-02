@@ -181,15 +181,11 @@ export class Animator<Instance extends LitElement> {
         }
         //
       } catch (e) {
-        console.log("ABORT", {
-          e,
-          host: this.host,
-          new: {
-            keyframes,
-            name,
-            options,
-          },
-          running: this.running,
+        this.o11y.devtools.log("animation.abort", {
+          name,
+          tag: this.host.tagName,
+          keyframes,
+          options,
         });
       }
     });

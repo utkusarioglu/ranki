@@ -87,6 +87,8 @@ export const TEXT: GeometryAnimationPreset = {
 
   "text-span": {
     lifecycle: {
+      // FIX text span should never have a need to call this.
+      update: {},
       enter: {
         root: [
           {
@@ -100,7 +102,7 @@ export const TEXT: GeometryAnimationPreset = {
             name: "init",
           },
           {
-            duration: 1000,
+            duration: 3000,
             keyframes: [
               {
                 opacity: 1,

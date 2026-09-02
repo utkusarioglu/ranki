@@ -22,4 +22,5 @@ export const createAnkiStore = (defaults: AnkiDistStoreStates) =>
     setPreviewScale: (previewScale) => set(() => ({ previewScale })),
     setTags: (tags) => set(() => ({ tags })),
     setTemplateConfig: (templateConfig) => set(() => ({ templateConfig })),
+    addEvent: (e) => set((s) => ({ events: [...s.events, e] })),
   }));

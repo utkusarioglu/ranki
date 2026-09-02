@@ -12,6 +12,7 @@ export interface AnkiDesktopIFrameProps {
   onLoad: () => void;
   ref: RefObject<HTMLIFrameElement | null>;
   src: string;
+  onFetch?: (originalFetch: typeof window.fetch) => typeof window.fetch;
 }
 
 /**
@@ -24,6 +25,7 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
   onLoad,
   ref,
   src,
+  onFetch,
 }) => {
   const replaced = createRankiElements(files);
 
@@ -118,6 +120,56 @@ export const AnkiIFrame: FC<AnkiDesktopIFrameProps> = ({
         replaced.jss.forEach((js) => {
           doc.body.appendChild(js);
         });
+
+        if (onFetch) {
+          const frameWindow = ref.current.contentWindow;
+          if (frameWindow) {
+            frameWindow.fetch = onFetch(frameWindow.fetch);
+            // const frameFetch = frameWindow.fetch;
+            // if (frameFetch) {
+            //   frameWindow.fetch = (url: string, ...others) => {
+            //     // return frameFetch(...args);
+            //     // return Promise.reject(new TypeError("Failed to fetch"));
+            //     if (["8080", "file-batch"].some((v) => url.includes(v))) {
+            //       console.log("fetch override", url, others);
+            //       return Promise.resolve(
+            //         new Response(JSON.stringify({ hello: "world" }), {
+            //           status: 200,
+            //           headers: {
+            //             "Content-Type": "application/json",
+            //           },
+            //         }),
+            //       );
+            //     } else {
+            //       return frameFetch(url, ...others);
+            //     }
+            //   };
+            // }
+          }
+        }
+        // const frameWindow = ref.current.contentWindow;
+        // if (frameWindow) {
+        //   const frameFetch = frameWindow.fetch;
+        //   if (frameFetch) {
+        //     frameWindow.fetch = (url: string, ...others) => {
+        //       // return frameFetch(...args);
+        //       // return Promise.reject(new TypeError("Failed to fetch"));
+        //       if (["8080", "file-batch"].some((v) => url.includes(v))) {
+        //         console.log("fetch override", url, others);
+        //         return Promise.resolve(
+        //           new Response(JSON.stringify({ hello: "world" }), {
+        //             status: 200,
+        //             headers: {
+        //               "Content-Type": "application/json",
+        //             },
+        //           }),
+        //         );
+        //       } else {
+        //         return frameFetch(url, ...others);
+        //       }
+        //     };
+        //   }
+        // }
 
         onLoad();
       }}

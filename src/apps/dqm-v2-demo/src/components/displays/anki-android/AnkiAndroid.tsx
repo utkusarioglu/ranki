@@ -7,6 +7,7 @@ import { useRef } from "react";
 import { AnkiScreen } from "../../views/anki-screen/AnkiScreen";
 import ankiAndroidSrc from "./anki-android.html?url";
 import style from "./AnkiAndroid.module.css";
+import { EventsDisplay } from "_views/event-display/EventDisplay";
 
 export const AnkiAndroid = () => {
   const ref = useRef<HTMLIFrameElement>(null);
@@ -17,41 +18,45 @@ export const AnkiAndroid = () => {
   sendChanges(android, dqm, ref);
 
   return (
-    <AnkiScreen
-      appVariant={android.appVariant}
-      aspect={android.previewAspect}
-      Bottom={
-        <div className={style.bottom}>
+    <>
+      <AnkiScreen
+        appVariant={android.appVariant}
+        aspect={android.previewAspect}
+        Bottom={
+          <div className={style.bottom}>
+            <div>
+              <button></button>
+            </div>
+          </div>
+        }
+        deviceClassName={style.device}
+        onLoad={() => sendChanges(android, dqm, ref)}
+        ref={ref}
+        reservedWidth={ui.menuWidth}
+        scale={android.previewScale}
+        src={ankiAndroidSrc}
+        onEvent={(e) => android.addEvent(e)}
+        Top={
           <div>
-            <button></button>
-          </div>
-        </div>
-      }
-      deviceClassName={style.device}
-      onLoad={() => sendChanges(android, dqm, ref)}
-      ref={ref}
-      reservedWidth={ui.menuWidth}
-      scale={android.previewScale}
-      src={ankiAndroidSrc}
-      Top={
-        <div>
-          <div className={style.osTop}>
-            <div>
-              <div />
-            </div>
-            <div>
-              <div />
-            </div>
-          </div>
-          <div className={style.ankiTop}>
-            {Array(7)
-              .fill(null)
-              .map(() => (
+            <div className={style.osTop}>
+              <div>
                 <div />
-              ))}
+              </div>
+              <div>
+                <div />
+              </div>
+            </div>
+            <div className={style.ankiTop}>
+              {Array(7)
+                .fill(null)
+                .map(() => (
+                  <div />
+                ))}
+            </div>
           </div>
-        </div>
-      }
-    />
+        }
+      />
+      <EventsDisplay events={android.events} />
+    </>
   );
 };

@@ -13,6 +13,11 @@ export interface AnkiDistStoreActions {
   setPreviewScale: (n: number) => void;
   setTags: (t: RankiTagString) => void;
   setTemplateConfig: (c: RankiConfigString) => void;
+  addEvent: (e: RankiIframeEvent) => void;
+}
+
+export interface RankiIframeEvent {
+  log: string;
 }
 
 export interface AnkiDistStoreStates {
@@ -29,7 +34,9 @@ export interface AnkiDistStoreStates {
   previewScale: number;
   tags: RankiTagString;
   templateConfig: RankiConfigString;
+  events: RankiIframeEvent[];
 }
+
 export type ColorSchemes = "dark" | "light";
 export type RankiAppVariant = "core" | "devtools" | "o11y";
 export type RankiCard = string;
