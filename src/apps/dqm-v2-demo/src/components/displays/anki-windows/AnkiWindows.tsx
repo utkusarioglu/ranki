@@ -2,7 +2,7 @@ import { useAnkiWinStore } from "_stores/anki-dist/anki-win.store.mjs";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
 import { useUiStore } from "_stores/ui/ui.store.mjs";
 import { AnkiScreen } from "_views/anki-screen/AnkiScreen";
-import { sendChanges } from "_views/anki-screen/sendChanges";
+import { sendChanges } from "_views/anki-screen/utils/send-changes.mjs";
 import { useRef } from "react";
 
 import ankiWinSrc from "./anki-windows.html?url";

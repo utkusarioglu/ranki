@@ -1,80 +1,12 @@
-import type {
-  RankiAppVariant,
-  RankiIframeEvent,
-} from "_stores/anki-dist/anki.store.types.mjs";
+import { type FC } from "react";
 
-import { useEffect, useState, type FC, type ReactNode } from "react";
-
-import { type AnkiDesktopIFrameProps, AnkiIFrame } from "./anki-iframe";
-import style from "./AnkiIFrame.module.css";
-import { getSizing, useRankiFiles } from "./utils";
-
-export type RankiElements = {
-  css: HTMLStyleElement[];
-  fragment: DocumentFragment;
-  jss: HTMLScriptElement[];
-};
-
-export type RankiFiles = {
-  css: Record<string, string>;
-  epoch: number;
-  html: Record<string, string>;
-  js: Record<string, string>;
-};
-
-interface AnkiScreenProps extends Omit<
-  AnkiDesktopIFrameProps,
-  "files" | "onFetch" | "srcDoc"
-> {
-  appVariant: RankiAppVariant;
-  aspect: number;
-  Bottom: ReactNode;
-  deviceClassName: string;
-
-  /**
-   * Css matchers for elements that you would like to comment out in the `src`
-   * document. this allows keeping these elements in the html while removing
-   * their influence.
-   *
-   * it is useful for commenting out elements with src and href attributes that
-   * keep making network requests that can never be fulfilled.
-   */
-  srcFilters?: string[];
-  src: string;
-  onLoad: () => void;
-  reservedWidth: number;
-  scale: number;
-  Top: ReactNode;
-  onEvent: (event: RankiIframeEvent) => void;
-}
+import { AnkiIFrame } from "./anki-iframe/anki-iframe";
+import style from "./AnkiScreen.module.css";
+import { getSizing } from "./utils/get-sizing.mts";
+import { useDocumentCleaner, useRankiFiles } from "./hooks/hooks.mts";
+import type { AnkiScreenProps } from "./AnkiScreen.types.mts";
 
 const PADDING = 16;
-
-function useDocumentCleaner(src: string, filters?: string[]) {
-  const [srcClean, setSrcClean] = useState<string | null>(null);
-  useEffect(() => {
-    fetch(src)
-      .then((v) => v.text())
-      .then((str) => {
-        if (!filters || !filters.length) {
-          setSrcClean(str);
-          return;
-        }
-
-        const doc = new DOMParser().parseFromString(str, "text/html");
-        filters.forEach((t) => {
-          const matches = doc.querySelectorAll(t);
-          for (const m of matches) {
-            m.replaceWith(document.createComment(m.outerHTML));
-          }
-        });
-        const clean = doc.documentElement.outerHTML;
-        setSrcClean(clean);
-      });
-  }, []);
-
-  return srcClean;
-}
 
 export const AnkiScreen: FC<AnkiScreenProps> = ({
   appVariant,

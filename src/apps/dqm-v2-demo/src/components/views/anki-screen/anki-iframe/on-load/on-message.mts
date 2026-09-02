@@ -1,0 +1,81 @@
+import { RENDERED_CLASS_SELECTOR } from "@ranki/app-ranki-v2/constants";
+import { assertExists } from "_assertions";
+import type { RankiFiles } from "../../AnkiScreen.types.mts";
+import { createFragment } from "../../utils/create-fragment.mts";
+import { MAPPING } from "../anki-iframe.constants.mts";
+import type { RankiIframeMessage } from "_views/anki-screen/utils/send-changes.mjs";
+import type { OnMessageCallback } from "./on-message.types.mts";
+
+export const onMessageCallback: OnMessageCallback =
+  (doc, qa, files) =>
+  ({ data }) => {
+    {
+      if (data.type !== "ranki-update") return;
+
+      setTemplateHtml(qa, data, files);
+      setFields(data, qa);
+      setColorScheme(doc, data);
+      ensureRerender(qa);
+    }
+  };
+
+function setFields(data: RankiIframeMessage, qa: Element) {
+  Object.entries(data.ranki.fields).forEach(([n, v]) => {
+    setField(qa, n, v as string);
+  });
+}
+
+function setTemplateHtml(
+  qa: Element,
+  data: RankiIframeMessage,
+  files: RankiFiles,
+) {
+  if (data.ranki.contentType === "foreign") {
+    if (qa) {
+      qa.innerHTML = "Foreign Content";
+      return;
+    }
+  } else {
+    const fragment = createFragment(files);
+    qa.replaceChildren(fragment);
+  }
+}
+
+function ensureRerender(qa: Element) {
+  const ren = qa.querySelector(RENDERED_CLASS_SELECTOR);
+  if (ren) {
+    ren.parentElement!.removeChild(ren);
+  }
+}
+
+function setColorScheme(doc: HTMLDocument, data: RankiIframeMessage) {
+  const html = doc.querySelector("html")!;
+  const body = doc.querySelector("body")!;
+
+  const isDark = data.ranki.pref.scheme === "dark";
+  if (!isDark) {
+    body.classList.remove("night_mode", "nightMode");
+    body.classList.add("light_mode", "lightMode");
+    html.classList.remove("night-mode");
+    html.classList.add("light-mode");
+    html.setAttribute("data-bs-theme", "light");
+  } else {
+    body.classList.add("night_mode", "nightMode");
+    body.classList.remove("light_mode", "lightMode");
+    html.classList.add("night-mode");
+    html.classList.remove("light-mode");
+    html.setAttribute("data-bs-theme", "dark");
+  }
+}
+
+const setField = (qa: Element, name: string, value: string) => {
+  const selector = MAPPING[name];
+  let f = qa.querySelector<HTMLScriptElement>(selector)!;
+  if (!f) {
+    const tag = selector.split(".")[0];
+    f = document.createElement(tag) as HTMLScriptElement;
+    f.className = selector.split(".")[1];
+  }
+  assertExists(f, { why: "Cannot find element" });
+  f.innerText = value.toString();
+};
