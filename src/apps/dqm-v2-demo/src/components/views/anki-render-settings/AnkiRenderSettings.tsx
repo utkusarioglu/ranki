@@ -12,7 +12,7 @@ import { type FC } from "react";
 
 import style from "./AnkiRenderSettings.module.css";
 import { getAspect, getAspectText } from "./utils.mts";
-import { FETCH_RULES } from "_views/anki-screen/onFetchCallback";
+import { FETCH_RULES } from "_views/anki-screen/on-fetch/on-fetch.constants.mjs";
 
 type AnkiRenderSettingsProps = {
   aspectRatios: string[];
@@ -93,6 +93,7 @@ const AnkiRenderFetchSettings: FC<Pick<AnkiRenderSettingsProps, "store">> = ({
     if (store.fetchOverride.all !== "passthru") {
       return null;
     }
+
     return (
       <>
         {FETCH_RULES.map(({ title, type }) => (

@@ -7,3 +7,7 @@ export type IFrameOnLoadCb = (
 ) => ReactEventHandler<HTMLIFrameElement>;
 
 type OnLoadProps = Omit<AnkiDesktopIFrameProps, "srcDoc">;
+
+export type FetchOverload = (
+  originalFetch: typeof window.fetch,
+) => typeof window.fetch;

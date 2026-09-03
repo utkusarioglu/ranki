@@ -1,6 +1,6 @@
 import type { GraphViewStoreStateKey } from "_stores/graph-view/graph-view.store.types.mjs";
 
-import { assertExists } from "_assertions";
+import { assertNotUndefined } from "_assertions";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
 import { useGraphViewStore } from "_stores/graph-view/graph-view.store.mjs";
 import { useUiStore } from "_stores/ui/ui.store.mjs";
@@ -68,7 +68,7 @@ function useCyStateBind(
     if (!cyRef.current) return;
     cyRef.current.batch(() => {
       const c = LOOKUP[elemType].cy;
-      assertExists(c, {
+      assertNotUndefined(c, {
         details: {
           elemType,
         },

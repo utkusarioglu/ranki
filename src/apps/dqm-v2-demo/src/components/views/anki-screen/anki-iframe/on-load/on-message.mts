@@ -1,6 +1,6 @@
-import type { RankiIframeMessage } from "_views/anki-screen/utils/send-changes.mjs";
+import type { RankiIframeMessageUpdate } from "_views/anki-screen/utils/send.types.mjs";
 
-import { assertExists } from "_assertions";
+import { assertNotUndefined } from "_assertions";
 import { RENDERED_CLASS_SELECTOR } from "@ranki/app-ranki-v2/constants";
 
 import type { RankiFiles } from "../../AnkiScreen.types.mts";
@@ -8,17 +8,24 @@ import type { OnMessageCallback } from "./on-message.types.mts";
 
 import { createFragment } from "../../utils/create-fragment.mts";
 import { MAPPING } from "../anki-iframe.constants.mts";
+import { overrideWindowFetchFunc } from "./on-load.mts";
 
 export const onMessageCallback: OnMessageCallback =
-  (doc, qa, files) =>
+  (win, doc, qa, files) =>
   ({ data }) => {
     {
-      if (data.type !== "ranki-update") return;
-
-      setTemplateHtml(qa, data, files);
-      setFields(data, qa);
-      setColorScheme(doc, data);
-      ensureRerender(qa);
+      switch (data.type) {
+        case "ranki-update":
+          setTemplateHtml(qa, data, files);
+          setFields(data, qa);
+          setColorScheme(doc, data);
+          ensureRerender(qa);
+          break;
+        case "ranki-fetch":
+          // console.log("f", data);
+          overrideWindowFetchFunc(win, data.fetchOverride);
+          break;
+      }
     }
   };
 
@@ -29,7 +36,7 @@ function ensureRerender(qa: Element) {
   }
 }
 
-function setColorScheme(doc: HTMLDocument, data: RankiIframeMessage) {
+function setColorScheme(doc: HTMLDocument, data: RankiIframeMessageUpdate) {
   const html = doc.querySelector("html")!;
   const body = doc.querySelector("body")!;
 
@@ -49,7 +56,7 @@ function setColorScheme(doc: HTMLDocument, data: RankiIframeMessage) {
   }
 }
 
-function setFields(data: RankiIframeMessage, qa: Element) {
+function setFields(data: RankiIframeMessageUpdate, qa: Element) {
   Object.entries(data.ranki.fields).forEach(([n, v]) => {
     setField(qa, n, v as string);
   });
@@ -57,7 +64,7 @@ function setFields(data: RankiIframeMessage, qa: Element) {
 
 function setTemplateHtml(
   qa: Element,
-  data: RankiIframeMessage,
+  data: RankiIframeMessageUpdate,
   files: RankiFiles,
 ) {
   if (data.ranki.contentType === "foreign") {
@@ -79,6 +86,6 @@ const setField = (qa: Element, name: string, value: string) => {
     f = document.createElement(tag) as HTMLScriptElement;
     f.className = selector.split(".")[1];
   }
-  assertExists(f, { why: "Cannot find element" });
+  assertNotUndefined(f, { why: "Cannot find element" });
   f.innerText = value.toString();
 };

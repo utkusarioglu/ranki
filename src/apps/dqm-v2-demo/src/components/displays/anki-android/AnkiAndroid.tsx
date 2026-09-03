@@ -1,7 +1,7 @@
 import { useAnkiAndroidStore } from "_stores/anki-dist/anki-android.store.mjs";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
 import { useUiStore } from "_stores/ui/ui.store.mjs";
-import { sendChanges } from "_views/anki-screen/utils/send-changes.mjs";
+import { sendChanges } from "_views/anki-screen/utils/send.mjs";
 import { EventsDisplay } from "_views/event-display/EventDisplay";
 import { useRef } from "react";
 

@@ -1,4 +1,4 @@
-import { assertExists } from "_assertions";
+import { assertNotUndefined } from "_assertions";
 import { DqmDemoError } from "_error";
 
 import type {
@@ -25,7 +25,7 @@ export class Registry {
   static getEdge(source: IdValue, target: IdValue): E {
     const key = Registry.makeEdgeKey(source, target);
     const edge = this.edges.get(key);
-    assertExists(edge, {
+    assertNotUndefined(edge, {
       why: "Tried to get the node for an id that hasn't registered its node",
     });
     return edge;
@@ -59,11 +59,11 @@ export class Registry {
 
   static getNode(source: any): N {
     const id = this.seen.get(source);
-    assertExists(id, {
+    assertNotUndefined(id, {
       why: "Tried to get the id of a source that hasn't been registered",
     });
     const node = this.nodes.get(id);
-    assertExists(node, {
+    assertNotUndefined(node, {
       why: "Tried to get the node for an id that hasn't registered its node",
     });
     return node;
@@ -77,7 +77,7 @@ export class Registry {
 
   static getSanitized(id: IdValue) {
     const sanitized = this.sanitized.get(+id);
-    assertExists(sanitized, {
+    assertNotUndefined(sanitized, {
       why: "Tried to get the sanitized package for an id that hasn't registered its node",
     });
     return sanitized;

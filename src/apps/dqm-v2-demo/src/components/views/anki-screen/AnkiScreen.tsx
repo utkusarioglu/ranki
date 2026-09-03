@@ -1,4 +1,4 @@
-import { useMemo, type FC } from "react";
+import { type FC } from "react";
 
 import type { AnkiScreenProps } from "./AnkiScreen.types.mts";
 
@@ -6,7 +6,7 @@ import { AnkiIFrame } from "./anki-iframe/anki-iframe";
 import style from "./AnkiScreen.module.css";
 import { useDocumentCleaner, useRankiFiles } from "./hooks/hooks.mts";
 import { getSizing } from "./utils/get-sizing.mts";
-import { onFetchCallback } from "./onFetchCallback";
+import { Send } from "./utils/send.mts";
 
 const PADDING = 16;
 
@@ -27,10 +27,6 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
 }) => {
   const files = useRankiFiles(appVariant);
   const srcDoc = useDocumentCleaner(src, srcFilters);
-  const onFetchMemo = useMemo(
-    () => onFetchCallback({ onEvent, fetchOverride }),
-    [onEvent, fetchOverride],
-  );
 
   if (files.epoch === 0 || srcDoc === null) {
     return (
@@ -41,6 +37,7 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   }
 
   const sizing = getSizing(PADDING, aspect, scale, reservedWidth, 0);
+  Send.fetch(ref, fetchOverride);
 
   return (
     <div className={style.screen}>
@@ -57,8 +54,8 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
         <AnkiIFrame
           files={files}
           key={appVariant}
-          onFetch={onFetchMemo}
           onLoad={onLoad}
+          fetchOverride={fetchOverride}
           ref={ref}
           srcDoc={srcDoc}
         />

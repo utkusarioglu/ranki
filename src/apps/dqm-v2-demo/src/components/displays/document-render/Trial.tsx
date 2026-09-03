@@ -1,7 +1,7 @@
 import type { PluginStoreWrapper } from "_stores/dqm/dqm.store.types.mjs";
 import type { DqmParseInputStructured } from "@dqm/package-dqm-api-v2";
 
-import { assertExists } from "_assertions";
+import { assertNotUndefined } from "_assertions";
 import { pluginsAsArray } from "_stores/dqm/dqm.plugins.mjs";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
 import { buildPluginSelectionConfig } from "_stores/dqm/dqm.utils.mjs";
@@ -23,7 +23,7 @@ function dqmOnLoad(
   const fixedConfig = buildPluginSelectionConfig(pluginSelection);
   console.log("Fixed", JSON.stringify(fixedConfig));
   const dqm = new Dqm([fixedConfig], pluginsAsArray);
-  assertExists(a, {
+  assertNotUndefined(a, {
     why: "body element has to be available for dqm to render",
   });
   // @ts-expect-error
@@ -45,7 +45,7 @@ export const TrialRender = () => {
         // }}
         onLoad={() => {
           const doc = ref.current?.contentDocument;
-          assertExists(doc, { why: "doc is needed" });
+          assertNotUndefined(doc, { why: "doc is needed" });
           dqmOnLoad(doc, s.pluginSelection, s.inputs);
         }}
         ref={ref}

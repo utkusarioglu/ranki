@@ -2,7 +2,7 @@ import { useAnkiWinStore } from "_stores/anki-dist/anki-win.store.mjs";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
 import { useUiStore } from "_stores/ui/ui.store.mjs";
 import { AnkiScreen } from "_views/anki-screen/AnkiScreen";
-import { sendChanges } from "_views/anki-screen/utils/send-changes.mjs";
+import { Send } from "_views/anki-screen/utils/send.mjs";
 import { EventsDisplay } from "_views/event-display/EventDisplay";
 import { useRef } from "react";
 
@@ -15,7 +15,7 @@ export const AnkiWindows = () => {
   const platform = useAnkiWinStore();
   const ui = useUiStore();
 
-  sendChanges(platform, dqm, ref);
+  Send.changes(platform, dqm, ref);
 
   return (
     <>
@@ -33,7 +33,7 @@ export const AnkiWindows = () => {
         fetchOverride={platform.fetchOverride}
         deviceClassName={style.device}
         onEvent={(e) => platform.addEvent(e)}
-        onLoad={() => sendChanges(platform, dqm, ref)}
+        onLoad={() => Send.changes(platform, dqm, ref)}
         ref={ref}
         reservedWidth={ui.menuWidth}
         scale={platform.previewScale}

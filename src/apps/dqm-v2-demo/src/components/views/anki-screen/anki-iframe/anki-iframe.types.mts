@@ -1,6 +1,7 @@
 import type { RefObject } from "react";
 
 import type { RankiFiles } from "../AnkiScreen.types.mts";
+import type { FetchOverrideRecord } from "_stores/anki-dist/anki.store.types.mjs";
 
 export interface AnkiDesktopIFrameProps {
   files: RankiFiles;
@@ -9,8 +10,9 @@ export interface AnkiDesktopIFrameProps {
    * useful for logging fetch calls, preventing them, or returning fake
    * responses for them.
    */
-  onFetch?: OnFetchOverrideCallback;
+  // onFetch?: OnFetchOverrideCallback;
   onLoad: () => void;
+  fetchOverride: FetchOverrideRecord;
 
   ref: RefObject<HTMLIFrameElement | null>;
 
