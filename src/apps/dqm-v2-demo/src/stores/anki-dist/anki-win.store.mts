@@ -16,4 +16,9 @@ export const useAnkiWinStore = createAnkiStore({
   previewScale: 1.25,
   tags: "win",
   templateConfig: TEMPLATE_CONFIG,
+
+  fetchOverride: {
+    all: "passthru",
+    telemetry: "autoSucceed",
+  },
 });

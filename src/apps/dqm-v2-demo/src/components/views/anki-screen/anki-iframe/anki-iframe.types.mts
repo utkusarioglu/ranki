@@ -9,7 +9,7 @@ export interface AnkiDesktopIFrameProps {
    * useful for logging fetch calls, preventing them, or returning fake
    * responses for them.
    */
-  onFetch?: (originalFetch: typeof window.fetch) => typeof window.fetch;
+  onFetch?: OnFetchOverrideCallback;
   onLoad: () => void;
 
   ref: RefObject<HTMLIFrameElement | null>;
@@ -21,3 +21,7 @@ export interface AnkiDesktopIFrameProps {
    */
   srcDoc: string;
 }
+
+export type OnFetchOverrideCallback = (
+  originalFetch: typeof window.fetch,
+) => typeof window.fetch;

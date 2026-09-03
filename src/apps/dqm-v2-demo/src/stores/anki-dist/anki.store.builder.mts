@@ -23,4 +23,11 @@ export const createAnkiStore = (defaults: AnkiDistStoreStates) =>
     setPreviewScale: (previewScale) => set(() => ({ previewScale })),
     setTags: (tags) => set(() => ({ tags })),
     setTemplateConfig: (templateConfig) => set(() => ({ templateConfig })),
+    setFetchOverride: (t, m) =>
+      set((s) => ({
+        fetchOverride: {
+          ...s.fetchOverride,
+          [t]: m,
+        },
+      })),
   }));

@@ -12,16 +12,16 @@ import style from "./AnkiAndroid.module.css";
 export const AnkiAndroid = () => {
   const ref = useRef<HTMLIFrameElement>(null);
   const dqm = useDqmStore();
-  const android = useAnkiAndroidStore();
+  const platform = useAnkiAndroidStore();
   const ui = useUiStore();
 
-  sendChanges(android, dqm, ref);
+  sendChanges(platform, dqm, ref);
 
   return (
     <>
       <AnkiScreen
-        appVariant={android.appVariant}
-        aspect={android.previewAspect}
+        appVariant={platform.appVariant}
+        aspect={platform.previewAspect}
         Bottom={
           <div className={style.bottom}>
             <div>
@@ -29,12 +29,13 @@ export const AnkiAndroid = () => {
             </div>
           </div>
         }
+        fetchOverride={platform.fetchOverride}
         deviceClassName={style.device}
-        onEvent={(e) => android.addEvent(e)}
-        onLoad={() => sendChanges(android, dqm, ref)}
+        onEvent={(e) => platform.addEvent(e)}
+        onLoad={() => sendChanges(platform, dqm, ref)}
         ref={ref}
         reservedWidth={ui.menuWidth}
-        scale={android.previewScale}
+        scale={platform.previewScale}
         src={ankiAndroidSrc}
         srcFilters={['[src*="file:"]', '[href*="file:"]']}
         Top={
@@ -57,7 +58,7 @@ export const AnkiAndroid = () => {
           </div>
         }
       />
-      <EventsDisplay events={android.events} />
+      <EventsDisplay events={platform.events} />
     </>
   );
 };

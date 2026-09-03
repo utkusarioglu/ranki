@@ -12,16 +12,16 @@ import style from "./AnkiWindows.module.css";
 export const AnkiWindows = () => {
   const ref = useRef<HTMLIFrameElement>(null);
   const dqm = useDqmStore();
-  const win = useAnkiWinStore();
+  const platform = useAnkiWinStore();
   const ui = useUiStore();
 
-  sendChanges(win, dqm, ref);
+  sendChanges(platform, dqm, ref);
 
   return (
     <>
       <AnkiScreen
-        appVariant={win.appVariant}
-        aspect={win.previewAspect}
+        appVariant={platform.appVariant}
+        aspect={platform.previewAspect}
         Bottom={
           <div>
             <div className={style.ankiBottom} />
@@ -30,12 +30,13 @@ export const AnkiWindows = () => {
             </div>
           </div>
         }
+        fetchOverride={platform.fetchOverride}
         deviceClassName={style.device}
-        onEvent={(e) => win.addEvent(e)}
-        onLoad={() => sendChanges(win, dqm, ref)}
+        onEvent={(e) => platform.addEvent(e)}
+        onLoad={() => sendChanges(platform, dqm, ref)}
         ref={ref}
         reservedWidth={ui.menuWidth}
-        scale={win.previewScale}
+        scale={platform.previewScale}
         src={ankiWinSrc}
         srcFilters={['[src*="_anki"]', '[href*="_anki"]']}
         Top={
@@ -50,7 +51,7 @@ export const AnkiWindows = () => {
           </div>
         }
       />
-      <EventsDisplay events={win.events} />
+      <EventsDisplay events={platform.events} />
     </>
   );
 };

@@ -1,7 +1,11 @@
 export type AnkiDistStore = AnkiDistStoreActions & AnkiDistStoreStates;
 export interface AnkiDistStoreActions {
-  addEvent: (e: RankiIframeEvent) => void;
+  addEvent: RankiOnEvent;
   setAppVariant: (c: RankiAppVariant) => void;
+  setFetchOverride: (
+    type: FetchOverrideType,
+    c: RankiFetchOverrideMode,
+  ) => void;
   setCard: (c: RankiCard) => void;
   setCardConfig: (c: RankiConfigString) => void;
   setCardType: (c: RankiCardType) => void;
@@ -31,22 +35,45 @@ export interface AnkiDistStoreStates {
   previewScale: number;
   tags: RankiTagString;
   templateConfig: RankiConfigString;
+
+  fetchOverride: FetchOverrideRecord;
 }
+
+export type FetchOverrideRecord = Record<
+  FetchOverrideType,
+  RankiFetchOverrideMode
+>;
+
+export type FetchOverrideType = "all" | "telemetry";
 
 export type ColorSchemes = "dark" | "light";
 
 export type RankiAppVariant = "core" | "devtools" | "o11y";
+
 export type RankiCard = string;
+
 export type RankiCardType = string;
 
 export type RankiConfigString = string;
+
 export type RankiContentType = "foreign" | "r2";
+
 export type RankiDeckString = string;
+
 export type RankiFace = "N" | "Q";
+
 export type RankiFlag = `flag${number}`;
+
+export type RankiOnEvent = (event: RankiIframeEvent) => void;
 
 export interface RankiIframeEvent {
   log: string;
 }
 
 export type RankiTagString = string;
+
+export type RankiFetchOverrideMode =
+  | "passthru"
+  | "autoFail"
+  | "autoThrow"
+  | "autoSucceed";

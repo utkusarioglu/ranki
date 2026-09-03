@@ -12,6 +12,7 @@ import { type FC } from "react";
 
 import style from "./AnkiRenderSettings.module.css";
 import { getAspect, getAspectText } from "./utils.mts";
+import { FETCH_RULES } from "_views/anki-screen/onFetchCallback";
 
 type AnkiRenderSettingsProps = {
   aspectRatios: string[];
@@ -62,6 +63,75 @@ const FLAGS: Flag[] = [
 
 const FACES: RankiFace[] = ["Q", "N"];
 
+const OVERRIDES = [
+  {
+    title: "Passthru",
+    mode: "passthru" as const,
+  },
+  {
+    title: "Succeed",
+    mode: "autoSucceed" as const,
+  },
+  {
+    title: "Fail",
+    mode: "autoFail" as const,
+  },
+  {
+    title: "Throw",
+    mode: "autoThrow" as const,
+  },
+];
+
+const AnkiRenderFetchSettings: FC<Pick<AnkiRenderSettingsProps, "store">> = ({
+  store,
+}) => {
+  if (store.appVariant === "core") {
+    return null;
+  }
+
+  const TelemetryOverride = () => {
+    if (store.fetchOverride.all !== "passthru") {
+      return null;
+    }
+    return (
+      <>
+        {FETCH_RULES.map(({ title, type }) => (
+          <div key={title}>
+            <Typography>{title} Fetch Override</Typography>
+            {OVERRIDES.map(({ title, mode }) => (
+              <Button
+                key={title}
+                onClick={() => store.setFetchOverride(type, mode)}
+                type={
+                  store.fetchOverride[type] === mode ? "primary" : "default"
+                }
+              >
+                {title}
+              </Button>
+            ))}
+          </div>
+        ))}
+      </>
+    );
+  };
+
+  return (
+    <>
+      <Typography>All Fetch Override</Typography>
+      {OVERRIDES.map(({ title, mode }) => (
+        <Button
+          key={title}
+          onClick={() => store.setFetchOverride("all", mode)}
+          type={store.fetchOverride.all === mode ? "primary" : "default"}
+        >
+          {title}
+        </Button>
+      ))}
+      <TelemetryOverride />
+    </>
+  );
+};
+
 export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
   aspectRatios,
   colorSchemes,
@@ -93,6 +163,7 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
           {title}
         </Button>
       ))}
+      <AnkiRenderFetchSettings store={store} />
       <Typography>Content</Typography>
       {[
         {

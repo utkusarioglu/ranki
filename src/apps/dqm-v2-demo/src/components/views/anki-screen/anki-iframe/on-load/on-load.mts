@@ -4,8 +4,9 @@ import type { RankiFiles } from "../../AnkiScreen.types.mts";
 import type { IFrameOnLoadCb } from "./on-load.types.mts";
 
 import { createRankiElements } from "../../utils/create-ranki-elements.mts";
-import { FETCH_OVERRIDE } from "../anki-iframe";
 import { onMessageCallback } from "./on-message.mts";
+
+export const FETCH_OVERRIDE = Symbol("fetcher");
 
 export const iFrameOnLoad: IFrameOnLoadCb =
   ({ files, onFetch, onLoad, ref }) =>

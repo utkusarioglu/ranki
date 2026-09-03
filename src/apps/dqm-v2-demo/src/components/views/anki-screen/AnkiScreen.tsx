@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { useMemo, type FC } from "react";
 
 import type { AnkiScreenProps } from "./AnkiScreen.types.mts";
 
@@ -6,6 +6,7 @@ import { AnkiIFrame } from "./anki-iframe/anki-iframe";
 import style from "./AnkiScreen.module.css";
 import { useDocumentCleaner, useRankiFiles } from "./hooks/hooks.mts";
 import { getSizing } from "./utils/get-sizing.mts";
+import { onFetchCallback } from "./onFetchCallback";
 
 const PADDING = 16;
 
@@ -22,9 +23,14 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   src,
   srcFilters,
   Top,
+  fetchOverride,
 }) => {
   const files = useRankiFiles(appVariant);
   const srcDoc = useDocumentCleaner(src, srcFilters);
+  const onFetchMemo = useMemo(
+    () => onFetchCallback({ onEvent, fetchOverride }),
+    [onEvent, fetchOverride],
+  );
 
   if (files.epoch === 0 || srcDoc === null) {
     return (
@@ -51,22 +57,7 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
         <AnkiIFrame
           files={files}
           key={appVariant}
-          onFetch={(original) => (url) => {
-            const urlString = url.toString();
-            if (["8080", "file-batch"].some((v) => urlString.includes(v))) {
-              onEvent({ log: `Fetch override: ${urlString}` });
-              return Promise.resolve(
-                new Response(JSON.stringify({}), {
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  status: 200,
-                }),
-              );
-            } else {
-              return original(url);
-            }
-          }}
+          onFetch={onFetchMemo}
           onLoad={onLoad}
           ref={ref}
           srcDoc={srcDoc}
