@@ -1,11 +1,18 @@
 .eventsDisplay {
   box-sizing: border-box;
-  position: absolute;
-  bottom: 0;
-  height: 20px;
-  right: 0;
-  width: 200px;
-  color: red;
-  text-align: right;
+  height: 100px;
+  width: 100%;
   padding-inline: 1em;
+}
+
+.eventRow {
+  display: grid;
+  align-items: end;
+  grid-template-columns: 50px 200px 50px 1fr;
+  color: #555;
+}
+
+.eventLog {
+  text-align: right;
+  color: #999;
 }

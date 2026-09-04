@@ -4,18 +4,22 @@ import { useUiStore } from "_stores/ui/ui.store.mjs";
 import { AnkiScreen } from "_views/anki-screen/AnkiScreen";
 import { Send } from "_views/anki-screen/utils/send.mjs";
 import { EventsDisplay } from "_views/event-display/EventDisplay";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import ankiWinSrc from "./anki-windows.html?url";
 import style from "./AnkiWindows.module.css";
+import { useAnkiTelemetry } from "_stores/anki-dist/anki-telemetry.mjs";
 
 export const AnkiWindows = () => {
   const ref = useRef<HTMLIFrameElement>(null);
   const dqm = useDqmStore();
+  const telemetry = useAnkiTelemetry();
   const platform = useAnkiWinStore();
   const ui = useUiStore();
 
-  Send.changes(platform, dqm, ref);
+  useEffect(() => {
+    Send.changes(platform, dqm, ref);
+  }, [ref, dqm, platform]);
 
   return (
     <>
@@ -32,7 +36,7 @@ export const AnkiWindows = () => {
         }
         fetchOverride={platform.fetchOverride}
         deviceClassName={style.device}
-        onEvent={(e) => platform.addEvent(e)}
+        onEvent={(e) => telemetry.addEvent("windows", e)}
         onLoad={() => Send.changes(platform, dqm, ref)}
         ref={ref}
         reservedWidth={ui.menuWidth}
@@ -51,7 +55,7 @@ export const AnkiWindows = () => {
           </div>
         }
       />
-      <EventsDisplay events={platform.events} />
+      <EventsDisplay events={telemetry.events} />
     </>
   );
 };

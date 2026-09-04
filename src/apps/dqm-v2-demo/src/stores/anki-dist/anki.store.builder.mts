@@ -9,7 +9,6 @@ export const createAnkiStore = (defaults: AnkiDistStoreStates) =>
   create<AnkiDistStore>((set) => ({
     ...defaults,
 
-    addEvent: (e) => set((s) => ({ events: [...s.events, e] })),
     setAppVariant: (appVariant) => set(() => ({ appVariant })),
     setCard: (card) => set(() => ({ card })),
     setCardConfig: (cardConfig) => set(() => ({ cardConfig })),

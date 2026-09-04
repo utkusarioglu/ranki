@@ -1,11 +1,11 @@
 import type {
   FetchOverrideRecord,
   RankiAppVariant,
-  RankiOnEvent,
 } from "_stores/anki-dist/anki.store.types.mjs";
 import type { ReactNode } from "react";
 
 import type { AnkiDesktopIFrameProps } from "./anki-iframe/anki-iframe.types.mts";
+import type { RankiOnEvent } from "_stores/anki-dist/anki-telemetry.mjs";
 
 export interface AnkiScreenProps extends Omit<
   AnkiDesktopIFrameProps,

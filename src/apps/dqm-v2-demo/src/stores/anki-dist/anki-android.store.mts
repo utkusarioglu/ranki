@@ -9,7 +9,6 @@ export const useAnkiAndroidStore = createAnkiStore({
   colorScheme: "dark",
   contentType: "r2",
   deck: DECK,
-  events: [],
   face: "Q",
   flag: "flag0",
   previewAspect: 9 / 19,

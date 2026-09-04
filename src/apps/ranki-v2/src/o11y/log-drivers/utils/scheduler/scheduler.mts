@@ -53,7 +53,7 @@ export class Scheduler<T> {
       if (!curr.length) return;
       await this.operation(curr);
     } catch (e) {
-      console.log("failed operation. length: ", curr.length, e);
+      // console.log("failed operation. length: ", curr.length, e, curr);
       this.queue = [...curr, ...this.queue];
     }
   }

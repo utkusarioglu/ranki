@@ -1,6 +1,5 @@
 export type AnkiDistStore = AnkiDistStoreActions & AnkiDistStoreStates;
 export interface AnkiDistStoreActions {
-  addEvent: RankiOnEvent;
   setAppVariant: (c: RankiAppVariant) => void;
   setFetchOverride: (
     type: FetchOverrideType,
@@ -28,14 +27,12 @@ export interface AnkiDistStoreStates {
   colorScheme: ColorSchemes;
   contentType: RankiContentType;
   deck: RankiDeckString;
-  events: RankiIframeEvent[];
   face: RankiFace;
   flag: RankiFlag;
   previewAspect: number;
   previewScale: number;
   tags: RankiTagString;
   templateConfig: RankiConfigString;
-
   fetchOverride: FetchOverrideRecord;
 }
 
@@ -63,12 +60,6 @@ export type RankiDeckString = string;
 export type RankiFace = "N" | "Q";
 
 export type RankiFlag = `flag${number}`;
-
-export type RankiOnEvent = (event: RankiIframeEvent) => void;
-
-export interface RankiIframeEvent {
-  log: string;
-}
 
 export type RankiTagString = string;
 
