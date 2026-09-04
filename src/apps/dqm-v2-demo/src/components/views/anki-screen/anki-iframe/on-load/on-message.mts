@@ -15,15 +15,15 @@ export const onMessageCallback: OnMessageCallback =
   ({ data }) => {
     {
       switch (data.type) {
+        case "ranki-fetch":
+          // console.log("f", data);
+          overrideWindowFetchFunc(win, data.fetchOverride);
+          break;
         case "ranki-update":
           setTemplateHtml(qa, data, files);
           setFields(data, qa);
           setColorScheme(doc, data);
           ensureRerender(qa);
-          break;
-        case "ranki-fetch":
-          // console.log("f", data);
-          overrideWindowFetchFunc(win, data.fetchOverride);
           break;
       }
     }

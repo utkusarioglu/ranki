@@ -29,11 +29,15 @@ export function useDocumentCleaner(src: string, filters?: string[]) {
         const clean = doc.documentElement.outerHTML;
         setSrcClean(clean);
       });
-  }, []);
+  }, [src, filters]);
 
   return srcClean;
 }
 
+/**
+ * @dev
+ * #1 ignored for convenience
+ */
 export function useRankiFiles(appVariant: RankiAppVariant): RankiFiles {
   const [files, setFiles] = useState<RankiFiles>(DEFAULT_RANKI_FILES);
 
@@ -45,7 +49,7 @@ export function useRankiFiles(appVariant: RankiAppVariant): RankiFiles {
             const val = await fetch(URL_TEMPLATE.replace("%", url));
             const text = await val.text();
             const name =
-              // @ts-expect-error
+              // @ts-expect-error #1
               v[i];
             return [name, text];
           }),
@@ -58,7 +62,7 @@ export function useRankiFiles(appVariant: RankiAppVariant): RankiFiles {
           t.map(([t, n]) => [
             t,
             Object.fromEntries(
-              // @ts-expect-error
+              // @ts-expect-error ignored for convenience
               n,
             ),
           ]),

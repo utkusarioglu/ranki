@@ -1,7 +1,7 @@
 import type {
+  FetchOverrideRecord,
   RankiAppVariant,
   RankiOnEvent,
-  FetchOverrideRecord,
 } from "_stores/anki-dist/anki.store.types.mjs";
 import type { ReactNode } from "react";
 
@@ -16,6 +16,13 @@ export interface AnkiScreenProps extends Omit<
   Bottom: ReactNode;
   deviceClassName: string;
 
+  /**
+   * Sets whether the custom fetch function defined inside the iframe will allow telemetry endpoints do one of the following:
+   * - Allow communication with the server
+   * - Auto throw on each request without allowing server comm
+   * - Auto respond with 200 on each request without allowing server comm
+   */
+  fetchOverride: FetchOverrideRecord;
   onEvent: RankiOnEvent;
   onLoad: () => void;
   reservedWidth: number;
@@ -30,15 +37,8 @@ export interface AnkiScreenProps extends Omit<
    * keep making network requests that can never be fulfilled.
    */
   srcFilters?: string[];
-  Top: ReactNode;
 
-  /**
-   * Sets whether the custom fetch function defined inside the iframe will allow telemetry endpoints do one of the following:
-   * - Allow communication with the server
-   * - Auto throw on each request without allowing server comm
-   * - Auto respond with 200 on each request without allowing server comm
-   */
-  fetchOverride: FetchOverrideRecord;
+  Top: ReactNode;
 }
 
 export interface RankiElements {

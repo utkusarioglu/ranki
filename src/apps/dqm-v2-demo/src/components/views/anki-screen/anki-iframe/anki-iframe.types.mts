@@ -1,9 +1,10 @@
+import type { FetchOverrideRecord } from "_stores/anki-dist/anki.store.types.mjs";
 import type { RefObject } from "react";
 
 import type { RankiFiles } from "../AnkiScreen.types.mts";
-import type { FetchOverrideRecord } from "_stores/anki-dist/anki.store.types.mjs";
 
 export interface AnkiDesktopIFrameProps {
+  fetchOverride: FetchOverrideRecord;
   files: RankiFiles;
   /**
    * Allows interfering with `window.fetch` calls made by the iframe. it's
@@ -12,7 +13,6 @@ export interface AnkiDesktopIFrameProps {
    */
   // onFetch?: OnFetchOverrideCallback;
   onLoad: () => void;
-  fetchOverride: FetchOverrideRecord;
 
   ref: RefObject<HTMLIFrameElement | null>;
 

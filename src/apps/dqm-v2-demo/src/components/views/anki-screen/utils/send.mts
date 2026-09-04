@@ -41,20 +41,14 @@ export class Send {
     cWIn.postMessage(message);
   }
 
-  public static fetch(
-    ref: RefObject<HTMLIFrameElement | null>,
-    fetchOverride: FetchOverrideRecord,
-  ) {
-    if (!ref.current) return;
-
-    const cWIn = ref.current.contentWindow;
-    if (!cWIn) return;
+  public static fetch(cWin: null | Window, fetchOverride: FetchOverrideRecord) {
+    if (!cWin) return;
 
     const message: RankiIframeMessage = {
       fetchOverride,
       type: "ranki-fetch",
     };
 
-    cWIn.postMessage(message);
+    cWin.postMessage(message);
   }
 }

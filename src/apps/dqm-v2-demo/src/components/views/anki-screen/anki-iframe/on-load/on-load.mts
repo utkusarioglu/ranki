@@ -1,15 +1,16 @@
+import type { FetchOverrideRecord } from "_stores/anki-dist/anki.store.types.mjs";
+
 import { assertNotUndefined } from "_assertions";
+import { onFetchCallback } from "_views/anki-screen/on-fetch/on-fetch.mjs";
 
 import type { RankiFiles } from "../../AnkiScreen.types.mts";
 import type { IFrameOnLoadCb } from "./on-load.types.mts";
 
 import { createRankiElements } from "../../utils/create-ranki-elements.mts";
 import { onMessageCallback } from "./on-message.mts";
-import type { FetchOverrideRecord } from "_stores/anki-dist/anki.store.types.mjs";
-import { onFetchCallback } from "_views/anki-screen/on-fetch/on-fetch.mjs";
 
-let originalFetch: typeof window.fetch | null = null;
-let originalWindow: Window | null = null;
+let originalFetch: null | typeof window.fetch = null;
+let originalWindow: null | Window = null;
 
 export function overrideWindowFetchFunc(
   win: Window,
@@ -23,13 +24,13 @@ export function overrideWindowFetchFunc(
 }
 
 export const iFrameOnLoad: IFrameOnLoadCb =
-  ({ files, fetchOverride, onLoad, ref }) =>
+  ({ fetchOverride, files, onLoad, ref }) =>
   (e) => {
     ref.current = e.target as HTMLIFrameElement;
 
     const win = (e.target as HTMLIFrameElement).contentWindow;
     assertNotUndefined(win, { why: "iframe window object is needed" });
-    const doc = ref.current?.contentDocument!;
+    const doc = ref.current?.contentDocument;
     assertNotUndefined(doc, { why: "iframe document is needed" });
 
     setHtmlBaseTag(doc);

@@ -1,4 +1,4 @@
-import { useEffect, type FC } from "react";
+import { type FC, useEffect } from "react";
 
 import type { AnkiScreenProps } from "./AnkiScreen.types.mts";
 
@@ -15,6 +15,7 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   aspect,
   Bottom,
   deviceClassName,
+  fetchOverride,
   onEvent,
   onLoad,
   ref,
@@ -23,7 +24,6 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   src,
   srcFilters,
   Top,
-  fetchOverride,
 }) => {
   const files = useRankiFiles(appVariant);
   const srcDoc = useDocumentCleaner(src, srcFilters);
@@ -35,7 +35,13 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
 
     window.top?.addEventListener("message", onMessage);
     return () => window.top?.removeEventListener("message", onMessage);
-  }, []);
+  }, [onEvent]);
+
+  useEffect(() => {
+    if (ref.current && ref.current.contentWindow) {
+      Send.fetch(ref.current.contentWindow, fetchOverride);
+    }
+  }, [ref, fetchOverride]);
 
   if (files.epoch === 0 || srcDoc === null) {
     return (
@@ -46,7 +52,6 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   }
 
   const sizing = computeSizing(PADDING, aspect, scale, reservedWidth, 0);
-  Send.fetch(ref, fetchOverride);
 
   return (
     <div className={style.screen}>
@@ -61,10 +66,10 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
       >
         {Top}
         <AnkiIFrame
+          fetchOverride={fetchOverride}
           files={files}
           key={appVariant}
           onLoad={onLoad}
-          fetchOverride={fetchOverride}
           ref={ref}
           srcDoc={srcDoc}
         />

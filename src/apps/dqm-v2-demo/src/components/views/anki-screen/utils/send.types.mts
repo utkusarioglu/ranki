@@ -1,16 +1,16 @@
-import type { IDqmRendererClientPreferences } from "@dqm/package-dqm-api-v2";
 import type {
   FetchOverrideRecord,
   RankiContentType,
 } from "_stores/anki-dist/anki.store.types.mjs";
+import type { IDqmRendererClientPreferences } from "@dqm/package-dqm-api-v2";
 
 export type RankiIframeMessage =
-  | RankiIframeMessageUpdate
-  | RankiIframeMessageFetch;
+  | RankiIframeMessageFetch
+  | RankiIframeMessageUpdate;
 
 export interface RankiIframeMessageFetch {
-  type: "ranki-fetch";
   fetchOverride: FetchOverrideRecord;
+  type: "ranki-fetch";
 }
 
 export interface RankiIframeMessageUpdate {

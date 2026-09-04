@@ -1,5 +1,6 @@
-import { FETCH_RULES } from "./on-fetch.constants.mts";
 import type { OnFetchCallback } from "./on-fetch.types.mts";
+
+import { FETCH_RULES } from "./on-fetch.constants.mts";
 
 export const onFetchCallback: OnFetchCallback =
   ({ fetchOverride }) =>
@@ -30,6 +31,10 @@ export const onFetchCallback: OnFetchCallback =
     }
   };
 
+function autoThrow() {
+  return Promise.reject(new Error("Simulated network failure"));
+}
+
 function respond(status: number) {
   return Promise.reject(
     new Response(JSON.stringify({}), {
@@ -39,8 +44,4 @@ function respond(status: number) {
       status,
     }),
   );
-}
-
-function autoThrow() {
-  return Promise.reject(new Error("Simulated network failure"));
 }
