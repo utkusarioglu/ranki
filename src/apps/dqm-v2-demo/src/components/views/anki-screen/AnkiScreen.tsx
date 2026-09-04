@@ -1,11 +1,11 @@
-import { type FC } from "react";
+import { useEffect, type FC } from "react";
 
 import type { AnkiScreenProps } from "./AnkiScreen.types.mts";
 
 import { AnkiIFrame } from "./anki-iframe/anki-iframe";
 import style from "./AnkiScreen.module.css";
 import { useDocumentCleaner, useRankiFiles } from "./hooks/hooks.mts";
-import { getSizing } from "./utils/get-sizing.mts";
+import { computeSizing } from "./utils/get-sizing.mts";
 import { Send } from "./utils/send.mts";
 
 const PADDING = 16;
@@ -28,6 +28,15 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   const files = useRankiFiles(appVariant);
   const srcDoc = useDocumentCleaner(src, srcFilters);
 
+  const onMessage = (e: MessageEvent<string>) => {
+    onEvent({ log: e.data });
+  };
+
+  useEffect(() => {
+    window.top?.addEventListener("message", onMessage);
+    return () => window.top?.removeEventListener("message", onMessage);
+  }, []);
+
   if (files.epoch === 0 || srcDoc === null) {
     return (
       <div className={style.loading}>
@@ -36,7 +45,7 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
     );
   }
 
-  const sizing = getSizing(PADDING, aspect, scale, reservedWidth, 0);
+  const sizing = computeSizing(PADDING, aspect, scale, reservedWidth, 0);
   Send.fetch(ref, fetchOverride);
 
   return (

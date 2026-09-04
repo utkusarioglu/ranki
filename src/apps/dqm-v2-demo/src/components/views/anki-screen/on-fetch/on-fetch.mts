@@ -17,7 +17,8 @@ export const onFetchCallback: OnFetchCallback =
       }
     }
 
-    console.log(`Fetch ${active} ${mode}: ${url.toString()}`);
+    window.top?.postMessage(`Fetch ${active} ${mode}: ${url.toString()}`);
+    console.log("sent", window.top);
     switch (mode) {
       case "autoFail":
         return autoFail();

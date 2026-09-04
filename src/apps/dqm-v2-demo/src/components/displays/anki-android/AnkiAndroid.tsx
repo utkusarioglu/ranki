@@ -1,7 +1,7 @@
 import { useAnkiAndroidStore } from "_stores/anki-dist/anki-android.store.mjs";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
 import { useUiStore } from "_stores/ui/ui.store.mjs";
-import { sendChanges } from "_views/anki-screen/utils/send.mjs";
+import { Send } from "_views/anki-screen/utils/send.mjs";
 import { EventsDisplay } from "_views/event-display/EventDisplay";
 import { useRef } from "react";
 
@@ -15,7 +15,7 @@ export const AnkiAndroid = () => {
   const platform = useAnkiAndroidStore();
   const ui = useUiStore();
 
-  sendChanges(platform, dqm, ref);
+  Send.changes(platform, dqm, ref);
 
   return (
     <>
@@ -32,7 +32,7 @@ export const AnkiAndroid = () => {
         fetchOverride={platform.fetchOverride}
         deviceClassName={style.device}
         onEvent={(e) => platform.addEvent(e)}
-        onLoad={() => sendChanges(platform, dqm, ref)}
+        onLoad={() => Send.changes(platform, dqm, ref)}
         ref={ref}
         reservedWidth={ui.menuWidth}
         scale={platform.previewScale}

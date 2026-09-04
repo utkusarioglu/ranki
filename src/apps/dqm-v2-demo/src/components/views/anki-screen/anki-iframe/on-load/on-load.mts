@@ -1,7 +1,7 @@
 import { assertNotUndefined } from "_assertions";
 
 import type { RankiFiles } from "../../AnkiScreen.types.mts";
-import type { FetchOverload, IFrameOnLoadCb } from "./on-load.types.mts";
+import type { IFrameOnLoadCb } from "./on-load.types.mts";
 
 import { createRankiElements } from "../../utils/create-ranki-elements.mts";
 import { onMessageCallback } from "./on-message.mts";

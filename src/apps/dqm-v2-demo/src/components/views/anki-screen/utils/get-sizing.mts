@@ -1,4 +1,4 @@
-export function getSizing(
+export function computeSizing(
   padding: number,
   aspect: number,
   scale: number,

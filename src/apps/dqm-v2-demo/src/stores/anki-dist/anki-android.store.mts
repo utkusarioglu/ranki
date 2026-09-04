@@ -17,6 +17,8 @@ export const useAnkiAndroidStore = createAnkiStore({
   tags: "android",
   templateConfig: TEMPLATE_CONFIG,
 
-  fetchTelemetryOverrideMode: "autoSucceed",
-  fetchOverride: "passthru",
+  fetchOverride: {
+    all: "passthru",
+    telemetry: "autoSucceed",
+  },
 });
