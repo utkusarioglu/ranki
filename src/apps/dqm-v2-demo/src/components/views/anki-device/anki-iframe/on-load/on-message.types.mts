@@ -1,5 +1,5 @@
-import type { RankiFiles } from "_views/anki-screen/AnkiScreen.types.mjs";
-import type { RankiIframeMessage } from "_views/anki-screen/utils/send.types.mjs";
+import type { RankiFiles } from "_views/anki-device/screen/AnkiScreen.types.mjs";
+import type { RankiIframeMessage } from "_views/anki-device/utils/send.types.mjs";
 
 export type OnMessageCallback = (
   win: Window,

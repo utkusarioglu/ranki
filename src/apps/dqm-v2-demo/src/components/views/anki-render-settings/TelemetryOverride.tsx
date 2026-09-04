@@ -1,10 +1,10 @@
-import { FETCH_RULES } from "_views/anki-screen/on-fetch/on-fetch.constants.mjs";
 import { Button, Typography } from "antd";
 import { type FC } from "react";
 
 import type { TelemetryOverrideProps } from "./RenderSettings.types.mts";
 
 import { OVERRIDES } from "./RenderSettings.constants.mts";
+import { FETCH_RULES } from "_views/anki-device/on-fetch/on-fetch.constants.mjs";
 
 export const TelemetryOverride: FC<TelemetryOverrideProps> = ({ store }) => {
   if (store.fetchOverride.all !== "passthru") {

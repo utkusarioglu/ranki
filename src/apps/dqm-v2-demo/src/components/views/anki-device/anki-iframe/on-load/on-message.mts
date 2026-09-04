@@ -1,5 +1,3 @@
-import type { RankiIframeMessageUpdate } from "_views/anki-screen/utils/send.types.mjs";
-
 import { assertNotUndefined } from "_assertions";
 import { RENDERED_CLASS_SELECTOR } from "@ranki/app-ranki-v2/constants";
 
@@ -9,6 +7,7 @@ import type { OnMessageCallback } from "./on-message.types.mts";
 import { createFragment } from "../../utils/create-fragment.mts";
 import { MAPPING } from "../anki-iframe.constants.mts";
 import { overrideWindowFetchFunc } from "./on-load.mts";
+import type { RankiIframeMessageUpdate } from "_views/anki-device/utils/send.types.mjs";
 
 export const onMessageCallback: OnMessageCallback =
   (win, doc, qa, files) =>

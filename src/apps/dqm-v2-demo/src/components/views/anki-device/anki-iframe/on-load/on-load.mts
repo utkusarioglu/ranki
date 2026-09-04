@@ -1,13 +1,13 @@
 import type { FetchOverrideRecord } from "_stores/anki-dist/anki.store.types.mjs";
 
 import { assertNotUndefined } from "_assertions";
-import { onFetchCallback } from "_views/anki-screen/on-fetch/on-fetch.mjs";
 
 import type { RankiFiles } from "../../screen/AnkiScreen.types.mts";
 import type { IFrameOnLoadCb } from "./on-load.types.mts";
 
 import { createRankiElements } from "../../utils/create-ranki-elements.mts";
 import { onMessageCallback } from "./on-message.mts";
+import { onFetchCallback } from "_views/anki-device/on-fetch/on-fetch.mjs";
 
 let originalFetch: null | typeof window.fetch = null;
 let originalWindow: null | Window = null;
