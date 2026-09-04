@@ -1,8 +1,9 @@
 import { Button, Typography } from "antd";
 import { type FC } from "react";
 
+import type { AnkiRenderSettingsProps } from "./RenderSettings.types.mts";
+
 import { OVERRIDES } from "./RenderSettings.constants.mts";
-import type { AnkiRenderSettingsProps } from "./AnkiRenderSettings.types.mts";
 import { TelemetryOverride } from "./TelemetryOverride";
 
 export const AnkiRenderFetchSettings: FC<

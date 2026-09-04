@@ -1,6 +1,6 @@
 import type {
-  ColorSchemes,
   AnkiDistStore,
+  ColorSchemes,
   RankiFlag,
 } from "_stores/anki-dist/anki.store.types.mjs";
 

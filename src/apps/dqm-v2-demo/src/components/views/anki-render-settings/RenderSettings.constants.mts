@@ -1,8 +1,9 @@
 import type {
-  RankiFace,
   RankiContentType,
+  RankiFace,
 } from "_stores/anki-dist/anki.store.types.mjs";
-import type { Flag } from "./AnkiRenderSettings.types.mts";
+
+import type { Flag } from "./RenderSettings.types.mts";
 
 export const FLAGS: Flag[] = [
   {

@@ -2,16 +2,17 @@ import { CheckOutlined } from "@ant-design/icons";
 import { Button, Input, Typography } from "antd";
 import { type FC } from "react";
 
+import type { AnkiRenderSettingsProps } from "./RenderSettings.types.mts";
+
 import style from "./AnkiRenderSettings.module.css";
-import { computeAspect, getAspectText } from "./utils.mts";
+import { AnkiRenderFetchSettings } from "./RenderFetchSettings";
 import {
+  APP_VARIANTS,
+  CONTENT_TYPES,
   FACES,
   FLAGS,
-  CONTENT_TYPES,
-  APP_VARIANTS,
 } from "./RenderSettings.constants.mts";
-import type { AnkiRenderSettingsProps } from "./AnkiRenderSettings.types.mts";
-import { AnkiRenderFetchSettings } from "./RenderFetchSettings";
+import { computeAspect, getAspectText } from "./utils.mts";
 
 export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
   aspectRatios,
