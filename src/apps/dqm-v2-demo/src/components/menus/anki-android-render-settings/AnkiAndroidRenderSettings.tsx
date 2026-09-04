@@ -1,7 +1,7 @@
 import type { ColorSchemes } from "_stores/anki-dist/anki.store.types.mjs";
 
 import { useAnkiAndroidStore } from "_stores/anki-dist/anki-android.store.mjs";
-import { AnkiRenderSettings } from "_views/anki-render-settings/AnkiRenderSettings";
+import { AnkiRenderSettings } from "_views/anki-render-settings/RenderSettings";
 
 const COLOR_SCHEMES: ColorSchemes[] = ["dark", "light"];
 const ASPECT_RATIOS = ["9:19", "9:16", "3:4", "1:1", "4:3", "16:9", "19:9"];

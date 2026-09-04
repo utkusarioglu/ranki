@@ -1,137 +1,17 @@
-import type {
-  AnkiDistStore,
-  ColorSchemes,
-  RankiContentType,
-  RankiFace,
-  RankiFlag,
-} from "_stores/anki-dist/anki.store.types.mjs";
-
 import { CheckOutlined } from "@ant-design/icons";
 import { Button, Input, Typography } from "antd";
 import { type FC } from "react";
 
 import style from "./AnkiRenderSettings.module.css";
-import { getAspect, getAspectText } from "./utils.mts";
-import { FETCH_RULES } from "_views/anki-screen/on-fetch/on-fetch.constants.mjs";
-
-type AnkiRenderSettingsProps = {
-  aspectRatios: string[];
-  colorSchemes: ColorSchemes[];
-  scales: string[];
-  store: AnkiDistStore;
-};
-
-interface Flag {
-  color: "none" | `#${string}`;
-  flag: RankiFlag;
-}
-
-const FLAGS: Flag[] = [
-  {
-    color: "none",
-    flag: "flag0",
-  },
-  {
-    color: "#FF0000",
-    flag: "flag1",
-  },
-  {
-    color: "#FF7700",
-    flag: "flag2",
-  },
-  {
-    color: "#00FF00",
-    flag: "flag3",
-  },
-  {
-    color: "#0000FF",
-    flag: "flag4",
-  },
-  {
-    color: "#e89eb8",
-    flag: "flag5",
-  },
-  {
-    color: "#40E0D0",
-    flag: "flag6",
-  },
-  {
-    color: "#BF40BF",
-    flag: "flag7",
-  },
-];
-
-const FACES: RankiFace[] = ["Q", "N"];
-
-const OVERRIDES = [
-  {
-    title: "Passthru",
-    mode: "passthru" as const,
-  },
-  {
-    title: "Succeed",
-    mode: "autoSucceed" as const,
-  },
-  {
-    title: "Fail",
-    mode: "autoFail" as const,
-  },
-  {
-    title: "Throw",
-    mode: "autoThrow" as const,
-  },
-];
-
-const AnkiRenderFetchSettings: FC<Pick<AnkiRenderSettingsProps, "store">> = ({
-  store,
-}) => {
-  if (store.appVariant === "core") {
-    return null;
-  }
-
-  const TelemetryOverride = () => {
-    if (store.fetchOverride.all !== "passthru") {
-      return null;
-    }
-
-    return (
-      <>
-        {FETCH_RULES.map(({ title, type }) => (
-          <div key={title}>
-            <Typography>{title} Fetch Override</Typography>
-            {OVERRIDES.map(({ title, mode }) => (
-              <Button
-                key={title}
-                onClick={() => store.setFetchOverride(type, mode)}
-                type={
-                  store.fetchOverride[type] === mode ? "primary" : "default"
-                }
-              >
-                {title}
-              </Button>
-            ))}
-          </div>
-        ))}
-      </>
-    );
-  };
-
-  return (
-    <>
-      <Typography>All Fetch Override</Typography>
-      {OVERRIDES.map(({ title, mode }) => (
-        <Button
-          key={title}
-          onClick={() => store.setFetchOverride("all", mode)}
-          type={store.fetchOverride.all === mode ? "primary" : "default"}
-        >
-          {title}
-        </Button>
-      ))}
-      <TelemetryOverride />
-    </>
-  );
-};
+import { computeAspect, getAspectText } from "./utils.mts";
+import {
+  FACES,
+  FLAGS,
+  CONTENT_TYPES,
+  APP_VARIANTS,
+} from "./RenderSettings.constants.mts";
+import type { AnkiRenderSettingsProps } from "./AnkiRenderSettings.types.mts";
+import { AnkiRenderFetchSettings } from "./RenderFetchSettings";
 
 export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
   aspectRatios,
@@ -142,20 +22,7 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
   return (
     <div className={style.container}>
       <Typography>App Variant</Typography>
-      {[
-        {
-          title: "Core",
-          variant: "core" as const,
-        },
-        {
-          title: "Observable",
-          variant: "o11y" as const,
-        },
-        {
-          title: "Devtools",
-          variant: "devtools" as const,
-        },
-      ].map(({ title, variant }) => (
+      {APP_VARIANTS.map(({ title, variant }) => (
         <Button
           key={title}
           onClick={() => store.setAppVariant(variant)}
@@ -165,17 +32,9 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
         </Button>
       ))}
       <AnkiRenderFetchSettings store={store} />
+
       <Typography>Content</Typography>
-      {[
-        {
-          contentType: "r2" as RankiContentType,
-          title: "Dqm",
-        },
-        {
-          contentType: "foreign" as RankiContentType,
-          title: "Foreign",
-        },
-      ].map(({ contentType, title }) => (
+      {CONTENT_TYPES.map(({ contentType, title }) => (
         <Button
           key={title}
           onClick={() => store.setContentType(contentType)}
@@ -184,11 +43,12 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
           {title}
         </Button>
       ))}
+
       <Typography>Orientation & Aspect</Typography>
       {aspectRatios
         .map((a) => ({
           a,
-          f: getAspect(a),
+          f: computeAspect(a),
         }))
         .map(({ a, f }) => (
           <Button
@@ -199,6 +59,7 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
             {getAspectText(a, f)}
           </Button>
         ))}
+
       <Typography>Scale</Typography>
       {scales.map((s) => (
         <Button
@@ -209,6 +70,7 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
           {s}
         </Button>
       ))}
+
       <Typography>Color scheme</Typography>
       {colorSchemes.map((s) => (
         <Button
@@ -219,6 +81,7 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
           {s}
         </Button>
       ))}
+
       <Typography>Face</Typography>
       {FACES.map((face) => (
         <Button
@@ -229,6 +92,7 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
           {face}
         </Button>
       ))}
+
       <Typography>Flag</Typography>
       {FLAGS.map((flag) => (
         <Button
@@ -242,26 +106,31 @@ export const AnkiRenderSettings: FC<AnkiRenderSettingsProps> = ({
           <CheckOutlined />
         </Button>
       ))}
+
       <Typography>Type</Typography>
       <Input
         onChange={(e) => store.setCardType(e.target.value)}
         value={store.cardType}
       />
+
       <Typography>Card</Typography>
       <Input
         onChange={(e) => store.setCard(e.target.value)}
         value={store.card}
       />
+
       <Typography>Deck</Typography>
       <Input
         onChange={(e) => store.setDeck(e.target.value)}
         value={store.deck}
       />
+
       <Typography>Tags</Typography>
       <Input
         onChange={(e) => store.setTags(e.target.value)}
         value={store.tags}
       />
+
       <Typography>Card Config</Typography>
       <Input.TextArea
         autoSize
