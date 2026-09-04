@@ -17,7 +17,6 @@ export class Send {
 
     const cWIn = ref.current.contentWindow;
     if (!cWIn) return;
-    // assertNotNull(cWIn, { why: "Iframe content window is required" });
 
     const message: RankiIframeMessage = {
       ranki: {

@@ -18,12 +18,11 @@ export const onFetchCallback: OnFetchCallback =
     }
 
     window.top?.postMessage(`Fetch ${active} ${mode}: ${url.toString()}`);
-    console.log("sent", window.top);
     switch (mode) {
       case "autoFail":
-        return autoFail();
+        return respond(404);
       case "autoSucceed":
-        return autoSucceed();
+        return respond(200);
       case "autoThrow":
         return autoThrow();
       case "passthru":
@@ -31,24 +30,13 @@ export const onFetchCallback: OnFetchCallback =
     }
   };
 
-function autoFail() {
+function respond(status: number) {
   return Promise.reject(
     new Response(JSON.stringify({}), {
       headers: {
         "Content-Type": "application/json",
       },
-      status: 404,
-    }),
-  );
-}
-
-function autoSucceed() {
-  return Promise.resolve(
-    new Response(JSON.stringify({}), {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      status: 200,
+      status,
     }),
   );
 }

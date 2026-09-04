@@ -28,11 +28,11 @@ export const AnkiScreen: FC<AnkiScreenProps> = ({
   const files = useRankiFiles(appVariant);
   const srcDoc = useDocumentCleaner(src, srcFilters);
 
-  const onMessage = (e: MessageEvent<string>) => {
-    onEvent({ log: e.data });
-  };
-
   useEffect(() => {
+    const onMessage = (e: MessageEvent<string>) => {
+      onEvent({ log: e.data });
+    };
+
     window.top?.addEventListener("message", onMessage);
     return () => window.top?.removeEventListener("message", onMessage);
   }, []);

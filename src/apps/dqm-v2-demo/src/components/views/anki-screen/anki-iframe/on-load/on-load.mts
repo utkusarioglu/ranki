@@ -8,6 +8,20 @@ import { onMessageCallback } from "./on-message.mts";
 import type { FetchOverrideRecord } from "_stores/anki-dist/anki.store.types.mjs";
 import { onFetchCallback } from "_views/anki-screen/on-fetch/on-fetch.mjs";
 
+let originalFetch: typeof window.fetch | null = null;
+let originalWindow: Window | null = null;
+
+export function overrideWindowFetchFunc(
+  win: Window,
+  fetchOverride: FetchOverrideRecord,
+) {
+  if (originalWindow !== win || originalFetch === null) {
+    originalWindow = win;
+    originalFetch = win.fetch;
+  }
+  win.fetch = onFetchCallback({ fetchOverride })(originalFetch);
+}
+
 export const iFrameOnLoad: IFrameOnLoadCb =
   ({ files, fetchOverride, onLoad, ref }) =>
   (e) => {
@@ -39,20 +53,6 @@ function attachFileSourcedTags(win: Window, doc: Document, files: RankiFiles) {
   replaced.jss.forEach((js) => {
     doc.body.appendChild(js);
   });
-}
-
-let originalFetch: typeof window.fetch | null = null;
-let originalWindow: Window | null = null;
-
-export function overrideWindowFetchFunc(
-  win: Window,
-  fetchOverride: FetchOverrideRecord,
-) {
-  if (originalWindow !== win || originalFetch === null) {
-    originalWindow = win;
-    originalFetch = win.fetch;
-  }
-  win.fetch = onFetchCallback({ fetchOverride })(originalFetch);
 }
 
 function setHtmlBaseTag(doc: Document) {

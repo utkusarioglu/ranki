@@ -184,7 +184,6 @@ const AsyncHTMLElement: FC<AsyncHTMLElementProps> = ({
 };
 
 export interface ResourceProps {
-  // name: string;
   element: HTMLElement;
 }
 
