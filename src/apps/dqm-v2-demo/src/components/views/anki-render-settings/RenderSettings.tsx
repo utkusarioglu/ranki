@@ -4,7 +4,7 @@ import { type FC } from "react";
 
 import type { AnkiRenderSettingsProps } from "./RenderSettings.types.mts";
 
-import style from "./AnkiRenderSettings.module.css";
+import style from "./RenderSettings.module.css";
 import { AnkiRenderFetchSettings } from "./RenderFetchSettings";
 import {
   APP_VARIANTS,
