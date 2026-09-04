@@ -1,4 +1,4 @@
-import type { RankiElements, RankiFiles } from "../AnkiScreen.types.mts";
+import type { RankiElements, RankiFiles } from "../screen/AnkiScreen.types.mts";
 
 import { createFragment } from "./create-fragment.mts";
 

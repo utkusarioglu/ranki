@@ -3,7 +3,7 @@ import type { RankiIframeMessageUpdate } from "_views/anki-screen/utils/send.typ
 import { assertNotUndefined } from "_assertions";
 import { RENDERED_CLASS_SELECTOR } from "@ranki/app-ranki-v2/constants";
 
-import type { RankiFiles } from "../../AnkiScreen.types.mts";
+import type { RankiFiles } from "../../screen/AnkiScreen.types.mts";
 import type { OnMessageCallback } from "./on-message.types.mts";
 
 import { createFragment } from "../../utils/create-fragment.mts";

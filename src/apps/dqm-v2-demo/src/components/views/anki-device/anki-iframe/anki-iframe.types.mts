@@ -1,7 +1,7 @@
 import type { FetchOverrideRecord } from "_stores/anki-dist/anki.store.types.mjs";
 import type { RefObject } from "react";
 
-import type { RankiFiles } from "../AnkiScreen.types.mts";
+import type { RankiFiles } from "../screen/AnkiScreen.types.mts";
 
 export interface AnkiDesktopIFrameProps {
   fetchOverride: FetchOverrideRecord;

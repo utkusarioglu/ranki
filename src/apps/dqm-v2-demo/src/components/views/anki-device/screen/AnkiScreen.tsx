@@ -1,12 +1,11 @@
 import { type FC, useEffect } from "react";
 
-import type { AnkiScreenProps } from "./AnkiScreen.types.mts";
-
-import { AnkiIFrame } from "./anki-iframe/anki-iframe";
+import { AnkiIFrame } from "../anki-iframe/anki-iframe";
 import style from "./AnkiScreen.module.css";
-import { useDocumentCleaner, useRankiFiles } from "./hooks/hooks.mts";
-import { computeSizing } from "./utils/get-sizing.mts";
-import { Send } from "./utils/send.mts";
+import { useDocumentCleaner, useRankiFiles } from "../hooks/hooks.mts";
+import { computeSizing } from "../utils/get-sizing.mts";
+import { Send } from "../utils/send.mts";
+import type { AnkiScreenProps } from "./AnkiScreen.types.mts";
 
 const PADDING = 16;
 

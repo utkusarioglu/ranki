@@ -2,7 +2,7 @@ import type { RankiAppVariant } from "_stores/anki-dist/anki.store.types.mjs";
 
 import { useEffect, useState } from "react";
 
-import type { RankiFiles } from "../AnkiScreen.types.mts";
+import type { RankiFiles } from "../screen/AnkiScreen.types.mts";
 
 import { URL_TEMPLATE } from "../utils/create-fragment.mts";
 import { DEFAULT_RANKI_FILES, R2_VARIANT_FILES } from "./hooks.constants.mts";
