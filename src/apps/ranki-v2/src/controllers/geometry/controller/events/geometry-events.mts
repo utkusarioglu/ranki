@@ -11,7 +11,10 @@ import type {
   GeometryEventsConstructorParams,
 } from "./types/geometry-events.constructor.types.mjs";
 import type { GeometryEventTypes } from "./types/geometry-events.constructor.types.mjs";
-import type { LocalAction } from "./types/geometry-events.types.mjs";
+import type {
+  LocalAction,
+  OnEmitCallbackParams,
+} from "./types/geometry-events.types.mjs";
 import type { GeometryEvent } from "./types/geometry-events.types.mjs";
 import type { EventWithContext } from "./types/geometry-events.types.mjs";
 
@@ -87,7 +90,7 @@ export class GeometryEvents<Instance extends LitElement> {
     }
   }
 
-  public onEmit(callback: (c: { detail: GeometryEvent; target: R2C; }) => void) {
+  public onEmit(callback: (c: OnEmitCallbackParams) => void) {
     return async (e: CustomEvent<EventWithContext<GeometryEvent>>) => {
       e.stopPropagation();
       const target = e.composedPath()[0] as null | R2C;

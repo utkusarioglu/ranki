@@ -25,7 +25,7 @@ export class R2HudScroller extends R2C {
   @query("r2-hud-bg")
   private accessor bg!: R2HudBg;
 
-  @queryAll("r2-cue-list")
+  @queryAll(".elems")
   private accessor cueList!: NodeListOf<R2C>;
 
   @geometry({
@@ -64,10 +64,14 @@ export class R2HudScroller extends R2C {
       ></r2-hud-bg>
 
       <r2-notification-list
+        class="elems"
         @r2-geometry=${this.geo.onEmit()}
       ></r2-notification-list>
 
-      <r2-cue-list @r2-geometry=${this.geo.onEmit()}></r2-cue-list>
+      <r2-cue-list
+        class="elems"
+        @r2-geometry=${this.geo.onEmit()}
+      ></r2-cue-list>
     `;
   }
 }
