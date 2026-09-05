@@ -1,4 +1,4 @@
-import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
+// import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 
 import { R2C } from "_components/r2c/r2c.mjs";
 import {
@@ -8,7 +8,7 @@ import {
 } from "_controllers/geometry/geometry.mjs";
 import { getAnimationCollection } from "_store/store.mjs";
 import { css, html } from "lit";
-import { customElement, query, queryAll } from "lit/decorators.js";
+import { customElement } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
 
 @customElement("r2-hud-scroller")
@@ -21,12 +21,6 @@ export class R2HudScroller extends R2C {
       overflow: hidden;
     }
   `;
-
-  @query("r2-hud-bg")
-  private accessor bg!: R2HudBg;
-
-  @queryAll(".elems")
-  private accessor cueList!: NodeListOf<R2C>;
 
   @geometry({
     children: {
@@ -42,21 +36,16 @@ export class R2HudScroller extends R2C {
             start: 10,
           },
         }),
-      selector: (s) => Array.from(s.cueList),
     },
     collection: getAnimationCollection,
     role: "hud-scroller",
-    watchers: {
-      bg: {
-        selector: (s) => [s.bg],
-      },
-    },
   })
   private readonly geo!: GeometryController<R2HudScroller>;
 
   override render() {
     return html`
       <r2-hud-bg
+        @r2-geometry=${this.geo.watcher()}
         style="${styleMap({
           "--bg": "rgb(var(--scheme-yellow-2))",
           "--z-index": -4,
@@ -65,13 +54,10 @@ export class R2HudScroller extends R2C {
 
       <r2-notification-list
         class="elems"
-        @r2-geometry=${this.geo.onEmit()}
+        @r2-geometry=${this.geo.child()}
       ></r2-notification-list>
 
-      <r2-cue-list
-        class="elems"
-        @r2-geometry=${this.geo.onEmit()}
-      ></r2-cue-list>
+      <r2-cue-list class="elems" @r2-geometry=${this.geo.child()}></r2-cue-list>
     `;
   }
 }

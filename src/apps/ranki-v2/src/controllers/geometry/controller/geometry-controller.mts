@@ -17,6 +17,7 @@ import { GeometryMerger } from "./merger/geometry-merger.mjs";
 import { GeometrySetsUtils } from "./sets/geometry-sets-utils.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
 import { TimingUtils } from "./utils/timing.utils.mjs";
+import type { OnEmitCallbackParams } from "./events/types/geometry-events.types.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -56,7 +57,6 @@ export class GeometryController<
     });
     this.sets = new GeometrySets(this.host, {
       children: params.children,
-      watchers: params.watchers,
     });
     this.o11y = new O11y(this, {
       // logger: {
@@ -86,69 +86,132 @@ export class GeometryController<
   }
 
   hostConnected(): void {
+    this.events.emit({ type: "lifecycle", lifecycle: "connected" });
     this.events.registerListeners();
   }
 
   hostDisconnected(): void {
     this.events.deregisterListeners();
+    this.events.emit({ type: "lifecycle", lifecycle: "disconnected" });
   }
 
-  onEmit() {
+  watcher() {
     return this.events.onEmit(async (event) => {
-      return this.o11y.trace.span(
-        "onEmit",
-        async ({ session, span, withLink }) => {
-          this.o11y.meter.count("onEmit");
-          this.sizing = this.sets.onEmit(event);
-          if (!this.isRoot) {
-            span.addEvent("controller.propagate.up");
-            this.o11y.devtools.log("emit.not-root", {
-              curr: this.curr,
-              event,
-              host: this.host,
-              prev: this.prev,
-              sizing: this.sizing,
-              tag: this.host.tagName,
-            });
-            this.events.emit({
-              lifecycle: "update",
-              style: this.sizing.container,
-              type: "lifecycle",
-            });
-            return;
+      switch (event.detail.type) {
+        case "lifecycle": {
+          switch (event.detail.lifecycle) {
+            case "connected":
+              return this.sets.addWatcher(event.target);
+            case "disconnected":
+              return this.sets.removeWatcher(event.target);
           }
-          if (this.inSession) {
-            session.join(span);
-            return;
-          }
-          this.inSession = true;
-          session.start();
-          this.o11y.devtools.log("session.start", {
+        }
+      }
+    });
+  }
+
+  child() {
+    return this.events.onEmit(async (event) => {
+      return this.o11y.trace.span("onEmit", async () => {
+        switch (event.detail.type) {
+          case "lifecycle":
+            return this.lifecycle(event);
+          default:
+        }
+      });
+    });
+  }
+
+  private async lifecycle(event: OnEmitCallbackParams) {
+    if (event.detail.type !== "lifecycle") return;
+    switch (event.detail.lifecycle) {
+      case "connected":
+        return this.lifecycleConnected(event);
+      case "disconnected":
+        return this.lifecycleDisconnected(event);
+      case "leave":
+      case "update":
+        return await this.lifecycleUpdate(event);
+    }
+  }
+
+  private lifecycleConnected(event: OnEmitCallbackParams) {
+    this.o11y.devtools.log("emit.lifecycle.connected", {
+      curr: this.curr,
+      event,
+      host: this.host,
+      prev: this.prev,
+      sizing: this.sizing,
+      tag: this.host.tagName,
+    });
+    this.sets.addChild(event.target);
+  }
+
+  private lifecycleDisconnected(event: OnEmitCallbackParams) {
+    this.o11y.devtools.log("emit.lifecycle.connected", {
+      curr: this.curr,
+      event,
+      host: this.host,
+      prev: this.prev,
+      sizing: this.sizing,
+      tag: this.host.tagName,
+    });
+    this.sets.removeChild(event.target);
+  }
+
+  private lifecycleUpdate(event: OnEmitCallbackParams) {
+    return this.o11y.trace.span(
+      "onEmit.lifecycle.update",
+      async ({ session, span, withLink }) => {
+        this.sizing = this.sets.onEmit(event);
+        if (!this.isRoot) {
+          span.addEvent("controller.propagate.up");
+          this.o11y.devtools.log("emit.lifecycle.update.not-root", {
+            curr: this.curr,
             event,
             host: this.host,
+            prev: this.prev,
             sizing: this.sizing,
             tag: this.host.tagName,
           });
-          await this.wait.raf(3);
-          this.inSession = false;
-          const inform = GeometrySetsUtils.prepareRootStyle(this.sizing);
-          session.end();
-          this.o11y.devtools.log("session.end", {
-            event,
-            inform,
-            sizing: this.sizing,
+          this.events.emit({
+            lifecycle: "update",
+            style: this.sizing.container,
+            type: "lifecycle",
           });
-          span.addEvent("controller.propagate.down");
-          await withLink(() => this.informStyle(inform));
-          span.addEvent("controller.animation.end");
-          this.o11y.devtools.log("root.animation.end", {
-            event,
-            inform,
-            sizing: this.sizing,
-          });
-        },
-      );
-    });
+          return;
+        }
+        if (this.inSession) {
+          session.join(span);
+          return;
+        }
+        this.inSession = true;
+        session.start();
+        this.o11y.devtools.log("session.start", {
+          event,
+          host: this.host,
+          sizing: this.sizing,
+          tag: this.host.tagName,
+        });
+        await this.wait.raf(3);
+        this.inSession = false;
+        const inform = GeometrySetsUtils.prepareRootStyle(this.sizing);
+        session.end();
+        this.o11y.devtools.log("session.end", {
+          event,
+          inform,
+          sizing: this.sizing,
+        });
+        span.addEvent("controller.propagate.down");
+        await withLink(() => this.informStyle(inform));
+        span.addEvent("controller.animation.end");
+        this.o11y.devtools.log("root.animation.end", {
+          event,
+          inform,
+          sizing: this.sizing,
+        });
+      },
+    );
   }
 
   /**

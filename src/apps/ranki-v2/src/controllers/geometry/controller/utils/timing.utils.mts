@@ -19,7 +19,6 @@ export class TimingUtils {
         requestAnimationFrame(() => step(resolve, cb));
       }
     }
-    // await this.propagateDelay();
     return new Promise<void>((r) => step(r, cb));
   }
 }

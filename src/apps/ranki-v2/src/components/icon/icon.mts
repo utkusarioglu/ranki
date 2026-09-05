@@ -41,7 +41,6 @@ export class R2Icon extends R2C {
     children: {
       diff: (s) => s.subtree.curr.diff,
       layout: () => LayoutUtils.last(),
-      selector: (s) => Array.from(s.spans),
     },
     collection: getAnimationCollection,
     role: "icon",
@@ -74,7 +73,7 @@ export class R2Icon extends R2C {
         html`<r2-icon-span
           .props=${p.props}
           @r2-reconciler=${this.subtree.onEmit(p.id)}
-          @r2-geometry=${this.geo.onEmit()}
+          @r2-geometry=${this.geo.child()}
         ></r2-icon-span>`,
     )}`;
   }

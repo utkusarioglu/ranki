@@ -1,4 +1,4 @@
-import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
+// import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 
 import { R2C } from "_components/r2c/r2c.mjs";
@@ -10,16 +10,13 @@ import {
 import { ReconciliationUtils } from "_controllers/reconciler/reconciler.mjs";
 import { getAnimationCollection } from "_store/store.mjs";
 import { html, unsafeCSS } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 
 import style from "./chip.css?inline";
 
 @customElement("r2-chip")
 export class R2Chip extends R2C {
   static override styles = unsafeCSS(style);
-
-  @query("r2-hud-bg")
-  private accessor bg!: R2HudBg;
 
   @geometry({
     children: {
@@ -35,7 +32,6 @@ export class R2Chip extends R2C {
             start: 10,
           },
         }),
-      selector: (s) => [s.icon, s.text],
     },
     collection: getAnimationCollection,
     events: {
@@ -47,25 +43,14 @@ export class R2Chip extends R2C {
       }
     },
     role: "chip",
-    watchers: {
-      bg: {
-        selector: (s) => [s.bg],
-      },
-    },
   })
   private readonly geo!: GeometryController<R2Chip>;
-
-  @query("r2-icon")
-  private accessor icon!: R2C;
 
   @property()
   private accessor index!: number;
 
   @property()
   private accessor list!: HudTagListItem[];
-
-  @query("r2-text")
-  private accessor text!: R2C;
 
   public override leave() {
     this.geo.events.emit({
@@ -78,7 +63,11 @@ export class R2Chip extends R2C {
     const item = this.list[this.index];
 
     return html`
-      <r2-hud-bg style="--z-index: -1;"></r2-hud-bg>
+      <r2-hud-bg
+        style="--z-index: -1;"
+        @r2-geometry=${this.geo.watcher()}
+      ></r2-hud-bg>
+
       <r2-icon
         .props=${{
           animation: {
@@ -91,12 +80,12 @@ export class R2Chip extends R2C {
           width: 24,
         }}
         style="position: absolute;"
-        @r2-geometry=${this.geo.onEmit()}
+        @r2-geometry=${this.geo.child()}
       ></r2-icon>
       <r2-text
         .props=${item}
         style="position: absolute;"
-        @r2-geometry=${this.geo.onEmit()}
+        @r2-geometry=${this.geo.child()}
       ></r2-text>
     `;
   }

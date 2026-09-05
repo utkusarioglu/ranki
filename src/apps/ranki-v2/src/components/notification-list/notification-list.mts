@@ -1,4 +1,3 @@
-import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
 import type { HudTagListItem } from "_components/hud/hud.types.mjs";
 
 import { R2C } from "_components/r2c/r2c.mjs";
@@ -15,7 +14,7 @@ import { AppStoreController } from "_controllers/store/store.controller.mjs";
 import { store } from "_controllers/store/store.decorator.mjs";
 import { getAnimationCollection } from "_store/store.mjs";
 import { html, unsafeCSS } from "lit";
-import { customElement, query, queryAll } from "lit/decorators.js";
+import { customElement, queryAll } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
 
@@ -26,9 +25,6 @@ type R2BadgeListState = HudTagListItem;
 @customElement("r2-notification-list")
 export class R2BadgeList extends R2C {
   static override styles = unsafeCSS(style);
-
-  @query("r2-hud-bg")
-  private accessor bg!: R2HudBg;
 
   @queryAll("r2-chip")
   private accessor chips!: NodeListOf<R2C>;
@@ -48,15 +44,9 @@ export class R2BadgeList extends R2C {
             start: 10,
           },
         }),
-      selector: (h) => Array.from(h.chips),
     },
     collection: getAnimationCollection,
     role: "badge-list",
-    watchers: {
-      bg: {
-        selector: (r) => [r.bg],
-      },
-    },
   })
   private readonly geo!: GeometryController<R2BadgeList>;
 
@@ -82,11 +72,13 @@ export class R2BadgeList extends R2C {
     const base = this.subtree.curr.list;
     return html`
       <r2-hud-bg
+        @r2-geometry=${this.geo.watcher()}
         style="${styleMap({
           "--bg": "rgb(var(--scheme-red-1))",
           "--z-index": -2,
         })}"
       ></r2-hud-bg>
+
       ${repeat(
         Array.from({ length: base.length }, (_, i) => i),
         (i) => i,
@@ -103,7 +95,7 @@ export class R2BadgeList extends R2C {
               .index=${i}
               .list=${list}
               ?leave=${leave}
-              @r2-geometry=${this.geo.onEmit()}
+              @r2-geometry=${this.geo.child()}
               @r2-reconciler=${this.subtree.onEmit(id)}
             ></r2-chip>
           `;

@@ -39,7 +39,6 @@ export class R2Text extends R2C {
     children: {
       diff: (s) => s.subtree.curr.diff,
       layout: () => LayoutUtils.last(),
-      selector: (s) => Array.from(s.spans),
     },
     collection: getAnimationCollection,
     role: "text",
@@ -47,9 +46,6 @@ export class R2Text extends R2C {
   private readonly geo!: GeometryController<R2Text>;
 
   @property()
-  // {
-  // hasChanged: () => false,
-  // }
   private accessor props!: R2TextProps;
 
   @queryAll("r2-text-span")
@@ -75,7 +71,7 @@ export class R2Text extends R2C {
         html`<r2-text-span
           .props=${p.props}
           @r2-reconciler=${this.subtree.onEmit(p.id)}
-          @r2-geometry=${this.geo.onEmit()}
+          @r2-geometry=${this.geo.child()}
         ></r2-text-span>`,
     )}`;
   }

@@ -1,40 +1,33 @@
 import type { LitElement } from "lit";
 
-import { assertNotUndefined } from "_error/assertions.mjs";
-
 import type { InformSetProps } from "../../animator/types/animator.types.mjs";
 import type { LayoutSizing } from "../children/layout/layout-utils.types.mjs";
-import type { GeometrySetName } from "../sets.types.mjs";
-import type { GeometryWatcherRecord } from "./watcher.types.mjs";
 
 import { WatcherSet } from "../watcher-set/watcher-set.mjs";
+import type { R2C } from "_components/r2c/r2c.mjs";
 
 export class GeometryWatchers<Instance extends LitElement> {
   private readonly host: Instance;
-  private readonly sets: Record<GeometrySetName, WatcherSet<Instance>> = {};
+  private readonly sets: WatcherSet<Instance>[] = [];
 
-  constructor(host: Instance, props: GeometryWatcherRecord<Instance>) {
+  constructor(host: Instance) {
     this.host = host;
-    this.sets = Object.fromEntries(
-      Object.entries(props).map(([setName, setProps]) => [
-        setName,
-        new WatcherSet(this.host, setProps),
-      ]),
-    );
+  }
+
+  public add(elem: R2C) {
+    const w = new WatcherSet(this.host);
+    w.addElement(elem);
+    this.sets.push(w);
+  }
+
+  public remove(elem: R2C) {
+    console.log("remove watcher", elem);
   }
 
   public async inform(
     props: InformSetProps,
     sizing: LayoutSizing | null,
   ): Promise<void> {
-    this.getSet(props.setName).inform(props, sizing);
-  }
-
-  private getSet(setName: GeometrySetName) {
-    const set = this.sets[setName];
-    assertNotUndefined(set, {
-      why: "Watcher attempting to call undefined set",
-    });
-    return set;
+    this.sets.forEach((s) => s.inform(props, sizing));
   }
 }

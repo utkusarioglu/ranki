@@ -16,16 +16,19 @@ export class GeometryChildren<
   private readonly layout: GeometryChildrenLayoutCallback;
   private readonly registry = new ChildrenRegistry();
 
-  constructor(host: Instance, props: GeometryChildrenProps<Instance>) {
-    super(host, props);
-    this.layout = props.layout || (() => LayoutUtils.row({}));
-    this.diff = props.diff;
+  constructor(host: Instance, props?: GeometryChildrenProps<Instance>) {
+    super(host);
+    this.layout = props?.layout || (() => LayoutUtils.row({}));
+    if (props?.diff) this.diff = props.diff;
   }
 
   public onEmit({ detail, target }: GeometryChildrenOnEmitProps) {
     this.registry.update(target, detail);
     return this.updateSizing();
   }
+
+  public add = this.addElement;
+  public remove = this.removeElement;
 
   private updateSizing() {
     return this.o11y.trace.span("updateSizing", () => {

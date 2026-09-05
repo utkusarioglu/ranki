@@ -5,7 +5,7 @@ import type { LitElement } from "lit";
 
 import type { GeometryEvent } from "../../events/types/geometry-events.types.mjs";
 import type { InformedChildStyle } from "../../types/geometry-controller.types.mjs";
-import type { GeometrySetSelectorCb } from "../sets.types.mjs";
+// import type { GeometrySetSelectorCb } from "../sets.types.mjs";
 import type {
   LayoutSizing,
   LayoutSizingCallback,
@@ -52,7 +52,7 @@ export interface GeometryChildrenProps<Instance extends LitElement> {
    * @default LayoutUtils.row
    */
   layout?: GeometryChildrenLayoutCallback;
-  selector: GeometrySetSelectorCb<Instance>;
+  // selector: GeometrySetSelectorCb<Instance>;
 }
 
 export type GeometrySetDiffCb<Instance extends LitElement> = (
