@@ -19,11 +19,11 @@ import type { R2IconSpan } from "./icon-span.mjs";
 
 import style from "./icon.css?inline";
 
-export type Parts = {
+export interface Parts {
   id: number;
   leave: boolean;
   props: R2IconProps;
-};
+}
 
 export interface R2IconProps {
   animation: RankiPropAnimationBlock;

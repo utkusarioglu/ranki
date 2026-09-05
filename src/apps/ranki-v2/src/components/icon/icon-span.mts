@@ -13,7 +13,7 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import type { R2IconProps } from "./icon.mjs";
 
 import style from "./icon-span.css?inline";
-import { SVG_PLACEHOLDER } from "./SVG_PLACEHOLDER.mjs";
+import { SVG_PLACEHOLDER } from "./icon.constants.mjs";
 
 @customElement("r2-icon-span")
 export class R2IconSpan extends R2C {

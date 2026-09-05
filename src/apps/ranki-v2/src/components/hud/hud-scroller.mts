@@ -1,5 +1,3 @@
-// import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
-
 import { R2C } from "_components/r2c/r2c.mjs";
 import {
   geometry,
@@ -7,20 +5,14 @@ import {
   LayoutUtils,
 } from "_controllers/geometry/geometry.mjs";
 import { getAnimationCollection } from "_store/store.mjs";
-import { css, html } from "lit";
+import { html, unsafeCSS } from "lit";
 import { customElement } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
+import style from "./hud-scroller.css?inline";
 
 @customElement("r2-hud-scroller")
 export class R2HudScroller extends R2C {
-  static override styles = css`
-    :host {
-      display: block;
-      width: 0;
-      height: 0;
-      overflow: hidden;
-    }
-  `;
+  static override styles = unsafeCSS(style);
 
   @geometry({
     children: {
