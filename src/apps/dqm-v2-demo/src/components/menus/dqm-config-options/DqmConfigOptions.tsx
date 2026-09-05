@@ -2,27 +2,17 @@ import { UpdatesForm } from "_menus/dqm-input-options/updates-form/UpdatesForm";
 import { useDqmStore } from "_stores/dqm/dqm.store.mjs";
 import { buildPluginSelectionConfig } from "_stores/dqm/dqm.utils.mjs";
 import { ReorderList } from "_views/reorder-list/ReorderList";
-import { Button, Flex, Form } from "antd";
+import { Form } from "antd";
 import { useCallback } from "react";
 import yaml from "yaml";
 
-import { dqmConfigEntryFactory, DqmConfigEntryFixed } from "./DqmConfigEntry";
+import { dqmConfigEntryFactory } from "./config-entry/dqmConfigEntryFactory";
 import style from "./DqmConfigOptions.module.css";
+import { ConfigForm } from "./config-form/ConfigForm";
+import { DqmConfigEntryFixed } from "./config-entry/DqmConfigEntryFixed";
 
 export const DqmConfigOptions = () => {
   const dqm = useDqmStore();
-
-  // const setCode = (i: number) => (code: string) => {
-  //   dqm.setConfigCodeByIndex(i, code);
-  // };
-
-  // const setValue = (i: number) => (configStr: string, config: DqmConfig) => {
-  //   dqm.setConfigValueByIndex(i, configStr, config);
-  // };
-
-  // const removeConfig = (i: number) => () => {
-  //   dqm.removeConfigByIndex(i);
-  // };
 
   const component = useCallback(
     dqmConfigEntryFactory({
@@ -38,7 +28,9 @@ export const DqmConfigOptions = () => {
     <>
       <Form className={style.band}>
         <UpdatesForm />
+        <ConfigForm />
       </Form>
+
       <div className={style.container}>
         <ReorderList
           component={component}
@@ -57,12 +49,6 @@ export const DqmConfigOptions = () => {
           message="This entry is controlled by the Plugins tab"
         />
       </div>
-
-      <Flex className={style.band}>
-        <Button block onClick={() => dqm.pushNewConfig()}>
-          Add Config
-        </Button>
-      </Flex>
     </>
   );
 };
