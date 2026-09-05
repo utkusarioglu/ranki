@@ -2,9 +2,9 @@ import { SkinnyCard } from "_views/skinny-card/SkinnyCard";
 import { CloseOutlined } from "@ant-design/icons";
 import { Button, Flex, Input, Typography } from "antd";
 
-import style from "./DqmConfigEntry.module.css";
+import style from "../common.module.css";
 import type { DqmConfigEntryFactoryFunc } from "./dqmConfigEntryFactory.types.mts";
-import { useLocalState } from "./useLocalState";
+import { useLocalState } from "../hooks/useLocalState.hook.mts";
 
 export const dqmConfigEntryFactory: DqmConfigEntryFactoryFunc =
   ({ removeConfigByIndex, setConfigCodeByIndex, setConfigValueByIndex }) =>

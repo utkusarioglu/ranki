@@ -1,4 +1,4 @@
-import type { CardMessage } from "./dqmConfigEntryFactory.types.mts";
+import type { CardMessage } from "../factory/dqmConfigEntryFactory.types.mts";
 
 export const ERROR_MESSAGE: CardMessage = {
   text: "This config is current ignored because it is not a valid yaml document.",

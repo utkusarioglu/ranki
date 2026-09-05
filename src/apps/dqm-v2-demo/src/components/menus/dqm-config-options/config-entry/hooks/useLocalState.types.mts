@@ -2,7 +2,7 @@ import type { ConfigInput } from "_stores/dqm/dqm.store.types.mjs";
 import type {
   CardMessage,
   DqmConfigEntryFactoryFuncProps,
-} from "./dqmConfigEntryFactory.types.mts";
+} from "../factory/dqmConfigEntryFactory.types.mts";
 
 export interface LocalState {
   configStr: string;

@@ -6,10 +6,10 @@ import { Form } from "antd";
 import { useCallback } from "react";
 import yaml from "yaml";
 
-import { dqmConfigEntryFactory } from "./config-entry/dqmConfigEntryFactory";
+import { dqmConfigEntryFactory } from "./config-entry/factory/dqmConfigEntryFactory";
 import style from "./DqmConfigOptions.module.css";
 import { ConfigForm } from "./config-form/ConfigForm";
-import { DqmConfigEntryFixed } from "./config-entry/DqmConfigEntryFixed";
+import { DqmConfigEntryFixed } from "./config-entry/fixed/DqmConfigEntryFixed";
 
 export const DqmConfigOptions = () => {
   const dqm = useDqmStore();

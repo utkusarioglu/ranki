@@ -6,7 +6,7 @@ import {
   WHITESPACE_MESSAGE,
   EMPTY_MESSAGE,
   ERROR_MESSAGE,
-} from "./DqmConfigEntry.constants.mts";
+} from "./useLocalState.constants.mts";
 import type { UseLocalStateParams } from "./useLocalState.types.mts";
 import type { LocalState } from "./useLocalState.types.mts";
 

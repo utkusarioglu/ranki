@@ -3,7 +3,7 @@ import { CloseOutlined } from "@ant-design/icons";
 import { Button, Flex, Input, Typography } from "antd";
 import { type FC } from "react";
 
-import style from "./DqmConfigEntry.module.css";
+import style from "../common.module.css";
 import type { DqmConfigEntryFixedProps } from "./DqmConfigEntryFixed.types.mts";
 
 export const DqmConfigEntryFixed: FC<DqmConfigEntryFixedProps> = ({
