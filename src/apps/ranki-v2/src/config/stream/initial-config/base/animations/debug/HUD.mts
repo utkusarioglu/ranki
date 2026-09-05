@@ -9,13 +9,14 @@ export const HUD: GeometryAnimationPreset = {
             duration: 0,
             keyframes: [
               {
+                top: "= to.self.height * -1",
                 height: "= to.self.height",
               },
             ],
             name: "size",
           },
           {
-            duration: 0,
+            duration: 1000,
             keyframes: [
               // {
               //   top: "= to.self.height * -1",

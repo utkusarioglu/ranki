@@ -74,7 +74,7 @@ export class R2BadgeList extends R2C {
       <r2-hud-bg
         @r2-geometry=${this.geo.watcher()}
         style="${styleMap({
-          "--bg": "rgb(var(--scheme-red-1))",
+          "--bg": "rgb(var(--scheme-tone-0))",
           "--z-index": -2,
         })}"
       ></r2-hud-bg>

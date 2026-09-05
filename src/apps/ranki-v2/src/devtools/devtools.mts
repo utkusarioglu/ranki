@@ -11,9 +11,15 @@ export class RankiDevtools {
 
   static persist(on: boolean = true) {
     if (on) {
-      console.log("Ranki DevMethods will persist until reload");
+      store.pushNotification({
+        group: "devtools-persist",
+        log: "Ranki DevMethods will persist until reload",
+      });
     } else {
-      console.log("Ranki DevMethods will not persist on state change");
+      store.pushNotification({
+        group: "devtools-persist",
+        log: "Ranki DevMethods will not persist on state change",
+      });
     }
     this.isPersisted = on;
   }
@@ -23,10 +29,10 @@ export class RankiDevtools {
       RankiDevtools.persist();
     }
     if (conf?.methods) {
-      console.log(
-        "Ranki Devtools available at %cwindow.ranki",
-        "background:#000;color:#df981d;padding:2px 6px;",
-      );
+      store.pushNotification({
+        group: "devtools-methods",
+        log: "Ranki Devtools available at [code|window.ranki]",
+      });
 
       window.ranki = {
         anki: RankiDevAnkiMethods,
@@ -35,6 +41,9 @@ export class RankiDevtools {
       };
     } else if (window.ranki) {
       if (!RankiDevtools.isPersisted) {
+        store.removeNotification({
+          groups: ["devtools-persist", "devtools-methods"],
+        });
         console.log("Ranki Devtools removed.");
         delete window.ranki;
       }

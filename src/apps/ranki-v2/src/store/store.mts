@@ -5,8 +5,10 @@ import {
 } from "./notifications/notifications.mjs";
 
 export const store = {
-  pushNotification: (...all: Parameters<NotificationStore["addList"]>) =>
-    notificationStore.getState().addList(...all),
+  pushNotification: (...all: Parameters<NotificationStore["add"]>) =>
+    notificationStore.getState().add(...all),
+  removeNotification: (...all: Parameters<NotificationStore["remove"]>) =>
+    notificationStore.getState().remove(...all),
   use: {
     app: appStore,
     notification: notificationStore,

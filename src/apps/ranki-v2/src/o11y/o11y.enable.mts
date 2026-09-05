@@ -8,12 +8,14 @@ const collected = Collect.o11y();
 switch (collected.type) {
   case "custom":
     store.pushNotification({
+      group: "o11y-enabled",
       log: "Ranki Observability enabled with custom settings",
     });
     RankiO11y.enable(collected.config);
     break;
   case "default":
     store.pushNotification({
+      group: "o11y-enabled",
       log: "Ranki Observability enabled with default settings",
     });
     RankiO11y.enable(DEFAULT_O11Y);
