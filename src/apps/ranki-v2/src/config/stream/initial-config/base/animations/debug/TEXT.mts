@@ -87,8 +87,6 @@ export const TEXT: GeometryAnimationPreset = {
 
   "text-span": {
     lifecycle: {
-      // FIX text span should never have a need to call this.
-      update: {},
       enter: {
         root: [
           {
@@ -126,6 +124,8 @@ export const TEXT: GeometryAnimationPreset = {
           },
         ],
       },
+      // FIX text span should never have a need to call this.
+      update: {},
     },
   },
 };

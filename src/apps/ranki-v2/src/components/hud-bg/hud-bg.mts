@@ -3,7 +3,7 @@ import {
   geometry,
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
-import { getAnimationCollection } from "_store/app/app.getters.mjs";
+import { getAnimationCollection } from "_store/store.mjs";
 import { unsafeCSS } from "lit";
 import { customElement } from "lit/decorators.js";
 

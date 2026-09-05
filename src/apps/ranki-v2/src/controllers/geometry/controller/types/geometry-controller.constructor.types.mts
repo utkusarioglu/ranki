@@ -8,9 +8,9 @@ import type { GeometrySetsConstructorParams } from "../sets/sets.types.mjs";
 export interface GeometryControllerConstructorParams<
   Instance extends LitElement,
 > extends GeometrySetsConstructorParams<Instance> {
-  isRoot?: boolean;
   collection: GetCollectionConstructorParam<Instance>;
   events?: GeometryEventTypes;
+  isRoot?: boolean;
   on?: GeometryEventCb<Instance>;
   role: GeometryRole;
 }

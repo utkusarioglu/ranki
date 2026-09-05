@@ -5,9 +5,9 @@ import type {
 } from "_controllers/geometry/controller/types/geometry-controller.types.mjs";
 
 import { GeometryEval } from "_controllers/geometry/controller/merger/geometry-eval.mjs";
+import { RankiAppError } from "_error/ranki-app-error.mjs";
 
 import type { LayoutSizing } from "../sets/children/layout/layout-utils.types.mjs";
-import { RankiAppError } from "_error/ranki-app-error.mjs";
 import type { CreateSetItemInformerProps } from "./geometry-merger.types.mjs";
 
 export class GeometryMerger {
@@ -76,16 +76,16 @@ export class GeometryMerger {
       };
     } catch (e) {
       throw new RankiAppError({
+        cause: e,
         code: "UNDEFINED",
-        why: "item merge failed",
         details: {
           context,
           index,
-          props,
           item: sizing?.set[index],
+          props,
           sizing,
         },
-        cause: e,
+        why: "item merge failed",
       });
     }
   }

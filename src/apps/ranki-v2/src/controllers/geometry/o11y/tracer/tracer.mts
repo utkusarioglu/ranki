@@ -50,17 +50,6 @@ export class O11yTracer<T extends EmptyClass> {
     };
   }
 
-  private withLinkFactory(formattedName: string, span: Span): WithLinkFunc {
-    const withLink: WithLinkFunc = (cb) => {
-      return this.span(`${formattedName}.linked`, (child) => {
-        child.span.addLink({ context: span.spanContext() });
-        span.addLink({ context: child.span.spanContext() });
-        return cb(child);
-      });
-    };
-    return withLink;
-  }
-
   async span<T>(def: SpanDefinition, fn: SpanCallback<Promise<T>>): Promise<T>;
   span<T>(def: SpanDefinition, fn: SpanCallback<T>): T;
   span<T>(def: SpanDefinition, fn: SpanCallback<T>): Promise<T> | T {
@@ -85,10 +74,10 @@ export class O11yTracer<T extends EmptyClass> {
         try {
           const exec = fn({
             ctx: currentCtx,
+            session,
             span,
             withCtx,
             withLink,
-            session,
           });
           if (isPromiseLike(exec)) {
             return Promise.resolve(exec).finally(() => span.end());
@@ -103,7 +92,6 @@ export class O11yTracer<T extends EmptyClass> {
       },
     );
   }
-
   private childContextFactory(ctx: Context) {
     const withCtx: CallWithContextMetadata = <F,>(
       a: SpanMetadata | WithContextFunc<F>,
@@ -143,5 +131,16 @@ export class O11yTracer<T extends EmptyClass> {
     const metadata = isString ? {} : def.metadata;
     const spanOptions = isString ? {} : def.spanOptions || {};
     return { metadata, name, spanOptions };
+  }
+
+  private withLinkFactory(formattedName: string, span: Span): WithLinkFunc {
+    const withLink: WithLinkFunc = (cb) => {
+      return this.span(`${formattedName}.linked`, (child) => {
+        child.span.addLink({ context: span.spanContext() });
+        span.addLink({ context: child.span.spanContext() });
+        return cb(child);
+      });
+    };
+    return withLink;
   }
 }

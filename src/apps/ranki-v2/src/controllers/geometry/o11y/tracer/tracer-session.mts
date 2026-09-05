@@ -1,30 +1,41 @@
+import { assertNotNull, assertNull } from "_error/assertions.mjs";
 import { type Span, type Tracer } from "@opentelemetry/api";
 
-import { assertNotNull, assertNull } from "_error/assertions.mjs";
-
 export class TracerSession {
-  private otelTracer: Tracer;
-  private session: Span | null = null;
   private static sessionId = 0;
+  private otelTracer: Tracer;
+  private session: null | Span = null;
   private sessionIndex = 0;
 
   constructor(tracer: Tracer) {
     this.otelTracer = tracer;
   }
 
+  public end() {
+    assertNotNull(this.session, {
+      why: "Attempted to end a session where none exists",
+    });
+    this.session.end();
+    this.session = null;
+    TracerSession.sessionId++;
+    this.sessionIndex = 0;
+  }
+
   public getCallbacks(formattedName: string) {
     return {
-      start: this.start(formattedName),
-      join: this.join.bind(this),
       end: this.end.bind(this),
+      join: this.join.bind(this),
+      start: this.start(formattedName),
     };
   }
 
-  private getSessionLink() {
-    return {
-      "session.id": TracerSession.sessionId,
-      "session.index": this.sessionIndex++,
-    };
+  public join(curr: Span) {
+    assertNotNull(this.session, {
+      why: "Attempted to end a session that doesn't exist",
+    });
+    this.session.addLink({ context: curr.spanContext() });
+    curr.addLink({ context: this.session.spanContext() });
+    curr.addEvent("session.link", this.getSessionLink());
   }
 
   public start(formattedName: string) {
@@ -39,22 +50,10 @@ export class TracerSession {
     };
   }
 
-  public join(curr: Span) {
-    assertNotNull(this.session, {
-      why: "Attempted to end a session that doesn't exist",
-    });
-    this.session.addLink({ context: curr.spanContext() });
-    curr.addLink({ context: this.session.spanContext() });
-    curr.addEvent("session.link", this.getSessionLink());
-  }
-
-  public end() {
-    assertNotNull(this.session, {
-      why: "Attempted to end a session where none exists",
-    });
-    this.session.end();
-    this.session = null;
-    TracerSession.sessionId++;
-    this.sessionIndex = 0;
+  private getSessionLink() {
+    return {
+      "session.id": TracerSession.sessionId,
+      "session.index": this.sessionIndex++,
+    };
   }
 }

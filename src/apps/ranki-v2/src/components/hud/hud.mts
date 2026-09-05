@@ -4,7 +4,7 @@ import {
   GeometryController,
   LayoutUtils,
 } from "_controllers/geometry/geometry.mjs";
-import { getAnimationCollection } from "_store/app/app.getters.mjs";
+import { getAnimationCollection } from "_store/store.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, query } from "lit/decorators.js";
 
@@ -15,7 +15,6 @@ export class R2Hud extends R2C {
   static override styles = unsafeCSS(styles);
 
   @geometry({
-    isRoot: true,
     children: {
       layout: () =>
         LayoutUtils.row({
@@ -27,6 +26,7 @@ export class R2Hud extends R2C {
       selector: (s) => [s.scroller],
     },
     collection: getAnimationCollection,
+    isRoot: true,
     role: "hud",
   })
   private readonly geo!: GeometryController<R2Hud>;

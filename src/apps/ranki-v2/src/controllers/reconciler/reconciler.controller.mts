@@ -90,11 +90,6 @@ export class ReconciliationController<
     };
   }
 
-  private async waitLayout() {
-    await new Promise<void>((r) => requestAnimationFrame(() => r()));
-    await new Promise<void>((r) => requestAnimationFrame(() => r()));
-  }
-
   private async leave(
     subtree: ReconcilableSubtree<S>,
     id: number,
@@ -138,5 +133,10 @@ export class ReconciliationController<
   private setCurr(value: ReconcilableSubtree<S>) {
     this.curr = value;
     this.host.requestUpdate();
+  }
+
+  private async waitLayout() {
+    await new Promise<void>((r) => requestAnimationFrame(() => r()));
+    await new Promise<void>((r) => requestAnimationFrame(() => r()));
   }
 }

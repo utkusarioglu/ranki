@@ -40,6 +40,10 @@ export default defineConfig([
           category: "collect.public",
           pattern: "src/collect/collect.mts",
         },
+        {
+          category: "store.public",
+          pattern: "src/store/store.mts",
+        },
       ],
       "boundaries/elements": [
         {
@@ -53,6 +57,10 @@ export default defineConfig([
         {
           type: "components",
           pattern: "src/components",
+        },
+        {
+          type: "store.internal",
+          pattern: "src/store",
         },
       ],
     },
@@ -81,6 +89,18 @@ export default defineConfig([
             {
               from: { element: { type: "components" } },
               allow: { to: { file: { categories: "geometry.public" } } },
+            },
+            {
+              from: { element: { type: "components" } },
+              allow: { to: { file: { categories: "store.public" } } },
+            },
+            {
+              from: { element: { type: "store.internal" } },
+              allow: { to: { file: { categories: "collect.public" } } },
+            },
+            {
+              from: { element: { type: "geometry.internal" } },
+              allow: { to: { file: { categories: "reconciler.public" } } },
             },
             // {
             //   from: { file: { categories: "!geometry.public" } },

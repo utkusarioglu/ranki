@@ -1,4 +1,4 @@
-import { StoreController } from "_controllers/store/store.controller.mjs";
+import { AppStoreController } from "_controllers/store/store.controller.mjs";
 import { css, html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
@@ -14,7 +14,7 @@ export class R2Indicator extends LitElement {
     }
   `;
 
-  private state = new StoreController(this, (s) => s.state?.indicator);
+  private state = new AppStoreController(this, (s) => s.state?.indicator);
 
   override render() {
     if (!this.state.curr) return;

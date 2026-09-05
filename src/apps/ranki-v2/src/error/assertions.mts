@@ -67,21 +67,6 @@ export function assertNotExists(
   }
 }
 
-export function assertNull(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  value: any,
-  //
-  extra: AssertionExtra,
-): asserts value is null {
-  if (value !== null) {
-    throw new RankiAppError({
-      cause: extra.cause || null,
-      code: "VALUE_NOT_NULL",
-      ...extra,
-    });
-  }
-}
-
 export function assertNotNull(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any,
@@ -107,6 +92,21 @@ export function assertNotUndefined(
     throw new RankiAppError({
       cause: extra.cause || null,
       code: "VALUE_UNDEFINED",
+      ...extra,
+    });
+  }
+}
+
+export function assertNull(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value: any,
+  //
+  extra: AssertionExtra,
+): asserts value is null {
+  if (value !== null) {
+    throw new RankiAppError({
+      cause: extra.cause || null,
+      code: "VALUE_NOT_NULL",
       ...extra,
     });
   }

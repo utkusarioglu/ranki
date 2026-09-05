@@ -87,15 +87,15 @@ export class GeometryEvents<Instance extends LitElement> {
     }
   }
 
-  public onEmit(callback: (c: { target: R2C; detail: GeometryEvent }) => void) {
+  public onEmit(callback: (c: { detail: GeometryEvent; target: R2C; }) => void) {
     return async (e: CustomEvent<EventWithContext<GeometryEvent>>) => {
       e.stopPropagation();
       const target = e.composedPath()[0] as null | R2C;
       assertExists(target, { why: "No valid target given" });
       return context.with(e.detail.context, () =>
         callback({
-          target,
           detail: e.detail.event,
+          target,
         }),
       );
     };

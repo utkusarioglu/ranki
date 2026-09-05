@@ -1,4 +1,4 @@
-import { StoreController } from "_controllers/store/store.controller.mjs";
+import { AppStoreController } from "_controllers/store/store.controller.mjs";
 import { css, html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
 import yaml from "yaml";
@@ -20,7 +20,7 @@ export class R2Challenge extends LitElement {
       }
     }
   `;
-  private state = new StoreController(this, (s) => s.state);
+  private state = new AppStoreController(this, (s) => s.state);
   override render() {
     return html`<div class="scroller">
       <pre><code>${yaml.stringify(

@@ -22,7 +22,7 @@ export class GeometryChildren<
     this.diff = props.diff;
   }
 
-  public onEmit({ target, detail }: GeometryChildrenOnEmitProps) {
+  public onEmit({ detail, target }: GeometryChildrenOnEmitProps) {
     this.registry.update(target, detail);
     return this.updateSizing();
   }

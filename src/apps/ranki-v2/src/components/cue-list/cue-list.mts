@@ -6,7 +6,7 @@ import {
   GeometryController,
   LayoutUtils,
 } from "_controllers/geometry/geometry.mjs";
-import { getAnimationCollection } from "_store/app/app.getters.mjs";
+import { getAnimationCollection } from "_store/store.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, query } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";

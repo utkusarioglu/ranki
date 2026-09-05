@@ -9,12 +9,12 @@ import type { GeometryWatcherRecord } from "./watcher/watcher.types.mjs";
 
 export type GeometrySetName = { type?: "GeometrySet" } & string;
 
+export type GeometrySetOnEmitProps = GeometryChildrenOnEmitProps;
 export interface GeometrySetsConstructorParams<Instance extends LitElement> {
   children?: GeometryChildrenProps<Instance>;
   watchers?: GeometryWatcherRecord<Instance>;
 }
+
 export type GeometrySetSelectorCb<Instance extends LitElement> = (
   s: Instance,
 ) => R2C[];
-
-export type GeometrySetOnEmitProps = GeometryChildrenOnEmitProps;

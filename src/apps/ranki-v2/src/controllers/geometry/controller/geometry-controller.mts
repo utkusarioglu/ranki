@@ -14,9 +14,9 @@ import { O11y } from "../o11y/o11y.mjs";
 import { Animator } from "./animator/animator.mjs";
 import { GeometryEvents } from "./events/geometry-events.mjs";
 import { GeometryMerger } from "./merger/geometry-merger.mjs";
+import { GeometrySetsUtils } from "./sets/geometry-sets-utils.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
 import { TimingUtils } from "./utils/timing.utils.mjs";
-import { GeometrySetsUtils } from "./sets/geometry-sets-utils.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
@@ -30,13 +30,13 @@ export class GeometryController<
   private readonly animator: Animator<Instance>;
   private curr: CurrentAppliedStyle | null = null;
   private readonly host: Instance;
+  private inSession: boolean = false;
+  private readonly isRoot: boolean;
   private readonly o11y: O11y<this>;
+
   private prev: CurrentAppliedStyle | null = null;
   private readonly sets: GeometrySets<Instance>;
-
-  private readonly isRoot: boolean;
   private sizing: LayoutSizing | null = null;
-  private inSession: boolean = false;
 
   constructor(
     host: Instance,
@@ -97,18 +97,18 @@ export class GeometryController<
     return this.events.onEmit(async (event) => {
       return this.o11y.trace.span(
         "onEmit",
-        async ({ span, session, withLink }) => {
+        async ({ session, span, withLink }) => {
           this.o11y.meter.count("onEmit");
           this.sizing = this.sets.onEmit(event);
           if (!this.isRoot) {
             span.addEvent("controller.propagate.up");
             this.o11y.devtools.log("emit.not-root", {
+              curr: this.curr,
               event,
+              host: this.host,
+              prev: this.prev,
               sizing: this.sizing,
               tag: this.host.tagName,
-              host: this.host,
-              curr: this.curr,
-              prev: this.prev,
             });
             this.events.emit({
               lifecycle: "update",
@@ -125,9 +125,9 @@ export class GeometryController<
           session.start();
           this.o11y.devtools.log("session.start", {
             event,
+            host: this.host,
             sizing: this.sizing,
             tag: this.host.tagName,
-            host: this.host,
           });
           await this.wait.raf(3);
           this.inSession = false;
@@ -135,16 +135,16 @@ export class GeometryController<
           session.end();
           this.o11y.devtools.log("session.end", {
             event,
-            sizing: this.sizing,
             inform,
+            sizing: this.sizing,
           });
           span.addEvent("controller.propagate.down");
           await withLink(() => this.informStyle(inform));
           span.addEvent("controller.animation.end");
           this.o11y.devtools.log("root.animation.end", {
             event,
-            sizing: this.sizing,
             inform,
+            sizing: this.sizing,
           });
         },
       );
@@ -180,12 +180,12 @@ export class GeometryController<
       span.addEvent("style.ready");
 
       this.o11y.devtools.log("informStyle", {
-        host: this.host,
-        tag: this.host.tagName,
         curr: this.curr,
+        host: this.host,
         informed,
         prev: this.prev,
         sizing: this.sizing,
+        tag: this.host.tagName,
       });
 
       this.events.onActionsStart(this.curr.actions);

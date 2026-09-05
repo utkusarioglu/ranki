@@ -23,19 +23,17 @@ export interface SpanDetailedDefinition {
   spanOptions?: SpanOptions;
 }
 
-export type WithLinkFunc = <T>(cb: SpanCallback<T>) => T;
 export interface SpanFuncParams {
   ctx: Context;
+  session: {
+    end: () => void;
+    join: (span: Span) => void;
+    start: () => void;
+  };
   span: Span;
   withCtx: CallWithContextMetadata;
   withLink: WithLinkFunc;
-  session: {
-    start: () => void;
-    join: (span: Span) => void;
-    end: () => void;
-  };
 }
-
 export type SpanMetadata = Record<string, unknown>;
 
 export type WithContextFunc<F> = () => F;
@@ -47,6 +45,8 @@ export type WithContextParams<F> =
 export type WithContextParamsBare<F> = [WithContextFunc<F>];
 
 export type WithContextParamsRich<F> = [SpanMetadata, WithContextFunc<F>];
+
+export type WithLinkFunc = <T>(cb: SpanCallback<T>) => T;
 
 type O11yTraceNameFormatterCallback<T> = (
   p: O11yTraceNameFormatterParams<T>,

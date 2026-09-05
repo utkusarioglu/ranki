@@ -102,21 +102,6 @@ export class Animator<Instance extends LitElement> {
     });
   }
 
-  private async styleByName(name: string, finalKeyframes: Keyframe[]) {
-    return this.o11y.trace.span(`${name}.animate.style`, async () => {
-      this.o11y.devtools.log("animation.duration.0", {
-        name,
-        finalKeyframes,
-        host: this.host,
-      });
-      finalKeyframes.forEach((keyframe) => {
-        Object.entries(keyframe).forEach(([k, v]) => {
-          this.host.style.setProperty(k, v as string);
-        });
-      });
-    });
-  }
-
   private async animateByName(
     name: string,
     finalKeyframes: Keyframe[],
@@ -136,10 +121,10 @@ export class Animator<Instance extends LitElement> {
               tag: this.host.tagName,
             });
             this.o11y.devtools.log("animation.cancel", {
-              name,
-              tag: this.host.tagName,
               finalKeyframes,
               finalOptions,
+              name,
+              tag: this.host.tagName,
             });
           }
         };
@@ -182,10 +167,11 @@ export class Animator<Instance extends LitElement> {
         //
       } catch (e) {
         this.o11y.devtools.log("animation.abort", {
-          name,
-          tag: this.host.tagName,
+          error: e,
           keyframes,
+          name,
           options,
+          tag: this.host.tagName,
         });
       }
     });
@@ -199,5 +185,20 @@ export class Animator<Instance extends LitElement> {
           RecipeUtils.getRecipeFromCollection(collectionVal(this.host), p)
       : (p: GetAnimationRecipeProps) =>
           RecipeUtils.getRecipeFromCollection(collectionVal, p);
+  }
+
+  private async styleByName(name: string, finalKeyframes: Keyframe[]) {
+    return this.o11y.trace.span(`${name}.animate.style`, async () => {
+      this.o11y.devtools.log("animation.duration.0", {
+        finalKeyframes,
+        host: this.host,
+        name,
+      });
+      finalKeyframes.forEach((keyframe) => {
+        Object.entries(keyframe).forEach(([k, v]) => {
+          this.host.style.setProperty(k, v as string);
+        });
+      });
+    });
   }
 }

@@ -38,9 +38,9 @@ export class LayoutUtils {
         mode: dims[i].mode,
         style: {
           height: lastHeight,
-          width: lastWidth,
-          top: lastTop,
           left: lastLeft,
+          top: lastTop,
+          width: lastWidth,
         },
       }));
 

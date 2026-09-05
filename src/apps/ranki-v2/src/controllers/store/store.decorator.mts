@@ -3,7 +3,7 @@ import type { ReactiveElement } from "lit";
 
 import { O11y } from "_controllers/geometry/o11y/o11y.mjs";
 
-import { type StoreAdapter, StoreController } from "./store.controller.mjs";
+import { AppStoreController, type StoreAdapter } from "./store.controller.mjs";
 
 export function store<
   Instance extends ReactiveElement,
@@ -20,7 +20,7 @@ export function store<
         context,
         selector,
       });
-      return new StoreController(this, selector, adapter);
+      return new AppStoreController(this, selector, adapter);
     };
   };
 }

@@ -4,7 +4,7 @@ import {
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
 import { ReconciliationUtils } from "_controllers/reconciler/reconciler.mjs";
-import { getAnimationCollection } from "_store/app/app.getters.mjs";
+import { getAnimationCollection } from "_store/store.mjs";
 import { loadIcon } from "iconify-icon";
 import { html, unsafeCSS } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
