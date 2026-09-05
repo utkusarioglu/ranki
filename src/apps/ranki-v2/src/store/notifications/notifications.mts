@@ -1,4 +1,3 @@
-export {
-  notificationStore,
-  type NotificationStore,
-} from "./notifications.store.mjs";
+export { notificationStore } from "./notifications.store.mjs";
+
+export { type NotificationStore } from "./notifications.types.mjs";

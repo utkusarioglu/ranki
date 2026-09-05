@@ -12,3 +12,4 @@ import "./text/text-span.mjs";
 import "./challenge/challenge.mjs";
 import "./indicator/indicator.mjs";
 import "./indicator/indicator-pattern.mjs";
+import "./notification-list/notification-list.mjs";

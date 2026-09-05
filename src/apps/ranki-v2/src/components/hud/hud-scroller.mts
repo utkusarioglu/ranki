@@ -62,6 +62,11 @@ export class R2HudScroller extends R2C {
           "--z-index": -4,
         })}"
       ></r2-hud-bg>
+
+      <r2-notification-list
+        @r2-geometry=${this.geo.onEmit()}
+      ></r2-notification-list>
+
       <r2-cue-list @r2-geometry=${this.geo.onEmit()}></r2-cue-list>
     `;
   }

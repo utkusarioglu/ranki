@@ -1,7 +1,7 @@
 import type { RankiDevState } from "_config/config.types.mjs";
 
 import { RankiO11y } from "_/o11y/o11y.mjs";
-import { appStore } from "_store/app/app.store.mjs";
+import { store } from "_store/store.mjs";
 
 import "./devtools.types.mjs";
 import { RankiDevAnkiMethods } from "./anki.mjs";
@@ -31,9 +31,7 @@ export class RankiDevtools {
       window.ranki = {
         anki: RankiDevAnkiMethods,
         o11y: RankiO11y.getConsoleAccess(),
-        store: {
-          app: appStore,
-        },
+        store,
       };
     } else if (window.ranki) {
       if (!RankiDevtools.isPersisted) {

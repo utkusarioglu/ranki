@@ -1,5 +1,5 @@
 import type { RankiO11yConsoleAccess } from "_/o11y/o11y.types.mjs";
-import type { appStore } from "_store/app/app.store.mjs";
+import type { store } from "_store/store.mjs";
 
 import type { IRankiDevAnkiMethods } from "./anki.types.mjs";
 
@@ -8,9 +8,7 @@ declare global {
     ranki?: {
       anki: IRankiDevAnkiMethods;
       o11y: RankiO11yConsoleAccess;
-      store: {
-        app: typeof appStore;
-      };
+      store: typeof store;
     };
   }
 }
