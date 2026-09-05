@@ -24,6 +24,6 @@ export interface AnkiDesktopIFrameProps {
   srcDoc: string;
 }
 
-export type OnFetchOverrideCallback = (
-  originalFetch: typeof window.fetch,
-) => typeof window.fetch;
+export type OnFetchOverrideCallback = typeof window.fetch;
+//   (
+// ) =>

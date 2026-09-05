@@ -12,7 +12,10 @@ export interface FetchRule {
 export type OnFetchCallback = (
   s: OnFetchCallbackSourceProps,
 ) => OnFetchOverrideCallback;
-type OnFetchCallbackSourceProps = Pick<AnkiScreenProps, "fetchOverride">;
+
+type OnFetchCallbackSourceProps = Pick<AnkiScreenProps, "fetchOverride"> & {
+  originalFetch: typeof window.fetch;
+};
 
 type OtherEndsProps = {
   original: typeof window.fetch;

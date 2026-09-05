@@ -3,8 +3,7 @@ import type { OnFetchCallback } from "./on-fetch.types.mts";
 import { FETCH_RULES } from "./on-fetch.constants.mts";
 
 export const onFetchCallback: OnFetchCallback =
-  ({ fetchOverride }) =>
-  (original) =>
+  ({ fetchOverride, originalFetch }) =>
   (url) => {
     let mode = fetchOverride.all;
     let active: string = "-";
@@ -18,7 +17,8 @@ export const onFetchCallback: OnFetchCallback =
       }
     }
 
-    window.top?.postMessage(`Fetch ${active} ${mode}: ${url.toString()}`);
+    postMessage(active, mode, url);
+
     switch (mode) {
       case "autoFail":
         return respond(404);
@@ -27,9 +27,17 @@ export const onFetchCallback: OnFetchCallback =
       case "autoThrow":
         return autoThrow();
       case "passthru":
-        return original(url);
+        return originalFetch(url);
     }
   };
+
+function postMessage(active: string, mode: string, url: RequestInfo | URL) {
+  if (window.top) {
+    window.top.postMessage(`Fetch ${active} ${mode}: ${url.toString()}`);
+  } else {
+    console.warn("No `window.top` in `onFetchCallback`");
+  }
+}
 
 function autoThrow() {
   return Promise.reject(new Error("Simulated network failure"));

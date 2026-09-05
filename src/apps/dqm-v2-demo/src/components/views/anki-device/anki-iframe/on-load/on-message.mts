@@ -15,24 +15,21 @@ export const onMessageCallback: OnMessageCallback =
     {
       switch (data.type) {
         case "ranki-fetch":
-          // console.log("f", data);
           overrideWindowFetchFunc(win, data.fetchOverride);
-          break;
+          return;
         case "ranki-update":
           setTemplateHtml(qa, data, files);
           setFields(data, qa);
           setColorScheme(doc, data);
           ensureRerender(qa);
-          break;
+          return;
       }
     }
   };
 
 function ensureRerender(qa: Element) {
   const ren = qa.querySelector(RENDERED_CLASS_SELECTOR);
-  if (ren) {
-    ren.parentElement!.removeChild(ren);
-  }
+  if (ren) ren.parentElement!.removeChild(ren);
 }
 
 function setColorScheme(doc: HTMLDocument, data: RankiIframeMessageUpdate) {
@@ -41,16 +38,12 @@ function setColorScheme(doc: HTMLDocument, data: RankiIframeMessageUpdate) {
 
   const isDark = data.ranki.pref.scheme === "dark";
   if (!isDark) {
-    body.classList.remove("night_mode", "nightMode");
-    body.classList.add("light_mode", "lightMode");
-    html.classList.remove("night-mode");
-    html.classList.add("light-mode");
+    body.classList.remove("night_mode", "nightMode", "night-mode");
+    body.classList.add("light_mode", "lightMode", "light-mode");
     html.setAttribute("data-bs-theme", "light");
   } else {
-    body.classList.add("night_mode", "nightMode");
-    body.classList.remove("light_mode", "lightMode");
-    html.classList.add("night-mode");
-    html.classList.remove("light-mode");
+    body.classList.add("night_mode", "nightMode", "night-mode");
+    body.classList.remove("light_mode", "lightMode", "light-mode");
     html.setAttribute("data-bs-theme", "dark");
   }
 }

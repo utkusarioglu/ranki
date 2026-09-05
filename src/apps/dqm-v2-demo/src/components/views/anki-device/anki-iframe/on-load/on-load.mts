@@ -20,7 +20,7 @@ export function overrideWindowFetchFunc(
     originalWindow = win;
     originalFetch = win.fetch;
   }
-  win.fetch = onFetchCallback({ fetchOverride })(originalFetch);
+  win.fetch = onFetchCallback({ fetchOverride, originalFetch });
 }
 
 export const iFrameOnLoad: IFrameOnLoadCb =
@@ -48,12 +48,8 @@ function attachFileSourcedTags(win: Window, doc: Document, files: RankiFiles) {
 
   win.addEventListener("message", onMessageCallback(win, doc, qa, files));
 
-  replaced.css.forEach((css) => {
-    doc.body.appendChild(css);
-  });
-  replaced.jss.forEach((js) => {
-    doc.body.appendChild(js);
-  });
+  replaced.css.forEach((css) => doc.body.appendChild(css));
+  replaced.jss.forEach((js) => doc.body.appendChild(js));
 }
 
 function setHtmlBaseTag(doc: Document) {
