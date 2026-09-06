@@ -1,5 +1,3 @@
-import type { HudTagListItem } from "_components/hud/hud.types.mjs";
-
 import { R2C } from "_components/r2c/r2c.mjs";
 import {
   geometry,
@@ -19,11 +17,12 @@ import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
 
 import style from "./notification-list.css?inline";
+import type { NotificationListEntry } from "_store/notifications/notifications.types.mjs";
 
-type R2BadgeListState = HudTagListItem;
+type R2NotificationListState = NotificationListEntry;
 
 @customElement("r2-notification-list")
-export class R2BadgeList extends R2C {
+export class R2NotificationList extends R2C {
   static override styles = unsafeCSS(style);
 
   @queryAll("r2-chip")
@@ -48,24 +47,27 @@ export class R2BadgeList extends R2C {
     collection: getAnimationCollection,
     role: "badge-list",
   })
-  private readonly geo!: GeometryController<R2BadgeList>;
+  private readonly geo!: GeometryController<R2NotificationList>;
 
-  @store("app", (s) => s.state?.hud.subtree.tags.list || [])
-  private readonly store!: StoreController<"app", HudTagListItem[]>;
+  @store("notification", (s) => s.list)
+  private readonly store!: StoreController<
+    "notification",
+    NotificationListEntry[]
+  >;
 
-  @reconciler<R2BadgeList, R2BadgeListState>({
+  @reconciler<R2NotificationList, R2NotificationListState>({
     on: (s, type, { index }) => {
       if (type === "leave") {
         s.chips[index]!.leave();
       }
     },
-    reconcile: (c, p) => (c.text === p.text ? "retain" : "update"),
+    reconcile: (c, p) => (c.icon === p.icon ? "retain" : "update"),
     source: (s) => s.store.curr || [],
     type: "flat",
   })
   private readonly subtree!: ReconciliationController<
-    R2BadgeList,
-    R2BadgeListState
+    R2NotificationList,
+    R2NotificationListState
   >;
 
   override render() {

@@ -22,5 +22,3 @@ export const notificationStore = createStore(
       })),
   })),
 );
-
-notificationStore.subscribe((s) => console.log(s.list));

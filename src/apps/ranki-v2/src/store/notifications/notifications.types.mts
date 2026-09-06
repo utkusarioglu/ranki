@@ -15,7 +15,7 @@ export type NotificationStore = NotificationStoreMethods &
 
 type Group = { type?: "NotificationGroup" } & string;
 
-type ListEntry = NotificationEntry;
+export type NotificationListEntry = NotificationEntry;
 
 interface NotificationStoreMethods {
   add: (e: NotificationEntry) => void;
@@ -23,5 +23,5 @@ interface NotificationStoreMethods {
 }
 
 interface NotificationStoreState {
-  list: ListEntry[];
+  list: NotificationListEntry[];
 }

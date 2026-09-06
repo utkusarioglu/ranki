@@ -19,6 +19,11 @@ export class StoreController<
 > implements ReactiveController {
   curr!: Adapted;
   prev: Adapted | undefined;
+
+  /**
+   * @dev
+   * #1 Ts struggles with determining store types. it errs on `subscribe` method being different in every store.
+   */
   constructor(
     host: ReactiveControllerHost,
     key: Key,
@@ -29,11 +34,13 @@ export class StoreController<
     host.addController(this);
 
     const selectedStore = store.use[key];
-    this.unsubscribe = selectedStore.subscribe(selector, (v) => {
-      this.prev = this.curr;
-      this.curr = adapter(v, this.prev);
-      host.requestUpdate();
-    });
+    this.unsubscribe = selectedStore
+      // @ts-expect-error #1
+      .subscribe(selector, (v) => {
+        this.prev = this.curr;
+        this.curr = adapter(v, this.prev);
+        host.requestUpdate();
+      });
   }
 
   hostDisconnected() {
