@@ -1,6 +1,7 @@
 export interface NotificationEntry {
   group: Group;
   color?: string;
+  background?: string;
   icon?: string;
   log: string;
 }

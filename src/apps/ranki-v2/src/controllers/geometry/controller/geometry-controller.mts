@@ -230,9 +230,6 @@ export class GeometryController<
   }
 
   private async informStyle(informed: InformedChildStyle): Promise<void> {
-    if (this.host.tagName.includes("NOTIFICATION")) {
-      console.log("ddd", informed);
-    }
     return this.o11y.trace.span("informStyle", async ({ span }) => {
       this.o11y.meter.count("informStyle");
       this.prev = this.curr;

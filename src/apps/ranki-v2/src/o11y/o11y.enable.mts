@@ -9,6 +9,7 @@ switch (collected.type) {
   case "custom":
     store.pushNotification({
       group: "o11y-enabled",
+      icon: "boxicons:8-ball",
       log: "Ranki Observability enabled with custom settings",
     });
     RankiO11y.enable(collected.config);
@@ -16,6 +17,7 @@ switch (collected.type) {
   case "default":
     store.pushNotification({
       group: "o11y-enabled",
+      icon: "boxicons:8-ball-filled",
       log: "Ranki Observability enabled with default settings",
     });
     RankiO11y.enable(DEFAULT_O11Y);

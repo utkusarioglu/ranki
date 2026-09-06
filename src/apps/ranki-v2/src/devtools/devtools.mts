@@ -13,11 +13,13 @@ export class RankiDevtools {
     if (on) {
       store.pushNotification({
         group: "devtools-persist",
+        icon: "boxicons:alert-triangle",
         log: "Ranki DevMethods will persist until reload",
       });
     } else {
       store.pushNotification({
         group: "devtools-persist",
+        icon: "boxicons:alarm-plus",
         log: "Ranki DevMethods will not persist on state change",
       });
     }
@@ -31,6 +33,7 @@ export class RankiDevtools {
     if (conf?.methods) {
       store.pushNotification({
         group: "devtools-methods",
+        icon: "boxicons:air-conditioner-filled",
         log: "Ranki Devtools available at [code|window.ranki]",
       });
 
