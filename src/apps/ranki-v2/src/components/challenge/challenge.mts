@@ -1,4 +1,6 @@
+import type { RankiState } from "_config/config.types.mjs";
 import { StoreController } from "_controllers/store/store.controller.mjs";
+import { store } from "_controllers/store/store.decorator.mjs";
 import { css, html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
 import yaml from "yaml";
@@ -20,7 +22,9 @@ export class R2Challenge extends LitElement {
       }
     }
   `;
-  private state = new StoreController(this, (s) => s.state);
+  @store("app", (s) => s.state)
+  private state!: StoreController<"app", RankiState>;
+
   override render() {
     return html`<div class="scroller">
       <pre><code>${yaml.stringify(

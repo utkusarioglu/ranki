@@ -1,17 +1,24 @@
-import type { AnkiStore } from "_store/app/app.types.mjs";
 import type { ReactiveElement } from "lit";
 
 import { O11y } from "_controllers/geometry/o11y/o11y.mjs";
 
-import { StoreController, type StoreAdapter } from "./store.controller.mjs";
+import {
+  type StoreAdapter,
+  StoreController,
+  type StoreKey,
+  type StoreState,
+} from "./store.controller.mjs";
 
 export function store<
   Instance extends ReactiveElement,
-  StoreType,
-  AdaptedType = StoreType,
+  Key extends StoreKey,
+  Selected = StoreState<Key>,
+  Adapted = Selected,
 >(
-  selector: (s: AnkiStore) => StoreType,
-  adapter?: StoreAdapter<StoreType, AdaptedType>,
+  key: Key,
+  selector: (s: StoreState<Key>) => Selected,
+  // selector: (s: AnkiStore) => StoreType,
+  adapter?: StoreAdapter<Selected, Adapted>,
 ) {
   return (_value: undefined, context: ClassFieldDecoratorContext<Instance>) => {
     return function (this: Instance) {
@@ -20,7 +27,7 @@ export function store<
         context,
         selector,
       });
-      return new StoreController(this, selector, adapter);
+      return new StoreController(this, key, selector, adapter);
     };
   };
 }

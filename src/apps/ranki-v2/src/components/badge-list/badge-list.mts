@@ -50,8 +50,8 @@ export class R2BadgeList extends R2C {
   })
   private readonly geo!: GeometryController<R2BadgeList>;
 
-  @store((s) => s.state?.hud.subtree.tags.list || [])
-  private readonly store!: StoreController<HudTagListItem[]>;
+  @store("app", (s) => s.state?.hud.subtree.tags.list || [])
+  private readonly store!: StoreController<"app", HudTagListItem[]>;
 
   @reconciler<R2BadgeList, R2BadgeListState>({
     on: (s, type, { index }) => {

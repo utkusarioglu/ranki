@@ -1,4 +1,4 @@
-import type { RankiDesignState } from "_config/config.types.mjs";
+import type { RankiDesignState, RankiState } from "_config/config.types.mjs";
 
 import { generatePaletteCss } from "_/design/color.mjs";
 import { R2C } from "_components/r2c/r2c.mjs";
@@ -9,6 +9,7 @@ import { customElement } from "lit/decorators.js";
 import appStyle from "./app.css?inline";
 import scheme from "./schemes.css?inline";
 import theme from "./theme.css?inline";
+import { store } from "_controllers/store/store.decorator.mjs";
 
 @customElement("r2-app")
 export class R2App extends R2C {
@@ -20,7 +21,8 @@ export class R2App extends R2C {
     unsafeCSS(scheme),
   ];
   private paletteName: string = "(none)";
-  private state = new StoreController(this, (s) => s.state);
+  @store("app", (s) => s.state)
+  private state!: StoreController<"app", RankiState>;
 
   override render() {
     const val = this.state.curr;

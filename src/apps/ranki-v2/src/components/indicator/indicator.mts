@@ -1,4 +1,6 @@
+import type { RankiIndicatorState } from "_config/config.types.mjs";
 import { StoreController } from "_controllers/store/store.controller.mjs";
+import { store } from "_controllers/store/store.decorator.mjs";
 import { css, html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
@@ -14,7 +16,8 @@ export class R2Indicator extends LitElement {
     }
   `;
 
-  private state = new StoreController(this, (s) => s.state?.indicator);
+  @store("app", (s) => s.state?.indicator)
+  private state!: StoreController<"app", RankiIndicatorState | undefined>;
 
   override render() {
     if (!this.state.curr) return;

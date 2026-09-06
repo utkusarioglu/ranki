@@ -1,12 +1,10 @@
 export interface NotificationEntry {
-  group: Group;
-  color?: string;
   background?: string;
+  color?: string;
+  group: Group;
   icon?: string;
   log: string;
 }
-
-type Group = string;
 
 export interface NotificationRemoval {
   groups: Group[];
@@ -14,6 +12,8 @@ export interface NotificationRemoval {
 
 export type NotificationStore = NotificationStoreMethods &
   NotificationStoreState;
+
+type Group = { type?: "NotificationGroup" } & string;
 
 type ListEntry = NotificationEntry;
 
