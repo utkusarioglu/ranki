@@ -5,7 +5,7 @@ import { store } from "_store/store.mjs";
 
 export type StoreAdapter<S, T> = (curr: S, prev: T | undefined) => T;
 
-export class AppStoreController<S, T = S> implements ReactiveController {
+export class StoreController<S, T = S> implements ReactiveController {
   curr!: T;
   prev: T | undefined;
   constructor(
@@ -26,5 +26,6 @@ export class AppStoreController<S, T = S> implements ReactiveController {
     this.unsubscribe();
   }
 
+  // DECIDE why is this here?
   private unsubscribe: () => void = () => {};
 }

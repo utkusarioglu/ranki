@@ -10,7 +10,7 @@ import {
   reconciler,
   ReconciliationController,
 } from "_controllers/reconciler/reconciler.mjs";
-import { AppStoreController } from "_controllers/store/store.controller.mjs";
+import { StoreController } from "_controllers/store/store.controller.mjs";
 import { store } from "_controllers/store/store.decorator.mjs";
 import { getAnimationCollection } from "_store/store.mjs";
 import { html, unsafeCSS } from "lit";
@@ -51,7 +51,7 @@ export class R2BadgeList extends R2C {
   private readonly geo!: GeometryController<R2BadgeList>;
 
   @store((s) => s.state?.hud.subtree.tags.list || [])
-  private readonly store!: AppStoreController<HudTagListItem[]>;
+  private readonly store!: StoreController<HudTagListItem[]>;
 
   @reconciler<R2BadgeList, R2BadgeListState>({
     on: (s, type, { index }) => {
