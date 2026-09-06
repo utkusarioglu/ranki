@@ -17,9 +17,9 @@ import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
 
 import style from "./notification-list.css?inline";
-import type { NotificationListEntry } from "_store/notifications/notifications.types.mjs";
+import type { CueRecord } from "_config/config.types.mjs";
 
-type R2NotificationListState = NotificationListEntry;
+type R2NotificationListState = CueRecord;
 
 @customElement("r2-notification-list")
 export class R2NotificationList extends R2C {
@@ -49,11 +49,8 @@ export class R2NotificationList extends R2C {
   })
   private readonly geo!: GeometryController<R2NotificationList>;
 
-  @store("notification", (s) => s.list)
-  private readonly store!: StoreController<
-    "notification",
-    NotificationListEntry[]
-  >;
+  @store("notification", (s) => s.list.map((v) => v.record))
+  private readonly store!: StoreController<"notification", CueRecord[]>;
 
   @reconciler<R2NotificationList, R2NotificationListState>({
     on: (s, type, { index }) => {

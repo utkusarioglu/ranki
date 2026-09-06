@@ -13,7 +13,7 @@ export const useAnkiAndroidStore = createAnkiStore({
   flag: "flag0",
   previewAspect: 9 / 19,
   previewScale: 1,
-  tags: "android",
+  tags: "android +r::dev::methods +r::dev::persist",
   templateConfig: TEMPLATE_CONFIG,
 
   fetchOverride: {

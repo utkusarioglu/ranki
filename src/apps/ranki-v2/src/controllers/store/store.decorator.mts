@@ -17,7 +17,6 @@ export function store<
 >(
   key: Key,
   selector: (s: StoreState<Key>) => Selected,
-  // selector: (s: AnkiStore) => StoreType,
   adapter?: StoreAdapter<Selected, Adapted>,
 ) {
   return (_value: undefined, context: ClassFieldDecoratorContext<Instance>) => {

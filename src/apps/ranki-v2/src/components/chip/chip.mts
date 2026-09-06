@@ -1,6 +1,3 @@
-// import type { R2HudBg } from "_components/hud-bg/hud-bg.mjs";
-import type { HudTagListItem } from "_components/hud/hud.types.mjs";
-
 import { R2C } from "_components/r2c/r2c.mjs";
 import {
   geometry,
@@ -13,6 +10,7 @@ import { html, unsafeCSS } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import style from "./chip.css?inline";
+import type { CueRecord } from "_config/config.types.mjs";
 
 @customElement("r2-chip")
 export class R2Chip extends R2C {
@@ -50,7 +48,7 @@ export class R2Chip extends R2C {
   private accessor index!: number;
 
   @property()
-  private accessor list!: HudTagListItem[];
+  private accessor list!: CueRecord[];
 
   public override leave() {
     this.geo.events.emit({
@@ -76,12 +74,13 @@ export class R2Chip extends R2C {
           },
           color: "rgb(var(--scheme-orange-2))",
           height: 24,
-          icon: "mdi:home",
+          icon: item.icon?.id || "mdi:home",
           width: 24,
         }}
         style="position: absolute;"
         @r2-geometry=${this.geo.child()}
       ></r2-icon>
+
       <r2-text
         .props=${item}
         style="position: absolute;"

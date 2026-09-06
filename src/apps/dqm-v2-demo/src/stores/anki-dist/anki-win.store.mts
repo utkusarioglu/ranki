@@ -13,7 +13,7 @@ export const useAnkiWinStore = createAnkiStore({
   flag: "flag0",
   previewAspect: 16 / 9,
   previewScale: 1.25,
-  tags: "win",
+  tags: "+r::dev::methods +r::dev::persist win",
   templateConfig: TEMPLATE_CONFIG,
 
   fetchOverride: {

@@ -56,6 +56,7 @@ export interface CueConfig {
 }
 
 export type CueKind =
+  | "notification"
   | "always"
   | "card"
   | "deck"
