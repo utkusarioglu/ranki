@@ -2,7 +2,11 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { GeometryEventInteraction } from "_controllers/geometry/controller/events/types/interaction.types.mjs";
 import type { GeometryEventLifecycle } from "_controllers/geometry/controller/events/types/lifecycle.types.mjs";
 
-import { assertNever } from "_error/assertions.mjs";
+import {
+  assertFalse,
+  assertNever,
+  assertNotUndefined,
+} from "_error/assertions.mjs";
 
 import type { GeometryEvent } from "../../../events/types/geometry-events.types.mjs";
 import type {
@@ -13,7 +17,7 @@ import type {
 import { INTERACTION_SEPARATOR } from "./children-registry.constants.mjs";
 
 export class ChildrenRegistry {
-  private static DEFAULT_INTERACTION: GeometryInteraction = {
+  public static readonly DEFAULT_INTERACTION: GeometryInteraction = {
     drag: "none",
     focus: "none",
     hover: "none",
@@ -25,20 +29,29 @@ export class ChildrenRegistry {
     const ordered: EmittedComponentState[] = [];
     for (const component of serial) {
       const dims = this.dims.get(component);
-      if (!dims) {
-        ordered.push({
-          interaction: {
-            drag: "none",
-            focus: "none",
-            hover: "none",
-            press: "none",
-          },
-          lifecycle: "none",
-          mode: "default",
-        });
-      } else {
-        ordered.push(dims);
-      }
+      assertNotUndefined(dims, {
+        why: "dims does not exist for element",
+        details: {
+          serial,
+          component,
+          dims: this.dims,
+        },
+      });
+      // if (!dims) {
+      //   ordered.push({
+      //     interaction: {
+      //       drag: "none",
+      //       focus: "none",
+      //       hover: "none",
+      //       press: "none",
+      //     },
+      //     lifecycle: "none",
+      //     mode: "default",
+      //   });
+      // } else {
+      //   ordered.push(dims);
+      // }
+      ordered.push(dims);
     }
     return ordered;
   }
@@ -84,6 +97,17 @@ export class ChildrenRegistry {
   private updateLifecycle(target: R2C, detail: GeometryEventLifecycle) {
     const curr = this.dims.get(target);
     switch (detail.lifecycle) {
+      case "connected":
+        assertFalse(this.dims.has(target), {
+          why: "connected component reconnecting",
+          details: { target, detail },
+        });
+        this.dims.set(target, {
+          lifecycle: "connected",
+          interaction: ChildrenRegistry.DEFAULT_INTERACTION,
+          mode: "default",
+        });
+        break;
       case "disconnected":
         this.dims.delete(target);
         break;

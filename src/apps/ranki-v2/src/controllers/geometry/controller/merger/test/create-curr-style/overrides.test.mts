@@ -3,6 +3,7 @@ import type { LayoutSizing } from "_controllers/geometry/controller/sets/childre
 import { expect, test } from "vitest";
 
 import type {
+  CurrentAppliedStyle,
   InformContext,
   InformedChildStyle,
 } from "../../../types/geometry-controller.types.mjs";
@@ -78,7 +79,8 @@ test("overridden self style", () => {
       },
     },
   };
-  const response = GeometryMerger.createCurrStyle(informed, sizing);
+  const prev: CurrentAppliedStyle | null = null;
+  const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
   const expected: typeof response = {
     actions: ["lifecycle.enter"],
     container: {
@@ -138,7 +140,8 @@ test("informed container width 2", () => {
       },
     },
   };
-  const response = GeometryMerger.createCurrStyle(informed, sizing);
+  const prev: CurrentAppliedStyle | null = null;
+  const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
   const expected: typeof response = {
     actions: ["lifecycle.enter"],
     container: {

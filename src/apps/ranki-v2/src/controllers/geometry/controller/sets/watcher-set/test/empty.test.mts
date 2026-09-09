@@ -13,9 +13,12 @@ let watchers: WatcherSet<any>;
 
 beforeEach(() => {
   const host = new Host() as unknown as LitElement;
-  watchers = new WatcherSet(host, {
-    selector: () => [],
-  });
+  watchers = new WatcherSet(
+    host,
+    // {
+    // selector: () => [],
+    // }
+  );
 });
 
 afterEach(() => {

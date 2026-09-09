@@ -1,40 +1,36 @@
 import type { R2C } from "_components/r2c/r2c.mjs";
 import type { ReconciliationDiff } from "_controllers/reconciler/reconciler.mjs";
-import type { SpanContext } from "@opentelemetry/api";
 import type { LitElement } from "lit";
 
 import type { GeometryEvent } from "../../events/types/geometry-events.types.mjs";
-import type { InformedChildStyle } from "../../types/geometry-controller.types.mjs";
+// import type { InformedChildStyle } from "../../types/geometry-controller.types.mjs";
 // import type { GeometrySetSelectorCb } from "../sets.types.mjs";
-import type {
-  LayoutSizing,
-  LayoutSizingCallback,
-} from "./layout/layout-utils.types.mjs";
+import type { LayoutSizingCallback } from "./layout/layout-utils.types.mjs";
 
-export type ChildrenSizing =
-  | ChildrenSizingRoot
-  | ChildrenSizingTerminate
-  | ChildrenSizingUpdate;
+// export type ChildrenSizing =
+//   | ChildrenSizingRoot
+//   | ChildrenSizingTerminate
+//   | ChildrenSizingUpdate;
 
-export interface ChildrenSizingRoot {
-  inform: InformedChildStyle;
-  session: GeometryUpdateSessionWithSpanContext;
-  sizing: LayoutSizing;
-  type: "root";
-}
+// export interface ChildrenSizingRoot {
+//   inform: InformedChildStyle;
+//   session: GeometryUpdateSessionWithSpanContext;
+//   sizing: LayoutSizing;
+//   type: "root";
+// }
 
-export interface ChildrenSizingTerminate {
-  session: GeometryUpdateSessionWithSpanContext;
-  type: "terminate";
-}
+// export interface ChildrenSizingTerminate {
+//   session: GeometryUpdateSessionWithSpanContext;
+//   type: "terminate";
+// }
 
-export interface ChildrenSizingUpdate {
-  session: GeometryUpdateSessionWithSpanContext;
-  sizing: LayoutSizing;
-  type: "update";
-}
+// export interface ChildrenSizingUpdate {
+//   session: GeometryUpdateSessionWithSpanContext;
+//   sizing: LayoutSizing;
+//   type: "update";
+// }
 
-export type ChildrenUpdateSizingReturn = Promise<ChildrenSizing>;
+// export type ChildrenUpdateSizingReturn = Promise<ChildrenSizing>;
 
 export type GeometryChildrenLayoutCallback = (
   s: LitElement,
@@ -59,12 +55,12 @@ export type GeometrySetDiffCb<Instance extends LitElement> = (
   s: Instance,
 ) => ReconciliationDiff;
 
-export interface GeometryUpdateSession {
-  id: number;
-  index: number;
-  start: number;
-}
+// export interface GeometryUpdateSession {
+//   id: number;
+//   index: number;
+//   start: number;
+// }
 
-export interface GeometryUpdateSessionWithSpanContext extends GeometryUpdateSession {
-  context: SpanContext;
-}
+// export interface GeometryUpdateSessionWithSpanContext extends GeometryUpdateSession {
+//   context: SpanContext;
+// }

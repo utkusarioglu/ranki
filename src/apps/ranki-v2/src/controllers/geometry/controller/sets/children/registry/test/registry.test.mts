@@ -61,12 +61,7 @@ test("leave", () => {
     type: "lifecycle",
   };
   const expected: EmittedComponentState = {
-    interaction: {
-      drag: "none",
-      focus: "none",
-      hover: "none",
-      press: "none",
-    },
+    interaction: ChildrenRegistry.DEFAULT_INTERACTION,
     lifecycle: "leave",
     mode: "default",
   };
@@ -89,12 +84,7 @@ test("update", () => {
     type: "lifecycle",
   };
   const expected: EmittedComponentState = {
-    interaction: {
-      drag: "none",
-      focus: "none",
-      hover: "none",
-      press: "none",
-    },
+    interaction: ChildrenRegistry.DEFAULT_INTERACTION,
     lifecycle: detail.lifecycle,
     mode: "default",
     style: detail.style,
@@ -103,42 +93,12 @@ test("update", () => {
   registry.dims
     //
     .set(target, {
-      interaction: {
-        drag: "none",
-        focus: "none",
-        hover: "none",
-        press: "none",
-      },
+      interaction: ChildrenRegistry.DEFAULT_INTERACTION,
       lifecycle: "enter",
       mode: "default",
       style: { height: 2, width: 1 },
     });
   set.mockClear();
-  registry.update(target, detail);
-  expect(set).toHaveBeenCalledTimes(1);
-  expect(set).toHaveBeenNthCalledWith(1, target, expected);
-});
-
-test("update lifecycle registered as enter", () => {
-  const detail: GeometryEvent = {
-    lifecycle: "update",
-    style: {
-      height: 7,
-      width: 5,
-    },
-    type: "lifecycle",
-  };
-  const expected: EmittedComponentState = {
-    interaction: {
-      drag: "none",
-      focus: "none",
-      hover: "none",
-      press: "none",
-    },
-    lifecycle: "enter",
-    mode: "default",
-    style: detail.style,
-  };
   registry.update(target, detail);
   expect(set).toHaveBeenCalledTimes(1);
   expect(set).toHaveBeenNthCalledWith(1, target, expected);
@@ -151,10 +111,8 @@ test("interaction", () => {
   };
   const expected: EmittedComponentState = {
     interaction: {
-      drag: "none",
-      focus: "none",
+      ...ChildrenRegistry.DEFAULT_INTERACTION,
       hover: "enter",
-      press: "none",
     },
     lifecycle: "enter",
     mode: "default",

@@ -61,11 +61,11 @@ test("Single set 1 elem", async () => {
       },
     ],
   };
-  const props = {
-    one: {
-      selector: () => [elem as unknown as R2C],
-    },
-  };
+  // const props = {
+  //   one: {
+  //     selector: () => [elem as unknown as R2C],
+  //   },
+  // };
   const expected: InformedChildStyle = {
     containerExposed: {
       style: sizing.container,
@@ -87,7 +87,7 @@ test("Single set 1 elem", async () => {
       style: sizing.set[0].style,
     },
   };
-  await new GeometryWatchers(host, props).inform(informProps, sizing);
+  await new GeometryWatchers(host).inform(informProps, sizing);
   expect(elem.informStyle).toHaveBeenCalledTimes(1);
   expect(elem.informStyle).toHaveBeenNthCalledWith(1, expected);
 });
@@ -133,11 +133,11 @@ test("Single set 2 elems", async () => {
       },
     ],
   };
-  const props = {
-    one: {
-      selector: () => [elem as unknown as R2C, elem as unknown as R2C],
-    },
-  };
+  // const props = {
+  //   one: {
+  //     selector: () => [elem as unknown as R2C, elem as unknown as R2C],
+  //   },
+  // };
   const expected: InformedChildStyle[] = [
     {
       containerExposed: {
@@ -182,7 +182,7 @@ test("Single set 2 elems", async () => {
       },
     },
   ];
-  await new GeometryWatchers(host, props).inform(informProps, sizing);
+  await new GeometryWatchers(host).inform(informProps, sizing);
   expect(elem.informStyle).toHaveBeenCalledTimes(2);
   expect(elem.informStyle).toHaveBeenNthCalledWith(1, expected[0]);
   expect(elem.informStyle).toHaveBeenNthCalledWith(2, expected[1]);

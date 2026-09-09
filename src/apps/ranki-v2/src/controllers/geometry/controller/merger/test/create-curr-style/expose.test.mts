@@ -4,6 +4,7 @@ import { expect, test } from "vitest";
 
 import type {
   CurrentAppliedStyle,
+  CurrentAppliedStyleWithoutActions,
   InformContext,
   InformedChildStyle,
 } from "../../../types/geometry-controller.types.mjs";
@@ -76,7 +77,8 @@ test("exposed container width", () => {
       style: {},
     },
   };
-  const response = GeometryMerger.createCurrStyle(informed, sizing);
+  const prev: CurrentAppliedStyle | null = null;
+  const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
   const expected: CurrentAppliedStyle = {
     actions: ["lifecycle.enter"],
     container: {
@@ -133,7 +135,8 @@ test("exposed container width 2", () => {
       style: {},
     },
   };
-  const response = GeometryMerger.createCurrStyle(informed, sizing);
+  const prev: CurrentAppliedStyleWithoutActions | null = null;
+  const response = GeometryMerger.createCurrStyle(informed, sizing, prev);
   const expected: CurrentAppliedStyle = {
     actions: ["lifecycle.leave"],
     container: {

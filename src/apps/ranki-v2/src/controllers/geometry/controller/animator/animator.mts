@@ -108,33 +108,45 @@ export class Animator<Instance extends LitElement> {
     finalOptions: KeyframeAnimationOptions,
   ) {
     return this.o11y.trace.span(`${name}.animate.animate`, async ({ span }) => {
+      const running = this.running.get(name);
+      if (running) {
+        span.addEvent("animation.commit");
+        running.commitStyles();
+      }
       span.addEvent("host.animate.start");
       const anim = this.host.animate(finalKeyframes, finalOptions);
       span.addEvent("host.animate.end");
-      const running = this.running.get(name);
-      if (running) {
-        span.addEvent("animation.cancel");
-        running.oncancel = (_ev) => {
-          if (running.playState === "running") {
-            this.o11y.log.info("Running animation prematurely cancelled", {
-              name,
-              tag: this.host.tagName,
-            });
-            this.o11y.devtools.log("animation.cancel", {
-              finalKeyframes,
-              finalOptions,
-              name,
-              tag: this.host.tagName,
-            });
-          }
-        };
-        running.commitStyles();
-        running.cancel();
-      }
       this.running.set(name, anim);
-      await anim.finished;
-      this.running.delete(name);
-      span.addEvent("animation.delete");
+
+      anim.oncancel = (_ev) => {
+        if (anim.playState === "running") {
+          this.o11y.log.info("Running animation prematurely cancelled", {
+            name,
+            tag: this.host.tagName,
+          });
+          this.o11y.devtools.log("animation.cancel", {
+            finalKeyframes,
+            finalOptions,
+            name,
+            tag: this.host.tagName,
+          });
+        }
+      };
+      // anim.onremove = (ev) => {
+      //   console.log("remove", ev, name);
+      // };
+      // anim.onfinish = (ev) => {
+      // console.log("fnins", ev, name);
+      // };
+
+      try {
+        await anim.finished;
+      } catch {
+        this.o11y.log.debug("Animation.fail", { name });
+      } finally {
+        this.running.delete(name);
+        span.addEvent("animation.delete");
+      }
     });
   }
 
@@ -163,6 +175,11 @@ export class Animator<Instance extends LitElement> {
           this.styleByName(name, finalKeyframes);
         } else {
           await this.animateByName(name, finalKeyframes, finalOptions);
+          //   .catch(
+          //   (e) => {
+          //     console.log("bobo", e);
+          //   },
+          // );
         }
         //
       } catch (e) {

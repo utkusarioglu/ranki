@@ -100,7 +100,7 @@ export const TEXT: GeometryAnimationPreset = {
             name: "init",
           },
           {
-            duration: 3000,
+            duration: 500,
             keyframes: [
               {
                 opacity: 1,
@@ -114,7 +114,7 @@ export const TEXT: GeometryAnimationPreset = {
       leave: {
         root: [
           {
-            duration: 1000,
+            duration: 500,
             keyframes: [
               {
                 opacity: 0,

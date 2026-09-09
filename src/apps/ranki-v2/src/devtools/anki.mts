@@ -34,6 +34,22 @@ export class RankiDevAnkiMethods {
     });
   }
 
+  static broken3() {
+    ["cat elephant cat", "cat 4elephant cat", "cat 4elephant cat2"].forEach(
+      async (v, i) => {
+        await new Promise((r) => setTimeout(r, 1000 * i));
+        this.tags(v);
+      },
+    );
+  }
+
+  static broken2() {
+    ["4elephant cat", "4elephant cat2"].forEach(async (v, i) => {
+      await new Promise((r) => setTimeout(r, 2000 * i));
+      this.tags(v);
+    });
+  }
+
   static deck = (v: AnkiSetValues) => this.dataType("deck", v);
 
   static face = (v: AnkiSetValues) => this.dataType("face", v);

@@ -28,6 +28,6 @@ export class GeometryWatchers<Instance extends LitElement> {
     props: InformSetProps,
     sizing: LayoutSizing | null,
   ): Promise<void> {
-    this.sets.forEach((s) => s.inform(props, sizing));
+    await Promise.all(this.sets.map(async (s) => s.inform(props, sizing)));
   }
 }

@@ -58,10 +58,10 @@ test("only last has size", () => {
         lifecycle: "update",
         mode: "default",
         style: {
-          height: 0,
+          height: 23,
+          width: 17,
           left: 0,
           top: 0,
-          width: 0,
         },
       },
       {

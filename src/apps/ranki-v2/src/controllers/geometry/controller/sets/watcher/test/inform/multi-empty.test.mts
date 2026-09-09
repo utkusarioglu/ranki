@@ -7,9 +7,7 @@ import type { LayoutSizing } from "../../../children/layout/layout-utils.types.m
 
 import { WatcherSet } from "../../../watcher-set/watcher-set.mjs";
 import { GeometryWatchers } from "../../watcher.mjs";
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getSet = vi.spyOn(GeometryWatchers.prototype as any, "getSet");
+import { ChildrenRegistry } from "../../../children/registry/children-registry.mjs";
 
 const Host = vi.fn(class {});
 
@@ -18,30 +16,18 @@ let watchers: GeometryWatchers<any>;
 
 beforeEach(() => {
   const host = new Host() as unknown as LitElement;
-  watchers = new GeometryWatchers(host, {
-    one: {
-      selector: () => [],
-    },
-    two: {
-      selector: () => [],
-    },
-  });
+  watchers = new GeometryWatchers(host);
 });
 
 afterEach(() => {
   Host.mockClear();
 });
 
-test("Single set no elems", async () => {
+test("no set no elems", async () => {
   const props: InformSetProps = {
     containerExposed: { style: {} },
     selfOverrides: {
-      interaction: {
-        drag: "none",
-        focus: "none",
-        hover: "none",
-        press: "none",
-      },
+      interaction: ChildrenRegistry.DEFAULT_INTERACTION,
       lifecycle: "enter",
       mode: "default",
       style: {},
@@ -56,7 +42,5 @@ test("Single set no elems", async () => {
     set: [],
   };
   await watchers.inform(props, sizing);
-  expect(inform).toHaveBeenCalledTimes(1);
-  expect(getSet).toHaveBeenNthCalledWith(1, "one");
-  expect(inform).toHaveBeenNthCalledWith(1, props, sizing);
+  expect(inform).toHaveBeenCalledTimes(0);
 });

@@ -6,7 +6,7 @@ import type { LitElement } from "lit";
 import { beforeEach, expect, test, vi } from "vitest";
 
 import type { LayoutSizing } from "../../children/layout/layout-utils.types.mjs";
-import type { GeometryWatcherProps } from "../../watcher/watcher.types.mjs";
+// import type { GeometryWatcherProps } from "../../watcher/watcher.types.mjs";
 
 import { WatcherSet } from "../watcher-set.mjs";
 
@@ -80,9 +80,9 @@ beforeEach(() => {
 
 test("Single set 1 elem", async () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const props: GeometryWatcherProps<any> = {
-    selector: () => [elem as unknown as R2C],
-  };
+  // const props: GeometryWatcherProps<any> = {
+  //   selector: () => [elem as unknown as R2C],
+  // };
   const expected: InformedChildStyle = {
     containerExposed: {
       style: sizing.container,
@@ -94,16 +94,16 @@ test("Single set 1 elem", async () => {
     },
     selfOverrides: sizing.set[0],
   };
-  await new WatcherSet(host, props).inform(informProps, sizing);
+  await new WatcherSet(host).inform(informProps, sizing);
   expect(elem.informStyle).toHaveBeenCalledTimes(1);
   expect(elem.informStyle).toHaveBeenNthCalledWith(1, expected);
 });
 
 test("Single set 2 elems", async () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const props: GeometryWatcherProps<any> = {
-    selector: () => [elem as unknown as R2C, elem as unknown as R2C],
-  };
+  // const props: GeometryWatcherProps<any> = {
+  //   selector: () => [elem as unknown as R2C, elem as unknown as R2C],
+  // };
   const expected: InformedChildStyle[] = [
     {
       containerExposed: {
@@ -128,7 +128,7 @@ test("Single set 2 elems", async () => {
       selfOverrides: sizing.set[1],
     },
   ];
-  await new WatcherSet(host, props).inform(informProps, sizing);
+  await new WatcherSet(host).inform(informProps, sizing);
   expect(elem.informStyle).toHaveBeenCalledTimes(2);
   expect(elem.informStyle).toHaveBeenNthCalledWith(1, expected[0]);
   expect(elem.informStyle).toHaveBeenNthCalledWith(2, expected[1]);

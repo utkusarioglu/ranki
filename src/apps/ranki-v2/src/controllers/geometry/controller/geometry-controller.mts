@@ -22,6 +22,8 @@ import type { OnEmitCallbackParams } from "./events/types/geometry-events.types.
 export class GeometryController<
   Instance extends LitElement,
 > implements ReactiveController {
+  private static idCounter = 0;
+  private id: number;
   public readonly events: GeometryEvents<Instance>;
   public readonly wait = {
     delay: TimingUtils.delay,
@@ -43,6 +45,7 @@ export class GeometryController<
     host: Instance,
     params: GeometryControllerConstructorParams<Instance>,
   ) {
+    this.id = GeometryController.idCounter++;
     this.isRoot = params.isRoot || false;
     host.addController(this);
     this.host = host;
@@ -75,7 +78,7 @@ export class GeometryController<
         },
       },
       tracer: {
-        nameFormat: ({ name }) => [this.host.tagName, name].join(":"),
+        nameFormat: ({ name }) => [this.host.tagName, name, this.id].join(":"),
       },
     });
     this.bindHostMethods();
@@ -130,6 +133,10 @@ export class GeometryController<
       case "disconnected":
         return this.lifecycleDisconnected(event);
       case "leave":
+      // if (event.target.tagName.includes("TEXT")) {
+      //   console.log("t", event.target.tagName, event.detail);
+      // }
+      // break;
       case "update":
         return await this.lifecycleUpdate(event);
     }

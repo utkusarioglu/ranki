@@ -14,11 +14,14 @@ let watchers: GeometryWatchers<any>;
 
 beforeEach(() => {
   const host = new Host() as unknown as LitElement;
-  watchers = new GeometryWatchers(host, {
-    f: {
-      selector: () => [],
-    },
-  });
+  watchers = new GeometryWatchers(
+    host,
+    // {
+    // f: {
+    //   selector: () => [],
+    // },
+    // }
+  );
 });
 
 afterEach(() => {
