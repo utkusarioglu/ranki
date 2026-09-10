@@ -26,7 +26,7 @@ export function store<
         context,
         selector,
       });
-      return new StoreController(this, key, selector, adapter);
+      return new StoreController(this, { key, selector, adapter });
     };
   };
 }

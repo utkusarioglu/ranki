@@ -12,13 +12,19 @@ export type StoreState<Key extends StoreKey> = ReturnType<
 
 type Stores = (typeof store)["use"];
 
+interface StoreParams<Key extends StoreKey, Selected, Adapted = Selected> {
+  key: Key;
+  selector: (s: StoreState<Key>) => Selected;
+  adapter?: StoreAdapter<Selected, Adapted>;
+}
+
 export class StoreController<
   Key extends StoreKey,
   Selected,
   Adapted = Selected,
 > implements ReactiveController {
-  curr!: Adapted;
-  prev: Adapted | undefined;
+  private curr!: Adapted;
+  private prev: Adapted | undefined;
 
   /**
    * @dev
@@ -26,21 +32,26 @@ export class StoreController<
    */
   constructor(
     host: ReactiveControllerHost,
-    key: Key,
-    selector: (s: StoreState<Key>) => Selected,
-    adapter: StoreAdapter<Selected, Adapted> = (v, _p) =>
-      v as unknown as Adapted,
+    params: StoreParams<Key, Selected, Adapted>,
   ) {
     host.addController(this);
+    if (params.adapter) {
+      this.adapter = params.adapter;
+    }
 
-    const selectedStore = store.use[key];
+    const selectedStore = store.use[params.key];
     this.unsubscribe = selectedStore
       // @ts-expect-error #1
-      .subscribe(selector, (v) => {
-        this.prev = this.curr;
-        this.curr = adapter(v, this.prev);
-        host.requestUpdate();
-      });
+      .subscribe(
+        //
+        params.selector,
+        // @ts-expect-error #1
+        (v) => {
+          this.prev = this.curr;
+          this.curr = this.adapter(v, this.prev);
+          host.requestUpdate();
+        },
+      );
   }
 
   hostDisconnected() {
@@ -48,4 +59,7 @@ export class StoreController<
   }
 
   private unsubscribe: () => void = () => {};
+
+  private adapter: StoreAdapter<Selected, Adapted> = (v, _p) =>
+    v as unknown as Adapted;
 }
