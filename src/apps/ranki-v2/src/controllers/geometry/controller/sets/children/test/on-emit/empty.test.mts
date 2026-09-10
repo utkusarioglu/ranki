@@ -16,7 +16,7 @@ const host = vi.fn() as unknown as LitElement;
 const target = vi.fn() as unknown as R2C;
 const props: GeometryChildrenProps<LitElement> = {};
 
-test.only("single session single elem", async () => {
+test.only("empty", async () => {
   const children = new GeometryChildren(host, props);
   const detail: GeometryEvent = {
     lifecycle: "update",
@@ -30,36 +30,13 @@ test.only("single session single elem", async () => {
     container: {
       width: 0,
       height: 0,
-      // ...detail.style,
     },
-    set: [
-      // {
-      //   interaction: {
-      //     drag: "none",
-      //     focus: "none",
-      //     hover: "none",
-      //     press: "none",
-      //   },
-      //   lifecycle: detail.lifecycle,
-      //   mode: "default",
-      //   style: {
-      //     ...detail.style,
-      //     left: 0,
-      //     top: 0,
-      //   },
-      // },
-    ],
+    set: [],
   };
-  // const expectedTerm: LayoutSizing = {
-  // session,
-  // type: "terminate",
-  // };
   const call = () => children.onEmit({ target, detail });
   const response = [call(), call(), call()];
   await TimingUtils.raf(10);
   expect(response[0]).toEqual(expected0);
   expect(response[1]).toEqual(expected0);
   expect(response[2]).toEqual(expected0);
-  // expect(response[1]).toEqual(expectedTerm);
-  // expect(response[2]).toEqual(expectedTerm);
 });
