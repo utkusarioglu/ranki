@@ -54,14 +54,13 @@ export class R2Text extends R2C {
   @reconciler<R2Text, R2TextProps>({
     on: (s, type, { index }) => {
       if (type === "leave") {
-        console.log("l", s.subtree.curr.list);
-        console.log("s", s.spans, index);
+        console.log("f", s, s.spans, index);
         s.spans[index]!.leave();
       }
     },
     reconcile: (c, p) => (c.text === p.text ? "retain" : "add"),
     source: (s) => [s.props],
-    type: "first",
+    type: "last",
   })
   private readonly subtree!: ReconciliationController<R2Text, R2TextProps>;
 

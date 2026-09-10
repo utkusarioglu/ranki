@@ -57,7 +57,6 @@ export class ReconciliationController<
       this.getSource(this.host),
       this.itemReconcile,
     );
-    console.log("new curr", this.curr);
     this.epoch = Date.now();
 
     const bl = this.on;

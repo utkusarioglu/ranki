@@ -284,8 +284,6 @@ export class ReconciliationUtils {
       }
     }
 
-    console.log("l", list);
-
     const indices = Array.from({ length: list.length }, (_) => 0);
 
     return {
