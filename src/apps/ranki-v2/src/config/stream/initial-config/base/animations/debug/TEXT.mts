@@ -114,7 +114,7 @@ export const TEXT: GeometryAnimationPreset = {
       leave: {
         root: [
           {
-            duration: 500,
+            duration: 1000,
             keyframes: [
               {
                 opacity: 0,

@@ -95,7 +95,7 @@ export class R2NotificationList extends R2C {
               .list=${list}
               ?leave=${leave}
               @r2-geometry=${this.geo.child()}
-              @r2-reconciler=${this.subtree.onEmit(id)}
+              @r2-reconciler=${this.subtree.child(id)}
             ></r2-chip>
           `;
         },

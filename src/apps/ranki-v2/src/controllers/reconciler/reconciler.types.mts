@@ -11,7 +11,7 @@ export type ReconcilerEventsCb<Instance> = (
   },
 ) => void;
 
-export type ReconcilerTypes = "flat" | "last";
+export type ReconcilerTypes = "flat" | "last" | "first";
 
 export type SubtreeParams<Instance, S> = {
   on?: ReconcilerEventsCb<Instance>;

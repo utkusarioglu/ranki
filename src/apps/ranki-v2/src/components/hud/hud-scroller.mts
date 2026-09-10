@@ -34,6 +34,11 @@ export class R2HudScroller extends R2C {
   })
   private readonly geo!: GeometryController<R2HudScroller>;
 
+  // <r2-notification-list
+  //   class="elems"
+  //   @r2-geometry=${this.geo.child()}
+  // ></r2-notification-list>
+
   override render() {
     return html`
       <r2-hud-bg
@@ -43,11 +48,6 @@ export class R2HudScroller extends R2C {
           "--z-index": -4,
         })}"
       ></r2-hud-bg>
-
-      <r2-notification-list
-        class="elems"
-        @r2-geometry=${this.geo.child()}
-      ></r2-notification-list>
 
       <r2-cue-list class="elems" @r2-geometry=${this.geo.child()}></r2-cue-list>
     `;

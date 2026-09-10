@@ -24,7 +24,7 @@ export class ReconciliationController<
   public curr: ReconcilableSubtree<S> = ReconciliationUtils.empty<S>();
   public epoch: number = 0;
   public prev: ReconcilableSubtree<S> | undefined;
-  private beforeLeave: ReconcilerEventsCb<Instance> | undefined;
+  private on: ReconcilerEventsCb<Instance> | undefined;
 
   private getSource!: GetSourceCallback<Instance, S>;
   private host: Instance;
@@ -40,7 +40,7 @@ export class ReconciliationController<
     this.reconcilerName = params.type;
     this.itemReconcile = params.reconcile;
     this.getSource = params.source;
-    this.beforeLeave = params.on;
+    this.on = params.on;
   }
 
   emit(type: "leave") {
@@ -57,9 +57,10 @@ export class ReconciliationController<
       this.getSource(this.host),
       this.itemReconcile,
     );
+    console.log("new curr", this.curr);
     this.epoch = Date.now();
 
-    const bl = this.beforeLeave;
+    const bl = this.on;
     if (bl) {
       this.curr.list.forEach((p, index) => {
         if (p.leave) {
@@ -71,7 +72,7 @@ export class ReconciliationController<
     this.host.requestUpdate();
   }
 
-  onEmit(id: number) {
+  child(id: number) {
     return (e: CustomEvent<R2ReconcilerEmit>) => {
       e.stopPropagation();
       const detail = e.detail;
@@ -131,6 +132,7 @@ export class ReconciliationController<
   }
 
   private setCurr(value: ReconcilableSubtree<S>) {
+    console.log("set curr", value);
     this.curr = value;
     this.host.requestUpdate();
   }
