@@ -1,4 +1,4 @@
-import type { ReconcileSingle } from "./utils.types.mjs";
+import type { ReconcileSingle } from "../utils/utils.types.mjs";
 
 export type GetSourceCallback<Instance, S> = (instance: Instance) => S[];
 

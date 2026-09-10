@@ -1,10 +1,10 @@
 import type { LitElement } from "lit";
 
-import { ReconciliationController } from "./reconciler.controller.mjs";
-import { type SubtreeParams } from "./reconciler.types.mjs";
+import { ReconciliationController } from "../controller/reconciler-controller.mjs";
+import type { ReconcilerDecoratorParams } from "./reconciler-decorator.types.mjs";
 
 export function reconciler<Instance extends LitElement, S>(
-  params: SubtreeParams<Instance, S>,
+  params: ReconcilerDecoratorParams<Instance, S>,
 ) {
   return (
     _value: undefined,

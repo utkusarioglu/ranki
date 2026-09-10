@@ -1,6 +1,6 @@
 import type { LitElement, ReactiveController } from "lit";
 
-import { ReconciliationUtils } from "_controllers/reconciler/utils.mjs";
+import { ReconciliationUtils } from "_controllers/reconciler/utils/utils.mjs";
 import { assertNever } from "_error/assertions.mjs";
 
 import type {
@@ -8,14 +8,14 @@ import type {
   ReconcilerEventsCb,
   ReconcilerTypes,
   SubtreeParams,
-} from "./reconciler.types.mjs";
+} from "./reconciler-controller.types.mjs";
 
 import {
   type R2ReconcilerEmit,
   type ReconcilableSubtree,
   type ReconcileSingle,
   type ReconciliationContainer,
-} from "./utils.types.mjs";
+} from "../utils/utils.types.mjs";
 
 export class ReconciliationController<
   Instance extends LitElement,
