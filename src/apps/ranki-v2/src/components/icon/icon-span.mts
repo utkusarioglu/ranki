@@ -3,7 +3,7 @@ import {
   geometry,
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
-import { ReconciliationUtils } from "_controllers/reconciler/reconciler.mjs";
+import { reconciler } from "_controllers/reconciler/reconciler.mjs";
 import { getAnimationCollection } from "_store/store.mjs";
 import { loadIcon } from "iconify-icon";
 import { html, unsafeCSS } from "lit";
@@ -23,7 +23,7 @@ export class R2IconSpan extends R2C {
     collection: getAnimationCollection,
     on: (s, type) => {
       if (type === "lifecycle.leave/end") {
-        ReconciliationUtils.emitLeave(s);
+        reconciler.emit(s, "leave");
       }
     },
     role: "icon-span",

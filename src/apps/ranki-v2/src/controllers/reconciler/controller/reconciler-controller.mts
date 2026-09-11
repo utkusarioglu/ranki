@@ -1,6 +1,6 @@
 import type { LitElement, ReactiveController } from "lit";
 
-import { ReconciliationUtils } from "_controllers/reconciler/utils/utils.mjs";
+import { ReconciliationShapes } from "_controllers/reconciler/utils/shapes.mjs";
 import { assertNever } from "_error/assertions.mjs";
 
 import type {
@@ -10,20 +10,22 @@ import type {
   ReconcilerTypes,
 } from "./reconciler-controller.types.mjs";
 
+import { LayoutEngines } from "../engine/layout-engine.mjs";
+import { ReconciliationEvents } from "../events/reconciliation-events.mjs";
+import { type ReconcileSingle } from "../events/reconciliation-events.types.mjs";
 import {
-  type R2ReconcilerEmit,
   type ReconcilableSubtree,
-  type ReconcileSingle,
   type ReconciliationContainer,
-} from "../utils/utils.types.mjs";
+} from "../utils/shapes.types.mjs";
 
 export class ReconciliationController<
   Instance extends LitElement,
   S,
 > implements ReactiveController {
-  public curr: ReconcilableSubtree<S> = ReconciliationUtils.empty<S>();
+  public curr: ReconcilableSubtree<S> = ReconciliationShapes.emptyState<S>();
   public epoch: number = 0;
   public prev: ReconcilableSubtree<S> | undefined;
+  private readonly events: ReconciliationEvents<Instance>;
   private getSource!: GetSourceCallback<Instance, S>;
 
   private host: Instance;
@@ -41,12 +43,15 @@ export class ReconciliationController<
     this.itemReconcile = params.reconcile;
     this.getSource = params.source;
     this.on = params.on;
+    this.events = new ReconciliationEvents(this.host);
+  }
+
+  public static emit(host: LitElement, type: "leave") {
+    ReconciliationEvents.emit(host, type);
   }
 
   child(id: number) {
-    return (e: CustomEvent<R2ReconcilerEmit>) => {
-      e.stopPropagation();
-      const detail = e.detail;
+    return this.events.onEmit(({ detail }) => {
       // eslint-disable-next-line sonarjs/no-small-switch
       switch (detail.type) {
         case "leave":
@@ -59,31 +64,28 @@ export class ReconciliationController<
             why: "Unrecognized Reconciler emit type",
           });
       }
-    };
+    });
   }
 
   emit(type: "leave") {
-    if (type !== "leave") {
-      assertNever({ details: { type }, why: "Unrecognized emit type" });
-    }
-    ReconciliationUtils.emitLeave(this.host);
+    ReconciliationEvents.emit(this.host, type);
   }
 
   hostUpdate(): void {
     this.prev = this.curr;
-    this.curr = ReconciliationUtils[this.reconcilerName](
+    this.curr = LayoutEngines[this.reconcilerName](
       this.curr,
       this.getSource(this.host),
       this.itemReconcile,
     );
     this.epoch = Date.now();
 
-    const bl = this.on;
-    if (bl) {
+    const on = this.on;
+    if (on) {
       this.curr.list.forEach((p, index) => {
         if (p.leave) {
           const stagger = this.curr.diff.stagger.indices[index];
-          bl(this.host, "leave", { index, stagger });
+          on(this.host, "leave", { index, stagger });
         }
       });
     }

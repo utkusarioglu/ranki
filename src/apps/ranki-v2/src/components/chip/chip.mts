@@ -6,7 +6,7 @@ import {
   GeometryController,
   LayoutUtils,
 } from "_controllers/geometry/geometry.mjs";
-import { ReconciliationUtils } from "_controllers/reconciler/reconciler.mjs";
+import { reconciler } from "_controllers/reconciler/reconciler.mjs";
 import { getAnimationCollection } from "_store/store.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, property } from "lit/decorators.js";
@@ -38,7 +38,7 @@ export class R2Chip extends R2C {
     },
     on: (s, action) => {
       if (action === "lifecycle.leave/end") {
-        ReconciliationUtils.emitLeave(s);
+        reconciler.emit(s, "leave");
       }
     },
     role: "chip",

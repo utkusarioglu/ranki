@@ -1,32 +1,17 @@
-import type { LitElement } from "lit";
-
 import { assertNever } from "_error/assertions.mjs";
 
 import type {
-  R2ReconcilerEmit,
-  ReconcilableSubtree,
   ReconcileSingle,
   ReconciliationActions,
+} from "../events/reconciliation-events.types.mjs";
+import type {
+  ReconcilableSubtree,
   ReconciliationContainer,
-  ReconciliationDiff,
-} from "./utils.types.mjs";
+} from "../utils/shapes.types.mjs";
 
-export class ReconciliationUtils {
-  static leaveEventName = "r2-reconciler";
-  private static idCounter = 0;
+import { IdCounter } from "../utils/id-counter.mjs";
 
-  public static emitLeave(el: LitElement) {
-    el.dispatchEvent(ReconciliationUtils.leaveEvent());
-  }
-
-  public static empty<G>(): ReconcilableSubtree<G> {
-    return {
-      diff: ReconciliationUtils.noChanges(),
-      epoch: 0,
-      list: [],
-    };
-  }
-
+export class LayoutEngines {
   public static first<G>(
     prev: ReconcilableSubtree<G>,
     curr: G[],
@@ -67,7 +52,7 @@ export class ReconciliationUtils {
       case "add":
         add.unshift(i);
         list.unshift({
-          id: this.getId(),
+          id: IdCounter.getNewId(),
           leave: false,
           props: currFirst!,
         });
@@ -156,7 +141,7 @@ export class ReconciliationUtils {
         case "add":
           add.push(i);
           list.push({
-            id: this.getId(),
+            id: IdCounter.getNewId(),
             leave: false,
             props: curr[i],
           });
@@ -172,7 +157,7 @@ export class ReconciliationUtils {
         case "update":
           update.push(i);
           list.push({
-            id: this.getId(),
+            id: IdCounter.getNewId(),
             leave: false,
             props: curr[i],
           });
@@ -264,7 +249,7 @@ export class ReconciliationUtils {
       case "add":
         add.push(i);
         list.push({
-          id: this.getId(),
+          id: IdCounter.getNewId(),
           leave: false,
           props: currLast!,
         });
@@ -301,33 +286,5 @@ export class ReconciliationUtils {
       epoch: Date.now(),
       list,
     };
-  }
-
-  public static noChanges(length: number = 0): ReconciliationDiff {
-    return {
-      add: [],
-      remove: [],
-      retain: [],
-      stagger: {
-        first: 0,
-        indices: Array.from({ length }, (_) => 0),
-      },
-      update: [],
-    };
-  }
-
-  private static getId() {
-    return this.idCounter++;
-  }
-
-  private static leaveEvent() {
-    const detail = {
-      type: "leave" as const,
-    };
-    return new CustomEvent<R2ReconcilerEmit>(this.leaveEventName, {
-      bubbles: true,
-      composed: true,
-      detail,
-    });
   }
 }

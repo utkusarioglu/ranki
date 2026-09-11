@@ -3,13 +3,11 @@ import type { LitElement } from "lit";
 
 import {
   type ReconciliationDiff,
-  ReconciliationUtils,
+  ReconciliationShapes,
 } from "_controllers/reconciler/reconciler.mjs";
 import { assertNever } from "_error/assertions.mjs";
 
 import type { InformSetProps } from "../../animator/types/animator.types.mjs";
-// import type { GeometrySetSelectorCb } from "../sets.types.mjs";
-// import type { GeometryWatcherProps } from "../watcher/watcher.types.mjs";
 import type { GeometrySetDiffCb } from "../children/children.types.mjs";
 import type { LayoutSizing } from "../children/layout/layout-utils.types.mjs";
 
@@ -18,19 +16,12 @@ import { GeometrySetsUtils } from "../geometry-sets-utils.mjs";
 
 export class WatcherSet<Instance extends LitElement> {
   protected diff?: GeometrySetDiffCb<Instance>;
-  // protected readonly props: GeometryWatcherProps<Instance>;
   protected readonly elements: R2C[] = [];
   protected readonly host: Instance;
   protected readonly o11y: O11y<this>;
-  // protected readonly selector: GeometrySetSelectorCb<Instance>;
 
-  constructor(
-    host: Instance,
-    // , props: GeometryWatcherProps<Instance>
-  ) {
+  constructor(host: Instance) {
     this.host = host;
-    // this.props = props;
-    // this.selector = props.selector;
     this.o11y = new O11y(this, {
       // logger: {
       //   attributes: () => ({
@@ -66,7 +57,6 @@ export class WatcherSet<Instance extends LitElement> {
 
   protected getElements() {
     return this.elements;
-    // return this.selector(this.host);
   }
 
   protected removeElement(elem: R2C) {
@@ -85,7 +75,7 @@ export class WatcherSet<Instance extends LitElement> {
     const diff = this.diff;
     if (!diff) {
       const elems = this.getElements();
-      return ReconciliationUtils.noChanges(elems.length);
+      return ReconciliationShapes.noChanges(elems.length);
     }
     return diff(this.host);
   }

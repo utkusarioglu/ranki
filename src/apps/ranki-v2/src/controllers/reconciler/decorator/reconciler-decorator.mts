@@ -16,3 +16,5 @@ export function reconciler<Instance extends LitElement, S>(
     };
   };
 }
+
+reconciler.emit = ReconciliationController.emit;

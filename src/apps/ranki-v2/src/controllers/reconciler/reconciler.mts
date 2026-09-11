@@ -1,4 +1,4 @@
 export { ReconciliationController } from "./controller/reconciler-controller.mjs";
 export { reconciler } from "./decorator/reconciler-decorator.mjs";
-export { ReconciliationUtils } from "./utils/utils.mjs";
-export type { ReconciliationDiff } from "./utils/utils.types.mjs";
+export { ReconciliationShapes } from "./utils/shapes.mjs";
+export type { ReconciliationDiff } from "./utils/shapes.types.mjs";

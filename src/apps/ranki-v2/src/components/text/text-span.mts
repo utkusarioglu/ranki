@@ -3,7 +3,7 @@ import {
   geometry,
   GeometryController,
 } from "_controllers/geometry/geometry.mjs";
-import { ReconciliationUtils } from "_controllers/reconciler/reconciler.mjs";
+import { reconciler } from "_controllers/reconciler/reconciler.mjs";
 import { getAnimationCollection } from "_store/store.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
@@ -25,7 +25,7 @@ export class R2TextSpan extends R2C {
     collection: getAnimationCollection,
     on: (s, type) => {
       if (type === "lifecycle.leave/end") {
-        ReconciliationUtils.emitLeave(s);
+        reconciler.emit(s, "leave");
       }
     },
     role: "text-span",
