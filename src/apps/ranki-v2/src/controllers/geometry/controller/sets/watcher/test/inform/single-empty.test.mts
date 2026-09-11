@@ -35,6 +35,9 @@ afterEach(() => {
   Host.mockClear();
 });
 
+/**
+ * Watcher related tests are broken until the watcher logic is simplified
+ */
 describe.skip("broken tests during transition", () => {
   test("Single set no elems", async () => {
     const props: InformSetProps = {

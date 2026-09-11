@@ -8,6 +8,12 @@ export interface NotificationEntry {
   log: string;
 }
 
+export type NotificationListEntry = {
+  epoch: number;
+  group: Group;
+  record: CueRecord;
+};
+
 export interface NotificationRemoval {
   groups: Group[];
 }
@@ -16,12 +22,6 @@ export type NotificationStore = NotificationStoreMethods &
   NotificationStoreState;
 
 type Group = { type?: "NotificationGroup" } & string;
-
-export type NotificationListEntry = {
-  epoch: number;
-  group: Group;
-  record: CueRecord;
-};
 
 interface NotificationStoreMethods {
   add: (e: NotificationEntry) => void;

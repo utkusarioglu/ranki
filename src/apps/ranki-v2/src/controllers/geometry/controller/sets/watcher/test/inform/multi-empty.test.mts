@@ -5,9 +5,9 @@ import { afterEach, beforeEach, expect, test, vi } from "vitest";
 const inform = vi.spyOn(WatcherSet.prototype, "inform");
 import type { LayoutSizing } from "../../../children/layout/layout-utils.types.mjs";
 
+import { ChildrenRegistry } from "../../../children/registry/children-registry.mjs";
 import { WatcherSet } from "../../../watcher-set/watcher-set.mjs";
 import { GeometryWatchers } from "../../watcher.mjs";
-import { ChildrenRegistry } from "../../../children/registry/children-registry.mjs";
 
 const Host = vi.fn(class {});
 

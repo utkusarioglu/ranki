@@ -56,12 +56,12 @@ export interface CueConfig {
 }
 
 export type CueKind =
-  | "notification"
   | "always"
   | "card"
   | "deck"
   | "face"
   | "flag"
+  | "notification"
   | "tag:marked"
   | "tag:neutral"
   | "tag:ranki"

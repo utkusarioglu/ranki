@@ -23,14 +23,10 @@ import {
 import nativeHtml from "./native.html?raw";
 
 export class RankiDevAnkiMethods {
-  static card = (v: AnkiSetValues) => this.dataType("card", v);
-
-  static config(v: AnkiRecordProps) {
-    Object.entries(v).forEach(([type, value]) => {
-      this.assign(
-        [CONFIG_TYPE_CLASS_SELECTOR, type].join("."),
-        JSON.stringify(value),
-      );
+  static broken2() {
+    ["4elephant cat", "4elephant cat2"].forEach(async (v, i) => {
+      await new Promise((r) => setTimeout(r, 2000 * i));
+      this.tags(v);
     });
   }
 
@@ -43,10 +39,14 @@ export class RankiDevAnkiMethods {
     );
   }
 
-  static broken2() {
-    ["4elephant cat", "4elephant cat2"].forEach(async (v, i) => {
-      await new Promise((r) => setTimeout(r, 2000 * i));
-      this.tags(v);
+  static card = (v: AnkiSetValues) => this.dataType("card", v);
+
+  static config(v: AnkiRecordProps) {
+    Object.entries(v).forEach(([type, value]) => {
+      this.assign(
+        [CONFIG_TYPE_CLASS_SELECTOR, type].join("."),
+        JSON.stringify(value),
+      );
     });
   }
 

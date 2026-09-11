@@ -63,6 +63,9 @@ beforeEach(() => {
   elemTwo = singleElem() as unknown as R2C;
 });
 
+/**
+ * Watcher related tests are broken until the watcher logic is simplified
+ */
 describe.skip("broken tests during transition", () => {
   test("2 set 1 elem each call first", async () => {
     // const props = {

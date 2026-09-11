@@ -30,12 +30,12 @@ export class ChildrenRegistry {
     for (const component of serial) {
       const dims = this.dims.get(component);
       assertNotUndefined(dims, {
-        why: "dims does not exist for element",
         details: {
-          serial,
           component,
           dims: this.dims,
+          serial,
         },
+        why: "dims does not exist for element",
       });
       // if (!dims) {
       //   ordered.push({
@@ -99,12 +99,12 @@ export class ChildrenRegistry {
     switch (detail.lifecycle) {
       case "connected":
         assertFalse(this.dims.has(target), {
+          details: { detail, target },
           why: "connected component reconnecting",
-          details: { target, detail },
         });
         this.dims.set(target, {
-          lifecycle: "connected",
           interaction: ChildrenRegistry.DEFAULT_INTERACTION,
+          lifecycle: "connected",
           mode: "default",
         });
         break;

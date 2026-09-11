@@ -2,14 +2,13 @@ import type { RankiDesignState, RankiState } from "_config/config.types.mjs";
 
 import { generatePaletteCss } from "_/design/color.mjs";
 import { R2C } from "_components/r2c/r2c.mjs";
-import { StoreController } from "_controllers/store/store.controller.mjs";
+import { store, StoreController } from "_controllers/store/store.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement } from "lit/decorators.js";
 
 import appStyle from "./app.css?inline";
 import scheme from "./schemes.css?inline";
 import theme from "./theme.css?inline";
-import { store } from "_controllers/store/store.decorator.mjs";
 
 @customElement("r2-app")
 export class R2App extends R2C {

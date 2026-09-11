@@ -10,21 +10,21 @@ export type StoreState<Key extends StoreKey> = ReturnType<
   Stores[Key]["getState"]
 >;
 
-type Stores = (typeof store)["use"];
-
 interface StoreParams<Key extends StoreKey, Selected, Adapted = Selected> {
+  adapter?: StoreAdapter<Selected, Adapted>;
   key: Key;
   selector: (s: StoreState<Key>) => Selected;
-  adapter?: StoreAdapter<Selected, Adapted>;
 }
+
+type Stores = (typeof store)["use"];
 
 export class StoreController<
   Key extends StoreKey,
   Selected,
   Adapted = Selected,
 > implements ReactiveController {
-  private curr!: Adapted;
-  private prev: Adapted | undefined;
+  public curr!: Adapted;
+  public prev: Adapted | undefined;
 
   /**
    * @dev
@@ -58,8 +58,8 @@ export class StoreController<
     this.unsubscribe();
   }
 
-  private unsubscribe: () => void = () => {};
-
   private adapter: StoreAdapter<Selected, Adapted> = (v, _p) =>
     v as unknown as Adapted;
+
+  private unsubscribe: () => void = () => {};
 }

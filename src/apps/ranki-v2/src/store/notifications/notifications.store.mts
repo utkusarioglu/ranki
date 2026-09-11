@@ -10,8 +10,8 @@ export const notificationStore = createStore(
         list: [
           ...s.list.filter((v) => v.group !== e.group),
           {
-            group: e.group,
             epoch: Date.now(),
+            group: e.group,
             record: {
               icon: e.icon
                 ? {

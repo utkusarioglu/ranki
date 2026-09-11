@@ -1,10 +1,10 @@
+import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement } from "lit";
 
 import type { InformSetProps } from "../../animator/types/animator.types.mjs";
 import type { LayoutSizing } from "../children/layout/layout-utils.types.mjs";
 
 import { WatcherSet } from "../watcher-set/watcher-set.mjs";
-import type { R2C } from "_components/r2c/r2c.mjs";
 
 export class GeometryWatchers<Instance extends LitElement> {
   private readonly host: Instance;
@@ -20,14 +20,14 @@ export class GeometryWatchers<Instance extends LitElement> {
     this.sets.push(w);
   }
 
-  public remove(elem: R2C) {
-    console.log("remove watcher", elem);
-  }
-
   public async inform(
     props: InformSetProps,
     sizing: LayoutSizing | null,
   ): Promise<void> {
     await Promise.all(this.sets.map(async (s) => s.inform(props, sizing)));
+  }
+
+  public remove(elem: R2C) {
+    console.log("remove watcher", elem);
   }
 }

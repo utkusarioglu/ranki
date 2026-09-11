@@ -78,9 +78,11 @@ beforeEach(() => {
   elem = singleElem() as unknown as R2C;
 });
 
+/**
+ * Watcher related tests are broken until the watcher logic is simplified
+ */
 describe.skip("broken tests during transition", () => {
   test("Single set 1 elem", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // const props: GeometryWatcherProps<any> = {
     //   selector: () => [elem as unknown as R2C],
     // };
@@ -101,7 +103,6 @@ describe.skip("broken tests during transition", () => {
   });
 
   test("Single set 2 elems", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // const props: GeometryWatcherProps<any> = {
     //   selector: () => [elem as unknown as R2C, elem as unknown as R2C],
     // };

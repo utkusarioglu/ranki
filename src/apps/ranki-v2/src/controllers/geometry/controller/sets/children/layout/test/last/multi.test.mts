@@ -59,9 +59,9 @@ test("only last has size", () => {
         mode: "default",
         style: {
           height: 23,
-          width: 17,
           left: 0,
           top: 0,
+          width: 17,
         },
       },
       {

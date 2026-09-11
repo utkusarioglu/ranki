@@ -1,7 +1,8 @@
 import type { LitElement } from "lit";
 
-import { ReconciliationController } from "../controller/reconciler-controller.mjs";
 import type { ReconcilerDecoratorParams } from "./reconciler-decorator.types.mjs";
+
+import { ReconciliationController } from "../controller/reconciler-controller.mjs";
 
 export function reconciler<Instance extends LitElement, S>(
   params: ReconcilerDecoratorParams<Instance, S>,

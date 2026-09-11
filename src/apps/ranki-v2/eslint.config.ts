@@ -25,11 +25,11 @@ export default defineConfig([
       },
       "boundaries/files": [
         {
-          category: "reconciler.public",
+          category: "reconciliation-controller.public",
           pattern: "src/controllers/reconciler/reconciler.mts",
         },
         {
-          category: "geometry.public",
+          category: "geometry-controller.public",
           pattern: "src/controllers/geometry/geometry.mts",
         },
         {
@@ -44,15 +44,26 @@ export default defineConfig([
           category: "store.public",
           pattern: "src/store/store.mts",
         },
+        {
+          category: "store-controller.public",
+          pattern: "src/controllers/store/store.mts",
+        },
       ],
       "boundaries/elements": [
         {
-          type: "reconciler.internal",
+          type: "reconciliation-controller.internal",
           pattern: "src/controllers/reconciler",
+          exclude: ["src/controllers/reconciler/reconciler.mts"],
         },
         {
-          type: "geometry.internal",
+          type: "geometry-controller.internal",
           pattern: "src/controllers/geometry",
+          exclude: ["src/controllers/geometry/geometry.mts"],
+        },
+        {
+          type: "store-controller.internal",
+          pattern: "src/controllers/store",
+          exclude: ["src/controllers/store/store.mts"],
         },
         {
           type: "components",
@@ -61,6 +72,7 @@ export default defineConfig([
         {
           type: "store.internal",
           pattern: "src/store",
+          exclude: ["src/store/store.mts"],
         },
       ],
     },
@@ -72,15 +84,45 @@ export default defineConfig([
           policies: [
             {
               from: { element: { type: "components" } },
-              allow: { to: { file: { categories: "reconciler.public" } } },
+              allow: {
+                to: {
+                  file: { categories: "store.public" },
+                },
+              },
             },
             {
-              from: { file: { categories: "reconciler.public" } },
-              allow: { to: { element: { type: "reconciler.internal" } } },
+              from: { element: { type: "components" } },
+              allow: {
+                to: {
+                  file: { categories: "store-controller.public" },
+                },
+              },
             },
             {
-              from: { element: { type: "reconciler.internal" } },
-              allow: { to: { element: { type: "reconciler.internal" } } },
+              from: { element: { type: "store-controller.internal" } },
+              allow: { to: { file: { categories: "store.public" } } },
+            },
+            {
+              from: { element: { type: "components" } },
+              allow: {
+                to: {
+                  file: { categories: "reconciliation-controller.public" },
+                },
+              },
+            },
+            {
+              from: {
+                file: { categories: "reconciliation-controller.public" },
+              },
+              allow: {
+                to: { element: { type: "reconciliation-controller.internal" } },
+              },
+            },
+            {
+              from: { element: { type: "reconciliation-controller.internal" } },
+              allow: {
+                to: { element: { type: "reconciliation-controller.internal" } },
+              },
             },
             {
               from: { element: { type: "components" } },
@@ -88,37 +130,45 @@ export default defineConfig([
             },
             {
               from: { element: { type: "components" } },
-              allow: { to: { file: { categories: "geometry.public" } } },
-            },
-            {
-              from: { element: { type: "components" } },
-              allow: { to: { file: { categories: "store.public" } } },
+              allow: {
+                to: { file: { categories: "geometry-controller.public" } },
+              },
             },
             {
               from: { element: { type: "store.internal" } },
               allow: { to: { file: { categories: "collect.public" } } },
             },
             {
-              from: { element: { type: "geometry.internal" } },
-              allow: { to: { file: { categories: "reconciler.public" } } },
-            },
-            // {
-            //   from: { file: { categories: "!geometry.public" } },
-            //   disallow: {
-            //     to: { element: { type: "geometry.internal" } },
-            //   },
-            // },
-            {
-              from: { file: { categories: "geometry.public" } },
-              allow: { to: { element: { type: "geometry.internal" } } },
+              from: { element: { type: "geometry-controller.internal" } },
+              allow: {
+                to: {
+                  file: { categories: "reconciliation-controller.public" },
+                },
+              },
             },
             {
-              from: { element: { type: "geometry.internal" } },
-              allow: { to: { element: { type: "geometry.internal" } } },
+              from: { file: { categories: "geometry-controller.public" } },
+              allow: {
+                to: { element: { type: "geometry-controller.internal" } },
+              },
             },
             {
-              from: { element: { type: "geometry.internal" } },
+              from: { element: { type: "geometry-controller.internal" } },
+              allow: {
+                to: { element: { type: "geometry-controller.internal" } },
+              },
+            },
+            {
+              from: { element: { type: "geometry-controller.internal" } },
               allow: { to: { file: { categories: "component.r2c" } } },
+            },
+            {
+              from: {
+                file: { categories: "store-controller.public" },
+              },
+              allow: {
+                to: { element: { type: "store-controller.internal" } },
+              },
             },
           ],
         },

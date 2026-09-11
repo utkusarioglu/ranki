@@ -1,3 +1,5 @@
+import type { CueRecord } from "_config/config.types.mjs";
+
 import { R2C } from "_components/r2c/r2c.mjs";
 import {
   geometry,
@@ -8,8 +10,7 @@ import {
   reconciler,
   ReconciliationController,
 } from "_controllers/reconciler/reconciler.mjs";
-import { StoreController } from "_controllers/store/store.controller.mjs";
-import { store } from "_controllers/store/store.decorator.mjs";
+import { store, StoreController } from "_controllers/store/store.mjs";
 import { getAnimationCollection } from "_store/store.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, queryAll } from "lit/decorators.js";
@@ -17,7 +18,6 @@ import { repeat } from "lit/directives/repeat.js";
 import { styleMap } from "lit/directives/style-map.js";
 
 import style from "./notification-list.css?inline";
-import type { CueRecord } from "_config/config.types.mjs";
 
 type R2NotificationListState = CueRecord;
 

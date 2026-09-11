@@ -27,6 +27,85 @@ export class ReconciliationUtils {
     };
   }
 
+  public static first<G>(
+    prev: ReconcilableSubtree<G>,
+    curr: G[],
+    hasChanged: ReconcileSingle<G>,
+  ): ReconcilableSubtree<G> {
+    const list: ReconciliationContainer<G>[] = [...prev.list];
+
+    const remove: number[] = [];
+    const add: number[] = [];
+    const retain: number[] = [];
+
+    const currFirst = curr.at(0);
+    const prevFirst = list.at(0)?.props;
+    const isCurr = currFirst !== undefined;
+    const isPrev = prevFirst !== undefined;
+
+    let action: ReconciliationActions;
+    if (isCurr && isPrev) {
+      action = hasChanged(currFirst, prevFirst);
+    } else if (isCurr && !isPrev) {
+      action = "add";
+    } else if (!isCurr && isPrev) {
+      action = "remove";
+    } else {
+      assertNever({
+        details: {
+          curr,
+          isCurr,
+          isPrev,
+          prev,
+        },
+        why: "Impossible reconciliation state",
+      });
+    }
+
+    const i = list.length;
+    switch (action) {
+      case "add":
+        add.unshift(i);
+        list.unshift({
+          id: this.getId(),
+          leave: false,
+          props: currFirst!,
+        });
+        break;
+      case "retain":
+        retain.push(i);
+        break;
+      default:
+        assertNever({
+          details: { action },
+          why: "unrecognized change option",
+        });
+    }
+
+    if (list.length > 1) {
+      for (let i = 1; i < list.length; i++) {
+        list[i].leave = true;
+      }
+    }
+
+    const indices = Array.from({ length: list.length }, (_) => 0);
+
+    return {
+      diff: {
+        add,
+        remove,
+        retain,
+        stagger: {
+          first: 0,
+          indices,
+        },
+        update: [],
+      },
+      epoch: Date.now(),
+      list,
+    };
+  }
+
   /**
    * @dev
    * #1 Why do we need this? Sometimes an update due to a late loading icon and
@@ -36,6 +115,7 @@ export class ReconciliationUtils {
    * to the reconcilliation mechanism but due to the how updates are being
    * handled.
    */
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   public static flat<G>(
     prev: ReconcilableSubtree<G>,
     curr: G[],
@@ -201,85 +281,6 @@ export class ReconciliationUtils {
 
     if (list.length > 1) {
       for (let i = 0; i < list.length - 1; i++) {
-        list[i].leave = true;
-      }
-    }
-
-    const indices = Array.from({ length: list.length }, (_) => 0);
-
-    return {
-      diff: {
-        add,
-        remove,
-        retain,
-        stagger: {
-          first: 0,
-          indices,
-        },
-        update: [],
-      },
-      epoch: Date.now(),
-      list,
-    };
-  }
-
-  public static first<G>(
-    prev: ReconcilableSubtree<G>,
-    curr: G[],
-    hasChanged: ReconcileSingle<G>,
-  ): ReconcilableSubtree<G> {
-    const list: ReconciliationContainer<G>[] = [...prev.list];
-
-    const remove: number[] = [];
-    const add: number[] = [];
-    const retain: number[] = [];
-
-    const currFirst = curr.at(0);
-    const prevFirst = list.at(0)?.props;
-    const isCurr = currFirst !== undefined;
-    const isPrev = prevFirst !== undefined;
-
-    let action: ReconciliationActions;
-    if (isCurr && isPrev) {
-      action = hasChanged(currFirst, prevFirst);
-    } else if (isCurr && !isPrev) {
-      action = "add";
-    } else if (!isCurr && isPrev) {
-      action = "remove";
-    } else {
-      assertNever({
-        details: {
-          curr,
-          isCurr,
-          isPrev,
-          prev,
-        },
-        why: "Impossible reconciliation state",
-      });
-    }
-
-    const i = list.length;
-    switch (action) {
-      case "add":
-        add.unshift(i);
-        list.unshift({
-          id: this.getId(),
-          leave: false,
-          props: currFirst!,
-        });
-        break;
-      case "retain":
-        retain.push(i);
-        break;
-      default:
-        assertNever({
-          details: { action },
-          why: "unrecognized change option",
-        });
-    }
-
-    if (list.length > 1) {
-      for (let i = 1; i < list.length; i++) {
         list[i].leave = true;
       }
     }

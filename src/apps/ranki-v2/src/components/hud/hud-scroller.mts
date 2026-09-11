@@ -8,6 +8,7 @@ import { getAnimationCollection } from "_store/store.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
+
 import style from "./hud-scroller.css?inline";
 
 @customElement("r2-hud-scroller")

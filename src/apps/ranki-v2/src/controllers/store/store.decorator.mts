@@ -1,7 +1,5 @@
 import type { ReactiveElement } from "lit";
 
-import { O11y } from "_controllers/geometry/o11y/o11y.mjs";
-
 import {
   type StoreAdapter,
   StoreController,
@@ -19,14 +17,12 @@ export function store<
   selector: (s: StoreState<Key>) => Selected,
   adapter?: StoreAdapter<Selected, Adapted>,
 ) {
-  return (_value: undefined, context: ClassFieldDecoratorContext<Instance>) => {
+  return (
+    _value: undefined,
+    _context: ClassFieldDecoratorContext<Instance>,
+  ) => {
     return function (this: Instance) {
-      O11y.devtools.log("Created store decorator", {
-        adapter,
-        context,
-        selector,
-      });
-      return new StoreController(this, { key, selector, adapter });
+      return new StoreController(this, { adapter, key, selector });
     };
   };
 }

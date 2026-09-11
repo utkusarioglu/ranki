@@ -5,9 +5,9 @@ import { assertNever } from "_error/assertions.mjs";
 
 import type {
   GetSourceCallback,
+  ReconcilerControllerParams,
   ReconcilerEventsCb,
   ReconcilerTypes,
-  SubtreeParams,
 } from "./reconciler-controller.types.mjs";
 
 import {
@@ -24,23 +24,42 @@ export class ReconciliationController<
   public curr: ReconcilableSubtree<S> = ReconciliationUtils.empty<S>();
   public epoch: number = 0;
   public prev: ReconcilableSubtree<S> | undefined;
-  private on: ReconcilerEventsCb<Instance> | undefined;
-
   private getSource!: GetSourceCallback<Instance, S>;
+
   private host: Instance;
   private itemReconcile!: ReconcileSingle<S>;
   private leaving: number[] = [];
+  private on: ReconcilerEventsCb<Instance> | undefined;
 
   private reconcilerName!: ReconcilerTypes;
   private willLeave = false;
 
-  constructor(host: Instance, params: SubtreeParams<Instance, S>) {
+  constructor(host: Instance, params: ReconcilerControllerParams<Instance, S>) {
     host.addController(this);
     this.host = host;
     this.reconcilerName = params.type;
     this.itemReconcile = params.reconcile;
     this.getSource = params.source;
     this.on = params.on;
+  }
+
+  child(id: number) {
+    return (e: CustomEvent<R2ReconcilerEmit>) => {
+      e.stopPropagation();
+      const detail = e.detail;
+      // eslint-disable-next-line sonarjs/no-small-switch
+      switch (detail.type) {
+        case "leave":
+          this.prev = this.curr;
+          this.leave(this.prev, id);
+          break;
+        default:
+          assertNever({
+            details: { type: detail.type },
+            why: "Unrecognized Reconciler emit type",
+          });
+      }
+    };
   }
 
   emit(type: "leave") {
@@ -69,25 +88,6 @@ export class ReconciliationController<
       });
     }
     this.host.requestUpdate();
-  }
-
-  child(id: number) {
-    return (e: CustomEvent<R2ReconcilerEmit>) => {
-      e.stopPropagation();
-      const detail = e.detail;
-      // eslint-disable-next-line sonarjs/no-small-switch
-      switch (detail.type) {
-        case "leave":
-          this.prev = this.curr;
-          this.leave(this.prev, id);
-          break;
-        default:
-          assertNever({
-            details: { type: detail.type },
-            why: "Unrecognized Reconciler emit type",
-          });
-      }
-    };
   }
 
   private async leave(

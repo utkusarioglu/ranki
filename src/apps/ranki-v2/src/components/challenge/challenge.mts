@@ -1,6 +1,6 @@
 import type { RankiState } from "_config/config.types.mjs";
-import { StoreController } from "_controllers/store/store.controller.mjs";
-import { store } from "_controllers/store/store.decorator.mjs";
+
+import { store, StoreController } from "_controllers/store/store.mjs";
 import { css, html, LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
 import yaml from "yaml";

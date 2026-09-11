@@ -8,15 +8,15 @@ import { TimingUtils } from "_controllers/geometry/controller/utils/timing.utils
 import { expect, test, vi } from "vitest";
 
 import type { GeometryChildrenProps } from "../../children.types.mjs";
+import type { LayoutSizing } from "../../layout/layout-utils.types.mjs";
 
 import { GeometryChildren } from "../../children.mjs";
-import type { LayoutSizing } from "../../layout/layout-utils.types.mjs";
 
 const host = vi.fn() as unknown as LitElement;
 const target = vi.fn() as unknown as R2C;
 const props: GeometryChildrenProps<LitElement> = {};
 
-test.only("empty", async () => {
+test("empty", async () => {
   const children = new GeometryChildren(host, props);
   const detail: GeometryEvent = {
     lifecycle: "update",
@@ -28,12 +28,12 @@ test.only("empty", async () => {
   };
   const expected0: LayoutSizing = {
     container: {
-      width: 0,
       height: 0,
+      width: 0,
     },
     set: [],
   };
-  const call = () => children.onEmit({ target, detail });
+  const call = () => children.onEmit({ detail, target });
   const response = [call(), call(), call()];
   await TimingUtils.raf(10);
   expect(response[0]).toEqual(expected0);

@@ -1,3 +1,4 @@
+import type { R2C } from "_components/r2c/r2c.mjs";
 import type { Context } from "@opentelemetry/api";
 
 import type { INTERACTION_SEPARATOR } from "../../sets/children/registry/children-registry.constants.mjs";
@@ -10,7 +11,6 @@ import type {
   GeometryEventLifecycle,
 } from "./lifecycle.types.mjs";
 import type { GeometryEventMode, GeometryEventModeKey } from "./mode.types.mjs";
-import type { R2C } from "_components/r2c/r2c.mjs";
 
 export type EmitType = GeometryEvent["type"];
 

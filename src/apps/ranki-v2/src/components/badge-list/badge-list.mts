@@ -10,8 +10,7 @@ import {
   reconciler,
   ReconciliationController,
 } from "_controllers/reconciler/reconciler.mjs";
-import { StoreController } from "_controllers/store/store.controller.mjs";
-import { store } from "_controllers/store/store.decorator.mjs";
+import { store, StoreController } from "_controllers/store/store.mjs";
 import { getAnimationCollection } from "_store/store.mjs";
 import { html, unsafeCSS } from "lit";
 import { customElement, queryAll } from "lit/decorators.js";

@@ -1,3 +1,5 @@
+import type { CueRecord } from "_config/config.types.mjs";
+
 import { R2C } from "_components/r2c/r2c.mjs";
 import {
   geometry,
@@ -10,7 +12,6 @@ import { html, unsafeCSS } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 import style from "./chip.css?inline";
-import type { CueRecord } from "_config/config.types.mjs";
 
 @customElement("r2-chip")
 export class R2Chip extends R2C {

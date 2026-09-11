@@ -2,6 +2,7 @@ import type { R2C } from "_components/r2c/r2c.mjs";
 import type { LitElement, ReactiveController } from "lit";
 
 import type { InformSetProps } from "./animator/types/animator.types.mjs";
+import type { OnEmitCallbackParams } from "./events/types/geometry-events.types.mjs";
 import type { LayoutSizing } from "./sets/children/layout/layout-utils.types.mjs";
 import type { GeometryControllerConstructorParams } from "./types/geometry-controller.constructor.types.mjs";
 import type { GeometryControllerStaticConfig } from "./types/geometry-controller.static.types.mjs";
@@ -17,13 +18,11 @@ import { GeometryMerger } from "./merger/geometry-merger.mjs";
 import { GeometrySetsUtils } from "./sets/geometry-sets-utils.mjs";
 import { GeometrySets } from "./sets/sets.mjs";
 import { TimingUtils } from "./utils/timing.utils.mjs";
-import type { OnEmitCallbackParams } from "./events/types/geometry-events.types.mjs";
 
 export class GeometryController<
   Instance extends LitElement,
 > implements ReactiveController {
   private static idCounter = 0;
-  private id: number;
   public readonly events: GeometryEvents<Instance>;
   public readonly wait = {
     delay: TimingUtils.delay,
@@ -33,6 +32,7 @@ export class GeometryController<
   private readonly animator: Animator<Instance>;
   private curr: CurrentAppliedStyle | null = null;
   private readonly host: Instance;
+  private id: number;
   private inSession: boolean = false;
   private readonly isRoot: boolean;
   private readonly o11y: O11y<this>;
@@ -88,18 +88,32 @@ export class GeometryController<
     if (conf.observability) O11y.configure(conf.observability);
   }
 
+  child() {
+    return this.events.onEmit(async (event) => {
+      return this.o11y.trace.span("onEmit", async () => {
+        // eslint-disable-next-line sonarjs/no-small-switch
+        switch (event.detail.type) {
+          case "lifecycle":
+            return this.lifecycle(event);
+          default:
+        }
+      });
+    });
+  }
+
   hostConnected(): void {
-    this.events.emit({ type: "lifecycle", lifecycle: "connected" });
+    this.events.emit({ lifecycle: "connected", type: "lifecycle" });
     this.events.registerListeners();
   }
 
   hostDisconnected(): void {
     this.events.deregisterListeners();
-    this.events.emit({ type: "lifecycle", lifecycle: "disconnected" });
+    this.events.emit({ lifecycle: "disconnected", type: "lifecycle" });
   }
 
   watcher() {
     return this.events.onEmit(async (event) => {
+      // eslint-disable-next-line sonarjs/no-small-switch
       switch (event.detail.type) {
         case "lifecycle": {
           switch (event.detail.lifecycle) {
@@ -113,15 +127,46 @@ export class GeometryController<
     });
   }
 
-  child() {
-    return this.events.onEmit(async (event) => {
-      return this.o11y.trace.span("onEmit", async () => {
-        switch (event.detail.type) {
-          case "lifecycle":
-            return this.lifecycle(event);
-          default:
-        }
+  /**
+   * This is the method parent uses to tell its child what style it's
+   * supposed to animate towards
+   */
+  private bindHostMethods() {
+    (this.host as unknown as R2C).informStyle = this.informStyle.bind(this);
+  }
+
+  private async informSet(props: InformSetProps): Promise<void> {
+    return this.o11y.trace.span("informSet", () => {
+      this.o11y.devtools.log("informSet", { props, sizing: this.sizing });
+      return this.sets.inform(props, this.sizing);
+    });
+  }
+
+  private async informStyle(informed: InformedChildStyle): Promise<void> {
+    return this.o11y.trace.span("informStyle", async ({ span }) => {
+      this.o11y.meter.count("informStyle");
+      this.prev = this.curr;
+      const curr = GeometryMerger.createCurrStyle(
+        informed,
+        this.sizing,
+        this.prev,
+      );
+      this.curr = curr;
+
+      span.addEvent("style.ready");
+
+      this.o11y.devtools.log("informStyle", {
+        curr: this.curr,
+        host: this.host,
+        informed,
+        prev: this.prev,
+        sizing: this.sizing,
+        tag: this.host.tagName,
       });
+
+      this.events.onActionsStart(this.curr.actions);
+      await this.animator.update(curr, this.prev);
+      this.events.onActionsEnd(this.curr.actions);
     });
   }
 
@@ -137,6 +182,7 @@ export class GeometryController<
       //   console.log("t", event.target.tagName, event.detail);
       // }
       // break;
+      // eslint-disable-next-line no-fallthrough
       case "update":
         return await this.lifecycleUpdate(event);
     }
@@ -219,48 +265,5 @@ export class GeometryController<
         });
       },
     );
-  }
-
-  /**
-   * This is the method parent uses to tell its child what style it's
-   * supposed to animate towards
-   */
-  private bindHostMethods() {
-    (this.host as unknown as R2C).informStyle = this.informStyle.bind(this);
-  }
-
-  private async informSet(props: InformSetProps): Promise<void> {
-    return this.o11y.trace.span("informSet", () => {
-      this.o11y.devtools.log("informSet", { props, sizing: this.sizing });
-      return this.sets.inform(props, this.sizing);
-    });
-  }
-
-  private async informStyle(informed: InformedChildStyle): Promise<void> {
-    return this.o11y.trace.span("informStyle", async ({ span }) => {
-      this.o11y.meter.count("informStyle");
-      this.prev = this.curr;
-      const curr = GeometryMerger.createCurrStyle(
-        informed,
-        this.sizing,
-        this.prev,
-      );
-      this.curr = curr;
-
-      span.addEvent("style.ready");
-
-      this.o11y.devtools.log("informStyle", {
-        curr: this.curr,
-        host: this.host,
-        informed,
-        prev: this.prev,
-        sizing: this.sizing,
-        tag: this.host.tagName,
-      });
-
-      this.events.onActionsStart(this.curr.actions);
-      await this.animator.update(curr, this.prev);
-      this.events.onActionsEnd(this.curr.actions);
-    });
   }
 }
