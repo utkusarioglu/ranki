@@ -1,11 +1,11 @@
 import type { ReactiveElement } from "lit";
 
+import { StoreController } from "../controller/store-controller.mjs";
 import {
   type StoreAdapter,
-  StoreController,
   type StoreKey,
   type StoreState,
-} from "./store.controller.mjs";
+} from "../controller/store-controller.types.mjs";
 
 export function store<
   Instance extends ReactiveElement,

@@ -2,21 +2,11 @@ import type { ReactiveController, ReactiveControllerHost } from "lit";
 
 import { store } from "_store/store.mjs";
 
-export type StoreAdapter<S, T> = (curr: S, prev: T | undefined) => T;
-
-export type StoreKey = keyof Stores;
-
-export type StoreState<Key extends StoreKey> = ReturnType<
-  Stores[Key]["getState"]
->;
-
-interface StoreParams<Key extends StoreKey, Selected, Adapted = Selected> {
-  adapter?: StoreAdapter<Selected, Adapted>;
-  key: Key;
-  selector: (s: StoreState<Key>) => Selected;
-}
-
-type Stores = (typeof store)["use"];
+import type {
+  StoreAdapter,
+  StoreKey,
+  StoreParams,
+} from "./store-controller.types.mjs";
 
 export class StoreController<
   Key extends StoreKey,
