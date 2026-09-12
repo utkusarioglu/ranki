@@ -6,9 +6,32 @@ export interface R2ReconcilerEmit {
   type: "leave";
 }
 
-export type ReconcileSingle<G> = (curr: G, prev: G) => ReconciliationActions;
+export type ReconcileSingle<G> = (curr: G, prev: G) => ReconciliationAction;
 
-export type ReconciliationActions = "add" | "remove" | "retain" | "update";
+export type HasChangedCallback2<G> = (
+  curr: G,
+  prev: G,
+) => ReconciliationActionRec[];
+
+export type ReconciliationActionRec =
+  | ReconciliationActionPrev
+  | ReconciliationActionCurr;
+
+interface ReconciliationActionPrev {
+  type: "prev";
+  // advance: boolean;
+  action: "keep" | "remove";
+}
+
+interface ReconciliationActionCurr {
+  type: "curr";
+  action: "add" | "update";
+}
+//   {
+//   type: "curr"
+//   prev: "keep" | "remove";
+// }
+export type ReconciliationAction = "add" | "remove" | "retain" | "update";
 
 interface OnEmitCallbackParams {
   detail: R2ReconcilerEmit;
